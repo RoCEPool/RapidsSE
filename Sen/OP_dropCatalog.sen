@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: dropCatalog :: dropCatalog <catalogNm> ;
 
-: dropCatalog _info tagCopy: stageOp_tags
+: dropCatalog _cmdTags tagCopy: stageOp_tags
   tags{
     <jobDesc>   = "--op desc--" }
 ;

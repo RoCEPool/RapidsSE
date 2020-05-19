@@ -90,7 +90,7 @@
 
 cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
-: pipeline _info tags{
+: pipeline _cmdTags tags{
   <jobDesc>  = "--description of job--"
 
   <jobKind>  = JK_DIST2PC
@@ -102,7 +102,7 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
 ;
 
 /*
-: pipeline _info tags{
+: pipeline _cmdTags tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_DIST2PC

@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: eatAll :: eatAll ;
 
-: eatAll _info tagCopy: stageOp_tags
+: eatAll _cmdTags tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

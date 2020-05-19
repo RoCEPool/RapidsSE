@@ -1205,7 +1205,7 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
   
   s32 sJobInfoNm(pOp->szOpNm());
   
-  StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_info"_Stz);
+  StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_cmdTags"_Stz);
   
   Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
   

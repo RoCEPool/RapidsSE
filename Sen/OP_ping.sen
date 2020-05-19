@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: ping :: ping ;
 
-: ping _info tagCopy: localLiteOp_tags
+: ping _cmdTags tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--op desc--"
     <localLiteOp> = true

@@ -64,7 +64,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: truncateTable :: truncateTable <tableNm> ;
 
-: truncateTable _info tagCopy: stageOp_tags
+: truncateTable _cmdTags tagCopy: stageOp_tags
   tags{ <jobDesc>  = "--op desc--" }
 ;
 

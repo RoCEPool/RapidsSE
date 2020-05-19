@@ -133,7 +133,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toCrwH :: toCrwH <tableNm> ;
 
-: toCrwH _info tagCopy: stageOp_tags
+: toCrwH _cmdTags tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

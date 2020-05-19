@@ -105,7 +105,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: stats :: stats ;
 
-: stats _info tagCopy: stageOp_tags
+: stats _cmdTags tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

@@ -148,7 +148,7 @@
 
 cmdSyntax: connectCluster :: connectCluster ;
 
-: connectCluster _info tags{
+: connectCluster _cmdTags tags{
   <jobKind>  = JK_DIST2PC
   <rspKind>  = RS_NONE
   <ddlLock>  = DL_NONE

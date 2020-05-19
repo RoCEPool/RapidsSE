@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: pythonShell :: pythonShell <pythonFile> ;
 
-: pythonShell _info tagCopy: stageOp_tags
+: pythonShell _cmdTags tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

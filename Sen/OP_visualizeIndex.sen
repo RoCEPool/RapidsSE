@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: visidx :: visidx <tableNm> <indexNm> ;
 
-: visidx _info tagCopy: localLiteOp_tags
+: visidx _cmdTags tagCopy: localLiteOp_tags
 tags{
   <jobDesc>     = "--op desc--"
   <localLiteOp> = true

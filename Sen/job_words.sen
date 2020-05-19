@@ -292,7 +292,7 @@
 /*----------------------------------------------------------------------------*/
 : job::acquireDdlLock
 
-  "<ddlLock>" <jobNm> _info::findTagSet tagSet.getInt
+  "<ddlLock>" <jobNm> _cmdTags::findTagSet tagSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 

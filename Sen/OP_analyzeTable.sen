@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: antbl :: antbl <tableNm> ;
 
-: antbl _info tagCopy: liteOp_tags
+: antbl _cmdTags tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--op desc--"
     <liteOp>    = true

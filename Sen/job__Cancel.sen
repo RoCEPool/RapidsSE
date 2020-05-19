@@ -76,7 +76,7 @@
 
 cmdSyntax: _Cancel :: _Cancel ;
 
-: _Cancel _info tags{
+: _Cancel _cmdTags tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_GENERIC

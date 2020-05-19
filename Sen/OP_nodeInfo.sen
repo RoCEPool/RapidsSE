@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: NodeInfo :: NodeInfo ;
 
-: nodeInfo _info tagCopy: liteOp_tags
+: nodeInfo _cmdTags tagCopy: liteOp_tags
 tags{
   <jobDesc>   = "--op desc--"
   <liteOp>    = true

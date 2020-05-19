@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: vfytbl :: vfytbl <tableNm> ;
 
-: vfytbl _info tagCopy: liteOp_tags
+: vfytbl _cmdTags tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--op desc--"
     <liteOp>    = true

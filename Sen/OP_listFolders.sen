@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lf :: lf ;
 
-: lf _info tagCopy: localLiteOp_tags
+: lf _cmdTags tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--op desc--"
     <localLiteOp> = true

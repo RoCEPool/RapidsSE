@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: recurring :: recurring ;
 
-: recurring _info
+: recurring _cmdTags
 
   tags{
     <jobKind>  = JK_LOCAL

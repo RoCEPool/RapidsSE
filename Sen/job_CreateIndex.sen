@@ -190,7 +190,7 @@
 cmdSyntax: createIndex :: create index <indexNm> on <tableNm> etc ;
 cmdSyntax: createIndex :: create unique index <indexNm> on <tableNm> etc ;
 
-: createIndex _info tags{
+: createIndex _cmdTags tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_DIST2PC

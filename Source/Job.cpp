@@ -305,7 +305,7 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 TagSet* Job::pJobInfo_tagSet(Stz* szJobNm)
 {
   s32 sJobNm_info = szJobNm;
-  sJobNm_info.vConcat("_info"_Stz);
+  sJobNm_info.vConcat("_cmdTags"_Stz);
   
   Word* pWord_jobInfo = AM::pRootDic()->pFindWord(sJobNm_info);
   
@@ -752,7 +752,7 @@ TagSet* Job::pJobInfoTagSet(void)
   
   s32 sJobInfoNm(szJobNm);
   
-  StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_info"_Stz);
+  StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_cmdTags"_Stz);
   
   Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
   

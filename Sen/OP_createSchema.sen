@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: createSchema :: createSchema <schemaNm> ;
 
-: createSchema _info tagCopy: stageOp_tags
+: createSchema _cmdTags tagCopy: stageOp_tags
   tags{
     <jobDesc>   = "--op desc--" }
 ;

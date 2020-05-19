@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* cmd_Info.sen -- the _info words                                            */
+/* cmd_Info.sen -- the _cmdTags words                                            */
 /*============================================================================*/
 
 " cmd_info.sen" .verbose
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if info word is about a distributed job                               */
 /*----------------------------------------------------------------------------*/
-: _info.aboutDistJob params| pInfoWrd |
+: _cmdTags.aboutDistJob params| pInfoWrd |
 
   pInfoWrd word.TagSet@ locals| pInfTagSet |
 
@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if info word is about a generic job                                   */
 /*----------------------------------------------------------------------------*/
-: _info.aboutGenericJob params| pInfoWrd |
+: _cmdTags.aboutGenericJob params| pInfoWrd |
 
   pInfoWrd word.TagSet@ locals| pInfTagSet |
 
@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if info word is about a local job                                     */
 /*----------------------------------------------------------------------------*/
-: _info.aboutLocalJob params| pInfoWrd |
+: _cmdTags.aboutLocalJob params| pInfoWrd |
 
   pInfoWrd word.TagSet@ locals| pInfTagSet |
 
@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if info word is about a lite op                                       */
 /*----------------------------------------------------------------------------*/
-: _info.aboutLiteOp params| pInfoWrd |
+: _cmdTags.aboutLiteOp params| pInfoWrd |
 
   pInfoWrd word.TagSet@ locals| pInfTagSet |
 
@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if info word is about a local lite op                                 */
 /*----------------------------------------------------------------------------*/
-: _info.aboutLocalLiteOp params| pInfoWrd |
+: _cmdTags.aboutLocalLiteOp params| pInfoWrd |
 
   pInfoWrd word.TagSet@ locals| pInfTagSet |
 
@@ -57,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if info word is a service command                                     */
 /*----------------------------------------------------------------------------*/
-: _info.aboutServiceCmd params| pInfoWrd |
+: _cmdTags.aboutServiceCmd params| pInfoWrd |
 
   pInfoWrd word.TagSet@ locals| pInfTagSet |
 
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* does a seed by the name of Cmd_Suffix exist ?                              */
 /*----------------------------------------------------------------------------*/
-: _info.doesSeedExist? params| pInfoWrd sSeedSuffix |
+: _cmdTags.doesSeedExist? params| pInfoWrd sSeedSuffix |
 
   pInfoWrd word.name_trunc locals| sCmdNm |
 
@@ -79,11 +79,11 @@
 /*----------------------------------------------------------------------------*/
 /* add <seedNm> = Cmd_Suffix | DefaultSeed to tag set of given infor word     */
 /*----------------------------------------------------------------------------*/
-: _info.addSeedToTagSet params| pInfoWrd sSeedSuffix sDefaultSeed sSeedNm |
+: _cmdTags.addSeedToTagSet params| pInfoWrd sSeedSuffix sDefaultSeed sSeedNm |
 
   0 locals| sSeedNm_Suffix |
 
-  sSeedSuffix pInfoWrd _info.doesSeedExist? if
+  sSeedSuffix pInfoWrd _cmdTags.doesSeedExist? if
     pInfoWrd word.name_trunc
       sSeedSuffix str.cat to sSeedNm_Suffix
   else
@@ -100,19 +100,19 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* promote current word to be an _info word                                   */
+/* promote current word to be an _cmdTags word                                   */
 /*----------------------------------------------------------------------------*/
-: _info immediate
+: _cmdTags immediate
 
   compiler::current@ locals| pWord |
 
-  // set the name of the word to be _info
+  // set the name of the word to be _cmdTags
   pWord word.name@
-    "_info" str.cat
+    "_cmdTags" str.cat
     pWord word.name!
 
-  // set the word category to be _info
-  find: _info pWord word.category!
+  // set the word category to be _cmdTags
+  find: _cmdTags pWord word.category!
 
   // attach an ename set to the word being created
   tagSet::new locals| pWordTagSet |
@@ -128,17 +128,17 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: _info::findTagSet params| sWordNm |
+: _cmdTags::findTagSet params| sWordNm |
 
-  sWordNm "_info" str.cat find word.TagSet@
+  sWordNm "_cmdTags" str.cat find word.TagSet@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* show all words that are of _info                                          */
+/* show all words that are of _cmdTags                                          */
 /*----------------------------------------------------------------------------*/
 : opInfos prompt
 
-  find: _info word::ofCatg
+  find: _cmdTags word::ofCatg
 ;
 
 /*============================================================================*/

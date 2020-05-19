@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lscol :: lscol <tableNm> ;
 
-: lscol _info tagCopy: localLiteOp_tags
+: lscol _cmdTags tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--op desc--"
     <localLiteOp> = true

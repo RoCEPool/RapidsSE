@@ -39,7 +39,7 @@
 cmdSyntax: forgetNode :: forget node <nodeNm> __etc__ ;
 cmdSyntax: forgetNode :: fgnde <nodeNm> ;
 
-: forgetNode _info tags{
+: forgetNode _cmdTags tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_DIST2PC

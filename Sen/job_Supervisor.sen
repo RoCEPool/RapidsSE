@@ -41,7 +41,7 @@
 
 cmdSyntax: supervisor :: supervisor ;
 
-: supervisor _info tags{
+: supervisor _cmdTags tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

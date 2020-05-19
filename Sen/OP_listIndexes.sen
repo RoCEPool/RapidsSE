@@ -85,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lsidx :: lsidx <tableNm> ;
 
-: lsidx _info tagCopy: localLiteOp_tags
+: lsidx _cmdTags tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--op desc--"
     <localLiteOp> = true

@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lsparts :: lsparts ;
 
-: lsparts _info tagCopy: liteOp_tags
+: lsparts _cmdTags tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--op desc--"
     <liteOp>    = true
