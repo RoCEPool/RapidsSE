@@ -101,14 +101,12 @@ namespace Prompt
     void vPromptUser(void);
     bool bReadNextCommand(void);
     bool bRedirectFromFile(void);
-    void vReformatCommand(void);
     void vReportObjects();
     void vReportOther(void);
     void vReportPool(void);
     void vReportTrace();
     void vReportTime(void);
     void vResetSectionNo(void);
-    void vRestateCommand(void);
     i8   iRequestId(void);
     Session* pSession(void);
     void vSetJob(void);

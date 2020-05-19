@@ -205,10 +205,6 @@ void SePrompt::vPromptLoop(void)
     if (bTranslateProcedure())
       goto L_Read_Next_Command;
     
-    vRestateCommand();
-    
-    vReformatCommand();
-    
     if (bRedirectFromFile())
       continue;
     
@@ -1143,22 +1139,6 @@ bool SePrompt::bRedirectFromFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reformat command                                                           */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vReformatCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  TokenVec* pTknVec = this->pTokenVec();
-  
-  if (Sql::bReformat(pTknVec))
-    return;
-
-  // -- -- -- -- -- --
-  return;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get command id                                                             */
 /*----------------------------------------------------------------------------*/
 i8 SePrompt::iRequestId(void)
@@ -1176,22 +1156,6 @@ void SePrompt::vResetSectionNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   m_iSectionNo = 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* restate command                                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vRestateCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  TokenVec* pTknVec = this->pTokenVec();
-  
-  if (Sql::bRestate(pTknVec))
-    return;
-  
-  // -- -- -- -- -- --
-  return;
 }
 
 /*----------------------------------------------------------------------------*/
