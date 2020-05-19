@@ -427,6 +427,8 @@ void JobClass::vJobCat(eCN eClass)
 /*----------------------------------------------------------------------------*/
 void JobClass::vVerifySeeds(void)
 {
+  _static_
+  
   //vTrace("FindJob: %s %s\n"_Stz, aCommand1, aCommand2);
   
   Dic* pRootDic = AM::pRootDic();

@@ -1251,6 +1251,9 @@ void AM::vBootCheck(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  if (AM::bVerboseProgress())
+    vInfo("  aCN[] has CN_ENUMS\n"_Stz);
+  
   bool bFoundEnum = false;
   // find number of entries in aCN
   for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
@@ -1263,7 +1266,7 @@ void AM::vBootCheck(void)
   
   if (!bFoundEnum)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "Enum for CN_ENUM not found in aCN\n"_Stz);
+           "Enum for CN_ENUMS not found in aCN\n"_Stz);
   
   if (iEntriesECN != iEntriesPCN) {
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -1273,6 +1276,9 @@ void AM::vBootCheck(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (AM::bVerboseProgress())
+    vInfo("  gxaSizeHeap[] matches aCN[]\n"_Stz);
   
   bFoundEnum = false;
   // find number of entries in gxaSizeHeap
@@ -1296,6 +1302,9 @@ void AM::vBootCheck(void)
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (AM::bVerboseProgress())
+    vInfo("  Heap assignment matches class size\n"_Stz);
   
   // check sizes are less than pool block size
   for (i8 iClass = 0; iClass <= CN_ENUMS; iClass++) {
@@ -1332,6 +1341,8 @@ void AM::vBootCheck(void)
         assert(0);
     }
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Logging::vCheckAssumptions();
 }

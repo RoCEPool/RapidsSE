@@ -158,10 +158,7 @@ void SePrompt::vPromptLoop(void)
     //vJotTrigger(0x0e,d_iDebugMode);
     //vJotDisable(0x27,0);
   }
-  
-  vVerifyJobSeeds();
-  
-  
+    
   while (bContinue()) {
     
     if (bStdIn()) {

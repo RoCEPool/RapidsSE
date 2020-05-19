@@ -1434,6 +1434,14 @@ void Engine::vStartSystem(void)
               "running boot job"_Stz); //!format-LogSys
   vCallBoot();
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
+  JobClass::vVerifySeeds();
+  
+  
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading
   
