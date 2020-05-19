@@ -179,7 +179,7 @@
 /*----------------------------------------------------------------------------*/
 /* generate words for a serice (these should be demons)         TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
-: cmd::genService_info params| pwCmdTags |
+: cmd::genService_cmdTags params| pwCmdTags |
 
   pwCmdTags _cmdTags.aboutServiceCmd if
     pwCmdTags .generateService
@@ -190,7 +190,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add any missing seed tags for a distributed job                            */
+/* add the seed tags for a distributed job                                    */
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedsFor_distJob params| pwCmdTags |
 
@@ -206,7 +206,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add any missing seed tags for a generic job                                */
+/* add the seed tags for a generic job                                        */
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedsFor_genericJob params| pwCmdTags |
 
@@ -214,7 +214,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add any missing seed tags for a local op                                   */
+/* add the seed tags for a local op                                           */
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedsFor_localOp params| pwCmdTags |
 
@@ -224,7 +224,7 @@
 /*----------------------------------------------------------------------------*/
 /* add any missing seed tags for a command                                    */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeeds_info params| pwCmdTags |
+: cmd::addSeeds_cmdTags params| pwCmdTags |
 
   // pwCmdTags word.name@ "Add seeds using _cmdTags : %v" .printf
 
@@ -241,38 +241,32 @@
 /*----------------------------------------------------------------------------*/
 /* add any setting tags that are missing                                      */
 /*----------------------------------------------------------------------------*/
-: cmd::addSettings_info params| pwCmdTags |
+: cmd::addSettings_cmdTags params| pwCmdTags |
 
   // pwCmdTags word.name@ "Adding default tags for : %v" .printf
 
   pwCmdTags word.tagSet@ locals| pCmdTags |
 
-  // test and add default for: command kind
-  "<cmdKind>" pCmdTags tagSet.hasName not if
-    "<cmdKind>" "CK_COMMAND" pCmdTags tagSet.addTag
-  then
-
-  // test and add default for: ddl lock
-  "<ddlLock>" pCmdTags tagSet.hasName not if
-    "<ddlLock>" "DL_NONE" pCmdTags tagSet.addTag
-  then
-
-  // test and add default for: job desc
   "<cmdDesc>" pCmdTags tagSet.hasName not if
     "<cmdDesc>" "--description  --" pCmdTags tagSet.addTag
   then
 
-  // test and add default for: job kind
+  "<cmdKind>" pCmdTags tagSet.hasName not if
+    "<cmdKind>" "CK_COMMAND" pCmdTags tagSet.addTag
+  then
+
+  "<ddlLock>" pCmdTags tagSet.hasName not if
+    "<ddlLock>" "DL_NONE" pCmdTags tagSet.addTag
+  then
+
   "<jobKind>" pCmdTags tagSet.hasName not if
     "<jobKind>" "JK_LOCAL" pCmdTags tagSet.addTag
   then
 
-  // test and add default for:  priority
   "<priority>" pCmdTags tagSet.hasName not if
     "<priority>" "PY_NORMAL" pCmdTags tagSet.addTag
   then
 
-  // test and add default for:  response kind
   "<rspKind>" pCmdTags tagSet.hasName not if
     "<rspKind>" "RS_NONE" pCmdTags tagSet.addTag
   then
@@ -443,7 +437,7 @@
 
     word@ word.category@ pwCmdTagsCatg eql if
 
-      word@ cmd::addSeeds_info
+      word@ cmd::addSeeds_cmdTags
 
     then
 
@@ -461,7 +455,7 @@
 
     word@ word.category@ pwCmdTagsCatg eql if
 
-      word@ cmd::addSettings_info
+      word@ cmd::addSettings_cmdTags
 
     then
 
@@ -479,7 +473,7 @@
 
     word@ word.category@ pwCmdTagsCatg eql if
 
-      word@ cmd::genService_info       // TO BE REMOVED
+      word@ cmd::genService_cmdTags       // TO BE REMOVED
 
     then
 
