@@ -224,7 +224,7 @@
 /*----------------------------------------------------------------------------*/
 /* add the seed tags required by a command (distributed, generic, local)      */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeedTags params| pwCmdTags |
+: cmd::addSeedTags_toCmdTagSet params| pwCmdTags |
 
   // pwCmdTags word.name@ "Add seeds using _cmdTags : %v" .printf
 
@@ -241,7 +241,7 @@
 /*----------------------------------------------------------------------------*/
 /* add any settings that are missing in the command tags                      */
 /*----------------------------------------------------------------------------*/
-: cmd::addSettings_cmdTags params| pwCmdTags |
+: cmd::addSettings_toCmdTagSet params| pwCmdTags |
 
   // pwCmdTags word.name@ "Adding default tags for : %v" .printf
 
@@ -405,7 +405,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::synthProcs_usingCmdTags
+: cmd::synthLiteOpProcs
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -428,7 +428,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::synthWords_usingCmdTags
+: cmd::synthLiteOpWords
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -451,7 +451,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeedTags_toCmdTagSet
+: cmd::addSeedTags
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -459,7 +459,7 @@
 
     word@ word.category@ pwCmdTagsCatg eql if
 
-      word@ cmd::addSeedTags
+      word@ cmd::addSeedTags_toCmdTagSet
 
     then
 
@@ -469,7 +469,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::addSettings_toCmdTagSet
+: cmd::addSettings
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -477,7 +477,7 @@
 
     word@ word.category@ pwCmdTagsCatg eql if
 
-      word@ cmd::addSettings_cmdTags
+      word@ cmd::addSettings_toCmdTagSet
 
     then
 
@@ -487,7 +487,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::genServices_usingCmdTags
+: cmd::genServices
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -507,21 +507,20 @@
 /*----------------------------------------------------------------------------*/
 : cmd::fillOut_allCmds
 
-  [? 1 ?if
+//  [? 1 ?if
   
-    cmd::synthWords_usingCmdTags
-    cmd::synthProcs_usingCmdTags
+  cmd::synthLiteOpProcs // synthesise procs for lite and local-lite op's
+  cmd::synthLiteOpWords // synthesise words for lite and local-lite op's
 
-    cmd::addSeedTags_toCmdTagSet
-    cmd::addSettings_toCmdTagSet
+  cmd::addSeedTags      // add seed tags for dist/local/generic jobs
+  cmd::addSettings      // add missing settings for <ddlLock> etc
 
-    // to be removed
-    cmd::genServices_usingCmdTags
+  cmd::genServices      // to be removed
 
-  ?else
+//  ?else
    
    
-  ?]
+//  ?]
 ;
 
 /*============================================================================*/
