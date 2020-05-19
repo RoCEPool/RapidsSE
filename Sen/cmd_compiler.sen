@@ -224,7 +224,7 @@
 /*----------------------------------------------------------------------------*/
 /* add the seed tags required by a command (distributed, generic, local)      */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeedTags params| pwCmdTags |
+: cmd::addSeedTags_toCmdTagSet params| pwCmdTags |
 
   // pwCmdTags word.name@ "Add seeds using _cmdTags : %v" .printf
 
@@ -241,7 +241,7 @@
 /*----------------------------------------------------------------------------*/
 /* add any settings that are missing in the command tags                      */
 /*----------------------------------------------------------------------------*/
-: cmd::addSettings_cmdTags params| pwCmdTags |
+: cmd::addSettings_toCmdTagSet params| pwCmdTags |
 
   // pwCmdTags word.name@ "Adding default tags for : %v" .printf
 
@@ -278,8 +278,13 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* synthesize the words for a lite op given its info word                     */
+/* synthesize the words for a lite op command given its cmdTags word          */
 /*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyn |
+//
+
 : cmd::synthWordsFor_liteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
@@ -299,8 +304,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* synthesize the procedure for a lite op given its info word                 */
+/* synthesize the procedure for a lite op command given its cmdTags word      */
 /*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyn |
+//
+
 : cmd::synthProcFor_liteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
@@ -329,8 +339,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* synthesize the words for a local lite op given its info word               */
+/* synthesize the words for a local lite op command given its info word       */
 /*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyn |
+//
+
 : cmd::synthWordsFor_localLiteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
@@ -350,8 +365,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* synthesize the procedure for a local lite op given its info word           */
+/* synthesize the procedure for a local lite op command given its info word   */
 /*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyn |
+//
+
 : cmd::synthProcFor_localLiteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
@@ -385,7 +405,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_synthProcs_usingInfo
+: cmd::synthLiteOpProcs
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -408,7 +428,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_synthWords_usingInfo
+: cmd::synthLiteOpWords
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -431,7 +451,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_seedTagsInInfo
+: cmd::addSeedTags
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -439,7 +459,7 @@
 
     word@ word.category@ pwCmdTagsCatg eql if
 
-      word@ cmd::addSeedTags
+      word@ cmd::addSeedTags_toCmdTagSet
 
     then
 
@@ -449,7 +469,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_tagSettingsInInfo
+: cmd::addSettings
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -457,7 +477,7 @@
 
     word@ word.category@ pwCmdTagsCatg eql if
 
-      word@ cmd::addSettings_cmdTags
+      word@ cmd::addSettings_toCmdTagSet
 
     then
 
@@ -467,7 +487,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_services_usingInfo
+: cmd::genServices
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -487,21 +507,20 @@
 /*----------------------------------------------------------------------------*/
 : cmd::fillOut_allCmds
 
-  [? 1 ?if
+//  [? 1 ?if
   
-    cmd::fillOut_synthWords_usingInfo
-    cmd::fillOut_synthProcs_usingInfo
+  cmd::synthLiteOpProcs // synthesise procs for lite and local-lite op's
+  cmd::synthLiteOpWords // synthesise words for lite and local-lite op's
 
-    cmd::fillOut_seedTagsInInfo
-    cmd::fillOut_tagSettingsInInfo   
+  cmd::addSeedTags      // add seed tags for dist/local/generic jobs
+  cmd::addSettings      // add missing settings for <ddlLock> etc
 
-    // to be removed
-    cmd::fillOut_services_usingInfo
+  cmd::genServices      // to be removed
 
-  ?else
+//  ?else
    
    
-  ?]
+//  ?]
 ;
 
 /*============================================================================*/
