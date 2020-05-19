@@ -194,15 +194,15 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedsFor_distJob params| pwCmdTags |
 
-  "<SeedReq>" "defaultSeedDist" "_req" pwCmdTags _cmdTags.addSeedToTagSet
+  "<SeedReq>" "defaultSeedDist" "_req" pwCmdTags _cmdTags.addSeedTag
 
-  "<SeedRcv>" "defaultSeedDist" "_beg" pwCmdTags _cmdTags.addSeedToTagSet
+  "<SeedRcv>" "defaultSeedDist" "_beg" pwCmdTags _cmdTags.addSeedTag
 
-  "<SeedExe>" "defaultSeedDist" "_exe" pwCmdTags _cmdTags.addSeedToTagSet
+  "<SeedExe>" "defaultSeedDist" "_exe" pwCmdTags _cmdTags.addSeedTag
 
-  "<SeedEnd>" "defaultSeedDist" "_end" pwCmdTags _cmdTags.addSeedToTagSet
+  "<SeedEnd>" "defaultSeedDist" "_end" pwCmdTags _cmdTags.addSeedTag
 
-  "<SeedCan>" "defaultSeedDist" "_can" pwCmdTags _cmdTags.addSeedToTagSet
+  "<SeedCan>" "defaultSeedDist" "_can" pwCmdTags _cmdTags.addSeedTag
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -210,7 +210,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedsFor_genericJob params| pwCmdTags |
 
-  "<SeedReq>" "defaultSeedLocal" "_run" pwCmdTags _cmdTags.addSeedToTagSet
+  "<SeedReq>" "defaultSeedLocal" "_run" pwCmdTags _cmdTags.addSeedTag
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -218,7 +218,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedsFor_localOp params| pwCmdTags |
 
-  "<SeedReq>" "defaultSeedLocal" "_req" pwCmdTags _cmdTags.addSeedToTagSet
+  "<SeedReq>" "defaultSeedLocal" "_req" pwCmdTags _cmdTags.addSeedTag
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -398,7 +398,7 @@
     word@ word.category@ pwCmdTagsCatg eql if
 
       word@ _cmdTags.aboutLiteOp if
-         word@ cmd::synthProcFor_liteOp
+        word@ cmd::synthProcFor_liteOp
       else
       word@ _cmdTags.aboutLocalLiteOp if
         word@ cmd::synthProcFor_localLiteOp

@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 /* add <seedNm> = Cmd_Suffix | DefaultSeed to tag set of given infor word     */
 /*----------------------------------------------------------------------------*/
-: _cmdTags.addSeedToTagSet params| pInfoWrd sSeedSuffix sDefaultSeed sSeedNm |
+: _cmdTags.addSeedTag params| pInfoWrd sSeedSuffix sDefaultSeed sSeedNm |
 
   0 locals| sSeedNm_Suffix |
 
