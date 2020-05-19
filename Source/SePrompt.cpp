@@ -143,7 +143,8 @@ void SePrompt::vPromptLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
- 
+  TagSet oTagSet;
+  
   // we need to set the thread key to non-zero
   PsxThd::vMarkNonSeThread();
   
@@ -214,6 +215,8 @@ void SePrompt::vPromptLoop(void)
 
     vCheckTimed();
 
+
+    // ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ??
     
     vCheckJobCtl();
 
@@ -221,130 +224,98 @@ void SePrompt::vPromptLoop(void)
       continue;
 
     
+    
     if (bTranslateProcedure())
       goto L_Read_Next_Command;
     
-
     
-    vPseudoApi1();
-    vPseudoApi2();
-    vPseudoApi3();
-
     
-  } // while
-}
-
-/*----------------------------------------------------------------------------*/
-/* what will go into the api...                                               */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPseudoApi1(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  TagSet oTagSet;
-  
-  vLogCommand();
-
-  if ( ! AM::bParseCmd(&oTagSet, m_pInpTknVec) ) {
-
-    vTrace("error: invalid command \n"_Stz);
     
-    if (AM::bDeveloper())
-      vDumpInpTknVec(true);
-    return;
-  }
-  
-  oTagSet.vDumpSet();
-  
-  if (! bFindMatch_job(&oTagSet)) {
-    vUnknownCommand();
-    if (AM::bDeveloper())
-      vDumpInpTknVec(true);
-    return;
-  }
+    //.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.
+    
+    vLogCommand();
 
-  if (! bPassesLowMem())
-    return;
-  
-  if (! bPassesCheck())
-    return;
-  
-  vBeginRequest();
-  
-  vPreJob(&oTagSet);
-  oTagSet.vReset();
-  ASSERT(! m_pJob->pTask());
-  m_pJob->pJobTags()->vDumpSet();
-  
-  // this should go
-  if (m_pJob->bJobHasError()) {
-    vPostJob();
-    if (AM::bDeveloper())
-      vDumpInpTknVec(true);
-    //vCompletedTask();
-    vDeleteJob();
-    vEndRequest();
-    return;
-  }
-  
-  if (bDumpTokens())
-    Correctness::vDebugPoint();
-  
-  vSetJob();
-  
-  vPrepareSpawn();  // RENAME spawn etc
-  
-  if (bDontSpawn())
-    return;
-  
-  m_oTimer.vStart();
-  
-  vJobLockMutex();
+    if ( ! AM::bParseCmd(&oTagSet, m_pInpTknVec) ) {
 
-  
-  if (bNoWait()) {
+      vTrace("error: invalid command \n"_Stz);
+      
+      if (AM::bDeveloper())
+        vDumpInpTknVec(true);
+      continue;
+    }
+    oTagSet.vDumpSet();
+    
+    if (! bFindMatch_job(&oTagSet)) {
+      vUnknownCommand();
+      if (AM::bDeveloper())
+        vDumpInpTknVec(true);
+      continue;
+    }
+
+    if (! bPassesLowMem())
+      continue;
+    
+    if (! bPassesCheck())
+      continue;
+    
+    vBeginRequest();
+    
+    vPreJob(&oTagSet);
+    oTagSet.vReset();
+    ASSERT(! m_pJob->pTask());
+    m_pJob->pJobTags()->vDumpSet();
+    
+    // this should go
+    if (m_pJob->bJobHasError()) {
+      vPostJob();
+      if (AM::bDeveloper())
+        vDumpInpTknVec(true);
+      //vCompletedTask();
+      vDeleteJob();
+      vEndRequest();
+      continue;
+    }
+    
+    if (bDumpTokens())
+      Correctness::vDebugPoint();
+    
+    vSetJob();
+    
+    vPrepareSpawn();  // RENAME spawn etc
+    
+    if (bDontSpawn())
+      continue;
+    
+    m_oTimer.vStart();
+    
+    vJobLockMutex();
+
+    vSpawnJob();
+    
+    if (bNoWait()) {
+      vJobUnlockMutex();
+      continue;
+    }
+
+    if (bExecutePipeline()) {
+      // start the buffer queue processing while the pipeline ops are running
+      m_pJob->m_xResult.vProcessBufferQueue();
+    }
+    
+    vJobWaitCond();
     vJobUnlockMutex();
-    return;
-  }
+    m_oTimer.vUpdate();
+    
+    vPostJob();
 
-  if (bExecutePipeline()) {
-    // start the buffer queue processing while the pipeline ops are running
-    m_pJob->m_xResult.vProcessBufferQueue();
-  }
-  
- }
+    vReportTime();
+    
+    vDeleteJob();
+    
+    vEndRequest();
 
-/*----------------------------------------------------------------------------*/
-/* what will go into the api...                                               */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPseudoApi2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  vSpawnJob();
-}
-
-/*----------------------------------------------------------------------------*/
-/* what will go into the api...                                               */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPseudoApi3(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  vJobWaitCond();
-  
-  vJobUnlockMutex();
-  m_oTimer.vUpdate();
-
-  vPostJob();
-
-  vReportTime();
-
-  vDeleteJob();
-
-  vEndRequest();
-
-  vLogFreeSpace();
+    vLogFreeSpace();
+  } // while
 }
 
 /*----------------------------------------------------------------------------*/
