@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
-bool CmdHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
+bool CmdHelper::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
 {
   Dic* pRootDic = AM::pRootDic();
 
@@ -34,15 +34,15 @@ bool CmdHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
       
       //vTrace("    matches\n"_Stz);
       
-      pArgTags->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
+      pTagSet->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
       s32 sJobName(pSyntax->pWordTags()->szValue("__cmdNm__"_Stz));
       
-      // get the job info tag set
-      TagSet* pTagSet = Job::pJobInfo_tagSet(sJobName);
+      // get the cmd tag set
+      TagSet* pCmdTagSet = Job::pJobInfo_tagSet(sJobName);
       //pTagSet->vDumpSet();
       
-      // copy the info tag set into the pArgTags
-      pArgTags->vCopy(pTagSet);
+      // copy the cmd tag set into the pTagSet
+      pTagSet->vCopy(pCmdTagSet);
       
       goto L_Matched;
     }
@@ -65,7 +65,7 @@ bool CmdHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
   
   L_Matched:
   
-  bool b = bExtractAllArgs(pArgTags,pSyntax->pWordTags(),pTknVec);
+  bool b = bExtractAllArgs(pTagSet,pSyntax->pWordTags(),pTknVec);
   if (! b) {
     if (AM::bDeveloper()) {
       SP_TknVecStr spTvs;
@@ -90,7 +90,7 @@ bool CmdHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* parse token vec of command and extract arguments                           */
 /*----------------------------------------------------------------------------*/
-bool CmdHelper::bExtractAllArgs(TagSet* pArgTags,
+bool CmdHelper::bExtractAllArgs(TagSet* pTagSet,
                                 TagSet* pSynTags,
                                 TokenVec* pTknVec)
 {
@@ -126,13 +126,13 @@ bool CmdHelper::bExtractAllArgs(TagSet* pArgTags,
     else
     // argument
     if (pSynTags->szName(i_Syn)->bSame("__arg__"_Stz)) {
-      if (! bExtractArg(pArgTags,pSynTags,i_Syn,pTknVec,i_Tkn))
+      if (! bExtractArg(pTagSet,pSynTags,i_Syn,pTknVec,i_Tkn))
         return false;
     }
     else
     // json argument
     if (pSynTags->szName(i_Syn)->bSame("__json__"_Stz)) {
-      if (! bExtractJson(pArgTags,pSynTags,i_Syn,pTknVec,i_Tkn))
+      if (! bExtractJson(pTagSet,pSynTags,i_Syn,pTknVec,i_Tkn))
         return false;
       //pArgTags->vPrint();
     }
@@ -154,7 +154,7 @@ bool CmdHelper::bExtractAllArgs(TagSet* pArgTags,
 /*----------------------------------------------------------------------------*/
 /* parse tokenvec of command and extract argument                             */
 /*----------------------------------------------------------------------------*/
-bool CmdHelper::bExtractJson(TagSet*   pArgTags,
+bool CmdHelper::bExtractJson(TagSet*   pTagSet,
                              TagSet*   pSynTags, i8& i_Syn_,
                              TokenVec* pTknVec,  i8& i_Tkn_)
 {
@@ -177,7 +177,7 @@ bool CmdHelper::bExtractJson(TagSet*   pArgTags,
     vTrace("  %s\n"_Stz,pTkn->szChars());
     Token* pTkn_value = pTkn;
     
-    pArgTags->vInsert(pTkn_name->szChars(),
+    pTagSet->vInsert(pTkn_name->szChars(),
                      pTkn_value->szChars());
     
     //pArgTags->vPrint();
