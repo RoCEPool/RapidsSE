@@ -3,11 +3,25 @@
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
+/* answer service demon                                                       */
+/*----------------------------------------------------------------------------*/
+/nowait pipelineLocal answerD
+
+  //tag "<pre_execute>" = "demon::install" endTag
+
+begin
+
+  stage stageA on origin:
+  start | answer | eatAll | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
 /* recurring service demon                                                    */
 /*----------------------------------------------------------------------------*/
 /nowait pipelineLocal recurringD
 
-  tag "<pre_execute>" = "demon::install" endTag
+  //tag "<pre_execute>" = "demon::install" endTag
 
 begin
 
@@ -19,7 +33,6 @@ end;
 /*----------------------------------------------------------------------------*/
 /* statistics service demon                                                   */
 /*----------------------------------------------------------------------------*/
-/*
 /nowait pipelineLocal statD
 
   tag "<pre_execute>" = "demon::install" endTag
@@ -30,7 +43,7 @@ begin
     start | statWrite | eatAll | stageA
 
 end;
-*/
+
 
 //pipeline endless
 //begin
