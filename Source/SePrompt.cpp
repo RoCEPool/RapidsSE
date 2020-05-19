@@ -163,7 +163,6 @@ void SePrompt::vPromptLoop(void)
   
   vVerifyJobSeeds();
   
-  TokenVec* pInpTknVec = m_pSession->pInpTknVec();
   
   while (bContinue()) {
     
@@ -204,14 +203,14 @@ void SePrompt::vPromptLoop(void)
     
     if (bIsPromptWord()) {
 
-      Token* pTkn0 = pInpTknVec->pGet(0);
+      Token* pTkn0 = m_pInpTknVec->pGet(0);
 
       s32 sWordNm;
       sWordNm = pTkn0->szChars();
 
-      pInpTknVec->vSoftReset();
-      pInpTknVec->vAppendToken("docol"_Stz,TN_NAME);
-      pInpTknVec->vAppendToken(sWordNm,TN_NAME);
+      m_pInpTknVec->vSoftReset();
+      m_pInpTknVec->vAppendToken("docol"_Stz,TN_NAME);
+      m_pInpTknVec->vAppendToken(sWordNm,TN_NAME);
     }
 
     vCheckTimed();
@@ -236,7 +235,7 @@ void SePrompt::vPromptLoop(void)
     
     vLogCommand();
 
-    if ( ! AM::bParseCmd(&oTagSet, pInpTknVec) ) {
+    if ( ! AM::bParseCmd(&oTagSet, m_pInpTknVec) ) {
 
       vTrace("error: invalid command \n"_Stz);
       
