@@ -17,6 +17,20 @@ begin
 end;
 
 /*----------------------------------------------------------------------------*/
+/* connector service demon                                                    */
+/*----------------------------------------------------------------------------*/
+/nowait pipelineLocal connectorD
+
+//tag "<pre_execute>" = "demon::install" endTag
+
+begin
+
+  stage stageA on origin:
+  start | connectorOP | eatAll | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
 /* recurring service demon                                                    */
 /*----------------------------------------------------------------------------*/
 /nowait pipelineLocal recurringD
