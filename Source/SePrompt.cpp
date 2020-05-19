@@ -179,7 +179,7 @@ void SePrompt::vPromptLoop(void)
       break;
     
     if (bDumpTokens()) {
-      vDumpTokenVec(false);
+      vDumpInpTknVec(false);
     }
     
     if (bBlankLine()) {
@@ -240,7 +240,7 @@ void SePrompt::vPromptLoop(void)
       vTrace("error: invalid command \n"_Stz);
       
       if (AM::bDeveloper())
-        vDumpTokenVec(true);
+        vDumpInpTknVec(true);
       continue;
     }
     oTagSet.vDumpSet();
@@ -248,7 +248,7 @@ void SePrompt::vPromptLoop(void)
     if (! bFindMatch_job(&oTagSet)) {
       vUnknownCommand();
       if (AM::bDeveloper())
-        vDumpTokenVec(true);
+        vDumpInpTknVec(true);
       continue;
     }
 
@@ -269,7 +269,7 @@ void SePrompt::vPromptLoop(void)
     if (m_pJob->bJobHasError()) {
       vPostJob();
       if (AM::bDeveloper())
-        vDumpTokenVec(true);
+        vDumpInpTknVec(true);
       //vCompletedTask();
       vDeleteJob();
       vEndRequest();
@@ -611,7 +611,7 @@ void SePrompt::vDumpTokens(bool bDumpTokens)
 /*----------------------------------------------------------------------------*/
 /* dump token vector                                                          */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vDumpTokenVec(bool bForce)
+void SePrompt::vDumpInpTknVec(bool bForce)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

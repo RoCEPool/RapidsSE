@@ -76,7 +76,7 @@ namespace Prompt
     bool bDontSpawn(void);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
-    void vDumpTokenVec(bool bForce);
+    void vDumpInpTknVec(bool bForce);
     void vEndRequest(void);
     bool bExecuteFunction(void);
     bool bExecutePipeline(void);
