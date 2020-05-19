@@ -1,0 +1,107 @@
+/*============================================================================*/
+/* OP_connector.sen -- Operator connector                                     */
+/*============================================================================*/
+
+" OP_connector.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* send node info to node we just connected to                                */
+/*----------------------------------------------------------------------------*/
+: .sendNodeInfo ( pSocket -- )
+
+  params| pSocket |
+
+  0 locals| pJobClass_NodeInfo |
+  0 locals| pJob_NodeInfo |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the node info job
+  CN_JOB_NODEINFO jobClass::find to pJobClass_NodeInfo
+  pJobClass_NodeInfo jobClass.new to pJob_NodeInfo
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // send node info job to the other node
+  pSocket socket.grabWrite
+  pJob_NodeInfo pSocket socket.sendObject assert
+  pSocket socket.dropWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete node info job
+  pJob_NodeInfo job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: connectorOP_StartMarker \handler
+
+  0 locals| pThisTask |
+  0 locals| pJob_Connector |
+
+  //"connector_run" .
+
+  args.verbose if
+    grid::thisNode@ job[] "Connector %v on node %v running" .printf
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // get the task
+  task[] to pThisTask
+
+  // get the connectpr job from the task
+  pThisTask task.job@ to pJob_Connector
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  begin
+    _connectorTake
+    trap::stackDepthZero
+
+    3 thread::sleepSsec
+  again
+
+  // print started message
+  //grid::thisNodeName@ "Node %v : SE cluster started" .printf
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  job::completed
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for connector req                          (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : connectorOP_req \operator
+ 
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: connectorOP_StartMarker ZK_STARTMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: connectorOP :: connectorOP ;
+
+: connectorOP _cmdTags
+
+  tags{
+    <jobKind>  = JK_LOCAL
+    <rspKind>  = RS_PARTICIPANT_RESPONSE
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
