@@ -405,7 +405,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_synthProcs_usingInfo
+: cmd::synthProcs_usingCmdTags
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -428,7 +428,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_synthWords_usingInfo
+: cmd::synthWords_usingCmdTags
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -509,8 +509,8 @@
 
   [? 1 ?if
   
-    cmd::fillOut_synthWords_usingInfo
-    cmd::fillOut_synthProcs_usingInfo
+    cmd::synthWords_usingCmdTags
+    cmd::synthProcs_usingCmdTags
 
     cmd::addSeedTags_toCmdTagSet
     cmd::addSettings_toCmdTagSet
