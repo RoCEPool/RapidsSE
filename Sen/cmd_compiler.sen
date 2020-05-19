@@ -78,6 +78,11 @@
 /*----------------------------------------------------------------------------*/
 /* consume service arguments                                                  */
 /*----------------------------------------------------------------------------*/
+
+//
+// TO BE REMOVED
+//
+
 : .consumeArgs
 
   0 locals| nArgs |
@@ -103,6 +108,11 @@
 /*----------------------------------------------------------------------------*/
 /* generate two words, one which parses and another which spawns a service    */
 /*----------------------------------------------------------------------------*/
+
+//
+// TO BE REMOVED
+//
+
 : .generateService params| pwCmdTags |
 
   pwCmdTags word.name@ "Gen service using _cmdTags : %v" .printf
@@ -179,11 +189,213 @@
 /*----------------------------------------------------------------------------*/
 /* generate words for a serice (these should be demons)         TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
+
+//
+// TO BE REMOVED
+//
+
 : cmd::genService_cmdTags params| pwCmdTags |
 
   pwCmdTags _cmdTags.aboutServiceCmd if
     pwCmdTags .generateService
   then
+;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for all commands                          */
+/*----------------------------------------------------------------------------*/
+
+//
+// TO BE REMOVED
+//
+
+: cmd::genServices
+
+  find: _cmdTags locals| pwCmdTagsCatg |
+
+  iterate-words
+
+    word@ word.category@ pwCmdTagsCatg eql if
+
+      word@ cmd::genService_cmdTags       // TO BE REMOVED
+
+    then
+
+  next-word
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* synthesize the procedure for a lite op command given its cmdTags word      */
+/*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyntax |
+//
+
+: cmd::synthProcFor_liteOp params| pwCmdTags |
+
+  pwCmdTags word.name_trunc locals| sCmdNm |
+  pwCmdTags word.tagSet@    locals| pCmdTagSet |
+
+  0 locals| sText |
+
+  // sCmdNm "LiteOP: %v" .printf
+
+  // synthesize procedure depending on no of parameters
+  "<params>" pCmdTagSet tagSet.hasName assert
+  "<params>" pCmdTagSet tagSet.getStr >int locals| iParams |
+
+  iParams 2 == if
+    "/liteOp/" sCmdNm tpl_liteOp_procedure2 str.replace to sText
+    sText procedure::add
+  else
+  iParams 1 == if
+    "/liteOp/" sCmdNm tpl_liteOp_procedure1 str.replace to sText
+    sText procedure::add
+  else
+  iParams 0 == assert
+    "/liteOp/" sCmdNm tpl_liteOp_procedure0 str.replace to sText
+    sText procedure::add
+  then then
+;
+
+/*----------------------------------------------------------------------------*/
+/* synthesize the procedure for a local lite op command given its info word   */
+/*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyntax |
+//
+
+: cmd::synthProcFor_localLiteOp params| pwCmdTags |
+
+  pwCmdTags word.name_trunc locals| sCmdNm |
+  pwCmdTags word.tagSet@    locals| pCmdTagSet |
+
+  0 0 locals| sText iParams |
+
+  // sCmdNm "LocalLiteOP: %v" .printf
+
+  // synthesize procedure depending on no of parameters
+  "<params>" pCmdTagSet tagSet.hasName assert
+  "<params>" pCmdTagSet tagSet.getStr >int to iParams
+
+  iParams 2 == if
+    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure2 str.replace to sText
+    sText procedure::add
+  else
+  iParams 1 == if
+    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure1 str.replace to sText
+    sText procedure::add
+  else
+  iParams 0 == assert
+    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure0 str.replace to sText
+    sText procedure::add
+  then then
+;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for all commands                          */
+/*----------------------------------------------------------------------------*/
+: cmd::synthLiteOpProcs
+
+  find: _cmdTags locals| pwCmdTagsCatg |
+
+  iterate-words
+
+    word@ word.category@ pwCmdTagsCatg eql if
+
+      word@ _cmdTags.aboutLiteOp if
+        word@ cmd::synthProcFor_liteOp
+      else
+      word@ _cmdTags.aboutLocalLiteOp if
+        word@ cmd::synthProcFor_localLiteOp
+      then then
+
+    then
+
+  next-word
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* synthesize the words for a lite op command given its cmdTags word          */
+/*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyntax |
+//
+
+: cmd::synthWordsFor_liteOp params| pwCmdTags |
+
+  pwCmdTags word.name_trunc locals| sCmdNm |
+  pwCmdTags word.tagSet@    locals| pCmdTagSet |
+
+  0 locals| sText |
+
+  // sCmdNm "LiteOP: %v" .printf
+
+  // synthesize word : cmdNm_PulseMarker \\handler ... ;
+  "/liteOp/" sCmdNm tpl_liteOp_PulseMarker str.replace to sText
+  sText >interpret
+
+  // synthesize word : cmdNm_req ... ;
+  "/liteOp/" sCmdNm tpl_liteOp_req str.replace to sText
+  sText >interpret
+;
+
+/*----------------------------------------------------------------------------*/
+/* synthesize the words for a local lite op command given its info word       */
+/*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyntax |
+//
+
+: cmd::synthWordsFor_localLiteOp params| pwCmdTags |
+
+  pwCmdTags word.name_trunc locals| sCmdNm |
+  pwCmdTags word.tagSet@    locals| pCmdTagSet |
+
+  0 locals| sText |
+
+  // sCmdNm "LocalLiteOP: %v" .printf
+
+  // synthesize : cmdNm_PulseMarker
+  "/localLiteOp/" sCmdNm tpl_localLiteOp_PulseMarker str.replace to sText
+  sText >interpret
+
+  // synthesize : cmdNm_req
+  "/localLiteOp/" sCmdNm tpl_localLiteOp_req str.replace to sText
+  sText >interpret
+;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for all commands                          */
+/*----------------------------------------------------------------------------*/
+: cmd::synthLiteOpWords
+
+  find: _cmdTags locals| pwCmdTagsCatg |
+
+  iterate-words
+
+    word@ word.category@ pwCmdTagsCatg eql if
+
+      word@ _cmdTags.aboutLiteOp if
+        word@ cmd::synthWordsFor_liteOp
+      else
+      word@ _cmdTags.aboutLocalLiteOp if
+        word@ cmd::synthWordsFor_localLiteOp
+      then then
+
+    then
+
+  next-word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -239,6 +451,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* complete the info and procedures for all commands                          */
+/*----------------------------------------------------------------------------*/
+: cmd::addSeedTags
+
+  find: _cmdTags locals| pwCmdTagsCatg |
+
+  iterate-words
+
+    word@ word.category@ pwCmdTagsCatg eql if
+
+      word@ cmd::addSeedTags_toCmdTagSet
+
+    then
+
+  next-word
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* add any settings that are missing in the command tags                      */
 /*----------------------------------------------------------------------------*/
 : cmd::addSettings_toCmdTagSet params| pwCmdTags |
@@ -275,198 +508,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* synthesize the words for a lite op command given its cmdTags word          */
-/*----------------------------------------------------------------------------*/
-
-//
-// I think this should be params| pwCmdSyn |
-//
-
-: cmd::synthWordsFor_liteOp params| pwCmdTags |
-
-  pwCmdTags word.name_trunc locals| sCmdNm |
-  pwCmdTags word.tagSet@    locals| pCmdTagSet |
-
-  0 locals| sText |
-
-  // sCmdNm "LiteOP: %v" .printf
-
-  // synthesize word : cmdNm_PulseMarker \\handler ... ;
-  "/liteOp/" sCmdNm tpl_liteOp_PulseMarker str.replace to sText
-  sText >interpret
-
-  // synthesize word : cmdNm_req ... ;
-  "/liteOp/" sCmdNm tpl_liteOp_req str.replace to sText
-  sText >interpret
-;
-
-/*----------------------------------------------------------------------------*/
-/* synthesize the procedure for a lite op command given its cmdTags word      */
-/*----------------------------------------------------------------------------*/
-
-//
-// I think this should be params| pwCmdSyn |
-//
-
-: cmd::synthProcFor_liteOp params| pwCmdTags |
-
-  pwCmdTags word.name_trunc locals| sCmdNm |
-  pwCmdTags word.tagSet@    locals| pCmdTagSet |
-
-  0 locals| sText |
-
-  // sCmdNm "LiteOP: %v" .printf
-
-  // synthesize procedure depending on no of parameters
-  "<params>" pCmdTagSet tagSet.hasName assert
-  "<params>" pCmdTagSet tagSet.getStr >int locals| iParams |
-
-  iParams 2 == if
-    "/liteOp/" sCmdNm tpl_liteOp_procedure2 str.replace to sText
-    sText procedure::add
-  else
-  iParams 1 == if
-    "/liteOp/" sCmdNm tpl_liteOp_procedure1 str.replace to sText
-    sText procedure::add
-  else
-  iParams 0 == assert
-    "/liteOp/" sCmdNm tpl_liteOp_procedure0 str.replace to sText
-    sText procedure::add
-  then then
-;
-
-/*----------------------------------------------------------------------------*/
-/* synthesize the words for a local lite op command given its info word       */
-/*----------------------------------------------------------------------------*/
-
-//
-// I think this should be params| pwCmdSyn |
-//
-
-: cmd::synthWordsFor_localLiteOp params| pwCmdTags |
-
-  pwCmdTags word.name_trunc locals| sCmdNm |
-  pwCmdTags word.tagSet@    locals| pCmdTagSet |
-
-  0 locals| sText |
-
-  // sCmdNm "LocalLiteOP: %v" .printf
-
-  // synthesize : cmdNm_PulseMarker
-  "/localLiteOp/" sCmdNm tpl_localLiteOp_PulseMarker str.replace to sText
-  sText >interpret
-
-  // synthesize : cmdNm_req
-  "/localLiteOp/" sCmdNm tpl_localLiteOp_req str.replace to sText
-  sText >interpret
-;
-
-/*----------------------------------------------------------------------------*/
-/* synthesize the procedure for a local lite op command given its info word   */
-/*----------------------------------------------------------------------------*/
-
-//
-// I think this should be params| pwCmdSyn |
-//
-
-: cmd::synthProcFor_localLiteOp params| pwCmdTags |
-
-  pwCmdTags word.name_trunc locals| sCmdNm |
-  pwCmdTags word.tagSet@    locals| pCmdTagSet |
-
-  0 0 locals| sText iParams |
-
-  // sCmdNm "LocalLiteOP: %v" .printf
-
-  // synthesize procedure depending on no of parameters
-  "<params>" pCmdTagSet tagSet.hasName assert
-  "<params>" pCmdTagSet tagSet.getStr >int to iParams
-
-  iParams 2 == if
-    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure2 str.replace to sText
-    sText procedure::add
-  else
-  iParams 1 == if
-    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure1 str.replace to sText
-    sText procedure::add
-  else
-  iParams 0 == assert
-    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure0 str.replace to sText
-    sText procedure::add
-  then then
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* complete the info and procedures for all commands                          */
-/*----------------------------------------------------------------------------*/
-: cmd::synthLiteOpProcs
-
-  find: _cmdTags locals| pwCmdTagsCatg |
-
-  iterate-words
-
-    word@ word.category@ pwCmdTagsCatg eql if
-
-      word@ _cmdTags.aboutLiteOp if
-        word@ cmd::synthProcFor_liteOp
-      else
-      word@ _cmdTags.aboutLocalLiteOp if
-        word@ cmd::synthProcFor_localLiteOp
-      then then
-
-    then
-
-  next-word
-;
-
-/*----------------------------------------------------------------------------*/
-/* complete the info and procedures for all commands                          */
-/*----------------------------------------------------------------------------*/
-: cmd::synthLiteOpWords
-
-  find: _cmdTags locals| pwCmdTagsCatg |
-
-  iterate-words
-
-    word@ word.category@ pwCmdTagsCatg eql if
-
-      word@ _cmdTags.aboutLiteOp if
-        word@ cmd::synthWordsFor_liteOp
-      else
-      word@ _cmdTags.aboutLocalLiteOp if
-        word@ cmd::synthWordsFor_localLiteOp
-      then then
-
-    then
-
-  next-word
-;
-
-/*----------------------------------------------------------------------------*/
-/* complete the info and procedures for all commands                          */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeedTags
-
-  find: _cmdTags locals| pwCmdTagsCatg |
-
-  iterate-words
-
-    word@ word.category@ pwCmdTagsCatg eql if
-
-      word@ cmd::addSeedTags_toCmdTagSet
-
-    then
-
-  next-word
-;
-
-/*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
 : cmd::addSettings
@@ -485,22 +526,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::genServices
-
-  find: _cmdTags locals| pwCmdTagsCatg |
-
-  iterate-words
-
-    word@ word.category@ pwCmdTagsCatg eql if
-
-      word@ cmd::genService_cmdTags       // TO BE REMOVED
-
-    then
-
-  next-word
-;
 
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
