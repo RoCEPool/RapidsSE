@@ -26,7 +26,7 @@ bool Prompt::bPrompt_job(SePrompt* pPrompt)
   Token* pArg0 = nullptr;
   Token* pArg1 = nullptr;
   
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
   i8 nTokens = pTokenVec->nItems();
   
   if (nTokens != 3)

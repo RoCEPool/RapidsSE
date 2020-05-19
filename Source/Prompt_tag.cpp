@@ -33,7 +33,7 @@ PromptFun __Prompt_tag (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_tag(SePrompt* pPrompt)
 {
-  TokenVec* pTknVec   = pPrompt->pTokenVec();
+  TokenVec* pTknVec   = pPrompt->pInpTknVec();
   i8 nTokens = pTknVec->nTokens();
 
   Session*  pSession  = pPrompt->pSession();

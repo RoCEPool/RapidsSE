@@ -24,7 +24,7 @@ PromptFun __Prompt_st (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
 
   i8 nTokens = pTokenVec->nTokens();
   

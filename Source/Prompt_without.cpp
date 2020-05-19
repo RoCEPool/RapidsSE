@@ -24,7 +24,7 @@ PromptFun __Prompt_without (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_without(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
 
   i8 nTokens = pTokenVec->nTokens();
   

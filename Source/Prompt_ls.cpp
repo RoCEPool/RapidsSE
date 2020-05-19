@@ -30,7 +30,7 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
   
   pDir = new Dir(pPrompt);
                  
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
 
   ASSERT(pTokenVec->pGet(0)->bSame("ls"_Stz));
   

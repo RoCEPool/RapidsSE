@@ -27,7 +27,7 @@ bool Prompt::bPrompt_ssnState(SePrompt* pPrompt)
 {
   Token* pArg = nullptr;
   
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
   i8 nTokens = pTokenVec->nItems();
 
   if (nTokens == 2)

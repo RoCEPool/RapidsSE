@@ -23,7 +23,7 @@ PromptFun __Prompt_logWrite (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_logWrite(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pTokenVec->nItems();
   
   if (iNumTokens > 1 && pTokenVec->pGet(1)->eToken() == TN_NAME) {

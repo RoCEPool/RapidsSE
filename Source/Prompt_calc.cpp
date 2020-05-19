@@ -23,7 +23,7 @@ PromptFun __Prompt_calc (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_calc(SePrompt* pPrompt)
 {
-  TokenVec* pTknVec = pPrompt->pTokenVec();
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
 
   Calculator* pCalculator = new Calculator;
  

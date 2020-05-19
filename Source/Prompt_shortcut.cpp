@@ -23,7 +23,7 @@ PromptFun __Prompt_shortcut (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_shortcut(SePrompt* pPrompt)
 {
-  TokenVec* pTknVec = pPrompt->pTokenVec();
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pTknVec->pGet(0)->bSame("shortcut"_Stz));
 

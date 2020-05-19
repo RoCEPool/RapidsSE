@@ -23,7 +23,7 @@ PromptFun __Prompt_procedure (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_procedure(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
   
   //pTokenVec->vListTokens();
   

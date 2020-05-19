@@ -34,7 +34,7 @@ PromptFun __Prompt_setDbg (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_setDbg(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
 
   ASSERT(pTokenVec->pGet(0)->bSame("setDbg"_Stz));
   

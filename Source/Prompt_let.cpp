@@ -23,7 +23,7 @@ PromptFun __Prompt_let (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_let(SePrompt* pPrompt)
 {
-  TokenVec* pTknVec = pPrompt->pTokenVec();
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pTknVec->pGet(0)->bSame("let"_Stz));
   

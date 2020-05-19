@@ -23,7 +23,7 @@ PromptFun __Prompt_promptDebug (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_promptDebug(SePrompt* pPrompt)
 {
-  TokenVec* pTknVec = pPrompt->pTokenVec();
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pTknVec->pGet(0)->bSame("promptDebug"_Stz));
 

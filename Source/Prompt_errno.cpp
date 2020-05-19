@@ -25,7 +25,7 @@ bool Prompt::bPrompt_errno(SePrompt* pPrompt)
 {
   i8 iErrNo = 0;
 
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pTokenVec->nItems();
   
   if (2 == iNumTokens) {

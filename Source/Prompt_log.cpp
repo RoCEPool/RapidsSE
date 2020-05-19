@@ -23,7 +23,7 @@ PromptFun __Prompt_log (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_log(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
   
   AM::vLog(pTokenVec);
   

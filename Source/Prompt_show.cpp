@@ -23,7 +23,7 @@ PromptFun __Prompt_show (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_show(SePrompt* pPrompt)
 {
-  TokenVec* pTkVec = pPrompt->pTokenVec();
+  TokenVec* pTkVec = pPrompt->pInpTknVec();
 
   ASSERT(pTkVec->pGet(0)->bSame("show"_Stz));
   

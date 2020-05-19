@@ -24,7 +24,7 @@ PromptFun __Prompt_cancel (
 bool Prompt::bPrompt_cancel(SePrompt* pPrompt)
 {
 
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
   
   ASSERT(pTokenVec->pGet(0)->bSame("cancel"_Stz));
   

@@ -32,7 +32,7 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   
   bool bFatal = false;
   
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pTokenVec->nItems();
   
   if (2 == iNumTokens && pTokenVec->pGet(1)->bSame("fatal"_Stz))

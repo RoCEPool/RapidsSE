@@ -25,7 +25,7 @@ bool Prompt::bPrompt_cd(SePrompt* pPrompt)
 {
   s256 sDir;
   
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
 
   ASSERT(pTokenVec->pGet(0)->bSame("cd"_Stz));
   

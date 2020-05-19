@@ -23,7 +23,7 @@ PromptFun __Prompt_dumpTokens (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_dumpTokens(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pTokenVec->nItems();
   
   if (2 == iNumTokens) {

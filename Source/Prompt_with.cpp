@@ -24,7 +24,7 @@ PromptFun __Prompt_with (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_with(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  TokenVec* pTokenVec = pPrompt->pInpTknVec();
   
   i8 nTokens = pTokenVec->nTokens();
   
