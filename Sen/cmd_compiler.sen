@@ -192,7 +192,7 @@
 /*----------------------------------------------------------------------------*/
 /* add the seed tags for a distributed job                                    */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeedsFor_distJob params| pwCmdTags |
+: cmd::addSeedTags_forDistJob params| pwCmdTags |
 
   "<SeedReq>" "defaultSeedDist" "_req" pwCmdTags _cmdTags.addSeedTag
 
@@ -208,7 +208,7 @@
 /*----------------------------------------------------------------------------*/
 /* add the seed tags for a generic job                                        */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeedsFor_genericJob params| pwCmdTags |
+: cmd::addSeedTags_forGenericJob params| pwCmdTags |
 
   "<SeedReq>" "defaultSeedLocal" "_run" pwCmdTags _cmdTags.addSeedTag
 ;
@@ -216,59 +216,61 @@
 /*----------------------------------------------------------------------------*/
 /* add the seed tags for a local op                                           */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeedsFor_localOp params| pwCmdTags |
+: cmd::addSeedTags_forLocalOp params| pwCmdTags |
 
   "<SeedReq>" "defaultSeedLocal" "_req" pwCmdTags _cmdTags.addSeedTag
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add any missing seed tags for a command                                    */
+/* add the seed tags required by a command (distributed, generic, local)      */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeeds_cmdTags params| pwCmdTags |
+: cmd::addSeedTags params| pwCmdTags |
 
   // pwCmdTags word.name@ "Add seeds using _cmdTags : %v" .printf
 
-  pwCmdTags _cmdTags.aboutGenericJob if
-    pwCmdTags cmd::addSeedsFor_genericJob
-  else
   pwCmdTags _cmdTags.aboutDistJob if
-    pwCmdTags cmd::addSeedsFor_distJob
+    pwCmdTags cmd::addSeedTags_forDistJob
   else
-    pwCmdTags cmd::addSeedsFor_localOp
+  pwCmdTags _cmdTags.aboutGenericJob if
+    pwCmdTags cmd::addSeedTags_forGenericJob
+  else
+    pwCmdTags cmd::addSeedTags_forLocalOp
   then then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add any setting tags that are missing                                      */
+/* add any settings that are missing in the command tags                      */
 /*----------------------------------------------------------------------------*/
 : cmd::addSettings_cmdTags params| pwCmdTags |
 
   // pwCmdTags word.name@ "Adding default tags for : %v" .printf
 
-  pwCmdTags word.tagSet@ locals| pCmdTags |
+  // hello future Alka, you should be able to conjure up what this looks like
 
-  "<cmdDesc>" pCmdTags tagSet.hasName not if
-    "<cmdDesc>" "--description  --" pCmdTags tagSet.addTag
+  pwCmdTags word.tagSet@ locals| pCmdTagSet |
+
+  "<cmdDesc>" pCmdTagSet tagSet.hasName not if
+    "<cmdDesc>" "--description--" pCmdTagSet tagSet.addTag
   then
 
-  "<cmdKind>" pCmdTags tagSet.hasName not if
-    "<cmdKind>" "CK_COMMAND" pCmdTags tagSet.addTag
+  "<cmdKind>" pCmdTagSet tagSet.hasName not if
+    "<cmdKind>" "CK_COMMAND" pCmdTagSet tagSet.addTag
   then
 
-  "<ddlLock>" pCmdTags tagSet.hasName not if
-    "<ddlLock>" "DL_NONE" pCmdTags tagSet.addTag
+  "<ddlLock>" pCmdTagSet tagSet.hasName not if
+    "<ddlLock>" "DL_NONE" pCmdTagSet tagSet.addTag
   then
 
-  "<jobKind>" pCmdTags tagSet.hasName not if
-    "<jobKind>" "JK_LOCAL" pCmdTags tagSet.addTag
+  "<jobKind>" pCmdTagSet tagSet.hasName not if
+    "<jobKind>" "JK_LOCAL" pCmdTagSet tagSet.addTag
   then
 
-  "<priority>" pCmdTags tagSet.hasName not if
-    "<priority>" "PY_NORMAL" pCmdTags tagSet.addTag
+  "<priority>" pCmdTagSet tagSet.hasName not if
+    "<priority>" "PY_NORMAL" pCmdTagSet tagSet.addTag
   then
 
-  "<rspKind>" pCmdTags tagSet.hasName not if
-    "<rspKind>" "RS_NONE" pCmdTags tagSet.addTag
+  "<rspKind>" pCmdTagSet tagSet.hasName not if
+    "<rspKind>" "RS_NONE" pCmdTagSet tagSet.addTag
   then
 ;
 
@@ -281,17 +283,17 @@
 : cmd::synthWordsFor_liteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
-  pwCmdTags word.tagSet@    locals| pCmdTags |
+  pwCmdTags word.tagSet@    locals| pCmdTagSet |
 
   0 locals| sText |
 
   // sCmdNm "LiteOP: %v" .printf
 
-  // synthesize : cmdNm_PulseMarker
+  // synthesize word : cmdNm_PulseMarker \\handler ... ;
   "/liteOp/" sCmdNm tpl_liteOp_PulseMarker str.replace to sText
   sText >interpret
 
-  // synthesize : cmdNm_req
+  // synthesize word : cmdNm_req ... ;
   "/liteOp/" sCmdNm tpl_liteOp_req str.replace to sText
   sText >interpret
 ;
@@ -302,15 +304,15 @@
 : cmd::synthProcFor_liteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
-  pwCmdTags word.tagSet@    locals| pCmdTags |
+  pwCmdTags word.tagSet@    locals| pCmdTagSet |
 
-  0 0 locals| sText iParams |
+  0 locals| sText |
 
   // sCmdNm "LiteOP: %v" .printf
 
   // synthesize procedure depending on no of parameters
-  "<params>" pCmdTags tagSet.hasName assert
-  "<params>" pCmdTags tagSet.getStr >int to iParams
+  "<params>" pCmdTagSet tagSet.hasName assert
+  "<params>" pCmdTagSet tagSet.getStr >int locals| iParams |
 
   iParams 2 == if
     "/liteOp/" sCmdNm tpl_liteOp_procedure2 str.replace to sText
@@ -332,7 +334,7 @@
 : cmd::synthWordsFor_localLiteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
-  pwCmdTags word.tagSet@    locals| pCmdTags |
+  pwCmdTags word.tagSet@    locals| pCmdTagSet |
 
   0 locals| sText |
 
@@ -353,15 +355,15 @@
 : cmd::synthProcFor_localLiteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
-  pwCmdTags word.tagSet@    locals| pCmdTags |
+  pwCmdTags word.tagSet@    locals| pCmdTagSet |
 
   0 0 locals| sText iParams |
 
   // sCmdNm "LocalLiteOP: %v" .printf
 
   // synthesize procedure depending on no of parameters
-  "<params>" pCmdTags tagSet.hasName assert
-  "<params>" pCmdTags tagSet.getStr >int to iParams
+  "<params>" pCmdTagSet tagSet.hasName assert
+  "<params>" pCmdTagSet tagSet.getStr >int to iParams
 
   iParams 2 == if
     "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure2 str.replace to sText
@@ -437,7 +439,7 @@
 
     word@ word.category@ pwCmdTagsCatg eql if
 
-      word@ cmd::addSeeds_cmdTags
+      word@ cmd::addSeedTags
 
     then
 
