@@ -1495,7 +1495,7 @@ void SePrompt::vTrackingMemory(bool bTrackMemory)
 }
 
 /*----------------------------------------------------------------------------*/
-/* translate stored procedure into its final command form                     */
+/* translate stored procedure into its final pipeline command form            */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bTranslateProcedure(void)
 {
@@ -1515,9 +1515,13 @@ bool SePrompt::bTranslateProcedure(void)
                                        pCmdTknVec,pProcWord))
     return false;
   
-  m_pSession->m_sToDo = sPipelineSmt.szStz();
+  
+  //m_pSession->m_sToDo = sPipelineSmt.szStz();
 
-  return true;
+  pCmdTknVec->vSoftReset();
+  pCmdTknVec->vTokenise(sPipelineSmt);
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
