@@ -180,7 +180,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     Scheduler::vThread_AddGeneralThread(pThread);
     
     if (AM::bVerbose())
-      vTrace("Thread::aEntryPoint_general %p %lld\n"_Stz,
+      vTrace("    Thread::aEntryPoint_general %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
     
     pThread->m_pPsxThd->vIncStepNo();

@@ -1374,7 +1374,13 @@ void Engine::vStartSystem(void)
   Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
   
   AM::pLexiconArticle()->vAppend(pGridArticle);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grid and nodes
   
+  if (AM::bVerboseProgress())
+    vInfo("  Creating Grid and Node's\n"_Stz);
+
   for (i8 i_Node = 0; i_Node < AM::pGrid()->nDefinedNodes(); i_Node++) {
     Node* pNode = new Node(i_Node,
                            gxArgs.m_xNodes[i_Node].m_sNodeName,
@@ -1391,7 +1397,7 @@ void Engine::vStartSystem(void)
   Node* pThisNode = AM::pGrid()->pFindNode(gxArgs.m_sNodeName);
   if (! pThisNode)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "Cannot fine Node %s in the cluster"_Stz,
+           "Cannot find Node %s in the cluster"_Stz,
            gxArgs.m_sNodeName.azChar());
   
   i8 iThisNodeNo = pThisNode->iNodeNo();
@@ -1408,6 +1414,10 @@ void Engine::vStartSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  if (AM::bVerboseProgress())
+    vInfo("  Creating SessionArray\n"_Stz);
+
+
   gpAttachMap->m_pSessionArray = new SessionArray;
   
   // create the tx set
@@ -1415,6 +1425,10 @@ void Engine::vStartSystem(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (AM::bVerboseProgress())
+    vInfo("  Opening shared Log\n"_Stz);
+
 
   vOpenLog();
   
@@ -1438,6 +1452,10 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   
+  if (AM::bVerboseProgress())
+    vInfo("  Verify job seeds\n"_Stz);
+
+
   JobClass::vVerifySeeds();
   
   
@@ -1445,6 +1463,9 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading
   
+  if (AM::bVerboseProgress())
+    vInfo("  Spawning Threads\n"_Stz);
+
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "spawning threads"_Stz); //!format-LogSys
   // spawn general threads
@@ -1464,12 +1485,16 @@ void Engine::vStartSystem(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (AM::bVerboseProgress())
+    vInfo("  Running Boot\n"_Stz);
+
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
-              "running boot job"_Stz); //!format-LogSys
+              "running Start job"_Stz); //!format-LogSys
   
   vSpawnJobStart();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "instance %s started"_Stz,
               gxArgs.m_sRegionName.azChar()); //!format-LogSys
