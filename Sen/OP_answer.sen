@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: answer_StartMarker \handler
+: answerOP_StartMarker \handler
 
   0 locals| iPort |
   0 locals| pListeningSocket |
@@ -105,13 +105,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for answer req                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : answer_req \operator
+ : answerOP_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: answer_StartMarker ZK_STARTMARKER op[].handler!
+  find: answerOP_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -123,9 +123,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: answer :: answer ;
+cmdSyntax: answerOP :: answerOP ;
 
-: answewr _info
+: answerOP _cmdTags
 
   tags{
     <jobKind>  = JK_LOCAL

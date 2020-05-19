@@ -12,7 +12,7 @@
 begin
 
   stage stageA on origin:
-  start | answer | eatAll | stageA
+  start | answerOP | eatAll | stageA
 
 end;
 

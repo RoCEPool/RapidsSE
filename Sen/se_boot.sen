@@ -98,6 +98,7 @@ assert::stack_0
 
         "OP_analyzeIndex.sen"         include
         "OP_analyzeTable.sen"         include
+        "OP_answer.sen"               include
 
         "OP_bufferGen.sen"            include
         "OP_burst.sen"                include
@@ -105,6 +106,7 @@ assert::stack_0
         "OP_changeFolder.sen"         include
         "OP_chunk.sen"                include
         "OP_compactIndex.sen"         include
+        "OP_connector.sen"            include
         "OP_consume.sen"              include
         "OP_createCatalog.sen"        include
         "OP_createSchema.sen"         include
