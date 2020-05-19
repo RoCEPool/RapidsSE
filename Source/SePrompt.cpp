@@ -193,21 +193,10 @@ void SePrompt::vPromptLoop(void)
     while (bSubLet())
       {;}
 
-    vCheckJobCtl();
-
-    if (! bCheckJobTags())
-      continue;
-
-    vCheckTimed();
-
-    vLogCommand();
-    
-    if (bTranslateProcedure())
-      goto L_Read_Next_Command;
     
     if (bRedirectFromFile())
       continue;
-    
+
     if (bExecuteFunction())
       continue;
     
@@ -222,7 +211,29 @@ void SePrompt::vPromptLoop(void)
       pSsnTknVec->vAppendToken("docol"_Stz,TN_NAME);
       pSsnTknVec->vAppendToken(sWordNm,TN_NAME);
     }
+
+    vCheckTimed();
+
+
+    // ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ??
     
+    vCheckJobCtl();
+
+    if (! bCheckJobTags())
+      continue;
+
+    
+    
+    if (bTranslateProcedure())
+      goto L_Read_Next_Command;
+    
+    
+    
+    
+    //.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.
+    
+    vLogCommand();
+
     if ( ! AM::bParseCmd(&oTagSet, pSsnTknVec) ) {
 
       vTrace("error: invalid command \n"_Stz);
@@ -297,8 +308,6 @@ void SePrompt::vPromptLoop(void)
     vPostJob();
 
     vReportTime();
-    
-    
     
     vDeleteJob();
     
