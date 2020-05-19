@@ -58,6 +58,9 @@ namespace Prompt
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vPromptLoop(void);
+    void vPseudoApi1(void);
+    void vPseudoApi2(void);
+    void vPseudoApi3(void);
 
     // these are the prompt.xyz task primitives
     void vBeginRequest(void);
