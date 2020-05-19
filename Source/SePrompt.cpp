@@ -63,6 +63,8 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 
   ASSERT(EC_NONE == eError);
   
+  m_pInpTknVec = m_pSession->pInpTknVec();
+  
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
   m_pSession->m_pInput->vForkReset();
@@ -161,7 +163,7 @@ void SePrompt::vPromptLoop(void)
   
   vVerifyJobSeeds();
   
-  TokenVec* pSsnTknVec = m_pSession->pTokenVec();
+  TokenVec* pInpTknVec = m_pSession->pInpTknVec();
   
   while (bContinue()) {
     
@@ -202,14 +204,14 @@ void SePrompt::vPromptLoop(void)
     
     if (bIsPromptWord()) {
 
-      Token* pTkn0 = pSsnTknVec->pGet(0);
+      Token* pTkn0 = pInpTknVec->pGet(0);
 
       s32 sWordNm;
       sWordNm = pTkn0->szChars();
 
-      pSsnTknVec->vSoftReset();
-      pSsnTknVec->vAppendToken("docol"_Stz,TN_NAME);
-      pSsnTknVec->vAppendToken(sWordNm,TN_NAME);
+      pInpTknVec->vSoftReset();
+      pInpTknVec->vAppendToken("docol"_Stz,TN_NAME);
+      pInpTknVec->vAppendToken(sWordNm,TN_NAME);
     }
 
     vCheckTimed();
@@ -234,7 +236,7 @@ void SePrompt::vPromptLoop(void)
     
     vLogCommand();
 
-    if ( ! AM::bParseCmd(&oTagSet, pSsnTknVec) ) {
+    if ( ! AM::bParseCmd(&oTagSet, pInpTknVec) ) {
 
       vTrace("error: invalid command \n"_Stz);
       
@@ -540,11 +542,11 @@ void SePrompt::vCutToken(i8 i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pTknVec = m_pSession->pTokenVec();
+  TokenVec* pInpTknVec = m_pSession->pInpTknVec();
   
   //pTknVec->vPrint();
   
-  pTknVec->vRemoveToken(i_Tkn);
+  pInpTknVec->vRemoveToken(i_Tkn);
 
   //pTknVec->vPrint();
 }
@@ -1448,7 +1450,7 @@ TokenVec* SePrompt::pTokenVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSession->pTokenVec();
+  return m_pSession->pInpTknVec();
 }
 
 /*----------------------------------------------------------------------------*/

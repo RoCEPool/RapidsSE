@@ -142,8 +142,8 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession, TagSet* pTagSet)
     // add <cmd> into job ename-set
     
     s4K sCmd;
-    TokenVec* pTknVec = pSession->pTokenVec();
-    pTknVec->vVecToString(sCmd,0,true);
+    TokenVec* pInpTknVec = pSession->pInpTknVec();
+    pInpTknVec->vVecToString(sCmd,0,true);
     
     pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
    

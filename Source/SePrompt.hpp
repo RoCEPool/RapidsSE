@@ -16,16 +16,17 @@ namespace Prompt
   class SePrompt : public Focal
   {
   private:
-    Session*  m_pSession;   // rapidsse session
+    Session*  m_pSession;    // rapidsse session
+    TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
 
-    bool      m_bOneCommand;// run one command only
-    bool      m_bOneRun;    // one command has been run?
-    bool      m_bContinue;  // continue processing commands?
+    bool      m_bOneCommand; // run one command only
+    bool      m_bOneRun;     // one command has been run?
+    bool      m_bContinue;   // continue processing commands?
 
-    i8        m_iCmdNo;     // command no
-    JobClass* m_aJobClass;  // job class
+    i8        m_iCmdNo;      // command no
+    JobClass* m_aJobClass;   // job class
     TagSet    m_oPromptTags; // tags gleaned from the prompt command
-    Job*      m_pJob;       // job
+    Job*      m_pJob;        // job
 
     Request*  m_pRequest;       // current request being executed by SE
     i8        m_i_RequestFocal; // focal subscript of last request

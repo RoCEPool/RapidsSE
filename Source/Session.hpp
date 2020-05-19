@@ -89,7 +89,7 @@ namespace Sessions
     void      vReport(void);
     
     i8        iSlot(void);
-    TokenVec* pTokenVec(void);
+    TokenVec* pInpTknVec(void);
     Tx*       pTx(void);
     void      vTx(Tx* pTx);
   

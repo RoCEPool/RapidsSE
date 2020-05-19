@@ -388,9 +388,9 @@ i8 Session::iSlot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get token vector                                                           */
+/* get token vector from input                                                */
 /*----------------------------------------------------------------------------*/
-TokenVec* Session::pTokenVec(void)
+TokenVec* Session::pInpTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
