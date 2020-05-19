@@ -9,12 +9,26 @@
 /*----------------------------------------------------------------------------*/
 : cmdSyntax:
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //           cmdNm    cmd / procNm arg       arg
+  //cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ; // proc anidx
+  //cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ; // proc analizeIndex
+  //             ^       ^^
+  //             |       ||  [synth proc needs to be this]
+  //    +========+-------++
+  //    |
+  //    v
+  //: anidx _cmdTags tagCopy: liteOp_cmdTags  // +==> synth: procedure andix [currently]
+  //  tags{
+  //    <cmdDesc>   = "--cmd desc for op--"
+  //    <liteOp>    = true
+  //    <streamDef> = __analyzeIndex
+  //    <params>    = 2
+  //  }
   //
-  //            cmdNm    cmd          arg       arg
-  // cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ;
-  // cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
-  //                     verb   noun
-  //
+  //  [ compiler::current@ word.TagSet@ tagSet.asStr . ]
+  //;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // create a word using next token from input source as the word name
   input::next locals| sCmdNm |
@@ -80,7 +94,7 @@
 /*----------------------------------------------------------------------------*/
 
 //
-// TO BE REMOVED
+// TO BE REMOVED ONCE SERVICES CONVERTED TO DEMONS
 //
 
 : .consumeArgs
@@ -110,7 +124,7 @@
 /*----------------------------------------------------------------------------*/
 
 //
-// TO BE REMOVED
+// TO BE REMOVED ONCE SERVICES CONVERTED TO DEMONS
 //
 
 : .generateService params| pwCmdTags |
@@ -191,7 +205,7 @@
 /*----------------------------------------------------------------------------*/
 
 //
-// TO BE REMOVED
+// TO BE REMOVED ONCE SERVICES CONVERTED TO DEMONS
 //
 
 : cmd::genService_cmdTags params| pwCmdTags |
@@ -206,22 +220,16 @@
 /*----------------------------------------------------------------------------*/
 
 //
-// TO BE REMOVED
+// TO BE REMOVED ONCE SERVICES CONVERTED TO DEMONS
 //
 
 : cmd::genServices
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words
-
-    word@ word.category@ pwCmdTagsCatg eql if
-
-      word@ cmd::genService_cmdTags       // TO BE REMOVED
-
-    then
-
-  next-word
+  iterate-words word@ word.category@ pwCmdTagsCatg eql if
+    word@ cmd::genService_cmdTags
+  then next-word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -232,7 +240,7 @@
 /*----------------------------------------------------------------------------*/
 
 //
-// I think this should be params| pwCmdSyntax |
+// I think the orientation should be params| pwCmdSyntax |
 //
 
 : cmd::synthProcFor_liteOp params| pwCmdTags |
@@ -267,7 +275,7 @@
 /*----------------------------------------------------------------------------*/
 
 //
-// I think this should be params| pwCmdSyntax |
+// I think the orientation should be params| pwCmdSyntax |
 //
 
 : cmd::synthProcFor_localLiteOp params| pwCmdTags |
@@ -304,20 +312,16 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words
+  iterate-words word@ word.category@ pwCmdTagsCatg eql if
 
-    word@ word.category@ pwCmdTagsCatg eql if
+    word@ _cmdTags.aboutLiteOp if
+      word@ cmd::synthProcFor_liteOp
+    else
+    word@ _cmdTags.aboutLocalLiteOp if
+      word@ cmd::synthProcFor_localLiteOp
+    then then
 
-      word@ _cmdTags.aboutLiteOp if
-        word@ cmd::synthProcFor_liteOp
-      else
-      word@ _cmdTags.aboutLocalLiteOp if
-        word@ cmd::synthProcFor_localLiteOp
-      then then
-
-    then
-
-  next-word
+  then next-word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -328,7 +332,7 @@
 /*----------------------------------------------------------------------------*/
 
 //
-// I think this should be params| pwCmdSyntax |
+// I think the orientation should be params| pwCmdSyntax |
 //
 
 : cmd::synthWordsFor_liteOp params| pwCmdTags |
@@ -354,7 +358,7 @@
 /*----------------------------------------------------------------------------*/
 
 //
-// I think this should be params| pwCmdSyntax |
+// I think the orientation should be params| pwCmdSyntax |
 //
 
 : cmd::synthWordsFor_localLiteOp params| pwCmdTags |
@@ -382,20 +386,16 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words
+  iterate-words word@ word.category@ pwCmdTagsCatg eql if
 
-    word@ word.category@ pwCmdTagsCatg eql if
+    word@ _cmdTags.aboutLiteOp if
+      word@ cmd::synthWordsFor_liteOp
+    else
+    word@ _cmdTags.aboutLocalLiteOp if
+      word@ cmd::synthWordsFor_localLiteOp
+    then then
 
-      word@ _cmdTags.aboutLiteOp if
-        word@ cmd::synthWordsFor_liteOp
-      else
-      word@ _cmdTags.aboutLocalLiteOp if
-        word@ cmd::synthWordsFor_localLiteOp
-      then then
-
-    then
-
-  next-word
+  then next-word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -457,15 +457,9 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words
-
-    word@ word.category@ pwCmdTagsCatg eql if
-
-      word@ cmd::addSeedTags_toCmdTagSet
-
-    then
-
-  next-word
+  iterate-words word@ word.category@ pwCmdTagsCatg eql if
+    word@ cmd::addSeedTags_toCmdTagSet
+  then next-word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -514,15 +508,9 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words
-
-    word@ word.category@ pwCmdTagsCatg eql if
-
-      word@ cmd::addSettings_toCmdTagSet
-
-    then
-
-  next-word
+  iterate-words word@ word.category@ pwCmdTagsCatg eql if
+    word@ cmd::addSettings_toCmdTagSet
+  then next-word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -535,16 +523,15 @@
 
 //  [? 1 ?if
   
-  cmd::synthLiteOpProcs // synthesise procs for lite and local-lite op's
-  cmd::synthLiteOpWords // synthesise words for lite and local-lite op's
+  cmd::synthLiteOpProcs // synthesise procs for all lite and local-lite op's
+  cmd::synthLiteOpWords // synthesise words for all lite and local-lite op's
 
-  cmd::addSeedTags      // add seed tags for dist/local/generic jobs
+  cmd::addSeedTags      // add seed tags for all dist/local/generic jobs
   cmd::addSettings      // add missing settings for <ddlLock> etc
 
   cmd::genServices      // to be removed
 
 //  ?else
-   
    
 //  ?]
 ;
