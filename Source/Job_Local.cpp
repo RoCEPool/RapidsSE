@@ -160,22 +160,6 @@ eEC Job_Local::ePopulateJob(TagSet* pTagSet)
   Stz* szJobNm = pJobTags()->szValue(C_TAG_JOBNM);
   vJobNm(szJobNm);
   
-  /*
-  TagSet* pJobInfoTagSet = this->pJobInfoTagSet();
-  //pTagSet_ji->vPrint();
-  
-  if (pJobInfoTagSet) {
-    eJK eJobKind = (eJK) pJobInfoTagSet->iValue(C_TAG_JOBKIND);
-    vJobKind(eJobKind);
-    
-    Stz* szJobNm = pJobInfoTagSet->szValue(C_TAG_JOBNM);
-    vJobNm(szJobNm);
-    
-    pJobTags()->vCopy(pJobInfoTagSet);
-    
-  }
-  */
-  
   return EC_NONE;
 }
 

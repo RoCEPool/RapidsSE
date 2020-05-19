@@ -100,7 +100,6 @@ namespace Jobs
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
-    TagSet* pJobInfoTagSet(void);
     void vLockJobMutex(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);

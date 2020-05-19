@@ -735,33 +735,6 @@ TagSet* Job::pJobTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the ename set of job information                                       */
-/*----------------------------------------------------------------------------*/
-TagSet* Job::pJobInfoTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Stz* szJobNm = m_oJobTags.szValue(C_TAG_JOBNM);
-  
-  // did we get a job name ?
-  if ( szJobNm->bEqual(""_Stz) ) {
-    // would have been a startup problem (unable to match job syntax !!!)
-    ASSERT(m_xResult.m_bJobHasError);
-    return nullptr;
-  }
-  
-  s32 sJobInfoNm(szJobNm);
-  
-  StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_cmdTags"_Stz);
-  
-  Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
-  
-  TagSet* pJobInfoTagSet = pJobInfo->pWordTags();
-
-  return pJobInfoTagSet;
-}
-
-/*----------------------------------------------------------------------------*/
 /* write an activity map string about this job                                */
 /*----------------------------------------------------------------------------*/
 void Job::vMarkJob(void)
@@ -1319,24 +1292,7 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
   if (CN_JOB_DISTRIBUTED == eClass ||
       CN_JOB_LOCAL == eClass) {
     
-//    TagSet* pJobInfoTagSet = pJob->pJobInfoTagSet();
-//
-//
-//    if (pJobInfoTagSet)
-//      eResponse = (eRS) pJobInfoTagSet->iValue("<rspKind>"_Stz);
-    
     eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
-    
-    
-    
-//    if ( ! pJobInfoTagSet )
-//      return;
-//
-//    eResponse = (eRS) pJobInfoTagSet->iValue("<rspKind>"_Stz);
-    
-    
-    
-    
   }
   else {
     eResponse = aJobClass->m_eResponse;
