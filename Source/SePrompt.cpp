@@ -227,7 +227,8 @@ void SePrompt::vPromptLoop(void)
       pSsnTknVec->vAppendToken(sWordNm,TN_NAME);
     }
     
-    if ( ! JobHelper::bParseCmd(&oTagSet, pSsnTknVec)) {
+    if ( ! AM::bParseCmd(&oTagSet, pSsnTknVec) ) {
+
       vTrace("error: invalid command \n"_Stz);
       
       if (AM::bDeveloper())
@@ -697,7 +698,7 @@ bool SePrompt::bFindMatch_job(TagSet* pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  pTagSet->vDumpSet();
+  //pTagSet->vDumpSet();
   
   // attempt to find a job class which matches the command tokens
   if (bFindJobClass())

@@ -967,7 +967,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   // add the OpJob JobNM to be the same as the Opertor name
   pOpJobTags->vReplace(C_TAG_JOBNM, m_sOpNm);
   
-  pOpJobTags->vDumpSet();
+  //pOpJobTags->vDumpSet();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the command string using the parameter ename pairs

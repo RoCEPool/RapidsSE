@@ -1642,8 +1642,9 @@ void Step::vJobSpawnDedicated(void)
   EXIT();
 }
 
+//! TO GO : ALKA
 /*----------------------------------------------------------------------------*/
-/* job.spawnUniversal -- spawn a universal job                                */
+/* job::spawnUniversal -- spawn a universal job                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobSpawnUniversal(void)
 {

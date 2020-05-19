@@ -151,10 +151,17 @@ eEC Job_Distributed::ePopulateJob(TagSet* pTagSet)
 //    vParticipantHasError(true);
 //    return EC_INVALID_COMMAND;
 //  }
-  pTagSet->vDumpSet();
+  //pTagSet->vDumpSet();
   
   // copy the tagset into the job tag set
   pJobTags()->vCopy(pTagSet);
+  
+  eJK eJobKind = (eJK) pJobTags()->iValue(C_TAG_JOBKIND);
+  vJobKind(eJobKind);
+  
+  Stz* szJobNm = pJobTags()->szValue(C_TAG_JOBNM);
+  vJobNm(szJobNm);
+  /*
   
   TagSet* pJobInfoTagSet = this->pJobInfoTagSet();
   //pTagSet_ji->vPrint();
@@ -169,8 +176,8 @@ eEC Job_Distributed::ePopulateJob(TagSet* pTagSet)
     
     pJobTags()->vCopy(pJobInfoTagSet);
     
-}
-  
+  }
+  */
   return EC_NONE;
 }
 

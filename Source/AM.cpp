@@ -1198,9 +1198,6 @@ void AM::vSetOperand(Job_Operand* pJob_Operand, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
 {
-  
-
-  Job* pParentJob = pOp->pPipeline()->pJob();
   Job* pNewJob;
   
   s32 sJobInfoNm(pOp->szOpNm());

@@ -37,7 +37,15 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
       pArgTags->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
       s32 sJobName(pSyntax->pWordTags()->szValue("__cmdNm__"_Stz));
       //StrLib::vRemoveSuffix(sJobName.azChar(),'_');
-      pArgTags->vInsert(C_TAG_JOBNM,sJobName);
+      //pArgTags->vInsert(C_TAG_JOBNM,sJobName);
+      
+      // get the job info tag set
+      TagSet* pTagSet = Job::pJobInfo_tagSet(sJobName);
+      //pTagSet->vDumpSet();
+      
+      // copy the info tag set into the pArgTags
+      pArgTags->vCopy(pTagSet);
+      
       goto L_Matched;
     }
   }

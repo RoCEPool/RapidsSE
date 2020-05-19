@@ -1316,14 +1316,16 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
   
   eRS eResponse = RS_NONE;
   
-  if (CN_JOB_DISTRIBUTED == eClass) {
+  if (CN_JOB_DISTRIBUTED == eClass ||
+      CN_JOB_LOCAL == eClass) {
     
-    TagSet* pJobInfoTagSet = pJob->pJobInfoTagSet();
+//    TagSet* pJobInfoTagSet = pJob->pJobInfoTagSet();
+//
+//
+//    if (pJobInfoTagSet)
+//      eResponse = (eRS) pJobInfoTagSet->iValue("<rspKind>"_Stz);
     
-    
-    if (pJobInfoTagSet)
-      eResponse = (eRS) pJobInfoTagSet->iValue("<rspKind>"_Stz);
-
+    eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
     
     
     
