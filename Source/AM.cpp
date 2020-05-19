@@ -1200,19 +1200,25 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
 {
   Job* pNewJob;
   
-  s32 sJobInfoNm(pOp->szOpNm());
+  // form the cmdTag name
+  s32 sCmdTagNm(pOp->szOpNm());
+  StrLib::vConcat(sCmdTagNm.azChar(),(const char*)"_cmdTags"_Stz);
   
-  StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_cmdTags"_Stz);
+  // find the CmdTagNm word
+  Word* pCmdWord = AM::pRootDic()->pFindWord(sCmdTagNm);
   
-  Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
+  // get the CmdTag words tagSet
+  TagSet* pCmdTagSet = pCmdWord->pWordTags();
   
-  TagSet* pJobInfoTagSet = pJobInfo->pWordTags();
+  // get the jobKind from the cmdTagSet
+  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
   
-  if ((eJK)pJobInfoTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL) {
+  if (eJobKind == JK_LOCAL) {
     JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_LOCAL);
     pNewJob = new Job_Local(pJobClass_Local,pReqTuple);
   }
   else {
+    RASSERT(eJobKind == JK_DIST2PC);
     JobClass* pJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
     pNewJob = new Job_Distributed(pJobClass_Distributed,pReqTuple);
   }
