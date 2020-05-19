@@ -170,7 +170,7 @@ void SePrompt::vPromptLoop(void)
       vPromptUser();
     }
     
-    m_oCmdTags.vReset();
+    m_oPromptTags.vReset();
     
     L_Read_Next_Command:
     
@@ -378,7 +378,7 @@ void SePrompt::vCheckJobCtl(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //m_oCmdTags.vReset();
+  //m_oPromptTags();
   
   Token* pTkn0 = pTkn(0);
   
@@ -389,14 +389,14 @@ void SePrompt::vCheckJobCtl(void)
    Token* pTkn1 = pTkn(1);
    sTag.vSprint("</%s>"_Stz,pTkn1->szChars());
     
-    m_oCmdTags.vInsert(sTag,1);
+    m_oPromptTags.vInsert(sTag,1);
     
     vCutToken(0);
     vCutToken(0);
   }
   
-  //if (m_oCmdTags.nEnames())
-  //  m_oCmdTags.vPrint();
+  //if (m_oPromptTags())
+  //  m_oPromptTags();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -455,10 +455,10 @@ bool SePrompt::bCheckJobTags(void)
 
     s32 sName;
     sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
-    m_oCmdTags.vAppend(sName,pTkn_value->szChars());
+    m_oPromptTags.vAppend(sName,pTkn_value->szChars());
   }
   
-  //m_oCmdTags.vDumpSet();
+  //m_oPromptTags();
   
   //pTknVec->vDumpVec(16);
   
@@ -481,7 +481,7 @@ void SePrompt::vCheckTimed(void)
   if (! pTkn0->bSame("time"_Stz))
     return;
   
-  m_oCmdTags.vInsert(C_TAG_TIME,1);
+  m_oPromptTags.vInsert(C_TAG_TIME,1);
 
   vCutToken(0);
 }
@@ -1319,14 +1319,14 @@ void SePrompt::vSetJob(void)
   m_pJob->pJobTags()->vInsert(C_TAG_DISTID,m_pJob->m_iFocalId);
   m_pJob->pJobTags()->vInsert(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   
-  if (m_oCmdTags.bHasName(C_TAG_INFO)) {
+  if (m_oPromptTags.bHasName(C_TAG_INFO)) {
     
     TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(sJobNm);
     if (pCmdTagSet)
       pCmdTagSet->vDumpSet();
   }
 
-  m_pJob->pJobTags()->vCopy(&m_oCmdTags);
+  m_pJob->pJobTags()->vCopy(&m_oPromptTags);
   
   if (m_pJob->bHasTag(C_TAG_LIFE)) {
     SP_TagSet spTagSet;
