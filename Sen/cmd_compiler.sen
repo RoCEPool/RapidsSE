@@ -278,8 +278,13 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* synthesize the words for a lite op given its info word                     */
+/* synthesize the words for a lite op command given its cmdTags word          */
 /*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyn |
+//
+
 : cmd::synthWordsFor_liteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
@@ -299,8 +304,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* synthesize the procedure for a lite op given its info word                 */
+/* synthesize the procedure for a lite op command given its cmdTags word      */
 /*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyn |
+//
+
 : cmd::synthProcFor_liteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
@@ -329,8 +339,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* synthesize the words for a local lite op given its info word               */
+/* synthesize the words for a local lite op command given its info word       */
 /*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyn |
+//
+
 : cmd::synthWordsFor_localLiteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
@@ -350,8 +365,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* synthesize the procedure for a local lite op given its info word           */
+/* synthesize the procedure for a local lite op command given its info word   */
 /*----------------------------------------------------------------------------*/
+
+//
+// I think this should be params| pwCmdSyn |
+//
+
 : cmd::synthProcFor_localLiteOp params| pwCmdTags |
 
   pwCmdTags word.name_trunc locals| sCmdNm |
