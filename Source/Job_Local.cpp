@@ -145,7 +145,7 @@ eEC Job_Local::ePopulateJob(TagSet* pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOCAL,_FOOTER_);
   
-//  bool b = JobHelper::bParseCmd(pJobTags(),pTknVec);
+//  bool b = CmdHelper::bParseCmd(pJobTags(),pTknVec);
 //  if (! b) {
 //    //vTrace("Unable to match job syntax\n"_Stz);
 //    vParticipantHasError(true);

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* JobHelper.hpp -- A set of helper functions for Job                         */
+/* CmdHelper.hpp -- A set of helper functions for cmd                         */
 /*============================================================================*/
 #pragma once
 
 namespace Jobs
 {
-  class JobHelper
+  class CmdHelper
   {
   public:
   

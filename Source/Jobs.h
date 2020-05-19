@@ -27,7 +27,7 @@ namespace Jobs
 
 #include "RowOnce.hpp"
 
-#include "JobHelper.hpp"
+#include "CmdHelper.hpp"
 
 #include "Job__Find.hpp"
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* JobHelper.cpp -- a set of job helper functions                             */
+/* CmdHelper.cpp -- a set of cmd helper functions                             */
 /*============================================================================*/
 
 #include "Jobs.h"
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
+bool CmdHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
 {
   Dic* pRootDic = AM::pRootDic();
 
@@ -30,14 +30,12 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
     //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
     //pSyntax->pTagSet()->vDumpSet();
     
-    if (JobHelper::bMatchesSyntax(pTknVec,pSyntax->pWordTags())) {
+    if (CmdHelper::bMatchesSyntax(pTknVec,pSyntax->pWordTags())) {
       
       //vTrace("    matches\n"_Stz);
       
       pArgTags->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
       s32 sJobName(pSyntax->pWordTags()->szValue("__cmdNm__"_Stz));
-      //StrLib::vRemoveSuffix(sJobName.azChar(),'_');
-      //pArgTags->vInsert(C_TAG_JOBNM,sJobName);
       
       // get the job info tag set
       TagSet* pTagSet = Job::pJobInfo_tagSet(sJobName);
@@ -92,7 +90,7 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* parse token vec of command and extract arguments                           */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractAllArgs(TagSet* pArgTags,
+bool CmdHelper::bExtractAllArgs(TagSet* pArgTags,
                                 TagSet* pSynTags,
                                 TokenVec* pTknVec)
 {
@@ -156,7 +154,7 @@ bool JobHelper::bExtractAllArgs(TagSet* pArgTags,
 /*----------------------------------------------------------------------------*/
 /* parse tokenvec of command and extract argument                             */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractJson(TagSet*   pArgTags,
+bool CmdHelper::bExtractJson(TagSet*   pArgTags,
                              TagSet*   pSynTags, i8& i_Syn_,
                              TokenVec* pTknVec,  i8& i_Tkn_)
 {
@@ -202,7 +200,7 @@ bool JobHelper::bExtractJson(TagSet*   pArgTags,
 /*----------------------------------------------------------------------------*/
 /* parse tokenvec of command and extract argument                             */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractArg(TagSet*   pArgTags,
+bool CmdHelper::bExtractArg(TagSet*   pArgTags,
                             TagSet*   pSynTags, i8& i_Syn_,
                             TokenVec* pTknVec,  i8& i_Tkn_)
 {
@@ -224,7 +222,7 @@ bool JobHelper::bExtractArg(TagSet*   pArgTags,
 /*----------------------------------------------------------------------------*/
 /* test if the token vector matches the given job syntax                      */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
+bool CmdHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
 {
   i8 nTokens = pTknVec->nTokens();
   

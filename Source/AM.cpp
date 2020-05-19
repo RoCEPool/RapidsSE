@@ -298,7 +298,7 @@ void AM::vLogArguments(void) {
 
 bool AM::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
 {
-  return JobHelper::bParseCmd(pTagSet,pTknVec);
+  return CmdHelper::bParseCmd(pTagSet,pTknVec);
 }
 
 void AM::vPoolAnalyze(void)   { return PoolHelper::vPoolAnalyze(); }
