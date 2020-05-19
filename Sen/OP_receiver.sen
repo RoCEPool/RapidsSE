@@ -1,0 +1,150 @@
+/*============================================================================*/
+/* OP_receiver.sen -- Operator receiver                                       */
+/*============================================================================*/
+
+" OP_receiver.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* receiver init                                                              */
+/*----------------------------------------------------------------------------*/
+: receiverOP_init ( -- )
+
+  CN_JOB_RECEIVER task[] task.thread thread.dedicated!
+
+  NS_ACTIVE grid::thisNode@ grid::node node.state!
+
+  args.verbose if
+    grid::thisNode@ "receiver running on node %v" .printf
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* receiver loop: receive a job (possibly with operand), dispatch it          */
+/*----------------------------------------------------------------------------*/
+: receiverOP_loop ( -- )
+
+  0 locals| pReceivedJob |
+  0 locals| pOperand     |
+  0 locals| pSendWith    |
+  0 locals| pOtherNode   |
+  0 locals| pSocket      |
+  0 locals| bRecvd       |
+
+  job[] locals| pJob_Receiver |
+
+  pJob_Receiver job_Receiver.node@ to pOtherNode
+
+  pOtherNode node.recvSocket@ to pSocket
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  begin
+
+    trap::stackDepthZero
+
+    // -- -- -- -- -- -- -- --
+    // recv job
+
+    pSocket socket.recvObject
+
+    not if
+      //ifAgain
+      "receiver exiting" .
+      exit
+    then
+
+    to pReceivedJob
+
+    // -- -- -- -- -- -- -- --
+    // log received job
+
+    //pReceivedJob job_receiver::jobReceived
+
+    // -- -- -- -- -- -- -- --
+    // run post receive function
+
+    pReceivedJob job.postRecv
+
+    // -- -- -- -- -- -- -- --
+    // recv operand
+
+    pReceivedJob job.hasOperand if
+      pSocket socket.recvObject discard to pOperand
+      pOperand pReceivedJob job.operand!
+    then
+
+    // -- -- -- -- -- -- -- --
+    // examine job
+    //pReceivedJob job.kind@ JK_GENERIC == if
+    //"received a generic job" .
+    //  pReceivedJob job.tagSet@ tagSet.asStr .
+    //then
+
+    // -- -- -- -- -- -- -- --
+    // dispatch job
+
+    pReceivedJob job.jobClass CN_JOB_OPERAND == if
+      //pReceivedJob job.hasOperand if
+      pReceivedJob Job_operand.pipeOut
+    else
+      //pReceivedJob job.name@ grid::thisNodeName@ "(%v) receiver_loop %v" .printf
+      pReceivedJob job.seedDecode
+      pReceivedJob job.seed!
+      pReceivedJob job.spawn_received
+    then
+
+  again
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: receiverOP_StartMarker \handler
+
+  // initialise
+  receiverOP_init
+
+  // loop, receiving and executing jobs
+  receiverOP_loop
+
+  // should never exit
+  //hazard
+
+  job::completed
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for receiver req                           (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : receiverOP_req \operator
+ 
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: receiverOP_StartMarker ZK_STARTMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: receiverOP :: receiverOP ;
+
+: receiverOP _cmdTags
+
+  tags{
+    <jobKind>  = JK_LOCAL
+    <rspKind>  = RS_PARTICIPANT_RESPONSE
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

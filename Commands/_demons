@@ -12,7 +12,7 @@
 begin
 
   stage stageA on origin:
-  start | answerOP | eatAll | stageA
+   start | answerOP | eatAll | stageA
 
 end;
 
@@ -26,7 +26,21 @@ end;
 begin
 
   stage stageA on origin:
-  start | connectorOP | eatAll | stageA
+    start | connectorOP | eatAll | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
+/* receiver service demon                                                     */
+/*----------------------------------------------------------------------------*/
+/nowait pipelineLocal receiverD
+
+  //tag "<pre_execute>" = "demon::install" endTag
+
+  begin
+
+  stage stageA on origin:
+    start | receiverOP | eatAll | stageA
 
 end;
 
@@ -39,8 +53,8 @@ end;
 
 begin
 
-    stage stageA on origin:
-      start | recurring | eatAll | stageA
+  stage stageA on origin:
+    start | recurring | eatAll | stageA
 
 end;
 
