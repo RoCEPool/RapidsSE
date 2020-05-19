@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lstbl :: lstbl ;
 
-: lstbl _cmdTags tagCopy: localLiteOp_tags
+: lstbl _cmdTags tagCopy: localLiteOp_cmdTags
   tags{
     <cmdDesc>     = "--cmd desc for op--"
     <localLiteOp> = true

@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: dumpIdx :: dumpIdx <tableNm> <indexNm> ;
 
-: dumpIdx _cmdTags tagCopy: localLiteOp_tags
+: dumpIdx _cmdTags tagCopy: localLiteOp_cmdTags
 tags{
   <cmdDesc>     = "--cmd desc for op--"
   <localLiteOp> = true

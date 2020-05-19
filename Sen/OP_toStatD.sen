@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toStatDOp :: toStatDOp ;
 
-: toStatDOp _cmdTags tagCopy: stageOp_tags
+: toStatDOp _cmdTags tagCopy: opCmd_tags
   tags{ <?jobDesc?>  = "--cmd desc for op--" }
 ;
 

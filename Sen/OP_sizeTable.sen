@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: sztbl :: sztbl <tableNm> ;
 
-: sztbl _cmdTags tagCopy: liteOp_tags
+: sztbl _cmdTags tagCopy: liteOp_cmdTags
   tags{
     <cmdDesc>   = "--cmd desc for op--"
     <liteOp>    = true

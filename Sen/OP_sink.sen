@@ -118,7 +118,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: sink :: sink ;
 
-: sink _cmdTags tagCopy: stageOp_tags
+: sink _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

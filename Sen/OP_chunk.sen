@@ -114,7 +114,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: Chunk :: Chunk <fileNm> ;
 
-: Chunk _cmdTags tagCopy: stageOp_tags
+: Chunk _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

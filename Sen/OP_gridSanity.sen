@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: GridSanity :: GridSanity ;
 
-: GridSanity _cmdTags tagCopy: stageOp_tags
+: GridSanity _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

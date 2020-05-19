@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: vistbl :: vistbl <tableNm> ;
 
-: vistbl _cmdTags tagCopy: localLiteOp_tags
+: vistbl _cmdTags tagCopy: localLiteOp_cmdTags
   tags{
     <cmdDesc>     = "--cmd desc for op--"
     <localLiteOp> = true

@@ -304,7 +304,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: fetch :: fetch <tableNm> <predicate> ;
 
-: fetch _cmdTags tagCopy: stageOp_tags
+: fetch _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

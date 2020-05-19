@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lsten :: lsten ;
 
-: lsten _cmdTags tagCopy: localLiteOp_tags
+: lsten _cmdTags tagCopy: localLiteOp_cmdTags
   tags{
     <cmdDesc>     = "--cmd desc for op--"
     <localLiteOp> = true

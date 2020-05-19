@@ -166,7 +166,7 @@ true
 /*----------------------------------------------------------------------------*/
 cmdSyntax: output :: output ;
 
-: output _cmdTags tagCopy: stageOp_tags
+: output _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 
