@@ -133,7 +133,7 @@
 cmdSyntax: _Begun :: _Begun ;
 
 : _Begun _cmdTags tags{
-  <cmdDesc>  = "--description of job--"
+  <cmdDesc>  = "--cmd desc for job--"
   
   <jobKind>  = JK_GENERIC
 }

@@ -111,7 +111,7 @@ cmdSyntax: createTable :: create table <tableNm> etc ;
 cmdSyntax: createTable :: create table definition <tableNm> etc ;
 
 : createTable _cmdTags tags{
-  <cmdDesc>  = "--description of job--"
+  <cmdDesc>  = "--cmd desc for job--"
   
   <jobKind>  = JK_DIST2PC
   <rspKind>  = RS_PARTICIPANT_RESPONSE

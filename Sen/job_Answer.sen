@@ -113,7 +113,7 @@
 cmdSyntax: answer :: answer ;
 
 : answer _cmdTags tags{
-  <cmdDesc>  = "--description of job--"
+  <cmdDesc>  = "--cmd desc for job--"
   
   <jobKind>  = JK_LOCAL
   <rspKind>  = RS_NONE
