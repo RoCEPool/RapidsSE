@@ -42,7 +42,7 @@
 cmdSyntax: supervisor :: supervisor ;
 
 : supervisor _cmdTags tags{
-  <jobDesc>  = "--description of job--"
+  <cmdDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL
   <rspKind>  = RS_NONE

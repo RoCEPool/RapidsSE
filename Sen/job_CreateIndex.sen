@@ -191,7 +191,7 @@ cmdSyntax: createIndex :: create index <indexNm> on <tableNm> etc ;
 cmdSyntax: createIndex :: create unique index <indexNm> on <tableNm> etc ;
 
 : createIndex _cmdTags tags{
-  <jobDesc>  = "--description of job--"
+  <cmdDesc>  = "--description of job--"
   
   <jobKind>  = JK_DIST2PC
   <rspKind>  = RS_PARTICIPANT_RESPONSE

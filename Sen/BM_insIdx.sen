@@ -132,7 +132,7 @@
 cmdSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> ;
 
 : BM_InsIdxOp _cmdTags tagCopy: stageOp_tags
-  tags{ <jobDesc> = "--op desc--" }
+  tags{ <cmdDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

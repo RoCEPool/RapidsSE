@@ -31,7 +31,7 @@ cmdSyntax: NodeInfo :: NodeInfo ;
 
 : nodeInfo _cmdTags tagCopy: liteOp_tags
 tags{
-  <jobDesc>   = "--op desc--"
+  <cmdDesc>   = "--op desc--"
   <liteOp>    = true
   <streamDef> = __nodeInfo
   <params>    = 0

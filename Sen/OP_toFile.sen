@@ -77,7 +77,7 @@
 cmdSyntax: ToFileOp :: ToFileOp <fileNm> ;
 
 : ToFileOp _cmdTags tagCopy: stageOp_tags
-  tags{ <jobDesc>  = "--op desc--" }
+  tags{ <cmdDesc>  = "--op desc--" }
 ;
 
 /*============================================================================*/

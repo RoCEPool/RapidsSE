@@ -29,7 +29,7 @@
 cmdSyntax: Xmit :: Xmit <xmitKind> ;
 
 : Xmit _cmdTags tagCopy: stageOp_tags
-  tags{ <jobDesc> = "--op desc--" }
+  tags{ <cmdDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

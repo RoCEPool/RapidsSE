@@ -113,7 +113,7 @@
 cmdSyntax: ToCrw :: ToCrw <tableNm> ;
 
 : ToCrw _cmdTags tagCopy: stageOp_tags
-  tags{ <jobDesc> = "--op desc--" }
+  tags{ <cmdDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

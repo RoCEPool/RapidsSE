@@ -77,7 +77,7 @@
 cmdSyntax: UpsertOp :: UpsertOp <tableNm> ;
 
 : UpsertOp _cmdTags tagCopy: stageOp_tags
-  tags{ <jobDesc> = "--op desc--" }
+  tags{ <cmdDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

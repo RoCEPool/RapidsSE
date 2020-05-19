@@ -51,7 +51,7 @@ cmdSyntax: antbl :: antbl <tableNm> ;
 
 : antbl _cmdTags tagCopy: liteOp_tags
   tags{
-    <jobDesc>   = "--op desc--"
+    <cmdDesc>   = "--op desc--"
     <liteOp>    = true
     <streamDef> = __analyzeTable
     <params>    = 1

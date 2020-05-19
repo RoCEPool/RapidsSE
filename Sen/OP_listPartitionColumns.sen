@@ -57,7 +57,7 @@ cmdSyntax: lspartcol :: lspartcol <tableNm> ;
 
 : lspartcol _cmdTags tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>     = "--op desc--"
+    <cmdDesc>     = "--op desc--"
     <localLiteOp> = true
     <streamDef>   = __listColumns
     <params>      = 1

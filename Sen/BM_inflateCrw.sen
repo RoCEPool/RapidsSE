@@ -114,7 +114,7 @@
 cmdSyntax: BM_InflateCrwOp :: BM_InflateCrwOp <tableNm> ;
 
 : BM_InflateCrwOp _cmdTags tagCopy: stageOp_tags
-  tags{ <jobDesc> = "--op desc--" }
+  tags{ <cmdDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

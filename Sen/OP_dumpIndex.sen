@@ -24,7 +24,7 @@ cmdSyntax: dumpIdx :: dumpIdx <tableNm> <indexNm> ;
 
 : dumpIdx _cmdTags tagCopy: localLiteOp_tags
 tags{
-  <jobDesc>     = "--op desc--"
+  <cmdDesc>     = "--op desc--"
   <localLiteOp> = true
   <params>      = 2
   }

@@ -96,7 +96,7 @@
 cmdSyntax: _Ended :: _Ended ;
 
 : _Ended _cmdTags tags{
-  <jobDesc>  = "--description of job--"
+  <cmdDesc>  = "--description of job--"
   
   <jobKind>  = JK_GENERIC
 }

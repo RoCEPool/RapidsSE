@@ -61,7 +61,7 @@ cmdSyntax: lsten :: lsten ;
 
 : lsten _cmdTags tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>     = "--op desc--"
+    <cmdDesc>     = "--op desc--"
     <localLiteOp> = true
     <streamDef>   = __listContents
     <params>      = 0

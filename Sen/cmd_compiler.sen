@@ -258,8 +258,8 @@
   then
 
   // test and add default for: job desc
-  "<jobDesc>" pCmdTags tagSet.hasName not if
-    "<jobDesc>" "--description  --" pCmdTags tagSet.addTag
+  "<cmdDesc>" pCmdTags tagSet.hasName not if
+    "<cmdDesc>" "--description  --" pCmdTags tagSet.addTag
   then
 
   // test and add default for: job kind

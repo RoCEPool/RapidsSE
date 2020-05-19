@@ -91,7 +91,7 @@
 cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
 : pipeline _cmdTags tags{
-  <jobDesc>  = "--description of job--"
+  <cmdDesc>  = "--description of job--"
 
   <jobKind>  = JK_DIST2PC
   <rspKind>  = RS_PARTICIPANT_ERROR
@@ -103,7 +103,7 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
 /*
 : pipeline _cmdTags tags{
-  <jobDesc>  = "--description of job--"
+  <cmdDesc>  = "--description of job--"
   
   <jobKind>  = JK_DIST2PC
   <rspKind>  = RS_PARTICIPANT_ERROR

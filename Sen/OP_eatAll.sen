@@ -43,7 +43,7 @@
 cmdSyntax: eatAll :: eatAll ;
 
 : eatAll _cmdTags tagCopy: stageOp_tags
-  tags{ <jobDesc> = "--op desc--" }
+  tags{ <cmdDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/
