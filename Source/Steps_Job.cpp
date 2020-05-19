@@ -1358,6 +1358,7 @@ void Step::vJobRowsSkippedStore(void)
   EXIT();
 }
 
+//! TO GO - ALKA
 /*----------------------------------------------------------------------------*/
 /* job.seedDecode -- decode seed for received job                             */
 /*----------------------------------------------------------------------------*/
@@ -1495,7 +1496,7 @@ void Step::vJobShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.signalCompletion -- signal the connector thread                            */
+/* job.signalCompletion -- signal the connector thread                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobSignalCompletion(void)
 {

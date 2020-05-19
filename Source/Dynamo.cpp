@@ -245,7 +245,7 @@ bool Dynamo::bPhase1_collect(void)
   
   vBeginToken(0);
   
-  if (m_pTkn->bSame("pipeline"_Stz)) {
+  if (m_pTkn->bSame("pipeline"_Stz) || m_pTkn->bSame("pipelineLocal"_Stz)) {
     bResult = bCollectName();
     if (! bResult)
       return false;
@@ -305,7 +305,7 @@ bool Dynamo::bCollectName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  ASSERT(m_pTkn->bSame("pipeline"_Stz));
+  ASSERT(m_pTkn->bSame("pipeline"_Stz) || m_pTkn->bSame("pipelineLocal"_Stz));
   vAcceptToken();
   
 #ifdef WITH_TRACE_DYNAMO

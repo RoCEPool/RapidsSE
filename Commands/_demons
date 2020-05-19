@@ -5,7 +5,7 @@
 /*----------------------------------------------------------------------------*/
 /* recurring service demon                                                    */
 /*----------------------------------------------------------------------------*/
-/nowait pipeline recurringD
+/nowait pipelineLocal recurringD
 
   tag "<pre_execute>" = "demon::install" endTag
 
@@ -19,7 +19,8 @@ end;
 /*----------------------------------------------------------------------------*/
 /* statistics service demon                                                   */
 /*----------------------------------------------------------------------------*/
-/nowait pipeline statD
+/*
+/nowait pipelineLocal statD
 
   tag "<pre_execute>" = "demon::install" endTag
 
@@ -29,7 +30,7 @@ begin
     start | statWrite | eatAll | stageA
 
 end;
-
+*/
 
 //pipeline endless
 //begin

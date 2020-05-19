@@ -1,0 +1,105 @@
+/*============================================================================*/
+/* job_PipelineLocal.sen -- Job Local Pipeline                                */
+/*============================================================================*/
+
+" job_PipelineLocal.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Pipeline request on origin                                     */
+/*----------------------------------------------------------------------------*/
+: pipelineLocal_req _eeh ( -- )
+
+  task[] locals| pTask |
+  job[]  locals| pJob_pipeline |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compile the pipeline command
+  <cmd> job_Pipeline::compile dup
+  EC_NONE != if
+    "got error" .
+    job::error! !!logError exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // begin the pipeline job (spawning jobs for ops etc)
+  job[] job_Pipeline.begin
+
+  // run <pre_execute>
+/*
+  "<pre_execute>"
+  job[] job.tagSet@ tagSet.hasName if
+    "<pre_execute>"
+    job[] job.tagSet@ tagSet.getStr locals| sPreExe |
+    sPreExe find
+    dup not if
+      sPreExe "Unable to find pre execute word: %v" .printf
+      process::quit
+    then
+      execute
+  else
+    <pipelineNm> "No pre execute word for pipeline: %v" .printf
+  then
+*/
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab the task lock
+  pTask task.grabLock
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute the pipeline job (send startmarker to start)
+  //<pipelineNm> "%v execute" .printf
+  pJob_pipeline job_Pipeline.execute if
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // wait for operators to finish
+    //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on task::wait" .printf
+    task::wait
+    //<pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
+  else
+    //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
+    pTask task.dropLock
+  then
+
+  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_pipeline job check resources                                   */
+/*----------------------------------------------------------------------------*/
+: pipelineLocal::checkResources _eeh ( -- )
+
+
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
+
+: pipelineLocal _cmdTags tags{
+  <cmdDesc>  = "--cmd desc for job--"
+
+  <jobKind>  = JK_LOCAL
+  <rspKind>  = RS_JOB_RESPONSE
+  //<ddlLock>  = DL_GRAB_READ
+
+  //<preCheck> = bClusterStarted
+}
+;
+
+/*
+: pipeline _cmdTags tags{
+  <cmdDesc>  = "--cmd desc for job--"
+  
+  <jobKind>  = JK_DIST2PC
+  <rspKind>  = RS_PARTICIPANT_ERROR
+  <ddlLock>  = DL_GRAB_READ
+  
+  <preCheck> = bClusterStarted
+}
+;
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
