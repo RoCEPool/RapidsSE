@@ -25,7 +25,7 @@
   job[] job_Pipeline.begin
 
   // run <pre_execute>
-/*
+
   "<pre_execute>"
   job[] job.tagSet@ tagSet.hasName if
     "<pre_execute>"
@@ -39,7 +39,7 @@
   else
     <pipelineNm> "No pre execute word for pipeline: %v" .printf
   then
-*/
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab the task lock
   pTask task.grabLock
