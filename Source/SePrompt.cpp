@@ -224,7 +224,7 @@ void SePrompt::vPromptLoop(void)
     // prompt has finessed the final input token vector at this stage
     
     Job* pJob;
-    if (! (pJob = pPseudoApi1()))
+    if (! (pJob = pPseudoApi1(&pJob)))
       continue;
     
     
@@ -258,7 +258,7 @@ void SePrompt::vPromptLoop(void)
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-Job* SePrompt::pPseudoApi1(void)
+Job* SePrompt::pPseudoApi1(Job** ppJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
