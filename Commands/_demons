@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /nowait pipelineLocal answerD
 
-  //tag "<pre_execute>" = "demon::install" endTag
+  tag "<pre_execute>" = "demon::install" endTag
 
 begin
 
@@ -21,7 +21,7 @@ end;
 /*----------------------------------------------------------------------------*/
 /nowait pipelineLocal connectorD
 
-//tag "<pre_execute>" = "demon::install" endTag
+  tag "<pre_execute>" = "demon::install" endTag
 
 begin
 
@@ -35,9 +35,9 @@ end;
 /*----------------------------------------------------------------------------*/
 /nowait pipelineLocal receiverD
 
-  //tag "<pre_execute>" = "demon::install" endTag
+  tag "<pre_execute>" = "demon::install" endTag
 
-  begin
+begin
 
   stage stageA on origin:
     start | receiverOP | eatAll | stageA
@@ -49,7 +49,7 @@ end;
 /*----------------------------------------------------------------------------*/
 /nowait pipelineLocal recurringD
 
-  //tag "<pre_execute>" = "demon::install" endTag
+  tag "<pre_execute>" = "demon::install" endTag
 
 begin
 
@@ -72,6 +72,19 @@ begin
 
 end;
 
+/*----------------------------------------------------------------------------*/
+/* waker service demon                                                        */
+/*----------------------------------------------------------------------------*/
+/nowait pipelineLocal wakerD
+
+  tag "<pre_execute>" = "demon::install" endTag
+
+begin
+
+  stage stageA on origin:
+    start | wakerOP | eatAll | stageA
+
+end;
 
 //pipeline endless
 //begin

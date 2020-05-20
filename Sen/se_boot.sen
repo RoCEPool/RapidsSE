@@ -189,6 +189,8 @@ assert::stack_0
         "OP_visualizeIndex.sen"       include
         "OP_visualizeTable.sen"       include
 
+        "OP_waker.sen"                include
+
         "OP_xmit.sen"                 include
 
 3 .put
