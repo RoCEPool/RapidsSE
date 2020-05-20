@@ -580,6 +580,35 @@ void Api::vPseudoApi5_DeleteJob(Job** ppJob)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* attempt to find a job which matches the command tokens                     */
+/*----------------------------------------------------------------------------*/
+JobClass* Api::aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet)
+{
+  _static_
+  
+  //pTagSet->vDumpSet();
+  
+  Stz* aCommand1 = pCmdTknVec->pGet(0,true)->szChars();
+  Stz* aCommand2 = pCmdTknVec->pGet(1,true)->szChars();
+  
+  JobClass* aJobClass = JobClass::pFind(aCommand1, aCommand2);
+
+  if (aJobClass)
+    return aJobClass;
+  
+  // is the command token a forth-word marked as prompt?
+  //if (bIsPromptWord())
+  //  return true;
+  
+  // give command to the universal job
+  if ((eJK)pTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL)
+    aJobClass = JobClass::pFind(CN_JOB_LOCAL);
+  else
+    aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
+  
+  return aJobClass;
+}
 
 
 /*============================================================================*/

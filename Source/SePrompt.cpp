@@ -294,13 +294,20 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
   }
   m_oPromptTags.vDumpSet();
   
-  if (! bFindJobClass(m_pInpTknVec,&m_oPromptTags)) {
+  
+  
+  JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oPromptTags);
+  m_aJobClass = aJobClass;
+  
+  if (! aJobClass) {
     vUnknownCommand();
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
     return EC_INVALID_COMMAND;
   }
 
+      
+      
   if (! bPassesLowMem())
     return EC_LOW_MEMORY;
 
@@ -658,36 +665,6 @@ bool SePrompt::bExecuteFunction(void)
   //vTrace("Executing function %s\n"_Stz,pTkn(0)->szChars());
   
   (pPromptDesc->m_fPrompt)(this);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to find a job which matches the command tokens                     */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  //pTagSet->vDumpSet();
-  
-  Stz* aCommand1 = pCmdTknVec->pGet(0,true)->szChars();
-  Stz* aCommand2 = pCmdTknVec->pGet(1,true)->szChars();
-  
-  m_aJobClass = JobClass::pFind(aCommand1, aCommand2);
-
-  if (m_aJobClass)
-    return true;
-  
-  // is the command token a forth-word marked as prompt?
-  //if (bIsPromptWord())
-  //  return true;
-  
-  // give command to the universal job
-  if ((eJK)pTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL)
-    m_aJobClass = JobClass::pFind(CN_JOB_LOCAL);
-  else
-    m_aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
   
   return true;
 }

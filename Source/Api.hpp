@@ -41,6 +41,8 @@ namespace Interface
   static void vPseudoApi4_PostJob(Job* pJob);
   static void vPseudoApi5_DeleteJob(Job** ppJob);
 
+  static JobClass* aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet);
+
   private:
   
   static void vCreateTaskForJob(Job* pJob);
