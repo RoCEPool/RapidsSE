@@ -209,38 +209,36 @@ void SePrompt::vPromptLoop(void)
     }
 
     vCheckTimed();
-
-
-    // ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ??
     
     vCheckJobCtl();
 
     if (! bCheckJobTags())
       continue;
 
-    
-    
     if (bTranslateProcedure())
       goto L_Read_Next_Command;
     
     
-    
-    
     //.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.
     
-    if (! bPseudoApi1())
+    // prompt has finessed the final input token vector at this stage
+    
+    Job* pJob;
+    if (! (pJob = pPseudoApi1()))
       continue;
     
     
     
-    vSpawnJob();
+    // spawn the job
+    if (! bPseudoApi2_SpawnJob(pJob))
+      continue;
 
     
     
-    if (! bPseudoApi2())
+    if (! bPseudoApi3(pJob))
       continue;
   
-    if (! bPseudoApi3())
+    if (! bPseudoApi4(pJob))
       continue;
     
     
@@ -260,7 +258,7 @@ void SePrompt::vPromptLoop(void)
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPseudoApi1(void)
+Job* SePrompt::pPseudoApi1(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -272,7 +270,7 @@ bool SePrompt::bPseudoApi1(void)
     
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
-    return false;
+    return nullptr;
   }
   m_oPromptTags.vDumpSet();
   
@@ -280,14 +278,14 @@ bool SePrompt::bPseudoApi1(void)
     vUnknownCommand();
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
-    return false;
+    return nullptr;
   }
 
   if (! bPassesLowMem())
-    return false;
+    return nullptr;
 
   if (! bPassesCheck())
-    return false;
+    return nullptr;
 
   vBeginRequest();
   
@@ -304,7 +302,7 @@ bool SePrompt::bPseudoApi1(void)
     //vCompletedTask();
     vDeleteJob();
     vEndRequest();
-    return false;
+    return nullptr;
   }
   
   if (bDumpTokens())
@@ -317,11 +315,23 @@ bool SePrompt::bPseudoApi1(void)
   vPrepareSpawn();  // RENAME spawn etc
   
   if (bDontSpawn())
-    return false;
+    return nullptr;
 
   m_oTimer.vStart();
   
   vJobLockMutex();
+
+  return m_pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bPseudoApi2_SpawnJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  vSpawnJob();
 
   return true;
 }
@@ -329,7 +339,7 @@ bool SePrompt::bPseudoApi1(void)
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPseudoApi2(void)
+bool SePrompt::bPseudoApi3(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -354,7 +364,7 @@ bool SePrompt::bPseudoApi2(void)
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPseudoApi3(void)
+bool SePrompt::bPseudoApi4(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
