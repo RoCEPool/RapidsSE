@@ -60,7 +60,8 @@ namespace Prompt
     void vPromptLoop(void);
     eEC  ePseudoApi1_PreJob(Job**     ppJob,
                             TokenVec* pCmdTknVec,
-                            TagSet*   pTagSet);
+                            TagSet*   pTagSet,
+                            ReqTuple* axReqTuple);
  
     // these are the prompt.xyz task primitives
     void vBeginRequest(void);

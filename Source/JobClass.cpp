@@ -134,7 +134,7 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, TagSet* pTagSet)
   
   Job* pJob = (*m_fpPre)(this,aReqTuple,pTagSet);
   
-  pJob->m_xReqTuple.m_i_Session = -1;
+  //pJob->m_xReqTuple.m_i_Session = -1;
   
   return pJob;
 }

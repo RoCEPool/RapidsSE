@@ -226,8 +226,13 @@ void SePrompt::vPromptLoop(void)
     Job* pJob;
     
     vLogCommand();
+    
+    vBeginRequest();
 
-    eEC eError = ePseudoApi1_PreJob(&pJob,m_pInpTknVec,&m_oPromptTags);
+    m_pRequest->m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
+
+    eEC eError = ePseudoApi1_PreJob(&pJob,m_pInpTknVec,&m_oPromptTags,
+                                    &m_pRequest->m_xReqTuple);
     if (eError) {
       vTrace("Api1 Error: %s\n"_Stz,aEC[eError]);
       continue;
@@ -279,7 +284,8 @@ void SePrompt::vPromptLoop(void)
 /*----------------------------------------------------------------------------*/
 eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
                                  TokenVec* pCmdTknVec,
-                                 TagSet*   pTagSet)
+                                 TagSet*   pTagSet,
+                                 ReqTuple* axReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -316,13 +322,11 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
   if (! bPassesCheck())
     return EC_ZZZ_OTHER;
 
-  vBeginRequest();
   
   
   
   
-  Job* pJob = aJobClass->pPreJob(&m_pRequest->m_xReqTuple,pTagSet);
-  pJob->m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
+  Job* pJob = aJobClass->pPreJob(axReqTuple,pTagSet);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
@@ -388,7 +392,8 @@ void SePrompt::vBeginRequest(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   //m_pRequest = new Request(m_pSession,pTokenVec());
-  m_pRequest = new Request(m_pSession,m_aJobClass->m_aComment,iStepNo());
+  //m_pRequest = new Request(m_pSession,m_aJobClass->m_aComment,iStepNo());
+  m_pRequest = new Request(m_pSession,"--jobClass comment--"_Stz,iStepNo());
 
   m_i_RequestFocal = m_pRequest->m_i_Focal;
   
