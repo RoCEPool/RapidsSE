@@ -44,6 +44,9 @@ namespace Interface
   static JobClass* aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet);
   static Job* pPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVec);
 
+  static bool bPassesCheck(JobClass* aJobCLass);
+  static bool bPassesLowMem(JobClass* aJobCLass);
+
   private:
   
   static void vCreateTaskForJob(Job* pJob);

@@ -610,6 +610,48 @@ JobClass* Api::aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet)
   return aJobClass;
 }
 
+/*----------------------------------------------------------------------------*/
+/* passes the pre-condition check function?                                   */
+/*----------------------------------------------------------------------------*/
+bool Api::bPassesCheck(JobClass* aJobCLass)
+{
+  _static_
+
+  eEC eErrorCode = aJobCLass->eCheckJob();
+  
+  if (EC_NONE != eErrorCode) {
+    vTrace("Error: %s\n"_Stz,aEC[eErrorCode]);
+    return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* passes the low-memory condition?                                           */
+/*----------------------------------------------------------------------------*/
+bool Api::bPassesLowMem(JobClass* aJobCLass)
+{
+  _static_
+
+  if (aJobCLass->m_eFlags != JF_LOWMEM)
+    return true;
+  
+  if (! gpBufferPool->bLowMemory())
+    return true;
+  
+  if (aJobCLass->m_aCommand2)
+    vTrace("Error: unable to run %s %s under low memory conditions\n"_Stz,
+           aJobCLass->m_aCommand1,aJobCLass->m_aCommand2);
+  else
+    vTrace("Error: unable to run %s under low memory conditions\n"_Stz,
+           aJobCLass->m_aCommand1);
+
+  return false;
+}
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
