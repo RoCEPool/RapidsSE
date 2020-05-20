@@ -271,12 +271,12 @@ void SePrompt::vPromptLoop(void)
       m_pJob->m_xResult.vProcessBufferQueue();
     }
 
-    Api::vPseudoApi4_PostJob(pJob);
+    Api::vPseudoApi3_PostJob(pJob);
     
     
     vReportTime();
     
-    Api::vPseudoApi5_DeleteJob(&m_pJob);
+    Api::vPseudoApi4_DeleteJob(&m_pJob);
     
 
     vLogFreeSpace();

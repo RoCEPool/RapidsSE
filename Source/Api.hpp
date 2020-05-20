@@ -40,8 +40,8 @@ namespace Interface
                                  TagSet*   pTagSet,
                                  ReqTuple* axReqTuple);
   static void vPseudoApi2_SpawnJob(Job* pJob);
-  static void vPseudoApi4_PostJob(Job* pJob);
-  static void vPseudoApi5_DeleteJob(Job** ppJob);
+  static void vPseudoApi3_PostJob(Job* pJob);
+  static void vPseudoApi4_DeleteJob(Job** ppJob);
 
   static JobClass* aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet);
   static Job* pPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVec);

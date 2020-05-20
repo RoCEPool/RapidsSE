@@ -592,8 +592,8 @@ eEC Api::ePseudoApi1_PreJob(Job**     ppJob,
   
   // this should go
   if (pJob->bJobHasError()) {
-    Api::vPseudoApi4_PostJob(pJob);
-    Api::vPseudoApi5_DeleteJob(&pJob);
+    Api::vPseudoApi3_PostJob(pJob);
+    Api::vPseudoApi4_DeleteJob(&pJob);
     return EC_ZZZ_OTHER;
   }
   
@@ -633,7 +633,7 @@ void Api::vPseudoApi2_SpawnJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-void Api::vPseudoApi4_PostJob(Job* pJob)
+void Api::vPseudoApi3_PostJob(Job* pJob)
 {
   _static_
   
@@ -644,7 +644,7 @@ void Api::vPseudoApi4_PostJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-void Api::vPseudoApi5_DeleteJob(Job** ppJob)
+void Api::vPseudoApi4_DeleteJob(Job** ppJob)
 {
   _static_
   
