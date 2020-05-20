@@ -528,6 +528,7 @@ public:
 
   // job
   void vJobAcksRemaining(void);
+  void vJobAddDemon(void);
   void vJobAddOriginator(void);
   void vJobAddParticipant(void);
   void vJobAssertBegin(void);

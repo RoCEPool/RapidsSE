@@ -14,6 +14,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::spawnUniversal"_Stz,    &Step::vJobSpawnUniversal);
 
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
+  vAddStep("job.addDemon"_Stz,         &Step::vJobAddDemon);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
   vAddStep("job.assertBegin"_Stz,      &Step::vJobAssertBegin);
@@ -122,6 +123,35 @@ void Step::vJobAcksRemaining(void)
   i8 nAcksRemaining = m_pDataStack->iPopInt(__func__);
   
   pJob->vAcksRmg(nAcksRemaining);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.addDemon -- add job to demon job set                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAddDemon(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  // add the job to the originating jobs
+  //  AM::pOriginatingJobs()->vGrabLock();
+  //  AM::pOriginatingJobs()->vAddJob(pJob);
+  //  AM::pOriginatingJobs()->vDropLock();
+  
+  
+  Scheduler::vJob_AddDemon(pJob);
+  
+  //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
+  
+  if (pJob->m_xReqTuple.m_iDetail) {
+    JobLog::vNote(pJob,"Added to Originator List: %s %p"_Stz,
+                  aCN[pJob->eClass()],
+                  pJob);
+    AM::pDemonJobs()->vLogJobs(pJob->m_iFocalId);
+  }
   
   EXIT();
 }

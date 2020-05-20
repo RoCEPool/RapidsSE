@@ -573,6 +573,23 @@ void Scheduler::vTaskApi_BeginExecutingDedicated(Thread* pThread)
 // /////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add job to demon list                                                      */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vJob_AddDemon(Job* pJob)
+{
+  
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->m_pDemonJobs->vGrabLock();
+  pQueues->m_pDemonJobs->vAddJob(pJob);
+  pQueues->m_pDemonJobs->vDropLock();
+  
+  pJob->vIncStepNo();
+  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_DEMON,
+              "Job added to DemonJobs"_Stz); //!format-LogJob
+}
+
+/*----------------------------------------------------------------------------*/
 /* add job to originating list                                                */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vJob_AddOriginating(Job* pJob)
@@ -604,6 +621,21 @@ void Scheduler::vJob_AddParticipating(Job* pJob)
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTG,
               "Job added to ParticipatingJobs"_Stz); //!format-LogJob
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump demon job list                                                        */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vJob_DumpDemon(void)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
+              "OriginatingJobs list:"_Stz); //!format-LogQue
+  
+  pQueues->m_pDemonJobs->vGrabLock();
+  pQueues->m_pDemonJobs->vContentDump();
+  pQueues->m_pDemonJobs->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

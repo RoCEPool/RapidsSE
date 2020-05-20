@@ -17302,6 +17302,7 @@ void Task::vAddMunged(Forth* pForth)
     "  sDemonNm >createInRoot locals| pDemonWd |\n"
     "\n"
     "  job[] pDemonWd word.object!\n"
+    "  job[] job.addDemon\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"

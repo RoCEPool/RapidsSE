@@ -458,7 +458,8 @@ void Job::vContentDump(void)
     vTrace("Pipeline Job\n"_Stz);
     vTrace("---\n"_Stz);
     
-    m_pPipeline->pJob()->vContentDump();
+    if (m_pPipeline->pJob() != this)
+      m_pPipeline->pJob()->vContentDump();
   }
   
   m_oJobTags.vContentDump();

@@ -49,6 +49,8 @@ BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 CarryOver* AM::pCarryOver(void)   { return gpAttachMap->m_pCarryOver;         }
 EnumFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 Lock* AM::pDdlLock(void)      { return & gpAttachMap->m_okDdlLock;            }
+JobList* AM::pDemonJobs(void) {
+  return gpAttachMap->m_pQueues->m_pDemonJobs;                                }
 Lock* AM::pDicLock(void)      { return & gpAttachMap->m_okDicLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }

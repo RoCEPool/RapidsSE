@@ -50,8 +50,10 @@ namespace Threads
     // job interface
   
   public:
+    static void vJob_AddDemon(Job* pJob);
     static void vJob_AddOriginating(Job* pJob);
     static void vJob_AddParticipating(Job* pJob);
+    static void vJob_DumpDemon(void);
     static void vJob_DumpOriginating(void);
     static void vJob_DumpParticipating(void);
     static Job* pJob_FindOriginating(i8 iJobId);

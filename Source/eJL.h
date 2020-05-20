@@ -6,15 +6,17 @@
 enum eJL // jobs list
 {
   /* 0 */ JL_NONE=0,
-  /* 1 */ JL_ORIGINATING,
-  /* 2 */ JL_PARTICIPATING
+  /* 1 */ JL_DEMON,
+  /* 2 */ JL_ORIGINATING,
+  /* 3 */ JL_PARTICIPATING
 };
 
 static Stz* aJL[]
 {
   /* 0 */ "None"_Stz,
-  /* 1 */ "Originating"_Stz,
-  /* 2 */ "Participating"_Stz
+  /* 1 */ "Demon"_Stz,
+  /* 2 */ "Originating"_Stz,
+  /* 3 */ "Participating"_Stz
 };
 
 /*============================================================================*/

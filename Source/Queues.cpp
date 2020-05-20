@@ -77,6 +77,7 @@ Queues::Queues(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // jobs
   
+  m_pDemonJobs         = new JobList(bJobCompare,JL_DEMON);
   m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
   m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
 
