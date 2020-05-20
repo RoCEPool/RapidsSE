@@ -32,6 +32,8 @@ namespace Prompt
     i8        m_i_RequestFocal; // focal subscript of last request
     i8        m_iRequestId;     // id of last command
 
+    ReqTuple  m_xReqTuple;      // request information
+
     BPA*      m_pBPA;           // object delta reporting
     ObjectsInPool* m_pObjectsInPool;
     ObjectsInPool* m_pSnapshotObjects;

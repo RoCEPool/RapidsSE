@@ -22,6 +22,21 @@ void* ReqTuple::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+ReqTuple::ReqTuple(void)
+{
+  m_i_Origin   = AM::bAttached() && AM::pGrid() ? AM::iThisNodeNo() : C_UNKNOWN;
+  m_i_Session  = C_UNKNOWN;
+  m_iReqId     = C_UNKNOWN;
+  m_iForId     = C_UNKNOWN;
+
+  m_iDetail    = 0;
+  
+  m_sPurpose   = "?"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 ReqTuple::ReqTuple(ReqTuple* aReqTuple)
 {
   vSet(aReqTuple);

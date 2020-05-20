@@ -19,6 +19,7 @@ namespace Focals
   public:
     void* operator new(size_t);
   
+    ReqTuple(void);
     ReqTuple(ReqTuple* aReqTuple);
     ReqTuple(Stz* szService, bool bFlag);
     ReqTuple(Stz* szService, i8 iSessionId, bool bFlag);
