@@ -29,7 +29,7 @@ namespace Jobs
       ePY  m_ePriority;  // job priority
       eJF  m_eFlags;     // job flags
   
-      eEC  (*m_fpCheck)(Session* pSession);
+      eEC  (*m_fpCheck)(void);
       Job* (*m_fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);
       void (*m_fpPost)(JobClass* aJobClass, Job* pJob);
       Job* (*m_fpNew)(JobClass* aJobClass, ReqTuple* aReqTuple);
@@ -46,7 +46,7 @@ namespace Jobs
       bool m_bSeedsSpawned[SS_ENUMS]; // which seeds have been spawned
   
     public:
-      eEC  eCheckJob(Session* pSession);
+      eEC  eCheckJob(void);
       void vCmds(void);
       void vDeleteJob(Job* pJob);
       void vDropDdlLock(void);

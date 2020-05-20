@@ -32,13 +32,13 @@ JobClass* Jobs::_pJobClass(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* post-receive fucntion                                                      */
 /*----------------------------------------------------------------------------*/
-eEC JobClass::eCheckJob(Session *pSession)
+eEC JobClass::eCheckJob(void)
 {
   if (! m_fpCheck)
     return EC_NONE;
-  
-  eEC eErrorCode = (*m_fpCheck)(pSession);
-  
+
+  eEC eErrorCode = (*m_fpCheck)();
+
   return eErrorCode;
 }
 

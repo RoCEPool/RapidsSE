@@ -31,7 +31,7 @@ JobDesc::JobDesc(
                  ePY  ePriority,  // job priority
                  eJF  eFlags,     // job flags
                  
-                 eEC  (*fpCheck)(Session* pSession),
+                 eEC  (*fpCheck)(void),
                  Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet),
                  void (*fpPost)(JobClass* aJobClass, Job* pJob),
                  Job* (*fpNew)(JobClass* aJobClass, ReqTuple* aReqTuple),

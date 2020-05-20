@@ -160,7 +160,7 @@ namespace Jobs
   bool _bIsValidJob(eCN eClass);
 
   ////////////////////////////////////////////////////////////////////////////////
-  eEC  eJob_checkCluster(Session* pSession);
+  eEC  eJob_checkCluster(void);
   void vJob_recv(Job* pJob);
   void vJob_send(Job* pJob);
   void vJob_post(JobClass* aJobClass, Job* pJob);

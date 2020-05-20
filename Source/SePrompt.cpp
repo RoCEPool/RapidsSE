@@ -945,7 +945,7 @@ bool SePrompt::bPassesCheck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  eEC eErrorCode = m_aJobClass->eCheckJob(m_pSession);
+  eEC eErrorCode = m_aJobClass->eCheckJob();
   
   if (EC_NONE != eErrorCode) {
     vTrace("Error: %s\n"_Stz,aEC[eErrorCode]);

@@ -1245,7 +1245,7 @@ void Job::vWasReceived(bool bWasReceived)
 /*----------------------------------------------------------------------------*/
 /* check if the cluster has started                                           */
 /*----------------------------------------------------------------------------*/
-eEC Jobs::eJob_checkCluster(Session* pSession)
+eEC Jobs::eJob_checkCluster(void)
 {
   if (AM::pGrid()->m_bHasStarted)
     return EC_NONE;
