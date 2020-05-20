@@ -25,8 +25,8 @@ namespace Prompt
 
     i8        m_iCmdNo;      // command no
     JobClass* m_aJobClass;   // job class
-    TagSet    m_oControlTags; // control tags gleaned from the prompt command
-    Job*      m_pJob;         // job
+    TagSet    m_oPromptTags; // tags gleaned from the prompt command
+    Job*      m_pJob;        // job
 
     Request*  m_pRequest;       // current request being executed by SE
     i8        m_i_RequestFocal; // focal subscript of last request
