@@ -318,10 +318,24 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
 
   vBeginRequest();
   
-  Job* pJob;
-  pJob = pPreJob(aJobClass,&m_pRequest->m_xReqTuple,pTagSet,pCmdTknVec);
+  
+  
+  
+  Job* pJob = aJobClass->pPreJob(&m_pRequest->m_xReqTuple,pTagSet);
   pJob->m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add <cmd> into job ename-set
+  
+  s4K sCmd;
+  pCmdTknVec->vVecToString(sCmd,0,true);
+  
+  pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
   m_pJob = pJob;
+  
+  
+  
+  
   
   pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
   
@@ -914,26 +928,6 @@ bool SePrompt::bPassesLowMem(void)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* call pre-job function                                                      */
-/*----------------------------------------------------------------------------*/
-Job* SePrompt::pPreJob(JobClass* aJobClass, ReqTuple* axReqTuple,
-                       TagSet* pTagSet, TokenVec* pCmdTknVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-      
-  Job* pJob = aJobClass->pPreJob(axReqTuple,pTagSet);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add <cmd> into job ename-set
-  
-  s4K sCmd;
-  pCmdTknVec->vVecToString(sCmd,0,true);
-  
-  pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
-     
-  return pJob;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get prompt id                                                              */

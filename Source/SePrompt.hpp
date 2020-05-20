@@ -96,8 +96,6 @@ namespace Prompt
     ObjectsInPool*  pObjectsInPool(void);
     bool bPassesCheck(void);
     bool bPassesLowMem(void);
-    Job* pPreJob(JobClass* aJobClass, ReqTuple* axReqTuple,
-                 TagSet* pTagSet, TokenVec* pCmdTknVec);
     i8   iPromptId(void);
     void vPromptUser(void);
     bool bReadNextCommand(void);
