@@ -59,7 +59,7 @@ namespace Prompt
   
     void vPromptLoop(void);
     eEC  ePseudoApi1_PreJob(Job** ppJob);
-    bool bPseudoApi2_SpawnJob(Job* pJob);
+    void vPseudoApi2_SpawnJob(Job* pJob, bool* abWait);
     void vPseudoApi3_WaitCompletion(Job* pJob);
     void vPseudoApi4_PostJob(Job* pJob);
 
