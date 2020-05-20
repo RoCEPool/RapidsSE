@@ -29,7 +29,6 @@ namespace Prompt
     Job*      m_pJob;        // job
 
     Request*  m_pRequest;       // current request being executed by SE
-    i8        m_iRequestId;     // id of last command
 
     ReqTuple  m_xReqTuple;      // request information
 

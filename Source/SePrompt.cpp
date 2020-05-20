@@ -88,7 +88,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pSnapshotObjects = new ObjectsInPool;
   
   m_pRequest = nullptr;
-  m_iRequestId = C_UNKNOWN;
+
   
   m_pBPA = nullptr;
 //  if (AM::bDeveloper())
@@ -393,8 +393,6 @@ void SePrompt::vBeginRequest(void)
   
   m_pRequest = new Request(m_pSession,"--jobClass comment--"_Stz,iStepNo());
 
-  
-  m_iRequestId = m_pRequest->m_iFocalId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1073,7 +1071,7 @@ i8 SePrompt::iRequestId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_iRequestId;
+  return m_xReqTuple.m_iReqId;
 }
 
 /*----------------------------------------------------------------------------*/
