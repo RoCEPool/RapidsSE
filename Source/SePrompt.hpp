@@ -58,10 +58,10 @@ namespace Prompt
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vPromptLoop(void);
-    eEC  ePseudoApi1(Job** ppJob);
+    eEC  ePseudoApi1_PreJob(Job** ppJob);
     bool bPseudoApi2_SpawnJob(Job* pJob);
-    bool bPseudoApi3(Job* pJob);
-    bool bPseudoApi4(Job* pJob);
+    void vPseudoApi3_WaitCompletion(Job* pJob);
+    void vPseudoApi4_PostJob(Job* pJob);
 
     // these are the prompt.xyz task primitives
     void vBeginRequest(void);
