@@ -319,7 +319,8 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
   vBeginRequest();
   
   Job* pJob;
-  pJob = pPreJob(aJobClass,pTagSet,pCmdTknVec);
+  pJob = pPreJob(aJobClass,&m_pRequest->m_xReqTuple,pTagSet,pCmdTknVec);
+  pJob->m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
   m_pJob = pJob;
   
   pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
@@ -916,26 +917,13 @@ bool SePrompt::bPassesLowMem(void)
 /*----------------------------------------------------------------------------*/
 /* call pre-job function                                                      */
 /*----------------------------------------------------------------------------*/
-Job* SePrompt::pPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVec)
+Job* SePrompt::pPreJob(JobClass* aJobClass, ReqTuple* axReqTuple,
+                       TagSet* pTagSet, TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  SP_Gid spId;
+      
+  Job* pJob = aJobClass->pPreJob(axReqTuple,pTagSet);
   
-  vIncStepNo();
-  AM::vLogPrm(SL_INF,this,PA_PRM_NEW_JOB,
-              "for request %s"_Stz, //!format-LogPrm
-              spId.sz(EK_REQ,m_iRequestId),
-              C_VARGS_END);
-  
-  Job* pJob = aJobClass->pPreJob(&m_pRequest->m_xReqTuple,pTagSet);
-  
-  //
-  // THE FOLLOWING WAS COPIED FROM JobClass::pPreJob()
-  //
-
-  pJob->m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
   

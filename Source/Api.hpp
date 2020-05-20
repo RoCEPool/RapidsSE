@@ -42,6 +42,7 @@ namespace Interface
   static void vPseudoApi5_DeleteJob(Job** ppJob);
 
   static JobClass* aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet);
+  static Job* pPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVec);
 
   private:
   
