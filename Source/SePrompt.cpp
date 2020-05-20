@@ -294,7 +294,7 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
   }
   m_oPromptTags.vDumpSet();
   
-  if (! bFindMatch_job(&m_oPromptTags)) {
+  if (! bFindJobClass(&m_oPromptTags)) {
     vUnknownCommand();
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
@@ -663,34 +663,21 @@ bool SePrompt::bExecuteFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find job class                                                             */
+/* attempt to find a job which matches the command tokens                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bFindJobClass(void)
+bool SePrompt::bFindJobClass(TagSet* pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  //pTagSet->vDumpSet();
+  
   
   Stz* aCommand1 = pTkn(0)->szChars();
   Stz* aCommand2 = pTkn(1)->szChars();
   
   m_aJobClass = JobClass::pFind(aCommand1, aCommand2);
 
-  if (! m_aJobClass)
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to find a job which matches the command tokens                     */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bFindMatch_job(TagSet* pTagSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  //pTagSet->vDumpSet();
-  
-  // attempt to find a job class which matches the command tokens
-  if (bFindJobClass())
+  if (m_aJobClass)
     return true;
   
   // is the command token a forth-word marked as prompt?
