@@ -294,7 +294,7 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
       vDumpInpTknVec(true);
     return EC_INVALID_COMMAND;
   }
-  m_oPromptTags.vDumpSet();
+  pTagSet->vDumpSet();
   
   
   
@@ -340,35 +340,35 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
   pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
   
   
-  ASSERT(! m_pJob->pTask());
-  m_pJob->pJobTags()->vDumpSet();
+  ASSERT(! pJob->pTask());
+  pJob->pJobTags()->vDumpSet();
   
   // this should go
-  if (m_pJob->bJobHasError()) {
-    Api::vPseudoApi4_PostJob(m_pJob);
+  if (pJob->bJobHasError()) {
+    Api::vPseudoApi4_PostJob(pJob);
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
     //vCompletedTask();
-    Api::vPseudoApi5_DeleteJob(&m_pJob);
+    Api::vPseudoApi5_DeleteJob(&pJob);
     vEndRequest();
     return EC_ZZZ_OTHER;
   }
   
 
-  if (m_pJob->bHasTag(C_TAG_LIFE)) {
+  if (pJob->bHasTag(C_TAG_LIFE)) {
     SP_TagSet spTagSet;
-    m_pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(m_pJob->pJobTags()));
-    //m_pJob->pTagSet()->vPrint();
+    pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(pJob->pJobTags()));
+    //pJob->pTagSet()->vPrint();
   }
   
-  RASSERT(JS_LOCKED != m_pJob->eJobState());
+  RASSERT(JS_LOCKED != pJob->eJobState());
         
-  m_pJob->vSeed(SS_SEED_REQ);
+  pJob->vSeed(SS_SEED_REQ);
         
   //! ALKA: Come back to this : 3 feb 2020
-  m_pJob->vJobClass(nullptr, (char*)__func__);
+  pJob->vJobClass(nullptr, (char*)__func__);
 
-  *ppJob = m_pJob;
+  *ppJob = pJob;
 
   return EC_NONE;
 }
