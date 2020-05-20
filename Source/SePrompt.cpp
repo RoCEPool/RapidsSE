@@ -318,7 +318,9 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
 
   vBeginRequest();
   
-  vPreJob(aJobClass,pTagSet,pCmdTknVec);
+  Job* pJob;
+  pJob = pPreJob(aJobClass,pTagSet,pCmdTknVec);
+  m_pJob = pJob;
   
   ASSERT(! m_pJob->pTask());
   m_pJob->pJobTags()->vDumpSet();
@@ -911,7 +913,7 @@ bool SePrompt::bPassesLowMem(void)
 /*----------------------------------------------------------------------------*/
 /* call pre-job function                                                      */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVec)
+Job* SePrompt::pPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
@@ -923,13 +925,13 @@ void SePrompt::vPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVe
               spId.sz(EK_REQ,m_iRequestId),
               C_VARGS_END);
   
-  m_pJob = aJobClass->pPreJob(&m_pRequest->m_xReqTuple,pTagSet);  
+  Job* pJob = aJobClass->pPreJob(&m_pRequest->m_xReqTuple,pTagSet);
   
   //
   // THE FOLLOWING WAS COPIED FROM JobClass::pPreJob()
   //
 
-  m_pJob->m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
+  pJob->m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
@@ -937,18 +939,18 @@ void SePrompt::vPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVe
   s4K sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
   
-  m_pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
+  pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy the semantic ename-set into the job
   
-  m_pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
+  pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
   
   
   //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,
   //                       pJob->m_aJobClass->m_eKind,_EG_JK);
     
-
+  return pJob;
 }
 
 /*----------------------------------------------------------------------------*/
