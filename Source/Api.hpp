@@ -40,7 +40,6 @@ namespace Interface
                                  TagSet*   pTagSet,
                                  ReqTuple* axReqTuple);
   static void vPseudoApi2_SpawnJob(Job* pJob);
-  static void vPseudoApi3_WaitCompletion(Job* pJob);
   static void vPseudoApi4_PostJob(Job* pJob);
   static void vPseudoApi5_DeleteJob(Job** ppJob);
 
