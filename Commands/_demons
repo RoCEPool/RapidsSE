@@ -5,7 +5,7 @@
 /*----------------------------------------------------------------------------*/
 /* answer service demon                                                       */
 /*----------------------------------------------------------------------------*/
-/nowait pipelineLocal answerD
+/nowait pipelineLocal answerDemon
 
   tag "<pre_execute>" = "demon::install" endTag
 
@@ -19,7 +19,7 @@ end;
 /*----------------------------------------------------------------------------*/
 /* connector service demon                                                    */
 /*----------------------------------------------------------------------------*/
-/nowait pipelineLocal connectorD
+/nowait pipelineLocal connectorDemon
 
   tag "<pre_execute>" = "demon::install" endTag
 
@@ -33,7 +33,7 @@ end;
 /*----------------------------------------------------------------------------*/
 /* receiver service demon                                                     */
 /*----------------------------------------------------------------------------*/
-/nowait pipelineLocal receiverD
+/nowait pipelineLocal receiverDemon
 
   tag "<pre_execute>" = "demon::install" endTag
 
@@ -47,7 +47,7 @@ end;
 /*----------------------------------------------------------------------------*/
 /* recurring service demon                                                    */
 /*----------------------------------------------------------------------------*/
-/nowait pipelineLocal recurringD
+/nowait pipelineLocal recurringDemon
 
   tag "<pre_execute>" = "demon::install" endTag
 
@@ -61,7 +61,7 @@ end;
 /*----------------------------------------------------------------------------*/
 /* statistics service demon                                                   */
 /*----------------------------------------------------------------------------*/
-/nowait pipelineLocal statD
+/nowait pipelineLocal statDemon
 
   tag "<pre_execute>" = "demon::install" endTag
 
@@ -75,7 +75,7 @@ end;
 /*----------------------------------------------------------------------------*/
 /* waker service demon                                                        */
 /*----------------------------------------------------------------------------*/
-/nowait pipelineLocal wakerD
+/nowait pipelineLocal wakerDemon
 
   tag "<pre_execute>" = "demon::install" endTag
 
@@ -83,6 +83,20 @@ begin
 
   stage stageA on origin:
     start | wakerOP | eatAll | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
+/* supervisor service demon                                                   */
+/*----------------------------------------------------------------------------*/
+/nowait pipelineLocal supervisorDemon
+
+  tag "<pre_execute>" = "demon::install" endTag
+
+begin
+
+stage stageA on origin:
+  start | supervisorOP | eatAll | stageA
 
 end;
 
