@@ -224,23 +224,29 @@ void SePrompt::vPromptLoop(void)
     // prompt has finessed the final input token vector at this stage
     
     Job* pJob;
-    if (! (pJob = pPseudoApi1(&pJob)))
+    
+    eEC eError = ePseudoApi1_PreJob(&pJob);
+    if (eError) {
+      vTrace("Api1 Error: %s\n"_Stz,aEC[eError]);
       continue;
+    }
     
-    
-    
-    // spawn the job
-    if (! bPseudoApi2_SpawnJob(pJob))
+    // spawn the job (returns true if prompt is to wait)
+    if (! bPseudoApi2_SpawnJob(pJob)) {
+      // don't wait
       continue;
+    }
 
     
+    vPseudoApi3_WaitCompletion(pJob);
     
-    if (! bPseudoApi3(pJob))
-      continue;
   
-    if (! bPseudoApi4(pJob))
-      continue;
-    
+    if (bExecutePipeline()) {
+      // start the buffer queue processing while the pipeline ops are running
+      m_pJob->m_xResult.vProcessBufferQueue();
+    }
+
+    vPseudoApi4_PostJob(pJob);
     
     
     vReportTime();
@@ -258,7 +264,7 @@ void SePrompt::vPromptLoop(void)
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-Job* SePrompt::pPseudoApi1(Job** ppJob)
+eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -270,7 +276,7 @@ Job* SePrompt::pPseudoApi1(Job** ppJob)
     
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
-    return nullptr;
+    return EC_INVALID_COMMAND;
   }
   m_oPromptTags.vDumpSet();
   
@@ -278,14 +284,14 @@ Job* SePrompt::pPseudoApi1(Job** ppJob)
     vUnknownCommand();
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
-    return nullptr;
+    return EC_INVALID_COMMAND;
   }
 
   if (! bPassesLowMem())
-    return nullptr;
+    return EC_LOW_MEMORY;
 
   if (! bPassesCheck())
-    return nullptr;
+    return EC_ZZZ_OTHER;
 
   vBeginRequest();
   
@@ -302,7 +308,7 @@ Job* SePrompt::pPseudoApi1(Job** ppJob)
     //vCompletedTask();
     vDeleteJob();
     vEndRequest();
-    return nullptr;
+    return EC_ZZZ_OTHER;
   }
   
   if (bDumpTokens())
@@ -318,14 +324,14 @@ Job* SePrompt::pPseudoApi1(Job** ppJob)
   
   vPrepareSpawn();  // RENAME spawn etc
   
-  if (bDontSpawn())
-    return nullptr;
+  //if (bDontSpawn())
+  //  return nullptr;
 
   m_oTimer.vStart();
   
   vJobLockMutex();
 
-  return m_pJob;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -335,46 +341,37 @@ bool SePrompt::bPseudoApi2_SpawnJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  vSpawnJob();
-
-  return true;
+  if (bNoWait()) {
+    vSpawnJob();
+    vJobUnlockMutex();
+    return false;
+  }
+  else {
+    vSpawnJob();
+    return true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPseudoApi3(Job* pJob)
+void SePrompt::vPseudoApi3_WaitCompletion(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  
-  if (bNoWait()) {
-    vJobUnlockMutex();
-    return false;
-  }
-
-  if (bExecutePipeline()) {
-    // start the buffer queue processing while the pipeline ops are running
-    m_pJob->m_xResult.vProcessBufferQueue();
-  }
   
   vJobWaitCond();
   vJobUnlockMutex();
   m_oTimer.vUpdate();
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPseudoApi4(Job* pJob)
+void SePrompt::vPseudoApi4_PostJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   vPostJob();
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
