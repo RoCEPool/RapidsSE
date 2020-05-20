@@ -1006,6 +1006,33 @@ void SePrompt::vPreJob(TagSet* pTagSet)
               C_VARGS_END);
   
   m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession,pTagSet);
+  
+  
+  m_pJob->m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
+
+  //
+  // THE FOLLOWING WAS COPIED FROM JobClass::pPreJob()
+  //
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add <cmd> into job ename-set
+  
+  s4K sCmd;
+  TokenVec* pInpTknVec = m_pSession->pInpTknVec();
+  pInpTknVec->vVecToString(sCmd,0,true);
+  
+  m_pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy the semantic ename-set into the job
+  
+  m_pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
+  
+  
+  //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,
+  //                       pJob->m_aJobClass->m_eKind,_EG_JK);
+    
+
 }
 
 /*----------------------------------------------------------------------------*/

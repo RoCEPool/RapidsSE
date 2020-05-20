@@ -134,36 +134,8 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession, TagSet* pTagSet)
   
   Job* pJob = (*m_fpPre)(this,aReqTuple,pTagSet);
   
-  //ASSERT(this == pJob->aJobClass());
-  pJob->m_xReqTuple.m_i_Session = pSession ? pSession->m_i_Session : -1;
+  pJob->m_xReqTuple.m_i_Session = -1;
   
-  if (pSession) {
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // add <cmd> into job ename-set
-    
-    s4K sCmd;
-    TokenVec* pInpTknVec = pSession->pInpTknVec();
-    pInpTknVec->vVecToString(sCmd,0,true);
-    
-    pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
-   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // copy the semantic ename-set into the job
-    
-    pJob->pJobTags()->vCopy(& pSession->m_oSsnTags);
-    
-    
-    //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,
-    //                       pJob->m_aJobClass->m_eKind,_EG_JK);
-    
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add a task
-  
-  
-  //AM::vJobContentDump(pJob);
-
   return pJob;
 }
 
