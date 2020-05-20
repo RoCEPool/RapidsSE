@@ -232,11 +232,10 @@ void SePrompt::vPromptLoop(void)
     }
     
     // spawn the job (returns true if prompt is to wait)
-    if (! bPseudoApi2_SpawnJob(pJob)) {
-      // don't wait
+    bool bWaitCompletion;
+    vPseudoApi2_SpawnJob(pJob,&bWaitCompletion);
+    if (! bWaitCompletion)
       continue;
-    }
-
     
     vPseudoApi3_WaitCompletion(pJob);
     
@@ -337,18 +336,18 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPseudoApi2_SpawnJob(Job* pJob)
+void SePrompt::vPseudoApi2_SpawnJob(Job* pJob, bool* abWaitCompletion)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   if (bNoWait()) {
     vSpawnJob();
     vJobUnlockMutex();
-    return false;
+    *abWaitCompletion = false;
   }
   else {
     vSpawnJob();
-    return true;
+    *abWaitCompletion =  true;
   }
 }
 
