@@ -1005,15 +1005,14 @@ void SePrompt::vPreJob(TagSet* pTagSet)
               spId.sz(EK_REQ,m_iRequestId),
               C_VARGS_END);
   
-  m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession,pTagSet);
+  m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,pTagSet);  
   
-  
-  m_pJob->m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
-
   //
   // THE FOLLOWING WAS COPIED FROM JobClass::pPreJob()
   //
-  
+
+  m_pJob->m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
   

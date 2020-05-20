@@ -128,7 +128,7 @@ void JobClass::vPostJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                               */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession, TagSet* pTagSet)
+Job* JobClass::pPreJob(ReqTuple* aReqTuple, TagSet* pTagSet)
 {
   // create the job
   
