@@ -58,7 +58,7 @@ namespace Prompt
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vPromptLoop(void);
-    Job* pPseudoApi1(Job** ppJob);
+    eEC  ePseudoApi1(Job** ppJob);
     bool bPseudoApi2_SpawnJob(Job* pJob);
     bool bPseudoApi3(Job* pJob);
     bool bPseudoApi4(Job* pJob);
