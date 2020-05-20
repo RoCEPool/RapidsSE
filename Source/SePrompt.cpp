@@ -229,6 +229,9 @@ void SePrompt::vPromptLoop(void)
     
     eEC eError = ePseudoApi1_PreJob(&pJob,m_pInpTknVec,&m_oPromptTags,
                                     &m_xReqTuple);
+    
+    m_pJob = pJob;
+
     if (eError) {
       RASSERT(! pJob);
       vTrace("Api1 Error: %s\n"_Stz,aEC[eError]);
@@ -324,7 +327,6 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
   pCmdTknVec->vVecToString(sCmd,0,true);
   
   pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
-  m_pJob = pJob;
   
   
   
@@ -335,9 +337,6 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
   // this should go
   if (pJob->bJobHasError()) {
     Api::vPseudoApi4_PostJob(pJob);
-    if (AM::bDeveloper())
-      vDumpInpTknVec(true);
-    //vCompletedTask();
     Api::vPseudoApi5_DeleteJob(&pJob);
     return EC_ZZZ_OTHER;
   }
