@@ -159,6 +159,8 @@ void SePrompt::vPromptLoop(void)
     //vJotDisable(0x27,0);
   }
     
+  m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
+
   while (bContinue()) {
     
     if (bStdIn()) {
@@ -229,10 +231,9 @@ void SePrompt::vPromptLoop(void)
     
     vBeginRequest();
 
-    m_pRequest->m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
 
     eEC eError = ePseudoApi1_PreJob(&pJob,m_pInpTknVec,&m_oPromptTags,
-                                    &m_pRequest->m_xReqTuple);
+                                    &m_xReqTuple);
     if (eError) {
       vTrace("Api1 Error: %s\n"_Stz,aEC[eError]);
       continue;
