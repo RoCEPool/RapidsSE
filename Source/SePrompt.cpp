@@ -166,7 +166,7 @@ void SePrompt::vPromptLoop(void)
       vPromptUser();
     }
     
-    m_oPromptTags.vReset();
+    vInitPromptTags();
     
     L_Read_Next_Command:
     
@@ -264,12 +264,9 @@ bool SePrompt::bPseudoApi1(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TagSet oTagSet;
-  
-
   vLogCommand();
 
-  if ( ! AM::bParseCmd(&oTagSet, m_pInpTknVec) ) {
+  if ( ! AM::bParseCmd(&m_oPromptTags, m_pInpTknVec) ) {
 
     vTrace("error: invalid command \n"_Stz);
     
@@ -277,9 +274,9 @@ bool SePrompt::bPseudoApi1(void)
       vDumpInpTknVec(true);
     return false;
   }
-  oTagSet.vDumpSet();
+  m_oPromptTags.vDumpSet();
   
-  if (! bFindMatch_job(&oTagSet)) {
+  if (! bFindMatch_job(&m_oPromptTags)) {
     vUnknownCommand();
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
@@ -294,8 +291,8 @@ bool SePrompt::bPseudoApi1(void)
 
   vBeginRequest();
   
-  vPreJob(&oTagSet);
-  oTagSet.vReset();
+  vPreJob(&m_oPromptTags);
+  //m_oPromptTags.vReset();
   ASSERT(! m_pJob->pTask());
   m_pJob->pJobTags()->vDumpSet();
   
@@ -313,7 +310,9 @@ bool SePrompt::bPseudoApi1(void)
   if (bDumpTokens())
     Correctness::vDebugPoint();
   
-  vSetJob();
+  //m_pJob->pJobTags()->vDumpSet();
+  
+  //vSetJob();
   
   vPrepareSpawn();  // RENAME spawn etc
   
@@ -784,6 +783,18 @@ void SePrompt::vInitialSettings(void)
     m_oSettings.vInsert(C_PMT_OBJDELTA);
     m_oSettings.vInsert(C_PMT_TRCFILE);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* init the prompt tags                                                       */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vInitPromptTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_oPromptTags.vReset();
+  m_oPromptTags.vInsert(C_TAG_BYPROMPT,1);
+  m_oPromptTags.vInsert(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
 }
 
 /*----------------------------------------------------------------------------*/

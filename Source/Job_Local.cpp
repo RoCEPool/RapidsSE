@@ -152,6 +152,10 @@ eEC Job_Local::ePopulateJob(TagSet* pTagSet)
 //    return EC_INVALID_COMMAND;
 //  }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the distid
+  pJobTags()->vInsert(C_TAG_DISTID,m_iFocalId);
+  
   // copy the tagset into the job tag set
   pJobTags()->vCopy(pTagSet);
   eJK eJobKind = (eJK) pJobTags()->iValue(C_TAG_JOBKIND);

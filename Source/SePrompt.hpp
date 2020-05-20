@@ -87,6 +87,7 @@ namespace Prompt
     bool bFindMatch_job(TagSet* pTagSet);
     void vFocalOutline(s4K& sOutline);
     void vInitialSettings(void);
+    void vInitPromptTags(void);
     TokenVec* pInpTknVec(void);
     bool bIsPromptWord(void);
     void vJobLockMutex(void);

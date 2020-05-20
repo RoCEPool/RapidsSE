@@ -153,6 +153,10 @@ eEC Job_Distributed::ePopulateJob(TagSet* pTagSet)
 //  }
   //pTagSet->vDumpSet();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the distid
+  pJobTags()->vInsert(C_TAG_DISTID,m_iFocalId);
+  
   // copy the tagset into the job tag set
   pJobTags()->vCopy(pTagSet);
   
