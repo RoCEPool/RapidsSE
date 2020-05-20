@@ -222,16 +222,19 @@ void SePrompt::vPromptLoop(void)
     
     // prompt has finessed the final input token vector at this stage
     
-    Job* pJob;
-    
     vLogCommand();
     
 
 
+    Job* pJob = nullptr;
+    
     eEC eError = ePseudoApi1_PreJob(&pJob,m_pInpTknVec,&m_oPromptTags,
                                     &m_xReqTuple);
     if (eError) {
+      RASSERT(! pJob);
       vTrace("Api1 Error: %s\n"_Stz,aEC[eError]);
+      if (AM::bDeveloper())
+        vDumpInpTknVec(true);
       continue;
     }
     
@@ -290,14 +293,9 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
   *ppJob = nullptr;
 
 
-  if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) ) {
-
-    vTrace("error: invalid command \n"_Stz);
-    
-    if (AM::bDeveloper())
-      vDumpInpTknVec(true);
+  if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) )
     return EC_INVALID_COMMAND;
-  }
+  
   pTagSet->vDumpSet();
   
   
