@@ -29,7 +29,6 @@ namespace Prompt
     Job*      m_pJob;        // job
 
     Request*  m_pRequest;       // current request being executed by SE
-    i8        m_i_RequestFocal; // focal subscript of last request
     i8        m_iRequestId;     // id of last command
 
     ReqTuple  m_xReqTuple;      // request information
@@ -73,7 +72,6 @@ namespace Prompt
     void vCheckJobCtl(void);
     bool bCheckJobTags(void);
     void vCheckTimed(void);
-    i8   iCommandFocal(void);
     void vCompletedTask(void);
     bool bContinue(void);
     void vContinue(bool bContinue);

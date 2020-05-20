@@ -88,7 +88,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pSnapshotObjects = new ObjectsInPool;
   
   m_pRequest = nullptr;
-  m_i_RequestFocal = C_UNKNOWN;
   m_iRequestId = C_UNKNOWN;
   
   m_pBPA = nullptr;
@@ -392,11 +391,8 @@ void SePrompt::vBeginRequest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //m_pRequest = new Request(m_pSession,pTokenVec());
-  //m_pRequest = new Request(m_pSession,m_aJobClass->m_aComment,iStepNo());
   m_pRequest = new Request(m_pSession,"--jobClass comment--"_Stz,iStepNo());
 
-  m_i_RequestFocal = m_pRequest->m_i_Focal;
   
   m_iRequestId = m_pRequest->m_iFocalId;
 }
@@ -548,16 +544,6 @@ void SePrompt::vCheckTimed(void)
   m_oPromptTags.vInsert(C_TAG_TIME,1);
 
   vCutToken(0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get command focal                                                          */
-/*----------------------------------------------------------------------------*/
-i8 SePrompt::iCommandFocal(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_i_RequestFocal;
 }
 
 /*----------------------------------------------------------------------------*/
