@@ -235,6 +235,8 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
+    pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
+
     
     m_oTimer.vStart();
     
@@ -334,10 +336,6 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
   m_pJob = pJob;
   
   
-  
-  
-  
-  pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
   
   
   ASSERT(! pJob->pTask());
