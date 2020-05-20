@@ -237,15 +237,18 @@ void SePrompt::vPromptLoop(void)
     if (! bWaitCompletion)
       continue;
     
-    vPseudoApi3_WaitCompletion(pJob);
     
+    vJobWaitCond();
+    vJobUnlockMutex();
+    m_oTimer.vUpdate();
+
   
     if (bExecutePipeline()) {
       // start the buffer queue processing while the pipeline ops are running
       m_pJob->m_xResult.vProcessBufferQueue();
     }
 
-    vPseudoApi4_PostJob(pJob);
+    Api::vPseudoApi4_PostJob(pJob);
     
     
     vReportTime();
@@ -266,6 +269,8 @@ void SePrompt::vPromptLoop(void)
 eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  *ppJob = nullptr;
   
   vLogCommand();
 
@@ -301,7 +306,7 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
   
   // this should go
   if (m_pJob->bJobHasError()) {
-    vPostJob();
+    Api::vPseudoApi4_PostJob(m_pJob);
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
     //vCompletedTask();
@@ -329,6 +334,8 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
   m_oTimer.vStart();
   
   vJobLockMutex();
+  
+  *ppJob = m_pJob;
 
   return EC_NONE;
 }
@@ -351,27 +358,6 @@ void SePrompt::vPseudoApi2_SpawnJob(Job* pJob, bool* abWaitCompletion)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPseudoApi3_WaitCompletion(Job* pJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  vJobWaitCond();
-  vJobUnlockMutex();
-  m_oTimer.vUpdate();
-}
-
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPseudoApi4_PostJob(Job* pJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  vPostJob();
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1005,18 +991,6 @@ bool SePrompt::bPassesLowMem(void)
            m_aJobClass->m_aCommand1);
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* call post-job function                                                     */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPostJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  //RASSERT(JS_RUNNING == m_pJob->eJobState());
-  
-  m_aJobClass->vPostJob(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/

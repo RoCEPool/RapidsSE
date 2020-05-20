@@ -18,6 +18,9 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 Session* Api::pAllocSession(void)
 {
+  _static_
+  
+  
   SessionArray* pSessionArray = AM::pSessionArray();
   
   Session* pSession = pSessionArray->pAllocSession();
@@ -30,6 +33,9 @@ Session* Api::pAllocSession(void)
 /*----------------------------------------------------------------------------*/
 void Api::vFreeSession(Session* pSession)
 {
+  _static_
+  
+  
   SessionArray* pSessionArray = AM::pSessionArray();
 
   pSessionArray->vFreeSession(pSession);
@@ -40,6 +46,9 @@ void Api::vFreeSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Api::vIncStatistics(eAC eApiCall)
 {
+  _static_
+  
+  
   if (! AM::bAttached())
     return;
   
@@ -81,6 +90,9 @@ void Api::vIncStatistics(eAC eApiCall)
 /*----------------------------------------------------------------------------*/
 void Api::vMonitorPortrait(s48K& sPortrait)
 {
+  _static_
+  
+  
   s48K s;
   i8 nCats = 0;
   i8 nBreak = 80;
@@ -201,6 +213,9 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob_connector(Job* pJob)
 {
+  _static_
+  
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
@@ -224,6 +239,9 @@ bool Api::bSpawnJob_connector(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Api::vSpawnJob_op(Job* pJob)
 {
+  _static_
+  
+  
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddOp(pJob->pTask());
 }
@@ -233,6 +251,9 @@ void Api::vSpawnJob_op(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Api::vSpawnJob_service(Job* pJob)
 {
+  _static_
+  
+  
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddService(pJob->pTask());
 }
@@ -242,6 +263,9 @@ void Api::vSpawnJob_service(Job* pJob)
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob_prompt(Job* pJob)
 {
+  _static_
+  
+  
   RASSERT(! pJob->pTask());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -266,6 +290,9 @@ bool Api::bSpawnJob_prompt(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Api::vSpawnJob_received(Job* pJob)
 {
+  _static_
+  
+  
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddReceived(pJob->pTask());
 }
@@ -275,6 +302,9 @@ void Api::vSpawnJob_received(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Api::vSpawnJob_system(Job* pJob)
 {
+  _static_
+  
+  
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddSystem(pJob->pTask());
 }
@@ -284,6 +314,9 @@ void Api::vSpawnJob_system(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
+  _static_
+  
+  
   // THIS NOW DOESNT READ CORRECTLY
   vCreateTaskForJob(pParticipantJob);
   
@@ -296,6 +329,9 @@ void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 /*----------------------------------------------------------------------------*/
 void Api::vCreateTaskForJob(Job* pJob)
 {
+  _static_
+  
+  
   //ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
   
@@ -335,6 +371,9 @@ void Api::vCreateTaskForJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Api::vSpawnJobAndWait(Job* pJob)
 {
+  _static_
+  
+  
   // lock this job's session mutex
   Session* pSession = pJob->pSession();
   pSession->m_pMutex->vLock(pJob);
@@ -404,6 +443,9 @@ void Api::vSpawnJobAndWait(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Api::vSpawnJobDedicated(Job* pJob)
 {
+  _static_
+  
+  
   ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
   
@@ -425,7 +467,10 @@ void Api::vSpawnJobDedicated(Job* pJob)
 /*----------------------------------------------------------------------------*/
 eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
 {
+  _static_
   
+  
+
   // pSession cannot be null
   if (pSession == nullptr) {
     TRACE_API_ERROR("eValidateSession(a)", EC_INVALID_INTERFACE);
@@ -454,6 +499,9 @@ eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
 /*----------------------------------------------------------------------------*/
 bool Api::bReseedJob(Session* pSession, Job* pJob)
 {
+  _static_
+  
+  
   ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
   
@@ -488,6 +536,19 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
   //Scheduler::vAddTaskGeneral(pTask);
   
   return true;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
+void Api::vPseudoApi4_PostJob(Job* pJob)
+{
+  _static_
+  
+  
+  pJob->aJobClass()->vPostJob(pJob);
 }
 
 /*============================================================================*/

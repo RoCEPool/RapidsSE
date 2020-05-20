@@ -33,7 +33,14 @@ namespace Interface
   
   //! TO GO
   static bool bReseedJob(Session* pSession, Job* pJob);
-    
+  
+  
+  static eEC  ePseudoApi1_PreJob(Job** ppJob);
+  static void vPseudoApi2_SpawnJob(Job* pJob, bool* abWait);
+  static void vPseudoApi3_WaitCompletion(Job* pJob);
+  static void vPseudoApi4_PostJob(Job* pJob);
+
+
   private:
   
   static void vCreateTaskForJob(Job* pJob);

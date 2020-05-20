@@ -60,9 +60,7 @@ namespace Prompt
     void vPromptLoop(void);
     eEC  ePseudoApi1_PreJob(Job** ppJob);
     void vPseudoApi2_SpawnJob(Job* pJob, bool* abWait);
-    void vPseudoApi3_WaitCompletion(Job* pJob);
-    void vPseudoApi4_PostJob(Job* pJob);
-
+ 
     // these are the prompt.xyz task primitives
     void vBeginRequest(void);
     bool bBlankLine(void);
@@ -101,7 +99,6 @@ namespace Prompt
     ObjectsInPool*  pObjectsInPool(void);
     bool bPassesCheck(void);
     bool bPassesLowMem(void);
-    void vPostJob(void);
     void vPreJob(TagSet* pTagSet);
     void vPrepareSpawn(void);
     i8   iPromptId(void);
