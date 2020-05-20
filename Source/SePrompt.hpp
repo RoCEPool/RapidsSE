@@ -113,8 +113,6 @@ namespace Prompt
     void vTrackingMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);
-    void vUnknownCommand(void);
-    void vVerifyJobSeeds(void);
 
   private:
 

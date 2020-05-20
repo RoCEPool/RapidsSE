@@ -304,7 +304,6 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
   m_aJobClass = aJobClass;
   
   if (! aJobClass) {
-    vUnknownCommand();
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
     return EC_INVALID_COMMAND;
@@ -1357,27 +1356,6 @@ bool SePrompt::bTranslateProcedure(void)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* unknown command                                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vUnknownCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Token* pTkn = m_pInpTknVec->pGet(0);
-  
-  vTrace("error: Unknown command '%s'\n"_Stz,pTkn->szChars());
-}
-
-/*----------------------------------------------------------------------------*/
-/* verify the words for all job seeds are known                               */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vVerifyJobSeeds(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  JobClass::vVerifySeeds();
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
