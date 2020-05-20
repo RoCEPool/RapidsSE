@@ -16,8 +16,6 @@ namespace Sessions
 
 #include "Session.hpp"
 
-#include "Request.hpp"
-
 #include "SP_Session.hpp"
 
 /*============================================================================*/

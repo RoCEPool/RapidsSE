@@ -50,7 +50,6 @@ enum eCN : u2 // Class Number
   /*  28 0x01C      136B Heap:M */ CN_CLAUSE_WHERE,
   /*  29 0x01D     4096B Heap:M */ CN_CMD_SELECT,
   /*  30 0x01E      184B Heap:S */ CN_COLUMN,
-  /*  32 0x020      176B Heap:M */ CN_COMMAND,
   /*  33 0x021      176B Heap:M */ CN_COMPILER,
   /*  33 0x021      176B Heap:M */ CN_CONSTDEF,
   /*  33 0x021      176B Heap:M */ CN_CONSTSET,
@@ -218,7 +217,6 @@ enum eCN : u2 // Class Number
   /* 186 0x0BA  1043496B Heap:L */ CN_RECORDDATA,
   /* 187 0x0BB      184B Heap:S */ CN_REGSET,
   /* 188 0x0BC       24B Heap:S */ CN_RELOP,
-  /* 189 0x0BD      176B Heap:M */ CN_REQUEST,
   /* 190 0x0BE      184B Heap:S */ CN_RESOURCETRACKER,
   /* 191 0x0BF     4128B Heap:M */ CN_RESPONSE,
   /* 192 0x0C0     1048B Heap:M */ CN_RESPONSEVEC,
@@ -373,7 +371,7 @@ static Stz* aCN[]
   /*  17 0x011 */ "CALCULATOR"_Stz,          // CN_CALCULATOR
   /*  19 0x013 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /*  20 0x014 */ "CATALOG"_Stz,             // CN_CATALOG
-  /* 166 0x0A6 */ "Charser"_Stz,        // CN_CHARSER
+  /* 166 0x0A6 */ "CHARSER"_Stz,             // CN_CHARSER
   /*  21 0x015 */ "CLAUSE_FROM"_Stz,         // CN_CLAUSE_FROM
   /*  22 0x016 */ "CLAUSE_GROUPBY"_Stz,      // CN_CLAUSE_GROUPBY
   /*  23 0x017 */ "CLAUSE_JOIN"_Stz,         // CN_CLAUSE_JOIN
@@ -384,7 +382,6 @@ static Stz* aCN[]
   /*  28 0x01C */ "CLAUSE_WHERE"_Stz,        // CN_CLAUSE_WHERE
   /*  29 0x01D */ "CMD_SELECT"_Stz,          // CN_CMD_SELECT
   /*  30 0x01E */ "COLUMN"_Stz,              // CN_COLUMN
-  /*  32 0x020 */ "COMMAND"_Stz,             // CN_COMMAND
   /*  33 0x021 */ "COMPILER"_Stz,            // CN_COMPILER
   /*  33 0x021 */ "CONSTDEF"_Stz,            // CN_CONSTDEF
   /*  33 0x021 */ "CONSTSET"_Stz,            // CN_CONSTSET
@@ -552,7 +549,6 @@ static Stz* aCN[]
   /* 186 0x0BA */ "RECORDDATA"_Stz,          // CN_RECORDDATA
   /* 187 0x0BB */ "REGSET"_Stz,              // CN_REGSET
   /* 188 0x0BC */ "RELOP"_Stz,               // CN_RELOP
-  /* 189 0x0BD */ "REQUEST"_Stz,             // CN_REQUEST
   /* 190 0x0BE */ "RESOURCETRACKER"_Stz,     // CN_RESOURCETRACKER
   /* 191 0x0BF */ "RESPONSE"_Stz,            // CN_RESPONSE
   /* 192 0x0C0 */ "RESPONSEVEC"_Stz,         // CN_RESPONSEVEC

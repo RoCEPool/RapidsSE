@@ -46,7 +46,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Clause_Where),       HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_WHERE
   { sizeof(Cmd_Select),         HT_TRANSIENT_MEDIUM  }, // CN_CMD_SELECT
   { sizeof(Column),             HT_TRANSIENT_TINY    }, // CN_COLUMN
-  { sizeof(Request),            HT_TRANSIENT_MEDIUM  }, // CN_COMMAND
   { sizeof(Compiler),           HT_TRANSIENT_TINY    }, // CN_COMPILER
   { sizeof(ConstDef),           HT_TRANSIENT_MEDIUM  }, // CN_CONSTDEF
   { sizeof(ConstSet),           HT_TRANSIENT_MEDIUM  }, // CN_CONSTSET
@@ -214,7 +213,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RecordData),         HT_TRANSIENT_LARGE   }, // CN_RECORDDATA
   { sizeof(RegSet),             HT_TRANSIENT_TINY    }, // CN_REGSET
   { sizeof(RelOp),              HT_TRANSIENT_TINY    }, // CN_RELOP
-  { sizeof(Request),            HT_TRANSIENT_TINY    }, // CN_REQUEST
   { sizeof(ResourceTracker),    HT_TRANSIENT_TINY    }, // CN_RESOURCETRACKER
   { sizeof(Response),           HT_TRANSIENT_MEDIUM  }, // CN_RESPONSE
   { sizeof(ResponseVec),        HT_TRANSIENT_MEDIUM  }, // CN_RESPONSEVEC

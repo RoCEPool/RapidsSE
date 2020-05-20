@@ -80,7 +80,7 @@ namespace Reflection    { class ConstDef; class ConstSet;
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Rows          {                                                     }
 namespace SenVM         { class Dic; class DicStack; class Forth; class Word; }
-namespace Sessions      { class Request; class Session; class SessionState;   }
+namespace Sessions      { class Session; class SessionState;                  }
 namespace SharedMemory  {                                                     }
 namespace SortBuffers   {                                                     }
 namespace SqlValues     {                                                     }
