@@ -13265,7 +13265,7 @@ void Task::vAddMunged(Forth* pForth)
     "    task::yield\n"
     "\n"
     "    // \"periodic sleeping...\" .\n"
-    "    1 task::sleepSsec\n"
+    "    60 task::sleepSsec\n"
     "\n"
     "    recurring_activity\n"
     "\n"
