@@ -111,7 +111,6 @@ void LogEntry::vAsTxt(s4K& sString)
     case EK_OPR: m_xOpr.vToTxt(sInf,this); break;
     case EK_PRM: m_xPrm.vToTxt(sInf,this); break;
     case EK_QUE: m_xQue.vToTxt(sInf,this); break;
-    case EK_REQ: m_xReq.vToTxt(sInf,this); break;
     case EK_RES: m_xRes.vToTxt(sInf,this); break;
     case EK_SSN: m_xSsn.vToTxt(sInf,this); break;
     case EK_SVC: m_xSvc.vToTxt(sInf,this); break;
@@ -230,7 +229,6 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
     case EK_OPR: m_xOpr.vOutline(sString); break;
     case EK_PRM: m_xPrm.vOutline(sString); break;
     case EK_QUE: m_xQue.vOutline(sString); break;
-    case EK_REQ: m_xReq.vOutline(sString); break;
     case EK_RES: m_xRes.vOutline(sString); break;
     case EK_SSN: m_xSsn.vOutline(sString); break;
     case EK_SVC: m_xSvc.vOutline(sString); break;
@@ -294,7 +292,6 @@ void LogEntry::vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
     case EK_OPR: m_xOpr.vWriteCsv(pFile,this); break;
     case EK_PRM: m_xPrm.vWriteCsv(pFile,this); break;
     case EK_QUE: m_xQue.vWriteCsv(pFile,this); break;
-    case EK_REQ: m_xReq.vWriteCsv(pFile,this); break;
     case EK_RES: m_xRes.vWriteCsv(pFile,this); break;
     case EK_SSN: m_xSsn.vWriteCsv(pFile,this); break;
     case EK_SVC: m_xSvc.vWriteCsv(pFile,this); break;
@@ -362,7 +359,6 @@ void LogEntry::vWriteTxt(File* pFile)
     case EK_OPR: m_xOpr.vToTxt(sInf,this); break;
     case EK_PRM: m_xPrm.vToTxt(sInf,this); break;
     case EK_QUE: m_xQue.vToTxt(sInf,this); break;
-    case EK_REQ: m_xReq.vToTxt(sInf,this); break;
     case EK_RES: m_xRes.vToTxt(sInf,this); break;
     case EK_SSN: m_xSsn.vToTxt(sInf,this); break;
     case EK_SVC: m_xSvc.vToTxt(sInf,this); break;
