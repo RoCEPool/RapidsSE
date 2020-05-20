@@ -116,7 +116,6 @@ namespace Prompt
     void vResetSectionNo(void);
     i8   iRequestId(void);
     Session* pSession(void);
-    void vSetJob(void);
     TagSet* pSettings(void);
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);

@@ -310,7 +310,11 @@ Job* SePrompt::pPseudoApi1(void)
   
   //m_pJob->pJobTags()->vDumpSet();
   
-  //vSetJob();
+  if (m_pJob->bHasTag(C_TAG_LIFE)) {
+    SP_TagSet spTagSet;
+    m_pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(m_pJob->pJobTags()));
+    //m_pJob->pTagSet()->vPrint();
+  }
   
   vPrepareSpawn();  // RENAME spawn etc
   
@@ -1353,40 +1357,6 @@ Session* SePrompt::pSession(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set anything additional in the job                                         */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vSetJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  s32 sJobNm = m_pJob->pJobTags()->szValue(C_TAG_JOBNM);
-  
-  m_pJob->vJobNm(sJobNm);
-  
-  m_pJob->pJobTags()->vInsert(C_TAG_BYPROMPT,1);
-  
-  m_pJob->pJobTags()->vInsert(C_TAG_DISTID,m_pJob->m_iFocalId);
-  m_pJob->pJobTags()->vInsert(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
-  
-  if (m_oPromptTags.bHasName(C_TAG_INFO)) {
-    
-    TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(sJobNm);
-    if (pCmdTagSet)
-      pCmdTagSet->vDumpSet();
-  }
-
-  m_pJob->pJobTags()->vCopy(&m_oPromptTags);
-  
-  if (m_pJob->bHasTag(C_TAG_LIFE)) {
-    SP_TagSet spTagSet;
-    m_pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(m_pJob->pJobTags()));
-    //m_pJob->pTagSet()->vPrint();
-  }
-  
-  //m_pJob->pTagSet()->vContentDump();
 }
 
 /*----------------------------------------------------------------------------*/
