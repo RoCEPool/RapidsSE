@@ -669,26 +669,6 @@ i8 Log::iEntryQue(eSL eSeverity, Queues* pQue, eQA eQueAct,
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a request log entry                                                    */
-/*----------------------------------------------------------------------------*/
-i8 Log::iEntryReq(eSL eSeverity, Request* pRequest, eCA eReqAct,
-                  Stz* szFormat, va_list xVaArgs)
-{
-  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
-  
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pRequest,szFormat,xVaArgs);
-  
-  if (! pLogEntry)
-    return C_UNKNOWN;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pLogEntry->m_xReq.vSet(pLogEntry,pRequest,eReqAct);
-  
-  return pLogEntry->m_i_Entry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryRes(eSL eSeverity, Resource* pRes, eRA eResAct,
