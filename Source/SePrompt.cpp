@@ -231,6 +231,12 @@ void SePrompt::vPromptLoop(void)
     if (! bPseudoApi1())
       continue;
     
+    
+    
+    vSpawnJob();
+
+    
+    
     if (! bPseudoApi2())
       continue;
   
@@ -307,7 +313,16 @@ bool SePrompt::bPseudoApi1(void)
   
   vJobLockMutex();
 
-  vSpawnJob();
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bPseudoApi2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   
   if (bNoWait()) {
     vJobUnlockMutex();
@@ -332,16 +347,6 @@ bool SePrompt::bPseudoApi1(void)
   vEndRequest();
 
   vLogFreeSpace();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bPseudoApi2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return true;
 }
