@@ -618,7 +618,7 @@ void SePrompt::vDumpInpTknVec(bool bForce)
   s48K sCommand;
 
   m_pInpTknVec->vVecToString(sCommand,0,false);
-  vTrace("Request %lld tokens: %s\n"_Stz,m_pInpTknVec->nTokens(),sCommand.szStz());
+  vTrace("InpTknVec %lld tokens: %s\n"_Stz,m_pInpTknVec->nTokens(),sCommand.szStz());
   
   Correctness::vDebugPoint();
 }
