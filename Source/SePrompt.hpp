@@ -58,7 +58,9 @@ namespace Prompt
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vPromptLoop(void);
-    eEC  ePseudoApi1_PreJob(Job** ppJob);
+    eEC  ePseudoApi1_PreJob(Job**     ppJob,
+                            TokenVec* pCmdTknVec,
+                            TagSet*   pTagSet);
  
     // these are the prompt.xyz task primitives
     void vBeginRequest(void);
@@ -94,7 +96,7 @@ namespace Prompt
     ObjectsInPool*  pObjectsInPool(void);
     bool bPassesCheck(void);
     bool bPassesLowMem(void);
-    void vPreJob(TagSet* pTagSet);
+    void vPreJob(TagSet* pTagSet, TokenVec* pCmdTknVec);
     i8   iPromptId(void);
     void vPromptUser(void);
     bool bReadNextCommand(void);

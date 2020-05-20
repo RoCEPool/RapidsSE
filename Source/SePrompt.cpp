@@ -227,7 +227,7 @@ void SePrompt::vPromptLoop(void)
     
     vLogCommand();
 
-    eEC eError = ePseudoApi1_PreJob(&pJob);
+    eEC eError = ePseudoApi1_PreJob(&pJob,m_pInpTknVec,&m_oPromptTags);
     if (eError) {
       vTrace("Api1 Error: %s\n"_Stz,aEC[eError]);
       continue;
@@ -277,14 +277,16 @@ void SePrompt::vPromptLoop(void)
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
+eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
+                                 TokenVec* pCmdTknVec,
+                                 TagSet*   pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   *ppJob = nullptr;
 
 
-  if ( ! AM::bParseCmd(&m_oPromptTags, m_pInpTknVec) ) {
+  if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) ) {
 
     vTrace("error: invalid command \n"_Stz);
     
@@ -296,7 +298,7 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
   
   
   
-  JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oPromptTags);
+  JobClass* aJobClass = Api::aFindJobClass(pCmdTknVec,pTagSet);
   m_aJobClass = aJobClass;
   
   if (! aJobClass) {
@@ -316,7 +318,8 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
 
   vBeginRequest();
   
-  vPreJob(&m_oPromptTags);
+  vPreJob(pTagSet,pCmdTknVec);
+  
   ASSERT(! m_pJob->pTask());
   m_pJob->pJobTags()->vDumpSet();
   
@@ -908,7 +911,7 @@ bool SePrompt::bPassesLowMem(void)
 /*----------------------------------------------------------------------------*/
 /* call pre-job function                                                      */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vPreJob(TagSet* pTagSet)
+void SePrompt::vPreJob(TagSet* pTagSet, TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
@@ -932,8 +935,7 @@ void SePrompt::vPreJob(TagSet* pTagSet)
   // add <cmd> into job ename-set
   
   s4K sCmd;
-  TokenVec* pInpTknVec = m_pSession->pInpTknVec();
-  pInpTknVec->vVecToString(sCmd,0,true);
+  pCmdTknVec->vVecToString(sCmd,0,true);
   
   m_pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
  
