@@ -318,7 +318,7 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
 
   vBeginRequest();
   
-  vPreJob(pTagSet,pCmdTknVec);
+  vPreJob(aJobClass,pTagSet,pCmdTknVec);
   
   ASSERT(! m_pJob->pTask());
   m_pJob->pJobTags()->vDumpSet();
@@ -911,7 +911,7 @@ bool SePrompt::bPassesLowMem(void)
 /*----------------------------------------------------------------------------*/
 /* call pre-job function                                                      */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vPreJob(TagSet* pTagSet, TokenVec* pCmdTknVec)
+void SePrompt::vPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
@@ -923,7 +923,7 @@ void SePrompt::vPreJob(TagSet* pTagSet, TokenVec* pCmdTknVec)
               spId.sz(EK_REQ,m_iRequestId),
               C_VARGS_END);
   
-  m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,pTagSet);  
+  m_pJob = aJobClass->pPreJob(&m_pRequest->m_xReqTuple,pTagSet);  
   
   //
   // THE FOLLOWING WAS COPIED FROM JobClass::pPreJob()
