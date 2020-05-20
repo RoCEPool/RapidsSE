@@ -31,6 +31,72 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* attempt connect to given node                                              */
+/*----------------------------------------------------------------------------*/
+: .attemptConnectNode ( pNode -- )
+
+  params| pNode |
+
+  0 locals| pSocket |
+
+  args.verbose if
+    pNode node.no grid::thisNode@ "Node %v connecting to node %v" .printf
+  then
+
+  // get the nodes port and IP address
+  pNode node.port ( port )
+  pNode node.IP   ( port IP )
+
+  // attempt connect to that node
+  pNode socket::open socket.connect to pSocket
+
+  pSocket not if
+    pNode node.no grid::thisNode@ "Node %v unable to connect to node %v" .printf
+    exit
+  then
+
+  // set the send socket in the node
+  pSocket pNode node.sendSocket!
+
+  grid::incConnectedNodes
+
+  // print connection message
+  args.verbose if
+    pNode node.no grid::thisNode@ "Node %v connected to node %v" .printf
+  then
+
+  // send this node's info to the node we just connected to
+  pSocket .sendNodeInfo
+;
+
+/*----------------------------------------------------------------------------*/
+/* one iteration of connector behavior                                        */
+/*----------------------------------------------------------------------------*/
+: _connectorTake ( -- )
+
+  0 locals| pNode |
+
+  // "_connectorTake" .
+
+  grid::definedNodes 0
+  do
+
+    // get node I
+    I grid::node to pNode
+
+    // connect to the node
+    pNode node.sendSocket@ not if
+      pNode .attemptConnectNode
+    then
+
+  loop
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// set grid as started
+//true grid::started!
+;
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : connectorOP_StartMarker \handler

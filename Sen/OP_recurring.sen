@@ -22,7 +22,7 @@
     task::yield
 
     // "periodic sleeping..." .
-    60 task::sleepSsec
+    1 task::sleepSsec
 
     recurring_activity
 
