@@ -239,6 +239,7 @@ void SePrompt::vPromptLoop(void)
     }
     
     pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
+    pJob->pJobTags()->vDumpSet();
 
     
     m_oTimer.vStart();
@@ -295,19 +296,14 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
 
   if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) )
     return EC_INVALID_COMMAND;
-  
-  pTagSet->vDumpSet();
-  
+   
   
   
   JobClass* aJobClass = Api::aFindJobClass(pCmdTknVec,pTagSet);
   m_aJobClass = aJobClass;
   
-  if (! aJobClass) {
-    if (AM::bDeveloper())
-      vDumpInpTknVec(true);
+  if (! aJobClass)
     return EC_INVALID_COMMAND;
-  }
 
       
       
