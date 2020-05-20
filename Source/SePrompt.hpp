@@ -79,7 +79,7 @@ namespace Prompt
     void vEndRequest(void);
     bool bExecuteFunction(void);
     bool bExecutePipeline(void);
-    bool bFindJobClass(TagSet* pTagSet);
+    bool bFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet);
     void vFocalOutline(s4K& sOutline);
     void vInitialSettings(void);
     void vInitPromptTags(void);

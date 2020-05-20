@@ -294,7 +294,7 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
   }
   m_oPromptTags.vDumpSet();
   
-  if (! bFindJobClass(&m_oPromptTags)) {
+  if (! bFindJobClass(m_pInpTknVec,&m_oPromptTags)) {
     vUnknownCommand();
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
@@ -665,15 +665,14 @@ bool SePrompt::bExecuteFunction(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to find a job which matches the command tokens                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bFindJobClass(TagSet* pTagSet)
+bool SePrompt::bFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
   //pTagSet->vDumpSet();
   
-  
-  Stz* aCommand1 = pTkn(0)->szChars();
-  Stz* aCommand2 = pTkn(1)->szChars();
+  Stz* aCommand1 = pCmdTknVec->pGet(0,true)->szChars();
+  Stz* aCommand2 = pCmdTknVec->pGet(1,true)->szChars();
   
   m_aJobClass = JobClass::pFind(aCommand1, aCommand2);
 
