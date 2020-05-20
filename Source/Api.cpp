@@ -539,6 +539,83 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
+eEC Api::ePseudoApi1_PreJob(Job**     ppJob,
+                                 TokenVec* pCmdTknVec,
+                                 TagSet*   pTagSet,
+                                 ReqTuple* axReqTuple)
+{
+  _static_
+
+  *ppJob = nullptr;
+
+
+  if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) )
+    return EC_INVALID_COMMAND;
+   
+  
+  
+  JobClass* aJobClass = Api::aFindJobClass(pCmdTknVec,pTagSet);
+  
+  if (! aJobClass)
+    return EC_INVALID_COMMAND;
+
+      
+      
+  if (! Api::bPassesLowMem(aJobClass))
+    return EC_LOW_MEMORY;
+
+  if (! Api::bPassesCheck(aJobClass))
+    return EC_ZZZ_OTHER;
+
+  
+  
+  
+  
+  Job* pJob = aJobClass->pPreJob(axReqTuple,pTagSet);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add <cmd> into job ename-set
+  
+  s4K sCmd;
+  pCmdTknVec->vVecToString(sCmd,0,true);
+  
+  pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
+  
+  
+  
+  
+  ASSERT(! pJob->pTask());
+  pJob->pJobTags()->vDumpSet();
+  
+  // this should go
+  if (pJob->bJobHasError()) {
+    Api::vPseudoApi4_PostJob(pJob);
+    Api::vPseudoApi5_DeleteJob(&pJob);
+    return EC_ZZZ_OTHER;
+  }
+  
+
+  if (pJob->bHasTag(C_TAG_LIFE)) {
+    SP_TagSet spTagSet;
+    pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(pJob->pJobTags()));
+    //pJob->pTagSet()->vPrint();
+  }
+  
+  RASSERT(JS_LOCKED != pJob->eJobState());
+        
+  pJob->vSeed(SS_SEED_REQ);
+        
+  //! ALKA: Come back to this : 3 feb 2020
+  pJob->vJobClass(nullptr, (char*)__func__);
+
+  *ppJob = pJob;
+
+  return EC_NONE;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */

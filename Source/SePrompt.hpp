@@ -55,10 +55,6 @@ namespace Prompt
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vPromptLoop(void);
-    eEC  ePseudoApi1_PreJob(Job**     ppJob,
-                            TokenVec* pCmdTknVec,
-                            TagSet*   pTagSet,
-                            ReqTuple* axReqTuple);
  
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
