@@ -22,6 +22,139 @@
   job[] pDemonWd word.object!
 ;
 
+/*----------------------------------------------------------------------------*/
+/* answer demon                                                               */
+/*----------------------------------------------------------------------------*/
+: answerDemon
+
+  "
+    /nowait pipelineLocal answerDemon
+
+      tag "<pre_execute>" = "demon::install" endTag
+
+    begin
+
+      stage stageA on origin:
+        start | answerOP | eatAll | stageA
+
+    end;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* connector demon                                                            */
+/*----------------------------------------------------------------------------*/
+: connectorDemon
+
+  "
+    /nowait pipelineLocal connectorDemon
+
+      tag "<pre_execute>" = "demon::install" endTag
+
+    begin
+
+      stage stageA on origin:
+        start | connectorOP | eatAll | stageA
+
+    end;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* receiver demon                                                             */
+/*----------------------------------------------------------------------------*/
+: receiverDemon
+
+  "
+    /nowait pipelineLocal receiverDemon
+
+      tag "<pre_execute>" = "demon::install" endTag
+
+    begin
+
+      stage stageA on origin:
+        start | receiverOP | eatAll | stageA
+
+    end;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* recurring demon                                                            */
+/*----------------------------------------------------------------------------*/
+: recurringDemon
+
+  "
+    /nowait pipelineLocal recurringDemon
+
+      tag "<pre_execute>" = "demon::install" endTag
+
+    begin
+
+      stage stageA on origin:
+        start | recurringOP | eatAll | stageA
+
+    end;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* stat demon                                                                 */
+/*----------------------------------------------------------------------------*/
+: statDemon
+
+  "
+    /nowait pipelineLocal statDemon
+
+      tag "<pre_execute>" = "demon::install" endTag
+
+    begin
+
+      stage stageA on origin:
+        start | statWrite | eatAll | stageA
+
+    end;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* waker demon                                                                */
+/*----------------------------------------------------------------------------*/
+: wakerDemon
+
+  "
+    /nowait pipelineLocal wakerDemon
+
+      tag "<pre_execute>" = "demon::install" endTag
+
+    begin
+
+      stage stageA on origin:
+        start | wakerOP | eatAll | stageA
+
+  end;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* supervisor demon                                                           */
+/*----------------------------------------------------------------------------*/
+: supervisorDemon
+
+  "
+    /nowait pipelineLocal supervisorDemon
+
+      tag "<pre_execute>" = "demon::install" endTag
+
+    begin
+
+      stage stageA on origin:
+        start | supervisorOP | eatAll | stageA
+
+    end;
+  "
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
