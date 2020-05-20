@@ -242,6 +242,17 @@ void SePrompt::vPromptLoop(void)
   
     if (! bPseudoApi3())
       continue;
+    
+    
+    
+    vReportTime();
+    
+    vDeleteJob();
+    
+    vEndRequest();
+
+    vLogFreeSpace();
+
   
   } // while
 }
@@ -338,16 +349,6 @@ bool SePrompt::bPseudoApi2(void)
   vJobUnlockMutex();
   m_oTimer.vUpdate();
   
-  vPostJob();
-
-  vReportTime();
-  
-  vDeleteJob();
-  
-  vEndRequest();
-
-  vLogFreeSpace();
-  
   return true;
 }
 
@@ -358,6 +359,8 @@ bool SePrompt::bPseudoApi3(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  vPostJob();
+
   return true;
 }
 
