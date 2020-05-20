@@ -322,6 +322,9 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
   pJob = pPreJob(aJobClass,pTagSet,pCmdTknVec);
   m_pJob = pJob;
   
+  pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
+  
+  
   ASSERT(! m_pJob->pTask());
   m_pJob->pJobTags()->vDumpSet();
   
@@ -940,16 +943,7 @@ Job* SePrompt::pPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVe
   pCmdTknVec->vVecToString(sCmd,0,true);
   
   pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy the semantic ename-set into the job
-  
-  pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
-  
-  
-  //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,
-  //                       pJob->m_aJobClass->m_eKind,_EG_JK);
-    
+     
   return pJob;
 }
 
