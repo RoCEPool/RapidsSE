@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_toStatD.sen -- To StatD Operator                                        */
+/* OP_toStatDemon.sen -- To Stat demon Operator                               */
 /*============================================================================*/
 
-" OP_toStatD.sen" .verbose
+" OP_toStatDemon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_LOCKSTATS ...                                                        */
 /*----------------------------------------------------------------------------*/
-: OP_toStatD_LockStats \handler
+: OP_toStatDemon_LockStats \handler
 
   "OP_toStatD_LockStats +++ +++ +++" .
 
@@ -19,7 +19,7 @@
   //infoset[].delete
 
   infoset[]
-    "__statD" find dup if
+    "__statDemon" find dup if
       word.object@
       pipeline.pipeout
       nullptr to infoSet[]
@@ -34,13 +34,13 @@
 /*----------------------------------------------------------------------------*/
 /* toStatD request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: toStatDOp_req \operator
+: toStatDemon_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: OP_toStatD_LockStats ZK_LOCKSTATS op[].handler!
+  find: OP_toStatDemon_LockStats ZK_LOCKSTATS op[].handler!
 
   op__loop
 
@@ -53,9 +53,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toStatDOp :: toStatDOp ;
+cmdSyntax: toStatDemon :: toStatDemon ;
 
-: toStatDOp _cmdTags tagCopy: opCmd_tags
+: toStatDemon _cmdTags tagCopy: opCmd_tags
   tags{ <?jobDesc?>  = "--cmd desc for op--" }
 ;
 
