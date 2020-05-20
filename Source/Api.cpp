@@ -564,6 +564,21 @@ void Api::vPseudoApi4_PostJob(Job* pJob)
   pJob->aJobClass()->vPostJob(pJob);
 }
 
+/*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
+void Api::vPseudoApi5_DeleteJob(Job** ppJob)
+{
+  _static_
+  
+  Job* pJob = * ppJob;
+  JobClass* aJobClass = pJob->aJobClass();
+
+  aJobClass->vDeleteJob(pJob);
+
+  * ppJob = nullptr;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

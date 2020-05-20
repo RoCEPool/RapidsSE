@@ -264,7 +264,7 @@ void SePrompt::vPromptLoop(void)
     
     vReportTime();
     
-    vDeleteJob();
+    Api::vPseudoApi5_DeleteJob(&m_pJob);
     
     vEndRequest();
 
@@ -319,7 +319,7 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
     //vCompletedTask();
-    vDeleteJob();
+    Api::vPseudoApi5_DeleteJob(&m_pJob);
     vEndRequest();
     return EC_ZZZ_OTHER;
   }
@@ -570,43 +570,6 @@ void SePrompt::vCutToken(i8 i_Tkn)
   pInpTknVec->vRemoveToken(i_Tkn);
 
   //pTknVec->vPrint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete the job                                                             */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vDeleteJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  SP_Gid spId;
-  
-  AM::vLogPrm(SL_INF,this,PA_PRM_DELETE_JOB,
-              "%s"_Stz, //!format-LogPrm
-              spId.sz(IK_JOB,m_pJob->m_iFocalId));
-  
-  // call the job delete function
-  m_aJobClass->vDeleteJob(m_pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dont actually spawn?                                                       */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bDontSpawn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  if (! m_pJob->bHasTag(C_TAG_NOSPAWN))
-    return false;
-  
-  if (m_pJob->bHasTag(C_TAG_TAGS))
-    m_pJob->pJobTags()->vDumpSet();
-  
-  vCompletedTask();
-  vDeleteJob();
-  vEndRequest();
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
