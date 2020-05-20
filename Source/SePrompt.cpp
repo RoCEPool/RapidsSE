@@ -331,8 +331,13 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
     //m_pJob->pTagSet()->vPrint();
   }
   
-  vPrepareSpawn();  // RENAME spawn etc
-  
+  RASSERT(JS_LOCKED != m_pJob->eJobState());
+        
+  m_pJob->vSeed(SS_SEED_REQ);
+        
+  //! ALKA: Come back to this : 3 feb 2020
+  m_pJob->vJobClass(nullptr, (char*)__func__);
+
   *ppJob = m_pJob;
 
   return EC_NONE;
@@ -1016,24 +1021,6 @@ void SePrompt::vPreJob(TagSet* pTagSet)
   //                       pJob->m_aJobClass->m_eKind,_EG_JK);
     
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* prepare to spawn job                                                       */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPrepareSpawn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  RASSERT(JS_LOCKED != m_pJob->eJobState());
-      
-  m_pJob->vSeed(SS_SEED_REQ);
-  
-//  if (m_pJob->bHasTag(C_TAG_TAGS))
-//    m_pJob->pTagSet()->vDumpSet();
-  
-  //! ALKA: Come back to this : 3 feb 2020
-  m_pJob->vJobClass(nullptr, (char*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/

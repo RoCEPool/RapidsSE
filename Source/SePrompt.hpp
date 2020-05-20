@@ -99,7 +99,6 @@ namespace Prompt
     bool bPassesCheck(void);
     bool bPassesLowMem(void);
     void vPreJob(TagSet* pTagSet);
-    void vPrepareSpawn(void);
     i8   iPromptId(void);
     void vPromptUser(void);
     bool bReadNextCommand(void);
