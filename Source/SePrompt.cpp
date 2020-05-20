@@ -87,8 +87,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pObjectsInPool = new ObjectsInPool;
   m_pSnapshotObjects = new ObjectsInPool;
   
-  m_pRequest = nullptr;
-
   
   m_pBPA = nullptr;
 //  if (AM::bDeveloper())
@@ -228,7 +226,6 @@ void SePrompt::vPromptLoop(void)
     
     vLogCommand();
     
-    vBeginRequest();
 
 
     eEC eError = ePseudoApi1_PreJob(&pJob,m_pInpTknVec,&m_oPromptTags,
@@ -271,7 +268,6 @@ void SePrompt::vPromptLoop(void)
     
     Api::vPseudoApi5_DeleteJob(&m_pJob);
     
-    vEndRequest();
 
     vLogFreeSpace();
 
@@ -354,7 +350,6 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
       vDumpInpTknVec(true);
     //vCompletedTask();
     Api::vPseudoApi5_DeleteJob(&pJob);
-    vEndRequest();
     return EC_ZZZ_OTHER;
   }
   
@@ -383,17 +378,6 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
 /*----------------------------------------------------------------------------*/
 
 
-
-/*----------------------------------------------------------------------------*/
-/* begin request                                                              */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vBeginRequest(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_pRequest = new Request(m_pSession,"--jobClass comment--"_Stz,iStepNo());
-
-}
 
 /*----------------------------------------------------------------------------*/
 /* test for blank line                                                        */
@@ -637,16 +621,6 @@ void SePrompt::vDumpInpTknVec(bool bForce)
   vTrace("Request %lld tokens: %s\n"_Stz,m_pInpTknVec->nTokens(),sCommand.szStz());
   
   Correctness::vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* end command                                                                */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vEndRequest(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  delete m_pRequest;
 }
 
 /*----------------------------------------------------------------------------*/

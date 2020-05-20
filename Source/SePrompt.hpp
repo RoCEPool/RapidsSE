@@ -28,8 +28,6 @@ namespace Prompt
     TagSet    m_oPromptTags; // tags gleaned from the prompt command
     Job*      m_pJob;        // job
 
-    Request*  m_pRequest;       // current request being executed by SE
-
     ReqTuple  m_xReqTuple;      // request information
 
     BPA*      m_pBPA;           // object delta reporting
@@ -64,7 +62,6 @@ namespace Prompt
                             ReqTuple* axReqTuple);
  
     // these are the prompt.xyz task primitives
-    void vBeginRequest(void);
     bool bBlankLine(void);
     BPA* pBPA(void);
     void vDebugMode(i8 iDebugMode);
@@ -78,7 +75,6 @@ namespace Prompt
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
-    void vEndRequest(void);
     bool bExecuteFunction(void);
     bool bExecutePipeline(void);
     void vFocalOutline(s4K& sOutline);
