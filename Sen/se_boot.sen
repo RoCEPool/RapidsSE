@@ -171,7 +171,7 @@ assert::stack_0
         "OP_statWrite.sen"            include
         "OP_sizeIndex.sen"            include
         "OP_sizeTable.sen"            include
-
+        "OP_supervisor.sen"           include
         "OP_tableSizes.sen"           include
         "OP_toDemon.sen"              include
         "OP_toCrw.sen"                include
