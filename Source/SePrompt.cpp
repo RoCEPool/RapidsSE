@@ -225,11 +225,20 @@ void SePrompt::vPromptLoop(void)
     
     Job* pJob;
     
+    vLogCommand();
+
     eEC eError = ePseudoApi1_PreJob(&pJob);
     if (eError) {
       vTrace("Api1 Error: %s\n"_Stz,aEC[eError]);
       continue;
     }
+    
+    
+    m_oTimer.vStart();
+    
+    vJobLockMutex();
+
+    
     
     // spawn the job
     if (bNoWait()) {
@@ -273,8 +282,7 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   *ppJob = nullptr;
-  
-  vLogCommand();
+
 
   if ( ! AM::bParseCmd(&m_oPromptTags, m_pInpTknVec) ) {
 
@@ -302,7 +310,6 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
   vBeginRequest();
   
   vPreJob(&m_oPromptTags);
-  //m_oPromptTags.vReset();
   ASSERT(! m_pJob->pTask());
   m_pJob->pJobTags()->vDumpSet();
   
@@ -317,11 +324,7 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
     return EC_ZZZ_OTHER;
   }
   
-  if (bDumpTokens())
-    Correctness::vDebugPoint();
-  
-  //m_pJob->pJobTags()->vDumpSet();
-  
+
   if (m_pJob->bHasTag(C_TAG_LIFE)) {
     SP_TagSet spTagSet;
     m_pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(m_pJob->pJobTags()));
@@ -329,10 +332,6 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
   }
   
   vPrepareSpawn();  // RENAME spawn etc
-  
-  m_oTimer.vStart();
-  
-  vJobLockMutex();
   
   *ppJob = m_pJob;
 
