@@ -24,7 +24,6 @@ namespace Prompt
     bool      m_bContinue;   // continue processing commands?
 
     i8        m_iCmdNo;      // command no
-    JobClass* m_aJobClass;   // job class
     TagSet    m_oPromptTags; // tags gleaned from the prompt command
     Job*      m_pJob;        // job
 

@@ -75,7 +75,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_bContinue   = true;
   
   m_iCmdNo      = 0;
-  m_aJobClass   = nullptr;
   m_pJob        = nullptr;
   // m_oTimer
 
@@ -300,7 +299,6 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
   
   
   JobClass* aJobClass = Api::aFindJobClass(pCmdTknVec,pTagSet);
-  m_aJobClass = aJobClass;
   
   if (! aJobClass)
     return EC_INVALID_COMMAND;
