@@ -307,10 +307,10 @@ eEC SePrompt::ePseudoApi1_PreJob(Job**     ppJob,
 
       
       
-  if (! bPassesLowMem())
+  if (! bPassesLowMem(aJobClass))
     return EC_LOW_MEMORY;
 
-  if (! bPassesCheck())
+  if (! bPassesCheck(aJobClass))
     return EC_ZZZ_OTHER;
 
   
@@ -846,11 +846,11 @@ ObjectsInPool* SePrompt::pObjectsInPool(void)
 /*----------------------------------------------------------------------------*/
 /* passes the pre-condition check function?                                   */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPassesCheck(void)
+bool SePrompt::bPassesCheck(JobClass* aJobCLass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  eEC eErrorCode = m_aJobClass->eCheckJob();
+  eEC eErrorCode = aJobCLass->eCheckJob();
   
   if (EC_NONE != eErrorCode) {
     vTrace("Error: %s\n"_Stz,aEC[eErrorCode]);
@@ -863,22 +863,22 @@ bool SePrompt::bPassesCheck(void)
 /*----------------------------------------------------------------------------*/
 /* passes the low-memory condition?                                           */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPassesLowMem(void)
+bool SePrompt::bPassesLowMem(JobClass* aJobCLass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_aJobClass->m_eFlags != JF_LOWMEM)
+  if (aJobCLass->m_eFlags != JF_LOWMEM)
     return true;
   
   if (! gpBufferPool->bLowMemory())
     return true;
   
-  if (m_aJobClass->m_aCommand2)
+  if (aJobCLass->m_aCommand2)
     vTrace("Error: unable to run %s %s under low memory conditions\n"_Stz,
-           m_aJobClass->m_aCommand1,m_aJobClass->m_aCommand2);
+           aJobCLass->m_aCommand1,aJobCLass->m_aCommand2);
   else
     vTrace("Error: unable to run %s under low memory conditions\n"_Stz,
-           m_aJobClass->m_aCommand1);
+           aJobCLass->m_aCommand1);
 
   return false;
 }

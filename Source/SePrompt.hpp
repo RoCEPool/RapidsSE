@@ -90,8 +90,8 @@ namespace Prompt
     i8   iNextSectionNo(void);
     bool bNoWait(void);
     ObjectsInPool*  pObjectsInPool(void);
-    bool bPassesCheck(void);
-    bool bPassesLowMem(void);
+    bool bPassesCheck(JobClass* aJobCLass);
+    bool bPassesLowMem(JobClass* aJobCLass);
     i8   iPromptId(void);
     void vPromptUser(void);
     bool bReadNextCommand(void);
