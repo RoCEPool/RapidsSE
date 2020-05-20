@@ -543,6 +543,19 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
+void Api::vPseudoApi2_SpawnJob(Job* pJob)
+{
+  RASSERT(JS_LOCKED == pJob->eJobState());
+  
+  RASSERT(! pJob->pTask());
+  
+  bool bSpawned = Api::bSpawnJob_prompt(pJob);
+  RASSERT(bSpawned);
+}
+
+/*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
 void Api::vPseudoApi4_PostJob(Job* pJob)
 {
   _static_

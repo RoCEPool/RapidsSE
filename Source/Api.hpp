@@ -36,7 +36,7 @@ namespace Interface
   
   
   static eEC  ePseudoApi1_PreJob(Job** ppJob);
-  static void vPseudoApi2_SpawnJob(Job* pJob, bool* abWait);
+  static void vPseudoApi2_SpawnJob(Job* pJob);
   static void vPseudoApi3_WaitCompletion(Job* pJob);
   static void vPseudoApi4_PostJob(Job* pJob);
 

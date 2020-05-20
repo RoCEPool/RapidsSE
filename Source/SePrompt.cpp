@@ -231,12 +231,14 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
-    // spawn the job (returns true if prompt is to wait)
-    bool bWaitCompletion;
-    vPseudoApi2_SpawnJob(pJob,&bWaitCompletion);
-    if (! bWaitCompletion)
+    // spawn the job
+    if (bNoWait()) {
+      Api::vPseudoApi2_SpawnJob(pJob);
       continue;
-    
+    }
+    else {
+      Api::vPseudoApi2_SpawnJob(pJob);
+    }
     
     vJobWaitCond();
     vJobUnlockMutex();
@@ -328,9 +330,6 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
   
   vPrepareSpawn();  // RENAME spawn etc
   
-  //if (bDontSpawn())
-  //  return nullptr;
-
   m_oTimer.vStart();
   
   vJobLockMutex();
@@ -340,23 +339,6 @@ eEC SePrompt::ePseudoApi1_PreJob(Job** ppJob)
   return EC_NONE;
 }
 
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPseudoApi2_SpawnJob(Job* pJob, bool* abWaitCompletion)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (bNoWait()) {
-    vSpawnJob();
-    vJobUnlockMutex();
-    *abWaitCompletion = false;
-  }
-  else {
-    vSpawnJob();
-    *abWaitCompletion =  true;
-  }
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -1371,21 +1353,6 @@ ObjectsInPool* SePrompt::pSnapshotObjects(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pSnapshotObjects;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job : invoke API to spawn the job (creating a task)                  */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vSpawnJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  RASSERT(JS_LOCKED == m_pJob->eJobState());
-  
-  RASSERT(! m_pJob->pTask());
-  
-  bool bSpawned = Api::bSpawnJob_prompt(m_pJob);
-  RASSERT(bSpawned);
 }
 
 /*----------------------------------------------------------------------------*/

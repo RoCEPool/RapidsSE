@@ -59,7 +59,6 @@ namespace Prompt
   
     void vPromptLoop(void);
     eEC  ePseudoApi1_PreJob(Job** ppJob);
-    void vPseudoApi2_SpawnJob(Job* pJob, bool* abWait);
  
     // these are the prompt.xyz task primitives
     void vBeginRequest(void);
@@ -117,7 +116,6 @@ namespace Prompt
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     ObjectsInPool*  pSnapshotObjects(void);
-    void vSpawnJob(void);
     bool bStdIn(void);
     bool bSubLet(void);
     void vTrackingMemory(bool bTrackMemory);
