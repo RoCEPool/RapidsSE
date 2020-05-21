@@ -13,7 +13,9 @@ namespace Interface
                             TokenVec* pCmdTknVec,
                             TagSet*   pTagSet,
                             ReqTuple* axReqTuple);
-  static void vJob_2_SpawnJob(Job* pJob, bool bMustBeLocked=true);
+  static void vJob_2_SpawnJob_prompt(Job* pJob, bool bMustBeLocked=true);
+  static void vJob_2_SpawnJob_service(Job* pJob);
+  static void vJob_2_SpawnJob_dedicated(Job* pJob);
   static void vJob_3_PostJob(Job* pJob);
   static void vJob_4_DeleteJob(Job** ppJob);
 
@@ -42,16 +44,17 @@ namespace Interface
   static bool bSpawnJob_prompt(Job* pJob);
   
   // internal
+  static void vSpawnJob_dedicated(Job* pJob);
   static void vSpawnJob_op(Job* pJob);
   static void vSpawnJob_received(Job* pJob);
   static void vSpawnJob_service(Job* pJob);
   static void vSpawnJob_system(Job* pJob);
   static void vSpawnJobAndWait(Job* pJob);
   
-  static void vSpawnJobDedicated(Job* pJob);
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
   
   //! TO GO
+  static void vSpawnJobDedicated(Job* pJob);
   static bool bReseedJob(Session* pSession, Job* pJob);
   
   

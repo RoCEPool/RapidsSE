@@ -17,27 +17,27 @@
   "start_run" .verbose
 
   // spawn supervisor demon
-  //"" supervisorDemonStr api::spawnDemon not if
+  //"" false supervisorDemonStr api::spawnDemon not if
   //  "Error Code %v" .printf
   //then
 
   // spawn recurring demon
-  "" recurringDemonStr api::spawnDemon not if
+  "" false recurringDemonStr api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   // spawn waker demon
-  "" wakerDemonStr api::spawnDemon not if
+  "" false wakerDemonStr api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   //spawn answer demon
-  "" answerDemonStr api::spawnDemon not if
+  "" false answerDemonStr api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   //spawn connector demon
-  "" connectorDemonStr api::spawnDemon not if
+  "" false connectorDemonStr api::spawnDemon not if
     "Error Code %v" .printf
   then
 

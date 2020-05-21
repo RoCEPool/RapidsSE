@@ -22,6 +22,8 @@ void Step::vApiSpawnDemon(void)
   s48K sPipeline;
   m_pDataStack->vPopStr(sPipeline,__func__);
  
+  bool bDedicated = m_pDataStack->iPopInt(__func__);
+  
   s48K sTagStr;
   m_pDataStack->vPopStr(sTagStr,__func__);
 
@@ -58,7 +60,10 @@ void Step::vApiSpawnDemon(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Api::vJob_2_SpawnJob(pJob,false);
+  if (bDedicated)
+    Api::vJob_2_SpawnJob_dedicated(pJob);
+  else
+    Api::vJob_2_SpawnJob_service(pJob);
 
   m_pDataStack->vPushInt(true);
   

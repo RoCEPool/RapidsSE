@@ -94,7 +94,7 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-void Api::vJob_2_SpawnJob(Job* pJob, bool bMustBeLocked)
+void Api::vJob_2_SpawnJob_prompt(Job* pJob, bool bMustBeLocked)
 {
   RASSERT(! bMustBeLocked || JS_LOCKED == pJob->eJobState());
   
@@ -102,6 +102,28 @@ void Api::vJob_2_SpawnJob(Job* pJob, bool bMustBeLocked)
   
   bool bSpawned = Api::bSpawnJob_prompt(pJob);
   RASSERT(bSpawned);
+}
+
+/*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
+void Api::vJob_2_SpawnJob_service(Job* pJob)
+{
+  
+  RASSERT(! pJob->pTask());
+  
+  Api::vSpawnJob_service(pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
+void Api::vJob_2_SpawnJob_dedicated(Job* pJob)
+{
+  
+  RASSERT(! pJob->pTask());
+  
+  Api::vSpawnJob_dedicated(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -457,6 +479,18 @@ bool Api::bSpawnJob_connector(Job* pJob)
   Scheduler::vTaskApi_AddConnector(pJob->pTask());
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+void Api::vSpawnJob_dedicated(Job* pJob)
+{
+  _static_
+  
+  
+  vCreateTaskForJob(pJob);
+  Scheduler::vTaskApi_AddDedicated(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
