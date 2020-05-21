@@ -39,7 +39,7 @@
   sTableNm find execute locals| pTable |
 
   // set the table in the writeBuffer and its rowBuffer
-// ALKA: should these be two steps ?
+  // ALKA: should these be two steps ?
   pTable pJob_WriteBuffer Job_WriteBuffer.Table!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

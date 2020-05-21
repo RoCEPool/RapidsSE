@@ -619,7 +619,6 @@ public:
   void vJobSlotFetch(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawnReceived(void);
-  void vJobSpawnDedicated(void);
   void vJobSpawnUniversal(void);
   void vJobStateDiagram(void);
 

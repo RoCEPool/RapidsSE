@@ -456,7 +456,7 @@ void Step::vIndexIsValidUniqueIndex(void)
   
   bool bValid = true;
   
-  //! ALKA: shouldn't this be chencking for the leading edge of the index to include
+  //! ALKA: shouldn't this be checking for the leading edge of the index to include
   //!  all partition keys ???
   // a unique index must include all columns in the partitioning keys
   i8 nPtnColumns = pPtnStreamDef->nColumns(C_ALL);

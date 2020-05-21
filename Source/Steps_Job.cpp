@@ -100,7 +100,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.signalCompletion"_Stz, &Step::vJobSignalCompletion);
   vAddStep("job.slot@"_Stz,            &Step::vJobSlotFetch);
   vAddStep("job.scheduleNextPhase"_Stz, &Step::vJobScheduleNextPhase);
-  vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
   vAddStep("job.spawn_received"_Stz,   &Step::vJobSpawnReceived);
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
   
@@ -1388,7 +1387,6 @@ void Step::vJobRowsSkippedStore(void)
   EXIT();
 }
 
-//! TO GO - ALKA
 /*----------------------------------------------------------------------------*/
 /* job.seedDecode -- decode seed for received job                             */
 /*----------------------------------------------------------------------------*/
@@ -1646,29 +1644,6 @@ void Step::vJobSpawnReceived(void)
 //  }
   
   Api::vSpawnJob_received(pJob);
-  
-  EXIT();
-}
-//! TO GO : ALKA
-/*----------------------------------------------------------------------------*/
-/* job.spawn_dedicated -- spawn the dedicated job on the stack                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSpawnDedicated(void)
-{
-  ENTRY();
-  
-  i8 i_Seed = m_pDataStack->iPopInt(__func__);
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
-              "%s spawned by %s"_Stz, //!format-LogSvc
-              aCN[pJob->eClass()],
-              aCN[m_pTask->m_pJob->eClass()],
-              C_VARGS_END);
-
-  pJob->vSeed((eSS)i_Seed);
-  Api::vSpawnJobDedicated(pJob);
   
   EXIT();
 }
