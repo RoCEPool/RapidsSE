@@ -16,25 +16,30 @@
 
   "start_run" .verbose
 
-  //supervisor ;&
-  //periodic ;&
-  waker ;&
+  // spawn supervisor demon
+  //"" supervisorDemonStr api::spawnDemon not if
+  //  "Error Code %v" .printf
+  //then
 
-  //spawn answer
+  // spawn recurring demon
+  "" recurringDemonStr api::spawnDemon not if
+    "Error Code %v" .printf
+  then
 
-  //answer ;&
+  // spawn waker demon
+  "" wakerDemonStr api::spawnDemon not if
+    "Error Code %v" .printf
+  then
 
+  //spawn answer demon
   "" answerDemonStr api::spawnDemon not if
     "Error Code %v" .printf
   then
 
-  //connector ;&
-
+  //spawn connector demon
   "" connectorDemonStr api::spawnDemon not if
     "Error Code %v" .printf
   then
-
-  //service egArgA egArgB egArgC ;&
 
   "end start_run" .verbose
 

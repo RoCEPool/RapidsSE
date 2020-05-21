@@ -34,9 +34,7 @@
 
   //pJob_Receiver job_Receiver.node@ to pOtherNode
 
-  "<ansNode>" job[] job.tagSet@ tagSet.hasName if
-    <ansNode> .
-  then
+  "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
 
   <ansNode> >int >ptr node.recvSocket@ to pSocket
 

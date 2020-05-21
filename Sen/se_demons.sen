@@ -23,7 +23,6 @@
   job[] job.addDemon
 ;
 
-//tag "<pre_execute>" = "demon::install" endTag
 /*----------------------------------------------------------------------------*/
 /* answer demon                                                               */
 /*----------------------------------------------------------------------------*/
@@ -59,34 +58,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* receiver demon                                                             */
-/*----------------------------------------------------------------------------*/
-: receiverDemonStr
-
-  "
-    pipelineLocal receiverDemon
-
-    begin
-
-      stage stageA on origin :
-        start | receiverOP | eatAll | stageA
-
-    end ;
-  "
-;
-
-/*----------------------------------------------------------------------------*/
 /* recurring demon                                                            */
 /*----------------------------------------------------------------------------*/
 : recurringDemonStr
 
   "
     pipelineLocal recurringDemon
-
+      tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
       stage stageA on origin :
-        start | recurringOP | eatAll | stageA
+        start | recurring | eatAll | stageA
 
     end ;
   "
@@ -99,11 +81,28 @@
 
   "
     pipelineLocal statDemon
-
+      tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
       stage stageA on origin :
         start | statWrite | eatAll | stageA
+
+    end ;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* supervisor demon                                                           */
+/*----------------------------------------------------------------------------*/
+: supervisorDemonStr
+
+  "
+    pipelineLocal supervisorDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | supervisorOP | eatAll | stageA
 
     end ;
   "
@@ -116,28 +115,11 @@
 
   "
     pipelineLocal wakerDemon
-
+      tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
       stage stageA on origin :
         start | wakerOP | eatAll | stageA
-
-  end ;
-  "
-;
-
-/*----------------------------------------------------------------------------*/
-/* supervisor demon                                                           */
-/*----------------------------------------------------------------------------*/
-: supervisorDemonStr
-
-  "
-    pipelineLocal supervisorDemon
-
-    begin
-
-      stage stageA on origin :
-        start | supervisorOP | eatAll | stageA
 
     end ;
   "
