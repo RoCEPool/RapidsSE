@@ -234,16 +234,16 @@ void SePrompt::vPromptLoop(void)
     
     m_pJob = pJob;
     
-    // this should go
-    JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oPromptTags);
-    
     if (eError) {
       RASSERT(! pJob);
-      vTrace("Api1 Error: %s\n"_Stz,aEC[eError]);
+      vTrace("error: %s\n"_Stz,aEC[eError]);
       if (AM::bDeveloper())
         vDumpInpTknVec(true);
       continue;
     }
+    
+    //! ALKA: this should go
+    JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oPromptTags);
     
     pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
     pJob->pJobTags()->vDumpSet();
