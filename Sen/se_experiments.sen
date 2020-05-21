@@ -18,11 +18,11 @@
       start | recurring | eatAll | stageA
 
   end ;
-"
+" locals| sPipeLine |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  api::spawnDemon not if
+  "" sPipeLine api::spawnDemon not if
     "Error Code %v" .printf
   then
 ;
