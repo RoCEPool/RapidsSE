@@ -24,10 +24,10 @@ void Step::vJob_ReceiverConnNoFetch(void)
 {
   ENTRY();
   
-  Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iConnNo = pJob_Receiver->iConnNo();
-  m_pDataStack->vPushInt(iConnNo);
+//  Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
+//
+//  i8 iConnNo = pJob_Receiver->iConnNo();
+//  m_pDataStack->vPushInt(iConnNo);
   
   EXIT();
 }
@@ -67,11 +67,11 @@ void Step::vJob_ReceiverConnNoStore(void)
 {
   ENTRY();
   
-  Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iConnNo = m_pDataStack->iPopInt(__func__);
-  
-  pJob_Receiver->vConnNo(iConnNo);
+//  Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
+//
+//  i8 iConnNo = m_pDataStack->iPopInt(__func__);
+//
+//  pJob_Receiver->vConnNo(iConnNo);
   
   EXIT();
 }
@@ -83,10 +83,10 @@ void Step::vJob_ReceiverNodeFetch(void)
 {
   ENTRY();
   
-  Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
-  
-  Node* pNode = pJob_Receiver->pNode();
-  m_pDataStack->vPushPtr(pNode);
+//  Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
+//
+//  Node* pNode = pJob_Receiver->pNode();
+//  m_pDataStack->vPushPtr(pNode);
   
   EXIT();
 }
@@ -98,11 +98,11 @@ void Step::vJob_ReceiverNodeStore(void)
 {
   ENTRY();
   
-  Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
-  
-  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
-  
-  pJob_Receiver->vNode(pNode);
+//  Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
+//  
+//  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
+//  
+//  pJob_Receiver->vNode(pNode);
   
   EXIT();
 }

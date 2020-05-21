@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : receiverOP_init ( -- )
 
-  CN_JOB_RECEIVER task[] task.thread thread.dedicated!
+  CN_JOB_LOCAL task[] task.thread thread.dedicated!
 
   NS_ACTIVE grid::thisNode@ grid::node node.state!
 
@@ -26,15 +26,19 @@
   0 locals| pReceivedJob |
   0 locals| pOperand     |
   0 locals| pSendWith    |
-  0 locals| pOtherNode   |
   0 locals| pSocket      |
   0 locals| bRecvd       |
 
-  job[] locals| pJob_Receiver |
 
-  pJob_Receiver job_Receiver.node@ to pOtherNode
+  //job[] locals| pJob_Receiver |
 
-  pOtherNode node.recvSocket@ to pSocket
+  //pJob_Receiver job_Receiver.node@ to pOtherNode
+
+  "<ansNode>" job[] job.tagSet@ tagSet.hasName if
+    <ansNode> .
+  then
+
+  <ansNode> >int >ptr node.recvSocket@ to pSocket
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin

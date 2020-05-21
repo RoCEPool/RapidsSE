@@ -31,7 +31,7 @@
 
   "
     pipelineLocal answerDemon
-
+      tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
       stage stageA on origin :
@@ -48,7 +48,7 @@
 
   "
     pipelineLocal connectorDemon
-
+      tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
       stage stageA on origin :
