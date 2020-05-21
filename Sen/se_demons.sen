@@ -52,7 +52,7 @@
     begin
 
       stage stageA on origin :
-        start | connectorOP __nodeInfo | eatAll | stageA
+        start | connectorOP | eatAll | stageA
 
     end ;
   "

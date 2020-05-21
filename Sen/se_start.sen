@@ -22,8 +22,17 @@
 
   //spawn answer
 
-  answer ;&
-  connector ;&
+  //answer ;&
+
+  answerDemonStr api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  //connector ;&
+
+  connectorDemonStr api::spawnDemon not if
+    "Error Code %v" .printf
+  then
 
   //service egArgA egArgB egArgC ;&
 
