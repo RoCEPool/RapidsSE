@@ -25,14 +25,14 @@ void Step::vApiSpawnDemon(void)
   s48K sTagStr;
   m_pDataStack->vPopStr(sTagStr,__func__);
 
-  vTrace("SpawnDemon: %sn"_Stz,sPipeline.szStz());
-  vTrace("WithTags: %sn"_Stz,sTagStr.szStz());
+  vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
+  vTrace("WithTags: %s\nn"_Stz,sTagStr.szStz());
 
-  
-  TokenVec* pDmnTknVec = TokenVec::pTokenise(sPipeline);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  TokenVec* pDmnTknVec = TokenVec::pTokenise(sPipeline);
+  
   Job* pJob = nullptr;
   TagSet oTagSet;
   ReqTuple xReqTuple;
@@ -46,14 +46,25 @@ void Step::vApiSpawnDemon(void)
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);
+
+  TagSet* pJobTagSet = pJob->pJobTags();
   
   Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
-  pJob->pJobTags()->vAppend(C_TAG_PATH,szTagPath);
+  pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
+  
+  Api::vPopulateTagSet(pJobTagSet,pTagStrTknVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Api::vJob_2_SpawnJob(pJob,false);
 
   m_pDataStack->vPushInt(true);
-
+  
+  delete pDmnTknVec;
+  delete pTagStrTknVec;
+  
   EXIT();
 }
 
