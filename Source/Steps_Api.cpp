@@ -19,6 +19,11 @@ void Step::vApiSpawnDemon(void)
 {
   ENTRY();
   
+  s48K sPipeline;
+  m_pDataStack->vPopStr(sPipeline,__func__);
+  
+  vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
+  
   EXIT();
 }
 
