@@ -21,9 +21,13 @@ void Step::vApiSpawnDemon(void)
   
   s48K sPipeline;
   m_pDataStack->vPopStr(sPipeline,__func__);
-  
-  vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
-  
+ 
+  s48K sTagStr;
+  m_pDataStack->vPopStr(sTagStr,__func__);
+
+  vTrace("SpawnDemon: %sn"_Stz,sPipeline.szStz());
+  vTrace("WithTags: %sn"_Stz,sTagStr.szStz());
+
   
   TokenVec* pDmnTknVec = TokenVec::pTokenise(sPipeline);
   
