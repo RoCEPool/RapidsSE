@@ -14,7 +14,7 @@
 
   begin
 
-    stage stageA origin :
+    stage stageA on origin :
       start | recurring | eatAll | stageA
 
   end ;
@@ -22,7 +22,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "" sPipeLine api::spawnDemon not if
+  "<testTag> = ATestTag" sPipeLine api::spawnDemon not if
     "Error Code %v" .printf
   then
 ;

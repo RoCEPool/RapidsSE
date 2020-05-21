@@ -214,36 +214,21 @@ void Api::vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec)
   i8 i_Scan = 0;
   while (i_Scan < nTkns) {
     
-    Token* pScan = pTknVec->pGet(i_Scan++);        // <
+    Token* pTkn_name = pTknVec->pGet(i_Scan++);    // <tagNm>
     if (i_Scan >= nTkns)
       break;
-    if (! pScan->bIsLessThan())
+    if (TN_TAG != pTkn_name->eToken())
       break;
 
-    Token* pTkn_name = pTknVec->pGet(i_Scan++);    // name
+    Token* pTkn_equals = pTknVec->pGet(i_Scan++);  // =
     if (i_Scan >= nTkns)
       break;
-    if (! pTkn_name->bIsName())
-      break;
-
-    pScan = pTknVec->pGet(i_Scan++);               // >
-    if (! pScan->bIsGreaterThan())
-      break;
-
-    pScan = pTknVec->pGet(i_Scan++);               // =
-    if (i_Scan >= nTkns)
-      break;
-    if (! pScan->bIsAssign())
-      break;
+    //if (! pTkn_equals->bIsAssign())
+    //  break;
 
     Token* pTkn_value = pTknVec->pGet(i_Scan++);   // value
-    if (! pTkn_value->bIsString())
-      break;
-
-    s32 sName;
-    sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
     
-    pTagSet->vAppend(sName,pTkn_value->szChars());
+    pTagSet->vAppend(pTkn_name->szChars(),pTkn_value->szChars());
   }
 
 }

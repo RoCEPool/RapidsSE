@@ -36,6 +36,10 @@
  
   LogReqEntry SEED_REQ
 
+  "<testTag>" job[] job.tagSet@ tagSet.hasName if
+    <testTag> .
+  then
+
   op__topology
 
   find: recurring_StartMarker ZK_STARTMARKER op[].handler!

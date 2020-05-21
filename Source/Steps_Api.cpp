@@ -47,13 +47,12 @@ void Step::vApiSpawnDemon(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);
-
   TagSet* pJobTagSet = pJob->pJobTags();
   
   Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
   
+  TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);
   Api::vPopulateTagSet(pJobTagSet,pTagStrTknVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
