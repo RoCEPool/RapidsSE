@@ -1251,6 +1251,7 @@ public:
   // row
   void vRowGet(void);
   void vRowGetIntColumn(void);
+  void vRowGetVchColumn(void);
   void vRowIsNull(void);
   void vRowSet(void);
 

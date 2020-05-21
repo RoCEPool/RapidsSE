@@ -11,6 +11,7 @@ void Step::vAddSteps_Row(void)
 {
   vAddStep("Row[].get"_Stz,           &Step::vRowGet);
   vAddStep("Row[].getIntColumn"_Stz,  &Step::vRowGetIntColumn);
+  vAddStep("Row[].getVchColumn"_Stz,  &Step::vRowGetVchColumn);
   vAddStep("Row[].isNull"_Stz,        &Step::vRowIsNull);
   vAddStep("Row[].set"_Stz,           &Step::vRowSet);
 }
@@ -38,6 +39,23 @@ void Step::vRowGetIntColumn(void)
   
   Row* pRow = *m_pRegSet->m_xpRow;
   m_pDataStack->vPushInt(pRow->m_waColVal[iColumn]);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Row[].getVchColumn -- get the varchar column from the row                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRowGetVchColumn(void)
+{
+  ENTRY();
+  
+  i8 iColumn = m_pDataStack->iPopInt(__func__);
+  
+  Row* pRow = *m_pRegSet->m_xpRow;
+  
+  s256 sColumn = pRow->szStzGet(iColumn);
+  m_pDataStack->vPushStr(sColumn);
   
   EXIT();
 }
