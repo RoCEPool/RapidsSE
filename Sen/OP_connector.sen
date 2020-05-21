@@ -10,7 +10,7 @@
 : .sendNodeInfo ( pSocket -- )
 
   params| pSocket |
-
+/*
   0 locals| pJobClass_NodeInfo |
   0 locals| pJob_NodeInfo |
 
@@ -28,6 +28,23 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete node info job
   pJob_NodeInfo job.delete
+ */
+
+  // find the __ table
+  <streamDef> op__tableDef_infoSet assert
+
+  // create an infoSet operand
+  infoSetTable[] infoSet[].new
+
+  // add nodeInfo to the infoSet
+  infoSetTable[] infoSet[].addNodeInfo assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // send node infoset to the other node
+  pSocket socket.grabWrite
+  infoSet[] pSocket socket.sendObject assert
+  pSocket socket.dropWrite
+
 ;
 
 /*----------------------------------------------------------------------------*/
