@@ -29,9 +29,9 @@
 : answerDemonStr
 
   "
-    /nowait pipelineLocal answerDemon
+    pipelineLocal answerDemon
 
-      tag "<pre_execute>" = "demon::install" endTag
+      //tag "<pre_execute>" = "demon::install" endTag
 
     begin
 
@@ -48,9 +48,9 @@
 : connectorDemonStr
 
   "
-    /nowait pipelineLocal connectorDemon
+    pipelineLocal connectorDemon
 
-      tag "<pre_execute>" = "demon::install" endTag
+      //tag "<pre_execute>" = "demon::install" endTag
 
     begin
 
@@ -67,9 +67,9 @@
 : receiverDemonStr
 
   "
-    /nowait pipelineLocal receiverDemon
+    pipelineLocal receiverDemon
 
-      tag "<pre_execute>" = "demon::install" endTag
+      //tag "<pre_execute>" = "demon::install" endTag
 
     begin
 
@@ -86,9 +86,9 @@
 : recurringDemonStr
 
   "
-    /nowait pipelineLocal recurringDemon
+    pipelineLocal recurringDemon
 
-      tag "<pre_execute>" = "demon::install" endTag
+      //tag "<pre_execute>" = "demon::install" endTag
 
     begin
 
@@ -105,9 +105,9 @@
 : statDemonStr
 
   "
-    /nowait pipelineLocal statDemon
+    pipelineLocal statDemon
 
-      tag "<pre_execute>" = "demon::install" endTag
+      //tag "<pre_execute>" = "demon::install" endTag
 
     begin
 
@@ -124,9 +124,9 @@
 : wakerDemonStr
 
   "
-    /nowait pipelineLocal wakerDemon
+    pipelineLocal wakerDemon
 
-      tag "<pre_execute>" = "demon::install" endTag
+      //tag "<pre_execute>" = "demon::install" endTag
 
     begin
 
@@ -143,9 +143,9 @@
 : supervisorDemonStr
 
   "
-    /nowait pipelineLocal supervisorDemon
+    pipelineLocal supervisorDemon
 
-      tag "<pre_execute>" = "demon::install" endTag
+      //tag "<pre_execute>" = "demon::install" endTag
 
     begin
 
