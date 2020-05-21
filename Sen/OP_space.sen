@@ -21,7 +21,7 @@
   // create an infoSet operand
   streamSetTable[] streamSet[].new
 
-  // add nodeInfo to the infoSet
+  // add spaceInfo to the infoSet
   streamSetTable[] streamSet[].addSpaceInfo assert
 
   // pipeout the infoset

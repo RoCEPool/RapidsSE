@@ -37,7 +37,7 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  // add nodeInfo to the infoSet
+  // add pwfInfo to the infoSet
   folder streamSetTable[]  StreamSet[].addPwfInfo assert
 
   // pipeout the infoset
