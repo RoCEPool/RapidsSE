@@ -6459,7 +6459,7 @@ void Task::vAddMunged(Forth* pForth)
     "  sTableNm find execute locals| pTable |\n"
     "\n"
     "  // set the table in the writeBuffer and its rowBuffer\n"
-    "// ALKA: should these be two steps ?\n"
+    "  // ALKA: should these be two steps ?\n"
     "  pTable pJob_WriteBuffer Job_WriteBuffer.Table!\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
