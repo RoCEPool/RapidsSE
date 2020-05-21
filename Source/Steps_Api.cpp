@@ -20,24 +20,35 @@ void Step::vApiExecuteRequest(void)
 {
   ENTRY();
 
-   s48K sRequest;
-   m_pDataStack->vPopStr(sRequest,__func__);
-  
-   s48K sTagStr;
-   m_pDataStack->vPopStr(sTagStr,__func__);
+  eEC eError;
+  ReqTuple xReqTuple;
 
-   vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
-   vTrace("WithTags: %s\nn"_Stz,sTagStr.szStz());
+  s48K sRequest;
+  m_pDataStack->vPopStr(sRequest,__func__);
+
+  s48K sTagStr;
+  m_pDataStack->vPopStr(sTagStr,__func__);
+
+  vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
+  vTrace("WithTags: %s\nn"_Stz,sTagStr.szStz());
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Session* pSession = Api::pAllocSession();
+  pSession->vPartition(0);
+  
+  eError = pSession->eInit("rapidsse"_Stz,"public"_Stz);
+
+  xReqTuple.m_i_Session = pSession->m_i_Session;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   TokenVec* pDmnTknVec = TokenVec::pTokenise(sRequest);
   
   Job* pJob = nullptr;
   TagSet oTagSet;
-  ReqTuple xReqTuple;
   
-  eEC eError = Api::eJob_1_PreJob(&pJob,pDmnTknVec,&oTagSet,&xReqTuple);
+  eError = Api::eJob_1_PreJob(&pJob,pDmnTknVec,&oTagSet,&xReqTuple);
   
   if (eError) {
     m_pDataStack->vPushInt(eError);
@@ -65,8 +76,11 @@ void Step::vApiExecuteRequest(void)
   
   m_pDataStack->vPushInt(true);
   
+  Api::vFreeSession(pSession);
+  
   delete pDmnTknVec;
   delete pTagStrTknVec;
+  
   
   EXIT();
 }
