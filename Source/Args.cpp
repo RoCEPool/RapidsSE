@@ -781,13 +781,14 @@ void Args::vPrintStartupInfo(void)
   if (! AM::bVerboseProgress())
     return;
   
-  vTrace("  No of Classes %lld\n"_Stz,CN_ENUMS);
   
   if (gxArgs.m_bVerbose) {
+    vTrace("\n"_Stz,CN_ENUMS);
+    vTrace("  No of Classes %lld\n"_Stz,CN_ENUMS);
 #ifdef WITH_MUNGED_SEN
     vTrace("  Compiled with MUNGE\n\n"_Stz);
 #else
-    vTrace("  Not compiled with MUNGE\n\n"_Stz);
+    vTrace("  Not compiled with MUNGE\n"_Stz);
 #endif
   }
   
