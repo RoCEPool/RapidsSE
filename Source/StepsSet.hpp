@@ -30,7 +30,7 @@ public:
   void vAddressFetch(void);
   void vAddressStore(void);
 
-  // timer
+  // agg timer
   void vAggTimerAdd(void);
   void vAggTimerDelete(void);
   void vAggTimerMicrosecs(void);
@@ -42,7 +42,10 @@ public:
   void vAggTimerSecs(void);
   void vAggTimerTicks(void);
 
-// args
+  // api
+  void vApiSpawnDemon(void);
+
+  // args
   void vArgsOscillate(void);
   void vArgsPrint(void);
 
