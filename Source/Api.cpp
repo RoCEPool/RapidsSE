@@ -202,6 +202,51 @@ bool Api::bPassesLowMem(JobClass* aJobCLass)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* populate tagset from given token vector                                    */
+/*----------------------------------------------------------------------------*/
+void Api::vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec)
+{
+  _static_
+  
+  i8 nTkns = pTknVec->nTokens();
+
+  i8 i_Scan = 0;
+  while (i_Scan < nTkns) {
+    
+    Token* pScan = pTknVec->pGet(i_Scan++);        // <
+    if (i_Scan >= nTkns)
+      break;
+    if (! pScan->bIsLessThan())
+      break;
+
+    Token* pTkn_name = pTknVec->pGet(i_Scan++);    // name
+    if (i_Scan >= nTkns)
+      break;
+    if (! pTkn_name->bIsName())
+      break;
+
+    pScan = pTknVec->pGet(i_Scan++);               // >
+    if (! pScan->bIsGreaterThan())
+      break;
+
+    pScan = pTknVec->pGet(i_Scan++);               // =
+    if (i_Scan >= nTkns)
+      break;
+    if (! pScan->bIsAssign())
+      break;
+
+    Token* pTkn_value = pTknVec->pGet(i_Scan++);   // value
+    if (! pTkn_value->bIsString())
+      break;
+
+    s32 sName;
+    sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
+    
+    pTagSet->vAppend(sName,pTkn_value->szChars());
+  }
+
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
