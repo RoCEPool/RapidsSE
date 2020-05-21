@@ -9,7 +9,27 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Api(void)
 {
-  vAddStep("api::spawnDemon"_Stz, &Step::vApiSpawnDemon);
+  vAddStep("api::executeRequest"_Stz, &Step::vApiExecuteRequest);
+  vAddStep("api::spawnDemon"_Stz,     &Step::vApiSpawnDemon);
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::spawnDemon -- spawn a demon                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vApiExecuteRequest(void)
+{
+  ENTRY();
+
+   s48K sRequest;
+   m_pDataStack->vPopStr(sRequest,__func__);
+  
+   s48K sTagStr;
+   m_pDataStack->vPopStr(sTagStr,__func__);
+
+   vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
+   vTrace("WithTags: %s\nn"_Stz,sTagStr.szStz());
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

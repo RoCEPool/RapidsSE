@@ -128,6 +128,24 @@
   pConvertor convertor.delete
 ;
 
+/*----------------------------------------------------------------------------*/
+/* execute a statement                                                        */
+/*----------------------------------------------------------------------------*/
+: exp4 prompt
+
+"
+  create table definition __Exp4 (
+    nodeName       VARCHAR NOT NULL ,
+    partition      INTEGER NOT NULL ,
+    buffers        INTEGER NOT NULL ,
+    entries        INTEGER NOT NULL
+  ) ;
+"
+  locals| sStmt |
+
+  "" sStmt api::executeRequest
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
