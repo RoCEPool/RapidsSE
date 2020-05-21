@@ -14,10 +14,10 @@
 
   begin
 
-    stage stageA on origin:
+    stage stageA origin :
       start | recurring | eatAll | stageA
 
-  end;
+  end ;
 "
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
