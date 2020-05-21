@@ -13,7 +13,7 @@ namespace Interface
                             TokenVec* pCmdTknVec,
                             TagSet*   pTagSet,
                             ReqTuple* axReqTuple);
-  static void vJob_2_SpawnJob(Job* pJob);
+  static void vJob_2_SpawnJob(Job* pJob, bool bMustBeLocked=true);
   static void vJob_3_PostJob(Job* pJob);
   static void vJob_4_DeleteJob(Job** ppJob);
 

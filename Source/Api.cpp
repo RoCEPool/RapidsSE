@@ -94,9 +94,9 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
-void Api::vJob_2_SpawnJob(Job* pJob)
+void Api::vJob_2_SpawnJob(Job* pJob, bool bMustBeLocked)
 {
-  RASSERT(JS_LOCKED == pJob->eJobState());
+  RASSERT(! bMustBeLocked || JS_LOCKED == pJob->eJobState());
   
   RASSERT(! pJob->pTask());
   

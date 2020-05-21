@@ -12,8 +12,6 @@
 "
   pipelineLocal recurringDemon
 
-    tag <pre_execute> = demon::install endTag
-
   begin
 
     stage stageA on origin:
@@ -22,10 +20,15 @@
   end;
 "
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   api::spawnDemon not if
     "Error Code %v" .printf
   then
 ;
+
+
+// tag <pre_execute> = demon::install endTag
 
 /*----------------------------------------------------------------------------*/
 /* experiment 2                                                               */

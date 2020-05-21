@@ -27,25 +27,28 @@ void Step::vApiSpawnDemon(void)
   
   TokenVec* pDmnTknVec = TokenVec::pTokenise(sPipeline);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Job* pJob = nullptr;
-  
   TagSet oTagSet;
-  
   ReqTuple xReqTuple;
   
   eEC eError = Api::eJob_1_PreJob(&pJob,pDmnTknVec,&oTagSet,&xReqTuple);
   
   if (eError) {
-  
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
-    
     EXIT();
   }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // MORE...
-  m_pDataStack->vPushInt(true);
+  Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
+  pJob->pJobTags()->vAppend(C_TAG_PATH,szTagPath);
+  
+  Api::vJob_2_SpawnJob(pJob,false);
 
+  m_pDataStack->vPushInt(true);
 
   EXIT();
 }

@@ -255,6 +255,7 @@ void SePrompt::vPromptLoop(void)
     // spawn the job
     if (bNoWait()) {
       Api::vJob_2_SpawnJob(pJob);
+      vJobUnlockMutex();
       continue;
     }
     else {
