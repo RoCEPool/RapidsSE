@@ -233,7 +233,10 @@ void SePrompt::vPromptLoop(void)
                                    &m_xReqTuple);
     
     m_pJob = pJob;
-
+    
+    // this should go
+    JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oPromptTags);
+    
     if (eError) {
       RASSERT(! pJob);
       vTrace("Api1 Error: %s\n"_Stz,aEC[eError]);
@@ -272,6 +275,7 @@ void SePrompt::vPromptLoop(void)
       m_pJob->m_xResult.vProcessBufferQueue();
     }
 
+    pJob->vJobClass(aJobClass, (char*)__func__);
     Api::vJob_3_PostJob(pJob);
     
     
