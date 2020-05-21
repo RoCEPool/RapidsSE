@@ -23,6 +23,7 @@
   job[] job.addDemon
 ;
 
+//tag "<pre_execute>" = "demon::install" endTag
 /*----------------------------------------------------------------------------*/
 /* answer demon                                                               */
 /*----------------------------------------------------------------------------*/
@@ -30,8 +31,6 @@
 
   "
     pipelineLocal answerDemon
-
-      //tag "<pre_execute>" = "demon::install" endTag
 
     begin
 
@@ -50,12 +49,10 @@
   "
     pipelineLocal connectorDemon
 
-      //tag "<pre_execute>" = "demon::install" endTag
-
     begin
 
       stage stageA on origin :
-        start | connectorOP | eatAll | stageA
+        start | connectorOP __nodeInfo | eatAll | stageA
 
     end ;
   "
@@ -68,8 +65,6 @@
 
   "
     pipelineLocal receiverDemon
-
-      //tag "<pre_execute>" = "demon::install" endTag
 
     begin
 
@@ -88,8 +83,6 @@
   "
     pipelineLocal recurringDemon
 
-      //tag "<pre_execute>" = "demon::install" endTag
-
     begin
 
       stage stageA on origin :
@@ -106,8 +99,6 @@
 
   "
     pipelineLocal statDemon
-
-      //tag "<pre_execute>" = "demon::install" endTag
 
     begin
 
@@ -126,8 +117,6 @@
   "
     pipelineLocal wakerDemon
 
-      //tag "<pre_execute>" = "demon::install" endTag
-
     begin
 
       stage stageA on origin :
@@ -144,8 +133,6 @@
 
   "
     pipelineLocal supervisorDemon
-
-      //tag "<pre_execute>" = "demon::install" endTag
 
     begin
 
