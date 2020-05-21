@@ -35,10 +35,10 @@
 
     begin
 
-      stage stageA on origin:
+      stage stageA on origin :
         start | answerOP | eatAll | stageA
 
-    end;
+    end ;
   "
 ;
 
@@ -54,10 +54,10 @@
 
     begin
 
-      stage stageA on origin:
+      stage stageA on origin :
         start | connectorOP | eatAll | stageA
 
-    end;
+    end ;
   "
 ;
 
@@ -73,10 +73,10 @@
 
     begin
 
-      stage stageA on origin:
+      stage stageA on origin :
         start | receiverOP | eatAll | stageA
 
-    end;
+    end ;
   "
 ;
 
@@ -92,10 +92,10 @@
 
     begin
 
-      stage stageA on origin:
+      stage stageA on origin :
         start | recurringOP | eatAll | stageA
 
-    end;
+    end ;
   "
 ;
 
@@ -111,10 +111,10 @@
 
     begin
 
-      stage stageA on origin:
+      stage stageA on origin :
         start | statWrite | eatAll | stageA
 
-    end;
+    end ;
   "
 ;
 
@@ -130,10 +130,10 @@
 
     begin
 
-      stage stageA on origin:
+      stage stageA on origin :
         start | wakerOP | eatAll | stageA
 
-  end;
+  end ;
   "
 ;
 
@@ -149,10 +149,10 @@
 
     begin
 
-      stage stageA on origin:
+      stage stageA on origin :
         start | supervisorOP | eatAll | stageA
 
-    end;
+    end ;
   "
 ;
 
