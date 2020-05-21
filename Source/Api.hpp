@@ -23,6 +23,8 @@ namespace Interface
   static bool bPassesCheck(JobClass* aJobCLass);
   static bool bPassesLowMem(JobClass* aJobCLass);
 
+  static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   static Session* pAllocSession(void);
