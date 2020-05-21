@@ -1434,10 +1434,12 @@ void Input::vCollectSenInteger(void)
     *z++ = m_xAnnChar.m_cChar;
     
     // collect the hex digits
+    vGetAnnCharStripped();
     while (m_xAnnChar.bIsHex()) {
       *z++ = m_xAnnChar.m_cChar;
       vGetAnnCharStripped();
     }
+    *z = '\0';
   }
   
   // - handle minus only

@@ -22,7 +22,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "<testTag> = ATestTag" sPipeLine api::spawnDemon not if
+  "<testTag> = 0x1234" sPipeLine api::spawnDemon not if
     "Error Code %v" .printf
   then
 ;
