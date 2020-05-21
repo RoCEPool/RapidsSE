@@ -227,10 +227,10 @@ void SePrompt::vPromptLoop(void)
 
     Job* pJob = nullptr;
     
-    eEC eError = Api::ePseudoApi1_PreJob(&pJob,
-                                         m_pInpTknVec,
-                                         &m_oPromptTags,
-                                         &m_xReqTuple);
+    eEC eError = Api::eJob_1_PreJob(&pJob,
+                                    m_pInpTknVec,
+                                   &m_oPromptTags,
+                                   &m_xReqTuple);
     
     m_pJob = pJob;
 
@@ -254,11 +254,11 @@ void SePrompt::vPromptLoop(void)
     
     // spawn the job
     if (bNoWait()) {
-      Api::vPseudoApi2_SpawnJob(pJob);
+      Api::vJob_2_SpawnJob(pJob);
       continue;
     }
     else {
-      Api::vPseudoApi2_SpawnJob(pJob);
+      Api::vJob_2_SpawnJob(pJob);
     }
     
     vJobWaitCond();
@@ -271,12 +271,12 @@ void SePrompt::vPromptLoop(void)
       m_pJob->m_xResult.vProcessBufferQueue();
     }
 
-    Api::vPseudoApi3_PostJob(pJob);
+    Api::vJob_3_PostJob(pJob);
     
     
     vReportTime();
     
-    Api::vPseudoApi4_DeleteJob(&m_pJob);
+    Api::vJob_4_DeleteJob(&m_pJob);
     
 
     vLogFreeSpace();

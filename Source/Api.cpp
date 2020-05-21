@@ -14,6 +14,201 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
+eEC Api::eJob_1_PreJob(Job**     ppJob,
+                       TokenVec* pCmdTknVec,
+                       TagSet*   pTagSet,
+                       ReqTuple* axReqTuple)
+{
+  _static_
+
+  *ppJob = nullptr;
+
+
+  if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) )
+    return EC_INVALID_COMMAND;
+   
+  
+  
+  JobClass* aJobClass = Api::aFindJobClass(pCmdTknVec,pTagSet);
+  
+  if (! aJobClass)
+    return EC_INVALID_COMMAND;
+
+      
+      
+  if (! Api::bPassesLowMem(aJobClass))
+    return EC_LOW_MEMORY;
+
+  if (! Api::bPassesCheck(aJobClass))
+    return EC_ZZZ_OTHER;
+
+  
+  
+  
+  
+  Job* pJob = aJobClass->pPreJob(axReqTuple,pTagSet);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add <cmd> into job ename-set
+  
+  s4K sCmd;
+  pCmdTknVec->vVecToString(sCmd,0,true);
+  
+  pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
+  
+  
+  
+  
+  ASSERT(! pJob->pTask());
+  pJob->pJobTags()->vDumpSet();
+  
+  // this should go
+  if (pJob->bJobHasError()) {
+    Api::vJob_3_PostJob(pJob);
+    Api::vJob_4_DeleteJob(&pJob);
+    return EC_ZZZ_OTHER;
+  }
+  
+
+  if (pJob->bHasTag(C_TAG_LIFE)) {
+    SP_TagSet spTagSet;
+    pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(pJob->pJobTags()));
+    //pJob->pTagSet()->vPrint();
+  }
+  
+  RASSERT(JS_LOCKED != pJob->eJobState());
+        
+  pJob->vSeed(SS_SEED_REQ);
+        
+  //! ALKA: Come back to this : 3 feb 2020
+  pJob->vJobClass(nullptr, (char*)__func__);
+
+  *ppJob = pJob;
+
+  return EC_NONE;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
+void Api::vJob_2_SpawnJob(Job* pJob)
+{
+  RASSERT(JS_LOCKED == pJob->eJobState());
+  
+  RASSERT(! pJob->pTask());
+  
+  bool bSpawned = Api::bSpawnJob_prompt(pJob);
+  RASSERT(bSpawned);
+}
+
+/*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
+void Api::vJob_3_PostJob(Job* pJob)
+{
+  _static_
+  
+  
+  pJob->aJobClass()->vPostJob(pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* api...                                                                     */
+/*----------------------------------------------------------------------------*/
+void Api::vJob_4_DeleteJob(Job** ppJob)
+{
+  _static_
+  
+  Job* pJob = * ppJob;
+  JobClass* aJobClass = pJob->aJobClass();
+
+  aJobClass->vDeleteJob(pJob);
+
+  * ppJob = nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* attempt to find a job which matches the command tokens                     */
+/*----------------------------------------------------------------------------*/
+JobClass* Api::aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet)
+{
+  _static_
+  
+  //pTagSet->vDumpSet();
+  
+  Stz* aCommand1 = pCmdTknVec->pGet(0,true)->szChars();
+  Stz* aCommand2 = pCmdTknVec->pGet(1,true)->szChars();
+  
+  JobClass* aJobClass = JobClass::pFind(aCommand1, aCommand2);
+
+  if (aJobClass)
+    return aJobClass;
+  
+  // is the command token a forth-word marked as prompt?
+  //if (bIsPromptWord())
+  //  return true;
+  
+  // give command to the universal job
+  if ((eJK)pTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL)
+    aJobClass = JobClass::pFind(CN_JOB_LOCAL);
+  else
+    aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
+  
+  return aJobClass;
+}
+
+/*----------------------------------------------------------------------------*/
+/* passes the pre-condition check function?                                   */
+/*----------------------------------------------------------------------------*/
+bool Api::bPassesCheck(JobClass* aJobCLass)
+{
+  _static_
+
+  eEC eErrorCode = aJobCLass->eCheckJob();
+  
+  if (EC_NONE != eErrorCode) {
+    vTrace("Error: %s\n"_Stz,aEC[eErrorCode]);
+    return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* passes the low-memory condition?                                           */
+/*----------------------------------------------------------------------------*/
+bool Api::bPassesLowMem(JobClass* aJobCLass)
+{
+  _static_
+
+  if (aJobCLass->m_eFlags != JF_LOWMEM)
+    return true;
+  
+  if (! gpBufferPool->bLowMemory())
+    return true;
+  
+  if (aJobCLass->m_aCommand2)
+    vTrace("Error: unable to run %s %s under low memory conditions\n"_Stz,
+           aJobCLass->m_aCommand1,aJobCLass->m_aCommand2);
+  else
+    vTrace("Error: unable to run %s under low memory conditions\n"_Stz,
+           aJobCLass->m_aCommand1);
+
+  return false;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
 /* allocate a session                                                         */
 /*----------------------------------------------------------------------------*/
 Session* Api::pAllocSession(void)
@@ -536,195 +731,6 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
   //Scheduler::vAddTaskGeneral(pTask);
   
   return true;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-eEC Api::ePseudoApi1_PreJob(Job**     ppJob,
-                                 TokenVec* pCmdTknVec,
-                                 TagSet*   pTagSet,
-                                 ReqTuple* axReqTuple)
-{
-  _static_
-
-  *ppJob = nullptr;
-
-
-  if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) )
-    return EC_INVALID_COMMAND;
-   
-  
-  
-  JobClass* aJobClass = Api::aFindJobClass(pCmdTknVec,pTagSet);
-  
-  if (! aJobClass)
-    return EC_INVALID_COMMAND;
-
-      
-      
-  if (! Api::bPassesLowMem(aJobClass))
-    return EC_LOW_MEMORY;
-
-  if (! Api::bPassesCheck(aJobClass))
-    return EC_ZZZ_OTHER;
-
-  
-  
-  
-  
-  Job* pJob = aJobClass->pPreJob(axReqTuple,pTagSet);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add <cmd> into job ename-set
-  
-  s4K sCmd;
-  pCmdTknVec->vVecToString(sCmd,0,true);
-  
-  pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
-  
-  
-  
-  
-  ASSERT(! pJob->pTask());
-  pJob->pJobTags()->vDumpSet();
-  
-  // this should go
-  if (pJob->bJobHasError()) {
-    Api::vPseudoApi3_PostJob(pJob);
-    Api::vPseudoApi4_DeleteJob(&pJob);
-    return EC_ZZZ_OTHER;
-  }
-  
-
-  if (pJob->bHasTag(C_TAG_LIFE)) {
-    SP_TagSet spTagSet;
-    pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(pJob->pJobTags()));
-    //pJob->pTagSet()->vPrint();
-  }
-  
-  RASSERT(JS_LOCKED != pJob->eJobState());
-        
-  pJob->vSeed(SS_SEED_REQ);
-        
-  //! ALKA: Come back to this : 3 feb 2020
-  pJob->vJobClass(nullptr, (char*)__func__);
-
-  *ppJob = pJob;
-
-  return EC_NONE;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void Api::vPseudoApi2_SpawnJob(Job* pJob)
-{
-  RASSERT(JS_LOCKED == pJob->eJobState());
-  
-  RASSERT(! pJob->pTask());
-  
-  bool bSpawned = Api::bSpawnJob_prompt(pJob);
-  RASSERT(bSpawned);
-}
-
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void Api::vPseudoApi3_PostJob(Job* pJob)
-{
-  _static_
-  
-  
-  pJob->aJobClass()->vPostJob(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void Api::vPseudoApi4_DeleteJob(Job** ppJob)
-{
-  _static_
-  
-  Job* pJob = * ppJob;
-  JobClass* aJobClass = pJob->aJobClass();
-
-  aJobClass->vDeleteJob(pJob);
-
-  * ppJob = nullptr;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* attempt to find a job which matches the command tokens                     */
-/*----------------------------------------------------------------------------*/
-JobClass* Api::aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet)
-{
-  _static_
-  
-  //pTagSet->vDumpSet();
-  
-  Stz* aCommand1 = pCmdTknVec->pGet(0,true)->szChars();
-  Stz* aCommand2 = pCmdTknVec->pGet(1,true)->szChars();
-  
-  JobClass* aJobClass = JobClass::pFind(aCommand1, aCommand2);
-
-  if (aJobClass)
-    return aJobClass;
-  
-  // is the command token a forth-word marked as prompt?
-  //if (bIsPromptWord())
-  //  return true;
-  
-  // give command to the universal job
-  if ((eJK)pTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL)
-    aJobClass = JobClass::pFind(CN_JOB_LOCAL);
-  else
-    aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
-  
-  return aJobClass;
-}
-
-/*----------------------------------------------------------------------------*/
-/* passes the pre-condition check function?                                   */
-/*----------------------------------------------------------------------------*/
-bool Api::bPassesCheck(JobClass* aJobCLass)
-{
-  _static_
-
-  eEC eErrorCode = aJobCLass->eCheckJob();
-  
-  if (EC_NONE != eErrorCode) {
-    vTrace("Error: %s\n"_Stz,aEC[eErrorCode]);
-    return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* passes the low-memory condition?                                           */
-/*----------------------------------------------------------------------------*/
-bool Api::bPassesLowMem(JobClass* aJobCLass)
-{
-  _static_
-
-  if (aJobCLass->m_eFlags != JF_LOWMEM)
-    return true;
-  
-  if (! gpBufferPool->bLowMemory())
-    return true;
-  
-  if (aJobCLass->m_aCommand2)
-    vTrace("Error: unable to run %s %s under low memory conditions\n"_Stz,
-           aJobCLass->m_aCommand1,aJobCLass->m_aCommand2);
-  else
-    vTrace("Error: unable to run %s under low memory conditions\n"_Stz,
-           aJobCLass->m_aCommand1);
-
-  return false;
 }
 
 

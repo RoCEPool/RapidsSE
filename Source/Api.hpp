@@ -9,12 +9,30 @@ namespace Interface
   {
   public:
 
+  static eEC  eJob_1_PreJob(Job**     ppJob,
+                            TokenVec* pCmdTknVec,
+                            TagSet*   pTagSet,
+                            ReqTuple* axReqTuple);
+  static void vJob_2_SpawnJob(Job* pJob);
+  static void vJob_3_PostJob(Job* pJob);
+  static void vJob_4_DeleteJob(Job** ppJob);
+
+  static JobClass* aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet);
+  static Job* pPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVec);
+
+  static bool bPassesCheck(JobClass* aJobCLass);
+  static bool bPassesLowMem(JobClass* aJobCLass);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   static Session* pAllocSession(void);
   static void     vFreeSession(Session* pSession);
   
   static void vIncStatistics(eAC eApiCall);
   static void vMonitorPortrait(s48K& sPortrait);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
   // external
@@ -35,20 +53,6 @@ namespace Interface
   static bool bReseedJob(Session* pSession, Job* pJob);
   
   
-  static eEC  ePseudoApi1_PreJob(Job**     ppJob,
-                                 TokenVec* pCmdTknVec,
-                                 TagSet*   pTagSet,
-                                 ReqTuple* axReqTuple);
-  static void vPseudoApi2_SpawnJob(Job* pJob);
-  static void vPseudoApi3_PostJob(Job* pJob);
-  static void vPseudoApi4_DeleteJob(Job** ppJob);
-
-  static JobClass* aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet);
-  static Job* pPreJob(JobClass* aJobClass, TagSet* pTagSet, TokenVec* pCmdTknVec);
-
-  static bool bPassesCheck(JobClass* aJobCLass);
-  static bool bPassesLowMem(JobClass* aJobCLass);
-
   private:
   
   static void vCreateTaskForJob(Job* pJob);
