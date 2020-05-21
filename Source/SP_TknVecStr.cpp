@@ -82,6 +82,10 @@ Stz* SP_TknVecStr::sz(TokenVec* pTknVec, i8 i_From, i8 i_Till)
         StrLib::vConcat(m_caResult,"\"");
         break;
         
+      case TN_TAG:
+        StrLib::vConcat(m_caResult,pToken->azChars());
+        break;
+        
       default:
         NEVER_REACH;
     }

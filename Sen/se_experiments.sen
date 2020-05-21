@@ -9,7 +9,22 @@
 /*----------------------------------------------------------------------------*/
 : exp1 prompt
 
-  "PIPELINE-STATEMENT-HERE" api::spawnDemon
+"
+  pipelineLocal recurringDemon
+
+    tag <pre_execute> = demon::install endTag
+
+  begin
+
+    stage stageA on origin:
+      start | recurring | eatAll | stageA
+
+  end;
+"
+
+  api::spawnDemon not if
+    "Error Code %v" .printf
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -24,6 +24,29 @@ void Step::vApiSpawnDemon(void)
   
   vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
   
+  
+  TokenVec* pDmnTknVec = TokenVec::pTokenise(sPipeline);
+  
+  Job* pJob = nullptr;
+  
+  TagSet oTagSet;
+  
+  ReqTuple xReqTuple;
+  
+  eEC eError = Api::eJob_1_PreJob(&pJob,pDmnTknVec,&oTagSet,&xReqTuple);
+  
+  if (eError) {
+  
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+    
+    EXIT();
+  }
+  
+  // MORE...
+  m_pDataStack->vPushInt(true);
+
+
   EXIT();
 }
 
