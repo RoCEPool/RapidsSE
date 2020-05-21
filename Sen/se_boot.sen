@@ -57,10 +57,6 @@ assert::stack_0
         "job__Execute.sen"        include
         "job__Begun.sen"          include
 
-        //"job_Receiver.sen"        include
-        //"job_Connector.sen"       include
-        //"job_Answer.sen"          include
-
         "job_BootCluster.sen"     include
 
         "job_ConnectCluster.sen"  include
