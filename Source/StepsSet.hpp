@@ -746,13 +746,6 @@ public:
   void vJob_QueryEnd(void);
   void vJob_QueryExecute(void);
 
-  // job Receiver
-  void vJob_ReceiverConnNoFetch(void);
-  void vJob_ReceiverConnNoStore(void);
-  void vJob_ReceiverJobReceived(void);
-  void vJob_ReceiverNodeFetch(void);
-  void vJob_ReceiverNodeStore(void);
-
  // job Repeater
   void vJob_RepeaterBegin(void);
   void vJob_RepeaterChunk(void);
