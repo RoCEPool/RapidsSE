@@ -256,6 +256,47 @@ void Api::vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* lock mutex and mark job as locked                                          */
+/*----------------------------------------------------------------------------*/
+void Api::vMutexLock(Session* pSession, Job* pJob)
+{
+  _static_
+  
+  pSession->m_pMutex->vLock(pSession);
+        
+  pJob->vJobState(JS_LOCKED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark job as running and unlock session mutex                               */
+/*----------------------------------------------------------------------------*/
+void Api::vMutexUnlock(Session* pSession, Job* pJob)
+{
+  _static_
+  
+  RASSERT(JS_RUNNING != pJob->eJobState());
+    
+  pJob->vJobState(JS_RUNNING);
+  
+  pSession->m_pMutex->vUnlock(pSession);
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait for session mutex to be signalled                                     */
+/*----------------------------------------------------------------------------*/
+void Api::vMutexWaitCond(Session* pSession, Job* pJob)
+{
+  _static_
+  
+  do {
+    
+    pSession->m_pMutex->vWait(pSession);
+    
+  } while (pJob->eJobState() != JS_SIGNALLED);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -26,7 +26,11 @@ namespace Interface
   static bool bPassesLowMem(JobClass* aJobCLass);
 
   static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
-  
+
+  static void vMutexLock(Session* pSession, Job* pJob);
+  static void vMutexUnlock(Session* pSession, Job* pJob);
+  static void vMutexWaitCond(Session* pSession, Job* pJob);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   static Session* pAllocSession(eSK eSession);

@@ -1524,7 +1524,7 @@ void Step::vJobShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.signalCompletion -- signal the connector thread                        */
+/* job.signalCompletion -- signal the waiting session                         */
 /*----------------------------------------------------------------------------*/
 void Step::vJobSignalCompletion(void)
 {
