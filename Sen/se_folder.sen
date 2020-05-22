@@ -219,7 +219,7 @@ dicLock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* list all words (long form) in the current dictionary                       */
 /*----------------------------------------------------------------------------*/
-: symbols prompt
+: symbols \prompt
 
   path[].toStr .put "::" .put .\n
 

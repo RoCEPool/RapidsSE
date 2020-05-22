@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* munge all .hpp files                                                       */
 /*----------------------------------------------------------------------------*/
-: vortex prompt
+: vortex \prompt
 
   // create a directory accessor
   dir::new locals| pSeSourceDir |

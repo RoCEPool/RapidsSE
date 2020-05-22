@@ -31,11 +31,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* prompt category                                                            */
+/*----------------------------------------------------------------------------*/
+: \prompt \\category ;
+
+: prompts \prompt find: \prompt word::ofCatg ;
+
+/*----------------------------------------------------------------------------*/
 /* demon category                                                             */
 /*----------------------------------------------------------------------------*/
 : \demon \\category ;
 
-: demons prompt find: \demon word::ofCatg ;
+: demons \prompt find: \demon word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* folder is used as a kind of word to identify folders                       */
@@ -43,44 +50,71 @@
 : \folder \\category ;
 
 : isFolder word.category@ find: \folder eql ;
-: folders prompt find: \folder word::ofCatg ;
+
+: folders \prompt find: \folder word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* handler category                                                           */
 /*----------------------------------------------------------------------------*/
 : \handler \\category ;
 
-: handlers prompt find: \handler word::ofCatg ;
+: handlers \prompt find: \handler word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* include category                                                           */
 /*----------------------------------------------------------------------------*/
 : \include \\category ;
 
-: includes prompt find: \include word::ofCatg ;
+: includes \prompt find: \include word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* operator category                                                          */
 /*----------------------------------------------------------------------------*/
 : \operator \\category ;
 
-: operators prompt find: \operator word::ofCatg ;
-: ops       prompt find: \operator word::ofCatg ;
+: operators \prompt find: \operator word::ofCatg ;
+: ops       \prompt find: \operator word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* procedure category                                                         */
 /*----------------------------------------------------------------------------*/
 : \procedure \\category ;
 
-: procedures prompt find: \procedure word::ofCatg ;
-: procs      prompt find: \procedure word::ofCatg ;
+: procedures \prompt find: \procedure word::ofCatg ;
+: procs      \prompt find: \procedure word::ofCatg ;
+
 
 /*----------------------------------------------------------------------------*/
-/* prompt category                                                            */
+/* list all words in the current dictionary                                   */
 /*----------------------------------------------------------------------------*/
-: \prompt \\category ;
+: words \prompt
 
-: prompts prompt find: \prompt word::ofCatg ;
+  //folder[] dic.lastWord dup
+  dic::root dic.lastWord dup
+  iterate                        // iterate word cursor
+    object@ word.name@ .         // print the name of the word
+    object@ word.prev object!    // advance cursor backwards thru words
+  next
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: lw \prompt
+
+  0 0 locals| pWord pCatg |
+
+  dic::root dic.lastWord dup
+  iterate                                 // iterate word cursor
+
+    object@ to pWord
+
+    pWord word.show
+
+    object@ word.prev object!             // advance cursor backwards thru words
+  next
+;
+
 
 /*============================================================================*/
 /* end                                                                        */

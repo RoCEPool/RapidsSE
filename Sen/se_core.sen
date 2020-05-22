@@ -290,18 +290,6 @@ true find: CASE word.immediate!
   word.exitHook!
 ;
 
-: exit_test prompt
-
-  set_hook
-  //[ "eg_hook" compiler::current@ word.exitHook! ]
-
-  1 if
-    "exit with hook" . exit
-  else
-    "normal exit"    . exit_rt
-  then
-;
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -559,14 +547,6 @@ true find: CASE word.immediate!
   begin
     "snoozing..." . snooze task::yield
   again
-;
-
-/*----------------------------------------------------------------------------*/
-/* hello world                                                                */
-/*----------------------------------------------------------------------------*/
-: helloWorld prompt
-
-  "Hello World!" .
 ;
 
 /*============================================================================*/

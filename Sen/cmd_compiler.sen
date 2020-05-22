@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 /* show all words that are of cmdSyntax:                                      */
 /*----------------------------------------------------------------------------*/
-: cmdSyntaxs prompt
+: cmdSyntaxs \prompt
 
   find: cmdSyntax: word::ofCatg
 ;

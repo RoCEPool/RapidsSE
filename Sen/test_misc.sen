@@ -5,11 +5,11 @@
 " test_misc.sen" .verbose
 
 
-: chuck prompt throw ;
-: chuck1 prompt false assert ;
-: chuck3 prompt a> . ;
-: chuck4 prompt rstk 0 1 2 3 stk throw ;
-: chuck5 prompt rstk 0 1 2 3 stk path[].dump throw ;
+: chuck \prompt throw ;
+: chuck1 \prompt false assert ;
+: chuck3 \prompt a> . ;
+: chuck4 \prompt rstk 0 1 2 3 stk throw ;
+: chuck5 \prompt rstk 0 1 2 3 stk path[].dump throw ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -166,7 +166,7 @@ traceon
 /*----------------------------------------------------------------------------*/
 /* test reverse                                                               */
 /*----------------------------------------------------------------------------*/
-: testReverse prompt
+: testReverse \prompt
 
   1 2 3 . . .
   1 2 3 3 reverse . . .

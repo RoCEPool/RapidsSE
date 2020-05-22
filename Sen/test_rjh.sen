@@ -4,7 +4,7 @@
 
 " test_rjh.sen" .verbose
 
-: test_rjh prompt
+: test_rjh \prompt
 
   "Rays Test Suite" .
 
