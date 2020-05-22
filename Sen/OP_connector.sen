@@ -91,15 +91,13 @@
 
   loop
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// set grid as started
-//true grid::started!
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ;
+
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: connectorOP_StartMarker \handler
+: connector_StartMarker \handler
 
   0 locals| pThisTask |
   0 locals| pJob_Connector |
@@ -140,13 +138,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for connector req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : connectorOP_req \operator
+ : connector_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: connectorOP_StartMarker ZK_STARTMARKER op[].handler!
+  find: connector_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -158,9 +156,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: connectorOP :: connectorOP ;
+cmdSyntax: connector :: connector ;
 
-: connectorOP _cmdTags
+: connector _cmdTags
 
   tags{
     <jobKind>  = JK_LOCAL

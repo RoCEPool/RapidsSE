@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* receiver init                                                              */
 /*----------------------------------------------------------------------------*/
-: receiverOP_init ( -- )
+: receiver_init ( -- )
 
   CN_JOB_LOCAL task[] task.thread thread.dedicated!
 
@@ -21,18 +21,13 @@
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job (possibly with operand), dispatch it          */
 /*----------------------------------------------------------------------------*/
-: receiverOP_loop ( -- )
+: receiver_loop ( -- )
 
   0 locals| pReceivedJob |
   0 locals| pOperand     |
   0 locals| pSendWith    |
   0 locals| pSocket      |
   0 locals| bRecvd       |
-
-
-  //job[] locals| pJob_Receiver |
-
-  //pJob_Receiver job_Receiver.node@ to pOtherNode
 
   "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
 
@@ -100,13 +95,13 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: receiverOP_StartMarker \handler
+: receiver_StartMarker \handler
 
   // initialise
-  receiverOP_init
+  receiver_init
 
   // loop, receiving and executing jobs
-  receiverOP_loop
+  receiver_loop
 
   // should never exit
   //hazard
@@ -119,13 +114,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for receiver req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : receiverOP_req \operator
+ : receiver_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: receiverOP_StartMarker ZK_STARTMARKER op[].handler!
+  find: receiver_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -137,9 +132,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: receiverOP :: receiverOP ;
+cmdSyntax: receiver :: receiver ;
 
-: receiverOP _cmdTags
+: receiver _cmdTags
 
   tags{
     <jobKind>  = JK_LOCAL

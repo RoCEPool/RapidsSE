@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: supervisorOP_StartMarker \handler
+: supervisor_StartMarker \handler
 
     "Supervisor Job Started" .
 
@@ -35,13 +35,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for supervisor req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : supervisorOP_req \operator
+ : supervisor_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: supervisorOP_StartMarker ZK_STARTMARKER op[].handler!
+  find: supervisor_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -53,9 +53,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: supervisorOP :: supervisorOP ;
+cmdSyntax: supervisor :: supervisor ;
 
-: supervisorOP _cmdTags
+: supervisor _cmdTags
 
   tags{
     <jobKind>  = JK_LOCAL

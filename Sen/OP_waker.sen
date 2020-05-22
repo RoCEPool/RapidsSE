@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: wakerOP_StartMarker \handler
+: waker_StartMarker \handler
 
   begin
 
@@ -28,13 +28,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for waker req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : wakerOP_req \operator
+ : waker_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: wakerOP_StartMarker ZK_STARTMARKER op[].handler!
+  find: waker_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -46,9 +46,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: wakerOP :: wakerOP ;
+cmdSyntax: waker :: waker ;
 
-: wakerOP _cmdTags
+: waker _cmdTags
 
   tags{
     <jobKind>  = JK_LOCAL
