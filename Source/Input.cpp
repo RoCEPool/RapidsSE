@@ -111,11 +111,11 @@ void Input::vDebugMode(i8 iDebugMode)
 i8 Input::iDepth(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  i8 iCharserDepth = 0;
-  
-  if (m_pCharser)
-    iCharserDepth = m_pCharser->iDepth();
+
+  if (! m_pCharser)
+    return -1;
+
+  i8 iCharserDepth = m_pCharser->iDepth();
   
   return iCharserDepth;
 }
