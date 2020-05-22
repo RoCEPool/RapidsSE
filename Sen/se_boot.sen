@@ -66,7 +66,6 @@ assert::stack_0
 
         "job_DefineNode.sen"      include
         "job_Distributed.sen"     include
-        "job_Docol.sen"           include
 
         "job_ForgetNode.sen"      include
 
@@ -105,6 +104,7 @@ assert::stack_0
         "OP_createSchema.sen"         include
         "OP_createTenant.sen"         include
 
+        "OP_docol.sen"                include
         "OP_dropCatalog.sen"          include
         "OP_dropIndex.sen"            include
         "OP_dropSchema.sen"           include
