@@ -48,6 +48,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
+//         opNm
 //         cmdNm    cmd / procNm arg       arg
 cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ; // proc anidx      
 cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ; // proc analizeIndex
