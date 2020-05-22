@@ -181,6 +181,18 @@ void Forth::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete input                                                               */
+/*----------------------------------------------------------------------------*/
+void Forth::vDeleteInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+
+  delete m_pInput;
+  
+  m_pInput = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get dictionary stack                                                       */
 /*----------------------------------------------------------------------------*/
 DicStack* Forth::pDicStack(void)
@@ -188,6 +200,28 @@ DicStack* Forth::pDicStack(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
   return & m_oDicStack;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get input stream                                                           */
+/*----------------------------------------------------------------------------*/
+Input* Forth::pInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+
+  return m_pInput;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new input                                                                  */
+/*----------------------------------------------------------------------------*/
+void Forth::vNewInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+
+  RASSERT(! m_pInput);
+    
+  m_pInput = new Input;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,16 +293,6 @@ Task* Forth::pTask(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
   return m_pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get input stream                                                           */
-/*----------------------------------------------------------------------------*/
-Input* Forth::pInput(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-
-  return m_pInput;
 }
 
 

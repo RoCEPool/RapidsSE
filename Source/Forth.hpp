@@ -48,7 +48,9 @@ namespace SenVM
     void vCompiler(Compiler* pCompiler);
     void vContentDump(void);
     bool bCorrectLayout(void);
+    void vDeleteInput(void);
     DicStack* pDicStack(void);
+    void vNewInput(void);
     void vReset(void);
     DicStack* pSaveDicStack(void);
     void vSeedForth(Word* pSeedWord);
