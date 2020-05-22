@@ -281,8 +281,8 @@ void SePrompt::vPromptLoop(void)
     
     vReportTime();
     
-    Api::vJob_4_DeleteJob(&m_pJob);
-    
+    Api::vJob_4_DeleteJob(&pJob);
+    m_pJob = nullptr;
 
     vLogFreeSpace();
 

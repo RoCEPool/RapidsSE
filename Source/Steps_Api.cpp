@@ -69,15 +69,24 @@ void Step::vApiExecuteRequest(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  Api::vMutexLock(pSession,pJob);
+  
   Api::vJob_2_SpawnJob_prompt(pJob);
 
+  Api::vMutexWaitCond(pSession,pJob);
   
-  
-  
-  
- 
+  Api::vMutexUnlock(pSession,pJob);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  Api::vJob_3_PostJob(pJob);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Api::vJob_4_DeleteJob(&pJob);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   m_pDataStack->vPushInt(true);
   
   Api::vFreeSession(pSession);
