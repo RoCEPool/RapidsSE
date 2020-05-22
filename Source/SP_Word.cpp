@@ -38,7 +38,7 @@ Stz* SP_Word::sz(Word* pWord)
   
   StrLib::vSprint(m_caResult,
                   "%s %p %s %s"
-                  "%s%s"_Stz,
+                  "%s"_Stz,
                   
                   pWord->szWordNm(),
                   pWord,
@@ -47,7 +47,6 @@ Stz* SP_Word::sz(Word* pWord)
                   
 
                   pWord->bImmediate() ? " immediate" : "",
-                  pWord->bPrompt()    ? " prompt"    : "",
 
                   C_VARGS_END
                   );
@@ -75,7 +74,7 @@ Stz* SP_Word::szSeeDoes(Word* pWord)
   
   StrLib::vSprint(m_caResult,
                   "%p: Does %s %s %s"
-                  "%s%s"_Stz,
+                  "%s"_Stz,
                   
                   pWord,
                   pWord->szWordNm(),
@@ -84,7 +83,6 @@ Stz* SP_Word::szSeeDoes(Word* pWord)
                   
                   
                   pWord->bImmediate() ? " immediate" : "",
-                  pWord->bPrompt()    ? " prompt"    : "",
                   
                   C_VARGS_END
                   );
@@ -112,7 +110,7 @@ Stz* SP_Word::szSeeWord(Word* pWord)
   
   StrLib::vSprint(m_caResult,
                   "%p: Word %s %s %s"
-                  "%s%s"_Stz,
+                  "%s"_Stz,
                   
                   pWord,
                   pWord->szWordNm(),
@@ -121,7 +119,6 @@ Stz* SP_Word::szSeeWord(Word* pWord)
                   
                   
                   pWord->bImmediate() ? " immediate" : "",
-                  pWord->bPrompt()    ? " prompt"    : "",
                   
                   C_VARGS_END
                   );

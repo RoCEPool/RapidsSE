@@ -29,7 +29,6 @@ namespace SenVM
     Object*   m_pObject;      // optional associated object
     i8        m_iParams;      // number of parameters
     bool      m_bPersistent;  // is on persistent heap
-    bool      m_bPrompt;      // can be executed by prompt?
     i8        m_iTrace;       // trace level
     TagSet*   m_pWordTags;    // optional tag set
 
@@ -112,8 +111,6 @@ namespace SenVM
     void  vParams(i8 iParams);
     i8    iParams(void);
     Word* pPrevWord(void);
-    bool  bPrompt(void);
-    void  vPrompt(bool bImmediate);
     void  vResetRoutine(void);
     Routine* pRoutine(void);
     i8    nRoutineUsed(void);

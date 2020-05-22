@@ -1648,8 +1648,6 @@ public:
   void vWordObjectFetch(void);
   void vWordObjectStore(void);
   void vWordPrev(void);
-  void vWordPromptFetch(void);
-  void vWordPromptStore(void);
   void vWordResetRoutine(void);
   void vWordSee(void);
   void vWordXcheckInxPtr(void);

@@ -628,10 +628,7 @@ bool SePrompt::bIsPromptWord(void)
   
   if (! pWord)
     return false;
-  
-  if (pWord->bPrompt())
-    return true;
-  
+    
   Word* pPromptCatg = pRootDic->pFindWord("\\prompt"_Stz);
   if (pPromptCatg == pWord->pCategory())
     return true;

@@ -93,7 +93,6 @@ Word::Word(Stz* szWordNm)
   m_pObject    = nullptr;
   m_iParams    = 0;
   //m_bPersistent   = false;
-  m_bPrompt    = false;
   m_iTrace     = 0;
   m_pWordTags  = nullptr;
 
@@ -634,26 +633,6 @@ Word* Word::pPrevWord(void)
   Word* pPrevWord = _pWord(pPrevArticle->pObject());
   
   return pPrevWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get prompt flag                                                            */
-/*----------------------------------------------------------------------------*/
-bool Word::bPrompt(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_bPrompt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set prompt flag                                                            */
-/*----------------------------------------------------------------------------*/
-void Word::vPrompt(bool bPrompt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_bPrompt = bPrompt;
 }
 
 /*----------------------------------------------------------------------------*/

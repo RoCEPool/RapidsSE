@@ -173,25 +173,6 @@ traceon
 ;
 
 
-/*----------------------------------------------------------------------------*/
-/* test store strings into session todo                                       */
-/*----------------------------------------------------------------------------*/
-: ssnDo
-
-  "storedCmd" :create
-
-  true compiler::current@ word.prompt!
-
-  "print \"hello world!\"" encode::push
-
-  POSTPONE session::this
-
-  POSTPONE session.todo!
-
-  POSTPONE exit_rt
-;
-
-//debug::breakPoint
 
 /*============================================================================*/
 /* end                                                                        */
