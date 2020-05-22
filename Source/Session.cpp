@@ -114,7 +114,7 @@ Session::Session(void)
   m_bSessionExiting = false;
   m_pJobStack       = new Stack(KK_JOB_STACK);
 
-  m_pInput          = new Input;
+  m_pInput          = nullptr;
 
   m_sToDo           = ""_Stz;
   
