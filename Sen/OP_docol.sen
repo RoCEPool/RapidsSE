@@ -1,27 +1,14 @@
 /*============================================================================*/
-/* job_Docol.sen -- Job Docol                                                 */
+/* OP_docol.sen -- Operator docol                                             */
 /*============================================================================*/
 
-" job_Docol.sen" .verbose
+" OP_docol.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* docol command request                                                      */
+/* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: docol_req ( -- <R> )
+: docol_action
 
-  LogEntry SEED_REQ
-
-  0 0 locals| pJob_Docol pTask |
-
-
-  // get the task
-  task[] to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob_Docol
-
-  // get the routine from the job
-  //pJob_Docol job.routineName@
   <routineNm>
   >interpret
 
@@ -29,24 +16,22 @@
     depth while discard
   repeat
 
-  LogExit DONE_REQ
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
-/***                            - Definition -                              ***/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-
 cmdSyntax: docol :: docol <routineNm> ;
 
-: docol _cmdTags tags{
-  <cmdDesc>  = "--cmd desc for job--"
-  
-  <jobKind>  = JK_LOCAL
-  <rspKind>  = RS_JOB_RESPONSE
-  <ddlLock>  = DL_NONE
-}
+: docol _cmdTags tagCopy: localLiteOp_cmdTags
+  tags{
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <params>      = 1
+  }
 ;
-
+    
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
