@@ -43,6 +43,7 @@
 : \folder \\category ;
 
 : isFolder word.category@ find: \folder eql ;
+: folders prompt find: \folder word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* handler category                                                           */
@@ -71,8 +72,8 @@
 /*----------------------------------------------------------------------------*/
 : \procedure \\category ;
 
-: procedues prompt find: \procedure word::ofCatg ;
-: procs     prompt find: \procedure word::ofCatg ;
+: procedures prompt find: \procedure word::ofCatg ;
+: procs      prompt find: \procedure word::ofCatg ;
 
 /*============================================================================*/
 /* end                                                                        */

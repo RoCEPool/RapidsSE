@@ -2,7 +2,22 @@
 /* help -- rapidse help                                                       */
 /*============================================================================*/
 
-man;
+//man;
+
+print "" ;
+
+print "Useful SE commands include:" ;
+
+print "demons     -- " ;
+print "folders    -- " ;
+print "handlers   -- " ;
+print "munge      -- " ;
+print "ops        -- " ;
+print "operators  -- " ;
+print "procs      -- " ;
+print "procedures -- " ;
+
+print "" ;
 
 /*============================================================================*/
 /* end                                                                        */
