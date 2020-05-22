@@ -9,10 +9,11 @@ assert::stack_0
 "Compilation progress: " .put
 
 9 .put
-        "se_categories.sen"       include
         "se_core.sen"             include
         "se_word.sen"             include
         "se_str.sen"              include
+
+        "se_categories.sen"       include
         "se_tags.sen"             include
         "se_log.sen"              include
         "se_path.sen"             include
