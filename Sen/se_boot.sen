@@ -24,7 +24,7 @@ assert::stack_0
 8 .put
         "tpl_liteOp.sen"          include
         "tpl_localLiteOp.sen"     include
-        "cmd_info.sen"            include
+        "cmd_cmdTags.sen"         include
         "cmd_compiler.sen"        include
 
 7 .put

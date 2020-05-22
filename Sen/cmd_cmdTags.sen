@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* cmd_Info.sen -- the _cmdTags words                                            */
+/* cmd_cmdTags.sen -- the _cmdTags words                                      */
 /*============================================================================*/
 
 " cmd_info.sen" .verbose
@@ -134,9 +134,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* show all words that are of _cmdTags                                          */
+/* show all words that are of _cmdTags                                        */
 /*----------------------------------------------------------------------------*/
-: opInfos prompt
+: cmdTags prompt
 
   find: _cmdTags word::ofCatg
 ;
