@@ -251,22 +251,22 @@ void SePrompt::vPromptLoop(void)
     
     m_oTimer.vStart();
     
-    vJobLockMutex();
+    Api::vMutexLock(m_pSession,pJob);
 
     
     
     // spawn the job
     if (bNoWait()) {
       Api::vJob_2_SpawnJob_prompt(pJob);
-      vJobUnlockMutex();
+      Api::vMutexUnlock(m_pSession,pJob);
       continue;
     }
     else {
       Api::vJob_2_SpawnJob_prompt(pJob);
     }
     
-    vJobWaitCond();
-    vJobUnlockMutex();
+    Api::vMutexWaitCond(m_pSession,pJob);
+    Api::vMutexUnlock(m_pSession,pJob);
     m_oTimer.vUpdate();
 
   
@@ -630,69 +630,6 @@ bool SePrompt::bIsPromptWord(void)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* lock job's mutex                                                           */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vJobLockMutex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  RASSERT(JS_RUNNING == m_pJob->eJobState());
-  
-  m_pSession->m_pMutex->vLock(this);
-  
-//  i8 rCode = pthread_mutex_lock(&m_pJob->m_xThreadMutex);
-//  if (0 != rCode)
-//    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
-  
-  m_pJob->vJobState(JS_LOCKED);
-}
-
-/*----------------------------------------------------------------------------*/
-/* unlock job's mutex                                                         */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vJobUnlockMutex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // have to be locked, waiting or signalled
-  RASSERT(JS_RUNNING != m_pJob->eJobState());
-  
-  AM::vLogPrm(SL_INF,this,PA_PRM_RESUMES,
-              "unlocks job mutex and resumes running"_Stz, //!format-LogPrm
-              C_VARGS_END);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pSession->m_pMutex->vUnlock(this);
-
-  m_pJob->vJobState(JS_RUNNING);
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait on job's condition variable                                           */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vJobWaitCond(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  SP_Gid spId;
-  
-  vIncStepNo();
-  AM::vLogPrm(SL_INF,this,PA_PRM_WAITS,
-              "for job mutex %s to be signaled (mutex is unlocked)"_Stz, //!format-LogPrm
-              spId.sz(IK_JOB,m_pJob->m_iFocalId),
-              C_VARGS_END);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  do {
-    
-      m_pSession->m_pMutex->vWait(this);
-    
-  } while (m_pJob->eJobState() != JS_SIGNALLED);
 }
 
 /*----------------------------------------------------------------------------*/

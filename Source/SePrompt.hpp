@@ -77,9 +77,6 @@ namespace Prompt
     void vInitPromptTags(void);
     TokenVec* pInpTknVec(void);
     bool bIsPromptWord(void);
-    void vJobLockMutex(void);
-    void vJobUnlockMutex(void);
-    void vJobWaitCond(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
     i8   iNextSectionNo(void);
