@@ -14,7 +14,7 @@ void Step::vAddSteps_Api(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* api::spawnDemon -- spawn a demon                                           */
+/* api::executeRequest -- extecute a request (internally)                     */
 /*----------------------------------------------------------------------------*/
 void Step::vApiExecuteRequest(void)
 {
@@ -34,7 +34,7 @@ void Step::vApiExecuteRequest(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Session* pSession = Api::pAllocSession();
+  Session* pSession = Api::pAllocSession(SK_INTERNAL);
   pSession->vPartition(0);
   
   eError = pSession->eInit("rapidsse"_Stz,"public"_Stz);

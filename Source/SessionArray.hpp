@@ -38,7 +38,7 @@ namespace Interface
     static void vMarkSenLoc(Session* pSession, i8 iSenLoc);
     static void vMarkSignalled(Session* pSession);
   
-    Session* pAllocSession(void);
+    Session* pAllocSession(eSK eSssion);
     void vDump(void);
     void vFreeSession(Session* pSession);
     Session* pGetSession(i8 i_Session);

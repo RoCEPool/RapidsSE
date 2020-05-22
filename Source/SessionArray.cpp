@@ -186,7 +186,7 @@ void SessionArray::vMarkSignalled(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* allocate a session                                                         */
 /*----------------------------------------------------------------------------*/
-Session* SessionArray::pAllocSession(void)
+Session* SessionArray::pAllocSession(eSK eSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
@@ -201,6 +201,8 @@ Session* SessionArray::pAllocSession(void)
   
   m_nSessionsSoFar++;
 
+  pSession->m_eSession = eSession;
+  
   m_okLock.vDropWrite();
   
   return pSession;
@@ -253,6 +255,8 @@ void SessionArray::vFreeSession(Session* pSession)
   
   m_okLock.vGrabWrite();
   
+  pSession->m_eSession = SK_NONE;
+
   pSession->vFreeSession(m_iFirstFree);
   
   m_iFirstFree = i_FreedSession;

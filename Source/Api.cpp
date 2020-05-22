@@ -263,14 +263,14 @@ void Api::vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* allocate a session                                                         */
 /*----------------------------------------------------------------------------*/
-Session* Api::pAllocSession(void)
+Session* Api::pAllocSession(eSK eSession)
 {
   _static_
   
   
   SessionArray* pSessionArray = AM::pSessionArray();
   
-  Session* pSession = pSessionArray->pAllocSession();
+  Session* pSession = pSessionArray->pAllocSession(eSession);
   
   return pSession;
 }

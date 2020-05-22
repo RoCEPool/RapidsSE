@@ -56,7 +56,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   i8 iPartition = 0;
   
-  m_pSession = Api::pAllocSession();
+  m_pSession = Api::pAllocSession(SK_EXTERNAL);
   m_pSession->vPartition(iPartition);
   
   eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);

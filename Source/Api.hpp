@@ -29,7 +29,7 @@ namespace Interface
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  static Session* pAllocSession(void);
+  static Session* pAllocSession(eSK eSession);
   static void     vFreeSession(Session* pSession);
   
   static void vIncStatistics(eAC eApiCall);

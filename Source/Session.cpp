@@ -73,6 +73,7 @@ Session::Session(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   m_i_Session  = -1;
+  m_eSession   = SK_NONE;
   
   m_eApiFun    = AC_NONE;
   m_iApiLoc    = 0;

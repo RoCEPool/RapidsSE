@@ -12,6 +12,8 @@ namespace Sessions
   public:
     i8    m_i_Session;   // session index
     i8    m_i_NextFree;  // next state in free chain
+  
+    eSK   m_eSession;    // session kind
     
     eAC   m_eApiFun;     // current / last api function called
     i8    m_iApiLoc;     // last reported location in api function
