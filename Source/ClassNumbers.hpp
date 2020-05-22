@@ -141,7 +141,6 @@ enum eCN : u2 // Class Number
   /* 110 0x06E    14576B Heap:L */ CN_JOB_LOCAL,
   /* 111 0x06F    14280B Heap:L */ CN_JOB_NODEINFO,
   /* 112 0x070    14264B Heap:L */ CN_JOB_OPERAND,
-  /* 113 0x071    14240B Heap:L */ CN_JOB_RECEIVER,
   /* 116 0x074    14224B Heap:L */ CN_JOB_START,
   /* 124 0x07C    14280B Heap:L */ CN_JOB_WRITEBUFFER,
   /* 126 0x07E      224B Heap:S */ CN_JOBLIST,
@@ -473,7 +472,6 @@ static Stz* aCN[]
   /* 110 0x06E */ "JOB_LOCAL"_Stz,           // CN_JOB_LOCAL
   /* 111 0x06F */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
   /* 112 0x070 */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
-  /* 113 0x071 */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER
   /* 116 0x074 */ "JOB_START"_Stz,           // CN_JOB_START
   /* 124 0x07C */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
   /* 126 0x07E */ "JOBLIST"_Stz,             // CN_JOBLIST

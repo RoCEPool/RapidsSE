@@ -81,7 +81,6 @@ namespace Steps
     static void vAddSteps_JobNodeInfo(void);
     static void vAddSteps_JobOperand(void);
     static void vAddSteps_JobPipeline(void);
-    static void vAddSteps_JobReceiver(void);
     static void vAddSteps_JobRef(void);
 
     static void vAddSteps_JobWriteBuffer(void);

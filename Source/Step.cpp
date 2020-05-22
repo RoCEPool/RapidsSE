@@ -100,7 +100,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobNodeInfo();
   Step::vAddSteps_JobOperand();
   Step::vAddSteps_JobPipeline();
-  Step::vAddSteps_JobReceiver();
   Step::vAddSteps_JobRef();
   Step::vAddSteps_JobWriteBuffer();
   Step::vAddSteps_JobWriteRecord();

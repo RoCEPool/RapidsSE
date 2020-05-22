@@ -41,8 +41,6 @@ namespace Jobs
 
 #include "Job_Operand.hpp"
 
-//#include "Job_Receiver.hpp"
-
 #include "Job_Start.hpp"
 
 #include "Job_WriteBuffer.hpp"
