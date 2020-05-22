@@ -151,6 +151,9 @@ void Step::vInputPop(void)
   
   bool bPopped = m_pInput->bPopCharser();
   ASSERT(bPopped);
+  
+  if (-1 == m_pInput->iDepth())
+    vDeleteInput();
 
   EXIT();
 }
@@ -161,6 +164,11 @@ void Step::vInputPop(void)
 void Step::vInputPush(void)
 {
   ENTRY();
+  
+  if (! m_pInput) {
+    vNewInput();
+    ASSERT(0 == m_pInput->iDepth());
+  }
   
   m_pInput->vPushCharser();
 

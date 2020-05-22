@@ -34,6 +34,8 @@ void Task::vAddAxioms(void)
   if (AM::bVerbose())
     vTrace("[[mainThread]] Adding axiomatic routines...\n"_Stz);
   
+  m_pForth->vNewInput();
+  
   s48K sDefinition;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -318,6 +320,8 @@ void Task::vAddAxioms(void)
 //#endif
   
   pCompileAxiomaticColon(sDefinition);
+  
+  m_pForth->vDeleteInput();
 }
 
 /*----------------------------------------------------------------------------*/

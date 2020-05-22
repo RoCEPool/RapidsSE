@@ -485,9 +485,11 @@ void Step::vWordNew(void)
 
   Word* pNewWord = new(pDic) Word(sWordNm);
   
-  Word* pInclude = m_pInput->pUseInclude();
-  pNewWord->vInclude(pInclude);
-
+  if (m_pInput) {
+    Word* pInclude = m_pInput->pUseInclude();
+    pNewWord->vInclude(pInclude);
+  }
+  
   m_pDataStack->vPushPtr(pNewWord);
   //m_pCompiler->vCurrentWord(pNewWord);
 

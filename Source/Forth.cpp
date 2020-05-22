@@ -65,7 +65,7 @@ Forth::Forth(Task* pTask, RegSet* pRegSet)
   m_pLocalsFrame = nullptr;
 
   m_pCompiler    = new Compiler;
-  m_pInput   = new Input;
+  m_pInput       = nullptr; // new Input;
 
   _checkInitialised_(CN_FORTH);
  
