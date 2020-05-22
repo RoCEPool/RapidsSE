@@ -9,8 +9,8 @@ namespace Focals
   {
   public:
     i8   m_i_Origin;   // originated on which node
-    i8   m_i_Session;  // which session
-    i8   m_iReqId;     // the id of the request
+    i8   m_i_Session;  // which session in session array
+    i8   m_iReqNo;     // the sequence no of the request from that session
     i8   m_iForId;     // id of prompt or api
   
     i8   m_iDetail;    // level of logging  

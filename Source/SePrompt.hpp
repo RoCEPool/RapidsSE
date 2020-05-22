@@ -23,7 +23,6 @@ namespace Prompt
     bool      m_bOneRun;     // one command has been run?
     bool      m_bContinue;   // continue processing commands?
 
-    i8        m_iCmdNo;      // command no
     TagSet    m_oPromptTags; // tags gleaned from the prompt command
     Job*      m_pJob;        // job
 
@@ -63,7 +62,6 @@ namespace Prompt
     void vCheckJobCtl(void);
     bool bCheckJobTags(void);
     void vCheckTimed(void);
-    void vCompletedTask(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
     void vCutToken(i8 i_Tkn);

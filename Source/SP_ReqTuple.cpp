@@ -43,7 +43,7 @@ Stz* SP_ReqTuple::sz(ReqTuple* aReqTuple)
                   "<i_Session=%lld ReqId=%s For=%s Detail=%lld Purpose=%s>"_Stz,
                   
                   aReqTuple->m_i_Session,
-                  spId.sz(IK_REQUEST,aReqTuple->m_iReqId),
+                  spId.sz(IK_REQUEST,aReqTuple->m_iReqNo),
                   spIdFor.sz(aReqTuple->m_iForId),
                   aReqTuple->m_iDetail,
                   aReqTuple->m_sPurpose.azChar()

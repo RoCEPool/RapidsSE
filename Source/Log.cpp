@@ -275,7 +275,7 @@ void Log::vHow(i8 iReqId, i8 iDetail)
   
   LogEntry* pLogEntry = &m_oaEntry[i_MinEntry % m_nEntries];
   
-  if (pLogEntry->m_xReqTuple.m_iReqId == iReqId)
+  if (pLogEntry->m_xReqTuple.m_iReqNo == iReqId)
     vHow(iReqId,iDetail,pLogEntry);
 
   for (i8 i_Entry = i_MinEntry + 1; i_Entry <= i_MaxEntry; i_Entry++) {
@@ -285,7 +285,7 @@ void Log::vHow(i8 iReqId, i8 iDetail)
     if (-1 == pLogEntry->m_i_Entry)
       break;
     
-    if (pLogEntry->m_xReqTuple.m_iReqId == iReqId)
+    if (pLogEntry->m_xReqTuple.m_iReqNo == iReqId)
       vHow(iReqId,iDetail,pLogEntry);
   }
   
@@ -301,7 +301,7 @@ void Log::vHow(i8 iReqId, i8 iDetail)
 /*----------------------------------------------------------------------------*/
 void Log::vHow(i8 iReqId, i8 iDetail, LogEntry* pLogEntry)
 {
-  if (pLogEntry->m_xReqTuple.m_iReqId != iReqId)
+  if (pLogEntry->m_xReqTuple.m_iReqNo != iReqId)
     return;
   
   if (iDetail != C_UNKNOWN) {

@@ -17,7 +17,7 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
   m_iJobId  = pJob->m_iFocalId;
   m_eJobAct = eJobAct;
   
-  m_iReqId  = pJob->m_xReqTuple.m_iReqId;
+  m_iReqNo  = pJob->m_xReqTuple.m_iReqNo;
   
        if (JA_JOB_CONSTRUCT == eJobAct)     pLogEntry->m_iIndicator = OC_CONSTRUCT;
   else if (JA_JOB_DESTRUCT == eJobAct)      pLogEntry->m_iIndicator = OC_DESTRUCT;
@@ -45,7 +45,7 @@ void _LogEntryJob::vOutline(s4K& sOutline)
                 
                       spId.sz(IK_JOB,m_iJobId),
                       spString.szRight(aJA[m_eJobAct],24),
-                      spReqId.sz(IK_REQUEST,m_iReqId)
+                      spReqId.sz(IK_REQUEST,m_iReqNo)
                       );
 }
 
@@ -61,7 +61,7 @@ void _LogEntryJob::vWriteCsv(File* pFile, LogEntry* pEntry)
                 
                 spId.sz(IK_JOB,m_iJobId),
                 aJA[m_eJobAct],
-                spReqId.sz(IK_REQUEST,m_iReqId)
+                spReqId.sz(IK_REQUEST,m_iReqNo)
                 );
 }
 

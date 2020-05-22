@@ -74,7 +74,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 
   m_bContinue   = true;
   
-  m_iCmdNo      = 0;
   m_pJob        = nullptr;
   // m_oTimer
 
@@ -157,7 +156,7 @@ void SePrompt::vPromptLoop(void)
     
   m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
 
-  while (bContinue()) {
+  while (m_bContinue) {
     
     if (bStdIn()) {
       vReportOther();
@@ -220,6 +219,8 @@ void SePrompt::vPromptLoop(void)
     //.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.
     
     // prompt has finessed the final input token vector at this stage
+    
+    m_xReqTuple.m_iReqNo++;
     
     vLogCommand();
     
@@ -447,18 +448,6 @@ void SePrompt::vCheckTimed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set task as completed                                                      */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCompletedTask(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Task* pTask = m_pJob->pTask();
-  
-  pTask->vState(TS_COMPLETED);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get continue                                                               */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bContinue(void)
@@ -655,7 +644,7 @@ void SePrompt::vLogCommand(void)
   vIncStepNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
               "%lld %s"_Stz, //!format-LogPrm
-              m_iCmdNo++,sCommand.szStz());
+              m_xReqTuple.m_iReqNo,sCommand.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -863,7 +852,7 @@ i8 SePrompt::iRequestId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_xReqTuple.m_iReqId;
+  return m_xReqTuple.m_iReqNo;
 }
 
 /*----------------------------------------------------------------------------*/
