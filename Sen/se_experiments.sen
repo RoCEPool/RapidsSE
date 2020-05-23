@@ -183,20 +183,24 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* the convertor experiment                                                   */
 /*----------------------------------------------------------------------------*/
-: exp6 \prompt
+: exp_fl \prompt
 
-": exp6 A" .
+": exp_fl A" .
 
-  <fl_file> <fl_table> "exp6 : %v %v" .printf
+  <fl_file> <fl_table> "exp_fl : %v %v" .printf
 
   <fl_file> file::size locals| nFileSize |
 
   nFileSize <fl_file> "File %v Size %v" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-": exp6 B" .
+": exp_fl B" .
 
   <fl_table> op__table not if
     <fl_table> "Cant find <fl_table> : %v" .printf
@@ -204,7 +208,7 @@
   then
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-": exp6 C" .
+": exp_fl C" .
 
   table[].streamDef@ convertor::new locals| pConvertor |
 
@@ -215,7 +219,7 @@
   <fl_file> OPEN_READ pFile file.open assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-": exp6 D" .
+": exp_fl D" .
 
   now[] now.asOf
   now[] now.timestampStr .
@@ -225,19 +229,19 @@
 
   1 0 do
 
-    ": exp6 D1" .
+    ": exp_fl D1" .
 
     0 pFile file.seek
 
-    ": exp6 D2" .
+    ": exp_fl D2" .
     pCsvBuffer pFile file.ReadChunk assert
 
     //pCsvBuffer csvBuffer.print
 
-    ": exp6 D3" .
+    ": exp_fl D3" .
     pCsvBuffer pConvertor convertor.inspect
 
-    ": exp6 D4" .
+    ": exp_fl D4" .
   loop
   
   BM_TimerUpdate
@@ -248,7 +252,7 @@
   now[] now.timestampStr .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-": exp6 E" .
+": exp_fl E" .
 
   pFile file.close
   pFile file.delete
@@ -257,7 +261,7 @@
 
   pConvertor convertor.delete
 
-": exp6 F" .
+": exp_fl F" .
 ;
 
 /*============================================================================*/
