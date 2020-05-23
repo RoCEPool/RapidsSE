@@ -51,8 +51,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.kind@"_Stz,            &Step::vJobKindFetch);
   
-  vAddStep("job.metadata!"_Stz,        &Step::vJobMetadataStore);
-  
   vAddStep("job.name@"_Stz,            &Step::vJobNameFetch);
   vAddStep("job.nextOperand"_Stz,      &Step::vJobNextOperand);
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
@@ -764,23 +762,6 @@ void Step::vJobKindFetch(void)
   
   m_pDataStack->vPushInt(pJob->eJobKind());
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.metadata! -- store meta data string in the job                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJobMetadataStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  s4K sMetadata;
-  m_pDataStack->vPopStr(sMetadata,__func__);
-  
-  pJob->vMetaData(sMetadata);
-  
   EXIT();
 }
 

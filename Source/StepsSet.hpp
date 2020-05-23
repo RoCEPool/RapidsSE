@@ -571,8 +571,6 @@ public:
 
   void vJobKindFetch(void);
 
-  void vJobMetadataStore(void);
-
   void vJobNameFetch(void);
   void vJobNextOperand(void);
   void vJobNoWaitFetch(void);
