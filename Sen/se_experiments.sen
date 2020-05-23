@@ -182,6 +182,84 @@
   then
 ;
 
+/*----------------------------------------------------------------------------*/
+/* the convertor experiment                                                   */
+/*----------------------------------------------------------------------------*/
+: exp6 \prompt
+
+": exp6 A" .
+
+  <fl_file> <fl_table> "exp6 : %v %v" .printf
+
+  <fl_file> file::size locals| nFileSize |
+
+  nFileSize <fl_file> "File %v Size %v" .printf
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+": exp6 B" .
+
+  <fl_table> op__table not if
+    <fl_table> "Cant find <fl_table> : %v" .printf
+    exit
+  then
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+": exp6 C" .
+
+  table[].streamDef@ convertor::new locals| pConvertor |
+
+  csvBuffer::new locals| pCsvBuffer |
+
+  file::new locals| pFile |
+
+  <fl_file> OPEN_READ pFile file.open assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+": exp6 D" .
+
+  now[] now.asOf
+  now[] now.timestampStr .
+
+  BM_TimerNew
+  BM_TimerBegin
+
+  1 0 do
+
+    ": exp6 D1" .
+
+    0 pFile file.seek
+
+    ": exp6 D2" .
+    pCsvBuffer pFile file.ReadChunk assert
+
+    //pCsvBuffer csvBuffer.print
+
+    ": exp6 D3" .
+    pCsvBuffer pConvertor convertor.inspect
+
+    ": exp6 D4" .
+  loop
+  
+  BM_TimerUpdate
+  
+  aggTimer[] aggTimer.reportStr .
+
+  now[] now.asOf
+  now[] now.timestampStr .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+": exp6 E" .
+
+  pFile file.close
+  pFile file.delete
+
+  pCsvBuffer csvBuffer.delete
+
+  pConvertor convertor.delete
+
+": exp6 F" .
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

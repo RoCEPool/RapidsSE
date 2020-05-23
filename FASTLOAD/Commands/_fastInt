@@ -4,6 +4,9 @@
 
 bc;
 
+tag <fl_table> = uniIntTbl ;
+tag <fl_file>  = "../FASTLOAD/Data/uniInt.csv" ;
+
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create uniIntTbl";
 
@@ -25,7 +28,7 @@ tableScan uniIntTbl;
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "convert uniIntTbl";
 
-//exp3;
+exp6;
 
 /*============================================================================*/
 /* end                                                                        */
