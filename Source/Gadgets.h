@@ -15,43 +15,41 @@ namespace Gadgets
 //------------------------------------------------------------------------------
 
 // tags
-static Stz* C_TAGSET_NAME      = "<aTagSetNm>"_Stz;
+static Stz* C_TAGSET_NAME   = "<aTagSetNm>"_Stz;
 
-static Stz* C_TAG_CMD          = "<cmd>"_Stz;
-static Stz* C_TAG_XMITS        = "<Xmits>"_Stz;
-static Stz* C_TAG_DISTID       = "<distId>"_Stz;
-static Stz* C_TAG_JOBCLASS     = "<jobClass>"_Stz;
-static Stz* C_TAG_JOBKIND      = "<jobKind>"_Stz;
-static Stz* C_TAG_JOBNM        = "<jobNm>"_Stz;
-static Stz* C_TAG_NEXTOP       = "<nextOp>"_Stz;
-static Stz* C_TAG_NEXTSTAGE    = "<nextStage>"_Stz;
-static Stz* C_TAG_NODENO       = "<nodeNo>"_Stz;
-static Stz* C_TAG_PATH         = "<path>"_Stz;
-static Stz* C_TAG_STMT         = "<stmt>"_Stz;
-static Stz* C_TAG_TABLENM      = "<tableNm>"_Stz;
-static Stz* C_TAG_TOPOLOGY     = "<topology>"_Stz;
-static Stz* C_TAG_XMITKIND     = "<xmitKind>"_Stz;
+static Stz* C_TAG_API       = "</api>"_Stz;
+static Stz* C_TAG_BYPROMPT  = "<byPrompt>"_Stz;
+static Stz* C_TAG_CMD       = "<cmd>"_Stz;
+static Stz* C_TAG_FLOW      = "</flow>"_Stz;
+static Stz* C_TAG_DISTID    = "<distId>"_Stz;
+static Stz* C_TAG_INFO      = "</info>"_Stz;
+static Stz* C_TAG_JOBCLASS  = "<jobClass>"_Stz;
+static Stz* C_TAG_JOBKIND   = "<jobKind>"_Stz;
+static Stz* C_TAG_JOBNM     = "<jobNm>"_Stz;
+static Stz* C_TAG_LIFE      = "</life>"_Stz;
+static Stz* C_TAG_NEXTOP    = "<nextOp>"_Stz;
+static Stz* C_TAG_NEXTSTAGE = "<nextStage>"_Stz;
+static Stz* C_TAG_NODENO    = "<nodeNo>"_Stz;
+static Stz* C_TAG_PATH      = "<path>"_Stz;
+static Stz* C_TAG_NOSPAWN   = "</noSpawn>"_Stz;
+static Stz* C_TAG_NOWAIT    = "</noWait>"_Stz;
+static Stz* C_TAG_STMT      = "<stmt>"_Stz;
+static Stz* C_TAG_TABLENM   = "<tableNm>"_Stz;
+static Stz* C_TAG_TAGS      = "</tags>"_Stz;
+static Stz* C_TAG_TIME      = "</time>"_Stz;
+static Stz* C_TAG_TOPOLOGY  = "<topology>"_Stz;
+static Stz* C_TAG_XFER      = "</xfer>"_Stz;
+static Stz* C_TAG_XMITKIND  = "<xmitKind>"_Stz;
+static Stz* C_TAG_XMITS     = "<Xmits>"_Stz;
 
+static Stz* C_TAG_DATE_FORMAT          = "<date_format>"_Stz;
 static Stz* C_TAG_ENCLOSED_BY_LEADING  = "<enclosed_by_leading>"_Stz;
 static Stz* C_TAG_ENCLOSED_BY_TRAILING = "<enclosed_by_trailing>"_Stz;
 static Stz* C_TAG_ESCAPE_CHAR          = "<escape_char>"_Stz;
 static Stz* C_TAG_FIELD_DELIMITER      = "<field_delimiter>"_Stz;
+static Stz* C_TAG_MAX_ERRORS           = "<max_errors>"_Stz;
 static Stz* C_TAG_RECORD_TERMINATOR    = "<record_terminator>"_Stz;
 static Stz* C_TAG_RECORD_ENDS          = "<record_ends>"_Stz;
-static Stz* C_TAG_DATE_FORMAT          = "<date_format>"_Stz;
-static Stz* C_TAG_MAX_ERRORS           = "<max_errors>"_Stz;
-
-// job control tags
-static Stz* C_TAG_API      = "</api>"_Stz;
-static Stz* C_TAG_BYPROMPT = "</byPrompt>"_Stz;
-static Stz* C_TAG_FLOW     = "</flow>"_Stz;
-static Stz* C_TAG_INFO     = "</info>"_Stz;
-static Stz* C_TAG_LIFE     = "</life>"_Stz;
-static Stz* C_TAG_NOWAIT   = "</noWait>"_Stz;
-static Stz* C_TAG_NOSPAWN  = "</noSpawn>"_Stz;
-static Stz* C_TAG_TAGS     = "</tags>"_Stz;
-static Stz* C_TAG_TIME     = "</time>"_Stz;
-static Stz* C_TAG_XFER     = "</xfer>"_Stz;
 
 // job info tags
 static Stz* C_TAG_SEEDCAN  = "<seedCan>"_Stz;

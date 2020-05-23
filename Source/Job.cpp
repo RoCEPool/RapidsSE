@@ -378,7 +378,7 @@ void Job::vAddRowsSkipped(i8 iRowsISkipped)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this job has a /byPrompt ename tag                                 */
+/* test if this job has a <byPrompt> tag                                      */
 /*----------------------------------------------------------------------------*/
 bool Job::bByPromptTag(void)
 {
