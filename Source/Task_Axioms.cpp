@@ -1,3 +1,4 @@
+
 /*============================================================================*/
 /* Task_Axioms.cpp - functions which add axioms during the boot of system     */
 /*============================================================================*/
@@ -19,7 +20,12 @@ void Task::vAddMunged(void)
     if (AM::bVerbose())
       vTrace("[[mainThread]] Adding munged routines...\n"_Stz);
 
+    m_pForth->vNewInput();
+    m_pForth->pInput()->vFormSenTokens();
+    
     vAddMunged(m_pForth);
+    
+    m_pForth->vDeleteInput();
   }
 #endif
 }
