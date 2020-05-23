@@ -109,6 +109,9 @@ void Result::vPrint(eRS eResponse)
 /*----------------------------------------------------------------------------*/
 void Result::vPrintJobResponse(void)
 {
+  // ray: 23 may 2020: I think this is no longer called
+  NEVER_REACH;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Errors should already be handled
   ASSERT( ! m_bJobHasError );
