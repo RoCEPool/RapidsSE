@@ -17,7 +17,6 @@ namespace Gadgets
 // tags
 static Stz* C_TAGSET_NAME   = "<aTagSetNm>"_Stz;
 
-static Stz* C_TAG_API       = "</api>"_Stz;
 static Stz* C_TAG_BYPROMPT  = "<byPrompt>"_Stz;
 static Stz* C_TAG_CMD       = "<cmd>"_Stz;
 static Stz* C_TAG_FLOW      = "</flow>"_Stz;

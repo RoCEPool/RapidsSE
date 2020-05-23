@@ -654,12 +654,6 @@ void Api::vCreateTaskForJob(Job* pJob)
   }
   
   Job* pThisJob = AM::pThisTLSJob();
-
-  if (pJob->bHasTag(C_TAG_API) ||
-      (pThisJob && pThisJob->bHasTag(C_TAG_TAGS))) {
-    SP_Job spJob;
-    vTrace("Api Spawn: spawned job %s\n"_Stz,spJob.sz_api(pJob));
-  }
   
   if (pJob->bHasTag(C_TAG_TAGS) ||
       (pThisJob && pThisJob->bHasTag(C_TAG_TAGS)))
