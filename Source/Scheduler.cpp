@@ -293,7 +293,15 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
   //
   // called from Step::vTaskAck()
   //
-    
+  RASSERT(pTaskWaiting->eClass() == CN_TASK);
+  
+  if (pTaskWaiting->iAcksRmg_assert_only_() <= 0) {
+    vTrace("[%s] Acks Remaining: %lld\n"_Stz,
+         AM::pGrid()->pThisNode()->szNodeNm(), pTaskWaiting->iAcksRmg_assert_only_());
+    vTrace("[%s] Acks Original: %lld\n"_Stz,
+           AM::pGrid()->pThisNode()->szNodeNm(), pTaskWaiting->iAcksOriginal());
+  }
+  
   RASSERT(pTaskWaiting->iAcksRmg_assert_only_() > 0);
   
   RASSERT(TS_EXECUTING == pTaskAcking->eState());

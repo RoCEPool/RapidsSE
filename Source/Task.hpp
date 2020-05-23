@@ -56,6 +56,7 @@ namespace Tasks
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vMonitorProfile_stats(s48K& sPortrait);
   
+    i8   iAcksOriginal(void);
     i8   iAcksRmg_assert_only_(void);
     void vAcksRmg(i8 nAcksRmg);
     bool bAcksRmgDec(void);

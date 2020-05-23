@@ -94,7 +94,7 @@ i8 Decider::nOriginalAcks(void)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
   
-  return m_nAcksRemaining;
+  return m_nAcksOriginally;
 }
 
 /*----------------------------------------------------------------------------*/

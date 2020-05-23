@@ -272,6 +272,18 @@ void Task::vMonitorProfile_stats(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* get the number of acks remaining (for assert/print use only)               */
 /*----------------------------------------------------------------------------*/
+i8 Task::iAcksOriginal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  i8 iOriginal = m_oAcksRmg.nOriginalAcks();
+  
+  return iOriginal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the number of acks remaining (for assert/print use only)               */
+/*----------------------------------------------------------------------------*/
 i8 Task::iAcksRmg_assert_only_(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
