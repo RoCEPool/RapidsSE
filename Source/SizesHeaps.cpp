@@ -134,7 +134,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Job__Find),          HT_TRANSIENT_LARGE   }, // CN_JOB__FIND
   { sizeof(Job_Boot),           HT_TRANSIENT_MEDIUM  }, // CN_JOB_BOOT
   { sizeof(Job_Distributed),    HT_TRANSIENT_MEDIUM  }, // CN_JOB_DISTRIBUTED
-  { sizeof(Job_Local),          HT_TRANSIENT_LARGE   }, // CN_JOB_LOCAL
+  { sizeof(Job_Local),          HT_TRANSIENT_MEDIUM  }, // CN_JOB_LOCAL
   { sizeof(Job_NodeInfo),       HT_TRANSIENT_LARGE   }, // CN_JOB_NODEINFO
   { sizeof(Job_Operand),        HT_TRANSIENT_LARGE   }, // CN_JOB_OPERAND
   { sizeof(Job_Start),          HT_TRANSIENT_MEDIUM  }, // CN_JOB_START
