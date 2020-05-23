@@ -47,8 +47,12 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   s32  sTagNm;
   s256 sTagValue;
 
-  TKNpf();
-  TKNpf();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // tag <promptTag> = "Boo!" ;
+  
+  TKNpf(); // pTkn(0)
+  TKNpf(); // pTkn(1)
 
   bool bDelete = false;
   
