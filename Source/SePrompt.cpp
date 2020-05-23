@@ -200,9 +200,10 @@ void SePrompt::vPromptLoop(void)
       s32 sWordNm;
       sWordNm = pTkn0->szChars();
 
-      m_pInpTknVec->vSoftReset();
-      m_pInpTknVec->vAppendToken("docol"_Stz,TN_NAME);
-      m_pInpTknVec->vAppendToken(sWordNm,TN_NAME);
+//      m_pInpTknVec->vSoftReset();
+//      m_pInpTknVec->vAppendToken("docol"_Stz,TN_NAME);
+//      m_pInpTknVec->vAppendToken(sWordNm,TN_NAME);
+      m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
     }
 
     vCheckTimed();
@@ -411,8 +412,8 @@ bool SePrompt::bCheckJobTags(void)
       return false;
 
     Token* pTkn_value = m_pInpTknVec->pGet(i_Scan++);   // value
-    if (! pTkn_value->bIsString())
-      return false;
+    //if (! pTkn_value->bIsString())
+    //  return false;
 
     s32 sName;
     sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
