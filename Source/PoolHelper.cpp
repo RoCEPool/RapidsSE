@@ -274,8 +274,8 @@ void PoolHelper::vObjectSummary(void)
     
     MagLib::vByteMag(nSumObjSize,sMagObj);
     
-    if (nObjSize < C_SIZE_SMALL_OBJECT / 2)
-      sFlag = " !savings"_Stz;
+    if (nObjSize < C_SIZE_TINY_OBJECT / 2)
+      sFlag = " *half again!"_Stz;
     else
       sFlag = ""_Stz;
 
@@ -308,8 +308,8 @@ void PoolHelper::vObjectSummary(void)
     
     MagLib::vByteMag(nSumObjSize,sMagObj);
     
-    if (nObjSize < C_SIZE_SMALL_OBJECT / 2)
-      sFlag = " !savings"_Stz;
+    if (nObjSize < C_SIZE_TINY_OBJECT)
+      sFlag = " *into tiny"_Stz;
     else
       sFlag = ""_Stz;
 
@@ -343,7 +343,7 @@ void PoolHelper::vObjectSummary(void)
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
     if (nObjSize < C_SIZE_SMALL_OBJECT)
-      sFlag = " *waste"_Stz;
+      sFlag = " *into small"_Stz;
     else
       sFlag = ""_Stz;
     
@@ -377,7 +377,7 @@ void PoolHelper::vObjectSummary(void)
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
     if (nObjSize < C_SIZE_MEDIUM_OBJECT)
-      sFlag = " *waste"_Stz;
+      sFlag = " *into medium"_Stz;
     else
       sFlag = ""_Stz;
     
