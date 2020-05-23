@@ -9,27 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : cmdSyntax:
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //           cmdNm    cmd / procNm arg       arg
-  //cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ; // proc anidx
-  //cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ; // proc analizeIndex
-  //             ^       ^^
-  //             |       ||  [synth proc needs to be this]
-  //    +========+-------++
-  //    |
-  //    v
-  //: anidx _cmdTags tagCopy: liteOp_cmdTags  // +==> synth: procedure andix [currently]
-  //  tags{
-  //    <cmdDesc>   = "--cmd desc for op--"
-  //    <liteOp>    = true
-  //    <streamDef> = __analyzeIndex
-  //    <params>    = 2
-  //  }
-  //
-  //  [ compiler::current@ word.TagSet@ tagSet.asStr . ]
-  //;
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // create a word using next token from input source as the word name
   input::next locals| sCmdNm |
   sCmdNm series-name "_syntax" str.cat :create
@@ -243,7 +222,7 @@
 // I think the orientation should be params| pwCmdSyntax |
 //
 
-: cmd::synthProcFor_liteOp params| pwCmdTags |
+: cmd::synthProc_lliteOp params| pwCmdTags |
 
   0 locals| sText |
 
@@ -277,7 +256,7 @@
 // I think the orientation should be params| pwCmdSyntax |
 //
 
-: cmd::synthProcFor_localLiteOp params| pwCmdTags |
+: cmd::synthProc_locallliteOp params| pwCmdTags |
 
   0 0 locals| sText iParams |
 
@@ -313,10 +292,10 @@
   iterate-words word@ word.category@ pwCmdTagsCatg eql if
 
     word@ _cmdTags.aboutLiteOp if
-      word@ cmd::synthProcFor_liteOp
+      word@ cmd::synthProc_lliteOp
     else
     word@ _cmdTags.aboutLocalLiteOp if
-      word@ cmd::synthProcFor_localLiteOp
+      word@ cmd::synthProc_locallliteOp
     then then
 
   then next-word
@@ -333,7 +312,7 @@
 // I think the orientation should be params| pwCmdSyntax |
 //
 
-: cmd::synthWordsFor_liteOp params| pwCmdTags |
+: cmd::synthWords_lliteOp params| pwCmdTags |
 
   0 locals| sText |
 
@@ -357,7 +336,7 @@
 // I think the orientation should be params| pwCmdSyntax |
 //
 
-: cmd::synthWordsFor_localLiteOp params| pwCmdTags |
+: cmd::synthWords_locallliteOp params| pwCmdTags |
 
   0 locals| sText |
 
@@ -383,10 +362,10 @@
   iterate-words word@ word.category@ pwCmdTagsCatg eql if
 
     word@ _cmdTags.aboutLiteOp if
-      word@ cmd::synthWordsFor_liteOp
+      word@ cmd::synthWords_lliteOp
     else
     word@ _cmdTags.aboutLocalLiteOp if
-      word@ cmd::synthWordsFor_localLiteOp
+      word@ cmd::synthWords_locallliteOp
     then then
 
   then next-word

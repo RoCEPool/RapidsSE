@@ -81,6 +81,8 @@ Word::Word(Stz* szWordNm)
   m_pArticle   = new Article(szWordNm,this,Word::vArtFun);
 
   m_sWordNm    = szWordNm;
+  RASSERT(m_sWordNm.bSame(szWordNm));
+  
   m_eWord      = WK_ROUTINE;
 
   m_bBreakPt   = false;
@@ -728,6 +730,8 @@ void Word::vWordNm(Stz* szWordNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_sWordNm = szWordNm;
+  
+  RASSERT(m_sWordNm.bSame(szWordNm));
   
   m_pArticle->vName(szWordNm);
 }

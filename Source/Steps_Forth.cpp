@@ -32,7 +32,7 @@ void Step::vColon(void)
 {
   ENTRY();
   
-  s32 sName;
+  s256 sName;
   
   m_pCompiler->vMode(CM_COMPILING);
   

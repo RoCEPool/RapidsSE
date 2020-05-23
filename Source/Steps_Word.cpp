@@ -459,7 +459,7 @@ void Step::vWordNameStore(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  s32 sWordNm;
+  s256 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
 
   pWord->vWordNm(sWordNm);
@@ -474,7 +474,7 @@ void Step::vWordNew(void)
 {
   ENTRY();
   
-  s32 sWordNm;
+  s256 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
   
   Dic* pDic;
