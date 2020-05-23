@@ -33,7 +33,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.scan"_Stz,               &Step::vTableScan);
   vAddStep("table[].size"_Stz,             &Step::vTableSize);
   vAddStep("table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
-  vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
   vAddStep("table.tableDef@"_Stz,          &Step::vTableTableDefFetch);
   vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefStore);
   vAddStep("table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
@@ -582,22 +581,6 @@ void Step::vTableScan(void)
   // put the buffer in the session bufferQueue
   pQueue->vAppend(pFetchBuffer);
  */
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.subLoaders -- set table sub loaders                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vTableSubLoaders(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iSubLoaders = m_pDataStack->iPopInt(__func__);
-  
-  pTable->vSubLoaders(iSubLoaders);
-  
   EXIT();
 }
 

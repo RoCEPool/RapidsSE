@@ -90,11 +90,6 @@ Table::Table(Stz* szTableNm)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the subLoaders
-  for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
-    m_ixSubLoaders[i_Slot] = 0;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   _checkInitialised_(CN_TABLE);
   
@@ -802,17 +797,6 @@ void Table::vAppendBufferInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer
   pPartition->vAppendBufferOLD(pCrwBuffer);
   
   pPartition->vInsertIndexEntries(pCrwBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set subloaders                                                             */
-/*----------------------------------------------------------------------------*/
-void Table::vSubLoaders(i8 iSubLoaders)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
-    m_ixSubLoaders[i_Slot] = iSubLoaders;
 }
 
 /*============================================================================*/

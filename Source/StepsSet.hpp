@@ -1428,7 +1428,6 @@ public:
   void vTableSet(void);
   void vTableSize(void);
   void vTableStreamDefFetch(void);
-  void vTableSubLoaders(void);
   void vTableTableDefFetch(void);
   void vTableTableDefStore(void);
   void vTableTablePtnFetch(void);

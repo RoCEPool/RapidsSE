@@ -23,10 +23,7 @@ namespace MetaData
     
     TablePtnVec*  m_pTablePtnVec;  // table partition vector
     StreamDef*    m_pPtnStreamDef; // partition stream def
-    
-    // TO GO
-    Atomic     m_ixSubLoaders[C_MAX_SLOTS];  // subloader*slot count
-    
+        
     // must be last
     Footer m_xFooter;
     
@@ -78,7 +75,6 @@ namespace MetaData
    
     //! TO GO
     void    vAppendBufferInsertEntries(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
-    void    vSubLoaders(i8 iSubLoaders);
     
     Footer* aFooter(void);
   };

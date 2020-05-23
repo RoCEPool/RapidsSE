@@ -189,7 +189,7 @@ SizeHeap gxaSizeHeap[]
   { 'P' - ('A' - 1),            HT_INVALID           }, // CN__P__
   { sizeof(PathVec),            HT_TRANSIENT_MEDIUM  }, // CN_PATHVEC
   { sizeof(Peruse),             HT_TRANSIENT_MEDIUM  }, // CN_PERUSE
-  { sizeof(Pipeline),           HT_TRANSIENT_MEDIUM  }, // CN_PIPELINE
+  { sizeof(Pipeline),           HT_TRANSIENT_SMALL   }, // CN_PIPELINE
   { sizeof(PipelineSpec),       HT_TRANSIENT_SMALL   }, // CN_PIPELINESPEC
   { sizeof(Plan),               HT_TRANSIENT_MEDIUM  }, // CN_PLAN
   { sizeof(Planner),            HT_TRANSIENT_MEDIUM  }, // CN_PLANNER
@@ -214,7 +214,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RelOp),              HT_TRANSIENT_TINY    }, // CN_RELOP
   { sizeof(ResourceTracker),    HT_TRANSIENT_TINY    }, // CN_RESOURCETRACKER
   { sizeof(Response),           HT_TRANSIENT_MEDIUM  }, // CN_RESPONSE
-  { sizeof(ResponseVec),        HT_TRANSIENT_MEDIUM  }, // CN_RESPONSEVEC
+  { sizeof(ResponseVec),        HT_TRANSIENT_SMALL   }, // CN_RESPONSEVEC
   { sizeof(Result),             HT_TRANSIENT_MEDIUM  }, // CN_RESULT
   { sizeof(Rand),               HT_INVALID           }, // CN_RN_RAND
   { sizeof(Routine),            HT_TRANSIENT_SMALL   }, // CN_ROUTINE
@@ -277,13 +277,13 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SrtBuffer),          HT_TRANSIENT_LARGE   }, // CN_SRTBUFFER
   { sizeof(SrtSet),             HT_INVALID           }, // CN_SRTSET
   { sizeof(Stack),              HT_TRANSIENT_MEDIUM  }, // CN_STACK
-  { sizeof(Stage),              HT_TRANSIENT_MEDIUM  }, // CN_STAGE
+  { sizeof(Stage),              HT_TRANSIENT_SMALL   }, // CN_STAGE
   { sizeof(StageSpec),          HT_TRANSIENT_SMALL   }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID           }, // CN_STEPACCUM
   { sizeof(StepAccum),          HT_INVALID           }, // CN_STATISTICS
   { sizeof(StepTiming),         HT_TRANSIENT_LARGE   }, // CN_STEPTIMING
   { sizeof(Stmt_Select),        HT_TRANSIENT_LARGE   }, // CN_STMT_SELECT
-  { sizeof(Strand),             HT_TRANSIENT_MEDIUM  }, // CN_STRAND
+  { sizeof(Strand),             HT_TRANSIENT_SMALL   }, // CN_STRAND
   { sizeof(StreamDef),          HT_TRANSIENT_LARGE   }, // CN_STREAMDEF
   { sizeof(StreamSet),          HT_TRANSIENT_LARGE   }, // CN_STREAMSET
   { sizeof(s32),                HT_INVALID           }, // CN_STRING_T
