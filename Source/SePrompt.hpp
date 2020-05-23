@@ -59,8 +59,6 @@ namespace Prompt
     bool bBlankLine(void);
     BPA* pBPA(void);
     void vDebugMode(i8 iDebugMode);
-    void vCheckJobCtl(void);
-    bool bCheckJobTags(void);
     void vCheckTimed(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
@@ -70,6 +68,8 @@ namespace Prompt
     void vDumpInpTknVec(bool bForce);
     bool bExecuteFunction(void);
     bool bExecutePipeline(void);
+    void vExtractCtlTags(void);
+    bool bExtractSupTags(void);
     void vFocalOutline(s4K& sOutline);
     void vInitialSettings(void);
     void vInitPromptTags(void);
