@@ -1,0 +1,1 @@
+*.{tgz,csv,png,jpg,tar,tar.gz,dylib,pyc,zip} filter=lfs diff=lfs merge=lfs -text
