@@ -141,10 +141,10 @@ void SePrompt::vPromptLoop(void)
   //
   // prompt commands are of the form:
   //
-  //  /jobCtlTags cmd1 cmd2 [arg0 ... ] <jobSupplementalTags> =  val ... ;
-  //              +---+---+
-  //                  |
-  //               procNm
+  //  /jobControlTag... cmd1 [cmd2] [arg0 ...] <jobSupplementalTag> = val ... ;
+  //                    +---+-----+
+  //                        |
+  //                      procNm
   //
   
   // we need to set the thread key to non-zero
