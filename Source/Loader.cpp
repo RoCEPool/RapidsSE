@@ -179,7 +179,7 @@ bool Loader::bSetFormat(TagSet* pFmtTagSet)
 
   // - - - - - - - - - - - - - - - - - - - - -
   // C_RECORD_TERMINATOR
-  i_Tag = pFmtTagSet->i_Find(C_TAG_RECORD_TERMINATOR);
+  i_Tag = pFmtTagSet->i_Find(C_TAG_LD_RECORD_TERMINATOR);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pFmtTagSet->szValue(i_Tag);
     m_oFormatter.m_cRecordTerminator = *sTagValue.azChar();
@@ -191,7 +191,7 @@ bool Loader::bSetFormat(TagSet* pFmtTagSet)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // C_RECORD_ENDS
-  i_Tag = pFmtTagSet->i_Find(C_TAG_RECORD_ENDS);
+  i_Tag = pFmtTagSet->i_Find(C_TAG_LD_RECORD_ENDS);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pFmtTagSet->szValue(i_Tag);
     char cRecordEnds = *sTagValue.azChar();
@@ -234,7 +234,7 @@ bool Loader::bSetFormat(TagSet* pFmtTagSet)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // C_FIELD_DELIMITER
-  i_Tag = pFmtTagSet->i_Find(C_TAG_FIELD_DELIMITER);
+  i_Tag = pFmtTagSet->i_Find(C_TAG_LD_FIELD_DELIMITER);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pFmtTagSet->szValue(i_Tag);
     if (sTagValue.bSame("\\t"_Stz))
@@ -248,7 +248,7 @@ bool Loader::bSetFormat(TagSet* pFmtTagSet)
 
   // - - - - - - - - - - - - - - - - - - - - -
   // C_ENCLOSED_BY_LEADING
-  i_Tag = pFmtTagSet->i_Find(C_TAG_ENCLOSED_BY_LEADING);
+  i_Tag = pFmtTagSet->i_Find(C_TAG_LD_ENCLOSED_BY_LEADING);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pFmtTagSet->szValue(i_Tag);
     m_oFormatter.m_cEnclosedBy_Leading = *sTagValue.azChar();
@@ -264,7 +264,7 @@ bool Loader::bSetFormat(TagSet* pFmtTagSet)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // C_ENCLOSED_BY_TRAILING
-  i_Tag = pFmtTagSet->i_Find(C_TAG_ENCLOSED_BY_TRAILING);
+  i_Tag = pFmtTagSet->i_Find(C_TAG_LD_ENCLOSED_BY_TRAILING);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pFmtTagSet->szValue(i_Tag);
     // if trailing is specified, leading should also have been specified
@@ -285,7 +285,7 @@ bool Loader::bSetFormat(TagSet* pFmtTagSet)
   //
   // - - - - - - - - - - - - - - - - - - - - -
   // C_DATE_FORMAT
-  i_Tag = pFmtTagSet->i_Find(C_TAG_DATE_FORMAT);
+  i_Tag = pFmtTagSet->i_Find(C_TAG_LD_DATE_FORMAT);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pFmtTagSet->szValue(i_Tag);
     // extract date format
@@ -299,7 +299,7 @@ bool Loader::bSetFormat(TagSet* pFmtTagSet)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // C_ESCAPE_CHAR
-  i_Tag = pFmtTagSet->i_Find(C_TAG_ESCAPE_CHAR);
+  i_Tag = pFmtTagSet->i_Find(C_TAG_LD_ESCAPE_CHAR);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pFmtTagSet->szValue(i_Tag);
     m_oFormatter.m_cEscapeChar = *sTagValue.azChar();
@@ -311,7 +311,7 @@ bool Loader::bSetFormat(TagSet* pFmtTagSet)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // C_MAX_ERRORS
-  i_Tag = pFmtTagSet->i_Find(C_TAG_MAX_ERRORS);
+  i_Tag = pFmtTagSet->i_Find(C_TAG_LD_MAX_ERRORS);
   if (i_Tag != C_UNKNOWN) {
     iTagValue = pFmtTagSet->iValue(i_Tag);
     

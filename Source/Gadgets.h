@@ -38,16 +38,16 @@ static Stz* C_TAG_TIME      = "<time>"_Stz;
 static Stz* C_TAG_TOPOLOGY  = "<topology>"_Stz;
 static Stz* C_TAG_XFER      = "<xfer>"_Stz;
 static Stz* C_TAG_XMITKIND  = "<xmitKind>"_Stz;
-static Stz* C_TAG_XMITS     = "<Xmits>"_Stz;
+static Stz* C_TAG_XMITS     = "<xmits>"_Stz;
 
-static Stz* C_TAG_DATE_FORMAT          = "<date_format>"_Stz;
-static Stz* C_TAG_ENCLOSED_BY_LEADING  = "<enclosed_by_leading>"_Stz;
-static Stz* C_TAG_ENCLOSED_BY_TRAILING = "<enclosed_by_trailing>"_Stz;
-static Stz* C_TAG_ESCAPE_CHAR          = "<escape_char>"_Stz;
-static Stz* C_TAG_FIELD_DELIMITER      = "<field_delimiter>"_Stz;
-static Stz* C_TAG_MAX_ERRORS           = "<max_errors>"_Stz;
-static Stz* C_TAG_RECORD_TERMINATOR    = "<record_terminator>"_Stz;
-static Stz* C_TAG_RECORD_ENDS          = "<record_ends>"_Stz;
+static Stz* C_TAG_LD_DATE_FORMAT          = "<date_format>"_Stz;
+static Stz* C_TAG_LD_ENCLOSED_BY_LEADING  = "<enclosed_by_leading>"_Stz;
+static Stz* C_TAG_LD_ENCLOSED_BY_TRAILING = "<enclosed_by_trailing>"_Stz;
+static Stz* C_TAG_LD_ESCAPE_CHAR          = "<escape_char>"_Stz;
+static Stz* C_TAG_LD_FIELD_DELIMITER      = "<field_delimiter>"_Stz;
+static Stz* C_TAG_LD_MAX_ERRORS           = "<max_errors>"_Stz;
+static Stz* C_TAG_LD_RECORD_TERMINATOR    = "<record_terminator>"_Stz;
+static Stz* C_TAG_LD_RECORD_ENDS          = "<record_ends>"_Stz;
 
 // job info tags
 static Stz* C_TAG_SEEDCAN  = "<seedCan>"_Stz;
