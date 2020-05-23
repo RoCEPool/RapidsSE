@@ -291,7 +291,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SysCall),            HT_INVALID           }, // CN_SYSCALL
 
   { 'T' - ('A' - 1),            HT_INVALID           }, // CN__T__
-  { sizeof(Table),              HT_TRANSIENT_MEDIUM  }, // CN_TABLE
+  { sizeof(Table),              HT_TRANSIENT_TINY    }, // CN_TABLE
   { sizeof(TableDef),           HT_TRANSIENT_MEDIUM  }, // CN_TABLEDEF
   { sizeof(TablePtn),           HT_TRANSIENT_TINY    }, // CN_TABLEPTN
   { sizeof(TablePtnVec),        HT_TRANSIENT_SMALL   }, // CN_TABLEPTNVEC
