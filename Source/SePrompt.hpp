@@ -23,7 +23,7 @@ namespace Prompt
     bool      m_bOneRun;     // one command has been run?
     bool      m_bContinue;   // continue processing commands?
 
-    TagSet    m_oPromptTags; // tags gleaned from the prompt command
+    TagSet    m_oExtTags;    // tags gleaned from the prompt command
     Job*      m_pJob;        // job
 
     ReqTuple  m_xReqTuple;      // request information
@@ -72,7 +72,7 @@ namespace Prompt
     bool bExtractSupTags(void);
     void vFocalOutline(s4K& sOutline);
     void vInitialSettings(void);
-    void vInitPromptTags(void);
+    void vInitExtractedTags(void);
     TokenVec* pInpTknVec(void);
     bool bIsPromptWord(void);
     void vLogCommand(void);

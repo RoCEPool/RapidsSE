@@ -172,7 +172,7 @@ void SePrompt::vPromptLoop(void)
       vPromptUser();
     }
     
-    vInitPromptTags();
+    vInitExtractedTags();
     
     L_Read_Next_Command:
     
@@ -229,7 +229,7 @@ void SePrompt::vPromptLoop(void)
     
     eEC eError = Api::eJob_1_PreJob(&pJob,
                                     m_pInpTknVec,
-                                   &m_oPromptTags,
+                                   &m_oExtTags,
                                    &m_xReqTuple);
     
     m_pJob = pJob;
@@ -243,7 +243,7 @@ void SePrompt::vPromptLoop(void)
     }
     
     //! ALKA: this should go
-    JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oPromptTags);
+    JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oExtTags);
     
     pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
     pJob->pJobTags()->vDumpSet();
@@ -347,7 +347,7 @@ void SePrompt::vCheckTimed(void)
   if (! pTkn0->bSame("time"_Stz))
     return;
   
-  m_oPromptTags.vInsert(C_TAG_TIME,1);
+  m_oExtTags.vInsert(C_TAG_TIME,1);
 
   vCutToken(0);
 }
@@ -475,7 +475,7 @@ void SePrompt::vExtractCtlTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //m_oPromptTags();
+  //m_oExtTags();
   
   Token* pTkn0 = pTkn(0);
   
@@ -486,14 +486,11 @@ void SePrompt::vExtractCtlTags(void)
    Token* pTkn1 = pTkn(1);
    sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
     
-    m_oPromptTags.vInsert(sTag,1);
+    m_oExtTags.vInsert(sTag,1);
     
     vCutToken(0);
     vCutToken(0);
   }
-  
-  //if (m_oPromptTags())
-  //  m_oPromptTags();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -548,10 +545,10 @@ bool SePrompt::bExtractSupTags(void)
 
     s32 sName;
     sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
-    m_oPromptTags.vAppend(sName,pTkn_value->szChars());
+    m_oExtTags.vAppend(sName,pTkn_value->szChars());
   }
   
-  //m_oPromptTags();
+  //m_oExtTags();
   
   //pTknVec->vDumpVec(16);
   
@@ -587,15 +584,16 @@ void SePrompt::vInitialSettings(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* init the prompt tags                                                       */
+/* init the extracted tags                                                    */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vInitPromptTags(void)
+void SePrompt::vInitExtractedTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_oPromptTags.vReset();
-  m_oPromptTags.vInsert(C_TAG_BYPROMPT,1);
-  m_oPromptTags.vInsert(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
+  m_oExtTags.vReset();
+  m_oExtTags.vInsert(C_TAG_BYPROMPT,1);
+  m_oExtTags.vInsert(C_TAG_ORIGIN,AM::pGrid()->m_iThisNode);
+  m_oExtTags.vInsert(C_TAG_SESSION,m_pSession->m_i_Session);
 }
 
 /*----------------------------------------------------------------------------*/
