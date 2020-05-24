@@ -233,7 +233,9 @@ void SePrompt::vPromptLoop(void)
     xNow.vSetNow();
     
     //vTrace("%s\n"_Stz,xNow.sz());
-         
+
+    m_oExtTagSet.vInsert(C_PMT_REQUEST,m_xReqTuple.m_iReqNo);
+
     m_oExtTagSet.vInsert(C_TAG_WHEN,xNow.sz());
     
     if (*szCmdFile->azChar()) {
