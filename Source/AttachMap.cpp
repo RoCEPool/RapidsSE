@@ -243,29 +243,7 @@ void AttachMap::vPrintAttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed arguments                                            */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordArguments(Args* pArgs,
-                                 
-                                 bool bDeveloper,
-                                 i8   nDummyLoop,
-                                 i8   nDummySleep,
-                                 i8   nDummyThreads,
-                                 i8   nIndexEntries,
-                                 bool bLog,
-                                 i8   nMaxLoadErrors,
-                                 i8   nMaxReadyLP,
-                                 bool bMetadata,
-                                 bool bMunged,
-                                 i8   nNodes,
-                                 bool bProgress,
-                                 Stz* aRegionName,
-                                 i8   iRegionSize,
-                                 i8   nSlotsPerNode,
-                                 i8   nSubIngesters,
-                                 i8   nSubLoaders,
-                                 i8   nThreads,
-                                 bool bTracepoint,
-                                 bool bVerbose
-                                 )
+void AttachMap::vRecordArguments(Args* pArgs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 

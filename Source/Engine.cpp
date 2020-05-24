@@ -1382,29 +1382,7 @@ void Engine::vStartSystem(void)
   
   //ASSERT( ! AM::pRootDic()->bHasWords() );
     
-  gpAttachMap->vRecordArguments(&gxArgs,
-                                
-                                gxArgs.m_bDeveloper,
-                                gxArgs.m_nDummyLoop,
-                                gxArgs.m_nDummySleep,
-                                gxArgs.m_nDummyThreads,
-                                gxArgs.m_nEntries,
-                                gxArgs.m_bLog,
-                                gxArgs.m_nMaxLoadErrors,
-                                gxArgs.m_nMaxReadyLP,
-                                gxArgs.m_bMetadata,
-                                gxArgs.m_bMunged,
-                                gxArgs.m_nNodes,
-                                gxArgs.m_bProgress,
-                                gxArgs.m_sRegionName,
-                                gxArgs.m_iRegionSize,
-                                gxArgs.m_nSlotsPerNode,
-                                gxArgs.m_nSubIngesters,
-                                gxArgs.m_nSubLoaders,
-                                gxArgs.m_nThreads,
-                                gxArgs.m_bTracepoint,
-                                gxArgs.m_bVerbose
-                                );
+  gpAttachMap->vRecordArguments(&gxArgs);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move

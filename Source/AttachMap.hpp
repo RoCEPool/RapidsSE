@@ -128,29 +128,7 @@ namespace StorageEngine
     void vPrintAttachMap(void);
     void vPrintStartupInfo(void);
   
-    void vRecordArguments(Args* pArgs,
-
-                          bool bDeveloper,
-                          i8   nDummyLoop,
-                          i8   nDummySleep,
-                          i8   nDummyThreads,
-                          i8   nIndexEntries,
-                          bool bLog,
-                          i8   nMaxLoadErrors,
-                          i8   nMaxReadyLP,
-                          bool bMetadata,
-                          bool bMunged,
-                          i8   nNodes,
-                          bool bProgress,
-                          Stz* sRegionName,
-                          i8   iRegionSize,
-                          i8   nSlotsPerNode,
-                          i8   nSubIngesters,
-                          i8   nSubLoaders,
-                          i8   nThreads,
-                          bool bTracepoint,
-                          bool bVerbose
-                         );
+    void vRecordArguments(Args* pArgs);
     SessionArray* pSessionArray(void);
 
     Footer* aFooter(void);
