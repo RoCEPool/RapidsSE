@@ -250,10 +250,6 @@ void AttachMap::vRecordArguments(Args* pArgs)
   if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
-  m_iPid = Process::iGetPid();
-  
-  m_oBirth.vNow();
-  m_oNow.vSetNowUTC();
   
   Arg.m_bDeveloper       = pArgs->m_bDeveloper;
   Arg.m_nDummyLoop       = pArgs->m_nDummyLoop;
@@ -277,9 +273,15 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_bTracepoint      = pArgs->m_bTracepoint;
   Arg.m_bVerbose         = pArgs->m_bVerbose;
 
-  // these are args
-
+  Arg.m_oMapTagSet.vCopy(&pArgs->m_oArgTagSet);
   
+  
+  // ray -- not sure the following should be here
+  
+  m_iPid = Process::iGetPid();
+  
+  m_oBirth.vNow();
+  m_oNow.vSetNowUTC();
   
   m_pBufferPool = gpBufferPool;
   
@@ -295,16 +297,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   ASSERT(m_xHeapMem.Persistent.m_pLarge);
   ASSERT(m_xHeapMem.Persistent.m_pSmall);
   
-  
-  //ASSERT(m_pGrid);
     
-  //ASSERT(m_pWord);
-
-
-  //ASSERT(m_pStepTiming);
-    
-  //m_nBuffersPending;
-  
   m_iStop       = 0;
   m_iQuit       = 0;
 }

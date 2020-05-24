@@ -26,27 +26,30 @@ namespace StorageEngine
     s256  m_sLogTxtFile;
     
     struct {
-      bool m_bDeveloper;    // developer mode
-      i8   m_nDummyLoop;    // loop count for dummy threads
-      i8   m_nDummySleep;   // sleep period for dummy threads
-      i8   m_nDummyThreads; // number of dummy threads
-      i8   m_nIndexEntries; // no of entries per buffer
-      bool m_bLog;
-      i8   m_nMaxLoadErrors;
-      i8   m_nMaxReadyLP;
-      bool m_bMetadata;
-      bool m_bMunged;
-      i8   m_nNodes;
-      bool m_bProgress;
-      s32  m_sRegionName;
-      i8   m_iRegionSize;
-      i8   m_nSlotsPerNode;
-      i8   m_nSubIngesters;
-      i8   m_nSubInserters;
-      i8   m_nSubLoaders;
-      i8   m_nThreads;      // number of general threads
-      bool m_bTracepoint;
-      bool m_bVerbose;
+      bool   m_bDeveloper;     // developer mode
+      i8     m_nDummyLoop;     // loop count for dummy threads
+      i8     m_nDummySleep;    // sleep period for dummy threads
+      i8     m_nDummyThreads;  // number of dummy threads
+      i8     m_nIndexEntries;  // no of entries per buffer
+      bool   m_bLog;
+      i8     m_nMaxLoadErrors;
+      i8     m_nMaxReadyLP;
+      bool   m_bMetadata;
+      bool   m_bMunged;
+      i8     m_nNodes;
+      bool   m_bProgress;
+      s32    m_sRegionName;
+      i8     m_iRegionSize;
+      i8     m_nSlotsPerNode;
+      i8     m_nSubIngesters;
+      i8     m_nSubInserters;
+      i8     m_nSubLoaders;
+      i8     m_nThreads;       // number of general threads
+      bool   m_bTracepoint;
+      bool   m_bVerbose;
+      
+      TagSet m_oMapTagSet;
+      
     } Arg;
     
     bool          m_bBootError;
