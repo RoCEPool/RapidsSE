@@ -35,7 +35,8 @@ namespace Arguments
     } m_xNodes[C_MAX_NODES];
     i8   m_iThisNode;      // this node no in the m_xNode list         //! FIX
 
-    
+    TagSet m_oArgTagSet;  // arguments tag set
+  
     // command
     bool m_bAddNode;     // add node
     bool m_bAppendTrace; // append to trace file

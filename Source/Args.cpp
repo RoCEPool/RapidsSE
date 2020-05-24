@@ -46,6 +46,9 @@ Args::Args(void)
   m_sCommand = ""_Stz;
   m_sInitial = ""_Stz;
 
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // commands
   m_bAddNode     = false;
   m_bAppendTrace = false;
