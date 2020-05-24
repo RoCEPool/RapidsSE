@@ -38,7 +38,7 @@
   pConstantWord if
     pConstantWord word.category@ find: rootConstant eql if
 
-      // sEvalue "  %v is a constant" .printf
+      sTagValue "  %v is a constant" .printf
       // add/replace <name> = <constant>
       sTagName pConstantWord execute pWordTagSet tagSet.replaceInt
       exit
