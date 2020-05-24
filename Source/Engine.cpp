@@ -129,10 +129,10 @@ void Engine::vPreliminary(void)
 
   vCheckGrid();
 
-  if (AM::bVerboseProgress()) {
-    vInfo("\n*\n* %lld) Attach Map Contents\n*\n"_Stz,giProgressPoint++);
-    gpAttachMap->vPrintAttachMap();
-  }
+//  if (AM::bVerboseProgress()) {
+//    vInfo("\n*\n* %lld) Attach Map Contents\n*\n"_Stz,giProgressPoint++);
+//    gpAttachMap->vPrintAttachMap();
+//  }
   
   if (AM::bVerboseProgress()) {
      vInfo("\n**\n** Preliminaries Complete \n**\n"_Stz);
@@ -1383,6 +1383,10 @@ void Engine::vStartSystem(void)
   //ASSERT( ! AM::pRootDic()->bHasWords() );
     
   gpAttachMap->vRecordArguments(&gxArgs);
+  
+  if (AM::bVerboseProgress()) {
+    gpAttachMap->vPrintAttachMap();
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move

@@ -291,9 +291,9 @@ void TagSet::vDumpSet(bool bCarriageReturns)
   
  
   if (bCarriageReturns)
-    vTrace("\n BYTES=%lld }\n"_Stz,m_xyStrings.i_Latter());
+    vTrace("\n BYTES=%lld/%lld }\n"_Stz,m_xyStrings.i_Latter(),m_xyStrings.nSize());
   else
-    vTrace(" BYTES=%lld }\n\n"_Stz,m_xyStrings.i_Latter());
+    vTrace(" BYTES=%lld/%lld }\n"_Stz,m_xyStrings.i_Latter(),m_xyStrings.nSize());
 }
 
 /*----------------------------------------------------------------------------*/

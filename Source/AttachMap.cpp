@@ -236,6 +236,9 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("Date_separator       : %c\n"_Stz,
         gpAttachMap->m_oFormatters.m_cDateSeparator ? gpAttachMap->m_oFormatters.m_cDateSeparator : '0');
+  
+  vInfo("\n"_Stz);
+  gpAttachMap->Arg.m_oDbgTagSet.vDumpSet();
 
   vInfo("\n-- ATTACH MAP END --\n\n"_Stz);
 }
@@ -273,6 +276,8 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_bTracepoint      = pArgs->m_bTracepoint;
   Arg.m_bVerbose         = pArgs->m_bVerbose;
 
+  Arg.m_oDbgTagSet.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
+  
   Arg.m_oDbgTagSet.vCopy(&pArgs->m_oArgTagSet);
   
   

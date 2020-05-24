@@ -695,6 +695,36 @@ bool Args::bParse(int argc, Stz* argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if ('<' == * szArg->azChar()) {
+      
+      i8 i_TagArg = i_Arg + 1;
+      
+      if (i_TagArg >= argc) {
+        m_oArgTagSet.vInsert(szArg);
+        continue;
+      }
+      
+      Stz* szTagEqual = argv[i_TagArg];
+      if ('=' != * szTagEqual->azChar()) {
+        m_oArgTagSet.vInsert(szArg);
+        continue;
+      }
+      
+      // consume <tagNm>
+      i_Arg++;
+
+      // consume =
+      i_Arg++;
+
+      Stz* szTagValue = argv[i_Arg];
+
+      if (szTagValue->bIsNumeric())
+        m_oArgTagSet.vInsert(szArg,szTagValue->iToI8());
+      else
+        m_oArgTagSet.vInsert(szArg,szTagValue);
+
+      continue;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     vWarn("Unrecognized command argument: %s\n"_Stz,argv[i_Arg]);

@@ -50,6 +50,8 @@ static Stz* C_TAG_XFER      = "<xfer>"_Stz;
 static Stz* C_TAG_XMITKIND  = "<xmitKind>"_Stz;
 static Stz* C_TAG_XMITS     = "<xmits>"_Stz;
 
+static Stz* C_TAG_DBG_ACKS  = "<dbg_acks>"_Stz;
+
 static Stz* C_TAG_LD_DATE_FORMAT          = "<date_format>"_Stz;
 static Stz* C_TAG_LD_ENCLOSED_BY_LEADING  = "<enclosed_by_leading>"_Stz;
 static Stz* C_TAG_LD_ENCLOSED_BY_TRAILING = "<enclosed_by_trailing>"_Stz;
