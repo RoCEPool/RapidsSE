@@ -26,15 +26,18 @@ namespace StorageEngine
     s256  m_sLogTxtFile;
     
     struct {
-      bool m_bDeveloper;
+      bool m_bDeveloper;    // developer mode
       i8   m_nDummyLoop;    // loop count for dummy threads
       i8   m_nDummySleep;   // sleep period for dummy threads
       i8   m_nDummyThreads; // number of dummy threads
+      i8   m_nIndexEntries; // no of entries per buffer
       bool m_bLog;
       i8   m_nMaxLoadErrors;
       i8   m_nMaxReadyLP;
+      bool m_bMetadata;
       bool m_bMunged;
       i8   m_nNodes;
+      bool m_bProgress;
       s32  m_sRegionName;
       i8   m_iRegionSize;
       i8   m_nSlotsPerNode;
@@ -42,9 +45,10 @@ namespace StorageEngine
       i8   m_nSubInserters;
       i8   m_nSubLoaders;
       i8   m_nThreads;      // number of general threads
+      bool m_bTracepoint;
+      bool m_bVerbose;
     } Arg;
     
-    SessionArray* m_pSessionArray;
     bool          m_bBootError;
     BufferPool*   m_pBufferPool;
     CarryOver*    m_pCarryOver;
@@ -79,6 +83,7 @@ namespace StorageEngine
     Word*         m_pRootConstant;
     Dic*          m_pRootDic;
     Word*         m_pRootWord;
+    SessionArray* m_pSessionArray;
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;
     i8            m_iStop;
@@ -90,16 +95,11 @@ namespace StorageEngine
     TxSet*        m_pTxSet;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // these should be in Args
-    bool          m_bVerbose;
-    bool          m_bTracepoint;
-    bool          m_bProgress;
-    bool          m_bMetadata;
+    // these should be in Arg
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove?
   
-    i8            m_nIndexEntries;     // no of entries per buffer
     union {
       u8    m_uAttachMapState;         // attachmap is ready
       char  m_caAttachMapState[8];

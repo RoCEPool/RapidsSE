@@ -144,7 +144,7 @@ void AttachMap::vIndexEntries(i8 nIndexEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
  
-  m_nIndexEntries = nIndexEntries;
+  Arg.m_nIndexEntries = nIndexEntries;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,13 +184,13 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("\n"_Stz);
   vInfo("Epoch        : %lld \n"_Stz, gpAttachMap->m_iEpoch);
   vInfo("BootError    : %lld \n"_Stz, gpAttachMap->m_bBootError);
-  vInfo("IndexEntries : %lld \n"_Stz, gpAttachMap->m_nIndexEntries);
+  vInfo("IndexEntries : %lld \n"_Stz, gpAttachMap->Arg.m_nIndexEntries);
   vInfo("IndexOffsets : %lld \n"_Stz, C_INDEX_LEVELS);
   
   vInfo("Verbose      : %s \n"_Stz, AM::bVerbose() ? "true"_Stz : "false"_Stz);
-  vInfo("Tracepoint   : %s \n"_Stz, gpAttachMap->m_bTracepoint ? "true"_Stz : "false"_Stz);
-  vInfo("Progress     : %s \n"_Stz, gpAttachMap->m_bProgress ? "true"_Stz : "false"_Stz);
-  vInfo("Metadata     : %s \n"_Stz, gpAttachMap->m_bMetadata ? "true"_Stz : "false"_Stz);
+  vInfo("Tracepoint   : %s \n"_Stz, gpAttachMap->Arg.m_bTracepoint ? "true"_Stz : "false"_Stz);
+  vInfo("Progress     : %s \n"_Stz, gpAttachMap->Arg.m_bProgress ? "true"_Stz : "false"_Stz);
+  vInfo("Metadata     : %s \n"_Stz, gpAttachMap->Arg.m_bMetadata ? "true"_Stz : "false"_Stz);
   
   vInfo("\n"_Stz);
   vInfo("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
@@ -280,11 +280,14 @@ void AttachMap::vRecordArguments(
   Arg.m_nDummyLoop       = nDummyLoop;
   Arg.m_nDummySleep      = nDummySleep;
   Arg.m_nDummyThreads    = nDummyThreads;
+  Arg.m_nIndexEntries    = nIndexEntries;
   Arg.m_bLog             = bLog;
   Arg.m_nMaxLoadErrors   = nMaxLoadErrors;
   Arg.m_nMaxReadyLP      = nMaxReadyLP;
+  Arg.m_bMetadata        = bMetadata;
   Arg.m_bMunged          = bMunged;
   Arg.m_nNodes           = nNodes;
+  Arg.m_bProgress        = bProgress;
   Arg.m_sRegionName      = aRegionName;
   Arg.m_iRegionSize      = iRegionSize;
   Arg.m_nSlotsPerNode    = nSlotsPerNode;
@@ -292,13 +295,10 @@ void AttachMap::vRecordArguments(
   Arg.m_nSubInserters    = 0;
   Arg.m_nSubLoaders      = nSubLoaders;
   Arg.m_nThreads         = nThreads;
-  
+  Arg.m_bTracepoint      = bTracepoint;
+  Arg.m_bVerbose         = bVerbose;
+
   // these are args
-  m_nIndexEntries        = nIndexEntries;
-  m_bMetadata            = bMetadata;
-  m_bProgress            = bProgress;
-  m_bTracepoint          = bTracepoint;
-  m_bVerbose             = bVerbose;
 
   
   
