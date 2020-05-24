@@ -238,7 +238,9 @@ void SePrompt::vPromptLoop(void)
     //vTrace("%s\n"_Stz,xNow.sz());
 
     m_oExtTagSet.vInsert(C_TAG_FREEPCT,gpBufferPool->iFreePercent());
+    m_oExtTagSet.vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
     m_oExtTagSet.vInsert(C_TAG_HOST,sHostName);
+    m_oExtTagSet.vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
     m_oExtTagSet.vInsert(C_TAG_REQUEST,m_xReqTuple.m_iReqNo);
     m_oExtTagSet.vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
     m_oExtTagSet.vInsert(C_TAG_WHEN,xNow.sz());
