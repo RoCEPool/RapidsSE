@@ -243,7 +243,8 @@ void AttachMap::vPrintAttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed arguments                                            */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordArguments(
+void AttachMap::vRecordArguments(Args* pArgs,
+                                 
                                  bool bDeveloper,
                                  i8   nDummyLoop,
                                  i8   nDummySleep,

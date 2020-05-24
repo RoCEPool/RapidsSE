@@ -128,7 +128,8 @@ namespace StorageEngine
     void vPrintAttachMap(void);
     void vPrintStartupInfo(void);
   
-    void vRecordArguments(
+    void vRecordArguments(Args* pArgs,
+
                           bool bDeveloper,
                           i8   nDummyLoop,
                           i8   nDummySleep,

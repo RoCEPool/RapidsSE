@@ -1382,7 +1382,8 @@ void Engine::vStartSystem(void)
   
   //ASSERT( ! AM::pRootDic()->bHasWords() );
     
-  gpAttachMap->vRecordArguments(
+  gpAttachMap->vRecordArguments(&gxArgs,
+                                
                                 gxArgs.m_bDeveloper,
                                 gxArgs.m_nDummyLoop,
                                 gxArgs.m_nDummySleep,
