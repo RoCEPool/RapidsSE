@@ -65,7 +65,7 @@ cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ; // proc analizeIndex
     <params>    = 2
   }
 
-  [ compiler::current@ word.TagSet@ tagSet.asStr . ]
+  // [ compiler::current@ word.TagSet@ tagSet.asStr . ]
 ;
     
 /*============================================================================*/

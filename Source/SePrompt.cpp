@@ -225,7 +225,7 @@ void SePrompt::vPromptLoop(void)
     Now xNow;
     xNow.vSetNow();
     
-    vTrace("%s\n"_Stz,xNow.sz());
+    //vTrace("%s\n"_Stz,xNow.sz());
          
     m_oExtTagSet.vInsert(C_TAG_WHEN,xNow.sz());
 
