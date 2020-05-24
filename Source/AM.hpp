@@ -51,8 +51,8 @@ namespace Oblique
     static i8   nSubLoaders(void);
     static i8   nThreads(void);
 
-    TagSet* pDbgTagSet(void);
-    bool    bDbgTag(Stz* szTagNm);
+    static TagSet* pDbgTagSet(void);
+    static bool    bDbgTag(Stz* szTagNm);
 
     static Stz* szLogRegion(void);
     static Stz* szLogCsvFile(void);

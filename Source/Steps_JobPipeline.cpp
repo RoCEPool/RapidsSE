@@ -166,7 +166,8 @@ void Step::vJob_PipelineExecute(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set acks remaining equal to no of operators to be executed on this node
   if (nOps) {
-    vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
+    if (AM::bDbgTag(C_TAG_DBG_ACKS) || true)
+      vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
     AM::vSetAcksRmg(pJob_Pipeline->pTask(),nOps);
   
     // get the first stage of the pipeline
