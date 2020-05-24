@@ -287,11 +287,13 @@ void TagSet::vDumpSet(bool bCarriageReturns)
            C_VARGS_END
            );
   }
+  
+  
  
   if (bCarriageReturns)
-    vTrace("\n}\n"_Stz);
+    vTrace("\n BYTES=%lld }\n"_Stz,m_xyStrings.i_Latter());
   else
-    vTrace(" }\n\n"_Stz);
+    vTrace(" BYTES=%lld }\n\n"_Stz,m_xyStrings.i_Latter());
 }
 
 /*----------------------------------------------------------------------------*/
