@@ -514,6 +514,28 @@ void Input::vReadToken(void)
 #endif
 
 /*----------------------------------------------------------------------------*/
+/* set prompt section                                                         */
+/*----------------------------------------------------------------------------*/
+void Input::vSection(Stz* szSection)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  m_pCharser->vSection(szSection);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prompt section                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Input::szSection(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  Stz* szSection = m_pCharser->szSection();
+  
+  return szSection;
+}
+
+/*----------------------------------------------------------------------------*/
 /* seen EOF?                                                                  */
 /*----------------------------------------------------------------------------*/
 bool Input::bSeenEOF(void)

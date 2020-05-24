@@ -241,6 +241,9 @@ void SePrompt::vPromptLoop(void)
       m_oExtTagSet.vInsert(C_PMT_CMDLINE,iCmdLine);
     }
 
+    if (*m_pInput->szSection()->azChar())
+      m_oExtTagSet.vInsert(C_PMT_SECTION,m_pInput->szSection());
+
     m_pJob = nullptr;
     
     eEC eError = Api::eJob_1_PreJob(&m_pJob,
@@ -914,6 +917,16 @@ void SePrompt::vReportTime(void)
     return;
   
   vTrace("time %lldms\n"_Stz,m_oTimer.iMilliseconds());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prompt section                                                         */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vSection(Stz* szSection)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pInput->vSection(szSection);
 }
 
 /*----------------------------------------------------------------------------*/

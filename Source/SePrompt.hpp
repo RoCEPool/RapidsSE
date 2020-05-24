@@ -94,6 +94,7 @@ namespace Prompt
     void vReportTime(void);
     void vResetSectionNo(void);
     i8   iRequestId(void);
+  void vSection(Stz* szSection);
     Session* pSession(void);
     TagSet* pPmtTagSet(void);
     bool bShortCut(void);

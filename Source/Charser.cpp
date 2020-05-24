@@ -209,6 +209,26 @@ i8 Charser::iSrcLine(void)
   return m_iSrcLine;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get prompt section                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Charser::szSection(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_sSection;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prompt section                                                         */
+/*----------------------------------------------------------------------------*/
+void Charser::vSection(Stz* szSection)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  m_sSection = szSection;
+}
+
 
 //
 // Control /////////////////////////////////////////////////////////////////////
@@ -551,6 +571,7 @@ void Charser::vResetCharser(void)
   // source definition
   m_eSource    = IS_NONE;
   m_sPath      = C_NO_NAME;
+  m_sSection   = ""_Stz;
   m_pInclude   = nullptr;
   
   // source

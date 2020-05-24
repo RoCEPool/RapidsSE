@@ -51,6 +51,8 @@ namespace LexicalAnalysis
     void vPushCharser(void);
     void vReadCommand(void);
     void vReadToken(void);
+    void vSection(Stz* szSection);
+    Stz* szSection(void);
     bool bSeenEOF(void);
     void vSingleLineCmd(bool bLineMode);
     bool bSingleLineCmd(void);

@@ -40,6 +40,10 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
   }
   
   if (pInpTknVec->nTokens() == 3) {
+    
+    Stz* szSectionNm = pInpTknVec->pGet(2)->szChars();
+    pPrompt->vSection(szSectionNm);
+    
     vInfo("\n"_Stz);
     vInfo("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
           "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"

@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* _tests - mini bamboo tests                                                 */
+/* _unitTestA -- unot test A                                                  */
 /*============================================================================*/
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Boot Cluster";
+print section "Boot-Cluster";
 bc
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Track Memory";
+print section "Track-Memory";
 
 trackMemory;
 
@@ -17,7 +17,7 @@ print section "Ping";
 ping;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Grid Sanity";
+print section "Grid-Sanity";
 
 gridSanity;
 
@@ -27,7 +27,7 @@ print section "Space";
 space;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "List Partitions";
+print section "List-Partitions";
 
 lsparts;
 
@@ -47,17 +47,17 @@ print section "cf ~";
 cf ~;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "List Tenants";
+print section "List-Tenants";
 
 lsten;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Create Tenant";
+print section "Create-Tenant";
 
 create tenant t;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Drop Tenant";
+print section "Drop-Tenant";
 
 drop tenant t;
 
