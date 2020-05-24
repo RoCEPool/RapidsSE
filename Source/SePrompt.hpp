@@ -83,9 +83,7 @@ namespace Prompt
     void vLogCommand(void);
     void vLogFreeSpace(void);
     i8   iNextSectionNo(void);
-    bool bNoWait(void);
     ObjectsInPool*  pObjectsInPool(void);
-    i8   iPromptId(void);
     void vPromptUser(void);
     bool bReadNextCommand(void);
     bool bRedirectFromFile(void);

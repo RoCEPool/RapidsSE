@@ -166,6 +166,8 @@ void SePrompt::vPromptLoop(void)
   }
     
   m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   while (m_bContinue) {
     
@@ -270,7 +272,7 @@ void SePrompt::vPromptLoop(void)
     
     
     // spawn the job
-    if (bNoWait()) {
+    if (m_pJob->bNoWaitTag()) {
       Api::vJob_2_SpawnJob_prompt(m_pJob);
       Api::vMutexUnlock(m_pSession,m_pJob);
       continue;
@@ -663,36 +665,13 @@ i8 SePrompt::iNextSectionNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* no wait                                                                    */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bNoWait(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  if (m_pJob->bNoWaitTag())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* no wait                                                                    */
+/* objects in pool                                                            */
 /*----------------------------------------------------------------------------*/
 ObjectsInPool* SePrompt::pObjectsInPool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pObjectsInPool;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get prompt id                                                              */
-/*----------------------------------------------------------------------------*/
-i8 SePrompt::iPromptId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_iFocalId;
 }
 
 /*----------------------------------------------------------------------------*/

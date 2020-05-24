@@ -7,7 +7,7 @@ print section "Boot Cluster";
 bc
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "trackMemory";
+print section "Track Memory";
 
 trackMemory;
 
@@ -17,17 +17,17 @@ print section "Ping";
 ping;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "gridSanity";
+print section "Grid Sanity";
 
 gridSanity;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "space";
+print section "Space";
 
 space;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "list partitions";
+print section "List Partitions";
 
 lsparts;
 
@@ -47,17 +47,17 @@ print section "cf ~";
 cf ~;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "lsten";
+print section "List Tenants";
 
 lsten;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "create tenant";
+print section "Create Tenant";
 
 create tenant t;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "drop tenant";
+print section "Drop Tenant";
 
 drop tenant t;
 
@@ -77,12 +77,12 @@ print section "lscat";
 lscat;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "create catalog";
+print section "Create Catalog";
 
 create catalog t;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "drop catalog";
+print section "Drop Catalog";
 
 drop catalog t;
 
