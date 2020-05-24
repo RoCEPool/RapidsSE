@@ -201,6 +201,9 @@ void SePrompt::vPromptLoop(void)
     if (bExecuteFunction())
       continue;
     
+    Stz* szCmdFile = m_pSession->m_pInput->szPath();
+    i8   iCmdLine  = pTkn(0)->iLineNo();
+
     if (bIsPromptWord())
       m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
 
@@ -228,6 +231,11 @@ void SePrompt::vPromptLoop(void)
     //vTrace("%s\n"_Stz,xNow.sz());
          
     m_oExtTagSet.vInsert(C_TAG_WHEN,xNow.sz());
+    
+    if (*szCmdFile->azChar()) {
+      m_oExtTagSet.vInsert(C_PMT_CMDFILE,szCmdFile);
+      m_oExtTagSet.vInsert(C_PMT_CMDLINE,iCmdLine);
+    }
 
     Job* pJob = nullptr;
     
