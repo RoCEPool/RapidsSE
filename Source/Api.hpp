@@ -9,6 +9,11 @@ namespace Interface
   {
   public:
 
+  static Session* pAllocSession(eSK eSession);
+  static void     vFreeSession(Session* pSession);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   static eEC  eJob_1_PreJob(Job**     ppJob,
                             TokenVec* pCmdTknVec,
                             TagSet*   pTagSet,
@@ -33,9 +38,7 @@ namespace Interface
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  static Session* pAllocSession(eSK eSession);
-  static void     vFreeSession(Session* pSession);
-  
+
   static void vIncStatistics(eAC eApiCall);
   static void vMonitorPortrait(s48K& sPortrait);
 

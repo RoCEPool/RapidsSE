@@ -13,6 +13,45 @@ extern Log* gpLog;
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* allocate a session                                                         */
+/*----------------------------------------------------------------------------*/
+Session* Api::pAllocSession(eSK eSession)
+{
+  _static_
+  
+  
+  SessionArray* pSessionArray = AM::pSessionArray();
+  
+  Session* pSession = pSessionArray->pAllocSession(eSession);
+  
+  pSession->m_pInput = new Input;
+  
+  return pSession;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free a session                                                             */
+/*----------------------------------------------------------------------------*/
+void Api::vFreeSession(Session* pSession)
+{
+  _static_
+  
+  delete pSession->m_pInput;
+  pSession->m_pInput = nullptr;
+
+  
+  SessionArray* pSessionArray = AM::pSessionArray();
+
+  pSessionArray->vFreeSession(pSession);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
@@ -299,40 +338,6 @@ void Api::vMutexWaitCond(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* allocate a session                                                         */
-/*----------------------------------------------------------------------------*/
-Session* Api::pAllocSession(eSK eSession)
-{
-  _static_
-  
-  
-  SessionArray* pSessionArray = AM::pSessionArray();
-  
-  Session* pSession = pSessionArray->pAllocSession(eSession);
-  
-  pSession->m_pInput = new Input;
-  
-  return pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free a session                                                             */
-/*----------------------------------------------------------------------------*/
-void Api::vFreeSession(Session* pSession)
-{
-  _static_
-  
-  delete pSession->m_pInput;
-  pSession->m_pInput = nullptr;
-
-  
-  SessionArray* pSessionArray = AM::pSessionArray();
-
-  pSessionArray->vFreeSession(pSession);
-}
 
 /*----------------------------------------------------------------------------*/
 /* monitor portrait                                                           */
