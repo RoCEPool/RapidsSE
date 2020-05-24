@@ -23,6 +23,9 @@ PromptFun __Prompt_print (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_print(SePrompt* pPrompt)
 {
+  Session* pSession = pPrompt->pSession();
+  Input* pInput = pSession->m_pInput;
+  
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pInpTknVec->pGet(0)->bSame("print"_Stz));
@@ -49,7 +52,8 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
           "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
           "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
           "/\n"_Stz);
-    vInfo("§Section %lld) %s : (@line %lld)\n"_Stz,
+    vInfo("§%s Section %lld) %s : (@line %lld)\n"_Stz,
+          pInput->szPath(),
           pPrompt->iNextSectionNo(),
           pInpTknVec->pGet(2)->szChars(),
           pInpTknVec->pGet(2)->iLineNo()
