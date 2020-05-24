@@ -8,14 +8,17 @@ print "" ;
 
 print "Useful SE commands include:" ;
 
+print "cmdtags    -- a list of all the _cmdTags" ;
 print "demons     -- " ;
 print "folders    -- " ;
 print "handlers   -- " ;
+print "lw         -- " ;
 print "munge      -- " ;
 print "ops        -- " ;
 print "operators  -- " ;
 print "procs      -- " ;
 print "procedures -- " ;
+print "words      -- " ;
 
 print "" ;
 
