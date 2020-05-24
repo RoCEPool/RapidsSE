@@ -37,7 +37,9 @@
     then
       execute
   else
-    <pipelineNm> "No pre execute word for pipeline: %v" .printf
+    args.verbose if
+      <pipelineNm> "No pre execute word for pipeline: %v" .printf
+    then
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

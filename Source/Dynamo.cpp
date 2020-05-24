@@ -352,7 +352,8 @@ bool Dynamo::bCollectTag(void)
   vAcceptToken();
 
 //#ifdef WITH_TRACE_DYNAMO
-  vTrace("Tag recognised: %s %s\n"_Stz,sTagNm.szStz(),sTagValue.szStz());
+  if (AM::bVerbose())
+    vTrace("Tag recognised: %s %s\n"_Stz,sTagNm.szStz(),sTagValue.szStz());
 //#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
