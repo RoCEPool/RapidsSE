@@ -167,6 +167,9 @@ void SePrompt::vPromptLoop(void)
     
   m_xReqTuple.m_i_Session = m_pSession->m_i_Session;
   
+  s32 sHostName;
+  Hardware::vHostName(sHostName);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   while (m_bContinue) {
@@ -235,6 +238,7 @@ void SePrompt::vPromptLoop(void)
     //vTrace("%s\n"_Stz,xNow.sz());
 
     m_oExtTagSet.vInsert(C_TAG_FREEPCT,gpBufferPool->iFreePercent());
+    m_oExtTagSet.vInsert(C_TAG_HOST,sHostName);
     m_oExtTagSet.vInsert(C_TAG_REQUEST,m_xReqTuple.m_iReqNo);
     m_oExtTagSet.vInsert(C_TAG_WHEN,xNow.sz());
     
