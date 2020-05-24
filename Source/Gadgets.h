@@ -21,7 +21,6 @@ static Stz* C_TAG_BYPROMPT  = "<byPrompt>"_Stz;
 static Stz* C_TAG_CMD       = "<cmd>"_Stz;
 static Stz* C_TAG_FLOW      = "<flow>"_Stz;
 static Stz* C_TAG_DISTID    = "<distId>"_Stz;
-static Stz* C_TAG_INFO      = "<info>"_Stz;
 static Stz* C_TAG_JOBCLASS  = "<jobClass>"_Stz;
 static Stz* C_TAG_JOBKIND   = "<jobKind>"_Stz;
 static Stz* C_TAG_JOBNM     = "<jobNm>"_Stz;

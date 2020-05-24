@@ -379,15 +379,15 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedTags_forDistJob params| pwCmdTags |
 
-  "<SeedReq>" "defaultSeedDist" "_req" pwCmdTags _cmdTags.addSeedTag
+  "<seedReq>" "defaultSeedDist" "_req" pwCmdTags _cmdTags.addSeedTag
 
-  "<SeedRcv>" "defaultSeedDist" "_beg" pwCmdTags _cmdTags.addSeedTag
+  "<seedRcv>" "defaultSeedDist" "_beg" pwCmdTags _cmdTags.addSeedTag
 
-  "<SeedExe>" "defaultSeedDist" "_exe" pwCmdTags _cmdTags.addSeedTag
+  "<seedExe>" "defaultSeedDist" "_exe" pwCmdTags _cmdTags.addSeedTag
 
-  "<SeedEnd>" "defaultSeedDist" "_end" pwCmdTags _cmdTags.addSeedTag
+  "<seedEnd>" "defaultSeedDist" "_end" pwCmdTags _cmdTags.addSeedTag
 
-  "<SeedCan>" "defaultSeedDist" "_can" pwCmdTags _cmdTags.addSeedTag
+  "<seedCan>" "defaultSeedDist" "_can" pwCmdTags _cmdTags.addSeedTag
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -395,7 +395,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedTags_forGenericJob params| pwCmdTags |
 
-  "<SeedReq>" "defaultSeedLocal" "_run" pwCmdTags _cmdTags.addSeedTag
+  "<seedReq>" "defaultSeedLocal" "_run" pwCmdTags _cmdTags.addSeedTag
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -403,7 +403,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedTags_forLocalOp params| pwCmdTags |
 
-  "<SeedReq>" "defaultSeedLocal" "_req" pwCmdTags _cmdTags.addSeedTag
+  "<seedReq>" "defaultSeedLocal" "_req" pwCmdTags _cmdTags.addSeedTag
 ;
 
 /*----------------------------------------------------------------------------*/
