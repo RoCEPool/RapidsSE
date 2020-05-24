@@ -10,7 +10,6 @@ namespace Prompt
   static Stz* C_PMT_BUFPOOL  = "<bufferPool>"_Stz;
   static Stz* C_PMT_OBJDELTA = "<objectDelta>"_Stz;
   static Stz* C_PMT_MEMTRACK = "<trackMemory>"_Stz;
-  static Stz* C_PMT_REQUEST  = "<request>"_Stz;
   static Stz* C_PMT_TKNDUMP  = "<dumpTokens>"_Stz;
   static Stz* C_PMT_TRCFILE  = "<traceFile>"_Stz;
 
