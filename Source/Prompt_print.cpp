@@ -52,11 +52,11 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
           "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
           "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
           "/\n"_Stz);
-    vInfo("§%s Section %lld) %s : (@line %lld)\n"_Stz,
+    vInfo("§%s @line %lld Section %lld) %s : \n"_Stz,
           pInput->szPath(),
+          pInpTknVec->pGet(2)->iLineNo(),
           pPrompt->iNextSectionNo(),
-          pInpTknVec->pGet(2)->szChars(),
-          pInpTknVec->pGet(2)->iLineNo()
+          pInpTknVec->pGet(2)->szChars()
           );
     vInfo("\n"_Stz);
     return true;

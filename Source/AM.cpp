@@ -17,12 +17,11 @@ extern Log*          gpLog;
 extern SizeHeap      gxaSizeHeap[];
 
 // Arg
-Stz* AM::szCommand(void)      { return gxArgs.m_sCommand.szStz();             }
+bool AM::bDebugMode(void)     { return gpAttachMap->Arg.m_bDebugMode;         }
 bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->Arg.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->Arg.m_nDummySleep;        }
 i8   AM::nDummyThreads(void)  { return gpAttachMap->Arg.m_nDummyThreads;      }
-Stz* AM::szInitial(void)      { return gxArgs.m_sInitial.szStz();             }
 bool AM::bLog(void)           { return gpAttachMap->Arg.m_bLog;               }
 i8   AM::nMaxLoadErrors(void) { return gpAttachMap->Arg.m_nMaxLoadErrors;     }
 i8   AM::nMaxReadyLP(void)    { return gpAttachMap->Arg.m_nMaxReadyLP;        }
@@ -34,6 +33,11 @@ i8   AM::nSubIngesters(void)  { return gpAttachMap->Arg.m_nSubIngesters;      }
 i8   AM::nSubInserters(void)  { return gpAttachMap->Arg.m_nSubInserters;      }
 i8   AM::nSubLoaders(void)    { return gpAttachMap->Arg.m_nSubLoaders;        }
 i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
+
+TagSet* AM::pDbgTagSet(void)  { return & gpAttachMap->Arg.m_oDbgTagSet;       }
+
+Stz* AM::szCommand(void)      { return gxArgs.m_sCommand.szStz();             }
+Stz* AM::szInitial(void)      { return gxArgs.m_sInitial.szStz();             }
 
 // file names
 Stz* AM::szLogRegion(void)    { return gpAttachMap->m_sLogRegion;             }

@@ -1172,17 +1172,17 @@ void Engine::vPrintFormats(void)
   vInfo("\n"_Stz);
   vInfo("Formats:\n"_Stz);
   
-  vTrace("  F_BCD        = %s\n"_Stz,F_BCD);
-  vTrace("  F_BCD_frac   = %s\n"_Stz,F_BCD_frac);
-  vTrace("  F_DTE        = %s\n"_Stz,F_DTE);
-  vTrace("  F_FLT        = %s\n"_Stz,F_FLT);
-  vTrace("  F_INT        = %s\n"_Stz,F_INT);
-  vTrace("  F_IVL        = %s\n"_Stz,F_IVL);
-  vTrace("  F_IVL_frac   = %s\n"_Stz,F_IVL_frac);
-  vTrace("  F_TME        = %s\n"_Stz,F_TME);
-  vTrace("  F_TME_frac   = %s\n"_Stz,F_TME_frac);
-  vTrace("  F_TSP        = %s\n"_Stz,F_TSP);
-  vTrace("  F_TSP_frac   = %s\n"_Stz,F_TSP_frac);
+  vTrace("  F_BCD      = %s\n"_Stz,F_BCD);
+  vTrace("  F_BCD_frac = %s\n"_Stz,F_BCD_frac);
+  vTrace("  F_DTE      = %s\n"_Stz,F_DTE);
+  vTrace("  F_FLT      = %s\n"_Stz,F_FLT);
+  vTrace("  F_INT      = %s\n"_Stz,F_INT);
+  vTrace("  F_IVL      = %s\n"_Stz,F_IVL);
+  vTrace("  F_IVL_frac = %s\n"_Stz,F_IVL_frac);
+  vTrace("  F_TME      = %s\n"_Stz,F_TME);
+  vTrace("  F_TME_frac = %s\n"_Stz,F_TME_frac);
+  vTrace("  F_TSP      = %s\n"_Stz,F_TSP);
+  vTrace("  F_TSP_frac = %s\n"_Stz,F_TSP_frac);
 }
 
 /*----------------------------------------------------------------------------*/

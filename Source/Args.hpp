@@ -55,6 +55,7 @@ namespace Arguments
     // options
     s256 m_sCommand;         // command to run
     bool m_bConfig;          // print configuration information
+    bool m_bDebugMode;       // debug mode
     bool m_bDeveloper;       // user is a developer
     bool m_bDontFree;        // dont actually free objects back to heap
     i8   m_nDummyThreads;    // number of dummy threads

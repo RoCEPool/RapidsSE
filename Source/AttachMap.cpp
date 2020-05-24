@@ -250,7 +250,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
-  
+  Arg.m_bDebugMode       = pArgs->m_bDebugMode;
   Arg.m_bDeveloper       = pArgs->m_bDeveloper;
   Arg.m_nDummyLoop       = pArgs->m_nDummyLoop;
   Arg.m_nDummySleep      = pArgs->m_nDummySleep;
@@ -273,7 +273,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_bTracepoint      = pArgs->m_bTracepoint;
   Arg.m_bVerbose         = pArgs->m_bVerbose;
 
-  Arg.m_oMapTagSet.vCopy(&pArgs->m_oArgTagSet);
+  Arg.m_oDbgTagSet.vCopy(&pArgs->m_oArgTagSet);
   
   
   // ray -- not sure the following should be here

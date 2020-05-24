@@ -64,6 +64,7 @@ Args::Args(void)
 
   // options
   m_bConfig          = true;
+  m_bDebugMode       = false;
   m_bDeveloper       = false;
   m_bDontFree        = false;
   m_nDummyThreads    = 0;
@@ -182,25 +183,25 @@ bool Args::bParse(int argc, Stz* argv[])
 
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--addNode"_Stz)) {
       m_bAddNode = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--address"_Stz)) {
       m_aRegionAddr = (void*)argv[++i_Arg]->iToI8();
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--appendTrace"_Stz)) {
       m_bAppendTrace = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--command"_Stz)) {
       m_sCommand = (Stz*)argv[++i_Arg];
       vTrace("command %s\n"_Stz, m_sCommand.azChar());
@@ -210,68 +211,74 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--commands"_Stz)) {
       m_sCommandsDir = (Stz*)argv[++i_Arg];
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--config"_Stz)) {
       m_bConfig = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--debugMode"_Stz)) {
+      m_bDebugMode = true;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--developer"_Stz)) {
       m_bDeveloper = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--dontFree"_Stz)) {
       m_bDontFree = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--dummyLoop"_Stz)) {
       m_nDummyLoop = argv[++i_Arg]->iToI8();
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--dummySleep"_Stz)) {
       m_nDummySleep = argv[++i_Arg]->iToI8();
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--dummyThreads"_Stz)) {
       m_nDummyThreads = argv[++i_Arg]->iToI8();
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (argv[i_Arg]->bSame("--entries"_Stz)) {
       m_nEntries = argv[++i_Arg]->iToI8();
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--freeCB"_Stz)) {
       m_bFreeCB = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--gridTest"_Stz)) {
       m_bGridTest = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (
         argv[i_Arg]->bSame("--help"_Stz)
         || argv[i_Arg]->bSame("-help"_Stz)
@@ -284,32 +291,32 @@ bool Args::bParse(int argc, Stz* argv[])
       Process::vExitSuccess();
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--hugepages"_Stz)) {
       m_bHugePages = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--initial"_Stz)) {
       m_bInitial = true;
       m_sInitial = (Stz*)argv[++i_Arg];
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--jot"_Stz)) {
       vJotDebug(3);
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--killPrev"_Stz)) {
       m_bKillPrev = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // lock shared memory pages in memory
     if (argv[i_Arg]->bSame("--lock"_Stz)) {
       m_bLock = true;
@@ -329,25 +336,25 @@ bool Args::bParse(int argc, Stz* argv[])
     }
 #endif
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--maxLoadErrors"_Stz)) {
       m_nMaxLoadErrors = argv[++i_Arg]->iToI8();
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--maxReadyLP"_Stz)) {
       m_nMaxReadyLP = argv[++i_Arg]->iToI8();
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--metadata"_Stz)) {
       m_bMetadata = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--munged"_Stz)) {
       m_bMunged = true;
 #ifdef WITH_MUNGED_SEN
@@ -359,13 +366,13 @@ bool Args::bParse(int argc, Stz* argv[])
       
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--name"_Stz)) {
       m_sNodeName = (Stz*)argv[++i_Arg];
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--node"_Stz)) {
       m_xNodes[i_Node].m_sNodeName  = (Stz*)argv[++i_Arg];;
       m_xNodes[i_Node].m_sIPAddress = (Stz*)argv[++i_Arg];
@@ -379,37 +386,37 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--noLog"_Stz)) {
       m_bLog = false;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--NoMunge"_Stz)) {
       m_bNoMunge = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--noprogress"_Stz)) {
       m_bProgress = false;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--notouch"_Stz)) {
       m_bTouch = false;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--nowelcome"_Stz)) {
       m_bWelcome = false;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--partitionsPerNode"_Stz)) {
       m_nSlotsPerNode = argv[++i_Arg]->iToI8();
       if (m_nSlotsPerNode > C_MAX_SLOTS) {
@@ -421,19 +428,19 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--periodicSleep"_Stz)) {
       m_nPeriodicSleep = argv[++i_Arg]->iToI8();
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--progress"_Stz)) {
       m_bProgress = true;
       continue;
     }
 
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--prompt"_Stz)) {
       
       if (m_bStop) {
@@ -455,37 +462,37 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--promptDebug"_Stz)) {
       m_iPromptDebug = argv[++i_Arg]->iToI8();
       continue;
     }
 
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--region"_Stz)) {
       m_sRegionName = (Stz*)argv[++i_Arg];
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--regionPrefix"_Stz)) {
       m_sRegionPrefix = (Stz*)argv[++i_Arg];
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--reload"_Stz)) {
       m_bReload = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //if (argv[iArg]->bSame("--restart"_Stz)) {
     //  m_bRestart = true;
     //  continue;
     //}
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--script"_Stz)) {
       if (m_bStop) {
         vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
@@ -504,19 +511,19 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--seprompt"_Stz)) {
       m_bPrompt = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--sen"_Stz)) {
       m_sSenDir = (Stz*)argv[++i_Arg];
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--size"_Stz)) {
       
       bool bResult = MagLib::bToBytes((Stz*)argv[++i_Arg], m_iRegionSize);
@@ -552,7 +559,7 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--start"_Stz)) {
       
       if (m_bStop) {
@@ -568,7 +575,7 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--status"_Stz)) {
       if (m_bStop) {
         vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
@@ -587,7 +594,7 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--stop"_Stz)) {
       
       if (m_bStart) {
@@ -607,7 +614,7 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--subIngesters"_Stz)) {
       m_nSubIngesters = argv[++i_Arg]->iToI8();
       if (m_nThreads > C_MAX_THREADS) {
@@ -619,7 +626,7 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--subloaders"_Stz)) {
       m_nSubLoaders = argv[++i_Arg]->iToI8();
       if (m_nThreads > C_MAX_THREADS) {
@@ -631,13 +638,13 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--supervisorSleep"_Stz)) {
       m_nSupervisorSleep = argv[++i_Arg]->iToI8();
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--threads"_Stz)) {
       m_nThreads = argv[++i_Arg]->iToI8();
       if (m_nThreads > C_MAX_THREADS) {
@@ -649,37 +656,37 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--touch"_Stz)) {
       m_bTouch = true;
       continue;
     }
 
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--tracepoint"_Stz)) {
       m_bTracepoint = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--tracing"_Stz)) {
       m_bTracing = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--unlink"_Stz)) {
       m_bUnlink = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--verbose"_Stz)) {
       m_bVerbose = true;
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--welcome"_Stz)) {
       m_bWelcome = true;
       continue;

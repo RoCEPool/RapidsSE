@@ -26,6 +26,7 @@ namespace StorageEngine
     s256  m_sLogTxtFile;
     
     struct {
+      bool   m_bDebugMode;     // debug mode
       bool   m_bDeveloper;     // developer mode
       i8     m_nDummyLoop;     // loop count for dummy threads
       i8     m_nDummySleep;    // sleep period for dummy threads
@@ -48,7 +49,7 @@ namespace StorageEngine
       bool   m_bTracepoint;
       bool   m_bVerbose;
       
-      TagSet m_oMapTagSet;
+      TagSet m_oDbgTagSet;
       
     } Arg;
     

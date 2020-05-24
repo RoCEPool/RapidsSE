@@ -31,6 +31,7 @@ namespace Oblique
   {
   public:
     // args
+    static bool bDebugMode(void);
     static bool bDeveloper(void);
     static Stz* szCommand(void);
     static i8   nDummyLoop(void);
@@ -50,6 +51,8 @@ namespace Oblique
     static i8   nSubLoaders(void);
     static i8   nThreads(void);
 
+    TagSet* pDbgTagSet(void);
+  
     static Stz* szLogRegion(void);
     static Stz* szLogCsvFile(void);
     static Stz* szLogTxtFile(void);
