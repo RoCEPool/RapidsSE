@@ -221,6 +221,14 @@ void SePrompt::vPromptLoop(void)
     
     vLogCommand();
     
+    
+    Now xNow;
+    xNow.vSetNow();
+    
+    vTrace("%s\n"_Stz,xNow.sz());
+         
+    m_oExtTagSet.vInsert(C_TAG_WHEN,xNow.sz());
+
     Job* pJob = nullptr;
     
     eEC eError = Api::eJob_1_PreJob(&pJob,

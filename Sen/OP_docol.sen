@@ -26,7 +26,7 @@ cmdSyntax: docol :: docol <routineNm> ;
 
 : docol _cmdTags tagCopy: localLiteOp_cmdTags
   tags{
-    <jobDesc>     = "--description of operator--"
+    <cmdDesc>     = "--cmd desc for op--"
     <localLiteOp> = true
     <params>      = 1
   }
