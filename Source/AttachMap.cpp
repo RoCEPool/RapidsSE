@@ -277,27 +277,27 @@ void AttachMap::vRecordArguments(Args* pArgs,
   m_oBirth.vNow();
   m_oNow.vSetNowUTC();
   
-  Arg.m_bDeveloper       = bDeveloper;
-  Arg.m_nDummyLoop       = nDummyLoop;
-  Arg.m_nDummySleep      = nDummySleep;
-  Arg.m_nDummyThreads    = nDummyThreads;
-  Arg.m_nIndexEntries    = nIndexEntries;
-  Arg.m_bLog             = bLog;
-  Arg.m_nMaxLoadErrors   = nMaxLoadErrors;
-  Arg.m_nMaxReadyLP      = nMaxReadyLP;
-  Arg.m_bMetadata        = bMetadata;
-  Arg.m_bMunged          = bMunged;
-  Arg.m_nNodes           = nNodes;
-  Arg.m_bProgress        = bProgress;
-  Arg.m_sRegionName      = aRegionName;
-  Arg.m_iRegionSize      = iRegionSize;
-  Arg.m_nSlotsPerNode    = nSlotsPerNode;
-  Arg.m_nSubIngesters    = nSubIngesters;
+  Arg.m_bDeveloper       = pArgs->m_bDeveloper;
+  Arg.m_nDummyLoop       = pArgs->m_nDummyLoop;
+  Arg.m_nDummySleep      = pArgs->m_nDummySleep;
+  Arg.m_nDummyThreads    = pArgs->m_nDummyThreads;
+  Arg.m_nIndexEntries    = pArgs->m_nEntries;
+  Arg.m_bLog             = pArgs->m_bLog;
+  Arg.m_nMaxLoadErrors   = pArgs->m_nMaxLoadErrors;
+  Arg.m_nMaxReadyLP      = pArgs->m_nMaxReadyLP;
+  Arg.m_bMetadata        = pArgs->m_bMetadata;
+  Arg.m_bMunged          = pArgs->m_bMunged;
+  Arg.m_nNodes           = pArgs->m_nNodes;
+  Arg.m_bProgress        = pArgs->m_bProgress;
+  Arg.m_sRegionName      = pArgs->m_sRegionName;
+  Arg.m_iRegionSize      = pArgs->m_iRegionSize;
+  Arg.m_nSlotsPerNode    = pArgs->m_nSlotsPerNode;
+  Arg.m_nSubIngesters    = pArgs->m_nSubIngesters;
   Arg.m_nSubInserters    = 0;
-  Arg.m_nSubLoaders      = nSubLoaders;
-  Arg.m_nThreads         = nThreads;
-  Arg.m_bTracepoint      = bTracepoint;
-  Arg.m_bVerbose         = bVerbose;
+  Arg.m_nSubLoaders      = pArgs->m_nSubLoaders;
+  Arg.m_nThreads         = pArgs->m_nThreads;
+  Arg.m_bTracepoint      = pArgs->m_bTracepoint;
+  Arg.m_bVerbose         = pArgs->m_bVerbose;
 
   // these are args
 
