@@ -65,7 +65,9 @@ void Step::vApiExecuteRequest(void)
   
   TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);
   Api::vPopulateTagSet(pJobTagSet,pTagStrTknVec);
-  pJobTagSet->vDumpSet();
+  
+  if (AM::bVerbose())
+    pJobTagSet->vDumpSet();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -142,7 +144,8 @@ void Step::vApiSpawnDemon(void)
   
   TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);
   Api::vPopulateTagSet(pJobTagSet,pTagStrTknVec);
-  pJobTagSet->vDumpSet();
+  if (AM::bVerbose())
+    pJobTagSet->vDumpSet();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

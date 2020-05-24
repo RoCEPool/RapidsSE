@@ -101,7 +101,9 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   
   
   ASSERT(! pJob->pTask());
-  pJob->pJobTags()->vDumpSet();
+  
+  if (AM::bVerbose())
+    pJob->pJobTags()->vDumpSet();
   
   // this should go
   if (pJob->bJobHasError()) {

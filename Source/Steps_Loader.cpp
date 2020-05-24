@@ -29,7 +29,9 @@ void Step::vLoaderCreate(void)
   Job* pJob = m_pTask->pJob();
   
   TagSet* pJobTags = pJob->pJobTags();
-  pJobTags->vContentDump();
+  
+  if (AM::bVerbose())
+    pJobTags->vContentDump();
   
   Loader* pLoader = new Loader(*m_pRegSet->m_xpTable);
   bool bResult = pLoader->bSetFormat(pJobTags);

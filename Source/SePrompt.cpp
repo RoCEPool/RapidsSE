@@ -250,7 +250,9 @@ void SePrompt::vPromptLoop(void)
     JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oExtTagSet);
     
     pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTagSet);
-    pJob->pJobTags()->vDumpSet();
+    
+    if (AM::bVerbose())
+      pJob->pJobTags()->vDumpSet();
 
     
     m_oTimer.vStart();
