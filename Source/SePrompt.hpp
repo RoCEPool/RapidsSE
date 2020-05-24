@@ -20,13 +20,15 @@ namespace Prompt
   {
   private:
     Session*  m_pSession;    // rapidsse session
+    Input*    m_pInput;      // input processor from session
+    TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
+    TagSet*   m_pSsnTagSet;  // session tag set
 
     TagSet    m_oPmtTagSet;  // tag set which controls this prompt
     i8        m_iSectionNo;  // section numbering
     bool      m_bContinue;   // continue processing commands?
 
-    TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
-    TagSet    m_oExtTagSet;  // tags gleaned from the prompt command
+    TagSet    m_oExtTagSet;  // extra tags gleaned from the prompt command
     ReqTuple  m_xReqTuple;   // request information
 
     Job*      m_pJob;        // job

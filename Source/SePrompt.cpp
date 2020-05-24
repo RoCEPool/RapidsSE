@@ -63,11 +63,13 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 
   ASSERT(EC_NONE == eError);
   
+  m_pInput     = m_pSession->m_pInput;
   m_pInpTknVec = m_pSession->pInpTknVec();
+  m_pSsnTagSet = & m_pSession->m_oSsnTagSet;
   
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
-  m_pSession->m_pInput->vForkReset();
+  m_pInput->vForkReset();
   
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
@@ -93,7 +95,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_iSectionNo = 0;
 
   d_iDebugMode = gxArgs.m_iPromptDebug;
-  m_pSession->m_pInput->vDebugMode(d_iDebugMode);
+  m_pInput->vDebugMode(d_iDebugMode);
   
   _checkInitialised_(CN_SEPROMPT);
   
@@ -150,11 +152,11 @@ void SePrompt::vPromptLoop(void)
   // we need to set the thread key to non-zero
   PsxThd::vMarkNonSeThread();
   
-  ASSERT(0 == m_pSession->m_pInput->iDepth());
-  m_pSession->m_pInput->vUseStdin();
-  m_pSession->m_pInput->vFormCppTokens();
-  m_pSession->m_pInput->vUseBegin();
-  //m_pSession->m_pInput->vInspect();
+  ASSERT(0 == m_pInput->iDepth());
+  m_pInput->vUseStdin();
+  m_pInput->vFormCppTokens();
+  m_pInput->vUseBegin();
+  //m_pInput->vInspect();
 
   if (d_iDebugMode) {
     vJotDebug(d_iDebugMode);
@@ -201,7 +203,7 @@ void SePrompt::vPromptLoop(void)
     if (bExecuteFunction())
       continue;
     
-    Stz* szCmdFile = m_pSession->m_pInput->szPath();
+    Stz* szCmdFile = m_pInput->szPath();
     i8   iCmdLine  = pTkn(0)->iLineNo();
 
     if (bIsPromptWord())
@@ -237,17 +239,15 @@ void SePrompt::vPromptLoop(void)
       m_oExtTagSet.vInsert(C_PMT_CMDLINE,iCmdLine);
     }
 
-    Job* pJob = nullptr;
+    m_pJob = nullptr;
     
-    eEC eError = Api::eJob_1_PreJob(&pJob,
+    eEC eError = Api::eJob_1_PreJob(&m_pJob,
                                     m_pInpTknVec,
                                    &m_oExtTagSet,
                                    &m_xReqTuple);
     
-    m_pJob = pJob;
-    
     if (eError) {
-      RASSERT(! pJob);
+      RASSERT(! m_pJob);
       vTrace("error: %s\n"_Stz,aEC[eError]);
       if (AM::bDeveloper())
         vDumpInpTknVec(true);
@@ -257,30 +257,30 @@ void SePrompt::vPromptLoop(void)
     //! ALKA: this should go
     JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oExtTagSet);
     
-    pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTagSet);
+    m_pJob->pJobTags()->vCopy(m_pSsnTagSet);
     
     if (AM::bVerbose())
-      pJob->pJobTags()->vDumpSet();
+      m_pJob->pJobTags()->vDumpSet();
 
     
     m_oTimer.vStart();
     
-    Api::vMutexLock(m_pSession,pJob);
+    Api::vMutexLock(m_pSession,m_pJob);
 
     
     
     // spawn the job
     if (bNoWait()) {
-      Api::vJob_2_SpawnJob_prompt(pJob);
-      Api::vMutexUnlock(m_pSession,pJob);
+      Api::vJob_2_SpawnJob_prompt(m_pJob);
+      Api::vMutexUnlock(m_pSession,m_pJob);
       continue;
     }
     else {
-      Api::vJob_2_SpawnJob_prompt(pJob);
+      Api::vJob_2_SpawnJob_prompt(m_pJob);
     }
     
-    Api::vMutexWaitCond(m_pSession,pJob);
-    Api::vMutexUnlock(m_pSession,pJob);
+    Api::vMutexWaitCond(m_pSession,m_pJob);
+    Api::vMutexUnlock(m_pSession,m_pJob);
     m_oTimer.vUpdate();
 
   
@@ -289,13 +289,13 @@ void SePrompt::vPromptLoop(void)
       m_pJob->m_xResult.vProcessBufferQueue();
     }
 
-    pJob->vJobClass(aJobClass, (char*)__func__);
-    Api::vJob_3_PostJob(pJob);
+    m_pJob->vJobClass(aJobClass, (char*)__func__);
+    Api::vJob_3_PostJob(m_pJob);
     
     
     vReportTime();
     
-    Api::vJob_4_DeleteJob(&pJob);
+    Api::vJob_4_DeleteJob(&m_pJob);
     m_pJob = nullptr;
 
     vLogFreeSpace();
@@ -343,9 +343,9 @@ void SePrompt::vDebugMode(i8 iDebugMode)
   d_iDebugMode = iDebugMode;
 
   if (d_iDebugMode > 1)
-    m_pSession->m_pInput->vDebugMode(d_iDebugMode);
+    m_pInput->vDebugMode(d_iDebugMode);
   else
-    m_pSession->m_pInput->vDebugMode(0);
+    m_pInput->vDebugMode(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -794,7 +794,7 @@ bool SePrompt::bReadNextCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case:
   
-  if (m_bOneCommand && m_pSession->m_pInput->bIsStdin()) {
+  if (m_bOneCommand && m_pInput->bIsStdin()) {
     m_pInpTknVec->vIntegrityCheck();
     return false;
   }
@@ -802,7 +802,7 @@ bool SePrompt::bReadNextCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // general case
   
-  m_pSession->m_pInput->vReadCommand();
+  m_pInput->vReadCommand();
   m_pInpTknVec->vIntegrityCheck();
 
   return true;
@@ -819,13 +819,11 @@ bool SePrompt::bRedirectFromFile(void)
 
   if (! File::bExists(szPath))
     return false;
-  
-  Input* pInput = m_pSession->m_pInput;
-    
-  pInput->vPushCharser();
-  bool b = pInput->bUseFile(szPath);
+      
+  m_pInput->vPushCharser();
+  bool b = m_pInput->bUseFile(szPath);
 
-  pInput->vUseBegin();
+  m_pInput->vUseBegin();
 
   return true;
 }
@@ -1010,8 +1008,7 @@ bool SePrompt::bStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Input* pInput = m_pSession->m_pInput;
-  if (pInput->bIsStdin())
+  if (m_pInput->bIsStdin())
     return true;
   else
     return false;
