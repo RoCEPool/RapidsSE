@@ -520,28 +520,27 @@ void TagSet::vReplace(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  TagSet xOriginalTagSet;
+  TagSet xTagSet;
   
   bool bWasCopied = false;
   
-  xOriginalTagSet.vCopy(this);
+  xTagSet.vCopy(this);
   vReset();
   
-  for (i8 i_Ename = 0; i_Ename < xOriginalTagSet.nEnames(); i_Ename++) {
+  for (i8 i_Ename = 0; i_Ename < xTagSet.nEnames(); i_Ename++) {
     
-    if (TN_STRING == xOriginalTagSet.eToken(i_Ename)) {
-      vInsert(xOriginalTagSet.szName(i_Ename),xOriginalTagSet.szValue(i_Ename));
-      continue;
-    }
-    
-    if (xOriginalTagSet.szName(i_Ename)->bSame(szName)) {
-      vInsert(xOriginalTagSet.szName(i_Ename),iValue);
-      bWasCopied = true;
+    if (TN_STRING == xTagSet.eToken(i_Ename)) {
+      vInsert(xTagSet.szName(i_Ename),xTagSet.szValue(i_Ename));
     }
     else {
-      vInsert(xOriginalTagSet.szName(i_Ename),xOriginalTagSet.iValue(i_Ename));
+      if (xTagSet.szName(i_Ename)->bSame(szName)) {
+        vInsert(xTagSet.szName(i_Ename),iValue);
+        bWasCopied = true;
+      }
+      else {
+        vInsert(xTagSet.szName(i_Ename),xTagSet.iValue(i_Ename));
+      }
     }
-    
   }
   
   if (! bWasCopied)
@@ -555,28 +554,27 @@ void TagSet::vReplace(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  TagSet xOriginalTagSet;
+  TagSet xTagSet;
   
   bool bWasCopied = false;
   
-  xOriginalTagSet.vCopy(this);
+  xTagSet.vCopy(this);
   vReset();
   
-  for (i8 i_Ename = 0; i_Ename < xOriginalTagSet.nEnames(); i_Ename++) {
+  for (i8 i_Ename = 0; i_Ename < xTagSet.nEnames(); i_Ename++) {
     
-    if (TN_STRING != xOriginalTagSet.eToken(i_Ename)) {
-      vInsert(xOriginalTagSet.szName(i_Ename),xOriginalTagSet.iValue(i_Ename));
-      continue;
+    if (TN_STRING == xTagSet.eToken(i_Ename)) {
+      
+      if (xTagSet.szName(i_Ename)->bSame(szName)) {
+        vInsert(xTagSet.szName(i_Ename),szValue);
+        bWasCopied = true;
+      }
+      else {
+        vInsert(xTagSet.szName(i_Ename),xTagSet.szValue(i_Ename));
+      }
     }
-    
-    if (xOriginalTagSet.szName(i_Ename)->bSame(szName)) {
-      vInsert(xOriginalTagSet.szName(i_Ename),szValue);
-      bWasCopied = true;
-    }
-    else {
-      vInsert(xOriginalTagSet.szName(i_Ename),xOriginalTagSet.szValue(i_Ename));
-    }
-
+    else
+      vInsert(xTagSet.szName(i_Ename),xTagSet.iValue(i_Ename));
   }
   
   if (! bWasCopied)
