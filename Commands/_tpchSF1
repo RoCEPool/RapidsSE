@@ -5,7 +5,7 @@
 bc;
 
 print "-----------------------------------------------------------------------";
-time create table customer (
+/time create table customer (
 	C_CUSTKEY       INTEGER NOT NULL,
 	C_NAME          VARCHAR(25) NOT NULL,
 	C_ADDRESS       VARCHAR(40) NOT NULL,
@@ -16,7 +16,7 @@ time create table customer (
 	C_COMMENT       VARCHAR(117) NOT NULL
 );
 
-time create table lineitem (
+/time create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,
   L_PARTKEY       INTEGER NOT NULL,
   L_SUPPKEY       INTEGER NOT NULL,
@@ -35,14 +35,14 @@ time create table lineitem (
   L_COMMENT       VARCHAR(44) NOT NULL
 );
 
-time create table nation (
+/time create table nation (
   N_NATIONKEY     INTEGER NOT NULL,
   N_NAME          CHAR(25) NOT NULL,
   N_REGIONKEY     INTEGER NOT NULL,
   N_COMMENT       VARCHAR(152)
 );
 
-time create table orders (
+/time create table orders (
   O_ORDERKEY      INTEGER NOT NULL,
   O_CUSTKEY       INTEGER NOT NULL,
   O_ORDERSTATUS   CHAR(1) NOT NULL,
@@ -54,7 +54,7 @@ time create table orders (
   O_COMMENT       VARCHAR(79) NOT NULL
 );
 
-time create table part (
+/time create table part (
   P_PARTKEY       INTEGER NOT NULL,
   P_NAME          VARCHAR(55) NOT NULL,
   P_MFGR          CHAR(25) NOT NULL,
@@ -66,7 +66,7 @@ time create table part (
   P_COMMENT       VARCHAR(23) NOT NULL
 );
 
-time create table partsupp (
+/time create table partsupp (
 	PS_PARTKEY      INTEGER NOT NULL,
 	PS_SUPPKEY      INTEGER NOT NULL,
 	PS_AVAILQTY     INTEGER NOT NULL,
@@ -74,13 +74,13 @@ time create table partsupp (
 	PS_COMMENT      VARCHAR(199) NOT NULL
 );
 
-time create table region (
+/time create table region (
   R_REGIONKEY     INTEGER NOT NULL,
   R_NAME          CHAR(25) NOT NULL,
   R_COMMENT       VARCHAR(152)
 );
 
-time create table supplier (
+/time create table supplier (
   S_SUPPKEY       INTEGER NOT NULL,
   S_NAME          CHAR(25) NOT NULL,
   S_ADDRESS       VARCHAR(40) NOT NULL,
@@ -100,21 +100,21 @@ print "loading customer.csv..." ;
 
 //time load partsupp "/TPCH/SF1/temp.tbl" <field_delimiter> =  "|";
 
-time load partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> =  "|";
+/time load partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> =  "|";
 
-time load customer "/TPCH/SF1/customer.tbl" <field_delimiter> =  "|";
+/time load customer "/TPCH/SF1/customer.tbl" <field_delimiter> =  "|";
 print "loading lineitem.csv..." ;
-time load lineitem "/TPCH/SF1/lineitem.csv" ;
+/time load lineitem "/TPCH/SF1/lineitem.csv" ;
 print "loading nation.csv..." ;
-time load nation "/TPCH/SF1/nation.tbl" <field_delimiter> =  "|";
+/time load nation "/TPCH/SF1/nation.tbl" <field_delimiter> =  "|";
 print "loading orders.csv..." ;
-time load orders "/TPCH/SF1/orders.tbl" <field_delimiter> =  "|";
+/time load orders "/TPCH/SF1/orders.tbl" <field_delimiter> =  "|";
 print "loading part.csv..." ;
-time load part "/TPCH/SF1/part.tbl" <field_delimiter> =  "|";
+/time load part "/TPCH/SF1/part.tbl" <field_delimiter> =  "|";
 print "loading region.csv..." ;
-time load region "/TPCH/SF1/region.tbl" <field_delimiter> =  "|";
+/time load region "/TPCH/SF1/region.tbl" <field_delimiter> =  "|";
 print "loading supplier.csv..." ;
-time load supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> =  "|";
+/time load supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> =  "|";
 print "-----------------------------------------------------------------------";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -150,62 +150,62 @@ print "-----------------------------------------------------------------------";
 
 print "-----------------------------------------------------------------------";
 print "fetching customer.csv..." ;
-time predicateFetch customer displayOff ;
+/time predicateFetch customer displayOff ;
 print "fetching lineitem.csv..." ;
-time predicateFetch lineitem displayOff ;
+/time predicateFetch lineitem displayOff ;
 print "fetching nation.csv..." ;
-time predicateFetch nation displayOff ;
+/time predicateFetch nation displayOff ;
 print "fetching orders.csv..." ;
-time predicateFetch orders displayOff ;
+/time predicateFetch orders displayOff ;
 print "fetching part.csv..." ;
-time predicateFetch part displayOff ;
+/time predicateFetch part displayOff ;
 print "fetching partsupp.csv..." ;
-time predicateFetch partsupp displayOff ;
+/time predicateFetch partsupp displayOff ;
 print "fetching region.csv..." ;
-time predicateFetch region displayOff ;
+/time predicateFetch region displayOff ;
 print "fetching supplier.csv..." ;
-time predicateFetch supplier displayOff ;
+/time predicateFetch supplier displayOff ;
 print "-----------------------------------------------------------------------";
 
 
 print "-----------------------------------------------------------------------";
 print "fetching customer.csv (noPrint)..." ;
-time predicateFetch customer noPrint;
+/time predicateFetch customer noPrint;
 print "fetching lineitem.csv (noPrint)..." ;
-time predicateFetch lineitem noPrint;
+/time predicateFetch lineitem noPrint;
 print "fetching nation.csv (noPrint)..." ;
-time predicateFetch nation noPrint;
+/time predicateFetch nation noPrint;
 print "fetching orders.csv (noPrint)..." ;
-time predicateFetch orders noPrint;
+/time predicateFetch orders noPrint;
 print "fetching part.csv (noPrint)..." ;
-time predicateFetch part noPrint;
+/time predicateFetch part noPrint;
 print "fetching partsupp.csv (noPrint)..." ;
-time predicateFetch partsupp noPrint;
+/time predicateFetch partsupp noPrint;
 print "fetching region.csv (noPrint)..." ;
-time predicateFetch region noPrint;
+/time predicateFetch region noPrint;
 print "fetching supplier.csv (noPrint)..." ;
-time predicateFetch supplier noPrint;
+/time predicateFetch supplier noPrint;
 print "-----------------------------------------------------------------------";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 print "-----------------------------------------------------------------------";
 print "dropping customer.csv..." ;
-time drop table customer ;
+/time drop table customer ;
 print "dropping lineitem.csv..." ;
-time drop table lineitem ;
+/time drop table lineitem ;
 print "dropping nation.csv..." ;
-time drop table nation ;
+/time drop table nation ;
 print "dropping orders.csv..." ;
-time drop table orders ;
+/time drop table orders ;
 print "dropping part.csv..." ;
-time drop table part ;
+/time drop table part ;
 print "dropping partsupp.csv..." ;
-time drop table partsupp ;
+/time drop table partsupp ;
 print "dropping region.csv..." ;
-time drop table region ;
+/time drop table region ;
 print "dropping supplier.csv..." ;
-time drop table supplier ;
+/time drop table supplier ;
 print "-----------------------------------------------------------------------";
 
 

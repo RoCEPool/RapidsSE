@@ -53,7 +53,7 @@ load jidxDte "../JTEST/jidxDte.csv" ;
 //dynamic scan jidxDte | getkey jidx_100 | sort | merge | superMerge | output;
 
 
-time dynamic scan jidxDte | project jidx_100,jidx_10 | filter jidx_100 120 < jidx_10 5 > and | output;
+/time dynamic scan jidxDte | project jidx_100,jidx_10 | filter jidx_100 120 < jidx_10 5 > and | output;
 //time dynamic scan jidxDte | project jidx_100,jidx_10 | filter jidx_100 120 < jidx_10 2 5 + > and | output | zed;
 
 //time dynamic predicateFetch jidxDte idx_dte | project jidx_100 | agg jidx_100 | output | zed;

@@ -53,7 +53,7 @@ print "loading lineitem.csv..." ;
 
 space;
 timerStart;
-time load lineitem "/tpch/SF1/lineitem.csv" ;
+/time load lineitem "/tpch/SF1/lineitem.csv" ;
 //time load lineitem "/DATA/tpch/lineitem10.csv" <max_errors> =  100;
 //load lineitem "/tpch/SF10/lineitem.csv" ;
 timerEnd;
@@ -65,37 +65,37 @@ szTbl lineitem;
 //time predicateFetch lineitem noPrint;
 
 print "\nInflate 1 thread";
-time inflate lineitem;
+/time inflate lineitem;
 
 sleep 3;
 
 print "\nInflate 2 thread";
-time inflate lineitem 2;
+/time inflate lineitem 2;
 
 sleep 3;
 
 print "\nInflate 4 thread";
-time inflate lineitem 4;
+/time inflate lineitem 4;
 
 sleep 3;
 
 print "\nInflate 6 thread";
-time inflate lineitem 6;
+/time inflate lineitem 6;
 
 sleep 3;
 
 print "\nInflate 8 thread";
-time inflate lineitem 8;
+/time inflate lineitem 8;
 
 sleep 3;
 
 print "\nInflate 10 thread";
-time inflate lineitem 10;
+/time inflate lineitem 10;
 
 sleep 3;
 
 print "\nInflate 12 thread";
-time inflate lineitem 12;
+/time inflate lineitem 12;
 
 //predicateFetch lineitem;
 /*
@@ -290,22 +290,22 @@ time inflate lineitem 12;
  
  
 predicateFetch retrieve lineitem x;
-time predicateFetch retrieve lineitem L_ORDERKEY;
-time predicateFetch retrieve lineitem L_PARTKEY;
-time predicateFetch retrieve lineitem L_SUPPKEY;
-time predicateFetch retrieve lineitem L_LINENUMBER;
-time predicateFetch retrieve lineitem L_QUANTITY;
-time predicateFetch retrieve lineitem L_EXTENDEDPRICE;
-time predicateFetch retrieve lineitem L_DISCOUNT;
-time predicateFetch retrieve lineitem L_TAX;
-time predicateFetch retrieve lineitem L_RETURNFLAG;
-time predicateFetch retrieve lineitem L_LINESTATUS;
-time predicateFetch retrieve lineitem L_SHIPDATE;
-time predicateFetch retrieve lineitem L_COMMITDATE;
-time predicateFetch retrieve lineitem L_RECEIPTDATE;
-time predicateFetch retrieve lineitem L_SHIPINSTRUCT;
-time predicateFetch retrieve lineitem L_SHIPMODE;
-time predicateFetch retrieve lineitem L_COMMENT;
+/time predicateFetch retrieve lineitem L_ORDERKEY;
+/time predicateFetch retrieve lineitem L_PARTKEY;
+/time predicateFetch retrieve lineitem L_SUPPKEY;
+/time predicateFetch retrieve lineitem L_LINENUMBER;
+/time predicateFetch retrieve lineitem L_QUANTITY;
+/time predicateFetch retrieve lineitem L_EXTENDEDPRICE;
+/time predicateFetch retrieve lineitem L_DISCOUNT;
+/time predicateFetch retrieve lineitem L_TAX;
+/time predicateFetch retrieve lineitem L_RETURNFLAG;
+/time predicateFetch retrieve lineitem L_LINESTATUS;
+/time predicateFetch retrieve lineitem L_SHIPDATE;
+/time predicateFetch retrieve lineitem L_COMMITDATE;
+/time predicateFetch retrieve lineitem L_RECEIPTDATE;
+/time predicateFetch retrieve lineitem L_SHIPINSTRUCT;
+/time predicateFetch retrieve lineitem L_SHIPMODE;
+/time predicateFetch retrieve lineitem L_COMMENT;
 */
 //predicateFetch retrieve lineitem l_orderkey;
 

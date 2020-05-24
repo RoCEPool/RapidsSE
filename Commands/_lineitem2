@@ -4,7 +4,7 @@
 
 bc;
 
-time create table LineItem2 (
+/time create table LineItem2 (
 
   L_ORDERKEY       INTEGER NOT NULL,         //  0)
   L_PARTKEY        INTEGER NOT NULL,         //  1)
@@ -53,7 +53,7 @@ time create table LineItem2 (
 
 space;
 //time load LineItem2 "/tpch/SF0/lineitem2_1.csv" <max_errors> =  100;
-time load LineItem2 "/tpch/SF0/lineitem2_10.csv" <max_errors> =  100;
+/time load LineItem2 "/tpch/SF0/lineitem2_10.csv" <max_errors> =  100;
 //time load LineItem2 "/tpch/SF0/lineitem2_100.csv" <max_errors> =  100;
 //time load LineItem2 "/tpch/SF0/lineitem2_1k.csv" <max_errors> =  100;
 //time load LineItem2 "/tpch/SF0/lineitem2_10k.csv" <max_errors> =  100;

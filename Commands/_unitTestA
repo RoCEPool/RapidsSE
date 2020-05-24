@@ -145,7 +145,7 @@ logSection createTable;
 print section "Create Table";
 
 
-time create table LineItem                 // SF * 6,000,000 rows
+/time create table LineItem                 // SF * 6,000,000 rows
 (
   L_ORDERKEY      INTEGER       NOT NULL min 1 max 1000,  //  0)  8B   3B  O_ORDERKEY 1+
   L_PARTKEY       INTEGER       NOT NULL,  //  1)  8B   3B  rnd(1..(SF*200000))
@@ -222,7 +222,7 @@ tag delete <<enclosed_by_leading> = >;
 logSection load;
 print section "Load Table";
 
-time load lineitem "../DATA/TPCH/lineitem10.csv";
+/time load lineitem "../DATA/TPCH/lineitem10.csv";
 
 
 
@@ -260,7 +260,7 @@ tableScan lineitem;
 logSection predicateFetch;
 print section "Predicate Fetch";
 
-time predicateFetch lineitem "l_orderKey 20 <" ;
+/time predicateFetch lineitem "l_orderKey 20 <" ;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection dumpTable;

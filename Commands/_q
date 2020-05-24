@@ -6,15 +6,15 @@
 
 print "" ;
 print "select count(*) SCAN" ;
-time dynamic scan lineitem | count | superCount | output;
+/time dynamic scan lineitem | count | superCount | output;
 
 print "" ;
 print "select count(*) FETCH" ;
-time dynamic predicateFetch lineitem LineItem_Idx1 | count | superCount | output;
+/time dynamic predicateFetch lineitem LineItem_Idx1 | count | superCount | output;
 
 print "" ;
 print "lineitem join orders (not-opt)" ;
-time dynamic
+/time dynamic
   predicateFetch lineitem LineItem_Idx1 ||
   predicateFetch orders   orders_idx1   |
   join |
@@ -24,7 +24,7 @@ time dynamic
 
 print "" ;
 print "lineitem join orders (opt)" ;
-time dynamic
+/time dynamic
   predicateFetch lineitem LineItem_Idx1 1 ||
   predicateFetch orders   orders_idx1   1 |
   join |
@@ -34,7 +34,7 @@ time dynamic
 
 print "" ;
 print "lineitem join orders orderby" ;
-time dynamic
+/time dynamic
   predicateFetch lineitem LineItem_Idx1 ||
   predicateFetch orders   orders_idx1   |
   join |
@@ -46,7 +46,7 @@ time dynamic
 
 print "" ;
 print "orders join lineitem (not-opt)" ;
-time dynamic
+/time dynamic
   predicateFetch orders   orders_idx1   ||
   predicateFetch lineitem LineItem_Idx1 |
   join |
@@ -56,7 +56,7 @@ time dynamic
 
 print "" ;
 print "orders join lineitem (opt)" ;
-time dynamic
+/time dynamic
   predicateFetch orders   orders_idx1   1 ||
   predicateFetch lineitem LineItem_Idx1 1 |
   join |
@@ -66,7 +66,7 @@ time dynamic
 
 print "" ;
 print "orders join lineitem orderby" ;
-time dynamic
+/time dynamic
   predicateFetch orders   orders_idx1   ||
   predicateFetch lineitem LineItem_Idx1 |
   join |
@@ -78,7 +78,7 @@ time dynamic
 
 print "" ;
 print "select sum(lineitem.l_linenumber)" ;
-time dynamic
+/time dynamic
   predicateFetch lineitem  LineItem_Idx1   |
   agg L_LINENUMBER | superAgg |
   output

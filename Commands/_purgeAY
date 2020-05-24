@@ -29,7 +29,7 @@ print "** 2/9) createTable";
 
 trackMemory;
 
-time create table T
+/time create table T
 (
   colA DECIMAL   NOT NULL min 0              max 250,
   colB BOOLEAN   NOT NULL min false          max true,

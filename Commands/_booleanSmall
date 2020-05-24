@@ -28,7 +28,7 @@ bc;
  load bolTbl "/DATA/Encoding/booleanSmall.csv" ;
 
 print "Fetching bolTbl noPrint";
-time predicateFetch bolTbl noPrint;
+/time predicateFetch bolTbl noPrint;
 
 
  time predicateFetch retrieve bolTbl bol_col1;
@@ -44,9 +44,9 @@ time predicateFetch bolTbl noPrint;
 /*
 
 MARKIII : 22 May
-time predicateFetch bolTbl noPrint;
+/time predicateFetch bolTbl noPrint;
 success: 1000000 rows fetched
-time 600ms
+/time 600ms
 
  : HeadFree 3213015B(19%) : 0..7B:39052 8..15B:134011 16..23B:79793 24..31B:0 32..39B:0 40..47B:0 µ:12B
  success: 1000000 rows loaded (0 invalid rows 0 skipped rows)

@@ -25,81 +25,81 @@ int_col15  INTEGER
 load intTbl "/home/rapids/SE_SCALE/integer10M.csv" ;
 
 print "\n predicateFetch noPrint";
-time predicateFetch intTbl noPrint;
+/time predicateFetch intTbl noPrint;
 
 print "\nInflate 1 thread";
-time inflate intTbl;
+/time inflate intTbl;
 
 print "\nInflate 2 thread";
-time inflate intTbl 2;
+/time inflate intTbl 2;
 
 print "\nInflate 4 thread";
-time inflate intTbl 4;
+/time inflate intTbl 4;
 
 sleep 3;
 
 print "\nInflate 6 thread";
-time inflate intTbl 6;
+/time inflate intTbl 6;
 
 sleep 3;
 
 print "\nInflate 8 thread";
-time inflate intTbl 8;
+/time inflate intTbl 8;
 
 sleep 3;
 
 print "\nInflate 10 thread";
-time inflate intTbl 10;
+/time inflate intTbl 10;
 
 sleep 3;
 
 print "\nInflate 12 thread";
-time inflate intTbl 12;
+/time inflate intTbl 12;
 
 sleep 3;
 
 print "\nInflate 14 thread";
-time inflate intTbl 14;
+/time inflate intTbl 14;
 
 sleep 3;
 
 print "\nInflate 16 thread";
-time inflate intTbl 16;
+/time inflate intTbl 16;
 
 sleep 3;
 
 print "\nInflate 18 thread";
-time inflate intTbl 18;
+/time inflate intTbl 18;
 
 sleep 3;
 
 print "\nInflate 20 thread";
-time inflate intTbl 20;
+/time inflate intTbl 20;
 
 sleep 3;
 
 print "\nInflate 22 thread";
-time inflate intTbl 22;
+/time inflate intTbl 22;
 
 sleep 3;
 
 print "\nInflate 24 thread";
-time inflate intTbl 24;
+/time inflate intTbl 24;
 
 sleep 3;
 
 print "\nInflate 26 thread";
-time inflate intTbl 26;
+/time inflate intTbl 26;
 
 sleep 3;
 
 print "\nInflate 28 thread";
-time inflate intTbl 28;
+/time inflate intTbl 28;
 
 sleep 3;
 
 print "\nInflate 30 thread";
-time inflate intTbl 30;
+/time inflate intTbl 30;
 
 /*
  

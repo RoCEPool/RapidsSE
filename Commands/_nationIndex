@@ -4,7 +4,7 @@
 
 // currently none
 
-time create index nation_idx1 ON nation(N_NationKey);
+/time create index nation_idx1 ON nation(N_NationKey);
 
 /*============================================================================*/
 /* end                                                                        */

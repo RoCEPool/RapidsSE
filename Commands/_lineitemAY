@@ -11,7 +11,7 @@ bc;
 
 print "Cluster started" ;
 
-time create table LineItem                 // SF * 6,000,000 rows
+/time create table LineItem                 // SF * 6,000,000 rows
 (
   L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
   L_PARTKEY       INTEGER       NOT NULL,  //  1)  8B   3B  rnd(1..(SF*200000))
@@ -90,7 +90,7 @@ memoryLeaks;
 //dumptbl lineitem;
 /*
 ;
-time create table LineItem2                 // SF * 6,000,000 rows
+/time create table LineItem2                 // SF * 6,000,000 rows
 (
 L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
 L_PARTKEY       INTEGER       NOT NULL,  //  1)  8B   3B  rnd(1..(SF*200000))
@@ -129,7 +129,7 @@ partitionScan lineitem 1;
 
 docol epochTake;
 
-time pipeline passThru
+/time pipeline passThru
 begin
 
   stage stageA on origin:
@@ -145,7 +145,7 @@ end
 ;
 
 
-time pipeline python
+/time pipeline python
 begin
 
 stage stageA on origin:
@@ -161,7 +161,7 @@ end
 ;
 
 
-time pipeline python
+/time pipeline python
 begin
 
   stage stageA on origin:
@@ -179,7 +179,7 @@ end
 
 python "sample" "printString" | sink | stageA
 
-time pipeline insertSelect
+/time pipeline insertSelect
 begin
 
 stage stageA on origin:
@@ -560,11 +560,11 @@ end
 //drop table orders;
 //docol epochDump;
 
-time predicateFetch lineitem
+/time predicateFetch lineitem
   "l_orderKey 2341987 > l_orderKey 443873129 < and"
   displayoff;
 
-time predicateFetch lineitem
+/time predicateFetch lineitem
   "l_shipdate '1998-09-01 00:00:00' >= l_shipdate '1998-12-01 00:00:00' <= and"
   displayOff;
 */

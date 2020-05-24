@@ -25,38 +25,38 @@ dec_col15  DECIMAL
 load decTbl "/DATA/Encoding/decimal.csv" ;
 
 print "Fetching decTbl noPrint";
-time predicateFetch decTbl noPrint;
+/time predicateFetch decTbl noPrint;
 
 print "Retrieving col0";
-time predicateFetch retrieve decTbl dec_col0;
+/time predicateFetch retrieve decTbl dec_col0;
 
-time predicateFetch retrieve decTbl dec_col1;
-time predicateFetch retrieve decTbl dec_col2;
-time predicateFetch retrieve decTbl dec_col3;
-time predicateFetch retrieve decTbl dec_col4;
-time predicateFetch retrieve decTbl dec_col5;
-time predicateFetch retrieve decTbl dec_col6;
-time predicateFetch retrieve decTbl dec_col7;
-time predicateFetch retrieve decTbl dec_col8;
-time predicateFetch retrieve decTbl dec_col9;
-time predicateFetch retrieve decTbl dec_col10;
-time predicateFetch retrieve decTbl dec_col11;
-time predicateFetch retrieve decTbl dec_col12;
-time predicateFetch retrieve decTbl dec_col13;
-time predicateFetch retrieve decTbl dec_col14;
-time predicateFetch retrieve decTbl dec_col15;
+/time predicateFetch retrieve decTbl dec_col1;
+/time predicateFetch retrieve decTbl dec_col2;
+/time predicateFetch retrieve decTbl dec_col3;
+/time predicateFetch retrieve decTbl dec_col4;
+/time predicateFetch retrieve decTbl dec_col5;
+/time predicateFetch retrieve decTbl dec_col6;
+/time predicateFetch retrieve decTbl dec_col7;
+/time predicateFetch retrieve decTbl dec_col8;
+/time predicateFetch retrieve decTbl dec_col9;
+/time predicateFetch retrieve decTbl dec_col10;
+/time predicateFetch retrieve decTbl dec_col11;
+/time predicateFetch retrieve decTbl dec_col12;
+/time predicateFetch retrieve decTbl dec_col13;
+/time predicateFetch retrieve decTbl dec_col14;
+/time predicateFetch retrieve decTbl dec_col15;
 
 
-time predicateFetch retrieve decTbl dec_col1;
-time predicateFetch retrieve decTbl dec_col1;
-time predicateFetch retrieve decTbl dec_col1;
-time predicateFetch retrieve decTbl dec_col1;
-time predicateFetch retrieve decTbl dec_col1;
-time predicateFetch retrieve decTbl dec_col1;
-time predicateFetch retrieve decTbl dec_col1;
-time predicateFetch retrieve decTbl dec_col1;
-time predicateFetch retrieve decTbl dec_col1;
-time predicateFetch retrieve decTbl dec_col1;
+/time predicateFetch retrieve decTbl dec_col1;
+/time predicateFetch retrieve decTbl dec_col1;
+/time predicateFetch retrieve decTbl dec_col1;
+/time predicateFetch retrieve decTbl dec_col1;
+/time predicateFetch retrieve decTbl dec_col1;
+/time predicateFetch retrieve decTbl dec_col1;
+/time predicateFetch retrieve decTbl dec_col1;
+/time predicateFetch retrieve decTbl dec_col1;
+/time predicateFetch retrieve decTbl dec_col1;
+/time predicateFetch retrieve decTbl dec_col1;
 
 
 //*============================================================================*/

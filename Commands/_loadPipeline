@@ -8,7 +8,7 @@ bc;
 // begin tracking memory
 trackMemory;
 
-time create table LineItem                 // SF * 6,000,000 rows
+/time create table LineItem                 // SF * 6,000,000 rows
 (
 L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
 L_PARTKEY       INTEGER       NOT NULL,  //  1)  8B   3B  rnd(1..(SF*200000))
@@ -33,7 +33,7 @@ L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
 // create indexes
 create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 
-time load lineitem "/DATA/TPCH/lineitem10.csv";
+/time load lineitem "/DATA/TPCH/lineitem10.csv";
 //load lineitem "/DATA/TPCH/lineitem20k.csv";
 //time load lineitem "/TPCH/SF1/lineitem.csv";
 

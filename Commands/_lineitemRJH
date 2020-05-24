@@ -10,7 +10,7 @@ print section "Create Tables";
 
 //dumptokens true;
 
-time create table LineItem                 // SF * 6,000,000 rows
+/time create table LineItem                 // SF * 6,000,000 rows
 (
   L_ORDERKEY      INTEGER       NOT NULL min 1 max 1000,  //  0)  8B   3B  O_ORDERKEY 1+
   L_PARTKEY       INTEGER       NOT NULL,  //  1)  8B   3B  rnd(1..(SF*200000))
@@ -34,7 +34,7 @@ time create table LineItem                 // SF * 6,000,000 rows
   rowsize 256
 ;
 
-time create table LineItem2                // SF * 6,000,000 rows
+/time create table LineItem2                // SF * 6,000,000 rows
 (
   L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
   L_PARTKEY       INTEGER       NOT NULL,  //  1)  8B   3B  rnd(1..(SF*200000))
@@ -85,7 +85,7 @@ print section "Load Table";
 space;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time load lineitem "/tpch/SF0/lineitem_1.csv" <max_errors> =  100;
-time load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" <max_errors> =  100;
+/time load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" <max_errors> =  100;
 //time load lineitem "/tpch/SF0/lineitem_100.csv" <max_errors> =  100;
 //time load lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv" <max_errors> =  100;
 //time load lineitem "/tpch/SF0/lineitem_10k.csv" <max_errors> =  100;
@@ -127,7 +127,7 @@ dumpTbl lineitem;
 logSection filteredFetch;
 print section "Filtered Fetch";
 
-time predicateFetch lineitem "l_orderKey 20 <" ;
+/time predicateFetch lineitem "l_orderKey 20 <" ;
 
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
@@ -247,11 +247,11 @@ status;
 */
 
 /*
-time predicateFetch lineitem
+/time predicateFetch lineitem
   "l_orderKey 2341987 > l_orderKey 443873129 < and"
   displayoff;
 
-time predicateFetch lineitem
+/time predicateFetch lineitem
   "l_shipdate '1998-09-01 00:00:00' >= l_shipdate '1998-12-01 00:00:00' <= and"
   displayOff;
 */

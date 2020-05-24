@@ -7,7 +7,7 @@ print "*************************************************************************
 print "B) Exporting LineItem";
 print "**************************************************************************";
 
-time pipeline exportB
+/time pipeline exportB
 begin
  
   stage scanBuffers on all partitions:
