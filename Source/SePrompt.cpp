@@ -239,12 +239,12 @@ void SePrompt::vPromptLoop(void)
     m_oExtTagSet.vInsert(C_TAG_WHEN,xNow.sz());
     
     if (*szCmdFile->azChar()) {
-      m_oExtTagSet.vInsert(C_PMT_CMDFILE,szCmdFile);
-      m_oExtTagSet.vInsert(C_PMT_CMDLINE,iCmdLine);
+      m_oExtTagSet.vInsert(C_TAG_CMDFILE,szCmdFile);
+      m_oExtTagSet.vInsert(C_TAG_CMDLINE,iCmdLine);
     }
 
     if (*m_pInput->szSection()->azChar())
-      m_oExtTagSet.vInsert(C_PMT_SECTION,m_pInput->szSection());
+      m_oExtTagSet.vInsert(C_TAG_SECTION,m_pInput->szSection());
 
     m_pJob = nullptr;
     

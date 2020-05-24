@@ -19,6 +19,8 @@ static Stz* C_TAGSET_NAME   = "<aTagSetNm>"_Stz;
 
 static Stz* C_TAG_BYPROMPT  = "<byPrompt>"_Stz;
 static Stz* C_TAG_CMD       = "<cmd>"_Stz;
+static Stz* C_TAG_CMDFILE   = "<cmdFile>"_Stz;
+static Stz* C_TAG_CMDLINE   = "<cmdLine>"_Stz;
 static Stz* C_TAG_FLOW      = "<flow>"_Stz;
 static Stz* C_TAG_DISTID    = "<distId>"_Stz;
 static Stz* C_TAG_JOBCLASS  = "<jobClass>"_Stz;
@@ -30,6 +32,7 @@ static Stz* C_TAG_NEXTSTAGE = "<nextStage>"_Stz;
 static Stz* C_TAG_ORIGIN    = "<origin>"_Stz;
 static Stz* C_TAG_PATH      = "<path>"_Stz;
 static Stz* C_TAG_NOWAIT    = "<noWait>"_Stz;
+static Stz* C_TAG_SECTION   = "<section>"_Stz;
 static Stz* C_TAG_SESSION   = "<session>"_Stz;
 static Stz* C_TAG_STMT      = "<stmt>"_Stz;
 static Stz* C_TAG_TABLENM   = "<tableNm>"_Stz;
