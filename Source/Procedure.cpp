@@ -239,7 +239,9 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   // stringise the modified text vector into a pipeline statement
   
   pProcTextVec->vVecToString(pToPipelineStmt->szStz(),0,true);
-  vTrace(" => %s\n"_Stz,pToPipelineStmt->szStz());
+  
+  if (AM::bVerbose())
+    vTrace(" => %s\n"_Stz,pToPipelineStmt->szStz());
   
   delete pProcTextVec;
   delete pParamsVec;
