@@ -36,6 +36,16 @@ i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 TagSet* AM::pDbgTagSet(void)  { return & gpAttachMap->Arg.m_oDbgTagSet;       }
 
+bool AM::bDbgTag(Stz* szTagNm) {
+  
+  if (! AM::bDebugMode())
+    return false;
+  
+  bool bHasDbgTag = gpAttachMap->Arg.m_oDbgTagSet.bHasName(szTagNm);
+  
+  return bHasDbgTag;
+}
+
 Stz* AM::szCommand(void)      { return gxArgs.m_sCommand.szStz();             }
 Stz* AM::szInitial(void)      { return gxArgs.m_sInitial.szStz();             }
 
