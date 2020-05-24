@@ -39,7 +39,7 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   Session*  pSession  = pPrompt->pSession();
   
   TagSet* pSsnTagSet = & pSession->m_oSsnTagSet;
-  TagSet* pPmtTagSet = pPrompt->pSettings();
+  TagSet* pPmtTagSet = pPrompt->pPmtTagSet();
 
   Token* pTkn;
   i8 i_Tkn = 0;

@@ -944,7 +944,7 @@ Session* SePrompt::pSession(void)
 /*----------------------------------------------------------------------------*/
 /* get the prompt settings tag set                                            */
 /*----------------------------------------------------------------------------*/
-TagSet* SePrompt::pSettings(void)
+TagSet* SePrompt::pPmtTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

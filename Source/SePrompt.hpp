@@ -92,7 +92,7 @@ namespace Prompt
     void vResetSectionNo(void);
     i8   iRequestId(void);
     Session* pSession(void);
-    TagSet* pSettings(void);
+    TagSet* pPmtTagSet(void);
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     ObjectsInPool*  pSnapshotObjects(void);
