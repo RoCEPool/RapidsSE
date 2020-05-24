@@ -251,8 +251,13 @@ void Result::vPrintParticipantResponses(void)
   i8 iRowsProcessed = 0;
   
   for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    vTrace("%s\n"_Stz, m_pOriginResponseVec->pGet(i_Node)->m_sResponse.azChar());
-    iRowsProcessed += *m_pOriginResponseVec->pGet(i_Node)->m_ixRowsProcessed;
+    
+    char* azRsp = m_pOriginResponseVec->pGet(i_Node)->m_sResponse.azChar();
+    if (*azRsp)
+      vTrace("%s\n"_Stz,azRsp);
+    
+    i8 nRows = *m_pOriginResponseVec->pGet(i_Node)->m_ixRowsProcessed;
+    iRowsProcessed += nRows;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
