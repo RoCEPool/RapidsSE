@@ -17,29 +17,30 @@ namespace Prompt
   {
   private:
     Session*  m_pSession;    // rapidsse session
+
+    TagSet    m_oPmtTagSet;  // tag set which controls this prompt
+    i8        m_iSectionNo;  // section numbering
+    bool      m_bContinue;   // continue processing commands?
+
     TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
+    TagSet    m_oExtTagSet;  // tags gleaned from the prompt command
+    ReqTuple  m_xReqTuple;   // request information
+
+    Job*      m_pJob;        // job
+    Timer     m_oTimer;      // the timer
 
     bool      m_bOneCommand; // run one command only
     bool      m_bOneRun;     // one command has been run?
-    bool      m_bContinue;   // continue processing commands?
 
-    TagSet    m_oExtTagSet;  // tags gleaned from the prompt command
-    Job*      m_pJob;        // job
-
-    ReqTuple  m_xReqTuple;      // request information
-
-    BPA*      m_pBPA;           // object delta reporting
+    ShortCutVec m_oShortCutVec; // vector of short cuts
+   
+    // object delta reporting
+    BPA*           m_pBPA;
     ObjectsInPool* m_pObjectsInPool;
     ObjectsInPool* m_pSnapshotObjects;
-    
-    TagSet  m_oPmtTagSet;
-    ShortCutVec m_oShortCutVec; // vector of short cuts
-    Timer     m_oTimer;         // the timer
-   
-    i8        m_iSectionNo;  // section numbering
 
     // some debugging aids
-    i8        d_iDebugMode;   // debug mode?
+    i8  d_iDebugMode; // debug mode?
   
     // must be last
     Footer m_xFooter;
