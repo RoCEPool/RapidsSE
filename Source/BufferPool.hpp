@@ -21,11 +21,11 @@ namespace Pool
     bool    m_bDontFree;  // dont actually free objects back to heap
     bool    m_bFreeCB;    // but actually free CrwBuffers back to heap
 
-    s32  m_sShmName;      // shared memory region name
+    s32  m_sShmNm;        // shared memory region name
     int  m_iShmFD;        // shared memory file descriptor
     
     // free chain
-    Lock m_okLock;     // lock over free chain
+    Lock m_okLock;        // lock over free chain
     i8   m_nAllocCount;   //   number of buffers currently in use
     i8   m_nFreeCount;    //   number of buffers in free chain
     i8   m_iFreeHead;     //   head of free chain
@@ -74,6 +74,7 @@ namespace Pool
     bool bLowMemory(void);
     void vMonitorPortrait(s48K& sPortrait);
     void vPoolDump(void);
+    Stz* szShmNm(void);
     i8   iTotalSpace(void);
     PoolBuffer* pToPoolBuffer(i8 i_Buffer);
     FreeBuffer* pToFreeBuffer(i8 i_Buffer);

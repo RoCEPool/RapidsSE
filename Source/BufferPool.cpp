@@ -45,7 +45,7 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
   m_bDontFree = bDontFree;
   m_bFreeCB = bFreeCB;
   
-  m_sShmName = aRegionName;
+  m_sShmNm = aRegionName;
   m_iShmFD   = 0;
   
   m_nAllocCount  = 0;
@@ -99,7 +99,7 @@ void BufferPool::vReport(void)
          
          gpBufferPool,
          
-         gpBufferPool->m_sShmName.szStz(),
+         gpBufferPool->m_sShmNm.szStz(),
          sRegionMag.azChar(),
          
          gpBufferPool->m_nBuffers,
@@ -555,6 +555,16 @@ void BufferPool::vPoolDump(void)
     i_Buffer = pFreeBuffer->iNextFree();
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* return free space in bytes                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* BufferPool::szShmNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  return m_sShmNm;
 }
 
 /*----------------------------------------------------------------------------*/
