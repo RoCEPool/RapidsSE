@@ -183,26 +183,28 @@ bool Args::bParse(int argc, Stz* argv[])
 
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
     
+    Stz* szArg = argv[i_Arg];
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--addNode"_Stz)) {
+    if (szArg->bSame("--addNode"_Stz)) {
       m_bAddNode = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--address"_Stz)) {
+    if (szArg->bSame("--address"_Stz)) {
       m_aRegionAddr = (void*)argv[++i_Arg]->iToI8();
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--appendTrace"_Stz)) {
+    if (szArg->bSame("--appendTrace"_Stz)) {
       m_bAppendTrace = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--command"_Stz)) {
+    if (szArg->bSame("--command"_Stz)) {
       m_sCommand = (Stz*)argv[++i_Arg];
       vTrace("command %s\n"_Stz, m_sCommand.azChar());
       m_bCommand = true;
@@ -212,68 +214,68 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--commands"_Stz)) {
+    if (szArg->bSame("--commands"_Stz)) {
       m_sCommandsDir = (Stz*)argv[++i_Arg];
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--config"_Stz)) {
+    if (szArg->bSame("--config"_Stz)) {
       m_bConfig = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--debugMode"_Stz)) {
+    if (szArg->bSame("--debugMode"_Stz)) {
       m_bDebugMode = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--developer"_Stz)) {
+    if (szArg->bSame("--developer"_Stz)) {
       m_bDeveloper = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--dontFree"_Stz)) {
+    if (szArg->bSame("--dontFree"_Stz)) {
       m_bDontFree = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--dummyLoop"_Stz)) {
+    if (szArg->bSame("--dummyLoop"_Stz)) {
       m_nDummyLoop = argv[++i_Arg]->iToI8();
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--dummySleep"_Stz)) {
+    if (szArg->bSame("--dummySleep"_Stz)) {
       m_nDummySleep = argv[++i_Arg]->iToI8();
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--dummyThreads"_Stz)) {
+    if (szArg->bSame("--dummyThreads"_Stz)) {
       m_nDummyThreads = argv[++i_Arg]->iToI8();
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    if (argv[i_Arg]->bSame("--entries"_Stz)) {
+    if (szArg->bSame("--entries"_Stz)) {
       m_nEntries = argv[++i_Arg]->iToI8();
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--freeCB"_Stz)) {
+    if (szArg->bSame("--freeCB"_Stz)) {
       m_bFreeCB = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--gridTest"_Stz)) {
+    if (szArg->bSame("--gridTest"_Stz)) {
       m_bGridTest = true;
       continue;
     }
@@ -292,70 +294,70 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--hugepages"_Stz)) {
+    if (szArg->bSame("--hugepages"_Stz)) {
       m_bHugePages = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--initial"_Stz)) {
+    if (szArg->bSame("--initial"_Stz)) {
       m_bInitial = true;
       m_sInitial = (Stz*)argv[++i_Arg];
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--jot"_Stz)) {
+    if (szArg->bSame("--jot"_Stz)) {
       vJotDebug(3);
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--killPrev"_Stz)) {
+    if (szArg->bSame("--killPrev"_Stz)) {
       m_bKillPrev = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // lock shared memory pages in memory
-    if (argv[i_Arg]->bSame("--lock"_Stz)) {
+    if (szArg->bSame("--lock"_Stz)) {
       m_bLock = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_SHARED_LOG
-    if (argv[i_Arg]->bSame("--log"_Stz)) {
+    if (szArg->bSame("--log"_Stz)) {
       m_bLog = true;
       continue;
     }
 #else
-    if (argv[i_Arg]->bSame("--log"_Stz)) {
+    if (szArg->bSame("--log"_Stz)) {
       vWarn("arg --log ignored; not compiled WITH_SHARED_LOG\n"_Stz);
       continue;
     }
 #endif
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--maxLoadErrors"_Stz)) {
+    if (szArg->bSame("--maxLoadErrors"_Stz)) {
       m_nMaxLoadErrors = argv[++i_Arg]->iToI8();
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--maxReadyLP"_Stz)) {
+    if (szArg->bSame("--maxReadyLP"_Stz)) {
       m_nMaxReadyLP = argv[++i_Arg]->iToI8();
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--metadata"_Stz)) {
+    if (szArg->bSame("--metadata"_Stz)) {
       m_bMetadata = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--munged"_Stz)) {
+    if (szArg->bSame("--munged"_Stz)) {
       m_bMunged = true;
 #ifdef WITH_MUNGED_SEN
       continue;
@@ -367,13 +369,13 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--name"_Stz)) {
+    if (szArg->bSame("--name"_Stz)) {
       m_sNodeName = (Stz*)argv[++i_Arg];
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--node"_Stz)) {
+    if (szArg->bSame("--node"_Stz)) {
       m_xNodes[i_Node].m_sNodeName  = (Stz*)argv[++i_Arg];;
       m_xNodes[i_Node].m_sIPAddress = (Stz*)argv[++i_Arg];
       m_xNodes[i_Node].m_iPortNo    = argv[++i_Arg]->iToI8();
@@ -387,37 +389,37 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--noLog"_Stz)) {
+    if (szArg->bSame("--noLog"_Stz)) {
       m_bLog = false;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--NoMunge"_Stz)) {
+    if (szArg->bSame("--NoMunge"_Stz)) {
       m_bNoMunge = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--noprogress"_Stz)) {
+    if (szArg->bSame("--noprogress"_Stz)) {
       m_bProgress = false;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--notouch"_Stz)) {
+    if (szArg->bSame("--notouch"_Stz)) {
       m_bTouch = false;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--nowelcome"_Stz)) {
+    if (szArg->bSame("--nowelcome"_Stz)) {
       m_bWelcome = false;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--partitionsPerNode"_Stz)) {
+    if (szArg->bSame("--partitionsPerNode"_Stz)) {
       m_nSlotsPerNode = argv[++i_Arg]->iToI8();
       if (m_nSlotsPerNode > C_MAX_SLOTS) {
         vWarn("Maximum number of partitions allowed per node is %lld\n"_Stz,
@@ -429,19 +431,19 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--periodicSleep"_Stz)) {
+    if (szArg->bSame("--periodicSleep"_Stz)) {
       m_nPeriodicSleep = argv[++i_Arg]->iToI8();
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--progress"_Stz)) {
+    if (szArg->bSame("--progress"_Stz)) {
       m_bProgress = true;
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--prompt"_Stz)) {
+    if (szArg->bSame("--prompt"_Stz)) {
       
       if (m_bStop) {
         vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
@@ -463,25 +465,25 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--promptDebug"_Stz)) {
+    if (szArg->bSame("--promptDebug"_Stz)) {
       m_iPromptDebug = argv[++i_Arg]->iToI8();
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--region"_Stz)) {
+    if (szArg->bSame("--region"_Stz)) {
       m_sRegionName = (Stz*)argv[++i_Arg];
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--regionPrefix"_Stz)) {
+    if (szArg->bSame("--regionPrefix"_Stz)) {
       m_sRegionPrefix = (Stz*)argv[++i_Arg];
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--reload"_Stz)) {
+    if (szArg->bSame("--reload"_Stz)) {
       m_bReload = true;
       continue;
     }
@@ -493,7 +495,7 @@ bool Args::bParse(int argc, Stz* argv[])
     //}
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--script"_Stz)) {
+    if (szArg->bSame("--script"_Stz)) {
       if (m_bStop) {
         vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
         return false;
@@ -512,19 +514,19 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--seprompt"_Stz)) {
+    if (szArg->bSame("--seprompt"_Stz)) {
       m_bPrompt = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--sen"_Stz)) {
+    if (szArg->bSame("--sen"_Stz)) {
       m_sSenDir = (Stz*)argv[++i_Arg];
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--size"_Stz)) {
+    if (szArg->bSame("--size"_Stz)) {
       
       bool bResult = MagLib::bToBytes((Stz*)argv[++i_Arg], m_iRegionSize);
       if (!bResult) {
@@ -560,7 +562,7 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--start"_Stz)) {
+    if (szArg->bSame("--start"_Stz)) {
       
       if (m_bStop) {
         vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
@@ -576,7 +578,7 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--status"_Stz)) {
+    if (szArg->bSame("--status"_Stz)) {
       if (m_bStop) {
         vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
         return false;
@@ -595,7 +597,7 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--stop"_Stz)) {
+    if (szArg->bSame("--stop"_Stz)) {
       
       if (m_bStart) {
         vWarn("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg]);
@@ -615,7 +617,7 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--subIngesters"_Stz)) {
+    if (szArg->bSame("--subIngesters"_Stz)) {
       m_nSubIngesters = argv[++i_Arg]->iToI8();
       if (m_nThreads > C_MAX_THREADS) {
         vWarn("Maximum number of subIngesters allowed is %lld\n"_Stz,
@@ -627,7 +629,7 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--subloaders"_Stz)) {
+    if (szArg->bSame("--subloaders"_Stz)) {
       m_nSubLoaders = argv[++i_Arg]->iToI8();
       if (m_nThreads > C_MAX_THREADS) {
         vWarn("Maximum number of subloaders allowed is %lld\n"_Stz,
@@ -639,13 +641,13 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--supervisorSleep"_Stz)) {
+    if (szArg->bSame("--supervisorSleep"_Stz)) {
       m_nSupervisorSleep = argv[++i_Arg]->iToI8();
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--threads"_Stz)) {
+    if (szArg->bSame("--threads"_Stz)) {
       m_nThreads = argv[++i_Arg]->iToI8();
       if (m_nThreads > C_MAX_THREADS) {
         vWarn("Maximum number of thread allowed is %lld\n"_Stz,
@@ -657,40 +659,42 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--touch"_Stz)) {
+    if (szArg->bSame("--touch"_Stz)) {
       m_bTouch = true;
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--tracepoint"_Stz)) {
+    if (szArg->bSame("--tracepoint"_Stz)) {
       m_bTracepoint = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--tracing"_Stz)) {
+    if (szArg->bSame("--tracing"_Stz)) {
       m_bTracing = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--unlink"_Stz)) {
+    if (szArg->bSame("--unlink"_Stz)) {
       m_bUnlink = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--verbose"_Stz)) {
+    if (szArg->bSame("--verbose"_Stz)) {
       m_bVerbose = true;
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--welcome"_Stz)) {
+    if (szArg->bSame("--welcome"_Stz)) {
       m_bWelcome = true;
       continue;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     vWarn("Unrecognized command argument: %s\n"_Stz,argv[i_Arg]);
