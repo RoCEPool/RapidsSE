@@ -519,33 +519,62 @@ void TagSet::vNamesString(String* pString)
 void TagSet::vReplace(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  TagSet xTagSet;
-  
+
+  TagSet xOriginalTagSet;
+
   bool bWasCopied = false;
-  
-  xTagSet.vCopy(this);
+
+  xOriginalTagSet.vCopy(this);
   vReset();
-  
-  for (i8 i_Ename = 0; i_Ename < xTagSet.nEnames(); i_Ename++) {
-    
-    if (TN_STRING == xTagSet.eToken(i_Ename)) {
-      vInsert(xTagSet.szName(i_Ename),xTagSet.szValue(i_Ename));
+
+  for (i8 i_Ename = 0; i_Ename < xOriginalTagSet.nEnames(); i_Ename++) {
+
+    if (xOriginalTagSet.szName(i_Ename)->bSame(szName)) {
+      vInsert(szName,iValue);
+      bWasCopied = true;
+      continue;
     }
-    else {
-      if (xTagSet.szName(i_Ename)->bSame(szName)) {
-        vInsert(xTagSet.szName(i_Ename),iValue);
-        bWasCopied = true;
-      }
-      else {
-        vInsert(xTagSet.szName(i_Ename),xTagSet.iValue(i_Ename));
-      }
-    }
+
+    if (TN_STRING == xOriginalTagSet.eToken(i_Ename))
+      vInsert(xOriginalTagSet.szName(i_Ename),xOriginalTagSet.szValue(i_Ename));
+    else
+      vInsert(xOriginalTagSet.szName(i_Ename),xOriginalTagSet.iValue(i_Ename));
   }
-  
+
   if (! bWasCopied)
     vInsert(szName,iValue);
 }
+/*----------------------------------------------------------------------------*/
+//void TagSet::vReplace(Stz* szName, i8 iValue)
+//{
+//  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+//
+//  TagSet xTagSet;
+//
+//  bool bWasCopied = false;
+//
+//  xTagSet.vCopy(this);
+//  vReset();
+//
+//  for (i8 i_Ename = 0; i_Ename < xTagSet.nEnames(); i_Ename++) {
+//
+//    if (TN_STRING == xTagSet.eToken(i_Ename)) {
+//      vInsert(xTagSet.szName(i_Ename),xTagSet.szValue(i_Ename));
+//    }
+//    else {
+//      if (xTagSet.szName(i_Ename)->bSame(szName)) {
+//        vInsert(xTagSet.szName(i_Ename),iValue);
+//        bWasCopied = true;
+//      }
+//      else {
+//        vInsert(xTagSet.szName(i_Ename),xTagSet.iValue(i_Ename));
+//      }
+//    }
+//  }
+//
+//  if (! bWasCopied)
+//    vInsert(szName,iValue);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* copy source ename-set into this ename-set and replace an ename pair        */
@@ -553,33 +582,62 @@ void TagSet::vReplace(Stz* szName, i8 iValue)
 void TagSet::vReplace(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  TagSet xTagSet;
-  
+
+  TagSet xOriginalTagSet;
+
   bool bWasCopied = false;
-  
-  xTagSet.vCopy(this);
+
+  xOriginalTagSet.vCopy(this);
   vReset();
-  
-  for (i8 i_Ename = 0; i_Ename < xTagSet.nEnames(); i_Ename++) {
-    
-    if (TN_STRING == xTagSet.eToken(i_Ename)) {
-      
-      if (xTagSet.szName(i_Ename)->bSame(szName)) {
-        vInsert(xTagSet.szName(i_Ename),szValue);
-        bWasCopied = true;
-      }
-      else {
-        vInsert(xTagSet.szName(i_Ename),xTagSet.szValue(i_Ename));
-      }
+
+  for (i8 i_Ename = 0; i_Ename < xOriginalTagSet.nEnames(); i_Ename++) {
+
+    if (xOriginalTagSet.szName(i_Ename)->bSame(szName)) {
+      vInsert(szName,szValue);
+      bWasCopied = true;
+      continue;
     }
+
+    if (TN_STRING == xOriginalTagSet.eToken(i_Ename))
+      vInsert(xOriginalTagSet.szName(i_Ename),xOriginalTagSet.szValue(i_Ename));
     else
-      vInsert(xTagSet.szName(i_Ename),xTagSet.iValue(i_Ename));
+      vInsert(xOriginalTagSet.szName(i_Ename),xOriginalTagSet.iValue(i_Ename));
   }
-  
+
   if (! bWasCopied)
     vInsert(szName,szValue);
 }
+/*----------------------------------------------------------------------------*/
+//void TagSet::vReplace(Stz* szName, Stz* szValue)
+//{
+//  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+//
+//  TagSet xTagSet;
+//
+//  bool bWasCopied = false;
+//
+//  xTagSet.vCopy(this);
+//  vReset();
+//
+//  for (i8 i_Ename = 0; i_Ename < xTagSet.nEnames(); i_Ename++) {
+//
+//    if (TN_STRING == xTagSet.eToken(i_Ename)) {
+//
+//      if (xTagSet.szName(i_Ename)->bSame(szName)) {
+//        vInsert(xTagSet.szName(i_Ename),szValue);
+//        bWasCopied = true;
+//      }
+//      else {
+//        vInsert(xTagSet.szName(i_Ename),xTagSet.szValue(i_Ename));
+//      }
+//    }
+//    else
+//      vInsert(xTagSet.szName(i_Ename),xTagSet.iValue(i_Ename));
+//  }
+//
+//  if (! bWasCopied)
+//    vInsert(szName,szValue);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
