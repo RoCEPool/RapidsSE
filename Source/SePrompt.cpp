@@ -204,8 +204,6 @@ void SePrompt::vPromptLoop(void)
     if (bIsPromptWord())
       m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
 
-    vCheckTimed();
-    
     vExtractCtlTags();
 
     if (! bExtractSupTags())
@@ -223,13 +221,11 @@ void SePrompt::vPromptLoop(void)
     
     vLogCommand();
     
-
-
     Job* pJob = nullptr;
     
     eEC eError = Api::eJob_1_PreJob(&pJob,
                                     m_pInpTknVec,
-                                   &m_oExtTags,
+                                   &m_oExtTagSet,
                                    &m_xReqTuple);
     
     m_pJob = pJob;
@@ -243,9 +239,9 @@ void SePrompt::vPromptLoop(void)
     }
     
     //! ALKA: this should go
-    JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oExtTags);
+    JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oExtTagSet);
     
-    pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTags);
+    pJob->pJobTags()->vCopy(& m_pSession->m_oSsnTagSet);
     pJob->pJobTags()->vDumpSet();
 
     
@@ -332,24 +328,6 @@ void SePrompt::vDebugMode(i8 iDebugMode)
     m_pSession->m_pInput->vDebugMode(d_iDebugMode);
   else
     m_pSession->m_pInput->vDebugMode(0);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* check for timed function                                                   */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCheckTimed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Token* pTkn0 = pTkn(0);
-  
-  if (! pTkn0->bSame("time"_Stz))
-    return;
-  
-  m_oExtTags.vInsert(C_TAG_TIME,1);
-
-  vCutToken(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -395,7 +373,7 @@ bool SePrompt::bDumpTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_oSettings.bHasName(C_PMT_TKNDUMP))
+  if (m_oPmtTagSet.bHasName(C_PMT_TKNDUMP))
     return true;
   else
     return false;
@@ -409,9 +387,9 @@ void SePrompt::vDumpTokens(bool bDumpTokens)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
   if (bDumpTokens)
-    m_oSettings.vInsert(C_PMT_TKNDUMP,1);
+    m_oPmtTagSet.vInsert(C_PMT_TKNDUMP,1);
   else
-    m_oSettings.vDelete(C_PMT_TKNDUMP);
+    m_oPmtTagSet.vDelete(C_PMT_TKNDUMP);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -469,14 +447,12 @@ bool SePrompt::bExecuteFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check for job control tags (such as /nowait)                               */
+/* extract leading job control tags (such as time or /nowait)                 */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vExtractCtlTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  //m_oExtTags();
-  
+    
   Token* pTkn0 = pTkn(0);
   
   s32 sTag;
@@ -486,7 +462,7 @@ void SePrompt::vExtractCtlTags(void)
    Token* pTkn1 = pTkn(1);
    sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
     
-    m_oExtTags.vInsert(sTag,1);
+    m_oExtTagSet.vInsert(sTag,1);
     
     vCutToken(0);
     vCutToken(0);
@@ -494,7 +470,7 @@ void SePrompt::vExtractCtlTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check for job tags                                                         */
+/* extract trailing job supplemtntal tags ( such as <field_delimiter> = | )   */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bExtractSupTags(void)
 {
@@ -545,16 +521,10 @@ bool SePrompt::bExtractSupTags(void)
 
     s32 sName;
     sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
-    m_oExtTags.vAppend(sName,pTkn_value->szChars());
+    m_oExtTagSet.vAppend(sName,pTkn_value->szChars());
   }
-  
-  //m_oExtTags();
-  
-  //pTknVec->vDumpVec(16);
-  
+    
   m_pInpTknVec->vTrimTokens(i_TagBegin);
-  
-  //pTknVec->vDumpVec(16);
   
   return true;
 }
@@ -577,9 +547,9 @@ void SePrompt::vInitialSettings(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   if (gxArgs.m_bDeveloper) {
-    m_oSettings.vInsert(C_PMT_BUFPOOL);
-    m_oSettings.vInsert(C_PMT_OBJDELTA);
-    m_oSettings.vInsert(C_PMT_TRCFILE);
+    m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
+    m_oPmtTagSet.vInsert(C_PMT_OBJDELTA);
+    m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
   }
 }
 
@@ -590,10 +560,10 @@ void SePrompt::vInitExtractedTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_oExtTags.vReset();
-  m_oExtTags.vInsert(C_TAG_BYPROMPT,1);
-  m_oExtTags.vInsert(C_TAG_ORIGIN,AM::pGrid()->m_iThisNode);
-  m_oExtTags.vInsert(C_TAG_SESSION,m_pSession->m_i_Session);
+  m_oExtTagSet.vReset();
+  m_oExtTagSet.vInsert(C_TAG_BYPROMPT,1);
+  m_oExtTagSet.vInsert(C_TAG_ORIGIN,AM::pGrid()->m_iThisNode);
+  m_oExtTagSet.vInsert(C_TAG_SESSION,m_pSession->m_i_Session);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -869,7 +839,7 @@ void SePrompt::vReportObjects(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (! m_oSettings.bHasName(C_PMT_OBJDELTA))
+  if (! m_oPmtTagSet.bHasName(C_PMT_OBJDELTA))
     return;
 
   if (m_pBPA) {
@@ -901,7 +871,7 @@ void SePrompt::vReportPool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  if (! m_oSettings.bHasName(C_PMT_BUFPOOL))
+  if (! m_oPmtTagSet.bHasName(C_PMT_BUFPOOL))
     return;
 
   if (! gpBufferPool)
@@ -925,7 +895,7 @@ void SePrompt::vReportTrace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (! m_oSettings.bHasName(C_PMT_TRCFILE))
+  if (! m_oPmtTagSet.bHasName(C_PMT_TRCFILE))
     return;
 
   i8 iSizeTrace = File::nSize(gpAttachMap->m_sTraceFile);
@@ -978,7 +948,7 @@ TagSet* SePrompt::pSettings(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return &m_oSettings;
+  return &m_oPmtTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1115,7 +1085,7 @@ bool SePrompt::bTrackingMemory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_oSettings.bHasName(C_PMT_MEMTRACK))
+  if (m_oPmtTagSet.bHasName(C_PMT_MEMTRACK))
     return true;
   else
     return false;
@@ -1129,9 +1099,9 @@ void SePrompt::vTrackingMemory(bool bTrackMemory)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
   if (bTrackMemory)
-    m_oSettings.vInsert(C_PMT_MEMTRACK,1);
+    m_oPmtTagSet.vInsert(C_PMT_MEMTRACK,1);
   else
-    m_oSettings.vDelete(C_PMT_MEMTRACK);
+    m_oPmtTagSet.vDelete(C_PMT_MEMTRACK);
 
   if (bTrackingMemory())
     PoolHelper::vObjectSnapshot(m_pObjectsInPool);

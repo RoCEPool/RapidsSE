@@ -29,7 +29,7 @@ bool Prompt::bPrompt_tags(SePrompt* pPrompt)
   
   vTrace("Session Tags:\n"_Stz);
 
-  TagSet* pSsnTags = & pSession->m_oSsnTags;
+  TagSet* pSsnTags = & pSession->m_oSsnTagSet;
 
   pSsnTags->vDumpSet();
 

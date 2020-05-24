@@ -23,7 +23,7 @@ namespace Prompt
     bool      m_bOneRun;     // one command has been run?
     bool      m_bContinue;   // continue processing commands?
 
-    TagSet    m_oExtTags;    // tags gleaned from the prompt command
+    TagSet    m_oExtTagSet;  // tags gleaned from the prompt command
     Job*      m_pJob;        // job
 
     ReqTuple  m_xReqTuple;      // request information
@@ -32,7 +32,7 @@ namespace Prompt
     ObjectsInPool* m_pObjectsInPool;
     ObjectsInPool* m_pSnapshotObjects;
     
-    TagSet  m_oSettings;
+    TagSet  m_oPmtTagSet;
     ShortCutVec m_oShortCutVec; // vector of short cuts
     Timer     m_oTimer;         // the timer
    
@@ -59,7 +59,6 @@ namespace Prompt
     bool bBlankLine(void);
     BPA* pBPA(void);
     void vDebugMode(i8 iDebugMode);
-    void vCheckTimed(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
     void vCutToken(i8 i_Tkn);

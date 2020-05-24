@@ -127,7 +127,7 @@ Session::Session(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -
   
   // set initial session <path>
-  m_oSsnTags.vInsert(C_TAG_PATH,C_SE_PATH);
+  m_oSsnTagSet.vInsert(C_TAG_PATH,C_SE_PATH);
   
   ++ gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_CONSTRUCT,
