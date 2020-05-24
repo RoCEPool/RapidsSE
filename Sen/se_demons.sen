@@ -15,7 +15,9 @@
 
   "__" <pipelineNm> str.cat locals| sDemonNm |
 
-  sDemonNm "installing demon pipeline job: %v" .printf
+  args.verbose if
+    sDemonNm "installing demon pipeline job: %v" .printf
+  then
 
   sDemonNm >createInRoot locals| pDemonWd |
 

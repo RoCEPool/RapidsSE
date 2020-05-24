@@ -115,8 +115,10 @@ void Step::vApiSpawnDemon(void)
   s48K sTagStr;
   m_pDataStack->vPopStr(sTagStr,__func__);
 
-  vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
-  vTrace("WithTags: %s\nn"_Stz,sTagStr.szStz());
+  if (AM::bVerbose()) {
+    vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
+    vTrace("WithTags: %s\nn"_Stz,sTagStr.szStz());
+  }
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
