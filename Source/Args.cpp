@@ -535,12 +535,12 @@ bool Args::bParse(int argc, Stz* argv[])
       }
       
       i8 iTotalMemory = MemLib::iGetTotalMemory();
-      if (m_iRegionSize > DIV(C_MAX_SHM_PRECENT * iTotalMemory, 100)) {
+      if (m_iRegionSize > DIV(C_MAX_SHM_PERCENT * iTotalMemory, 100)) {
         vWarn("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
         s32 sMag;
         MagLib::vByteMag(iTotalMemory,sMag);
         vWarn("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
-              C_MAX_SHM_PRECENT,
+              C_MAX_SHM_PERCENT,
               sMag.azChar());
         return false;
       }

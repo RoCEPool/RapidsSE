@@ -8,7 +8,7 @@ namespace Pool
   static const void* C_ADR_REGION    = (void*)0x204800000000;
 
   static const i8 C_MIN_SHM_REGION  = 1024 * C_1MB;
-  static const i8 C_MAX_SHM_PRECENT = 95;
+  static const i8 C_MAX_SHM_PERCENT = 95;
 
   class BufferPool : public Object
   {

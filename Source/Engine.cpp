@@ -1133,7 +1133,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_PATH           = %lld\n"_Stz,C_MAX_PATH);
   vTrace("  C_MAX_RECORD         = %lld\n"_Stz,C_MAX_RECORD);
   vTrace("  C_MAX_SESSIONS       = %lld\n"_Stz,C_MAX_SESSIONS);
-  vTrace("  C_MAX_SHM_PRECENT    = %lld\n"_Stz,C_MAX_SHM_PRECENT);
+  vTrace("  C_MAX_SHM_PERCENT    = %lld\n"_Stz,C_MAX_SHM_PERCENT);
   vTrace("  C_MAX_SHORTCUTS      = %lld\n"_Stz,C_MAX_SHORTCUTS);
   vTrace("  C_MAX_SLOTS          = %lld\n"_Stz,C_MAX_SLOTS);
   vTrace("  C_MAX_STAGES         = %lld\n"_Stz,C_MAX_STAGES);
