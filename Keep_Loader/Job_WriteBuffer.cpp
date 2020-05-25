@@ -371,7 +371,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   
   Job_WriteBuffer* pJob_WriteBuffer =
     static_cast<Job_WriteBuffer*>
-      (pJobClass_WriteBuffer->pPreJob(&xReqTuple,pSession));
+      (pJobClass_WriteBuffer->pPreJob(&xReqTuple,nullptr));
   
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
@@ -434,11 +434,11 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteBuffer_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
+Job* Jobs::pJob_WriteBuffer_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet)
 {
   Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
-
+  
   return pJob_WriteBuffer;
 }
 

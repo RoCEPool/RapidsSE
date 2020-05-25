@@ -47,7 +47,7 @@ JobClass xJobClass_Start =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Start_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WriteBuffer_class;
+  *pNextFun = (pFUN*)nullptr;
   
   return &xJobClass_Start;
 }

@@ -43,8 +43,6 @@ namespace Jobs
 
 #include "Job_Start.hpp"
 
-#include "Job_WriteBuffer.hpp"
-
 #include "JobList.hpp"
 
 #include "JobDesc.hpp"

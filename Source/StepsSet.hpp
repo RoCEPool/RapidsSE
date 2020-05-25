@@ -815,15 +815,6 @@ public:
   void vJob_WalkIndexStore(void);
   void vJob_WalkTableStore(void);
 
-  // Job WriteBuffer
-  void vJob_WriteBufferParentJobIdFetch(void);
-  void vJob_WriteBufferInsertRows(void);
-  void vJob_WriteBufferIsIngesting(void);
-  void vJob_WriteBufferIsInserting(void);
-  void vJob_WriteBufferIsLoading(void);
-  void vJob_WriteBufferPartitionFetch(void);
-  void vJob_WriteBufferTableStore(void);
-
   // loader
   void vLoaderCreate(void);
   void vLoaderCrwBufferFetch(void);

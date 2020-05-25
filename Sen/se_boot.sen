@@ -74,7 +74,7 @@ assert::stack_0
         "Job_Pipeline.sen"        include
         "Job_PipelineLocal.sen"   include
 
-        "job_WriteBuffer.sen"         include
+        //"job_WriteBuffer.sen"         include
 
       //"otherJobs"               include-subdir
 
