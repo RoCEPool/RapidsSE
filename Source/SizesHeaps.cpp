@@ -16,6 +16,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(AggTimer),           HT_TRANSIENT_TINY    }, // CN_AGGTIMER
   { sizeof(Arg),                HT_TRANSIENT_TINY    }, // CN_ARG
   { sizeof(Args),               HT_INVALID           }, // CN_ARGUMENTS
+  { sizeof(Arrange),            HT_TRANSIENT_TINY    }, // CN_ARRANGE
   { sizeof(Article),            HT_TRANSIENT_TINY    }, // CN_ARTICLE
   { sizeof(Atomic),             HT_INVALID           }, // CN_ATOMIC
   { sizeof(AttachMap),          HT_INVALID           }, // CN_ATTACHMAP

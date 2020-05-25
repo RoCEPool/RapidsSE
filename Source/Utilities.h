@@ -14,6 +14,7 @@ namespace Utilities
 
 //------------------------------------------------------------------------------
 
+#include "Arrange.hpp"
 #include "BPA.hpp"
 #include "Calculator.hpp"
 #include "GenData.hpp"
