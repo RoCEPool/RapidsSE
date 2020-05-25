@@ -143,7 +143,6 @@ enum eCN : u2 // Class Number
   /* */ CN_JOB_NODEINFO,
   /* */ CN_JOB_OPERAND,
   /* */ CN_JOB_START,
-  /* */ CN_JOB_WRITEBUFFER,
   /* */ CN_JOBLIST,
   
   /* */ CN__K__,
@@ -476,7 +475,6 @@ static Stz* aCN[]
   /* */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
   /* */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
   /* */ "JOB_START"_Stz,           // CN_JOB_START
-  /* */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
   /* */ "JOBLIST"_Stz,             // CN_JOBLIST
   
   /* */ "_K__"_Stz,                // CN__K__

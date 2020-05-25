@@ -1,2 +1,3 @@
-boolean.test
-integer.test
+//boolean.test
+dropTable.test
+//integer.test

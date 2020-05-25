@@ -3,6 +3,8 @@
 # This is a recursive testList file.
 
 //../testsMN/Datums/testList
+
+//../testsMN/Datums/testList
 //../tests/Ddl/testList
 //../tests/LocalFunctions/testList
 //../testsMN/Misc/testList

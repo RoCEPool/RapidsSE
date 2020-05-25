@@ -44,17 +44,13 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 
   // dist2pc
   nJobs++; JobClass::vJobCat(CN_JOB_DISTRIBUTED);
-  
-
-  // grankid  
-  nJobs++; JobClass::vJobCat(CN_JOB_WRITEBUFFER);
 
 
   vTrace("\n"_Stz);
   
-  if (nJobs != CN_JOB_WRITEBUFFER - CN_JOB_BOOT + 1)
+  if (nJobs != CN_JOB_START - CN_JOB_BOOT + 1)
     vTrace("\nWarning: Missing Jobs (%lld v. %lld)\n\n"_Stz,
-           nJobs, CN_JOB_WRITEBUFFER - CN_JOB_BOOT + 1);
+           nJobs, CN_JOB_START - CN_JOB_BOOT + 1);
   
   return true;
 }

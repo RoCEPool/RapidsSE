@@ -581,58 +581,58 @@ void Step::vSocketRecvObject_LowMem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the specific case of job_writeBuffer under low memory condition
   
-  if (CN_JOB_WRITEBUFFER == eClass) {
-
-    vTrace("Received Job_WriteBuffer under low mem\n"_Stz);
-    
-    MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
-    
-    void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
-    i8 nRemainingBytes = sizeof(Job_WriteBuffer) - sizeof(Object);
-    
-    bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
-    if (! bResult) {
-      m_pDataStack->vPushInt(false);
-      EXIT();
-      return;
-    }
-    
-    Job_WriteBuffer* pJob_WriteBuffer =
-      static_cast<Job_WriteBuffer*>(aLowBuff);
-
-    pJob_WriteBuffer->m_i_Focal = C_UNKNOWN;
-
-    bDiscardOperand = pJob_WriteBuffer->m_pOperand ? true : false;
-
-    pJob_WriteBuffer->m_bLowMem = true;
-    
-    Job* pJob = static_cast<Job*>(HeapMem::pAllocate(CN_JOB_WRITEBUFFER));
-    MemLib::vCopy(pJob,pJob_WriteBuffer,sizeof(Job_WriteBuffer),CN_JOB_WRITEBUFFER);
-    
-    pJob_WriteBuffer = static_cast<Job_WriteBuffer*>(pJob);
-    
-    if (-1 != pJob_WriteBuffer->m_nWriteBehindBuffers) {
-      
-      pJob_WriteBuffer->m_pOperand = nullptr;
-    }
-    else {
-      //pJob_WriteBuffer = nullptr;
-      //vTrace("Discarded Job_WriteBuffer under low mem\n"_Stz);
-      pJob_WriteBuffer->m_pOperand = nullptr;
-    }
-
-    if (bDiscardOperand) {
-
-      bResult = pSocket->bRecvBytes(aLowBuff,sizeof(EntBuffer),oSysCall);
-      vTrace("Discarded EntBuffer under low mem\n"_Stz);
-    }
-    
-    m_pDataStack->vPushPtr(pJob_WriteBuffer);
-    m_pDataStack->vPushInt(true);
-    EXIT();
-    return;
-
-  }
+//  if (CN_JOB_WRITEBUFFER == eClass) {
+//
+//    vTrace("Received Job_WriteBuffer under low mem\n"_Stz);
+//    
+//    MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
+//    
+//    void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
+//    i8 nRemainingBytes = sizeof(Job_WriteBuffer) - sizeof(Object);
+//    
+//    bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+//    if (! bResult) {
+//      m_pDataStack->vPushInt(false);
+//      EXIT();
+//      return;
+//    }
+//    
+//    Job_WriteBuffer* pJob_WriteBuffer =
+//      static_cast<Job_WriteBuffer*>(aLowBuff);
+//
+//    pJob_WriteBuffer->m_i_Focal = C_UNKNOWN;
+//
+//    bDiscardOperand = pJob_WriteBuffer->m_pOperand ? true : false;
+//
+//    pJob_WriteBuffer->m_bLowMem = true;
+//    
+//    Job* pJob = static_cast<Job*>(HeapMem::pAllocate(CN_JOB_WRITEBUFFER));
+//    MemLib::vCopy(pJob,pJob_WriteBuffer,sizeof(Job_WriteBuffer),CN_JOB_WRITEBUFFER);
+//    
+//    pJob_WriteBuffer = static_cast<Job_WriteBuffer*>(pJob);
+//    
+//    if (-1 != pJob_WriteBuffer->m_nWriteBehindBuffers) {
+//      
+//      pJob_WriteBuffer->m_pOperand = nullptr;
+//    }
+//    else {
+//      //pJob_WriteBuffer = nullptr;
+//      //vTrace("Discarded Job_WriteBuffer under low mem\n"_Stz);
+//      pJob_WriteBuffer->m_pOperand = nullptr;
+//    }
+//
+//    if (bDiscardOperand) {
+//
+//      bResult = pSocket->bRecvBytes(aLowBuff,sizeof(EntBuffer),oSysCall);
+//      vTrace("Discarded EntBuffer under low mem\n"_Stz);
+//    }
+//    
+//    m_pDataStack->vPushPtr(pJob_WriteBuffer);
+//    m_pDataStack->vPushInt(true);
+//    EXIT();
+//    return;
+//
+//  }
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
