@@ -88,9 +88,9 @@
 
       // wait till the parent job is executing
       begin
-        pParentJob  job.phase@ JP_EXECUTING == not
+        pParentJob job.phase@ JP_EXECUTING == not
       while
-       pParentJob job.phase@ "Job state %v" .printf
+       //pParentJob job.phase@ "Job phase %v" .printf
        task::yield
       repeat
 
@@ -101,7 +101,7 @@
       begin
         pTask task.isWaiting
       not while
-        pTask task.state@ "Task state %v" .printf
+        //pTask task.state@ "Task state %v" .printf
         task::yield
       repeat
 
