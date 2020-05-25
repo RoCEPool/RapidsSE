@@ -194,7 +194,7 @@ void vTest7(void)
 {
   vTrace("Arrange Test\n"_Stz);
   
-  Arrange* pArrange = new Arrange(bThingCompare);
+  Arrange* pArrange = new Arrange;
   
   Dic* pRootDic = AM::pRootDic();
   
@@ -207,7 +207,7 @@ void vTest7(void)
   
   void* vpCursor;
 
-  pArrange->vBeginIter(&vpCursor);
+  //pArrange->vBeginIter(&vpCursor);
   
   for (pArrange->bFirst(&vpCursor);
        vpCursor;
@@ -216,7 +216,7 @@ void vTest7(void)
            pArrange->iSeqNo(&vpCursor),
            pArrange->szObjNm(&vpCursor));
   
-  pArrange->vEndIter(&vpCursor);
+  //pArrange->vEndIter(&vpCursor);
 
   delete pArrange;
   

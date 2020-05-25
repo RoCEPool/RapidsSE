@@ -50,6 +50,19 @@ public:
   void vArgsOscillate(void);
   void vArgsPrint(void);
 
+  // arrange
+  void vArrangeBegin(void);
+  void vArrangeDelete(void);
+  void vArrangeEnd(void);
+  void vArrangeFirst(void);
+  void vArrangeInsert(void);
+  void vArrangeName(void);
+  void vArrangeNew(void);
+  void vArrangeNext(void);
+  void vArrangeObject(void);
+  void vArrangeSeqNo(void);
+  void vArrangeSequence(void);
+
   // article
   void vArticleDump(void);
 

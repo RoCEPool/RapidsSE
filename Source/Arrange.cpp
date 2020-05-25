@@ -17,13 +17,13 @@ __aFooterFunction(Arrange)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Arrange::Arrange(CompareFp fpCompare)
+Arrange::Arrange(void)
 : Object(CN_ARRANGE)
 , m_okLock(LK_JOBS,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
   
-  m_pSkipList = new SkipListNL(C_UNQIUE_KEY,fpCompare);
+  m_pSkipList = new SkipListNL(C_UNQIUE_KEY,bThingCompare);
   
   _checkInitialised_(CN_ARRANGE);
   

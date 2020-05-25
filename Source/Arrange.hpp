@@ -19,7 +19,7 @@ namespace Utilities
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Arrange(CompareFp fpCompare);
+    Arrange(void);
    ~Arrange(void) noexcept(false);
     
     void vBeginIter(void** vppCursor);

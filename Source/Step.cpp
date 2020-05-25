@@ -43,6 +43,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Address();
   Step::vAddSteps_Api();
   Step::vAddSteps_Args();
+  Step::vAddSteps_Arrange();
   Step::vAddSteps_Article();
   Step::vAddSteps_Assert();
   Step::vAddSteps_Astack();
