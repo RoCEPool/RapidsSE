@@ -181,6 +181,19 @@ bool Stz::bEqual(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bEqual: test if this Stz is equal to arg (same case)                       */
+/*----------------------------------------------------------------------------*/
+bool Stz::bGreater(Stz* szArg)
+{
+  i8 iDiff = strcmp(azChar(),szArg->azChar());
+  
+  if (iDiff)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* iLength: get length in bytes of arg (not including terminating null)       */
 /*----------------------------------------------------------------------------*/
 i8 Stz::nLength(void)

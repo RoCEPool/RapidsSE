@@ -15,7 +15,7 @@ Arrange* Utilities::_pArrange(void* aAddr)
 {
   Arrange* pLoad = reinterpret_cast<Arrange*>(aAddr);
   
-  RASSERT_TYPE(pLoad,CN_JOBLIST);
+  RASSERT_TYPE(pLoad,CN_ARRANGE);
   
   return pLoad;
 }
@@ -25,7 +25,7 @@ Arrange* Utilities::_pArrange(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Arrange::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_JOBLIST);
+  void* pObject = HeapMem::pAllocate(CN_ARRANGE);
   
   return pObject;
 }
@@ -43,16 +43,16 @@ void Arrange::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Arrange::Arrange(CompareFp fpCompare)
-: Object(CN_JOBLIST)
+: Object(CN_ARRANGE)
 , m_okLock(LK_JOBS,this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
   
   m_pSkipList = new SkipListNL(C_UNQIUE_KEY, fpCompare);
   
-  _checkInitialised_(CN_JOBLIST);
+  _checkInitialised_(CN_ARRANGE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ Arrange::Arrange(CompareFp fpCompare)
 /*----------------------------------------------------------------------------*/
 Arrange::~Arrange(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
   
   delete m_pSkipList;
 }
@@ -79,7 +79,7 @@ Arrange::~Arrange(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Footer* Arrange::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE);
   
   return &m_xFooter;
 }

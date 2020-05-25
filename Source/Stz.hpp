@@ -32,6 +32,7 @@ namespace Strings
     void  vCopy(Stz* szArg);
     void  vCopyLen(Stz* szArg, i8 nBytes);
     bool  bEqual(Stz* szArg);
+    bool  bGreater(Stz* szArg);
     bool  bIsNumeric(void);
     bool  bIsSomeFalse(void);
     bool  bIsSomeTrue(void);

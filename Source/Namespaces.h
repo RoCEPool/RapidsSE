@@ -38,6 +38,7 @@ namespace Esses         { template <int BYTES> class String_t;
                           typedef Bytes_t<32>      b32;
                           typedef Bytes_t<256>     b256;
                           typedef Bytes_t<C_4K>    b4K;   // note: K, not KB
+                          typedef Bytes_t<C_8K>    b8K;   // note: K, not KB
                           typedef Bytes_t<C_256K>  b256K; // note: K, not KB
                                                                               }
 namespace Focals        { class ReqTuple;                                     }

@@ -34,6 +34,7 @@ namespace Esses
     void vCat(Stz* szArg, ...);
     void vCatSprint(Stz* szFormat, ...);
     char* azChar(void);
+    void vClip(i8 i_Char);
     void vConcat(Stz* szArg);
     bool bContains(Stz* szArg);
     void vCopy(Stz* szArg);
@@ -273,6 +274,20 @@ char* String_t<SIZE>::azChar(void)
   _precondition_(_MAGIC_,_FOOTER_);
 
   return (char*)m_caStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clip                                                                       */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+void String_t<SIZE>::vClip(i8 i_Char)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  if (i_Char < m_nSize)
+    m_caStr[i_Char] = '\0';
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

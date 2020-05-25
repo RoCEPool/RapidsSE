@@ -240,7 +240,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SchemaTest),         HT_TRANSIENT_LARGE   }, // CN_SCHEMATEST
   { sizeof(SeeMe),              HT_INVALID           }, // CN_SEEME
   { sizeof(SePrompt),           HT_TRANSIENT_MEDIUM  }, // CN_SEPROMPT
-  { sizeof(Session),            HT_TRANSIENT_MEDIUM  }, // CN_SESSION
+  { sizeof(Session),            HT_TRANSIENT_LARGE   }, // CN_SESSION
   { sizeof(SessionArray),       HT_TRANSIENT_TINY    }, // CN_SESSIONARRAY
   { sizeof(ShortCut),           HT_TRANSIENT_MEDIUM  }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_TRANSIENT_MEDIUM  }, // CN_SHORTCUTVEC
@@ -303,6 +303,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TempName),           HT_TRANSIENT_TINY    }, // CN_TENANT
   { sizeof(Tenant),             HT_TRANSIENT_TINY    }, // CN_TENANTS
   { sizeof(Tenants),            HT_TRANSIENT_TINY    }, // CN_TASKQUEUE
+  { sizeof(Thing),              HT_TRANSIENT_TINY    }, // CN_THING
   { sizeof(Thread),             HT_TRANSIENT_TINY    }, // CN_THREAD
   { sizeof(ThreadQueue),        HT_TRANSIENT_TINY    }, // CN_THREADQUEUE
   { sizeof(ThreadVec),          HT_TRANSIENT_SMALL   }, // CN_THREADVEC
