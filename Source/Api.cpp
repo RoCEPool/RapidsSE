@@ -95,9 +95,9 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   s4K sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
   
+  //vTrace("sCmd: %s\n %lld\n"_Stz,sCmd.szStz(),sCmd.nSize());
+
   pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
-  
-  
   
   
   ASSERT(! pJob->pTask());
