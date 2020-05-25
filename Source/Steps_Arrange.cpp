@@ -119,6 +119,13 @@ void Step::vArrangeInsert(void)
 
   Arrange* pArrange = _pArrange(m_pDataStack->pPopPtr(__func__));
 
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
+
+  s256 sObjNm;
+  m_pDataStack->vPopStr(sObjNm,__func__);
+  
+  pArrange->vInsert(sObjNm,pObject);
+
   EXIT();
 }
 
