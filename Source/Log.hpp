@@ -24,7 +24,7 @@ namespace Logging
   private:
   
     // circular array of log entries
-    LogEntry m_oaEntry[C_LOG_ENTRIES];
+    LogEntry m_oaEntry[C_MAX_LOG_ENTRIES];
   
     // must be last
     Footer m_xFooter;

@@ -369,7 +369,7 @@ void Log::vOpenByApi(void)
            "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
            AM::szLogRegion(),
            sizeof(Log),
-           C_LOG_ENTRIES);
+           C_MAX_LOG_ENTRIES);
   
   gpLog = pLog;
   
@@ -409,7 +409,7 @@ void Log::vOpenBySE(bool bStarting)
              "created new map (size %lldB, max %lld marks)\n\n"_Stz,
              AM::szLogRegion(),
              sizeof(Log),
-             C_LOG_ENTRIES);
+             C_MAX_LOG_ENTRIES);
     gpLog = new(pLog) Log;
     
     gpLog->vMarkAll(true);
@@ -421,7 +421,7 @@ void Log::vOpenBySE(bool bStarting)
              "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
              AM::szLogRegion(),
              sizeof(Log),
-             C_LOG_ENTRIES);
+             C_MAX_LOG_ENTRIES);
     
     gpLog = pLog;
   }
@@ -859,7 +859,7 @@ LogEntry* Log::pNewEntry(eSL eSeverity, eCN eClassNo,
   
   pLogEntry->vInit(eSeverity,eClassNo,(Stz*)caText);
   
-  //StrLib::vCopyLen(pLogEntry->m_caNote,caText,C_LOG_NOTE - 1);
+  //StrLib::vCopyLen(pLogEntry->m_caNote,caText,C_MAX_LOG_NOTE - 1);
 
   return pLogEntry;
 }
@@ -885,7 +885,7 @@ LogEntry* Log::pNewEntry(eSL eSeverity, Focal* pFocal,
   
   pLogEntry->vInit(eSeverity,pFocal,(Stz*)caText);
   
-  //StrLib::vCopyLen(pLogEntry->m_caNote,caText,C_LOG_NOTE - 1);
+  //StrLib::vCopyLen(pLogEntry->m_caNote,caText,C_MAX_LOG_NOTE - 1);
   
   return pLogEntry;
 }

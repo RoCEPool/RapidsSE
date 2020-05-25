@@ -57,7 +57,7 @@ namespace Logging
   
     i8   m_iIndicator;
   
-    char m_caNote[C_LOG_NOTE]; // comment
+    char m_caNote[C_MAX_LOG_NOTE]; // comment
   
     eEK  m_eKind;      // log entry kind.  one of the following
     union {

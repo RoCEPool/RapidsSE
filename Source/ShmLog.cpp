@@ -34,7 +34,7 @@ ShmLog::ShmLog(eCN eClassNo)
   _precondition_(_MAGIC_,eClassNo);
   
   m_i_Entry = 0;
-  m_nEntries = C_LOG_ENTRIES;
+  m_nEntries = C_MAX_LOG_ENTRIES;
   
 
   _postcondition_(_MAGIC_,eClassNo);

@@ -638,7 +638,7 @@ void SePrompt::vLogCommand(void)
   return;
   
   m_pInpTknVec->vVecToString(sCommand,0,true);
-  sCommand.vSizeMax(C_LOG_NOTE / 2);
+  sCommand.vSizeMax(C_MAX_LOG_NOTE / 2);
   
   vIncStepNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,

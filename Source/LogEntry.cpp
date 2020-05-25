@@ -152,7 +152,7 @@ void LogEntry::vInit(eSL eSeverity, eCN eClassNo, Stz* szText)
   StrLib::vCopyLen(m_caNode,AM::szNodeNm()->azChar(),sizeof(m_caNode) - 1);
   
   m_caNote[0] = '\0';
-  StrLib::vCopyLen(m_caNote,szText->azChar(),C_LOG_NOTE - 1);
+  StrLib::vCopyLen(m_caNote,szText->azChar(),C_MAX_LOG_NOTE - 1);
 
   m_iAct   = C_UNKNOWN;
   m_eClass = eClassNo;
@@ -183,7 +183,7 @@ void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
   StrLib::vCopyLen(m_caNode,AM::szNodeNm()->azChar(),sizeof(m_caNode) - 1);
   
   m_caNote[0] = '\0';
-  StrLib::vCopyLen(m_caNote,szText->azChar(),C_LOG_NOTE - 1);
+  StrLib::vCopyLen(m_caNote,szText->azChar(),C_MAX_LOG_NOTE - 1);
   
   m_iAct    = pFocal->iStepNo();
   m_eClass  = pFocal->eClass();

@@ -3,36 +3,32 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_MAX_COLUMNS    = 150;    // max columns per table
-static const i8 C_MAX_COLUMNVECS = 32;     // max column vectors per streamDef
-static const i8 C_MAX_DEFCOLUMNS = 256;    // max columns in a stream definition
-static const i8 C_MAX_INDEXES    = 1025;   // max indexes per table
-static const i8 C_MAX_KEY        = 256;    // max length of index entry key
-static const i8 C_MAX_NODES      = 128;    // max nodes in a grid
-static const i8 C_MAX_PATH       = 256;    // max length of file path
-static const i8 C_MAX_RECORD     = C_16KB; // max length of record
-static const i8 C_MAX_SESSIONS   = 4;      // max number of sessions
-static const i8 C_MAX_SLOTS      = 128;    // max slots per node
-static const i8 C_MAX_STREAMDEFS = 16;     // max stream definitions
-static const i8 C_MAX_VCH        = C_4KB;  // max practical length of vch value
+static const i8 C_MAX_BUCKETS       = 1024;
+static const i8 C_MAX_COLUMNS       = 150;    // max columns per table
+static const i8 C_MAX_COLUMNVECS    = 32;     // max column vectors per streamDef
+static const i8 C_MAX_DEFCOLUMNS    = 256;    // max columns in a stream definition
+static const i8 C_MAX_INDEXES       = 1025;   // max indexes per table
+static const i8 C_MAX_INDEX_COLUMNS = 16;
+static const i8 C_MAX_KEY           = 256;    // max length of index entry key
+static const i8 C_MAX_LOG_ENTRIES   = C_256K * 1;
+static const i8 C_MAX_LOG_NOTE      = C_1K;
+static const i8 C_MAX_NESTED_WORDS  = 16;
+static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
+static const i8 C_MAX_OPS           = 256;
+static const i8 C_MAX_PATH          = 256;    // max length of file path
+static const i8 C_MAX_RECORD        = C_16KB; // max length of record
+static const i8 C_MAX_SESSIONS      = 4;      // max number of sessions
+static const i8 C_MAX_SHORTCUTS     = 64;
+static const i8 C_MAX_SLOTS         = 128;    // max slots per node
+static const i8 C_MAX_STAGES        = 256;
+static const i8 C_MAX_STRANDS       = 256;
+static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
+static const i8 C_MAX_THREADS       = 256;
+static const i8 C_MAX_TOKENS        = 1024;
+static const i8 C_MAX_VCH           = C_4KB;  // max practical length of vch value
 
 // max partitions in a grid
 static const i8 C_MAX_PARTITIONS = C_MAX_SLOTS * C_MAX_NODES;
-
-static const i8 C_MAX_INDEX_COLUMNS = 16;
-
-static const i8 C_MAX_THREADS   = 256;
-
-static const i8 C_MAX_TOKENS    = 1024;
-
-static const i8 C_MAX_OPS       = 256;
-static const i8 C_MAX_STAGES    = 256;
-static const i8 C_MAX_STRANDS   = 256;
-static const i8 C_MAX_SHORTCUTS = 64;
-
-static const i8 C_MAX_BUCKETS   = 1024;
-
-static const i8 C_MAX_NESTED_WORDS  = 16;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -87,8 +83,6 @@ static Stz* C_SE_PATH = "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-static const i8 C_LOG_ENTRIES = C_256K * 1;
-static const i8 C_LOG_NOTE    = C_1K;
 
 static Stz* C_TDEF_ANALYZEINDEX     = "__analyzeIndex"_Stz;
 static Stz* C_TDEF_ANALYZETABLE     = "__analyzeTable"_Stz;

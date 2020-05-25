@@ -1124,7 +1124,10 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_INDEX_COLUMNS  = %lld\n"_Stz,C_MAX_INDEX_COLUMNS);
   vTrace("  C_MAX_INT_PRECISION  = %lld\n"_Stz,C_MAX_INT_PRECISION);
   vTrace("  C_MAX_KEY            = %lld\n"_Stz,C_MAX_KEY);
+  vTrace("  C_MAX_NESTED_WORDS   = %lld\n"_Stz,C_MAX_NESTED_WORDS);
   vTrace("  C_MAX_NODES          = %lld\n"_Stz,C_MAX_NODES);
+  vTrace("  C_MAX_LOG_ENTRIES    = %lld\n"_Stz,C_MAX_LOG_ENTRIES);
+  vTrace("  C_MAX_LOG_NOTE       = %lld\n"_Stz,C_MAX_LOG_NOTE);
   vTrace("  C_MAX_OPS            = %lld\n"_Stz,C_MAX_OPS);
   vTrace("  C_MAX_PARTITIONS     = %lld\n"_Stz,C_MAX_PARTITIONS);
   vTrace("  C_MAX_PATH           = %lld\n"_Stz,C_MAX_PATH);
@@ -1452,23 +1455,27 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::bVerboseProgress())
-    vInfo("  Opening shared Log\n"_Stz);
-
-
+    vInfo("  Opening Shared Log\n"_Stz);
   vOpenLog();
   
+  
+  if (AM::bVerboseProgress())
+    vInfo("  Adding Steps\n"_Stz);
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "adding steps"_Stz); //!format-LogSys
-
   Step::vAddSteps();
   
+  
+  if (AM::bVerboseProgress())
+    vInfo("  Adding Constants\n"_Stz);
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "adding constants"_Stz); //!format-LogSys
-  
   Constants::vAddConstantsArgs();
-  
   Constants::vAddConstantsCpp();
 
+  
+  if (AM::bVerboseProgress())
+    vInfo("  Running Boot Job\n"_Stz);
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "running boot job"_Stz); //!format-LogSys
   vCallBoot();
@@ -1478,9 +1485,7 @@ void Engine::vStartSystem(void)
   
   
   if (AM::bVerboseProgress())
-    vInfo("  Verify job seeds\n"_Stz);
-
-
+    vInfo("  Verify Job Seeds\n"_Stz);
   JobClass::vVerifySeeds();
   
   
@@ -1490,7 +1495,6 @@ void Engine::vStartSystem(void)
   
   if (AM::bVerboseProgress())
     vInfo("  Spawning Threads\n"_Stz);
-
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "spawning threads"_Stz); //!format-LogSys
   // spawn general threads
@@ -1511,11 +1515,9 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::bVerboseProgress())
-    vInfo("  Running Boot\n"_Stz);
-
+    vInfo("  Running Start\n"_Stz);
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "running Start job"_Stz); //!format-LogSys
-  
   vSpawnJobStart();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1525,7 +1527,7 @@ void Engine::vStartSystem(void)
               gxArgs.m_sRegionName.azChar()); //!format-LogSys
   
   if (AM::bVerboseProgress()) {
-    vInfo("Engine instance %s started\n"_Stz,gxArgs.m_sRegionName.azChar());
+    vInfo("Engine Instance %s started\n"_Stz,gxArgs.m_sRegionName.azChar());
     AM::pGrid()->vDumpPartitioning();
   }
   
