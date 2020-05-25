@@ -203,6 +203,8 @@ void vTest7(void)
   while ( (pWord = pRootDic->pEachWord(pWord)) )
     pArrange->vInsert(pWord->szWordNm(),pWord);
   
+  pArrange->vSequence();
+  
   void* vpCursor;
 
   pArrange->vBeginIter(&vpCursor);
@@ -210,7 +212,9 @@ void vTest7(void)
   for (pArrange->bFirst(&vpCursor);
        vpCursor;
        pArrange->bNext(&vpCursor))
-    vTrace("  %s\n"_Stz,pArrange->szObjNm(&vpCursor));
+    vTrace("  [%03lld] %s\n"_Stz,
+           pArrange->iSeqNo(&vpCursor),
+           pArrange->szObjNm(&vpCursor));
   
   pArrange->vEndIter(&vpCursor);
 

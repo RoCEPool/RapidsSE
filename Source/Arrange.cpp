@@ -37,6 +37,11 @@ Arrange::~Arrange(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
   
+  Thing* pThing;
+  
+  while ( (pThing = _pThing(m_pSkipList->pPop())) )
+    delete pThing;
+  
   delete m_pSkipList;
 }
 
