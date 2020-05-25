@@ -192,6 +192,32 @@ void vTest6(void)
 /*----------------------------------------------------------------------------*/
 void vTest7(void)
 {
+  vTrace("Arrange Test\n"_Stz);
+  
+  Arrange* pArrange = new Arrange(bThingCompare);
+  
+  Dic* pRootDic = AM::pRootDic();
+  
+  Word* pWord = nullptr;
+  
+  while ( (pWord = pRootDic->pEachWord(pWord)) )
+    pArrange->vInsert(pWord->szWordNm(),pWord);
+  
+  void* vpCursor;
+  Thing* pThing;
+
+  pArrange->vBeginIter(&vpCursor);
+  
+  for (pThing = pArrange->pFirst(&vpCursor);
+       pThing;
+       pThing = pArrange->pNext(&vpCursor))
+    vTrace("  %s\n"_Stz,pThing->szThingNm());
+  
+  pArrange->vEndIter(&vpCursor);
+
+  delete pArrange;
+  
+  vTrace("End Arrange Test\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
