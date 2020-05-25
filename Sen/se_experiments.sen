@@ -190,6 +190,31 @@
   job[] job.tagSet@ tagSet.asStr .
 ;
 
+/*----------------------------------------------------------------------------*/
+/* execute a statement                                                        */
+/*----------------------------------------------------------------------------*/
+: exp7 \prompt
+
+  arrange::new locals| pArrange |
+
+  iterate-words
+    word@ word.name@ .
+
+    word@ word.name@ word@ pArrange arrange.insert
+  next-word
+
+  nullptr locals| pCursor |
+
+  begin
+    pCursor pArrange arrange.next to pCursor
+    pCursor
+  while
+    pCursor pArrange arrange.name .
+  repeat
+
+  pArrange arrange.delete
+;
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

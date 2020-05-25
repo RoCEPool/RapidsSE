@@ -101,10 +101,10 @@ void Step::vArrangeFirst(void)
   bool bFirst = pArrange->bFirst((void**)&pSkipNode);
   
   if (bFirst) {
-    m_pDataStack->vPushPtr(nullptr);
+    m_pDataStack->vPushPtr(pSkipNode);
   }
   else {
-    m_pDataStack->vPushPtr(pSkipNode);
+    m_pDataStack->vPushPtr(nullptr);
   }
   
   EXIT();
@@ -161,10 +161,10 @@ void Step::vArrangeNext(void)
   bool bNext = pArrange->bNext((void**)&pSkipNode);
   
   if (bNext) {
-    m_pDataStack->vPushPtr(nullptr);
+    m_pDataStack->vPushPtr(pSkipNode);
   }
   else {
-    m_pDataStack->vPushPtr(pSkipNode);
+    m_pDataStack->vPushPtr(nullptr);
   }
   
   EXIT();

@@ -136,8 +136,9 @@ bool Arrange::bNext(void** vppCursor)
   
   SkipNode* pNode = _pSkipNode(* vppCursor);
 
-  if (! pNode)
-    return false;
+  if (! pNode) {
+    return bFirst(vppCursor);
+  }
   
   pNode = m_pSkipList->pNext(pNode,0);
 
