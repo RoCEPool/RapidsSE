@@ -824,10 +824,6 @@ public:
   void vJob_WriteBufferPartitionFetch(void);
   void vJob_WriteBufferTableStore(void);
 
-  // Job WriteRow
-  void vJob_WriteRowEncodeRow(void);
-  void vJob_WriteRowInsertRow(void);
-
   // loader
   void vLoaderCreate(void);
   void vLoaderCrwBufferFetch(void);
