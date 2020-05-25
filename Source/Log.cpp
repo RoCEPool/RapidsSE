@@ -50,7 +50,7 @@ Log::Log(void)
   if (0 != AM::iThisNodeNo() || PsxThd::bIsJavaThread() )
     RASSERT(0);
   
-  m_bLogFyi =   false;
+  m_bLogFyi =   true;
   
   m_bLogDdl =   false;
   m_bLogJob = true;

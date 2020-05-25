@@ -14,6 +14,9 @@ namespace Correctness
     i8 m_i_Focal;   // focal lattice subscript
     i8 m_i_Log;     // last log entry subscript
   
+    i8 m_bForceLog; // force log
+    i8 m__spare;    //
+
   private:
     i8 m_iStepNo;   // last step sequence number
     i8 m_iStepTk;   // time point that occurred
