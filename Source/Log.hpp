@@ -22,6 +22,33 @@ namespace Logging
   class Log : public ShmLog
   {
   private:
+    
+    bool m_bLogFyi;
+  
+    bool m_bLogDdl;
+    bool m_bLogJob;
+    bool m_bLogLck;
+    bool m_bLogLog;
+    bool m_bLogOpr;
+    bool m_bLogMgt;
+    bool m_bLogPrm;
+    bool m_bLogQue;
+    bool m_bLogRes;
+    bool m_bLogSsn;
+    bool m_bLogSvc;
+    bool m_bLogSys;
+    bool m_bLogThd;
+    bool m_bLogTsk;
+    bool m_bLogTxn;
+  
+//    bool m_bLogResDir;
+//    bool m_bLogResFifo;
+//    bool m_bLogResFile;
+//    bool m_bLogResMutex;
+//    bool m_bLogResPsxThd;
+//    bool m_bLogResSocket;
+
+    bool m_baLogClass[CN_ENUMS];
   
     // circular array of log entries
     LogEntry m_oaEntry[C_MAX_LOG_ENTRIES];

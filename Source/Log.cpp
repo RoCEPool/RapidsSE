@@ -50,6 +50,34 @@ Log::Log(void)
   if (0 != AM::iThisNodeNo() || PsxThd::bIsJavaThread() )
     RASSERT(0);
   
+  m_bLogFyi =   false;
+  
+  m_bLogDdl =   false;
+  m_bLogJob = true;
+  m_bLogLck =   false;
+  m_bLogLog =   false;
+  m_bLogOpr =   false;
+  m_bLogMgt =   false;
+  m_bLogPrm =   false;
+  m_bLogQue =   false;
+  m_bLogRes =   false;
+  m_bLogSsn =   false;
+  m_bLogSvc =   false;
+  m_bLogSys =   false;
+  m_bLogThd =   false;
+  m_bLogTsk =   false;
+  m_bLogTxn =   false;
+
+//  m_bLogResDir    = true;
+//  m_bLogResFifo   = true;
+//  m_bLogResFile   = true;
+//  m_bLogResMutex  = true;
+//  m_bLogResPsxThd = true;
+//  m_bLogResSocket = true;
+  
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++)
+    m_baLogClass[i_Class] = true;
+
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
     LogEntry* pLogEntry = &m_oaEntry[i_Entry];
     pLogEntry->vZero();
@@ -196,7 +224,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* entry exists?                                                               */
+/* entry exists?                                                              */
 /*----------------------------------------------------------------------------*/
 bool Log::bEntryExists(i8 i_Entry)
 {
@@ -496,6 +524,9 @@ i8 Log::iEntryFyi(eCN eClassNo,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
+  if (! m_bLogFyi)
+    return C_UNKNOWN;
+  
   LogEntry* pLogEntry = pNewEntry(SL_INF,eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
@@ -515,6 +546,9 @@ i8 Log::iEntryDdl(eSL eSeverity, Job* pJob, eDA eDdlAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  if (! m_bLogDdl)
+    return C_UNKNOWN;
   
   LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVaArgs);
   
@@ -536,6 +570,9 @@ i8 Log::iEntryJob(eSL eSeverity, Job* pJob, eJA eJobAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
+  if (! m_bLogJob)
+    return C_UNKNOWN;
+  
   LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVaArgs);
   
   if (! pLogEntry)
@@ -555,6 +592,9 @@ i8 Log::iEntryLck(eSL eSeverity, Lock* pLck, eLA eLckAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  if (! m_bLogLck)
+    return C_UNKNOWN;
   
   LogEntry* pLogEntry = pNewEntry(eSeverity,pLck,szFormat,xVaArgs);
   
@@ -576,6 +616,9 @@ i8 Log::iEntryLog(eSL eSeverity, Log* pLog, eGA eLogAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
+  if (! m_bLogLog)
+    return C_UNKNOWN;
+  
   LogEntry* pLogEntry = pNewEntry(eSeverity,pLog,szFormat,xVaArgs);
   
   if (! pLogEntry)
@@ -595,6 +638,9 @@ i8 Log::iEntryMgt(eSL eSeverity, Job* pJob, eMA eMgtAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  if (! m_bLogMgt)
+    return C_UNKNOWN;
   
   LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVaArgs);
   
@@ -616,6 +662,9 @@ i8 Log::iEntryOpr(eSL eSeverity, Op* pOpr, eOA eOprAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
+  if (! m_bLogOpr)
+    return C_UNKNOWN;
+  
   LogEntry* pLogEntry = pNewEntry(eSeverity,pOpr,szFormat,xVaArgs);
   
   if (! pLogEntry)
@@ -635,6 +684,9 @@ i8 Log::iEntryPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  if (! m_bLogPrm)
+    return C_UNKNOWN;
   
   LogEntry* pLogEntry = pNewEntry(eSeverity,pPrm,szFormat,xVaArgs);
   
@@ -656,6 +708,9 @@ i8 Log::iEntryQue(eSL eSeverity, Queues* pQue, eQA eQueAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
+  if (! m_bLogQue)
+    return C_UNKNOWN;
+  
   LogEntry* pLogEntry = pNewEntry(eSeverity,pQue,szFormat,xVaArgs);
   
   if (! pLogEntry)
@@ -675,6 +730,27 @@ i8 Log::iEntryRes(eSL eSeverity, Resource* pRes, eRA eResAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  if (! m_bLogRes)
+    return C_UNKNOWN;
+  
+  eCN eClass = pRes->eClass();
+  
+  if (! m_baLogClass[eClass])
+    return C_UNKNOWN;
+  
+//  switch (eClass) {
+//
+//    case CN_DIR:    if (! m_bLogResDir)    return C_UNKNOWN; break;
+//    case CN_FIFO:   if (! m_bLogResFifo)   return C_UNKNOWN; break;
+//    case CN_FILE:   if (! m_bLogResFile)   return C_UNKNOWN; break;
+//    case CN_MUTEX:  if (! m_bLogResMutex)  return C_UNKNOWN; break;
+//    case CN_PSXTHD: if (! m_bLogResPsxThd) return C_UNKNOWN; break;
+//    case CN_SOCKET: if (! m_bLogResSocket) return C_UNKNOWN; break;
+//
+//    default:
+//      NEVER_REACH;
+//  }
   
   LogEntry* pLogEntry = pNewEntry(eSeverity,pRes,szFormat,xVaArgs);
   
@@ -696,6 +772,9 @@ i8 Log::iEntrySsn(eSL eSeverity, Session* pSsn, eAA eApiAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
+  if (! m_bLogSsn)
+    return C_UNKNOWN;
+  
   LogEntry* pLogEntry = pNewEntry(eSeverity,pSsn,szFormat,xVaArgs);
   
   if (! pLogEntry)
@@ -715,6 +794,9 @@ i8 Log::iEntrySvc(eSL eSeverity, Job* pJob, eVA eSvcAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  if (! m_bLogSvc)
+    return C_UNKNOWN;
   
   LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVaArgs);
   
@@ -736,6 +818,9 @@ i8 Log::iEntrySys(eSL eSeverity, AttachMap* pSys, eYA eSysAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
+  if (! m_bLogSys)
+    return C_UNKNOWN;
+  
   LogEntry* pLogEntry = pNewEntry(eSeverity,pSys,szFormat,xVaArgs);
   
   if (! pLogEntry)
@@ -755,6 +840,9 @@ i8 Log::iEntryThd(eSL eSeverity, Thread* pThd, eHA eThdAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  if (! m_bLogThd)
+    return C_UNKNOWN;
   
   LogEntry* pLogEntry = pNewEntry(eSeverity,pThd,szFormat,xVaArgs);
   
@@ -776,6 +864,9 @@ i8 Log::iEntryTsk(eSL eSeverity, Task* pTsk, eTA eTskAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
+  if (! m_bLogTsk)
+    return C_UNKNOWN;
+  
   LogEntry* pLogEntry = pNewEntry(eSeverity,pTsk,szFormat,xVaArgs);
   
   if (! pLogEntry)
@@ -795,6 +886,9 @@ i8 Log::iEntryTxn(eSL eSeverity, Tx* pTxn, eXA eTxnAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  if (! m_bLogTxn)
+    return C_UNKNOWN;
   
   LogEntry* pLogEntry = pNewEntry(eSeverity,pTxn,szFormat,xVaArgs);
   
