@@ -103,7 +103,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobRef();
   Step::vAddSteps_JobWriteBuffer();
   Step::vAddSteps_JobWriteRecord();
-  Step::vAddSteps_JobWriteRow();
   
   Step::vAddSteps_Loader();
   Step::vAddSteps_Locals();
