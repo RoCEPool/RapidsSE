@@ -81,7 +81,7 @@ bool Xmits::bCancelDone(void)
          m_iCancelMarkers, m_iXmits);
   
   if (m_iCancelMarkers == m_iXmits) {
-    m_iCancelMarkers = 0;
+    //m_iCancelMarkers = 0;
     return true;
   }
   else
@@ -100,7 +100,7 @@ bool Xmits::bEosDone(void)
            m_iEosMarkers, m_iXmits);
   
   if (m_iEosMarkers == m_iXmits) {
-    m_iEosMarkers = 0;
+    //m_iEosMarkers = 0;
     return true;
   }
   else
@@ -108,18 +108,18 @@ bool Xmits::bEosDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* exit done ?                                                                */
+/* error done ?                                                               */
 /*----------------------------------------------------------------------------*/
 bool Xmits::bErrorDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
-  if (m_iExitMarkers > m_iXmits)
+  if (m_iEosMarkers > m_iXmits)
     vTrace("Warning: ConsumeOp received ZK_ERRORMARKER %lld; expected %lld\n"_Stz,
            m_iEosMarkers, m_iXmits);
   
   if (m_iEosMarkers == m_iXmits) {
-    m_iEosMarkers = 0;
+    //m_iEosMarkers = 0;
     return true;
   }
   else
@@ -138,7 +138,7 @@ bool Xmits::bExitDone(void)
       m_iExitMarkers, m_iXmits);
   
   if (m_iExitMarkers == m_iXmits) {
-    m_iExitMarkers = 0;
+    //m_iExitMarkers = 0;
     return true;
   }
   else
@@ -157,7 +157,7 @@ bool Xmits::bPulseDone(void)
            m_iPulseMarkers, m_iXmits);
   
   if (m_iPulseMarkers == m_iXmits) {
-    m_iPulseMarkers = 0;
+    //m_iPulseMarkers = 0;
     return true;
   }
   else
@@ -176,7 +176,7 @@ bool Xmits::bPulsedDone(void)
            m_iPulsedMarkers, m_iXmits);
   
   if (m_iPulsedMarkers == m_iXmits) {
-    m_iPulsedMarkers = 0;
+    //m_iPulsedMarkers = 0;
     return true;
   }
   else
