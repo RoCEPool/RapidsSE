@@ -13,7 +13,7 @@ TESTLIST_FILE="${DIR}/allTestsBambooMN"
 
 # How long to run the seth tests for (in seconds) before declaring that they are hung.
 # Defaulting to 15 minutes.
-SETH_TIMEOUT="1800"
+SETH_TIMEOUT="500"
 
 # The minimum time (in seconds) that we expect the seth tests to run for. If they take 
 # less than this then something has gone wrong.

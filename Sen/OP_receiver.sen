@@ -90,6 +90,7 @@
       begin
         pParentJob  job.phase@ JP_EXECUTING == not
       while
+       pParentJob job.phase@ "Job state %v" .printf
        task::yield
       repeat
 
@@ -100,6 +101,7 @@
       begin
         pTask task.isWaiting
       not while
+        pTask task.state@ "Task state %v" .printf
         task::yield
       repeat
 
