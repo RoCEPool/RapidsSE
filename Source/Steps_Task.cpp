@@ -25,6 +25,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.dropLock"_Stz,       &Step::vTaskDropLock);
   vAddStep("task.grabLock"_Stz,       &Step::vTaskGrabLock);
   vAddStep("task.isAckSet"_Stz,       &Step::vTaskIsAckSet);
+  vAddStep("task.isWaiting"_Stz,      &Step::vTaskIsWaiting);
   vAddStep("task.job@"_Stz,           &Step::vTaskJobFetch);
   vAddStep("task.job!"_Stz,           &Step::vTaskJobStore);
   vAddStep("task.name@"_Stz,          &Step::vTaskNameFetch);
@@ -178,6 +179,19 @@ void Step::vTaskIsAckSet(void)
   
   m_pDataStack->vPushInt(iIsAckSet);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.isWaiting -- is task waiting?                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskIsWaiting(void)
+{
+  ENTRY();
+  
+  Task* pTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  m_pDataStack->vPushInt(pTask->eState() == TS_WAITING ? true : false);
+  
   EXIT();
 }
 

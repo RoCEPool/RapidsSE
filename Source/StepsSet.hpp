@@ -717,6 +717,7 @@ public:
   void vJob_NodeInfoNodeNameFetch(void);
 
   // Job Operand
+  void vJob_OperandPipelineTask(void);
   void vJob_OperandPipeOut(void);
 
   // job Pipeline
@@ -1458,6 +1459,7 @@ public:
   void vTaskDelete(void);
   void vTaskGrabLock(void);
   void vTaskIsAckSet(void);
+  void vTaskIsWaiting(void);
   void vTaskJobFetch(void);
   void vTaskJobStore(void);
   void vTaskNameFetch(void);
