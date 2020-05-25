@@ -187,7 +187,7 @@ bool Stz::bGreater(Stz* szArg)
 {
   i8 iDiff = strcmp(azChar(),szArg->azChar());
   
-  if (iDiff)
+  if (iDiff > 0)
     return true;
   else
     return false;

@@ -22,6 +22,19 @@ namespace Utilities
     Arrange(CompareFp fpCompare);
    ~Arrange(void) noexcept(false);
     
+    void vBeginIter(void** vppCursor);
+    void vEndIter(void** vppCursor);
+    bool bFirst(void** vppCursor);
+    Thing* pFirst(void** vppCursor);
+    void vInsert(Stz* szObjNm, Object* pObject);
+    void vInsert(Thing* pThing);
+    bool bNext(void** vppCursor);
+    Thing* pNext(void** vppCursor);
+    Object* pObject(void** vppCursor);
+    i8 iSeqNo(void** vppCursor);
+    void vSequence(void);
+    Stz* szObjNm(void** vppCursor);
+
     Footer* aFooter(void);
   };
   

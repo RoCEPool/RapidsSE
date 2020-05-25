@@ -14,6 +14,8 @@ namespace Utilities
 
 //------------------------------------------------------------------------------
 
+#include "Thing.hpp"
+
 #include "Arrange.hpp"
 #include "BPA.hpp"
 #include "Calculator.hpp"
@@ -23,7 +25,6 @@ namespace Utilities
 #include "Prefetch.hpp"
 #include "SchemaTest.hpp"
 #include "ShmUtility.hpp"
-#include "Thing.hpp"
 #include "Vortex.hpp"
 
 /*============================================================================*/
