@@ -29,6 +29,7 @@
   0 locals| pSocket      |
   0 locals| bRecvd       |
   0 locals| pTask        |
+  0 locals| pParentJob   |
 
   "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
 
@@ -81,13 +82,30 @@
     // dispatch job
 
     pReceivedJob job.jobClass CN_JOB_OPERAND == if
-      pReceivedJob Job_operand.pipelineTask to pTask
+
+      // get the paremt (pipeline) job of the operand
+      pReceivedJob Job_operand.parentJob@ to pParentJob
+
+      // wait till the parent job is executing
+      begin
+        pParentJob  job.phase@ JP_EXECUTING == not
+      while
+       task::yield
+      repeat
+
+      // get the task of the parent (pipeline) job
+      pParentJob job.task@ to pTask
+
+      // wait till the parent (pipeline) job is in a WAIT state
       begin
         pTask task.isWaiting
       not while
         task::yield
       repeat
+
+      // now pipe out the operand
       pReceivedJob Job_operand.pipeOut
+
     else
       //pReceivedJob job.name@ grid::thisNodeName@ "(%v) receiver_loop %v" .printf
       pReceivedJob job.seedDecode

@@ -9,14 +9,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobOperand(void)
 {
-  vAddStep("Job_Operand.pipelineTask"_Stz,  &Step::vJob_OperandPipelineTask);
-  vAddStep("Job_Operand.pipeOut"_Stz,       &Step::vJob_OperandPipeOut);
+  vAddStep("Job_Operand.parentJob@"_Stz, &Step::vJob_OperandParentJobFetch);
+  vAddStep("Job_Operand.pipeOut"_Stz,    &Step::vJob_OperandPipeOut);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Operand.pipelineTask -- pipe out the operand                                */
+/* Job_Operand.parentJob@ -- get parent job                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_OperandPipelineTask(void)
+void Step::vJob_OperandParentJobFetch(void)
 {
   ENTRY();
   
@@ -26,7 +26,7 @@ void Step::vJob_OperandPipelineTask(void)
   i8 iParentJob = pJob_Operand->iParentId();
   Job* pParentJob = Scheduler::pJob_FindParticipating(iParentJob);
   
-  m_pDataStack->vPushPtr(pParentJob->pTask());
+  m_pDataStack->vPushPtr(pParentJob);
   
   EXIT();
 }

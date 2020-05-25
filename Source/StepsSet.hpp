@@ -730,7 +730,7 @@ public:
   void vJob_NodeInfoNodeNameFetch(void);
 
   // Job Operand
-  void vJob_OperandPipelineTask(void);
+  void vJob_OperandParentJobFetch(void);
   void vJob_OperandPipeOut(void);
 
   // job Pipeline
