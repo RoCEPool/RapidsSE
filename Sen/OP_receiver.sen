@@ -28,6 +28,7 @@
   0 locals| pSendWith    |
   0 locals| pSocket      |
   0 locals| bRecvd       |
+  0 locals| pTask        |
 
   "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
 
@@ -80,7 +81,12 @@
     // dispatch job
 
     pReceivedJob job.jobClass CN_JOB_OPERAND == if
-      //pReceivedJob job.hasOperand if
+      pReceivedJob Job_operand.pipelineTask to pTask
+      begin
+        pTask task.isWaiting
+      not while
+        task::yield
+      repeat
       pReceivedJob Job_operand.pipeOut
     else
       //pReceivedJob job.name@ grid::thisNodeName@ "(%v) receiver_loop %v" .printf
