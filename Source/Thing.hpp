@@ -9,7 +9,7 @@ namespace Utilities
   {
   private:
 
-    s32     m_sThingNm; // name of thing
+    s32     m_sObjNm;   // name of object
     Object* m_pObject;  // object being arranged
     i8      m_iSeqNo;   // optional sequence number
    
@@ -20,11 +20,11 @@ namespace Utilities
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Thing(Stz* szThingNm, Object* pObject);
+    Thing(Stz* szObjNm, Object* pObject);
    ~Thing(void) noexcept(false);
   
-    Stz*    szThingNm(void);
     Object* pObject(void);
+    Stz*    szObjNm(void);
     i8      iSeqNo(void);
     void    vSeqNo(i8 iSeqNo);
 

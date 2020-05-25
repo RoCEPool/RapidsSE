@@ -17,12 +17,12 @@ __aFooterFunction(Thing)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Thing::Thing(Stz* szThingNm, Object* pObject)
+Thing::Thing(Stz* szObjNm, Object* pObject)
 : Object(CN_THING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THING,_FOOTER_);
     
-  m_sThingNm = szThingNm;
+  m_sObjNm   = szObjNm;
   m_pObject  = pObject;
   m_iSeqNo   = C_UNKNOWN;
   
@@ -46,11 +46,11 @@ Thing::~Thing(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get the name of the thing                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* Thing::szThingNm(void)
+Stz* Thing::szObjNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THING,_FOOTER_);
   
-  return m_sThingNm;
+  return m_sObjNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,13 +100,13 @@ bool bThingCompare(void* vpInsert, void* vpScan, bool& bMatch)
     return false;
   
   // names match?
-  if (pInsertThing->szThingNm()->bSame(pScanThing->szThingNm()))
+  if (pInsertThing->szObjNm()->bSame(pScanThing->szObjNm()))
     bMatch = true;
   else
     bMatch = false;
   
   // insert after scan?
-  if (pInsertThing->szThingNm()->bGreater(pScanThing->szThingNm()))
+  if (pInsertThing->szObjNm()->bGreater(pScanThing->szObjNm()))
     return true;
   else
     return false;

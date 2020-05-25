@@ -67,6 +67,23 @@ void Arrange::vEndIter(void** vppCursor)
 /*----------------------------------------------------------------------------*/
 /* get first thing                                                            */
 /*----------------------------------------------------------------------------*/
+bool Arrange::bFirst(void** vppCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
+  
+  SkipNode* pNode = m_pSkipList->pFirst(0);
+  
+  *vppCursor = pNode;
+  
+  if (pNode)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get first thing                                                            */
+/*----------------------------------------------------------------------------*/
 Thing* Arrange::pFirst(void** vppCursor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
@@ -74,6 +91,9 @@ Thing* Arrange::pFirst(void** vppCursor)
   SkipNode* pNode = m_pSkipList->pFirst(0);
   
   *vppCursor = pNode;
+  
+  if (! pNode)
+    return nullptr;
 
   Thing* pThing = _pThing(pNode->m_pObject);
   
@@ -105,6 +125,28 @@ void Arrange::vInsert(Thing* pThing)
 /*----------------------------------------------------------------------------*/
 /* get next thing                                                             */
 /*----------------------------------------------------------------------------*/
+bool Arrange::bNext(void** vppCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
+  
+  SkipNode* pNode = _pSkipNode(* vppCursor);
+
+  if (! pNode)
+    return false;
+  
+  pNode = m_pSkipList->pNext(pNode,0);
+
+  *vppCursor = pNode;
+
+  if (pNode)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next thing                                                             */
+/*----------------------------------------------------------------------------*/
 Thing* Arrange::pNext(void** vppCursor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
@@ -115,9 +157,50 @@ Thing* Arrange::pNext(void** vppCursor)
 
   *vppCursor = pNode;
 
+  if (! pNode)
+    return nullptr;
+  
   Thing* pThing = pNode ? _pThing(pNode->m_pObject) : nullptr;
 
   return pThing;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object                                                                 */
+/*----------------------------------------------------------------------------*/
+Object* Arrange::pObject(void** vppCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
+  
+  SkipNode* pNode = _pSkipNode(* vppCursor);
+  
+  if (! pNode)
+    return nullptr;
+  
+  Thing* pThing = _pThing(pNode->m_pObject);
+  
+  Object* pObject = pThing->pObject();
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 Arrange::iSeqNo(void** vppCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
+  
+  SkipNode* pNode = _pSkipNode(* vppCursor);
+  
+  if (! pNode)
+    return C_UNKNOWN;
+  
+  Thing* pThing = _pThing(pNode->m_pObject);
+  
+  i8 iSeqNo = pThing->iSeqNo();
+  
+  return iSeqNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,6 +221,26 @@ void Arrange::vSequence(void)
   
   vEndIter(&vpCursor);
 }
+
+/*----------------------------------------------------------------------------*/
+/* get name                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Arrange::szObjNm(void** vppCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
+  
+  SkipNode* pNode = _pSkipNode(* vppCursor);
+  
+  if (! pNode)
+    return nullptr;
+  
+  Thing* pThing = _pThing(pNode->m_pObject);
+  
+  Stz* szObjNm = pThing->szObjNm();
+  
+  return szObjNm;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

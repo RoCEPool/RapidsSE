@@ -204,14 +204,13 @@ void vTest7(void)
     pArrange->vInsert(pWord->szWordNm(),pWord);
   
   void* vpCursor;
-  Thing* pThing;
 
   pArrange->vBeginIter(&vpCursor);
   
-  for (pThing = pArrange->pFirst(&vpCursor);
-       pThing;
-       pThing = pArrange->pNext(&vpCursor))
-    vTrace("  %s\n"_Stz,pThing->szThingNm());
+  for (pArrange->bFirst(&vpCursor);
+       vpCursor;
+       pArrange->bNext(&vpCursor))
+    vTrace("  %s\n"_Stz,pArrange->szObjNm(&vpCursor));
   
   pArrange->vEndIter(&vpCursor);
 
