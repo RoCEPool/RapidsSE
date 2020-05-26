@@ -87,13 +87,7 @@ namespace Partitioning
     void vVisualizeTable(void);
 
     //! TO GO
-    void vAddLoadWriteBehindBuffers(i8 nBuffersLoadable);
-    void vAddInsertWriteBehindBuffers(i8 nBuffersInsertable);
-    bool bAllBuffersWritten(eDS eDataSource);
     void vAppendBufferOLD(CrwBuffer* pCrwBuffer);
-    void vIncBuffersWritten(void);
-    i8   nWriteBehindBuffers(void);
-    void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     
   private:
     Footer* aFooter(void);
