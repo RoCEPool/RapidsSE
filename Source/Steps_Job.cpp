@@ -14,8 +14,10 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addDemon"_Stz,         &Step::vJobAddDemon);
+  vAddStep("job.addLocal"_Stz,         &Step::vJobAddLocal);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
+  vAddStep("job.addDemon"_Stz,         &Step::vJobAddDemon);
   vAddStep("job.assertBegin"_Stz,      &Step::vJobAssertBegin);
   vAddStep("job.assertNeutral"_Stz,    &Step::vJobAssertNeutral);
   vAddStep("job.assertOriginator"_Stz, &Step::vJobAssertOriginator);
@@ -143,10 +145,33 @@ void Step::vJobAddDemon(void)
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
   
   if (pJob->m_xReqTuple.m_iDetail) {
-    JobLog::vNote(pJob,"Added to Originator List: %s %p"_Stz,
+    JobLog::vNote(pJob,"Added to Demon List: %s %p"_Stz,
                   aCN[pJob->eClass()],
                   pJob);
     AM::pDemonJobs()->vLogJobs(pJob->m_iFocalId);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.addLocal -- add job to local job set                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAddLocal(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  Scheduler::vJob_AddLocal(pJob);
+  
+  //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
+  
+  if (pJob->m_xReqTuple.m_iDetail) {
+    JobLog::vNote(pJob,"Added to Local List: %s %p"_Stz,
+                  aCN[pJob->eClass()],
+                  pJob);
+    AM::pLocalJobs()->vLogJobs(pJob->m_iFocalId);
   }
   
   EXIT();
