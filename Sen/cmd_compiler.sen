@@ -354,7 +354,7 @@
 /*----------------------------------------------------------------------------*/
 /* show all words that are of cmdSyntax:                                      */
 /*----------------------------------------------------------------------------*/
-: cmdSyntaxs \prompt
+: cmds \prompt
 
   //find: cmdSyntax: word::ofCatg
 
@@ -365,7 +365,9 @@
     pCursor pArrange arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.name .
+    pCursor pArrange arrange.name
+    pCursor pArrange arrange.seqNo
+    "[%v] %v" .printf
   repeat
 ;
 
@@ -383,7 +385,9 @@
     pCursor pArrange arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.name .
+    pCursor pArrange arrange.name
+    pCursor pArrange arrange.seqNo
+    "[%v] %v" .printf
   repeat
 ;
 
@@ -406,7 +410,9 @@
     pCursor pArrange arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.name .
+    pCursor pArrange arrange.name
+    pCursor pArrange arrange.seqNo
+    "[%v] %v" .printf
   repeat
 ;
 
