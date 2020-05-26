@@ -73,9 +73,6 @@ namespace MetaData
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
    
-    //! TO GO
-    void    vAppendBufferInsertEntries(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
-    
     Footer* aFooter(void);
   };
   
