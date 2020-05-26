@@ -410,6 +410,31 @@
   repeat
 ;
 
+/*----------------------------------------------------------------------------*/
+/* list all words in the current dictionary                                   */
+/*----------------------------------------------------------------------------*/
+//: words \prompt
+//
+//  iterate-words
+//    word@ word.name@ str.length word@ word.name@ "word: %32v %v" .printf
+//  next-word
+//;
+: words \prompt
+
+  arrange::allWords locals| pArrange |
+
+  nullptr locals| pCursor |
+  begin
+    pCursor pArrange arrange.next to pCursor
+    pCursor
+  while
+      pCursor pArrange arrange.name
+      pCursor pArrange arrange.name str.length
+      pCursor pArrange arrange.seqNo
+      "[%v %2vB] %v" .printf
+  repeat
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

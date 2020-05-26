@@ -91,16 +91,6 @@
     word@ word.name@ str.length word@ word.name@ "word: %32v %v" .printf
   next-word
 ;
-/*----------------------------------------------------------------------------*/
-//: words \prompt
-//
-//  //folder[] dic.lastWord dup
-//  dic::root dic.lastWord dup
-//  iterate                        // iterate word cursor
-//    object@ word.name@ .         // print the name of the word
-//    object@ word.prev object!    // advance cursor backwards thru words
-//  next
-//;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

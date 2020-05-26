@@ -118,6 +118,8 @@
 
   next-word
 
+  pArrange arrange.sequence
+
   pArrange
 ;
 
