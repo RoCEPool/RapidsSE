@@ -56,27 +56,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* show all words that are of cmdSyntax:                                      */
-/*----------------------------------------------------------------------------*/
-: cmdSyntaxs \prompt
-
-  //find: cmdSyntax: word::ofCatg
-
-  find: cmdSyntax: arrange::wordsOfCatg locals| pArrange |
-
-  nullptr locals| pCursor |
-  begin
-    pCursor pArrange arrange.next to pCursor
-    pCursor
-  while
-    pCursor pArrange arrange.name .
-  repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* synthesize the procedure for a lite op command given its cmdTags word      */
 /*----------------------------------------------------------------------------*/
 
@@ -367,6 +346,45 @@
 //  ?else
    
 //  ?]
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* show all words that are of cmdSyntax:                                      */
+/*----------------------------------------------------------------------------*/
+: cmdSyntaxs \prompt
+
+  //find: cmdSyntax: word::ofCatg
+
+  find: cmdSyntax: arrange::wordsOfCatg locals| pArrange |
+
+  nullptr locals| pCursor |
+  begin
+    pCursor pArrange arrange.next to pCursor
+    pCursor
+  while
+    pCursor pArrange arrange.name .
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* show all words that are of _cmdTags                                        */
+/*----------------------------------------------------------------------------*/
+: cmdTags \prompt
+
+  //find: _cmdTags word::ofCatg
+
+  find: _cmdTags arrange::wordsOfCatg locals| pArrange |
+
+  nullptr locals| pCursor |
+  begin
+    pCursor pArrange arrange.next to pCursor
+    pCursor
+  while
+    pCursor pArrange arrange.name .
+  repeat
 ;
 
 /*============================================================================*/
