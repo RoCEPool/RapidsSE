@@ -150,6 +150,7 @@ namespace Strings
     static void  vPad(char* azDst, i8 iToLength, const char cWith);
     
     static void  vRemove(char* azArg, const char cLeading);
+    static void  vRemoveChar(char* azDst, char* azSrc, const char cChr);
     static void  vRemovePrefix(char* azArg, char cIntro);
     static void  vRemoveSuffix(char* azArg, char cIntro);
     static bool  bReplace(char* pString, const char* pThis, const char* pThat);

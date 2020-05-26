@@ -34,7 +34,11 @@ static Stz* szaAscii[128] = {
 
 
 /*----------------------------------------------------------------------------*/
-/* wAllocate: allocate a workspace/string of given size                       */
+/* A                                  A                                     A */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allocate a workspace/string of given size                                  */
 /*----------------------------------------------------------------------------*/
 char* StrLib::wAllocate(i8 nBytes)
 {
@@ -46,7 +50,7 @@ char* StrLib::wAllocate(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* wAllocate: allocate a workspace/string and initialize with given string    */
+/* allocate a workspace/string and initialize with given string               */
 /*----------------------------------------------------------------------------*/
 char* StrLib::wAllocate(const char* s)
 {
@@ -62,7 +66,7 @@ char* StrLib::wAllocate(const char* s)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vAppendChar: append character to end of workspace                          */
+/* append character to end of workspace                                       */
 /*----------------------------------------------------------------------------*/
 void StrLib::vAppendChar(char** pz, char cChar)
 {
@@ -74,7 +78,7 @@ void StrLib::vAppendChar(char** pz, char cChar)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vAppendDecimal: append number in decimal to workspace                      */
+/* append number in decimal to workspace                                      */
 /*----------------------------------------------------------------------------*/
 void StrLib::vAppendDecimal(char** pz, i8 iNumber)
 {
@@ -2604,7 +2608,11 @@ void StrLib::vPad(char* azDst, i8 iToLength, const char cWith)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vRemove: remove any leading character                                      */
+/* R                                  R                                     R */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* remove any leading character                                               */
 /*----------------------------------------------------------------------------*/
 void StrLib::vRemove(char *w, const char cLeading)
 {
@@ -2623,6 +2631,26 @@ void StrLib::vRemove(char *w, const char cLeading)
     if ( ! cCopied )
       return;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove any occurance of given character                                    */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveChar(char* azDst, char* azSrc, const char cChr)
+{
+  _static_
+  
+  char* azTo = azDst;
+  char* azFrom = azSrc;
+  
+  while (*azFrom) {
+    if (cChr == *azFrom)
+      azFrom++;
+    else
+      *azTo++ = *azFrom++;
+  }
+
+  *azTo = '\0';
 }
   
 /*----------------------------------------------------------------------------*/
@@ -2660,7 +2688,7 @@ void StrLib::vRemoveSuffix(char *azArg, char cIntro)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bReplace: replace sub-string                                               */
+/* replace sub-string                                                         */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
 {
@@ -2724,7 +2752,7 @@ bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bReplace: replace sub-string                                               */
+/* replace sub-string                                                         */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bReplace(char *pDst, const char* pSrc,
                       const char *pThis, const char *pThat)
@@ -2797,7 +2825,7 @@ void StrLib::vReplaceTail(char* azArg, char* azTail)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vReverse: reverse a string                                                 */
+/* reverse a string                                                           */
 /*----------------------------------------------------------------------------*/
 void StrLib::vReverse(char* azDst, char* azSrc)
 {
@@ -2826,7 +2854,7 @@ void StrLib::vRight(char* azDst, char* azSrc, i8 i_At)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vRotate: rotate a string by given number of characters                     */
+/* rotate a string by given number of characters                              */
 /*----------------------------------------------------------------------------*/
 void StrLib::vRotate(char* zArg, i8 nBy)
 {
@@ -2862,7 +2890,7 @@ void StrLib::vRuler(char* azDst, i8 iLength)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bSame: are two arguments equal (no case)                                   */
+/* are two arguments equal (no case)                                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bSame(const char* pArg1, const char* pArg2)
 {
