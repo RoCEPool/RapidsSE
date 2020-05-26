@@ -2,7 +2,7 @@
 /* dropTable.test -- DROP TABLE tests                                         */
 /*----------------------------------------------------------------------------*/
 
-loop 100 {
+//loop 10 {
   // begin tracking memory
   trackMemory;
   success
@@ -39,7 +39,7 @@ loop 100 {
   // get memory leaks
   memoryLeaks;
   rows: 0
-}
+//}
 
 CLEANUP {
   
