@@ -195,16 +195,17 @@
 /*----------------------------------------------------------------------------*/
 : exp7 \prompt
 
-  arrange::new locals| pArrange |
+//  arrange::new locals| pArrange |
+//
+//  iterate-words
+//    word@ word.name@ .
+//
+//    word@ word.name@ word@ pArrange arrange.insert
+//  next-word
 
-  iterate-words
-    word@ word.name@ .
-
-    word@ word.name@ word@ pArrange arrange.insert
-  next-word
+  arrange::allWords locals| pArrange |
 
   nullptr locals| pCursor |
-
   begin
     pCursor pArrange arrange.next to pCursor
     pCursor
