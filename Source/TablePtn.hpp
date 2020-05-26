@@ -77,9 +77,6 @@ namespace Partitioning
                            Encoding* pEncoding_upsert, t8 tPerspective);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
-
-    //! TO GO
-    void vAppendBufferOLD(CrwBuffer* pCrwBuffer);
     
   private:
     Footer* aFooter(void);

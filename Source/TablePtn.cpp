@@ -973,43 +973,6 @@ void TablePtn::vVisualizeTable(void)
 /*----------------------------------------------------------------------------*/
 __aFooterFunction(TablePtn);
 
-
-/*----------------------------------------------------------------------------*/
-/*--- TO GO ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* append a row buffer into the TablePtn                                      */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vAppendBufferOLD(CrwBuffer* pCrwBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  RASSERT(m_okLock.bIsLocked());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the root buffer
-  if (m_pRootCrwBuffer == nullptr) {
-    ASSERT( ! m_pCurrentCrwBuffer )
-    m_pRootCrwBuffer = pCrwBuffer;
-  }
-  else {
-    pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
-    pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
-    m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the root buffer
-  m_pCurrentCrwBuffer = pCrwBuffer;
-}
-
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
