@@ -17,7 +17,6 @@ namespace Partitioning
     i8   m_iPartitionId;   // partition number
     bool m_bLowMemLoad;    // was low memory detected during this load
 
-    
     CrwBuffer* m_pRootCrwBuffer;    // the data root buffer
     CrwBuffer* m_pCurrentCrwBuffer; // the data current buffer for insert
     

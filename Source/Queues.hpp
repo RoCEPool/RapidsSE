@@ -38,10 +38,11 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // jobs
   
+    JobList*   m_pDemonJobs;
+    JobList*   m_pLocalJobs;
     JobList*   m_pOriginatingJobs;
     JobList*   m_pParticipatingJobs;
-    JobList*   m_pDemonJobs;
-
+    
     // must be last
     Footer m_xFooter;
   

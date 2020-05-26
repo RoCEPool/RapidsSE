@@ -598,6 +598,23 @@ void Scheduler::vJob_AddDemon(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add job to local list                                                      */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vJob_AddLocal(Job* pJob)
+{
+  
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->m_pLocalJobs->vGrabLock();
+  pQueues->m_pLocalJobs->vAddJob(pJob);
+  pQueues->m_pLocalJobs->vDropLock();
+  
+  pJob->vIncStepNo();
+  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_LOCAL,
+              "Job added to LocalJobs"_Stz); //!format-LogJob
+}
+
+/*----------------------------------------------------------------------------*/
 /* add job to originating list                                                */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vJob_AddOriginating(Job* pJob)
@@ -639,11 +656,26 @@ void Scheduler::vJob_DumpDemon(void)
   Queues* pQueues = AM::pQueues();
   
   AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
-              "OriginatingJobs list:"_Stz); //!format-LogQue
+              "DemonJobs list:"_Stz); //!format-LogQue
   
   pQueues->m_pDemonJobs->vGrabLock();
   pQueues->m_pDemonJobs->vContentDump();
   pQueues->m_pDemonJobs->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump local job list                                                        */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vJob_DumpLocal(void)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
+              "LocalJobs list:"_Stz); //!format-LogQue
+  
+  pQueues->m_pLocalJobs->vGrabLock();
+  pQueues->m_pLocalJobs->vContentDump();
+  pQueues->m_pLocalJobs->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -724,6 +756,29 @@ Job* Scheduler::pJob_FindParticipating(i8 iJobId)
                 iJobId);
 
   return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove job from local list                                                 */
+/*----------------------------------------------------------------------------*/
+bool Scheduler::bJob_RemoveLocal(Job* pJob, bool bDump)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->m_pLocalJobs->vGrabLock();
+  
+  if (bDump)
+    pQueues->m_pLocalJobs->vContentDump();
+  
+  bool bRemoved = pQueues->m_pLocalJobs->bRemoveJob(pJob);
+  
+  pQueues->m_pLocalJobs->vDropLock();
+  
+  pJob->vIncStepNo();
+  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_LOCAL,
+              "Job removed from LocalJobs"_Stz); //!format-LogJob
+  
+  return bRemoved;
 }
 
 /*----------------------------------------------------------------------------*/

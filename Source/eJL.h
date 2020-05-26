@@ -7,8 +7,9 @@ enum eJL // jobs list
 {
   /* 0 */ JL_NONE=0,
   /* 1 */ JL_DEMON,
-  /* 2 */ JL_ORIGINATING,
-  /* 3 */ JL_PARTICIPATING
+  /* 2 */ JL_LOCAL,
+  /* 3 */ JL_ORIGINATING,
+  /* 4 */ JL_PARTICIPATING
 };
 
 static Stz* aJL[]

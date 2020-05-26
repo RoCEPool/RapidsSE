@@ -8,6 +8,7 @@ enum eJA // job actions
   /*  0 */ JA_NONE=0,
   
   /*    */ JA_JOB_ADD_DEMON,
+  /*    */ JA_JOB_ADD_LOCAL,
   /*    */ JA_JOB_ADD_ORIGIN,
   /*    */ JA_JOB_ADD_PARTG,
   /*    */ JA_JOB_CONSTRUCT,
@@ -20,6 +21,7 @@ enum eJA // job actions
   /*    */ JA_JOB_FIND_PARTICIPATING,
   /*    */ JA_JOB_INF,
   /*    */ JA_JOB_PHASE,
+  /*    */ JA_JOB_REMOVE_LOCAL,
   /*    */ JA_JOB_REMOVE_ORIGIN,
   /*    */ JA_JOB_REMOVE_PARTG,
   /*    */ JA_JOB_SEED,
