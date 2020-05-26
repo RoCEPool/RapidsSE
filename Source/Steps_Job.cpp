@@ -77,6 +77,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
   vAddStep("job.recv"_Stz,             &Step::vJobRecv);
+  vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("job.reseed"_Stz,           &Step::vJobReseed);
@@ -1171,6 +1172,37 @@ void Step::vJobRecv(void)
   
   // call the job post-receive function
   pJobClass->vRecvJob(pJob);  // come back to this, remove session as parameter to delete
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.removeLocal -- remove job from local job set                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRemoveLocal(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  bool bRemove = Scheduler::bJob_RemoveLocal(pJob);
+  
+  if (! bRemove) {
+    vTrace("------------------------------------\n"_Stz);
+    vTrace("%s Failed to Remove JobId %lld from local\n"_Stz,
+           aCN[pJob->eClass()],pJob->m_iFocalId);
+    vTrace("------------------------------------\n"_Stz);
+    
+    bRemove = Scheduler::bJob_RemoveLocal(pJob,true);
+  }
+  
+  if (pJob->m_xReqTuple.m_iDetail) {
+    JobLog::vNote(pJob,
+                  "Removed from Local List: %s %p"_Stz,
+                  aCN[pJob->eClass()],
+                  pJob);
+    AM::pLocalJobs()->vLogJobs(pJob->m_iFocalId);
+  }
   
   EXIT();
 }
