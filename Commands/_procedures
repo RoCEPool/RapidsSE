@@ -261,7 +261,7 @@ begin
 /*----------------------------------------------------------------------------*/
 /* stored procedure with two-part name syntax test                            */
 /*----------------------------------------------------------------------------*/
-procedure Select Table
+procedure select table
   parameters $Table
 begin
 

@@ -80,8 +80,6 @@
 /*----------------------------------------------------------------------------*/
 : \procedure \\category ;
 
-: procedures \prompt find: \procedure word::ofCatg ;
-: procs      \prompt find: \procedure word::ofCatg ;
 
 
 /*----------------------------------------------------------------------------*/

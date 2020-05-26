@@ -387,6 +387,29 @@
   repeat
 ;
 
+/*----------------------------------------------------------------------------*/
+/* show all procedures                                                        */
+/*----------------------------------------------------------------------------*/
+: procedures \prompt find: \procedure word::ofCatg ;
+
+/*----------------------------------------------------------------------------*/
+/* show all procedures                                                        */
+/*----------------------------------------------------------------------------*/
+: procs \prompt
+
+  //find: \procedure word::ofCatg
+
+  find: \procedure arrange::wordsOfCatg locals| pArrange |
+
+  nullptr locals| pCursor |
+  begin
+    pCursor pArrange arrange.next to pCursor
+    pCursor
+  while
+    pCursor pArrange arrange.name .
+  repeat
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
