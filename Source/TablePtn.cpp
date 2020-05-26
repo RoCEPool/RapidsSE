@@ -54,14 +54,7 @@ TablePtn::TablePtn(Table* pTable)
   m_iPartitionId = -1;
   m_pTable = pTable;
   
-  m_nSubLoadersDone  = 0;
-  m_nSubInsertersDone = 0;
   m_bLowMemLoad = false;
-
-  m_nWriteBehindBuffers = 0;
-  m_nBuffersWritten     = 0;
-  
-  m_iParentJobId = C_UNKNOWN;
   
   m_pRootCrwBuffer  = nullptr;
   m_pCurrentCrwBuffer = nullptr;
@@ -495,26 +488,6 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set endInsert jobid                                                        */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vParentJobId(i8 iJobId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_iParentJobId = iJobId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get endInsert jobid                                                        */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::iParentJobId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_iParentJobId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get this partitions partitionId                                            */
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::iPartitionId(void)
@@ -670,23 +643,6 @@ ReadApi* TablePtn::pReadApi(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_pReadApi;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset the buffer write members                                             */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vResetWrite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  //! TO GO
-  m_nSubLoadersDone     = 0;
-  m_nSubInsertersDone   = 0;
-  m_nWriteBehindBuffers = 0;
-  m_nBuffersWritten     = 0;
-  m_iParentJobId        = -1;
-  
-  m_bLowMemLoad = false;
 }
 
 /*----------------------------------------------------------------------------*/

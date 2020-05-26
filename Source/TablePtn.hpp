@@ -24,13 +24,6 @@ namespace Partitioning
     IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
   
     ReadApi* m_pReadApi;            // read consistency api
-  
-    //! TO GO
-    i8   m_nWriteBehindBuffers;     // buffers to be written
-    i8   m_nBuffersWritten;         // buffers written so far
-    i8   m_nSubLoadersDone;         // number of subloader which have completed
-    i8   m_nSubInsertersDone;       // number of subInserters which have completed
-    i8   m_iParentJobId;            // parent jobid
     
     // must be last
     Footer m_xFooter;
@@ -72,7 +65,6 @@ namespace Partitioning
     bool bPurge(i8 iOlderThanSeconds);
     ReadApi* pReadApi(void);
     void vRemoveIndex(i8 iIndexNo);
-    void vResetWrite(void);
     CrwBuffer* pRootCrwBuffer(void);
     CrwBuffer* pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective);
     Table* pTable(void);
