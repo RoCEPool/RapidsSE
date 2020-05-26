@@ -214,6 +214,20 @@
   repeat
 
   pArrange arrange.delete
+
+  // - - - - - - -
+
+  find: _cmdTags arrange::wordsOfCatg to pArrange
+
+  nullptr to pCursor
+  begin
+    pCursor pArrange arrange.next to pCursor
+    pCursor
+  while
+    pCursor pArrange arrange.name .
+  repeat
+
+  pArrange arrange.delete
 ;
 
 

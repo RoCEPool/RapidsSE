@@ -113,9 +113,26 @@
   arrange::new locals| pArrange |
 
   iterate-words
-  word@ word.name@ .
+ 
+    word@ word.name@ word@ pArrange arrange.insert
 
-  word@ word.name@ word@ pArrange arrange.insert
+  next-word
+
+  pArrange
+;
+
+/*----------------------------------------------------------------------------*/
+/* get a sorted arrangement of all words which are of given category          */
+/*----------------------------------------------------------------------------*/
+: arrange::wordsOfCatg params| pCatg |
+
+  arrange::new locals| pArrange |
+
+  iterate-words
+
+    word@ word.category@ pCatg eql if
+      word@ word.name@ word@ pArrange arrange.insert
+    then
 
   next-word
 
