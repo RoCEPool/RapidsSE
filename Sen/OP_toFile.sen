@@ -7,12 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: ToFileOp_CsvBuffer \handler
+: toFileOp_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
   Pipein[] to Operand[]
   nullptr to Pipein[]
-  Operand[].writeToFile0
+  Operand[].writetoFile0
   Operand[].delete
 
   true
@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: ToFileOp_StartMarker \handler
+: toFileOp_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: ToFileOp_ExitMarker \handler
+: toFileOp_ExitMarker \handler
 
   //"Operand:- ZK_EXITMARKER" .verbose
   File0[].isNull not if
@@ -54,15 +54,15 @@
 /*----------------------------------------------------------------------------*/
 /* execute for toFileOp req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : ToFileOp_req \operator
+ : toFileOp_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: ToFileOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: ToFileOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: ToFileOp_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: toFileOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: toFileOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: toFileOp_ExitMarker  ZK_EXITMARKER  op[].handler!
 
   op__loop
 
@@ -74,9 +74,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: ToFileOp :: ToFileOp <fileNm> ;
+cmdSyntax: toFileOp :: toFileOp <fileNm> ;
 
-: ToFileOp _cmdTags tagCopy: opCmd_tags
+: toFileOp _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc>  = "--cmd desc for op--" }
 ;
 

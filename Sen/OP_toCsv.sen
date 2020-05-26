@@ -7,13 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: ToCsv_CrwBuffer \handler
+: toCsv_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
   Pipein[] to Operand[]
   nullptr to Pipein[]
 
-  Operand[].crwToCsv
+  Operand[].crwtoCsv
   Operand[] to Subset[]
 
   begin
@@ -41,27 +41,27 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
-: ToCsv_StreamDef \handler
+: toCsv_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
   Pipein[].delete
-  streamDef[].newToCsvStream
+  streamDef[].newtoCsvStream
   streamDef[].pipeout
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for ToCsv req                              (on node where spawned) */
+/* execute for toCsv req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : ToCsv_req \operator
+ : toCsv_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: ToCsv_CrwBuffer  ZK_CRWBUFFER op[].handler!
-  find: ToCsv_StreamDef  ZK_STREAMDEF op[].handler!
+  find: toCsv_CrwBuffer  ZK_CRWBUFFER op[].handler!
+  find: toCsv_StreamDef  ZK_STREAMDEF op[].handler!
 
   op__loop
 
@@ -74,9 +74,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: ToCsv :: ToCsv ;
+cmdSyntax: toCsv :: toCsv ;
 
-: ToCsv _cmdTags tagCopy: opCmd_tags
+: toCsv _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

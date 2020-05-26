@@ -60,7 +60,17 @@
 /*----------------------------------------------------------------------------*/
 : cmdSyntaxs \prompt
 
-  find: cmdSyntax: word::ofCatg
+  //find: cmdSyntax: word::ofCatg
+
+  find: cmdSyntax: arrange::wordsOfCatg locals| pArrange |
+
+  nullptr locals| pCursor |
+  begin
+    pCursor pArrange arrange.next to pCursor
+    pCursor
+  while
+    pCursor pArrange arrange.name .
+  repeat
 ;
 
 /*----------------------------------------------------------------------------*/

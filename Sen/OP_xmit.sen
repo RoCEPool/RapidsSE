@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for xmit request                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : Xmit_req \operator
+ : xmit_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -26,9 +26,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: Xmit :: Xmit <xmitKind> ;
+cmdSyntax: xmit :: xmit <xmitKind> ;
 
-: Xmit _cmdTags tagCopy: opCmd_tags
+: xmit _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

@@ -92,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for chunk req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : Chunk_req \operator
+ : chunk_req \operator
  
   LogReqEntry SEED_REQ
 
@@ -112,9 +112,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: Chunk :: Chunk <fileNm> ;
+cmdSyntax: chunk :: chunk <fileNm> ;
 
-: Chunk _cmdTags tagCopy: opCmd_tags
+: chunk _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

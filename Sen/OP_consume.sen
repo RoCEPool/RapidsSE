@@ -153,9 +153,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: ConsumeOp :: ConsumeOp <Xmits> ;
+cmdSyntax: consumeOp :: consumeOp <Xmits> ;
 
-: ConsumeOp _cmdTags tagCopy: opCmd_tags
+: consumeOp _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

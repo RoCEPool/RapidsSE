@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: Purge_PulseMarker \handler
+: purge_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
@@ -16,7 +16,7 @@
   Operand[].newStreamDef
   Operand[].pipeOut
 
-  // PURGE
+  // purge
   tablePtn[].get tablePtnGrabWrite2
   tablePtn[].purge
   tablePtn[].get tablePtnDropWrite2
@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: Purge_StartMarker \handler
+: purge_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -43,16 +43,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* Purge request                                      (on node where spawned) */
+/* purge request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: Purge_req \operator
+: purge_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: Purge_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: Purge_StartMarker ZK_STARTMARKER op[].handler!
+  find: purge_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: purge_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -64,9 +64,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: Purge :: Purge <tableNm> ;
+cmdSyntax: purge :: purge <tableNm> ;
 
-: Purge _cmdTags tagCopy: opCmd_tags
+: purge _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

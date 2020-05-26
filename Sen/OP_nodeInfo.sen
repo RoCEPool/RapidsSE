@@ -16,7 +16,7 @@
   infoSetTable[] infoSet[].new
 
   // add nodeInfo to the infoSet
-  infoSetTable[] infoSet[].addNodeInfo assert
+  infoSetTable[] infoSet[].addnodeInfo assert
 
   // pipeout the infoset
   infoSet[].pipeout
@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: NodeInfo :: NodeInfo ;
+cmdSyntax: nodeInfo :: nodeInfo ;
 
 : nodeInfo _cmdTags tagCopy: liteOp_cmdTags
 tags{

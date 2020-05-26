@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: UpsertOp_CrwBuffer \handler
+: upsertOp_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
   Pipein[] to Operand[]
@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: UpsertOp_StartMarker \handler
+: upsertOp_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
   // check if we can insert into the table
@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
-: UpsertOp_StreamDef \handler
+: upsertOp_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
   Pipein[].delete
@@ -54,15 +54,15 @@
 /*----------------------------------------------------------------------------*/
 /* execute for upsert                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : UpsertOp_req \operator
+ : upsertOp_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: UpsertOp_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: UpsertOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: UpsertOp_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: upsertOp_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: upsertOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: upsertOp_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
 
@@ -74,9 +74,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: UpsertOp :: UpsertOp <tableNm> ;
+cmdSyntax: upsertOp :: upsertOp <tableNm> ;
 
-: UpsertOp _cmdTags tagCopy: opCmd_tags
+: upsertOp _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

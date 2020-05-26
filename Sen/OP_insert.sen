@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: Insert_CrwBuffer \handler
+: insert_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
 
@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EOSMARKER ...                                               */
 /*----------------------------------------------------------------------------*/
-: Insert_EosMarker \handler
+: insert_EosMarker \handler
 
   //"Operand:- ZK_EOSMARKER" .verbose
   Pipein[].pipeout
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: Insert_ExitMarker \handler
+: insert_ExitMarker \handler
 
   //"Operand:- ZK_EXITMARKER" .verbose
   path[].popNamedTableFolder
@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: Insert_StartMarker \handler
+: insert_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -100,7 +100,7 @@
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
 /*
-: Insert_StreamDef \handler
+: insert_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
   Pipein[].delete
@@ -114,7 +114,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for insert                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : Insert_req \operator
+ : insert_req \operator
  
   LogReqEntry SEED_REQ
 
@@ -123,11 +123,11 @@
 
   op__topology
 
-  find: Insert_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: Insert_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: Insert_ExitMarker  ZK_EXITMARKER  op[].handler!
-  //find: Insert_StreamDef   ZK_STREAMDEF   op[].handler!
-  find: Insert_StartMarker ZK_STARTMARKER op[].handler!
+  find: insert_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: insert_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: insert_ExitMarker  ZK_EXITMARKER  op[].handler!
+  //find: insert_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: insert_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -139,9 +139,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: Insert :: Insert <tableNm> ;
+cmdSyntax: insert :: insert <tableNm> ;
 
-: Insert _cmdTags tagCopy: opCmd_tags
+: insert _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

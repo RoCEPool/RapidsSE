@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_NODEINFO...                                                          */
 /*----------------------------------------------------------------------------*/
-: GridSanity_NodeInfo \handler
+: gridSanity_NodeInfo \handler
 
   //"Operand:- ZK_NODEINFO" .verbose
 
@@ -18,7 +18,7 @@
   infoSet[].firstRow to row[]
 
   // find the __nodeInfo table
-  //C_TDEF_GRIDSANITY op__tableDef_streamSet assert
+  //C_TDEF_gridSanity op__tableDef_streamSet assert
 
   // create a new stream defnition as per the nodeinfo being sent
   //streamSetTable[] streamDef[].new
@@ -30,7 +30,7 @@
   streamSetTable[] streamSet[].new
 
   // add nodeInfo to the infoSet
-  row[].get streamSetTable[] streamSet[].addGridSanity assert
+  row[].get streamSetTable[] streamSet[].addgridSanity assert
 
   // pipeout the infoset
   streamSet[].pipeout
@@ -45,14 +45,14 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER...                                                       */
 /*----------------------------------------------------------------------------*/
-: GridSanity_StartMarker \handler
+: gridSanity_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
   Pipein[].pipeout
 
   // find the __gridSanity table
-  C_TDEF_GRIDSANITY op__tableDef_streamSet assert
+  C_TDEF_gridSanity op__tableDef_streamSet assert
 
   // create a new stream defnition as per the nodeinfo being sent
   streamSetTable[] streamDef[].new
@@ -67,14 +67,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute for gridSanity req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : GridSanity_req \operator
+ : gridSanity_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: GridSanity_StartMarker ZK_STARTMARKER op[].handler!
-  find: GridSanity_NodeInfo    ZK_NODEINFO    op[].handler!
+  find: gridSanity_StartMarker ZK_STARTMARKER op[].handler!
+  find: gridSanity_NodeInfo    ZK_NODEINFO    op[].handler!
 
   op__loop
 
@@ -86,9 +86,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: GridSanity :: GridSanity ;
+cmdSyntax: gridSanity :: gridSanity ;
 
-: GridSanity _cmdTags tagCopy: opCmd_tags
+: gridSanity _cmdTags tagCopy: opCmd_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 
