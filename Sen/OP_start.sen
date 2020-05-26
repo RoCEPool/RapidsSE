@@ -107,6 +107,42 @@
   find: start_PulsedMarker  ZK_PULSEDMARKER  op[].handler!
   find: start_StartedMarker ZK_STARTEDMARKER op[].handler!
 
+  // get the pipeline job of the operator
+  Op.pipelineJob@ locals| pPipelineJob |
+
+  //pPipelineJob job.jobList@  "Job list %v" .printf
+
+  // wait till the pipeline job is in a list
+  begin
+  pPipelineJob job.jobList@ JP_NONE ==
+  while
+    //pPipelineJob job.jobList@ "Job list %v" .printf
+    task::yield
+  repeat
+
+  // ensure pipeline job is executing and task is waiting
+  // for the non-demon jobs
+  pPipelineJob job.jobList@ JL_DEMON == not if
+
+    // wait till the parent job is executing
+    begin
+    pPipelineJob job.phase@ JP_EXECUTING == not
+    while
+      //pParentJob job.phase@ "Job phase %v" .printf
+      task::yield
+    repeat
+
+    // wait till the pipelinetask is in a WAIT state
+    // possibilty of _execute not have arrived yet
+    pPipelineJob job.task@ locals| pPipelineTask |
+    begin
+    pPipelineTask task.isWaiting
+      not while
+      task::yield
+    repeat
+
+  then
+
   op__loop
 
   LogReqExit

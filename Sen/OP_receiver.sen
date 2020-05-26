@@ -82,8 +82,8 @@
     // dispatch job
 
     pReceivedJob job.jobClass CN_JOB_OPERAND == if
-
-      // get the paremt (pipeline) job of the operand
+/*
+      // get the parent (pipeline) job of the operand
       pReceivedJob Job_operand.parentJob@ to pParentJob
 
       // wait till the parent job is executing
@@ -104,7 +104,7 @@
         //pTask task.state@ "Task state %v" .printf
         task::yield
       repeat
-
+*/
       // now pipe out the operand
       pReceivedJob Job_operand.pipeOut
 

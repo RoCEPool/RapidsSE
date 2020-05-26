@@ -503,6 +503,11 @@ void Constants::vAddConstantsCpp(void)
   /* 10 */ vAddConstant("JK_SERVICE"_Stz,   JK_SERVICE);
   /* 11 */ vAddConstant("JK_OTHER"_Stz,     JK_OTHER);
 
+  /* 0 */ vAddConstant("JL_NONE"_Stz,         JL_NONE);
+  /* 1 */ vAddConstant("JL_DEMON"_Stz,        JL_DEMON);
+  /* 2 */ vAddConstant("JL_ORIGINATING"_Stz,  JL_ORIGINATING);
+  /* 3 */ vAddConstant("JL_PARTICIPATING"_Stz,JL_PARTICIPATING);
+  
   // JP_ : job phase
   /*  0 */ vAddConstant("JP_NONE"_Stz,      JP_NONE);
   /*  0 */ vAddConstant("JP_BEGINNING"_Stz, JP_BEGINNING);

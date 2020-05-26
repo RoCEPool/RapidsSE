@@ -188,8 +188,12 @@ void Step::vTaskIsAckSet(void)
 void Step::vTaskIsWaiting(void)
 {
   ENTRY();
-  
+
   Task* pTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  // should never s=check for DEDICATED tasks
+  RASSERT(pTask->eEntryPoint() != EP_DEDICATED);
+  
   m_pDataStack->vPushInt(pTask->eState() == TS_WAITING ? true : false);
   
   EXIT();
