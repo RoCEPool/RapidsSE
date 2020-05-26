@@ -1119,7 +1119,6 @@ public:
   void vRegOperandIsNull(void);
   void vRegOperandIsReport(void);
   void vRegOperandItemCountFetch(void);
-  void vRegOperandInsertIntoTable(void);
   void vRegOperandInvokePython(void);
   void vRegOperandInvokePythonShell(void);
   void vRegOperandKind(void);

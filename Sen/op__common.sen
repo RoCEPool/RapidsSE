@@ -282,7 +282,7 @@
     begin
     pPipelineJob job.phase@ JP_EXECUTING == not
     while
-      //pParentJob job.phase@ "Job phase %v" .printf
+      //pPipelineJob job.phase@ "Job phase %v" .printf
       task::yield
     repeat
 
@@ -292,6 +292,7 @@
     begin
     pPipelineTask task.isWaiting
     not while
+      //pPipelineTask task.isWaiting "task waiting %v" .printf
       task::yield
     repeat
 

@@ -23,7 +23,6 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].isNull"_Stz,         &Step::vRegOperandIsNull);
   vAddStep("Operand[].isReport"_Stz,       &Step::vRegOperandIsReport);
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vRegOperandItemCountFetch);
-  vAddStep("Operand[].insertIntoTable"_Stz,&Step::vRegOperandInsertIntoTable);
   vAddStep("Operand[].invokePython"_Stz,   &Step::vRegOperandInvokePython);
   vAddStep("Operand[].invokePythonShell"_Stz, &Step::vRegOperandInvokePythonShell);
   vAddStep("Operand[].kind"_Stz,           &Step::vRegOperandKind);
@@ -240,30 +239,6 @@ void Step::vRegOperandItemCountFetch(void)
   IrwBuffer* pIrwBuffer = _pIrwBuffer(*m_pRegSet->m_xpOperandA);
   
   m_pDataStack->vPushInt(pIrwBuffer->nItems());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].insertIntoTable -- insert operand into the table                 */
-/*----------------------------------------------------------------------------*/
-//! TO GO
-void Step::vRegOperandInsertIntoTable(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pRegSet->m_xpOperandA);
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  i8 iPartition = pOp->nPartition();
-  i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
-  
-  // ste the table in the crwBuffer
-  pCrwBuffer->vTable(*m_pRegSet->m_xpTable);
-  m_pRegSet->m_xpTable->vAppendBufferInsertEntries(C_UNKNOWN, iSlot, pCrwBuffer);
-  
-  m_pRegSet->m_xpOperandA = nullptr;
   
   EXIT();
 }
