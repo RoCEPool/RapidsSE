@@ -205,14 +205,33 @@
 
   arrange::allWords locals| pArrange |
 
-  nullptr locals| pCursor |
-  begin
-    pCursor pArrange arrange.next to pCursor
-    pCursor
-  while
-    pCursor pArrange arrange.name .
-  repeat
+//  nullptr locals| pCursor |
+//  begin
+//    pCursor pArrange arrange.next to pCursor
+//    pCursor
+//  while
+//    pCursor pArrange arrange.name .
+//  repeat
+//
+//  pArrange arrange.delete
 
+  pArrange arrange.print
+  pArrange arrange.delete
+  // - - - - - - -
+
+  find: _cmdTags arrange::wordsOfCatg to pArrange
+
+//  nullptr locals| pCursor |
+//  begin
+//    pCursor pArrange arrange.next to pCursor
+//    pCursor
+//  while
+//    pCursor pArrange arrange.name .
+//  repeat
+//
+//  pArrange arrange.delete
+
+  pArrange arrange.print
   pArrange arrange.delete
 ;
 
