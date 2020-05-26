@@ -63,12 +63,12 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   
   pProcWord->vCategory(pProcCatg);
   
-  if (! pProcWord->pWordTags())
-    pProcWord->vWordTags(new TagSet);
+  if (! pProcWord->pWrdTagSet())
+    pProcWord->vWrdTagSet(new TagSet);
 
   vParseParameters(pProcWord,pTokenVec);
 
-  pProcWord->pWordTags()->vInsert("procText"_Stz,sProcText);
+  pProcWord->pWrdTagSet()->vInsert("procText"_Stz,sProcText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,6 +156,13 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 {
   _static_
 
+  if (AM::bVerbose()) {
+    vTrace("Translating Proc: %s\n"_Stz,pProcWord->szWordNm());
+    
+    if (pProcWord->szWordNm()->bSame("drop__table"_Stz))
+      vDebugPoint();
+  }
+  
   i8 i_Cut;
   i8 nTokens = pCmdTokenVec->nTokens();
 
@@ -164,9 +171,13 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the procedure text and toeknise it
-  TagSet* pTagSet = pProcWord->pWordTags();
+  TagSet* pWrdTagSet = pProcWord->pWrdTagSet();
+  if (pProcWord->szWordNm()->bSame("drop__table"_Stz)) {
+    pWrdTagSet->vDumpSet(true);
+    vDebugPoint();
+  }
   
-  Stz* szProcText = pTagSet->szValue("procText"_Stz);
+  Stz* szProcText = pWrdTagSet->szValue("procText"_Stz);
   
   TokenVec* pProcTextVec = TokenVec::pTokenise(szProcText);
   
@@ -275,7 +286,7 @@ void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
   if (! pTkn)
     return;
   
-  TagSet* pTagSet = pProcWord->pWordTags(true);
+  TagSet* pTagSet = pProcWord->pWrdTagSet(true);
   
   for (i_Tkn++; i_Tkn < nTokens; i_Tkn++) {
     pTkn = pTokenVec->pGet(i_Tkn);

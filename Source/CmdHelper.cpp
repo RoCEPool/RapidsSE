@@ -22,7 +22,7 @@ TagSet* CmdHelper::pCmdTagSet(Stz* szJobNm)
   Word* pCmdWord = AM::pRootDic()->pFindWord(sCmdTagNm);
   
   // get the CmdTag words tagSet
-  TagSet* pCmdTagSet = pCmdWord->pWordTags();
+  TagSet* pCmdTagSet = pCmdWord->pWrdTagSet();
   
   return pCmdTagSet;
 }
@@ -48,12 +48,12 @@ bool CmdHelper::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
     //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
     //pSyntax->pTagSet()->vDumpSet();
     
-    if (CmdHelper::bMatchesSyntax(pTknVec,pSyntax->pWordTags())) {
+    if (CmdHelper::bMatchesSyntax(pTknVec,pSyntax->pWrdTagSet())) {
       
       //vTrace("    matches\n"_Stz);
       
       pTagSet->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
-      s32 sJobName(pSyntax->pWordTags()->szValue("__cmdNm__"_Stz));
+      s32 sJobName(pSyntax->pWrdTagSet()->szValue("__cmdNm__"_Stz));
       
       // get the CmdTag words tagSet
       TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(sJobName);
@@ -82,14 +82,14 @@ bool CmdHelper::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
   
   L_Matched:
   
-  bool b = bExtractAllArgs(pTagSet,pSyntax->pWordTags(),pTknVec);
+  bool b = bExtractAllArgs(pTagSet,pSyntax->pWrdTagSet(),pTknVec);
   if (! b) {
     if (AM::bDeveloper()) {
       SP_TknVecStr spTvs;
       SP_TagSet spTags;
       vTrace("Unable to extract arguments:-\n"_Stz);
       vTrace("  Tokens: %s\n"_Stz,spTvs.sz(pTknVec));
-      vTrace("  Syntax: %s\n"_Stz,spTags.sz(pSyntax->pWordTags()));
+      vTrace("  Syntax: %s\n"_Stz,spTags.sz(pSyntax->pWrdTagSet()));
     }
     return false;
   }

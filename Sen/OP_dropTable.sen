@@ -54,7 +54,9 @@ cmdSyntax: dropTable :: dropTable <tableNm> ;
 
 : dropTable _cmdTags tagCopy: opCmd_tags
   tags{
-    <cmdDesc>   = "--cmd desc for op--" }
+    <cmdDesc>   = "--cmd desc for op--"
+    <forceLog>  = 1
+  }
 ;
     
 /*============================================================================*/

@@ -188,9 +188,9 @@ void Step::vWordEnmSetFetch(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  TagSet* pWordTags = pWord->pWordTags();
+  TagSet* pWrdTagSet = pWord->pWrdTagSet();
   
-   m_pDataStack->vPushPtr(pWordTags);
+   m_pDataStack->vPushPtr(pWrdTagSet);
   
   EXIT();
 }
@@ -204,9 +204,9 @@ void Step::vWordEnmSetStore(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  TagSet* pWordTags = _pTagSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pWrdTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
-  pWord->vWordTags(pWordTags);
+  pWord->vWrdTagSet(pWrdTagSet);
   
   EXIT();
 }

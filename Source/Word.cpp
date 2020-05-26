@@ -96,7 +96,7 @@ Word::Word(Stz* szWordNm)
   m_iParams    = 0;
   //m_bPersistent   = false;
   m_iTrace     = 0;
-  m_pWordTags  = nullptr;
+  m_pWrdTagSet = nullptr;
 
   m_pRoutine    = new Routine(this);
   
@@ -123,7 +123,7 @@ Word::~Word(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
     
   delete m_pArticle;
-  delete m_pWordTags;
+  delete m_pWrdTagSet;
   
   delete m_pRoutine;
 }
@@ -692,24 +692,24 @@ void Word::vWord(eWK eWord)
 /*----------------------------------------------------------------------------*/
 /* get ename set                                                              */
 /*----------------------------------------------------------------------------*/
-TagSet* Word::pWordTags(bool bCreateNew)
+TagSet* Word::pWrdTagSet(bool bCreateNew)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  if (! m_pWordTags && bCreateNew)
-    m_pWordTags = new TagSet;
+  if (! m_pWrdTagSet && bCreateNew)
+    m_pWrdTagSet = new TagSet;
   
-  return m_pWordTags;
+  return m_pWrdTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set ename set                                                              */
 /*----------------------------------------------------------------------------*/
-void Word::vWordTags(TagSet* pWordTags)
+void Word::vWrdTagSet(TagSet* pWrdTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pWordTags = pWordTags;
+  m_pWrdTagSet = pWrdTagSet;
 }
 
 /*----------------------------------------------------------------------------*/

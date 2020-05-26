@@ -30,7 +30,7 @@ namespace SenVM
     i8        m_iParams;      // number of parameters
     bool      m_bPersistent;  // is on persistent heap
     i8        m_iTrace;       // trace level
-    TagSet*   m_pWordTags;    // optional tag set
+    TagSet*   m_pWrdTagSet;   // optional tag set
 
     //*
     //* the following two must be together in this order
@@ -118,8 +118,8 @@ namespace SenVM
     void  vWord(eWK eWord);
     Stz*  szWordNm(void);
     void  vWordNm(Stz* szWordNm);
-    TagSet* pWordTags(bool bCreateNew = false);
-    void  vWordTags(TagSet* pWordTags);
+    TagSet* pWrdTagSet(bool bCreateNew = false);
+    void  vWrdTagSet(TagSet* pWrdTagSet);
     char* aWspArea(void);
 
   
