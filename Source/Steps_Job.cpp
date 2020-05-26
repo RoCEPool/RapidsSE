@@ -11,7 +11,6 @@ void Step::vAddSteps_Job(void)
 {
   vAddStep("job::assertCorrectness"_Stz, &Step::vJobAssertCorrectness);
   vAddStep("job::completed"_Stz,         &Step::vJobCompleted);
-  vAddStep("job::spawnUniversal"_Stz,    &Step::vJobSpawnUniversal);
 
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addDemon"_Stz,         &Step::vJobAddDemon);
@@ -1626,58 +1625,6 @@ void Step::vJobSpawnReceived(void)
   
   Api::vSpawnJob_received(pJob);
   
-  EXIT();
-}
-
-//! TO GO : ALKA
-/*----------------------------------------------------------------------------*/
-/* job::spawnUniversal -- spawn a universal job                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSpawnUniversal(void)
-{
-  ENTRY();
-  
-  s32 sJobNm;
-  m_pDataStack->vPopStr(sJobNm,__func__);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // get the cmd tag set
-  TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(sJobNm);
-  
-  // find the job class
-  JobClass* aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
-
-  // new the universal job
-  ReqTuple xReqTuple("!!vJobSpawnDistributed"_Stz,false);
-  Job_Distributed* pJob_Distributed = new Job_Distributed(aJobClass,&xReqTuple);
-
-  // translate job kind
-  pJob_Distributed->vJobKind((eJK) pCmdTagSet->iValue(C_TAG_JOBKIND));
-
-  // add the necessary ename tags
-  TagSet* pJobTags = pJob_Distributed->pJobTags();
-  
-  //pTagSet_jobInfo->vContentDump();
-  //pTagSet_job->vContentDump();
-  
-  pJobTags->vCopy(pCmdTagSet);
-  
-  pJobTags->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
-  //pTagSet_job->vAdd(C_TAG_JOBNM,sJobNm);
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-
-  // seed the job for request
-  pJob_Distributed->vSeed(SS_SEED_REQ);
-
-  // spawn the job
-  Task* pTask = pJob_Distributed->pTask();
-  if ( pTask) {
-    RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(TR_NONE == pTask->eTranstionRequest());
-  }
-  Api::vSpawnJob_service(pJob_Distributed);
-
   EXIT();
 }
 

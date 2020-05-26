@@ -268,7 +268,7 @@
 
   // wait till the pipeline job is in a list
   begin
-  pPipelineJob job.jobList@ JP_NONE ==
+  pPipelineJob job.jobList@ JL_NONE ==
   while
     //pPipelineJob job.jobList@ "Job list %v" .printf
     task::yield
