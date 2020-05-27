@@ -160,12 +160,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: receiver :: receiver ;
 
-: receiver _cmdTags
-
-  tags{
-    <jobKind>  = JK_LOCAL
-    <rspKind>  = RS_PARTICIPANT_RESPONSE
-  }
+: receiver _cmdTags tagCopy: serviceOp_tags
 ;
 
 /*============================================================================*/

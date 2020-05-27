@@ -55,12 +55,8 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: supervisor :: supervisor ;
 
-: supervisor _cmdTags
+: supervisor _cmdTags tagCopy: serviceOp_tags
 
-  tags{
-    <jobKind>  = JK_LOCAL
-    <rspKind>  = RS_PARTICIPANT_RESPONSE
-  }
 ;
 
 /*============================================================================*/

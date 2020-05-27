@@ -158,12 +158,8 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: connector :: connector ;
 
-: connector _cmdTags
+: connector _cmdTags tagCopy: serviceOp_tags
 
-  tags{
-    <jobKind>  = JK_LOCAL
-    <rspKind>  = RS_PARTICIPANT_RESPONSE
-  }
 ;
 
 /*============================================================================*/

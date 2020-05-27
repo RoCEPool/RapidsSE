@@ -48,12 +48,8 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: waker :: waker ;
 
-: waker _cmdTags
+: waker _cmdTags tagCopy: serviceOp_tags
 
-  tags{
-    <jobKind>  = JK_LOCAL
-    <rspKind>  = RS_PARTICIPANT_RESPONSE
-  }
 ;
 
 /*============================================================================*/

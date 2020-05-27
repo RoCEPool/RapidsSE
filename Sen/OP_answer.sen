@@ -165,12 +165,8 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: answer :: answer ;
 
-: answer _cmdTags
+: answer _cmdTags tagCopy: serviceOp_tags
 
-  tags{
-    <jobKind>  = JK_LOCAL
-    <rspKind>  = RS_PARTICIPANT_RESPONSE
-  }
 ;
 
 /*============================================================================*/

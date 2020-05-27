@@ -417,6 +417,9 @@
       then
 
 
+      "<serviceOp>" pCmdTagSet tagSet.hasName if
+        "<serviceOp>" " %v" .putf
+      else
       "<localLiteOp>" pCmdTagSet tagSet.hasName if
         "<localLiteOp>" " %v" .putf
       else
@@ -425,7 +428,7 @@
       else
       "<op>" pCmdTagSet tagSet.hasName if
         "<op>" " %v" .putf
-      then then then
+      then then then then
 
 
       "<genericJob>" pCmdTagSet tagSet.hasName if
