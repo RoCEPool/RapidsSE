@@ -95,11 +95,10 @@
 
 cmdSyntax: _Ended :: _Ended ;
 
-: _Ended _cmdTags tags{
-  <cmdDesc>  = "--cmd desc for job--"
-  
-  <jobKind>  = JK_GENERIC
-}
+: _Ended _cmdTags tagCopy: generic_tags
+  tags{
+    <cmdDesc>  = "--cmd desc for job--"
+  }
 ;
 
 /*============================================================================*/

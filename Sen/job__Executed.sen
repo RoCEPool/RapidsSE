@@ -122,11 +122,10 @@
 
 cmdSyntax: _Executed :: _Executed ;
 
-: _Executed _cmdTags tags{
-  <cmdDesc>  = "--cmd desc for job--"
-  
-  <jobKind>  = JK_GENERIC
-}
+: _Executed _cmdTags tagCopy: generic_tags
+  tags{
+    <cmdDesc>  = "--cmd desc for job--"
+  }
 ;
 
 

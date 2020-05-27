@@ -14,6 +14,8 @@
     <rspKind>  = RS_PARTICIPANT_RESPONSE
     <ddlLock>  = DL_GRAB_READ
     
+    <op> = true
+
     <preCheck> = bClusterStarted
   }
 ;
@@ -27,6 +29,14 @@
 : localLiteOp_cmdTags tagCopy: opCmd_tags
   tags{
     <localLiteOp> = 1
+  }
+;
+
+: generic_tags
+  tags{
+    <genericJob> = 1
+    
+    <jobKind>  = JK_GENERIC
   }
 ;
         

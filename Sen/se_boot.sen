@@ -50,6 +50,8 @@ assert::stack_0
 
         // -- -- -- -- -- -- -- -- -- --
 
+ "op_tagSets.sen"              include
+
         "job__Ended.sen"          include
         "job__End.sen"            include
         "job__Cancelled.sen"      include
@@ -84,7 +86,7 @@ assert::stack_0
 4 .put
         "op_defHandlers.sen"          include
         "op__common.sen"              include
-        "op_tagSets.sen"              include
+//        "op_tagSets.sen"              include
 
         // -- -- -- -- -- -- -- -- -- --
 

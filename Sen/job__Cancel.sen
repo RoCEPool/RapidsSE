@@ -76,11 +76,10 @@
 
 cmdSyntax: _Cancel :: _Cancel ;
 
-: _Cancel _cmdTags tags{
-  <cmdDesc>  = "--cmd desc for job--"
-  
-  <jobKind>  = JK_GENERIC
-}
+: _Cancel _cmdTags tagCopy: generic_tags
+  tags{
+    <cmdDesc>  = "--cmd desc for job--"
+  }
 ;
 
 
