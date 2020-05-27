@@ -1350,6 +1350,7 @@ public:
   void vStrRandom(void);
   void vStrRemovePrefix(void);
   void vStrRemoveSuffix(void);
+  void vStrRemoveTailInt(void);
   void vStrReplace(void);
   void vStrRight(void);
   void vStrSub(void);

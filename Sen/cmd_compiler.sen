@@ -351,6 +351,11 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+: cmd::getSeriesName
+
+  "_" swap str.removeSuffix str.removeTailInt
+;
+
 /*----------------------------------------------------------------------------*/
 /* show all words that are of cmdSyntax:                                      */
 /*----------------------------------------------------------------------------*/
@@ -360,14 +365,28 @@
 
   find: cmdSyntax: arrange::wordsOfCatg locals| pArrange |
 
+  0 locals| pwCmdSyntax |
+  0 locals| sCmdSyntax  |
+  0 locals| sCmdNm      |
+  0 locals| pwCmdTags   |
+  0 locals| pCmdTagSet  |
+
   nullptr locals| pCursor |
   begin
     pCursor pArrange arrange.next to pCursor
     pCursor
   while
+
     pCursor pArrange arrange.name
     pCursor pArrange arrange.seqNo
-    "[%v] %v" .printf
+    "[%v] %32v" .putf
+
+    pCursor pArrange arrange.object to pwCmdSyntax
+    pCursor pArrange arrange.name   to sCmdSyntax
+    sCmdSyntax cmd::getSeriesName " %v" .putf
+
+    "\n" .putf
+
   repeat
 ;
 

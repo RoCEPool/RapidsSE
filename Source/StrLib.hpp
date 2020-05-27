@@ -153,6 +153,7 @@ namespace Strings
     static void  vRemoveChar(char* azDst, char* azSrc, const char cChr);
     static void  vRemovePrefix(char* azArg, char cIntro);
     static void  vRemoveSuffix(char* azArg, char cIntro);
+    static void  vRemoveTailInt(char* azArg);
     static bool  bReplace(char* pString, const char* pThis, const char* pThat);
     static bool  bReplace(char* pDst, const char* pSrc,
                           const char* pThis, const char* pThat);

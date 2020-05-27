@@ -24,6 +24,7 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.random"_Stz,       &Step::vStrRandom);
   vAddStep("str.removePrefix"_Stz, &Step::vStrRemovePrefix);
   vAddStep("str.removeSuffix"_Stz, &Step::vStrRemoveSuffix);
+  vAddStep("str.removeTailInt"_Stz,&Step::vStrRemoveTailInt);
   vAddStep("str.replace"_Stz,      &Step::vStrReplace);
   vAddStep("str.right"_Stz,        &Step::vStrRight);
   vAddStep("str.sub"_Stz,          &Step::vStrSub);
@@ -349,6 +350,23 @@ void Step::vStrRemoveSuffix(void)
   m_pDataStack->vPopStr(sIntro,__func__);
   
   StrLib::vRemoveSuffix(sString.azChar(), * sIntro.azChar());
+  
+  m_pDataStack->vPushStr(sString);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove tail int from string                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vStrRemoveTailInt(void)
+{
+  ENTRY();
+  
+  s48K sString;
+  m_pDataStack->vPopStr(sString,__func__);
+  
+  StrLib::vRemoveTailInt(sString.azChar());
   
   m_pDataStack->vPushStr(sString);
 

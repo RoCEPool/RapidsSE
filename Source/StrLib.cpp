@@ -2572,6 +2572,20 @@ char* StrLib::sNew(const char* sFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get ptr to null terminator                                                 */
+/*----------------------------------------------------------------------------*/
+char* StrLib::zNullTerminator(char* s)
+{
+  _static_
+  
+  i8 nLen  = nLength(s);
+  
+  char* z = s + nLen;
+  
+  return z;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bOneOf: is given word one of the words in the given set?                   */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bOneOf(char** asaSet, char* sWord)
@@ -2685,6 +2699,19 @@ void StrLib::vRemoveSuffix(char *azArg, char cIntro)
   
   // terminate azArg at the suffix introduction
   *azSuffix = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove tail int digits from arg                                            */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveTailInt(char *azArg)
+{
+  _static_
+  
+  char* azTail = azArg + nLength(azArg) - 1;
+  
+  while (StrLib::bIsDigit(*azTail))
+    *azTail-- = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2889,6 +2916,11 @@ void StrLib::vRuler(char* azDst, i8 iLength)
   *azPut = '\0';
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* S                                  S                                     S */
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* are two arguments equal (no case)                                          */
 /*----------------------------------------------------------------------------*/
@@ -2905,7 +2937,7 @@ bool StrLib::bSame(const char* pArg1, const char* pArg2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* iSize: get size in bytes of arg                                            */
+/* get size in bytes of arg                                                   */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::iSize(const char* s)
 {
@@ -2917,7 +2949,7 @@ i8 StrLib::iSize(const char* s)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bSkipDigits: skip digit sequence in substr                                 */
+/* skip digit sequence in substr                                              */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bSkipNonDigit(char** ps)
 {
@@ -2938,7 +2970,7 @@ bool StrLib::bSkipNonDigit(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bSkipEOL: skip till end of line                                            */
+/* skip till end of line                                                      */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bSkipEOL(char** ps)
 {
@@ -2955,7 +2987,7 @@ bool StrLib::bSkipEOL(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bSkipNonAlnum: skip non-alphanumeric sequence in substr                    */
+/* skip non-alphanumeric sequence in substr                                   */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bSkipNonAlnum(char** ps)
 {
@@ -2972,7 +3004,7 @@ bool StrLib::bSkipNonAlnum(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bSkipDigits: skip non digit sequence in substr                             */
+/* skip non digit sequence in substr                                          */
 /*----------------------------------------------------------------------------*/
 void StrLib::vSkipDigits(char** aaSrc)
 {
@@ -2988,7 +3020,7 @@ void StrLib::vSkipDigits(char** aaSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSkipSpaces: skip spaces                                                   */
+/* skip spaces                                                                */
 /*----------------------------------------------------------------------------*/
 void StrLib::vSkipSpaces(char** ps)
 {
@@ -2999,7 +3031,7 @@ void StrLib::vSkipSpaces(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bSkipTrailing: skip trailing sequence                                      */
+/* skip trailing sequence                                                     */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bSkipTrailing(char** ps,  bool bSawEnclosedBy_Leading,
                            char cEnclosedBy_Trailing)
@@ -3029,7 +3061,7 @@ bool StrLib::bSkipTrailing(char** ps,  bool bSawEnclosedBy_Leading,
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSkipWhite: skip whitespace                                                */
+/* skip whitespace                                                            */
 /*----------------------------------------------------------------------------*/
 void StrLib::vSkipWhite(char** ps)
 {
@@ -3041,7 +3073,7 @@ void StrLib::vSkipWhite(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSplitSeries: split src into string and integer components                    */
+/* split src into string and integer components                               */
 /*----------------------------------------------------------------------------*/
 void StrLib::vSplitSeries(char* azStr, char* azInt, char* azSrc)
 {
@@ -3064,7 +3096,7 @@ void StrLib::vSplitSeries(char* azStr, char* azInt, char* azSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSprint: formatted sprint                                                  */
+/* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
 void StrLib::vSprint(char* sDst, Stz* szFormat, ...)
 {
@@ -3078,7 +3110,7 @@ void StrLib::vSprint(char* sDst, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSprint: formatted sprint                                                  */
+/* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
 void StrLib::vSprint(Stz* sDst, Stz* szFormat, ...)
 {
@@ -3092,7 +3124,7 @@ void StrLib::vSprint(Stz* sDst, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSprint: formatted sprint                                                  */
+/* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
 void StrLib::vSprint(char* sDst, va_list args, const char* sFormat)
 {
@@ -3102,7 +3134,7 @@ void StrLib::vSprint(char* sDst, va_list args, const char* sFormat)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSprintCat: formatted concatenated sprint                                  */
+/* formatted concatenated sprint                                              */
 /*----------------------------------------------------------------------------*/
 void StrLib::vSprintCat(Stz* sDst, Stz* sFormat, ...)
 {
@@ -3118,7 +3150,7 @@ void StrLib::vSprintCat(Stz* sDst, Stz* sFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSprintCat: formatted concatenated sprint                                  */
+/* formatted concatenated sprint                                              */
 /*----------------------------------------------------------------------------*/
 void StrLib::vSprintCat(char* sDst, va_list args, const char* sFormat)
 {
@@ -3130,7 +3162,7 @@ void StrLib::vSprintCat(char* sDst, va_list args, const char* sFormat)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vStrip: test last char and remove                                          */
+/* test last char and remove                                                 */
 /*----------------------------------------------------------------------------*/
 void StrLib::vStrip(char* s, char cTrailing)
 {
@@ -3167,6 +3199,11 @@ void StrLib::vSubPath(char* azDst, char* azSrc)
     StrLib::vCopy(azDst,azSrc);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* T                                  T                                     T */
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* find tab location in given arg                                             */
 /*----------------------------------------------------------------------------*/
@@ -3192,7 +3229,7 @@ char* StrLib::aczTabLoc(char* azArg, i8 i_Tab, char cPad)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bToBool: convert arg to boolean                                            */
+/* convert arg to boolean                                                     */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bToBool(const char* s)
 {
@@ -3208,7 +3245,7 @@ bool StrLib::bToBool(const char* s)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cToHex: convert value to hexadecimal character                             */
+/* convert value to hexadecimal character                                     */
 /*----------------------------------------------------------------------------*/
 char StrLib::cToHex(i8 i)
 {
@@ -3225,7 +3262,7 @@ char StrLib::cToHex(i8 i)
 }
 
 /*----------------------------------------------------------------------------*/
-/* iToI8: convert arg to i8                                                   */
+/* convert arg to i8                                                          */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::iToI8(const char* s)
 {
@@ -3268,7 +3305,7 @@ i8 StrLib::iToI8(const char* s)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vToLower: convert arg to lower case                                        */
+/* convert arg to lower case                                                  */
 /*----------------------------------------------------------------------------*/
 void StrLib::vToLower(char* s)
 {
@@ -3281,7 +3318,7 @@ void StrLib::vToLower(char* s)
 }
 
 /*----------------------------------------------------------------------------*/
-/* wToPointer: convert given integer into its char/str form                   */
+/* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
 char* StrLib::wToPointer(void* pArg, char* wArg)
 {
@@ -3312,7 +3349,7 @@ char* StrLib::wToPointer(void* pArg, char* wArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vToString: convert given float into its char/str form                      */
+/* convert given float into its char/str form                                 */
 /*----------------------------------------------------------------------------*/
 void StrLib::vToString(char* psDst, i8 iArg)
 {
@@ -3322,7 +3359,7 @@ void StrLib::vToString(char* psDst, i8 iArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* wToString: convert given float into its char/str form                      */
+/* convert given float into its char/str form                                 */
 /*----------------------------------------------------------------------------*/
 char* StrLib::wToString(d8 d, char* w)
 {
@@ -3338,7 +3375,7 @@ char* StrLib::wToString(d8 d, char* w)
 }
 
 /*----------------------------------------------------------------------------*/
-/* wToString: convert given integer into its char/str form                    */
+/* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
 char* StrLib::wToString(i8 i, char* w)
 {
@@ -3370,22 +3407,13 @@ char* StrLib::wToString(i8 i, char* w)
   return w;
 }
 
-/*----------------------------------------------------------------------------*/
-/* zTerminator: get ptr to null terminator                                    */
-/*----------------------------------------------------------------------------*/
-char* StrLib::zNullTerminator(char* s)
-{
-  _static_
-  
-  i8 nLen  = nLength(s);
-  
-  char* z = s + nLen;
-  
-  return z;
-}
 
 /*----------------------------------------------------------------------------*/
-/* bValidateMonth: validate month                                             */
+/* V                                  V                                     V */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* validate month                                                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bValidateMonth(i8 iDay, i8 iMonth, i8 iYear)
 {
@@ -3411,6 +3439,10 @@ bool StrLib::bValidateMonth(i8 iDay, i8 iMonth, i8 iYear)
 
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* W                                  W                                     W */
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
