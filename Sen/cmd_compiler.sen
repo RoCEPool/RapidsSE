@@ -393,16 +393,17 @@
     pCursor
   while
 
-    pCursor pArrange arrange.name
-    pCursor pArrange arrange.seqNo
-    "[%3v] %24v" .putf
-
     pCursor pArrange arrange.object to pwCmdSyntax
     pCursor pArrange arrange.name   to sCmdSyntax
     sCmdSyntax cmd::seriesToCmdNm   to sCmdNm
     sCmdNm "_cmdTags" str.cat       to sCmdTagsNm
 
-    sCmdTagsNm sCmdNm " %18v %24v" .putf
+
+    pCursor pArrange arrange.seqNo "[%3v]" .putf
+    sCmdNm " %18v" .putf
+    pCursor pArrange arrange.name  " %24v" .putf
+    sCmdTagsNm " %24v" .putf
+
 
     sCmdTagsNm word::find to pwCmdTags
     pwCmdTags not if
