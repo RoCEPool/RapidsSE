@@ -1,13 +1,15 @@
 /*============================================================================*/
-/* job_CreateTableDef.sen -- Job Create Table Definition                      */
+/* job_defineTable.sen -- Job Define Info Table                               */
 /*============================================================================*/
 
-" job_CreateTableDef.sen" .verbose
+" job_defineTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if <tableNm> is a creatable table                                    */
 /*----------------------------------------------------------------------------*/
-: createTableDef::checkCreate ( -- true | errorCode false )
+: defineTable::checkCreate ( -- true | errorCode false )
+
+"DEFINETABLE::CHECKCREATE" .
 
   // check in tables folder: ../schemas/public/tables
   check::folderIsTables not if false exit then
@@ -19,9 +21,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create table <tableNm> on this particpating node                           */
+/* define table <tableNm> on this particpating node                           */
 /*----------------------------------------------------------------------------*/
-: createTableDef::createNamedTbl
+: defineTable::createNamedTbl
+
+"DEFINETABLE::CREATEBANEDTBL" .
 
   // assert initial folder is ./tables
   //   /tenants/boray/catalogs/rapidsse/schemas/public/tables
@@ -53,9 +57,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* check resources for Job_CreateTableDef                                     */
+/* check resources for Job_defineTable                                        */
 /*----------------------------------------------------------------------------*/
-: createTableDef::checkResources
+: defineTable::checkResources
+
+"DEFINETABLE::CHECKRESOURCES" .
 
   // grab the ddl lock
   DdlLock[].grabRead
@@ -68,7 +74,7 @@
   then
 
   // check ok to create table
-  createTableDef::checkCreate not if ( errorCode )
+  defineTable::checkCreate not if ( errorCode )
     job::error!
     !!logError
     exit
@@ -79,9 +85,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateTableDef on origin                                       */
+/* execute Job_defineTable on origin                                          */
 /*----------------------------------------------------------------------------*/
-: createTableDef_req _eeh ( -- )
+: defineTable_req _eeh ( -- )
+
+"DEFINETABLE_REQ" .
 
   // check create table syntax
   <cmd> TableDef::syntax dup EC_NONE != if  ( errorCode )
@@ -91,13 +99,13 @@
     discard
   then
 
-  createTableDef::checkResources
+  defineTable::checkResources
 
   // should be in tables
   folder[].isTables assert
 
   // create the table
-  createTableDef::createNamedTbl
+  defineTable::createNamedTbl
 
   // should be in tables
   folder[].isTables assert
@@ -106,15 +114,17 @@
 /*----------------------------------------------------------------------------*/
 /*                              - Definition -                                */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: createTableDef :: create _table definition <tableNm> etc ;
+cmdSyntax: defineTable :: define table <tableNm> etc ;
 
-: createTableDef _cmdTags tags{
-  <cmdDesc>  = "--cmd desc for job--"
-  
-  <jobKind>  = JK_LOCAL
-  <rspKind>  = RS_JOB_RESPONSE
-  <ddlLock>  = DL_GRAB_WRITE
-}
+: defineTable _cmdTags
+  tags{
+    <cmdDesc>  = "--cmd desc for job--"
+    
+    <axiomOp>  = 1
+    <jobKind>  = JK_LOCAL
+    <rspKind>  = RS_JOB_RESPONSE
+    <ddlLock>  = DL_GRAB_WRITE
+  }
 ;
 
 /*============================================================================*/

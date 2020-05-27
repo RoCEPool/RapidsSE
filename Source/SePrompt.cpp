@@ -169,6 +169,8 @@ void SePrompt::vPromptLoop(void)
   
   s32 sHostName;
   Hardware::vHostName(sHostName);
+
+  vTrace("vPromptLoop\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

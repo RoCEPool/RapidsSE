@@ -415,6 +415,9 @@
       then
 
 
+      "<axiomOp>" pCmdTagSet tagSet.hasName if
+        "<axiomOp>" " %14v" .putf
+      else
       "<serviceOp>" pCmdTagSet tagSet.hasName if
         "<serviceOp>" " %14v" .putf
       else
@@ -435,7 +438,7 @@
       else
       "<distJob>" pCmdTagSet tagSet.hasName if
         "<distJob>" " %14v" .putf
-      then then then then then then then
+      then then then then then then then then
 
       pwCmdSyntax word.tagSet@ to pSynTagSet
       pSynTagSet tagSet.asStr " %v" .putf
@@ -468,6 +471,9 @@
     pCursor pArrange arrange.object to pwCmdTags
     pwCmdTags word.tagSet@ to pCmdTagSet
 
+    "<axiomOp>" pCmdTagSet tagSet.hasName if
+      "<axiomOp>" " %14v" .putf
+    else
     "<serviceOp>" pCmdTagSet tagSet.hasName if
       "<serviceOp>" " %14v" .putf
     else
@@ -488,7 +494,7 @@
     else
     "<distJob>" pCmdTagSet tagSet.hasName if
       "<distJob>" " %14v" .putf
-    then then then then then then then
+    then then then then then then then then
 
 
     pCmdTagSet tagSet.asStr " %v" .putf
