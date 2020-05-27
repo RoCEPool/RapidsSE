@@ -119,11 +119,6 @@ bool CmdHelper::bExtractAllArgs(TagSet* pTagSet,
 
   while (i_Tkn < nTokens && i_Syn < nTags) {
     
-    // job class
-    if (pSynTags->szName(i_Syn)->bSame("__job__"_Stz)) {
-      i_Syn++;
-    }
-    else
     // name of command
     if (pSynTags->szName(i_Syn)->bSame("__cmdNm__"_Stz)) {
       i_Syn++;
@@ -249,11 +244,6 @@ bool CmdHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
   while (i_Tkn < nTokens) {
     Token* pTkn = pTknVec->pGet(i_Tkn);
     
-    if (pSynTags->szName(i_Syn)->bEqual("__job__"_Stz)) {
-      i_Syn++;
-    }
-    
-    else
     if (pSynTags->szName(i_Syn)->bEqual("__cmdNm__"_Stz)) {
       i_Syn++;
     }

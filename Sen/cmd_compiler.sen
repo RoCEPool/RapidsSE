@@ -28,9 +28,6 @@
   // add a syntax-tag for the command name
   "__cmdNm__" sCmdNm pSynTags tagSet.appendStr
 
-  // add a syntax-tag indicating the job is a distributed job
-  "__job__" "CN_JOB_DISTRIBUTED" pSynTags tagSet.appendStr
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till ';', building tag set representing the syntax
 
