@@ -5,10 +5,6 @@
 Print "Creating System Table Definitions";
 
 
-create table definition __defineTest (
-  a integer not null
-);
-
 // this is C_TDEF_ANALYZEINDEX
 create table definition __analyzeIndex (
   nodeName       VARCHAR NOT NULL,

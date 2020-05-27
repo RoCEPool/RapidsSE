@@ -291,7 +291,7 @@ void Api::vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec)
 
     Token* pTkn_value = pTknVec->pGet(i_Scan++);   // value
     
-    pTagSet->vAppend(pTkn_name->szChars(),pTkn_value->szChars());
+    pTagSet->vReplace(pTkn_name->szChars(),pTkn_value->szChars());
   }
 
 }

@@ -1520,6 +1520,9 @@ void Engine::vStartSystem(void)
               "running Start job"_Stz); //!format-LogSys
   vSpawnJobStart();
   
+  sleep((unsigned)1); // ray : fix : wait for job start to end
+
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,

@@ -26,11 +26,11 @@ void Step::vApiExecuteRequest(void)
   s48K sRequest;
   m_pDataStack->vPopStr(sRequest,__func__);
 
-  s48K sTagStr;
-  m_pDataStack->vPopStr(sTagStr,__func__);
+  s48K sWithTagStr;
+  m_pDataStack->vPopStr(sWithTagStr,__func__);
 
   vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
-  vTrace("WithTags: %s\nn"_Stz,sTagStr.szStz());
+  vTrace("WithTags: %s\nn"_Stz,sWithTagStr.szStz());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -63,8 +63,8 @@ void Step::vApiExecuteRequest(void)
   Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
   
-  TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);
-  Api::vPopulateTagSet(pJobTagSet,pTagStrTknVec);
+  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
+  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
   
   if (AM::bVerbose())
     pJobTagSet->vDumpSet();
@@ -94,7 +94,7 @@ void Step::vApiExecuteRequest(void)
   Api::vFreeSession(pSession);
   
   delete pDmnTknVec;
-  delete pTagStrTknVec;
+  delete pWithTagStrTknVec;
   
   
   EXIT();

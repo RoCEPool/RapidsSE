@@ -51,13 +51,19 @@ BucketMap::BucketMap(i8 nPartitions)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
-  // assign buckets to partitions in a round-robin fashion
-  i8 i_Ptn = 0;
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    m_iaInPartition[i_Bkt] = i_Ptn;
-    i_Ptn = (++i_Ptn) % nPartitions;
+  if (nPartitions) {
+    // assign buckets to partitions in a round-robin fashion
+    i8 i_Ptn = 0;
+    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+      m_iaInPartition[i_Bkt] = i_Ptn;
+      i_Ptn = (++i_Ptn) % nPartitions;
+    }
   }
-  
+  // ray : 28 May 2020 : added this to get define table running
+  else {
+    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++)
+      m_iaInPartition[i_Bkt] = 0;
+  }
   _checkInitialised_(CN_BUCKETMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);

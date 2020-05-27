@@ -2,8 +2,27 @@
 /* se_start.sen -- Start System                                               */
 /*============================================================================*/
 
-" job_Start.sen" .verbose
+" se_start.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/* define apriori tables                                                      */
+/*----------------------------------------------------------------------------*/
+: start::defineTables
+
+"
+  define table __DEFINE_TEST (
+    nodeName       VARCHAR NOT NULL ,
+    partition      INTEGER NOT NULL ,
+    buffers        INTEGER NOT NULL ,
+    entries        INTEGER NOT NULL
+  ) ;
+"
+  locals| sStmt |
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+    sStmt
+    api::executeRequest
+;
 
 /*----------------------------------------------------------------------------*/
 /* start system                                                               */
@@ -15,6 +34,10 @@
   nullptr locals| pParentJob |
 
   "start_run" .verbose
+
+
+  start::defineTables
+
 
   // spawn supervisor demon
   //"" false supervisorDemonStr api::spawnDemon not if

@@ -9,11 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : defineTable::checkCreate ( -- true | errorCode false )
 
-"DEFINETABLE::CHECKCREATE" .
-
   // check in tables folder: ../schemas/public/tables
   check::folderIsTables not if false exit then
-  
+ 
   // error if given name already exists
   <tableNm> check::nameIsUnknownTable not if false exit then
 
@@ -24,8 +22,6 @@
 /* define table <tableNm> on this particpating node                           */
 /*----------------------------------------------------------------------------*/
 : defineTable::createNamedTbl
-
-"DEFINETABLE::CREATEBANEDTBL" .
 
   // assert initial folder is ./tables
   //   /tenants/boray/catalogs/rapidsse/schemas/public/tables
@@ -61,8 +57,6 @@
 /*----------------------------------------------------------------------------*/
 : defineTable::checkResources
 
-"DEFINETABLE::CHECKRESOURCES" .
-
   // grab the ddl lock
   DdlLock[].grabRead
 
@@ -88,8 +82,6 @@
 /* execute Job_defineTable on origin                                          */
 /*----------------------------------------------------------------------------*/
 : defineTable_req _eeh ( -- )
-
-"DEFINETABLE_REQ" .
 
   // check create table syntax
   <cmd> TableDef::syntax dup EC_NONE != if  ( errorCode )
