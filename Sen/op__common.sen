@@ -86,7 +86,6 @@
 
   // restore path
   path[].restore
-
   true
   ;
 
@@ -276,7 +275,7 @@
 
   // ensure pipeline job is executing and task is waiting
   // for the non-demon jobs
-  pPipelineJob job.jobList@ JL_DEMON == not if
+  pPipelineJob job.jobList@ JL_PARTICIPATING == if
 
     // wait till the parent job is executing
     begin

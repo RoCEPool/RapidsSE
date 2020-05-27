@@ -188,7 +188,12 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   
   Token* pTkn0 = pProcTextVec->pGet(0);
 
-  pTkn0->vUpdateChars("pipeline"_Stz,pProcTextVec);
+  if (pTkn0->bSame("procedure"_Stz))
+    pTkn0->vUpdateChars("pipeline"_Stz,pProcTextVec);
+  else {
+    ASSERT(pTkn0->bSame("procedureLocal"_Stz));
+    pTkn0->vUpdateChars("pipelineLocal"_Stz,pProcTextVec);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // substitute parameters in procedure text with command arguments

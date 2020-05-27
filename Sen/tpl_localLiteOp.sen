@@ -53,7 +53,7 @@
 : tpl_localLiteOp_procedure0
 
 "
-  procedure /localLiteOp/
+  procedureLocal /localLiteOp/
   begin
 
   stage stageA on origin :
@@ -70,7 +70,7 @@
 : tpl_localLiteOp_procedure1
 
 "
-  procedure /localLiteOp/
+  procedureLocal /localLiteOp/
     parameters $param
   begin
 
@@ -88,7 +88,7 @@
 : tpl_localLiteOp_procedure2
 
   "
-    procedure /localLiteOp/
+    procedureLocal /localLiteOp/
       parameters $param0 $param1
     begin
 

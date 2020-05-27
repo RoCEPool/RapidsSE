@@ -7,32 +7,32 @@
 JobClass xJobClass_Local =
 {
   CN_JOB_LOCAL,             // class number
-  JK_DIST2PC,               // job kind
+  JK_LOCAL,                 // job kind
   RS_PARTICIPANT_RESPONSE,  // response kind
-  "distributed"_Stz,        // comment about the job
+  "local"_Stz,              // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word
-  "distributed_run"_Stz,    // the _run task seed
-  "distributed_req"_Stz,    // the _req task seed
-  "distributed_beg"_Stz,    // the _rcv task seed
-  "distributed_exe"_Stz,    // the _exe task seed
-  "distributed_end"_Stz,    // the _end task seed
-  "distributed_can"_Stz,    // the _can task seed
-  true,                     // check resources?
+  nullptr,                  // the _run task seed
+  "local_req"_Stz,          // the _req task seed
+  nullptr,                  // the _rcv task seed
+  nullptr,                  // the _exe task seed
+  nullptr,                  // the _end task seed
+  nullptr,                  // the _can task seed
+  false,                    // check resources?
   false,                    // detached job?
   false,                    // buffer attached?
-  DL_GRAB_WRITE,            // ddl lock model
+  DL_NONE,                  // ddl lock model
   PY_NORMAL,                // priority
   JF_LOWMEM,                // flags
 
   nullptr,                  // prompt check function
-  pJob_Local_pre,     // prompt pre-process function
+  pJob_Local_pre,           // prompt pre-process function
   vJob_post,                // prompt post-process function
-  pJob_Local_new,     // job new function
-  vJob_Local_delete,  // job delete function
-  vJob_send,                // job pre-send function
-  vJob_recv,                // job post-receive function
-  vJob_Local_show,    // job show function
+  pJob_Local_new,           // job new function
+  vJob_Local_delete,        // job delete function
+  nullptr,                  // job pre-send function
+  nullptr,                  // job post-receive function
+  vJob_Local_show,          // job show function
   
   // help
   false,

@@ -109,23 +109,12 @@ void Result::vPrint(eRS eResponse)
 /*----------------------------------------------------------------------------*/
 void Result::vPrintJobResponse(void)
 {
-  // ray: 23 may 2020: I think this is no longer called
-  NEVER_REACH;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Errors should already be handled
   ASSERT( ! m_bJobHasError );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Responses
-  if (AM::bMetadata() && ! m_sMetadata.szStz()->bEqual(""_Stz))
-    vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
-  
-  if (*m_xJobResponse.m_ixRowsProcessed)
-    vTrace("%s"_Stz, m_xJobResponse.m_sResponse.azChar());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // sucess
+  // success
   vTrace("success: %lld rows affected\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
 }
 

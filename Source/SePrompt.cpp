@@ -452,7 +452,8 @@ bool SePrompt::bExecutePipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (AM::szJobName(m_pJob)->bSame("pipeline"_Stz))
+  if (AM::szJobName(m_pJob)->bSame("pipeline"_Stz) ||
+      AM::szJobName(m_pJob)->bSame("pipelineLocal"_Stz))
     return true;
   else
     return false;
