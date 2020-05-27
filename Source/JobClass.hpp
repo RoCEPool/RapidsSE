@@ -10,7 +10,6 @@ namespace Jobs
     public:
       eCN  m_eClass;     // enum of the class
       eJK  m_eKind;      // job kind
-      eRS  m_eResponse;  // response kind
       Stz* m_aComment;   // comment about the job
       Stz* m_aCommand1;  // first word of prompt command
       Stz* m_aCommand2;  // optional second word of prompt command

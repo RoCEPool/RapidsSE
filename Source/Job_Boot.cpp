@@ -8,7 +8,6 @@ JobClass xJobClass_Boot =
 {
   CN_JOB_BOOT,       // class number
   JK_BOOT,           // job kind
-  RS_NONE,           // response kind
   "system boot"_Stz, // comment about the job
   nullptr,           // the prompt command
   nullptr,           // the second word

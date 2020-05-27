@@ -8,7 +8,6 @@ JobClass xJobClass_Distributed =
 {
   CN_JOB_DISTRIBUTED,       // class number
   JK_DIST2PC,               // job kind
-  RS_PARTICIPANT_RESPONSE,  // response kind
   "distributed"_Stz,        // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word

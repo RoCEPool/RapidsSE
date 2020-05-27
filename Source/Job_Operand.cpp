@@ -8,7 +8,6 @@ JobClass xJobClass_Xmit =
 {
   CN_JOB_OPERAND,      // class number
   JK_GRANDKID,         // job kind
-  RS_NONE,             // response kind
   "xmit operand"_Stz,  // comment about the job
   nullptr,             // the prompt command
   nullptr,             // the second word

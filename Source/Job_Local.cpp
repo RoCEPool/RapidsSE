@@ -8,7 +8,6 @@ JobClass xJobClass_Local =
 {
   CN_JOB_LOCAL,             // class number
   JK_LOCAL,                 // job kind
-  RS_PARTICIPANT_RESPONSE,  // response kind
   "local"_Stz,              // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word

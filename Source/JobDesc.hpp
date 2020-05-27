@@ -11,7 +11,6 @@ namespace Jobs
     JobDesc(
             eCN  eClass,     // enum of the class
             eJK  eKind,      // job kind
-            eRS  eResponse,  // response kind
             Stz* aComment,   // comment about the job
             Stz* aCommand1,  // first word of prompt command
             Stz* aCommand2,  // optional second word of prompt command
