@@ -386,6 +386,7 @@
   0 locals| sCmdTagsNm  |
   0 locals| pwCmdTags   |
   0 locals| pCmdTagSet  |
+  0 locals| pSynTagSet  |
 
   nullptr locals| pCursor |
   begin
@@ -418,28 +419,29 @@
 
 
       "<serviceOp>" pCmdTagSet tagSet.hasName if
-        "<serviceOp>" " %v" .putf
+        "<serviceOp>" " %14v" .putf
       else
       "<localLiteOp>" pCmdTagSet tagSet.hasName if
-        "<localLiteOp>" " %v" .putf
+        "<localLiteOp>" " %14v" .putf
       else
       "<liteOp>" pCmdTagSet tagSet.hasName if
-        "<liteOp>" " %v" .putf
+        "<liteOp>" " %14v" .putf
       else
       "<op>" pCmdTagSet tagSet.hasName if
-        "<op>" " %v" .putf
-      then then then then
-
-
+        "<op>" " %14v" .putf
+      else
       "<genericJob>" pCmdTagSet tagSet.hasName if
-        "<genericJob>" " %v" .putf
+        "<genericJob>" " %14v" .putf
       else
       "<localJob>" pCmdTagSet tagSet.hasName if
-        "<localJob>" " %v" .putf
+        "<localJob>" " %14v" .putf
       else
       "<distJob>" pCmdTagSet tagSet.hasName if
-        "<distJob>" " %v" .putf
-      then then then
+        "<distJob>" " %14v" .putf
+      then then then then then then then
+
+      pwCmdSyntax word.tagSet@ to pSynTagSet
+      pSynTagSet tagSet.asStr " %v" .putf
 
     then
     
@@ -478,8 +480,6 @@
 /*----------------------------------------------------------------------------*/
 : procs \prompt
 
-  //find: \procedure word::ofCatg
-
   find: \procedure arrange::wordsOfCatg locals| pArrange |
 
   nullptr locals| pCursor |
@@ -487,9 +487,10 @@
     pCursor pArrange arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.name
-    pCursor pArrange arrange.seqNo
-    "[%v] %v" .printf
+    pCursor pArrange arrange.seqNo "[%v]" .putf
+    pCursor pArrange arrange.name  " %v"  .putf
+
+    "\n" .putf
   repeat
 ;
 
