@@ -351,7 +351,7 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-: cmd::getSeriesName
+: cmd::seriesToCmdNm
 
   "_" swap str.removeSuffix str.removeTailInt
 ;
@@ -368,6 +368,7 @@
   0 locals| pwCmdSyntax |
   0 locals| sCmdSyntax  |
   0 locals| sCmdNm      |
+  0 locals| sCmdTagsNm  |
   0 locals| pwCmdTags   |
   0 locals| pCmdTagSet  |
 
@@ -379,11 +380,18 @@
 
     pCursor pArrange arrange.name
     pCursor pArrange arrange.seqNo
-    "[%v] %32v" .putf
+    "[%3v] %24v" .putf
 
     pCursor pArrange arrange.object to pwCmdSyntax
     pCursor pArrange arrange.name   to sCmdSyntax
-    sCmdSyntax cmd::getSeriesName " %v" .putf
+    sCmdSyntax cmd::seriesToCmdNm   to sCmdNm
+    sCmdNm "_cmdTags" str.cat       to sCmdTagsNm
+
+    sCmdTagsNm sCmdNm " %18v %32v" .putf
+
+  
+    //sCmdNm word::find
+    
 
     "\n" .putf
 
