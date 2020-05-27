@@ -21,7 +21,7 @@ JobClass xJobClass_Local =
   false,                    // check resources?
   false,                    // detached job?
   false,                    // buffer attached?
-  DL_NONE,                  // ddl lock model
+  DL_GRAB_WRITE,            // ddl lock model
   PY_NORMAL,                // priority
   JF_LOWMEM,                // flags
 

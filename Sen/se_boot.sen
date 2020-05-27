@@ -65,6 +65,7 @@ assert::stack_0
         "job_ConnectCluster.sen"  include
         "job_CreateIndex.sen"     include
         "job_CreateTable.sen"     include
+        "job_CreateTableDef.sen"  include
 
         "job_DefineNode.sen"      include
         "job_Distributed.sen"     include
