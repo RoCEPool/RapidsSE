@@ -58,7 +58,6 @@ cmdSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
 : lsidxcol _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
-    <localLiteOp> = true
     <streamDef>   = __listColumns
     <params>      = 2
   }

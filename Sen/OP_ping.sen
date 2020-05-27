@@ -42,7 +42,6 @@ cmdSyntax: ping :: ping ;
 : ping _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
-    <localLiteOp> = true
     <params>      = 0
     <streamDef>   = __pingInfo
   }

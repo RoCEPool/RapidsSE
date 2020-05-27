@@ -54,7 +54,6 @@ cmdSyntax: pwf :: pwf ;
 : pwf _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
-    <localLiteOp> = true
     <streamDef>   = __pwf
     <params>      = 0
   }

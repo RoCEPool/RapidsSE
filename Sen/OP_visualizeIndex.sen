@@ -23,10 +23,9 @@
 cmdSyntax: visidx :: visidx <tableNm> <indexNm> ;
 
 : visidx _cmdTags tagCopy: localLiteOp_tags
-tags{
-  <cmdDesc>     = "--desc for op--"
-  <localLiteOp> = true
-  <params>      = 2
+  tags{
+    <cmdDesc>     = "--desc for op--"
+    <params>      = 2
   }
 ;
   
