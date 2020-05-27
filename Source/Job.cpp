@@ -1243,27 +1243,7 @@ eEC Jobs::eJob_checkCluster(void)
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
 {
-  eCN eClass = pJob->eClass();
-  
-  //! why wouldn't this be set by now??
-  //JobClass* pJobClass = JobClass::pFind(eClass);
-  //pJob->vJobClass(pJobClass,(char*)__func__);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  eRS eResponse = RS_NONE;
-  
-  if (CN_JOB_DISTRIBUTED == eClass ||
-      CN_JOB_LOCAL == eClass) {
-    
-    eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
-  }
-  else {
-    eResponse = aJobClass->m_eResponse;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
   pJob->vPrintResult(eResponse);
 }
 
