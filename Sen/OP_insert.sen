@@ -141,7 +141,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: insert :: insert <tableNm> ;
 
-: insert _cmdTags tagCopy: opCmd_tags
+: insert _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

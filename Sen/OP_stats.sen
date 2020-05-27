@@ -105,7 +105,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: stats :: stats ;
 
-: stats _cmdTags tagCopy: opCmd_tags
+: stats _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

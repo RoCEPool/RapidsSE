@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: xmit :: xmit <xmitKind> ;
 
-: xmit _cmdTags tagCopy: opCmd_tags
+: xmit _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

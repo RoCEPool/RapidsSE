@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lstbldef :: lstbldef ;
 
-: lstbldef _cmdTags tagCopy: localLiteOp_cmdTags
+: lstbldef _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--cmd desc for op--"
     <localLiteOp> = true

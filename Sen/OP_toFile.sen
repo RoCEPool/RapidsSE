@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toFileOp :: toFileOp <fileNm> ;
 
-: toFileOp _cmdTags tagCopy: opCmd_tags
+: toFileOp _cmdTags tagCopy: op_tags
   tags{ <cmdDesc>  = "--cmd desc for op--" }
 ;
 

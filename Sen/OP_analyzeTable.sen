@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: antbl :: antbl <tableNm> ;
 
-: antbl _cmdTags tagCopy: liteOp_cmdTags
+: antbl _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc>   = "--cmd desc for op--"
     <liteOp>    = true

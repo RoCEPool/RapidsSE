@@ -57,7 +57,7 @@ cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ; // proc analizeIndex
 //  +========+-------++
 //  |
 //  v
-: anidx _cmdTags tagCopy: liteOp_cmdTags  // +==> synth: procedure andix [currently]
+: anidx _cmdTags tagCopy: liteOp_tags  // +==> synth: procedure andix [currently]
   tags{
     <cmdDesc>   = "--cmd desc for op--"
     <liteOp>    = true

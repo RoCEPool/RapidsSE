@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: statWrite :: statWrite ;
 
-: statWrite _cmdTags tagCopy: opCmd_tags
+: statWrite _cmdTags tagCopy: op_tags
   tags{ <cmdDesc>  = "--cmd desc for op--" }
 ;
 

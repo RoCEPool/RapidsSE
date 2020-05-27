@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lssch :: lssch ;
 
-: lssch _cmdTags tagCopy: localLiteOp_cmdTags
+: lssch _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--cmd desc for op--"
     <localLiteOp> = true

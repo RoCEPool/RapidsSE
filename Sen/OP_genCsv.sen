@@ -69,7 +69,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: genCsv :: genCsv <tableNm> ;
 
-: genCsv _cmdTags tagCopy: opCmd_tags
+: genCsv _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

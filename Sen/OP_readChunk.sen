@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: readChunk :: readChunk <fileNm> ;
 
-: readChunk _cmdTags tagCopy: opCmd_tags
+: readChunk _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

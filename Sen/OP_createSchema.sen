@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: createSchema :: createSchema <schemaNm> ;
 
-: createSchema _cmdTags tagCopy: opCmd_tags
+: createSchema _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>   = "--cmd desc for op--" }
 ;

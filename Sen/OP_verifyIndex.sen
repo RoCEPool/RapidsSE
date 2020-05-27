@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: vfyidx :: vfyidx <tableNm> <indexNm> ;
 
-: vfyidx _cmdTags tagCopy: liteOp_cmdTags
+: vfyidx _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc>   = "--cmd desc for op--"
     <liteOp>    = true

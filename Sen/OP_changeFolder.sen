@@ -96,7 +96,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: cf :: cf <folderNm> ;
 
-: cf _cmdTags tagCopy: localLiteOp_cmdTags
+: cf _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--cmd desc for op--"
     <localLiteOp> = true

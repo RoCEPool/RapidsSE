@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: pythonShell :: pythonShell <pythonFile> ;
 
-: pythonShell _cmdTags tagCopy: opCmd_tags
+: pythonShell _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

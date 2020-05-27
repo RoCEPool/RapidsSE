@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: createCatalog :: createCatalog <catalogNm> ;
 
-: createCatalog _cmdTags tagCopy: opCmd_tags
+: createCatalog _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>   = "--cmd desc for op--" }
 ;

@@ -58,7 +58,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lscat :: lscat ;
 
-: lscat _cmdTags tagCopy: localLiteOp_cmdTags
+: lscat _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--cmd desc for op--"
     <localLiteOp> = true

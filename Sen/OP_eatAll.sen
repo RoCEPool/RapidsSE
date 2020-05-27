@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: eatAll :: eatAll ;
 
-: eatAll _cmdTags tagCopy: opCmd_tags
+: eatAll _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

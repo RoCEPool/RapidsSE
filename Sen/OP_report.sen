@@ -151,7 +151,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: report :: report <fileNm> ;
 
-: report _cmdTags tagCopy: opCmd_tags
+: report _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

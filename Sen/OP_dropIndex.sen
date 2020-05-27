@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: dropIndex :: dropIndex <tableNm> <indexNm> ;
 
-: dropIndex _cmdTags tagCopy: opCmd_tags
+: dropIndex _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>   = "--cmd desc for op--" }
 ;

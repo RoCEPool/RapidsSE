@@ -112,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toCrw :: toCrw <tableNm> ;
 
-: toCrw _cmdTags tagCopy: opCmd_tags
+: toCrw _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 

@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: showCluster :: showCluster ;
 
-: showCluster _cmdTags tagCopy: localLiteOp_cmdTags
+: showCluster _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--cmd desc for op--"
     <localLiteOp> = true

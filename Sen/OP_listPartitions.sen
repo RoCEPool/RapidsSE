@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lsparts :: lsparts ;
 
-: lsparts _cmdTags tagCopy: liteOp_cmdTags
+: lsparts _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc>   = "--cmd desc for op--"
     <liteOp>    = true
