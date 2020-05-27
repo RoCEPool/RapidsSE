@@ -54,15 +54,16 @@
 
 cmdSyntax: defineNode :: define node <nodeNm> {name:value} ;
 
-: defineNode _cmdTags tags{
-  <cmdDesc>  = "--cmd desc for job--"
+: defineNode _cmdTags tagCopy: distJob_tags
+
+  tags{
+    <cmdDesc>  = "--cmd desc for job--"
   
-  <jobKind>  = JK_DIST2PC
-  <rspKind>  = RS_PARTICIPANT_RESPONSE
-  <ddlLock>  = DL_GRAB_WRITE
+    <rspKind>  = RS_PARTICIPANT_RESPONSE
+    <ddlLock>  = DL_GRAB_WRITE
   
-  <preCheck> = bClusterStarted
-}
+    <preCheck> = bClusterStarted
+  }
 ;
 
 

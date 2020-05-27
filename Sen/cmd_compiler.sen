@@ -433,6 +433,9 @@
         "<genericJob>" " %v" .putf
       then
 
+      "<distJob>" pCmdTagSet tagSet.hasName if
+        "<distJob>" " %v" .putf
+      then
 
     then
     

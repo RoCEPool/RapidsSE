@@ -110,15 +110,15 @@
 cmdSyntax: createTable :: create table <tableNm> etc ;
 cmdSyntax: createTable :: create table definition <tableNm> etc ;
 
-: createTable _cmdTags tags{
-  <cmdDesc>  = "--cmd desc for job--"
+: createTable _cmdTags tagCopy: distJob_tags
+  tags{
+    <cmdDesc>  = "--cmd desc for job--"
   
-  <jobKind>  = JK_DIST2PC
-  <rspKind>  = RS_PARTICIPANT_RESPONSE
-  <ddlLock>  = DL_GRAB_WRITE
+    <rspKind>  = RS_PARTICIPANT_RESPONSE
+    <ddlLock>  = DL_GRAB_WRITE
   
-  <preCheck> = bClusterStarted
-}
+    <preCheck> = bClusterStarted
+  }
 ;
 
 /*============================================================================*/

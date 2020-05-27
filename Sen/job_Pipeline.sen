@@ -92,29 +92,16 @@
 
 cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
-: pipeline _cmdTags tags{
-  <cmdDesc>  = "--cmd desc for job--"
+: pipeline _cmdTags tagCopy: distJob_tags
+  tags{
+    <cmdDesc>  = "--cmd desc for job--"
 
-  <jobKind>  = JK_DIST2PC
-  <rspKind>  = RS_PARTICIPANT_ERROR
-  <ddlLock>  = DL_GRAB_READ
+    <rspKind>  = RS_PARTICIPANT_ERROR
+    <ddlLock>  = DL_GRAB_READ
 
-  <preCheck> = bClusterStarted
-}
+    <preCheck> = bClusterStarted
+  }
 ;
-
-/*
-: pipeline _cmdTags tags{
-  <cmdDesc>  = "--cmd desc for job--"
-  
-  <jobKind>  = JK_DIST2PC
-  <rspKind>  = RS_PARTICIPANT_ERROR
-  <ddlLock>  = DL_GRAB_READ
-  
-  <preCheck> = bClusterStarted
-}
-;
-*/
 
 /*============================================================================*/
 /* end                                                                        */

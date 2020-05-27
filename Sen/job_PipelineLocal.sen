@@ -102,19 +102,6 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
 }
 ;
 
-/*
-: pipeline _cmdTags tags{
-  <cmdDesc>  = "--cmd desc for job--"
-  
-  <jobKind>  = JK_DIST2PC
-  <rspKind>  = RS_PARTICIPANT_ERROR
-  <ddlLock>  = DL_GRAB_READ
-  
-  <preCheck> = bClusterStarted
-}
-;
-*/
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

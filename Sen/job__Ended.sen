@@ -95,7 +95,7 @@
 
 cmdSyntax: _Ended :: _Ended ;
 
-: _Ended _cmdTags tagCopy: generic_tags
+: _Ended _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--cmd desc for job--"
   }

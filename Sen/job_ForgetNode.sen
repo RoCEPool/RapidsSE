@@ -39,14 +39,14 @@
 cmdSyntax: forgetNode :: forget node <nodeNm> __etc__ ;
 cmdSyntax: forgetNode :: fgnde <nodeNm> ;
 
-: forgetNode _cmdTags tags{
-  <cmdDesc>  = "--cmd desc for job--"
+: forgetNode _cmdTags tagCopy: distJob_tags
+  tags{
+    <cmdDesc>  = "--cmd desc for job--"
   
-  <jobKind>  = JK_DIST2PC
-  <rspKind>  = RS_PARTICIPANT_RESPONSE
-  <ddlLock>  = DL_GRAB_WRITE
+    <rspKind>  = RS_PARTICIPANT_RESPONSE
+    <ddlLock>  = DL_GRAB_WRITE
   
-  <preCheck> = bClusterStarted
+    <preCheck> = bClusterStarted
 }
 ;
 

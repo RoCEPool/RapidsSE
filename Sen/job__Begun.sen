@@ -132,7 +132,7 @@
 
 cmdSyntax: _Begun :: _Begun ;
 
-: _Begun _cmdTags tagCopy: generic_tags
+: _Begun _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--cmd desc for job--"
   }
