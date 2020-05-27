@@ -417,17 +417,16 @@
       then
 
 
-      "<liteOp>" pCmdTagSet tagSet.hasName if
-        "<liteOp>" " %v" .putf
-      then
-
       "<localLiteOp>" pCmdTagSet tagSet.hasName if
         "<localLiteOp>" " %v" .putf
-      then
-
+      else
+      "<liteOp>" pCmdTagSet tagSet.hasName if
+        "<liteOp>" " %v" .putf
+      else
       "<op>" pCmdTagSet tagSet.hasName if
         "<op>" " %v" .putf
-      then
+      then then then
+
 
       "<genericJob>" pCmdTagSet tagSet.hasName if
         "<genericJob>" " %v" .putf
