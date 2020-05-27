@@ -49,7 +49,6 @@ cmdSyntax: lsparts :: lsparts ;
 : lsparts _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc>   = "--desc for op--"
-    <liteOp>    = true
     <streamDef> = __listPartitions
     <params>    = 0
   }

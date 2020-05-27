@@ -32,7 +32,6 @@ cmdSyntax: nodeInfo :: nodeInfo ;
 : nodeInfo _cmdTags tagCopy: liteOp_tags
 tags{
   <cmdDesc>   = "--desc for op--"
-  <liteOp>    = true
   <streamDef> = __nodeInfo
   <params>    = 0
   }

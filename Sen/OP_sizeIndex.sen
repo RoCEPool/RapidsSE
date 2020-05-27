@@ -45,7 +45,6 @@ cmdSyntax: szidx :: szidx <tableNm> <indexNm> ;
 : szidx _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc>   = "--desc for op--"
-    <liteOp>    = true
     <streamDef> = __sizeIndex
     <params>    = 2
   }

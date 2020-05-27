@@ -45,7 +45,6 @@ cmdSyntax: vfyidx :: vfyidx <tableNm> <indexNm> ;
 : vfyidx _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc>   = "--desc for op--"
-    <liteOp>    = true
     <streamDef> = __verifyIndex
     <params>    = 2
   }
