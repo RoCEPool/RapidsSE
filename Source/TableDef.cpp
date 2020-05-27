@@ -130,8 +130,8 @@ eEC TableDef::eParse(Stz* szCmd)
   // -- -- -- -- -- -- -- -- -- --
 
   Token* pTkn = pTknVec->pFirstToken(); dPT();
-  ASSERT(pTkn->bSame("create"_Stz));
-  
+  ASSERT(pTkn->bSame("create"_Stz) || pTkn->bSame("define"_Stz) );
+
   pTkn = pTknVec->pNextToken(); dPT();
   ASSERT(pTkn->bSame("table"_Stz));
   
@@ -248,7 +248,7 @@ eEC TableDef::eSyntax(Stz* szCmd)
   // -- -- -- -- -- -- -- -- -- --
   
   Token* pTkn = pTknVec->pFirstToken(); dPT();
-  ASSERT(pTkn->bSame("create"_Stz));
+  ASSERT(pTkn->bSame("create"_Stz) || pTkn->bSame("define"_Stz) );
   
   pTkn = pTknVec->pNextToken(); dPT();
   ASSERT(pTkn->bSame("table"_Stz));
