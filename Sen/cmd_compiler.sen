@@ -356,6 +356,21 @@
   "_" swap str.removeSuffix str.removeTailInt
 ;
 
+: decode::jobKind params| eJobKind |
+
+  0 locals| sDecode |
+  eJobKind case
+    
+    JK_DIST2PC of "JK_DIST2PC" to sDecode endof
+    JK_GENERIC of "JK_GENERIC" to sDecode endof
+    JK_LOCAL   of "JK_LOCAL"   to sDecode endof
+    "JK_???" to sDecode
+
+  endcase
+
+  sDecode
+;
+
 /*----------------------------------------------------------------------------*/
 /* show all words that are of cmdSyntax:                                      */
 /*----------------------------------------------------------------------------*/
@@ -387,12 +402,31 @@
     sCmdSyntax cmd::seriesToCmdNm   to sCmdNm
     sCmdNm "_cmdTags" str.cat       to sCmdTagsNm
 
-    sCmdTagsNm sCmdNm " %18v %v" .putf
+    sCmdTagsNm sCmdNm " %18v %24v" .putf
 
-  
-    sCmdTagsNm word::find if " (exists)" .put else " (no-such)" .put then
+    sCmdTagsNm word::find to pwCmdTags
+    pwCmdTags not if
+      " (no-such)" .put
+    else
+      pwCmdTags word.tagSet@ to pCmdtagSet
+
+      "<jobKind>" pCmdTagSet tagSet.hasName if
+        "<jobKind>" pCmdTagSet tagSet.getInt " %v" .putf
+        "<jobKind>" pCmdTagSet tagSet.getInt decode::jobKind " %10v" .putf
+     then
+
+
+     "<liteOp>" pCmdTagSet tagSet.hasName if
+       "<liteOp>" " %v" .putf
+     then
+
+     "<localLiteOp>" pCmdTagSet tagSet.hasName if
+       "<localLiteOp>" " %v" .putf
+     then
+
+
+    then
     
-
     "\n" .putf
 
   repeat
