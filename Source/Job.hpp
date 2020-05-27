@@ -101,8 +101,6 @@ namespace Jobs
     void vLockJobMutex(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
-    Stz* szMetaData(void);
-    void vMetaData(Stz* sMetaData);
     bool bNoWaitTag(void);
     bool bParticipantHasError(void);
     void vParticipantHasError(bool bHasError);

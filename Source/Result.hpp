@@ -9,8 +9,6 @@ namespace Jobs
   {
 
   public:
-    s4K          m_sMetadata;          // meta data of result
-    
     // this job
     bool         m_bJobHasError;       // this job has an error
     Response     m_xJobResponse;       // response of this job

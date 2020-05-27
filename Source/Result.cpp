@@ -48,8 +48,6 @@ Result::Result(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT);
   
-  m_sMetadata          = ""_Stz;
-  
   //m_xJobResponse
   m_bJobHasError       = false;
   
@@ -229,12 +227,6 @@ void Result::vPrintParticipantResponses(void)
     }
     vTrace("\n"_Stz);
     return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Responses
-  if (AM::bMetadata() && ! m_sMetadata.szStz()->bEqual(""_Stz)) {
-    vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
   }
   
   i8 iRowsProcessed = 0;
@@ -429,8 +421,9 @@ void Result::vProcessBufferQueue(void)
           
           // print the metadata
           if (AM::bMetadata()) {
-            pStreamDef->vToMetadata(m_sMetadata.szStz());
-            vTrace("%s\n"_Stz, m_sMetadata.szStz());
+            s4K sMetadata;
+            pStreamDef->vToMetadata(sMetadata.szStz());
+            vTrace("%s\n"_Stz, sMetadata.szStz());
           }
         }
         break;
