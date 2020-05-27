@@ -387,10 +387,10 @@
     sCmdSyntax cmd::seriesToCmdNm   to sCmdNm
     sCmdNm "_cmdTags" str.cat       to sCmdTagsNm
 
-    sCmdTagsNm sCmdNm " %18v %32v" .putf
+    sCmdTagsNm sCmdNm " %18v %v" .putf
 
   
-    //sCmdNm word::find
+    sCmdTagsNm word::find if " (exists)" .put else " (no-such)" .put then
     
 
     "\n" .putf
