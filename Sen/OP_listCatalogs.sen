@@ -61,7 +61,6 @@ cmdSyntax: lscat :: lscat ;
 : lscat _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
-    <localLiteOp> = true
     <streamDef>   = __listContents
     <params>      = 0
   }

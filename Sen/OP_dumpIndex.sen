@@ -23,10 +23,9 @@
 cmdSyntax: dumpIdx :: dumpIdx <tableNm> <indexNm> ;
 
 : dumpIdx _cmdTags tagCopy: localLiteOp_tags
-tags{
-  <cmdDesc>     = "--desc for op--"
-  <localLiteOp> = true
-  <params>      = 2
+  tags{
+    <cmdDesc>     = "--desc for op--"
+    <params>      = 2
   }
 ;
   

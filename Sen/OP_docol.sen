@@ -27,7 +27,6 @@ cmdSyntax: docol :: docol <routineNm> ;
 : docol _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
-    <localLiteOp> = true
     <params>      = 1
   }
 ;
