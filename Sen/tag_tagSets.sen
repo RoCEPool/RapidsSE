@@ -49,7 +49,6 @@
 /*----------------------------------------------------------------------------*/
 : operator_tags
   tags{
-    <operator> = 1
     <jobKind>  = JK_LOCAL
     <rspKind>  = RS_PARTICIPANT_RESPONSE
     <ddlLock>  = DL_GRAB_READ
@@ -71,7 +70,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: liteOp_tags tagCopy: op_tags
+: liteOp_tags tagCopy: operator_tags
   tags{
     <liteOp> = 1
   }
@@ -80,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: localLiteOp_tags tagCopy: op_tags
+: localLiteOp_tags tagCopy: operator_tags
   tags{
     <localLiteOp> = 1
   }

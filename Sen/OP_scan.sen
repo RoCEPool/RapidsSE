@@ -128,7 +128,7 @@ cmdSyntax: scan :: scan <tableNm> ;
 cmdSyntax: scan :: scan <tableNm> <rateSecs> ;
 
 : scan _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--cmd desc for op--" }
+  tags{ <cmdDesc> = "--desc for op--" }
 ;
   
 /*============================================================================*/

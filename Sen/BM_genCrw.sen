@@ -70,7 +70,7 @@
 cmdSyntax: BM_GenCrwOp :: BM_GenCrwOp <tableNm> <nBuffers> ;
 
 : BM_GenCrwOp _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--cmd desc for op--" }
+  tags{ <cmdDesc> = "--desc for op--" }
 ;
 
 /*============================================================================*/

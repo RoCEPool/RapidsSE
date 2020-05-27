@@ -99,7 +99,7 @@
 cmdSyntax: BM_GenEntOp :: BM_GenEntOp <tableNm> <indexNm> <nBuffers> ;
 
 : BM_GenEntOp _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc>  = "--cmd desc for op--" }
+  tags{ <cmdDesc>  = "--desc for op--" }
 ;
 
 /*============================================================================*/

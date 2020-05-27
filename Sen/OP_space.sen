@@ -37,7 +37,7 @@ cmdSyntax: space :: space ;
 
 : space _cmdTags tagCopy: liteOp_tags
   tags{
-    <cmdDesc>   = "--cmd desc for op--"
+    <cmdDesc>   = "--desc for op--"
     <liteOp>    = true
     <streamDef> = __space
     <params>    = 0

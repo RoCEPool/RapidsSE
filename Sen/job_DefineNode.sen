@@ -57,7 +57,7 @@ cmdSyntax: defineNode :: define node <nodeNm> {name:value} ;
 : defineNode _cmdTags tagCopy: distJob_tags
 
   tags{
-    <cmdDesc>  = "--cmd desc for job--"
+    <cmdDesc>  = "--desc for job--"
   
     <rspKind>  = RS_PARTICIPANT_RESPONSE
     <ddlLock>  = DL_GRAB_WRITE

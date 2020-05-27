@@ -24,7 +24,7 @@ cmdSyntax: compactIdx :: compactIdx   <tableNm> <indexNm> ;
 
 : compactIdx _cmdTags tagCopy: liteOp_tags
   tags{
-    <cmdDesc>   = "--cmd desc for op--"
+    <cmdDesc>   = "--desc for op--"
     <liteOp>    = true
     <params>    = 2
   }

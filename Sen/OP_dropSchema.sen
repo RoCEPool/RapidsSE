@@ -54,7 +54,7 @@ cmdSyntax: dropSchema :: dropSchema <schemaNm> ;
 
 : dropSchema _cmdTags tagCopy: op_tags
   tags{
-    <cmdDesc>   = "--cmd desc for op--" }
+    <cmdDesc>   = "--desc for op--" }
 ;
     
 /*============================================================================*/

@@ -54,7 +54,7 @@ cmdSyntax: dropCatalog :: dropCatalog <catalogNm> ;
 
 : dropCatalog _cmdTags tagCopy: op_tags
   tags{
-    <cmdDesc>   = "--cmd desc for op--" }
+    <cmdDesc>   = "--desc for op--" }
 ;
     
 /*============================================================================*/

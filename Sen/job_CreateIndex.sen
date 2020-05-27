@@ -192,7 +192,7 @@ cmdSyntax: createIndex :: create unique index <indexNm> on <tableNm> etc ;
 
 : createIndex _cmdTags tagCopy: distJob_tags
   tags{
-    <cmdDesc>  = "--cmd desc for op--"
+    <cmdDesc>  = "--desc for op--"
   
     <rspKind>  = RS_PARTICIPANT_RESPONSE
     <ddlLock>  = DL_GRAB_WRITE

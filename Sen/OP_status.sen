@@ -37,7 +37,7 @@ cmdSyntax: status :: status ;
 
 : status _cmdTags tagCopy: liteOp_tags
   tags{
-    <cmdDesc>   = "--cmd desc for op--"
+    <cmdDesc>   = "--desc for op--"
     <liteOp>    = true
     <streamDef> = __status
     <params>    = 0

@@ -44,7 +44,7 @@ cmdSyntax: sztbl :: sztbl <tableNm> ;
 
 : sztbl _cmdTags tagCopy: liteOp_tags
   tags{
-    <cmdDesc>   = "--cmd desc for op--"
+    <cmdDesc>   = "--desc for op--"
     <liteOp>    = true
     <streamDef> = __sizeTable
     <params>    = 1

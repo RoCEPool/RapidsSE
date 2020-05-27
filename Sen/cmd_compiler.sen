@@ -462,11 +462,35 @@
     pCursor pArrange arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.seqNo "[%v]" .putf
+    pCursor pArrange arrange.seqNo "[%2v]" .putf
     pCursor pArrange arrange.name  " %24v"  .putf
 
     pCursor pArrange arrange.object to pwCmdTags
     pwCmdTags word.tagSet@ to pCmdTagSet
+
+    "<serviceOp>" pCmdTagSet tagSet.hasName if
+      "<serviceOp>" " %14v" .putf
+    else
+    "<localLiteOp>" pCmdTagSet tagSet.hasName if
+      "<localLiteOp>" " %14v" .putf
+    else
+    "<liteOp>" pCmdTagSet tagSet.hasName if
+      "<liteOp>" " %14v" .putf
+    else
+    "<op>" pCmdTagSet tagSet.hasName if
+      "<op>" " %14v" .putf
+    else
+    "<genericJob>" pCmdTagSet tagSet.hasName if
+      "<genericJob>" " %14v" .putf
+    else
+    "<localJob>" pCmdTagSet tagSet.hasName if
+      "<localJob>" " %14v" .putf
+    else
+    "<distJob>" pCmdTagSet tagSet.hasName if
+      "<distJob>" " %14v" .putf
+    then then then then then then then
+
+
     pCmdTagSet tagSet.asStr " %v" .putf
 
     "\n" .putf

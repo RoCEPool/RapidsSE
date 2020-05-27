@@ -94,7 +94,7 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
 : pipeline _cmdTags tagCopy: distJob_tags
   tags{
-    <cmdDesc>  = "--cmd desc for job--"
+    <cmdDesc>  = "--desc for job--"
 
     <rspKind>  = RS_PARTICIPANT_ERROR
     <ddlLock>  = DL_GRAB_READ

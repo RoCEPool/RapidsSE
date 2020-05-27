@@ -103,7 +103,7 @@ cmdSyntax: periodicOp :: periodicOp min <minutes> ;
 cmdSyntax: periodicOp :: periodicOp hour <hours> ;
 
 : periodicOp _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--cmd desc for op--" }
+  tags{ <cmdDesc> = "--desc for op--" }
 ;
 
 /*============================================================================*/
