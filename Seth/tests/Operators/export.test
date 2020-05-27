@@ -61,8 +61,8 @@ success
 
 
 // check existence of table
-lstbl;
-rows: 0
+//lstbl;
+//rows: 0
 
 // get memory leaks
 memoryLeaks;
