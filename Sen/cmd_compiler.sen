@@ -452,7 +452,8 @@
 /*----------------------------------------------------------------------------*/
 : cmdTags \prompt
 
-  //find: _cmdTags word::ofCatg
+  0 locals| pwCmdTags  |
+  0 locals| pCmdTagSet |
 
   find: _cmdTags arrange::wordsOfCatg locals| pArrange |
 
@@ -461,9 +462,14 @@
     pCursor pArrange arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.name
-    pCursor pArrange arrange.seqNo
-    "[%v] %v" .printf
+    pCursor pArrange arrange.seqNo "[%v]" .putf
+    pCursor pArrange arrange.name  " %24v"  .putf
+
+    pCursor pArrange arrange.object to pwCmdTags
+    pwCmdTags word.tagSet@ to pCmdTagSet
+    pCmdTagSet tagSet.asStr " %v" .putf
+
+    "\n" .putf
   repeat
 ;
 
