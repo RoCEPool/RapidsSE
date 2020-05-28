@@ -203,11 +203,21 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 
   TokenVec* pParamsVec = TokenVec::pGetSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
   
-  if ( pParamsVec ) {
+  if (pParamsVec) {
   
     pArgsVec = TokenVec::pGetSubVec(pInpTknVec,1,nTokens-1);
     
-    if (pParamsVec->nTokens() != pArgsVec->nTokens()) {
+    i8 i_Last = pParamsVec->nTokens() - 1;
+    Token* pLastPrmTkn = pParamsVec->pGet(i_Last);
+    
+    bool bHasEtcParam = false;
+    if (pLastPrmTkn->bSame("$etc"_Stz)) {
+      bHasEtcParam = true;
+      //vJotDebug(1);
+      //vDebugPoint();
+    }
+    
+    if (! bHasEtcParam && pParamsVec->nTokens() != pArgsVec->nTokens()) {
       delete pProcTextVec;
       delete pParamsVec;
       delete pArgsVec;
