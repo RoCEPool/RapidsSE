@@ -22,7 +22,6 @@ void EnvCheck::vCheckManifest(void)
 
   vCheckFile("_bootCluster"_Stz,     C_EXIST_EXISTS,C_ACCESS_READ);
   vCheckFile("_procedures"_Stz,      C_EXIST_EXISTS,C_ACCESS_READ);
-  vCheckFile("_tableDefinitions"_Stz,C_EXIST_EXISTS,C_ACCESS_READ);
 }
 
 /*----------------------------------------------------------------------------*/
