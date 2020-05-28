@@ -46,7 +46,7 @@ JobClass xJobClass_Local =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Local_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_NodeInfo_class;
+  *pNextFun = (pFUN*)pJob_Operand_class;
   
   return &xJobClass_Local;
 }

@@ -11,9 +11,6 @@
 
   params| pSocket |
 
-  0 locals| pJobClass_NodeInfo |
-  0 locals| pJob_NodeInfo |
-
   // find the __nodeinfo table
   C_TDEF_NODEINFO op__tableDef_infoSet assert
 

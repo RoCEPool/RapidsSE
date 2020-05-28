@@ -29,9 +29,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   
   i8 nJobs = 0;
   
-  // info
-  nJobs++; JobClass::vJobCat(CN_JOB_NODEINFO);
-  
   // boot
   nJobs++; JobClass::vJobCat(CN_JOB_BOOT);
   nJobs++; JobClass::vJobCat(CN_JOB_START);

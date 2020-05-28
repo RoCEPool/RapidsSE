@@ -37,8 +37,6 @@ namespace Jobs
 
 #include "Job_Local.hpp"
 
-#include "Job_NodeInfo.hpp"
-
 #include "Job_Operand.hpp"
 
 #include "Job_Start.hpp"

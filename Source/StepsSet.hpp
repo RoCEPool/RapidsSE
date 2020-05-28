@@ -728,9 +728,6 @@ public:
   // job NetHog
   void vJob_NetHogHogNoFetch(void);
 
-  // job NodeInfo
-  void vJob_NodeInfoNodeNameFetch(void);
-
   // Job Operand
   void vJob_OperandParentJobFetch(void);
   void vJob_OperandPipeOut(void);
