@@ -108,7 +108,6 @@ Session::Session(void)
   m_iPartition      = C_UNKNOWN;
   
   //m_oDicStack;
-  m_sResponse       = ""_Stz;
   m_pJob            = nullptr;
   m_pTx             = nullptr;
   m_bSessionExiting = false;
@@ -214,13 +213,11 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   Session* pSession = _pSession(pObject);
   
-  vTrace("pid %lld %s partition %lld slot %lld"_Stz
-         " response '%s'\n"_Stz,
+  vTrace("pid %lld %s partition %lld slot %lld"_Stz,
          pSession->m_iPid,
          Process::bTestPid(pSession->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
          pSession->m_iPartition,
-         pSession->iSlot(),
-         pSession->m_sResponse.azChar());
+         pSession->iSlot());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -454,7 +451,6 @@ void Session::vFreeSession(i8 i_NextFree)
   m_nJobNew    = 0;
   m_nJobDelete = 0;
   
-  m_sResponse       = ""_Stz;
   m_pJob            = nullptr;
   m_pTx             = nullptr;
   m_bSessionExiting = false;

@@ -47,7 +47,6 @@ namespace Sessions
   
     i8       m_iPartition;       // which partition this session connects to
     DicStack m_oDicStack;        // dictionary stack
-    s48K     m_sResponse;        // response
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
     Input*   m_pInput;           // input stream
