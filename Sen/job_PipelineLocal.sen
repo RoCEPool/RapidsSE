@@ -98,8 +98,6 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
     <jobKind>  = JK_LOCAL
     <rspKind>  = RS_LOCAL_RESPONSE
     //<ddlLock>  = DL_GRAB_READ
-
-    //<preCheck> = bClusterStarted
   }
 ;
 
