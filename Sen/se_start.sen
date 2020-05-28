@@ -36,7 +36,7 @@
   "start_run" .verbose
 
 
-  start::defineTables
+  // start::defineTables
 
 
   // spawn supervisor demon
