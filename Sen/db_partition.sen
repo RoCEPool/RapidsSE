@@ -68,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 /* grab write lock on a partition of given table                              */
 /*----------------------------------------------------------------------------*/
-: tablePtnGrabWrite2 ( pTablePtn -- )
+: tablePtnGrabWrite ( pTablePtn -- )
 
   params| pTablePtn |   // table partition
 
@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 /* grab read lock on a partition of given table                               */
 /*----------------------------------------------------------------------------*/
-: tablePtnGrabRead2 ( pTablePtn -- )
+: tablePtnGrabRead ( pTablePtn -- )
 
   params| pTablePtn |   // table partition
 
@@ -96,7 +96,7 @@
 /*----------------------------------------------------------------------------*/
 /* drop read lock on a partition of given table                               */
 /*----------------------------------------------------------------------------*/
-: tablePtnDropRead2 ( pTablePtn -- )
+: tablePtnDropRead ( pTablePtn -- )
 
   params| pTablePtn |  // given tablePtn
 
@@ -106,7 +106,7 @@
 /*----------------------------------------------------------------------------*/
 /* drop write lock on a partition of given table                              */
 /*----------------------------------------------------------------------------*/
-: tablePtnDropWrite2 ( pTablePtn -- )
+: tablePtnDropWrite ( pTablePtn -- )
 
   params| pTablePtn |  // given tablePtn
 

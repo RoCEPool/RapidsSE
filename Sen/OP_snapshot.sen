@@ -17,7 +17,7 @@
   Operand[].pipeOut
 
   // grab a read lock onn the table ptn
-  tablePtn[].get tablePtnGrabRead2
+  tablePtn[].get tablePtnGrabRead
 
   // begin a read transaction
   tx[].begin
@@ -37,7 +37,7 @@
   tx[].commit
 
   // discard the read lock on the table ptn
-  tablePtn[].get tablePtnDropRead2
+  tablePtn[].get tablePtnDropRead
 
   Operand[].newEosMarker
   Operand[].pipeOut
