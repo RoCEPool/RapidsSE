@@ -323,7 +323,7 @@ end
 /*----------------------------------------------------------------------------*/
 
 procedure etcTest
-  parameters $arg1 $etc
+  parameters $arg1
 
 begin
 
@@ -331,7 +331,7 @@ begin
     start | periodicOp once | stageB
 
   stage stageB on all nodes :
-    ping | stageC
+    etcTest $arg1 | stageC
 
   stage stageC on origin :
     output | sink | stageA

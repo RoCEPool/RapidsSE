@@ -114,6 +114,7 @@ assert::stack_0
         "OP_dumpTable.sen"            include
 
         "OP_eatAll.sen"               include
+        "OP_etcTest.sen"              include
         "OP_exemplar.sen"             include
 
         "OP_fetch.sen"                include
