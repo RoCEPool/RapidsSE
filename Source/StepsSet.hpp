@@ -1411,8 +1411,6 @@ public:
   void vTableFindColumn(void);
   void vTableGenCsvBuffer(void);
   void vTableGet(void);
-  void vTableGetColumnsAsString(void);
-  void vTableGetPtn(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
   void vTableIsDefinitionOnly(void);

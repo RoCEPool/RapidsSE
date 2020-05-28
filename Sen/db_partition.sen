@@ -65,36 +65,6 @@
   folder[].isPartitions assert
 ;
 
-//*----------------------------------------------------------------------------*/
-/* grab read lock on a partition of given table                               */
-/*----------------------------------------------------------------------------*/
-: tablePtnGrabRead ( i_Partition pTable -- )
-
-  params| pTable |      // given table
-  params| i_Partition | // which partition
-
-  begin
-    i_Partition pTable table.getPtn tablePtn.attemptGrabRead
-    not while
-      task::yield
-  repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/* grab write lock on a partition of given table                              */
-/*----------------------------------------------------------------------------*/
-: tablePtnGrabWrite ( i_Partition pTable -- )
-
-  params| pTable |      // given table
-  params| i_Partition | // which partition
-
-  begin
-    i_Partition pTable table.getPtn tablePtn.attemptGrabWrite
-    not while
-      task::yield
-  repeat
-;
-
 /*----------------------------------------------------------------------------*/
 /* grab write lock on a partition of given table                              */
 /*----------------------------------------------------------------------------*/
@@ -121,28 +91,6 @@
   not while
     task::yield
   repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/* drop read lock on a partition of given table                               */
-/*----------------------------------------------------------------------------*/
-: tablePtnDropRead ( i_Partition pTable -- )
-
-  params| pTable |      // given table
-  params| i_Partition | // which partition
-
-  i_Partition pTable table.getPtn tablePtn.dropRead
-;
-
-/*----------------------------------------------------------------------------*/
-/* drop write lock on a partition of given table                              */
-/*----------------------------------------------------------------------------*/
-: tablePtnDropWrite ( i_Partition pTable -- )
-
-  params| pTable |      // given table
-  params| i_Partition | // which partition
-
-  i_Partition pTable table.getPtn tablePtn.dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/

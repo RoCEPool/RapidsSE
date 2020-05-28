@@ -38,10 +38,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
   vAddStep("table[].verify"_Stz,           &Step::vTableVerify);
   vAddStep("table[].visualize"_Stz,        &Step::vTableVisualize);
-  
-  // to go
-  vAddStep("table.getColumnsAsString"_Stz, &Step::vTableGetColumnsAsString);
-  vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,58 +234,6 @@ void Step::vTableGenCsvBuffer(void)
   
   m_pDataStack->vPushPtr(pCsvBuffer);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.getColumnsAsString -- get columns as a csv string                    */
-/*----------------------------------------------------------------------------*/
-void Step::vTableGetColumnsAsString(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  i8 nColumns = pStreamDef->nColumns(C_ALL);
-  
-  s16KB s;
-  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
-    
-    if (i_Column != 0)
-    s.vConcat(","_Stz);
-    
-    if (i_Column == 0)
-      s.vCopy(pStreamDef->pGetColumn(i_Column)->szColNm());
-    else
-      s.vConcat(pStreamDef->pGetColumn(i_Column)->szColNm());
-    
-    s.vConcat(" "_Stz);
-    s.vConcat(aCT[pStreamDef->pGetColumn(i_Column)->eColumnType()]);
-  }
-  
-  m_pDataStack->vPushStr(s);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.getPtn -- get table partition given slot no                          */
-/*----------------------------------------------------------------------------*/
-void Step::vTableGetPtn(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_Ptn = m_pDataStack->iPopAsInt(__func__);
-  
-  // get the table partition
-  i8 i_Slot = TablePtn::iPartitionToSlot(i_Ptn);
-  TablePtn* pTablePtn = pTable->pPartition(i_Slot);
-
-  m_pDataStack->vPushPtr(pTablePtn);
-  
   EXIT();
 }
 
