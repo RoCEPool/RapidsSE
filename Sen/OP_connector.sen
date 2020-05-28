@@ -14,20 +14,24 @@
   0 locals| pJobClass_NodeInfo |
   0 locals| pJob_NodeInfo |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the node info job
-  CN_JOB_NODEINFO jobClass::find to pJobClass_NodeInfo
-  pJobClass_NodeInfo jobClass.new to pJob_NodeInfo
+  // find the __nodeinfo table
+  C_TDEF_NODEINFO op__tableDef_infoSet assert
+
+  // create an infoSet operand
+  infoSetTable[] infoSet[].new
+
+  // add nodeInfo to the infoSet
+  infoSetTable[] infoSet[].addnodeInfo assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node
   pSocket socket.grabWrite
-  pJob_NodeInfo pSocket socket.sendObject assert
+  infoSet[] pSocket socket.sendObject assert
   pSocket socket.dropWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete node info job
-  pJob_NodeInfo job.delete
+  // delete infoset
+  infoSet[].delete
 ;
 
 /*----------------------------------------------------------------------------*/

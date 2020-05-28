@@ -51,20 +51,26 @@
 
   params| pSocket |
 
-  0 locals| pJob_NodeInfo |
   0 locals| pAnsweredNode |
+  0 locals| sNodeName |
 
-  // receive the node info job
-  pSocket socket.recvObject discard to pJob_NodeInfo
+  // receive the node info set
+  pSocket socket.recvObject discard to infoSet[]
 
-  // find the answered node in grid
-  pJob_NodeInfo job_NodeInfo.nodeName@ grid::findNode to pAnsweredNode
+  // get the first row from the infoset
+  infoSet[].firstRow to row[]
+
+  // get the 0th column from the row
+  0 row[].getVchColumn to sNodeName
+
+  // find the node
+  sNodeName grid::findNode to pAnsweredNode
 
   // set the receive socket in the answered node
   pSocket pAnsweredNode node.recvSocket!
 
-  // delete the node info job
-  pJob_NodeInfo job.delete
+  // delete the infoset
+  infoSet[].delete
 
   //pAnsweredNode node.name "Answered node %v" str.format .logNote
 
