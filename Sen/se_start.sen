@@ -9,19 +9,306 @@
 /*----------------------------------------------------------------------------*/
 : start::defineTables
 
-"
-  define table __DEFINE_TEST (
-    nodeName       VARCHAR NOT NULL ,
-    partition      INTEGER NOT NULL ,
-    buffers        INTEGER NOT NULL ,
-    entries        INTEGER NOT NULL
-  ) ;
-"
-  locals| sStmt |
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
-    sStmt
-    api::executeRequest
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_ANALYZEINDEX
+  sPath
+  "
+    define table __analyzeIndex (
+      nodeName       VARCHAR NOT NULL ,
+      partition      INTEGER NOT NULL ,
+      buffers        INTEGER NOT NULL ,
+      entries        INTEGER NOT NULL
+    ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_ANALYZETABLE
+  sPath
+  "
+  define table __analyzeTable (
+     nodeName       VARCHAR NOT NULL ,
+     partition      INTEGER NOT NULL ,
+     buffers        INTEGER NOT NULL ,
+     entries        INTEGER NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_GRIDSANITY
+  sPath
+  "
+  define table __gridSanity (
+    nodeName   VARCHAR NOT NULL ,
+    homogenous BOOLEAN NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LISTCOLUMNS
+  sPath
+  "
+  define table __listColumns (
+    columnName     VARCHAR NOT NULL ,
+    columnType     VARCHAR NOT NULL ,
+    columnLength   INTEGER NOT NULL ,
+    columnScale    INTEGER NOT NULL ,
+    isNullable     BOOLEAN NOT NULL ,
+    isPartitionKey BOOLEAN NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LISTCONTENTS
+  sPath
+  "
+  define table __listContents (
+    Name       VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LISTFOLDER
+  sPath
+  "
+  define table __listFolder (
+    Name       VARCHAR NOT NULL ,
+    Type       VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LISTINDEX
+  sPath
+  "
+  define table __listIndex (
+    indexName    VARCHAR NOT NULL ,
+    isUnique     BOOLEAN NOT NULL ,
+    isPrimaryKey BOOLEAN NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LISTPARTITIONS
+  sPath
+  "
+  define table __listPartitions (
+    partition     INTEGER NOT NULL ,
+    nodeName      VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_PINGINFO
+  sPath
+  "
+  define table __pingInfo (
+    pong      VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_PWF
+  sPath
+  "
+  define table __pwf (
+    folder   VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_SHOWCLUSTER
+  sPath
+  "
+  define table __showCluster (
+    NodeName  VARCHAR NOT NULL ,
+    IPAddress VARCHAR NOT NULL ,
+    PortNo    INTEGER NOT NULL ,
+    Connected BOOLEAN NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_SIZEINDEX
+  sPath
+  "
+  define table __sizeIndex (
+    NodeName  VARCHAR NOT NULL ,
+    size      VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_SIZETABLE
+  sPath
+  "
+  define table __sizeTable (
+    NodeName  VARCHAR NOT NULL ,
+    size      VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_SPACE
+  sPath
+  "
+  define table __space (
+    nodeName   VARCHAR NOT NULL ,
+    totalSpace VARCHAR NOT NULL ,
+    inUseSpace VARCHAR NOT NULL ,
+    freeSpace  VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_STATUS
+  sPath
+  "
+  define table __status (
+    nodeName   VARCHAR NOT NULL ,
+    regionName VARCHAR NOT NULL ,
+    status     VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_TABLESIZES
+  sPath
+  "
+  define table __tableSizes (
+    NodeName  VARCHAR NOT NULL ,
+    TableName VARCHAR NOT NULL ,
+    size      VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_VERIFYINDEX
+  sPath
+  "
+  define table __verifyIndex (
+    nodeName       VARCHAR NOT NULL ,
+    tableName      VARCHAR NOT NULL ,
+    indexName      VARCHAR NOT NULL ,
+    status         VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_VERIFYTABLE
+  sPath
+  "
+  define table __verifyTable (
+    nodeName       VARCHAR NOT NULL ,
+    tableName      VARCHAR NOT NULL ,
+    status         VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* define infoset tables                                                      */
+/*----------------------------------------------------------------------------*/
+: start::defineInfoSets
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LOCKSTATS
+  sPath
+  "
+  define table __lockStats (
+    nodeNo         INTEGER        NOT NULL ,
+    takeNo         INTEGER        NOT NULL ,
+
+    lockNo         INTEGER        NOT NULL ,
+    lockNm         VARCHAR ( 32 ) NOT NULL ,
+
+    readGrab       INTEGER        NOT NULL ,
+    readCollision  INTEGER        NOT NULL ,
+    readPercent    INTEGER        NOT NULL ,
+
+    writeGrab      INTEGER        NOT NULL ,
+    writeCollision INTEGER        NOT NULL ,
+    WritePercent   INTEGER        NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_NODEINFO
+  sPath
+  "
+  define table __nodeInfo (
+    nodeName       VARCHAR NOT NULL ,
+    regionSize     INTEGER NOT NULL ,
+    partitionCount INTEGER NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_PROGRESSUNITS
+  sPath
+  "
+  define table __progressUnits (
+    units      INTEGER NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_PWF
+  sPath
+  "
+  define table __pwf (
+    folder   VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_SEEKOFFSETS
+  sPath
+  "
+  define table __seekOffsets (
+    offset INTEGER NOT NULL ,
+    size   INTEGER NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_TOTALUNITS
+  sPath
+  "
+  define table __totalUnits (
+    UNITS      INTEGER NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,9 +322,11 @@
 
   "start_run" .verbose
 
+   // define the apriori system tables
+   start::defineTables
 
-  // start::defineTables
-
+   // define the apriori infoset tables
+   start::defineInfoSets
 
   // spawn supervisor demon
   //"" false supervisorDemonStr api::spawnDemon not if
@@ -65,6 +354,8 @@
   then
 
   "end start_run" .verbose
+
+  api::startDone
 
   DONE_RUN
   job::completed

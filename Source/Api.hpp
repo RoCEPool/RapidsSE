@@ -57,6 +57,7 @@ namespace Interface
   static void vSpawnJob_service(Job* pJob);
   static void vSpawnJob_system(Job* pJob);
   static void vSpawnJobAndWait(Job* pJob);
+  static void vStartDone(bool bStartDone);
   
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
   

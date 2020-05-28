@@ -108,7 +108,6 @@
 /*                              - Definition -                                */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: createTable :: create table <tableNm> etc ;
-cmdSyntax: createTable :: create table definition <tableNm> etc ;
 
 : createTable _cmdTags tagCopy: distJob_tags
   tags{

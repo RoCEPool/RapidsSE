@@ -11,6 +11,7 @@ void Step::vAddSteps_Api(void)
 {
   vAddStep("api::executeRequest"_Stz, &Step::vApiExecuteRequest);
   vAddStep("api::spawnDemon"_Stz,     &Step::vApiSpawnDemon);
+  vAddStep("api::startDone"_Stz,      &Step::vApiStartDone);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,6 +165,16 @@ void Step::vApiSpawnDemon(void)
   delete pTagStrTknVec;
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::start done -- mark start as done                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vApiStartDone(void)
+{
+  ENTRY();
+  
+  Api::vStartDone(true);
 }
 
 /*============================================================================*/

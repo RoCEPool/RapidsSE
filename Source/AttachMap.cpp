@@ -66,7 +66,7 @@ AttachMap::AttachMap(void)
   //ASSERT(nPoolBufferNo() == 1_bn);
   
   m_iTimePoint = AM::iRdTimePoint();
-
+  m_bStartDone = false;
   
   // create the carry over (which records global pointers restored on restart)
   m_pCarryOver = new CarryOver;

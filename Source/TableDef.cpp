@@ -132,23 +132,21 @@ eEC TableDef::eParse(Stz* szCmd)
   Token* pTkn = pTknVec->pFirstToken(); dPT();
   ASSERT(pTkn->bSame("create"_Stz) || pTkn->bSame("define"_Stz) );
 
-  pTkn = pTknVec->pNextToken(); dPT();
-  ASSERT(pTkn->bSame("table"_Stz));
-  
   // -- -- -- -- -- --
   // table definition
   // -- -- -- -- -- --
-  pTkn = pTknVec->pNextToken(); dPT();
-  if (pTkn->bSame("definition"_Stz)) {
+  if (pTkn->bSame("define"_Stz)) {
     m_bDefinitionOnly = true;
-    pTkn = pTknVec->pNextToken(); dPT();
   }
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  ASSERT(pTkn->bSame("table"_Stz));
   
   // -- -- -- --
   // table name
   // -- -- -- --
 
-  //pTkn = pTknVec->pNextToken(); dPT();
+  pTkn = pTknVec->pNextToken(); dPT();
   m_sTableNm = pTkn->szChars();
   m_pStreamDef->vName(m_sTableNm);
   
