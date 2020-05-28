@@ -60,6 +60,8 @@ namespace Interface
   
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
   
+  static void vWaitForAllJobsToComplete(void);
+    
   //! TO GO
   static void vSpawnJobDedicated(Job* pJob);
   static bool bReseedJob(Session* pSession, Job* pJob);

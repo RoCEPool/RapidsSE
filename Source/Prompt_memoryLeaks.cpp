@@ -30,6 +30,11 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     return true;
   }
   
+  // Wait for all jobs in the system to complete
+  // Note: the tracking of memory works with an assumption that
+  //  whatever was started after trackingMemory has completed
+  Api::vWaitForAllJobsToComplete();
+  
   bool bFatal = false;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();

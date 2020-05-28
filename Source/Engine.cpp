@@ -1520,8 +1520,8 @@ void Engine::vStartSystem(void)
               "running Start job"_Stz); //!format-LogSys
   vSpawnJobStart();
   
-  sleep((unsigned)1); // ray : fix : wait for job start to end
-
+  // wait for all jobs to complete before proceeding
+  Api::vWaitForAllJobsToComplete();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
