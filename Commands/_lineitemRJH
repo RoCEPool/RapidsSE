@@ -155,8 +155,6 @@ logWrite;
 logSection storedProcedure;
 print section "** 11/n) Stored Procedue";
 
-sp_TEST lineitem;
-
 print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 
 select table lineItem;

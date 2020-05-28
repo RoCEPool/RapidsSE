@@ -319,8 +319,30 @@ end
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* etc test                                                                   */
+/*----------------------------------------------------------------------------*/
+
+procedure etcTest
+  parameters $arg1 $etc
+
+begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    ping | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+end
+;
+
+/*----------------------------------------------------------------------------*/
 /* stored procedure syntax test                                               */
 /*----------------------------------------------------------------------------*/
+/*
 procedure sp_TEST
   parameters $Table
 begin
@@ -335,9 +357,6 @@ begin
   output | sink | stageA
 
 end;
-
-
-/*
 
 
 procedure sp_dropTable
