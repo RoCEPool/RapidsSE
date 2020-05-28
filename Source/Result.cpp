@@ -92,10 +92,11 @@ void Result::vPrint(eRS eResponse)
   switch (eResponse) {
     
     case RS_NONE                   : /* do nothing */              break;
-    case RS_JOB_RESPONSE           : vPrintJobResponse();          break;
-    case RS_LOAD_RESPONSE          : vPrintLoadResponse();         break;
-    case RS_PARTICIPANT_ERROR      : vPrintParticipantErrors();    break;
-    case RS_PARTICIPANT_RESPONSE   : vPrintParticipantResponses(); break;
+    case RS_LOCAL_RESPONSE         : vPrintLocalResponse();        break;
+    case RS_DIS2PC_RESPONSE        : vPrintDist2pcResponse();      break;
+    
+    //! TO GO
+    case RS_OLD_JOB_RESPONSE       : vPrintOldJobResponses();      break;
       
     default:
       vTrace("Invalid response : %s\n"_Stz,aRS[eResponse]);
@@ -103,68 +104,9 @@ void Result::vPrint(eRS eResponse)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print job response                                                         */
+/* print dist2pc response                                                     */
 /*----------------------------------------------------------------------------*/
-void Result::vPrintJobResponse(void)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Errors should already be handled
-  ASSERT( ! m_bJobHasError );
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // success
-  vTrace("success: %lld rows affected\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print load response                                                        */
-/*----------------------------------------------------------------------------*/
-void Result::vPrintLoadResponse(void)
-{
-  i8 iResponses = m_pOriginResponseVec->nItems();
-  RASSERT(iResponses == AM::nDefinedNodes());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Errors
-  if ( m_bPartHasError ) {
-    vTrace("error: "_Stz);
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++)
-      vTrace("node%lld: %s; "_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
-    vTrace("\n"_Stz);
-    return;
-  }
-  
-  //vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Responses
-  i8 iRowsProcessed = 0;
-  i8 iRowsInvalid   = 0;
-  i8 iRowsSkipped   = 0;
-  
-  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    
-    Response* pResponse = m_pOriginResponseVec->pGet(i_Node);
-    iRowsProcessed += *pResponse->m_ixRowsProcessed;
-    iRowsInvalid   += *pResponse->m_ixRowsInvalid;
-    iRowsSkipped   += *pResponse->m_ixRowsSkipped;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // success / error
-  if (iRowsInvalid || iRowsSkipped)
-    vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-  else
-    vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* print participant node errors                                              */
-/*----------------------------------------------------------------------------*/
-void Result::vPrintParticipantErrors(void)
+void Result::vPrintDist2pcResponse(void)
 {
   i8 iResponses = m_pOriginResponseVec->nItems();
   
@@ -211,9 +153,24 @@ void Result::vPrintParticipantErrors(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print job response                                                         */
+/*----------------------------------------------------------------------------*/
+void Result::vPrintLocalResponse(void)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Errors should already be handled
+  ASSERT( ! m_bJobHasError );
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // success
+  vTrace("success: %lld rows affected\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
+}
+
+//! TO GO
+/*----------------------------------------------------------------------------*/
 /* print participant node responses                                           */
 /*----------------------------------------------------------------------------*/
-void Result::vPrintParticipantResponses(void)
+void Result::vPrintOldJobResponses(void)
 {
   i8 iResponses = m_pOriginResponseVec->nItems();
   RASSERT(iResponses == AM::pGrid()->nConnectedNodes());

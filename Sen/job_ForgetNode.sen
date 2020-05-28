@@ -43,7 +43,7 @@ cmdSyntax: forgetNode :: fgnde <nodeNm> ;
   tags{
     <cmdDesc>  = "--desc for job--"
   
-    <rspKind>  = RS_PARTICIPANT_RESPONSE
+    <rspKind>  = RS_OLD_JOB_RESPONSE
     <ddlLock>  = DL_GRAB_WRITE
   
     <preCheck> = bClusterStarted

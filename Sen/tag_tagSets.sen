@@ -50,7 +50,7 @@
 : operator_tags
   tags{
     <jobKind>  = JK_LOCAL
-    <rspKind>  = RS_PARTICIPANT_RESPONSE
+    //<rspKind>  = RS_PARTICIPANT_RESPONSE
     <ddlLock>  = DL_GRAB_READ
     
     <preCheck> = bClusterStarted
@@ -93,7 +93,7 @@
     <serviceOp> = 1
     
     <jobKind>  = JK_LOCAL
-    <rspKind>  = RS_PARTICIPANT_RESPONSE
+    //<rspKind>  = RS_PARTICIPANT_RESPONSE
   }
 ;
 
