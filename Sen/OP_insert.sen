@@ -12,9 +12,9 @@
   //"Operand:- ZK_CRWBUFFER" .verbose
 
   // insert the buffer into the table ptn
-  tablePtn[].get tablePtnGrabWrite
+  tablePtn[] tablePtnGrabWrite
   Pipein[] tablePtn[].appendBuffer
-  tablePtn[].get tablePtnDropWrite
+  tablePtn[] tablePtnDropWrite
 
   // null the Pipein
   nullptr to Pipein[]

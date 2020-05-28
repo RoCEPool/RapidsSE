@@ -47,7 +47,7 @@
   Subset[] to Operand[]
 
   Operand[].isNull if
-    tablePtn[].get tablePtnDropRead
+    tablePtn[] tablePtnDropRead
     Operand[].newEosMarker
     Operand[].pipeOut
   then
@@ -70,14 +70,14 @@
   Operand[].pipeOut
 
   // grab the table ptn read lock
-  tablePtn[].get tablePtnGrabRead
+  tablePtn[] tablePtnGrabRead
 
   // pipeout all subsets from tablePtn
   tablePtn[].root to Subset[]
   Subset[] to Operand[]
 
   Operand[].isNull if
-    tablePtn[].get tablePtnDropRead
+    tablePtn[] tablePtnDropRead
     Operand[].newEosMarker
     Operand[].pipeOut
   then

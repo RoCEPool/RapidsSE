@@ -17,9 +17,9 @@
   Operand[].pipeOut
 
   // purge
-  tablePtn[].get tablePtnGrabWrite
+  tablePtn[] tablePtnGrabWrite
   tablePtn[].purge
-  tablePtn[].get tablePtnDropWrite
+  tablePtn[] tablePtnDropWrite
   Operand[].newEosMarker
   Operand[].pipeOut
 

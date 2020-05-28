@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_TablePartition2(void)
 {
-  vAddStep("tablePtn[].get"_Stz,              &Step::vTablePtnGet);
+  vAddStep("tablePtn[]"_Stz,                  &Step::vTablePtnGet);
   
   vAddStep("tablePtn[].appendBuffer"_Stz,     &Step::vTablePtnAppendBuffer);
   vAddStep("tablePtn[].genCrwBuffers"_Stz,    &Step::vTablePtnGenCrwBuffers);
@@ -41,7 +41,7 @@ void Step::vTablePtnAppendBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn[].get -- get table                                                */
+/* tablePtn[] -- get table                                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnGet(void)
 {

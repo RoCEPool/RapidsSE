@@ -14,9 +14,9 @@
   nullptr to Pipein[]
 
   tx[].begin
-  tablePtn[].get tablePtnGrabWrite
+  tablePtn[] tablePtnGrabWrite
   Operand[].upsertIntoTable
-  tablePtn[].get tablePtnDropWrite
+  tablePtn[] tablePtnDropWrite
   tx[].commit
   Operand[].delete
 

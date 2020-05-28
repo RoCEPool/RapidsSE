@@ -17,13 +17,13 @@
   <tableNm> sIndexNm op__index assert
 
   // grab the table ptn read lock
-  tablePtn[].get tablePtnGrabRead
+  tablePtn[] tablePtnGrabRead
 
   // position in the index
   iPhrase  // phrase
   lowerKey // lower
   upperKey // upper
-  planner[] tablePtn[].get index[].position
+  planner[] tablePtn[] index[].position
 
   // fetch next buffer
   rowOnce[].isNull if
@@ -31,7 +31,7 @@
   else
     rowOnce[]
   then
-  tablePtn[].get index[].fetchNext
+  tablePtn[] index[].fetchNext
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +96,7 @@
     AT_SCAN of
       "*scan*" .verbose
       // now get excat key rows from index
-      tablePtn[].get tablePtnGrabRead
+      tablePtn[] tablePtnGrabRead
       tablePtn[].root to Subset[]
       Subset[] to Operand[]
     endof
@@ -164,7 +164,7 @@
     else
       rowOnce[]
     then
-    tablePtn[].get index[].fetchNext to Operand[]
+    tablePtn[] index[].fetchNext to Operand[]
 
   endcase
 
@@ -175,7 +175,7 @@
     Counter1[] 1 + to Counter1[]
     Counter1[] Counter0[] >= if
       // all done
-      tablePtn[].get tablePtnDropRead
+      tablePtn[] tablePtnDropRead
 
       // delete the planner
       planner[].delete
@@ -233,7 +233,7 @@
 
   // any data ?
   Operand[].isNull if
-    tablePtn[].get tablePtnDropRead
+    tablePtn[] tablePtnDropRead
 
     // delete the planner
     planner[].delete
