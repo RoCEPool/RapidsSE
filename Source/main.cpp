@@ -21,6 +21,7 @@ int main(int argc, const char* argv[])
 {
   //ASSERT(1 == 0);
 
+  printf("sizeof(RowSingle)   %lld\n", (i8)sizeof(RowSingle));
   printf("sizeof(Table)       %lld\n", (i8)sizeof(Table));
   printf("sizeof(Index)       %lld\n", (i8)sizeof(Index));
   printf("sizeof(Dic)         %lld\n", (i8)sizeof(Dic));

@@ -5,6 +5,34 @@
 #include "Host.h"
 
 /*----------------------------------------------------------------------------*/
+/* get byte order                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Hardware::iByteOrder(void)
+{
+  _static_
+
+#ifdef WITH_APPLE
+  
+  i8     iSize = 0;
+  size_t len = sizeof(iSize);
+  
+  i8 iReturn = sysctlbyname("hw.byteorder", &iSize, &len, 0, 0);
+  if (iReturn) {
+    vWarn("Error while getting byte order %lld\n"_Stz, iReturn);
+    return 0;
+  }
+  return iSize;
+  
+#else
+  
+  //vWarn("iCacheLine() not implemented on LINUX!\n");
+  return 0;
+
+#endif
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size of cache line                                                     */
 /*----------------------------------------------------------------------------*/
 i8 Hardware::iCacheLine(void)
@@ -153,6 +181,34 @@ i8 Hardware::iCpuFrequency(void)
   //vTrace("Clock frequency: %lld\n"_Stz, iFreq);
 
   return iFreq;
+
+#endif
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of L1 cache per core on this machine                              */
+/*----------------------------------------------------------------------------*/
+i8 Hardware::iL1Cache(void)
+{
+  _static_
+
+#ifdef WITH_APPLE
+  
+  i8     iSize = 0;
+  size_t len = sizeof(iSize);
+  
+  i8 iReturn = sysctlbyname("hw.l1dcachesize", &iSize, &len, 0, 0);
+  if (iReturn) {
+    vWarn("Error while getting L1 cache size %lld\n"_Stz, iReturn);
+    return 0;
+  }
+  return iSize;
+  
+#else
+  
+  //vWarn("iL2Cache() not implemented on LINUX!\n");
+  return 0;
 
 #endif
   

@@ -8,11 +8,13 @@ namespace Host
   class Hardware
   {    
   public:
+    static i8 iByteOrder(void);
     static i8 iCacheLine(void);
     static i8 iClockResNsec(void);
     static i8 iCoreCount(void);
     static i8 iCpuCount(void);
     static i8 iCpuFrequency(void);
+    static i8 iL1Cache(void);
     static i8 iL2Cache(void);
     static i8 iL3Cache(void);
     static i8 iPhysicalMemory(void);

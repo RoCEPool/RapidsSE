@@ -38,10 +38,12 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_pCol    = nullptr;
   m_eCol    = CT_NONE;
 
-  m_bTrace  = false;
+  m_bTrace  = true;
   m_dCalc   = 0.0;
   m_nChars  = 0;
-
+  
+  m_pRowSingle = new RowSingle(m_pStreamDef,0);
+  
   m_pFmt->vShow();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
@@ -59,6 +61,8 @@ Convertor::~Convertor(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
   
   vTrace("Converted %lld chars\n"_Stz,m_nChars);
+  
+  delete m_pRowSingle;
 }
 
 /*----------------------------------------------------------------------------*/

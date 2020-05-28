@@ -1229,6 +1229,8 @@ void Engine::vPrintMachine(void)
   s32 sHostName;
   Hardware::vHostName(sHostName);
 
+  i8 iByteOrder = Hardware::iByteOrder();
+
   i8 iCoreCount = Hardware::iCoreCount();
  
   i8 iCacheLine = Hardware::iCacheLine();
@@ -1241,6 +1243,10 @@ void Engine::vPrintMachine(void)
   i8 iClockResNsec = Hardware::iClockResNsec();
   MagLib::vHzMag(iClockResNsec,sClock_magn);
 
+  s32 sL1Cache_magn;
+  i8 iL1Cache= Hardware::iL1Cache();
+  MagLib::vByteMag(iL1Cache,sL1Cache_magn);
+  
   s32 sL2Cache_magn;
   i8 iL2Cache= Hardware::iL2Cache();
   MagLib::vByteMag(iL2Cache,sL2Cache_magn);
@@ -1261,6 +1267,8 @@ void Engine::vPrintMachine(void)
   vInfo("  Host Name : %s\n"_Stz,   sHostName.szStz());
   vInfo("  Core Count: %lld\n"_Stz, iCoreCount);
   vInfo("  Cache Line: %lldB\n"_Stz,iCacheLine);
+  vInfo("  Byte Order: %lld\n"_Stz, iByteOrder);
+  vInfo("  L1 Cache  : %s (per core)\n"_Stz,   sL1Cache_magn.szStz());
   vInfo("  L2 Cache  : %s (per core)\n"_Stz,   sL2Cache_magn.szStz());
   vInfo("  L3 Cache  : %s\n"_Stz,   sL3Cache_magn.szStz());
   vInfo("  Memory    : %s\n"_Stz,   sMemory_magn.szStz());

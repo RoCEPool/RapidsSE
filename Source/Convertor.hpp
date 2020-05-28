@@ -25,12 +25,14 @@ namespace Load
     Column*    m_pCol;
     eCT        m_eCol;
   
-    Datum      m_oDatum;
   
     bool       m_bTrace;
     d8         m_dCalc;
     i8         m_nChars;
     bool       m_bSawFldSep;
+  
+    Datum      m_oDatum;
+    RowSingle* m_pRowSingle;
   
     // must be last
     Footer m_xFooter;
@@ -147,6 +149,7 @@ namespace Load
   {
     if (! m_bTrace)
       return;
+  
   }
 
   /*--------------------------------------------------------------------------*/
@@ -183,6 +186,10 @@ namespace Load
   {
     if (! m_bTrace)
       return;
+  
+    SP_Int spInt;
+  
+    vTrace("Integer : %s\n"_Stz,spInt.sz(m_oDatum.iInt()));
   }
 
   /*--------------------------------------------------------------------------*/
@@ -219,6 +226,10 @@ namespace Load
   {
     if (! m_bTrace)
       return;
+  
+    SP_Vch spVch;
+  
+    vTrace("Varchar : %s\n"_Stz,m_oDatum.szStz());
   }
 
   /*--------------------------------------------------------------------------*/
@@ -316,16 +327,21 @@ namespace Load
   {
     vFieldTrace();
 
-    while (bInField()) {
-
-      m_dCalc = (CALC) - 4.0;
-
-      if (m_bTrace)
-        vTrace("%c"_Stz,*m_acChr);
-      m_acChr++;
-      m_iCol++;
-      m_nChars++;
-    }
+//    while (bInField()) {
+//
+//      m_dCalc = (CALC) - 4.0;
+//
+//      if (m_bTrace)
+//        vTrace("%c"_Stz,*m_acChr);
+//      m_acChr++;
+//      m_iCol++;
+//      m_nChars++;
+//    }
+  
+    i8 iInt;
+    StrLib::bExtractInteger(&m_acChr,&iInt,true);
+  
+    m_oDatum.vInt(iInt);
   
     vSprintInteger();
   }
