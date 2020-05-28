@@ -114,7 +114,7 @@ cmdSyntax: createTable :: create table definition <tableNm> etc ;
   tags{
     <cmdDesc>  = "--desc for job--"
   
-    <rspKind>  = RS_PARTICIPANT_RESPONSE
+    <rspKind>  = RS_OLD_JOB_RESPONSE
     <ddlLock>  = DL_GRAB_WRITE
   
     <preCheck> = bClusterStarted

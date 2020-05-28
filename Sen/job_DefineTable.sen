@@ -114,7 +114,7 @@ cmdSyntax: defineTable :: define table <tableNm> etc ;
     
     <axiomOp>  = 1
     <jobKind>  = JK_LOCAL
-    <rspKind>  = RS_JOB_RESPONSE
+    <rspKind>  = RS_LOCAL_RESPONSE
     <ddlLock>  = DL_GRAB_WRITE
   }
 ;

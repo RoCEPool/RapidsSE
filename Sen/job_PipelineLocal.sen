@@ -96,7 +96,7 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
     <cmdDesc>  = "--desc for job--"
 
     <jobKind>  = JK_LOCAL
-    <rspKind>  = RS_JOB_RESPONSE
+    <rspKind>  = RS_LOCAL_RESPONSE
     //<ddlLock>  = DL_GRAB_READ
 
     //<preCheck> = bClusterStarted

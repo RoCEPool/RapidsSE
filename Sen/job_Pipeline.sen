@@ -96,7 +96,7 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
   tags{
     <cmdDesc>  = "--desc for job--"
 
-    <rspKind>  = RS_PARTICIPANT_ERROR
+    <rspKind>  = RS_DIS2PC_RESPONSE
     <ddlLock>  = DL_GRAB_READ
 
     <preCheck> = bClusterStarted
