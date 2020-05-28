@@ -74,7 +74,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* find word for procedure matching given name                                */
 /*----------------------------------------------------------------------------*/
-Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
+Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
 {
   _static_
   
@@ -94,28 +94,28 @@ Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // try one part name
   
-  Token* pTkn0_CalledProcNm_a = pCmdTokenVec->pGet(0);
+  Token* pTkn0_CalledProcNm_a = pInpTknVec->pGet(0);
 
   s256 sProcNm_single = pTkn0_CalledProcNm_a->szChars();
   
-  Word* pProcWord = pRootDic->pFindWord(sProcNm_single);
+  Word* pwMatchedProc = pRootDic->pFindWord(sProcNm_single);
   
-  if (pProcWord) {
-    if (pProcWord->pCategory() != pProcCatg)
+  if (pwMatchedProc) {
+    if (pwMatchedProc->pCategory() != pProcCatg)
       return nullptr;
 
     // found procedure which matches token0
-    return pProcWord;
+    return pwMatchedProc;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // try two-part name
 
-  i8 nTokens = pCmdTokenVec->nTokens();
+  i8 nTokens = pInpTknVec->nTokens();
   if (1 == nTokens)
     return nullptr;
 
-  Token* pTkn1_CalledProcNm_b = pCmdTokenVec->pGet(1);
+  Token* pTkn1_CalledProcNm_b = pInpTknVec->pGet(1);
 
   s256 sProcNm_compound = sProcNm_single;
   sProcNm_compound.vConcat("__"_Stz);
@@ -125,54 +125,55 @@ Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
   vTrace("bTranslateProcedure: two part name: %s\n"_Stz,sProcNm_compound.szStz());
 #endif
 
-  pProcWord = pRootDic->pFindWord(sProcNm_compound);
+  pwMatchedProc = pRootDic->pFindWord(sProcNm_compound);
 
-  if (! pProcWord)
+  if (! pwMatchedProc)
     return nullptr;
 
-  if (pProcWord->pCategory() != pProcCatg)
+  if (pwMatchedProc->pCategory() != pProcCatg)
     return nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // found two-part; correct the command token vector
   
-  pCmdTokenVec->vRemoveToken(1);
+  pInpTknVec->vRemoveToken(1);
   
-  pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound,pCmdTokenVec);
+  pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound,pInpTknVec);
   
   if (iJotDebug())
-    pCmdTokenVec->vListTokens();
+    pInpTknVec->vListTokens();
 
   // found procedure which matches token0_token1
-  return pProcWord;
+  return pwMatchedProc;
 }
 
 /*----------------------------------------------------------------------------*/
 /* translate stored procedure command into a pipeline command                 */
 /*----------------------------------------------------------------------------*/
 bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
-                                    TokenVec* pCmdTokenVec,
-                                    Word* pProcWord)
+                                    TokenVec* pInpTknVec,
+                                    Word* pwMatchedProc)
 {
   _static_
 
   if (AM::bVerbose()) {
-    vTrace("Translating Proc: %s\n"_Stz,pProcWord->szWordNm());
+    vTrace("Translating Proc: %s\n"_Stz,pwMatchedProc->szWordNm());
     
-    if (pProcWord->szWordNm()->bSame("drop__table"_Stz))
+    if (pwMatchedProc->szWordNm()->bSame("drop__table"_Stz))
       vDebugPoint();
   }
   
   i8 i_Cut;
-  i8 nTokens = pCmdTokenVec->nTokens();
+  i8 nTokens = pInpTknVec->nTokens();
 
   s4K sOriginalCmd;
-  pCmdTokenVec->vVecToString(sOriginalCmd,0,false);
+  pInpTknVec->vVecToString(sOriginalCmd,0,false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the procedure text and toeknise it
-  TagSet* pWrdTagSet = pProcWord->pWrdTagSet();
-  if (pProcWord->szWordNm()->bSame("drop__table"_Stz)) {
+  // get the procedure text and tokneise it
+  
+  TagSet* pWrdTagSet = pwMatchedProc->pWrdTagSet();
+  if (pwMatchedProc->szWordNm()->bSame("drop__table"_Stz)) {
     pWrdTagSet->vDumpSet(true);
     vDebugPoint();
   }
@@ -198,12 +199,13 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // substitute parameters in procedure text with command arguments
   
-  TokenVec* pParamsVec = TokenVec::pSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
   TokenVec* pArgsVec = nullptr;
+
+  TokenVec* pParamsVec = TokenVec::pGetSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
   
   if ( pParamsVec ) {
   
-    pArgsVec = TokenVec::pSubVec(pCmdTokenVec,1,nTokens-1);
+    pArgsVec = TokenVec::pGetSubVec(pInpTknVec,1,nTokens-1);
     
     if (pParamsVec->nTokens() != pArgsVec->nTokens()) {
       delete pProcTextVec;
