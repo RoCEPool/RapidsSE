@@ -251,6 +251,16 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
       pEtcTknVec = TokenVec::pGetSubVec(pInpTknVec,1 + i_Etc,nInpTokens-1);
       dPV("pEtcTknVec"_Stz,pEtcTknVec);
       
+      s4K sEtcSubStr;
+      pEtcTknVec->vVecToString(sEtcSubStr,0,false);
+      vTrace("sEtcSubStr=%s\n"_Stz,sEtcSubStr.szStz());
+      
+      pInpArgVec->vTrimTokens(i_Etc);
+      dPV("pInpArgVec(t)"_Stz,pInpArgVec);
+
+      pInpArgVec->vAppendToken(sEtcSubStr,TN_STRING);
+      dPV("pInpArgVec(+)"_Stz,pInpArgVec);
+
       vDebugPoint();
     }
     
