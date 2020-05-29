@@ -196,43 +196,49 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     pTkn0->vUpdateChars("pipelineLocal"_Stz,pProcTextVec);
   }
   
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // substitute parameters in procedure text with command arguments
+  // substitute parameters in procedure text with command input arguments
   
-  TokenVec* pArgsVec = nullptr;
+  TokenVec* pInpArgVec = nullptr;
 
-  TokenVec* pParamsVec = TokenVec::pGetSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
+  TokenVec* pPrcPrmVec = TokenVec::pGetSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
   
-  if (pParamsVec) {
+  if (pPrcPrmVec) {
   
-    pArgsVec = TokenVec::pGetSubVec(pInpTknVec,1,nTokens-1);
+    // get the arguments, e.g. : $arg1 $arg2 $etc
+    pInpArgVec = TokenVec::pGetSubVec(pInpTknVec,1,nTokens-1);
     
-    i8 i_Last = pParamsVec->nTokens() - 1;
-    Token* pLastPrmTkn = pParamsVec->pGet(i_Last);
-    
+    // test if last argument is $etc
     bool bHasEtcParam = false;
+    i8 i_Last = pPrcPrmVec->nTokens() - 1;
+    Token* pLastPrmTkn = pPrcPrmVec->pGet(i_Last);
     if (pLastPrmTkn->bSame("$etc"_Stz)) {
       bHasEtcParam = true;
       //vJotDebug(1);
       //vDebugPoint();
+      
+      
+      // ... etc stuff ...
+      
+      
+      
     }
     
-    if (! bHasEtcParam && pParamsVec->nTokens() != pArgsVec->nTokens()) {
+    if (! bHasEtcParam && pPrcPrmVec->nTokens() != pInpArgVec->nTokens()) {
       delete pProcTextVec;
-      delete pParamsVec;
-      delete pArgsVec;
+      delete pPrcPrmVec;
+      delete pInpArgVec;
       return false;
     }
     
     if (iJotDebug())
       pProcTextVec->vListTokens();
-    TokenVec::vReplace(pProcTextVec,pParamsVec,pArgsVec);
+    TokenVec::vReplace(pProcTextVec,pPrcPrmVec,pInpArgVec);
     if (iJotDebug())
       pProcTextVec->vListTokens();
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove the parameters clause from the modified text vector
-    
     i_Cut = pProcTextVec->iFindToken("parameters"_Stz);
     
     if (C_UNKNOWN != i_Cut) {
@@ -272,8 +278,8 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     vTrace(" => %s\n"_Stz,pToPipelineStmt->szStz());
   
   delete pProcTextVec;
-  delete pParamsVec;
-  delete pArgsVec;
+  delete pPrcPrmVec;
+  delete pInpArgVec;
 
   return true;
 }
