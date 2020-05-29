@@ -252,7 +252,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
       dPV("pEtcTknVec"_Stz,pEtcTknVec);
       
       s4K sEtcSubStr;
-      pEtcTknVec->vVecToString(sEtcSubStr,0,false);
+      pEtcTknVec->vToTknString(sEtcSubStr);
       vTrace("sEtcSubStr=%s\n"_Stz,sEtcSubStr.szStz());
       
       pInpArgVec->vTrimTokens(i_Etc);

@@ -894,6 +894,63 @@ void TokenVec::vUpdateToken(Token* pDstToken, Stz* szArgChars)
 /*----------------------------------------------------------------------------*/
 /* concat all tokens into one string                                          */
 /*----------------------------------------------------------------------------*/
+void TokenVec::vToTknString(Stz* szDstStr)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  StrLib::vCopy(szDstStr->azChar(),"");
+  
+  i8 nTokens = this->nTokens();
+  
+  // concat all the tokens together
+  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
+    
+    Token* pToken = pGet(i_Token);
+    
+    if (i_Token)
+      StrLib::vConcat(szDstStr->azChar()," ");
+    
+    eTN eToken = pToken->eToken();
+    
+    switch (eToken) {
+        
+      case TN_NONE:
+        break;
+        
+      case TN_INTEGER:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        break;
+        
+      case TN_NAME:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        break;
+        
+      case TN_NULL:
+        break;
+        
+      case TN_OTHER:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        break;
+        
+      case TN_STRING:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        break;
+        
+      case TN_TAG:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        break;
+        
+      default:
+        NEVER_REACH;
+    }
+    
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat all tokens into one string                                          */
+/*----------------------------------------------------------------------------*/
 void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);

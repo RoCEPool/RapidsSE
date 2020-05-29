@@ -2,17 +2,38 @@
 /* OP_etcTest.sen -- etc test operator                                        */
 /*============================================================================*/
 
-" OP_etc" .verbose
+" OP_etcTest" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* action                                                                     */
+/* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: etcTest_action
+: etcTest_PulseMarker \handler
 
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Pipein[].pipeOut
   <etc> <arg1> "etcTest : arg1 = %v etc = %v" .printf
 
   true
 ;
+
+/*----------------------------------------------------------------------------*/
+/* etcTest request                                    (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: etcTest_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: etcTest_PulseMarker ZK_PULSEMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -22,10 +43,10 @@ cmdSyntax: etcTest :: etcTest <arg1> <etc> ;
 : etcTest _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>     = "--desc for op--"
-    <params>      = 2
   }
 ;
     
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

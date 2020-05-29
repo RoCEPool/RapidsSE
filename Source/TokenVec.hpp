@@ -66,6 +66,7 @@ namespace LexicalAnalysis
     void vTokenise(Stz* szString);
     i8   nTokens(void);
     void vUpdateToken(Token* pDstToken, Stz* szArgChars);
+    void vToTknString(Stz* szDstStr);
     void vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon);
   
   private:
