@@ -239,7 +239,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SchemaTest),         HT_TRANSIENT_LARGE   }, // CN_SCHEMATEST
   { sizeof(SeeMe),              HT_INVALID           }, // CN_SEEME
   { sizeof(SePrompt),           HT_TRANSIENT_MEDIUM  }, // CN_SEPROMPT
-  { sizeof(Session),            HT_TRANSIENT_LARGE   }, // CN_SESSION
+  { sizeof(Session),            HT_TRANSIENT_MEDIUM  }, // CN_SESSION
   { sizeof(SessionArray),       HT_TRANSIENT_TINY    }, // CN_SESSIONARRAY
   { sizeof(ShortCut),           HT_TRANSIENT_MEDIUM  }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_TRANSIENT_MEDIUM  }, // CN_SHORTCUTVEC
