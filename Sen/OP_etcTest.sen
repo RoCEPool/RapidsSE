@@ -11,7 +11,7 @@
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
-  <etc> <arg1> "etcTest : arg1 = %v etc = %v" .printf
+  <etc> <arg2> <arg1> "etcTest : arg1 = %v arg2 = %v etc = %v" .printf
 
   true
 ;
@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: etcTest :: etcTest <arg1> <etc> ;
+cmdSyntax: etcTest :: etcTest <arg1> <arg2> <etc> ;
 
 : etcTest _cmdTags tagCopy: op_tags
   tags{
