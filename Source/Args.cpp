@@ -164,7 +164,7 @@ void Args::vLog(void)
 /*----------------------------------------------------------------------------*/
 /* parse command line arguments                                               */
 /*----------------------------------------------------------------------------*/
-bool Args::bParse(int argc, Stz* argv[])
+bool Args::bParse(i8 argc, Stz* argv[])
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   

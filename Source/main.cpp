@@ -17,17 +17,17 @@ extern Args  gxArgs;
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
-int main(int argc, const char* argv[])
+int main(int argc, char* argv[])
 {
   //ASSERT(1 == 0);
 
-  printf("sizeof(RowSingle)   %lld\n", (i8)sizeof(RowSingle));
-  printf("sizeof(Table)       %lld\n", (i8)sizeof(Table));
-  printf("sizeof(Index)       %lld\n", (i8)sizeof(Index));
-  printf("sizeof(Dic)         %lld\n", (i8)sizeof(Dic));
-  printf("sizeof(Token)       %lld\n", (i8)sizeof(Token));
-  printf("sizeof(TokenVec)    %lld\n", (i8)sizeof(TokenVec));
-  printf("sizeof(Session)     %lld\n", (i8)sizeof(Session));
+//  printf("sizeof(RowSingle)   %lld\n", (i8)sizeof(RowSingle));
+//  printf("sizeof(Table)       %lld\n", (i8)sizeof(Table));
+//  printf("sizeof(Index)       %lld\n", (i8)sizeof(Index));
+//  printf("sizeof(Dic)         %lld\n", (i8)sizeof(Dic));
+//  printf("sizeof(Token)       %lld\n", (i8)sizeof(Token));
+//  printf("sizeof(TokenVec)    %lld\n", (i8)sizeof(TokenVec));
+//  printf("sizeof(Session)     %lld\n", (i8)sizeof(Session));
 
 //  printf("sizeof(Column)       %lld\n", (i8)sizeof(Column));
 //  printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
@@ -51,7 +51,21 @@ int main(int argc, const char* argv[])
   gsBuildHostName = (Stz*)C_BUILD_HOSTNAME;
   gsBuildUserName = (Stz*)C_BUILD_USERNAME;
   gsBuildBranch   = (Stz*)C_BUILD_BRANCH;
-
+  
+  int nCmdLineArgs = 0;
+  Stz* szaCmdLineArg[128];
+  
+  if (argc) {
+    for (i8 i_Arg = 0; i_Arg < argc; i_Arg++)
+      szaCmdLineArg[i_Arg] = (Stz*)argv[i_Arg];
+    nCmdLineArgs = argc;
+  }
+  else {
+    
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   try {
     
     // force bamboo build
@@ -59,7 +73,7 @@ int main(int argc, const char* argv[])
     Process::vEntry();
     
     // parse the command line arguments
-    if (! gxArgs.bParse(argc,(Stz**)argv))
+    if (! gxArgs.bParse(nCmdLineArgs,szaCmdLineArg))
       Process::vExitFailure();
     
     // potentially run utilities

@@ -100,7 +100,7 @@ namespace Arguments
     static void vLog(void);
   
     void vEnvironmentVariables(void);
-    bool bParse(int argc, Stz* argv[]);
+    bool bParse(i8 argc, Stz* argv[]);
     void vPrint(void);
     void vPrintStartupInfo(void);
     void vPrintHelp(void);
