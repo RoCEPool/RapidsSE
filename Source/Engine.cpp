@@ -29,8 +29,8 @@ extern Atomic gixSocket;
 extern i8     giProgressPoint;
 extern i8     giProgressSubPoint;
 
-extern int    gi_argc;
-extern char** gi_argv;
+extern i8     gi_argc;
+extern s256   gi_szaArgv[];
 
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ void Engine::vPreliminary(void)
     vTrace("\n"_Stz);
     vTrace("argv[]:\n"_Stz);
     for (i8 i = 0; i < gi_argc; i++)
-      vTrace("  argv[%lld] %s\n"_Stz,i,gi_argv[i]);
+      vTrace("  argv[%lld] %s\n"_Stz,i,gi_szaArgv[i].szStz());
   }
   
   vPrintTime();

@@ -30,6 +30,7 @@ namespace Strings
     static char* azAscii(i8 i_Char);
     
     static bool  bBackward(char** ps, char* pBegin, const char c);
+    static i8    nBurstArgs(Stz* szaArgv[], Stz* szArgStr);
 
     static void  vClick(char* aArg);
     static bool  bClip(char* aArg, i8 iLen);

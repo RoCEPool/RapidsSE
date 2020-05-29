@@ -12,7 +12,10 @@ extern Stz* gsBuildHostName;
 extern Stz* gsBuildUserName;
 extern Stz* gsBuildBranch;
 
-extern Args  gxArgs;
+extern Args gxArgs;
+
+extern i8   gi_argc;
+extern s256 gi_szaArgv[];
 
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
@@ -51,17 +54,27 @@ int main(int argc, char* argv[])
   gsBuildHostName = (Stz*)C_BUILD_HOSTNAME;
   gsBuildUserName = (Stz*)C_BUILD_USERNAME;
   gsBuildBranch   = (Stz*)C_BUILD_BRANCH;
-  
-  int nCmdLineArgs = 0;
-  Stz* szaCmdLineArg[128];
-  
+    
   if (argc) {
     for (i8 i_Arg = 0; i_Arg < argc; i_Arg++)
-      szaCmdLineArg[i_Arg] = (Stz*)argv[i_Arg];
-    nCmdLineArgs = argc;
+      gi_szaArgv[i_Arg] = (Stz*)argv[i_Arg];
+    gi_argc = argc;
   }
   else {
-    
+    s4K sSeArgs;
+    sSeArgs =
+      "--start "
+      "--prompt "
+      "--verbose "
+      "--developer "
+      "--killPrev "
+      "--name NODE0 "
+      "--node NODE0 127.0.0.1 5540 "
+      //"--node NODE1 127.0.0.1 5541 "
+      //"--node NODE2 127.0.0.1 5542 "
+      //"--node NODE3 127.0.0.1 5543 "
+      "--log "
+      ""_Stz;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,7 +86,7 @@ int main(int argc, char* argv[])
     Process::vEntry();
     
     // parse the command line arguments
-    if (! gxArgs.bParse(nCmdLineArgs,szaCmdLineArg))
+    if (! gxArgs.bParse(gi_argc,gi_szaArgv))
       Process::vExitFailure();
     
     // potentially run utilities
