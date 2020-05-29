@@ -1439,8 +1439,6 @@ public:
   void vTablePtnAttemptGrabWrite(void);
   void vTablePtnDropRead(void);
   void vTablePtnDropWrite(void);
-  void vTablePtnDump(void);
-  void vTablePtnIsLocked(void);
 
   // table partition
   void vTablePtnAppendBuffer(void);

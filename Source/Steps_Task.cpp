@@ -131,7 +131,7 @@ void Step::vTaskDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::scheduledelete -- remove task from scheduler and delete                      */
+/* task::scheduledelete -- remove task from scheduler and delete              */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDelete(void)
 {

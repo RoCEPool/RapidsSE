@@ -14,8 +14,6 @@ void Step::vAddSteps_TablePartition(void)
   vAddStep("tablePtn.attemptGrabWrite"_Stz, &Step::vTablePtnAttemptGrabWrite);
   vAddStep("tablePtn.dropRead"_Stz,         &Step::vTablePtnDropRead);
   vAddStep("tablePtn.dropWrite"_Stz,        &Step::vTablePtnDropWrite);
-  vAddStep("tablePtn.dump"_Stz,             &Step::vTablePtnDump);
-  vAddStep("tablePtn.isLocked"_Stz,         &Step::vTablePtnIsLocked);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,20 +66,6 @@ void Step::vTablePtnDropRead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn.dump -- dump partition id                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnDump(void)
-{
-  ENTRY();
-  
-  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pTablePtn->iPartitionId());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* tablePtn.dropWrite -- drop a write lock on the partition of a table        */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnDropWrite(void)
@@ -93,22 +77,6 @@ void Step::vTablePtnDropWrite(void)
   // drop the write lock
   pTablePtn->vDropWrite();
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tablePtn.isLocked -- test if a table partition is locked                   */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnIsLocked(void)
-{
-  ENTRY();
-  
-  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
-  
-  bool bIsLocked = pTablePtn->bIsLocked();
-  
-  m_pDataStack->vPushInt(bIsLocked);
-
   EXIT();
 }
 
