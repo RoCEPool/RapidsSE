@@ -147,6 +147,12 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   return pwMatchedProc;
 }
 
+#define dPV(sNM,pTV) { \
+  s4K sDbgStr; \
+  pTV->vDbgStr(sDbgStr); \
+  vTrace("%s=%s\n"_Stz,sNM->azChar(),sDbgStr.azChar()); \
+}
+
 /*----------------------------------------------------------------------------*/
 /* translate stored procedure command into a pipeline command                 */
 /*----------------------------------------------------------------------------*/
@@ -170,7 +176,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   pInpTknVec->vVecToString(sOriginalCmd,0,false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the procedure text and tokneise it
+  // get the procedure text and tokenise it
   
   TagSet* pWrdTagSet = pwMatchedProc->pWrdTagSet();
   if (pwMatchedProc->szWordNm()->bSame("drop__table"_Stz)) {
@@ -178,22 +184,22 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     vDebugPoint();
   }
   
-  Stz* szProcText = pWrdTagSet->szValue("procText"_Stz);
+  Stz* szPrdText = pWrdTagSet->szValue("procText"_Stz);
   
-  TokenVec* pProcTextVec = TokenVec::pTokenise(szProcText);
+  TokenVec* pPrdTxtVec = TokenVec::pTokenise(szPrdText);
   
   //pProcVec->vDumpTokens();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert procedure into pipeline
   
-  Token* pTkn0 = pProcTextVec->pGet(0);
+  Token* pTkn0 = pPrdTxtVec->pGet(0);
 
   if (pTkn0->bSame("procedure"_Stz))
-    pTkn0->vUpdateChars("pipeline"_Stz,pProcTextVec);
+    pTkn0->vUpdateChars("pipeline"_Stz,pPrdTxtVec);
   else {
     ASSERT(pTkn0->bSame("procedureLocal"_Stz));
-    pTkn0->vUpdateChars("pipelineLocal"_Stz,pProcTextVec);
+    pTkn0->vUpdateChars("pipelineLocal"_Stz,pPrdTxtVec);
   }
   
   
@@ -203,21 +209,21 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   TokenVec* pInpArgVec = nullptr;
   TokenVec* pEtcTknVec = nullptr;
 
-  TokenVec* pPrcPrmVec = TokenVec::pGetSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
+  TokenVec* pPrdPrmVec = TokenVec::pGetSubVec(pPrdTxtVec,"parameters"_Stz,"begin"_Stz);
   
-  if (pPrcPrmVec) {
+  if (pPrdPrmVec) {
   
-    vJotDebug(1);
-    pPrcPrmVec->vListTokens();
-    vJotDebug(0);
+    dPV("pInpTknVec"_Stz,pInpTknVec);
+    dPV("pPrcTxtVec"_Stz,pPrdTxtVec);
+    dPV("pPrcPrmVec"_Stz,pPrdPrmVec);
 
     // get the input arguments, e.g. : A B C
     pInpArgVec = TokenVec::pGetSubVec(pInpTknVec,1,nTokens-1);
     
     // test if last parameter is $etc
     bool bHasEtcParam = false;
-    i8 i_Etc = pPrcPrmVec->nTokens() - 1;
-    Token* pLastPrmTkn = pPrcPrmVec->pGet(i_Etc);
+    i8 i_Etc = pPrdPrmVec->nTokens() - 1;
+    Token* pLastPrmTkn = pPrdPrmVec->pGet(i_Etc);
     if (pLastPrmTkn->bSame("$etc"_Stz)) {
       bHasEtcParam = true;
       //vJotDebug(1);
@@ -249,31 +255,31 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
       vTrace("sEtcTokens : %s"_Stz,sEtcTokens.szStz());
     }
     
-    if (! bHasEtcParam && pPrcPrmVec->nTokens() != pInpArgVec->nTokens()) {
-      delete pProcTextVec;
-      delete pPrcPrmVec;
+    if (! bHasEtcParam && pPrdPrmVec->nTokens() != pInpArgVec->nTokens()) {
+      delete pPrdTxtVec;
+      delete pPrdPrmVec;
       delete pInpArgVec;
       delete pEtcTknVec;
       return false;
     }
     
     if (iJotDebug())
-      pProcTextVec->vListTokens();
+      pPrdTxtVec->vListTokens();
     
     
-    TokenVec::vReplace(pProcTextVec,pPrcPrmVec,pInpArgVec);
+    TokenVec::vReplace(pPrdTxtVec,pPrdPrmVec,pInpArgVec);
     
     
     if (iJotDebug())
-      pProcTextVec->vListTokens();
+      pPrdTxtVec->vListTokens();
 
     // remove the parameters clause from the modified text vector
-    i_Cut = pProcTextVec->iFindToken("parameters"_Stz);
+    i_Cut = pPrdTxtVec->iFindToken("parameters"_Stz);
     
     if (C_UNKNOWN != i_Cut) {
       for (;;) {
-        pProcTextVec->vRemoveToken(i_Cut);
-        Token* pTest = pProcTextVec->pGet(i_Cut);
+        pPrdTxtVec->vRemoveToken(i_Cut);
+        Token* pTest = pPrdTxtVec->pGet(i_Cut);
         if (pTest->bSame("begin"_Stz))
           break;
       }
@@ -281,7 +287,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     
   }
   else {
-    i_Cut = pProcTextVec->iFindToken("begin"_Stz);
+    i_Cut = pPrdTxtVec->iFindToken("begin"_Stz);
   }
 
   
@@ -289,25 +295,25 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   // add the <stmt> tag into the modified text vector
   
   i8 i_InsTkn = i_Cut;
-  pProcTextVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
-  pProcTextVec->vInsertToken(i_InsTkn++,C_TAG_STMT,TN_NAME);
-  pProcTextVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
-  pProcTextVec->vInsertToken(i_InsTkn++,sOriginalCmd.szStz(),TN_NAME);
-  pProcTextVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
+  pPrdTxtVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
+  pPrdTxtVec->vInsertToken(i_InsTkn++,C_TAG_STMT,TN_NAME);
+  pPrdTxtVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
+  pPrdTxtVec->vInsertToken(i_InsTkn++,sOriginalCmd.szStz(),TN_NAME);
+  pPrdTxtVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
 
   if (iJotDebug())
-    pProcTextVec->vListTokens();
+    pPrdTxtVec->vListTokens();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // stringise the modified text vector into a pipeline statement
   
-  pProcTextVec->vVecToString(pToPipelineStmt->szStz(),0,true);
+  pPrdTxtVec->vVecToString(pToPipelineStmt->szStz(),0,true);
   
   if (AM::bVerbose())
     vTrace(" => %s\n"_Stz,pToPipelineStmt->szStz());
   
-  delete pProcTextVec;
-  delete pPrcPrmVec;
+  delete pPrdTxtVec;
+  delete pPrdPrmVec;
   delete pInpArgVec;
   delete pEtcTknVec;
 

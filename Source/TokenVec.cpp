@@ -332,6 +332,9 @@ void TokenVec::vDbgStr(Stz* szDstStr)
   // concat all the tokens together
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
     
+    if (0 == i_Token % 8)
+      StrLib::vConcat(szDstStr,"\n  "_Stz);
+
     StrLib::vSprintCat(szDstStr,"[%lld]"_Stz,i_Token);
 
     Token* pToken = pGet(i_Token);
