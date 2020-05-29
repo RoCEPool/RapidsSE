@@ -19,6 +19,7 @@ namespace StorageEngine
     static void vCallBoot(void);
     static void vCallImmmediate(Task* pTask);
     static void vCallPrompt(void);
+    static void vCallStart(void);
     static void vChangeDirectory(void);
     static void vCheckGrid(void);
     static void vCheckNodes(void);
@@ -52,7 +53,6 @@ namespace StorageEngine
     static bool bRunUtilities(int argc, Stz* argv[]);
     static void vSanityCheck(void);
     static void vSignalHandler(int iSignal);
-    static void vSpawnJobStart(void);
     static void vStartSystem(void);
     static void vStopSystem(void);
     static void vTestPort(i8 iPort);

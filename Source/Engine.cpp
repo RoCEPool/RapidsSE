@@ -364,6 +364,38 @@ void Engine::vCallPrompt(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* call start                                                                 */
+/*----------------------------------------------------------------------------*/
+void Engine::vCallStart(void)
+{
+  if (AM::bVerboseProgress())
+    vInfo("\n+\n+ %lld) Start System Jobs\n+\n"_Stz,giProgressPoint++);
+  
+  PsxThd::vMarkNonSeThread();
+  
+  JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_LOCAL);
+  ReqTuple xReqTuple("!!StartSE"_Stz,false);
+  
+  Job_Local* pJob_Local
+  = static_cast<Job_Local*>(pJobClass_Local->pNewJob(&xReqTuple));
+  
+  pJob_Local->vSeed(SS_SEED_RUN);
+  
+  TagSet* pJobTags = pJob_Local->pJobTags();
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace("<seed>"_Stz,"start_run"_Stz);
+  
+  Task* pStartTask = new Task(pJob_Local);
+  pStartTask->vInitExeContext();
+  
+  pJob_Local->vTimerStart();
+  
+  vCallImmmediate(pStartTask);
+  
+  vDeleteImmmediate(&pStartTask);  
+}
+
+/*----------------------------------------------------------------------------*/
 /* change current directory                                                   */
 /*----------------------------------------------------------------------------*/
 void Engine::vChangeDirectory(void)
@@ -1361,39 +1393,6 @@ void Engine::vSignalHandler(int iSignal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* start the system tasks                                                     */
-/*----------------------------------------------------------------------------*/
-void Engine::vSpawnJobStart(void)
-{
-  if (AM::bVerboseProgress())
-    vInfo("\n+\n+ %lld) Start System Jobs\n+\n"_Stz,giProgressPoint++);
-  
-  PsxThd::vMarkNonSeThread();
-  
-  JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_LOCAL);
-  ReqTuple xReqTuple("!!StartSE"_Stz,false);
-  
-  Job_Local* pJob_Local
-    = static_cast<Job_Local*>(pJobClass_Local->pNewJob(&xReqTuple));
-
-  pJob_Local->vSeed(SS_SEED_RUN);
-  
-  TagSet* pJobTags = pJob_Local->pJobTags();
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace("<seed>"_Stz,"start_run"_Stz);
-  
-  Task* pStartTask = new Task(pJob_Local);
-  pStartTask->vInitExeContext();
-  
-  pJob_Local->vTimerStart();
-  
-  vCallImmmediate(pStartTask);
-  
-  vDeleteImmmediate(&pStartTask);
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* start a new system                                                         */
 /*----------------------------------------------------------------------------*/
 void Engine::vStartSystem(void)
@@ -1536,7 +1535,7 @@ void Engine::vStartSystem(void)
     vInfo("  Running Start\n"_Stz);
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "running Start job"_Stz); //!format-LogSys
-  vSpawnJobStart();
+  vCallStart();
   
   // wait for start to be done
   while ( ! AM::bStartDone() )
