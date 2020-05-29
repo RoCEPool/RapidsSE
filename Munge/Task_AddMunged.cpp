@@ -18295,7 +18295,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  \"end start_run\" .verbose\n"
     "\n"
-    "  api::startDone\n"
+    "  //api::startDone\n"
     "\n"
     "  // delete task instead of returning to nowhere\n"
     "  task::scheduleDelete\n"

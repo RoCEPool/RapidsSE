@@ -358,7 +358,7 @@
 
   "end start_run" .verbose
 
-  api::startDone
+  //api::startDone
 
   // delete task instead of returning to nowhere
   task::scheduleDelete
