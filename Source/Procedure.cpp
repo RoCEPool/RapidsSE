@@ -201,40 +201,69 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   // substitute parameters in procedure text with command input arguments
   
   TokenVec* pInpArgVec = nullptr;
+  TokenVec* pEtcTknVec = nullptr;
 
   TokenVec* pPrcPrmVec = TokenVec::pGetSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
   
   if (pPrcPrmVec) {
   
-    // get the arguments, e.g. : $arg1 $arg2 $etc
+    vJotDebug(1);
+    pPrcPrmVec->vListTokens();
+    vJotDebug(0);
+
+    // get the input arguments, e.g. : A B C
     pInpArgVec = TokenVec::pGetSubVec(pInpTknVec,1,nTokens-1);
     
-    // test if last argument is $etc
+    // test if last parameter is $etc
     bool bHasEtcParam = false;
-    i8 i_Last = pPrcPrmVec->nTokens() - 1;
-    Token* pLastPrmTkn = pPrcPrmVec->pGet(i_Last);
+    i8 i_Etc = pPrcPrmVec->nTokens() - 1;
+    Token* pLastPrmTkn = pPrcPrmVec->pGet(i_Etc);
     if (pLastPrmTkn->bSame("$etc"_Stz)) {
       bHasEtcParam = true;
       //vJotDebug(1);
       //vDebugPoint();
       
-      
       // ... etc stuff ...
       
+      // leading-subset of PrcPrmVec is
+      //   procedure etcTest ::- [ $arg0 $arg1 ... ] $etc
+      
+      // leading-subset of InpArgVec is :
+      //   etcTest ::- [ arg0 arg1 ... ] tknA tnkB ...
+      
+      // etc-subset of InpArgVec is :
+      //   etcTest ::- arg0 arg1 ... [ tknA tnkB ... ]
+      
+      // .: collapse InpArgVec [ tknA tnkB ... ] into one string so that
+      //    replace of $etc will be replaced with that string
       
       
+      // etcTest a b c d e ;
+      // substitute ($arg,a) ($etc,b c d e)
+      
+      pEtcTknVec = TokenVec::pGetSubVec(pInpTknVec,i_Etc,nTokens-1);
+      
+      s4K sEtcTokens;
+      pEtcTknVec->vVecToString(sEtcTokens,0,false);
+      
+      vTrace("sEtcTokens : %s"_Stz,sEtcTokens.szStz());
     }
     
     if (! bHasEtcParam && pPrcPrmVec->nTokens() != pInpArgVec->nTokens()) {
       delete pProcTextVec;
       delete pPrcPrmVec;
       delete pInpArgVec;
+      delete pEtcTknVec;
       return false;
     }
     
     if (iJotDebug())
       pProcTextVec->vListTokens();
+    
+    
     TokenVec::vReplace(pProcTextVec,pPrcPrmVec,pInpArgVec);
+    
+    
     if (iJotDebug())
       pProcTextVec->vListTokens();
 
@@ -280,6 +309,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   delete pProcTextVec;
   delete pPrcPrmVec;
   delete pInpArgVec;
+  delete pEtcTknVec;
 
   return true;
 }

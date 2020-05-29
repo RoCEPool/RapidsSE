@@ -319,6 +319,64 @@ Token* TokenVec::pCurrToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* concat all tokens into debug string                                        */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vDbgStr(Stz* szDstStr)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  StrLib::vCopy(szDstStr->azChar(),"");
+  
+  i8 nTokens = this->nTokens();
+  
+  // concat all the tokens together
+  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
+    
+    StrLib::vSprintCat(szDstStr,"[%lld]"_Stz,i_Token);
+
+    Token* pToken = pGet(i_Token);
+    
+    eTN eToken = pToken->eToken();
+    
+    switch (eToken) {
+        
+      case TN_NONE:
+        break;
+        
+      case TN_INTEGER:
+        StrLib::vConcat(szDstStr,pToken->szChars());
+        break;
+        
+      case TN_NAME:
+        StrLib::vConcat(szDstStr,pToken->szChars());
+        break;
+        
+      case TN_NULL:
+        break;
+        
+      case TN_OTHER:
+        StrLib::vConcat(szDstStr,pToken->szChars());
+        break;
+        
+      case TN_STRING:
+        StrLib::vConcat(szDstStr,"\""_Stz);
+        StrLib::vConcat(szDstStr,pToken->szChars());
+        StrLib::vConcat(szDstStr,"\""_Stz);
+        break;
+        
+      case TN_TAG:
+        StrLib::vConcat(szDstStr,pToken->szChars());
+        break;
+        
+      default:
+        NEVER_REACH;
+    }
+    
+    StrLib::vConcat(szDstStr," "_Stz);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump token vector                                                          */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vDumpVec(i8 nPlusMore)

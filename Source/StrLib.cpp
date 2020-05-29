@@ -410,6 +410,16 @@ void StrLib::vConcat(char* psDst, i8 iArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vConcat: concatenate i8 arg onto dst string                                */
+/*----------------------------------------------------------------------------*/
+void StrLib::vConcat(Stz* szDst, Stz* szArg)
+{
+  _static_
+  
+  strcat(szDst->azChar(),szArg->azChar());
+}
+
+/*----------------------------------------------------------------------------*/
 /* sConcat: concatenate two strings                                           */
 /*----------------------------------------------------------------------------*/
 char* StrLib::wConcat(const char* s1, const char* s2)
