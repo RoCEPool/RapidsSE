@@ -113,27 +113,33 @@ Args::~Args(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check for environment variables                                            */
+/* burst env string into command line arguments                               */
 /*----------------------------------------------------------------------------*/
-void Args::vEnvironmentVariables(void)
+i8 Args::nBurstArgs(s256 saArgv[], Stz* szArgStr)
 {
-  s32  sVarName;
-  s256 sRegionName;
-  s256 sRegionSize;
-  s256 sPartitions;
-  s256 sFolder;
+  _static_
+
+  i8 i_Arg = 1;
+  for (char* acSrc = szArgStr->azChar(); *acSrc; ) {
   
-  sVarName = "SE_INSTANCE_NAME"_Stz;
-  if (Env::bGet(sVarName,sRegionName))
-    m_sRegionName = sRegionName;
-
-  sVarName = "SE_INSTANCE_SIZE"_Stz;
-  if (Env::bGet(sVarName,sRegionSize))
-    m_iRegionSize = sRegionSize.iToI8();
-
-  sVarName = "SE_PARTITIONS"_Stz;
-  if (Env::bGet(sVarName,sPartitions))
-    m_nSlotsPerNode = sPartitions.iToI8();
+    if (' ' == *acSrc) {
+      acSrc++;
+      continue;
+    }
+    
+    char* acDst = saArgv[i_Arg].azChar();
+    
+    while (*acSrc && ' ' != *acSrc)
+      *acDst++ = *acSrc++;
+    *acDst = '\0';
+    
+    if (*acSrc)
+      acSrc++;
+    
+    i_Arg++;
+  }
+  
+  return i_Arg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,6 +147,8 @@ void Args::vEnvironmentVariables(void)
 /*----------------------------------------------------------------------------*/
 void Args::vLog(void)
 {
+  _static_
+  
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_ARGS,
               "Command line args:"_Stz); //!format-LogSys
   
@@ -159,6 +167,32 @@ void Args::vLog(void)
                 "  %s"_Stz //!format-LogSys
                 ,sArg.azChar());
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* check for environment variables                                            */
+/*----------------------------------------------------------------------------*/
+void Args::vEnvironmentVariables(void)
+{
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  s32  sVarName;
+  s256 sRegionName;
+  s256 sRegionSize;
+  s256 sPartitions;
+  s256 sFolder;
+  
+  sVarName = "SE_INSTANCE_NAME"_Stz;
+  if (Env::bGet(sVarName,sRegionName))
+    m_sRegionName = sRegionName;
+
+  sVarName = "SE_INSTANCE_SIZE"_Stz;
+  if (Env::bGet(sVarName,sRegionSize))
+    m_iRegionSize = sRegionSize.iToI8();
+
+  sVarName = "SE_PARTITIONS"_Stz;
+  if (Env::bGet(sVarName,sPartitions))
+    m_nSlotsPerNode = sPartitions.iToI8();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -790,6 +824,8 @@ bool Args::bParse(i8 argc, s256 argv[])
 /*----------------------------------------------------------------------------*/
 void Args::vPrint(void)
 {
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
   vTrace("\nArgs:"_Stz);
   
   for (i8 i_Arg = 1; i_Arg < gi_argc; i_Arg++) {

@@ -55,26 +55,35 @@ int main(int argc, char* argv[])
   gsBuildUserName = (Stz*)C_BUILD_USERNAME;
   gsBuildBranch   = (Stz*)C_BUILD_BRANCH;
     
-  if (argc) {
+  gi_szaArgv[0] = (Stz*)argv[0];
+  
+  if (argc> 1) {
     for (i8 i_Arg = 0; i_Arg < argc; i_Arg++)
       gi_szaArgv[i_Arg] = (Stz*)argv[i_Arg];
     gi_argc = argc;
   }
   else {
-    s4K sSeArgs;
-    sSeArgs =
-      "--start "
-      "--prompt "
-      "--verbose "
-      "--developer "
-      "--killPrev "
-      "--name NODE0 "
-      "--node NODE0 127.0.0.1 5540 "
-      //"--node NODE1 127.0.0.1 5541 "
-      //"--node NODE2 127.0.0.1 5542 "
-      //"--node NODE3 127.0.0.1 5543 "
-      "--log "
-      ""_Stz;
+    s32 sVarName;
+    s256 sSeArgs;
+    sVarName = "SE_ARGS"_Stz;
+    if (! Env::bGet(sVarName,sSeArgs)) {
+      sSeArgs =
+        "--start "
+        "--prompt "
+        "--verbose "
+        "--developer "
+        "--killPrev "
+        "--name NODE0 "
+        "--node NODE0 127.0.0.1 5540 "
+        //"--node NODE1 127.0.0.1 5541 "
+        //"--node NODE2 127.0.0.1 5542 "
+        //"--node NODE3 127.0.0.1 5543 "
+        "--log "
+        ""_Stz;
+    }
+    vTrace("Args: %s\n"_Stz,sSeArgs.szStz());
+    
+    gi_argc = Args::nBurstArgs(gi_szaArgv, sSeArgs);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

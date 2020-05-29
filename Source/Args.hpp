@@ -97,6 +97,8 @@ namespace Arguments
     Args(void);
    ~Args(void) noexcept(false);
     
+    static i8 nBurstArgs(s256 saArgv[], Stz* szArgStr);
+
     static void vLog(void);
   
     void vEnvironmentVariables(void);
