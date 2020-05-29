@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* operators.sen -- the operators                                             */
+/*============================================================================*/
+
+"-operators.sen" .verbose
+
+"operator.sen" include
+
+"symbolicArgs.sen" include
+
+"op_aggregate.sen" include
+"op_decider.sen" include
+"op_distinct.sen" include
+"op_emit.sen" include
+"op_fan.sen" include
+"op_fetch.sen" include
+"op_filter.sen" include
+"op_join.sen" include
+"op_limit.sen" include
+"op_mark.sen" include
+"op_merge.sen" include
+"op_next.sen" include
+"op_print.sen" include
+"op_project.sen" include
+"op_range.sen" include
+"op_read.sen" include
+"op_recv.sen" include
+"op_response.sen" include
+"op_scan.sen" include
+"op_send.sen" include
+"op_sink.sen" include
+"op_sort.sen" include
+"op_tee.sen" include
+"op_triggerRange.sen" include
+"op_triggerScan.sen" include
+"op_write.sen" include
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

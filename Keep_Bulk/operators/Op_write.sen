@@ -1,0 +1,234 @@
+/*============================================================================*/
+/* op_write.sen -- write rows to file operator                                 */
+/*============================================================================*/
+
+" op_write.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* frame common variables for write                                           */
+/*----------------------------------------------------------------------------*/
+common/ write filePointer /
+common/ write nStreams    /
+
+/*----------------------------------------------------------------------------*/
+/* open file for writing                                                      */
+/*----------------------------------------------------------------------------*/
+: writeOpenFile subDic write ( plan -- )
+
+  params| thePlan  |
+
+  // open new file?
+  filePointer if
+    // nothing to do, file already open
+    EC_NONE
+    exit
+  then
+
+  // create a file pointer
+  file::new toCommon filePointer
+
+  // get file name
+  thePlan plan.dic task::this task.dicStack dicStack.push
+  $$fileNm //dup .
+  task::this task.dicStack dicStack.drop
+
+
+  // open file for writing
+  OPEN_READ_WRITE_CREATE filePointer file.open
+  if
+    //": writeOpenFile opened file" .
+      
+    $$nStreams toCommon nStreams
+    //nStreams .
+    EC_NONE
+  else
+    0 toCommon filePointer
+    filePointer file.delete EC_INVALID_FILE
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* close file for writing                                                     */
+/*----------------------------------------------------------------------------*/
+: writeCloseFile subDic write ( -- true )
+
+  nStreams 1- toCommon nStreams
+
+  //": writeCloseFile " .put
+  //nStreams .put
+  //" streams still open" .put .\n
+  args.metadata not if
+    "." .put
+  then
+
+  nStreams
+  if
+    false
+    exit
+  then
+
+  filePointer file.close
+  filePointer file.delete
+
+  0 toCommon filePointer
+
+  //": writeCloseFile closed file" .
+
+  args.metadata not if
+    .\n
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* write row buffer to file                                                   */
+/*----------------------------------------------------------------------------*/
+: writeToFile subDic write ( rowBuffer pTable -- )
+
+  // declare rowCrs variable
+  rowCursor::new locals| rowCrs pTable rowBuffer |
+
+  // set the table in the cursor
+  pTable rowCrs rowCursor.table!
+
+  // set row buffer in cursor
+  rowBuffer rowCrs rowCursor.entryBuffer!
+
+  // iterate the row buffer
+  rowCrs rowCursor.first
+  begin while
+    rowCrs rowCursor.row
+    pTable swap row.asEscapedString
+    filePointer file.write
+    "\n" filePointer file.write
+    rowCrs rowCursor.next
+  repeat
+
+  rowCrs rowCursor.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* write contents of row buffer to file                                       */
+/*----------------------------------------------------------------------------*/
+: writeRb subDic write
+
+  // record the plan and profile
+  0 locals| pTablePtr thePlan profile pSession |
+
+  "tenants" 1 dicStack.set
+
+  // [0] push thePlan's dictionary onto path stack
+  thePlan plan.dic pathPush
+
+  // push the op frame for this writeOp
+  profile thePlan plan.opFrame? opFrame.push
+
+  //----------------------------------------------------------------------------
+  // get to the table dic and find the table
+  // need to set the table in the rowCusror so we can convert
+  // rows to strings using the columns from the table
+  // Note: the entryBuffers that we move across the custer do NOT
+  //       have an index pointer
+  $$tableNm   locals| tableNm   |
+  $$schemaNm  locals| schemaNm  |
+  $$catalogNm locals| catalogNm |
+
+  "boray" find execute
+  pathPush
+
+  "catalogs"  find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  catalogNm find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  "schemas" find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  schemaNm find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  "tables" find execute
+  pathPush
+
+  // push tableNm on the dictionary path
+  tableNm find execute pathPush
+  tableNm find execute to pTablePtr
+
+  pathDrop pathDrop pathDrop pathDrop pathDrop pathDrop pathDrop
+
+  //----------------------------------------------------------------------------
+
+  // open the file
+  thePlan writeOpenFile ( plan [ rowBuffer ] )
+
+  // did we manage to open the file ?                           //! NEEDS REVIEW
+  dup EC_NONE != if ( [ rowBuffer ] EC )
+
+    // got an error
+    error.msg .
+    if ( [ rowBuffer ] )
+      drop
+    else
+      //thePlan writePipeSink
+      //<< pSession $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+    then
+
+  else
+
+    drop ( [ rowBuffer ] )
+
+    // write or close file & sink plan?
+    if ( [ rowBuffer ] )
+
+     pTablePtr  writeToFile
+    else
+      writeCloseFile
+      if
+        // << $$nextProfile thePlan >> -->> $$nextOp
+        //<< pSession $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+      then
+    then
+
+  then
+  opFrame.drop
+  // first pop the plan dic as plan may have gotten deleted
+  pathPop
+
+  dicStack.clear
+;
+
+/*----------------------------------------------------------------------------*/
+/* file write operator loop                                                   */
+/*----------------------------------------------------------------------------*/
+: writeOp operator ( -- NEVER )
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug::trap then
+
+    // wait for next job
+    //jobQueue> ( valset )
+
+    // unpack it
+    valset> ( profile planId nValues )
+    drop ( profile planId )
+
+    // find plan using planId
+    planList::findPlan ( pSession profile plan true )
+    assert ( pSession profile plan )
+
+    // write row buffer to file
+    writeRb ( )
+
+  again
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

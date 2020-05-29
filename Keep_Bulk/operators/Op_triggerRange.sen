@@ -1,0 +1,72 @@
+/*============================================================================*/
+/* op_triggerRange.sen -- flow trigger operator                                */
+/*============================================================================*/
+
+" op_triggerRange.sen" .verbose
+common/ triggerRange rbCrs /
+/*----------------------------------------------------------------------------*/
+/* trigger                                                                    */
+/*----------------------------------------------------------------------------*/
+: triggerRangePlan ( profile plan -- )
+
+  // record the plan and profile
+  locals| thePlan profile |
+  0 locals| partitionId |
+
+  //thePlan plan.id@ "Triggering plan: %v" str.format .
+
+  // trigger scanOp by piping the plan to it
+  grid::partitions 0 do
+
+    // << profile plan >> -->> nextOp
+    //<< I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* triggerPlan_distributed                                                    */
+/*----------------------------------------------------------------------------*/
+: triggerRangePlan_distributed subDic triggerRange ( pSession profile plan -- )
+
+  // record the plan and profile
+  0 locals| pTablePtr thePlan profile pSession |
+
+  //thePlan plan.id@ "Triggering plan: %v" str.format .
+
+  // trigger scanOp by piping the plan to it
+  grid::partitions 0 do
+
+    // << profile plan >> -->> nextOp
+    //<< pSession I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
+    //<< I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* flow trigger operator loop                                                 */
+/*----------------------------------------------------------------------------*/
+: triggerRangeOp operator ( -- NEVER )
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug::trap then
+
+    // wait for next job
+    //jobQueue> ( valset )
+
+    // unpack it
+    valset> ( nextOp profile planId nValues )
+    drop ( nextOp profile planId )
+    // find plan using planId
+    planList::findPlan ( pSession profile plan true )
+    assert ( pSession profile plan )
+
+    // trigger the plan
+    triggerRangePlan_distributed ( )
+
+  again
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

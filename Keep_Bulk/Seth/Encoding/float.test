@@ -1,0 +1,101 @@
+/*----------------------------------------------------------------------------*/
+/* float.test -- FLOAT ENCODING tests                                         */
+/*----------------------------------------------------------------------------*/
+
+// (1) create a table
+create table fltTbl (
+flt_col0   FLOAT     NOT NULL,
+flt_col1   FLOAT     NOT NULL,
+flt_col2   FLOAT     NOT NULL,
+flt_col3   FLOAT     NOT NULL,
+flt_col4   FLOAT     NOT NULL,
+flt_col5   FLOAT     NOT NULL,
+flt_col6   FLOAT     NOT NULL,
+flt_col7   FLOAT     NOT NULL,
+flt_col8   FLOAT     NOT NULL,
+flt_col9   FLOAT     NOT NULL,
+flt_col10  FLOAT     NOT NULL,
+flt_col11  FLOAT     NOT NULL,
+flt_col12  FLOAT     NOT NULL,
+flt_col13  FLOAT     NOT NULL,
+flt_col14  FLOAT     NOT NULL,
+flt_col15  FLOAT
+);
+success
+
+Loop 1000 {
+  
+  load fltTbl "../DATA/Encoding/float.csv" ;
+  success
+  
+}
+
+// check no of rows
+fetch fltTbl;
+rows: 100000
+
+// dump table
+//dumpTbl fltTbl;
+
+fetch retrieve fltTbl flt_col0;
+affected: 100000
+
+fetch retrieve fltTbl flt_col1;
+affected: 100000
+
+fetch retrieve fltTbl flt_col2;
+affected: 100000
+
+fetch retrieve fltTbl flt_col3;
+affected: 100000
+
+fetch retrieve fltTbl flt_col4;
+affected: 100000
+
+fetch retrieve fltTbl flt_col5;
+affected: 100000
+
+fetch retrieve fltTbl flt_col6;
+affected: 100000
+
+fetch retrieve fltTbl flt_col7;
+affected: 100000
+
+fetch retrieve fltTbl flt_col8;
+affected: 100000
+
+fetch retrieve fltTbl flt_col9;
+affected: 100000
+
+fetch retrieve fltTbl flt_col10;
+affected: 100000
+
+fetch retrieve fltTbl flt_col11;
+affected: 100000
+
+fetch retrieve fltTbl flt_col12;
+affected: 100000
+
+fetch retrieve fltTbl flt_col13;
+affected: 100000
+
+fetch retrieve fltTbl flt_col14;
+affected: 100000
+
+fetch retrieve fltTbl flt_col15;
+affected: 100000
+
+// drop the table
+drop table fltTbl;
+success
+
+CLEANUP {
+  
+  // drop the table
+  drop table fltTbl;
+  mute
+  
+  bye;
+  mute
+}
+

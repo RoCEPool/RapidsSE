@@ -1,0 +1,159 @@
+/*============================================================================*/
+/* job_SubFetch.sen -- Job SubFetch                                           */
+/*============================================================================*/
+
+" job_SubFetch.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* fetch rows                                                                 */
+/*----------------------------------------------------------------------------*/
+: fetchRows ( Job_SubFetch -- <R> )
+
+  params| pJob_SubFetch |
+  0 0 0 locals| sTableNm iPhrase iSlot |
+  0 0 0 0 locals| pPlanner pBufferQueue pIndex pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the planner, bufferQueue, phrase and slot t
+  pJob_SubFetch job_subFetch.planner@ to pPlanner
+  pJob_SubFetch job_subFetch.bufferQueue@ to pBufferQueue
+  pJob_SubFetch job_subFetch.phrase@ to iPhrase
+  pJob_SubFetch job_subFetch.slot@ to iSlot
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table
+  //pJob_SubFetch job.objectName@ to sTableNm
+  <tableNm> to sTableNm
+  sTableNm path[].pushNamedTableFolder
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the table
+  sTableNm find execute to pTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push into indexes folder
+  path[].pushIndexesFolder
+
+  iPhrase pPlanner Planner.fetchTechnique@
+  case
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an exact select using index
+    AT_EXACT of
+      // find the index
+      iPhrase pPlanner Planner.indexNm@
+      find execute to pIndex
+
+      // now get excat key rows from index
+      iSlot pTable tablePtnGrabRead  //! partitionLock
+      iPhrase pPlanner Planner.key@
+      iPhrase pPlanner Planner.key@
+      pJob_SubFetch pIndex index.range
+      iSlot pTable tablePtnDropRead
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lower bound select using index
+    AT_LOWER of
+      // find the index
+      iPhrase pPlanner Planner.indexNm@
+      find execute to pIndex
+
+      // now get excat key rows from index
+      iSlot pTable tablePtnGrabRead  //! partitionLock
+      iPhrase pPlanner Planner.lowKey@
+      pJob_SubFetch pIndex index.lowerBound
+      iSlot pTable tablePtnDropRead
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an upper bound select using index
+    AT_UPPER of
+
+      // find the index
+      iPhrase pPlanner Planner.indexNm@
+      find execute to pIndex
+
+      // now get excat key rows from index
+      iSlot pTable tablePtnGrabRead  //! partitionLock
+      iPhrase pPlanner Planner.highKey@
+      pJob_SubFetch pIndex index.upperBound
+      iSlot pTable tablePtnDropRead
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // a range select using index
+    AT_RANGE of
+
+      // find the index
+      iPhrase pPlanner Planner.indexNm@
+      find execute to pIndex
+
+      // now get excat key rows from index
+      iSlot pTable tablePtnGrabRead  //! partitionLock
+      iPhrase pPlanner Planner.highKey@
+      iPhrase pPlanner Planner.lowKey@
+      pJob_SubFetch pIndex index.range
+      iSlot pTable tablePtnDropRead
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // full scan (no index)
+    AT_SCAN of
+
+      // now scan the table
+      iSlot pTable tablePtnGrabRead  //! partitionLock
+      pJob_SubFetch pTable table.scan
+      iSlot pTable tablePtnDropRead
+    endof
+
+  endcase
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table
+  path[].popNamedTableFolder
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes
+  path[].popIndexesFolder
+;
+
+/*----------------------------------------------------------------------------*/
+/* SubFetch (on originating node)                                             */
+/*----------------------------------------------------------------------------*/
+: SubFetch_run ( -- <R> )
+
+  LogEntry SEED_RUN
+
+  0 0 locals| pTask pJob_SubFetch |
+
+  //"SubFetch_run" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task[] to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_SubFetch
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  DdlLock[].grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute fetch depending on the fetchTechnique in the planner
+  pJob_SubFetch fetchRows
+
+  DdlLock[].testDrop
+
+  job::deleteThis
+  DONE_RUN
+  job::completed
+
+  HAZARD
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

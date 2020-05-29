@@ -1,0 +1,107 @@
+/*============================================================================*/
+/* reclaimDrone.sen -- seitf reclaim drone                                    */
+/*============================================================================*/
+
+"reclaimDrone.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
+
+lock:    zReclaimLock
+
+str:     sReclaimString
+
+seitfCursor: seitfCrs
+
+/*----------------------------------------------------------------------------*/
+/* spawn the reclaim drone                                                    */
+/*----------------------------------------------------------------------------*/
+: spawnReclaimDrone
+
+  0 "reclaimLoop" "ReclaimDrone" TK_RECLAIM_DRONE spawnDroneActor drop
+;
+
+/*----------------------------------------------------------------------------*/
+/* reclaim task loop                                                          */
+/*----------------------------------------------------------------------------*/
+: iterateSEitfList
+
+  seitfcrs seitfcrs seitfcursor.begin
+
+  iterate
+
+    reclaimDronePrint if
+      object@ seitf.dump
+    then
+
+    object@ task::this task.seitf!
+      object@ seitf.pid
+      0 task::this task.seitf!
+
+    reclaimDronePrint if
+      dup .put " " .put dup process.testpid .put .\n
+    then
+
+    process.testpid not if
+      reclaimDronePrint if
+        "deleting..." .
+      then
+      object@
+      cursor@ seitfcursor.end 0 object!
+      seitf.delete
+    else
+      reclaimDronePrint if
+        "not deleteing" .
+      then
+      cursor@ seitfcursor.next object!
+    then
+
+  next
+
+  seitfcrs seitfcursor.end
+;
+
+/*----------------------------------------------------------------------------*/
+/* reclaim task loop                                                          */
+/*----------------------------------------------------------------------------*/
+: reclaimLoop
+
+//"reclaimTask" task::this task.name!
+
+  reclaimDronePrint if
+    task::this task.name@ " running..." str.cat .
+  then
+
+  "" sReclaimString !
+
+  begin
+
+    zReclaimLock lock.grabWrite
+
+    iterateSEitfList
+
+    zReclaimLock lock.dropWrite
+
+    // sReclaimString @ .
+
+    3 thread.sleep_s
+
+  again
+;
+
+/*----------------------------------------------------------------------------*/
+/* get reclaim string                                                         */
+/*----------------------------------------------------------------------------*/
+: sReclaimString@
+
+  zReclaimLock lock.grabRead
+
+    sReclaimString @
+
+  zReclaimLock lock.dropRead
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

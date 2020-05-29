@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* Job_CopyBuffer.sen -- Job Copy buffer                                      */
+/*============================================================================*/
+
+" Job_CopyBuffer.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* Job_CopyBuffer request (on originating node)                                */
+/*----------------------------------------------------------------------------*/
+: Job_CopyBuffer_req (  -- <R> )
+
+  LogEntry SEED_REQ
+
+  0 locals| pThisTask |
+  job[] locals| pJob_CopyBuffer |
+
+
+  // get the task
+  task[] to pThisTask
+
+  // get the job from the task
+  pThisTask task.job@ to pJob_CopyBuffer
+
+  //pJob_CopyBuffer Job_CopyBuffer.copy
+
+  // null the job in the task
+  nullptr pThisTask task.job!
+
+  // delete the job
+  pJob_CopyBuffer job.delete
+
+  DONE_RUN
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

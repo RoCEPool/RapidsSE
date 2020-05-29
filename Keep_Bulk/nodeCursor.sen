@@ -1,0 +1,75 @@
+/*============================================================================*/
+/* nodeCursor.sen -- Node Cursor                                              */
+/*============================================================================*/
+
+"nodeCursor.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create a nodeCursor using name from input stream                           */
+/*----------------------------------------------------------------------------*/
+: nodeCursor:
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_nodeCursor allot
+  word.this >body object.magic!
+  CN_NODECURSOR word.this >body object.class!
+  word.this >body nodeCursor.init
+  true word.this >body object.wordbody!
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a nodeCursor using name on the stack              (leaves on stack) */
+/*----------------------------------------------------------------------------*/
+: :nodeCursor
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_nodeCursor allot
+  word.this >body object.magic!
+  CN_NODECURSOR word.this >body object.class!
+  word.this >body nodeCursor.init
+  true word.this >body object.wordbody!
+  word.this
+  does>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+: ::nodeCursor ( create a temporary nodeCursor )
+
+  "__nodeCursor__" find dup
+  not if
+    drop
+    "__nodeCursor__" :nodeCursor
+  then
+  execute
+;
+
+: ~nodeCursor ( forget temporary nodeCursor )
+
+  "__nodeCursor__" find word.forget
+;
+
+: listNodes ( list all nodes in grid )
+
+  ::nodeCursor >r // r0 ^nodeCursor
+
+  r0 nodeCursor.begin
+  r0 nodeCursor.first
+  begin
+    while
+    r0 nodeCursor.get
+    node.no .
+    r0 nodeCursor.next
+  repeat
+
+  rdrop
+
+  ~nodeCursor
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,75 @@
+/*============================================================================*/
+/* monitorDrone.sen -- monitor drone                                          */
+/*============================================================================*/
+
+"monitorDrone.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
+
+lock: zMonitorLock
+
+str:  sMonitorString
+
+/*----------------------------------------------------------------------------*/
+/* spawn the monitor drone                                                    */
+/*----------------------------------------------------------------------------*/
+: spawnMonitorDrone
+
+  0 "monitorLoop" "MonitorDrone" TK_MONITOR_DRONE spawnDroneActor drop
+;
+
+/*----------------------------------------------------------------------------*/
+/* monitor task loop                                                          */
+/*----------------------------------------------------------------------------*/
+: monitorLoop
+
+//"monitorDrone" task::this task.name!
+
+  monitorDronePrint if
+    task::this task.name@ " running..." str.cat .
+  then
+
+  "" sMonitorString !
+
+  begin
+
+    zMonitorLock lock.grabWrite
+
+      "freespace " bp::freeSpace >str str.cat
+
+      " queries " str.cat
+
+      queryCount @ >str str.cat
+
+      sMonitorString !
+
+    zMonitorLock lock.dropWrite
+
+    // sMonitorString @ .
+
+    monitorDronePrint if bp::analyze then
+
+  10 thread.sleep_s
+
+
+  again
+;
+
+/*----------------------------------------------------------------------------*/
+/* get monitor string                                                         */
+/*----------------------------------------------------------------------------*/
+
+: MonitorString@
+
+  zMonitorLock lock.grabRead
+
+    sMonitorString @
+
+  zMonitorLock lock.dropRead
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

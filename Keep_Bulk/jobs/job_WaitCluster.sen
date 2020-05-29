@@ -1,0 +1,105 @@
+/*============================================================================*/
+/* job_WaitCluster.sen -- Job Wait CLuster                                    */
+/*============================================================================*/
+
+" job_WaitCluster.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* request to wait for cluster to start (on originating node)                 */
+/*----------------------------------------------------------------------------*/
+: waitCluster_req ( -- <R> )
+
+  >>logEntry <SEED_REQ>
+
+  0 0 locals| pJob pTask |
+
+  tp: waitCluster_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait till all nodes connected
+  grid::pause
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pJob job.distribute
+
+  <<logExit <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute job_WaitCluster (on participating node)                            */
+/*----------------------------------------------------------------------------*/
+: waitCluster_exe ( pJob_WaitCluster -- )
+
+  >>logEntry <SEED_EXE>
+
+  //params| pJob_WaitCluster |
+  job::this locals| pJob_WaitCluster |
+
+  pJob_WaitCluster job.notice
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait till all nodes connected
+  grid::pause
+
+  pJob_WaitCluster job::participantExecuted
+
+  <<logExit <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: waitCluster_beg ( -- )
+
+  >>logEntry <SEED_BEG>
+
+  job::this locals| pJob_WaitCluster |
+
+  pJob_WaitCluster job.becomeParticipant
+
+  job::participantBegun
+
+  <<logExit <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: waitCluster_end ( -- )
+
+  >>logEntry <SEED_END>
+
+  job::this locals| pJob_WaitCluster |
+
+  job::participantEnded
+
+  <<logExit <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: waitCluster_can ( -- )
+
+  >>logEntry <SEED_CAN>
+
+  job::this locals| pJob_WaitCluster |
+
+  job::participantCancelled
+
+  <<logExit <DONE_CAN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

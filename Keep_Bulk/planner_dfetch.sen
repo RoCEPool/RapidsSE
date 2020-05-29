@@ -1,0 +1,62 @@
+/*============================================================================*/
+/* planner_dfetch.sen -- distributed fetch planner                            */
+/*============================================================================*/
+
+" planner_dfetch.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* distributed fetch planner (multi-node version)                             */
+/*----------------------------------------------------------------------------*/
+: dfetchPlanner ( catalogNm schemaNm tableNm where -- dfetchPlan )
+
+  locals| sWhere sTableNm sSchemaNm sCatalogNm |
+
+  sWhere sTableNm sSchemaNm sCatalogNm "dfetchPlanner %v %v %v %v" str.format .
+
+  // create a distributed fetch plan
+  plan::new locals| dfetchPlan |
+  0 locals| partitionId |
+
+  // synthesise any plan-level symbolic arguments into the lambda text of plan
+  sTableNm   dfetchPlan  ##: $$tableNm
+  sSchemaNm  dfetchPlan  ##: $$schemaNm
+  sCatalogNm dfetchPlan  ##: $$catalogNm
+  sWhere     dfetchPlan  ##: $$where
+
+  // nb: the above could have been a frame level, but left it as an example
+
+  //schemaNm .
+  "triggerRangeOp" str.format dfetchPlan plan.opFrame++ drop
+
+  // create the named opFrames in plan and any fame-level symbolic arguments
+  grid::partitions 0 do
+
+    I to partitionid
+
+    // frame-level symbolic arguments for scanOp#I
+    partitionid "rangeOp#%v" str.format dfetchPlan plan.opFrame++ drop
+      partitionid    dfetchPlan ##: $$partition   // partition
+      sWhere         dfetchPlan ##: $$where       // where clause
+      "printOp.task" dfetchPlan ##: $$nextOp      // next op is printOp
+      "printOp#"     dfetchPlan ##: $$nextProfile // next profile is printOp#
+  loop
+
+  "printOp#" dfetchPlan plan.opFrame++ drop
+    // frame-level symbolic arguments
+    grid::partitions   dfetchPlan ##: $$nPartitions // number of partitions in pipeline
+    "responseOp.task" dfetchPlan ##: $$nextOp      // pipe to next operator
+    "responseOp#"     dfetchPlan ##: $$nextProfile // pipe to next profile
+
+  "responseOp#" dfetchPlan plan.opFrame++ drop
+    "sinkOp.task"     dfetchPlan ##: $$nextOp      // pipe to next operator
+    "sinkOp#"         dfetchPlan ##: $$nextProfile // pipe to next profile
+
+  "sinkOp#" dfetchPlan plan.opFrame++ drop
+
+  // return dfetchPlan
+  dfetchPlan
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

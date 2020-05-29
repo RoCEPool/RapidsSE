@@ -1,0 +1,75 @@
+/*============================================================================*/
+/* job_NetHog.sen -- Network Hog Job                                          */
+/*============================================================================*/
+
+" job_NetHog.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* Job_NetHog receive (on every node the hog runs thru)                       */
+/*----------------------------------------------------------------------------*/
+: NetHog_rcv (  -- <R> )
+
+  >>logEntry <SEED_BEG>
+
+  0 locals| iHogNo  |
+  0 locals| iNodeNo |
+  0 locals| nNodes  |
+  0 locals| iNextNodeNo |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get data about nodes etc
+  job::this job_netHog.hogNo@ to iHogNo
+  grid::thisNode@ to iNodeNo
+  grid::definedNodes to nNodes
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute next node for this hog
+  iHogNo 2 % if
+    // odd numbered hogs go counter=clockwise
+    //"Counterclockwise" .
+
+    iNodeNo 1- to iNextNodeNo
+    iNextNodeNo 0 < if
+      nNodes 1 - to iNextNodeNo
+    then
+
+  else
+    // even numbered hogs go clockwise
+    //"Clockwise" .
+
+    iNodeNo 1+ to iNextNodeNo
+    iNextNodeNo nNodes >= if
+      0 to iNextNodeNo
+   then
+  then
+
+  //iNextNodeNo iHogNo "Hog %v runs to node %v" fmt.print
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // run to next node
+
+  iNextNodeNo job::this job.forward
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  <<logExit
+  job::deleteThis
+  <DONE_RCV>
+;
+
+/*----------------------------------------------------------------------------*/
+/* Job_NetHog request (on command node)                                       */
+/*----------------------------------------------------------------------------*/
+: NetHog_req (  -- <R> )
+
+  >>logEntry <SEED_REQ>
+
+  //"Hog Boss" .
+
+  job::this locals| pJob_NetHog |
+
+  <<logExit <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

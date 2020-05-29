@@ -1,0 +1,367 @@
+/*============================================================================*/
+/* RowAgg.hpp -- Row Aggregation                                              */
+/*============================================================================*/
+
+#include "Jobs.h"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+RowAgg* Jobs::_pRowAgg(void* aAddr)
+{
+  RowAgg* pRowAgg = reinterpret_cast<RowAgg*>(aAddr);
+  
+  if (pRowAgg && CN_ROWAGG != pRowAgg->eClass())
+    vTrace("_pRowAgg got class %s\n"_Stz,aCN[pRowAgg->eClass()]);
+  
+  RASSERT_TYPE(pRowAgg,CN_TABLE);
+  
+  return pRowAgg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* RowAgg::operator new(size_t)
+{
+  void* pObject = HeapMem::pAllocate(CN_ROWAGG);
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void RowAgg::operator delete(void* pAddress)
+{
+  RowAgg* pRowAgg = reinterpret_cast<RowAgg*>(pAddress);
+  
+  HeapMem::vFree(pRowAgg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+RowAgg::RowAgg(void)
+: Object(CN_ROWAGG)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG);
+  
+  m_pTable     = nullptr;
+  m_pKeyColumn = nullptr;
+  m_pAggColVec = nullptr;
+  m_pAggColVec = new ColumnVec;
+  
+  vReset();
+  
+  _checkInitialised_(CN_ROWAGG);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+RowAgg::~RowAgg(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  //clear all pointers back to the columns of the original table
+  m_pAggColVec->vClear();
+  
+  delete m_pAggColVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add an aggregate to this aggrow                                            */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vAdd(RowAgg* pAggArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  if (! m_pTable) {
+    m_pTable     = pAggArg->m_pTable;
+    m_pKeyColumn = pAggArg->m_pKeyColumn;
+    m_pAggColVec = pAggArg->m_pAggColVec;
+  }
+  
+  m_nRows += pAggArg->m_nRows;
+  
+  i8 nAggColumns = m_pAggColVec->nItems();
+  
+  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+
+    if (pAggArg->m_iaMinVal[i_AggCol] < m_iaMinVal[i_AggCol]) {
+      m_iaMinVal[i_AggCol] = pAggArg->m_iaMinVal[i_AggCol];
+      m_iaMinKey[i_AggCol] = pAggArg->m_iaMinKey[i_AggCol];
+    }
+
+    if (pAggArg->m_iaMaxVal[i_AggCol] > m_iaMaxVal[i_AggCol]) {
+      m_iaMaxVal[i_AggCol] = pAggArg->m_iaMaxVal[i_AggCol];
+      m_iaMaxKey[i_AggCol] = pAggArg->m_iaMaxKey[i_AggCol];
+    }
+    
+    m_iaSumVal[i_AggCol] += pAggArg->m_iaSumVal[i_AggCol];
+    m_iaAvgVal[i_AggCol] = m_iaSumVal[i_AggCol] / m_nRows;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* aggregate an entry buffer                                                  */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vAggregate(i8 i_Slot, CrwBuffer* pCrwBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  s48K sRowString;
+  
+  Dtm xKey;
+  Dtm xVal;
+  Column* pAggColumn;
+  i8 i_Col;
+  
+  i8 nAggColumns = m_pAggColVec->nItems();
+  
+  vReset();
+  
+  m_oBirth = pCrwBuffer->oWhenNewed();
+  
+  // aggregate the buffer
+  i8 nRowCount = pCrwBuffer->nRowCount();
+  HV_Row hRow(m_pTable->pStreamDef(),C_ALL);
+  i8 iKeyCol = m_pKeyColumn->iColumnNo();
+  
+  for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
+  
+    // mark key column to be decoded
+    hRow->m_abGetCol[iKeyCol] = true;
+    
+    i8 iAggCol = C_UNKNOWN;
+    
+    // mark agg columns to be decoded
+    for (i8 i_Col = 0; i_Col < nAggColumns; i_Col++) {
+      pAggColumn = m_pAggColVec->pGet(i_Col);
+      iAggCol = pAggColumn->iColumnNo();
+      hRow->m_abGetCol[iAggCol] = true;
+    }
+    
+    hRow->m_iLastCol = iKeyCol > iAggCol ? iKeyCol : iAggCol;
+    
+    // get the inflated row
+    pCrwBuffer->vGetRow(hRow, i_Row);
+    
+    // get the key value from the row
+    xKey.m_iInt = hRow->m_waColVal[m_pKeyColumn->iColumnNo()].m_iInt;
+    
+    // for each agg column
+    for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+      
+      pAggColumn = m_pAggColVec->pGet(i_AggCol);
+      i_Col = pAggColumn->iColumnNo();
+      
+      xVal.m_iInt = hRow->m_waColVal[i_Col].m_iInt;
+      
+      if (xVal.m_iInt < m_iaMinVal[i_AggCol]) {
+        m_iaMinVal[i_AggCol] = xVal.m_iInt;
+        m_iaMinKey[i_AggCol] = xKey.m_iInt;
+      }
+      if (xVal.m_iInt > m_iaMaxVal[i_AggCol]) {
+        m_iaMaxVal[i_AggCol] = xVal.m_iInt;
+        m_iaMaxKey[i_AggCol] = xKey.m_iInt;
+      }
+      m_iaSumVal[i_AggCol] += xVal.m_iInt;
+    }
+    
+    m_nRows++;
+    
+  }
+  
+  // compute average
+  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++)
+    m_iaAvgVal[i_AggCol] = m_iaSumVal[i_AggCol] / m_nRows;
+  
+  // temp trace
+  
+  //  Time oDateTime;
+  //  oDateTime.vSetLocal(&m_oSince);
+  //  s32 sDateTime;
+  //  char* z = sDateTime.azChar();
+  //  oDateTime.vAppendLocal(&z);
+  
+  //  vTrace("%s\n"_Stz,sDateTime.azChar());
+  //  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+  //    pAggColumn = m_pAggColVec->pGet(i_AggCol);
+  //    vTrace("AggCol %s: min: %lld %lld; max: %lld %lld; avg: %lld\n"_Stz,
+  //           pAggColumn->sColumnName().azChar(),
+  //           m_iaMinKey[i_AggCol], m_iaMinVal[i_AggCol],
+  //           m_iaMaxKey[i_AggCol], m_iaMaxVal[i_AggCol],
+  //           m_iaAvgVal[i_AggCol]
+  //           );
+  //  }
+  
+  
+  //vTrace("Slot %lld: published %lld rows\n"_Stz,
+  //       i_Slot, pEntBuffer->nItems());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* print this aggregation out                                                 */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vPrintOut(File& oOutputFile)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  i8 nAggColumns = m_pAggColVec->nItems();
+
+//  Time oDateTime;
+//  oDateTime.vSetLocal(&m_oSince);
+//  s32 sDateTime;
+//  char* z = sDateTime.azChar();
+//  oDateTime.vAppendLocal(&z);
+
+  vTrace("  %lld rows\n"_Stz,m_nRows);
+  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+    
+    Column* pAggColumn = m_pAggColVec->pGet(i_AggCol);
+    vTrace("  %18s: min: %4lld (key=%4lld); max: %4lld (key=%4lld); avg: %6lld\n"_Stz,
+           pAggColumn->szColNm(),
+           m_iaMinVal[i_AggCol], m_iaMinKey[i_AggCol],
+           m_iaMaxVal[i_AggCol], m_iaMaxKey[i_AggCol],
+           m_iaAvgVal[i_AggCol]
+           );
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* wread into this aggregation                                                */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vReadIn(File& oInFile)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  i8 nBytesRead = oInFile.nReadBytes(this,sizeof(RowAgg));
+  ASSERT(nBytesRead == sizeof(RowAgg));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the aggregation                                                      */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  m_oBirth.vClear();
+  
+  m_nRows = 0;
+  
+  for (i8 i_Col = 0; i_Col < C_MAX_COLAGG; i_Col++) {
+    
+    m_iaMinKey[i_Col] = -1;
+    m_iaMinVal[i_Col] = C_I8_MAX;
+    
+    m_iaSumVal[i_Col] = 0;
+    m_iaAvgVal[i_Col] = 0;
+    
+    m_iaMaxKey[i_Col] = -1;
+    m_iaMaxVal[i_Col] = C_I8_MIN;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table to be aggregated                                                 */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  m_pTable = pTable;
+  
+  vDiscoverColumns();
+}
+
+/*----------------------------------------------------------------------------*/
+/* write this aggregation out                                                 */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vWriteOut(File& oOutputFile)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  bool bWritten = oOutputFile.bWriteBytes(this,sizeof(RowAgg));
+  ASSERT(bWritten);
+  
+  oOutputFile.vFlush();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* discover aggregation columns                                               */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vDiscoverColumns(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  StreamDef* pStreamDef = m_pTable->pStreamDef();
+  
+  m_pKeyColumn = pStreamDef->pGetColumn(0);
+  
+  i8 nTableColumns = pStreamDef->nColumns(C_ALL);
+  for (i8 i_Col = 1; i_Col < nTableColumns; i_Col++) {
+    
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+    
+    if (-1 == pColumn->iColumnNo())
+      continue;
+    
+    if (CT_INTEGER != pColumn->eColumnType())
+      continue;
+    
+    // keep a pointer to the oroginal table column
+    m_pAggColVec->vAdd(pColumn);
+  }
+  
+//  i8 nAggColumns = m_pAggColVec->nItems();
+//  for (i8 i_Col = 1; i_Col < nAggColumns; i_Col++) {
+//    
+//    Column* pColumn = m_pAggColVec->pGet(i_Col);
+//   
+//    vTrace("Column: %lld %s %s\n"_Stz,
+//           pColumn->iColumnNo(),
+//           pColumn->sColumnName().azChar(),
+//           aCT[pColumn->eColumnType()]);
+//  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* RowAgg::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG);
+  
+  return &m_xFooter;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

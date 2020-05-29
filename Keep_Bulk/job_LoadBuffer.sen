@@ -1,0 +1,171 @@
+/*============================================================================*/
+/* job_LoadBuffer.sen -- Load Buffer Job                                      */
+/*============================================================================*/
+
+" job_LoadBuffer.sen" .verbose
+
+////////////////////////////////////////////////////////////////////////////////
+//                               on kid node                                  //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* load buffer into table                                                     */
+/*----------------------------------------------------------------------------*/
+: LoadBuffer.load ( pJob_LoadBuffer -- )
+
+  params| pJob_LoadBuffer |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  0 locals| pJob_LoadTable  |
+
+  0 locals| sTableNm    |
+  0 locals| i_Partition |
+  0 locals| bAllLoaded  |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //"LoadBuffer_kid :" .
+  //pJob_LoadBuffer job.show
+
+  // get table name
+  pJob_LoadBuffer job.objectName@ to sTableNm
+
+  // push table dictionary
+  pJob_LoadBuffer getPath dicStack.set
+  sTableNm pushTable assert
+  //pathDump
+
+  // use table name find and set target table
+  sTableNm find execute locals| pTable |
+  pTable pJob_LoadBuffer Job_LoadBuffer.table!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the load table job (participant node)
+  pJob_LoadBuffer job_loadBuffer.parentJobId@ locals| iParentJobId |
+
+  // we wait till the LoadTable can be found in the participant job skip list
+  // there is a possiblity that the buffer arrives on a node before the loadTable
+  pJob_LoadBuffer iParentJobId job::waitParticipant to pJob_LoadTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // grab write lock on table partition
+  pJob_LoadBuffer Job_LoadBuffer.partition@ to i_Partition
+  i_Partition pTable tablePtnGrabWrite
+
+  // now insert the buffer of rows
+  pJob_LoadBuffer job_LoadBuffer.insertRows to bAllLoaded
+
+  // drop write lock on table partition
+  i_Partition pTable tablePtnDropWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // ack the load table task if all buffers have been loaded
+  bAllLoaded if
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // first check if the job is executing SS_SEED_EXE
+    // then get the task that is executing it
+    begin
+      pJob_LoadTable job.IsExecuting
+    not while
+      1 thread.sleep_ms
+    repeat
+
+    pJob_LoadTable job.executingTask@ locals| pTask_Parent |
+
+   //pTask_LoadTable pJob_LoadTable iLoadJobId
+   //  "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v"
+   //fmt.print
+
+   //pTask_LoadTable
+   //"All buffers loaded; Would ack task_LoadTable (node) %v"
+   //fmt.print
+
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // wait for acks to be set in the endInsert task
+    begin
+      pTask_Parent task.IsAckSet
+    not while
+      1 thread.sleep_ms
+    repeat
+
+    pTask_Parent task.grabLock
+    pTask_Parent task.dropLock
+    pTask_Parent task.ack
+  then
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* seed on kid node                                                           */
+/*----------------------------------------------------------------------------*/
+: LoadBuffer_kid ( -- )
+
+  >>am <SEED_KID>
+
+  job::this locals| pJob_LoadBuffer |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check there is enough buffers and load
+
+  // node::checkEnoughBuffers if
+    pJob_LoadBuffer LoadBuffer.load
+  //then
+
+  <<am
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  delete_completed_job
+
+  <DONE_KID>
+;
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on loading node                                 //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* forward this load buffer job to kid node                                   */
+/*----------------------------------------------------------------------------*/
+: loadBuffer.forward ( pJob_LoadBuffer -- )
+
+  params| pJob_LoadBuffer |
+
+  // which partition are we forwarding to?
+  pJob_LoadBuffer job_loadBuffer.partition@ locals| i_Partition |
+
+  // convert i_Partition to i_ForwardNode
+  i_Partition grid::toNode locals| i_ForwardNode |
+
+  //i_Partition i_ForwardNode "loadBuffer.forward : Node %v Partition %v" fmt.print
+
+  // send this job to the forward node
+  i_ForwardNode pJob_LoadBuffer job.forward
+;
+
+/*----------------------------------------------------------------------------*/
+/* seed on loading node                                                       */
+/*----------------------------------------------------------------------------*/
+: loadBuffer_run (  -- )
+
+  >>am <SEED_RUN>
+
+  job::this locals| pJob_LoadBuffer  |
+
+  //"loadBuffer_run :" .
+
+  // simply forward this job to kid node
+  pJob_LoadBuffer LoadBuffer.forward
+
+  delete_completed_job
+
+  <DONE_RUN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

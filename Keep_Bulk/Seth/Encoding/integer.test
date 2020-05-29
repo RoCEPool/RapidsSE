@@ -1,0 +1,97 @@
+/*----------------------------------------------------------------------------*/
+/* integer.test -- INTEGER ENCODING tests                                     */
+/*----------------------------------------------------------------------------*/
+
+// (1) create a table
+create table intTbl (
+int_col0   INTEGER     NOT NULL,
+int_col1   INTEGER     NOT NULL,
+int_col2   INTEGER     NOT NULL,
+int_col3   INTEGER     NOT NULL,
+int_col4   INTEGER     NOT NULL,
+int_col5   INTEGER     NOT NULL,
+int_col6   INTEGER     NOT NULL,
+int_col7   INTEGER     NOT NULL,
+int_col8   INTEGER     NOT NULL,
+int_col9   INTEGER     NOT NULL,
+int_col10  INTEGER     NOT NULL,
+int_col11  INTEGER     NOT NULL,
+int_col12  INTEGER     NOT NULL,
+int_col13  INTEGER     NOT NULL,
+int_col14  INTEGER     NOT NULL,
+int_col15  INTEGER
+);
+success
+  
+load intTbl "../DATA/Encoding/integer.csv" ;
+success
+
+// check no of rows
+fetch intTbl;
+rows: 1000000
+
+// dump table
+//dumpTbl intTbl;
+
+fetch retrieve intTbl int_col0;
+affected: 1000000
+
+fetch retrieve intTbl int_col1;
+affected: 1000000
+
+fetch retrieve intTbl int_col2;
+affected: 1000000
+
+fetch retrieve intTbl int_col3;
+affected: 1000000
+
+fetch retrieve intTbl int_col4;
+affected: 1000000
+
+fetch retrieve intTbl int_col5;
+affected: 1000000
+
+fetch retrieve intTbl int_col6;
+affected: 1000000
+
+fetch retrieve intTbl int_col7;
+affected: 1000000
+
+fetch retrieve intTbl int_col8;
+affected: 1000000
+
+fetch retrieve intTbl int_col9;
+affected: 1000000
+
+fetch retrieve intTbl int_col10;
+affected: 1000000
+
+fetch retrieve intTbl int_col11;
+affected: 1000000
+
+fetch retrieve intTbl int_col12;
+affected: 1000000
+
+fetch retrieve intTbl int_col13;
+affected: 1000000
+
+fetch retrieve intTbl int_col14;
+affected: 1000000
+
+fetch retrieve intTbl int_col15;
+affected: 1000000
+
+// drop the table
+drop table intTbl;
+success
+
+CLEANUP {
+  
+  // drop the table
+  drop table intTbl;
+  mute
+  
+  bye;
+  mute
+}
+

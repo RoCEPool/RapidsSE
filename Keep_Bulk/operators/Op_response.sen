@@ -1,0 +1,63 @@
+/*============================================================================*/
+/* op_response.sen -- response operator                                        */
+/*============================================================================*/
+
+" op_response.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* respond                                                                    */
+/*----------------------------------------------------------------------------*/
+: respondSession ( pSession profile plan -- )
+
+  // record the plan and profile
+  0 locals| pTask thePlan profile pSession |
+
+  // get the executing task
+  thePlan plan.executingTask@ to pTask
+
+  // push the op frame for this writeOp
+  profile thePlan plan.opFrame? opFrame.push
+
+  //"DONE" .
+
+  // << profile plan >> -->> nextOp
+  //<< pSession $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+
+  opFrame.drop
+
+  //"ResponseOP acking the plan's executing task" .
+
+  // ack the plan's executing task
+  //pTask >str "acking task %v" str.format .
+  pTask task.ack
+;
+
+/*----------------------------------------------------------------------------*/
+/* response                                                                   */
+/*----------------------------------------------------------------------------*/
+: responseOp operator ( -- NEVER )
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug::trap then
+
+    // wait for next job
+    //jobQueue> ( valset )
+
+    // unpack it
+    valset> ( profile planId nValues )
+    drop ( profile planId )
+
+    // find plan using planId
+    planList::findPlan ( pSession profile plan true )
+    assert ( pSession profile plan )
+
+    // respond to session
+    respondSession ( )
+
+  again
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

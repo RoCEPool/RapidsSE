@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* pJob_SubPurger.hpp -- Sub Purger Job                                       */
+/*============================================================================*/
+#pragma once
+
+namespace Jobs
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  class Job_SubPurger : public Job
+  {
+  public:
+   
+    i8 m_iPurgeJobId;    // job id of the purge job that spawned this sub purge
+  
+    Job_Purge* m_pJob_Purge;
+    Table* m_pTable;
+  
+    i8 m_nPurgeCount;    // number of buffers purged
+    
+    // must be last
+    Footer m_xFooter;
+  
+  public:
+    void* operator new(size_t);
+    void* operator new(size_t, void* aAddress);
+    void  operator delete(void*);
+  
+    Job_SubPurger(JobClass* aJobClass, ReqTuple* aReqTuple);
+    ~Job_SubPurger(void) noexcept(false);
+  
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+
+  public:
+    void vShow(void);
+  
+    bool bBegin(void);
+    bool bChunk(void);
+    void vEnd(void);
+
+  public:
+    Footer* aFooter(void);
+  };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Job_SubPurger* _pJob_SubPurger(void* aAddr);
+  
+  Job* pJob_SubPurger_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
+  void vJob_SubPurger_delete(Job* pJob);
+  void vJob_SubPurger_show(Job* pJob);
+  
+  JobClass* pJob_SubPurger_class(pFUN** aaFun);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

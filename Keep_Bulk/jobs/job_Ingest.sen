@@ -1,0 +1,100 @@
+/*============================================================================*/
+/* job_Ingest.sen -- Ingest Job                                               */
+/*============================================================================*/
+
+" job_Ingest.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* read records from file, create working buffers, send to node               */
+/*----------------------------------------------------------------------------*/
+: Ingest_process ( pJob_Ingest -- )
+
+  params| pJob_Ingest |
+
+  pJob_Ingest job_ingest.begin not if exit then
+
+  begin pJob_Ingest job_ingest.chunk while repeat
+
+  task::wait
+
+  pJob_Ingest job_ingest.end
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn sub-ingesters                                                        */
+/*----------------------------------------------------------------------------*/
+: Ingest_spawnSubs ( pJob_Ingest -- )
+
+  params| pJob_Ingest |
+
+  task::this task.grabLock
+
+  args.subIngesters task::acks!
+
+  args.subIngesters 0
+  do
+    pJob_Ingest job_subIngester::spawn
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* Job_Ingest request (on command node)                                       */
+/*----------------------------------------------------------------------------*/
+: Ingest_req (  -- <R> )
+
+  >>logEntry <SEED_REQ2>
+
+  0 locals| sTableNm |
+  0 locals| pTable |
+
+  job::this locals| pJob_Ingest |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  //pJob_Ingest job.pushPath
+  //task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  DdlLock[].grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if pJob_Ingest <ERROR_REQUEST> !!logError exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get table name from job
+  //pJob_Ingest job.objectName@ to sTableNm
+  <tableNm> to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm checkIsTable not if popTable pJob_Ingest <ERROR_REQUEST> !!logError exit then
+
+  //----------------------------------------------------------------------------
+
+  // get table
+  sTableNm find execute to pTable
+  pTable pJob_Ingest job_ingest.table!
+
+  pJob_Ingest Ingest_spawnSubs
+
+  pJob_Ingest Ingest_process
+
+  //----------------------------------------------------------------------------
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  popTable
+  assertInTables
+
+  <<logExit <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

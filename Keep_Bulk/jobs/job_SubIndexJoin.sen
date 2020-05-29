@@ -1,0 +1,119 @@
+/*============================================================================*/
+/* job_SubIndexJoin.sen -- Job SubIndexJoin                                   */
+/*============================================================================*/
+
+" job_SubIndexJoin.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* index join                                                                 */
+/*----------------------------------------------------------------------------*/
+: indexJoin ( Job_SubIndexJoin -- <R> )
+
+  params| pJob_SubIndexJoin |
+  0 0 locals| pBufferQueue iSlot |
+  0 0 0 0 locals| sLeftTableNm sLeftIndexNm pLeftIndex pLeftTable |
+  0 0 0 0 locals| sRightTableNm sRightIndexNm pRightIndex pRightTable |
+/*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push left table
+  pJob_SubIndexJoin job.objectName@ to sLeftTableNm
+  sLeftTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the left table
+  sLeftTableNm find execute to pLeftTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes
+  pushIndexes assert
+  pJob_SubIndexJoin job.indexName@ to sLeftIndexNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the left index
+  sLeftIndexNm find execute to pLeftIndex
+  popIndexes
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push right table
+  pJob_SubIndexJoin job_SubIndexJoin.rightTableName@ to sRightTableNm
+  sRightTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the right table
+  sRightTableNm find execute to pRightTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes
+  pushIndexes assert
+  pJob_SubIndexJoin job_SubIndexJoin.rightIndexName@ to sRightIndexNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the right index
+  sRightIndexNm find execute to pRightIndex
+  popIndexes
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table
+  popTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes
+  popIndexes
+
+*/
+ // grab partition locks on the left and right tables
+ //iSlot pLeftTable tablePtnGrabRead  //! partitionLock
+ //iSlot pRightTable tablePtnGrabRead  //! partitionLock
+
+ // execute the join of the two tables
+ pJob_SubIndexJoin job_SubIndexJoin.indexJoin
+
+ // drop partition locks on the left and right tables
+ //iSlot pRightTable tablePtnDropRead
+ //iSlot pLeftTable tablePtnDropRead
+;
+
+/*----------------------------------------------------------------------------*/
+/* SubIndexJoin (on originating node)                                         */
+/*----------------------------------------------------------------------------*/
+: SubIndexJoin_run ( -- <R> )
+
+  >>logEntry <SEED_RUN2>
+
+  0 0 locals| pTask pJob_SubIndexJoin |
+
+  tp: SubIndexJoin
+  //"SubIndexJoin_run" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_SubIndexJoin
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  DdlLock[].grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  //pJob_SubIndexJoin job.pushPath
+  //task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute index join
+  pJob_SubIndexJoin indexJoin
+
+  DdlLock[].testDrop
+
+  job::completed
+
+  HAZARD
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,364 @@
+/*============================================================================*/
+/* Job_SubExporter.cpp -- Sub Export Job                                        */
+/*============================================================================*/
+
+#include "Jobs.h"
+
+JobClass xJobClass_SubExporter =
+{
+  CN_JOB_SUBEXPORTER,        // class number
+  JK_CHILD,                  // job kind
+  RS_NODE_ERRORS,            // response kind
+  "sub-export rows"_Stz,     // comment about the job
+  "subExporter"_Stz,         // the prompt command
+  nullptr,                   // the second word
+  "subExporter_run"_Stz,     // the _run task seed
+  nullptr,                   // the _req task seed
+  nullptr,                   // the _rcv task seed
+  nullptr,                   // the _exe task seed
+  nullptr,                   // the _end task seed
+  nullptr,                   // the _can task seed
+  false,                     // check resources?
+  false,                     // detached job?
+  false,                     // buffer attached?
+  DL_NONE,                   // ddl lock model
+  PY_NORMAL,         // priority
+  JF_NONE,           // flags
+
+  nullptr,                   // prompt check function
+  pJob_SubExporter_pre,      // prompt pre-process function
+  vJob_post,                 // prompt post-process function
+  nullptr,                   // job new function
+  vJob_SubExporter_delete,   // job delete function
+  nullptr,                   // job pre-send function
+  nullptr,                   // job post-receive function
+  vJob_SubExporter_show,     // job show function
+  
+  // help and example
+  true,
+  C_NO_NAME,
+  C_NO_NAME,
+
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass* Jobs::pJob_SubExporter_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_SubFetch_class;
+  
+  return &xJobClass_SubExporter;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_SubExporter* Jobs::_pJob_SubExporter(void* aAddress)
+{
+  Job_SubExporter* pJob_SubExporter = reinterpret_cast<Job_SubExporter*>(aAddress);
+  
+  RASSERT_TYPE(pJob_SubExporter,CN_JOB_SUBEXPORTER);
+  
+  return pJob_SubExporter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_SubExporter::operator new(size_t)
+{
+  Job_SubExporter* pJob_SubExporter =
+    static_cast<Job_SubExporter*>(HeapMem::pAllocate(CN_JOB_SUBEXPORTER));
+  
+  return pJob_SubExporter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_SubExporter::operator new(size_t, void* aAddress)
+{
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::operator delete(void* aAddress)
+{
+  Job_SubExporter* pJob_SubExporter = static_cast<Job_SubExporter*>(aAddress);
+  
+  HeapMem::vFree(pJob_SubExporter);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_SubExporter::Job_SubExporter(JobClass* aJobClass, ReqTuple* aReqTuple)
+: Job(aJobClass, aReqTuple)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+    
+  m_pJobExport = nullptr;
+  m_nCrwBuffers = C_UNKNOWN;
+  m_iCrwBuffer  = 0;
+  
+  m_pCrwBuffer = nullptr;
+  
+  m_nExportBuffers = 0;
+  m_pExportBuffer = nullptr;
+  
+  _checkInitialised_(CN_JOB_SUBEXPORTER);
+  
+  //ActLog::vAdd(this,AN_CONSTRUCT,CN_JOB_SUBEXPORTER,_EG_CN);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_SubExporter::~Job_SubExporter(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pObject);
+
+  pJob_SubExporter->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* begin                                                                      */
+/*----------------------------------------------------------------------------*/
+bool Job_SubExporter::bBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+  
+  Table* pTable = m_pJobExport->m_pTable;
+  TablePtn* pTblPtn = pTable->pPartition(i_Slot());
+  
+  m_pCrwBuffer = pTblPtn->pRootCrwBuffer();
+  m_nCrwBuffers = pTblPtn->nCrwBuffers();
+  
+  if (m_xReqTuple.m_iDetail)
+    JobLog::vNote(this,
+                          "TableTpn[%lld] for table %s has %lld buffers"_Stz,
+                          i_Slot(),
+                          pTable->szTableNm(),
+                          m_nCrwBuffers);
+  
+  //ActLog::vAdd(this,AN_JOB_BEGIN,m_nCrwBuffers);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* chunk                                                                      */
+/*----------------------------------------------------------------------------*/
+bool Job_SubExporter::bChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+  
+  if (! m_pCrwBuffer)
+    return false;
+  
+  if (m_xReqTuple.m_iDetail)
+    JobLog::vNote(this,
+                          "Exporting Table %s CrwBuffer[%lld/%lld] %p"_Stz,
+                          m_pJobExport->m_pTable->szTableNm(),
+                          m_iCrwBuffer,
+                          m_nCrwBuffers,
+                          m_pCrwBuffer);
+  
+  //ActLog::vAdd(this,AN_JOB_CHUNK,m_iCrwBuffer);
+
+  if (m_pCrwBuffer->nRowCount())
+    vSprintRows();
+  
+  m_iCrwBuffer++;
+  m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                         */
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+
+  if (m_pExportBuffer)
+    vSpawnKidExport(true);
+  
+  //ActLog::vAdd(this,AN_JOB_END,m_iCrwBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+  
+  vTrace("  Job_SubExport %p %03lld "
+         "i_Slot %lld\n"_Stz,
+         m_pJobExport, m_pJobExport->m_iFocalId,
+         i_Slot()
+         );
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* spawn kid-export to drag export buffer to export node and write            */
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::vSpawnKidExport(bool bLast)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+  
+  JobClass* pJobClass_KidExport = JobClass::pFind(CN_JOB_KIDEXPORT);
+  Job* pNewJob = pJobClass_KidExport->pNewJob(nullptr);
+  Job_KidExport* pJob_KidExport = _pJob_KidExport(pNewJob);
+  
+  pJob_KidExport->m_iExportJobId = m_pJobExport->m_iFocalId;
+  //pJob_KidExport->m_pSendWith    = m_pExportBuffer;
+  
+  if (bLast)
+    pJob_KidExport->m_nBuffersExpected = m_nExportBuffers;
+  else
+    pJob_KidExport->m_nBuffersExpected = C_UNKNOWN;
+
+  m_pExportBuffer = nullptr;
+  
+  pJob_KidExport->vSeed(SS_SEED_RUN);
+  
+  IGNORE_RETURN(AM::bSpawnJob(pJob_KidExport));
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint rows into export buffer                                             */
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::vSprintRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+    
+  char* aRecord = nullptr;
+  i8 nBytes = 0;
+
+  i8 nRowCount = m_pCrwBuffer->nRowCount();
+  ColumnVec* pColVec = m_pCrwBuffer->pTable()->pColumnVec();
+  HV_Rec hvRec(pColVec);
+  
+  // create a row for retrieval the data
+  HV_Row hRow(pColVec);
+  
+  for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
+    
+    // get the inflated compact row
+    m_pCrwBuffer->vGetRow(hRow, i_Row);
+    
+    // append the row to the record
+    hvRec->vAppend(hRow);
+    
+    StrLib::vConcat(hvRec->szRecStr()->azChar(),'\n');            //! sub-optimal
+    //vTrace("]]%s[[\n"_Stz,sRecord.szStz());
+    
+    nBytes = hvRec->szRecStr()->nSize();
+    
+    if (! m_pExportBuffer) {
+      m_pExportBuffer = new ExportBuffer;
+      m_nExportBuffers++;
+    }
+    
+    if (m_pExportBuffer->nFreeBytes() < nBytes + 1) {
+      vSpawnKidExport(false);
+      m_pExportBuffer = new ExportBuffer;
+      m_nExportBuffers++;
+    }
+    
+    aRecord = m_pExportBuffer->aAllotRecord(nBytes - 1);
+    StrLib::vCopyLen(aRecord,hvRec->szRecStr()->azChar(),nBytes - 1);
+  }
+  
+  if (aRecord)
+    aRecord[nBytes-1] = '\0';
+  
+  //delete pRecord;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_SubExporter::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pJob_SubExporter_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
+{
+  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(aJobClass,aReqTuple);
+  //pJob->vDicPath(pSession);
+  
+  return pJob_SubExporter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_SubExporter_delete(Job* pJob)
+{
+  Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pJob);
+  
+  delete pJob_SubExporter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_SubExporter_show(Job* pJob)
+{
+  Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pJob);
+
+  pJob_SubExporter->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

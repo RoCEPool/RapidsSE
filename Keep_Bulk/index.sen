@@ -1,0 +1,1631 @@
+/*============================================================================*/
+/* index.sen -- index related words                                           */
+/*============================================================================*/
+
+/*
+: rangeSelectIdxTask ( <"key>" "<lower>" "<upper>" pIndex pSeitf iPartitionNo -- )
+
+//"rangeSelectIdxTask" .
+
+// save args
+locals| iPartitionNo pSeitf pIndex sUpper sLower sKey |
+
+// local variables
+0 0 0 0 locals| pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
+
+tp: rangeSelectIdxTask
+
+//debug::trap
+
+// task is a select participant running on server thread
+task::this task.kind@ TK_SELECT_PART == assert
+task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+// save seitf into this task
+pSeitf task::this task.seitf!
+
+// start groupBy for this partition
+iPartitionNo pSeitf seitf.groupBy@ locals| pGroupBy |
+pGroupBy groupBy.start
+
+// create a temporary buffer for the results
+pIndex entryBuffer::create to pResultBuffer
+
+// position in the first index buffer
+iPartitionNo pIndex index.positionFirst to pIndexBuffer
+
+// position at the upper bound entry
+sUpper pIndexBuffer pIndex index.position to pUpperEntry
+
+// get the indexBuffer looking for the lower key
+sLower iPartitionNo pIndex index.buffer to pIndexBuffer
+
+// position in the index buffer at the lower key
+sLower pIndexBuffer pIndex index.position to pIndexEntry
+
+// did we find an entry ?
+pIndexEntry not if
+
+// mark this result buffer as the last buffer
+pResultBuffer entryBuffer.isLast!
+
+// return the empty result buffer
+pResultBuffer pGroupby groupBy.applyBuffer
+pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+
+exit
+then
+
+// iterate thru the index buffer till no more index entries
+begin
+pIndexEntry
+while
+
+// check against upper bound
+pUpperEntry pIndexEntry entry.same not if
+
+// look up data row and insert row into result buffer
+//"calling entry.toDataRow" .
+pIndex pIndexEntry entry.toDataRow row.string pResultBuffer entryBuffer.insertRow
+
+// check if we managed to insert the entry
+not if
+// buffer must be full
+// put this result buffer in seitf buffer queue
+pResultBuffer pGroupby groupBy.applyBuffer
+pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+
+// create another result buffer
+pIndex entryBuffer::create to pResultBuffer
+
+// look up data row and insert row into result buffer
+pIndex pIndexEntry entry.toDataRow row.string pResultBuffer entryBuffer.insertRow
+assert
+then
+
+// move to next index entry in the index buffer
+pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
+
+pIndexEntry not if
+// get next index buffer from the current index buffer
+pIndexBuffer entryBuffer.nextBuffer to pIndexBuffer
+
+pIndexBuffer if
+pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
+then
+then
+else
+// entry beyond upper, null the entry and break from loop
+0  to pIndexEntry
+then
+repeat
+
+// mark this result buffer as the last buffer
+pResultBuffer entryBuffer.isLast!
+
+// put the result buffer in the seitf buffer queue
+pResultBuffer pGroupby groupBy.applyBuffer
+pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+;
+*/
+"index.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* index is used as a kind of word to identify indexes                        */
+/*----------------------------------------------------------------------------*/
+: index ;
+
+/*----------------------------------------------------------------------------*/
+/* make an indexes folder under given named table                             */
+/*----------------------------------------------------------------------------*/
+: makeIndexes ( "<tableNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING INDEXES FOR TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  then
+
+  find execute ( dic )
+  "indexes"     ( dic "indexes" )
+  swap         ( "indexes" dic )
+  :folder      ( )
+;
+
+: isIndex word.kind@ tick index eql ;
+
+/*----------------------------------------------------------------------------*/
+/* create an index using name from input stream (doesnt leave index on stk)   */
+/*----------------------------------------------------------------------------*/
+: index:
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_index allot
+  word.this >body object.magic!
+  CN_INDEX word.this >body object.class!
+  word.this >body index.init
+  true word.this >body object.wordbody!
+  tick index word.this word.kind!
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create an index using name on the stack (leaves index on stack)             */
+/*----------------------------------------------------------------------------*/
+: :index
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_index allot
+  word.this >body object.magic!
+  CN_INDEX word.this >body object.class!
+  word.this >body index.init
+  true word.this >body object.wordbody!
+  tick index word.this word.kind!
+  word.this
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* check within indexes folder                                                */
+/*----------------------------------------------------------------------------*/
+: withinIndexes
+  0 pathPick dic.name "indexes" str.equal
+;
+
+/*----------------------------------------------------------------------------*/
+/* check in indexes folder                                                    */
+/*----------------------------------------------------------------------------*/
+: checkInIndexes
+  withinIndexes if true exit then
+  EC_NOT_IN_INDEXES false
+;
+
+/*----------------------------------------------------------------------------*/
+/* assert top of task dictionary stack is indexes                              */
+/*----------------------------------------------------------------------------*/
+: assertInIndexes ( -- t|f )
+  withinIndexes assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* check word is an index                                                     */
+/*----------------------------------------------------------------------------*/
+: checkIsIndex ( "<indexNm>" -- true | errorCode false )
+
+  0 locals| indexPtr indexNm |
+
+  indexNm find ( indexPtr )
+  to indexPtr
+
+  indexPtr
+  not ( indexPtr bool )
+
+  if
+    EC_NO_SUCH_INDEX false ( errorCode false )
+  exit
+  then
+
+  indexPtr ( indexPtr )
+  word.kind@ ( ^word )
+  tick index ( ^word ^word )
+  eql ( bool )
+  if
+    //indexPtr execute index.isHidden@ if
+    //  EC_NO_SUCH_INDEX false ( errorCode false )
+    //  exit
+    //then
+
+    true ( true )
+    exit
+  then
+
+
+  EC_NOT_AN_INDEX false ( errorCode false )
+;
+
+/*----------------------------------------------------------------------------*/
+/* check in indexes folder                                                    */
+/*----------------------------------------------------------------------------*/
+: checkIsNotIndex ( "<word>" )
+
+  findInCurrent not if true exit then
+  EC_INDEX_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* find the index sub folder and push it onto task dictionary                 */
+/*----------------------------------------------------------------------------*/
+: pushIndexSub ( "<indexNm>" -- )
+  dup checkIsIndex not if EC_NO_SUCH_INDEX false exit then
+  find execute index.subDic pathPush
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop the index sub folder                                                   */
+/*----------------------------------------------------------------------------*/
+: popIndexSub
+  pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* find the indexes folder and push it onto task dictionary                   */
+/*----------------------------------------------------------------------------*/
+: pushIndexes ( -- )
+  "indexes" find execute pathPush
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop the indexes folder                                                     */
+/*----------------------------------------------------------------------------*/
+: popIndexes
+  pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable index                                          */
+/*----------------------------------------------------------------------------*/
+: checkMakeIndex ( "<indexNm>" "<tableNm>" --  true | errorCode false )
+
+  locals| tableNm indexNm |
+
+  checkInTables not if false exit then
+
+  tableNm checkIsTableFolder not if false exit then
+
+  tableNm pushTable assert
+
+  tableNm find execute table.indexCount
+  C_INDEXES_PER_TABLE == if EC_MAX_INDEXES popTable assertInTables false exit then
+
+  pushIndexes assert
+
+  indexNm checkIsNotIndex not if popIndexes popTable assertInTables false exit then
+
+  popIndexes
+  popTable
+
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable index folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkRemoveIndex ( "<indexNm>" "<tableNm>" -- true | errorCode false )
+
+  locals| tableNm indexNm |
+
+  // should be in the tables folder
+  checkInTables       not if false exit then
+
+  // there should be a table folder
+  tableNm checkIsTableFolder not if false exit then
+
+  true ( "<indexNm>" true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* tidy up of the index                                                       */
+/*----------------------------------------------------------------------------*/
+: indexTidyUp ( "<indexNm>" -- )
+
+   find execute ( ^indexPtr )
+
+   // truncate the index
+   dup index.truncate
+   
+   // forget all column names
+   dup index.subDic
+   pathPush
+   "columns" find execute forgetAll
+   pathDrop
+
+  // forget the sub dictionary
+   index.subDic forgetAll
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* analyze an index of a table                                                */
+/*----------------------------------------------------------------------------*/
+: analyzeIndex allParticipants 2 returnResult ( detailed "<indexNm>" -- true n# true )
+
+  tp: analyzeIndex
+
+  find execute
+  index.analyze
+
+  <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get index pointer and put into task.seitf.currentIndex                     */
+/*----------------------------------------------------------------------------*/
+: getIndex ( "<indexNm>" "<tableNm>" -- <R> )
+
+  locals| sTableNm sIndexNm |
+
+  assertInTables
+
+  // push table folder
+  sTableNm pushTable assert
+
+  // push indexes folder
+  pushIndexes assert
+
+  // get index ptr
+  sIndexNm findInCurrent execute
+
+  task::this task.seitf@ seitf.index!
+
+  // pop indexes folder
+  popIndexes
+
+  // pop table folder
+  popTable
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* clear task.seitf.currentIndex                                              */
+/*----------------------------------------------------------------------------*/
+: returnIndex ( )
+
+  nullptr task::this task.seitf@ seitf.index!
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* make_index (invoked from makeIndex)                                        */
+/*----------------------------------------------------------------------------*/
+: make_index ( "<tableNm>" "<indexNm>" -- )
+
+  0 0 locals| indexPtr tablePtr indexNm tableNm |
+
+  pushIndexes assert
+
+  // create the index
+  indexNm ( "<indexNm>" )
+  :index ( ^index )
+
+  // drop the index word
+  drop (  )
+
+  // make index columns
+  indexNm "makeIndexColumns" find execute
+
+  indexNm ( "<indexNm>" )
+
+  // find the index
+  find execute ( ^index )
+  to indexPtr
+
+  // find the table
+  tableNm find execute
+  to tablePtr
+
+  // push the table and index
+  tablePtr indexPtr ( ^index ^table )
+
+  // set the table in the index
+  index.table! (  )
+
+  // add the index in the table
+  indexPtr tablePtr table.addIndex
+
+  popIndexes
+;
+
+/*----------------------------------------------------------------------------*/
+/* make an index (run by participant)                                         */
+/*----------------------------------------------------------------------------*/
+: makeIndex allParticipants 2 checkResult ( "<tableNm>" "<indexNm>"  -- true n# true )
+
+tp: makingIndex
+
+  locals| indexNm tableNm |
+
+  args.tracepoint if
+  "MAKING INDEX " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  then
+
+  tableNm
+  pushTable assert
+
+  tableNm indexNm make_index
+
+  popTable
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by keySelectIndex request)    */
+/*----------------------------------------------------------------------------*/
+: exactSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+
+  tp: keySelectIdx
+
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 locals| entry pTempEntryBuffer pEntryBuffer |
+
+  // task is a select participant running on server thread
+  //task::this task.kind@ TK_SELECT_PART == assert
+  //task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+  //pSeitf seitf.index@ to pIndex
+
+  // create a temporary index buffer for the results
+  //"Creating a tempEntryBuffer" .
+  iPartitionNo pIndex entryBuffer::create to pTempEntryBuffer
+
+  // get the entryBuffer looking for the key
+  key iPartitionNo pIndex index.buffer ( pEntryBuffer )
+  to pEntryBuffer
+
+  // did we get an index buffer ?
+  pEntryBuffer if
+    // position in the index buffer at the key
+    key pEntryBuffer pIndex i_Phrase pPlanner index.position
+    to entry
+  then
+
+  // did we find an entry ?
+  entry not if
+
+    // mark this buffer as the last buffer
+    //"NO ENTRY Marking tempEntryBuffer as last buffer" .
+    pTempEntryBuffer entryBuffer.isLast!
+
+    // return the empty tempEntryBuffer
+    pTempEntryBuffer pBufferQueue queue.append
+
+    // mark that a fetch task has ended
+    pSeitf if
+      pSeitf seitf.fetchTaskEnded
+    then
+
+    exit
+  then
+
+  // iterate thru the buffer till no key match
+  begin
+    entry
+    while
+
+    // check if exact key match
+    key pIndex entry entry.matches if
+
+
+      // insert row from entry in tempEntryBuffer
+      //"Inserting row into tempEntryBuffer" .
+      pIndex entry entry.toDataRow pTempEntryBuffer entryBuffer.insertRow
+
+      // check if we managed to insert the entry
+      not if
+        // buffer must be full
+        // put this tempEntryBuffer in seitf bufferQueue
+        pTempEntryBuffer pBufferQueue queue.append
+
+        // create another temporary index buffer for the results
+        //"Creating a tempEntryBuffer" .
+        iPartitionNo pIndex entryBuffer::create to pTempEntryBuffer
+
+        // insert row from entry in temporary buffer
+        //"Inserting row into tempEntryBuffer" .
+        pIndex entry entry.toDataRow pTempEntryBuffer entryBuffer.insertRow
+        assert
+      then
+
+      // move to next entry in the buffer
+      entry pEntryBuffer entryBuffer.nextEntry to entry
+
+      entry not if
+        // get next buffer from the current entryBuffer
+        pEntryBuffer entryBuffer.nextBuffer to pEntryBuffer
+
+        pEntryBuffer if
+          entry pEntryBuffer entryBuffer.nextEntry to entry
+        then
+      then
+      // check if seitf exiting
+      pSeitf seitf.isExiting if
+        0 to entry
+      then
+    else
+      // entry did not match the key, null the entry and break from loop
+      0  to entry
+    then
+
+    // yield
+    //task.yield
+
+  repeat
+
+  //"Marking tempEntryBuffer as last buffer" .
+  // mark this buffer as the last buffer
+  pTempEntryBuffer entryBuffer.isLast!
+
+  // put the buffer in the seitf bufferQueue
+  pTempEntryBuffer pBufferQueue queue.append
+
+  // mark that a fetch task has ended
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by keySelectIndex request)    */
+/*----------------------------------------------------------------------------*/
+: exactSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+
+tp: keySelectIdx
+
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 locals| entry pTempEntryBuffer pEntryBuffer |
+
+  // task is a select participant running on server thread
+  //task::this task.kind@ TK_SELECT_PART == assert
+  //task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+
+  // iterate thru the index and find matching rows
+  key i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.exactKey
+;
+
+/*----------------------------------------------------------------------------*/
+/* make an index (run by participant)                                         */
+/*----------------------------------------------------------------------------*/
+: loadIndexes allParticipants 0 checkResult ( -- true n# true )
+
+tp: loadIndexes
+
+  args.tracepoint if
+    "LOADING INDEXES on NODE " grid.thisNode@ >str str.cat .
+  then
+
+  "indexes"
+  find execute pathPush
+
+  0 pathPick dic.lastWord dup
+    iterate
+    object@ word.name
+    find execute ( ^index )
+
+    // populate only non-hidden indexes
+    dup index.isHidden@ not if
+      index.populate
+    then
+
+    object@ word.prev object!
+  next
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by selectIndex request)       */
+/*----------------------------------------------------------------------------*/
+: lowerSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
+
+tp: lowerSelectIdxTask
+
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 locals| entry tempEntryBuffer indexBuffer |
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+  //pSeitf seitf.index@ to pIndex
+
+  // create a temporary index buffer for the results
+  //"Creating a tempIndexBuffer" .
+  iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+
+  // get the indexBuffer looking for the lower key
+  lower iPartitionNo pIndex index.buffer ( indexBuffer )
+  to indexBuffer
+
+  // did we get an index buffer ?
+  indexBuffer if
+    // position in the index buffer at the lower key
+    lower indexBuffer pIndex i_Phrase pPlanner index.position
+    to entry
+  then
+
+  // did we find an entry ?
+  entry not if
+    
+    // mark this buffer as the last buffer
+    //"Marking tempEntryBuffer as last buffer" .
+    tempEntryBuffer entryBuffer.isLast!
+
+    // return the empty tempEntryBuffer
+    //"Appending tempEntryBuffer to buffer queue" .
+    //tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+    tempEntryBuffer pBufferQueue queue.append
+
+    // mark that a fetch task has ended
+    pSeitf if
+      pSeitf seitf.fetchTaskEnded
+    then
+
+    exit
+  then
+
+  // iterate thru the buffer till no more entries
+  begin
+  entry
+  while
+    
+    // insert row from entry in tempEntryBuffer
+    //"Inserting row into tempEntryBuffer" .
+    pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
+
+    // check if we managed to insert the entry
+    not if
+      // buffer must be full
+      // put this tempEntryBuffer in seitf bufferQueue
+      //"Inserting row into tempEntryBuffer" .
+      //tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+      tempEntryBuffer pBufferQueue queue.append
+
+      // create another temporary index buffer for the results
+      //"Creating a tempIndexBuffer" .
+      iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+
+      // insert row from entry in temporary buffer
+      //"Inserting row into tempEntryBuffer" .
+      pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
+      assert
+    then
+
+    // move to next entry in the buffer
+    entry indexBuffer entryBuffer.nextEntry to entry
+
+    entry not if
+      // get next buffer from the current indexBuffer
+      indexBuffer entryBuffer.nextBuffer to indexBuffer
+
+      indexBuffer if
+        entry indexBuffer entryBuffer.nextEntry to entry
+      then
+    then
+
+    // check if seitf exiting
+    pSeitf seitf.isExiting if
+      0 to entry
+    then
+    // yield
+    //task.yield
+
+  repeat
+
+  //"Marking tempEntryBuffer as last buffer" .
+  // mark this buffer as the last buffer
+  tempEntryBuffer entryBuffer.isLast!
+
+  // put the buffer in the seitf bufferQueue
+  //"Appending tempEntryBuffer to buffer queue" .
+  //tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+  tempEntryBuffer pBufferQueue queue.append
+
+  // mark that a fetch task has ended
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by selectIndex request)       */
+/*----------------------------------------------------------------------------*/
+: lowerSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 locals| entry tempEntryBuffer indexBuffer |
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+
+  // iterate thru the index and fetch lower bound rows
+  lower i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.lowerBound
+;
+
+/*----------------------------------------------------------------------------*/
+/* range select task (sen)                                                    */
+/*----------------------------------------------------------------------------*/
+: rangeSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+
+//"rangeSelectIdxTask" .
+
+  // save args
+  locals| iPartitionNo pSeitf pIndex pBufferQueue sUpper sLower sKey pPlanner i_Phrase |
+
+  // local variables
+  0 0 0 0 locals| pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
+
+  tp: rangeSelectIdxTask
+
+  //debug::trap
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  // save seitf into this task
+  pSeitf task::this task.seitf!
+  //pSeitf seitf.index@ to pIndex
+
+  // create a temporary buffer for the results
+  iPartitionNo pIndex entryBuffer::create to pResultBuffer
+
+  // get the indexBuffer looking for the lower key
+  sLower iPartitionNo pIndex index.buffer to pIndexBuffer
+
+  // did we get an index buffer ?
+  pIndexBuffer if
+    // position in the index buffer at the lower key
+    sLower pIndexBuffer pIndex i_Phrase pPlanner index.position to pIndexEntry
+  then
+
+  // did we find an entry ?
+  pIndexEntry not if
+
+    // mark this result buffer as the last buffer
+    pResultBuffer entryBuffer.isLast!
+
+    // return the empty result buffer
+    pResultBuffer pBufferQueue queue.append
+
+    // mark that a fetch task has ended
+    pSeitf if
+      pSeitf seitf.fetchTaskEnded
+    then
+
+    exit
+  then
+
+  // iterate thru the index buffer till no more index entries
+  begin
+  pIndexEntry
+  while
+
+    // check against upper bound
+    sUpper pIndexEntry iPartitionNo pIndex i_Phrase pPlanner index.upper if
+      
+      // look up data row and insert row into result buffer
+      pIndex pIndexEntry entry.toDataRow pResultBuffer entryBuffer.insertRow
+
+      // check if we managed to insert the entry
+      not if
+        // buffer must be full
+        // put this result buffer in seitf buffer queue
+        pResultBuffer pBufferQueue queue.append
+
+        // create another result buffer
+        iPartitionNo pIndex entryBuffer::create to pResultBuffer
+
+        // look up data row and insert row into result buffer
+        pIndex pIndexEntry entry.toDataRow pResultBuffer entryBuffer.insertRow
+        assert
+      then
+
+      // move to next index entry in the index buffer
+      pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
+
+      pIndexEntry not if
+        // get next index buffer from the current index buffer
+        pIndexBuffer entryBuffer.nextBuffer to pIndexBuffer
+
+        pIndexBuffer if
+         pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
+        then
+
+      then
+      // check if seitf exiting
+      pSeitf seitf.isExiting if
+        0 to pIndexEntry
+      then
+    else
+      // entry beyond upper, null the entry and break from loop
+      0  to pIndexEntry
+    then
+
+   // yield
+   //task.yield
+
+  repeat
+
+  // mark this result buffer as the last buffer
+  pResultBuffer entryBuffer.isLast!
+
+  // put the result buffer in the seitf buffer queue
+  pResultBuffer pBufferQueue queue.append
+
+  // mark that a fetch task has ended
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* range select task (c++)                                                    */
+/*----------------------------------------------------------------------------*/
+: rangeSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 locals| entry tempEntryBuffer indexBuffer |
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+
+  // iterate thru the index and fetch lower bound rows
+  upper lower i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.range
+;
+
+/*----------------------------------------------------------------------------*/
+/* print rows from entries of an index buffer                                 */
+/*----------------------------------------------------------------------------*/
+: printRows ( ^pIndex ^pIndexBuffer --  )
+
+/*
+  0 0 locals| nRowCount pEntry pIndexBuffer pIndex iPartitionNo |
+
+  // get the partitionNo
+  pIndexBuffer entryBuffer.partition@ to iPartitionNo
+
+  // get the entry
+  pIndexBuffer entryBuffer.firstEntry to pEntry
+
+  begin
+    pEntry
+    while
+
+      display@ if
+        args.metadata if
+          pIndex pEntry entry.embeddedRow
+          iPartitionNo grid::toPartition
+          "row: (%v,%v)\n" str.format .put
+        else
+          pIndex pEntry entry.embeddedRow "row: (%v)\n" str.format .put
+        then
+      then
+      1 nRowCount + to nRowCount
+      pEntry pIndexBuffer entryBuffer.nextEntry to pEntry
+
+    repeat
+
+    // return nRowCount
+    nRowCount
+*/
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop buffer off the buffer queue                                            */
+/*----------------------------------------------------------------------------*/
+: popBuffer ( ^pBufferQueue --  )
+
+  locals| pBufferQueue |
+
+  begin
+    pBufferQueue queue.pop ( value true | false )
+
+    // try again if no value
+    not while
+      //REQUST_LOOP2
+      //task.yield
+      //"waiting".
+      args.sleep thread.sleep_ms
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* populate the index with data                                               */
+/*----------------------------------------------------------------------------*/
+: populateIndex allParticipants 1 returnFinalResult ( "<indexNm>" -- true n# true )
+
+tp: populateIndex
+
+  0 locals| pIndex sIndexNm |
+
+  // get index ptr
+  sIndexNm findInCurrent execute to pIndex
+
+  pIndex index.populate
+
+  if
+    true <SUCCESS_RESULT>
+  else
+    // return final result returns error code
+    EC_DUPLICATE_KEY <FAILURE_RESULT>
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by selectIndex request)       */
+/*----------------------------------------------------------------------------*/
+: scanSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 0 locals| count entry tempEntryBuffer indexBuffer |
+
+  tp: scanSelectIdxTask
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+  //pSeitf seitf.index@ to pIndex
+
+  //pp: beginScanSelectTask
+/*
+  //////////EXP1
+  // position in the first index buffer
+  iPartitionNo pIndex index.positionFirst
+  to indexBuffer
+
+  // iterate thru the buffer till no more entries
+  begin
+  indexBuffer
+  while
+    iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+    tempEntryBuffer pBufferQueue queue.append
+    indexBuffer entryBuffer.nextBuffer to indexBuffer
+  repeat
+ iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+ tempEntryBuffer entryBuffer.isLast!
+ tempEntryBuffer pBufferQueue queue.append
+
+ // mark that a fetch task has ended
+ pSeitf if
+   pSeitf seitf.fetchTaskEnded
+ then
+ exit
+
+
+  //////////EXP2
+  // position in the first index buffer
+  iPartitionNo pIndex index.positionFirst
+  to indexBuffer
+
+  // iterate thru the buffer till no more entries
+  begin
+  indexBuffer
+  while
+    iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+
+    // get the first entry in the buffer
+    indexBuffer entryBuffer.firstEntry
+    to entry
+
+    begin
+    entry
+    while
+      entry indexBuffer entryBuffer.nextEntry to entry
+    repeat
+
+    tempEntryBuffer pBufferQueue queue.append
+    indexBuffer entryBuffer.nextBuffer to indexBuffer
+
+  repeat
+
+  iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+  tempEntryBuffer entryBuffer.isLast!
+  tempEntryBuffer pBufferQueue queue.append
+
+  // mark that a fetch task has ended
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
+  exit
+*/
+
+
+  // create a temporary index buffer for the results
+  //"Creating a tempIndexBuffer" .
+  iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+
+  // position in the first index buffer
+  iPartitionNo pIndex index.positionFirst
+  to indexBuffer
+
+  // get the first entry in the buffer
+  indexBuffer entryBuffer.firstEntry
+  to entry
+
+  // did we find an entry ?
+  entry not if
+
+    // mark this buffer as the last buffer
+    //"Marking tempEntryBuffer as last buffer" .
+    tempEntryBuffer entryBuffer.isLast!
+
+    // return the empty tempEntryBuffer
+    //"Appending last tempEntryBuffer to buffer queue" .
+    tempEntryBuffer pBufferQueue queue.append
+
+    // mark that a fetch task has ended
+    pSeitf if
+      pSeitf seitf.fetchTaskEnded
+    then
+
+    //pp: endScanSelectTask
+    //"select ended...B" .
+
+    //performancePrint
+
+    exit
+  then
+
+
+  // iterate thru the buffer till no more entries
+  begin
+  entry
+  while
+      // insert row from entry in tempEntryBuffer
+      //"Inserting row into tempEntryBuffer" .
+      pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
+
+      // check if we managed to insert the entry
+      not if
+        // buffer must be full
+        // put this tempEntryBuffer in seitf bufferQueue
+        //"Inserting row into tempEntryBuffer" .
+        tempEntryBuffer pBufferQueue queue.append
+
+        // create another temporary index buffer for the results
+        //"Creating a tempIndexBuffer" .
+        iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+
+        // insert row from entry in temporary buffer
+        //"Inserting row into tempEntryBuffer" .
+        pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
+        assert
+      then
+
+      // move to next entry in the buffer
+      entry indexBuffer entryBuffer.nextEntry to entry
+
+      entry not if
+        // get next buffer from the current indexBuffer
+        indexBuffer entryBuffer.nextBuffer to indexBuffer
+
+        indexBuffer if
+          entry indexBuffer entryBuffer.nextEntry to entry
+        then
+      else
+        // there is an entry
+        // check if seitf exiting
+        pSeitf seitf.isExiting if
+          0 to entry
+        then
+      then
+
+      // yield
+      //pp: yieldScanSelectTask
+      //task.yield
+      //pp: yieldDoneScanSelectTask
+    repeat
+
+  // mark this buffer as the last buffer
+  //"Marking tempEntryBuffer as last buffer" .
+  tempEntryBuffer entryBuffer.isLast!
+
+  // put the buffer in the seitf bufferQueue
+  //"Appending tempEntryBuffer to buffer queue" .
+  tempEntryBuffer pBufferQueue queue.append
+
+  // mark that a fetch task has ended
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
+
+  //pp: endScanSelectTask
+  //"select ended...A" .
+
+  //performancePrint
+ 
+;
+
+/*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by selectIndex request)       */
+/*----------------------------------------------------------------------------*/
+: scanSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 0 locals| count entry tempEntryBuffer indexBuffer |
+
+  tp: scanSelectIdxTask
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+
+  // now scan the index
+  pBufferQueue iPartitionNo pIndex index.scan
+;
+
+/*----------------------------------------------------------------------------*/
+/* set isUnique property of index                                             */
+/*----------------------------------------------------------------------------*/
+: setIndexIsUnique allParticipants 2 checkResult ( "<indexNm>" true/false -- )
+
+  assert::stack_2
+
+  locals| sIndexNm bIsUnique |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  bIsUnique ( bIsUnique )
+
+  sIndexNm find execute ( bIsUnique index^ )
+
+  index.isUnique! ( )
+
+  assert::stack_0
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of index                                                          */
+/*----------------------------------------------------------------------------*/
+: sizeIndex ( "<indexNm>" -- "<size>" )
+
+  find execute ( index^ )
+
+  index.space 0 swap number.magnitude >str
+;
+
+/*----------------------------------------------------------------------------*/
+/* select using index (called by fetchRowsIndex_req)                          */
+/*----------------------------------------------------------------------------*/
+: spawnSelectTask ( i_Phrase pPlanner "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
+"<sSelectTaskSeed>" "<sIndexNm>" pBufferQueue iSlot --  )
+
+  //debug::trap
+
+  // task is a request server
+  //task::this task.kind@ TK_REQUEST_SERVER == assert
+  //task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  //
+  // execution context:
+  //   this task will have a seitf
+  //   and the seitf will have a table
+  //   and the seitf will have an index
+  //   and the seitf will have a bufferQueue
+  //
+  //assert::stack_5
+
+  // save args
+  locals| iSlot pBufferQueue sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey pPlanner i_Phrase |
+
+  // local variables
+  0 0 0 0 0 0 0 locals| pIndex iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry |
+
+  // increment query count
+  queryCount ++
+
+  task::this task.seitf@ to pSeitf
+
+  // push into indexes folder
+  pushIndexes assert
+
+  // find the index and put it in the seitf
+  sIndexNm find execute to pIndex
+  pSeitf if
+    pIndex pSeitf seitf.index!
+  then
+
+  // pop indexes
+  popIndexes
+
+  //args.metadata if
+  //  metadata@ "metadata: %v\n" str.format .put
+  //then
+
+  // create the buffer queue in the seitf
+  //"selectTask.queue" queue::new pSeitf seitf.bufferQueue!
+
+  // set the queue in the seitf
+  pSeitf if
+    pBufferQueue pSeitf seitf.bufferQueue!
+  then
+
+  // create a selectTask to execute the key select on the index for the partition
+  i_Phrase pPlanner sExactKey sLowerKey sUpperKey pBufferQueue pIndex pSeitf iSlot 9
+  sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
+  to pSelectTask
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove an index                                                            */
+/*----------------------------------------------------------------------------*/
+: removeIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
+
+  tp: removeIndex
+  0 locals| pIndexPtr sIndexNm |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the index from the table
+  sIndexNm find execute to pIndexPtr
+  pIndexPtr pIndexPtr index.table@ table.removeIndex
+
+  // forward reference :-(
+  sIndexNm "indexTidyUp" find execute
+
+  sIndexNm :forget
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* upper bound select task (sen)                                              */
+/*----------------------------------------------------------------------------*/
+: upperSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pIndex pBufferQueue pSeitf partition -- )
+
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 0 locals| upperEntry entry tempEntryBuffer indexBuffer |
+
+  tp: upperSelectIdxTask
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+  //pSeitf seitf.index@ to pIndex
+
+  // create a temporary index buffer for the results
+  //"Creating a tempIndexBuffer" .
+  iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+
+  // position in the first index buffer
+  iPartitionNo pIndex index.positionFirst
+  to indexBuffer
+
+  // get the first entry in the buffer
+  indexBuffer entryBuffer.firstEntry
+  to entry
+
+  // did we find an entry ?
+  entry not if
+
+    // mark this buffer as the last buffer
+    //"Marking tempEntryBuffer as last buffer" .
+    tempEntryBuffer entryBuffer.isLast!
+
+    // return the empty tempEntryBuffer
+    //"Appending tempEntryBuffer to buffer queue" .
+    tempEntryBuffer pBufferQueue queue.append
+
+    // mark that a fetch task has ended
+    pSeitf if
+      pSeitf seitf.fetchTaskEnded
+    then
+
+    exit
+  then
+
+  // iterate thru the buffer till no more entries
+  begin
+  entry
+  while
+
+    // check against upper entry
+    //upperEntry entry entry.same not if
+    upper entry iPartitionNo pIndex i_Phrase pPlanner index.upper if
+      
+      // insert row from entry in tempEntryBuffer
+      //"Inserting row into tempEntryBuffer" .
+      pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
+
+      // check if we managed to insert the entry
+      not if
+        // buffer must be full
+        // put this tempEntryBuffer in seitf bufferQueue
+        //"Inserting row into tempEntryBuffer" .
+        tempEntryBuffer pBufferQueue queue.append
+
+        // create another temporary index buffer for the results
+        //"Creating a tempIndexBuffer" .
+        iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+
+        // insert row from entry in temporary buffer
+        //"Inserting row into tempEntryBuffer" .
+        pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
+        assert
+      then
+
+      // move to next entry in the buffer
+      entry indexBuffer entryBuffer.nextEntry to entry
+
+      entry not if
+        // get next buffer from the current indexBuffer
+        indexBuffer entryBuffer.nextBuffer to indexBuffer
+
+        indexBuffer if
+          entry indexBuffer entryBuffer.nextEntry to entry
+        then
+      then
+    else
+      // entry beyond upper, null the entry and break from loop
+      0  to entry
+    then
+    // check if seitf exiting
+    pSeitf seitf.isExiting if
+      0 to entry
+    then
+
+    // yield
+    //task.yield
+
+  repeat
+
+  //"Marking tempEntryBuffer as last buffer" .
+  // mark this buffer as the last buffer
+  tempEntryBuffer entryBuffer.isLast!
+
+  // put the buffer in the seitf bufferQueue
+  //"Appending tempEntryBuffer to buffer queue" .
+  tempEntryBuffer pBufferQueue queue.append
+
+  // mark that a fetch task has ended
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* upper bound select task (c++)                                              */
+/*----------------------------------------------------------------------------*/
+: upperSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 locals| entry tempEntryBuffer indexBuffer |
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+
+  // iterate thru the index and fetch lower bound rows
+  upper i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.upperBound
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* verify an index of a table                                                 */
+/*----------------------------------------------------------------------------*/
+: verifyIndex allParticipants 1 returnResult ( "<indexNm>" -- true n# true )
+
+  tp: verifyIndex
+
+  find execute
+  index.verify
+
+  <SUCCESS_RESULT>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/* fetch rows from buffers from teh buffer queue of the seitf                 */
+/*----------------------------------------------------------------------------*/
+: groupByQueueBufferRows ( -- )
+
+  0 0 0 0 0 0 0 locals| iSlots nRowCount pIndex pIndexBuffer pSeitf pGroupBy pPartialGroupBy |
+
+  // get the seitf of the task
+  task::this task.seitf@ to pSeitf
+
+  // get index
+  pSeitf seitf.index@ to pIndex
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  groupBy::new locals| pGroupBy |
+  pGroupBy groupBy.start
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  // get slots
+  grid.slots to iSlots
+
+  1
+  begin
+  while
+
+    // attempt to pop buffer off the tasks buffer queue
+    pSeitf seitf.bufferQueue@ popBuffer to pIndexBuffer
+
+    // print the rows from the index buffer
+    pIndex pIndexBuffer printRows nRowCount + to nRowCount
+
+    // check if last buffer
+    pIndexBuffer entryBuffer.isLast@ if
+
+      //"Reached last buffer" .
+      iSlots 1 - to iSlots
+      0 iSlots == if
+        0
+      else
+        1
+      then
+    else
+      1  // no more entries, move to next buffer
+    then
+
+    pIndexBuffer entryBuffer.delete
+    //"Deleted buffer" .
+
+  repeat
+
+  // delete the buffer queue from the seitf
+  pSeitf seitf.bufferQueue@ queue.delete
+  0 pSeitf seitf.bufferQueue!
+
+  args.metadata if
+    nRowCount pSeitf seitf.rowsProcessed
+  else
+    "rows selected"  nRowCount "%v %v\n" str.format .put
+  then
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  grid.slots 0
+  do
+    I pSeitf seitf.groupBy@ to pPartialGroupBy
+    pPartialGroupBy pGroupby groupBy.applyPartial
+    pPartialGroupBy groupBy.delete
+  loop
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  // delete groupBy
+  pGroupBy groupBy.end
+  pGroupBy groupBy.delete
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* select using index (called by fetchRowsIndex_req) -- groupBy               */
+/*----------------------------------------------------------------------------*/
+: spawnGroupByTask ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
+                   "<sSelectTaskSeed>" "<sIndexNm>" --  )
+
+  tp: selectIndex
+
+  //debug::trap
+
+  // task is a request server
+  task::this task.kind@ TK_REQUEST_SERVER == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  //
+  // execution context:
+  //   this task will have a seitf
+  //   and the seitf will have a table
+  //
+  //assert::stack_5
+
+  // save args
+  locals| sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
+
+  // local variables
+  0 0 0 0 0 0 0 locals| iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry pIndex |
+
+  // increment query count
+  queryCount ++
+
+  // push into indexes folder
+  pushIndexes assert
+
+  // find the index
+  sIndexNm find execute to pIndex
+
+  // find the index andput it in the seitf
+  task::this task.seitf@ to pSeitf
+  pIndex pSeitf seitf.index!
+
+  // pop indexes
+  popIndexes
+
+  args.metadata if
+    metadata@ "metadata: %v\n" str.format .put
+  then
+
+  // create the buffer queue in the seitf
+  "selectTask.queue" queue::new pSeitf seitf.bufferQueue!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // for each slot
+  grid.slots to iSlots
+  iSlots 0
+  do
+
+    args.metadata not if
+      I grid::toPartition "Partition: %v\n" str.format .put
+    then
+
+    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+    I groupBy::new pSeitf seitf.groupBy!
+    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+    // create a selectTask to execute the key select on the index for the partition
+    sExactKey sLowerKey sUpperKey pSeitf I 5
+    sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
+    to pSelectTask
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by selectIndex request)       */
+/*----------------------------------------------------------------------------*/
+: groupByIdxTask_RH ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pIndex pBufferQueue pSeitf iPartitionNo -- )
+
+  // save args
+  locals| iPartitionNo pSeitf pIndex pBufferQueue sUpper sLower sKey pPlanner i_Phrase |
+
+  // local variables
+  0 0 0 0 locals| pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
+
+  tp: rangeSelectIdxTask
+
+  //debug::trap
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  // save seitf into this task
+  pSeitf task::this task.seitf!
+  //pSeitf seitf.index@ to pIndex
+
+  // start groupBy operator for this partition
+  iPartitionNo pSeitf seitf.groupBy@ locals| pGroupBy |
+  pGroupBy groupBy.start
+
+  // create a temporary buffer for the results
+  iPartitionNo pIndex entryBuffer::create to pResultBuffer
+
+  iPartitionNo pIndex index.positionFirst to pIndexBuffer
+  pIndexBuffer entryBuffer.firstEntry to pIndexEntry
+
+  // did we find an entry ?
+  pIndexEntry not if
+
+    // mark this result buffer as the last buffer
+    pResultBuffer entryBuffer.isLast!
+
+    pResultBuffer pBufferQueue queue.append
+
+    exit
+  then
+
+  pGroupby pIndexEntry pUpperEntry pIndexBuffer entryBuffer.iterate
+
+  // mark this result buffer as the last buffer
+  pResultBuffer entryBuffer.isLast!
+  pResultBuffer pBufferQueue queue.append
+;
+

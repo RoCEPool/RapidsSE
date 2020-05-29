@@ -1,0 +1,81 @@
+/*============================================================================*/
+/* job_SuperCountOp.sen -- Job SuperCountOp                                               */
+/*============================================================================*/
+
+" job_SuperCountOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute for cancelQuery                            (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : SuperCountOp_req ( -- )
+ 
+  >>logEntry <SEED_REQ>
+  job::this locals| pJob_SuperCountOp |
+  0 locals| nSuperCount |
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_EOSMARKER of
+        "Operand:- ZK_EOSMARKER" .verbose
+        Operand[].pipeOut
+        nSuperCount Operand[].handleAggEnd
+        false
+      endof
+
+      ZK_IRWBUFFER of
+        "Operand:- ZK_IRWBUFFER" .verbose
+        Operand[].firstRow@
+
+        nSuperCount
+        0 row[].intColumn@
+        + to nSuperCount
+
+        Operand[].delete
+        true
+      endof
+
+      ZK_STREAMDEF of
+        "Operand:- ZK_STREAMDEF" .verbose
+        Operand[].get to StreamDef[]
+        true
+      endof
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+  ;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: SuperCountOp :: SuperCountOp ;
+
+jobInfo: SuperCountOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_SUPERCOUNTOP
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,68 @@
+/*============================================================================*/
+/* job_SelectTable.sen -- Job Select Table                                    */
+/*============================================================================*/
+
+" job_SelectTable.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* select table request (on originating node)                                 */
+/*----------------------------------------------------------------------------*/
+: selectTable_req ( -- <R> )
+
+  >>logEntry <SEED_REQ2>
+
+  100 ssn::senLoc
+
+  0 0 locals| sTableNm  iPartition |
+  0 0 0 locals| pJob_SelectTable pTask pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_SelectTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_SELECTTABLE pJob_SelectTable object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  //pJob_SelectTable job.pushPath
+  //task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  DdlLock[].grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table name
+  //pJob_SelectTable job.objectName@ to sTableNm
+  <tableNm> to sTableNm
+
+  pJob_SelectTable job_selectTable.partition@ to iPartition
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //check if we can fetch rows from selected table
+  sTableNm iPartition checkFetchRows not if pJob_SelectTable <ERROR_REQUEST> !!logError exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the table
+  sTableNm pushTable assert
+  sTableNm find execute to pTable
+  pTable pJob_SelectTable job_selectTable.table!
+
+  popTable
+
+  pJob_SelectTable job.notice
+
+  900 ssn::senLoc
+
+  <<logExit <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

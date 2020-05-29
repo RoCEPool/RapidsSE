@@ -1,0 +1,52 @@
+/*============================================================================*/
+/* job_Docol.sen -- Job Docol                                                 */
+/*============================================================================*/
+
+" job_Docol.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* docol command request                                                      */
+/*----------------------------------------------------------------------------*/
+: docol_req ( -- <R> )
+
+  LogEntry SEED_REQ
+
+  0 0 locals| pJob_Docol pTask |
+
+
+  // get the task
+  task[] to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob_Docol
+
+  // get the routine from the job
+  //pJob_Docol job.routineName@
+  <routineNm>
+  >interpret
+
+  begin
+    depth while discard
+  repeat
+
+  LogExit DONE_REQ
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+cmdSyntax: docol :: docol <routineNm> ;
+
+: docol _cmdTags tags{
+  <cmdDesc>  = "--cmd desc for job--"
+  
+  <jobKind>  = JK_LOCAL
+  <rspKind>  = RS_JOB_RESPONSE
+  <ddlLock>  = DL_NONE
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,247 @@
+/*============================================================================*/
+/* job_Walk.sen -- Job Walk                                                   */
+/*============================================================================*/
+
+" job_Walk.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* spawn sub-walkers on particpating node                                     */
+/*----------------------------------------------------------------------------*/
+: walk.spawnSubWalkers ( pJob_Walk -- )
+
+  params| pJob_Walk |
+
+  task::this task.grabLock
+
+  grid::slots task::acks!
+
+  grid::slots 0
+  do
+    I pJob_Walk job_subWalker::spawn
+  loop
+
+  task::wait
+;
+
+/*----------------------------------------------------------------------------*/
+/* export on this participant node (same as originator)                       */
+/*----------------------------------------------------------------------------*/
+: walk.walk ( pJob_Walk --  )
+
+  params| pJob_Walk |
+
+  0 locals| sTableNm  |
+  0 locals| pTable    |
+
+  0 locals| sIndexNm  |
+  0 locals| pIndex    |
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // set table dictionary
+  <tableNm> to sTableNm
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // get table pointer
+  sTableNm table::find to pTable
+  pTable pJob_Walk job_walk.table!
+
+  //pJob_Walk job.indexName@ to sIndexNm
+  pushIndexes assert
+  <indexNm> find execute to pIndex
+  pIndex pJob_Walk job_walk.index!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob_Walk job_walk.begin
+
+  pJob_Walk walk.spawnSubWalkers
+
+  pJob_Walk job_walk.end
+;
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a valid table folder                                      */
+/*----------------------------------------------------------------------------*/
+: walk.checkTable ( sTableNm -- true | errorCode false )
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTable not if popTable false exit then
+
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* check resources                                                            */
+/*----------------------------------------------------------------------------*/
+: walk.checkResources ( pJob_Walk -- )
+
+  >>logEntry <Check_Resources>
+
+  params| pJob_Walk  |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  DdlLock[].grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get index and table name
+  0 0 locals| sIndexNm sTableNm |
+  //pJob_Walk job.indexName@ to sIndexNm
+  //pJob_Walk job.objectName@ to sTableNm
+  <indexNm> to sIndexNm
+  <tableNm> to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can walk the table
+  //pJob_Walk job.objectName@ walk.checkTable
+  sTableNm walk.checkTable
+  not if
+    pJob_Walk <ERROR_JOB>
+    !!logError exit
+  then
+
+  sTableNm sIndexNm checkSizeIndex
+  not if
+    pJob_Walk <ERROR_JOB>
+    !!logError exit
+  then
+
+  <<logExit <Resources_Checked>
+  actLog::resources_checked
+;
+
+/*----------------------------------------------------------------------------*/
+/* release resources                                                          */
+/*----------------------------------------------------------------------------*/
+: walk.releaseResources ( pJob_Walk -- )
+
+  >>logEntry <Release_Resources>
+
+  params| pJob_Walk  |
+
+  <<logExit <Resources_Released>
+  actLog::resources_released
+;
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* export command request on originating node                                 */
+/*----------------------------------------------------------------------------*/
+: walk_req ( -- <R> )
+
+  >>logEntry <SEED_REQ>
+  actLog::seed_req
+
+  job::this locals| pJob_Walk |
+
+  pJob_Walk job.distribute
+
+  <<logExit <DONE_REQ>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* begin Job_Walk on participating node                                       */
+/*----------------------------------------------------------------------------*/
+: walk_beg ( -- )
+
+  >>logEntry <SEED_BEG>
+  actLog::seed_rcv
+
+  job::this locals| pJob_Walk |
+
+  pJob_Walk job::participantBegun
+
+  pJob_Walk walk.checkResources
+
+  job::participantBegun
+
+  <<logExit <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Walk on participating node                                     */
+/*----------------------------------------------------------------------------*/
+: walk_exe ( pJob_Walk -- )
+
+  >>logEntry <SEED_EXE>
+  actLog::seed_exe
+
+  job::this locals| pJob_Walk |
+
+
+  pJob_Walk walk.walk
+
+  pJob_Walk job.notice
+
+  // delete_completed_job
+
+  pJob_Walk job::participantExecuted
+
+  <<logExit <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end Job_Walk on participating node                                         */
+/*----------------------------------------------------------------------------*/
+: walk_end ( -- )
+
+  >>logEntry <SEED_END>
+  actLog::seed_end
+
+  job::this locals| pJob_Walk |
+
+  pJob_Walk walk.releaseResources
+
+  job::participantEnded
+
+  <<logExit <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel Job_Walk on participating node                                      */
+/*----------------------------------------------------------------------------*/
+: walk_can ( -- )
+
+  >>logEntry <SEED_CAN>
+  actLog::seed_can
+
+  job::this locals| pJob_Walk |
+
+  pJob_Walk walk.releaseResources
+
+  job::participantCancelled
+
+  <<logExit <DONE_CAN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

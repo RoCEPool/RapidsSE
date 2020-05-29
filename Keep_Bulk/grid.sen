@@ -1,0 +1,204 @@
+/*============================================================================*/
+/* grid.sen -- grid routines                                                  */
+/*============================================================================*/
+
+" grid.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* print grid result                                                          */
+/*----------------------------------------------------------------------------*/
+: printFile ( NodeObject n# t | ec n# f .... nn t/f )
+
+  tp: printFile
+
+  // was the final result true ?
+  true == if ( s n# t | ec n# f .... nn )
+
+    // pretty print the results resturned
+    0 do  ( s n# t | s n# f .... )
+
+      assert // should be true
+      swap >object file.path@ swap
+      "Node%v: %v"  str.format .
+    loop
+
+  else
+
+    // lets see which node failed
+    0 do  ( s n# t | ec n# f .... )
+
+      false == if ( s n# t | ec n# )
+
+        swap error.msg swap
+        "Node%v ERROR: %v" str.format .
+
+      else
+
+        drop drop
+
+      then
+
+    loop
+
+  then
+
+;
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* path for SE                                                                */
+/*----------------------------------------------------------------------------*/
+"../OS\\ X/Build/Products/Debug/SE" constant SE_PATH
+
+/*----------------------------------------------------------------------------*/
+/* form the shell command for spawning a node                                 */
+/*----------------------------------------------------------------------------*/
+: se_command ( nodeName clusterString -- "<command>" )
+
+  locals| nodeName |
+  locals| clusterString |
+
+  to clusterString
+  to nodeName
+
+  //  "nohup "
+  ""
+  SE_PATH str.cat
+  " --start " str.cat
+  " --size " str.cat args.regionSize >str str.cat
+  " --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
+  //" --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
+  clusterString str.cat
+  " --regionPrefix " str.cat args.regionPrefix str.cat
+  " --partitionsPerNode " str.cat args.partitionsPerNode >str str.cat
+  " --name  " str.cat nodeName str.cat
+  //" --partitionsPerNode " str.cat grid::slots >str str.cat
+
+  args.tracepoint  if " --tracepoint "  str.cat then
+  args.verbose     if " --verbose "     str.cat then
+  args.dontFree    if " --dontFree "    str.cat then
+  args.freeRB      if " --freeRB "      str.cat then
+  args.metadata    if " --metadata "    str.cat then
+  args.activityMap if " --activityMap " str.cat then
+
+  args.activityMap if " --amPath " str.cat
+                      args.amPath  str.cat
+                   then
+
+  " &" str.cat
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn all other nodes for a grid on this machine                           */
+/*----------------------------------------------------------------------------*/
+: grid::spawnNodes ( -- )
+
+  // test for single node
+  grid::nodes 1 == if exit then
+
+  // form the --node parameter string
+  locals| clusterString |
+  locals| node |
+
+  ""
+
+  grid::nodes 0 do
+    I grid::node   ( node )
+      to node
+    node node.port
+    node node.IP
+    node node.name
+    " --node %v %v %v " str.format
+    str.cat
+  loop
+
+  to clusterString
+
+  // spawn all other nodes
+  grid::nodes 0 do
+
+    // skip this node
+    I grid::thisNode@ != if
+
+      // form the shell command to spawn node I
+      clusterString I grid::node node.name se_command
+
+      // print the shell command
+      dup .
+
+      // execute the shell command
+      shell.execute
+
+      // check result
+      not assert
+
+    then
+
+  loop
+
+  //grid::thisNode@ grid::StartNode!
+  grid::StartNode@ "Cluster Start node: %v" str.format .
+;
+
+/*----------------------------------------------------------------------------*/
+/* set start node                                                             */
+/*----------------------------------------------------------------------------*/
+: grid::setStartNode ( -- )
+
+  // set this node as the grid start node
+  grid::thisNode@ grid::StartNode!
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* check node has enough buffers                                              */
+/*----------------------------------------------------------------------------*/
+: bp::checkEnoughBuffers
+
+  // return true if enough buffers, others return error code
+  bp::freeBuffers C_LOW_BUFFERS >
+  if
+    true
+  else
+     EC_LOW_BUFFERS
+    false
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test node has enough buffers                                               */
+/*----------------------------------------------------------------------------*/
+: bp::testEnoughBuffers
+
+  // return true if enough buffers, others return error code
+  bp::freeBuffers C_LOW_BUFFERS >
+  if
+    true
+  else
+    false
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if this node is given originating node                                */
+/*----------------------------------------------------------------------------*/
+: node::isOrigin ( iOriginNode -- true|false )
+
+  params| iOriginNode |
+
+  0 locals| iThisNode  |
+
+  grid::thisNode@ to iThisNode
+
+  iThisNode iOriginNode == if
+    true
+  else
+    false
+  then
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

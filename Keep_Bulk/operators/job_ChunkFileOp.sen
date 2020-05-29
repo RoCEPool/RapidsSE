@@ -1,0 +1,44 @@
+/*============================================================================*/
+/* job_ChunkFileOp.sen -- Job ChunkFile Op                                    */
+/*============================================================================*/
+
+" job_ChunkFileOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute for chunkOp                                (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : ChunkFile_req ( -- )
+ 
+   >>logEntry <SEED_REQ>
+
+   job::this locals| pJob_ChunkFileOp |
+
+
+   //pJob_ChunkFileOp job.opLoop
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: ChunkFile :: ChunkFile ;
+
+jobInfo: ChunkFile
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_CHUNKFILEOP
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

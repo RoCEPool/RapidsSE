@@ -1,0 +1,46 @@
+/*============================================================================*/
+/* job_SubWalker.sen -- Job SubWalker                                         */
+/*============================================================================*/
+
+" job_SubWalker.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: subWalker.export ( pJob_SubWalker -- )
+
+  params| pJob_SubWalker |
+
+  pJob_SubWalker job_subWalker.begin not if exit then
+
+  begin pJob_SubWalker job_subWalker.chunk while repeat
+
+  pJob_SubWalker job_subWalker.end
+;
+
+/*----------------------------------------------------------------------------*/
+/* SubWalker seed                                                             */
+/*----------------------------------------------------------------------------*/
+: subWalker_run ( -- )
+
+  >>logEntry <SEED_RUN>
+  actLog::seed_run
+
+  task::this locals| pThisTask |
+  job::this  locals| pJob_SubWalker |
+  pJob_SubWalker job_subWalker.walkJob@ locals| pJob_Walk |
+  pJob_Walk job.task@ locals| pTask_Walk |
+
+  pJob_SubWalker subWalker.export
+
+  pTask_Walk task.ack
+
+  // null the job in the task and delete ended job
+  job::completed
+
+  HAZARD
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
