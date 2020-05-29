@@ -148,9 +148,11 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
 }
 
 #define dPV(sNM,pTV) { \
-  s4K sDbgStr; \
-  pTV->vDbgStr(sDbgStr); \
-  vTrace("%s=%s\n"_Stz,sNM->azChar(),sDbgStr.azChar()); \
+  if (AM::bVerbose()) { \
+    s4K sDbgStr; \
+    pTV->vDbgStr(sDbgStr); \
+    vTrace("%s=%s\n"_Stz,sNM->azChar(),sDbgStr.azChar()); \
+  } \
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,7 +172,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   }
   
   i8 i_Cut;
-  i8 nTokens = pInpTknVec->nTokens();
+  i8 nInpTokens = pInpTknVec->nTokens();
 
   s4K sOriginalCmd;
   pInpTknVec->vVecToString(sOriginalCmd,0,false);
@@ -213,12 +215,13 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   
   if (pPrdPrmVec) {
   
-    dPV("pInpTknVec"_Stz,pInpTknVec);
-    dPV("pPrcTxtVec"_Stz,pPrdTxtVec);
-    dPV("pPrcPrmVec"_Stz,pPrdPrmVec);
-
     // get the input arguments, e.g. : A B C
-    pInpArgVec = TokenVec::pGetSubVec(pInpTknVec,1,nTokens-1);
+    pInpArgVec = TokenVec::pGetSubVec(pInpTknVec,1,nInpTokens-1);
+    
+    dPV("pInpTknVec"_Stz,pInpTknVec);
+    dPV("pInpArgVec"_Stz,pInpArgVec);
+    dPV("pPrdTxtVec"_Stz,pPrdTxtVec);
+    dPV("pPrdPrmVec"_Stz,pPrdPrmVec);
     
     // test if last parameter is $etc
     bool bHasEtcParam = false;
@@ -226,8 +229,6 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     Token* pLastPrmTkn = pPrdPrmVec->pGet(i_Etc);
     if (pLastPrmTkn->bSame("$etc"_Stz)) {
       bHasEtcParam = true;
-      //vJotDebug(1);
-      //vDebugPoint();
       
       // ... etc stuff ...
       
@@ -247,12 +248,10 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
       // etcTest a b c d e ;
       // substitute ($arg,a) ($etc,b c d e)
       
-      pEtcTknVec = TokenVec::pGetSubVec(pInpTknVec,i_Etc,nTokens-1);
+      pEtcTknVec = TokenVec::pGetSubVec(pInpTknVec,1 + i_Etc,nInpTokens-1);
+      dPV("pEtcTknVec"_Stz,pEtcTknVec);
       
-      s4K sEtcTokens;
-      pEtcTknVec->vVecToString(sEtcTokens,0,false);
-      
-      vTrace("sEtcTokens : %s"_Stz,sEtcTokens.szStz());
+      vDebugPoint();
     }
     
     if (! bHasEtcParam && pPrdPrmVec->nTokens() != pInpArgVec->nTokens()) {
@@ -268,7 +267,8 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     
     
     TokenVec::vReplace(pPrdTxtVec,pPrdPrmVec,pInpArgVec);
-    
+    dPV("pPrdTxtVec(r)"_Stz,pPrdTxtVec);
+
     
     if (iJotDebug())
       pPrdTxtVec->vListTokens();
