@@ -66,11 +66,8 @@ assert::stack_0
         "job_CreateIndex.sen"     include
         "job_CreateTable.sen"     include
 
-        "job_DefineNode.sen"      include
         "job_DefineTable.sen"     include
         "job_Distributed.sen"     include
-
-        "job_ForgetNode.sen"      include
 
         "Job_Local.sen"           include
 
