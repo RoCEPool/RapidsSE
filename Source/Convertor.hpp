@@ -150,6 +150,9 @@ namespace Load
     if (! m_bTrace)
       return;
   
+    SP_Bol spBol;
+  
+    vTrace("Boolean : %s\n"_Stz,spBol.sz(m_oDatum.iBol()));
   }
 
   /*--------------------------------------------------------------------------*/
@@ -159,6 +162,10 @@ namespace Load
   {
     if (! m_bTrace)
       return;
+  
+    SP_Dte spDte;
+  
+    vTrace("Date : %s\n"_Stz,spDte.sz(m_oDatum.iDte()));
   }
 
   /*--------------------------------------------------------------------------*/
@@ -168,6 +175,10 @@ namespace Load
   {
     if (! m_bTrace)
       return;
+  
+    SP_Bcd spBcd;
+  
+    vTrace("Decimal : %s\n"_Stz,spBcd.sz(m_oDatum.iBcd()));
   }
 
   /*--------------------------------------------------------------------------*/
@@ -177,6 +188,10 @@ namespace Load
   {
     if (! m_bTrace)
       return;
+  
+    SP_Bol spBol;
+  
+    vTrace("Boolean : %s\n"_Stz,spBol.sz(m_oDatum.iBol()));
   }
 
   /*--------------------------------------------------------------------------*/
@@ -199,6 +214,10 @@ namespace Load
   {
     if (! m_bTrace)
       return;
+  
+    SP_Ivl spIvl;
+  
+    vTrace("Interval : %s\n"_Stz,spIvl.sz(m_oDatum.iIvl()));
   }
 
   /*--------------------------------------------------------------------------*/
@@ -208,6 +227,10 @@ namespace Load
   {
     if (! m_bTrace)
       return;
+  
+    SP_Tme spTme;
+  
+    vTrace("Time : %s\n"_Stz,spTme.sz(m_oDatum.iTme()));
   }
 
   /*--------------------------------------------------------------------------*/
@@ -217,6 +240,10 @@ namespace Load
   {
     if (! m_bTrace)
       return;
+  
+    SP_Tsp spTsp;
+  
+    vTrace("Timestamp : %s\n"_Stz,spTsp.sz(m_oDatum.iTsp()));
   }
 
   /*--------------------------------------------------------------------------*/
