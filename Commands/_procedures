@@ -323,7 +323,7 @@ end
 /*----------------------------------------------------------------------------*/
 
 procedure etcTest
-parameters $arg1 $etc
+parameters $arg1 $arg2 $etc
 
 begin
 
@@ -331,111 +331,13 @@ begin
     start | periodicOp once | stageB
 
   stage stageB on all nodes :
-    etcTest $arg1 $etc | stageC
+    etcTest $arg1 $arg2 $etc | stageC
 
   stage stageC on origin :
     output | sink | stageA
 
 end
 ;
-
-/*----------------------------------------------------------------------------*/
-/* stored procedure syntax test                                               */
-/*----------------------------------------------------------------------------*/
-/*
-procedure sp_TEST
-  parameters $Table
-begin
-
-  stage stageA on origin:
-  start | periodicOp once | stageB
-
-  stage stageB on all partitions:
-  scan $Table | stageC
-
-  stage stageC on origin:
-  output | sink | stageA
-
-end;
-
-
-procedure sp_dropTable
-parameters $table
-begin
-
-  stage stageA on origin: // one
-  start | periodicOp once | stageB
-
-  stage stageB on all partitions: //many many
-  truncateOp $table | stageC
-
-  stage stageC on all nodes: // many
-  dropTableOp $table | stageD
-
-  stage stageD on origin: // one
-  sink | stageA
-
-end
-;
-
-procedure sp_createTable
-  parameters $tableName $cmd
-begin
-
-  stage stageA on origin: // one
-  start | periodicOp once | stageB
-
-  stage stageB on all nodes: // many
-  createTableOp $cmd | stagec
-
-  stage stageD on origin: // one
-  sink | stageA
-
-end
-;
-
-/////////////////
-//RAY TO LOOK AT
-/////////////////
-procedure create table
-  parameters $tableNm etc
-begin
-
-stage stageA on origin :
-  start | periodicOp once | stageB
-
-stage stageB on all nodes :
-  createTable $tableNm <cmd> | stageC
-
-stage stageC on origin :
-  sink | stageA
-
-end;
-
- procedure join
- parameters $table1 $table2
- begin
- 
- stage stageA on origin:
- start | periodicOp once | stageB , stageC
- 
- stage stageB on all partitions:
- scan $table1 | stageD left
- 
- stage stageC on all partitions:
- scan $table2 | stageD right
- 
- stage stageD on all partitions:
- join "a b ==" | stageE
- 
- stage stageE on origin:
- output | sink | stageA
- 
- end
- ;
-
-
-*/
 
 /*============================================================================*/
 /* end                                                                        */
