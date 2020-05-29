@@ -322,11 +322,14 @@
 
   "start_run" .verbose
 
-   // define the apriori system tables
-   start::defineTables
+  // define the apriori system tables
+  start::defineTables
 
-   // define the apriori infoset tables
-   start::defineInfoSets
+  // define the apriori infoset tables
+  start::defineInfoSets
+
+  // !!! This point onwards the SE execution model has been fully booted
+  // and we can now spawn jobs !!!
 
   // spawn supervisor demon
   //"" false supervisorDemonStr api::spawnDemon not if
@@ -357,8 +360,8 @@
 
   api::startDone
 
-  DONE_RUN
-  job::completed
+  // delete task instead of returning to nowhere
+  task::scheduleDelete
 
   HAZARD
 ;

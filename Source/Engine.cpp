@@ -304,16 +304,20 @@ void Engine::vBootCheck(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCallBoot(void)
 {
-  JobClass* pJobClass_Boot = JobClass::pFind(CN_JOB_BOOT);
+  JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_LOCAL);
   
-  Job_Boot* pJob_Boot
-    = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
+  ReqTuple xReqTuple("!!BootSE"_Stz,false);
   
-  pJob_Boot->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
+  Job_Local* pJob_Local
+    = static_cast<Job_Local*>(pJobClass_Local->pNewJob(&xReqTuple));
   
-  pJob_Boot->vSeed(SS_SEED_RUN);
+  pJob_Local->vSeed(SS_SEED_RUN);
   
-  Task* pBootTask = new Task(pJob_Boot);
+  TagSet* pJobTags = pJob_Local->pJobTags();
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace("<seed>"_Stz,"boot_run"_Stz);
+  
+  Task* pBootTask = new Task(pJob_Local);
   pBootTask->vInitExeContext();
 
   pBootTask->vAddAxioms();
@@ -323,8 +327,7 @@ void Engine::vCallBoot(void)
   if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
-  
-  pJob_Boot->vTimerStart();
+  pJob_Local->vTimerStart();
   
   vCallImmmediate(pBootTask);
   
@@ -1367,20 +1370,27 @@ void Engine::vSpawnJobStart(void)
   
   PsxThd::vMarkNonSeThread();
   
-  JobClass* pJobClass_Start = JobClass::pFind(CN_JOB_START);
+  JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_LOCAL);
+  ReqTuple xReqTuple("!!StartSE"_Stz,false);
   
-  Job_Start* pJob_Start
-    = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
-  
-  pJob_Start->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
-  
-  pJob_Start->vCopyTags(pJobClass_Start);
+  Job_Local* pJob_Local
+    = static_cast<Job_Local*>(pJobClass_Local->pNewJob(&xReqTuple));
 
-  //pJob_Start->pTagSet()->vContentDump();
+  pJob_Local->vSeed(SS_SEED_RUN);
   
-  pJob_Start->vSeed(SS_SEED_RUN);
+  TagSet* pJobTags = pJob_Local->pJobTags();
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace("<seed>"_Stz,"start_run"_Stz);
   
-  Api::vSpawnJob_system(pJob_Start);
+  Task* pStartTask = new Task(pJob_Local);
+  pStartTask->vInitExeContext();
+  
+  pJob_Local->vTimerStart();
+  
+  vCallImmmediate(pStartTask);
+  
+  vDeleteImmmediate(&pStartTask);
+  
 }
 
 /*----------------------------------------------------------------------------*/

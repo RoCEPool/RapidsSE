@@ -1044,6 +1044,9 @@ Stz* Job::szSeed(void)
   
   Stz* szSeed = m_aJobClass->sSeed(m_eSeed);
   
+  if ( ! szSeed )
+    szSeed = m_oJobTags.szValue("<seed>"_Stz);
+  
   return szSeed;
 }
 
