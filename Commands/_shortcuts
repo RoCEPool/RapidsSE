@@ -21,7 +21,7 @@ shortcut p    _purgeAY;
 shortcut dn   _defineNode;
 shortcut en   semantic;
 shortcut etc  etcTest firstArg secondArg;
-shortcut etc3 etcTest firstArg secondArg thirdArg;
+shortcut etc3 etcTest firstArg secondArg (a integer, b varchar(32));
 shortcut fn   forget node node9 abc def;
 shortcut ln   show nodes;
 shortcut o    olist;

@@ -323,7 +323,7 @@ end
 /*----------------------------------------------------------------------------*/
 
 procedure etcTest
-  parameters $arg1 $etc
+parameters $arg1 $etc
 
 begin
 
