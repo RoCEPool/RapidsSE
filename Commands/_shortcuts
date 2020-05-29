@@ -20,7 +20,7 @@ shortcut gs   gridSanity;
 shortcut p    _purgeAY;
 shortcut dn   _defineNode;
 shortcut en   semantic;
-shortcut etc  etcTest firstArg;
+shortcut etc  etcTest firstArg secondArg;
 shortcut fn   forget node node9 abc def;
 shortcut ln   show nodes;
 shortcut o    olist;

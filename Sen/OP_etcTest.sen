@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : etcTest_action
 
-  <arg1> "etcTest : arg1 = %v" .printf
+  <etc> <arg1> "etcTest : arg1 = %v etc = %v" .printf
 
   true
 ;
@@ -17,12 +17,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: etcTest :: etcTest <arg1> ;
+cmdSyntax: etcTest :: etcTest <arg1> <etc> ;
 
 : etcTest _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
-    <params>      = 1
+    <params>      = 2
   }
 ;
     
