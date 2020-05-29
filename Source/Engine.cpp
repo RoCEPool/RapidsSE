@@ -1537,13 +1537,6 @@ void Engine::vStartSystem(void)
               "running Start job"_Stz); //!format-LogSys
   vCallStart();
   
-//  // wait for start to be done
-//  while ( ! AM::bStartDone() )
-//    ;
-//  
-//  // wait for all jobs to complete before proceeding
-//  Api::vWaitForAllJobsToComplete();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,

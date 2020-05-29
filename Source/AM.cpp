@@ -125,8 +125,6 @@ Word* AM::pRootConstant(void) { return gpAttachMap->m_pRootConstant;          }
 Dic* AM::pRootDic(void)       { return gpAttachMap->m_pRootDic;               }
 Word* AM::pRootWord(void)     { return gpAttachMap->m_pRootWord;              }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
-bool AM::bStartDone(void)     { return gpAttachMap->m_bStartDone;             }
-void AM::vStartDone(bool bStartDone) { gpAttachMap->m_bStartDone = bStartDone; }
 StepTiming* AM::pStepTiming(void)   { return gpAttachMap->m_pStepTiming;      }
 PoolBuffer* AM::pTakenBuffers(void) { return gpAttachMap->m_pTakenBuffers;    }
 i8   AM::nTakenBytes(void)    { return gpAttachMap->m_nTakenBytes;            }

@@ -769,16 +769,6 @@ void Api::vSpawnJobDedicated(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* mark start done                                                            */
-/*----------------------------------------------------------------------------*/
-void Api::vStartDone(bool bStartDone)
-{
-  _static_
-  
-  AM::vStartDone(bStartDone);
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate the SE session                                                    */
 /*----------------------------------------------------------------------------*/
 eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)

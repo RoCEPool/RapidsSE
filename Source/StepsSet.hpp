@@ -45,7 +45,6 @@ public:
   // api
   void vApiExecuteRequest(void);
   void vApiSpawnDemon(void);
-  void vApiStartDone(void);
 
   // args
   void vArgsOscillate(void);

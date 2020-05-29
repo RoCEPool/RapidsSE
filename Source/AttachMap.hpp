@@ -54,7 +54,6 @@ namespace StorageEngine
     } Arg;
     
     bool          m_bBootError;
-    bool          m_bStartDone;
     BufferPool*   m_pBufferPool;
     CarryOver*    m_pCarryOver;
     EnumFlags     m_oClassFlags;
