@@ -5,7 +5,7 @@
 bc;
 
 tag <fl_table> = uniInt;
-tag <fl_file>  = "../FASTLOAD/Data/uniInt.csv";
+tag <fl_file>  = "../FASTLOAD/Data/chunkInt.csv";
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create uniInt";
