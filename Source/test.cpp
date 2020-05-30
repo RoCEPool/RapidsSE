@@ -1242,18 +1242,41 @@ void vTest20(void)
   
   RowSlab* pRowSlab = new RowSlab(pStreamDef);
   
+  i8 nStartFreeSpace = pRowSlab->nFreeSpace();
+
   i8 i_Cell = C_UNKNOWN;
   
   for (i8 i_Row = 0; i_Row < 1000; i_Row++) {
 
     bool bSuccess = pRowSlab->bNewRow(i_Cell);
-    for (i8 i_Col = 0; i_Col < 8; i_Col++)
+    for (i8 i_Col = 0; i_Col < 9; i_Col++)
       pRowSlab->vDeposit(i_Cell,i_Row * 10 + i_Col);
       
     char* azStzCell = pRowSlab->azString(i_Cell);
     StrLib::vCopy(azStzCell,"abcdefghjklmnopqrstuvwxyzABCD32");
     pRowSlab->vTakeBytes(33);
   }
+  
+  
+  for (i8 i_Row = 0; i_Row < pRowSlab->nRows(); i_Row++) {
+    vTrace("%lld,%lld,%lld,%lld,%lld,%lld,%lld,%lld,%lld,%lld=%s\n"_Stz,
+           pRowSlab->iCell(i_Row,0),
+           pRowSlab->iCell(i_Row,1),
+           pRowSlab->iCell(i_Row,2),
+           pRowSlab->iCell(i_Row,3),
+           pRowSlab->iCell(i_Row,4),
+           pRowSlab->iCell(i_Row,5),
+           pRowSlab->iCell(i_Row,6),
+           pRowSlab->iCell(i_Row,7),
+           pRowSlab->iCell(i_Row,8),
+           pRowSlab->iCell(i_Row,9),
+           pRowSlab->iCell(i_Row,9)
+           );
+    vDebugPoint();
+  }
+  
+  vTrace("RowSlab free space %lld -> %lldB\n"_Stz,
+         nStartFreeSpace,pRowSlab->nFreeSpace());
   
   delete pRowSlab;
   

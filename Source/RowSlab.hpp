@@ -32,6 +32,8 @@ namespace DataBuffers
       
     i8    iCell(i8 i_Row, i8 i_Cell);
     void  vDeposit(i8& i_Cell, i8 iVal);
+    i8    nFreeSpace(void);
+    i8    nRows(void);
     char* azString(i8& i_Cell);
     void  vTakeBytes(i8 nBytes);
     bool  bNewRow(i8& i_Cell);

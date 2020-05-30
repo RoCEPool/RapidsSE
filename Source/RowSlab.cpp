@@ -25,9 +25,11 @@ RowSlab::RowSlab(StreamDef* pStreamDef)
   
   m_nMaxRowSize = 128;  // FOR TESTING PURPOSES
 
-  m_nCols  = 0;
+  m_nCols  = pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
     m_xaColPix[i_Col].m_uAsI4 = 0;
+  
+  pStreamDef->vToColPix(m_xaColPix);
   
   // m_xWsp
 
@@ -45,13 +47,19 @@ RowSlab::~RowSlab(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get a row cell                                                             */
 /*----------------------------------------------------------------------------*/
-i8 RowSlab::iCell(i8 i_Row, i8 i_Cell)
+i8 RowSlab::iCell(i8 iRow, i8 iCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  i8* iaCells = (i8*)m_xWsp.ayArea();
+
+  i8 iLglCell = iRow * m_nCols + iCell;
   
-  return 0;
+  i8 i_Cell = C_FIRST_CELL - iLglCell;
+  
+  i8 iVal =iaCells[i_Cell];
+  
+  return iVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,6 +80,28 @@ void RowSlab::vDeposit(i8& i_Cell, i8 iVal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of rows                                                         */
+/*----------------------------------------------------------------------------*/
+i8 RowSlab::nRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of rows                                                         */
+/*----------------------------------------------------------------------------*/
+i8 RowSlab::nFreeSpace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  i8 nFree = m_xWsp.nFree();
+  
+  return nFree;
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin deposit of string                                                    */
 /*----------------------------------------------------------------------------*/
 char* RowSlab::azString(i8& i_Cell)
@@ -80,6 +110,12 @@ char* RowSlab::azString(i8& i_Cell)
 
   char* azStzCell = (char*)m_xWsp.ayLatterHead();
   
+  i_Cell--;
+
+  i8* iaCells = (i8*)m_xWsp.ayArea();
+  
+  iaCells[i_Cell] = (i8)azStzCell;
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   return azStzCell;
