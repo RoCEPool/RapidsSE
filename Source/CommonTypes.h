@@ -136,6 +136,7 @@ public:
   };
   
   
+  operator d8(void)                    { return m_dFlt;  }  // auto conversion
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
