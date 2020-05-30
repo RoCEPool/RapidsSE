@@ -4,29 +4,29 @@
 
 bc;
 
-tag <fl_table> = uniIntTbl ;
-tag <fl_file>  = "../FASTLOAD/Data/uniInt.csv" ;
+tag <fl_table> = uniInt;
+tag <fl_file>  = "../FASTLOAD/Data/uniInt.csv";
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Create uniIntTbl";
+print section "Create uniInt";
 
-create table uniIntTbl (
-  int_col1 INTEGER NOT NULL
+create table uniInt (
+  int INTEGER NOT NULL
 );
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Load uniIntTbl";
+print section "Load uniInt";
 
-load uniIntTbl "../FASTLOAD/Data/uniInt.csv" ;
+load uniInt "../FASTLOAD/Data/uniInt.csv" ;
 
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "scan uniIntTbl";
-
-tableScan uniIntTbl;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "convert uniIntTbl";
+print section "scan uniInt";
+
+tableScan uniInt;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "convert uniInt";
 
 exp_fl;
 

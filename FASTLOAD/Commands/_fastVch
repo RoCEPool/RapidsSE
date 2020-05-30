@@ -4,29 +4,29 @@
 
 bc;
 
-tag <fl_table> = uniVchTbl ;
-tag <fl_file>  = "../FASTLOAD/Data/uniVch.csv" ;
+tag <fl_table> = uniVch;
+tag <fl_file>  = "../FASTLOAD/Data/uniVch.csv";
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Create uniVchTbl";
+print section "Create uniVch";
 
-create table uniVchTbl (
+create table uniVch (
   vch VARCHAR NOT NULL
 );
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Load uniVchTbl";
+print section "Load uniVch";
 
-load uniVchTbl "../FASTLOAD/Data/uniVch.csv" ;
+load uniVch "../FASTLOAD/Data/uniVch.csv" ;
 
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "scan uniVchTbl";
-
-tableScan uniVchTbl;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "convert unVchTbl";
+print section "scan uniVch";
+
+tableScan uniVch;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "convert unVch";
 
 exp_fl;
 
