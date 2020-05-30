@@ -8,13 +8,15 @@ bc;
 
 "../FASTLOAD/Commands/_FastVch";
 
-"../FASTLOAD/Commands/_FastDte";
-
 "../FASTLOAD/Commands/_FastBcd";
 
-"../FASTLOAD/Commands/_FastTsp";
+"../FASTLOAD/Commands/_FastBol";
+
+"../FASTLOAD/Commands/_FastDte";
 
 "../FASTLOAD/Commands/_FastFlt";
+
+"../FASTLOAD/Commands/_FastTsp";
 
 tableSizes;
 
