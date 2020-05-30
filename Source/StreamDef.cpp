@@ -254,6 +254,29 @@ void StreamDef::vName(Stz* sName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert streamDef to colPix format                                         */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vToColPix(ColPix* axaColPix)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  for (i8 i_DefSet = 0; i_DefSet < m_nDefSets; i_DefSet++) {
+        
+    for (i8 i_DefColumn = 0; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
+      
+      Column* pColumn  = &m_xaColumn[i_DefColumn];
+      ColPix* axColPix = &axaColPix[i_DefColumn];
+      
+      axColPix->m_uType     = pColumn->eColumnType();
+      axColPix->m_uLength   = pColumn->iColumnLength();
+      axColPix->m_uScale    = pColumn->iColumnScale();
+      axColPix->m_uNullable = pColumn->bIsNullable();
+
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert streamDef to its metadat format                                    */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vToMetadata(Stz* sMetadata)
