@@ -220,10 +220,13 @@ void Encoding::vSplitOver(void)
   
   Column* pSplitCol = pNonFitting();
   
-  i8 i_SplitCol = pSplitCol->iColumnNo();
+  // ray : 30 may 2020 : i added this if to test for pSplitCol.  was crashing
+  if (pSplitCol) {
+    i8 i_SplitCol = pSplitCol->iColumnNo();
   
-  // split at that column
-  vSplitAt(i_SplitCol);
+    // split at that column
+    vSplitAt(i_SplitCol);
+  }
 }
 
 
