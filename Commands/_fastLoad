@@ -18,6 +18,8 @@ bc;
 
 "../FASTLOAD/Commands/_FastTsp";
 
+"../FASTLOAD/Commands/_FastTme";
+
 tableSizes;
 
 /*============================================================================*/
