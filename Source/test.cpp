@@ -1230,8 +1230,11 @@ void vTest19(void)
 /*----------------------------------------------------------------------------*/
 void vTest20(void)
 {
-  vTrace("This is the RowSlab test\n"_Stz);
+  vTrace("This is RowSlab Test\n"_Stz);
   
+  Task *pTask = AM::pThisTLSTask();
+  
+  Table* pTable = Table::pFindTable(pTask->pForth()->pDicStack(),"rowSlab"_Stz);
   
 }
 

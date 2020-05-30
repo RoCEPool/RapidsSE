@@ -137,15 +137,17 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 Table* Table::pFindTable(DicStack* pDicStack, Stz* aTableNm)
 {
+  _static_
+  
   Dic* pDic = pDicStack->pTop();
   
   Word* pTableDicWord = pDic->pFindWord(aTableNm);
   
-  Dic* pTableDic = _pDic(pTableDicWord->aWspArea());
+  Dic* pTableDic = _pDic(pTableDicWord->pObject());
   
   Word* pTableWord = pTableDic->pFindWord(aTableNm);
   
-  Table* pTable = _pTable(pTableWord->aWspArea());
+  Table* pTable = _pTable(pTableWord->pObject());
   
   return pTable;
 }
