@@ -4,29 +4,34 @@
 
 #include "DataBuffers.h"
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-RowSlab* DataBuffers::_pRowSlab(void* aAddress)
-{
-  RowSlab* pRowSlab = reinterpret_cast<RowSlab*>(aAddress);
-  
-  return pRowSlab;
-}
+__pCastFunction(DataBuffers,RowSlab,CN_ROWSLAB)
+__aNewFunction(RowSlab,CN_ROWSLAB)
+__vDeleteFunction(RowSlab,CN_ROWSLAB)
+__aFooterFunction(RowSlab)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowSlab::RowSlab(eCN eClassNo)
-: DataBuffer(eClassNo, false)
+RowSlab::RowSlab(StreamDef* pStreamDef)
+: Object(CN_ROWSLAB)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
+  m_nItems = 0;
+  
+  m_nMaxRowSize = 0;
+
+  m_nCols  = 0;
+  for (i8 i_ColHint = 0; i_ColHint < C_MAX_DEFCOLUMNS; i_ColHint++)
+    m_xaColHint[i_ColHint] = 0;
+  
+  // m_xWsp
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,215 +39,74 @@ RowSlab::RowSlab(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 RowSlab::~RowSlab(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
+/* get a row cell                                                             */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* dump reference buffer                                                      */
-/*----------------------------------------------------------------------------*/
-void RowSlab::vDump(eCN eClass, Object* pObject, Stz* aTab)
+i8 RowSlab::iCell(i8 i_Row, i8 i_Cell)
 {
-  //RowSlab* pRowSlab = _pRowSlab(pObject);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
+  
+  return 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/* deposit an i8 value                                                        */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* allot a ref set in this buffer (may return nulltpr)                        */
-/*----------------------------------------------------------------------------*/
-Row* RowSlab::aAllotRow(i8 nBytes)
+void RowSlab::vDeposit(i8& i_Cell, i8 iVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
   
-  // allot using bytes as we don't know the size of the item
-  Row* ayRow = ayAllotHead(nBytes);
-  
-  if (! ayRow)
-    return nullptr;
-  
-  vIncItems();
-  
-  Row* aRow = new(ayRow) Row();
-  
-  return aRow;
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot a ref set in this buffer (may return nulltpr)                        */
+/* begin deposit of string                                                    */
 /*----------------------------------------------------------------------------*/
-Row* RowSlab::aAllotRow(RowSingle* pRowSingle)
+char* RowSlab::azString(i8& i_Cell)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
   
-  StreamDef* pStreamDef = pRowSingle->m_pStreamDef;
-  
-  i8 nHeadSize = Row::nSizeBytes(pStreamDef);
-  i8 nTailSize = pRowSingle->nSizeVch();
-  
-  if (nFreeBytes() < nHeadSize + nTailSize)
-    return nullptr;
-  
-  Row* pRow = RowSlab::aAllotRow(nHeadSize);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy single row into this buffer
-  
-  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(C_ALL); i_Col++) {
-    
-    Column* pCol = pStreamDef->pGetColumn(i_Col);
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // vch
-    
-    if (DM_VCH == pCol->eDatum()) {
-      
-      // check for null
-      if (pRowSingle->m_waColVal[i_Col].bIsNull()) {
-        pRow->m_waColVal[i_Col].vSetNull();
-        continue;
-      }
-      
-      // get src string
-      char* acSrcString = (char*)pRowSingle->m_waColVal[i_Col].m_szVch;
-      i8 nSrcLength = StrLib::iSize(acSrcString);
-      
-      // allocate a string from the tail
-      Stz* acDstString = ayAllotTail(nSrcLength);
-      i8 nCopyBytes = StrLib::nCopy((char*)acDstString, acSrcString);
-      ASSERT(nCopyBytes + 1 == nSrcLength);
-      
-      // set offset of tail string
-      pRow->m_waColVal[i_Col].m_iWrd = iToOffset(acDstString);
-      
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // all others
-    
-    pRow->m_waColVal[i_Col].m_iWrd = pRowSingle->m_waColVal[i_Col].m_iWrd;
-  }
-  
-  //pRow->vDump(pStreamDef);
-  
-  return pRow;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* return first ref set in this buffer                                        */
+/* take bytes for deposited string                                            */
 /*----------------------------------------------------------------------------*/
-Row* RowSlab::aFirstRow(void)
+void RowSlab::vTakeBytes(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Row* aRow = aFirstItem();
-  
-  return aRow;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
+
 }
 
 /*----------------------------------------------------------------------------*/
-/* return last ref set in this buffer                                         */
+/* start of new row                                                           */
 /*----------------------------------------------------------------------------*/
-Row* RowSlab::aLastRow(i8 nRowBytes)
+bool RowSlab::bNewRow(i8& i_Cell)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
+
+  if (C_UNKNOWN == i_Cell)
+    i_Cell = C_FIRST_CELL;
+  else
+    i_Cell--;
   
-  Row* aRow = aFirstItem();
-  Row* aLastRow = nullptr;
-  
-  while (aRow) {
-    aLastRow = aRow;
-    aRow = aNextRow(aRow, nRowBytes);
-  };
-  
-  return aLastRow;
+  return true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* return next ref set in this buffer                                         */
-/*----------------------------------------------------------------------------*/
-Row* RowSlab::aNextRow(Row* aPriorRow, i8 nRowBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Row* aRow = aAdjacentItem(aPriorRow, nRowBytes);
-  
-  return aRow;
-}
 
 /*----------------------------------------------------------------------------*/
-/* print rows                                                                 */
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void RowSlab::vPrintRows(StreamDef* pStreamDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  HV_Rec hvRec(pStreamDef,C_ALL);
-  
-  // NOTE: We need to print only nItem no of rows
-  // as the limitOp may have truncated the rows via setting the nItems()
-  
-  // get the first row
-  Row* pRow = aFirstRow();
-  HV_Row hvRowSingle(pStreamDef, C_ALL);
-  i8 nRowHeadSize = Row::nSizeBytes(pStreamDef);
-  
-  for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
-    hvRowSingle->vCopy(pRow);
-    hvRec->vAppend(hvRowSingle);
-    hvRec->vPrintRow();
-    
-    // get the next row
-    pRow = aNextRow(pRow, nRowHeadSize);
-  }
-}
 
 /*----------------------------------------------------------------------------*/
-/* show contents of buffer                                                    */
+/* populate column hints                                                      */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vShow(StreamDef* pStreamDef)
+void RowSlab::vColHints(StreamDef* pStreamDef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
   
-  i8 nRows = nItems();
-  
-  vTrace("IrwBuffer: %p (buffer %lld): rows: %lld\n"_Stz,
-         this,m_iBufferNo,nRows);
-  
-  vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
-         m_pPrevBuffer,m_pNextBuffer);
-  
-  vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
-  
-  Row* pRow = aFirstRow();
-  HV_Row hvRowSingle(pStreamDef, C_ALL);
-  i8 nRowHeadSize = pStreamDef->nColumns(C_ALL)* sizeof(i8);
-  
-  HV_Rec hvRec(pStreamDef,C_ALL);
-  while (pRow) {
-    hvRowSingle->vCopy(pRow);
-    hvRec->vAppend(hvRowSingle);
-    pRow = aNextRow(pRow, nRowHeadSize);
-    hvRec->vPrintRow();
-  }
-  
-  vTrace("--------------------------------------------------"
-         "--------------------------------------------------\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* calculate the absolute offset within buffer for given item                 */
-/*----------------------------------------------------------------------------*/
-i8 RowSlab::iToOffset(Stz* aItem)
-{
-  i4 iOffset = static_cast<i4>(nDifference(aItem,this));
-  
-  return iOffset;
 }
 
 /*============================================================================*/

@@ -5,36 +5,41 @@
 
 namespace DataBuffers
 {
-  typedef       HV <Record,StreamDef>        HV_Rec;
-  
-  class RowSlab : public DataBuffer,
-                    public RowHeap_t<Row>
+  class RowSlab : public Object
   {
-  protected:
+    static const i8 C_WSP_ROWSLAB = C_SIZE_LARGE_OBJECT - C_4KB;
+    static const i8 C_FIRST_CELL  = (C_WSP_ROWSLAB / 8) - 1;
+
+  private:
   
+    i8  m_nItems;      // number of items in this row-slab
+
+    i8  m_nMaxRowSize; // max size of row
+    i8  m_nCols;       // number of items in this row-slab
+    i8  m_xaColHint[C_MAX_DEFCOLUMNS];
+  
+    WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
+
     // must be last
     Footer m_xFooter;
   
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    RowSlab(eCN eClassNo);
+
+    RowSlab(StreamDef* pStreamDef);
    ~RowSlab(void) noexcept(false);
-  
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
-    Row* aAllotRow(i8 nBytes);
-    Row* aAllotRow(RowSingle* pRowSingle);
-    
-    Row* aFirstRow(void);
-    Row* aLastRow(i8 nRowBytes);
-    Row* aNextRow(Row* aPriorRow, i8 nRowBytes);
-    void vPrintRows(StreamDef* pStreamDef);
-    void vShow(StreamDef* pStreamDef);
-    
+      
+    i8    iCell(i8 i_Row, i8 i_Cell);
+    void  vDeposit(i8& i_Cell, i8 iVal);
+    char* azString(i8& i_Cell);
+    void  vTakeBytes(i8 nBytes);
+    bool  bNewRow(i8& i_Cell);
+
   private:
-    i8   iToOffset(Stz* aItem);
+    void vColHints(StreamDef* pStreamDef);
+  
+    Footer* aFooter(void);
   };
   
   RowSlab* _pRowSlab(void* aAddr);
