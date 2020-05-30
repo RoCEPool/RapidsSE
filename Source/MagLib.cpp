@@ -78,7 +78,8 @@ void MagLib::vByteMag(i8 iValue, Stz* psBuf)
   else if (iValue < C_1GB) psBuf->vSprint("%lldMB"_Stz,iValue/C_1MB);
   else if (iValue < C_1TB) psBuf->vSprint("%lldGB"_Stz,iValue/C_1GB);
   else if (iValue < C_1PB) psBuf->vSprint("%lldTB"_Stz,iValue/C_1TB);
-  else                     psBuf->vSprint("%lldPB"_Stz,iValue/C_1PB);
+  else if (iValue < C_1EB) psBuf->vSprint("%lldPB"_Stz,iValue/C_1PB);
+  else                     psBuf->vSprint("%lldEB"_Stz,iValue/C_1EB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +97,8 @@ void MagLib::vByteMag(i8 iValue, i8 nDecimals, Stz* psBuf)
   else if (iValue < C_1GB) psBuf->vSprint("%.*fMB"_Stz,nPoints,dValue/C_1MB);
   else if (iValue < C_1TB) psBuf->vSprint("%.*fGB"_Stz,nPoints,dValue/C_1GB);
   else if (iValue < C_1PB) psBuf->vSprint("%.*fTB"_Stz,nPoints,dValue/C_1TB);
-  else                     psBuf->vSprint("%.*fPB"_Stz,nPoints,dValue/C_1PB);
+  else if (iValue < C_1EB) psBuf->vSprint("%.*fPB"_Stz,nPoints,dValue/C_1PB);
+  else                     psBuf->vSprint("%.*fEB"_Stz,nPoints,dValue/C_1EB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +114,8 @@ void MagLib::vHzMag(i8 iValue, Stz* psBuf)
   else if (iValue < C_1G) psBuf->vSprint("%.*fMhz"_Stz,nPoints,dValue/C_1M);
   else if (iValue < C_1T) psBuf->vSprint("%.*fGhz"_Stz,nPoints,dValue/C_1G);
   else if (iValue < C_1P) psBuf->vSprint("%.*fThz"_Stz,nPoints,dValue/C_1T);
-  else                    psBuf->vSprint("%.*fPhz"_Stz,nPoints,dValue/C_1P);
+  else if (iValue < C_1E) psBuf->vSprint("%.*fPhz"_Stz,nPoints,dValue/C_1P);
+  else                    psBuf->vSprint("%.*fEhz"_Stz,nPoints,dValue/C_1E);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,7 +139,8 @@ void MagLib::vUnitMag(i8 iValue, Stz* psBuf)
   else if (iValue < C_1G) psBuf->vSprint("%lldM"_Stz,iValue/C_1M);
   else if (iValue < C_1T) psBuf->vSprint("%lldG"_Stz,iValue/C_1G);
   else if (iValue < C_1P) psBuf->vSprint("%lldT"_Stz,iValue/C_1T);
-  else                    psBuf->vSprint("%lldP"_Stz,iValue/C_1P);
+  else if (iValue < C_1E) psBuf->vSprint("%lldP"_Stz,iValue/C_1P);
+  else                    psBuf->vSprint("%lldE"_Stz,iValue/C_1E);
 }
 
 /*============================================================================*/
