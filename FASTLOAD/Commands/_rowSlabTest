@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* _rowSlabTest -- unit test of RowSlab                                       */
+/*============================================================================*/
+
+bc;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "Create rowSlab";
+
+drop table rowSlab;
+
+create table rowSlab (
+  colA INTEGER NOT NULL,
+  colB INTEGER NOT NULL,
+  colC INTEGER NOT NULL,
+  colD INTEGER NOT NULL,
+  colE INTEGER NOT NULL,
+  colF INTEGER NOT NULL,
+  colG INTEGER NOT NULL,
+  colH INTEGER NOT NULL
+);
+
+lsTbl;
+
+lscol rowSlab;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "test rowSlab";
+
+test20;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
