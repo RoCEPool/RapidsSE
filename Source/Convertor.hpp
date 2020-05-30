@@ -256,7 +256,10 @@ namespace Load
   
     SP_Vch spVch;
   
-    vTrace("Varchar : %s\n"_Stz,m_oDatum.szStz());
+    vTrace("Varchar : %s (%lldB)\n"_Stz,
+           m_oDatum.szStz(),
+           StrLib::nLength(m_oDatum.azChar())
+           );
   }
 
   /*--------------------------------------------------------------------------*/

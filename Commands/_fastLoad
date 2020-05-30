@@ -22,6 +22,8 @@ bc;
 
 "../FASTLOAD/Commands/_FastVch";
 
+"../FASTLOAD/Commands/_FastAll";
+
 tableSizes;
 
 /*============================================================================*/
