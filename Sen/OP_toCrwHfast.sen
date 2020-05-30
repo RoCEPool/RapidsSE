@@ -1,0 +1,142 @@
+/*============================================================================*/
+/* OP_toCrwHfast.sen -- Operator toCrwHfast                                   */
+/*============================================================================*/
+
+" OP_toCrwHfast.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: toCrwHfast_PulseMarker \handler
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+
+  // pipe out the pulsemarker
+  Pipein[].pipeOut
+
+  // pipe out the stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CSVBUFFER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: toCrwHfast_CsvBuffer \handler
+
+  //"Operand:- ZK_CSVBUFFER" .verbose
+
+  Pipein[] to Operand[]
+  nullptr to Pipein[]
+
+  // use extractRow from register0 and convert csvtoCrw
+  Operand[].csvtoCrwH
+
+  // pipe out any full buffers
+  grid::partitions 0
+  do
+    I loader[].fullCrwBuffer@ to OperandB[]
+
+    begin
+      OperandB[].isNull not
+    while
+      OperandB[].appendClose
+      OperandB[].pipeOut
+      I loader[].fullCrwBuffer@ to OperandB[]
+    repeat
+  loop
+
+  Operand[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: toCrwHfast_EosMarker \handler
+
+  //"Operand:- ZK_EOSMARKER" .verbose
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipe out any dangling buffers
+
+  grid::partitions 0
+  do
+    I loader[].crwBuffer@ to OperandB[]
+    OperandB[].isNull not if
+      OperandB[].appendClose
+      OperandB[].pipeOut
+      nullptr I loader[].crwBuffer!
+    then
+  loop
+
+  // delete loader
+  loader[].delete
+
+  Pipein[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: toCrwHfast_StartMarker \handler
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  <tableNm> locals| sTableNm |
+
+  // check if we can scan the table
+  <tableNm> op__table if
+
+    // create a loader
+    Loader[].create not if
+      EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
+      Pipein[].delete
+      Operand[].newErrorMarker
+      Operand[].pipeout
+    else
+      Pipein[].pipeout
+    then
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for toCrw req                              (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : toCrwHfast_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: toCrwHfast_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: toCrwHfast_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: toCrwHfast_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: toCrwHfast_StartMarker ZK_STARTMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: toCrwHfast :: toCrwHfast <tableNm> ;
+
+: toCrwHfast _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
