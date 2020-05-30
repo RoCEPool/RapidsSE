@@ -339,6 +339,29 @@ begin
 end
 ;
 
+/*----------------------------------------------------------------------------*/
+/* fast load data into a table from a csv file                                */
+/*----------------------------------------------------------------------------*/
+procedure fload
+  parameters $table $file
+begin
+
+  stage stageA on origin:
+    start | periodicOp once | chunk $file | stageB
+
+  stage stageB on all partitions on origin:
+    readChunk $file | toCrwH $table | stageC Hashed
+
+  stage stageC on all partitions:
+    insert $table | stageD
+
+  stage stageD on origin:
+    progress "Load" | sink | stageA
+
+end
+;
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
