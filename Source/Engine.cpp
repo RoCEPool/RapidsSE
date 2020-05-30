@@ -71,6 +71,8 @@ void Engine::vPreliminary(void)
   
   vPrintMachine();
   
+  vPrintRLimits();
+
   vPrintConstants();
   vPrintFormats();
 
@@ -1254,7 +1256,7 @@ void Engine::vPrintStatus(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print welcome                                                              */
+/* print machine information                                                  */
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintMachine(void)
 {
@@ -1311,6 +1313,48 @@ void Engine::vPrintMachine(void)
   vInfo("  Clock Res : %s\n"_Stz,   sClock_magn.szStz());
   vInfo("  Tick/sec  : %lld\n"_Stz, TickingDevice::iTicksPerSec());
   vInfo("  Tick Now  : %lld\n"_Stz, TickingDevice::iGetTick());
+}
+
+/*----------------------------------------------------------------------------*/
+/* print os resource limits                                                   */
+/*----------------------------------------------------------------------------*/
+void Engine::vPrintRLimits(void)
+{
+  if (! AM::bVerboseProgress())
+    return;
+  
+  vInfo("\n"_Stz);
+  vInfo("Rlimits:\n"_Stz);
+
+  i8 nSoft;
+  i8 nHard;
+  
+  OpSys::vRLimitCore(nSoft,nHard);
+  vInfo("  RLIMIT_CORE    : %lld - %lld\n"_Stz,nSoft,nHard);
+  
+  OpSys::vRLimitCpu(nSoft,nHard);
+  vInfo("  RLIMIT_CPU     : %lld - %lld\n"_Stz,nSoft,nHard);
+  
+  OpSys::vRLimitData(nSoft,nHard);
+  vInfo("  RLIMIT_DATA    : %lld - %lld\n"_Stz,nSoft,nHard);
+  
+  OpSys::vRLimitFileSize(nSoft,nHard);
+  vInfo("  RLIMIT_FSIZE   : %lld - %lld\n"_Stz,nSoft,nHard);
+  
+  OpSys::vRLimitMemoryLocked(nSoft,nHard);
+  vInfo("  RLIMIT_MEMLOCK : %lld - %lld\n"_Stz,nSoft,nHard);
+  
+  OpSys::vRLimitOpenFiles(nSoft,nHard);
+  vInfo("  RLIMIT_NOFILE  : %lld - %lld\n"_Stz,nSoft,nHard);
+  
+  OpSys::vRLimitProcesses(nSoft,nHard);
+  vInfo("  RLIMIT_NPROC   : %lld - %lld\n"_Stz,nSoft,nHard);
+  
+  OpSys::vRLimitRss(nSoft,nHard);
+  vInfo("  RLIMIT_RSS     : %lld - %lld\n"_Stz,nSoft,nHard);
+  
+  OpSys::vRLimitStack(nSoft,nHard);
+  vInfo("  RLIMIT_STACK   : %lld - %lld\n"_Stz,nSoft,nHard);
 }
 
 /*----------------------------------------------------------------------------*/

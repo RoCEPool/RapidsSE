@@ -11,6 +11,8 @@ static struct utsname gxUtsName;
 /*----------------------------------------------------------------------------*/
 void OpSys::vGetInfo(void)
 {
+  _static_
+  
   int iResult = uname(&gxUtsName);
   
   if (0 == iResult)
@@ -24,7 +26,8 @@ void OpSys::vGetInfo(void)
 /*----------------------------------------------------------------------------*/
 i8 OpSys::iSchedulerPeriod_us(void)
 {
-  
+  _static_
+
 #ifdef WITH_APPLE
   
   struct clockinfo xKernelClockRate;
@@ -82,6 +85,8 @@ i8 OpSys::iSchedulerPeriod_us(void)
 /*----------------------------------------------------------------------------*/
 void OpSys::vTraceInfo(void)
 {
+  _static_
+  
   vTrace("OpSys::vGetInfo:\n"_Stz);
   vTrace("  sysname : %s\n"_Stz,azSysName());
   vTrace("  nodename: %s\n"_Stz,azNodeName());
@@ -97,6 +102,8 @@ void OpSys::vTraceInfo(void)
 /*----------------------------------------------------------------------------*/
 char* OpSys::azMachine(void)
 {
+  _static_
+  
   return gxUtsName.machine;
 }
 
@@ -105,6 +112,8 @@ char* OpSys::azMachine(void)
 /*----------------------------------------------------------------------------*/
 char* OpSys::azNodeName(void)
 {
+  _static_
+  
   return gxUtsName.nodename;
 }
 
@@ -113,6 +122,8 @@ char* OpSys::azNodeName(void)
 /*----------------------------------------------------------------------------*/
 char* OpSys::azRelease(void)
 {
+  _static_
+  
   return gxUtsName.release;
 }
 
@@ -121,6 +132,8 @@ char* OpSys::azRelease(void)
 /*----------------------------------------------------------------------------*/
 char* OpSys::azSysName(void)
 {
+  _static_
+  
   return gxUtsName.sysname;
 }
 
@@ -129,7 +142,208 @@ char* OpSys::azSysName(void)
 /*----------------------------------------------------------------------------*/
 char* OpSys::azVersion(void)
 {
+  _static_
+  
   return gxUtsName.version;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* largest size (in bytes) core file that may be created                      */
+/*----------------------------------------------------------------------------*/
+void OpSys::vRLimitCore(i8& nSoft, i8& nHard)
+{
+  _static_
+  
+#ifdef WITH_APPLE
+  
+  struct rlimit xRLimit;
+  
+  int iRetVal = getrlimit(RLIMIT_CORE,&xRLimit);
+  
+  nSoft = xRLimit.rlim_cur;
+  nHard = xRLimit.rlim_max;
+
+#else
+  nSoft = 0;
+  nHard = 0;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* maximum amount of cpu time (in seconds) to be used by each process         */
+/*----------------------------------------------------------------------------*/
+void OpSys::vRLimitCpu(i8& nSoft, i8& nHard)
+{
+  _static_
+
+#ifdef WITH_APPLE
+
+  struct rlimit xRLimit;
+
+  int iRetVal = getrlimit(RLIMIT_CPU,&xRLimit);
+
+  nSoft = xRLimit.rlim_cur;
+  nHard = xRLimit.rlim_max;
+
+#else
+  nSoft = 0;
+  nHard = 0;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* maximum size (in bytes) of the data segment for a process                  */
+/*----------------------------------------------------------------------------*/
+void OpSys::vRLimitData(i8& nSoft, i8& nHard)
+{
+  _static_
+
+#ifdef WITH_APPLE
+
+  struct rlimit xRLimit;
+
+  int iRetVal = getrlimit(RLIMIT_DATA,&xRLimit);
+
+  nSoft = xRLimit.rlim_cur;
+  nHard = xRLimit.rlim_max;
+
+#else
+  nSoft = 0;
+  nHard = 0;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* largest size (in bytes) file that may be created                           */
+/*----------------------------------------------------------------------------*/
+void OpSys::vRLimitFileSize(i8& nSoft, i8& nHard)
+{
+  _static_
+
+#ifdef WITH_APPLE
+
+  struct rlimit xRLimit;
+
+  int iRetVal = getrlimit(RLIMIT_FSIZE,&xRLimit);
+
+  nSoft = xRLimit.rlim_cur;
+  nHard = xRLimit.rlim_max;
+
+#else
+  nSoft = 0;
+  nHard = 0;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* maximum size (in bytes) which a process may lock into memory               */
+/*----------------------------------------------------------------------------*/
+void OpSys::vRLimitMemoryLocked(i8& nSoft, i8& nHard)
+{
+  _static_
+
+#ifdef WITH_APPLE
+
+  struct rlimit xRLimit;
+
+  int iRetVal = getrlimit(RLIMIT_MEMLOCK,&xRLimit);
+
+  nSoft = xRLimit.rlim_cur;
+  nHard = xRLimit.rlim_max;
+
+#else
+  nSoft = 0;
+  nHard = 0;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* maximum number of open files for this process                              */
+/*----------------------------------------------------------------------------*/
+void OpSys::vRLimitOpenFiles(i8& nSoft, i8& nHard)
+{
+  _static_
+
+#ifdef WITH_APPLE
+
+  struct rlimit xRLimit;
+
+  int iRetVal = getrlimit(RLIMIT_NOFILE,&xRLimit);
+
+  nSoft = xRLimit.rlim_cur;
+  nHard = xRLimit.rlim_max;
+
+#else
+  nSoft = 0;
+  nHard = 0;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* maximum number of simultaneous processes for this user id                  */
+/*----------------------------------------------------------------------------*/
+void OpSys::vRLimitProcesses(i8& nSoft, i8& nHard)
+{
+  _static_
+
+#ifdef WITH_APPLE
+
+  struct rlimit xRLimit;
+
+  int iRetVal = getrlimit(RLIMIT_NPROC,&xRLimit);
+
+  nSoft = xRLimit.rlim_cur;
+  nHard = xRLimit.rlim_max;
+
+#else
+  nSoft = 0;
+  nHard = 0;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* maximum size (in bytes) to which a process's resident set size may grow    */
+/*----------------------------------------------------------------------------*/
+void OpSys::vRLimitRss(i8& nSoft, i8& nHard)
+{
+  _static_
+
+#ifdef WITH_APPLE
+
+  struct rlimit xRLimit;
+
+  int iRetVal = getrlimit(RLIMIT_RSS,&xRLimit);
+
+  nSoft = xRLimit.rlim_cur;
+  nHard = xRLimit.rlim_max;
+
+#else
+  nSoft = 0;
+  nHard = 0;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* maximum size (in bytes) of the stack segment for a process                 */
+/*----------------------------------------------------------------------------*/
+void OpSys::vRLimitStack(i8& nSoft, i8& nHard)
+{
+  _static_
+
+#ifdef WITH_APPLE
+
+  struct rlimit xRLimit;
+
+  int iRetVal = getrlimit(RLIMIT_STACK,&xRLimit);
+
+  nSoft = xRLimit.rlim_cur;
+  nHard = xRLimit.rlim_max;
+
+#else
+  nSoft = 0;
+  nHard = 0;
+#endif
 }
 
 /*============================================================================*/

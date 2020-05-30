@@ -47,6 +47,7 @@ namespace StorageEngine
     static void vPrintExit(void);
     static void vPrintFormats(void);
     static void vPrintMachine(void);
+    static void vPrintRLimits(void);
     static void vPrintStatus(void);
     static void vPrintTime(void);
     static void vPrintWelcome(void);
