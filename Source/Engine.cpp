@@ -1335,47 +1335,47 @@ void Engine::vPrintRLimits(void)
   OpSys::vRLimitCore(nSoft,nHard);
   MagLib::vByteMag(nSoft,sSoft_magn);
   MagLib::vByteMag(nHard,sHard_magn);
-  vInfo("  RLIMIT_CORE    : %s - %s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
+  vInfo("  RLIMIT_CORE    : %4s - %4s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
   
   OpSys::vRLimitCpu(nSoft,nHard);
   MagLib::vUnitMag(nSoft,sSoft_magn);
   MagLib::vUnitMag(nHard,sHard_magn);
-  vInfo("  RLIMIT_CPU     : %s - %s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
+  vInfo("  RLIMIT_CPU     : %4s - %4s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
   
   OpSys::vRLimitData(nSoft,nHard);
   MagLib::vByteMag(nSoft,sSoft_magn);
   MagLib::vByteMag(nHard,sHard_magn);
-  vInfo("  RLIMIT_DATA    : %s - %s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
+  vInfo("  RLIMIT_DATA    : %4s - %4s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
   
   OpSys::vRLimitFileSize(nSoft,nHard);
   MagLib::vByteMag(nSoft,sSoft_magn);
   MagLib::vByteMag(nHard,sHard_magn);
-  vInfo("  RLIMIT_FSIZE   : %s - %s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
+  vInfo("  RLIMIT_FSIZE   : %4s - %4s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
   
   OpSys::vRLimitMemoryLocked(nSoft,nHard);
   MagLib::vByteMag(nSoft,sSoft_magn);
   MagLib::vByteMag(nHard,sHard_magn);
-  vInfo("  RLIMIT_MEMLOCK : %s - %s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
+  vInfo("  RLIMIT_MEMLOCK : %4s - %4s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
   
   OpSys::vRLimitOpenFiles(nSoft,nHard);
   MagLib::vUnitMag(nSoft,sSoft_magn);
   MagLib::vUnitMag(nHard,sHard_magn);
-  vInfo("  RLIMIT_NOFILE  : %s - %s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
+  vInfo("  RLIMIT_NOFILE  : %4s - %4s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
   
   OpSys::vRLimitProcesses(nSoft,nHard);
   MagLib::vUnitMag(nSoft,sSoft_magn);
   MagLib::vUnitMag(nHard,sHard_magn);
-  vInfo("  RLIMIT_NPROC   : %s - %s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
+  vInfo("  RLIMIT_NPROC   : %4s - %4s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
   
   OpSys::vRLimitRss(nSoft,nHard);
   MagLib::vByteMag(nSoft,sSoft_magn);
   MagLib::vByteMag(nHard,sHard_magn);
-  vInfo("  RLIMIT_RSS     : %s - %s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
+  vInfo("  RLIMIT_RSS     : %4s - %4s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
   
   OpSys::vRLimitStack(nSoft,nHard);
   MagLib::vByteMag(nSoft,sSoft_magn);
   MagLib::vByteMag(nHard,sHard_magn);
-  vInfo("  RLIMIT_STACK   : %s - %s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
+  vInfo("  RLIMIT_STACK   : %4s - %4s\n"_Stz,sSoft_magn.szStz(),sHard_magn.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
