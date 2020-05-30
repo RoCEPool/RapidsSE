@@ -10,6 +10,8 @@ tag <fl_file>  = "../FASTLOAD/Data/allTyp.csv";
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create allTyp";
 
+drop table allTyp;
+
 create table allTyp (
   int INTEGER       NOT NULL,
                      

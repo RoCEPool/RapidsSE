@@ -10,6 +10,8 @@ tag <fl_file>  = "../FASTLOAD/Data/uniBcd.csv";
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create uniBcd";
 
+drop table uniBcd;
+
 create table uniBcd (
   bcd DECIMAL(15,2) NOT NULL
 );

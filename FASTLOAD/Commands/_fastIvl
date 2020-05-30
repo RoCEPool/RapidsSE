@@ -10,6 +10,8 @@ tag <fl_file>  = "../FASTLOAD/Data/uniIvl.csv";
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create uniIvl";
 
+drop table uniIvl;
+
 create table uniIvl (
   ivl INTERVAL NOT NULL
 );

@@ -10,6 +10,8 @@ tag <fl_file>  = "../FASTLOAD/Data/uniDte.csv";
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create uniDte";
 
+drop table uniDte;
+
 create table uniDte (
   dte DATE NOT NULL
 );

@@ -10,6 +10,8 @@ tag <fl_file>  = "../FASTLOAD/Data/uniBol.csv";
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create uniBol";
 
+drop table uniBol;
+
 create table uniBol (
   bol BOOLEAN NOT NULL
 );

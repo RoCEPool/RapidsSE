@@ -10,6 +10,8 @@ tag <fl_file>  = "../FASTLOAD/Data/uniFlt.csv";
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create uniFlt";
 
+drop table uniFlt;
+
 create table uniFlt (
   flt FLOAT NOT NULL
 );

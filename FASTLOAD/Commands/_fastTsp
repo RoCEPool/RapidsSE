@@ -10,6 +10,8 @@ tag <fl_file>  = "../FASTLOAD/Data/uniTsp.csv";
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create uniTsp";
 
+drop table uniTsp;
+
 create table uniTsp (
   tsp TIMESTAMP NOT NULL
 );

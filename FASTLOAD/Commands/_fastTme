@@ -10,6 +10,8 @@ tag <fl_file>  = "../FASTLOAD/Data/uniTme.csv";
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create uniTme";
 
+drop table uniTme;
+
 create table uniTme (
   tme TIME NOT NULL
 );

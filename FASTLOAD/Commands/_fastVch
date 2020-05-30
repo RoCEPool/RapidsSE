@@ -10,6 +10,8 @@ tag <fl_file>  = "../FASTLOAD/Data/uniVch.csv";
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create uniVch";
 
+drop table uniVch;
+
 create table uniVch (
   vch VARCHAR NOT NULL
 );

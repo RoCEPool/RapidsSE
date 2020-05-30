@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* _fastLoad                                                                  */
+/*============================================================================*/
+
+print "../FASTLOAD/Commands/_FastLoad" ;
+
+bc;
+
+"../FASTLOAD/Commands/_FastBcd";
+
+"../FASTLOAD/Commands/_FastBol";
+
+"../FASTLOAD/Commands/_FastDte";
+
+"../FASTLOAD/Commands/_FastFlt";
+
+"../FASTLOAD/Commands/_FastInt";
+
+"../FASTLOAD/Commands/_FastIvl";
+
+"../FASTLOAD/Commands/_FastTme";
+
+"../FASTLOAD/Commands/_FastTsp";
+
+"../FASTLOAD/Commands/_FastVch";
+
+"../FASTLOAD/Commands/_FastAll";
+
+"../FASTLOAD/Commands/_FastLineItem";
+
+tableSizes;
+
+print "that was ../FASTLOAD/Commands/_FastLoad" ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
