@@ -178,7 +178,7 @@ namespace Load
   
     SP_Bcd spBcd;
   
-    vTrace("Decimal : %s\n"_Stz,spBcd.sz(m_oDatum.iBcd()));
+    vTrace("Decimal : %s\n"_Stz,spBcd.sz(m_oDatum.iBcd(),m_pCol->iColumnScale()));
   }
 
   /*--------------------------------------------------------------------------*/
