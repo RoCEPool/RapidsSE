@@ -12,6 +12,8 @@ bc;
 
 "../FASTLOAD/Commands/_FastBcd";
 
+"../FASTLOAD/Commands/_FastTsp";
+
 tableSizes;
 
 /*============================================================================*/
