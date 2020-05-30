@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _fastInt                                                                   */
+/* _fastInt -- base test of fast load of int                                  */
 /*============================================================================*/
 
 bc;
@@ -11,7 +11,7 @@ tag <fl_file>  = "../FASTLOAD/Data/uniInt.csv" ;
 print section "Create uniIntTbl";
 
 create table uniIntTbl (
-  int_col1   INTEGER       NOT NULL
+  int_col1 INTEGER NOT NULL
 );
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
