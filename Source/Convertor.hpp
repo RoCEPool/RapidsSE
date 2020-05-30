@@ -189,9 +189,9 @@ namespace Load
     if (! m_bTrace)
       return;
   
-    SP_Bol spBol;
+    SP_Flt spFlt;
   
-    vTrace("Boolean : %s\n"_Stz,spBol.sz(m_oDatum.iBol()));
+    vTrace("Float : %s\n"_Stz,spFlt.sz(m_oDatum.dFlt()));
   }
 
   /*--------------------------------------------------------------------------*/
@@ -269,18 +269,14 @@ namespace Load
   inline void vConvertBoolean(void)
   {
     vFieldTrace();
-             
-    while (bInField()) {
+               
+    Bol xBol;
+    SN_Bol snBol;
 
-      m_dCalc = (CALC) - 0.0;
-
-      if (m_bTrace)
-        vTrace("%c"_Stz,*m_acChr);
-      m_acChr++;
-      m_iCol++;
-      m_nChars++;
-    }
+    xBol = snBol.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_oDatum.vBol(xBol);
+
     vSprintBoolean();
   }
 
@@ -291,17 +287,13 @@ namespace Load
   {
     vFieldTrace();
 
-    while (bInField()) {
+    Dte xDte;
+    SN_Dte snDte;
 
-      m_dCalc = (CALC) - 1.0;
-
-      if (m_bTrace)
-        vTrace("%c"_Stz,*m_acChr);
-      m_acChr++;
-      m_iCol++;
-      m_nChars++;
-    }
+    xDte = snDte.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_oDatum.vDte(xDte);
+
     vSprintDate();
   }
 
@@ -311,17 +303,13 @@ namespace Load
   inline void vConvertDecimal(void)
   {
     vFieldTrace();
+  
+    Bcd xBcd;
+    SN_Bcd snBcd;
 
-    while (bInField()) {
-
-      m_dCalc = (CALC) - 2.0;
-
-      if (m_bTrace)
-        vTrace("%c"_Stz,*m_acChr);
-      m_acChr++;
-      m_iCol++;
-      m_nChars++;
-    }
+    xBcd = snBcd.i(&m_acChr,m_pCol,m_pFmt);
+  
+    m_oDatum.vBcd(xBcd);
   
     vSprintDecimal();
   }
@@ -333,17 +321,13 @@ namespace Load
   {
     vFieldTrace();
 
-    while (bInField()) {
+    Flt xFlt;
+    SN_Flt snFlt;
 
-      m_dCalc = (CALC) - 3.0;
-
-      if (m_bTrace)
-        vTrace("%c"_Stz,*m_acChr);
-      m_acChr++;
-      m_iCol++;
-      m_nChars++;
-    }
+    xFlt = snFlt.d(&m_acChr,m_pCol,m_pFmt);
   
+    m_oDatum.vFlt(xFlt);
+
     vSprintFloat();
   }
 
@@ -365,11 +349,18 @@ namespace Load
 //      m_nChars++;
 //    }
   
-    i8 iInt;
-    StrLib::bExtractInteger(&m_acChr,&iInt,true);
+//    i8 iInt;
+//    StrLib::bExtractInteger(&m_acChr,&iInt,true);
+//
+//    m_oDatum.vInt(iInt);
   
-    m_oDatum.vInt(iInt);
+    Int xInt;
+    SN_Int snInt;
+
+    xInt = snInt.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_oDatum.vInt(xInt);
+
     vSprintInteger();
   }
   
@@ -380,17 +371,13 @@ namespace Load
   {
     vFieldTrace();
 
-    while (bInField()) {
+    Ivl xIvl;
+    SN_Ivl snIvl;
 
-      m_dCalc = (CALC) - 5.0;
-
-      if (m_bTrace)
-        vTrace("%c"_Stz,*m_acChr);
-      m_acChr++;
-      m_iCol++;
-      m_nChars++;
-    }
+    xIvl = snIvl.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_oDatum.vIvl(xIvl);
+
     vSprintInterval();
   }
   
@@ -401,17 +388,13 @@ namespace Load
   {
     vFieldTrace();
 
-    while (bInField()) {
+    Tme xTme;
+    SN_Tme snTme;
 
-      m_dCalc = (CALC) - 6.0;
-
-      if (m_bTrace)
-        vTrace("%c"_Stz,*m_acChr);
-      m_acChr++;
-      m_iCol++;
-      m_nChars++;
-    }
+    xTme = snTme.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_oDatum.vTme(xTme);
+
     vSprintTime();
   }
   
@@ -422,17 +405,13 @@ namespace Load
   {
     vFieldTrace();
 
-    while (bInField()) {
+    Tsp xTsp;
+    SN_Tsp snTsp;
 
-      m_dCalc = (CALC) - 7.0;
+    xTsp = snTsp.i(&m_acChr,m_pCol,m_pFmt);
+  
+    m_oDatum.vTsp(xTsp);
 
-      if (m_bTrace)
-        vTrace("%c"_Stz,*m_acChr);
-      m_acChr++;
-      m_iCol++;
-      m_nChars++;
-    }
-      
     vSprintTimestamp();
   }
   
@@ -443,16 +422,12 @@ namespace Load
   {
     vFieldTrace();
              
-    while (bInField()) {
+    SN_Vch snVch;
 
-      m_dCalc = (CALC) - 8.0;
+    i8 nChars = 0;
+    bool bSawEnclosedLeading = CsvValue::bIsEnclosedString(&m_acChr,m_pFmt);
 
-      if (m_bTrace)
-        vTrace("%c"_Stz,*m_acChr);
-      m_acChr++;
-      m_iCol++;
-      m_nChars++;
-    }
+    m_oDatum = snVch.sz(&m_acChr,m_pCol,m_pFmt,bSawEnclosedLeading,nChars);
   
     vSprintVarchar();
   }

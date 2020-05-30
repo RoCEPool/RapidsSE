@@ -25,8 +25,8 @@ namespace Datums
   
     static void vInto(Stz* szTgt, void* avSrc, Column* pCol);
 
-  private:
     static bool bIsEnclosedString(char** aazCrs, Format* pFmt);
+  private:
     static bool bIsThereFieldData(char* aSrc, Format* pFmt);
     static bool bValidFieldEnd(char* aSrc, Format* pFmt);
     static bool bValidRecordEnd(char* aSrc, Format* pFmt);
