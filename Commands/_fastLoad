@@ -4,10 +4,6 @@
 
 bc;
 
-"../FASTLOAD/Commands/_FastInt";
-
-"../FASTLOAD/Commands/_FastVch";
-
 "../FASTLOAD/Commands/_FastBcd";
 
 "../FASTLOAD/Commands/_FastBol";
@@ -16,9 +12,15 @@ bc;
 
 "../FASTLOAD/Commands/_FastFlt";
 
-"../FASTLOAD/Commands/_FastTsp";
+"../FASTLOAD/Commands/_FastInt";
+
+"../FASTLOAD/Commands/_FastIvl";
 
 "../FASTLOAD/Commands/_FastTme";
+
+"../FASTLOAD/Commands/_FastTsp";
+
+"../FASTLOAD/Commands/_FastVch";
 
 tableSizes;
 
