@@ -23,7 +23,7 @@ RowSlab::RowSlab(StreamDef* pStreamDef)
   
   m_nItems = 0;
   
-  m_nMaxRowSize = 0;
+  m_nMaxRowSize = 128;  // FOR TESTING PURPOSES
 
   m_nCols  = 0;
   for (i8 i_ColHint = 0; i_ColHint < C_MAX_DEFCOLUMNS; i_ColHint++)
@@ -87,10 +87,15 @@ bool RowSlab::bNewRow(i8& i_Cell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
 
+  if (m_xWsp.nFree() < m_nMaxRowSize)
+    return false;
+  
   if (C_UNKNOWN == i_Cell)
     i_Cell = C_FIRST_CELL;
   else
     i_Cell--;
+  
+  m_nItems++;
   
   return true;
 }

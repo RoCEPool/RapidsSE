@@ -1236,6 +1236,16 @@ void vTest20(void)
   
   Table* pTable = Table::pFindTable(pTask->pForth()->pDicStack(),"rowSlab"_Stz);
   
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RowSlab* pRowSlab = new RowSlab(pStreamDef);
+  
+  
+  delete pRowSlab;
+  
+  vTrace("End RowSlab Test\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
