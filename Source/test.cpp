@@ -1242,6 +1242,18 @@ void vTest20(void)
   
   RowSlab* pRowSlab = new RowSlab(pStreamDef);
   
+  i8 i_Cell = C_UNKNOWN;
+  
+  for (i8 i_Row = 0; i_Row < 1000; i_Row++) {
+
+    bool bSuccess = pRowSlab->bNewRow(i_Cell);
+    for (i8 i_Col = 0; i_Col < 8; i_Col++)
+      pRowSlab->vDeposit(i_Cell,i_Row * 10 + i_Col);
+      
+    char* azStzCell = pRowSlab->azString(i_Cell);
+    StrLib::vCopy(azStzCell,"abcdefghjklmnopqrstuvwxyzABCD32");
+    pRowSlab->vTakeBytes(33);
+  }
   
   delete pRowSlab;
   

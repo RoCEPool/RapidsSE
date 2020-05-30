@@ -16,7 +16,7 @@ namespace DataBuffers
 
     i8  m_nMaxRowSize; // max size of row
     i8  m_nCols;       // number of items in this row-slab
-    i8  m_xaColHint[C_MAX_DEFCOLUMNS];
+    ColPix m_xaColPix[C_MAX_DEFCOLUMNS];
   
     WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
 

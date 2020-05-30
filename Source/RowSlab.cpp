@@ -26,8 +26,8 @@ RowSlab::RowSlab(StreamDef* pStreamDef)
   m_nMaxRowSize = 128;  // FOR TESTING PURPOSES
 
   m_nCols  = 0;
-  for (i8 i_ColHint = 0; i_ColHint < C_MAX_DEFCOLUMNS; i_ColHint++)
-    m_xaColHint[i_ColHint] = 0;
+  for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
+    m_xaColPix[i_Col].m_uAsI4 = 0;
   
   // m_xWsp
 
@@ -47,18 +47,28 @@ RowSlab::~RowSlab(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 RowSlab::iCell(i8 i_Row, i8 i_Cell)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   return 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/* deposit an i8 value                                                        */
+/* deposit an i8 value into next cell                                         */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vDeposit(i8& i_Cell, i8 iVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  // move to previous cell
+  i_Cell--;
   
+  i8* iaCells = (i8*)m_xWsp.ayArea();
+  
+  iaCells[i_Cell] = iVal;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,9 +76,13 @@ void RowSlab::vDeposit(i8& i_Cell, i8 iVal)
 /*----------------------------------------------------------------------------*/
 char* RowSlab::azString(i8& i_Cell)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  char* azStzCell = (char*)m_xWsp.ayLatterHead();
   
-  return nullptr;
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  return azStzCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,8 +90,11 @@ char* RowSlab::azString(i8& i_Cell)
 /*----------------------------------------------------------------------------*/
 void RowSlab::vTakeBytes(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
+   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
+  m_xWsp.vTakeHead(nBytes);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,17 +102,17 @@ void RowSlab::vTakeBytes(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 bool RowSlab::bNewRow(i8& i_Cell)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
   if (m_xWsp.nFree() < m_nMaxRowSize)
     return false;
   
   if (C_UNKNOWN == i_Cell)
-    i_Cell = C_FIRST_CELL;
-  else
-    i_Cell--;
-  
+    i_Cell = C_FIRST_CELL + 1;
+    
   m_nItems++;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   return true;
 }
@@ -110,8 +127,8 @@ bool RowSlab::bNewRow(i8& i_Cell)
 /*----------------------------------------------------------------------------*/
 void RowSlab::vColHints(StreamDef* pStreamDef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
 }
 
 /*============================================================================*/
