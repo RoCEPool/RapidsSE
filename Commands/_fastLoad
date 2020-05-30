@@ -8,6 +8,8 @@ bc;
 
 "../FASTLOAD/Commands/_FastVch";
 
+"../FASTLOAD/Commands/_FastDte";
+
 tableSizes;
 
 /*============================================================================*/
