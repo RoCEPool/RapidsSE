@@ -29,6 +29,7 @@ shortcut pt   _passthru;
 shortcut r    _lineitemrjh;
 shortcut r2   _ray2;
 shortcut r3   _ray3;
+shortcut rs   test20;
 shortcut s    _select;
 shortcut t    _unitTestA;
 shortcut u    _upsertRJH;
