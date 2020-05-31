@@ -22,8 +22,8 @@ bc;
 
 "../FASTLOAD/Commands/_FastTsp";
 
-//"../FASTLOAD/Commands/_FastVch";
-//
+"../FASTLOAD/Commands/_FastVch";
+
 //"../FASTLOAD/Commands/_FastAll";
 //
 //"../FASTLOAD/Commands/_FastLineItem";

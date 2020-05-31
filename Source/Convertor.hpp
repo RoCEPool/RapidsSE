@@ -442,6 +442,11 @@ namespace Load
 
     m_oDatum = snVch.sz(&m_acChr,m_pCol,m_pFmt,bSawEnclosedLeading,nChars);
   
+    char* szStr = m_pRowSlab->azDepositString(m_i_Cell);
+    StrLib::vCopy(szStr,m_oDatum.azChar());
+    m_pRowSlab->vDepositedString(nChars+1);
+    ASSERT(nChars + 1 == StrLib::nSize(szStr));
+
     vSprintVarchar();
   }
 

@@ -100,6 +100,38 @@ void RowSlab::vDeposit(i8& i_Cell, i8 iVal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin deposit of string                                                    */
+/*----------------------------------------------------------------------------*/
+char* RowSlab::azDepositString(i8& i_Cell)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  char* azStzCell = (char*)m_xWsp.ayLatterHead();
+  
+  i_Cell--;
+
+  i8* iaCells = (i8*)m_xWsp.ayArea();
+  
+  iaCells[i_Cell] = (i8)azStzCell;
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  return azStzCell;
+}
+
+/*----------------------------------------------------------------------------*/
+/* take bytes for deposited string                                            */
+/*----------------------------------------------------------------------------*/
+void RowSlab::vDepositedString(i8 nBytes)
+{
+   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  m_xWsp.vTakeHead(nBytes);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump given row                                                             */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vDumpAllRows(void)
@@ -210,38 +242,6 @@ void RowSlab::vSlabReport(void)
          nRows(),
          m_xWsp.nUsed() / nRows()
          );
-}
-
-/*----------------------------------------------------------------------------*/
-/* begin deposit of string                                                    */
-/*----------------------------------------------------------------------------*/
-char* RowSlab::azString(i8& i_Cell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  char* azStzCell = (char*)m_xWsp.ayLatterHead();
-  
-  i_Cell--;
-
-  i8* iaCells = (i8*)m_xWsp.ayArea();
-  
-  iaCells[i_Cell] = (i8)azStzCell;
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  return azStzCell;
-}
-
-/*----------------------------------------------------------------------------*/
-/* take bytes for deposited string                                            */
-/*----------------------------------------------------------------------------*/
-void RowSlab::vTakeBytes(i8 nBytes)
-{
-   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  m_xWsp.vTakeHead(nBytes);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 }
 
 

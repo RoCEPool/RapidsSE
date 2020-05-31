@@ -86,7 +86,7 @@ Stz* SP_String::szSample(Stz* szString, Stz* szCursor, i8 iAfter, i8 iBefore)
   StrLib::vConcat(m_caResult,aOC[OC_CURSOR]->azChar());
   StrLib::vConcat(m_caResult,caEscapedAfter);
 
-  if (StrLib::iSize(szCursor->azChar()) < iAfter)
+  if (StrLib::nSize(szCursor->azChar()) < iAfter)
     StrLib::vConcat(m_caResult,"\\0");
   else
     StrLib::vConcat(m_caResult,"...");

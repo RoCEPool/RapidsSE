@@ -389,7 +389,7 @@ i8 RowSingle::nSizeVch(void)
       
       char* acSrcString = (char*)m_waColVal[i_Col].m_szVch;
       
-      nSizeVch += StrLib::iSize(acSrcString);
+      nSizeVch += StrLib::nSize(acSrcString);
       
       continue;
     }

@@ -34,6 +34,8 @@ namespace Load
     ColPix* axaColPix(void);
     i8    nCols(void);
     void  vDeposit(i8& i_Cell, i8 iVal);
+    char* azDepositString(i8& i_Cell);
+    void  vDepositedString(i8 nBytes);
     void  vDumpAllRows(void);
     void  vDumpRow(i8 i_Row);
     i8    nFreeSpace(void);
@@ -41,8 +43,6 @@ namespace Load
     i8*   aiaRowCells(i8 i_Row);
     i8    nRows(void);
     void  vSlabReport(void);
-    char* azString(i8& i_Cell);
-    void  vTakeBytes(i8 nBytes);
 
   private:
     void vColHints(StreamDef* pStreamDef);

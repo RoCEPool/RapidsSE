@@ -440,7 +440,7 @@ i8 String_t<SIZE>::nSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return StrLib::iSize(azChar());
+  return StrLib::nSize(azChar());
 }
 
 /*----------------------------------------------------------------------------*/

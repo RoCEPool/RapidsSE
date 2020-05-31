@@ -389,7 +389,7 @@ void Stack::vPushStr(String* pStr)
   
   //vDump(nullptr,"Before:"_Stz);
 
-  i8 nSize = StrLib::iSize(pStr->azStr());
+  i8 nSize = StrLib::nSize(pStr->azStr());
   StzVal* aStzVal = aAllotStzVal(nSize);
 
   aStzVal->vStz(pStr->szStz());

@@ -109,7 +109,7 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
       
       // get src string
       char* acSrcString = (char*)pRowSingle->m_waColVal[i_Col].m_szVch;
-      i8 nSrcLength = StrLib::iSize(acSrcString);
+      i8 nSrcLength = StrLib::nSize(acSrcString);
       
       // allocate a string from the tail
       Stz* acDstString = ayAllotTail(nSrcLength);

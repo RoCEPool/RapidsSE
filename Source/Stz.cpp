@@ -284,7 +284,7 @@ bool Stz::bSame(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 i8 Stz::nSize(void)
 {
-  i8 n = StrLib::iSize(azChar());
+  i8 n = StrLib::nSize(azChar());
   
   return n;
 }

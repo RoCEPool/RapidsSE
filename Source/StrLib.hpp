@@ -168,7 +168,7 @@ namespace Strings
     static void  vRuler(char* azDst, i8 iLength);
 
     static bool  bSame(const char* s1, const char* s2);
-    static i8    iSize(const char* s);
+    static i8    nSize(const char* s);
     static void  vSkipDigits(char** ps);
     static bool  bSkipEOL(char** ps);
     static bool  bSkipLeading(char** ps, char cEnclosedBy_Leading);

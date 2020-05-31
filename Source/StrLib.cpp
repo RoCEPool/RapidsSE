@@ -56,7 +56,7 @@ char* StrLib::wAllocate(const char* s)
 {
   _static_
   
-  i8 nBytes = iSize(s);
+  i8 nBytes = nSize(s);
   
   char* w = wAllocate(nBytes);
   
@@ -653,7 +653,7 @@ char* StrLib::sDupe(const char* psArg)
 {
   _static_
   
-  i8 iSize = StrLib::iSize(psArg);
+  i8 iSize = StrLib::nSize(psArg);
 
   char* psString = wAllocate(iSize);
 
@@ -672,7 +672,7 @@ char* StrLib::sDupeStripped(const char* s)
   if ('"' != *s)
     return sDupe(s);
   
-  i8 iSize = StrLib::iSize(s) - 2;
+  i8 iSize = StrLib::nSize(s) - 2;
   
   char* psString = wAllocate(iSize);
   
@@ -2966,7 +2966,7 @@ bool StrLib::bSame(const char* pArg1, const char* pArg2)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of arg                                                   */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iSize(const char* s)
+i8 StrLib::nSize(const char* s)
 {
   _static_
   
@@ -3491,7 +3491,7 @@ i8 StrLib::iWordFlip(char* aDst, char* aSrc)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iSrcLen = StrLib::iSize(aSrc);
+  i8 iSrcLen = StrLib::nSize(aSrc);
   MemLib::vZero(aDst,iDstSize,CN_KEY);
   MemLib::vCopy(aDst, aSrc, iSrcLen, CN_KEY);
   
@@ -3521,7 +3521,7 @@ i8 StrLib::iWordFlipBack(char* aDst, char* aSrc)
   //vTrace("WORDFLIPBACK\n"_Stz);
   //MemLib::vDumpWords(aSrc, 16);
   
-  i8 iLenSrc = StrLib::iSize(aSrc);
+  i8 iLenSrc = StrLib::nSize(aSrc);
   
   i8 iRoundUp = 0;
   i8 iRemainder = iLenSrc % C_BYTES_PER_WORD;
