@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* _fastLoad                                                                  */
+/* _fl -- fast load tests                                                     */
 /*============================================================================*/
 
-print "../FASTLOAD/Commands/_FastLoad" ;
+print "../FASTLOAD/Commands/_fl" ;
 
 bc;
 
@@ -33,7 +33,7 @@ tag <fl_file>   = "../FASTLOAD/Data/uniInt.csv";
 
 tableSizes;
 
-print "that was a ../FASTLOAD/Commands/_FastLoad" ;
+print "that was a ../FASTLOAD/Commands/_fl" ;
 
 /*============================================================================*/
 /* end                                                                        */

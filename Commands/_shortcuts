@@ -15,7 +15,7 @@ shortcut l    _loadPipeline;
 shortcut d    _pipeline;
 shortcut dl   _pipelineLineItem;
 shortcut f    _fetchLineItemRJH;
-shortcut fl   "../FASTLOAD/commands/_fastLoad";
+shortcut fl   "../FASTLOAD/commands/_fl";
 shortcut gs   gridSanity;
 shortcut p    _purgeAY;
 shortcut dn   _defineNode;
