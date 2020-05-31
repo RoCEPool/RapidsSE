@@ -281,6 +281,7 @@ namespace Load
 
     xBol = snBol.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_pRowSlab->vDeposit(m_i_Cell,xBol);
     m_oDatum.vBol(xBol);
 
     vSprintBoolean();
@@ -298,6 +299,7 @@ namespace Load
 
     xDte = snDte.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_pRowSlab->vDeposit(m_i_Cell,xDte);
     m_oDatum.vDte(xDte);
 
     vSprintDate();
@@ -315,6 +317,7 @@ namespace Load
 
     xBcd = snBcd.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_pRowSlab->vDeposit(m_i_Cell,xBcd);
     m_oDatum.vBcd(xBcd);
   
     vSprintDecimal();
@@ -365,11 +368,10 @@ namespace Load
 
     xInt = snInt.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_pRowSlab->vDeposit(m_i_Cell,xInt);
     m_oDatum.vInt(xInt);
 
     vSprintInteger();
-  
-    m_pRowSlab->vDeposit(m_i_Cell,xInt);
   }
   
   /*--------------------------------------------------------------------------*/
@@ -384,6 +386,7 @@ namespace Load
 
     xIvl = snIvl.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_pRowSlab->vDeposit(m_i_Cell,xIvl);
     m_oDatum.vIvl(xIvl);
 
     vSprintInterval();
@@ -401,6 +404,7 @@ namespace Load
 
     xTme = snTme.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_pRowSlab->vDeposit(m_i_Cell,xTme);
     m_oDatum.vTme(xTme);
 
     vSprintTime();
@@ -418,6 +422,7 @@ namespace Load
 
     xTsp = snTsp.i(&m_acChr,m_pCol,m_pFmt);
   
+    m_pRowSlab->vDeposit(m_i_Cell,xTsp);
     m_oDatum.vTsp(xTsp);
 
     vSprintTimestamp();
