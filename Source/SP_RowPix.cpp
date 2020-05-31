@@ -46,11 +46,11 @@ SP_RowPix::~SP_RowPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* SP_RowPix::sz(i8* aiaRowCells)
+Stz* SP_RowPix::sz(m8* amRowCells)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vPutRow(aiaRowCells);
+  vPutRow(amRowCells);
   
   return (Stz*) m_caRecord;
 }
@@ -103,11 +103,11 @@ void SP_RowPix::vAppendFlt(ColPix xColPix, i8 iVal)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendFlt(i8* aiaRowCells, i8 i_Cell)
+void SP_RowPix::vAppendFlt(m8* amRowCells, i8 i_Cell)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
-  d8* adaRowCells = (d8*)aiaRowCells;
+  d8* adaRowCells = (d8*)amRowCells;
   d8 dVal = adaRowCells[- i_Cell];
   
   SP_Flt spFlt;
@@ -166,7 +166,7 @@ void SP_RowPix::vAppendVch(ColPix xColPix, i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* put row into record                                                        */
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vPutRow(i8* aiaRowCells)
+void SP_RowPix::vPutRow(m8* amRowCells)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
     
@@ -177,7 +177,7 @@ void SP_RowPix::vPutRow(i8* aiaRowCells)
     if (i_Col)
       StrLib::vAppendString(&m_azCursor,",");
 
-    i8 iVal = aiaRowCells[- i_Col];
+    i8 iVal = (i8)amRowCells[- i_Col];
     
     ColPix xColPix = m_axaColPix[i_Col];
     eDM eDatum = (eDM)xColPix.m_uType;
@@ -186,7 +186,7 @@ void SP_RowPix::vPutRow(i8* aiaRowCells)
       case DM_BCD: vAppendBcd(xColPix,iVal); break;
       case DM_BOL: vAppendBol(xColPix,iVal); break;
       case DM_DTE: vAppendDte(xColPix,iVal); break;
-      case DM_FLT: vAppendFlt(aiaRowCells,i_Col); break;
+      case DM_FLT: vAppendFlt(amRowCells,i_Col); break;
       case DM_INT: vAppendInt(xColPix,iVal); break;
       case DM_IVL: vAppendIvl(xColPix,iVal); break;
       case DM_TME: vAppendTme(xColPix,iVal); break;

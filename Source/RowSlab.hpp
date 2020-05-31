@@ -5,10 +5,12 @@
 
 namespace Load
 {
+  static const i8 C_WSP_ROWSLAB = C_SIZE_LARGE_OBJECT - C_2KB;
+  static const i8 C_SLAB_CELLS  = C_WSP_ROWSLAB / C_BYTES_PER_WORD;
+  static const i8 C_FIRST_CELL  = C_SLAB_CELLS - 1;
+
   class RowSlab : public Object
   {
-    static const i8 C_WSP_ROWSLAB = C_SIZE_LARGE_OBJECT - C_2KB;
-    static const i8 C_FIRST_CELL  = (C_WSP_ROWSLAB / 8) - 1;
 
   private:
   
@@ -17,6 +19,8 @@ namespace Load
     i8  m_nMaxRowSize; // max size of row
     i8  m_nCols;       // number of items in this row-slab
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS];
+  
+    i8  m__spare[16];
   
     WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
 
@@ -31,6 +35,8 @@ namespace Load
    ~RowSlab(void) noexcept(false);
       
     i8    iCell(i8 i_Row, i8 i_Cell);
+    m8*   amCell(i8 i_Cell);
+    m8*   amCellVector(void);
     ColPix* axaColPix(void);
     i8    nCols(void);
     void  vDeposit(i8& i_Cell, d8 dVal);
@@ -41,7 +47,7 @@ namespace Load
     void  vDumpRow(i8 i_Row);
     i8    nFreeSpace(void);
     bool  bNewRow(i8& i_Cell);
-    i8*   aiaRowCells(i8 i_Row);
+    m8*   amRowCells(i8 i_Row);
     i8    nRows(void);
     void  vSlabReport(void);
 

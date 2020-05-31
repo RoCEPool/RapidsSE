@@ -63,6 +63,32 @@ i8 RowSlab::iCell(i8 iRow, i8 iCell)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of a row cell                                                  */
+/*----------------------------------------------------------------------------*/
+m8* RowSlab::amCell(i8 i_Cell)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  m8* amCellVec = amCellVector();
+
+  m8* amCell = &amCellVec[i_Cell];
+  
+  return amCell;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the entire cell vector                                                 */
+/*----------------------------------------------------------------------------*/
+m8* RowSlab::amCellVector(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  m8* amCellArea = (m8*)m_xWsp.ayArea();
+  
+  return amCellArea;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of columns                                                      */
 /*----------------------------------------------------------------------------*/
 i8 RowSlab::nCols(void)
@@ -169,8 +195,8 @@ void RowSlab::vDumpRow(i8 i_Row)
   
   SP_RowPix spRowPix(this->nCols(),this->axaColPix());
   
-  i8* aiaRowCells = this->aiaRowCells(i_Row);
-  Stz* szRow = spRowPix.sz(aiaRowCells);
+  m8* amRowCells = this->amRowCells(i_Row);
+  Stz* szRow = spRowPix.sz(amRowCells);
   vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
 }
 
@@ -212,19 +238,19 @@ bool RowSlab::bNewRow(i8& i_Cell)
 /*----------------------------------------------------------------------------*/
 /* get row cells for given row                                                */
 /*----------------------------------------------------------------------------*/
-i8* RowSlab::aiaRowCells(i8 iRow)
+m8* RowSlab::amRowCells(i8 iRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  i8* iaCellArea = (i8*)m_xWsp.ayArea();
 
   i8 iLglRow = iRow * m_nCols;
   
   i8 i_RowCells = C_FIRST_CELL - iLglRow;
+
+  m8* amCellVec = amCellVector();
+
+  m8* amRowCells = &amCellVec[i_RowCells];
   
-  i8* aiaRowCells = &iaCellArea[i_RowCells];
-  
-  return aiaRowCells;
+  return amRowCells;
 }
 
 /*----------------------------------------------------------------------------*/

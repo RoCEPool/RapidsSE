@@ -21,7 +21,7 @@ namespace Load
     SP_RowPix(i8 nCols, ColPix* axaColPix);
    ~SP_RowPix(void) noexcept(false);
     
-    Stz* sz(i8* aiaRowCells);
+    Stz* sz(m8* amRowCells);
   
   private:
   
@@ -29,14 +29,14 @@ namespace Load
     void vAppendBol(ColPix xColPix, i8 iVal);
     void vAppendDte(ColPix xColPix, i8 iVal);
     void vAppendFlt(ColPix xColPix, i8 iVal);
-    void vAppendFlt(i8* aiaRowCells, i8 i_Cell);
+    void vAppendFlt(m8* amRowCells, i8 i_Cell);
     void vAppendInt(ColPix xColPix, i8 iVal);
     void vAppendIvl(ColPix xColPix, i8 iVal);
     void vAppendTme(ColPix xColPix, i8 iVal);
     void vAppendTsp(ColPix xColPix, i8 iVal);
     void vAppendVch(ColPix xColPix, i8 iVal);
 
-    void vPutRow(i8* aiaRowCells);
+    void vPutRow(m8* amRowCells);
   
     char* azRecord(void);
     void vReset(void);
