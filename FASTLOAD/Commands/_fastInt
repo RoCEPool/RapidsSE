@@ -17,13 +17,13 @@ create table uniInt (
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Load uniInt";
 
-load uniInt "../FASTLOAD/Data/uniInt.csv" ;
+load <fl_table> <fl_file> ;
 
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "scan uniInt";
 
-tableScan uniInt;
+tableScan <fl_table>;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "convert uniInt";
