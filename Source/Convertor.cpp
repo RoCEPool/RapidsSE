@@ -42,7 +42,7 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_dCalc   = 0.0;
   m_nChars  = 0;
   
-  m_pRowSingle = new RowSingle(m_pStreamDef,0);
+  m_pRowSlab = new RowSlab(m_pStreamDef);
   
   m_pFmt->vShow();
 
@@ -62,7 +62,7 @@ Convertor::~Convertor(void) noexcept(false)
   
   vTrace("Converted %lld chars\n"_Stz,m_nChars);
   
-  delete m_pRowSingle;
+  delete m_pRowSlab;
 }
 
 /*----------------------------------------------------------------------------*/

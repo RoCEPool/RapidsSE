@@ -32,9 +32,8 @@ namespace Load
     bool       m_bSawFldSep;
   
     Datum      m_oDatum;
-    RowSingle* m_pRowSingle;
   
-    //RowSlab*   m_pRowSlab;
+    RowSlab*   m_pRowSlab;
   
     // must be last
     Footer m_xFooter;
