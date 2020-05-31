@@ -55,8 +55,6 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 #include "RowHeap_t.hpp"
 #include "TrayNL_t.hpp"
 
-#include "NmStr.hpp"
-
 // -- -- -- -- -- -- -- --
 
 #include "SP_Article.hpp"

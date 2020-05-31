@@ -177,8 +177,6 @@ enum eCN : u2 // Class Number
   
   /* */ CN__N__,
   /* */ CN_NEXTGID,
-  /* */ CN_NMSTR,
-  /* */ CN_NMVAL,
   /* */ CN_NODE,
   /* */ CN_NOW,
   /* */ CN_NUMBAT,
@@ -509,8 +507,6 @@ static Stz* aCN[]
   
   /* */ "_N__"_Stz,                // CN__N__
   /* */ "NEXTGID"_Stz,             // CN_NEXTGID
-  /* */ "NMSTR"_Stz,               // CN_NMSTR
-  /* */ "NMVAL"_Stz,               // CN_NMVAL
   /* */ "NODE"_Stz,                // CN_NODE
   /* */ "NOW"_Stz,                 // CN_NOW
   /* */ "NUMBAT"_Stz,              // CN_NUMBAT

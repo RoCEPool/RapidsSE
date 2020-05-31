@@ -82,7 +82,6 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 #include "HV.hpp"
 #include "MemTest.hpp"
 #include "NextGid.hpp"
-#include "NmVal.hpp"
 #include "Now.hpp"
 #include "Rand.hpp"
 #include "SeeMe.hpp"
