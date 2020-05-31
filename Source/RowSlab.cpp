@@ -148,6 +148,9 @@ bool RowSlab::bNewRow(i8& i_Cell)
     
   m_nItems++;
   
+  i8 nCellBytes = m_nCols * C_BYTES_PER_WORD;
+  m_xWsp.vTakeTail(nCellBytes);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   return true;

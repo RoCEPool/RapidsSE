@@ -1275,8 +1275,10 @@ void vTest20(void)
     vDebugPoint();
   }
   
-  vTrace("RowSlab free space %lld -> %lldB\n"_Stz,
-         nStartFreeSpace,pRowSlab->nFreeSpace());
+  vTrace("RowSlab free space %lld -> %lldB : %lld(B) per row\n"_Stz,
+         nStartFreeSpace,pRowSlab->nFreeSpace(),
+         (nStartFreeSpace - pRowSlab->nFreeSpace()) / pRowSlab->nRows()
+         );
   
   delete pRowSlab;
   
