@@ -181,22 +181,18 @@ void SePrompt::vPromptLoop(void)
       vPromptUser();
     }
     
-    vInitExtractedTags();
+    vResetExtractedTagSet();
     
     L_Read_Next_Command:
     
     if (! bReadNextCommand())
       break;
     
-    if (bBlankLine()) {
-      //if (AM::bDeveloper())
-      //  vDumpTokenVec(false);
+    if (bBlankLine())
       continue;
-    }
 
-    if (bDumpTokens()) {
+    if (bDumpTokens())
       vDumpInpTknVec(false);
-    }
 
     if (bShortCut())
       continue;
@@ -589,19 +585,6 @@ void SePrompt::vInitialSettings(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* init the extracted tags                                                    */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vInitExtractedTags(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_oExtTagSet.vReset();
-  m_oExtTagSet.vInsert(C_TAG_BYPROMPT,1);
-  m_oExtTagSet.vInsert(C_TAG_ORIGIN,AM::pGrid()->m_iThisNode);
-  m_oExtTagSet.vInsert(C_TAG_SESSION,m_pSession->m_i_Session);
-}
-
-/*----------------------------------------------------------------------------*/
 /* is a prompt word?                                                          */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bIsPromptWord(void)
@@ -830,6 +813,19 @@ i8 SePrompt::iRequestId(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_xReqTuple.m_iReqNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* init the extracted tag set                                                 */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vResetExtractedTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_oExtTagSet.vReset();
+  m_oExtTagSet.vInsert(C_TAG_BYPROMPT,1);
+  m_oExtTagSet.vInsert(C_TAG_ORIGIN,AM::pGrid()->m_iThisNode);
+  m_oExtTagSet.vInsert(C_TAG_SESSION,m_pSession->m_i_Session);
 }
 
 /*----------------------------------------------------------------------------*/

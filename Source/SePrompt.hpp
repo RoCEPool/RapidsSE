@@ -74,7 +74,6 @@ namespace Prompt
     bool bExtractSupTags(void);
     void vFocalOutline(s4K& sOutline);
     void vInitialSettings(void);
-    void vInitExtractedTags(void);
     TokenVec* pInpTknVec(void);
     bool bIsPromptWord(void);
     void vLogCommand(void);
@@ -89,6 +88,7 @@ namespace Prompt
     void vReportPool(void);
     void vReportTrace();
     void vReportTime(void);
+    void vResetExtractedTagSet(void);
     void vResetSectionNo(void);
     i8   iRequestId(void);
   void vSection(Stz* szSection);
