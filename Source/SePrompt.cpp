@@ -1015,63 +1015,6 @@ bool SePrompt::bStdIn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* subsititute lets                                                           */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bSubLet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  NmStrList* pNmStrList = m_pSession->m_pNmStrLst;
-  if (! pNmStrList)
-    return false;
-  
-  i8 nTokens = m_pInpTknVec->nTokens();
-  
-  // concat all the tokens together
-  for (i8 i_Token = 0; i_Token < nTokens - 1; i_Token++) { //! note the - 1
-    
-    Token* pToken = m_pInpTknVec->pGet(i_Token);
-    
-    if (! pToken->bSame("$"_Stz))
-      continue;
-    
-    pToken = m_pInpTknVec->pGet(++ i_Token);
-    
-    if (! pToken->bIsName())
-      continue;
-    
-    s32 sName = pToken->szChars();
-    
-    NmStr* pNmStr = pNmStrList->pFind(sName);
-    if (! pNmStr)
-      continue;
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    
-    s4K sPartA;
-    s4K sPartB;
-    s4K sSubstituted;
-    
-    SP_TknVecStr spTknVecStr;
-    
-    if (i_Token > 1)
-      sPartA = spTknVecStr.sz(m_pInpTknVec,0,i_Token - 2);
-    sPartB = spTknVecStr.sz(m_pInpTknVec,i_Token + 1);
-
-    sSubstituted.vSprint("%s %s %s"_Stz,
-                         sPartA.szStz(),
-                         pNmStr->m_sValue.szStz(),
-                         sPartB.szStz());
-    
-    m_pInpTknVec->vTokenise(sSubstituted);
-    
-    return true;
-  }
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* subsititute session tags                                                   */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bSubSsnTags(void)

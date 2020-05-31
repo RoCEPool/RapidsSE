@@ -98,7 +98,6 @@ namespace Prompt
     ShortCutVec* pShortCutVec(void);
     ObjectsInPool*  pSnapshotObjects(void);
     bool bStdIn(void);
-    bool bSubLet(void);
     bool bSubSsnTags(void);
     void vTrackingMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
