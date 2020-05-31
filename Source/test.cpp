@@ -1275,18 +1275,23 @@ void vTest20(void)
 //    vDebugPoint();
 //  }
   
-  SP_RowPix spRowPix(pRowSlab->nCols(),pRowSlab->axaColPix());
+//  SP_RowPix spRowPix(pRowSlab->nCols(),pRowSlab->axaColPix());
+//
+//  for (i8 i_Row = 0; i_Row < pRowSlab->nRows(); i_Row++) {
+//    i8* aiaRowCells = pRowSlab->aiaRowCells(i_Row);
+//    Stz* szRow = spRowPix.sz(aiaRowCells);
+//    vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
+//  }
+//
+
+  pRowSlab->vDumpAllRows();
   
-  for (i8 i_Row = 0; i_Row < pRowSlab->nRows(); i_Row++) {
-    i8* aiaRowCells = pRowSlab->aiaRowCells(i_Row);
-    Stz* szRow = spRowPix.sz(aiaRowCells);
-    vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
-  }
-           
-  vTrace("RowSlab free space %lld -> %lldB : %lld(B) per row\n"_Stz,
-         nStartFreeSpace,pRowSlab->nFreeSpace(),
-         (nStartFreeSpace - pRowSlab->nFreeSpace()) / pRowSlab->nRows()
-         );
+//  vTrace("RowSlab free space %lld -> %lldB : %lld(B) per row\n"_Stz,
+//         nStartFreeSpace,pRowSlab->nFreeSpace(),
+//         (nStartFreeSpace - pRowSlab->nFreeSpace()) / pRowSlab->nRows()
+//         );
+  
+  pRowSlab->vSlabReport();
   
   delete pRowSlab;
   

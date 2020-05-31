@@ -23,6 +23,7 @@ extern s256 gi_szaArgv[];
 int main(int argc, char* argv[])
 {
   //ASSERT(1 == 0);
+  printf("sizeof(ColPix)   %lld\n", (i8)sizeof(ColPix));
 
 //  printf("sizeof(RowSingle)   %lld\n", (i8)sizeof(RowSingle));
 //  printf("sizeof(Table)       %lld\n", (i8)sizeof(Table));

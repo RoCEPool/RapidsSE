@@ -100,6 +100,31 @@ void RowSlab::vDeposit(i8& i_Cell, i8 iVal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump given row                                                             */
+/*----------------------------------------------------------------------------*/
+void RowSlab::vDumpAllRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  for (i8 i_Row = 0; i_Row < this->nRows(); i_Row++)
+    vDumpRow(i_Row);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump given row                                                             */
+/*----------------------------------------------------------------------------*/
+void RowSlab::vDumpRow(i8 i_Row)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  SP_RowPix spRowPix(this->nCols(),this->axaColPix());
+  
+  i8* aiaRowCells = this->aiaRowCells(i_Row);
+  Stz* szRow = spRowPix.sz(aiaRowCells);
+  vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of rows                                                         */
 /*----------------------------------------------------------------------------*/
 i8 RowSlab::nFreeSpace(void)
@@ -160,6 +185,30 @@ i8 RowSlab::nRows(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump slap and report                                                       */
+/*----------------------------------------------------------------------------*/
+void RowSlab::vSlabReport(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+ 
+  s32 sSlab_magn;  MagLib::vByteMag(C_WSP_ROWSLAB, sSlab_magn);
+  s32 sUsed_magn;  MagLib::vByteMag(m_xWsp.nUsed(),sUsed_magn);
+  s32 sFree_magn;  MagLib::vByteMag(m_xWsp.nFree(),sFree_magn);
+
+  vTrace("RowSlab space %s, used %s, free %s %lld%%; "
+         "rows %lld, %lld(B) per row\n"_Stz,
+         
+         sSlab_magn.szStz(),
+         sUsed_magn.szStz(),
+         sFree_magn.szStz(),
+         (m_xWsp.nFree() * 100) / C_WSP_ROWSLAB,
+         
+         nRows(),
+         m_xWsp.nUsed() / nRows()
+         );
 }
 
 /*----------------------------------------------------------------------------*/

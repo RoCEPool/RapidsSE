@@ -7,7 +7,7 @@ namespace DataBuffers
 {
   class RowSlab : public Object
   {
-    static const i8 C_WSP_ROWSLAB = C_SIZE_LARGE_OBJECT - C_4KB;
+    static const i8 C_WSP_ROWSLAB = C_SIZE_LARGE_OBJECT - C_2KB;
     static const i8 C_FIRST_CELL  = (C_WSP_ROWSLAB / 8) - 1;
 
   private:
@@ -34,10 +34,13 @@ namespace DataBuffers
     ColPix* axaColPix(void);
     i8    nCols(void);
     void  vDeposit(i8& i_Cell, i8 iVal);
+    void  vDumpAllRows(void);
+    void  vDumpRow(i8 i_Row);
     i8    nFreeSpace(void);
     bool  bNewRow(i8& i_Cell);
     i8*   aiaRowCells(i8 i_Row);
     i8    nRows(void);
+    void  vSlabReport(void);
     char* azString(i8& i_Cell);
     void  vTakeBytes(i8 nBytes);
 
