@@ -21,7 +21,7 @@ namespace Records
     
     char* azRecord(void);
     void vReset(void);
-    Stz* sz(i8* aiaCells);
+    Stz* sz(i8* aiaRowCells);
     
     Footer* aFooter(void);
   };

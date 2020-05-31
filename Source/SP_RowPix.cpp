@@ -76,9 +76,11 @@ void SP_RowPix::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* SP_RowPix::sz(i8* aiaCells)
+Stz* SP_RowPix::sz(i8* aiaRowCells)
 {
   _precondition_(_MAGIC_,_FOOTER_);
+  
+  StrLib::vCopy(m_caRecord,"-- ROWPIX --");
   
   return (Stz*) &m_caRecord[0];
 }

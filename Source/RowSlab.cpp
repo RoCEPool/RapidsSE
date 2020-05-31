@@ -63,6 +63,16 @@ i8 RowSlab::iCell(i8 iRow, i8 iCell)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get row cells for given row                                                */
+/*----------------------------------------------------------------------------*/
+ColPix* RowSlab::axaColPix(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  return m_xaColPix;
+}
+
+/*----------------------------------------------------------------------------*/
 /* deposit an i8 value into next cell                                         */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vDeposit(i8& i_Cell, i8 iVal)
@@ -82,16 +92,6 @@ void RowSlab::vDeposit(i8& i_Cell, i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* get number of rows                                                         */
 /*----------------------------------------------------------------------------*/
-i8 RowSlab::nRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  return m_nItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of rows                                                         */
-/*----------------------------------------------------------------------------*/
 i8 RowSlab::nFreeSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -99,6 +99,57 @@ i8 RowSlab::nFreeSpace(void)
   i8 nFree = m_xWsp.nFree();
   
   return nFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* start of new row                                                           */
+/*----------------------------------------------------------------------------*/
+bool RowSlab::bNewRow(i8& i_Cell)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  if (m_xWsp.nFree() < m_nMaxRowSize)
+    return false;
+  
+  if (C_UNKNOWN == i_Cell)
+    i_Cell = C_FIRST_CELL + 1;
+    
+  m_nItems++;
+  
+  i8 nCellBytes = m_nCols * C_BYTES_PER_WORD;
+  m_xWsp.vTakeTail(nCellBytes);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row cells for given row                                                */
+/*----------------------------------------------------------------------------*/
+i8* RowSlab::aiaRowCells(i8 iRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  i8* iaCellArea = (i8*)m_xWsp.ayArea();
+
+  i8 iLglRow = iRow * m_nCols;
+  
+  i8 i_RowCells = C_FIRST_CELL - iLglRow;
+  
+  i8* aiaRowCells = &iaCellArea[i_RowCells];
+  
+  return aiaRowCells;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of rows                                                         */
+/*----------------------------------------------------------------------------*/
+i8 RowSlab::nRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  return m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,28 +184,6 @@ void RowSlab::vTakeBytes(i8 nBytes)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 }
 
-/*----------------------------------------------------------------------------*/
-/* start of new row                                                           */
-/*----------------------------------------------------------------------------*/
-bool RowSlab::bNewRow(i8& i_Cell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  if (m_xWsp.nFree() < m_nMaxRowSize)
-    return false;
-  
-  if (C_UNKNOWN == i_Cell)
-    i_Cell = C_FIRST_CELL + 1;
-    
-  m_nItems++;
-  
-  i8 nCellBytes = m_nCols * C_BYTES_PER_WORD;
-  m_xWsp.vTakeTail(nCellBytes);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  return true;
-}
 
 
 /*----------------------------------------------------------------------------*/

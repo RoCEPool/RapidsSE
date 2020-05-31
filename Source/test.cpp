@@ -1258,23 +1258,30 @@ void vTest20(void)
   }
   
   
-  for (i8 i_Row = 0; i_Row < pRowSlab->nRows(); i_Row++) {
-    vTrace("%lld,%lld,%lld,%lld,%lld,%lld,%lld,%lld,%lld,%lld=%s\n"_Stz,
-           pRowSlab->iCell(i_Row,0),
-           pRowSlab->iCell(i_Row,1),
-           pRowSlab->iCell(i_Row,2),
-           pRowSlab->iCell(i_Row,3),
-           pRowSlab->iCell(i_Row,4),
-           pRowSlab->iCell(i_Row,5),
-           pRowSlab->iCell(i_Row,6),
-           pRowSlab->iCell(i_Row,7),
-           pRowSlab->iCell(i_Row,8),
-           pRowSlab->iCell(i_Row,9),
-           pRowSlab->iCell(i_Row,9)
-           );
-    vDebugPoint();
-  }
+//  for (i8 i_Row = 0; i_Row < pRowSlab->nRows(); i_Row++) {
+//    vTrace("%lld,%lld,%lld,%lld,%lld,%lld,%lld,%lld,%lld,%lld=%s\n"_Stz,
+//           pRowSlab->iCell(i_Row,0),
+//           pRowSlab->iCell(i_Row,1),
+//           pRowSlab->iCell(i_Row,2),
+//           pRowSlab->iCell(i_Row,3),
+//           pRowSlab->iCell(i_Row,4),
+//           pRowSlab->iCell(i_Row,5),
+//           pRowSlab->iCell(i_Row,6),
+//           pRowSlab->iCell(i_Row,7),
+//           pRowSlab->iCell(i_Row,8),
+//           pRowSlab->iCell(i_Row,9),
+//           pRowSlab->iCell(i_Row,9)
+//           );
+//    vDebugPoint();
+//  }
   
+  SP_RowPix spRowPix(pRowSlab->axaColPix());
+  
+  for (i8 i_Row = 0; i_Row < pRowSlab->nRows(); i_Row++) {
+    i8* aiaRowCells = pRowSlab->aiaRowCells(i_Row);
+    vTrace("[%lld] %s\n"_Stz,i_Row,spRowPix.sz(aiaRowCells));
+  }
+           
   vTrace("RowSlab free space %lld -> %lldB : %lld(B) per row\n"_Stz,
          nStartFreeSpace,pRowSlab->nFreeSpace(),
          (nStartFreeSpace - pRowSlab->nFreeSpace()) / pRowSlab->nRows()
