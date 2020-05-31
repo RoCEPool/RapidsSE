@@ -21,6 +21,11 @@ namespace Base
   typedef long long          i8;   // 8 byte signed integer
   typedef __int128           i16;  // 16 byte signed integer
 
+  typedef unsigned char      m1;   // 1 byte memory cell
+  typedef unsigned short     m2;   // 2 byte memory cell
+  typedef unsigned long      m4;   // 4 byte memory cell
+  typedef unsigned long long m8;   // 8 byte memory cell
+
   typedef i8                 t8;   // transaction perspective
 
   typedef unsigned char      u1;   // 1 byte unsigned integer
