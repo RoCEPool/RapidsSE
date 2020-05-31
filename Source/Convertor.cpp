@@ -39,7 +39,7 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_pCol    = nullptr;
   m_eCol    = CT_NONE;
 
-  m_bTrace  = true;
+  m_bTrace  = false;
   m_dCalc   = 0.0;
   m_nChars  = 0;
   
