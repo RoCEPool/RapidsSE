@@ -99,6 +99,7 @@ namespace Prompt
     ObjectsInPool*  pSnapshotObjects(void);
     bool bStdIn(void);
     bool bSubLet(void);
+    bool bSubSsnTags(void);
     void vTrackingMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);

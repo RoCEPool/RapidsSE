@@ -197,7 +197,7 @@ void SePrompt::vPromptLoop(void)
     if (bShortCut())
       continue;
     
-    while (bSubLet())
+    while (bSubSsnTags())
       {;}
 
     if (bRedirectFromFile())
@@ -1065,6 +1065,62 @@ bool SePrompt::bSubLet(void)
     
     m_pInpTknVec->vTokenise(sSubstituted);
     
+    return true;
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* subsititute session tags                                                   */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bSubSsnTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 nTokens = m_pInpTknVec->nTokens();
+  for (i8 i_Token = 0; i_Token < nTokens - 2; i_Token++) { //! note the - 2
+    
+    Token* pToken = m_pInpTknVec->pGet(i_Token);
+    
+    if (0 == i_Token && pToken->bSame("tag"_Stz))
+      return false;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // do we have a known ssn tag?
+    
+    if (! pToken->bSame("<"_Stz))
+      continue;
+    
+    Token* pToken_name = m_pInpTknVec->pGet(i_Token + 1);
+    
+    pToken = m_pInpTknVec->pGet(i_Token + 2);
+    if (! pToken->bSame(">"_Stz))
+      continue;
+
+    s32 sTagName;
+    sTagName.vSprint("<%s>"_Stz,pToken_name->szChars());
+
+    if (! m_pSsnTagSet->bHasName(sTagName))
+      continue;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // substitute the value of the session tag into the input vector
+    
+    s256 sTagValue;
+    sTagValue = m_pSsnTagSet->szValue(sTagName);
+    
+    m_pInpTknVec->vRemoveToken(i_Token);
+    m_pInpTknVec->vRemoveToken(i_Token);
+    m_pInpTknVec->vRemoveToken(i_Token);
+    
+    nTokens -= 3;
+    
+    if (i_Token >= nTokens)
+      m_pInpTknVec->vAppendToken(sTagValue,TN_STRING);
+    else
+      m_pInpTknVec->vInsertToken(i_Token,sTagValue,TN_STRING);
+
     return true;
   }
   
