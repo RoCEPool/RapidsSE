@@ -4,6 +4,10 @@
 #pragma once
 
 static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
+static long  RAPIDSSE_VERSION_NUMBER = 0x030104;
+
+static char* RAPIDSSE_FORMAT_STRING  = (char*)"3.1.4";
+static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // platform

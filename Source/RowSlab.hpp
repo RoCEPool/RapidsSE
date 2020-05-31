@@ -14,15 +14,21 @@ namespace Load
 
   private:
   
-    i8  m_nItems;      // number of items in this row-slab
+    char caModel[32];  // model string
+    i8  m_iVersion;    //
+    i8  m_iFormat;
+  
+    i8  m_nBytes;      // size in bytes of this row slab
+    i8  m_nTrimmed;    //
+    i8  m_i_Trim;      // trim
 
+    i8  m_nItems;      // number of items in this row-slab
     i8  m_nMaxRowSize; // max size of row
     i8  m_nCols;       // number of items in this row-slab
-    ColPix m_xaColPix[C_MAX_DEFCOLUMNS];
+    ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // the column pix
+    WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
   
     i8  m__spare[16];
-  
-    WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
 
     // must be last
     Footer m_xFooter;

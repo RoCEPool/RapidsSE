@@ -7,12 +7,12 @@ namespace Datums
 {
   union ColPix {
     struct {
-      u4 m_uType     :  4; // 16 types
-      u4 m_uLength   : 14; // up to 16383B
+      u4 m_uType     :  6; // 64 types
+      u4 m_uLength   : 16; // up to 65,536
       u4 m_uScale    :  5; // up to 31 places
       u4 m_uNullable :  1; // yes or no
 
-      u4 m_uSpare    :  8; // round up
+      u4 m_uSpare    :  4; // round up
     //                ---
     //                 32b // so... 256 columns is 256 * 4B = 1KB
     //                ===

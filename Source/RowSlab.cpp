@@ -21,17 +21,32 @@ RowSlab::RowSlab(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  m_nItems = 0;
+  MemLib::vSet(caModel,' ',sizeof(caModel),CN_ROWSLAB);
+  caModel[31] = '\0';
   
+  StrLib::vSprint(caModel,"RapidsSE %s FORMAT %s"_Stz,
+                  RAPIDSSE_VERSION_STRING,
+                  RAPIDSSE_FORMAT_STRING);
+  
+  m_iVersion = RAPIDSSE_VERSION_NUMBER;
+  m_iFormat  = RAPIDSSE_FORMAT_NUMBER;
+  m_nBytes   = sizeof(RowSlab);
+  m_nTrimmed = 0;
+  m_i_Trim   = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_nItems      = 0;
   m_nMaxRowSize = 128;  // FOR TESTING PURPOSES
-
-  m_nCols  = pStreamDef->nColumns(C_ALL);
+  m_nCols       = pStreamDef->nColumns(C_ALL);
+  
   for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
     m_xaColPix[i_Col].m_uAsI4 = 0;
-  
   pStreamDef->vToColPix(m_xaColPix);
   
   // m_xWsp
+
+  //_checkInitialised_(CN_ROWSLAB);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 }
