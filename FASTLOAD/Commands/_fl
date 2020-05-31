@@ -6,30 +6,46 @@ print "../FASTLOAD/Commands/_fl" ;
 
 bc;
 
-//"../FASTLOAD/Commands/_FastBcd";
-//
+// decimal only
+tag <fl_name>   = "Decimal Only";
+tag <fl_table>  = uniBcd;
+tag <fl_create> = "../FASTLOAD/Commands/_uniBcd_table";
+tag <fl_file>   = "../FASTLOAD/Data/uniBcd.csv";
+"../FASTLOAD/Commands/_fastLoad";
+
 //"../FASTLOAD/Commands/_FastBol";
 //
+
 //"../FASTLOAD/Commands/_FastDte";
 //
+
 //"../FASTLOAD/Commands/_FastFlt";
 //
+
+// integer only
+tag <fl_name>   = "Integer Only";
 tag <fl_table>  = uniInt;
-tag <fl_create> = "../FASTLOAD/Commands/_uniInt";
+tag <fl_create> = "../FASTLOAD/Commands/_uniInt_table";
 tag <fl_file>   = "../FASTLOAD/Data/uniInt.csv";
 "../FASTLOAD/Commands/_fastLoad";
-//
+
 //"../FASTLOAD/Commands/_FastIvl";
 //
+
 //"../FASTLOAD/Commands/_FastTme";
 //
+
 //"../FASTLOAD/Commands/_FastTsp";
 //
+
 //"../FASTLOAD/Commands/_FastVch";
 //
+
 //"../FASTLOAD/Commands/_FastAll";
 //
+
 //"../FASTLOAD/Commands/_FastLineItem";
+//
 
 tableSizes;
 

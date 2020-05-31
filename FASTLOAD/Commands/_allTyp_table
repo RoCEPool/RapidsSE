@@ -1,16 +1,6 @@
 /*============================================================================*/
-/* _fastAll -- base test of fast load of all column types                     */
+/* _allTyp_table -- create allTyp table                                       */
 /*============================================================================*/
-
-bc;
-
-tag <fl_table> = allTyp;
-tag <fl_file>  = "../FASTLOAD/Data/allTyp.csv";
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Create allTyp";
-
-drop table allTyp;
 
 create table allTyp (
   int INTEGER       NOT NULL,
@@ -24,22 +14,6 @@ create table allTyp (
   tsp TIMESTAMP     NOT NULL,
   vch VARCHAR       NOT NULL
 );
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Load allTyp";
-
-load allTyp "../FASTLOAD/Data/allTyp.csv" ;
-
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "scan allTyp";
-
-tableScan allTyp;
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "convert allTyp";
-
-exp_fl;
 
 /*============================================================================*/
 /* end                                                                        */
