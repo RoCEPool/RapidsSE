@@ -107,9 +107,10 @@ bool Convertor::bInspect(char* azSrc)
       continue;
     }
     
-    // each record
+    // each record thats fits
     
-    RASSERT(m_pRowSlab->bNewRow(m_i_Cell));
+    if (! m_pRowSlab->bNewRow(m_i_Cell))
+      break;
     
     while (bMoreFields()) {
       

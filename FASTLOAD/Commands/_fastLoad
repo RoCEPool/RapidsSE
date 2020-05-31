@@ -11,9 +11,9 @@ bc;
 //"../FASTLOAD/Commands/_FastBol";
 //
 //"../FASTLOAD/Commands/_FastDte";
-
-"../FASTLOAD/Commands/_FastFlt";
-
+//
+//"../FASTLOAD/Commands/_FastFlt";
+//
 //"../FASTLOAD/Commands/_FastInt";
 //
 //"../FASTLOAD/Commands/_FastIvl";
@@ -26,7 +26,7 @@ bc;
 
 //"../FASTLOAD/Commands/_FastAll";
 //
-//"../FASTLOAD/Commands/_FastLineItem";
+"../FASTLOAD/Commands/_FastLineItem";
 
 tableSizes;
 
