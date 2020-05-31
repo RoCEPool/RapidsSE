@@ -32,6 +32,7 @@ namespace DataBuffers
       
     i8    iCell(i8 i_Row, i8 i_Cell);
     ColPix* axaColPix(void);
+    i8    nCols(void);
     void  vDeposit(i8& i_Cell, i8 iVal);
     i8    nFreeSpace(void);
     bool  bNewRow(i8& i_Cell);

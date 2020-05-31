@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_RowPix::SP_RowPix(ColPix* axaColPix)
+SP_RowPix::SP_RowPix(i8 nCols, ColPix* axaColPix)
 : Sprint(CN_SPID)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
@@ -15,6 +15,7 @@ SP_RowPix::SP_RowPix(ColPix* axaColPix)
   // set default enclosing char
   vFormat(F_VCH_enclose);
 
+  m_nCols     = nCols;
   m_axaColPix = axaColPix;
   m_azCursor  = azRecord();
 
@@ -42,22 +43,127 @@ SP_RowPix::~SP_RowPix(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* return Stz* of result                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* SP_RowPix::sz(i8* aiaRowCells)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  vReset();
+  
+  vPutRow(aiaRowCells);
+  
+  return (Stz*) m_caRecord;
+}
 
 
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void SP_RowPix::vAppendBcd(ColPix xColPix, i8 iVal)
+{
+  _precondition_(_MAGIC_,CN_SPID);
+}
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void SP_RowPix::vAppendBol(ColPix xColPix, i8 iVal)
+{
+  _precondition_(_MAGIC_,CN_SPID);
+}
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void SP_RowPix::vAppendDte(ColPix xColPix, i8 iVal)
+{
+  _precondition_(_MAGIC_,CN_SPID);
+}
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void SP_RowPix::vAppendFlt(ColPix xColPix, i8 iVal)
+{
+  _precondition_(_MAGIC_,CN_SPID);
+}
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void SP_RowPix::vAppendInt(ColPix xColPix, i8 iVal)
+{
+  _precondition_(_MAGIC_,CN_SPID);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void SP_RowPix::vAppendIvl(ColPix xColPix, i8 iVal)
+{
+  _precondition_(_MAGIC_,CN_SPID);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void SP_RowPix::vAppendTme(ColPix xColPix, i8 iVal)
+{
+  _precondition_(_MAGIC_,CN_SPID);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void SP_RowPix::vAppendTsp(ColPix xColPix, i8 iVal)
+{
+  _precondition_(_MAGIC_,CN_SPID);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void SP_RowPix::vAppendVch(ColPix xColPix, i8 iVal)
+{
+  _precondition_(_MAGIC_,CN_SPID);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put row into record                                                        */
+/*----------------------------------------------------------------------------*/
+void SP_RowPix::vPutRow(i8* aiaRowCells)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  StrLib::vCopy(m_caRecord,"-- ROWPIX --");
+  
+  for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
+    
+    i8 iVal = aiaRowCells[- i_Col];
+    ColPix xColPix = m_axaColPix[i_Col];
+    eDM eDatum = (eDM)xColPix.m_uType;
+    
+    switch (eDatum) {
+      case DM_BCD: vAppendBcd(xColPix,iVal); break;
+      case DM_BOL: vAppendBol(xColPix,iVal); break;
+      case DM_DTE: vAppendDte(xColPix,iVal); break;
+      case DM_FLT: vAppendFlt(xColPix,iVal); break;
+      case DM_INT: vAppendInt(xColPix,iVal); break;
+      case DM_IVL: vAppendIvl(xColPix,iVal); break;
+      case DM_TME: vAppendTme(xColPix,iVal); break;
+      case DM_TSP: vAppendTsp(xColPix,iVal); break;
+      case DM_VCH: vAppendVch(xColPix,iVal); break;
+      default:
+        NEVER_REACH;
+    }
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* return char* of result                                                     */
 /*----------------------------------------------------------------------------*/
 char* SP_RowPix::azRecord(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
-  
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+
   return & m_caRecord[0];
 }
 
@@ -66,24 +172,16 @@ char* SP_RowPix::azRecord(void)
 /*----------------------------------------------------------------------------*/
 void SP_RowPix::vReset(void)
 {
-  _precondition_(_MAGIC_,CN_SPID);
-  
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+
   m_caRecord[0] = '\0';
   
   m_azCursor = azRecord();
 }
 
 /*----------------------------------------------------------------------------*/
-/* return Stz* of result                                                      */
+/*-- Private ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Stz* SP_RowPix::sz(i8* aiaRowCells)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  StrLib::vCopy(m_caRecord,"-- ROWPIX --");
-  
-  return (Stz*) &m_caRecord[0];
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

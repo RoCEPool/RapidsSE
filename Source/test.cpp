@@ -1275,7 +1275,7 @@ void vTest20(void)
 //    vDebugPoint();
 //  }
   
-  SP_RowPix spRowPix(pRowSlab->axaColPix());
+  SP_RowPix spRowPix(pRowSlab->nCols(),pRowSlab->axaColPix());
   
   for (i8 i_Row = 0; i_Row < pRowSlab->nRows(); i_Row++) {
     i8* aiaRowCells = pRowSlab->aiaRowCells(i_Row);
