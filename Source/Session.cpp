@@ -116,9 +116,7 @@ Session::Session(void)
   m_pInput          = nullptr;
 
   m_sToDo           = ""_Stz;
-  
-  m_pNmStrLst       = nullptr;
-  
+    
   m_pMutex          = new Mutex(MK_JOB,this);
     
   _checkInitialised_(CN_SESSION);
@@ -149,8 +147,6 @@ Session::~Session(void) noexcept(false)
   delete m_pJobStack;
   
   delete m_pInput;
-
-  delete m_pNmStrLst;
   
   delete m_pMutex;
     
@@ -456,10 +452,6 @@ void Session::vFreeSession(i8 i_NextFree)
   m_bSessionExiting = false;
   
   RASSERT(0 == m_pJobStack->nValues());
-  
-  m_pNmStrLst = nullptr;
-  delete m_pNmStrLst;
-  
 }
 
 /*----------------------------------------------------------------------------*/

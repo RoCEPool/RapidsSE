@@ -57,9 +57,7 @@ namespace Sessions
     Tx*      m_pTx;              // current transaction
   
     s4K      m_sToDo;            // prompt to do
-  
-    NmStrList* m_pNmStrLst;      // name-string list
-    
+      
     Mutex*   m_pMutex;           // 
     
   private:
