@@ -174,7 +174,6 @@ SizeHeap gxaSizeHeap[]
   { 'N' - ('A' - 1),            HT_INVALID           }, // CN__N__
   { sizeof(NextGid),            HT_INVALID           }, // CN_NEXTGID
   { sizeof(NmStr),              HT_TRANSIENT_MEDIUM  }, // CN_NMSTR
-  { sizeof(NmStrList),          HT_TRANSIENT_TINY    }, // CN_NMLIST
   { sizeof(NmVal),              HT_TRANSIENT_TINY    }, // CN_NMVAL
   { sizeof(Node),               HT_TRANSIENT_TINY    }, // CN_NODE
   { sizeof(Now),                HT_TRANSIENT_TINY    }, // CN_NOW
