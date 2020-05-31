@@ -42,7 +42,7 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
   
   if (pInpTknVec->nTokens() >= 3) {
     
-    if (pInpTknVec->pGet(1)->bSame("section"_Stz)) {
+    if (pInpTknVec->pGet(1)->bSame("division"_Stz)) {
         
       Stz* szSectionNm = pInpTknVec->pGet(2)->szChars();
 
@@ -51,8 +51,34 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
       vInfo("\n"_Stz);
       vInfo("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
             "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
-            "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
-            "/\n"_Stz);
+            "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/"
+            "\n"_Stz);
+      vInfo("§%s @line %lld Division %lld) "_Stz,
+            pInput->szPath(),
+            pInpTknVec->pGet(2)->iLineNo(),
+            pPrompt->iNextSectionNo()
+            );
+      
+      for (i8 i_Tkn = 2; i_Tkn < nTokens; i_Tkn++)
+        vInfo("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
+
+      vInfo(":\n"_Stz);
+      vInfo("\n"_Stz);
+      
+      return true;
+    }
+    
+    if (pInpTknVec->pGet(1)->bSame("section"_Stz)) {
+        
+      Stz* szSectionNm = pInpTknVec->pGet(2)->szChars();
+
+      pPrompt->vSection(szSectionNm);
+      
+      vInfo("\n"_Stz);
+      vInfo("-- - -- - -- - -- - -- - -- - -- - -- - "
+            "-- - -- - -- - -- - -- - -- - -- - -- - "
+            "-- - -- - -- - -- - -- - -- - -- - -- - "
+            "--\n"_Stz);
       vInfo("§%s @line %lld Section %lld) "_Stz,
             pInput->szPath(),
             pInpTknVec->pGet(2)->iLineNo(),
@@ -67,6 +93,7 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
       
       return true;
     }
+
   }
      
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

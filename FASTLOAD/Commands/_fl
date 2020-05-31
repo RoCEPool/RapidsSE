@@ -2,84 +2,82 @@
 /* _fl -- fast load tests                                                     */
 /*============================================================================*/
 
-print "../FASTLOAD/Commands/_fl" ;
+print "Running ../FASTLOAD/Commands/_fl" ;
 
 bc;
 
 // decimal only
-tag <fl_name>   = "Decimal Only";
+tag <fl_name>   = "FL: Decimal Only";
 tag <fl_table>  = uniBcd;
 tag <fl_create> = "../FASTLOAD/Commands/_uniBcd_table";
 tag <fl_file>   = "../FASTLOAD/Data/uniBcd.csv";
 "../FASTLOAD/Commands/_fastLoad";
 
 // boolean only
-tag <fl_name>   = "Boolean Only";
+tag <fl_name>   = "FL: Boolean Only";
 tag <fl_table>  = uniBol;
 tag <fl_create> = "../FASTLOAD/Commands/_uniBol_table";
 tag <fl_file>   = "../FASTLOAD/Data/uniBol.csv";
 "../FASTLOAD/Commands/_fastLoad";
 
 // date only
-tag <fl_name>   = "Date Only";
+tag <fl_name>   = "FL: Date Only";
 tag <fl_table>  = uniDte;
 tag <fl_create> = "../FASTLOAD/Commands/_uniDte_table";
 tag <fl_file>   = "../FASTLOAD/Data/uniDte.csv";
 "../FASTLOAD/Commands/_fastLoad";
 
 // float only
-tag <fl_name>   = "Float Only";
+tag <fl_name>   = "FL: Float Only";
 tag <fl_table>  = uniFlt;
 tag <fl_create> = "../FASTLOAD/Commands/_uniFlt_table";
 tag <fl_file>   = "../FASTLOAD/Data/uniFlt.csv";
 "../FASTLOAD/Commands/_fastLoad";
 
 // integer only
-tag <fl_name>   = "Integer Only";
+tag <fl_name>   = "FL: Integer Only";
 tag <fl_table>  = uniInt;
 tag <fl_create> = "../FASTLOAD/Commands/_uniInt_table";
 tag <fl_file>   = "../FASTLOAD/Data/uniInt.csv";
 "../FASTLOAD/Commands/_fastLoad";
 
 // interval only
-tag <fl_name>   = "Interval Only";
+tag <fl_name>   = "FL: Interval Only";
 tag <fl_table>  = uniIvl;
 tag <fl_create> = "../FASTLOAD/Commands/_uniIvl_table";
 tag <fl_file>   = "../FASTLOAD/Data/uniIvl.csv";
 "../FASTLOAD/Commands/_fastLoad";
 
 // time only
-tag <fl_name>   = "Time Only";
+tag <fl_name>   = "FL: Time Only";
 tag <fl_table>  = uniTme;
 tag <fl_create> = "../FASTLOAD/Commands/_uniTme_table";
 tag <fl_file>   = "../FASTLOAD/Data/uniTme.csv";
 "../FASTLOAD/Commands/_fastLoad";
 
 // timestamp only
-tag <fl_name>   = "Timestamp Only";
+tag <fl_name>   = "FL: Timestamp Only";
 tag <fl_table>  = uniTsp;
 tag <fl_create> = "../FASTLOAD/Commands/_uniTsp_table";
 tag <fl_file>   = "../FASTLOAD/Data/uniTsp.csv";
 "../FASTLOAD/Commands/_fastLoad";
 
 // varchar only
-tag <fl_name>   = "Varchar Only";
+tag <fl_name>   = "FL: Varchar Only";
 tag <fl_table>  = uniVch;
 tag <fl_create> = "../FASTLOAD/Commands/_uniVch_table";
 tag <fl_file>   = "../FASTLOAD/Data/uniVch.csv";
 "../FASTLOAD/Commands/_fastLoad";
 
 // all types
-tag <fl_name>   = "All Types";
+tag <fl_name>   = "FL: All Types";
 tag <fl_table>  = allTyp;
 tag <fl_create> = "../FASTLOAD/Commands/_allTyp_table";
 tag <fl_file>   = "../FASTLOAD/Data/allTyp.csv";
 "../FASTLOAD/Commands/_fastLoad";
 
-//"../FASTLOAD/Commands/_FastLineItem";
-//
 // tpc-h lineitem
-tag <fl_name>   = "TPC-H LineItem";
+tag <fl_name>   = "FL: TPC-H LineItem";
 tag <fl_table>  = lineItem;
 tag <fl_create> = "_lineItem";
 tag <fl_file>   = "../FASTLOAD/Data/lineItem_100.csv";
@@ -87,7 +85,7 @@ tag <fl_file>   = "../FASTLOAD/Data/lineItem_100.csv";
 
 tableSizes;
 
-print "that was a ../FASTLOAD/Commands/_fl" ;
+print "-- that was ../FASTLOAD/Commands/_fl --" ;
 
 /*============================================================================*/
 /* end                                                                        */
