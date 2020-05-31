@@ -34,6 +34,8 @@ namespace Load
     Datum      m_oDatum;
     RowSingle* m_pRowSingle;
   
+    //RowSlab*   m_pRowSlab;
+  
     // must be last
     Footer m_xFooter;
 

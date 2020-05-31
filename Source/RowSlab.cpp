@@ -2,13 +2,13 @@
 /* RowSlab.hpp -- Row Slab                                                    */
 /*============================================================================*/
 
-#include "DataBuffers.h"
+#include "Load.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(DataBuffers,RowSlab,CN_ROWSLAB)
+__pCastFunction(Load,RowSlab,CN_ROWSLAB)
 __aNewFunction(RowSlab,CN_ROWSLAB)
 __vDeleteFunction(RowSlab,CN_ROWSLAB)
 __aFooterFunction(RowSlab)
