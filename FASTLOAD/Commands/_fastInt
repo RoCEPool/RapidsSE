@@ -2,31 +2,27 @@
 /* _fastInt -- base test of fast load of integer column                       */
 /*============================================================================*/
 
-bc;
-
-tag <fl_table> = uniInt;
-tag <fl_file>  = "../FASTLOAD/Data/uniInt.csv";
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Create uniInt";
+print section "Create Table" <fl_table> ;
 
 create table uniInt (
   int INTEGER NOT NULL
 );
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Load uniInt";
+print section "Load File" <fl_file> ;
 
 load <fl_table> <fl_file> ;
 
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "scan uniInt";
+print section "Scan Table" <fl_table>;
 
 tableScan <fl_table>;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "convert uniInt";
+print section "Convert Test" <fl_table> ;
 
 exp_fl;
 

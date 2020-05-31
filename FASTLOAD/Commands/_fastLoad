@@ -14,6 +14,9 @@ bc;
 //
 //"../FASTLOAD/Commands/_FastFlt";
 //
+tag <fl_table>  = uniInt;
+tag <fl_create> = _uniInt;
+tag <fl_file>   = "../FASTLOAD/Data/uniInt.csv";
 "../FASTLOAD/Commands/_FastInt";
 //
 //"../FASTLOAD/Commands/_FastIvl";
