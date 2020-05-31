@@ -83,6 +83,23 @@ ColPix* RowSlab::axaColPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* deposit an d8 value into next cell                                         */
+/*----------------------------------------------------------------------------*/
+void RowSlab::vDeposit(i8& i_Cell, d8 dVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  // move to previous cell
+  i_Cell--;
+  
+  d8* daCells = (d8*)m_xWsp.ayArea();
+  
+  daCells[i_Cell] = dVal;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* deposit an i8 value into next cell                                         */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vDeposit(i8& i_Cell, i8 iVal)

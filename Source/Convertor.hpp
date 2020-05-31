@@ -335,6 +335,7 @@ namespace Load
 
     xFlt = snFlt.d(&m_acChr,m_pCol,m_pFmt);
   
+    m_pRowSlab->vDeposit(m_i_Cell,xFlt.m_dFlt);
     m_oDatum.vFlt(xFlt);
 
     vSprintFloat();

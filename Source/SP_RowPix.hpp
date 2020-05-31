@@ -29,6 +29,7 @@ namespace Load
     void vAppendBol(ColPix xColPix, i8 iVal);
     void vAppendDte(ColPix xColPix, i8 iVal);
     void vAppendFlt(ColPix xColPix, i8 iVal);
+    void vAppendFlt(i8* aiaRowCells, i8 i_Cell);
     void vAppendInt(ColPix xColPix, i8 iVal);
     void vAppendIvl(ColPix xColPix, i8 iVal);
     void vAppendTme(ColPix xColPix, i8 iVal);

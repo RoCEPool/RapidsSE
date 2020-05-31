@@ -103,6 +103,19 @@ void SP_RowPix::vAppendFlt(ColPix xColPix, i8 iVal)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+void SP_RowPix::vAppendFlt(i8* aiaRowCells, i8 i_Cell)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+
+  d8* adaRowCells = (d8*)aiaRowCells;
+  d8 dVal = adaRowCells[- i_Cell];
+  
+  SP_Flt spFlt;
+  StrLib::vAppendString(&m_azCursor,(char*)spFlt.sz(dVal));
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 void SP_RowPix::vAppendInt(ColPix xColPix, i8 iVal)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
@@ -173,7 +186,7 @@ void SP_RowPix::vPutRow(i8* aiaRowCells)
       case DM_BCD: vAppendBcd(xColPix,iVal); break;
       case DM_BOL: vAppendBol(xColPix,iVal); break;
       case DM_DTE: vAppendDte(xColPix,iVal); break;
-      case DM_FLT: vAppendFlt(xColPix,iVal); break;
+      case DM_FLT: vAppendFlt(aiaRowCells,i_Col); break;
       case DM_INT: vAppendInt(xColPix,iVal); break;
       case DM_IVL: vAppendIvl(xColPix,iVal); break;
       case DM_TME: vAppendTme(xColPix,iVal); break;

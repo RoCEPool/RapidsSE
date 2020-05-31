@@ -33,6 +33,7 @@ namespace Load
     i8    iCell(i8 i_Row, i8 i_Cell);
     ColPix* axaColPix(void);
     i8    nCols(void);
+    void  vDeposit(i8& i_Cell, d8 dVal);
     void  vDeposit(i8& i_Cell, i8 iVal);
     char* azDepositString(i8& i_Cell);
     void  vDepositedString(i8 nBytes);
