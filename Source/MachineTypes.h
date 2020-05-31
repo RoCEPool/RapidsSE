@@ -10,11 +10,10 @@ namespace Base
   typedef unsigned long      b4;   // 4 byte boolean
   typedef unsigned long long b8;   // 8 byte boolean
   
-  typedef float              d4;   // 4 byte single word float
-  typedef double             d8;   // 8 byte double word float
+  typedef float              d4;   // 4 byte float
+  typedef double             d8;   // 8 byte float
   typedef long double        d10;  // 10 byte float
 
-  
   typedef char               i1;   // 1 byte signed integer
   typedef short              i2;   // 2 byte signed integer
   typedef int                i4;   // 4 byte signed integer
@@ -26,7 +25,7 @@ namespace Base
   typedef unsigned long      m4;   // 4 byte memory cell
   typedef unsigned long long m8;   // 8 byte memory cell
 
-  typedef i8                 t8;   // transaction perspective
+  typedef i8                 t8;   // 8 byte transaction perspective
 
   typedef unsigned char      u1;   // 1 byte unsigned integer
   typedef unsigned short     u2;   // 2 byte unsigned integer
