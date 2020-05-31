@@ -50,8 +50,6 @@ Stz* SP_RowPix::sz(i8* aiaRowCells)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vReset();
-  
   vPutRow(aiaRowCells);
   
   return (Stz*) m_caRecord;
@@ -158,11 +156,14 @@ void SP_RowPix::vAppendVch(ColPix xColPix, i8 iVal)
 void SP_RowPix::vPutRow(i8* aiaRowCells)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
-  
-  StrLib::vCopy(m_caRecord,"-- ROWPIX --");
+    
+  vReset();
   
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
     
+    if (i_Col)
+      StrLib::vAppendString(&m_azCursor,",");
+
     i8 iVal = aiaRowCells[- i_Col];
     
     ColPix xColPix = m_axaColPix[i_Col];

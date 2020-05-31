@@ -1279,7 +1279,8 @@ void vTest20(void)
   
   for (i8 i_Row = 0; i_Row < pRowSlab->nRows(); i_Row++) {
     i8* aiaRowCells = pRowSlab->aiaRowCells(i_Row);
-    vTrace("[%lld] %s\n"_Stz,i_Row,spRowPix.sz(aiaRowCells));
+    Stz* szRow = spRowPix.sz(aiaRowCells);
+    vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
   }
            
   vTrace("RowSlab free space %lld -> %lldB : %lld(B) per row\n"_Stz,
