@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Buffers.h -- DataBuffers namespace                                     */
+/* DataBuffers.h -- DataBuffers namespace                                     */
 /*============================================================================*/
 #pragma once
 
@@ -23,6 +23,8 @@ typedef       HV <RowSingle,   StreamDef>                      HV_Row;
 #include "RowSlab.hpp"
 #include "CsvBuffer.hpp"
 #include "IrwBuffer.hpp"
+
+#include "SP_RowPix.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
