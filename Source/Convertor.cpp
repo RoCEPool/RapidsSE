@@ -34,7 +34,8 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_iCol    = 1;
   m_i_Fld   = 0;
   m_i_Rec   = 0;
-   
+  m_i_Cell  = C_UNKNOWN;
+  
   m_pCol    = nullptr;
   m_eCol    = CT_NONE;
 
@@ -107,6 +108,9 @@ bool Convertor::bInspect(char* azSrc)
     }
     
     // each record
+    
+    RASSERT(m_pRowSlab->bNewRow(m_i_Cell));
+    
     while (bMoreFields()) {
       
       m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
@@ -160,6 +164,9 @@ bool Convertor::bInspect(char* azSrc)
   } // end-data
   
   RASSERT(m_dCalc != 1.0);
+  
+  m_pRowSlab->vDumpAllRows();
+  m_pRowSlab->vSlabReport();
   
   return true;
 }

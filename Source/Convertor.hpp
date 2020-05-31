@@ -22,6 +22,8 @@ namespace Load
     i8         m_i_Fld;
     i8         m_i_Rec;
   
+    i8         m_i_Cell;
+  
     Column*    m_pCol;
     eCT        m_eCol;
   
@@ -366,6 +368,8 @@ namespace Load
     m_oDatum.vInt(xInt);
 
     vSprintInteger();
+  
+    m_pRowSlab->vDeposit(m_i_Cell,xInt);
   }
   
   /*--------------------------------------------------------------------------*/
