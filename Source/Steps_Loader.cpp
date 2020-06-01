@@ -58,7 +58,9 @@ void Step::vLoaderCrwBufferFetch(void)
   i8 iPartition = m_pDataStack->iPopInt(__func__);
   Loader* pLoader = *m_pRegSet->m_xpLoader;
   
-  m_pDataStack->vPushPtr(pLoader->pCrwBuffer(iPartition));
+  WriteHash* pWriteHash = pLoader->pWriteHash();
+  
+  m_pDataStack->vPushPtr(pWriteHash->pCrwBuffer(iPartition));
   
   EXIT();
 }
@@ -74,7 +76,9 @@ void Step::vLoaderCrwBufferStore(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
   Loader* pLoader = *m_pRegSet->m_xpLoader;
   
-  pLoader->vCrwBuffer(iPartition, pCrwBuffer);
+  WriteHash* pWriteHash = pLoader->pWriteHash();
+
+  pWriteHash->vCrwBuffer(iPartition, pCrwBuffer);
   
   EXIT();
 }
@@ -88,8 +92,10 @@ void Step::vLoaderFullCrwBufferFetch(void)
   
   i8 iPartition = m_pDataStack->iPopInt(__func__);
   Loader* pLoader = *m_pRegSet->m_xpLoader;
-  
-  CrwBuffer* pCrwBuffer = pLoader->pFullCrwBuffer(iPartition);
+
+  WriteHash* pWriteHash = pLoader->pWriteHash();
+
+  CrwBuffer* pCrwBuffer = pWriteHash->pFullCrwBuffer(iPartition);
   
   m_pDataStack->vPushPtr(pCrwBuffer);
   
@@ -135,14 +141,16 @@ void Step::vLoaderHandleDangling(void)
   
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
     
-    CrwBuffer* pCrwBuffer = pLoader->pCrwBuffer(i_Ptn);
+    WriteHash* pWriteHash = pLoader->pWriteHash();
+    CrwBuffer* pCrwBuffer = pWriteHash->pCrwBuffer(i_Ptn);
     
     if (pCrwBuffer) {
       // close the append
       pCrwBuffer->vAppendClose();
       pOp->vPipeOut_nextOp(pCrwBuffer,m_pTask);
     }
-    pLoader->vCrwBuffer(i_Ptn, nullptr);
+    
+    pWriteHash->vCrwBuffer(i_Ptn, nullptr);
     
   }
   

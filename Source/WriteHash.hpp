@@ -17,8 +17,10 @@ namespace Load
     Footer m_xFooter;
     
   public:
-    
-    WriteHash(eCN eClassNo, Table* pTable);
+    void* operator new(size_t);
+    void  operator delete(void*);
+
+    WriteHash(Table* pTable);
     ~WriteHash(void) noexcept(false);
     
   public:
@@ -31,6 +33,8 @@ namespace Load
   private:
     bool       bExtractRow(Format* pFormatter, Stz* szRecStr, bool &bBlankLine);
     CrwBuffer* pNewCrwBuffer(i8 iPartition);
+  
+    Footer* aFooter(void);
   };
   
   WriteHash* _pWriteHash(void* aAddr);

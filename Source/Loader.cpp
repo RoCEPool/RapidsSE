@@ -53,9 +53,11 @@ void Loader::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Loader::Loader(Table* pTable)
-: WriteHash(CN_LOADER, pTable)
+: Object(CN_LOADER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  m_pWriteHash = new WriteHash(pTable);
   
   m_pRecordData = new RecordData(&m_oFormatter);
   
@@ -71,6 +73,7 @@ Loader::~Loader(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
+  delete m_pWriteHash;
   delete m_pRecordData;
 }
 
@@ -109,7 +112,7 @@ bool Loader::bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes)
       return true;
 
     // process that record into write behind
-    eEC eError = eProcessRecord(&m_oFormatter, aRecord, nRecordBytes);
+    eEC eError = m_pWriteHash->eProcessRecord(&m_oFormatter, aRecord, nRecordBytes);
 
     if (EC_NONE == eError) {
       //vTrace(aRecord);
@@ -344,6 +347,16 @@ bool Loader::bTerminate(void)
 //  }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* terminate loading early?                                                   */
+/*----------------------------------------------------------------------------*/
+WriteHash* Loader::pWriteHash(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  return m_pWriteHash;
 }
 
 /*----------------------------------------------------------------------------*/

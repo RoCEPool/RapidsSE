@@ -6,10 +6,12 @@
 namespace Load
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Loader : public WriteHash
+  class Loader : public Object
   {
   public:
  
+    WriteHash*    m_pWriteHash;
+  
     Format        m_oFormatter;
     RecordData*   m_pRecordData;
     
@@ -29,7 +31,8 @@ namespace Load
     bool bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes);
     bool bSetFormat(TagSet* pFmtTagSet);
     bool bTerminate(void);
-    
+    WriteHash* pWriteHash(void);
+
     Footer* aFooter(void);
     
   private:

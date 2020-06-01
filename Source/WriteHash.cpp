@@ -8,15 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-WriteHash* Load::_pWriteHash(void* aAddr)
-{
-  WriteHash* pWriteHash = reinterpret_cast<WriteHash*>(aAddr);
-  
-  return pWriteHash;
-}
+__pCastFunction(Load,WriteHash,CN_WRITEHASH)
+__aNewFunction(WriteHash,CN_WRITEHASH)
+__vDeleteFunction(WriteHash,CN_WRITEHASH)
+__aFooterFunction(WriteHash)
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -25,10 +20,10 @@ WriteHash* Load::_pWriteHash(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-WriteHash::WriteHash(eCN eClassNo, Table* pTable)
-: Object(eClassNo)
+WriteHash::WriteHash(Table* pTable)
+: Object(CN_WRITEHASH)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
   
   m_pTable = pTable;
   m_pRow = new RowSingle(pTable->pStreamDef(),C_ALL);
@@ -41,9 +36,9 @@ WriteHash::WriteHash(eCN eClassNo, Table* pTable)
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++)
     m_paRowCompactor[i_Ptn] = new RowCompactor;
   
-  _checkInitialised_(CN_WRITEBEHIND);
+  _checkInitialised_(CN_WRITEHASH);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,8 +46,8 @@ WriteHash::WriteHash(eCN eClassNo, Table* pTable)
 /*----------------------------------------------------------------------------*/
 WriteHash::~WriteHash(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+
   delete m_pRow;
   
   // Assert we don't have any dangling buffers
@@ -71,8 +66,8 @@ WriteHash::~WriteHash(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eEC WriteHash::eAppendRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+
   CrwBuffer* pCrwBuffer = nullptr;
   
   // use row hash to get partition
@@ -134,7 +129,7 @@ eEC WriteHash::eAppendRow(void)
 /*----------------------------------------------------------------------------*/
 CrwBuffer* WriteHash::pCrwBuffer(i8 iPtn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
   return m_pCrwBuffer[iPtn];
 }
 
@@ -143,8 +138,8 @@ CrwBuffer* WriteHash::pCrwBuffer(i8 iPtn)
 /*----------------------------------------------------------------------------*/
 void WriteHash::vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+
   m_pCrwBuffer[iPtn] = pCrwBuffer;
 }
 
@@ -153,8 +148,8 @@ void WriteHash::vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 CrwBuffer* WriteHash::pFullCrwBuffer(i8 iPtn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+
   CrwBuffer* pCrwBuffer = m_pCrwBuffer[iPtn] ? m_pCrwBuffer[iPtn]->pNextBuffer() : nullptr;
   CrwBuffer* pFirstCrwBuffer = nullptr;
   
@@ -176,8 +171,8 @@ CrwBuffer* WriteHash::pFullCrwBuffer(i8 iPtn)
 /*----------------------------------------------------------------------------*/
 eEC WriteHash::eProcessRecord(Format* pFormatter, Stz* szRecStr, i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+
   bool bBlankLine = false;
   
   if (nBytes > C_MAX_RECORD) {
@@ -220,8 +215,8 @@ eEC WriteHash::eProcessRecord(Format* pFormatter, Stz* szRecStr, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 bool WriteHash::bExtractRow(Format* pFormatter, Stz* szRecStr, bool &bBlankLine)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+
   StreamDef* pStreamDef = m_pTable->pStreamDef();
 
   m_pRow->vResetValues();
@@ -249,8 +244,8 @@ bool WriteHash::bExtractRow(Format* pFormatter, Stz* szRecStr, bool &bBlankLine)
 /*----------------------------------------------------------------------------*/
 CrwBuffer* WriteHash::pNewCrwBuffer( i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+
   //  create a new buffer
   CrwBuffer* pCrwBuffer = new CrwBuffer();;
   
@@ -274,7 +269,7 @@ CrwBuffer* WriteHash::pNewCrwBuffer( i8 i_Ptn)
   return pCrwBuffer;
 }
 
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-
