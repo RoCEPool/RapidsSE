@@ -28,13 +28,7 @@ namespace Load
     void       vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer);
     CrwBuffer* pFullCrwBuffer(i8 iPtn);
     CrwBuffer* pNewCrwBuffer(i8 iPartition);
-  
-    eEC        eProcessRecord(Format* pFormatter, Stz* aRecord,  i8 nBytes);
-    
-  private:
-    eEC        eAppendRow(void);
-    bool       bExtractRow(Format* pFormatter, Stz* szRecStr, bool &bBlankLine);
-  
+        
     Footer* aFooter(void);
   };
   
