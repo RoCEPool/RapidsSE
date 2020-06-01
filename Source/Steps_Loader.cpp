@@ -10,10 +10,7 @@
 void Step::vAddSteps_Loader(void)
 {
   vAddStep("Loader[].create"_Stz,         &Step::vLoaderCreate);
-  vAddStep("Loader[].crwBuffer@"_Stz,     &Step::vLoaderCrwBufferFetch);
-  vAddStep("Loader[].crwBuffer!"_Stz,     &Step::vLoaderCrwBufferStore);
   vAddStep("Loader[].delete"_Stz,         &Step::vLoaderDelete);
-  vAddStep("Loader[].fullCrwBuffer@"_Stz, &Step::vLoaderFullCrwBufferFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,60 +38,6 @@ void Step::vLoaderCreate(void)
     m_pDataStack->vPushInt(false);
     delete pLoader;
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Loader[].crwBuffer@ -- get crwbuffer for given partition from the loader   */
-/*----------------------------------------------------------------------------*/
-void Step::vLoaderCrwBufferFetch(void)
-{
-  ENTRY();
-  
-  i8 iPartition = m_pDataStack->iPopInt(__func__);
-  Loader* pLoader = *m_pRegSet->m_xpLoader;
-  
-  WriteHash* pWriteHash = pLoader->pWriteHash();
-  
-  m_pDataStack->vPushPtr(pWriteHash->pCrwBuffer(iPartition));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Loader[].crwBuffer! -- set crwbuffer for partition from the loader         */
-/*----------------------------------------------------------------------------*/
-void Step::vLoaderCrwBufferStore(void)
-{
-  ENTRY();
-  
-  i8 iPartition = m_pDataStack->iPopInt(__func__);
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
-  Loader* pLoader = *m_pRegSet->m_xpLoader;
-  
-  WriteHash* pWriteHash = pLoader->pWriteHash();
-
-  pWriteHash->vCrwBuffer(iPartition, pCrwBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Loader[].FullCrwBuffer@ -- get full crwbuffer for partition from loader    */
-/*----------------------------------------------------------------------------*/
-void Step::vLoaderFullCrwBufferFetch(void)
-{
-  ENTRY();
-  
-  i8 iPartition = m_pDataStack->iPopInt(__func__);
-  Loader* pLoader = *m_pRegSet->m_xpLoader;
-
-  WriteHash* pWriteHash = pLoader->pWriteHash();
-
-  CrwBuffer* pCrwBuffer = pWriteHash->pFullCrwBuffer(iPartition);
-  
-  m_pDataStack->vPushPtr(pCrwBuffer);
   
   EXIT();
 }

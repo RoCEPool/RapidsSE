@@ -56,9 +56,7 @@ Loader::Loader(Table* pTable)
 : Object(CN_LOADER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  m_pWriteHash = new WriteHash(pTable);
-  
+    
   m_pRecordData = new RecordData(&m_oFormatter);
   
   _checkInitialised_(CN_LOADER);
@@ -73,7 +71,6 @@ Loader::~Loader(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  delete m_pWriteHash;
   delete m_pRecordData;
 }
 
@@ -348,16 +345,6 @@ bool Loader::bTerminate(void)
 //  }
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* terminate loading early?                                                   */
-/*----------------------------------------------------------------------------*/
-WriteHash* Loader::pWriteHash(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  return m_pWriteHash;
 }
 
 /*----------------------------------------------------------------------------*/

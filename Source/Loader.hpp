@@ -10,8 +10,6 @@ namespace Load
   {
   public:
  
-    WriteHash*    m_pWriteHash;
-  
     Format        m_oFormatter;
     RecordData*   m_pRecordData;
     
@@ -32,7 +30,6 @@ namespace Load
                       Stz* aDataArea, i8 nDataBytes);
     bool bSetFormat(TagSet* pFmtTagSet);
     bool bTerminate(void);
-    WriteHash* pWriteHash(void);
 
     Footer* aFooter(void);
     

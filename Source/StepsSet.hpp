@@ -832,9 +832,6 @@ public:
 
   // loader
   void vLoaderCreate(void);
-  void vLoaderCrwBufferFetch(void);
-  void vLoaderCrwBufferStore(void);
-  void vLoaderFullCrwBufferFetch(void);
   void vLoaderDelete(void);
 
   // load table
