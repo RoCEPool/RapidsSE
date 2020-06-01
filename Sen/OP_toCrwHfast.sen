@@ -83,6 +83,7 @@
   // delete loader
   loader[].delete
   convertor[].delete
+  writeHash[].delete
 
   Pipein[].pipeOut
 
@@ -111,6 +112,7 @@
       Pipein[].pipeout
 
       Convertor[].create
+      WriteHash[].create
     then
   then
 
