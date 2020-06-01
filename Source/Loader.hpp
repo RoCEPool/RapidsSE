@@ -12,7 +12,10 @@ namespace Load
  
     Format        m_oFormatter;
     RecordData*   m_pRecordData;
-    
+  
+    RowSingle*    m_pRow;                             // row
+    Table*        m_pTable;                           // table
+
     // must be last
     Footer m_xFooter;
   

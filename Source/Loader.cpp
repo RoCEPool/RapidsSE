@@ -23,6 +23,10 @@ Loader::Loader(Table* pTable)
     
   m_pRecordData = new RecordData(&m_oFormatter);
   
+  m_pTable = pTable;
+  m_pRow = new RowSingle(pTable->pStreamDef(),C_ALL);
+
+  
   _checkInitialised_(CN_LOADER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
@@ -36,8 +40,9 @@ Loader::~Loader(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
   delete m_pRecordData;
+  
+  delete m_pRow;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
