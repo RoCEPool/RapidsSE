@@ -53,8 +53,7 @@ Loader::~Loader(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* read records                                                               */
 /*----------------------------------------------------------------------------*/
-bool Loader::bReadRecords(WriteHash* , Job* pPipelineJob,
-                          Stz* aDataArea, i8 nDataBytes)
+bool Loader::bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
