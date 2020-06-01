@@ -22,7 +22,6 @@ namespace Load
 
 #include "LoadCursor.hpp"
 #include "WriteHash.hpp"
-#include "Loader.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
