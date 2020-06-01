@@ -101,6 +101,7 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
   
   for (i8 i_Tkn = 1; i_Tkn < nTokens; i_Tkn++)
     vInfo("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
+  vInfo("\n"_Stz);
 
   return true;
 }
