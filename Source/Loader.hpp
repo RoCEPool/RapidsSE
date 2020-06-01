@@ -28,7 +28,8 @@ namespace Load
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    bool bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes);
+    bool bReadRecords(WriteHash* pWriteHash, Job* pPipelineJob,
+                      Stz* aDataArea, i8 nDataBytes);
     bool bSetFormat(TagSet* pFmtTagSet);
     bool bTerminate(void);
     WriteHash* pWriteHash(void);
