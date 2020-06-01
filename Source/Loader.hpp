@@ -18,7 +18,6 @@ namespace Load
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
     Loader(Table* pTable);
@@ -32,6 +31,10 @@ namespace Load
     bool bTerminate(void);
 
   private:
+  
+    bool bExtractRow(Format* pFormatter, Stz* szRecStr, bool &bBlankLine);
+    eEC  eProcessRecord(Format* pFormatter, Stz* aRecord,  i8 nBytes);
+
     Footer* aFooter(void);
   };
   
