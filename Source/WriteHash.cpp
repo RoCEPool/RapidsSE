@@ -23,7 +23,6 @@ WriteHash::WriteHash(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
   
   m_pTable = pTable;
-  m_pRow = new RowSingle(pTable->pStreamDef(),C_ALL);
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pCrwBuffer[i_Partition]     = nullptr;
@@ -45,8 +44,6 @@ WriteHash::~WriteHash(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
 
-  delete m_pRow;
-  
   // Assert we don't have any dangling buffers
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
     delete m_paRowCompactor[i_Ptn];

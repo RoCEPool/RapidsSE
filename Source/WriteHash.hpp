@@ -8,7 +8,6 @@ namespace Load
   class WriteHash : public Object
   {
   public:
-    RowSingle*    m_pRow;                             // row
     Table*        m_pTable;                           // table
     CrwBuffer*    m_pCrwBuffer[C_MAX_PARTITIONS];     // row buffers
     RowCompactor* m_paRowCompactor[C_MAX_PARTITIONS]; // row compactors
