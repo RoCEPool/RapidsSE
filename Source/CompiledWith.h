@@ -102,6 +102,7 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 //#define WITH_PULSING EndDefine             // code for pulsing compiled in
 
 // temporary
+#define WITH_FASTLOAD EndDefine              // code for fastload 
 
 /*============================================================================*/
 /* end                                                                        */

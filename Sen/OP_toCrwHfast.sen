@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 : toCrwHfast_CsvBuffer \handler
 
-  //"Operand:- ZK_CSVBUFFER" .verbose
+  "toCrwHfast Operand:- ZK_CSVBUFFER" .
 
   Pipein[] to Operand[]
   nullptr to Pipein[]
