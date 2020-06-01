@@ -1656,6 +1656,10 @@ public:
   void vWriteBehindHandleDangling(void);
   void vWriteBehindset(void);
 
+  // write hash
+  void vWriteHashCreate(void);
+  void vWriteHashDelete(void);
+
   // zero
   void vZeroLess(void);
   void vZeroLessEqual(void);
