@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* WriteBehindH.cpp -- Write Behind  (Ingest/Insert/Load)                     */
+/* CrwHash.cpp -- Compact Row Hash                                            */
 /*============================================================================*/
 
 #include "Load.h"
@@ -8,19 +8,19 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,WriteHash,CN_WRITEHASH)
-__aNewFunction(WriteHash,CN_WRITEHASH)
-__vDeleteFunction(WriteHash,CN_WRITEHASH)
-__aFooterFunction(WriteHash)
+__pCastFunction(Load,CrwHash,CN_CRWHASH)
+__aNewFunction(CrwHash,CN_CRWHASH)
+__vDeleteFunction(CrwHash,CN_CRWHASH)
+__aFooterFunction(CrwHash)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-WriteHash::WriteHash(Table* pTable)
-: Object(CN_WRITEHASH)
+CrwHash::CrwHash(Table* pTable)
+: Object(CN_CRWHASH)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
   
   m_pTable = pTable;
   
@@ -32,17 +32,17 @@ WriteHash::WriteHash(Table* pTable)
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++)
     m_paRowCompactor[i_Ptn] = new RowCompactor;
   
-  _checkInitialised_(CN_WRITEHASH);
+  _checkInitialised_(CN_CRWHASH);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-WriteHash::~WriteHash(void) noexcept(false)
+CrwHash::~CrwHash(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
 
   // Assert we don't have any dangling buffers
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
@@ -58,18 +58,18 @@ WriteHash::~WriteHash(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return the ptn crwBuffer                                                   */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* WriteHash::pCrwBuffer(i8 iPtn)
+CrwBuffer* CrwHash::pCrwBuffer(i8 iPtn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
   return m_pCrwBuffer[iPtn];
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the ptn crwBuffer                                                      */
 /*----------------------------------------------------------------------------*/
-void WriteHash::vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer)
+void CrwHash::vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
 
   m_pCrwBuffer[iPtn] = pCrwBuffer;
 }
@@ -77,9 +77,9 @@ void WriteHash::vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* return a full ptn crwBuffer if any                                         */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* WriteHash::pFullCrwBuffer(i8 iPtn)
+CrwBuffer* CrwHash::pFullCrwBuffer(i8 iPtn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
 
   CrwBuffer* pCrwBuffer = m_pCrwBuffer[iPtn] ? m_pCrwBuffer[iPtn]->pNextBuffer() : nullptr;
   CrwBuffer* pFirstCrwBuffer = nullptr;
@@ -104,9 +104,9 @@ CrwBuffer* WriteHash::pFullCrwBuffer(i8 iPtn)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* WriteHash::pNewCrwBuffer( i8 i_Ptn)
+CrwBuffer* CrwHash::pNewCrwBuffer( i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
 
   //  create a new buffer
   CrwBuffer* pCrwBuffer = new CrwBuffer();;

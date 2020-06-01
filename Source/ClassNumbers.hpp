@@ -57,6 +57,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CONVERTOR,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
+  /* */ CN_CRWHASH,
   /* */ CN_CSVBUFFER,
   
   /* */ CN__D__,
@@ -326,7 +327,6 @@ enum eCN : u2 // Class Number
   /* */ CN__W__,
   /* */ CN_WILDERNESS,
   /* */ CN_WORD,
-  /* */ CN_WRITEHASH,
 
   /* */ CN__X__,
   /* */ CN_XMITS,
@@ -387,6 +387,7 @@ static Stz* aCN[]
   /* */ "COBVERT"_Stz,             // CN_CONVERTOR
   /* */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
+  /* */ "CRWHASH"_Stz,             // CN_CRWHASH
   /* */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
   
   /* */ "_D__"_Stz,                // CN__D__
@@ -656,7 +657,6 @@ static Stz* aCN[]
   /* */ "_W__"_Stz,                // CN__W__
   /* */ "WILDERNESS"_Stz,          // CN_WILDERNESS
   /* */ "WORD"_Stz,                // CN_WORD
-  /* */ "WRITEHASH"_Stz,           // CN_WRITEHASH
 
   /* */ "_X__"_Stz,                // CN__X__
   /* */ "Xmits"_Stz,               // CN_XMITS

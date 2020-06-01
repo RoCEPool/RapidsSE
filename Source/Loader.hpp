@@ -9,13 +9,13 @@ namespace Load
   {
   public:
  
-    Table*        m_pTable;         // table
-    WriteHash*    m_pWriteHash;
+    Table*      m_pTable;         // table
+    CrwHash*    m_pCrwHash;
 
-    LoadCursor*   m_pLoadCursor;
-    RowSingle*    m_pRow;           // row
+    LoadCursor* m_pLoadCursor;
+    RowSingle*  m_pRow;           // row
 
-    Format        m_oFormatter;
+    Format      m_oFormatter;
 
     // must be last
     Footer m_xFooter;
@@ -24,7 +24,7 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Loader(Table* pTable, WriteHash* pWriteHash);
+    Loader(Table* pTable, CrwHash* pWriteHash);
    ~Loader(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

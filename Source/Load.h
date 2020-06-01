@@ -15,7 +15,7 @@ namespace Load
 //------------------------------------------------------------------------------
 
 #include "LoadCursor.hpp"
-#include "WriteHash.hpp"
+#include "CrwHash.hpp"
 
 #include "Loader.hpp"
 #include "Convertor.hpp"

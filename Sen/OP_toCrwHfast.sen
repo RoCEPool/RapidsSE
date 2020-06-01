@@ -39,14 +39,14 @@
   // pipe out any full buffers
   grid::partitions 0
   do
-    I writeHash[].fullCrwBuffer@ to OperandB[]
+    I CrwHash[].fullCrwBuffer@ to OperandB[]
 
     begin
       OperandB[].isNull not
     while
       OperandB[].appendClose
       OperandB[].pipeOut
-      I writeHash[].fullCrwBuffer@ to OperandB[]
+      I CrwHash[].fullCrwBuffer@ to OperandB[]
     repeat
   loop
 
@@ -72,18 +72,18 @@
 
   grid::partitions 0
   do
-    I writeHash[].crwBuffer@ to OperandB[]
+    I CrwHash[].crwBuffer@ to OperandB[]
     OperandB[].isNull not if
       OperandB[].appendClose
       OperandB[].pipeOut
-      nullptr I writeHash[].crwBuffer!
+      nullptr I CrwHash[].crwBuffer!
     then
   loop
 
   // delete loader
   loader[].delete
   convertor[].delete
-  writeHash[].delete
+  CrwHash[].delete
 
   Pipein[].pipeOut
 
@@ -112,7 +112,7 @@
       Pipein[].pipeout
 
       Convertor[].create
-      WriteHash[].create
+      CrwHash[].create
     then
   then
 

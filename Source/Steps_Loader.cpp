@@ -27,7 +27,7 @@ void Step::vLoaderCreate(void)
   if (AM::bVerbose())
     pJobTags->vContentDump();
   
-  Loader* pLoader = new Loader(*m_pRegSet->m_xpTable,*m_pRegSet->m_xpWriteHash);
+  Loader* pLoader = new Loader(*m_pRegSet->m_xpTable,*m_pRegSet->m_xpCrwHash);
   bool bResult = pLoader->bSetFormat(pJobTags);
   
   if (bResult) {

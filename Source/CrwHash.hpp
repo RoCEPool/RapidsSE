@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* WriteHash.hpp -- Write Hash (Insert/Ingest/Load)                           */
+/* CrwHash.hpp -- Compact Row Hash                                            */
 /*============================================================================*/
 #pragma once
 
 namespace Load
 {
-  class WriteHash : public Object
+  class CrwHash : public Object
   {
   public:
     Table*        m_pTable;                           // table
@@ -19,8 +19,8 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
 
-    WriteHash(Table* pTable);
-    ~WriteHash(void) noexcept(false);
+    CrwHash(Table* pTable);
+    ~CrwHash(void) noexcept(false);
     
   public:
     CrwBuffer* pCrwBuffer(i8 iPtn);
@@ -31,7 +31,7 @@ namespace Load
     Footer* aFooter(void);
   };
   
-  WriteHash* _pWriteHash(void* aAddr);
+  CrwHash* _pCrwHash(void* aAddr);
 }
 
 

@@ -16,13 +16,13 @@ __aFooterFunction(Loader)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Loader::Loader(Table* pTable, WriteHash* pWriteHash)
+Loader::Loader(Table* pTable, CrwHash* pWriteHash)
 : Object(CN_LOADER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
     
   m_pTable      = pTable;
-  m_pWriteHash  = pWriteHash;
+  m_pCrwHash  = pWriteHash;
   
   m_pLoadCursor = new LoadCursor(&m_oFormatter);
   m_pRow        = new RowSingle(pTable->pStreamDef(),C_ALL);
@@ -160,10 +160,10 @@ eEC Loader::eAppendRow(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for row buffer
   
-  if (! m_pWriteHash->m_pCrwBuffer[i_Ptn]) {
+  if (! m_pCrwHash->m_pCrwBuffer[i_Ptn]) {
     
     // create a new crw buffer for this partition
-    pCrwBuffer = m_pWriteHash->pNewCrwBuffer(i_Ptn);
+    pCrwBuffer = m_pCrwHash->pNewCrwBuffer(i_Ptn);
     
     if (! pCrwBuffer) {
       vTrace("CrwBuffer allocation failed\n"_Stz);
@@ -172,7 +172,7 @@ eEC Loader::eAppendRow(void)
 
   }
   else {
-    pCrwBuffer = m_pWriteHash->m_pCrwBuffer[i_Ptn];
+    pCrwBuffer = m_pCrwHash->m_pCrwBuffer[i_Ptn];
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -192,7 +192,7 @@ eEC Loader::eAppendRow(void)
   pCrwBuffer->vAppendClose();
   
   // create a new crw buffer for this partition linking to the old
-  pCrwBuffer = m_pWriteHash->pNewCrwBuffer(i_Ptn);
+  pCrwBuffer = m_pCrwHash->pNewCrwBuffer(i_Ptn);
   
   if (! pCrwBuffer) {
     vTrace("CrwBuffer allocation failed\n"_Stz);

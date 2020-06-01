@@ -53,6 +53,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Convertor),          HT_TRANSIENT_MEDIUM  }, // CN_CONVERTOR
   { sizeof(CrvBuffer),          HT_TRANSIENT_LARGE   }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_TRANSIENT_LARGE   }, // CN_CRWBUFFER
+  { sizeof(CrwHash),            HT_TRANSIENT_LARGE   }, // CN_CRWHASH
   { sizeof(CsvBuffer),          HT_TRANSIENT_LARGE   }, // CN_CSVBUFFER
 
   { 'D' - ('A' - 1),            HT_INVALID           }, // CN__D__
@@ -322,7 +323,6 @@ SizeHeap gxaSizeHeap[]
   { 'W' - ('A' - 1),            HT_INVALID           }, // CN__W__
   { sizeof(Wilderness),         HT_INVALID           }, // CN_WILDERNESS
   { sizeof(Word),               HT_TRANSIENT_TINY    }, // CN_WORD
-  { sizeof(WriteHash),          HT_TRANSIENT_LARGE   }, // CN_WRITEHASH
 
   { 'X' - ('A' - 1),            HT_INVALID           }, // CN__X__
   { sizeof(Xmits),              HT_TRANSIENT_TINY    }, // CN_XMITS

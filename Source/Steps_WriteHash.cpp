@@ -9,41 +9,41 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_WriteHash(void)
 {
-  vAddStep("WriteHash[].create"_Stz,         &Step::vWriteHashCreate);
-  vAddStep("WriteHash[].crwBuffer@"_Stz,     &Step::vWriteHashCrwBufferFetch);
-  vAddStep("WriteHash[].crwBuffer!"_Stz,     &Step::vWriteHashCrwBufferStore);
-  vAddStep("WriteHash[].delete"_Stz,         &Step::vWriteHashDelete);
-  vAddStep("WriteHash[].fullCrwBuffer@"_Stz, &Step::vWriteHashFullCrwBufferFetch);
+  vAddStep("CrwHash[].create"_Stz,         &Step::vWriteHashCreate);
+  vAddStep("CrwHash[].crwBuffer@"_Stz,     &Step::vWriteHashCrwBufferFetch);
+  vAddStep("CrwHash[].crwBuffer!"_Stz,     &Step::vWriteHashCrwBufferStore);
+  vAddStep("CrwHash[].delete"_Stz,         &Step::vWriteHashDelete);
+  vAddStep("CrwHash[].fullCrwBuffer@"_Stz, &Step::vWriteHashFullCrwBufferFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* WriteHash[].create -- create the writeHash                                 */
+/* CrwHash[].create -- create the CrwHash                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vWriteHashCreate(void)
 {
   ENTRY();
   
-  WriteHash* pWriteHash = new WriteHash(*m_pRegSet->m_xpTable);
+  CrwHash* pWriteHash = new CrwHash(*m_pRegSet->m_xpTable);
   
-  m_pRegSet->m_xpWriteHash = pWriteHash;
+  m_pRegSet->m_xpCrwHash = pWriteHash;
 }
 
 /*----------------------------------------------------------------------------*/
-/* WriteHash[].delete -- delete the writeHash                                 */
+/* CrwHash[].delete -- delete the CrwHash                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vWriteHashDelete(void)
 {
   ENTRY();
   
-  WriteHash* pWriteHash = *m_pRegSet->m_xpWriteHash;
+  CrwHash* pWriteHash = *m_pRegSet->m_xpCrwHash;
   
   delete pWriteHash;
   
-  m_pRegSet->m_xpWriteHash = nullptr;
+  m_pRegSet->m_xpCrwHash = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* WriteHash[].crwBuffer@ -- get crwbuffer for given partition                */
+/* CrwHash[].crwBuffer@ -- get crwbuffer for given partition                */
 /*----------------------------------------------------------------------------*/
 void Step::vWriteHashCrwBufferFetch(void)
 {
@@ -51,7 +51,7 @@ void Step::vWriteHashCrwBufferFetch(void)
   
   i8 iPartition = m_pDataStack->iPopInt(__func__);
   
-  WriteHash* pWriteHash = *m_pRegSet->m_xpWriteHash;
+  CrwHash* pWriteHash = *m_pRegSet->m_xpCrwHash;
 
   m_pDataStack->vPushPtr(pWriteHash->pCrwBuffer(iPartition));
   
@@ -59,7 +59,7 @@ void Step::vWriteHashCrwBufferFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* WriteHash[].crwBuffer! -- set crwbuffer for partition                      */
+/* CrwHash[].crwBuffer! -- set crwbuffer for partition                      */
 /*----------------------------------------------------------------------------*/
 void Step::vWriteHashCrwBufferStore(void)
 {
@@ -68,7 +68,7 @@ void Step::vWriteHashCrwBufferStore(void)
   i8 iPartition = m_pDataStack->iPopInt(__func__);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
   
-  WriteHash* pWriteHash = *m_pRegSet->m_xpWriteHash;
+  CrwHash* pWriteHash = *m_pRegSet->m_xpCrwHash;
 
   pWriteHash->vCrwBuffer(iPartition, pCrwBuffer);
   
@@ -76,7 +76,7 @@ void Step::vWriteHashCrwBufferStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* WriteHash[].FullCrwBuffer@ -- get full crwbuffer for partition             */
+/* CrwHash[].FullCrwBuffer@ -- get full crwbuffer for partition             */
 /*----------------------------------------------------------------------------*/
 void Step::vWriteHashFullCrwBufferFetch(void)
 {
@@ -84,7 +84,7 @@ void Step::vWriteHashFullCrwBufferFetch(void)
   
   i8 iPartition = m_pDataStack->iPopInt(__func__);
 
-  WriteHash* pWriteHash = *m_pRegSet->m_xpWriteHash;
+  CrwHash* pWriteHash = *m_pRegSet->m_xpCrwHash;
 
   CrwBuffer* pCrwBuffer = pWriteHash->pFullCrwBuffer(iPartition);
   
