@@ -6,7 +6,7 @@ print "Running ../FASTLOAD/Commands/_fl" ;
 
 bc;
 
-tag <fl_cmd> = "../FASTLOAD/Commands/_fastLoad_b";
+tag <fl_cmd> = "../FASTLOAD/Commands/_fastLoad_fload";
 
 // decimal only
 tag <fl_name>   = "FL: Decimal Only";

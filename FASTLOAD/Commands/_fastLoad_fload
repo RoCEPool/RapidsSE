@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* _fastLoad_b -- fast load script using new fload pipeline                   */
+/* _fastLoad_fload -- fast load script using new FLOAD procedure              */
 /*============================================================================*/
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print division "Fast Load B --" <fl_name> ;
+print division "Fast Load B (new FLOAD) --" <fl_name> ;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "Create Table" <fl_table> ;

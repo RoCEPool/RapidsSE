@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* _fastLoad_a -- fast load script (original)                                 */
+/* _fastLoad_load -- fast load script using original LOAD procedure           */
 /*============================================================================*/
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print division "Fast Load A --" <fl_name> ;
+print division "Fast Load A (original LOAD) --" <fl_name> ;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "Create Table" <fl_table> ;
