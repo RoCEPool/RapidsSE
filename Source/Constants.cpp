@@ -356,8 +356,7 @@ void Constants::vAddConstantsCpp(void)
   /* 87 */ vAddConstant("CN_TXSET"_Stz,        CN_TXSET);
   
   /* 88 */ vAddConstant("CN_WORD"_Stz,         CN_WORD);
-  /* 88 */ vAddConstant("CN_WRITEBEHIND"_Stz,  CN_WRITEBEHIND);
-  
+   
   /* 93 */ vAddConstant("CN_ENUMS"_Stz,        CN_ENUMS);
  
   // CT_ : columne type

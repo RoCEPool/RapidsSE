@@ -43,7 +43,6 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 
 #include "SP_Crw.hpp"
 #include "SP_Encoding.hpp"
-#include "WriteBehind.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
