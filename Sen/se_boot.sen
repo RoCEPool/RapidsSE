@@ -165,11 +165,10 @@ assert::stack_0
         "OP_sizeTable.sen"            include
         "OP_supervisor.sen"           include
         "OP_tableSizes.sen"           include
-        "OP_toDemon.sen"              include
-        "OP_toCrw.sen"                include
         "OP_toCrwH.sen"               include
         "OP_toCrwHfast.sen"           include
         "OP_toCsv.sen"                include
+        "OP_toDemon.sen"              include
         "OP_toFile.sen"               include
         "OP_toStatDemon.sen"          include
         "OP_truncateIndex.sen"        include
