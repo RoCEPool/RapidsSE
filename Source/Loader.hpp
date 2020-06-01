@@ -5,7 +5,6 @@
 
 namespace Load
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Loader : public Object
   {
   public:
@@ -30,19 +29,18 @@ namespace Load
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    bool bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes);
+    bool bReadRecords(Job* pPipelineJob, Stz* szCsvData, i8 nCsvBytes);
     bool bSetFormat(TagSet* pFmtTagSet);
     bool bTerminate(void);
 
   private:
     eEC  eAppendRow(void);
-    bool bExtractRow(Stz* szRecStr, bool &bBlankLine);
-    eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);
+    bool bExtractRow(Stz* szRecord, bool &bBlankLine);
+    eEC  eProcessRecord(Stz* szRecord,  i8 nBytes);
 
     Footer* aFooter(void);
   };
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Loader* _pLoader(void* aAddr);
 }
 

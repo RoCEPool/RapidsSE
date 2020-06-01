@@ -53,14 +53,14 @@ Loader::~Loader(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* read records                                                               */
 /*----------------------------------------------------------------------------*/
-bool Loader::bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes)
+bool Loader::bReadRecords(Job* pPipelineJob, Stz* szCsvData, i8 nCsvBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
-  Stz* aRecord;
+  Stz* szRecord;
   i8 nRecordBytes;
   
-  m_pLoadCursor->vInit(aDataArea, nDataBytes);
+  m_pLoadCursor->vInit(szCsvData,nCsvBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process the records in the chunk
@@ -70,12 +70,12 @@ bool Loader::bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes)
       return false;
 
     // fetch next record from data area
-    bool bHaveRecord = m_pLoadCursor->bNextRecord(&aRecord,nRecordBytes);
+    bool bHaveRecord = m_pLoadCursor->bNextRecord(&szRecord,nRecordBytes);
     if (! bHaveRecord)
       return true;
 
     // process that record into write behind
-    eEC eError = eProcessRecord(aRecord, nRecordBytes);
+    eEC eError = eProcessRecord(szRecord,nRecordBytes);
 
     if (EC_NONE == eError) {
       //vTrace(aRecord);
@@ -209,7 +209,7 @@ eEC Loader::eAppendRow(void)
 /*----------------------------------------------------------------------------*/
 /* Extract row (with hash) from given record string                           */
 /*----------------------------------------------------------------------------*/
-bool Loader::bExtractRow(Stz* szRecStr, bool &bBlankLine)
+bool Loader::bExtractRow(Stz* szRecord, bool &bBlankLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
@@ -217,7 +217,7 @@ bool Loader::bExtractRow(Stz* szRecStr, bool &bBlankLine)
 
   m_pRow->vResetValues();
   
-  char* acRecCrs = szRecStr->azChar();
+  char* acRecCrs = szRecord->azChar();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -238,7 +238,7 @@ bool Loader::bExtractRow(Stz* szRecStr, bool &bBlankLine)
 /*----------------------------------------------------------------------------*/
 /* process record                                                             */
 /*----------------------------------------------------------------------------*/
-eEC Loader::eProcessRecord(Stz* szRecStr, i8 nBytes)
+eEC Loader::eProcessRecord(Stz* szRecord, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
@@ -247,7 +247,7 @@ eEC Loader::eProcessRecord(Stz* szRecStr, i8 nBytes)
   if (nBytes > C_MAX_RECORD) {
     if (! AM::bMetadata()) {
       vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
-            szRecStr,
+            szRecord,
             C_MAX_RECORD);
     }
     return EC_MAX_ROW_LENGTH;
@@ -255,7 +255,7 @@ eEC Loader::eProcessRecord(Stz* szRecStr, i8 nBytes)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bValid = bExtractRow(szRecStr, bBlankLine);
+  bool bValid = bExtractRow(szRecord, bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;
