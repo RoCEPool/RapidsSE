@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Load
+namespace Records
 {
   class CsvCursor
   {
