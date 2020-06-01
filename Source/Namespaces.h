@@ -52,11 +52,10 @@ namespace InfoData      {                                                     }
 namespace Interface     { class SessionArray;                                 }
 namespace Jobs          { class Job; struct JobClass; class JobList;
                           class Job_CreateTable; class Job_CreateIndex;
-                          class Job_Operand; class Job_Distributed;             }
+                          class Job_Operand; class Job_Distributed;           }
 namespace LexicalAnalysis { class Token; class Charser;
                             class Input; class TokenVec;                      }
 namespace Library       {                                                     }
-namespace Load          {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }
 namespace MetaData      { class Table; class IdxColVec; class Index;          }
@@ -129,7 +128,6 @@ using namespace Interface;
 using namespace Jobs;
 using namespace LexicalAnalysis;
 using namespace Library;
-using namespace Load;
 using namespace Locking;
 using namespace Logging;
 using namespace MetaData;
