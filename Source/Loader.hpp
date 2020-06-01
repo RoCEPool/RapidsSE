@@ -36,8 +36,8 @@ namespace Load
 
   private:
     eEC  eAppendRow(void);
-    bool bExtractRow(Format* pFormatter, Stz* szRecStr, bool &bBlankLine);
-    eEC  eProcessRecord(Format* pFormatter, Stz* aRecord,  i8 nBytes);
+    bool bExtractRow(Stz* szRecStr, bool &bBlankLine);
+    eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);
 
     Footer* aFooter(void);
   };
