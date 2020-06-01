@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Load
+namespace Rows
 {
   static const i8 C_WSP_ROWSLAB = C_SIZE_LARGE_OBJECT - C_2KB;
   static const i8 C_SLAB_CELLS  = C_WSP_ROWSLAB / C_BYTES_PER_WORD;

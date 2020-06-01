@@ -18,16 +18,11 @@ namespace Load
 #include "CsvField.hpp"
 #include "CsvRecord.hpp"
 
-
-#include "RowSlab.hpp"
-
 #include "Convertor.hpp"
 
 #include "RecordData.hpp"
 #include "WriteHash.hpp"
 #include "Loader.hpp"
-
-#include "SP_RowPix.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

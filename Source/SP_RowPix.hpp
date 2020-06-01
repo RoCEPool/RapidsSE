@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Load
+namespace Rows
 {
   class SP_RowPix : public Sprint
   {
