@@ -34,8 +34,11 @@ namespace Chunks
   
     void vReset(void);
     void vSet(Format* pFmt);
+    bool bSetFormat(TagSet* pFmtTagSet);
     void vShow(void);
     
+  private:
+    bool bExtractDateFormat(Stz* dateFormat);
     Footer* aFooter(void);
   };
   
