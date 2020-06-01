@@ -113,7 +113,7 @@ bool Loader::bReadRecords(WriteHash* pWriteHash, Job* pPipelineJob,
       return true;
 
     // process that record into write behind
-    eEC eError = m_pWriteHash->eProcessRecord(&m_oFormatter, aRecord, nRecordBytes);
+    eEC eError = pWriteHash->eProcessRecord(&m_oFormatter, aRecord, nRecordBytes);
 
     if (EC_NONE == eError) {
       //vTrace(aRecord);
