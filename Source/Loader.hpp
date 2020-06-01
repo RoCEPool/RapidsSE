@@ -31,10 +31,8 @@ namespace Load
     bool bSetFormat(TagSet* pFmtTagSet);
     bool bTerminate(void);
 
-    Footer* aFooter(void);
-    
   private:
-    bool bExtractDateFormat(Stz* dateFormat);
+    Footer* aFooter(void);
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
