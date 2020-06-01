@@ -836,9 +836,6 @@ public:
   void vLoaderCrwBufferStore(void);
   void vLoaderFullCrwBufferFetch(void);
   void vLoaderDelete(void);
-  void vLoaderGet(void);
-  void vLoaderHandleDangling(void);
-  void vLoaderset(void);
 
   // load table
   void vLoadTableChunkFile(void);

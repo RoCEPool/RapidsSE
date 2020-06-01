@@ -14,9 +14,6 @@ void Step::vAddSteps_Loader(void)
   vAddStep("Loader[].crwBuffer!"_Stz,     &Step::vLoaderCrwBufferStore);
   vAddStep("Loader[].fullCrwBuffer@"_Stz, &Step::vLoaderFullCrwBufferFetch);
   vAddStep("Loader[].delete"_Stz,         &Step::vLoaderDelete);
-  vAddStep("Loader[].get"_Stz,            &Step::vLoaderGet);
-  vAddStep("Loader[].handleDangling"_Stz, &Step::vLoaderHandleDangling);
-  vAddStep("Loader[].set"_Stz,            &Step::vLoaderset);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,58 +110,6 @@ void Step::vLoaderDelete(void)
   delete pLoader;
   
   m_pRegSet->m_xpLoader = nullptr;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Loader[].get -- get the Loader                                             */
-/*----------------------------------------------------------------------------*/
-void Step::vLoaderGet(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpLoader);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Loader[].handleDangling -- pipeout the Loader dangling operands            */
-/*----------------------------------------------------------------------------*/
-void Step::vLoaderHandleDangling(void)
-{
-  ENTRY();
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  Loader* pLoader = *m_pRegSet->m_xpLoader;
-  
-  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
-    
-    WriteHash* pWriteHash = pLoader->pWriteHash();
-    CrwBuffer* pCrwBuffer = pWriteHash->pCrwBuffer(i_Ptn);
-    
-    if (pCrwBuffer) {
-      // close the append
-      pCrwBuffer->vAppendClose();
-      pOp->vPipeOut_nextOp(pCrwBuffer,m_pTask);
-    }
-    
-    pWriteHash->vCrwBuffer(i_Ptn, nullptr);
-    
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Loader[].set -- set the Loader                                             */
-/*----------------------------------------------------------------------------*/
-void Step::vLoaderset(void)
-{
-  ENTRY();
-  
-  m_pRegSet->m_xpLoader = _pLoader(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
