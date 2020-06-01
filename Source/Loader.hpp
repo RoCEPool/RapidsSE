@@ -10,11 +10,13 @@ namespace Load
   {
   public:
  
-    Format        m_oFormatter;
-    LoadCursor*   m_pRecordData;
-  
-    RowSingle*    m_pRow;                             // row
     Table*        m_pTable;                           // table
+    WriteHash*    m_pWriteHash;
+
+    LoadCursor*   m_pRecordData;
+    RowSingle*    m_pRow;                             // row
+
+    Format        m_oFormatter;
 
     // must be last
     Footer m_xFooter;
@@ -23,7 +25,7 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Loader(Table* pTable);
+    Loader(Table* pTable, WriteHash* pWriteHash);
    ~Loader(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -34,7 +36,7 @@ namespace Load
     bool bTerminate(void);
 
   private:
-  
+    eEC  eAppendRow(void);
     bool bExtractRow(Format* pFormatter, Stz* szRecStr, bool &bBlankLine);
     eEC  eProcessRecord(Format* pFormatter, Stz* aRecord,  i8 nBytes);
 
