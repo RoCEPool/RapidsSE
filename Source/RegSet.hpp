@@ -44,7 +44,6 @@ namespace Tasks
     REG<Table>       m_xpTable;
     REG<TablePtn>    m_xpTablePtn;
     REG<Tx>          m_xpTx;
-    REG<WriteBehind> m_xpWriteBehind;
     REG<WriteHash>   m_xpWriteHash;
     REG<Xmits>       m_xpXmits;     // consume xmits
     
