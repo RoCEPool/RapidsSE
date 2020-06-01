@@ -53,7 +53,7 @@ Loader::~Loader(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* read records                                                               */
 /*----------------------------------------------------------------------------*/
-bool Loader::bReadRecords(WriteHash* pWriteHash, Job* pPipelineJob,
+bool Loader::bReadRecords(WriteHash* , Job* pPipelineJob,
                           Stz* aDataArea, i8 nDataBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
@@ -76,7 +76,7 @@ bool Loader::bReadRecords(WriteHash* pWriteHash, Job* pPipelineJob,
       return true;
 
     // process that record into write behind
-    eEC eError = pWriteHash->eProcessRecord(&m_oFormatter, aRecord, nRecordBytes);
+    eEC eError = eProcessRecord(&m_oFormatter, aRecord, nRecordBytes);
 
     if (EC_NONE == eError) {
       //vTrace(aRecord);
@@ -149,7 +149,7 @@ bool Loader::bTerminate(void)
 /*----------------------------------------------------------------------------*/
 eEC Loader::eAppendRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
   CrwBuffer* pCrwBuffer = nullptr;
   
@@ -212,7 +212,7 @@ eEC Loader::eAppendRow(void)
 /*----------------------------------------------------------------------------*/
 bool Loader::bExtractRow(Format* pFormatter, Stz* szRecStr, bool &bBlankLine)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
   StreamDef* pStreamDef = m_pTable->pStreamDef();
 
@@ -241,7 +241,7 @@ bool Loader::bExtractRow(Format* pFormatter, Stz* szRecStr, bool &bBlankLine)
 /*----------------------------------------------------------------------------*/
 eEC Loader::eProcessRecord(Format* pFormatter, Stz* szRecStr, i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
   bool bBlankLine = false;
   
