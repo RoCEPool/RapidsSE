@@ -39,14 +39,14 @@
   // pipe out any full buffers
   grid::partitions 0
   do
-    I loader[].fullCrwBuffer@ to OperandB[]
+    I writeHash[].fullCrwBuffer@ to OperandB[]
 
     begin
       OperandB[].isNull not
     while
       OperandB[].appendClose
       OperandB[].pipeOut
-      I loader[].fullCrwBuffer@ to OperandB[]
+      I writeHash[].fullCrwBuffer@ to OperandB[]
     repeat
   loop
 
@@ -72,11 +72,11 @@
 
   grid::partitions 0
   do
-    I loader[].crwBuffer@ to OperandB[]
+    I writeHash[].crwBuffer@ to OperandB[]
     OperandB[].isNull not if
       OperandB[].appendClose
       OperandB[].pipeOut
-      nullptr I loader[].crwBuffer!
+      nullptr I writeHash[].crwBuffer!
     then
   loop
 
