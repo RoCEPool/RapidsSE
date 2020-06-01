@@ -72,6 +72,26 @@ void Charser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get prompt division                                                        */
+/*----------------------------------------------------------------------------*/
+Stz* Charser::szDivision(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_sDivision;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prompt division                                                        */
+/*----------------------------------------------------------------------------*/
+void Charser::vDivision(Stz* szDivision)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  m_sDivision = szDivision;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next annotated char                                                    */
 /*----------------------------------------------------------------------------*/
 void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
@@ -571,6 +591,7 @@ void Charser::vResetCharser(void)
   // source definition
   m_eSource    = IS_NONE;
   m_sPath      = C_NO_NAME;
+  m_sDivision  = ""_Stz;
   m_sSection   = ""_Stz;
   m_pInclude   = nullptr;
   

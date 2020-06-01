@@ -121,6 +121,28 @@ i8 Input::iDepth(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set prompt division                                                        */
+/*----------------------------------------------------------------------------*/
+void Input::vDivision(Stz* szDivision)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  m_pCharser->vDivision(szDivision);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prompt division                                                        */
+/*----------------------------------------------------------------------------*/
+Stz* Input::szDivision(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  Stz* szDivision = m_pCharser->szDivision();
+  
+  return szDivision;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump the tokeniser                                                         */
 /*----------------------------------------------------------------------------*/
 void Input::vDump(void)

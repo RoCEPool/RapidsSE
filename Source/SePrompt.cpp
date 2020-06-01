@@ -92,6 +92,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 //  if (AM::bDeveloper())
 //    m_pBPA = new BPA;
   
+  m_iDivisionNo = 0;
   m_iSectionNo = 0;
 
   d_iDebugMode = gxArgs.m_iPromptDebug;
@@ -346,21 +347,6 @@ BPA* SePrompt::pBPA(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set debug mode                                                             */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vDebugMode(i8 iDebugMode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  d_iDebugMode = iDebugMode;
-
-  if (d_iDebugMode > 1)
-    m_pInput->vDebugMode(d_iDebugMode);
-  else
-    m_pInput->vDebugMode(0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get continue                                                               */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bContinue(void)
@@ -394,6 +380,43 @@ void SePrompt::vCutToken(i8 i_Tkn)
   pInpTknVec->vRemoveToken(i_Tkn);
 
   //pTknVec->vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set debug mode                                                             */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDebugMode(i8 iDebugMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  d_iDebugMode = iDebugMode;
+
+  if (d_iDebugMode > 1)
+    m_pInput->vDebugMode(d_iDebugMode);
+  else
+    m_pInput->vDebugMode(0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prompt section                                                         */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDivision(Stz* szDivision)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pInput->vSection(szDivision);
+  
+  m_iSectionNo = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get division number                                                       */
+/*----------------------------------------------------------------------------*/
+i8 SePrompt::iDivisionNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_iDivisionNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -650,6 +673,16 @@ void SePrompt::vLogFreeSpace(void)
               "%s on node %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.szStz(),
               AM::szNodeNm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* next division number                                                       */
+/*----------------------------------------------------------------------------*/
+i8 SePrompt::iNextDivisionNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return ++m_iDivisionNo;
 }
 
 /*----------------------------------------------------------------------------*/

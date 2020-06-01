@@ -22,6 +22,7 @@ namespace Prompt
     TagSet*   m_pSsnTagSet;  // session tag set
 
     TagSet    m_oPmtTagSet;  // tag set which controls this prompt
+    i8        m_iDivisionNo; // division numbering
     i8        m_iSectionNo;  // section numbering
     bool      m_bContinue;   // continue processing commands?
 
@@ -62,6 +63,8 @@ namespace Prompt
     bool bBlankLine(void);
     BPA* pBPA(void);
     void vDebugMode(i8 iDebugMode);
+    void vDivision(Stz* szDivision);
+    i8   iDivisionNo(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
     void vCutToken(i8 i_Tkn);
@@ -78,6 +81,7 @@ namespace Prompt
     bool bIsPromptWord(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
+    i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     ObjectsInPool*  pObjectsInPool(void);
     void vPromptUser(void);
@@ -91,7 +95,7 @@ namespace Prompt
     void vResetExtractedTagSet(void);
     void vResetSectionNo(void);
     i8   iRequestId(void);
-  void vSection(Stz* szSection);
+    void vSection(Stz* szSection);
     Session* pSession(void);
     TagSet* pPmtTagSet(void);
     bool bShortCut(void);

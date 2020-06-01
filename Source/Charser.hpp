@@ -16,6 +16,7 @@ namespace LexicalAnalysis
     // source definition
     eIS      m_eSource;   // what source are we parsing? given file or string?
     s256     m_sPath;     // the source path
+    s32      m_sDivision; // division of prompt command file
     s32      m_sSection;  // section of prompt command file
     Word*    m_pInclude;  // the include file/group
 
@@ -73,8 +74,11 @@ namespace LexicalAnalysis
     bool bSeenEOF(void);
     i8   iSrcCol(void);
     i8   iSrcLine(void);
+  
+    Stz* szDivision(void);
+    void vDivision(Stz* szDivision);
     Stz* szSection(void);
-    void vSection(Stz* szSectio);
+    void vSection(Stz* szSection);
 
     // Control
     void vDebugMode(i8 iDebugMode);

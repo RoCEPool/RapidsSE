@@ -40,6 +40,8 @@ namespace LexicalAnalysis
     Stz* szChars(void);
     void vDebugMode(i8 iDebugMode);
     i8   iDepth(void);
+    void vDivision(Stz* szDivision);
+    Stz* szDivision(void);
     void vDump(void);
     void vForkReset(void);
     void vFormCppTokens(void);
