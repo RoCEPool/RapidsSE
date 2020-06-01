@@ -50,6 +50,12 @@
     repeat
   loop
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // fast convert the csv buffer
+  Convertor[].convert
+
+  // delete the csv buffer
   Operand[].delete
 
   true

@@ -77,6 +77,8 @@ bool Convertor::bConvert(char* azSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
   
+  bInspect(azSrc);
+  
   return true;
 }
 

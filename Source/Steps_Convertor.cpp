@@ -11,10 +11,10 @@ void Step::vAddSteps_Convertor(void)
 {
   vAddStep("convertor::new"_Stz,      &Step::vConvertorNew);
 
-  vAddStep("convertor.convert"_Stz,   &Step::vConvertorConvert);
   vAddStep("convertor.delete"_Stz,    &Step::vConvertorDelete);
   vAddStep("convertor.inspect"_Stz,   &Step::vConvertorInspect);
   
+  vAddStep("convertor[].convert"_Stz,  &Step::vConvertorRegConvert);
   vAddStep("convertor[].create"_Stz,   &Step::vConvertorRegCreate);
   vAddStep("convertor[].delete"_Stz,   &Step::vConvertorRegDelete);
 }
@@ -39,24 +39,6 @@ void Step::vConvertorNew(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convertor.convert -- convert                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vConvertorConvert(void)
-{
-  ENTRY();
-
-  Convertor* pConvertor = _pConvertor(m_pDataStack->pPopPtr(__func__));
-
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
-
-  char* azSrc  = (char*)pCsvBuffer->ayDataArea();
-  
-  bool bResult = pConvertor->bConvert(azSrc);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* convertor.delete -- delete                                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vConvertorDelete(void)
@@ -78,9 +60,8 @@ void Step::vConvertorInspect(void)
   ENTRY();
 
   Convertor* pConvertor = _pConvertor(m_pDataStack->pPopPtr(__func__));
-
+  
   CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
-
 
   char* azSrc  = (char*)pCsvBuffer->ayDataArea();
   
@@ -92,6 +73,24 @@ void Step::vConvertorInspect(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* convertor.convert -- convert csv buffer                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vConvertorRegConvert(void)
+{
+  ENTRY();
+
+  Convertor* pConvertor = *m_pRegSet->m_xpConvertor;
+  
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
+  
+  char* azSrc  = (char*)pCsvBuffer->ayDataArea();
+  
+  bool bResult = pConvertor->bConvert(azSrc);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* convertor[].create -- create a convertor                                   */

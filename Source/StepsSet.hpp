@@ -179,11 +179,11 @@ public:
   void vCompilerPostponing(void);
 
   // convertor
-  void vConvertorConvert(void);
   void vConvertorNew(void);
   void vConvertorDelete(void);
   void vConvertorInspect(void);
 
+  void vConvertorRegConvert(void);
   void vConvertorRegCreate(void);
   void vConvertorRegDelete(void);
 
