@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace UpperLoad
+namespace Load
 {
   class LoadCursor : public Object
   {

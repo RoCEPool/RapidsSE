@@ -2,12 +2,12 @@
 /* Load.cpp - Load namespace functions                                        */
 /*============================================================================*/
 
-#include "UpperLoad.h"
+#include "Load.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void UpperLoad::vCheckAssumptions(void)
+void Load::vCheckAssumptions(void)
 {
 }
 

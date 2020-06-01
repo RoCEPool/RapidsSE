@@ -2,13 +2,13 @@
 /* Loader.cpp -- Loader                                                       */
 /*============================================================================*/
 
-#include "UpperLoad.h"
+#include "Load.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(UpperLoad,Loader,CN_LOADER)
+__pCastFunction(Load,Loader,CN_LOADER)
 __aNewFunction(Loader,CN_LOADER)
 __vDeleteFunction(Loader,CN_LOADER)
 __aFooterFunction(Loader)

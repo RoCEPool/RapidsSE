@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace UpperLoad
+namespace Load
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Loader : public Object

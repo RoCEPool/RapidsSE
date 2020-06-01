@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace UpperLoad
+namespace Load
 {
   void vCheckAssumptions(void);
 }

@@ -56,6 +56,7 @@ namespace Jobs          { class Job; struct JobClass; class JobList;
 namespace LexicalAnalysis { class Token; class Charser;
                             class Input; class TokenVec;                      }
 namespace Library       {                                                     }
+namespace Load          {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }
 namespace MetaData      { class Table; class IdxColVec; class Index;          }
@@ -91,7 +92,6 @@ namespace Structures    { class Article; class Queue;                         }
 namespace Tasks         { class RegSet; class Task;                           }
 namespace Threads       { class Scheduler;  class Thread; class Queues;       }
 namespace Transactions  { class Tx; class TxSet;                              }
-namespace UpperLoad     {                                                     }
 namespace Utilities     { class BPA; class PoolHelper;                        }
 namespace Verbs         {                                                     }
 
@@ -128,6 +128,7 @@ using namespace Interface;
 using namespace Jobs;
 using namespace LexicalAnalysis;
 using namespace Library;
+using namespace Load;
 using namespace Locking;
 using namespace Logging;
 using namespace MetaData;
@@ -158,7 +159,6 @@ using namespace Structures;
 using namespace Tasks;
 using namespace Threads;
 using namespace Transactions;
-using namespace UpperLoad;
 using namespace Utilities;
 using namespace Verbs;
 
