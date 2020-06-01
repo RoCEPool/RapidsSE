@@ -327,7 +327,8 @@ enum eCN : u2 // Class Number
   /* */ CN_WILDERNESS,
   /* */ CN_WORD,
   /* */ CN_WRITEBEHIND,
-  
+  /* */ CN_WRITEHASH,
+
   /* */ CN__X__,
   /* */ CN_XMITS,
   
@@ -657,7 +658,8 @@ static Stz* aCN[]
   /* */ "WILDERNESS"_Stz,          // CN_WILDERNESS
   /* */ "WORD"_Stz,                // CN_WORD
   /* */ "WRITEBEHIND"_Stz,         // CN_WRITEBEHIND
-  
+  /* */ "WRITEHASH"_Stz,           // CN_WRITEHASH
+
   /* */ "_X__"_Stz,                // CN__X__
   /* */ "Xmits"_Stz,               // CN_XMITS
   
