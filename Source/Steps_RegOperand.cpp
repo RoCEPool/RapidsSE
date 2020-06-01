@@ -17,6 +17,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
   vAddStep("Operand[].csvToCrw"_Stz,       &Step::vRegOperandCsvToCrw);
   vAddStep("Operand[].csvToCrwH"_Stz,      &Step::vRegOperandCsvToCrwH);
+  vAddStep("Operand[].csvToRowSlab"_Stz,   &Step::vRegOperandCsvToRowSlab);
   vAddStep("Operand[].delete"_Stz,         &Step::vRegOperandDelete);
   vAddStep("Operand[].firstRow@"_Stz,      &Step::vRegOperandFirstRowFetch);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vRegOperandHandleAggEnd);
@@ -793,6 +794,18 @@ void Step::vRegOperandCsvToCrwH(void)
   pLoader->bReadRecords(pPipelineJob,
                         (Stz*)pCsvBuffer->ayDataArea(),
                         pCsvBuffer->nDataBytes());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].csvToRowSlab -- convert csv operand to row slab                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandCsvToRowSlab(void)
+{
+  ENTRY();
+  
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
   
   EXIT();
 }
