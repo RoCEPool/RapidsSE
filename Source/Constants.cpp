@@ -317,7 +317,7 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_READAPI"_Stz,      CN_READAPI);
   /*    */ vAddConstant("CN_RECORD"_Stz,       CN_RECORD);
   /*    */ vAddConstant("CN_RECORDBUFFER"_Stz, CN_RECORDBUFFER);
-  /*    */ vAddConstant("CN_RECORDDATA"_Stz,   CN_RECORDDATA);
+  /*    */ vAddConstant("CN_LOADCURSOR"_Stz,   CN_LOADCURSOR);
   /*    */ vAddConstant("CN_RESPONSE"_Stz,     CN_RESPONSE);
   /*    */ vAddConstant("CN_RESPONSEVEC"_Stz,  CN_RESPONSEVEC);
   /*    */ vAddConstant("CN_RESULT"_Stz,       CN_RESULT);

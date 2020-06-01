@@ -154,6 +154,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LICENCE,
   /* */ CN_LIMITS,
   /* */ CN_LOADCHUNK,
+  /* */ CN_LOADCURSOR,
   /* */ CN_LOADER,
   /* */ CN_LOCAL,
   /* */ CN_LOCALSCHAIN,
@@ -210,7 +211,6 @@ enum eCN : u2 // Class Number
   /* */ CN_READAPI,
   /* */ CN_RECORD,
   /* */ CN_RECORDBUFFER,
-  /* */ CN_RECORDDATA,
   /* */ CN_REGSET,
   /* */ CN_RELOP,
   /* */ CN_RESOURCETRACKER,
@@ -485,6 +485,7 @@ static Stz* aCN[]
   /* */ "LICENCE"_Stz,             // CN_LICENCE
   /* */ "LIMITS"_Stz,              // CN_LIMITS
   /* */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
+  /* */ "LOADCURSOR"_Stz,          // CN_LOADCURSOR
   /* */ "LOADER"_Stz,              // CN_LOADER
   /* */ "LOCAL"_Stz,               // CN_LOCAL
   /* */ "LOCALSCHAIN"_Stz,         // CN_LOCALSCHAIN
@@ -541,7 +542,6 @@ static Stz* aCN[]
   /* */ "READAPI"_Stz,             // CN_READAPI
   /* */ "RECORD"_Stz,              // CN_RECORD
   /* */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
-  /* */ "RECORDDATA"_Stz,          // CN_RECORDDATA
   /* */ "REGSET"_Stz,              // CN_REGSET
   /* */ "RELOP"_Stz,               // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,     // CN_RESOURCETRACKER

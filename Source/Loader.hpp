@@ -11,7 +11,7 @@ namespace Load
   public:
  
     Format        m_oFormatter;
-    RecordData*   m_pRecordData;
+    LoadCursor*   m_pRecordData;
   
     RowSingle*    m_pRow;                             // row
     Table*        m_pTable;                           // table

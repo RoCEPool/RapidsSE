@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* RecordData.hpp -- Record Data                                              */
+/* LoadCursor.hpp -- Load Cursor                                              */
 /*============================================================================*/
 #pragma once
 
 namespace Load
 {
-  class RecordData : public Object
+  class LoadCursor : public Object
   {
   public:
     Format* m_pFmt;              // using these formatters
@@ -20,8 +20,8 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-    RecordData(Format* pFmt);
-   ~RecordData(void) noexcept(false);
+    LoadCursor(Format* pFmt);
+   ~LoadCursor(void) noexcept(false);
   
     void  vInit(Stz* aDataArea, i8 nDataBytes);
     bool  bNextRecord(Stz** aszRecord, i8& nRecordBytes);

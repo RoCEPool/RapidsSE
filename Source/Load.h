@@ -20,7 +20,7 @@ namespace Load
 
 #include "Convertor.hpp"
 
-#include "RecordData.hpp"
+#include "LoadCursor.hpp"
 #include "WriteHash.hpp"
 #include "Loader.hpp"
 

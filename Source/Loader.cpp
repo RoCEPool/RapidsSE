@@ -21,7 +21,7 @@ Loader::Loader(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
     
-  m_pRecordData = new RecordData(&m_oFormatter);
+  m_pRecordData = new LoadCursor(&m_oFormatter);
   
   m_pTable = pTable;
   m_pRow = new RowSingle(pTable->pStreamDef(),C_ALL);

@@ -149,6 +149,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Lexicon),            HT_TRANSIENT_TINY    }, // CN_LEXICON
   { sizeof(Licence),            HT_TRANSIENT_TINY    }, // CN_LICENCE
   { sizeof(Limits),             HT_TRANSIENT_TINY    }, // CN_LIMITS
+  { sizeof(LoadCursor),         HT_TRANSIENT_LARGE   }, // CN_LOADCURSOR
   { sizeof(LoadChunk),          HT_TRANSIENT_LARGE   }, // CN_LOADCHUNK
   { sizeof(Loader),             HT_TRANSIENT_LARGE   }, // CN_LOADER
   { sizeof(Local),              HT_INVALID           }, // CN_LOCAL
@@ -206,7 +207,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ReadApi),            HT_TRANSIENT_TINY    }, // CN_READAPI
   { sizeof(Record),             HT_TRANSIENT_MEDIUM  }, // CN_RECORD
   { sizeof(RecordBuffer),       HT_TRANSIENT_LARGE   }, // CN_RECORDBUFFER
-  { sizeof(RecordData),         HT_TRANSIENT_LARGE   }, // CN_RECORDDATA
   { sizeof(RegSet),             HT_TRANSIENT_TINY    }, // CN_REGSET
   { sizeof(RelOp),              HT_TRANSIENT_TINY    }, // CN_RELOP
   { sizeof(ResourceTracker),    HT_TRANSIENT_TINY    }, // CN_RESOURCETRACKER

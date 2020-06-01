@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RecordData.cpp -- Record Data                                              */
+/* LoadCursor.cpp -- Load Cursor                                              */
 /*============================================================================*/
 
 #include "Load.h"
@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RecordData::operator new(size_t)
+void* LoadCursor::operator new(size_t)
 {
-  RecordData* pRecordData = (RecordData*)HeapMem::pAllocate(CN_RECORDDATA);
+  LoadCursor* pRecordData = (LoadCursor*)HeapMem::pAllocate(CN_LOADCURSOR);
   
   return pPoolCheck<void*>(pRecordData);
 }
@@ -21,9 +21,9 @@ void* RecordData::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void RecordData::operator delete(void* pRecordDataAddress)
+void LoadCursor::operator delete(void* pRecordDataAddress)
 {
-  RecordData* pRecordData = static_cast<RecordData*>(pRecordDataAddress);
+  LoadCursor* pRecordData = static_cast<LoadCursor*>(pRecordDataAddress);
   
   HeapMem::vFree(pRecordData);
 }
@@ -31,10 +31,10 @@ void RecordData::operator delete(void* pRecordDataAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RecordData::RecordData(Format* pFmt)
-: Object(CN_RECORDDATA)
+LoadCursor::LoadCursor(Format* pFmt)
+: Object(CN_LOADCURSOR)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDDATA);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCURSOR);
 
   m_pFmt  = pFmt;
   m_szNextRecord  = nullptr;
@@ -44,15 +44,15 @@ RecordData::RecordData(Format* pFmt)
   m_nDataBytes = C_UNKNOWN;
   m_aDataArea  = nullptr;
   
-   _postcondition_(_ADDRESS_,_MAGIC_,CN_RECORDDATA);
+   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADCURSOR);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RecordData::~RecordData(void) noexcept(false)
+LoadCursor::~LoadCursor(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDDATA);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCURSOR);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,9 +62,9 @@ RecordData::~RecordData(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
-void RecordData::vInit(Stz* aDataArea, i8 nDataBytes)
+void LoadCursor::vInit(Stz* aDataArea, i8 nDataBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDDATA);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCURSOR);
   
   m_nDataBytes = nDataBytes;
   m_aDataArea  = aDataArea;
@@ -76,9 +76,9 @@ void RecordData::vInit(Stz* aDataArea, i8 nDataBytes)
 /*----------------------------------------------------------------------------*/
 /* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
-bool RecordData::bNextRecord(Stz** aszRecord, i8& nRecordBytes)
+bool LoadCursor::bNextRecord(Stz** aszRecord, i8& nRecordBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDDATA);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCURSOR);
   
   // get start address of next record
   Stz* szStartRecord = m_szNextRecord;
@@ -109,9 +109,9 @@ bool RecordData::bNextRecord(Stz** aszRecord, i8& nRecordBytes)
 /*----------------------------------------------------------------------------*/
 /* find the last character of next record within chunk (a '\r' or '\n')       */
 /*----------------------------------------------------------------------------*/
-bool RecordData::bFindRecordEnd(char** aazRecordEnd)
+bool LoadCursor::bFindRecordEnd(char** aazRecordEnd)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDDATA);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCURSOR);
   
   // test for explicit record ends
   
