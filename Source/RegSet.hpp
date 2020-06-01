@@ -27,6 +27,7 @@ namespace Tasks
 
     REG<Dynamo>      m_xpDynamo;   // dynamo pipleine compiler
   
+    REG<Convertor>   m_xpConvertor;
     REG<Index>       m_xpIndex;
     REG<IndexTree>   m_xpIndexTree;
     REG<Operand>     m_xpInfoSet;

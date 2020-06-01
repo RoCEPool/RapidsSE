@@ -76,6 +76,7 @@
 
   // delete loader
   loader[].delete
+  convertor[].delete
 
   Pipein[].pipeOut
 
@@ -102,6 +103,8 @@
       Operand[].pipeout
     else
       Pipein[].pipeout
+
+      Convertor[].create
     then
   then
 

@@ -180,9 +180,12 @@ public:
 
   // convertor
   void vConvertorConvert(void);
+  void vConvertorNew(void);
   void vConvertorDelete(void);
   void vConvertorInspect(void);
-  void vConvertorNew(void);
+
+  void vConvertorRegCreate(void);
+  void vConvertorRegDelete(void);
 
   // crwBuffer
   void vCrwBufferSnapshot(void);

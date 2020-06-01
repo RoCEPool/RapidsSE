@@ -44,6 +44,8 @@ void Step::vLoaderCreate(void)
     m_pDataStack->vPushInt(false);
     delete pLoader;
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,6 +59,8 @@ void Step::vLoaderCrwBufferFetch(void)
   Loader* pLoader = *m_pRegSet->m_xpLoader;
   
   m_pDataStack->vPushPtr(pLoader->pCrwBuffer(iPartition));
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,6 +75,8 @@ void Step::vLoaderCrwBufferStore(void)
   Loader* pLoader = *m_pRegSet->m_xpLoader;
   
   pLoader->vCrwBuffer(iPartition, pCrwBuffer);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,6 +92,8 @@ void Step::vLoaderFullCrwBufferFetch(void)
   CrwBuffer* pCrwBuffer = pLoader->pFullCrwBuffer(iPartition);
   
   m_pDataStack->vPushPtr(pCrwBuffer);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,6 +107,8 @@ void Step::vLoaderDelete(void)
   delete pLoader;
   
   m_pRegSet->m_xpLoader = nullptr;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,6 +119,8 @@ void Step::vLoaderGet(void)
   ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpLoader);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,6 +145,8 @@ void Step::vLoaderHandleDangling(void)
     pLoader->vCrwBuffer(i_Ptn, nullptr);
     
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,6 +157,8 @@ void Step::vLoaderset(void)
   ENTRY();
   
   m_pRegSet->m_xpLoader = _pLoader(m_pDataStack->pPopPtr(__func__));
+  
+  EXIT();
 }
 
 /*============================================================================*/

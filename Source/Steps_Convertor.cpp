@@ -14,6 +14,9 @@ void Step::vAddSteps_Convertor(void)
   vAddStep("convertor.convert"_Stz,   &Step::vConvertorConvert);
   vAddStep("convertor.delete"_Stz,    &Step::vConvertorDelete);
   vAddStep("convertor.inspect"_Stz,   &Step::vConvertorInspect);
+  
+  vAddStep("convertor[].create"_Stz,   &Step::vConvertorRegCreate);
+  vAddStep("convertor[].delete"_Stz,   &Step::vConvertorRegDelete);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,6 +85,41 @@ void Step::vConvertorInspect(void)
   char* azSrc  = (char*)pCsvBuffer->ayDataArea();
   
   bool bResult = pConvertor->bInspect(azSrc);
+  
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* convertor[].create -- create a convertor                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vConvertorRegCreate(void)
+{
+  ENTRY();
+  
+  StreamDef* pStreamDef = m_pRegSet->m_xpTable->pStreamDef();
+  
+  Convertor* pConvertor = new Convertor(pStreamDef,AM::pFmt());
+      
+  m_pRegSet->m_xpConvertor = pConvertor;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convertor[].delete -- delete the convertor                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vConvertorRegDelete(void)
+{
+  ENTRY();
+  
+  Convertor* pConvertor = *m_pRegSet->m_xpConvertor;
+  delete pConvertor;
+  
+  m_pRegSet->m_xpConvertor = nullptr;
   
   EXIT();
 }
