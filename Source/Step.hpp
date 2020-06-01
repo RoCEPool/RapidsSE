@@ -169,7 +169,6 @@ namespace Steps
     static void vAddSteps_Vortex(void);
 
     static void vAddSteps_Word(void);
-    static void vAddSteps_WriteBehind(void);
     static void vAddSteps_WriteHash(void);
 
     static void vAddSteps_Zero(void);

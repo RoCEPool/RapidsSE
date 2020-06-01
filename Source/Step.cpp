@@ -189,7 +189,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Vortex();
   
   Step::vAddSteps_Word();
-  Step::vAddSteps_WriteBehind();
   Step::vAddSteps_WriteHash();
 
   Step::vAddSteps_Zero();

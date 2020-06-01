@@ -295,11 +295,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("WriteBehind[]"_Stz)) {
-    pCurrentWord->vEncodeCall("WriteBehind[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("Xmits[]"_Stz)) {
     pCurrentWord->vEncodeCall("Xmits[].set"_Stz);
     EXIT();
