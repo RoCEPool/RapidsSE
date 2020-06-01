@@ -24,7 +24,7 @@ Loader::Loader(Table* pTable, WriteHash* pWriteHash)
   m_pTable      = pTable;
   m_pWriteHash  = pWriteHash;
   
-  m_pRecordData = new LoadCursor(&m_oFormatter);
+  m_pLoadCursor = new LoadCursor(&m_oFormatter);
   m_pRow        = new RowSingle(pTable->pStreamDef(),C_ALL);
 
   // m_oFormatter
@@ -41,7 +41,7 @@ Loader::~Loader(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  delete m_pRecordData;
+  delete m_pLoadCursor;
   
   delete m_pRow;
 }
@@ -61,7 +61,7 @@ bool Loader::bReadRecords(WriteHash* , Job* pPipelineJob,
   Stz* aRecord;
   i8 nRecordBytes;
   
-  m_pRecordData->vInit(aDataArea, nDataBytes);
+  m_pLoadCursor->vInit(aDataArea, nDataBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process the records in the chunk
@@ -71,7 +71,7 @@ bool Loader::bReadRecords(WriteHash* , Job* pPipelineJob,
       return false;
 
     // fetch next record from data area
-    bool bHaveRecord = m_pRecordData->bNextRecord(&aRecord,nRecordBytes);
+    bool bHaveRecord = m_pLoadCursor->bNextRecord(&aRecord,nRecordBytes);
     if (! bHaveRecord)
       return true;
 

@@ -10,11 +10,11 @@ namespace Load
   {
   public:
  
-    Table*        m_pTable;                           // table
+    Table*        m_pTable;         // table
     WriteHash*    m_pWriteHash;
 
-    LoadCursor*   m_pRecordData;
-    RowSingle*    m_pRow;                             // row
+    LoadCursor*   m_pLoadCursor;
+    RowSingle*    m_pRow;           // row
 
     Format        m_oFormatter;
 
