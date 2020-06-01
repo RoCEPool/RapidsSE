@@ -20,8 +20,6 @@ namespace Load
 
 #include "Convertor.hpp"
 
-#include "LoadCursor.hpp"
-#include "WriteHash.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

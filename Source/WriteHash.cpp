@@ -2,13 +2,13 @@
 /* WriteBehindH.cpp -- Write Behind  (Ingest/Insert/Load)                     */
 /*============================================================================*/
 
-#include "Jobs.h"
+#include "UpperLoad.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,WriteHash,CN_WRITEHASH)
+__pCastFunction(UpperLoad,WriteHash,CN_WRITEHASH)
 __aNewFunction(WriteHash,CN_WRITEHASH)
 __vDeleteFunction(WriteHash,CN_WRITEHASH)
 __aFooterFunction(WriteHash)
