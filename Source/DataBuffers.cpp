@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DataBuffers.cpp - DataBuffers namespace functions                                  */
+/* DataBuffers.cpp - DataBuffers namespace functions                          */
 /*============================================================================*/
 
 #include "DataBuffers.h"
