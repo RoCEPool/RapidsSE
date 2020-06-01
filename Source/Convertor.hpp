@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Load
+namespace UpperLoad
 {
   class Convertor : public Object
   {

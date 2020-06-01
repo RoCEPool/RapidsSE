@@ -18,8 +18,6 @@ namespace Load
 #include "CsvField.hpp"
 #include "CsvRecord.hpp"
 
-#include "Convertor.hpp"
-
 
 /*============================================================================*/
 /* end                                                                        */

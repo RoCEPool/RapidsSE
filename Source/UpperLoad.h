@@ -18,6 +18,7 @@ namespace UpperLoad
 #include "WriteHash.hpp"
 
 #include "Loader.hpp"
+#include "Convertor.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

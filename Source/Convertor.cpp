@@ -2,13 +2,13 @@
 /* Convertor.cpp -- Fast Convertor of Csv Record                              */
 /*============================================================================*/
 
-#include "Load.h"
+#include "UpperLoad.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,Convertor,CN_CONVERTOR)
+__pCastFunction(UpperLoad,Convertor,CN_CONVERTOR)
 __aNewFunction(Convertor,CN_CONVERTOR)
 __vDeleteFunction(Convertor,CN_CONVERTOR)
 __aFooterFunction(Convertor)
