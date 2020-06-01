@@ -1656,6 +1656,9 @@ public:
   // write hash
   void vWriteHashCreate(void);
   void vWriteHashDelete(void);
+  void vWriteHashCrwBufferFetch(void);
+  void vWriteHashCrwBufferStore(void);
+  void vWriteHashFullCrwBufferFetch(void);
 
   // zero
   void vZeroLess(void);

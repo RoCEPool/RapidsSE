@@ -12,8 +12,8 @@ void Step::vAddSteps_Loader(void)
   vAddStep("Loader[].create"_Stz,         &Step::vLoaderCreate);
   vAddStep("Loader[].crwBuffer@"_Stz,     &Step::vLoaderCrwBufferFetch);
   vAddStep("Loader[].crwBuffer!"_Stz,     &Step::vLoaderCrwBufferStore);
-  vAddStep("Loader[].fullCrwBuffer@"_Stz, &Step::vLoaderFullCrwBufferFetch);
   vAddStep("Loader[].delete"_Stz,         &Step::vLoaderDelete);
+  vAddStep("Loader[].fullCrwBuffer@"_Stz, &Step::vLoaderFullCrwBufferFetch);
 }
 
 /*----------------------------------------------------------------------------*/
