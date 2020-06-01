@@ -1138,7 +1138,6 @@ public:
   void vRegOperandSet(void);
   void vRegOperandUpsertIntoTable(void);
   void vRegOperandCrwToCsv(void);
-  void vRegOperandCsvToCrw(void);
   void vRegOperandCsvToCrwH(void);
   void vRegOperandCsvToRowSlab(void);
   void vRegOperandWorkDone(void);
