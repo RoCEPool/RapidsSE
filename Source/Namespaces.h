@@ -92,6 +92,7 @@ namespace Structures    { class Article; class Queue;                         }
 namespace Tasks         { class RegSet; class Task;                           }
 namespace Threads       { class Scheduler;  class Thread; class Queues;       }
 namespace Transactions  { class Tx; class TxSet;                              }
+namespace UpperLoad     {                                                     }
 namespace Utilities     { class BPA; class PoolHelper;                        }
 namespace Verbs         {                                                     }
 
@@ -159,6 +160,7 @@ using namespace Structures;
 using namespace Tasks;
 using namespace Threads;
 using namespace Transactions;
+using namespace UpperLoad;
 using namespace Utilities;
 using namespace Verbs;
 
