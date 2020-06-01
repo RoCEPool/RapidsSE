@@ -14,6 +14,11 @@ namespace Load
 
 //------------------------------------------------------------------------------
 
+#include "CsvCursor.hpp"
+#include "CsvField.hpp"
+#include "CsvRecord.hpp"
+
+
 #include "RowSlab.hpp"
 
 #include "Convertor.hpp"
