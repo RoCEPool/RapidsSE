@@ -192,31 +192,6 @@ eEC Loader::eAppendRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Extract row (with hash) from given record string                           */
-/*----------------------------------------------------------------------------*/
-eEC Loader::eExtractRow(Stz* szRecord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  eEC eError = CsvCursor::eExtractNext(m_pRow,m_pStreamDef,
-                                         szRecord,&m_oFormatter);
-//  if (! bResult)
-//    return EC_INVALID_VALUE;
-//
-//  if (bBlankLine)
-//    return EC_BLANKLINE;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  //SP_Row spRow;
-//  //vTrace("%s\n"_Stz,spRow.sz(m_pRow));
-//
-//  return EC_NONE;
-  
-  return eError;
-}
-
-/*----------------------------------------------------------------------------*/
 /* process csv record into crwHash                                            */
 /*----------------------------------------------------------------------------*/
 eEC Loader::eProcessRecord(Stz* szRecord, i8 nBytes)
