@@ -9,8 +9,7 @@ namespace Records
   {
   public:
     static eEC eExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
-                             char** aazCrs, Format* pFmt,
-                             bool& bBlankLine_);
+                             char** aazCrs, Format* pFmt);
   
   private:
     static bool bIsThereRecordData(char* aSrc, Format* pFmt);

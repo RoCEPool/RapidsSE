@@ -12,15 +12,12 @@
 /* extract row from record (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
 eEC CsvCursor::eExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
-                             char** aazCrs, Format* pFmt,
-                             bool& bBlankLine_)
+                             char** aazCrs, Format* pFmt)
 {
   _static_
   
   char* acRec = *aazCrs;
-  
-  bBlankLine_ = false;
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // leading blanks and blank lines
   
@@ -32,7 +29,6 @@ eEC CsvCursor::eExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
   
   // ignore blank lines
   if (! bIsThereRecordData(*aazCrs,pFmt) ) {
-    bBlankLine_ = true;
     return EC_BLANKLINE;
   }
   

@@ -205,10 +205,8 @@ eEC Loader::eExtractRow(Stz* szRecord)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bBlankLine = false;
   eEC eError = CsvCursor::eExtractNext(m_pRow,pStreamDef,
-                                         &acRecCrs,&m_oFormatter,
-                                         bBlankLine);
+                                         &acRecCrs,&m_oFormatter);
 //  if (! bResult)
 //    return EC_INVALID_VALUE;
 //
