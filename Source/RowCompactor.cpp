@@ -103,15 +103,15 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pCrwNub       = pCrwBuffer->m_oRowTray.pNub();
-  m_pStreamDef    = m_pCrwNub->pDesc()->pStreamDef();
-  m_pEncoding     = new Encoding(m_pStreamDef);
+  m_pCrwNub     = pCrwBuffer->m_oRowTray.pNub();
+  m_pStreamDef  = m_pCrwNub->pDesc()->pStreamDef();
+  m_pEncoding   = new Encoding(m_pStreamDef);
   
-  m_aHeadLine     = nullptr;
-  m_aOverLine     = nullptr;
+  m_aHeadLine   = nullptr;
+  m_aOverLine   = nullptr;
 
-  m_pRowSamples   = new IrwBuffer;
-  m_bCollecting   = bCollectSamples;
+  m_pRowSamples = new IrwBuffer;
+  m_bCollecting = bCollectSamples;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,16 +131,16 @@ void RowCompactor::vCompactEnd(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   delete m_pRowSamples;
-  m_pRowSamples   = nullptr;
-  m_bCollecting   = false;
+  m_pRowSamples = nullptr;
+  m_bCollecting = false;
   
-  m_aHeadLine     = nullptr;
-  m_aOverLine     = nullptr;
+  m_aHeadLine   = nullptr;
+  m_aOverLine   = nullptr;
   
   delete m_pEncoding;
-  m_pEncoding     = nullptr;
-  m_pCrwNub       = nullptr;
-  m_pStreamDef    = nullptr;
+  m_pEncoding   = nullptr;
+  m_pCrwNub     = nullptr;
+  m_pStreamDef  = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -386,11 +386,13 @@ bool RowCompactor::bAddCrw(Row* pIrw)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add given row into current crw buffer                                      */
+/* add given signle row into current crw buffer (samples have been collected) */
 /*----------------------------------------------------------------------------*/
 bool RowCompactor::bAddCrw(RowSingle* pSingleRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  ASSERT(! m_bCollecting);
   
   // 1) initially encode the inflated row
   vEncodeHead(pSingleRow);
@@ -509,11 +511,11 @@ void RowCompactor::vEncodeHead(Row* pIrw)
 /*----------------------------------------------------------------------------*/
 /* encode the head                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeHead(RowSingle* pIrw)
+void RowCompactor::vEncodeHead(RowSingle* pSingleRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pEncoding->vEncodeRow(pIrw);
+  m_pEncoding->vEncodeRow(pSingleRow);
   
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
@@ -599,7 +601,7 @@ void RowCompactor::vEncodeTails(Row* pIrw)
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeTails(RowSingle* pIrw)
+void RowCompactor::vEncodeTails(RowSingle* pSingleRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -616,7 +618,7 @@ void RowCompactor::vEncodeTails(RowSingle* pIrw)
     
     // -- vch column --
     
-    Dtm* aColVal = & pIrw->m_waColVal[i_Col];
+    Dtm* aColVal = & pSingleRow->m_waColVal[i_Col];
     
     if (aColVal->bIsNull())
       continue;
