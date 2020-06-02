@@ -29,7 +29,8 @@ namespace Load
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    bool bReadRecords(Job* pPipelineJob, Stz* szCsvData, i8 nCsvBytes);
+    bool bCsvToCrw(Stz* szCsvArea, i8 nCsvBytes, Job* pPipelineJob);
+  
     bool bSetFormat(TagSet* pFmtTagSet);
     bool bTerminate(void);
 

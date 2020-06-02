@@ -51,30 +51,30 @@ Loader::~Loader(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* read records                                                               */
+/* scan csv records and convert to crw in crwHash                             */
 /*----------------------------------------------------------------------------*/
-bool Loader::bReadRecords(Job* pPipelineJob, Stz* szCsvData, i8 nCsvBytes)
+bool Loader::bCsvToCrw(Stz* szCsvArea, i8 nCsvBytes, Job* pPipelineJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
   Stz* szRecord;
   i8 nRecordBytes;
   
-  m_pLoadCursor->vInit(szCsvData,nCsvBytes);
+  m_pLoadCursor->vInit(szCsvArea,nCsvBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process the records in the chunk
+  
   for (;;) {
 
     if (bTerminate())
       return false;
 
-    // fetch next record from data area
-    bool bHaveRecord = m_pLoadCursor->bNextRecord(&szRecord,nRecordBytes);
-    if (! bHaveRecord)
+    // advnace to next record in the csv data area
+    if (! m_pLoadCursor->bNextRecord(&szRecord,nRecordBytes))
       return true;
 
-    // process that record into write behind
+    // process that record into crwHash
     eEC eError = eProcessRecord(szRecord,nRecordBytes);
 
     if (EC_NONE == eError) {
