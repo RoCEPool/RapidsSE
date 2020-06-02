@@ -88,7 +88,7 @@ bool Loader::bCsvToCrw(Stz* szCsvArea, i8 nCsvBytes, Job* pPipelineJob)
       continue;
 
     // attempt to append row into crwHash
-    eError = eAppendRow(m_pRow);
+    eError = m_pCrwHash->eAppendRow(m_pRow);
     if (! bContinueAfterError(eError,pPipelineJob))
       continue;
 

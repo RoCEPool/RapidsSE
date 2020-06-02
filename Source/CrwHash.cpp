@@ -56,6 +56,69 @@ CrwHash::~CrwHash(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* append row into working buffer                                             */
+/*----------------------------------------------------------------------------*/
+eEC CrwHash::eAppendRow(RowSingle* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
+
+  CrwBuffer* pCrwBuffer = nullptr;
+  
+  // use row hash to get partition
+  i8 i_Ptn = m_pTable->iToPartition(pRow->m_iHash);
+  
+  // append the row into a working buffer
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check for row buffer
+  
+  if (! m_pCrwBuffer[i_Ptn]) {
+    
+    // create a new crw buffer for this partition
+    pCrwBuffer = pNewCrwBuffer(i_Ptn);
+    
+    if (! pCrwBuffer) {
+      vTrace("CrwBuffer allocation failed\n"_Stz);
+      return EC_LOW_MEMORY;
+    }
+
+  }
+  else {
+    pCrwBuffer = m_pCrwBuffer[i_Ptn];
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append row into working buffer
+  
+  //pCrwBuffer->vGrabWrite();
+  bool bWasAppended = pCrwBuffer->bAppendRow(pRow);
+  //pCrwBuffer->vDropWrite();
+  
+  // appended ?
+  if (bWasAppended)
+    return EC_NONE;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // close the buffer for append
+  
+  pCrwBuffer->vAppendClose();
+  
+  // create a new crw buffer for this partition linking to the old
+  pCrwBuffer = pNewCrwBuffer(i_Ptn);
+  
+  if (! pCrwBuffer) {
+    vTrace("CrwBuffer allocation failed\n"_Stz);
+    return EC_LOW_MEMORY;
+  }
+  
+  // reattempt insrt. Should work
+  bWasAppended = pCrwBuffer->bAppendRow(pRow);
+  ASSERT(bWasAppended);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return the ptn crwBuffer                                                   */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwHash::pCrwBuffer(i8 iPtn)

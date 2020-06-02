@@ -23,6 +23,7 @@ namespace Load
     ~CrwHash(void) noexcept(false);
     
   public:
+    eEC        eAppendRow(RowSingle* pRow);
     CrwBuffer* pCrwBuffer(i8 iPtn);
     void       vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer);
     CrwBuffer* pFullCrwBuffer(i8 iPtn);
