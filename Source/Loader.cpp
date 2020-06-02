@@ -81,11 +81,17 @@ bool Loader::bCsvToCrw(Stz* szCsvArea, i8 nCsvBytes, Job* pPipelineJob)
     if (! bContinueAfterError(eError,pPipelineJob))
       continue;
 
-    // process that csv record into crwHash
-    eError = eProcessRecord(szRecord,nRecordBytes);
+    // extract the row
+    eEC eError = CsvCursor::eExtractNext(m_pRow,m_pStreamDef,
+                                         szRecord,&m_oFormatter);
     if (! bContinueAfterError(eError,pPipelineJob))
       continue;
-    
+
+    // attempt to append row into crwHash
+    eError = eAppendRow();
+    if (! bContinueAfterError(eError,pPipelineJob))
+      continue;
+
     AM::vIncRowsProcessed(pPipelineJob);
   }
 
