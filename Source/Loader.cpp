@@ -74,6 +74,12 @@ bool Loader::bCsvToCrw(Stz* szCsvArea, i8 nCsvBytes, Job* pPipelineJob)
     // advance to next record in the csv data area
     if (! m_pLoadCursor->bNextRecord(&szRecord,nRecordBytes))
       return true;
+    
+    // test record length etc
+    if (EC_NONE != eValidRecord(szRecord,nRecordBytes)) {
+      AM::vIncRowsInvalid(pPipelineJob);
+      continue;
+    }
 
     // process that csv record into crwHash
     eError = eProcessRecord(szRecord,nRecordBytes);
@@ -214,7 +220,7 @@ bool Loader::bExtractRow(Stz* szRecord, bool &bBlankLine)
 }
 
 /*----------------------------------------------------------------------------*/
-/* process record                                                             */
+/* process csv record into crwHash                                            */
 /*----------------------------------------------------------------------------*/
 eEC Loader::eProcessRecord(Stz* szRecord, i8 nBytes)
 {
@@ -222,18 +228,7 @@ eEC Loader::eProcessRecord(Stz* szRecord, i8 nBytes)
 
   bool bBlankLine = false;
   
-  if (nBytes > C_MAX_RECORD) {
-    if (! AM::bMetadata()) {
-      vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
-            szRecord,
-            C_MAX_RECORD);
-    }
-    return EC_MAX_ROW_LENGTH;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  bool bValid = bExtractRow(szRecord, bBlankLine);
+  bool bValid = bExtractRow(szRecord,bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;
@@ -276,6 +271,24 @@ bool Loader::bTerminateEarly(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* coarse validation of the record (length etc)                               */
+/*----------------------------------------------------------------------------*/
+eEC Loader::eValidRecord(Stz* szRecord, i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+
+  if (nBytes > C_MAX_RECORD) {
+    if (! AM::bMetadata()) {
+      vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
+            szRecord,
+            C_MAX_RECORD);
+    }
+    return EC_MAX_ROW_LENGTH;
+  }
+    
+  return EC_NONE;
+}
 
 /*============================================================================*/
 /* end                                                                        */

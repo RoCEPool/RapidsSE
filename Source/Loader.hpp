@@ -38,6 +38,7 @@ namespace Load
     bool bExtractRow(Stz* szRecord, bool &bBlankLine);
     eEC  eProcessRecord(Stz* szRecord,  i8 nBytes);
     bool bTerminateEarly(void);
+    eEC  eValidRecord(Stz* szRecord, i8 nBytes);
 
     Footer* aFooter(void);
   };
