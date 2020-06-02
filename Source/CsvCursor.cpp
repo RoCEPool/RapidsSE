@@ -12,11 +12,13 @@
 /* extract row from record (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
 eEC CsvCursor::eExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
-                             char* azRecord, Format* pFmt)
+                            Stz* szRecord, Format* pFmt)
 {
   _static_
   
-  char* azCrs = azRecord;
+  pRow->vResetValues();
+  
+  char* azCrs = szRecord->azChar();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // leading blanks and blank lines

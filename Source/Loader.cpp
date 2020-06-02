@@ -22,7 +22,8 @@ Loader::Loader(Table* pTable, CrwHash* pWriteHash)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
     
   m_pTable      = pTable;
-  m_pCrwHash  = pWriteHash;
+  m_pStreamDef  = m_pTable->pStreamDef();
+  m_pCrwHash    = pWriteHash;
   
   m_pLoadCursor = new LoadCursor(&m_oFormatter);
   m_pRow        = new RowSingle(pTable->pStreamDef(),C_ALL);
@@ -196,17 +197,9 @@ eEC Loader::eAppendRow(void)
 eEC Loader::eExtractRow(Stz* szRecord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-
-  StreamDef* pStreamDef = m_pTable->pStreamDef();
-
-  m_pRow->vResetValues();
   
-  char* azRecord = szRecord->azChar();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  eEC eError = CsvCursor::eExtractNext(m_pRow,pStreamDef,
-                                         azRecord,&m_oFormatter);
+  eEC eError = CsvCursor::eExtractNext(m_pRow,m_pStreamDef,
+                                         szRecord,&m_oFormatter);
 //  if (! bResult)
 //    return EC_INVALID_VALUE;
 //

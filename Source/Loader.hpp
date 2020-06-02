@@ -10,6 +10,8 @@ namespace Load
   public:
  
     Table*      m_pTable;         // table
+    StreamDef*  m_pStreamDef;
+
     CrwHash*    m_pCrwHash;
 
     LoadCursor* m_pLoadCursor;
