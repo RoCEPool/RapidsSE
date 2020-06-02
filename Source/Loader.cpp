@@ -223,8 +223,10 @@ eEC Loader::eProcessRecord(Stz* szRecord, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
-  eEC eError = eExtractRow(szRecord);
-  
+  //eEC eError = eExtractRow(szRecord);
+  eEC eError = CsvCursor::eExtractNext(m_pRow,m_pStreamDef,
+                                         szRecord,&m_oFormatter);
+
   if (EC_NONE != eError)
     return eError;
   
