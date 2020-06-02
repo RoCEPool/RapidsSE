@@ -39,7 +39,7 @@ namespace CompactBuffers
     
     void vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples);
     void vCompactEnd(void);
-    bool bCompactRow(RowSingle* pSingleRow);
+    bool bCompactSingleRow(RowSingle* pSingleRow);
   
   private:
 
@@ -56,20 +56,20 @@ namespace CompactBuffers
     // - - - - - - - - - - - - - - - - - - - - -
     // Compact Row Packing
   
+    bool bAddCrw(Row* pIrwSample);
     bool bAddCrw(RowSingle* pSingleRow);
-    bool bAddCrw(Row* pRow);
     bool bAllotCrw(void);
-    void vEncodeHead(Row* pRow);
+    void vEncodeHead(Row* pIrwSample);
     void vEncodeHead(RowSingle* pSingleRow);
-    void vEncodeTails(Row* pRow);
+    void vEncodeTails(Row* pIrwSample);
     void vEncodeTails(RowSingle* pSingleRow);
-    void vSplitOver(void);
+    void vEncodeSplit(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  RowCompactor* _pRowCoder(void* aAddr);
+  RowCompactor* _pRowCompactor(void* aAddr);
 }
 
 /*============================================================================*/

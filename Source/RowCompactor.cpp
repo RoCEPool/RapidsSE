@@ -6,40 +6,15 @@
 
 static Numbat oNumBat("partKey"_Stz);
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-RowCompactor* CompactBuffers::_pRowCoder(void* aAddr)
-{
-  RowCompactor* pRowCompactor = reinterpret_cast<RowCompactor*>(aAddr);
-  
-  return pRowCompactor;
-}
+__pCastFunction(CompactBuffers,RowCompactor,CN_ROWCOMPACTOR)
+__aNewFunction(RowCompactor,CN_ROWCOMPACTOR)
+__vDeleteFunction(RowCompactor,CN_ROWCOMPACTOR)
+__aFooterFunction(RowCompactor)
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* RowCompactor::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_ROWCOMPACTOR);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::operator delete(void* aAddr)
-{
-  RowCompactor* pRowCompactor = reinterpret_cast<RowCompactor*>(aAddr);
-  
-  HeapMem::vFree(pRowCompactor);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -91,13 +66,12 @@ RowCompactor::~RowCompactor(void) noexcept(false)
   
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Public Non-Static -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* begin compactine rows into given crw buffer                                */
+/* begin compacting rows into given crw buffer                                */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
 {
@@ -115,7 +89,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end copying rows into given crw buffer                                     */
+/* end compacting rows into given crw buffer                                  */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vCompactEnd(void)
 {
@@ -144,20 +118,22 @@ void RowCompactor::vCompactEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compact given single row into current nub                                  */
+/* compact given single row into current crw buffer                           */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCompactRow(RowSingle* pSingleRow)
+bool RowCompactor::bCompactSingleRow(RowSingle* pSingleRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   if (m_bCollecting) {
 
+    // collect single row as a sample into irw buffer (as an inflated row)
     if (bCollectSample(pSingleRow))
       return true;
     
     vPackSamples();
   }
   
+  // add a compact version of single row into crw buffer
   bool bResult = bAddCrw(pSingleRow);
     
   return bResult;
@@ -168,7 +144,7 @@ bool RowCompactor::bCompactRow(RowSingle* pSingleRow)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/******************************  Sampling  ************************************/
+/*                             -- Sampling --                                 */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -342,27 +318,26 @@ void RowCompactor::vCreateTail(Column* pCol,
   //vDebugPoint();
 }
 
-
 /*----------------------------------------------------------------------------*/
-/*************************  Compact Row Packing  ******************************/
+/*                        -- Compact Row Packing --                           */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* add given row from irw buffer into current crw buffer                      */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bAddCrw(Row* pIrw)
+bool RowCompactor::bAddCrw(Row* pIrwSample)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  // 1) initially encode the inflated row
-  vEncodeHead(pIrw);
+  // 1) initially encode head of inflated row into m_pEncoding
+  vEncodeHead(pIrwSample);
   
-  // 2) encode tails
-//  if (! m_pStreamDef->m_nFixedSized)
-    vEncodeTails(pIrw);
+  // 2) encode tails into m_pEncoding
+  //  if (! m_pStreamDef->m_nFixedSized)
+    vEncodeTails(pIrwSample);
   
-  // 3) split encoding between head and overflow
-  vSplitOver();
+  // 3) split encoded head between crw head and crw overflow
+  vEncodeSplit();
 
   // 4) allot a logical compact row (head & over)
   if (! bAllotCrw()) {
@@ -370,7 +345,7 @@ bool RowCompactor::bAddCrw(Row* pIrw)
     return false;
   }
   
-  // 5) pack encoded inflated row into a compact row
+  // 5) pack encoded row into a compact row
   vPackCrw(m_aHeadLine,m_pEncoding);
   
   m_aHeadLine = nullptr;
@@ -394,15 +369,21 @@ bool RowCompactor::bAddCrw(RowSingle* pSingleRow)
   
   ASSERT(! m_bCollecting);
   
-  // 1) initially encode the inflated row
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // encode
+  
+  // 1) initially encode head of single row into m_pEncoding
   vEncodeHead(pSingleRow);
   
-  // 2) encode tails
+  // 2) encode tails into m_pEncoding
   //  if (! m_pStreamDef->m_nFixedSized)
   vEncodeTails(pSingleRow);
   
-  // 3) split encoding between head and overflow
-  vSplitOver();
+  // 3) split encoded head between crw head and crw overflow
+  vEncodeSplit();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pack
   
   // 4) allot a logical compact row (head & over)
   if (! bAllotCrw()) {
@@ -410,7 +391,7 @@ bool RowCompactor::bAddCrw(RowSingle* pSingleRow)
     return false;
   }
   
-  // 5) pack encoded inflated row into a compact row
+  // 5) pack encoded row into a compact row
   vPackCrw(m_aHeadLine,m_pEncoding);
   
   m_aHeadLine = nullptr;
@@ -496,11 +477,11 @@ bool RowCompactor::bAllotCrw(void)
 /*----------------------------------------------------------------------------*/
 /* encode the head                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeHead(Row* pIrw)
+void RowCompactor::vEncodeHead(Row* pIrwSample)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pEncoding->vEncodeRow(pIrw);
+  m_pEncoding->vEncodeRow(pIrwSample);
   
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
@@ -526,7 +507,7 @@ void RowCompactor::vEncodeHead(RowSingle* pSingleRow)
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeTails(Row* pIrw)
+void RowCompactor::vEncodeTails(Row* pIrwSample)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -543,14 +524,14 @@ void RowCompactor::vEncodeTails(Row* pIrw)
     
     // -- vch column --
     
-    Dtm* aColVal = & pIrw->m_waColVal[i_Col];
+    Dtm* aColVal = & pIrwSample->m_waColVal[i_Col];
     
     if (aColVal->bIsNull())
       continue;
     
     // -- non-null vch column --
     
-    Stz* azStr = pIrw->szStzGet(i_Col);
+    Stz* azStr = pIrwSample->szStzGet(i_Col);
     if (StrLib::nLength((char*)azStr) < 8)
       continue;
     
@@ -676,7 +657,7 @@ void RowCompactor::vEncodeTails(RowSingle* pSingleRow)
 /*----------------------------------------------------------------------------*/
 /* split out over from head                                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vSplitOver(void)
+void RowCompactor::vEncodeSplit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -686,12 +667,6 @@ void RowCompactor::vSplitOver(void)
   vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
 #endif
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(RowCompactor);
 
 /*============================================================================*/
 /* end                                                                        */

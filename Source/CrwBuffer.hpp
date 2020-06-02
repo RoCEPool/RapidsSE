@@ -63,7 +63,7 @@ namespace CompactBuffers
     // row functions
     void vAppendClose(void);
     void vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples);
-    bool bAppendRow(RowSingle* pRow);
+    bool bAppendRow(RowSingle* pSingleRow);
 
   private:
     bool       bHasSpace(i8 nBytes);
