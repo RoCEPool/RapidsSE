@@ -11,10 +11,12 @@
 /*----------------------------------------------------------------------------*/
 /* extract row from record (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
-bool CsvCursor::bExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
+eEC CsvCursor::eExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
                              char** aazCrs, Format* pFmt,
                              bool& bBlankLine_)
 {
+  _static_
+  
   char* acRec = *aazCrs;
   
   bBlankLine_ = false;
@@ -31,7 +33,7 @@ bool CsvCursor::bExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
   // ignore blank lines
   if (! bIsThereRecordData(*aazCrs,pFmt) ) {
     bBlankLine_ = true;
-    return false;
+    return EC_BLANKLINE;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,7 +60,7 @@ bool CsvCursor::bExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
         vTrace("%c"_Stz,*ac);
       vTrace("\n"_Stz);
     }
-    return false;
+    return EC_INVALID_VALUE;
   }
   
   //SP_Row spRow;
@@ -68,7 +70,7 @@ bool CsvCursor::bExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
     (*aazCrs)++;
     
   
-  return true;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,6 +82,8 @@ bool CsvCursor::bExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
 /*----------------------------------------------------------------------------*/
 bool CsvCursor::bIsThereRecordData(char* aSrc, Format* pFmt)
 {
+  _static_
+  
   if ( ! *aSrc
       || *aSrc == C_NL
       || *aSrc == C_CR
@@ -88,7 +92,6 @@ bool CsvCursor::bIsThereRecordData(char* aSrc, Format* pFmt)
   else
     return true;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

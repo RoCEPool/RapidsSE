@@ -205,21 +205,23 @@ eEC Loader::eExtractRow(Stz* szRecord, bool &bBlankLine)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bResult = CsvCursor::bExtractNext(m_pRow,pStreamDef,
+  eEC eError = CsvCursor::eExtractNext(m_pRow,pStreamDef,
                                          &acRecCrs,&m_oFormatter,
                                          bBlankLine);
-  if (! bResult)
-    return EC_INVALID_VALUE;
- 
-  if (bBlankLine)
-    return EC_BLANKLINE;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  if (! bResult)
+//    return EC_INVALID_VALUE;
+//
+//  if (bBlankLine)
+//    return EC_BLANKLINE;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  //SP_Row spRow;
+//  //vTrace("%s\n"_Stz,spRow.sz(m_pRow));
+//
+//  return EC_NONE;
   
-  //SP_Row spRow;
-  //vTrace("%s\n"_Stz,spRow.sz(m_pRow));
-  
-  return EC_NONE;
+  return eError;
 }
 
 /*----------------------------------------------------------------------------*/
