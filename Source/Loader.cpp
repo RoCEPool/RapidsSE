@@ -192,6 +192,24 @@ eEC Loader::eAppendRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* manage any error, indicate if processing of record is to continue          */
+/*----------------------------------------------------------------------------*/
+bool Loader::bContinueAfterError(eEC eError, Job* pPipelineJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  if (EC_NONE == eError)
+    return true;
+
+  if (EC_BLANKLINE == eError)
+    return false;
+  
+  AM::vIncRowsInvalid(pPipelineJob);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* process csv record into crwHash                                            */
 /*----------------------------------------------------------------------------*/
 eEC Loader::eProcessRecord(Stz* szRecord, i8 nBytes)
