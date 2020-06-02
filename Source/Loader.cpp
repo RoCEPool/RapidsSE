@@ -196,32 +196,6 @@ bool Loader::bContinueAfterError(eEC eError, Job* pPipelineJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* process csv record into crwHash                                            */
-/*----------------------------------------------------------------------------*/
-eEC Loader::eProcessRecord(Stz* szRecord, i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-
-  //eEC eError = eExtractRow(szRecord);
-  eEC eError = CsvCursor::eExtractNext(m_pRow,m_pStreamDef,
-                                         szRecord,&m_oFormatter);
-
-  if (EC_NONE != eError)
-    return eError;
-  
-  // attempt to append row into a write-behind buffer
-  eError = eAppendRow();
-  
-  // was there an error ?
-  if (eError != EC_NONE) {
-    vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eError]);
-    return eError;
-  }
-  
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
 /* terminate loading early?                                                   */
 /*----------------------------------------------------------------------------*/
 bool Loader::bTerminateEarly(void)

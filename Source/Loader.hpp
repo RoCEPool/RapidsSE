@@ -38,7 +38,6 @@ namespace Load
   private:
     eEC  eAppendRow(void);
     bool bContinueAfterError(eEC eError, Job* pPipelineJob);
-    eEC  eProcessRecord(Stz* szRecord, i8 nBytes);
     bool bTerminateEarly(void);
     eEC  eValidRecord(Stz* szRecord, i8 nBytes);
 
