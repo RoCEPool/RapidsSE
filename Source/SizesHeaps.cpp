@@ -74,8 +74,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntWrk),             HT_INVALID           }, // CN_ENTWRK
   { sizeof(EnumFlags),          HT_TRANSIENT_TINY    }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_TRANSIENT_TINY    }, // CN_EXEMPLAR
-  { sizeof(ExtractRow),         HT_TRANSIENT_TINY    }, // CN_EXTRACTROW
-
+ 
   { 'F' - ('A' - 1),            HT_INVALID           }, // CN__F__
   { sizeof(FetchBuffer),        HT_TRANSIENT_LARGE   }, // CN_FETCHBUFFER
   { sizeof(Fifo),               HT_TRANSIENT_TINY    }, // CN_FIFO
