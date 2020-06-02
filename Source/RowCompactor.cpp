@@ -31,7 +31,7 @@ RowCompactor::RowCompactor(void)
   m_aHeadLine     = nullptr;
   m_aOverLine     = nullptr;
   
-  m_pRowSamples   = nullptr;
+  m_pIrwSamples   = nullptr;
   m_bCollecting   = false;
   
   m_nTotalBuffers = 0;
@@ -84,7 +84,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   m_aHeadLine   = nullptr;
   m_aOverLine   = nullptr;
 
-  m_pRowSamples = new IrwBuffer;
+  m_pIrwSamples = new IrwBuffer;
   m_bCollecting = bCollectSamples;
 }
 
@@ -104,8 +104,8 @@ void RowCompactor::vCompactEnd(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  delete m_pRowSamples;
-  m_pRowSamples = nullptr;
+  delete m_pIrwSamples;
+  m_pIrwSamples = nullptr;
   m_bCollecting = false;
   
   m_aHeadLine   = nullptr;
@@ -126,14 +126,14 @@ bool RowCompactor::bCompactSingleRow(RowSingle* pSingleRow)
   
   if (m_bCollecting) {
 
-    // collect single row as a sample into irw buffer (as an inflated row)
+    // collect single row as a sample into irw buffer (as an irw inflated row)
     if (bCollectSample(pSingleRow))
       return true;
     
     vPackSamples();
   }
   
-  // add a compact version of single row into crw buffer
+  // add a compact version of given single row into crw buffer
   bool bResult = bAddCrw(pSingleRow);
     
   return bResult;
@@ -154,7 +154,7 @@ bool RowCompactor::bCollectSample(RowSingle* pSingleRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  if (m_pRowSamples->nItems() >= C_SAMPLE_ROWS) {
+  if (m_pIrwSamples->nItems() >= C_SAMPLE_ROWS) {
 #ifdef WITH_ENCODING_TRACE
     vTrace("Samples collected\n"_Stz);
 #endif
@@ -162,7 +162,7 @@ bool RowCompactor::bCollectSample(RowSingle* pSingleRow)
     return false;
   }
   
-  if ( ! m_pRowSamples->bCopyRow(pSingleRow) ) {
+  if ( ! m_pIrwSamples->bCopyRow(pSingleRow) ) {
   
 #ifdef WITH_ENCODING_TRACE
     vTrace("Samples full\n"_Stz);
@@ -191,7 +191,7 @@ void RowCompactor::vPackSamples(void)
   
   i8 nRowSize = Row::nSizeBytes(m_pStreamDef);
   
-  Row* pSampleRow = m_pRowSamples->aFirstRow();
+  Row* pSampleRow = m_pIrwSamples->aFirstRow();
   while (pSampleRow) {
     
     //pSampleRow->vDump(m_pStreamDef);
@@ -202,7 +202,7 @@ void RowCompactor::vPackSamples(void)
     bool bPacked = bAddCrw(pSampleRow);
     RASSERT(bPacked);
     
-    pSampleRow = m_pRowSamples->aNextRow(pSampleRow, nRowSize);
+    pSampleRow = m_pIrwSamples->aNextRow(pSampleRow, nRowSize);
   }
 }
 
@@ -224,28 +224,28 @@ void RowCompactor::vAnalyzeSamples(void)
     
     i8 nRowHeadSize = Row::nSizeBytes(m_pStreamDef);
     
-    for (Row* pOuterRow = m_pRowSamples->aFirstRow();
-         pOuterRow;
-         pOuterRow = m_pRowSamples->aNextRow(pOuterRow, nRowHeadSize)) {
+    for (Row* pOuterIrw = m_pIrwSamples->aFirstRow();
+         pOuterIrw;
+         pOuterIrw = m_pIrwSamples->aNextRow(pOuterIrw,nRowHeadSize)) {
       
       //pOuterRow->vDump(m_pStreamDef);
       
-      if (pOuterRow->m_waColVal[i_Col].bIsNull())
+      if (pOuterIrw->m_waColVal[i_Col].bIsNull())
         continue;
       
-      Stz* azOuterStr = pOuterRow->szStzGet(i_Col);
+      Stz* azOuterStr = pOuterIrw->szStzGet(i_Col);
       i8 nLength = StrLib::nLength((char*)azOuterStr);
       if (nLength < 8)
         continue;
       
-      for (Row* pInnerRow = m_pRowSamples->aNextRow(pOuterRow, nRowHeadSize);
-           pInnerRow;
-           pInnerRow = m_pRowSamples->aNextRow(pInnerRow, nRowHeadSize)) {
+      for (Row* pInnerIrw = m_pIrwSamples->aNextRow(pOuterIrw,nRowHeadSize);
+           pInnerIrw;
+           pInnerIrw = m_pIrwSamples->aNextRow(pInnerIrw,nRowHeadSize)) {
         
-        if (pInnerRow->m_waColVal[i_Col].bIsNull())
+        if (pInnerIrw->m_waColVal[i_Col].bIsNull())
           continue;
         
-        vCreateTail(pCol,pOuterRow,pInnerRow);
+        vCreateTail(pCol,pOuterIrw,pInnerIrw);
         
       }
     }
