@@ -193,7 +193,7 @@ eEC Loader::eAppendRow(void)
 /*----------------------------------------------------------------------------*/
 /* Extract row (with hash) from given record string                           */
 /*----------------------------------------------------------------------------*/
-eEC Loader::eExtractRow(Stz* szRecord, bool &bBlankLine)
+eEC Loader::eExtractRow(Stz* szRecord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
@@ -205,6 +205,7 @@ eEC Loader::eExtractRow(Stz* szRecord, bool &bBlankLine)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  bool bBlankLine = false;
   eEC eError = CsvCursor::eExtractNext(m_pRow,pStreamDef,
                                          &acRecCrs,&m_oFormatter,
                                          bBlankLine);
@@ -231,12 +232,7 @@ eEC Loader::eProcessRecord(Stz* szRecord, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
-  bool bBlankLine = false;
-  
-  eEC eError = eExtractRow(szRecord,bBlankLine);
-  
-  if (bBlankLine)
-    return EC_BLANKLINE;
+  eEC eError = eExtractRow(szRecord);
   
   if (EC_NONE != eError)
     return eError;

@@ -35,7 +35,7 @@ namespace Load
 
   private:
     eEC  eAppendRow(void);
-    eEC  eExtractRow(Stz* szRecord, bool &bBlankLine);
+    eEC  eExtractRow(Stz* szRecord);
     eEC  eProcessRecord(Stz* szRecord,  i8 nBytes);
     bool bTerminateEarly(void);
     eEC  eValidRecord(Stz* szRecord, i8 nBytes);
