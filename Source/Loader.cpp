@@ -193,7 +193,7 @@ eEC Loader::eAppendRow(void)
 /*----------------------------------------------------------------------------*/
 /* Extract row (with hash) from given record string                           */
 /*----------------------------------------------------------------------------*/
-bool Loader::bExtractRow(Stz* szRecord, bool &bBlankLine)
+eEC Loader::eExtractRow(Stz* szRecord, bool &bBlankLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
@@ -209,14 +209,14 @@ bool Loader::bExtractRow(Stz* szRecord, bool &bBlankLine)
                                          &acRecCrs,&m_oFormatter,
                                          bBlankLine);
   if (! bResult)
-    return false;
+    return EC_INVALID_VALUE;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //SP_Row spRow;
   //vTrace("%s\n"_Stz,spRow.sz(m_pRow));
   
-  return bResult;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,16 +228,16 @@ eEC Loader::eProcessRecord(Stz* szRecord, i8 nBytes)
 
   bool bBlankLine = false;
   
-  bool bValid = bExtractRow(szRecord,bBlankLine);
+  eEC eError = eExtractRow(szRecord,bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;
   
-  if (! bValid)
-    return EC_INVALID_VALUE;
+  if (EC_NONE != eError)
+    return eError;
   
   // attempt to append row into a write-behind buffer
-  eEC eError = eAppendRow();
+  eError = eAppendRow();
   
   // was there an error ?
   if (eError != EC_NONE) {
