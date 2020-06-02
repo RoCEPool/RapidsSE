@@ -77,10 +77,13 @@ bool Loader::bCsvToCrw(Stz* szCsvArea, i8 nCsvBytes, Job* pPipelineJob)
       return true;
     
     // test record length etc
-    if (EC_NONE != eValidRecord(szRecord,nRecordBytes)) {
-      AM::vIncRowsInvalid(pPipelineJob);
+    eError = eValidRecord(szRecord,nRecordBytes);
+//    if (EC_NONE != eError) {
+//      AM::vIncRowsInvalid(pPipelineJob);
+//      continue;
+//    }
+    if (! bContinueAfterError(eError,pPipelineJob))
       continue;
-    }
 
     // process that csv record into crwHash
     eError = eProcessRecord(szRecord,nRecordBytes);
