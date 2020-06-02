@@ -144,21 +144,21 @@ void RowCompactor::vCompactEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compact given row into current nub                                         */
+/* compact given single row into current nub                                  */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCompactRow(RowSingle* pInflatedRow)
+bool RowCompactor::bCompactRow(RowSingle* pSingleRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   if (m_bCollecting) {
 
-    if (bCollectSample(pInflatedRow))
+    if (bCollectSample(pSingleRow))
       return true;
     
     vPackSamples();
   }
   
-  bool bResult = bAddCrw(pInflatedRow);
+  bool bResult = bAddCrw(pSingleRow);
     
   return bResult;
 }
@@ -174,7 +174,7 @@ bool RowCompactor::bCompactRow(RowSingle* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 /* collect inflated row as a sample                                           */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCollectSample(RowSingle* pInflatedRow)
+bool RowCompactor::bCollectSample(RowSingle* pSingleRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -186,7 +186,7 @@ bool RowCompactor::bCollectSample(RowSingle* pInflatedRow)
     return false;
   }
   
-  if ( ! m_pRowSamples->bCopyRow(pInflatedRow) ) {
+  if ( ! m_pRowSamples->bCopyRow(pSingleRow) ) {
   
 #ifdef WITH_ENCODING_TRACE
     vTrace("Samples full\n"_Stz);
@@ -280,14 +280,15 @@ void RowCompactor::vAnalyzeSamples(void)
 /*----------------------------------------------------------------------------*/
 /* potentially create a tail for vch column value                             */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
+void RowCompactor::vCreateTail(Column* pCol,
+                               Row* pOuterIrw, Row* pInnerIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   SP_Row spRow;
   
 #ifdef WITH_ENCODING_TRACE
-  vTrace("Analyzing Sample: %s\n"_Stz,spRow.sz(pOuterRow));
+  vTrace("Analyzing Sample: %s\n"_Stz,spRow.sz(pOuterStagedRow));
 #endif
   
   i8 i_Col = pCol->iColumnNo();
@@ -295,15 +296,15 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) does the inner vch equal the outer vch?
   
-  char* azInnerStr = (char*)pInnerRow->szStzGet(i_Col);
-  char* azOuterStr = (char*)pOuterRow->szStzGet(i_Col);
+  char* azInnerStr = (char*)pInnerIrw->szStzGet(i_Col);
+  char* azOuterStr = (char*)pOuterIrw->szStzGet(i_Col);
   if (! StrLib::bEqualTo(azInnerStr,azOuterStr) )
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) is there already a tail for the vch?
   
-  TailStr xFindTail(pOuterRow->szStzGet(i_Col));
+  TailStr xFindTail(pOuterIrw->szStzGet(i_Col));
   
   if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
     return;
@@ -330,7 +331,7 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   // **********************************
   //
   
-  aTail->vAssign(pOuterRow->szStzGet(i_Col));
+  aTail->vAssign(pOuterIrw->szStzGet(i_Col));
  
   m_pCrwNub->vSetLastStr(i_Tail);
   
@@ -347,18 +348,18 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add given row into current crw buffer                                      */
+/* add given row from irw buffer into current crw buffer                      */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bAddCrw(Row* pInflatedRow)
+bool RowCompactor::bAddCrw(Row* pIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // 1) initially encode the inflated row
-  vEncodeHead(pInflatedRow);
+  vEncodeHead(pIrw);
   
   // 2) encode tails
 //  if (! m_pStreamDef->m_nFixedSized)
-    vEncodeTails(pInflatedRow);
+    vEncodeTails(pIrw);
   
   // 3) split encoding between head and overflow
   vSplitOver();
@@ -387,16 +388,16 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 /* add given row into current crw buffer                                      */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bAddCrw(RowSingle* pInflatedRow)
+bool RowCompactor::bAddCrw(RowSingle* pSingleRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // 1) initially encode the inflated row
-  vEncodeHead(pInflatedRow);
+  vEncodeHead(pSingleRow);
   
   // 2) encode tails
   //  if (! m_pStreamDef->m_nFixedSized)
-  vEncodeTails(pInflatedRow);
+  vEncodeTails(pSingleRow);
   
   // 3) split encoding between head and overflow
   vSplitOver();
@@ -493,11 +494,11 @@ bool RowCompactor::bAllotCrw(void)
 /*----------------------------------------------------------------------------*/
 /* encode the head                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeHead(Row* pInflatedRow)
+void RowCompactor::vEncodeHead(Row* pIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pEncoding->vEncodeRow(pInflatedRow);
+  m_pEncoding->vEncodeRow(pIrw);
   
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
@@ -508,11 +509,11 @@ void RowCompactor::vEncodeHead(Row* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 /* encode the head                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeHead(RowSingle* pInflatedRow)
+void RowCompactor::vEncodeHead(RowSingle* pIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pEncoding->vEncodeRow(pInflatedRow);
+  m_pEncoding->vEncodeRow(pIrw);
   
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
@@ -523,7 +524,7 @@ void RowCompactor::vEncodeHead(RowSingle* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeTails(Row* pInflatedRow)
+void RowCompactor::vEncodeTails(Row* pIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -540,14 +541,14 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     
     // -- vch column --
     
-    Dtm* aColVal = & pInflatedRow->m_waColVal[i_Col];
+    Dtm* aColVal = & pIrw->m_waColVal[i_Col];
     
     if (aColVal->bIsNull())
       continue;
     
     // -- non-null vch column --
     
-    Stz* azStr = pInflatedRow->szStzGet(i_Col);
+    Stz* azStr = pIrw->szStzGet(i_Col);
     if (StrLib::nLength((char*)azStr) < 8)
       continue;
     
@@ -598,7 +599,7 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeTails(RowSingle* pInflatedRow)
+void RowCompactor::vEncodeTails(RowSingle* pIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -615,7 +616,7 @@ void RowCompactor::vEncodeTails(RowSingle* pInflatedRow)
     
     // -- vch column --
     
-    Dtm* aColVal = & pInflatedRow->m_waColVal[i_Col];
+    Dtm* aColVal = & pIrw->m_waColVal[i_Col];
     
     if (aColVal->bIsNull())
       continue;

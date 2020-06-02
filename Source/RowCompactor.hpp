@@ -39,29 +39,30 @@ namespace CompactBuffers
     
     void vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples);
     void vCompactEnd(void);
-    bool bCompactRow(RowSingle* pInflatedRow);
+    bool bCompactRow(RowSingle* pSingleRow);
   
   private:
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Sampling (structural order)
   
-    bool bCollectSample(RowSingle* pInflatedRow);
+    bool bCollectSample(RowSingle* pSingleRow);
   
     void vPackSamples(void);
     void vAnalyzeSamples(void);
-    void vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow);
+    void vCreateTail(Column* pCol,
+                     Row* pOuterIrw, Row* pInnerIrw);
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Compact Row Packing
   
-    bool bAddCrw(RowSingle* pInflatedRow);
-    bool bAddCrw(Row* pInflatedRow);
+    bool bAddCrw(RowSingle* pSingleRow);
+    bool bAddCrw(Row* pRow);
     bool bAllotCrw(void);
-    void vEncodeHead(Row* pInflatedRow);
-    void vEncodeHead(RowSingle* pInflatedRow);
-    void vEncodeTails(Row* pInflatedRow);
-    void vEncodeTails(RowSingle* pInflatedRow);
+    void vEncodeHead(Row* pRow);
+    void vEncodeHead(RowSingle* pSingleRow);
+    void vEncodeTails(Row* pRow);
+    void vEncodeTails(RowSingle* pSingleRow);
     void vSplitOver(void);
 
   private:
