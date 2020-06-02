@@ -201,12 +201,12 @@ eEC Loader::eExtractRow(Stz* szRecord)
 
   m_pRow->vResetValues();
   
-  char* acRecCrs = szRecord->azChar();
+  char* azRecord = szRecord->azChar();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   eEC eError = CsvCursor::eExtractNext(m_pRow,pStreamDef,
-                                         &acRecCrs,&m_oFormatter);
+                                         azRecord,&m_oFormatter);
 //  if (! bResult)
 //    return EC_INVALID_VALUE;
 //

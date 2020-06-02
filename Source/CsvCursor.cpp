@@ -12,23 +12,23 @@
 /* extract row from record (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
 eEC CsvCursor::eExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
-                             char** aazCrs, Format* pFmt)
+                             char* azRecord, Format* pFmt)
 {
   _static_
   
-  char* acRec = *aazCrs;
+  char* azCrs = azRecord;
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // leading blanks and blank lines
   
   // skip leading spaces
   if (pFmt->m_cRecordTerminator)
-    StrLib::vSkipWhite(aazCrs);
+    StrLib::vSkipWhite(&azCrs);
   else
-    StrLib::vSkipSpaces(aazCrs);
+    StrLib::vSkipSpaces(&azCrs);
   
   // ignore blank lines
-  if (! bIsThereRecordData(*aazCrs,pFmt) ) {
+  if (! bIsThereRecordData(azCrs,pFmt) ) {
     return EC_BLANKLINE;
   }
   
@@ -45,14 +45,14 @@ eEC CsvCursor::eExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract row from record
   
-  Column* pBadCol = CsvRecord::pExtractRow(pRow,pStreamDef,aazCrs,pFmt);
+  Column* pBadCol = CsvRecord::pExtractRow(pRow,pStreamDef,&azCrs,pFmt);
   
   // any invalid field?
   if (pBadCol) {
     if (! AM::bMetadata()) {
       vWarn("Skipping row - invalid field %s in record: "_Stz,
             pBadCol->szColNm());
-      for (char* ac = acRec; ( *ac && '\n' != *ac && '\r' != *ac ); ac++)
+      for (char* ac = azCrs; ( *ac && '\n' != *ac && '\r' != *ac ); ac++)
         vTrace("%c"_Stz,*ac);
       vTrace("\n"_Stz);
     }
@@ -62,8 +62,8 @@ eEC CsvCursor::eExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
   //SP_Row spRow;
   //vTrace("%s\n"_Stz,spRow.sz(pRow));
   
-  if (**aazCrs == ' ' || **aazCrs == C_NL || **aazCrs == C_CR)
-    (*aazCrs)++;
+  if (*azCrs == ' ' || *azCrs == C_NL || *azCrs == C_CR)
+    azCrs++;
     
   
   return EC_NONE;
