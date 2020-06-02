@@ -210,7 +210,10 @@ eEC Loader::eExtractRow(Stz* szRecord, bool &bBlankLine)
                                          bBlankLine);
   if (! bResult)
     return EC_INVALID_VALUE;
-  
+ 
+  if (bBlankLine)
+    return EC_BLANKLINE;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //SP_Row spRow;
