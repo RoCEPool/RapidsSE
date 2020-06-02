@@ -53,6 +53,8 @@ void ExtractRow::operator delete(void* aAddress)
 ExtractRow::ExtractRow(Table* pTable)
 : Object(CN_EXTRACTROW)
 {
+  NEVER_REACH;
+  
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXTRACTROW,_FOOTER_);
   
   m_pTable = pTable;
