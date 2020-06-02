@@ -51,53 +51,54 @@ Loader::~Loader(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* scan csv records and convert to crw in crwHash                             */
+/* scan csv records (in read chunk) and convert to crw in crwHash             */
 /*----------------------------------------------------------------------------*/
 bool Loader::bCsvToCrw(Stz* szCsvArea, i8 nCsvBytes, Job* pPipelineJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
   Stz* szRecord;
-  i8 nRecordBytes;
+  i8   nRecordBytes;
+  eEC  eError;
   
   m_pLoadCursor->vInit(szCsvArea,nCsvBytes);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process the records in the chunk
+  // process the records from the chunk
   
   for (;;) {
 
-    if (bTerminate())
+    // test if this loader needs to terminate early
+    if (bTerminateEarly())
       return false;
 
-    // advnace to next record in the csv data area
+    // advance to next record in the csv data area
     if (! m_pLoadCursor->bNextRecord(&szRecord,nRecordBytes))
       return true;
 
-    // process that record into crwHash
-    eEC eError = eProcessRecord(szRecord,nRecordBytes);
+    // process that csv record into crwHash
+    eError = eProcessRecord(szRecord,nRecordBytes);
 
     if (EC_NONE == eError) {
-      //vTrace(aRecord);
       AM::vIncRowsProcessed(pPipelineJob);
       continue;
     }
 
-    if (EC_BLANKLINE == eError)
+    if (EC_BLANKLINE == eError) {
       continue;
-
+    }
+    
+    // we inc errors here to detect error limit as early as possible
     if (EC_INVALID_VALUE == eError) {
       AM::vIncRowsInvalid(pPipelineJob);
-      //++m_pJob_LoadTable->m_ixErrors;
       continue;
     }
 
     if (EC_MAX_ROW_LENGTH == eError) {
       AM::vIncRowsInvalid(pPipelineJob);
-      //++m_pJob_LoadTable->m_ixErrors;
       continue;
     }
 
+    // some other error?
     return false;
   }
 
@@ -114,29 +115,6 @@ bool Loader::bSetFormat(TagSet* pFmtTagSet)
   bool b = m_oFormatter.bSetFormat(pFmtTagSet);
   
   return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* terminate loading early?                                                   */
-/*----------------------------------------------------------------------------*/
-bool Loader::bTerminate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-
-//  if (m_oFormatters.m_nMaxErrors &&
-//      *m_pJob_LoadTable->m_ixErrors >= m_oFormatters.m_nMaxErrors) {
-//    vTrace("Loader -- terminating with max errors %lld %lld\n"_Stz,
-//           *m_pJob_LoadTable->m_ixErrors,m_oFormatters.m_nMaxErrors);
-//    return true;
-//  }
-//
-//  if (gpBufferPool->bLowMemory()) {
-//    vTrace("Job_SubLoader #%lld -- terminating with low memory\n"_Stz,
-//           m_iFocalId);
-//    return true;
-//  }
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,6 +252,30 @@ eEC Loader::eProcessRecord(Stz* szRecord, i8 nBytes)
   
   return EC_NONE;
 }
+
+/*----------------------------------------------------------------------------*/
+/* terminate loading early?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Loader::bTerminateEarly(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+
+//  if (m_oFormatters.m_nMaxErrors &&
+//      *m_pJob_LoadTable->m_ixErrors >= m_oFormatters.m_nMaxErrors) {
+//    vTrace("Loader -- terminating with max errors %lld %lld\n"_Stz,
+//           *m_pJob_LoadTable->m_ixErrors,m_oFormatters.m_nMaxErrors);
+//    return true;
+//  }
+//
+//  if (gpBufferPool->bLowMemory()) {
+//    vTrace("Job_SubLoader #%lld -- terminating with low memory\n"_Stz,
+//           m_iFocalId);
+//    return true;
+//  }
+
+  return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

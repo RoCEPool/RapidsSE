@@ -32,12 +32,12 @@ namespace Load
     bool bCsvToCrw(Stz* szCsvArea, i8 nCsvBytes, Job* pPipelineJob);
   
     bool bSetFormat(TagSet* pFmtTagSet);
-    bool bTerminate(void);
 
   private:
     eEC  eAppendRow(void);
     bool bExtractRow(Stz* szRecord, bool &bBlankLine);
     eEC  eProcessRecord(Stz* szRecord,  i8 nBytes);
+    bool bTerminateEarly(void);
 
     Footer* aFooter(void);
   };
