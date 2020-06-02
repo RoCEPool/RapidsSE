@@ -88,28 +88,33 @@ bool Loader::bCsvToCrw(Stz* szCsvArea, i8 nCsvBytes, Job* pPipelineJob)
     // process that csv record into crwHash
     eError = eProcessRecord(szRecord,nRecordBytes);
 
-    if (EC_NONE == eError) {
-      AM::vIncRowsProcessed(pPipelineJob);
+//    if (EC_NONE == eError) {
+//      AM::vIncRowsProcessed(pPipelineJob);
+//      continue;
+//    }
+    if (! bContinueAfterError(eError,pPipelineJob))
       continue;
-    }
-
-    if (EC_BLANKLINE == eError) {
-      continue;
-    }
     
-    // we inc errors here to detect error limit as early as possible
-    if (EC_INVALID_VALUE == eError) {
-      AM::vIncRowsInvalid(pPipelineJob);
-      continue;
-    }
+    AM::vIncRowsProcessed(pPipelineJob);
 
-    if (EC_MAX_ROW_LENGTH == eError) {
-      AM::vIncRowsInvalid(pPipelineJob);
-      continue;
-    }
-
-    // some other error?
-    return false;
+    
+//    if (EC_BLANKLINE == eError) {
+//      continue;
+//    }
+//
+//    // we inc errors here to detect error limit as early as possible
+//    if (EC_INVALID_VALUE == eError) {
+//      AM::vIncRowsInvalid(pPipelineJob);
+//      continue;
+//    }
+//
+//    if (EC_MAX_ROW_LENGTH == eError) {
+//      AM::vIncRowsInvalid(pPipelineJob);
+//      continue;
+//    }
+//
+//    // some other error?
+//    return false;
   }
 
   NEVER_REACH
