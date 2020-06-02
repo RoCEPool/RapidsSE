@@ -88,7 +88,7 @@ bool Loader::bCsvToCrw(Stz* szCsvArea, i8 nCsvBytes, Job* pPipelineJob)
       continue;
 
     // attempt to append row into crwHash
-    eError = eAppendRow();
+    eError = eAppendRow(m_pRow);
     if (! bContinueAfterError(eError,pPipelineJob))
       continue;
 
@@ -117,14 +117,14 @@ bool Loader::bSetFormat(TagSet* pFmtTagSet)
 /*----------------------------------------------------------------------------*/
 /* append row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC Loader::eAppendRow(void)
+eEC Loader::eAppendRow(RowSingle* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
   CrwBuffer* pCrwBuffer = nullptr;
   
   // use row hash to get partition
-  i8 i_Ptn = m_pTable->iToPartition(m_pRow->m_iHash);
+  i8 i_Ptn = m_pTable->iToPartition(pRow->m_iHash);
   
   // append the row into a working buffer
     
@@ -150,7 +150,7 @@ eEC Loader::eAppendRow(void)
   // append row into working buffer
   
   //pCrwBuffer->vGrabWrite();
-  bool bWasAppended = pCrwBuffer->bAppendRow(m_pRow);
+  bool bWasAppended = pCrwBuffer->bAppendRow(pRow);
   //pCrwBuffer->vDropWrite();
   
   // appended ?
@@ -171,7 +171,7 @@ eEC Loader::eAppendRow(void)
   }
   
   // reattempt insrt. Should work
-  bWasAppended = pCrwBuffer->bAppendRow(m_pRow);
+  bWasAppended = pCrwBuffer->bAppendRow(pRow);
   ASSERT(bWasAppended);
   
   return EC_NONE;

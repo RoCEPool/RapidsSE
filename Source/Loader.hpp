@@ -36,7 +36,7 @@ namespace Load
     bool bSetFormat(TagSet* pFmtTagSet);
 
   private:
-    eEC  eAppendRow(void);
+    eEC  eAppendRow(RowSingle* pRow);
     bool bContinueAfterError(eEC eError, Job* pPipelineJob);
     bool bTerminateEarly(void);
     eEC  eValidRecord(Stz* szRecord, i8 nBytes);
