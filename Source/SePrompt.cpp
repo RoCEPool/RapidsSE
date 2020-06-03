@@ -249,6 +249,8 @@ void SePrompt::vPromptLoop(void)
       m_oExtTagSet.vInsert(C_TAG_CMDLINE,iCmdLine);
     }
 
+    if (*m_pInput->szDivision()->azChar())
+      m_oExtTagSet.vInsert(C_TAG_DIVISION,m_pInput->szDivision());
     if (*m_pInput->szSection()->azChar())
       m_oExtTagSet.vInsert(C_TAG_SECTION,m_pInput->szSection());
 
@@ -404,7 +406,7 @@ void SePrompt::vDivision(Stz* szDivision)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pInput->vSection(szDivision);
+  m_pInput->vDivision(szDivision);
   
   m_iSectionNo = 0;
 }
