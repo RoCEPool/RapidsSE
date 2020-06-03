@@ -20,8 +20,8 @@
   // test for a ".." which will go up one folder
 
   // pop up one folder, but not into tenants
-  sFolderNm ".." str.equal if
-    folder[] dic.name@ "tenants" str.equal not if path[].popFolder then
+  sFolderNm ".." str.same if
+    folder[] dic.name@ "tenants" str.same not if path[].popFolder then
     setPath
     true
     exit                                                         // *EARLY EXIT*
@@ -31,29 +31,29 @@
   // test for a "~" will pop folder path till it reaches /tenants
 
   // pop up to tenants
-  sFolderNm "~" str.equal if
-    begin folder[] dic.name@ "tenants" str.equal not while path[].popFolder repeat
+  sFolderNm "~" str.same if
+    begin folder[] dic.name@ "tenants" str.same not while path[].popFolder repeat
     setPath
     true
     exit                                                         // *EARLY EXIT*
   then
 
   // set default catalogs
-  sFolderNm "~catalogs" str.equal if
+  sFolderNm "~catalogs" str.same if
     setCatalogs
     true
     exit                                                         // *EARLY EXIT*
   then
 
   // set default schemas
-  sFolderNm "~schemas" str.equal if
+  sFolderNm "~schemas" str.same if
     setSchemas
     true
     exit                                                         // *EARLY EXIT*
   then
 
   // set default tables
-  sFolderNm "~tables" str.equal if
+  sFolderNm "~tables" str.same if
     setTables
     true
     exit                                                         // *EARLY EXIT*
@@ -63,7 +63,7 @@
   // test for a "tenants" will clear folder path and set to /tenants
 
   // clear dic path and push tenants
-  sFolderNm "tenants" str.equal if
+  sFolderNm "tenants" str.same if
     path[].popAllFolders
     attachmap::tenants@ execute path[].pushFolder
     setPath

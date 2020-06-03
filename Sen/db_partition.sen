@@ -25,7 +25,7 @@
 /* check within partitions folder                                             */
 /*----------------------------------------------------------------------------*/
 : folder[].isPartitions
-  folder[] dic.name@ "partitions" str.equal
+  folder[] dic.name@ "partitions" str.same
 ;
 
 /*----------------------------------------------------------------------------*/

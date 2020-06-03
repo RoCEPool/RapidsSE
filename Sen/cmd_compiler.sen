@@ -33,7 +33,7 @@
 
   begin
 
-    input::next ";" str.equal not
+    input::next ";" str.same not
 
     while
            input::isTag  if "__arg__"  input::chars pSynTags tagSet.appendStr

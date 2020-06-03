@@ -24,14 +24,14 @@
     pSeSourceDir dir.entryType DE_REG == not continue
 
     // ignore entries which aren't .sen files
-    4 pSeSourceDir dir.entryName str.right ".hpp" str.equal if
+    4 pSeSourceDir dir.entryName str.right ".hpp" str.same if
 
       //pSeSourceDir dir.entryName .
 
       pSeSourceDir dir.entryName pVortex vortex.processHpp
 
     else
-    2 pSeSourceDir dir.entryName str.right ".h" str.equal if
+    2 pSeSourceDir dir.entryName str.right ".h" str.same if
 
       //pSeSourceDir dir.entryName .
 

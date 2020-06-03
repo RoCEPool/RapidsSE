@@ -75,7 +75,7 @@
 
   // -- -- -- -- -- -- --
   // test for bye
-  input::chars "bye" str.equal if
+  input::chars "bye" str.same if
     false exit_rt
   then
 

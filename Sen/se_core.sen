@@ -481,7 +481,7 @@ true find: CASE word.immediate!
     while
       pSubDir dir.entryName "Entry %v" .printf
 
-      4 pSubDir dir.entryName str.right ".sen" str.equal if
+      4 pSubDir dir.entryName str.right ".sen" str.same if
         pSubDir dir.entryName "Would parse %v" .printf
 
         args.senDir sSubDir str.cat

@@ -31,17 +31,17 @@
 
     // dup "path[].set %v" .printf
 
-    dup "__dicRoot" str.equal if
+    dup "__dicRoot" str.same if
       discard
       dic::root
       path[].pushFolder
     else
 
-      dup "session" str.equal if
+      dup "session" str.same if
         discard
       else
 
-        dup "tenants" str.equal if
+        dup "tenants" str.same if
           discard attachmap::tenants@ execute path[].pushFolder
         else
 

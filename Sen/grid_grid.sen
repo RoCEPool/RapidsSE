@@ -31,7 +31,7 @@
   " --subLoaders "        str.cat args.subLoaders        >str   str.cat
   " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
 
-  user::name "ray" str.equal if
+  user::name "ray" str.same if
     " --commands /Users/ray/rapidsse/Commands"  str.cat
   else
     " --commands /Users/alka/rapidsse/Commands" str.cat

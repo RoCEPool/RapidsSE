@@ -46,7 +46,7 @@
 
     str.escape str.escape to sSenLine
 
-    sSenLine ";" str.equal if
+    sSenLine ";" str.same if
       " ;" to sSenLine
     then
 
@@ -95,7 +95,7 @@
     //str.escape
     str.escape to sSenLine
 
-    sSenLine ";" str.equal if
+    sSenLine ";" str.same if
       " ;" to sSenLine
     then
 
@@ -183,7 +183,7 @@
     pSenDir dir.entryType DE_REG == not continue
 
     // ignore entries which aren't .sen files
-    4 pSenDir dir.entryName str.right ".sen" str.equal not continue
+    4 pSenDir dir.entryName str.right ".sen" str.same not continue
 
     // convert to C++
     i_File pCppFile pSenDir dir.entryName munge_ProcessSenFile

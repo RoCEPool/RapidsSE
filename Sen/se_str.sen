@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : str.isMetaToken ( s -- t|f )
 
-  dup 1 swap str.left  "<" str.equal not if discard false exit_rt then
+  dup 1 swap str.left  "<" str.same not if discard false exit_rt then
 
-  1 swap str.right ">" str.equal not if false exit_rt then
+  1 swap str.right ">" str.same not if false exit_rt then
 
   true
 ;
@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 : str.isJsonToken ( s -- t|f )
 
-  "{name:value}" str.equal
+  "{name:value}" str.same
 ;
 
 /*----------------------------------------------------------------------------*/
