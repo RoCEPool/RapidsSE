@@ -102,12 +102,15 @@
   // check if we can scan the table
   <tableNm> op__table if
 
+    CrwHash[].create
+
     // create a loader
     Loader[].create not if
       EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
       Pipein[].delete
       Operand[].newErrorMarker
       Operand[].pipeout
+      CrwHash[].delete
     else
       Pipein[].pipeout
 
