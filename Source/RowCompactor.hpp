@@ -22,6 +22,8 @@ namespace CompactBuffers
     IrwBuffer* m_pIrwSamples;  // the set of sample rows
     bool       m_bCollecting;  // has sample set been encoded?
   
+    RowSlab*   m_pIrwSampleSlab;
+  
     // - - - - - - - - - - - -
     i8 m_nTotalBuffers;        // total number of crw buffers created
     i8 m_nTotalCrws;           // total number of rows compacted

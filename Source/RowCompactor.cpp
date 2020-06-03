@@ -34,6 +34,8 @@ RowCompactor::RowCompactor(void)
   m_pIrwSamples   = nullptr;
   m_bCollecting   = false;
   
+  m_pIrwSampleSlab = nullptr;
+  
   m_nTotalBuffers = 0;
   m_nTotalCrws    = 0;
   
@@ -64,6 +66,7 @@ RowCompactor::~RowCompactor(void) noexcept(false)
   vTrace("\n"_Stz);
 #endif
   
+  delete m_pIrwSampleSlab;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,6 +89,8 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
 
   m_pIrwSamples = new IrwBuffer;
   m_bCollecting = bCollectSamples;
+  
+  m_pIrwSampleSlab = new RowSlab(m_pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
