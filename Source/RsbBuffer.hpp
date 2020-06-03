@@ -7,7 +7,9 @@ namespace DataBuffers
 {
   class RsbBuffer : public DataBuffer
   {
-  protected:
+  private:
+  
+    RowSlab m_oRowSlab;
   
     // must be last
     Footer m_xFooter;

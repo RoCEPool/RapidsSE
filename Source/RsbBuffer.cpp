@@ -18,6 +18,7 @@ __aFooterFunction(RsbBuffer)
 /*----------------------------------------------------------------------------*/
 RsbBuffer::RsbBuffer(void)
 : DataBuffer(CN_RSBBUFFER,false)
+, m_oRowSlab(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
   
