@@ -790,7 +790,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
     pCrwBuffer_upsert->vGetRow(hvRow_upsert,i_Row);
     TRACE_UPSERT( vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hvRow_upsert)); )
     
-    pEncoding_upsert->vEncodeRow(hvRow_upsert);
+    pEncoding_upsert->vEncodeInputRow(hvRow_upsert);
 
     xEntWrk.vElmSeqSize(0);
     pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer_upsert,i_Row);
