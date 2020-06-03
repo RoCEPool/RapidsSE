@@ -1,0 +1,155 @@
+/*============================================================================*/
+/* OP_toCrwHash.sen -- Convert row slab to hashed crw buffers                 */
+/*============================================================================*/
+
+" OP_toCrwHash.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: toCrwHash_PulseMarker \handler
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+
+  // pipe out the pulsemarker
+  Pipein[].pipeOut
+
+  // pipe out the stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CSVBUFFER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: toCrwHash_CsvBuffer \handler
+
+  "toCrwHash Operand:- ZK_CSVBUFFER" .
+
+  Pipein[] to Operand[]
+  nullptr to Pipein[]
+
+  // use extractRow from register0 and convert csvtoCrw
+  Operand[].csvtoCrwH
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // pipe out any full buffers
+  grid::partitions 0
+  do
+    I CrwHash[].fullCrwBuffer@ to OperandB[]
+
+    begin
+      OperandB[].isNull not
+    while
+      OperandB[].appendClose
+      OperandB[].pipeOut
+      I CrwHash[].fullCrwBuffer@ to OperandB[]
+    repeat
+  loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // fast convert the csv buffer
+  Convertor[].convert
+
+  // delete the csv buffer
+  Operand[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: toCrwHash_EosMarker \handler
+
+  //"Operand:- ZK_EOSMARKER" .verbose
+
+  // pipe out any dangling buffers
+
+  grid::partitions 0
+  do
+    I CrwHash[].crwBuffer@ to OperandB[]
+    OperandB[].isNull not if
+      OperandB[].appendClose
+      OperandB[].pipeOut
+      nullptr I CrwHash[].crwBuffer!
+    then
+  loop
+
+  // delete loader
+  loader[].delete
+  convertor[].delete
+  CrwHash[].delete
+
+  Pipein[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: toCrwHash_StartMarker \handler
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  <tableNm> locals| sTableNm |
+
+  // check if we can scan the table
+  <tableNm> op__table if
+
+    CrwHash[].create
+
+    // create a loader
+    Loader[].create not if
+      EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
+      Pipein[].delete
+      Operand[].newErrorMarker
+      Operand[].pipeout
+      CrwHash[].delete
+    else
+      Pipein[].pipeout
+
+      Convertor[].create
+      CrwHash[].create
+    then
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for toCrw req                              (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : toCrwHash_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: toCrwHash_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: toCrwHash_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: toCrwHash_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: toCrwHash_StartMarker ZK_STARTMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: toCrwHash :: toCrwHash <tableNm> ;
+
+: toCrwHash _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -350,10 +350,10 @@ begin
     start | periodicOp once | chunk $file | stageB
 
   stage stageB on all partitions on origin:
-    readChunk $file   |
-    toRowSlab $table  |
-    toCrwHfast $table |
-    stageC Hashed
+    readChunk $file  |
+    toRowSlab $table |
+    toCrwHash $table |
+    stageC hashed
 
   stage stageC on all partitions:
     insert $table | stageD
