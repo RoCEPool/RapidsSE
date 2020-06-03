@@ -40,6 +40,8 @@ RowSlab::RowSlab(StreamDef* pStreamDef)
   m_nMaxRowSize = 128;  // FOR TESTING PURPOSES
   m_nCols       = pStreamDef->nColumns(C_ALL);
   
+  m_i_Cell      = C_UNKNOWN;
+  
   for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
     m_xaColPix[i_Col].m_uAsI4 = 0;
   pStreamDef->vToColPix(m_xaColPix);
@@ -126,16 +128,16 @@ ColPix* RowSlab::axaColPix(void)
 /*----------------------------------------------------------------------------*/
 /* deposit an d8 value into next cell                                         */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vDeposit(i8& i_Cell, d8 dVal)
+void RowSlab::vDeposit(i8& i_Cell_IGNORE, d8 dVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
   // move to previous cell
-  i_Cell--;
+  m_i_Cell--;
   
   d8* daCells = (d8*)m_xWsp.ayArea();
   
-  daCells[i_Cell] = dVal;
+  daCells[m_i_Cell] = dVal;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 }
@@ -143,16 +145,16 @@ void RowSlab::vDeposit(i8& i_Cell, d8 dVal)
 /*----------------------------------------------------------------------------*/
 /* deposit an i8 value into next cell                                         */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vDeposit(i8& i_Cell, i8 iVal)
+void RowSlab::vDeposit(i8& i_Cell_IGNORE, i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
   // move to previous cell
-  i_Cell--;
+  m_i_Cell--;
   
   i8* iaCells = (i8*)m_xWsp.ayArea();
   
-  iaCells[i_Cell] = iVal;
+  iaCells[m_i_Cell] = iVal;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 }
@@ -160,17 +162,17 @@ void RowSlab::vDeposit(i8& i_Cell, i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* begin deposit of string                                                    */
 /*----------------------------------------------------------------------------*/
-char* RowSlab::azDepositString(i8& i_Cell)
+char* RowSlab::azDepositString(i8& i_Cell_IGNORE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
   char* azStzCell = (char*)m_xWsp.ayLatterHead();
   
-  i_Cell--;
+  m_i_Cell--;
 
   i8* iaCells = (i8*)m_xWsp.ayArea();
   
-  iaCells[i_Cell] = (i8)azStzCell;
+  iaCells[m_i_Cell] = (i8)azStzCell;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
@@ -230,15 +232,15 @@ i8 RowSlab::nFreeSpace(void)
 /*----------------------------------------------------------------------------*/
 /* start of new row                                                           */
 /*----------------------------------------------------------------------------*/
-bool RowSlab::bNewRow(i8& i_Cell)
+bool RowSlab::bNewRow(i8& i_Cell_IGNORE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
   if (m_xWsp.nFree() < m_nMaxRowSize)
     return false;
   
-  if (C_UNKNOWN == i_Cell)
-    i_Cell = C_FIRST_CELL + 1;
+  if (C_UNKNOWN == m_i_Cell)
+    m_i_Cell = C_FIRST_CELL + 1;
     
   m_nItems++;
   

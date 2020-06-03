@@ -19,12 +19,15 @@ namespace Rows
     i8  m_iFormat;
   
     i8  m_nBytes;      // size in bytes of this row slab
-    i8  m_nTrimmed;    //
-    i8  m_i_Trim;      // trim
+    i8  m_nTrimmed;    // how many bytes trimmed  NOT USED YET
+    i8  m_i_Trim;      // where trim occurred     NOT USED YET
 
     i8  m_nItems;      // number of items in this row-slab
     i8  m_nMaxRowSize; // max size of row
     i8  m_nCols;       // number of items in this row-slab
+  
+    i8  m_i_Cell;
+  
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // the column pix
     WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
   
