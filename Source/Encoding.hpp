@@ -56,8 +56,8 @@ namespace CompactBuffers
     ~Encoding(void) noexcept(false);
   
     i8   nBytesNeeded(void);
-    void vEncodeRow(RowSingle* pRow);
-    void vEncodeRow(Row* pRow);
+    void vEncodeInputRow(RowSingle* pInputRow);
+    void vEncodeIrwSample(Row* pIrwSample);
     void vMorphEncoding(_ColEnc* aColEnc);
     bool bOverFlowed(void);
     i8   nOverSize(void);

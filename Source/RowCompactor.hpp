@@ -22,6 +22,8 @@ namespace CompactBuffers
     IrwBuffer* m_pIrwSamples;  // the set of sample rows
     bool       m_bCollecting;  // has sample set been encoded?
   
+    RowSlab*   m_pIrwSampleSlab;
+  
     // - - - - - - - - - - - -
     i8 m_nTotalBuffers;        // total number of crw buffers created
     i8 m_nTotalCrws;           // total number of rows compacted
@@ -39,30 +41,31 @@ namespace CompactBuffers
     
     void vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples);
     void vCompactEnd(void);
-    bool bCompactSingleRow(RowSingle* pSingleRow);
+    bool bCompactSingleRow(RowSingle* pInputRow);
   
   private:
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Sampling (structural order)
   
-    bool bCollectSample(RowSingle* pSingleRow);
+    bool bCollectSample(RowSingle* pInputRow);
   
     void vPackSamples(void);
     void vAnalyzeSamples(void);
     void vCreateTail(Column* pCol,
-                     Row* pOuterIrw, Row* pInnerIrw);
+                     Row* pOuterIrwSample,
+                     Row* pInnerIrwSample);
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Compact Row Packing
   
     bool bAddCrw(Row* pIrwSample);
-    bool bAddCrw(RowSingle* pSingleRow);
+    bool bAddCrw(RowSingle* pInputRow);
     bool bAllotCrw(void);
     void vEncodeHead(Row* pIrwSample);
-    void vEncodeHead(RowSingle* pSingleRow);
+    void vEncodeHead(RowSingle* pInputRow);
     void vEncodeTails(Row* pIrwSample);
-    void vEncodeTails(RowSingle* pSingleRow);
+    void vEncodeTails(RowSingle* pInputRow);
     void vEncodeSplit(void);
 
   private:

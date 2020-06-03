@@ -123,7 +123,7 @@ i8 Encoding::nBytesNeeded(void)
 /*----------------------------------------------------------------------------*/
 /* encode row                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeRow(RowSingle* pRow)
+void Encoding::vEncodeInputRow(RowSingle* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -135,7 +135,7 @@ void Encoding::vEncodeRow(RowSingle* pRow)
 /*----------------------------------------------------------------------------*/
 /* encode row                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeRow(Row* pRow)
+void Encoding::vEncodeIrwSample(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
