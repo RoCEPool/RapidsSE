@@ -9,6 +9,10 @@
 /*----------------------------------------------------------------------------*/
 : dump_SeekOffsets \handler
 
+  <operand> "seekOffset" str.equal if
+    "Would dump seekOffset pipein" .
+  then
+
   ZK_SEEKOFFSETS_handler
 ;
 
@@ -33,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: dump :: dump ;
+cmdSyntax: dump :: dump <operand> ;
 
 : dump _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 

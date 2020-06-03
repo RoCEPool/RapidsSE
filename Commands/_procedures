@@ -350,7 +350,7 @@ begin
     start            |
     periodicOp once  |
     chunk $file      |
-    dump             |
+    dump  seekOffset |
     stageB
 
   stage stageB on all partitions on origin:
