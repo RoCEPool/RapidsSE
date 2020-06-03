@@ -1240,7 +1240,8 @@ void vTest20(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RowSlab* pRowSlab = new RowSlab(pStreamDef);
+  RowSlab* pRowSlab = new RowSlab;
+  pRowSlab->vInitPix(pStreamDef);
   
   i8 nStartFreeSpace = pRowSlab->nFreeSpace();
 

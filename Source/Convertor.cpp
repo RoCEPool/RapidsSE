@@ -42,8 +42,9 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_dCalc   = 0.0;
   m_nChars  = 0;
   
-  m_pRowSlab = new RowSlab(m_pStreamDef);
-  
+  m_pRowSlab = new RowSlab;
+  m_pRowSlab->vInitPix(pStreamDef);
+
   m_pFmt->vShow();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);

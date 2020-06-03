@@ -16,7 +16,7 @@ __aFooterFunction(RowSlab)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowSlab::RowSlab(StreamDef* pStreamDef)
+RowSlab::RowSlab(void)
 : Object(CN_ROWSLAB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -38,17 +38,18 @@ RowSlab::RowSlab(StreamDef* pStreamDef)
   
   m_nItems      = 0;
   m_nMaxRowSize = 128;  // FOR TESTING PURPOSES
-  m_nCols       = pStreamDef->nColumns(C_ALL);
+  m_nCols       = C_UNKNOWN;
   
   m_i_Cell      = C_UNKNOWN;
   
   for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
     m_xaColPix[i_Col].m_uAsI4 = 0;
-  pStreamDef->vToColPix(m_xaColPix);
   
-  // m_xWsp
+#ifdef WITH_DEBUG_VERSION
+  m_xWsp.vZero(CN_ROWSLAB);
+#endif
 
-  //_checkInitialised_(CN_ROWSLAB);
+  _checkInitialised_(CN_ROWSLAB);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 }
@@ -228,6 +229,22 @@ i8 RowSlab::nFreeSpace(void)
   i8 nFree = m_xWsp.nFree();
   
   return nFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* initilize col pix                                                          */
+/*----------------------------------------------------------------------------*/
+void RowSlab::vInitPix(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  m_nCols       = pStreamDef->nColumns(C_ALL);
+  
+  m_i_Cell      = C_UNKNOWN;
+  
+  for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
+    m_xaColPix[i_Col].m_uAsI4 = 0;
+  pStreamDef->vToColPix(m_xaColPix);
 }
 
 /*----------------------------------------------------------------------------*/

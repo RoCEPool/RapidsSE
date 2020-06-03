@@ -90,7 +90,8 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   m_pIrwSamples = new IrwBuffer;
   m_bCollecting = bCollectSamples;
   
-  m_pIrwSampleSlab = new RowSlab(m_pStreamDef);
+  m_pIrwSampleSlab = new RowSlab;
+  m_pIrwSampleSlab->vInitPix(m_pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/

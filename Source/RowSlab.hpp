@@ -31,8 +31,6 @@ namespace Rows
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // the column pix
     WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
   
-    i8  m__spare[16];
-
     // must be last
     Footer m_xFooter;
   
@@ -40,7 +38,7 @@ namespace Rows
     void* operator new(size_t);
     void  operator delete(void*);
 
-    RowSlab(StreamDef* pStreamDef);
+    RowSlab(void);
    ~RowSlab(void) noexcept(false);
       
     i8    iCell(i8 i_Row, i8 i_Cell);
@@ -55,6 +53,7 @@ namespace Rows
     void  vDumpAllRows(void);
     void  vDumpRow(i8 i_Row);
     i8    nFreeSpace(void);
+    void  vInitPix(StreamDef* pStreamDef);
     bool  bNewRow(void);
     m8*   amRowCells(i8 i_Row);
     i8    nRows(void);
