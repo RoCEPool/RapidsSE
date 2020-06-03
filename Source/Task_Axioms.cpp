@@ -73,11 +73,11 @@ void Task::vAddAxioms(void)
   // -- -- -- -- -- -- --
   // test for discarding
   "  compiler::isDiscarding if"
-  "    input::chars \"?else\" str.equal if"
+  "    input::chars \"?else\" str.same if"
   "      input::chars word::find execute"
   "      reenter"
   "    then"
-  "    input::chars \"?]\" str.equal if"
+  "    input::chars \"?]\" str.same if"
   "      input::chars word::find execute"
   "      reenter"
   "    then"
