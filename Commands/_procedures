@@ -63,7 +63,7 @@ begin
 end;
 
 /*----------------------------------------------------------------------------*/
-/* drop catalog                                                                */
+/* drop catalog                                                               */
 /*----------------------------------------------------------------------------*/
 procedure drop catalog
   parameters $catalogNm
@@ -221,7 +221,7 @@ end
 ;
 
 /*----------------------------------------------------------------------------*/
-/* scan rows from a partition of a table                                     */
+/* scan rows from a partition of a table                                      */
 /*----------------------------------------------------------------------------*/
 procedure partitionScan
   parameters $table $partition 
@@ -350,7 +350,9 @@ begin
     start | periodicOp once | chunk $file | stageB
 
   stage stageB on all partitions on origin:
-    readChunk $file | toCrwHfast $table | stageC Hashed
+    readChunk $file   |
+    toCrwHfast $table |
+    stageC Hashed
 
   stage stageC on all partitions:
     insert $table | stageD
@@ -360,7 +362,6 @@ begin
 
 end
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */
