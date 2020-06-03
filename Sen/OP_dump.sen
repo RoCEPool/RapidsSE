@@ -5,6 +5,14 @@
 " OP_dump.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_SEEKOFFSETS ...                                                      */
+/*----------------------------------------------------------------------------*/
+: dump_SeekOffsets \handler
+
+  ZK_SEEKOFFSETS_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* dump request                                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : dump_req \operator
@@ -12,6 +20,8 @@
   LogReqEntry SEED_REQ
 
   op__topology
+
+  find: dump_SeekOffsets ZK_SEEKOFFSETS op[].handler!
 
   op__loop
 
