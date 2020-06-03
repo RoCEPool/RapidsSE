@@ -134,6 +134,7 @@ assert::stack_0
         "OP_listTenants.sen"          include
 
         "OP_nodeinfo.sen"             include
+        "OP_noop.sen"                 include
 
         "OP_output.sen"               include
 

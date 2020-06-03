@@ -351,6 +351,7 @@ begin
 
   stage stageB on all partitions on origin:
     readChunk $file   |
+    noop              |
     toCrwHfast $table |
     stageC Hashed
 
