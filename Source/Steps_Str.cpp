@@ -27,6 +27,7 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.removeTailInt"_Stz,&Step::vStrRemoveTailInt);
   vAddStep("str.replace"_Stz,      &Step::vStrReplace);
   vAddStep("str.right"_Stz,        &Step::vStrRight);
+  vAddStep("str.same"_Stz,         &Step::vStrSame);
   vAddStep("str.sub"_Stz,          &Step::vStrSub);
   vAddStep("str.tailInt"_Stz,      &Step::vStrTailInt);
   vAddStep("str.toStrVec"_Stz,     &Step::vStrToStrVec);
@@ -428,6 +429,29 @@ void Step::vStrRight(void)
   StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
   
   m_pDataStack->vPushStr(sSubStr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.same -- test if two strings are same                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vStrSame(void)
+{
+  ENTRY();
+  
+  Datum xStringA;
+  m_pDataStack->vPopVal(xStringA,__func__);
+  
+  Datum xStringB;
+  m_pDataStack->vPopVal(xStringB,__func__);
+
+  // get the arguments
+  
+  i8 iEqual = StrLib::bSame(xStringA.azChar(),
+                            xStringB.azChar());
+  
+  m_pDataStack->vPushInt(iEqual);
   
   EXIT();
 }

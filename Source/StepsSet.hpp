@@ -1347,6 +1347,7 @@ public:
   void vStrRemoveTailInt(void);
   void vStrReplace(void);
   void vStrRight(void);
+  void vStrSame(void);
   void vStrSub(void);
   void vStrTailInt(void);
   void vStrToStrVec(void);

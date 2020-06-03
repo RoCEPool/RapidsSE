@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : dump_SeekOffsets \handler
 
-  <operand> "seekOffset" str.equal if
-    "Would dump seekOffset pipein" .
+  <operand> "seekOffset" str.same if
+    "Would dump seekOffset" .
   then
 
   ZK_SEEKOFFSETS_handler
