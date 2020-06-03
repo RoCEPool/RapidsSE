@@ -120,6 +120,8 @@ void RowCompactor::vCompactEnd(void)
   m_pEncoding   = nullptr;
   m_pCrwNub     = nullptr;
   m_pStreamDef  = nullptr;
+  
+  //m_pIrwSampleSlab->vDumpAllRows();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,6 +160,9 @@ bool RowCompactor::bCompactSingleRow(RowSingle* pInputRow)
 bool RowCompactor::bCollectSample(RowSingle* pInputRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  bool b = RowUte::bAddSingleToSlab(m_pIrwSampleSlab,pInputRow,m_pStreamDef);
+  
   
   if (m_pIrwSamples->nItems() >= C_SAMPLE_ROWS) {
 #ifdef WITH_ENCODING_TRACE

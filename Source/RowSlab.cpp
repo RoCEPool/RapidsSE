@@ -198,8 +198,9 @@ void RowSlab::vDumpAllRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  vTrace("RowSlab...\n"_Stz);
-  for (i8 i_Row = 0; i_Row < this->nRows(); i_Row++)
+  i8 nRows = this->nRows();
+  vTrace("RowSlab of %lld rows...\n"_Stz,nRows);
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++)
     vDumpRow(i_Row);
 }
 

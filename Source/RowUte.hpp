@@ -9,8 +9,9 @@ namespace Rows
   {
   public:
    
-    bool bAddSingleToSlab(RowSlab* pRowSlab, RowSingle* pRowSingle,
-                          StreamDef* pStreamDef);
+    static bool bAddSingleToSlab(RowSlab* pRowSlab,
+                                 RowSingle* pRowSingle,
+                                 StreamDef* pStreamDef);
   };
 }
 
