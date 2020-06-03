@@ -1248,11 +1248,11 @@ void vTest20(void)
   
   for (i8 i_Row = 0; i_Row < 1000; i_Row++) {
 
-    bool bSuccess = pRowSlab->bNewRow(i_Cell);
+    bool bSuccess = pRowSlab->bNewRow();
     for (i8 i_Col = 0; i_Col < 9; i_Col++)
-      pRowSlab->vDeposit(i_Cell,i_Row * 10 + i_Col);
+      pRowSlab->vDeposit(i_Row * 10 + i_Col);
       
-    char* azStzCell = pRowSlab->azDepositString(i_Cell);
+    char* azStzCell = pRowSlab->azDepositString();
     StrLib::vCopy(azStzCell,"abcdefghjklmnopqrstuvwxyzABCD32");
     pRowSlab->vDepositedString(33);
   }

@@ -21,9 +21,7 @@ namespace Load
     i8         m_iCol;
     i8         m_i_Fld;
     i8         m_i_Rec;
-  
-    i8         m_i_Cell;
-  
+    
     Column*    m_pCol;
     eCT        m_eCol;
   
@@ -281,7 +279,7 @@ namespace Load
 
     xBol = snBol.i(&m_acChr,m_pCol,m_pFmt);
   
-    m_pRowSlab->vDeposit(m_i_Cell,xBol);
+    m_pRowSlab->vDeposit(xBol);
     m_oDatum.vBol(xBol);
 
     vSprintBoolean();
@@ -299,7 +297,7 @@ namespace Load
 
     xDte = snDte.i(&m_acChr,m_pCol,m_pFmt);
   
-    m_pRowSlab->vDeposit(m_i_Cell,xDte);
+    m_pRowSlab->vDeposit(xDte);
     m_oDatum.vDte(xDte);
 
     vSprintDate();
@@ -317,7 +315,7 @@ namespace Load
 
     xBcd = snBcd.i(&m_acChr,m_pCol,m_pFmt);
   
-    m_pRowSlab->vDeposit(m_i_Cell,xBcd);
+    m_pRowSlab->vDeposit(xBcd);
     m_oDatum.vBcd(xBcd);
   
     vSprintDecimal();
@@ -335,7 +333,7 @@ namespace Load
 
     xFlt = snFlt.d(&m_acChr,m_pCol,m_pFmt);
   
-    m_pRowSlab->vDeposit(m_i_Cell,xFlt.m_dFlt);
+    m_pRowSlab->vDeposit(xFlt.m_dFlt);
     m_oDatum.vFlt(xFlt);
 
     vSprintFloat();
@@ -369,7 +367,7 @@ namespace Load
 
     xInt = snInt.i(&m_acChr,m_pCol,m_pFmt);
   
-    m_pRowSlab->vDeposit(m_i_Cell,xInt);
+    m_pRowSlab->vDeposit(xInt);
     m_oDatum.vInt(xInt);
 
     vSprintInteger();
@@ -387,7 +385,7 @@ namespace Load
 
     xIvl = snIvl.i(&m_acChr,m_pCol,m_pFmt);
   
-    m_pRowSlab->vDeposit(m_i_Cell,xIvl);
+    m_pRowSlab->vDeposit(xIvl);
     m_oDatum.vIvl(xIvl);
 
     vSprintInterval();
@@ -405,7 +403,7 @@ namespace Load
 
     xTme = snTme.i(&m_acChr,m_pCol,m_pFmt);
   
-    m_pRowSlab->vDeposit(m_i_Cell,xTme);
+    m_pRowSlab->vDeposit(xTme);
     m_oDatum.vTme(xTme);
 
     vSprintTime();
@@ -423,7 +421,7 @@ namespace Load
 
     xTsp = snTsp.i(&m_acChr,m_pCol,m_pFmt);
   
-    m_pRowSlab->vDeposit(m_i_Cell,xTsp);
+    m_pRowSlab->vDeposit(xTsp);
     m_oDatum.vTsp(xTsp);
 
     vSprintTimestamp();
@@ -443,7 +441,7 @@ namespace Load
 
     m_oDatum = snVch.sz(&m_acChr,m_pCol,m_pFmt,bSawEnclosedLeading,nChars);
   
-    char* szStr = m_pRowSlab->azDepositString(m_i_Cell);
+    char* szStr = m_pRowSlab->azDepositString();
     StrLib::vCopy(szStr,m_oDatum.azChar());
     m_pRowSlab->vDepositedString(nChars+1);
     ASSERT(nChars + 1 == StrLib::nSize(szStr));

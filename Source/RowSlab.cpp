@@ -128,7 +128,7 @@ ColPix* RowSlab::axaColPix(void)
 /*----------------------------------------------------------------------------*/
 /* deposit an d8 value into next cell                                         */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vDeposit(i8& i_Cell_IGNORE, d8 dVal)
+void RowSlab::vDeposit(d8 dVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
@@ -145,7 +145,7 @@ void RowSlab::vDeposit(i8& i_Cell_IGNORE, d8 dVal)
 /*----------------------------------------------------------------------------*/
 /* deposit an i8 value into next cell                                         */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vDeposit(i8& i_Cell_IGNORE, i8 iVal)
+void RowSlab::vDeposit(i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
@@ -162,7 +162,7 @@ void RowSlab::vDeposit(i8& i_Cell_IGNORE, i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* begin deposit of string                                                    */
 /*----------------------------------------------------------------------------*/
-char* RowSlab::azDepositString(i8& i_Cell_IGNORE)
+char* RowSlab::azDepositString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
@@ -232,7 +232,7 @@ i8 RowSlab::nFreeSpace(void)
 /*----------------------------------------------------------------------------*/
 /* start of new row                                                           */
 /*----------------------------------------------------------------------------*/
-bool RowSlab::bNewRow(i8& i_Cell_IGNORE)
+bool RowSlab::bNewRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 

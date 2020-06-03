@@ -34,7 +34,6 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_iCol    = 1;
   m_i_Fld   = 0;
   m_i_Rec   = 0;
-  m_i_Cell  = C_UNKNOWN;
   
   m_pCol    = nullptr;
   m_eCol    = CT_NONE;
@@ -111,7 +110,7 @@ bool Convertor::bInspect(char* azSrc)
     
     // each record thats fits
     
-    if (! m_pRowSlab->bNewRow(m_i_Cell))
+    if (! m_pRowSlab->bNewRow())
       break;
     
     while (bMoreFields()) {

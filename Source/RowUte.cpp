@@ -18,8 +18,7 @@ bool RowUte::bAddSingleToSlab(RowSlab* pRowSlab, RowSingle* pRowSingle,
   
   // begin a new slab row, return false if no space
   
-  i8 i_Cell;
-  if (! pRowSlab->bNewRow(i_Cell))
+  if (! pRowSlab->bNewRow())
     return false;
 
   
@@ -35,7 +34,7 @@ bool RowUte::bAddSingleToSlab(RowSlab* pRowSlab, RowSingle* pRowSingle,
     if (DM_VCH != pCol->eDatum()) {
       
       // copy word from row single to row slab
-      pRowSlab->vDeposit(i_Cell,pRowSingle->m_waColVal[i_Col]);
+      pRowSlab->vDeposit(pRowSingle->m_waColVal[i_Col]);
       
       continue;
     }
@@ -44,12 +43,12 @@ bool RowUte::bAddSingleToSlab(RowSlab* pRowSlab, RowSingle* pRowSingle,
     
     // check for null
     if (pRowSingle->m_waColVal[i_Col].bIsNull()) {
-      pRowSlab->vDeposit(i_Cell,C_DATUM_NULL);
+      pRowSlab->vDeposit(C_DATUM_NULL);
       continue;
     }
         
     // copy vch from row single to row slab
-    char* azTgt = pRowSlab->azDepositString(i_Cell);
+    char* azTgt = pRowSlab->azDepositString();
     
     char* azSrc = pRowSingle->m_waColVal[i_Col].m_azStr;
     i8 nLen = StrLib::nCopy(azTgt,azSrc);

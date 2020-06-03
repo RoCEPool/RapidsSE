@@ -48,14 +48,14 @@ namespace Rows
     m8*   amCellVector(void);
     ColPix* axaColPix(void);
     i8    nCols(void);
-    void  vDeposit(i8& i_Cell, d8 dVal);
-    void  vDeposit(i8& i_Cell, i8 iVal);
-    char* azDepositString(i8& i_Cell);
+    void  vDeposit(d8 dVal);
+    void  vDeposit(i8 iVal);
+    char* azDepositString(void);
     void  vDepositedString(i8 nSize);
     void  vDumpAllRows(void);
     void  vDumpRow(i8 i_Row);
     i8    nFreeSpace(void);
-    bool  bNewRow(i8& i_Cell);
+    bool  bNewRow(void);
     m8*   amRowCells(i8 i_Row);
     i8    nRows(void);
     void  vSlabReport(void);
