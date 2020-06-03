@@ -24,6 +24,7 @@ shortcut etc  etcTest firstArg secondArg;
 shortcut etc3 etcTest createtable T (a integer, b varchar(32));
 shortcut fn   forget node node9 abc def;
 shortcut ln   show nodes;
+shortcut nl   "../FASTLOAD/commands/_normalLoad";
 shortcut o    olist;
 shortcut pt   _passthru;
 shortcut r    _lineitemrjh;
