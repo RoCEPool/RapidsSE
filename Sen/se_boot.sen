@@ -107,6 +107,7 @@ assert::stack_0
         "OP_dropSchema.sen"           include
         "OP_dropTable.sen"            include
         "OP_dropTenant.sen"           include
+        "OP_dump.sen"                 include
         "OP_dumpIndex.sen"            include
         "OP_dumpTable.sen"            include
 

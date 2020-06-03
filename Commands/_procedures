@@ -347,7 +347,11 @@ procedure fload
 begin
 
   stage stageA on origin:
-    start | periodicOp once | chunk $file | stageB
+    start            |
+    periodicOp once  |
+    chunk $file      |
+    dump             |
+    stageB
 
   stage stageB on all partitions on origin:
     readChunk $file  |
@@ -356,10 +360,13 @@ begin
     stageC hashed
 
   stage stageC on all partitions:
-    insert $table | stageD
+    insert $table    |
+    stageD
 
   stage stageD on origin:
-    progress "FLoad" | sink | stageA
+    progress "FLoad" |
+    sink             |
+    stageA
 
 end
 ;
