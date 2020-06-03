@@ -180,11 +180,11 @@ char* RowSlab::azDepositString(i8& i_Cell)
 /*----------------------------------------------------------------------------*/
 /* take bytes for deposited string                                            */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vDepositedString(i8 nBytes)
+void RowSlab::vDepositedString(i8 nSize)
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  m_xWsp.vTakeHead(nBytes);
+  m_xWsp.vTakeHead(nSize);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 }

@@ -48,7 +48,7 @@ namespace Rows
     void  vDeposit(i8& i_Cell, d8 dVal);
     void  vDeposit(i8& i_Cell, i8 iVal);
     char* azDepositString(i8& i_Cell);
-    void  vDepositedString(i8 nBytes);
+    void  vDepositedString(i8 nSize);
     void  vDumpAllRows(void);
     void  vDumpRow(i8 i_Row);
     i8    nFreeSpace(void);

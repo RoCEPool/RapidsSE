@@ -7,7 +7,10 @@ namespace Rows
 {
   class RowUte
   {
-  public:   
+  public:
+   
+    bool bAddSingleToSlab(RowSlab* pRowSlab, RowSingle* pRowSingle,
+                          StreamDef* pStreamDef);
   };
 }
 

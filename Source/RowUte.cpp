@@ -8,6 +8,57 @@
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* add a row single to row slab                                               */
+/*----------------------------------------------------------------------------*/
+bool RowUte::bAddSingleToSlab(RowSlab* pRowSlab, RowSingle* pRowSingle,
+                              StreamDef* pStreamDef)
+{
+  _static_
+  
+  // begin a new slab row, return false if no space
+  
+  i8 i_Cell;
+  if (! pRowSlab->bNewRow(i_Cell))
+    return false;
+
+  
+  // copy values from row single into row slab
+  
+  i8 nCol = pStreamDef->nColumns(C_ALL);
+  for (i8 i_Col = 0; i_Col < nCol; i_Col++) {
+    
+    Column* pCol = pStreamDef->pGetColumn(i_Col);
+    
+    // -- single word values --
+    
+    if (DM_VCH != pCol->eDatum()) {
+      
+      // copy word from row single to row slab
+      pRowSlab->vDeposit(i_Cell,pRowSingle->m_waColVal[i_Col]);
+      
+      continue;
+    }
+
+    // -- vch string values --
+    
+    // check for null
+    if (pRowSingle->m_waColVal[i_Col].bIsNull()) {
+      pRowSlab->vDeposit(i_Cell,C_DATUM_NULL);
+      continue;
+    }
+        
+    // copy vch from row single to row slab
+    char* azTgt = pRowSlab->azDepositString(i_Cell);
+    
+    char* azSrc = pRowSingle->m_waColVal[i_Col].m_azStr;
+    i8 nLen = StrLib::nCopy(azTgt,azSrc);
+
+    pRowSlab->vDepositedString(nLen + 1);
+  }
+  
+  return true;
+}
 
 /*============================================================================*/
 /* end                                                                        */
