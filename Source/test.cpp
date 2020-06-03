@@ -1303,7 +1303,12 @@ void vTest20(void)
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
 {
-  
+  vTrace("This is RsbBuffer Test; sizeof(RsbBuffer) = %lld(B)\n"_Stz,
+         sizeof(RsbBuffer));
+
+  RsbBuffer* pRsbBuffer = new RsbBuffer;
+
+  delete pRsbBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
