@@ -126,9 +126,9 @@ void Step::vStrEqual(void)
 
   // get the arguments
   
+  // ray : 4 jun 2020 : this was a same test. made this a strict equality test
   i8 iEqual = StrLib::bEqualTo(xStringA.azChar(),
-                               xStringB.azChar(),
-                               C_NO_CASE);
+                               xStringB.azChar());
   
   m_pDataStack->vPushInt(iEqual);
   
