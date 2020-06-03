@@ -149,7 +149,7 @@ assert::stack_0
         "OP_python.sen"               include
         "OP_pythonShell.sen"          include
 
-        "OP_readChunk.sen"            include
+        "OP_rdCsvChunk.sen"           include
         "OP_receiver.sen"             include
         "OP_recurring.sen"            include
         "OP_report.sen"               include
