@@ -484,7 +484,7 @@ public:
   void vInfoSetNew(void);
   void vInfoSetNextRow(void);
   void vInfoSetPipeOut(void);
-  void vInfoSetReadChunk(void);
+  void vInfoSetRdCsvChunk(void);
   void vInfoSetSet(void);
   void vInfoSetWriteCsv(void);
 

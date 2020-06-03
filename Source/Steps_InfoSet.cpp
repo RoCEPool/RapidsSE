@@ -25,7 +25,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].new"_Stz,            &Step::vInfoSetNew);
   vAddStep("InfoSet[].nextRow"_Stz,        &Step::vInfoSetNextRow);
   vAddStep("InfoSet[].pipeOut"_Stz,        &Step::vInfoSetPipeOut);
-  vAddStep("InfoSet[].readChunk"_Stz,      &Step::vInfoSetReadChunk);
+  vAddStep("InfoSet[].rdCsvChunk"_Stz,     &Step::vInfoSetRdCsvChunk);
   vAddStep("InfoSet[].set"_Stz,            &Step::vInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vInfoSetWriteCsv);
 }
@@ -419,7 +419,7 @@ void Step::vInfoSetPipeOut(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].readChunk -- reach a chunk from file given the infoSet           */
 /*----------------------------------------------------------------------------*/
-void Step::vInfoSetReadChunk(void)
+void Step::vInfoSetRdCsvChunk(void)
 {
   ENTRY();
   

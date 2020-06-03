@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_readChunk.sen -- Operator readChunk                                     */
+/* OP_rdCsvChunk.sen -- Op Read Csv Chunk                                     */
 /*============================================================================*/
 
-" OP_readChunk.sen" .verbose
+" OP_rdCsvChunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_SEEKOFFSETS ...                                                      */
 /*----------------------------------------------------------------------------*/
-: readChunk_SeekOffsets \handler
+: rdCsvChunk_SeekOffsets \handler
 
   Pipein[] to InfoSet[]
   nullptr to Pipein[]
@@ -16,7 +16,7 @@
   begin
     row[].isNull
   not while
-    row[].get InfoSet[].readChunk to Operand[]
+    row[].get InfoSet[].rdCsvChunk to Operand[]
     Operand[].pipeout
     InfoSet[].nextRow to row[]
   repeat
@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: readChunk_StartMarker \handler
+: rdCsvChunk_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_EXITMARKER ...                                                       */
 /*----------------------------------------------------------------------------*/
-: readChunk_ExitMarker \handler
+: rdCsvChunk_ExitMarker \handler
 
   //"Operand:- ZK_EXITMARKER" .verbose
   File0[].isNull not if
@@ -60,15 +60,15 @@
 /*----------------------------------------------------------------------------*/
 /* execute for reachChunk req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : readChunk_req \operator
+ : rdCsvChunk_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: readChunk_ExitMarker    ZK_EXITMARKER    op[].handler!
-  find: readChunk_SeekOffsets   ZK_SEEKOFFSETS   op[].handler!
-  find: readChunk_StartMarker   ZK_STARTMARKER   op[].handler!
+  find: rdCsvChunk_ExitMarker    ZK_EXITMARKER    op[].handler!
+  find: rdCsvChunk_SeekOffsets   ZK_SEEKOFFSETS   op[].handler!
+  find: rdCsvChunk_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop
 
@@ -81,9 +81,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: readChunk :: readChunk <fileNm> ;
+cmdSyntax: rdCsvChunk :: rdCsvChunk <fileNm> ;
 
-: readChunk _cmdTags tagCopy: op_tags
+: rdCsvChunk _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

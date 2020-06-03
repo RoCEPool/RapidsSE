@@ -209,7 +209,7 @@ begin
     start | periodicOp once | chunk $file | stageB
 
   stage stageB on all partitions on origin:
-    readChunk $file | toCrwH $table | stageC Hashed
+    rdCsvChunk $file | toCrwH $table | stageC Hashed
 
   stage stageC on all partitions:
     insert $table | stageD
@@ -354,7 +354,7 @@ begin
     stageB
 
   stage stageB on all partitions on origin:
-    readChunk $file  |
+    rdCsvChunk $file |
     toRowSlab $table |
     toCrwHash $table |
     stageC hashed
