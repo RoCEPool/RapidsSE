@@ -37,7 +37,7 @@ void Step::vRegPipeinBide(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].delete -- operand delete                                         */
+/* Pipein[].delete -- operand delete                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinDelete(void)
 {
@@ -51,7 +51,7 @@ void Step::vRegPipeinDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].get -- fetch operand                                             */
+/* Pipein[].get -- fetch operand                                              */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinGet(void)
 {
@@ -63,7 +63,7 @@ void Step::vRegPipeinGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].isNull -- is operand null ?                                      */
+/* Pipein[].isNull -- is operand null ?                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinIsNull(void)
 {
@@ -75,7 +75,7 @@ void Step::vRegPipeinIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].kind -- decode operand into its operand kind                     */
+/* Pipein[].kind -- decode operand into its operand kind                      */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinKind(void)
 {
@@ -86,22 +86,22 @@ void Step::vRegPipeinKind(void)
   eCN eClass_op = m_pRegSet->m_xpPipein->eClass();
   switch (eClass_op) {
     
-    case CN_CRWBUFFER:       eOperand = ZK_CRWBUFFER;       break;
-    case CN_CSVBUFFER:       eOperand = ZK_CSVBUFFER;       break;
-    case CN_ENTBUFFER:       eOperand = ZK_ENTBUFFER;       break;
+    case CN_CRWBUFFER:            eOperand = ZK_CRWBUFFER;       break;
+    case CN_CSVBUFFER:            eOperand = ZK_CSVBUFFER;       break;
+    case CN_ENTBUFFER:            eOperand = ZK_ENTBUFFER;       break;
     case CN_INFOSET  : {
       InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpPipein);
       switch(pInfoSet->eOpInfoSet()) {
-        case OI_LOCKSTATS:      eOperand = ZK_LOCKSTATS;      break;
-        case OI_NODEINFO:       eOperand = ZK_NODEINFO;       break;
-        case OI_PROGRESSUNITS:  eOperand = ZK_PROGRESSUNITS;  break;
-        case OI_SEEKOFFSETS:    eOperand = ZK_SEEKOFFSETS;    break;
-        case OI_TOTALUNITS:     eOperand = ZK_TOTALUNITS;     break;
+        case OI_LOCKSTATS:        eOperand = ZK_LOCKSTATS;       break;
+        case OI_NODEINFO:         eOperand = ZK_NODEINFO;        break;
+        case OI_PROGRESSUNITS:    eOperand = ZK_PROGRESSUNITS;   break;
+        case OI_SEEKOFFSETS:      eOperand = ZK_SEEKOFFSETS;     break;
+        case OI_TOTALUNITS:       eOperand = ZK_TOTALUNITS;      break;
         default: ASSERT(0);
       }
       break;
-  }
-    case CN_IRWBUFFER:       eOperand = ZK_IRWBUFFER;       break;
+    }
+    case CN_IRWBUFFER:            eOperand = ZK_IRWBUFFER;       break;
     case CN_MARKER: {
       Marker* pMarker = _pMarker(*m_pRegSet->m_xpPipein);
 
@@ -121,9 +121,10 @@ void Step::vRegPipeinKind(void)
        }
       break;
     }
-    case CN_SRTBUFFER:       eOperand = ZK_SRTBUFFER;       break;
-    case CN_STREAMDEF:       eOperand = ZK_STREAMDEF;       break;
-    case CN_STREAMSET:       eOperand = ZK_STREAMSET;       break;
+    case CN_RSBBUFFER:            eOperand = ZK_RSBBUFFER;       break;
+    case CN_SRTBUFFER:            eOperand = ZK_SRTBUFFER;       break;
+    case CN_STREAMDEF:            eOperand = ZK_STREAMDEF;       break;
+    case CN_STREAMSET:            eOperand = ZK_STREAMSET;       break;
       
     default:
       RASSERT(0);
@@ -168,7 +169,7 @@ void Step::vRegPipeinPipeOut(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].pipeToJob -- append operand onto the pipeline job buffer queue   */
+/* Pipein[].pipeToJob -- append operand onto the pipeline job buffer queue    */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinPipeToJob(void)
 {
@@ -186,7 +187,7 @@ void Step::vRegPipeinPipeToJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].set -- set operand                                               */
+/* Pipein[].set -- set operand                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinSet(void)
 {
