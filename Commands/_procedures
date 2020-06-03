@@ -358,7 +358,7 @@ begin
 
   stage stageB on all partitions on origin:
     rdCsvChunk $file |
-    toRowSlab $table |
+    toRsb $table     |
     toCrwHash $table |
     stageC hashed
 

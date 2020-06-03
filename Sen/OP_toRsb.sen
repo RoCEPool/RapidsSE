@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_toRowSlab.sen -- Operator to row slab                                   */
+/* OP_toRsb.sen -- Operator to row slab                                       */
 /*============================================================================*/
 
-" OP_toRowSlab.sen" .verbose
+" OP_toRsb.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* toRowSlab request                                  (on node where spawned) */
+/* toRsb request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: toRowSlab_req \operator
+: toRsb_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -23,9 +23,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toRowSlab :: toRowSlab <tableNm> ;
+cmdSyntax: toRsb :: toRsb <tableNm> ;
 
-: toRowSlab _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: toRsb _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */
