@@ -209,7 +209,10 @@ begin
     start | periodicOp once | chunk $file | stageB
 
   stage stageB on all partitions on origin:
-    rdCsvChunk $file | toCrwH $table | stageC Hashed
+    rdCsvChunk $file |
+    dump csvBuffer   |
+    toCrwH $table    |
+    stageC Hashed
 
   stage stageC on all partitions:
     insert $table | stageD
@@ -350,7 +353,7 @@ begin
     start            |
     periodicOp once  |
     chunk $file      |
-    dump  seekOffset |
+    dump seekOffset  |
     stageB
 
   stage stageB on all partitions on origin:

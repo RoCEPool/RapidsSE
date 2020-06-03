@@ -5,12 +5,36 @@
 " OP_dump.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CRWBUFFER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: dump_CrwBuffer \handler
+
+  <operand> "crwBuffer" str.same if
+    "WOULD DUMP: crwBuffer" .
+  then
+
+  ZK_CRWBUFFER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CSVBUFFER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: dump_CsvBuffer \handler
+
+  <operand> "csvBuffer" str.same if
+    "WOULD DUMP: csvBuffer" .
+  then
+
+  ZK_CSVBUFFER_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_SEEKOFFSETS ...                                                      */
 /*----------------------------------------------------------------------------*/
 : dump_SeekOffsets \handler
 
   <operand> "seekOffset" str.same if
-    "Would dump seekOffset" .
+    "WOULD DUMP: seekOffset" .
   then
 
   ZK_SEEKOFFSETS_handler
@@ -26,6 +50,8 @@
   op__topology
 
   find: dump_SeekOffsets ZK_SEEKOFFSETS op[].handler!
+  find: dump_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: dump_CsvBuffer   ZK_CSVBUFFER   op[].handler!
 
   op__loop
 
