@@ -352,21 +352,21 @@ begin
   stage stageA on origin:
     start            |
     periodicOp once  |
-    chunk $file      |
+    chunk $file      | // read chunks of file, produce (seekOffset)=>
   
     eatSome          |
 
-    dump seekOffset  |
+    dump seekOffset  | // dump (offset) => (*all*)
     stageB
 
   stage stageB on all partitions on origin:
-    rdCsvChunk $file |
-    toRsb $table     |
-    toCrwHash $table |
+    rdCsvChunk $file | // (offset)    => (csvBuffer)
+    toRsb $table     | // (csvBuffer) => (rsbBuffer)
+    toCrwHash $table | // (rsbBuffer) => (crwBuffer \hashed)
     stageC hashed
 
   stage stageC on all partitions:
-    insert $table    |
+    insert $table    | // (crwBuffer) inserted into table
     stageD
 
   stage stageD on origin:
