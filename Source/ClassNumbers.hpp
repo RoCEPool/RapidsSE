@@ -54,7 +54,6 @@ enum eCN : u2 // Class Number
   /* */ CN_COMPILER,
   /* */ CN_CONSTDEF,
   /* */ CN_CONSTSET,
-  /* */ CN_TORSB,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWHASH,
@@ -315,6 +314,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TMEVAL,
   /* */ CN_TOKEN,
   /* */ CN_TOKENVEC,
+  /* */ CN_TORSB,
   /* */ CN_TSPVAL,
   /* */ CN_TX,
   /* */ CN_TXSET,
@@ -384,7 +384,6 @@ static Stz* aCN[]
   /* */ "COMPILER"_Stz,            // CN_COMPILER
   /* */ "CONSTDEF"_Stz,            // CN_CONSTDEF
   /* */ "CONSTSET"_Stz,            // CN_CONSTSET
-  /* */ "COBVERT"_Stz,             // CN_TORSB
   /* */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /* */ "CRWHASH"_Stz,             // CN_CRWHASH
@@ -645,6 +644,7 @@ static Stz* aCN[]
   /* */ "TMEVAL"_Stz,              // CN_TMEVAL
   /* */ "TOKEN"_Stz,               // CN_TOKEN
   /* */ "TOKENVEC"_Stz,            // CN_TOKENVEC
+  /* */ "TORSB"_Stz,               // CN_TORSB
   /* */ "TSPVAL"_Stz,              // CN_TSPVAL
   /* */ "TX"_Stz,                  // CN_TX
   /* */ "TXSET"_Stz,               // CN_TXSET

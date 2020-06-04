@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Convertor.hpp -- Csv Record Convertor                                      */
+/* ToRsb.hpp -- Csv Record ToRsb                                              */
 /*============================================================================*/
 #pragma once
 
 namespace Load
 {
-  class Convertor : public Object
+  class ToRsb : public Object
   {
   private:
     StreamDef* m_pStreamDef;
@@ -42,8 +42,8 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Convertor(StreamDef* pStreamDef, Format* pFmt);
-   ~Convertor(void) noexcept(false);
+    ToRsb(StreamDef* pStreamDef, Format* pFmt);
+   ~ToRsb(void) noexcept(false);
   
     bool bConvert(char* azSrc);
     bool bInspect(char* azSrc);
@@ -483,7 +483,7 @@ namespace Load
   
   }; // end class --------------------------------------------------------------
 
-  Convertor* _pConvertor(void* aAddr);
+  ToRsb* _pToRsb(void* aAddr);
 }
 
 /*============================================================================*/

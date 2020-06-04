@@ -107,7 +107,7 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  table[].streamDef@ convertor::new locals| pConvertor |
+  table[].streamDef@ ToRsb::new locals| pConvertor |
 
   csvBuffer::new locals| pCsvBuffer |
 
@@ -131,7 +131,7 @@
 
     //pCsvBuffer csvBuffer.print
 
-    pCsvBuffer pConvertor convertor.inspect
+    pCsvBuffer pConvertor toRsb.inspect
 
   loop
   
@@ -149,7 +149,7 @@
 
   pCsvBuffer csvBuffer.delete
 
-  pConvertor convertor.delete
+  pConvertor toRsb.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -235,7 +235,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ": exp_fl C" .
 
-  table[].streamDef@ convertor::new locals| pConvertor |
+  table[].streamDef@ ToRsb::new locals| pConvertor |
 
   csvBuffer::new locals| pCsvBuffer |
 
@@ -264,7 +264,7 @@
     //pCsvBuffer csvBuffer.print
 
     ": exp_fl D3" .
-    pCsvBuffer pConvertor convertor.inspect
+    pCsvBuffer pConvertor toRsb.inspect
 
     ": exp_fl D4" .
   loop
@@ -284,7 +284,7 @@
 
   pCsvBuffer csvBuffer.delete
 
-  pConvertor convertor.delete
+  pConvertor toRsb.delete
 
 ": exp_fl F" .
 ;

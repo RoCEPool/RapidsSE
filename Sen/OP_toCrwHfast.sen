@@ -53,7 +53,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // fast convert the csv buffer
-  Convertor[].convert
+  ToRsb[].convert
 
   // delete the csv buffer
   Operand[].delete
@@ -82,7 +82,7 @@
 
   // delete loader
   loader[].delete
-  convertor[].delete
+  ToRsb[].delete
   CrwHash[].delete
 
   Pipein[].pipeOut
@@ -114,7 +114,7 @@
     else
       Pipein[].pipeout
 
-      Convertor[].create
+      ToRsb[].create
       CrwHash[].create
     then
   then

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Convertor.cpp -- Fast Convertor of Csv Record                              */
+/* ToRsb.cpp -- Fast ToRsb of Csv Record                                      */
 /*============================================================================*/
 
 #include "Load.h"
@@ -8,15 +8,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,Convertor,CN_TORSB)
-__aNewFunction(Convertor,CN_TORSB)
-__vDeleteFunction(Convertor,CN_TORSB)
-__aFooterFunction(Convertor)
+__pCastFunction(Load,ToRsb,CN_TORSB)
+__aNewFunction(ToRsb,CN_TORSB)
+__vDeleteFunction(ToRsb,CN_TORSB)
+__aFooterFunction(ToRsb)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
+ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt)
 : Object(CN_TORSB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
@@ -57,7 +57,7 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Convertor::~Convertor(void) noexcept(false)
+ToRsb::~ToRsb(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
   
@@ -73,7 +73,7 @@ Convertor::~Convertor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert a chunck                                                           */
 /*----------------------------------------------------------------------------*/
-bool Convertor::bConvert(char* azSrc)
+bool ToRsb::bConvert(char* azSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
   
@@ -85,7 +85,7 @@ bool Convertor::bConvert(char* azSrc)
 /*----------------------------------------------------------------------------*/
 /* inspect a chunck                                                           */
 /*----------------------------------------------------------------------------*/
-bool Convertor::bInspect(char* azSrc)
+bool ToRsb::bInspect(char* azSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
   

@@ -9,14 +9,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Convertor(void)
 {
-  vAddStep("convertor::new"_Stz,      &Step::vConvertorNew);
+  vAddStep("toRsb::new"_Stz,      &Step::vConvertorNew);
 
-  vAddStep("convertor.delete"_Stz,    &Step::vConvertorDelete);
-  vAddStep("convertor.inspect"_Stz,   &Step::vConvertorInspect);
+  vAddStep("toRsb.delete"_Stz,    &Step::vConvertorDelete);
+  vAddStep("toRsb.inspect"_Stz,   &Step::vConvertorInspect);
   
-  vAddStep("convertor[].convert"_Stz,  &Step::vConvertorRegConvert);
-  vAddStep("convertor[].create"_Stz,   &Step::vConvertorRegCreate);
-  vAddStep("convertor[].delete"_Stz,   &Step::vConvertorRegDelete);
+  vAddStep("toRsb[].convert"_Stz,  &Step::vConvertorRegConvert);
+  vAddStep("toRsb[].create"_Stz,   &Step::vConvertorRegCreate);
+  vAddStep("toRsb[].delete"_Stz,   &Step::vConvertorRegDelete);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -28,7 +28,7 @@ void Step::vConvertorNew(void)
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   
-  Convertor* pConvertor = new Convertor(pStreamDef,AM::pFmt());
+  ToRsb* pConvertor = new ToRsb(pStreamDef,AM::pFmt());
   
   m_pDataStack->vPushPtr(pConvertor);
     
@@ -39,13 +39,13 @@ void Step::vConvertorNew(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convertor.delete -- delete                                                 */
+/* toRsb.delete -- delete                                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vConvertorDelete(void)
 {
   ENTRY();
   
-  Convertor* pConvertor = _pConvertor(m_pDataStack->pPopPtr(__func__));
+  ToRsb* pConvertor = _pToRsb(m_pDataStack->pPopPtr(__func__));
 
   delete pConvertor;
   
@@ -53,13 +53,13 @@ void Step::vConvertorDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convertor.inspect -- inspect without actually converting                   */
+/* toRsb.inspect -- inspect without actually converting                   */
 /*----------------------------------------------------------------------------*/
 void Step::vConvertorInspect(void)
 {
   ENTRY();
 
-  Convertor* pConvertor = _pConvertor(m_pDataStack->pPopPtr(__func__));
+  ToRsb* pConvertor = _pToRsb(m_pDataStack->pPopPtr(__func__));
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -81,7 +81,7 @@ void Step::vConvertorRegConvert(void)
 {
   ENTRY();
 
-  Convertor* pConvertor = *m_pRegSet->m_xpConvertor;
+  ToRsb* pConvertor = *m_pRegSet->m_xpConvertor;
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
   
@@ -101,7 +101,7 @@ void Step::vConvertorRegCreate(void)
   
   StreamDef* pStreamDef = m_pRegSet->m_xpTable->pStreamDef();
   
-  Convertor* pConvertor = new Convertor(pStreamDef,AM::pFmt());
+  ToRsb* pConvertor = new ToRsb(pStreamDef,AM::pFmt());
       
   m_pRegSet->m_xpConvertor = pConvertor;
 
@@ -115,7 +115,7 @@ void Step::vConvertorRegDelete(void)
 {
   ENTRY();
   
-  Convertor* pConvertor = *m_pRegSet->m_xpConvertor;
+  ToRsb* pConvertor = *m_pRegSet->m_xpConvertor;
   delete pConvertor;
   
   m_pRegSet->m_xpConvertor = nullptr;

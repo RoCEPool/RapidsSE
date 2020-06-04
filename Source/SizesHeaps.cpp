@@ -50,7 +50,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Compiler),           HT_TRANSIENT_TINY    }, // CN_COMPILER
   { sizeof(ConstDef),           HT_TRANSIENT_MEDIUM  }, // CN_CONSTDEF
   { sizeof(ConstSet),           HT_TRANSIENT_MEDIUM  }, // CN_CONSTSET
-  { sizeof(Convertor),          HT_TRANSIENT_MEDIUM  }, // CN_TORSB
   { sizeof(CrvBuffer),          HT_TRANSIENT_LARGE   }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_TRANSIENT_LARGE   }, // CN_CRWBUFFER
   { sizeof(CrwHash),            HT_TRANSIENT_LARGE   }, // CN_CRWHASH
@@ -311,6 +310,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TmeVal),             HT_INVALID           }, // CN_TMEVAL
   { sizeof(Token),              HT_TRANSIENT_TINY    }, // CN_TOKEN
   { sizeof(TokenVec),           HT_TRANSIENT_LARGE   }, // CN_TOKENVEC
+  { sizeof(ToRsb),              HT_TRANSIENT_MEDIUM  }, // CN_TORSB
   { sizeof(TspVal),             HT_INVALID           }, // CN_TSPVAL
   { sizeof(Tx),                 HT_TRANSIENT_TINY    }, // CN_TX
   { sizeof(TxSet),              HT_TRANSIENT_TINY    }, // CN_TXSET
