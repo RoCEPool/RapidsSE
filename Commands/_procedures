@@ -355,8 +355,8 @@ begin
     chunk $file      | // read chunks of file, produce (seekOffset)=>
   
     eatSome          |
-
     dump seekOffset  | // dump (offset) => (*all*)
+
     stageB
 
   stage stageB on all partitions on origin:
