@@ -9,25 +9,25 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_InfoSet(void)
 {
-  vAddStep("InfoSet[]"_Stz,                &Step::vInfoSetGet);
-  vAddStep("InfoSet[].addLockStats"_Stz,   &Step::vInfoSetAddLockStats);
-  vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vInfoSetAddNodeInfo);
+  vAddStep("InfoSet[]"_Stz,                  &Step::vInfoSetGet);
+  vAddStep("InfoSet[].addLockStats"_Stz,     &Step::vInfoSetAddLockStats);
+  vAddStep("InfoSet[].addNodeInfo"_Stz,      &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
-  vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vInfoSetChunkFile);
-  vAddStep("InfoSet[].delete"_Stz,         &Step::vInfoSetDelete);
-  vAddStep("InfoSet[].firstRow"_Stz,       &Step::vInfoSetFirstRow);
-  vAddStep("InfoSet[].get"_Stz,            &Step::vInfoSetGet);
-  vAddStep("InfoSet[].infoRows"_Stz,       &Step::vInfoSetInfoRows);
-  vAddStep("InfoSet[].isProgress"_Stz,     &Step::vInfoSetIsProgress);
-  vAddStep("InfoSet[].isTotalUnits"_Stz,   &Step::vInfoSetIsTotalUnits);
-  vAddStep("InfoSet[].name"_Stz,           &Step::vInfoSetName);
-  vAddStep("InfoSet[].new"_Stz,            &Step::vInfoSetNew);
-  vAddStep("InfoSet[].nextRow"_Stz,        &Step::vInfoSetNextRow);
-  vAddStep("InfoSet[].pipeOut"_Stz,        &Step::vInfoSetPipeOut);
-  vAddStep("InfoSet[].rdCsvChunk"_Stz,     &Step::vInfoSetRdCsvChunk);
-  vAddStep("InfoSet[].set"_Stz,            &Step::vInfoSetSet);
-  vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vInfoSetWriteCsv);
+  vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile);
+  vAddStep("InfoSet[].delete"_Stz,           &Step::vInfoSetDelete);
+  vAddStep("InfoSet[].firstRow"_Stz,         &Step::vInfoSetFirstRow);
+  vAddStep("InfoSet[].get"_Stz,              &Step::vInfoSetGet);
+  vAddStep("InfoSet[].infoRows"_Stz,         &Step::vInfoSetInfoRows);
+  vAddStep("InfoSet[].isProgress"_Stz,       &Step::vInfoSetIsProgress);
+  vAddStep("InfoSet[].isTotalUnits"_Stz,     &Step::vInfoSetIsTotalUnits);
+  vAddStep("InfoSet[].name"_Stz,             &Step::vInfoSetName);
+  vAddStep("InfoSet[].new"_Stz,              &Step::vInfoSetNew);
+  vAddStep("InfoSet[].nextRow"_Stz,          &Step::vInfoSetNextRow);
+  vAddStep("InfoSet[].pipeOut"_Stz,          &Step::vInfoSetPipeOut);
+  vAddStep("InfoSet[].rdCsvChunk"_Stz,       &Step::vInfoSetRdCsvChunk);
+  vAddStep("InfoSet[].set"_Stz,              &Step::vInfoSetSet);
+  vAddStep("InfoSet[].writeCsv"_Stz,         &Step::vInfoSetWriteCsv);
 }
 
 /*----------------------------------------------------------------------------*/

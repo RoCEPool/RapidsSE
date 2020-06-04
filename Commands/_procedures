@@ -354,8 +354,8 @@ begin
     periodicOp once  |
     chunk $file      | // read chunks of file, produce (seekOffset)=>
   
-    eatSome          |
-    dump seekOffset  | // dump (offset) => (*all*)
+    dump seekOffsets | // dump (offset) => (*all*)
+  //eatSome          |
 
     stageB
 

@@ -136,6 +136,7 @@ namespace Steps
     static void vAddSteps_Row(void);
     static void vAddSteps_RowOnce(void);
   
+    static void vAddSteps_SeekOffsets(void);
     static void vAddSteps_Session(void);
     static void vAddSteps_Shell(void);
     static void vAddSteps_Socket(void);

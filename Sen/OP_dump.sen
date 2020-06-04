@@ -45,8 +45,10 @@
 /*----------------------------------------------------------------------------*/
 : dump_SeekOffsets \handler
 
-  <operand> "seekOffset" str.same if
-    "WOULD DUMP: seekOffset" .
+  <operand> "seekOffsets" str.same if
+    "OPERAND DUMP: seekOffsets" .printf
+
+    pipeIn[] seekOffsets.operandDump
   then
 
   ZK_SEEKOFFSETS_handler

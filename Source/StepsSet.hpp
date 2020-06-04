@@ -1278,6 +1278,9 @@ public:
   void vSchLockDropWrite(void);
   void vSchLockGrabWrite(void);
 
+  // csv buffer
+  void vSeekOffsetsOperandDump(void);
+
   // session
   void vSessionCommand(void);
   void vSessionDicStackFetch(void);
