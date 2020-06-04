@@ -12,9 +12,9 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[]"_Stz,                &Step::vRegOperandGet);
   vAddStep("Operand[].addColumnDef"_Stz,   &Step::vRegOperandAddColumnDef);
   vAddStep("Operand[].bide"_Stz,           &Step::vRegOperandBide);
+  vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
   vAddStep("Operand[].csvAppend"_Stz,      &Step::vRegOperandCsvAppend);
   vAddStep("Operand[].csvData"_Stz,        &Step::vRegOperandCsvData);
-  vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
   vAddStep("Operand[].csvToCrwH"_Stz,      &Step::vRegOperandCsvToCrwH);
   vAddStep("Operand[].csvToRsb"_Stz,       &Step::vRegOperandCsvToRsb);
   vAddStep("Operand[].delete"_Stz,         &Step::vRegOperandDelete);
@@ -87,6 +87,19 @@ void Step::vRegOperandBide(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].crwToCsv -- convert Crw operand to Csv                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandCrwToCsv(void)
+{
+  ENTRY();
+  
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
+  m_pRegSet->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].csvAppend -- append a csv row to the csv operand                 */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCsvAppend(void)
@@ -118,6 +131,43 @@ void Step::vRegOperandCsvData(void)
   char* data = (char*)pCsvBuffer->ayDataArea();
   m_pDataStack->vPushStz((Stz*)data);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].csvToCrwH -- convert csv operand to CrwH                         */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandCsvToCrwH(void)
+{
+  ENTRY();
+  
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
+  Loader* pLoader = *m_pRegSet->m_xpLoader;
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Job* pPipelineJob = pOp->pPipeline()->pJob();
+  
+  pLoader->bCsvToCrw((Stz*)pCsvBuffer->ayDataArea(),
+                     pCsvBuffer->nDataBytes(),
+                     pPipelineJob);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].csvToRsb -- convert csv nuffer operand to rsb buffer             */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandCsvToRsb(void)
+{
+  ENTRY();
+  
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
+  
+  char* azRecords = (char*) pCsvBuffer->szRecords();
+
+  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
+  
+  bool b = pToRsb->bConvert(azRecords);
+
   EXIT();
 }
 
@@ -693,56 +743,6 @@ void Step::vRegOperandUpsertIntoTable(void)
   // will delete this buffer
   pCrwBuffer->vIsPermanent(false);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].crwToCsv -- convert Crw operand to Csv                           */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandCrwToCsv(void)
-{
-  ENTRY();
-  
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
-  m_pRegSet->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].csvToCrwH -- convert csv operand to CrwH                         */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandCsvToCrwH(void)
-{
-  ENTRY();
-  
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
-  Loader* pLoader = *m_pRegSet->m_xpLoader;
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  Job* pPipelineJob = pOp->pPipeline()->pJob();
-  
-  pLoader->bCsvToCrw((Stz*)pCsvBuffer->ayDataArea(),
-                     pCsvBuffer->nDataBytes(),
-                     pPipelineJob);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].csvToRsb -- convert csv nuffer operand to rsb buffer             */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandCsvToRsb(void)
-{
-  ENTRY();
-  
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
-  
-  char* azRecords = (char*) pCsvBuffer->szRecords();
-
-  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
-  
-  bool b = pToRsb->bConvert(azRecords);
-
   EXIT();
 }
 
