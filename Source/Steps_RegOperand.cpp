@@ -43,6 +43,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].pipeToJob"_Stz,      &Step::vRegOperandPipeToJob);
   vAddStep("Operand[].report"_Stz,         &Step::vRegOperandReport);
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vRegOperandRowCountFetch);
+  vAddStep("Operand[].rsbToCsv"_Stz,       &Step::vRegOperandRsbToCsv);
   vAddStep("Operand[].set"_Stz,            &Step::vRegOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vRegOperandUpsertIntoTable);
   vAddStep("Operand[].workDone"_Stz,       &Step::vRegOperandWorkDone);
@@ -742,6 +743,20 @@ void Step::vRegOperandCsvToRsb(void)
   
   bool b = pToRsb->bConvert(azRecords);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].rsbToCsv -- convert rsbBuffer operand to csvBuffer               */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandRsbToCsv(void)
+{
+  ENTRY();
+  
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(*m_pRegSet->m_xpOperandA);
+ 
+  //m_pRegSet->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
+  
   EXIT();
 }
 

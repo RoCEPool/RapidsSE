@@ -5,11 +5,26 @@
 " OP_toCsv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                               */
+/* handler for ZK_STREAMDEF ...                                    DEFINITION */
+/*----------------------------------------------------------------------------*/
+: toCsv_StreamDef \handler
+
+  //"Operand:- ZK_STREAMDEF" .verbose
+  PipeIn[].delete
+
+  streamDef[].newtoCsvStream
+  streamDef[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CRWBUFFER ...                                     CRWBUFFER */
 /*----------------------------------------------------------------------------*/
 : toCsv_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
+
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
@@ -39,20 +54,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
+/* handler for ZK_RSBBUFFER ...                                     RSBBUFFER */
 /*----------------------------------------------------------------------------*/
-: toCsv_StreamDef \handler
+: toCsv_RsbBuffer \handler
 
-  //"Operand:- ZK_STREAMDEF" .verbose
-  PipeIn[].delete
-  streamDef[].newtoCsvStream
-  streamDef[].pipeOut
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for toCsv req                              (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute for toCsv req                                                SPAWN */
 /*----------------------------------------------------------------------------*/
  : toCsv_req \operator
 
@@ -61,6 +73,7 @@
   op__topology
 
   find: toCsv_CrwBuffer  ZK_CRWBUFFER op[].handler!
+  find: toCsv_RsbBuffer  ZK_RSBBUFFER op[].handler!
   find: toCsv_StreamDef  ZK_STREAMDEF op[].handler!
 
   op__loop
@@ -69,7 +82,6 @@
   job::deleteThis
   DONE_REQ_OP
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

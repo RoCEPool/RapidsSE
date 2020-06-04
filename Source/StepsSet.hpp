@@ -1133,6 +1133,7 @@ public:
   void vRegOperandCrwToCsv(void);
   void vRegOperandCsvToCrwH(void);
   void vRegOperandCsvToRsb(void);
+  void vRegOperandRsbToCsv(void);
   void vRegOperandWorkDone(void);
   void vRegOperandWriteToFile0(void);
 
