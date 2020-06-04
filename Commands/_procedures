@@ -361,6 +361,7 @@ begin
 
   stage stageB on all partitions on origin:
     rdCsvChunk $file | // (offset)    => (csvBuffer)
+    dump csvBuffer   | // dump (offset) => (*all*)
     toRsb $table     | // (csvBuffer) => (rsbBuffer)
     toCrwHash $table | // (rsbBuffer) => (crwBuffer \hashed)
     stageC hashed

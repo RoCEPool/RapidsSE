@@ -193,6 +193,7 @@ public:
   // csv buffer
   void vCsvBufferDelete(void);
   void vCsvBufferNew(void);
+  void vCsvBufferOperandDump(void);
   void vCsvBufferPrint(void);
 
   // cursor

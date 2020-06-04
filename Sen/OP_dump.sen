@@ -22,7 +22,9 @@
 : dump_CsvBuffer \handler
 
   <operand> "csvBuffer" str.same if
-    "WOULD DUMP: csvBuffer" .
+    "OPERAND DUMP: csvBuffer" .printf
+
+    pipeIn[] csvBuffer.operandDump
   then
 
   ZK_CSVBUFFER_handler
