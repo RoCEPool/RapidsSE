@@ -50,7 +50,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Compiler),           HT_TRANSIENT_TINY    }, // CN_COMPILER
   { sizeof(ConstDef),           HT_TRANSIENT_MEDIUM  }, // CN_CONSTDEF
   { sizeof(ConstSet),           HT_TRANSIENT_MEDIUM  }, // CN_CONSTSET
-  { sizeof(Convertor),          HT_TRANSIENT_MEDIUM  }, // CN_CONVERTOR
+  { sizeof(Convertor),          HT_TRANSIENT_MEDIUM  }, // CN_TORSB
   { sizeof(CrvBuffer),          HT_TRANSIENT_LARGE   }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_TRANSIENT_LARGE   }, // CN_CRWBUFFER
   { sizeof(CrwHash),            HT_TRANSIENT_LARGE   }, // CN_CRWHASH

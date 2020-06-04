@@ -8,18 +8,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,Convertor,CN_CONVERTOR)
-__aNewFunction(Convertor,CN_CONVERTOR)
-__vDeleteFunction(Convertor,CN_CONVERTOR)
+__pCastFunction(Load,Convertor,CN_TORSB)
+__aNewFunction(Convertor,CN_TORSB)
+__vDeleteFunction(Convertor,CN_TORSB)
 __aFooterFunction(Convertor)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
-: Object(CN_CONVERTOR)
+: Object(CN_TORSB)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
   
   m_pStreamDef = pStreamDef;
   m_pFmt       = pFmt;
@@ -47,7 +47,7 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
 
   m_pFmt->vShow();
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
   
   s48K sDef;
    m_pStreamDef->vAsString(sDef);
@@ -59,7 +59,7 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 Convertor::~Convertor(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
   
   vTrace("Converted %lld chars\n"_Stz,m_nChars);
   
@@ -75,7 +75,7 @@ Convertor::~Convertor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Convertor::bConvert(char* azSrc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
   
   bInspect(azSrc);
   
@@ -87,7 +87,7 @@ bool Convertor::bConvert(char* azSrc)
 /*----------------------------------------------------------------------------*/
 bool Convertor::bInspect(char* azSrc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
   
   //vTrace("[>%s<]"_Stz,azSrc);
   

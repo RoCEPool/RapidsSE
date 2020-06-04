@@ -18,7 +18,7 @@ namespace Load
 #include "CrwHash.hpp"
 
 #include "Loader.hpp"
-#include "Convertor.hpp"
+#include "ToRsb.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

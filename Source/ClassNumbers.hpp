@@ -54,7 +54,7 @@ enum eCN : u2 // Class Number
   /* */ CN_COMPILER,
   /* */ CN_CONSTDEF,
   /* */ CN_CONSTSET,
-  /* */ CN_CONVERTOR,
+  /* */ CN_TORSB,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWHASH,
@@ -384,7 +384,7 @@ static Stz* aCN[]
   /* */ "COMPILER"_Stz,            // CN_COMPILER
   /* */ "CONSTDEF"_Stz,            // CN_CONSTDEF
   /* */ "CONSTSET"_Stz,            // CN_CONSTSET
-  /* */ "COBVERT"_Stz,             // CN_CONVERTOR
+  /* */ "COBVERT"_Stz,             // CN_TORSB
   /* */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /* */ "CRWHASH"_Stz,             // CN_CRWHASH
