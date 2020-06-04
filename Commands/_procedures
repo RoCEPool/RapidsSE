@@ -369,6 +369,7 @@ begin
 
     toRsb $table     | // (csvBuffer)  => (rsbBuffer)
     dump rsbBuffer   |
+    eatSome          |
 
     toCrwHash $table | // (rsbBuffer)  => (crwBuffer \hashed)
 

@@ -181,12 +181,6 @@ void AM::vDeleteOperand(Operand* pOperand)
   
   switch(eClass) {
       
-    case CN_MARKER: {
-      Marker* pMarker = _pMarker(pOperand);
-      delete pMarker;
-      break;
-    }
-      
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       
@@ -221,6 +215,18 @@ void AM::vDeleteOperand(Operand* pOperand)
     case CN_IRWBUFFER: {
       IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
       delete pIrwBuffer;
+      break;
+    }
+      
+    case CN_MARKER: {
+      Marker* pMarker = _pMarker(pOperand);
+      delete pMarker;
+      break;
+    }
+      
+    case CN_RSBBUFFER: {
+      RsbBuffer* pRsbBuffer = _pRsbBuffer(pOperand);
+      delete pRsbBuffer;
       break;
     }
       

@@ -68,6 +68,9 @@
 /*----------------------------------------------------------------------------*/
 : toRsb_EosMarker \handler
 
+  ToRsb[].rsbBuffer@ to OperandB[]
+  OperandB[].pipeOut
+
   // delete ToRsb
   ToRsb[].delete
 

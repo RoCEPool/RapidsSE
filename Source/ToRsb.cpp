@@ -42,7 +42,9 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt)
   m_dCalc   = 0.0;
   m_nChars  = 0;
   
-  m_pRowSlab = new RowSlab;
+  m_pRsbBuffer = new RsbBuffer;
+  
+  m_pRowSlab = m_pRsbBuffer->pRowSlab();
   m_pRowSlab->vInitPix(pStreamDef);
 
   m_pFmt->vShow();
@@ -63,7 +65,7 @@ ToRsb::~ToRsb(void) noexcept(false)
   
   vTrace("Converted %lld chars\n"_Stz,m_nChars);
   
-  delete m_pRowSlab;
+  delete m_pRsbBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -172,6 +174,26 @@ bool ToRsb::bInspect(char* azSrc)
   m_pRowSlab->vSlabReport();
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rsb buffer                                                             */
+/*----------------------------------------------------------------------------*/
+RsbBuffer* ToRsb::pRsbBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
+  
+  return m_pRsbBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set rsb buffer                                                             */
+/*----------------------------------------------------------------------------*/
+void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
+  
+  m_pRsbBuffer = pRsbBuffer;
 }
 
 /*============================================================================*/

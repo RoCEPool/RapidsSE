@@ -1560,6 +1560,7 @@ public:
   void vToRsbRegConvert(void);
   void vToRsbRegCreate(void);
   void vToRsbRegDelete(void);
+  void vToRsbRegRsbBufferFetch(void);
 
   // trace
   void vTraceOff(void);

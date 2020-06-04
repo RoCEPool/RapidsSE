@@ -9,14 +9,15 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToRsb(void)
 {
-  vAddStep("toRsb::new"_Stz,      &Step::vToRsbNew);
+  vAddStep("toRsb::new"_Stz,          &Step::vToRsbNew);
 
-  vAddStep("toRsb.delete"_Stz,    &Step::vToRsbDelete);
-  vAddStep("toRsb.inspect"_Stz,   &Step::vToRsbInspect);
+  vAddStep("toRsb.delete"_Stz,        &Step::vToRsbDelete);
+  vAddStep("toRsb.inspect"_Stz,       &Step::vToRsbInspect);
   
-  vAddStep("toRsb[].convert"_Stz, &Step::vToRsbRegConvert);
-  vAddStep("toRsb[].create"_Stz,  &Step::vToRsbRegCreate);
-  vAddStep("toRsb[].delete"_Stz,  &Step::vToRsbRegDelete);
+  vAddStep("toRsb[].convert"_Stz,     &Step::vToRsbRegConvert);
+  vAddStep("toRsb[].create"_Stz,      &Step::vToRsbRegCreate);
+  vAddStep("toRsb[].delete"_Stz,      &Step::vToRsbRegDelete);
+  vAddStep("toRsb[].rsbBuffer@"_Stz,  &Step::vToRsbRegRsbBufferFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,6 +121,23 @@ void Step::vToRsbRegDelete(void)
   
   m_pRegSet->m_xpToRsb = nullptr;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* toRsb[].rsbBuffer@ -- fetch rsb buffer                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vToRsbRegRsbBufferFetch(void)
+{
+  ENTRY();
+  
+  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
+  
+  RsbBuffer* pRsbBuffer = pToRsb->pRsbBuffer();
+  pToRsb->vRsbBuffer(nullptr);
+  
+  m_pDataStack->vPushPtr(pRsbBuffer);
+
   EXIT();
 }
 

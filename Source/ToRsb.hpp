@@ -34,7 +34,8 @@ namespace Load
     Datum      m_oDatum;
   
     RowSlab*   m_pRowSlab;
-  
+    RsbBuffer* m_pRsbBuffer;
+
     // must be last
     Footer m_xFooter;
 
@@ -47,6 +48,9 @@ namespace Load
   
     bool bConvert(char* azSrc);
     bool bInspect(char* azSrc);
+  
+    RsbBuffer* pRsbBuffer(void);
+    void vRsbBuffer(RsbBuffer* pRsbBuffer);
 
   private:
     Footer* aFooter(void);
