@@ -349,28 +349,40 @@ procedure fload
   parameters $table $file
 begin
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   stage stageA on origin:
+
     start            |
     periodicOp once  |
-    chunk $file      | // read chunks of file, produce (seekOffset)=>
+    chunk $file      | // read chunks of file, produce (seekOffset) =>
   
-    dump seekOffsets | // dump (offset) => (*all*)
+    dump seekOffsets |
   //eatSome          |
 
     stageB
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   stage stageB on all partitions on origin:
-    rdCsvChunk $file | // (offset)    => (csvBuffer)
-    dump csvBuffer   | // dump (offset) => (*all*)
-    toRsb $table     | // (csvBuffer) => (rsbBuffer)
-    toCrwHash $table | // (rsbBuffer) => (crwBuffer \hashed)
+
+    rdCsvChunk $file | // (seekOffset) => (csvBuffer)
+    dump csvBuffer   |
+
+    toRsb $table     | // (csvBuffer)  => (rsbBuffer)
+    dump rsbBuffer   |
+
+    toCrwHash $table | // (rsbBuffer)  => (crwBuffer \hashed)
+
     stageC hashed
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   stage stageC on all partitions:
+
     insert $table    | // (crwBuffer) inserted into table
     stageD
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   stage stageD on origin:
+
     progress "FLoad" |
     sink             |
     stageA

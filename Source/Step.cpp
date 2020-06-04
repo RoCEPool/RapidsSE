@@ -153,7 +153,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegXmits();
   Step::vAddSteps_Row();
   Step::vAddSteps_RowOnce();
-  
+  Step::vAddSteps_RsbBuffer();
   Step::vAddSteps_Rstack();
   
   Step::vAddSteps_SeekOffsets();

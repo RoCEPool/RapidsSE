@@ -132,10 +132,11 @@ namespace Steps
     static void vAddSteps_RegTask(void);
     static void vAddSteps_RegTimer(void);
     static void vAddSteps_RegXmits(void);
-    static void vAddSteps_Rstack(void);
     static void vAddSteps_Row(void);
     static void vAddSteps_RowOnce(void);
-  
+    static void vAddSteps_RsbBuffer(void);
+    static void vAddSteps_Rstack(void);
+
     static void vAddSteps_SeekOffsets(void);
     static void vAddSteps_Session(void);
     static void vAddSteps_Shell(void);

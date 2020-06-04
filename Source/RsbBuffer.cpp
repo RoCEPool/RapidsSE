@@ -34,6 +34,16 @@ RsbBuffer::~RsbBuffer(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get row slab                                                               */
+/*----------------------------------------------------------------------------*/
+RowSlab* RsbBuffer::pRowSlab(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
+  
+  return & m_oRowSlab;
+}
+
 //*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

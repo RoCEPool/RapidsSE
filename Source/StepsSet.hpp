@@ -1248,6 +1248,9 @@ public:
   void vRowOnceIsNull(void);
   void vRowOnceNew(void);
 
+  // rsb buffer
+  void vRsbBufferOperandDump(void);
+
   // rstack
   void vRstackCsPick(void);
   void vRstackCsRoll(void);

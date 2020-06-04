@@ -20,7 +20,9 @@ namespace DataBuffers
   
     RsbBuffer(void);
    ~RsbBuffer(void) noexcept(false);
-        
+
+    RowSlab* pRowSlab(void);
+  
   private:
     Footer* aFooter(void);
   };

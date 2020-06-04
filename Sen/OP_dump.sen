@@ -36,7 +36,9 @@
 : dump_RsbBuffer \handler
 
   <operand> "rsbBuffer" str.same if
-    "WOULD DUMP: rsbBuffer" .
+    "OPERAND DUMP: rsbBuffer" .
+
+    pipeIn[] rsbBuffer.operandDump
   then
 
   ZK_RSBBUFFER_handler
