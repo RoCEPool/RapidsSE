@@ -31,7 +31,7 @@
 
   // check if we can scan the table
   <tableNm> op__table if
-    table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to tablePtn[]
     PipeIn[].pipeOut
   then
 

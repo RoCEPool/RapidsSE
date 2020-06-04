@@ -60,7 +60,7 @@
 
   sReportTable op__table if
     sReportTable path[].pushNamedTableFolder
-    sReportTable find execute to table[]
+    sReportTable find execute to Table[]
     PipeIn[].pipeOut
   then
 

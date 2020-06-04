@@ -35,7 +35,7 @@
   "BM_GenEnt_StartMarker" .
 
   <tableNm> op__table if
-    table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to tablePtn[]
 
     path[].toStr     "Folder path: %v" .printf
     folder[].contentStr "contains: %v" .printf

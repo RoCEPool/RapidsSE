@@ -107,7 +107,7 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  table[].streamDef@ ToRsb::new locals| pToRsb |
+  Table[].streamDef@ ToRsb::new locals| pToRsb |
 
   csvBuffer::new locals| pCsvBuffer |
 
@@ -235,7 +235,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ": exp_fl C" .
 
-  table[].streamDef@ ToRsb::new locals| pToRsb |
+  Table[].streamDef@ ToRsb::new locals| pToRsb |
 
   csvBuffer::new locals| pCsvBuffer |
 

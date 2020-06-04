@@ -10,7 +10,7 @@
 : dumpTbl_action
 
   <tableNm> op__table if
-    table[].dump
+    Table[].dump
     true
   else
     false

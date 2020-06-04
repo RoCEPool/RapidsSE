@@ -118,11 +118,11 @@
 
   // move to table folder and find the table
   sTableNm path[].pushNamedTableFolder
-  sTableNm find execute to table[]
+  sTableNm find execute to Table[]
   path[].popNamedTableFolder
 
   // cross-check
-  table[] assert
+  Table[] assert
 
   true
 ;
@@ -204,10 +204,10 @@
 
   // move to table folder and find the table
   sTableNm path[].pushNamedTableFolder
-  sTableNm find execute to table[]
+  sTableNm find execute to Table[]
 
   // cross-check
-  table[] assert
+  Table[] assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

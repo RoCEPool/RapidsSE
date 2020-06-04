@@ -36,7 +36,7 @@
   //"BM_InflateCrw_CrwBuffer" .
 
   // get table partition for current partition
-  table[].tablePtn@ to tablePtn[]
+  Table[].tablePtn@ to tablePtn[]
 
   BM_TimerBegin
 

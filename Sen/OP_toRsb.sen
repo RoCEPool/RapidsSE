@@ -1,59 +1,32 @@
 /*============================================================================*/
-/* OP_toRsb.sen -- Convert csv buffer to row slab buffer                      */
+/* OP_toRsb.sen -- Convert csv buffers to row slab buffers                    */
 /*============================================================================*/
 
 " OP_toRsb.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                        */
-/*----------------------------------------------------------------------------*/
-: toRsb_CsvBuffer \handler
-
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
-
-  Operand[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                        */
-/*----------------------------------------------------------------------------*/
-: toRsb_EosMarker \handler
-
-  ToRsb[].delete
-
-  PipeIn[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
-/*----------------------------------------------------------------------------*/
-: toRsb_PulseMarker \handler
-
-  // pipe out the pulsemarker
-  PipeIn[].pipeOut
-
-  // pipe out the stream def
-  Operand[].newStreamDef
-  Operand[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                      */
+/* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : toRsb_StartMarker \handler
 
+  // test and create Table[] using <tableNm>
   <tableNm> op__table if
 
+    // create a ToRsb using Table[].streamDef
     ToRsb[].create
 
+    // pipeout the (StartMarker)
     PipeIn[].pipeOut
+
+  else
+    
+    // delete the (StartMarker)
+    PipeIn[].delete
+
+    // pipeout (ErrorMarker)
+    EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
+    Operand[].newErrorMarker
+    Operand[].pipeOut
 
   then
 
@@ -61,7 +34,53 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* toRsb request                                      (on node where spawned) */
+/* on ZK_PULSEMARKER ...                                                BEGIN */
+/*----------------------------------------------------------------------------*/
+: toRsb_PulseMarker \handler
+
+  // pipe out the (PulseMarker)
+  PipeIn[].pipeOut
+
+  // new and pipe out (StreamDef)  DOES NOT SET StreamDef[]??
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CSVBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: toRsb_CsvBuffer \handler
+
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
+
+
+  Operand[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: toRsb_EosMarker \handler
+
+  // delete ToRsb
+  ToRsb[].delete
+
+  // pipeout the (EosMarker)
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* toRsb request                                                        SPAWN */
 /*----------------------------------------------------------------------------*/
 : toRsb_req \operator
 

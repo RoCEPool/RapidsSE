@@ -98,7 +98,7 @@ void Step::vRegStreamDefGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].new -- new a stream def from table[]                           */
+/* StreamDef[].new -- new a stream def from Table[]                           */
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefNew(void)
 {

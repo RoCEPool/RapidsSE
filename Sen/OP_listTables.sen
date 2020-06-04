@@ -42,10 +42,10 @@
 
     object@ word.name@ to sTableNm
     sTableNm path[].pushNamedTableFolder
-    sTableNm find execute to table[]
+    sTableNm find execute to Table[]
 
     // skip definition only tables
-    table[].isDefinitionOnly not if
+    Table[].isDefinitionOnly not if
 
     sTableNm streamSetTable[] StreamSet[].addListContents  not if
       StreamSet[].pipeOut

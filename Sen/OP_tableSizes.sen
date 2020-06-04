@@ -46,9 +46,9 @@
     then
 
     // skip definition only tables
-    table[].isDefinitionOnly not if
+    Table[].isDefinitionOnly not if
 
-      0 table[].size number.magnitude >str
+      0 Table[].size number.magnitude >str
 
       // insert index size
       sTableNm streamSetTable[] StreamSet[].addTableSizes  not if
@@ -60,7 +60,7 @@
     then
 
     // move to next table
-    nullptr to table[]
+    nullptr to Table[]
 
     object@ word.prev object!
 

@@ -16,7 +16,7 @@
 //  C_TDEF_LOCKSTATS word::find if
 //    C_TDEF_LOCKSTATS path[].pushNamedTableFolder
 //    path[].toStr .
-//    C_TDEF_LOCKSTATS find execute to table[]
+//    C_TDEF_LOCKSTATS find execute to Table[]
 //    Operand[].newStreamDef
 //    Operand[] to streamDef[]
 //    streamDef[].asStr .

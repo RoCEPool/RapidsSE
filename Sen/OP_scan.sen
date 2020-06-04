@@ -93,7 +93,7 @@
   //"Operand:- ZK_STARTMARKER" .verbose
 
   <tableNm> op__table if
-    table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to tablePtn[]
     PipeIn[].pipeOut
   then
 

@@ -18,7 +18,7 @@
   then
 
   // get the table column count
-  table[].columnCount@ to iColumns
+  Table[].columnCount@ to iColumns
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -34,11 +34,11 @@
 
   // insert a row in the infoset for each column
   iColumns 0 do
-    I table[].column@
+    I Table[].column@
     streamSetTable[] StreamSet[].addColumnDef not if
       StreamSet[].pipeOut
       streamSetTable[] streamSet[].new
-      I table[].column@
+      I Table[].column@
       streamSetTable[] StreamSet[].addColumnDef assert
     then
   loop

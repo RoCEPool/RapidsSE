@@ -87,9 +87,9 @@
   // create the infoSetTable for C_TDEF_PROGRESSUNITS
   C_TDEF_PROGRESSUNITS op__tableDef_infoSet assert
 
-  // get table[] to be inserted into
+  // get Table[] to be inserted into
   <tableNm> op__table if
-    table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to tablePtn[]
     PipeIn[].pipeOut
   then
 

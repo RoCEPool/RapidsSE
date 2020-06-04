@@ -561,7 +561,7 @@ void Step::vRegOperandNewStartedMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newStreamDef -- new a stream def from table[]                    */
+/* Operand[].newStreamDef -- new a stream def from Table[]                    */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewStreamDef(void)
 {

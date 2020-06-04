@@ -12,32 +12,32 @@ void Step::vAddSteps_Table(void)
   vAddStep("table::delete"_Stz,            &Step::vTableDelete);
   vAddStep("table::new"_Stz,               &Step::vTableNew);
   
-  vAddStep("table[]"_Stz,                  &Step::vTableGet);
-  vAddStep("table[].set"_Stz,              &Step::vTableSet);
+  vAddStep("Table[]"_Stz,                  &Step::vTableGet);
+  vAddStep("Table[].set"_Stz,              &Step::vTableSet);
   
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
-  vAddStep("table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
-  vAddStep("table[].column@"_Stz,          &Step::vTableColumnFetch);
+  vAddStep("Table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
+  vAddStep("Table[].column@"_Stz,          &Step::vTableColumnFetch);
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
-  vAddStep("table[].dump"_Stz,             &Step::vTableDump);
+  vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);  
-  vAddStep("table[].genCsvBuffer"_Stz,     &Step::vTableGenCsvBuffer);
+  vAddStep("Table[].genCsvBuffer"_Stz,     &Step::vTableGenCsvBuffer);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
-  vAddStep("table[].isDefinitionOnly"_Stz, &Step::vTableIsDefinitionOnly);
+  vAddStep("Table[].isDefinitionOnly"_Stz, &Step::vTableIsDefinitionOnly);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
-  vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
+  vAddStep("Table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
   vAddStep("table.publish"_Stz,            &Step::vTablePublish);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table.scan"_Stz,               &Step::vTableScan);
-  vAddStep("table[].size"_Stz,             &Step::vTableSize);
-  vAddStep("table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
+  vAddStep("Table[].size"_Stz,             &Step::vTableSize);
+  vAddStep("Table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
   vAddStep("table.tableDef@"_Stz,          &Step::vTableTableDefFetch);
   vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefStore);
-  vAddStep("table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
-  vAddStep("table[].verify"_Stz,           &Step::vTableVerify);
-  vAddStep("table[].visualize"_Stz,        &Step::vTableVisualize);
+  vAddStep("Table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
+  vAddStep("Table[].verify"_Stz,           &Step::vTableVerify);
+  vAddStep("Table[].visualize"_Stz,        &Step::vTableVisualize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@ void Step::vTableDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[] -- get table                                                       */
+/* Table[] -- get table                                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vTableGet(void)
 {
@@ -67,7 +67,7 @@ void Step::vTableGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].set -- set table                                                   */
+/* Table[].set -- set table                                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTableSet(void)
 {
@@ -132,7 +132,7 @@ void Step::vTableCreatePtnDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].column -- get the column from the table                            */
+/* Table[].column -- get the column from the table                            */
 /*----------------------------------------------------------------------------*/
 void Step::vTableColumnFetch(void)
 {
@@ -150,7 +150,7 @@ void Step::vTableColumnFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].columnCount -- get column count                                    */
+/* Table[].columnCount -- get column count                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vTableColumnCountFetch(void)
 {
@@ -181,7 +181,7 @@ void Step::vTableDeleteIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].dump                                                               */
+/* Table[].dump                                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vTableDump(void)
 {
@@ -201,7 +201,7 @@ void Step::vTableDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].genCsvBuffer -- generate a random row for table                    */
+/* Table[].genCsvBuffer -- generate a random row for table                    */
 /*----------------------------------------------------------------------------*/
 void Step::vTableGenCsvBuffer(void)
 {
@@ -238,7 +238,7 @@ void Step::vTableGenCsvBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].streamDef@ -- fetch the table stream def                           */
+/* Table[].streamDef@ -- fetch the table stream def                           */
 /*----------------------------------------------------------------------------*/
 void Step::vTableStreamDefFetch(void)
 {
@@ -254,7 +254,7 @@ void Step::vTableStreamDefFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].tablePtn@ -- fetch the table partition                              */
+/* Table[].tablePtn@ -- fetch the table partition                              */
 /*----------------------------------------------------------------------------*/
 void Step::vTableTablePtnFetch(void)
 {
@@ -387,7 +387,7 @@ void Step::vTableNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].ptnStreamDef@ -- get the table ptn stream def                      */
+/* Table[].ptnStreamDef@ -- get the table ptn stream def                      */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnStreamDefFetch(void)
 {
@@ -529,7 +529,7 @@ void Step::vTableScan(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].size -- push space used by table                                   */
+/* Table[].size -- push space used by table                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTableSize(void)
 {
@@ -575,7 +575,7 @@ void Step::vTableTableDefStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].verify -- verify the table                                         */
+/* Table[].verify -- verify the table                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vTableVerify(void)
 {
@@ -591,7 +591,7 @@ void Step::vTableVerify(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].visualize -- visualize the table                                   */
+/* Table[].visualize -- visualize the table                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTableVisualize(void)
 {

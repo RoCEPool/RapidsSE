@@ -10,7 +10,7 @@
 : vistbl_action
 
   <tableNm> op__table if
-    table[].visualize
+    Table[].visualize
     true
   else
     false
