@@ -86,7 +86,7 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* the convertor experiment                                                   */
+/* the toRsb convertor experiment                                             */
 /*----------------------------------------------------------------------------*/
 : exp3 \prompt
 
@@ -107,7 +107,7 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  table[].streamDef@ ToRsb::new locals| pConvertor |
+  table[].streamDef@ ToRsb::new locals| pToRsb |
 
   csvBuffer::new locals| pCsvBuffer |
 
@@ -131,7 +131,7 @@
 
     //pCsvBuffer csvBuffer.print
 
-    pCsvBuffer pConvertor toRsb.inspect
+    pCsvBuffer pToRsb toRsb.inspect
 
   loop
   
@@ -149,7 +149,7 @@
 
   pCsvBuffer csvBuffer.delete
 
-  pConvertor toRsb.delete
+  pToRsb toRsb.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -212,7 +212,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* the convertor experiment                                                   */
+/* the toRsb experiment                                                       */
 /*----------------------------------------------------------------------------*/
 : exp_fl \prompt
 
@@ -235,7 +235,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ": exp_fl C" .
 
-  table[].streamDef@ ToRsb::new locals| pConvertor |
+  table[].streamDef@ ToRsb::new locals| pToRsb |
 
   csvBuffer::new locals| pCsvBuffer |
 
@@ -264,7 +264,7 @@
     //pCsvBuffer csvBuffer.print
 
     ": exp_fl D3" .
-    pCsvBuffer pConvertor toRsb.inspect
+    pCsvBuffer pToRsb toRsb.inspect
 
     ": exp_fl D4" .
   loop
@@ -284,7 +284,7 @@
 
   pCsvBuffer csvBuffer.delete
 
-  pConvertor toRsb.delete
+  pToRsb toRsb.delete
 
 ": exp_fl F" .
 ;

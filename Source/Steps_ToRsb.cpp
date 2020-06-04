@@ -20,7 +20,7 @@ void Step::vAddSteps_ToRsb(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convertor::new -- new a convertor                                          */
+/* toRsb::new -- new toRsb                                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbNew(void)
 {
@@ -28,9 +28,9 @@ void Step::vToRsbNew(void)
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   
-  ToRsb* pConvertor = new ToRsb(pStreamDef,AM::pFmt());
+  ToRsb* pToRsb = new ToRsb(pStreamDef,AM::pFmt());
   
-  m_pDataStack->vPushPtr(pConvertor);
+  m_pDataStack->vPushPtr(pToRsb);
     
   EXIT();
 }
@@ -45,9 +45,9 @@ void Step::vToRsbDelete(void)
 {
   ENTRY();
   
-  ToRsb* pConvertor = _pToRsb(m_pDataStack->pPopPtr(__func__));
+  ToRsb* pToRsb = _pToRsb(m_pDataStack->pPopPtr(__func__));
 
-  delete pConvertor;
+  delete pToRsb;
   
   EXIT();
 }
@@ -59,13 +59,13 @@ void Step::vToRsbInspect(void)
 {
   ENTRY();
 
-  ToRsb* pConvertor = _pToRsb(m_pDataStack->pPopPtr(__func__));
+  ToRsb* pToRsb = _pToRsb(m_pDataStack->pPopPtr(__func__));
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
 
   char* azSrc  = (char*)pCsvBuffer->ayDataArea();
   
-  bool bResult = pConvertor->bInspect(azSrc);
+  bool bResult = pToRsb->bInspect(azSrc);
   
   EXIT();
 }
@@ -75,25 +75,25 @@ void Step::vToRsbInspect(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convertor.convert -- convert csv buffer                                    */
+/* toRsb[].convert -- convert csv buffer                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbRegConvert(void)
 {
   ENTRY();
 
-  ToRsb* pConvertor = *m_pRegSet->m_xpConvertor;
+  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
   
   char* azSrc  = (char*)pCsvBuffer->ayDataArea();
   
-  bool bResult = pConvertor->bConvert(azSrc);
+  bool bResult = pToRsb->bConvert(azSrc);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* convertor[].create -- create a convertor                                   */
+/* toRsb[].create -- create toRsb                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbRegCreate(void)
 {
@@ -101,24 +101,24 @@ void Step::vToRsbRegCreate(void)
   
   StreamDef* pStreamDef = m_pRegSet->m_xpTable->pStreamDef();
   
-  ToRsb* pConvertor = new ToRsb(pStreamDef,AM::pFmt());
+  ToRsb* pToRsb = new ToRsb(pStreamDef,AM::pFmt());
       
-  m_pRegSet->m_xpConvertor = pConvertor;
+  m_pRegSet->m_xpToRsb = pToRsb;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* convertor[].delete -- delete the convertor                                 */
+/* toRsb[].delete -- delete the toRsb                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbRegDelete(void)
 {
   ENTRY();
   
-  ToRsb* pConvertor = *m_pRegSet->m_xpConvertor;
-  delete pConvertor;
+  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
+  delete pToRsb;
   
-  m_pRegSet->m_xpConvertor = nullptr;
+  m_pRegSet->m_xpToRsb = nullptr;
   
   EXIT();
 }

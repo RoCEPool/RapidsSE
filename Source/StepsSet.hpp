@@ -1552,7 +1552,7 @@ public:
   void vToStr(void);
   void vToTask(void);
 
-  // convertor
+  // toRsb
   void vToRsbNew(void);
   void vToRsbDelete(void);
   void vToRsbInspect(void);
