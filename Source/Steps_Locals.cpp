@@ -240,8 +240,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Pipein[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Pipein[].set"_Stz);
+  else if (szTerm->bSame("PipeIn[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PipeIn[].set"_Stz);
     EXIT();
     return;
   }

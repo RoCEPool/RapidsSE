@@ -10,8 +10,8 @@
 : toCsv_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
-  Pipein[] to Operand[]
-  nullptr to Pipein[]
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
 
   Operand[].crwtoCsv
   Operand[] to Subset[]
@@ -44,9 +44,9 @@
 : toCsv_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
-  Pipein[].delete
+  PipeIn[].delete
   streamDef[].newtoCsvStream
-  streamDef[].pipeout
+  streamDef[].pipeOut
 
   true
 ;

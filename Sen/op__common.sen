@@ -19,9 +19,9 @@
   else
     File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
     op.pipelineJob@ ERROR_JOB !!logError
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     false
   then
   ;
@@ -99,9 +99,9 @@
   // check in tables folder
   check::folderIsTables not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     false
     exit
   then
@@ -109,9 +109,9 @@
   // table
   sTableNm check::validTableAssembly not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     false
     exit
   then
@@ -137,9 +137,9 @@
   // check in tables folder
   check::folderIsTables not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     false
     exit
   then
@@ -154,9 +154,9 @@
 
   sIndexNm check::nameIsaIndex not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     path[].popNamedTableFolder
     path[].popIndexesFolder
     false
@@ -185,9 +185,9 @@
   // check in tables folder
   check::folderIsTables not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     false
     exit
   then
@@ -195,9 +195,9 @@
   // table
   sTableNm check::validTableAssembly not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     false
   exit
   then
@@ -216,9 +216,9 @@
 
   sIndexNm check::nameIsaIndex not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     path[].popNamedTableFolder
     path[].popIndexesFolder
     false
@@ -302,24 +302,24 @@
     Operand[].isNull if
 
       // bide till next operand is available
-      Pipein[].bide
+      PipeIn[].bide
 
-      // pop next operand from queue into Pipein[]
-      Pipein[].next
+      // pop next operand from queue into PipeIn[]
+      PipeIn[].next
 
       // execute the operator's handler for the operand
-      Pipein[].kind op[].handler@ execute
+      PipeIn[].kind op[].handler@ execute
 
     else
 
       // get the Out-of_Order Operand
       OperandOoO[].next if
 
-        OperandOoO[] to Pipein[]
+        OperandOoO[] to PipeIn[]
         nullptr to OperandOoO[]
 
         // execute the operator's handler for the Out-of_Order operand
-        Pipein[].kind op[].handler@ execute
+        PipeIn[].kind op[].handler@ execute
 
         // assert Operand is null
         Operand[].isNull assert

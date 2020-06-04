@@ -14,8 +14,8 @@
   //"Operand:- ZK_PROGRESSUNITS" .verbose
 
   // get operand into InfoSet[]
-  Pipein[] to InfoSet[]
-  nullptr to Pipein[]
+  PipeIn[] to InfoSet[]
+  nullptr to PipeIn[]
 
 
   // get first row of InfoSet[]
@@ -55,8 +55,8 @@
   //"Operand:- ZK_TOTALUNITS" .verbose
 
   // get operand into InfoSet[]
-  Pipein[] to InfoSet[]
-  nullptr to Pipein[]
+  PipeIn[] to InfoSet[]
+  nullptr to PipeIn[]
 
   // get first row of infoSet[]
   Infoset[].firstRow to row[]

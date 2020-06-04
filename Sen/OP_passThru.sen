@@ -22,14 +22,14 @@
 : passThru_EosMarker \handler
 
   //"Operand:- ZK_EOSMARKER" .verbose
-  Pipein[].delete
+  PipeIn[].delete
   Operand[].newCsvBuffer
   Operand[].report
   Counter0[] "passThru" "passThru,%v,%v\nn" str.format Operand[].csvAppend
-  Operand[].pipeout
+  Operand[].pipeOut
 
   Operand[].newEosMarker
-  Operand[].pipeout
+  Operand[].pipeOut
 
   true
 ;
@@ -40,7 +40,7 @@
 : passThru_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   // new a stream def
   Operand[].newStreamDef
@@ -61,7 +61,7 @@
   sReportTable op__table if
     sReportTable path[].pushNamedTableFolder
     sReportTable find execute to table[]
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   then
 
   true

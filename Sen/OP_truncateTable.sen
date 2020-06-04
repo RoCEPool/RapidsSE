@@ -11,7 +11,7 @@
 
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   // truncate the buffers of the tablePtn
   tablePtn[].truncate
@@ -32,7 +32,7 @@
   // check if we can scan the table
   <tableNm> op__table if
     table[].tablePtn@ to tablePtn[]
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   then
 
   true

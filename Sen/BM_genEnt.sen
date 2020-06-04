@@ -21,7 +21,7 @@
 //
 //  // generate the ent buffer's
 //  <nBuffers> index[].genEntBuffers to Operand[]
-//  Operand[].pipeoutSet
+//  Operand[].pipeOutSet
 //
 //  Operand[].newEosMarker
 //  Operand[].pipeOut
@@ -32,7 +32,7 @@
 : BM_GenEnt_PulseMarker \handler
 
   // pipe out the pulse marker to the next operator
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipeout a new stream def
@@ -43,7 +43,7 @@
   // generate the ent buffer's
   <nBuffers> >int 0 do
     index[].genEntBuffer to Operand[]
-    Operand[].pipeout
+    Operand[].pipeOut
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -67,7 +67,7 @@
     path[].toStr     "Folder path: %v" .printf
     folder[].contentStr "contains: %v" .printf
 
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   then
 
   true

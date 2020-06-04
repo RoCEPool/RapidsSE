@@ -24,7 +24,7 @@
   <operand> "csvBuffer" str.same if
     "OPERAND DUMP: csvBuffer" .printf
 
-    pipeIn[] csvBuffer.operandDump
+    PipeIn[] csvBuffer.operandDump
   then
 
   ZK_CSVBUFFER_handler
@@ -38,7 +38,7 @@
   <operand> "rsbBuffer" str.same if
     "OPERAND DUMP: rsbBuffer" .
 
-    pipeIn[] rsbBuffer.operandDump
+    PipeIn[] rsbBuffer.operandDump
   then
 
   ZK_RSBBUFFER_handler
@@ -52,7 +52,7 @@
   <operand> "seekOffsets" str.same if
     "OPERAND DUMP: seekOffsets" .printf
 
-    pipeIn[] seekOffsets.operandDump
+    PipeIn[] seekOffsets.operandDump
   then
 
   ZK_SEEKOFFSETS_handler

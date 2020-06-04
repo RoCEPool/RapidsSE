@@ -10,7 +10,7 @@
 : genCsv_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   // new a stream def
   Operand[].newStreamDef
@@ -37,7 +37,7 @@
   //"Operand:- ZK_STARTMARKER" .verbose
   // check if table exits
   <tableNm> op__table if
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   then
 
   true

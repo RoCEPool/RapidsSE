@@ -42,7 +42,7 @@
     "BM_InsIdx,%v,%v,Average Time per Entry,%vns\n"
     str.format Operand[].csvAppend
   
-  Operand[].pipeout
+  Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -74,12 +74,12 @@
 /*----------------------------------------------------------------------------*/
 : BM_InsIdx_EosMarker \handler
 
-  Pipein[].delete
+  PipeIn[].delete
 
   BM_InsIdx_Report
 
   Operand[].newEosMarker
-  Operand[].pipeout
+  Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +99,7 @@
 
     //Task_Interpreter
 
-    Pipein[].pipeout
+    PipeIn[].pipeOut
   then
 ;
 

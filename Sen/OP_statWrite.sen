@@ -44,8 +44,8 @@
   // open the file for writing
   "/tmp/SE_Stats.csv" OPEN_APPEND op__file if
 
-    Pipein[] to infoset[]
-    nullptr to Pipein[]
+    PipeIn[] to infoset[]
+    nullptr to PipeIn[]
 
     C_TDEF_LOCKSTATS op__tableDef_infoSet assert
 

@@ -10,7 +10,7 @@
 : BufferGen_PulseMarker \handler
 
   "Operand:- ZK_PULSEMARKER" .verbose
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   <nBuffers> 0 do
     I "buffer# %v" .printf

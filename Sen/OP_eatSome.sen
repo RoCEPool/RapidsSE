@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : OP_eatSome_Opr \handler
 
-  Pipein[].kind "EATING : %v" .printf
-  Pipein[].delete
+  PipeIn[].kind "EATING : %v" .printf
+  PipeIn[].delete
   true
 ;
 

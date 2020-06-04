@@ -13,9 +13,9 @@
   // check if we have enough buffers
   node::checkEnoughBuffers not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then
@@ -24,9 +24,9 @@
   // check if are in tenant
   folder[].checkIsTenants not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then
@@ -35,9 +35,9 @@
   // check if catalog already exits
   <tenantNm> name::isNotKnownTenant not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then
@@ -46,7 +46,7 @@
   // make the tenant
   <tenantNm> :makeTenantFolder ( )
 
-  Pipein[].pipeout
+  PipeIn[].pipeOut
 
   true
 ;

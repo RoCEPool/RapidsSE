@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : stats_StartMarker \handler
 
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   "+++ +++ +++" .
 
@@ -44,7 +44,7 @@
   infoSetTable[] infoSet[].addLockStats assert
 
   // pipeout the infoset
-  infoSet[].pipeout
+  infoSet[].pipeOut
 
   true
 ;
@@ -57,7 +57,7 @@
   metrics::lockSample // to operandC[]
   //OperandC[].pipeOut
 
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
  
  Op.ackPipelineJob
  false
@@ -73,9 +73,9 @@
   infoSetTable[] infoSet[].addLockStats assert
 
   // pipeout the infoset
-  infoSet[].pipeout
+  infoSet[].pipeOut
 
-  Pipein[].pipeout
+  PipeIn[].pipeOut
   Op.ackPipelineJob
   false
 ;

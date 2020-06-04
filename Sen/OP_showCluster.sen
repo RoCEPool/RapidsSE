@@ -17,7 +17,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipeout the streamDef
-  streamDef[].pipeout
+  streamDef[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an infoSet operand
@@ -28,7 +28,7 @@
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert a row in the infoSet for the defined node
     I streamSetTable[] streamSet[].addShowCluster  not if
-      StreamSet[].pipeout
+      StreamSet[].pipeOut
       streamSetTable[] streamSet[].new
       I streamSetTable[] StreamSet[].addShowCluster assert
     then
@@ -37,7 +37,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipeout the infoset
-  streamSet[].pipeout
+  streamSet[].pipeOut
 
   true
 ;

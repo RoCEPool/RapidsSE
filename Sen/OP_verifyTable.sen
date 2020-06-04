@@ -21,7 +21,7 @@
   streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  streamDef[].pipeout
+  streamDef[].pipeOut
 
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
@@ -32,7 +32,7 @@
   table[] streamSetTable[] StreamSet[].addVerifyTable assert
 
   // pipeout the infoset
-  StreamSet[].pipeout
+  StreamSet[].pipeOut
 
   true
 ;

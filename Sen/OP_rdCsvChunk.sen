@@ -9,15 +9,15 @@
 /*----------------------------------------------------------------------------*/
 : rdCsvChunk_SeekOffsets \handler
 
-  Pipein[] to InfoSet[]
-  nullptr to Pipein[]
+  PipeIn[] to InfoSet[]
+  nullptr to PipeIn[]
 
   InfoSet[].firstRow to row[]
   begin
     row[].isNull
   not while
     row[].get InfoSet[].rdCsvChunk to Operand[]
-    Operand[].pipeout
+    Operand[].pipeOut
     InfoSet[].nextRow to row[]
   repeat
 
@@ -35,7 +35,7 @@
 
   // open the file for reading
   <fileNm> OPEN_READ op__file if
-    Pipein[].pipeout
+    PipeIn[].pipeOut
   then
 
   true
@@ -51,7 +51,7 @@
     File0[].get file.close
     File0[].get file.delete
   then
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
   Op.ackPipelineJob
 
   false

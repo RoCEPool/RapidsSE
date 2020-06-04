@@ -9,19 +9,19 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegPipein(void)
 {
-  vAddStep("Pipein[]"_Stz,                &Step::vRegPipeinGet);
-  vAddStep("Pipein[].bide"_Stz,           &Step::vRegPipeinBide);
-  vAddStep("Pipein[].delete"_Stz,         &Step::vRegPipeinDelete);
-  vAddStep("Pipein[].isNull"_Stz,         &Step::vRegPipeinIsNull);
-  vAddStep("Pipein[].kind"_Stz,           &Step::vRegPipeinKind);
-  vAddStep("Pipein[].next"_Stz,           &Step::vRegPipeinNext);
-  vAddStep("Pipein[].pipeOut"_Stz,        &Step::vRegPipeinPipeOut);
-  vAddStep("Pipein[].pipeToJob"_Stz,      &Step::vRegPipeinPipeToJob);
-  vAddStep("Pipein[].set"_Stz,            &Step::vRegPipeinSet);
+  vAddStep("PipeIn[]"_Stz,                &Step::vRegPipeinGet);
+  vAddStep("PipeIn[].bide"_Stz,           &Step::vRegPipeinBide);
+  vAddStep("PipeIn[].delete"_Stz,         &Step::vRegPipeinDelete);
+  vAddStep("PipeIn[].isNull"_Stz,         &Step::vRegPipeinIsNull);
+  vAddStep("PipeIn[].kind"_Stz,           &Step::vRegPipeinKind);
+  vAddStep("PipeIn[].next"_Stz,           &Step::vRegPipeinNext);
+  vAddStep("PipeIn[].pipeOut"_Stz,        &Step::vRegPipeinPipeOut);
+  vAddStep("PipeIn[].pipeToJob"_Stz,      &Step::vRegPipeinPipeToJob);
+  vAddStep("PipeIn[].set"_Stz,            &Step::vRegPipeinSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].bide -- pipein operand bide                                       */
+/* PipeIn[].bide -- pipein operand bide                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinBide(void)
 {
@@ -37,7 +37,7 @@ void Step::vRegPipeinBide(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].delete -- operand delete                                          */
+/* PipeIn[].delete -- operand delete                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinDelete(void)
 {
@@ -51,7 +51,7 @@ void Step::vRegPipeinDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].get -- fetch operand                                              */
+/* PipeIn[].get -- fetch operand                                              */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinGet(void)
 {
@@ -63,7 +63,7 @@ void Step::vRegPipeinGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].isNull -- is operand null ?                                       */
+/* PipeIn[].isNull -- is operand null ?                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinIsNull(void)
 {
@@ -75,7 +75,7 @@ void Step::vRegPipeinIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].kind -- decode operand into its operand kind                      */
+/* PipeIn[].kind -- decode operand into its operand kind                      */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinKind(void)
 {
@@ -137,7 +137,7 @@ void Step::vRegPipeinKind(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].next -- get next operand                                          */
+/* PipeIn[].next -- get next operand                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinNext(void)
 {
@@ -151,7 +151,7 @@ void Step::vRegPipeinNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].pipeOut -- append operand onto next operator in pipeline          */
+/* PipeIn[].pipeOut -- append operand onto next operator in pipeline          */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinPipeOut(void)
 {
@@ -169,7 +169,7 @@ void Step::vRegPipeinPipeOut(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].pipeToJob -- append operand onto the pipeline job buffer queue    */
+/* PipeIn[].pipeToJob -- append operand onto the pipeline job buffer queue    */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinPipeToJob(void)
 {
@@ -187,7 +187,7 @@ void Step::vRegPipeinPipeToJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipein[].set -- set operand                                                */
+/* PipeIn[].set -- set operand                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinSet(void)
 {

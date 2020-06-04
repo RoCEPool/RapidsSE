@@ -10,7 +10,7 @@
 : sink_CancelMarker \handler
 
   //"Operand:- ZK_CANCELMARKER" .verbose
-  Pipein[].pipeToJob
+  PipeIn[].pipeToJob
   Operand[].newExitedMarker
   Operand[].pipeOut
   Op.ackPipelineJob
@@ -24,7 +24,7 @@
 : sink_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
-  Pipein[].delete
+  PipeIn[].delete
 
   // check if start has already been errored
   Job_Pipeline::isErrored not if
@@ -36,7 +36,7 @@
 
     // now pipeout an exit marker
     Operand[].newErroredMarker
-    Operand[].pipeout
+    Operand[].pipeOut
 
   else
     grid::thisNodeName@ "(%v) sinkOP ignoring error marker" .printf
@@ -51,7 +51,7 @@
 : sink_ExitMarker \handler
 
   //"Operand:- ZK_EXITMARKER" .verbose
-  Pipein[].pipeToJob
+  PipeIn[].pipeToJob
   Operand[].newExitedMarker
   Operand[].pipeOut
   Op.ackPipelineJob
@@ -65,7 +65,7 @@
 : sink_PulsedMarker \handler
 
   //"Operand:- ZK_PULSEDMARKER" .verbose
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
   true
 ;
 
@@ -75,7 +75,7 @@
 : sink_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
-  Pipein[].delete
+  PipeIn[].delete
   Operand[].newStartedMarker
   Operand[].pipeOut
 
@@ -88,7 +88,7 @@
 : sink_Xyz \handler
 
   // delete all operands
-  Pipein[].delete
+  PipeIn[].delete
 
   true
 ;

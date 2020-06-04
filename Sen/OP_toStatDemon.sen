@@ -11,8 +11,8 @@
 
   "OP_toStatD_LockStats +++ +++ +++" .
 
-  Pipein[] to infoset[]
-  nullptr to Pipein[]
+  PipeIn[] to infoset[]
+  nullptr to PipeIn[]
 
   infoset[].name .
 

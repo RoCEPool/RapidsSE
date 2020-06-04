@@ -14,7 +14,7 @@ void Step::vAddSteps_RegOperandB(void)
   vAddStep("OperandB[].delete"_Stz,         &Step::vRegOperandBDelete);
   vAddStep("OperandB[].get"_Stz,            &Step::vRegOperandBGet);
   vAddStep("OperandB[].isNull"_Stz,         &Step::vRegOperandBIsNull);
-  vAddStep("OperandB[].pipeout"_Stz,        &Step::vRegOperandBPipeOut);
+  vAddStep("OperandB[].pipeOut"_Stz,        &Step::vRegOperandBPipeOut);
   vAddStep("OperandB[].set"_Stz,            &Step::vRegOperandBSet);
 }
 

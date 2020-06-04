@@ -13,9 +13,9 @@
   // check if we have enough buffers
   node::checkEnoughBuffers not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then
@@ -24,9 +24,9 @@
   // check if are in catalogs
   folder[].checkIsCatalogs not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then
@@ -35,9 +35,9 @@
   // check if catalog already exits
   <catalogNm> name::isNotKnownCatalog not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then
@@ -46,7 +46,7 @@
   // make the catalog
   <catalogNm> :makeCatalogFolder ( )
 
-  Pipein[].pipeout
+  PipeIn[].pipeOut
 
   true
 ;

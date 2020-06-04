@@ -11,8 +11,8 @@
 
   //"Operand:- ZK_NODEINFO" .verbose
 
-  Pipein[] to infoSet[]
-  nullptr to Pipein[]
+  PipeIn[] to infoSet[]
+  nullptr to PipeIn[]
 
   // get the first row of the infoSet (nodeInfo)
   infoSet[].firstRow to row[]
@@ -24,7 +24,7 @@
   //streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  //streamDef[].pipeout
+  //streamDef[].pipeOut
 
   // create an infoSet operand
   streamSetTable[] streamSet[].new
@@ -33,7 +33,7 @@
   row[].get streamSetTable[] streamSet[].addgridSanity assert
 
   // pipeout the infoset
-  streamSet[].pipeout
+  streamSet[].pipeOut
 
   // delete the infoset
   infoSet[].delete
@@ -49,7 +49,7 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
-  Pipein[].pipeout
+  PipeIn[].pipeOut
 
   // find the __gridSanity table
   C_TDEF_gridSanity op__tableDef_streamSet assert
@@ -58,7 +58,7 @@
   streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  streamDef[].pipeout
+  streamDef[].pipeOut
 
   true
 ;

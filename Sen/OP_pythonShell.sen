@@ -10,8 +10,8 @@
 : pythonShell_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
-  Pipein[] to Operand[]
-  nullptr to Pipein[]
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
 
   Operand[].csvData
   <pythonFile> Operand[].invokePythonShell
@@ -26,7 +26,7 @@
 : pythonShell_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   true
 ;

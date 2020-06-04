@@ -10,7 +10,7 @@
 : print_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
   <string> .
 
   true

@@ -11,11 +11,11 @@
 
   //"Operand:- ZK_CANCELMARKER" .verbose
   xmits[].handleCancel if
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
     Op.ackPipelineJob
     false
   else
-    Pipein[].delete
+    PipeIn[].delete
     true
   then
 ;
@@ -27,9 +27,9 @@
 
   //"Operand:- ZK_EOSMARKER" .verbose
   xmits[].handleEos if
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   else
-    Pipein[].delete
+    PipeIn[].delete
   then
   true
 ;
@@ -41,9 +41,9 @@
 
   //"Operand:- ZK_ERRORMARKER" .verbose
   xmits[].handleError if
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   else
-    Pipein[].delete
+    PipeIn[].delete
   then
   true
 ;
@@ -56,11 +56,11 @@
 
   //"Operand:- ZK_EXITMARKER" .verbose
   xmits[].handleExit if
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
     Op.ackPipelineJob
     false
   else
-    Pipein[].delete
+    PipeIn[].delete
     true
   then
 ;
@@ -72,9 +72,9 @@
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   xmits[].handlePulse if
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   else
-    Pipein[].delete
+    PipeIn[].delete
   then
   true
 ;
@@ -85,9 +85,9 @@
 
   //"Operand:- ZK_PULSEDMARKER" .verbose
   xmits[].handlePulsed if
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   else
-    Pipein[].delete
+    PipeIn[].delete
   then
   true
 ;
@@ -99,9 +99,9 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
   xmits[].handleStart if
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   else
-    Pipein[].delete
+    PipeIn[].delete
   then
   true
 ;
@@ -113,9 +113,9 @@
 
   //"Operand:- ZK_STREAMDEF" .verbose
   xmits[].handleStreamDef if
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   else
-    Pipein[].delete
+    PipeIn[].delete
   then
   true
 ;

@@ -25,7 +25,7 @@
   aggTimer[] aggTimer.nanosecs counter1[].get /
     "BM_InflateCrw,Average Time per Compact Row,%vns\n" str.format Operand[].csvAppend
   
-  Operand[].pipeout
+  Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -59,12 +59,12 @@
 /*----------------------------------------------------------------------------*/
 : BM_InflateCrwOp_EosMarker \handler
 
-  Pipein[].delete
+  PipeIn[].delete
 
   BM_InflateCrwOp_Report
 
   Operand[].newEosMarker
-  Operand[].pipeout
+  Operand[].pipeOut
 
   true
 ;
@@ -81,7 +81,7 @@
 
     BM_TimerNew
 
-    Pipein[].pipeout
+    PipeIn[].pipeOut
   then
 
   true

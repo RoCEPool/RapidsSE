@@ -19,7 +19,7 @@
   infoSetTable[] infoSet[].addnodeInfo assert
 
   // pipeout the infoset
-  infoSet[].pipeout
+  infoSet[].pipeOut
 
   true
 ;

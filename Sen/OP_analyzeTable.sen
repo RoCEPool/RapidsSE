@@ -21,7 +21,7 @@
   streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  streamDef[].pipeout
+  streamDef[].pipeOut
 
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
@@ -31,7 +31,7 @@
   do
     // analyze table
     I table[] streamSetTable[] StreamSet[].addAnalyzeTable  not if
-      StreamSet[].pipeout
+      StreamSet[].pipeOut
       streamSetTable[] streamSet[].new
       I table[] streamSetTable[] StreamSet[].addAnalyzeTable assert
     then
@@ -39,7 +39,7 @@
   loop
 
   // pipeout the infoset
-  StreamSet[].pipeout
+  StreamSet[].pipeOut
 
   true
 ;

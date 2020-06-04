@@ -21,9 +21,9 @@
   // check if we have enough buffers
   node::checkEnoughBuffers not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then
@@ -32,9 +32,9 @@
   // check if are in schemas
   folder[].checkIsSchemas not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then
@@ -43,9 +43,9 @@
   // check if schema already exits
   <schemaNm> name::isNotKnownSchema not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then
@@ -54,7 +54,7 @@
   // make the schema
   <schemaNm> :makeSchemaFolder ( )
 
-  Pipein[].pipeout
+  PipeIn[].pipeOut
 
   true
 ;

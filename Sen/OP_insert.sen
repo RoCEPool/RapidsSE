@@ -13,11 +13,11 @@
 
   // insert the buffer into the table ptn
   tablePtn[] tablePtnGrabWrite
-  Pipein[] tablePtn[].appendBuffer
+  PipeIn[] tablePtn[].appendBuffer
   tablePtn[] tablePtnDropWrite
 
   // null the Pipein
-  nullptr to Pipein[]
+  nullptr to PipeIn[]
 
   // increment no of buffers inserted
   Counter0[] 1 + to Counter0[]
@@ -32,7 +32,7 @@
     Counter0[] infoSetTable[] InfoSet[].addProgressUnits assert
 
     // pipeout the infoset
-    InfoSet[].pipeout
+    InfoSet[].pipeOut
 
     // reset the counter
     0 to Counter0[]
@@ -48,7 +48,7 @@
 : insert_EosMarker \handler
 
   //"Operand:- ZK_EOSMARKER" .verbose
-  Pipein[].pipeout
+  PipeIn[].pipeOut
 
   // send out final progress units
 
@@ -59,7 +59,7 @@
   Counter0[] infoSetTable[] InfoSet[].addProgressUnits assert
 
   // pipeout the infoset
-  InfoSet[].pipeout
+  InfoSet[].pipeOut
 
   true
   ;
@@ -71,7 +71,7 @@
 
   //"Operand:- ZK_EXITMARKER" .verbose
   path[].popNamedTableFolder
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
   Op.ackPipelineJob
 
   false
@@ -90,7 +90,7 @@
   // get table[] to be inserted into
   <tableNm> op__table if
     table[].tablePtn@ to tablePtn[]
-    Pipein[].pipeout
+    PipeIn[].pipeOut
   then
 
   true
@@ -103,7 +103,7 @@
 : insert_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
-  Pipein[].delete
+  PipeIn[].delete
   Operand[].newStreamDef
   Operand[].pipeOut
   

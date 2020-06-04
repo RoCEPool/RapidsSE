@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 : OP_EatAll_Xyz \handler
 
-  Pipein[].kind "OP_EatAll_Xyz +++ +++ +++ : Operand %v" .printf
+  PipeIn[].kind "OP_EatAll_Xyz +++ +++ +++ : Operand %v" .printf
 
   // delete all operands
-  Pipein[].delete
+  PipeIn[].delete
 
   true
 ;

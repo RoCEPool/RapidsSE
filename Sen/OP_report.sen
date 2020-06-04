@@ -10,7 +10,7 @@
 : report_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
-  Pipein[] to Operand[]
+  PipeIn[] to Operand[]
   nullptr to Operand[]
 
   Operand[].isReport if
@@ -28,7 +28,7 @@
 : report_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
-  Pipein[] to Operand[]
+  PipeIn[] to Operand[]
   nullptr to Operand[]
 
   Operand[].isReport if
@@ -46,7 +46,7 @@
 : report_EntBuffer \handler
 
   //"Operand:- ZK_ENTBUFFER" .verbose
-  Pipein[] to Operand[]
+  PipeIn[] to Operand[]
   nullptr to Operand[]
 
   Operand[].isReport if
@@ -66,7 +66,7 @@
   //"Operand:- ZK_EOSMARKER" .verbose
   File0[].get file.close
   File0[].get file.delete
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   true
 ;
@@ -77,7 +77,7 @@
 : report_IrwBuffer \handler
 
   //"Operand:- ZK_IRWBUFFER" .verbose
-  Pipein[] to Operand[]
+  PipeIn[] to Operand[]
   nullptr to Operand[]
 
   Operand[].isReport if
@@ -95,7 +95,7 @@
 : report_SrtBuffer \handler
 
   //"Operand:- ZK_SRTBUFFER" .verbose
-  Pipein[] to Operand[]
+  PipeIn[] to Operand[]
   nullptr to Operand[]
 
   Operand[].isReport if
@@ -116,7 +116,7 @@
 
   // open the file for writing
   <fileNm> OPEN_WRITE op__file if
-    Pipein[].pipeout
+    PipeIn[].pipeOut
   then
 
   true

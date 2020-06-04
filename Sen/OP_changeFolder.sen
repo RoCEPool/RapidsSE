@@ -80,7 +80,7 @@
   pCurrentFolder word.checkIsAFolder not if
     op.pipelineJob@ ERROR_JOB
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then

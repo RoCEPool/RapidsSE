@@ -16,7 +16,7 @@
   streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  streamDef[].pipeout
+  streamDef[].pipeOut
 
   // create a streamSet operand
   streamSetTable[] streamSet[].new
@@ -41,7 +41,7 @@
 
     object@ word.name@
     streamSetTable[] StreamSet[].addListFolder not if
-      StreamSet[].pipeout
+      StreamSet[].pipeOut
       streamSetTable[] streamSet[].new
       object@ word.name@
       streamSetTable[] StreamSet[].addListFolder assert
@@ -51,7 +51,7 @@
   next
 
   // pipeout the infoset
-  StreamSet[].pipeout
+  StreamSet[].pipeOut
 
   true
 ;

@@ -10,8 +10,8 @@
 : upsertOp_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
-  Pipein[] to Operand[]
-  nullptr to Pipein[]
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
 
   tx[].begin
   tablePtn[] tablePtnGrabWrite
@@ -32,7 +32,7 @@
   // check if we can insert into the table
   <tableNm> op__table if
     table[].tablePtn@ to tablePtn[]
-    Pipein[].pipeout
+    PipeIn[].pipeOut
   then
 
   true
@@ -44,7 +44,7 @@
 : upsertOp_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
-  Pipein[].delete
+  PipeIn[].delete
   Operand[].newStreamDef
   Operand[].pipeOut
 

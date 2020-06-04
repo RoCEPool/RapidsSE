@@ -13,9 +13,9 @@
   // check if are in tenants
   folder[].checkIsTenants not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then
@@ -24,9 +24,9 @@
   // check if tenant exits
   <tenantNm> checkIsTenant not if
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
+    PipeIn[].delete
     Operand[].newErrorMarker
-    Operand[].pipeout
+    Operand[].pipeOut
     true
     exit
   then
@@ -35,7 +35,7 @@
   // remove the tenant
   <tenantNm> removeTenant
 
-  Pipein[].pipeout
+  PipeIn[].pipeOut
 
   true
 ;

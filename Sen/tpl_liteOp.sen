@@ -13,7 +13,7 @@
 : /liteOp/_PulseMarker \\handler
 
   /liteOp/_action if
-    Pipein[].pipeout
+    PipeIn[].pipeOut
     Operand[].newEosMarker
     Operand[].pipeOut
   then

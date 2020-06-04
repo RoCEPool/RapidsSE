@@ -10,7 +10,7 @@
 : BM_GenCrw_PulseMarker \handler
 
   // pipe out the pulse marker to the next operator
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -21,7 +21,7 @@
 
   // generate the crw buffer's
   <nBuffers> >int tablePtn[].genCrwBuffers to Operand[]
-  Operand[].pipeoutSet
+  Operand[].pipeOutSet
 
   Operand[].newEosMarker
   Operand[].pipeOut
@@ -40,7 +40,7 @@
     path[].toStr     "Folder path: %v" .printf
     folder[].contentStr "contains: %v" .printf
 
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   then
 ;
 

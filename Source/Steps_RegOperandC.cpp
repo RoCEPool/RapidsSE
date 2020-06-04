@@ -13,7 +13,7 @@ void Step::vAddSteps_RegOperandC(void)
   vAddStep("OperandC[].collect"_Stz,     &Step::vRegOperandCCollect);
   vAddStep("OperandC[].get"_Stz,         &Step::vRegOperandCGet);
   vAddStep("OperandC[].pipeOut"_Stz,     &Step::vRegOperandCPipeOut);
-  vAddStep("OperandC[].pipeoutSet"_Stz,  &Step::vRegOperandCPipeOutSet);
+  vAddStep("OperandC[].pipeOutSet"_Stz,  &Step::vRegOperandCPipeOutSet);
   vAddStep("OperandC[].set"_Stz,         &Step::vRegOperandCSet);
   vAddStep("OperandC[].setFirst"_Stz,    &Step::vRegOperandCSetFirst);
 }

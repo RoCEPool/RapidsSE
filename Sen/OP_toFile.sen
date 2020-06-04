@@ -10,8 +10,8 @@
 : toFileOp_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
-  Pipein[] to Operand[]
-  nullptr to Pipein[]
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
   Operand[].writetoFile0
   Operand[].delete
 
@@ -27,7 +27,7 @@
 
   // open the file for writing
   <fileNm> OPEN_WRITE op__file if
-    Pipein[].pipeout
+    PipeIn[].pipeOut
   then
 
   true
@@ -44,7 +44,7 @@
     File0[].get file.delete
   then
 
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
   Op.ackPipelineJob
 
   false

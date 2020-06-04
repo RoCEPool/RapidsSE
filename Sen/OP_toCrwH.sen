@@ -11,8 +11,8 @@
 
   //"Operand:- ZK_CSVBUFFER" .verbose
 
-  Pipein[] to Operand[]
-  nullptr to Pipein[]
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
 
   // use extractRow from register0 and convert csvtoCrw
   Operand[].csvToCrwH
@@ -60,7 +60,7 @@
   loader[].delete
   CrwHash[].delete
 
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   true
 ;
@@ -73,7 +73,7 @@
   //"Operand:- ZK_PULSEMARKER" .verbose
 
   // pipe out the pulsemarker
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   // pipe out the stream def
   Operand[].newStreamDef
@@ -99,12 +99,12 @@
     // create a loader
     Loader[].create not if
       EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
-      Pipein[].delete
+      PipeIn[].delete
       Operand[].newErrorMarker
-      Operand[].pipeout
+      Operand[].pipeOut
       CrwHash[].delete
     else
-      Pipein[].pipeout
+      PipeIn[].pipeOut
 
     then
   then

@@ -10,7 +10,7 @@
 : etcTest_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
   <etc> <arg2> <arg1> "etcTest : arg1 = %v arg2 = %v etc = %v" .printf
 
   true

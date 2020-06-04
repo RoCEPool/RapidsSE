@@ -13,12 +13,12 @@
 
   // check if start has already been pulsed
   Job_Pipeline::isPulsed if
-    Pipein[].delete
+    PipeIn[].delete
   else
     // mark pipeline as being cancelled
     true Job_Pipeline::cancelled
 
-    Pipein[].pipeout
+    PipeIn[].pipeOut
   then
 
   true
@@ -30,11 +30,11 @@
 : start_ErroredMarker \handler
 
   //"Operand:- ZK_ERROREDMARKER" .verbose
-  Pipein[].delete
+  PipeIn[].delete
 
   // now pipeout an exit marker
   Operand[].newExitMarker
-  Operand[].pipeout
+  Operand[].pipeOut
 
   true
 ;
@@ -45,7 +45,7 @@
 : start_ExitedMarker \handler
 
   //"Operand:- ZK_EXITEDMARKER" .verbose
-  Pipein[].delete
+  PipeIn[].delete
   Op.ackPipelineJob
 
   false
@@ -57,7 +57,7 @@
 : start_PulsedMarker \handler
 
   //"Operand:- ZK_PULSEDMARKER" .verbose
-  Pipein[].delete
+  PipeIn[].delete
 
   // check if start has already been cancelled
   Job_Pipeline::isCancelled not if
@@ -70,7 +70,7 @@
 
       // now pipeout an exit marker
       Operand[].newExitMarker
-      Operand[].pipeout
+      Operand[].pipeOut
 
     then
 
@@ -85,9 +85,9 @@
 : start_StartedMarker \handler
 
   //"Operand:- ZK_STARTEDMARKER" .verbose
-  Pipein[].delete
+  PipeIn[].delete
   Operand[].newPulseMarker
-  Operand[].pipeout
+  Operand[].pipeOut
 
   true
 ;

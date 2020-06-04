@@ -135,7 +135,7 @@
 
   //"ZK_CANCELMARKER_handler" .verbose
   nullptr to Operand[]
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
   Op.ackPipelineJob
 
   false
@@ -205,7 +205,7 @@
   0 locals| iPhrases |
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   // new a stream def
   Operand[].newStreamDef
@@ -262,7 +262,7 @@
 
   <tableNm> op__table if
     table[].tablePtn@ to tablePtn[]
-    Pipein[].pipeOut
+    PipeIn[].pipeOut
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

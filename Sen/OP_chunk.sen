@@ -10,7 +10,7 @@
 : chunk_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
 
   // find the __seekOffsets table
   C_TDEF_SEEKOFFSETS op__tableDef_infoSet assert
@@ -49,7 +49,7 @@
   // open the file for reading
   <fileNm> OPEN_READ op__file if
 
-    Pipein[].pipeout
+    PipeIn[].pipeOut
 
     // get size of file
     File0[].size C_1Mb / to iFileSizeMb
@@ -64,7 +64,7 @@
     iFileSizeMb infoSetTable[] InfoSet[].addTotalUnits assert
 
     // pipeout the infoset
-    InfoSet[].pipeout
+    InfoSet[].pipeOut
 
   then
 
@@ -82,7 +82,7 @@
     File0[].get file.delete
   then
 
-  Pipein[].pipeOut
+  PipeIn[].pipeOut
   Op.ackPipelineJob
 
   false
