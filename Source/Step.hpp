@@ -34,7 +34,6 @@ namespace Steps
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
     static void vAddSteps_Compiler(void);
-    static void vAddSteps_Convertor(void);
     static void vAddSteps_CoreWords(void);
     static void vAddSteps_CrwBuffer(void);
     static void vAddSteps_CsvBuffer(void);
@@ -161,6 +160,7 @@ namespace Steps
     static void vAddSteps_Ticking(void);
     static void vAddSteps_Timer(void);
     static void vAddSteps_To(void);
+    static void vAddSteps_ToRsb(void);
     static void vAddSteps_Trace(void);
     static void vAddSteps_Tx(void);
     static void vAddSteps_TxSet(void);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Convertor.cpp - csv record convertor                                 */
+/* Steps_ToRsb.cpp - csv to rsb convertor                                     */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,22 +7,22 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Convertor(void)
+void Step::vAddSteps_ToRsb(void)
 {
-  vAddStep("toRsb::new"_Stz,      &Step::vConvertorNew);
+  vAddStep("toRsb::new"_Stz,      &Step::vToRsbNew);
 
-  vAddStep("toRsb.delete"_Stz,    &Step::vConvertorDelete);
-  vAddStep("toRsb.inspect"_Stz,   &Step::vConvertorInspect);
+  vAddStep("toRsb.delete"_Stz,    &Step::vToRsbDelete);
+  vAddStep("toRsb.inspect"_Stz,   &Step::vToRsbInspect);
   
-  vAddStep("toRsb[].convert"_Stz,  &Step::vConvertorRegConvert);
-  vAddStep("toRsb[].create"_Stz,   &Step::vConvertorRegCreate);
-  vAddStep("toRsb[].delete"_Stz,   &Step::vConvertorRegDelete);
+  vAddStep("toRsb[].convert"_Stz, &Step::vToRsbRegConvert);
+  vAddStep("toRsb[].create"_Stz,  &Step::vToRsbRegCreate);
+  vAddStep("toRsb[].delete"_Stz,  &Step::vToRsbRegDelete);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convertor::new -- new a convertor                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vConvertorNew(void)
+void Step::vToRsbNew(void)
 {
   ENTRY();
   
@@ -39,9 +39,9 @@ void Step::vConvertorNew(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* toRsb.delete -- delete                                                 */
+/* toRsb.delete -- delete                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vConvertorDelete(void)
+void Step::vToRsbDelete(void)
 {
   ENTRY();
   
@@ -53,9 +53,9 @@ void Step::vConvertorDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb.inspect -- inspect without actually converting                   */
+/* toRsb.inspect -- inspect without actually converting                       */
 /*----------------------------------------------------------------------------*/
-void Step::vConvertorInspect(void)
+void Step::vToRsbInspect(void)
 {
   ENTRY();
 
@@ -77,7 +77,7 @@ void Step::vConvertorInspect(void)
 /*----------------------------------------------------------------------------*/
 /* convertor.convert -- convert csv buffer                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vConvertorRegConvert(void)
+void Step::vToRsbRegConvert(void)
 {
   ENTRY();
 
@@ -95,7 +95,7 @@ void Step::vConvertorRegConvert(void)
 /*----------------------------------------------------------------------------*/
 /* convertor[].create -- create a convertor                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vConvertorRegCreate(void)
+void Step::vToRsbRegCreate(void)
 {
   ENTRY();
   
@@ -111,7 +111,7 @@ void Step::vConvertorRegCreate(void)
 /*----------------------------------------------------------------------------*/
 /* convertor[].delete -- delete the convertor                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vConvertorRegDelete(void)
+void Step::vToRsbRegDelete(void)
 {
   ENTRY();
   

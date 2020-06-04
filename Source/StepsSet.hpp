@@ -178,14 +178,6 @@ public:
   void vCompilerNestedStore(void);
   void vCompilerPostponing(void);
 
-  // convertor
-  void vConvertorNew(void);
-  void vConvertorDelete(void);
-  void vConvertorInspect(void);
-
-  void vConvertorRegConvert(void);
-  void vConvertorRegCreate(void);
-  void vConvertorRegDelete(void);
 
   // crwBuffer
   void vCrwBufferSnapshot(void);
@@ -1559,6 +1551,15 @@ public:
   void vToPtr(void);
   void vToStr(void);
   void vToTask(void);
+
+  // convertor
+  void vToRsbNew(void);
+  void vToRsbDelete(void);
+  void vToRsbInspect(void);
+
+  void vToRsbRegConvert(void);
+  void vToRsbRegCreate(void);
+  void vToRsbRegDelete(void);
 
   // trace
   void vTraceOff(void);
