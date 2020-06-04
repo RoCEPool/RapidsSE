@@ -9,7 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : toRsb_CsvBuffer \handler
 
-  ZK_CSVBUFFER_handler
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
+
+  Operand[].delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -17,7 +22,11 @@
 /*----------------------------------------------------------------------------*/
 : toRsb_EosMarker \handler
 
-  ZK_EOSMARKER_handler
+  ToRsb[].delete
+
+  PipeIn[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +34,14 @@
 /*----------------------------------------------------------------------------*/
 : toRsb_PulseMarker \handler
 
-  ZK_PULSEMARKER_handler
+  // pipe out the pulsemarker
+  PipeIn[].pipeOut
+
+  // pipe out the stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +49,14 @@
 /*----------------------------------------------------------------------------*/
 : toRsb_StartMarker \handler
 
-  PipeIn[].pipeOut
+  <tableNm> op__table if
+
+    ToRsb[].create
+
+    PipeIn[].pipeOut
+
+  then
+
   true
 ;
 

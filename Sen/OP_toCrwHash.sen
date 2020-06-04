@@ -15,8 +15,8 @@
   PipeIn[].pipeOut
 
   // pipe out the stream def
-  Operand[].newStreamDef
-  Operand[].pipeOut
+  //Operand[].newStreamDef
+  //Operand[].pipeOut
 
   true
 ;
