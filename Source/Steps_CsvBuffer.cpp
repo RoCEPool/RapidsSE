@@ -48,13 +48,15 @@ void Step::vCsvBufferDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* csvBuffer.operandDump -- operand dump                                      */
+/* csvBuffer.operandDump -- operand dump of csvBuffer                         */
 /*----------------------------------------------------------------------------*/
 void Step::vCsvBufferOperandDump(void)
 {
   ENTRY();
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
+
+  i8 iDetail = m_pDataStack->iPopInt(__func__);
 
   pCsvBuffer->vPrintRecords();
   

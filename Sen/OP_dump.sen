@@ -24,7 +24,7 @@
   <operand> "csvBuffer" str.same if
     "OPERAND DUMP: csvBuffer" .printf
 
-    PipeIn[] csvBuffer.operandDump
+    <detail> >int PipeIn[] csvBuffer.operandDump
   then
 
   ZK_CSVBUFFER_handler
@@ -38,7 +38,7 @@
   <operand> "rsbBuffer" str.same if
     "OPERAND DUMP: rsbBuffer" .
 
-    PipeIn[] rsbBuffer.operandDump
+    <detail> >int PipeIn[] rsbBuffer.operandDump
   then
 
   ZK_RSBBUFFER_handler
@@ -52,7 +52,7 @@
   <operand> "seekOffsets" str.same if
     "OPERAND DUMP: seekOffsets" .printf
 
-    PipeIn[] seekOffsets.operandDump
+    <detail> >int PipeIn[] seekOffsets.operandDump
   then
 
   ZK_SEEKOFFSETS_handler
@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: dump :: dump <operand> ;
+cmdSyntax: dump :: dump <operand> <detail> ;
 
 : dump _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 

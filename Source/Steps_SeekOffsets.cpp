@@ -13,7 +13,7 @@ void Step::vAddSteps_SeekOffsets(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* csvBuffer.print -- print                                                   */
+/* seekOffsets.operandDump -- operand dump of seek offsets info set           */
 /*----------------------------------------------------------------------------*/
 void Step::vSeekOffsetsOperandDump(void)
 {
@@ -21,6 +21,9 @@ void Step::vSeekOffsetsOperandDump(void)
   
   InfoSet* pInfoSet = _pInfoSet(m_pDataStack->pPopPtr(__func__));
 
+  i8 iDetail = m_pDataStack->iPopInt(__func__);
+  
+  
   i8 i_Ofs = 0;
   for (Row* pRow = pInfoSet->aFirstRow();
        pRow;
