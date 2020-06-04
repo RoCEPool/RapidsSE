@@ -210,7 +210,7 @@ begin
 
   stage stageB on all partitions on origin:
     rdCsvChunk $file |
-    dump csvBuffer   |
+    //dump csvBuffer   |
     toCrwH $table    |
     stageC Hashed
 
