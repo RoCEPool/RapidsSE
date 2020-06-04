@@ -164,6 +164,16 @@ i8 CsvBuffer::nRecords(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the records pointer                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* CsvBuffer::szRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  return (Stz*) m_xWsp.ayArea();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get optional report name                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* CsvBuffer::szReportNm(void)

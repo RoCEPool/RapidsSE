@@ -13692,6 +13692,7 @@ void Task::vAddMunged(Forth* pForth)
     "  PipeIn[] to Operand[]\n"
     "  nullptr to PipeIn[]\n"
     "\n"
+    "  Operand[].csvToRsb\n"
     "\n"
     "  Operand[].delete\n"
     "\n"

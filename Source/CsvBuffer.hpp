@@ -34,6 +34,7 @@ namespace DataBuffers
     CsvBuffer* pNextBuffer(void);
     void       vPrintRecords(void);
     i8         nRecords(void);
+    Stz*       szRecords(void);
     Stz*       szReportNm(void);
     void       vReset(void);
     void       vReportNm(Stz* szReportNm);
