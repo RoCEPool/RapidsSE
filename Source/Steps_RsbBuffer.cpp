@@ -22,6 +22,7 @@ void Step::vRsbBufferOperandDump(void)
   RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pDataStack->pPopPtr(__func__));
 
   pRsbBuffer->pRowSlab()->vDumpAllRows();
+  pRsbBuffer->pRowSlab()->vSlabReport();
   
   EXIT();
 }

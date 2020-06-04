@@ -170,8 +170,8 @@ bool ToRsb::bInspect(char* azSrc)
   
   RASSERT(m_dCalc != 1.0);
   
-  m_pRowSlab->vDumpAllRows();
-  m_pRowSlab->vSlabReport();
+  //m_pRowSlab->vDumpAllRows();
+  //m_pRowSlab->vSlabReport();
   
   return true;
 }
