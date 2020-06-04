@@ -1,0 +1,72 @@
+/*============================================================================*/
+/* OP_eatSome.sen -- Eat Some Operators                                       */
+/*============================================================================*/
+
+" OP_eatSome.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_Xyz ...                                                              */
+/*----------------------------------------------------------------------------*/
+: OP_eatSome_Opr \handler
+
+  Pipein[].kind "EATING : %v" .printf
+  Pipein[].delete
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* eatSome request                                     (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: eatSome_req \operator
+
+  find: OP_eatSome_Opr locals| pEastSomeHandler |
+
+  LogReqEntry SEED_REQ
+
+  // set topology, next stage and op
+  op__topology
+
+//  pEastSomeHandler ZK_CANCELMARKER     op[].handler!
+//  pEastSomeHandler ZK_CANCELLEDMARKER  op[].handler!
+//  pEastSomeHandler ZK_CRWBUFFER        op[].handler!
+//  pEastSomeHandler ZK_CSVBUFFER        op[].handler!
+//  pEastSomeHandler ZK_ENTBUFFER        op[].handler!
+//  pEastSomeHandler ZK_EOSMARKER        op[].handler!
+//  pEastSomeHandler ZK_ERRORMARKER      op[].handler!
+//  pEastSomeHandler ZK_ERROREDMARKER    op[].handler!
+//  pEastSomeHandler ZK_EXITMARKER       op[].handler!
+//  pEastSomeHandler ZK_EXITEDMARKER     op[].handler!
+//  pEastSomeHandler ZK_IRWBUFFER        op[].handler!
+//  pEastSomeHandler ZK_LOCKSTATS        op[].handler!
+//  pEastSomeHandler ZK_NODEINFO         op[].handler!
+//  pEastSomeHandler ZK_PROGRESSUNITS    op[].handler!
+//  pEastSomeHandler ZK_PULSEMARKER      op[].handler!
+//  pEastSomeHandler ZK_PULSEDMARKER     op[].handler!
+//  pEastSomeHandler ZK_RSBBUFFER        op[].handler!
+  pEastSomeHandler ZK_SEEKOFFSETS      op[].handler!
+//  pEastSomeHandler ZK_SRTBUFFER        op[].handler!
+//  pEastSomeHandler ZK_STARTMARKER      op[].handler!
+//  pEastSomeHandler ZK_STARTEDMARKER    op[].handler!
+//  pEastSomeHandler ZK_STREAMDEF        op[].handler!
+//  pEastSomeHandler ZK_STREAMSET        op[].handler!
+//  pEastSomeHandler ZK_TOTALUNITS       op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: eatSome :: eatSome ;
+
+: eatSome _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

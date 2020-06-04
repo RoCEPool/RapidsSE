@@ -353,6 +353,9 @@ begin
     start            |
     periodicOp once  |
     chunk $file      |
+  
+    eatSome          |
+
     dump seekOffset  |
     stageB
 
