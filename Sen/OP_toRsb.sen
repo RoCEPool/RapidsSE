@@ -1,8 +1,40 @@
 /*============================================================================*/
-/* OP_toRsb.sen -- Operator to row slab                                       */
+/* OP_toRsb.sen -- Convert csv buffer to row slab buffer                      */
 /*============================================================================*/
 
 " OP_toRsb.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CSVBUFFER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: toRsb_CsvBuffer \handler
+
+  ZK_CSVBUFFER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: toRsb_EosMarker \handler
+
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: toRsb_PulseMarker \handler
+
+  ZK_PULSEMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: toRsb_StartMarker \handler
+
+  ZK_STARTMARKER_handler
+;
 
 /*----------------------------------------------------------------------------*/
 /* toRsb request                                      (on node where spawned) */
@@ -12,6 +44,11 @@
   LogReqEntry SEED_REQ
 
   op__topology
+
+  find: toRsb_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: toRsb_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: toRsb_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: toRsb_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 

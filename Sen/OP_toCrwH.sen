@@ -5,23 +5,6 @@
 " OP_toCrwH.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
-/*----------------------------------------------------------------------------*/
-: toCrwH_PulseMarker \handler
-
-  //"Operand:- ZK_PULSEMARKER" .verbose
-
-  // pipe out the pulsemarker
-  Pipein[].pipeOut
-
-  // pipe out the stream def
-  Operand[].newStreamDef
-  Operand[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_CSVBUFFER ...                                                        */
 /*----------------------------------------------------------------------------*/
 : toCrwH_CsvBuffer \handler
@@ -78,6 +61,23 @@
   CrwHash[].delete
 
   Pipein[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: toCrwH_PulseMarker \handler
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+
+  // pipe out the pulsemarker
+  Pipein[].pipeOut
+
+  // pipe out the stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
 
   true
 ;
