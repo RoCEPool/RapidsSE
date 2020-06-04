@@ -58,7 +58,10 @@ void Step::vCsvBufferOperandDump(void)
 
   i8 iDetail = m_pDataStack->iPopInt(__func__);
 
-  pCsvBuffer->vPrintRecords();
+  if (iDetail)
+    pCsvBuffer->vPrintRecords();
+  
+  vTrace("CsvBuffer: %lld(B)\n"_Stz,pCsvBuffer->nDataBytes());
   
   EXIT();
 }
