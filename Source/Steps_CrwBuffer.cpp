@@ -9,7 +9,22 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_CrwBuffer(void)
 {
+  vAddStep("crwBuffer.operandDump"_Stz,   &Step::vCrwBufferOperandDump);
   vAddStep("crwBuffer.snapshot"_Stz,      &Step::vCrwBufferSnapshot);
+}
+
+/*----------------------------------------------------------------------------*/
+/* crwBuffer.operandDump -- dump information about crw buffer                 */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferOperandDump(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+
+  i8 iDetail = m_pDataStack->iPopInt(__func__);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -10,7 +10,9 @@
 : dump_CrwBuffer \handler
 
   <operand> "crwBuffer" str.same if
-    "WOULD DUMP: crwBuffer" .
+    "OPERAND DUMP: crwBuffer" .
+
+    <detail> >int PipeIn[] crwBuffer.operandDump
   then
 
   ZK_CRWBUFFER_handler

@@ -180,6 +180,7 @@ public:
 
 
   // crwBuffer
+  void vCrwBufferOperandDump(void);
   void vCrwBufferSnapshot(void);
 
   // csv buffer
