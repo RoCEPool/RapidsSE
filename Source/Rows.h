@@ -22,6 +22,7 @@ namespace Rows
 #include "RowSlab.hpp"
 
 #include "RowUte.hpp"
+#include "Rsb.hpp"
 
 #include "SP_Ref.hpp"
 #include "SP_Row.hpp"
