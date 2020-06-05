@@ -4,33 +4,14 @@
 
 #include "CompactBuffers.h"
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* CompactBuffers::_pCrwBuffer(void* aAddress)
-{
-  CrwBuffer* pCrwBuffer = reinterpret_cast<CrwBuffer*>(aAddress);
-  
-  RASSERT_TYPE(pCrwBuffer,CN_CRWBUFFER);
-  
-  return pCrwBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate a new row buffer from heap                                        */
-/*----------------------------------------------------------------------------*/
-void* CrwBuffer::operator new(size_t)
-{
-  CrwBuffer* pCrwBuffer =
-    static_cast<CrwBuffer*>(HeapMem::pAllocate(CN_CRWBUFFER));
-  
-  return pCrwBuffer;
-}
+__pCastFunction(CompactBuffers,CrwBuffer,CN_CRWBUFFER)
+__aNewFunction(CrwBuffer,CN_CRWBUFFER)
+__vDeleteFunction(CrwBuffer,CN_CRWBUFFER)
+__aFooterFunction(CrwBuffer)
 
 /*----------------------------------------------------------------------------*/
 /* perform new of row buffer for given address                                */
@@ -38,16 +19,6 @@ void* CrwBuffer::operator new(size_t)
 void* CrwBuffer::operator new(size_t, void* aAddress)
 {
   return aAddress;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free a row buffer back to the heap                                         */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::operator delete(void* aAddress)
-{
-  CrwBuffer* pCrwBuffer = static_cast<CrwBuffer*>(aAddress);
-  
-  HeapMem::vFree(pCrwBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -391,47 +362,6 @@ i8 CrwBuffer::iLengthList(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operand dump of this crw buffer                                            */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vOperandDump(i8 iDetail)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  vTrace("CrwBuffer: %lld rows\n"_Stz,nRowCount());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the stream def                                                         */
-/*----------------------------------------------------------------------------*/
-StreamDef* CrwBuffer::pStreamDef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  return pTable()->pStreamDef();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the table of the row buffer                                            */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  //RASSERT(pTable);
-  m_oRowTray.pNub()->vDesc(pTable);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the table of the index buffer                                          */
-/*----------------------------------------------------------------------------*/
-Table* CrwBuffer::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  return m_oRowTray.pNub()->pDesc();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwBuffer::pNextBuffer(void)
@@ -449,6 +379,26 @@ void CrwBuffer::vNextBuffer(CrwBuffer* pNextBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   m_pNextBuffer = pNextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operand dump of this crw buffer                                            */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vOperandDump(i8 iDetail)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  vTrace("CrwBuffer: rows: %lld headItems: %lld tailItems: %lld free: %lldB\n"_Stz,
+         nRowCount(),
+         m_oRowTray.pNub()->nHeads(),
+         m_oRowTray.pNub()->nTails(),
+         m_oRowTray.pNub()->nFreeAllotableBytes());
+  
+  if (iDetail)
+    vShow();
+  
+  if (iDetail >= 2)
+    m_oRowTray.pNub()->vDumpTails();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -616,6 +566,37 @@ void CrwBuffer::vShow(void)
   vTrace("\n"_Stz);
   vTrace("=================================================="
          "==================================================\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the stream def                                                         */
+/*----------------------------------------------------------------------------*/
+StreamDef* CrwBuffer::pStreamDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  return pTable()->pStreamDef();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the table of the row buffer                                            */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  //RASSERT(pTable);
+  m_oRowTray.pNub()->vDesc(pTable);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the table of the index buffer                                          */
+/*----------------------------------------------------------------------------*/
+Table* CrwBuffer::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  return m_oRowTray.pNub()->pDesc();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -880,12 +861,6 @@ bool CrwBuffer::bVerifyNextPrev(void)
   
   return true;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(CrwBuffer)
 
 /*============================================================================*/
 /* end                                                                        */

@@ -211,7 +211,7 @@ begin
   stage stageB on all partitions on origin:
     rdCsvChunk $file |
     toCrwH $table    |
-    dump crwBuffer 1 |
+    dump crwBuffer 2 |
     stageC Hashed
 
   stage stageC on all partitions:
