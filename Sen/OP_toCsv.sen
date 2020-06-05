@@ -28,7 +28,7 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  Operand[].crwtoCsv
+  Operand[].crwToCsv
   Operand[] to Subset[]
 
   begin
@@ -58,6 +58,32 @@
 /*----------------------------------------------------------------------------*/
 : toCsv_RsbBuffer \handler
 
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
+
+  Operand[].rsbToCsv
+  Operand[] to Subset[]
+
+  begin
+    Operand[].isNull
+
+  not while
+
+    assert::stack_0
+
+    // get the next buffer
+    Subset[].nextBuffer to Subset[]
+
+    // now pipeout the Operand
+    Operand[].pipeOut
+
+    // move Subset to Operand
+    Subset[] to Operand[]
+
+    assert::stack_0
+  repeat
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
