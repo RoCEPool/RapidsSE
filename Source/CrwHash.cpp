@@ -138,26 +138,27 @@ void CrwHash::vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return a full ptn crwBuffer if any                                         */
+/* return a full crwBuffer for given partition (if any)                       */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwHash::pFullCrwBuffer(i8 iPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
 
-  CrwBuffer* pCrwBuffer = m_pCrwBuffer[iPtn] ? m_pCrwBuffer[iPtn]->pNextBuffer() : nullptr;
-  CrwBuffer* pFirstCrwBuffer = nullptr;
+  CrwBuffer* pFullCrwBuffer = nullptr;
   
-  while( pCrwBuffer) {
-    pFirstCrwBuffer = pCrwBuffer;
+  CrwBuffer* pCrwBuffer = m_pCrwBuffer[iPtn] ?
+                            m_pCrwBuffer[iPtn]->pNextBuffer() : nullptr;
+  while (pCrwBuffer) {
+    pFullCrwBuffer = pCrwBuffer;
     pCrwBuffer = pCrwBuffer->pNextBuffer();
   }
   
-  if (pFirstCrwBuffer) {
-    CrwBuffer* pPrevBuffer = pFirstCrwBuffer->pPrevBuffer();
+  if (pFullCrwBuffer) {
+    CrwBuffer* pPrevBuffer = pFullCrwBuffer->pPrevBuffer();
     pPrevBuffer->vNextBuffer(nullptr);
   }
   
-  return pFirstCrwBuffer;
+  return pFullCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
