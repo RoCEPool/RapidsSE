@@ -6,6 +6,8 @@ print "Running ../FASTLOAD/Commands/_nl" ;
 
 bc;
 
+drop table lineitem;
+
 _lineItem
 
 load lineitem "/Users/Shared/tpch/SF0/lineitem_100.csv";

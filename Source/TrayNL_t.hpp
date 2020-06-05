@@ -28,6 +28,7 @@ namespace Structures
     i8 m_nTailUnits;  // number of space units allocated from the tail
     i8 m_nTailBytes;  // number of bytes allocated from the tail
   
+    i8 m_nStrItems;
     i8 m_i_LastStr;   // last string tail
 
     DESC* m_pDesc;    // object describing the items
@@ -58,6 +59,7 @@ namespace Structures
     i8    nAreaBytes(void);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
+    void  vDumpStrings(void);
     void  vDumpTails(void);
     i8    iFindTail(TAIL* aFindLine);
     TAIL* aFindTail(TAIL* aFindLine, i8& i_Tail);
@@ -81,6 +83,7 @@ namespace Structures
     void  vReset(void);
     void  vSetItems(i8 nSpaceUnits, SpaceUnit* axaUnits);
     void  vSetLastStr(i8 i_LastStr);
+    i8    nStrs(void);
     i8    nTails(void);
     i8    iToUnit(TAIL* aTail);
     void  vVerifyTails(i8 i_Dump);
@@ -162,7 +165,8 @@ Nub_t<CN,HEAD,OVER,TAIL,DESC>::Nub_t(void)
   m_nTailItems  = 0;
   m_nTailUnits  = 0;
   m_nTailBytes  = 0;
-  
+
+  m_nStrItems   = 0;
   m_i_LastStr   = 0;
 
   m_pDesc       = nullptr;
@@ -429,6 +433,33 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDesc(DESC* pDesc)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_pDesc = pDesc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump tail strings                                                          */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDumpStrings(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+
+  for (i8 i_Tail = m_i_LastStr;
+       i_Tail != C_UNKNOWN;
+       i_Tail = iPrevTail(i_Tail)) {
+    
+    TAIL* aTailLine = aGetTail(i_Tail);
+    
+    char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_1B));
+    
+    vTrace("Repeating Str @%lld : <U %lld> <L %lld> %s\n"_Stz,
+           i_Tail,
+           aTailLine->iU(),
+           aTailLine->iL(),
+           azStr);
+    
+//    if (i_Tail == m_i_LastStr)
+//      break;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -809,6 +840,18 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vSetLastStr(i8 i_LastStr)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_i_LastStr = i_LastStr;
+  m_nStrItems++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current number of str items                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nStrs(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  return m_nStrItems;
 }
 
 /*----------------------------------------------------------------------------*/

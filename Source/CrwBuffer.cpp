@@ -388,17 +388,24 @@ void CrwBuffer::vOperandDump(i8 iDetail)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  vTrace("CrwBuffer: rows: %lld headItems: %lld tailItems: %lld free: %lldB\n"_Stz,
+  vTrace("CrwBuffer: rows: %lld "
+         "headItems: %lld tailItems: %lld strItems: %lld "
+         "free: %lld(B)\n"_Stz,
+
          nRowCount(),
+         
          m_oRowTray.pNub()->nHeads(),
          m_oRowTray.pNub()->nTails(),
+         m_oRowTray.pNub()->nStrs(),
+         
          m_oRowTray.pNub()->nFreeAllotableBytes());
   
-  if (iDetail)
-    vShow();
   
+  if (iDetail >= 1)
+    m_oRowTray.pNub()->vDumpStrings();
+
   if (iDetail >= 2)
-    m_oRowTray.pNub()->vDumpTails();
+    vShow();
 }
 
 /*----------------------------------------------------------------------------*/
