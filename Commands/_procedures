@@ -359,14 +359,14 @@ begin
     dump seekOffsets 1 |
 
     rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
-    dump csvBuffer 1   |
+    dump csvBuffer 0   |
+//
+//    toRsb $table       | // (csvBuffer)  => (rsbBuffer)
+//    dump rsbBuffer 1   |
+//
+//    toCsv              | // (rsbBuffer)  => (csvBuffer)
 
-    toRsb $table       | // (csvBuffer)  => (rsbBuffer)
-    dump rsbBuffer 1   |
-
-    toCsv              | // (rsbBuffer)  => (csvBuffer)
-
-    output             |
+//    output             |
 
     sink               |
 

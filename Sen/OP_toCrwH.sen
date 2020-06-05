@@ -5,7 +5,50 @@
 " OP_toCrwH.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                        */
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: toCrwH_StartMarker \handler
+
+  // check if we can scan the table
+  <tableNm> op__table if
+
+    CrwHash[].create
+
+    // create a loader
+    Loader[].create not if
+      EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
+      PipeIn[].delete
+      Operand[].newErrorMarker
+      Operand[].pipeOut
+      CrwHash[].delete
+    else
+      PipeIn[].pipeOut
+
+    then
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                BEGIN */
+/*----------------------------------------------------------------------------*/
+: toCrwH_PulseMarker \handler
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+
+  // pipe out the pulsemarker
+  PipeIn[].pipeOut
+
+  // pipe out the stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CSVBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : toCrwH_CsvBuffer \handler
 
@@ -37,15 +80,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                        */
+/* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : toCrwH_EosMarker \handler
 
   //"Operand:- ZK_EOSMARKER" .verbose
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out any dangling buffers
-
   grid::partitions 0
   do
     I CrwHash[].crwBuffer@ to OperandB[]
@@ -66,54 +107,10 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: toCrwH_PulseMarker \handler
-
-  //"Operand:- ZK_PULSEMARKER" .verbose
-
-  // pipe out the pulsemarker
-  PipeIn[].pipeOut
-
-  // pipe out the stream def
-  Operand[].newStreamDef
-  Operand[].pipeOut
-
-  true
-;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                      */
-/*----------------------------------------------------------------------------*/
-: toCrwH_StartMarker \handler
-
-  //"Operand:- ZK_STARTMARKER" .verbose
-
-  <tableNm> locals| sTableNm |
-
-  // check if we can scan the table
-  <tableNm> op__table if
-
-    CrwHash[].create
-
-    // create a loader
-    Loader[].create not if
-      EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
-      PipeIn[].delete
-      Operand[].newErrorMarker
-      Operand[].pipeOut
-      CrwHash[].delete
-    else
-      PipeIn[].pipeOut
-
-    then
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute for toCrw req                              (on node where spawned) */
+/* toCrwH request                                                       SPAWN */
 /*----------------------------------------------------------------------------*/
  : toCrwH_req \operator
 
@@ -138,9 +135,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toCrwH :: toCrwH <tableNm> ;
 
-: toCrwH _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
-;
+: toCrwH _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */
