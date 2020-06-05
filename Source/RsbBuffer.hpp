@@ -22,7 +22,9 @@ namespace DataBuffers
    ~RsbBuffer(void) noexcept(false);
 
     RowSlab* pRowSlab(void);
-  
+
+    CsvBuffer* pToCsvBuffer(void);
+
   private:
     Footer* aFooter(void);
   };
