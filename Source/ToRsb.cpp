@@ -19,8 +19,8 @@ __aFooterFunction(ToRsb)
 ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt)
 : Object(CN_TORSB)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+
   m_pStreamDef = pStreamDef;
   m_pFmt       = pFmt;
   
@@ -42,14 +42,18 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt)
   m_dCalc   = 0.0;
   m_nChars  = 0;
   
-  m_pRsbBuffer = new RsbBuffer;
+  m_pRsbBuffer = nullptr;
   
-  m_pRowSlab = m_pRsbBuffer->pRowSlab();
-  m_pRowSlab->vInitPix(pStreamDef);
-
+//  m_pRowSlab = m_pRsbBuffer->pRowSlab();
+//  m_pRowSlab->vInitPix(m_pStreamDef);
+  m_pRowSlab = nullptr;
+  
   m_pFmt->vShow();
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  
+  vNewRsbBuffer();
+
   
   s48K sDef;
    m_pStreamDef->vAsString(sDef);
@@ -61,8 +65,8 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 ToRsb::~ToRsb(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+
   vTrace("Converted %lld chars\n"_Stz,m_nChars);
   
   delete m_pRsbBuffer;
@@ -77,8 +81,8 @@ ToRsb::~ToRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool ToRsb::bConvert(char* azSrc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+
   bInspect(azSrc);
   
   return true;
@@ -89,8 +93,8 @@ bool ToRsb::bConvert(char* azSrc)
 /*----------------------------------------------------------------------------*/
 bool ToRsb::bInspect(char* azSrc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+
   //vTrace("[>%s<]"_Stz,azSrc);
   
   m_azSrc = azSrc;
@@ -113,8 +117,12 @@ bool ToRsb::bInspect(char* azSrc)
     
     // each record thats fits
     
-    if (! m_pRowSlab->bNewRow())
-      break;
+    if (! m_pRowSlab->bNewRow()) {
+      vNewRsbBuffer();
+      bool b = m_pRowSlab->bNewRow();
+      ASSERT(b);
+    }
+    
     
     while (bMoreFields()) {
       
@@ -177,31 +185,11 @@ bool ToRsb::bInspect(char* azSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get rsb buffer                                                             */
-/*----------------------------------------------------------------------------*/
-RsbBuffer* ToRsb::pRsbBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
-  
-  return m_pRsbBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set rsb buffer                                                             */
-/*----------------------------------------------------------------------------*/
-void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB);
-  
-  m_pRsbBuffer = pRsbBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* return last remaining dangling rsbBuffer (if any)                          */
 /*----------------------------------------------------------------------------*/
 RsbBuffer* ToRsb::pDanglingRsbBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
   RsbBuffer* pRsbBuffer = m_pRsbBuffer;
   
@@ -215,7 +203,7 @@ RsbBuffer* ToRsb::pDanglingRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 RsbBuffer* ToRsb::pFullRsbBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
   RsbBuffer* pFullRsbBuffer = nullptr;
   
@@ -234,6 +222,48 @@ RsbBuffer* ToRsb::pFullRsbBuffer(void)
   return pFullRsbBuffer;
 }
 
+/*----------------------------------------------------------------------------*/
+/* create a new rsbBuffer                                                     */
+/*----------------------------------------------------------------------------*/
+void ToRsb::vNewRsbBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  
+  //  create a new buffer
+  RsbBuffer* pRsbBuffer = new RsbBuffer;
+  
+  // link the new to old
+  pRsbBuffer->vNextBuffer(m_pRsbBuffer);
+  
+  if (m_pRsbBuffer)
+    m_pRsbBuffer->vPrevBuffer(pRsbBuffer);
+  
+  m_pRsbBuffer = pRsbBuffer;
+  
+  // set table and ptn no in it
+  m_pRowSlab = m_pRsbBuffer->pRowSlab();
+  m_pRowSlab->vInitPix(m_pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rsb buffer                                                             */
+/*----------------------------------------------------------------------------*/
+RsbBuffer* ToRsb::pRsbBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+
+  return m_pRsbBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set rsb buffer                                                             */
+/*----------------------------------------------------------------------------*/
+void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+
+  m_pRsbBuffer = pRsbBuffer;
+}
 
 /*============================================================================*/
 /* end                                                                        */

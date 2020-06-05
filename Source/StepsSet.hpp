@@ -1562,6 +1562,8 @@ public:
   void vToRsbRegCreate(void);
   void vToRsbRegDelete(void);
   void vToRsbRegRsbBufferFetch(void);
+  void vToRsbRegDanglingRsbBuffer(void);
+  void vToRsbRegFullRsbBuffer(void);
 
   // trace
   void vTraceOff(void);

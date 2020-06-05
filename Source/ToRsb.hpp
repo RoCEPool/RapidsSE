@@ -48,12 +48,14 @@ namespace Load
   
     bool bConvert(char* azSrc);
     bool bInspect(char* azSrc);
-  
+
+    RsbBuffer* pDanglingRsbBuffer(void);
+    RsbBuffer* pFullRsbBuffer(void);
+    void vNewRsbBuffer(void);
+
     RsbBuffer* pRsbBuffer(void);
     void vRsbBuffer(RsbBuffer* pRsbBuffer);
   
-    RsbBuffer* pDanglingRsbBuffer(void);
-    RsbBuffer* pFullRsbBuffer(void);
 
   private:
     Footer* aFooter(void);

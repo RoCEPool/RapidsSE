@@ -37,7 +37,7 @@ RowSlab::RowSlab(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_nItems      = 0;
-  m_nMaxRowSize = 128;  // FOR TESTING PURPOSES
+  m_nMaxRowSize = 256;  // FOR TESTING PURPOSES
   m_nCols       = C_UNKNOWN;
   
   m_i_Cell      = C_UNKNOWN;

@@ -18,6 +18,9 @@ void Step::vAddSteps_ToRsb(void)
   vAddStep("toRsb[].create"_Stz,      &Step::vToRsbRegCreate);
   vAddStep("toRsb[].delete"_Stz,      &Step::vToRsbRegDelete);
   vAddStep("toRsb[].rsbBuffer@"_Stz,  &Step::vToRsbRegRsbBufferFetch);
+  
+  vAddStep("toRsb[].danglingRsbBuffer"_Stz, &Step::vToRsbRegDanglingRsbBuffer);
+  vAddStep("toRsb[].fullRsbBuffer"_Stz,     &Step::vToRsbRegFullRsbBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,6 +138,38 @@ void Step::vToRsbRegRsbBufferFetch(void)
   
   RsbBuffer* pRsbBuffer = pToRsb->pRsbBuffer();
   pToRsb->vRsbBuffer(nullptr);
+  
+  m_pDataStack->vPushPtr(pRsbBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* toRsb[].danglingRsbBuffer -- fetch rsb buffer                              */
+/*----------------------------------------------------------------------------*/
+void Step::vToRsbRegDanglingRsbBuffer(void)
+{
+  ENTRY();
+  
+  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
+  
+  RsbBuffer* pRsbBuffer = pToRsb->pDanglingRsbBuffer();
+  
+  m_pDataStack->vPushPtr(pRsbBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* toRsb[].fullRsbBuffer -- full rsb buffer                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vToRsbRegFullRsbBuffer(void)
+{
+  ENTRY();
+  
+  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
+  
+  RsbBuffer* pRsbBuffer = pToRsb->pFullRsbBuffer();
   
   m_pDataStack->vPushPtr(pRsbBuffer);
 
