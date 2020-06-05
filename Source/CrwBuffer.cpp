@@ -83,6 +83,8 @@ CrwBuffer::~CrwBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  _static_
+  
   CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);
   
   pCrwBuffer->vShow();
@@ -93,6 +95,8 @@ void CrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 Crw* CrwBuffer::pRefdCrw(Ref xRef)
 {
+  _static_
+  
   // get the referenced row buffer
   CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
   if (! pCrwBuffer)
@@ -109,6 +113,8 @@ Crw* CrwBuffer::pRefdCrw(Ref xRef)
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwBuffer::pRefdCrwBuffer(Ref& xRef)
 {
+  _static_
+  
   i8 i_Buffer = xRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
@@ -128,6 +134,8 @@ CrwBuffer* CrwBuffer::pRefdCrwBuffer(Ref& xRef)
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwBuffer::pToCrwBuffer(void* aAddr)
 {
+  _static_
+  
   PoolBuffer* pPoolBuffer =
     PoolBuffer::pWithinPoolBuffer((Object*)aAddr);
   
@@ -147,6 +155,8 @@ CrwBuffer* CrwBuffer::pToCrwBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vToRow(RowSingle* pRow, Crw* aCrw)
 {
+  _static_
+  
   RowInflator::vInflateRow(pRow,aCrw);
 }
 
@@ -261,6 +271,8 @@ void CrwBuffer::vAssertCrwBuffer(void)
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vBufferCount(i8& nBuffers)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
   CrwBuffer* pNextBuffer = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -315,10 +327,24 @@ void CrwBuffer::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the head line for given row                                            */
+/*----------------------------------------------------------------------------*/
+HeadLine* CrwBuffer::aGetHead(i8 i_Row)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  HeadLine* aHeadLine = m_oRowTray.pNub()->aGetHead(i_Row);
+  
+  return aHeadLine;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the compact row from the buffer                                        */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vGetRow(RowSingle* pRow, i8 i_Row)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
   Crw* aCrw = (Crw*)aGetHead(i_Row);
   
   RowInflator::vInflateRow(pRow,aCrw);
@@ -362,6 +388,16 @@ i8 CrwBuffer::iLengthList(void)
     iLength++;
   
   return iLength;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operand dump of this crw buffer                                            */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vOperandDump(i8 iDetail)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  vTrace("CrwBuffer: %lld rows\n"_Stz,nRowCount());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -518,6 +554,8 @@ void CrwBuffer::vRestoreTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vShowRow(i8 i_Row)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
   vTrace("Ref: %3lli.%03lli"_Stz,m_iBufferNo,i_Row);
   
   StreamDef* pStreamDef = pTable()->pStreamDef();
@@ -841,20 +879,6 @@ bool CrwBuffer::bVerifyNextPrev(void)
   }
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get the head line for given row                                            */
-/*----------------------------------------------------------------------------*/
-HeadLine* CrwBuffer::aGetHead(i8 i_Row)
-{
-  HeadLine* aHeadLine = m_oRowTray.pNub()->aGetHead(i_Row);
-  
-  return aHeadLine;
 }
 
 

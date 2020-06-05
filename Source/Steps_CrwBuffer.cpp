@@ -23,6 +23,8 @@ void Step::vCrwBufferOperandDump(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
 
   i8 iDetail = m_pDataStack->iPopInt(__func__);
+  
+  pCrwBuffer->vOperandDump(iDetail);
 
   EXIT();
 }

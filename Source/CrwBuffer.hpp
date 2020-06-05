@@ -31,9 +31,10 @@ namespace CompactBuffers
     static void       vToRow(RowSingle* pRow, Crw* aCrw);
 
     HeadLine*  aGetHead(i8 i_Row);
+    void       vOperandDump(i8 iDetail);
+    i8         nRowCount(void);
     void       vTable(Table* pTable);
     Table*     pTable(void);
-    i8         nRowCount(void);
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
