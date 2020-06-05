@@ -755,7 +755,9 @@ void Step::vRegOperandRsbToCsv(void)
   
   RsbBuffer* pRsbBuffer = _pRsbBuffer(*m_pRegSet->m_xpOperandA);
  
-  //m_pRegSet->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
+  m_pRegSet->m_xpOperandA = pRsbBuffer->pToCsvBuffer();
+  
+  delete pRsbBuffer;
   
   EXIT();
 }

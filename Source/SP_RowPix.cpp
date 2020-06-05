@@ -46,11 +46,11 @@ SP_RowPix::~SP_RowPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* SP_RowPix::sz(m8* amRowCells)
+Stz* SP_RowPix::sz(m8* amRowCells, bool bNewLine)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vPutRow(amRowCells);
+  vPutRow(amRowCells,bNewLine);
   
   return (Stz*) m_caRecord;
 }
@@ -166,7 +166,7 @@ void SP_RowPix::vAppendVch(ColPix xColPix, i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* put row into record                                                        */
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vPutRow(m8* amRowCells)
+void SP_RowPix::vPutRow(m8* amRowCells, bool bNewLine)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
     
@@ -175,7 +175,7 @@ void SP_RowPix::vPutRow(m8* amRowCells)
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
     
     if (i_Col)
-      StrLib::vAppendString(&m_azCursor,",");
+      StrLib::vAppendChar(&m_azCursor,',');
 
     i8 iVal = (i8)amRowCells[- i_Col];
     
@@ -196,6 +196,10 @@ void SP_RowPix::vPutRow(m8* amRowCells)
         NEVER_REACH;
     }
   }
+  
+  if (bNewLine)
+    StrLib::vAppendChar(&m_azCursor,'\n');
+
 }
 
 /*----------------------------------------------------------------------------*/

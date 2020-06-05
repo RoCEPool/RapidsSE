@@ -21,7 +21,7 @@ namespace Rows
     SP_RowPix(i8 nCols, ColPix* axaColPix);
    ~SP_RowPix(void) noexcept(false);
     
-    Stz* sz(m8* amRowCells);
+    Stz* sz(m8* amRowCells, bool bNewLine = false);
   
   private:
   
@@ -36,7 +36,7 @@ namespace Rows
     void vAppendTsp(ColPix xColPix, i8 iVal);
     void vAppendVch(ColPix xColPix, i8 iVal);
 
-    void vPutRow(m8* amRowCells);
+    void vPutRow(m8* amRowCells, bool bNewLine);
   
     char* azRecord(void);
     void vReset(void);

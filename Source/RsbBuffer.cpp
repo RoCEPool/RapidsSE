@@ -64,9 +64,9 @@ CsvBuffer* RsbBuffer::pToCsvBuffer(void)
     
     m8* amRowCells = m_oRowSlab.amRowCells(i_Row);
     
-    Stz* szRow = spRowPix.sz(amRowCells);
+    Stz* szRow = spRowPix.sz(amRowCells,true);
 
-    i8 nSize = szRow->nSize();
+    nSize = szRow->nSize();
     
     if (pCsvBuffer->nFreeBytes() < nSize + 1) {
       CsvBuffer* pNewCsvBuffer = new CsvBuffer;
