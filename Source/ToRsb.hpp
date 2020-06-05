@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToRsb.hpp -- Csv Record ToRsb                                              */
+/* ToRsb.hpp -- Csv Record to Rsb                                             */
 /*============================================================================*/
 #pragma once
 
@@ -51,6 +51,9 @@ namespace Load
   
     RsbBuffer* pRsbBuffer(void);
     void vRsbBuffer(RsbBuffer* pRsbBuffer);
+  
+    RsbBuffer* pDanglingRsbBuffer(void);
+    RsbBuffer* pFullRsbBuffer(void);
 
   private:
     Footer* aFooter(void);

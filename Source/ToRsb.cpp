@@ -196,6 +196,45 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   m_pRsbBuffer = pRsbBuffer;
 }
 
+/*----------------------------------------------------------------------------*/
+/* return last remaining dangling rsbBuffer (if any)                          */
+/*----------------------------------------------------------------------------*/
+RsbBuffer* ToRsb::pDanglingRsbBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
+  
+  RsbBuffer* pRsbBuffer = m_pRsbBuffer;
+  
+  m_pRsbBuffer = nullptr;
+  
+  return pRsbBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a full rsbBuffer (if any)                                           */
+/*----------------------------------------------------------------------------*/
+RsbBuffer* ToRsb::pFullRsbBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
+
+  RsbBuffer* pFullRsbBuffer = nullptr;
+  
+  RsbBuffer* pRsbBuffer = m_pRsbBuffer ?
+                            _pRsbBuffer(m_pRsbBuffer->pNextBuffer()) : nullptr;
+  while (pRsbBuffer) {
+    pFullRsbBuffer = pRsbBuffer;
+    pRsbBuffer = _pRsbBuffer(pRsbBuffer->pNextBuffer());
+  }
+  
+  if (pFullRsbBuffer) {
+    RsbBuffer* pPrevBuffer = _pRsbBuffer(pFullRsbBuffer->pPrevBuffer());
+    pPrevBuffer->vNextBuffer(nullptr);
+  }
+  
+  return pFullRsbBuffer;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
