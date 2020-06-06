@@ -180,7 +180,7 @@ void SP_RowPix::vPutRow(m8* amRowCells, bool bNewLine)
     i8 iVal = (i8)amRowCells[- i_Col];
     
     ColPix xColPix = m_axaColPix[i_Col];
-    eDM eDatum = (eDM)xColPix.m_uType;
+    eDM eDatum = (eDM)xColPix.m_uDatum;
     
     switch (eDatum) {
       case DM_BCD: vAppendBcd(xColPix,iVal); break;
@@ -199,7 +199,6 @@ void SP_RowPix::vPutRow(m8* amRowCells, bool bNewLine)
   
   if (bNewLine)
     StrLib::vAppendChar(&m_azCursor,'\n');
-
 }
 
 /*----------------------------------------------------------------------------*/

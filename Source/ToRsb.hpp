@@ -467,6 +467,8 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vPreField(eDM eDatum)
   {
+    m_bSawFldSep = false;
+  
     if (DM_VCH == eDatum)
       return;
   

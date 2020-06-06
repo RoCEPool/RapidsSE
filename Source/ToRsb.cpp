@@ -115,16 +115,16 @@ bool ToRsb::bConvert(char* azSrc)
     
     while (bMoreFields()) {
     
-      m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-
-      eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uType;
+      eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
     
       if (26 == m_i_Rec && 6 == m_i_Fld)
         vDebugPoint();
       
-      m_bSawFldSep = false;
       vPreField(eDatum);
   
+      // currently needed by the SN_ scanners (will go)
+      m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
+      
       switch (eDatum) {
         case DM_BOL : vConvertBoolean();   break;
         case DM_DTE : vConvertDate();      break;
