@@ -39,7 +39,7 @@ namespace MetaData
     Column* pGetColumn(i8 iColumn);
     void vName(Stz* sName);
     Stz* szName(void);
-    void vToColPix(ColPix* axColPix);
+    void vToColPix(ColPix* axColPix, bool bPtnHash);
     void vToMetadata(Stz* sMetaData);
     
     Footer* aFooter(void);

@@ -256,13 +256,15 @@ void StreamDef::vName(Stz* sName)
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to colPix format                                         */
 /*----------------------------------------------------------------------------*/
-void StreamDef::vToColPix(ColPix* axaColPix)
+void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
+  i8 i_DefColumn = 0;
+  
   for (i8 i_DefSet = 0; i_DefSet < m_nDefSets; i_DefSet++) {
         
-    for (i8 i_DefColumn = 0; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
+    for ( ; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
       
       Column* pColumn  = &m_xaColumn[i_DefColumn];
       ColPix* axColPix = &axaColPix[i_DefColumn];
@@ -273,8 +275,22 @@ void StreamDef::vToColPix(ColPix* axaColPix)
       axColPix->m_bNullable = (u4)pColumn->bIsNullable();
       axColPix->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
       axColPix->m_uKind     = (u4)CX_USERCOL;
-
+      axColPix->m_uSpare    = (u4)0;
     }
+  }
+  
+  if (bPtnHash) {
+
+    Column* pColumn  = &m_xaColumn[i_DefColumn];
+    ColPix* axColPix = &axaColPix[i_DefColumn];
+  
+    axColPix->m_uType     = (u4)DM_INT;
+    axColPix->m_uLength   = (u4)C_MAX_INT_PRECISION;
+    axColPix->m_uScale    = (u4)0;
+    axColPix->m_bNullable = (u4)false;
+    axColPix->m_bPtnKey   = (u4)false;
+    axColPix->m_uKind     = (u4)CX_USERCOL;
+    axColPix->m_uSpare    = (u4)0;
   }
 }
 

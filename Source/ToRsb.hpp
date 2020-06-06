@@ -25,6 +25,7 @@ namespace Load
     Column*    m_pCol;
     eCT        m_eCol;
   
+    bool       m_bPtnHash;
   
     bool       m_bTrace;
     d8         m_dCalc;
@@ -43,7 +44,7 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ToRsb(StreamDef* pStreamDef, Format* pFmt);
+    ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash);
    ~ToRsb(void) noexcept(false);
   
     bool bConvert(char* azSrc);

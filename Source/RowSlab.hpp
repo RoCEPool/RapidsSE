@@ -17,20 +17,20 @@ namespace Rows
   private:
   
     char caModel[32];  // model string
-    i8  m_iVersion;    //
-    i8  m_iFormat;
+    i8   m_iVersion;    //
+    i8   m_iFormat;
   
-    i8  m_nBytes;      // size in bytes of this row slab
-    i8  m_nTrimmed;    // how many bytes trimmed  NOT USED YET
-    i8  m_i_Trim;      // where trim occurred     NOT USED YET
+    i8   m_nBytes;      // size in bytes of this row slab
+    i8   m_nTrimmed;    // how many bytes trimmed  NOT USED YET
+    i8   m_i_Trim;      // where trim occurred     NOT USED YET
 
-    i8  m_nItems;      // number of items in this row-slab
-    i8  m_nMaxRowSize; // max size of row
+    i8   m_nItems;      // number of items in this row-slab
+    i8   m_nMaxRowSize; // max size of row
  
-    i8  m_nCols;       // number of columns per row in this row-slab
-    i8  m_nExtraCols;  //  of which there are nExtra metadata columns
-  
-    i8  m_i_Cell;
+    i8   m_nCols;       // number of columns per row in this row-slab
+    i8   m_nExtraCols;  //  of which there are nExtra metadata columns
+    bool m_bPtnHash;    //
+    i8   m_i_Cell;      // 
   
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // the column pix
   
@@ -58,7 +58,7 @@ namespace Rows
     void  vDumpAllRows(void);
     void  vDumpRow(i8 i_Row);
     i8    nFreeSpace(void);
-    void  vInitPix(StreamDef* pStreamDef);
+    void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
     bool  bNewRow(void);
     Rsb*  aRsb(i8 i_Row);
     m8*   amRowCells(i8 i_Row);

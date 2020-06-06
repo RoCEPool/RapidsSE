@@ -16,7 +16,7 @@ __aFooterFunction(ToRsb)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt)
+ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
 : Object(CN_TORSB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
@@ -38,6 +38,8 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt)
   m_pCol    = nullptr;
   m_eCol    = CT_NONE;
 
+  m_bPtnHash = bPtnHash;
+  
   m_bTrace  = false;
   m_dCalc   = 0.0;
   m_nChars  = 0;
@@ -230,7 +232,7 @@ void ToRsb::vNewRsbBuffer(void)
   
   // set table and ptn no in it
   m_pRowSlab = m_pRsbBuffer->pRowSlab();
-  m_pRowSlab->vInitPix(m_pStreamDef);
+  m_pRowSlab->vInitPix(m_pStreamDef,m_bPtnHash);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -59,7 +59,8 @@ void Step::vToRsbRegCreate(void)
   
   StreamDef* pStreamDef = m_pRegSet->m_xpTable->pStreamDef();
   
-  ToRsb* pToRsb = new ToRsb(pStreamDef,AM::pFmt());
+  bool bPtnHash = true;
+  ToRsb* pToRsb = new ToRsb(pStreamDef,AM::pFmt(),bPtnHash);
       
   m_pRegSet->m_xpToRsb = pToRsb;
 
