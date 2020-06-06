@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-enum eCX // column pic indicating what the cell contains
+enum eCX // column pix indicating what the cell contains
 {
   /* 0 */ CX_USER=0,  // user defined column
   /* 1 */ CX_HASH,    // hash of partition columns
