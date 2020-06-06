@@ -254,7 +254,7 @@ bool RowSlab::bNewRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  i8 nBytesAvail = m_xWsp.nFree() + C_NML_STR_SPACE + (i8)C_BYTES_PER_CACHE_LINE;
+  i8 nBytesAvail = m_xWsp.nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
   
   if (nBytesAvail < m_nMaxRowSize)
     return false;
