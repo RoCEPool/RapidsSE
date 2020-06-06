@@ -1568,11 +1568,11 @@ public:
   void vToPtnRsbRegDangling(void);
 
   // toRsb
+  void vToRsbRegCompleted(void);
   void vToRsbRegConvert(void);
   void vToRsbRegCreate(void);
+  void vToRsbRegDangling(void);
   void vToRsbRegDelete(void);
-  void vToRsbRegDanglingRsbBuffer(void);
-  void vToRsbRegFullRsbBuffer(void);
 
   // trace
   void vTraceOff(void);

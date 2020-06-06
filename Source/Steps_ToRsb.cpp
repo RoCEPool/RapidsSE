@@ -9,12 +9,27 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToRsb(void)
 {
+  vAddStep("toRsb[].completed"_Stz,   &Step::vToRsbRegCompleted);
   vAddStep("toRsb[].convert"_Stz,     &Step::vToRsbRegConvert);
   vAddStep("toRsb[].create"_Stz,      &Step::vToRsbRegCreate);
+  vAddStep("toRsb[].dangling"_Stz,    &Step::vToRsbRegDangling);
   vAddStep("toRsb[].delete"_Stz,      &Step::vToRsbRegDelete);
+}
+
+/*----------------------------------------------------------------------------*/
+/* toRsb[].fullRsbBuffer -- full rsb buffer                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vToRsbRegCompleted(void)
+{
+  ENTRY();
   
-  vAddStep("toRsb[].dangling"_Stz,    &Step::vToRsbRegDanglingRsbBuffer);
-  vAddStep("toRsb[].completed"_Stz,   &Step::vToRsbRegFullRsbBuffer);
+  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
+  
+  RsbBuffer* pRsbBuffer = pToRsb->pFullRsbBuffer();
+  
+  m_pDataStack->vPushPtr(pRsbBuffer);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,24 +67,9 @@ void Step::vToRsbRegCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].delete -- delete toRsb                                             */
-/*----------------------------------------------------------------------------*/
-void Step::vToRsbRegDelete(void)
-{
-  ENTRY();
-  
-  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
-  m_pRegSet->m_xpToRsb = nullptr;
-  
-  delete pToRsb;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* toRsb[].danglingRsbBuffer -- fetch rsb buffer                              */
 /*----------------------------------------------------------------------------*/
-void Step::vToRsbRegDanglingRsbBuffer(void)
+void Step::vToRsbRegDangling(void)
 {
   ENTRY();
   
@@ -83,18 +83,17 @@ void Step::vToRsbRegDanglingRsbBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].fullRsbBuffer -- full rsb buffer                                   */
+/* toRsb[].delete -- delete toRsb                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vToRsbRegFullRsbBuffer(void)
+void Step::vToRsbRegDelete(void)
 {
   ENTRY();
   
   ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
+  m_pRegSet->m_xpToRsb = nullptr;
   
-  RsbBuffer* pRsbBuffer = pToRsb->pFullRsbBuffer();
+  delete pToRsb;
   
-  m_pDataStack->vPushPtr(pRsbBuffer);
-
   EXIT();
 }
 
