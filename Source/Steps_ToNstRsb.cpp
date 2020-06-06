@@ -9,8 +9,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToNstRsb(void)
 {
+  vAddStep("toNstRsb[].convert"_Stz,     &Step::vToNstRsbRegConvert);
   vAddStep("toNstRsb[].create"_Stz,      &Step::vToNstRsbRegCreate);
   vAddStep("toNstRsb[].delete"_Stz,      &Step::vToNstRsbRegDelete);
+}
+
+/*----------------------------------------------------------------------------*/
+/* toNstRsb[].convert -- convert rsb buffer                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vToNstRsbRegConvert(void)
+{
+  ENTRY();
+
+  ToNstRsb* pToNstRsb = *m_pRegSet->m_xpToNstRsb;
+  
+  //bool bResult = pToRsb->bConvert(azSrc);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

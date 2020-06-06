@@ -1555,10 +1555,12 @@ public:
   void vToTask(void);
 
   // toNstRsb
+  void vToNstRsbRegConvert(void);
   void vToNstRsbRegCreate(void);
   void vToNstRsbRegDelete(void);
 
   // toPtnRsb
+  void vToPtnRsbRegConvert(void);
   void vToPtnRsbRegCreate(void);
   void vToPtnRsbRegDelete(void);
 
