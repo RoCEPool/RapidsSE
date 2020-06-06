@@ -8,20 +8,20 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToNstRsb,CN_TOPTNRSB)
-__aNewFunction(ToNstRsb,CN_TOPTNRSB)
-__vDeleteFunction(ToNstRsb,CN_TOPTNRSB)
+__pCastFunction(Load,ToNstRsb,CN_TONSTRSB)
+__aNewFunction(ToNstRsb,CN_TONSTRSB)
+__vDeleteFunction(ToNstRsb,CN_TONSTRSB)
 __aFooterFunction(ToNstRsb)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ToNstRsb::ToNstRsb(void)
-: Object(CN_TOPTNRSB)
+: Object(CN_TONSTRSB)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -29,12 +29,21 @@ ToNstRsb::ToNstRsb(void)
 /*----------------------------------------------------------------------------*/
 ToNstRsb::~ToNstRsb(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* convert                                                                    */
+/*----------------------------------------------------------------------------*/
+void ToNstRsb::vConvert(RsbBuffer* pRsbBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

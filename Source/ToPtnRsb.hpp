@@ -19,6 +19,8 @@ namespace Load
     ToPtnRsb(void);
    ~ToPtnRsb(void) noexcept(false);
   
+    void vConvert(RsbBuffer* pRsbBuffer);
+  
   private:
     Footer* aFooter(void);
   };

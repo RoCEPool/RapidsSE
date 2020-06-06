@@ -24,9 +24,11 @@ void Step::vToPtnRsbRegConvert(void)
 {
   ENTRY();
 
-  ToNstRsb* pToNstRsb = *m_pRegSet->m_xpToNstRsb;
+  ToPtnRsb* pToPtnRsb = *m_pRegSet->m_xpToPtnRsb;
     
-  //bool bResult = pToRsb->bConvert(azSrc);
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pDataStack->pPopPtr(__func__));
+
+  pToPtnRsb->vConvert(pRsbBuffer);
   
   EXIT();
 }

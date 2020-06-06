@@ -23,7 +23,9 @@ void Step::vToNstRsbRegConvert(void)
 
   ToNstRsb* pToNstRsb = *m_pRegSet->m_xpToNstRsb;
   
-  //bool bResult = pToRsb->bConvert(azSrc);
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pDataStack->pPopPtr(__func__));
+
+  pToNstRsb->vConvert(pRsbBuffer);
   
   EXIT();
 }
