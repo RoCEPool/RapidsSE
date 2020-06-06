@@ -1571,7 +1571,6 @@ public:
   void vToRsbRegConvert(void);
   void vToRsbRegCreate(void);
   void vToRsbRegDelete(void);
-  void vToRsbRegRsbBufferFetch(void);
   void vToRsbRegDanglingRsbBuffer(void);
   void vToRsbRegFullRsbBuffer(void);
 
