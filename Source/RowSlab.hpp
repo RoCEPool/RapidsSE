@@ -5,9 +5,11 @@
 
 namespace Rows
 {
-  static const i8 C_WSP_ROWSLAB = C_SIZE_LARGE_OBJECT - C_2KB;
-  static const i8 C_SLAB_CELLS  = C_WSP_ROWSLAB / C_BYTES_PER_WORD;
-  static const i8 C_FIRST_CELL  = C_SLAB_CELLS - 1;
+  static const i8 C_WSP_ROWSLAB   = C_SIZE_LARGE_OBJECT - C_2KB;
+  static const i8 C_SLAB_CELLS    = C_WSP_ROWSLAB / C_BYTES_PER_WORD;
+  static const i8 C_FIRST_CELL    = C_SLAB_CELLS - 1;
+
+  static const i8 C_NML_STR_SPACE = C_8KB;
 
   class RowSlab : public Object
   {

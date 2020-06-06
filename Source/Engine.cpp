@@ -1183,6 +1183,8 @@ void Engine::vPrintConstants(void)
   
   vTrace("  C_MIN_SHM_REGION     = %lld\n"_Stz,C_MIN_SHM_REGION);
   
+  vTrace("  C_NML_STR_SPACE      = %lld\n"_Stz,C_NML_STR_SPACE);
+
   vTrace("  C_WSP_DATACHUNK      = %lld\n"_Stz,C_WSP_DATACHUNK);
   vTrace("  C_WSP_STACK          = %lld\n"_Stz,C_WSP_STACK);
   
