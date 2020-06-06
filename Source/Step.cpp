@@ -178,6 +178,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Ticking();
   Step::vAddSteps_Timer();
   Step::vAddSteps_To();
+  Step::vAddSteps_ToNstRsb();
+  Step::vAddSteps_ToPtnRsb();
   Step::vAddSteps_ToRsb();
   Step::vAddSteps_Trace();
   Step::vAddSteps_Tx();
