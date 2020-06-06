@@ -26,6 +26,7 @@ typedef       HV <RowSingle,   StreamDef>                      HV_Row;
 
 #include "RsbBuffer.hpp"
 
+#include "HashSet.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

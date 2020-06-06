@@ -97,7 +97,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(FocalObjects),       HT_TRANSIENT_LARGE   }, // CN_FOCALOBJECTS
   { sizeof(Forth),              HT_TRANSIENT_TINY    }, // CN_FORTH
   { sizeof(Format),             HT_TRANSIENT_TINY    }, // CN_FORMAT
-  { sizeof(PoolBuffer),         HT_INVALID           }, // CN_FREEBUFFER
+  { sizeof(PoolBuffer),/*yes*/  HT_INVALID           }, // CN_FREEBUFFER
   { sizeof(FreeChunk),          HT_INVALID           }, // CN_FREECHUNK
   { 0,                          HT_INVALID           }, // CN_FREEDNOT
   { 0,                          HT_INVALID           }, // CN_FREEITEM
@@ -109,6 +109,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'H' - ('A' - 1),            HT_INVALID           }, // CN__H__
   { sizeof(HashBuffer),         HT_TRANSIENT_LARGE   }, // CN_HASHBUFFER
+  { sizeof(HashSet),            HT_TRANSIENT_LARGE   }, // CN_HASHSET
   { sizeof(HashMap),            HT_TRANSIENT_TINY    }, // CN_HASHMAP
   { sizeof(HeapBuffer),         HT_INVALID           }, // CN_HEAPBUFFER
   { sizeof(SP_Row),             HT_INVALID           }, // CN_HPROW
