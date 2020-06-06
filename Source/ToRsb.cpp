@@ -36,7 +36,6 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   m_i_Rec   = 0;
   
   m_pCol    = nullptr;
-  m_eCol    = CT_NONE;
 
   m_bPtnHash = false; //bPtnHash;
   
@@ -115,18 +114,16 @@ bool ToRsb::bConvert(char* azSrc)
     
     
     while (bMoreFields()) {
-      
+    
       m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-      m_eCol = m_pCol->eColumnType();
-    
-    
+
       eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uType;
     
       if (26 == m_i_Rec && 6 == m_i_Fld)
         vDebugPoint();
       
       m_bSawFldSep = false;
-      vPreField();
+      vPreField(eDatum);
   
       switch (eDatum) {
         case DM_BOL : vConvertBoolean();   break;
@@ -141,21 +138,6 @@ bool ToRsb::bConvert(char* azSrc)
         default:
           RASSERT(0);
       }
-
-//      switch (m_eCol) {
-//        case CT_BOOLEAN  : vConvertBoolean();   break;
-//        case CT_CHAR     : vConvertVarchar();   break;
-//        case CT_DATE     : vConvertDate();      break;
-//        case CT_DECIMAL  : vConvertDecimal();   break;
-//        case CT_FLOAT    : vConvertFloat();     break;
-//        case CT_INTEGER  : vConvertInteger();   break;
-//        case CT_INTERVAL : vConvertInterval();  break;
-//        case CT_TIME     : vConvertTime();      break;
-//        case CT_TIMESTAMP: vConvertTimestamp(); break;
-//        case CT_VARCHAR  : vConvertVarchar();   break;
-//        default:
-//          RASSERT(0);
-//      }
       
       vPostField();
 

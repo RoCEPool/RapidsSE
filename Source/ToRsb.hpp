@@ -21,10 +21,8 @@ namespace Load
     i8         m_iCol;
     i8         m_i_Fld;
     i8         m_i_Rec;
-    
+      
     Column*    m_pCol;
-    eCT        m_eCol;
-  
     bool       m_bPtnHash;
   
     bool       m_bTrace;
@@ -135,7 +133,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   /* extract boolean                                                          */
   /*--------------------------------------------------------------------------*/
-  inline void vFieldTrace(void)
+  inline void vFieldTrace(eCT eCol)
   {
     if (m_bTrace)
       vTrace("[%lld,%lld @%02lld,%02lld %10s] "_Stz,
@@ -145,7 +143,7 @@ namespace Load
              m_iLine,
              m_iCol,
 
-             aCT[m_eCol]);
+             aCT[eCol]);
   }
   
   /*--------------------------------------------------------------------------*/
@@ -188,7 +186,9 @@ namespace Load
   
     SP_Bcd spBcd;
   
-    vTrace("Decimal : %s\n"_Stz,spBcd.sz(m_oDatum.iBcd(),m_pCol->iColumnScale()));
+    vTrace("Decimal : %s\n"_Stz,
+           spBcd.sz(m_oDatum.iBcd(),
+                    (i8)m_pRowSlab->axaColPix()[m_i_Fld].m_uScale));
   }
 
   /*--------------------------------------------------------------------------*/
@@ -281,7 +281,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertBoolean(void)
   {
-    vFieldTrace();
+    vFieldTrace(CT_BOOLEAN);
                
     Bol xBol;
     SN_Bol snBol;
@@ -299,7 +299,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertDate(void)
   {
-    vFieldTrace();
+    vFieldTrace(CT_DATE);
 
     Dte xDte;
     SN_Dte snDte;
@@ -317,7 +317,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertDecimal(void)
   {
-    vFieldTrace();
+    vFieldTrace(CT_DECIMAL);
   
     Bcd xBcd;
     SN_Bcd snBcd;
@@ -335,7 +335,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertFloat(void)
   {
-    vFieldTrace();
+    vFieldTrace(CT_FLOAT);
 
     Flt xFlt;
     SN_Flt snFlt;
@@ -353,7 +353,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertInteger(void)
   {
-    vFieldTrace();
+    vFieldTrace(CT_INTEGER);
 
 //    while (bInField()) {
 //
@@ -387,7 +387,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertInterval(void)
   {
-    vFieldTrace();
+    vFieldTrace(CT_INTERVAL);
 
     Ivl xIvl;
     SN_Ivl snIvl;
@@ -405,7 +405,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertTime(void)
   {
-    vFieldTrace();
+    vFieldTrace(CT_TIME);
 
     Tme xTme;
     SN_Tme snTme;
@@ -423,7 +423,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertTimestamp(void)
   {
-    vFieldTrace();
+    vFieldTrace(CT_TIMESTAMP);
 
     Tsp xTsp;
     SN_Tsp snTsp;
@@ -441,7 +441,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertVarchar(void)
   {
-    vFieldTrace();
+    vFieldTrace(CT_VARCHAR);
              
     SN_Vch snVch;
 
@@ -465,9 +465,9 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   /* pre-field actions                                                        */
   /*--------------------------------------------------------------------------*/
-  inline void vPreField(void)
+  inline void vPreField(eDM eDatum)
   {
-    if (CT_VARCHAR == m_eCol)
+    if (DM_VCH == eDatum)
       return;
   
     vSkipBlankspace();
