@@ -90,66 +90,66 @@
 /*----------------------------------------------------------------------------*/
 : exp3 \prompt
 
-  "../DATA/Datums/timestamp.csv" locals| sFilePath |
-
-  //sFilePath file::print
-
-  sFilePath file::size locals| nFileSize |
-
-  nFileSize sFilePath "File %v Size %v" .printf
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  "tspTbl" op__table not if
-    "Cant find table tspTbl" .
-    exit
-  then
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Table[].streamDef@ ToRsb::new locals| pToRsb |
-
-  csvBuffer::new locals| pCsvBuffer |
-
-  file::new locals| pFile |
-
-  sFilePath OPEN_READ pFile file.open assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  now[] now.asOf
-  now[] now.timestampStr .
-
-  BM_TimerNew
-  BM_TimerBegin
-
-  1000000 0 do
-
-    0 pFile file.seek
-
-    pCsvBuffer pFile file.ReadChunk assert
-
-    //pCsvBuffer csvBuffer.print
-
-    pCsvBuffer pToRsb toRsb.inspect
-
-  loop
-  
-  BM_TimerUpdate
-  
-  aggTimer[] aggTimer.reportStr .
-
-  now[] now.asOf
-  now[] now.timestampStr .
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pFile file.close
-  pFile file.delete
-
-  pCsvBuffer csvBuffer.delete
-
-  pToRsb toRsb.delete
+//  "../DATA/Datums/timestamp.csv" locals| sFilePath |
+//
+//  //sFilePath file::print
+//
+//  sFilePath file::size locals| nFileSize |
+//
+//  nFileSize sFilePath "File %v Size %v" .printf
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  "tspTbl" op__table not if
+//    "Cant find table tspTbl" .
+//    exit
+//  then
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  Table[].streamDef@ ToRsb::new locals| pToRsb |
+//
+//  csvBuffer::new locals| pCsvBuffer |
+//
+//  file::new locals| pFile |
+//
+//  sFilePath OPEN_READ pFile file.open assert
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  now[] now.asOf
+//  now[] now.timestampStr .
+//
+//  BM_TimerNew
+//  BM_TimerBegin
+//
+//  1000000 0 do
+//
+//    0 pFile file.seek
+//
+//    pCsvBuffer pFile file.ReadChunk assert
+//
+//    //pCsvBuffer csvBuffer.print
+//
+//    pCsvBuffer pToRsb toRsb.inspect
+//
+//  loop
+//
+//  BM_TimerUpdate
+//
+//  aggTimer[] aggTimer.reportStr .
+//
+//  now[] now.asOf
+//  now[] now.timestampStr .
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  pFile file.close
+//  pFile file.delete
+//
+//  pCsvBuffer csvBuffer.delete
+//
+//  pToRsb toRsb.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -216,77 +216,77 @@
 /*----------------------------------------------------------------------------*/
 : exp_fl \prompt
 
-": exp_fl A" .
-
-  <fl_file> <fl_table> "exp_fl : %v %v" .printf
-
-  <fl_file> file::size locals| nFileSize |
-
-  nFileSize <fl_file> "File %v Size %v" .printf
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-": exp_fl B" .
-
-  <fl_table> op__table not if
-    <fl_table> "Cant find <fl_table> : %v" .printf
-    exit
-  then
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-": exp_fl C" .
-
-  Table[].streamDef@ ToRsb::new locals| pToRsb |
-
-  csvBuffer::new locals| pCsvBuffer |
-
-  file::new locals| pFile |
-
-  <fl_file> OPEN_READ pFile file.open assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-": exp_fl D" .
-
-  now[] now.asOf
-  now[] now.timestampStr .
-
-  BM_TimerNew
-  BM_TimerBegin
-
-  1 0 do
-
-    ": exp_fl D1" .
-
-    0 pFile file.seek
-
-    ": exp_fl D2" .
-    pCsvBuffer pFile file.ReadChunk assert
-
-    //pCsvBuffer csvBuffer.print
-
-    ": exp_fl D3" .
-    pCsvBuffer pToRsb toRsb.inspect
-
-    ": exp_fl D4" .
-  loop
-  
-  BM_TimerUpdate
-  
-  aggTimer[] aggTimer.reportStr .
-
-  now[] now.asOf
-  now[] now.timestampStr .
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-": exp_fl E" .
-
-  pFile file.close
-  pFile file.delete
-
-  pCsvBuffer csvBuffer.delete
-
-  pToRsb toRsb.delete
-
-": exp_fl F" .
+//": exp_fl A" .
+//
+//  <fl_file> <fl_table> "exp_fl : %v %v" .printf
+//
+//  <fl_file> file::size locals| nFileSize |
+//
+//  nFileSize <fl_file> "File %v Size %v" .printf
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//": exp_fl B" .
+//
+//  <fl_table> op__table not if
+//    <fl_table> "Cant find <fl_table> : %v" .printf
+//    exit
+//  then
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//": exp_fl C" .
+//
+//  Table[].streamDef@ ToRsb::new locals| pToRsb |
+//
+//  csvBuffer::new locals| pCsvBuffer |
+//
+//  file::new locals| pFile |
+//
+//  <fl_file> OPEN_READ pFile file.open assert
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//": exp_fl D" .
+//
+//  now[] now.asOf
+//  now[] now.timestampStr .
+//
+//  BM_TimerNew
+//  BM_TimerBegin
+//
+//  1 0 do
+//
+//    ": exp_fl D1" .
+//
+//    0 pFile file.seek
+//
+//    ": exp_fl D2" .
+//    pCsvBuffer pFile file.ReadChunk assert
+//
+//    //pCsvBuffer csvBuffer.print
+//
+//    ": exp_fl D3" .
+//    pCsvBuffer pToRsb toRsb.inspect
+//
+//    ": exp_fl D4" .
+//  loop
+//
+//  BM_TimerUpdate
+//
+//  aggTimer[] aggTimer.reportStr .
+//
+//  now[] now.asOf
+//  now[] now.timestampStr .
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//": exp_fl E" .
+//
+//  pFile file.close
+//  pFile file.delete
+//
+//  pCsvBuffer csvBuffer.delete
+//
+//  pToRsb toRsb.delete
+//
+//": exp_fl F" .
 ;
 
 /*============================================================================*/
