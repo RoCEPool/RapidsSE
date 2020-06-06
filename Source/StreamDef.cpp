@@ -272,6 +272,7 @@ void StreamDef::vToColPix(ColPix* axaColPix)
       axColPix->m_uScale    = (u4)pColumn->iColumnScale();
       axColPix->m_bNullable = (u4)pColumn->bIsNullable();
       axColPix->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
+      axColPix->m_uKind     = (u4)CX_USERCOL;
 
     }
   }
