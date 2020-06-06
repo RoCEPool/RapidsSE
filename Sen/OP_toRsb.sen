@@ -58,12 +58,12 @@
 
   Operand[].csvToRsb
 
-  ToRsb[].fullRsbBuffer to OperandB[]
+  ToRsb[].completed to OperandB[]
   begin
     OperandB[].isNull not
   while
     OperandB[].pipeOut
-    ToRsb[].fullRsbBuffer to OperandB[]
+    ToRsb[].completed to OperandB[]
   repeat
 
   Operand[].delete
@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 : toRsb_EosMarker \handler
 
-  ToRsb[].danglingRsbBuffer to OperandB[]
+  ToRsb[].dangling to OperandB[]
   OperandB[].isNull not if
     OperandB[].pipeOut
   then

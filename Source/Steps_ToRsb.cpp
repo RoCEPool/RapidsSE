@@ -19,8 +19,8 @@ void Step::vAddSteps_ToRsb(void)
   vAddStep("toRsb[].delete"_Stz,      &Step::vToRsbRegDelete);
   vAddStep("toRsb[].rsbBuffer@"_Stz,  &Step::vToRsbRegRsbBufferFetch);
   
-  vAddStep("toRsb[].danglingRsbBuffer"_Stz, &Step::vToRsbRegDanglingRsbBuffer);
-  vAddStep("toRsb[].fullRsbBuffer"_Stz,     &Step::vToRsbRegFullRsbBuffer);
+  vAddStep("toRsb[].dangling"_Stz,    &Step::vToRsbRegDanglingRsbBuffer);
+  vAddStep("toRsb[].completed"_Stz,   &Step::vToRsbRegFullRsbBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
