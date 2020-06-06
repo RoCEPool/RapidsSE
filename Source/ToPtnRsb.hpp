@@ -21,6 +21,9 @@ namespace Load
   
     void vConvert(RsbBuffer* pRsbBuffer);
   
+    RsbBuffer* pDangling(i8 i_Ptn);
+    RsbBuffer* pFull(i8 i_Ptn);
+  
   private:
     Footer* aFooter(void);
   };

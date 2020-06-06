@@ -72,7 +72,9 @@ void Step::vToPtnRsbRegDangling(void)
   
   ToPtnRsb* pToPtnRsb = *m_pRegSet->m_xpToPtnRsb;
   
-  RsbBuffer* pRsbBuffer = nullptr; // pToPtnRsb->pDangling();
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+  
+  RsbBuffer* pRsbBuffer = pToPtnRsb->pDangling(i_Ptn);
   
   m_pDataStack->vPushPtr(pRsbBuffer);
 
@@ -88,7 +90,9 @@ void Step::vToPtnRsbRegFull(void)
   
   ToPtnRsb* pToPtnRsb = *m_pRegSet->m_xpToPtnRsb;
   
-  RsbBuffer* pRsbBuffer = nullptr; // pToPtnRsb->pFull();
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+  
+  RsbBuffer* pRsbBuffer = pToPtnRsb->pFull(i_Ptn);
 
   m_pDataStack->vPushPtr(pRsbBuffer);
 
