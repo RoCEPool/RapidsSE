@@ -39,7 +39,8 @@ RowSlab::RowSlab(void)
   m_nItems      = 0;
   m_nMaxRowSize = 256;  // FOR TESTING PURPOSES
   m_nCols       = C_UNKNOWN;
-  
+  m_nExtraCols  = 0;
+
   m_i_Cell      = C_UNKNOWN;
   
   for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
