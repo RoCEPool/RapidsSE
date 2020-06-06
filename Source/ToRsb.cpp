@@ -83,18 +83,6 @@ bool ToRsb::bConvert(char* azSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
-  bInspect(azSrc);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect a chunck                                                           */
-/*----------------------------------------------------------------------------*/
-bool ToRsb::bInspect(char* azSrc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
-
   //vTrace("[>%s<]"_Stz,azSrc);
   
   m_azSrc = azSrc;

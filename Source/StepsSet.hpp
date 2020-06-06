@@ -1570,7 +1570,6 @@ public:
   // toRsb
   void vToRsbNew(void);
   void vToRsbDelete(void);
-  void vToRsbInspect(void);
 
   void vToRsbRegConvert(void);
   void vToRsbRegCreate(void);

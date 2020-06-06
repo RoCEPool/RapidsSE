@@ -12,7 +12,6 @@ void Step::vAddSteps_ToRsb(void)
   vAddStep("toRsb::new"_Stz,          &Step::vToRsbNew);
 
   vAddStep("toRsb.delete"_Stz,        &Step::vToRsbDelete);
-  vAddStep("toRsb.inspect"_Stz,       &Step::vToRsbInspect);
   
   vAddStep("toRsb[].convert"_Stz,     &Step::vToRsbRegConvert);
   vAddStep("toRsb[].create"_Stz,      &Step::vToRsbRegCreate);
@@ -56,23 +55,6 @@ void Step::vToRsbDelete(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* toRsb.inspect -- inspect without actually converting                       */
-/*----------------------------------------------------------------------------*/
-void Step::vToRsbInspect(void)
-{
-  ENTRY();
-
-  ToRsb* pToRsb = _pToRsb(m_pDataStack->pPopPtr(__func__));
-  
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
-
-  char* azSrc  = (char*)pCsvBuffer->ayDataArea();
-  
-  bool bResult = pToRsb->bInspect(azSrc);
-  
-  EXIT();
-}
 
 
 /*----------------------------------------------------------------------------*/
