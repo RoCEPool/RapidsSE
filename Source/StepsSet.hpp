@@ -1560,12 +1560,11 @@ public:
   void vToNstRsbRegDelete(void);
 
   // toPtnRsb
+  void vToPtnRsbRegCompleted(void);
   void vToPtnRsbRegConvert(void);
   void vToPtnRsbRegCreate(void);
-  void vToPtnRsbRegDelete(void);
-
-  void vToPtnRsbRegCompleted(void);
   void vToPtnRsbRegDangling(void);
+  void vToPtnRsbRegDelete(void);
 
   // toRsb
   void vToRsbRegCompleted(void);
@@ -1581,10 +1580,9 @@ public:
   void vTraceSet(void);
 
   // tx
-  void vTxDumpAll(void);
-
   void vTx0Begin(void);
   void vTx0Commit(void);
+  void vTxDumpAll(void);
   void vTx0Perspective(void);
 
   // txCollection
