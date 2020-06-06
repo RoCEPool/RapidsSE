@@ -1554,6 +1554,14 @@ public:
   void vToStr(void);
   void vToTask(void);
 
+  // toNstRsb
+  void vToNstRsbRegCreate(void);
+  void vToNstRsbRegDelete(void);
+
+  // toPtnRsb
+  void vToPtnRsbRegCreate(void);
+  void vToPtnRsbRegDelete(void);
+
   // toRsb
   void vToRsbNew(void);
   void vToRsbDelete(void);

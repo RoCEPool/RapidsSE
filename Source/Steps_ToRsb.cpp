@@ -113,16 +113,16 @@ void Step::vToRsbRegCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].delete -- delete the toRsb                                         */
+/* toRsb[].delete -- delete toRsb                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbRegDelete(void)
 {
   ENTRY();
   
   ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
-  delete pToRsb;
-  
   m_pRegSet->m_xpToRsb = nullptr;
+  
+  delete pToRsb;
   
   EXIT();
 }
