@@ -45,9 +45,9 @@ void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get any dangling buffer                                                    */
+/* get any completed/full buffer                                              */
 /*----------------------------------------------------------------------------*/
-RsbBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
+RsbBuffer* ToPtnRsb::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
   
@@ -55,9 +55,9 @@ RsbBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get any full buffer                                                        */
+/* get any dangling/last buffer                                               */
 /*----------------------------------------------------------------------------*/
-RsbBuffer* ToPtnRsb::pFull(i8 i_Ptn)
+RsbBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
   

@@ -13,8 +13,8 @@ void Step::vAddSteps_ToPtnRsb(void)
   vAddStep("toPtnRsb[].create"_Stz,    &Step::vToPtnRsbRegCreate);
   vAddStep("toPtnRsb[].delete"_Stz,    &Step::vToPtnRsbRegDelete);
   
+  vAddStep("toPtnRsb[].completed"_Stz, &Step::vToPtnRsbRegCompleted);
   vAddStep("toPtnRsb[].dangling"_Stz,  &Step::vToPtnRsbRegDangling);
-  vAddStep("toPtnRsb[].full"_Stz,      &Step::vToPtnRsbRegFull);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,9 +62,26 @@ void Step::vToPtnRsbRegDelete(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* toRsb[].completed -- get any completed/full buffer                         */
+/*----------------------------------------------------------------------------*/
+void Step::vToPtnRsbRegCompleted(void)
+{
+  ENTRY();
+  
+  ToPtnRsb* pToPtnRsb = *m_pRegSet->m_xpToPtnRsb;
+  
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+  
+  RsbBuffer* pRsbBuffer = pToPtnRsb->pCompleted(i_Ptn);
+
+  m_pDataStack->vPushPtr(pRsbBuffer);
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].danglingRsbBuffer -- fetch rsb buffer                              */
+/* toRsb[].danglingRsbBuffer -- get any dangling/last buffer                  */
 /*----------------------------------------------------------------------------*/
 void Step::vToPtnRsbRegDangling(void)
 {
@@ -80,25 +97,6 @@ void Step::vToPtnRsbRegDangling(void)
 
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* toRsb[].full -- full rsb buffer                                            */
-/*----------------------------------------------------------------------------*/
-void Step::vToPtnRsbRegFull(void)
-{
-  ENTRY();
-  
-  ToPtnRsb* pToPtnRsb = *m_pRegSet->m_xpToPtnRsb;
-  
-  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
-  
-  RsbBuffer* pRsbBuffer = pToPtnRsb->pFull(i_Ptn);
-
-  m_pDataStack->vPushPtr(pRsbBuffer);
-
-  EXIT();
-}
-
 
 /*============================================================================*/
 /* end                                                                        */
