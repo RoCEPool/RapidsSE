@@ -37,7 +37,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   
   m_pCol    = nullptr;
 
-  m_bPtnHash = false; //bPtnHash;
+  m_bPtnHash = bPtnHash;
   
   m_bTrace  = false;
   m_dCalc   = 0.0;
@@ -154,6 +154,11 @@ bool ToRsb::bConvert(char* azSrc)
       if (! m_bSawFldSep)
         vTrace("\n"_Stz);
       vTrace("-- recSep -- \n"_Stz);
+    }
+    
+    // set partition hash
+    if (m_bPtnHash) {
+      m_pRowSlab->vDeposit((i8)0);
     }
     
     m_i_Rec++;

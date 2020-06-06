@@ -288,7 +288,7 @@ void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)
     axColPix->m_uScale    = (u4)0;
     axColPix->m_bNullable = (u4)false;
     axColPix->m_bPtnKey   = (u4)false;
-    axColPix->m_uKind     = (u4)CX_USERCOL;
+    axColPix->m_uKind     = (u4)CX_PTNHASH;
     axColPix->m_uSpare    = (u4)0;
   }
 }

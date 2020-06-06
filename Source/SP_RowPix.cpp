@@ -120,6 +120,9 @@ void SP_RowPix::vAppendInt(ColPix xColPix, i8 iVal)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
+  if (CX_PTNHASH == xColPix.m_uKind)
+    StrLib::vAppendChar(&m_azCursor,'#');
+  
   SP_Int spInt;
   StrLib::vAppendString(&m_azCursor,(char*)spInt.sz(iVal));
 }
