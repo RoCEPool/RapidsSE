@@ -275,11 +275,23 @@ bool RowSlab::bNewRow(void)
 /*----------------------------------------------------------------------------*/
 /* get row cells for given row                                                */
 /*----------------------------------------------------------------------------*/
-m8* RowSlab::amRowCells(i8 iRow)
+Rsb* RowSlab::aRsb(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  i8 iLglRow = iRow * m_nCols;
+  Rsb* aRsb = (Rsb*)amRowCells(i_Row);
+  
+  return aRsb;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row cells for given row                                                */
+/*----------------------------------------------------------------------------*/
+m8* RowSlab::amRowCells(i8 i_Row)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  i8 iLglRow = i_Row * m_nCols;
   
   i8 i_RowCells = C_FIRST_CELL - iLglRow;
 

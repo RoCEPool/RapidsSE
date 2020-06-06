@@ -57,6 +57,7 @@ namespace Rows
     i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef);
     bool  bNewRow(void);
+    Rsb*  aRsb(i8 i_Row);
     m8*   amRowCells(i8 i_Row);
     i8    nRows(void);
     void  vSlabReport(void);

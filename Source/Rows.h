@@ -19,10 +19,11 @@ namespace Rows
 #include "RowSingle.hpp"
 
 #include "RowGenerator.hpp"
+
+#include "Rsb.hpp"
 #include "RowSlab.hpp"
 
 #include "RowUte.hpp"
-#include "Rsb.hpp"
 
 #include "SP_Ref.hpp"
 #include "SP_Row.hpp"

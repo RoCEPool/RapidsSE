@@ -27,6 +27,8 @@ namespace Load
     RsbBuffer* pDangling(i8 i_Ptn);
   
   private:
+    void vCopyRsb(Rsb* aRsb);
+  
     Footer* aFooter(void);
   };
 
