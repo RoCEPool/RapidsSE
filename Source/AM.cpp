@@ -1277,7 +1277,7 @@ void AM::vBootCheck(void)
   if (iEntriesECN != iEntriesPCN) {
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "\n!!!ALERT!!! No of entries in aCN (%lld) "
-           "do not match the no in eCN (%lld)\n\n"_Stz,
+           "do not match the no in eCN (%lld) -- missing comma??\n\n"_Stz,
            iEntriesPCN, iEntriesECN);
   }
   

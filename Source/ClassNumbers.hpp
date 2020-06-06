@@ -314,6 +314,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TMEVAL,
   /* */ CN_TOKEN,
   /* */ CN_TOKENVEC,
+  /* */ CN_TOPTNRSB,
   /* */ CN_TORSB,
   /* */ CN_TSPVAL,
   /* */ CN_TX,
@@ -644,6 +645,7 @@ static Stz* aCN[]
   /* */ "TMEVAL"_Stz,              // CN_TMEVAL
   /* */ "TOKEN"_Stz,               // CN_TOKEN
   /* */ "TOKENVEC"_Stz,            // CN_TOKENVEC
+  /* */ "TOPTNRSB"_Stz,            // CN_TOPTNRSB
   /* */ "TORSB"_Stz,               // CN_TORSB
   /* */ "TSPVAL"_Stz,              // CN_TSPVAL
   /* */ "TX"_Stz,                  // CN_TX

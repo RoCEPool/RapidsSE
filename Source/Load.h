@@ -19,6 +19,7 @@ namespace Load
 
 #include "Loader.hpp"
 #include "ToRsb.hpp"
+#include "ToPtnRsb.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

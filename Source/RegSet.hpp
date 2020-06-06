@@ -27,7 +27,6 @@ namespace Tasks
 
     REG<Dynamo>      m_xpDynamo;   // dynamo pipleine compiler
   
-    REG<ToRsb>   m_xpToRsb;
     REG<CrwHash>     m_xpCrwHash;
     REG<Index>       m_xpIndex;
     REG<IndexTree>   m_xpIndexTree;
@@ -44,6 +43,7 @@ namespace Tasks
     REG<Operand>     m_xpSubset;
     REG<Table>       m_xpTable;
     REG<TablePtn>    m_xpTablePtn;
+    REG<ToRsb>       m_xpToRsb;
     REG<Tx>          m_xpTx;
     REG<Xmits>       m_xpXmits;     // consume xmits
     
