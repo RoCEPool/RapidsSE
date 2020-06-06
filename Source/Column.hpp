@@ -5,17 +5,19 @@
 
 namespace Datums
 {
+  // the ColPix structure is 32b / u4
   union ColPix {
     struct {
-      u4 m_uType     :  6; // 64 types
-      u4 m_uLength   : 16; // up to 65,536
-      u4 m_uScale    :  5; // up to 31 places
-      u4 m_uNullable :  1; // yes or no
+      u4 m_uType      :  6; // up to 64 types
+      u4 m_uLength    : 16; // up to 65,536
+      u4 m_uScale     :  5; // up to 31 places
+      u4 m_bNullable  :  1; // is allowed to be null?
+      u4 m_bPtnKey    :  1; // is a partitioning column?
 
-      u4 m_uSpare    :  4; // round up
-    //                ---
+      u4 m_uSpare     :  3; // round up to 32b
+    //                 ---
     //                 32b // so... 256 columns is 256 * 4B = 1KB
-    //                ===
+    //                 ===
     };
     
     u4 m_uAsI4;

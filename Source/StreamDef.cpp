@@ -267,10 +267,11 @@ void StreamDef::vToColPix(ColPix* axaColPix)
       Column* pColumn  = &m_xaColumn[i_DefColumn];
       ColPix* axColPix = &axaColPix[i_DefColumn];
       
-      axColPix->m_uType     = pColumn->eDatum();
-      axColPix->m_uLength   = pColumn->iColumnLength();
-      axColPix->m_uScale    = pColumn->iColumnScale();
-      axColPix->m_uNullable = pColumn->bIsNullable();
+      axColPix->m_uType     = (u4)pColumn->eDatum();
+      axColPix->m_uLength   = (u4)pColumn->iColumnLength();
+      axColPix->m_uScale    = (u4)pColumn->iColumnScale();
+      axColPix->m_bNullable = (u4)pColumn->bIsNullable();
+      axColPix->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
 
     }
   }
