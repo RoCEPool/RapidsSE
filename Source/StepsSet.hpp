@@ -1568,9 +1568,6 @@ public:
   void vToPtnRsbRegDangling(void);
 
   // toRsb
-  void vToRsbNew(void);
-  void vToRsbDelete(void);
-
   void vToRsbRegConvert(void);
   void vToRsbRegCreate(void);
   void vToRsbRegDelete(void);

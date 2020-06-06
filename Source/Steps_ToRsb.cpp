@@ -9,10 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToRsb(void)
 {
-  vAddStep("toRsb::new"_Stz,          &Step::vToRsbNew);
-
-  vAddStep("toRsb.delete"_Stz,        &Step::vToRsbDelete);
-  
   vAddStep("toRsb[].convert"_Stz,     &Step::vToRsbRegConvert);
   vAddStep("toRsb[].create"_Stz,      &Step::vToRsbRegCreate);
   vAddStep("toRsb[].delete"_Stz,      &Step::vToRsbRegDelete);
@@ -21,44 +17,6 @@ void Step::vAddSteps_ToRsb(void)
   vAddStep("toRsb[].dangling"_Stz,    &Step::vToRsbRegDanglingRsbBuffer);
   vAddStep("toRsb[].completed"_Stz,   &Step::vToRsbRegFullRsbBuffer);
 }
-
-/*----------------------------------------------------------------------------*/
-/* toRsb::new -- new toRsb                                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vToRsbNew(void)
-{
-  ENTRY();
-  
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  
-  ToRsb* pToRsb = new ToRsb(pStreamDef,AM::pFmt());
-  
-  m_pDataStack->vPushPtr(pToRsb);
-    
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* toRsb.delete -- delete                                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vToRsbDelete(void)
-{
-  ENTRY();
-  
-  ToRsb* pToRsb = _pToRsb(m_pDataStack->pPopPtr(__func__));
-
-  delete pToRsb;
-  
-  EXIT();
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* toRsb[].convert -- convert csv buffer                                      */
