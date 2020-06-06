@@ -43,6 +43,8 @@ namespace Tasks
     REG<Operand>     m_xpSubset;
     REG<Table>       m_xpTable;
     REG<TablePtn>    m_xpTablePtn;
+    REG<ToNstRsb>    m_xpToNstRsb;
+    REG<ToPtnRsb>    m_xpToPtnRsb;
     REG<ToRsb>       m_xpToRsb;
     REG<Tx>          m_xpTx;
     REG<Xmits>       m_xpXmits;     // consume xmits
