@@ -281,7 +281,6 @@ void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)
   
   if (bPtnHash) {
 
-    Column* pColumn  = &m_xaColumn[i_DefColumn];
     ColPix* axColPix = &axaColPix[i_DefColumn];
   
     axColPix->m_uType     = (u4)DM_INT;

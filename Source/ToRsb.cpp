@@ -38,7 +38,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   m_pCol    = nullptr;
   m_eCol    = CT_NONE;
 
-  m_bPtnHash = bPtnHash;
+  m_bPtnHash = false; //bPtnHash;
   
   m_bTrace  = false;
   m_dCalc   = 0.0;
@@ -58,8 +58,8 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
 
   
   s48K sDef;
-   m_pStreamDef->vAsString(sDef);
-   vTrace("%s\n"_Stz,sDef.szStz());
+  m_pStreamDef->vAsString(sDef);
+  vTrace("%s\n"_Stz,sDef.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,27 +118,44 @@ bool ToRsb::bConvert(char* azSrc)
       
       m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
       m_eCol = m_pCol->eColumnType();
-      m_bSawFldSep = false;
-
+    
+    
+      eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uType;
+    
       if (26 == m_i_Rec && 6 == m_i_Fld)
         vDebugPoint();
       
+      m_bSawFldSep = false;
       vPreField();
-      
-      switch (m_eCol) {
-        case CT_BOOLEAN  : vConvertBoolean();   break;
-        case CT_CHAR     : vConvertVarchar();   break;
-        case CT_DATE     : vConvertDate();      break;
-        case CT_DECIMAL  : vConvertDecimal();   break;
-        case CT_FLOAT    : vConvertFloat();     break;
-        case CT_INTEGER  : vConvertInteger();   break;
-        case CT_INTERVAL : vConvertInterval();  break;
-        case CT_TIME     : vConvertTime();      break;
-        case CT_TIMESTAMP: vConvertTimestamp(); break;
-        case CT_VARCHAR  : vConvertVarchar();   break;
+  
+      switch (eDatum) {
+        case DM_BOL : vConvertBoolean();   break;
+        case DM_DTE : vConvertDate();      break;
+        case DM_BCD : vConvertDecimal();   break;
+        case DM_FLT : vConvertFloat();     break;
+        case DM_INT : vConvertInteger();   break;
+        case DM_IVL : vConvertInterval();  break;
+        case DM_TME : vConvertTime();      break;
+        case DM_TSP : vConvertTimestamp(); break;
+        case DM_VCH : vConvertVarchar();   break;
         default:
           RASSERT(0);
       }
+
+//      switch (m_eCol) {
+//        case CT_BOOLEAN  : vConvertBoolean();   break;
+//        case CT_CHAR     : vConvertVarchar();   break;
+//        case CT_DATE     : vConvertDate();      break;
+//        case CT_DECIMAL  : vConvertDecimal();   break;
+//        case CT_FLOAT    : vConvertFloat();     break;
+//        case CT_INTEGER  : vConvertInteger();   break;
+//        case CT_INTERVAL : vConvertInterval();  break;
+//        case CT_TIME     : vConvertTime();      break;
+//        case CT_TIMESTAMP: vConvertTimestamp(); break;
+//        case CT_VARCHAR  : vConvertVarchar();   break;
+//        default:
+//          RASSERT(0);
+//      }
       
       vPostField();
 
@@ -224,13 +241,11 @@ void ToRsb::vNewRsbBuffer(void)
   
   // link the new to old
   pRsbBuffer->vNextBuffer(m_pRsbBuffer);
-  
   if (m_pRsbBuffer)
     m_pRsbBuffer->vPrevBuffer(pRsbBuffer);
-  
   m_pRsbBuffer = pRsbBuffer;
   
-  // set table and ptn no in it
+  // initialise the row slab inside the new rsb buffer
   m_pRowSlab = m_pRsbBuffer->pRowSlab();
   m_pRowSlab->vInitPix(m_pStreamDef,m_bPtnHash);
 }

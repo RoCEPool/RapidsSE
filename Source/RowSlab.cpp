@@ -241,13 +241,12 @@ void RowSlab::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   m_nCols       = pStreamDef->nColumns(C_ALL);
-  
   m_bPtnHash    = bPtnHash;
   if (m_bPtnHash)
     m_nCols++;
-  
   m_i_Cell      = C_UNKNOWN;
   
+  //                                                           optimise this
   for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
     m_xaColPix[i_Col].m_uAsI4 = 0;
   
