@@ -1564,6 +1564,9 @@ public:
   void vToPtnRsbRegCreate(void);
   void vToPtnRsbRegDelete(void);
 
+  void vToPtnRsbRegDangling(void);
+  void vToPtnRsbRegFull(void);
+
   // toRsb
   void vToRsbNew(void);
   void vToRsbDelete(void);

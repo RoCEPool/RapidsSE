@@ -9,9 +9,12 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToPtnRsb(void)
 {
-  vAddStep("toPtnRsb[].convert"_Stz,     &Step::vToPtnRsbRegConvert);
-  vAddStep("toPtnRsb[].create"_Stz,      &Step::vToPtnRsbRegCreate);
-  vAddStep("toPtnRsb[].delete"_Stz,      &Step::vToPtnRsbRegDelete);
+  vAddStep("toPtnRsb[].convert"_Stz,   &Step::vToPtnRsbRegConvert);
+  vAddStep("toPtnRsb[].create"_Stz,    &Step::vToPtnRsbRegCreate);
+  vAddStep("toPtnRsb[].delete"_Stz,    &Step::vToPtnRsbRegDelete);
+  
+  vAddStep("toPtnRsb[].dangling"_Stz,  &Step::vToPtnRsbRegDangling);
+  vAddStep("toPtnRsb[].full"_Stz,      &Step::vToPtnRsbRegFull);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,6 +59,40 @@ void Step::vToPtnRsbRegDelete(void)
   
   EXIT();
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* toRsb[].danglingRsbBuffer -- fetch rsb buffer                              */
+/*----------------------------------------------------------------------------*/
+void Step::vToPtnRsbRegDangling(void)
+{
+  ENTRY();
+  
+  ToPtnRsb* pToPtnRsb = *m_pRegSet->m_xpToPtnRsb;
+  
+  RsbBuffer* pRsbBuffer = nullptr; // pToPtnRsb->pDangling();
+  
+  m_pDataStack->vPushPtr(pRsbBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* toRsb[].full -- full rsb buffer                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vToPtnRsbRegFull(void)
+{
+  ENTRY();
+  
+  ToPtnRsb* pToPtnRsb = *m_pRegSet->m_xpToPtnRsb;
+  
+  RsbBuffer* pRsbBuffer = nullptr; // pToPtnRsb->pFull();
+
+  m_pDataStack->vPushPtr(pRsbBuffer);
+
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
