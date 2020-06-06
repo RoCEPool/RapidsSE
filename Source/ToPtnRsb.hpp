@@ -8,6 +8,8 @@ namespace Load
   class ToPtnRsb : public Object
   {
   private:
+  
+    HashSet m_oHashSet;
 
     // must be last
     Footer m_xFooter;
