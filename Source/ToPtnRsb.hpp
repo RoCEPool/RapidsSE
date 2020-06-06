@@ -27,8 +27,9 @@ namespace Load
     RsbBuffer* pDangling(i8 i_Ptn);
   
   private:
-    void vCopyRsb(Rsb* aRsb);
-  
+    void vCopyIntoHashSet(i8 i_Ptn, Rsb* aRsbSrc);
+    void vNewHashSetRow(i8 i_Ptn);
+
     Footer* aFooter(void);
   };
 

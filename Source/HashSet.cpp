@@ -66,6 +66,18 @@ void HashSet::vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer)
 /*----------------------------------------------------------------------------*/
 /* return a full crwBuffer for given partition (if any)                       */
 /*----------------------------------------------------------------------------*/
+DataBuffer* HashSet::pBuffer(i8 i_Ptn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
+
+  DataBuffer* pBuffer = m_paBufferChain[i_Ptn];
+
+  return pBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a full crwBuffer for given partition (if any)                       */
+/*----------------------------------------------------------------------------*/
 DataBuffer* HashSet::pCompletedBuffer(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);

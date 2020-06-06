@@ -24,6 +24,7 @@ namespace Load
   
     void vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer);
 
+    DataBuffer* pBuffer(i8 i_Ptn);
     DataBuffer* pCompletedBuffer(i8 i_Ptn);
     DataBuffer* pDanglingBuffer(i8 i_Ptn);
 
