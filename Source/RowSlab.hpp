@@ -49,7 +49,6 @@ namespace Rows
     i8    nCols(void);
     void  vCopyPix(StreamPix* pStreamPixSrc);
     void  vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
-    void  vCreateNmlStr(Stz* szArg);
     void  vDeposit(d8 dVal);
     void  vDeposit(i8 iVal);
     void  vDeposit(Stz* szVal);

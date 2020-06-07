@@ -175,17 +175,6 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a normalized string                                                 */
-/*----------------------------------------------------------------------------*/
-void RowSlab::vCreateNmlStr(Stz* szArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  if (! m_oNmlStr.szFind(szArg))
-    m_oNmlStr.szAdd(szArg);
-}
-
-/*----------------------------------------------------------------------------*/
 /* deposit an d8 value into next cell                                         */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vDeposit(d8 dVal)
