@@ -97,7 +97,7 @@ RsbBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 void ToPtnRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
     
   // new a destination row in target partition row slab
   vNewDstRsb(i_Ptn);
@@ -112,7 +112,7 @@ void ToPtnRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
 /*----------------------------------------------------------------------------*/
 void ToPtnRsb::vNewDstRsb(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
     
   // get rsb buffer for given partition (new a first buffer if ncessary)
   RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_oHashSet.pBuffer(i_Ptn));

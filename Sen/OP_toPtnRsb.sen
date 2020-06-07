@@ -9,7 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : toPtnRsb_StartMarker \handler
 
-  ZK_STARTMARKER_handler
+  ToPtnRsb[].create
+
+  PipeIn[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -21,11 +25,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                   EACH */
+/* on ZK_RSBBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : toPtnRsb_RsbBuffer \handler
 
-  ZK_RSBBUFFER_handler
+  PipeIn[] ToPtnRsb[].convert
+
+  grid::partitions 0
+  do
+
+    I ToPtnRsb[].completed to OperandB[]
+
+    begin
+      OperandB[].isNull not
+    while
+      OperandB[].pipeOut
+      I ToPtnRsb[].completed to OperandB[]
+    repeat
+
+  loop
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +53,24 @@
 /*----------------------------------------------------------------------------*/
 : toPtnRsb_EosMarker \handler
 
-  ZK_EOSMARKER_handler
+  grid::partitions 0
+  do
+
+    I ToPtnRsb[].dangling to OperandB[]
+
+    begin
+      OperandB[].isNull not
+    while
+      OperandB[].pipeOut
+      I ToPtnRsb[].dangling to OperandB[]
+    repeat
+
+  loop
+
+  ToPtnRsb[].delete
+  PipeIn[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/

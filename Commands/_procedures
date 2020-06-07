@@ -356,16 +356,16 @@ begin
     periodicOp once    |
 
     chunk $file        | // read chunks of file, produce (seekOffset) =>
-    dump seekOffsets 1 |
+    // dump seekOffsets 1 |
 
     rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
-    dump csvBuffer 0   |
+    // dump csvBuffer 0   |
 
     toRsb $table       | // (csvBuffer)  => (rsbBuffer)
-    dump rsbBuffer 1   |
+    // dump rsbBuffer 1   |
 
     toPtnRsb           | // (rsbBuffer)  => (rsbBuffer)
-    dump rsbBuffer 1   |
+    // dump rsbBuffer 1   |
 
 //
 //    toCsv              | // (rsbBuffer)  => (csvBuffer)
