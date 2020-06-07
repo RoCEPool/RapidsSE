@@ -160,6 +160,7 @@ namespace Steps
     static void vAddSteps_Ticking(void);
     static void vAddSteps_Timer(void);
     static void vAddSteps_To(void);
+    static void vAddSteps_ToHshCrw(void);
     static void vAddSteps_ToNstRsb(void);
     static void vAddSteps_ToPtnRsb(void);
     static void vAddSteps_ToRsb(void);

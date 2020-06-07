@@ -8,22 +8,22 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToHshCrw,CN_TOPTNRSB)
-__aNewFunction(ToHshCrw,CN_TOPTNRSB)
-__vDeleteFunction(ToHshCrw,CN_TOPTNRSB)
+__pCastFunction(Load,ToHshCrw,CN_TOHSHCRW)
+__aNewFunction(ToHshCrw,CN_TOHSHCRW)
+__vDeleteFunction(ToHshCrw,CN_TOHSHCRW)
 __aFooterFunction(ToHshCrw)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ToHshCrw::ToHshCrw(void)
-: Object(CN_TOPTNRSB)
+: Object(CN_TOHSHCRW)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
 
   // m_oHashSet
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +31,7 @@ ToHshCrw::ToHshCrw(void)
 /*----------------------------------------------------------------------------*/
 ToHshCrw::~ToHshCrw(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ ToHshCrw::~ToHshCrw(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void ToHshCrw::vConvert(RsbBuffer* pRsbBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
 }
 
@@ -52,7 +52,7 @@ void ToHshCrw::vConvert(RsbBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 RsbBuffer* ToHshCrw::pCompleted(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
   RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
   
@@ -64,7 +64,7 @@ RsbBuffer* ToHshCrw::pCompleted(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 RsbBuffer* ToHshCrw::pDangling(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
   RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
   

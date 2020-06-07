@@ -1557,6 +1557,13 @@ public:
   void vToStr(void);
   void vToTask(void);
 
+  // toHshCrw
+  void vToHshCrwRegCompleted(void);
+  void vToHshCrwRegConvert(void);
+  void vToHshCrwRegCreate(void);
+  void vToHshCrwRegDangling(void);
+  void vToHshCrwRegDelete(void);
+
   // toNstRsb
   void vToNstRsbRegConvert(void);
   void vToNstRsbRegCreate(void);

@@ -43,6 +43,7 @@ namespace Tasks
     REG<Operand>     m_xpSubset;
     REG<Table>       m_xpTable;
     REG<TablePtn>    m_xpTablePtn;
+    REG<ToHshCrw>    m_xpToHshCrw;
     REG<ToNstRsb>    m_xpToNstRsb;
     REG<ToPtnRsb>    m_xpToPtnRsb;
     REG<ToRsb>       m_xpToRsb;
