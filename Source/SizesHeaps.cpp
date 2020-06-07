@@ -310,6 +310,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap),/*correct*/    HT_INVALID           }, // CN_TINYPERSISTENT
   { sizeof(Heap),/*correct*/    HT_INVALID           }, // CN_TINYTRANSIENT
   { sizeof(TmeVal),             HT_INVALID           }, // CN_TMEVAL
+  { sizeof(ToHshCrw),           HT_TRANSIENT_LARGE   }, // CN_TOHSHCRW
   { sizeof(Token),              HT_TRANSIENT_TINY    }, // CN_TOKEN
   { sizeof(TokenVec),           HT_TRANSIENT_LARGE   }, // CN_TOKENVEC
   { sizeof(ToNstRsb),           HT_TRANSIENT_MEDIUM  }, // CN_TONSTRSB

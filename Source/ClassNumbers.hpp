@@ -314,6 +314,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TINYPERSISTENT,
   /* */ CN_TINYTRANSIENT,
   /* */ CN_TMEVAL,
+  /* */ CN_TOHSHCRW,
   /* */ CN_TOKEN,
   /* */ CN_TOKENVEC,
   /* */ CN_TONSTRSB,
@@ -648,6 +649,7 @@ static Stz* aCN[]
   /* */ "TINYPERSISTENT"_Stz,      // CN_TINYPERSISTENT
   /* */ "TINYTRANSIENT"_Stz,       // CN_TINYTRANSIENT
   /* */ "TMEVAL"_Stz,              // CN_TMEVAL
+  /* */ "TOHSHCRW"_Stz,            // CN_TOHSHCRW
   /* */ "TOKEN"_Stz,               // CN_TOKEN
   /* */ "TOKENVEC"_Stz,            // CN_TOKENVEC
   /* */ "TONSTRSB"_Stz,            // CN_TONSTRSB
