@@ -5,18 +5,17 @@
 
 namespace Rows
 {
-  static const i8 C_WSP_ROWSLAB   = C_SIZE_LARGE_OBJECT - C_4KB;
-  static const i8 C_SLAB_CELLS    = C_WSP_ROWSLAB / C_BYTES_PER_WORD;
-  static const i8 C_FIRST_CELL    = C_SLAB_CELLS - 1;
+  static const i8 C_WSP_ROWSLAB    = C_SIZE_LARGE_OBJECT - C_2KB;
+  static const i8 C_SLAB_CELLS     = C_WSP_ROWSLAB / C_BYTES_PER_WORD;
+  static const i8 C_FIRST_LGL_CELL = C_SLAB_CELLS - 1;
 
-  static const i8 C_NML_STR_SPACE = C_8KB;
+  static const i8 C_NML_STR_SPACE  = C_8KB;
 
   class RowSlab : public Object
   {
-
   private:
   
-    char caModel[32];  // model string
+    char m_caModel[32]; // model string
     i8   m_iVersion;    //
     i8   m_iFormat;
     i8   m_nBytes;      // size in bytes of this row slab
@@ -25,14 +24,10 @@ namespace Rows
     i8   m_i_Trim;      // where trim occurred     NOT USED YET
 
     i8   m_nItems;      // number of items in this row-slab
-   
-    i8   m_nCols;       // number of columns per row in this row-slab
-    i8   m_nExtraCols;  //  of which there are nExtra metadata columns
-    bool m_bPtnHash;    //
-    i8   m_i_Cell;      // 
+    i8   m_i_Cell;      // current working cell
   
-    StreamPix m_oStreamPix;
-  
+    StreamPix m_oStreamPix; // condensed stream def
+    
     WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
   
     // must be last

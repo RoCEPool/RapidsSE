@@ -21,10 +21,10 @@ RowSlab::RowSlab(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  MemLib::vSet(caModel,' ',sizeof(caModel),CN_ROWSLAB);
-  caModel[31] = '\0';
+  MemLib::vSet(m_caModel,' ',sizeof(m_caModel),CN_ROWSLAB);
+  m_caModel[sizeof(m_caModel) - 1] = '\0';
   
-  StrLib::vSprint(caModel,"RapidsSE %s FORMAT %s"_Stz,
+  StrLib::vSprint(m_caModel,"RapidsSE %s FORMAT %s"_Stz,
                   RAPIDSSE_VERSION_STRING,
                   RAPIDSSE_FORMAT_STRING);
   
@@ -36,13 +36,11 @@ RowSlab::RowSlab(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_nItems      = 0;
-  m_nCols       = C_UNKNOWN;
-  m_nExtraCols  = 0;
-  m_bPtnHash    = false;
-  
-  m_i_Cell      = C_UNKNOWN;
-    
+  m_nItems   = 0;
+  m_i_Cell   = C_UNKNOWN;
+ 
+  // m_oStreamPix
+
 #ifdef WITH_DEBUG_VERSION
   m_xWsp.vZero(CN_ROWSLAB);
 #endif
@@ -69,11 +67,11 @@ i8 RowSlab::iCell(i8 iRow, i8 iCell)
 
   i8* iaCells = (i8*)m_xWsp.ayArea();
 
-  i8 iLglCell = iRow * m_nCols + iCell;
+  i8 iLglCell = iRow * m_oStreamPix.m_nCols + iCell;
   
-  i8 i_Cell = C_FIRST_CELL - iLglCell;
+  i8 i_Cell = C_FIRST_LGL_CELL - iLglCell;
   
-  i8 iVal =iaCells[i_Cell];
+  i8 iVal = iaCells[i_Cell];
   
   return iVal;
 }
@@ -111,7 +109,7 @@ i8 RowSlab::nCols(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  return m_nCols;
+  return m_oStreamPix.m_nCols;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,12 +242,7 @@ i8 RowSlab::nFreeSpace(void)
 void RowSlab::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  m_nCols       = pStreamDef->nColumns(C_ALL);
-  m_bPtnHash    = bPtnHash;
-  if (m_bPtnHash)
-    m_nCols++;
-      
+        
   pStreamDef->vToStreamPix(&m_oStreamPix,bPtnHash);
 }
 
@@ -266,11 +259,11 @@ bool RowSlab::bNewRow(void)
     return false;
   
   if (C_UNKNOWN == m_i_Cell)
-    m_i_Cell = C_FIRST_CELL + 1;
+    m_i_Cell = C_FIRST_LGL_CELL + 1;
     
   m_nItems++;
   
-  i8 nCellBytes = m_nCols * C_BYTES_PER_WORD;
+  i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
   m_xWsp.vTakeTail(nCellBytes);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -285,7 +278,7 @@ bool RowSlab::bPtnHash(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  return m_bPtnHash;
+  return m_oStreamPix.m_bPtnHash;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,9 +300,9 @@ m8* RowSlab::amRowCells(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  i8 iLglRow = i_Row * m_nCols;
+  i8 iLglRow = i_Row * m_oStreamPix.m_nCols;
   
-  i8 i_RowCells = C_FIRST_CELL - iLglRow;
+  i8 i_RowCells = C_FIRST_LGL_CELL - iLglRow;
 
   m8* amCellVec = amCellVector();
 
