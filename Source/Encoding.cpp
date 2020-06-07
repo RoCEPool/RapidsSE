@@ -121,27 +121,27 @@ i8 Encoding::nBytesNeeded(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode row                                                                 */
+/* encode inflated row                                                        */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeInputRow(RowSingle* pRow)
+void Encoding::vEncodeIrw(Row* pIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   vReset();
   
-  vInitialEncoding(pRow);
+  vInitialEncoding(pIrw);
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode row                                                                 */
+/* encode signle row                                                          */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeIrwSample(Row* pRow)
+void Encoding::vEncodeSrw(RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   vReset();
   
-  vInitialEncoding(pRow);
+  vInitialEncoding(pSrw);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,7 +237,7 @@ void Encoding::vSplitOver(void)
 /*----------------------------------------------------------------------------*/
 /* encode the columns of given row and compute their initial offsets          */
 /*----------------------------------------------------------------------------*/
-void Encoding::vInitialEncoding(RowSingle* pRow)
+void Encoding::vInitialEncoding(RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -247,7 +247,7 @@ void Encoding::vInitialEncoding(RowSingle* pRow)
     
     _ColEnc& xrColEnc = xaColEnc[i_Col];
     
-    Dtm wColVal = pRow->m_waColVal[i_Col];
+    Dtm wColVal = pSrw->m_waColVal[i_Col];
     
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // encode the column value
@@ -282,7 +282,7 @@ void Encoding::vInitialEncoding(RowSingle* pRow)
 /*----------------------------------------------------------------------------*/
 /* encode the columns of given row and compute their initial offsets          */
 /*----------------------------------------------------------------------------*/
-void Encoding::vInitialEncoding(Row* pRow)
+void Encoding::vInitialEncoding(Row* pIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -292,7 +292,7 @@ void Encoding::vInitialEncoding(Row* pRow)
     
     _ColEnc& xrColEnc = xaColEnc[i_Col];
     
-    Dtm wColVal = pRow->m_waColVal[i_Col];
+    Dtm wColVal = pIrw->m_waColVal[i_Col];
     
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // encode the column value
@@ -310,7 +310,7 @@ void Encoding::vInitialEncoding(Row* pRow)
       case DM_VCH:
         // get the stz from the row
         if ( ! wColVal.bIsNull() )
-          wColVal.m_szVch = pRow->szStzGet(i_Col);
+          wColVal.m_szVch = pIrw->szStzGet(i_Col);
         vEncodeVch(xrColEnc,wColVal);
         break;
         

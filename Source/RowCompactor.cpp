@@ -495,7 +495,7 @@ void RowCompactor::vEncodeHead(Row* pIrwSample)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pEncoding->vEncodeIrwSample(pIrwSample);
+  m_pEncoding->vEncodeIrw(pIrwSample);
   
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
@@ -512,7 +512,7 @@ void RowCompactor::vEncodeHead(RowSingle* pInputRow)
 
   ASSERT(! m_bCollecting);
 
-  m_pEncoding->vEncodeInputRow(pInputRow);
+  m_pEncoding->vEncodeSrw(pInputRow);
   
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
