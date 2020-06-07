@@ -48,12 +48,12 @@ bool RowUte::bAddSingleToSlab(RowSlab* pRowSlab, RowSingle* pRowSingle,
     }
         
     // copy vch from row single to row slab
-    char* azTgt = pRowSlab->azDepositString();
+    char* azTgt = pRowSlab->azDepositString_begin();
     
     char* azSrc = pRowSingle->m_waColVal[i_Col].m_azStr;
     i8 nLen = StrLib::nCopy(azTgt,azSrc);
 
-    pRowSlab->vDepositedString(nLen + 1);
+    pRowSlab->vDepositString_end(nLen + 1);
   }
   
   return true;

@@ -49,8 +49,9 @@ namespace Rows
     void  vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
     void  vDeposit(d8 dVal);
     void  vDeposit(i8 iVal);
-    char* azDepositString(void);
-    void  vDepositedString(i8 nSize);
+    void  vDeposit(Stz* szVal);
+    char* azDepositString_begin(void);
+    void  vDepositString_end(i8 nSize);
     void  vDumpAllRows(void);
     void  vDumpRow(i8 i_Row);
     i8    nFreeSpace(void);

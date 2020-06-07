@@ -450,9 +450,9 @@ namespace Load
 
     m_oDatum = snVch.sz(&m_acChr,m_pCol,m_pFmt,bSawEnclosedLeading,nChars);
   
-    char* szStr = m_pRowSlab->azDepositString();
+    char* szStr = m_pRowSlab->azDepositString_begin();
     StrLib::vCopy(szStr,m_oDatum.azChar());
-    m_pRowSlab->vDepositedString(nChars+1);
+    m_pRowSlab->vDepositString_end(nChars+1);
     ASSERT(nChars + 1 == StrLib::nSize(szStr));
 
     vSprintVarchar();

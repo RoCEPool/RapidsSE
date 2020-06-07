@@ -145,7 +145,6 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
     
     eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
     
-    
     if (DM_VCH == eDatum) {
        // vch datum
 
@@ -153,14 +152,12 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
         vDeposit(C_DATUM_NULL);
       }
       else {
-     
         Stz* szSrcStz = aRsbSrc->szVal(i_Col);
-        //vAllotSetVarchar(i_IntoCol, (Stz*)acSrcString);
-       
+        vDeposit(szSrcStz);
       }
     }
     else {
-     // all others
+      // all others
      
       i8 iVal = aRsbSrc->iVal(i_Col);
      vDeposit(iVal);
@@ -208,9 +205,25 @@ void RowSlab::vDeposit(i8 iVal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* deposit an stz value into next cell                                        */
+/*----------------------------------------------------------------------------*/
+void RowSlab::vDeposit(Stz* szVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  char* azTgt = azDepositString_begin();
+  
+  i8 nLen = StrLib::nCopy(azTgt,szVal->azChar());
+
+  vDepositString_end(nLen + 1);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin deposit of string                                                    */
 /*----------------------------------------------------------------------------*/
-char* RowSlab::azDepositString(void)
+char* RowSlab::azDepositString_begin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
@@ -230,7 +243,7 @@ char* RowSlab::azDepositString(void)
 /*----------------------------------------------------------------------------*/
 /* take bytes for deposited string                                            */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vDepositedString(i8 nSize)
+void RowSlab::vDepositString_end(i8 nSize)
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
