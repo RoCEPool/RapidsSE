@@ -139,9 +139,38 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
+  i8 nCols = m_oStreamPix.m_nCols;
   
-  
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
+    
+    
+    if (DM_VCH == eDatum) {
+       // vch datum
 
+      if (C_DATUM_NULL == aRsbSrc->iVal(i_Col)) {
+        vDeposit(C_DATUM_NULL);
+      }
+      else {
+     
+        Stz* szSrcStz = aRsbSrc->szVal(i_Col);
+        //vAllotSetVarchar(i_IntoCol, (Stz*)acSrcString);
+       
+      }
+    }
+    else {
+     // all others
+     
+      i8 iVal = aRsbSrc->iVal(i_Col);
+     vDeposit(iVal);
+    }
+    
+    m_i_Cell--;
+  }
+
+  if (bSrcHasPtnHash && ! bCopyPtnHash)
+    m_i_Cell--;
 }
 
 /*----------------------------------------------------------------------------*/
