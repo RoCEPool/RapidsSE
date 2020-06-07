@@ -23,6 +23,10 @@ namespace Rows
     NmlStr(void);
    ~NmlStr(void) noexcept(false);
       
+    Stz* szAdd(Stz* szArg);
+    Stz* szFind(Stz* szArg);
+    void vDump(void);
+
   private:
     Footer* aFooter(void);
   };

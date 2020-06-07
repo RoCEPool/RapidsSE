@@ -22,6 +22,10 @@ namespace Load
     void vConvert(RsbBuffer* pRsbBuffer);
   
   private:
+  
+    void vAnalyzeStrings(RsbBuffer* pRsbBuffer);
+    void vCreateNmlStr(Stz* szStz);
+
     Footer* aFooter(void);
   };
 
