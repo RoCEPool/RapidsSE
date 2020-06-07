@@ -5,7 +5,7 @@
 
 namespace Rows
 {
-  static const i8 C_WSP_ROWSLAB   = C_SIZE_LARGE_OBJECT - C_2KB;
+  static const i8 C_WSP_ROWSLAB   = C_SIZE_LARGE_OBJECT - C_4KB;
   static const i8 C_SLAB_CELLS    = C_WSP_ROWSLAB / C_BYTES_PER_WORD;
   static const i8 C_FIRST_CELL    = C_SLAB_CELLS - 1;
 
@@ -32,6 +32,7 @@ namespace Rows
     bool m_bPtnHash;    //
     i8   m_i_Cell;      // 
   
+    StreamPix m_oStreamPix;
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // the column pix
   
     WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
