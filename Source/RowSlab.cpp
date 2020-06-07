@@ -37,7 +37,6 @@ RowSlab::RowSlab(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_nItems      = 0;
-  m_nMaxRowSize = 256;  // FOR TESTING PURPOSES
   m_nCols       = C_UNKNOWN;
   m_nExtraCols  = 0;
   m_bPtnHash    = false;
@@ -253,7 +252,6 @@ void RowSlab::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
   m_bPtnHash    = bPtnHash;
   if (m_bPtnHash)
     m_nCols++;
-  m_i_Cell      = C_UNKNOWN;
   
   //                                                           optimise this
   for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
@@ -271,7 +269,7 @@ bool RowSlab::bNewRow(void)
 
   i8 nBytesAvail = m_xWsp.nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
   
-  if (nBytesAvail < m_nMaxRowSize)
+  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize)
     return false;
   
   if (C_UNKNOWN == m_i_Cell)

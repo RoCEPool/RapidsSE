@@ -25,8 +25,7 @@ namespace Rows
     i8   m_i_Trim;      // where trim occurred     NOT USED YET
 
     i8   m_nItems;      // number of items in this row-slab
-    i8   m_nMaxRowSize; // max size of row
- 
+   
     i8   m_nCols;       // number of columns per row in this row-slab
     i8   m_nExtraCols;  //  of which there are nExtra metadata columns
     bool m_bPtnHash;    //
