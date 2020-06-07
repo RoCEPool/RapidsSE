@@ -59,8 +59,8 @@ namespace CompactBuffers
     // - - - - - - - - - - - - - - - - - - - - -
     // Compact Row Packing
   
-    bool bAddCrw(Row* pIrwSample);
-    bool bAddCrw(RowSingle* pInputRow);
+    bool bAddIrwAsCrw(Row* pIrw);
+    bool bAddSrwAsCrw(RowSingle* pSrw);
     bool bAllotCrw(void);
     void vEncodeHead(Row* pIrwSample);
     void vEncodeHead(RowSingle* pInputRow);

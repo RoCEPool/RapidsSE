@@ -142,7 +142,7 @@ bool RowCompactor::bCompactSrw(RowSingle* pSrw)
   }
   
   // add a compact version of given single row into crw buffer
-  bool bResult = bAddCrw(pSrw);
+  bool bResult = bAddSrwAsCrw(pSrw);
     
   return bResult;
 }
@@ -210,7 +210,7 @@ void RowCompactor::vPackSamples(void)
 #ifdef WITH_ENCODING_TRACE
     vTrace("Compacting Sample: %s\n"_Stz,spRow.sz(pSampleRow));
 #endif
-    bool bPacked = bAddCrw(pSampleRow);
+    bool bPacked = bAddIrwAsCrw(pSampleRow);
     RASSERT(bPacked);
     
     pSampleRow = m_pIrwSamples->aNextRow(pSampleRow, nRowSize);
@@ -339,16 +339,16 @@ void RowCompactor::vCreateTail(Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* add given row from irw buffer into current crw buffer                      */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bAddCrw(Row* pIrwSample)
+bool RowCompactor::bAddIrwAsCrw(Row* pIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // 1) initially encode head of inflated row into m_pEncoding
-  vEncodeHead(pIrwSample);
+  vEncodeHead(pIrw);
   
   // 2) encode tails into m_pEncoding
   //  if (! m_pStreamDef->m_nFixedSized)
-    vEncodeTails(pIrwSample);
+    vEncodeTails(pIrw);
   
   // 3) split encoded head between crw head and crw overflow
   vEncodeSplit();
@@ -377,7 +377,7 @@ bool RowCompactor::bAddCrw(Row* pIrwSample)
 /*----------------------------------------------------------------------------*/
 /* add given input row into current crw buffer (samples have been collected)  */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bAddCrw(RowSingle* pInputRow)
+bool RowCompactor::bAddSrwAsCrw(RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -387,11 +387,11 @@ bool RowCompactor::bAddCrw(RowSingle* pInputRow)
   // encode
   
   // 1) initially encode head of single row into m_pEncoding
-  vEncodeHead(pInputRow);
+  vEncodeHead(pSrw);
   
   // 2) encode tails into m_pEncoding
   //  if (! m_pStreamDef->m_nFixedSized)
-  vEncodeTails(pInputRow);
+  vEncodeTails(pSrw);
   
   // 3) split encoded head between crw head and crw overflow
   vEncodeSplit();
