@@ -27,9 +27,9 @@ void Step::vToHshCrwRegCompleted(void)
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  RsbBuffer* pRsbBuffer = pToHshCrw->pCompleted(i_Ptn);
+  CrwBuffer* pCrwBuffer = pToHshCrw->pCompleted(i_Ptn);
 
-  m_pDataStack->vPushPtr(pRsbBuffer);
+  m_pDataStack->vPushPtr(pCrwBuffer);
 
   EXIT();
 }
@@ -75,9 +75,9 @@ void Step::vToHshCrwRegDangling(void)
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  RsbBuffer* pRsbBuffer = pToHshCrw->pDangling(i_Ptn);
+  CrwBuffer* pCrwBuffer = pToHshCrw->pDangling(i_Ptn);
   
-  m_pDataStack->vPushPtr(pRsbBuffer);
+  m_pDataStack->vPushPtr(pCrwBuffer);
 
   EXIT();
 }

@@ -23,8 +23,8 @@ namespace Load
   
     void vConvert(RsbBuffer* pRsbBuffer);
   
-    RsbBuffer* pCompleted(i8 i_Ptn);
-    RsbBuffer* pDangling(i8 i_Ptn);
+    CrwBuffer* pCompleted(i8 i_Ptn);
+    CrwBuffer* pDangling(i8 i_Ptn);
   
   private:
 
