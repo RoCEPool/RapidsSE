@@ -42,7 +42,7 @@ namespace Rows
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
       
-    i8    iCell(i8 i_Row, i8 i_Cell);
+    i8    i_Cell(i8 iRow, i8 iCell);
     m8*   amCell(i8 i_Cell);
     m8*   amCellVector(void);
     ColPix* axaColPix(void);

@@ -368,7 +368,7 @@ begin
     // dump rsbBuffer 1   |
 
     toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
-    dump rsbBuffer 1   |
+    //dump rsbBuffer 1   |
 
 //
 //    toCsv              | // (rsbBuffer)  => (csvBuffer)

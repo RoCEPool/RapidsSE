@@ -61,19 +61,15 @@ RowSlab::~RowSlab(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get a row cell                                                             */
 /*----------------------------------------------------------------------------*/
-i8 RowSlab::iCell(i8 iRow, i8 iCell)
+i8 RowSlab::i_Cell(i8 iRow, i8 iCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  i8* iaCells = (i8*)m_xWsp.ayArea();
 
   i8 iLglCell = iRow * m_oStreamPix.m_nCols + iCell;
   
   i8 i_Cell = C_FIRST_LGL_CELL - iLglCell;
   
-  i8 iVal = iaCells[i_Cell];
-  
-  return iVal;
+  return i_Cell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -352,6 +348,49 @@ void RowSlab::vNormaliseStrings(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
+  m_oNmlStr.vDump();
+
+  i8 nCols = this->nCols();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
+    
+    if (DM_VCH != eDatum)
+      continue;
+
+    i8 nRows = this->nRows();
+    for (i8 i_OuterRow = 0; i_OuterRow < nRows-1; i_OuterRow++) {
+      
+      i8 i_OuterCell = i_Cell(i_OuterRow,i_Col);
+      m8* aOuterCell = amCell(i_OuterCell);
+      if (C_DATUM_NULL == (i8) *aOuterCell)
+        continue;
+      
+      Stz* szOuterStz = (Stz*) * aOuterCell;
+      //vTrace("Outer: %s\n"_Stz,szOuterStz);
+      i8 nLength = szOuterStz->nLength();
+      if (nLength < 8)
+        continue;
+      
+      for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < nRows; i_InnerRow++) {
+
+        i8 i_InnerCell = i_Cell(i_InnerRow,i_Col);
+        m8* aInnerCell = amCell(i_InnerCell);
+        if (C_DATUM_NULL == (i8) *aInnerCell)
+          continue;
+
+        Stz* szInnerStz = (Stz*) * aInnerCell;
+        
+        if (! szInnerStz->bEqual(szOuterStz))
+          continue;
+
+        if (! m_oNmlStr.szFind(szOuterStz))
+          m_oNmlStr.szAdd(szOuterStz);
+      }
+    }
+  }
+  
+  m_oNmlStr.vDump();
 }
 
 /*----------------------------------------------------------------------------*/

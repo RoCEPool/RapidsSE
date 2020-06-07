@@ -47,15 +47,17 @@ NmlStr::~NmlStr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* NmlStr::szAdd(Stz* szArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NMLSTR,_FOOTER_);
   
+  vTrace("Adding: %s\n"_Stz,szArg);
+
   i8 nSize = StrLib::nSize(szArg->azChar());
   
   Stz* szNew = (Stz*)m_xWsp.ayAllot(nSize);
   
   StrLib::vCopy(szNew->azChar(),szArg->azChar());
   
-  vDump();
+  //vDump();
   
   return szNew;
 }
@@ -65,7 +67,7 @@ Stz* NmlStr::szAdd(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 Stz* NmlStr::szFind(Stz* szArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NMLSTR,_FOOTER_);
   
   Stz* szStr = (Stz*)m_xWsp.ayArea();
   
@@ -85,7 +87,7 @@ Stz* NmlStr::szFind(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 void NmlStr::vDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NMLSTR,_FOOTER_);
   
   Stz* szStr = (Stz*)m_xWsp.ayArea();
   
