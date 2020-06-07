@@ -23,7 +23,9 @@ ToPtnRsb::ToPtnRsb(void)
 
   // m_oHashSet
 
-  m_pRowSlab = nullptr;
+  m_pFromRsbBuffer = nullptr;
+
+  m_pIntoRowSlab   = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
 }
@@ -46,6 +48,8 @@ ToPtnRsb::~ToPtnRsb(void) noexcept(false)
 void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  
+  m_pFromRsbBuffer = pRsbBuffer;
   
   // for the moment we partition to 0
   i8 i_Ptn = 0;
@@ -98,7 +102,7 @@ void ToPtnRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
   // new a destination row in target partition row slab
   vNewDstRsb(i_Ptn);
   
-  m_pRowSlab->vCopyRsb(aRsbSrc,false);
+  m_pIntoRowSlab->vCopyRsb(aRsbSrc,false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,6 +116,7 @@ void ToPtnRsb::vNewDstRsb(i8 i_Ptn)
   RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pBuffer(i_Ptn));
   if (! pRsbBuffer) {
     pRsbBuffer = new RsbBuffer;
+    pRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
     m_oHashSet.vAddBuffer(i_Ptn,pRsbBuffer);
   }
   
@@ -119,12 +124,13 @@ void ToPtnRsb::vNewDstRsb(i8 i_Ptn)
   bool bNewed = pRsbBuffer->pRowSlab()->bNewRow();
   if (! bNewed) {
     pRsbBuffer = new RsbBuffer;
+    pRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
     m_oHashSet.vAddBuffer(i_Ptn,pRsbBuffer);
     bNewed = pRsbBuffer->pRowSlab()->bNewRow();
     ASSERT(bNewed);
   }
   
-  m_pRowSlab = pRsbBuffer->pRowSlab();
+  m_pIntoRowSlab = pRsbBuffer->pRowSlab();
 }
 
 /*============================================================================*/

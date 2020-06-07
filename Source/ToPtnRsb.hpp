@@ -11,8 +11,10 @@ namespace Load
   
     HashSet  m_oHashSet;
   
-    RowSlab* m_pRowSlab;
+    RsbBuffer* m_pFromRsbBuffer; // the
 
+    RowSlab*   m_pIntoRowSlab;
+  
     // must be last
     Footer m_xFooter;
 
