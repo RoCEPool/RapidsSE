@@ -294,6 +294,22 @@ void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert streamDef to condensed streamPix format                            */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vToStreamPix(StreamPix* aStreamPix, bool bPtnHash)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  aStreamPix->m_nCols    = nColumns(C_ALL);
+  aStreamPix->m_bPtnHash = bPtnHash;
+  if (aStreamPix->m_bPtnHash) {
+    aStreamPix->m_nCols++;
+    aStreamPix->m_nExtraCols = 1;
+  }
+  vToColPix(aStreamPix->m_xaColPix,bPtnHash);
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert streamDef to its metadat format                                    */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vToMetadata(Stz* sMetadata)

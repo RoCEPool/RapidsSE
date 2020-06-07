@@ -6,7 +6,8 @@
 namespace Datums
 {
   // the ColPix structure is 32b / u4
-  union ColPix {
+  union ColPix  // condensed column def 
+  {
     struct {
       u4 m_uDatum     :  4; // up to 16 types
       u4 m_uLength    : 16; // up to 65,536
@@ -30,7 +31,7 @@ namespace Datums
 
 namespace Datums
 {
-  class StreamPix
+  class StreamPix // condensed stream def
   {
   public:
   

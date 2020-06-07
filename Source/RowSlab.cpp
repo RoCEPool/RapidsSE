@@ -258,6 +258,8 @@ void RowSlab::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
     m_xaColPix[i_Col].m_uAsI4 = 0;
   
   pStreamDef->vToColPix(m_xaColPix,bPtnHash);
+  
+  pStreamDef->vToStreamPix(&m_oStreamPix,bPtnHash);
 }
 
 /*----------------------------------------------------------------------------*/

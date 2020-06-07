@@ -40,6 +40,7 @@ namespace MetaData
     void vName(Stz* sName);
     Stz* szName(void);
     void vToColPix(ColPix* axColPix, bool bPtnHash);
+    void vToStreamPix(StreamPix* aStreamPix, bool bPtnHash);
     void vToMetadata(Stz* sMetaData);
     
     Footer* aFooter(void);
