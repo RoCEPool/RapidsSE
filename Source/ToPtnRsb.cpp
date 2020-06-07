@@ -21,6 +21,10 @@ ToPtnRsb::ToPtnRsb(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
 
+  // m_oHashSet
+
+  m_pRowSlab = nullptr;
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
 }
 
@@ -51,9 +55,9 @@ void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
   i8 nRows = pRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    Rsb* aRsb = pRowSlab->aRsb(i_Row);
+    Rsb* aRsbSrc = pRowSlab->aRsb(i_Row);
     
-    vCopyIntoHashSet(i_Ptn,aRsb);
+    vCopyRsb(i_Ptn,aRsbSrc);
   }
 }
 
@@ -64,7 +68,9 @@ RsbBuffer* ToPtnRsb::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
   
-  return nullptr;
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
+  
+  return pRsbBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,43 +80,51 @@ RsbBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
   
-  return nullptr;
-}
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
+  
+  return pRsbBuffer;}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy rsb into hash set                                                     */
+/* copy source rsb into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void ToPtnRsb::vCopyIntoHashSet(i8 i_Ptn, Rsb* aRsbSrc)
+void ToPtnRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
     
+  // new a destination row in target partition row slab
+  vNewDstRsb(i_Ptn);
+  
+  m_pRowSlab->vCopyRsb(aRsbSrc,false);
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a rsb row in hash set                                                  */
+/* new a destination rsb row in rsb slab in hash set                          */
 /*----------------------------------------------------------------------------*/
-void ToPtnRsb::vNewHashSetRow(i8 i_Ptn)
+void ToPtnRsb::vNewDstRsb(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
     
+  // get rsb buffer for given partition (new a first buffer if ncessary)
   RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pBuffer(i_Ptn));
   if (! pRsbBuffer) {
     pRsbBuffer = new RsbBuffer;
     m_oHashSet.vAddBuffer(i_Ptn,pRsbBuffer);
   }
   
+  // new a row in rsb buffer (new another rsb buffer if necessary)
   bool bNewed = pRsbBuffer->pRowSlab()->bNewRow();
   if (! bNewed) {
     pRsbBuffer = new RsbBuffer;
     m_oHashSet.vAddBuffer(i_Ptn,pRsbBuffer);
     bNewed = pRsbBuffer->pRowSlab()->bNewRow();
-    
     ASSERT(bNewed);
   }
+  
+  m_pRowSlab = pRsbBuffer->pRowSlab();
 }
 
 /*============================================================================*/

@@ -51,6 +51,7 @@ namespace Rows
     m8*   amCellVector(void);
     ColPix* axaColPix(void);
     i8    nCols(void);
+    void  vCopyRsb(Rsb* aRsbSrc, bool bCopyPtnHash);
     void  vDeposit(d8 dVal);
     void  vDeposit(i8 iVal);
     char* azDepositString(void);

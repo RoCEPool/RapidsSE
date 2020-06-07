@@ -9,7 +9,9 @@ namespace Load
   {
   private:
   
-    HashSet m_oHashSet;
+    HashSet  m_oHashSet;
+  
+    RowSlab* m_pRowSlab;
 
     // must be last
     Footer m_xFooter;
@@ -27,8 +29,8 @@ namespace Load
     RsbBuffer* pDangling(i8 i_Ptn);
   
   private:
-    void vCopyIntoHashSet(i8 i_Ptn, Rsb* aRsbSrc);
-    void vNewHashSetRow(i8 i_Ptn);
+    void vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc);
+    void vNewDstRsb(i8 i_Ptn);
 
     Footer* aFooter(void);
   };

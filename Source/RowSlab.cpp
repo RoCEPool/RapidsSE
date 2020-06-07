@@ -129,6 +129,15 @@ ColPix* RowSlab::axaColPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy given source rsb into this current row of this row slab               */
+/*----------------------------------------------------------------------------*/
+void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bCopyPtnHash)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* deposit an d8 value into next cell                                         */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vDeposit(d8 dVal)
