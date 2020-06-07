@@ -364,7 +364,10 @@ begin
     toRsb $table       | // (csvBuffer)  => (rsbBuffer)
     // dump rsbBuffer 1   |
 
-    toPtnRsb           | // (rsbBuffer)  => (rsbBuffer)
+    toPtnRsb           | // (rsbBuffer)  => (rsbBuffer 'ptn)
+    // dump rsbBuffer 1   |
+
+    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
     dump rsbBuffer 1   |
 
 //

@@ -27,6 +27,8 @@ void Step::vToNstRsbRegConvert(void)
 
   pToNstRsb->vConvert(pRsbBuffer);
   
+  m_pDataStack->vPushPtr(pRsbBuffer);
+
   EXIT();
 }
 
@@ -52,6 +54,7 @@ void Step::vToNstRsbRegDelete(void)
   ENTRY();
   
   ToNstRsb* pToNstRsb = *m_pRegSet->m_xpToNstRsb;
+  
   m_pRegSet->m_xpToNstRsb = nullptr;
   
   delete pToNstRsb;

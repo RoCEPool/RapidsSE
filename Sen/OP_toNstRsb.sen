@@ -39,8 +39,8 @@
 /*----------------------------------------------------------------------------*/
 : toNstRsb_EosMarker \handler
 
-  // delete ToRsb
-  ToRsb[].delete
+  // delete ToNstRsb
+  ToNstRsb[].delete
 
   ZK_EOSMARKER_handler
 ;
