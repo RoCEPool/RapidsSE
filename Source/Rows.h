@@ -20,7 +20,9 @@ namespace Rows
 
 #include "RowGenerator.hpp"
 
+
 #include "Rsb.hpp"
+#include "NmlStr.hpp"
 #include "RowSlab.hpp"
 
 #include "RowUte.hpp"
