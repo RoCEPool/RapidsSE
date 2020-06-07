@@ -370,6 +370,9 @@ begin
     toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
     //dump rsbBuffer 1   |
 
+    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
+    //dump rsbBuffer 1   |
+
 //
 //    toCsv              | // (rsbBuffer)  => (csvBuffer)
 
