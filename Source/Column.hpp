@@ -63,6 +63,17 @@ namespace Datums
     
       return nBytes;
     }
+  
+    // remove partition metadata column
+    void vRemovePtnHash(void)
+    {
+      ASSERT(m_bPtnHash);
+      ASSERT(m_nExtraCols);
+
+      m_nCols--;
+      m_nExtraCols--;
+      m_bPtnHash = false;
+    }
     
     // calc size of this StreamPix
     i8 nSize(void)
