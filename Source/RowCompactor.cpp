@@ -344,7 +344,7 @@ bool RowCompactor::bAddIrwAsCrw(Row* pIrw)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // 1) initially encode head of inflated row into m_pEncoding
-  vEncodeHead(pIrw);
+  vEncodeHeadForIrw(pIrw);
   
   // 2) encode tails into m_pEncoding
   //  if (! m_pStreamDef->m_nFixedSized)
@@ -387,7 +387,7 @@ bool RowCompactor::bAddSrwAsCrw(RowSingle* pSrw)
   // encode
   
   // 1) initially encode head of single row into m_pEncoding
-  vEncodeHead(pSrw);
+  vEncodeHeadForSrw(pSrw);
   
   // 2) encode tails into m_pEncoding
   //  if (! m_pStreamDef->m_nFixedSized)
@@ -491,11 +491,11 @@ bool RowCompactor::bAllotCrw(void)
 /*----------------------------------------------------------------------------*/
 /* encode the head                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeHead(Row* pIrwSample)
+void RowCompactor::vEncodeHeadForIrw(Row* pIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pEncoding->vEncodeIrw(pIrwSample);
+  m_pEncoding->vEncodeIrw(pIrw);
   
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
@@ -506,13 +506,13 @@ void RowCompactor::vEncodeHead(Row* pIrwSample)
 /*----------------------------------------------------------------------------*/
 /* encode the head                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeHead(RowSingle* pInputRow)
+void RowCompactor::vEncodeHeadForSrw(RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 
   ASSERT(! m_bCollecting);
 
-  m_pEncoding->vEncodeSrw(pInputRow);
+  m_pEncoding->vEncodeSrw(pSrw);
   
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
