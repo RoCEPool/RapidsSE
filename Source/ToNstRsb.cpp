@@ -42,6 +42,8 @@ ToNstRsb::~ToNstRsb(void) noexcept(false)
 void ToNstRsb::vConvert(RsbBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
+  
+  pRsbBuffer->pRowSlab()->vNormaliseStrings();
 }
 
 /*----------------------------------------------------------------------------*/

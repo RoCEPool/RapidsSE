@@ -21,6 +21,10 @@ NmlStr::NmlStr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NMLSTR,_FOOTER_);
   
+  #ifdef WITH_DEBUG_VERSION
+    m_xWsp.vZero(CN_NMLSTR);
+  #endif
+
   _checkInitialised_(CN_NMLSTR);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_NMLSTR,_FOOTER_);

@@ -5,7 +5,7 @@
 
 namespace Rows
 {
-  static const i8 C_WSP_ROWSLAB    = C_SIZE_LARGE_OBJECT - C_2KB;
+  static const i8 C_WSP_ROWSLAB    = C_SIZE_LARGE_OBJECT - C_16KB;
   static const i8 C_SLAB_CELLS     = C_WSP_ROWSLAB / C_BYTES_PER_WORD;
   static const i8 C_FIRST_LGL_CELL = C_SLAB_CELLS - 1;
 
@@ -27,6 +27,8 @@ namespace Rows
     i8   m_i_Cell;      // current working cell
   
     StreamPix m_oStreamPix; // condensed stream def
+  
+    NmlStr m_oNmlStr;   //
     
     WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
   
@@ -47,6 +49,7 @@ namespace Rows
     i8    nCols(void);
     void  vCopyPix(StreamPix* pStreamPixSrc);
     void  vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
+    void  vCreateNmlStr(Stz* szArg);
     void  vDeposit(d8 dVal);
     void  vDeposit(i8 iVal);
     void  vDeposit(Stz* szVal);
@@ -57,6 +60,7 @@ namespace Rows
     i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
     bool  bNewRow(void);
+    void  vNormaliseStrings(void);
     bool  bPtnHash(void);
     Rsb*  aRsb(i8 i_Row);
     m8*   amRowCells(i8 i_Row);
