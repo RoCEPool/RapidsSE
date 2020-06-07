@@ -71,7 +71,9 @@
 
   //"Operand:- ZK_EXITMARKER" .verbose
 
+  // get the profile from the task
   task[] task.profile@ to Operand[]
+  nullptr task[] task.profile!
   Operand[].pipeOut
 
   path[].popNamedTableFolder

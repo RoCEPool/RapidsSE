@@ -30,6 +30,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.job!"_Stz,           &Step::vTaskJobStore);
   vAddStep("task.name@"_Stz,          &Step::vTaskNameFetch);
   vAddStep("task.profile@"_Stz,       &Step::vTaskProfileFetch);
+  vAddStep("task.profile!"_Stz,       &Step::vTaskProfileStore);
   vAddStep("task.sendNode@"_Stz,      &Step::vTaskSendNodeFetch);
   vAddStep("task.sendNode!"_Stz,      &Step::vTaskSendNodeStore);
   vAddStep("task.state@"_Stz,         &Step::vTaskStateFetch);
@@ -260,6 +261,21 @@ void Step::vTaskProfileFetch(void)
   m_pDataStack->vPushPtr(pThatTask->pProfile());
   pThatTask->vProfile(nullptr);
    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.profile! -- store task profile                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskProfileStore(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Profile* pProfile = _pProfile(m_pDataStack->pPopPtr(__func__));
+  
+  pThatTask->vProfile(pProfile);
+  
   EXIT();
 }
 
