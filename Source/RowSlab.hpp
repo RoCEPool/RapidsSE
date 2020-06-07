@@ -60,10 +60,9 @@ namespace Rows
     m8*   amRowCells(i8 i_Row);
     i8    nRows(void);
     void  vSlabReport(void);
+    StreamPix* aStreamPix(void);
 
   private:
-    void vColHints(StreamDef* pStreamDef);
-  
     Footer* aFooter(void);
   };
   
