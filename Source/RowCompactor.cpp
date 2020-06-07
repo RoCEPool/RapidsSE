@@ -70,7 +70,7 @@ RowCompactor::~RowCompactor(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public Non-Static -------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -148,192 +148,11 @@ bool RowCompactor::bCompactSrw(RowSingle* pSrw)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Private Non-Static ------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                             -- Sampling --                                 */
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* collect inflated row as a sample                                           */
-/*----------------------------------------------------------------------------*/
-bool RowCompactor::bCollectSample(RowSingle* pSrw)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  bool b = RowUte::bAddSingleToSlab(m_pIrwSampleSlab,pSrw,m_pStreamDef);
-  
-  
-  if (m_pIrwSamples->nItems() >= C_SAMPLE_ROWS) {
-#ifdef WITH_ENCODING_TRACE
-    vTrace("Samples collected\n"_Stz);
-#endif
-    m_bCollecting = false;
-    return false;
-  }
-  
-  if ( ! m_pIrwSamples->bCopyRow(pSrw) ) {
-  
-#ifdef WITH_ENCODING_TRACE
-    vTrace("Samples full\n"_Stz);
-#endif
-    m_bCollecting = false;
-    return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pack collected samples into crw buffer                                     */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPackSamples(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  ASSERT(! m_bCollecting);
-  
-  vAnalyzeSamples();
-  
-  //vDumpTails();
-  
-  SP_Row spRow;
-  
-  i8 nRowSize = Row::nSizeBytes(m_pStreamDef);
-  
-  Row* pSampleRow = m_pIrwSamples->aFirstRow();
-  while (pSampleRow) {
-    
-    //pSampleRow->vDump(m_pStreamDef);
-    
-#ifdef WITH_ENCODING_TRACE
-    vTrace("Compacting Sample: %s\n"_Stz,spRow.sz(pSampleRow));
-#endif
-    bool bPacked = bAddIrwAsCrw(pSampleRow);
-    RASSERT(bPacked);
-    
-    pSampleRow = m_pIrwSamples->aNextRow(pSampleRow, nRowSize);
-  }
-  
-  vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* analyze collected samples                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vAnalyzeSamples(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  i8 nCols = m_pStreamDef->nColumns(C_ALL);
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
-    eDM eDatum = pCol->eDatum();
-    
-    if (DM_VCH != eDatum)
-      continue;
-    
-    i8 nRowHeadSize = Row::nSizeBytes(m_pStreamDef);
-    
-    for (Row* pOuterIrw = m_pIrwSamples->aFirstRow();
-         pOuterIrw;
-         pOuterIrw = m_pIrwSamples->aNextRow(pOuterIrw,nRowHeadSize)) {
-      
-      //pOuterRow->vDump(m_pStreamDef);
-      
-      if (pOuterIrw->m_waColVal[i_Col].bIsNull())
-        continue;
-      
-      Stz* azOuterStr = pOuterIrw->szStzGet(i_Col);
-      i8 nLength = StrLib::nLength((char*)azOuterStr);
-      if (nLength < 8)
-        continue;
-      
-      for (Row* pInnerIrw = m_pIrwSamples->aNextRow(pOuterIrw,nRowHeadSize);
-           pInnerIrw;
-           pInnerIrw = m_pIrwSamples->aNextRow(pInnerIrw,nRowHeadSize)) {
-        
-        if (pInnerIrw->m_waColVal[i_Col].bIsNull())
-          continue;
-        
-        vCreateTail(pCol,pOuterIrw,pInnerIrw);
-        
-      }
-    }
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially create a tail for duplicate vch samples                        */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vCreateTail(Column* pCol,
-                               Row* pOuterIrwSample,
-                               Row* pInnerIrwSample)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  SP_Row spRow;
-  
-#ifdef WITH_ENCODING_TRACE
-  vTrace("Analyzing Sample: %s\n"_Stz,spRow.sz(pOuterStagedRow));
-#endif
-  
-  i8 i_Col = pCol->iColumnNo();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) does the inner vch equal the outer vch?
-  
-  char* azInnerStr = (char*)pInnerIrwSample->szStzGet(i_Col);
-  char* azOuterStr = (char*)pOuterIrwSample->szStzGet(i_Col);
-  if (! StrLib::bEqualTo(azInnerStr,azOuterStr) )
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) is there already a tail for the vch?
-  
-  TailStr xFindTail(pOuterIrwSample->szStzGet(i_Col));
-  
-  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3) create a new tail
-  
-  //           -- TailLine --
-  // **********************************
-  // * <U> ////////////////////////// *
-  // **********************************
-  //
-
-  //vDumpTails();
-  //vDebugPoint();
-  
-  i8 nTailBytes = xFindTail.nBytes();
-  i8 i_Tail = m_pCrwNub->iAllotTail(nTailBytes);
-  TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
-  
-  //           -- TailLine --
-  // **********************************
-  // * <U><L><StringN> ////////////// *
-  // **********************************
-  //
-  
-  aTail->vAssign(pOuterIrwSample->szStzGet(i_Col));
- 
-  m_pCrwNub->vSetLastStr(i_Tail);
-  
-#ifdef WITH_ENCODING_TRACE
-  vDumpTails();
-#endif
-  
-  //vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                        -- Compact Row Packing --                           */
+/*                             -- Row Packing --                              */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -684,6 +503,187 @@ void RowCompactor::vEncodeSplit(void)
 #ifdef WITH_ENCODING_TRACE
   vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/*                            -- Row Sampling --                              */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* collect inflated row as a sample                                           */
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bCollectSample(RowSingle* pSrw)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  bool b = RowUte::bAddSingleToSlab(m_pIrwSampleSlab,pSrw,m_pStreamDef);
+  
+  
+  if (m_pIrwSamples->nItems() >= C_SAMPLE_ROWS) {
+#ifdef WITH_ENCODING_TRACE
+    vTrace("Samples collected\n"_Stz);
+#endif
+    m_bCollecting = false;
+    return false;
+  }
+  
+  if ( ! m_pIrwSamples->bCopyRow(pSrw) ) {
+  
+#ifdef WITH_ENCODING_TRACE
+    vTrace("Samples full\n"_Stz);
+#endif
+    m_bCollecting = false;
+    return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pack collected samples into crw buffer                                     */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPackSamples(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  ASSERT(! m_bCollecting);
+  
+  vAnalyzeSamples();
+  
+  //vDumpTails();
+  
+  SP_Row spRow;
+  
+  i8 nRowSize = Row::nSizeBytes(m_pStreamDef);
+  
+  Row* pSampleRow = m_pIrwSamples->aFirstRow();
+  while (pSampleRow) {
+    
+    //pSampleRow->vDump(m_pStreamDef);
+    
+#ifdef WITH_ENCODING_TRACE
+    vTrace("Compacting Sample: %s\n"_Stz,spRow.sz(pSampleRow));
+#endif
+    bool bPacked = bAddIrwAsCrw(pSampleRow);
+    RASSERT(bPacked);
+    
+    pSampleRow = m_pIrwSamples->aNextRow(pSampleRow, nRowSize);
+  }
+  
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze collected samples                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vAnalyzeSamples(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  i8 nCols = m_pStreamDef->nColumns(C_ALL);
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
+    eDM eDatum = pCol->eDatum();
+    
+    if (DM_VCH != eDatum)
+      continue;
+    
+    i8 nRowHeadSize = Row::nSizeBytes(m_pStreamDef);
+    
+    for (Row* pOuterIrw = m_pIrwSamples->aFirstRow();
+         pOuterIrw;
+         pOuterIrw = m_pIrwSamples->aNextRow(pOuterIrw,nRowHeadSize)) {
+      
+      //pOuterRow->vDump(m_pStreamDef);
+      
+      if (pOuterIrw->m_waColVal[i_Col].bIsNull())
+        continue;
+      
+      Stz* azOuterStr = pOuterIrw->szStzGet(i_Col);
+      i8 nLength = StrLib::nLength((char*)azOuterStr);
+      if (nLength < 8)
+        continue;
+      
+      for (Row* pInnerIrw = m_pIrwSamples->aNextRow(pOuterIrw,nRowHeadSize);
+           pInnerIrw;
+           pInnerIrw = m_pIrwSamples->aNextRow(pInnerIrw,nRowHeadSize)) {
+        
+        if (pInnerIrw->m_waColVal[i_Col].bIsNull())
+          continue;
+        
+        vCreateTail(pCol,pOuterIrw,pInnerIrw);
+        
+      }
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially create a tail for duplicate vch samples                        */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vCreateTail(Column* pCol,
+                               Row* pOuterIrwSample,
+                               Row* pInnerIrwSample)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  SP_Row spRow;
+  
+#ifdef WITH_ENCODING_TRACE
+  vTrace("Analyzing Sample: %s\n"_Stz,spRow.sz(pOuterStagedRow));
+#endif
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1) does the inner vch equal the outer vch?
+  
+  char* azInnerStr = (char*)pInnerIrwSample->szStzGet(i_Col);
+  char* azOuterStr = (char*)pOuterIrwSample->szStzGet(i_Col);
+  if (! StrLib::bEqualTo(azInnerStr,azOuterStr) )
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2) is there already a tail for the vch?
+  
+  TailStr xFindTail(pOuterIrwSample->szStzGet(i_Col));
+  
+  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 3) create a new tail
+  
+  //           -- TailLine --
+  // **********************************
+  // * <U> ////////////////////////// *
+  // **********************************
+  //
+
+  //vDumpTails();
+  //vDebugPoint();
+  
+  i8 nTailBytes = xFindTail.nBytes();
+  i8 i_Tail = m_pCrwNub->iAllotTail(nTailBytes);
+  TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
+  
+  //           -- TailLine --
+  // **********************************
+  // * <U><L><StringN> ////////////// *
+  // **********************************
+  //
+  
+  aTail->vAssign(pOuterIrwSample->szStzGet(i_Col));
+ 
+  m_pCrwNub->vSetLastStr(i_Tail);
+  
+#ifdef WITH_ENCODING_TRACE
+  vDumpTails();
+#endif
+  
+  //vDebugPoint();
 }
 
 /*============================================================================*/
