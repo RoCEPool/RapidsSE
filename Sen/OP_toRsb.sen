@@ -58,6 +58,7 @@
 
   Operand[].csvToRsb
 
+  // test for any completed
   ToRsb[].completed to OperandB[]
   begin
     OperandB[].isNull not
@@ -76,10 +77,14 @@
 /*----------------------------------------------------------------------------*/
 : toRsb_EosMarker \handler
 
+  // test for any remainders
   ToRsb[].dangling to OperandB[]
-  OperandB[].isNull not if
+  begin
+    OperandB[].isNull not
+  while
     OperandB[].pipeOut
-  then
+    ToRsb[].dangling to OperandB[]
+  repeat
 
   // delete ToRsb
   ToRsb[].delete
