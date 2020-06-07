@@ -19,8 +19,8 @@ namespace Rows
     char caModel[32];  // model string
     i8   m_iVersion;    //
     i8   m_iFormat;
-  
     i8   m_nBytes;      // size in bytes of this row slab
+  
     i8   m_nTrimmed;    // how many bytes trimmed  NOT USED YET
     i8   m_i_Trim;      // where trim occurred     NOT USED YET
 
@@ -32,7 +32,6 @@ namespace Rows
     i8   m_i_Cell;      // 
   
     StreamPix m_oStreamPix;
-    ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // the column pix
   
     WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
   

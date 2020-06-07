@@ -42,10 +42,7 @@ RowSlab::RowSlab(void)
   m_bPtnHash    = false;
   
   m_i_Cell      = C_UNKNOWN;
-  
-  for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
-    m_xaColPix[i_Col].m_uAsI4 = 0;
-  
+    
 #ifdef WITH_DEBUG_VERSION
   m_xWsp.vZero(CN_ROWSLAB);
 #endif
@@ -118,13 +115,13 @@ i8 RowSlab::nCols(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get row cells for given row                                                */
+/* get the condensed column pix array                                         */
 /*----------------------------------------------------------------------------*/
 ColPix* RowSlab::axaColPix(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  return m_xaColPix;
+  return m_oStreamPix.m_xaColPix;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -252,13 +249,7 @@ void RowSlab::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
   m_bPtnHash    = bPtnHash;
   if (m_bPtnHash)
     m_nCols++;
-  
-  //                                                           optimise this
-  for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
-    m_xaColPix[i_Col].m_uAsI4 = 0;
-  
-  pStreamDef->vToColPix(m_xaColPix,bPtnHash);
-  
+      
   pStreamDef->vToStreamPix(&m_oStreamPix,bPtnHash);
 }
 
