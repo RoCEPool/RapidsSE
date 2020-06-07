@@ -135,9 +135,12 @@ void RowSlab::vCopyPix(StreamPix* pStreamPixSrc)
 /*----------------------------------------------------------------------------*/
 /* copy given source rsb into this current row of this row slab               */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bCopyPtnHash)
+void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  
+  
 
 }
 

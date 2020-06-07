@@ -102,7 +102,9 @@ void ToPtnRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
   // new a destination row in target partition row slab
   vNewDstRsb(i_Ptn);
   
-  m_pIntoRowSlab->vCopyRsb(aRsbSrc,false);
+  bool bSrcHasPtnHash = true;
+  bool bCopyPtnHash   = false;
+  m_pIntoRowSlab->vCopyRsb(aRsbSrc,bSrcHasPtnHash,bCopyPtnHash);
 }
 
 /*----------------------------------------------------------------------------*/
