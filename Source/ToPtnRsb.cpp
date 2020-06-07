@@ -113,24 +113,26 @@ void ToPtnRsb::vNewDstRsb(i8 i_Ptn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
     
   // get rsb buffer for given partition (new a first buffer if ncessary)
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pBuffer(i_Ptn));
-  if (! pRsbBuffer) {
-    pRsbBuffer = new RsbBuffer;
-    pRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
-    m_oHashSet.vAddBuffer(i_Ptn,pRsbBuffer);
+  RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_oHashSet.pBuffer(i_Ptn));
+  if (! pDstRsbBuffer) {
+    pDstRsbBuffer = new RsbBuffer;
+    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
+    pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
+    m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
   }
   
   // new a row in rsb buffer (new another rsb buffer if necessary)
-  bool bNewed = pRsbBuffer->pRowSlab()->bNewRow();
+  bool bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
   if (! bNewed) {
-    pRsbBuffer = new RsbBuffer;
-    pRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
-    m_oHashSet.vAddBuffer(i_Ptn,pRsbBuffer);
-    bNewed = pRsbBuffer->pRowSlab()->bNewRow();
+    pDstRsbBuffer = new RsbBuffer;
+    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
+    pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
+    m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
+    bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
     ASSERT(bNewed);
   }
   
-  m_pIntoRowSlab = pRsbBuffer->pRowSlab();
+  m_pIntoRowSlab = pDstRsbBuffer->pRowSlab();
 }
 
 /*============================================================================*/
