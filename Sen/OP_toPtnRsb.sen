@@ -2,7 +2,7 @@
 /* OP_toPtnRsb.sen -- Convert rsb buffers to partitioned row slab buffers     */
 /*============================================================================*/
 
-" OP_toRsb.sen" .verbose
+" OP_toPtnRsb.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
@@ -11,9 +11,7 @@
 
   ToPtnRsb[].create
 
-  PipeIn[].pipeOut
-
-  true
+  ZK_STARTMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/

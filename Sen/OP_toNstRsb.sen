@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : toNstRsb_StartMarker \handler
 
+  ToNstRsb[].create
+
   ZK_STARTMARKER_handler
 ;
 
@@ -21,17 +23,24 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                   EACH */
+/* on ZK_RSBBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : toNstRsb_RsbBuffer \handler
 
-  ZK_RSBBUFFER_handler
+  PipeIn[] ToNstRsb[].convert to OperandB[]
+
+  OperandB[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : toNstRsb_EosMarker \handler
+
+  // delete ToRsb
+  ToRsb[].delete
 
   ZK_EOSMARKER_handler
 ;
