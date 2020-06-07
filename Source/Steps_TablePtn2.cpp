@@ -96,7 +96,7 @@ void Step::vTablePtnGenCrwBuffers(void)
     RowGenerator::vRandom(hCsvRow,pStreamDef);
     
     // append row to buffer
-    if (! pCrwBuffer->bAppendRow(hCsvRow)) {
+    if (! pCrwBuffer->bAppendSrw(hCsvRow)) {
       
       // close current buffer
       pCrwBuffer->vAppendClose();
@@ -116,7 +116,7 @@ void Step::vTablePtnGenCrwBuffers(void)
       pCrwBuffer->vAppendOpen(pRowCompactor, true);
       
       // now append the row
-      bool bAppend = pCrwBuffer->bAppendRow(hCsvRow);
+      bool bAppend = pCrwBuffer->bAppendSrw(hCsvRow);
       ASSERT(bAppend);
       nBuffers--;
     }

@@ -562,7 +562,7 @@ void Step::vIndexFetchNextN(void)
         RowInflator::vInflateRow(hRow,aCrw);
         
         // insert row from entry in crwBuffer
-        if ( ! pCrwBuffer->bAppendRow(hRow)) {
+        if ( ! pCrwBuffer->bAppendSrw(hRow)) {
           
           // Buffer is full ?
           goto L_Exit;
@@ -1106,7 +1106,7 @@ void Step::vIndexLowerBoundN(void)
     RowInflator::vInflateRow(hRow,aCrw);
     
     // insert row from entry in crwBuffer
-    if ( ! pCrwBuffer->bAppendRow(hRow)) {
+    if ( ! pCrwBuffer->bAppendSrw(hRow)) {
       
       // Buffer is Full;
       pCrwBuffer->vAppendClose();

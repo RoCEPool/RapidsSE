@@ -91,7 +91,7 @@ eEC CrwHash::eAppendRow(RowSingle* pRow)
   // append row into working buffer
   
   //pCrwBuffer->vGrabWrite();
-  bool bWasAppended = pCrwBuffer->bAppendRow(pRow);
+  bool bWasAppended = pCrwBuffer->bAppendSrw(pRow);
   //pCrwBuffer->vDropWrite();
   
   // appended ?
@@ -112,7 +112,7 @@ eEC CrwHash::eAppendRow(RowSingle* pRow)
   }
   
   // reattempt insrt. Should work
-  bWasAppended = pCrwBuffer->bAppendRow(pRow);
+  bWasAppended = pCrwBuffer->bAppendSrw(pRow);
   ASSERT(bWasAppended);
   
   return EC_NONE;

@@ -128,21 +128,21 @@ void RowCompactor::vCompactEnd(void)
 /*----------------------------------------------------------------------------*/
 /* compact given single row into current crw buffer                           */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCompactSingleRow(RowSingle* pInputRow)
+bool RowCompactor::bCompactSrw(RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   if (m_bCollecting) {
 
     // collect single row as a sample into irw buffer (as an irw inflated row)
-    if (bCollectSample(pInputRow))
+    if (bCollectSample(pSrw))
       return true;
     
     vPackSamples();
   }
   
   // add a compact version of given single row into crw buffer
-  bool bResult = bAddCrw(pInputRow);
+  bool bResult = bAddCrw(pSrw);
     
   return bResult;
 }
@@ -158,11 +158,11 @@ bool RowCompactor::bCompactSingleRow(RowSingle* pInputRow)
 /*----------------------------------------------------------------------------*/
 /* collect inflated row as a sample                                           */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCollectSample(RowSingle* pInputRow)
+bool RowCompactor::bCollectSample(RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  bool b = RowUte::bAddSingleToSlab(m_pIrwSampleSlab,pInputRow,m_pStreamDef);
+  bool b = RowUte::bAddSingleToSlab(m_pIrwSampleSlab,pSrw,m_pStreamDef);
   
   
   if (m_pIrwSamples->nItems() >= C_SAMPLE_ROWS) {
@@ -173,7 +173,7 @@ bool RowCompactor::bCollectSample(RowSingle* pInputRow)
     return false;
   }
   
-  if ( ! m_pIrwSamples->bCopyRow(pInputRow) ) {
+  if ( ! m_pIrwSamples->bCopyRow(pSrw) ) {
   
 #ifdef WITH_ENCODING_TRACE
     vTrace("Samples full\n"_Stz);

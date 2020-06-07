@@ -243,7 +243,7 @@ void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* append a row to the row buffer into the TablePtn                           */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAppendRow(RowCompactor* pRowCompactor, RowSingle* pRow)
+void TablePtn::vAppendRow(RowCompactor* pRowCompactor, RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -258,13 +258,13 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, RowSingle* pRow)
     RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
   
   m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
-  bool bAppended = m_pCurrentCrwBuffer->bAppendRow(pRow);
+  bool bAppended = m_pCurrentCrwBuffer->bAppendSrw(pSrw);
   
   if (! bAppended) {
     RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
 
     m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
-    bAppended = m_pCurrentCrwBuffer->bAppendRow(pRow);
+    bAppended = m_pCurrentCrwBuffer->bAppendSrw(pSrw);
     RASSERT(bAppended);
   }
   
