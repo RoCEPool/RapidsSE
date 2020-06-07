@@ -1185,6 +1185,7 @@ public:
   void vRegPipeinPipeOut(void);
   void vRegPipeinPipeToJob(void);
   void vRegPipeinSet(void);
+  void vRegPipeinWriteProfile(void);
 
   // reg stream def
   void vRegStreamDefAsStr(void);
@@ -1469,6 +1470,7 @@ public:
   void vTaskJobFetch(void);
   void vTaskJobStore(void);
   void vTaskNameFetch(void);
+  void vTaskProfileFetch(void);
   void vTaskSeedInitially(void);
   void vTaskSendNodeFetch(void);
   void vTaskSendNodeStore(void);

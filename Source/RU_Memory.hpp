@@ -26,7 +26,8 @@ namespace Host
   
     void vInit(void);
     void vReport(void);
-
+    void vWriteReport(File* pFile);
+    
     void vAllocInc(eCN eClassNo);
     void vFreeInc(eCN eClassNo);
 

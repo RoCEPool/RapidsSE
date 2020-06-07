@@ -218,7 +218,7 @@ begin
     insert $table | stageD
 
   stage stageD on origin:
-    progress "Load" | sink | stageA
+    progress "Load" | toStatDemon | sink | stageA
 
 end
 ;

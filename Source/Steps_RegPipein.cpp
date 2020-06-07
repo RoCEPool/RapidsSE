@@ -18,6 +18,7 @@ void Step::vAddSteps_RegPipein(void)
   vAddStep("PipeIn[].pipeOut"_Stz,        &Step::vRegPipeinPipeOut);
   vAddStep("PipeIn[].pipeToJob"_Stz,      &Step::vRegPipeinPipeToJob);
   vAddStep("PipeIn[].set"_Stz,            &Step::vRegPipeinSet);
+  vAddStep("PipeIn[].writeProfile"_Stz,   &Step::vRegPipeinWriteProfile);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,6 +122,7 @@ void Step::vRegPipeinKind(void)
        }
       break;
     }
+    case CN_PROFILE:              eOperand = ZK_PROFILE;         break;
     case CN_RSBBUFFER:            eOperand = ZK_RSBBUFFER;       break;
     case CN_SRTBUFFER:            eOperand = ZK_SRTBUFFER;       break;
     case CN_STREAMDEF:            eOperand = ZK_STREAMDEF;       break;
@@ -196,6 +198,24 @@ void Step::vRegPipeinSet(void)
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || m_pRegSet->m_xpPipein.bIsNull());
   m_pRegSet->m_xpPipein = _pOperand(pOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PipeIn[].writeProfile -- write profile to file as csv                      */
+/*----------------------------------------------------------------------------*/
+void Step::vRegPipeinWriteProfile(void)
+{
+  ENTRY();
+  
+  ASSERT(*m_pRegSet->m_xpPipein);
+  
+  Profile* pProfile = _pProfile(*m_pRegSet->m_xpPipein);
+  
+  File* pFile = _pFile(*m_pRegSet->m_xpFile0);
+  
+  pProfile->vWriteReport(pFile);
   
   EXIT();
 }

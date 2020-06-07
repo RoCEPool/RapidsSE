@@ -187,6 +187,8 @@ namespace Oblique
     static void vFocalOutline(s4K& sString, Focal* pFocal);
     static void vFocalRemove(Focal* pFocal);
   
+    static void vFilePrint(File* pFile, Stz* szFormat,...);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);

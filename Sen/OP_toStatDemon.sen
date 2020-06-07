@@ -32,6 +32,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_PROFILE ...                                                          */
+/*----------------------------------------------------------------------------*/
+: OP_toStatDemon_Profile \handler
+
+  "OP_toStatD_Profile +++ +++ +++" .
+
+  PipeIn[]
+  "__statDemon" find dup if
+    word.object@
+    pipeline.pipeout
+    nullptr to PipeIn[]
+  else
+    discard discard
+    PipeIn[].delete
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* toStatD request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : toStatDemon_req \operator
@@ -41,6 +61,7 @@
   op__topology
 
   find: OP_toStatDemon_LockStats ZK_LOCKSTATS op[].handler!
+  find: OP_toStatDemon_Profile   ZK_PROFILE   op[].handler!
 
   op__loop
 

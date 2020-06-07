@@ -341,6 +341,11 @@
     "Error Code %v" .printf
   then
 
+  // spawn stat demon
+  "" false statDemonStr api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
   // spawn waker demon
   "" false wakerDemonStr api::spawnDemon not if
     "Error Code %v" .printf

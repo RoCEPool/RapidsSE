@@ -78,7 +78,8 @@ namespace Reflection    { class ConstDef; class ConstSet;
                           class MetaBlock; class MetaCell; class MetaGraph;
                           class MetaInherit; class MetaInherits;
                           class MetaMember; class MetaType;                   }
-namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
+namespace Resources     { class File; class Resource; class ResourceTracker;
+                          class PsxThd;                                       }
 namespace Rows          {                                                     }
 namespace SenVM         { class Dic; class DicStack; class Forth; class Word; }
 namespace Sessions      { class Session; class SessionState;                  }

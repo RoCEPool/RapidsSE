@@ -498,6 +498,27 @@ void Step::vSocketRecvObject(void)
       EXIT();
       return;
     }
+     
+    case CN_PROFILE: {
+      Profile* pProfile = new Profile();
+      
+      MemLib::vCopy(pProfile,pObject,sizeof(Object),CN_PROFILE);
+      
+      aBody = aAdd<void*>(pProfile,sizeof(Object));
+      nRemainingBytes = gxaSizeHeap[CN_PROFILE].m_nClassSize - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
+      
+      m_pDataStack->vPushPtr(pProfile);
+      m_pDataStack->vPushInt(true);
+      EXIT();
+      return;
+    }
       
     case CN_STREAMDEF: {
       StreamDef* pStreamDef = new StreamDef();

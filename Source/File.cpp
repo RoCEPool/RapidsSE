@@ -569,13 +569,41 @@ void File::vPrint(Stz* aFormat, ...)
 #endif
   
   i8 nPrinted = vfprintf(m_aFile,aFormat->azChar(),args);
-
+  
 #ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrintBytes += nPrinted;
 #endif
   
   va_end(args);
 
+  if (-1 == nPrinted) {
+    m_oSysCall.vError(errno);
+    vWarn("File::vPrint: vfprintf() error; errno=%d"_Stz,errno);
+    return;
+  }
+  
+  m_oSysCall.vSuccess();
+}
+
+/*----------------------------------------------------------------------------*/
+/* formatted print                                                            */
+/*----------------------------------------------------------------------------*/
+void File::vPrint(va_list args, Stz* aFormat)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
+#ifdef WITH_STATISTICS_COUNTERS
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrints++;
+#endif
+  
+  i8 nPrinted = vfprintf(m_aFile,aFormat->azChar(),args);
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrintBytes += nPrinted;
+#endif
+  
+  va_end(args);
+  
   if (-1 == nPrinted) {
     m_oSysCall.vError(errno);
     vWarn("File::vPrint: vfprintf() error; errno=%d"_Stz,errno);

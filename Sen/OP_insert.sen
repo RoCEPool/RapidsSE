@@ -70,6 +70,10 @@
 : insert_ExitMarker \handler
 
   //"Operand:- ZK_EXITMARKER" .verbose
+
+  task[] task.profile@ to Operand[]
+  Operand[].pipeOut
+
   path[].popNamedTableFolder
   PipeIn[].pipeOut
   Op.ackPipelineJob

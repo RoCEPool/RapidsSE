@@ -48,7 +48,7 @@ void RU_Memory::vInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* init                                                                       */
+/* report                                                                     */
 /*----------------------------------------------------------------------------*/
 void RU_Memory::vReport(void)
 {
@@ -62,6 +62,28 @@ void RU_Memory::vReport(void)
            i_Class,
            aCN[i_Class],
            
+           xClass[i_Class].m_nAlloc,
+           xClass[i_Class].m_nFree,
+           xClass[i_Class].m_nMax
+           );
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* write report                                                               */
+/*----------------------------------------------------------------------------*/
+void RU_Memory::vWriteReport(File* pFile)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RUMEMORY,_FOOTER_);
+  
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (! xClass[i_Class].m_nAlloc)
+      continue;
+    
+    AM::vFilePrint(pFile, "  %lld %24s %6lld %6lld %6lld\n"_Stz,
+           i_Class,
+           aCN[i_Class],
+
            xClass[i_Class].m_nAlloc,
            xClass[i_Class].m_nFree,
            xClass[i_Class].m_nMax

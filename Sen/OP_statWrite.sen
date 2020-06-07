@@ -61,6 +61,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_PROFILE ...                                                 */
+/*----------------------------------------------------------------------------*/
+: OP_statWrite_Profile \handler
+
+  "statWrite_Profile --- --- ---" .
+
+  // open the file for writing
+  "/tmp/SE_Profile.csv" OPEN_APPEND op__file if
+
+    PipeIn[].writeProfile
+
+    PipeIn[].delete
+
+    File0[].get file.close
+    File0[].get file.delete
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for statWrite req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : statWrite_req \operator
@@ -70,6 +91,7 @@
   op__topology
 
   find: OP_statWrite_LockStats ZK_LOCKSTATS op[].handler!
+  find: OP_statWrite_Profile   ZK_PROFILE   op[].handler!
 
   op__loop
 

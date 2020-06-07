@@ -607,6 +607,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_IRWBUFFER"_Stz,       ZK_IRWBUFFER);
   /*  0 */ vAddConstant("ZK_LOCKSTATS"_Stz,       ZK_LOCKSTATS);
   /*  0 */ vAddConstant("ZK_NODEINFO"_Stz,        ZK_NODEINFO);
+  /*  0 */ vAddConstant("ZK_PROFILE"_Stz,         ZK_PROFILE);
   /*  0 */ vAddConstant("ZK_PROGRESSUNITS"_Stz,   ZK_PROGRESSUNITS);
   /*  0 */ vAddConstant("ZK_PULSEMARKER"_Stz,     ZK_PULSEMARKER);
   /*  0 */ vAddConstant("ZK_PULSEDMARKER"_Stz,    ZK_PULSEDMARKER);

@@ -26,7 +26,8 @@ namespace Tasks
    ~Profile(void) noexcept(false);
     
     RU_Memory* pRU_Memory();
-
+    void       vWriteReport(File* pFile);
+    
     Footer* aFooter(void);
   };
   

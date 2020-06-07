@@ -39,6 +39,7 @@
 //  pEastSomeHandler ZK_IRWBUFFER        op[].handler!
 //  pEastSomeHandler ZK_LOCKSTATS        op[].handler!
 //  pEastSomeHandler ZK_NODEINFO         op[].handler!
+//  pEastSomeHandler ZK_PROFILE          op[].handler!
 //  pEastSomeHandler ZK_PROGRESSUNITS    op[].handler!
 //  pEastSomeHandler ZK_PULSEMARKER      op[].handler!
 //  pEastSomeHandler ZK_PULSEDMARKER     op[].handler!

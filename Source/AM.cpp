@@ -224,6 +224,12 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
       
+    case CN_PROFILE: {
+      Profile* pProfile = _pProfile(pOperand);
+      delete pProfile;
+      break;
+    }
+      
     case CN_RSBBUFFER: {
       RsbBuffer* pRsbBuffer = _pRsbBuffer(pOperand);
       delete pRsbBuffer;
@@ -1388,6 +1394,15 @@ void AM::vFocalRemove(Focal* pFocal)   {
     return;
   gpAttachMap->m_pFocalObjects->vRemove(pFocal);
 }
+void AM::vFilePrint(File* pFile, Stz* szFormat,...) {
+  
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  pFile->vPrint(xArgs, szFormat);
+  va_end(xArgs);
+  
+}
+
 void AM::vMri(TokenVec *pTknVec) { gpAttachMap->m_pFocalObjects->vMri(pTknVec); }
 void AM::vLog(TokenVec *pTknVec) { gpLog->vLog(pTknVec);                        }
 
