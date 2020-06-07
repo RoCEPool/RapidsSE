@@ -53,7 +53,7 @@ namespace CompactBuffers
     void  operator delete(void*);
 
     Encoding(StreamDef* pStreamDef);
-    ~Encoding(void) noexcept(false);
+   ~Encoding(void) noexcept(false);
   
     i8   nBytesNeeded(void);
   
@@ -67,8 +67,8 @@ namespace CompactBuffers
 
   private:
     // encoding (structural order)
-    void vInitialEncoding(RowSingle* pSrw);
-    void vInitialEncoding(Row* pIrw);
+    void vInitialEncodingIrw(Row* pIrw);
+    void vInitialEncodingSrw(RowSingle* pSrw);
     void vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal);
     void vEncodeBol(_ColEnc& xColEnc, Dtm wColVal);
     void vEncodeDte(_ColEnc& xColEnc, Dtm wColVal);
