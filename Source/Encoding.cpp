@@ -8,43 +8,11 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Encoding* CompactBuffers::_pEncoding(void* aAddr)
-{
-  Encoding* pEncoding = reinterpret_cast<Encoding*>(aAddr);
-  
-  return pEncoding;
-}
+__pCastFunction(CompactBuffers,Encoding,CN_ENCODING)
+__aNewFunction(Encoding,CN_ENCODING)
+__vDeleteFunction(Encoding,CN_ENCODING)
+__aFooterFunction(Encoding)
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Encoding::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_ENCODING);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* perform new of row buffer for given address                                */
-/*----------------------------------------------------------------------------*/
-void* Encoding::operator new(size_t, void* aAddress)
-{
-  return aAddress;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Encoding::operator delete(void* aAddr)
-{
-  Encoding* pEncoding = reinterpret_cast<Encoding*>(aAddr);
-  
-  HeapMem::vFree(pEncoding);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -763,12 +731,6 @@ bool Encoding::bWithinHead(i8 i_Col)
   // this column doesnt fit
   return false;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Encoding)
 
 /*============================================================================*/
 /* end                                                                        */
