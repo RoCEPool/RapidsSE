@@ -348,7 +348,7 @@ bool RowCompactor::bAddIrwAsCrw(Row* pIrw)
   
   // 2) encode tails into m_pEncoding
   //  if (! m_pStreamDef->m_nFixedSized)
-    vEncodeTails(pIrw);
+    vEncodeTailsForIrw(pIrw);
   
   // 3) split encoded head between crw head and crw overflow
   vEncodeSplit();
@@ -391,7 +391,7 @@ bool RowCompactor::bAddSrwAsCrw(RowSingle* pSrw)
   
   // 2) encode tails into m_pEncoding
   //  if (! m_pStreamDef->m_nFixedSized)
-  vEncodeTails(pSrw);
+  vEncodeTailsForSrw(pSrw);
   
   // 3) split encoded head between crw head and crw overflow
   vEncodeSplit();
@@ -523,7 +523,7 @@ void RowCompactor::vEncodeHeadForSrw(RowSingle* pSrw)
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeTails(Row* pIrwSample)
+void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -540,14 +540,14 @@ void RowCompactor::vEncodeTails(Row* pIrwSample)
     
     // -- vch column --
     
-    Dtm* aColVal = & pIrwSample->m_waColVal[i_Col];
+    Dtm* aColVal = & pIrw->m_waColVal[i_Col];
     
     if (aColVal->bIsNull())
       continue;
     
     // -- non-null vch column --
     
-    Stz* azStr = pIrwSample->szStzGet(i_Col);
+    Stz* azStr = pIrw->szStzGet(i_Col);
     if (StrLib::nLength((char*)azStr) < 8)
       continue;
     
@@ -598,7 +598,7 @@ void RowCompactor::vEncodeTails(Row* pIrwSample)
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of an input row with tails                            */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeTails(RowSingle* pInputRow)
+void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -617,7 +617,7 @@ void RowCompactor::vEncodeTails(RowSingle* pInputRow)
     
     // -- vch column --
     
-    Dtm* aColVal = & pInputRow->m_waColVal[i_Col];
+    Dtm* aColVal = & pSrw->m_waColVal[i_Col];
     
     if (aColVal->bIsNull())
       continue;

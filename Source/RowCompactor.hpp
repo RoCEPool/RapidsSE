@@ -64,8 +64,8 @@ namespace CompactBuffers
     bool bAllotCrw(void);
     void vEncodeHeadForIrw(Row* pIrw);
     void vEncodeHeadForSrw(RowSingle* pSrw);
-    void vEncodeTails(Row* pIrwSample);
-    void vEncodeTails(RowSingle* pInputRow);
+    void vEncodeTailsForIrw(Row* pIrw);
+    void vEncodeTailsForSrw(RowSingle* pSrw);
     void vEncodeSplit(void);
 
   private:
