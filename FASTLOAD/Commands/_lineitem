@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 create table lineitem
-(                                          //      c++  crw
+(                                          //      c++  crw (est.)
   L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B
   L_PARTKEY       INTEGER       NOT NULL,  //  1)  8B   3B
   L_SUPPKEY       INTEGER       NOT NULL,  //  2)  8B   3B
@@ -22,7 +22,7 @@ create table lineitem
   L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B
   //                                             ---- ----
   // 16 columns                                  174B  91B
-  //                                           𝛀 1.3  0.7
+  //                    expansion coefficient  𝛀 1.3  0.7
 );
 
 /*

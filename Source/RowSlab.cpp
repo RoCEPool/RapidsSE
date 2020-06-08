@@ -405,6 +405,20 @@ bool RowSlab::bPtnHash(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the partition of rsb                                                   */
+/*----------------------------------------------------------------------------*/
+i8 RowSlab::iPtnOfRsb(Rsb* aRsb)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  i8 i_HshCol = m_oStreamPix.m_nCols - 1;
+  
+  i8 i_Ptn = aRsb->iVal(- i_HshCol);
+  
+  return i_Ptn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get row cells for given row                                                */
 /*----------------------------------------------------------------------------*/
 Rsb* RowSlab::aRsb(i8 i_Row)

@@ -61,6 +61,7 @@ namespace Rows
     bool  bNewRow(void);
     void  vNormaliseStrings(void);
     bool  bPtnHash(void);
+    i8    iPtnOfRsb(Rsb* aRsb);
     Rsb*  aRsb(i8 i_Row);
     m8*   amRowCells(i8 i_Row);
     i8    nRows(void);

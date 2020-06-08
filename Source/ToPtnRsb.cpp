@@ -51,7 +51,6 @@ void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
   
   m_pFromRsbBuffer = pRsbBuffer;
   
-  // for the moment we partition to 0
   i8 i_Ptn = 0;
   
   RowSlab* pRowSlab = pRsbBuffer->pRowSlab();
@@ -60,6 +59,8 @@ void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     Rsb* aRsbSrc = pRowSlab->aRsb(i_Row);
+    
+    i_Ptn = pRowSlab->iPtnOfRsb(aRsbSrc);
     
     vCopyRsb(i_Ptn,aRsbSrc);
   }
