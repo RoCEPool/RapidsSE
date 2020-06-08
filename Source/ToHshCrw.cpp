@@ -64,6 +64,8 @@ void ToHshCrw::vConvert(RsbBuffer* pRsbBuffer)
   
   if (! pCrwBuffer)
     pCrwBuffer = pNewCrwBuffer(i_Ptn);
+  
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

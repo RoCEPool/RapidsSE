@@ -51,6 +51,7 @@
     begin
       OperandB[].isNull not
     while
+      OperandB[].appendClose
       OperandB[].pipeOut
       I ToHshCrw[].completed to OperandB[]
     repeat
@@ -73,6 +74,7 @@
     begin
       OperandB[].isNull not
     while
+      OperandB[].appendClose
       OperandB[].pipeOut
       I ToHshCrw[].dangling to OperandB[]
     repeat
