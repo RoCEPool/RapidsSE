@@ -22,24 +22,26 @@ create table lineitem (
   //                                              ---- ----
   // 16 columns                                   174B  91B
   //
-  // SF0  :              273MB used ;
-  //
-  // No indexes:
-  // SF1  :   6M rows ;   1.6GB used ;   1278 buf ; 233B/row; 4,696 rows/buf
-  // SF10 :  60M rows ;  12.7GB used ;  12674 buf ; 200B/row; 4,734 rows/buf
-  // SF30 : 180M rows ;  37.7GB used ;  38006 buf ; 209B/row; 4,735 rows/buf
-  // SF100: 600M rows ; 124.5GB used ; 127096 buf ;
-  // SF1K :   6B rows ;
-  // SF10K:  60B rows ;
-  //
-  //
-  // index on l_partkey
-  // SF1  :   6M rows ;   1.9GB used
-  // SF10 :  60M rows ;  16.4GB used
-  // SF30 : 180M rows ;  48.6GB used
-  // SF100: 600M rows ; 161.9GB used
 );
+/*
 
+ SF100
+ 
+               wc  : 599860520 3547140270 77757276880
+         / 100MB/s :                           777.5s (10ns/char)
+                  
+ 
+ SF10
+ 
+                wc :  59986052  354714027  7775727688
+         / 100MB/s :                            77.5s (10ns/char)
+
+ SF1
+ 
+                wc :   6001215   35481203   759863287
+         / 100MB/s :                             7.5s (10ns/char)
+
+ */
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

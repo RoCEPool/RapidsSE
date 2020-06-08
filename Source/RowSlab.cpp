@@ -339,16 +339,19 @@ void RowSlab::vNormaliseStrings(void)
 
   m_oNmlStr.vDump();
 
+  i8 nTimes = 0;
+  
   i8 nCols = this->nCols();
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
+//for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+  for (i8 i_Col = 13; i_Col < 14; i_Col++) {
+
     eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
     
     if (DM_VCH != eDatum)
       continue;
 
     i8 nRows = this->nRows();
-    for (i8 i_OuterRow = 0; i_OuterRow < nRows-1; i_OuterRow++) {
+    for (i8 i_OuterRow = 0; i_OuterRow < 100; i_OuterRow++) {
       
       i8 i_OuterCell = i_Cell(i_OuterRow,i_Col);
       m8* aOuterCell = amCell(i_OuterCell);
@@ -361,7 +364,8 @@ void RowSlab::vNormaliseStrings(void)
       if (nLength < 8)
         continue;
       
-      for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < nRows; i_InnerRow++) {
+    //for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < nRows; i_InnerRow++) {
+      for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < i_OuterRow + 99; i_InnerRow++) {
 
         i8 i_InnerCell = i_Cell(i_InnerRow,i_Col);
         m8* aInnerCell = amCell(i_InnerCell);
@@ -373,12 +377,20 @@ void RowSlab::vNormaliseStrings(void)
         if (! szInnerStz->bEqual(szOuterStz))
           continue;
 
-        if (! m_oNmlStr.szFind(szOuterStz))
+        vTrace("Testing : %lld - %lld : %s\n"_Stz,i_OuterRow,i_InnerRow,szOuterStz);
+        if (! m_oNmlStr.szFind(szOuterStz)) {
           m_oNmlStr.szAdd(szOuterStz);
+          if (++nTimes >= 3)
+            goto L_Exit;
+        }
+        break;
       }
+      
+      //L_NextOuter: ;
     }
   }
   
+L_Exit:
   m_oNmlStr.vDump();
 }
 
