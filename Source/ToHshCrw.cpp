@@ -45,6 +45,14 @@ void ToHshCrw::vConvert(RsbBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
+  i8 i_Ptn = pRsbBuffer->iPartitionNo();
+  
+  CrwBuffer* pCrwBuffer =
+     m_oHashSet.pBuffer(i_Ptn) ?
+       _pCrwBuffer(m_oHashSet.pBuffer(i_Ptn)) : nullptr;
+  
+  if (! pCrwBuffer)
+    pCrwBuffer = pNewCrwBuffer(i_Ptn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,6 +81,21 @@ CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create a new crw buffer                                                    */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* ToHshCrw::pNewCrwBuffer( i8 i_Ptn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
+  
+  //  create a new buffer
+  CrwBuffer* pCrwBuffer = new CrwBuffer();;
+
+  m_oHashSet.vAddBuffer(i_Ptn,pCrwBuffer);
+  
+  return pCrwBuffer;
+}
 
 /*============================================================================*/
 /* end                                                                        */
