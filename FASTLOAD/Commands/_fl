@@ -84,6 +84,7 @@ tag <fl_table>  = lineItem;
 tag <fl_create> = "../FASTLOAD/Commands/_lineItem";
 //tag <fl_file>   = "../FASTLOAD/Data/lineItem_100.csv";
 tag <fl_file>   = "/Users/Shared/tpch/SF0/lineItem_100k.csv";
+
 <fl_cmd>;
 
 tableSizes;
