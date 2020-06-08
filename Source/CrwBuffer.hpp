@@ -56,7 +56,6 @@ namespace CompactBuffers
     
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-    bool       bAppendCrw(Crw* aCrwSrc);
     Crw*       aCrw(i8 i_Row);
     void       vGetRow(RowSingle* pRow, i8 i_Row);
     void       vShow(void);
@@ -67,10 +66,11 @@ namespace CompactBuffers
     // row functions
     void vAppendClose(void);
     void vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples);
-    bool bAppendSrw(RowSingle* pSingleRow);
+    bool bAppendCrw(Crw* aCrwSrc);
+    bool bAppendSrw(RowSingle* pIrwSrc);
 
   private:
-    bool       bHasSpace(i8 nBytes);
+    bool bHasSpace(i8 nBytes);
 
 
     ////////////////////////////////////////////////////////////////////////////
@@ -85,21 +85,21 @@ namespace CompactBuffers
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
-    void        vAnalyze(i8& nBuffers, i8& nRows);
-    void        vDump(void);
-    void        vRestore(void);
-    void        vRestoreNub(void);
-    void        vRestoreTable(Table* pTable);
-    bool        bVerify(void);
+    void vAnalyze(i8& nBuffers, i8& nRows);
+    void vDump(void);
+    void vRestore(void);
+    void vRestoreNub(void);
+    void vRestoreTable(Table* pTable);
+    bool bVerify(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions        
-    bool         bVerifyNextPrev(void);
-    bool         bVerifyRows(void);
-    void         vVerifyFault(void);
+    bool bVerifyNextPrev(void);
+    bool bVerifyRows(void);
+    void vVerifyFault(void);
 
     public:
     Footer* aFooter(void);

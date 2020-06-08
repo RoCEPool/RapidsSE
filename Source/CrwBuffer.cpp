@@ -218,7 +218,7 @@ void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples)
 /*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
-bool CrwBuffer::bAppendSrw(RowSingle* pSrw)
+bool CrwBuffer::bAppendSrw(RowSingle* pSrwSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
     
@@ -226,7 +226,7 @@ bool CrwBuffer::bAppendSrw(RowSingle* pSrw)
   vTrace("Partition:%lld\n"_Stz, m_iPartitionNo);
 #endif
   
-  bool bAppended = m_pRowCompactor->bCompactSrw(pSrw);
+  bool bAppended = m_pRowCompactor->bCompactSrw(pSrwSrc);
   
   return bAppended;
 }
