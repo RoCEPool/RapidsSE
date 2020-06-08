@@ -544,7 +544,7 @@ void TablePtn::vPublish(void)
     return;
   }
   
-  StreamDef* pStreamDef = m_pCurrentCrwBuffer->pTable()->pStreamDef();
+  StreamDef* pStreamDef = m_pCurrentCrwBuffer->pStreamDef();
   HV_Rec hvRec(pStreamDef, C_ALL);
   
   // create a row for retrieving the row

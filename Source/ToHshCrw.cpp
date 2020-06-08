@@ -97,7 +97,7 @@ CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 CrwBuffer* ToHshCrw::pNewCrwBuffer(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
   //  create a new buffer
   CrwBuffer* pCrwBuffer = new CrwBuffer();

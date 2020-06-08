@@ -100,7 +100,7 @@ namespace Structures
   {
   protected:
   
-    i8 m__filler[1]; // fill so m_xaUnits starts on a double word boundry
+    i8 m__filler[2]; // fill so m_xaUnits starts on a double word boundry
   
     //alignas(DoubleWord)
     SpaceUnit m_xaUnits[BYTES / C_SPACEUNIT_QUANTA]; // array of space units

@@ -31,6 +31,8 @@ CrwBuffer::CrwBuffer(void)
   
   m_pRowCompactor = nullptr;
   
+  m_pTable = nullptr;
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_CRWBUFFER);
@@ -183,8 +185,7 @@ bool CrwBuffer::bAppendCrw(Crw* aCrwSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  Table* pTable = this->pTable();
-  StreamDef* pStreamDef = pTable->pStreamDef();
+  StreamDef* pStreamDef = this->pStreamDef();
   i8 jCrwSize = pStreamDef->m_nFixedSized;
 
   RowNub* pRowNub = m_oRowTray.pNub();
@@ -582,7 +583,7 @@ StreamDef* CrwBuffer::pStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  return pTable()->pStreamDef();
+  return m_oRowTray.pNub()->pDesc();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -593,7 +594,8 @@ void CrwBuffer::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   //RASSERT(pTable);
-  m_oRowTray.pNub()->vDesc(pTable);
+  m_pTable = pTable;
+  m_oRowTray.pNub()->vDesc(pTable->pStreamDef());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -602,8 +604,8 @@ void CrwBuffer::vTable(Table* pTable)
 Table* CrwBuffer::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  return m_oRowTray.pNub()->pDesc();
+
+  return m_pTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -613,7 +615,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  StreamDef* pStreamDef = pTable()->pStreamDef();
+  StreamDef* pStreamDef = this->pStreamDef();
   
   CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
   CsvBuffer* pCsvBuffer = pFirstCsvBuffer;

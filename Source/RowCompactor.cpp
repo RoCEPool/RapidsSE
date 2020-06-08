@@ -81,7 +81,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   m_pCrwNub     = pCrwBuffer->m_oRowTray.pNub();
-  m_pStreamDef  = m_pCrwNub->pDesc()->pStreamDef();
+  m_pStreamDef  = m_pCrwNub->pDesc();
   m_pEncoding   = new Encoding(m_pStreamDef);
   
   m_aHeadLine   = nullptr;

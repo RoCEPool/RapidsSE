@@ -8,6 +8,7 @@ namespace CompactBuffers
   class CrwBuffer : public DataBuffer
   {
   public:
+    Table*  m_pTable;
     RowTray m_oRowTray;  // tray of rows
     SeeMe   m_xSeeMe;
   
