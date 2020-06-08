@@ -68,6 +68,18 @@ void OperandQueue::vAppendOperand(Operand* pOperand)
 }
 
 /*----------------------------------------------------------------------------*/
+/* peek at operands and see if any Operand                                    */
+/*----------------------------------------------------------------------------*/
+bool OperandQueue::bPeekQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  
+  Operand* pOperand = ListNL_t<Operand>::pHead();
+  
+  return pOperand ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* peek at operands and see if any OoO Operand                                */
 /*----------------------------------------------------------------------------*/
 bool OperandQueue::bPeekQueueOoO(void)

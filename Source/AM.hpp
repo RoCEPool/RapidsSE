@@ -273,6 +273,7 @@ namespace Oblique
     static bool bSpawnJob_prompt(Job* pJob);
     
     static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
+    static void vSpawnJob_dedicated(Job* pJob);
     static void vSpawnJob_op(Job* pJob);    
     static void vSpawnJob_received(Job* pJob);
     static void vSpawnJob_service(Job* pJob);

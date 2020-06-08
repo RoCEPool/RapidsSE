@@ -80,6 +80,7 @@ namespace Pipelines
     void vPartition(i8 iPartition);
     i8   nPartition(void);
     bool bPause(void);
+    bool bPeekQueue(void);
     bool bPeekQueueOoO(void);
     Pipeline* pPipeline(void);
     void vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);

@@ -148,7 +148,24 @@
 
   find: receiver_StartMarker ZK_STARTMARKER op[].handler!
 
-  op__loop
+  // get the pipeline job of the operator
+  Op.pipelineJob@ locals| pPipelineJob |
+
+ // peek to see if any operand
+  begin
+    Pipein[].peek
+  not while
+    "receiver waiting for STARTMARKER..." .
+    2 thread::sleepMsec
+  repeat
+
+  assert::stack_0
+
+  // pop next operand from queue into PipeIn[]
+  PipeIn[].next
+
+  // execute the operator's handler for the operand
+  PipeIn[].kind op[].handler@ execute
 
   LogReqExit
   job::deleteThis

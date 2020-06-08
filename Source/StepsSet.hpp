@@ -1182,6 +1182,7 @@ public:
   void vRegPipeinIsNull(void);
   void vRegPipeinKind(void);
   void vRegPipeinNext(void);
+  void vRegPipeinPeek(void);
   void vRegPipeinPipeOut(void);
   void vRegPipeinPipeToJob(void);
   void vRegPipeinSet(void);

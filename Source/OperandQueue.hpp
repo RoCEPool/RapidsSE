@@ -21,6 +21,7 @@ namespace Operands
     
     void vAppendOperand(Operand* pOperand);
     bool      bPeekQueueOoO(void);
+    bool      bPeekQueue(void);
     Operand*  pPopQueue(void);
     Operand*  pPopQueueOoO(void);
     i8   nQueuedOperands(void);

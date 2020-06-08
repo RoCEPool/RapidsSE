@@ -519,6 +519,24 @@ bool Op::bPause(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* peek for operand from operand queue                                        */
+/*----------------------------------------------------------------------------*/
+bool Op::bPeekQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  bool bOperand;
+  
+  vGrabTaskLock();
+  
+  bOperand = pQueueLeft()->bPeekQueue();
+  
+  vDropTaskLock();
+  
+  return bOperand;
+}
+
+/*----------------------------------------------------------------------------*/
 /* peek for OoO operand from operand queue                                    */
 /*----------------------------------------------------------------------------*/
 bool Op::bPeekQueueOoO(void)
@@ -996,7 +1014,10 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
-  AM::vSpawnJob_op(m_pOpJob);
+  if (StrLib::bSame(m_sOpNm.azChar(), "receiver"))
+    AM::vSpawnJob_dedicated(m_pOpJob);
+  else
+    AM::vSpawnJob_op(m_pOpJob);
 }
 
 /*----------------------------------------------------------------------------*/

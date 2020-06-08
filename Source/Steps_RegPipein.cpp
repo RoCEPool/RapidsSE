@@ -15,6 +15,7 @@ void Step::vAddSteps_RegPipein(void)
   vAddStep("PipeIn[].isNull"_Stz,         &Step::vRegPipeinIsNull);
   vAddStep("PipeIn[].kind"_Stz,           &Step::vRegPipeinKind);
   vAddStep("PipeIn[].next"_Stz,           &Step::vRegPipeinNext);
+  vAddStep("PipeIn[].peek"_Stz,           &Step::vRegPipeinPeek);
   vAddStep("PipeIn[].pipeOut"_Stz,        &Step::vRegPipeinPipeOut);
   vAddStep("PipeIn[].pipeToJob"_Stz,      &Step::vRegPipeinPipeToJob);
   vAddStep("PipeIn[].set"_Stz,            &Step::vRegPipeinSet);
@@ -148,6 +149,18 @@ void Step::vRegPipeinNext(void)
   if (m_pRegSet->m_xpPipein.bIsNull())
     m_pRegSet->m_xpPipein = m_pTask->m_pJob->m_pOp->pPopQueue();
   ASSERT(*m_pRegSet->m_xpPipein);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PipeIn[].peek -- peek next operand                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vRegPipeinPeek(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pTask->m_pJob->m_pOp->bPeekQueue() ? true : false);
   
   EXIT();
 }

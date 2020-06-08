@@ -34,7 +34,7 @@
   iConnNo "<connectionNo> = %v" str.format str.cat
 
   // dedicated demon ?
-  true
+  false
 
   // receiver demon pipeline
   receiverDemonStr
