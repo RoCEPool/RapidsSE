@@ -98,6 +98,21 @@ CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
+void ToHshCrw::vAddRsbRows(RsbBuffer* pRsbBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  
+  RowSlab* pRowSlab = pRsbBuffer->pRowSlab();
+  
+  i8 nRows = pRowSlab->nRows();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    Rsb* aRsb = pRowSlab->aRsb(i_Row);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new crw buffer                                                    */
+/*----------------------------------------------------------------------------*/
 CrwBuffer* ToHshCrw::pNewCrwBuffer(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);

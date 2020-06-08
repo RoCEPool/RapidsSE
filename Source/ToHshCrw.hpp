@@ -32,7 +32,8 @@ namespace Load
     CrwBuffer* pDangling(i8 i_Ptn);
   
   private:
-    CrwBuffer* pNewCrwBuffer( i8 i_Ptn);
+    void vAddRsbRows(RsbBuffer* pRsbBuffer);
+    CrwBuffer* pNewCrwBuffer(i8 i_Ptn);
 
     Footer* aFooter(void);
   };
