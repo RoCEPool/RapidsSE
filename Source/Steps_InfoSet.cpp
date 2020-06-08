@@ -156,6 +156,9 @@ void Step::vInfoSetChunkFile(void)
 {
   ENTRY();
   
+  i8 nRows = 0;
+  Row* pRow;
+  
   // get the seekOffsets
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_SEEKOFFSETS);
@@ -187,9 +190,13 @@ void Step::vInfoSetChunkFile(void)
       
       // compute the number of bytes which belong to the current chunk
       nChunkBytes = i_EofLoc - i_ChunkLoc;
-      Row* pRow = pInfoSet->aAllotRow();
+      pRow = nullptr;
+      if (nRows < 16)
+        pRow = pInfoSet->aAllotRow();
       
       if (pRow) {
+        nRows++;
+        
         pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
         pRow->m_waColVal[1].m_iWrd = nChunkBytes;
       }
@@ -204,6 +211,8 @@ void Step::vInfoSetChunkFile(void)
       
       // set the chunk location
       m_pRegSet->m_iCounter0 = i_ChunkLoc + nChunkBytes;
+      
+      //vTrace("*****SeekOfset has %lld rows\n"_Stz, nRows);
       
       break;
     }
@@ -232,9 +241,13 @@ void Step::vInfoSetChunkFile(void)
     // compute end location of chunk
     i8 i_EndChunkLoc = i_ChunkLoc + nChunkBytes - 1;
     
-    Row* pRow = pInfoSet->aAllotRow();
+    pRow = nullptr;
+    if (nRows < 16 )
+      pRow = pInfoSet->aAllotRow();
     
     if (pRow) {
+      nRows++;
+      
       pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
       pRow->m_waColVal[1].m_iWrd = nChunkBytes;
       
@@ -246,6 +259,7 @@ void Step::vInfoSetChunkFile(void)
       // save the current chunk location
       m_pRegSet->m_iCounter0 = i_ChunkLoc;
       
+      //vTrace("*****SeekOfset has %lld rows\n"_Stz, nRows);
       // dump
       //pInfoSet->vPrintRows();
       
