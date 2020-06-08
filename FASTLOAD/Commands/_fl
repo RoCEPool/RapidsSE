@@ -97,7 +97,7 @@ tag <fl_file>   = "/Users/Shared/tpch/SF0/lineItem_100k.csv";
 
 <fl_cmd>;
 
-tableSizes;
+//tableSizes;
 
 print "-- that was ../FASTLOAD/Commands/_fl :" <fl_cmd> ;
 
