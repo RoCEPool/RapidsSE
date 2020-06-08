@@ -9,8 +9,10 @@ namespace Load
   {
   private:
   
-    HashSet    m_oHashSet;
-    
+    HashSet m_oHashSet;
+  
+    RowCompactor* m_paRowCompactor[C_MAX_PARTITIONS]; // row compactors
+
     // must be last
     Footer m_xFooter;
 
