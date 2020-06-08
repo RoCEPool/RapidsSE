@@ -162,7 +162,7 @@ bool ToRsb::bConvert(char* azSrc)
     // set partition hash CURRENTLY ROUND ROBIN.  DISCUSS W ALKA
     if (m_bPtnHash) {
       m_pRowSlab->vDeposit((i8)i_Ptn);
-      if (++i_Ptn > nPtns)
+      if (++i_Ptn >= nPtns)
         i_Ptn = 0;
     }
     

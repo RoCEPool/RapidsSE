@@ -33,16 +33,20 @@ Rsb::~Rsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert logical cell to cell subscript                                     */
 /*----------------------------------------------------------------------------*/
-i8 Rsb::i_Cell(i8 iLogicalCell)
+i8 Rsb::i_Cell_ptv(i8 iLogicalCell)
 {
+  ASSERT(iLogicalCell >= 0);
+  
   return -1 * iLogicalCell;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get i8 integer                                                             */
 /*----------------------------------------------------------------------------*/
-bool Rsb::bIsNull(i8 i_Cell)
+bool Rsb::bIsNull_ntv(i8 i_Cell)
 {
+  ASSERT(i_Cell <= 0);
+  
   i8* aI8 = (i8*) & m_maCells[i_Cell];
   
   i8 iVal = * aI8;
@@ -57,8 +61,10 @@ bool Rsb::bIsNull(i8 i_Cell)
 /*----------------------------------------------------------------------------*/
 /* get d8 float                                                               */
 /*----------------------------------------------------------------------------*/
-d8 Rsb::dVal(i8 i_Cell)
+d8 Rsb::dVal_ntv(i8 i_Cell)
 {
+  ASSERT(i_Cell <= 0);
+  
   d8* aD8 = (d8*) & m_maCells[i_Cell];
   
   d8 dVal = * aD8;
@@ -69,8 +75,10 @@ d8 Rsb::dVal(i8 i_Cell)
 /*----------------------------------------------------------------------------*/
 /* get i8 integer                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Rsb::iVal(i8 i_Cell)
+i8 Rsb::iVal_ntv(i8 i_Cell)
 {
+  ASSERT(i_Cell <= 0);
+  
   i8* aI8 = (i8*) & m_maCells[i_Cell];
   
   i8 iVal = * aI8;
@@ -81,8 +89,10 @@ i8 Rsb::iVal(i8 i_Cell)
 /*----------------------------------------------------------------------------*/
 /* get Stz* string                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Rsb::szVal(i8 i_Cell)
+Stz* Rsb::szVal_ntv(i8 i_Cell)
 {
+  ASSERT(i_Cell <= 0);
+  
   Stz* szStz = (Stz*) m_maCells[i_Cell];
 
   return szStz;

@@ -148,24 +148,24 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
     if (DM_VCH == eDatum) {
        // vch datum
 
-      if (C_DATUM_NULL == aRsbSrc->iVal(- i_Col)) {
+      if (C_DATUM_NULL == aRsbSrc->iVal_ntv(- i_Col)) {
         vDeposit(C_DATUM_NULL);
       }
       else {
-        szSrcStz = aRsbSrc->szVal(- i_Col);
+        szSrcStz = aRsbSrc->szVal_ntv(- i_Col);
         vDeposit(szSrcStz);
       }
     }
     else {
       // all others
      
-      iVal = aRsbSrc->iVal(- i_Col);
+      iVal = aRsbSrc->iVal_ntv(- i_Col);
       vDeposit(iVal);
     }
   }
 
   if (bSrcHasPtnHash && bCopyPtnHash) {
-    iVal = aRsbSrc->iVal(- i_Col);
+    iVal = aRsbSrc->iVal_ntv(- i_Col);
     vDeposit(iVal);
   }
   
@@ -413,7 +413,7 @@ i8 RowSlab::iPtnOfRsb(Rsb* aRsb)
 
   i8 i_HshCol = m_oStreamPix.m_nCols - 1;
   
-  i8 i_Ptn = aRsb->iVal(- i_HshCol);
+  i8 i_Ptn = aRsb->iVal_ntv(- i_HshCol);
   
   return i_Ptn;
 }
