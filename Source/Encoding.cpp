@@ -109,7 +109,7 @@ void Encoding::vEncodeRsb(Rsb* aRsb)
   
   vReset();
   
-  //vInitialEncodingRsb(aRsb);
+  vInitialEncodingRsb(aRsb);
 }
 
 /*----------------------------------------------------------------------------*/

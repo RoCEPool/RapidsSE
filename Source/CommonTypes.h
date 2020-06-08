@@ -157,7 +157,7 @@ class Int
 {
 public:
   union {
-    d8 m_iInt;
+    i8 m_iInt;
     i8 m_iAsI8;
   };
   
