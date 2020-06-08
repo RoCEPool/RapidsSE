@@ -43,7 +43,8 @@ namespace CompactBuffers
     void vCompactEnd(void);
     bool bCompactRsb(Rsb* aRsb);
     bool bCompactSrw(RowSingle* pSrw);
-  
+    bool bCompactTail(Stz* szTailStr);
+
   private:
 
     // - - - - - - - - - - - - - - - - - - - - -
