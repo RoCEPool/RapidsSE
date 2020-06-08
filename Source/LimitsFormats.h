@@ -17,6 +17,7 @@ static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
 static const i8 C_MAX_OPS           = 256;
 static const i8 C_MAX_PATH          = 256;    // max length of file path
 static const i8 C_MAX_RECORD        = C_16KB; // max length of record
+static const i8 C_MAX_SEEKOFFSETS   = 16;
 static const i8 C_MAX_SESSIONS      = 4;      // max number of sessions
 static const i8 C_MAX_SHORTCUTS     = 64;
 static const i8 C_MAX_SLOTS         = 128;    // max slots per node

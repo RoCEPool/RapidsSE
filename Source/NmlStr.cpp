@@ -49,7 +49,7 @@ Stz* NmlStr::szAdd(Stz* szArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NMLSTR,_FOOTER_);
   
-  vTrace("Adding: %s\n"_Stz,szArg);
+  //vTrace("Adding: %s\n"_Stz,szArg);
 
   i8 nSize = StrLib::nSize(szArg->azChar());
   

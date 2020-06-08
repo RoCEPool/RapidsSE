@@ -377,7 +377,7 @@ void RowSlab::vNormaliseStrings(void)
         if (! szInnerStz->bEqual(szOuterStz))
           continue;
 
-        vTrace("Testing : %lld - %lld : %s\n"_Stz,i_OuterRow,i_InnerRow,szOuterStz);
+        //vTrace("Testing : %lld - %lld : %s\n"_Stz,i_OuterRow,i_InnerRow,szOuterStz);
         if (! m_oNmlStr.szFind(szOuterStz)) {
           m_oNmlStr.szAdd(szOuterStz);
           if (++nTimes >= 3)

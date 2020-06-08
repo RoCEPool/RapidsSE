@@ -155,7 +155,9 @@ void Step::vInfoSetAddTotalUnits(void)
 void Step::vInfoSetChunkFile(void)
 {
   ENTRY();
-  
+
+  m_pRegSet->m_iCounter2++;
+
   i8 nRows = 0;
   Row* pRow;
   
@@ -177,7 +179,7 @@ void Step::vInfoSetChunkFile(void)
   i8 nChunkBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process chunks till eof or till we get C_SET_SEEKOFFSETS
+  // process chunks till eof or till we get C_MAX_SEEKOFFSETS
   
   while (true) {
     
@@ -191,7 +193,7 @@ void Step::vInfoSetChunkFile(void)
       // compute the number of bytes which belong to the current chunk
       nChunkBytes = i_EofLoc - i_ChunkLoc;
       pRow = nullptr;
-      if (nRows < 16)
+      if (nRows < C_MAX_SEEKOFFSETS)
         pRow = pInfoSet->aAllotRow();
       
       if (pRow) {
@@ -200,12 +202,19 @@ void Step::vInfoSetChunkFile(void)
         pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
         pRow->m_waColVal[1].m_iWrd = nChunkBytes;
       }
-      
+
       s32 sFileSize;
       MagLib::vByteMag(i_EofLoc, 3, sFileSize);
-      vTrace("Loading %s %s in %lld chunks by %lld nodes %lld partitions\n"_Stz,
-             pFile->sFilePath().szStz(),sFileSize.szStz(),
-             pInfoSet->nInfoRows(),
+      vTrace("Loading %s %s "
+             "in %lld chunks (%lld offsets per chunk) "
+             "by %lld nodes %lld partitions\n"_Stz,
+             
+             pFile->sFilePath().szStz(),
+             sFileSize.szStz(),
+             
+             m_pRegSet->m_iCounter2,
+             C_MAX_SEEKOFFSETS,
+             
              AM::nDefinedNodes(),
              AM::nPartitions());
       
@@ -242,7 +251,7 @@ void Step::vInfoSetChunkFile(void)
     i8 i_EndChunkLoc = i_ChunkLoc + nChunkBytes - 1;
     
     pRow = nullptr;
-    if (nRows < 16 )
+    if (nRows < C_MAX_SEEKOFFSETS)
       pRow = pInfoSet->aAllotRow();
     
     if (pRow) {
