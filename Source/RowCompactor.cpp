@@ -128,6 +128,18 @@ void RowCompactor::vCompactEnd(void)
 /*----------------------------------------------------------------------------*/
 /* compact given single row into current crw buffer                           */
 /*----------------------------------------------------------------------------*/
+bool RowCompactor::bCompactRsb(Rsb* aRsb)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+ 
+  bool bResult = bAddRsbAsCrw(aRsb);
+
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compact given single row into current crw buffer                           */
+/*----------------------------------------------------------------------------*/
 bool RowCompactor::bCompactSrw(RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
@@ -191,6 +203,18 @@ bool RowCompactor::bAddIrwAsCrw(Row* pIrw)
 #endif
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given input row into current crw buffer                                */
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bAddRsbAsCrw(Rsb* aRsb)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+
+  ASSERT(! m_bCollecting);
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -222,7 +222,7 @@ bool CrwBuffer::bAppendRsb(Rsb* aRsbSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  bool bAppended = false;
+  bool bAppended = m_pRowCompactor->bCompactRsb(aRsbSrc);
   
   return bAppended;
 }
