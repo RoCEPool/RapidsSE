@@ -168,7 +168,7 @@ CrwBuffer* CrwHash::pFullCrwBuffer(i8 iPtn)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* CrwHash::pNewCrwBuffer( i8 i_Ptn)
+CrwBuffer* CrwHash::pNewCrwBuffer(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
 

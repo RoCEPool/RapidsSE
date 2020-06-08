@@ -9,6 +9,8 @@ namespace Load
   {
   private:
   
+    Table*  m_pTable;
+  
     HashSet m_oHashSet;
   
     RowCompactor* m_paRowCompactor[C_MAX_PARTITIONS]; // row compactors

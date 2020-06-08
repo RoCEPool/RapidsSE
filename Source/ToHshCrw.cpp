@@ -23,6 +23,8 @@ ToHshCrw::ToHshCrw(void)
 
   // m_oHashSet
   
+  m_pTable = nullptr;
+  
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++)
     m_paRowCompactor[i_Ptn] = new RowCompactor;
 
@@ -93,12 +95,18 @@ CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToHshCrw::pNewCrwBuffer( i8 i_Ptn)
+CrwBuffer* ToHshCrw::pNewCrwBuffer(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
   
   //  create a new buffer
-  CrwBuffer* pCrwBuffer = new CrwBuffer();;
+  CrwBuffer* pCrwBuffer = new CrwBuffer();
+  
+  pCrwBuffer->vTable(m_pTable);
+  pCrwBuffer->vPartitionNo(i_Ptn);
+
+  // open buffer for append
+  pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn],false);
 
   m_oHashSet.vAddBuffer(i_Ptn,pCrwBuffer);
   
