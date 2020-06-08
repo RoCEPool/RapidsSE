@@ -78,17 +78,20 @@ ToRsb::~ToRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert a chunck                                                           */
+/* convert a chunk                                                            */
 /*----------------------------------------------------------------------------*/
 bool ToRsb::bConvert(char* azSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
+  i8 nPtns = AM::nPartitions();
+  i8 i_Ptn = 0;
+  
   //vTrace("[>%s<]"_Stz,azSrc);
   
   m_azSrc = azSrc;
-  
   m_acChr = m_azSrc;
+  
     
   // while more data
   while (bMoreData()) {
@@ -156,9 +159,11 @@ bool ToRsb::bConvert(char* azSrc)
       vTrace("-- recSep -- \n"_Stz);
     }
     
-    // set partition hash
+    // set partition hash CURRENTLY ROUND ROBIN.  DISCUSS W ALKA
     if (m_bPtnHash) {
-      m_pRowSlab->vDeposit((i8)0);
+      m_pRowSlab->vDeposit((i8)i_Ptn);
+      if (++i_Ptn > nPtns)
+        i_Ptn = 0;
     }
     
     m_i_Rec++;
