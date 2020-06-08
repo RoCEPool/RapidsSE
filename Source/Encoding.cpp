@@ -270,46 +270,45 @@ void Encoding::vInitialEncodingIrw(Row* pIrw)
 void Encoding::vInitialEncodingRsb(Rsb* aRsb)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
-  
+
+  Dtm wColVal;
+
   m_i_Offset_next = m_i_BaseOffsetData;
   
-//  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-//    
-//    _ColEnc& xrColEnc = xaColEnc[i_Col];
-//    
-//    Dtm wColVal = pIrw->m_waColVal[i_Col];
-//    
-//    // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // encode the column value
-//    
-//    switch (xrColEnc.m_pCol->eDatum()) {
-//        
-//      case DM_BCD: vEncodeBcd(xrColEnc,wColVal);  break;
-//      case DM_BOL: vEncodeBol(xrColEnc,wColVal);  break;
-//      case DM_DTE: vEncodeDte(xrColEnc,wColVal);  break;
-//      case DM_FLT: vEncodeFlt(xrColEnc,wColVal);  break;
-//      case DM_INT: vEncodeInt(xrColEnc,wColVal);  break;
-//      case DM_IVL: vEncodeIvl(xrColEnc,wColVal);  break;
-//      case DM_TME: vEncodeTme(xrColEnc,wColVal);  break;
-//      case DM_TSP: vEncodeTsp(xrColEnc,wColVal);  break;
-//      case DM_VCH:
-//        // get the stz from the row
-//        if ( ! wColVal.bIsNull() )
-//          wColVal.m_szVch = pIrw->szStzGet(i_Col);
-//        vEncodeVch(xrColEnc,wColVal);
-//        break;
-//        
-//      default:
-//        NEVER_REACH;
-//        
-//    } // switch eDatum
-//    
-//    // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // compute initial offset and till for this column
-//    
-//    vOffsetTill(xrColEnc);
-//    
-//  } // for i_Col
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+
+    _ColEnc& xrColEnc = xaColEnc[i_Col];
+
+    i8 i_Cell = aRsb->i_Cell(i_Col);
+
+    wColVal = aRsb->iVal(i_Cell);
+
+    // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // encode the column value
+
+    switch (xrColEnc.m_pCol->eDatum()) {
+
+      case DM_BCD: vEncodeBcd(xrColEnc,wColVal);  break;
+      case DM_BOL: vEncodeBol(xrColEnc,wColVal);  break;
+      case DM_DTE: vEncodeDte(xrColEnc,wColVal);  break;
+      case DM_FLT: vEncodeFlt(xrColEnc,wColVal);  break;
+      case DM_INT: vEncodeInt(xrColEnc,wColVal);  break;
+      case DM_IVL: vEncodeIvl(xrColEnc,wColVal);  break;
+      case DM_TME: vEncodeTme(xrColEnc,wColVal);  break;
+      case DM_TSP: vEncodeTsp(xrColEnc,wColVal);  break;
+      case DM_VCH: vEncodeVch(xrColEnc,wColVal);  break;
+
+      default:
+        NEVER_REACH;
+
+    } // switch eDatum
+
+    // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // compute initial offset and till for this column
+
+    vOffsetTill(xrColEnc);
+
+  } // for i_Col
   
   m_nBytesNeeded = m_i_Offset_next;
 }
