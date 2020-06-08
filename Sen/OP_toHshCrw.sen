@@ -5,11 +5,25 @@
 " OP_toHshCrw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_STREAMDEF ...                                    DEFINITION */
+/*----------------------------------------------------------------------------*/
+: toHshCrw_StreamDef \handler
+
+  PipeIn[] to StreamDef[]
+
+  StreamDef[].duplicate to OperandB[]
+
+  OperandB[].pipeOut
+
+  ToHshCrw[].create
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : toHshCrw_StartMarker \handler
-
-  ToHshCrw[].create
 
   ZK_STARTMARKER_handler
 ;
@@ -88,6 +102,7 @@
   find: toHshCrw_PulseMarker ZK_PULSEMARKER op[].handler!
   find: toHshCrw_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: toHshCrw_StartMarker ZK_STARTMARKER op[].handler!
+  find: toHshCrw_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
 

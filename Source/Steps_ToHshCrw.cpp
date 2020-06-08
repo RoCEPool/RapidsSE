@@ -57,7 +57,7 @@ void Step::vToHshCrwRegCreate(void)
 {
   ENTRY();
     
-  ToHshCrw* pToHshCrw = new ToHshCrw;
+  ToHshCrw* pToHshCrw = new ToHshCrw(* m_pRegSet->m_xpStreamDef);
       
   m_pRegSet->m_xpToHshCrw = pToHshCrw;
 

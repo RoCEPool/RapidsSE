@@ -32,6 +32,7 @@ CrwBuffer::CrwBuffer(void)
   m_pRowCompactor = nullptr;
   
   m_pTable = nullptr;
+  m_pStreamDef = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
@@ -584,6 +585,18 @@ StreamDef* CrwBuffer::pStreamDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   return m_oRowTray.pNub()->pDesc();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the table of the row buffer                                            */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  //RASSERT(pTable);
+  m_pStreamDef = pStreamDef;
+  m_oRowTray.pNub()->vDesc(pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,6 +14,7 @@ void Step::vAddSteps_RegStreamDef(void)
   vAddStep("StreamDef[].columnCount@"_Stz,    &Step::vRegStreamDefColumnCountFetch);
   vAddStep("StreamDef[].column@"_Stz,         &Step::vRegStreamDefColumnFetch);
   vAddStep("StreamDef[].delete"_Stz,          &Step::vRegStreamDefDelete);
+  vAddStep("StreamDef[].duplicate"_Stz,       &Step::vRegStreamDefDuplicate);
   vAddStep("StreamDef[].get"_Stz,             &Step::vRegStreamDefGet);
   vAddStep("StreamDef[].newCountStream"_Stz,  &Step::vRegStreamDefNewCount);
   vAddStep("StreamDef[].new"_Stz,             &Step::vRegStreamDefNew);
@@ -82,6 +83,22 @@ void Step::vRegStreamDefDelete(void)
   
   m_pRegSet->m_xpStreamDef = nullptr;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].duplicate -- new a duplicate stream def from Table[]           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefDuplicate(void)
+{
+  ENTRY();
+  
+  ASSERT (* m_pRegSet->m_xpStreamDef);
+  
+  StreamDef* pStreamDef = new StreamDef(* m_pRegSet->m_xpStreamDef);
+  
+  m_pDataStack->vPushPtr(pStreamDef);
+
   EXIT();
 }
 

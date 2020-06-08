@@ -1192,6 +1192,7 @@ public:
   void vRegStreamDefColumnFetch(void);
   void vRegStreamDefColumnCountFetch(void);
   void vRegStreamDefDelete(void);
+  void vRegStreamDefDuplicate(void);
   void vRegStreamDefGet(void);
   void vRegStreamDefNew(void);
   void vRegStreamDefNewCount(void);

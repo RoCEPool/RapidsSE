@@ -9,8 +9,9 @@ namespace Load
   {
   private:
   
-    Table*  m_pTable;
-  
+    Table*     m_pTable;
+    StreamDef* m_pStreamDef;
+
     HashSet m_oHashSet;
   
     RowCompactor* m_paRowCompactor[C_MAX_PARTITIONS]; // row compactors
@@ -22,7 +23,7 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ToHshCrw(void);
+    ToHshCrw(StreamDef* pStreamDef);
    ~ToHshCrw(void) noexcept(false);
   
     void vConvert(RsbBuffer* pRsbBuffer);

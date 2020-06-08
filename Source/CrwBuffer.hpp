@@ -8,9 +8,10 @@ namespace CompactBuffers
   class CrwBuffer : public DataBuffer
   {
   public:
-    Table*  m_pTable;
-    RowTray m_oRowTray;  // tray of rows
-    SeeMe   m_xSeeMe;
+    RowTray    m_oRowTray;  // tray of rows
+    Table*     m_pTable;
+    StreamDef* m_pStreamDef;
+    SeeMe      m_xSeeMe;
   
     RowCompactor* m_pRowCompactor;
   
@@ -34,6 +35,7 @@ namespace CompactBuffers
     HeadLine*  aGetHead(i8 i_Row);
     void       vOperandDump(i8 iDetail);
     i8         nRowCount(void);
+    void       vStreamDef(StreamDef* pStreamDef);
     void       vTable(Table* pTable);
     Table*     pTable(void);
 

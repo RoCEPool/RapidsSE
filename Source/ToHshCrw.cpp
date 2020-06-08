@@ -16,7 +16,7 @@ __aFooterFunction(ToHshCrw)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToHshCrw::ToHshCrw(void)
+ToHshCrw::ToHshCrw(StreamDef* pStreamDef)
 : Object(CN_TOHSHCRW)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
@@ -24,6 +24,7 @@ ToHshCrw::ToHshCrw(void)
   // m_oHashSet
   
   m_pTable = nullptr;
+  m_pStreamDef = pStreamDef;
   
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++)
     m_paRowCompactor[i_Ptn] = new RowCompactor;
@@ -102,7 +103,7 @@ CrwBuffer* ToHshCrw::pNewCrwBuffer(i8 i_Ptn)
   //  create a new buffer
   CrwBuffer* pCrwBuffer = new CrwBuffer();
   
-  pCrwBuffer->vTable(m_pTable);
+  pCrwBuffer->vStreamDef(m_pStreamDef);
   pCrwBuffer->vPartitionNo(i_Ptn);
 
   // open buffer for append

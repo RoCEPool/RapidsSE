@@ -94,6 +94,9 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   
   m_bTemp = true;
   
+  m_nFixedSized = pStreamDef->m_nFixedSized;
+
+  
   //_checkInitialised_(CN_STREAMDEF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
