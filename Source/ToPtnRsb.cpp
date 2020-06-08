@@ -103,6 +103,7 @@ void ToPtnRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
   // new a destination row in target partition row slab
   vNewDstRsb(i_Ptn);
   
+  // copy that
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
   m_pIntoRowSlab->vCopyRsb(aRsbSrc,bSrcHasPtnHash,bCopyPtnHash);
@@ -135,7 +136,7 @@ void ToPtnRsb::vNewDstRsb(i8 i_Ptn)
     ASSERT(bNewed);
   }
   
-  pDstRsbBuffer->vPartitionNo(0);
+  pDstRsbBuffer->vPartitionNo(i_Ptn);
   
   m_pIntoRowSlab = pDstRsbBuffer->pRowSlab();
 }

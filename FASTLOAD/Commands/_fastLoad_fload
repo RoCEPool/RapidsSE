@@ -20,9 +20,9 @@ print section "Load File" <fl_file> ;
 fload <fl_table> <fl_file> ;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-print section "Scan Table" <fl_table>;
-
-tableScan <fl_table>;
+//print section "Scan Table" <fl_table>;
+//
+//tableScan <fl_table>;
 
 /*============================================================================*/
 /* end                                                                        */
