@@ -63,6 +63,31 @@ Stz* NmlStr::szAdd(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get each normal string in turn                                             */
+/*----------------------------------------------------------------------------*/
+Stz* NmlStr::szEach(Stz* szPrior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NMLSTR,_FOOTER_);
+  
+  if (! szPrior) {
+    
+    if (m_xWsp.ayArea() == m_xWsp.ayLatter())
+      return nullptr;
+    
+    Stz* szFirst = (Stz*)m_xWsp.ayArea();
+    
+    return szFirst;
+  }
+  
+  Stz* szNext = aAdd<Stz*>(szPrior,szPrior->nSize());
+
+  if (szNext->azChar() < (char*)m_xWsp.ayLatter())
+    return szNext;
+      
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find given arg string                                                      */
 /*----------------------------------------------------------------------------*/
 Stz* NmlStr::szFind(Stz* szArg)

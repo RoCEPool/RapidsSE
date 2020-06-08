@@ -60,6 +60,7 @@ namespace Rows
     i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
     bool  bNewRow(void);
+    NmlStr* pNmlStr(void);
     void  vNormaliseStrings(void);
     bool  bPtnHash(void);
     i8    iPtnOfRsb(Rsb* aRsb);

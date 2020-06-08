@@ -33,6 +33,7 @@ namespace Load
     CrwBuffer* pDangling(i8 i_Ptn);
   
   private:
+    void vAddNst(RsbBuffer* pRsbBuffer);
     void vAddRsbRows(i8 i_Ptn, RsbBuffer* pRsbBuffer);
     CrwBuffer* pNewCrwBuffer(i8 i_Ptn);
 

@@ -341,6 +341,16 @@ bool RowSlab::bNewRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get normalised string set                                                  */
+/*----------------------------------------------------------------------------*/
+NmlStr* RowSlab::pNmlStr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  return & m_oNmlStr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* normalize repeating strings                                                */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vNormaliseStrings(void)

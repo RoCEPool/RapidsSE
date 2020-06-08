@@ -24,6 +24,7 @@ namespace Rows
    ~NmlStr(void) noexcept(false);
       
     Stz* szAdd(Stz* szArg);
+    Stz* szEach(Stz* szArg);
     Stz* szFind(Stz* szArg);
     void vDump(void);
 

@@ -59,13 +59,15 @@ void ToHshCrw::vConvert(RsbBuffer* pRsbBuffer)
   
   i8 i_Ptn = pRsbBuffer->iPartitionNo();
   
-  pRsbBuffer->pRowSlab()->vDumpNst();
+  //pRsbBuffer->pRowSlab()->vDumpNst();
   
   m_pCrwBuffer = m_oHashSet.pBuffer(i_Ptn) ?
                   _pCrwBuffer(m_oHashSet.pBuffer(i_Ptn)) : nullptr;
   
-  if (! m_pCrwBuffer)
+  if (! m_pCrwBuffer) {
     m_pCrwBuffer = pNewCrwBuffer(i_Ptn);
+    vAddNst(pRsbBuffer);
+  }
   
   vAddRsbRows(i_Ptn,pRsbBuffer);
   
@@ -100,6 +102,24 @@ CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add normalised strings into new crw buffer                                 */
+/*----------------------------------------------------------------------------*/
+void ToHshCrw::vAddNst(RsbBuffer* pRsbBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
+  
+  ASSERT(0 == m_pCrwBuffer->nRowCount());
+  
+  NmlStr* pNmlStr = pRsbBuffer->pRowSlab()->pNmlStr();
+  
+  Stz* szNmlStr = nullptr;
+  while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) )
+    vTrace("vAddNst : %s\n"_Stz,szNmlStr);
+  
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
 void ToHshCrw::vAddRsbRows(i8 i_Ptn, RsbBuffer* pRsbBuffer)
@@ -123,6 +143,7 @@ void ToHshCrw::vAddRsbRows(i8 i_Ptn, RsbBuffer* pRsbBuffer)
     //m_pCrwBuffer->vPrintRows(m_pStreamDef);
     
     m_pCrwBuffer = pNewCrwBuffer(i_Ptn);
+    vAddNst(pRsbBuffer);
 
     bAppended = m_pCrwBuffer->bAppendRsb(aRsb);
     ASSERT(bAppended);
