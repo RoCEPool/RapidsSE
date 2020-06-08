@@ -54,8 +54,10 @@ namespace CompactBuffers
     bool bAddSrwAsCrw(RowSingle* pSrw);
     bool bAllotCrw(void);
     void vEncodeHeadForIrw(Row* pIrw);
+    void vEncodeHeadForRsb(Rsb* aRsb);
     void vEncodeHeadForSrw(RowSingle* pSrw);
     void vEncodeTailsForIrw(Row* pIrw);
+    void vEncodeTailsForRsb(Rsb* aRsb);
     void vEncodeTailsForSrw(RowSingle* pSrw);
     void vEncodeSplit(void);
 

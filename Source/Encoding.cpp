@@ -101,6 +101,18 @@ void Encoding::vEncodeIrw(Row* pIrw)
 }
 
 /*----------------------------------------------------------------------------*/
+/* encode inflated row                                                        */
+/*----------------------------------------------------------------------------*/
+void Encoding::vEncodeRsb(Rsb* aRsb)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  
+  vReset();
+  
+  //vInitialEncodingRsb(aRsb);
+}
+
+/*----------------------------------------------------------------------------*/
 /* encode signle row                                                          */
 /*----------------------------------------------------------------------------*/
 void Encoding::vEncodeSrw(RowSingle* pSrw)

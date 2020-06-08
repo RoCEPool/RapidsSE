@@ -57,6 +57,7 @@ namespace CompactBuffers
     i8   nBytesNeeded(void);
   
     void vEncodeIrw(Row* pIrw);
+    void vEncodeRsb(Rsb* aRsb);
     void vEncodeSrw(RowSingle* pSrw);
   
     void vMorphEncoding(_ColEnc* aColEnc);

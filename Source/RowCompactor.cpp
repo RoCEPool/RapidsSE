@@ -214,7 +214,34 @@ bool RowCompactor::bAddRsbAsCrw(Rsb* aRsb)
 
   ASSERT(! m_bCollecting);
   
-  return false;
+  // 1) initially encode head of inflated row into m_pEncoding
+  vEncodeHeadForRsb(aRsb);
+  
+  // 2) encode tails into m_pEncoding
+  vEncodeTailsForRsb(aRsb);
+  
+  // 3) split encoded head between crw head and crw overflow
+  vEncodeSplit();
+
+  // 4) allot a logical compact row (head & over)
+  if (! bAllotCrw()) {
+    m_nTotalBuffers++;
+    return false;
+  }
+  
+  // 5) pack encoded row into a compact row
+  vPackCrw(m_aHeadLine,m_pEncoding);
+  
+  m_aHeadLine = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify
+    
+  #ifdef WITH_VERIFY_TAILS
+  m_pCrwNub->vVerifyTails(C_UNKNOWN);
+  #endif
+    
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -349,6 +376,21 @@ void RowCompactor::vEncodeHeadForIrw(Row* pIrw)
 /*----------------------------------------------------------------------------*/
 /* encode the head                                                            */
 /*----------------------------------------------------------------------------*/
+void RowCompactor::vEncodeHeadForRsb(Rsb* aRsb)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  m_pEncoding->vEncodeRsb(aRsb);
+  
+#ifdef WITH_ENCODING_TRACE
+  SP_Encoding spEncoding;
+  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode the head                                                            */
+/*----------------------------------------------------------------------------*/
 void RowCompactor::vEncodeHeadForSrw(RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
@@ -391,6 +433,81 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
     // -- non-null vch column --
     
     Stz* azStr = pIrw->szStzGet(i_Col);
+    if (StrLib::nLength((char*)azStr) < 8)
+      continue;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // attempt to find tail for non-null vch column of minimum length
+    
+    TailStr xFindTail(azStr);
+    
+#ifdef WITH_ENCODING_TRACE
+    vDumpTails();
+#endif
+    
+    
+#if 0
+    i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
+    if (C_UNKNOWN == i_Tail)
+      continue;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // found a matching tail
+    
+    // put tial into the encoding
+    aColEnc->m_i_Tail = i_Tail;
+    aColEnc->m_aTailLine = m_pCrwNub->aGetTail(i_Tail);
+#else
+    i8 i_Tail;
+    TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
+    if (! aTailLine)
+      continue;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // found a matching tail
+    
+    // put tial into the encoding
+    aColEnc->m_i_Tail = i_Tail;
+    aColEnc->m_aTailLine = aTailLine;
+#endif
+    
+    // morph the encoding
+    m_pEncoding->vMorphEncoding(aColEnc);
+  }
+  
+#ifdef WITH_ENCODING_TRACE
+  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark up the encoding of a row with tails                                   */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  i8 nCols = m_pStreamDef->nColumns(C_ALL);
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for non-null vch column of minimum length
+    
+    if (DM_VCH != aColEnc->m_pCol->eDatum())
+      continue;
+    
+    // -- vch column --
+    
+    i8 i_Cell = aRsb->i_Cell(i_Col);
+    
+    if (aRsb->bIsNull(i_Cell))
+      continue;
+    
+    // -- non-null vch column --
+    
+    Stz* azStr = aRsb->szVal(i_Cell);
     if (StrLib::nLength((char*)azStr) < 8)
       continue;
     

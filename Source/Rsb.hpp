@@ -17,6 +17,7 @@ namespace Rows
       
     i8   i_Cell(i8 iLogicalCell);
   
+    bool bIsNull(i8 i_Cell);
     d8   dVal(i8 i_Cell);
     i8   iVal(i8 i_Cell);
     Stz* szVal(i8 i_Cell);
