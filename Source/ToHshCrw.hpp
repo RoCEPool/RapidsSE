@@ -11,8 +11,9 @@ namespace Load
   
     Table*     m_pTable;
     StreamDef* m_pStreamDef;
+    CrwBuffer* m_pCrwBuffer;
 
-    HashSet m_oHashSet;
+    HashSet    m_oHashSet;
   
     RowCompactor* m_paRowCompactor[C_MAX_PARTITIONS]; // row compactors
 
@@ -32,7 +33,7 @@ namespace Load
     CrwBuffer* pDangling(i8 i_Ptn);
   
   private:
-    void vAddRsbRows(RsbBuffer* pRsbBuffer);
+    void vAddRsbRows(i8 i_Ptn, RsbBuffer* pRsbBuffer);
     CrwBuffer* pNewCrwBuffer(i8 i_Ptn);
 
     Footer* aFooter(void);

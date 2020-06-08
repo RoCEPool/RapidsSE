@@ -23,9 +23,10 @@ ToHshCrw::ToHshCrw(StreamDef* pStreamDef)
 
   // m_oHashSet
   
-  m_pTable = nullptr;
+  m_pTable     = nullptr;
   m_pStreamDef = pStreamDef;
-  
+  m_pCrwBuffer = nullptr;
+
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++)
     m_paRowCompactor[i_Ptn] = new RowCompactor;
 
@@ -58,12 +59,13 @@ void ToHshCrw::vConvert(RsbBuffer* pRsbBuffer)
   
   i8 i_Ptn = pRsbBuffer->iPartitionNo();
   
-  CrwBuffer* pCrwBuffer =
-     m_oHashSet.pBuffer(i_Ptn) ?
-       _pCrwBuffer(m_oHashSet.pBuffer(i_Ptn)) : nullptr;
+  m_pCrwBuffer = m_oHashSet.pBuffer(i_Ptn) ?
+                  _pCrwBuffer(m_oHashSet.pBuffer(i_Ptn)) : nullptr;
   
-  if (! pCrwBuffer)
-    pCrwBuffer = pNewCrwBuffer(i_Ptn);
+  if (! m_pCrwBuffer)
+    m_pCrwBuffer = pNewCrwBuffer(i_Ptn);
+  
+  vAddRsbRows(i_Ptn,pRsbBuffer);
   
   vDebugPoint();
 }
@@ -98,7 +100,7 @@ CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void ToHshCrw::vAddRsbRows(RsbBuffer* pRsbBuffer)
+void ToHshCrw::vAddRsbRows(i8 i_Ptn, RsbBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
@@ -107,6 +109,18 @@ void ToHshCrw::vAddRsbRows(RsbBuffer* pRsbBuffer)
   i8 nRows = pRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     Rsb* aRsb = pRowSlab->aRsb(i_Row);
+    
+    bool bAppended = m_pCrwBuffer->bAppendRsb(aRsb);
+    
+    if (bAppended)
+      continue;
+
+    m_pCrwBuffer->vAppendClose();
+    
+    m_pCrwBuffer = pNewCrwBuffer(i_Ptn);
+
+    bAppended = m_pCrwBuffer->bAppendRsb(aRsb);
+    ASSERT(bAppended);
   }
 }
 
