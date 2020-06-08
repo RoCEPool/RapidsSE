@@ -53,6 +53,7 @@ namespace CompactBuffers
     bool bAddRsbAsCrw(Rsb* aRsb);
     bool bAddSrwAsCrw(RowSingle* pSrw);
     bool bAllotCrw(void);
+    bool bCreateTail(Stz* szTailStr);
     void vEncodeHeadForIrw(Row* pIrw);
     void vEncodeHeadForRsb(Rsb* aRsb);
     void vEncodeHeadForSrw(RowSingle* pSrw);
@@ -68,9 +69,9 @@ namespace CompactBuffers
   
     void vPackSamples(void);
     void vAnalyzeSamples(void);
-    void vCreateTail(Column* pCol,
-                     Row* pOuterIrwSample,
-                     Row* pInnerIrwSample);
+    void vCreateSampleTail(Column* pCol,
+                           Row* pOuterIrwSample,
+                           Row* pInnerIrwSample);
   private:
     Footer* aFooter(void);
   };

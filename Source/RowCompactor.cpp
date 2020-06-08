@@ -359,6 +359,62 @@ bool RowCompactor::bAllotCrw(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* potentially create a tail for given str                                    */
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bCreateTail(Stz* szTailStr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  SP_Row spRow;
+  
+#ifdef WITH_ENCODING_TRACE
+  vTrace("Create Tail: %s\n"_Stz,szTailStr);
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1) is there already a tail for the vch?
+  
+  TailStr xFindTail(szTailStr);
+  
+  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2) create a new tail
+  
+  //           -- TailLine --
+  // **********************************
+  // * <U> ////////////////////////// *
+  // **********************************
+  //
+
+  //vDumpTails();
+  //vDebugPoint();
+  
+  i8 nTailBytes = xFindTail.nBytes();
+  i8 i_Tail = m_pCrwNub->iAllotTail(nTailBytes);
+  TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
+  
+  //           -- TailLine --
+  // **********************************
+  // * <U><L><StringN> ////////////// *
+  // **********************************
+  //
+  
+  aTail->vAssign(szTailStr);
+ 
+  m_pCrwNub->vSetLastStr(i_Tail);
+  
+#ifdef WITH_ENCODING_TRACE
+  vDumpTails();
+#endif
+  
+  //vDebugPoint();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* encode the head                                                            */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vEncodeHeadForIrw(Row* pIrw)
@@ -753,7 +809,7 @@ void RowCompactor::vAnalyzeSamples(void)
         if (pInnerIrw->m_waColVal[i_Col].bIsNull())
           continue;
         
-        vCreateTail(pCol,pOuterIrw,pInnerIrw);
+        vCreateSampleTail(pCol,pOuterIrw,pInnerIrw);
         
       }
     }
@@ -764,9 +820,9 @@ void RowCompactor::vAnalyzeSamples(void)
 /*----------------------------------------------------------------------------*/
 /* potentially create a tail for duplicate vch samples                        */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCreateTail(Column* pCol,
-                               Row* pOuterIrwSample,
-                               Row* pInnerIrwSample)
+void RowCompactor::vCreateSampleTail(Column* pCol,
+                                     Row* pOuterIrwSample,
+                                     Row* pInnerIrwSample)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   

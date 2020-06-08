@@ -59,6 +59,8 @@ void ToHshCrw::vConvert(RsbBuffer* pRsbBuffer)
   
   i8 i_Ptn = pRsbBuffer->iPartitionNo();
   
+  pRsbBuffer->pRowSlab()->vDumpNst();
+  
   m_pCrwBuffer = m_oHashSet.pBuffer(i_Ptn) ?
                   _pCrwBuffer(m_oHashSet.pBuffer(i_Ptn)) : nullptr;
   

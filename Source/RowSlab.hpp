@@ -55,6 +55,7 @@ namespace Rows
     char* azDepositString_begin(void);
     void  vDepositString_end(i8 nSize);
     void  vDumpAllRows(void);
+    void  vDumpNst(void);
     void  vDumpRow(i8 i_Row);
     i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
