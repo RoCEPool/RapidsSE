@@ -337,7 +337,7 @@ void RowSlab::vNormaliseStrings(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  m_oNmlStr.vDump();
+  //m_oNmlStr.vDump();
 
   i8 nTimes = 0;
   
@@ -391,7 +391,7 @@ void RowSlab::vNormaliseStrings(void)
   }
   
 L_Exit:
-  m_oNmlStr.vDump();
+  ; //m_oNmlStr.vDump();
 }
 
 /*----------------------------------------------------------------------------*/
