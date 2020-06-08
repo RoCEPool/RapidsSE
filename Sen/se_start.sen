@@ -337,9 +337,9 @@
   //then
 
   // spawn recurring demon
-  "" false recurringDemonStr api::spawnDemon not if
-    "Error Code %v" .printf
-  then
+//  "" false recurringDemonStr api::spawnDemon not if
+//    "Error Code %v" .printf
+//  then
 
   // spawn stat demon
   "" false statDemonStr api::spawnDemon not if

@@ -349,10 +349,10 @@ procedure fload
   parameters $table $file
 begin
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   stage stageA on origin:
 
     start              |
+
     periodicOp once    |
 
     chunk $file        | // read chunks of file, produce (seekOffset) =>
@@ -373,10 +373,19 @@ begin
     toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
     //dump rsbBuffer 1   |
 
-//
-//    toCsv              | // (rsbBuffer)  => (csvBuffer)
+    stageB hashed
 
-//    output             |
+
+  stage stageB on all partitions:
+
+    insert $table      | // (crwBuffer) inserted into table
+
+    stageC
+
+
+  stage stageC on origin:
+
+    output             |
 
     sink               |
 

@@ -118,6 +118,8 @@ void ToHshCrw::vAddRsbRows(i8 i_Ptn, RsbBuffer* pRsbBuffer)
 
     m_pCrwBuffer->vAppendClose();
     
+    //m_pCrwBuffer->vPrintRows(m_pStreamDef);
+    
     m_pCrwBuffer = pNewCrwBuffer(i_Ptn);
 
     bAppended = m_pCrwBuffer->bAppendRsb(aRsb);
