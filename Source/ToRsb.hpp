@@ -403,9 +403,9 @@ namespace Load
     // move to previous cell
     m_pRowSlab->m_i_Cell--;
     
-    d8* daCells = (d8*)m_pRowSlab->m_xWsp.ayArea();
+    i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
     
-    daCells[m_pRowSlab->m_i_Cell] = xDte.m_iAsI8;
+    iaCells[m_pRowSlab->m_i_Cell] = xDte.m_iAsI8;
 
     //m_oDatum.vDte(xDte);
     
