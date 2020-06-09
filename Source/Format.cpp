@@ -86,6 +86,46 @@ Format::~Format(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for ordinary/normal csv file                                          */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsOrdCsv(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
+  
+  if ('\0' != m_cEnclosedBy_Leading)
+    return false;
+  
+  if ('\0' != m_cEnclosedBy_Trailing)
+    return false;
+  
+  if ('\\' != m_cEscapeChar)
+    return false;
+  
+  if (',' != m_cFieldDelimiter)
+    return false;
+  
+  if ('\0' != m_cRecordTerminator)
+    return false;
+  
+  if (RE_NL != m_eRecordEnd)
+    return false;
+  
+  if ('-' != m_cDateSeparator)
+    return false;
+  
+  if (DC_YYYY != m_eDateComponent[0])
+    return false;
+  
+  if (DC_MM != m_eDateComponent[1])
+    return false;
+  
+  if (DC_DD != m_eDateComponent[2])
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset the formatters to given set of defaults                              */
 /*----------------------------------------------------------------------------*/
 void Format::vReset(void)

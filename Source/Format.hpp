@@ -32,6 +32,7 @@ namespace Chunks
     Format(void);
    ~Format(void) noexcept(false);
   
+    bool bIsOrdCsv(void);
     void vReset(void);
     void vSet(Format* pFmt);
     bool bSetFormat(TagSet* pFmtTagSet);
