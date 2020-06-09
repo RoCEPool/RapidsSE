@@ -28,7 +28,7 @@ namespace Rows
   
     StreamPix m_oStreamPix; // condensed stream def
   
-    NmlStr m_oNmlStr;   //
+    NmlStr m_oNmlStr;   // normalised string set
     
     WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
   
@@ -44,7 +44,6 @@ namespace Rows
       
     i8    i_Cell(i8 iRow, i8 iCell);
     m8*   amCell(i8 i_Cell);
-    m8*   amCellVector(void);
     ColPix* axaColPix(void);
     i8    nCols(void);
     void  vCopyPix(StreamPix* pStreamPixSrc);
@@ -70,6 +69,7 @@ namespace Rows
     StreamPix* aStreamPix(void);
 
   private:
+    m8*     amSlabCellVec(void);
     Footer* aFooter(void);
   };
   

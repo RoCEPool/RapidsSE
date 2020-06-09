@@ -79,23 +79,11 @@ m8* RowSlab::amCell(i8 i_Cell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  m8* amCellVec = amCellVector();
+  m8* amCellVec = amSlabCellVec();
 
   m8* amCell = &amCellVec[i_Cell];
   
   return amCell;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the entire cell vector                                                 */
-/*----------------------------------------------------------------------------*/
-m8* RowSlab::amCellVector(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  m8* amCellArea = (m8*)m_xWsp.ayArea();
-  
-  return amCellArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -480,7 +468,7 @@ Rsb* RowSlab::aRsbAdr(i8 i_Row)
   
   i8 i_RowCells = C_FIRST_LGL_CELL - iLglRow;
 
-  m8* amCellVec = amCellVector();
+  m8* amCellVec = amSlabCellVec();
 
   Rsb* aRsb = (Rsb*) & amCellVec[i_RowCells];
   
@@ -534,6 +522,19 @@ StreamPix* RowSlab::aStreamPix(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the cell vector for this slab                                          */
+/*----------------------------------------------------------------------------*/
+m8* RowSlab::amSlabCellVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  m8* amCellArea = (m8*)m_xWsp.ayArea();
+  
+  return amCellArea;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
