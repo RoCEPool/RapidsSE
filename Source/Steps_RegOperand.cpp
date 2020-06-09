@@ -17,6 +17,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].csvData"_Stz,        &Step::vRegOperandCsvData);
   vAddStep("Operand[].csvToCrwH"_Stz,      &Step::vRegOperandCsvToCrwH);
   vAddStep("Operand[].csvToRsb"_Stz,       &Step::vRegOperandCsvToRsb);
+  vAddStep("Operand[].csvToRsbFast"_Stz,   &Step::vRegOperandCsvToRsbFast);
   vAddStep("Operand[].delete"_Stz,         &Step::vRegOperandDelete);
   vAddStep("Operand[].firstRow@"_Stz,      &Step::vRegOperandFirstRowFetch);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vRegOperandHandleAggEnd);
@@ -168,6 +169,24 @@ void Step::vRegOperandCsvToRsb(void)
   
   bool b = pToRsb->bConvert(azRecords);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].csvToRsbFast -- convert csv nuffer operand to rsb buffer         */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandCsvToRsbFast(void)
+{
+  ENTRY();
+  
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
+  
+  char* azRecords = (char*) pCsvBuffer->szRecords();
+  
+  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
+  
+  bool b = pToRsb->bConvertFast(azRecords);
+  
   EXIT();
 }
 

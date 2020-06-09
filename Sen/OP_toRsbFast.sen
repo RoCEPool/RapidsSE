@@ -56,7 +56,7 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  Operand[].csvToRsb
+  Operand[].csvToRsbFast
 
   // test for any completed
   ToRsb[].completed to OperandB[]
