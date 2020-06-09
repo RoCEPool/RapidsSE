@@ -398,6 +398,24 @@ namespace Load
   }
   
   /*--------------------------------------------------------------------------*/
+  /* extract integer                                                          */
+  /*--------------------------------------------------------------------------*/
+  inline void vConvertIntegerFast(void)
+  {
+    vFieldTrace(CT_INTEGER);
+    
+    Int xInt;
+    SN_Int snInt;
+    
+    xInt = snInt.i(&m_acChr,m_pCol,m_pFmt);
+    
+    m_pRowSlab->vDeposit(xInt);
+    m_oDatum.vInt(xInt);
+    
+    vSprintInteger();
+  }
+    
+  /*--------------------------------------------------------------------------*/
   /* extract interval                                                         */
   /*--------------------------------------------------------------------------*/
   inline void vConvertInterval(void)

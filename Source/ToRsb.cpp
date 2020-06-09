@@ -239,7 +239,7 @@ bool ToRsb::bConvertFast(char* azSrc)
         case DM_DTE : vConvertDate();      break;
         case DM_BCD : vConvertDecimal();   break;
         case DM_FLT : vConvertFloat();     break;
-        case DM_INT : vConvertInteger();   break;
+        case DM_INT : vConvertIntegerFast(); break;
         case DM_IVL : vConvertInterval();  break;
         case DM_TME : vConvertTime();      break;
         case DM_TSP : vConvertTimestamp(); break;
