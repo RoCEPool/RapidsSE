@@ -94,9 +94,11 @@ Stz* Rsb::szVal_ntv(i8 i_Cell)
   ASSERT(i_Cell <= 0);
   
 #ifdef WITH_RSB_STROFS
-  
-  Stz* szStz = (Stz*) m_maCells[i_Cell];
 
+  i8 i_Ofs = (i8) m_maCells[i_Cell];
+    
+  Stz* szStz = aAdd<Stz*>(&m_maCells[i_Cell],i_Ofs);
+  
 #else
   
   Stz* szStz = (Stz*) m_maCells[i_Cell];

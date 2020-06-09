@@ -8,7 +8,7 @@ extern BufferPool* gpBufferPool;
 
 
 /*----------------------------------------------------------------------------*/
-/* compute byte difference between two addresses                              */
+/* compute absolute byte difference between two addresses                     */
 /*----------------------------------------------------------------------------*/
 i8 Correctness::nDifference(void* aAddress0, void* aAddress1)
 {

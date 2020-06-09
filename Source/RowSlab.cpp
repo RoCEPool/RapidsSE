@@ -200,13 +200,15 @@ char* RowSlab::azDepositString_begin(void)
 
 #ifdef WITH_RSB_STROFS
   
-  char* azStzCell = (char*)m_xWsp.ayLatterHead();
+  char* azStz = (char*)m_xWsp.ayLatterHead();
   
   m_i_Cell--;
 
-  i8* iaCells = (i8*)m_xWsp.ayArea();
+  i8* iaCells = (i8*)amSlabCellVec();
   
-  iaCells[m_i_Cell] = (i8)azStzCell;
+  i8 i_Ofs = - (nDifference(azStz, & iaCells[m_i_Cell]));
+  
+  iaCells[m_i_Cell] = i_Ofs;
 
 #else
   
@@ -214,7 +216,7 @@ char* RowSlab::azDepositString_begin(void)
   
   m_i_Cell--;
 
-  i8* iaCells = (i8*)m_xWsp.ayArea();
+  i8* iaCells = (i8*)amSlabCellVec();
   
   iaCells[m_i_Cell] = (i8)azStzCell;
 

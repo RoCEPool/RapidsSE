@@ -103,7 +103,7 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 
 // temporary
 
-#define WITH_RSB_STROFS EndDefine // code for string-offsets in row slabs
+//#define WITH_RSB_STROFS EndDefine // code for string-offsets in row slabs
 
 /*============================================================================*/
 /* end                                                                        */
