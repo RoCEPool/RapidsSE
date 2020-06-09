@@ -521,6 +521,99 @@ namespace Load
   }
 
   /*--------------------------------------------------------------------------*/
+  /* extract date                                                             */
+  /*--------------------------------------------------------------------------*/
+  inline void vConvertDecimalFast(void)
+  {
+    vFieldTrace(CT_DECIMAL);
+    
+    Bcd xBcd;
+    //SN_Bcd snBcd;
+    //xBcd = snBcd.i(&m_acChr,m_pCol,m_pFmt);
+    
+    i8 iDecimal;
+    i8 iLength = m_pCol->iColumnLength();
+    i8 iScale  = m_pCol->iColumnScale();
+    i8 iPrecision = iLength - iScale;
+    
+    u8 uUnsignedResult = 0;
+    
+    // test for negative or positive sign
+    bool bNegative = false;
+    if (*m_acChr && '-' == *m_acChr ) {
+      bNegative = true;
+      (*m_acChr)++;
+    }
+    else
+      if (*m_acChr && '+' == *m_acChr ) {
+        (m_acChr)++;
+      }
+    
+    bool bOnce = false;
+    if (*m_acChr && (isdigit(*m_acChr) || '.' == *m_acChr))
+      bOnce = true;
+    
+    // ignore leading 0's
+    while (StrLib::bIsDigit(*m_acChr) && StrLib::iDigitToI8(*m_acChr) == 0) {
+      m_acChr++;
+    }
+    
+    // collect leading digits (till '.')
+    while (StrLib::bIsDigit(*m_acChr)) {
+      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(*m_acChr);
+      m_acChr++;
+      iPrecision--;
+    }
+    
+    // have we exceeded maximum precision digits?
+    if (iPrecision < 0)
+      THROW_USER("vConvertDecimalFast"_Stz);
+    
+    if ('.' == *m_acChr) {
+      
+      m_acChr++; // skip '.'
+      
+      while (StrLib::bIsDigit(*m_acChr) && iScale) {
+        uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(*m_acChr);
+        m_acChr++;
+        iScale--;
+      }
+    }
+    
+    while (iScale--)
+      uUnsignedResult = uUnsignedResult * 10 + 0;
+    
+    // have we exceeded the max ?
+    if (uUnsignedResult > (u8)C_I8_MAX)
+      THROW_USER("vConvertDecimalFast"_Stz);
+    
+    // round up if there any more digits after decimal
+    if (StrLib::bIsDigit(*m_acChr)) {
+      if (StrLib::iDigitToI8(*m_acChr) >= 5)
+        uUnsignedResult += 1;
+      while (StrLib::bIsDigit(*m_acChr))
+        m_acChr++;
+    }
+    
+    // compute final result
+    uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
+    
+    // have we gone beyond the min ?
+    if (uUnsignedResult != 0 && bNegative && (uUnsignedResult < (u8)C_I8_MIN))
+      THROW_USER("vConvertDecimalFast"_Stz);
+    
+    iDecimal = uUnsignedResult;
+    
+    if ( ! bOnce )
+      THROW_USER("vConvertDecimalFast"_Stz);
+    
+    m_pRowSlab->vDeposit(iDecimal);
+    //m_oDatum.vBcd(xBcd);
+    
+    //vSprintDecimal();
+  }
+    
+  /*--------------------------------------------------------------------------*/
   /* extract float                                                            */
   /*--------------------------------------------------------------------------*/
   inline void vConvertFloat(void)
