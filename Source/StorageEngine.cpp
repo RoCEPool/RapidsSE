@@ -50,6 +50,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Pool::vCheckAssumptions();
   //Prompt::vCheckAssumptions();
    Reflection::vCheckAssumptions();
+  ResourceUsage::vCheckAssumptions();
   Resources::vCheckAssumptions();
   SenVM::vCheckAssumptions();
   Sessions::vCheckAssumptions();

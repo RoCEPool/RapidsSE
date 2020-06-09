@@ -128,7 +128,7 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
   RU_Memory* pRU_Memory = AM::pRU_Memory();
   
   if (pRU_Memory)
-    pRU_Memory->vAllocInc(eAllocClass);
+    AM::vAllocInc(pRU_Memory, eAllocClass);
   
   return pObject;
 }
@@ -147,7 +147,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   RU_Memory* pRU_Memory = AM::pRU_Memory();
   
   if (pRU_Memory)
-    pRU_Memory->vFreeInc(eFreeingClass);
+    AM::vFreeInc(pRU_Memory, eFreeingClass);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dont-free capability

@@ -46,7 +46,7 @@ namespace Folders       {                                                     }
 namespace Gadgets       { class EnumFlags; class TagSet;                      }
 namespace GoldenGate    {                                                     }
 namespace Grids         { class Grid; class Node;                             }
-namespace Host          { class RU_Memory;                                    }
+namespace Host          {                                                     }
 namespace Indexing      { class EntBuffer; class IndexTree;                   }
 namespace InfoData      {                                                     }
 namespace Interface     { class SessionArray;                                 }
@@ -78,6 +78,7 @@ namespace Reflection    { class ConstDef; class ConstSet;
                           class MetaBlock; class MetaCell; class MetaGraph;
                           class MetaInherit; class MetaInherits;
                           class MetaMember; class MetaType;                   }
+namespace ResourceUsage { class RU_Cpu; class RU_Memory;                      }
 namespace Resources     { class File; class Resource; class ResourceTracker;
                           class PsxThd;                                       }
 namespace Rows          {                                                     }
@@ -146,6 +147,7 @@ using namespace Prompt;
 using namespace ReadConsistency;
 using namespace Records;
 using namespace Reflection;
+using namespace ResourceUsage;
 using namespace Resources;
 using namespace Rows;
 using namespace SenVM;
