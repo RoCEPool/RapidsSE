@@ -309,8 +309,8 @@ void RowSlab::vDumpRow(i8 i_Row)
   
   SP_RowPix spRowPix(this->nCols(),this->axaColPix());
   
-  m8* amRowCells = this->amRowCells(i_Row);
-  Stz* szRow = spRowPix.sz((Rsb*)amRowCells);
+  Rsb* aRsb = this->aRsbAdr(i_Row);
+  Stz* szRow = spRowPix.sz(aRsb);
   vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
 }
 
@@ -475,28 +475,16 @@ i8 RowSlab::iPtnOfRsb(Rsb* aRsb)
 Rsb* RowSlab::aRsbAdr(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  Rsb* aRsb = (Rsb*)amRowCells(i_Row);
   
-  return aRsb;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get row cells for given row                                                */
-/*----------------------------------------------------------------------------*/
-m8* RowSlab::amRowCells(i8 i_Row)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
   i8 iLglRow = i_Row * m_oStreamPix.m_nCols;
   
   i8 i_RowCells = C_FIRST_LGL_CELL - iLglRow;
 
   m8* amCellVec = amCellVector();
 
-  m8* amRowCells = &amCellVec[i_RowCells];
+  Rsb* aRsb = (Rsb*) & amCellVec[i_RowCells];
   
-  return amRowCells;
+  return aRsb;
 }
 
 /*----------------------------------------------------------------------------*/

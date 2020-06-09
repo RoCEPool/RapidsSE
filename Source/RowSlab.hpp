@@ -65,7 +65,6 @@ namespace Rows
     bool  bPtnHash(void);
     i8    iPtnOfRsb(Rsb* aRsb);
     Rsb*  aRsbAdr(i8 i_Row);
-    m8*   amRowCells(i8 i_Row);
     i8    nRows(void);
     void  vSlabReport(void);
     StreamPix* aStreamPix(void);
