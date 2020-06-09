@@ -324,7 +324,7 @@ namespace Load
     //SN_Dte snDte;
     
     //xDte = snDte.i(&m_acChr,m_pCol,m_pFmt);
-    i8 iYear, iMonth, iDay;
+    i8 iYear = 0, iMonth = 0, iDay = 0;
     
     for (i8 i_Component = 0; i_Component < 3; i_Component++) {
       
@@ -332,20 +332,51 @@ namespace Load
       
       switch (eDateComponent) {
           
-        case DC_DD:
-          if (! StrLib::bExtractDay(&m_acChr,iDay))
-            THROW_USER("vConvertDateFast"_Stz);
-          break;
+        case DC_DD: {
           
-        case DC_MM:
-          if (! StrLib::bExtractMonth(&m_acChr,iMonth))
-            THROW_USER("vConvertDateFast"_Stz);
-          break;
+          u8 uSubField;
           
-        case DC_YYYY:
-          if (! StrLib::bExtractYear(&m_acChr,iYear))
+          if ( ! StrLib::bExtractU8(&m_acChr,&uSubField,2) )
             THROW_USER("vConvertDateFast"_Stz);
+          
+          iDay = uSubField;
           break;
+        }
+          
+        case DC_MM: {
+          u8 uSubField;
+          
+          iMonth = 0;
+          
+          if ( ! StrLib::bExtractU8(&m_acChr,&uSubField,2) )
+            THROW_USER("vConvertDateFast"_Stz);
+          
+          if (uSubField < 1 || uSubField > 12)
+            THROW_USER("vConvertDateFast"_Stz);
+          
+          iMonth = uSubField;
+          
+          break;
+        }
+          
+        case DC_YYYY: {
+          i8 nDigits;
+          
+          // extract year
+          if ( ! StrLib::bExtractInteger(&m_acChr,&iYear,nDigits) )
+            THROW_USER("vConvertDateFast"_Stz);
+          
+          if (2 == nDigits) {
+            iYear += 2000;
+            break;
+          }
+          
+          if (4 == nDigits)
+            break;
+          
+          THROW_USER("vConvertDateFast"_Stz);
+          break;
+        }
           
         default:
           THROW_USER("vConvertDateFast"_Stz);
