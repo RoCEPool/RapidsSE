@@ -231,6 +231,8 @@ char* RowSlab::azDepositString_begin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
+#ifdef WITH_RSB_STROFS
+  
   char* azStzCell = (char*)m_xWsp.ayLatterHead();
   
   m_i_Cell--;
@@ -239,8 +241,20 @@ char* RowSlab::azDepositString_begin(void)
   
   iaCells[m_i_Cell] = (i8)azStzCell;
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+#else
   
+  char* azStzCell = (char*)m_xWsp.ayLatterHead();
+  
+  m_i_Cell--;
+
+  i8* iaCells = (i8*)m_xWsp.ayArea();
+  
+  iaCells[m_i_Cell] = (i8)azStzCell;
+
+#endif
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
   return azStzCell;
 }
 
