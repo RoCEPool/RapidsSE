@@ -59,20 +59,6 @@ RowSlab::~RowSlab(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a row cell                                                             */
-/*----------------------------------------------------------------------------*/
-i8 RowSlab::i_Cell(i8 iRow, i8 iCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  i8 iLglCell = iRow * m_oStreamPix.m_nCols + iCell;
-  
-  i8 i_Cell = C_FIRST_LGL_CELL - iLglCell;
-  
-  return i_Cell;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of columns                                                      */
 /*----------------------------------------------------------------------------*/
 i8 RowSlab::nCols(void)

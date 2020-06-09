@@ -42,7 +42,6 @@ namespace Rows
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
       
-    i8    i_Cell(i8 iRow, i8 iCell);
     ColPix* axaColPix(void);
     i8    nCols(void);
     void  vCopyPix(StreamPix* pStreamPixSrc);
