@@ -90,10 +90,10 @@ tag <fl_create> = "../FASTLOAD/Commands/_lineItem";
 //tag <fl_file>   = "/Users/Shared/tpch/SF0/lineItem_100.csv";
 //tag <fl_file>   = "/Users/Shared/tpch/SF0/lineItem_1k.csv";
 //tag <fl_file>   = "/Users/Shared/tpch/SF0/lineItem_10k.csv";
-//tag <fl_file>   = "/Users/Shared/tpch/SF0/lineItem_100k.csv";
+tag <fl_file>   = "/Users/Shared/tpch/SF0/lineItem_100k.csv";
 //tag <fl_file>   = "/Users/Shared/tpch/SF0/lineItem_1m.csv";
 //tag <fl_file>   = "/Users/Shared/tpch/SF1/lineItem.csv";
-tag <fl_file>   = "/Users/Shared/tpch/SF10/lineItem.csv";
+//tag <fl_file>   = "/Users/Shared/tpch/SF10/lineItem.csv";
 
 <fl_cmd>;
 
