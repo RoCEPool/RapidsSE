@@ -143,7 +143,7 @@ void ToHshCrw::vAddRsbRows(i8 i_Ptn, RsbBuffer* pRsbBuffer)
   i8 nRows = pRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    Rsb* aRsb = pRowSlab->aRsb(i_Row);
+    Rsb* aRsb = pRowSlab->aRsbAdr(i_Row);
     
     bool bAppended = m_pCrwBuffer->bAppendRsb(aRsb);
     

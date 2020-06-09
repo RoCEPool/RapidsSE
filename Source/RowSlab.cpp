@@ -395,7 +395,7 @@ void RowSlab::vNormaliseStrings(void)
 
     for (i8 i_OuterRow = 0; i_OuterRow < 100; i_OuterRow++) {
       
-      Rsb* aOuterRsb = aRsb(i_OuterRow);
+      Rsb* aOuterRsb = aRsbAdr(i_OuterRow);
       i8 i_OuterCell_ntv = aOuterRsb->i_Cell_lglToNtv(i_Col);
       
       if (C_DATUM_NULL == aOuterRsb->iVal_ntv(i_OuterCell_ntv))
@@ -412,7 +412,7 @@ void RowSlab::vNormaliseStrings(void)
     //for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < nRows; i_InnerRow++) {
       for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < i_OuterRow + 99; i_InnerRow++) {
 
-        Rsb* aInnerRsb = aRsb(i_InnerRow);
+        Rsb* aInnerRsb = aRsbAdr(i_InnerRow);
         i8 i_InnerCell_ntv = aInnerRsb->i_Cell_lglToNtv(i_Col);
 
         if (C_DATUM_NULL == aInnerRsb->iVal_ntv(i_InnerCell_ntv))
@@ -470,9 +470,9 @@ i8 RowSlab::iPtnOfRsb(Rsb* aRsb)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get row cells for given row                                                */
+/* get address of an rsb                                                      */
 /*----------------------------------------------------------------------------*/
-Rsb* RowSlab::aRsb(i8 i_Row)
+Rsb* RowSlab::aRsbAdr(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
