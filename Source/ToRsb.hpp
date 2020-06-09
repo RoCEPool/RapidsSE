@@ -46,7 +46,8 @@ namespace Load
    ~ToRsb(void) noexcept(false);
   
     bool bConvert(char* azSrc);
-
+    bool bConvertFast(char* azSrc);
+    
     RsbBuffer* pDanglingRsbBuffer(void);
     RsbBuffer* pFullRsbBuffer(void);
     void vNewRsbBuffer(void);

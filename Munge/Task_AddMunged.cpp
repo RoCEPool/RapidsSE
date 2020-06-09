@@ -15733,7 +15733,7 @@ void Task::vAddMunged(Forth* pForth)
     "  PipeIn[] to Operand[]\n"
     "  nullptr to PipeIn[]\n"
     "\n"
-    "  Operand[].csvToRsb\n"
+    "  Operand[].csvToRsbFast\n"
     "\n"
     "  // test for any completed\n"
     "  ToRsb[].completed to OperandB[]\n"
