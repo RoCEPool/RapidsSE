@@ -47,6 +47,8 @@ void Step::vToPtnRsbRegConvert(void)
 
   pToPtnRsb->vConvert(pRsbBuffer);
   
+  delete pRsbBuffer;
+  
   EXIT();
 }
 
