@@ -13,7 +13,7 @@ namespace Rows
 
   class RowSlab : public Object
   {
-  private:
+  public:
   
     char m_caModel[32]; // model string
     i8   m_iVersion;    //

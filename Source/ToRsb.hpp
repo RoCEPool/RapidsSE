@@ -404,15 +404,61 @@ namespace Load
   {
     vFieldTrace(CT_INTEGER);
     
-    Int xInt;
-    SN_Int snInt;
+    //Int xInt;
+    //SN_Int snInt;
+    //xInt = snInt.i(&m_acChr,m_pCol,m_pFmt);
     
-    xInt = snInt.i(&m_acChr,m_pCol,m_pFmt);
+    char *aSrc = m_acChr;
     
-    m_pRowSlab->vDeposit(xInt);
-    m_oDatum.vInt(xInt);
+    if ( ! *aSrc )
+      THROW_USER("vConvertIntegerFast"_Stz);
     
-    vSprintInteger();
+    // test for negative or positive sign
+    bool bNegative = false;
+    //if (bWithSign) {
+      if (*aSrc && '-' == *aSrc) {
+        bNegative = true;
+        aSrc++;
+      }
+      else
+        if (*aSrc && '+' == *aSrc) {
+          aSrc++;
+        }
+    //}
+    
+    bool bOnce = false;
+    if (*aSrc && isdigit(*aSrc))
+      bOnce = true;
+    
+    u8 uUnsignedResult = 0;
+    for ( ; *aSrc; aSrc++) {
+      
+      char c = *aSrc;
+      
+      if ( c < '0' || c > '9' )
+        break;
+      
+      uUnsignedResult = (uUnsignedResult * 10) + (c - '0');
+      
+      // have we exceeded the max ?
+      if (uUnsignedResult > (u8)C_I8_MAX)
+        THROW_USER("vConvertIntegerFast"_Stz);
+    }
+    
+    //m_pRowSlab->vDeposit(xInt);
+    m_pRowSlab->m_i_Cell--;
+    i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
+    
+    if (bNegative)
+      iaCells[m_pRowSlab->m_i_Cell] = - uUnsignedResult;
+    else
+      iaCells[m_pRowSlab->m_i_Cell] = uUnsignedResult;
+    
+    //m_oDatum.vInt(xInt);
+    //vSprintInteger();
+    
+    if ( ! bOnce)
+      THROW_USER("vConvertIntegerFast"_Stz);
   }
     
   /*--------------------------------------------------------------------------*/
