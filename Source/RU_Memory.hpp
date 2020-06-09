@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Host
+namespace ResourceUsage
 {
   class RU_Memory : public RU
   {

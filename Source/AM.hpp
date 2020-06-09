@@ -263,7 +263,9 @@ namespace Oblique
     static ReqTuple* aReqTuple_tls(void);
   
     static RU_Memory* pRU_Memory(void);
-  
+    static void vAllocInc(RU_Memory* pRU_Memory, eCN eAllocClass);
+    static void vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand);
     static Session* pSessionGet(ReqTuple* aReqTuple);
