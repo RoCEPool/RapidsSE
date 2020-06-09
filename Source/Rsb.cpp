@@ -33,7 +33,7 @@ Rsb::~Rsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert logical cell to cell subscript                                     */
 /*----------------------------------------------------------------------------*/
-i8 Rsb::i_Cell_lglToNtv(i8 i_Col)
+i8 Rsb::i_ColToCell_ntv(i8 i_Col)
 {
   ASSERT(i_Col >= 0);
   

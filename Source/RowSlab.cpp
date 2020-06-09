@@ -148,7 +148,7 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
     eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
     
     
-    i_Cell_ntv = aRsbSrc->i_Cell_lglToNtv(i_Col);
+    i_Cell_ntv = aRsbSrc->i_ColToCell_ntv(i_Col);
     
     
     if (DM_VCH == eDatum) {
@@ -171,7 +171,7 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
   }
 
   if (bSrcHasPtnHash && bCopyPtnHash) {
-    i_Cell_ntv = aRsbSrc->i_Cell_lglToNtv(i_Col);
+    i_Cell_ntv = aRsbSrc->i_ColToCell_ntv(i_Col);
     iVal = aRsbSrc->iVal_ntv(i_Cell_ntv);
     vDeposit(iVal);
   }
@@ -396,7 +396,7 @@ void RowSlab::vNormaliseStrings(void)
     for (i8 i_OuterRow = 0; i_OuterRow < 100; i_OuterRow++) {
       
       Rsb* aOuterRsb = aRsbAdr(i_OuterRow);
-      i8 i_OuterCell_ntv = aOuterRsb->i_Cell_lglToNtv(i_Col);
+      i8 i_OuterCell_ntv = aOuterRsb->i_ColToCell_ntv(i_Col);
       
       if (C_DATUM_NULL == aOuterRsb->iVal_ntv(i_OuterCell_ntv))
         continue;
@@ -413,7 +413,7 @@ void RowSlab::vNormaliseStrings(void)
       for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < i_OuterRow + 99; i_InnerRow++) {
 
         Rsb* aInnerRsb = aRsbAdr(i_InnerRow);
-        i8 i_InnerCell_ntv = aInnerRsb->i_Cell_lglToNtv(i_Col);
+        i8 i_InnerCell_ntv = aInnerRsb->i_ColToCell_ntv(i_Col);
 
         if (C_DATUM_NULL == aInnerRsb->iVal_ntv(i_InnerCell_ntv))
           continue;
@@ -462,7 +462,7 @@ i8 RowSlab::iPtnOfRsb(Rsb* aRsb)
 
   i8 i_HshCol = m_oStreamPix.m_nCols - 1;
   
-  i8 i_HashCell_ntv = aRsb->i_Cell_lglToNtv(i_HshCol);
+  i8 i_HashCell_ntv = aRsb->i_ColToCell_ntv(i_HshCol);
   
   i8 i_Ptn = aRsb->iVal_ntv(i_HashCell_ntv);
   

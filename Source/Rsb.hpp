@@ -15,12 +15,12 @@ namespace Rows
     Rsb(void);
    ~Rsb(void) noexcept(false);
       
-    i8   i_Cell_lglToNtv(i8 i_Col);
+    i8   i_ColToCell_ntv(i8 i_Col);
   
-    bool bIsNull_ntv(i8 i_Cell);
-    d8   dVal_ntv(i8 i_Cell);
-    i8   iVal_ntv(i8 i_Cell);
-    Stz* szVal_ntv(i8 i_Cell);
+    bool bIsNull_ntv(i8 i_Cell_ntv);
+    d8   dVal_ntv(i8 i_Cell_ntv);
+    i8   iVal_ntv(i8 i_Cell_ntv);
+    Stz* szVal_ntv(i8 i_Cell_ntv);
   };
   
   Rsb* _aRsb(void* aAddr);
