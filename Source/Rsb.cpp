@@ -33,7 +33,7 @@ Rsb::~Rsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert logical cell to cell subscript                                     */
 /*----------------------------------------------------------------------------*/
-i8 Rsb::i_Cell_ptv(i8 iLogicalCell)
+i8 Rsb::i_Cell_lglToNtv(i8 iLogicalCell)
 {
   ASSERT(iLogicalCell >= 0);
   
