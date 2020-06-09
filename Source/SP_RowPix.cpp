@@ -174,10 +174,10 @@ void SP_RowPix::vAppendVch(Rsb* aRsb, i8 i_Col, ColPix xColPix)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
-  i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
+  Stz* szVal = aRsb->szVal_ntv(i_Cell_ntv);
   
   SP_Vch spVch;
-  StrLib::vAppendString(&m_azCursor,(char*)spVch.sz((char*)iVal));
+  StrLib::vAppendString(&m_azCursor,(char*)szVal);
 }
 
 /*----------------------------------------------------------------------------*/
