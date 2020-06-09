@@ -607,7 +607,14 @@ namespace Load
     if ( ! bOnce )
       THROW_USER("vConvertDecimalFast"_Stz);
     
-    m_pRowSlab->vDeposit(iDecimal);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // deposit the decimal
+    
+    //m_pRowSlab->vDeposit(iDecimal);
+    m_pRowSlab->m_i_Cell--;
+    i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
+    iaCells[m_pRowSlab->m_i_Cell] = iDecimal;
+    
     //m_oDatum.vBcd(xBcd);
     
     //vSprintDecimal();
@@ -726,6 +733,9 @@ namespace Load
       if (uUnsignedResult > (u8)C_I8_MAX)
         THROW_USER("vConvertIntegerFast"_Stz);
     }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // deposit the integer
     
     //m_pRowSlab->vDeposit(xInt);
     m_pRowSlab->m_i_Cell--;
@@ -992,6 +1002,8 @@ namespace Load
     //StrLib::vCopy(szStr,m_oDatum.azChar());
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // deposit the string
+    
     //m_pRowSlab->vDepositString_end(nChars+1);
     m_pRowSlab->m_xWsp.vTakeHead(nChars+1);
     
