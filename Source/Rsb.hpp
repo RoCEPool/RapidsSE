@@ -15,7 +15,7 @@ namespace Rows
     Rsb(void);
    ~Rsb(void) noexcept(false);
       
-    i8   i_Cell_ptv(i8 iLogicalCell);
+    i8   i_Cell_lglToNtv(i8 iLogicalCell);
   
     bool bIsNull_ntv(i8 i_Cell);
     d8   dVal_ntv(i8 i_Cell);

@@ -279,7 +279,7 @@ void Encoding::vInitialEncodingRsb(Rsb* aRsb)
 
     _ColEnc& xrColEnc = xaColEnc[i_Col];
 
-    i8 i_Cell_ntv = aRsb->i_Cell_ptv(i_Col);
+    i8 i_Cell_ntv = aRsb->i_Cell_lglToNtv(i_Col);
 
     wColVal = aRsb->iVal_ntv(i_Cell_ntv);
 

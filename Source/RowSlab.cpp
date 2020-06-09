@@ -231,6 +231,8 @@ char* RowSlab::azDepositString_begin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
+#ifdef WITH_RSB_STROFS
+  
   char* azStzCell = (char*)m_xWsp.ayLatterHead();
   
   m_i_Cell--;
@@ -239,8 +241,20 @@ char* RowSlab::azDepositString_begin(void)
   
   iaCells[m_i_Cell] = (i8)azStzCell;
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+#else
   
+  char* azStzCell = (char*)m_xWsp.ayLatterHead();
+  
+  m_i_Cell--;
+
+  i8* iaCells = (i8*)m_xWsp.ayArea();
+  
+  iaCells[m_i_Cell] = (i8)azStzCell;
+
+#endif
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
   return azStzCell;
 }
 
@@ -373,12 +387,18 @@ void RowSlab::vNormaliseStrings(void)
     i8 nRows = this->nRows();
     for (i8 i_OuterRow = 0; i_OuterRow < 100; i_OuterRow++) {
       
+      Rsb* aOuterRsb = aRsb(i_OuterRow);
+      i8 i_OuterCell_ntv = aOuterRsb->i_Cell_lglToNtv(i_Col);
+      
+      
       i8 i_OuterCell = i_Cell(i_OuterRow,i_Col);
       m8* aOuterCell = amCell(i_OuterCell);
       if (C_DATUM_NULL == (i8) *aOuterCell)
         continue;
+
       
       Stz* szOuterStz = (Stz*) * aOuterCell;
+      ASSERT(aOuterRsb->szVal_ntv(i_OuterCell_ntv) == szOuterStz);
       //vTrace("Outer: %s\n"_Stz,szOuterStz);
       i8 nLength = szOuterStz->nLength();
       if (nLength < 8)
@@ -387,13 +407,19 @@ void RowSlab::vNormaliseStrings(void)
     //for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < nRows; i_InnerRow++) {
       for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < i_OuterRow + 99; i_InnerRow++) {
 
+        Rsb* aInnerRsb = aRsb(i_InnerRow);
+        i8 i_InnerCell_ntv = aOuterRsb->i_Cell_lglToNtv(i_Col);
+
+        
+        
         i8 i_InnerCell = i_Cell(i_InnerRow,i_Col);
         m8* aInnerCell = amCell(i_InnerCell);
         if (C_DATUM_NULL == (i8) *aInnerCell)
           continue;
 
         Stz* szInnerStz = (Stz*) * aInnerCell;
-        
+        ASSERT(aInnerRsb->szVal_ntv(i_InnerCell_ntv) == szInnerStz);
+
         if (! szInnerStz->bEqual(szOuterStz))
           continue;
 
