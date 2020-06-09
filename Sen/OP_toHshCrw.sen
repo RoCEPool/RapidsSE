@@ -81,6 +81,8 @@
 
   loop
 
+  StreamDef[].delete
+
   ToHshCrw[].delete
 
   PipeIn[].pipeOut
