@@ -1,0 +1,131 @@
+/*============================================================================*/
+/* OP_toRsbFast.sen -- Convert csv buffers to row slab buffers                */
+/*============================================================================*/
+
+" OP_toRsbFast.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: toRsbFast_StartMarker \handler
+
+  // test and create Table[] using <tableNm>
+  <tableNm> op__table if
+
+    // create a ToRsb using Table[].streamDef
+    ToRsb[].create
+
+    // pipeout the (StartMarker)
+    PipeIn[].pipeOut
+
+  else
+    
+    // delete the (StartMarker)
+    PipeIn[].delete
+
+    // pipeout (ErrorMarker)
+    EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                BEGIN */
+/*----------------------------------------------------------------------------*/
+: toRsbFast_PulseMarker \handler
+
+  // pipe out the (PulseMarker)
+  PipeIn[].pipeOut
+
+  // new and pipe out (StreamDef)  DOES NOT SET StreamDef[]??
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CSVBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: toRsbFast_CsvBuffer \handler
+
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
+
+  Operand[].csvToRsb
+
+  // test for any completed
+  ToRsb[].completed to OperandB[]
+  begin
+    OperandB[].isNull not
+  while
+    OperandB[].pipeOut
+    ToRsb[].completed to OperandB[]
+  repeat
+
+  Operand[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: toRsbFast_EosMarker \handler
+
+  // test for any remainders
+  ToRsb[].dangling to OperandB[]
+  begin
+    OperandB[].isNull not
+  while
+    OperandB[].pipeOut
+    ToRsb[].dangling to OperandB[]
+  repeat
+
+  // delete ToRsb
+  ToRsb[].delete
+
+  // pipeout the (EosMarker)
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* toRsb request                                                        SPAWN */
+/*----------------------------------------------------------------------------*/
+: toRsbFast_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: toRsbFast_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: toRsbFast_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: toRsbFast_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: toRsbFast_StartMarker ZK_STARTMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: toRsbFast :: toRsbFast <tableNm> ;
+
+: toRsbFast _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
