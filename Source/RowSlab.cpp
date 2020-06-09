@@ -390,25 +390,22 @@ void RowSlab::vNormaliseStrings(void)
       Rsb* aOuterRsb = aRsb(i_OuterRow);
       i8 i_OuterCell_ntv = aOuterRsb->i_Cell_lglToNtv(i_Col);
       
-      
-      i8 i_OuterCell = i_Cell(i_OuterRow,i_Col);
-      m8* aOuterCell = amCell(i_OuterCell);
-      if (C_DATUM_NULL == (i8) *aOuterCell)
+      if (C_DATUM_NULL == aOuterRsb->iVal_ntv(i_OuterCell_ntv))
         continue;
 
-      
-      Stz* szOuterStz = (Stz*) * aOuterCell;
-      ASSERT(aOuterRsb->szVal_ntv(i_OuterCell_ntv) == szOuterStz);
+      Stz* szOuterStz = aOuterRsb->szVal_ntv(i_OuterCell_ntv);
       //vTrace("Outer: %s\n"_Stz,szOuterStz);
       i8 nLength = szOuterStz->nLength();
       if (nLength < 8)
         continue;
       
+      
+      
     //for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < nRows; i_InnerRow++) {
       for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < i_OuterRow + 99; i_InnerRow++) {
 
         Rsb* aInnerRsb = aRsb(i_InnerRow);
-        i8 i_InnerCell_ntv = aOuterRsb->i_Cell_lglToNtv(i_Col);
+        i8 i_InnerCell_ntv = aInnerRsb->i_Cell_lglToNtv(i_Col);
 
         
         
@@ -437,7 +434,7 @@ void RowSlab::vNormaliseStrings(void)
   }
   
 L_Exit:
-  ; //m_oNmlStr.vDump();
+  m_oNmlStr.vDump();
 }
 
 /*----------------------------------------------------------------------------*/
