@@ -24,18 +24,17 @@ namespace Rows
     Stz* sz(Rsb* aRsb, bool bNewLine = false);
 
   private:
-    void vAppendBcd(ColPix xColPix, i8 iVal);
-    void vAppendBol(ColPix xColPix, i8 iVal);
-    void vAppendDte(ColPix xColPix, i8 iVal);
-    void vAppendFlt(Rsb* aRsb, i8 i_Col);
-    void vAppendInt(ColPix xColPix, i8 iVal);
-    void vAppendIvl(ColPix xColPix, i8 iVal);
-    void vAppendTme(ColPix xColPix, i8 iVal);
-    void vAppendTsp(ColPix xColPix, i8 iVal);
-    void vAppendVch(ColPix xColPix, i8 iVal);
+    void vAppendBcd(Rsb* aRsb, i8 i_Col, ColPix xColPix);
+    void vAppendBol(Rsb* aRsb, i8 i_Col, ColPix xColPix);
+    void vAppendDte(Rsb* aRsb, i8 i_Col, ColPix xColPix);
+    void vAppendFlt(Rsb* aRsb, i8 i_Col, ColPix xColPix);
+    void vAppendInt(Rsb* aRsb, i8 i_Col, ColPix xColPix);
+    void vAppendIvl(Rsb* aRsb, i8 i_Col, ColPix xColPix);
+    void vAppendTme(Rsb* aRsb, i8 i_Col, ColPix xColPix);
+    void vAppendTsp(Rsb* aRsb, i8 i_Col, ColPix xColPix);
+    void vAppendVch(Rsb* aRsb, i8 i_Col, ColPix xColPix);
 
     void vPutRow(Rsb* aRsb, bool bNewLine);
-
     char* azRecord(void);
     void vReset(void);
 

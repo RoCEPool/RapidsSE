@@ -63,9 +63,12 @@ Stz* SP_RowPix::sz(Rsb* aRsb, bool bNewLine)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendBcd(ColPix xColPix, i8 iVal)
+void SP_RowPix::vAppendBcd(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+
+  i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
+  i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
 
   SP_Bcd spBcd;
   StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(iVal,xColPix.m_uScale));
@@ -73,27 +76,33 @@ void SP_RowPix::vAppendBcd(ColPix xColPix, i8 iVal)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendBol(ColPix xColPix, i8 iVal)
+void SP_RowPix::vAppendBol(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
+  i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
+  i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
+  
   SP_Bol spBol;
   StrLib::vAppendString(&m_azCursor,(char*)spBol.sz(iVal));
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendDte(ColPix xColPix, i8 iVal)
+void SP_RowPix::vAppendDte(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
+  i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
+  i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
+  
   SP_Dte spDte;
   StrLib::vAppendString(&m_azCursor,(char*)spDte.sz(iVal));
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendFlt(Rsb* aRsb, i8 i_Col)
+void SP_RowPix::vAppendFlt(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
@@ -106,9 +115,12 @@ void SP_RowPix::vAppendFlt(Rsb* aRsb, i8 i_Col)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendInt(ColPix xColPix, i8 iVal)
+void SP_RowPix::vAppendInt(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
+  i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
   
   if (CX_PTNHASH == xColPix.m_uKind)
     StrLib::vAppendChar(&m_azCursor,'#');
@@ -119,8 +131,11 @@ void SP_RowPix::vAppendInt(ColPix xColPix, i8 iVal)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendIvl(ColPix xColPix, i8 iVal)
+void SP_RowPix::vAppendIvl(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 {
+  i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
+  i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
+  
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   SP_Ivl spIvl;
   StrLib::vAppendString(&m_azCursor,(char*)spIvl.sz(iVal));
@@ -128,9 +143,12 @@ void SP_RowPix::vAppendIvl(ColPix xColPix, i8 iVal)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendTme(ColPix xColPix, i8 iVal)
+void SP_RowPix::vAppendTme(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
+  i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
   
   SP_Tme spTme;
   StrLib::vAppendString(&m_azCursor,(char*)spTme.sz(iVal));
@@ -138,9 +156,12 @@ void SP_RowPix::vAppendTme(ColPix xColPix, i8 iVal)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendTsp(ColPix xColPix, i8 iVal)
+void SP_RowPix::vAppendTsp(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
+  i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
   
   SP_Tsp spTsp;
   StrLib::vAppendString(&m_azCursor,(char*)spTsp.sz(iVal));
@@ -148,9 +169,12 @@ void SP_RowPix::vAppendTsp(ColPix xColPix, i8 iVal)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendVch(ColPix xColPix, i8 iVal)
+void SP_RowPix::vAppendVch(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
+  i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
   
   SP_Vch spVch;
   StrLib::vAppendString(&m_azCursor,(char*)spVch.sz((char*)iVal));
@@ -178,15 +202,15 @@ void SP_RowPix::vPutRow(Rsb* aRsb, bool bNewLine)
     eDM eDatum = (eDM)xColPix.m_uDatum;
     
     switch (eDatum) {
-      case DM_BCD: vAppendBcd(xColPix,iVal); break;
-      case DM_BOL: vAppendBol(xColPix,iVal); break;
-      case DM_DTE: vAppendDte(xColPix,iVal); break;
-      case DM_FLT: vAppendFlt(aRsb,i_Col);   break;
-      case DM_INT: vAppendInt(xColPix,iVal); break;
-      case DM_IVL: vAppendIvl(xColPix,iVal); break;
-      case DM_TME: vAppendTme(xColPix,iVal); break;
-      case DM_TSP: vAppendTsp(xColPix,iVal); break;
-      case DM_VCH: vAppendVch(xColPix,iVal); break;
+      case DM_BCD: vAppendBcd(aRsb,i_Col,xColPix); break;
+      case DM_BOL: vAppendBol(aRsb,i_Col,xColPix); break;
+      case DM_DTE: vAppendDte(aRsb,i_Col,xColPix); break;
+      case DM_FLT: vAppendFlt(aRsb,i_Col,xColPix); break;
+      case DM_INT: vAppendInt(aRsb,i_Col,xColPix); break;
+      case DM_IVL: vAppendIvl(aRsb,i_Col,xColPix); break;
+      case DM_TME: vAppendTme(aRsb,i_Col,xColPix); break;
+      case DM_TSP: vAppendTsp(aRsb,i_Col,xColPix); break;
+      case DM_VCH: vAppendVch(aRsb,i_Col,xColPix); break;
       default:
         NEVER_REACH;
     }

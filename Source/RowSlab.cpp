@@ -212,19 +212,19 @@ char* RowSlab::azDepositString_begin(void)
 
 #else
   
-  char* azStzCell = (char*)m_xWsp.ayLatterHead();
+  char* azStz = (char*)m_xWsp.ayLatterHead();
   
   m_i_Cell--;
 
   i8* iaCells = (i8*)amSlabCellVec();
   
-  iaCells[m_i_Cell] = (i8)azStzCell;
+  iaCells[m_i_Cell] = (i8)azStz;
 
 #endif
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  return azStzCell;
+  return azStz;
 }
 
 /*----------------------------------------------------------------------------*/
