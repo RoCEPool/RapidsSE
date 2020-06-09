@@ -395,8 +395,10 @@ void RowSlab::vNormaliseStrings(void)
       m8* aOuterCell = amCell(i_OuterCell);
       if (C_DATUM_NULL == (i8) *aOuterCell)
         continue;
+
       
       Stz* szOuterStz = (Stz*) * aOuterCell;
+      ASSERT(aOuterRsb->szVal_ntv(i_OuterCell_ntv) == szOuterStz);
       //vTrace("Outer: %s\n"_Stz,szOuterStz);
       i8 nLength = szOuterStz->nLength();
       if (nLength < 8)
@@ -416,7 +418,8 @@ void RowSlab::vNormaliseStrings(void)
           continue;
 
         Stz* szInnerStz = (Stz*) * aInnerCell;
-        
+        ASSERT(aInnerRsb->szVal_ntv(i_InnerCell_ntv) == szInnerStz);
+
         if (! szInnerStz->bEqual(szOuterStz))
           continue;
 
