@@ -457,6 +457,27 @@ void Step::vSocketRecvObject(void)
       return;
     }
       
+    case CN_RSBBUFFER: {
+      RsbBuffer* pRsbBuffer = new RsbBuffer;
+      
+      MemLib::vCopy(pRsbBuffer,pObject,sizeof(Object),CN_RSBBUFFER);
+      
+      aBody = aAdd<void*>(pRsbBuffer,sizeof(Object));
+      nRemainingBytes = gxaSizeHeap[CN_RSBBUFFER].m_nClassSize - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
+      
+      m_pDataStack->vPushPtr(pRsbBuffer);
+      m_pDataStack->vPushInt(true);
+      EXIT();
+      return;
+    }
+      
     case CN_STREAMSET: {
       StreamSet* pStreamSet = new StreamSet;
       
