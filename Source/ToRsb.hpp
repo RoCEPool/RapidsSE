@@ -335,8 +335,36 @@ namespace Load
         case DC_DD: {
           
           u8 uSubField;
+            
+          char *s = m_acChr;
+          i8 iDigits = 2;
           
-          if ( ! StrLib::bExtractU8(&m_acChr,&uSubField,2) )
+          if ( ! *s )
+            THROW_USER("vConvertDateFast"_Stz);
+          
+          bool bOnce = false;
+          if (*s && isdigit(*s))
+            bOnce = true;
+          
+          u8 v = 0;
+          for ( ; *s && iDigits > 0; s++)
+          {
+            char c = *s;
+            
+            // decrement no of digits extracted
+            iDigits--;
+            
+            //    if ( ! isdigit(c) )
+            if ( c < '0' || c > '9' )
+              break;
+            
+            v = (v * 10) + c - '0';
+          }
+          
+          uSubField = v;
+          m_acChr = s;
+          
+          if (!bOnce)
             THROW_USER("vConvertDateFast"_Stz);
           
           iDay = uSubField;
@@ -347,8 +375,36 @@ namespace Load
           u8 uSubField;
           
           iMonth = 0;
+
+          char *s = m_acChr;
+          i8 iDigits = 2;
           
-          if ( ! StrLib::bExtractU8(&m_acChr,&uSubField,2) )
+          if ( ! *s )
+            THROW_USER("vConvertDateFast"_Stz);
+          
+          bool bOnce = false;
+          if (*s && isdigit(*s))
+            bOnce = true;
+          
+          u8 v = 0;
+          for ( ; *s && iDigits > 0; s++)
+          {
+            char c = *s;
+            
+            // decrement no of digits extracted
+            iDigits--;
+            
+            //    if ( ! isdigit(c) )
+            if ( c < '0' || c > '9' )
+              break;
+            
+            v = (v * 10) + c - '0';
+          }
+          
+          uSubField = v;
+          m_acChr = s;
+          
+          if (!bOnce)
             THROW_USER("vConvertDateFast"_Stz);
           
           if (uSubField < 1 || uSubField > 12)
@@ -363,7 +419,41 @@ namespace Load
           i8 nDigits;
           
           // extract year
-          if ( ! StrLib::bExtractInteger(&m_acChr,&iYear,nDigits) )
+          //if ( ! StrLib::bExtractInteger(&m_acChr,&iYear,nDigits) )
+          //  THROW_USER("vConvertDateFast"_Stz);
+          
+          char *aSrc = m_acChr;
+          
+          if ( ! *aSrc )
+            THROW_USER("vConvertDateFast"_Stz);
+          
+          bool bOnce = false;
+          if (*aSrc && isdigit(*aSrc))
+            bOnce = true;
+          
+          nDigits = 0;
+          
+          u8 uUnsignedResult = 0;
+          for ( ; *aSrc; aSrc++) {
+            
+            char c = *aSrc;
+            
+            if ( c < '0' || c > '9' )
+              break;
+            
+            uUnsignedResult = (uUnsignedResult * 10) + (c - '0');
+            nDigits++;
+            
+            // have we exceeded the max ?
+            if (uUnsignedResult > (u8)C_I8_MAX)
+              THROW_USER("vConvertDateFast"_Stz);
+          }
+          
+          iYear = uUnsignedResult;
+          
+          m_acChr = aSrc;
+          
+          if (!bOnce)
             THROW_USER("vConvertDateFast"_Stz);
           
           if (2 == nDigits) {
