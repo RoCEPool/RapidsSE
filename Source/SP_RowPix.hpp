@@ -22,7 +22,8 @@ namespace Rows
    ~SP_RowPix(void) noexcept(false);
     
     Stz* sz(m8* amRowCells, bool bNewLine = false);
-  
+    Stz* sz(Rsb* aRsb, bool bNewLine = false);
+
   private:
   
     void vAppendBcd(ColPix xColPix, i8 iVal);

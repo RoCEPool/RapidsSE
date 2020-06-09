@@ -55,6 +55,18 @@ Stz* SP_RowPix::sz(m8* amRowCells, bool bNewLine)
   return (Stz*) m_caRecord;
 }
 
+/*----------------------------------------------------------------------------*/
+/* return Stz* of result                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* SP_RowPix::sz(Rsb* aRsb, bool bNewLine)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  vPutRow((m8*)aRsb,bNewLine);
+  
+  return (Stz*) m_caRecord;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
