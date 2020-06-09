@@ -136,9 +136,9 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
     vDeposit(iVal);
   }
   
-  Rsb* aRsbDst = aRsbAdr(nRows() - 1);
-  SP_RowPix spPix(nCols,m_oStreamPix.m_xaColPix);
-  vTrace("CopyRsb: %s\n"_Stz,spPix.sz(aRsbDst));
+//  Rsb* aRsbDst = aRsbAdr(nRows() - 1);
+//  SP_RowPix spPix(nCols,m_oStreamPix.m_xaColPix);
+//  vTrace("CopyRsb: %s\n"_Stz,spPix.sz(aRsbDst));
 }
 
 /*----------------------------------------------------------------------------*/

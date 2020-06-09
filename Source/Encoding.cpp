@@ -279,14 +279,21 @@ void Encoding::vInitialEncodingRsb(Rsb* aRsb)
 
     _ColEnc& xrColEnc = xaColEnc[i_Col];
 
+    eDM eDatum = xrColEnc.m_pCol->eDatum();
+    
     i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
-
-    wColVal = aRsb->iVal_ntv(i_Cell_ntv);
+    
+    if (DM_VCH == eDatum) {
+      wColVal = aRsb->szVal_ntv(i_Cell_ntv);
+    }
+    else {
+      wColVal = aRsb->iVal_ntv(i_Cell_ntv);
+    }
 
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // encode the column value
 
-    switch (xrColEnc.m_pCol->eDatum()) {
+    switch (eDatum) {
 
       case DM_BCD: vEncodeBcd(xrColEnc,wColVal);  break;
       case DM_BOL: vEncodeBol(xrColEnc,wColVal);  break;
