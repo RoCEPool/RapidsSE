@@ -73,20 +73,6 @@ i8 RowSlab::i_Cell(i8 iRow, i8 iCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of a row cell                                                  */
-/*----------------------------------------------------------------------------*/
-m8* RowSlab::amCell(i8 i_Cell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  m8* amCellVec = amSlabCellVec();
-
-  m8* amCell = &amCellVec[i_Cell];
-  
-  return amCell;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of columns                                                      */
 /*----------------------------------------------------------------------------*/
 i8 RowSlab::nCols(void)
