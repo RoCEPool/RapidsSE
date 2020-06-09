@@ -19,7 +19,7 @@ lsCol <fl_table> ;
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "Load File" <fl_file> ;
 
-fload <fl_table> <fl_file> ;
+/time fload <fl_table> <fl_file> ;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 //print section "Scan Table" <fl_table>;
