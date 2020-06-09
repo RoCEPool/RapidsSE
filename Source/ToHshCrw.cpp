@@ -71,6 +71,8 @@ void ToHshCrw::vConvert(RsbBuffer* pRsbBuffer)
   
   vAddRsbRows(i_Ptn,pRsbBuffer);
   
+  delete pRsbBuffer;
+  
   vDebugPoint();
 }
 
