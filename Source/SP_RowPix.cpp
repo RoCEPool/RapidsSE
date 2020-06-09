@@ -217,6 +217,46 @@ void SP_RowPix::vPutRow(m8* amRowCells, bool bNewLine)
 }
 
 /*----------------------------------------------------------------------------*/
+/* put row into record                                                        */
+/*----------------------------------------------------------------------------*/
+void SP_RowPix::vPutRow(Rsb* aRsb, bool bNewLine)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+    
+  vReset();
+  
+  for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
+    
+    if (i_Col)
+      StrLib::vAppendChar(&m_azCursor,',');
+
+    i8 i_Cell_ntv = aRsb->i_Cell_lglToNtv(i_Col);
+    
+    i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
+    
+    ColPix xColPix = m_axaColPix[i_Col];
+    eDM eDatum = (eDM)xColPix.m_uDatum;
+    
+    switch (eDatum) {
+      case DM_BCD: vAppendBcd(xColPix,iVal); break;
+      case DM_BOL: vAppendBol(xColPix,iVal); break;
+      case DM_DTE: vAppendDte(xColPix,iVal); break;
+      case DM_FLT: vAppendFlt((m8*)aRsb,i_Col); break;
+      case DM_INT: vAppendInt(xColPix,iVal); break;
+      case DM_IVL: vAppendIvl(xColPix,iVal); break;
+      case DM_TME: vAppendTme(xColPix,iVal); break;
+      case DM_TSP: vAppendTsp(xColPix,iVal); break;
+      case DM_VCH: vAppendVch(xColPix,iVal); break;
+      default:
+        NEVER_REACH;
+    }
+  }
+  
+  if (bNewLine)
+    StrLib::vAppendChar(&m_azCursor,'\n');
+}
+
+/*----------------------------------------------------------------------------*/
 /* return char* of result                                                     */
 /*----------------------------------------------------------------------------*/
 char* SP_RowPix::azRecord(void)

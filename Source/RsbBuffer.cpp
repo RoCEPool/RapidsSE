@@ -64,7 +64,7 @@ CsvBuffer* RsbBuffer::pToCsvBuffer(void)
     
     m8* amRowCells = m_oRowSlab.amRowCells(i_Row);
     
-    Stz* szRow = spRowPix.sz(amRowCells,true);
+    Stz* szRow = spRowPix.sz((Rsb*)amRowCells,true);
 
     nSize = szRow->nSize();
     

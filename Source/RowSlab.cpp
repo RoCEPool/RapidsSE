@@ -310,7 +310,7 @@ void RowSlab::vDumpRow(i8 i_Row)
   SP_RowPix spRowPix(this->nCols(),this->axaColPix());
   
   m8* amRowCells = this->amRowCells(i_Row);
-  Stz* szRow = spRowPix.sz(amRowCells);
+  Stz* szRow = spRowPix.sz((Rsb*)amRowCells);
   vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
 }
 
