@@ -529,8 +529,10 @@ TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aFindTail(TAIL* aFindLine, i8& i_Tail)
     //aFindLine->vDump();
     //aTailLine->vDump();
     
-    if (0 == MemLib::iCompareBytes(aStrLine,aFindLine,nTailBytes))
+    if (0 == MemLib::iCompareBytes(aStrLine,aFindLine,nTailBytes)) {
+      i_Tail = iToUnit(aStrLine);
       return aStrLine;
+    }
   }
   
   return nullptr;

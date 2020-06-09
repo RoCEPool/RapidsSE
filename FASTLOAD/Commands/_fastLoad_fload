@@ -5,6 +5,8 @@
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print division "Fast Load B (new FLOAD) --" <fl_name> ;
 
+trackMemory;
+
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "Create Table" <fl_table> ;
 
@@ -30,6 +32,12 @@ print section "Analyse and Size" <fl_table> ;
 antbl <fl_table> ;
 
 sztbl <fl_table> ;
+
+drop table <fl_table> ;
+
+sleep 2;
+
+memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

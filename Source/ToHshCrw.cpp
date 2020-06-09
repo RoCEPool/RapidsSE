@@ -113,21 +113,20 @@ void ToHshCrw::vAddNst(RsbBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
-//  ASSERT(0 == m_pCrwBuffer->nRowCount());
-//  
-//  NmlStr* pNmlStr = pRsbBuffer->pRowSlab()->pNmlStr();
-//  
-//  Stz* szNmlStr = nullptr;
-//  while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
-//    //vTrace("vAddNst : %s\n"_Stz,szNmlStr);
-//    
-//    
-//    bool bAdded = m_pCrwBuffer->m_pRowCompactor->bCompactTail(szNmlStr);
-//    ASSERT(bAdded);
-//  }
-//  
-//  
-//  vDebugPoint();
+  ASSERT(0 == m_pCrwBuffer->nRowCount());
+
+  NmlStr* pNmlStr = pRsbBuffer->pRowSlab()->pNmlStr();
+
+  Stz* szNmlStr = nullptr;
+  while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
+    //vTrace("vAddNst : %s\n"_Stz,szNmlStr);
+
+    bool bAdded = m_pCrwBuffer->m_pRowCompactor->bCompactTail(szNmlStr);
+    ASSERT(bAdded);
+  }
+
+
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
