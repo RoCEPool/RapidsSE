@@ -24,8 +24,6 @@ namespace Rows
     Stz* sz(Rsb* aRsb, bool bNewLine = false);
 
   private:
-    Stz* sz(m8* amRowCells, bool bNewLine = false);
-
     void vAppendBcd(ColPix xColPix, i8 iVal);
     void vAppendBol(ColPix xColPix, i8 iVal);
     void vAppendDte(ColPix xColPix, i8 iVal);
@@ -37,7 +35,6 @@ namespace Rows
     void vAppendTsp(ColPix xColPix, i8 iVal);
     void vAppendVch(ColPix xColPix, i8 iVal);
 
-    void vPutRow(m8* amRowCells, bool bNewLine);
     void vPutRow(Rsb* aRsb, bool bNewLine);
 
     char* azRecord(void);

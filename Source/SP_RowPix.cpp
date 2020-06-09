@@ -46,23 +46,11 @@ SP_RowPix::~SP_RowPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* SP_RowPix::sz(m8* amRowCells, bool bNewLine)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  vPutRow(amRowCells,bNewLine);
-  
-  return (Stz*) m_caRecord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return Stz* of result                                                      */
-/*----------------------------------------------------------------------------*/
 Stz* SP_RowPix::sz(Rsb* aRsb, bool bNewLine)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vPutRow((m8*)aRsb,bNewLine);
+  vPutRow(aRsb,bNewLine);
   
   return (Stz*) m_caRecord;
 }
@@ -176,44 +164,6 @@ void SP_RowPix::vAppendVch(ColPix xColPix, i8 iVal)
   
   SP_Vch spVch;
   StrLib::vAppendString(&m_azCursor,(char*)spVch.sz((char*)iVal));
-}
-
-/*----------------------------------------------------------------------------*/
-/* put row into record                                                        */
-/*----------------------------------------------------------------------------*/
-void SP_RowPix::vPutRow(m8* amRowCells, bool bNewLine)
-{
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
-    
-  vReset();
-  
-  for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    
-    if (i_Col)
-      StrLib::vAppendChar(&m_azCursor,',');
-
-    i8 iVal = (i8)amRowCells[- i_Col];
-    
-    ColPix xColPix = m_axaColPix[i_Col];
-    eDM eDatum = (eDM)xColPix.m_uDatum;
-    
-    switch (eDatum) {
-      case DM_BCD: vAppendBcd(xColPix,iVal); break;
-      case DM_BOL: vAppendBol(xColPix,iVal); break;
-      case DM_DTE: vAppendDte(xColPix,iVal); break;
-      case DM_FLT: vAppendFlt(amRowCells,i_Col); break;
-      case DM_INT: vAppendInt(xColPix,iVal); break;
-      case DM_IVL: vAppendIvl(xColPix,iVal); break;
-      case DM_TME: vAppendTme(xColPix,iVal); break;
-      case DM_TSP: vAppendTsp(xColPix,iVal); break;
-      case DM_VCH: vAppendVch(xColPix,iVal); break;
-      default:
-        NEVER_REACH;
-    }
-  }
-  
-  if (bNewLine)
-    StrLib::vAppendChar(&m_azCursor,'\n');
 }
 
 /*----------------------------------------------------------------------------*/
