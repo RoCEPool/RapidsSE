@@ -27,7 +27,6 @@ namespace Rows
     void vAppendBcd(ColPix xColPix, i8 iVal);
     void vAppendBol(ColPix xColPix, i8 iVal);
     void vAppendDte(ColPix xColPix, i8 iVal);
-    void vAppendFlt(ColPix xColPix, i8 iVal);
     void vAppendFlt(m8* amRowCells, i8 i_Cell);
     void vAppendInt(ColPix xColPix, i8 iVal);
     void vAppendIvl(ColPix xColPix, i8 iVal);

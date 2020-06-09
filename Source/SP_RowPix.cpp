@@ -93,16 +93,6 @@ void SP_RowPix::vAppendDte(ColPix xColPix, i8 iVal)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendFlt(ColPix xColPix, i8 iVal)
-{
-  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
-
-  SP_Flt spFlt;
-  StrLib::vAppendString(&m_azCursor,(char*)spFlt.sz(iVal));
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 void SP_RowPix::vAppendFlt(m8* amRowCells, i8 i_Cell)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
