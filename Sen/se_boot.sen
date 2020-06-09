@@ -178,6 +178,7 @@ assert::stack_0
         "OP_toNstRsb.sen"             include
         "OP_toPtnRsb.sen"             include
         "OP_toRsb.sen"                include
+        "OP_toRsbFast.sen"            include
         "OP_toStatDemon.sen"          include
         "OP_truncateIndex.sen"        include
         "OP_truncateTable.sen"        include
