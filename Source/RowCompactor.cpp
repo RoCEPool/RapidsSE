@@ -90,6 +90,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   m_pIrwSamples = new IrwBuffer;
   m_bCollecting = bCollectSamples;
   
+  ASSERT(!m_pIrwSampleSlab);
   m_pIrwSampleSlab = new RowSlab;
   m_pIrwSampleSlab->vInitPix(m_pStreamDef,false);
 }
@@ -121,6 +122,9 @@ void RowCompactor::vCompactEnd(void)
   m_pEncoding   = nullptr;
   m_pCrwNub     = nullptr;
   m_pStreamDef  = nullptr;
+  
+  delete m_pIrwSampleSlab;
+  m_pIrwSampleSlab = nullptr;
   
   //m_pIrwSampleSlab->vDumpAllRows();
 }
