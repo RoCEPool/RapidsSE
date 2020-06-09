@@ -42,6 +42,7 @@ create table lineitem
          760MB
                 wc :   6001215   35481203   759863287 (127B ascii/row)
          / 100MB/s :                             7.5s (10ns/char)
+                                                576MB (𝛀 0.75)
 
  */
 

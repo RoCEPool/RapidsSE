@@ -458,10 +458,15 @@ void Step::vInfoSetRdCsvChunk(void)
   //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
   
   CsvBuffer* pCsvBuffer = new CsvBuffer;
+  char* azInto = (char*)pCsvBuffer->ayDataArea();
+
   pFile->vSeek(iOffset);
   pCsvBuffer->vTake(nBytes);
-  i8 nBytesRead = pFile->nReadBytes(pCsvBuffer->ayDataArea(),nBytes);
+  i8 nBytesRead = pFile->nReadBytes(azInto,nBytes);
   ASSERT(nBytesRead == nBytes);
+  azInto[nBytes] = '\0';
+  
+  //vTrace("trailing: %s\n"_Stz,azInto + nBytes - 64);
   
   // return the CsvBuffer
   m_pDataStack->vPushPtr(pCsvBuffer);

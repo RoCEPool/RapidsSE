@@ -83,6 +83,11 @@ CrwBuffer* ToHshCrw::pCompleted(i8 i_Ptn)
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
   
+//  if (pCrwBuffer) {
+//    pCrwBuffer->vDump();
+//    vDebugPoint();
+//  }
+  
   return pCrwBuffer;
 }
 
@@ -94,7 +99,7 @@ CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
-  
+
   return pCrwBuffer;}
 
 /*----------------------------------------------------------------------------*/
@@ -108,21 +113,21 @@ void ToHshCrw::vAddNst(RsbBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
-  ASSERT(0 == m_pCrwBuffer->nRowCount());
-  
-  NmlStr* pNmlStr = pRsbBuffer->pRowSlab()->pNmlStr();
-  
-  Stz* szNmlStr = nullptr;
-  while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
-    //vTrace("vAddNst : %s\n"_Stz,szNmlStr);
-    
-    
-    bool bAdded = m_pCrwBuffer->m_pRowCompactor->bCompactTail(szNmlStr);
-    ASSERT(bAdded);
-  }
-  
-  
-  vDebugPoint();
+//  ASSERT(0 == m_pCrwBuffer->nRowCount());
+//  
+//  NmlStr* pNmlStr = pRsbBuffer->pRowSlab()->pNmlStr();
+//  
+//  Stz* szNmlStr = nullptr;
+//  while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
+//    //vTrace("vAddNst : %s\n"_Stz,szNmlStr);
+//    
+//    
+//    bool bAdded = m_pCrwBuffer->m_pRowCompactor->bCompactTail(szNmlStr);
+//    ASSERT(bAdded);
+//  }
+//  
+//  
+//  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

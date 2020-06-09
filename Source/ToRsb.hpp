@@ -374,6 +374,20 @@ namespace Load
     Int xInt;
     SN_Int snInt;
 
+//  if (m_iLine > 1199000) {
+//    vTrace("%lld: %c%c%c%c%c%c%c%c\n"_Stz,
+//           m_iLine,
+//           *(m_acChr+0),
+//           *(m_acChr+1),
+//           *(m_acChr+2),
+//           *(m_acChr+3),
+//           *(m_acChr+4),
+//           *(m_acChr+5),
+//           *(m_acChr+6),
+//           *(m_acChr+7)
+//           );
+//  }
+  
     xInt = snInt.i(&m_acChr,m_pCol,m_pFmt);
   
     m_pRowSlab->vDeposit(xInt);

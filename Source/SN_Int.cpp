@@ -36,6 +36,20 @@ i8 SN_Int::i(char** aacCrs, Column* pCol, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNINT);
   
+//  if (! StrLib::bIsDigit(*(*aacCrs+0))) {
+//    vTrace("SN_Int: %c%c%c%c%c%c%c%c\n"_Stz,
+//           *(*aacCrs+0),
+//           *(*aacCrs+1),
+//           *(*aacCrs+2),
+//           *(*aacCrs+3),
+//           *(*aacCrs+4),
+//           *(*aacCrs+5),
+//           *(*aacCrs+6),
+//           *(*aacCrs+7)
+//           );
+//    vDebugPoint();
+//  }
+  
   if ( ! StrLib::bExtractInteger(aacCrs,&m_wDtm.m_iWrd,
                                  true/*bWithSign*/) )
     THROW_USER("StrLib::bExtractInteger"_Stz);
