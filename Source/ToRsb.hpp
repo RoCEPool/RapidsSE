@@ -554,13 +554,13 @@ namespace Load
       bOnce = true;
     
     // ignore leading 0's
-    while (StrLib::bIsDigit(*m_acChr) && StrLib::iDigitToI8(*m_acChr) == 0) {
+    while (isdigit(*m_acChr) && *m_acChr - '0' == 0) {
       m_acChr++;
     }
     
     // collect leading digits (till '.')
-    while (StrLib::bIsDigit(*m_acChr)) {
-      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(*m_acChr);
+    while (isdigit(*m_acChr)) {
+      uUnsignedResult = uUnsignedResult * 10 + *m_acChr - '0';
       m_acChr++;
       iPrecision--;
     }
@@ -573,8 +573,8 @@ namespace Load
       
       m_acChr++; // skip '.'
       
-      while (StrLib::bIsDigit(*m_acChr) && iScale) {
-        uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(*m_acChr);
+      while (isdigit(*m_acChr) && iScale) {
+        uUnsignedResult = uUnsignedResult * 10 + *m_acChr - '0';
         m_acChr++;
         iScale--;
       }
@@ -588,10 +588,10 @@ namespace Load
       THROW_USER("vConvertDecimalFast"_Stz);
     
     // round up if there any more digits after decimal
-    if (StrLib::bIsDigit(*m_acChr)) {
-      if (StrLib::iDigitToI8(*m_acChr) >= 5)
+    if (isdigit(*m_acChr)) {
+      if (*m_acChr - '0' >= 5)
         uUnsignedResult += 1;
-      while (StrLib::bIsDigit(*m_acChr))
+      while (isdigit(*m_acChr))
         m_acChr++;
     }
     
