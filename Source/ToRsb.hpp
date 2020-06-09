@@ -316,6 +316,74 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   /* extract date                                                             */
   /*--------------------------------------------------------------------------*/
+  inline void vConvertDateFast(void)
+  {
+    vFieldTrace(CT_DATE);
+    
+    //Dte xDte;
+    //SN_Dte snDte;
+    
+    //xDte = snDte.i(&m_acChr,m_pCol,m_pFmt);
+    i8 iYear, iMonth, iDay;
+    
+    for (i8 i_Component = 0; i_Component < 3; i_Component++) {
+      
+      eDC eDateComponent = m_pFmt->m_eDateComponent[i_Component];
+      
+      switch (eDateComponent) {
+          
+        case DC_DD:
+          if (! StrLib::bExtractDay(&m_acChr,iDay))
+            THROW_USER("vConvertDateFast"_Stz);
+          break;
+          
+        case DC_MM:
+          if (! StrLib::bExtractMonth(&m_acChr,iMonth))
+            THROW_USER("vConvertDateFast"_Stz);
+          break;
+          
+        case DC_YYYY:
+          if (! StrLib::bExtractYear(&m_acChr,iYear))
+            THROW_USER("vConvertDateFast"_Stz);
+          break;
+          
+        default:
+          THROW_USER("vConvertDateFast"_Stz);
+      }
+      
+      // skip separator after components  0 and 1
+      if (i_Component < 2) {
+        if (m_pFmt->m_cDateSeparator != *m_acChr++)
+          THROW_USER("vConvertDateFast"_Stz);
+      }
+      
+    }
+    
+    if (! StrLib::bValidateMonth(iDay, iMonth, iYear))
+      THROW_USER("vConvertDateFast"_Stz);
+    
+    Dte xDte;
+    xDte.m_uYearDelta  = iYear - C_YEAR_BASE;
+    xDte.m_uMonth = iMonth;
+    xDte.m_uDay   = iDay;
+    xDte.m_uSpare = 0;
+    
+    //m_pRowSlab->vDeposit(xDte);
+    // move to previous cell
+    m_pRowSlab->m_i_Cell--;
+    
+    d8* daCells = (d8*)m_pRowSlab->m_xWsp.ayArea();
+    
+    daCells[m_pRowSlab->m_i_Cell] = xDte.m_iAsI8;
+
+    //m_oDatum.vDte(xDte);
+    
+    //vSprintDate();
+  }
+    
+  /*--------------------------------------------------------------------------*/
+  /* extract date                                                             */
+  /*--------------------------------------------------------------------------*/
   inline void vConvertDecimal(void)
   {
     vFieldTrace(CT_DECIMAL);
