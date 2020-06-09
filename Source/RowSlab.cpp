@@ -374,8 +374,9 @@ void RowSlab::vNormaliseStrings(void)
   //m_oNmlStr.vDump();
 
   i8 nTimes = 0;
+  i8 nRows  = this->nRows();
+  i8 nCols  = this->nCols();
   
-  i8 nCols = this->nCols();
 //for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
   for (i8 i_Col = 13; i_Col < 14; i_Col++) {
 
@@ -383,8 +384,8 @@ void RowSlab::vNormaliseStrings(void)
     
     if (DM_VCH != eDatum)
       continue;
+    
 
-    i8 nRows = this->nRows();
     for (i8 i_OuterRow = 0; i_OuterRow < 100; i_OuterRow++) {
       
       Rsb* aOuterRsb = aRsb(i_OuterRow);
@@ -395,10 +396,10 @@ void RowSlab::vNormaliseStrings(void)
 
       Stz* szOuterStz = aOuterRsb->szVal_ntv(i_OuterCell_ntv);
       //vTrace("Outer: %s\n"_Stz,szOuterStz);
+      
       i8 nLength = szOuterStz->nLength();
       if (nLength < 8)
         continue;
-      
       
       
     //for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < nRows; i_InnerRow++) {
@@ -407,15 +408,11 @@ void RowSlab::vNormaliseStrings(void)
         Rsb* aInnerRsb = aRsb(i_InnerRow);
         i8 i_InnerCell_ntv = aInnerRsb->i_Cell_lglToNtv(i_Col);
 
-        
-        
-        i8 i_InnerCell = i_Cell(i_InnerRow,i_Col);
-        m8* aInnerCell = amCell(i_InnerCell);
-        if (C_DATUM_NULL == (i8) *aInnerCell)
+        if (C_DATUM_NULL == aInnerRsb->iVal_ntv(i_InnerCell_ntv))
           continue;
 
-        Stz* szInnerStz = (Stz*) * aInnerCell;
-        ASSERT(aInnerRsb->szVal_ntv(i_InnerCell_ntv) == szInnerStz);
+        Stz* szInnerStz = aInnerRsb->szVal_ntv(i_InnerCell_ntv);
+        //vTrace("Inner: %s\n"_Stz,szInnerStz);
 
         if (! szInnerStz->bEqual(szOuterStz))
           continue;
@@ -426,15 +423,17 @@ void RowSlab::vNormaliseStrings(void)
           if (++nTimes >= 3)
             goto L_Exit;
         }
+        
         break;
-      }
+        
+      } // each inner row
       
-      //L_NextOuter: ;
-    }
-  }
+    } // each outer row
+
+  } // each col
   
 L_Exit:
-  m_oNmlStr.vDump();
+  ; //m_oNmlStr.vDump();
 }
 
 /*----------------------------------------------------------------------------*/
