@@ -235,15 +235,15 @@ bool ToRsb::bConvertFast(char* azSrc)
       m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
       
       switch (eDatum) {
-        case DM_BOL : vConvertBoolean();   break;
-        case DM_DTE : vConvertDate();      break;
-        case DM_BCD : vConvertDecimal();   break;
-        case DM_FLT : vConvertFloat();     break;
+        case DM_BOL : vConvertBoolean();     break;
+        case DM_DTE : vConvertDate();        break;
+        case DM_BCD : vConvertDecimal();     break;
+        case DM_FLT : vConvertFloat();       break;
         case DM_INT : vConvertIntegerFast(); break;
-        case DM_IVL : vConvertInterval();  break;
-        case DM_TME : vConvertTime();      break;
-        case DM_TSP : vConvertTimestamp(); break;
-        case DM_VCH : vConvertVarchar();   break;
+        case DM_IVL : vConvertInterval();    break;
+        case DM_TME : vConvertTime();        break;
+        case DM_TSP : vConvertTimestamp();   break;
+        case DM_VCH : vConvertVarcharFast(); break;
         default:
           RASSERT(0);
       }
