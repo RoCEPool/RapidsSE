@@ -396,8 +396,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   \
   while (*acChr && StrLib::bIsWhite(*acChr)) { \
     acChr++;  \
-    m_iCol++;   \
-    m_nChars++; \
+    m_iCol++; \
   }
 
 /*----------------------------------------------------------------------------*/
@@ -450,7 +449,6 @@ L_TestMoreCsv:
   while (bWHITE_SPACE(*acChr)) {
     acChr++;
     m_iCol++;
-    m_nChars++;
   }
   
   // test for more csv to be parsed
