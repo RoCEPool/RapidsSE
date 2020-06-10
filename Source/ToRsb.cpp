@@ -819,7 +819,176 @@ L_TestMoreFields:
   L_Varchar:
   {
   // don't skip white space
-  vConvertVarchar();
+
+  i8 iMaxColumn = m_pCol->iColumnLength();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // azDepositString_begin
+
+  char* azStzCell = m_pRowSlab->azDepositString_begin();
+
+
+  //SN_Vch snVch;
+
+  i8 nChars = 0;
+  //bool bSawEnclosedLeading = CsvValue::bIsEnclosedString(&m_acChr,m_pFmt);
+
+  bool bSawEnclosedLeading;
+
+  if (! m_pFmt->m_cEnclosedBy_Leading)
+    bSawEnclosedLeading = false;
+
+  char *aStart = m_acChr;
+
+  // find first non-space character
+  while (' ' == *m_acChr)
+    m_acChr++;
+
+  // is it an enclosed varchar?
+  if (*m_acChr == m_pFmt->m_cEnclosedBy_Leading) {
+    m_acChr++;
+    bSawEnclosedLeading = true;
+  }
+  else {
+    m_acChr = aStart;
+    bSawEnclosedLeading = false;
+  }
+
+  //m_oDatum = snVch.sz(&m_acChr,m_pCol,m_pFmt,bSawEnclosedLeading,nChars);
+  i8 iLength = 0;
+  char *aDst = (char*)azStzCell;
+
+  bool bSawEnclosedTrailing = false;
+
+  char cSrc = *m_acChr;
+
+  while (cSrc) {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // special case of double enclosedBy
+    
+    if (m_pFmt->m_cEnclosedBy_Trailing == m_pFmt->m_cEnclosedBy_Leading) {
+      if (cSrc == m_pFmt->m_cEnclosedBy_Leading && *(m_acChr+1) == m_pFmt->m_cEnclosedBy_Leading) {
+        
+        // skip the first enclosed character
+        m_acChr++;
+        
+        // append one instance of the enclosedBy character
+        if (iLength++ < iMaxColumn)
+          *aDst++ = cSrc;
+        
+        m_acChr++;
+        
+        cSrc = *m_acChr;
+        
+        continue;
+      }
+      //falls thru if not the case of double enclosedBy
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for a non-printable character (e.g. \n or \r)
+    
+    // Alka: Changed check from ! isprint (not-printable) to isspace and then allowing space
+    // this ways we allow for UTF-8 characters to pass this test
+    // I think there is more to supporting UTF-8 but this will let us allow for UTF-8 characters to
+    // be loaded from files.
+    
+    //if (! bAllowNonPrintable && ! isprint(**aaSrc) )
+    
+    // isprint: checks for any printable character including space.
+    
+    // isspace : checks for white-space characters. In the C and POSIX locales, these are:
+    // space, form-feed ('\f'), newline ('\n'), carriage return ('\r'), horizontal tab ('\t'),
+    // and vertical tab ('\v').
+    
+    if (! m_pFmt->m_bAllowNonPrintable && isspace(cSrc) && (cSrc != ' ') )
+      break;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for normal end
+    
+    if (bSawEnclosedLeading) {
+      // we saw a leading enclodedBy so test for trailing enclosedBy
+      if (cSrc == m_pFmt->m_cEnclosedBy_Trailing) {
+        bSawEnclosedTrailing = true;
+        m_acChr++;
+        break;
+      }
+      //falls thru if not trailing enclosedBy
+    }
+    // test for field separator (because its not enclosed)
+    else if (m_pFmt->m_cFieldDelimiter && cSrc == m_pFmt->m_cFieldDelimiter)
+      break;
+    // test for record terminator (because its not enclosed)
+    else if (m_pFmt->m_cRecordTerminator && cSrc == m_pFmt->m_cRecordTerminator)
+      break;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for the escape character
+    
+    if (cSrc == m_pFmt->m_cEscapeChar) {
+      
+      if (StrLib::bEscapeConvert( *(m_acChr+1),
+                                 m_pFmt->m_cEnclosedBy_Leading,
+                                 m_pFmt->m_cEnclosedBy_Trailing,
+                                 m_pFmt->m_cEscapeChar,
+                                 m_pFmt->m_cFieldDelimiter,
+                                 m_pFmt->m_cRecordTerminator)) {
+        
+        // skip the escape character
+        m_acChr++;
+        
+        // append the escaped character
+        if (iLength++ < iMaxColumn)
+          *aDst++ = StrLib::cEscapeConvert(*m_acChr++);
+        else
+          m_acChr++;
+        
+        cSrc = *m_acChr;
+        continue;
+      }
+      else {
+        m_acChr++;
+        cSrc = *m_acChr;
+      }
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // normal character
+    
+    // append the normal character
+    if (iLength++ < iMaxColumn)
+      *aDst++ = cSrc;
+    
+    m_acChr++;
+    cSrc = *m_acChr;
+  }
+
+  // terminate
+  *aDst++ = '\0';
+
+  // its not an enclosed varchar so we consider it to be valid
+  if (iLength < iMaxColumn)
+    nChars = iLength;
+  else
+    nChars = iMaxColumn;
+
+  // if this an enclosed varchar we should have expected to
+  // see the trailing enclosedBy
+  if (bSawEnclosedLeading)
+    if ( ! bSawEnclosedTrailing )
+      THROW_USER("vConvertVarcharFast"_Stz);
+
+
+  //char* szStr = m_pRowSlab->azDepositString_begin();
+  //StrLib::vCopy(szStr,m_oDatum.azChar());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // deposit the string
+
+  m_pRowSlab->vDepositString_end(nChars+1);
+
   }
   goto L_PostField;
 
