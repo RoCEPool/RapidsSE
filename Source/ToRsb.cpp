@@ -403,7 +403,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a chunk                                          */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertFastInline(char* azSrc)
+bool ToRsb::bConvertFastInline(char* azCsvSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
@@ -433,12 +433,12 @@ bool ToRsb::bConvertFastInline(char* azSrc)
   
   //vTrace("[>%s<]"_Stz,azSrc);
   
-  m_azSrc = azSrc;
+  m_azSrc = azCsvSrc;
   m_acChr = m_azSrc;
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // while more csv data
+  // 1) while more csv data
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreCsv:
   
@@ -462,7 +462,7 @@ L_TestMoreCsv:
   
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // while more fields
+  // 1.a) while more fields
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_TestMoreFields:
   
@@ -488,8 +488,9 @@ L_TestMoreFields:
       RASSERT(0);
   }
   
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // date
+  // 1.b) date field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Date:
   {
@@ -497,156 +498,138 @@ L_TestMoreFields:
   
   i8 iYear = 0, iMonth = 0, iDay = 0;
   
-  //for (i8 i_Component = 0; i_Component < 3; i_Component++) {
-    
-    //eDC eDateComponent = m_pFmt->m_eDateComponent[i_Component];
-    
-    //switch (eDateComponent) {
-        
-      //case DC_YYYY: {
-        i8 nDigits;
-                
-        char *aSrc = m_acChr;
-        
-        if ( ! *aSrc )
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        bool bOnce = false;
-        if (*aSrc && isdigit(*aSrc))
-          bOnce = true;
-        
-        nDigits = 0;
-        
-        u8 uUnsignedResult = 0;
-        for ( ; *aSrc; aSrc++) {
+  i8 nDigits;
           
-          char c = *aSrc;
-          
-          if ( c < '0' || c > '9' )
-            break;
-          
-          uUnsignedResult = (uUnsignedResult * 10) + (c - '0');
-          nDigits++;
-          
-          // have we exceeded the max ?
-          if (uUnsignedResult > (u8)C_I8_MAX)
-            THROW_USER("vConvertDateFast"_Stz);
-        }
-        
-        iYear = uUnsignedResult;
-        
-        m_acChr = aSrc;
-        
-        if (!bOnce)
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        if (2 == nDigits) {
-          iYear += 2000;
-          goto L_Month;
-        }
-        
-        if (4 == nDigits)
-          goto L_Month;
-        
-        THROW_USER("vConvertDateFast"_Stz);
-
-      //}
+  char *aSrc = m_acChr;
   
-      L_Month:
-
-      if (m_pFmt->m_cDateSeparator != *m_acChr++)
-        THROW_USER("vConvertDateFast"_Stz);
-      //case DC_MM: {
-        
-        u8 uSubField;
-        
-        iMonth = 0;
-
-        char *s = m_acChr;
-        i8 iDigits = 2;
-        
-        if ( ! *s )
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        bOnce = false;
-        if (*s && isdigit(*s))
-          bOnce = true;
-        
-        u8 v = 0;
-        for ( ; *s && iDigits > 0; s++)
-        {
-          char c = *s;
-          
-          // decrement no of digits extracted
-          iDigits--;
-          
-          if ( c < '0' || c > '9' )
-            break;
-          
-          v = (v * 10) + c - '0';
-        }
-        
-        uSubField = v;
-        m_acChr = s;
-        
-        if (!bOnce)
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        if (uSubField < 1 || uSubField > 12)
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        iMonth = uSubField;
-        
-
-      //}
-        
-      L_Day:
-//case DC_DD: {
+  if ( ! *aSrc )
+    THROW_USER("vConvertDateFast"_Stz);
   
-        if (m_pFmt->m_cDateSeparator != *m_acChr++)
-          THROW_USER("vConvertDateFast"_Stz);
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // year
+  
+  bool bOnce = false;
+  if (*aSrc && isdigit(*aSrc))
+    bOnce = true;
+  
+  nDigits = 0;
+  
+  u8 uUnsignedResult = 0;
+  for ( ; *aSrc; aSrc++) {
+    
+    char c = *aSrc;
+    
+    if ( c < '0' || c > '9' )
+      break;
+    
+    uUnsignedResult = (uUnsignedResult * 10) + (c - '0');
+    nDigits++;
+    
+    // have we exceeded the max ?
+    if (uUnsignedResult > (u8)C_I8_MAX)
+      THROW_USER("vConvertDateFast"_Stz);
+  }
+  
+  iYear = uUnsignedResult;
+  
+  m_acChr = aSrc;
+  
+  if (!bOnce)
+    THROW_USER("vConvertDateFast"_Stz);
+  
+  if (2 == nDigits) {
+    iYear += 2000;
+    goto L_Month;
+  }
+  
+  if (4 == nDigits)
+    goto L_Month;
+  
+  THROW_USER("vConvertDateFast"_Stz);
 
-                  
-        s = m_acChr;
-        iDigits = 2;
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // month
+  
+  L_Month:
+  if (m_pFmt->m_cDateSeparator != *m_acChr++)
+    THROW_USER("vConvertDateFast"_Stz);
         
-        if ( ! *s )
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        bOnce = false;
-        if (*s && isdigit(*s))
-          bOnce = true;
-        
-        v = 0;
-        for ( ; *s && iDigits > 0; s++)
-        {
-          char c = *s;
-          
-          // decrement no of digits extracted
-          iDigits--;
-          
-          if ( c < '0' || c > '9' )
-            break;
-          
-          v = (v * 10) + c - '0';
-        }
-        
-        uSubField = v;
-        m_acChr = s;
-        
-        if (!bOnce)
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        iDay = uSubField;
-      //}
-        
-        
-      //default:
-      //  THROW_USER("vConvertDateFast"_Stz);
-    //}
+  u8 uSubField;
+  
+  iMonth = 0;
+
+  char *s = m_acChr;
+  i8 iDigits = 2;
+  
+  if ( ! *s )
+    THROW_USER("vConvertDateFast"_Stz);
+  
+  bOnce = false;
+  if (*s && isdigit(*s))
+    bOnce = true;
+  
+  u8 v = 0;
+  for ( ; *s && iDigits > 0; s++)
+  {
+    char c = *s;
     
+    // decrement no of digits extracted
+    iDigits--;
     
-  //}
+    if ( c < '0' || c > '9' )
+      break;
+    
+    v = (v * 10) + c - '0';
+  }
+  
+  uSubField = v;
+  m_acChr = s;
+  
+  if (!bOnce)
+    THROW_USER("vConvertDateFast"_Stz);
+  
+  if (uSubField < 1 || uSubField > 12)
+    THROW_USER("vConvertDateFast"_Stz);
+  
+  iMonth = uSubField;
+        
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // day
+        
+  if (m_pFmt->m_cDateSeparator != *m_acChr++)
+    THROW_USER("vConvertDateFast"_Stz);
+
+  s = m_acChr;
+  iDigits = 2;
+  
+  if ( ! *s )
+    THROW_USER("vConvertDateFast"_Stz);
+  
+  bOnce = false;
+  if (*s && isdigit(*s))
+    bOnce = true;
+  
+  v = 0;
+  for ( ; *s && iDigits > 0; s++)
+  {
+    char c = *s;
+    
+    // decrement no of digits extracted
+    iDigits--;
+    
+    if ( c < '0' || c > '9' )
+      break;
+    
+    v = (v * 10) + c - '0';
+  }
+  
+  uSubField = v;
+  m_acChr = s;
+  
+  if (!bOnce)
+    THROW_USER("vConvertDateFast"_Stz);
+  
+  iDay = uSubField;
   
   if (! StrLib::bValidateMonth(iDay, iMonth, iYear))
     THROW_USER("vConvertDateFast"_Stz);
@@ -663,16 +646,15 @@ L_TestMoreFields:
   }
   goto L_PostField;
 
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // decimal
+  // 1.c) decimal field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Decimal:
   {
   vSKIP_WHITE_SPACE();
   
   Bcd xBcd;
-  //SN_Bcd snBcd;
-  //xBcd = snBcd.i(&m_acChr,m_pCol,m_pFmt);
   
   i8 iDecimal;
   i8 iLength = m_pCol->iColumnLength();
@@ -688,9 +670,9 @@ L_TestMoreFields:
     (*m_acChr)++;
   }
   else
-    if (*m_acChr && '+' == *m_acChr ) {
-      (m_acChr)++;
-    }
+  if (*m_acChr && '+' == *m_acChr ) {
+    (m_acChr)++;
+  }
   
   bool bOnce = false;
   if (*m_acChr && (isdigit(*m_acChr) || '.' == *m_acChr))
@@ -755,8 +737,9 @@ L_TestMoreFields:
   }
   goto L_PostField;
 
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // integer
+  // 1.d) integer
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Integer:
   {
@@ -810,8 +793,9 @@ L_TestMoreFields:
   }
   goto L_PostField;
 
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // varchar
+  // 1.e) varchar field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Varchar:
   {
@@ -958,7 +942,7 @@ L_TestMoreFields:
   
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // boolean
+  // 1.f) boolean field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Boolean:
   {
@@ -973,7 +957,7 @@ L_TestMoreFields:
   goto L_PostField;
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // float
+  // 1.g) float field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Float:
   {
@@ -988,7 +972,7 @@ L_TestMoreFields:
   goto L_PostField;
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // interval
+  // 1.h) interval field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Interval:
   {
@@ -1003,7 +987,7 @@ L_TestMoreFields:
   goto L_PostField;
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // time
+  // 1.i) time field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Time:
   {
@@ -1018,7 +1002,7 @@ L_TestMoreFields:
   goto L_PostField;
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // timestamp
+  // 1.j) timestamp field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Timestamp:
   {
@@ -1033,9 +1017,8 @@ L_TestMoreFields:
   goto L_PostField;
 
   
-  
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // ... back to while more fields
+  // 1.k) end of fields
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
   
@@ -1055,9 +1038,8 @@ L_PostField:
   goto L_TestMoreFields;
   
   
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ... back to while more csv data
+  // 2) back to while more csv data
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfFields:
   
@@ -1084,6 +1066,10 @@ L_EndOfFields:
   m_iCol = 1;
   
   goto L_TestMoreCsv;
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 3) end of azCsvSrc
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 L_EndOfCsv:
