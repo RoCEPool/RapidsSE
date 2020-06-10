@@ -760,7 +760,6 @@ L_TestMoreFields:
     THROW_USER("vConvertDecimalFast"_Stz);
   
   // round up if there any more digits after decimal
-  //if (isdigit(*acCsvChr)) {
   if (*acCsvChr >= '0' && *acCsvChr <= '9') {
     if (*acCsvChr - '0' >= 5)
       uUnsignedResult += 1;
@@ -794,36 +793,32 @@ L_TestMoreFields:
 
   vSKIP_WHITE_SPACE();
   
-  aSrc = acCsvChr;
-  
-  if ( ! *aSrc )
+   if ( ! *acCsvChr )
     THROW_USER("vConvertIntegerFast"_Stz);
   
   // test for negative or positive sign
   bNegative = false;
-  if (*aSrc && '-' == *aSrc) {
+  if (*acCsvChr && '-' == *acCsvChr) {
     bNegative = true;
-    aSrc++;
+    acCsvChr++;
   }
   else
-  if (*aSrc && '+' == *aSrc) {
-    aSrc++;
+  if (*acCsvChr && '+' == *acCsvChr) {
+    acCsvChr++;
   }
   
   bOnce = false;
-  //if (*aSrc && isdigit(*aSrc))
-  if (*aSrc && (*aSrc >= '0' && *aSrc <= '9'))
+  //if (*acCsvChr && isdigit(*acCsvChr))
+  if (*acCsvChr && (*acCsvChr >= '0' && *acCsvChr <= '9'))
     bOnce = true;
   
   uUnsignedResult = 0;
-  for ( ; *aSrc; aSrc++) {
-    
-    c = *aSrc;
-    
-    if ( c < '0' || c > '9' )
+  for ( ; *acCsvChr; acCsvChr++) {
+        
+    if ( *acCsvChr < '0' || *acCsvChr > '9' )
       break;
     
-    uUnsignedResult = (uUnsignedResult * 10) + (c - '0');
+    uUnsignedResult = (uUnsignedResult * 10) + (*acCsvChr - '0');
     
     // have we exceeded the max ?
     if (uUnsignedResult > (u8)C_I8_MAX)
@@ -834,11 +829,10 @@ L_TestMoreFields:
     THROW_USER("vConvertIntegerFast"_Stz);
 
   // deposit the integer
-  if ( ! bNegative )
-    xInt = uUnsignedResult;
+  if (bNegative)
+    pRowSlab->vDeposit((i8) - uUnsignedResult);
   else
-    xInt = - uUnsignedResult;
-  pRowSlab->vDeposit(xInt);
+    pRowSlab->vDeposit((i8) uUnsignedResult);
 
   goto L_PostField;                                            // end of integer
 
