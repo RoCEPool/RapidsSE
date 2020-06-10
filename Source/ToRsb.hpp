@@ -113,24 +113,13 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vSkipBlankspace(void)
   {
-    if ( ! (*m_acChr && bIsBlankspace(*m_acChr)) )
-      return;
-
-    if (m_bTrace)
-      vTrace("Skipping: "_Stz);
-  
-    while (*m_acChr && StrLib::bIsWhite(*m_acChr)) {
-
-      if (m_bTrace)
-        vTrace("%c"_Stz,*m_acChr);
-      
-      m_acChr++;
-      m_iCol++;
-      m_nChars++;
+    if ( (*m_acChr && bIsBlankspace(*m_acChr)) ) {
+      while (*m_acChr && StrLib::bIsWhite(*m_acChr)) {
+        m_acChr++;
+        m_iCol++;
+        m_nChars++;
+      }
     }
-  
-    if (m_bTrace)
-      vTrace("\n"_Stz);
   }
 
   /*--------------------------------------------------------------------------*/

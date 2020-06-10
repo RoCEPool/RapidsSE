@@ -385,8 +385,10 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*                             -- FAST INLINE --                              */
 /*----------------------------------------------------------------------------*/
 
-#define bMORE_DATA()    (bool)(*m_acChr)
-#define bMORE_FIELDS()  (bool)(*m_acChr && m_cRecEnd != *m_acChr)
+#define bMORE_DATA()     (bool)(*m_acChr)
+#define bMORE_FIELDS()   (bool)(*m_acChr && m_cRecEnd != *m_acChr)
+#define bWHITE_SPACE(c)  \
+  (c == ' ') || (c == '\n') || (c == '\r') || (c == '\f') || (c == '\t')
 
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a chunk                                          */
@@ -411,11 +413,17 @@ bool ToRsb::bConvertFastInline(char* azSrc)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreCsv:
   
+  // test for more csv to be parsed
   if (! bMORE_DATA())   // ? macro ?
     goto L_EndOfCsv;
-  
-  vSkipBlankspace();   // ? expand ?
-  
+
+  // skip blank spaces
+  while (bWHITE_SPACE(*m_acChr)) {
+    m_acChr++;
+    m_iCol++;
+    m_nChars++;
+  }
+
   if (! bMORE_FIELDS()) {   // ? macro ?
     m_acChr++;
     m_iCol++;
