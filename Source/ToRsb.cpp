@@ -447,9 +447,6 @@ L_TestMoreFields:
 
   m_bSawFldSep = false;
     
-  if (DM_VCH != eDatum)
-    vSkipBlankspace();
-
   switch (eDatum) {
     case DM_BOL : goto L_Boolean;
     case DM_DTE : goto L_Date;
@@ -469,6 +466,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Date:
   {
+  vSkipBlankspace();
   vConvertDate();
   }
   goto L_PostField;
@@ -478,6 +476,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Decimal:
   {
+  vSkipBlankspace();
   vConvertDecimal();
   }
   goto L_PostField;
@@ -487,6 +486,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Integer:
   {
+  vSkipBlankspace();
   vConvertInteger();
   }
   goto L_PostField;
@@ -496,6 +496,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Varchar:
   {
+  // don't skip blank space
   vConvertVarchar();
   }
   goto L_PostField;
@@ -509,6 +510,8 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Boolean:
   {
+    vSkipBlankspace();
+  
     Bol xBol;
     SN_Bol snBol;
   
@@ -522,6 +525,8 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Float:
   {
+    vSkipBlankspace();
+  
     Flt xFlt;
     SN_Flt snFlt;
 
@@ -535,6 +540,8 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Interval:
   {
+    vSkipBlankspace();
+  
     Ivl xIvl;
     SN_Ivl snIvl;
 
@@ -548,6 +555,8 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Time:
   {
+    vSkipBlankspace();
+  
     Tme xTme;
     SN_Tme snTme;
 
@@ -561,6 +570,8 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Timestamp:
   {
+    vSkipBlankspace();
+  
     Tsp xTsp;
     SN_Tsp snTsp;
 
