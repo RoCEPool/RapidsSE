@@ -637,9 +637,27 @@ L_TestMoreFields:
   
   iDay = uSubField;
   
-  if (! StrLib::bValidateMonth(iDay, iMonth, iYear))
-    THROW_USER("vConvertDateFast"_Stz);
-  
+  //if (! StrLib::bValidateMonth(iDay, iMonth, iYear))
+  //  THROW_USER("vConvertDateFast"_Stz);
+    
+  // assume a leap year
+  bool bLeapYear = true;
+  if (iYear % 4 == 0) {
+    if ((iYear % 100) == 0 && (iYear % 400) != 0) {
+      // not a leap year
+      bLeapYear = false;
+    }
+  }
+
+  if (bLeapYear) {
+    if (iDay > (i8)iDaysPerMonthLeap[iMonth-1])
+      THROW_USER("vConvertDateFast"_Stz);
+  }
+  else {
+    if (iDay > (i8)iDaysPerMonth[iMonth-1])
+      THROW_USER("vConvertDateFast"_Stz);
+  }
+    
   // deposit the date
   Dte xDte;
   xDte.m_uYearDelta  = iYear - C_YEAR_BASE;
@@ -876,10 +894,10 @@ L_TestMoreFields:
     //  break;
     if (! m_pFmt->m_bAllowNonPrintable &&
         ( (cSrc == '\f') ||
-         (cSrc == '\n') ||
-         (cSrc == '\r') ||
-         (cSrc == '\t') ||
-         (cSrc == '\v') )
+          (cSrc == '\n') ||
+          (cSrc == '\r') ||
+          (cSrc == '\t') ||
+          (cSrc == '\v') )
         )
       break;
     
