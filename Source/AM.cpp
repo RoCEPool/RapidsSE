@@ -1197,8 +1197,6 @@ void AM::vDeleteJobOperand(Job_Operand* pJob)
 /*----------------------------------------------------------------------------*/
 Operand* AM::pDuplicateOperand(Operand* pOperand)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   if (pOperand->eClass() == CN_MARKER) {
     Marker* pMarker = _pMarker(pOperand);
     Marker* pNewMarker = new Marker(pMarker->eOpMarker());
