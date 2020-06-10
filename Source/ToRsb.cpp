@@ -773,25 +773,25 @@ L_Integer:
   bOnce = false;
 
   // leading sign
-  if (*acCsvSrc && '-' == *acCsvSrc) {
+  if ('-' == cSrc) {
     bNegative = true;
-    acCsvSrc++;
+    vADV_SRC();
   }
   else
-  if (*acCsvSrc && '+' == *acCsvSrc) {
-    acCsvSrc++;
+  if ('+' == cSrc) {
+    vADV_SRC();
   }
   
   // at least 1 digit
-  if (*acCsvSrc && (*acCsvSrc >= '0' && *acCsvSrc <= '9'))
+  if (cSrc && (cSrc >= '0' && cSrc <= '9'))
     bOnce = true;
   
-  for ( ; *acCsvSrc; acCsvSrc++) {
+  for ( ; cSrc; vADV_SRC()) {
         
-    if ( *acCsvSrc < '0' || *acCsvSrc > '9' )
+    if ( cSrc < '0' || cSrc > '9' )
       break;
     
-    uPartialResult = (uPartialResult * 10) + (*acCsvSrc - '0');
+    uPartialResult = (uPartialResult * 10) + (cSrc - '0');
     
     if (uPartialResult > (u8)C_I8_MAX)
       THROW_USER("vConvertIntegerFast"_Stz);
