@@ -119,7 +119,7 @@ void TailStr::vAssign(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 void TailStr::vSet(Stz* szStz)
 {
-  vReset();
+//  vReset();
   
   i8 nL = StrLib::nCopy((char*)sz(),(char*)szStz) + C_1B;
   
