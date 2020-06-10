@@ -397,6 +397,24 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     acChr++; \
   }
 
+/*
+ 
+   the following members are used:
+ 
+   m_azSrc
+   m_acChr
+   m_iCol
+   m_nChars
+ 
+   m_pRowSlab
+   m_i_Fld
+   m_bSawFldSep
+ 
+   m_pStreamDef??
+   m_pFmt -- shouldnt be necessary
+   m_pCol
+ */
+
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a chunk                                          */
 /*----------------------------------------------------------------------------*/
@@ -404,39 +422,25 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
-  /*
-   
-     the following members are used:
-   
-     m_azSrc
-     acChr
-     m_iCol
-     m_nChars
-   
-     m_pRowSlab
-     m_i_Fld
-     m_bSawFldSep
-   
-     m_pStreamDef??
-     m_pFmt -- shouldnt be necessary
-     m_pCol
-   */
   
   ColPix xColPix;
   
-  eDM eDatum;
+  eDM    eDatum;
   
   i8 nPtns = AM::nPartitions();
   i8 i_Ptn = 0;
   
-  //vTrace("[>%s<]"_Stz,azSrc);
   
-  ColPix* aColPix = m_pRowSlab->axaColPix();
 
   
   
   char* acChr = azCsvSrc;
+  
+  RowSlab* pRowSlab = m_pRowSlab;
 
+  ColPix* aColPix = pRowSlab->axaColPix();
+
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) while more csv data
@@ -453,9 +457,10 @@ L_TestMoreCsv:
     goto L_EndOfCsv;
   
   // alloc a new rsb, new another rsbBufer if necessary
-  if (! m_pRowSlab->bNewRow()) {    // ? inline ?
+  if (! pRowSlab->bNewRow()) {    // ? inline ?
     vNewRsbBuffer();
-    bool b = m_pRowSlab->bNewRow();
+    pRowSlab = m_pRowSlab;
+    bool b = pRowSlab->bNewRow();
     ASSERT(b);
   }
   
@@ -663,7 +668,7 @@ L_TestMoreFields:
   xDte.m_uDay   = iDay;
   xDte.m_uSpare = 0;
   
-  m_pRowSlab->vDeposit(xDte);
+  pRowSlab->vDeposit(xDte);
 
   }
   goto L_PostField;
@@ -761,7 +766,7 @@ L_TestMoreFields:
     THROW_USER("vConvertDecimalFast"_Stz);
   
   // deposit the decimal
-  m_pRowSlab->vDeposit(iDecimal);
+  pRowSlab->vDeposit(iDecimal);
   }
   goto L_PostField;
 
@@ -818,7 +823,7 @@ L_TestMoreFields:
     xInt = uUnsignedResult;
   else
     xInt = - uUnsignedResult;
-  m_pRowSlab->vDeposit(xInt);
+  pRowSlab->vDeposit(xInt);
   }
   goto L_PostField;
 
@@ -832,7 +837,7 @@ L_TestMoreFields:
 
   i8 iMaxColumn = xColPix.m_uLength;
 
-  char* azStzCell = m_pRowSlab->azDepositString_begin();
+  char* azStzCell = pRowSlab->azDepositString_begin();
 
   i8 nChars = 0;
 
@@ -970,7 +975,7 @@ L_TestMoreFields:
       THROW_USER("vConvertVarcharFast"_Stz);
 
   // deposit the string
-  m_pRowSlab->vDepositString_end(nChars+1);
+  pRowSlab->vDepositString_end(nChars+1);
   }
   goto L_PostField;
 
@@ -990,7 +995,7 @@ L_TestMoreFields:
     SN_Bol snBol;
   
     xBol = snBol.i(&acChr,m_pCol,m_pFmt);
-    m_pRowSlab->vDeposit(xBol);
+    pRowSlab->vDeposit(xBol);
   }
   goto L_PostField;
   
@@ -1006,7 +1011,7 @@ L_TestMoreFields:
     SN_Flt snFlt;
 
     xFlt = snFlt.d(&acChr,m_pCol,m_pFmt);
-    m_pRowSlab->vDeposit(xFlt.m_dFlt);
+    pRowSlab->vDeposit(xFlt.m_dFlt);
   }
   goto L_PostField;
 
@@ -1022,7 +1027,7 @@ L_TestMoreFields:
     SN_Ivl snIvl;
 
     xIvl = snIvl.i(&acChr,m_pCol,m_pFmt);
-    m_pRowSlab->vDeposit(xIvl);
+    pRowSlab->vDeposit(xIvl);
   }
   goto L_PostField;
 
@@ -1038,7 +1043,7 @@ L_TestMoreFields:
     SN_Tme snTme;
 
     xTme = snTme.i(&acChr,m_pCol,m_pFmt);
-    m_pRowSlab->vDeposit(xTme);
+    pRowSlab->vDeposit(xTme);
   }
   goto L_PostField;
 
@@ -1054,7 +1059,7 @@ L_TestMoreFields:
     SN_Tsp snTsp;
 
     xTsp = snTsp.i(&acChr,m_pCol,m_pFmt);
-    m_pRowSlab->vDeposit(xTsp);
+    pRowSlab->vDeposit(xTsp);
   }
   goto L_PostField;
 
@@ -1094,7 +1099,7 @@ L_EndOfFields:
 
   // set partition hash CURRENTLY ROUND ROBIN.  DISCUSS W ALKA
   if (m_bPtnHash) {
-    m_pRowSlab->vDeposit((i8)i_Ptn);
+    pRowSlab->vDeposit((i8)i_Ptn);
     if (++i_Ptn >= nPtns)
       i_Ptn = 0;
   }
@@ -1115,8 +1120,8 @@ L_EndOfFields:
 L_EndOfCsv:
     
 #ifdef WITH_DEBUG_VERSION
-  //m_pRowSlab->vDumpAllRows();
-  //m_pRowSlab->vSlabReport();
+  //pRowSlab->vDumpAllRows();
+  //pRowSlab->vSlabReport();
 #endif
   
   return true;
