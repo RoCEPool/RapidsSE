@@ -585,20 +585,19 @@ L_TestMoreFields:
     THROW_USER("vConvertDateFast"_Stz);
           
   bOnce = false;
-  s = acCsvSrc;
   nDigits = 2;
   
-  if ( ! *s )
+  if ( ! *acCsvSrc )
     THROW_USER("vConvertDateFast"_Stz);
   
-  //if (*s && isdigit(*s))
-  if ( *s && (*s >= '0' && *s <= '9') )
+  //if (*acCsvSrc && isdigit(*acCsvSrc))
+  if ( *acCsvSrc && (*acCsvSrc >= '0' && *acCsvSrc <= '9') )
     bOnce = true;
   
   v = 0;
-  for ( ; *s && nDigits > 0; s++)
+  for ( ; *acCsvSrc && nDigits > 0; acCsvSrc++)
   {
-    c = *s;
+    c = *acCsvSrc;
     
     // decrement no of digits extracted
     nDigits--;
@@ -610,7 +609,6 @@ L_TestMoreFields:
   }
   
   uSubField = v;
-  acCsvSrc = s;
   
   if (!bOnce)
     THROW_USER("vConvertDateFast"_Stz);
@@ -619,7 +617,7 @@ L_TestMoreFields:
     THROW_USER("vConvertDateFast"_Stz);
   
   iMonth = uSubField;
-        
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day
         
