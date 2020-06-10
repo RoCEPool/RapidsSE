@@ -587,7 +587,11 @@ L_TestMoreFields:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
   
-  vPostField();
+  if (m_cFldSep == *m_acChr)
+    m_bSawFldSep = true;
+
+  while (bInField())
+    m_acChr++;
 
   if (m_cFldSep == *m_acChr) {
     m_acChr++;
