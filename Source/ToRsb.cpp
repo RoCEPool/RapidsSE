@@ -442,6 +442,7 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   i8 iMonth;
   i8 iDay;
   i8 nDigits;
+  bool bLeapYear;
 
   u8 uSubField;
   u8 v = 0;
@@ -449,8 +450,6 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   Dte xDte;
 
   
-  bool bLeapYear = true;
-  i8 iMaxColumn;
 
   char* azStzCell;
   char* s;
@@ -830,16 +829,19 @@ L_TestMoreFields:
 
   // don't skip white space
 
-  iMaxColumn = xColPix.m_uLength;
-
-  azStzCell = pRowSlab->azDepositString_begin();
+  nPixLength = xColPix.m_uLength;
 
   nChars = 0;
+  aStart = acCsvChr;
+  bSawEnclosedTrailing = false;
+  bSawEnclosedLeading  = false;
 
+  azStzCell = pRowSlab->azDepositString_begin();
+  aDst = (char*)azStzCell;
+
+  
   if (! m_pFmt->m_cEnclosedBy_Leading)
     bSawEnclosedLeading = false;
-
-  aStart = acCsvChr;
 
   // find first non-space character
   while (' ' == *acCsvChr)
@@ -855,9 +857,7 @@ L_TestMoreFields:
     bSawEnclosedLeading = false;
   }
 
-  aDst = (char*)azStzCell;
 
-  bSawEnclosedTrailing = false;
 
   while (*acCsvChr) {
     
@@ -870,7 +870,7 @@ L_TestMoreFields:
         acCsvChr++;
         
         // append one instance of the enclosedBy character
-        if (nChars++ < iMaxColumn)
+        if (nChars++ < nPixLength)
           *aDst++ = *acCsvChr;
         
         acCsvChr++;
@@ -923,7 +923,7 @@ L_TestMoreFields:
         acCsvChr++;
         
         // append the escaped character
-        if (nChars++ < iMaxColumn)
+        if (nChars++ < nPixLength)
           *aDst++ = StrLib::cEscapeConvert(*acCsvChr++);
         else
           acCsvChr++;
@@ -938,7 +938,7 @@ L_TestMoreFields:
     // normal character
     
     // append the normal character
-    if (nChars++ < iMaxColumn)
+    if (nChars++ < nPixLength)
       *aDst++ = *acCsvChr;
     
     acCsvChr++;
@@ -948,8 +948,8 @@ L_TestMoreFields:
   *aDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nChars >= iMaxColumn)
-    nChars = iMaxColumn;
+  if (nChars >= nPixLength)
+    nChars = nPixLength;
 
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
