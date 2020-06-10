@@ -503,88 +503,6 @@ L_TestMoreFields:
     
     switch (eDateComponent) {
         
-      case DC_DD: {
-        
-        u8 uSubField;
-          
-        char *s = m_acChr;
-        i8 iDigits = 2;
-        
-        if ( ! *s )
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        bool bOnce = false;
-        if (*s && isdigit(*s))
-          bOnce = true;
-        
-        u8 v = 0;
-        for ( ; *s && iDigits > 0; s++)
-        {
-          char c = *s;
-          
-          // decrement no of digits extracted
-          iDigits--;
-          
-          if ( c < '0' || c > '9' )
-            break;
-          
-          v = (v * 10) + c - '0';
-        }
-        
-        uSubField = v;
-        m_acChr = s;
-        
-        if (!bOnce)
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        iDay = uSubField;
-        break;
-      }
-        
-      case DC_MM: {
-        
-        u8 uSubField;
-        
-        iMonth = 0;
-
-        char *s = m_acChr;
-        i8 iDigits = 2;
-        
-        if ( ! *s )
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        bool bOnce = false;
-        if (*s && isdigit(*s))
-          bOnce = true;
-        
-        u8 v = 0;
-        for ( ; *s && iDigits > 0; s++)
-        {
-          char c = *s;
-          
-          // decrement no of digits extracted
-          iDigits--;
-          
-          if ( c < '0' || c > '9' )
-            break;
-          
-          v = (v * 10) + c - '0';
-        }
-        
-        uSubField = v;
-        m_acChr = s;
-        
-        if (!bOnce)
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        if (uSubField < 1 || uSubField > 12)
-          THROW_USER("vConvertDateFast"_Stz);
-        
-        iMonth = uSubField;
-        
-        break;
-      }
-        
       case DC_YYYY: {
         i8 nDigits;
                 
@@ -633,6 +551,89 @@ L_TestMoreFields:
         THROW_USER("vConvertDateFast"_Stz);
         break;
       }
+
+      case DC_MM: {
+        
+        u8 uSubField;
+        
+        iMonth = 0;
+
+        char *s = m_acChr;
+        i8 iDigits = 2;
+        
+        if ( ! *s )
+          THROW_USER("vConvertDateFast"_Stz);
+        
+        bool bOnce = false;
+        if (*s && isdigit(*s))
+          bOnce = true;
+        
+        u8 v = 0;
+        for ( ; *s && iDigits > 0; s++)
+        {
+          char c = *s;
+          
+          // decrement no of digits extracted
+          iDigits--;
+          
+          if ( c < '0' || c > '9' )
+            break;
+          
+          v = (v * 10) + c - '0';
+        }
+        
+        uSubField = v;
+        m_acChr = s;
+        
+        if (!bOnce)
+          THROW_USER("vConvertDateFast"_Stz);
+        
+        if (uSubField < 1 || uSubField > 12)
+          THROW_USER("vConvertDateFast"_Stz);
+        
+        iMonth = uSubField;
+        
+        break;
+      }
+        
+      case DC_DD: {
+        
+        u8 uSubField;
+          
+        char *s = m_acChr;
+        i8 iDigits = 2;
+        
+        if ( ! *s )
+          THROW_USER("vConvertDateFast"_Stz);
+        
+        bool bOnce = false;
+        if (*s && isdigit(*s))
+          bOnce = true;
+        
+        u8 v = 0;
+        for ( ; *s && iDigits > 0; s++)
+        {
+          char c = *s;
+          
+          // decrement no of digits extracted
+          iDigits--;
+          
+          if ( c < '0' || c > '9' )
+            break;
+          
+          v = (v * 10) + c - '0';
+        }
+        
+        uSubField = v;
+        m_acChr = s;
+        
+        if (!bOnce)
+          THROW_USER("vConvertDateFast"_Stz);
+        
+        iDay = uSubField;
+        break;
+      }
+        
         
       default:
         THROW_USER("vConvertDateFast"_Stz);
