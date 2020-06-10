@@ -385,43 +385,19 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*                             -- FAST INLINE --                              */
 /*----------------------------------------------------------------------------*/
 
-#define bMORE_DATA()     (bool)(*acCsvSrc)
+#define vADV_SRC()       (cSrc = *++acCsvSrc)
 
-#define bMORE_FIELDS()   (bool)(*acCsvSrc && m_cRecEnd != *acCsvSrc)
+#define bMORE_DATA()     (bool)(cSrc)
+
+#define bMORE_FIELDS()   (bool)(cSrc && '\n' != cSrc)
 
 #define bWHITE_SPACE(c)  \
   (c == ' ') || (c == '\n') || (c == '\r') || (c == '\f') || (c == '\t')
-
-#define vSKIP_WHITE_SPACE() \
-  while (*acCsvSrc && StrLib::bIsWhite(*acCsvSrc)) { \
-    acCsvSrc++; \
-  }
-
-#define vADV_SRC() (cSrc = *++acCsvSrc)
 
 #define vSKIP_WHITE_SPACE_ADV() \
   while (cSrc && StrLib::bIsWhite(cSrc)) { \
     vADV_SRC(); \
   }
-
-
-/*
- 
-   the following members are used:
- 
-   m_azSrc
-   m_acChr
-   m_iCol
-   m_nChars
- 
-   m_pRowSlab
-   m_i_Fld
-   m_bSawFldSep
- 
-   m_pStreamDef??
-   m_pFmt -- shouldnt be necessary
-   m_pCol
- */
 
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a chunk                                          */
@@ -482,8 +458,8 @@ L_TestMoreCsv:
   cSrc = *acCsvSrc;
   
   // skip leading whitespace
-  while (bWHITE_SPACE(*acCsvSrc)) {
-    acCsvSrc++;
+  while (bWHITE_SPACE(cSrc)) {
+    vADV_SRC();
   }
   
   // test for more csv to be parsed
@@ -965,7 +941,7 @@ L_Boolean:
     cSrc = *acCsvSrc;
     
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-    vSKIP_WHITE_SPACE(); ;
+    vSKIP_WHITE_SPACE_ADV(); ;
   
     Bol xBol;
     SN_Bol snBol;
@@ -984,7 +960,7 @@ L_Float:
     cSrc = *acCsvSrc;
     
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-    vSKIP_WHITE_SPACE();
+    vSKIP_WHITE_SPACE_ADV();
   
     Flt xFlt;
     SN_Flt snFlt;
@@ -1003,7 +979,7 @@ L_Interval:
     cSrc = *acCsvSrc;
     
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-    vSKIP_WHITE_SPACE();
+    vSKIP_WHITE_SPACE_ADV();
   
     Ivl xIvl;
     SN_Ivl snIvl;
@@ -1022,7 +998,7 @@ L_Time:
     cSrc = *acCsvSrc;
     
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-    vSKIP_WHITE_SPACE();
+    vSKIP_WHITE_SPACE_ADV();
   
     Tme xTme;
     SN_Tme snTme;
@@ -1041,7 +1017,7 @@ L_Timestamp:
     cSrc = *acCsvSrc;
     
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-    vSKIP_WHITE_SPACE();
+    vSKIP_WHITE_SPACE_ADV();
   
     Tsp xTsp;
     SN_Tsp snTsp;
