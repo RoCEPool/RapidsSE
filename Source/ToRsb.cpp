@@ -447,19 +447,90 @@ L_TestMoreFields:
   m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
 
   switch (eDatum) {
-    case DM_BOL : vConvertBoolean();     break;
-    case DM_DTE : vConvertDateFast();    break;
-    case DM_BCD : vConvertDecimalFast(); break;
-    case DM_FLT : vConvertFloat();       break;
-    case DM_INT : vConvertIntegerFast(); break;
-    case DM_IVL : vConvertInterval();    break;
-    case DM_TME : vConvertTime();        break;
-    case DM_TSP : vConvertTimestamp();   break;
-    case DM_VCH : vConvertVarcharFast(); break;
+    case DM_BOL : goto L_Boolean;
+    case DM_DTE : goto L_Date;
+    case DM_BCD : goto L_Decimal;
+    case DM_FLT : goto L_Float;
+    case DM_INT : goto L_Integer;
+    case DM_IVL : goto L_Interval;
+    case DM_TME : goto L_Time;
+    case DM_TSP : goto L_Timestamp;
+    case DM_VCH : goto L_Varchar;
     default:
       RASSERT(0);
   }
+  
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // boolean
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  L_Boolean:
+  vConvertBoolean();
+  goto L_PostField;
+  
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // date
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  L_Date:
+  vConvertDate();
+  goto L_PostField;
 
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // decimal
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  L_Decimal:
+  vConvertDecimal();
+  goto L_PostField;
+
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // float
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  L_Float:
+  vConvertFloat();
+  goto L_PostField;
+
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // integer
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  L_Integer:
+  vConvertInteger();
+  goto L_PostField;
+
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // interval
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  L_Interval:
+  vConvertInterval();
+  goto L_PostField;
+
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // time
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  L_Time:
+  vConvertTime();
+  goto L_PostField;
+
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // timestamp
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  L_Timestamp:
+  vConvertTimestamp();
+  goto L_PostField;
+
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // varchar
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  L_Varchar:
+  vConvertVarchar();
+  goto L_PostField;
+
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+  
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // ... back to while more fields
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+L_PostField:
+  
   vPostField();
 
   if (m_cFldSep == *m_acChr) {
@@ -472,6 +543,10 @@ L_TestMoreFields:
   goto L_TestMoreFields;
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ... back to while more csv data
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfFields:
   
   if (m_bTrace) {
@@ -499,8 +574,10 @@ L_EndOfFields:
 
 L_EndOfCsv:
     
+#ifdef WITH_DEBUG_VERSION
   m_pRowSlab->vDumpAllRows();
   m_pRowSlab->vSlabReport();
+#endif
   
   return true;
 }
