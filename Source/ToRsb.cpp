@@ -512,7 +512,8 @@ L_TestMoreFields:
   // year
   
   bool bOnce = false;
-  if (*aSrc && isdigit(*aSrc))
+  //if (*aSrc && isdigit(*aSrc))
+  if ( *aSrc && (*aSrc >= '0' && *aSrc <= '9') )
     bOnce = true;
   
   nDigits = 0;
@@ -568,7 +569,8 @@ L_TestMoreFields:
     THROW_USER("vConvertDateFast"_Stz);
   
   bOnce = false;
-  if (*s && isdigit(*s))
+  //if (*s && isdigit(*s))
+  if ( *s && (*s >= '0' && *s <= '9') )
     bOnce = true;
   
   u8 v = 0;
@@ -609,7 +611,8 @@ L_TestMoreFields:
     THROW_USER("vConvertDateFast"_Stz);
   
   bOnce = false;
-  if (*s && isdigit(*s))
+  //if (*s && isdigit(*s))
+  if ( *s && (*s >= '0' && *s <= '9') )
     bOnce = true;
   
   v = 0;
@@ -678,16 +681,19 @@ L_TestMoreFields:
   }
   
   bool bOnce = false;
-  if (*m_acChr && (isdigit(*m_acChr) || '.' == *m_acChr))
+  //if (*m_acChr && (isdigit(*m_acChr) || '.' == *m_acChr))
+  if (*m_acChr && ( (*m_acChr >= '0' && *m_acChr <= '9') || '.' == *m_acChr))
     bOnce = true;
   
   // ignore leading 0's
-  while (isdigit(*m_acChr) && *m_acChr - '0' == 0) {
+  //while (isdigit(*m_acChr) && *m_acChr - '0' == 0) {
+  while ((*m_acChr >= '0' && *m_acChr <= '9') && *m_acChr - '0' == 0) {
     m_acChr++;
   }
   
   // collect leading digits (till '.')
-  while (isdigit(*m_acChr)) {
+  //while (isdigit(*m_acChr)) {
+  while (*m_acChr >= '0' && *m_acChr <= '9') {
     uUnsignedResult = uUnsignedResult * 10 + *m_acChr - '0';
     m_acChr++;
     iPrecision--;
@@ -701,7 +707,8 @@ L_TestMoreFields:
     
     m_acChr++; // skip '.'
     
-    while (isdigit(*m_acChr) && iScale) {
+    //while (isdigit(*m_acChr) && iScale) {
+    while ((*m_acChr >= '0' && *m_acChr <= '9') && iScale) {
       uUnsignedResult = uUnsignedResult * 10 + *m_acChr - '0';
       m_acChr++;
       iScale--;
@@ -716,10 +723,12 @@ L_TestMoreFields:
     THROW_USER("vConvertDecimalFast"_Stz);
   
   // round up if there any more digits after decimal
-  if (isdigit(*m_acChr)) {
+  //if (isdigit(*m_acChr)) {
+  if (*m_acChr >= '0' && *m_acChr <= '9') {
     if (*m_acChr - '0' >= 5)
       uUnsignedResult += 1;
-    while (isdigit(*m_acChr))
+    //while (isdigit(*m_acChr))
+    while (*m_acChr >= '0' && *m_acChr <= '9')
       m_acChr++;
   }
   
@@ -765,7 +774,8 @@ L_TestMoreFields:
   }
   
   bool bOnce = false;
-  if (*aSrc && isdigit(*aSrc))
+  //if (*aSrc && isdigit(*aSrc))
+  if (*aSrc && (*aSrc >= '0' && *aSrc <= '9'))
     bOnce = true;
   
   u8 uUnsignedResult = 0;
