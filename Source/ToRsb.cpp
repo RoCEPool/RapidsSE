@@ -407,6 +407,25 @@ bool ToRsb::bConvertFastInline(char* azSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
+  /*
+   
+     the following members are used:
+   
+     m_azSrc
+     m_acChr
+     m_iCol
+     m_nChars
+   
+     m_pRowSlab
+     m_i_Fld
+     m_bSawFldSep
+   
+     m_pStreamDef??
+     m_pFmt -- shouldnt be necessary
+     m_pCol
+   */
+
+  
   eDM eDatum;
   
   i8 nPtns = AM::nPartitions();
