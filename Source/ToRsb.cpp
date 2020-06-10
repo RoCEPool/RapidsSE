@@ -424,7 +424,8 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
      m_pFmt -- shouldnt be necessary
      m_pCol
    */
-
+  
+  ColPix xColPix;
   
   eDM eDatum;
   
@@ -469,8 +470,10 @@ L_TestMoreFields:
   if (! bMORE_FIELDS())   // ? macro ?
     goto L_EndOfFields;
 
-  eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
-  m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
+  xColPix = m_pRowSlab->axaColPix()[m_i_Fld];
+  
+  eDatum = (eDM) xColPix.m_uDatum;
+  //m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
 
   m_bSawFldSep = false;
     
@@ -657,8 +660,8 @@ L_TestMoreFields:
   Bcd xBcd;
   
   i8 iDecimal;
-  i8 iLength = m_pCol->iColumnLength();
-  i8 iScale  = m_pCol->iColumnScale();
+  i8 iLength = xColPix.m_uLength;
+  i8 iScale  = xColPix.m_uScale;
   i8 iPrecision = iLength - iScale;
   
   u8 uUnsignedResult = 0;
@@ -801,7 +804,7 @@ L_TestMoreFields:
   {
   // don't skip white space
 
-  i8 iMaxColumn = m_pCol->iColumnLength();
+  i8 iMaxColumn = xColPix.m_uLength;
 
   char* azStzCell = m_pRowSlab->azDepositString_begin();
 
@@ -946,6 +949,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Boolean:
   {
+    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE(); ;
   
     Bol xBol;
@@ -961,6 +965,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Float:
   {
+    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
   
     Flt xFlt;
@@ -976,6 +981,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Interval:
   {
+    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
   
     Ivl xIvl;
@@ -991,6 +997,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Time:
   {
+    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
   
     Tme xTme;
@@ -1006,6 +1013,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Timestamp:
   {
+    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
   
     Tsp xTsp;
