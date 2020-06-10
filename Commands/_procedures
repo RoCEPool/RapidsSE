@@ -369,14 +369,14 @@ begin
     toRsb $table       | // (csvBuffer)  => (rsbBuffer)
     // dump rsbBuffer 1   |
 
-//    toPtnRsb           | // (rsbBuffer)  => (rsbBuffer 'ptn)
-//    // dump rsbBuffer 1   |
+    toPtnRsb           | // (rsbBuffer)  => (rsbBuffer 'ptn)
+    // dump rsbBuffer 1   |
 
-//    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
-//    //dump rsbBuffer 1   |
-//
-//    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
-//    //dump rsbBuffer 1   |
+    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
+    //dump rsbBuffer 1   |
+
+    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
+    //dump rsbBuffer 1   |
  
 
     stageC hashed
@@ -384,7 +384,7 @@ begin
 
   stage stageC on all partitions:
 
-    eatSome |
+//    eatSome |
 
     insert $table      | // (crwBuffer) inserted into table
 

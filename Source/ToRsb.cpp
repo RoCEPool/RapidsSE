@@ -720,18 +720,16 @@ L_TestMoreFields:
   }
   
   bOnce = false;
-  //if (*acCsvChr && (isdigit(*acCsvChr) || '.' == *acCsvChr))
   if (*acCsvChr && ( (*acCsvChr >= '0' && *acCsvChr <= '9') || '.' == *acCsvChr))
     bOnce = true;
   
   // ignore leading 0's
-  //while (isdigit(*acCsvChr) && *acCsvChr - '0' == 0) {
   while ((*acCsvChr >= '0' && *acCsvChr <= '9') && *acCsvChr - '0' == 0) {
     acCsvChr++;
   }
   
   // collect leading digits (till '.')
-  //while (isdigit(*acCsvChr)) {
+  uUnsignedResult = 0;
   while (*acCsvChr >= '0' && *acCsvChr <= '9') {
     uUnsignedResult = uUnsignedResult * 10 + *acCsvChr - '0';
     acCsvChr++;
