@@ -440,9 +440,7 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   u8 v = 0;
   i8  iFinalResult;
 
-  Bcd xBcd;
   Dte xDte;
-  Int xInt;
 
   eDM eDatum;
   i8  nLength;
