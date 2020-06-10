@@ -393,6 +393,8 @@ bool ToRsb::bConvertFastInline(char* azSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
+  eDM eDatum;
+  
   i8 nPtns = AM::nPartitions();
   i8 i_Ptn = 0;
   
@@ -430,10 +432,13 @@ L_TestMoreCsv:
   
   // while more fields
   L_TestMoreFields:
-  while (bMoreFields()) {
-    
-    eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
-    
+  //while (bMoreFields()) {
+  
+    if (! bMoreFields())
+      goto L_EndOfFields;
+  
+    eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
+  
     if (26 == m_i_Rec && 6 == m_i_Fld)
       vDebugPoint();
     
@@ -466,7 +471,8 @@ L_TestMoreCsv:
     m_i_Fld++;
     
     goto L_TestMoreFields;
-  } // while (bMoreFields())
+  //} // while (bMoreFields())
+L_EndOfFields:
   
   if (m_bTrace) {
     if (! m_bSawFldSep)
