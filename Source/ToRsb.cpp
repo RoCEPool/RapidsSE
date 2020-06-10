@@ -413,23 +413,23 @@ bool ToRsb::bConvertFastInline(char* azSrc)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreCsv:
   
-  // test for more csv to be parsed
-  if (! bMORE_DATA())   // ? macro ?
-    goto L_EndOfCsv;
-
-  // skip blank spaces
+  // skip leading whitespace
   while (bWHITE_SPACE(*m_acChr)) {
     m_acChr++;
     m_iCol++;
     m_nChars++;
   }
-
-  if (! bMORE_FIELDS()) {   // ? macro ?
-    m_acChr++;
-    m_iCol++;
-    m_iLine++;
+  
+  // test for more csv to be parsed
+  if (! bMORE_DATA())   // ? macro ?
     goto L_EndOfCsv;
-  }
+
+//  if (! bMORE_FIELDS()) {   // ? macro ?
+//    m_acChr++;
+//    m_iCol++;
+//    m_iLine++;
+//    goto L_EndOfCsv;
+//  }
   
   // each record thats fits
   
