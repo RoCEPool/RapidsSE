@@ -453,8 +453,6 @@ L_TestMoreFields:
   eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
   m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
 
-  //vPreField(eDatum);
-
   m_bSawFldSep = false;
     
   switch (eDatum) {
@@ -476,7 +474,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Date:
   {
-  vSKIP_WHITE_SPACE(); //vSkipBlankspace();
+  vSKIP_WHITE_SPACE();
   vConvertDate();
   }
   goto L_PostField;
@@ -486,7 +484,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Decimal:
   {
-  vSKIP_WHITE_SPACE(); //vSkipBlankspace();
+  vSKIP_WHITE_SPACE();
   vConvertDecimal();
   }
   goto L_PostField;
@@ -496,7 +494,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Integer:
   {
-  vSKIP_WHITE_SPACE(); //vSkipBlankspace();
+  vSKIP_WHITE_SPACE();
   vConvertInteger();
   }
   goto L_PostField;
@@ -520,7 +518,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Boolean:
   {
-    vSKIP_WHITE_SPACE(); //vSkipBlankspace();
+    vSKIP_WHITE_SPACE(); ;
   
     Bol xBol;
     SN_Bol snBol;
@@ -535,7 +533,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Float:
   {
-    vSKIP_WHITE_SPACE(); //vSkipBlankspace();
+    vSKIP_WHITE_SPACE();
   
     Flt xFlt;
     SN_Flt snFlt;
@@ -550,7 +548,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Interval:
   {
-    vSKIP_WHITE_SPACE(); //vSkipBlankspace();
+    vSKIP_WHITE_SPACE();
   
     Ivl xIvl;
     SN_Ivl snIvl;
@@ -565,7 +563,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Time:
   {
-    vSKIP_WHITE_SPACE(); //vSkipBlankspace();
+    vSKIP_WHITE_SPACE();
   
     Tme xTme;
     SN_Tme snTme;
@@ -580,7 +578,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Timestamp:
   {
-    vSKIP_WHITE_SPACE(); //vSkipBlankspace();
+    vSKIP_WHITE_SPACE(); 
   
     Tsp xTsp;
     SN_Tsp snTsp;
