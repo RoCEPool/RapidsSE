@@ -46,11 +46,11 @@ namespace Rows
     i8    nCols(void);
     void  vCopyPix(StreamPix* pStreamPixSrc);
     void  vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
-    void  vDeposit(d8 dVal);
-    void  vDeposit(i8 iVal);
-    void  vDeposit(Stz* szVal);
-    char* azDepositString_begin(void);
-    void  vDepositString_end(i8 nSize);
+//    void  vDeposit(d8 dVal);
+//    void  vDeposit(i8 iVal);
+//    void  vDeposit(Stz* szVal);
+//    char* azDepositString_begin(void);
+//    void  vDepositString_end(i8 nSize);
     void  vDumpAllRows(void);
     void  vDumpNst(void);
     void  vDumpRow(i8 i_Row);
@@ -69,6 +69,108 @@ namespace Rows
   private:
     m8*     amSlabCellVec(void);
     Footer* aFooter(void);
+  
+  public:
+  
+  /*----------------------------------------------------------------------------*/
+  /* deposit an d8 value into next cell                                         */
+  /*----------------------------------------------------------------------------*/
+  inline void vDeposit(d8 dVal)
+  {
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+    // move to previous cell
+    m_i_Cell--;
+    
+    d8* daCells = (d8*)m_xWsp.ayArea();
+    
+    daCells[m_i_Cell] = dVal;
+    
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* deposit an i8 value into next cell                                         */
+  /*----------------------------------------------------------------------------*/
+  inline void vDeposit(i8 iVal)
+  {
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+    // move to previous cell
+    m_i_Cell--;
+    
+    i8* iaCells = (i8*)m_xWsp.ayArea();
+    
+    iaCells[m_i_Cell] = iVal;
+    
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* deposit an stz value into next cell                                        */
+  /*----------------------------------------------------------------------------*/
+  inline void vDeposit(Stz* szVal)
+  {
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+    char* azTgt = azDepositString_begin();
+    
+    i8 nLen = StrLib::nCopy(azTgt,szVal->azChar());
+
+    vDepositString_end(nLen + 1);
+
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* begin deposit of string                                                    */
+  /*----------------------------------------------------------------------------*/
+  inline char* azDepositString_begin(void)
+  {
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  #ifdef WITH_RSB_STROFS
+    
+    char* azStz = (char*)m_xWsp.ayLatterHead();
+    
+    m_i_Cell--;
+
+    i8* iaCells = (i8*)amSlabCellVec();
+    
+    i8 i_Ofs = - (nDifference(azStz, & iaCells[m_i_Cell]));
+    
+    iaCells[m_i_Cell] = i_Ofs;
+
+  #else
+    
+    char* azStz = (char*)m_xWsp.ayLatterHead();
+    
+    m_i_Cell--;
+
+    i8* iaCells = (i8*)amSlabCellVec();
+    
+    iaCells[m_i_Cell] = (i8)azStz;
+
+  #endif
+
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+    return azStz;
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* take bytes for deposited string                                            */
+  /*----------------------------------------------------------------------------*/
+  inline void vDepositString_end(i8 nSize)
+  {
+     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+    m_xWsp.vTakeHead(nSize);
+    
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  }
+
+
   };
   
   RowSlab* _pRowSlab(void* aAddr);
