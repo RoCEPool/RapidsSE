@@ -345,8 +345,6 @@ end
 /*----------------------------------------------------------------------------*/
 /* fast load data into a table from a csv file                                */
 /*----------------------------------------------------------------------------*/
-
-// chunk | rdCsvChunk | toRsb | toPtnRsb | toNstRsb | toHshCrw | * 4 insert
 procedure fload
   parameters $table $file
 begin
