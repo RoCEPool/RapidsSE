@@ -1193,6 +1193,27 @@ void AM::vDeleteJobOperand(Job_Operand* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* duplicate the operand ( marker / streamDef )                               */
+/*----------------------------------------------------------------------------*/
+Operand* AM::pDuplicateOperand(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (pOperand->eClass() == CN_MARKER) {
+    Marker* pMarker = _pMarker(pOperand);
+    Marker* pNewMarker = new Marker(pMarker->eOpMarker());
+    return pNewMarker;
+  }
+  else {
+    ASSERT(pOperand->eClass() == CN_STREAMDEF);
+    StreamDef* pStreamDef = _pStreamDef(pOperand);
+    StreamDef* pNewStreamDef = new StreamDef(pStreamDef);
+    return pNewStreamDef;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
 Job_Operand* AM::pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 iNde, i8 iPtn)

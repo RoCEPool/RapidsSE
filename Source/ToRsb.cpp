@@ -645,8 +645,8 @@ L_EndOfFields:
 L_EndOfCsv:
     
 #ifdef WITH_DEBUG_VERSION
-  m_pRowSlab->vDumpAllRows();
-  m_pRowSlab->vSlabReport();
+  //m_pRowSlab->vDumpAllRows();
+  //m_pRowSlab->vSlabReport();
 #endif
   
   return true;

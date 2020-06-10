@@ -583,18 +583,18 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
            pOperand);
   
   if (AM::szJobName(m_pOpJob)->bSame("xmit"_Stz)) {
-    vSendJobOperand(pOperand, bSet);
+    vSendJobOperand(pOperand, pTriggeringTask, bSet);
   }
   else {
     
-      // get the next stage the xmit is supposed to xmit to
-      Stage* pStage = m_pPipeline->pGet(m_iNextStage);
-    
-      // get the op to forward to depending on the cross topology
-      Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
-                                   m_nNode,
-                                   m_nPartition,
-                                   m_iNextOp);
+    // get the next stage the xmit is supposed to xmit to
+    Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+  
+    // get the op to forward to depending on the cross topology
+    Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+                                 m_nNode,
+                                 m_nPartition,
+                                 m_iNextOp);
     if (m_bAppendRight)
       pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
     else
@@ -871,7 +871,7 @@ OperandQueue* Op::pQueueRight(void)
 /*----------------------------------------------------------------------------*/
 /* set job operand                                                            */
 /*----------------------------------------------------------------------------*/
-void Op::vSendJobOperand(Operand* pOperand, bool bSet)
+void Op::vSendJobOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -903,20 +903,20 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN: {
-      vSendToOrigin(pOperand, bSet, eXmitKind);
+      vSendToOrigin(pOperand, pTriggeringTask, bSet, eXmitKind);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS: {
-      vSendToAllPartitions(pOperand, bSet, eXmitKind);
+      vSendToAllPartitions(pOperand, pTriggeringTask, bSet, eXmitKind);
       break;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN: {
-      vSendToAllOriginPartitions(pOperand, bSet, eXmitKind);
+      vSendToAllOriginPartitions(pOperand, pTriggeringTask, bSet, eXmitKind);
       break;
     }
      
@@ -924,35 +924,35 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       Strand* pStrand = pNextStage->pGetPartitionStrand(m_nPartition);
       i8 i_Ptn = pStrand->i_Ptn();
-      vSendToPartition(pOperand, bSet, eXmitKind, i_Ptn);
+      vSendToPartition(pOperand, pTriggeringTask,bSet, eXmitKind, i_Ptn);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
       i8 i_Nde = TablePtn::iPartitionToNode(m_nPartition);
-      vSendToNode(pOperand, bSet, eXmitKind,i_Nde);
+      vSendToNode(pOperand, pTriggeringTask, bSet, eXmitKind,i_Nde);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
-      vSendToPartition(pOperand, bSet, eXmitKind, m_nPartition);
+      vSendToPartition(pOperand, pTriggeringTask, bSet, eXmitKind, m_nPartition);
       break;
     }
      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_NODES: {
-      vSendToAllNodes(pOperand, bSet, eXmitKind);
+      vSendToAllNodes(pOperand, pTriggeringTask, bSet, eXmitKind);
       break;
     }
       
     default:
       RASSERT(0);
   }
-  
+    
   // delete the operand
-  AM::vDeleteOperand(pOperand);
+  //AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1157,6 +1157,7 @@ void Op::vSend(Operand* pOperand, bool bSet, i8 i_Nde, i8 i_Ptn)
   Node* pSendNode = AM::pGrid()->pGetNode(i_Nde);
   
   if (bSet) {
+    
     while (pOperand) {
       
       // set the operand in the job
@@ -1172,7 +1173,7 @@ void Op::vSend(Operand* pOperand, bool bSet, i8 i_Nde, i8 i_Ptn)
     // send the operand job across the sendNode
     AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
   }
-  
+
   // delete the operand job
   AM::vDeleteJobOperand(pJob_Operand);
 }
@@ -1180,7 +1181,7 @@ void Op::vSend(Operand* pOperand, bool bSet, i8 i_Nde, i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToAllNodes(Operand* pOperand, bool bSet, eXK eXmitKind)
+void Op::vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1195,12 +1196,15 @@ void Op::vSendToAllNodes(Operand* pOperand, bool bSet, eXK eXmitKind)
   for (i8 i_Nde = 0; i_Nde < pNextStage->nItems(); i_Nde++) {
     vSend(pOperand, bSet, i_Nde, C_UNKNOWN);
   }
+  
+  // delete the operand
+  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToAllOriginPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
+void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1210,6 +1214,11 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
   // get the next stage
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
   RASSERT(pNextStage);
+  
+#ifdef WITH_NO_XMIT_OPT
+  // get the current node
+  i8 i_ThisNode = AM::pGrid()->iThisNode();
+#endif
   
   // check the XmitKind
   switch (eXmitKind) {
@@ -1223,10 +1232,42 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
       // xmitNode is the partition node
       m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
       ASSERT(m_iXmitNode == m_pPipeline->iOriginatingNode());
-      
+   
       if ( m_iXmitNode == m_pPipeline->iOriginatingNode()) {
         ASSERT( ! bSet );
+        
+#ifdef WITH_NO_XMIT_OPT
+        if ( m_iXmitNode == i_ThisNode) {
+
+          // get the next stage the xmit is supposed to xmit to
+          Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+
+          // get the op to forward to depending on the cross topology
+          Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+                                       m_iXmitNode,
+                                       i_Ptn,
+                                       m_iNextOp);
+          if (m_bAppendRight)
+            pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
+          else
+            pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
+
+          AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                      "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+                      AM::pOperandName(pOperand),
+                      m_bAppendRight ? "right"_Stz : "left"_Stz,
+                      aCN[pOp->eClass()]);
+
+        }
+        else {
+          vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+          AM::vDeleteOperand(pOperand);
+        }
+#else
         vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+        AM::vDeleteOperand(pOperand);
+#endif
+        
       }
       
       break;
@@ -1242,14 +1283,50 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
         i_Ptn = pStrand->i_Ptn();
         
         // xmitNode is the partition node
+    
         m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
         if ( m_iXmitNode == m_pPipeline->iOriginatingNode()) {
+ #ifdef WITH_NO_XMIT_OPT
+          if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
+                m_iXmitNode == i_ThisNode) {
+            
+            // get the next stage the xmit is supposed to xmit to
+            Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+            
+            // get the op to forward to depending on the cross topology
+            Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+                                         m_iXmitNode,
+                                         i_Ptn,
+                                         m_iNextOp);
+            
+            // duplicate the marker / streamDef
+            Operand* pNewOperand = AM::pDuplicateOperand(pOperand);
+            
+            if (m_bAppendRight)
+              pOp->vAppendRight(pNewOperand,pTriggeringTask,bSet);
+            else
+              pOp->vAppendLeft(pNewOperand,pTriggeringTask,bSet);
+            
+            AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                        "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+                        AM::pOperandName(pNewOperand),
+                        m_bAppendRight ? "right"_Stz : "left"_Stz,
+                        aCN[pOp->eClass()]);
+            
+          }
+     
+          else {
+            vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+          }
+#else
           vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+#endif
         }
         
       }
+      AM::vDeleteOperand(pOperand);
     }
-      break;
+    break;
       
     default:
       ASSERT(0);
@@ -1260,7 +1337,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToAllPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
+void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1269,6 +1346,11 @@ void Op::vSendToAllPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
   // get the next stage
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
   RASSERT(pNextStage);
+  
+#ifdef WITH_NO_XMIT_OPT
+  // get the current node
+  i8 i_ThisNode = AM::pGrid()->iThisNode();
+#endif
   
   switch (eXmitKind) {
       
@@ -1280,7 +1362,37 @@ void Op::vSendToAllPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
       // xmitNode is the partition node
       m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
       
+#ifdef WITH_NO_XMIT_OPT
+      if ( m_iXmitNode == i_ThisNode) {
+        
+        // get the next stage the xmit is supposed to xmit to
+        Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+        
+        // get the op to forward to depending on the cross topology
+        Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+                                     m_iXmitNode,
+                                     i_Ptn,
+                                     m_iNextOp);
+        if (m_bAppendRight)
+          pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
+        else
+          pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
+        
+        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                    "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+                    AM::pOperandName(pOperand),
+                    m_bAppendRight ? "right"_Stz : "left"_Stz,
+                    aCN[pOp->eClass()]);
+        
+      }
+      else {
+        vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+        AM::vDeleteOperand(pOperand);
+      }
+#else
       vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+      AM::vDeleteOperand(pOperand);
+#endif
       break;
     }
       
@@ -1292,10 +1404,43 @@ void Op::vSendToAllPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
         
         // xmitNode is the partition node
         m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
-        
         ASSERT( ! bSet );
+#ifdef WITH_NO_XMIT_OPT
+        if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
+            m_iXmitNode == i_ThisNode) {
+          
+          // get the next stage the xmit is supposed to xmit to
+          Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+          
+          // get the op to forward to depending on the cross topology
+          Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+                                       m_iXmitNode,
+                                       i_Ptn,
+                                       m_iNextOp);
+          
+          // duplicate the marker / streamDef
+          Operand* pNewOperand = AM::pDuplicateOperand(pOperand);
+          
+          if (m_bAppendRight)
+            pOp->vAppendRight(pNewOperand,pTriggeringTask,bSet);
+          else
+            pOp->vAppendLeft(pNewOperand,pTriggeringTask,bSet);
+          
+          AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                      "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+                      AM::pOperandName(pNewOperand),
+                      m_bAppendRight ? "right"_Stz : "left"_Stz,
+                      aCN[pOp->eClass()]);
+          
+        }
+        else {
+          vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+        }
+#else
         vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+#endif
       }
+      AM::vDeleteOperand(pOperand);
       break;
     }
       
@@ -1309,7 +1454,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
       
       ASSERT( ! bSet );
       vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
-      
+      AM::vDeleteOperand(pOperand);
       break;
     }
       
@@ -1321,7 +1466,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
 /*----------------------------------------------------------------------------*/
 /* send the operand to a specific node                                        */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToNode(Operand* pOperand, bool bSet, eXK eXmitKind,i8 i_Nde)
+void Op::vSendToNode(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind,i8 i_Nde)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1334,30 +1479,39 @@ void Op::vSendToNode(Operand* pOperand, bool bSet, eXK eXmitKind,i8 i_Nde)
   ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
   
   vSend(pOperand, bSet, i_Nde, C_UNKNOWN);
+  
+  // delete the operand
+  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
 /* send the operand to the origin                                             */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToOrigin(Operand* pOperand, bool bSet, eXK eXmitKind)
+void Op::vSendToOrigin(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
   m_iXmitNode = m_pPipeline->iOriginatingNode();
   vSend(pOperand, bSet, m_iXmitNode, C_UNKNOWN);
+  
+  // delete the operand
+  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
 /* send the operand to a partition                                            */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToPartition(Operand* pOperand, bool bSet, eXK eXmitKind, i8 i_Ptn)
+void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind, i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
   m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
   vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+  
+  // delete the operand
+  AM::vDeleteOperand(pOperand);
 }
 
 /*============================================================================*/

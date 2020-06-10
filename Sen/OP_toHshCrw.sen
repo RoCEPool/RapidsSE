@@ -13,9 +13,9 @@
 
   StreamDef[].duplicate to OperandB[]
 
-  OperandB[].pipeOut
-
   ToHshCrw[].create
+
+  OperandB[].pipeOut
 
   true
 ;
