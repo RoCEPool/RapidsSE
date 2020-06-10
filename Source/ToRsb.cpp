@@ -399,6 +399,12 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define vADV_SRC() (cSrc = *++acCsvSrc)
 
+#define vSKIP_WHITE_SPACE_ADV() \
+  while (cSrc && StrLib::bIsWhite(cSrc)) { \
+    vADV_SRC(); \
+  }
+
+
 /*
  
    the following members are used:
@@ -677,7 +683,7 @@ L_Decimal:
   // temp
   cSrc = *acCsvSrc;
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_ADV();
   
   nPixLength    = xColPix.m_uLength;
   nPixScale     = xColPix.m_uScale;
@@ -688,28 +694,28 @@ L_Decimal:
   bOnce = false;
 
   // test for negative or positive sign
-  if (*acCsvSrc && '-' == *acCsvSrc ) {
+  if ('-' == cSrc) {
     bNegative = true;
-    acCsvSrc++;
+    vADV_SRC();
   }
   else
-  if (*acCsvSrc && '+' == *acCsvSrc ) {
-    acCsvSrc++;
+  if ('+' == cSrc) {
+    vADV_SRC();
   }
   
   // at least one digit
-  if (*acCsvSrc && ( (*acCsvSrc >= '0' && *acCsvSrc <= '9') || '.' == *acCsvSrc))
+  if (cSrc && ( (cSrc >= '0' && cSrc <= '9') || '.' == cSrc))
     bOnce = true;
   
   // ignore leading 0's
-  while ((*acCsvSrc >= '0' && *acCsvSrc <= '9') && *acCsvSrc - '0' == 0) {
-    acCsvSrc++;
+  while (cSrc == '0') {
+    vADV_SRC();
   }
   
   // collect leading digits (till '.')
-  while (*acCsvSrc >= '0' && *acCsvSrc <= '9') {
-    uPartialResult = uPartialResult * 10 + *acCsvSrc - '0';
-    acCsvSrc++;
+  while (cSrc >= '0' && cSrc <= '9') {
+    uPartialResult = uPartialResult * 10 + cSrc - '0';
+    vADV_SRC();
     nPixPrecision--;
   }
   
@@ -717,13 +723,13 @@ L_Decimal:
   if (nPixPrecision < 0)
     THROW_USER("vConvertDecimalFast"_Stz);
   
-  if ('.' == *acCsvSrc) {
+  if ('.' == cSrc) {
     
-    acCsvSrc++; // skip '.'
+    vADV_SRC(); // skip '.'
     
-    while ((*acCsvSrc >= '0' && *acCsvSrc <= '9') && nPixScale) {
-      uPartialResult = uPartialResult * 10 + *acCsvSrc - '0';
-      acCsvSrc++;
+    while ((cSrc >= '0' && cSrc <= '9') && nPixScale) {
+      uPartialResult = uPartialResult * 10 + cSrc - '0';
+      vADV_SRC();
       nPixScale--;
     }
   }
@@ -736,11 +742,11 @@ L_Decimal:
     THROW_USER("vConvertDecimalFast"_Stz);
   
   // round up if there any more digits after decimal
-  if (*acCsvSrc >= '0' && *acCsvSrc <= '9') {
-    if (*acCsvSrc - '0' >= 5)
+  if (cSrc >= '0' && cSrc <= '9') {
+    if (cSrc - '0' >= 5)
       uPartialResult += 1;
-    while (*acCsvSrc >= '0' && *acCsvSrc <= '9')
-      acCsvSrc++;
+    while (cSrc >= '0' && cSrc <= '9')
+      vADV_SRC();
   }
   
   // compute final result
@@ -766,7 +772,7 @@ L_Integer:
   // temp
   cSrc = *acCsvSrc;
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_ADV();
  
   uPartialResult = 0;
   bNegative = false;
