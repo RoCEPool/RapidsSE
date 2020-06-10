@@ -590,7 +590,7 @@ L_PostField:
   if (m_cFldSep == *m_acChr)
     m_bSawFldSep = true;
 
-  while (bInField())
+  while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr)
     m_acChr++;
 
   if (m_cFldSep == *m_acChr) {
