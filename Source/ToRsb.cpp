@@ -436,7 +436,7 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   
   m_azSrc = azCsvSrc;
   m_acChr = m_azSrc;
-  
+  ColPix* aColPix = m_pRowSlab->axaColPix();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) while more csv data
@@ -470,7 +470,7 @@ L_TestMoreFields:
   if (! bMORE_FIELDS())   // ? macro ?
     goto L_EndOfFields;
 
-  xColPix = m_pRowSlab->axaColPix()[m_i_Fld];
+  xColPix = aColPix[m_i_Fld];
   
   eDatum = (eDM) xColPix.m_uDatum;
   //m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
@@ -816,10 +816,10 @@ L_TestMoreFields:
 
   // deposit the integer
   Int xInt;
-  if (bNegative)
-    xInt = - uUnsignedResult;
-  else
+  if ( ! bNegative )
     xInt = uUnsignedResult;
+  else
+    xInt = - uUnsignedResult;
   m_pRowSlab->vDeposit(xInt);
   }
   goto L_PostField;
