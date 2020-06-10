@@ -95,6 +95,9 @@ tag <fl_create> = "../FASTLOAD/Commands/_lineItem";
 //tag <fl_file>   = "/Users/Shared/tpch/SF1/lineItem.csv";
 tag <fl_file>   = "/Users/Shared/tpch/SF10/lineItem.csv";
 
+// for alka
+//tag <fl_file>   = "/TPCH/SF1/lineitem.csv";
+
 <fl_cmd>;
 
 //tableSizes;
