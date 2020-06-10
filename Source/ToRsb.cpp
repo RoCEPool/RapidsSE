@@ -401,103 +401,105 @@ bool ToRsb::bConvertFastInline(char* azSrc)
   m_azSrc = azSrc;
   m_acChr = m_azSrc;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // while more csv data
-  L_TestMoreCsv:
-  //while (bMoreData()) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_TestMoreCsv:
+  
+  if (! bMoreData())
+    goto L_EndOfCsv;
+  
+  vSkipBlankspace();
+  
+  if (! bMoreFields()) {
+    if (m_bTrace)
+      vTrace("blank line...\n"_Stz);
+    m_acChr++;
+    m_iCol++;
+    m_iLine++;
+    goto L_EndOfCsv;
+  }
+  
+  // each record thats fits
+  
+  if (! m_pRowSlab->bNewRow()) {
+    vNewRsbBuffer();
+    bool b = m_pRowSlab->bNewRow();
+    ASSERT(b);
+  }
+  
+  // while more fields
+  L_TestMoreFields:
+  while (bMoreFields()) {
     
-    if (! bMoreData())
-      goto L_NoMoreCsv;
+    eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
     
-    vSkipBlankspace();
+    if (26 == m_i_Rec && 6 == m_i_Fld)
+      vDebugPoint();
     
-    if (! bMoreFields()) {
-      if (m_bTrace)
-        vTrace("blank line...\n"_Stz);
+    vPreField(eDatum);
+    
+    // currently needed by the SN_ scanners (will go)
+    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
+    
+    switch (eDatum) {
+      case DM_BOL : vConvertBoolean();     break;
+      case DM_DTE : vConvertDateFast();    break;
+      case DM_BCD : vConvertDecimalFast(); break;
+      case DM_FLT : vConvertFloat();       break;
+      case DM_INT : vConvertIntegerFast(); break;
+      case DM_IVL : vConvertInterval();    break;
+      case DM_TME : vConvertTime();        break;
+      case DM_TSP : vConvertTimestamp();   break;
+      case DM_VCH : vConvertVarcharFast(); break;
+      default:
+        RASSERT(0);
+    }
+    
+    vPostField();
+    
+    if (m_cFldSep == *m_acChr) {
       m_acChr++;
       m_iCol++;
-      m_iLine++;
-      goto L_NoMoreCsv;
     }
     
-    // each record thats fits
+    m_i_Fld++;
     
-    if (! m_pRowSlab->bNewRow()) {
-      vNewRsbBuffer();
-      bool b = m_pRowSlab->bNewRow();
-      ASSERT(b);
-    }
-    
-    // while more fields
-    L_TestMoreFields:
-    while (bMoreFields()) {
-      
-      eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
-      
-      if (26 == m_i_Rec && 6 == m_i_Fld)
-        vDebugPoint();
-      
-      vPreField(eDatum);
-      
-      // currently needed by the SN_ scanners (will go)
-      m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-      
-      switch (eDatum) {
-        case DM_BOL : vConvertBoolean();     break;
-        case DM_DTE : vConvertDateFast();    break;
-        case DM_BCD : vConvertDecimalFast(); break;
-        case DM_FLT : vConvertFloat();       break;
-        case DM_INT : vConvertIntegerFast(); break;
-        case DM_IVL : vConvertInterval();    break;
-        case DM_TME : vConvertTime();        break;
-        case DM_TSP : vConvertTimestamp();   break;
-        case DM_VCH : vConvertVarcharFast(); break;
-        default:
-          RASSERT(0);
-      }
-      
-      vPostField();
-      
-      if (m_cFldSep == *m_acChr) {
-        m_acChr++;
-        m_iCol++;
-      }
-      
-      m_i_Fld++;
-      
-      goto L_TestMoreFields;
-    } // while (bMoreFields())
-    
-    if (m_bTrace) {
-      if (! m_bSawFldSep)
-        vTrace("\n"_Stz);
-      vTrace("-- recSep -- \n"_Stz);
-    }
-    
-    // set partition hash CURRENTLY ROUND ROBIN.  DISCUSS W ALKA
-    if (m_bPtnHash) {
-      m_pRowSlab->vDeposit((i8)i_Ptn);
-      if (++i_Ptn >= nPtns)
-        i_Ptn = 0;
-    }
-    
-    m_i_Rec++;
-    m_i_Fld = 0;
-    if (*m_acChr)
-      m_acChr++;
-    m_iLine++;
-    m_iCol = 1;
-    
-    goto L_TestMoreCsv;
-  //} // while (bMoreData())
+    goto L_TestMoreFields;
+  } // while (bMoreFields())
   
-L_NoMoreCsv:
+  if (m_bTrace) {
+    if (! m_bSawFldSep)
+      vTrace("\n"_Stz);
+    vTrace("-- recSep -- \n"_Stz);
+  }
+  
+  // set partition hash CURRENTLY ROUND ROBIN.  DISCUSS W ALKA
+  if (m_bPtnHash) {
+    m_pRowSlab->vDeposit((i8)i_Ptn);
+    if (++i_Ptn >= nPtns)
+      i_Ptn = 0;
+  }
+  
+  m_i_Rec++;
+  m_i_Fld = 0;
+  if (*m_acChr)
+    m_acChr++;
+  m_iLine++;
+  m_iCol = 1;
+  
+  goto L_TestMoreCsv;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // end of csv data
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_EndOfCsv:
     
   m_pRowSlab->vDumpAllRows();
   m_pRowSlab->vSlabReport();
   
   return true;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
