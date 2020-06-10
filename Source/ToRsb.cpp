@@ -525,7 +525,6 @@ L_TestMoreFields:
           // decrement no of digits extracted
           iDigits--;
           
-          //    if ( ! isdigit(c) )
           if ( c < '0' || c > '9' )
             break;
           
@@ -543,6 +542,7 @@ L_TestMoreFields:
       }
         
       case DC_MM: {
+        
         u8 uSubField;
         
         iMonth = 0;
@@ -565,7 +565,6 @@ L_TestMoreFields:
           // decrement no of digits extracted
           iDigits--;
           
-          //    if ( ! isdigit(c) )
           if ( c < '0' || c > '9' )
             break;
           
@@ -588,11 +587,7 @@ L_TestMoreFields:
         
       case DC_YYYY: {
         i8 nDigits;
-        
-        // extract year
-        //if ( ! StrLib::bExtractInteger(&m_acChr,&iYear,nDigits) )
-        //  THROW_USER("vConvertDateFast"_Stz);
-        
+                
         char *aSrc = m_acChr;
         
         if ( ! *aSrc )
@@ -654,6 +649,7 @@ L_TestMoreFields:
   if (! StrLib::bValidateMonth(iDay, iMonth, iYear))
     THROW_USER("vConvertDateFast"_Stz);
   
+  // deposit the date
   Dte xDte;
   xDte.m_uYearDelta  = iYear - C_YEAR_BASE;
   xDte.m_uMonth = iMonth;
@@ -661,12 +657,6 @@ L_TestMoreFields:
   xDte.m_uSpare = 0;
   
   m_pRowSlab->vDeposit(xDte);
-//  // move to previous cell
-//  m_pRowSlab->m_i_Cell--;
-//
-//  i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
-//
-//  iaCells[m_pRowSlab->m_i_Cell] = xDte.m_iAsI8;
 
   }
   goto L_PostField;
@@ -758,13 +748,8 @@ L_TestMoreFields:
   if ( ! bOnce )
     THROW_USER("vConvertDecimalFast"_Stz);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // deposit the decimal
-  
   m_pRowSlab->vDeposit(iDecimal);
-//  m_pRowSlab->m_i_Cell--;
-//  i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
-//  iaCells[m_pRowSlab->m_i_Cell] = iDecimal;
   }
   goto L_PostField;
 
@@ -782,16 +767,14 @@ L_TestMoreFields:
   
   // test for negative or positive sign
   bool bNegative = false;
-  //if (bWithSign) {
-    if (*aSrc && '-' == *aSrc) {
-      bNegative = true;
-      aSrc++;
-    }
-    else
-      if (*aSrc && '+' == *aSrc) {
-        aSrc++;
-      }
-  //}
+  if (*aSrc && '-' == *aSrc) {
+    bNegative = true;
+    aSrc++;
+  }
+  else
+  if (*aSrc && '+' == *aSrc) {
+    aSrc++;
+  }
   
   bool bOnce = false;
   if (*aSrc && isdigit(*aSrc))
@@ -812,30 +795,16 @@ L_TestMoreFields:
       THROW_USER("vConvertIntegerFast"_Stz);
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if ( ! bOnce)
+    THROW_USER("vConvertIntegerFast"_Stz);
+
   // deposit the integer
-  
-  //m_pRowSlab->vDeposit(xInt);
-//  m_pRowSlab->m_i_Cell--;
-//  i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
-//
-//  if (bNegative)
-//    iaCells[m_pRowSlab->m_i_Cell] = - uUnsignedResult;
-//  else
-//    iaCells[m_pRowSlab->m_i_Cell] = uUnsignedResult;
-  
   Int xInt;
   if (bNegative)
     xInt = - uUnsignedResult;
   else
     xInt = uUnsignedResult;
   m_pRowSlab->vDeposit(xInt);
-
-  //m_oDatum.vInt(xInt);
-  //vSprintInteger();
-  
-  if ( ! bOnce)
-    THROW_USER("vConvertIntegerFast"_Stz);
   }
   goto L_PostField;
 
@@ -848,16 +817,9 @@ L_TestMoreFields:
 
   i8 iMaxColumn = m_pCol->iColumnLength();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // azDepositString_begin
-
   char* azStzCell = m_pRowSlab->azDepositString_begin();
 
-
-  //SN_Vch snVch;
-
   i8 nChars = 0;
-  //bool bSawEnclosedLeading = CsvValue::bIsEnclosedString(&m_acChr,m_pFmt);
 
   bool bSawEnclosedLeading;
 
@@ -880,7 +842,6 @@ L_TestMoreFields:
     bSawEnclosedLeading = false;
   }
 
-  //m_oDatum = snVch.sz(&m_acChr,m_pCol,m_pFmt,bSawEnclosedLeading,nChars);
   i8 iLength = 0;
   char *aDst = (char*)azStzCell;
 
@@ -890,7 +851,6 @@ L_TestMoreFields:
 
   while (cSrc) {
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // special case of double enclosedBy
     
     if (m_pFmt->m_cEnclosedBy_Trailing == m_pFmt->m_cEnclosedBy_Leading) {
@@ -912,28 +872,11 @@ L_TestMoreFields:
       //falls thru if not the case of double enclosedBy
     }
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for a non-printable character (e.g. \n or \r)
-    
-    // Alka: Changed check from ! isprint (not-printable) to isspace and then allowing space
-    // this ways we allow for UTF-8 characters to pass this test
-    // I think there is more to supporting UTF-8 but this will let us allow for UTF-8 characters to
-    // be loaded from files.
-    
-    //if (! bAllowNonPrintable && ! isprint(**aaSrc) )
-    
-    // isprint: checks for any printable character including space.
-    
-    // isspace : checks for white-space characters. In the C and POSIX locales, these are:
-    // space, form-feed ('\f'), newline ('\n'), carriage return ('\r'), horizontal tab ('\t'),
-    // and vertical tab ('\v').
-    
     if (! m_pFmt->m_bAllowNonPrintable && isspace(cSrc) && (cSrc != ' ') )
       break;
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for normal end
-    
     if (bSawEnclosedLeading) {
       // we saw a leading enclodedBy so test for trailing enclosedBy
       if (cSrc == m_pFmt->m_cEnclosedBy_Trailing) {
@@ -950,9 +893,7 @@ L_TestMoreFields:
     else if (m_pFmt->m_cRecordTerminator && cSrc == m_pFmt->m_cRecordTerminator)
       break;
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for the escape character
-    
     if (cSrc == m_pFmt->m_cEscapeChar) {
       
       if (StrLib::bEscapeConvert( *(m_acChr+1),
@@ -980,7 +921,6 @@ L_TestMoreFields:
       }
     }
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // normal character
     
     // append the normal character
@@ -1006,15 +946,8 @@ L_TestMoreFields:
     if ( ! bSawEnclosedTrailing )
       THROW_USER("vConvertVarcharFast"_Stz);
 
-
-  //char* szStr = m_pRowSlab->azDepositString_begin();
-  //StrLib::vCopy(szStr,m_oDatum.azChar());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // deposit the string
-
   m_pRowSlab->vDepositString_end(nChars+1);
-
   }
   goto L_PostField;
 
