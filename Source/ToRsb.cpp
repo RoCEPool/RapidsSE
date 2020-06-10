@@ -497,13 +497,13 @@ L_TestMoreFields:
   
   i8 iYear = 0, iMonth = 0, iDay = 0;
   
-  for (i8 i_Component = 0; i_Component < 3; i_Component++) {
+  //for (i8 i_Component = 0; i_Component < 3; i_Component++) {
     
-    eDC eDateComponent = m_pFmt->m_eDateComponent[i_Component];
+    //eDC eDateComponent = m_pFmt->m_eDateComponent[i_Component];
     
-    switch (eDateComponent) {
+    //switch (eDateComponent) {
         
-      case DC_YYYY: {
+      //case DC_YYYY: {
         i8 nDigits;
                 
         char *aSrc = m_acChr;
@@ -542,17 +542,21 @@ L_TestMoreFields:
         
         if (2 == nDigits) {
           iYear += 2000;
-          break;
+          goto L_Month;
         }
         
         if (4 == nDigits)
-          break;
+          goto L_Month;
         
         THROW_USER("vConvertDateFast"_Stz);
-        break;
-      }
 
-      case DC_MM: {
+      //}
+  
+      L_Month:
+
+      if (m_pFmt->m_cDateSeparator != *m_acChr++)
+        THROW_USER("vConvertDateFast"_Stz);
+      //case DC_MM: {
         
         u8 uSubField;
         
@@ -564,7 +568,7 @@ L_TestMoreFields:
         if ( ! *s )
           THROW_USER("vConvertDateFast"_Stz);
         
-        bool bOnce = false;
+        bOnce = false;
         if (*s && isdigit(*s))
           bOnce = true;
         
@@ -593,24 +597,27 @@ L_TestMoreFields:
         
         iMonth = uSubField;
         
-        break;
-      }
+
+      //}
         
-      case DC_DD: {
-        
-        u8 uSubField;
-          
-        char *s = m_acChr;
-        i8 iDigits = 2;
+      L_Day:
+//case DC_DD: {
+  
+        if (m_pFmt->m_cDateSeparator != *m_acChr++)
+          THROW_USER("vConvertDateFast"_Stz);
+
+                  
+        s = m_acChr;
+        iDigits = 2;
         
         if ( ! *s )
           THROW_USER("vConvertDateFast"_Stz);
         
-        bool bOnce = false;
+        bOnce = false;
         if (*s && isdigit(*s))
           bOnce = true;
         
-        u8 v = 0;
+        v = 0;
         for ( ; *s && iDigits > 0; s++)
         {
           char c = *s;
@@ -631,21 +638,15 @@ L_TestMoreFields:
           THROW_USER("vConvertDateFast"_Stz);
         
         iDay = uSubField;
-        break;
-      }
+      //}
         
         
-      default:
-        THROW_USER("vConvertDateFast"_Stz);
-    }
+      //default:
+      //  THROW_USER("vConvertDateFast"_Stz);
+    //}
     
-    // skip separator after components  0 and 1
-    if (i_Component < 2) {
-      if (m_pFmt->m_cDateSeparator != *m_acChr++)
-        THROW_USER("vConvertDateFast"_Stz);
-    }
     
-  }
+  //}
   
   if (! StrLib::bValidateMonth(iDay, iMonth, iYear))
     THROW_USER("vConvertDateFast"_Stz);
