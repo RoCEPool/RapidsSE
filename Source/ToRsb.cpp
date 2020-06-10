@@ -426,7 +426,6 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   ColPix xColPix;
   
   char c;
-  char cSrc;
   
   i8 nPtns = AM::nPartitions();
   i8 i_Ptn = 0;
@@ -874,47 +873,43 @@ L_TestMoreFields:
 
   bSawEnclosedTrailing = false;
 
-  cSrc = *acCsvChr;
-
-  while (cSrc) {
+  while (*acCsvChr) {
     
     // special case of double enclosedBy
     
     if (m_pFmt->m_cEnclosedBy_Trailing == m_pFmt->m_cEnclosedBy_Leading) {
-      if (cSrc == m_pFmt->m_cEnclosedBy_Leading && *(acCsvChr+1) == m_pFmt->m_cEnclosedBy_Leading) {
+      if (*acCsvChr == m_pFmt->m_cEnclosedBy_Leading && *(acCsvChr+1) == m_pFmt->m_cEnclosedBy_Leading) {
         
         // skip the first enclosed character
         acCsvChr++;
         
         // append one instance of the enclosedBy character
         if (iLength++ < iMaxColumn)
-          *aDst++ = cSrc;
+          *aDst++ = *acCsvChr;
         
         acCsvChr++;
-        
-        cSrc = *acCsvChr;
-        
+                
         continue;
       }
       //falls thru if not the case of double enclosedBy
     }
     
     // test for a non-printable character (e.g. \n or \r)
-    //if (! m_pFmt->m_bAllowNonPrintable && isspace(cSrc) && (cSrc != ' ') )
+    //if (! m_pFmt->m_bAllowNonPrintable && isspace(*acCsvChr) && (*acCsvChr != ' ') )
     //  break;
     if (! m_pFmt->m_bAllowNonPrintable &&
-        ( (cSrc == '\f') ||
-          (cSrc == '\n') ||
-          (cSrc == '\r') ||
-          (cSrc == '\t') ||
-          (cSrc == '\v') )
+        ( (*acCsvChr == '\f') ||
+          (*acCsvChr == '\n') ||
+          (*acCsvChr == '\r') ||
+          (*acCsvChr == '\t') ||
+          (*acCsvChr == '\v') )
         )
       break;
     
     // test for normal end
     if (bSawEnclosedLeading) {
       // we saw a leading enclodedBy so test for trailing enclosedBy
-      if (cSrc == m_pFmt->m_cEnclosedBy_Trailing) {
+      if (*acCsvChr == m_pFmt->m_cEnclosedBy_Trailing) {
         bSawEnclosedTrailing = true;
         acCsvChr++;
         break;
@@ -922,14 +917,14 @@ L_TestMoreFields:
       //falls thru if not trailing enclosedBy
     }
     // test for field separator (because its not enclosed)
-    else if (m_pFmt->m_cFieldDelimiter && cSrc == m_pFmt->m_cFieldDelimiter)
+    else if (m_pFmt->m_cFieldDelimiter && *acCsvChr == m_pFmt->m_cFieldDelimiter)
       break;
     // test for record terminator (because its not enclosed)
-    else if (m_pFmt->m_cRecordTerminator && cSrc == m_pFmt->m_cRecordTerminator)
+    else if (m_pFmt->m_cRecordTerminator && *acCsvChr == m_pFmt->m_cRecordTerminator)
       break;
     
     // test for the escape character
-    if (cSrc == m_pFmt->m_cEscapeChar) {
+    if (*acCsvChr == m_pFmt->m_cEscapeChar) {
       
       if (StrLib::bEscapeConvert( *(acCsvChr+1),
                                  m_pFmt->m_cEnclosedBy_Leading,
@@ -947,12 +942,10 @@ L_TestMoreFields:
         else
           acCsvChr++;
         
-        cSrc = *acCsvChr;
         continue;
       }
       else {
         acCsvChr++;
-        cSrc = *acCsvChr;
       }
     }
     
@@ -960,10 +953,9 @@ L_TestMoreFields:
     
     // append the normal character
     if (iLength++ < iMaxColumn)
-      *aDst++ = cSrc;
+      *aDst++ = *acCsvChr;
     
     acCsvChr++;
-    cSrc = *acCsvChr;
   }
 
   // terminate
