@@ -403,7 +403,6 @@ bool ToRsb::bConvertFastInline(char* azSrc)
   
   // while more data
   L_TestMoreData:
-  
   while (bMoreData()) {
     
     vSkipBlankspace();
@@ -425,7 +424,8 @@ bool ToRsb::bConvertFastInline(char* azSrc)
       ASSERT(b);
     }
     
-    
+    // while more fields
+    L_TestMoreFields:
     while (bMoreFields()) {
       
       eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
@@ -461,7 +461,8 @@ bool ToRsb::bConvertFastInline(char* azSrc)
       
       m_i_Fld++;
       
-    } // end-record
+      goto L_TestMoreFields;
+    } // while (bMoreFields())
     
     if (m_bTrace) {
       if (! m_bSawFldSep)
@@ -483,7 +484,8 @@ bool ToRsb::bConvertFastInline(char* azSrc)
     m_iLine++;
     m_iCol = 1;
     
-  } // end-data
+    goto L_TestMoreData;
+  } // while (bMoreData())
   
   RASSERT(m_dCalc != 1.0);
   
