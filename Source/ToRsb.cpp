@@ -454,7 +454,6 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   char* azVchSlab;
   char* acVchDst;
 
-  char* s;
   
   i8 nChars;
   char *aStart;
@@ -564,9 +563,7 @@ L_TestMoreFields:
   }
   
   iYear = uPartialResult;
-  
-  acCsvSrc = acCsvSrc;
-  
+    
   if (!bOnce)
     THROW_USER("vConvertDateFast"_Stz);
   
