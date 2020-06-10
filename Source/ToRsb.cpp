@@ -385,17 +385,17 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*                             -- FAST INLINE --                              */
 /*----------------------------------------------------------------------------*/
 
-#define bMORE_DATA()     (bool)(*m_acChr)
+#define bMORE_DATA()     (bool)(*acChr)
 
-#define bMORE_FIELDS()   (bool)(*m_acChr && m_cRecEnd != *m_acChr)
+#define bMORE_FIELDS()   (bool)(*acChr && m_cRecEnd != *acChr)
 
 #define bWHITE_SPACE(c)  \
   (c == ' ') || (c == '\n') || (c == '\r') || (c == '\f') || (c == '\t')
 
 #define vSKIP_WHITE_SPACE() \
   \
-  while (*m_acChr && StrLib::bIsWhite(*m_acChr)) { \
-    m_acChr++;  \
+  while (*acChr && StrLib::bIsWhite(*acChr)) { \
+    acChr++;  \
     m_iCol++;   \
     m_nChars++; \
   }
@@ -412,7 +412,7 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
      the following members are used:
    
      m_azSrc
-     m_acChr
+     acChr
      m_iCol
      m_nChars
    
@@ -434,9 +434,12 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   
   //vTrace("[>%s<]"_Stz,azSrc);
   
-  m_azSrc = azCsvSrc;
-  m_acChr = m_azSrc;
   ColPix* aColPix = m_pRowSlab->axaColPix();
+
+  
+  
+  char* acChr = azCsvSrc;
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) while more csv data
@@ -444,8 +447,8 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
 L_TestMoreCsv:
   
   // skip leading whitespace
-  while (bWHITE_SPACE(*m_acChr)) {
-    m_acChr++;
+  while (bWHITE_SPACE(*acChr)) {
+    acChr++;
     m_iCol++;
     m_nChars++;
   }
@@ -503,7 +506,7 @@ L_TestMoreFields:
   
   i8 nDigits;
           
-  char *aSrc = m_acChr;
+  char *aSrc = acChr;
   
   if ( ! *aSrc )
     THROW_USER("vConvertDateFast"_Stz);
@@ -536,7 +539,7 @@ L_TestMoreFields:
   
   iYear = uUnsignedResult;
   
-  m_acChr = aSrc;
+  acChr = aSrc;
   
   if (!bOnce)
     THROW_USER("vConvertDateFast"_Stz);
@@ -555,14 +558,14 @@ L_TestMoreFields:
   // month
   
   L_Month:
-  if (m_pFmt->m_cDateSeparator != *m_acChr++)
+  if (m_pFmt->m_cDateSeparator != *acChr++)
     THROW_USER("vConvertDateFast"_Stz);
         
   u8 uSubField;
   
   iMonth = 0;
 
-  char *s = m_acChr;
+  char *s = acChr;
   i8 iDigits = 2;
   
   if ( ! *s )
@@ -588,7 +591,7 @@ L_TestMoreFields:
   }
   
   uSubField = v;
-  m_acChr = s;
+  acChr = s;
   
   if (!bOnce)
     THROW_USER("vConvertDateFast"_Stz);
@@ -601,10 +604,10 @@ L_TestMoreFields:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day
         
-  if (m_pFmt->m_cDateSeparator != *m_acChr++)
+  if (m_pFmt->m_cDateSeparator != *acChr++)
     THROW_USER("vConvertDateFast"_Stz);
 
-  s = m_acChr;
+  s = acChr;
   iDigits = 2;
   
   if ( ! *s )
@@ -630,7 +633,7 @@ L_TestMoreFields:
   }
   
   uSubField = v;
-  m_acChr = s;
+  acChr = s;
   
   if (!bOnce)
     THROW_USER("vConvertDateFast"_Stz);
@@ -689,31 +692,31 @@ L_TestMoreFields:
   
   // test for negative or positive sign
   bool bNegative = false;
-  if (*m_acChr && '-' == *m_acChr ) {
+  if (*acChr && '-' == *acChr ) {
     bNegative = true;
-    (*m_acChr)++;
+    (*acChr)++;
   }
   else
-  if (*m_acChr && '+' == *m_acChr ) {
-    (m_acChr)++;
+  if (*acChr && '+' == *acChr ) {
+    (acChr)++;
   }
   
   bool bOnce = false;
-  //if (*m_acChr && (isdigit(*m_acChr) || '.' == *m_acChr))
-  if (*m_acChr && ( (*m_acChr >= '0' && *m_acChr <= '9') || '.' == *m_acChr))
+  //if (*acChr && (isdigit(*acChr) || '.' == *acChr))
+  if (*acChr && ( (*acChr >= '0' && *acChr <= '9') || '.' == *acChr))
     bOnce = true;
   
   // ignore leading 0's
-  //while (isdigit(*m_acChr) && *m_acChr - '0' == 0) {
-  while ((*m_acChr >= '0' && *m_acChr <= '9') && *m_acChr - '0' == 0) {
-    m_acChr++;
+  //while (isdigit(*acChr) && *acChr - '0' == 0) {
+  while ((*acChr >= '0' && *acChr <= '9') && *acChr - '0' == 0) {
+    acChr++;
   }
   
   // collect leading digits (till '.')
-  //while (isdigit(*m_acChr)) {
-  while (*m_acChr >= '0' && *m_acChr <= '9') {
-    uUnsignedResult = uUnsignedResult * 10 + *m_acChr - '0';
-    m_acChr++;
+  //while (isdigit(*acChr)) {
+  while (*acChr >= '0' && *acChr <= '9') {
+    uUnsignedResult = uUnsignedResult * 10 + *acChr - '0';
+    acChr++;
     iPrecision--;
   }
   
@@ -721,14 +724,14 @@ L_TestMoreFields:
   if (iPrecision < 0)
     THROW_USER("vConvertDecimalFast"_Stz);
   
-  if ('.' == *m_acChr) {
+  if ('.' == *acChr) {
     
-    m_acChr++; // skip '.'
+    acChr++; // skip '.'
     
-    //while (isdigit(*m_acChr) && iScale) {
-    while ((*m_acChr >= '0' && *m_acChr <= '9') && iScale) {
-      uUnsignedResult = uUnsignedResult * 10 + *m_acChr - '0';
-      m_acChr++;
+    //while (isdigit(*acChr) && iScale) {
+    while ((*acChr >= '0' && *acChr <= '9') && iScale) {
+      uUnsignedResult = uUnsignedResult * 10 + *acChr - '0';
+      acChr++;
       iScale--;
     }
   }
@@ -741,13 +744,13 @@ L_TestMoreFields:
     THROW_USER("vConvertDecimalFast"_Stz);
   
   // round up if there any more digits after decimal
-  //if (isdigit(*m_acChr)) {
-  if (*m_acChr >= '0' && *m_acChr <= '9') {
-    if (*m_acChr - '0' >= 5)
+  //if (isdigit(*acChr)) {
+  if (*acChr >= '0' && *acChr <= '9') {
+    if (*acChr - '0' >= 5)
       uUnsignedResult += 1;
-    //while (isdigit(*m_acChr))
-    while (*m_acChr >= '0' && *m_acChr <= '9')
-      m_acChr++;
+    //while (isdigit(*acChr))
+    while (*acChr >= '0' && *acChr <= '9')
+      acChr++;
   }
   
   // compute final result
@@ -775,7 +778,7 @@ L_TestMoreFields:
   {
   vSKIP_WHITE_SPACE();
   
-  char *aSrc = m_acChr;
+  char *aSrc = acChr;
   
   if ( ! *aSrc )
     THROW_USER("vConvertIntegerFast"_Stz);
@@ -843,19 +846,19 @@ L_TestMoreFields:
   if (! m_pFmt->m_cEnclosedBy_Leading)
     bSawEnclosedLeading = false;
 
-  char *aStart = m_acChr;
+  char *aStart = acChr;
 
   // find first non-space character
-  while (' ' == *m_acChr)
-    m_acChr++;
+  while (' ' == *acChr)
+    acChr++;
 
   // is it an enclosed varchar?
-  if (*m_acChr == m_pFmt->m_cEnclosedBy_Leading) {
-    m_acChr++;
+  if (*acChr == m_pFmt->m_cEnclosedBy_Leading) {
+    acChr++;
     bSawEnclosedLeading = true;
   }
   else {
-    m_acChr = aStart;
+    acChr = aStart;
     bSawEnclosedLeading = false;
   }
 
@@ -864,25 +867,25 @@ L_TestMoreFields:
 
   bool bSawEnclosedTrailing = false;
 
-  char cSrc = *m_acChr;
+  char cSrc = *acChr;
 
   while (cSrc) {
     
     // special case of double enclosedBy
     
     if (m_pFmt->m_cEnclosedBy_Trailing == m_pFmt->m_cEnclosedBy_Leading) {
-      if (cSrc == m_pFmt->m_cEnclosedBy_Leading && *(m_acChr+1) == m_pFmt->m_cEnclosedBy_Leading) {
+      if (cSrc == m_pFmt->m_cEnclosedBy_Leading && *(acChr+1) == m_pFmt->m_cEnclosedBy_Leading) {
         
         // skip the first enclosed character
-        m_acChr++;
+        acChr++;
         
         // append one instance of the enclosedBy character
         if (iLength++ < iMaxColumn)
           *aDst++ = cSrc;
         
-        m_acChr++;
+        acChr++;
         
-        cSrc = *m_acChr;
+        cSrc = *acChr;
         
         continue;
       }
@@ -906,7 +909,7 @@ L_TestMoreFields:
       // we saw a leading enclodedBy so test for trailing enclosedBy
       if (cSrc == m_pFmt->m_cEnclosedBy_Trailing) {
         bSawEnclosedTrailing = true;
-        m_acChr++;
+        acChr++;
         break;
       }
       //falls thru if not trailing enclosedBy
@@ -921,7 +924,7 @@ L_TestMoreFields:
     // test for the escape character
     if (cSrc == m_pFmt->m_cEscapeChar) {
       
-      if (StrLib::bEscapeConvert( *(m_acChr+1),
+      if (StrLib::bEscapeConvert( *(acChr+1),
                                  m_pFmt->m_cEnclosedBy_Leading,
                                  m_pFmt->m_cEnclosedBy_Trailing,
                                  m_pFmt->m_cEscapeChar,
@@ -929,20 +932,20 @@ L_TestMoreFields:
                                  m_pFmt->m_cRecordTerminator)) {
         
         // skip the escape character
-        m_acChr++;
+        acChr++;
         
         // append the escaped character
         if (iLength++ < iMaxColumn)
-          *aDst++ = StrLib::cEscapeConvert(*m_acChr++);
+          *aDst++ = StrLib::cEscapeConvert(*acChr++);
         else
-          m_acChr++;
+          acChr++;
         
-        cSrc = *m_acChr;
+        cSrc = *acChr;
         continue;
       }
       else {
-        m_acChr++;
-        cSrc = *m_acChr;
+        acChr++;
+        cSrc = *acChr;
       }
     }
     
@@ -952,8 +955,8 @@ L_TestMoreFields:
     if (iLength++ < iMaxColumn)
       *aDst++ = cSrc;
     
-    m_acChr++;
-    cSrc = *m_acChr;
+    acChr++;
+    cSrc = *acChr;
   }
 
   // terminate
@@ -991,7 +994,7 @@ L_TestMoreFields:
     Bol xBol;
     SN_Bol snBol;
   
-    xBol = snBol.i(&m_acChr,m_pCol,m_pFmt);
+    xBol = snBol.i(&acChr,m_pCol,m_pFmt);
     m_pRowSlab->vDeposit(xBol);
   }
   goto L_PostField;
@@ -1007,7 +1010,7 @@ L_TestMoreFields:
     Flt xFlt;
     SN_Flt snFlt;
 
-    xFlt = snFlt.d(&m_acChr,m_pCol,m_pFmt);
+    xFlt = snFlt.d(&acChr,m_pCol,m_pFmt);
     m_pRowSlab->vDeposit(xFlt.m_dFlt);
   }
   goto L_PostField;
@@ -1023,7 +1026,7 @@ L_TestMoreFields:
     Ivl xIvl;
     SN_Ivl snIvl;
 
-    xIvl = snIvl.i(&m_acChr,m_pCol,m_pFmt);
+    xIvl = snIvl.i(&acChr,m_pCol,m_pFmt);
     m_pRowSlab->vDeposit(xIvl);
   }
   goto L_PostField;
@@ -1039,7 +1042,7 @@ L_TestMoreFields:
     Tme xTme;
     SN_Tme snTme;
 
-    xTme = snTme.i(&m_acChr,m_pCol,m_pFmt);
+    xTme = snTme.i(&acChr,m_pCol,m_pFmt);
     m_pRowSlab->vDeposit(xTme);
   }
   goto L_PostField;
@@ -1055,7 +1058,7 @@ L_TestMoreFields:
     Tsp xTsp;
     SN_Tsp snTsp;
 
-    xTsp = snTsp.i(&m_acChr,m_pCol,m_pFmt);
+    xTsp = snTsp.i(&acChr,m_pCol,m_pFmt);
     m_pRowSlab->vDeposit(xTsp);
   }
   goto L_PostField;
@@ -1066,14 +1069,14 @@ L_TestMoreFields:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
   
-  if (m_cFldSep == *m_acChr)
+  if (m_cFldSep == *acChr)
     m_bSawFldSep = true;
 
-  while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr)
-    m_acChr++;
+  while (*acChr && m_cFldSep != *acChr && m_cRecEnd != *acChr)
+    acChr++;
 
-  if (m_cFldSep == *m_acChr) {
-    m_acChr++;
+  if (m_cFldSep == *acChr) {
+    acChr++;
     m_iCol++;
   }
 
@@ -1104,8 +1107,8 @@ L_EndOfFields:
   
   m_i_Rec++;
   m_i_Fld = 0;
-  if (*m_acChr)
-    m_acChr++;
+  if (*acChr)
+    acChr++;
   m_iLine++;
   m_iCol = 1;
   

@@ -149,7 +149,7 @@ void WspConverge_t<LENGTH>::vFill(char cByte, eCN eClassNo)
 template<int LENGTH>
 i8 WspConverge_t<LENGTH>::nFree(void)
 {
-  i8 nFree = LENGTH - nUsedHead() - nUsedTail();
+  i8 nFree = LENGTH - m_nUsedHead - m_nUsedTail;
   ASSERT(nFree >= 0);
   
   return nFree;

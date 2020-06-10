@@ -73,6 +73,19 @@ namespace Rows
   public:
   
   /*----------------------------------------------------------------------------*/
+  /* deposit cursor                                                             */
+  /*----------------------------------------------------------------------------*/
+  inline void vDepositCursor(m8** aaCell)
+  {
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+    m8* aCells = (m8*)m_xWsp.ayArea();
+
+    *aaCell = & aCells[m_i_Cell];
+  }
+
+
+  /*----------------------------------------------------------------------------*/
   /* deposit an d8 value into next cell                                         */
   /*----------------------------------------------------------------------------*/
   inline void vDeposit(d8 dVal)
