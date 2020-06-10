@@ -872,7 +872,15 @@ L_TestMoreFields:
     }
     
     // test for a non-printable character (e.g. \n or \r)
-    if (! m_pFmt->m_bAllowNonPrintable && isspace(cSrc) && (cSrc != ' ') )
+    //if (! m_pFmt->m_bAllowNonPrintable && isspace(cSrc) && (cSrc != ' ') )
+    //  break;
+    if (! m_pFmt->m_bAllowNonPrintable &&
+        ( (cSrc == '\f') ||
+         (cSrc == '\n') ||
+         (cSrc == '\r') ||
+         (cSrc == '\t') ||
+         (cSrc == '\v') )
+        )
       break;
     
     // test for normal end
