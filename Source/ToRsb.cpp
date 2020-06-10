@@ -454,10 +454,11 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   i8 iMaxColumn;
 
   char* azStzCell;
-
+  char* s;
+  
   i8 nChars;
   char *aStart;
-
+  char *aSrc;
   bool bSawEnclosedLeading;
 
   char *aDst;
@@ -532,14 +533,14 @@ L_TestMoreFields:
   // 1.b) date field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Date:
-  {
+
   vSKIP_WHITE_SPACE();
   
   iYear  = 0;
   iMonth = 0;
   iDay   = 0;
             
-  char *aSrc = acCsvChr;
+  aSrc = acCsvChr;
   
   if ( ! *aSrc )
     THROW_USER("vConvertDateFast"_Stz);
@@ -589,8 +590,8 @@ L_TestMoreFields:
           
   iMonth = 0;
 
-  char *s = acCsvChr;
-  i8 iDigits = 2;
+  s = acCsvChr;
+  nDigits = 2;
   
   if ( ! *s )
     THROW_USER("vConvertDateFast"_Stz);
@@ -601,12 +602,12 @@ L_TestMoreFields:
     bOnce = true;
   
   v = 0;
-  for ( ; *s && iDigits > 0; s++)
+  for ( ; *s && nDigits > 0; s++)
   {
     c = *s;
     
     // decrement no of digits extracted
-    iDigits--;
+    nDigits--;
     
     if ( c < '0' || c > '9' )
       break;
@@ -632,7 +633,7 @@ L_TestMoreFields:
     THROW_USER("vConvertDateFast"_Stz);
 
   s = acCsvChr;
-  iDigits = 2;
+  nDigits = 2;
   
   if ( ! *s )
     THROW_USER("vConvertDateFast"_Stz);
@@ -643,12 +644,12 @@ L_TestMoreFields:
     bOnce = true;
   
   v = 0;
-  for ( ; *s && iDigits > 0; s++)
+  for ( ; *s && nDigits > 0; s++)
   {
     c = *s;
     
     // decrement no of digits extracted
-    iDigits--;
+    nDigits--;
     
     if ( c < '0' || c > '9' )
       break;
@@ -693,17 +694,15 @@ L_TestMoreFields:
   
   pRowSlab->vDeposit(xDte);
 
-  }
-  goto L_PostField;
+  goto L_PostField;                                               // end of date
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.c) decimal field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Decimal:
-  {
+
   vSKIP_WHITE_SPACE();
-  
   
   iLength = xColPix.m_uLength;
   iScale  = xColPix.m_uScale;
@@ -786,18 +785,18 @@ L_TestMoreFields:
   
   // deposit the decimal
   pRowSlab->vDeposit(iDecimal);
-  }
-  goto L_PostField;
+
+  goto L_PostField;                                            // end of decimal
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.d) integer
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Integer:
-  {
+
   vSKIP_WHITE_SPACE();
   
-  char *aSrc = acCsvChr;
+  aSrc = acCsvChr;
   
   if ( ! *aSrc )
     THROW_USER("vConvertIntegerFast"_Stz);
@@ -842,15 +841,15 @@ L_TestMoreFields:
   else
     xInt = - uUnsignedResult;
   pRowSlab->vDeposit(xInt);
-  }
-  goto L_PostField;
+
+  goto L_PostField;                                            // end of integer
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.e) varchar field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Varchar:
-  {
+
   // don't skip white space
 
   iMaxColumn = xColPix.m_uLength;
@@ -992,8 +991,8 @@ L_TestMoreFields:
 
   // deposit the string
   pRowSlab->vDepositString_end(nChars+1);
-  }
-  goto L_PostField;
+
+  goto L_PostField;                                            // end of varchar
 
   
   // ===     ===     ===     ===     ===     ===     ===     ===     ===     ===
