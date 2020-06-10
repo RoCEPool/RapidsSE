@@ -855,7 +855,6 @@ L_TestMoreFields:
     bSawEnclosedLeading = false;
   }
 
-  nPixLength = 0;
   aDst = (char*)azStzCell;
 
   bSawEnclosedTrailing = false;
@@ -871,7 +870,7 @@ L_TestMoreFields:
         acCsvChr++;
         
         // append one instance of the enclosedBy character
-        if (nPixLength++ < iMaxColumn)
+        if (nChars++ < iMaxColumn)
           *aDst++ = *acCsvChr;
         
         acCsvChr++;
@@ -924,7 +923,7 @@ L_TestMoreFields:
         acCsvChr++;
         
         // append the escaped character
-        if (nPixLength++ < iMaxColumn)
+        if (nChars++ < iMaxColumn)
           *aDst++ = StrLib::cEscapeConvert(*acCsvChr++);
         else
           acCsvChr++;
@@ -939,7 +938,7 @@ L_TestMoreFields:
     // normal character
     
     // append the normal character
-    if (nPixLength++ < iMaxColumn)
+    if (nChars++ < iMaxColumn)
       *aDst++ = *acCsvChr;
     
     acCsvChr++;
@@ -949,9 +948,7 @@ L_TestMoreFields:
   *aDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nPixLength < iMaxColumn)
-    nChars = nPixLength;
-  else
+  if (nChars >= iMaxColumn)
     nChars = iMaxColumn;
 
   // if this an enclosed varchar we should have expected to
