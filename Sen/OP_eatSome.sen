@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : OP_eatSome_Opr \handler
 
-  PipeIn[].kind "EATING : %v" .printf
+  //PipeIn[].kind "EATING : %v" .printf
   PipeIn[].delete
   true
 ;
@@ -28,7 +28,7 @@
 
 //  pEastSomeHandler ZK_CANCELMARKER     op[].handler!
 //  pEastSomeHandler ZK_CANCELLEDMARKER  op[].handler!
-//  pEastSomeHandler ZK_CRWBUFFER        op[].handler!
+    pEastSomeHandler ZK_CRWBUFFER        op[].handler!
     pEastSomeHandler ZK_CSVBUFFER        op[].handler!
 //  pEastSomeHandler ZK_ENTBUFFER        op[].handler!
 //  pEastSomeHandler ZK_EOSMARKER        op[].handler!
@@ -43,7 +43,7 @@
 //  pEastSomeHandler ZK_PROGRESSUNITS    op[].handler!
 //  pEastSomeHandler ZK_PULSEMARKER      op[].handler!
 //  pEastSomeHandler ZK_PULSEDMARKER     op[].handler!
-//  pEastSomeHandler ZK_RSBBUFFER        op[].handler!
+    pEastSomeHandler ZK_RSBBUFFER        op[].handler!
 //  pEastSomeHandler ZK_SEEKOFFSETS      op[].handler!
 //  pEastSomeHandler ZK_SRTBUFFER        op[].handler!
 //  pEastSomeHandler ZK_STARTMARKER      op[].handler!
