@@ -10,6 +10,7 @@ namespace Load
   private:
     StreamDef* m_pStreamDef;
     Format*    m_pFmt;
+    bool       m_bOrdCsv;
 
     char*      m_azSrc;
     char*      m_acChr;
@@ -47,7 +48,8 @@ namespace Load
   
     bool bConvert(char* azSrc);
     bool bConvertFast(char* azSrc);
-    
+    bool bConvertFastInline(char* azSrc);
+
     RsbBuffer* pDanglingRsbBuffer(void);
     RsbBuffer* pFullRsbBuffer(void);
     void vNewRsbBuffer(void);
@@ -840,11 +842,14 @@ namespace Load
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // azDepositString_begin
-    char* azStzCell = (char*)m_pRowSlab->m_xWsp.ayLatterHead();
-    m_pRowSlab->m_i_Cell--;
-    i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
-    iaCells[m_pRowSlab->m_i_Cell] = (i8)azStzCell;
+//    char* azStzCell = (char*)m_pRowSlab->m_xWsp.ayLatterHead();
+//    m_pRowSlab->m_i_Cell--;
+//    i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
+//    iaCells[m_pRowSlab->m_i_Cell] = (i8)azStzCell;
     
+    char* azStzCell = m_pRowSlab->azDepositString_begin();
+
+  
     //SN_Vch snVch;
     
     i8 nChars = 0;
@@ -1004,10 +1009,9 @@ namespace Load
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // deposit the string
     
-    //m_pRowSlab->vDepositString_end(nChars+1);
-    m_pRowSlab->m_xWsp.vTakeHead(nChars+1);
-    
-    ASSERT(nChars + 1 == StrLib::nSize(azStzCell));
+    m_pRowSlab->vDepositString_end(nChars+1);
+    //m_pRowSlab->m_xWsp.vTakeHead(nChars+1);
+    //ASSERT(nChars + 1 == StrLib::nSize(azStzCell));
     
     //vSprintVarchar();
   }
