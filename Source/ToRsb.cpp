@@ -418,7 +418,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a chunk                                          */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertFastInline(char* azCsvSrc)
+bool ToRsb::bConvertFastInline(char* azCsvInput)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
@@ -432,20 +432,12 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   u8   uPartialResult;
   bool bNegative;
   bool bOnce;
-
-  char c;
-  
-  i8 nPtns = AM::nPartitions();
-  i8 i_Ptn = 0;
-  
-  i8 iYear;
-  i8 iMonth;
-  i8 iDay;
+    
+  u8 iYear;
+  u8 iMonth;
+  u8 iDay;
   i8 nDigits;
   bool bLeapYear;
-
-  u8 uSubField;
-  u8 v = 0;
 
   Dte xDte;
 
@@ -458,18 +450,19 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   bool bSawEnclosedTrailing;
 
   
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) begin
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  char* acCsvSrc = azCsvSrc;
+  char* acCsvSrc = azCsvInput;
   
   RowSlab* pRowSlab = m_pRowSlab;
 
   ColPix* aColPix = pRowSlab->axaColPix();
 
-  
+  i8 nPtns = AM::nPartitions();
+  i8 i_Ptn = 0;
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) while more csv data
@@ -527,40 +520,35 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.b) date field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  L_Date:
+L_Date:
 
   vSKIP_WHITE_SPACE();
   
   iYear  = 0;
   iMonth = 0;
   iDay   = 0;
-              
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year
   
   bOnce = false;
   nDigits = 0;
-  uPartialResult = 0;
 
   if ( *acCsvSrc && (*acCsvSrc >= '0' && *acCsvSrc <= '9') )
     bOnce = true;
   
   for ( ; *acCsvSrc; acCsvSrc++) {
     
-    c = *acCsvSrc;
-    if ( c < '0' || c > '9' )
+     if ( *acCsvSrc < '0' || *acCsvSrc > '9' )
       break;
     
-    uPartialResult = (uPartialResult * 10) + (c - '0');
+    iYear = (iYear * 10) + (*acCsvSrc - '0');
     nDigits++;
     
-    if (uPartialResult > (u8)C_I8_MAX)
+    if (iYear > (u8)C_I8_MAX)
       THROW_USER("vConvertDateFast"_Stz);
   }
-  
-  iYear = uPartialResult;
-    
+      
   if (!bOnce)
     THROW_USER("vConvertDateFast"_Stz);
   
@@ -575,11 +563,12 @@ L_TestMoreFields:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month
   
+  bOnce = false;
+  nDigits = 2;
+
   if (m_pFmt->m_cDateSeparator != *acCsvSrc++)
     THROW_USER("vConvertDateFast"_Stz);
           
-  bOnce = false;
-  nDigits = 2;
   
   if ( ! *acCsvSrc )
     THROW_USER("vConvertDateFast"_Stz);
@@ -588,67 +577,55 @@ L_TestMoreFields:
   if ( *acCsvSrc && (*acCsvSrc >= '0' && *acCsvSrc <= '9') )
     bOnce = true;
   
-  v = 0;
-  for ( ; *acCsvSrc && nDigits > 0; acCsvSrc++)
-  {
-    c = *acCsvSrc;
+  for ( ; *acCsvSrc && nDigits > 0; acCsvSrc++) {
     
     // decrement no of digits extracted
     nDigits--;
     
-    if ( c < '0' || c > '9' )
+    if ( *acCsvSrc < '0' || *acCsvSrc > '9' )
       break;
     
-    v = (v * 10) + c - '0';
+    iMonth = (iMonth * 10) + *acCsvSrc - '0';
   }
-  
-  uSubField = v;
-  
+    
   if (!bOnce)
     THROW_USER("vConvertDateFast"_Stz);
   
-  if (uSubField < 1 || uSubField > 12)
+  if (iMonth < 1 || iMonth > 12)
     THROW_USER("vConvertDateFast"_Stz);
   
-  iMonth = uSubField;
-
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day
         
   bOnce = false;
-  
+  nDigits = 2;
+
   if (m_pFmt->m_cDateSeparator != *acCsvSrc++)
     THROW_USER("vConvertDateFast"_Stz);
 
-   nDigits = 2;
-  
   if ( ! *acCsvSrc )
     THROW_USER("vConvertDateFast"_Stz);
   
   if ( *acCsvSrc && (*acCsvSrc >= '0' && *acCsvSrc <= '9') )
     bOnce = true;
   
-  v = 0;
-  for ( ; *acCsvSrc && nDigits > 0; acCsvSrc++)
-  {
-    c = *acCsvSrc;
+  for ( ; *acCsvSrc && nDigits > 0; acCsvSrc++)  {
     
     // decrement no of digits extracted
     nDigits--;
     
-    if ( c < '0' || c > '9' )
+    if ( *acCsvSrc < '0' || *acCsvSrc > '9' )
       break;
     
-    v = (v * 10) + c - '0';
+    iDay = (iDay * 10) + *acCsvSrc - '0';
   }
-  
-  uSubField = v;
-   
+     
   if (!bOnce)
     THROW_USER("vConvertDateFast"_Stz);
+        
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // validate
   
-  iDay = uSubField;
-      
   // assume a leap year
   bLeapYear = true;
   if (iYear % 4 == 0) {
@@ -659,11 +636,11 @@ L_TestMoreFields:
   }
 
   if (bLeapYear) {
-    if (iDay > (i8)iDaysPerMonthLeap[iMonth-1])
+    if (iDay > (u8)iDaysPerMonthLeap[iMonth-1])
       THROW_USER("vConvertDateFast"_Stz);
   }
   else {
-    if (iDay > (i8)iDaysPerMonth[iMonth-1])
+    if (iDay > (u8)iDaysPerMonth[iMonth-1])
       THROW_USER("vConvertDateFast"_Stz);
   }
 
@@ -683,7 +660,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.c) decimal field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  L_Decimal:
+L_Decimal:
 
   vSKIP_WHITE_SPACE();
   
@@ -691,9 +668,9 @@ L_TestMoreFields:
   nPixScale     = xColPix.m_uScale;
   nPixPrecision = nPixLength - nPixScale;
 
-  bNegative = false;
-  bOnce     = false;
   uPartialResult = 0;
+  bNegative = false;
+  bOnce = false;
 
   // test for negative or positive sign
   if (*acCsvSrc && '-' == *acCsvSrc ) {
@@ -769,7 +746,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.d) integer
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  L_Integer:
+L_Integer:
 
   vSKIP_WHITE_SPACE();
  
@@ -814,7 +791,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.e) varchar field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  L_Varchar:
+L_Varchar:
 
   // don't skip white space
 
@@ -825,9 +802,9 @@ L_TestMoreFields:
   bSawEnclosedTrailing = false;
   bSawEnclosedLeading  = false;
 
+  // allocate string space in slab
   azVchSlab = pRowSlab->azDepositString_begin();
   acVchDst = (char*)azVchSlab;
-
   
   if (! m_pFmt->m_cEnclosedBy_Leading)
     bSawEnclosedLeading = false;
@@ -845,8 +822,6 @@ L_TestMoreFields:
     acCsvSrc = aStart;
     bSawEnclosedLeading = false;
   }
-
-
 
   while (*acCsvSrc) {
     
@@ -870,8 +845,6 @@ L_TestMoreFields:
     }
     
     // test for a non-printable character (e.g. \n or \r)
-    //if (! m_pFmt->m_bAllowNonPrintable && isspace(*acCsvSrc) && (*acCsvSrc != ' ') )
-    //  break;
     if (! m_pFmt->m_bAllowNonPrintable &&
         ( (*acCsvSrc == '\f') ||
           (*acCsvSrc == '\n') ||
@@ -891,6 +864,7 @@ L_TestMoreFields:
       }
       //falls thru if not trailing enclosedBy
     }
+    
     // test for field separator (because its not enclosed)
     else if (m_pFmt->m_cFieldDelimiter && *acCsvSrc == m_pFmt->m_cFieldDelimiter)
       break;
@@ -958,7 +932,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.f) boolean field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  L_Boolean:
+L_Boolean:
   {
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE(); ;
@@ -974,7 +948,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.g) float field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  L_Float:
+L_Float:
   {
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
@@ -990,7 +964,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.h) interval field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  L_Interval:
+L_Interval:
   {
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
@@ -1006,7 +980,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.i) time field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  L_Time:
+L_Time:
   {
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
@@ -1022,7 +996,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 1.j) timestamp field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  L_Timestamp:
+L_Timestamp:
   {
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
