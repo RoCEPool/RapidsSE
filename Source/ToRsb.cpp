@@ -423,16 +423,8 @@ L_TestMoreCsv:
   // test for more csv to be parsed
   if (! bMORE_DATA())   // ? macro ?
     goto L_EndOfCsv;
-
-//  if (! bMORE_FIELDS()) {   // ? macro ?
-//    m_acChr++;
-//    m_iCol++;
-//    m_iLine++;
-//    goto L_EndOfCsv;
-//  }
   
-  // each record thats fits
-  
+  // alloc a new rsb, new another rsbBufer if necessary
   if (! m_pRowSlab->bNewRow()) {    // ? inline ?
     vNewRsbBuffer();
     bool b = m_pRowSlab->bNewRow();
@@ -449,10 +441,14 @@ L_TestMoreFields:
     goto L_EndOfFields;
 
   eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
-
-  vPreField(eDatum);
-
   m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
+
+  //vPreField(eDatum);
+
+  m_bSawFldSep = false;
+    
+  if (DM_VCH != eDatum)
+    vSkipBlankspace();
 
   switch (eDatum) {
     case DM_BOL : goto L_Boolean;
