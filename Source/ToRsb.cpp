@@ -431,23 +431,23 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   i8 i_Ptn = 0;
   
   i8 iYear = 0, iMonth = 0, iDay = 0;
-  u8 uUnsignedResult = 0;
+  u8 uPartialResult = 0;
   bool bNegative = false;
   i8 nDigits;
   bool bOnce;
 
   u8 uSubField;
   u8 v = 0;
-  i8  iDecimal;
+  i8  iFinalResult;
 
   Bcd xBcd;
   Dte xDte;
   Int xInt;
 
   eDM eDatum;
-  i8  iLength;
-  i8  iScale;
-  i8  iPrecision;
+  i8  nLength;
+  i8  nScale;
+  i8  nPrecision;
   
   bool bLeapYear = true;
   i8 iMaxColumn;
@@ -553,20 +553,20 @@ L_TestMoreFields:
     bOnce = true;
   
   nDigits = 0;
-  uUnsignedResult = 0;
+  uPartialResult = 0;
   for ( ; *aSrc; aSrc++) {
     
     c = *aSrc;
     if ( c < '0' || c > '9' )
       break;
     
-    uUnsignedResult = (uUnsignedResult * 10) + (c - '0');
+    uPartialResult = (uPartialResult * 10) + (c - '0');
     nDigits++;
     
-    if (uUnsignedResult > (u8)C_I8_MAX)
+    if (uPartialResult > (u8)C_I8_MAX)
       THROW_USER("vConvertDateFast"_Stz);
   }
-  iYear = uUnsignedResult;
+  iYear = uPartialResult;
   
   acCsvChr = aSrc;
   
@@ -703,9 +703,9 @@ L_TestMoreFields:
 
   vSKIP_WHITE_SPACE();
   
-  iLength = xColPix.m_uLength;
-  iScale  = xColPix.m_uScale;
-  iPrecision = iLength - iScale;
+  nLength = xColPix.m_uLength;
+  nScale  = xColPix.m_uScale;
+  nPrecision = nLength - nScale;
     
   // test for negative or positive sign
   bNegative = false;
@@ -728,59 +728,59 @@ L_TestMoreFields:
   }
   
   // collect leading digits (till '.')
-  uUnsignedResult = 0;
+  uPartialResult = 0;
   while (*acCsvChr >= '0' && *acCsvChr <= '9') {
-    uUnsignedResult = uUnsignedResult * 10 + *acCsvChr - '0';
+    uPartialResult = uPartialResult * 10 + *acCsvChr - '0';
     acCsvChr++;
-    iPrecision--;
+    nPrecision--;
   }
   
   // have we exceeded maximum precision digits?
-  if (iPrecision < 0)
+  if (nPrecision < 0)
     THROW_USER("vConvertDecimalFast"_Stz);
   
   if ('.' == *acCsvChr) {
     
     acCsvChr++; // skip '.'
     
-    //while (isdigit(*acCsvChr) && iScale) {
-    while ((*acCsvChr >= '0' && *acCsvChr <= '9') && iScale) {
-      uUnsignedResult = uUnsignedResult * 10 + *acCsvChr - '0';
+    //while (isdigit(*acCsvChr) && nScale) {
+    while ((*acCsvChr >= '0' && *acCsvChr <= '9') && nScale) {
+      uPartialResult = uPartialResult * 10 + *acCsvChr - '0';
       acCsvChr++;
-      iScale--;
+      nScale--;
     }
   }
   
-  while (iScale--)
-    uUnsignedResult = uUnsignedResult * 10 + 0;
+  while (nScale--)
+    uPartialResult = uPartialResult * 10 + 0;
   
   // have we exceeded the max ?
-  if (uUnsignedResult > (u8)C_I8_MAX)
+  if (uPartialResult > (u8)C_I8_MAX)
     THROW_USER("vConvertDecimalFast"_Stz);
   
   // round up if there any more digits after decimal
   if (*acCsvChr >= '0' && *acCsvChr <= '9') {
     if (*acCsvChr - '0' >= 5)
-      uUnsignedResult += 1;
+      uPartialResult += 1;
     //while (isdigit(*acCsvChr))
     while (*acCsvChr >= '0' && *acCsvChr <= '9')
       acCsvChr++;
   }
   
   // compute final result
-  uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
+  uPartialResult = bNegative ? - uPartialResult : uPartialResult;
   
   // have we gone beyond the min ?
-  if (uUnsignedResult != 0 && bNegative && (uUnsignedResult < (u8)C_I8_MIN))
+  if (uPartialResult != 0 && bNegative && (uPartialResult < (u8)C_I8_MIN))
     THROW_USER("vConvertDecimalFast"_Stz);
   
-  iDecimal = uUnsignedResult;
+  iFinalResult = uPartialResult;
   
   if ( ! bOnce )
     THROW_USER("vConvertDecimalFast"_Stz);
   
   // deposit the decimal
-  pRowSlab->vDeposit(iDecimal);
+  pRowSlab->vDeposit(iFinalResult);
 
   goto L_PostField;                                            // end of decimal
 
@@ -791,12 +791,12 @@ L_TestMoreFields:
   L_Integer:
 
   vSKIP_WHITE_SPACE();
-  
-   if ( ! *acCsvChr )
-    THROW_USER("vConvertIntegerFast"_Stz);
-  
-  // test for negative or positive sign
+ 
+  uPartialResult = 0;
   bNegative = false;
+  bOnce = false;
+
+  // leading sign
   if (*acCsvChr && '-' == *acCsvChr) {
     bNegative = true;
     acCsvChr++;
@@ -806,32 +806,26 @@ L_TestMoreFields:
     acCsvChr++;
   }
   
-  bOnce = false;
-  //if (*acCsvChr && isdigit(*acCsvChr))
+  // at least 1 digit
   if (*acCsvChr && (*acCsvChr >= '0' && *acCsvChr <= '9'))
     bOnce = true;
   
-  uUnsignedResult = 0;
   for ( ; *acCsvChr; acCsvChr++) {
         
     if ( *acCsvChr < '0' || *acCsvChr > '9' )
       break;
     
-    uUnsignedResult = (uUnsignedResult * 10) + (*acCsvChr - '0');
+    uPartialResult = (uPartialResult * 10) + (*acCsvChr - '0');
     
-    // have we exceeded the max ?
-    if (uUnsignedResult > (u8)C_I8_MAX)
+    if (uPartialResult > (u8)C_I8_MAX)
       THROW_USER("vConvertIntegerFast"_Stz);
   }
   
-  if ( ! bOnce)
+  if (! bOnce)
     THROW_USER("vConvertIntegerFast"_Stz);
 
-  // deposit the integer
-  if (bNegative)
-    pRowSlab->vDeposit((i8) - uUnsignedResult);
-  else
-    pRowSlab->vDeposit((i8) uUnsignedResult);
+  iFinalResult = bNegative ? - uPartialResult : uPartialResult;
+  pRowSlab->vDeposit(iFinalResult);
 
   goto L_PostField;                                            // end of integer
 
@@ -868,7 +862,7 @@ L_TestMoreFields:
     bSawEnclosedLeading = false;
   }
 
-  iLength = 0;
+  nLength = 0;
   aDst = (char*)azStzCell;
 
   bSawEnclosedTrailing = false;
@@ -884,7 +878,7 @@ L_TestMoreFields:
         acCsvChr++;
         
         // append one instance of the enclosedBy character
-        if (iLength++ < iMaxColumn)
+        if (nLength++ < iMaxColumn)
           *aDst++ = *acCsvChr;
         
         acCsvChr++;
@@ -937,7 +931,7 @@ L_TestMoreFields:
         acCsvChr++;
         
         // append the escaped character
-        if (iLength++ < iMaxColumn)
+        if (nLength++ < iMaxColumn)
           *aDst++ = StrLib::cEscapeConvert(*acCsvChr++);
         else
           acCsvChr++;
@@ -952,7 +946,7 @@ L_TestMoreFields:
     // normal character
     
     // append the normal character
-    if (iLength++ < iMaxColumn)
+    if (nLength++ < iMaxColumn)
       *aDst++ = *acCsvChr;
     
     acCsvChr++;
@@ -962,8 +956,8 @@ L_TestMoreFields:
   *aDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (iLength < iMaxColumn)
-    nChars = iLength;
+  if (nLength < iMaxColumn)
+    nChars = nLength;
   else
     nChars = iMaxColumn;
 
@@ -1125,6 +1119,7 @@ L_EndOfCsv:
   
   return true;
 }
+
 
 /*============================================================================*/
 /* end                                                                        */
