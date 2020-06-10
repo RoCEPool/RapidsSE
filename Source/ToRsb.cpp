@@ -385,6 +385,8 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*                             -- FAST INLINE --                              */
 /*----------------------------------------------------------------------------*/
 
+#define bMORE_DATA()    (bool)(*m_acChr)
+#define bMORE_FIELDS()  (bool)(*m_acChr && m_cRecEnd != *m_acChr)
 
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a chunk                                          */
@@ -409,14 +411,12 @@ bool ToRsb::bConvertFastInline(char* azSrc)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreCsv:
   
-  if (! bMoreData())   // ? macro ?
+  if (! bMORE_DATA())   // ? macro ?
     goto L_EndOfCsv;
   
   vSkipBlankspace();   // ? expand ?
   
-  if (! bMoreFields()) {   // ? macro ?
-    if (m_bTrace)
-      vTrace("blank line...\n"_Stz);
+  if (! bMORE_FIELDS()) {   // ? macro ?
     m_acChr++;
     m_iCol++;
     m_iLine++;
@@ -437,7 +437,7 @@ L_TestMoreCsv:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_TestMoreFields:
   
-  if (! bMoreFields())   // ? macro ?
+  if (! bMORE_FIELDS())   // ? macro ?
     goto L_EndOfFields;
 
   eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
