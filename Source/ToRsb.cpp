@@ -538,11 +538,7 @@ L_TestMoreFields:
   iYear  = 0;
   iMonth = 0;
   iDay   = 0;
-            
-  aSrc = acCsvSrc;
-  
-  if ( ! *aSrc )
-    THROW_USER("vConvertDateFast"_Stz);
+              
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year
@@ -551,12 +547,12 @@ L_TestMoreFields:
   nDigits = 0;
   uPartialResult = 0;
 
-  if ( *aSrc && (*aSrc >= '0' && *aSrc <= '9') )
+  if ( *acCsvSrc && (*acCsvSrc >= '0' && *acCsvSrc <= '9') )
     bOnce = true;
   
-  for ( ; *aSrc; aSrc++) {
+  for ( ; *acCsvSrc; acCsvSrc++) {
     
-    c = *aSrc;
+    c = *acCsvSrc;
     if ( c < '0' || c > '9' )
       break;
     
@@ -569,7 +565,7 @@ L_TestMoreFields:
   
   iYear = uPartialResult;
   
-  acCsvSrc = aSrc;
+  acCsvSrc = acCsvSrc;
   
   if (!bOnce)
     THROW_USER("vConvertDateFast"_Stz);
@@ -581,7 +577,7 @@ L_TestMoreFields:
   if (4 != nDigits) {
     THROW_USER("vConvertDateFast"_Stz);
   }
-  
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month
   
