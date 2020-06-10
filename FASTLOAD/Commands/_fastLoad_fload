@@ -24,7 +24,7 @@ print section "Load File" <fl_file> ;
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 //print section "Scan Table" <fl_table>;
 //
-tableScan <fl_table>;
+//tableScan <fl_table>;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "Analyse and Size" <fl_table> ;

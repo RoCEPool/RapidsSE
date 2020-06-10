@@ -401,9 +401,12 @@ bool ToRsb::bConvertFastInline(char* azSrc)
   m_azSrc = azSrc;
   m_acChr = m_azSrc;
   
-  // while more data
-  L_TestMoreData:
-  while (bMoreData()) {
+  // while more csv data
+  L_TestMoreCsv:
+  //while (bMoreData()) {
+    
+    if (! bMoreData())
+      goto L_NoMoreCsv;
     
     vSkipBlankspace();
     
@@ -413,7 +416,7 @@ bool ToRsb::bConvertFastInline(char* azSrc)
       m_acChr++;
       m_iCol++;
       m_iLine++;
-      goto L_TestMoreData;
+      goto L_NoMoreCsv;
     }
     
     // each record thats fits
@@ -484,13 +487,13 @@ bool ToRsb::bConvertFastInline(char* azSrc)
     m_iLine++;
     m_iCol = 1;
     
-    goto L_TestMoreData;
-  } // while (bMoreData())
+    goto L_TestMoreCsv;
+  //} // while (bMoreData())
   
-  RASSERT(m_dCalc != 1.0);
-  
-  //m_pRowSlab->vDumpAllRows();
-  //m_pRowSlab->vSlabReport();
+L_NoMoreCsv:
+    
+  m_pRowSlab->vDumpAllRows();
+  m_pRowSlab->vSlabReport();
   
   return true;
 }
