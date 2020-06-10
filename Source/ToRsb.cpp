@@ -641,13 +641,13 @@ L_TestMoreFields:
   xDte.m_uDay   = iDay;
   xDte.m_uSpare = 0;
   
-  //m_pRowSlab->vDeposit(xDte);
-  // move to previous cell
-  m_pRowSlab->m_i_Cell--;
-  
-  i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
-  
-  iaCells[m_pRowSlab->m_i_Cell] = xDte.m_iAsI8;
+  m_pRowSlab->vDeposit(xDte);
+//  // move to previous cell
+//  m_pRowSlab->m_i_Cell--;
+//
+//  i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
+//
+//  iaCells[m_pRowSlab->m_i_Cell] = xDte.m_iAsI8;
 
   }
   goto L_PostField;
@@ -742,10 +742,10 @@ L_TestMoreFields:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // deposit the decimal
   
-  //m_pRowSlab->vDeposit(iDecimal);
-  m_pRowSlab->m_i_Cell--;
-  i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
-  iaCells[m_pRowSlab->m_i_Cell] = iDecimal;
+  m_pRowSlab->vDeposit(iDecimal);
+//  m_pRowSlab->m_i_Cell--;
+//  i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
+//  iaCells[m_pRowSlab->m_i_Cell] = iDecimal;
   }
   goto L_PostField;
 
@@ -797,14 +797,21 @@ L_TestMoreFields:
   // deposit the integer
   
   //m_pRowSlab->vDeposit(xInt);
-  m_pRowSlab->m_i_Cell--;
-  i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
+//  m_pRowSlab->m_i_Cell--;
+//  i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
+//
+//  if (bNegative)
+//    iaCells[m_pRowSlab->m_i_Cell] = - uUnsignedResult;
+//  else
+//    iaCells[m_pRowSlab->m_i_Cell] = uUnsignedResult;
   
+  Int xInt;
   if (bNegative)
-    iaCells[m_pRowSlab->m_i_Cell] = - uUnsignedResult;
+    xInt = - uUnsignedResult;
   else
-    iaCells[m_pRowSlab->m_i_Cell] = uUnsignedResult;
-  
+    xInt = uUnsignedResult;
+  m_pRowSlab->vDeposit(xInt);
+
   //m_oDatum.vInt(xInt);
   //vSprintInteger();
   
