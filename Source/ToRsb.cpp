@@ -626,19 +626,18 @@ L_TestMoreFields:
   if (m_pFmt->m_cDateSeparator != *acCsvSrc++)
     THROW_USER("vConvertDateFast"_Stz);
 
-  s = acCsvSrc;
-  nDigits = 2;
+   nDigits = 2;
   
-  if ( ! *s )
+  if ( ! *acCsvSrc )
     THROW_USER("vConvertDateFast"_Stz);
   
-  if ( *s && (*s >= '0' && *s <= '9') )
+  if ( *acCsvSrc && (*acCsvSrc >= '0' && *acCsvSrc <= '9') )
     bOnce = true;
   
   v = 0;
-  for ( ; *s && nDigits > 0; s++)
+  for ( ; *acCsvSrc && nDigits > 0; acCsvSrc++)
   {
-    c = *s;
+    c = *acCsvSrc;
     
     // decrement no of digits extracted
     nDigits--;
@@ -650,8 +649,7 @@ L_TestMoreFields:
   }
   
   uSubField = v;
-  acCsvSrc = s;
-  
+   
   if (!bOnce)
     THROW_USER("vConvertDateFast"_Stz);
   
@@ -674,8 +672,10 @@ L_TestMoreFields:
     if (iDay > (i8)iDaysPerMonth[iMonth-1])
       THROW_USER("vConvertDateFast"_Stz);
   }
-    
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // deposit the date
+  
   xDte.m_uYearDelta = iYear - C_YEAR_BASE;
   xDte.m_uMonth     = iMonth;
   xDte.m_uDay       = iDay;
