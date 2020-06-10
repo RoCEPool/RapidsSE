@@ -32,6 +32,11 @@ i8 TickingDevice::iGetTick(void)
 i8 TickingDevice::iTicksPerSec(void)
 {
   _static_
+ 
+  static i8 iFreq = 0;
+
+  if (iFreq)
+    return iFreq;
   
 #ifdef WITH_APPLE
   i8 iFrequency = Hardware::iCpuFrequency();
@@ -41,6 +46,8 @@ i8 TickingDevice::iTicksPerSec(void)
   NEVER_REACH;
 #endif
 
+  iFreq = iFrequency;
+  
   return iFrequency;
 }
 
