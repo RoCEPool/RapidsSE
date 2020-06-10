@@ -425,7 +425,9 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
   
   ColPix xColPix;
   
-
+  char c;
+  char cSrc;
+  
   i8 nPtns = AM::nPartitions();
   i8 i_Ptn = 0;
   
@@ -554,7 +556,7 @@ L_TestMoreFields:
   uUnsignedResult = 0;
   for ( ; *aSrc; aSrc++) {
     
-    char c = *aSrc;
+    c = *aSrc;
     if ( c < '0' || c > '9' )
       break;
     
@@ -601,7 +603,7 @@ L_TestMoreFields:
   v = 0;
   for ( ; *s && iDigits > 0; s++)
   {
-    char c = *s;
+    c = *s;
     
     // decrement no of digits extracted
     iDigits--;
@@ -643,7 +645,7 @@ L_TestMoreFields:
   v = 0;
   for ( ; *s && iDigits > 0; s++)
   {
-    char c = *s;
+    c = *s;
     
     // decrement no of digits extracted
     iDigits--;
@@ -819,7 +821,7 @@ L_TestMoreFields:
   uUnsignedResult = 0;
   for ( ; *aSrc; aSrc++) {
     
-    char c = *aSrc;
+    c = *aSrc;
     
     if ( c < '0' || c > '9' )
       break;
@@ -881,7 +883,7 @@ L_TestMoreFields:
 
   bSawEnclosedTrailing = false;
 
-  char cSrc = *acCsvChr;
+  cSrc = *acCsvChr;
 
   while (cSrc) {
     
