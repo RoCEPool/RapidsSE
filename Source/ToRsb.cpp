@@ -816,94 +816,14 @@ L_Varchar:
   while (' ' == cSrc)
     vADV_SRC();
 
-  // is it an enclosed varchar?
-  if (cSrc == m_pFmt->m_cEnclosedBy_Leading) {
-    vADV_SRC();
-    bSawEnclosedLeading = true;
-  }
-  else {
-    acCsvSrc = aStart;
-    cSrc = *acCsvSrc;
-    bSawEnclosedLeading = false;
-  }
+  acCsvSrc = aStart;
 
   while (cSrc) {
-    
-    // special case of double enclosedBy
-    
-    if (m_pFmt->m_cEnclosedBy_Trailing == m_pFmt->m_cEnclosedBy_Leading) {
-      if (cSrc == m_pFmt->m_cEnclosedBy_Leading && *(acCsvSrc+1) == m_pFmt->m_cEnclosedBy_Leading) {
         
-        // skip the first enclosed character
-        vADV_SRC();
-
-        // append one instance of the enclosedBy character
-        if (nChars++ < nPixLength)
-          *acVchDst++ = cSrc;
-        
-        vADV_SRC();
-                
-        continue;
-      }
-      //falls thru if not the case of double enclosedBy
-    }
-    
-    // test for a non-printable character (e.g. \n or \r)
-    if (! m_pFmt->m_bAllowNonPrintable &&
-        ( (cSrc == '\f') ||
-          (cSrc == '\n') ||
-          (cSrc == '\r') ||
-          (cSrc == '\t') ||
-          (cSrc == '\v') )
-        )
-      break;
-    
-    // test for normal end
-    if (bSawEnclosedLeading) {
-      // we saw a leading enclodedBy so test for trailing enclosedBy
-      if (cSrc == m_pFmt->m_cEnclosedBy_Trailing) {
-        bSawEnclosedTrailing = true;
-        vADV_SRC();
-        break;
-      }
-      //falls thru if not trailing enclosedBy
-    }
-    
     // test for field separator (because its not enclosed)
-    else if (m_pFmt->m_cFieldDelimiter && cSrc == m_pFmt->m_cFieldDelimiter)
-      break;
-    // test for record terminator (because its not enclosed)
-    else if (m_pFmt->m_cRecordTerminator && cSrc == m_pFmt->m_cRecordTerminator)
+    if (',' == cSrc)
       break;
     
-    // test for the escape character
-    if (cSrc == m_pFmt->m_cEscapeChar) {
-      
-      if (StrLib::bEscapeConvert( *(acCsvSrc+1),
-                                 m_pFmt->m_cEnclosedBy_Leading,
-                                 m_pFmt->m_cEnclosedBy_Trailing,
-                                 m_pFmt->m_cEscapeChar,
-                                 m_pFmt->m_cFieldDelimiter,
-                                 m_pFmt->m_cRecordTerminator)) {
-        
-        // skip the escape character
-        vADV_SRC();
-        
-        // append the escaped character
-        if (nChars++ < nPixLength)
-          *acVchDst++ = StrLib::cEscapeConvert(cSrc);
-        vADV_SRC();
-
-        continue;
-      }
-      else {
-        vADV_SRC();
-      }
-    }
-    
-    // normal character
-    
-    // append the normal character
     if (nChars++ < nPixLength)
       *acVchDst++ = cSrc;
     
