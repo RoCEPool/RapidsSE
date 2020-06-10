@@ -360,13 +360,13 @@ begin
     chunk $file        | // read chunks of file, produce (seekOffset) =>
     // dump seekOffsets 1 |
 
-    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
-    // dump csvBuffer 0   |
-
     stageB robin
 
 
-  stage stageB on all partitions:
+  stage stageB on all partitions on origin:
+
+    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
+    // dump csvBuffer 0   |
 
     toRsb $table       | // (csvBuffer)  => (rsbBuffer)
     // dump rsbBuffer 1   |
@@ -380,12 +380,17 @@ begin
     toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
     //dump rsbBuffer 1   |
 
+    stageC hashed
+
+
+  stage stageC on all partitions:
+
     insert $table      | // (crwBuffer) inserted into table
 
-    stageC
+    stageD
 
 
-  stage stageC on origin:
+  stage stageD on origin:
 
     output             |
 
