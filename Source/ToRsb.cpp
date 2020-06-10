@@ -540,7 +540,7 @@ L_Date:
   // temp
   cSrc = *acCsvSrc;
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_ADV();
   
   iYear  = 0;
   iMonth = 0;
@@ -552,15 +552,15 @@ L_Date:
   bOnce = false;
   nDigits = 0;
 
-  if ( *acCsvSrc && (*acCsvSrc >= '0' && *acCsvSrc <= '9') )
+  if (cSrc && (cSrc >= '0' && cSrc <= '9') )
     bOnce = true;
   
-  for ( ; *acCsvSrc; acCsvSrc++) {
+  for ( ; cSrc; vADV_SRC()) {
     
-     if ( *acCsvSrc < '0' || *acCsvSrc > '9' )
+     if (cSrc < '0' || cSrc > '9' )
       break;
     
-    iYear = (iYear * 10) + (*acCsvSrc - '0');
+    iYear = (iYear * 10) + (cSrc - '0');
     nDigits++;
     
     if (iYear > (u8)C_I8_MAX)
@@ -584,26 +584,25 @@ L_Date:
   bOnce = false;
   nDigits = 2;
 
-  if (m_pFmt->m_cDateSeparator != *acCsvSrc++)
+  if ( ! cSrc )
+    THROW_USER("vConvertDateFast"_Stz);
+  if ('-' != cSrc)
     THROW_USER("vConvertDateFast"_Stz);
           
+  vADV_SRC();
   
-  if ( ! *acCsvSrc )
-    THROW_USER("vConvertDateFast"_Stz);
-  
-  //if (*acCsvSrc && isdigit(*acCsvSrc))
-  if ( *acCsvSrc && (*acCsvSrc >= '0' && *acCsvSrc <= '9') )
+  if (cSrc && (cSrc >= '0' && cSrc <= '9') )
     bOnce = true;
   
-  for ( ; *acCsvSrc && nDigits > 0; acCsvSrc++) {
+  for ( ; cSrc && nDigits > 0; vADV_SRC()) {
     
     // decrement no of digits extracted
     nDigits--;
     
-    if ( *acCsvSrc < '0' || *acCsvSrc > '9' )
+    if (cSrc < '0' || cSrc > '9' )
       break;
     
-    iMonth = (iMonth * 10) + *acCsvSrc - '0';
+    iMonth = (iMonth * 10) + cSrc - '0';
   }
     
   if (!bOnce)
@@ -618,24 +617,25 @@ L_Date:
   bOnce = false;
   nDigits = 2;
 
-  if (m_pFmt->m_cDateSeparator != *acCsvSrc++)
+  if (! cSrc)
+    THROW_USER("vConvertDateFast"_Stz);
+  if ('-' != cSrc)
     THROW_USER("vConvertDateFast"_Stz);
 
-  if ( ! *acCsvSrc )
-    THROW_USER("vConvertDateFast"_Stz);
-  
-  if ( *acCsvSrc && (*acCsvSrc >= '0' && *acCsvSrc <= '9') )
+  vADV_SRC();
+
+  if (cSrc && (cSrc >= '0' && cSrc <= '9') )
     bOnce = true;
   
-  for ( ; *acCsvSrc && nDigits > 0; acCsvSrc++)  {
+  for ( ; cSrc && nDigits > 0; vADV_SRC())  {
     
     // decrement no of digits extracted
     nDigits--;
     
-    if ( *acCsvSrc < '0' || *acCsvSrc > '9' )
+    if ( cSrc < '0' || cSrc > '9' )
       break;
     
-    iDay = (iDay * 10) + *acCsvSrc - '0';
+    iDay = (iDay * 10) + cSrc - '0';
   }
      
   if (!bOnce)
