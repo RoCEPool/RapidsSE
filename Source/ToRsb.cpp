@@ -449,22 +449,19 @@ bool ToRsb::bConvertFastInline(char* azCsvSrc)
 
   Dte xDte;
 
-  
-
   char* azVchSlab;
   char* acVchDst;
 
-  
   i8 nChars;
   char *aStart;
-  char *aSrc;
   bool bSawEnclosedLeading;
-
-
   bool bSawEnclosedTrailing;
 
   
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 0) begin
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   char* acCsvSrc = azCsvSrc;
   
