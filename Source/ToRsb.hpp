@@ -913,7 +913,16 @@ namespace Load
       // space, form-feed ('\f'), newline ('\n'), carriage return ('\r'), horizontal tab ('\t'),
       // and vertical tab ('\v').
       
-      if (! m_pFmt->m_bAllowNonPrintable && isspace(cSrc) && (cSrc != ' ') )
+      //if (! m_pFmt->m_bAllowNonPrintable && isspace(cSrc) && (cSrc != ' ') )
+      //  break;
+      
+      if (! m_pFmt->m_bAllowNonPrintable &&
+          ( (cSrc == '\f') ||
+            (cSrc == '\n') ||
+            (cSrc == '\r') ||
+            (cSrc == '\t') ||
+            (cSrc == '\v') )
+          )
         break;
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
