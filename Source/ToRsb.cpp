@@ -837,34 +837,35 @@ L_Varchar:
     bSawEnclosedLeading = false;
 
   // find first non-space character
-  while (' ' == *acCsvSrc)
-    acCsvSrc++;
+  while (' ' == cSrc)
+    vADV_SRC();
 
   // is it an enclosed varchar?
-  if (*acCsvSrc == m_pFmt->m_cEnclosedBy_Leading) {
-    acCsvSrc++;
+  if (cSrc == m_pFmt->m_cEnclosedBy_Leading) {
+    vADV_SRC();
     bSawEnclosedLeading = true;
   }
   else {
     acCsvSrc = aStart;
+    cSrc = *acCsvSrc;
     bSawEnclosedLeading = false;
   }
 
-  while (*acCsvSrc) {
+  while (cSrc) {
     
     // special case of double enclosedBy
     
     if (m_pFmt->m_cEnclosedBy_Trailing == m_pFmt->m_cEnclosedBy_Leading) {
-      if (*acCsvSrc == m_pFmt->m_cEnclosedBy_Leading && *(acCsvSrc+1) == m_pFmt->m_cEnclosedBy_Leading) {
+      if (cSrc == m_pFmt->m_cEnclosedBy_Leading && *(acCsvSrc+1) == m_pFmt->m_cEnclosedBy_Leading) {
         
         // skip the first enclosed character
-        acCsvSrc++;
-        
+        vADV_SRC();
+
         // append one instance of the enclosedBy character
         if (nChars++ < nPixLength)
-          *acVchDst++ = *acCsvSrc;
+          *acVchDst++ = cSrc;
         
-        acCsvSrc++;
+        vADV_SRC();
                 
         continue;
       }
@@ -873,34 +874,34 @@ L_Varchar:
     
     // test for a non-printable character (e.g. \n or \r)
     if (! m_pFmt->m_bAllowNonPrintable &&
-        ( (*acCsvSrc == '\f') ||
-          (*acCsvSrc == '\n') ||
-          (*acCsvSrc == '\r') ||
-          (*acCsvSrc == '\t') ||
-          (*acCsvSrc == '\v') )
+        ( (cSrc == '\f') ||
+          (cSrc == '\n') ||
+          (cSrc == '\r') ||
+          (cSrc == '\t') ||
+          (cSrc == '\v') )
         )
       break;
     
     // test for normal end
     if (bSawEnclosedLeading) {
       // we saw a leading enclodedBy so test for trailing enclosedBy
-      if (*acCsvSrc == m_pFmt->m_cEnclosedBy_Trailing) {
+      if (cSrc == m_pFmt->m_cEnclosedBy_Trailing) {
         bSawEnclosedTrailing = true;
-        acCsvSrc++;
+        vADV_SRC();
         break;
       }
       //falls thru if not trailing enclosedBy
     }
     
     // test for field separator (because its not enclosed)
-    else if (m_pFmt->m_cFieldDelimiter && *acCsvSrc == m_pFmt->m_cFieldDelimiter)
+    else if (m_pFmt->m_cFieldDelimiter && cSrc == m_pFmt->m_cFieldDelimiter)
       break;
     // test for record terminator (because its not enclosed)
-    else if (m_pFmt->m_cRecordTerminator && *acCsvSrc == m_pFmt->m_cRecordTerminator)
+    else if (m_pFmt->m_cRecordTerminator && cSrc == m_pFmt->m_cRecordTerminator)
       break;
     
     // test for the escape character
-    if (*acCsvSrc == m_pFmt->m_cEscapeChar) {
+    if (cSrc == m_pFmt->m_cEscapeChar) {
       
       if (StrLib::bEscapeConvert( *(acCsvSrc+1),
                                  m_pFmt->m_cEnclosedBy_Leading,
@@ -910,18 +911,17 @@ L_Varchar:
                                  m_pFmt->m_cRecordTerminator)) {
         
         // skip the escape character
-        acCsvSrc++;
+        vADV_SRC();
         
         // append the escaped character
         if (nChars++ < nPixLength)
-          *acVchDst++ = StrLib::cEscapeConvert(*acCsvSrc++);
-        else
-          acCsvSrc++;
-        
+          *acVchDst++ = StrLib::cEscapeConvert(cSrc);
+        vADV_SRC();
+
         continue;
       }
       else {
-        acCsvSrc++;
+        vADV_SRC();
       }
     }
     
@@ -929,9 +929,9 @@ L_Varchar:
     
     // append the normal character
     if (nChars++ < nPixLength)
-      *acVchDst++ = *acCsvSrc;
+      *acVchDst++ = cSrc;
     
-    acCsvSrc++;
+    vADV_SRC();
   }
 
   // terminate
