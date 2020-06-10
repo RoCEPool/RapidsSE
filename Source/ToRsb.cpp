@@ -409,12 +409,12 @@ bool ToRsb::bConvertFastInline(char* azSrc)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreCsv:
   
-  if (! bMoreData())
+  if (! bMoreData())   // ? macro ?
     goto L_EndOfCsv;
   
-  vSkipBlankspace();
+  vSkipBlankspace();   // ? expand ?
   
-  if (! bMoreFields()) {
+  if (! bMoreFields()) {   // ? macro ?
     if (m_bTrace)
       vTrace("blank line...\n"_Stz);
     m_acChr++;
@@ -425,7 +425,7 @@ L_TestMoreCsv:
   
   // each record thats fits
   
-  if (! m_pRowSlab->bNewRow()) {
+  if (! m_pRowSlab->bNewRow()) {    // ? inline ?
     vNewRsbBuffer();
     bool b = m_pRowSlab->bNewRow();
     ASSERT(b);
@@ -437,7 +437,7 @@ L_TestMoreCsv:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_TestMoreFields:
   
-  if (! bMoreFields())
+  if (! bMoreFields())   // ? macro ?
     goto L_EndOfFields;
 
   eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
@@ -565,8 +565,7 @@ L_TestMoreFields:
   }
   goto L_PostField;
 
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
+  
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // ... back to while more fields
@@ -583,7 +582,7 @@ L_PostField:
   m_i_Fld++;
 
   goto L_TestMoreFields;
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -591,12 +590,14 @@ L_PostField:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfFields:
   
+#ifdef WITH_DEBUG_VERSION
   if (m_bTrace) {
     if (! m_bSawFldSep)
       vTrace("\n"_Stz);
     vTrace("-- recSep -- \n"_Stz);
   }
-  
+#endif
+
   // set partition hash CURRENTLY ROUND ROBIN.  DISCUSS W ALKA
   if (m_bPtnHash) {
     m_pRowSlab->vDeposit((i8)i_Ptn);
