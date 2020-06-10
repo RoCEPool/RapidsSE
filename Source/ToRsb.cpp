@@ -393,10 +393,8 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   (c == ' ') || (c == '\n') || (c == '\r') || (c == '\f') || (c == '\t')
 
 #define vSKIP_WHITE_SPACE() \
-  \
   while (*acChr && StrLib::bIsWhite(*acChr)) { \
-    acChr++;  \
-    m_iCol++; \
+    acChr++; \
   }
 
 /*----------------------------------------------------------------------------*/
@@ -448,7 +446,6 @@ L_TestMoreCsv:
   // skip leading whitespace
   while (bWHITE_SPACE(*acChr)) {
     acChr++;
-    m_iCol++;
   }
   
   // test for more csv to be parsed
@@ -1075,7 +1072,6 @@ L_PostField:
 
   if (m_cFldSep == *acChr) {
     acChr++;
-    m_iCol++;
   }
 
   m_i_Fld++;
@@ -1108,7 +1104,6 @@ L_EndOfFields:
   if (*acChr)
     acChr++;
   m_iLine++;
-  m_iCol = 1;
   
   goto L_TestMoreCsv;
   
