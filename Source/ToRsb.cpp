@@ -397,6 +397,8 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     acCsvSrc++; \
   }
 
+#define vADV_SRC() (cSrc = *++acCsvSrc)
+
 /*
  
    the following members are used:
@@ -455,7 +457,8 @@ bool ToRsb::bConvertFastInline(char* azCsvInput)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   char* acCsvSrc = azCsvInput;
-  
+  char cSrc = *acCsvSrc;
+
   RowSlab* pRowSlab = m_pRowSlab;
 
   ColPix* aColPix = pRowSlab->axaColPix();
@@ -468,6 +471,9 @@ bool ToRsb::bConvertFastInline(char* azCsvInput)
   // 1) while more csv data
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreCsv:
+  
+  // temp
+  cSrc = *acCsvSrc;
   
   // skip leading whitespace
   while (bWHITE_SPACE(*acCsvSrc)) {
@@ -491,6 +497,9 @@ L_TestMoreCsv:
   // 1.a) while more fields
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_TestMoreFields:
+  
+  // temp
+  cSrc = *acCsvSrc;
   
   if (! bMORE_FIELDS())   // ? macro ?
     goto L_EndOfFields;
@@ -522,6 +531,9 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
 
+  // temp
+  cSrc = *acCsvSrc;
+  
   vSKIP_WHITE_SPACE();
   
   iYear  = 0;
@@ -662,6 +674,9 @@ L_Date:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
 
+  // temp
+  cSrc = *acCsvSrc;
+  
   vSKIP_WHITE_SPACE();
   
   nPixLength    = xColPix.m_uLength;
@@ -748,6 +763,9 @@ L_Decimal:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
 
+  // temp
+  cSrc = *acCsvSrc;
+  
   vSKIP_WHITE_SPACE();
  
   uPartialResult = 0;
@@ -793,6 +811,9 @@ L_Integer:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Varchar:
 
+  // temp
+  cSrc = *acCsvSrc;
+  
   // don't skip white space
 
   nPixLength = xColPix.m_uLength;
@@ -934,6 +955,9 @@ L_Varchar:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Boolean:
   {
+    // temp
+    cSrc = *acCsvSrc;
+    
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE(); ;
   
@@ -950,6 +974,9 @@ L_Boolean:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
   {
+    // temp
+    cSrc = *acCsvSrc;
+    
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
   
@@ -966,6 +993,9 @@ L_Float:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
   {
+    // temp
+    cSrc = *acCsvSrc;
+    
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
   
@@ -982,6 +1012,9 @@ L_Interval:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   {
+    // temp
+    cSrc = *acCsvSrc;
+    
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
   
@@ -998,6 +1031,9 @@ L_Time:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Timestamp:
   {
+    // temp
+    cSrc = *acCsvSrc;
+    
     m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE();
   
@@ -1014,6 +1050,9 @@ L_Timestamp:
   // 1.k) end of fields
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
+  
+  // temp
+  cSrc = *acCsvSrc;
   
   if (m_cFldSep == *acCsvSrc)
     m_bSawFldSep = true;
@@ -1035,6 +1074,9 @@ L_PostField:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfFields:
   
+  // temp
+  cSrc = *acCsvSrc;
+
 #ifdef WITH_DEBUG_VERSION
   if (m_bTrace) {
     if (! m_bSawFldSep)
