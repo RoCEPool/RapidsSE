@@ -505,7 +505,11 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Boolean:
   {
-  vConvertBoolean();
+    Bol xBol;
+    SN_Bol snBol;
+  
+    xBol = snBol.i(&m_acChr,m_pCol,m_pFmt);
+    m_pRowSlab->vDeposit(xBol);
   }
   goto L_PostField;
   
@@ -514,7 +518,11 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Float:
   {
-  vConvertFloat();
+    Flt xFlt;
+    SN_Flt snFlt;
+
+    xFlt = snFlt.d(&m_acChr,m_pCol,m_pFmt);
+    m_pRowSlab->vDeposit(xFlt.m_dFlt);
   }
   goto L_PostField;
 
@@ -523,7 +531,11 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Interval:
   {
-  vConvertInterval();
+    Ivl xIvl;
+    SN_Ivl snIvl;
+
+    xIvl = snIvl.i(&m_acChr,m_pCol,m_pFmt);
+    m_pRowSlab->vDeposit(xIvl);
   }
   goto L_PostField;
 
@@ -532,7 +544,11 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Time:
   {
-  vConvertTime();
+    Tme xTme;
+    SN_Tme snTme;
+
+    xTme = snTme.i(&m_acChr,m_pCol,m_pFmt);
+    m_pRowSlab->vDeposit(xTme);
   }
   goto L_PostField;
 
@@ -541,7 +557,11 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   L_Timestamp:
   {
-  vConvertTimestamp();
+    Tsp xTsp;
+    SN_Tsp snTsp;
+
+    xTsp = snTsp.i(&m_acChr,m_pCol,m_pFmt);
+    m_pRowSlab->vDeposit(xTsp);
   }
   goto L_PostField;
 
