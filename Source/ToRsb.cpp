@@ -710,11 +710,11 @@ L_TestMoreFields:
   // test for negative or positive sign
   if (*acCsvChr && '-' == *acCsvChr ) {
     bNegative = true;
-    (*acCsvChr)++;
+    acCsvChr++;
   }
   else
   if (*acCsvChr && '+' == *acCsvChr ) {
-    (acCsvChr)++;
+    acCsvChr++;
   }
   
   // at least one digit
