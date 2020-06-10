@@ -403,6 +403,7 @@ bool ToRsb::bConvertFastInline(char* azSrc)
   m_azSrc = azSrc;
   m_acChr = m_azSrc;
   
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // while more csv data
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -430,48 +431,47 @@ L_TestMoreCsv:
     ASSERT(b);
   }
   
+  
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // while more fields
-  L_TestMoreFields:
-  //while (bMoreFields()) {
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+L_TestMoreFields:
   
-    if (! bMoreFields())
-      goto L_EndOfFields;
+  if (! bMoreFields())
+    goto L_EndOfFields;
+
+  eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
+
+  vPreField(eDatum);
+
+  m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
+
+  switch (eDatum) {
+    case DM_BOL : vConvertBoolean();     break;
+    case DM_DTE : vConvertDateFast();    break;
+    case DM_BCD : vConvertDecimalFast(); break;
+    case DM_FLT : vConvertFloat();       break;
+    case DM_INT : vConvertIntegerFast(); break;
+    case DM_IVL : vConvertInterval();    break;
+    case DM_TME : vConvertTime();        break;
+    case DM_TSP : vConvertTimestamp();   break;
+    case DM_VCH : vConvertVarcharFast(); break;
+    default:
+      RASSERT(0);
+  }
+
+  vPostField();
+
+  if (m_cFldSep == *m_acChr) {
+    m_acChr++;
+    m_iCol++;
+  }
+
+  m_i_Fld++;
+
+  goto L_TestMoreFields;
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
-    eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
-  
-    if (26 == m_i_Rec && 6 == m_i_Fld)
-      vDebugPoint();
-    
-    vPreField(eDatum);
-    
-    // currently needed by the SN_ scanners (will go)
-    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-    
-    switch (eDatum) {
-      case DM_BOL : vConvertBoolean();     break;
-      case DM_DTE : vConvertDateFast();    break;
-      case DM_BCD : vConvertDecimalFast(); break;
-      case DM_FLT : vConvertFloat();       break;
-      case DM_INT : vConvertIntegerFast(); break;
-      case DM_IVL : vConvertInterval();    break;
-      case DM_TME : vConvertTime();        break;
-      case DM_TSP : vConvertTimestamp();   break;
-      case DM_VCH : vConvertVarcharFast(); break;
-      default:
-        RASSERT(0);
-    }
-    
-    vPostField();
-    
-    if (m_cFldSep == *m_acChr) {
-      m_acChr++;
-      m_iCol++;
-    }
-    
-    m_i_Fld++;
-    
-    goto L_TestMoreFields;
-  //} // while (bMoreFields())
 L_EndOfFields:
   
   if (m_bTrace) {
@@ -495,10 +495,8 @@ L_EndOfFields:
   m_iCol = 1;
   
   goto L_TestMoreCsv;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // end of csv data
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfCsv:
     
   m_pRowSlab->vDumpAllRows();
