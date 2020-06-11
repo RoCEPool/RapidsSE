@@ -384,7 +384,7 @@ begin
 
   stage stageC on all partitions:
 
-//    eatSome |
+    eatSome |
 
     insert $table      | // (crwBuffer) inserted into table
 
