@@ -50,6 +50,44 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   ObjectsInPool* pObjectsInPool = pPrompt->pObjectsInPool();
   ObjectsInPool* pSnapshotObjects = pPrompt->pSnapshotObjects();
   
+  // NOTE: There is a possibilty that a job completesbut the cleanup
+  // of task etc has not.
+  // Therefore we loop C_ATTEMPTS times to wait for memory leaks to go away
+  
+  for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
+    
+    PoolHelper::vObjectSnapshot(pSnapshotObjects);
+    
+    for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
+      
+      eCN eClass = (eCN)i_Object;
+      
+      if (eClass == CN_FREEBUFFER || eClass == CN_HEAPBUFFER)
+        continue;
+      
+      i8 nCount = pSnapshotObjects->m_nObjects[eClass] -
+        pObjectsInPool->m_nObjects[eClass];
+      
+      if ( nCount == 0 )
+        continue;
+      
+      // we have a memory leak
+      iRowsProcessed++;
+      
+      // lets retry
+      break;
+    }
+    
+    // no memory leaks ?
+    if ( iRowsProcessed == 0 )
+      goto L_REPORT;
+    
+    // we have memory leaks; try again!
+  }
+
+  // attempted C_ATTEMPTS to see if memory leaks settle down
+  // time to report
+  iRowsProcessed = 0;
   PoolHelper::vObjectSnapshot(pSnapshotObjects);
   
   for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
@@ -60,7 +98,7 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
       continue;
     
     i8 nCount = pSnapshotObjects->m_nObjects[eClass] -
-      pObjectsInPool->m_nObjects[eClass];
+    pObjectsInPool->m_nObjects[eClass];
     if ( nCount == 0 )
       continue;
     
@@ -70,7 +108,8 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
            );
     iRowsProcessed++;
   }
-
+  
+L_REPORT:
   vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   
   if (iRowsProcessed && bFatal)
