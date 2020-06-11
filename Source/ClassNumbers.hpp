@@ -162,6 +162,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LOG,
   /* */ CN_LOGENTRY,
   /* */ CN_LRW,
+  /* */ CN_LRWBUFFER,
 
   /* */ CN__M__,
   /* */ CN_MARKER,
@@ -498,6 +499,7 @@ static Stz* aCN[]
   /* */ "LOG"_Stz,                 // CN_LOG
   /* */ "LOGENTRY"_Stz,            // CN_LOGENTRY
   /* */ "LRW"_Stz,                 // CN_LRW
+  /* */ "LRWBUFFER"_Stz,           // CN_LRWBUFFER
 
   /* */ "_M__"_Stz,                // CN__M__
   /* */ "MARKER"_Stz,              // CN_MARKER
