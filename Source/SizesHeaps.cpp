@@ -157,6 +157,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Lock),               HT_INVALID           }, // CN_LOCK
   { sizeof(Log),                HT_INVALID           }, // CN_LOG
   { sizeof(LogEntry),           HT_INVALID           }, // CN_LOGENTRY
+  { sizeof(Lrw),                HT_TRANSIENT_SMALL   }, // CN_LRW
 
   { 'M' - ('A' - 1),            HT_INVALID           }, // CN__M__
   { sizeof(Marker),             HT_TRANSIENT_TINY    }, // CN_MARKER
