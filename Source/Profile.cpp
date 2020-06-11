@@ -40,6 +40,16 @@ Profile::~Profile(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get cpu usage                                                              */
+/*----------------------------------------------------------------------------*/
+RU_Cpu* Profile::pRU_Cpu(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROFILE,_FOOTER_);
+  
+  return & m_oRU_Cpu;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get memory usage                                                           */
 /*----------------------------------------------------------------------------*/
 RU_Memory* Profile::pRU_Memory(void)
@@ -57,6 +67,7 @@ void Profile::vWriteReport(File* pFile)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROFILE,_FOOTER_);
   
   m_oRU_Memory.vWriteReport(pFile);
+  m_oRU_Cpu.vWriteReport(pFile);
 }
 
 /*============================================================================*/

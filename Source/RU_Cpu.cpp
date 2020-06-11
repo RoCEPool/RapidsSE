@@ -12,7 +12,10 @@ RU_Cpu::RU_Cpu(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RUCPU,_FOOTER_);
   
-  vInit();
+  m_nBuffers = 0;
+  m_nRows  = 0;
+  m_nTicks = 0;
+  //m_oTimer;
   
   _checkInitialised_(CN_RUCPU);
   
@@ -34,15 +37,14 @@ RU_Cpu::~RU_Cpu(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* init                                                                       */
+/* end                                                                       */
 /*----------------------------------------------------------------------------*/
-void RU_Cpu::vInit(void)
+void RU_Cpu::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RUCPU,_FOOTER_);
   
-  m_nBuffers = 0;
-  m_nRows  = 0;
-  //m_oTimer;
+  m_oTimer.vUpdate();
+  m_nTicks += m_oTimer.iTickDelta();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,17 +61,28 @@ void RU_Cpu::vReport(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* start                                                                       */
+/*----------------------------------------------------------------------------*/
+void RU_Cpu::vStart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RUCPU,_FOOTER_);
+  
+  m_oTimer.vStart();
+}
+
+/*----------------------------------------------------------------------------*/
 /* write report                                                               */
 /*----------------------------------------------------------------------------*/
 void RU_Cpu::vWriteReport(File* pFile)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RUCPU,_FOOTER_);
   
-  AM::vFilePrint(pFile, "  Buffers#, Rows#\n"_Stz);
+  AM::vFilePrint(pFile, "  Buffers#, Rows# Ms#\n"_Stz);
     
-  AM::vFilePrint(pFile, "  %6lld, %6lld\n"_Stz,
+  AM::vFilePrint(pFile, "  %6lld, %6lld %6lld\n"_Stz,
          m_nBuffers,
-         m_nRows
+         m_nRows,
+         TickingDevice::iToMsec(m_nTicks)
          );
 }
 
@@ -84,13 +97,13 @@ void RU_Cpu::vBuffersInc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc free                                                                   */
+/* add rows                                                                   */
 /*----------------------------------------------------------------------------*/
-void RU_Cpu::vRowsInc(void)
+void RU_Cpu::vRowsAdd(i8 nRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RUCPU,_FOOTER_);
   
-  m_nRows++;
+  m_nRows += nRows;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -126,6 +126,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Plist();
   Step::vAddSteps_Procedure();
   Step::vAddSteps_Process();
+  Step::vAddSteps_Profile();
   Step::vAddSteps_Push();
   
   Step::vAddSteps_Queues();

@@ -350,6 +350,8 @@ void ToRsb::vNewRsbBuffer(void)
   //  create a new buffer
   RsbBuffer* pRsbBuffer = new RsbBuffer;
   
+  AM::pRU_Cpu()->vBuffersInc();
+  
   // link the new to old
   pRsbBuffer->vNextBuffer(m_pRsbBuffer);
   if (m_pRsbBuffer)

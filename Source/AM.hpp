@@ -264,6 +264,7 @@ namespace Oblique
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static ReqTuple* aReqTuple_tls(void);
   
+    static RU_Cpu* pRU_Cpu(void);
     static RU_Memory* pRU_Memory(void);
     static void vAllocInc(RU_Memory* pRU_Memory, eCN eAllocClass);
     static void vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass);

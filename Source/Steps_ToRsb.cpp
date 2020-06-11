@@ -27,6 +27,9 @@ void Step::vToRsbRegCompleted(void)
   
   RsbBuffer* pRsbBuffer = pToRsb->pFullRsbBuffer();
   
+  if (pRsbBuffer)
+    m_pTask->pProfile()->pRU_Cpu()->vRowsAdd(pRsbBuffer->pRowSlab()->nRows());
+  
   m_pDataStack->vPushPtr(pRsbBuffer);
 
   EXIT();
@@ -63,7 +66,7 @@ void Step::vToRsbRegCreate(void)
   ToRsb* pToRsb = new ToRsb(pStreamDef,AM::pFmt(),bPtnHash);
       
   m_pRegSet->m_xpToRsb = pToRsb;
-
+  
   EXIT();
 }
 
@@ -77,6 +80,8 @@ void Step::vToRsbRegDangling(void)
   ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
   
   RsbBuffer* pRsbBuffer = pToRsb->pDanglingRsbBuffer();
+  if (pRsbBuffer)
+    m_pTask->pProfile()->pRU_Cpu()->vRowsAdd(pRsbBuffer->pRowSlab()->nRows());
   
   m_pDataStack->vPushPtr(pRsbBuffer);
 

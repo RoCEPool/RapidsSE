@@ -1583,7 +1583,25 @@ ReqTuple* AM::aReqTuple_tls(void) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump routine of word                                                       */
+/* get RU_Cpu                                                                 */
+/*----------------------------------------------------------------------------*/
+RU_Cpu* AM::pRU_Cpu(void)
+{
+  Task* pTask = AM::pThisTLSTask();
+  
+  if (! pTask)
+    return nullptr;
+  
+  Profile* pProfile = pTask->pProfile();
+  if (! pProfile)
+    return nullptr;
+  
+  RU_Cpu* pRU_Cpu = pProfile->pRU_Cpu();
+  return pRU_Cpu;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get RU_Memory                                                              */
 /*----------------------------------------------------------------------------*/
 RU_Memory* AM::pRU_Memory(void)
 {

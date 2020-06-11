@@ -108,6 +108,7 @@ namespace Steps
     static void vAddSteps_Plist(void);
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
+    static void vAddSteps_Profile(void);
     static void vAddSteps_Push(void);
   
     static void vAddSteps_Queues(void);

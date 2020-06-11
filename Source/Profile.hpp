@@ -14,7 +14,8 @@ namespace Tasks
     // git hash
   
     RU_Memory m_oRU_Memory;
-  
+    RU_Cpu    m_oRU_Cpu;
+    
     // must be last
     Footer m_xFooter;
     
@@ -25,6 +26,7 @@ namespace Tasks
     Profile(void);
    ~Profile(void) noexcept(false);
     
+    RU_Cpu*    pRU_Cpu();
     RU_Memory* pRU_Memory();
     void       vWriteReport(File* pFile);
     

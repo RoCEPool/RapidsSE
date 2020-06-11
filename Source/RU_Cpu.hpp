@@ -11,6 +11,8 @@ namespace ResourceUsage
   
     i8    m_nBuffers;
     i8    m_nRows;
+    i8    m_nTicks;
+    
     Timer m_oTimer;
   
     // must be last
@@ -20,12 +22,13 @@ namespace ResourceUsage
     RU_Cpu(void);
    ~RU_Cpu(void) noexcept(false);
   
-    void vInit(void);
+    void vEnd(void);
     void vReport(void);
+    void vStart(void);
     void vWriteReport(File* pFile);
     
     void vBuffersInc(void);
-    void vRowsInc(void);
+    void vRowsAdd(i8 nRows);
 
     i8 nBuffers(void);
     i8 nRows(void);

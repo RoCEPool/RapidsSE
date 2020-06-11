@@ -1011,6 +1011,10 @@ public:
   void vProcessQuit(void);
   void vProcessTestPid(void);
 
+  // profile
+  void vProfileEnd(void);
+  void vProfileStart(void);
+
   // prompt
   void vPromptContinue(void);
   void vPromptExecuteFunction(void);
