@@ -10,7 +10,7 @@ namespace CompactBuffers
   class LrwBuffer : public DataBuffer
   {
   private:
-    i8  m_nRows;
+    i8 m_nItems;
   
     Wsp_t<C_WSP_LRWBUFFER> m_xWsp;
     
@@ -23,7 +23,12 @@ namespace CompactBuffers
     
     LrwBuffer(void);
    ~LrwBuffer(void) noexcept(false);
-    
+  
+    Lrw* pAllotLrw(i8 nBytes);
+  
+    Lrw* pEach(Lrw* pLrwPrev);
+  
+  
   private:
     Footer* aFooter(void);
   };

@@ -2,13 +2,13 @@
 /* Lrw.cpp -- Linear compact row                                              */
 /*============================================================================*/
 
-#include "Rows.h"
+#include "CompactBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Rows,Lrw,CN_LRW)
+__pCastFunction(CompactBuffers,Lrw,CN_LRW)
 __aNewFunction(Lrw,CN_LRW)
 __vDeleteFunction(Lrw,CN_LRW)
 
@@ -18,6 +18,9 @@ __vDeleteFunction(Lrw,CN_LRW)
 Lrw::Lrw(void)
 : Object(CN_LRW)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+  
+  m_xLrwCdx.m_uAsI8 = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,11 +28,91 @@ Lrw::Lrw(void)
 /*----------------------------------------------------------------------------*/
 Lrw::~Lrw(void) noexcept(false)
 {
+_precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get codex                                                                  */
+/*----------------------------------------------------------------------------*/
+LrwCdx* Lrw::aLrwCdx(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+  
+  return & m_xLrwCdx;
+}
+
+/*----------------------------------------------------------------------------*/
+/* size                                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Lrw::nSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+  
+  return m_xLrwCdx.m_uLrwBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*
+ 
+  +--------+--------+--------+--------+--------+--------+--------+
+  | header | codex  | key    | head   | over   | tail0  | tail...|
+  +--------+--------+--------+--------+--------+--------+--------+
+ 
+ */
+
+/*----------------------------------------------------------------------------*/
+/* get head line                                                              */
+/*----------------------------------------------------------------------------*/
+HeadLine* Lrw::aHeadLine(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+ 
+  HeadLine* aHeadLine = aAdd<HeadLine*>(this,sizeof(Lrw));
+  
+  return aHeadLine;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get over line                                                              */
+/*----------------------------------------------------------------------------*/
+OverLine* Lrw::aOverLine(void)
+{
+   _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+  
+  HeadLine* aHeadLine = this->aHeadLine();
+  
+  i8 nHeadBytes = aHeadLine->nBytes();
+  
+  OverLine* aOverLine = aAdd<OverLine*>(this,nHeadBytes);
+  
+  return aOverLine;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tail lines                                                             */
+/*----------------------------------------------------------------------------*/
+TailLine* Lrw::aTailLines(void)
+{
+   _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+  
+  HeadLine* aHeadLine = this->aHeadLine();
+  i8 nHeadBytes = aHeadLine->nBytes();
+
+  OverLine* aOverLine = this->aOverLine();
+  i8 nOverBytes = aOverLine->nBytes();
+
+  i8 nHeadOverBytes = nHeadBytes + nOverBytes;
+  
+  TailLine* aTailLine = aAdd<TailLine*>(this,nHeadOverBytes);
+  
+  return aTailLine;
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+namespace CompactBuffers
 {
   union LrwCdx
   {
@@ -24,7 +24,7 @@ namespace Rows
 
 /*----------------------------------------------------------------------------*/
 
-namespace Rows
+namespace CompactBuffers
 {
   class Lrw : public Object
   {
@@ -38,7 +38,13 @@ namespace Rows
   
     Lrw(void);
    ~Lrw(void) noexcept(false);
-      
+  
+    LrwCdx* aLrwCdx(void);
+    i8 nSize(void);
+  
+    HeadLine* aHeadLine(void);
+    OverLine* aOverLine(void);
+    TailLine* aTailLines(void);
   };
   
   Lrw* _pLrw(void* aAddr);
