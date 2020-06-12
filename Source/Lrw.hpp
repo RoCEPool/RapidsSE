@@ -38,7 +38,9 @@ namespace Rows
   
     Lrw(void);
    ~Lrw(void) noexcept(false);
-      
+  
+    LrwCdx* aLrwCdx(void);
+    i8 nSize(void);
   };
   
   Lrw* _pLrw(void* aAddr);
