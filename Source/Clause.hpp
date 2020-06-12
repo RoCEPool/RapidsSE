@@ -8,14 +8,16 @@ namespace CompilerStream
   class Clause : public Operand
   {
   protected:
-    s32       m_sName;
+    s32 m_sName;
     TokenVec* m_pTokenVec;
-  
+
   public:
     void operator delete(void*);
   
     Clause(eCN eClass, TokenVec* pTknVec, i8& i_Tkn_);
    ~Clause(void) noexcept(false);
+  
+    static bool bDescend(Descend* pDescend);
   
     TokenVec* pTokenVec(void);
   };

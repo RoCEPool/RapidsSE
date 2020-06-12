@@ -76,6 +76,10 @@ bool Stmt_Select::bParse(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
   
+  Descend* pDescend = new Descend(pTokenVec);
+  
+  
+  
   return true;
 }
 

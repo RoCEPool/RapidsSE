@@ -5,9 +5,27 @@
 
 namespace CompilerStream
 {
+  class Descend;
+
+  struct DescendDsp
+  {
+    s32 m_sName;
+    bool (*m_pFunc)(Descend*);
+  };
+}
+
+/*----------------------------------------------------------------------------*/
+
+namespace CompilerStream
+{
   class Descend : public Object
   {
+    static const i8 C_MAX_DESCENDDSP = 64;
+
   private:
+  
+    i8 m_nDispatch;
+    DescendDsp m_xaDispatch[C_MAX_DESCENDDSP];
   
     i8 m_iNesting;
  
@@ -41,6 +59,10 @@ namespace CompilerStream
   
     void   vPrev(void);
     Token* pPrev(void);
+  
+    //
+  
+    void vDispatchInit(void);
 
     Footer* aFooter(void);
   };

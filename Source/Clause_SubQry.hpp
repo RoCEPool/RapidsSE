@@ -18,6 +18,8 @@ namespace CompilerStream
   
     Clause_SubQry(TokenVec* pTknVec, i8& i_Tkn_);
    ~Clause_SubQry(void) noexcept(false);
+  
+    static bool bParse(Descend* pDescend);
 
     Footer* aFooter(void);
   };

@@ -19,6 +19,8 @@ namespace CompilerStream
     Clause_From(TokenVec* pTknVec, i8& i_Tkn_);
    ~Clause_From(void) noexcept(false);
 
+    static bool bParse(Descend* pDescend);
+    
     Footer* aFooter(void);
   };
 

@@ -22,6 +22,14 @@ Descend::Descend(TokenVec* pArgVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
+  m_nDispatch = 0;
+  for (i8 i_Dispatch = 0; i_Dispatch > C_MAX_DESCENDDSP; i_Dispatch++) {
+    m_xaDispatch[i_Dispatch].m_sName = C_NO_NAME;
+    m_xaDispatch[i_Dispatch].m_pFunc = nullptr;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   i8 m_iNesting = 0;
   
   m_pTokenVec = new TokenVec;
@@ -29,6 +37,8 @@ Descend::Descend(TokenVec* pArgVec)
   m_pTokenVec->vDuplicateVector(pArgVec);
     
   _checkInitialised_(CN_DESCEND);
+  
+  vDispatchInit();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
 }
@@ -193,6 +203,43 @@ void Descend::vPrev(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
   m_pTokenVec->vPrevToken();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dispatch init                                                              */
+/*----------------------------------------------------------------------------*/
+void Descend::vDispatchInit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
+  
+  m_nDispatch = 0;
+  
+  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_FROM;
+  m_xaDispatch[m_nDispatch].m_pFunc = Clause_From::bDescend;
+  m_nDispatch++;
+
+  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_GROUP;
+  m_xaDispatch[m_nDispatch].m_pFunc = Clause_GroupBy::bDescend;
+  m_nDispatch++;
+
+  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_LIMIT;
+  m_xaDispatch[m_nDispatch].m_pFunc = Clause_Limit::bDescend;
+  m_nDispatch++;
+
+  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_ORDER;
+  m_xaDispatch[m_nDispatch].m_pFunc = Clause_OrderBy::bDescend;
+  m_nDispatch++;
+
+  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_SELECT;
+  m_xaDispatch[m_nDispatch].m_pFunc = Clause_Select::bDescend;
+  m_nDispatch++;
+
+  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_WHERE;
+  m_xaDispatch[m_nDispatch].m_pFunc = Clause_Where::bDescend;
+  m_nDispatch++;
 }
 
 /*============================================================================*/
