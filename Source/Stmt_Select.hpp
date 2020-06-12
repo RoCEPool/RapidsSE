@@ -21,6 +21,8 @@ namespace CompilerStream
     Stmt_Select(void);
    ~Stmt_Select(void) noexcept(false);
   
+    bool bParse(TokenVec* pTokenVec);
+  
     TokenVec* pTokenVec(void);
 
     Footer* aFooter(void);

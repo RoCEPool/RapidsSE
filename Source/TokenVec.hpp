@@ -39,6 +39,7 @@ namespace LexicalAnalysis
     i8   iCountTokens(void);
     void vCopyVector(TokenVec* pTokenVec);
     i8   iCurrToken(void);
+    void vCurrToken(i8 i_Tkn);
     Token* pCurrToken(void);
     void vDbgStr(Stz* szDstStr);
     void vDumpVec(i8 nPlusMore);
@@ -52,7 +53,9 @@ namespace LexicalAnalysis
     void vIntegrityCheck(void);
     void vListTokens(void);
     Token* pNextToken(void);
+    void vNextToken(void);
     Token* pPrevToken(void);
+    void vPrevToken(void);
     void vRemoveSemicolon(void);
     void vRemoveToken(i8 i_Tkn);
     void vRewindCurr(void);
