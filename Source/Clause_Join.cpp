@@ -8,36 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Clause_Join* CompilerStream::_pClause_Join(void* aAddr)
-{
-  Clause_Join* pOp = reinterpret_cast<Clause_Join*>(aAddr);
-  
-  return pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate from heap                                                         */
-/*----------------------------------------------------------------------------*/
-void* Clause_Join::operator new(size_t)
-{
-  Clause_Join* pClause_Join =
-    static_cast<Clause_Join*>(HeapMem::pAllocate(CN_CLAUSE_JOIN));
-  
-  return pClause_Join;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free back to the heap                                                      */
-/*----------------------------------------------------------------------------*/
-void Clause_Join::operator delete(void* aAddress)
-{
-  Object* pObject = static_cast<Object*>(aAddress);
-  
-  HeapMem::vFree(pObject);
-}
+__pCastFunction(CompilerStream,Clause_Join,CN_CLAUSE_JOIN)
+__aNewFunction(Clause_Join,CN_CLAUSE_JOIN)
+__vDeleteFunction(Clause_Join,CN_CLAUSE_JOIN)
+__aFooterFunction(Clause_Join)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -62,8 +36,6 @@ Clause_Join::~Clause_Join(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_JOIN,_FOOTER_);
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -77,13 +49,6 @@ bool Clause_Join::bParse(Descend* pDescend)
   
   return true;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-__aFooterFunction(Clause_Join);
-
 
 /*============================================================================*/
 /* end                                                                        */

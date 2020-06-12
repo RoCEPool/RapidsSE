@@ -8,36 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Clause_OrderBy* CompilerStream::_pClause_OrderBy(void* aAddr)
-{
-  Clause_OrderBy* pOp = reinterpret_cast<Clause_OrderBy*>(aAddr);
-  
-  return pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate from heap                                                         */
-/*----------------------------------------------------------------------------*/
-void* Clause_OrderBy::operator new(size_t)
-{
-  Clause_OrderBy* pClause_OrderBy =
-    static_cast<Clause_OrderBy*>(HeapMem::pAllocate(CN_CLAUSE_ORDERBY));
-  
-  return pClause_OrderBy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free back to the heap                                                      */
-/*----------------------------------------------------------------------------*/
-void Clause_OrderBy::operator delete(void* aAddress)
-{
-  Object* pObject = static_cast<Object*>(aAddress);
-  
-  HeapMem::vFree(pObject);
-}
+__pCastFunction(CompilerStream,Clause_OrderBy,CN_CLAUSE_ORDERBY)
+__aNewFunction(Clause_OrderBy,CN_CLAUSE_ORDERBY)
+__vDeleteFunction(Clause_OrderBy,CN_CLAUSE_ORDERBY)
+__aFooterFunction(Clause_OrderBy)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -62,8 +36,6 @@ Clause_OrderBy::~Clause_OrderBy(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_ORDERBY,_FOOTER_);
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -77,13 +49,6 @@ bool Clause_OrderBy::bParse(Descend* pDescend)
   
   return true;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-__aFooterFunction(Clause_OrderBy);
-
 
 /*============================================================================*/
 /* end                                                                        */

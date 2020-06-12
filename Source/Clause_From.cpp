@@ -8,36 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Clause_From* CompilerStream::_pClause_From(void* aAddr)
-{
-  Clause_From* pOp = reinterpret_cast<Clause_From*>(aAddr);
-  
-  return pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new                                                                        */
-/*----------------------------------------------------------------------------*/
-void* Clause_From::operator new(size_t)
-{
-  Clause_From* pClause_From =
-    static_cast<Clause_From*>(HeapMem::pAllocate(CN_CLAUSE_FROM));
-  
-  return pClause_From;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Clause_From::operator delete(void* aAddress)
-{
-  Object* pObject = static_cast<Object*>(aAddress);
-  
-  HeapMem::vFree(pObject);
-}
+__pCastFunction(CompilerStream,Clause_From,CN_CLAUSE_FROM)
+__aNewFunction(Clause_From,CN_CLAUSE_FROM)
+__vDeleteFunction(Clause_From,CN_CLAUSE_FROM)
+__aFooterFunction(Clause_From)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -75,13 +49,6 @@ bool Clause_From::bParse(Descend* pDescend)
   
   return true;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-__aFooterFunction(Clause_From);
-
 
 /*============================================================================*/
 /* end                                                                        */

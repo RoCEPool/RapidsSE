@@ -8,36 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Clause_Limit* CompilerStream::_pClause_Limit(void* aAddr)
-{
-  Clause_Limit* pOp = reinterpret_cast<Clause_Limit*>(aAddr);
-  
-  return pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate from heap                                                         */
-/*----------------------------------------------------------------------------*/
-void* Clause_Limit::operator new(size_t)
-{
-  Clause_Limit* pClause_Limit =
-    static_cast<Clause_Limit*>(HeapMem::pAllocate(CN_CLAUSE_LIMIT));
-  
-  return pClause_Limit;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free back to the heap                                                      */
-/*----------------------------------------------------------------------------*/
-void Clause_Limit::operator delete(void* aAddress)
-{
-  Object* pObject = static_cast<Object*>(aAddress);
-  
-  HeapMem::vFree(pObject);
-}
+__pCastFunction(CompilerStream,Clause_Limit,CN_CLAUSE_LIMIT)
+__aNewFunction(Clause_Limit,CN_CLAUSE_LIMIT)
+__vDeleteFunction(Clause_Limit,CN_CLAUSE_LIMIT)
+__aFooterFunction(Clause_Limit)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -62,8 +36,6 @@ Clause_Limit::~Clause_Limit(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_LIMIT,_FOOTER_);
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -77,13 +49,6 @@ bool Clause_Limit::bParse(Descend* pDescend)
   
   return true;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-__aFooterFunction(Clause_Limit);
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -8,36 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Clause_Select* CompilerStream::_pClause_Select(void* aAddr)
-{
-  Clause_Select* pOp = reinterpret_cast<Clause_Select*>(aAddr);
-  
-  return pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate from heap                                                         */
-/*----------------------------------------------------------------------------*/
-void* Clause_Select::operator new(size_t)
-{
-  Clause_Select* pClause_Select =
-    static_cast<Clause_Select*>(HeapMem::pAllocate(CN_CLAUSE_SELECT));
-  
-  return pClause_Select;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free back to the heap                                                      */
-/*----------------------------------------------------------------------------*/
-void Clause_Select::operator delete(void* aAddress)
-{
-  Object* pObject = static_cast<Object*>(aAddress);
-  
-  HeapMem::vFree(pObject);
-}
+__pCastFunction(CompilerStream,Clause_Select,CN_CLAUSE_SELECT)
+__aNewFunction(Clause_Select,CN_CLAUSE_SELECT)
+__vDeleteFunction(Clause_Select,CN_CLAUSE_SELECT)
+__aFooterFunction(Clause_Select)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -62,7 +36,6 @@ Clause_Select::~Clause_Select(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SELECT,_FOOTER_);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -76,14 +49,6 @@ bool Clause_Select::bParse(Descend* pDescend)
   
   return true;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-__aFooterFunction(Clause_Select);
-
 
 /*============================================================================*/
 /* end                                                                        */

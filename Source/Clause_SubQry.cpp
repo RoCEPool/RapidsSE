@@ -8,36 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Clause_SubQry* CompilerStream::_pClause_SubQry(void* aAddr)
-{
-  Clause_SubQry* pOp = reinterpret_cast<Clause_SubQry*>(aAddr);
-  
-  return pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate from heap                                                         */
-/*----------------------------------------------------------------------------*/
-void* Clause_SubQry::operator new(size_t)
-{
-  Clause_SubQry* pClause_SubQry =
-    static_cast<Clause_SubQry*>(HeapMem::pAllocate(CN_CLAUSE_SUBQRY));
-  
-  return pClause_SubQry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free back to the heap                                                      */
-/*----------------------------------------------------------------------------*/
-void Clause_SubQry::operator delete(void* aAddress)
-{
-  Object* pObject = static_cast<Object*>(aAddress);
-  
-  HeapMem::vFree(pObject);
-}
+__pCastFunction(CompilerStream,Clause_SubQry,CN_CLAUSE_SUBQRY)
+__aNewFunction(Clause_SubQry,CN_CLAUSE_SUBQRY)
+__vDeleteFunction(Clause_SubQry,CN_CLAUSE_SUBQRY)
+__aFooterFunction(Clause_SubQry)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -62,7 +36,6 @@ Clause_SubQry::~Clause_SubQry(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -76,14 +49,6 @@ bool Clause_SubQry::bParse(Descend* pDescend)
   
   return true;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-__aFooterFunction(Clause_SubQry);
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -8,36 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Clause_Where* CompilerStream::_pClause_Where(void* aAddr)
-{
-  Clause_Where* pOp = reinterpret_cast<Clause_Where*>(aAddr);
-  
-  return pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate from heap                                                         */
-/*----------------------------------------------------------------------------*/
-void* Clause_Where::operator new(size_t)
-{
-  Clause_Where* pClause_Where =
-    static_cast<Clause_Where*>(HeapMem::pAllocate(CN_CLAUSE_WHERE));
-  
-  return pClause_Where;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free back to the heap                                                      */
-/*----------------------------------------------------------------------------*/
-void Clause_Where::operator delete(void* aAddress)
-{
-  Object* pObject = static_cast<Object*>(aAddress);
-  
-  HeapMem::vFree(pObject);
-}
+__pCastFunction(CompilerStream,Clause_Where,CN_CLAUSE_WHERE)
+__aNewFunction(Clause_Where,CN_CLAUSE_WHERE)
+__vDeleteFunction(Clause_Where,CN_CLAUSE_WHERE)
+__aFooterFunction(Clause_Where)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -62,7 +36,6 @@ Clause_Where::~Clause_Where(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_WHERE,_FOOTER_);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -76,14 +49,6 @@ bool Clause_Where::bParse(Descend* pDescend)
   
   return true;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-__aFooterFunction(Clause_Where);
-
 
 /*============================================================================*/
 /* end                                                                        */
