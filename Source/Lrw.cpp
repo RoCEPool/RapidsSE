@@ -18,6 +18,9 @@ __vDeleteFunction(Lrw,CN_LRW)
 Lrw::Lrw(void)
 : Object(CN_LRW)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+  
+  m_xLrwCdx.m_uAsI8 = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,6 +28,7 @@ Lrw::Lrw(void)
 /*----------------------------------------------------------------------------*/
 Lrw::~Lrw(void) noexcept(false)
 {
+_precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,6 +40,8 @@ Lrw::~Lrw(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 LrwCdx* Lrw::aLrwCdx(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+  
   return & m_xLrwCdx;
 }
 
@@ -44,18 +50,30 @@ LrwCdx* Lrw::aLrwCdx(void)
 /*----------------------------------------------------------------------------*/
 i8 Lrw::nSize(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+  
   return m_xLrwCdx.m_uLrwBytes;
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*
+ 
+  +--------+--------+--------+--------+--------+--------+--------+
+  | header | codex  | key    | head   | over   | tail0  | tail...|
+  +--------+--------+--------+--------+--------+--------+--------+
+ 
+ */
+
 /*----------------------------------------------------------------------------*/
 /* get head line                                                              */
 /*----------------------------------------------------------------------------*/
 HeadLine* Lrw::aHeadLine(void)
 {
-  HeadLine* aHeadLine = nullptr;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+ 
+  HeadLine* aHeadLine = aAdd<HeadLine*>(this,sizeof(Lrw));
   
   return aHeadLine;
 }
@@ -65,17 +83,33 @@ HeadLine* Lrw::aHeadLine(void)
 /*----------------------------------------------------------------------------*/
 OverLine* Lrw::aOverLine(void)
 {
-  OverLine* aOverLine = nullptr;
+   _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+  
+  HeadLine* aHeadLine = this->aHeadLine();
+  
+  i8 nHeadBytes = aHeadLine->nBytes();
+  
+  OverLine* aOverLine = aAdd<OverLine*>(this,nHeadBytes);
   
   return aOverLine;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tail line                                                              */
+/* get tail lines                                                             */
 /*----------------------------------------------------------------------------*/
-TailLine* Lrw::aTailLine(void)
+TailLine* Lrw::aTailLines(void)
 {
-  TailLine* aTailLine = nullptr;
+   _precondition_(_ADDRESS_,_MAGIC_,CN_LRW);
+  
+  HeadLine* aHeadLine = this->aHeadLine();
+  i8 nHeadBytes = aHeadLine->nBytes();
+
+  OverLine* aOverLine = this->aOverLine();
+  i8 nOverBytes = aOverLine->nBytes();
+
+  i8 nHeadOverBytes = nHeadBytes + nOverBytes;
+  
+  TailLine* aTailLine = aAdd<TailLine*>(this,nHeadOverBytes);
   
   return aTailLine;
 }

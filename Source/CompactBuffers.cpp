@@ -11,6 +11,9 @@ void CompactBuffers::vCheckAssumptions(void)
 {
   RASSERT(sizeof(HeadLine) == sizeof(SingleWord));
   RASSERT(sizeof(TailLine) == sizeof(SpaceUnit));
+
+  RASSERT(sizeof(Lrw) == 16);
+  RASSERT(sizeof(LrwCdx) == 8);
 }
 
 /*============================================================================*/

@@ -44,7 +44,7 @@ namespace CompactBuffers
   
     HeadLine* aHeadLine(void);
     OverLine* aOverLine(void);
-    TailLine* aTailLine(void);
+    TailLine* aTailLines(void);
   };
   
   Lrw* _pLrw(void* aAddr);
