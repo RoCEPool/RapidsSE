@@ -17,6 +17,7 @@ namespace CompilerStream
 #include "Stmt.hpp"
 
 #include "Descend.hpp"
+#include "KeyWords.hpp"
 
 #include "Stmt_Select.hpp"
 
