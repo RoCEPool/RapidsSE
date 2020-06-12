@@ -5,7 +5,7 @@
 
 namespace Prompt
 {
-  #define C_ATTEMPTS 10
+  #define C_ATTEMPTS 5
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   bool bPrompt_memoryLeaks(SePrompt* pPrompt);
