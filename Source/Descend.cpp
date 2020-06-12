@@ -22,7 +22,9 @@ Descend::Descend(TokenVec* pArgVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
-  m_pTokenVec = pArgVec;
+  m_pTokenVec = new TokenVec;
+  
+  m_pTokenVec->vDuplicateVector(pArgVec);
     
   _checkInitialised_(CN_DESCEND);
   
@@ -36,7 +38,7 @@ Descend::~Descend(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
-  //delete m_pTokenVec;
+  delete m_pTokenVec;
 }
 
 /*----------------------------------------------------------------------------*/

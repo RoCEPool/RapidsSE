@@ -443,6 +443,23 @@ void TokenVec::vDumpVec(i8 nPlusMore)
 }
 
 /*----------------------------------------------------------------------------*/
+/* duplcate entirely the given token vector                                   */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vDuplicateVector(TokenVec* pSrcVec)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i8 i_Token = 0; i_Token < pSrcVec->nTokens(); i_Token++) {
+    
+    Token* pToken_src = pSrcVec->pGet(i_Token);
+    
+    vAppendToken(pToken_src);
+  }
+  
+  vIntegrityCheck();
+}
+
+/*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
 i8 TokenVec::iFindToken(Stz* szArgChars)
