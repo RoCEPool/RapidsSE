@@ -22,6 +22,8 @@ Descend::Descend(TokenVec* pArgVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
+  i8 m_iNesting = 0;
+  
   m_pTokenVec = new TokenVec;
   
   m_pTokenVec->vDuplicateVector(pArgVec);
@@ -117,6 +119,36 @@ void Descend::vLast(void)
   i8 nTokens = m_pTokenVec->nTokens();
   
   m_pTokenVec->vCurrToken(nTokens - 1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement current nesting level                                            */
+/*----------------------------------------------------------------------------*/
+void Descend::vNestDec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
+  
+  m_iNesting--;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment current nesting level                                            */
+/*----------------------------------------------------------------------------*/
+void Descend::vNestInc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
+  
+  m_iNesting++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current nesting level                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Descend::iNesting(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
+  
+  return m_iNesting;
 }
 
 /*----------------------------------------------------------------------------*/

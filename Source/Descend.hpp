@@ -8,6 +8,9 @@ namespace CompilerStream
   class Descend : public Object
   {
   private:
+  
+    i8 m_iNesting;
+ 
     TokenVec* m_pTokenVec;
   
     // must be last
@@ -28,6 +31,10 @@ namespace CompilerStream
 
     Token* pLast(void);
     void   vLast(void);
+
+    void   vNestDec(void);
+    void   vNestInc(void);
+    i8     iNesting(void);
 
     void   vNext(void);
     Token* pNext(void);
