@@ -54,6 +54,8 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   // of task etc has not.
   // Therefore we loop C_ATTEMPTS times to wait for memory leaks to go away
   
+  Thread* pThread = Thread::pThisTLSThread();
+  
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
     
     PoolHelper::vObjectSnapshot(pSnapshotObjects);
@@ -82,7 +84,8 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     if ( iRowsProcessed == 0 )
       goto L_REPORT;
     
-    // we have memory leaks; try again!
+    // we have memory leaks; sleep and try again!
+    pThread->m_pPsxThd->vSleepUsec(5,CN_SEPROMPT);
   }
 
   // attempted C_ATTEMPTS to see if memory leaks settle down
