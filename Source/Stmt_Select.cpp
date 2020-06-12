@@ -8,36 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Stmt_Select* CompilerStream::_pStmt_Select(void* aAddr)
-{
-  Stmt_Select* pOp = reinterpret_cast<Stmt_Select*>(aAddr);
-  
-  return pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new                                                                        */
-/*----------------------------------------------------------------------------*/
-void* Stmt_Select::operator new(size_t)
-{
-  Stmt_Select* pStmt_Select =
-    static_cast<Stmt_Select*>(HeapMem::pAllocate(CN_STMT_SELECT));
-  
-  return pStmt_Select;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Stmt_Select::operator delete(void* aAddress)
-{
-  Object* pObject = static_cast<Object*>(aAddress);
-  
-  HeapMem::vFree(pObject);
-}
+__pCastFunction(CompilerStream,Stmt_Select,CN_STMT_SELECT)
+__aNewFunction(Stmt_Select,CN_STMT_SELECT)
+__vDeleteFunction(Stmt_Select,CN_STMT_SELECT)
+__aFooterFunction(Stmt_Select)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -48,6 +22,8 @@ Stmt_Select::Stmt_Select(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
   
   m_pTokenVec = new TokenVec(false);
+  
+  m_pSubQry = nullptr;
 
   _checkInitialised_(CN_STMT_SELECT);
 
@@ -62,6 +38,8 @@ Stmt_Select::~Stmt_Select(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
   
   delete m_pTokenVec;
+  
+  delete m_pSubQry;
 }
 
 
@@ -95,10 +73,24 @@ TokenVec* Stmt_Select::pTokenVec(void)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
+/* get subQry                                                                 */
 /*----------------------------------------------------------------------------*/
+Clause_SubQry* Stmt_Select::pSubQry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
 
-__aFooterFunction(Stmt_Select);
+  return m_pSubQry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* put subQry                                                                 */
+/*----------------------------------------------------------------------------*/
+void Stmt_Select::vSubQry(Clause_SubQry* pSubQry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
+
+  m_pSubQry = pSubQry;
+}
 
 
 /*============================================================================*/

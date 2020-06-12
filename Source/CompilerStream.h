@@ -19,8 +19,6 @@ namespace CompilerStream
 #include "Descend.hpp"
 #include "KeyWords.hpp"
 
-#include "Stmt_Select.hpp"
-
 #include "Clause.hpp"
 #include "Clause_From.hpp"
 #include "Clause_GroupBy.hpp"
@@ -28,8 +26,8 @@ namespace CompilerStream
 #include "Clause_Limit.hpp"
 #include "Clause_OrderBy.hpp"
 #include "Clause_Select.hpp"
-#include "Clause_SubQry.hpp"
 #include "Clause_Where.hpp"
+#include "Clause_SubQry.hpp"
 
 #include "Cmd.hpp"
 #include "Cmd_Select.hpp"
@@ -49,6 +47,9 @@ namespace CompilerStream
 #include "Filter_SubQry.hpp"
 #include "Filter_Where.hpp"
 #include "Filter_Zed.hpp"
+
+#include "Stmt_Select.hpp"
+
 
 /*============================================================================*/
 /* end                                                                        */

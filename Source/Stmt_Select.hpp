@@ -11,6 +11,8 @@ namespace CompilerStream
   
     TokenVec* m_pTokenVec;
   
+    Clause_SubQry* m_pSubQry;
+  
     // must be last
     Footer m_xFooter;
 
@@ -24,6 +26,10 @@ namespace CompilerStream
     bool bParse(TokenVec* pTokenVec);
   
     TokenVec* pTokenVec(void);
+  
+    Clause_SubQry*  pSubQry(void);
+    void            vSubQry(Clause_SubQry*);
+
 
     Footer* aFooter(void);
   };
