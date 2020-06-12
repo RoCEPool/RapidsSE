@@ -39,6 +39,39 @@ shortcut v    vortex;
 shortcut x    exp3;
 shortcut z    _ray;
 
+shortcut p1   "../Benchmarks/Progressive/p1.sql";
+shortcut p2   "../Benchmarks/Progressive/p2.sql";
+shortcut p3   "../Benchmarks/Progressive/p3.sql";
+shortcut p4   "../Benchmarks/Progressive/p4.sql";
+shortcut p5   "../Benchmarks/Progressive/p5.sql";
+shortcut p6   "../Benchmarks/Progressive/p6.sql";
+shortcut p7   "../Benchmarks/Progressive/p7.sql";
+shortcut p8   "../Benchmarks/Progressive/p8.sql";
+shortcut p9   "../Benchmarks/Progressive/p9.sql";
+
+shortcut q1   "../Benchmarks/TPC-H/tpch_q1.sql";
+shortcut q2   "../Benchmarks/TPC-H/tpch_q2.sql";
+shortcut q3   "../Benchmarks/TPC-H/tpch_q3.sql";
+shortcut q4   "../Benchmarks/TPC-H/tpch_q4.sql";
+shortcut q5   "../Benchmarks/TPC-H/tpch_q5.sql";
+shortcut q6   "../Benchmarks/TPC-H/tpch_q6.sql";
+shortcut q7   "../Benchmarks/TPC-H/tpch_q7.sql";
+shortcut q8   "../Benchmarks/TPC-H/tpch_q8.sql";
+shortcut q9   "../Benchmarks/TPC-H/tpch_q9.sql";
+shortcut q10  "../Benchmarks/TPC-H/tpch_q10.sql";
+shortcut q11  "../Benchmarks/TPC-H/tpch_q11.sql";
+shortcut q12  "../Benchmarks/TPC-H/tpch_q12.sql";
+shortcut q13  "../Benchmarks/TPC-H/tpch_q13.sql";
+shortcut q14  "../Benchmarks/TPC-H/tpch_q14.sql";
+shortcut q15  "../Benchmarks/TPC-H/tpch_q15.sql";
+shortcut q16  "../Benchmarks/TPC-H/tpch_q16.sql";
+shortcut q17  "../Benchmarks/TPC-H/tpch_q17.sql";
+shortcut q18  "../Benchmarks/TPC-H/tpch_q18.sql";
+shortcut q19  "../Benchmarks/TPC-H/tpch_q19.sql";
+shortcut q20  "../Benchmarks/TPC-H/tpch_q20.sql";
+shortcut q21  "../Benchmarks/TPC-H/tpch_q21.sql";
+shortcut q22  "../Benchmarks/TPC-H/tpch_q22.sql";
+
 // shortcut;
 
 /*============================================================================*/
