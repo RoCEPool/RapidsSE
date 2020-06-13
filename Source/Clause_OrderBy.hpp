@@ -19,8 +19,7 @@ namespace CompilerStream
     Clause_OrderBy(void);
    ~Clause_OrderBy(void) noexcept(false);
   
-    static bool bDescend(Descend* pDescend, Clause_SubQry* pSubQry);
-    static bool bParse(Descend* pDescend);
+    static bool bParse(Descend* pDescend, Clause_SubQry* pSubQry);
 
     Footer* aFooter(void);
   };

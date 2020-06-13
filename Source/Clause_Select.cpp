@@ -43,7 +43,7 @@ Clause_Select::~Clause_Select(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_Select::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
+bool Clause_Select::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
 {
   _static_
   
@@ -60,16 +60,6 @@ bool Clause_Select::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
   pDescend->vNext();
   
   vCollect(pDescend,pSubQry);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend                                                                    */
-/*----------------------------------------------------------------------------*/
-bool Clause_Select::bParse(Descend* pDescend)
-{
-  _static_
   
   return true;
 }

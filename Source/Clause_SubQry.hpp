@@ -28,8 +28,7 @@ namespace CompilerStream
     Clause_SubQry(void);
    ~Clause_SubQry(void) noexcept(false);
   
-    static bool bDescend(Descend* pDescend, Clause_SubQry* pSubQry);
-    static bool bParse(Descend* pDescend);
+    static bool bParse(Descend* pDescend, Clause_SubQry* pSubQry);
 
     Clause_SubQry*  pParentSubQry(void);
     void            vParentSubQry(Clause_SubQry*);

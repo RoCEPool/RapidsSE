@@ -59,17 +59,7 @@ Clause_SubQry::~Clause_SubQry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_SubQry::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
-{
-  _static_
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend                                                                    */
-/*----------------------------------------------------------------------------*/
-bool Clause_SubQry::bParse(Descend* pDescend)
+bool Clause_SubQry::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
 {
   _static_
   

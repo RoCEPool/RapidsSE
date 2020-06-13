@@ -43,7 +43,7 @@ Clause_From::~Clause_From(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_From::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
+bool Clause_From::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
 {
   _static_
   
@@ -53,16 +53,6 @@ bool Clause_From::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
   pDescend->vNext();
   
   vCollect(pDescend,pSubQry);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend                                                                    */
-/*----------------------------------------------------------------------------*/
-bool Clause_From::bParse(Descend* pDescend)
-{
-  _static_
   
   return true;
 }

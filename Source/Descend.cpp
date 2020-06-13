@@ -308,28 +308,28 @@ void Descend::vInit(void)
   m_nDescend = 0;
   
   m_xaDescend[m_nDescend].m_sName = C_CLAUSE_FROM;
-  m_xaDescend[m_nDescend].m_pFunc = Clause_From::bDescend;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_From::bParse;
   m_nDescend++;
 
   m_xaDescend[m_nDescend].m_sName = C_CLAUSE_GROUP;
-  m_xaDescend[m_nDescend].m_pFunc = Clause_GroupBy::bDescend;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_GroupBy::bParse;
   m_nDescend++;
 
   m_xaDescend[m_nDescend].m_sName = C_CLAUSE_LIMIT;
-  m_xaDescend[m_nDescend].m_pFunc = Clause_Limit::bDescend;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_Limit::bParse;
   m_nDescend++;
 
   m_xaDescend[m_nDescend].m_sName = C_CLAUSE_ORDER;
-  m_xaDescend[m_nDescend].m_pFunc = Clause_OrderBy::bDescend;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_OrderBy::bParse;
   m_nDescend++;
 
   m_xaDescend[m_nDescend].m_sName = C_CLAUSE_SELECT;
-  m_xaDescend[m_nDescend].m_pFunc = Clause_Select::bDescend;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_Select::bParse;
   m_xaDescend[m_nDescend].m_bSubQry = true;
   m_nDescend++;
 
   m_xaDescend[m_nDescend].m_sName = C_CLAUSE_WHERE;
-  m_xaDescend[m_nDescend].m_pFunc = Clause_Where::bDescend;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_Where::bParse;
   m_nDescend++;
 }
 
