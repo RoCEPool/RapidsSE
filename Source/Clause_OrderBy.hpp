@@ -19,6 +19,7 @@ namespace CompilerStream
     Clause_OrderBy(TokenVec* pTknVec, i8& i_Tkn_);
    ~Clause_OrderBy(void) noexcept(false);
   
+    static bool bDescend(Descend* pDescend);
     static bool bParse(Descend* pDescend);
 
     Footer* aFooter(void);

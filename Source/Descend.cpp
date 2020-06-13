@@ -24,8 +24,9 @@ Descend::Descend(TokenVec* pArgVec)
   
   m_nDispatch = 0;
   for (i8 i_Dispatch = 0; i_Dispatch < C_MAX_DESCENDDSP; i_Dispatch++) {
-    m_xaDispatch[i_Dispatch].m_sName = C_NO_NAME;
-    m_xaDispatch[i_Dispatch].m_pFunc = nullptr;
+    m_xaDispatch[i_Dispatch].m_sName   = C_NO_NAME;
+    m_xaDispatch[i_Dispatch].m_pFunc   = nullptr;
+    m_xaDispatch[i_Dispatch].m_bSubQry = false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -133,6 +134,22 @@ void Descend::vLast(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* more tokens?                                                               */
+/*----------------------------------------------------------------------------*/
+bool Descend::bMore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
+
+  i8 nTokens = m_pTokenVec->nTokens();
+  i8 i_CurTkn = m_pTokenVec->iCurrToken();
+  
+  if (i_CurTkn < nTokens)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* decrement current nesting level                                            */
 /*----------------------------------------------------------------------------*/
 void Descend::vNestDec(void)
@@ -236,6 +253,7 @@ void Descend::vDispatchInit(void)
 
   m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_SELECT;
   m_xaDispatch[m_nDispatch].m_pFunc = Clause_Select::bDescend;
+  m_xaDispatch[m_nDispatch].m_bSubQry = true;
   m_nDispatch++;
 
   m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_WHERE;
@@ -263,7 +281,7 @@ bool Descend::bDispatch(void)
 /*----------------------------------------------------------------------------*/
 /* is current token dispatcable?                                              */
 /*----------------------------------------------------------------------------*/
-bool Descend::bIsDispatchable(void)
+bool Descend::bIsDispatchable(bool& bSubQry_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
@@ -273,10 +291,14 @@ bool Descend::bIsDispatchable(void)
   
   i8 i_Dsp = iFindDispatch(szChars);
 
-  if (C_UNKNOWN == i_Dsp)
+  if (C_UNKNOWN == i_Dsp) {
+    bSubQry_ = false;
     return false;
-  else
+  }
+  else {
+    bSubQry_ = m_xaDispatch[i_Dsp].m_bSubQry;
     return true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

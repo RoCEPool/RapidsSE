@@ -43,6 +43,23 @@ Clause_Join::~Clause_Join(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
+bool Clause_Join::bDescend(Descend* pDescend)
+{
+  _static_
+
+  Token* pCurTkn = pDescend->pCurr();
+  
+  vTrace("JOIN : %s\n"_Stz,pCurTkn->szChars());
+  pDescend->vNext();
+  
+  vCollect(pDescend);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend                                                                    */
+/*----------------------------------------------------------------------------*/
 bool Clause_Join::bParse(Descend* pDescend)
 {
   _static_

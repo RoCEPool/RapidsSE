@@ -43,6 +43,23 @@ Clause_OrderBy::~Clause_OrderBy(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
+bool Clause_OrderBy::bDescend(Descend* pDescend)
+{
+  _static_
+
+  Token* pCurTkn = pDescend->pCurr();
+  
+  vTrace("ORDERBY : %s\n"_Stz,pCurTkn->szChars());
+  pDescend->vNext();
+  
+  vCollect(pDescend);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend                                                                    */
+/*----------------------------------------------------------------------------*/
 bool Clause_OrderBy::bParse(Descend* pDescend)
 {
   _static_

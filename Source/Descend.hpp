@@ -9,8 +9,9 @@ namespace CompilerStream
 
   struct DescendDsp
   {
-    s32 m_sName;
+    s32  m_sName;
     bool (*m_pFunc)(Descend*);
+    bool m_bSubQry;
   };
 }
 
@@ -50,6 +51,8 @@ namespace CompilerStream
     Token* pLast(void);
     void   vLast(void);
 
+    bool   bMore(void);
+  
     void   vNestDec(void);
     void   vNestInc(void);
     i8     iNesting(void);
@@ -64,7 +67,7 @@ namespace CompilerStream
   
     bool bDispatch(void);
     void vDispatchInit(void);
-    bool bIsDispatchable(void);
+    bool bIsDispatchable(bool& bSubQry);
     i8   iFindDispatch(Stz* szChars);
    
 

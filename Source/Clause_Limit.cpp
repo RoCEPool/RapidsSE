@@ -43,6 +43,23 @@ Clause_Limit::~Clause_Limit(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
+bool Clause_Limit::bDescend(Descend* pDescend)
+{
+  _static_
+
+  Token* pCurTkn = pDescend->pCurr();
+  
+  vTrace("LIMIT : %s\n"_Stz,pCurTkn->szChars());
+  pDescend->vNext();
+  
+  vCollect(pDescend);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend                                                                    */
+/*----------------------------------------------------------------------------*/
 bool Clause_Limit::bParse(Descend* pDescend)
 {
   _static_

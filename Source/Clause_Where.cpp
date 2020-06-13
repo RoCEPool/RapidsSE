@@ -43,6 +43,23 @@ Clause_Where::~Clause_Where(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
+bool Clause_Where::bDescend(Descend* pDescend)
+{
+  _static_
+
+  Token* pCurTkn = pDescend->pCurr();
+  
+  vTrace("WHERE : %s\n"_Stz,pCurTkn->szChars());
+  pDescend->vNext();
+  
+  vCollect(pDescend);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend                                                                    */
+/*----------------------------------------------------------------------------*/
 bool Clause_Where::bParse(Descend* pDescend)
 {
   _static_

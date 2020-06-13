@@ -43,6 +43,23 @@ Clause_From::~Clause_From(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
+bool Clause_From::bDescend(Descend* pDescend)
+{
+  _static_
+  
+  Token* pCurTkn = pDescend->pCurr();
+  
+  vTrace("FROM : %s\n"_Stz,pCurTkn->szChars());
+  pDescend->vNext();
+  
+  vCollect(pDescend);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend                                                                    */
+/*----------------------------------------------------------------------------*/
 bool Clause_From::bParse(Descend* pDescend)
 {
   _static_

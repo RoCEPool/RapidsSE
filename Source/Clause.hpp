@@ -16,10 +16,11 @@ namespace CompilerStream
   
     Clause(eCN eClass, TokenVec* pTknVec, i8& i_Tkn_);
    ~Clause(void) noexcept(false);
-  
-    static bool bDescend(Descend* pDescend);
-  
+
+    static void vCollect(Descend* pDescend);
+
     TokenVec* pTokenVec(void);
+  
   };
 
   Clause* _pClause(void* aAddr);

@@ -26,6 +26,7 @@ namespace CompilerStream
     Clause_SubQry(TokenVec* pTknVec, i8& i_Tkn_);
    ~Clause_SubQry(void) noexcept(false);
   
+    static bool bDescend(Descend* pDescend);
     static bool bParse(Descend* pDescend);
 
     Clause_Select*  pSelect(void);

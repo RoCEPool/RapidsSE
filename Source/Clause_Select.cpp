@@ -43,6 +43,23 @@ Clause_Select::~Clause_Select(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
+bool Clause_Select::bDescend(Descend* pDescend)
+{
+  _static_
+  
+  Token* pCurTkn = pDescend->pCurr();
+  
+  vTrace("SELECT : %s\n"_Stz,pCurTkn->szChars());
+  pDescend->vNext();
+  
+  vCollect(pDescend);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend                                                                    */
+/*----------------------------------------------------------------------------*/
 bool Clause_Select::bParse(Descend* pDescend)
 {
   _static_
