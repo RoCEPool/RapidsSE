@@ -45,26 +45,26 @@ namespace CompilerStream
     Descend(TokenVec* pArgVec, Stmt* pStmt);
    ~Descend(void) noexcept(false);
   
-    i8     iCurr(void);
-    Token* pCurr(void);
+    i8     iCurrToken(void);
+    Token* pCurrToken(void);
   
-    Token* pFirst(void);
-    void   vFirst(void);
+    Token* pFirstToken(void);
+    void   vFirstToken(void);
 
-    Token* pLast(void);
-    void   vLast(void);
+    Token* pLastToken(void);
+    void   vLastToken(void);
 
-    bool   bMore(void);
+    bool   bMoreTokens(void);
   
     void   vNestDec(void);
     void   vNestInc(void);
     i8     iNesting(void);
 
-    void   vNext(void);
-    Token* pNext(void);
+    void   vNextToken(void);
+    Token* pNextToken(void);
   
-    void   vPrev(void);
-    Token* pPrev(void);
+    void   vPrevToken(void);
+    Token* pPrevToken(void);
   
     //
   

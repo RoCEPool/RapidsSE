@@ -64,9 +64,9 @@ void Clause::vCollect(Descend* pDescend, Clause_SubQry* pSubQry)
   bool bResult;
   bool bSubQry;
   
-  while (pDescend->bMore()) {
+  while (pDescend->bMoreTokens()) {
     
-    Token* pCurTkn = pDescend->pCurr();
+    Token* pCurTkn = pDescend->pCurrToken();
     
     Stz* szChars = pCurTkn->szChars();
     
@@ -76,7 +76,7 @@ void Clause::vCollect(Descend* pDescend, Clause_SubQry* pSubQry)
     else
     if (szChars->bSame("("_Stz)) {
       vTrace("  : %s\n"_Stz,szChars);
-      pDescend->vNext();
+      pDescend->vNextToken();
 
       if (pDescend->bIsDescendParse(bSubQry)) {
         bResult = pDescend->bCallFunc(pSubQry);
@@ -85,10 +85,10 @@ void Clause::vCollect(Descend* pDescend, Clause_SubQry* pSubQry)
         vCollect(pDescend,pSubQry);
       }
       
-      pCurTkn = pDescend->pCurr();
+      pCurTkn = pDescend->pCurrToken();
       szChars = pCurTkn->szChars();
       vTrace("  : %s\n"_Stz,szChars);
-      pDescend->vNext();
+      pDescend->vNextToken();
     }
     else
     if (pDescend->bIsDescendParse(bSubQry)) {
@@ -97,7 +97,7 @@ void Clause::vCollect(Descend* pDescend, Clause_SubQry* pSubQry)
     }
     else {
       vTrace("  : %s\n"_Stz,szChars);
-      pDescend->vNext();
+      pDescend->vNextToken();
     }
     
   } // while

@@ -64,7 +64,7 @@ Descend::~Descend(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get current token                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Descend::iCurr(void)
+i8 Descend::iCurrToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
 
@@ -76,7 +76,7 @@ i8 Descend::iCurr(void)
 /*----------------------------------------------------------------------------*/
 /* get current token                                                          */
 /*----------------------------------------------------------------------------*/
-Token* Descend::pCurr(void)
+Token* Descend::pCurrToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
 
@@ -88,11 +88,11 @@ Token* Descend::pCurr(void)
 /*----------------------------------------------------------------------------*/
 /* set to and get first token                                                 */
 /*----------------------------------------------------------------------------*/
-Token* Descend::pFirst(void)
+Token* Descend::pFirstToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
 
-  vFirst();
+  vFirstToken();
   
   Token* pFirst = m_pTokenVec->pCurrToken();
   
@@ -102,7 +102,7 @@ Token* Descend::pFirst(void)
 /*----------------------------------------------------------------------------*/
 /* set to first token                                                         */
 /*----------------------------------------------------------------------------*/
-void Descend::vFirst(void)
+void Descend::vFirstToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
 
@@ -112,11 +112,11 @@ void Descend::vFirst(void)
 /*----------------------------------------------------------------------------*/
 /* set to and get last token                                                  */
 /*----------------------------------------------------------------------------*/
-Token* Descend::pLast(void)
+Token* Descend::pLastToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
 
-  vLast();
+  vLastToken();
   
   Token* pLast = m_pTokenVec->pCurrToken();
   
@@ -126,7 +126,7 @@ Token* Descend::pLast(void)
 /*----------------------------------------------------------------------------*/
 /* set to last token                                                          */
 /*----------------------------------------------------------------------------*/
-void Descend::vLast(void)
+void Descend::vLastToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
 
@@ -138,7 +138,7 @@ void Descend::vLast(void)
 /*----------------------------------------------------------------------------*/
 /* more tokens?                                                               */
 /*----------------------------------------------------------------------------*/
-bool Descend::bMore(void)
+bool Descend::bMoreTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
 
@@ -184,7 +184,7 @@ i8 Descend::iNesting(void)
 /*----------------------------------------------------------------------------*/
 /* set to and get next token                                                  */
 /*----------------------------------------------------------------------------*/
-Token* Descend::pNext(void)
+Token* Descend::pNextToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
@@ -196,7 +196,7 @@ Token* Descend::pNext(void)
 /*----------------------------------------------------------------------------*/
 /* set to next token                                                          */
 /*----------------------------------------------------------------------------*/
-void Descend::vNext(void)
+void Descend::vNextToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
@@ -206,7 +206,7 @@ void Descend::vNext(void)
 /*----------------------------------------------------------------------------*/
 /* set to and get next token                                                  */
 /*----------------------------------------------------------------------------*/
-Token* Descend::pPrev(void)
+Token* Descend::pPrevToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
@@ -218,7 +218,7 @@ Token* Descend::pPrev(void)
 /*----------------------------------------------------------------------------*/
 /* set to next token                                                          */
 /*----------------------------------------------------------------------------*/
-void Descend::vPrev(void)
+void Descend::vPrevToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
@@ -235,7 +235,7 @@ bool Descend::bCallFunc(Clause_SubQry* pSubQry)
 {
   Token* pCurTkn = m_pTokenVec->pCurrToken();
   
-  Stz* szChars = pCurr()->szChars();
+  Stz* szChars = pCurrToken()->szChars();
   
   i8 i_Dsp = iFindDescend(szChars);
   
@@ -254,7 +254,7 @@ bool Descend::bIsDescendParse(bool& bSubQry_)
   
   Token* pCurTkn = m_pTokenVec->pCurrToken();
   
-  Stz* szChars = pCurr()->szChars();
+  Stz* szChars = pCurrToken()->szChars();
   
   i8 i_Dsp = iFindDescend(szChars);
 
@@ -278,7 +278,7 @@ i8 Descend::iFindDescend(Stz* szChars)
   Token* pCurTkn = m_pTokenVec->pCurrToken();
   
   for (i8 i_Dsp = 0; i_Dsp < m_nDescend; i_Dsp++)
-    if (m_xaDescend[i_Dsp].m_sName.bSame(pCurr()->szChars()))
+    if (m_xaDescend[i_Dsp].m_sName.bSame(pCurrToken()->szChars()))
       return i_Dsp;
   
   return C_UNKNOWN;
@@ -332,7 +332,6 @@ void Descend::vInit(void)
   m_xaDescend[m_nDescend].m_pFunc = Clause_Where::bParse;
   m_nDescend++;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

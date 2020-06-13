@@ -56,8 +56,10 @@ bool Stmt_Select::bParse(TokenVec* pTokenVec)
   
   bool bResult = true;
   
+  // create a descend for this statement
   Descend* pDescend = new Descend(pTokenVec,this);
   
+  // descend and parse the statment
   bool bSubQry;
   if (pDescend->bIsDescendParse(bSubQry))
     bResult = pDescend->bCallFunc(m_pSubQry);
