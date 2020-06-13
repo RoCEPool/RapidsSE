@@ -16,8 +16,8 @@ __aFooterFunction(Clause_Where)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_Where::Clause_Where(TokenVec* pTknVec, i8& i_Tkn_)
-: Clause(CN_CLAUSE_WHERE,pTknVec,i_Tkn_)
+Clause_Where::Clause_Where(void)
+: Clause(CN_CLAUSE_WHERE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_WHERE,_FOOTER_);
 

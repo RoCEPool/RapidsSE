@@ -16,7 +16,7 @@ namespace CompilerStream
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Clause_Where(TokenVec* pTknVec, i8& i_Tkn_);
+    Clause_Where(void);
    ~Clause_Where(void) noexcept(false);
   
     static bool bDescend(Descend* pDescend, Clause_SubQry* pSubQry);

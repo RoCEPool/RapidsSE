@@ -16,8 +16,8 @@ __aFooterFunction(Clause_Join)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_Join::Clause_Join(TokenVec* pTknVec, i8& i_Tkn_)
-: Clause(CN_CLAUSE_JOIN,pTknVec,i_Tkn_)
+Clause_Join::Clause_Join(void)
+: Clause(CN_CLAUSE_JOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_JOIN,_FOOTER_);
 

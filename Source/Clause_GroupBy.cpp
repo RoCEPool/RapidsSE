@@ -16,8 +16,8 @@ __aFooterFunction(Clause_GroupBy)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_GroupBy::Clause_GroupBy(TokenVec* pTknVec, i8& i_Tkn_)
-: Clause(CN_CLAUSE_GROUPBY,pTknVec,i_Tkn_)
+Clause_GroupBy::Clause_GroupBy(void)
+: Clause(CN_CLAUSE_GROUPBY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_GROUPBY,_FOOTER_);
 

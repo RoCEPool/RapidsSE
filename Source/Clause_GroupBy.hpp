@@ -16,7 +16,7 @@ namespace CompilerStream
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Clause_GroupBy(TokenVec* pTknVec, i8& i_Tkn_);
+    Clause_GroupBy(void);
    ~Clause_GroupBy(void) noexcept(false);
   
     static bool bDescend(Descend* pDescend, Clause_SubQry* pSubQry);

@@ -16,8 +16,8 @@ __aFooterFunction(Clause_OrderBy)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_OrderBy::Clause_OrderBy(TokenVec* pTknVec, i8& i_Tkn_)
-: Clause(CN_CLAUSE_ORDERBY,pTknVec,i_Tkn_)
+Clause_OrderBy::Clause_OrderBy(void)
+: Clause(CN_CLAUSE_ORDERBY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_ORDERBY,_FOOTER_);
 

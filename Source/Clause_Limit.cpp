@@ -16,8 +16,8 @@ __aFooterFunction(Clause_Limit)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_Limit::Clause_Limit(TokenVec* pTknVec, i8& i_Tkn_)
-: Clause(CN_CLAUSE_LIMIT,pTknVec,i_Tkn_)
+Clause_Limit::Clause_Limit(void)
+: Clause(CN_CLAUSE_LIMIT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_LIMIT,_FOOTER_);
 

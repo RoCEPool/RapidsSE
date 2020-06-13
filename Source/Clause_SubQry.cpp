@@ -16,8 +16,8 @@ __aFooterFunction(Clause_SubQry)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_SubQry::Clause_SubQry(TokenVec* pTknVec, i8& i_Tkn_)
-: Clause(CN_CLAUSE_SUBQRY,pTknVec,i_Tkn_)
+Clause_SubQry::Clause_SubQry(void)
+: Clause(CN_CLAUSE_SUBQRY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
 

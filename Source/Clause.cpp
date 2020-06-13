@@ -32,27 +32,12 @@ void Clause::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause::Clause(eCN eClassNo, TokenVec* pTknVec_src, i8& i_Tkn_)
+Clause::Clause(eCN eClassNo)
 : Operand(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
   m_pTokenVec = new TokenVec(false);
-  
-  // -- -- -- -- -- -- -- -- -- --
-  
-  i8 nTkn = pTknVec_src->nTokens();
-  
-  while (i_Tkn_ < nTkn) {
-    Token* pTkn_src = pTknVec_src->pGet(i_Tkn_);
-    
-    if (StrLib::bOneOf((char**)szaClauseWords,pTkn_src->azChars()))
-      break;
-    
-    Token* pTkn_dst = m_pTokenVec->pGet(i_Tkn_);
-    pTkn_dst->vCopyToken_restricted(pTkn_src,m_pTokenVec);
-    i_Tkn_++;
-  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -56,9 +56,12 @@ bool Stmt_Select::bParse(TokenVec* pTokenVec)
   
   Descend* pDescend = new Descend(pTokenVec);
   
+  
+  m_pSubQry = new Clause_SubQry;
+  
   bool bSubQry;
   while (pDescend->bMore() && pDescend->bIsDispatchable(bSubQry))
-    if (! pDescend->bDispatch(nullptr))
+    if (! pDescend->bDispatch(m_pSubQry))
       break;
   
   delete pDescend;

@@ -16,8 +16,8 @@ __aFooterFunction(Clause_From)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_From::Clause_From(TokenVec* pTknVec, i8& i_Tkn_)
-: Clause(CN_CLAUSE_FROM,pTknVec,i_Tkn_)
+Clause_From::Clause_From(void)
+: Clause(CN_CLAUSE_FROM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_FROM,_FOOTER_);
   
