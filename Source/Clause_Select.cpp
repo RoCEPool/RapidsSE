@@ -43,14 +43,14 @@ Clause_Select::~Clause_Select(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_Select::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
+bool Clause_Select::bParse(Descend* pDescend, Clause_SubQry* pParentSubQry)
 {
   _static_
   
-  if (! pSubQry) {
-    pSubQry = new Clause_SubQry;
-    
-    Stmt_Select* pSelectStmt = _pStmt_Select(pDescend->pStmt());
+  Clause_SubQry* pSubQry = new Clause_SubQry;
+
+  Stmt_Select* pSelectStmt = _pStmt_Select(pDescend->pStmt());
+  if (! pSelectStmt->pSubQry()) {
     pSelectStmt->vSubQry(pSubQry);
   }
   
@@ -59,7 +59,12 @@ bool Clause_Select::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
   vTrace("SELECT : %s\n"_Stz,pCurTkn->szChars());
   pDescend->vNext();
   
-  vCollect(pDescend,pSubQry);
+  Clause_Project::bParse(pDescend,pSubQry);
+
+  bool bSubQry;
+  while (pDescend->bMore() && pDescend->bIsDescendParse(bSubQry))
+    if (! pDescend->bCallFunc(pSubQry))
+      break;
   
   return true;
 }

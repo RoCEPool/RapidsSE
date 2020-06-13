@@ -49,7 +49,7 @@ bool Clause_Project::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
   
   Token* pCurTkn = pDescend->pCurr();
   
-  vTrace("FROM : %s\n"_Stz,pCurTkn->szChars());
+  vTrace("PROJECT : %s\n"_Stz,pCurTkn->szChars());
   pDescend->vNext();
   
   vCollect(pDescend,pSubQry);

@@ -54,12 +54,13 @@ bool Stmt_Select::bParse(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
   
+  bool bResult = true;
+  
   Descend* pDescend = new Descend(pTokenVec,this);
   
   bool bSubQry;
-  while (pDescend->bMore() && pDescend->bIsDescendParse(bSubQry))
-    if (! pDescend->bCallFunc(m_pSubQry))
-      break;
+  if (pDescend->bIsDescendParse(bSubQry))
+    bResult = pDescend->bCallFunc(m_pSubQry);
   
   delete pDescend;
   

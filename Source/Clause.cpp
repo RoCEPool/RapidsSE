@@ -61,6 +61,7 @@ void Clause::vCollect(Descend* pDescend, Clause_SubQry* pSubQry)
 {
   _static_
   
+  bool bResult;
   bool bSubQry;
   
   while (pDescend->bMore()) {
@@ -76,8 +77,13 @@ void Clause::vCollect(Descend* pDescend, Clause_SubQry* pSubQry)
     if (szChars->bSame("("_Stz)) {
       vTrace("  : %s\n"_Stz,szChars);
       pDescend->vNext();
-    
-      vCollect(pDescend,pSubQry);
+
+      if (pDescend->bIsDescendParse(bSubQry)) {
+        bResult = pDescend->bCallFunc(pSubQry);
+      }
+      else {
+        vCollect(pDescend,pSubQry);
+      }
       
       pCurTkn = pDescend->pCurr();
       szChars = pCurTkn->szChars();
