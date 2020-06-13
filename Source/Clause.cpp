@@ -68,14 +68,34 @@ void Clause::vCollect(Descend* pDescend, Clause_SubQry* pSubQry)
     Token* pCurTkn = pDescend->pCurr();
     
     Stz* szChars = pCurTkn->szChars();
+    
+    if (szChars->bSame(")"_Stz)) {
+      return;
+    }
+    else
+    if (szChars->bSame("("_Stz)) {
+      vTrace("  : %s\n"_Stz,szChars);
+      pDescend->vNext();
+    
+      vCollect(pDescend,pSubQry);
+      
+      pCurTkn = pDescend->pCurr();
+      szChars = pCurTkn->szChars();
+      vTrace("  : %s\n"_Stz,szChars);
+      pDescend->vNext();
+    }
+    else
+    if (pDescend->bIsDescendParse(bSubQry)) {
+      if (! pDescend->bCallFunc(pSubQry))
+        break;
+    }
+    else {
+      vTrace("  : %s\n"_Stz,szChars);
+      pDescend->vNext();
+    }
+    
+  } // while
   
-    if (pDescend->bIsDescendParse(bSubQry))
-      break;
-    
-    vTrace("  : %s\n"_Stz,szChars);
-    
-    pDescend->vNext();
-  }
 }
 
 

@@ -29,6 +29,7 @@ namespace CompilerStream
 #include "Clause_Join.hpp"
 #include "Clause_Limit.hpp"
 #include "Clause_OrderBy.hpp"
+#include "Clause_Project.hpp"
 #include "Clause_Select.hpp"
 #include "Clause_Where.hpp"
 

@@ -46,6 +46,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CLAUSE_JOIN,
   /* */ CN_CLAUSE_LIMIT,
   /* */ CN_CLAUSE_ORDERBY,
+  /* */ CN_CLAUSE_PROJECT,
   /* */ CN_CLAUSE_SELECT,
   /* */ CN_CLAUSE_SUBQRY,
   /* */ CN_CLAUSE_WHERE,
@@ -384,6 +385,7 @@ static Stz* aCN[]
   /* */ "CLAUSE_JOIN"_Stz,         // CN_CLAUSE_JOIN
   /* */ "CLAUSE_LIMIT"_Stz,        // CN_CLAUSE_LIMIT
   /* */ "CLAUSE_ORDERBY"_Stz,      // CN_CLAUSE_ORDERBY
+  /* */ "CLAUSE_PROJECT"_Stz,      // CN_CLAUSE_PROJECT
   /* */ "CLAUSE_SELECT"_Stz,       // CN_CLAUSE_SELECT
   /* */ "CLAUSE_SUBQRY"_Stz,       // CN_CLAUSE_SUBQRY
   /* */ "CLAUSE_WHERE"_Stz,        // CN_CLAUSE_WHERE
