@@ -23,14 +23,14 @@ Descend::Descend(TokenVec* pArgVec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
   m_nDispatch = 0;
-  for (i8 i_Dispatch = 0; i_Dispatch > C_MAX_DESCENDDSP; i_Dispatch++) {
+  for (i8 i_Dispatch = 0; i_Dispatch < C_MAX_DESCENDDSP; i_Dispatch++) {
     m_xaDispatch[i_Dispatch].m_sName = C_NO_NAME;
     m_xaDispatch[i_Dispatch].m_pFunc = nullptr;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 m_iNesting = 0;
+  m_iNesting = 0;
   
   m_pTokenVec = new TokenVec;
   

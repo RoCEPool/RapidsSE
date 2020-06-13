@@ -56,7 +56,7 @@ bool Stmt_Select::bParse(TokenVec* pTokenVec)
   
   Descend* pDescend = new Descend(pTokenVec);
   
-  
+  delete pDescend;
   
   return true;
 }
