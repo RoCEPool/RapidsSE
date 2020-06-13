@@ -23,7 +23,7 @@ Stmt_Select::Stmt_Select(void)
   
   m_pTokenVec = new TokenVec(false);
   
-  m_pSubQry = nullptr;
+  m_pRootSubQry = nullptr;
 
   _checkInitialised_(CN_STMT_SELECT);
 
@@ -39,7 +39,7 @@ Stmt_Select::~Stmt_Select(void) noexcept(false)
   
   delete m_pTokenVec;
   
-  delete m_pSubQry;
+  delete m_pRootSubQry;
 }
 
 
@@ -62,7 +62,7 @@ bool Stmt_Select::bParse(TokenVec* pTokenVec)
   // descend and parse the statment
   bool bSubQry;
   if (pDescend->bIsDescendParse(bSubQry))
-    bResult = pDescend->bCallFunc(m_pSubQry);
+    bResult = pDescend->bCallFunc(m_pRootSubQry);
   
   delete pDescend;
   
@@ -81,23 +81,23 @@ TokenVec* Stmt_Select::pTokenVec(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* get subQry                                                                 */
+/* get root subQry                                                            */
 /*----------------------------------------------------------------------------*/
-Clause_SubQry* Stmt_Select::pSubQry(void)
+Clause_SubQry* Stmt_Select::pRootSubQry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
 
-  return m_pSubQry;
+  return m_pRootSubQry;
 }
 
 /*----------------------------------------------------------------------------*/
 /* put subQry                                                                 */
 /*----------------------------------------------------------------------------*/
-void Stmt_Select::vSubQry(Clause_SubQry* pSubQry)
+void Stmt_Select::vRootSubQry(Clause_SubQry* pRootSubQry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
 
-  m_pSubQry = pSubQry;
+  m_pRootSubQry = pRootSubQry;
 }
 
 /*============================================================================*/

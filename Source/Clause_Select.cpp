@@ -47,16 +47,27 @@ bool Clause_Select::bParse(Descend* pDescend, Clause_SubQry* pParentSubQry)
 {
   _static_
   
+  // begin new sub query
   Clause_SubQry* pSubQry = new Clause_SubQry;
-
+  if (pParentSubQry) {
+    Stz* szQryNbr = pParentSubQry->szSubQryNbr();
+    pSubQry->vParentSubQry(pParentSubQry);
+    i8 iSubDepth = pParentSubQry->iDepth() + 1;
+    pSubQry->vDepth(iSubDepth);
+  }
+  else {
+    pSubQry->vDepth(0);
+  }
+  
+  // does the statement have a root sub-query?
   Stmt_Select* pSelectStmt = _pStmt_Select(pDescend->pStmt());
-  if (! pSelectStmt->pSubQry()) {
-    pSelectStmt->vSubQry(pSubQry);
+  if (! pSelectStmt->pRootSubQry()) {
+    pSelectStmt->vRootSubQry(pSubQry);
   }
   
   Token* pCurTkn = pDescend->pCurrToken();
   
-  vTrace("%s SELECT : %s\n"_Stz,pSubQry->szSubQryNbr(),pCurTkn->szChars());
+  vTrace("%s) SELECT : %s\n"_Stz,pSubQry->szSubQryNbr(),pCurTkn->szChars());
   pDescend->vNextToken();
   
   Clause_Project::bParse(pDescend,pSubQry);

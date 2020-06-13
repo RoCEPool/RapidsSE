@@ -113,7 +113,9 @@ void Clause_SubQry::vDepth(i8 iDepth)
 
   m_iDepth = iDepth;
   
-  StrLib::vConcat(m_sSubQryNbr.azChar(),'.');
+  if (m_iDepth)
+    StrLib::vConcat(m_sSubQryNbr.azChar(),'.');
+  
   StrLib::vConcat(m_sSubQryNbr.azChar(),iDepth);
 }
 
