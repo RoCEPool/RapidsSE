@@ -16,10 +16,13 @@ namespace CompilerStream
 
 #include "Stmt.hpp"
 
+
+#include "Clause.hpp"
+#include "Clause_SubQry.hpp"
+
 #include "Descend.hpp"
 #include "KeyWords.hpp"
 
-#include "Clause.hpp"
 #include "Clause_From.hpp"
 #include "Clause_GroupBy.hpp"
 #include "Clause_Join.hpp"
@@ -27,7 +30,7 @@ namespace CompilerStream
 #include "Clause_OrderBy.hpp"
 #include "Clause_Select.hpp"
 #include "Clause_Where.hpp"
-#include "Clause_SubQry.hpp"
+
 
 #include "Cmd.hpp"
 #include "Cmd_Select.hpp"

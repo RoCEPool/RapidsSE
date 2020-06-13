@@ -43,7 +43,7 @@ Clause_Join::~Clause_Join(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_Join::bDescend(Descend* pDescend)
+bool Clause_Join::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
 {
   _static_
 

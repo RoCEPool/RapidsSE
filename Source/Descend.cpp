@@ -264,7 +264,7 @@ void Descend::vDispatchInit(void)
 /*----------------------------------------------------------------------------*/
 /* dispatch init                                                              */
 /*----------------------------------------------------------------------------*/
-bool Descend::bDispatch(void)
+bool Descend::bDispatch(Clause_SubQry* pSubQry)
 {
   Token* pCurTkn = m_pTokenVec->pCurrToken();
   
@@ -273,7 +273,7 @@ bool Descend::bDispatch(void)
   i8 i_Dsp = iFindDispatch(szChars);
   
   ASSERT(C_UNKNOWN != i_Dsp);
-  bool b = (*m_xaDispatch[i_Dsp].m_pFunc)(this);
+  bool b = (*m_xaDispatch[i_Dsp].m_pFunc)(this,pSubQry);
   
   return b;
 }

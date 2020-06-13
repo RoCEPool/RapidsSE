@@ -43,7 +43,7 @@ Clause_Select::~Clause_Select(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_Select::bDescend(Descend* pDescend)
+bool Clause_Select::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
 {
   _static_
   

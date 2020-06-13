@@ -10,7 +10,7 @@ namespace CompilerStream
   struct DescendDsp
   {
     s32  m_sName;
-    bool (*m_pFunc)(Descend*);
+    bool (*m_pFunc)(Descend*, Clause_SubQry*);
     bool m_bSubQry;
   };
 }
@@ -65,7 +65,7 @@ namespace CompilerStream
   
     //
   
-    bool bDispatch(void);
+    bool bDispatch(Clause_SubQry* p1);
     void vDispatchInit(void);
     bool bIsDispatchable(bool& bSubQry);
     i8   iFindDispatch(Stz* szChars);

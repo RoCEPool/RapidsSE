@@ -43,7 +43,7 @@ Clause_From::~Clause_From(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_From::bDescend(Descend* pDescend)
+bool Clause_From::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
 {
   _static_
   

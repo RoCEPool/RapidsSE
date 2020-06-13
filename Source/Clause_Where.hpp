@@ -19,7 +19,7 @@ namespace CompilerStream
     Clause_Where(TokenVec* pTknVec, i8& i_Tkn_);
    ~Clause_Where(void) noexcept(false);
   
-    static bool bDescend(Descend* pDescend);
+    static bool bDescend(Descend* pDescend, Clause_SubQry* pSubQry);
     static bool bParse(Descend* pDescend);
 
     Footer* aFooter(void);

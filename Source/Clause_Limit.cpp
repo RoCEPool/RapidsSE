@@ -43,7 +43,7 @@ Clause_Limit::~Clause_Limit(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_Limit::bDescend(Descend* pDescend)
+bool Clause_Limit::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
 {
   _static_
 

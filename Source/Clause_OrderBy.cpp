@@ -43,7 +43,7 @@ Clause_OrderBy::~Clause_OrderBy(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_OrderBy::bDescend(Descend* pDescend)
+bool Clause_OrderBy::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
 {
   _static_
 
