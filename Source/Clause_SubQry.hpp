@@ -9,8 +9,12 @@ namespace CompilerStream
   {
   private:
 
+    i8   m_iDepth;
+    s32  m_sSubQryNbr;
+  
     Clause_SubQry*  m_pParentSubQry;
-
+ 
+  
     Clause_Select*  m_pSelect;
     Clause_From*    m_pFrom;
     Clause_Where*   m_pWhere;
@@ -33,6 +37,11 @@ namespace CompilerStream
     Clause_SubQry*  pParentSubQry(void);
     void            vParentSubQry(Clause_SubQry*);
 
+    i8 iDepth(void);
+    void vDepth(i8 iDepth);
+  
+    Stz* szSubQryNbr(void);
+    
     Clause_Select*  pSelect(void);
     void            vSelect(Clause_Select*);
 

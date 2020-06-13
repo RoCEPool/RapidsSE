@@ -56,7 +56,7 @@ bool Clause_Select::bParse(Descend* pDescend, Clause_SubQry* pParentSubQry)
   
   Token* pCurTkn = pDescend->pCurr();
   
-  vTrace("SELECT : %s\n"_Stz,pCurTkn->szChars());
+  vTrace("%s SELECT : %s\n"_Stz,pSubQry->szSubQryNbr(),pCurTkn->szChars());
   pDescend->vNext();
   
   Clause_Project::bParse(pDescend,pSubQry);

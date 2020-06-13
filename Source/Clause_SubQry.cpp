@@ -23,6 +23,8 @@ Clause_SubQry::Clause_SubQry(void)
 
   m_sName = "subqry"_Stz;
   
+  m_iDepth = C_UNKNOWN;
+  m_sSubQryNbr = ""_Stz;
   m_pParentSubQry = nullptr;
   
   m_pSelect  = nullptr;
@@ -88,7 +90,46 @@ void Clause_SubQry::vParentSubQry(Clause_SubQry* pParentSubQry)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
 
   m_pParentSubQry = pParentSubQry;
+  
+  m_sSubQryNbr = m_pParentSubQry->szSubQryNbr();
 }
+
+/*----------------------------------------------------------------------------*/
+/* get depth of this sub query                                                */
+/*----------------------------------------------------------------------------*/
+i8 Clause_SubQry::iDepth(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+
+  return m_iDepth;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set depth of this sub query                                                */
+/*----------------------------------------------------------------------------*/
+void Clause_SubQry::vDepth(i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+
+  m_iDepth = iDepth;
+  
+  StrLib::vConcat(m_sSubQryNbr.azChar(),'.');
+  StrLib::vConcat(m_sSubQryNbr.azChar(),iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get depth of this sub query                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Clause_SubQry::szSubQryNbr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+
+  return m_sSubQryNbr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get select                                                                 */
