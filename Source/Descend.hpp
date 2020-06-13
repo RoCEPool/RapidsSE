@@ -62,7 +62,11 @@ namespace CompilerStream
   
     //
   
+    bool bDispatch(void);
     void vDispatchInit(void);
+    bool bIsDispatchable(void);
+    i8   iFindDispatch(Stz* szChars);
+   
 
     Footer* aFooter(void);
   };

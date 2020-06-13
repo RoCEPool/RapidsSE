@@ -35,6 +35,7 @@ Descend::Descend(TokenVec* pArgVec)
   m_pTokenVec = new TokenVec;
   
   m_pTokenVec->vDuplicateVector(pArgVec);
+  m_pTokenVec->vCurrToken(0);
     
   _checkInitialised_(CN_DESCEND);
   
@@ -240,6 +241,58 @@ void Descend::vDispatchInit(void)
   m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_WHERE;
   m_xaDispatch[m_nDispatch].m_pFunc = Clause_Where::bDescend;
   m_nDispatch++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dispatch init                                                              */
+/*----------------------------------------------------------------------------*/
+bool Descend::bDispatch(void)
+{
+  Token* pCurTkn = m_pTokenVec->pCurrToken();
+  
+  Stz* szChars = pCurr()->szChars();
+  
+  i8 i_Dsp = iFindDispatch(szChars);
+  
+  ASSERT(C_UNKNOWN != i_Dsp);
+  bool b = (*m_xaDispatch[i_Dsp].m_pFunc)(this);
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is current token dispatcable?                                              */
+/*----------------------------------------------------------------------------*/
+bool Descend::bIsDispatchable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
+  
+  Token* pCurTkn = m_pTokenVec->pCurrToken();
+  
+  Stz* szChars = pCurr()->szChars();
+  
+  i8 i_Dsp = iFindDispatch(szChars);
+
+  if (C_UNKNOWN == i_Dsp)
+    return false;
+  else
+    return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dispatch init                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Descend::iFindDispatch(Stz* szChars)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
+  
+  Token* pCurTkn = m_pTokenVec->pCurrToken();
+  
+  for (i8 i_Dsp = 0; i_Dsp < m_nDispatch; i_Dsp++)
+    if (m_xaDispatch[i_Dsp].m_sName.bSame(pCurr()->szChars()))
+      return i_Dsp;
+  
+  return C_UNKNOWN;
 }
 
 /*============================================================================*/
