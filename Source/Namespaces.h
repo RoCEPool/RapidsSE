@@ -12,7 +12,11 @@ namespace ClassData     {                                                     }
 namespace CompactBuffers{ class Crw; class CrwBuffer; class RowCompactor;
                           class HeadLine; class OverLine; class TailLine;     }
 namespace CompilerOperators {                                                 }
-namespace CompilerStream{                                                     }
+namespace CompilerStream{ class Clause_Select;  class Clause_From;
+                          class Clause_Where;   class Clause_GroupBy;
+                          class Clause_OrderBy; class Clause_Limit;
+                          class Clause_OrderBy; class Clause_SubQry;
+                          class Descend;                                      }
 namespace ControlData   {                                                     }
 namespace Correctness   { class Cell; class Focal; class Header; class Object;
                           class Statistics;                                   }

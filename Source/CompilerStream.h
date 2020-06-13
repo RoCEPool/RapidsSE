@@ -16,6 +16,7 @@ namespace CompilerStream
 
 #include "Stmt.hpp"
 
+#include "Cmd.hpp"
 
 #include "Clause.hpp"
 #include "Clause_SubQry.hpp"
@@ -32,7 +33,6 @@ namespace CompilerStream
 #include "Clause_Where.hpp"
 
 
-#include "Cmd.hpp"
 #include "Cmd_Select.hpp"
 
 #include "Filter.hpp"

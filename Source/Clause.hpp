@@ -5,14 +5,6 @@
 
 namespace CompilerStream
 {
-  class Clause_Select;
-  class Clause_From;
-  class Clause_Where;
-  class Clause_GroupBy;
-  class Clause_OrderBy;
-  class Clause_Limit;
-  class Descend;
-
   class Clause : public Operand
   {
   protected:
@@ -25,7 +17,7 @@ namespace CompilerStream
     Clause(eCN eClass);
    ~Clause(void) noexcept(false);
 
-    static void vCollect(Descend* pDescend);
+    static void vCollect(Descend* pDescend, Clause_SubQry* pSubQry);
 
     TokenVec* pTokenVec(void);
   

@@ -52,7 +52,7 @@ bool Clause_From::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
   vTrace("FROM : %s\n"_Stz,pCurTkn->szChars());
   pDescend->vNext();
   
-  vCollect(pDescend);
+  vCollect(pDescend,pSubQry);
   
   return true;
 }

@@ -52,7 +52,7 @@ bool Clause_Where::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
   vTrace("WHERE : %s\n"_Stz,pCurTkn->szChars());
   pDescend->vNext();
   
-  vCollect(pDescend);
+  vCollect(pDescend,pSubQry);
   
   return true;
 }

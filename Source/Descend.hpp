@@ -27,10 +27,13 @@ namespace CompilerStream
   
     i8 m_nDispatch;
     DescendDsp m_xaDispatch[C_MAX_DESCENDDSP];
-  
+ 
+    
     i8 m_iNesting;
  
     TokenVec* m_pTokenVec;
+  
+    Stmt* m_pStmt;
   
     // must be last
     Footer m_xFooter;
@@ -39,7 +42,7 @@ namespace CompilerStream
     void* operator new(size_t);
     void  operator delete(void* aAddress);
     
-    Descend(TokenVec* pArgVec);
+    Descend(TokenVec* pArgVec, Stmt* pStmt);
    ~Descend(void) noexcept(false);
   
     i8     iCurr(void);
@@ -69,7 +72,9 @@ namespace CompilerStream
     void vDispatchInit(void);
     bool bIsDispatchable(bool& bSubQry);
     i8   iFindDispatch(Stz* szChars);
-   
+
+    Stmt* pStmt(void);
+
 
     Footer* aFooter(void);
   };

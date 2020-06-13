@@ -5,7 +5,7 @@
 
 namespace CompilerStream
 {
-  class Stmt_Select : public Operand
+  class Stmt_Select : public Stmt
   {
   private:
   

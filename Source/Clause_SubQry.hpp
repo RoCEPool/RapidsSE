@@ -8,7 +8,9 @@ namespace CompilerStream
   class Clause_SubQry : public Clause
   {
   private:
-  
+
+    Clause_SubQry*  m_pParentSubQry;
+
     Clause_Select*  m_pSelect;
     Clause_From*    m_pFrom;
     Clause_Where*   m_pWhere;
@@ -28,6 +30,9 @@ namespace CompilerStream
   
     static bool bDescend(Descend* pDescend, Clause_SubQry* pSubQry);
     static bool bParse(Descend* pDescend);
+
+    Clause_SubQry*  pParentSubQry(void);
+    void            vParentSubQry(Clause_SubQry*);
 
     Clause_Select*  pSelect(void);
     void            vSelect(Clause_Select*);

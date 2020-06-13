@@ -17,7 +17,7 @@ __aFooterFunction(Descend)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Descend::Descend(TokenVec* pArgVec)
+Descend::Descend(TokenVec* pArgVec, Stmt* pStmt)
 : Object(CN_DESCEND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
@@ -37,6 +37,8 @@ Descend::Descend(TokenVec* pArgVec)
   
   m_pTokenVec->vDuplicateVector(pArgVec);
   m_pTokenVec->vCurrToken(0);
+  
+  m_pStmt = pStmt;
     
   _checkInitialised_(CN_DESCEND);
   
@@ -315,6 +317,16 @@ i8 Descend::iFindDispatch(Stz* szChars)
       return i_Dsp;
   
   return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get statement                                                              */
+/*----------------------------------------------------------------------------*/
+Stmt* Descend::pStmt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
+  
+  return m_pStmt;
 }
 
 /*============================================================================*/

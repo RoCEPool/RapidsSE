@@ -47,12 +47,19 @@ bool Clause_Select::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
 {
   _static_
   
+  if (! pSubQry) {
+    pSubQry = new Clause_SubQry;
+    
+    Stmt_Select* pSelectStmt = _pStmt_Select(pDescend->pStmt());
+    pSelectStmt->vSubQry(pSubQry);
+  }
+  
   Token* pCurTkn = pDescend->pCurr();
   
   vTrace("SELECT : %s\n"_Stz,pCurTkn->szChars());
   pDescend->vNext();
   
-  vCollect(pDescend);
+  vCollect(pDescend,pSubQry);
   
   return true;
 }

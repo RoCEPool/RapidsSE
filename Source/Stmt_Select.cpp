@@ -17,7 +17,7 @@ __aFooterFunction(Stmt_Select)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stmt_Select::Stmt_Select(void)
-: Operand(CN_STMT_SELECT)
+: Stmt(CN_STMT_SELECT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
   
@@ -54,10 +54,7 @@ bool Stmt_Select::bParse(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
   
-  Descend* pDescend = new Descend(pTokenVec);
-  
-  
-  m_pSubQry = new Clause_SubQry;
+  Descend* pDescend = new Descend(pTokenVec,this);
   
   bool bSubQry;
   while (pDescend->bMore() && pDescend->bIsDispatchable(bSubQry))
@@ -99,7 +96,6 @@ void Stmt_Select::vSubQry(Clause_SubQry* pSubQry)
 
   m_pSubQry = pSubQry;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

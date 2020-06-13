@@ -52,7 +52,7 @@ bool Clause_Join::bDescend(Descend* pDescend, Clause_SubQry* pSubQry)
   vTrace("JOIN : %s\n"_Stz,pCurTkn->szChars());
   pDescend->vNext();
   
-  vCollect(pDescend);
+  vCollect(pDescend,pSubQry);
   
   return true;
 }

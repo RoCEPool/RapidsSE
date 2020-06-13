@@ -30,7 +30,6 @@ bool Prompt::bPrompt_select(SePrompt* pPrompt)
   pTknVec->vToTknString(sSelect);
   vTrace("Select:: %s\n"_Stz,sSelect.szStz());
   
-  
   Stmt_Select* pSelectStmt = new Stmt_Select;
   
   bool b = pSelectStmt->bParse(pTknVec);

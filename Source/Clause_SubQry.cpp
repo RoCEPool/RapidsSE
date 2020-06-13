@@ -23,6 +23,8 @@ Clause_SubQry::Clause_SubQry(void)
 
   m_sName = "subqry"_Stz;
   
+  m_pParentSubQry = nullptr;
+  
   m_pSelect  = nullptr;
   m_pFrom    = nullptr;
   m_pWhere   = nullptr;
@@ -77,6 +79,26 @@ bool Clause_SubQry::bParse(Descend* pDescend)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get parent sub query                                                       */
+/*----------------------------------------------------------------------------*/
+Clause_SubQry* Clause_SubQry::pParentSubQry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+
+  return m_pParentSubQry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set parent sub query                                                       */
+/*----------------------------------------------------------------------------*/
+void Clause_SubQry::vParentSubQry(Clause_SubQry* pParentSubQry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+
+  m_pParentSubQry = pParentSubQry;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get select                                                                 */
