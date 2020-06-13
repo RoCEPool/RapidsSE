@@ -49,7 +49,7 @@ bool Clause_Join::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
 
   Token* pCurTkn = pDescend->pCurr();
   
-  vTrace("JOIN : %s\n"_Stz,pCurTkn->szChars());
+  vTrace(C_FMT_CLAUSE,"JOIN"_Stz,pCurTkn->szChars());
   pDescend->vNext();
   
   vCollect(pDescend,pSubQry);

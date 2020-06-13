@@ -49,7 +49,7 @@ bool Clause_GroupBy::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
 
   Token* pCurTkn = pDescend->pCurr();
   
-  vTrace("GROUPBY : %s\n"_Stz,pCurTkn->szChars());
+  vTrace(C_FMT_CLAUSE,"GROUPBY"_Stz,pCurTkn->szChars());
   pDescend->vNext();
   
   vCollect(pDescend,pSubQry);

@@ -49,7 +49,7 @@ bool Clause_Where::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
 
   Token* pCurTkn = pDescend->pCurr();
   
-  vTrace("WHERE : %s\n"_Stz,pCurTkn->szChars());
+  vTrace(C_FMT_CLAUSE,"WHERE"_Stz,pCurTkn->szChars());
   pDescend->vNext();
   
   vCollect(pDescend,pSubQry);

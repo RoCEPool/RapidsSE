@@ -49,7 +49,7 @@ bool Clause_From::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
   
   Token* pCurTkn = pDescend->pCurr();
   
-  vTrace("FROM : %s\n"_Stz,pCurTkn->szChars());
+  vTrace(C_FMT_CLAUSE,"FROM"_Stz,pCurTkn->szChars());
   pDescend->vNext();
   
   vCollect(pDescend,pSubQry);

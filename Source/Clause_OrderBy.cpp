@@ -49,7 +49,7 @@ bool Clause_OrderBy::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
 
   Token* pCurTkn = pDescend->pCurr();
   
-  vTrace("ORDERBY : %s\n"_Stz,pCurTkn->szChars());
+  vTrace(C_FMT_CLAUSE,"ORDERBY"_Stz,pCurTkn->szChars());
   pDescend->vNext();
   
   vCollect(pDescend,pSubQry);
