@@ -69,7 +69,7 @@ void Clause::vCollect(Descend* pDescend, Clause_SubQry* pSubQry)
     
     Stz* szChars = pCurTkn->szChars();
   
-    if (pDescend->bIsDispatchable(bSubQry))
+    if (pDescend->bIsDescendParse(bSubQry))
       break;
     
     vTrace("  : %s\n"_Stz,szChars);

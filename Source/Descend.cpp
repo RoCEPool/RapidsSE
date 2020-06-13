@@ -22,11 +22,11 @@ Descend::Descend(TokenVec* pArgVec, Stmt* pStmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
-  m_nDispatch = 0;
+  m_nDescend = 0;
   for (i8 i_Dispatch = 0; i_Dispatch < C_MAX_DESCENDDSP; i_Dispatch++) {
-    m_xaDispatch[i_Dispatch].m_sName   = C_NO_NAME;
-    m_xaDispatch[i_Dispatch].m_pFunc   = nullptr;
-    m_xaDispatch[i_Dispatch].m_bSubQry = false;
+    m_xaDescend[i_Dispatch].m_sName   = C_NO_NAME;
+    m_xaDescend[i_Dispatch].m_pFunc   = nullptr;
+    m_xaDescend[i_Dispatch].m_bSubQry = false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -42,7 +42,7 @@ Descend::Descend(TokenVec* pArgVec, Stmt* pStmt)
     
   _checkInitialised_(CN_DESCEND);
   
-  vDispatchInit();
+  vInit();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
 }
@@ -229,53 +229,18 @@ void Descend::vPrev(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dispatch init                                                              */
+/* call descn func                                                            */
 /*----------------------------------------------------------------------------*/
-void Descend::vDispatchInit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
-  
-  m_nDispatch = 0;
-  
-  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_FROM;
-  m_xaDispatch[m_nDispatch].m_pFunc = Clause_From::bDescend;
-  m_nDispatch++;
-
-  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_GROUP;
-  m_xaDispatch[m_nDispatch].m_pFunc = Clause_GroupBy::bDescend;
-  m_nDispatch++;
-
-  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_LIMIT;
-  m_xaDispatch[m_nDispatch].m_pFunc = Clause_Limit::bDescend;
-  m_nDispatch++;
-
-  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_ORDER;
-  m_xaDispatch[m_nDispatch].m_pFunc = Clause_OrderBy::bDescend;
-  m_nDispatch++;
-
-  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_SELECT;
-  m_xaDispatch[m_nDispatch].m_pFunc = Clause_Select::bDescend;
-  m_xaDispatch[m_nDispatch].m_bSubQry = true;
-  m_nDispatch++;
-
-  m_xaDispatch[m_nDispatch].m_sName = C_CLAUSE_WHERE;
-  m_xaDispatch[m_nDispatch].m_pFunc = Clause_Where::bDescend;
-  m_nDispatch++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dispatch init                                                              */
-/*----------------------------------------------------------------------------*/
-bool Descend::bDispatch(Clause_SubQry* pSubQry)
+bool Descend::bCallFunc(Clause_SubQry* pSubQry)
 {
   Token* pCurTkn = m_pTokenVec->pCurrToken();
   
   Stz* szChars = pCurr()->szChars();
   
-  i8 i_Dsp = iFindDispatch(szChars);
+  i8 i_Dsp = iFindDescend(szChars);
   
   ASSERT(C_UNKNOWN != i_Dsp);
-  bool b = (*m_xaDispatch[i_Dsp].m_pFunc)(this,pSubQry);
+  bool b = (*m_xaDescend[i_Dsp].m_pFunc)(this,pSubQry);
   
   return b;
 }
@@ -283,7 +248,7 @@ bool Descend::bDispatch(Clause_SubQry* pSubQry)
 /*----------------------------------------------------------------------------*/
 /* is current token dispatcable?                                              */
 /*----------------------------------------------------------------------------*/
-bool Descend::bIsDispatchable(bool& bSubQry_)
+bool Descend::bIsDescendParse(bool& bSubQry_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
@@ -291,14 +256,14 @@ bool Descend::bIsDispatchable(bool& bSubQry_)
   
   Stz* szChars = pCurr()->szChars();
   
-  i8 i_Dsp = iFindDispatch(szChars);
+  i8 i_Dsp = iFindDescend(szChars);
 
   if (C_UNKNOWN == i_Dsp) {
     bSubQry_ = false;
     return false;
   }
   else {
-    bSubQry_ = m_xaDispatch[i_Dsp].m_bSubQry;
+    bSubQry_ = m_xaDescend[i_Dsp].m_bSubQry;
     return true;
   }
 }
@@ -306,14 +271,14 @@ bool Descend::bIsDispatchable(bool& bSubQry_)
 /*----------------------------------------------------------------------------*/
 /* dispatch init                                                              */
 /*----------------------------------------------------------------------------*/
-i8 Descend::iFindDispatch(Stz* szChars)
+i8 Descend::iFindDescend(Stz* szChars)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
   
   Token* pCurTkn = m_pTokenVec->pCurrToken();
   
-  for (i8 i_Dsp = 0; i_Dsp < m_nDispatch; i_Dsp++)
-    if (m_xaDispatch[i_Dsp].m_sName.bSame(pCurr()->szChars()))
+  for (i8 i_Dsp = 0; i_Dsp < m_nDescend; i_Dsp++)
+    if (m_xaDescend[i_Dsp].m_sName.bSame(pCurr()->szChars()))
       return i_Dsp;
   
   return C_UNKNOWN;
@@ -328,6 +293,46 @@ Stmt* Descend::pStmt(void)
   
   return m_pStmt;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dispatch init                                                              */
+/*----------------------------------------------------------------------------*/
+void Descend::vInit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DESCEND,_FOOTER_);
+  
+  m_nDescend = 0;
+  
+  m_xaDescend[m_nDescend].m_sName = C_CLAUSE_FROM;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_From::bDescend;
+  m_nDescend++;
+
+  m_xaDescend[m_nDescend].m_sName = C_CLAUSE_GROUP;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_GroupBy::bDescend;
+  m_nDescend++;
+
+  m_xaDescend[m_nDescend].m_sName = C_CLAUSE_LIMIT;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_Limit::bDescend;
+  m_nDescend++;
+
+  m_xaDescend[m_nDescend].m_sName = C_CLAUSE_ORDER;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_OrderBy::bDescend;
+  m_nDescend++;
+
+  m_xaDescend[m_nDescend].m_sName = C_CLAUSE_SELECT;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_Select::bDescend;
+  m_xaDescend[m_nDescend].m_bSubQry = true;
+  m_nDescend++;
+
+  m_xaDescend[m_nDescend].m_sName = C_CLAUSE_WHERE;
+  m_xaDescend[m_nDescend].m_pFunc = Clause_Where::bDescend;
+  m_nDescend++;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

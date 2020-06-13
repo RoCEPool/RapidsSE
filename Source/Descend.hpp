@@ -25,8 +25,8 @@ namespace CompilerStream
 
   private:
   
-    i8 m_nDispatch;
-    DescendDsp m_xaDispatch[C_MAX_DESCENDDSP];
+    i8 m_nDescend;
+    DescendDsp m_xaDescend[C_MAX_DESCENDDSP];
  
     
     i8 m_iNesting;
@@ -68,13 +68,14 @@ namespace CompilerStream
   
     //
   
-    bool bDispatch(Clause_SubQry* p1);
-    void vDispatchInit(void);
-    bool bIsDispatchable(bool& bSubQry);
-    i8   iFindDispatch(Stz* szChars);
+    bool bCallFunc(Clause_SubQry* pSubQry);
+    bool bIsDescendParse(bool& bSubQry);
+    i8   iFindDescend(Stz* szChars);
 
     Stmt* pStmt(void);
 
+  private:
+    void vInit(void);
 
     Footer* aFooter(void);
   };

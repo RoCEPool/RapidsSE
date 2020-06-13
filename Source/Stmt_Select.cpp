@@ -57,8 +57,8 @@ bool Stmt_Select::bParse(TokenVec* pTokenVec)
   Descend* pDescend = new Descend(pTokenVec,this);
   
   bool bSubQry;
-  while (pDescend->bMore() && pDescend->bIsDispatchable(bSubQry))
-    if (! pDescend->bDispatch(m_pSubQry))
+  while (pDescend->bMore() && pDescend->bIsDescendParse(bSubQry))
+    if (! pDescend->bCallFunc(m_pSubQry))
       break;
   
   delete pDescend;
