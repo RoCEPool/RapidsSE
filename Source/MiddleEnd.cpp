@@ -2,7 +2,7 @@
 /* Manifests.cpp -- Statement Manifests                                       */
 /*============================================================================*/
 
-#include "Manifests.h"
+#include "MiddleEnd.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
