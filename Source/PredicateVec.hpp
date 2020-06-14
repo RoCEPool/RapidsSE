@@ -5,7 +5,7 @@
 
 namespace Plans
 {
-  class PredicateVec : public VectorNL_t<CN_PREDICATEVEC,Predicate,16>
+  class PredicateVec : public VectorNL_t<CN_PREDICATEVEC,Predicate,C_MAX_PREDICATEVEC>
   {
   private:
     i8   m_nMatchedPredicates; // number of matched columns

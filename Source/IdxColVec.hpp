@@ -5,7 +5,7 @@
 
 namespace MetaData
 {
-  class IdxColVec : public VectorNL_t<CN_IDXCOLVEC,Column,1024>
+  class IdxColVec : public VectorNL_t<CN_IDXCOLVEC,Column,C_MAX_IDXCOLVEC>
   {
   private:
     IndexDef* m_pIndexDef;  // which index definition
