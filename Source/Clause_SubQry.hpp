@@ -9,9 +9,10 @@ namespace CompilerStream
   {
   private:
 
-    i8   m_iAtDepth;
+    i8   m_iSubSeqNo;     // ....0 ....1 ....2
     s32  m_sSubQryNbr;
-  
+    i8   m_iAtDepth;
+
     Clause_SubQry*  m_pParentSubQry;
  
   
@@ -41,6 +42,11 @@ namespace CompilerStream
     void vAtDepth(i8 iDepth);
   
     Stz* szSubQryNbr(void);
+  
+    i8 iSubSeqNo(void);
+    void vSubSeqNo(i8 iSubSeqNo);
+
+  
     
     Clause_Select*  pSelect(void);
     void            vSelect(Clause_Select*);
