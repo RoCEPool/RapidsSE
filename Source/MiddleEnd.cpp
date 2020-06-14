@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Manifests.cpp -- Statement Manifests                                       */
+/* MiddleEnd.cpp -- Statement MiddleEnd                                       */
 /*============================================================================*/
 
 #include "MiddleEnd.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Manifests::vCheckAssumptions(void)
+void MiddleEnd::vCheckAssumptions(void)
 {
 }
 

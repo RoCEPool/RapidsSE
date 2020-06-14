@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Manifests.h -- Statement Manifests                                         */
+/* MiddleEnd.h -- Statement MiddleEnd                                         */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace Manifests
+namespace MiddleEnd
 {
   
   void vCheckAssumptions(void);
