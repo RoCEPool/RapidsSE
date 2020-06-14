@@ -66,6 +66,7 @@ namespace Library           {                                                 }
 namespace Load              {                                                 }
 namespace Locking           { class Lock;            class LockTracker;       }
 namespace Logging           { class Log;             class LogEntry;          }
+namespace Manifests         {                                                 }
 namespace MetaData          { class Table;           class IdxColVec;
                               class Index;                                    }
 namespace Metrics           {                                                 }
@@ -146,6 +147,7 @@ using namespace Library;
 using namespace Load;
 using namespace Locking;
 using namespace Logging;
+using namespace Manifests;
 using namespace MetaData;
 using namespace Metrics;
 using namespace Oblique;

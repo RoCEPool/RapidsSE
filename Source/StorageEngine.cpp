@@ -39,6 +39,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   LexicalAnalysis::vCheckAssumptions();
   Library::vCheckAssumptions();
   Locking::vCheckAssumptions();
+  Manifests::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   Metrics::vCheckAssumptions();
   Operands::vCheckAssumptions();
@@ -49,7 +50,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Plans::vCheckAssumptions();
   Pool::vCheckAssumptions();
   //Prompt::vCheckAssumptions();
-   Reflection::vCheckAssumptions();
+  Reflection::vCheckAssumptions();
   ResourceUsage::vCheckAssumptions();
   Resources::vCheckAssumptions();
   SenVM::vCheckAssumptions();
