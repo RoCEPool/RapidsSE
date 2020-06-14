@@ -24,6 +24,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Correctness::vCheckAssumptions();
   DataBuffers::vCheckAssumptions();
   DynamoCompiler::vCheckAssumptions();
+  DynamoCompiler::vCheckAssumptions();
   Entries::vCheckAssumptions();
   Enums::vCheckAssumptions();
   Esses::vCheckAssumptions();
@@ -39,6 +40,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   LexicalAnalysis::vCheckAssumptions();
   Library::vCheckAssumptions();
   Locking::vCheckAssumptions();
+  LogicalPlans::vCheckAssumptions();
   Manifests::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   Metrics::vCheckAssumptions();
