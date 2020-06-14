@@ -83,7 +83,7 @@ TokenVec* Stmt_Select::pTokenVec(void)
 /*----------------------------------------------------------------------------*/
 /* get root subQry                                                            */
 /*----------------------------------------------------------------------------*/
-Clause_SubQry* Stmt_Select::pRootSubQry(void)
+Stmt_SubQry* Stmt_Select::pRootSubQry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
 
@@ -93,7 +93,7 @@ Clause_SubQry* Stmt_Select::pRootSubQry(void)
 /*----------------------------------------------------------------------------*/
 /* put subQry                                                                 */
 /*----------------------------------------------------------------------------*/
-void Stmt_Select::vRootSubQry(Clause_SubQry* pRootSubQry)
+void Stmt_Select::vRootSubQry(Stmt_SubQry* pRootSubQry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
 

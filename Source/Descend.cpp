@@ -231,7 +231,7 @@ void Descend::vPrevToken(void)
 /*----------------------------------------------------------------------------*/
 /* call descn func                                                            */
 /*----------------------------------------------------------------------------*/
-bool Descend::bCallFunc(Clause_SubQry* pSubQry)
+bool Descend::bCallFunc(Stmt_SubQry* pSubQry)
 {
   Token* pCurTkn = m_pTokenVec->pCurrToken();
   

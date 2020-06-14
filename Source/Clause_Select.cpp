@@ -43,12 +43,12 @@ Clause_Select::~Clause_Select(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_Select::bParse(Descend* pDescend, Clause_SubQry* pParentSubQry)
+bool Clause_Select::bParse(Descend* pDescend, Stmt_SubQry* pParentSubQry)
 {
   _static_
   
   // begin new sub query
-  Clause_SubQry* pSubQry = new Clause_SubQry;
+  Stmt_SubQry* pSubQry = new Stmt_SubQry;
   if (pParentSubQry) {
     Stz* szQryNbr = pParentSubQry->szSubQryNbr();
     pSubQry->vParentSubQry(pParentSubQry);

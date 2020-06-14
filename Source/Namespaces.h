@@ -15,7 +15,7 @@ namespace CompilerOperators {                                                 }
 namespace CompilerStream{ class Clause_Select;  class Clause_From;
                           class Clause_Where;   class Clause_GroupBy;
                           class Clause_OrderBy; class Clause_Limit;
-                          class Clause_OrderBy; class Clause_SubQry;
+                          class Clause_OrderBy; class Stmt_SubQry;
                           class Descend;                                      }
 namespace ControlData   {                                                     }
 namespace Correctness   { class Cell; class Focal; class Header; class Object;

@@ -57,7 +57,7 @@ Clause::~Clause(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* collect                                                                    */
 /*----------------------------------------------------------------------------*/
-void Clause::vCollect(Descend* pDescend, Clause_SubQry* pSubQry)
+void Clause::vCollect(Descend* pDescend, Stmt_SubQry* pSubQry)
 {
   _static_
   

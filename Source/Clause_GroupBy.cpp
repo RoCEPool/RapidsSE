@@ -43,7 +43,7 @@ Clause_GroupBy::~Clause_GroupBy(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_GroupBy::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
+bool Clause_GroupBy::bParse(Descend* pDescend, Stmt_SubQry* pSubQry)
 {
   _static_
 

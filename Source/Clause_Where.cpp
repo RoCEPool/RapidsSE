@@ -43,7 +43,7 @@ Clause_Where::~Clause_Where(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_Where::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
+bool Clause_Where::bParse(Descend* pDescend, Stmt_SubQry* pSubQry)
 {
   _static_
 

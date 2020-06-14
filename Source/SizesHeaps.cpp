@@ -44,7 +44,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Clause_OrderBy),     HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_ORDERBY
   { sizeof(Clause_Project),     HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_PROJECT
   { sizeof(Clause_Select),      HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_SELECT
-  { sizeof(Clause_SubQry),      HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_SUBQRY
   { sizeof(Clause_Where),       HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_WHERE
   { sizeof(Cmd_Select),         HT_TRANSIENT_MEDIUM  }, // CN_CMD_SELECT
   { sizeof(Column),             HT_TRANSIENT_TINY    }, // CN_COLUMN
@@ -287,6 +286,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StepAccum),          HT_INVALID           }, // CN_STATISTICS
   { sizeof(StepTiming),         HT_TRANSIENT_LARGE   }, // CN_STEPTIMING
   { sizeof(Stmt_Select),        HT_TRANSIENT_LARGE   }, // CN_STMT_SELECT
+  { sizeof(Stmt_SubQry),        HT_TRANSIENT_MEDIUM  }, // CN_STMT_SUBQRY
   { sizeof(Strand),             HT_TRANSIENT_SMALL   }, // CN_STRAND
   { sizeof(StreamDef),          HT_TRANSIENT_LARGE   }, // CN_STREAMDEF
   { sizeof(StreamSet),          HT_TRANSIENT_LARGE   }, // CN_STREAMSET

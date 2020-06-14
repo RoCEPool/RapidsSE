@@ -17,7 +17,7 @@ namespace CompilerStream
     Clause(eCN eClass);
    ~Clause(void) noexcept(false);
 
-    static void vCollect(Descend* pDescend, Clause_SubQry* pSubQry);
+    static void vCollect(Descend* pDescend, Stmt_SubQry* pSubQry);
 
     TokenVec* pTokenVec(void);
   

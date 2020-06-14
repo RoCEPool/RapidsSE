@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Clause_SubQry.cpp -- Sub-Query Clause operand                              */
+/* Stmt_SubQry.cpp -- Sub-Query Clause operand                              */
 /*============================================================================*/
 
 #include "CompilerStream.h"
@@ -8,20 +8,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompilerStream,Clause_SubQry,CN_CLAUSE_SUBQRY)
-__aNewFunction(Clause_SubQry,CN_CLAUSE_SUBQRY)
-__vDeleteFunction(Clause_SubQry,CN_CLAUSE_SUBQRY)
-__aFooterFunction(Clause_SubQry)
+__pCastFunction(CompilerStream,Stmt_SubQry,CN_STMT_SUBQRY)
+__aNewFunction(Stmt_SubQry,CN_STMT_SUBQRY)
+__vDeleteFunction(Stmt_SubQry,CN_STMT_SUBQRY)
+__aFooterFunction(Stmt_SubQry)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_SubQry::Clause_SubQry(void)
-: Clause(CN_CLAUSE_SUBQRY)
+Stmt_SubQry::Stmt_SubQry(void)
+: Stmt(CN_STMT_SUBQRY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
-
-  m_sName = "subqry"_Stz;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
   
   m_iSubSeqDgt = C_UNKNOWN;
   m_sSubQryNbr = ""_Stz;
@@ -38,17 +36,17 @@ Clause_SubQry::Clause_SubQry(void)
   m_pOrderBy = nullptr;
   m_pLimit   = nullptr;
   
-  _checkInitialised_(CN_CLAUSE_SUBQRY);
+  _checkInitialised_(CN_STMT_SUBQRY);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Clause_SubQry::~Clause_SubQry(void) noexcept(false)
+Stmt_SubQry::~Stmt_SubQry(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
   
   delete m_pSelect;
   delete m_pFrom;
@@ -65,7 +63,7 @@ Clause_SubQry::~Clause_SubQry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_SubQry::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
+bool Stmt_SubQry::bParse(Descend* pDescend, Stmt_SubQry* pSubQry)
 {
   _static_
   
@@ -79,9 +77,9 @@ bool Clause_SubQry::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
 /*----------------------------------------------------------------------------*/
 /* get parent sub query                                                       */
 /*----------------------------------------------------------------------------*/
-Clause_SubQry* Clause_SubQry::pParentSubQry(void)
+Stmt_SubQry* Stmt_SubQry::pParentSubQry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   return m_pParentSubQry;
 }
@@ -89,9 +87,9 @@ Clause_SubQry* Clause_SubQry::pParentSubQry(void)
 /*----------------------------------------------------------------------------*/
 /* set parent sub query                                                       */
 /*----------------------------------------------------------------------------*/
-void Clause_SubQry::vParentSubQry(Clause_SubQry* pParentSubQry)
+void Stmt_SubQry::vParentSubQry(Stmt_SubQry* pParentSubQry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   m_pParentSubQry = pParentSubQry;
   
@@ -101,9 +99,9 @@ void Clause_SubQry::vParentSubQry(Clause_SubQry* pParentSubQry)
 /*----------------------------------------------------------------------------*/
 /* get depth of this sub query                                                */
 /*----------------------------------------------------------------------------*/
-i8 Clause_SubQry::iAtDepth(void)
+i8 Stmt_SubQry::iAtDepth(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   return m_iAtDepth;
 }
@@ -111,9 +109,9 @@ i8 Clause_SubQry::iAtDepth(void)
 /*----------------------------------------------------------------------------*/
 /* set depth of this sub query                                                */
 /*----------------------------------------------------------------------------*/
-void Clause_SubQry::vAtDepth(i8 iAtDepth)
+void Stmt_SubQry::vAtDepth(i8 iAtDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   m_iAtDepth = iAtDepth;
 }
@@ -121,9 +119,9 @@ void Clause_SubQry::vAtDepth(i8 iAtDepth)
 /*----------------------------------------------------------------------------*/
 /* get next kid digit                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Clause_SubQry::iNextKidDgt(void)
+i8 Stmt_SubQry::iNextKidDgt(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   return m_iNxtKidDgt++;
 }
@@ -131,9 +129,9 @@ i8 Clause_SubQry::iNextKidDgt(void)
 /*----------------------------------------------------------------------------*/
 /* get depth of this sub query                                                */
 /*----------------------------------------------------------------------------*/
-Stz* Clause_SubQry::szSubQryNbr(void)
+Stz* Stmt_SubQry::szSubQryNbr(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   return m_sSubQryNbr;
 }
@@ -141,9 +139,9 @@ Stz* Clause_SubQry::szSubQryNbr(void)
 /*----------------------------------------------------------------------------*/
 /* get depth of this sub query                                                */
 /*----------------------------------------------------------------------------*/
-i8 Clause_SubQry::iSubSeqDgt(void)
+i8 Stmt_SubQry::iSubSeqDgt(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   return m_iSubSeqDgt;
 }
@@ -151,9 +149,9 @@ i8 Clause_SubQry::iSubSeqDgt(void)
 /*----------------------------------------------------------------------------*/
 /* set depth of this sub query                                                */
 /*----------------------------------------------------------------------------*/
-void Clause_SubQry::vSubSeqDgt(i8 iSubSeqDgt)
+void Stmt_SubQry::vSubSeqDgt(i8 iSubSeqDgt)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   m_iSubSeqDgt = iSubSeqDgt;
   
@@ -170,9 +168,9 @@ void Clause_SubQry::vSubSeqDgt(i8 iSubSeqDgt)
 /*----------------------------------------------------------------------------*/
 /* get select                                                                 */
 /*----------------------------------------------------------------------------*/
-Clause_Select* Clause_SubQry::pSelect(void)
+Clause_Select* Stmt_SubQry::pSelect(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   return m_pSelect;
 }
@@ -180,9 +178,9 @@ Clause_Select* Clause_SubQry::pSelect(void)
 /*----------------------------------------------------------------------------*/
 /* put select                                                                 */
 /*----------------------------------------------------------------------------*/
-void Clause_SubQry::vSelect(Clause_Select* pSelect)
+void Stmt_SubQry::vSelect(Clause_Select* pSelect)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   m_pSelect = pSelect;
 }
@@ -190,9 +188,9 @@ void Clause_SubQry::vSelect(Clause_Select* pSelect)
 /*----------------------------------------------------------------------------*/
 /* get from                                                                   */
 /*----------------------------------------------------------------------------*/
-Clause_From* Clause_SubQry::pFrom(void)
+Clause_From* Stmt_SubQry::pFrom(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   return m_pFrom;
 }
@@ -200,9 +198,9 @@ Clause_From* Clause_SubQry::pFrom(void)
 /*----------------------------------------------------------------------------*/
 /* put from                                                                   */
 /*----------------------------------------------------------------------------*/
-void Clause_SubQry::vFrom(Clause_From* pFrom)
+void Stmt_SubQry::vFrom(Clause_From* pFrom)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   m_pFrom = pFrom;
 }
@@ -210,9 +208,9 @@ void Clause_SubQry::vFrom(Clause_From* pFrom)
 /*----------------------------------------------------------------------------*/
 /* get where                                                                  */
 /*----------------------------------------------------------------------------*/
-Clause_Where* Clause_SubQry::pWhere(void)
+Clause_Where* Stmt_SubQry::pWhere(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   return m_pWhere;
 }
@@ -220,9 +218,9 @@ Clause_Where* Clause_SubQry::pWhere(void)
 /*----------------------------------------------------------------------------*/
 /* put where                                                                  */
 /*----------------------------------------------------------------------------*/
-void Clause_SubQry::vWhere(Clause_Where* pWhere)
+void Stmt_SubQry::vWhere(Clause_Where* pWhere)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   m_pWhere = pWhere;
 }
@@ -230,9 +228,9 @@ void Clause_SubQry::vWhere(Clause_Where* pWhere)
 /*----------------------------------------------------------------------------*/
 /* get groupBy                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_GroupBy* Clause_SubQry::pGroupBy(void)
+Clause_GroupBy* Stmt_SubQry::pGroupBy(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   return m_pGroupBy;
 }
@@ -240,9 +238,9 @@ Clause_GroupBy* Clause_SubQry::pGroupBy(void)
 /*----------------------------------------------------------------------------*/
 /* put groupBy                                                                */
 /*----------------------------------------------------------------------------*/
-void Clause_SubQry::vGroupBy(Clause_GroupBy* pGroupBy)
+void Stmt_SubQry::vGroupBy(Clause_GroupBy* pGroupBy)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   m_pGroupBy = pGroupBy;
 }
@@ -250,9 +248,9 @@ void Clause_SubQry::vGroupBy(Clause_GroupBy* pGroupBy)
 /*----------------------------------------------------------------------------*/
 /* get orderBy                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_OrderBy* Clause_SubQry::pOrderBy(void)
+Clause_OrderBy* Stmt_SubQry::pOrderBy(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   return m_pOrderBy;
 }
@@ -260,9 +258,9 @@ Clause_OrderBy* Clause_SubQry::pOrderBy(void)
 /*----------------------------------------------------------------------------*/
 /* put orderBy                                                                */
 /*----------------------------------------------------------------------------*/
-void Clause_SubQry::vOrderBy(Clause_OrderBy* pOrderBy)
+void Stmt_SubQry::vOrderBy(Clause_OrderBy* pOrderBy)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   m_pOrderBy = pOrderBy;
 }
@@ -270,9 +268,9 @@ void Clause_SubQry::vOrderBy(Clause_OrderBy* pOrderBy)
 /*----------------------------------------------------------------------------*/
 /* get limit                                                                  */
 /*----------------------------------------------------------------------------*/
-Clause_Limit* Clause_SubQry::pLimit(void)
+Clause_Limit* Stmt_SubQry::pLimit(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   return m_pLimit;
 }
@@ -280,9 +278,9 @@ Clause_Limit* Clause_SubQry::pLimit(void)
 /*----------------------------------------------------------------------------*/
 /* put limit                                                                  */
 /*----------------------------------------------------------------------------*/
-void Clause_SubQry::vOrderBy(Clause_Limit* pLimit)
+void Stmt_SubQry::vOrderBy(Clause_Limit* pLimit)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
   m_pLimit = pLimit;
 }

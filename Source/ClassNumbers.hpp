@@ -48,7 +48,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CLAUSE_ORDERBY,
   /* */ CN_CLAUSE_PROJECT,
   /* */ CN_CLAUSE_SELECT,
-  /* */ CN_CLAUSE_SUBQRY,
   /* */ CN_CLAUSE_WHERE,
   /* */ CN_CMD_SELECT,
   /* */ CN_COLUMN,
@@ -291,6 +290,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STEPACCUM,
   /* */ CN_STEPTIMING,
   /* */ CN_STMT_SELECT,
+  /* */ CN_STMT_SUBQRY,
   /* */ CN_STRAND,
   /* */ CN_STREAMDEF,
   /* */ CN_STREAMSET,
@@ -387,7 +387,6 @@ static Stz* aCN[]
   /* */ "CLAUSE_ORDERBY"_Stz,      // CN_CLAUSE_ORDERBY
   /* */ "CLAUSE_PROJECT"_Stz,      // CN_CLAUSE_PROJECT
   /* */ "CLAUSE_SELECT"_Stz,       // CN_CLAUSE_SELECT
-  /* */ "CLAUSE_SUBQRY"_Stz,       // CN_CLAUSE_SUBQRY
   /* */ "CLAUSE_WHERE"_Stz,        // CN_CLAUSE_WHERE
   /* */ "CMD_SELECT"_Stz,          // CN_CMD_SELECT
   /* */ "COLUMN"_Stz,              // CN_COLUMN
@@ -630,6 +629,7 @@ static Stz* aCN[]
   /* */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* */ "STEPTIMING"_Stz,          // CN_STEPTIMING
   /* */ "STMT_SELECT"_Stz,         // CN_STMT_SELECT
+  /* */ "STMT_SUBQRY"_Stz,         // CN_STMT_SUBQRY
   /* */ "STRAND"_Stz,              // CN_STRAND
   /* */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* */ "STREAMSET"_Stz,           // CN_STREAMSET

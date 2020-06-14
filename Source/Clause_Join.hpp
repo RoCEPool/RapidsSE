@@ -19,7 +19,7 @@ namespace CompilerStream
     Clause_Join(void);
    ~Clause_Join(void) noexcept(false);
   
-    static bool bParse(Descend* pDescend, Clause_SubQry* pSubQry);
+    static bool bParse(Descend* pDescend, Stmt_SubQry* pSubQry);
 
     Footer* aFooter(void);
   };

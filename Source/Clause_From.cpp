@@ -43,7 +43,7 @@ Clause_From::~Clause_From(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_From::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
+bool Clause_From::bParse(Descend* pDescend, Stmt_SubQry* pSubQry)
 {
   _static_
   

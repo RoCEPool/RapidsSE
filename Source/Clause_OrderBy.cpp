@@ -43,7 +43,7 @@ Clause_OrderBy::~Clause_OrderBy(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Clause_OrderBy::bParse(Descend* pDescend, Clause_SubQry* pSubQry)
+bool Clause_OrderBy::bParse(Descend* pDescend, Stmt_SubQry* pSubQry)
 {
   _static_
 

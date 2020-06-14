@@ -10,7 +10,7 @@ namespace CompilerStream
   struct DescendDsp
   {
     s32  m_sName;
-    bool (*m_pFunc)(Descend*, Clause_SubQry*);
+    bool (*m_pFunc)(Descend*, Stmt_SubQry*);
     bool m_bSubQry;
   };
 }
@@ -68,7 +68,7 @@ namespace CompilerStream
   
     //
   
-    bool bCallFunc(Clause_SubQry* pSubQry);
+    bool bCallFunc(Stmt_SubQry* pSubQry);
     bool bIsDescendParse(bool& bSubQry);
     i8   iFindDescend(Stz* szChars);
 

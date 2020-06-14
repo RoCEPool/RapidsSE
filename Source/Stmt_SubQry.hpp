@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Clause_SubQry.hpp -- Sub-Query Clause operand                              */
+/* Stmt_SubQry.hpp -- Statement Sub-Query                                     */
 /*============================================================================*/
 #pragma once
 
 namespace CompilerStream
 {
-  class Clause_SubQry : public Clause
+  class Stmt_SubQry : public Stmt
   {
   private:
 
@@ -15,7 +15,7 @@ namespace CompilerStream
     i8   m_iAtDepth;   // what depth from root
     i8   m_iNxtKidDgt; // next digit(s) of a kid sub qry ..0 ..1 ..2
 
-    Clause_SubQry*  m_pParentSubQry;
+    Stmt_SubQry*  m_pParentSubQry;
  
     Clause_Select*  m_pSelect;
     Clause_From*    m_pFrom;
@@ -31,13 +31,13 @@ namespace CompilerStream
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Clause_SubQry(void);
-   ~Clause_SubQry(void) noexcept(false);
+    Stmt_SubQry(void);
+   ~Stmt_SubQry(void) noexcept(false);
   
-    static bool bParse(Descend* pDescend, Clause_SubQry* pSubQry);
+    static bool bParse(Descend* pDescend, Stmt_SubQry* pSubQry);
 
-    Clause_SubQry*  pParentSubQry(void);
-    void            vParentSubQry(Clause_SubQry*);
+    Stmt_SubQry*  pParentSubQry(void);
+    void            vParentSubQry(Stmt_SubQry*);
 
     i8 iAtDepth(void);
     void vAtDepth(i8 iDepth);
@@ -72,7 +72,7 @@ namespace CompilerStream
     Footer* aFooter(void);
   };
 
-  Clause_SubQry* _pClause_SubQry(void* aAddr);
+  Stmt_SubQry* _pStmt_SubQry(void* aAddr);
 }
 
 /*============================================================================*/

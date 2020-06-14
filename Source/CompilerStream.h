@@ -19,7 +19,7 @@ namespace CompilerStream
 #include "Cmd.hpp"
 
 #include "Clause.hpp"
-#include "Clause_SubQry.hpp"
+#include "Stmt_SubQry.hpp"
 
 #include "Descend.hpp"
 #include "KeyWords.hpp"
