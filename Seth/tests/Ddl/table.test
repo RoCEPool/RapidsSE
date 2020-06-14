@@ -77,7 +77,7 @@ success
 // (10) drop table
 drop table T1 ;
 success
-
+/*
 // (9) create table with 150 columns
 create table T1 (
 c0 boolean NOT NULL,
@@ -398,6 +398,7 @@ c149 boolean NOT NULL,
 c150 boolean NOT NULL
 );
 failure contains: 'max 150 columns'
+*/
 
 // (11) create table with two columns that have same name
 create table T1 (

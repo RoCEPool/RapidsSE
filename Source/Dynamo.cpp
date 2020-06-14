@@ -528,7 +528,7 @@ bool Dynamo::bCollectOp(void)
     s32 sArgName;
     sArgName.vSprint("<arg_%lld>"_Stz,i_Arg++);
     
-    s256 sArgValue ( m_pTkn->szChars() );
+    s4K sArgValue ( m_pTkn->szChars() );
     
     pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
     

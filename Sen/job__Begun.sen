@@ -23,7 +23,7 @@
   pJobParticipant job__Begun::new to pJob__Begun
 
   // get error if any
-  grid::thisNode@ pJobParticipant job.error@ to error
+  pJobParticipant job.error@ to error
 
   error EC_NONE != if
     // set error in the job

@@ -20,7 +20,7 @@ void Step::vTableDefParse(void)
 {
   ENTRY();
   
-  Job* pJob_CreateTable = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob_Local = _pJob_Local(m_pDataStack->pPopPtr(__func__));
   
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
@@ -38,7 +38,7 @@ void Step::vTableDefParse(void)
     // at this stage shouldn't be a syntax error
     ASSERT(eResult != EC_INVALID_COMMAND);
     
-    pJob_CreateTable->vJobError(eResult);
+    pJob_Local->vJobError(eResult);
     
     // delete tabledef
     delete pTableDef;

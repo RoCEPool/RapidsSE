@@ -64,7 +64,7 @@ assert::stack_0
 
         "job_ConnectCluster.sen"  include
         "job_CreateIndex.sen"     include
-        "job_CreateTable.sen"     include
+        //"job_CreateTable.sen"     include
 
         "job_DefineTable.sen"     include
         "job_Distributed.sen"     include
@@ -168,6 +168,7 @@ assert::stack_0
         "OP_sizeIndex.sen"            include
         "OP_sizeTable.sen"            include
         "OP_supervisor.sen"           include
+        "OP_syntaxTable.sen"          include
         "OP_tableSizes.sen"           include
         "OP_toCrwH.sen"               include
         "OP_toCrwHash.sen"            include

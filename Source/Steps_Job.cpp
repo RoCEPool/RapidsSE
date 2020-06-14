@@ -590,8 +590,6 @@ void Step::vJobErrorFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  i8 iNode = m_pDataStack->iPopAsInt(__func__);
-  
   m_pDataStack->vPushInt(pJob->eJobError());
   
   EXIT();
