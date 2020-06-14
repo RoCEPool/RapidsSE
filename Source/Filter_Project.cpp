@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Project.cpp -- Project Filter operand                               */
+/* Filter_Project.cpp -- Project LogicalOp operand                               */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_Project::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Project::Filter_Project(TokenVec* pTokenVec)
-: Filter(CN_FILTER_PROJECT,pTokenVec)
+: LogicalOp(CN_FILTER_PROJECT,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_PROJECT,_FOOTER_);
 

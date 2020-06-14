@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Fetch.cpp -- Fetch Filter operand                                   */
+/* Filter_Fetch.cpp -- Fetch LogicalOp operand                                   */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_Fetch::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Fetch::Filter_Fetch(TokenVec* pTokenVec)
-: Filter(CN_FILTER_FETCH,pTokenVec)
+: LogicalOp(CN_FILTER_FETCH,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FETCH,_FOOTER_);
 

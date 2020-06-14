@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter.hpp -- Filter                                                       */
+/* LogicalOp.hpp -- LogicalOp                                                       */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter : public Operand
+  class LogicalOp : public Operand
   {
   protected:
     s32       m_sName;
@@ -14,13 +14,13 @@ namespace LogicalPlans
   public:
     void operator delete(void*);
   
-    Filter(eCN eClass, TokenVec* pTokenVec);
-   ~Filter(void) noexcept(false);
+    LogicalOp(eCN eClass, TokenVec* pTokenVec);
+   ~LogicalOp(void) noexcept(false);
   
     void vAsString(s4K& sFilterStr);
   };
 
-  Filter* _pFilter(void* aAddr);
+  LogicalOp* _pFilter(void* aAddr);
 }
 
 /*============================================================================*/

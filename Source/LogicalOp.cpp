@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter.cpp -- Filter                                                       */
+/* LogicalOp.cpp -- LogicalOp                                                       */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter* LogicalPlans::_pFilter(void* aAddr)
+LogicalOp* LogicalPlans::_pFilter(void* aAddr)
 {
-  Filter* pFilter = reinterpret_cast<Filter*>(aAddr);
+  LogicalOp* pFilter = reinterpret_cast<LogicalOp*>(aAddr);
   
   return pFilter;
 }
@@ -22,7 +22,7 @@ Filter* LogicalPlans::_pFilter(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* delete                                                                     */
 /*----------------------------------------------------------------------------*/
-void Filter::operator delete(void* aAddress)
+void LogicalOp::operator delete(void* aAddress)
 {
   Object* pObject = static_cast<Object*>(aAddress);
   
@@ -32,7 +32,7 @@ void Filter::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Filter::Filter(eCN eClassNo, TokenVec* pTokenVec)
+LogicalOp::LogicalOp(eCN eClassNo, TokenVec* pTokenVec)
 : Operand(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
@@ -49,7 +49,7 @@ Filter::Filter(eCN eClassNo, TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Filter::~Filter(void) noexcept(false)
+LogicalOp::~LogicalOp(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -64,7 +64,7 @@ Filter::~Filter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Filter::vAsString(s4K& sFilterStr)
+void LogicalOp::vAsString(s4K& sFilterStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

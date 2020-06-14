@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_From.hpp -- From Filter operand                                     */
+/* Filter_From.hpp -- From LogicalOp operand                                     */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_From : public Filter
+  class Filter_From : public LogicalOp
   {
   private:
   

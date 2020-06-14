@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Select.cpp -- Select Filter operand                                 */
+/* Filter_Select.cpp -- Select LogicalOp operand                                 */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_Select::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Select::Filter_Select(TokenVec* pTokenVec)
-: Filter(CN_FILTER_SELECT,pTokenVec)
+: LogicalOp(CN_FILTER_SELECT,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SELECT,_FOOTER_);
 

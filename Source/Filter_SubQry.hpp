@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_SubQry.hpp -- SubQry Filter operand                                 */
+/* Filter_SubQry.hpp -- SubQry LogicalOp operand                                 */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_SubQry : public Filter
+  class Filter_SubQry : public LogicalOp
   {
   private:
   

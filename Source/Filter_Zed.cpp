@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Zed.cpp -- Zed Filter operand                                       */
+/* Filter_Zed.cpp -- Zed LogicalOp operand                                       */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_Zed::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Zed::Filter_Zed(TokenVec* pTokenVec)
-: Filter(CN_FILTER_ZED,pTokenVec)
+: LogicalOp(CN_FILTER_ZED,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_ZED,_FOOTER_);
 

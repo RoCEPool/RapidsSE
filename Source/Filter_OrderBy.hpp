@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_OrderBy.hpp -- OrderBy Filter operand                               */
+/* Filter_OrderBy.hpp -- OrderBy LogicalOp operand                               */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_OrderBy : public Filter
+  class Filter_OrderBy : public LogicalOp
   {
   private:
   

@@ -16,8 +16,6 @@ namespace CompilerStream
 
 #include "Stmt.hpp"
 
-#include "Cmd.hpp"
-
 #include "Clause.hpp"
 #include "Stmt_SubQry.hpp"
 
@@ -32,12 +30,7 @@ namespace CompilerStream
 #include "Clause_Project.hpp"
 #include "Clause_Where.hpp"
 
-
-#include "Cmd_Select.hpp"
-
-
 #include "Stmt_Select.hpp"
-
 
 /*============================================================================*/
 /* end                                                                        */

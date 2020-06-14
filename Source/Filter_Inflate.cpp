@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Inflate.cpp -- Inflate Filter operand                               */
+/* Filter_Inflate.cpp -- Inflate LogicalOp operand                               */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_Inflate::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Inflate::Filter_Inflate(TokenVec* pTokenVec)
-: Filter(CN_FILTER_INFLATE,pTokenVec)
+: LogicalOp(CN_FILTER_INFLATE,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_INFLATE,_FOOTER_);
 

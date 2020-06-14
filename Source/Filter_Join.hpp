@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_Join.hpp -- Join Filter operand                                     */
+/* Filter_Join.hpp -- Join LogicalOp operand                                     */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_Join : public Filter
+  class Filter_Join : public LogicalOp
   {
   private:
   

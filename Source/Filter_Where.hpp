@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_Where.hpp -- Where Filter operand                                   */
+/* Filter_Where.hpp -- Where LogicalOp operand                                   */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_Where : public Filter
+  class Filter_Where : public LogicalOp
   {
   private:
   

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Where.cpp -- Where Filter operand                                   */
+/* Filter_Where.cpp -- Where LogicalOp operand                                   */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_Where::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Where::Filter_Where(TokenVec* pTokenVec)
-: Filter(CN_FILTER_WHERE,pTokenVec)
+: LogicalOp(CN_FILTER_WHERE,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
 

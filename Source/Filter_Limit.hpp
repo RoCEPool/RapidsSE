@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_Limit.hpp -- Limit Filter operand                                   */
+/* Filter_Limit.hpp -- Limit LogicalOp operand                                   */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_Limit : public Filter
+  class Filter_Limit : public LogicalOp
   {
   private:
   

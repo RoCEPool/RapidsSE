@@ -15,7 +15,7 @@ namespace LogicalPlans
 
 //------------------------------------------------------------------------------
 
-#include "Filter.hpp"
+#include "LogicalOp.hpp"
 #include "Filter_Fetch.hpp"
 #include "Filter_From.hpp"
 #include "Filter_GroupBy.hpp"

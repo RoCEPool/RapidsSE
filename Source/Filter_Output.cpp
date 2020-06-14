@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Output.cpp -- Output Filter operand                                 */
+/* Filter_Output.cpp -- Output LogicalOp operand                                 */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_Output::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Output::Filter_Output(TokenVec* pTokenVec)
-: Filter(CN_FILTER_OUTPUT,pTokenVec)
+: LogicalOp(CN_FILTER_OUTPUT,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_OUTPUT,_FOOTER_);
 

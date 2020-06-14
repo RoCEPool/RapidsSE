@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_Zed.hpp -- Zed Filter operand                                       */
+/* Filter_Zed.hpp -- Zed LogicalOp operand                                       */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_Zed : public Filter
+  class Filter_Zed : public LogicalOp
   {
   private:
   

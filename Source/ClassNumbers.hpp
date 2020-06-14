@@ -48,7 +48,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CLAUSE_ORDERBY,
   /* */ CN_CLAUSE_PROJECT,
   /* */ CN_CLAUSE_WHERE,
-  /* */ CN_CMD_SELECT,
   /* */ CN_COLUMN,
   /* */ CN_COMPILER,
   /* */ CN_CONSTDEF,
@@ -386,7 +385,6 @@ static Stz* aCN[]
   /* */ "CLAUSE_ORDERBY"_Stz,      // CN_CLAUSE_ORDERBY
   /* */ "CLAUSE_PROJECT"_Stz,      // CN_CLAUSE_PROJECT
   /* */ "CLAUSE_WHERE"_Stz,        // CN_CLAUSE_WHERE
-  /* */ "CMD_SELECT"_Stz,          // CN_CMD_SELECT
   /* */ "COLUMN"_Stz,              // CN_COLUMN
   /* */ "COMPILER"_Stz,            // CN_COMPILER
   /* */ "CONSTDEF"_Stz,            // CN_CONSTDEF

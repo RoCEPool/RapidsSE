@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_Inflate.hpp -- Inflate Filter operand                               */
+/* Filter_Inflate.hpp -- Inflate LogicalOp operand                               */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_Inflate : public Filter
+  class Filter_Inflate : public LogicalOp
   {
   private:
   

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_OrderBy.cpp -- OrderBy Filter operand                               */
+/* Filter_OrderBy.cpp -- OrderBy LogicalOp operand                               */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_OrderBy::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_OrderBy::Filter_OrderBy(TokenVec* pTokenVec)
-: Filter(CN_FILTER_ORDERBY,pTokenVec)
+: LogicalOp(CN_FILTER_ORDERBY,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_ORDERBY,_FOOTER_);
 

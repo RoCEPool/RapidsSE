@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_Project.hpp -- Project Filter operand                               */
+/* Filter_Project.hpp -- Project LogicalOp operand                               */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_Project : public Filter
+  class Filter_Project : public LogicalOp
   {
   private:
   

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_GroupBy.cpp -- GroupBy Filter operand                               */
+/* Filter_GroupBy.cpp -- GroupBy LogicalOp operand                               */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_GroupBy::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_GroupBy::Filter_GroupBy(TokenVec* pTokenVec)
-: Filter(CN_FILTER_GROUPBY,pTokenVec)
+: LogicalOp(CN_FILTER_GROUPBY,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_GROUPBY,_FOOTER_);
 

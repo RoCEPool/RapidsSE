@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Limit.cpp -- Limit Filter operand                                   */
+/* Filter_Limit.cpp -- Limit LogicalOp operand                                   */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_Limit::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Limit::Filter_Limit(TokenVec* pTokenVec)
-: Filter(CN_FILTER_LIMIT,pTokenVec)
+: LogicalOp(CN_FILTER_LIMIT,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_LIMIT,_FOOTER_);
 

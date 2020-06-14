@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_Scan.hpp -- Scan Filter operand                                     */
+/* Filter_Scan.hpp -- Scan LogicalOp operand                                     */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_Scan : public Filter
+  class Filter_Scan : public LogicalOp
   {
   private:
   

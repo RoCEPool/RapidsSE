@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_SubQry.cpp -- SubQry Filter operand                                 */
+/* Filter_SubQry.cpp -- SubQry LogicalOp operand                                 */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_SubQry::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_SubQry::Filter_SubQry(TokenVec* pTokenVec)
-: Filter(CN_FILTER_SUBQRY,pTokenVec)
+: LogicalOp(CN_FILTER_SUBQRY,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SUBQRY,_FOOTER_);
 

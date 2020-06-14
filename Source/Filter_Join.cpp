@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Join.cpp -- Join Filter operand                                     */
+/* Filter_Join.cpp -- Join LogicalOp operand                                     */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_Join::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Join::Filter_Join(TokenVec* pTokenVec)
-: Filter(CN_FILTER_JOIN,pTokenVec)
+: LogicalOp(CN_FILTER_JOIN,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_JOIN,_FOOTER_);
 

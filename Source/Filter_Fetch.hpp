@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_Fetch.hpp -- Fetch Filter operand                                   */
+/* Filter_Fetch.hpp -- Fetch LogicalOp operand                                   */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_Fetch : public Filter
+  class Filter_Fetch : public LogicalOp
   {
   private:
   

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_GroupBy.hpp -- GroupBy Filter operand                               */
+/* Filter_GroupBy.hpp -- GroupBy LogicalOp operand                               */
 /*============================================================================*/
 #pragma once
 
 namespace LogicalPlans
 {
-  class Filter_GroupBy : public Filter
+  class Filter_GroupBy : public LogicalOp
   {
   private:
   

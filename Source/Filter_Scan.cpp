@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Scan.cpp -- Scan Filter operand                                     */
+/* Filter_Scan.cpp -- Scan LogicalOp operand                                     */
 /*============================================================================*/
 
 #include "LogicalPlans.h"
@@ -43,7 +43,7 @@ void Filter_Scan::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Scan::Filter_Scan(TokenVec* pTokenVec)
-: Filter(CN_FILTER_SCAN,pTokenVec)
+: LogicalOp(CN_FILTER_SCAN,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SCAN,_FOOTER_);
 
