@@ -52,11 +52,11 @@ bool Clause_Select::bParse(Descend* pDescend, Clause_SubQry* pParentSubQry)
   if (pParentSubQry) {
     Stz* szQryNbr = pParentSubQry->szSubQryNbr();
     pSubQry->vParentSubQry(pParentSubQry);
-    i8 iSubDepth = pParentSubQry->iDepth() + 1;
-    pSubQry->vDepth(iSubDepth);
+    i8 iSubDepth = pParentSubQry->iAtDepth() + 1;
+    pSubQry->vAtDepth(iSubDepth);
   }
   else {
-    pSubQry->vDepth(0);
+    pSubQry->vAtDepth(0);
   }
   
   // does the statement have a root sub-query?
