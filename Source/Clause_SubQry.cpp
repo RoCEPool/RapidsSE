@@ -23,9 +23,11 @@ Clause_SubQry::Clause_SubQry(void)
 
   m_sName = "subqry"_Stz;
   
-  m_iSubSeqNo  = C_UNKNOWN;
+  m_iSubSeqDgt = C_UNKNOWN;
   m_sSubQryNbr = ""_Stz;
+  
   m_iAtDepth   = C_UNKNOWN;
+  m_iNxtKidDgt = 0;
 
   m_pParentSubQry = nullptr;
   
@@ -117,6 +119,16 @@ void Clause_SubQry::vAtDepth(i8 iAtDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next kid digit                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Clause_SubQry::iNextKidDgt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
+
+  return m_iNxtKidDgt++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get depth of this sub query                                                */
 /*----------------------------------------------------------------------------*/
 Stz* Clause_SubQry::szSubQryNbr(void)
@@ -129,26 +141,26 @@ Stz* Clause_SubQry::szSubQryNbr(void)
 /*----------------------------------------------------------------------------*/
 /* get depth of this sub query                                                */
 /*----------------------------------------------------------------------------*/
-i8 Clause_SubQry::iSubSeqNo(void)
+i8 Clause_SubQry::iSubSeqDgt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
 
-  return m_iSubSeqNo;
+  return m_iSubSeqDgt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set depth of this sub query                                                */
 /*----------------------------------------------------------------------------*/
-void Clause_SubQry::vSubSeqNo(i8 iSubSeqNo)
+void Clause_SubQry::vSubSeqDgt(i8 iSubSeqDgt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
 
-  m_iSubSeqNo = iSubSeqNo;
+  m_iSubSeqDgt = iSubSeqDgt;
   
   if (m_iAtDepth)
     StrLib::vConcat(m_sSubQryNbr.azChar(),'.');
   
-  StrLib::vConcat(m_sSubQryNbr.azChar(),m_iSubSeqNo);
+  StrLib::vConcat(m_sSubQryNbr.azChar(),m_iSubSeqDgt);
 }
 
 

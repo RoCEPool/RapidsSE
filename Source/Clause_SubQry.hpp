@@ -9,13 +9,14 @@ namespace CompilerStream
   {
   private:
 
-    i8   m_iSubSeqNo;     // ....0 ....1 ....2
-    s32  m_sSubQryNbr;
-    i8   m_iAtDepth;
+    i8   m_iSubSeqDgt; // last digit(s) of the subQryNbr ..0 ..1 ..2
+    s32  m_sSubQryNbr; // the entire sub query number
+  
+    i8   m_iAtDepth;   // what depth from root
+    i8   m_iNxtKidDgt; // next digit(s) of a kid sub qry ..0 ..1 ..2
 
     Clause_SubQry*  m_pParentSubQry;
  
-  
     Clause_Select*  m_pSelect;
     Clause_From*    m_pFrom;
     Clause_Where*   m_pWhere;
@@ -40,11 +41,13 @@ namespace CompilerStream
 
     i8 iAtDepth(void);
     void vAtDepth(i8 iDepth);
-  
+
+    i8 iNextKidDgt(void);
+
     Stz* szSubQryNbr(void);
   
-    i8 iSubSeqNo(void);
-    void vSubSeqNo(i8 iSubSeqNo);
+    i8 iSubSeqDgt(void);
+    void vSubSeqDgt(i8 iSubSeqDgt);
 
   
     
