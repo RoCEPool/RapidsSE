@@ -68,38 +68,41 @@ bool Stmt_SubQry::bParse(Descend* pDescend, Stmt_SubQry* pDadSubQry)
   _static_
   
   // begin new sub-query
-  Stmt_SubQry* pSubQry = new Stmt_SubQry;
+  Stmt_SubQry* pSonSubQry = new Stmt_SubQry;
   
   // nested sub-query?
   if (pDadSubQry) {
-    // this new sub-query is nested
-    Stz* szQryNbr = pDadSubQry->szSubQryNbr();
-    pSubQry->vDadSubQry(pDadSubQry);
-    i8 iSubDepth = pDadSubQry->iAtDepth() + 1;
-    pSubQry->vAtDepth(iSubDepth);
+    // this new sub-query is nested son sub-query
+    pSonSubQry->vDadSubQry(pDadSubQry);
+
+    i8 iSonDepth  = pDadSubQry->iAtDepth() + 1;
+    i8 iSonSubDgt = pDadSubQry->iNextKidDgt();
+    pSonSubQry->vAtDepth(iSonDepth);
+    pSonSubQry->vSubSeqDgt(iSonSubDgt);
+
   }
   else {
     // this sub-query is the root
-    pSubQry->vAtDepth(0);
-    pSubQry->vSubSeqDgt(0);
+    pSonSubQry->vAtDepth(0);
+    pSonSubQry->vSubSeqDgt(0);
   }
   
   // does the statement have a root sub-query?
   Stmt_Select* pSelectStmt = _pStmt_Select(pDescend->pStmt());
   if (! pSelectStmt->pRootSubQry()) {
-    pSelectStmt->vRootSubQry(pSubQry);
+    pSelectStmt->vRootSubQry(pSonSubQry);
   }
   
   Token* pCurTkn = pDescend->pCurrToken();
   
-  vTrace("%s) SELECT\n"_Stz,pSubQry->szSubQryNbr());
+  vTrace("%s) SELECT\n"_Stz,pSonSubQry->szSubQryNbr());
   pDescend->vNextToken();
   
-  Clause_Project::bParse(pDescend,pSubQry);
+  Clause_Project::bParse(pDescend,pSonSubQry);
 
   bool bSubQry;
   while (pDescend->bMoreTokens() && pDescend->bIsDescendParse(bSubQry))
-    if (! pDescend->bCallFunc(pSubQry))
+    if (! pDescend->bCallFunc(pSonSubQry))
       break;
   
   return true;
