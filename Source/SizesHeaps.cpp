@@ -43,7 +43,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Clause_Limit),       HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_LIMIT
   { sizeof(Clause_OrderBy),     HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_ORDERBY
   { sizeof(Clause_Project),     HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_PROJECT
-  { sizeof(Clause_Select),      HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_SELECT
   { sizeof(Clause_Where),       HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_WHERE
   { sizeof(Cmd_Select),         HT_TRANSIENT_MEDIUM  }, // CN_CMD_SELECT
   { sizeof(Column),             HT_TRANSIENT_TINY    }, // CN_COLUMN

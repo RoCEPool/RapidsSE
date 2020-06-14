@@ -27,15 +27,14 @@ Stmt_SubQry::Stmt_SubQry(void)
   m_iAtDepth   = C_UNKNOWN;
   m_iNxtKidDgt = 0;
 
-  m_pParentSubQry = nullptr;
+  m_pDadSubQry = nullptr;
   
-  m_pSelect  = nullptr;
-  m_pProject = nullptr;
-  m_pFrom    = nullptr;
-  m_pWhere   = nullptr;
-  m_pGroupBy = nullptr;
-  m_pOrderBy = nullptr;
-  m_pLimit   = nullptr;
+  m_pProject   = nullptr;
+  m_pFrom      = nullptr;
+  m_pWhere     = nullptr;
+  m_pGroupBy   = nullptr;
+  m_pOrderBy   = nullptr;
+  m_pLimit     = nullptr;
   
   _checkInitialised_(CN_STMT_SUBQRY);
 
@@ -49,7 +48,6 @@ Stmt_SubQry::~Stmt_SubQry(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
   
-  delete m_pSelect;
   delete m_pProject;
   delete m_pFrom;
   delete m_pWhere;
@@ -65,7 +63,7 @@ Stmt_SubQry::~Stmt_SubQry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* descend                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Stmt_SubQry::bParse(Descend* pDescend, Stmt_SubQry* pParentSubQry)
+bool Stmt_SubQry::bParse(Descend* pDescend, Stmt_SubQry* pDadSubQry)
 {
   _static_
   
@@ -73,11 +71,11 @@ bool Stmt_SubQry::bParse(Descend* pDescend, Stmt_SubQry* pParentSubQry)
   Stmt_SubQry* pSubQry = new Stmt_SubQry;
   
   // nested sub-query?
-  if (pParentSubQry) {
+  if (pDadSubQry) {
     // this new sub-query is nested
-    Stz* szQryNbr = pParentSubQry->szSubQryNbr();
-    pSubQry->vParentSubQry(pParentSubQry);
-    i8 iSubDepth = pParentSubQry->iAtDepth() + 1;
+    Stz* szQryNbr = pDadSubQry->szSubQryNbr();
+    pSubQry->vDadSubQry(pDadSubQry);
+    i8 iSubDepth = pDadSubQry->iAtDepth() + 1;
     pSubQry->vAtDepth(iSubDepth);
   }
   else {
@@ -112,25 +110,25 @@ bool Stmt_SubQry::bParse(Descend* pDescend, Stmt_SubQry* pParentSubQry)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get parent sub query                                                       */
+/* get dad sub query                                                          */
 /*----------------------------------------------------------------------------*/
-Stmt_SubQry* Stmt_SubQry::pParentSubQry(void)
+Stmt_SubQry* Stmt_SubQry::pDadSubQry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
-  return m_pParentSubQry;
+  return m_pDadSubQry;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set parent sub query                                                       */
+/* set dad sub query                                                          */
 /*----------------------------------------------------------------------------*/
-void Stmt_SubQry::vParentSubQry(Stmt_SubQry* pParentSubQry)
+void Stmt_SubQry::vDadSubQry(Stmt_SubQry* pDadSubQry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
 
-  m_pParentSubQry = pParentSubQry;
+  m_pDadSubQry = pDadSubQry;
   
-  m_sSubQryNbr = m_pParentSubQry->szSubQryNbr();
+  m_sSubQryNbr = m_pDadSubQry->szSubQryNbr();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,26 +199,6 @@ void Stmt_SubQry::vSubSeqDgt(i8 iSubSeqDgt)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get select                                                                 */
-/*----------------------------------------------------------------------------*/
-Clause_Select* Stmt_SubQry::pSelect(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
-
-  return m_pSelect;
-}
-
-/*----------------------------------------------------------------------------*/
-/* put select                                                                 */
-/*----------------------------------------------------------------------------*/
-void Stmt_SubQry::vSelect(Clause_Select* pSelect)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
-
-  m_pSelect = pSelect;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get from                                                                   */

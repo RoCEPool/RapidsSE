@@ -15,10 +15,8 @@ namespace CompilerStream
     i8   m_iAtDepth;   // what depth from root
     i8   m_iNxtKidDgt; // next digit(s) of a kid sub qry ..0 ..1 ..2
 
-    Stmt_SubQry*  m_pParentSubQry;
+    Stmt_SubQry*    m_pDadSubQry;
  
-    Clause_Select*  m_pSelect;
-  
     Clause_Project* m_pProject;
     Clause_From*    m_pFrom;
     Clause_Where*   m_pWhere;
@@ -38,8 +36,8 @@ namespace CompilerStream
   
     static bool bParse(Descend* pDescend, Stmt_SubQry* pSubQry);
 
-    Stmt_SubQry*  pParentSubQry(void);
-    void            vParentSubQry(Stmt_SubQry*);
+    Stmt_SubQry*  pDadSubQry(void);
+    void          vDadSubQry(Stmt_SubQry*);
 
     i8 iAtDepth(void);
     void vAtDepth(i8 iDepth);
@@ -52,10 +50,6 @@ namespace CompilerStream
     void vSubSeqDgt(i8 iSubSeqDgt);
 
   
-    
-    Clause_Select*  pSelect(void);
-    void            vSelect(Clause_Select*);
-
     Clause_Project* pProject(void);
     void            vProject(Clause_Project*);
 

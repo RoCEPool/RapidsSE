@@ -13,8 +13,7 @@ namespace CompactBuffers    { class Crw;             class CrwBuffer;
                               class RowCompactor;    class HeadLine;
                               class OverLine;        class TailLine;          }
 namespace CompilerOperators {                                                 }
-namespace CompilerStream    { class Clause_Select;
-                              class Clause_Project;  class Clause_From;
+namespace CompilerStream    { class Clause_Project;  class Clause_From;
                               class Clause_Where;    class Clause_GroupBy;
                               class Clause_OrderBy;  class Clause_Limit;
                               class Stmt_Select;     class Stmt_SubQry;
