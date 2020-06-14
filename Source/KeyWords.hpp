@@ -14,8 +14,8 @@ namespace CompilerStream
   static Stz* C_SQL_KEYWRD_WHERE   = "where"_Stz;
 
 
-  static Stz* C_FMT_CLAUSE     = "%8s : %s\n"_Stz;
-  static Stz* C_FMT_COLLECT    = "         : %s\n"_Stz;
+  static Stz* C_FMT_CLAUSE     = "%s%8s : %s\n"_Stz;
+  static Stz* C_FMT_COLLECT    = "%s         : %s\n"_Stz;
 
   class KeyWords
   {

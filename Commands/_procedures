@@ -7,6 +7,24 @@ print "_procedures" ;
 /*----------------------------------------------------------------------------*/
 /* create catalog                                                             */
 /*----------------------------------------------------------------------------*/
+procedure cpTable
+  parameters $table1 $table2
+begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions:
+    scan $Table1 | dupCrw | insert $Table2 | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
+/* create catalog                                                             */
+/*----------------------------------------------------------------------------*/
 procedure create catalog
   parameters $catalogNm
 begin
@@ -398,7 +416,7 @@ begin
 
   stage stageC on all partitions:
 
-    eatSome |
+    //eatSome |
 
     insert $table      | // (crwBuffer) inserted into table
 

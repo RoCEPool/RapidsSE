@@ -26,6 +26,10 @@ print section "Load File" <fl_file> ;
 //
 //tableScan <fl_table>;
 
+_lineitem2
+
+cpTable lineitem lineitem2 ;
+
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "Analyse and Size" <fl_table> ;
 

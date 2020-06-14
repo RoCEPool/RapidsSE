@@ -75,7 +75,7 @@ void Clause::vCollect(Descend* pDescend, Stmt_SubQry* pSubQry)
     }
     else
     if (szChars->bSame("("_Stz)) {
-      vTrace(C_FMT_COLLECT,szChars);
+      vTrace(C_FMT_COLLECT,Stz::szTab(pSubQry->iAtDepth()),szChars);
       pDescend->vNextToken();
 
       if (pDescend->bIsDescendParse(bSubQry)) {
@@ -87,7 +87,7 @@ void Clause::vCollect(Descend* pDescend, Stmt_SubQry* pSubQry)
       
       pCurTkn = pDescend->pCurrToken();
       szChars = pCurTkn->szChars();
-      vTrace(C_FMT_COLLECT,szChars);
+      vTrace(C_FMT_COLLECT,Stz::szTab(pSubQry->iAtDepth()),szChars);
       pDescend->vNextToken();
     }
     else
@@ -96,7 +96,7 @@ void Clause::vCollect(Descend* pDescend, Stmt_SubQry* pSubQry)
         break;
     }
     else {
-      vTrace(C_FMT_COLLECT,szChars);
+      vTrace(C_FMT_COLLECT,Stz::szTab(pSubQry->iAtDepth()),szChars);
       pDescend->vNextToken();
     }
     
