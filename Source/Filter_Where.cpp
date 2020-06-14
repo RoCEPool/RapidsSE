@@ -2,7 +2,7 @@
 /* Filter_Where.cpp -- Where Filter operand                                   */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_Where* CompilerStream::_pFilter_Where(void* aAddr)
+Filter_Where* LogicalPlans::_pFilter_Where(void* aAddr)
 {
   Filter_Where* pOp = reinterpret_cast<Filter_Where*>(aAddr);
   

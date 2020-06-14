@@ -2,7 +2,7 @@
 /* Filter_OrderBy.cpp -- OrderBy Filter operand                               */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_OrderBy* CompilerStream::_pFilter_OrderBy(void* aAddr)
+Filter_OrderBy* LogicalPlans::_pFilter_OrderBy(void* aAddr)
 {
   Filter_OrderBy* pOp = reinterpret_cast<Filter_OrderBy*>(aAddr);
   

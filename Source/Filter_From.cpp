@@ -2,7 +2,7 @@
 /* Filter_From.cpp -- From Filter operand                                     */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_From* CompilerStream::_pFilter_From(void* aAddr)
+Filter_From* LogicalPlans::_pFilter_From(void* aAddr)
 {
   Filter_From* pOp = reinterpret_cast<Filter_From*>(aAddr);
   

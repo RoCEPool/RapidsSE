@@ -2,7 +2,7 @@
 /* Filter.cpp -- Filter                                                       */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter* CompilerStream::_pFilter(void* aAddr)
+Filter* LogicalPlans::_pFilter(void* aAddr)
 {
   Filter* pFilter = reinterpret_cast<Filter*>(aAddr);
   

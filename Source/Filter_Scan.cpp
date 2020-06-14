@@ -2,7 +2,7 @@
 /* Filter_Scan.cpp -- Scan Filter operand                                     */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_Scan* CompilerStream::_pFilter_Scan(void* aAddr)
+Filter_Scan* LogicalPlans::_pFilter_Scan(void* aAddr)
 {
   Filter_Scan* pOp = reinterpret_cast<Filter_Scan*>(aAddr);
   

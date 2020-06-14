@@ -2,7 +2,7 @@
 /* Filter_Limit.cpp -- Limit Filter operand                                   */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_Limit* CompilerStream::_pFilter_Limit(void* aAddr)
+Filter_Limit* LogicalPlans::_pFilter_Limit(void* aAddr)
 {
   Filter_Limit* pOp = reinterpret_cast<Filter_Limit*>(aAddr);
   

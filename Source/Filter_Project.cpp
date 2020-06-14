@@ -2,7 +2,7 @@
 /* Filter_Project.cpp -- Project Filter operand                               */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_Project* CompilerStream::_pFilter_Project(void* aAddr)
+Filter_Project* LogicalPlans::_pFilter_Project(void* aAddr)
 {
   Filter_Project* pOp = reinterpret_cast<Filter_Project*>(aAddr);
   

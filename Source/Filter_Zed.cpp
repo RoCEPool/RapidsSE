@@ -2,7 +2,7 @@
 /* Filter_Zed.cpp -- Zed Filter operand                                       */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_Zed* CompilerStream::_pFilter_Zed(void* aAddr)
+Filter_Zed* LogicalPlans::_pFilter_Zed(void* aAddr)
 {
   Filter_Zed* pOp = reinterpret_cast<Filter_Zed*>(aAddr);
   

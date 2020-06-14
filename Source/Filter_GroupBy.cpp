@@ -2,7 +2,7 @@
 /* Filter_GroupBy.cpp -- GroupBy Filter operand                               */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_GroupBy* CompilerStream::_pFilter_GroupBy(void* aAddr)
+Filter_GroupBy* LogicalPlans::_pFilter_GroupBy(void* aAddr)
 {
   Filter_GroupBy* pOp = reinterpret_cast<Filter_GroupBy*>(aAddr);
   

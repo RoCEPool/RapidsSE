@@ -2,7 +2,7 @@
 /* Filter_Select.cpp -- Select Filter operand                                 */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_Select* CompilerStream::_pFilter_Select(void* aAddr)
+Filter_Select* LogicalPlans::_pFilter_Select(void* aAddr)
 {
   Filter_Select* pOp = reinterpret_cast<Filter_Select*>(aAddr);
   

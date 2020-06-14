@@ -2,7 +2,7 @@
 /* Filter_Inflate.cpp -- Inflate Filter operand                               */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_Inflate* CompilerStream::_pFilter_Inflate(void* aAddr)
+Filter_Inflate* LogicalPlans::_pFilter_Inflate(void* aAddr)
 {
   Filter_Inflate* pOp = reinterpret_cast<Filter_Inflate*>(aAddr);
   

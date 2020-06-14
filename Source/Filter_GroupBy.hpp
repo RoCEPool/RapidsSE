@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CompilerStream
+namespace LogicalPlans
 {
   class Filter_GroupBy : public Filter
   {

@@ -2,7 +2,7 @@
 /* Filter_Fetch.cpp -- Fetch Filter operand                                   */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_Fetch* CompilerStream::_pFilter_Fetch(void* aAddr)
+Filter_Fetch* LogicalPlans::_pFilter_Fetch(void* aAddr)
 {
   Filter_Fetch* pOp = reinterpret_cast<Filter_Fetch*>(aAddr);
   

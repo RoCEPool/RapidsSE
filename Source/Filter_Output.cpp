@@ -2,7 +2,7 @@
 /* Filter_Output.cpp -- Output Filter operand                                 */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_Output* CompilerStream::_pFilter_Output(void* aAddr)
+Filter_Output* LogicalPlans::_pFilter_Output(void* aAddr)
 {
   Filter_Output* pOp = reinterpret_cast<Filter_Output*>(aAddr);
   

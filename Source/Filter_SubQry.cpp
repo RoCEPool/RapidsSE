@@ -2,7 +2,7 @@
 /* Filter_SubQry.cpp -- SubQry Filter operand                                 */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_SubQry* CompilerStream::_pFilter_SubQry(void* aAddr)
+Filter_SubQry* LogicalPlans::_pFilter_SubQry(void* aAddr)
 {
   Filter_SubQry* pOp = reinterpret_cast<Filter_SubQry*>(aAddr);
   

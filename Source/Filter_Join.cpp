@@ -2,7 +2,7 @@
 /* Filter_Join.cpp -- Join Filter operand                                     */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "LogicalPlans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_Join* CompilerStream::_pFilter_Join(void* aAddr)
+Filter_Join* LogicalPlans::_pFilter_Join(void* aAddr)
 {
   Filter_Join* pOp = reinterpret_cast<Filter_Join*>(aAddr);
   
