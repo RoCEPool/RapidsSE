@@ -2,7 +2,7 @@
 /* CompilerStream.cpp -- CompilerStream namespace                             */
 /*============================================================================*/
 
-#include "CompilerStream.h"
+#include "FrontEnd.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
