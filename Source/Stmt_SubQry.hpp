@@ -18,6 +18,8 @@ namespace CompilerStream
     Stmt_SubQry*  m_pParentSubQry;
  
     Clause_Select*  m_pSelect;
+  
+    Clause_Project* m_pProject;
     Clause_From*    m_pFrom;
     Clause_Where*   m_pWhere;
     Clause_GroupBy* m_pGroupBy;
@@ -53,6 +55,9 @@ namespace CompilerStream
     
     Clause_Select*  pSelect(void);
     void            vSelect(Clause_Select*);
+
+    Clause_Project* pProject(void);
+    void            vProject(Clause_Project*);
 
     Clause_From*    pFrom(void);;
     void            vFrom(Clause_From*);

@@ -30,6 +30,7 @@ Stmt_SubQry::Stmt_SubQry(void)
   m_pParentSubQry = nullptr;
   
   m_pSelect  = nullptr;
+  m_pProject = nullptr;
   m_pFrom    = nullptr;
   m_pWhere   = nullptr;
   m_pGroupBy = nullptr;
@@ -49,6 +50,7 @@ Stmt_SubQry::~Stmt_SubQry(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SUBQRY,_FOOTER_);
   
   delete m_pSelect;
+  delete m_pProject;
   delete m_pFrom;
   delete m_pWhere;
   delete m_pGroupBy;
