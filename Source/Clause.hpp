@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CompilerStream
+namespace FrontEnd
 {
   class Clause : public Operand
   {

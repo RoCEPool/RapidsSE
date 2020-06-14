@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Stmt* CompilerStream::_pStmt(void* aAddr)
+Stmt* FrontEnd::_pStmt(void* aAddr)
 {
   Stmt* pStmt = reinterpret_cast<Stmt*>(aAddr);
   

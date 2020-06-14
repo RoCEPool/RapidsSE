@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CompilerStream
+namespace FrontEnd
 {
   class Clause_Where : public Clause
   {

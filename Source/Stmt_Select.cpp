@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompilerStream,Stmt_Select,CN_STMT_SELECT)
+__pCastFunction(FrontEnd,Stmt_Select,CN_STMT_SELECT)
 __aNewFunction(Stmt_Select,CN_STMT_SELECT)
 __vDeleteFunction(Stmt_Select,CN_STMT_SELECT)
 __aFooterFunction(Stmt_Select)

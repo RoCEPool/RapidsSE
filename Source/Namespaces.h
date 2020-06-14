@@ -13,11 +13,6 @@ namespace CompactBuffers    { class Crw;             class CrwBuffer;
                               class RowCompactor;    class HeadLine;
                               class OverLine;        class TailLine;          }
 namespace CompilerOperators {                                                 }
-namespace CompilerStream    { class Clause_Project;  class Clause_From;
-                              class Clause_Where;    class Clause_GroupBy;
-                              class Clause_OrderBy;  class Clause_Limit;
-                              class Stmt_Select;     class Stmt_SubQry;
-                              class Descend;                                  }
 namespace ControlData       {                                                 }
 namespace Correctness       { class Cell;            class Focal;
                               class Header;          class Object;
@@ -49,6 +44,11 @@ namespace Esses             { template <int BYTES> class String_t;
                                                                               }
 namespace Focals            { class ReqTuple;                                 }
 namespace Folders           {                                                 }
+namespace FrontEnd          { class Clause_Project;  class Clause_From;
+                              class Clause_Where;    class Clause_GroupBy;
+                              class Clause_OrderBy;  class Clause_Limit;
+                              class Stmt_Select;     class Stmt_SubQry;
+                              class Descend;                                  }
 namespace Gadgets           { class EnumFlags;       class TagSet;            }
 namespace GoldenGate        {                                                 }
 namespace Grids             { class Grid;            class Node;              }
@@ -122,7 +122,6 @@ using namespace Chunks;
 using namespace ClassData;
 using namespace CompactBuffers;
 using namespace CompilerOperators;
-using namespace CompilerStream;
 using namespace ControlData;
 using namespace Correctness;
 using namespace DataBuffers;
@@ -135,6 +134,7 @@ using namespace Enums;
 using namespace Esses;
 using namespace Focals;
 using namespace Folders;
+using namespace FrontEnd;
 using namespace Gadgets;
 using namespace GoldenGate;
 using namespace Grids;

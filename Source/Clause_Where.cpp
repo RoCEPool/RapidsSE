@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompilerStream,Clause_Where,CN_CLAUSE_WHERE)
+__pCastFunction(FrontEnd,Clause_Where,CN_CLAUSE_WHERE)
 __aNewFunction(Clause_Where,CN_CLAUSE_WHERE)
 __vDeleteFunction(Clause_Where,CN_CLAUSE_WHERE)
 __aFooterFunction(Clause_Where)

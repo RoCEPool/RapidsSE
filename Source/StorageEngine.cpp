@@ -19,7 +19,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Chunks::vCheckAssumptions();
   ClassData::vCheckAssumptions();
   CompactBuffers::vCheckAssumptions();
-  CompilerStream::vCheckAssumptions();
+  FrontEnd::vCheckAssumptions();
   ControlData::vCheckAssumptions();
   Correctness::vCheckAssumptions();
   DataBuffers::vCheckAssumptions();

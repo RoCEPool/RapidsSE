@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stmt_SubQry.cpp -- Sub-Query Clause operand                              */
+/* Stmt_SubQry.cpp -- Sub-Query Clause operand                                */
 /*============================================================================*/
 
 #include "FrontEnd.h"
@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompilerStream,Stmt_SubQry,CN_STMT_SUBQRY)
+__pCastFunction(FrontEnd,Stmt_SubQry,CN_STMT_SUBQRY)
 __aNewFunction(Stmt_SubQry,CN_STMT_SUBQRY)
 __vDeleteFunction(Stmt_SubQry,CN_STMT_SUBQRY)
 __aFooterFunction(Stmt_SubQry)

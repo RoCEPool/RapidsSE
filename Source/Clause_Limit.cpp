@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompilerStream,Clause_Limit,CN_CLAUSE_LIMIT)
+__pCastFunction(FrontEnd,Clause_Limit,CN_CLAUSE_LIMIT)
 __aNewFunction(Clause_Limit,CN_CLAUSE_LIMIT)
 __vDeleteFunction(Clause_Limit,CN_CLAUSE_LIMIT)
 __aFooterFunction(Clause_Limit)

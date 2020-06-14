@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CompilerStream.cpp -- CompilerStream namespace                             */
+/* FrontEnd.cpp -- FrontEnd namespace                             */
 /*============================================================================*/
 
 #include "FrontEnd.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void CompilerStream::vCheckAssumptions(void)
+void FrontEnd::vCheckAssumptions(void)
 {
 }
 

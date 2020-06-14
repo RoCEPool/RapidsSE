@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompilerStream,Clause_From,CN_CLAUSE_FROM)
+__pCastFunction(FrontEnd,Clause_From,CN_CLAUSE_FROM)
 __aNewFunction(Clause_From,CN_CLAUSE_FROM)
 __vDeleteFunction(Clause_From,CN_CLAUSE_FROM)
 __aFooterFunction(Clause_From)

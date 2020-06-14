@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CompilerStream
+namespace FrontEnd
 {
   class Descend;
 
@@ -17,7 +17,7 @@ namespace CompilerStream
 
 /*----------------------------------------------------------------------------*/
 
-namespace CompilerStream
+namespace FrontEnd
 {
   class Descend : public Object
   {

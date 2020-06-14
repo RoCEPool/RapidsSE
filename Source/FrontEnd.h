@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace CompilerStream
+namespace FrontEnd
 {
   void vCheckAssumptions(void);
 }

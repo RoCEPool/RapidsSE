@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompilerStream,Descend,CN_DESCEND)
+__pCastFunction(FrontEnd,Descend,CN_DESCEND)
 __aNewFunction(Descend,CN_DESCEND)
 __vDeleteFunction(Descend,CN_DESCEND)
 __aFooterFunction(Descend)

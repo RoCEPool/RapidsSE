@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompilerStream,Clause_GroupBy,CN_CLAUSE_GROUPBY)
+__pCastFunction(FrontEnd,Clause_GroupBy,CN_CLAUSE_GROUPBY)
 __aNewFunction(Clause_GroupBy,CN_CLAUSE_GROUPBY)
 __vDeleteFunction(Clause_GroupBy,CN_CLAUSE_GROUPBY)
 __aFooterFunction(Clause_GroupBy)

@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompilerStream,Clause_OrderBy,CN_CLAUSE_ORDERBY)
+__pCastFunction(FrontEnd,Clause_OrderBy,CN_CLAUSE_ORDERBY)
 __aNewFunction(Clause_OrderBy,CN_CLAUSE_ORDERBY)
 __vDeleteFunction(Clause_OrderBy,CN_CLAUSE_ORDERBY)
 __aFooterFunction(Clause_OrderBy)

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CompilerStream
+namespace FrontEnd
 {
   static Stz* C_SQL_KEYWRD_FROM    = "from"_Stz;
   static Stz* C_SQL_KEYWRD_GROUP   = "group"_Stz;

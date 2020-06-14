@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Clause* CompilerStream::_pClause(void* aAddr)
+Clause* FrontEnd::_pClause(void* aAddr)
 {
   Clause* pClause = reinterpret_cast<Clause*>(aAddr);
   
