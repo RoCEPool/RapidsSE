@@ -129,7 +129,7 @@ rows: 0
 
 CLEANUP {
   
-  drop catalog myTenant;
+  drop tenant myTenant;
   mute
   
   cf "~tables";
