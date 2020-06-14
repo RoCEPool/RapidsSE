@@ -15,7 +15,7 @@ namespace CompilerStream
 
 
   static Stz* C_FMT_CLAUSE     = "%8s : %s\n"_Stz;
-  static Stz* C_FMT_COLLECT    = "  : %s\n"_Stz;
+  static Stz* C_FMT_COLLECT    = "         : %s\n"_Stz;
 
   class KeyWords
   {

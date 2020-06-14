@@ -324,7 +324,7 @@ void Descend::vInit(void)
   m_nDescend++;
 
   m_xaDescend[m_nDescend].m_sName = C_SQL_KEYWRD_SELECT;
-  m_xaDescend[m_nDescend].m_pFunc = Clause_Select::bParse;
+  m_xaDescend[m_nDescend].m_pFunc = Stmt_SubQry::bParse;
   m_xaDescend[m_nDescend].m_bSubQry = true;
   m_nDescend++;
 
