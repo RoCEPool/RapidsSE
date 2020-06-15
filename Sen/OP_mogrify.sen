@@ -15,6 +15,7 @@
   nullptr to PipeIn[]
 
   Operand[].crwDuplicate to operandB[]
+  nullptr to Operand[]
 
   OperandB[].pipeOut
 
