@@ -9,7 +9,6 @@ namespace Jobs
   class Job_Operand : public Job
   {
   public:
-    Op*        m_pOp;             // operator number
     i8         m_iNode;           // node id
     i8         m_iPartition;      // partition
     ePX        m_eTopologyX;      // cross topology
