@@ -55,9 +55,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.nextOperand"_Stz,      &Step::vJobNextOperand);
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
-  vAddStep("job.operand@"_Stz,         &Step::vJobOperandFetch);
-  vAddStep("job.operand!"_Stz,         &Step::vJobOperandStore);
-  
   vAddStep("job.originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
   vAddStep("job.originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
   vAddStep("job.originatingTask@"_Stz, &Step::vJobOriginatingTaskFetch);
@@ -814,36 +811,6 @@ void Step::vJobNoWaitFetch(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pJob->bNoWaitTag());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.operand@ -- fetch operand from job                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOperandFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  //m_pDataStack->vPushPtr(pJob->m_pOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.operand! -- store operand in the job                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOperandStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  
-  //pJob->m_pOperand = pOperand;
   
   EXIT();
 }

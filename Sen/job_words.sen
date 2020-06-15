@@ -195,11 +195,6 @@
 
     pJob pSocket socket.sendObject discard
 
-    //pJob job.hasOperand if
-      //"job.send: Job has crs buffer" .
-    //   pJob job.operand@ pSocket socket.sendObject discard
-    //then
-
   socket[].unlock
 ;
 
