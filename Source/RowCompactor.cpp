@@ -518,8 +518,6 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
 #endif
     
     
-#if 0
-#else
     i8 i_Tail;
     TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
     if (! aTailLine)
@@ -531,7 +529,6 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
     // put tial into the encoding
     aColEnc->m_i_Tail = i_Tail;
     aColEnc->m_aTailLine = aTailLine;
-#endif
     
     // morph the encoding
     m_pEncoding->vMorphEncoding(aColEnc);
@@ -582,9 +579,6 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     vDumpTails();
 #endif
     
-    
-#if 0
-#else
     i8 i_Tail;
     TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
     if (! aTailLine)
@@ -596,7 +590,6 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     // put tial into the encoding
     aColEnc->m_i_Tail = i_Tail;
     aColEnc->m_aTailLine = aTailLine;
-#endif
     
     // morph the encoding
     m_pEncoding->vMorphEncoding(aColEnc);
@@ -649,9 +642,6 @@ void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
     vDumpTails();
 #endif
     
-    
-#if 0
-#else
     i8 i_Tail;
     TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
     if (! aTailLine)
@@ -663,7 +653,6 @@ void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
     // put tial into the encoding
     aColEnc->m_i_Tail = i_Tail;
     aColEnc->m_aTailLine = aTailLine;
-#endif
     
     // morph the encoding
     m_pEncoding->vMorphEncoding(aColEnc);
