@@ -31,8 +31,6 @@ namespace Jobs
 
 #include "Job__Find.hpp"
 
-#include "Job_Boot.hpp"
-
 #include "Job_Distributed.hpp"
 
 #include "Job_Local.hpp"

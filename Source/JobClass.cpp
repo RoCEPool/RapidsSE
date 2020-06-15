@@ -295,7 +295,7 @@ void JobClass::vJobCatHeader(void)
 /*----------------------------------------------------------------------------*/
 pJOBCLASSFUN JobClass::pFirstFun(void)
 {
-  return (pJOBCLASSFUN)pJob_Boot_class;
+  return (pJOBCLASSFUN)pJob_Distributed_class;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -325,7 +325,7 @@ JobClass* JobClass::pFind(eCN eClass)
   if (pJobClass)
     return pJobClass;
 
-  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob_Boot_class; pfJobClass; ) {
+  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob_Distributed_class; pfJobClass; ) {
     
     pJobClass = pfJobClass((pFUN**)&pfJobClass);
     //vTrace("class: %s\n"_Stz,aCN[ pJobClass->m_eClass]);
@@ -352,7 +352,7 @@ JobClass* JobClass::pFind(Stz* aCommand1, Stz* aCommand2)
   
 
   
-  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob_Boot_class; pfJobClass; ) {
+  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob_Distributed_class; pfJobClass; ) {
     
     pJobClass = pfJobClass((pFUN**)&pfJobClass);
     
@@ -406,7 +406,7 @@ void JobClass::vVerifySeeds(void)
   Dic* pRootDic = AM::pRootDic();
   JobClass* pJobClass = nullptr;
   
-  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob_Boot_class; pfJobClass; ) {
+  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob_Distributed_class; pfJobClass; ) {
     
     pJobClass = pfJobClass((pFUN**)&pfJobClass);
 

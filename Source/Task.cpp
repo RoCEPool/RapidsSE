@@ -538,12 +538,7 @@ void Task::vInitExeContext(void)
   m_pProfile = new Profile;
   m_pRegSet  = new RegSet(this);
   m_pForth   = new Forth(this,m_pRegSet);
-
-//  Compiler* pCompiler =
-//    (CN_JOB_BOOT == m_pJob->eClass()) ? new Compiler : nullptr;
-//  
-//  m_pForth->vCompiler(pCompiler);
-  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* is task locked?                                                            */
