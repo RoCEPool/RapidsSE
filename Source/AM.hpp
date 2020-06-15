@@ -239,9 +239,9 @@ namespace Oblique
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
-    static void vDeleteJobOperand(Job_Operand* pJob);
+    static void vDeleteXmitOperand(XmitOperand* pXmitOperand);
     static Operand* pDuplicateOperand(Operand* pOperand);
-    static Job_Operand* pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 iNde, i8 iPtn);
+    static XmitOperand* pNewXmitOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 iNde, i8 iPtn);
     
     static Job* pNewJobOp(Op* pOp, ReqTuple* pReqTuple);
     
@@ -270,9 +270,9 @@ namespace Oblique
     static void vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand);
+    static void vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand);
     static Session* pSessionGet(ReqTuple* aReqTuple);
-    static void vSetOperand(Job_Operand* pJobOperand, Operand* pOperand);
+    static void vSetOperand(XmitOperand* pXmitOperand, Operand* pOperand);
     
     static bool bSpawnJob_connector(Job* pJob);
     static bool bSpawnJob_prompt(Job* pJob);

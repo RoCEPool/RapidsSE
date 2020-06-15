@@ -583,7 +583,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
            pOperand);
   
   if (AM::szJobName(m_pOpJob)->bSame("xmit"_Stz)) {
-    vSendJobOperand(pOperand, pTriggeringTask, bSet);
+    vSendXmitOperand(pOperand, pTriggeringTask, bSet);
   }
   else {
     
@@ -869,9 +869,9 @@ OperandQueue* Op::pQueueRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set job operand                                                            */
+/* set xmit operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vSendJobOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
+void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1148,10 +1148,10 @@ void Op::vSend(Operand* pOperand, bool bSet, i8 i_Nde, i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Job_Operand* pJob_Operand;
+  XmitOperand* pXmitOperand;
   
-  // new a operand job
-  pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand, this, i_Nde, i_Ptn);
+  // new an xmit operand
+  pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, this, i_Nde, i_Ptn);
   
   // get the send node in the task
   Node* pSendNode = AM::pGrid()->pGetNode(i_Nde);
@@ -1161,21 +1161,21 @@ void Op::vSend(Operand* pOperand, bool bSet, i8 i_Nde, i8 i_Ptn)
     while (pOperand) {
       
       // set the operand in the job
-      AM::vSetOperand(pJob_Operand, pOperand);
+      AM::vSetOperand(pXmitOperand, pOperand);
       
       // send the operand job across the sendNode
-      AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+      AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pXmitOperand);
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
       pOperand = pDataBuffer->pNextBuffer();
     }
   }
   else {
     // send the operand job across the sendNode
-    AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+    AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pXmitOperand);
   }
 
-  // delete the operand job
-  AM::vDeleteJobOperand(pJob_Operand);
+  // delete the xmitOperand
+  AM::vDeleteXmitOperand(pXmitOperand);
 }
 
 /*----------------------------------------------------------------------------*/

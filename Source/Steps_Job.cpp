@@ -42,7 +42,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
 
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
-  vAddStep("job.hasOperand"_Stz,       &Step::vJobHasOperand);
 
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
   vAddStep("job.IsExecuting"_Stz,      &Step::vJobIsExecuting);
@@ -697,22 +696,6 @@ void Step::vJobHasError(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.hasOperand -- return true if job has an operand                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobHasOperand(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-    
-  i8 bHas = pJob->m_pOperand ? true : false;
-  
-  m_pDataStack->vPushInt(bHas);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.id@ -- fetch the job id of the job                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdFetch(void)
@@ -844,7 +827,7 @@ void Step::vJobOperandFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushPtr(pJob->m_pOperand);
+  //m_pDataStack->vPushPtr(pJob->m_pOperand);
   
   EXIT();
 }
@@ -860,7 +843,7 @@ void Step::vJobOperandStore(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  pJob->m_pOperand = pOperand;
+  //pJob->m_pOperand = pOperand;
   
   EXIT();
 }

@@ -29,12 +29,11 @@ namespace Jobs
     
   
   public:
-
+    
     // into task? -------------
     Pipeline*  m_pPipeline;   // pipeline
     Op*        m_pOp;         // Op this job is executing
-    Operand*   m_pOperand;
-
+    
     // undecided --------------
     ReqTuple  m_xReqTuple;    // the request tuple
     Atomic    m_ixErrors;

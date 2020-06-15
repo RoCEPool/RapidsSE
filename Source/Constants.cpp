@@ -349,12 +349,14 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_TEMPNAME"_Stz,     CN_TEMPNAME);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
   /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
-  /* 81 */ vAddConstant("CN_INPUT"_Stz,    CN_INPUT);
+  /* 81 */ vAddConstant("CN_INPUT"_Stz,        CN_INPUT);
   /* 82 */ vAddConstant("CN_TX"_Stz,           CN_TX);
   /* 87 */ vAddConstant("CN_TXSET"_Stz,        CN_TXSET);
   
   /* 88 */ vAddConstant("CN_WORD"_Stz,         CN_WORD);
-   
+  
+  /* 89 */ vAddConstant("CN_XMITOPERAND"_Stz,  CN_XMITOPERAND);
+  
   /* 93 */ vAddConstant("CN_ENUMS"_Stz,        CN_ENUMS);
  
   // CT_ : columne type

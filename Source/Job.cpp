@@ -46,7 +46,7 @@ Job* Jobs::_pJob(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 bool Jobs::_bIsValidJob(eCN eClass)
 {
-  if (eClass >= CN_JOB__FIND && eClass <= CN_JOB_OPERAND)
+  if (eClass >= CN_JOB__FIND && eClass <= CN_JOB_LOCAL)
     return true;
   else
     return false;
@@ -95,7 +95,6 @@ Job::Job(eCN eClassNo)
   
   m_pPipeline = nullptr;
   m_pOp       = nullptr;
-  m_pOperand  = nullptr;
   
   //m_xResult
   // -- -- -- -- -- --
@@ -149,7 +148,6 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   
   m_pPipeline = nullptr;
   m_pOp       = nullptr;
-  m_pOperand  = nullptr;
     
   //m_xResult
   // -- -- -- -- -- --

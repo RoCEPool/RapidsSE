@@ -78,7 +78,6 @@ namespace Steps
     static void vAddSteps_JobClass(void);
     static void vAddSteps_JobGeneric(void);
 
-    static void vAddSteps_JobOperand(void);
     static void vAddSteps_JobPipeline(void);
     static void vAddSteps_JobRef(void);
   
@@ -177,6 +176,8 @@ namespace Steps
     static void vAddSteps_Word(void);
     static void vAddSteps_WriteHash(void);
 
+    static void vAddSteps_XmitOperand(void);
+    
     static void vAddSteps_Zero(void);
   
     /*------------------------------------------------------------------------*/

@@ -1,14 +1,17 @@
 /*============================================================================*/
-/* Job_Operand.hpp -- Xmit Job                                                   */
+/* XmitInfo.hpp -- XmitInfo                                                   */
 /*============================================================================*/
 #pragma once
 
 namespace Jobs
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_Operand : public Job
+  class XmitOperand : public Object
   {
   public:
+    Operand*   m_pOperand;        // operand
+    
+    i8         m_iPipelineJobId;  // pipeline job id
     i8         m_iNode;           // node id
     i8         m_iPartition;      // partition
     ePX        m_eTopologyX;      // cross topology
@@ -23,15 +26,12 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple);
-    ~Job_Operand(void) noexcept(false);
-  
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    XmitOperand(void);
+    ~XmitOperand(void) noexcept(false);
     
-    static Job_Operand* pNewJobOperand(Operand* pOperand, i8 iParentJobId, Op* pOp, i8 iNde, i8 iPtn);
+    static XmitOperand* pNewXmitOperand(Operand* pOperand, i8 iParentJobId, Op* pOp, i8 iNde, i8 iPtn);
     
   public:
-    void vInsertRow(void);
     void vShow(void);
     
   public:
@@ -40,14 +40,7 @@ namespace Jobs
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job_Operand* _pJob_Operand(void* aAddr);
-  
-  Job* pJob_Operand_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);
-  Job* pJob_Operand_new(JobClass* aJobClass, ReqTuple* aReqTuple);
-  void vJob_Operand_delete(Job* pJob);
-  void vJob_Operand_show(Job* pJob);
-  
-  JobClass* pJob_Operand_class(pFUN** aaFun);
+  XmitOperand* _pXmitOperand(void* aAddr);
 }
 
 /*============================================================================*/

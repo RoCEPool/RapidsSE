@@ -572,7 +572,6 @@ public:
   void vJobFindParticipant(void);
 
   void vJobHasError(void);
-  void vJobHasOperand(void);
 
   void vJobIdFetch(void);
   void vJobIsExecuting(void);
@@ -723,9 +722,6 @@ public:
 
   // job NetHog
   void vJob_NetHogHogNoFetch(void);
-
-  // Job Operand
-  void vJob_OperandPipeOut(void);
 
   // job Pipeline
   void vJob_PipelineBegin(void);
@@ -1692,6 +1688,10 @@ public:
   void vWriteHashCrwBufferFetch(void);
   void vWriteHashCrwBufferStore(void);
   void vWriteHashFullCrwBufferFetch(void);
+
+  // XmitOperand
+void vXmitOperandOperandStore(void);
+  void vXmitOperandPipeOut(void);
 
   // zero
   void vZeroLess(void);

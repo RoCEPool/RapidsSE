@@ -480,7 +480,7 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
-void AM::vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand)
+void AM::vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand)
 {
   pTask->vSendNode(pSendNode);
   
@@ -489,10 +489,10 @@ void AM::vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand)
   pSocket->vGrabWrite();
   
   SysCall oSysCall;
-  i8 nObjectSize = gxaSizeHeap[pJob_Operand->eClass()].m_nClassSize;
-  bool bResult = pSocket->bSendTo(pJob_Operand, nObjectSize, oSysCall);
+  i8 nObjectSize = gxaSizeHeap[pXmitOperand->eClass()].m_nClassSize;
+  bool bResult = pSocket->bSendTo(pXmitOperand, nObjectSize, oSysCall);
   
-  Operand* pOperand = pJob_Operand->m_pOperand;
+  Operand* pOperand = pXmitOperand->m_pOperand;
   
   nObjectSize = gxaSizeHeap[pOperand->eClass()].m_nClassSize;
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
@@ -1185,11 +1185,11 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete an operand job                                                      */
+/* delete the xmitOperand                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vDeleteJobOperand(Job_Operand* pJob)
+void AM::vDeleteXmitOperand(XmitOperand* pXmitOperand)
 {
-  delete pJob;
+  delete pXmitOperand;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1214,21 +1214,20 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
-Job_Operand* AM::pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 iNde, i8 iPtn)
+XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 iNde, i8 iPtn)
 {
-  Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(
+  XmitOperand* pXmitOperand = XmitOperand::pNewXmitOperand(
                                  pOperand, pParentJob->m_iFocalId, pOp, iNde, iPtn);
   
-  return pJob_Operand;
+  return pXmitOperand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set operand in operand job                                                 */
 /*----------------------------------------------------------------------------*/
-void AM::vSetOperand(Job_Operand* pJob_Operand, Operand* pOperand)
+void AM::vSetOperand(XmitOperand* pXmitOperand, Operand* pOperand)
 {
-  //Job_Operand* pJob_Operand = _pJob_Operand(pJob);
-  pJob_Operand->m_pOperand = pOperand;
+  pXmitOperand->m_pOperand = pOperand;
 }
 
 /*----------------------------------------------------------------------------*/

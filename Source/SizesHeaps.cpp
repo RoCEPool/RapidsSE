@@ -134,7 +134,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Job__Find),          HT_TRANSIENT_LARGE   }, // CN_JOB__FIND
   { sizeof(Job_Distributed),    HT_TRANSIENT_MEDIUM  }, // CN_JOB_DISTRIBUTED
   { sizeof(Job_Local),          HT_TRANSIENT_MEDIUM  }, // CN_JOB_LOCAL
-  { sizeof(Job_Operand),        HT_TRANSIENT_LARGE   }, // CN_JOB_OPERAND
+  { sizeof(Job_Local),          HT_TRANSIENT_LARGE   }, // CN_JOB_OPERAND
   { sizeof(JobList),            HT_TRANSIENT_TINY    }, // CN_JOBLIST
 
   { 'K' - ('A' - 1),            HT_INVALID           }, // CN__K__
@@ -331,6 +331,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Word),               HT_TRANSIENT_TINY    }, // CN_WORD
 
   { 'X' - ('A' - 1),            HT_INVALID           }, // CN__X__
+  { sizeof(XmitOperand),        HT_TRANSIENT_TINY    }, // CN_XMITIOPERAND
   { sizeof(Xmits),              HT_TRANSIENT_TINY    }, // CN_XMITS
 
   { 'Y' - ('A' - 1),            HT_INVALID           }, // CN__Y__

@@ -96,7 +96,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobAnalyzeIndex();
   Step::vAddSteps_JobClass();
   Step::vAddSteps_JobGeneric();
-  Step::vAddSteps_JobOperand();
   Step::vAddSteps_JobPipeline();
   Step::vAddSteps_JobRef();
   
@@ -195,6 +194,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Word();
   Step::vAddSteps_WriteHash();
 
+  Step::vAddSteps_XmitOperand();
+  
   Step::vAddSteps_Zero();
 }
 

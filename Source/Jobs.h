@@ -35,7 +35,7 @@ namespace Jobs
 
 #include "Job_Local.hpp"
 
-#include "Job_Operand.hpp"
+#include "XmitOperand.hpp"
 
 #include "JobList.hpp"
 

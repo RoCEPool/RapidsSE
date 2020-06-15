@@ -292,7 +292,8 @@ void Step::vSocketRecvObject(void)
   i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
 
   RASSERT(_bIsValidJob(eClass) ||
-          _bIsValidOperand(eClass));
+          _bIsValidOperand(eClass) ||
+          eClass == CN_XMITOPERAND);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of a job
@@ -343,6 +344,35 @@ void Step::vSocketRecvObject(void)
     return;
   }
   
+  if (eClass == CN_XMITOPERAND) {
+    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(HeapMem::pAllocate(eClass));
+    
+    MemLib::vCopy(pXmitOperand,pObject,sizeof(Object),eClass);
+    
+    void* aBody = aAdd<void*>(pXmitOperand,sizeof(Object));
+    i8 nRemainingBytes = nObjectSize - sizeof(Object);
+    
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+    if (! bResult) {
+      m_pDataStack->vPushInt(false);
+      EXIT();
+      return;
+    }
+    
+    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+    //       pJob,eClass,aCN[eClass],nObjectSize);
+    
+//    SP_Job spJob;
+//    AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
+//                "Socket received XmitOperand: %s"_Stz, //!format-LogRes
+//                spJob.sz_recv(pXmitOperand));
+    
+    m_pDataStack->vPushPtr(pXmitOperand);
+    m_pDataStack->vPushInt(true);
+    EXIT();
+    return;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of a row buffer
   
