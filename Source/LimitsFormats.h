@@ -25,6 +25,7 @@ static const i8 C_MAX_SESSIONS      = 4;      // max number of sessions
 static const i8 C_MAX_SHORTCUTS     = 1024;
 static const i8 C_MAX_SLOTS         = 128;    // max slots per node
 static const i8 C_MAX_STAGES        = 256;
+static const i8 C_MAX_STATEMENT     = C_16KB - 64;
 static const i8 C_MAX_STRANDS       = 256;
 static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
 static const i8 C_MAX_THREADS       = 256;

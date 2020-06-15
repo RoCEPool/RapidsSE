@@ -1178,6 +1178,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_SHORTCUTS      = %lld\n"_Stz,C_MAX_SHORTCUTS);
   vTrace("  C_MAX_SLOTS          = %lld\n"_Stz,C_MAX_SLOTS);
   vTrace("  C_MAX_STAGES         = %lld\n"_Stz,C_MAX_STAGES);
+  vTrace("  C_MAX_STATEMENT      = %lld\n"_Stz,C_MAX_STATEMENT);
   vTrace("  C_MAX_STRANDS        = %lld\n"_Stz,C_MAX_STRANDS);
   vTrace("  C_MAX_STREAMDEFS     = %lld\n"_Stz,C_MAX_STREAMDEFS);
   vTrace("  C_MAX_THREADS        = %lld\n"_Stz,C_MAX_THREADS);
