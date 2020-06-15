@@ -1106,6 +1106,11 @@ public:
   void vRegOperandCsvAppend(void);
   void vRegOperandBide(void);
   void vRegOperandCsvData(void);
+  void vRegOperandCsvToCrwH(void);
+  void vRegOperandCsvToRsb(void);
+  void vRegOperandCsvToRsbFast(void);
+  void vRegOperandCrwDuplicate(void);
+  void vRegOperandCrwToCsv(void);
   void vRegOperandDelete(void);
   void vRegOperandFirstRowFetch(void);
   void vRegOperandGet(void);
@@ -1135,10 +1140,6 @@ public:
   void vRegOperandRowCountFetch(void);
   void vRegOperandSet(void);
   void vRegOperandUpsertIntoTable(void);
-  void vRegOperandCrwToCsv(void);
-  void vRegOperandCsvToCrwH(void);
-  void vRegOperandCsvToRsb(void);
-  void vRegOperandCsvToRsbFast(void);
   void vRegOperandRsbToCsv(void);
   void vRegOperandWorkDone(void);
   void vRegOperandWriteToFile0(void);

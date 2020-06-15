@@ -135,6 +135,8 @@ assert::stack_0
         "OP_listTableDefs.sen"        include
         "OP_listTenants.sen"          include
 
+        "OP_mogrify.sen"              include
+
         "OP_nodeinfo.sen"             include
         "OP_noop.sen"                 include
 
