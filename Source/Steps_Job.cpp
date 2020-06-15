@@ -36,7 +36,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.tagSet@"_Stz,        &Step::vJobTagSetFetch);
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
-  vAddStep("job.execute@"_Stz,         &Step::vJobExecuteFetch);
 
   vAddStep("job::findOriginator"_Stz,  &Step::vJobFindOriginator);
   vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
@@ -606,30 +605,6 @@ void Step::vJobErrorStore(void)
   pJob->vJobError((eEC)iJobError);
   
   //ActLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.execute@ -- fetch the job word to be executed                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobExecuteFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  s32 sExecute;
-
-  switch (pJob->eClass()) {
-            
-    default:
-      StrLib::vCopy(sExecute.azChar(),pJob->aJobClass()->m_aSeedExe->azChar());
-      //sExecute.vConcat("_exe"_Stz);
-      break;
-  }
-  
-  m_pDataStack->vPushStr(sExecute);
   
   EXIT();
 }

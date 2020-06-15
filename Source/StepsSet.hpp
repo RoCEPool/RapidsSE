@@ -553,7 +553,6 @@ public:
   void vJobTagSetFetch(void);
   void vJobErrorStore(void);
   void vJobErrorFetch(void);
-  void vJobExecuteFetch(void);
 
   void vJobFindOriginator(void);
   void vJobFindParticipant(void);
