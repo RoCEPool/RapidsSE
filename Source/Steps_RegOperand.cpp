@@ -12,12 +12,13 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[]"_Stz,                &Step::vRegOperandGet);
   vAddStep("Operand[].addColumnDef"_Stz,   &Step::vRegOperandAddColumnDef);
   vAddStep("Operand[].bide"_Stz,           &Step::vRegOperandBide);
-  vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
   vAddStep("Operand[].csvAppend"_Stz,      &Step::vRegOperandCsvAppend);
   vAddStep("Operand[].csvData"_Stz,        &Step::vRegOperandCsvData);
   vAddStep("Operand[].csvToCrwH"_Stz,      &Step::vRegOperandCsvToCrwH);
   vAddStep("Operand[].csvToRsb"_Stz,       &Step::vRegOperandCsvToRsb);
   vAddStep("Operand[].csvToRsbFast"_Stz,   &Step::vRegOperandCsvToRsbFast);
+  vAddStep("Operand[].crwDuplicate"_Stz,   &Step::vRegOperandCrwDuplicate);
+  vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
   vAddStep("Operand[].delete"_Stz,         &Step::vRegOperandDelete);
   vAddStep("Operand[].firstRow@"_Stz,      &Step::vRegOperandFirstRowFetch);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vRegOperandHandleAggEnd);
@@ -84,6 +85,16 @@ void Step::vRegOperandBide(void)
     m_pTask->vScheduleBide();
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].crwDuplicate -- duplicate crw buffer operand                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandCrwDuplicate(void)
+{
+  ENTRY();
+    
   EXIT();
 }
 

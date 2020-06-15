@@ -1,0 +1,89 @@
+/*============================================================================*/
+/* OP_mogrify_.sen -- create temp copies of permanent crw buffers             */
+/*============================================================================*/
+
+" OP_mogrify_.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STREAMDEF ...                                    DEFINITION */
+/*----------------------------------------------------------------------------*/
+: mogrify_StreamDef \handler
+
+  //"Operand:- ZK_STREAMDEF" .verbose
+  PipeIn[].delete
+
+  streamDef[].newtoCsvStream
+  streamDef[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CRWBUFFER ...                                     CRWBUFFER */
+/*----------------------------------------------------------------------------*/
+: mogrify_CrwBuffer \handler
+
+  //"Operand:- ZK_CRWBUFFER" .verbose
+
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
+
+  Operand[].crwToCsv
+  Operand[] to Subset[]
+
+  begin
+    Operand[].isNull
+
+  not while
+
+    assert::stack_0
+
+    // get the next buffer
+    Subset[].nextBuffer to Subset[]
+
+    // now pipeout the Operand
+    Operand[].pipeOut
+
+    // move Subset to Operand
+    Subset[] to Operand[]
+
+    assert::stack_0
+  repeat
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute for mogrify_ req                                                SPAWN */
+/*----------------------------------------------------------------------------*/
+ : mogrify_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: mogrify_CrwBuffer  ZK_CRWBUFFER op[].handler!
+  find: mogrify_StreamDef  ZK_STREAMDEF op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: mogrify_ :: mogrify_ ;
+
+: mogrify_ _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

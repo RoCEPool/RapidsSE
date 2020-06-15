@@ -23,6 +23,27 @@ begin
 end;
 
 /*----------------------------------------------------------------------------*/
+/* create table as                                                            */
+/*----------------------------------------------------------------------------*/
+//procedure ctas
+//  parameters $table1 $table2
+//begin
+//
+//  stage stageA on origin :
+//    start | periodicOp once | emitStremDef $Table1 | stageB
+//
+//  stage stageB on all nodes :
+//   createTable $table2 | stageC
+//
+//  stage stageC on all partitions:
+//    scan $Table1 | dupCrw | insert $Table2 | stageD
+//
+//  stage stageD on origin :
+//    sink | stageA
+//
+//end;
+
+/*----------------------------------------------------------------------------*/
 /* create catalog                                                             */
 /*----------------------------------------------------------------------------*/
 procedure create catalog
