@@ -519,16 +519,6 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
     
     
 #if 0
-    i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
-    if (C_UNKNOWN == i_Tail)
-      continue;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // found a matching tail
-    
-    // put tial into the encoding
-    aColEnc->m_i_Tail = i_Tail;
-    aColEnc->m_aTailLine = m_pCrwNub->aGetTail(i_Tail);
 #else
     i8 i_Tail;
     TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
@@ -594,16 +584,6 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     
     
 #if 0
-    i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
-    if (C_UNKNOWN == i_Tail)
-      continue;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // found a matching tail
-    
-    // put tial into the encoding
-    aColEnc->m_i_Tail = i_Tail;
-    aColEnc->m_aTailLine = m_pCrwNub->aGetTail(i_Tail);
 #else
     i8 i_Tail;
     TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
@@ -671,16 +651,6 @@ void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
     
     
 #if 0
-    i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
-    if (C_UNKNOWN == i_Tail)
-      continue;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // found a matching tail
-    
-    // put tial into the encoding
-    aColEnc->m_i_Tail = i_Tail;
-    aColEnc->m_aTailLine = m_pCrwNub->aGetTail(i_Tail);
 #else
     i8 i_Tail;
     TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
