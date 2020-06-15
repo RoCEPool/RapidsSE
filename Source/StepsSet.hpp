@@ -527,19 +527,6 @@ public:
   void vIntSubtract(void);
   void vUnsignedIntRandom(void);
 
-  // jobClass
-  void vJobClassBuffer(void);
-  void vJobClassFind(void);
-  void vJobClassName(void);
-  void vJobClassNew(void);
-
-  void vJobClassSeedRun(void);
-  void vJobClassSeedReq(void);
-  void vJobClassSeedRcv(void);
-  void vJobClassSeedExe(void);
-  void vJobClassSeedEnd(void);
-  void vJobClassSeedCan(void);
-
   // job
   void vJobAcksRemaining(void);
   void vJobAddDemon(void);
