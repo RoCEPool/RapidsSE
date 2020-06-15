@@ -45,7 +45,7 @@ bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("  sizeof(s256)   = %lu; \n"_Stz, sizeof(s256));
   vTrace("  sizeof(s4K)    = %lu; \n"_Stz, sizeof(s4K));
   vTrace("  sizeof(s16KB)  = %lu; \n"_Stz, sizeof(s16KB));
-  vTrace("  sizeof(s17KB)  = %lu; \n"_Stz, sizeof(s17KB));
+  vTrace("  sizeof(s24KB)  = %lu; \n"_Stz, sizeof(s24KB));
   vTrace("  sizeof(s48K)   = %lu; \n"_Stz, sizeof(s48K));
   vTrace("  sizeof(s1M)    = %lu; \n"_Stz, sizeof(s1M));
   vTrace("\n"_Stz);

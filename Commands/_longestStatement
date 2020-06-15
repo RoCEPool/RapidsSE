@@ -6,11 +6,20 @@
 //   maximum number of columns with
 //     each column being longest name
 
-create table T_longestTableName_abcdefghi000
+// Token calculation:
+// 3 + (150 * 10) + 2 = 1505 tokens
+//
+// Space calculation:
+// 152 * 64 = 9,728(B) = 9.5KB
+//
+
+
+//         1         2         3         4        5         6
+//12345678901234567890123456789012345678901234568901234567890
+  create table T_longestTableName_abcdefghi000
 (
 //         1         2         3
 //1234567890123456789012345678901
-//                                                           000
   C_abcdefghijklmnopqrstuvwxyz000   DECIMAL(15,12) NOT NULL,
   C_abcdefghijklmnopqrstuvwxyz001   DECIMAL(15,12) NOT NULL,
   C_abcdefghijklmnopqrstuvwxyz002   DECIMAL(15,12) NOT NULL,

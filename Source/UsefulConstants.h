@@ -44,11 +44,13 @@ static const i8 C_2KB    = C_1KB * 2;    // 2 kilobytes   = 2,048
 static const i8 C_4KB    = C_1KB * 4;    // 4 kilobytes   = 4,096
 static const i8 C_8KB    = C_1KB * 8;    // 8 kilobytes   = 8,192
 static const i8 C_10KB   = C_1KB * 10;   // 10 kilobytes  = 10,240
+static const i8 C_12KB   = C_1KB * 12;   // 10 kilobytes  = 12,288
 static const i8 C_16KB   = C_1KB * 16;   // 16 kilobytes  = 16,384
-static const i8 C_17KB   = C_1KB * 17;   // 17 kilobytes  = 17,408
+static const i8 C_24KB   = C_1KB * 24;   // 24 kilobytes  = 24,576
 static const i8 C_32KB   = C_1KB * 32;   // 32 kilobytes  = 32,768
 static const i8 C_48KB   = C_1KB * 48;   // 48 kilobytes  = 49,152
 static const i8 C_64KB   = C_1KB * 64;   // 64 kilobytes  = 65,536
+static const i8 C_80KB   = C_1KB * 80;   // 80 kilobytes  = 81,920
 static const i8 C_96KB   = C_1KB * 96;   // 96 kilobytes  = 98,304
 static const i8 C_128KB  = C_1KB * 128;  // 128 kilobytes = 131,072
 static const i8 C_256KB  = C_1KB * 256;  // 256 kilobytes = 262,144
