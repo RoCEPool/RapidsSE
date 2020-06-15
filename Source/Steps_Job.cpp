@@ -706,8 +706,6 @@ void Step::vJobHasOperand(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
     
   i8 bHas = pJob->m_pOperand ? true : false;
-  if (pJob->aJobClass()->m_eClass == CN_JOB_START)
-    int iDebug = 1;
   
   m_pDataStack->vPushInt(bHas);
   

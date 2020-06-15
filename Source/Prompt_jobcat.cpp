@@ -28,9 +28,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   JobClass::vJobCatHeader();
   
   i8 nJobs = 0;
-  
-  // boot
-  nJobs++; JobClass::vJobCat(CN_JOB_START);
 
   // local
   nJobs++; JobClass::vJobCat(CN_JOB_LOCAL);

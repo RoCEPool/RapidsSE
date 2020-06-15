@@ -46,7 +46,7 @@ JobClass xJobClass_Xmit =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Operand_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Start_class;
+  *pNextFun = (pFUN*)nullptr;
   
   return &xJobClass_Xmit;
 }
