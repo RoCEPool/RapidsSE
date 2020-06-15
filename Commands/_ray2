@@ -8,6 +8,19 @@ bc;
 print section "Create LineItem";
 
 _lineitem
+_lineitem2
+
+// /time fload lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv" ;
+// /time fload lineitem "/Users/Shared/tpch/SF1/lineItem.csv" ;
+// /time fload lineitem "/Users/Shared/tpch/SF10/lineItem.csv" ;
+
+/time cpTable lineitem lineitem2 ;
+
+tableSizes;
+
+drop table lineitem;
+
+drop table lineitem2;
 
 /*============================================================================*/
 /* end                                                                        */
