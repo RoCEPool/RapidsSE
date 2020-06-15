@@ -29,7 +29,7 @@ static const i8 C_MAX_STATEMENT     = C_16KB - 64;
 static const i8 C_MAX_STRANDS       = 256;
 static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
 static const i8 C_MAX_THREADS       = 256;
-static const i8 C_MAX_TOKENS        = 1024;
+static const i8 C_MAX_TOKENS        = C_2KB;
 static const i8 C_MAX_VCH           = C_4KB;  // max practical length of vch value
 
 // max partitions in a grid
