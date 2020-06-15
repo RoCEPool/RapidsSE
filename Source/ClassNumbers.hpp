@@ -175,6 +175,7 @@ enum eCN : u2 // Class Number
   /* */ CN_METAINHERITS,
   /* */ CN_METAMEMBER,
   /* */ CN_METATYPE,
+  /* */ CN_MIDEND_FROMVEC,
   /* */ CN_MUTEX,
   
   /* */ CN__N__,
@@ -512,6 +513,7 @@ static Stz* aCN[]
   /* */ "METAINHERITS"_Stz,        // CN_METAINHERITS
   /* */ "METAMEMBER"_Stz,          // CN_METAMEMBER
   /* */ "METATYPE"_Stz,            // CN_METATYPE
+  /* */ "MIDEND_FROMVEC"_Stz,      // CN_MIDEND_FROMVEC
   /* */ "MUTEX"_Stz,               // CN_MUTEX
   
   /* */ "_N__"_Stz,                // CN__N__
