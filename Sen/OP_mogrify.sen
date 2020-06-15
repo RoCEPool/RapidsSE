@@ -5,20 +5,6 @@
 " OP_mogrify_.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                    DEFINITION */
-/*----------------------------------------------------------------------------*/
-: mogrify_StreamDef \handler
-
-  //"Operand:- ZK_STREAMDEF" .verbose
-  PipeIn[].delete
-
-  streamDef[].newtoCsvStream
-  streamDef[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                     CRWBUFFER */
 /*----------------------------------------------------------------------------*/
 : mogrify_CrwBuffer \handler
@@ -28,27 +14,9 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  Operand[].crwToCsv
-  Operand[] to Subset[]
+  Operand[].crwDuplicate to operandB[]
 
-  begin
-    Operand[].isNull
-
-  not while
-
-    assert::stack_0
-
-    // get the next buffer
-    Subset[].nextBuffer to Subset[]
-
-    // now pipeout the Operand
-    Operand[].pipeOut
-
-    // move Subset to Operand
-    Subset[] to Operand[]
-
-    assert::stack_0
-  repeat
+  OperandB[].pipeOut
 
   true
 ;
@@ -66,8 +34,7 @@
   op__topology
 
   find: mogrify_CrwBuffer  ZK_CRWBUFFER op[].handler!
-  find: mogrify_StreamDef  ZK_STREAMDEF op[].handler!
-
+ 
   op__loop
 
   LogReqExit
@@ -78,9 +45,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: mogrify_ :: mogrify_ ;
+cmdSyntax: mogrify :: mogrify ;
 
-: mogrify_ _cmdTags tagCopy: op_tags
+: mogrify _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

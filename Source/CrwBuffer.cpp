@@ -275,6 +275,24 @@ void CrwBuffer::vBufferCount(i8& nBuffers)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy given argument into this crw buffer                                   */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vCopy(CrwBuffer* pArgCrwBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  m_pTable     = pArgCrwBuffer->m_pTable;
+  m_pStreamDef = pArgCrwBuffer->m_pStreamDef;
+  
+  MemLib::vCopy(&m_oRowTray,
+                &pArgCrwBuffer->m_oRowTray,
+                sizeof(RowTray),
+                CN_CRWBUFFER);
+  
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get compact row                                                            */
 /*----------------------------------------------------------------------------*/
 Crw* CrwBuffer::aCrw(i8 i_Row)

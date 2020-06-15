@@ -94,7 +94,14 @@ void Step::vRegOperandBide(void)
 void Step::vRegOperandCrwDuplicate(void)
 {
   ENTRY();
-    
+  
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
+
+  CrwBuffer* pNewCrwBuffer = new CrwBuffer;
+  pNewCrwBuffer->vCopy(pCrwBuffer);
+
+  m_pDataStack->vPushPtr(pNewCrwBuffer);
+
   EXIT();
 }
 
