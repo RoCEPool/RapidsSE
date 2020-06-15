@@ -282,7 +282,6 @@ void Constants::vAddConstantsCpp(void)
   /*    */ //vAddConstant("CN_INDEXDEFN"_Stz,    CN_INDEXDEFN);
   /*  4 */ vAddConstant("CN_INTVAL"_Stz,       CN_INTVAL);
 
-  /*    */ vAddConstant("CN_JOB_BOOT"_Stz,           CN_JOB_BOOT);
   /*    */ vAddConstant("CN_JOB_DISTRIBUTED"_Stz,    CN_JOB_DISTRIBUTED);
   /*    */ vAddConstant("CN_JOB_LOCAL"_Stz,          CN_JOB_LOCAL);
   /*    */ vAddConstant("CN_JOB_OPERAND"_Stz,        CN_JOB_OPERAND);

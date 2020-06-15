@@ -28,19 +28,19 @@ bool Prompt::bPrompt_jobClass(SePrompt* pPrompt)
   
   JobClass* pJobClass = nullptr;
   
-  i8 i_JobClass = 0;
-  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob_Boot_class; pfJobClass; ) {
-    
-    pJobClass = pfJobClass((pFUN**)&pfJobClass);
-    
-    vTrace("  %02lld %-20s %s\n"_Stz,
-           i_JobClass,
-           aCN[pJobClass->m_eClass],
-           aJK[pJobClass->m_eKind]
-           );
-    
-    i_JobClass++;
-  }
+//  i8 i_JobClass = 0;
+//  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob_Boot_class; pfJobClass; ) {
+//    
+//    pJobClass = pfJobClass((pFUN**)&pfJobClass);
+//    
+//    vTrace("  %02lld %-20s %s\n"_Stz,
+//           i_JobClass,
+//           aCN[pJobClass->m_eClass],
+//           aJK[pJobClass->m_eKind]
+//           );
+//    
+//    i_JobClass++;
+//  }
 
   return true;
 }

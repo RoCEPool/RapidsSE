@@ -30,7 +30,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   i8 nJobs = 0;
   
   // boot
-  nJobs++; JobClass::vJobCat(CN_JOB_BOOT);
   nJobs++; JobClass::vJobCat(CN_JOB_START);
 
   // local
@@ -44,10 +43,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 
 
   vTrace("\n"_Stz);
-  
-  if (nJobs != CN_JOB_START - CN_JOB_BOOT + 1)
-    vTrace("\nWarning: Missing Jobs (%lld v. %lld)\n\n"_Stz,
-           nJobs, CN_JOB_START - CN_JOB_BOOT + 1);
   
   return true;
 }
