@@ -725,7 +725,6 @@ public:
   void vJob_NetHogHogNoFetch(void);
 
   // Job Operand
-  void vJob_OperandParentJobFetch(void);
   void vJob_OperandPipeOut(void);
 
   // job Pipeline

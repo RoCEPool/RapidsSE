@@ -82,29 +82,7 @@
     // dispatch job
 
     pReceivedJob job.jobClass CN_JOB_OPERAND == if
-/*
-      // get the parent (pipeline) job of the operand
-      pReceivedJob Job_operand.parentJob@ to pParentJob
 
-      // wait till the parent job is executing
-      begin
-        pParentJob job.phase@ JP_EXECUTING == not
-      while
-       //pParentJob job.phase@ "Job phase %v" .printf
-       task::yield
-      repeat
-
-      // get the task of the parent (pipeline) job
-      pParentJob job.task@ to pTask
-
-      // wait till the parent (pipeline) job is in a WAIT state
-      begin
-        pTask task.isWaiting
-      not while
-        //pTask task.state@ "Task state %v" .printf
-        task::yield
-      repeat
-*/
       // now pipe out the operand
       pReceivedJob Job_operand.pipeOut
 

@@ -108,7 +108,6 @@ Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_pOp          = nullptr;
   m_iNode        = C_UNKNOWN;
   m_iPartition   = C_UNKNOWN;
-  m_iParentJobId = C_UNKNOWN;
   
   m_eTopologyX   = PX_NONE;
   m_iNextStage   = C_UNKNOWN;
