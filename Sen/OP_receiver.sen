@@ -72,14 +72,14 @@
       pReceivedObject xmitOperand.pipeOut
     else
 
-    // -- -- -- -- -- -- -- --
-    // examine job
-    //pReceivedJob job.kind@ JK_GENERIC == if
-    //"received a generic job" .
-    //  pReceivedJob job.tagSet@ tagSet.asStr .
-    //then
+      // -- -- -- -- -- -- -- --
+      // examine job
+      //pReceivedJob job.kind@ JK_GENERIC == if
+      //"received a generic job" .
+      //  pReceivedJob job.tagSet@ tagSet.asStr .
+      //then
 
-    pReceivedObject job.postRecv
+      pReceivedObject job.postRecv
       //pReceivedJob job.name@ grid::thisNodeName@ "(%v) receiver_loop %v" .printf
       pReceivedObject job.seedDecode
       pReceivedObject job.seed!
