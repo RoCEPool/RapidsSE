@@ -343,7 +343,7 @@ bool Dynamo::bCollectTag(void)
     return false;
   vAcceptToken();
 
-  s4K sTagValue = m_pTkn->szChars();
+  sSTMT sTagValue = m_pTkn->szChars();
   vAcceptToken();
 
   while (! m_pTkn->bSame("endTag"_Stz)) {

@@ -92,7 +92,7 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
   
-  s4K sCmd;
+  sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
   
   //vTrace("sCmd: %s\n %lld\n"_Stz,sCmd.szStz(),sCmd.nSize());

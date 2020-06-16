@@ -149,7 +149,7 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
 
 #define dPV(sNM,pTV) { \
   if (AM::bVerbose()) { \
-    s4K sDbgStr; \
+    s48K sDbgStr; \
     pTV->vDbgStr(sDbgStr); \
     vTrace("%s=%s\n"_Stz,sNM->azChar(),sDbgStr.azChar()); \
   } \
@@ -174,7 +174,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   i8 i_Cut;
   i8 nInpTokens = pInpTknVec->nTokens();
 
-  s4K sOriginalCmd;
+  sSTMT sOriginalCmd;
   pInpTknVec->vVecToString(sOriginalCmd,0,false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -251,7 +251,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
       pEtcTknVec = TokenVec::pGetSubVec(pInpTknVec,1 + i_Etc,nInpTokens-1);
       dPV("pEtcTknVec"_Stz,pEtcTknVec);
       
-      s4K sEtcSubStr;
+      sSTMT sEtcSubStr;
       pEtcTknVec->vToTknString(sEtcSubStr);
       vTrace("sEtcSubStr=%s\n"_Stz,sEtcSubStr.szStz());
       

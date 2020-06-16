@@ -181,9 +181,9 @@ SizeHeap gxaSizeHeap[]
 
   { 'O' - ('A' - 1),            HT_INVALID           }, // CN__O__
   { sizeof(ObjectsInPool),      HT_TRANSIENT_SMALL   }, // CN_OBJECTSINPOOL
-  { sizeof(Op),                 HT_TRANSIENT_MEDIUM  }, // CN_OP
+  { sizeof(Op),                 HT_TRANSIENT_LARGE   }, // CN_OP
   { sizeof(OperandQueue),       HT_TRANSIENT_TINY    }, // CN_OPERANDQUEUE
-  { sizeof(OpSpec),             HT_TRANSIENT_MEDIUM  }, // CN_OPSPEC
+  { sizeof(OpSpec),             HT_TRANSIENT_LARGE   }, // CN_OPSPEC
 
   { 'P' - ('A' - 1),            HT_INVALID           }, // CN__P__
   { sizeof(PathVec),            HT_TRANSIENT_MEDIUM  }, // CN_PATHVEC
@@ -238,7 +238,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Schema),             HT_TRANSIENT_TINY    }, // CN_SCHEMA
   { sizeof(SchemaTest),         HT_TRANSIENT_LARGE   }, // CN_SCHEMATEST
   { sizeof(SeeMe),              HT_INVALID           }, // CN_SEEME
-  { sizeof(SePrompt),           HT_TRANSIENT_MEDIUM  }, // CN_SEPROMPT
+  { sizeof(SePrompt),           HT_TRANSIENT_LARGE   }, // CN_SEPROMPT
   { sizeof(Session),            HT_TRANSIENT_MEDIUM  }, // CN_SESSION
   { sizeof(SessionArray),       HT_TRANSIENT_TINY    }, // CN_SESSIONARRAY
   { sizeof(ShortCut),           HT_TRANSIENT_MEDIUM  }, // CN_SHORTCUT

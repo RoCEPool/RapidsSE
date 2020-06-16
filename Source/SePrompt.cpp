@@ -192,13 +192,6 @@ void SePrompt::vPromptLoop(void)
     if (bBlankLine())
       continue;
     
-    if (AM::bDeveloper()) {
-      i8 nTokens = m_pInpTknVec->nTokens();
-      i8 nUsed   = m_pInpTknVec->nUsedByteSpace();
-      if (nTokens > C_1KB)
-         vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
-    }
-
     if (bDumpTokens())
       vDumpInpTknVec(false);
 
@@ -225,6 +218,14 @@ void SePrompt::vPromptLoop(void)
     if (! bExtractSupTags())
       continue;
 
+    if (AM::bDeveloper() && m_pInpTknVec->nTokens() > C_1KB) {
+      i8 nTokens = m_pInpTknVec->nTokens();
+      i8 nUsed   = m_pInpTknVec->nUsedByteSpace();
+      if (nTokens > C_1KB)
+         vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
+      vDebugPoint();
+    }
+    
     if (bTranslateProcedure())
       goto L_Read_Next_Command;
     
@@ -649,7 +650,7 @@ void SePrompt::vLogCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  s16KB sCommand;
+  sSTMT sCommand;
   
   Token* pTkn0 = m_pInpTknVec->pGet(0);
   if (pTkn0->bSame("logNote"_Stz))
@@ -1170,7 +1171,7 @@ bool SePrompt::bTranslateProcedure(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  s4K sPipelineSmt;
+  sSTMT sPipelineSmt;
 
   Word* pProcWord = Procedure::pFindProcedure(m_pInpTknVec);
   //Word* pProcWord = nullptr;

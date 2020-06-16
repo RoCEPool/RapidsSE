@@ -20,7 +20,7 @@
 (
 //         1         2         3
 //1234567890123456789012345678901
-  C_abcdefghijklmnopqrstuvwxyz000   DECIMAL(15,12) NOT NULL,
+  C_abcdefghijklmnopqrstuvwxyz000   DECIMAL ( 15 , 12 ) NOT NULL ,
   C_abcdefghijklmnopqrstuvwxyz001   DECIMAL(15,12) NOT NULL,
   C_abcdefghijklmnopqrstuvwxyz002   DECIMAL(15,12) NOT NULL,
   C_abcdefghijklmnopqrstuvwxyz003   DECIMAL(15,12) NOT NULL,
