@@ -80,7 +80,7 @@ procedure create schema
 end;
 
 /*----------------------------------------------------------------------------*/
-/* create tenant                                                              */
+/* create table                                                               */
 /*----------------------------------------------------------------------------*/
 procedure create table
  parameters $tableNm $etc
@@ -112,6 +112,19 @@ begin
 
   stage stageC on origin :
     sink | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
+/* define table                                                               */
+/*----------------------------------------------------------------------------*/
+procedure define2 table
+  parameters $tableNm $etc
+begin
+
+stage stageA on origin :
+  start | periodicOp once | syntaxTable $tableNm $etc |
+    createTable $tableNm $etc | sink | stageA
 
 end;
 
