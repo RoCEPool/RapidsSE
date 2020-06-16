@@ -85,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for defineTable req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: defineTable_req \operator
+: defineTable2_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -103,9 +103,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: defineTable :: defineTable <tableNm> <etc> ;
+cmdSyntax: defineTable2 :: defineTable2 <tableNm> <etc> ;
 
-: defineTable _cmdTags tagCopy: op_tags
+: defineTable2 _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>   = "--description of operator--" }
 ;

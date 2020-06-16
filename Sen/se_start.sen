@@ -5,6 +5,31 @@
 " se_start.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+: start::defineProcedures
+
+"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // define table
+  sPath
+  "
+    procedure define2 table
+      parameters $tableNm $etc
+    begin
+
+      stage stageA on origin :
+        start | periodicOp once | syntaxTable $tableNm $etc |
+          defineTable2 $tableNm $etc | sink | stageA
+
+    end ;
+  "
+  api::addProcedure
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* define apriori tables                                                      */
 /*----------------------------------------------------------------------------*/
 : start::defineTables
@@ -321,6 +346,9 @@
   nullptr locals| pParentJob |
 
   "start_run" .verbose
+
+  // define the apriori procedures
+  start::defineProcedures
 
   // define the apriori system tables
   start::defineTables

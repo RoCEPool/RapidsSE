@@ -43,6 +43,7 @@ public:
   void vAggTimerTicks(void);
 
   // api
+  void vApiAddProcedure(void);
   void vApiExecuteRequest(void);
   void vApiSpawnDemon(void);
 

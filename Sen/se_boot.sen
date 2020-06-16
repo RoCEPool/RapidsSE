@@ -101,6 +101,7 @@ assert::stack_0
         "OP_createTable.sen"          include
         "OP_createTenant.sen"         include
 
+        "OP_defineTable.sen"          include
         "OP_docol.sen"                include
         "OP_dropCatalog.sen"          include
         "OP_dropIndex.sen"            include
