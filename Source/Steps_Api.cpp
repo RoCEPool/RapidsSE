@@ -28,7 +28,7 @@ void Step::vApiAddProcedure(void)
   m_pDataStack->vPopStr(sWithTagStr,__func__);
   
   vTrace("AddProcedure: %s\n"_Stz,sRequest.szStz());
-  vTrace("WithTags: %s\nn"_Stz,sWithTagStr.szStz());
+  vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

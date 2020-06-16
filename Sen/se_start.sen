@@ -7,26 +7,497 @@
 /*----------------------------------------------------------------------------*/
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
-: start::defineProcedures
+: start::defineProcedures1
 
-"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+ "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // define table
+  // copy table
   sPath
   "
-    procedure define2 table
-      parameters $tableNm $etc
+    procedure cpTable
+      parameters $table1 $table2
     begin
 
-      stage stageA on origin :
-        start | periodicOp once | syntaxTable $tableNm $etc |
-          defineTable2 $tableNm $etc | sink | stageA
+    stage stageA on origin :
+      start | periodicOp once | stageB
+
+    stage stageB on all partitions :
+      scan $Table1 | mogrify | insert $Table2 | stageC
+
+    stage stageC on origin :
+      sink | stageA
 
     end ;
   "
   api::addProcedure
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create table as
+  //sPath
+  //"
+  //procedure ctas
+  //  parameters $table1 $table2
+  //begin
+  //
+  //  stage stageA on origin :
+  //    start | periodicOp once | emitStremDef $Table1 | stageB
+  //
+  //  stage stageB on all nodes :
+  //   createTable $table2 | stageC
+  //
+  //  stage stageC on all partitions:
+  //    scan $Table1 | dupCrw | insert $Table2 | stageD
+  //
+  //  stage stageD on origin :
+  //    sink | stageA
+  //
+  //end ;
+  //"
+  //api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create catalog
+  sPath
+  "
+  procedure create catalog
+    parameters $catalogNm
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    createCatalog $catalogNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create schema
+  sPath
+  "
+  procedure create schema
+    parameters $schemaNm
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    createSchema $schemaNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create table
+  sPath
+  "
+  procedure create table
+    parameters $tableNm $etc
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | syntaxTable $tableNm $etc | stageB
+
+  stage stageB on all nodes :
+    createTable $tableNm $etc | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create tenant
+  sPath
+  "
+  procedure create tenant
+    parameters $tenantNm
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    createTenant $tenantNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop catalog
+  sPath
+  "
+  procedure drop catalog
+    parameters $catalogNm
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    dropCatalog $catalogNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop index
+  sPath
+  "
+  procedure drop index
+    parameters $tableNm $indexNm
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    truncateIndex $tableNm $indexNm | stageC
+
+  stage stageC on all nodes :
+    dropIndex $tableNm $indexNm | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop schema
+  sPath
+  "
+  procedure drop schema
+    parameters $schemaNm
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    dropSchema $schemaNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop table
+  sPath
+  "
+  procedure drop table
+    parameters $tableNm
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    truncateTable $tableNm | stageC
+
+  stage stageC on all nodes :
+    dropTable $tableNm | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop tenant
+  sPath
+  "
+  procedure drop tenant
+    parameters $tenantNm
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    dropTenant $tenantNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // export
+  sPath
+  "
+  procedure export
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    scan $Table | toCsv | stageC
+
+  stage stageC on origin :
+    toFileOp $File | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gridSanity
+  sPath
+  "
+  procedure gridSanity
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    nodeInfo | stageC
+
+  stage stageC on origin :
+    gridSanity | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+: start::defineProcedures2
+
+"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // load
+  sPath
+  "
+  procedure load
+    parameters $table $file
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | chunk $file | stageB
+
+  stage stageB on all partitions on origin :
+    rdCsvChunk $file |
+    toCrwH $table    |
+    //  dump crwBuffer 1 |
+    stageC Hashed
+
+  stage stageC on all partitions :
+    insert $table | stageD
+
+  stage stageD on origin :
+    sink | stageA
+    //progress 'Load' | toStatDemon | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // partitionScan
+  sPath
+  "
+  procedure partitionScan
+    parameters $table $partition
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on partition $partition :
+    scan $table | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // predicateFetch
+  sPath
+  "
+  procedure predicateFetch
+    parameters $table $predicate
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    fetch $table $predicate | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // select table
+  sPath
+  "
+  procedure select table
+    parameters $Table
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    scan $Table | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tableScan
+  sPath
+  "
+  procedure tableScan
+    parameters $table
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    scan $table | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // truncate
+  sPath
+  "
+  procedure truncate
+    parameters $table
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    truncateTable $table | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fload
+  sPath
+  "
+  procedure fload
+    parameters $table $file
+  begin
+
+  stage stageA on origin :
+
+    start              |
+
+    periodicOp once    |
+
+    chunk $file        | // read chunks of file, produce (seekOffset) =>
+    // dump seekOffsets 1 |
+
+    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
+    // dump csvBuffer 0   |
+
+    stageB robin
+
+
+  stage stageB on all partitions on origin :
+
+    toRsb $table       | // (csvBuffer)  => (rsbBuffer)
+    // dump rsbBuffer 1   |
+
+    toPtnRsb           | // (rsbBuffer)  => (rsbBuffer 'ptn)
+    // dump rsbBuffer 1   |
+
+    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
+    //dump rsbBuffer 1   |
+
+    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
+    //dump rsbBuffer 1   |
+
+    stageC hashed
+
+  stage stageC on all partitions :
+
+    //eatSome |
+
+    insert $table      | // (crwBuffer) inserted into table
+
+    stageD
+
+  stage stageD on origin :
+
+    output             |
+
+    sink               |
+
+    stageA
+
+    end ;
+  "
+  api::addProcedure
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -348,7 +819,8 @@
   "start_run" .verbose
 
   // define the apriori procedures
-  start::defineProcedures
+  start::defineProcedures1
+  start::defineProcedures2
 
   // define the apriori system tables
   start::defineTables
