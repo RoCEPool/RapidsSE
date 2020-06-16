@@ -19,18 +19,15 @@ static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
 static const i8 C_MAX_OPS           = 256;
 static const i8 C_MAX_PATH          = 256;    // max length of file path
 static const i8 C_MAX_PREDICATEVEC  = 16;
-static const i8 C_MAX_RECORD        = C_16KB; // max length of record
 static const i8 C_MAX_SEEKOFFSETS   = 16;
 static const i8 C_MAX_SESSIONS      = 4;      // max number of sessions
 static const i8 C_MAX_SHORTCUTS     = 1024;
 static const i8 C_MAX_SLOTS         = 128;    // max slots per node
 static const i8 C_MAX_STAGES        = 256;
-static const i8 C_MAX_STATEMENT     = C_16KB - 64;
 static const i8 C_MAX_STRANDS       = 256;
 static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
 static const i8 C_MAX_THREADS       = 256;
 static const i8 C_MAX_TOKENS        = C_2KB;
-static const i8 C_MAX_VCH           = C_4KB;  // max practical length of vch value
 
 // max partitions in a grid
 static const i8 C_MAX_PARTITIONS = C_MAX_SLOTS * C_MAX_NODES;

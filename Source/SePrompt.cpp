@@ -191,6 +191,13 @@ void SePrompt::vPromptLoop(void)
     
     if (bBlankLine())
       continue;
+    
+    if (AM::bDeveloper()) {
+      i8 nTokens = m_pInpTknVec->nTokens();
+      i8 nUsed   = m_pInpTknVec->nUsedByteSpace();
+      if (nTokens > C_1KB)
+         vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
+    }
 
     if (bDumpTokens())
       vDumpInpTknVec(false);

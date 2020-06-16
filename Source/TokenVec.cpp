@@ -939,6 +939,18 @@ void TokenVec::vUpdateToken(Token* pDstToken, Stz* szArgChars)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy chars                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::nUsedByteSpace(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 nUsed = m_xyByteSpace.i_Latter();
+  
+  return nUsed;
+}
+
+/*----------------------------------------------------------------------------*/
 /* concat all tokens into one string                                          */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vToTknString(Stz* szDstStr)
