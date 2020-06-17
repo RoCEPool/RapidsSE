@@ -36,8 +36,9 @@ void Step::vApiAddProcedure(void)
   
   pDmnTknVec->vIntegrityCheck();
   
-  ASSERT(pDmnTknVec->pGet(0)->bSame("procedure"_Stz));
-  
+  Token* pTkn0 = pDmnTknVec->pGet(0);
+  ASSERT(pTkn0->bSame("procedure"_Stz) || pTkn0->bSame("procedureLocal"_Stz));
+
   //Stz* ssProcNm = pDmnTknVec->pGet(1)->szChars();
   
   Procedure::vAddProcedure(pDmnTknVec);
@@ -155,6 +156,7 @@ void Step::vApiSpawnDemon(void)
 
   TokenVec* pDmnTknVec = TokenVec::pTokenise(sPipeline);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job* pJob = nullptr;
   TagSet oTagSet;
   ReqTuple xReqTuple;

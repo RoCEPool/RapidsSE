@@ -65,6 +65,19 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   *ppJob = nullptr;
 
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Word* pProcWord = Procedure::pFindProcedure(pCmdTknVec);
+  if (pProcWord) {
+    sSTMT sPipelineSmt;
+    if (Procedure::bTranslateProcedure(sPipelineSmt.pString(),
+                                       pCmdTknVec,pProcWord)) {
+      
+      pCmdTknVec->vSoftReset();
+      pCmdTknVec->vTokenise(sPipelineSmt);
+    }
+  }
+  
   if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) )
     return EC_INVALID_COMMAND;
    

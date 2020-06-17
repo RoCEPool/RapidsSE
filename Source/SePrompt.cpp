@@ -184,7 +184,7 @@ void SePrompt::vPromptLoop(void)
     
     vResetExtractedTagSet();
     
-    L_Read_Next_Command:
+    //L_Read_Next_Command:
     
     if (! bReadNextCommand())
       break;
@@ -226,8 +226,8 @@ void SePrompt::vPromptLoop(void)
       vDebugPoint();
     }
     
-    if (bTranslateProcedure())
-      goto L_Read_Next_Command;
+    //if (bTranslateProcedure())
+    //  goto L_Read_Next_Command;
     
     
     //.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.
