@@ -211,7 +211,7 @@ void Dynamo::vShow(void)
   
   StageSpec* pStageSpec = m_pPipelineSpec->pStageSpec(0);
   
-  s4K sPipe("pipeline "_Stz);
+  sSTMT sPipe("pipeline "_Stz);
   pStageSpec->vToPipeStr(sPipe.szStz());
   
 #ifdef WITH_TRACE_DYNAMO
@@ -528,7 +528,7 @@ bool Dynamo::bCollectOp(void)
     s32 sArgName;
     sArgName.vSprint("<arg_%lld>"_Stz,i_Arg++);
     
-    s4K sArgValue ( m_pTkn->szChars() );
+    sSTMT sArgValue ( m_pTkn->szChars() );
     
     pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
     

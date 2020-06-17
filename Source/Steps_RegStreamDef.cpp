@@ -36,7 +36,7 @@ void Step::vRegStreamDefAsStr(void)
   
   StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
   
-  s4K sStreamDef;
+  sSTMT sStreamDef;
   
   pStreamDef->vAsString(sStreamDef.pString());
   
