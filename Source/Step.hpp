@@ -147,7 +147,6 @@ namespace Steps
     static void vAddSteps_Subset(void);
   
     static void vAddSteps_Table(void);
-    static void vAddSteps_TableDef(void);
     static void vAddSteps_TablePartition(void);
     static void vAddSteps_TablePartition2(void);
     static void vAddSteps_Tag(void);

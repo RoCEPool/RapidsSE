@@ -166,7 +166,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Subset();
   
   Step::vAddSteps_Table();
-  Step::vAddSteps_TableDef();
   Step::vAddSteps_TablePartition();
   Step::vAddSteps_TablePartition2();
   Step::vAddSteps_Tag();
