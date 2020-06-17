@@ -474,7 +474,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEntryWork)
   Ent* aInsertedEntry;
   
 #ifdef WITH_EB_LAZY_CHAIN
-  if (m_pIndex->pTable()->bIsLoading()) {
+  if (m_pIndex->pTable() && m_pIndex->pTable()->bIsLoading()) {
     if (! m_iBufferHeight) {
       aInsertedEntry = aInsertEntAbsLazy(aEntryWork);
       return aInsertedEntry;
@@ -702,9 +702,9 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
     vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
   }
 #else
-  Ent* aOriginalFirstEntry = aFirstEntry();
-  pInsertedKeyEntry = pInsertEntAbs(xEntWrk);
-  vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootBuffer);
+  Ent* aOriginalFirstEntry = aLeadEntry();
+  aInsertedEntry = aInsertEntAbs(aEntryWork);
+  vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
 #endif
   
   return aInsertedEntry;

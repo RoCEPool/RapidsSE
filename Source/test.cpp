@@ -1239,14 +1239,46 @@ void vTest20(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test21                                                                     */
+/* test21 : EntBuffer Test                                                    */
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
 {
   vTrace("This is EntBuffer Test; sizeof(EntBuffer) = %lld(B)\n"_Stz,
          sizeof(EntBuffer));
 
+  i8 i_Ent;
+  EntWrk xEntWrk;
+  
+  Timer xTimer;
   EntBuffer* pEntBuffer = new EntBuffer;
+  
+  xTimer.vStart();
+  for (i_Ent = 0; ; i_Ent++) {
+    
+    i8 nOffsets = AM::nRandomLevels();
+    
+    xEntWrk.vAppendInt(i_Ent);
+    xEntWrk.vOffsets(nOffsets);
+    
+    i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
+    if (! pEntBuffer->bHasSpace(nBytesNeeded))
+      break;
+    
+    Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
+    
+    xEntWrk.vReset();
+  }
+  xTimer.vUpdate();
+
+  
+  SP_Timer spTimer;
+  SP_Timer spTimer2;
+
+  vTrace("aInsertEntAbs() of %lld entries took %s : %s/ent\n"_Stz,
+         i_Ent,
+         spTimer.sz(xTimer.iNanoseconds()),
+         spTimer2.sz(xTimer.iNanoseconds() / i_Ent)
+         );
 
   delete pEntBuffer;
 }
