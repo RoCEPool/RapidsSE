@@ -4,16 +4,16 @@
 
 " se_stepTests.sen" .verbose
 
-: test0 \prompt test::test0 ;
-: test1 \prompt test::test1 ;
-: test2 \prompt test::test2 ;
-: test3 \prompt test::test3 ;
-: test4 \prompt test::test4 ;
-: test5 \prompt test::test5 ;
-: test6 \prompt test::test6 ;
-: test7 \prompt test::test7 ;
-: test8 \prompt test::test8 ;
-: test9 \prompt test::test9 ;
+: test0  \prompt test::test0 ;
+: test1  \prompt test::test1 ;
+: test2  \prompt test::test2 ;
+: test3  \prompt test::test3 ;
+: test4  \prompt test::test4 ;
+: test5  \prompt test::test5 ;
+: test6  \prompt test::test6 ;
+: test7  \prompt test::test7 ;
+: test8  \prompt test::test8 ;
+: test9  \prompt test::test9 ;
 : test10 \prompt test::test10 ;
 : test11 \prompt test::test11 ;
 : test12 \prompt test::test12 ;
@@ -30,6 +30,45 @@
 : test23 \prompt test::test23 ;
 : test24 \prompt test::test24 ;
 : test25 \prompt test::test25 ;
+: test26 \prompt test::test26 ;
+: test27 \prompt test::test27 ;
+: test28 \prompt test::test28 ;
+: test29 \prompt test::test29 ;
+: test30 \prompt test::test30 ;
+: test31 \prompt test::test31 ;
+: test32 \prompt test::test32 ;
+: test33 \prompt test::test33 ;
+: test34 \prompt test::test34 ;
+: test35 \prompt test::test35 ;
+: test36 \prompt test::test36 ;
+: test37 \prompt test::test37 ;
+: test38 \prompt test::test38 ;
+: test39 \prompt test::test39 ;
+: test40 \prompt test::test40 ;
+: test41 \prompt test::test41 ;
+: test42 \prompt test::test42 ;
+: test43 \prompt test::test43 ;
+: test44 \prompt test::test44 ;
+: test45 \prompt test::test45 ;
+: test46 \prompt test::test46 ;
+: test47 \prompt test::test47 ;
+: test48 \prompt test::test48 ;
+: test49 \prompt test::test49 ;
+: test50 \prompt test::test50 ;
+: test51 \prompt test::test51 ;
+: test52 \prompt test::test52 ;
+: test53 \prompt test::test53 ;
+: test54 \prompt test::test54 ;
+: test55 \prompt test::test55 ;
+: test56 \prompt test::test56 ;
+: test57 \prompt test::test57 ;
+: test58 \prompt test::test58 ;
+: test59 \prompt test::test59 ;
+: test60 \prompt test::test60 ;
+: test61 \prompt test::test61 ;
+: test62 \prompt test::test62 ;
+: test63 \prompt test::test63 ;
+: test64 \prompt test::test64 ;
 
 /*============================================================================*/
 /* end                                                                        */
