@@ -50,11 +50,8 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   ObjectsInPool* pObjectsInPool = pPrompt->pObjectsInPool();
   ObjectsInPool* pSnapshotObjects = pPrompt->pSnapshotObjects();
   
-  // NOTE: There is a possibilty that a job completesbut the cleanup
-  // of task etc has not.
-  // Therefore we loop C_ATTEMPTS times to wait for memory leaks to go away
-  
-  Thread* pThread = Thread::pThisTLSThread();
+  // NOTE: Need to wait for job to complete and cleanup
+  // Loop C_ATTEMPTS times to wait for memory leaks to go away
   
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
     
@@ -85,7 +82,7 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
       goto L_REPORT;
     
     // we have memory leaks; sleep and try again!
-    pThread->m_pPsxThd->vSleepUsec(5,CN_SEPROMPT);
+    AM::vNapUsec(5,CN_SEPROMPT);
   }
 
   // attempted C_ATTEMPTS to see if memory leaks settle down
@@ -112,6 +109,7 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     iRowsProcessed++;
   }
   
+
 L_REPORT:
   vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   
