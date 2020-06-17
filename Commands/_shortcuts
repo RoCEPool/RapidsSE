@@ -72,6 +72,8 @@ shortcut q20  "../Benchmarks/TPC-H/tpch_q20.sql";
 shortcut q21  "../Benchmarks/TPC-H/tpch_q21.sql";
 shortcut q22  "../Benchmarks/TPC-H/tpch_q22.sql";
 
+shortcut t21  test21;
+
 // shortcut;
 
 /*============================================================================*/

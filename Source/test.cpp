@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* test.cpp - general testing                                                 */
+/* Test.cpp - general testing                                                 */
 /*============================================================================*/
   
 #include "StorageEngine.h"
@@ -1230,6 +1230,12 @@ void vTest19(void)
 /*----------------------------------------------------------------------------*/
 void vTest20(void)
 {
+  vTrace("This is RsbBuffer Test; sizeof(RsbBuffer) = %lld(B)\n"_Stz,
+         sizeof(RsbBuffer));
+
+  RsbBuffer* pRsbBuffer = new RsbBuffer;
+
+  delete pRsbBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1237,12 +1243,12 @@ void vTest20(void)
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
 {
-  vTrace("This is RsbBuffer Test; sizeof(RsbBuffer) = %lld(B)\n"_Stz,
-         sizeof(RsbBuffer));
+  vTrace("This is EntBuffer Test; sizeof(EntBuffer) = %lld(B)\n"_Stz,
+         sizeof(EntBuffer));
 
-  RsbBuffer* pRsbBuffer = new RsbBuffer;
+  EntBuffer* pEntBuffer = new EntBuffer;
 
-  delete pRsbBuffer;
+  delete pEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1274,25 +1280,6 @@ void vTest24(void)
 /*----------------------------------------------------------------------------*/
 void vTest25(void)
 {
-  b4K bStrings;
-  
-  bStrings.vPrintAll();
-  
-  bStrings.iAppend("abc"_Stz);  bStrings.vPrintAll();
-  bStrings.iAppend("defg"_Stz); bStrings.vPrintAll();
-
-  TagSet* pTagSet = new TagSet();
-  
-  pTagSet->vInsert("name1"_Stz,"value1"_Stz);
-  pTagSet->vInsert("name2"_Stz,"value2"_Stz);
-  pTagSet->vInsert("name3"_Stz,"value3"_Stz);
-
-  for (i8 i_Ename = 0; i_Ename < pTagSet->nEnames(); i_Ename++)
-    vTrace("  [%lld] %s,%s (%s)\n"_Stz,
-           i_Ename,pTagSet->szName(i_Ename),pTagSet->szValue(i_Ename),
-           aTN[pTagSet->eToken(i_Ename)]);
-
-  delete pTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
