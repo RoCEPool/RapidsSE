@@ -91,7 +91,7 @@ void Step::vTagSetAsStr(void)
   
   TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
-  s4K sStr;
+  sSTMT sStr;
   SP_TagSet spTagSet;
   sStr = spTagSet.sz(pTagSet);
   
@@ -152,7 +152,7 @@ void Step::vTagSetGetStr(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // translate name into value
   
-  s4K sValue = ""_Stz;
+  sSTMT sValue = ""_Stz;
   
   if (pTagSet->bHasName(sName)) {
     sValue = pTagSet->szValue(sName);

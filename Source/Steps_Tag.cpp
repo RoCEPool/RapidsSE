@@ -62,7 +62,7 @@ void Step::vTagSet(void)
   s32 sTagNm;
   m_pDataStack->vPopStr(sTagNm,__func__);
 
-  s4K sTagValue;
+  sSTMT sTagValue;
   m_pDataStack->vPopStr(sTagValue,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
