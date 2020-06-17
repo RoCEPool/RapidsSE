@@ -15,7 +15,7 @@ namespace MetaData
 //------------------------------------------------------------------------------
 
 #include "StreamDef.hpp"
-#include "TableDef.hpp"
+//#include "TableDef.hpp"
 #include "IndexDef.hpp"
 
 #include "Table.hpp"

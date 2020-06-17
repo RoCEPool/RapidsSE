@@ -1181,9 +1181,11 @@ public:
   void vRegStreamDefDelete(void);
   void vRegStreamDefDuplicate(void);
   void vRegStreamDefGet(void);
+  void vRegStreamDefIsNull(void);
   void vRegStreamDefNew(void);
   void vRegStreamDefNewCount(void);
   void vRegStreamDefNewToCsv(void);
+  void vRegStreamDefParse(void);
   void vRegStreamDefPipeOut(void);
   void vRegStreamDefRowSize(void);
   void vRegStreamDefSet(void);
@@ -1400,7 +1402,8 @@ public:
   void vTableGet(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
-  void vTableIsDefinitionOnly(void);
+  void vTableIsDefinitionOnlyFetch(void);
+  void vTableIsDefinitionOnlyStore(void);
   void vTablePtnStreamDefFetch(void);
   void vTableLazyBuildIndexes(void);
   void vTableNew(void);
@@ -1411,8 +1414,7 @@ public:
   void vTableSet(void);
   void vTableSize(void);
   void vTableStreamDefFetch(void);
-  void vTableTableDefFetch(void);
-  void vTableTableDefStore(void);
+  void vTableStreamDefStore(void);
   void vTableTablePtnFetch(void);
   void vTableVerify(void);
   void vTableVisualize(void);

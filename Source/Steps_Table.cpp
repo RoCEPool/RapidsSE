@@ -12,32 +12,32 @@ void Step::vAddSteps_Table(void)
   vAddStep("table::delete"_Stz,            &Step::vTableDelete);
   vAddStep("table::new"_Stz,               &Step::vTableNew);
   
-  vAddStep("Table[]"_Stz,                  &Step::vTableGet);
-  vAddStep("Table[].set"_Stz,              &Step::vTableSet);
+  vAddStep("table[]"_Stz,                  &Step::vTableGet);
+  vAddStep("table[].set"_Stz,              &Step::vTableSet);
   
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
-  vAddStep("Table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
-  vAddStep("Table[].column@"_Stz,          &Step::vTableColumnFetch);
+  vAddStep("table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
+  vAddStep("table[].column@"_Stz,          &Step::vTableColumnFetch);
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
-  vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
+  vAddStep("table[].dump"_Stz,             &Step::vTableDump);
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);  
-  vAddStep("Table[].genCsvBuffer"_Stz,     &Step::vTableGenCsvBuffer);
+  vAddStep("table[].genCsvBuffer"_Stz,     &Step::vTableGenCsvBuffer);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
-  vAddStep("Table[].isDefinitionOnly"_Stz, &Step::vTableIsDefinitionOnly);
+  vAddStep("table[].isDefinitionOnly@"_Stz, &Step::vTableIsDefinitionOnlyFetch);
+  vAddStep("table[].isDefinitionOnly!"_Stz, &Step::vTableIsDefinitionOnlyStore);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
-  vAddStep("Table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
+  vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
   vAddStep("table.publish"_Stz,            &Step::vTablePublish);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table.scan"_Stz,               &Step::vTableScan);
-  vAddStep("Table[].size"_Stz,             &Step::vTableSize);
-  vAddStep("Table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
-  vAddStep("table.tableDef@"_Stz,          &Step::vTableTableDefFetch);
-  vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefStore);
-  vAddStep("Table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
-  vAddStep("Table[].verify"_Stz,           &Step::vTableVerify);
-  vAddStep("Table[].visualize"_Stz,        &Step::vTableVisualize);
+  vAddStep("table[].size"_Stz,             &Step::vTableSize);
+  vAddStep("table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
+  vAddStep("table.streamDef!"_Stz,         &Step::vTableStreamDefStore);
+  vAddStep("table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
+  vAddStep("table[].verify"_Stz,           &Step::vTableVerify);
+  vAddStep("table[].visualize"_Stz,        &Step::vTableVisualize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -358,13 +358,27 @@ void Step::vTableIsColumn(void)
 /*----------------------------------------------------------------------------*/
 /* table.isDefinitionOnly -- is the table a definition only                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTableIsDefinitionOnly(void)
+void Step::vTableIsDefinitionOnlyFetch(void)
 {
   ENTRY();
   
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
 
   m_pDataStack->vPushInt(pTable->bIsDefinitionOnly());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.isDefinitionOnly! -- store table is definition only                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTableIsDefinitionOnlyStore(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  
+  pTable->vIsDefinitionOnly(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
@@ -545,31 +559,16 @@ void Step::vTableSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.tableDef@ -- fetch table definition                                  */
+/* table.streamDef! -- store stream definition                                */
 /*----------------------------------------------------------------------------*/
-void Step::vTableTableDefFetch(void)
-{
-  ENTRY();
-
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushPtr(pTable->pTableDef());
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.tableDef! -- store table definition                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vTableTableDefStore(void)
+void Step::vTableStreamDefStore(void)
 {
   ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   
-  TableDef* pTableDef = _pTableDef(m_pDataStack->pPopPtr(__func__));
-
-  pTable->vTableDef(pTableDef);
+  pTable->vStreamDef(pStreamDef);
   
   EXIT();
 }

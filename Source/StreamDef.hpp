@@ -31,10 +31,13 @@ namespace MetaData
     StreamDef(StreamDef* pStreamDef);
    ~StreamDef(void) noexcept(false);
     
+    static eCT eColumn(Stz* szType);
+    
     void vAdd(StreamDef* pStreamDef);
     void vAddColumn(Stz* ColumnNm, eCT eColumnType);
     void vAsString(String* pString);
     i8 nColumns(i8 iSubSet);
+    eEC eParse(Stz* szCmd);
     i8 iFindColumn(char* sColumnNm, i8& iColVec);
     Column* pGetColumn(i8 iColumn);
     void vName(Stz* sName);
@@ -42,6 +45,33 @@ namespace MetaData
     void vToColPix(ColPix* axColPix, bool bPtnHash);
     void vToStreamPix(StreamPix* aStreamPix, bool bPtnHash);
     void vToMetadata(Stz* sMetaData);
+    
+  private:
+    
+    eEC eParseColumn(TokenVec* pTknVec, i8 i_Col);
+    
+    eEC eParseColumnBoolean  (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnDate     (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnDecimal  (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnFloat    (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnInteger  (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnInterval (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnTime     (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnVarchar  (TokenVec* pTknVec, Column* pCol);
+    
+    eEC eParseColumnClauses  (TokenVec* pTknVec, Column* pCol);
+    eEC eParseAsc            (TokenVec* pTknVec, Column* pCol);
+    eEC eParseDesc           (TokenVec* pTknVec, Column* pCol);
+    eEC eParseFixed          (TokenVec* pTknVec, Column* pCol);
+    eEC eParseMax            (TokenVec* pTknVec, Column* pCol);
+    eEC eParseMin            (TokenVec* pTknVec, Column* pCol);
+    eEC eParseNotNull        (TokenVec* pTknVec, Column* pCol);
+    eEC eParseRandom         (TokenVec* pTknVec, Column* pCol);
+    
+    eEC eParseTableClauses(TokenVec* pTknVec);
+    eEC eParsePartitionBy(TokenVec* pTknVec);
+    eEC eParseRowSize(TokenVec* pTknVec);
     
     Footer* aFooter(void);
   };

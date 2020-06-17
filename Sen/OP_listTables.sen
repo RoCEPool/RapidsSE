@@ -45,7 +45,7 @@
     sTableNm find execute to Table[]
 
     // skip definition only tables
-    Table[].isDefinitionOnly not if
+    Table[].isDefinitionOnly@ not if
 
     sTableNm streamSetTable[] StreamSet[].addListContents  not if
       StreamSet[].pipeOut

@@ -178,7 +178,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a table assembly (along with indexes sub-assembly)                    */
 /*----------------------------------------------------------------------------*/
-: table::makeTableAssembly params| sTableNm pTableDef | ( pTable )
+: table::makeTableAssembly params| sTableNm pStreamDef | ( pTable )
 
  sTableNm table::makeNamedTableFolder
 
@@ -188,7 +188,7 @@
 
  sTableNm table::newTable locals| pTable |
 
- pTableDef pTable table.tableDef!
+ pStreamDef pTable table.streamDef!
 
  pTable table.createPtnDef
 
@@ -200,12 +200,12 @@
 /*----------------------------------------------------------------------------*/
 /* create a table using given table definition                                */
 /*----------------------------------------------------------------------------*/
-: table::createTable params| sTableNm pTableDef | ( pTable )
+: table::createTable params| sTableNm pStreamDef | ( pTable )
 
  folder[].isTables assert
  sTableNm name::isSubFolder not assert
 
- pTableDef sTableNm table::makeTableAssembly locals| pTable |
+ pStreamDef sTableNm table::makeTableAssembly locals| pTable |
 
  folder[].isTables assert
  sTableNm name::isSubFolder assert

@@ -14,13 +14,14 @@ namespace MetaData
   class Table : public Object
   {
   private:
-    TableDef*  m_pTableDef;   // definition of this table
     s32        m_sTableNm;    // table name (leave for the moment)
     IdxVec*    m_pIdxVec;     // index vector
     Atomic     m_ixIndexNo;   // next index no
     BucketMap* m_pBucketMap;  // bucket (to partition) map
     bool       m_bIsLoading;  // data is loading
+    bool       m_bDefinitionOnly; // table is a definition only
     
+    StreamDef*    m_pStreamDef;    // table stream def
     TablePtnVec*  m_pTablePtnVec;  // table partition vector
     StreamDef*    m_pPtnStreamDef; // partition stream def
         
@@ -49,6 +50,7 @@ namespace MetaData
     IdxVec* pIdxVec(void);
     i8      nIndexBuffers(i8 iIndexNo);
     bool    bIsDefinitionOnly(void);
+    void    vIsDefinitionOnly(bool bIsDefinitionOnly);
     void    vIsLoading(bool bIsLoading);
     bool    bIsLoading(void);
     void    vLazyBuildIndexes(i8 iSlot);
@@ -61,8 +63,7 @@ namespace MetaData
     bool    bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
     StreamDef* pStreamDef(void);
-    TableDef* pTableDef(void);
-    void    vTableDef(TableDef* pTableDef);
+    void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);
     void    vTidyUp(void);
     void    vTidyUpIndex(i8 iIndexNo);

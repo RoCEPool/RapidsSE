@@ -29,26 +29,30 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse cmd and create table definition
-  <etc> <tableNm> "define table %v %v ;" str.format
-  job[] tableDef::parse locals| pTableDef |
+  //<etc> <tableNm> "define table %v %v ;" str.format
+  //job[] tableDef::parse locals| pTableDef |
 
-  pTableDef not if  ( errorCode )
-    job[] job.error@
-    false
-    exit
-  then
+  //pTableDef not if  ( errorCode )
+  //  job[] job.error@
+  //  false
+  //  exit
+  //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
 
-  pTableDef <tableNm> table::createTable locals| pTable |
-  true
+  streamDef[] <tableNm> table::createTable to table[]
+  true table[].isDefinitionOnly!
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
-: defineTable_PulseMarker
+: defineTable_StreamDef
+
+  // get the stream def
+  Pipein[] to StreamDef[]
+  nullptr to Pipein[]
 
   // grab the ddl lock
   DdlLock[].grabRead
@@ -57,7 +61,6 @@
   // check ok to create table
   defineTable::checkDefine not if ( errorCode )
     op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeout
     true
@@ -66,18 +69,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
-  defineTable::createDefinedTable not if ( errorCode )
-   op.pipelineJob@ ERROR_JOB
-   Pipein[].delete
-   Operand[].newErrorMarker
-   Operand[].pipeout
-   true
-   exit
-  then
+  defineTable::createDefinedTable
+
   // should be in tables
   folder[].isTables assert
-
-  Pipein[].pipeout
 
   true
 ;
@@ -91,7 +86,7 @@
 
   op__topology
 
-  find: defineTable_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: defineTable_StreamDef ZK_StreamDef op[].handler!
 
   op__loop
 
@@ -103,7 +98,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: defineTable :: defineTable <tableNm> <etc> ;
+cmdSyntax: defineTable :: defineTable <tableNm> ;
 
 : defineTable _cmdTags tagCopy: op_tags
   tags{

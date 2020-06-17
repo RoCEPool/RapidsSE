@@ -41,8 +41,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check create table syntax
-  <etc> <tableNm> "create table %v %v ;" str.format dup .
-  TableDef::syntax dup EC_NONE != if  ( errorCode )
+/*
+  StreamDef::parse dup EC_NONE != if  ( errorCode )
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -52,15 +52,31 @@
   else
     discard
   then
+*/
+  <etc> <tableNm> "create table %v %v ;" str.format dup .
+  job[] streamDef::parse to streamDef[]
+
+  streamDef[].isNull if
+    job[] job.error@
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in tables
   folder[].isTables assert
 
-  // grab the ddl lock
-  DdlLock[].grabRead
+  Pipein[].pipeout
+  StreamDef[].pipeout
 
 /*
+  // grab the ddl lock
+  DdlLock[].grabRead
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check there are enough buffers
   node::checkEnoughBuffers not if ( errorCode )
@@ -75,8 +91,6 @@
 
   // should be in tables
   folder[].isTables assert
-
-  Pipein[].pipeout
 
   true
 ;

@@ -46,7 +46,7 @@
     then
 
     // skip definition only tables
-    Table[].isDefinitionOnly not if
+    Table[].isDefinitionOnly@ not if
 
       0 Table[].size number.magnitude >str
 

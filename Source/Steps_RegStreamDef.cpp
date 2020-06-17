@@ -16,9 +16,11 @@ void Step::vAddSteps_RegStreamDef(void)
   vAddStep("StreamDef[].delete"_Stz,          &Step::vRegStreamDefDelete);
   vAddStep("StreamDef[].duplicate"_Stz,       &Step::vRegStreamDefDuplicate);
   vAddStep("StreamDef[].get"_Stz,             &Step::vRegStreamDefGet);
+  vAddStep("StreamDef[].isNull"_Stz,          &Step::vRegStreamDefIsNull);
   vAddStep("StreamDef[].newCountStream"_Stz,  &Step::vRegStreamDefNewCount);
   vAddStep("StreamDef[].new"_Stz,             &Step::vRegStreamDefNew);
   vAddStep("StreamDef[].newToCsvStream"_Stz,  &Step::vRegStreamDefNewToCsv);
+  vAddStep("StreamDef::parse"_Stz,            &Step::vRegStreamDefParse);
   vAddStep("StreamDef[].pipeOut"_Stz,         &Step::vRegStreamDefPipeOut);
   vAddStep("StreamDef[].rowSize"_Stz,         &Step::vRegStreamDefRowSize);
   vAddStep("StreamDef[].set"_Stz,             &Step::vRegStreamDefSet);
@@ -115,6 +117,18 @@ void Step::vRegStreamDefGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* StreamDef[].isNull -- is streamDef null ?                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefIsNull(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pRegSet->m_xpStreamDef.bIsNull() ? 1 : 0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* StreamDef[].new -- new a stream def from Table[]                           */
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefNew(void)
@@ -181,6 +195,44 @@ void Step::vRegStreamDefNewToCsv(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* streamDef::parse -- parse Create Table statement and produce a streamDef   */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefParse(void)
+{
+  ENTRY();
+  
+  Job* pJob_Local = _pJob_Local(m_pDataStack->pPopPtr(__func__));
+  
+  s4K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
+  
+  //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  //vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
+  //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  
+  StreamDef* pStreamDef = new StreamDef;
+  
+  eEC eResult = pStreamDef->eParse(sCmd);
+  
+  if (eResult != EC_NONE) {
+    
+    // at this stage shouldn't be a syntax error
+    //ASSERT(eResult != EC_INVALID_COMMAND);
+    
+    pJob_Local->vJobError(eResult);
+    
+    // delete tabledef
+    delete pStreamDef;
+    
+    pStreamDef = nullptr;
+  }
+  
+  m_pDataStack->vPushPtr(pStreamDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* StreamDef[].pipeOut -- append streamDef onto next operator in pipeline     */
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefPipeOut(void)
@@ -199,7 +251,7 @@ void Step::vRegStreamDefPipeOut(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].rowSize -- get row size from streamDef                           */
+/* StreamDef[].rowSize -- get row size from streamDef                         */
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefRowSize(void)
 {

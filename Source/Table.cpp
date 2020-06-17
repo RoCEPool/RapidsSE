@@ -68,14 +68,16 @@ Table::Table(Stz* szTableNm)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Table.m_nCreates++;
 #endif
-    
-  m_pTableDef  = nullptr;
+  
   m_sTableNm   = szTableNm;
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
   m_pBucketMap = new BucketMap(AM::nPartitions());
   m_bIsLoading = false;
-  m_pTablePtnVec = new TablePtnVec;
+  m_bDefinitionOnly = false;
+
+  m_pStreamDef    = nullptr;
+  m_pTablePtnVec  = new TablePtnVec;
   m_pPtnStreamDef = new StreamDef;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -127,9 +129,8 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   Table* pTable = _pTable(pObject);
   
-  vTrace("name %s type %s\n"_Stz,
-         pTable->m_sTableNm.azChar(),
-         aTT[pTable->m_pTableDef->m_eTableType]->azChar());
+  vTrace("name %s\n"_Stz,
+         pTable->m_sTableNm.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,10 +273,10 @@ Column* Table::pFindColumn(Stz* szColNm)
   
   Column* pColumn = nullptr;
   bool bFound = false;
-  i8 nColumns = m_pTableDef->m_pStreamDef->nColumns(C_ALL);
+  i8 nColumns = m_pStreamDef->nColumns(C_ALL);
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    pColumn = m_pTableDef->m_pStreamDef->pGetColumn(i_Col);
+    pColumn = m_pStreamDef->pGetColumn(i_Col);
     if (pColumn->szColNm()->bSame(szColNm)) {
       bFound = true;
       break;
@@ -320,7 +321,17 @@ bool Table::bIsDefinitionOnly(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_pTableDef->m_bDefinitionOnly;
+  return m_bDefinitionOnly;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set if table if definition only                                            */
+/*----------------------------------------------------------------------------*/
+void Table::vIsDefinitionOnly(bool bDefinitionOnly)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_bDefinitionOnly = bDefinitionOnly;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -383,11 +394,11 @@ void Table::vMarkTable(void)
   sTableMark.vSprintCat("Table %s\n"_Stz,
                         m_sTableNm.szStz());
   
-  i8 nCols = m_pTableDef->m_pStreamDef->nColumns(C_ALL);
+  i8 nCols = m_pStreamDef->nColumns(C_ALL);
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    Column* pColumn = m_pTableDef->m_pStreamDef->pGetColumn(i_Col);
+    Column* pColumn = m_pStreamDef->pGetColumn(i_Col);
     sTableMark.vSprintCat("  Col %02lld %s %s(%lld,%lld) %s\n"_Stz,
                           i_Col,
                           pColumn->szColNm(),
@@ -533,39 +544,23 @@ StreamDef* Table::pStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_pTableDef->m_pStreamDef;
+  return m_pStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the table definition                                                   */
+/* set StreamDef                                                              */
 /*----------------------------------------------------------------------------*/
-TableDef* Table::pTableDef(void)
+void Table::vStreamDef(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_pTableDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the table definition                                                   */
-/*----------------------------------------------------------------------------*/
-void Table::vTableDef(TableDef* pTableDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  m_pTableDef = pTableDef;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set stream def for each read api
-
-  StreamDef* pStreamDef = m_pTableDef->m_pStreamDef;
+  m_pStreamDef = pStreamDef;
   
   for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
     TablePtn* pPartition = this->pPartition(iPartition);
     ReadApi* pReadApi = pPartition->pReadApi();
     pReadApi->vStreamDef(pStreamDef);
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -590,7 +585,7 @@ void Table::vTidyUp(void)
   delete m_pIdxVec;
   delete m_pBucketMap;
     
-  delete m_pTableDef;
+  delete m_pStreamDef;
   delete m_pPtnStreamDef;
   
   // delete the TablePtn's
