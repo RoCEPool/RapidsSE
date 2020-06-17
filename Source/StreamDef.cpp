@@ -1094,6 +1094,14 @@ eEC StreamDef::eParsePartitionBy(TokenVec* pTknVec)
     
     iPartKeys++;
     
+    if ( ! pTkn ) {
+      return EC_INVALID_COMMAND;
+    }
+    
+    if ( pTkn->bSame(";"_Stz) ) {
+      return EC_INVALID_COMMAND;
+    }
+    
     // find column and set as partition column
     for (i8 i_Col = 0; i_Col < nColumns(C_ALL); i_Col++) {
       Column* pCol = pGetColumn(i_Col);
