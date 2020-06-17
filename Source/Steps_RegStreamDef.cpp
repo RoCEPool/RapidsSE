@@ -17,6 +17,7 @@ void Step::vAddSteps_RegStreamDef(void)
   vAddStep("StreamDef[].duplicate"_Stz,       &Step::vRegStreamDefDuplicate);
   vAddStep("StreamDef[].get"_Stz,             &Step::vRegStreamDefGet);
   vAddStep("StreamDef[].isNull"_Stz,          &Step::vRegStreamDefIsNull);
+  vAddStep("StreamDef[].name"_Stz,            &Step::vRegStreamDefName);
   vAddStep("StreamDef[].newCountStream"_Stz,  &Step::vRegStreamDefNewCount);
   vAddStep("StreamDef[].new"_Stz,             &Step::vRegStreamDefNew);
   vAddStep("StreamDef[].newToCsvStream"_Stz,  &Step::vRegStreamDefNewToCsv);
@@ -124,6 +125,21 @@ void Step::vRegStreamDefIsNull(void)
   ENTRY();
   
   m_pDataStack->vPushInt(m_pRegSet->m_xpStreamDef.bIsNull() ? 1 : 0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].name -- get streamDef name                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefName(void)
+{
+  ENTRY();
+  
+  StreamDef* pStreamDef = _pStreamDef(*m_pRegSet->m_xpStreamDef);
+  
+  s32 sName = pStreamDef->szName();
+  m_pDataStack->vPushStr(sName);
   
   EXIT();
 }

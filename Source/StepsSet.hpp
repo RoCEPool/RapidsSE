@@ -1182,6 +1182,7 @@ public:
   void vRegStreamDefDuplicate(void);
   void vRegStreamDefGet(void);
   void vRegStreamDefIsNull(void);
+  void vRegStreamDefName(void);
   void vRegStreamDefNew(void);
   void vRegStreamDefNewCount(void);
   void vRegStreamDefNewToCsv(void);

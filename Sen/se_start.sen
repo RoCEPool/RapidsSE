@@ -110,7 +110,7 @@
     start | periodicOp once | syntaxTable $tableNm $etc | stageB
 
   stage stageB on all nodes :
-    createTable $tableNm | stageC
+    createTable | stageC
 
   stage stageC on origin :
     sink | stageA

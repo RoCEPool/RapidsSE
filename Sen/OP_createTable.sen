@@ -7,13 +7,15 @@
 /*----------------------------------------------------------------------------*/
 /* check if <tableNm> is a creatable table                                    */
 /*----------------------------------------------------------------------------*/
-: createTable::checkCreate ( -- true | errorCode false )
+: createTable::checkCreate ( -- true | false )
+
+  params| sTableNm |
 
   // check in tables folder: ../schemas/public/tables
   check::folderIsTables not if false exit then
 
   // error if given name already exists
-  <tableNm> check::nameIsUnknownTable not if false exit then
+  sTableNm check::nameIsUnknownTable not if false exit then
 
   true
 ;
@@ -21,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 /* create table <tableNm> on this particpating node                           */
 /*----------------------------------------------------------------------------*/
-: createTable::createNamedTable
+: createTable::createNamedTable params| sTableNm |
 
   // assert initial folder is ./tables
   //   /tenants/boray/catalogs/rapidsse/schemas/public/tables
@@ -30,7 +32,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
 
-  streamDef[] <tableNm> table::createTable to table[]
+  streamDef[] sTableNm table::createTable to table[]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -38,16 +40,28 @@
 /*----------------------------------------------------------------------------*/
 : createTable_StreamDef
 
+  0 locals| sTableNm |
+
   // get the stream def
   Pipein[] to StreamDef[]
   nullptr to Pipein[]
+
+  // get the table name
+  "<tableNm>" job[] job.tagSet@ tagSet.hasName if
+    <tableNm> to sTableNm
+  else
+    StreamDef[].name to sTableNm
+  then
+
+  //"***********" .
+  //sTableNm .
 
   // grab the ddl lock
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check ok to create table
-  createTable::checkCreate not if ( errorCode )
+  sTableNm createTable::checkCreate not if ( errorCode )
     StreamDef[].delete
     op.pipelineJob@ ERROR_JOB
     Operand[].newErrorMarker
@@ -58,7 +72,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
-  createTable::createNamedTable
+  sTableNm createTable::createNamedTable
 
   // should be in tables
   folder[].isTables assert
@@ -88,6 +102,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: createTable :: createTable <tableNm> ;
+cmdSyntax: createTable :: createTable ;
 
 : createTable _cmdTags tagCopy: op_tags
   tags{
