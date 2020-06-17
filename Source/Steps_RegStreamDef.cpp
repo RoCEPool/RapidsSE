@@ -219,7 +219,7 @@ void Step::vRegStreamDefParse(void)
   
   Job* pJob_Local = _pJob_Local(m_pDataStack->pPopPtr(__func__));
   
-  s4K sCmd;
+  sSTMT sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
   
   //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);

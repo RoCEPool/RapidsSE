@@ -6,7 +6,7 @@
 namespace Esses
 {
   static const i8 C_SP_FORMAT = 32;
-  static const i8 C_SP_RESULT = C_4K;
+  static const i8 C_SP_RESULT = C_MAX_STATEMENT;
   
   class SP : public StackObject
   {

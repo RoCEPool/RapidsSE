@@ -989,7 +989,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the command string using the parameter ename pairs
-  s4K szCmdStr;
+  sSTMT szCmdStr;
   vToCmdStr(szCmdStr);
 
   TokenVec* pTknVec = new TokenVec;

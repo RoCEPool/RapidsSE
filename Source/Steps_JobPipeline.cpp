@@ -90,7 +90,7 @@ void Step::vJob_PipelineCompile(void)
 {
   ENTRY();
   
-  s4K sCmd;
+  sSTMT sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
   
   m_pRegSet->m_xpDynamo = new Dynamo(sCmd,m_pTask->m_pJob);

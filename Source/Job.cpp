@@ -867,7 +867,7 @@ void Job::vPrint(Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  s4K sFormatted;
+  sSTMT sFormatted;
   
   SP_Timer spTimer;
   
