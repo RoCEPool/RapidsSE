@@ -28,17 +28,6 @@
   folder[].isTables assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // parse cmd and create table definition
-  //<etc> <tableNm> "define table %v %v ;" str.format
-  //job[] tableDef::parse locals| pTableDef |
-
-  //pTableDef not if  ( errorCode )
-  //  job[] job.error@
-  //  false
-  //  exit
-  //then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
 
   streamDef[] <tableNm> table::createTable to table[]
