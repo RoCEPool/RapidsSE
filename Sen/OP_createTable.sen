@@ -48,6 +48,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check ok to create table
   createTable::checkCreate not if ( errorCode )
+    StreamDef[].delete
     op.pipelineJob@ ERROR_JOB
     Operand[].newErrorMarker
     Operand[].pipeout
