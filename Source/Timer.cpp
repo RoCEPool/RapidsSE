@@ -210,6 +210,25 @@ i8 Timer::iUpdate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get rate per second                                                        */
+/*----------------------------------------------------------------------------*/
+d8 Timer::dRatePerSec(i8 nItems)
+{
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
+  i8 nNanosPerItem = iNanoseconds() / nItems;
+  
+  RASSERT(nNanosPerItem < C_1G);
+  
+  if (! nNanosPerItem)
+    return 0.0;
+  
+  d8 dRate = (d8)C_1G / (d8)nNanosPerItem;
+  
+  return dRate;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 __aFooterFunction(Timer)

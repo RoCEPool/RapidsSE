@@ -1243,7 +1243,7 @@ void vTest20(void)
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
 {
-  vTrace("This is EntBuffer Test; sizeof(EntBuffer) = %lld(B)\n"_Stz,
+  vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,
          sizeof(EntBuffer));
 
   i8 i_Ent;
@@ -1274,10 +1274,22 @@ void vTest21(void)
   SP_Timer spTimer;
   SP_Timer spTimer2;
 
-  vTrace("aInsertEntAbs() of %lld entries took %s : %s/ent\n"_Stz,
+  vTrace("aInsertEntAbs() of %lld entries took %s "
+         ": %s/ent : %6.2f ent/s "
+         ": %4.2fs/1M "
+         ": %4.2fs for SF100 LineItem over 48ptn "
+         "\n"_Stz,
+         
          i_Ent,
          spTimer.sz(xTimer.iNanoseconds()),
-         spTimer2.sz(xTimer.iNanoseconds() / i_Ent)
+         
+         spTimer2.sz(xTimer.iNanoseconds() / i_Ent),
+         xTimer.dRatePerSec(i_Ent),
+         
+         (d8)C_1M / xTimer.dRatePerSec(i_Ent),
+         
+         600000000.0 / xTimer.dRatePerSec(i_Ent) / 48
+         
          );
 
   delete pEntBuffer;

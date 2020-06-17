@@ -37,6 +37,8 @@ namespace Gadgets
     i8 iStart(void);
     i8 iUpdate(void);
 
+    d8 dRatePerSec(i8 nItems);
+  
     Footer* aFooter(void);
   };
   
