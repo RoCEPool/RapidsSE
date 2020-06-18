@@ -21,11 +21,13 @@ namespace Structures
   
     void  vDecItems(void);
     ITEM* pGet(i8 i_Item, bool bDisableBounds=false);
+    ITEM  xGet(i8 i_Item);
     void  vIncItems(void);
     i8    nItems(void);
     void  vItems(i8 nItems);
     i8    nMaxItems(void);
-  
+    void  vSet(i8 i_Item, ITEM xItem);
+
     Footer* aFooter(void);
   };
 
@@ -96,6 +98,19 @@ ITEM* ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::pGet(i8 i_Item, bool bDisableBounds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a specific item                                                        */
+/*----------------------------------------------------------------------------*/
+template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+ITEM ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::xGet(i8 i_Item)
+{
+  aFooter()->vAssertFooter();
+  
+  ITEM xItem = m_oItem[i_Item];
+  
+  return xItem;
+}
+
+/*----------------------------------------------------------------------------*/
 /* increment the number of items                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
@@ -142,6 +157,18 @@ i8 ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::nMaxItems(void)
   
   return MAX_ITEMS;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set a specific item                                                        */
+/*----------------------------------------------------------------------------*/
+template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+void ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::vSet(i8 i_Item, ITEM xItem)
+{
+  aFooter()->vAssertFooter();
+  
+  m_oItem[i_Item] = xItem;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

@@ -1246,10 +1246,18 @@ void vTest21(void)
   vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,
          sizeof(EntBuffer));
   
+  static const i8 C_INTS_ENTBUFFER = 28491;
   Timer  xTimer;
   EntWrk xEntWrk;
 
   i8 i_Ent = 0;
+  
+  IntUtility* pIntUte = new IntUtility(C_INTS_ENTBUFFER);
+  for (i8 i_Int = 0; i_Int < C_INTS_ENTBUFFER; i_Int++)
+    pIntUte->vSet(i_Int,i_Int);
+    
+  vTrace("IntUte of %lld ints\n"_Stz,
+         pIntUte->nInts());
 
   
   xTimer.vStart();
@@ -1258,11 +1266,13 @@ void vTest21(void)
     
     EntBuffer* pEntBuffer = new EntBuffer;
     
-    for (; ; i_Ent++) {
+    for (i8 i_Int = 0; ; i_Int++, i_Ent++) {
       
       i8 nOffsets = AM::nRandomLevels();
       
-      xEntWrk.vAppendInt(i_Ent);
+      i8 iInt = pIntUte->iGet(i_Int);
+      //vTrace("%lld "_Stz,iInt);
+      xEntWrk.vAppendInt(iInt);
       xEntWrk.vOffsets(nOffsets);
       
       i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
@@ -1274,7 +1284,8 @@ void vTest21(void)
       xEntWrk.vReset();
     }
   }
-    
+  vTrace("\n"_Stz);
+
   xTimer.vUpdate();
 
   
