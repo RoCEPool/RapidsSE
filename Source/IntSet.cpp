@@ -241,7 +241,7 @@ void IntSet::vSort(void)
   
   if (m_sDesc.nLength())
     m_sDesc.vAppend(' ');
-  m_sDesc.vConcat("sorted"_Stz);
+  m_sDesc.vConcat("sorted(ascending)"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

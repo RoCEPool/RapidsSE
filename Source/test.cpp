@@ -1296,7 +1296,45 @@ IntSet* pTest21_keySamples(void)
 /*----------------------------------------------------------------------------*/
 /* test21 : populate EntBuffer using KeySamples                               */
 /*----------------------------------------------------------------------------*/
-void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
+void vTest21_delete(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
+{
+  Ref xRef;
+  EntWrk xEntWrk;
+
+  i8 nInts = pKeySamples->nInts();
+  
+  for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
+          
+    i8 iInt = pKeySamples->iGet(i_Int);
+    
+    // ref
+    xRef.vBuffer(0);
+    xRef.vItem(iInt);
+    xEntWrk.vRef(xRef);
+    
+    // key
+    xEntWrk.vAppendInt(iInt);
+    
+    // neo
+    i8 nOffsets = AM::nRandomLevels();
+    xEntWrk.vOffsets(nOffsets);
+    
+    i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
+    if (! pEntBuffer->bHasSpace(nBytesNeeded))
+      break;
+    
+    //Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
+    nTotalDel_++;
+    
+    xEntWrk.vReset();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* test21 : populate EntBuffer using KeySamples                               */
+/*----------------------------------------------------------------------------*/
+void vTest21_insert(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalIns_)
 {
   Ref xRef;
   EntWrk xEntWrk;
@@ -1324,7 +1362,7 @@ void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
       break;
     
     Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
-    nTotalEnts++;
+    nTotalIns_++;
     
     xEntWrk.vReset();
   }
@@ -1372,7 +1410,42 @@ void vTest21_results(Stz* szTestFn, IntSet* pKeySamples,
 }
 
 /*----------------------------------------------------------------------------*/
-/* test21 : run one sub-test                                                  */
+/* test21 : run one delete test                                               */
+/*----------------------------------------------------------------------------*/
+void vTest21_testDeletes(IntSet* pKeySamples, i8 nBuffers)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a number of EntBuffers using the key samples
+  
+  i8 nTotalEnts = 0;
+  
+  Timer    xTimer;
+  AggTimer xAggTimer;
+
+  
+  for (i8 i_Buf = 0; i_Buf < nBuffers; i_Buf++) {
+    EntBuffer* pEntBuffer = new EntBuffer;
+    vTest21_insert(pEntBuffer,pKeySamples,nTotalEnts);
+    
+    xTimer.vStart();
+    
+    xTimer.vUpdate();
+    xAggTimer.vAdd(&xTimer);
+
+    delete pEntBuffer;
+  }
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // print timing results
+  
+  vTest21_results("DELETE()"_Stz,pKeySamples,&xAggTimer,nTotalEnts);
+  
+  //pKeySamples->vDescReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test21 : run one insert test                                               */
 /*----------------------------------------------------------------------------*/
 void vTest21_testInserts(IntSet* pKeySamples, i8 nBuffers)
 {
@@ -1388,7 +1461,7 @@ void vTest21_testInserts(IntSet* pKeySamples, i8 nBuffers)
   
   for (i8 i_Buf = 0; i_Buf < nBuffers; i_Buf++) {
     EntBuffer* pEntBuffer = new EntBuffer;
-    vTest21_populate(pEntBuffer,pKeySamples,nTotalEnts);
+    vTest21_insert(pEntBuffer,pKeySamples,nTotalEnts);
     delete pEntBuffer;
   }
 
@@ -1400,8 +1473,6 @@ void vTest21_testInserts(IntSet* pKeySamples, i8 nBuffers)
   // print timing results
   
   vTest21_results("aInsertEntAbs()"_Stz,pKeySamples,&xAggTimer,nTotalEnts);
-  
-  //pKeySamples->vDescReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1422,12 +1493,15 @@ void vTest21(void)
   
   pKeySamples->vAscending();
   vTest21_testInserts(pKeySamples,10);
-  
+  vTest21_testDeletes(pKeySamples,10);
+
   pKeySamples->vDescending();
   vTest21_testInserts(pKeySamples,10);
-  
+  vTest21_testDeletes(pKeySamples,10);
+
   pKeySamples->vRandomise();
   vTest21_testInserts(pKeySamples,10);
+  vTest21_testDeletes(pKeySamples,10);
 }
 
 /*----------------------------------------------------------------------------*/
