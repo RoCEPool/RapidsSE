@@ -1239,7 +1239,7 @@ void vTest20(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test21 : popluate                                                          */
+/* test21 : populate EntBuffer using KeySamples                               */
 /*----------------------------------------------------------------------------*/
 void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
 {
@@ -1271,6 +1271,39 @@ void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
     xEntWrk.vReset();
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* test21 : print results                                                     */
+/*----------------------------------------------------------------------------*/
+void vTest21_results(IntSet* pKeySamples,Timer* pTimer, i8 nTotalEnts)
+{
+  SP_Timer spTimer1;
+  SP_Timer spTimer2;
+  
+  i8 nElapsedNsec = pTimer->iNanoseconds();
+  d8 dRatePerSec  = pTimer->dRatePerSec(nTotalEnts);
+
+  vTrace("\n"_Stz);
+  vTrace("aInsertEntAbs() of %lld entries took %s "
+         ": %s/ent : %6.2f ent/s "
+         ": %4.2fs/1M "
+         ": %4.2fs for SF100 LineItem over 48ptn "
+         "\n"_Stz,
+         
+         nTotalEnts,
+         spTimer1.sz(nElapsedNsec),
+         
+         spTimer2.sz(nElapsedNsec / nTotalEnts),
+         dRatePerSec,
+         
+         (d8)C_1M / dRatePerSec,
+         
+         (d8)(C_TPCH_LINEITEM * 100) / dRatePerSec / 48
+         
+         );
+  
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
