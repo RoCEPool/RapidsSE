@@ -1245,34 +1245,44 @@ void vTest21(void)
 {
   vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,
          sizeof(EntBuffer));
-
-  i8 i_Ent;
-  EntWrk xEntWrk;
   
-  Timer xTimer;
-  EntBuffer* pEntBuffer = new EntBuffer;
+  Timer  xTimer;
+  EntWrk xEntWrk;
+
+  i8 i_Ent = 0;
+
   
   xTimer.vStart();
-  for (i_Ent = 0; ; i_Ent++) {
+  
+  for (i8 i_Buf = 0; i_Buf < 1; i_Buf++) {
     
-    i8 nOffsets = AM::nRandomLevels();
+    EntBuffer* pEntBuffer = new EntBuffer;
     
-    xEntWrk.vAppendInt(i_Ent);
-    xEntWrk.vOffsets(nOffsets);
-    
-    i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
-    if (! pEntBuffer->bHasSpace(nBytesNeeded))
-      break;
-    
-    Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
-    
-    xEntWrk.vReset();
+    for (; ; i_Ent++) {
+      
+      i8 nOffsets = AM::nRandomLevels();
+      
+      xEntWrk.vAppendInt(i_Ent);
+      xEntWrk.vOffsets(nOffsets);
+      
+      i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
+      if (! pEntBuffer->bHasSpace(nBytesNeeded))
+        break;
+      
+      Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
+      
+      xEntWrk.vReset();
+    }
   }
+    
   xTimer.vUpdate();
 
   
   SP_Timer spTimer;
   SP_Timer spTimer2;
+  
+  i8 nElapsedNsec = xTimer.iNanoseconds();
+  d8 dRatePerSec  = xTimer.dRatePerSec(i_Ent);
 
   vTrace("aInsertEntAbs() of %lld entries took %s "
          ": %s/ent : %6.2f ent/s "
@@ -1281,18 +1291,18 @@ void vTest21(void)
          "\n"_Stz,
          
          i_Ent,
-         spTimer.sz(xTimer.iNanoseconds()),
+         spTimer.sz(nElapsedNsec),
          
-         spTimer2.sz(xTimer.iNanoseconds() / i_Ent),
-         xTimer.dRatePerSec(i_Ent),
+         spTimer2.sz(nElapsedNsec / i_Ent),
+         dRatePerSec,
          
-         (d8)C_1M / xTimer.dRatePerSec(i_Ent),
+         (d8)C_1M / dRatePerSec,
          
-         (d8)(C_TPCH_LINEITEM * 100) / xTimer.dRatePerSec(i_Ent) / 48
+         (d8)(C_TPCH_LINEITEM * 100) / dRatePerSec / 48
          
          );
 
-  delete pEntBuffer;
+  //delete pEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
