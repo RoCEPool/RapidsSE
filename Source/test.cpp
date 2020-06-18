@@ -1309,7 +1309,7 @@ void vTest21_results(IntSet* pKeySamples,Timer* pTimer, i8 nTotalEnts)
 /*----------------------------------------------------------------------------*/
 /* test21 : run one sub-test                                                  */
 /*----------------------------------------------------------------------------*/
-void vTest21_testShot(IntSet* pKeySamples)
+void vTest21_testShot(IntSet* pKeySamples, i8 nBuffers)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a number of EntBuffers using the key samples
@@ -1320,7 +1320,7 @@ void vTest21_testShot(IntSet* pKeySamples)
 
   xTimer.vStart();
   
-  for (i8 i_Buf = 0; i_Buf < 1; i_Buf++) {
+  for (i8 i_Buf = 0; i_Buf < nBuffers; i_Buf++) {
     EntBuffer* pEntBuffer = new EntBuffer;
     vTest21_populate(pEntBuffer,pKeySamples,nTotalEnts);
     delete pEntBuffer;
@@ -1383,12 +1383,12 @@ void vTest21(void)
   // run tests
   
   pKeySamples->vAscending();
-  vTest21_testShot(pKeySamples);
+  vTest21_testShot(pKeySamples,10);
   pKeySamples->vDescReset();
   
   
   pKeySamples->vDescending();
-  vTest21_testShot(pKeySamples);
+  vTest21_testShot(pKeySamples,10);
   pKeySamples->vDescReset();
 }
 

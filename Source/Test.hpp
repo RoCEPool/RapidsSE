@@ -26,7 +26,7 @@ void vTest20(void);
 
 void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts);
 void vTest21_results(IntSet* pKeySamples,Timer* pTimer, i8 nTotalEnts);
-void vTest21_testShot(IntSet* pKeySamples);
+void vTest21_testShot(IntSet* pKeySamples, i8 nBuffers);
 
 void vTest21(void);
 void vTest22(void);
