@@ -1315,7 +1315,8 @@ void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
 /*----------------------------------------------------------------------------*/
 /* test21 : print results                                                     */
 /*----------------------------------------------------------------------------*/
-void vTest21_results(IntSet* pKeySamples,Timer* pTimer, i8 nTotalEnts)
+void vTest21_results(Stz* szTestFn, IntSet* pKeySamples,
+                     Timer* pTimer, i8 nTotalEnts)
 {
   SP_Bytes spBytes;
   SP_Timer spTimer1;
@@ -1327,13 +1328,14 @@ void vTest21_results(IntSet* pKeySamples,Timer* pTimer, i8 nTotalEnts)
   i8 nBytesPerDay = (i8)(dRatePerSec * C_SECS_PER_DAY * 128 * 48);
   
   vTrace("\n"_Stz);
-  vTrace("aInsertEntAbs() of %lld %s entries took %s "
+  vTrace("%s of %lld %s entries took %s "
          ": %s/ent : %6.2f ent/s "
          ": %4.2fs/1M "
          ": %4.2fs for SF100 LineItem over 48ptn "
          ": %s per day"
          "\n"_Stz,
          
+         szTestFn,
          nTotalEnts,
          pKeySamples->szDesc(),
          spTimer1.sz(nElapsedNsec),
@@ -1375,7 +1377,7 @@ void vTest21_testShot(IntSet* pKeySamples, i8 nBuffers)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // print timing results
   
-  vTest21_results(pKeySamples,&xTimer,nTotalEnts);
+  vTest21_results("aInsertEntAbs()"_Stz,pKeySamples,&xTimer,nTotalEnts);
   
   pKeySamples->vDescReset();
 }
