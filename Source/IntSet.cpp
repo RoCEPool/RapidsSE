@@ -78,10 +78,23 @@ void IntSet::vAscending(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
+  vAscending(0,1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set as an ascending set of integers                                        */
+/*----------------------------------------------------------------------------*/
+void IntSet::vAscending(i8 iStart, i8 iStride)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
   i8 nItems = m_pIntAry->nItems();
   
-  for (i8 i_Item = 0; i_Item < nItems; i_Item++)
-    vSet(i_Item,i_Item);
+  i8 iInt = iStart;
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
+    vSet(i_Item,iInt);
+    iInt += iStride;
+  }
   
   if (m_sDesc.nLength())
     m_sDesc.vAppend(' ');
@@ -97,10 +110,24 @@ void IntSet::vDescending(void)
   
   i8 nItems = m_pIntAry->nItems();
   
-  i8 iInt = nItems - 1;
-  for (i8 i_Item = 0; i_Item < nItems; i_Item++)
-    vSet(i_Item,iInt--);
+  vDescending(nItems,1);
+}
 
+/*----------------------------------------------------------------------------*/
+/* set as an descending set of integers                                       */
+/*----------------------------------------------------------------------------*/
+void IntSet::vDescending(i8 iStart, i8 iStride)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  i8 nItems = m_pIntAry->nItems();
+  
+  i8 iInt = iStart;
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
+    vSet(i_Item,iInt);
+    iInt -= iStride;
+  }
+  
   if (m_sDesc.nLength())
     m_sDesc.vAppend(' ');
   m_sDesc.vConcat("descending"_Stz);

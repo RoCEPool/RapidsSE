@@ -24,7 +24,9 @@ namespace Utilities
    ~IntSet(void) noexcept(false);
   
     void vAscending(void);
+    void vAscending(i8 iStart, i8 iStride);
     void vDescending(void);
+    void vDescending(i8 iStart, i8 iStride);
     void vRandomise(void);
     void vRandoms(i8 iMin, i8 iMax);
     void vRandomsUnique(i8 iMin, i8 iMax);
