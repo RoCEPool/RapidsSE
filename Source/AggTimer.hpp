@@ -23,6 +23,7 @@ namespace Gadgets
     AggTimer(void);
    ~AggTimer(void) noexcept(false);
     
+    void vAdd(i8 iTicks);
     void vReset(void);
     void vSet(i8 iTicks);
     
