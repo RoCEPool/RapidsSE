@@ -32,6 +32,7 @@ namespace Utilities
     void vSortDescend(void);
 
     Stz* szDesc(void);
+    void vDescReset(void);
     bool bHas(i8 iInt);
     i8 iFind(i8 iInt);
     i8 iGet(i8 i_Item);

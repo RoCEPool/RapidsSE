@@ -1304,8 +1304,6 @@ void vTest21_results(IntSet* pKeySamples,Timer* pTimer, i8 nTotalEnts)
          (d8)(C_TPCH_LINEITEM * 100) / dRatePerSec / 48
          
          );
-  
-  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1381,33 +1379,17 @@ void vTest21(void)
   IntSet* pKeySamples = new IntSet(nEnts);
   vTrace("KeySamples of %lld ints\n"_Stz,pKeySamples->nInts());
   
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run tests
   
   pKeySamples->vAscending();
   vTest21_testShot(pKeySamples);
-
+  pKeySamples->vDescReset();
   
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // create a number of EntBuffers using the key samples
-//
-//  Timer  xTimer;
-//
-//  xTimer.vStart();
-//
-//  for (i8 i_Buf = 0; i_Buf < 1; i_Buf++) {
-//    EntBuffer* pEntBuffer = new EntBuffer;
-//    vTest21_populate(pEntBuffer,pKeySamples,nTotalEnts);
-//    delete pEntBuffer;
-//  }
-//
-//  xTimer.vUpdate();
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // print timing results
-//
-//  vTest21_results(pKeySamples,&xTimer,nTotalEnts);
+  
+  pKeySamples->vDescending();
+  vTest21_testShot(pKeySamples);
+  pKeySamples->vDescReset();
 }
 
 /*----------------------------------------------------------------------------*/
