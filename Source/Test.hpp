@@ -23,6 +23,9 @@ void vTest17(void);
 void vTest18(void);
 void vTest19(void);
 void vTest20(void);
+
+void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& i_Ent);
+
 void vTest21(void);
 void vTest22(void);
 void vTest23(void);

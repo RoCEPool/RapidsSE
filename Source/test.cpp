@@ -1239,6 +1239,41 @@ void vTest20(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test21 : popluate                                                          */
+/*----------------------------------------------------------------------------*/
+void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& i_Ent)
+{
+  Ref xRef;
+  EntWrk xEntWrk;
+
+  for (i8 i_Int = 0; ; i_Int++, i_Ent++) {
+          
+    i8 iInt = pKeySamples->iGet(i_Int);
+    
+    // ref
+    xRef.vBuffer(0);
+    xRef.vItem(iInt);
+    xEntWrk.vRef(xRef);
+    
+    // key
+    xEntWrk.vAppendInt(iInt);
+    
+    // neo
+    i8 nOffsets = AM::nRandomLevels();
+    xEntWrk.vOffsets(nOffsets);
+    
+    i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
+    if (! pEntBuffer->bHasSpace(nBytesNeeded))
+      break;
+    
+    Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
+    
+    xEntWrk.vReset();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* test21 : EntBuffer Test                                                    */
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
