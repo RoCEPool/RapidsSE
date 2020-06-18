@@ -1288,7 +1288,7 @@ void vTest21(void)
          
          (d8)C_1M / xTimer.dRatePerSec(i_Ent),
          
-         600000000.0 / xTimer.dRatePerSec(i_Ent) / 48
+         (d8)(C_TPCH_LINEITEM * 100) / xTimer.dRatePerSec(i_Ent) / 48
          
          );
 
