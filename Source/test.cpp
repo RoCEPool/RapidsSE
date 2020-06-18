@@ -1368,10 +1368,12 @@ void vTest21_testShot(IntSet* pKeySamples, i8 nBuffers)
   // print timing results
   
   vTest21_results(pKeySamples,&xTimer,nTotalEnts);
+  
+  pKeySamples->vDescReset();
 }
 
 /*----------------------------------------------------------------------------*/
-/* test21 : EntBuffer Test                                                    */
+/* test21 : EntBuffer Test -- tune the insert of ent into skiplist of 1 buffer*/
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
 {
@@ -1394,12 +1396,9 @@ void vTest21(void)
   
   pKeySamples->vAscending();
   vTest21_testShot(pKeySamples,10);
-  pKeySamples->vDescReset();
-  
   
   pKeySamples->vDescending();
   vTest21_testShot(pKeySamples,10);
-  pKeySamples->vDescReset();
 }
 
 /*----------------------------------------------------------------------------*/
