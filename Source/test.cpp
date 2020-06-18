@@ -1277,12 +1277,12 @@ i8 nTest21_intEnts(void)
 /*----------------------------------------------------------------------------*/
 /* test21 : create an int set for key samples                                 */
 /*----------------------------------------------------------------------------*/
-IntSet* pTest21_keySamples(void)
+IntSet* pTest21_keySamples(i8 nSamples)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first calculate how many int entries fit into an EntBuffer
   
-  i8 nEntsWhichFit = nTest21_intEnts();
+  i8 nEntsWhichFit = C_UNKNOWN == nSamples ? nTest21_intEnts() : nSamples;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create that many keys
@@ -1538,13 +1538,15 @@ void vTest21_testSearch(IntSet* pKeySamples, i8 nBuffers)
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
 {
+  i8 nSamples = C_UNKNOWN;
+  
   vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,
          sizeof(EntBuffer));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create key sample int set
 
-  IntSet* pKeySamples = pTest21_keySamples();
+  IntSet* pKeySamples = pTest21_keySamples(nSamples);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run our tests

@@ -25,7 +25,7 @@ void vTest19(void);
 void vTest20(void);
 
 i8   nTest21_intEnts(void);
-IntSet* pTest21_keySamples(void);
+IntSet* pTest21_keySamples(i8 nSamples=C_UNKNOWN);
 void vTest21_printResults(Stz* szTestFn, IntSet* pKeySamples,
                           AggTimer* pAggTimer, i8 nTotalEnts);
 
