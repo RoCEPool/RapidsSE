@@ -1275,6 +1275,25 @@ i8 nTest21_intEnts(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test21 : create an int set for key samples                                 */
+/*----------------------------------------------------------------------------*/
+IntSet* pTest21_keySamples(void)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // first calculate how many int entries fit into an EntBuffer
+  
+  i8 nEntsWhichFit = nTest21_intEnts();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create that many keys
+
+  IntSet* pKeySamples = new IntSet(nEntsWhichFit);
+  vTrace("KeySamples of %lld ints\n"_Stz,pKeySamples->nInts());
+  
+  return pKeySamples;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test21 : populate EntBuffer using KeySamples                               */
 /*----------------------------------------------------------------------------*/
 void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
@@ -1316,14 +1335,14 @@ void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
 /* test21 : print results                                                     */
 /*----------------------------------------------------------------------------*/
 void vTest21_results(Stz* szTestFn, IntSet* pKeySamples,
-                     Timer* pTimer, i8 nTotalEnts)
+                     AggTimer* pAggTimer, i8 nTotalEnts)
 {
   SP_Bytes spBytes;
   SP_Timer spTimer1;
   SP_Timer spTimer2;
 
-  i8 nElapsedNsec = pTimer->iNanoseconds();
-  d8 dRatePerSec  = pTimer->dRatePerSec(nTotalEnts);
+  i8 nElapsedNsec = pAggTimer->iNanoseconds();
+  d8 dRatePerSec  = pAggTimer->dRatePerSec(nTotalEnts);
 
   i8 nBytesPerDay = (i8)(dRatePerSec * C_SECS_PER_DAY * 128 * 48);
   
@@ -1355,14 +1374,15 @@ void vTest21_results(Stz* szTestFn, IntSet* pKeySamples,
 /*----------------------------------------------------------------------------*/
 /* test21 : run one sub-test                                                  */
 /*----------------------------------------------------------------------------*/
-void vTest21_testShot(IntSet* pKeySamples, i8 nBuffers)
+void vTest21_testInserts(IntSet* pKeySamples, i8 nBuffers)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a number of EntBuffers using the key samples
   
   i8 nTotalEnts = 0;
   
-  Timer  xTimer;
+  Timer    xTimer;
+  AggTimer xAggTimer;
 
   xTimer.vStart();
   
@@ -1374,10 +1394,12 @@ void vTest21_testShot(IntSet* pKeySamples, i8 nBuffers)
 
   xTimer.vUpdate();
 
+  xAggTimer.vAdd(&xTimer);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // print timing results
   
-  vTest21_results("aInsertEntAbs()"_Stz,pKeySamples,&xTimer,nTotalEnts);
+  vTest21_results("aInsertEntAbs()"_Stz,pKeySamples,&xAggTimer,nTotalEnts);
   
   //pKeySamples->vDescReset();
 }
@@ -1391,27 +1413,21 @@ void vTest21(void)
          sizeof(EntBuffer));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // first calculate how many int entries fit into an EntBuffer
-  
-  i8 nEntsWhichFit = nTest21_intEnts();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create that many keys
+  // create key sample int set
 
-  IntSet* pKeySamples = new IntSet(nEntsWhichFit);
-  vTrace("KeySamples of %lld ints\n"_Stz,pKeySamples->nInts());
+  IntSet* pKeySamples = pTest21_keySamples();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run our tests
   
   pKeySamples->vAscending();
-  vTest21_testShot(pKeySamples,10);
+  vTest21_testInserts(pKeySamples,10);
   
   pKeySamples->vDescending();
-  vTest21_testShot(pKeySamples,10);
+  vTest21_testInserts(pKeySamples,10);
   
   pKeySamples->vRandomise();
-  vTest21_testShot(pKeySamples,10);
+  vTest21_testInserts(pKeySamples,10);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1419,28 +1435,6 @@ void vTest21(void)
 /*----------------------------------------------------------------------------*/
 void vTest22(void)
 {
-  IntSet* pIntSet = new IntSet(64);
-
-  pIntSet->vAscending();          pIntSet->vPrint(false);
-  pIntSet->vDescending();         pIntSet->vPrint(false);
-  pIntSet->vSort();               pIntSet->vPrint(false);
-  pIntSet->vSortDescend();        pIntSet->vPrint(false);
-  
-  pIntSet->vRandoms(0,16);        pIntSet->vPrint(false);
-  pIntSet->vSort();               pIntSet->vPrint(false);
-  pIntSet->vSortDescend();        pIntSet->vPrint(false);
-  
-  pIntSet->vRandomsUnique(0,64);  pIntSet->vPrint(false);
-  pIntSet->vSort();               pIntSet->vPrint(false);
-  pIntSet->vSortDescend();        pIntSet->vPrint(false);
-
-  pIntSet->vRandomsUnique(0,128); pIntSet->vPrint(false);
-  pIntSet->vSort();               pIntSet->vPrint(false);
-  pIntSet->vSortDescend();        pIntSet->vPrint(false);
-  
-  pIntSet->vRandoms(0,128);       pIntSet->vPrint(false);
-  pIntSet->vSort();               pIntSet->vPrint(false);
-  pIntSet->vSortDescend();        pIntSet->vPrint(false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1462,6 +1456,28 @@ void vTest24(void)
 /*----------------------------------------------------------------------------*/
 void vTest25(void)
 {
+  IntSet* pIntSet = new IntSet(64);
+
+  pIntSet->vAscending();          pIntSet->vPrint(false);
+  pIntSet->vDescending();         pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
+
+  pIntSet->vRandoms(0,16);        pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
+
+  pIntSet->vRandomsUnique(0,64);  pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
+
+  pIntSet->vRandomsUnique(0,128); pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
+
+  pIntSet->vRandoms(0,128);       pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
 }
 
 /*----------------------------------------------------------------------------*/

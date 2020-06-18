@@ -84,7 +84,6 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 
 //------------------------------------------------------------------------------
 
-#include "AggTimer.hpp"
 #include "Birth.hpp"
 #include "CRM.hpp"
 #include "DecaCnt.hpp"
@@ -106,6 +105,7 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 #include "TempName.hpp"
 #include "TickingDevice.hpp"
 #include "Timer.hpp"
+#include "AggTimer.hpp"
 
 #include "ByteRate.hpp"
 #include "Peruse.hpp"

@@ -77,6 +77,15 @@ void AggTimer::vAdd(i8 iTicks)
   m_iTicks += iTicks;
 }
 
+/*----------------------------------------------------------------------------*/
+/* add                                                                        */
+/*----------------------------------------------------------------------------*/
+void AggTimer::vAdd(Timer* pTimer)
+{
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
+  
+  m_iTicks += pTimer->iTickDelta();
+}
 
 /*----------------------------------------------------------------------------*/
 /* reset                                                                      */
@@ -181,6 +190,26 @@ i8 AggTimer::iTicks(void)
     
   return m_iTicks;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get rate per second                                                        */
+/*----------------------------------------------------------------------------*/
+d8 AggTimer::dRatePerSec(i8 nItems)
+{
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
+  
+  i8 nNanosPerItem = iNanoseconds() / nItems;
+  
+  RASSERT(nNanosPerItem < C_1G);
+  
+  if (! nNanosPerItem)
+    return 0.0;
+  
+  d8 dRate = (d8)C_1G / (d8)nNanosPerItem;
+  
+  return dRate;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

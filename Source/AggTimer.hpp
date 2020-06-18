@@ -24,6 +24,7 @@ namespace Gadgets
    ~AggTimer(void) noexcept(false);
     
     void vAdd(i8 iTicks);
+    void vAdd(Timer* pTimer);
     void vReset(void);
     void vSet(i8 iTicks);
     
@@ -33,6 +34,7 @@ namespace Gadgets
     i8 iSeconds(void);
     i8 iTicks(void);
   
+    d8 dRatePerSec(i8 nItems);
 
     Footer* aFooter(void);
   };
