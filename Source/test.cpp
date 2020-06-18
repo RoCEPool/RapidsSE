@@ -1318,9 +1318,8 @@ void vTest21(void)
   i8 nTotalEnts = 0;
   
   IntSet* pKeySamples = new IntSet(nEnts);
-  for (i8 i_Int = 0; i_Int < nEnts; i_Int++)
-    pKeySamples->vSet(i_Int,i_Int);
-    
+  pKeySamples->vAscending();
+  
   vTrace("KeySamples of %lld ints\n"_Stz,
          pKeySamples->nInts());
   
