@@ -1375,33 +1375,7 @@ void vTest21(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // print timing results
   
-  SP_Timer spTimer;
-  SP_Timer spTimer2;
-  
-  i8 nElapsedNsec = xTimer.iNanoseconds();
-  d8 dRatePerSec  = xTimer.dRatePerSec(nTotalEnts);
-
-  vTrace("\n"_Stz);
-  vTrace("aInsertEntAbs() of %lld entries took %s "
-         ": %s/ent : %6.2f ent/s "
-         ": %4.2fs/1M "
-         ": %4.2fs for SF100 LineItem over 48ptn "
-         "\n"_Stz,
-         
-         nTotalEnts,
-         spTimer.sz(nElapsedNsec),
-         
-         spTimer2.sz(nElapsedNsec / nTotalEnts),
-         dRatePerSec,
-         
-         (d8)C_1M / dRatePerSec,
-         
-         (d8)(C_TPCH_LINEITEM * 100) / dRatePerSec / 48
-         
-         );
-  
-  vTrace("\n"_Stz);
-
+  vTest21_results(pKeySamples,&xTimer,nTotalEnts);
 }
 
 /*----------------------------------------------------------------------------*/
