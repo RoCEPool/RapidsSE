@@ -807,7 +807,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
       continue;
     }
     
-    Ent* aEnt_prior = pEntH0Buf->pPositionPriorEntry(xEntWrk.aKey());
+    Ent* aEnt_prior = pEntH0Buf->aPositionPriorEntry(xEntWrk.aKey());
     if (! aEnt_prior) {
       TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);

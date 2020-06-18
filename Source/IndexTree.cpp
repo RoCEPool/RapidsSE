@@ -321,7 +321,7 @@ Ref IndexTree::xwGetRef(Key* aFindKey)
   if (! pEntBuffer)
     return xwNilRef;
 
-  Ent* aEntPos = pEntBuffer->pPositionPriorEntry(aFindKey);
+  Ent* aEntPos = pEntBuffer->aPositionPriorEntry(aFindKey);
   if (! aEntPos)
     return xwNilRef;
 

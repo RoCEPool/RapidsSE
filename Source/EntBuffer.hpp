@@ -86,7 +86,7 @@ namespace Indexing
     // key positioning functions
     
     EntBuffer* pPositionH0Buffer(Key* aFindKey);
-    Ent*       pPositionPriorEntry(Key* aFindKey);
+    Ent*       aPositionPriorEntry(Key* aFindKey);
     void       vPositionPriorVecBuffer(Key* aFindKey, Ent** aaPriorVec,
                                        EntBuffer* pToBuffer);
     void       vPositionPriorVecEntry(Key* aFindKey, Ent** aaPriorVec,

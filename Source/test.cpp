@@ -1349,7 +1349,7 @@ void vTest21_delete(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
     // key
     xEntWrk.vAppendInt(iInt);
         
-    Ent* aEnt = pEntBuffer->pPositionPriorEntry(xEntWrk.aKey());
+    Ent* aEnt = pEntBuffer->aPositionPriorEntry(xEntWrk.aKey());
     RASSERT(aEnt);
     nTotalDel_++;
     
@@ -1412,7 +1412,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
     // key
     xEntWrk.vAppendInt(iInt);
         
-    Ent* aPrevEnt = pEntBuffer->pPositionPriorEntry(xEntWrk.aKey());
+    Ent* aPrevEnt = pEntBuffer->aPositionPriorEntry(xEntWrk.aKey());
     RASSERT(aPrevEnt);
     
     Ent* aSearchedEnt = pEntBuffer->aNextEntry(aPrevEnt,0);
@@ -1523,7 +1523,7 @@ void vTest21_testSearch(IntSet* pKeySamples, i8 nBuffers)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // print timing results
   
-  vTest21_printResults("pPositionPriorEntry()"_Stz,pKeySamples,&xAggTimer,nTotalDel);
+  vTest21_printResults("aPositionPriorEntry()"_Stz,pKeySamples,&xAggTimer,nTotalDel);
 }
 
 /*----------------------------------------------------------------------------*/
