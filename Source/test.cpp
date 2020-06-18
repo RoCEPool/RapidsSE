@@ -1282,7 +1282,9 @@ void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
   Ref xRef;
   EntWrk xEntWrk;
 
-  for (i8 i_Int = 0; ; i_Int++) {
+  i8 nInts = pKeySamples->nInts();
+  
+  for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
           
     i8 iInt = pKeySamples->iGet(i_Int);
     
