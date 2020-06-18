@@ -1,41 +1,57 @@
 /*============================================================================*/
-/* OP_mogrify_.sen -- create temp copies of permanent crw buffers             */
+/* OP_emitStreamDef.sen -- Operator emit streamDef                            */
 /*============================================================================*/
 
-" OP_mogrify_.sen" .verbose
+" OP_emitStreamDef.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                     CRWBUFFER */
+/* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: mogrify_CrwBuffer \handler
+: emitStreamDef_PulseMarker \handler
 
-  //"Operand:- ZK_CRWBUFFER" .verbose
+  0 locals| rateSecs |
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  PipeIn[].pipeOut
 
-  Operand[].crwDuplicate to operandB[]
-  nullptr to Operand[]
-
-  OperandB[].pipeOut
+  // new a stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
+: emitStreamDef_StartMarker \handler
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  <tableNm> op__table if
+
+    // new a stream def
+    Operand[].newStreamDef
+    Operand[].pipeOut
+
+    PipeIn[].pipeOut
+  then
+
+  true
+;
 
 /*----------------------------------------------------------------------------*/
-/* execute for mogrify_ req                                                SPAWN */
+/* emitStreamDef reques                               (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : mogrify_req \operator
+: emitStreamDef_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: mogrify_CrwBuffer  ZK_CRWBUFFER op[].handler!
- 
+  //find: emitStreamDef_PulseMarker  ZK_PULSEMARKER  op[].handler!
+  find: emitStreamDef_StartMarker  ZK_STARTMARKER  op[].handler!
+
   op__loop
 
   LogReqExit
@@ -46,12 +62,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: mogrify :: mogrify ;
+cmdSyntax: emitStreamDef :: emitStreamDef <tableNm> ;
 
-: mogrify _cmdTags tagCopy: op_tags
+: emitStreamDef _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
-
+  
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
