@@ -1379,7 +1379,7 @@ void vTest21_testShot(IntSet* pKeySamples, i8 nBuffers)
   
   vTest21_results("aInsertEntAbs()"_Stz,pKeySamples,&xTimer,nTotalEnts);
   
-  pKeySamples->vDescReset();
+  //pKeySamples->vDescReset();
 }
 
 /*----------------------------------------------------------------------------*/

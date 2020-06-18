@@ -90,15 +90,18 @@ void IntSet::vAscending(i8 iStart, i8 iStride)
   
   i8 nItems = m_pIntAry->nItems();
   
+  i8 iLast = C_UNKNOWN;
+  
   i8 iInt = iStart;
   for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
     vSet(i_Item,iInt);
+    iLast = iInt;
     iInt += iStride;
   }
   
-  if (m_sDesc.nLength())
-    m_sDesc.vAppend(' ');
-  m_sDesc.vConcat("ascending"_Stz);
+  //if (m_sDesc.nLength())
+  //  m_sDesc.vAppend(' ');
+  m_sDesc.vSprint("ascending(%lld,%lld,%lld)"_Stz,iStart,iStride,iLast);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +113,7 @@ void IntSet::vDescending(void)
   
   i8 nItems = m_pIntAry->nItems();
   
-  vDescending(nItems,1);
+  vDescending(nItems - 1,1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,15 +125,18 @@ void IntSet::vDescending(i8 iStart, i8 iStride)
   
   i8 nItems = m_pIntAry->nItems();
   
+  i8 iLast = C_UNKNOWN;
+  
   i8 iInt = iStart;
   for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
     vSet(i_Item,iInt);
+    iLast = iInt;
     iInt -= iStride;
   }
   
-  if (m_sDesc.nLength())
-    m_sDesc.vAppend(' ');
-  m_sDesc.vConcat("descending"_Stz);
+  //if (m_sDesc.nLength())
+  //  m_sDesc.vAppend(' ');
+  m_sDesc.vSprint("descending(%lld,%lld,%lld)"_Stz,iStart,iStride,iLast);
 }
 
 /*----------------------------------------------------------------------------*/
