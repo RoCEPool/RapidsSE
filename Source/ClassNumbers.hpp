@@ -128,6 +128,7 @@ enum eCN : u2 // Class Number
   /* */ CN_INGESTCHUNK,
   /* */ CN_INPUT,
   /* */ CN_INTBUFFER,
+  /* */ CN_INTSET,
   /* */ CN_INTVAL,
   /* */ CN_IOCHUNK,
   /* */ CN_IOCOPY,
@@ -466,6 +467,7 @@ static Stz* aCN[]
   /* */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK
   /* */ "INPUT"_Stz,               // CN_INPUT
   /* */ "INTBUFFER"_Stz,           // CN_INTBUFFER
+  /* */ "INTUTILITY"_Stz,          // CN_INTSET
   /* */ "INTVAL"_Stz,              // CN_INTVAL
   /* */ "IOCHUNK"_Stz,             // CN_IOCHUNK
   /* */ "IOCOPY"_Stz,              // CN_IOCOPY

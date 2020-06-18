@@ -1239,61 +1239,64 @@ void vTest20(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test21 : EntBuffer Test                                                    */
+/* test21 : populate EntBuffer using KeySamples                               */
 /*----------------------------------------------------------------------------*/
-void vTest21(void)
+void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
 {
-  vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,
-         sizeof(EntBuffer));
-  
-  Timer  xTimer;
+  Ref xRef;
   EntWrk xEntWrk;
 
-  i8 i_Ent = 0;
-
-  
-  xTimer.vStart();
-  
-  for (i8 i_Buf = 0; i_Buf < 1; i_Buf++) {
+  for (i8 i_Int = 0; ; i_Int++) {
+          
+    i8 iInt = pKeySamples->iGet(i_Int);
     
-    EntBuffer* pEntBuffer = new EntBuffer;
+    // ref
+    xRef.vBuffer(0);
+    xRef.vItem(iInt);
+    xEntWrk.vRef(xRef);
     
-    for (; ; i_Ent++) {
-      
-      i8 nOffsets = AM::nRandomLevels();
-      
-      xEntWrk.vAppendInt(i_Ent);
-      xEntWrk.vOffsets(nOffsets);
-      
-      i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
-      if (! pEntBuffer->bHasSpace(nBytesNeeded))
-        break;
-      
-      Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
-      
-      xEntWrk.vReset();
-    }
+    // key
+    xEntWrk.vAppendInt(iInt);
+    
+    // neo
+    i8 nOffsets = AM::nRandomLevels();
+    xEntWrk.vOffsets(nOffsets);
+    
+    i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
+    if (! pEntBuffer->bHasSpace(nBytesNeeded))
+      break;
+    
+    Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
+    nTotalEnts++;
+    
+    xEntWrk.vReset();
   }
-    
-  xTimer.vUpdate();
 
-  
-  SP_Timer spTimer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test21 : print results                                                     */
+/*----------------------------------------------------------------------------*/
+void vTest21_results(IntSet* pKeySamples,Timer* pTimer, i8 nTotalEnts)
+{
+  SP_Timer spTimer1;
   SP_Timer spTimer2;
   
-  i8 nElapsedNsec = xTimer.iNanoseconds();
-  d8 dRatePerSec  = xTimer.dRatePerSec(i_Ent);
+  i8 nElapsedNsec = pTimer->iNanoseconds();
+  d8 dRatePerSec  = pTimer->dRatePerSec(nTotalEnts);
 
-  vTrace("aInsertEntAbs() of %lld entries took %s "
+  vTrace("\n"_Stz);
+  vTrace("aInsertEntAbs() of %lld %s entries took %s "
          ": %s/ent : %6.2f ent/s "
          ": %4.2fs/1M "
          ": %4.2fs for SF100 LineItem over 48ptn "
          "\n"_Stz,
          
-         i_Ent,
-         spTimer.sz(nElapsedNsec),
+         nTotalEnts,
+         pKeySamples->szDesc(),
+         spTimer1.sz(nElapsedNsec),
          
-         spTimer2.sz(nElapsedNsec / i_Ent),
+         spTimer2.sz(nElapsedNsec / nTotalEnts),
          dRatePerSec,
          
          (d8)C_1M / dRatePerSec,
@@ -1301,8 +1304,92 @@ void vTest21(void)
          (d8)(C_TPCH_LINEITEM * 100) / dRatePerSec / 48
          
          );
+}
 
-  //delete pEntBuffer;
+/*----------------------------------------------------------------------------*/
+/* test21 : run one sub-test                                                  */
+/*----------------------------------------------------------------------------*/
+void vTest21_testShot(IntSet* pKeySamples)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a number of EntBuffers using the key samples
+  
+  i8 nTotalEnts = 0;
+  
+  Timer  xTimer;
+
+  xTimer.vStart();
+  
+  for (i8 i_Buf = 0; i_Buf < 1; i_Buf++) {
+    EntBuffer* pEntBuffer = new EntBuffer;
+    vTest21_populate(pEntBuffer,pKeySamples,nTotalEnts);
+    delete pEntBuffer;
+  }
+
+  xTimer.vUpdate();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // print timing results
+  
+  vTest21_results(pKeySamples,&xTimer,nTotalEnts);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test21 : EntBuffer Test                                                    */
+/*----------------------------------------------------------------------------*/
+void vTest21(void)
+{
+  vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,
+         sizeof(EntBuffer));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // first calculate how many int entries fit into an EntBuffer
+  
+  Ref xRef;
+  EntWrk xEntWrk;
+  
+  i8 nEnts = 0;
+
+  EntBuffer* pEntBufferCalc = new EntBuffer;
+
+  for (;;) {
+    
+    i8 nOffsets = AM::nRandomLevels();
+    
+    //vTrace("%lld "_Stz,iInt);
+    xEntWrk.vAppendInt(nEnts);
+    xEntWrk.vOffsets(nOffsets);
+    
+    i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
+    if (! pEntBufferCalc->bHasSpace(nBytesNeeded))
+      break;
+    
+    Ent* aEnt = pEntBufferCalc->aInsertEntAbs(xEntWrk.aEnt());
+    nEnts++;
+    
+    xEntWrk.vReset();
+
+  }
+  
+  delete pEntBufferCalc;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create that many keys
+
+  IntSet* pKeySamples = new IntSet(nEnts);
+  vTrace("KeySamples of %lld ints\n"_Stz,pKeySamples->nInts());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // run tests
+  
+  pKeySamples->vAscending();
+  vTest21_testShot(pKeySamples);
+  pKeySamples->vDescReset();
+  
+  
+  pKeySamples->vDescending();
+  vTest21_testShot(pKeySamples);
+  pKeySamples->vDescReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1310,7 +1397,28 @@ void vTest21(void)
 /*----------------------------------------------------------------------------*/
 void vTest22(void)
 {
+  IntSet* pIntSet = new IntSet(64);
+
+  pIntSet->vAscending();          pIntSet->vPrint(false);
+  pIntSet->vDescending();         pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
   
+  pIntSet->vRandoms(0,16);        pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
+  
+  pIntSet->vRandomsUnique(0,64);  pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
+
+  pIntSet->vRandomsUnique(0,128); pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
+  
+  pIntSet->vRandoms(0,128);       pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
 }
 
 /*----------------------------------------------------------------------------*/

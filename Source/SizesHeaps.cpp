@@ -124,6 +124,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(IngestChunk),        HT_TRANSIENT_LARGE   }, // CN_INGESTCHUNK
   { sizeof(Input),              HT_TRANSIENT_TINY    }, // CN_INPUT
   { sizeof(IntBuffer),          HT_TRANSIENT_LARGE   }, // CN_INTBUFFER
+  { sizeof(IntSet),             HT_TRANSIENT_TINY    }, // CN_INTSET
   { sizeof(IntVal),             HT_INVALID           }, // CN_INTVAL
   { sizeof(IoChunk),            HT_TRANSIENT_LARGE   }, // CN_IOCHUNK
   { sizeof(IoCopy),             HT_TRANSIENT_TINY    }, // CN_IOCOPY
