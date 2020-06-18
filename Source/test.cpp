@@ -1252,7 +1252,7 @@ void vTest21(void)
 
   i8 i_Ent = 0;
   
-  IntUtility* pIntUte = new IntUtility(C_INTS_ENTBUFFER);
+  IntSet* pIntUte = new IntSet(C_INTS_ENTBUFFER);
   for (i8 i_Int = 0; i_Int < C_INTS_ENTBUFFER; i_Int++)
     pIntUte->vSet(i_Int,i_Int);
     

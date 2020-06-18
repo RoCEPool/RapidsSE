@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* IntUtility.hpp -- Int Utility                                              */
+/* IntSet.hpp -- Int Set                                                      */
 /*============================================================================*/
 #pragma once
 
 namespace Utilities
 {
-  class IntUtility : public Object
+  class IntSet : public Object
   {
   private:
   
-    ArrayNL_t<CN_INTUTILITY,i8,C_64KB>*  m_pIntAry;
+    ArrayNL_t<CN_INTSET,i8,C_64KB>*  m_pIntAry;
   
     // must be last
     Footer m_xFooter;
@@ -18,9 +18,9 @@ namespace Utilities
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IntUtility(void);
-    IntUtility(i8 nInts);
-   ~IntUtility(void) noexcept(false);
+    IntSet(void);
+    IntSet(i8 nInts);
+   ~IntSet(void) noexcept(false);
   
     void vAscending(void);
     void vDescending(void);
@@ -33,7 +33,7 @@ namespace Utilities
     Footer* aFooter(void);
   };
   
-  IntUtility* _pIntUtility(void* aAddr);
+  IntSet* _pIntSet(void* aAddr);
 }
 /*============================================================================*/
 /* end                                                                        */

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IntUtility.cpp -- Int Utiliity                                             */
+/* IntSet.cpp -- Int Set                                                      */
 /*============================================================================*/
 
 #include "Utilities.h"
@@ -8,48 +8,48 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Utilities,IntUtility,CN_INTUTILITY)
-__aNewFunction(IntUtility,CN_INTUTILITY)
-__vDeleteFunction(IntUtility,CN_INTUTILITY)
-__aFooterFunction(IntUtility)
+__pCastFunction(Utilities,IntSet,CN_INTSET)
+__aNewFunction(IntSet,CN_INTSET)
+__vDeleteFunction(IntSet,CN_INTSET)
+__aFooterFunction(IntSet)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IntUtility::IntUtility(void)
-: Object(CN_INTUTILITY)
+IntSet::IntSet(void)
+: Object(CN_INTSET)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTUTILITY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
     
   m_pIntAry = nullptr;
   
-  _checkInitialised_(CN_INTUTILITY);
+  _checkInitialised_(CN_INTSET);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INTUTILITY,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IntUtility::IntUtility(i8 nInts)
-: Object(CN_INTUTILITY)
+IntSet::IntSet(i8 nInts)
+: Object(CN_INTSET)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTUTILITY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
     
-  m_pIntAry = new ArrayNL_t<CN_INTUTILITY,i8,C_64KB>;
+  m_pIntAry = new ArrayNL_t<CN_INTSET,i8,C_64KB>;
   
-  _checkInitialised_(CN_INTUTILITY);
+  _checkInitialised_(CN_INTSET);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INTUTILITY,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-IntUtility::~IntUtility(void) noexcept(false)
+IntSet::~IntSet(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTUTILITY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
   delete m_pIntAry;
 }
@@ -61,9 +61,9 @@ IntUtility::~IntUtility(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* set as an ascending set of integers                                        */
 /*----------------------------------------------------------------------------*/
-void IntUtility::vAscending(void)
+void IntSet::vAscending(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTUTILITY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
 
   i8 nMaxItems = m_pIntAry->nMaxItems();
@@ -75,9 +75,9 @@ void IntUtility::vAscending(void)
 /*----------------------------------------------------------------------------*/
 /* set as an descending set of integers                                       */
 /*----------------------------------------------------------------------------*/
-void IntUtility::vDescending(void)
+void IntSet::vDescending(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTUTILITY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
 
   i8 nMaxItems = m_pIntAry->nMaxItems();
@@ -90,9 +90,9 @@ void IntUtility::vDescending(void)
 /*----------------------------------------------------------------------------*/
 /* randomise the set                                                          */
 /*----------------------------------------------------------------------------*/
-void IntUtility::vRandomise(void)
+void IntSet::vRandomise(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTUTILITY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
 
   i8 nMaxItems = m_pIntAry->nMaxItems();
   
@@ -112,9 +112,9 @@ void IntUtility::vRandomise(void)
 /*----------------------------------------------------------------------------*/
 /* get an int                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 IntUtility::iGet(i8 i_Item)
+i8 IntSet::iGet(i8 i_Item)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTUTILITY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
   return m_pIntAry->xGet(i_Item);
 }
@@ -122,9 +122,9 @@ i8 IntUtility::iGet(i8 i_Item)
 /*----------------------------------------------------------------------------*/
 /* get number of ints                                                         */
 /*----------------------------------------------------------------------------*/
-i8 IntUtility::nInts(void)
+i8 IntSet::nInts(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTUTILITY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
 
   i8 nInts = m_pIntAry->nItems();
   
@@ -134,9 +134,9 @@ i8 IntUtility::nInts(void)
 /*----------------------------------------------------------------------------*/
 /* set an int                                                                 */
 /*----------------------------------------------------------------------------*/
-void IntUtility::vSet(i8 i_Item, i8 iInt)
+void IntSet::vSet(i8 i_Item, i8 iInt)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTUTILITY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
   m_pIntAry->vSet(i_Item,iInt);
   if (i_Item >= m_pIntAry->nItems())
