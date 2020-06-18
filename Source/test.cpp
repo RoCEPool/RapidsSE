@@ -1239,6 +1239,42 @@ void vTest20(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test21 : determine the number of int entries which fit into an ent buffer  */
+/*----------------------------------------------------------------------------*/
+i8 nTest21_intEnts(void)
+{
+  Ref xRef;
+  EntWrk xEntWrk;
+  
+  i8 nEnts = 0;
+
+  EntBuffer* pEntBufferCalc = new EntBuffer;
+
+  for (;;) {
+    
+    i8 nOffsets = AM::nRandomLevels();
+    
+    //vTrace("%lld "_Stz,iInt);
+    xEntWrk.vAppendInt(nEnts);
+    xEntWrk.vOffsets(nOffsets);
+    
+    i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
+    if (! pEntBufferCalc->bHasSpace(nBytesNeeded))
+      break;
+    
+    Ent* aEnt = pEntBufferCalc->aInsertEntAbs(xEntWrk.aEnt());
+    nEnts++;
+    
+    xEntWrk.vReset();
+
+  }
+  
+  delete pEntBufferCalc;
+  
+  return nEnts;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test21 : populate EntBuffer using KeySamples                               */
 /*----------------------------------------------------------------------------*/
 void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
@@ -1345,42 +1381,16 @@ void vTest21(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first calculate how many int entries fit into an EntBuffer
   
-  Ref xRef;
-  EntWrk xEntWrk;
-  
-  i8 nEnts = 0;
-
-  EntBuffer* pEntBufferCalc = new EntBuffer;
-
-  for (;;) {
-    
-    i8 nOffsets = AM::nRandomLevels();
-    
-    //vTrace("%lld "_Stz,iInt);
-    xEntWrk.vAppendInt(nEnts);
-    xEntWrk.vOffsets(nOffsets);
-    
-    i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
-    if (! pEntBufferCalc->bHasSpace(nBytesNeeded))
-      break;
-    
-    Ent* aEnt = pEntBufferCalc->aInsertEntAbs(xEntWrk.aEnt());
-    nEnts++;
-    
-    xEntWrk.vReset();
-
-  }
-  
-  delete pEntBufferCalc;
+  i8 nEntsWhichFit = nTest21_intEnts();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create that many keys
 
-  IntSet* pKeySamples = new IntSet(nEnts);
+  IntSet* pKeySamples = new IntSet(nEntsWhichFit);
   vTrace("KeySamples of %lld ints\n"_Stz,pKeySamples->nInts());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // run tests
+  // run our tests
   
   pKeySamples->vAscending();
   vTest21_testShot(pKeySamples,10);
