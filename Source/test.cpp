@@ -1401,6 +1401,9 @@ void vTest21(void)
   
   pKeySamples->vDescending();
   vTest21_testShot(pKeySamples,10);
+  
+  pKeySamples->vRandomise();
+  vTest21_testShot(pKeySamples,10);
 }
 
 /*----------------------------------------------------------------------------*/
