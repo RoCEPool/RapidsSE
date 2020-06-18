@@ -1349,8 +1349,14 @@ void vTest21_delete(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
     // key
     xEntWrk.vAppendInt(iInt);
         
-    Ent* aEnt = pEntBuffer->aPositionPriorEntry(xEntWrk.aKey());
-    RASSERT(aEnt);
+    Ent* aPrevEnt = pEntBuffer->aPositionPriorEntry(xEntWrk.aKey());
+    RASSERT(aPrevEnt);
+    
+    Ent* aDeleteEnt = pEntBuffer->aNextEntry(aPrevEnt,0);
+    RASSERT(aDeleteEnt);
+    
+    pEntBuffer->vDeleteEntry(&aDeleteEnt);
+    
     nTotalDel_++;
     
     xEntWrk.vReset();
@@ -1499,19 +1505,20 @@ void vTest21_testSearch(IntSet* pKeySamples, i8 nBuffers)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a number of EntBuffers using the key samples
   
-  i8 nTotalDel = 0;
-  
+  i8 nTotalIns = 0;
+  i8 nTotalSel = 0;
+
   Timer    xTimer;
   AggTimer xAggTimer;
 
   
   for (i8 i_Buf = 0; i_Buf < nBuffers; i_Buf++) {
     EntBuffer* pEntBuffer = new EntBuffer;
-    vTest21_insert(pEntBuffer,pKeySamples,nTotalDel);
+    vTest21_insert(pEntBuffer,pKeySamples,nTotalIns);
     
     xTimer.vStart();
     
-    vTest21_search(pEntBuffer,pKeySamples,nTotalDel);
+    vTest21_search(pEntBuffer,pKeySamples,nTotalSel);
 
     xTimer.vUpdate();
     xAggTimer.vAdd(&xTimer);
@@ -1523,7 +1530,7 @@ void vTest21_testSearch(IntSet* pKeySamples, i8 nBuffers)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // print timing results
   
-  vTest21_printResults("aPositionPriorEntry()"_Stz,pKeySamples,&xAggTimer,nTotalDel);
+  vTest21_printResults("aPositionPriorEntry()"_Stz,pKeySamples,&xAggTimer,nTotalSel);
 }
 
 /*----------------------------------------------------------------------------*/
