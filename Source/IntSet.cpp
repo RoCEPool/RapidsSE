@@ -4,6 +4,16 @@
 
 #include "Utilities.h"
 
+int Utilities::iSortCompare_ascend(const void * a, const void * b)
+{
+  return (int) ( *(i8*)a - *(i8*)b );
+}
+   
+int Utilities::iSortCompare_descend(const void * a, const void * b)
+{
+  return (int) ( *(i8*)b - *(i8*)a );
+}
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -107,6 +117,26 @@ void IntSet::vRandomise(void)
     vSet(i_Left,iVal_right);
     vSet(i_Right,iVal_left);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* sort the set                                                               */
+/*----------------------------------------------------------------------------*/
+void IntSet::vSort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+   qsort(m_pIntAry->aItemArea(),nInts(),sizeof(i8),Utilities::iSortCompare_ascend);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sort the set (descending)                                                  */
+/*----------------------------------------------------------------------------*/
+void IntSet::vSort_descend(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+   qsort(m_pIntAry->aItemArea(),nInts(),sizeof(i8),Utilities::iSortCompare_descend);
 }
 
 /*----------------------------------------------------------------------------*/

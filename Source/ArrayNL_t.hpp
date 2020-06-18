@@ -23,6 +23,7 @@ namespace Structures
     ITEM* pGet(i8 i_Item, bool bDisableBounds=false);
     ITEM  xGet(i8 i_Item);
     void  vIncItems(void);
+    ITEM* aItemArea(void);
     i8    nItems(void);
     void  vItems(i8 nItems);
     i8    nMaxItems(void);
@@ -119,6 +120,19 @@ void ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::vIncItems(void)
   aFooter()->vAssertFooter();
 
   m_nItems++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a specific item                                                        */
+/*----------------------------------------------------------------------------*/
+template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+ITEM* ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::aItemArea(void)
+{
+  aFooter()->vAssertFooter();
+  
+  ITEM* pItem = m_oItem;
+  
+  return pItem;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -25,6 +25,9 @@ namespace Utilities
     void vAscending(void);
     void vDescending(void);
     void vRandomise(void);
+    void vRandoms(i8 iMin, i8 iMax);
+    void vSort(void);
+    void vSort_descend(void);
 
     i8 iGet(i8 i_Item);
     i8 nInts(void);
@@ -32,7 +35,10 @@ namespace Utilities
 
     Footer* aFooter(void);
   };
-  
+
+  int iSortCompare_ascend(const void * a, const void * b);
+  int iSortCompare_descend(const void * a, const void * b);
+
   IntSet* _pIntSet(void* aAddr);
 }
 /*============================================================================*/
