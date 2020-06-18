@@ -1317,17 +1317,21 @@ void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
 /*----------------------------------------------------------------------------*/
 void vTest21_results(IntSet* pKeySamples,Timer* pTimer, i8 nTotalEnts)
 {
+  SP_Bytes spBytes;
   SP_Timer spTimer1;
   SP_Timer spTimer2;
-  
+
   i8 nElapsedNsec = pTimer->iNanoseconds();
   d8 dRatePerSec  = pTimer->dRatePerSec(nTotalEnts);
 
+  i8 nBytesPerDay = (i8)(dRatePerSec * C_SECS_PER_DAY * 128 * 48);
+  
   vTrace("\n"_Stz);
   vTrace("aInsertEntAbs() of %lld %s entries took %s "
          ": %s/ent : %6.2f ent/s "
          ": %4.2fs/1M "
          ": %4.2fs for SF100 LineItem over 48ptn "
+         ": %s per day"
          "\n"_Stz,
          
          nTotalEnts,
@@ -1339,7 +1343,9 @@ void vTest21_results(IntSet* pKeySamples,Timer* pTimer, i8 nTotalEnts)
          
          (d8)C_1M / dRatePerSec,
          
-         (d8)(C_TPCH_LINEITEM * 100) / dRatePerSec / 48
+         (d8)(C_TPCH_LINEITEM * 100) / dRatePerSec / 48,
+         
+         spBytes.sz(nBytesPerDay)
          
          );
 }
