@@ -101,8 +101,8 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: createTable :: createTable <tableNm> ;
 cmdSyntax: createTable :: createTable ;
+cmdSyntax: createTable :: createTable <tableNm> ;
 
 : createTable _cmdTags tagCopy: op_tags
   tags{

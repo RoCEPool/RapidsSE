@@ -873,6 +873,10 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eTopologyX)
       iXmits = AM::pGrid()->nConnectedNodes();
       break;
       
+    case PX_ALL_NODES_TO_ALL_PARTITIONS:
+      iXmits = 1;
+      break;
+      
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
       iXmits = AM::pGrid()->nSlotsPerNode();
       break;

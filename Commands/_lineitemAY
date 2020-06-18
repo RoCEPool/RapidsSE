@@ -54,11 +54,13 @@ space;
 //time load lineitem "/DATA/TPCH/lineitem10K.csv" <max_errors> =  100;
 //time load lineitem "/DATA/TPCH/lineitem10k.csv" <max_errors> =  100;
 //time load lineitem "/DATA/TPCH/lineitem10k.csv" <max_errors> =  100;
-//time load lineitem "/DATA/TPCH/lineitem10k.csv" <max_errors> =  100;
-//time load lineitem "/tpch/SF0/lineitem_100k.csv" <max_errors> =  100;
-//time load lineitem "/tpch/SF1/lineitem.csv" <max_errors> =  100;
+/time load lineitem "/DATA/TPCH/lineitem10k.csv"; // <max_errors> =  100;
+///time load lineitem "/tpch/SF0/lineitem_100k.csv" <max_errors> =  100;
+///time fload lineitem "/tpch/SF1/lineitem.csv"; // <max_errors> =  100;
 
-load lineitem "/DATA/TPCH/lineitem10.csv";
+/time ctas lineitem lineitem2;
+
+//load lineitem "/DATA/TPCH/lineitem10.csv";
 //drop table lineitem;
 //space;
 //sztbl lineitem;
@@ -72,9 +74,9 @@ load lineitem "/DATA/TPCH/lineitem10.csv";
 //predicateFetch lineitem "l_orderkey 3 <";
 //predicateFetch lineitem "l_orderkey 3 ==";
 //predicateFetch lineitem "l_orderkey 1 > l_orderkey 3 < and";
-trackMemory;
-predicateFetch lineitem "l_orderkey 1 >";
-memoryLeaks;
+//trackMemory;
+//predicateFetch lineitem "l_orderkey 1 >";
+//memoryLeaks;
 
 //predicateFetch lineitem "l_orderkey 3 <";
 //predicateFetch lineitem "l_orderkey 3 ==";

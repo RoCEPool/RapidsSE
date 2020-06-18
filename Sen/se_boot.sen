@@ -110,9 +110,11 @@ assert::stack_0
         "OP_dump.sen"                 include
         "OP_dumpIndex.sen"            include
         "OP_dumpTable.sen"            include
+        "OP_dupCrw.sen"               include
 
         "OP_eatAll.sen"               include
         "OP_eatSome.sen"              include
+        "OP_emitStreamDef.sen"        include
         "OP_etcTest.sen"              include
         "OP_exemplar.sen"             include
 
@@ -134,8 +136,6 @@ assert::stack_0
         "OP_listTables.sen"           include
         "OP_listTableDefs.sen"        include
         "OP_listTenants.sen"          include
-
-        "OP_mogrify.sen"              include
 
         "OP_nodeinfo.sen"             include
         "OP_noop.sen"                 include

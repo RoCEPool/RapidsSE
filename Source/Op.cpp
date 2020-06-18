@@ -898,6 +898,8 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   
   switch(m_eTopologyX) {
       
+    
+      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
@@ -909,6 +911,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_PARTITIONS:
+    case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS: {
       vSendToAllPartitions(pOperand, pTriggeringTask, bSet, eXmitKind);
       break;

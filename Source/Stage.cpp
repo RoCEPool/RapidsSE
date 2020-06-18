@@ -187,6 +187,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
       pOp = pPtnStrand->pGet(iOp);
       break;
       
+    case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
       pPtnStrand = pGetPartitionStrand(iPtn);
