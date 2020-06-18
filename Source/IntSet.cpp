@@ -183,7 +183,8 @@ void IntSet::vSort(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
-   qsort(m_pIntAry->aItemArea(),nInts(),sizeof(i8),Utilities::iSortCompare_ascend);
+   qsort(m_pIntAry->aItemArea(),nInts(),
+         sizeof(i8),Utilities::iSortCompare_ascend);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,7 +194,8 @@ void IntSet::vSortDescend(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
-   qsort(m_pIntAry->aItemArea(),nInts(),sizeof(i8),Utilities::iSortCompare_descend);
+   qsort(m_pIntAry->aItemArea(),nInts(),
+         sizeof(i8),Utilities::iSortCompare_descend);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -248,6 +250,26 @@ i8 IntSet::nInts(void)
   i8 nInts = m_pIntAry->nItems();
   
   return nInts;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use bsearch() function to test if int is in this SORTED set?               */
+/*----------------------------------------------------------------------------*/
+bool IntSet::bSearch(i8 iInt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  //
+  // CAUTION : the int set should be sorted in ascending order
+  //
+  
+  void* aAddr = bsearch(&iInt,m_pIntAry->aItemArea(),nInts(),
+                          sizeof(i8),Utilities::iSortCompare_ascend);
+
+ if (aAddr)
+   return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

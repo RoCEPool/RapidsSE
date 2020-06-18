@@ -35,6 +35,7 @@ namespace Utilities
     i8 iFind(i8 iInt);
     i8 iGet(i8 i_Item);
     i8 nInts(void);
+    bool bSearch(i8 iInt);
     void vSet(i8 i_Item, i8 iInt);
 
     Footer* aFooter(void);
