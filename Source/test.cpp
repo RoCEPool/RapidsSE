@@ -1252,12 +1252,12 @@ void vTest21(void)
 
   i8 i_Ent = 0;
   
-  IntSet* pIntUte = new IntSet(C_INTS_ENTBUFFER);
+  IntSet* pKeySamples = new IntSet(C_INTS_ENTBUFFER);
   for (i8 i_Int = 0; i_Int < C_INTS_ENTBUFFER; i_Int++)
-    pIntUte->vSet(i_Int,i_Int);
+    pKeySamples->vSet(i_Int,i_Int);
     
   vTrace("IntUte of %lld ints\n"_Stz,
-         pIntUte->nInts());
+         pKeySamples->nInts());
 
   
   xTimer.vStart();
@@ -1270,7 +1270,7 @@ void vTest21(void)
       
       i8 nOffsets = AM::nRandomLevels();
       
-      i8 iInt = pIntUte->iGet(i_Int);
+      i8 iInt = pKeySamples->iGet(i_Int);
       //vTrace("%lld "_Stz,iInt);
       xEntWrk.vAppendInt(iInt);
       xEntWrk.vOffsets(nOffsets);
@@ -1321,7 +1321,28 @@ void vTest21(void)
 /*----------------------------------------------------------------------------*/
 void vTest22(void)
 {
+  IntSet* pIntSet = new IntSet(64);
+
+  pIntSet->vAscending();          pIntSet->vPrint(false);
+  pIntSet->vDescending();         pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
   
+  pIntSet->vRandoms(0,16);        pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
+  
+  pIntSet->vRandomsUnique(0,64);  pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
+
+  pIntSet->vRandomsUnique(0,128); pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
+  
+  pIntSet->vRandoms(0,128);       pIntSet->vPrint(false);
+  pIntSet->vSort();               pIntSet->vPrint(false);
+  pIntSet->vSortDescend();        pIntSet->vPrint(false);
 }
 
 /*----------------------------------------------------------------------------*/

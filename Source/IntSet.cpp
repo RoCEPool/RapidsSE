@@ -48,6 +48,7 @@ IntSet::IntSet(i8 nInts)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
     
   m_pIntAry = new ArrayNL_t<CN_INTSET,i8,C_64KB>;
+  m_pIntAry->vItems(nInts);
   
   _checkInitialised_(CN_INTSET);
   
@@ -76,9 +77,9 @@ void IntSet::vAscending(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
 
-  i8 nMaxItems = m_pIntAry->nMaxItems();
+  i8 nItems = m_pIntAry->nItems();
   
-  for (i8 i_Item = 0; i_Item < nMaxItems; i_Item++)
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++)
     vSet(i_Item,i_Item);
 }
 
@@ -90,11 +91,30 @@ void IntSet::vDescending(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
 
-  i8 nMaxItems = m_pIntAry->nMaxItems();
+  i8 nItems = m_pIntAry->nItems();
   
-  i8 iInt = nMaxItems - 1;
-  for (i8 i_Item = 0; i_Item < nMaxItems; i_Item++)
+  i8 iInt = nItems - 1;
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++)
     vSet(i_Item,iInt--);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void IntSet::vPrint(bool bNewLine)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  i8 nItems = m_pIntAry->nItems();
+  
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++)
+    if (bNewLine)
+      vTrace("%lld\n"_Stz,iGet(i_Item));
+    else
+      vTrace("%lld "_Stz,iGet(i_Item));
+
+  if (! bNewLine)
+    vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,18 +124,55 @@ void IntSet::vRandomise(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
 
-  i8 nMaxItems = m_pIntAry->nMaxItems();
+  i8 nItems = m_pIntAry->nItems();
   
-  for (i8 i_Times = 0; i_Times < nMaxItems; i_Times++) {
+  for (i8 i_Times = 0; i_Times < nItems; i_Times++) {
     
-    i8 i_Left  = RndLib::iInteger(nMaxItems);
-    i8 i_Right = RndLib::iInteger(nMaxItems);
+    i8 i_Left  = RndLib::iInteger(nItems);
+    i8 i_Right = RndLib::iInteger(nItems);
 
     i8 iVal_left  = iGet(i_Left);
     i8 iVal_right = iGet(i_Right);
 
     vSet(i_Left,iVal_right);
     vSet(i_Right,iVal_left);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* populate with a set of random integers                                     */
+/*----------------------------------------------------------------------------*/
+void IntSet::vRandoms(i8 iMin, i8 iMax)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  i8 nItems = m_pIntAry->nItems();
+
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
+    i8 iRndInt = RndLib::iInteger(iMin,iMax);
+    
+    vSet(i_Item,iRndInt);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* populate with a set of unique random integers                              */
+/*----------------------------------------------------------------------------*/
+void IntSet::vRandomsUnique(i8 iMin, i8 iMax)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  i8 iRndInt = 0;
+  
+  i8 nItems = m_pIntAry->nItems();
+
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
+    
+    do
+      iRndInt = RndLib::iInteger(iMin,iMax);
+    while (bHas(iRndInt));
+    
+    vSet(i_Item,iRndInt);
   }
 }
 
@@ -132,11 +189,43 @@ void IntSet::vSort(void)
 /*----------------------------------------------------------------------------*/
 /* sort the set (descending)                                                  */
 /*----------------------------------------------------------------------------*/
-void IntSet::vSort_descend(void)
+void IntSet::vSortDescend(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
    qsort(m_pIntAry->aItemArea(),nInts(),sizeof(i8),Utilities::iSortCompare_descend);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* is int in this set?                                                        */
+/*----------------------------------------------------------------------------*/
+bool IntSet::bHas(i8 iInt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+ if (C_UNKNOWN == iFind(iInt))
+   return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an int                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 IntSet::iFind(i8 iInt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  i8 nInts = m_pIntAry->nItems();
+
+  for (i8 i_Item = 0; i_Item < nInts; i_Item++)
+    if (iInt == iGet(i_Item))
+      return i_Item;
+  
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/

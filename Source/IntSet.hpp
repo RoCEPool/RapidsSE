@@ -26,9 +26,13 @@ namespace Utilities
     void vDescending(void);
     void vRandomise(void);
     void vRandoms(i8 iMin, i8 iMax);
+    void vRandomsUnique(i8 iMin, i8 iMax);
+    void vPrint(bool bNewLine = true);
     void vSort(void);
-    void vSort_descend(void);
+    void vSortDescend(void);
 
+    bool bHas(i8 iInt);
+    i8 iFind(i8 iInt);
     i8 iGet(i8 i_Item);
     i8 nInts(void);
     void vSet(i8 i_Item, i8 iInt);
