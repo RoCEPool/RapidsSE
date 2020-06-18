@@ -1246,7 +1246,7 @@ void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
   Ref xRef;
   EntWrk xEntWrk;
 
-  for (i8 i_Int = 0; ; i_Int++, nTotalEnts++) {
+  for (i8 i_Int = 0; ; i_Int++) {
           
     i8 iInt = pKeySamples->iGet(i_Int);
     
@@ -1267,6 +1267,7 @@ void vTest21_populate(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalEnts)
       break;
     
     Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
+    nTotalEnts++;
     
     xEntWrk.vReset();
   }
@@ -1285,13 +1286,14 @@ void vTest21_results(IntSet* pKeySamples,Timer* pTimer, i8 nTotalEnts)
   d8 dRatePerSec  = pTimer->dRatePerSec(nTotalEnts);
 
   vTrace("\n"_Stz);
-  vTrace("aInsertEntAbs() of %lld entries took %s "
+  vTrace("aInsertEntAbs() of %lld %s entries took %s "
          ": %s/ent : %6.2f ent/s "
          ": %4.2fs/1M "
          ": %4.2fs for SF100 LineItem over 48ptn "
          "\n"_Stz,
          
          nTotalEnts,
+         pKeySamples->szDesc(),
          spTimer1.sz(nElapsedNsec),
          
          spTimer2.sz(nElapsedNsec / nTotalEnts),
@@ -1351,10 +1353,11 @@ void vTest21(void)
   i8 nTotalEnts = 0;
   
   IntSet* pKeySamples = new IntSet(nEnts);
+  vTrace("KeySamples of %lld ints\n"_Stz,pKeySamples->nInts());
+  
+
   pKeySamples->vAscending();
   
-  vTrace("KeySamples of %lld ints\n"_Stz,
-         pKeySamples->nInts());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a number of EntBuffers using the key samples
@@ -1364,7 +1367,6 @@ void vTest21(void)
   xTimer.vStart();
   
   for (i8 i_Buf = 0; i_Buf < 1; i_Buf++) {
-    
     EntBuffer* pEntBuffer = new EntBuffer;
     vTest21_populate(pEntBuffer,pKeySamples,nTotalEnts);
     delete pEntBuffer;

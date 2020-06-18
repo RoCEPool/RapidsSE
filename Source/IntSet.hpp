@@ -8,6 +8,7 @@ namespace Utilities
   class IntSet : public Object
   {
   private:
+    s256 m_sDesc;
   
     ArrayNL_t<CN_INTSET,i8,C_64KB>*  m_pIntAry;
   
@@ -27,14 +28,15 @@ namespace Utilities
     void vRandomise(void);
     void vRandoms(i8 iMin, i8 iMax);
     void vRandomsUnique(i8 iMin, i8 iMax);
-    void vPrint(bool bNewLine = true);
     void vSort(void);
     void vSortDescend(void);
 
+    Stz* szDesc(void);
     bool bHas(i8 iInt);
     i8 iFind(i8 iInt);
     i8 iGet(i8 i_Item);
     i8 nInts(void);
+    void vPrint(bool bNewLine = true);
     bool bSearch(i8 iInt);
     void vSet(i8 i_Item, i8 iInt);
 

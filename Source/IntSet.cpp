@@ -32,6 +32,8 @@ IntSet::IntSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
     
+  m_sDesc = ""_Stz;
+  
   m_pIntAry = nullptr;
   
   _checkInitialised_(CN_INTSET);
@@ -76,11 +78,14 @@ void IntSet::vAscending(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
-
   i8 nItems = m_pIntAry->nItems();
   
   for (i8 i_Item = 0; i_Item < nItems; i_Item++)
     vSet(i_Item,i_Item);
+  
+  if (m_sDesc.nLength())
+    m_sDesc.vAppend(' ');
+  m_sDesc.vConcat("ascending"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,12 +95,15 @@ void IntSet::vDescending(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
-
   i8 nItems = m_pIntAry->nItems();
   
   i8 iInt = nItems - 1;
   for (i8 i_Item = 0; i_Item < nItems; i_Item++)
     vSet(i_Item,iInt--);
+
+  if (m_sDesc.nLength())
+    m_sDesc.vAppend(' ');
+  m_sDesc.vConcat("descending"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,6 +145,10 @@ void IntSet::vRandomise(void)
     vSet(i_Left,iVal_right);
     vSet(i_Right,iVal_left);
   }
+  
+  if (m_sDesc.nLength())
+    m_sDesc.vAppend(' ');
+  m_sDesc.vConcat("randomised"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,6 +165,10 @@ void IntSet::vRandoms(i8 iMin, i8 iMax)
     
     vSet(i_Item,iRndInt);
   }
+
+  if (m_sDesc.nLength())
+    m_sDesc.vAppend(' ');
+  m_sDesc.vConcat("randoms"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,6 +190,10 @@ void IntSet::vRandomsUnique(i8 iMin, i8 iMax)
     
     vSet(i_Item,iRndInt);
   }
+  
+  if (m_sDesc.nLength())
+    m_sDesc.vAppend(' ');
+  m_sDesc.vConcat("uniqueRandoms"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,6 +205,10 @@ void IntSet::vSort(void)
   
    qsort(m_pIntAry->aItemArea(),nInts(),
          sizeof(i8),Utilities::iSortCompare_ascend);
+  
+  if (m_sDesc.nLength())
+    m_sDesc.vAppend(' ');
+  m_sDesc.vConcat("sorted"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,10 +220,24 @@ void IntSet::vSortDescend(void)
   
    qsort(m_pIntAry->aItemArea(),nInts(),
          sizeof(i8),Utilities::iSortCompare_descend);
+  
+  if (m_sDesc.nLength())
+    m_sDesc.vAppend(' ');
+  m_sDesc.vConcat("sorted(descending)"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the description                                                        */
+/*----------------------------------------------------------------------------*/
+Stz* IntSet::szDesc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
+  
+  return m_sDesc;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is int in this set?                                                        */
