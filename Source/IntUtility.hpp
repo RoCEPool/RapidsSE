@@ -24,6 +24,7 @@ namespace Utilities
   
     void vAscending(void);
     void vDescending(void);
+    void vRandomise(void);
 
     i8 iGet(i8 i_Item);
     i8 nInts(void);
