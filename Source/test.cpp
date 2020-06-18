@@ -1309,6 +1309,34 @@ void vTest21_results(IntSet* pKeySamples,Timer* pTimer, i8 nTotalEnts)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test21 : run one sub-test                                                  */
+/*----------------------------------------------------------------------------*/
+void vTest21_testShot(IntSet* pKeySamples)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a number of EntBuffers using the key samples
+  
+  i8 nTotalEnts = 0;
+  
+  Timer  xTimer;
+
+  xTimer.vStart();
+  
+  for (i8 i_Buf = 0; i_Buf < 1; i_Buf++) {
+    EntBuffer* pEntBuffer = new EntBuffer;
+    vTest21_populate(pEntBuffer,pKeySamples,nTotalEnts);
+    delete pEntBuffer;
+  }
+
+  xTimer.vUpdate();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // print timing results
+  
+  vTest21_results(pKeySamples,&xTimer,nTotalEnts);
+}
+
+/*----------------------------------------------------------------------------*/
 /* test21 : EntBuffer Test                                                    */
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
@@ -1350,34 +1378,36 @@ void vTest21(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create that many keys
 
-  i8 nTotalEnts = 0;
-  
   IntSet* pKeySamples = new IntSet(nEnts);
   vTrace("KeySamples of %lld ints\n"_Stz,pKeySamples->nInts());
   
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // run tests
+  
   pKeySamples->vAscending();
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a number of EntBuffers using the key samples
-  
-  Timer  xTimer;
+  vTest21_testShot(pKeySamples);
 
-  xTimer.vStart();
   
-  for (i8 i_Buf = 0; i_Buf < 1; i_Buf++) {
-    EntBuffer* pEntBuffer = new EntBuffer;
-    vTest21_populate(pEntBuffer,pKeySamples,nTotalEnts);
-    delete pEntBuffer;
-  }
-
-  xTimer.vUpdate();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // print timing results
-  
-  vTest21_results(pKeySamples,&xTimer,nTotalEnts);
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // create a number of EntBuffers using the key samples
+//
+//  Timer  xTimer;
+//
+//  xTimer.vStart();
+//
+//  for (i8 i_Buf = 0; i_Buf < 1; i_Buf++) {
+//    EntBuffer* pEntBuffer = new EntBuffer;
+//    vTest21_populate(pEntBuffer,pKeySamples,nTotalEnts);
+//    delete pEntBuffer;
+//  }
+//
+//  xTimer.vUpdate();
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // print timing results
+//
+//  vTest21_results(pKeySamples,&xTimer,nTotalEnts);
 }
 
 /*----------------------------------------------------------------------------*/
