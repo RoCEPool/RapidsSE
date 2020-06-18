@@ -59,6 +59,35 @@ IntUtility::~IntUtility(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set as an ascending set of integers                                        */
+/*----------------------------------------------------------------------------*/
+void IntUtility::vAscending(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
+  
+
+  i8 nMaxItems = m_pIntAry->nMaxItems();
+  
+  for (i8 i_Item = 0; i_Item < nMaxItems; i_Item++)
+    vSet(i_Item,i_Item);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set as an descending set of integers                                       */
+/*----------------------------------------------------------------------------*/
+void IntUtility::vDescending(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
+  
+
+  i8 nMaxItems = m_pIntAry->nMaxItems();
+  
+  i8 iInt = nMaxItems - 1;
+  for (i8 i_Item = 0; i_Item < nMaxItems; i_Item++)
+    vSet(i_Item,iInt--);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get an int                                                                 */
 /*----------------------------------------------------------------------------*/
 i8 IntUtility::iGet(i8 i_Item)
