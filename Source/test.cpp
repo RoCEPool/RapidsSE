@@ -1246,17 +1246,46 @@ void vTest21(void)
   vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,
          sizeof(EntBuffer));
   
-  static const i8 C_INTS_ENTBUFFER = 28491;
-  Timer  xTimer;
+  Ref xRef;
   EntWrk xEntWrk;
+  
+  i8 nEnts = 0;
+
+  EntBuffer* pEntBufferCalc = new EntBuffer;
+
+  for (;;) {
+    
+    i8 nOffsets = AM::nRandomLevels();
+    
+    //vTrace("%lld "_Stz,iInt);
+    xEntWrk.vAppendInt(nEnts);
+    xEntWrk.vOffsets(nOffsets);
+    
+    i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
+    if (! pEntBufferCalc->bHasSpace(nBytesNeeded))
+      break;
+    
+    Ent* aEnt = pEntBufferCalc->aInsertEntAbs(xEntWrk.aEnt());
+    nEnts++;
+    
+    xEntWrk.vReset();
+
+  }
+  
+  delete pEntBufferCalc;
+  
+  //static const i8 C_INTS_ENTBUFFER = 28491;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Timer  xTimer;
 
   i8 i_Ent = 0;
   
-  IntSet* pKeySamples = new IntSet(C_INTS_ENTBUFFER);
-  for (i8 i_Int = 0; i_Int < C_INTS_ENTBUFFER; i_Int++)
+  IntSet* pKeySamples = new IntSet(nEnts);
+  for (i8 i_Int = 0; i_Int < nEnts; i_Int++)
     pKeySamples->vSet(i_Int,i_Int);
     
-  vTrace("IntUte of %lld ints\n"_Stz,
+  vTrace("KeySamples of %lld ints\n"_Stz,
          pKeySamples->nInts());
 
   
@@ -1267,12 +1296,19 @@ void vTest21(void)
     EntBuffer* pEntBuffer = new EntBuffer;
     
     for (i8 i_Int = 0; ; i_Int++, i_Ent++) {
-      
-      i8 nOffsets = AM::nRandomLevels();
-      
+            
       i8 iInt = pKeySamples->iGet(i_Int);
-      //vTrace("%lld "_Stz,iInt);
+      
+      // ref
+      xRef.vBuffer(0);
+      xRef.vItem(iInt);
+      xEntWrk.vRef(xRef);
+      
+      // key
       xEntWrk.vAppendInt(iInt);
+      
+      // neo
+      i8 nOffsets = AM::nRandomLevels();
       xEntWrk.vOffsets(nOffsets);
       
       i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
@@ -1312,6 +1348,8 @@ void vTest21(void)
          (d8)(C_TPCH_LINEITEM * 100) / dRatePerSec / 48
          
          );
+  
+  vTrace("\n"_Stz);
 
   //delete pEntBuffer;
 }
