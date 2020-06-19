@@ -5,13 +5,11 @@
 
 namespace MetaData
 {
-  class IndexDef : public Object
+  class IndexDef : public Definition
   {
   friend class Index;
   
   private:
-    Index* m_pIndex;         // which index
-  
     s32    m_sIndexNm;       // name of index
     s32    m_sTableNm;       // name of table
     eIT    m_eIndexType;     // index type
@@ -20,8 +18,6 @@ namespace MetaData
     bool   m_bIsUnique;      // is this index unique?
   
     IdxColVec* m_pIdxColVec; // the sub-set of columns which are this index
-  
-    s4K    m_sCmd;  // the command which created this def
 
     // must be last
     Footer m_xFooter;
@@ -35,8 +31,6 @@ namespace MetaData
   
     static eEC eSyntax(Stz* szCmd);
     
-    Index* pIndex(void);
-    void   vIndex(Index* pIndex);
     Stz*   szIndexNm(void);
     eEC    eParse(Table* pTable, Stz* szCmd);
     bool   bIsPrimaryKey(void);

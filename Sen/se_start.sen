@@ -33,6 +33,29 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create index
+/*
+  sPath
+  "
+  procedure create index
+    parameters $tableNm $etc
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | syntaxIndex $tableNm $etc | stageB
+
+  stage stageB on all nodes :
+    createIndex | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+*/
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create schema
   sPath
   "

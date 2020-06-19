@@ -176,8 +176,6 @@ void Index::vIndexDef(IndexDef* pIndexDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  pIndexDef->vIndex(this);
-  
   m_pIndexDef = pIndexDef;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

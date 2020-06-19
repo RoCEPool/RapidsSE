@@ -53,11 +53,9 @@ void IndexDef::operator delete(void* pAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IndexDef::IndexDef(void)
-: Object(CN_INDEXDEF)
+: Definition(CN_INDEXDEF)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
-  
-  m_pIndex        = nullptr;
   
   m_sIndexNm      = C_NO_NAME;
   m_sTableNm      = C_NO_NAME;
@@ -67,8 +65,6 @@ IndexDef::IndexDef(void)
   m_bIsUnique     = false;
   
   m_pIdxColVec    = new IdxColVec(this);
-  
-  m_sCmd          = ""_Stz;
 
   _checkInitialised_(CN_INDEXDEF);
   
@@ -95,26 +91,6 @@ IndexDef::~IndexDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get which index                                                           */
-/*----------------------------------------------------------------------------*/
-Index* IndexDef::pIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
-  
-  return m_pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set which index                                                            */
-/*----------------------------------------------------------------------------*/
-void IndexDef::vIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
-  
-  m_pIndex = pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the index name                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* IndexDef::szIndexNm(void)
@@ -135,9 +111,6 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   eEC eError = EC_NONE;
-  
-  // retain the Create Index command
-  m_sCmd = szCmd;
 
   // tokenise the command
   TokenVec* pTknVec = TokenVec::pTokenise(szCmd);
