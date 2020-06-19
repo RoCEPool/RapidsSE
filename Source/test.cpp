@@ -1475,7 +1475,7 @@ void vTest21_testDelete(IntSet* pKeySamples, i8 nBuffers, bool bDump)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // print timing results
   
-  vTest21_printResults("DELETE()"_Stz,pKeySamples,&xAggTimer,nTotalDel);
+  vTest21_printResults("vDeleteEntry()"_Stz,pKeySamples,&xAggTimer,nTotalDel);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1555,7 +1555,11 @@ void vTest21_testSearch(IntSet* pKeySamples, i8 nBuffers, bool bDump)
 void vTest21(void)
 {
   i8 nSamples = C_UNKNOWN;
-  bool bDump  = false;
+  bool bDump  = true;
+  
+  bool bInsertTest = true;
+  bool bSearchTest = false;
+  bool bDeleteTest = false;
 
   vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,
          sizeof(EntBuffer));
@@ -1569,16 +1573,19 @@ void vTest21(void)
   // run our tests
   
   pKeySamples->vAscending();
-  vTest21_testInsert(pKeySamples,10,bDump);
-  vTest21_testSearch(pKeySamples,10,bDump);
+  if (bInsertTest) vTest21_testInsert(pKeySamples,10,bDump);
+  if (bSearchTest) vTest21_testSearch(pKeySamples,10,bDump);
+  if (bDeleteTest) vTest21_testDelete(pKeySamples,10,bDump);
 
   pKeySamples->vDescending();
-  vTest21_testInsert(pKeySamples,10,bDump);
-  vTest21_testSearch(pKeySamples,10,bDump);
+  if (bInsertTest) vTest21_testInsert(pKeySamples,10,bDump);
+  if (bSearchTest) vTest21_testSearch(pKeySamples,10,bDump);
+  if (bDeleteTest) vTest21_testDelete(pKeySamples,10,bDump);
 
   pKeySamples->vRandomise();
-  vTest21_testInsert(pKeySamples,10,bDump);
-  vTest21_testSearch(pKeySamples,10,bDump);
+  if (bInsertTest) vTest21_testInsert(pKeySamples,10,bDump);
+  if (bSearchTest) vTest21_testSearch(pKeySamples,10,bDump);
+  if (bDeleteTest) vTest21_testDelete(pKeySamples,10,bDump);
 }
 
 /*----------------------------------------------------------------------------*/
