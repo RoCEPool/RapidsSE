@@ -577,7 +577,7 @@ bool EntBuffer::bVerifyKeyOrder(void)
    order.
    */
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     

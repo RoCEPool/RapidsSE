@@ -127,6 +127,7 @@ namespace Indexing
     void        vTruncate(void);
     EntBuffer*  pUnlinkSubList(void);
     bool        bVerify(void);
+    bool        bVerifyKeyOrder(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
@@ -159,7 +160,7 @@ namespace Indexing
     Ent*       aPopLazyChain(void);
 
     EntBuffer* pSplitBuffer(void);
-  
+    
     NEO*       aAllotNEO(i8 nBytes);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -179,7 +180,6 @@ namespace Indexing
     bool bVerifyFirstKeys(void);
     bool bVerifyItems(void);
     bool bVerifyKeyBufferOrder(void);
-    bool bVerifyKeyOrder(void);
     bool bVerifyNextPrev(void);
     bool bVerifyRowRefs(void);
     bool bVerifySkipListEntry(bool bShowKeys = false);
