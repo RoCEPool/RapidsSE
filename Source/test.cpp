@@ -1643,6 +1643,68 @@ void vTest25(void)
 /*----------------------------------------------------------------------------*/
 void vTest26(void)
 {
+  // RndLib::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
+ 
+  bool bDumpTable = false;
+  i8 nSamples = C_32KB;
+
+  i8 i_NextRnd = C_UNKNOWN;
+  
+  i8 iaCounts[6][6][6];
+  for (i8 nLevels = 0; nLevels <= 5; nLevels++)
+    for (i8 iFreq = 0; iFreq <= 5; iFreq++)
+      for (i8 iLvl = 0; iLvl <= 5; iLvl++)
+        iaCounts[nLevels][iFreq][iLvl] = 0;
+
+
+  if (bDumpTable) {
+    vTrace("L     3           4           5\n"_Stz);
+    vTrace("F 1 2 3 4 5   1 2 3 4 5   1 2 3 4 5\n"_Stz);
+    vTrace("  - - - - -   - - - - -   - - - - -\n"_Stz);
+  }
+  
+  for (i8 i_Sample = 0; i_Sample < nSamples; i_Sample++) {
+    if (bDumpTable)
+      vTrace("  "_Stz);
+
+    for (i8 nLevels = 3; nLevels <= 5; nLevels++) {
+
+      if (bDumpTable)
+        if (nLevels > 3)
+          vTrace(": "_Stz);
+
+      for (i8 iFreq = 1; iFreq <= 5; iFreq++) {
+
+        i8 iLvl = RndLib::iLogLevel(nLevels,iFreq,i_NextRnd);
+        if (bDumpTable)
+          vTrace("%lld "_Stz,iLvl);
+
+        iaCounts[nLevels][iFreq][iLvl]++;
+        
+      } // freq
+      
+    } // level
+    if (bDumpTable)
+      vTrace("\n"_Stz);
+    
+
+  } // sample
+  
+  vTrace("\n"_Stz);
+  for (i8 nLevels = 3; nLevels <= 5; nLevels++) {
+    vTrace("Level %lld\n"_Stz,nLevels);
+
+    for (i8 iFreq = 1; iFreq <= 5; iFreq++) {
+      vTrace("Freq %lld: "_Stz,iFreq);
+      
+      for (i8 iLvl = 1; iLvl <= 5; iLvl++) {
+        vTrace("%lld "_Stz,iaCounts[nLevels][iFreq][iLvl]);
+      }
+      vTrace("\n"_Stz);
+    }
+    vTrace("\n"_Stz);
+  }
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
