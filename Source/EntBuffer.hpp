@@ -119,6 +119,8 @@ namespace Indexing
     void        vShowShort(void);
     void        vShowSubList(void);
     void        vShowTree(bool bDumpBuffer=false);
+    i8          nSkipLength(i8 i_Level);
+    void        vSkipLengths(i8& iL0Length_, i8& iL1Length_, i8& iL2Length_);
     void        vSpliceAfter(EntBuffer* pSplicedBuffer);
     IrwBuffer*  pToIrwBuffer(void);
     void        vTruncate(void);

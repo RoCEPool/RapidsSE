@@ -1139,6 +1139,12 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   else
     sHigherBuffer = "..."_Stz;
   
+  i8 iL0Length;
+  i8 iL1Length;
+  i8 iL2Length;
+  
+  vSkipLengths(iL0Length,iL1Length,iL2Length);
+  
   vTrace("\n"_Stz);
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
@@ -1152,12 +1158,15 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndex ? m_pIndex->szIndexNm() : C_NULL,m_iPartitionNo,m_iBufferHeight);
   
-  vTrace("  skipRoots: %p[%d,%d,%d]\n"_Stz,
+  vTrace("  skipRoots: %p[%lld, %lld, %lld]\n"_Stz,
          aSkipRoots(),
          aSkipRoots() ? aSkipRoots()->iNEO(0) : 0,
          aSkipRoots() ? aSkipRoots()->iNEO(1) : 0,
          aSkipRoots() ? aSkipRoots()->iNEO(2) : 0);
-  
+
+  vTrace("  listLengths: [%lld, %lld, %lld]\n"_Stz,
+         iL0Length,iL1Length,iL2Length);
+
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   
@@ -1303,6 +1312,37 @@ Ent* EntBuffer::aSkipRoots(void)
   
   //return m_aHeadEntry;
   return &m_xSkipRoots;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the length of a skip list                                              */
+/*----------------------------------------------------------------------------*/
+i8 EntBuffer::nSkipLength(i8 i_Level)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+ 
+  i8 iLength = 0;
+
+  for (Ent* aEnt = aNextEntry(aSkipRoots(),i_Level);
+       aEnt;
+       aEnt = aNextEntry(aEnt,i_Level))
+    iLength++;
+  
+  return iLength;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the lengths of the three skip lists                                    */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vSkipLengths(i8& iL0Length_, i8& iL1Length_, i8& iL2Length_)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  iL0Length_ = nSkipLength(0);
+
+  iL1Length_ = nSkipLength(1);
+
+  iL2Length_ = nSkipLength(2);
 }
 
 /*----------------------------------------------------------------------------*/
