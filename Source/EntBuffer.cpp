@@ -1097,14 +1097,13 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   Key* aKey = aEnt->aKey();
   i8 iOffset = iToOffset(aEnt);
   
-  vTrace("%lld: Ent: %p Size: %lluB Offsets: %llu "_Stz,
+  vTrace("Ent %05lld %p %lluB: "_Stz,
          iOffset,
          aEnt,
-         aEnt->nSizeBytes(),
-         aEnt->nOffsets()
+         aEnt->nSizeBytes()
          );
   
-  vTrace("Ref: %3lli.%03lli"_Stz,
+  vTrace("Ref %lld.%05lld"_Stz,
          aEnt->xRef().iBuffer(),
          aEnt->xRef().iItem()
          );
@@ -1114,11 +1113,14 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   //       Tx::iTxNo(m_iTxId)
   //       );
   
-  aKey->vShow(m_pIndex->pIdxColVec());
-  
-  vTrace(" offsets:"_Stz);
+  if (m_pIndex)
+    aKey->vShow(m_pIndex->pIdxColVec());
+  else
+    aKey->vShowIntKey();
+
+  vTrace(" offsets %lld"_Stz,aEnt->nOffsets());
   for (i8 i_Level = 0; i_Level < aEnt->nOffsets(); i_Level++)
-    vTrace(" %d"_Stz,aEnt->iNEO(i_Level));
+    vTrace(" %05d"_Stz,aEnt->iNEO(i_Level));
   
   vTrace("\n"_Stz);
 }

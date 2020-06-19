@@ -262,6 +262,20 @@ void Key::vShow(IdxColVec* pIdxColVec)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* show the elements of this integer k                                        */
+/*----------------------------------------------------------------------------*/
+void Key::vShowIntKey(void)
+{
+  i8 i_Col  = 0;
+  i8 nBytes = 8;
+  char caLiteral[128];
+
+  i8 iInt = (i8)* (i8*)ayElmSeq();
+  StrLib::vSprint(caLiteral,"%05lld"_Stz,iInt);
+  
+  vTrace(" Elm[%lld %lldB %s]"_Stz,i_Col,nBytes,caLiteral);
+}
 
 /*============================================================================*/
 /* end                                                                        */

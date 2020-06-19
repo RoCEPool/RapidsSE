@@ -33,6 +33,7 @@ namespace Entries
     void vElmSeqSize(i8 nElmSeqSize);
     void vReset(void);
     void vShow(IdxColVec* pIdxColVec);
+    void vShowIntKey(void);
 
     /*------------------------------------------------------------------------*/
     /* get the element sequence of this key                                   */
