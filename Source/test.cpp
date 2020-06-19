@@ -1422,7 +1422,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
     RASSERT(aPrevEnt);
     
     Ent* aSearchedEnt = pEntBuffer->aNextEntry(aPrevEnt,0);
-    RASSERT(aSearchedEnt);
+    //RASSERT(aSearchedEnt);
 
     nTotalDel_++;
     
@@ -1546,7 +1546,7 @@ void vTest21_testSearch(IntSet* pKeySamples, i8 nBuffers, bool bDump)
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
 {
-  i8 nSamples = 64;   //C_UNKNOWN;
+  i8 nSamples = C_UNKNOWN;
   bool bDump  = true;
 
   vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,

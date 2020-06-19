@@ -1097,7 +1097,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   Key* aKey = aEnt->aKey();
   i8 iOffset = iToOffset(aEnt);
   
-  vTrace("Ent %05lld %p %lluB: "_Stz,
+  vTrace("Ent %07lld %p %lluB: "_Stz,
          iOffset,
          aEnt,
          aEnt->nSizeBytes()
@@ -1143,7 +1143,7 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   
-  vTrace("EntBuffer: %p (buffer %lld): items: %lld used: %lld freespace %lld\n"_Stz,
+  vTrace("EntBuffer: %p (buffer %lld): items: %lld used: %lld(B) freespace %lld(B)\n"_Stz,
          this,iBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
@@ -1152,7 +1152,7 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndex ? m_pIndex->szIndexNm() : C_NULL,m_iPartitionNo,m_iBufferHeight);
   
-  vTrace("  skipRoots: %p[%d,%d,%d] lastEntry: %p\n"_Stz,
+  vTrace("  skipRoots: %p[%d,%d,%d]\n"_Stz,
          aSkipRoots(),
          aSkipRoots() ? aSkipRoots()->iNEO(0) : 0,
          aSkipRoots() ? aSkipRoots()->iNEO(1) : 0,
