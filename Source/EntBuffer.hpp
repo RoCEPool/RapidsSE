@@ -91,7 +91,8 @@ namespace Indexing
                                        EntBuffer* pToBuffer);
     void       vPositionPriorVecEntry(Key* aFindKey, Ent** aaPriorVec,
                                       Ent* aFindEntry);
-    
+    void       vPositionPriorVecEntryOpt(Key* aFindKey, Ent** aaPriorVec,
+                                      Ent* aFindEntry);
     ////////////////////////////////////////////////////////////////////////////
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

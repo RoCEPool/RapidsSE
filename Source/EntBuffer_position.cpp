@@ -177,6 +177,69 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey, Ent* aPriorVec[],
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute prior vector for find key, such that next of priorVec[0] is        */
+/* specifically the given find entry                                          */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey, Ent* aPriorVec[],
+                                       Ent* aFindEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  //ASSERT(0 == m_iBufferHeight);
+  
+#ifdef WITH_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  for (i8 i_Offset = 0; i_Offset < C_INDEX_LEVELS; i_Offset++)
+    aPriorVec[i_Offset] = aSkipRoots();
+  
+  if (nItems() == 0)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  i8 iFindLevels = aFindEntry ? aFindEntry->nOffsets() - 1 : 2;
+  
+  bool bIsJuxta;
+  Ent* aScanEntry_sl = aSkipRoots();
+  for (i8 i_ScanLevel = C_INDEX_LEVELS - 1;
+       i_ScanLevel >= 0;
+       i_ScanLevel--) {
+    
+    i8 iItemAtScanLevel = 0;
+    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
+    while (aNextEntry_sl) {
+      
+      if (aFindEntry == aNextEntry_sl)
+        break;
+      
+      Key* aNextKey = _aKey(aNextEntry_sl->ayElmSeq());
+      
+      bIsJuxta = Key::bGreaterEqual(aNextEntry_sl->aKey(), aFindKey);
+      
+      if (bIsJuxta) {
+        if (! aFindEntry || aNextEntry_sl == aFindEntry)
+          break;
+        
+        if (i_ScanLevel > iFindLevels)
+          break;
+      }
+      
+      Ent* aPriorEntry_sl = aScanEntry_sl;
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
+      iItemAtScanLevel++;
+    }
+    aPriorVec[i_ScanLevel] = aScanEntry_sl;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/

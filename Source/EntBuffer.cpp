@@ -711,7 +711,7 @@ Ent* EntBuffer::aLeadEntry(void)
   
   Ent* aFirst = aNextEntry(aSkipRoots(),0);
   
-  RASSERT(! aFirst || aFirst->bValidEnt());
+  ASSERT(! aFirst || aFirst->bValidEnt());
   
   return aFirst;
 }
