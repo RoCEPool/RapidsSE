@@ -1349,16 +1349,20 @@ void vTest21_delete(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
     // key
     xEntWrk.vAppendInt(iInt);
         
-    Ent* aPrevEnt = pEntBuffer->aPositionPriorEntry(xEntWrk.aKey());
-    RASSERT(aPrevEnt);
+    Ent* aPriorEnt = pEntBuffer->aPositionPriorEntry(xEntWrk.aKey());
+    RASSERT(aPriorEnt);
     
-    Ent* aDeleteEnt = pEntBuffer->aNextEntry(aPrevEnt,0);
-    RASSERT(aDeleteEnt);
+    Ent* aDeleteEnt = pEntBuffer->aNextEntry(aPriorEnt,0);
     
-    pEntBuffer->vDeleteEntry(&aDeleteEnt);
-    
-    nTotalDel_++;
-    
+    if (aDeleteEnt) {
+      bool b = Key::bEqualTo(aDeleteEnt->aKey(),xEntWrk.aKey());
+      
+      if (b) {
+        pEntBuffer->vDeleteEntry(&aDeleteEnt);
+        nTotalDel_++;
+      }
+    }
+
     xEntWrk.vReset();
   }
 
@@ -1418,10 +1422,14 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
     // key
     xEntWrk.vAppendInt(iInt);
         
-    Ent* aPrevEnt = pEntBuffer->aPositionPriorEntry(xEntWrk.aKey());
-    RASSERT(aPrevEnt);
+    Ent* aPriorEnt = pEntBuffer->aPositionPriorEntry(xEntWrk.aKey());
+    RASSERT(aPriorEnt);
     
-    Ent* aSearchedEnt = pEntBuffer->aNextEntry(aPrevEnt,0);
+    Ent* aSearchedEnt = pEntBuffer->aNextEntry(aPriorEnt,0);
+    
+    if (aSearchedEnt) {
+      bool b = Key::bEqualTo(aSearchedEnt->aKey(),xEntWrk.aKey());
+    }
     //RASSERT(aSearchedEnt);
 
     nTotalDel_++;
@@ -1547,7 +1555,7 @@ void vTest21_testSearch(IntSet* pKeySamples, i8 nBuffers, bool bDump)
 void vTest21(void)
 {
   i8 nSamples = C_UNKNOWN;
-  bool bDump  = true;
+  bool bDump  = false;
 
   vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,
          sizeof(EntBuffer));
