@@ -1756,17 +1756,17 @@ void vTest28(void)
   i8 iLevel;
   
   for (i8 i = 0; i < iTimes; i++) {
-    iLevel = RndLib::iLogLevel(3,3,i_NextRnd);
+    iLevel = RndLib::iLogLevel(3,3,i_NextRnd) + 1;
     //vTrace("[%02lld] %lld "_Stz,i,iLevel);
     if (i && ! (i % 64))
       vTrace("\n"_Stz);
-    if (2 == iLevel)
-      vTrace("%lld "_Stz,iLevel);
+    if (3 == iLevel)
+      vTrace("$ "_Stz);
     else
     if (1 == iLevel)
-      vTrace(". "_Stz,iLevel);
+      vTrace("  "_Stz);
     else
-      vTrace("  "_Stz,iLevel);
+      vTrace(". "_Stz);
 
   }
   vTrace("\n"_Stz);
