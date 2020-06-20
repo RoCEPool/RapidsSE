@@ -361,7 +361,7 @@ void AM::vPrintStartupInfo(void) {
 }
 i8 AM::nRandomLevels(void) {
   Task* pTask = Task::pThisTLSTask();
-  i8 nLevels = RndLib::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
+  i8 nLevels = RndLib::iLogLevel(3,C_DEF_LVL_FREQUENCY,pTask->i_NextRnd()) + 1;
   return nLevels;
 }
 

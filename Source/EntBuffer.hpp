@@ -7,7 +7,6 @@ namespace Indexing
 {
   static const bool C_NOT_FINAL    = false;
   static const bool C_FINAL        = true;
-  static const i8   C_INDEX_LEVELS = 3;
   
   class EntBuffer : public DataBuffer,
                     public MiniHeap_t<Ent>

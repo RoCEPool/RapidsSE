@@ -10,8 +10,6 @@
 namespace Indexing
 {  
   void vCheckAssumptions(void);
-  
-  static const i8 C_FLAT_FREQ         = 2;
 }
 
 //------------------------------------------------------------------------------

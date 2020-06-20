@@ -35,7 +35,7 @@ bool Prompt::bPrompt_lvl(SePrompt* pPrompt)
   }
   
   for (i8 i = 0; i < 128; i++) {
-    i8 iLevel = RndLib::iLogLevel(3,C_FLAT_FREQ + 1,i_Next) + 1;
+    i8 iLevel = RndLib::iLogLevel(3,C_DEF_LVL_FREQUENCY,i_Next) + 1;
     vTrace("%lld "_Stz,iLevel);
     if (0 == (i+1)%8)
       vTrace("\n"_Stz);

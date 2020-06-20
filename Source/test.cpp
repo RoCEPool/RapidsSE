@@ -1643,8 +1643,6 @@ void vTest25(void)
 /*----------------------------------------------------------------------------*/
 void vTest26(void)
 {
-  // RndLib::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
- 
   bool bDumpTable = false;
   i8 nSamples = C_32KB;
 
