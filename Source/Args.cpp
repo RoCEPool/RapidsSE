@@ -371,6 +371,18 @@ bool Args::bParse(i8 argc, s256 argv[])
 #endif
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--lvlRatio"_Stz)) {
+      m_iLvlRatio = argv[++i_Arg].iToI8();
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--lvlMaximum"_Stz)) {
+      m_nLvlMaximum = argv[++i_Arg].iToI8();
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--maxLoadErrors"_Stz)) {
       m_nMaxLoadErrors = argv[++i_Arg].iToI8();
       continue;
