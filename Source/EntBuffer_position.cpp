@@ -234,8 +234,8 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey, Ent* aPriorVec[],
         if (! aFindEntry || aNextEntry_sl == aFindEntry)
           break;
         
-        if (i_ScanLevel > C_INDEX_LEVELS - 1 ) //iFindLevels)
-          break;
+        //if (i_ScanLevel > C_INDEX_LEVELS - 1 ) //iFindLevels)
+        //  break;
       }
       
       aScanEntry_sl = aNextEntry_sl;
@@ -245,6 +245,145 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey, Ent* aPriorVec[],
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* compute prior vector for find key, such that next of priorVec[0] is        */
+/* specifically the given find entry                                          */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vPositionPriorVecEntryOpt2(Key* aFindKey, Ent* aPriorVec[],
+                                          Ent* aFindEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  //ASSERT(0 == m_iBufferHeight);
+  
+#ifdef WITH_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Ent* aSkipRoots = this->aSkipRoots();
+  for (i8 i_Offset = 0; i_Offset < C_INDEX_LEVELS; i_Offset++)
+    aPriorVec[i_Offset] = aSkipRoots;
+  
+  if (nItems() == 0)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //i8 iFindLevels = aFindEntry ? aFindEntry->nOffsets() - 1 : 2;
+  
+  //bool bIsJuxta;
+  Ent* aScanEntry_sl = aSkipRoots;
+  
+  Ent* aNextEntry_sl;
+  i8 iEntSize = sizeof(Ent);
+  
+  //  for (i8 i_ScanLevel = C_INDEX_LEVELS - 1;
+  //       i_ScanLevel >= 0;
+  //       i_ScanLevel--) {
+  
+  // FLATTENED OUT for loop
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // SCAN LEVEL 2
+  i8 i_ScanLevel = 2;
+  
+  i8 iOffset1 = aScanEntry_sl->aKey()->nElmSeqSize() + iEntSize +
+  (C_NEO_SIZE * i_ScanLevel);
+  i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
+  
+  i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
+  while ( iNEO != -1) {
+    
+    aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+    if (aFindEntry == aNextEntry_sl)
+      break;
+    
+    //--------------------------------------------------------------
+    Key* aNextKey = aNextEntry_sl->aKey();
+    
+    i8 iLeftValue = *((i8*)aNextKey->ayElmSeq());
+    i8 iRightValue = *((i8*)aFindKey->ayElmSeq());
+    
+    if (iLeftValue >= iRightValue) {
+      if (! aFindEntry || aNextEntry_sl == aFindEntry)
+        break;
+      
+      //if (2 > C_INDEX_LEVELS - 1 ) //iFindLevels)
+      //  break;
+    }
+    
+    aScanEntry_sl = aNextEntry_sl;
+    iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+  }
+  aPriorVec[i_ScanLevel] = aScanEntry_sl;
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // SCAN LEVEL 1
+  i_ScanLevel = 1;
+  
+  iOffset1 = aScanEntry_sl->aKey()->nElmSeqSize() + iEntSize + C_NEO_SIZE;
+  iOffset2 = sizeof(i8) + iEntSize + C_NEO_SIZE;
+  
+  iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
+  while ( iNEO != -1) {
+    
+    aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+    if (aFindEntry == aNextEntry_sl)
+      break;
+    
+    //--------------------------------------------------------------
+    Key* aNextKey = aNextEntry_sl->aKey();
+    
+    i8 iLeftValue = *((i8*)aNextKey->ayElmSeq());
+    i8 iRightValue = *((i8*)aFindKey->ayElmSeq());
+    
+    if (iLeftValue >= iRightValue) {
+      if (! aFindEntry || aNextEntry_sl == aFindEntry)
+        break;
+      
+    }
+    
+    aScanEntry_sl = aNextEntry_sl;
+    iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+  }
+  aPriorVec[i_ScanLevel] = aScanEntry_sl;
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // SCAN LEVEL 0
+  i_ScanLevel = 0;
+  
+  iOffset1 = aScanEntry_sl->aKey()->nElmSeqSize() + iEntSize;
+  iOffset2 = sizeof(i8) + iEntSize;
+  
+  iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
+  while ( iNEO != -1) {
+    
+    aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+    if (aFindEntry == aNextEntry_sl)
+      break;
+    
+    //--------------------------------------------------------------
+    Key* aNextKey = aNextEntry_sl->aKey();
+    
+    i8 iLeftValue = *((i8*)aNextKey->ayElmSeq());
+    i8 iRightValue = *((i8*)aFindKey->ayElmSeq());
+    
+    if (iLeftValue >= iRightValue) {
+      if (! aFindEntry || aNextEntry_sl == aFindEntry)
+        break;
+    }
+    
+    aScanEntry_sl = aNextEntry_sl;
+    iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+  }
+  aPriorVec[i_ScanLevel] = aScanEntry_sl;
+  
+  
+  //}
+}
 /*----------------------------------------------------------------------------*/
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */

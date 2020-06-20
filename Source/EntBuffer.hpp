@@ -93,6 +93,8 @@ namespace Indexing
                                       Ent* aFindEntry);
     void       vPositionPriorVecEntryOpt(Key* aFindKey, Ent** aaPriorVec,
                                       Ent* aFindEntry);
+    void       vPositionPriorVecEntryOpt2(Key* aFindKey, Ent** aaPriorVec,
+                                         Ent* aFindEntry);
     ////////////////////////////////////////////////////////////////////////////
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
