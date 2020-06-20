@@ -1771,7 +1771,7 @@ void vTest28(void)
   i8 iLevel;
   
   for (i8 i = 0; i < iTimes; i++) {
-    iLevel = RndLib::iLogLevel(3,3,i_NextRnd);
+    iLevel = RndLib::iLogLevel(C_DEF_LVL_MAXLEVELS,C_DEF_LVL_FREQUENCY,i_NextRnd);
     //vTrace("[%02lld] %lld "_Stz,i,iLevel);
     if (i && ! (i % 64))
       vTrace("\n"_Stz);

@@ -79,17 +79,14 @@ u8 RndLib::uInteger(u8 uLow, u8 uHigh)
 }
 
 /*----------------------------------------------------------------------------*/
-/* choose a random logarithemic level (up to n levels, at given frequency)    */
+/* random level which is a number 1..max, at given logarithm frequency        */
 /*----------------------------------------------------------------------------*/
-i8 RndLib::iLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
+i8 RndLib::iLevel(i8 nMaxLevels, i8 iFrequency, i8& i_NextRnd)
 {
-  ASSERT(nLevels * iFrequency <= (i8)C_BITS_PER_WORD);
+  ASSERT(nMaxLevels * iFrequency <= (i8)C_BITS_PER_WORD);
 
+  //SP_Bits spBits;
   
-  SP_Bits spBits;
-  
-  //u8 uBitMask = C_ALL_BITS_ON >> (C_BITS_PER_WORD - iFrequency);
-  //u8 uBitMask = 1ull << (iFrequency-1);
   u8 uBitMask = ~ (C_ALL_BITS_ON << iFrequency);
   //vTrace("uBitMask: %s\n"_Stz,spBits.sz(uBitMask));
   
@@ -111,12 +108,12 @@ i8 RndLib::iLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
     if (uGrpBits)
       break;
     iLevel++;
-    if (iLevel == nLevels)
+    if (iLevel == nMaxLevels)
       break;
     uPattern >>= iFrequency;
   }
   
-  ASSERT(iLevel >= 1 && iLevel <= nLevels);
+  ASSERT(iLevel >= 1 && iLevel <= nMaxLevels);
   
   return iLevel;
 }
@@ -124,7 +121,7 @@ i8 RndLib::iLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
 /*----------------------------------------------------------------------------*/
 /* choose a random logarithemic level (up to n levels, at given frequency)    */
 /*----------------------------------------------------------------------------*/
-i8 RndLib::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
+i8 RndLib::iLogLevel(i8 nMaxLevels, i8 iFrequency, i8& i_NextRnd)
 {
   //
   // This function generates a number between 0 and nLevels - 1.
@@ -165,7 +162,7 @@ i8 RndLib::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
       else
         uRndLibPattern = RndLib::uRepeatable(i_NextRnd);
 
-      nSubsetsLeft = nLevels / iFrequency;
+      nSubsetsLeft = nMaxLevels / iFrequency;
     }
 
     // take the next lower subset of bits
@@ -176,8 +173,8 @@ i8 RndLib::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
   
   // compute the level based on the number of times we observed subsets
   // whose bits were all zero
-  i8 iLevel = ((nAllZeroSubsets >= nLevels)
-                ? nLevels - 1
+  i8 iLevel = ((nAllZeroSubsets >= nMaxLevels)
+                ? nMaxLevels - 1
                 : nAllZeroSubsets) + 1;
     
   return iLevel;
