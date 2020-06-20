@@ -5,7 +5,7 @@
 
 namespace Indexing
 {
-static const i8 C_SKIPROOTS_PADDING = 4;
+static const i8 C_SKIPROOTS_PADDING = 8;
 
   class SkipRoots : public Ent
   {
