@@ -49,7 +49,7 @@ Stz* SP_Bits::sz(i8 iWord)
   m_caResult[0] = '\0';
   Stz* szDst = (Stz*)m_caResult;
   
-  for (u8 i_Byte = 0; i_Byte < C_BYTES_PER_WORD; i_Byte++) {
+  for (i8 i_Byte = C_BYTES_PER_WORD - 1; i_Byte >= 0; i_Byte--) {
     u8 uByte = IntLib::uByte(iWord,i_Byte);
     StrLib::vSprintCat(szDst,"%c%c%c%c%c%c%c%c"_Stz,BYTE_TO_BINARY(uByte));
   }

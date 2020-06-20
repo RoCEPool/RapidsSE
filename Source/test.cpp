@@ -1708,10 +1708,41 @@ void vTest26(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test27                                                                     */
+/* test27 : SP_bits test (along with using IntLib::iBytePower() striding      */
 /*----------------------------------------------------------------------------*/
 void vTest27(void)
 {
+  u8 i;
+  i8 iStart;
+  i8 iStride;
+  
+  i8 iLoop;
+
+  i8 iTimes;
+
+  SP_Bits spBits;
+  
+  iTimes = 16;
+    
+  for (i8 iPower = 0; iPower < (i8)C_BYTES_PER_WORD; iPower += 1) {
+    
+    iStart  = IntLib::iBytePower(iPower);
+    iStride = iStart ? iStart : 1;
+    
+    i = iStart;
+
+    for (iLoop = 0; iLoop < iTimes; iLoop++, i += iStride)
+      vTrace("[%02lld] %20llu %s %016llx Power=%lld Start=%llx Stride=%llx\n"_Stz,
+             iLoop,i,spBits.sz(i),i,iPower,iStart,iStride);
+    vTrace("...\n"_Stz);
+    
+    iStride = iStride * 16;
+    i = iStride;
+    for (iLoop = 0; iLoop < iTimes - 1; iLoop++, i += iStride)
+      vTrace("[%02lld] %20llu %s %016llx Power=%lld Start=%llx Stride=%llx\n"_Stz,
+             iLoop,i,spBits.sz(i),i,iPower,iStart,iStride);
+    vTrace("\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
