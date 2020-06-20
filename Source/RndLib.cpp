@@ -81,6 +81,15 @@ u8 RndLib::uInteger(u8 uLow, u8 uHigh)
 /*----------------------------------------------------------------------------*/
 /* choose a random logarithemic level (up to n levels, at given frequency)    */
 /*----------------------------------------------------------------------------*/
+i8 RndLib::iLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
+{
+  
+  return 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* choose a random logarithemic level (up to n levels, at given frequency)    */
+/*----------------------------------------------------------------------------*/
 i8 RndLib::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
 {
   //

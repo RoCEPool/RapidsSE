@@ -1746,10 +1746,30 @@ void vTest27(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test28                                                                     */
+/* test28 -- visualise random levels                                          */
 /*----------------------------------------------------------------------------*/
 void vTest28(void)
 {
+  i8 i_NextRnd = C_UNKNOWN;
+  
+  i8 iTimes = C_2KB;
+  i8 iLevel;
+  
+  for (i8 i = 0; i < iTimes; i++) {
+    iLevel = RndLib::iLogLevel(3,3,i_NextRnd) + 1;
+    //vTrace("[%02lld] %lld "_Stz,i,iLevel);
+    if (i && ! (i % 64))
+      vTrace("\n"_Stz);
+    if (3 == iLevel)
+      vTrace("$ "_Stz);
+    else
+    if (1 == iLevel)
+      vTrace("  "_Stz);
+    else
+      vTrace(". "_Stz);
+
+  }
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
