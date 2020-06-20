@@ -70,8 +70,8 @@ namespace Arguments
     bool m_bKillPrev;        // kill previous se's (temporary)
     bool m_bLock;            // lock shared memory pages in memory
     bool m_bLog;             // use shared log
-    i8   m_iLvlRatio;        // level ratio
     i8   m_nLvlMaximum;      // maximum number of levels
+    i8   m_iLvlRatio;        // level ratio
     bool m_bNoMunge;         // prompt not to munge
     i8   m_nMaxLoadErrors;   // maximum load errors
     i8   m_nMaxReadyLP;      // maximum ready lp queue

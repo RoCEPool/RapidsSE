@@ -259,6 +259,8 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_nDummyThreads    = pArgs->m_nDummyThreads;
   Arg.m_nIndexEntries    = pArgs->m_nEntries;
   Arg.m_bLog             = pArgs->m_bLog;
+  Arg.m_nLvlMaximum      = pArgs->m_nLvlMaximum;
+  Arg.m_iLvlRatio        = pArgs->m_iLvlRatio;
   Arg.m_nMaxLoadErrors   = pArgs->m_nMaxLoadErrors;
   Arg.m_nMaxReadyLP      = pArgs->m_nMaxReadyLP;
   Arg.m_bMetadata        = pArgs->m_bMetadata;
