@@ -1712,7 +1712,7 @@ void vTest26(void)
                           iaCounts[i_Lvl][i_Frq][i_Cnt]
                         : 0;
                       
-          vTrace("%lld:%lld "_Stz,iaCounts[i_Lvl][i_Frq][i_Cnt],iRatio);
+          vTrace("/%lld=%lld "_Stz,iRatio,iaCounts[i_Lvl][i_Frq][i_Cnt]);
         }
         iXchk += iaCounts[i_Lvl][i_Frq][i_Cnt];
       }

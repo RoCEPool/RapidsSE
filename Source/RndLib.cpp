@@ -149,8 +149,8 @@ i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iFrequency, i8& i_NextRnd)
 
   //SP_Bits spBits;
   
-  u8 uBitMask = ~ (C_ALL_BITS_ON << iFrequency);
-  //vTrace("uBitMask: %s\n"_Stz,spBits.sz(uBitMask));
+  u8 uFreqMask = ~ (C_ALL_BITS_ON << iFrequency);
+  //vTrace("uFreqMask: %s\n"_Stz,spBits.sz(uBitMask));
   
   
   u8 uPattern;
@@ -160,17 +160,14 @@ i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iFrequency, i8& i_NextRnd)
     uPattern = RndLib::uRepeatable(i_NextRnd);
 
   
-
   i8 iLevel = 1;
-
   for (i8 iGrp = 0; iGrp < iFrequency; iGrp++) {
     //vTrace("uPattern: %s\n"_Stz,spBits.sz(uPattern));
-    u8 uGrpBits = uPattern & uBitMask;
+    u8 uGrpBits = uPattern & uFreqMask;
     //vTrace("uGrpBits: %s\n"_Stz,spBits.sz(uGrpBits));
     if (uGrpBits)
       break;
-    iLevel++;
-    if (iLevel == nMaxLevels)
+    if (++iLevel == nMaxLevels)
       break;
     uPattern >>= iFrequency;
   }

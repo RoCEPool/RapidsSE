@@ -361,9 +361,12 @@ void AM::vPrintStartupInfo(void) {
 }
 i8 AM::nRndSkipLevel(void) {
   Task* pTask = Task::pThisTLSTask();
-  i8 nLevels = RndLib::iLogLevel(C_DEF_LVL_MAXLEVELS,
-                                 C_DEF_LVL_FREQUENCY,
-                                 pTask->i_NextRnd());
+//  i8 nLevels = RndLib::iLogLevel(C_DEF_LVL_MAXLEVELS,
+//                                 C_DEF_LVL_FREQUENCY,
+//                                 pTask->i_NextRnd());
+  i8 nLevels = RndLib::iSkipLevel(C_DEF_LVL_MAXLEVELS,
+                                  C_DEF_LVL_FREQUENCY,
+                                  pTask->i_NextRnd());
   RASSERT(nLevels >= 1 && nLevels <= 3);
   return nLevels;
 }
