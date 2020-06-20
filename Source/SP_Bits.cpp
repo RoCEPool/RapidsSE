@@ -2,7 +2,7 @@
 /* SP_Bits.cpp - Bits sprint helper                              (on c stack) */
 /*============================================================================*/
 
-#include "Gadgets.h"
+#include "Library.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -32,7 +32,7 @@ SP_Bits::~SP_Bits(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint bits and return Stz* to result                                      */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Bits::sz(i8 iWord)
+Stz* SP_Bits::sz(u8 iWord)
 {
   _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
     

@@ -18,6 +18,8 @@ namespace Library
 #include "MagLib.hpp"
 #include "Dtm.hpp"
 
+#include "SP_Bits.hpp"
+
 #include "Compress.hpp"
 #include "IvlLib.hpp"
 #include "RndLib.hpp"

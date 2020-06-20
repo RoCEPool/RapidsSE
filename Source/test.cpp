@@ -1777,13 +1777,27 @@ void vTest28(void)
 /*----------------------------------------------------------------------------*/
 void vTest29(void)
 {
+  i8 i_NextRnd = C_UNKNOWN;
+
+  i8 iLevel = RndLib::iLevel(3,3,i_NextRnd);
+  vTrace("%lld\n"_Stz,iLevel);
+
 }
 
 /*----------------------------------------------------------------------------*/
-/* test30                                                                     */
+/* test30 : observe generation of random bit patterns                         */
 /*----------------------------------------------------------------------------*/
 void vTest30(void)
 {
+ i8 iTimes = 32;
+ u8 uPattern;
+ 
+  SP_Bits spBits;
+
+ for (i8 i = 0; i < iTimes; i++) {
+   uPattern = RndLib::uInteger();
+   vTrace("[%02lld] %lls\n"_Stz,i,spBits.sz(uPattern));
+ }
 }
 
 /*----------------------------------------------------------------------------*/

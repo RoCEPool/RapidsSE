@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Gadgets
+namespace Library
 {
   class SP_Bits : public SP
   {
@@ -16,7 +16,7 @@ namespace Gadgets
     SP_Bits(void);
    ~SP_Bits(void) noexcept(false);
   
-    Stz* sz(i8 iWord);
+    Stz* sz(u8 iWord);
 
   private:
     Footer* aFooter(void);
