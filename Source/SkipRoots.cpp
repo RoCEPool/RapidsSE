@@ -29,7 +29,7 @@ SkipRoots::SkipRoots(void)
   i8 i_Buffer = pBuffer->iBufferNo();
 
   vBuffer(i_Buffer);
-  vOffsets(C_DEF_LVL_MAXLEVELS);
+  vOffsets(C_DEF_LVL_MAXIMUM);
   vElmSeqSize(0);
 
   m_iPadding[0] = -1;
@@ -37,7 +37,7 @@ SkipRoots::SkipRoots(void)
   m_iPadding[2] = -1;
   m_iPadding[3] = -1;
   
-  for (i8 i_Neo = 0; i_Neo < C_DEF_LVL_MAXLEVELS; i_Neo++)
+  for (i8 i_Neo = 0; i_Neo < C_DEF_LVL_MAXIMUM; i_Neo++)
     vNEO(i_Neo,-1);
 }
 

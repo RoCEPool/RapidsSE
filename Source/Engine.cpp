@@ -1149,8 +1149,8 @@ void Engine::vPrintConstants(void)
   vInfo("\n"_Stz);
   vInfo("Constants:\n"_Stz);
   
-  vTrace("  C_DEF_LVL_FREQUENCY  = %lld\n"_Stz,C_DEF_LVL_FREQUENCY);
-  vTrace("  C_DEF_LVL_MAXLEVELS  = %lld\n"_Stz,C_DEF_LVL_MAXLEVELS);
+  vTrace("  C_DEF_LVL_RATIO      = %lld\n"_Stz,C_DEF_LVL_RATIO);
+  vTrace("  C_DEF_LVL_MAXIMUM  = %lld\n"_Stz,C_DEF_LVL_MAXIMUM);
 
   vTrace("  C_LOW_BUFFERS        = %lld\n"_Stz,C_LOW_BUFFERS);
   

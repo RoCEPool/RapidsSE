@@ -81,7 +81,7 @@ u8 RndLib::uInteger(u8 uLow, u8 uHigh)
 /*----------------------------------------------------------------------------*/
 /* choose a random logarithemic level (up to n levels, at given frequency)    */
 /*----------------------------------------------------------------------------*/
-i8 RndLib::iLogLevel(i8 nMaxLevels, i8 iFrequency, i8& i_NextRnd)
+i8 RndLib::iLogLevel(i8 nMaxLevels, i8 iRatio, i8& i_NextRnd)
 {
   //
   // This function generates a number between 0 and nLevels - 1.
@@ -104,7 +104,7 @@ i8 RndLib::iLogLevel(i8 nMaxLevels, i8 iFrequency, i8& i_NextRnd)
   // less likely (logarithemically) that all bits are zero.
   //
   
-  u8 uBitMask = C_ALL_BITS_ON >> (C_BITS_PER_WORD - iFrequency);
+  u8 uBitMask = C_ALL_BITS_ON >> (C_BITS_PER_WORD - iRatio);
   
   u8 uBitSubset = 0;
   u8 nSubsetsLeft = 0;
@@ -122,12 +122,12 @@ i8 RndLib::iLogLevel(i8 nMaxLevels, i8 iFrequency, i8& i_NextRnd)
       else
         uRndLibPattern = RndLib::uRepeatable(i_NextRnd);
 
-      nSubsetsLeft = nMaxLevels / iFrequency;
+      nSubsetsLeft = nMaxLevels / iRatio;
     }
 
     // take the next lower subset of bits
     uBitSubset = uRndLibPattern & uBitMask;
-    uRndLibPattern >>= iFrequency;
+    uRndLibPattern >>= iRatio;
     nSubsetsLeft--;
   }
   
@@ -143,13 +143,13 @@ i8 RndLib::iLogLevel(i8 nMaxLevels, i8 iFrequency, i8& i_NextRnd)
 /*----------------------------------------------------------------------------*/
 /* random skip level which is a number 1..max, at given logarithm frequency   */
 /*----------------------------------------------------------------------------*/
-i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iFrequency)
+i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iRatio)
 {
-  ASSERT(nMaxLevels * iFrequency <= (i8)C_BITS_PER_WORD);
+  ASSERT(nMaxLevels * iRatio <= (i8)C_BITS_PER_WORD);
 
   //SP_Bits spBits;
   
-  u8 uFreqMask = ~ (C_ALL_BITS_ON << iFrequency);
+  u8 uRatioMask = ~ (C_ALL_BITS_ON << iRatio);
   //vTrace("uFreqMask: %s\n"_Stz,spBits.sz(uBitMask));
   
   
@@ -157,15 +157,15 @@ i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iFrequency)
   
 
   i8 iLevel = 1;
-  for (i8 iGrp = 0; iGrp < iFrequency; iGrp++) {
+  for (i8 iGrp = 0; iGrp < iRatio; iGrp++) {
     //vTrace("uPattern: %s\n"_Stz,spBits.sz(uPattern));
-    u8 uGrpBits = uPattern & uFreqMask;
+    u8 uGrpBits = uPattern & uRatioMask;
     //vTrace("uGrpBits: %s\n"_Stz,spBits.sz(uGrpBits));
     if (uGrpBits)
       break;
     if (++iLevel == nMaxLevels)
       break;
-    uPattern >>= iFrequency;
+    uPattern >>= iRatio;
   }
   
   ASSERT(iLevel >= 1 && iLevel <= nMaxLevels);
@@ -176,13 +176,13 @@ i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iFrequency)
 /*----------------------------------------------------------------------------*/
 /* random skip level which is a number 1..max, at given logarithm frequency   */
 /*----------------------------------------------------------------------------*/
-i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iFrequency, i8& i_NextRnd)
+i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iRatio, i8& i_NextRnd)
 {
-  ASSERT(nMaxLevels * iFrequency <= (i8)C_BITS_PER_WORD);
+  ASSERT(nMaxLevels * iRatio <= (i8)C_BITS_PER_WORD);
 
   //SP_Bits spBits;
   
-  u8 uFreqMask = ~ (C_ALL_BITS_ON << iFrequency);
+  u8 uRatioMask = ~ (C_ALL_BITS_ON << iRatio);
   //vTrace("uFreqMask: %s\n"_Stz,spBits.sz(uBitMask));
   
   
@@ -194,15 +194,15 @@ i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iFrequency, i8& i_NextRnd)
 
   
   i8 iLevel = 1;
-  for (i8 iGrp = 0; iGrp < iFrequency; iGrp++) {
+  for (i8 iGrp = 0; iGrp < iRatio; iGrp++) {
     //vTrace("uPattern: %s\n"_Stz,spBits.sz(uPattern));
-    u8 uGrpBits = uPattern & uFreqMask;
+    u8 uGrpBits = uPattern & uRatioMask;
     //vTrace("uGrpBits: %s\n"_Stz,spBits.sz(uGrpBits));
     if (uGrpBits)
       break;
     if (++iLevel == nMaxLevels)
       break;
-    uPattern >>= iFrequency;
+    uPattern >>= iRatio;
   }
   
   ASSERT(iLevel >= 1 && iLevel <= nMaxLevels);

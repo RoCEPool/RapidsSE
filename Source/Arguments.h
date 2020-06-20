@@ -9,8 +9,8 @@
 
 namespace Arguments
 {
-  static const i8 C_DEF_LVL_FREQUENCY = 3; // this means 1/2^3 i.e. reducing by 8
-  static const i8 C_DEF_LVL_MAXLEVELS = 3;
+  static const i8 C_DEF_LVL_RATIO     = 3; // this means 1/2^3 i.e. reducing by 8
+  static const i8 C_DEF_LVL_MAXIMUM = 3;
 
   void vCheckAssumptions(void);
 }

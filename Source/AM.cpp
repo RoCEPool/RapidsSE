@@ -363,18 +363,18 @@ i8 AM::nRndSkipLevel(void) {
   i8 nLevels;
   if (AM::bDeveloper()) {
     Task* pTask = Task::pThisTLSTask();
-//  i8 nLevels = RndLib::iLogLevel(C_DEF_LVL_MAXLEVELS,
-//                                 C_DEF_LVL_FREQUENCY,
+//  i8 nLevels = RndLib::iLogLevel(C_DEF_LVL_MAXIMUM,
+//                                 C_DEF_LVL_RATIO,
 //                                 pTask->i_NextRnd());
-    nLevels = RndLib::iSkipLevel(C_DEF_LVL_MAXLEVELS,
-                                 C_DEF_LVL_FREQUENCY,
+    nLevels = RndLib::iSkipLevel(C_DEF_LVL_MAXIMUM,
+                                 C_DEF_LVL_RATIO,
                                   pTask->i_NextRnd());
   }
   else {
-    nLevels = RndLib::iSkipLevel(C_DEF_LVL_MAXLEVELS,
-                                 C_DEF_LVL_FREQUENCY);
+    nLevels = RndLib::iSkipLevel(C_DEF_LVL_MAXIMUM,
+                                 C_DEF_LVL_RATIO);
   }
-  RASSERT(nLevels >= 1 && nLevels <= C_DEF_LVL_MAXLEVELS);
+  RASSERT(nLevels >= 1 && nLevels <= C_DEF_LVL_MAXIMUM);
   return nLevels;
 }
 
