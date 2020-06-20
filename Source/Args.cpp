@@ -78,6 +78,8 @@ Args::Args(void)
   m_bKillPrev        = false;
   m_bLock            = false;
   m_bLog             = false;
+  m_iLvlFrequency    = C_DEF_LVL_FREQUENCY;
+  m_nLvlMaximum      = C_DEF_LVL_MAXLEVELS;
   m_bNoMunge         = false;
   m_nMaxLoadErrors   = 0;
   m_nMaxReadyLP      = 32;
