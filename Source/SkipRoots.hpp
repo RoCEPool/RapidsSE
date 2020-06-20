@@ -5,10 +5,12 @@
 
 namespace Indexing
 {
+static const i8 C_SKIPROOTS_PADDING = 4;
+
   class SkipRoots : public Ent
   {
   private:
-    i8 m_iPadding[4];
+    i8 m_iPadding[C_SKIPROOTS_PADDING];
  
   public:
     SkipRoots(void);

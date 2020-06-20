@@ -81,8 +81,11 @@ u8 RndLib::uInteger(u8 uLow, u8 uHigh)
 /*----------------------------------------------------------------------------*/
 /* choose a random logarithemic level (up to n levels, at given frequency)    */
 /*----------------------------------------------------------------------------*/
-i8 RndLib::iLogLevel(i8 nMaxLevels, i8 iRatio, i8& i_NextRnd)
+i8 RndLib::iLogLevel(i8 nLvlMaximum, i8 iLvlRatio, i8& i_NextRnd)
 {
+  // temp
+  RASSERT(3 == nLvlMaximum && 3 == iLvlRatio);
+  
   //
   // This function generates a number between 0 and nLevels - 1.
   //
@@ -104,7 +107,7 @@ i8 RndLib::iLogLevel(i8 nMaxLevels, i8 iRatio, i8& i_NextRnd)
   // less likely (logarithemically) that all bits are zero.
   //
   
-  u8 uBitMask = C_ALL_BITS_ON >> (C_BITS_PER_WORD - iRatio);
+  u8 uBitMask = C_ALL_BITS_ON >> (C_BITS_PER_WORD - iLvlRatio);
   
   u8 uBitSubset = 0;
   u8 nSubsetsLeft = 0;
@@ -122,19 +125,19 @@ i8 RndLib::iLogLevel(i8 nMaxLevels, i8 iRatio, i8& i_NextRnd)
       else
         uRndLibPattern = RndLib::uRepeatable(i_NextRnd);
 
-      nSubsetsLeft = nMaxLevels / iRatio;
+      nSubsetsLeft = nLvlMaximum / iLvlRatio;
     }
 
     // take the next lower subset of bits
     uBitSubset = uRndLibPattern & uBitMask;
-    uRndLibPattern >>= iRatio;
+    uRndLibPattern >>= iLvlRatio;
     nSubsetsLeft--;
   }
   
   // compute the level based on the number of times we observed subsets
   // whose bits were all zero
-  i8 iLevel = ((nAllZeroSubsets >= nMaxLevels)
-                ? nMaxLevels - 1
+  i8 iLevel = ((nAllZeroSubsets >= nLvlMaximum)
+                ? nLvlMaximum - 1
                 : nAllZeroSubsets) + 1;
     
   return iLevel;
@@ -143,13 +146,16 @@ i8 RndLib::iLogLevel(i8 nMaxLevels, i8 iRatio, i8& i_NextRnd)
 /*----------------------------------------------------------------------------*/
 /* random skip level which is a number 1..max, at given logarithm frequency   */
 /*----------------------------------------------------------------------------*/
-i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iRatio)
+i8 RndLib::iSkipLevel(i8 nLvlMaximum, i8 iLvlRatio)
 {
-  ASSERT(nMaxLevels * iRatio <= (i8)C_BITS_PER_WORD);
+  // temp
+  RASSERT(3 == nLvlMaximum && 3 == iLvlRatio);
+  
+  ASSERT(nLvlMaximum * iLvlRatio <= (i8)C_BITS_PER_WORD);
 
   //SP_Bits spBits;
   
-  u8 uRatioMask = ~ (C_ALL_BITS_ON << iRatio);
+  u8 uRatioMask = ~ (C_ALL_BITS_ON << iLvlRatio);
   //vTrace("uFreqMask: %s\n"_Stz,spBits.sz(uBitMask));
   
   
@@ -157,18 +163,18 @@ i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iRatio)
   
 
   i8 iLevel = 1;
-  for (i8 iGrp = 0; iGrp < iRatio; iGrp++) {
+  for (i8 iGrp = 0; iGrp < iLvlRatio; iGrp++) {
     //vTrace("uPattern: %s\n"_Stz,spBits.sz(uPattern));
     u8 uGrpBits = uPattern & uRatioMask;
     //vTrace("uGrpBits: %s\n"_Stz,spBits.sz(uGrpBits));
     if (uGrpBits)
       break;
-    if (++iLevel == nMaxLevels)
+    if (++iLevel == nLvlMaximum)
       break;
-    uPattern >>= iRatio;
+    uPattern >>= iLvlRatio;
   }
   
-  ASSERT(iLevel >= 1 && iLevel <= nMaxLevels);
+  ASSERT(iLevel >= 1 && iLevel <= nLvlMaximum);
   
   return iLevel;
 }
@@ -176,13 +182,16 @@ i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iRatio)
 /*----------------------------------------------------------------------------*/
 /* random skip level which is a number 1..max, at given logarithm frequency   */
 /*----------------------------------------------------------------------------*/
-i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iRatio, i8& i_NextRnd)
+i8 RndLib::iSkipLevel(i8 nLvlMaximum, i8 iLvlRatio, i8& i_NextRnd)
 {
-  ASSERT(nMaxLevels * iRatio <= (i8)C_BITS_PER_WORD);
+  // temp
+  RASSERT(3 == nLvlMaximum && 3 == iLvlRatio);
+
+  ASSERT(nLvlMaximum * iLvlRatio <= (i8)C_BITS_PER_WORD);
 
   //SP_Bits spBits;
   
-  u8 uRatioMask = ~ (C_ALL_BITS_ON << iRatio);
+  u8 uRatioMask = ~ (C_ALL_BITS_ON << iLvlRatio);
   //vTrace("uFreqMask: %s\n"_Stz,spBits.sz(uBitMask));
   
   
@@ -194,18 +203,18 @@ i8 RndLib::iSkipLevel(i8 nMaxLevels, i8 iRatio, i8& i_NextRnd)
 
   
   i8 iLevel = 1;
-  for (i8 iGrp = 0; iGrp < iRatio; iGrp++) {
+  for (i8 iGrp = 0; iGrp < iLvlRatio; iGrp++) {
     //vTrace("uPattern: %s\n"_Stz,spBits.sz(uPattern));
     u8 uGrpBits = uPattern & uRatioMask;
     //vTrace("uGrpBits: %s\n"_Stz,spBits.sz(uGrpBits));
     if (uGrpBits)
       break;
-    if (++iLevel == nMaxLevels)
+    if (++iLevel == nLvlMaximum)
       break;
-    uPattern >>= iRatio;
+    uPattern >>= iLvlRatio;
   }
   
-  ASSERT(iLevel >= 1 && iLevel <= nMaxLevels);
+  ASSERT(iLevel >= 1 && iLevel <= nLvlMaximum);
   
   return iLevel;
 }
