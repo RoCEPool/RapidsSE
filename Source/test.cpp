@@ -1252,7 +1252,7 @@ i8 nTest21_intEnts(void)
 
   for (;;) {
     
-    i8 nOffsets = AM::nRandomLevels();
+    i8 nOffsets = AM::nRndSkipLevel();
     
     //vTrace("%lld "_Stz,iInt);
     xEntWrk.vAppendInt(nEnts);
@@ -1391,7 +1391,7 @@ void vTest21_insert(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalIns_)
     xEntWrk.vAppendInt(iInt);
     
     // neo
-    i8 nOffsets = AM::nRandomLevels();
+    i8 nOffsets = AM::nRndSkipLevel();
     xEntWrk.vOffsets(nOffsets);
     
     i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
@@ -1679,7 +1679,7 @@ void vTest26(void)
       for (i8 i_Frq = 2; i_Frq < C_FRQ; i_Frq++) {
 
         //i8 iLvl = RndLib::iLogLevel(nLevels,iFreq,i_NextRnd);
-        i8 i_Cnt = RndLib::iLevel(i_Lvl,i_Frq,i_NextRnd) ;
+        i8 i_Cnt = RndLib::iSkipLevel(i_Lvl,i_Frq,i_NextRnd) ;
         if (bDumpTable)
           vTrace("%lld "_Stz,i_Cnt);
 
@@ -1797,7 +1797,7 @@ void vTest29(void)
   i8 i_NextRnd = C_UNKNOWN;
 
   for (i8 i = 0; i < iTimes; i++) {
-    i8 iLevel = RndLib::iLevel(3,3,i_NextRnd);
+    i8 iLevel = RndLib::iSkipLevel(3,3,i_NextRnd);
     vTrace("Level = %lld\n"_Stz,iLevel);
   }
 

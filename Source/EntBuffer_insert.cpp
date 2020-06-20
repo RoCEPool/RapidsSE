@@ -596,7 +596,7 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set a random number offsets
-  i8 nOffsets = AM::nRandomLevels();
+  i8 nOffsets = AM::nRndSkipLevel();
 
   aEnt->vOffsets(nOffsets);
   

@@ -16,8 +16,8 @@ namespace Library
     static u8 uInteger(u8 uMax);
     static u8 uInteger(u8 uLow, u8 uHigh);
     
-    static i8 iLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd);
     static i8 iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd);
+    static i8 iSkipLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd);
 
     static void vString(s256& sStr, i8 iLength);
 

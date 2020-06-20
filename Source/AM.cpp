@@ -359,7 +359,7 @@ void AM::vPrintAttachMap(void) {
 void AM::vPrintStartupInfo(void) {
   gxArgs.vPrintStartupInfo();
 }
-i8 AM::nRandomLevels(void) {
+i8 AM::nRndSkipLevel(void) {
   Task* pTask = Task::pThisTLSTask();
   i8 nLevels = RndLib::iLogLevel(C_DEF_LVL_MAXLEVELS,
                                  C_DEF_LVL_FREQUENCY,

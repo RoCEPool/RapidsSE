@@ -153,7 +153,7 @@ namespace Oblique
     static void vPrintArguments(void);
     static void vPrintAttachMap(void);
     static void vPrintStartupInfo(void);
-    static i8   nRandomLevels(void);
+    static i8   nRndSkipLevel(void);
     static Job* pThisTLSJob(void);
     static t8   tThisTLSPespective(void);
     static Task* pThisTLSTask(void);
