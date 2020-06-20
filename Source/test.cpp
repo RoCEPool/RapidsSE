@@ -1555,10 +1555,10 @@ void vTest21_testSearch(IntSet* pKeySamples, i8 nBuffers, bool bDump)
 void vTest21(void)
 {
   i8 nSamples = C_UNKNOWN;
-  bool bDump  = true;
+  bool bDump  = false;
   
   bool bInsertTest = true;
-  bool bSearchTest = false;
+  bool bSearchTest = true;
   bool bDeleteTest = false;
 
   vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,
