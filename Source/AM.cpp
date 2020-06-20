@@ -360,13 +360,20 @@ void AM::vPrintStartupInfo(void) {
   gxArgs.vPrintStartupInfo();
 }
 i8 AM::nRndSkipLevel(void) {
-  Task* pTask = Task::pThisTLSTask();
+  i8 nLevels;
+  if (AM::bDeveloper()) {
+    Task* pTask = Task::pThisTLSTask();
 //  i8 nLevels = RndLib::iLogLevel(C_DEF_LVL_MAXLEVELS,
 //                                 C_DEF_LVL_FREQUENCY,
 //                                 pTask->i_NextRnd());
-  i8 nLevels = RndLib::iSkipLevel(C_DEF_LVL_MAXLEVELS,
-                                  C_DEF_LVL_FREQUENCY,
+    nLevels = RndLib::iSkipLevel(C_DEF_LVL_MAXLEVELS,
+                                 C_DEF_LVL_FREQUENCY,
                                   pTask->i_NextRnd());
+  }
+  else {
+    nLevels = RndLib::iSkipLevel(C_DEF_LVL_MAXLEVELS,
+                                 C_DEF_LVL_FREQUENCY);
+  }
   RASSERT(nLevels >= 1 && nLevels <= 3);
   return nLevels;
 }

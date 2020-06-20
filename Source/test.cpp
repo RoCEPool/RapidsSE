@@ -1561,8 +1561,10 @@ void vTest21(void)
   bool bSearchTest = true;
   bool bDeleteTest = false;
 
-  vTrace("Test21 -- This is EntBuffer Test %lld(B)\n"_Stz,
-         sizeof(EntBuffer));
+  vTrace("Test21 -- This is EntBuffer Test MODE: %s %s\n"_Stz,
+         AM::szBuild(),
+         AM::bDeveloper() ? "DEVELOPER"_Stz : ""_Stz
+         );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create key sample int set
