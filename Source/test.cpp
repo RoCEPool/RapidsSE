@@ -1650,11 +1650,16 @@ void vTest26(void)
 
   i8 i_NextRnd = C_UNKNOWN;
   
-  i8 iaCounts[6][6][6];
-  for (i8 nLevels = 0; nLevels <= 5; nLevels++)
-    for (i8 iFreq = 0; iFreq <= 5; iFreq++)
-      for (i8 iLvl = 0; iLvl <= 5; iLvl++)
-        iaCounts[nLevels][iFreq][iLvl] = 0;
+  static const i8 C_FRQ = 8;
+  static const i8 C_LVL = 8;
+  static const i8 C_CNT = 8;
+
+  i8 iaCounts[C_LVL][C_FRQ][C_CNT];
+  
+  for (i8 i_Lvl = 0; i_Lvl < C_LVL; i_Lvl++)
+    for (i8 i_Frq = 0; i_Frq < C_FRQ; i_Frq++)
+      for (i8 i_Cnt = 0; i_Cnt < C_CNT; i_Cnt++)
+        iaCounts[i_Lvl][i_Frq][i_Cnt] = 0;
 
 
   if (bDumpTable) {
@@ -1667,19 +1672,20 @@ void vTest26(void)
     if (bDumpTable)
       vTrace("  "_Stz);
 
-    for (i8 nLevels = 3; nLevels <= 5; nLevels++) {
+    for (i8 i_Lvl = 3; i_Lvl < C_LVL; i_Lvl++) {
 
       if (bDumpTable)
-        if (nLevels > 3)
+        if (i_Lvl > 3)
           vTrace(": "_Stz);
 
-      for (i8 iFreq = 1; iFreq <= 5; iFreq++) {
+      for (i8 i_Frq = 2; i_Frq < C_FRQ; i_Frq++) {
 
-        i8 iLvl = RndLib::iLogLevel(nLevels,iFreq,i_NextRnd) + 1;
+        //i8 iLvl = RndLib::iLogLevel(nLevels,iFreq,i_NextRnd) + 1;
+        i8 i_Cnt = RndLib::iLevel(i_Lvl,i_Frq,i_NextRnd) ;
         if (bDumpTable)
-          vTrace("%lld "_Stz,iLvl);
+          vTrace("%lld "_Stz,i_Cnt);
 
-        iaCounts[nLevels][iFreq][iLvl]++;
+        iaCounts[i_Lvl][i_Frq][i_Cnt]++;
         
       } // freq
       
@@ -1690,21 +1696,32 @@ void vTest26(void)
 
   } // sample
   
+  i8 iXchk = 0;
   vTrace("\n"_Stz);
-  for (i8 nLevels = 3; nLevels <= 5; nLevels++) {
-    vTrace("%lld Levels\n"_Stz,nLevels);
+  for (i8 i_Lvl = 3; i_Lvl < C_LVL; i_Lvl++) {
+    vTrace("%lld Levels\n"_Stz,i_Lvl);
 
-    for (i8 iFreq = 1; iFreq <= 5; iFreq++) {
-      vTrace("Freq %lld: "_Stz,iFreq);
-      
-      for (i8 iLvl = 1; iLvl <= 5; iLvl++) {
-        vTrace("%lld "_Stz,iaCounts[nLevels][iFreq][iLvl]);
+    for (i8 i_Frq = 2; i_Frq < C_FRQ; i_Frq++) {
+      vTrace("Freq %lld: "_Stz,i_Frq);
+
+      iXchk = 0;
+      for (i8 i_Cnt = 1; i_Cnt < C_CNT; i_Cnt++) {
+        if (i_Cnt == 1)
+          vTrace("%lld "_Stz,iaCounts[i_Lvl][i_Frq][i_Cnt]);
+        else {
+          i8 iRatio = iaCounts[i_Lvl][i_Frq][i_Cnt]
+                        ? iaCounts[i_Lvl][i_Frq][i_Cnt - 1] /
+                          iaCounts[i_Lvl][i_Frq][i_Cnt]
+                        : 0;
+                      
+          vTrace("%lld:%lld "_Stz,iaCounts[i_Lvl][i_Frq][i_Cnt],iRatio);
+        }
+        iXchk += iaCounts[i_Lvl][i_Frq][i_Cnt];
       }
-      vTrace("\n"_Stz);
+      vTrace(" (iXchk=%lld)\n"_Stz,iXchk);
     }
     vTrace("\n"_Stz);
   }
-  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1777,10 +1794,14 @@ void vTest28(void)
 /*----------------------------------------------------------------------------*/
 void vTest29(void)
 {
+  i8 iTimes = 32;
+  
   i8 i_NextRnd = C_UNKNOWN;
 
-  i8 iLevel = RndLib::iLevel(3,3,i_NextRnd);
-  vTrace("%lld\n"_Stz,iLevel);
+  for (i8 i = 0; i < iTimes; i++) {
+    i8 iLevel = RndLib::iLevel(3,3,i_NextRnd);
+    vTrace("Level = %lld\n"_Stz,iLevel);
+  }
 
 }
 

@@ -83,43 +83,40 @@ u8 RndLib::uInteger(u8 uLow, u8 uHigh)
 /*----------------------------------------------------------------------------*/
 i8 RndLib::iLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
 {
+  ASSERT(nLevels * iFrequency <= (i8)C_BITS_PER_WORD);
+
+  
   SP_Bits spBits;
   
-  u8 uBitMask = C_ALL_BITS_ON >> (C_BITS_PER_WORD - iFrequency);
-  vTrace("uBitMask: %s\n"_Stz,spBits.sz(uBitMask));
+  //u8 uBitMask = C_ALL_BITS_ON >> (C_BITS_PER_WORD - iFrequency);
+  //u8 uBitMask = 1ull << (iFrequency-1);
+  u8 uBitMask = ~ (C_ALL_BITS_ON << iFrequency);
+  //vTrace("uBitMask: %s\n"_Stz,spBits.sz(uBitMask));
   
-  u8 uBitSubset = 0;
-  u8 nSubsetsLeft = 0;
-  u8 uPattern = 0;
   
-  // step thru bit subsets until we find a subset with some bits set
-  i8 nAllZeroSubsets;
-  for (nAllZeroSubsets = -1; ! uBitSubset; nAllZeroSubsets++) {
-    
-    // if all bits used from the random bit pattern, generate a new pattern
-    if (0 == nSubsetsLeft) {
-      
-      if (C_UNKNOWN == i_NextRnd)
-        uPattern = RndLib::uInteger();
-      else
-        uPattern = RndLib::uRepeatable(i_NextRnd);
+  u8 uPattern;
+  if (C_UNKNOWN == i_NextRnd)
+    uPattern = RndLib::uInteger();
+  else
+    uPattern = RndLib::uRepeatable(i_NextRnd);
 
-      vTrace("uPattern: %s\n"_Stz,spBits.sz(uPattern));
-      
-      nSubsetsLeft = nLevels / iFrequency;
-    }
+  
 
-    // take the next lower subset of bits
-    uBitSubset = uPattern & uBitMask;
+  i8 iLevel = 1;
+
+  for (i8 iGrp = 0; iGrp < iFrequency; iGrp++) {
+    //vTrace("uPattern: %s\n"_Stz,spBits.sz(uPattern));
+    u8 uGrpBits = uPattern & uBitMask;
+    //vTrace("uGrpBits: %s\n"_Stz,spBits.sz(uGrpBits));
+    if (uGrpBits)
+      break;
+    iLevel++;
+    if (iLevel == nLevels)
+      break;
     uPattern >>= iFrequency;
-    nSubsetsLeft--;
   }
   
-  // compute the level based on the number of times we observed subsets
-  // whose bits were all zero
-  i8 iLevel = (nAllZeroSubsets >= nLevels)
-                ? nLevels - 1
-                : nAllZeroSubsets;
+  ASSERT(iLevel >= 1 && iLevel <= nLevels);
   
   return iLevel;
 }
