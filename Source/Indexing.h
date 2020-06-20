@@ -11,8 +11,6 @@ namespace Indexing
 {  
   void vCheckAssumptions(void);
   
-  static const i8 C_FLAT_LEVELS_MAX   = 16;
-  static const i8 C_FLAT_OFFSETS_MAX  = C_FLAT_LEVELS_MAX - 1;
   static const i8 C_FLAT_FREQ         = 2;
 }
 
