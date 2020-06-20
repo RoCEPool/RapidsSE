@@ -176,10 +176,10 @@ i8 RndLib::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
   
   // compute the level based on the number of times we observed subsets
   // whose bits were all zero
-  i8 iLevel = (nAllZeroSubsets >= nLevels)
+  i8 iLevel = ((nAllZeroSubsets >= nLevels)
                 ? nLevels - 1
-                : nAllZeroSubsets;
-  
+                : nAllZeroSubsets) + 1;
+    
   return iLevel;
 }
 

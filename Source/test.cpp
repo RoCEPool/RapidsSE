@@ -1678,7 +1678,7 @@ void vTest26(void)
 
       for (i8 i_Frq = 2; i_Frq < C_FRQ; i_Frq++) {
 
-        //i8 iLvl = RndLib::iLogLevel(nLevels,iFreq,i_NextRnd) + 1;
+        //i8 iLvl = RndLib::iLogLevel(nLevels,iFreq,i_NextRnd);
         i8 i_Cnt = RndLib::iLevel(i_Lvl,i_Frq,i_NextRnd) ;
         if (bDumpTable)
           vTrace("%lld "_Stz,i_Cnt);
@@ -1771,7 +1771,7 @@ void vTest28(void)
   i8 iLevel;
   
   for (i8 i = 0; i < iTimes; i++) {
-    iLevel = RndLib::iLogLevel(3,3,i_NextRnd) + 1;
+    iLevel = RndLib::iLogLevel(3,3,i_NextRnd);
     //vTrace("[%02lld] %lld "_Stz,i,iLevel);
     if (i && ! (i % 64))
       vTrace("\n"_Stz);
