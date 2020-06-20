@@ -226,7 +226,7 @@ void EntBuffer::vCompact(void)
     // get the prior vector to the entry being moved
     
     //vDumpPriorVec(xPriorVec);
-    for (i8 i_Offset = 0; i_Offset < 3; i_Offset++) {
+    for (i8 i_Offset = 0; i_Offset < C_DEF_LVL_MAXLEVELS; i_Offset++) {
       Ent* aPriorEntry = xPriorVec[i_Offset];
       i4 iPriorOffset = aPriorEntry->iNEO(i_Offset);
       if (iWasOffset == iPriorOffset)

@@ -374,7 +374,7 @@ i8 AM::nRndSkipLevel(void) {
     nLevels = RndLib::iSkipLevel(C_DEF_LVL_MAXLEVELS,
                                  C_DEF_LVL_FREQUENCY);
   }
-  RASSERT(nLevels >= 1 && nLevels <= 3);
+  RASSERT(nLevels >= 1 && nLevels <= C_DEF_LVL_MAXLEVELS);
   return nLevels;
 }
 
