@@ -81,6 +81,8 @@ namespace Oblique
     static JobList* pLocalJobs(void);
     static LockTracker* pLockTracker(void);
     static bool bLogging(void);
+    static i8   nLvlMaximum(void);
+    static i8   iLvlRatio(void);
     static bool bMetadata(void);
     static i8   iNextDiagram(void);
     static i8   iNextEpoch(void);

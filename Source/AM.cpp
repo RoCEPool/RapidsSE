@@ -333,6 +333,13 @@ void AM::vLogArguments(void) {
   gxArgs.vLog();
 }
 
+i8 AM::nLvlMaximum(void) {
+  return gpAttachMap->Arg.m_nLvlMaximum;
+}
+i8 AM::iLvlRatio(void) {
+  return gpAttachMap->Arg.m_iLvlRatio;
+}
+
 bool AM::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
 {
   return CmdHelper::bParseCmd(pTagSet,pTknVec);
