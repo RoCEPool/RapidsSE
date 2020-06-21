@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Resources::vCheckAssumptions(void)
 {
-  RASSERT(sizeof(struct sockaddr_in) <= (8 * 16));
+  ALWAYS(sizeof(struct sockaddr_in) <= (8 * 16));
 }
 
 /*============================================================================*/

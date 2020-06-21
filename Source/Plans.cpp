@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Plans::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(Plan)      < C_SIZE_MEDIUM_OBJECT);
+  ALWAYS(sizeof(Plan)      < C_SIZE_MEDIUM_OBJECT);
 }
 
 /*============================================================================*/

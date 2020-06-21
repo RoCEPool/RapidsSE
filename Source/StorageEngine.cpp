@@ -78,7 +78,7 @@ void StorageEngine::vCheckAllAssumptions(void)
 /*----------------------------------------------------------------------------*/
 void StorageEngine::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(AttachMap) < C_SIZE_POOL_BUFFER);
+  ALWAYS(sizeof(AttachMap) < C_SIZE_POOL_BUFFER);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void Alignment::vCheckAssumptions(void)
 {
-  RASSERT(sizeof(SingleWord)       == 8);
-  RASSERT(sizeof(SingleWord)       == C_BYTES_PER_WORD);
-  RASSERT(sizeof(DoubleWord) == 2 * C_BYTES_PER_WORD);
-  RASSERT(sizeof(QuadWord)   == 4 * C_BYTES_PER_WORD);
-  RASSERT(sizeof(CacheLine)  == C_BYTES_PER_CACHE_LINE);
+  ALWAYS(sizeof(SingleWord) == 8);
+  ALWAYS(sizeof(SingleWord) == C_BYTES_PER_WORD);
+  ALWAYS(sizeof(DoubleWord) == 2 * C_BYTES_PER_WORD);
+  ALWAYS(sizeof(QuadWord)   == 4 * C_BYTES_PER_WORD);
+  ALWAYS(sizeof(CacheLine)  == C_BYTES_PER_CACHE_LINE);
 }
 
 /*============================================================================*/

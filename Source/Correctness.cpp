@@ -9,24 +9,24 @@
 /*----------------------------------------------------------------------------*/
 void Correctness::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(u2)  == sizeof(eCN));
+  ALWAYS(sizeof(u2)  == sizeof(eCN));
     
-  ASSERT(8 == sizeof(Header));
-  ASSERT(8 == sizeof(Object));
-  ASSERT(16 == sizeof(Footer));
+  ALWAYS(8 == sizeof(Header));
+  ALWAYS(8 == sizeof(Object));
+  ALWAYS(16 == sizeof(Footer));
   
 
-  ASSERT(8 == sizeof(Gid));
+  ALWAYS(8 == sizeof(Gid));
   
-  ASSERT(8 == sizeof(Bcd));
-  ASSERT(8 == sizeof(Bol));
-  ASSERT(8 == sizeof(Dte));
-  ASSERT(8 == sizeof(Edt));
-  ASSERT(8 == sizeof(Flt));
-  ASSERT(8 == sizeof(Int));
-  ASSERT(8 == sizeof(Ivl));
-  ASSERT(8 == sizeof(Tme));
-  ASSERT(8 == sizeof(Tsp));
+  ALWAYS(8 == sizeof(Bcd));
+  ALWAYS(8 == sizeof(Bol));
+  ALWAYS(8 == sizeof(Dte));
+  ALWAYS(8 == sizeof(Edt));
+  ALWAYS(8 == sizeof(Flt));
+  ALWAYS(8 == sizeof(Int));
+  ALWAYS(8 == sizeof(Ivl));
+  ALWAYS(8 == sizeof(Tme));
+  ALWAYS(8 == sizeof(Tsp));
 }
 
 /*----------------------------------------------------------------------------*/

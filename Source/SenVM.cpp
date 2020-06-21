@@ -9,16 +9,16 @@
 /*----------------------------------------------------------------------------*/
 void SenVM::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(AnyVal) == 16);
-  ASSERT(sizeof(AnyVal) == sizeof(IntVal));
-  ASSERT(sizeof(AnyVal) == sizeof(FipVal));
-  ASSERT(sizeof(AnyVal) == sizeof(PtrVal));
+  ALWAYS(sizeof(AnyVal) == 16);
+  ALWAYS(sizeof(AnyVal) == sizeof(IntVal));
+  ALWAYS(sizeof(AnyVal) == sizeof(FipVal));
+  ALWAYS(sizeof(AnyVal) == sizeof(PtrVal));
 
-  ASSERT(sizeof(Cell)   == 8);
+  ALWAYS(sizeof(Cell)   == 8);
   
-  ASSERT(sizeof(Dic)     < C_SIZE_SMALL_OBJECT);
+  ALWAYS(sizeof(Dic)     < C_SIZE_SMALL_OBJECT);
   
-  ASSERT(sizeof(Dtm)    == sizeof(SingleWord));
+  ALWAYS(sizeof(Dtm)    == sizeof(SingleWord));
 }
 
 /*============================================================================*/

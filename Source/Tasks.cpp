@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Tasks::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(Queue)    < C_SIZE_SMALL_OBJECT);
-  ASSERT(sizeof(Task)     < C_SIZE_MEDIUM_OBJECT);
+  ALWAYS(sizeof(Queue)    < C_SIZE_SMALL_OBJECT);
+  ALWAYS(sizeof(Task)     < C_SIZE_MEDIUM_OBJECT);
 }
 
 /*============================================================================*/

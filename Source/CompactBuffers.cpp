@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void CompactBuffers::vCheckAssumptions(void)
 {
-  RASSERT(sizeof(HeadLine) == sizeof(SingleWord));
-  RASSERT(sizeof(TailLine) == sizeof(SpaceUnit));
+  ALWAYS(sizeof(HeadLine) == sizeof(SingleWord));
+  ALWAYS(sizeof(TailLine) == sizeof(SpaceUnit));
 
-  RASSERT(sizeof(Lrw) == 16);
-  RASSERT(sizeof(LrwCdx) == 8);
+  ALWAYS(sizeof(Lrw) == 16);
+  ALWAYS(sizeof(LrwCdx) == 8);
 }
 
 /*============================================================================*/

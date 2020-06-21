@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Threads::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(Thread)     < C_SIZE_SMALL_OBJECT);
+  ALWAYS(sizeof(Thread) < C_SIZE_SMALL_OBJECT);
 }
 
 /*============================================================================*/

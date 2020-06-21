@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Transactions::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(Tx)           < C_SIZE_SMALL_OBJECT);
-  ASSERT(sizeof(TxSet)        < C_SIZE_SMALL_OBJECT);
+  ALWAYS(sizeof(Tx)           < C_SIZE_SMALL_OBJECT);
+  ALWAYS(sizeof(TxSet)        < C_SIZE_SMALL_OBJECT);
 }
 
 /*============================================================================*/

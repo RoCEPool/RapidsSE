@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Entries::vCheckAssumptions(void)
 {
-  RASSERT(sizeof(FreeItem) <= sizeof(Ent));
-  RASSERT(sizeof(NEO)      == C_NEO_SIZE);
+  ALWAYS(sizeof(FreeItem) <= sizeof(Ent));
+  ALWAYS(sizeof(NEO)      == C_NEO_SIZE);
 }
 
 /*============================================================================*/

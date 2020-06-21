@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Host::vCheckAssumptions(void)
 {
-  ASSERT(Process::bTestPid(Process::iGetPid()));  
+  ALWAYS(Process::bTestPid(Process::iGetPid()));  
 }
 
 /*============================================================================*/
