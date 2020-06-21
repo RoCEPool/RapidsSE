@@ -143,7 +143,8 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey,
   
   //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  i8 iFindLevels = aFindEntry ? aFindEntry->nOffsets() - 1 : 2;
+  i8 iFindLevels = aFindEntry ? (aFindEntry->nOffsets() - 1)
+                              : (nLvlLevels - 1);
   
   bool bIsJuxta;
   Ent* aScanEntry_sl = aSkipRoots();
@@ -205,8 +206,9 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //i8 iFindLevels = aFindEntry ? aFindEntry->nOffsets() - 1 : 2;
-  
+  //i8 iFindLevels = aFindEntry ? (aFindEntry->nOffsets() - 1)
+  //                            : (nLvlLevels - 1);
+
   //bool bIsJuxta;
   Ent* aScanEntry_sl = aSkipRoots;
   
@@ -275,8 +277,9 @@ void EntBuffer::vPositionPriorVecEntryOpt2(Key* aFindKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //i8 iFindLevels = aFindEntry ? aFindEntry->nOffsets() - 1 : 2;
-  
+  //i8 iFindLevels = aFindEntry ? (aFindEntry->nOffsets() - 1)
+  //                            : (nLvlLevels - 1);
+
   //bool bIsJuxta;
   Ent* aScanEntry_sl = aSkipRoots;
   
