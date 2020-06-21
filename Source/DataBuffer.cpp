@@ -27,6 +27,8 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
+
   m_iBufferNo     = iBufferNo();
   m_iPartitionNo  = C_UNKNOWN;
   m_iBufferHeight = 0;

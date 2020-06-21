@@ -27,6 +27,8 @@ LinkedBuffer::LinkedBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  ASSERT(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
+
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
   

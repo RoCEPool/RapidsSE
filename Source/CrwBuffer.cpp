@@ -29,6 +29,8 @@ CrwBuffer::CrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
+  ASSERT(CacheLine::bOnCacheLineBoundary(this));
+
   m_pRowCompactor = nullptr;
   
   m_pTable = nullptr;

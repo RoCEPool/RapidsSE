@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Operands::vCheckAssumptions(void)
 {
+  RASSERT(CacheLine::bMultipleCacheLines(sizeof(Operand)));
+  RASSERT(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
 }
 
 /*============================================================================*/

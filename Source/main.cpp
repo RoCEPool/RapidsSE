@@ -22,32 +22,10 @@ extern s256 gi_szaArgv[];
 /*----------------------------------------------------------------------------*/
 int main(int argc, char* argv[])
 {
-  //ASSERT(1 == 0);
-  printf("sizeof(ColPix) %lld\n", (i8)sizeof(ColPix));
-  printf("sizeof(Lrw)    %lld\n", (i8)sizeof(Lrw));
-
-//  printf("sizeof(RowSingle)   %lld\n", (i8)sizeof(RowSingle));
-//  printf("sizeof(Table)       %lld\n", (i8)sizeof(Table));
-//  printf("sizeof(Index)       %lld\n", (i8)sizeof(Index));
-//  printf("sizeof(Dic)         %lld\n", (i8)sizeof(Dic));
-//  printf("sizeof(Token)       %lld\n", (i8)sizeof(Token));
-//  printf("sizeof(TokenVec)    %lld\n", (i8)sizeof(TokenVec));
-//  printf("sizeof(Session)     %lld\n", (i8)sizeof(Session));
-
-//  printf("sizeof(Column)       %lld\n", (i8)sizeof(Column));
-//  printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
-//  printf("sizeof(HeapBuffer)   %lld\n", (i8)sizeof(HeapBuffer));
-//  printf("sizeof(s32)          %lld\n", (i8)sizeof(s32));
-//  printf("sizeof(s4K)          %lld\n", (i8)sizeof(s4K));
-//  printf("sizeof(ShortCut)     %lld\n", (i8)sizeof(ShortCut));
-
-//  s32 sString;
-//  
-//  sString.pString()->vCopy("abcd"_Stz);
-//  printf("  %s\n",sString.azChar());
-//  sString.pString()->vCopy("012345678901234567890123456789abcdefghijk"_Stz);
-//  printf("  %s\n",sString.azChar());
-
+  printf("sizeof(Object) %lld\n",       (i8)sizeof(Object));
+  printf("sizeof(Operand) %lld\n",      (i8)sizeof(Operand));
+  printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
+  printf("sizeof(DataBuffer) %lld\n",   (i8)sizeof(DataBuffer));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

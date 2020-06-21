@@ -13,7 +13,7 @@ namespace DataBuffers
     i8     m_iPartitionNo;  // partition no this buffer belongs to
     i8     m_iBufferHeight; // buffer height in the tree
     Birth  m_oWhenNewed;    // when was this buffer created?
-    bool   m_bIsPermanent;  // is buffer permanent ?
+    b8     m_bIsPermanent;  // is buffer permanent ?
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);

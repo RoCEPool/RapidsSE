@@ -14,6 +14,11 @@ void Pool::vCheckAssumptions(void)
   
   ASSERT(sizeof(HeapBuffer) == 1 * sizeof(CacheLine));
   
+  ASSERT(CacheLine::bMultipleCacheLines(C_SIZE_TINY_OBJECT));
+  ASSERT(CacheLine::bMultipleCacheLines(C_SIZE_SMALL_OBJECT));
+  ASSERT(CacheLine::bMultipleCacheLines(C_SIZE_MEDIUM_OBJECT));
+  ASSERT(CacheLine::bMultipleCacheLines(C_SIZE_LARGE_OBJECT));
+
   HeapMem::vValidateEnums();
 }
 

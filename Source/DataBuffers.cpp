@@ -10,6 +10,8 @@
 void DataBuffers::vCheckAssumptions(void)
 {
   ASSERT(C_LOAD_READCHUNK < C_WSP_CSVBUFFER);
+  
+  RASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 }
 
 /*============================================================================*/

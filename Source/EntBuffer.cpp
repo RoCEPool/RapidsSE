@@ -61,6 +61,8 @@ EntBuffer::EntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
+  ASSERT(CacheLine::bOnCacheLineBoundary(this));
+  
   m_pIndex      = nullptr;
   //m_xSkipRoots
   m_aLazyChain  = nullptr;

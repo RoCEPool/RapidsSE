@@ -48,6 +48,8 @@ Operand::Operand(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  ASSERT(CacheLine::bMultipleCacheLines(sizeof(Operand)));
+
   m_eTailProcessing = TP_OUTPUT;
   MemLib::vZero(m__Padding,sizeof(m__Padding),eClassNo);
 
