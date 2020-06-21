@@ -593,7 +593,7 @@ Ent* EntBuffer::aGetEntryOffset(i8 iOffset)
 /*----------------------------------------------------------------------------*/
 /* get split entry by split number                                            */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aGetEntrySplit(i8 iSplitEntryNo,Ent** aaPriorEntry)
+Ent* EntBuffer::aGetEntrySplit(i8 iSplitEntryNo, Ent** aaPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   

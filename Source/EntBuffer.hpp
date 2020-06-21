@@ -86,14 +86,18 @@ namespace Indexing
     
     EntBuffer* pPositionH0Buffer(Key* aFindKey);
     Ent*       aPositionPriorEntry(Key* aFindKey);
-    void       vPositionPriorVecBuffer(Key* aFindKey, Ent** aaPriorVec,
+    void       vPositionPriorVecBuffer(Key* aFindKey,
+                                       Ent* aPriorVec[],
                                        EntBuffer* pToBuffer);
-    void       vPositionPriorVecEntry(Key* aFindKey, Ent** aaPriorVec,
+    void       vPositionPriorVecEntry(Key* aFindKey,
+                                      Ent* aPriorVec[],
                                       Ent* aFindEntry);
-    void       vPositionPriorVecEntryOpt(Key* aFindKey, Ent** aaPriorVec,
-                                      Ent* aFindEntry);
-    void       vPositionPriorVecEntryOpt2(Key* aFindKey, Ent** aaPriorVec,
-                                         Ent* aFindEntry);
+    void       vPositionPriorVecEntryOpt(Key* aFindKey,
+                                         Ent* aPriorVec[],
+                                          Ent* aFindEntry);
+    void       vPositionPriorVecEntryOpt2(Key* aFindKey,
+                                          Ent* aPriorVec[],
+                                          Ent* aFindEntry);
     ////////////////////////////////////////////////////////////////////////////
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

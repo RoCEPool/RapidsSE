@@ -117,7 +117,8 @@ Ent* EntBuffer::aPositionPriorEntry(Key* aFindKey)
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPositionPriorVecEntry(Key* aFindKey, Ent* aPriorVec[],
+void EntBuffer::vPositionPriorVecEntry(Key* aFindKey,
+                                       Ent* aPriorVec[],
                                        Ent* aFindEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -180,8 +181,9 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey, Ent* aPriorVec[],
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey, Ent* aPriorVec[],
-                                       Ent* aFindEntry)
+void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey,
+                                          Ent* aPriorVec[],
+                                          Ent* aFindEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -249,8 +251,9 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey, Ent* aPriorVec[],
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPositionPriorVecEntryOpt2(Key* aFindKey, Ent* aPriorVec[],
-                                          Ent* aFindEntry)
+void EntBuffer::vPositionPriorVecEntryOpt2(Key* aFindKey,
+                                           Ent* aPriorVec[],
+                                           Ent* aFindEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
