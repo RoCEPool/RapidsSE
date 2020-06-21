@@ -25,17 +25,20 @@ SkipRoots* Indexing::_aSkipRoots(void* aAddr)
 SkipRoots::SkipRoots(void)
 : Ent(CN_ENT,sizeof(SkipRoots))
 {
+  i8 nLvlLevels = AM::nLvlLevels();
+
+  
   PoolBuffer* pBuffer = PoolBuffer::pWithinPoolBuffer((Object*)this);
   i8 i_Buffer = pBuffer->iBufferNo();
 
   vBuffer(i_Buffer);
-  vOffsets(AM::nLvlLevels());
+  vOffsets(nLvlLevels);
   vElmSeqSize(0);
 
   for (i8 i_Pad = 0; i_Pad < C_SKIPROOTS_PADDING; i_Pad++)
     m_iPadding[i_Pad] = -1;
   
-  for (i8 i_Neo = 0; i_Neo < AM::nLvlLevels(); i_Neo++)
+  for (i8 i_Neo = 0; i_Neo < nLvlLevels; i_Neo++)
     vNEO(i_Neo,-1);
 }
 

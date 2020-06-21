@@ -84,6 +84,8 @@ Ent* EntBuffer::aPositionPriorEntry(Key* aFindKey)
   RASSERT( ! m_aLazyChain );
 #endif
   
+  i8 nLvlLevels = AM::nLvlLevels();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (nItems() == 0)
@@ -93,7 +95,7 @@ Ent* EntBuffer::aPositionPriorEntry(Key* aFindKey)
   
   bool bNextKeyIsGE;
   
-  for (i8 i_ScanLevel = AM::nLvlLevels() - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
@@ -127,9 +129,11 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey,
   RASSERT( ! m_aLazyChain );
 #endif
   
+  i8 nLvlLevels = AM::nLvlLevels();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Level = 0; i_Level < AM::nLvlLevels(); i_Level++)
+  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
     aPriorVec[i_Level] = aSkipRoots();
   
   if (nItems() == 0)
@@ -143,7 +147,7 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey,
   
   bool bIsJuxta;
   Ent* aScanEntry_sl = aSkipRoots();
-  for (i8 i_ScanLevel = AM::nLvlLevels() - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
     i8 iItemAtScanLevel = 0;
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
@@ -189,9 +193,11 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey,
   RASSERT( ! m_aLazyChain );
 #endif
   
+  i8 nLvlLevels = AM::nLvlLevels();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Ent* aSkipRoots = this->aSkipRoots();
-  for (i8 i_Level = 0; i_Level < AM::nLvlLevels(); i_Level++)
+  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
     aPriorVec[i_Level] = aSkipRoots;
   
   if (nItems() == 0)
@@ -207,7 +213,7 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey,
   Ent* aNextEntry_sl;
   i8 iEntSize = sizeof(Ent);
 
-  for (i8 i_ScanLevel = AM::nLvlLevels() - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
     i8 iOffset1 = aScanEntry_sl->aKey()->nElmSeqSize() + iEntSize +
                     (C_NEO_SIZE * i_ScanLevel);
@@ -230,7 +236,7 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey,
         if (! aFindEntry || aNextEntry_sl == aFindEntry)
           break;
         
-        //if (i_ScanLevel > AM::nLvlLevels() - 1 ) //iFindLevels)
+        //if (i_ScanLevel > nLvlLevels - 1 ) //iFindLevels)
         //  break;
       }
       
@@ -257,9 +263,11 @@ void EntBuffer::vPositionPriorVecEntryOpt2(Key* aFindKey,
   RASSERT( ! m_aLazyChain );
 #endif
   
+  i8 nLvlLevels = AM::nLvlLevels();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Ent* aSkipRoots = this->aSkipRoots();
-  for (i8 i_Level = 0; i_Level < AM::nLvlLevels(); i_Level++)
+  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
     aPriorVec[i_Level] = aSkipRoots;
   
   if (nItems() == 0)
@@ -275,7 +283,7 @@ void EntBuffer::vPositionPriorVecEntryOpt2(Key* aFindKey,
   Ent* aNextEntry_sl;
   i8 iEntSize = sizeof(Ent);
   
-  //  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
+  //  for (i8 i_ScanLevel = nLvlLevels - 1;
   //       i_ScanLevel >= 0;
   //       i_ScanLevel--) {
   
@@ -306,7 +314,7 @@ void EntBuffer::vPositionPriorVecEntryOpt2(Key* aFindKey,
       if (! aFindEntry || aNextEntry_sl == aFindEntry)
         break;
       
-      //if (2 > AM::nLvlLevels() - 1 ) //iFindLevels)
+      //if (2 > nLvlLevels - 1 ) //iFindLevels)
       //  break;
     }
     
@@ -424,10 +432,14 @@ void EntBuffer::vPositionPriorVecBuffer(Key* aFindKey,
                           x2
 
    */
+  
+  
+  i8 nLvlLevels = AM::nLvlLevels();
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Level = 0; i_Level < AM::nLvlLevels(); i_Level++)
+  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
     aPriorVec[i_Level] = aSkipRoots();
 
   // first entry
@@ -436,7 +448,7 @@ void EntBuffer::vPositionPriorVecBuffer(Key* aFindKey,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 i_ScanLevel = AM::nLvlLevels() - 1;
+  i8 i_ScanLevel = nLvlLevels - 1;
   Ent* aPriorEntry_sl = aSkipRoots();
 
   for (; i_ScanLevel >= 0; i_ScanLevel--) {
@@ -491,93 +503,7 @@ void EntBuffer::vPositionPriorVecBuffer(Key* aFindKey,
 
 }
 
-/*----------------------------------------------------------------------------*/
-//void EntBuffer::vPositionPriorVecBuffer(Ent* aFindKey, Ent* aPriorVec[],
-//                                          EntBuffer* pToBuffer)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-//
-//  ASSERT(0 != m_iBufferHeight);
-//
-//#ifdef WITH_EB_LAZY_CHAIN
-//  RASSERT( ! m_aLazyChain );
-//#endif
-//
-//  /*
-//
-//   nb. duplicates are fully qualified by their ref'd buffer
-//
-//
-//   when this function is called (findKey,toBuffer) is about to be inserted
-//   into this buffer
-//
-//   the (findKey,toBuffer) doesnt yet exist in this buffer
-//
-//
-//   x2?  [a2 y2]           ->  [a2 x2 y2]
-//   [2]a [2]x [2]y        [2]a [2]x [2]y
-//
-//   */
-//
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  for (i8 i_Offset = 0; i_Offset < AM::nLvlLevels(); i_Offset++)
-//    aPriorVec[i_Offset] = aSkipRoots();
-//
-//  if (nItems() == 0)
-//    return;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-//  bool bNextKeyIsGreater;
-//  Ent* aScanEntry_sl = aSkipRoots();
-//
-//  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
-//       i_ScanLevel >= 0;
-//       i_ScanLevel--) {
-//
-//    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
-//    while (aNextEntry_sl) {
-//
-//      //Key* aNextKey = _aKey(aNextEntry_sl->aDataArea());
-//
-//      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-//      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-//
-//      //#ifdef WITH_EB_SINGLE_COLIDX
-//      //      if (m_pIndex->bSingleColumn()) {
-//      //        bNextKeyIsGreater = aNextKey->bGreaterThanSingle(aFindKey,m_pIndex);
-//      //        RASSERT(bNextKeyIsGreater == aNextKey->bGreaterThan(aFindKey,pIdxColVec));
-//      //      }
-//      //      else
-//      //        bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
-//      //#else
-//      //      bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
-//      //#endif
-//
-//      bNextKeyIsGreater = Key::bGreaterThan(aNextEntry_sl, aFindKey);
-//
-//      if (bNextKeyIsGreater)
-//        break;
-//
-//      if (0 == i_ScanLevel) {
-//        //bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
-//        bool bKeysAreEqual = Key::bEqualTo(aNextEntry_sl, aFindKey);
-//
-//        if (bKeysAreEqual &&
-//            (pToBuffer == EntBuffer::pRefdEntBuffer(aNextEntry_sl)->pPrevBuffer()))
-//          break;
-//      }
-//
-//      aScanEntry_sl = aNextEntry_sl;
-//      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
-//    }
-//    aPriorVec[i_ScanLevel] = aScanEntry_sl;
-//  }
-//}
-//
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

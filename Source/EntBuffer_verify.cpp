@@ -709,6 +709,8 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
+  i8 nLvlLevels = AM::nLvlLevels();
+  
   /*
    Run thru each scan list level and verify we discover entries with
    the same number of scan entries
@@ -720,9 +722,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
   Ent* aNextEntry1;
   Ent* aNextEntry0;
   
-  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
-       i_ScanLevel >= 0;
-       i_ScanLevel--) {
+  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
     if (bShowKeys)
       vTrace("i_ScanLevel %lld\n"_Stz,i_ScanLevel);

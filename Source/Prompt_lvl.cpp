@@ -34,8 +34,11 @@ bool Prompt::bPrompt_lvl(SePrompt* pPrompt)
       i_Next = C_UNKNOWN;
   }
   
+  i8 nLvlLevels = AM::nLvlLevels();
+  i8 iLvlRatio  = AM::iLvlRatio();
+
   for (i8 i = 0; i < 128; i++) {
-    i8 iLevel = RndLib::iLogLevel(AM::nLvlLevels(),AM::iLvlRatio(),i_Next);
+    i8 iLevel = RndLib::iLogLevel(nLvlLevels,iLvlRatio,i_Next);
     vTrace("%lld "_Stz,iLevel);
     if (0 == (i+1)%8)
       vTrace("\n"_Stz);

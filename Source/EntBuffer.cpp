@@ -548,9 +548,12 @@ void EntBuffer::vDumpPriorVec(Ent* aPriorVec[])
   vTrace("  0:%p 1:%p 2:%p\n"_Stz,
          aPriorVec[0],aPriorVec[1],aPriorVec[2]);
   
-  for (i8 i = 0; i < AM::nLvlLevels(); i++) {
+  i8 nLvlLevels = AM::nLvlLevels();
+
+  for (i8 i = 0; i < nLvlLevels; i++) {
     Ent* aEnt = aPriorVec[i];
-    for (i8 i_Level = 0; i_Level < aEnt->nOffsets(); i_Level++) {
+    i8 nOffsets = aEnt->nOffsets();
+    for (i8 i_Level = 0; i_Level < nOffsets; i_Level++) {
       vTrace("  i : %lld Ent : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
              i,
              aEnt,
