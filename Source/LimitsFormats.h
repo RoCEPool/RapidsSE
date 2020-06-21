@@ -14,8 +14,8 @@ static const i8 C_MAX_INDEX_COLUMNS = 16;
 static const i8 C_MAX_KEY           = 256;    // max length of index entry key
 static const i8 C_MAX_LOG_ENTRIES   = C_256K * 1;
 static const i8 C_MAX_LOG_NOTE      = C_1K;
-static const i8 C_MAX_LVL_LEVELS    = 5;
-static const i8 C_MAX_LVL_RATIO     = 3;
+static const i8 C_MAX_LVL_LEVELS    = 7;
+static const i8 C_MAX_LVL_RATIO     = 7;
 static const i8 C_MAX_NESTED_WORDS  = 16;
 static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
 static const i8 C_MAX_OPS           = 256;
@@ -32,10 +32,10 @@ static const i8 C_MAX_THREADS       = 256;
 static const i8 C_MAX_TOKENS        = C_2KB;
 
 // max partitions in a grid
-static const i8 C_MAX_PARTITIONS = C_MAX_SLOTS * C_MAX_NODES;
+static const i8 C_MAX_PARTITIONS    = C_MAX_SLOTS * C_MAX_NODES;
 
-static const i8 C_MIN_LVL_LEVELS    = 3;
-static const i8 C_MIN_LVL_RATIO     = 3;
+static const i8 C_MIN_LVL_LEVELS    = 2;
+static const i8 C_MIN_LVL_RATIO     = 2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
