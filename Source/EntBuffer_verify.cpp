@@ -720,7 +720,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
   Ent* aNextEntry1;
   Ent* aNextEntry0;
   
-  for (i8 i_ScanLevel = C_MAX_LVL_LEVELS - 1;
+  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     

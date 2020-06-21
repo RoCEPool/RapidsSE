@@ -29,13 +29,13 @@ SkipRoots::SkipRoots(void)
   i8 i_Buffer = pBuffer->iBufferNo();
 
   vBuffer(i_Buffer);
-  vOffsets(C_MAX_LVL_LEVELS);
+  vOffsets(AM::nLvlLevels());
   vElmSeqSize(0);
 
   for (i8 i_Pad = 0; i_Pad < C_SKIPROOTS_PADDING; i_Pad++)
     m_iPadding[i_Pad] = -1;
   
-  for (i8 i_Neo = 0; i_Neo < C_MAX_LVL_LEVELS; i_Neo++)
+  for (i8 i_Neo = 0; i_Neo < AM::nLvlLevels(); i_Neo++)
     vNEO(i_Neo,-1);
 }
 

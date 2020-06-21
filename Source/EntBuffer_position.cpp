@@ -93,7 +93,7 @@ Ent* EntBuffer::aPositionPriorEntry(Key* aFindKey)
   
   bool bKeyIsGreaterEqual;
   
-  for (i8 i_ScanLevel = C_MAX_LVL_LEVELS - 1;
+  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     
@@ -131,7 +131,7 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Offset = 0; i_Offset < C_MAX_LVL_LEVELS; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < AM::nLvlLevels(); i_Offset++)
     aPriorVec[i_Offset] = aSkipRoots();
   
   if (nItems() == 0)
@@ -145,7 +145,7 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey,
   
   bool bIsJuxta;
   Ent* aScanEntry_sl = aSkipRoots();
-  for (i8 i_ScanLevel = C_MAX_LVL_LEVELS - 1;
+  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     
@@ -195,7 +195,7 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Ent* aSkipRoots = this->aSkipRoots();
-  for (i8 i_Offset = 0; i_Offset < C_MAX_LVL_LEVELS; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < AM::nLvlLevels(); i_Offset++)
     aPriorVec[i_Offset] = aSkipRoots;
   
   if (nItems() == 0)
@@ -211,7 +211,7 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey,
   Ent* aNextEntry_sl;
   i8 iEntSize = sizeof(Ent);
 
-  for (i8 i_ScanLevel = C_MAX_LVL_LEVELS - 1;
+  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     
@@ -236,7 +236,7 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey,
         if (! aFindEntry || aNextEntry_sl == aFindEntry)
           break;
         
-        //if (i_ScanLevel > C_MAX_LVL_LEVELS - 1 ) //iFindLevels)
+        //if (i_ScanLevel > AM::nLvlLevels() - 1 ) //iFindLevels)
         //  break;
       }
       
@@ -265,7 +265,7 @@ void EntBuffer::vPositionPriorVecEntryOpt2(Key* aFindKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Ent* aSkipRoots = this->aSkipRoots();
-  for (i8 i_Offset = 0; i_Offset < C_MAX_LVL_LEVELS; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < AM::nLvlLevels(); i_Offset++)
     aPriorVec[i_Offset] = aSkipRoots;
   
   if (nItems() == 0)
@@ -281,7 +281,7 @@ void EntBuffer::vPositionPriorVecEntryOpt2(Key* aFindKey,
   Ent* aNextEntry_sl;
   i8 iEntSize = sizeof(Ent);
   
-  //  for (i8 i_ScanLevel = C_MAX_LVL_LEVELS - 1;
+  //  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
   //       i_ScanLevel >= 0;
   //       i_ScanLevel--) {
   
@@ -312,7 +312,7 @@ void EntBuffer::vPositionPriorVecEntryOpt2(Key* aFindKey,
       if (! aFindEntry || aNextEntry_sl == aFindEntry)
         break;
       
-      //if (2 > C_MAX_LVL_LEVELS - 1 ) //iFindLevels)
+      //if (2 > AM::nLvlLevels() - 1 ) //iFindLevels)
       //  break;
     }
     
@@ -433,7 +433,7 @@ void EntBuffer::vPositionPriorVecBuffer(Key* aFindKey,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++)
+  for (i8 i_Level = 0; i_Level < AM::nLvlLevels(); i_Level++)
     aPriorVec[i_Level] = aSkipRoots();
 
   // first entry
@@ -442,7 +442,7 @@ void EntBuffer::vPositionPriorVecBuffer(Key* aFindKey,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 i_ScanLevel = C_MAX_LVL_LEVELS - 1;
+  i8 i_ScanLevel = AM::nLvlLevels() - 1;
   Ent* aPriorEntry_sl = aSkipRoots();
 
   for (; i_ScanLevel >= 0; i_ScanLevel--) {
@@ -528,7 +528,7 @@ void EntBuffer::vPositionPriorVecBuffer(Key* aFindKey,
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  for (i8 i_Offset = 0; i_Offset < C_MAX_LVL_LEVELS; i_Offset++)
+//  for (i8 i_Offset = 0; i_Offset < AM::nLvlLevels(); i_Offset++)
 //    aPriorVec[i_Offset] = aSkipRoots();
 //
 //  if (nItems() == 0)
@@ -540,7 +540,7 @@ void EntBuffer::vPositionPriorVecBuffer(Key* aFindKey,
 //  bool bNextKeyIsGreater;
 //  Ent* aScanEntry_sl = aSkipRoots();
 //
-//  for (i8 i_ScanLevel = C_MAX_LVL_LEVELS - 1;
+//  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
 //       i_ScanLevel >= 0;
 //       i_ScanLevel--) {
 //
