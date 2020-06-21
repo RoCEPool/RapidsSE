@@ -144,8 +144,6 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  #ifdef WITH_RSB_STROFS
-    
     char* azStz = (char*)m_xWsp.ayLatterHead();
     
     m_i_Cell--;
@@ -155,19 +153,7 @@ namespace Rows
     i8 i_Ofs = - (nDifference(azStz, & iaCells[m_i_Cell]));
     
     iaCells[m_i_Cell] = i_Ofs;
-
-  #else
     
-    char* azStz = (char*)m_xWsp.ayLatterHead();
-    
-    m_i_Cell--;
-
-    i8* iaCells = (i8*)amSlabCellVec();
-    
-    iaCells[m_i_Cell] = (i8)azStz;
-
-  #endif
-
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
     return azStz;
