@@ -92,12 +92,19 @@ namespace Indexing
     void       vPositionPriorVecEntry(Key* aFindKey,
                                       Ent* aPriorVec[],
                                       Ent* aFindEntry);
-    void       vPositionPriorVecEntryOpt(Key* aFindKey,
+  
+    void       vPositionPriorVecEntry_Opt01(Key* aFindKey,
                                          Ent* aPriorVec[],
                                           Ent* aFindEntry);
-    void       vPositionPriorVecEntryOpt2(Key* aFindKey,
+  
+    void       vPositionPriorVecEntry_Alka01(Key* aFindKey,
                                           Ent* aPriorVec[],
                                           Ent* aFindEntry);
+  
+    void       vPositionPriorVecEntry_Ray01(Key* aFindKey,
+                                              Ent* aPriorVec[],
+                                              Ent* aFindEntry);
+
     ////////////////////////////////////////////////////////////////////////////
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

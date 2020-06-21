@@ -732,7 +732,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   
   if (0 == m_iBufferHeight)
     vPositionPriorVecEntry(aEntry->aKey(), xPriorVec, nullptr);
-    //vPositionPriorVecEntryOpt(aEntry->aKey(), xPriorVec, nullptr);
+    //vPositionPriorVecEntry_Opt01(aEntry->aKey(), xPriorVec, nullptr);
   else {
     EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
     vPositionPriorVecBuffer(aEntry->aKey(), xPriorVec, pToBuffer);
