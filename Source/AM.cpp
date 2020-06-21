@@ -333,7 +333,8 @@ void AM::vLogArguments(void) {
   gxArgs.vLog();
 }
 
-i8 AM::nLvlMaximum(void) {
+i8 AM::nLvlLevels(void) {
+  RASSERT(C_DEF_LVL_LEVELS == gpAttachMap->Arg.m_nLvlLevels);
   return gpAttachMap->Arg.m_nLvlLevels;
 }
 i8 AM::iLvlRatio(void) {
@@ -372,11 +373,12 @@ i8 AM::nRndSkipLevel(void) {
     Task* pTask = Task::pThisTLSTask();
 //  i8 nLevels = RndLib::iLogLevel(AM::nLvlMaximum(),AM::iLvlRatio(),
 //                                 pTask->i_NextRnd());
-    nLevels = RndLib::iSkipLevel(AM::nLvlMaximum(),AM::iLvlRatio(),
-                                pTask->i_NextRnd());
+    nLevels = RndLib::iSkipLevel(AM::nLvlLevels(),
+                                 AM::iLvlRatio(),
+                                 pTask->i_NextRnd());
   }
   else {
-    nLevels = RndLib::iSkipLevel(AM::nLvlMaximum(),AM::iLvlRatio());
+    nLevels = RndLib::iSkipLevel(AM::nLvlLevels(),AM::iLvlRatio());
   }
   RASSERT(nLevels >= 1 && nLevels <= C_DEF_LVL_LEVELS);
   return nLevels;
