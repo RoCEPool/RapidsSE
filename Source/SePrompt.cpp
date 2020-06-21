@@ -743,7 +743,7 @@ void SePrompt::vPromptUser(void)
 
   vInfo("[%s %lld] "
         "%s%s%s"
-        "se %s%c %s> "_Stz,
+        "se %s %s %s> "_Stz,
         
         szNodeNm,
         iPid,
@@ -754,9 +754,9 @@ void SePrompt::vPromptUser(void)
         
         RAPIDSSE_VERSION_STRING,
 #ifdef WITH_DEBUG_VERSION
-        'd',
+        "debug",
 #else
-        'r',
+        "release",
 #endif
         bHasStarted           ? "booted" : "not-booted"
         );
