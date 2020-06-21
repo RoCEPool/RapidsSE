@@ -176,6 +176,9 @@ i8 RndLib::iSkipLevel(i8 nLvlLevels, i8 iLvlRatio)
   
   ASSERT(iLevel >= 1 && iLevel <= nLvlLevels);
   
+  //if (iLevel > 3)
+  //  vDebugPoint();
+
   return iLevel;
 }
 
@@ -192,7 +195,7 @@ i8 RndLib::iSkipLevel(i8 nLvlLevels, i8 iLvlRatio, i8& i_NextRnd)
   //SP_Bits spBits;
   
   u8 uRatioMask = ~ (C_ALL_BITS_ON << iLvlRatio);
-  //vTrace("uFreqMask: %s\n"_Stz,spBits.sz(uBitMask));
+  //vTrace("uRatioMask: %s\n"_Stz,spBits.sz(uRatioMask));
   
   
   u8 uPattern;
@@ -215,6 +218,9 @@ i8 RndLib::iSkipLevel(i8 nLvlLevels, i8 iLvlRatio, i8& i_NextRnd)
   }
   
   ASSERT(iLevel >= 1 && iLevel <= nLvlLevels);
+  
+  //if (iLevel > 3)
+  //  vDebugPoint();
   
   return iLevel;
 }

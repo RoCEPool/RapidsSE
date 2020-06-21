@@ -371,7 +371,7 @@ bool Args::bParse(i8 argc, s256 argv[])
 #endif
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--lvlLevel"_Stz)) {
+    if (szArg->bSame("--lvlLevels"_Stz)) {
       m_nLvlLevels = argv[++i_Arg].iToI8();
       if (m_nLvlLevels < C_MIN_LVL_LEVELS) {
         vWarn("Minimum number of levels allowed is %lld\n"_Stz,C_MIN_LVL_LEVELS);

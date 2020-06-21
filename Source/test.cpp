@@ -1560,6 +1560,8 @@ void vTest21(void)
   bool bInsertTest = true;
   bool bSearchTest = true;
   bool bDeleteTest = false;
+  
+  i8 nTimes = 10;
 
   vTrace("Test21 -- This is EntBuffer Test MODE: %s %s\n"_Stz,
          AM::szBuild(),
@@ -1575,19 +1577,19 @@ void vTest21(void)
   // run our tests
   
   pKeySamples->vAscending();
-  if (bInsertTest) vTest21_testInsert(pKeySamples,10,bDump);
-  if (bSearchTest) vTest21_testSearch(pKeySamples,10,bDump);
-  if (bDeleteTest) vTest21_testDelete(pKeySamples,10,bDump);
+  if (bInsertTest) vTest21_testInsert(pKeySamples,nTimes,bDump);
+  if (bSearchTest) vTest21_testSearch(pKeySamples,nTimes,bDump);
+  if (bDeleteTest) vTest21_testDelete(pKeySamples,nTimes,bDump);
 
   pKeySamples->vDescending();
-  if (bInsertTest) vTest21_testInsert(pKeySamples,10,bDump);
-  if (bSearchTest) vTest21_testSearch(pKeySamples,10,bDump);
-  if (bDeleteTest) vTest21_testDelete(pKeySamples,10,bDump);
+  if (bInsertTest) vTest21_testInsert(pKeySamples,nTimes,bDump);
+  if (bSearchTest) vTest21_testSearch(pKeySamples,nTimes,bDump);
+  if (bDeleteTest) vTest21_testDelete(pKeySamples,nTimes,bDump);
 
   pKeySamples->vRandomise();
-  if (bInsertTest) vTest21_testInsert(pKeySamples,10,bDump);
-  if (bSearchTest) vTest21_testSearch(pKeySamples,10,bDump);
-  if (bDeleteTest) vTest21_testDelete(pKeySamples,10,bDump);
+  if (bInsertTest) vTest21_testInsert(pKeySamples,nTimes,bDump);
+  if (bSearchTest) vTest21_testSearch(pKeySamples,nTimes,bDump);
+  if (bDeleteTest) vTest21_testDelete(pKeySamples,nTimes,bDump);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -334,7 +334,6 @@ void AM::vLogArguments(void) {
 }
 
 i8 AM::nLvlLevels(void) {
-  RASSERT(C_DEF_LVL_LEVELS == gpAttachMap->Arg.m_nLvlLevels);
   return gpAttachMap->Arg.m_nLvlLevels;
 }
 i8 AM::iLvlRatio(void) {
@@ -372,9 +371,6 @@ i8 AM::nRndSkipLevel(void) {
   i8 nLvlLevels = AM::nLvlLevels();
   i8 iLvlRatio  = AM::iLvlRatio();
 
-  
-  RASSERT(3 == nLvlLevels); // TEMP
-  
   i8 nLevels;
   if (AM::bDeveloper()) {
     Task* pTask = Task::pThisTLSTask();
