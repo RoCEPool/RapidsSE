@@ -368,6 +368,9 @@ void AM::vPrintStartupInfo(void) {
   gxArgs.vPrintStartupInfo();
 }
 i8 AM::nRndSkipLevel(void) {
+  
+  RASSERT(3 == AM::nLvlLevels()); // TEMP
+  
   i8 nLevels;
   if (AM::bDeveloper()) {
     Task* pTask = Task::pThisTLSTask();
@@ -380,7 +383,7 @@ i8 AM::nRndSkipLevel(void) {
   else {
     nLevels = RndLib::iSkipLevel(AM::nLvlLevels(),AM::iLvlRatio());
   }
-  RASSERT(nLevels >= 1 && nLevels <= C_DEF_LVL_LEVELS);
+  RASSERT(nLevels >= 1 && nLevels <= AM::nLvlLevels());
   return nLevels;
 }
 

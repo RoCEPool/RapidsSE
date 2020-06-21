@@ -1773,7 +1773,7 @@ void vTest28(void)
   i8 iLevel;
   
   for (i8 i = 0; i < iTimes; i++) {
-    iLevel = RndLib::iLogLevel(C_DEF_LVL_LEVELS,C_DEF_LVL_RATIO,i_NextRnd);
+    iLevel = RndLib::iLogLevel(AM::nLvlLevels(),AM::iLvlRatio(),i_NextRnd);
     //vTrace("[%02lld] %lld "_Stz,i,iLevel);
     if (i && ! (i % 64))
       vTrace("\n"_Stz);
