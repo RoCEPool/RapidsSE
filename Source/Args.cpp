@@ -78,8 +78,8 @@ Args::Args(void)
   m_bKillPrev        = false;
   m_bLock            = false;
   m_bLog             = false;
+  m_nLvlMaximum      = C_DEF_LVL_LEVELS;
   m_iLvlRatio        = C_DEF_LVL_RATIO;
-  m_nLvlMaximum      = C_DEF_LVL_MAXIMUM;
   m_bNoMunge         = false;
   m_nMaxLoadErrors   = 0;
   m_nMaxReadyLP      = 32;
