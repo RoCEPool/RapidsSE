@@ -76,9 +76,9 @@ void EntBuffer::vBuildSkipListSorted(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Ent* xPrevVec[C_DEF_LVL_MAXIMUM];
+  Ent* xPrevVec[C_MAX_LVL_LEVELS];
   
-  for (i8 i_Offset = 0; i_Offset < C_DEF_LVL_MAXIMUM; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < C_MAX_LVL_LEVELS; i_Offset++)
     xPrevVec[i_Offset] = aSkipRoots();
   
   
@@ -126,7 +126,7 @@ void EntBuffer::vCompact(void)
   
   FreeItem* aFreeItem;
   Ent*     aMoveEntry;
-  Ent*     xPriorVec[C_DEF_LVL_MAXIMUM];
+  Ent*     xPriorVec[C_MAX_LVL_LEVELS];
   
   // scan item is the working pointer
   Ent* aScanItem = aFirstItem();
@@ -226,7 +226,7 @@ void EntBuffer::vCompact(void)
     // get the prior vector to the entry being moved
     
     //vDumpPriorVec(xPriorVec);
-    for (i8 i_Offset = 0; i_Offset < C_DEF_LVL_MAXIMUM; i_Offset++) {
+    for (i8 i_Offset = 0; i_Offset < C_MAX_LVL_LEVELS; i_Offset++) {
       Ent* aPriorEntry = xPriorVec[i_Offset];
       i4 iPriorOffset = aPriorEntry->iNEO(i_Offset);
       if (iWasOffset == iPriorOffset)
@@ -287,7 +287,7 @@ void EntBuffer::vCompactLeft(void)
   
   vItems(0);
   
-  for (i8 i_Offset = 0; i_Offset < C_DEF_LVL_MAXIMUM; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < C_MAX_LVL_LEVELS; i_Offset++)
     aSkipRoots()->vNEO(i_Offset,-1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -720,7 +720,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the entry after which the new entry will be inserted
   
-  Ent* xPriorVec[C_DEF_LVL_MAXIMUM];
+  Ent* xPriorVec[C_MAX_LVL_LEVELS];
   
   //Key* aKey = _aKey(aKeyEntry->aDataArea());
   

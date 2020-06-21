@@ -184,7 +184,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("Epoch        : %lld \n"_Stz, gpAttachMap->m_iEpoch);
   vInfo("BootError    : %lld \n"_Stz, gpAttachMap->m_bBootError);
   vInfo("IndexEntries : %lld \n"_Stz, gpAttachMap->Arg.m_nIndexEntries);
-  vInfo("IndexOffsets : %lld \n"_Stz, C_DEF_LVL_MAXIMUM);
+  vInfo("IndexOffsets : %lld \n"_Stz, C_MAX_LVL_LEVELS);
   
   vInfo("Verbose      : %s \n"_Stz, AM::bVerbose() ? "true"_Stz : "false"_Stz);
   vInfo("Tracepoint   : %s \n"_Stz, gpAttachMap->Arg.m_bTracepoint ? "true"_Stz : "false"_Stz);

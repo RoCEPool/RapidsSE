@@ -1149,8 +1149,7 @@ void Engine::vPrintConstants(void)
   vInfo("\n"_Stz);
   vInfo("Constants:\n"_Stz);
   
-  vTrace("  C_DEF_LVL_LEVELS      = %lld\n"_Stz,C_DEF_LVL_LEVELS);
-  vTrace("  C_DEF_LVL_MAXIMUM    = %lld\n"_Stz,C_DEF_LVL_MAXIMUM);
+  vTrace("  C_DEF_LVL_LEVELS     = %lld\n"_Stz,C_DEF_LVL_LEVELS);
   vTrace("  C_DEF_LVL_RATIO      = %lld\n"_Stz,C_DEF_LVL_RATIO);
 
   vTrace("  C_LOW_BUFFERS        = %lld\n"_Stz,C_LOW_BUFFERS);
@@ -1169,6 +1168,8 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_KEY            = %lld\n"_Stz,C_MAX_KEY);
   vTrace("  C_MAX_LOG_ENTRIES    = %lld\n"_Stz,C_MAX_LOG_ENTRIES);
   vTrace("  C_MAX_LOG_NOTE       = %lld\n"_Stz,C_MAX_LOG_NOTE);
+  vTrace("  C_MAX_LVL_LEVELS     = %lld\n"_Stz,C_MAX_LVL_LEVELS);
+  vTrace("  C_MAX_LVL_RATIO      = %lld\n"_Stz,C_MAX_LVL_RATIO);
   vTrace("  C_MAX_NESTED_WORDS   = %lld\n"_Stz,C_MAX_NESTED_WORDS);
   vTrace("  C_MAX_NODES          = %lld\n"_Stz,C_MAX_NODES);
   vTrace("  C_MAX_OPS            = %lld\n"_Stz,C_MAX_OPS);
@@ -1190,6 +1191,8 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_VCH            = %lld\n"_Stz,C_MAX_VCH);
   vTrace("  C_MAX_VCH_PRECISION  = %lld\n"_Stz,C_MAX_FLT_PRECISION);
   
+  vTrace("  C_MIN_LVL_LEVELS     = %lld\n"_Stz,C_MIN_LVL_LEVELS);
+  vTrace("  C_MIN_LVL_RATIO      = %lld\n"_Stz,C_MIN_LVL_RATIO);
   vTrace("  C_MIN_SHM_REGION     = %lld\n"_Stz,C_MIN_SHM_REGION);
   
   vTrace("  C_NML_STR_SPACE      = %lld\n"_Stz,C_NML_STR_SPACE);

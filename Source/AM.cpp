@@ -378,7 +378,7 @@ i8 AM::nRndSkipLevel(void) {
   else {
     nLevels = RndLib::iSkipLevel(AM::nLvlMaximum(),AM::iLvlRatio());
   }
-  RASSERT(nLevels >= 1 && nLevels <= C_DEF_LVL_MAXIMUM);
+  RASSERT(nLevels >= 1 && nLevels <= C_MAX_LVL_LEVELS);
   return nLevels;
 }
 
