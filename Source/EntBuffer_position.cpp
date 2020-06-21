@@ -91,23 +91,21 @@ Ent* EntBuffer::aPositionPriorEntry(Key* aFindKey)
   
   Ent* aScanEntry_sl = aSkipRoots();
   
-  bool bKeyIsGreaterEqual;
+  bool bNextKeyIsGE;
   
-  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
-       i_ScanLevel >= 0;
-       i_ScanLevel--) {
+  for (i8 i_ScanLevel = AM::nLvlLevels() - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
-      bKeyIsGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(),aFindKey);
-      
-      if (bKeyIsGreaterEqual)
+      bNextKeyIsGE = Key::bGreaterEqual(aNextEntry_sl->aKey(),aFindKey);
+      if (bNextKeyIsGE)
         break;
       
       aScanEntry_sl = aNextEntry_sl;
       aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
     }
+    
   }
   
   return aScanEntry_sl;
@@ -131,8 +129,8 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Offset = 0; i_Offset < AM::nLvlLevels(); i_Offset++)
-    aPriorVec[i_Offset] = aSkipRoots();
+  for (i8 i_Level = 0; i_Level < AM::nLvlLevels(); i_Level++)
+    aPriorVec[i_Level] = aSkipRoots();
   
   if (nItems() == 0)
     return;
@@ -145,9 +143,7 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey,
   
   bool bIsJuxta;
   Ent* aScanEntry_sl = aSkipRoots();
-  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
-       i_ScanLevel >= 0;
-       i_ScanLevel--) {
+  for (i8 i_ScanLevel = AM::nLvlLevels() - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
     i8 iItemAtScanLevel = 0;
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
@@ -195,8 +191,8 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Ent* aSkipRoots = this->aSkipRoots();
-  for (i8 i_Offset = 0; i_Offset < AM::nLvlLevels(); i_Offset++)
-    aPriorVec[i_Offset] = aSkipRoots;
+  for (i8 i_Level = 0; i_Level < AM::nLvlLevels(); i_Level++)
+    aPriorVec[i_Level] = aSkipRoots;
   
   if (nItems() == 0)
     return;
@@ -211,9 +207,7 @@ void EntBuffer::vPositionPriorVecEntryOpt(Key* aFindKey,
   Ent* aNextEntry_sl;
   i8 iEntSize = sizeof(Ent);
 
-  for (i8 i_ScanLevel = AM::nLvlLevels() - 1;
-       i_ScanLevel >= 0;
-       i_ScanLevel--) {
+  for (i8 i_ScanLevel = AM::nLvlLevels() - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
     i8 iOffset1 = aScanEntry_sl->aKey()->nElmSeqSize() + iEntSize +
                     (C_NEO_SIZE * i_ScanLevel);
@@ -265,8 +259,8 @@ void EntBuffer::vPositionPriorVecEntryOpt2(Key* aFindKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Ent* aSkipRoots = this->aSkipRoots();
-  for (i8 i_Offset = 0; i_Offset < AM::nLvlLevels(); i_Offset++)
-    aPriorVec[i_Offset] = aSkipRoots;
+  for (i8 i_Level = 0; i_Level < AM::nLvlLevels(); i_Level++)
+    aPriorVec[i_Level] = aSkipRoots;
   
   if (nItems() == 0)
     return;
