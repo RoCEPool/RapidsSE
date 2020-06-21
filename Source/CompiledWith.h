@@ -36,7 +36,7 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 #define WITH_CHECK_INITIALISED EndDefine     // _checkInitialised_()
 #define WITH_CORECTNESS_ALGEBRA EndDefine    // known class, magic, footer
 //#define WITH_EB_LAZY_CHAIN EndDefine         // build lazy chain on insert
-#define WITH_ENTRY_EXIT EndDefine            // code for ENTRY() & EXIT() macros compiled in
+#define WITH_ENTRY_EXIT EndDefine            // code for ENTRY() & EXIT() macros
 #define WITH_IT_COMPACT_TRACE EndDefine      //
 #define WITH_LOCK_TRACKING EndDefine         // track lock activity
 #define WITH_PREPOST_CHECKING EndDefine      // _pre/postCondition_()
@@ -44,7 +44,7 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 #define WITH_SHARED_LOG EndDefine            // code for Log compiled in
 //#define WITH_STATISTICS_COUNTERS  EndDefine // statistics
 #define WITH_TRACE_API EndDefine             // code for tracing api's compiled in
-//#define WITH_TRACE_DYNAMO EndDefine        // code for tracing compiling dynamic pipeline
+//#define WITH_TRACE_DYNAMO EndDefine        // tracing compiling dynamic pipeline
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
 #define WITH_TRACE_PURGING EndDefine         // trace purging
 //#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
@@ -54,37 +54,32 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 
 #else
 
-#define WITH_RELEASE_VERSION EndDefine       // compile as release version
+#define WITH_RELEASE_VERSION EndDefine     // compile as release version
 
-#define WITH_ASSERT_MACRO EndDefine          // Assert() macro
-
+// usually corectnes
+//#define WITH_ASSERT_MACRO EndDefine        // Assert() macro
 //#define WITH_ACTION_SEQUENCE EndDefine     // code for ActionLog compiled in
 //#define WITH_CHECK_INITIALISED EndDefine   // _checkInitialised_()
 #define WITH_CORECTNESS_ALGEBRA EndDefine  // known class, magic, footer
-//#define WITH_EB_LAZY_CHAIN EndDefine         // build lazy chain on insert
-//#define WITH_ENTRY_EXIT EndDefine            // code for ENTRY() & EXIT() macros compiled in
-//#define WITH_IT_COMPACT_TRACE EndDefine      // compact trace
-//#define WITH_LOCK_TRACKING EndDefine         // track lock activity
-#define WITH_PREPOST_CHECKING EndDefine      // _pre/postCondition_()
-//#define WITH_SETH_SUPPORT EndDefine          // seth support
+//#define WITH_EB_LAZY_CHAIN EndDefine       // build lazy chain on insert
+#define WITH_ENTRY_EXIT EndDefine          // code for ENTRY() & EXIT() macros
+//#define WITH_IT_COMPACT_TRACE EndDefine    // compact trace
+//#define WITH_LOCK_TRACKING EndDefine       // track lock activity
+#define WITH_PREPOST_CHECKING EndDefine    // _pre/postCondition_()
+//#define WITH_SETH_SUPPORT EndDefine        // seth support
 //#define WITH_STATISTICS_COUNTERS EndDefine // statistics
 //#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in
-//#define WITH_TRACE_DYNAMO EndDefine        // code for tracing compiling dynamic pipeline
+//#define WITH_TRACE_DYNAMO EndDefine        // tracing compiling dynamic pipeline
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
-//#define WITH_TRACE_PURGING EndDefine         // trace purging
+//#define WITH_TRACE_PURGING EndDefine       // trace purging
 //#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
 
 #endif
 
-
-//!-----------------------------------------------------------------------------
-//!-----------------------------------------------------------------------------
-
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // buckets
 
-//#define WITH_BUCKET_HASHING EndDefine        // code for bucket hashing compiled in
+//#define WITH_BUCKET_HASHING EndDefine      // code for bucket hashing compiled in
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -100,10 +95,11 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 // event-based task model
 
 //#define WITH_PULSING EndDefine             // code for pulsing compiled in
+//#define WITH_NO_XMIT_OPT EndDefine         // code for no xmit optimization
 
 // temporary
 
-//#define WITH_NO_XMIT_OPT EndDefine // code for no xmit optimization
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
