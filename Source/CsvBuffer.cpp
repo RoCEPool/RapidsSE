@@ -24,6 +24,8 @@ CsvBuffer::CsvBuffer(void)
   m_sReportNm = C_NO_NAME;
   m_nRecords  = 0;
   
+  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_CSVBUFFER);
+
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_CSVBUFFER);
 #endif

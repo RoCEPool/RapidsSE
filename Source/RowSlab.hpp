@@ -30,6 +30,8 @@ namespace Rows
   
     NmlStr m_oNmlStr;   // normalised string set
     
+    //SingleWord m__PadToCacheLine[5]; // padding to cache line
+
     WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
   
     // must be last

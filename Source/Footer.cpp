@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 Footer::Footer(void)
 {
-  m__iPadding__ = 0;
+  m__PadToDoubleWord = 0;
   m_uFooter = C_FOOTER;
 }
 
@@ -42,7 +42,7 @@ void Footer::vAssertFooter(void) const
 /*----------------------------------------------------------------------------*/
 void Footer::vSetFooter(void)
 {
-  m__iPadding__ = 0;
+  m__PadToDoubleWord = 0;
   m_uFooter = C_FOOTER;
 }
 

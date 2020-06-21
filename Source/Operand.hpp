@@ -9,10 +9,10 @@ namespace Operands
                   public ListItem_t<Operand>
   {
   private:
-    eTP        m_eTailProcessing;  // pipeline tail processing
-    SingleWord m__Padding[4];      // padding to cache line
+    eTP        m_eTailProcessing;     // pipeline tail processing
+  
+    SingleWord m__PadToCacheLine[4];  // padding to cache line
 
-    
   public:
     Operand(eCN eClass);
     ~Operand(void) noexcept(false);

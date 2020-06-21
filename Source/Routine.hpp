@@ -12,6 +12,8 @@ namespace SenVM
   private:
     Word* m_p_ExoWord;
   
+    SingleWord m__PadToCacheLine[6]; // padding to cache line
+
     Wsp_t<C_WSP_ROUTINE> m_xWsp;
   
     // must be last

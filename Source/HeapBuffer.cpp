@@ -44,6 +44,8 @@ HeapBuffer::HeapBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
+  ASSERT(CacheLine::bOnCacheLineBoundary(this));
+
   m_pNextBuffer = nullptr;
   m_pPrevBuffer = nullptr;
   

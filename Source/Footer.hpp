@@ -11,7 +11,7 @@ namespace Correctness
   class Footer
   {
   private:
-    i8 m__iPadding__;
+    i8 m__PadToDoubleWord;
   
     union {
       u8   m_uFooter;

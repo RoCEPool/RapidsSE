@@ -14,6 +14,9 @@ namespace DataBuffers
     s32 m_sReportNm; // optional report name this csv buffer belong to
   
     i8  m_nRecords;
+  
+    SingleWord m__PadToCacheLine[7]; // padding to cache line
+
     Wsp_t<C_WSP_CSVBUFFER> m_xWsp;
     
     // must be last

@@ -55,6 +55,8 @@ Encoding::Encoding(StreamDef* pStreamDef)
     xaColEnc[i_Col].m_pCol   = m_pStreamDef->pGetColumn(i_Col);
   }
   
+  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ENCODING);
+
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_ENCODING);
 #else

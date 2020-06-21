@@ -40,6 +40,8 @@ RowSlab::RowSlab(void)
   m_i_Cell   = C_UNKNOWN;
  
   // m_oStreamPix
+  
+  //MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ENCODING);
 
 #ifdef WITH_DEBUG_VERSION
   m_xWsp.vZero(CN_ROWSLAB);

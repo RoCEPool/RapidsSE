@@ -14,6 +14,9 @@ namespace Structures
     
     i8 m_nItems;    // number of items in this mini-heap
     i8 m_nMaxItems; // max items allowed
+  
+    SingleWord m__PadToCacheLine[6]; // padding to cache line
+
     Wsp_t<C_WSP_MINIHEAP> m_xWsp; // workspace
   
   public:
@@ -81,6 +84,8 @@ MiniHeap_t<ITEM>::MiniHeap_t(void)
   
   m_nItems = 0;
   m_nMaxItems = 0;
+  
+  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_NMLSTR);
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_ROWTRAY);

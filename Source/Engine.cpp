@@ -602,14 +602,14 @@ void Engine::vCreateFileNames(void)
 eBO Engine::eDecodeCommandLine(void)
 {
   if (gxArgs.m_bStart && gxArgs.m_bPrompt)   return BO_START_PROMPT;
-  if (gxArgs.m_bStart)                            return BO_START;
-  if (gxArgs.m_bPrompt)                           return BO_PROMPT;
-  if (gxArgs.m_bStatus)                           return BO_STATUS;
-  if (gxArgs.m_bStop)                             return BO_STOP;
-  if (gxArgs.m_bUnlink)                           return BO_UNLINK;
-  if (gxArgs.m_bSethScript)                       return BO_SETH_PROMPT;
+  if (gxArgs.m_bStart)                       return BO_START;
+  if (gxArgs.m_bPrompt)                      return BO_PROMPT;
+  if (gxArgs.m_bStatus)                      return BO_STATUS;
+  if (gxArgs.m_bStop)                        return BO_STOP;
+  if (gxArgs.m_bUnlink)                      return BO_UNLINK;
+  if (gxArgs.m_bSethScript)                  return BO_SETH_PROMPT;
   
-  if (gxArgs.m_bAddNode)                          return BO_ADD_NODE;
+  if (gxArgs.m_bAddNode)                     return BO_ADD_NODE;
 
   return BO_NONE;
 }

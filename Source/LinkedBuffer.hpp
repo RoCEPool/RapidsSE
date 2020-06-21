@@ -15,7 +15,7 @@ namespace Operands
     LinkedBuffer* m_pLowerBuffer;  // lower buffer
   
   private:
-    SingleWord    m__Padding[4];   // padding to cache line
+    SingleWord    m__PadToCacheLine[4]; // padding to cache line
 
   public:
     LinkedBuffer(eCN eClass);

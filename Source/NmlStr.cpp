@@ -21,6 +21,8 @@ NmlStr::NmlStr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NMLSTR,_FOOTER_);
   
+  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_NMLSTR);
+
   #ifdef WITH_DEBUG_VERSION
     m_xWsp.vZero(CN_NMLSTR);
   #endif

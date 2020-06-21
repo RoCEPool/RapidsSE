@@ -51,7 +51,7 @@ Operand::Operand(eCN eClassNo)
   ASSERT(CacheLine::bMultipleCacheLines(sizeof(Operand)));
 
   m_eTailProcessing = TP_OUTPUT;
-  MemLib::vZero(m__Padding,sizeof(m__Padding),eClassNo);
+  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),eClassNo);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }

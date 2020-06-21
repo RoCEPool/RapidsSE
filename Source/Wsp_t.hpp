@@ -42,11 +42,25 @@ namespace Alignment
 template<int LENGTH>
 Wsp_t<LENGTH>::Wsp_t(void)
 {
+#ifdef WITH_DEBUG_VERSION
+  i8 nBytesNeeded =
+       C_BYTES_PER_CACHE_LINE - ((i8)m_yaByteArea % C_BYTES_PER_CACHE_LINE);
+  if (C_BYTES_PER_CACHE_LINE != nBytesNeeded)
+    vTrace("Wst_t::m_yaByteArea %p needs %lld(B) to pad to cache line\n"_Stz,
+           m_yaByteArea,nBytesNeeded);
+#endif
+  
+  ASSERT(CacheLine::bOnCacheLineBoundary(m_yaByteArea));
+  
   m_nAreaUsed = 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* initialise                                                                 */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
 void Wsp_t<LENGTH>::vInit(void)

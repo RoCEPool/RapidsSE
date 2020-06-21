@@ -11,7 +11,7 @@ namespace Pool
     HeapBuffer* m_pNextBuffer;  // next buffer in list
     HeapBuffer* m_pPrevBuffer;  // prev buffer in list
   
-    char m__aPadding[32];       // round up to cacheline
+    SingleWord m__PadToCacheLine[4]; // round up to cacheline
 
     // ..allocated object..
     
