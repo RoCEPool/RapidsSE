@@ -184,7 +184,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("Epoch        : %lld \n"_Stz, gpAttachMap->m_iEpoch);
   vInfo("BootError    : %lld \n"_Stz, gpAttachMap->m_bBootError);
   vInfo("IndexEntries : %lld \n"_Stz, gpAttachMap->Arg.m_nIndexEntries);
-  vInfo("IndexOffsets : %lld \n"_Stz, C_MAX_LVL_LEVELS);
+  vInfo("LvlLevels    : %lld \n"_Stz, gpAttachMap->Arg.m_nLvlLevels);
   
   vInfo("Verbose      : %s \n"_Stz, AM::bVerbose() ? "true"_Stz : "false"_Stz);
   vInfo("Tracepoint   : %s \n"_Stz, gpAttachMap->Arg.m_bTracepoint ? "true"_Stz : "false"_Stz);
@@ -259,7 +259,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_nDummyThreads    = pArgs->m_nDummyThreads;
   Arg.m_nIndexEntries    = pArgs->m_nEntries;
   Arg.m_bLog             = pArgs->m_bLog;
-  Arg.m_nLvlMaximum      = pArgs->m_nLvlMaximum;
+  Arg.m_nLvlLevels       = pArgs->m_nLvlLevels;
   Arg.m_iLvlRatio        = pArgs->m_iLvlRatio;
   Arg.m_nMaxLoadErrors   = pArgs->m_nMaxLoadErrors;
   Arg.m_nMaxReadyLP      = pArgs->m_nMaxReadyLP;

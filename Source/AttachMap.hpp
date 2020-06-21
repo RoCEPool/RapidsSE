@@ -33,7 +33,7 @@ namespace StorageEngine
       i8     m_nDummyThreads;  // number of dummy threads
       i8     m_nIndexEntries;  // no of entries per buffer
       bool   m_bLog;
-      i8     m_nLvlMaximum;    // maximum number of levels
+      i8     m_nLvlLevels;     // maximum number of levels 
       i8     m_iLvlRatio;      // level ratio
       i8     m_nMaxLoadErrors;
       i8     m_nMaxReadyLP;

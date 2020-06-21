@@ -78,7 +78,7 @@ Args::Args(void)
   m_bKillPrev        = false;
   m_bLock            = false;
   m_bLog             = false;
-  m_nLvlMaximum      = C_DEF_LVL_LEVELS;
+  m_nLvlLevels       = C_DEF_LVL_LEVELS;
   m_iLvlRatio        = C_DEF_LVL_RATIO;
   m_bNoMunge         = false;
   m_nMaxLoadErrors   = 0;
@@ -371,14 +371,14 @@ bool Args::bParse(i8 argc, s256 argv[])
 #endif
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--lvlRatio"_Stz)) {
-      m_iLvlRatio = argv[++i_Arg].iToI8();
+    if (szArg->bSame("--lvlLevel"_Stz)) {
+      m_nLvlLevels = argv[++i_Arg].iToI8();
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--lvlMaximum"_Stz)) {
-      m_nLvlMaximum = argv[++i_Arg].iToI8();
+    if (szArg->bSame("--lvlRatio"_Stz)) {
+      m_iLvlRatio = argv[++i_Arg].iToI8();
       continue;
     }
     

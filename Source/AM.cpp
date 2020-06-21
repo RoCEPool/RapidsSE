@@ -334,7 +334,7 @@ void AM::vLogArguments(void) {
 }
 
 i8 AM::nLvlMaximum(void) {
-  return gpAttachMap->Arg.m_nLvlMaximum;
+  return gpAttachMap->Arg.m_nLvlLevels;
 }
 i8 AM::iLvlRatio(void) {
   return gpAttachMap->Arg.m_iLvlRatio;
@@ -378,7 +378,7 @@ i8 AM::nRndSkipLevel(void) {
   else {
     nLevels = RndLib::iSkipLevel(AM::nLvlMaximum(),AM::iLvlRatio());
   }
-  RASSERT(nLevels >= 1 && nLevels <= C_MAX_LVL_LEVELS);
+  RASSERT(nLevels >= 1 && nLevels <= C_DEF_LVL_LEVELS);
   return nLevels;
 }
 
