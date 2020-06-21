@@ -34,7 +34,7 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 #define WITH_ADDRESS_CHECKING EndDefine      // check that address is in pool
 #define WITH_ASSERT_MACRO EndDefine          // Assert() macro
 #define WITH_CHECK_INITIALISED EndDefine     // _checkInitialised_()
-#define WITH_CORECTNESS_ALGEBRA EndDefine    // known class, magic, footer
+#define WITH_CORRECTNESS_ALGEBRA EndDefine   // known class, magic, footer
 //#define WITH_EB_LAZY_CHAIN EndDefine         // build lazy chain on insert
 #define WITH_ENTRY_EXIT EndDefine            // code for ENTRY() & EXIT() macros
 #define WITH_IT_COMPACT_TRACE EndDefine      //
@@ -60,7 +60,7 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 //#define WITH_ASSERT_MACRO EndDefine        // Assert() macro
 //#define WITH_ACTION_SEQUENCE EndDefine     // code for ActionLog compiled in
 //#define WITH_CHECK_INITIALISED EndDefine   // _checkInitialised_()
-#define WITH_CORECTNESS_ALGEBRA EndDefine  // known class, magic, footer
+#define WITH_CORRECTNESS_ALGEBRA EndDefine // known class, magic, footer
 //#define WITH_EB_LAZY_CHAIN EndDefine       // build lazy chain on insert
 #define WITH_ENTRY_EXIT EndDefine          // code for ENTRY() & EXIT() macros
 //#define WITH_IT_COMPACT_TRACE EndDefine    // compact trace

@@ -727,10 +727,10 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("WITH_BUCKET_HASHING"_Stz,(i8)false);
   #endif
     
-  #ifdef WITH_CORECTNESS_ALGEBRA
-  vAddConstant("WITH_CORECTNESS_ALGEBRA"_Stz,(i8)true);
+  #ifdef WITH_CORRECTNESS_ALGEBRA
+  vAddConstant("WITH_CORRECTNESS_ALGEBRA"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_CORECTNESS_ALGEBRA"_Stz,(i8)false);
+  vAddConstant("WITH_CORRECTNESS_ALGEBRA"_Stz,(i8)false);
   #endif
           
   #ifdef WITH_DEBUG_VERSION

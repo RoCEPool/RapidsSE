@@ -54,7 +54,7 @@ EndDefine
 /*--------------------------------------------------------------------------*/
 /* check the object has a footer marker as its last word                    */
 /*--------------------------------------------------------------------------*/
-#ifdef WITH_CORECTNESS_ALGEBRA
+#ifdef WITH_CORRECTNESS_ALGEBRA
   #define _footer_()    aFooter()->vAssertFooter(); EndDefine
   #define _hazard_()    aHazard()->vAssertFooter(); EndDefine
   #define _header_()    aHeader()->vAssertHeader(); EndDefine

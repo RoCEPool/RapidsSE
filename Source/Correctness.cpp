@@ -69,8 +69,8 @@ bool Correctness::bTraceWith(Stz* szWith)
     return true;
 #endif
   
-#ifdef WITH_CORECTNESS_ALGEBRA
-  if (szWith->bSame("WITH_CORECTNESS_ALGEBRA"_Stz))
+#ifdef WITH_CORRECTNESS_ALGEBRA
+  if (szWith->bSame("WITH_CORRECTNESS_ALGEBRA"_Stz))
     return true;
 #endif
       
@@ -212,8 +212,8 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_CHECK_INITIALISED\n"_Stz);
 #endif
   
-#ifdef WITH_CORECTNESS_ALGEBRA
-  vTrace("  WITH_CORECTNESS_ALGEBRA\n"_Stz);
+#ifdef WITH_CORRECTNESS_ALGEBRA
+  vTrace("  WITH_CORRECTNESS_ALGEBRA\n"_Stz);
 #endif
       
 #ifdef WITH_DEBUG_VERSION
@@ -338,8 +338,8 @@ bool Correctness::bTraceWithout(Stz* szWith)
     return true;
 #endif
   
-#ifndef WITH_CORECTNESS_ALGEBRA
-  if (szWith->bSame("WITH_CORECTNESS_ALGEBRA"_Stz))
+#ifndef WITH_CORRECTNESS_ALGEBRA
+  if (szWith->bSame("WITH_CORRECTNESS_ALGEBRA"_Stz))
     return true;
 #endif
       
@@ -481,8 +481,8 @@ void Correctness::vTraceWithout(void)
   vTrace("  WITH_CHECK_INITIALISED\n"_Stz);
 #endif
   
-#ifndef WITH_CORECTNESS_ALGEBRA
-  vTrace("  WITH_CORECTNESS_ALGEBRA\n"_Stz);
+#ifndef WITH_CORRECTNESS_ALGEBRA
+  vTrace("  WITH_CORRECTNESS_ALGEBRA\n"_Stz);
 #endif
       
 #ifndef WITH_DEBUG_VERSION

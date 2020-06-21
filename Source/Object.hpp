@@ -127,7 +127,7 @@ EndDefine
 /*--------------------------------------------------------------------------*/
 /* check the object has a magic marker as its first word                    */
 /*--------------------------------------------------------------------------*/
-#ifdef WITH_CORECTNESS_ALGEBRA
+#ifdef WITH_CORRECTNESS_ALGEBRA
 #define _magic_() ASSERT(bValidMagic()); EndDefine
 #else
 #define _magic_() EndDefine
@@ -196,7 +196,7 @@ EndDefine
 /*--------------------------------------------------------------------------*/
 /* check the object is of a known class                                     */
 /*--------------------------------------------------------------------------*/
-#ifdef WITH_CORECTNESS_ALGEBRA
+#ifdef WITH_CORRECTNESS_ALGEBRA
 #define _class_(arg) ASSERT(eClass() == arg); EndDefine
 #define _class2_(arg1,arg2) ASSERT(eClass() == arg1 || eClass() == arg2); EndDefine
 #define _class3_(arg1,arg2,arg3) \
