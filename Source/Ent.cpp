@@ -38,6 +38,9 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt_Without_NEO)
   
   m_xKey.vElmSeqSize(nElmSeqSize);
   
+  MemLib::vZero(m__iaOffset__,sizeof(m__iaOffset__),eClassNo);
+
+  
 #ifdef WITH_DEBUG_VERSION
   m_uSkipNo = 0;
 #endif

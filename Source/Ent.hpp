@@ -11,6 +11,8 @@ namespace Entries
     Ref  m_xRef;   // reference (this is either a sub-ref to a child EntBuffer,
                    //            or a row-ref to a row at H0 leaf buffers)
   
+    i8 m__iaOffset__[6];  // the offsets (not used yet)
+
 #ifdef WITH_DEBUG_VERSION
     i8  m_uSkipNo; // verify of order of skip items
 #endif
