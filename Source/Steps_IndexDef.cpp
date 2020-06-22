@@ -9,9 +9,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_IndexDef(void)
 {
-  vAddStep("indexDef::parse"_Stz,  &Step::vIndexDefParse);
-  vAddStep("indexDef::parseOLD"_Stz,  &Step::vIndexDefParseOLD);
-  vAddStep("indexDef::syntax"_Stz, &Step::vIndexDefSyntax);
+  vAddStep("indexDef[]"_Stz,         &Step::vIndexDefGet);
+  vAddStep("indexDef::parse"_Stz,    &Step::vIndexDefParse);
+  vAddStep("indexDef::parseOLD"_Stz, &Step::vIndexDefParseOLD);
+  vAddStep("indexDef::syntax"_Stz,   &Step::vIndexDefSyntax);
+  vAddStep("indexDef[].set"_Stz,     &Step::vIndexDefSet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* indexDef[].get -- get indexDef                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefGet(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpIndexDef);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,6 +105,18 @@ void Step::vIndexDefParse(void)
   }
   
   m_pDataStack->vPushPtr(pIndexDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* indexDef[].set -- set indexDef                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefSet(void)
+{
+  ENTRY();
+  
+  m_pRegSet->m_xpIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
