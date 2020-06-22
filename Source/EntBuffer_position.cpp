@@ -13,7 +13,7 @@ EntBuffer* EntBuffer::pPositionH0Buffer(Key* aFindKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
   
   //if (m_aLazyChain)
   //  vBuildSkipList();
@@ -81,7 +81,7 @@ Ent* EntBuffer::aPositionPriorEntry(Key* aFindKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   i8 nLvlLevels = AM::nLvlLevels();
@@ -126,7 +126,7 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey,
   //ASSERT(0 == m_iBufferHeight);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   i8 nLvlLevels = AM::nLvlLevels();
@@ -189,7 +189,7 @@ void EntBuffer::vPositionPriorVecBuffer(Key* aFindKey,
   ASSERT(0 != m_iBufferHeight);
 
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
 
   /*

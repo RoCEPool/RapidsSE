@@ -23,7 +23,7 @@ void EntBuffer::vPositionPriorVecEntry_Opt01(Key* aFindKey,
   //ASSERT(0 == m_iBufferHeight);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   i8 nLvlLevels = AM::nLvlLevels();
@@ -100,7 +100,7 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
   //ASSERT(0 == m_iBufferHeight);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   i8 nLvlLevels = AM::nLvlLevels();
@@ -256,7 +256,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray01(Key* aFindKey,
   //ASSERT(0 == m_iBufferHeight);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   i8 nLvlLevels = AM::nLvlLevels();
@@ -330,7 +330,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray02(Key* aFindKey,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   i8 nLvlLevels = AM::nLvlLevels();
@@ -396,7 +396,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   i8 nLvlLevels = AM::nLvlLevels();
@@ -436,7 +436,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
       i8 iLeftValue = *((i8*)aNextKey->ayElmSeq());
       i8 iRightValue = *((i8*)aFindKey->ayElmSeq());
       
-      RASSERT(aEntCur->m_iIntKey == iLeftValue);
+      ASSERT(aEntCur->m_iIntKey == iLeftValue);
       
       if (iLeftValue >= iRightValue)
         break;

@@ -118,7 +118,7 @@ void EntBuffer::vCompact(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  //RASSERT( ! m_aLazyChain );
+  //ASSERT( ! m_aLazyChain );
   
   if (m_aLazyChain)
     vBuildSkipList();
@@ -174,7 +174,7 @@ void EntBuffer::vCompact(void)
       
       eCN eClass = aEnt->eClass();
       
-      RASSERT ((eClass == CN_ENT) ||
+      ASSERT ((eClass == CN_ENT) ||
                (eClass == CN_FREEITEM) ||
                (eClass == CN_WILDERNESS));
       
@@ -260,7 +260,7 @@ void EntBuffer::vCompactLeft(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT(! m_aLazyChain);
+  ASSERT(! m_aLazyChain);
 #endif
   
   EntBuffer* pThisBuffer = this;
@@ -326,7 +326,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -363,7 +363,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
     
     return;
   }
-  //RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIndexDef));
+  //ASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIndexDef));
   
   Ent* aFirstEntry = this->aLeadEntry();
   if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer) {
@@ -801,7 +801,7 @@ void EntBuffer::vLazyBuild(void)
   
   while (pEntBuffer) {
     
-    RASSERT(pEntBuffer->iBufferHeight() == 0);
+    ASSERT(pEntBuffer->iBufferHeight() == 0);
     
     //vTrace("Building skip list %p\n"_Stz, pEntBuffer);
     
@@ -941,7 +941,7 @@ void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1015,7 +1015,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
   i8 iSplitRatio = 50;
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   EntBuffer* pThisLeftBuffer = this;
@@ -1085,7 +1085,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
     else {
       CrwBuffer* pChildBuffer =
       reinterpret_cast<CrwBuffer*>(pHeapBuffer->aFirstChunk());
-      RASSERT(pChildBuffer);
+      ASSERT(pChildBuffer);
     }
   }
   

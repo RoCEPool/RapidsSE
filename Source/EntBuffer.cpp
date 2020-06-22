@@ -203,9 +203,9 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
       xLeftEntWrk.vRef(xRef);
       
       TRACE_COMPACT( pH1->vShow(); )
-      //RASSERT(pH1->bVerifySkipListEntry());
+      //ASSERT(pH1->bVerifySkipListEntry());
       Ent* aLeftEntryH1 = pH1->aInsertEntAbs(xLeftEntWrk.aEnt());
-      //RASSERT(pH1->bVerifySkipListEntry());
+      //ASSERT(pH1->bVerifySkipListEntry());
       TRACE_COMPACT( pLeftEntryH1->vShow(0, pIndex, true); )
       TRACE_COMPACT( pH1->vShow(); )
       
@@ -572,7 +572,7 @@ EntBuffer* EntBuffer::pFirstChildBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   Ent* aFirstEntry = this->aLeadEntry();
@@ -604,7 +604,7 @@ Ent* EntBuffer::aGetEntrySplit(i8 iSplitEntryNo, Ent** aaPriorEntry)
   ASSERT(aSkipRoots());
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -684,7 +684,7 @@ Ent* EntBuffer::aLastEntry(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
   
   //if (m_aLazyChain)
   //  vBuildSkipList();
@@ -710,7 +710,7 @@ Ent* EntBuffer::aLeadEntry(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef WITH_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
+  ASSERT( ! m_aLazyChain );
 #endif
   
   Ent* aFirst = aNextEntry(aSkipRoots(),0);
@@ -1029,16 +1029,13 @@ void EntBuffer::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  RASSERT(1 == m_iBufferHeight);
+  ASSERT(1 == m_iBufferHeight);
   
   vResetUsed();
 
   m_xSkipRoots.vNEOreset();
   
-  //m_aHeadEntry  = nullptr;
   m_aLazyChain  = nullptr;
-  
-  //vHeadEntryNew();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1048,9 +1045,9 @@ void EntBuffer::vRestore(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  RASSERT( ! m_pHigherBuffer );
-  RASSERT( ! m_pNextBuffer );
-  RASSERT( ! m_pPrevBuffer );
+  ASSERT( ! m_pHigherBuffer );
+  ASSERT( ! m_pNextBuffer );
+  ASSERT( ! m_pPrevBuffer );
   
   // set the index to nullptr (this pointer is not valid any more)
   m_pIndex = nullptr;
@@ -1088,7 +1085,7 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  //RASSERT( ! m_pIndex );
+  //ASSERT( ! m_pIndex );
   m_pIndex = pIndex;
 }
 
@@ -1383,7 +1380,7 @@ IrwBuffer* EntBuffer::pToIrwBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // INCOMPLETE !!!
-  RASSERT(0);
+  ASSERT(0);
   
   return new IrwBuffer;
 }
@@ -1415,7 +1412,7 @@ IrwBuffer* EntBuffer::pToIrwBuffer(void)
 //      pSrtSet = pSrtBuffer->aAllotSrtSet();
 //      
 //    }
-//    RASSERT(pSrtSet);
+//    ASSERT(pSrtSet);
 //    
 //    // get the left (this) rowBuffer
 //    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEntry->xRef());

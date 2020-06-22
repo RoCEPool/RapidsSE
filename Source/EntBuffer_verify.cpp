@@ -214,7 +214,7 @@ bool EntBuffer::bVerifyH0Other(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  RASSERT(0 == m_iBufferHeight);
+  ASSERT(0 == m_iBufferHeight);
   
   //  vTrace("VerifyH0 %s: bufno: %lld level %lld\n"_Stz,
   //         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferHeight);
@@ -254,7 +254,7 @@ bool EntBuffer::bVerifyLnAny(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  RASSERT(0 != m_iBufferHeight);
+  ASSERT(0 != m_iBufferHeight);
   
   //  vTrace("VerifyLn %s: bufno: %lld level %lld\n"_Stz,
   //         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferHeight);
@@ -337,7 +337,7 @@ bool EntBuffer::bVerifyAdjacent(void)
    count.
    */
   
-  RASSERT(m_iBufferHeight >= 1);
+  ASSERT(m_iBufferHeight >= 1);
   
   IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
@@ -378,7 +378,7 @@ bool EntBuffer::bVerifyBufferRefs(void)
    the Ln-1 buffer should have its parent buffer be that Ln buffer
    */
   
-  RASSERT(m_iBufferHeight >= 1);
+  ASSERT(m_iBufferHeight >= 1);
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
@@ -415,7 +415,7 @@ bool EntBuffer::bVerifyFirstKeys(void)
    Ln-1 buffer
    */
   
-  RASSERT(m_iBufferHeight >= 1);
+  ASSERT(m_iBufferHeight >= 1);
   
   //vShow();
   
@@ -530,7 +530,7 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
    The entries in an Ln buffer should be in order of the child buffer list
    */
   
-  RASSERT(m_iBufferHeight >= 1);
+  ASSERT(m_iBufferHeight >= 1);
   
   IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
@@ -664,7 +664,7 @@ bool EntBuffer::bVerifyRowRefs(void)
    valid row in a row buffer
    */
   
-  RASSERT(0 == m_iBufferHeight);
+  ASSERT(0 == m_iBufferHeight);
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
@@ -847,7 +847,7 @@ void EntBuffer::vVerifyFault(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   vTrace("VerifyFault\n"_Stz);
-  RASSERT(0);
+  ASSERT(0);
   return;
 }
 

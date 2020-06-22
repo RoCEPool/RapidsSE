@@ -158,7 +158,7 @@ void IndexTree::vCompact(void)
     TRACE_COMPACT( vTrace("  Compacting H1 %lld\n"_Stz,pH1->iBufferNo()); )
     //vTrace("  Compacting H1 %lld\n"_Stz,pH1->iBufferNo());
     
-    //RASSERT(pH1->bVerifySkipListEntry());
+    //ASSERT(pH1->bVerifySkipListEntry());
     
     //continue;
     
@@ -399,7 +399,7 @@ bool IndexTree::bInsertEntry(Ent* aEnt)
   m_okLock.vGrabWrite();                                           //! GRAB LOCK
   
   if (! m_pRootEntBuffer)
-    RASSERT(pNewRootBuffer());
+    ASSERT(pNewRootBuffer());
   
   Ent* aInsertedEntry = EntBuffer::aInsertEntTree(aEnt,&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
@@ -428,7 +428,7 @@ bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
   m_okLock.vGrabWrite();                                           //! GRAB LOCK
   
   if (! m_pRootEntBuffer)
-    RASSERT(pNewRootBuffer());
+    ASSERT(pNewRootBuffer());
   
   Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
@@ -454,7 +454,7 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
   xEntWrk.vRef(xRowRef);
   
   if (! m_pRootEntBuffer)
-    RASSERT(pNewRootBuffer());
+    ASSERT(pNewRootBuffer());
 
   Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
@@ -519,7 +519,7 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  RASSERT(! m_pRootEntBuffer);
+  ASSERT(! m_pRootEntBuffer);
   
   m_pRootEntBuffer = new EntBuffer;
   m_pRootEntBuffer->vIndex(m_pIndex);
