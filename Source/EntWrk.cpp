@@ -490,12 +490,8 @@ i8 EntWrk::nSize_EntKeyNeo(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nSizeEnt    = sizeof(Ent);
-  i8 nSizeElmSeq = m_xEnt.nElmSeqSize();
-  i8 nSizeNeo    = m_xEnt.nNEOsize();
-  
-  i8 nSize = nSizeEnt + nSizeElmSeq + nSizeNeo;
-  
+  i8 nSize = m_xEnt.nSizeBytes();
+
   return nSize;
 }
 

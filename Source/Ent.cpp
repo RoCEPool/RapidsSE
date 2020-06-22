@@ -203,11 +203,11 @@ i8 Ent::nNEOsize(void)
 {
 #ifdef WITH_FIXED_NEO
   i8 nLvls  = AM::nLvlLevels();
+  i8 nBytes = C_NEO_SIZE * nLvls;
 #else
   i8 nLvls  = nOffsets();
-#endif
-  
   i8 nBytes = C_NEO_SIZE * nLvls;
+#endif
   
   return nBytes;
 }
