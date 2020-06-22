@@ -154,7 +154,7 @@ void Index::vAnalyze(i8 iSlot, i8& nBuffers, i8& nEntries)
 /*----------------------------------------------------------------------------*/
 Column* Index::pGetColumn(i8 iColumn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   return m_pIndexDef->pGetColumn(iColumn);
 }
@@ -164,7 +164,7 @@ Column* Index::pGetColumn(i8 iColumn)
 /*----------------------------------------------------------------------------*/
 i8 Index::nColumns()
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   return m_pIndexDef->nColumns();
 }
