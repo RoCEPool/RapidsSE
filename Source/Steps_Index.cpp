@@ -215,7 +215,7 @@ void Step::vIndexGenEntBuffer(void)
     MemLib::vCopy(aEnt,oEntWrk.aEnt(),nBytes,CN_ENTBUFFER);
     aEnt->vNEO(0,-1);
     
-    i8 iOffset = pEntBuffer->iToOffset(aEnt);
+    i8 iOffset = pEntBuffer->iToOffset_i4(aEnt);
     if (aPrevEnt)
       aPrevEnt->vNEO(0,(i4)iOffset);
     
@@ -297,7 +297,7 @@ void Step::vIndexGenEntBuffers(void)
       MemLib::vCopy(aEnt,oEntWrk.aEnt(),nBytes,CN_ENTBUFFER);
       aEnt->vNEO(0,-1);
       
-      i8 iOffset = pEntBuffer->iToOffset(aEnt);
+      i8 iOffset = pEntBuffer->iToOffset_i4(aEnt);
       if (aPrevEnt)
         aPrevEnt->vNEO(0,(i4)iOffset);
       

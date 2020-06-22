@@ -93,7 +93,7 @@ void EntBuffer::vBuildSkipListSorted(void)
        aEnt = aNextEntry(aEnt, 0)) {
     
     // where is this entry in the buffer (offset-wise)?
-    i4 iEntryOffset = iToOffset(aEnt);
+    i4 iEntryOffset = iToOffset_i4(aEnt);
     
     // get the number of offsets for this entry
     i8 nLevels = aEnt->nOffsets();
@@ -204,8 +204,8 @@ void EntBuffer::vCompact(void)
       int iDebug = 1;
     }
     
-    i4 iWasOffset = iToOffset(aMoveEntry);
-    i4 iNowOffset = iToOffset((Ent*)aFreeItem);
+    i4 iWasOffset = iToOffset_i4(aMoveEntry);
+    i4 iNowOffset = iToOffset_i4((Ent*)aFreeItem);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // now copy move entry left onto free entry
@@ -558,7 +558,7 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
   
-  i4 iOffset = iToOffset(aInsertedEntry);
+  i4 iOffset = iToOffset_i4(aInsertedEntry);
   
   (*aaPriorEntry)->vNEO(0,iOffset);
   
@@ -648,7 +648,7 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEnt)
   // form lazy chain
   
   if (m_aLazyChain) {
-    i4 iLazyOffset = iToOffset(m_aLazyChain);
+    i4 iLazyOffset = iToOffset_i4(m_aLazyChain);
     aInsertedEntry->vNEO(0,iLazyOffset);
   }
   else {
@@ -725,7 +725,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set prior offsets
   
-  i4 iKeyEntryOffset = iToOffset(aEntry);
+  i4 iKeyEntryOffset = iToOffset_i4(aEntry);
   
   i8 nLevels = aEntry->nOffsets();
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
