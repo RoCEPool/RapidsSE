@@ -154,15 +154,12 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute the size of the left key
     
-    i8 nEntryBytes = xLeftEntWrk.aEnt()->nEntKeySize();
-    i8 nOffsetBytes = xLeftEntWrk.aEnt()->nNEOsize();
-    i8 nEntryPlusOffsets = nEntryBytes + nOffsetBytes;
-    RASSERT(nEntryPlusOffsets == xLeftEntWrk.aEnt()->nSizeBytes());
+    i8 nEntrySizeBytes = xLeftEntWrk.aEnt()->nSizeBytes();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get a new left buffer if not enough space in current left buffer
     
-    if (! pLeftH0->bHasSpace(nEntryPlusOffsets)) {
+    if (! pLeftH0->bHasSpace(nEntrySizeBytes)) {
       
       // build the skip list for left L0 thats now full
       pLeftH0->vBuildSkipListSorted();

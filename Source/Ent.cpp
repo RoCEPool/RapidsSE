@@ -34,7 +34,7 @@ void* Ent::operator new(size_t, Ent* aEnt)
 /*----------------------------------------------------------------------------*/
 Ent::Ent(eCN eClassNo, i8 nSizeEnt)
 : Header(eClassNo)
-{  
+{
 #ifdef WITH_DEBUG_VERSION
   MemLib::vZero(m__iaOffset__,sizeof(m__iaOffset__),eClassNo);
   
@@ -99,18 +99,6 @@ void Ent::vElmSeqSize(i8 nElmSeqSize)
   m_xKey.vElmSeqSize(nElmSeqSize);
 }
 
-/*----------------------------------------------------------------------------*/
-/* get size of alt entry using m__iaOffset__ with key  (no trailing neo)      */
-/*----------------------------------------------------------------------------*/
-i8 Ent::nEntSize_alt(void)
-{
-  i8 nSizeEnt_alt = sizeof(Ent);
-  i8 nSizeElmSeq  = nElmSeqSize();
-
-  i8 nSize_alt = nSizeEnt_alt + nSizeElmSeq;
-
-  return nSize_alt;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get size of entry with key, but not with neo's                             */
