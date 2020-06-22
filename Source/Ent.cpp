@@ -37,12 +37,11 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt_Without_NEO)
 {
   i8 nElmSeqSize = static_cast<i4>(nSizeEnt_Without_NEO - sizeof(Ent));
   
-  m_xKey.vElmSeqSize(nElmSeqSize);
-  
-  MemLib::vZero(m__iaOffset__,sizeof(m__iaOffset__),eClassNo);
-
+  //m_xKey.vElmSeqSize(nElmSeqSize);
   
 #ifdef WITH_DEBUG_VERSION
+  MemLib::vZero(m__iaOffset__,sizeof(m__iaOffset__),eClassNo);
+  
   m_uSkipNo = 0;
 #endif
 }
@@ -280,6 +279,8 @@ void Ent::vSetEntry(Ent* aFromEntry)
   byte* aSrcKey  = aFromEntry->ayElmSeq();
   i8    nKeySize = aFromEntry->nElmSeqSize();
   
+  m_xKey.vElmSeqSize(nKeySize);
+
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
 }
 

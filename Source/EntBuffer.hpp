@@ -187,7 +187,7 @@ namespace Indexing
 
     EntBuffer* pSplitBuffer(void);
     
-    NEO*       aAllotNEO(i8 nBytes);
+    //NEO*       aAllotNEO(i8 nBytes);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions

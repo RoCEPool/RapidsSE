@@ -477,9 +477,7 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
 Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-    
-  Ent* aInsertedEntry;
-  
+      
 #ifdef WITH_EB_LAZY_CHAIN
   if (m_pIndex->pTable() && m_pIndex->pTable()->bIsLoading()) {
     if (! m_iBufferHeight) {
@@ -512,11 +510,14 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  aInsertedEntry = aAllotEntry(nEntryBytes);
+  Ent* aInsertedEntry = aAllotEntry(nEntryPlusOffsets);
   ASSERT(aInsertedEntry);
-  
-  NEO* aNEO = aAllotNEO(nOffsetBytes);
-  ASSERT(aNEO);
+
+//  aInsertedEntry = aAllotEntry(nEntryBytes);
+//  ASSERT(aInsertedEntry);
+//
+//  NEO* aNEO = aAllotNEO(nOffsetBytes);
+//  ASSERT(aNEO);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
@@ -562,11 +563,14 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  Ent* aInsertedEntry = aAllotEntry(nEntryBytes);
+  Ent* aInsertedEntry = aAllotEntry(nEntryPlusOffsets);
   ASSERT(aInsertedEntry);
   
-  NEO* aNEO = aAllotNEO(nOffsetBytes);
-  ASSERT(aNEO);
+//  Ent* aInsertedEntry = aAllotEntry(nEntryBytes);
+//  ASSERT(aInsertedEntry);
+//
+//  NEO* aNEO = aAllotNEO(nOffsetBytes);
+//  ASSERT(aNEO);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
@@ -657,11 +661,14 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEnt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  Ent* aInsertedEntry = aAllotEntry(nEntryBytes);
+  Ent* aInsertedEntry = aAllotEntry(nEntryPlusOffsets);
   ASSERT(aInsertedEntry);
   
-  NEO* aNEO = aAllotNEO(nOffsetBytes);
-  ASSERT(aNEO);
+//  Ent* aInsertedEntry = aAllotEntry(nEntryBytes);
+//  ASSERT(aInsertedEntry);
+//
+//  NEO* aNEO = aAllotNEO(nOffsetBytes);
+//  ASSERT(aNEO);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
@@ -1180,12 +1187,12 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* allot an offset array in this buffer                                       */
 /*----------------------------------------------------------------------------*/
-NEO* EntBuffer::aAllotNEO(i8 nBytes)
-{
-  NEO* aNEO = reinterpret_cast<NEO*>(ayAllotBytes(nBytes));
-  
-  return aNEO;
-}
+//NEO* EntBuffer::aAllotNEO(i8 nBytes)
+//{
+//  NEO* aNEO = reinterpret_cast<NEO*>(ayAllotBytes(nBytes));
+//  
+//  return aNEO;
+//}
 
 /*============================================================================*/
 /* end                                                                        */
