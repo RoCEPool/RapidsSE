@@ -38,8 +38,8 @@ SkipRoots::SkipRoots(void)
   for (i8 i_Pad = 0; i_Pad < C_SKIPROOTS_PADDING; i_Pad++)
     m_iPadding[i_Pad] = 0;
   
-  for (i8 i_Neo = 0; i_Neo < nLvlLevels; i_Neo++)
-    vNEO(i_Neo,C_OFS_NIL_i4);
+  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
+    vNEO(i_Level,C_OFS_NIL_i4);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -31,7 +31,7 @@ static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
 static const i8 C_MAX_THREADS       = 256;
 static const i8 C_MAX_TOKENS        = C_2KB;
 
-// max partitions in a grid
+// max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS INSTEAD
 static const i8 C_MAX_PARTITIONS    = C_MAX_SLOTS * C_MAX_NODES;
 
 static const i8 C_MIN_LVL_LEVELS    = 2;

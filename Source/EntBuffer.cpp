@@ -1033,9 +1033,7 @@ void EntBuffer::vReset(void)
   
   vResetUsed();
 
-  m_xSkipRoots.vNEO(0,C_OFS_NIL_i4);
-  m_xSkipRoots.vNEO(1,C_OFS_NIL_i4);
-  m_xSkipRoots.vNEO(2,C_OFS_NIL_i4);
+  m_xSkipRoots.vNEOreset();
   
   //m_aHeadEntry  = nullptr;
   m_aLazyChain  = nullptr;
@@ -1181,7 +1179,7 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   vTrace("Entries (by headEntry vector[0]):\n"_Stz);
   
   i8 iOffset = aSkipRoots()->iNEO(0);
-  while (iOffset != C_OFS_NIL_i4) {
+  while (C_OFS_NIL_i4 != iOffset) {
     Ent* aEnt = aGetEntryOffset(iOffset);
     vShowEntry(aEnt);
     if (aMarkEntry == aEnt)
@@ -1208,7 +1206,7 @@ void EntBuffer::vShowShort(void)
          pHigherBuffer() ? pHigherBuffer()->iBufferNo() : 0);
   
   i8 iOffset = aSkipRoots()->iNEO(0);
-  while (iOffset != C_OFS_NIL_i4) {
+  while (C_OFS_NIL_i4 != iOffset) {
     Ent* aEnt = aGetEntryOffset(iOffset);
     
     Key* aKey = _aKey(aEnt->ayElmSeq());
@@ -1220,7 +1218,7 @@ void EntBuffer::vShowShort(void)
       vTrace("%lld|%lld|"_Stz,iVal,EntBuffer::pRefdEntBuffer(aEnt)->iBufferNo());
     
     iOffset = aEnt->iNEO(0);
-    if (iOffset != C_OFS_NIL_i4)
+    if (C_OFS_NIL_i4 != iOffset)
       vTrace(","_Stz);
   }
   vTrace("]"_Stz);

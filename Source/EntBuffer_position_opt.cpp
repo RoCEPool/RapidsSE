@@ -53,10 +53,10 @@ void EntBuffer::vPositionPriorVecEntry_Opt01(Key* aFindKey,
                     (C_NEO_SIZE * i_ScanLevel);
     i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
     
-    i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-    while (iNEO != C_OFS_NIL_i4) {
+    i4 iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset1);
+    while (C_OFS_NIL_i4 != iNextOffset) {
       
-      aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+      aNextEntry_sl = (Ent*)((char*)aItemArea() + iNextOffset);
       if (aFindEntry == aNextEntry_sl)
         break;
       
@@ -75,7 +75,7 @@ void EntBuffer::vPositionPriorVecEntry_Opt01(Key* aFindKey,
       }
       
       aScanEntry_sl = aNextEntry_sl;
-      iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+      iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset2);
     }
     aPriorVec[i_ScanLevel] = aScanEntry_sl;
   }
@@ -138,10 +138,10 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
   (C_NEO_SIZE * i_ScanLevel);
   i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
   
-  i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-  while (iNEO != C_OFS_NIL_i4) {
+  i4 iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset1);
+  while (C_OFS_NIL_i4 != iNextOffset) {
     
-    aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+    aNextEntry_sl = (Ent*)((char*)aItemArea() + iNextOffset);
     if (aFindEntry == aNextEntry_sl)
       break;
     
@@ -160,7 +160,7 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
     }
     
     aScanEntry_sl = aNextEntry_sl;
-    iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+    iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset2);
   }
   aPriorVec[i_ScanLevel] = aScanEntry_sl;
   
@@ -172,10 +172,10 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
   iOffset1 = aScanEntry_sl->aKey()->nElmSeqSize() + iEntSize + C_NEO_SIZE;
   iOffset2 = sizeof(i8) + iEntSize + C_NEO_SIZE;
   
-  iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-  while (iNEO != C_OFS_NIL_i4) {
+  iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset1);
+  while (C_OFS_NIL_i4 != iNextOffset) {
     
-    aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+    aNextEntry_sl = (Ent*)((char*)aItemArea() + iNextOffset);
     if (aFindEntry == aNextEntry_sl)
       break;
     
@@ -192,7 +192,7 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
     }
     
     aScanEntry_sl = aNextEntry_sl;
-    iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+    iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset2);
   }
   aPriorVec[i_ScanLevel] = aScanEntry_sl;
   
@@ -204,10 +204,10 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
   iOffset1 = aScanEntry_sl->aKey()->nElmSeqSize() + iEntSize;
   iOffset2 = sizeof(i8) + iEntSize;
   
-  iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-  while (iNEO != C_OFS_NIL_i4) {
+  iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset1);
+  while (C_OFS_NIL_i4 != iNextOffset) {
     
-    aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+    aNextEntry_sl = (Ent*)((char*)aItemArea() + iNextOffset);
     if (aFindEntry == aNextEntry_sl)
       break;
     
@@ -223,7 +223,7 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
     }
     
     aScanEntry_sl = aNextEntry_sl;
-    iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+    iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset2);
   }
   aPriorVec[i_ScanLevel] = aScanEntry_sl;
   
@@ -286,10 +286,10 @@ void EntBuffer::vPositionPriorVecEntry_Ray01(Key* aFindKey,
                     (C_NEO_SIZE * i_ScanLevel);
     i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
     
-    i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-    while (iNEO != C_OFS_NIL_i4) {
+    i4 iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset1);
+    while (C_OFS_NIL_i4 != iNextOffset) {
       
-      aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+      aNextEntry_sl = (Ent*)((char*)aItemArea() + iNextOffset);
       if (aFindEntry == aNextEntry_sl)
         break;
       
@@ -308,7 +308,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray01(Key* aFindKey,
       }
       
       aScanEntry_sl = aNextEntry_sl;
-      iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+      iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset2);
     }
     aPriorVec[i_ScanLevel] = aScanEntry_sl;
   }
@@ -357,10 +357,10 @@ void EntBuffer::vPositionPriorVecEntry_Ray02(Key* aFindKey,
                     (C_NEO_SIZE * i_ScanLevel);
     i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
     
-    i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-    while (iNEO != C_OFS_NIL_i4) {
+    i4 iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset1);
+    while (C_OFS_NIL_i4 != iNextOffset) {
       
-      aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+      aNextEntry_sl = (Ent*)((char*)aItemArea() + iNextOffset);
       
       //--------------------------------------------------------------
       Key* aNextKey = aNextEntry_sl->aKey();
@@ -372,7 +372,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray02(Key* aFindKey,
         break;
               
       aScanEntry_sl = aNextEntry_sl;
-      iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+      iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset2);
     }
     aPriorVec[i_ScanLevel] = aScanEntry_sl;
   }
@@ -423,10 +423,10 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
                     (C_NEO_SIZE * i_ScanLevel);
     i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
     
-    i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-    while (iNEO != C_OFS_NIL_i4) {
+    i4 iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset1);
+    while (C_OFS_NIL_i4 != iNextOffset) {
       
-      aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+      aNextEntry_sl = (Ent*)((char*)aItemArea() + iNextOffset);
       
       Ent_Cur* aEntCur = (Ent_Cur*)aNextEntry_sl;
       
@@ -442,7 +442,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
         break;
               
       aScanEntry_sl = aNextEntry_sl;
-      iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+      iNextOffset = * (i4*)((char*)aScanEntry_sl+iOffset2);
     }
     aPriorVec[i_ScanLevel] = aScanEntry_sl;
   }

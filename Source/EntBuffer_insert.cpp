@@ -293,8 +293,7 @@ void EntBuffer::vCompactLeft(void)
   
   vItems(0);
   
-  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
-    aSkipRoots()->vNEO(i_Level,C_OFS_NIL_i4);
+  aSkipRoots()->vNEOreset();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -17,7 +17,7 @@ namespace Entries
       u8 m_uOffsets :  3; // number of neo's that follow
     } Ref;         // 64b                                             // 1 word
   
-    u2 m_uaOffset[6];     // the offsets                              // 2 words
+    u2 m_uaOffset[C_MAX_LVL_LEVELS];  // the offsets                  // 2 words
     u2 m_uSkipNo;         // skip numbering
     u2 m_uSpare;          // spare
   
@@ -41,7 +41,7 @@ namespace Entries
       u8 m_uOffsets :  3; // number of neo's that follow
     } Ref;         // 64b
   
-    i4 m_iaOffset[6];     // the offsets
+    i4 m_iaOffset[C_MAX_LVL_LEVELS]; // the offsets
 
     #ifdef WITH_DEBUG_VERSION
     i8 m_uSkipNo;         // verify of order of skip items
