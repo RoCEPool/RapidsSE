@@ -1559,7 +1559,7 @@ void vTest21(void)
   
   bool bInsertTest = true;
   bool bSearchTest = true;
-  bool bDeleteTest = false;
+  bool bDeleteTest = true;
   
   i8 nTimes = 10;
 

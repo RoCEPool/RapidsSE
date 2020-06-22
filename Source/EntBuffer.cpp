@@ -157,6 +157,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     i8 nEntryBytes = xLeftEntWrk.aEnt()->nEntKeySize();
     i8 nOffsetBytes = xLeftEntWrk.aEnt()->nNEOsize();
     i8 nEntryPlusOffsets = nEntryBytes + nOffsetBytes;
+    RASSERT(nEntryPlusOffsets == xLeftEntWrk.aEnt()->nSizeBytes());
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get a new left buffer if not enough space in current left buffer

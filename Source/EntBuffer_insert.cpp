@@ -441,7 +441,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
 /*----------------------------------------------------------------------------*/
 /* get an insertable buffer                                                   */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
+EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -449,21 +449,22 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffe
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(aEntryWork->nOffsets());
+  RASSERT(aEnt->nOffsets());
   
-  i8 nEntryBytes  = aEntryWork->nEntKeySize();
-  i8 nOffsetBytes = aEntryWork->nNEOsize();
-  i8 nEntryPlusOffsetsBytes = nEntryBytes + nOffsetBytes;
-  
+  i8 nEntryBytes  = aEnt->nEntKeySize();
+  i8 nOffsetBytes = aEnt->nNEOsize();
+  i8 nEntryPlusOffsets = nEntryBytes + nOffsetBytes;
+  RASSERT(nEntryPlusOffsets == aEnt->nSizeBytes());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert key into this EntBuffer if it has space or get a new one
   
   EntBuffer* pInsertIntoBuffer;
-  if (bHasSpace(nEntryPlusOffsetsBytes))
+  if (bHasSpace(nEntryPlusOffsets))
     pInsertIntoBuffer = this;
   else {
     pInsertIntoBuffer =
-      pNewInsertBuffer(aEntryWork,nEntryPlusOffsetsBytes,ppRootBuffer);
+      pNewInsertBuffer(aEnt,nEntryPlusOffsets,ppRootBuffer);
     //(*ppRootBuffer)->vShow();
   }
   
@@ -473,7 +474,7 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffe
 /*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (should be enough space)  */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntAbs(Ent* aEntryWork)
+Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
@@ -499,11 +500,12 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEntryWork)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(aEntryWork->nOffsets());
+  RASSERT(aEnt->nOffsets());
   
-  i8 nEntryBytes  = aEntryWork->nEntKeySize();
-  i8 nOffsetBytes = aEntryWork->nNEOsize();
+  i8 nEntryBytes  = aEnt->nEntKeySize();
+  i8 nOffsetBytes = aEnt->nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  RASSERT(nEntryPlusOffsets == aEnt->nSizeBytes());
   
   RASSERT(bHasSpace(nEntryPlusOffsets));
   
@@ -519,7 +521,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEntryWork)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
   
-  aInsertedEntry->vSetEntry(aEntryWork);
+  aInsertedEntry->vSetEntry(aEnt);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the new entry into the skip list
@@ -534,7 +536,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEntryWork)
 /*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (L0 chain only)           */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntAbsL0(Ent* aEntryWork, Ent** aaPriorEntry)
+Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -548,12 +550,13 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEntryWork, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(aEntryWork->nOffsets());
+  RASSERT(aEnt->nOffsets());
   
-  i8 nEntryBytes = aEntryWork->nEntKeySize();
-  i8 nOffsetBytes = aEntryWork->nNEOsize();
+  i8 nEntryBytes = aEnt->nEntKeySize();
+  i8 nOffsetBytes = aEnt->nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  
+  RASSERT(nEntryPlusOffsets == aEnt->nSizeBytes());
+
   RASSERT(bHasSpace(nEntryPlusOffsets));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -568,7 +571,7 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEntryWork, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
   
-  aInsertedEntry->vSetEntry(aEntryWork);
+  aInsertedEntry->vSetEntry(aEnt);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
@@ -628,7 +631,7 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (should be enough space)  */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEntryWork)
+Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -642,12 +645,13 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEntryWork)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
     
-  RASSERT(aEntryWork->nOffsets());
+  RASSERT(aEnt->nOffsets());
   
-  i8 nEntryBytes  = aEntryWork->nEntKeySize();
-  i8 nOffsetBytes = aEntryWork->nNEOsize();
+  i8 nEntryBytes  = aEnt->nEntKeySize();
+  i8 nOffsetBytes = aEnt->nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes + nOffsetBytes;
-  
+  RASSERT(nEntryPlusOffsets == aEnt->nSizeBytes());
+
   RASSERT(bHasSpace(nEntryPlusOffsets));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -662,7 +666,7 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEntryWork)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
   
-  aInsertedEntry->vSetEntry(aEntryWork);
+  aInsertedEntry->vSetEntry(aEnt);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form lazy chain
