@@ -4,8 +4,6 @@
 
 #include "Entries.h"
 
-#define __USE_ALT_OFFSETS
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -130,9 +128,7 @@ i4 Ent::iNEO(i8 i_Level)
 {
   ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
-  NEO* aNEO = this->aNEO();
-
-  i4 iNEO = aNEO->m_iOffset[i_Level];
+  i4 iNEO = m_iaOffset[i_Level];
   
   return iNEO;
 }
@@ -144,9 +140,7 @@ void Ent::vNEO(i8 i_Level, i4 i_Offset)
 {
   ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
-  NEO* aNEO = this->aNEO();
-
-  aNEO->m_iOffset[i_Level] = i_Offset;
+  m_iaOffset[i_Level] = i_Offset;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,14 +148,13 @@ void Ent::vNEO(i8 i_Level, i4 i_Offset)
 /*----------------------------------------------------------------------------*/
 void Ent::vNEOdump(void)
 {
-  NEO* aNEO = this->aNEO();
   i8 nLvls  = nOffsets();
   
-  vTrace("Ent %p levels: %lld NEO: %p"_Stz,
-         this,nLvls,aNEO);
+  vTrace("Ent %p levels: %lld"_Stz,
+         this,nLvls);
   
   for (i8 i_Level = 0; i_Level < nLvls; i_Level++)
-    vTrace(" %lld: %d"_Stz,i_Level,aNEO->m_iOffset[i_Level]);
+    vTrace(" %lld: %d"_Stz,i_Level,m_iaOffset[i_Level]);
   
   vTrace("\n"_Stz);
 }
@@ -286,31 +279,6 @@ bool Ent::bValidEnt(void)
   }
     
   return true;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get address of next entry offset array                                     */
-/*----------------------------------------------------------------------------*/
-NEO* Ent::aNEO(void)
-{
-#ifdef __USE_ALT_OFFSETS
-
-  NEO* aNEO = (NEO*)m_iaOffset;
-  
-#else
-  
-  i8 i_NEO = sizeof(Ent) + m_xKey.nElmSeqSize();
-  
-  NEO* aNEO = aAdd<NEO*>(this,i_NEO);
-  
-#endif
-  
-  return aNEO;
 }
 
 /*============================================================================*/

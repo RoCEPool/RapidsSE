@@ -100,8 +100,6 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 
 // temporary
 
-#define WITH_FIXED_NEO EndDefine             // code for fixed sized neo
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
