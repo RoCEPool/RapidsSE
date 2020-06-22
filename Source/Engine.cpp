@@ -1191,7 +1191,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_THREADS        = %lld\n"_Stz,C_MAX_THREADS);
   vTrace("  C_MAX_TOKENS         = %lld\n"_Stz,C_MAX_TOKENS);
   vTrace("  C_MAX_VCH            = %lld\n"_Stz,C_MAX_VCH);
-  vTrace("  C_MAX_VCH_PRECISION  = %lld\n"_Stz,C_MAX_FLT_PRECISION);
+  vTrace("  C_MAX_VCH_PRECISION  = %lld\n"_Stz,C_MAX_VCH_PRECISION);
   
   vTrace("  C_MIN_LVL_LEVELS     = %lld\n"_Stz,C_MIN_LVL_LEVELS);
   vTrace("  C_MIN_LVL_RATIO      = %lld\n"_Stz,C_MIN_LVL_RATIO);
@@ -1202,6 +1202,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_WSP_DATACHUNK      = %lld\n"_Stz,C_WSP_DATACHUNK);
   vTrace("  C_WSP_STACK          = %lld\n"_Stz,C_WSP_STACK);
   
+  vTrace("  C_SIZE_TINY_OBJECT   = %lld\n"_Stz,C_SIZE_TINY_OBJECT);
   vTrace("  C_SIZE_SMALL_OBJECT  = %lld\n"_Stz,C_SIZE_SMALL_OBJECT);
   vTrace("  C_SIZE_MEDIUM_OBJECT = %lld\n"_Stz,C_SIZE_MEDIUM_OBJECT);
   vTrace("  C_SIZE_LARGE_OBJECT  = %lld\n"_Stz,C_SIZE_LARGE_OBJECT);
