@@ -443,8 +443,10 @@ public:
 
 
   // index definition
+  void vIndexDefGet(void);
   void vIndexDefParse(void);
   void vIndexDefParseOLD(void);
+  void vIndexDefSet(void);
   void vIndexDefSyntax(void);
 
   // index reg
