@@ -498,14 +498,11 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(aEnt->nOffsets());
+  ASSERT(aEnt->nOffsets());
   
-  i8 nEntryBytes  = aEnt->nEntKeySize();
-  i8 nOffsetBytes = aEnt->nNEOsize();
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  RASSERT(nEntryPlusOffsets == aEnt->nSizeBytes());
+  i8 nEntryPlusOffsets = aEnt->nSizeBytes();
   
-  RASSERT(bHasSpace(nEntryPlusOffsets));
+  ASSERT(bHasSpace(nEntryPlusOffsets));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
@@ -551,14 +548,11 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(aEnt->nOffsets());
+  ASSERT(aEnt->nOffsets());
   
-  i8 nEntryBytes = aEnt->nEntKeySize();
-  i8 nOffsetBytes = aEnt->nNEOsize();
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  RASSERT(nEntryPlusOffsets == aEnt->nSizeBytes());
+  i8 nEntryPlusOffsets = aEnt->nSizeBytes();
 
-  RASSERT(bHasSpace(nEntryPlusOffsets));
+  ASSERT(bHasSpace(nEntryPlusOffsets));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
@@ -649,14 +643,11 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEnt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
     
-  RASSERT(aEnt->nOffsets());
+  ASSERT(aEnt->nOffsets());
   
-  i8 nEntryBytes  = aEnt->nEntKeySize();
-  i8 nOffsetBytes = aEnt->nNEOsize();
-  i8 nEntryPlusOffsets = nEntryBytes + nOffsetBytes;
-  RASSERT(nEntryPlusOffsets == aEnt->nSizeBytes());
+  i8 nEntryPlusOffsets = aEnt->nSizeBytes();
 
-  RASSERT(bHasSpace(nEntryPlusOffsets));
+  ASSERT(bHasSpace(nEntryPlusOffsets));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
@@ -1190,7 +1181,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
 //NEO* EntBuffer::aAllotNEO(i8 nBytes)
 //{
 //  NEO* aNEO = reinterpret_cast<NEO*>(ayAllotBytes(nBytes));
-//  
+//
 //  return aNEO;
 //}
 

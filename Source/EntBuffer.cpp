@@ -338,11 +338,11 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Ref& xRowRef)
 /*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aAllotEntry(i8 nEntBytes_Without_NEO)
+Ent* EntBuffer::aAllotEntry(i8 nSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Ent* aEnt = aAllotItem(CN_ENT,nEntBytes_Without_NEO);
+  Ent* aEnt = aAllotItem(CN_ENT,nSize);
   if (! aEnt)
     return nullptr;
   

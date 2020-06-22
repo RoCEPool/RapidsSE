@@ -65,7 +65,7 @@ namespace Indexing
     void vShowEntry(Ent* pEntry);
   
   private:
-    Ent* aAllotEntry(i8 nSizeEnt_Without_NEO);
+    Ent* aAllotEntry(i8 nSize);
     
     ////////////////////////////////////////////////////////////////////////////
   
