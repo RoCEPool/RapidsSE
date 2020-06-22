@@ -205,13 +205,19 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pEntBuffer;
       break;
     }
-    
+      
+    case CN_INDEXDEF: {
+      IndexDef* pIndexDef = _pIndexDef(pOperand);
+      delete pIndexDef;
+      break;
+    }
+      
     case CN_INFOSET: {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
       delete pInfoSet;
       break;
     }
-      
+    
     case CN_IRWBUFFER: {
       IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
       delete pIrwBuffer;

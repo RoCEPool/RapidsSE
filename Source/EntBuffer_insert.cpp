@@ -194,7 +194,7 @@ void EntBuffer::vCompact(void)
     
     //Key* aMoveKey = _aKey(aMoveEntry->aDataArea());
     
-    //aKey->vShow(pIdxColVec);
+    //aKey->vShow(pIndexDef);
     //vTrace("\n"_Stz);
     
     vPositionPriorVecEntry(aMoveEntry->aKey(), xPriorVec, aMoveEntry);
@@ -266,7 +266,7 @@ void EntBuffer::vCompactLeft(void)
   EntBuffer* pThisBuffer = this;
   EntBuffer* pTempBuffer = new EntBuffer();
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
   EntWrk xEntWrk;
   
@@ -346,25 +346,25 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   
   //Key* aDeleteEntryKey = _aKey(aEntryToBeDeleted->ayElmSeq());
   
-  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
-  //if ( ! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec) ) {
+  //if ( ! aDeleteEntryKey->bEqualTo(aDeleteKey,pIndexDef) ) {
   if ( ! Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteEntry->aKey()) ) {
     //vShow();
     
     //vShowTree();
     
     //vTrace("Delete key: "_Stz);
-    //aDeleteKey->vShow(pIdxColVec);
+    //aDeleteKey->vShow(pIndexDef);
     //vTrace("\n"_Stz);
     
     //vTrace("Delete entry key found: "_Stz);
-    //aDeleteEntryKey->vShow(pIdxColVec);
+    //aDeleteEntryKey->vShow(pIndexDef);
     //vTrace("\n"_Stz);
     
     return;
   }
-  //RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
+  //RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIndexDef));
   
   Ent* aFirstEntry = this->aLeadEntry();
   if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer) {
@@ -392,9 +392,9 @@ void EntBuffer::vHandleFirstInsert(Ent* aInsertedKeyEntry,
     
     //Key* aInsertedFirstKey = _aKey(aInsertedKeyEntry->aDataArea());
     
-    IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+    IndexDef* pIndexDef = m_pIndex->pIndexDef();
     
-    //if (aInsertedFirstKey->bNotEqual(aOriginalFirstKey,pIdxColVec))
+    //if (aInsertedFirstKey->bNotEqual(aOriginalFirstKey,pIndexDef))
     if (Key::bNotEqual(aInsertedKeyEntry->aKey(), aOriginalFirstEntry->aKey()))
       vHandleLeftInsert(aInsertedKeyEntry,
                         aOriginalFirstEntry,
@@ -430,7 +430,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //Key* aInsertEnt = _aKey(aInsertedKeyEntry->aDataArea());
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  IndexDef* pIndexDef = m_pIndex->pIndexDef();
   EntWrk xEntWrkIns;
   xEntWrkIns.vSetEnt(iBufferNo(), 0, aInsertedKeyEntry);
   
@@ -492,8 +492,8 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEntryWork)
   // trace
   
   //vTrace("Inserting key: "_Stz);
-  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  //xEntWrk.aKey()->vShow(pIdxColVec);
+  //IndexDef* pIndexDef = m_pIndex->pIndexDef();
+  //xEntWrk.aKey()->vShow(pIndexDef);
   //vTrace("\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -542,8 +542,8 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEntryWork, Ent** aaPriorEntry)
   // trace
   
   //vTrace("Inserting key:\n"_Stz);
-  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  //aKey->vShow(pIdxColVec);
+  //IndexDef* pIndexDef = m_pIndex->pIndexDef();
+  //aKey->vShow(pIndexDef);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
@@ -636,8 +636,8 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEntryWork)
   // trace
   
   //vTrace("Inserting key:\n"_Stz);
-  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  //aKey->vShow(pIdxColVec);
+  //IndexDef* pIndexDef = m_pIndex->pIndexDef();
+  //aKey->vShow(pIndexDef);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space

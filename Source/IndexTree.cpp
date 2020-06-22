@@ -425,8 +425,6 @@ bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
   vExtractKey(&xEntWrk,aCrw);
   xEntWrk.vRef(xRowRef);
 
-  //xEntWrk.vShow(m_pIndex->pIdxColVec());
-
   m_okLock.vGrabWrite();                                           //! GRAB LOCK
   
   if (! m_pRootEntBuffer)
@@ -454,8 +452,6 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
   EntWrk xEntWrk;
   vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
   xEntWrk.vRef(xRowRef);
-  
-  //xEntWrk.vShow(m_pIndex->pIdxColVec());
   
   if (! m_pRootEntBuffer)
     RASSERT(pNewRootBuffer());
@@ -610,15 +606,15 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
-  i8 nIdxCols = pIdxColVec->nItems();
+  i8 nIdxCols = pIndexDef->nColumns();
   hvRow->m_bGetAll = false;
   
   for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
     
     // get the column from the index column vector
-    Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+    Column* pColumn = pIndexDef->pGetColumn(i_IdxCol);
     
     // mark column to be retrieved
     i8 i_Col = pColumn->iColumnNo();
@@ -632,12 +628,10 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
 
   for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
     
-    Column* pColumn = pIdxColVec->pGet(i_Col);
+    Column* pColumn = pIndexDef->pGetColumn(i_Col);
     
     // add the column value to the key
     pEntWrk->vAppendElement(hvRow,pColumn);
-    
-    //vShow(pIdxColVec);
   }
 }
 
@@ -649,15 +643,15 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
   // create a row
   HV_Row hRow(pCrwBuffer->pStreamDef(),C_ALL);
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
-  i8 nIdxCols = pIdxColVec->nItems();
+  i8 nIdxCols = pIndexDef->nColumns();
   hRow->m_bGetAll = false;
   
   for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
     
     // get the column from the index column vector
-    Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+    Column* pColumn = pIndexDef->pGetColumn(i_IdxCol);
     
     // mark column to be retrieved
     i8 iColumn = pColumn->iColumnNo();
@@ -670,17 +664,13 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
   
   for (i8 i_Column = 0; i_Column < nIdxCols; i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(i_Column);
+    Column* pColumn = pIndexDef->pGetColumn(i_Column);
     
     // add the column value to the key
     pEntWrk->vAppendElement(hRow, pColumn);
-    
-    //vShow(pIdxColVec);
   }
   
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

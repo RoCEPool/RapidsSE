@@ -64,8 +64,9 @@ IndexDef::IndexDef(void)
   m_bIsPrimaryKey = false;
   m_bIsUnique     = false;
   
-  m_pIdxColVec    = new IdxColVec(this);
-
+  m_nColumns      = 0;
+  //m_xaColumn[C_MAX_INDEXCOLUMNS];
+  
   _checkInitialised_(CN_INDEXDEF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
@@ -79,16 +80,24 @@ IndexDef::~IndexDef(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   // Since the column is picked from the ColVec of table
-  // we need to just remove it from the IdxColVec before deleting it
-  m_pIdxColVec->vClear();
-  
-  delete m_pIdxColVec;
+  // we don not need to delete them
+  //! ALKA CHECK
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the no of columns in the index                                         */
+/*----------------------------------------------------------------------------*/
+i8 IndexDef::nColumns(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_nColumns;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the index name                                                         */
@@ -194,11 +203,13 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
     // -- -- -- -- --
     // process column
     // -- -- -- -- --
-    bool bResult = bAddIdxCol(pTable,pTkn->szChars());
+    bool bResult = bAddIdxCol(pTable,i_Col,pTkn->szChars());
     if ( ! bResult ) {
       eError = EC_INVALID_INDEX_COLUMN;
       goto L_RETURN;
     }
+    m_nColumns++;
+    
     // -- -- -- --
     // next token
     // -- -- -- --
@@ -259,11 +270,11 @@ void IndexDef::vIsUnique(bool bUnique)
 /*----------------------------------------------------------------------------*/
 /* get index column vector                                                    */
 /*----------------------------------------------------------------------------*/
-IdxColVec* IndexDef::pIdxColVec(void)
+Column* IndexDef::pGetColumn(i8 iColumn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
-  return m_pIdxColVec;
+  return &m_xaColumn[iColumn];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,8 +285,7 @@ i8 IndexDef::iSortKeyDatum(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   i8 nKeyDatumSize = 0;
-  for (i8 i_IdxCol = 0; i_IdxCol < m_pIdxColVec->nItems(); i_IdxCol++) {
-    //Column* pColumn = m_pIdxColVec->pGet(i_IdxCol);
+  for (i8 i_IdxCol = 0; i_IdxCol < m_nColumns; i_IdxCol++) {
     nKeyDatumSize += sizeof(i8);
   }
   
@@ -427,7 +437,7 @@ L_RETURN:
 /*----------------------------------------------------------------------------*/
 /* add column to the index column vector                                      */
 /*----------------------------------------------------------------------------*/
-bool IndexDef::bAddIdxCol(Table* pTable, Stz* szColNm)
+bool IndexDef::bAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
@@ -436,7 +446,7 @@ bool IndexDef::bAddIdxCol(Table* pTable, Stz* szColNm)
   if (! pColumn)
     return false;
   
-  m_pIdxColVec->vAdd(pColumn);
+  m_xaColumn[iCol].vCopy(pColumn);
   
   return true;
 }

@@ -168,15 +168,15 @@ i8 Key::iGetInt(void)
 /*----------------------------------------------------------------------------*/
 /* get element as int (assuming int)                                          */
 /*----------------------------------------------------------------------------*/
-i8 Key::iGetInt(IdxColVec* pIdxColVec, i8 iElement)
+i8 Key::iGetInt(IndexDef* pIndexDef, i8 iElement)
 {
   i8 nBytes;
   byte* ayCursor = ayElmSeq();
   i8 iVal = C_UNKNOWN;
   
-  for (i8 i_Col = 0; i_Col < pIdxColVec->nItems(); i_Col++) {
+  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
     
-    Column* pCol = pIdxColVec->pGet(i_Col);
+    Column* pCol = pIndexDef->pGetColumn(i_Col);
     
     byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,&ayCursor);
   
@@ -224,11 +224,11 @@ void Key::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* show the elements of this key                                              */
 /*----------------------------------------------------------------------------*/
-void Key::vShow(IdxColVec* pIdxColVec)
+void Key::vShow(IndexDef* pIndexDef)
 {
   bool bReadApi = false;
   
-  if (pIdxColVec->pIndexDef()->szIndexNm()->bSame(S_READAPI_I))
+  if (pIndexDef->szIndexNm()->bSame(S_READAPI_I))
     bReadApi = true;
   
   i8 nBytes;
@@ -237,9 +237,9 @@ void Key::vShow(IdxColVec* pIdxColVec)
   
   char caLiteral[128];
   
-  for (i8 i_Col = 0; i_Col < pIdxColVec->nItems(); i_Col++) {
+  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
     
-    Column* pCol = pIdxColVec->pGet(i_Col);
+    Column* pCol = pIndexDef->pGetColumn(i_Col);
     
     byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,&ayCursor);
     

@@ -30,7 +30,7 @@ SP_Ent::SP_Ent(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Ent::SP_Ent(Ent* aEnt, IdxColVec* pIdxColVec)
+SP_Ent::SP_Ent(Ent* aEnt, IndexDef* pIndexDef)
 : Sprint(CN_KEY)
 {
   _precondition_(_MAGIC_,CN_KEY,_FOOTER_);
@@ -47,7 +47,7 @@ SP_Ent::SP_Ent(Ent* aEnt, IdxColVec* pIdxColVec)
   //! FIX RAY
   //_checkInitialised_(CN_KEY);
   
-  vSprintEnt(aEnt,pIdxColVec);
+  vSprintEnt(aEnt,pIndexDef);
   
   _postcondition_(_MAGIC_,CN_KEY,_FOOTER_);
 }
@@ -87,11 +87,11 @@ Stz* SP_Ent::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ent::sz(Ent* aEnt, IdxColVec* pIdxColVec)
+Stz* SP_Ent::sz(Ent* aEnt, IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  vSprintEnt(aEnt,pIdxColVec);
+  vSprintEnt(aEnt,pIndexDef);
   
   return (Stz*) &m_caEnt[0];
 }
@@ -99,7 +99,7 @@ Stz* SP_Ent::sz(Ent* aEnt, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* sprint the entry                                                           */
 /*----------------------------------------------------------------------------*/
-void SP_Ent::vSprintEnt(Ent* aEnt, IdxColVec* pIdxColVec)
+void SP_Ent::vSprintEnt(Ent* aEnt, IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -109,7 +109,7 @@ void SP_Ent::vSprintEnt(Ent* aEnt, IdxColVec* pIdxColVec)
   StrLib::vSprint(m_caEnt,
                   "%s %s; NEO:"_Stz,
                   spRef.sz(aEnt->xRef()),
-                  spKey.sz(aEnt->aKey(),pIdxColVec));
+                  spKey.sz(aEnt->aKey(),pIndexDef));
   
   for (i8 i_Level = 0; i_Level < aEnt->nOffsets(); i_Level++)
     StrLib::vSprintCat((Stz*)m_caEnt," %d"_Stz,aEnt->iNEO(i_Level));

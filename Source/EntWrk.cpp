@@ -19,7 +19,7 @@ EntWrk::EntWrk(void)
   _precondition_(_MAGIC_,CN_ENTWRK);
 
   m_pStreamDef = nullptr;
-  m_pIdxColVec = nullptr;
+  m_pIndexDef  = nullptr;
   
   // -- entry --
   m_xEnt.vBuffer(0);
@@ -298,23 +298,22 @@ Key* EntWrk::aKey(void)
 /*----------------------------------------------------------------------------*/
 /* get index column vector                                                    */
 /*----------------------------------------------------------------------------*/
-IdxColVec* EntWrk::pIdxColVec(void)
+IndexDef* EntWrk::pIndexDef(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_pIdxColVec;
+  return m_pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set index column vector                                                    */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vIdxColVec(IdxColVec* pIdxColVec)
+void EntWrk::vIndexDef(IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_pIdxColVec = pIdxColVec;
+  m_pIndexDef = pIndexDef;
 }
-
 /*----------------------------------------------------------------------------*/
 /* inc total element sequence size by the size of element                     */
 /*----------------------------------------------------------------------------*/
@@ -380,16 +379,16 @@ void EntWrk::vOffsets(i8 nLevels)
 /*----------------------------------------------------------------------------*/
 /* generate random entry                                                      */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vRandomEnt(IdxColVec* pIdxColVec)
+void EntWrk::vRandomEnt(IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
 
   Datum oDatum;
   
-  i8 nIdxCol = pIdxColVec->nItems();
+  i8 nIdxCol = pIndexDef->nColumns();
   for (i8 i_IdxCol = 0; i_IdxCol < nIdxCol; i_IdxCol++) {
     
-    Column* pCol = pIdxColVec->pGet(i_IdxCol);
+    Column* pCol = pIndexDef->pGetColumn(i_IdxCol);
     
     DatumRandom::vRndDtm(&oDatum,pCol);
   
@@ -457,7 +456,7 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vShow(IdxColVec* pIdxColVec)
+void EntWrk::vShow(IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -465,7 +464,7 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
   Ent* aEnt = this->aEnt();
   Key* aKey = aEnt->aKey();
   
-  aKey->vShow(pIdxColVec);
+  aKey->vShow(pIndexDef);
   vTrace(" Buffer %lld Item %lld\n"_Stz,iBuffer(),iItem());
 }
 

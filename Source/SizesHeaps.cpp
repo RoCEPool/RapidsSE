@@ -118,7 +118,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(IndexDef),           HT_TRANSIENT_MEDIUM  }, // CN_INDEXDEF
   { sizeof(IndexTree),          HT_TRANSIENT_TINY    }, // CN_INDEXTREE
   { sizeof(IndexTreeVec),       HT_TRANSIENT_MEDIUM  }, // CN_INDEXTREEVEC
-  { sizeof(IdxColVec),          HT_TRANSIENT_MEDIUM  }, // CN_IDXCOLVEC
   { sizeof(IdxVec),             HT_TRANSIENT_MEDIUM  }, // CN_IDXVEC
   { sizeof(InfoSet),            HT_TRANSIENT_LARGE   }, // CN_INFOSET
   { sizeof(IngestChunk),        HT_TRANSIENT_LARGE   }, // CN_INGESTCHUNK

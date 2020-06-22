@@ -770,7 +770,8 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
   StreamDef* pStreamDef = pCrwBuffer_upsert->pStreamDef();
   
   IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
-
+  IndexDef* pIndexDef = pIndexTree->pIndex()->pIndexDef();
+  
   HV_Row hvRow_upsert(pStreamDef,C_ALL);
   
   Encoding* pEncoding_upsert = new Encoding(pStreamDef);
@@ -795,7 +796,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
     xEntWrk.vElmSeqSize(0);
     pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer_upsert,i_Row);
     SP_Ent spEnt;
-    TRACE_UPSERT( vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIdxColVec)); )
+    TRACE_UPSERT( vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIndexDef)); )
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // possible insert (can we find the row using primary key)
@@ -815,7 +816,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
     }
     
     SP_Key spKey;
-    TRACE_UPSERT( vTrace("Key Prior: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIdxColVec)); )
+    TRACE_UPSERT( vTrace("Key Prior: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIndexDef)); )
     vDebugPoint();
     
     Ent* aEnt_found = pEntH0Buf->aNextEntry(aEnt_prior,0);
@@ -825,7 +826,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
      continue;
     }
     
-    TRACE_UPSERT( vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIdxColVec)); )
+    TRACE_UPSERT( vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIndexDef)); )
     
     if (KC_SAME != Key::eCompare(aEnt_found->aKey(),xEntWrk.aKey())) {
       TRACE_UPSERT( vTrace("NOT SAME @%lld; inserting...\n"_Stz,(i8)__LINE__); )
@@ -837,7 +838,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
     // upsert (we have a crw matching the key)
     
     SP_Ent spRef;
-    TRACE_UPSERT( vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIdxColVec)); )
+    TRACE_UPSERT( vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef)); )
     
     Crw* aCrw_exists = CrwBuffer::pRefdCrw(aEnt_found->xRef());
     if (! aCrw_exists) {

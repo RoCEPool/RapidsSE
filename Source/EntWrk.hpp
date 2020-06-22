@@ -12,7 +12,7 @@ namespace Entries
   private:
   
     StreamDef* m_pStreamDef;     // stream definition
-    IdxColVec* m_pIdxColVec;     // index column vector describing the key
+    IndexDef*  m_pIndexDef;      // index definition
 
     // - - - - - - - - - - - - - //
     //       entry proper        //
@@ -50,8 +50,8 @@ namespace Entries
 
     Key*  aKey(void);
   
-    IdxColVec* pIdxColVec(void);
-    void  vIdxColVec(IdxColVec* pIdxColVec);
+    IndexDef* pIndexDef(void);
+    void  vIndexDef(IndexDef* pIndexDef);
     void  vIncElmSeqSize(i8 nElementSize);
     i8    iItem(void);
     void  vItem(i8 iItem);
@@ -59,13 +59,13 @@ namespace Entries
     i8    nOffsets(void);
     void  vOffsets(i8 nLevels);
 
-    void  vRandomEnt(IdxColVec* pIdxColVec);
+    void  vRandomEnt(IndexDef* pIndexDef);
     Ref&  xRef(void);
     void  vRef(Ref& xRef);
     void  vReset(void);
 
     void  vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry);
-    void  vShow(IdxColVec* pIdxColVec);
+    void  vShow(IndexDef* pIndexDef);
     i8    nSize_EntKey(void);
     i8    nSize_EntKeyNeo(void);
     StreamDef* pStreamDef(void);
