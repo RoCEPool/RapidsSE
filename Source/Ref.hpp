@@ -15,7 +15,7 @@ namespace Rows
         u8 m_uSpare   :  4; // spare
         u8 m_uPayload :  1; // is there is a payload?
         u8 m_uOffsets :  3; // number of neo's that follow
-      };             // 64
+      };             // 64b
       
       i8 m_iAsI8;
     };

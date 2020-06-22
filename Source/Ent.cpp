@@ -36,7 +36,7 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt)
 : Header(eClassNo)
 {
 #ifdef WITH_DEBUG_VERSION
-  MemLib::vZero(m__iaOffset__,sizeof(m__iaOffset__),eClassNo);
+  MemLib::vZero(m_iaOffset,sizeof(m_iaOffset),eClassNo);
   
   m_uSkipNo = 0;
 #endif
@@ -300,7 +300,7 @@ NEO* Ent::aNEO(void)
 {
 #ifdef __USE_ALT_OFFSETS
 
-  NEO* aNEO = (NEO*)m__iaOffset__;
+  NEO* aNEO = (NEO*)m_iaOffset;
   
 #else
   
