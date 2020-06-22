@@ -4083,7 +4083,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  <tableNm> find execute locals| pTable |\n"
     "\n"
-    "  <cmd> pTable job[] IndexDef::parse locals| pIndexDef |\n"
+    "  <cmd> pTable job[] IndexDef::parseOLD locals| pIndexDef |\n"
     "\n"
     "  // check for error while parsing indexdef\n"
     "  job[] job.hasError if\n"

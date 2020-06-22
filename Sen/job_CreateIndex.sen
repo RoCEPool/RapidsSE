@@ -79,7 +79,7 @@
 
   <tableNm> find execute locals| pTable |
 
-  <cmd> pTable job[] IndexDef::parse locals| pIndexDef |
+  <cmd> pTable job[] IndexDef::parseOLD locals| pIndexDef |
 
   // check for error while parsing indexdef
   job[] job.hasError if

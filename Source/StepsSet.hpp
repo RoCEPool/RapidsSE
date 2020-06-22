@@ -444,6 +444,7 @@ public:
 
   // index definition
   void vIndexDefParse(void);
+  void vIndexDefParseOLD(void);
   void vIndexDefSyntax(void);
 
   // index reg
