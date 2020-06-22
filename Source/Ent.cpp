@@ -105,6 +105,19 @@ void Ent::vElmSeqSize(i8 nElmSeqSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get size of alt entry using m__iaOffset__ with key  (no trailing neo)      */
+/*----------------------------------------------------------------------------*/
+i8 Ent::nEntSize_alt(void)
+{
+  i8 nSizeEnt_alt = sizeof(Ent);
+  i8 nSizeElmSeq  = nElmSeqSize();
+
+  i8 nSize_alt = nSizeEnt_alt + nSizeElmSeq;
+
+  return nSize_alt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size of entry with key, but not with neo's                             */
 /*----------------------------------------------------------------------------*/
 i8 Ent::nEntKeySize(void)
