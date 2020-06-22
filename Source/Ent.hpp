@@ -67,7 +67,6 @@ namespace Entries
   
   private:
     NEO*  aNEO(void);
-    i8    nNEOsize(void);
  };
   
   /*--------------------------------------------------------------------------*/
