@@ -232,9 +232,6 @@ void Step::vRegStreamDefParse(void)
   
   if (eResult != EC_NONE) {
     
-    // at this stage shouldn't be a syntax error
-    //ASSERT(eResult != EC_INVALID_COMMAND);
-    
     pJob_Local->vJobError(eResult);
     
     // delete tabledef
