@@ -330,9 +330,17 @@ bool Ent::bValidEnt(void)
 /*----------------------------------------------------------------------------*/
 NEO* Ent::aNEO(void)
 {
-  i8 i_NEO = sizeof(Ent) + m_xKey.nElmSeqSize();
+#ifdef __USE_ALT_OFFSETS
 
+  NEO* aNEO = (NEO*)m__iaOffset__;
+  
+#else
+  
+  i8 i_NEO = sizeof(Ent) + m_xKey.nElmSeqSize();
+  
   NEO* aNEO = aAdd<NEO*>(this,i_NEO);
+  
+#endif
   
   return aNEO;
 }
