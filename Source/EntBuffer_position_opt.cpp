@@ -54,7 +54,7 @@ void EntBuffer::vPositionPriorVecEntry_Opt01(Key* aFindKey,
     i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
     
     i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-    while ( iNEO != -1) {
+    while (iNEO != C_OFS_NIL_i4) {
       
       aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
       if (aFindEntry == aNextEntry_sl)
@@ -139,7 +139,7 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
   i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
   
   i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-  while ( iNEO != -1) {
+  while (iNEO != C_OFS_NIL_i4) {
     
     aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
     if (aFindEntry == aNextEntry_sl)
@@ -173,7 +173,7 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
   iOffset2 = sizeof(i8) + iEntSize + C_NEO_SIZE;
   
   iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-  while ( iNEO != -1) {
+  while (iNEO != C_OFS_NIL_i4) {
     
     aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
     if (aFindEntry == aNextEntry_sl)
@@ -205,7 +205,7 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
   iOffset2 = sizeof(i8) + iEntSize;
   
   iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-  while ( iNEO != -1) {
+  while (iNEO != C_OFS_NIL_i4) {
     
     aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
     if (aFindEntry == aNextEntry_sl)
@@ -287,7 +287,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray01(Key* aFindKey,
     i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
     
     i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-    while ( iNEO != -1) {
+    while (iNEO != C_OFS_NIL_i4) {
       
       aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
       if (aFindEntry == aNextEntry_sl)
@@ -358,7 +358,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray02(Key* aFindKey,
     i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
     
     i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-    while ( iNEO != -1) {
+    while (iNEO != C_OFS_NIL_i4) {
       
       aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
       
@@ -424,7 +424,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
     i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
     
     i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
-    while ( iNEO != -1) {
+    while (iNEO != C_OFS_NIL_i4) {
       
       aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
       
