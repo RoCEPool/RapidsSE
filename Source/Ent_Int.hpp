@@ -4,7 +4,9 @@
 #pragma once
 
 namespace Entries
-{ 
+{
+  // this is the goal
+
   struct Ent_Int
   {
     struct {
@@ -23,6 +25,8 @@ namespace Entries
   };                                                                  // 4 words
 
   //----------------------------------------------------------------------------
+  
+  // this is the current layout
 
   struct Ent_Cur
   {
