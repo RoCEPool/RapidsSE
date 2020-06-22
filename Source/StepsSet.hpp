@@ -444,10 +444,12 @@ public:
 
   // index definition
   void vIndexDefGet(void);
+  void vIndexDefIsNull(void);
   void vIndexDefParse(void);
   void vIndexDefParseOLD(void);
   void vIndexDefSet(void);
   void vIndexDefSyntax(void);
+  void vIndexDefTableNameFetch(void);
 
   // index reg
   void vRegIndexGet(void);
