@@ -6,6 +6,7 @@
 namespace Entries
 {
   static const i8 C_ENT_QUANTA = 32;
+  static const i4 C_OFS_NIL_i4 = -1;
 
   class Ent : public Header
   {
