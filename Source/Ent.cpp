@@ -168,10 +168,6 @@ i4 Ent::iNEO(i8 i_Level)
 
   i4 iNEO = aNEO->m_iOffset[i_Level];
   
-  //i8 i_NEO = sizeof(Ent) + m_xKey.nElmSeqSize() + (C_NEO_SIZE * i_Level);
-  
-  //i4 iNEO = * (aAdd<i4*>(this,i_NEO));
-  
   return iNEO;
 }
 
@@ -185,10 +181,6 @@ void Ent::vNEO(i8 i_Level, i4 i_Offset)
   NEO* aNEO = this->aNEO();
 
   aNEO->m_iOffset[i_Level] = i_Offset;
-  
-//  i8 i_NEO = sizeof(Ent) + m_xKey.nElmSeqSize() + (C_NEO_SIZE * i_Level);
-//
-//  * (aAdd<i4*>(this,i_NEO)) = i_Offset;
 }
 
 /*----------------------------------------------------------------------------*/

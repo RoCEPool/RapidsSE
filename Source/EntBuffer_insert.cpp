@@ -68,8 +68,8 @@ void EntBuffer::vBuildSkipListSorted(void)
    i8 nOffsets = aEnt->nOffsets();
    
    // connect the dots
-   for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++)
-   aEnt->vNEO(i_Offset,-1);
+   for (i8 i_Level = 1; i_Level < nOffsets; i_Level++)
+     aEnt->vNEO(i_Level,-1);
    }
    vShow();
    */
@@ -230,11 +230,11 @@ void EntBuffer::vCompact(void)
     // get the prior vector to the entry being moved
     
     //vDumpPriorVec(xPriorVec);
-    for (i8 i_Offset = 0; i_Offset < nLvlLevels; i_Offset++) {
-      Ent* aPriorEntry = xPriorVec[i_Offset];
-      i4 iPriorOffset = aPriorEntry->iNEO(i_Offset);
+    for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++) {
+      Ent* aPriorEntry = xPriorVec[i_Level];
+      i4 iPriorOffset = aPriorEntry->iNEO(i_Level);
       if (iWasOffset == iPriorOffset)
-        aPriorEntry->vNEO(i_Offset,iNowOffset);
+        aPriorEntry->vNEO(i_Level,iNowOffset);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -293,8 +293,8 @@ void EntBuffer::vCompactLeft(void)
   
   vItems(0);
   
-  for (i8 i_Offset = 0; i_Offset < nLvlLevels; i_Offset++)
-    aSkipRoots()->vNEO(i_Offset,-1);
+  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
+    aSkipRoots()->vNEO(i_Level,-1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
