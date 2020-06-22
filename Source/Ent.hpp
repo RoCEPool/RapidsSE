@@ -5,6 +5,8 @@
 
 namespace Entries
 {
+  static const i8 C_ENT_QUANTA = 32;
+
   class Ent : public Header
   {
   private:

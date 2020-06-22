@@ -236,9 +236,11 @@ void Ent::vSetEntry(Ent* aFromEntry)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeBytes(void)
 {
-  i8 nBytes = sizeof(Ent) + nElmSeqSize();
+  i8 nProperBytes = sizeof(Ent) + nElmSeqSize();
+  
+  i8 nRoundedBytes = MemLib::nRoundUp(nProperBytes,C_ENT_QUANTA);
 
-  return nBytes;
+  return nRoundedBytes;
 }
 
 /*----------------------------------------------------------------------------*/
