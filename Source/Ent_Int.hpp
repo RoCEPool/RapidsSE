@@ -41,7 +41,7 @@ namespace Entries
       u8 m_uOffsets :  3; // number of neo's that follow
     } Ref;         // 64
   
-    i8 m__iaOffset__[6];  // the offsets (not used yet)
+    i4 m__iaOffset__[6];  // the offsets (not used yet)
 
     #ifdef WITH_DEBUG_VERSION
     i8  m_uSkipNo;        // verify of order of skip items
