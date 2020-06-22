@@ -12,7 +12,7 @@ namespace Entries
                    //            or a row-ref to a row at H0 leaf buffers)
   
 #ifdef WITH_DEBUG_VERSION
-    i8  m_iSkipNo; // verify of order of skip items
+    i8  m_uSkipNo; // verify of order of skip items
 #endif
   
     Key m_xKey;    // the key

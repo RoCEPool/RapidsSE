@@ -39,7 +39,7 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt_Without_NEO)
   m_xKey.vElmSeqSize(nElmSeqSize);
   
 #ifdef WITH_DEBUG_VERSION
-  m_iSkipNo = -1;
+  m_uSkipNo = 0;
 #endif
 }
 
@@ -282,7 +282,7 @@ i8 Ent::nSizeBytes(void)
 i8 Ent::iSkipNo(void)
 {
 #ifdef WITH_DEBUG_VERSION
-  return m_iSkipNo;
+  return m_uSkipNo;
 #else
   return C_UNKNOWN;
 #endif
@@ -294,7 +294,7 @@ i8 Ent::iSkipNo(void)
 void Ent::vSkipNo(i8 iSkipNo)
 {
 #ifdef WITH_DEBUG_VERSION
-  m_iSkipNo = iSkipNo;
+  m_uSkipNo = (u8)iSkipNo;
 #endif
 }
 
