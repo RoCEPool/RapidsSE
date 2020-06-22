@@ -428,11 +428,15 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
       
       aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
       
+      Ent_Cur* aEntCur = (Ent_Cur*)aNextEntry_sl;
+      
       //--------------------------------------------------------------
       Key* aNextKey = aNextEntry_sl->aKey();
       
       i8 iLeftValue = *((i8*)aNextKey->ayElmSeq());
       i8 iRightValue = *((i8*)aFindKey->ayElmSeq());
+      
+      RASSERT(aEntCur->m_iIntKey == iLeftValue);
       
       if (iLeftValue >= iRightValue)
         break;

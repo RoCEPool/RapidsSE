@@ -25,6 +25,8 @@ namespace Entries
 
   struct Ent_Cur
   {
+    _Header m_xHeader;
+  
     struct {
       u8 m_uBuffer  : 40; // which buffer
       u8 m_uItem    : 16; // item in that buffer
@@ -33,8 +35,12 @@ namespace Entries
       u8 m_uOffsets :  3; // number of neo's that follow
     } Ref;         // 64
 
-    i8 m_nKeySize;        // the key
-    i8 m_iIntKey;         // the key
+    #ifdef WITH_DEBUG_VERSION
+    i8  m_iSkipNo;        // verify of order of skip items
+    #endif
+  
+    i8 m_nKeySize;        // size of the key
+    i8 m_iIntKey;         // the key 
   
     i4 m_iaOffset[1];     // variable array must be last
   };
