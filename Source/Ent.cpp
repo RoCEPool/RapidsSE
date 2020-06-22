@@ -124,22 +124,6 @@ Key* Ent::aKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of levels                                                       */
-/*----------------------------------------------------------------------------*/
-i8 Ent::nOffsets(void)
-{
-  return m_xRef.nOffsets();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set number of levels                                                       */
-/*----------------------------------------------------------------------------*/
-void Ent::vOffsets(i8 nLevels)
-{
-  m_xRef.vOffsets(nLevels);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next entry offset for given level                                      */
 /*----------------------------------------------------------------------------*/
 i4 Ent::iNEO(i8 i_Level)
@@ -183,19 +167,19 @@ void Ent::vNEOdump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of the NEO after this entry                                       */
+/* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Ent::nNEOsize(void)
+i8 Ent::nOffsets(void)
 {
-#ifdef WITH_FIXED_NEO
-  i8 nLvls  = AM::nLvlLevels();
-  i8 nBytes = C_NEO_SIZE * nLvls;
-#else
-  i8 nLvls  = nOffsets();
-  i8 nBytes = C_NEO_SIZE * nLvls;
-#endif
-  
-  return nBytes;
+  return m_xRef.nOffsets();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of levels                                                       */
+/*----------------------------------------------------------------------------*/
+void Ent::vOffsets(i8 nLevels)
+{
+  m_xRef.vOffsets(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -327,6 +311,22 @@ NEO* Ent::aNEO(void)
 #endif
   
   return aNEO;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of the NEO after this entry                                       */
+/*----------------------------------------------------------------------------*/
+i8 Ent::nNEOsize(void)
+{
+#ifdef WITH_FIXED_NEO
+  i8 nLvls  = AM::nLvlLevels();
+  i8 nBytes = C_NEO_SIZE * nLvls;
+#else
+  i8 nLvls  = nOffsets();
+  i8 nBytes = C_NEO_SIZE * nLvls;
+#endif
+  
+  return nBytes;
 }
 
 /*============================================================================*/

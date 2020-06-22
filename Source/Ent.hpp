@@ -44,14 +44,13 @@ namespace Entries
 
     Key*  aKey(void);
 
-    i8    nOffsets(void);
-    void  vOffsets(i8 nLevels);
-  
     i4    iNEO(i8 i_Level);
     void  vNEO(i8 i_Level, i4 i_Offset);
     void  vNEOdump(void);
-    i8    nNEOsize(void);
 
+    i8    nOffsets(void);
+    void  vOffsets(i8 nLevels);
+    
     Ref&  xRef(void);
     void  vRef(Ref xRef);
     Ref   wRef(void);
@@ -68,6 +67,7 @@ namespace Entries
   
   private:
     NEO*  aNEO(void);
+    i8    nNEOsize(void);
  };
   
   /*--------------------------------------------------------------------------*/
