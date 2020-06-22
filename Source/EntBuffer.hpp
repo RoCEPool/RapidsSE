@@ -76,34 +76,48 @@ namespace Indexing
     ////////////////////////////////////////////////////////////////////////////
     // static move functions
     
-    static Ent* pMoveToGreaterThanEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer);
-    static Ent* pMoveToGreaterEqualEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer);
-    static Ent* pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer);
-    static Ent* pFindPrevKeyEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer);
+    static Ent* pMoveToGreaterThanEntry(Ent* aEnt, Key* aGivenKey,
+                                        EntBuffer** ppEntBuffer);
+    static Ent* pMoveToGreaterEqualEntry(Ent* aEnt, Key* aGivenKey,
+                                         EntBuffer** ppEntBuffer);
+    static Ent* pMoveToNextEntry(Ent* aEnt,
+                                 EntBuffer** ppEntBuffer);
+    static Ent* pFindPrevKeyEntry(Ent* aEnt, Key* aGivenKey,
+                                  EntBuffer** ppEntBuffer);
     
     ////////////////////////////////////////////////////////////////////////////
     // key positioning functions
     
     EntBuffer* pPositionH0Buffer(Key* aFindKey);
+  
     Ent*       aPositionPriorEntry(Key* aFindKey);
+  
     void       vPositionPriorVecBuffer(Key* aFindKey,
                                        Ent* aPriorVec[],
                                        EntBuffer* pToBuffer);
+  
     void       vPositionPriorVecEntry(Key* aFindKey,
                                       Ent* aPriorVec[],
                                       Ent* aFindEntry);
   
     void       vPositionPriorVecEntry_Opt01(Key* aFindKey,
-                                         Ent* aPriorVec[],
-                                          Ent* aFindEntry);
+                                            Ent* aPriorVec[],
+                                            Ent* aFindEntry);
   
     void       vPositionPriorVecEntry_Alka01(Key* aFindKey,
-                                          Ent* aPriorVec[],
-                                          Ent* aFindEntry);
+                                             Ent* aPriorVec[],
+                                             Ent* aFindEntry);
   
     void       vPositionPriorVecEntry_Ray01(Key* aFindKey,
-                                              Ent* aPriorVec[],
-                                              Ent* aFindEntry);
+                                            Ent* aPriorVec[],
+                                            Ent* aFindEntry);
+  
+    void       vPositionPriorVecEntry_Ray02(Key* aFindKey,
+                                            Ent* aPriorVec[]);
+
+    void       vPositionPriorVecEntry_Ray03(Key* aFindKey,
+                                            Ent* aPriorVec[]);
+
 
     ////////////////////////////////////////////////////////////////////////////
     

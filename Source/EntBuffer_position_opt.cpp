@@ -314,6 +314,138 @@ void EntBuffer::vPositionPriorVecEntry_Ray01(Key* aFindKey,
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* compute prior vector for find key, such that next of priorVec[0] is        */
+/* specifically the given find entry                                          */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vPositionPriorVecEntry_Ray02(Key* aFindKey,
+                                             Ent* aPriorVec[])
+{
+  /*
+   
+     this optimisation explores bringing Key::bGreaterEqual() into line
+   
+   */
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+#ifdef WITH_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+#endif
+  
+  i8 nLvlLevels = AM::nLvlLevels();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Ent* aSkipRoots = this->aSkipRoots();
+  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
+    aPriorVec[i_Level] = aSkipRoots;
+  
+  if (nItems() == 0)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Ent* aScanEntry_sl = aSkipRoots;
+  
+  Ent* aNextEntry_sl;
+  i8 iEntSize = sizeof(Ent);
+
+  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+    
+    i8 iOffset1 = aScanEntry_sl->aKey()->nElmSeqSize() + iEntSize +
+                    (C_NEO_SIZE * i_ScanLevel);
+    i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
+    
+    i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
+    while ( iNEO != -1) {
+      
+      aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+      
+      //--------------------------------------------------------------
+      Key* aNextKey = aNextEntry_sl->aKey();
+      
+      i8 iLeftValue = *((i8*)aNextKey->ayElmSeq());
+      i8 iRightValue = *((i8*)aFindKey->ayElmSeq());
+      
+      if (iLeftValue >= iRightValue)
+        break;
+              
+      aScanEntry_sl = aNextEntry_sl;
+      iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+    }
+    aPriorVec[i_ScanLevel] = aScanEntry_sl;
+  }
+  
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute prior vector for find key, such that next of priorVec[0] is        */
+/* specifically the given find entry                                          */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
+                                             Ent* aPriorVec[])
+{
+  /*
+   
+     this optimisation explores bringing Key::bGreaterEqual() into line
+   
+   */
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+#ifdef WITH_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+#endif
+  
+  i8 nLvlLevels = AM::nLvlLevels();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Ent* aSkipRoots = this->aSkipRoots();
+  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
+    aPriorVec[i_Level] = aSkipRoots;
+  
+  if (nItems() == 0)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Ent* aScanEntry_sl = aSkipRoots;
+  
+  Ent* aNextEntry_sl;
+  i8 iEntSize = sizeof(Ent);
+
+  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+    
+    i8 iOffset1 = aScanEntry_sl->aKey()->nElmSeqSize() + iEntSize +
+                    (C_NEO_SIZE * i_ScanLevel);
+    i8 iOffset2 = sizeof(i8) + iEntSize + (C_NEO_SIZE * i_ScanLevel);
+    
+    i4 iNEO = * (i4*)((char*)aScanEntry_sl+iOffset1);
+    while ( iNEO != -1) {
+      
+      aNextEntry_sl = (Ent*)((char*)aItemArea() + iNEO);
+      
+      //--------------------------------------------------------------
+      Key* aNextKey = aNextEntry_sl->aKey();
+      
+      i8 iLeftValue = *((i8*)aNextKey->ayElmSeq());
+      i8 iRightValue = *((i8*)aFindKey->ayElmSeq());
+      
+      if (iLeftValue >= iRightValue)
+        break;
+              
+      aScanEntry_sl = aNextEntry_sl;
+      iNEO = * (i4*)((char*)aScanEntry_sl+iOffset2);
+    }
+    aPriorVec[i_ScanLevel] = aScanEntry_sl;
+  }
+  
+  
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

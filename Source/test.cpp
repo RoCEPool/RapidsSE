@@ -1704,7 +1704,7 @@ void vTest26(void)
     vTrace("%lld Levels\n"_Stz,i_Lvl);
 
     for (i8 i_Frq = 2; i_Frq < C_FRQ; i_Frq++) {
-      vTrace("Freq %lld: "_Stz,i_Frq);
+      vTrace("Ratio %lld: "_Stz,i_Frq);
 
       iXchk = 0;
       for (i8 i_Cnt = 1; i_Cnt < C_CNT; i_Cnt++) {
