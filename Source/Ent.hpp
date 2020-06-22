@@ -7,7 +7,7 @@ namespace Entries
 { 
   class Ent : public Header
   {
-  protected:
+  private:
     Ref  m_xRef;   // reference (this is either a sub-ref to a child EntBuffer,
                    //            or a row-ref to a row at H0 leaf buffers)
   
