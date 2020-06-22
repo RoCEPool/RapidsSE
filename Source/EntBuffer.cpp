@@ -588,8 +588,9 @@ Ent* EntBuffer::aGetEntryOffset(i8 iOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Ent* aEnt = aAdd<Ent*>(aItemArea(), iOffset);
-  
+  //Ent* aEnt = aAdd<Ent*>(aItemArea(), iOffset);
+  Ent* aEnt = aGetItem_i4((i4)iOffset);
+
   return aEnt;
 }
 
@@ -933,13 +934,14 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   
   ASSERT(aCurrent->bValidEnt());
   
-  i4 i_Offset = aCurrent->iNEO(iLevel);
+  i4 iOffset = aCurrent->iNEO(iLevel);
   
-  if (-1 == i_Offset)
+  if (-1 == iOffset)
     return nullptr;
   
-  Ent* aEnt = aAdd<Ent*>(aItemArea(), i_Offset);
-  
+  //Ent* aEnt = aAdd<Ent*>(aItemArea(), iOffset);
+  Ent* aEnt = aGetItem_i4(iOffset);
+
   ASSERT(! aEnt || aEnt->bValidEnt());
   
   return aEnt;
