@@ -32,13 +32,9 @@ void* Ent::operator new(size_t, Ent* aEnt)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Ent::Ent(eCN eClassNo, i8 nSizeEnt_Without_NEO)
+Ent::Ent(eCN eClassNo, i8 nSizeEnt)
 : Header(eClassNo)
-{
-  i8 nElmSeqSize = static_cast<i4>(nSizeEnt_Without_NEO - sizeof(Ent));
-  
-  //m_xKey.vElmSeqSize(nElmSeqSize);
-  
+{  
 #ifdef WITH_DEBUG_VERSION
   MemLib::vZero(m__iaOffset__,sizeof(m__iaOffset__),eClassNo);
   

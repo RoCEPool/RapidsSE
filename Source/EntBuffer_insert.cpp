@@ -449,22 +449,18 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(aEnt->nOffsets());
+  ASSERT(aEnt->nOffsets());
   
-  i8 nEntryBytes  = aEnt->nEntKeySize();
-  i8 nOffsetBytes = aEnt->nNEOsize();
-  i8 nEntryPlusOffsets = nEntryBytes + nOffsetBytes;
-  RASSERT(nEntryPlusOffsets == aEnt->nSizeBytes());
-
+  i8 nEntSizeBytes = aEnt->nSizeBytes();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert key into this EntBuffer if it has space or get a new one
   
   EntBuffer* pInsertIntoBuffer;
-  if (bHasSpace(nEntryPlusOffsets))
+  if (bHasSpace(nEntSizeBytes))
     pInsertIntoBuffer = this;
   else {
     pInsertIntoBuffer =
-      pNewInsertBuffer(aEnt,nEntryPlusOffsets,ppRootBuffer);
+      pNewInsertBuffer(aEnt,nEntSizeBytes,ppRootBuffer);
     //(*ppRootBuffer)->vShow();
   }
   
