@@ -275,6 +275,14 @@ void Result::vProcessBufferQueue(void)
         
       // -- -- -- -- -- --
         
+      case CN_INDEXDEF: {
+        //vTrace("Pipeline Job: INDEXDEF\n"_Stz);
+        AM::vDeleteOperand(pOperand);
+        break;
+      }
+        
+      // -- -- -- -- -- --
+        
       case CN_INFOSET: {
         InfoSet* pInfoSet = _pInfoSet(pOperand);
         ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );

@@ -446,6 +446,7 @@ void Step::vRegOperandKind(void)
     case CN_CRWBUFFER:       eOperand = ZK_CRWBUFFER;       break;
     case CN_CSVBUFFER:       eOperand = ZK_CSVBUFFER;       break;
     case CN_ENTBUFFER:       eOperand = ZK_ENTBUFFER;       break;
+    case CN_INDEXDEF:        eOperand = ZK_INDEXDEF;        break;
     case CN_INFOSET  : {
       InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpOperandA);
       

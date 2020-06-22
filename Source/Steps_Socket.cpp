@@ -466,6 +466,30 @@ void Step::vSocketRecvObject(void)
       return;
     }
      
+    case CN_INDEXDEF: {
+      IndexDef* pIndexDef = new IndexDef();
+      
+      MemLib::vCopy(pIndexDef,pObject,sizeof(Object),CN_INDEXDEF);
+      
+      aBody = aAdd<void*>(pIndexDef,sizeof(Object));
+      nRemainingBytes = gxaSizeHeap[CN_INDEXDEF].m_nClassSize - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      m_pDataStack->vPushPtr(pIndexDef);
+      m_pDataStack->vPushInt(true);
+      EXIT();
+      return;
+    }
+      
     case CN_INFOSET: {
       InfoSet* pInfoSet = new InfoSet;
       
