@@ -1119,7 +1119,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   //       );
   
   if (m_pIndex)
-    aKey->vShow(m_pIndex->pIdxColVec());
+    aKey->vShow(m_pIndex->pIndexDef());
   else
     aKey->vShowIntKey();
 

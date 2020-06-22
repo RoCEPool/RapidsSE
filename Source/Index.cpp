@@ -150,13 +150,23 @@ void Index::vAnalyze(i8 iSlot, i8& nBuffers, i8& nEntries)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get index column vector                                                    */
+/* get index column                                                           */
 /*----------------------------------------------------------------------------*/
-IdxColVec* Index::pIdxColVec(void)
+Column* Index::pGetColumn(i8 iColumn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
-  return m_pIndexDef->m_pIdxColVec;
+  return m_pIndexDef->pGetColumn(iColumn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of column vector                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Index::nColumns()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_pIndexDef->nColumns();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -262,8 +272,8 @@ i8 Index::iSortKeyDatum(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   i8 nKeyDatumSize = 0;
-  for (i8 i_IdxCol = 0; i_IdxCol < m_pIndexDef->m_pIdxColVec->nItems(); i_IdxCol++) {
-    // Column* pColumn = m_pIndexDef->m_pIdxColVec->pGet(i_IdxCol);
+  i8 nIdxColumns = m_pIndexDef->nColumns();
+  for (i8 i_IdxCol = 0; i_IdxCol < nIdxColumns; i_IdxCol++) {
     nKeyDatumSize += sizeof(i8);
   }
   

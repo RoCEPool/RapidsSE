@@ -27,12 +27,12 @@ namespace Entries
     static bool bNotEqual(Key* aLeft, Key* aRight);
 
     i8   iGetInt(void);
-    i8   iGetInt(IdxColVec* pIdxColVec, i8 iElement);
+    i8   iGetInt(IndexDef* pIndexDef, i8 iElement);
     void vIncElmSeqSize(i8 nDeltaBytes);
     i8   nElmSeqSize(void);
     void vElmSeqSize(i8 nElmSeqSize);
     void vReset(void);
-    void vShow(IdxColVec* pIdxColVec);
+    void vShow(IndexDef* pIndexDef);
     void vShowIntKey(void);
 
     /*------------------------------------------------------------------------*/

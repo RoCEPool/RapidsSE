@@ -238,10 +238,11 @@ void Planner::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
   // create a possible path for every index column combination
   //
   
-  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+  i8 nIdxColumns = pIndexDef->nColumns();
   
   // step thru index column combinations
-  for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
+  for (i8 nCols = 1; nCols <= nIdxColumns; nCols++) {
     
     // first, create an access path for this combo
     AccessPath* pAccessPath = new AccessPath(eAccess);
@@ -264,7 +265,7 @@ void Planner::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
         pLowerPredicateVec->vAdd(pLowerPredicate);
         
         // add column arg to predicate
-        Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+        Column* pColumn = pIndexDef->pGetColumn(i_IdxCol);
         Arg* pColumnArg = new Arg;
         s256 sColumnNm = pColumn->szColNm();
         pColumnArg->vArgVal(sColumnNm);
@@ -286,7 +287,7 @@ void Planner::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
         pUpperPredicateVec->vAdd(pUpperPredicate);
         
         // add column arg to predicate
-        Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+        Column* pColumn = pIndexDef->pGetColumn(i_IdxCol);
         Arg* pColumnArg = new Arg;
         s256 sColumnNm = pColumn->szColNm();
         pColumnArg->vArgVal(sColumnNm);

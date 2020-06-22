@@ -417,10 +417,7 @@ public:
   void vIndexFetchNextN(void);
   void vIndexGenEntBuffer(void);
   void vIndexGenEntBuffers(void);
-  void vIndexLowerBoundN(void);
   void vIndexPositionN(void);
-  void vIndexPositionLowerN(void);
-  void vIndexPositionUpperN(void);
   void vIndexSize(void);
   void vIndexVerify(void);
   void vIndexVisualize(void);
@@ -438,14 +435,11 @@ public:
   void vIndexIsUniqueFetch(void);
   void vIndexIsUniqueStore(void);
   void vIndexIsValidUniqueIndex(void);
-  void vIndexLowerBound(void);
   void vIndexNameFetch(void);
   void vIndexNew(void);
   void vIndexPopulate(void);
-  void vIndexRange(void);
   void vIndexTableFetch(void);
   void vIndexTableStore(void);
-  void vIndexUpperBound(void);
 
 
   // index definition

@@ -339,7 +339,7 @@ bool EntBuffer::bVerifyAdjacent(void)
   
   RASSERT(m_iBufferHeight >= 1);
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
@@ -419,8 +419,6 @@ bool EntBuffer::bVerifyFirstKeys(void)
   
   //vShow();
   
-  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get the entry buffer that this entry references
@@ -437,7 +435,7 @@ bool EntBuffer::bVerifyFirstKeys(void)
     //Key* aKeyChild  = _aKey(aChildFirstEntry->aDataArea());
     
     // the two keys should match
-    //bool bEqual = aKeyChild->bEqualTo(aKeyParent,pIdxColVec);
+    //bool bEqual = aKeyChild->bEqualTo(aKeyParent,pIndexDef);
     bool bEqual = Key::bEqualTo(aChildFirstEntry->aKey(), aEnt->aKey());
     if (! bEqual) {
       vVerifyFault();
@@ -534,7 +532,7 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
   
   RASSERT(m_iBufferHeight >= 1);
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
@@ -577,8 +575,6 @@ bool EntBuffer::bVerifyKeyOrder(void)
    order.
    */
   
-  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get next entry
@@ -591,7 +587,7 @@ bool EntBuffer::bVerifyKeyOrder(void)
     //Key* aKeyB = _aKey(aNextEntry->aDataArea());
     
     // next keyB should be greater than or equal to keyA
-    //bool bGreaterEqual = aKeyB->bGreaterEqual(aKeyA,pIdxColVec);
+    //bool bGreaterEqual = aKeyB->bGreaterEqual(aKeyA,pIndexDef);
     bool bGreaterEqual = Key::bGreaterEqual(aNextEntry->aKey(), aEnt->aKey());
     if (! bGreaterEqual) {
       vDump();
@@ -716,7 +712,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
    the same number of scan entries
    */
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
   Ent* aNextEntry2;
   Ent* aNextEntry1;
@@ -760,7 +756,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
       if (bShowKeys) {
         Key* aTestKey = _aKey(aTestEntry_sl->ayElmSeq());
         vTrace("Test %p: "_Stz,aTestEntry_sl);
-        aTestKey->vShow(pIdxColVec);
+        aTestKey->vShow(pIndexDef);
         vTrace("\n"_Stz);
       }
       

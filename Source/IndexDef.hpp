@@ -16,8 +16,9 @@ namespace MetaData
   
     bool   m_bIsPrimaryKey;  // is this the primary key?
     bool   m_bIsUnique;      // is this index unique?
-  
-    IdxColVec* m_pIdxColVec; // the sub-set of columns which are this index
+    
+    i8     m_nColumns;       // no of columns in the index
+    Column m_xaColumn[C_MAX_INDEX_COLUMNS];
 
     // must be last
     Footer m_xFooter;
@@ -31,6 +32,8 @@ namespace MetaData
   
     static eEC eSyntax(Stz* szCmd);
     
+    i8      nColumns(void);
+    Column* pGetColumn(i8 iColumn);
     Stz*   szIndexNm(void);
     eEC    eParse(Table* pTable, Stz* szCmd);
     bool   bIsPrimaryKey(void);
@@ -39,10 +42,8 @@ namespace MetaData
     void   vIsUnique(bool bUnique);
     i8     iSortKeyDatum(void);
   
-    IdxColVec* pIdxColVec(void);
-  
   private:
-    bool bAddIdxCol(Table* pTable, Stz* szColNm);
+    bool bAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm);
   
     Footer* aFooter(void);
   };

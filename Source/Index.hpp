@@ -33,7 +33,8 @@ namespace MetaData
   
     Stz*   pAnalyze(void);
     void   vAnalyze(i8 iSlot, i8& nBuffers, i8& nEntries);
-    IdxColVec* pIdxColVec(void);
+    i8     nColumns(void);
+    Column* pGetColumn(i8 iColumn);
     IndexDef* pIndexDef(void);
     void   vIndexDef(IndexDef* pIndexDef);
     Stz*   szIndexNm(void);

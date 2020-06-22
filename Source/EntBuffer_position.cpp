@@ -54,10 +54,10 @@ EntBuffer* EntBuffer::pPositionH0Buffer(Key* aFindKey)
     
     aEnt = pEntBuffer->pFindPrevKeyEntry(aEnt, aFindKey, &pEntBuffer);
     if (! aEnt ) {
-      aFindKey->vShow(m_pIndex->pIndexDef()->pIdxColVec());
+      aFindKey->vShow(m_pIndex->pIndexDef());
       vTrace("\n"_Stz);
       
-      aEntPrev->aKey()->vShow(m_pIndex->pIndexDef()->pIdxColVec());
+      aEntPrev->aKey()->vShow(m_pIndex->pIndexDef());
       vTrace("\n"_Stz);
       
       pEntBuffer->vDump();
@@ -140,8 +140,6 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey,
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   i8 iFindLevels = aFindEntry ? (aFindEntry->nOffsets() - 1)
                               : (nLvlLevels - 1);

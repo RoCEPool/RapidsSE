@@ -15,16 +15,16 @@ namespace Records
     
   public:
     SP_Ent(void);
-    SP_Ent(Ent* pEnt, IdxColVec* pIdxColVec);
+    SP_Ent(Ent* pEnt, IndexDef* pIndexDef);
    ~SP_Ent(void) noexcept(false);
   
     char* azKey(void);
 
     Stz* sz(void);
-    Stz* sz(Ent* aEnt, IdxColVec* pIdxColVec);
+    Stz* sz(Ent* aEnt, IndexDef* pIndexDef);
   
     void vReset(void);
-    void vSprintEnt(Ent* aEnt, IdxColVec* pIdxColVec);
+    void vSprintEnt(Ent* aEnt, IndexDef* pIndexDef);
 
     Footer* aFooter(void);
   };

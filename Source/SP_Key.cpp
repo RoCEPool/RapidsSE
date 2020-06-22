@@ -30,7 +30,7 @@ SP_Key::SP_Key(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Key::SP_Key(Key* pKey, IdxColVec* pIdxColVec)
+SP_Key::SP_Key(Key* pKey, IndexDef* pIndexDef)
 : Sprint(CN_KEY)
 {
   _precondition_(_MAGIC_,CN_KEY,_FOOTER_);
@@ -47,7 +47,7 @@ SP_Key::SP_Key(Key* pKey, IdxColVec* pIdxColVec)
   //! FIX RAY
   //_checkInitialised_(CN_KEY);
   
-  vSprintKey(pKey,pIdxColVec);
+  vSprintKey(pKey,pIndexDef);
   
   _postcondition_(_MAGIC_,CN_KEY,_FOOTER_);
 }
@@ -87,11 +87,11 @@ Stz* SP_Key::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Key::sz(Key* pKey, IdxColVec* pIdxColVec)
+Stz* SP_Key::sz(Key* pKey, IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  vSprintKey(pKey,pIdxColVec);
+  vSprintKey(pKey,pIndexDef);
   
   return (Stz*) &m_caKey[0];
 }
@@ -99,7 +99,7 @@ Stz* SP_Key::sz(Key* pKey, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* sprint the key                                                             */
 /*----------------------------------------------------------------------------*/
-void SP_Key::vSprintKey(Key* pKey, IdxColVec* pIdxColVec)
+void SP_Key::vSprintKey(Key* pKey, IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -114,9 +114,9 @@ void SP_Key::vSprintKey(Key* pKey, IdxColVec* pIdxColVec)
 
   StrLib::vSprint((Stz*)m_caKey,"Key[%lldB]; "_Stz,pKey->nElmSeqSize());
 
-  for (i8 i_IdxCol = 0; i_IdxCol < pIdxColVec->nItems(); i_IdxCol++) {
+  for (i8 i_IdxCol = 0; i_IdxCol < pIndexDef->nColumns(); i_IdxCol++) {
     
-    Column* pCol = pIdxColVec->pGet(i_IdxCol);
+    Column* pCol = pIndexDef->pGetColumn(i_IdxCol);
     
     byte* ayElm = EntWrk::ayEachElm(pCol,nElmBytes,&ayCursor);
     
