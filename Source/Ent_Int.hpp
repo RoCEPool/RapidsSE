@@ -7,7 +7,7 @@ namespace Entries
 { 
   struct Ent_Int
   {
-    struct {
+    struct {                                                          // 1 word
       u8 m_uBuffer  : 40; // which buffer
       u8 m_uItem    : 16; // item in that buffer
       u8 m_uSpare   :  4; // spare
@@ -15,11 +15,12 @@ namespace Entries
       u8 m_uOffsets :  3; // number of neo's that follow
     } Ref;         // 64
   
-    u2 m_uOffset[5];      // the offsets
-    u2 m_uSpare[3];       // some spares
+    u2 m_uOffset[6];      // the offsets                              // 2 words
+    u2 m_uSpare[2];       // some spares
 
-    i8 m_iIntKey;         // the key
-  };
+    i8 m_iIntKey;         // the key                                  // 1 word
+                                                                      //--
+  };                                                                  // 4 words
 
   //----------------------------------------------------------------------------
 
