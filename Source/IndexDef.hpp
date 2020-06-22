@@ -35,6 +35,7 @@ namespace MetaData
     i8      nColumns(void);
     Column* pGetColumn(i8 iColumn);
     Stz*   szIndexNm(void);
+    Stz*   szTableNm(void);
     eEC    eParse(Table* pTable, Stz* szCmd);
     bool   bIsPrimaryKey(void);
     void   vIsPrimaryKey(bool bUnique);

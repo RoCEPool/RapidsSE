@@ -9,11 +9,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_IndexDef(void)
 {
-  vAddStep("indexDef[]"_Stz,         &Step::vIndexDefGet);
-  vAddStep("indexDef::parse"_Stz,    &Step::vIndexDefParse);
-  vAddStep("indexDef::parseOLD"_Stz, &Step::vIndexDefParseOLD);
-  vAddStep("indexDef::syntax"_Stz,   &Step::vIndexDefSyntax);
-  vAddStep("indexDef[].set"_Stz,     &Step::vIndexDefSet);
+  vAddStep("indexDef[]"_Stz,          &Step::vIndexDefGet);
+  vAddStep("indexDef[].isNull"_Stz,   &Step::vIndexDefIsNull);
+  vAddStep("indexDef::parse"_Stz,     &Step::vIndexDefParse);
+  vAddStep("indexDef::parseOLD"_Stz,  &Step::vIndexDefParseOLD);
+  vAddStep("indexDef[].set"_Stz,      &Step::vIndexDefSet);
+  vAddStep("indexDef::syntax"_Stz,    &Step::vIndexDefSyntax);
+  vAddStep("indexDef[].tableName@"_Stz, &Step::vIndexDefTableNameFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -24,6 +26,18 @@ void Step::vIndexDefGet(void)
   ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpIndexDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* indexDef[].isNull -- is indexDef null ?                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefIsNull(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pRegSet->m_xpIndexDef.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -134,6 +148,22 @@ void Step::vIndexDefSyntax(void)
   eEC eResult = IndexDef::eSyntax(sCmd);
   
   m_pDataStack->vPushInt(eResult);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* indexDef.tableName@ -- fetch tableNm from indexDef                         */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefTableNameFetch(void)
+{
+  ENTRY();
+  
+  IndexDef* pIndexDef = *m_pRegSet->m_xpIndexDef;
+  
+  s32 sTableNm = pIndexDef->szTableNm();
+  
+  m_pDataStack->vPushStr(sTableNm);
   
   EXIT();
 }

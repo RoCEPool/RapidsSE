@@ -109,6 +109,17 @@ Stz* IndexDef::szIndexNm(void)
   return m_sIndexNm;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the table name                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* IndexDef::szTableNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_sTableNm;
+}
+
+
 //#define dPT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
 #define dPT()
 
