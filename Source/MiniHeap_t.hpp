@@ -44,7 +44,7 @@ namespace Structures
     void   vMaxItems(i8 nMaxItems);
     void   vResetUsed(void);
     void   vSetUsed(ITEM* aUptil);
-    i4     iToOffset_i4(ITEM* aItem);
+    i8     iToOffset(ITEM* aItem);
     i8     nUsedBytes(void);
 
   private:
@@ -427,9 +427,9 @@ void MiniHeap_t<ITEM>::vSetUsed(ITEM* aUptil)
 /* calculate the absolute offset within workspace for given item              */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-i4 MiniHeap_t<ITEM>::iToOffset_i4(ITEM* aItem)
+i8 MiniHeap_t<ITEM>::iToOffset(ITEM* aItem)
 {
-  i4 iOffset = static_cast<i4>(nDifference(aItem,m_xWsp.ayArea()));
+  i8 iOffset = static_cast<i4>(nDifference(aItem,m_xWsp.ayArea()));
   
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   

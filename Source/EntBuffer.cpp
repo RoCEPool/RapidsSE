@@ -1093,10 +1093,10 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 void EntBuffer::vShowEntry(Ent* aEnt)
 {
   Key* aKey = aEnt->aKey();
-  tET tOffset = (tET)iToOffset_i4(aEnt);
+  i8 iOffset = iToOffset(aEnt);
   
   vTrace("Ent %07lld %p %lluB: "_Stz,
-         (i8)tOffset,
+         iOffset,
          aEnt,
          aEnt->nSizeBytes()
          );
