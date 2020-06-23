@@ -51,10 +51,10 @@ namespace Entries
 
     Key*  aKey(void);
 
-    tET   tNEO(i8 i_Level);
-    void  vNEO(i8 i_Level, tET tNextEntry);
-    void  vNEOdump(void);
-    void  vNEOreset(void);
+    tET   tNextEntry(i8 i_Level);
+    void  vNextEntry(i8 i_Level, tET tNextEntry);
+    void  vNextEntryDump(void);
+    void  vNextEntryReset(void);
 
     i8    nOffsets(void);
     void  vOffsets(i8 nLevels);

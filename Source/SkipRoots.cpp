@@ -39,7 +39,7 @@ SkipRoots::SkipRoots(void)
     m_iPadding[i_Pad] = 0;
   
   for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
-    vNEO(i_Level,C_ENT_END_TICKET);
+    vNextEntry(i_Level,C_ENT_END_TICKET);
 }
 
 /*----------------------------------------------------------------------------*/

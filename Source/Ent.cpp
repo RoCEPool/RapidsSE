@@ -124,7 +124,7 @@ Key* Ent::aKey(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry ticket for given level                                      */
 /*----------------------------------------------------------------------------*/
-tET Ent::tNEO(i8 i_Level)
+tET Ent::tNextEntry(i8 i_Level)
 {
   ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
@@ -136,7 +136,7 @@ tET Ent::tNEO(i8 i_Level)
 /*----------------------------------------------------------------------------*/
 /* set next entry ticket for given level                                      */
 /*----------------------------------------------------------------------------*/
-void Ent::vNEO(i8 i_Level, tET tNextEntry)
+void Ent::vNextEntry(i8 i_Level, tET tNextEntry)
 {
   ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
@@ -146,7 +146,7 @@ void Ent::vNEO(i8 i_Level, tET tNextEntry)
 /*----------------------------------------------------------------------------*/
 /* dump the NEO associated with this entry                                    */
 /*----------------------------------------------------------------------------*/
-void Ent::vNEOdump(void)
+void Ent::vNextEntryDump(void)
 {
   i8 nLvls  = nOffsets();
   
@@ -162,7 +162,7 @@ void Ent::vNEOdump(void)
 /*----------------------------------------------------------------------------*/
 /* reset the neo array                                                        */
 /*----------------------------------------------------------------------------*/
-void Ent::vNEOreset(void)
+void Ent::vNextEntryReset(void)
 {
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++)
     m_taNextEntry[i_Level] = C_ENT_END_TICKET;

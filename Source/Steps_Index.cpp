@@ -213,11 +213,11 @@ void Step::vIndexGenEntBuffer(void)
       break;
     
     MemLib::vCopy(aEnt,oEntWrk.aEnt(),nBytes,CN_ENTBUFFER);
-    aEnt->vNEO(0,C_ENT_END_TICKET);
+    aEnt->vNextEntry(0,C_ENT_END_TICKET);
     
     tET tEntryTicket = pEntBuffer->tToTicket(aEnt);
     if (aPrevEnt)
-      aPrevEnt->vNEO(0,tEntryTicket);
+      aPrevEnt->vNextEntry(0,tEntryTicket);
     
     pEntBuffer->vIncItems();
     
@@ -295,11 +295,11 @@ void Step::vIndexGenEntBuffers(void)
         break;
       
       MemLib::vCopy(aEnt,oEntWrk.aEnt(),nBytes,CN_ENTBUFFER);
-      aEnt->vNEO(0,C_ENT_END_TICKET);
+      aEnt->vNextEntry(0,C_ENT_END_TICKET);
       
       tET tEntryTicket = pEntBuffer->tToTicket(aEnt);
       if (aPrevEnt)
-        aPrevEnt->vNEO(0,tEntryTicket);
+        aPrevEnt->vNextEntry(0,tEntryTicket);
 
       pEntBuffer->vIncItems();
       

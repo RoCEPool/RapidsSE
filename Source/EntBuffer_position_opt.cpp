@@ -458,7 +458,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
 
 #define ELM_OF_ENTRY(aEnt)   ( aEnt->aKey()->iGetIntElm() )
 
-#define NEXT_TICKET(aEnt,i_Lvl)  ( aEnt->tNEO(i_Lvl) )
+#define NEXT_TICKET(aEnt,i_Lvl)  ( aEnt->tNextEntry(i_Lvl) )
 
 #define ENTRY(tTicket)       ( aGetItem(tTicket) )
 

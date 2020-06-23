@@ -523,8 +523,8 @@ void EntBuffer::vCutEntry(Ent* aEnt, Ent* aPriorVec[])
   i8 nLevels = aEnt->nOffsets();
   
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
-    tET tEntryTicket = aEnt->tNEO(i_Level);
-    aPriorVec[i_Level]->vNEO(i_Level,tEntryTicket);
+    tET tEntryTicket = aEnt->tNextEntry(i_Level);
+    aPriorVec[i_Level]->vNextEntry(i_Level,tEntryTicket);
   }
 }
 
@@ -612,8 +612,8 @@ void EntBuffer::vDumpPriorVec(Ent* aPriorVec[])
              i,
              aEnt,
              i_Level,
-             aEnt->tNEO(i_Level),
-             aGetEntryOffset(aEnt->tNEO(i_Level)));
+             aEnt->tNextEntry(i_Level),
+             aGetEntryOffset(aEnt->tNextEntry(i_Level)));
     }
   }
 }
@@ -987,7 +987,7 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   
   ASSERT(aCurrent->bValidEnt());
   
-  tET tOffset = aCurrent->tNEO(iLevel);
+  tET tOffset = aCurrent->tNextEntry(iLevel);
   
   if (C_ENT_END_TICKET == tOffset)
     return nullptr;
@@ -1011,7 +1011,7 @@ Ent* EntBuffer::aPopLazyChain(void)
   
   Ent* aPoppedLazyEntry = m_aLazyChain;
   
-  tET tNextLazyOffset = aPoppedLazyEntry->tNEO(0);
+  tET tNextLazyOffset = aPoppedLazyEntry->tNextEntry(0);
   
   if (C_ENT_END_TICKET == tNextLazyOffset)
     m_aLazyChain = nullptr;
@@ -1085,7 +1085,7 @@ void EntBuffer::vReset(void)
   
   vResetUsed();
 
-  m_xSkipRoots.vNEOreset();
+  m_xSkipRoots.vNextEntryReset();
   
   m_aLazyChain  = nullptr;
 }
@@ -1172,7 +1172,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
 
   vTrace(" offsets %lld"_Stz,aEnt->nOffsets());
   for (i8 i_Level = 0; i_Level < aEnt->nOffsets(); i_Level++)
-    vTrace(" %05lld"_Stz,(i8)aEnt->tNEO(i_Level));
+    vTrace(" %05lld"_Stz,(i8)aEnt->tNextEntry(i_Level));
   
   vTrace("\n"_Stz);
 }
@@ -1212,9 +1212,9 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   
   vTrace("  skipRoots: %p[%lld, %lld, %lld]\n"_Stz,
          aSkipRoots(),
-         aSkipRoots() ? aSkipRoots()->tNEO(0) : 0,
-         aSkipRoots() ? aSkipRoots()->tNEO(1) : 0,
-         aSkipRoots() ? aSkipRoots()->tNEO(2) : 0);
+         aSkipRoots() ? aSkipRoots()->tNextEntry(0) : 0,
+         aSkipRoots() ? aSkipRoots()->tNextEntry(1) : 0,
+         aSkipRoots() ? aSkipRoots()->tNextEntry(2) : 0);
 
   vTrace("  listLengths: [%lld, %lld, %lld]\n"_Stz,
          iL0Length,iL1Length,iL2Length);
@@ -1227,7 +1227,7 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   vTrace("\n"_Stz);
   vTrace("Entries (by headEntry vector[0]):\n"_Stz);
   
-  tET tOffset = aSkipRoots()->tNEO(0);
+  tET tOffset = aSkipRoots()->tNextEntry(0);
   while (C_ENT_END_TICKET != tOffset) {
     Ent* aEnt = aGetEntryOffset(tOffset);
     vShowEntry(aEnt);
@@ -1235,7 +1235,7 @@ void EntBuffer::vShow(Ent* aMarkEntry)
       vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
              "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"_Stz);
     
-    tOffset = aEnt->tNEO(0);
+    tOffset = aEnt->tNextEntry(0);
   }
   
   vTrace("\n"_Stz);
@@ -1254,7 +1254,7 @@ void EntBuffer::vShowShort(void)
          iBufferNo(),
          pHigherBuffer() ? pHigherBuffer()->iBufferNo() : 0);
   
-  tET tOffset = aSkipRoots()->tNEO(0);
+  tET tOffset = aSkipRoots()->tNextEntry(0);
   while (C_ENT_END_TICKET != tOffset) {
     Ent* aEnt = aGetEntryOffset(tOffset);
     
@@ -1266,7 +1266,7 @@ void EntBuffer::vShowShort(void)
     else
       vTrace("%lld|%lld|"_Stz,iVal,EntBuffer::pRefdEntBuffer(aEnt)->iBufferNo());
     
-    tOffset = aEnt->tNEO(0);
+    tOffset = aEnt->tNextEntry(0);
     if (C_ENT_END_TICKET != tOffset)
       vTrace(","_Stz);
   }
