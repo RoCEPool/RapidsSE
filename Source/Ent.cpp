@@ -34,7 +34,7 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt)
 : Header(eClassNo)
 {
 #ifdef WITH_DEBUG_VERSION
-  MemLib::vZero(m_iaOffset,sizeof(m_iaOffset),eClassNo);
+  MemLib::vZero(m_taOffset,sizeof(m_taOffset),eClassNo);
   
   m_uSkipNo = 0;
 #endif
@@ -128,7 +128,7 @@ tEO Ent::tNEO(i8 i_Level)
 {
   ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
-  tEO tNEO = m_iaOffset[i_Level];
+  tEO tNEO = m_taOffset[i_Level];
   
   return tNEO;
 }
@@ -140,7 +140,7 @@ void Ent::vNEO(i8 i_Level, tEO tOffset)
 {
   ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
-  m_iaOffset[i_Level] = tOffset;
+  m_taOffset[i_Level] = tOffset;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +154,7 @@ void Ent::vNEOdump(void)
          this,nLvls);
   
   for (i8 i_Level = 0; i_Level < nLvls; i_Level++)
-    vTrace(" %lld: %d"_Stz,i_Level,m_iaOffset[i_Level]);
+    vTrace(" %lld: %d"_Stz,i_Level,(i8)m_taOffset[i_Level]);
   
   vTrace("\n"_Stz);
 }
@@ -165,7 +165,7 @@ void Ent::vNEOdump(void)
 void Ent::vNEOreset(void)
 {
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++)
-    m_iaOffset[i_Level] = C_OFS_NIL_i4;
+    m_taOffset[i_Level] = C_OFS_NIL_i4;
 }
 
 /*----------------------------------------------------------------------------*/

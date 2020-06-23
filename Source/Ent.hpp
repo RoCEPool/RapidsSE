@@ -6,9 +6,9 @@
 namespace Entries
 {
   static const i8 C_ENT_QUANTA = 32;
-  static const i4 C_OFS_NIL_i4 = 0x7FFFFFFF;
+  static const u4 C_OFS_NIL_i4 = 0x7FFFFFFF;
 
-  typedef i4 tEO; // opaque type for entry offset values
+  typedef u4 tEO; // opaque type for entry offset values
 
   class Ent : public Header
   {
@@ -16,7 +16,7 @@ namespace Entries
     Ref m_xRef;    // reference (this is either a sub-ref to a child EntBuffer,
                    //            or a row-ref to a row at H0 leaf buffers)
   
-    i4  m_iaOffset[C_MAX_LVL_LEVELS];  // the offsets
+    tEO m_taOffset[C_MAX_LVL_LEVELS];  // the offsets
 
 #ifdef WITH_DEBUG_VERSION
     i8  m_uSkipNo; // verify of order of skip items
