@@ -36,8 +36,6 @@ namespace Structures
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"
 
-#include "RightVec.hpp"
-
 #include "SkipNode.hpp"
 #include "SkipListNL.hpp"
 
