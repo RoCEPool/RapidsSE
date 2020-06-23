@@ -33,13 +33,13 @@ namespace Rows
     bool  bIsNil(void);
     i8    iItem(void);
     void  vItem(i8 iItem);
-    i8    nOffsets(void);
-    void  vOffsets(i8 nOffsets);
     bool  bPayLoad(void);
     void  vPayload(bool bPayLoad);
     void  vReset(void);
     void  vSet(Ref xwRef);
     void  vSetNil(void);
+    i8    nSkipLevels(void);
+    void  vSkipLevels(i8 nSkipLevels);
   };
 }
 

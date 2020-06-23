@@ -44,7 +44,7 @@ void SP_Ref::vRef(Ref wRef)
                   
                   wRef.iBuffer(),
                   wRef.iItem(),
-                  wRef.nOffsets());
+                  wRef.nSkipLevels());
 }
 
 /*----------------------------------------------------------------------------*/
