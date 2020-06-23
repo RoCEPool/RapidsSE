@@ -38,6 +38,9 @@ namespace Indexing
     static EntBuffer* pRefdEntBuffer(Ent* pItem);
     static EntBuffer* pRefdEntBuffer(Ref& RowRef);
   
+    static i8  iToEntryOffset(tET tEntryTicket);
+    static tET tToEntryTicket(i8 iEntryOffset);
+
     void    vDropWrite(void);
     void    vGrabWrite(void);
     void    vIndex(Index* pIndex);

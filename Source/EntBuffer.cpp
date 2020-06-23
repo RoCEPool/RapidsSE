@@ -93,6 +93,8 @@ EntBuffer::~EntBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
 {
+  _static_
+  
   TRACE_COMPACT( vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
                         pRightL0->iBufferNo()); )
   
@@ -233,6 +235,8 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
 {
+  _static_
+  
   ASSERT(0 == pFirstH0->iBufferHeight());
   ASSERT(1 == pH1->iBufferHeight());
   
@@ -273,6 +277,8 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  _static_
+  
   EntBuffer* pEntBuffer = _pEntBuffer(pObject);
   
   pEntBuffer->vShow();
@@ -283,6 +289,8 @@ void EntBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 Ent* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry)
 {
+  _static_
+  
   EntBuffer* pEntBuffer = *ppEntBuffer;
   
   Ent *aNextEntry = pEntBuffer->aNextEntry(aPrevEntry, 0);
@@ -301,6 +309,8 @@ Ent* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry)
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 {
+  _static_
+  
   Ref xRef = pItem->xRef();
   
   EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xRef);
@@ -313,6 +323,8 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pRefdEntBuffer(Ref& xRowRef)
 {
+  _static_
+  
   i8 i_Buffer = xRowRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
@@ -327,6 +339,29 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Ref& xRowRef)
   return pEntBuffer;
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert entry ticket to entry offset                                       */
+/*----------------------------------------------------------------------------*/
+i8 EntBuffer::iToEntryOffset(tET tEntryTicket)
+{
+  _static_
+  
+  i8 iEntryOffset = (i8)tEntryTicket;
+  
+  return iEntryOffset;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert entry offset to entry ticket                                       */
+/*----------------------------------------------------------------------------*/
+tET EntBuffer::tToEntryTicket(i8 iEntryOffset)
+{
+  _static_
+  
+  tET tEntryTicket = (tET)iEntryOffset;
+  
+  return tEntryTicket;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
