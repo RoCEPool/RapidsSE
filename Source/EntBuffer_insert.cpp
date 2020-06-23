@@ -29,7 +29,7 @@ void EntBuffer::vBuildSkipList(void)
     Ent* aEntry = aLazyChain;
     
     i8 iNextOffset = aEntry->tNEO(0);
-    if (C_OFS_NIL_i4 == iNextOffset)
+    if (C_ENT_END_TICKET == iNextOffset)
       aLazyChain = nullptr;
     else
       aLazyChain = aGetEntryOffset(iNextOffset);
@@ -69,7 +69,7 @@ void EntBuffer::vBuildSkipListSorted(void)
    
    // connect the dots
    for (i8 i_Level = 1; i_Level < nOffsets; i_Level++)
-     aEnt->vNEO(i_Level,C_OFS_NIL_i4);
+     aEnt->vNEO(i_Level,C_ENT_END_TICKET);
    }
    vShow();
    */
@@ -557,16 +557,16 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
   
-  tEO tOffset = (tEO)iToOffset_i4(aInsertedEntry);
+  tET tOffset = (tET)iToOffset_i4(aInsertedEntry);
   
   (*aaPriorEntry)->vNEO(0,tOffset);
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  // for the moment we set offsets in prior entry to C_OFS_NIL_i4
+  // for the moment we set offsets in prior entry to C_ENT_END_TICKET
   
   i8 nPriorLevels = aInsertedEntry->nOffsets();
   for (i8 i_Level = 0; i_Level < nPriorLevels; i_Level++)
-    aInsertedEntry->vNEO(i_Level,C_OFS_NIL_i4);
+    aInsertedEntry->vNEO(i_Level,C_ENT_END_TICKET);
   
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
   
@@ -651,7 +651,7 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEnt)
     aInsertedEntry->vNEO(0,iLazyOffset);
   }
   else {
-    aInsertedEntry->vNEO(0,C_OFS_NIL_i4);
+    aInsertedEntry->vNEO(0,C_ENT_END_TICKET);
   }
   
   m_aLazyChain = aInsertedEntry;
@@ -1093,7 +1093,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
   // cut off right entries at L0
   
   ASSERT(this->aNextEntry(aPriorEntry,0) == aSplitEntry);
-  aPriorEntry->vNEO(0,C_OFS_NIL_i4);
+  aPriorEntry->vNEO(0,C_ENT_END_TICKET);
   
   // adjust the number of items in the buffer
   i8 nItemsOriginally = pThisLeftBuffer->nItems();

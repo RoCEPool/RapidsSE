@@ -1205,7 +1205,7 @@ void EntBuffer::vShowShort(void)
     Ent* aEnt = aGetEntryOffset(tOffset);
     
     Key* aKey = _aKey(aEnt->ayElmSeq());
-    i8 iVal = aKey->iGetInt();
+    i8 iVal = aKey->iGetIntElm();
     
     if (m_iBufferHeight)
       vTrace("%lld(%lld)"_Stz,iVal,EntBuffer::pRefdEntBuffer(aEnt)->iBufferNo());

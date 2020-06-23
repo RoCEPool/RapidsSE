@@ -321,7 +321,7 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
       Key* aKey = aEnt->aKey();
       
       // get the psp of the Crv entry
-      t8 tCrvPsp = aKey->iGetInt(pIndexDef, 1);
+      t8 tCrvPsp = aKey->iGetIntElm(pIndexDef, 1);
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // delete if the CrvPsp is less than the tPerspective

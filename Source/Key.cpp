@@ -158,7 +158,7 @@ bool Key::bNotEqual(Key* aKey_l, Key* aKey_r)
 /*----------------------------------------------------------------------------*/
 /* get first element as int (assuming int)                                    */
 /*----------------------------------------------------------------------------*/
-i8 Key::iGetInt(void)
+i8 Key::iGetIntElm(void)
 {
   i8 iVal = *(i8*)ayElmSeq();
   
@@ -168,7 +168,7 @@ i8 Key::iGetInt(void)
 /*----------------------------------------------------------------------------*/
 /* get element as int (assuming int)                                          */
 /*----------------------------------------------------------------------------*/
-i8 Key::iGetInt(IndexDef* pIndexDef, i8 iElement)
+i8 Key::iGetIntElm(IndexDef* pIndexDef, i8 i_Element)
 {
   i8 nBytes;
   byte* ayCursor = ayElmSeq();
@@ -180,7 +180,7 @@ i8 Key::iGetInt(IndexDef* pIndexDef, i8 iElement)
     
     byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,&ayCursor);
   
-    if (iElement == i_Col) {
+    if (i_Element == i_Col) {
       iVal  = *(i8*)ayElm;
       break;
     }

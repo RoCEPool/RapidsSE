@@ -451,23 +451,22 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute prior vector for find key, such that next of priorVec[0] is        */
-/* specifically the given find entry                                          */
+/* compute prior vector for given key                                         */
 /*----------------------------------------------------------------------------*/
 
-#define ELM_OF_KEY(aKey)    ( * ((i8*) aKey->ayElmSeq()) )
+#define ELM_OF_KEY(aKey)     ( aKey->iGetIntElm() )
 
-#define ELM_OF_ENTRY(aEnt)  ( * ((i8*) aEnt->aKey()->ayElmSeq()) )
+#define ELM_OF_ENTRY(aEnt)   ( aEnt->aKey()->iGetIntElm() )
 
 #define NEXT_TICKET(aEnt,i_Lvl)  ( aEnt->tNEO(i_Lvl) )
 
-#define ENTRY(tTicket)      ( aGetItem_i4(tTicket) )
+#define ENTRY(tTicket)       ( aGetItem_i4(tTicket) )
 
-#define END_TICKET(tNxtEnt) ( C_ENT_END_TICKET == tNxtEnt )
+#define END_TICKET(tNxtEnt)  ( C_ENT_END_TICKET == tNxtEnt )
 
-#define PRIOR(iFind,iNext)  ( iFindElm < iNextElm )
+#define AT_PRIOR_POS(iPrior,iNext) ( iPrior <= iNext )
 
-void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aFindKey,
+void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aPriorKey,
                                              Ent* aPriorVec[])
 {
   /*
@@ -496,25 +495,25 @@ void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aFindKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iFindElm = ELM_OF_KEY(aFindKey);
+  i8 iPriorElm = ELM_OF_KEY(aPriorKey);
 
-  Ent* aScanEntry = aSkipRoots;
+  Ent* aScanEnt = aSkipRoots;
   for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
  
-    for (tET tNextEntry = NEXT_TICKET(aScanEntry,i_Level);
-         ! END_TICKET(tNextEntry);
-         tNextEntry = NEXT_TICKET(aScanEntry,i_Level)) {
+    for (tET tNextEnt = NEXT_TICKET(aScanEnt,i_Level);
+         ! END_TICKET(tNextEnt);
+         tNextEnt = NEXT_TICKET(aScanEnt,i_Level)) {
 
-      Ent* aNextEntry = ENTRY(tNextEntry);
-      i8 iNextElm = ELM_OF_ENTRY(aNextEntry);
+      Ent* aNextEnt = ENTRY(tNextEnt);
+      i8 iNextElm = ELM_OF_ENTRY(aNextEnt);
             
-      if (PRIOR(iFindElm,iNextElm))
+      if (AT_PRIOR_POS(iPriorElm,iNextElm))
         break;
               
-      aScanEntry = aNextEntry;
+      aScanEnt = aNextEnt;
     }
     
-    aPriorVec[i_Level] = aScanEntry;
+    aPriorVec[i_Level] = aScanEnt;
   }
   
 }

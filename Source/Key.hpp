@@ -26,8 +26,8 @@ namespace Entries
     static bool bLessThan(Key* aLeft, Key* aRight);
     static bool bNotEqual(Key* aLeft, Key* aRight);
 
-    i8   iGetInt(void);
-    i8   iGetInt(IndexDef* pIndexDef, i8 iElement);
+    i8   iGetIntElm(void);
+    i8   iGetIntElm(IndexDef* pIndexDef, i8 i_Element);
     void vIncElmSeqSize(i8 nDeltaBytes);
     i8   nElmSeqSize(void);
     void vElmSeqSize(i8 nElmSeqSize);
