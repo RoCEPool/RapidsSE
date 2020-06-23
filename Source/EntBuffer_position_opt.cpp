@@ -509,7 +509,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aFindKey,
       Ent* aNextEntry = NEXT_ENTRY(tNextEntry);
       i8 iNextElm = ELM_OF_ENTRY(aNextEntry);
             
-      if (! PRIOR(iFindElm,iNextElm))
+      if (PRIOR(iFindElm,iNextElm))
         break;
               
       aScanEntry = aNextEntry;

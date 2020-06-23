@@ -1555,7 +1555,7 @@ void vTest21_testSearch(IntSet* pKeySamples, i8 nBuffers, bool bDump)
 void vTest21(void)
 {
   i8 nSamples = C_UNKNOWN;
-  bool bDump  = false;
+  bool bDump  = true;
   
   bool bInsertTest = true;
   bool bSearchTest = true;

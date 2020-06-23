@@ -18,7 +18,7 @@ namespace Entries
     Ref m_xRef;    // reference (this is either a sub-ref to a child EntBuffer,
                    //            or a row-ref to a row at H0 leaf buffers)
   
-    tEO m_taOffset[C_MAX_LVL_LEVELS];  // the offsets
+    tEO m_taNextEntry[C_MAX_LVL_LEVELS];  // tickets to next entry by level
 
 #ifdef WITH_DEBUG_VERSION
     i8  m_uSkipNo; // verify of order of skip items
