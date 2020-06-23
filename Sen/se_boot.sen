@@ -63,7 +63,6 @@ assert::stack_0
         "job_BootCluster.sen"     include
 
         "job_ConnectCluster.sen"  include
-        //"job_CreateIndex.sen"     include
 
         "job_Distributed.sen"     include
 
