@@ -12,9 +12,9 @@ namespace Rows
       struct {
         u8 m_uBuffer  : 40; // which buffer
         u8 m_uItem    : 16; // item in that buffer
-        u8 m_uSpare   :  4; // spare
+        u8 m_uLevels  :  3; // number of skip levels in array
         u8 m_uPayload :  1; // is there is a payload?
-        u8 m_uOffsets :  3; // number of neo's that follow
+        u8 m_uSpare   :  4; // spare
       };             // 64b
       
       i8 m_iAsI8;
@@ -22,7 +22,7 @@ namespace Rows
   
   public:   
     Ref(void);
-    Ref(u8 uBuffer, u8 uItem, u8 uOffsets);
+    Ref(u8 uBuffer, u8 uItem, u8 uLevels);
    ~Ref(void) noexcept(false);
     
     void operator =(Ref xwRef); // assignment

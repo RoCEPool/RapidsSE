@@ -613,7 +613,7 @@ void EntBuffer::vDumpPriorVec(Ent* aPriorVec[])
              aEnt,
              i_Level,
              aEnt->tNextEntry(i_Level),
-             aGetEntryOffset(aEnt->tNextEntry(i_Level)));
+             aGetEntry(aEnt->tNextEntry(i_Level)));
     }
   }
 }
@@ -638,7 +638,7 @@ EntBuffer* EntBuffer::pFirstChildBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by offset                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aGetEntryOffset(tET tEntryTicket)
+Ent* EntBuffer::aGetEntry(tET tEntryTicket)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1016,7 +1016,7 @@ Ent* EntBuffer::aPopLazyChain(void)
   if (C_ENT_END_TICKET == tNextLazyOffset)
     m_aLazyChain = nullptr;
   else
-    m_aLazyChain = aGetEntryOffset(tNextLazyOffset);
+    m_aLazyChain = aGetEntry(tNextLazyOffset);
   
   return aPoppedLazyEntry;
 }
@@ -1229,7 +1229,7 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   
   tET tOffset = aSkipRoots()->tNextEntry(0);
   while (C_ENT_END_TICKET != tOffset) {
-    Ent* aEnt = aGetEntryOffset(tOffset);
+    Ent* aEnt = aGetEntry(tOffset);
     vShowEntry(aEnt);
     if (aMarkEntry == aEnt)
       vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
@@ -1256,7 +1256,7 @@ void EntBuffer::vShowShort(void)
   
   tET tOffset = aSkipRoots()->tNextEntry(0);
   while (C_ENT_END_TICKET != tOffset) {
-    Ent* aEnt = aGetEntryOffset(tOffset);
+    Ent* aEnt = aGetEntry(tOffset);
     
     Key* aKey = _aKey(aEnt->ayElmSeq());
     i8 iVal = aKey->iGetIntElm();

@@ -19,14 +19,14 @@ Ref::Ref(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Ref::Ref(u8 uBuffer, u8 uItem, u8 uOffsets)
+Ref::Ref(u8 uBuffer, u8 uItem, u8 uLevels)
 {
   m_uBuffer  = uBuffer;
   m_uItem    = uItem;
-  m_uOffsets = uOffsets;
+  m_uLevels  = uLevels;
   
-  m_uSpare   = 0;
   m_uPayload = 0;
+  m_uSpare   = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,10 +122,10 @@ void Ref::vReset(void)
 {
   m_uBuffer  = 0;
   m_uItem    = 0;
-  m_uOffsets = 0;
+  m_uLevels  = 0;
   
-  m_uSpare   = 0;
   m_uPayload = 0;
+  m_uSpare   = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,10 +135,10 @@ void Ref::vSet(Ref xwRef)
 {
   m_uBuffer  = xwRef.m_uBuffer;
   m_uItem    = xwRef.m_uItem;
-  m_uOffsets = xwRef.m_uOffsets;
+  m_uLevels  = xwRef.m_uLevels;
   
-  m_uSpare   = 0;
   m_uPayload = 0;
+  m_uSpare   = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,10 +148,10 @@ void Ref::vSetNil(void)
 {
   m_uBuffer  = 0;
   m_uItem    = 0;
-  m_uOffsets = 0;
-
-  m_uSpare   = 0;
+  m_uLevels  = 0;
+  
   m_uPayload = 0;
+  m_uSpare   = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +159,7 @@ void Ref::vSetNil(void)
 /*----------------------------------------------------------------------------*/
 i8 Ref::nSkipLevels(void)
 {
-  return (i8)m_uOffsets;
+  return (i8)m_uLevels;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,7 +167,7 @@ i8 Ref::nSkipLevels(void)
 /*----------------------------------------------------------------------------*/
 void Ref::vSkipLevels(i8 nSkipLevels)
 {
-  m_uOffsets = nSkipLevels;
+  m_uLevels = nSkipLevels;
 }
 
 /*============================================================================*/

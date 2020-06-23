@@ -32,7 +32,7 @@ void EntBuffer::vBuildSkipList(void)
     if (C_ENT_END_TICKET == tNextEntry)
       aLazyChain = nullptr;
     else
-      aLazyChain = aGetEntryOffset(tNextEntry);
+      aLazyChain = aGetEntry(tNextEntry);
     
     vInsertEntSkipList(aEntry);
   }
