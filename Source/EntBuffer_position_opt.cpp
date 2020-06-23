@@ -460,7 +460,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
 
 #define NEXT_TICKET(aEnt,i_Lvl)  ( aEnt->tNEO(i_Lvl) )
 
-#define ENTRY(tTicket)       ( aGetItem_i4(tTicket) )
+#define ENTRY(tTicket)       ( aGetItem(tTicket) )
 
 #define END_TICKET(tNxtEnt)  ( C_ENT_END_TICKET == tNxtEnt )
 

@@ -584,11 +584,11 @@ EntBuffer* EntBuffer::pFirstChildBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by offset                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aGetEntryOffset(tET tOffset)
+Ent* EntBuffer::aGetEntryOffset(tET tEntryTicket)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Ent* aEnt = aGetItem_i4(tOffset);
+  Ent* aEnt = aGetItem(tEntryTicket);
 
   return aEnt;
 }
@@ -938,7 +938,7 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   if (C_ENT_END_TICKET == tOffset)
     return nullptr;
   
-  Ent* aEnt = aGetItem_i4(tOffset);
+  Ent* aEnt = aGetItem(tOffset);
 
   ASSERT(! aEnt || aEnt->bValidEnt());
   

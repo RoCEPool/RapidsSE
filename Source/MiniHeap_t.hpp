@@ -33,7 +33,7 @@ namespace Structures
     ITEM*  aFirstItem(void);
     i8     nFreeBytes(void);
     void   vFreeItem(ITEM* aItem, i8 nBytes);
-    ITEM*  aGetItem_i4(i4 iOffset);
+    ITEM*  aGetItem(i8 iOffset);
     void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
     void   vIncItems(void);
@@ -301,7 +301,7 @@ void MiniHeap_t<ITEM>::vFreeItem(ITEM* aItem, i8 nBytes)
 /* get item at given offset                                                   */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-ITEM* MiniHeap_t<ITEM>::aGetItem_i4(i4 iOffset)
+ITEM* MiniHeap_t<ITEM>::aGetItem(i8 iOffset)
 {
   ITEM* aItem = aAdd<ITEM*>(aItemArea(),iOffset);
   
