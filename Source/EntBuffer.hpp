@@ -166,7 +166,7 @@ namespace Indexing
     void       vCompactLeft(void);
     void       vCutEntry(Ent* aEnt, Ent* aPriorVec[]);
     void       vDumpPriorVec(Ent* aPriorVec[]);
-    Ent*       aGetEntryOffset(tEO tOffset);
+    Ent*       aGetEntryOffset(tET tOffset);
     Ent*       aGetEntrySplit(i8 iSplitEntryNo, Ent** aaPriorEntry);
     void       vHandleFirstInsert(Ent* aInsertedKeyEntry,
                                   Ent* aOriginalFirstEntry,

@@ -6,9 +6,9 @@
 namespace Entries
 {
   static const i8 C_ENT_QUANTA = 32;
-  static const u4 C_OFS_NIL_i4 = 0x7FFFFFFF;
+  static const u4 C_ENT_END_TICKET = 0x7FFFFFFF;
 
-  typedef u4 tEO; // opaque type for entry offset values
+  typedef u4 tET; // opaque type for entry tickets
 
   //----------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ namespace Entries
     Ref m_xRef;    // reference (this is either a sub-ref to a child EntBuffer,
                    //            or a row-ref to a row at H0 leaf buffers)
   
-    tEO m_taNextEntry[C_MAX_LVL_LEVELS];  // tickets to next entry by level
+    tET m_taNextEntry[C_MAX_LVL_LEVELS];  // tickets to next entry by level
 
 #ifdef WITH_DEBUG_VERSION
     i8  m_uSkipNo; // verify of order of skip items
@@ -51,8 +51,8 @@ namespace Entries
 
     Key*  aKey(void);
 
-    tEO   tNEO(i8 i_Level);
-    void  vNEO(i8 i_Level, tEO tOffset);
+    tET   tNEO(i8 i_Level);
+    void  vNEO(i8 i_Level, tET tNextEntry);
     void  vNEOdump(void);
     void  vNEOreset(void);
 

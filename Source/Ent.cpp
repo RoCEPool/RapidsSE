@@ -122,25 +122,25 @@ Key* Ent::aKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next entry offset for given level                                      */
+/* get next entry ticket for given level                                      */
 /*----------------------------------------------------------------------------*/
-tEO Ent::tNEO(i8 i_Level)
+tET Ent::tNEO(i8 i_Level)
 {
   ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
-  tEO tNEO = m_taNextEntry[i_Level];
+  tET tNextEntry = m_taNextEntry[i_Level];
   
-  return tNEO;
+  return tNextEntry;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set next entry offset for given level                                      */
+/* set next entry ticket for given level                                      */
 /*----------------------------------------------------------------------------*/
-void Ent::vNEO(i8 i_Level, tEO tOffset)
+void Ent::vNEO(i8 i_Level, tET tNextEntry)
 {
   ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
-  m_taNextEntry[i_Level] = tOffset;
+  m_taNextEntry[i_Level] = tNextEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +165,7 @@ void Ent::vNEOdump(void)
 void Ent::vNEOreset(void)
 {
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++)
-    m_taNextEntry[i_Level] = C_OFS_NIL_i4;
+    m_taNextEntry[i_Level] = C_ENT_END_TICKET;
 }
 
 /*----------------------------------------------------------------------------*/
