@@ -67,13 +67,8 @@
 
   job[] job.tagSet@ tagSet.asStr .
 
-  // is it a unique index ?
-  "<unique>" job[] job.tagSet@ tagSet.hasName if
-    <etc> <indexNm> "create unique index %v %v ;" str.format to sSmt
-  else
-    <etc> <indexNm> "create index %v %v ;" str.format to sSmt
-  then
-
+  <etc> <indexNm> "create unique index %v %v ;" str.format to sSmt
+  
   sSmt .
 
   // parse the smt and get the table name
