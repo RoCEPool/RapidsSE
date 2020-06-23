@@ -32,7 +32,7 @@ SkipRoots::SkipRoots(void)
   i8 i_Buffer = pBuffer->iBufferNo();
 
   vBuffer(i_Buffer);
-  vOffsets(nLvlLevels);
+  vSkipLevels(nLvlLevels);
   vElmSeqSize(0);
 
   for (i8 i_Pad = 0; i_Pad < C_SKIPROOTS_PADDING; i_Pad++)

@@ -111,7 +111,7 @@ void SP_Ent::vSprintEnt(Ent* aEnt, IndexDef* pIndexDef)
                   spRef.sz(aEnt->xRef()),
                   spKey.sz(aEnt->aKey(),pIndexDef));
   
-  for (i8 i_Level = 0; i_Level < aEnt->nTickets(); i_Level++)
+  for (i8 i_Level = 0; i_Level < aEnt->nSkipLevels(); i_Level++)
     StrLib::vSprintCat((Stz*)m_caEnt," %d"_Stz,aEnt->tNextEntry(i_Level));
 
 }

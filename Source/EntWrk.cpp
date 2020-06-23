@@ -24,7 +24,7 @@ EntWrk::EntWrk(void)
   // -- entry --
   m_xEnt.vBuffer(0);
   m_xEnt.vItem(0);
-  m_xEnt.vOffsets(0);
+  m_xEnt.vSkipLevels(0);
   
   m_xEnt.vElmSeqSize(0);
   // -- end entry --
@@ -363,7 +363,7 @@ i8 EntWrk::nOffsets(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_xEnt.nTickets();
+  return m_xEnt.nSkipLevels();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -373,7 +373,7 @@ void EntWrk::vOffsets(i8 nLevels)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xEnt.vOffsets(nLevels);
+  m_xEnt.vSkipLevels(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -437,7 +437,7 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
-  i8 nLevels = pEntry->nTickets();
+  i8 nLevels = pEntry->nSkipLevels();
   vOffsets(nLevels);
   
   Ref xRef(iBufferNo,i_Item,nLevels);

@@ -142,7 +142,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     byte* ayElmSeq = aRightH0_Entry->ayElmSeq();
     
     i8 nElmSeqSize = aRightH0_Entry->nElmSeqSize();
-    i8 nOffsets = aRightH0_Entry->nTickets();
+    i8 nOffsets = aRightH0_Entry->nSkipLevels();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
@@ -254,7 +254,7 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   Ref xRef = aFirstL0_ent->xRef();
   byte* aKeyBytes = aFirstL0_ent->ayElmSeq();
   i8 nKeyBytes = aFirstL0_ent->nElmSeqSize();
-  i8 nLevels = aFirstL0_ent->nTickets();
+  i8 nLevels = aFirstL0_ent->nSkipLevels();
   
   i8 iFirstL0_BufferNo = pFirstH0->iBufferNo();
   xRef.vBuffer(iFirstL0_BufferNo);
@@ -520,7 +520,7 @@ void EntBuffer::vCutEntry(Ent* aEnt, Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  i8 nLevels = aEnt->nTickets();
+  i8 nLevels = aEnt->nSkipLevels();
   
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
     tET tEntryTicket = aEnt->tNextEntry(i_Level);
@@ -606,7 +606,7 @@ void EntBuffer::vDumpPriorVec(Ent* aPriorVec[])
 
   for (i8 i = 0; i < nLvlLevels; i++) {
     Ent* aEnt = aPriorVec[i];
-    i8 nOffsets = aEnt->nTickets();
+    i8 nOffsets = aEnt->nSkipLevels();
     for (i8 i_Level = 0; i_Level < nOffsets; i_Level++) {
       vTrace("  i : %lld Ent : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
              i,
@@ -1124,7 +1124,7 @@ void EntBuffer::vRestore(void)
        aEnt != nullptr;
        aEnt = aNextEntry(aEnt, 0)) {
     
-    Ref xRef(i_Buffer, aEnt->xRef().iItem(), aEnt->nTickets());
+    Ref xRef(i_Buffer, aEnt->xRef().iItem(), aEnt->nSkipLevels());
     aEnt->vRef(xRef);
   }
   
@@ -1170,8 +1170,8 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   else
     aKey->vShowIntKey();
 
-  vTrace(" offsets %lld"_Stz,aEnt->nTickets());
-  for (i8 i_Level = 0; i_Level < aEnt->nTickets(); i_Level++)
+  vTrace(" offsets %lld"_Stz,aEnt->nSkipLevels());
+  for (i8 i_Level = 0; i_Level < aEnt->nSkipLevels(); i_Level++)
     vTrace(" %05lld"_Stz,(i8)aEnt->tNextEntry(i_Level));
   
   vTrace("\n"_Stz);

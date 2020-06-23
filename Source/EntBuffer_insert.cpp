@@ -96,7 +96,7 @@ void EntBuffer::vBuildSkipListSorted(void)
     tET tEntryTicket = tToTicket(aEnt);
     
     // get the number of offsets for this entry
-    i8 nLevels = aEnt->nTickets();
+    i8 nLevels = aEnt->nSkipLevels();
     
     // connect the dots
     for (i8 i_Level = 1; i_Level < nLevels; i_Level++) {
@@ -448,7 +448,7 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  ASSERT(aEnt->nTickets());
+  ASSERT(aEnt->nSkipLevels());
   
   i8 nEntSizeBytes = aEnt->nSizeBytes();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -493,7 +493,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  ASSERT(aEnt->nTickets());
+  ASSERT(aEnt->nSkipLevels());
   
   i8 nEntSizeBytes = aEnt->nSizeBytes();
   
@@ -537,7 +537,7 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  ASSERT(aEnt->nTickets());
+  ASSERT(aEnt->nSkipLevels());
   
   i8 nEntSizeBytes = aEnt->nSizeBytes();
 
@@ -564,7 +564,7 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // for the moment we set offsets in prior entry to C_ENT_END_TICKET
   
-  i8 nPriorLevels = aInsertedEntry->nTickets();
+  i8 nPriorLevels = aInsertedEntry->nSkipLevels();
   for (i8 i_Level = 0; i_Level < nPriorLevels; i_Level++)
     aInsertedEntry->vNextEntry(i_Level,C_ENT_END_TICKET);
   
@@ -586,9 +586,9 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set a random number offsets
-  i8 nOffsets = AM::nRndSkipLevel();
+  i8 nSkipLevels = AM::nRndSkipLevel();
 
-  aEnt->vOffsets(nOffsets);
+  aEnt->vSkipLevels(nSkipLevels);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position on an H0 buffer which we will try and insert into
@@ -626,7 +626,7 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEnt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
     
-  ASSERT(aEnt->nTickets());
+  ASSERT(aEnt->nSkipLevels());
   
   i8 nEntSizeBytes = aEnt->nSizeBytes();
 
@@ -726,7 +726,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   
   tET tKeyEntryOffset = tToTicket(aEntry);
   
-  i8 nLevels = aEntry->nTickets();
+  i8 nLevels = aEntry->nSkipLevels();
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
     tET tNextOffset = xPriorVec[i_Level]->tNextEntry(i_Level);
     aEntry->vNextEntry(i_Level,tNextOffset);

@@ -56,9 +56,6 @@ namespace Entries
     void  vNextEntryDump(void);
     void  vNextEntryReset(void);
 
-    i8    nTickets(void);
-    void  vOffsets(i8 nLevels);
-    
     Ref&  xRef(void);
     void  vRef(Ref xRef);
     Ref   wRef(void);
@@ -66,6 +63,9 @@ namespace Entries
   
     void  vSetEntry(Ent* aFromEntry);
 
+    i8    nSkipLevels(void);
+    void  vSkipLevels(i8 nLevels);
+    
     i8    nSizeBytes(void);
 
     i8    iSkipNo(void);

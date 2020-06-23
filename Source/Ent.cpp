@@ -126,7 +126,7 @@ Key* Ent::aKey(void)
 /*----------------------------------------------------------------------------*/
 tET Ent::tNextEntry(i8 i_Level)
 {
-  ASSERT(i_Level >= 0 && i_Level < nTickets());
+  ASSERT(i_Level >= 0 && i_Level < nSkipLevels());
 
   tET tNextEntry = m_taNextEntry[i_Level];
   
@@ -138,7 +138,7 @@ tET Ent::tNextEntry(i8 i_Level)
 /*----------------------------------------------------------------------------*/
 void Ent::vNextEntry(i8 i_Level, tET tNextEntry)
 {
-  ASSERT(i_Level >= 0 && i_Level < nTickets());
+  ASSERT(i_Level >= 0 && i_Level < nSkipLevels());
 
   m_taNextEntry[i_Level] = tNextEntry;
 }
@@ -148,7 +148,7 @@ void Ent::vNextEntry(i8 i_Level, tET tNextEntry)
 /*----------------------------------------------------------------------------*/
 void Ent::vNextEntryDump(void)
 {
-  i8 nLvls  = nTickets();
+  i8 nLvls  = nSkipLevels();
   
   vTrace("Ent %p levels: %lld"_Stz,
          this,nLvls);
@@ -166,22 +166,6 @@ void Ent::vNextEntryReset(void)
 {
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++)
     m_taNextEntry[i_Level] = C_ENT_END_TICKET;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of levels                                                       */
-/*----------------------------------------------------------------------------*/
-i8 Ent::nTickets(void)
-{
-  return m_xRef.nOffsets();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set number of levels                                                       */
-/*----------------------------------------------------------------------------*/
-void Ent::vOffsets(i8 nLevels)
-{
-  m_xRef.vOffsets(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,7 +210,7 @@ void Ent::vSetEntry(Ent* aFromEntry)
   // set entry reference and offsets
   
   vRef(aFromEntry->xRef());
-  vOffsets(aFromEntry->nTickets());
+  vSkipLevels(aFromEntry->nSkipLevels());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry
@@ -250,6 +234,22 @@ i8 Ent::nSizeBytes(void)
   i8 nRoundedBytes = MemLib::nRoundUp(nProperBytes,C_ENT_QUANTA);
 
   return nRoundedBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of skip levels                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Ent::nSkipLevels(void)
+{
+  return m_xRef.nOffsets();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of skip levels                                                  */
+/*----------------------------------------------------------------------------*/
+void Ent::vSkipLevels(i8 nLevels)
+{
+  m_xRef.vOffsets(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
