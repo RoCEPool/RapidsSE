@@ -124,23 +124,23 @@ Key* Ent::aKey(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry offset for given level                                      */
 /*----------------------------------------------------------------------------*/
-i4 Ent::iNEO(i8 i_Level)
+tEO Ent::tNEO(i8 i_Level)
 {
   ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
-  i4 iNEO = m_iaOffset[i_Level];
+  tEO tNEO = m_iaOffset[i_Level];
   
-  return iNEO;
+  return tNEO;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set next entry offset for given level                                      */
 /*----------------------------------------------------------------------------*/
-void Ent::vNEO(i8 i_Level, i4 i_Offset)
+void Ent::vNEO(i8 i_Level, tEO tOffset)
 {
   ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
-  m_iaOffset[i_Level] = i_Offset;
+  m_iaOffset[i_Level] = tOffset;
 }
 
 /*----------------------------------------------------------------------------*/

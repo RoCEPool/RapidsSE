@@ -49,8 +49,8 @@ namespace Entries
 
     Key*  aKey(void);
 
-    i4    iNEO(i8 i_Level);
-    void  vNEO(i8 i_Level, i4 i_Offset);
+    tEO   tNEO(i8 i_Level);
+    void  vNEO(i8 i_Level, tEO tOffset);
     void  vNEOdump(void);
     void  vNEOreset(void);
 

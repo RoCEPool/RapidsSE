@@ -28,7 +28,7 @@ void EntBuffer::vBuildSkipList(void)
     
     Ent* aEntry = aLazyChain;
     
-    i8 iNextOffset = aEntry->iNEO(0);
+    i8 iNextOffset = aEntry->tNEO(0);
     if (C_OFS_NIL_i4 == iNextOffset)
       aLazyChain = nullptr;
     else
@@ -232,7 +232,7 @@ void EntBuffer::vCompact(void)
     //vDumpPriorVec(xPriorVec);
     for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++) {
       Ent* aPriorEntry = xPriorVec[i_Level];
-      i4 iPriorOffset = aPriorEntry->iNEO(i_Level);
+      i4 iPriorOffset = aPriorEntry->tNEO(i_Level);
       if (iWasOffset == iPriorOffset)
         aPriorEntry->vNEO(i_Level,iNowOffset);
     }
@@ -728,7 +728,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   
   i8 nLevels = aEntry->nOffsets();
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
-    i4 iNextOffset = xPriorVec[i_Level]->iNEO(i_Level);
+    i4 iNextOffset = xPriorVec[i_Level]->tNEO(i_Level);
     aEntry->vNEO(i_Level,iNextOffset);
     xPriorVec[i_Level]->vNEO(i_Level,iKeyEntryOffset);
   }
