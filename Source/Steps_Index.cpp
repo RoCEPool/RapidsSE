@@ -213,7 +213,7 @@ void Step::vIndexGenEntBuffer(void)
       break;
     
     MemLib::vCopy(aEnt,oEntWrk.aEnt(),nBytes,CN_ENTBUFFER);
-    aEnt->vNEO(0,-1);
+    aEnt->vNEO(0,C_ENT_END_TICKET);
     
     i8 iOffset = pEntBuffer->iToOffset(aEnt);
     if (aPrevEnt)

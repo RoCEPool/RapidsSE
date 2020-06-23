@@ -463,6 +463,25 @@ void EntBuffer::vAssertEntBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert entry to entry ticket                                              */
+/*----------------------------------------------------------------------------*/
+tET EntBuffer::tToTicket(Ent* pEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  i8 iEntryOffset = iToOffset(pEntry);
+  
+  tET tEntryTicket = tToEntryTicket(iEntryOffset);
+  
+  return tEntryTicket;
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
 /* return number of index buffers under this buffer                           */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vBufferCount(i8& nBuffers)
