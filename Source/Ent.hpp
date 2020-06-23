@@ -10,6 +10,8 @@ namespace Entries
 
   typedef u4 tEO; // opaque type for entry offset values
 
+  //----------------------------------------------------------------------------
+
   class Ent : public Header
   {
   private:

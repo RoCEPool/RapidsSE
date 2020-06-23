@@ -398,8 +398,9 @@ bool IndexTree::bInsertEntry(Ent* aEnt)
 
   m_okLock.vGrabWrite();                                           //! GRAB LOCK
   
-  if (! m_pRootEntBuffer)
-    ASSERT(pNewRootBuffer());
+  if (! m_pRootEntBuffer) {
+    EntBuffer* pRootBuffer = pNewRootBuffer();
+  }
   
   Ent* aInsertedEntry = EntBuffer::aInsertEntTree(aEnt,&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
@@ -427,8 +428,9 @@ bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
 
   m_okLock.vGrabWrite();                                           //! GRAB LOCK
   
-  if (! m_pRootEntBuffer)
-    ASSERT(pNewRootBuffer());
+  if (! m_pRootEntBuffer) {
+    EntBuffer* pRootBuffer = pNewRootBuffer();
+  }
   
   Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
@@ -453,9 +455,10 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
   vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
   xEntWrk.vRef(xRowRef);
   
-  if (! m_pRootEntBuffer)
-    ASSERT(pNewRootBuffer());
-
+  if (! m_pRootEntBuffer) {
+    EntBuffer* pRootBuffer = pNewRootBuffer();
+  }
+  
   Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
   
