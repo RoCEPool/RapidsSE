@@ -56,7 +56,7 @@ namespace Entries
     void  vNextEntryDump(void);
     void  vNextEntryReset(void);
 
-    Ref&  xRef(void);
+    Ref&  rxRef(void);
     void  vRef(Ref xRef);
     Ref   wRef(void);
     void  vReset(void);

@@ -840,7 +840,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
     SP_Ent spRef;
     TRACE_UPSERT( vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef)); )
     
-    Crw* aCrw_exists = CrwBuffer::pRefdCrw(aEnt_found->xRef());
+    Crw* aCrw_exists = CrwBuffer::pRefdCrw(aEnt_found->rxRef());
     if (! aCrw_exists) {
       TRACE_UPSERT( vTrace("No aCrw @%lld; skipping...\n"_Stz,(i8)__LINE__); )
       continue;
@@ -873,7 +873,7 @@ void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
   SP_Encoding spEncoding;
   TRACE_UPSERT( vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
   
-  Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->xRef());
+  Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
   Packing::vPackCrw(aCrw_insert,pEncoding_upsert);
   
   // set perspective
@@ -882,7 +882,7 @@ void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
   SP_Ref spRef;
   TRACE_UPSERT( vTrace("Insert Entries to : %s\n"_Stz,spRef.sz(aEntWrk->xRef())); )
 
-  vInsertIndexEntries(aCrw_insert,aEntWrk->xRef());
+  vInsertIndexEntries(aCrw_insert,aEntWrk->rxRef());
   
   vDebugPoint();
 }
@@ -906,7 +906,7 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
   TRACE_UPSERT( vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
   
   // record prior version
-  m_pReadApi->vAddCrwVersion(aEnt_found->xRef(),aCrw_exists);
+  m_pReadApi->vAddCrwVersion(aEnt_found->rxRef(),aCrw_exists);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

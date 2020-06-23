@@ -337,7 +337,7 @@ Ref IndexTree::xwGetRef(Key* aFindKey)
   if (KC_SAME != eCompare)
     return xwNilRef;
 
-  return aEntPos->xRef();
+  return aEntPos->rxRef();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -171,7 +171,7 @@ void Ent::vNextEntryReset(void)
 /*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
-Ref& Ent::xRef(void)
+Ref& Ent::rxRef(void)
 {
   return m_xRef;
 }
@@ -209,7 +209,7 @@ void Ent::vSetEntry(Ent* aFromEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry reference and offsets
   
-  vRef(aFromEntry->xRef());
+  vRef(aFromEntry->rxRef());
   vSkipLevels(aFromEntry->nSkipLevels());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

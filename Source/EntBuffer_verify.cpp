@@ -669,13 +669,13 @@ bool EntBuffer::bVerifyRowRefs(void)
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get the row buffer that this H0 key leaf references
-    Ref xRef = aEnt->xRef();
+    Ref xRef = aEnt->rxRef();
     //CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
     
     DataBuffer* pDataBuffer = DataBuffer::pRefdDataBuffer(xRef);
     
     // get the row entry from referenced entry buffer
-    i8 i_Item = aEnt->xRef().iItem();
+    i8 i_Item = aEnt->rxRef().iItem();
     
     if (pDataBuffer->eClass() == CN_CRWBUFFER) {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);

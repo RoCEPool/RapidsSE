@@ -60,7 +60,7 @@ namespace Entries
     void  vOffsets(i8 nLevels);
 
     void  vRandomEnt(IndexDef* pIndexDef);
-    Ref&  xRef(void);
+    Ref&  rxRef(void);
     void  vRef(Ref& xRef);
     void  vReset(void);
 

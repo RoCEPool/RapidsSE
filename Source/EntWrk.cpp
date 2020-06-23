@@ -400,11 +400,11 @@ void EntWrk::vRandomEnt(IndexDef* pIndexDef)
 /*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
-Ref& EntWrk::xRef(void)
+Ref& EntWrk::rxRef(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_xEnt.xRef();
+  return m_xEnt.rxRef();
 }
 
 /*----------------------------------------------------------------------------*/

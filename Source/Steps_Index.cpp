@@ -544,7 +544,7 @@ void Step::vIndexFetchNextN(void)
     if (bBefore) {
       
       // get the crw entry from the lowerEntry
-      Ref xRef = aLowerEntry->xRef();
+      Ref xRef = aLowerEntry->rxRef();
       
       // has this row already been seen ?
       if ( ! pRowOnce || ! pRowOnce->bRowSeen(xRef) ) {

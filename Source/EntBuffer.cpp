@@ -138,7 +138,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the elements of the right key
     
-    Ref xRef = aRightH0_Entry->xRef();
+    Ref xRef = aRightH0_Entry->rxRef();
     byte* ayElmSeq = aRightH0_Entry->ayElmSeq();
     
     i8 nElmSeqSize = aRightH0_Entry->nElmSeqSize();
@@ -251,7 +251,7 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   
   Ent* aFirstL0_ent = pFirstH0->aLeadEntry();
   
-  Ref xRef = aFirstL0_ent->xRef();
+  Ref xRef = aFirstL0_ent->rxRef();
   byte* aKeyBytes = aFirstL0_ent->ayElmSeq();
   i8 nKeyBytes = aFirstL0_ent->nElmSeqSize();
   i8 nLevels = aFirstL0_ent->nSkipLevels();
@@ -311,7 +311,7 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 {
   _static_
   
-  Ref xRef = pItem->xRef();
+  Ref xRef = pItem->rxRef();
   
   EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xRef);
     
@@ -1058,10 +1058,10 @@ void EntBuffer::vPrintRows(void)
   while (aEnt) {
     
     // get the crw buffer of the row
-    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
+    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->rxRef());
     
     // get the compact row
-    Crw* aCrw = pCrwBuffer->aCrw(aEnt->xRef().iItem());
+    Crw* aCrw = pCrwBuffer->aCrw(aEnt->rxRef().iItem());
     
     // inflate compact row into row
     RowInflator::vInflateRow(hRow,aCrw);
@@ -1124,7 +1124,7 @@ void EntBuffer::vRestore(void)
        aEnt != nullptr;
        aEnt = aNextEntry(aEnt, 0)) {
     
-    Ref xRef(i_Buffer, aEnt->xRef().iItem(), aEnt->nSkipLevels());
+    Ref xRef(i_Buffer, aEnt->rxRef().iItem(), aEnt->nSkipLevels());
     aEnt->vRef(xRef);
   }
   
@@ -1156,8 +1156,8 @@ void EntBuffer::vShowEntry(Ent* aEnt)
          );
   
   vTrace("Ref %lld.%05lld"_Stz,
-         aEnt->xRef().iBuffer(),
-         aEnt->xRef().iItem()
+         aEnt->rxRef().iBuffer(),
+         aEnt->rxRef().iItem()
          );
   
   //vTrace("Tx: %lld.%03lld "_Stz,
@@ -1344,7 +1344,7 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
     return;
   
   Ref xRef;
-  xRef = aFirstEntry->xRef();
+  xRef = aFirstEntry->rxRef();
   i8 i_Buffer = xRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =

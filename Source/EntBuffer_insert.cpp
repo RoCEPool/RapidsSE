@@ -280,7 +280,7 @@ void EntBuffer::vCompactLeft(void)
        aThisEntry != nullptr;
        aThisEntry = pThisBuffer->aNextEntry(aThisEntry, 0)) {
     
-    Ref xRef = aThisEntry->xRef();
+    Ref xRef = aThisEntry->rxRef();
     
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aThisEntry);
     pTempBuffer->aInsertEntAbsL0(xEntWrk.aEnt(),&aPriorEntry);
@@ -303,7 +303,7 @@ void EntBuffer::vCompactLeft(void)
        aTempEntry != nullptr;
        aTempEntry = pTempBuffer->aNextEntry(aTempEntry, 0)) {
     
-    Ref xRef = aTempEntry->xRef();
+    Ref xRef = aTempEntry->rxRef();
     
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aTempEntry);
     pThisBuffer->aInsertEntAbsL0(xEntWrk.aEnt(),&aPriorEntry);
@@ -756,7 +756,7 @@ Ent* EntBuffer::aInsertEntUpwards(Ent* aEntryWork, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pInsertIntoBuffer->m_iBufferHeight) {
-    Ref xRef = aInsertedEntry->xRef();
+    Ref xRef = aInsertedEntry->rxRef();
     i8 i_Buffer = xRef.iBuffer();
     
     HeapBuffer* pHeapBuffer =
@@ -1057,7 +1057,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
     aNextEntry = this->aNextEntry(aCopyEntry,0);
     
     // form the key
-    Ref xRef = aCopyEntry->xRef();
+    Ref xRef = aCopyEntry->rxRef();
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aCopyEntry);
     
     Ent* aNewEntry = pNewRightBuffer->aInsertEntAbsL0(xEntWrk.aEnt(),&aLastEntryRight);
@@ -1123,7 +1123,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
          aMovedEntry;
          aMovedEntry = pNewRightBuffer->aNextEntry(aMovedEntry, 0)) {
       
-      xRef = aMovedEntry->xRef();
+      xRef = aMovedEntry->rxRef();
       i8 i_Buffer = xRef.iBuffer();
       
       HeapBuffer* pHeapBuffer =

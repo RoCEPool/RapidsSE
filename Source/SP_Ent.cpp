@@ -108,7 +108,7 @@ void SP_Ent::vSprintEnt(Ent* aEnt, IndexDef* pIndexDef)
   
   StrLib::vSprint(m_caEnt,
                   "%s %s; NEO:"_Stz,
-                  spRef.sz(aEnt->xRef()),
+                  spRef.sz(aEnt->rxRef()),
                   spKey.sz(aEnt->aKey(),pIndexDef));
   
   for (i8 i_Level = 0; i_Level < aEnt->nSkipLevels(); i_Level++)
