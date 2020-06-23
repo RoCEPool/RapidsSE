@@ -13,6 +13,8 @@ void Step::vAddSteps_IndexDef(void)
   vAddStep("indexDef[].isNull"_Stz,   &Step::vIndexDefIsNull);
   vAddStep("indexDef::parse"_Stz,     &Step::vIndexDefParse);
   vAddStep("indexDef::parseOLD"_Stz,  &Step::vIndexDefParseOLD);
+  vAddStep("indexDef::parseTableName"_Stz, &Step::vIndexDefParseTableName);
+  vAddStep("indexDef[].pipeOut"_Stz,  &Step::vIndexDefPipeOut);
   vAddStep("indexDef[].set"_Stz,      &Step::vIndexDefSet);
   vAddStep("indexDef::syntax"_Stz,    &Step::vIndexDefSyntax);
   vAddStep("indexDef[].tableName@"_Stz, &Step::vIndexDefTableNameFetch);
@@ -106,7 +108,6 @@ void Step::vIndexDefParse(void)
   
   eEC eResult = pIndexDef->eParse(pTable,sCmd);
   
-  
   if (eResult != EC_NONE) {
     
     // set the error in the job
@@ -153,7 +154,56 @@ void Step::vIndexDefSyntax(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef.tableName@ -- fetch tableNm from indexDef                         */
+/* indexDef::parseTableName -- parse Create Index statement and get tableNm   */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefParseTableName(void)
+{
+  ENTRY();
+  
+  Job* pJob_Local = _pJob_Local(m_pDataStack->pPopPtr(__func__));
+  
+  s4K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
+  
+  //  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  //  vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
+  //  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  
+  s32 sTableNm;
+  
+  eEC eResult = IndexDef::eParseTableName(sCmd, sTableNm);
+  
+  if (eResult != EC_NONE) {
+    
+    // set the error in the job
+    pJob_Local->vJobError(eResult);
+  }
+  
+  m_pDataStack->vPushStr(sTableNm);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* indexDef[].pipeOut -- append indexDef onto next operator in pipeline       */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefPipeOut(void)
+{
+  ENTRY();
+  
+  ASSERT(*m_pRegSet->m_xpIndexDef);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
+  
+  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpIndexDef,m_pTask);
+  
+  m_pRegSet->m_xpIndexDef = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* indexDef[].tableName@ -- fetch tableNm from indexDef                       */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefTableNameFetch(void)
 {

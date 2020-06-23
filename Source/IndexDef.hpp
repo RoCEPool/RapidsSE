@@ -31,6 +31,7 @@ namespace MetaData
    ~IndexDef(void) noexcept(false);
   
     static eEC eSyntax(Stz* szCmd);
+    static eEC eParseTableName(Stz* szCmd, Stz* szTableNm);
     
     i8      nColumns(void);
     Column* pGetColumn(i8 iColumn);

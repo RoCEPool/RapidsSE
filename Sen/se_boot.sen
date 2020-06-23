@@ -63,7 +63,7 @@ assert::stack_0
         "job_BootCluster.sen"     include
 
         "job_ConnectCluster.sen"  include
-        "job_CreateIndex.sen"     include
+        //"job_CreateIndex.sen"     include
 
         "job_Distributed.sen"     include
 
@@ -96,6 +96,7 @@ assert::stack_0
         "OP_connector.sen"            include
         "OP_consume.sen"              include
         "OP_createCatalog.sen"        include
+        "OP_createIndex.sen"          include
         "OP_createSchema.sen"         include
         "OP_createTable.sen"          include
         "OP_createTenant.sen"         include
@@ -169,7 +170,10 @@ assert::stack_0
         "OP_sizeIndex.sen"            include
         "OP_sizeTable.sen"            include
         "OP_supervisor.sen"           include
+        "OP_syntaxIndex.sen"          include
         "OP_syntaxTable.sen"          include
+        "OP_syntaxUniqueIndex.sen"    include
+
         "OP_tableSizes.sen"           include
         "OP_toCrwH.sen"               include
         "OP_toCrwHash.sen"            include

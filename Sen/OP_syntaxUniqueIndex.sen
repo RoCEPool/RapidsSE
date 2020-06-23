@@ -1,0 +1,156 @@
+/*============================================================================*/
+/* OP_syntaxIndex.sen -- Operator syntax index                                */
+/*============================================================================*/
+
+" OP_syntaxIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if <tableNm> . <indexNm> is a creatable index                        */
+/*----------------------------------------------------------------------------*/
+: syntaxUniqueIndex::checkCreate ( sTableNm --  true | errorCode false )
+
+  params| sTableNm |
+
+  // check in tables folder: ../schemas/public/tables
+  check::folderIsTables not if false exit then
+
+  // check there is a sub-folder by the name of the table
+  //   ../schemas/public/tables/t
+  sTableNm check::folderHasNamedTable not if false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if max indexes already on table
+
+  // push into t: ../schemas/public/tables/t \folder
+  sTableNm path[].pushNamedTableFolder
+
+  // check max indexes
+  sTableNm find execute to table[]
+  table[] table.indexCount C_MAX_INDEXES == if
+    EC_MAX_INDEXES
+    path[].popNamedTableFolder
+    folder[].isTables assert
+    false exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check name doesn't already exist
+
+  // push into indexes: ../schemas/public/tables/t/indexes
+  path[].pushIndexesFolder
+  folder[].isIndexes assert
+
+  // error if given name already exists
+  <indexNm> check::nameIsUnknownIndex not if
+    path[].popIndexesFolder
+    path[].popNamedTableFolder
+    folder[].isTables assert
+    false exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop upto tables: ../schemas/public/tables
+
+  path[].popIndexesFolder
+  path[].popNamedTableFolder
+  folder[].isTables assert
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: syntaxUniqueIndex_PulseMarker
+
+  0 0 locals| sTableNm sSmt |
+
+  job[] job.tagSet@ tagSet.asStr .
+
+  // is it a unique index ?
+  "<unique>" job[] job.tagSet@ tagSet.hasName if
+    <etc> <indexNm> "create unique index %v %v ;" str.format to sSmt
+  else
+    <etc> <indexNm> "create index %v %v ;" str.format to sSmt
+  then
+
+  sSmt .
+
+  // parse the smt and get the table name
+  sSmt job[] indexDef::parseTableName to sTableNm
+  sTableNm "" str.equal if
+    job[] job.error@
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // check ok to create index
+  sTableNm syntaxIndex::checkCreate not if ( errorCode )
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  sSmt table[] job[] indexDef::parse to indexDef[]
+
+  indexDef[].isNull if
+    job[] job.error@
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in tables
+  folder[].isTables assert
+
+  Pipein[].pipeout
+  indexDef[].pipeout
+
+  // should be in tables
+  folder[].isTables assert
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for syntaxTable req                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: syntaxUniqueIndex_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: syntaxUniqueIndex_PulseMarker ZK_PULSEMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: syntaxUniqueIndex :: syntaxUniqueIndex <indexNm> <etc> ;
+
+: syntaxUniqueIndex _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc>   = "--description of operator--" }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

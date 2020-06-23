@@ -42,6 +42,25 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 
     //pTokenVec->vDumpTokens();
   }
+
+  if (! ( pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
+         pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
+    
+    sProcNm.vConcat("__"_Stz);
+    sProcNm.vConcat(pTokenVec->pGet(2)->szChars());
+    
+#ifdef WITH_TRACE_PROCEDURE
+    vTrace("vAddProcedure: three part name %s\n"_Stz,sProcNm.szStz());
+#endif
+    
+    pTokenVec->vRemoveToken(2);
+    pTokenVec->vIntegrityCheck();
+    
+    pTkn1_ProcNm->vUpdateChars(sProcNm,pTokenVec);
+    pTokenVec->vIntegrityCheck();
+    
+    //pTokenVec->vDumpTokens();
+  }
   
   
   s4K sProcText;
@@ -127,24 +146,63 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
 
   pwMatchedProc = pRootDic->pFindWord(sProcNm_compound);
 
+  if (pwMatchedProc) {
+
+    if (pwMatchedProc->pCategory() != pProcCatg)
+      return nullptr;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // found two-part; correct the command token vector
+    
+    pInpTknVec->vRemoveToken(1);
+    
+    pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound,pInpTknVec);
+    
+    if (iJotDebug())
+      pInpTknVec->vListTokens();
+
+    // found procedure which matches token0_token1
+    return pwMatchedProc;
+  }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // try three-part name
+  
+  nTokens = pInpTknVec->nTokens();
+  if (2 == nTokens)
+    return nullptr;
+  
+  Token* pTkn2_CalledProcNm_b = pInpTknVec->pGet(2);
+  
+  s256 sProcNm_compound_3 = sProcNm_compound;
+  sProcNm_compound_3.vConcat("__"_Stz);
+  sProcNm_compound_3.vConcat(pTkn2_CalledProcNm_b->szChars());
+  
+#ifdef WITH_TRACE_PROCEDURE
+  vTrace("bTranslateProcedure: three part name: %s\n"_Stz,sProcNm_compound.szStz());
+#endif
+  
+  pwMatchedProc = pRootDic->pFindWord(sProcNm_compound_3);
+  
   if (! pwMatchedProc)
     return nullptr;
-
+  
   if (pwMatchedProc->pCategory() != pProcCatg)
     return nullptr;
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // found two-part; correct the command token vector
-  
   pInpTknVec->vRemoveToken(1);
-  
-  pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound,pInpTknVec);
+  pInpTknVec->vRemoveToken(1);
+  pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound_3,pInpTknVec);
   
   if (iJotDebug())
     pInpTknVec->vListTokens();
-
+  
   // found procedure which matches token0_token1
   return pwMatchedProc;
+  
 }
 
 #define dPV(sNM,pTV) { \
@@ -167,7 +225,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   if (AM::bVerbose()) {
     vTrace("Translating Proc: %s\n"_Stz,pwMatchedProc->szWordNm());
     
-    if (pwMatchedProc->szWordNm()->bSame("drop__table"_Stz))
+    if (pwMatchedProc->szWordNm()->bSame("create__unique__index"_Stz))
       vDebugPoint();
   }
   

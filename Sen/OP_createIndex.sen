@@ -1,0 +1,142 @@
+/*============================================================================*/
+/* OP_createIndex.sen -- Operator create index                                */
+/*============================================================================*/
+
+" OP_createIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create index <tableNm> . <indexNm> on this particpating node               */
+/*----------------------------------------------------------------------------*/
+: createIndex::createNamedIndex ( )
+
+  0 locals| sTableNm |
+
+  indexDef[].tableName@ to sTableNm
+
+  // assert initial folder is ./tables
+  //   /tenants/boray/catalogs/rapidsse/schemas/public/tables
+  folder[].isTables assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // change working folder to : ./t/indexes
+
+  // cf to: ./t
+  sTableNm path[].pushNamedTableFolder
+
+  // cf to: ./indexes
+  path[].pushIndexesFolder
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // parse cmd and create index definition
+
+  sTableNm find execute to table[]
+
+  //dbg>
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the index
+
+  IndexDef[] <indexNm> table[] index::createIndex locals| pIndex |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // validate the unqiue index columns are a subset of the partition keys
+
+  pIndex index.isUnique@ if
+    pIndex index.isValidUniqueIndex not if
+      EC_INVALID_COLUMNS_UNIQUE_INDEX job::error!
+      path[].popIndexesFolder
+      path[].popNamedTableFolder
+      folder[].isTables assert
+      exit
+    then
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // populate the index
+
+  pIndex index.populate not if ( errorCode )
+    job::error!
+    path[].popIndexesFolder
+    path[].popNamedTableFolder
+    folder[].isTables assert
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move back to ./tables
+
+  path[].popIndexesFolder
+  path[].popNamedTableFolder
+  folder[].isTables assert
+;
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_INDEXDEF ...                                                */
+/*----------------------------------------------------------------------------*/
+: createIndex_IndexDef
+
+  0 locals| sTableNm |
+
+  // get the index def
+  Pipein[] to indexDef[]
+  nullptr to Pipein[]
+
+  // grab the ddl lock
+  DdlLock[].grabRead
+
+  // check ok to create index
+/*
+  sTableNm createIndex::checkCreate not if ( errorCode )
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+*/
+  // should be in tables
+  folder[].isTables assert
+
+  // create the index
+  createIndex::createNamedIndex
+
+  // should be in tables
+  folder[].isTables assert
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for createIndex req                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: createIndex_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: createIndex_IndexDef ZK_INDEXDEF op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: createIndex :: createIndex <indexNm> ;
+
+: createIndex _cmdTags tagCopy: op_tags
+  tags{
+    <jobDesc>   = "--description of operator--" }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

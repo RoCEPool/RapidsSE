@@ -449,6 +449,8 @@ public:
   void vIndexDefParseOLD(void);
   void vIndexDefSet(void);
   void vIndexDefSyntax(void);
+  void vIndexDefParseTableName(void);
+  void vIndexDefPipeOut(void);
   void vIndexDefTableNameFetch(void);
 
   // index reg

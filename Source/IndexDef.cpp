@@ -239,6 +239,69 @@ L_RETURN:
 }
 
 /*----------------------------------------------------------------------------*/
+/* check the syntax of the Create Index command                               */
+/*----------------------------------------------------------------------------*/
+eEC IndexDef::eParseTableName(Stz* szCmd, Stz* szTableNm)
+{
+  eEC eError = EC_NONE;
+  
+  // tokenise the command
+  TokenVec* pTknVec = TokenVec::pTokenise(szCmd);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: Create Index <indexNm>
+  
+  Token* pTkn = pTknVec->pFirstToken(); dPT();
+  ASSERT(pTkn->bSame("create"_Stz));
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  ASSERT(pTkn->bSame("unique"_Stz) || pTkn->bSame("index"_Stz));
+  
+  if (pTkn->bSame("unique"_Stz)) {
+    
+    pTkn = pTknVec->pNextToken(); dPT();
+    ASSERT(pTkn->bSame("index"_Stz));
+  }
+  
+  // -- -- -- --
+  // index name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // -- -- -- --
+  // ON
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn || ! pTkn->bSame("on"_Stz) ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // -- -- -- --
+  // table name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  
+  if ( ! pTkn || pTkn->bSame("("_Stz) || pTkn->bSame(";"_Stz)) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  StrLib::vCopy((char*)szTableNm,(const char*)pTkn->szChars());
+  
+L_RETURN:
+  delete pTknVec;
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a primary key  index                                               */
 /*----------------------------------------------------------------------------*/
 bool IndexDef::bIsPrimaryKey(void)

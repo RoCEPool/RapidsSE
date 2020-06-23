@@ -23,7 +23,7 @@ failure contains: 'invalid command'
 
 // (5) create an index (syntax error)
 create unique index idx on T1;
-failure contains: 'invalid command'
+failure contains: 'no such table'
 
 // (6) create an index (syntax error)
 create unique index idx on T1(;
