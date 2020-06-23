@@ -523,8 +523,8 @@ void EntBuffer::vCutEntry(Ent* aEnt, Ent* aPriorVec[])
   i8 nLevels = aEnt->nOffsets();
   
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
-    i4 iNEO = aEnt->tNEO(i_Level);
-    aPriorVec[i_Level]->vNEO(i_Level,iNEO);
+    tET tEntryTicket = aEnt->tNEO(i_Level);
+    aPriorVec[i_Level]->vNEO(i_Level,tEntryTicket);
   }
 }
 
