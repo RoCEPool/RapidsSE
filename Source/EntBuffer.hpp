@@ -118,6 +118,9 @@ namespace Indexing
     void       vPositionPriorVecEntry_Ray03(Key* aFindKey,
                                             Ent* aPriorVec[]);
 
+    void       vPositionPriorVecEntry_Ray04(Key* aFindKey,
+                                            Ent* aPriorVec[]);
+
 
     ////////////////////////////////////////////////////////////////////////////
     

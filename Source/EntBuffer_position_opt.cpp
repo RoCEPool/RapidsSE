@@ -450,6 +450,83 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
   
 }
 
+/*----------------------------------------------------------------------------*/
+/* compute prior vector for find key, such that next of priorVec[0] is        */
+/* specifically the given find entry                                          */
+/*----------------------------------------------------------------------------*/
+
+#define ELM_OF_KEY(aKey)    ( * ((i8*) aKey->ayElmSeq()) )
+
+#define ELM_OF_ENTRY(aEnt)  ( * ((i8*) aEnt->aKey()->ayElmSeq()) )
+
+#define NEXT_TICKET(aEnt,i_Lvl)  ( aEnt->tNEO(i_Lvl) )
+
+#define NEXT_ENTRY(tNxtEnt) ( aGetItem_i4(tNxtEnt) )
+
+#define END_TICKET(tNxtEnt) ( C_OFS_NIL_i4 == tNxtEnt )
+
+#define PRIOR(iFind,iNext)  ( iFindElm < iNextElm )
+
+void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aFindKey,
+                                             Ent* aPriorVec[])
+{
+  /*
+   
+     this optimisation explores bringing Key::bGreaterEqual() into line
+   
+   */
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+#ifdef WITH_EB_LAZY_CHAIN
+  ASSERT(! m_aLazyChain);
+#endif
+  
+  i8 nLvlLevels = AM::nLvlLevels();
+    
+  Ent* aSkipRoots = this->aSkipRoots();
+  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
+    aPriorVec[i_Level] = aSkipRoots;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // if there are no items then the prior vec is the set of skip roots
+  if (nItems() == 0)
+    return;
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 iFindElm = ELM_OF_KEY(aFindKey);
+
+  Ent* aScanEntry = aSkipRoots;
+  for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
+ 
+    for (tEO tNextEntry = NEXT_TICKET(aScanEntry,i_Level);
+         ! END_TICKET(tNextEntry);
+         tNextEntry = NEXT_TICKET(aScanEntry,i_Level)) {
+
+      Ent* aNextEntry = NEXT_ENTRY(tNextEntry);
+      i8 iNextElm = ELM_OF_ENTRY(aNextEntry);
+            
+      if (! PRIOR(iFindElm,iNextElm))
+        break;
+              
+      aScanEntry = aNextEntry;
+    }
+    
+    aPriorVec[i_Level] = aScanEntry;
+  }
+  
+}
+
+#undef ELM_OF_KEY
+#undef ELM_OF_ENTRY
+#undef NEXT_TICKET
+#undef NEXT_ENTRY
+#undef END_TICKET
+#undef PRIOR
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
