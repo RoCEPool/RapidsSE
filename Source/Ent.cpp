@@ -126,7 +126,7 @@ Key* Ent::aKey(void)
 /*----------------------------------------------------------------------------*/
 tET Ent::tNextEntry(i8 i_Level)
 {
-  ASSERT(i_Level >= 0 && i_Level < nOffsets());
+  ASSERT(i_Level >= 0 && i_Level < nTickets());
 
   tET tNextEntry = m_taNextEntry[i_Level];
   
@@ -138,7 +138,7 @@ tET Ent::tNextEntry(i8 i_Level)
 /*----------------------------------------------------------------------------*/
 void Ent::vNextEntry(i8 i_Level, tET tNextEntry)
 {
-  ASSERT(i_Level >= 0 && i_Level < nOffsets());
+  ASSERT(i_Level >= 0 && i_Level < nTickets());
 
   m_taNextEntry[i_Level] = tNextEntry;
 }
@@ -148,7 +148,7 @@ void Ent::vNextEntry(i8 i_Level, tET tNextEntry)
 /*----------------------------------------------------------------------------*/
 void Ent::vNextEntryDump(void)
 {
-  i8 nLvls  = nOffsets();
+  i8 nLvls  = nTickets();
   
   vTrace("Ent %p levels: %lld"_Stz,
          this,nLvls);
@@ -171,7 +171,7 @@ void Ent::vNextEntryReset(void)
 /*----------------------------------------------------------------------------*/
 /* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Ent::nOffsets(void)
+i8 Ent::nTickets(void)
 {
   return m_xRef.nOffsets();
 }
@@ -226,7 +226,7 @@ void Ent::vSetEntry(Ent* aFromEntry)
   // set entry reference and offsets
   
   vRef(aFromEntry->xRef());
-  vOffsets(aFromEntry->nOffsets());
+  vOffsets(aFromEntry->nTickets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry

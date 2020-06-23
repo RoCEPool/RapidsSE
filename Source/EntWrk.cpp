@@ -363,7 +363,7 @@ i8 EntWrk::nOffsets(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_xEnt.nOffsets();
+  return m_xEnt.nTickets();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -437,7 +437,7 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
-  i8 nLevels = pEntry->nOffsets();
+  i8 nLevels = pEntry->nTickets();
   vOffsets(nLevels);
   
   Ref xRef(iBufferNo,i_Item,nLevels);

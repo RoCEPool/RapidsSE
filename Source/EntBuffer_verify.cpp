@@ -98,7 +98,7 @@ void EntBuffer::vQuickVerify(Ent* aSeeEntry)
     if (aTestEntry == aSeeEntry)
       int iDebug = 1;
     
-    for (i8 i_ScanLevel = aTestEntry->nOffsets()-1; i_ScanLevel >= 0; i_ScanLevel--) {
+    for (i8 i_ScanLevel = aTestEntry->nTickets()-1; i_ScanLevel >= 0; i_ScanLevel--) {
       Ent* aCheckEntry = aNextEntry(aTestEntry,i_ScanLevel);
       if (! aCheckEntry)
         continue;
@@ -144,7 +144,7 @@ bool EntBuffer::bQuickVerify(Ent* aNotSeeEntry)
        aTestEntry;
        aTestEntry = aNextEntry(aTestEntry,0)) {
     
-    for (i8 i_ScanLevel = aTestEntry->nOffsets()-1; i_ScanLevel >= 0; i_ScanLevel--) {
+    for (i8 i_ScanLevel = aTestEntry->nTickets()-1; i_ScanLevel >= 0; i_ScanLevel--) {
       
       Ent* aCheckEntry = aNextEntry(aTestEntry,i_ScanLevel);
       if (! aCheckEntry)
@@ -795,7 +795,7 @@ bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
   while (aTestEntry_0) {
     
     // check if scan entry has more than one offset
-    i8 nOffsets = aTestEntry_0->nOffsets();
+    i8 nOffsets = aTestEntry_0->nTickets();
     if (1 == nOffsets) {
       aTestEntry_0 = aNextEntry(aTestEntry_0,0);
       continue;

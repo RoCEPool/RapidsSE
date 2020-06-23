@@ -141,7 +141,7 @@ void EntBuffer::vPositionPriorVecEntry(Key* aFindKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iFindLevels = aFindEntry ? (aFindEntry->nOffsets() - 1)
+  i8 iFindLevels = aFindEntry ? (aFindEntry->nTickets() - 1)
                               : (nLvlLevels - 1);
   
   bool bIsJuxta;
