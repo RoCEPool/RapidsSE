@@ -557,9 +557,9 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
   
-  i4 iOffset = iToOffset_i4(aInsertedEntry);
+  tEO tOffset = (tEO)iToOffset_i4(aInsertedEntry);
   
-  (*aaPriorEntry)->vNEO(0,iOffset);
+  (*aaPriorEntry)->vNEO(0,tOffset);
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // for the moment we set offsets in prior entry to C_OFS_NIL_i4

@@ -584,12 +584,11 @@ EntBuffer* EntBuffer::pFirstChildBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by offset                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aGetEntryOffset(i8 iOffset)
+Ent* EntBuffer::aGetEntryOffset(tEO tOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  //Ent* aEnt = aAdd<Ent*>(aItemArea(), iOffset);
-  Ent* aEnt = aGetItem_i4((i4)iOffset);
+  Ent* aEnt = aGetItem_i4(tOffset);
 
   return aEnt;
 }
@@ -934,13 +933,12 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   
   ASSERT(aCurrent->bValidEnt());
   
-  i4 iOffset = aCurrent->tNEO(iLevel);
+  tEO tOffset = aCurrent->tNEO(iLevel);
   
-  if (C_OFS_NIL_i4 == iOffset)
+  if (C_OFS_NIL_i4 == tOffset)
     return nullptr;
   
-  //Ent* aEnt = aAdd<Ent*>(aItemArea(), iOffset);
-  Ent* aEnt = aGetItem_i4(iOffset);
+  Ent* aEnt = aGetItem_i4(tOffset);
 
   ASSERT(! aEnt || aEnt->bValidEnt());
   
@@ -959,12 +957,12 @@ Ent* EntBuffer::aPopLazyChain(void)
   
   Ent* aPoppedLazyEntry = m_aLazyChain;
   
-  i8 iNextLazyOffset = aPoppedLazyEntry->tNEO(0);
+  tEO tNextLazyOffset = aPoppedLazyEntry->tNEO(0);
   
-  if (C_OFS_NIL_i4 == iNextLazyOffset)
+  if (C_OFS_NIL_i4 == tNextLazyOffset)
     m_aLazyChain = nullptr;
   else
-    m_aLazyChain = aGetEntryOffset(iNextLazyOffset);
+    m_aLazyChain = aGetEntryOffset(tNextLazyOffset);
   
   return aPoppedLazyEntry;
 }
@@ -1095,10 +1093,10 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 void EntBuffer::vShowEntry(Ent* aEnt)
 {
   Key* aKey = aEnt->aKey();
-  i8 iOffset = iToOffset_i4(aEnt);
+  tEO tOffset = (tEO)iToOffset_i4(aEnt);
   
   vTrace("Ent %07lld %p %lluB: "_Stz,
-         iOffset,
+         (i8)tOffset,
          aEnt,
          aEnt->nSizeBytes()
          );
@@ -1120,7 +1118,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
 
   vTrace(" offsets %lld"_Stz,aEnt->nOffsets());
   for (i8 i_Level = 0; i_Level < aEnt->nOffsets(); i_Level++)
-    vTrace(" %05d"_Stz,aEnt->tNEO(i_Level));
+    vTrace(" %05lld"_Stz,(i8)aEnt->tNEO(i_Level));
   
   vTrace("\n"_Stz);
 }
@@ -1175,15 +1173,15 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   vTrace("\n"_Stz);
   vTrace("Entries (by headEntry vector[0]):\n"_Stz);
   
-  i8 iOffset = aSkipRoots()->tNEO(0);
-  while (C_OFS_NIL_i4 != iOffset) {
-    Ent* aEnt = aGetEntryOffset(iOffset);
+  tEO tOffset = aSkipRoots()->tNEO(0);
+  while (C_OFS_NIL_i4 != tOffset) {
+    Ent* aEnt = aGetEntryOffset(tOffset);
     vShowEntry(aEnt);
     if (aMarkEntry == aEnt)
       vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
              "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"_Stz);
     
-    iOffset = aEnt->tNEO(0);
+    tOffset = aEnt->tNEO(0);
   }
   
   vTrace("\n"_Stz);
@@ -1202,9 +1200,9 @@ void EntBuffer::vShowShort(void)
          iBufferNo(),
          pHigherBuffer() ? pHigherBuffer()->iBufferNo() : 0);
   
-  i8 iOffset = aSkipRoots()->tNEO(0);
-  while (C_OFS_NIL_i4 != iOffset) {
-    Ent* aEnt = aGetEntryOffset(iOffset);
+  tEO tOffset = aSkipRoots()->tNEO(0);
+  while (C_OFS_NIL_i4 != tOffset) {
+    Ent* aEnt = aGetEntryOffset(tOffset);
     
     Key* aKey = _aKey(aEnt->ayElmSeq());
     i8 iVal = aKey->iGetInt();
@@ -1214,8 +1212,8 @@ void EntBuffer::vShowShort(void)
     else
       vTrace("%lld|%lld|"_Stz,iVal,EntBuffer::pRefdEntBuffer(aEnt)->iBufferNo());
     
-    iOffset = aEnt->tNEO(0);
-    if (C_OFS_NIL_i4 != iOffset)
+    tOffset = aEnt->tNEO(0);
+    if (C_OFS_NIL_i4 != tOffset)
       vTrace(","_Stz);
   }
   vTrace("]"_Stz);
