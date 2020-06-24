@@ -30,21 +30,21 @@ bool EntBuffer::bCheckPriorVec(Ent* aPriorVec[])
  
   
   if (aNextEntry_0 && aNextEntry_1) {
-    if (aNextEntry_0->iSkipNo() > aNextEntry_1->iSkipNo()) {
+    if (aNextEntry_0->iEntryNo() > aNextEntry_1->iEntryNo()) {
       vVerifyFault();
       return false;
     }
   }
 
   if (aNextEntry_1 && aNextEntry_2) {
-    if (aNextEntry_1->iSkipNo() > aNextEntry_2->iSkipNo()) {
+    if (aNextEntry_1->iEntryNo() > aNextEntry_2->iEntryNo()) {
       vVerifyFault();
       return false;
     }
   }
 
   if (aNextEntry_0 && aNextEntry_2) {
-    if (aNextEntry_0->iSkipNo() > aNextEntry_2->iSkipNo()) {
+    if (aNextEntry_0->iEntryNo() > aNextEntry_2->iEntryNo()) {
       vVerifyFault();
       return false;
     }
@@ -71,7 +71,7 @@ void EntBuffer::vNumberEntries(void)
        aTestEntry_0;
        aTestEntry_0 = aNextEntry(aTestEntry_0,0))
 
-    aTestEntry_0->vSkipNo( iEntryNo++ );
+    aTestEntry_0->vEntryNo(iEntryNo++);
   
 }
 #endif
@@ -815,7 +815,7 @@ bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
         Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_SkipLevel);
         
         // check we dont go backwwards
-        if (aNextEntry_sl->iSkipNo() < aScanEntry_sl->iSkipNo()) {
+        if (aNextEntry_sl->iEntryNo() < aScanEntry_sl->iEntryNo()) {
           vShow(aScanEntry_sl);
           vVerifyFault();
           return false;

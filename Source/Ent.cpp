@@ -36,7 +36,7 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt)
 #ifdef WITH_DEBUG_VERSION
   MemLib::vZero(m_taNextEntry,sizeof(m_taNextEntry),eClassNo);
   
-  m_uSkipNo = 0;
+  m_iEntryNo = 0;
 #endif
 }
 
@@ -95,6 +95,28 @@ i8 Ent::nElmSeqSize(void)
 void Ent::vElmSeqSize(i8 nElmSeqSize)
 {
   m_xKey.vElmSeqSize(nElmSeqSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set entry no                                                               */
+/*----------------------------------------------------------------------------*/
+i8 Ent::iEntryNo(void)
+{
+#ifdef WITH_DEBUG_VERSION
+  return m_iEntryNo;
+#else
+  return C_UNKNOWN;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set entry no                                                               */
+/*----------------------------------------------------------------------------*/
+void Ent::vEntryNo(i8 iEntryNo)
+{
+#ifdef WITH_DEBUG_VERSION
+  m_iEntryNo = (u8)iEntryNo;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,28 +272,6 @@ i8 Ent::nSkipLevels(void)
 void Ent::vSkipLevels(i8 nLevels)
 {
   m_xRef.vSkipLevels(nLevels);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set skip no                                                                */
-/*----------------------------------------------------------------------------*/
-i8 Ent::iSkipNo(void)
-{
-#ifdef WITH_DEBUG_VERSION
-  return m_uSkipNo;
-#else
-  return C_UNKNOWN;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set skip no                                                                */
-/*----------------------------------------------------------------------------*/
-void Ent::vSkipNo(i8 iSkipNo)
-{
-#ifdef WITH_DEBUG_VERSION
-  m_uSkipNo = (u8)iSkipNo;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

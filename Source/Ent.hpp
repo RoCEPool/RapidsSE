@@ -21,7 +21,7 @@ namespace Entries
     tET m_taNextEntry[C_MAX_LVL_LEVELS];  // tickets to next entry by level
 
 #ifdef WITH_DEBUG_VERSION
-    i8  m_uSkipNo; // verify of order of skip items
+    i8  m_iEntryNo; // verify of order of skip items
 #endif
   
     Key m_xKey;    // the key
@@ -45,7 +45,9 @@ namespace Entries
     byte* ayElmSeq(void);
     i8    nElmSeqSize(void);
     void  vElmSeqSize(i8 nElmSeqSize);
-  
+    i8    iEntryNo(void);
+    void  vEntryNo(i8 iEntryNo);
+
     i8    iItem(void);
     void  vItem(i8 iItem);
 
@@ -63,13 +65,10 @@ namespace Entries
   
     void  vSetEntry(Ent* aFromEntry);
 
-    i8    nSkipLevels(void);
-    void  vSkipLevels(i8 nLevels);
-    
     i8    nSizeBytes(void);
 
-    i8    iSkipNo(void);
-    void  vSkipNo(i8 iSkipNo);
+    i8    nSkipLevels(void);
+    void  vSkipLevels(i8 nLevels);
 
     bool  bValidEnt(void);
  };
