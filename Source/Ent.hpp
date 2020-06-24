@@ -3,12 +3,20 @@
 /*============================================================================*/
 #pragma once
 
+//#define __ENT_QUANTA
+
 namespace Entries
 {
   static const i8 C_ENT_QUANTA = 32;
-  static const u4 C_ENT_END_TICKET = 0x7FFFFFFF;
 
+#ifdef __ENT_QUANTA
+  static const u2 C_ENT_END_TICKET = 0xFFFF;
+  typedef u2 tET; // opaque type for entry tickets
+#else
+  static const u4 C_ENT_END_TICKET = 0x7FFFFFFF;
   typedef u4 tET; // opaque type for entry tickets
+#endif
+
 
   //----------------------------------------------------------------------------
 

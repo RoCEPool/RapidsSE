@@ -346,7 +346,11 @@ i8 EntBuffer::iToEntryOffset(tET tEntryTicket)
 {
   _static_
   
+#ifdef __ENT_QUANTA
+  i8 iEntryOffset = (i8)tEntryTicket * C_ENT_QUANTA;
+#else
   i8 iEntryOffset = (i8)tEntryTicket;
+#endif
   
   return iEntryOffset;
 }
@@ -358,7 +362,11 @@ tET EntBuffer::tToEntryTicket(i8 iEntryOffset)
 {
   _static_
   
+#ifdef __ENT_QUANTA
+  tET tEntryTicket = (tET)(iEntryOffset / C_ENT_QUANTA);
+#else
   tET tEntryTicket = (tET)iEntryOffset;
+#endif
   
   return tEntryTicket;
 }
