@@ -987,12 +987,12 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   
   ASSERT(aCurrent->bValidEnt());
   
-  tET tOffset = aCurrent->tNextEntry(iLevel);
+  tET tNextEntry = aCurrent->tNextEntry(iLevel);
   
-  if (C_ENT_END_TICKET == tOffset)
+  if (C_ENT_END_TICKET == tNextEntry)
     return nullptr;
   
-  Ent* aEnt = aGetItem(tOffset);
+  Ent* aEnt = aGetItem(tNextEntry);
 
   ASSERT(! aEnt || aEnt->bValidEnt());
   
@@ -1227,15 +1227,15 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   vTrace("\n"_Stz);
   vTrace("Entries (by headEntry vector[0]):\n"_Stz);
   
-  tET tOffset = aSkipRoots()->tNextEntry(0);
-  while (C_ENT_END_TICKET != tOffset) {
-    Ent* aEnt = aGetEntry(tOffset);
+  tET tEntry = aSkipRoots()->tNextEntry(0);
+  while (C_ENT_END_TICKET != tEntry) {
+    Ent* aEnt = aGetEntry(tEntry);
     vShowEntry(aEnt);
     if (aMarkEntry == aEnt)
       vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
              "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"_Stz);
     
-    tOffset = aEnt->tNextEntry(0);
+    tEntry = aEnt->tNextEntry(0);
   }
   
   vTrace("\n"_Stz);
@@ -1254,9 +1254,9 @@ void EntBuffer::vShowShort(void)
          iBufferNo(),
          pHigherBuffer() ? pHigherBuffer()->iBufferNo() : 0);
   
-  tET tOffset = aSkipRoots()->tNextEntry(0);
-  while (C_ENT_END_TICKET != tOffset) {
-    Ent* aEnt = aGetEntry(tOffset);
+  tET tEntry = aSkipRoots()->tNextEntry(0);
+  while (C_ENT_END_TICKET != tEntry) {
+    Ent* aEnt = aGetEntry(tEntry);
     
     Key* aKey = _aKey(aEnt->ayElmSeq());
     i8 iVal = aKey->iGetIntElm();
@@ -1266,8 +1266,8 @@ void EntBuffer::vShowShort(void)
     else
       vTrace("%lld|%lld|"_Stz,iVal,EntBuffer::pRefdEntBuffer(aEnt)->iBufferNo());
     
-    tOffset = aEnt->tNextEntry(0);
-    if (C_ENT_END_TICKET != tOffset)
+    tEntry = aEnt->tNextEntry(0);
+    if (C_ENT_END_TICKET != tEntry)
       vTrace(","_Stz);
   }
   vTrace("]"_Stz);

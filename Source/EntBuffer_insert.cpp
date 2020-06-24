@@ -557,9 +557,9 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
   
-  tET tTicket = tToTicket(aInsertedEntry);
+  tET tInsertedEntry = tToTicket(aInsertedEntry);
   
-  (*aaPriorEntry)->vNextEntry(0,tTicket);
+  (*aaPriorEntry)->vNextEntry(0,tInsertedEntry);
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // for the moment we set offsets in prior entry to C_ENT_END_TICKET
@@ -647,8 +647,8 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEnt)
   // form lazy chain
   
   if (m_aLazyChain) {
-    tET tLazyTicket = tToTicket(m_aLazyChain);
-    aInsertedEntry->vNextEntry(0,tLazyTicket);
+    tET tLazyChain = tToTicket(m_aLazyChain);
+    aInsertedEntry->vNextEntry(0,tLazyChain);
   }
   else {
     aInsertedEntry->vNextEntry(0,C_ENT_END_TICKET);
@@ -724,13 +724,13 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set prior offsets
   
-  tET tKeyEntryOffset = tToTicket(aEntry);
+  tET tEntry = tToTicket(aEntry);
   
   i8 nLevels = aEntry->nSkipLevels();
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
     tET tNextOffset = xPriorVec[i_Level]->tNextEntry(i_Level);
     aEntry->vNextEntry(i_Level,tNextOffset);
-    xPriorVec[i_Level]->vNextEntry(i_Level,tKeyEntryOffset);
+    xPriorVec[i_Level]->vNextEntry(i_Level,tEntry);
   }
   
   //vShow();
