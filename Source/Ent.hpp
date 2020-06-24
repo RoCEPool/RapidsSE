@@ -10,21 +10,21 @@ namespace Entries
   static const i8 C_ENT_QUANTA = 32;
 
 #ifdef __ENT_QUANTA
-  static const u2 C_ENT_END_TICKET = 0xFFFF;
   typedef u2 tET; // opaque type for entry tickets
+  static const tET C_ENT_END_TICKET = 0xFFFF;
 #else
-  static const u4 C_ENT_END_TICKET = 0x7FFFFFFF;
   typedef u4 tET; // opaque type for entry tickets
+  static const tET C_ENT_END_TICKET = 0x7FFFFFFF;
 #endif
-
 
   //----------------------------------------------------------------------------
 
   class Ent : public Header
   {
   private:
-    Ref m_xRef;    // reference (this is either a sub-ref to a child EntBuffer,
-                   //            or a row-ref to a row at H0 leaf buffers)
+    Ref m_xRef; // reference which is either:
+                //   a) a sub-ref to a child EntBuffer (Hn buffers), or
+                //   b) a row-ref to a row (occurs at H0 leaf buffers)
   
     tET m_taNextEntry[C_MAX_LVL_LEVELS];  // tickets to next entry by level
 
@@ -38,8 +38,6 @@ namespace Entries
   
     // ..neo (1, 2 or 3 next entry offsets)
   
-  public:
-
   public:
     void* operator new(size_t);
     void* operator new(size_t, Ent*);

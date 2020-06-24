@@ -428,7 +428,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
       
       aNextEntry_sl = (Ent*)((char*)aItemArea() + tNextOffset);
       
-      Ent_Cur* aEntCur = (Ent_Cur*)aNextEntry_sl;
+      Ent_flat* aEnt_flat = (Ent_flat*)aNextEntry_sl;
       
       //--------------------------------------------------------------
       Key* aNextKey = aNextEntry_sl->aKey();
@@ -436,7 +436,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
       i8 iLeftValue = *((i8*)aNextKey->ayElmSeq());
       i8 iRightValue = *((i8*)aFindKey->ayElmSeq());
       
-      ASSERT(aEntCur->m_iIntKey == iLeftValue);
+      ASSERT(aEnt_flat->m_iIntKey == iLeftValue);
       
       if (iLeftValue >= iRightValue)
         break;

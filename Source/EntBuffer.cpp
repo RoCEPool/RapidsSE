@@ -1001,11 +1001,12 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   if (C_ENT_END_TICKET == tNextEntry)
     return nullptr;
   
-  Ent* aEnt = aGetItem(tNextEntry);
+  i8 iNextEntryOffset = iToEntryOffset(tNextEntry);
+  Ent* aNextEnt = aGetItem(iNextEntryOffset);
 
-  ASSERT(! aEnt || aEnt->bValidEnt());
+  ASSERT(! aNextEnt || aNextEnt->bValidEnt());
   
-  return aEnt;
+  return aNextEnt;
 }
 
 /*----------------------------------------------------------------------------*/

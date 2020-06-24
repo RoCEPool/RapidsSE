@@ -515,6 +515,8 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   
   vInsertEntSkipList(aInsertedEntry);
   
+  Ent_flat* pEnt_flat = (Ent_flat*)aInsertedEntry;
+  
   //vShow();
   
   return aInsertedEntry;
@@ -600,10 +602,14 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert into the tree
+  
+  //pPositionedH0EntBuffer->vShow();
 
   Ent* aInsertedEnt =
     pPositionedH0EntBuffer->aInsertEntUpwards(aEnt,ppRootEntBuffer);
   
+  //pPositionedH0EntBuffer->vShow();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   return aInsertedEnt;
