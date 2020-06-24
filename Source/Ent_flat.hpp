@@ -21,7 +21,7 @@ namespace Entries
     tET m_taNextEntry[C_MAX_LVL_LEVELS];  // tickets                  // 2 words
     u2  m_uSpare;         // spare
 
-    i8  m_iIntElm0;       // integer element of key                   // 1 word
+    i8  m_iIntElm0;       // first element of an integer key          // 1 word
                                                                       //--------
   };                                                                  // 4 words
 
@@ -49,7 +49,7 @@ namespace Entries
     #endif
   
     i8 m_nElmSeqSize;     // total size of the key's elements
-    i8 m_iIntElm0;        // integer element of key
+    i8 m_iIntElm0;        // first element of an integer key 
   };
 }
 

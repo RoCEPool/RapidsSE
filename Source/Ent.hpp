@@ -35,7 +35,10 @@ namespace Entries
     i8  m_iEntryNo; // used to verify the order of entries
 #endif
   
-    Key m_xKey;    // the key
+    union {
+    Key m_xKey;     // the key (for the general case)
+    i8  m_iIntElm0; // or special case of first element of an integer only key
+    };
   
     // ..element sequence (of the key)
     

@@ -454,19 +454,19 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
 /* compute prior vector for given key                                         */
 /*----------------------------------------------------------------------------*/
 
-#define ELM_OF_KEY(aKey)     ( aKey->iGetIntElm() )
+#define ELM0_OF_KEY(aKey)    ( aKey->iGetIntElm() )
 
-#define ELM_OF_ENTRY(aEnt)   ( aEnt->aKey()->iGetIntElm() )
+#define ELM0_OF_ENTRY(aEnt)  ( aEnt->aKey()->iGetIntElm() )
 
 #define NEXT_TICKET(aEnt,i_Lvl)  ( aEnt->tNextEntry(i_Lvl) )
 
-#define ENTRY(tTicket)       ( aGetItem(tTicket) )
+#define GET_ENTRY(tTicket)   ( aGetItem(tTicket) )
 
 #define END_TICKET(tNxtEnt)  ( C_ENT_END_TICKET == tNxtEnt )
 
-#define AT_PRIOR_POS(iPrior,iNext) ( iPrior <= iNext )
+#define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
 
-void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aPriorKey,
+void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aKey,
                                              Ent* aPriorVec[])
 {
   /*
@@ -495,7 +495,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aPriorKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iPriorElm = ELM_OF_KEY(aPriorKey);
+  i8 iKey_IntElm = ELM0_OF_KEY(aKey);
 
   Ent* aScanEnt = aSkipRoots;
   for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
@@ -504,22 +504,22 @@ void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aPriorKey,
          ! END_TICKET(tNextEnt);
          tNextEnt = NEXT_TICKET(aScanEnt,i_Level)) {
 
-      Ent* aNextEnt = ENTRY(tNextEnt);
-      i8 iNextElm = ELM_OF_ENTRY(aNextEnt);
+      Ent* aNextEnt = GET_ENTRY(tNextEnt);
+      i8 iNextEnt_IntElm = ELM0_OF_ENTRY(aNextEnt);
             
-      if (AT_PRIOR_POS(iPriorElm,iNextElm))
+      if (SCAN_IS_AT_PRIOR_POS(iKey_IntElm,iNextEnt_IntElm)) {
+        aPriorVec[i_Level] = aScanEnt;
         break;
-              
+      }
+      
       aScanEnt = aNextEnt;
     }
-    
-    aPriorVec[i_Level] = aScanEnt;
   }
   
 }
 
-#undef ELM_OF_KEY
-#undef ELM_OF_ENTRY
+#undef ELM0_OF_KEY
+#undef ELM0_OF_ENTRY
 #undef NEXT_TICKET
 #undef NEXT_ENTRY
 #undef END_TICKET
