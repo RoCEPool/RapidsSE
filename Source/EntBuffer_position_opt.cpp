@@ -436,7 +436,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
       i8 iLeftValue = *((i8*)aNextKey->ayElmSeq());
       i8 iRightValue = *((i8*)aFindKey->ayElmSeq());
       
-      ASSERT(aEnt_flat->m_iIntKey == iLeftValue);
+      ASSERT(aEnt_flat->m_iIntElm0 == iLeftValue);
       
       if (iLeftValue >= iRightValue)
         break;

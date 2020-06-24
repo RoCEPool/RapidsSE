@@ -29,18 +29,16 @@ namespace Entries
                 //   a) a sub-ref to a child EntBuffer (Hn buffers), or
                 //   b) a row-ref to a row (occurs at H0 leaf buffers)
   
-    tET m_taNextEntry[C_MAX_LVL_LEVELS];  // tickets to next entry by level
+    tET m_taNextEntry[C_MAX_LVL_LEVELS]; // tickets to next entry by level
 
 #ifdef WITH_DEBUG_VERSION
-    i8  m_iEntryNo; // verify of order of skip items
+    i8  m_iEntryNo; // used to verify the order of entries
 #endif
   
     Key m_xKey;    // the key
   
     // ..element sequence (of the key)
-  
-    // ..neo (1, 2 or 3 next entry offsets)
-  
+    
   public:
     void* operator new(size_t);
     void* operator new(size_t, Ent*);
