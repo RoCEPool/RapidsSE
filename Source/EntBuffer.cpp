@@ -523,8 +523,8 @@ void EntBuffer::vCutEntry(Ent* aEnt, Ent* aPriorVec[])
   i8 nLevels = aEnt->nSkipLevels();
   
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
-    tET tEntryTicket = aEnt->tNextEntry(i_Level);
-    aPriorVec[i_Level]->vNextEntry(i_Level,tEntryTicket);
+    tET tNextEntry = aEnt->tNextEntry(i_Level);
+    aPriorVec[i_Level]->vNextEntry(i_Level,tNextEntry);
   }
 }
 
@@ -642,7 +642,8 @@ Ent* EntBuffer::aGetEntry(tET tEntryTicket)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Ent* aEnt = aGetItem(tEntryTicket);
+  i8 iEntryOffset = iToEntryOffset(tEntryTicket);
+  Ent* aEnt = aGetItem(iEntryOffset);
 
   return aEnt;
 }
