@@ -19,9 +19,12 @@ namespace Entries
 
   //----------------------------------------------------------------------------
 
-  class Ent : public Header
+  class Ent
   {
   private:
+
+    _Header m_xHeader;
+
     Ref m_xRef; // reference which is either:
                 //   a) a sub-ref to a child EntBuffer (Hn buffers), or
                 //   b) a row-ref to a row (occurs at H0 leaf buffers)
@@ -47,6 +50,8 @@ namespace Entries
   
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
+  
+    eCN   eClass(void);
   
     byte* ayElmSeq(void);
     i8    nElmSeqSize(void);
@@ -77,6 +82,7 @@ namespace Entries
     void  vSkipLevels(i8 nLevels);
 
     bool  bValidEnt(void);
+    bool  bValidMagic(void);
  };
   
   /*--------------------------------------------------------------------------*/

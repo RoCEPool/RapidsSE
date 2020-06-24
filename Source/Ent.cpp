@@ -31,8 +31,10 @@ void* Ent::operator new(size_t, Ent* aEnt)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Ent::Ent(eCN eClassNo, i8 nSizeEnt)
-: Header(eClassNo)
 {
+  m_xHeader.vClass(CN_ENT);
+  m_xHeader.vMagic();
+
 #ifdef WITH_DEBUG_VERSION
   MemLib::vZero(m_taNextEntry,sizeof(m_taNextEntry),eClassNo);
   
@@ -66,6 +68,16 @@ i8 Ent::iBuffer(void)
 void Ent::vBuffer(i8 iBuffer)
 {
   m_xRef.vBuffer(iBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of the element bytes of the key in this entry                  */
+/*----------------------------------------------------------------------------*/
+eCN Ent::eClass(void)
+{
+  eCN eClass = m_xHeader.eClass();
+  
+  return eClass;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,6 +302,16 @@ bool Ent::bValidEnt(void)
   }
     
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid magic                                                       */
+/*----------------------------------------------------------------------------*/
+bool Ent::bValidMagic(void)
+{
+  bool bValid = m_xHeader.bValidMagic();
+  
+  return bValid;
 }
 
 /*============================================================================*/
