@@ -290,7 +290,7 @@ void Ent::vSkipLevels(i8 nLevels)
 /* test for valid entry                                                       */
 /*----------------------------------------------------------------------------*/
 bool Ent::bValidEnt(void)
-{  
+{
   if (! bValidMagic()) {
     vTrace("Not valid magic\n"_Stz);
     return false;

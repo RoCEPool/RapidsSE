@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-//#define __ENT_QUANTA
+#define __ENT_QUANTA
 
 namespace Entries
 {
@@ -25,9 +25,9 @@ namespace Entries
 
     _Header m_xHeader;
 
-    Ref m_xRef; // reference which is either:
-                //   a) a sub-ref to a child EntBuffer (Hn buffers), or
-                //   b) a row-ref to a row (occurs at H0 leaf buffers)
+    Ref m_xRef; // reference which is either :
+                //   a) sub-ref to a child EntBuffer (Hn buffers), or
+                //   b) row-ref to a row (occurs at H0 leaf buffers)
   
     tET m_taNextEntry[C_MAX_LVL_LEVELS]; // tickets to next entry by level
 
