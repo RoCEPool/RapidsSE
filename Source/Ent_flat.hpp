@@ -9,6 +9,9 @@ namespace Entries
 
   struct Ent_int
   {
+    #ifdef __ENT_HEADER
+      _Header m_xHeader;
+    #endif
     struct {
       u8 m_uBuffer  : 32; // which buffer (2^32 * 1MB is 4PB)
       u8 m_uItem    : 16; // item in that buffer (2^16 is max of 64K items)
@@ -31,8 +34,9 @@ namespace Entries
 
   struct Ent_flat
   {
-    _Header m_xHeader;
-  
+    #ifdef __ENT_HEADER
+      _Header m_xHeader;
+    #endif
     struct {
       u8 m_uBuffer  : 32; // which buffer (2^32 * 1MB is 4PB)
       u8 m_uItem    : 16; // item in that buffer (2^16 is max of 64K items)

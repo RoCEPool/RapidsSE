@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#define __ENT_HEADER
 #define __ENT_QUANTA
 
 namespace Entries
@@ -23,8 +24,10 @@ namespace Entries
   {
   private:
 
+#ifdef __ENT_HEADER
     _Header m_xHeader;
-
+#endif
+  
     Ref m_xRef; // reference which is either :
                 //   a) sub-ref to a child EntBuffer (Hn buffers), or
                 //   b) row-ref to a crw row in a crwBuffer (occurs at H0 leaf buffers)
