@@ -20,9 +20,6 @@ JobClass xJobClass_Local =
   nullptr,                  // job pre-send function
   nullptr,                  // job post-receive function
   vJob_Local_show,          // job show function
-  
-  // help
-  false,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

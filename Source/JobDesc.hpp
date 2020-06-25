@@ -22,10 +22,7 @@ namespace Jobs
             void (*fpDelete)(Job* pJob),
             void (*fpSend)(Job* pJob),
             void (*fpRecv)(Job* pJob),
-            void (*fpShow)(Job* pJob),
-            
-            bool bEnabled  // is this job enabled?
-    
+            void (*fpShow)(Job* pJob)    
            );
   };
 }
