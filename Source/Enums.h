@@ -62,6 +62,7 @@ namespace Enums
 #include "eJS.h"
 
 #include "eKC.h"
+#include "eKE.h"
 #include "eKK.h"
 
 #include "eLA.h"
