@@ -34,13 +34,11 @@ namespace Entries
   
     tET m_taNextEntry[C_MAX_LVL_LEVELS]; // tickets to next entry by level
 
-#ifdef WITH_DEBUG_VERSION
     u2  m_uEntryNo; // used to verify the order of entries
-#endif
   
     union {
     Key m_xKey;     // the key (for the general case)
-    i8  m_iIntElm0; // or first element of an integer only key
+    i8  m_iIntElm0; // or first int element of a special case ent
     };
   
     // ... element sequence (for a KE_GENERAL key)

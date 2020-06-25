@@ -35,10 +35,10 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt)
   m_xHeader.vClass(CN_ENT);
   m_xHeader.vMagic();
 
+  m_uEntryNo = C_ENT_END_TICKET;
+
 #ifdef WITH_DEBUG_VERSION
   MemLib::vZero(m_taNextEntry,sizeof(m_taNextEntry),eClassNo);
-  
-  m_uEntryNo = 0;
 #endif
 }
 
@@ -122,11 +122,7 @@ void Ent::vElmSeqSize(i8 nElmSeqSize)
 /*----------------------------------------------------------------------------*/
 i8 Ent::iEntryNo(void)
 {
-#ifdef WITH_DEBUG_VERSION
   return m_uEntryNo;
-#else
-  return C_UNKNOWN;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,9 +130,9 @@ i8 Ent::iEntryNo(void)
 /*----------------------------------------------------------------------------*/
 void Ent::vEntryNo(i8 iEntryNo)
 {
-#ifdef WITH_DEBUG_VERSION
+  ASSERT(iEntryNo >= 0);
+  
   m_uEntryNo = (u8)iEntryNo;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
