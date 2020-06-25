@@ -1152,11 +1152,16 @@ void Scheduler::vScheduleTask(Task* pKnownTask)
   
   pKnownTask->vState(TS_READY);
 
-  if (pKnownTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL)
-    pQueues->vAppendReadyQueue(pKnownTask);
-  else
-    pQueues->vAppendReadyQueueLP(pKnownTask);
+  //! ALKA: while cleaning up JobClass all jobs had m_ePriority
+  //! as PY_NORMAL hence Appending to readyQueue always
+  
+  //if (pKnownTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL)
+  //  pQueues->vAppendReadyQueue(pKnownTask);
+  //else
+  //  pQueues->vAppendReadyQueueLP(pKnownTask);
  
+  pQueues->vAppendReadyQueue(pKnownTask);
+  
   pQueues->vDropThreadIdleQueue();
   
   // **do not touch task*

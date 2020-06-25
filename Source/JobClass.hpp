@@ -14,8 +14,6 @@ namespace Jobs
       Stz* m_aCommand1;  // first word of prompt command
       Stz* m_aCommand2;  // optional second word of prompt command
       eDL  m_eDdlLock;   // ddl lock model
-      ePY  m_ePriority;  // job priority
-      eJF  m_eFlags;     // job flags
   
       eEC  (*m_fpCheck)(void);
       Job* (*m_fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);

@@ -12,8 +12,6 @@ JobClass xJobClass_Distributed =
   nullptr,                  // the prompt command
   nullptr,                  // the second word
   DL_GRAB_WRITE,            // ddl lock model
-  PY_NORMAL,                // priority
-  JF_LOWMEM,                // flags
 
   nullptr,                  // prompt check function
   pJob_Distributed_pre,     // prompt pre-process function

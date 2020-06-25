@@ -13,8 +13,6 @@ JobClass xJobClass_Local =
   nullptr,                  // the second word
 
   DL_GRAB_WRITE,            // ddl lock model
-  PY_NORMAL,                // priority
-  JF_LOWMEM,                // flags
 
   nullptr,                  // prompt check function
   pJob_Local_pre,           // prompt pre-process function
