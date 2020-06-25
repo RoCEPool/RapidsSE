@@ -66,8 +66,6 @@ assert::stack_0
 
         "job_Distributed.sen"     include
 
-        "Job_Local.sen"           include
-
         "Job_Pipeline.sen"        include
         "Job_PipelineLocal.sen"   include
 
