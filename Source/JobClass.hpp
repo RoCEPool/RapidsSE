@@ -58,9 +58,6 @@ namespace Jobs
       void vSendJob(Job* pJob);
       void vShowJob(Job* pJob);
   
-      void vJobCat(void);
-      static void vJobCatHeader(void);
-  
       // - -
   
       static pJOBCLASSFUN pFirstFun(void);
@@ -68,7 +65,6 @@ namespace Jobs
       static void vCmds(eCN eClass);
       static JobClass* pFind(eCN eClass);
       static JobClass* pFind(Stz* aCommand1, Stz* aCommand2);
-      static void vJobCat(eCN eClass);
       static void vVerifySeeds(void);
   };
   

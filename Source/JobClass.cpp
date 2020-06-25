@@ -185,112 +185,6 @@ void JobClass::vShowJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vtrace the job class for the jobcat prompt function                        */
-/*----------------------------------------------------------------------------*/
-void JobClass::vJobCat(void)
-{
-  s32 sDdlLock("-"_Stz);
-  
-  if (DL_NONE != m_eDdlLock)
-    sDdlLock = aDL[m_eDdlLock];
-
-  s32 sFlags("-"_Stz);
-  if (JF_LOWMEM == m_eFlags)
-    sFlags = aJF[JF_LOWMEM];
-
-  s32 sFunctions(""_Stz);
-
-  sFunctions.vConcat(m_fpCheck  ? "c"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fpPre    ? "p"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fpPost   ? "P"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fpNew    ? "n"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fpDelete ? "d"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fpSend   ? "s"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fpRecv   ? "r"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fpShow   ? "."_Stz : " "_Stz);
-  
-  s32 sSeedRun(m_aSeedRun ? m_aSeedRun : "-"_Stz);
-  sSeedRun.vConcat(m_bSeedsSpawned[SS_SEED_RUN] ? "+"_Stz : " "_Stz);
-  
-  s32 sSeedReq(m_aSeedReq ? m_aSeedReq : "-"_Stz);
-  sSeedReq.vConcat(m_bSeedsSpawned[SS_SEED_REQ] ? "+"_Stz : " "_Stz);
-  
-  s32 sSeedRcv(m_aSeedRcv ? m_aSeedRcv : "-"_Stz);
-  sSeedRcv.vConcat(m_bSeedsSpawned[SS_SEED_RCV] ? "+"_Stz : " "_Stz);
-  
-  s32 sSeedExe(m_aSeedExe ? m_aSeedExe : "-"_Stz);
-  sSeedExe.vConcat(m_bSeedsSpawned[SS_SEED_EXE] ? "+"_Stz : " "_Stz);
-  
-  s32 sSeedEnd(m_aSeedEnd ? m_aSeedEnd : "-"_Stz);
-  sSeedEnd.vConcat(m_bSeedsSpawned[SS_SEED_END] ? "+"_Stz : " "_Stz);
-  
-  s32 sSeedCan(m_aSeedCan ? m_aSeedCan : "-"_Stz);
-  sSeedCan.vConcat(m_bSeedsSpawned[SS_SEED_CAN] ? "+"_Stz : " "_Stz);
-  
-  vTrace("%20s %10lld %10s %10s %10s %10s %10s %20s : "
-         "%10s %20s %20s %20s %20s %20s %20s\n"_Stz,
-         
-         aCN[m_eClass],
-         gxaSizeHeap[m_eClass].m_nClassSize,
-         sFunctions.szStz(),
-         aJK[m_eKind],
-         sDdlLock.szStz(),
-         aPY[m_ePriority],
-         sFlags.szStz(),
-         m_aComment,
-         
-         m_bResources ? "chk/rel"_Stz : "-"_Stz,
-         sSeedRun.szStz(),
-         sSeedReq.szStz(),
-         sSeedRcv.szStz(),
-         sSeedExe.szStz(),
-         sSeedEnd.szStz(),
-         sSeedCan.szStz()
-         );
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* vtrace the header for the jobcat prompt function                           */
-/*----------------------------------------------------------------------------*/
-void JobClass::vJobCatHeader(void)
-{
-  vTrace("%20s %10s %10s %10s %10s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
-         
-         "eClass"_Stz,
-         "SizeOf"_Stz,
-         "Functions"_Stz,
-         "Kind"_Stz,
-         "Ddl Lock"_Stz,
-         "Priority"_Stz,
-         "Flags"_Stz,
-         "Comment"_Stz,
-         
-         "Resources"_Stz,
-         "Run Seed"_Stz,
-         "Req Seed"_Stz,
-         "Rcv Seed"_Stz,
-         "Exe Seed"_Stz,
-         "End Seed"_Stz,
-         "Can Seed"_Stz
-         );
-  
-  s32 sBar10 = "----------"_Stz;
-  s32 sBar20 = "--------------------"_Stz;
-  
-  vTrace("%20s %10s %10s %10s %10s %10s %10s %20s : "
-         "%10s %20s %20s %20s %20s %20s %20s\n"_Stz,
-         
-         sBar20.szStz(),sBar10.szStz(),sBar10.szStz(),
-         sBar10.szStz(),sBar10.szStz(),sBar10.szStz(),sBar10.szStz(),sBar20.szStz(),
-         
-         sBar10.szStz(),sBar20.szStz(),sBar20.szStz(),sBar20.szStz(),
-         sBar20.szStz(),sBar20.szStz(),sBar20.szStz()
-         );
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* find job class given class number                                          */
 /*----------------------------------------------------------------------------*/
 pJOBCLASSFUN JobClass::pFirstFun(void)
@@ -376,22 +270,6 @@ JobClass* JobClass::pFind(Stz* aCommand1, Stz* aCommand2)
   }
   
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace the job for the given class                                          */
-/*----------------------------------------------------------------------------*/
-void JobClass::vJobCat(eCN eClass)
-{
-  JobClass* pJobClass = nullptr;
-  
-  for (pJOBCLASSFUN pfJobClass = pFirstFun(); pfJobClass; ) {
-    
-    pJobClass = pfJobClass((pFUN**)&pfJobClass);
-    
-    if (pJobClass->m_eClass == eClass)
-      pJobClass->vJobCat();
-  }
 }
 
 /*----------------------------------------------------------------------------*/
