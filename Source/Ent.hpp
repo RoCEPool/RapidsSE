@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-//#define __ENT_HEADER
+#define __ENT_HEADER
 
 namespace Entries
 {

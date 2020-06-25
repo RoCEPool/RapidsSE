@@ -462,9 +462,12 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
 
 #define GET_ENTRY(tTicket)   ( aGetItem(iToEntryOffset(tTicket)) )
 
-#define NEXT_TICKET(aEnt,i_Lvl)  ( aEnt->tNextEntry(i_Lvl) )
+#define MARK_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = aEnt )
+
+#define NEXT_TICKET(aEnt,i_Lvl) ( aEnt->tNextEntry(i_Lvl) )
 
 #define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
+
 
 void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aKey,
                                              Ent* aPriorVec[])
@@ -513,7 +516,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aKey,
       aScanEnt = aNextEnt;
     }
 
-    aPriorVec[i_Level] = aScanEnt;
+    MARK_PRIOR_POS(aPriorVec,i_Level,aScanEnt);
   }
   
 }
@@ -522,6 +525,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aKey,
 #undef ELM0_OF_ENTRY
 #undef END_TICKET
 #undef GET_ENTRY
+#undef MARK_PRIOR_POS
 #undef NEXT_TICKET
 #undef SCAN_IS_AT_PRIOR_POS
 
