@@ -12,8 +12,6 @@
 /*----------------------------------------------------------------------------*/
 /* check prior vec ordering                                                   */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG_VERSION
-
 bool EntBuffer::bCheckPriorVec(Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -53,12 +51,10 @@ bool EntBuffer::bCheckPriorVec(Ent* aPriorVec[])
   
   return true;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* number entries                                                             */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG_VERSION
 void EntBuffer::vNumberEntries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -74,7 +70,6 @@ void EntBuffer::vNumberEntries(void)
     aTestEntry_0->vEntryNo(iEntryNo++);
   
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* quick verify                                                               */
@@ -296,11 +291,9 @@ bool EntBuffer::bVerifyLnAny(void)
   if (! bValid)
     return false;
   
-#ifdef WITH_DEBUG_VERSION
   bValid = bVerifySkipListLevels();
   if (! bValid)
     return false;
-#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of child buffers
@@ -764,10 +757,8 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
     }
   }
   
-#ifdef WITH_DEBUG_VERSION
   if (! bVerifySkipListLevels())
     return false;
-#endif
   
   return true;
 }
@@ -775,8 +766,6 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
 /*----------------------------------------------------------------------------*/
 /* verify the skip list levels                                                */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG_VERSION
-
 bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -837,7 +826,6 @@ bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
   
   return true;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* verify has detected a fault                                                */
