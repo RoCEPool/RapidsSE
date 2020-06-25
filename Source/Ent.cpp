@@ -97,7 +97,15 @@ byte* Ent::ayElmSeq(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nElmSeqSize(void)
 {
-  i8 nBytes = m_xKey.nElmSeqSize();
+  i8 nBytes;
+
+  if (KE_GENERAL == m_xRef.eKind())
+    nBytes = m_xKey.nElmSeqSize();
+  else {
+    nBytes = 0;
+    RASSERT(0); // temp
+  }
+  
   return nBytes;
 }
 

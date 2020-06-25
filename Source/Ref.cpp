@@ -141,6 +141,7 @@ void Ref::vReset(void)
   m_uItem    = 0;
   m_uLevels  = 0;
   
+  m_uKind    = 0;
   m_uPayload = 0;
   m_uSpare   = 0;
 }
