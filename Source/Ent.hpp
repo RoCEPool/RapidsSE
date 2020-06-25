@@ -60,6 +60,8 @@ namespace Entries
     i8    iEntryNo(void);
     void  vEntryNo(i8 iEntryNo);
 
+    i8    iIntElm0(void);
+    void  vIntElm0(i8 iIntElm0);
     i8    iItem(void);
     void  vItem(i8 iItem);
 

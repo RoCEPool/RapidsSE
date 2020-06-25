@@ -131,11 +131,17 @@ void EntWrk::vAppendInt(i8 iArg)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  byte* ayDst = ayElmNext();
+  if (KE_GENERAL == m_xEnt.eKind()) {
+    byte* ayDst = ayElmNext();
   
-  i8 nElmSize = Dtm::nCopy(ayDst,iArg);
+    i8 nElmSize = Dtm::nCopy(ayDst,iArg);
   
-  vIncElmSeqSize(nElmSize);
+    vIncElmSeqSize(nElmSize);
+  }
+  else {
+    ASSERT(KE_INT == m_xEnt.eKind());
+    m_xEnt.vIntElm0(iArg);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
