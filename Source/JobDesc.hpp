@@ -15,9 +15,6 @@ namespace Jobs
             Stz* aCommand1,  // first word of prompt command
             Stz* aCommand2,  // optional second word of prompt command
             
-            bool bDetached,  // is this job detached?
-            bool bResources, // check resources?
-            bool bBuffer,    // buffer attached?
             eDL  eDdlLock,  // ddl lock model
             ePY  ePriority,  // job priority
             eJF  eFlags,     // job flags

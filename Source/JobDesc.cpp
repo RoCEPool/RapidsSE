@@ -16,9 +16,6 @@ JobDesc::JobDesc(
                  Stz* aCommand1,  // first word of prompt command
                  Stz* aCommand2,  // optional second word of prompt command
                  
-                 bool bDetached,  // is this job detached?
-                 bool bResources, // check resources?
-                 bool bBuffer,    // buffer attached?
                  eDL  eDdlLock,  // ddl lock model
                  ePY  ePriority,  // job priority
                  eJF  eFlags,     // job flags
@@ -46,9 +43,6 @@ JobDesc::JobDesc(
   pJobClass->m_aCommand1  = aCommand1;
   pJobClass->m_aCommand2  = aCommand2;
   
-  pJobClass->m_bDetached  = bDetached;
-  pJobClass->m_bResources = bResources;
-  pJobClass->m_bBuffer    = bBuffer;
   pJobClass->m_eDdlLock   = eDdlLock;
   pJobClass->m_ePriority  = ePriority;
   pJobClass->m_eFlags     = eFlags;

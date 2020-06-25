@@ -11,9 +11,7 @@ JobClass xJobClass_Local =
   "local"_Stz,              // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word
-  false,                    // check resources?
-  false,                    // detached job?
-  false,                    // buffer attached?
+
   DL_GRAB_WRITE,            // ddl lock model
   PY_NORMAL,                // priority
   JF_LOWMEM,                // flags

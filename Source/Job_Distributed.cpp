@@ -11,9 +11,6 @@ JobClass xJobClass_Distributed =
   "distributed"_Stz,        // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word
-  true,                     // check resources?
-  false,                    // detached job?
-  false,                    // buffer attached?
   DL_GRAB_WRITE,            // ddl lock model
   PY_NORMAL,                // priority
   JF_LOWMEM,                // flags
