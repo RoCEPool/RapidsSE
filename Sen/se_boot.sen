@@ -14,6 +14,7 @@ assert::stack_0
         "se_str.sen"              include
 
         "se_categories.sen"       include
+        "se_cluster.sen"          include
         "se_tags.sen"             include
         "se_log.sen"              include
         "se_path.sen"             include
@@ -63,10 +64,6 @@ assert::stack_0
         "job_BootCluster.sen"     include
 
         "job_ConnectCluster.sen"  include
-
-        "job_Distributed.sen"     include
-
-        "Job_Local.sen"           include
 
         "Job_Pipeline.sen"        include
         "Job_PipelineLocal.sen"   include

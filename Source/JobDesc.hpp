@@ -15,20 +15,6 @@ namespace Jobs
             Stz* aCommand1,  // first word of prompt command
             Stz* aCommand2,  // optional second word of prompt command
             
-            Stz* aSeedRun,   // the _run task seed
-            Stz* aSeedReq,   // the _req task seed
-            Stz* aSeedRcv,   // the _rcv task seed
-            Stz* aSeedExe,   // the _exe task seed
-            Stz* aSeedEnd,   // the _end task seed
-            Stz* aSeedCan,   // the _can task seed
-            
-            bool bDetached,  // is this job detached?
-            bool bResources, // check resources?
-            bool bBuffer,    // buffer attached?
-            eDL  eDdlLock,  // ddl lock model
-            ePY  ePriority,  // job priority
-            eJF  eFlags,     // job flags
-            
             eEC  (*fpCheck)(void),
             Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet),
             void (*fpPost)(JobClass* aJobClass, Job* pJob),
@@ -38,10 +24,8 @@ namespace Jobs
             void (*fpRecv)(Job* pJob),
             void (*fpShow)(Job* pJob),
             
-            bool bEnabled,  // is this job enabled?
-            
-            Stz* aHelp,     // help
-            Stz* aExample  // example
+            bool bEnabled  // is this job enabled?
+    
            );
   };
 }

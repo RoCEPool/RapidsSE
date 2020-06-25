@@ -316,8 +316,9 @@ void Engine::vCallBoot(void)
   pJob_Local->vSeed(SS_SEED_RUN);
   
   TagSet* pJobTags = pJob_Local->pJobTags();
+  pJobTags->vDumpSet();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace("<seed>"_Stz,"boot_run"_Stz);
+  pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
   
   Task* pBootTask = new Task(pJob_Local);
   pBootTask->vInitExeContext();
@@ -385,7 +386,7 @@ void Engine::vCallStart(void)
   
   TagSet* pJobTags = pJob_Local->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace("<seed>"_Stz,"start_run"_Stz);
+  pJobTags->vReplace("<seedRun>"_Stz,"start_run"_Stz);
   
   Task* pStartTask = new Task(pJob_Local);
   pStartTask->vInitExeContext();
@@ -1579,16 +1580,6 @@ void Engine::vStartSystem(void)
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "running boot job"_Stz); //!format-LogSys
   vCallBoot();
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  
-  if (AM::bVerboseProgress())
-    vInfo("  Verify Job Seeds\n"_Stz);
-  JobClass::vVerifySeeds();
-  
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading

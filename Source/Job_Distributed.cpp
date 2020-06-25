@@ -11,18 +11,6 @@ JobClass xJobClass_Distributed =
   "distributed"_Stz,        // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word
-  "distributed_run"_Stz,    // the _run task seed
-  "distributed_req"_Stz,    // the _req task seed
-  "distributed_beg"_Stz,    // the _rcv task seed
-  "distributed_exe"_Stz,    // the _exe task seed
-  "distributed_end"_Stz,    // the _end task seed
-  "distributed_can"_Stz,    // the _can task seed
-  true,                     // check resources?
-  false,                    // detached job?
-  false,                    // buffer attached?
-  DL_GRAB_WRITE,            // ddl lock model
-  PY_NORMAL,                // priority
-  JF_LOWMEM,                // flags
 
   nullptr,                  // prompt check function
   pJob_Distributed_pre,     // prompt pre-process function
@@ -35,8 +23,6 @@ JobClass xJobClass_Distributed =
   
   // help
   false,
-  C_NO_NAME,
-  C_NO_NAME,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

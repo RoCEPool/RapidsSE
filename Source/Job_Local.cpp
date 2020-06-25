@@ -11,18 +11,6 @@ JobClass xJobClass_Local =
   "local"_Stz,              // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word
-  nullptr,                  // the _run task seed
-  "distributed_req"_Stz,    // the _req task seed
-  nullptr,                  // the _rcv task seed
-  nullptr,                  // the _exe task seed
-  nullptr,                  // the _end task seed
-  nullptr,                  // the _can task seed
-  false,                    // check resources?
-  false,                    // detached job?
-  false,                    // buffer attached?
-  DL_GRAB_WRITE,            // ddl lock model
-  PY_NORMAL,                // priority
-  JF_LOWMEM,                // flags
 
   nullptr,                  // prompt check function
   pJob_Local_pre,           // prompt pre-process function
@@ -35,8 +23,6 @@ JobClass xJobClass_Local =
   
   // help
   false,
-  C_NO_NAME,
-  C_NO_NAME,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

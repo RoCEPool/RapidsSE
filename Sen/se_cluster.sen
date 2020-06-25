@@ -1,28 +1,18 @@
 /*============================================================================*/
-/* job_Local.sen -- Local Job                                                 */
+/* se_cluster.sen -- se cluster                                               */
 /*============================================================================*/
 
-" job_Local.sen" .verbose
+" se_cluster.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute the job's request seed-word on originating node                    */
 /*----------------------------------------------------------------------------*/
-: local_req ( -- <R> )
 
-  LogEntry SEED_REQ
-
-  job::</seeFlow/>
-
-  "<preCheck>" job[] job.tagSet@ tagSet.hasName if
-    <preCheck> find execute not if 
-      task::seedInitially task::doneFinally
-      job::error!
-    then
+: bClusterStarted
+  grid::started@ if
+    true
+  else
+    EC_CLUSTER_NOT_CONNECTED false
   then
-
-  <SeedReq> .executeSeed
-
-  //LogExit DONE_REQ
 ;
 
 /*============================================================================*/

@@ -75,7 +75,6 @@ namespace Jobs
     void vBufferQueue(Queue* pBufferQueue);
     Queue* pBufferQueue(void);
     void vContentDump(void);
-    void vCopyTags(JobClass* aJobClass);
     void vFocalOutline(s4K& sOutline);
     bool bHasTag(Stz* szEnameTag);
     void vIncRowsProcessed(void);

@@ -10,7 +10,8 @@ namespace Gadgets
     static const i8 C_WSP_SLAB = C_SIZE_LARGE_OBJECT - C_4KB;
   private:
     Slab* m_pNextSlab; // next slab in slab chain
-  
+    SingleWord m__PadToCacheLine[6]; // padding to cache line
+    
     Wsp_t<C_WSP_SLAB> m_xWsp;
   
     // must be last

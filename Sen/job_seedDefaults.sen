@@ -59,6 +59,13 @@
 
   task::seedInitially
 
+  "<preCheck>" job[] job.tagSet@ tagSet.hasName if
+    <preCheck> find execute not if
+      task::seedInitially task::doneFinally
+      job::error!
+    then
+  then
+
   // [ compiler::current@ word.name@ encode::push ] .
   // <jobNm> .
 

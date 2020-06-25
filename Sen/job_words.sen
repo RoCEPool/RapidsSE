@@ -49,25 +49,6 @@
 /*----------------------------------------------------------------------------*/
 /* job becomes a participant on participant node                              */
 /*----------------------------------------------------------------------------*/
-: job.becomeParticipant ( pJob -- )
-
-  params| pJob |
-
- //   grid::thisNode@
- //   pJob object.class@ class::name
- //   "Participant Job %v Received Node %v "
- // .printf
-
-  // set participant node in job
-  grid::thisNode@ pJob job.participant!
-
-  // add job as participant job
-  pJob job.addParticipant
-;
-
-/*----------------------------------------------------------------------------*/
-/* job becomes a participant on participant node                              */
-/*----------------------------------------------------------------------------*/
 : job::becomeParticipant ( -- )
 
   job[] locals| pJob |
@@ -77,41 +58,6 @@
 
   // add job to participant job list
   pJob job.addParticipant
-;
-
-/*----------------------------------------------------------------------------*/
-/* begun a job on participant node                                            */
-/*----------------------------------------------------------------------------*/
-: job::participantBegun ( -- )
-
-  job[] locals| pJob |
-
-  // send job__begun back to originating node
-  pJob "Job__Begun::send" find execute
-;
-
-/*----------------------------------------------------------------------------*/
-/* ended a job on participant node                                            */
-/*----------------------------------------------------------------------------*/
-: job::participantEnded ( -- )
-
-  job[] locals| pJobParticipant |
-
-  pJobParticipant job.removeParticipant
-
-  pJobParticipant "Job__Ended::send" find execute
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancelled a job on participant node                                        */
-/*----------------------------------------------------------------------------*/
-: job::participantCancelled ( -- )
-
-  job[] locals| pJobParticipant |
-
-  pJobParticipant job.removeParticipant
-
-  pJobParticipant "Job__Cancelled::send" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -152,16 +98,6 @@
   //pThisJob job.id@ pThisJob "job::deleteThis %v %v" .printf
 
   pThisJob job.delete
-;
-
-/*----------------------------------------------------------------------------*/
-/* call Job__Executed::send for the current job                               */
-/*----------------------------------------------------------------------------*/
-: job::participantExecuted ( pJobParticipant -- )
-
-  params| pJobParticipant  |
-
-  pJobParticipant "Job__Executed::send" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -237,51 +173,6 @@
   // add job to originator jobs
   job[] job.addOriginator
 ;
-
-/*----------------------------------------------------------------------------*/
-/* distribute the job to all participating nodes                              */
-/*----------------------------------------------------------------------------*/
-: job.distribute ( pJob -- )
-
-  params| pJob |
-
-  // set originating task
-  task[] pJob job.originatingTask!
-
-  job[] job.id@ job[] job.originatingId!
-
-  // add job to originator jobs
-  pJob job.addOriginator
-
-  // create the response vector in the orginating job to receive responses
-  pJob job.createResponseVec
-
-  // create the buffer queue in the orginating job to receive buffers
-  pJob job.createBufferQueue
-
-  // set the no of acks expected in originator job to nodes in the grid
-  grid::connectedNodes pJob job.acksRemaining!
-
-  // grab this task's lock
-  task[] task.grabLock
-
-  // set acks for originator task
-  1 task::acks!
-
-  // send the job to each node in the grid
-  grid::definedNodes 0 do
-
-    I grid::node node.sendSocket@ if
-      I pJob job.forward
-    then
-
-  loop
-
-  // wait for ack from deciding job__Ended
-  task::wait
-;
-
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
