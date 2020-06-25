@@ -1016,8 +1016,6 @@ Stz* Job::szSeed(void)
   
   Stz* szSeed;
   
-  //Stz* szSeed = m_aJobClass->sSeed(m_eSeed);
-  
   switch (m_eSeed) {
     case SS_SEED_RUN: szSeed = m_oJobTags.szValue("<seedRun>"_Stz); break;
     case SS_SEED_REQ: szSeed = m_oJobTags.szValue("<seedReq>"_Stz); break;

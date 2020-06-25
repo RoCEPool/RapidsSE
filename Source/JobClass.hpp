@@ -54,7 +54,6 @@ namespace Jobs
       void vPostJob(Job* pJob);
       Job* pPreJob(ReqTuple* aReqTuple, TagSet* pTagSet);
       void vRecvJob(Job* pJob);
-      Stz* sSeed(eSS eSeed);
       void vSendJob(Job* pJob);
       void vShowJob(Job* pJob);
   

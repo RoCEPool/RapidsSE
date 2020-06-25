@@ -140,22 +140,6 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, TagSet* pTagSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get seed                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* JobClass::sSeed(eSS eSeed)
-{
-  switch (eSeed) {
-    case SS_SEED_RUN: return (Stz*)m_aSeedRun; break;
-    case SS_SEED_REQ: return (Stz*)m_aSeedReq; break;
-    case SS_SEED_RCV: return (Stz*)m_aSeedRcv; break;
-    case SS_SEED_EXE: return (Stz*)m_aSeedExe; break;
-    case SS_SEED_END: return (Stz*)m_aSeedEnd; break;
-    case SS_SEED_CAN: return (Stz*)m_aSeedCan; break;
-    default: NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* pre-send function                                                          */
 /*----------------------------------------------------------------------------*/
 void JobClass::vSendJob(Job* pJob)
