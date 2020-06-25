@@ -495,6 +495,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   
   ASSERT(aEnt->nSkipLevels());
   
+  aEnt->vKind(m_eEntKind);
   i8 nEntSizeBytes = aEnt->nSizeBytes();
   
   ASSERT(bHasSpace(nEntSizeBytes));

@@ -17,8 +17,8 @@ namespace Indexing
     Index*    m_pIndex;     // index this buffer belongs to
     SkipRoots m_xSkipRoots; // skip roots
     Ent*      m_aLazyChain; // first lazy entry
-  
-    SeeMe m_xSeeMe;
+    
+    eKE       m_eEntKind;   // what kind of entries are in this buffer?
   
     // must be last
     Footer m_xFooter;
@@ -29,7 +29,7 @@ namespace Indexing
     void  operator delete(void*);
   
     EntBuffer(void);
-    ~EntBuffer(void) noexcept(false);
+   ~EntBuffer(void) noexcept(false);
 
     static void vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0);
     static void vCopyReInitH1(EntBuffer* pH1, EntBuffer* pLeftH0);
@@ -43,6 +43,9 @@ namespace Indexing
 
     void    vDropWrite(void);
     void    vGrabWrite(void);
+    eKE     eEntKind(void);
+    void    vEntKind(eKE eEntKind);
+
     void    vIndex(Index* pIndex);
     Index*  pIndex(void);
     void    vPrintRows(void);

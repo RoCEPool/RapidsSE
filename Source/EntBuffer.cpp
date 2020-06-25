@@ -67,6 +67,8 @@ EntBuffer::EntBuffer(void)
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
   
+  m_eEntKind    = KE_GENERAL;
+  
   if (AM::nIndexEntries() != 0)
     vMaxItems(AM::nIndexEntries());
   
@@ -619,6 +621,26 @@ void EntBuffer::vDumpPriorVec(Ent* aPriorVec[])
     else
       vShowEntry(aEnt);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the entry kind                                                         */
+/*----------------------------------------------------------------------------*/
+eKE EntBuffer::eEntKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  return m_eEntKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the entry kind                                                         */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vEntKind(eKE eEntKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  m_eEntKind = eEntKind;
 }
 
 /*----------------------------------------------------------------------------*/
