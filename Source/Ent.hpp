@@ -64,6 +64,9 @@ namespace Entries
     void  vItem(i8 iItem);
 
     Key*  aKey(void);
+    eKE   eKind(void);
+    void  vKind(eKE eKind);
+
 
     tET   tNextEntry(i8 i_Level);
     void  vNextEntry(i8 i_Level, tET tNextEntry);

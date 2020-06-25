@@ -25,6 +25,7 @@ Ref::Ref(u8 uBuffer, u8 uItem, u8 uLevels)
   m_uItem    = uItem;
   m_uLevels  = uLevels;
   
+  m_uKind    = KE_GENERAL;
   m_uPayload = 0;
   m_uSpare   = 0;
 }
@@ -100,6 +101,22 @@ void Ref::vItem(i8 iItem)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get entry key kind                                                        */
+/*----------------------------------------------------------------------------*/
+eKE Ref::eKind(void)
+{
+  return (eKE)m_uKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set entry key kind                                                        */
+/*----------------------------------------------------------------------------*/
+void Ref::vKind(eKE eKind)
+{
+  m_uKind = eKind;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is there a payload after ent?                                              */
 /*----------------------------------------------------------------------------*/
 bool Ref::bPayLoad(void)
@@ -136,7 +153,7 @@ void Ref::vSet(Ref xwRef)
   m_uBuffer  = xwRef.m_uBuffer;
   m_uItem    = xwRef.m_uItem;
   m_uLevels  = xwRef.m_uLevels;
-  
+  m_uKind    = xwRef.m_uKind;
   m_uPayload = 0;
   m_uSpare   = 0;
 }
@@ -150,6 +167,7 @@ void Ref::vSetNil(void)
   m_uItem    = 0;
   m_uLevels  = 0;
   
+  m_uKind    = 0;
   m_uPayload = 0;
   m_uSpare   = 0;
 }

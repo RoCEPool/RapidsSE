@@ -34,6 +34,8 @@ namespace Rows
     bool  bIsNil(void);
     i8    iItem(void);
     void  vItem(i8 iItem);
+    eKE   eKind(void);
+    void  vKind(eKE eKind);
     bool  bPayLoad(void);
     void  vPayload(bool bPayLoad);
     void  vReset(void);
