@@ -12,7 +12,7 @@ JobClass xJobClass_Local =
   nullptr,                  // the prompt command
   nullptr,                  // the second word
   nullptr,                  // the _run task seed
-  "distributed_req"_Stz,    // the _req task seed
+  nullptr,    // the _req task seed
   nullptr,                  // the _rcv task seed
   nullptr,                  // the _exe task seed
   nullptr,                  // the _end task seed

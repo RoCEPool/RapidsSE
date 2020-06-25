@@ -11,12 +11,12 @@ JobClass xJobClass_Distributed =
   "distributed"_Stz,        // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word
-  "distributed_run"_Stz,    // the _run task seed
-  "distributed_req"_Stz,    // the _req task seed
-  "distributed_beg"_Stz,    // the _rcv task seed
-  "distributed_exe"_Stz,    // the _exe task seed
-  "distributed_end"_Stz,    // the _end task seed
-  "distributed_can"_Stz,    // the _can task seed
+  nullptr,                  // the _run task seed
+  nullptr,    // the _req task seed
+  nullptr,    // the _rcv task seed
+  nullptr,    // the _exe task seed
+  nullptr,    // the _end task seed
+  nullptr,    // the _can task seed
   true,                     // check resources?
   false,                    // detached job?
   false,                    // buffer attached?
