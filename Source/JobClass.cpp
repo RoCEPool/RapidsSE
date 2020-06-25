@@ -72,52 +72,6 @@ void JobClass::vDeleteJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop ddl lock                                                              */
-/*----------------------------------------------------------------------------*/
-void JobClass::vDropDdlLock(void)
-{
-  switch (m_eDdlLock) {
-    case DL_NONE:
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "No ddl lock specified for job class: %s\n"_Stz,aCN[m_eClass]);
-      
-    case DL_GRAB_READ:
-      AM::pDdlLock()->vDropRead();
-      break;
-      
-    case DL_GRAB_WRITE:
-      AM::pDdlLock()->vDropWrite();
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* grab ddl lock                                                              */
-/*----------------------------------------------------------------------------*/
-void JobClass::vGrabDdlLock(void)
-{
-  switch (m_eDdlLock) {
-    case DL_NONE:
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "No ddl lock specified for job class: %s\n"_Stz,aCN[m_eClass]);
-      
-    case DL_GRAB_READ:
-      AM::pDdlLock()->vGrabRead();
-      break;
-      
-    case DL_GRAB_WRITE:
-      AM::pDdlLock()->vGrabWrite();
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
 void JobClass::vPostJob(Job* pJob)

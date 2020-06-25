@@ -13,7 +13,6 @@ namespace Jobs
       Stz* m_aComment;   // comment about the job
       Stz* m_aCommand1;  // first word of prompt command
       Stz* m_aCommand2;  // optional second word of prompt command
-      eDL  m_eDdlLock;   // ddl lock model
   
       eEC  (*m_fpCheck)(void);
       Job* (*m_fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);
@@ -35,8 +34,6 @@ namespace Jobs
       eEC  eCheckJob(void);
       void vCmds(void);
       void vDeleteJob(Job* pJob);
-      void vDropDdlLock(void);
-      void vGrabDdlLock(void);
       Job* pNewJob(ReqTuple* aReqTuple);
       void vPostJob(Job* pJob);
       Job* pPreJob(ReqTuple* aReqTuple, TagSet* pTagSet);

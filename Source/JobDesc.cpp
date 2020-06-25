@@ -16,8 +16,6 @@ JobDesc::JobDesc(
                  Stz* aCommand1,  // first word of prompt command
                  Stz* aCommand2,  // optional second word of prompt command
                  
-                 eDL  eDdlLock,  // ddl lock model
-                 
                  eEC  (*fpCheck)(void),
                  Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet),
                  void (*fpPost)(JobClass* aJobClass, Job* pJob),
@@ -40,8 +38,6 @@ JobDesc::JobDesc(
   pJobClass->m_aComment   = aComment;
   pJobClass->m_aCommand1  = aCommand1;
   pJobClass->m_aCommand2  = aCommand2;
-  
-  pJobClass->m_eDdlLock   = eDdlLock;
   
   pJobClass->m_fpCheck    = fpCheck;
   pJobClass->m_fpPre      = fpPre;

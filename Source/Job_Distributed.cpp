@@ -11,7 +11,6 @@ JobClass xJobClass_Distributed =
   "distributed"_Stz,        // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word
-  DL_GRAB_WRITE,            // ddl lock model
 
   nullptr,                  // prompt check function
   pJob_Distributed_pre,     // prompt pre-process function

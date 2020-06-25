@@ -12,8 +12,6 @@ JobClass xJobClass_Local =
   nullptr,                  // the prompt command
   nullptr,                  // the second word
 
-  DL_GRAB_WRITE,            // ddl lock model
-
   nullptr,                  // prompt check function
   pJob_Local_pre,           // prompt pre-process function
   vJob_post,                // prompt post-process function
