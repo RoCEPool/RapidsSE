@@ -23,8 +23,6 @@ namespace Jobs
       void (*m_fpRecv)(Job* pJob);
       void (*m_fpShow)(Job* pJob);
   
-      bool m_bEnabled;  // is this job enabled?
-  
       bool m_bSeedsSpawned[SS_ENUMS]; // which seeds have been spawned
   
     public:

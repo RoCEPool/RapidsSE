@@ -20,9 +20,6 @@ JobClass xJobClass_Distributed =
   vJob_send,                // job pre-send function
   vJob_recv,                // job post-receive function
   vJob_Distributed_show,    // job show function
-  
-  // help
-  false,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

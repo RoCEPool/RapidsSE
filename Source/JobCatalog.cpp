@@ -45,10 +45,7 @@ JobClass* JobCatalog::aFindClass(Stz* szCmd1, Stz* szCmd2)
         continue;
     }
     
-    if (aJobClass->m_bEnabled)
-      return aJobClass;
-    else
-      return nullptr;
+    return nullptr;
   }
   
   return nullptr;

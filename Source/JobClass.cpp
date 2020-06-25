@@ -175,10 +175,7 @@ JobClass* JobClass::pFind(Stz* aCommand1, Stz* aCommand2)
         continue;
     }
     
-    if (pJobClass->m_bEnabled)
-      return pJobClass;
-    else
-      return nullptr;
+    return nullptr;
     
   }
   

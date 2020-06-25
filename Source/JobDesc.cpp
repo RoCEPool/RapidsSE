@@ -23,9 +23,7 @@ JobDesc::JobDesc(
                  void (*fpDelete)(Job* pJob),
                  void (*fpSend)(Job* pJob),
                  void (*fpRecv)(Job* pJob),
-                 void (*fpShow)(Job* pJob),
-                 
-                 bool bEnabled  // is this job enabled?
+                 void (*fpShow)(Job* pJob)
               )
 {
   JobClass* pJobClass = & gxJobCatalog.m_xJobClass[gxJobCatalog.m_nJobClasses++];
@@ -44,8 +42,7 @@ JobDesc::JobDesc(
   pJobClass->m_fpSend     = fpSend;
   pJobClass->m_fpRecv     = fpRecv;
   pJobClass->m_fpShow     = fpShow;
-  
-  pJobClass->m_bEnabled   = bEnabled;
+
 }
 
 /*============================================================================*/
