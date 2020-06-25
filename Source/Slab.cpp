@@ -38,6 +38,8 @@ Slab::Slab(void)
   
   m_pNextSlab = nullptr;
   
+  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ENCODING);
+  
   m_xWsp.vFill(0xEF,CN_SLAB);
   
   _checkInitialisedSize_(sizeof(Slab));
