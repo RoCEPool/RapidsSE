@@ -26,7 +26,10 @@ int main(int argc, char* argv[])
   printf("sizeof(Operand) %lld\n",      (i8)sizeof(Operand));
   printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
   printf("sizeof(DataBuffer) %lld\n",   (i8)sizeof(DataBuffer));
-  
+  printf("sizeof(Ent) %lld\n",          (i8)sizeof(Ent));
+  printf("sizeof(Ent_flat) %lld\n",     (i8)sizeof(Ent_flat));
+  printf("sizeof(Ent_int) %lld\n",      (i8)sizeof(Ent_int));
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   gsBuildGitHash  = (Stz*)C_BUILD_GIT_HASH;

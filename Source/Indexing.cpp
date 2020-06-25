@@ -9,7 +9,13 @@
 /*----------------------------------------------------------------------------*/
 void Indexing::vCheckAssumptions(void)
 {
-#if ! defined(__ENT_HEADER)
+#if defined(__ENT_HEADER)
+  ALWAYS(40 == sizeof(Ent));
+  ALWAYS(48 == sizeof(Ent_flat));
+  ALWAYS(40 == sizeof(Ent_int));
+#else
+  ALWAYS(32 == sizeof(Ent));
+  ALWAYS(40 == sizeof(Ent_flat));
   ALWAYS(32 == sizeof(Ent_int));
 #endif
 }

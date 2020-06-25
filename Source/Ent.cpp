@@ -32,9 +32,11 @@ void* Ent::operator new(size_t, Ent* aEnt)
 /*----------------------------------------------------------------------------*/
 Ent::Ent(eCN eClassNo, i8 nSizeEnt)
 {
+#ifdef __ENT_HEADER
   m_xHeader.vClass(CN_ENT);
   m_xHeader.vMagic();
-
+#endif
+  
   m_uEntryNo = C_ENT_END_TICKET;
 
 #ifdef WITH_DEBUG_VERSION
@@ -75,7 +77,11 @@ void Ent::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 eCN Ent::eClass(void)
 {
+#ifdef __ENT_HEADER
   eCN eClass = m_xHeader.eClass();
+#else
+  eCN eClass = CN_ENT;
+#endif
   
   return eClass;
 }
@@ -351,7 +357,11 @@ bool Ent::bValidEnt(void)
 /*----------------------------------------------------------------------------*/
 bool Ent::bValidMagic(void)
 {
+#ifdef __ENT_HEADER
   bool bValid = m_xHeader.bValidMagic();
+#else
+  bool bValid = true;
+#endif
   
   return bValid;
 }
