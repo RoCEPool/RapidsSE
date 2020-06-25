@@ -16,13 +16,6 @@ JobDesc::JobDesc(
                  Stz* aCommand1,  // first word of prompt command
                  Stz* aCommand2,  // optional second word of prompt command
                  
-                 Stz* aSeedRun,   // the _run task seed
-                 Stz* aSeedReq,   // the _req task seed
-                 Stz* aSeedRcv,   // the _rcv task seed
-                 Stz* aSeedExe,   // the _exe task seed
-                 Stz* aSeedEnd,   // the _end task seed
-                 Stz* aSeedCan,   // the _can task seed
-                 
                  bool bDetached,  // is this job detached?
                  bool bResources, // check resources?
                  bool bBuffer,    // buffer attached?
@@ -52,13 +45,6 @@ JobDesc::JobDesc(
   pJobClass->m_aComment   = aComment;
   pJobClass->m_aCommand1  = aCommand1;
   pJobClass->m_aCommand2  = aCommand2;
-  
-  pJobClass->m_aSeedRun   = aSeedRun;
-  pJobClass->m_aSeedReq   = aSeedReq;
-  pJobClass->m_aSeedRcv   = aSeedRcv;
-  pJobClass->m_aSeedExe   = aSeedExe;
-  pJobClass->m_aSeedEnd   = aSeedEnd;
-  pJobClass->m_aSeedCan   = aSeedCan;
   
   pJobClass->m_bDetached  = bDetached;
   pJobClass->m_bResources = bResources;
