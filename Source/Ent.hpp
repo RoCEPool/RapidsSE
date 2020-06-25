@@ -27,7 +27,7 @@ namespace Entries
 
     Ref m_xRef; // reference which is either :
                 //   a) sub-ref to a child EntBuffer (Hn buffers), or
-                //   b) row-ref to a row (occurs at H0 leaf buffers)
+                //   b) row-ref to a crw row in a crwBuffer (occurs at H0 leaf buffers)
   
     tET m_taNextEntry[C_MAX_LVL_LEVELS]; // tickets to next entry by level
 
@@ -37,10 +37,12 @@ namespace Entries
   
     union {
     Key m_xKey;     // the key (for the general case)
-    i8  m_iIntElm0; // or special case of first element of an integer only key
+    i8  m_iIntElm0; // or first element of an integer only key
     };
   
-    // ..element sequence (of the key)
+    // ... element sequence (for a KE_GENERAL key)
+  
+    // ... payload (m_uPayload would be true)
     
   public:
     void* operator new(size_t);

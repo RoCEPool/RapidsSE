@@ -14,7 +14,7 @@ namespace Entries
       u8 m_uItem    : 16; // item in that buffer (2^16 is max of 64K items)
       u8 m_uLevels  :  3; // number of skip levels in next entry array
       u8 m_uPayload :  1; // is there is a payload? (not used yet)
-      u8 m_uKind    :  4; // kind (not used yet)
+      u8 m_uKind    :  4; // kind (would be KE_INT)
       u8 m_uSpare   :  8; // spare
     } Ref;         // 64b                                             // 1 word
   
@@ -38,7 +38,7 @@ namespace Entries
       u8 m_uItem    : 16; // item in that buffer (2^16 is max of 64K items)
       u8 m_uLevels  :  3; // number of skip levels in next entry array
       u8 m_uPayload :  1; // is there is a payload? (not used yet)
-      u8 m_uKind    :  4; // kind (not used yet)
+      u8 m_uKind    :  4; // kind (KE_GENERAL, KE_INT, ...)
       u8 m_uSpare   :  8; // spare
     } Ref;         // 64b
   

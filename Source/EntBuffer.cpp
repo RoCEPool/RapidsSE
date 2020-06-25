@@ -1179,11 +1179,12 @@ void EntBuffer::vShowEntry(Ent* aEnt)
 #ifdef __ENT_QUANTA
   tET tEntry = tToTicket(aEnt);
   
-  vTrace("Ent %04llx %07lld %p %lluB: "_Stz,
+  vTrace("Ent %04llx %07lld %p %lluB %7s: "_Stz,
          (i8)tEntry,
          iOffset,
          aEnt,
-         aEnt->nSizeBytes()
+         aEnt->nSizeBytes(),
+         aKE[aEnt->eKind()]
          );
 #else
   vTrace("Ent %07lld %p %lluB: "_Stz,
