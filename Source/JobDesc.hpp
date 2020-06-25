@@ -24,10 +24,8 @@ namespace Jobs
             void (*fpRecv)(Job* pJob),
             void (*fpShow)(Job* pJob),
             
-            bool bEnabled,  // is this job enabled?
-            
-            Stz* aHelp,     // help
-            Stz* aExample  // example
+            bool bEnabled  // is this job enabled?
+    
            );
   };
 }

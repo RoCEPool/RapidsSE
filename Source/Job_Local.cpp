@@ -23,8 +23,6 @@ JobClass xJobClass_Local =
   
   // help
   false,
-  C_NO_NAME,
-  C_NO_NAME,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

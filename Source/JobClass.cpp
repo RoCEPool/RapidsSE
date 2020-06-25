@@ -43,15 +43,6 @@ eEC JobClass::eCheckJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vtrace the job class for the jobcat prompt function                        */
-/*----------------------------------------------------------------------------*/
-void JobClass::vCmds(void)
-{
-  if (m_aHelp)
-    vTrace("%7s %s\n"_Stz,aJK[m_eKind],m_aHelp);
-}
-
-/*----------------------------------------------------------------------------*/
 /* create a new job by running the new-function                               */
 /*----------------------------------------------------------------------------*/
 Job* JobClass::pNewJob(ReqTuple* aReqTuple)
@@ -128,22 +119,6 @@ void JobClass::vShowJob(Job* pJob)
 pJOBCLASSFUN JobClass::pFirstFun(void)
 {
   return (pJOBCLASSFUN)pJob_Distributed_class;
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace the job for the given class                                          */
-/*----------------------------------------------------------------------------*/
-void JobClass::vCmds(eCN eClass)
-{
-  JobClass* pJobClass = nullptr;
-  
-  for (pJOBCLASSFUN pfJobClass = pFirstFun(); pfJobClass; ) {
-    
-    pJobClass = pfJobClass((pFUN**)&pfJobClass);
-    
-    if (pJobClass->m_eClass == eClass)
-    pJobClass->vCmds();
-  }
 }
 
 /*----------------------------------------------------------------------------*/

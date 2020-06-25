@@ -25,14 +25,10 @@ namespace Jobs
   
       bool m_bEnabled;  // is this job enabled?
   
-      Stz* m_aHelp;     // help
-      Stz* m_aExample;  // example
-  
       bool m_bSeedsSpawned[SS_ENUMS]; // which seeds have been spawned
   
     public:
       eEC  eCheckJob(void);
-      void vCmds(void);
       void vDeleteJob(Job* pJob);
       Job* pNewJob(ReqTuple* aReqTuple);
       void vPostJob(Job* pJob);
@@ -45,7 +41,6 @@ namespace Jobs
   
       static pJOBCLASSFUN pFirstFun(void);
   
-      static void vCmds(eCN eClass);
       static JobClass* pFind(eCN eClass);
       static JobClass* pFind(Stz* aCommand1, Stz* aCommand2);
   };
