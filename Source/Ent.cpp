@@ -38,7 +38,7 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt)
 #ifdef WITH_DEBUG_VERSION
   MemLib::vZero(m_taNextEntry,sizeof(m_taNextEntry),eClassNo);
   
-  m_iEntryNo = 0;
+  m_uEntryNo = 0;
 #endif
 }
 
@@ -123,7 +123,7 @@ void Ent::vElmSeqSize(i8 nElmSeqSize)
 i8 Ent::iEntryNo(void)
 {
 #ifdef WITH_DEBUG_VERSION
-  return m_iEntryNo;
+  return m_uEntryNo;
 #else
   return C_UNKNOWN;
 #endif
@@ -135,7 +135,7 @@ i8 Ent::iEntryNo(void)
 void Ent::vEntryNo(i8 iEntryNo)
 {
 #ifdef WITH_DEBUG_VERSION
-  m_iEntryNo = (u8)iEntryNo;
+  m_uEntryNo = (u8)iEntryNo;
 #endif
 }
 

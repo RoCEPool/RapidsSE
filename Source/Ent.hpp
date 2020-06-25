@@ -24,9 +24,9 @@ namespace Entries
   {
   private:
 
-#ifdef __ENT_HEADER
+    #ifdef __ENT_HEADER
     _Header m_xHeader;
-#endif
+    #endif
   
     Ref m_xRef; // reference which is either :
                 //   a) sub-ref to a child EntBuffer (Hn buffers), or
@@ -35,7 +35,7 @@ namespace Entries
     tET m_taNextEntry[C_MAX_LVL_LEVELS]; // tickets to next entry by level
 
 #ifdef WITH_DEBUG_VERSION
-    i8  m_iEntryNo; // used to verify the order of entries
+    u2  m_uEntryNo; // used to verify the order of entries
 #endif
   
     union {
