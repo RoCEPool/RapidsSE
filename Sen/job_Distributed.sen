@@ -5,23 +5,6 @@
 " job_Distributed.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* translate seed ename, find word matching translated value and execute it   */
-/*----------------------------------------------------------------------------*/
-: .executeSeed params| sSeedWordNm |
-
-  // find the word mathcing the seed name
-  sSeedWordNm find locals| pWord |
-
-  pWord not if
-    sSeedWordNm "Unable to find seed word: %v" .printf
-    process::quit
-  then
-
-  // execute the word
-  pWord execute
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 : bClusterStarted
