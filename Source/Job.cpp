@@ -464,32 +464,6 @@ void Job::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy tags from job class                                                   */
-/*----------------------------------------------------------------------------*/
-void Job::vCopyTags(JobClass* pJobClass)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (pJobClass->m_aSeedCan)
-    pJobTags()->vInsert(C_TAG_SEEDCAN,pJobClass->m_aSeedCan);
-  
-  if (pJobClass->m_aSeedEnd)
-    pJobTags()->vInsert(C_TAG_SEEDEND,pJobClass->m_aSeedEnd);
-  
-  if (pJobClass->m_aSeedExe)
-    pJobTags()->vInsert(C_TAG_SEEDEXE,pJobClass->m_aSeedExe);
-  
-  if (pJobClass->m_aSeedRcv)
-    pJobTags()->vInsert(C_TAG_SEEDRCV,pJobClass->m_aSeedRcv);
-  
-  if (pJobClass->m_aSeedReq)
-    pJobTags()->vInsert(C_TAG_SEEDREQ,pJobClass->m_aSeedReq);
-  
-  if (pJobClass->m_aSeedRun)
-    pJobTags()->vInsert(C_TAG_SEEDRUN,pJobClass->m_aSeedRun);
-}
-
-/*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/
 void Job::vFocalOutline(s4K& sOutline)
