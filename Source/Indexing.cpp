@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Indexing::vCheckAssumptions(void)
 {
-#if defined(__ENT_QUANTA) && ! defined(__ENT_HEADER)
+#if ! defined(__ENT_HEADER)
   ALWAYS(32 == sizeof(Ent_int));
 #endif
 }

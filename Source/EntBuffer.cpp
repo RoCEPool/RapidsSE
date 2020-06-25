@@ -348,11 +348,7 @@ i8 EntBuffer::iToEntryOffset(tET tEntryTicket)
 {
   _static_
   
-#ifdef __ENT_QUANTA
   i8 iEntryOffset = (i8)tEntryTicket * C_ENT_QUANTA;
-#else
-  i8 iEntryOffset = (i8)tEntryTicket;
-#endif
   
   return iEntryOffset;
 }
@@ -364,11 +360,7 @@ tET EntBuffer::tToEntryTicket(i8 iEntryOffset)
 {
   _static_
   
-#ifdef __ENT_QUANTA
   tET tEntryTicket = (tET)(iEntryOffset / C_ENT_QUANTA);
-#else
-  tET tEntryTicket = (tET)iEntryOffset;
-#endif
   
   return tEntryTicket;
 }
@@ -1176,7 +1168,6 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   Key* aKey = aEnt->aKey();
   i8 iOffset = iToOffset(aEnt);
   
-#ifdef __ENT_QUANTA
   tET tEntry = tToTicket(aEnt);
   
   vTrace("Ent %04llx %07lld %p %lluB %7s: "_Stz,
@@ -1186,13 +1177,6 @@ void EntBuffer::vShowEntry(Ent* aEnt)
          aEnt->nSizeBytes(),
          aKE[aEnt->eKind()]
          );
-#else
-  vTrace("Ent %07lld %p %lluB: "_Stz,
-         iOffset,
-         aEnt,
-         aEnt->nSizeBytes()
-         );
-#endif
   
   vTrace("Ref %lld.%05lld"_Stz,
          aEnt->rxRef().iBuffer(),
