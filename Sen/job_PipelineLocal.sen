@@ -75,6 +75,7 @@
   then
 
   //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/

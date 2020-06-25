@@ -22,7 +22,7 @@
 
   <SeedReq> .executeSeed
 
-  LogExit DONE_REQ
+  //LogExit DONE_REQ
 ;
 
 /*============================================================================*/

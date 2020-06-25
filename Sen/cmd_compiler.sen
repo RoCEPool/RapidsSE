@@ -252,11 +252,14 @@
   // pwCmdTags word.name@ "Add seeds using _cmdTags : %v" .printf
 
   pwCmdTags _cmdTags.aboutDistJob if
+    //<jobKind> == JK_DIST2PC
     pwCmdTags cmd::addSeedTags_forDistJob
   else
   pwCmdTags _cmdTags.aboutGenericJob if
+    //<jobKind> == JK_GENERIC
     pwCmdTags cmd::addSeedTags_forGenericJob
   else
+    //<jobKind> == JK_LOCAL
     pwCmdTags cmd::addSeedTags_forLocalOp
   then then
 ;
