@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#define __ENT_HEADER
 #define __ENT_QUANTA
 
 namespace Entries
@@ -23,21 +24,21 @@ namespace Entries
   {
   private:
 
+    #ifdef __ENT_HEADER
     _Header m_xHeader;
-
+    #endif
+  
     Ref m_xRef; // reference which is either :
                 //   a) sub-ref to a child EntBuffer (Hn buffers), or
                 //   b) row-ref to a crw row in a crwBuffer (occurs at H0 leaf buffers)
   
     tET m_taNextEntry[C_MAX_LVL_LEVELS]; // tickets to next entry by level
 
-#ifdef WITH_DEBUG_VERSION
-    i8  m_iEntryNo; // used to verify the order of entries
-#endif
+    u2  m_uEntryNo; // used to verify the order of entries
   
     union {
     Key m_xKey;     // the key (for the general case)
-    i8  m_iIntElm0; // or first element of an integer only key
+    i8  m_iIntElm0; // or first int element of a special case ent
     };
   
     // ... element sequence (for a KE_GENERAL key)
