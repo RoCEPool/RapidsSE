@@ -458,11 +458,11 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
 
 #define ELM0_OF_ENTRY(aEnt)  ( aEnt->aKey()->iGetIntElm() )
 
-#define NEXT_TICKET(aEnt,i_Lvl)  ( aEnt->tNextEntry(i_Lvl) )
-
-#define GET_ENTRY(tTicket)   ( aGetItem(tTicket) )
-
 #define END_TICKET(tNxtEnt)  ( C_ENT_END_TICKET == tNxtEnt )
+
+#define GET_ENTRY(tTicket)   ( aGetItem(iToEntryOffset(tTicket)) )
+
+#define NEXT_TICKET(aEnt,i_Lvl)  ( aEnt->tNextEntry(i_Lvl) )
 
 #define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
 
@@ -499,7 +499,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aKey,
 
   Ent* aScanEnt = aSkipRoots;
   for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
- 
+    
     for (tET tNextEnt = NEXT_TICKET(aScanEnt,i_Level);
          ! END_TICKET(tNextEnt);
          tNextEnt = NEXT_TICKET(aScanEnt,i_Level)) {
@@ -507,23 +507,23 @@ void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aKey,
       Ent* aNextEnt = GET_ENTRY(tNextEnt);
       i8 iNextEnt_IntElm = ELM0_OF_ENTRY(aNextEnt);
             
-      if (SCAN_IS_AT_PRIOR_POS(iKey_IntElm,iNextEnt_IntElm)) {
-        aPriorVec[i_Level] = aScanEnt;
+      if (SCAN_IS_AT_PRIOR_POS(iKey_IntElm,iNextEnt_IntElm))
         break;
-      }
       
       aScanEnt = aNextEnt;
     }
+
+    aPriorVec[i_Level] = aScanEnt;
   }
   
 }
 
 #undef ELM0_OF_KEY
 #undef ELM0_OF_ENTRY
-#undef NEXT_TICKET
-#undef NEXT_ENTRY
 #undef END_TICKET
-#undef PRIOR
+#undef GET_ENTRY
+#undef NEXT_TICKET
+#undef SCAN_IS_AT_PRIOR_POS
 
 /*============================================================================*/
 /* end                                                                        */

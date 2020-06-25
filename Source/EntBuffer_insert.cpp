@@ -712,17 +712,28 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   // find the entry after which the new entry will be inserted
   
   Ent* xPriorVec[C_MAX_LVL_LEVELS];
+  Ent* xPriorVec2[C_MAX_LVL_LEVELS];
+
+  Key* aKey = aEntry->aKey();
   
-  //Key* aKey = _aKey(aKeyEntry->aDataArea());
-  
-  if (0 == m_iBufferHeight)
-    vPositionPriorVecEntry(aEntry->aKey(), xPriorVec, nullptr);
-    //vPositionPriorVecEntry_Alka01(aEntry->aKey(), xPriorVec, nullptr);
-    //vPositionPriorVecEntry_Ray02(aEntry->aKey(), xPriorVec);
-    //vPositionPriorVecEntry_Ray04(aEntry->aKey(), xPriorVec);
+  if (0 == m_iBufferHeight) {
+    vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
+    //vPositionPriorVecEntry_Alka01(aKey, xPriorVec, nullptr);
+//    vPositionPriorVecEntry_Ray04(aKey, xPriorVec2);
+//
+//    for (i8 i_Lvl = 0; i_Lvl < AM::nLvlLevels(); i_Lvl++)
+//      if (xPriorVec2[i_Lvl] != xPriorVec[i_Lvl]) {
+//        vShow();
+//        vDumpPriorVec(xPriorVec);
+//        vDumpPriorVec(xPriorVec2);
+//        vPositionPriorVecEntry_Ray04(aKey, xPriorVec2);
+//        vDumpPriorVec(xPriorVec2);
+//        vDebugPoint();
+//      }
+  }
   else {
     EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
-    vPositionPriorVecBuffer(aEntry->aKey(), xPriorVec, pToBuffer);
+    vPositionPriorVecBuffer(aKey, xPriorVec, pToBuffer);
   }
   
   //vDumpPriorVec(xPriorVec);

@@ -1262,7 +1262,9 @@ i8 nTest21_intEnts(void)
     if (! pEntBufferCalc->bHasSpace(nBytesNeeded))
       break;
     
-    Ent* aEnt = pEntBufferCalc->aInsertEntAbs(xEntWrk.aEnt());
+    //pEntBufferCalc->vShow();
+    Ent* aEntToIns = xEntWrk.aEnt();
+    Ent* aEnt = pEntBufferCalc->aInsertEntAbs(aEntToIns);
     nEnts++;
     
     xEntWrk.vReset();
@@ -1359,6 +1361,8 @@ void vTest21_delete(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
       
       if (b) {
         pEntBuffer->vDeleteEntry(&aDeleteEnt);
+        //if (nTotalDel_ > 16000)
+        //  pEntBuffer->vShow();
         nTotalDel_++;
       }
     }
@@ -1555,7 +1559,7 @@ void vTest21_testSearch(IntSet* pKeySamples, i8 nBuffers, bool bDump)
 void vTest21(void)
 {
   i8 nSamples = C_UNKNOWN;
-  bool bDump  = true;
+  bool bDump  = false;
   
   bool bInsertTest = true;
   bool bSearchTest = true;

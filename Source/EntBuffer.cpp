@@ -524,14 +524,14 @@ void EntBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* cut entry from skip list                                                   */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vCutEntry(Ent* aEnt, Ent* aPriorVec[])
+void EntBuffer::vCutEntry(Ent* aCutEnt, Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  i8 nLevels = aEnt->nSkipLevels();
+  i8 nLevels = aCutEnt->nSkipLevels();
   
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
-    tET tNextEntry = aEnt->tNextEntry(i_Level);
+    tET tNextEntry = aCutEnt->tNextEntry(i_Level);
     aPriorVec[i_Level]->vNextEntry(i_Level,tNextEntry);
   }
 }
@@ -607,22 +607,17 @@ void EntBuffer::vDumpPriorVec(Ent* aPriorVec[])
   
   vTrace("Prior Vector\n"_Stz);
   
-  vTrace("  0:%p 1:%p 2:%p\n"_Stz,
-         aPriorVec[0],aPriorVec[1],aPriorVec[2]);
+//  vTrace("  0:%p 1:%p 2:%p\n"_Stz,
+//         aPriorVec[0],aPriorVec[1],aPriorVec[2]);
   
   i8 nLvlLevels = AM::nLvlLevels();
 
-  for (i8 i = 0; i < nLvlLevels; i++) {
-    Ent* aEnt = aPriorVec[i];
-    i8 nOffsets = aEnt->nSkipLevels();
-    for (i8 i_Level = 0; i_Level < nOffsets; i_Level++) {
-      vTrace("  i : %lld Ent : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
-             i,
-             aEnt,
-             i_Level,
-             aEnt->tNextEntry(i_Level),
-             aGetEntry(aEnt->tNextEntry(i_Level)));
-    }
+  for (i8 i_Lvl = 0; i_Lvl < nLvlLevels; i_Lvl++) {
+    Ent* aEnt = aPriorVec[i_Lvl];
+    if (aEnt == aSkipRoots())
+      vTrace("SKIP ROOT\n"_Stz);
+    else
+      vShowEntry(aEnt);
   }
 }
 
@@ -1159,11 +1154,22 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   Key* aKey = aEnt->aKey();
   i8 iOffset = iToOffset(aEnt);
   
+#ifdef __ENT_QUANTA
+  tET tEntry = tToTicket(aEnt);
+  
+  vTrace("Ent %04llx %07lld %p %lluB: "_Stz,
+         (i8)tEntry,
+         iOffset,
+         aEnt,
+         aEnt->nSizeBytes()
+         );
+#else
   vTrace("Ent %07lld %p %lluB: "_Stz,
          iOffset,
          aEnt,
          aEnt->nSizeBytes()
          );
+#endif
   
   vTrace("Ref %lld.%05lld"_Stz,
          aEnt->rxRef().iBuffer(),
