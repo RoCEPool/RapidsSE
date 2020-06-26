@@ -55,14 +55,6 @@ Job* JobClass::pNewJob(ReqTuple* aReqTuple)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete the job by running the delete-function                              */
-/*----------------------------------------------------------------------------*/
-void JobClass::vDeleteJob(Job* pJob)
-{
-  (*m_fpDelete)(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
 void JobClass::vPostJob(Job* pJob)

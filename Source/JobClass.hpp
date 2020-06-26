@@ -18,11 +18,9 @@ namespace Jobs
       Job* (*m_fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);
       void (*m_fpPost)(JobClass* aJobClass, Job* pJob);
       Job* (*m_fpNew)(JobClass* aJobClass, ReqTuple* aReqTuple);
-      void (*m_fpDelete)(Job* pJob);
   
     public:
       eEC  eCheckJob(void);
-      void vDeleteJob(Job* pJob);
       Job* pNewJob(ReqTuple* aReqTuple);
       void vPostJob(Job* pJob);
       Job* pPreJob(ReqTuple* aReqTuple, TagSet* pTagSet);

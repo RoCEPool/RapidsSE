@@ -15,8 +15,7 @@ JobClass xJobClass_Distributed =
   nullptr,                  // prompt check function
   pJob_Distributed_pre,     // prompt pre-process function
   vJob_post,                // prompt post-process function
-  pJob_Distributed_new,     // job new function
-  vJob_Distributed_delete   // job delete function
+  pJob_Distributed_new      // job new function
 };
 
 /*----------------------------------------------------------------------------*/
@@ -199,16 +198,6 @@ Job* Jobs::pJob_Distributed_new(JobClass* aJobClass, ReqTuple* aReqTuple)
   Job_Distributed* pJob_Distributed = new Job_Distributed(aJobClass,aReqTuple);
   
   return pJob_Distributed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* job delete function                                                        */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Distributed_delete(Job* pJob)
-{
-  Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
-    
-  delete pJob_Distributed;
 }
 
 /*============================================================================*/

@@ -537,11 +537,13 @@ void Step::vJobDelete(void)
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
+  //JobClass* pJobClass = JobClass::pFind(eClass);
   
   // call the job delete function
-  pJobClass->vDeleteJob(pJob);
+  //pJobClass->vDeleteJob(pJob);
   
+  Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
+  delete pJob_Distributed;
   EXIT();
 }
   

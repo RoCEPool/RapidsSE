@@ -57,7 +57,6 @@ namespace Jobs
   
     static Job* pThisTLSJob(void);
 
-    static void vDeleteJobViaClass(Job* pJob);
     static bool bIsForeign(i8 iJobId);
     static i8   iJobNo(i8 iJobId);
     static i8   iNodeNo(i8 iJobId);
