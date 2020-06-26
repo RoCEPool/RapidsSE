@@ -288,7 +288,7 @@ void EntBuffer::vCompactLeft(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Ent* aThisWilderness = aItemArea();
+  Ent* aThisWilderness = aItemArray();
   vSetUsed(aThisWilderness);
   
   vItems(0);

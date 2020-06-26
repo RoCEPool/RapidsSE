@@ -37,7 +37,7 @@ namespace Structures
     void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
     void   vIncItems(void);
-    ITEM*  aItemArea(void);
+    ITEM*  aItemArray(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
     i8     nMaxItems(void);
@@ -303,7 +303,7 @@ void MiniHeap_t<ITEM>::vFreeItem(ITEM* aItem, i8 nBytes)
 template <class ITEM>
 ITEM* MiniHeap_t<ITEM>::aGetItem(i8 iOffset)
 {
-  ITEM* aItem = aAdd<ITEM*>(aItemArea(),iOffset);
+  ITEM* aItem = aAdd<ITEM*>(aItemArray(),iOffset);
   
   return aItem;
 }
@@ -354,7 +354,7 @@ void MiniHeap_t<ITEM>::vIncItems(void)
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-ITEM* MiniHeap_t<ITEM>::aItemArea(void)
+ITEM* MiniHeap_t<ITEM>::aItemArray(void)
 {
   ITEM* aItemArea = (ITEM*)m_xWsp.ayArea();
   
@@ -416,7 +416,7 @@ void MiniHeap_t<ITEM>::vResetUsed(void)
 template <class ITEM>
 void MiniHeap_t<ITEM>::vSetUsed(ITEM* aUptil)
 {
-  i8 nUsedBytes = nDifference(aUptil,aItemArea());
+  i8 nUsedBytes = nDifference(aUptil,aItemArray());
   
   m_xWsp.vUsed(nUsedBytes);
   

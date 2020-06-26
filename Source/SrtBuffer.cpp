@@ -472,7 +472,7 @@ SrtSet* SrtBuffer::aSrtSet(i8 iSrtSet)
   if (iSrtSet >= m_nItems)
     return nullptr;
   
-  SrtSet* aSrtSetPtr = aItemArea();
+  SrtSet* aSrtSetPtr = aItemArray();
   i8 iSize = sizeof(SrtSet) + sizeof(i8)*(m_nRowRefs - 1);
   
   aSrtSetPtr = aAdd<SrtSet*>(aSrtSetPtr, iSize*iSrtSet);

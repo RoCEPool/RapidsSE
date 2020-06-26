@@ -56,7 +56,7 @@ void EntBuffer::vPositionPriorVecEntry_Opt01(Key* aFindKey,
     tET tNextOffset = * (tET*)((char*)aScanEntry_sl+tOffset1);
     while (C_ENT_END_TICKET != tNextOffset) {
       
-      aNextEntry_sl = (Ent*)((char*)aItemArea() + tNextOffset);
+      aNextEntry_sl = (Ent*)((char*)aItemArray() + tNextOffset);
       if (aFindEntry == aNextEntry_sl)
         break;
       
@@ -141,7 +141,7 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
   tET tNextOffset = * (tET*)((char*)aScanEntry_sl+tOffset1);
   while (C_ENT_END_TICKET != tNextOffset) {
     
-    aNextEntry_sl = (Ent*)((char*)aItemArea() + tNextOffset);
+    aNextEntry_sl = (Ent*)((char*)aItemArray() + tNextOffset);
     if (aFindEntry == aNextEntry_sl)
       break;
     
@@ -175,7 +175,7 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
   tNextOffset = * (i4*)((char*)aScanEntry_sl+tOffset1);
   while (C_ENT_END_TICKET != tNextOffset) {
     
-    aNextEntry_sl = (Ent*)((char*)aItemArea() + tNextOffset);
+    aNextEntry_sl = (Ent*)((char*)aItemArray() + tNextOffset);
     if (aFindEntry == aNextEntry_sl)
       break;
     
@@ -207,7 +207,7 @@ void EntBuffer::vPositionPriorVecEntry_Alka01(Key* aFindKey,
   tNextOffset = * (i4*)((char*)aScanEntry_sl+tOffset1);
   while (C_ENT_END_TICKET != tNextOffset) {
     
-    aNextEntry_sl = (Ent*)((char*)aItemArea() + tNextOffset);
+    aNextEntry_sl = (Ent*)((char*)aItemArray() + tNextOffset);
     if (aFindEntry == aNextEntry_sl)
       break;
     
@@ -289,7 +289,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray01(Key* aFindKey,
     tET tNextOffset = * (tET*)((char*)aScanEntry_sl+tOffset1);
     while (C_ENT_END_TICKET != tNextOffset) {
       
-      aNextEntry_sl = (Ent*)((char*)aItemArea() + tNextOffset);
+      aNextEntry_sl = (Ent*)((char*)aItemArray() + tNextOffset);
       if (aFindEntry == aNextEntry_sl)
         break;
       
@@ -360,7 +360,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray02(Key* aFindKey,
     tET tNextOffset = * (tET*)((char*)aScanEntry_sl+tOffset1);
     while (C_ENT_END_TICKET != tNextOffset) {
       
-      aNextEntry_sl = (Ent*)((char*)aItemArea() + tNextOffset);
+      aNextEntry_sl = (Ent*)((char*)aItemArray() + tNextOffset);
       
       //--------------------------------------------------------------
       Key* aNextKey = aNextEntry_sl->aKey();
@@ -426,7 +426,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
     tET tNextOffset = * (tET*)((char*)aScanEntry_sl+tOffset1);
     while (C_ENT_END_TICKET != tNextOffset) {
       
-      aNextEntry_sl = (Ent*)((char*)aItemArea() + tNextOffset);
+      aNextEntry_sl = (Ent*)((char*)aItemArray() + tNextOffset);
       
       Ent_flat* aEnt_flat = (Ent_flat*)aNextEntry_sl;
       
@@ -537,7 +537,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aKey,
 
 #define END_TICKET(tNxtEnt) ( C_ENT_END_TICKET == tNxtEnt )
 
-#define GET_ENTRY(tTicket) ( &aItemArea[tTicket] )
+#define GET_ENTRY(tTicket) ( &aItemArray[tTicket] )
 
 #define MARK_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = (Ent*)aEnt )
 
@@ -573,7 +573,7 @@ void EntBuffer::vPriorVecInsertedKey_Ray01(Ent* aInsertedEnt,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Ent_int* aItemArea = (Ent_int*)this->aItemArea();
+  Ent_int* aItemArray = (Ent_int*)this->aItemArray();
   
   Ent_int* aInsertedEnt_int = (Ent_int*)aInsertedEnt;
   
@@ -617,7 +617,7 @@ void EntBuffer::vPriorVecInsertedKey_Ray01(Ent* aInsertedEnt,
 
 #define END_TICKET(tNxtEnt) ( C_ENT_END_TICKET == tNxtEnt )
 
-#define GET_ENTRY(tTicket) ( &aItemArea[tTicket] )
+#define GET_ENTRY(tTicket) ( &aItemArray[tTicket] )
 
 #define NEXT_TICKET(aEnt_int,i_Lvl) ( aEnt_int->m_taNextEntry[i_Lvl] )
 
@@ -640,7 +640,7 @@ Ent* EntBuffer::aFindEnt_Ray01(i8 iKey_IntElm)
     
   Ent* aSkipRoots = this->aSkipRoots();
   
-  Ent_int* aItemArea = (Ent_int*)this->aItemArea();
+  Ent_int* aItemArray = (Ent_int*)this->aItemArray();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
