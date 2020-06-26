@@ -20,9 +20,7 @@ namespace Jobs
             void (*fpPost)(JobClass* aJobClass, Job* pJob),
             Job* (*fpNew)(JobClass* aJobClass, ReqTuple* aReqTuple),
             void (*fpDelete)(Job* pJob),
-            void (*fpSend)(Job* pJob),
-            void (*fpRecv)(Job* pJob),
-            void (*fpShow)(Job* pJob)    
+            void (*fpSend)(Job* pJob)  
            );
   };
 }

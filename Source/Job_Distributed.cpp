@@ -17,9 +17,7 @@ JobClass xJobClass_Distributed =
   vJob_post,                // prompt post-process function
   pJob_Distributed_new,     // job new function
   vJob_Distributed_delete,  // job delete function
-  vJob_send,                // job pre-send function
-  vJob_recv,                // job post-receive function
-  vJob_Distributed_show     // job show function
+  vJob_send                 // job pre-send function
 };
 
 /*----------------------------------------------------------------------------*/
@@ -212,16 +210,6 @@ void Jobs::vJob_Distributed_delete(Job* pJob)
   Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
     
   delete pJob_Distributed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* show job function                                                          */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Distributed_show(Job* pJob)
-{
-  Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
-
-  pJob_Distributed->vShow();
 }
 
 /*============================================================================*/

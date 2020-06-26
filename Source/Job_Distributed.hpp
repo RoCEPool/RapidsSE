@@ -37,7 +37,6 @@ namespace Jobs
   Job* pJob_Distributed_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);
   Job* pJob_Distributed_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Distributed_delete(Job* pJob);
-  void vJob_Distributed_show(Job* pJob);
   
   JobClass* pJob_Distributed_class(pFUN** aaFun);
 }

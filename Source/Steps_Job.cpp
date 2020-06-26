@@ -1028,18 +1028,17 @@ void Step::vJobPostRecv(void)
   }
   
   pJob->vJobClass(aJobClass,(char*)__func__);
-
-  ASSERT(aJobClass->m_fpRecv == vJob_recv);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run the post recv function
+  Jobs::vJob_recv(pJob);
   
-  if (aJobClass->m_fpRecv)
-    (*aJobClass->m_fpRecv)(pJob);
-  else {
-    vTrace("job.postRecv: %s\n"_Stz, pJob->szJobNm());
-    RASSERT(0);
-  }
+//  if (aJobClass->m_fpRecv)
+//    (*aJobClass->m_fpRecv)(pJob);
+//  else {
+//    vTrace("job.postRecv: %s\n"_Stz, pJob->szJobNm());
+//    RASSERT(0);
+//  }
   
   if (pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,
@@ -1085,6 +1084,7 @@ void Step::vJobRecv(void)
 {
   ENTRY();
   
+  RASSERT(0);
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   // find the job in the catalog
@@ -1092,7 +1092,7 @@ void Step::vJobRecv(void)
   JobClass* pJobClass = JobClass::pFind(eClass);
   
   // call the job post-receive function
-  pJobClass->vRecvJob(pJob);  // come back to this, remove session as parameter to delete
+  //pJobClass->vRecvJob(pJob);  // come back to this, remove session as parameter to delete
   
   EXIT();
 }
