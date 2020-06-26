@@ -73,6 +73,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ENCODING,
   /* */ CN_ENT,
   /* */ CN_ENTBUFFER,
+  /* */ CN_ENTBUFSORTER,
   /* */ CN_ENTWRK,
   /* */ CN_ENUMFLAGS,
   /* */ CN_EXEMPLAR,
@@ -411,6 +412,7 @@ static Stz* aCN[]
   /* */ "ENCODING"_Stz,            // CN_ENCODING
   /* */ "ENT"_Stz,                 // CN_ENT
   /* */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
+  /* */ "ENTBUFSORTER"_Stz,        // CN_ENTBUFSORTER
   /* */ "ENTWRK"_Stz,              // CN_ENTWRK
   /* */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
   /* */ "EXEMPLAR"_Stz,            // CN_EXEMPLAR

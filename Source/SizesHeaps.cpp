@@ -69,6 +69,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Encoding),           HT_TRANSIENT_LARGE   }, // CN_ENCODING
   { sizeof(Ent),                HT_INVALID           }, // CN_ENT
   { sizeof(EntBuffer),          HT_TRANSIENT_LARGE   }, // CN_ENTBUFFER
+  { sizeof(EntBufSorter),       HT_TRANSIENT_LARGE   }, // CN_ENTBUFSORTER
   { sizeof(EntWrk),             HT_INVALID           }, // CN_ENTWRK
   { sizeof(EnumFlags),          HT_TRANSIENT_TINY    }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_TRANSIENT_TINY    }, // CN_EXEMPLAR
