@@ -187,8 +187,7 @@ void Api::vJob_3_PostJob(Job* pJob)
 {
   _static_
   
-  
-  pJob->aJobClass()->vPostJob(pJob);
+  Jobs::vJob_post(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

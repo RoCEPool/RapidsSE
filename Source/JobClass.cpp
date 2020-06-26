@@ -43,14 +43,6 @@ eEC JobClass::eCheckJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end the job by running the post-function                                   */
-/*----------------------------------------------------------------------------*/
-void JobClass::vPostJob(Job* pJob)
-{
-  (*m_fpPost)(this, pJob);
-}
-
-/*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                               */
 /*----------------------------------------------------------------------------*/
 Job* JobClass::pPreJob(ReqTuple* aReqTuple, TagSet* pTagSet)

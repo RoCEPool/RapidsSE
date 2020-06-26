@@ -1214,7 +1214,7 @@ eEC Jobs::eJob_checkCluster(void)
 /*----------------------------------------------------------------------------*/
 /* post-execute job function                                                  */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
+void Jobs::vJob_post(Job* pJob)
 {
   eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
   pJob->vPrintResult(eResponse);

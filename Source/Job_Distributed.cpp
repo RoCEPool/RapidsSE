@@ -13,8 +13,7 @@ JobClass xJobClass_Distributed =
   nullptr,                  // the second word
 
   nullptr,                  // prompt check function
-  pJob_Distributed_pre,     // prompt pre-process function
-  vJob_post                 // prompt post-process function
+  pJob_Distributed_pre      // prompt pre-process function
 };
 
 /*----------------------------------------------------------------------------*/

@@ -16,8 +16,7 @@ namespace Jobs
             Stz* aCommand2,  // optional second word of prompt command
             
             eEC  (*fpCheck)(void),
-            Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet),
-            void (*fpPost)(JobClass* aJobClass, Job* pJob)
+            Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet)
            );
   };
 }

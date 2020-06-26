@@ -17,8 +17,7 @@ JobDesc::JobDesc(
                  Stz* aCommand2,  // optional second word of prompt command
                  
                  eEC  (*fpCheck)(void),
-                 Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet),
-                 void (*fpPost)(JobClass* aJobClass, Job* pJob)
+                 Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet)
               )
 {
   JobClass* pJobClass = & gxJobCatalog.m_xJobClass[gxJobCatalog.m_nJobClasses++];
@@ -31,8 +30,6 @@ JobDesc::JobDesc(
   
   pJobClass->m_fpCheck    = fpCheck;
   pJobClass->m_fpPre      = fpPre;
-  pJobClass->m_fpPost     = fpPost;
-
 }
 
 /*============================================================================*/
