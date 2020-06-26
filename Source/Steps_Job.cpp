@@ -1065,8 +1065,7 @@ void Step::vJobPreSend(void)
   JobClass* aJobClass = pJob->aJobClass();
   
   //ActLog::vAdd(pJob,AN_PRE_SEND,m_pTask->pJob());
-  if (aJobClass->m_fpSend)
-    (*aJobClass->m_fpSend)(pJob);
+  Jobs::vJob_send(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail)
     JobLog::vNote(pJob,
@@ -1422,7 +1421,7 @@ void Step::vJobSend(void)
   JobClass* pJobClass = JobClass::pFind(eClass);
   
   // call the job pre-send function
-  pJobClass->vSendJob(pJob);  // come back to this, remove session as parameter to delete
+  Jobs::vJob_send(pJob);  // come back to this, remove session as parameter to delete
   
   EXIT();
 }
@@ -1469,6 +1468,8 @@ void Step::vJobShow(void)
 {
   ENTRY();
   
+  RASSERT(0);
+  
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   // find the job in the catalog
@@ -1476,7 +1477,7 @@ void Step::vJobShow(void)
   JobClass* pJobClass = JobClass::pFind(eClass);
   
   // call the job delete function
-  pJobClass->vShowJob(pJob);
+  //pJobClass->vShowJob(pJob);
   
   EXIT();
 }

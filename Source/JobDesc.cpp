@@ -20,8 +20,7 @@ JobDesc::JobDesc(
                  Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet),
                  void (*fpPost)(JobClass* aJobClass, Job* pJob),
                  Job* (*fpNew)(JobClass* aJobClass, ReqTuple* aReqTuple),
-                 void (*fpDelete)(Job* pJob),
-                 void (*fpSend)(Job* pJob)
+                 void (*fpDelete)(Job* pJob)
               )
 {
   JobClass* pJobClass = & gxJobCatalog.m_xJobClass[gxJobCatalog.m_nJobClasses++];
@@ -37,7 +36,6 @@ JobDesc::JobDesc(
   pJobClass->m_fpPost     = fpPost;
   pJobClass->m_fpNew      = fpNew;
   pJobClass->m_fpDelete   = fpDelete;
-  pJobClass->m_fpSend     = fpSend;
 
 }
 

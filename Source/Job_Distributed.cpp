@@ -16,8 +16,7 @@ JobClass xJobClass_Distributed =
   pJob_Distributed_pre,     // prompt pre-process function
   vJob_post,                // prompt post-process function
   pJob_Distributed_new,     // job new function
-  vJob_Distributed_delete,  // job delete function
-  vJob_send                 // job pre-send function
+  vJob_Distributed_delete   // job delete function
 };
 
 /*----------------------------------------------------------------------------*/
