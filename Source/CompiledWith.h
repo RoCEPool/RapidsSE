@@ -56,7 +56,7 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 
 #define WITH_RELEASE_VERSION EndDefine     // compile as release version
 
-// usually correctnes, entry/exit, prepost
+// usually correctness, entry/exit, prepost
 
 //#define WITH_ASSERT_MACRO EndDefine        // Assert() macro
 //#define WITH_ACTION_SEQUENCE EndDefine     // code for ActionLog compiled in

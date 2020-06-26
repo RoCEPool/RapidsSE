@@ -944,6 +944,20 @@ Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next entry                                                             */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aNextEntry(Ent* aPrevEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+  Ent* aNext = this->aNextEntry(aSkipRoots(),0);
+  
+  ASSERT(! aNext || aNext->bValidEnt());
+  
+  return aNext;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find the prev key entry                                                    */
 /*----------------------------------------------------------------------------*/
 Ent* EntBuffer::pFindPrevKeyEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)

@@ -68,6 +68,7 @@ namespace Indexing
   
     Ent* aLeadEntry(void);
     Ent* aLastEntry(void);
+    Ent* aNextEntry(Ent* aPrevEntry);
     void vShowEntry(Ent* pEntry);
     tET  tToTicket(Ent* pEntry);
   
