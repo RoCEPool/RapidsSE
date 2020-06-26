@@ -19,9 +19,7 @@ JobClass xJobClass_Local =
   vJob_Local_delete,        // job delete function
   nullptr,                  // job pre-send function
   nullptr,                  // job post-receive function
-  vJob_Local_show,          // job show function
-
-  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+  vJob_Local_show           // job show function
 };
 
 /*----------------------------------------------------------------------------*/

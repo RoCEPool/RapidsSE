@@ -1045,8 +1045,6 @@ void Job::vSeed(eSS eSeed)
     m_oJobTags.vReplace("<seed>"_Stz,aSS[eSeed]);
   else
     m_oJobTags.vInsert("<seed>"_Stz,aSS[eSeed]);
-
-  m_aJobClass->m_bSeedsSpawned[eSeed] = true;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,9 +19,7 @@ JobClass xJobClass_Distributed =
   vJob_Distributed_delete,  // job delete function
   vJob_send,                // job pre-send function
   vJob_recv,                // job post-receive function
-  vJob_Distributed_show,    // job show function
-
-  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+  vJob_Distributed_show     // job show function
 };
 
 /*----------------------------------------------------------------------------*/

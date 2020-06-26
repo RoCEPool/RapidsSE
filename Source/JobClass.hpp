@@ -23,8 +23,6 @@ namespace Jobs
       void (*m_fpRecv)(Job* pJob);
       void (*m_fpShow)(Job* pJob);
   
-      bool m_bSeedsSpawned[SS_ENUMS]; // which seeds have been spawned
-  
     public:
       eEC  eCheckJob(void);
       void vDeleteJob(Job* pJob);
