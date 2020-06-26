@@ -229,9 +229,9 @@ JobClass* Api::aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet)
   //  return true;
   
   // give command to the universal job
-  if ((eJK)pTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL)
-    aJobClass = JobClass::pFind(CN_JOB_LOCAL);
-  else
+//  if ((eJK)pTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL)
+//    aJobClass = JobClass::pFind(CN_JOB_LOCAL);
+//  else
     aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
   
   return aJobClass;

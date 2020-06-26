@@ -93,7 +93,7 @@ void Step::vIndexDefParse(void)
 {
   ENTRY();
   
-  Job* pJob_Local = _pJob_Local(m_pDataStack->pPopPtr(__func__));
+  Job* pJob_Local = _pJob_Distributed(m_pDataStack->pPopPtr(__func__));
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -160,7 +160,7 @@ void Step::vIndexDefParseTableName(void)
 {
   ENTRY();
   
-  Job* pJob_Local = _pJob_Local(m_pDataStack->pPopPtr(__func__));
+  Job* pJob_Local = _pJob_Distributed(m_pDataStack->pPopPtr(__func__));
   
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);

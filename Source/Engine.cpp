@@ -306,7 +306,7 @@ void Engine::vBootCheck(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCallBoot(void)
 {
-  JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_LOCAL);
+  JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_DISTRIBUTED);
   
   ReqTuple xReqTuple("!!BootSE"_Stz,false);
   
@@ -376,7 +376,7 @@ void Engine::vCallStart(void)
   
   PsxThd::vMarkNonSeThread();
   
-  JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_LOCAL);
+  JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_DISTRIBUTED);
   ReqTuple xReqTuple("!!StartSE"_Stz,false);
   
   Job_Local* pJob_Local
