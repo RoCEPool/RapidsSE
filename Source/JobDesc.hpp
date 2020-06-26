@@ -14,8 +14,6 @@ namespace Jobs
             Stz* aComment,   // comment about the job
             Stz* aCommand1,  // first word of prompt command
             Stz* aCommand2,  // optional second word of prompt command
-            
-            eEC  (*fpCheck)(void),
             Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet)
            );
   };

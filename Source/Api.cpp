@@ -92,10 +92,6 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
       
   if (! Api::bPassesLowMem(aJobClass))
     return EC_LOW_MEMORY;
-
-  if (! Api::bPassesCheck(aJobClass))
-    return EC_ZZZ_OTHER;
-
   
   
   
@@ -236,23 +232,6 @@ JobClass* Api::aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet)
     aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
   
   return aJobClass;
-}
-
-/*----------------------------------------------------------------------------*/
-/* passes the pre-condition check function?                                   */
-/*----------------------------------------------------------------------------*/
-bool Api::bPassesCheck(JobClass* aJobCLass)
-{
-  _static_
-
-  eEC eErrorCode = aJobCLass->eCheckJob();
-  
-  if (EC_NONE != eErrorCode) {
-    vTrace("Error: %s\n"_Stz,aEC[eErrorCode]);
-    return false;
-  }
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

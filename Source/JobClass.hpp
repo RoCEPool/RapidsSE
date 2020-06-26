@@ -14,11 +14,9 @@ namespace Jobs
       Stz* m_aCommand1;  // first word of prompt command
       Stz* m_aCommand2;  // optional second word of prompt command
   
-      eEC  (*m_fpCheck)(void);
       Job* (*m_fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);
   
     public:
-      eEC  eCheckJob(void);
       Job* pPreJob(ReqTuple* aReqTuple, TagSet* pTagSet);
   
       // - -

@@ -28,20 +28,6 @@ JobClass* Jobs::_pJobClass(void* aAddr)
   return pJobClass;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* post-receive fucntion                                                      */
-/*----------------------------------------------------------------------------*/
-eEC JobClass::eCheckJob(void)
-{
-  if (! m_fpCheck)
-    return EC_NONE;
-
-  eEC eErrorCode = (*m_fpCheck)();
-
-  return eErrorCode;
-}
-
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                               */
 /*----------------------------------------------------------------------------*/
