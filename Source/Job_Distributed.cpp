@@ -14,8 +14,7 @@ JobClass xJobClass_Distributed =
 
   nullptr,                  // prompt check function
   pJob_Distributed_pre,     // prompt pre-process function
-  vJob_post,                // prompt post-process function
-  pJob_Distributed_new      // job new function
+  vJob_post                 // prompt post-process function
 };
 
 /*----------------------------------------------------------------------------*/
@@ -186,16 +185,6 @@ Job* Jobs::pJob_Distributed_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet
 //  if ( eError != EC_NONE ) {
 //    pJob_Distributed->vJobError(eError);
 //  }
-  
-  return pJob_Distributed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* job new function                                                           */
-/*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Distributed_new(JobClass* aJobClass, ReqTuple* aReqTuple)
-{
-  Job_Distributed* pJob_Distributed = new Job_Distributed(aJobClass,aReqTuple);
   
   return pJob_Distributed;
 }

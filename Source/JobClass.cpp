@@ -43,18 +43,6 @@ eEC JobClass::eCheckJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new job by running the new-function                               */
-/*----------------------------------------------------------------------------*/
-Job* JobClass::pNewJob(ReqTuple* aReqTuple)
-{
-  Job* pNewJob = (*m_fpNew)(this,aReqTuple);
-  
-  pNewJob->vJobClass(this,(char*)__func__);
-  
-  return pNewJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
 void JobClass::vPostJob(Job* pJob)

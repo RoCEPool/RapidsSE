@@ -311,7 +311,10 @@ void Engine::vCallBoot(void)
   ReqTuple xReqTuple("!!BootSE"_Stz,false);
   
   Job_Distributed* pJob_Distributed
-    = static_cast<Job_Distributed*>(pJobClass_Distributed->pNewJob(&xReqTuple));
+    = static_cast<Job_Distributed*>(new Job_Distributed(pJobClass_Distributed,&xReqTuple));
+  
+  //! ALKA: to go
+  pJob_Distributed->vJobClass(pJobClass_Distributed,(char*)__func__);
   
   pJob_Distributed->vSeed(SS_SEED_RUN);
   
@@ -380,7 +383,10 @@ void Engine::vCallStart(void)
   ReqTuple xReqTuple("!!StartSE"_Stz,false);
   
   Job_Distributed* pJob_Distributed
-  = static_cast<Job_Distributed*>(pJobClass_Distributed->pNewJob(&xReqTuple));
+  = static_cast<Job_Distributed*>(new Job_Distributed(pJobClass_Distributed,&xReqTuple));
+  
+  //! ALKA: to go
+  pJob_Distributed->vJobClass(pJobClass_Distributed,(char*)__func__);
   
   pJob_Distributed->vSeed(SS_SEED_RUN);
   
