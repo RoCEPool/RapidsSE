@@ -35,7 +35,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_);
 
 void vTest21_testDelete(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDump);
 void vTest21_testInsert(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDump);
-void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDump);
+void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, i8 nTimes, bool bDump);
 
 void vTest21(void);
 void vTest22(void);

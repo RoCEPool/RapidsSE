@@ -1462,7 +1462,8 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
 /*----------------------------------------------------------------------------*/
 /* test21 : run delete test                                                   */
 /*----------------------------------------------------------------------------*/
-void vTest21_testDelete(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDump)
+void vTest21_testDelete(eKE eEntKind, IntSet* pKeySamples,
+                        i8 nBuffers, bool bDump)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a number of EntBuffers using the key samples
@@ -1503,7 +1504,8 @@ void vTest21_testDelete(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDu
 /*----------------------------------------------------------------------------*/
 /* test21 : run insert test                                                   */
 /*----------------------------------------------------------------------------*/
-void vTest21_testInsert(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDump)
+void vTest21_testInsert(eKE eEntKind, IntSet* pKeySamples,
+                        i8 nBuffers, bool bDump)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a number of EntBuffers using the key samples
@@ -1540,7 +1542,8 @@ void vTest21_testInsert(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDu
 /*----------------------------------------------------------------------------*/
 /* test21 : run search test                                                   */
 /*----------------------------------------------------------------------------*/
-void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDump)
+void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples,
+                        i8 nBuffers, i8 nTimes, bool bDump)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a number of EntBuffers using the key samples
@@ -1560,7 +1563,8 @@ void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDu
     
     xTimer.vStart();
     
-    vTest21_search(pEntBuffer,pKeySamples,nTotalSel);
+    for (i8 i_Loop = 0; i_Loop < nTimes; i_Loop++)
+      vTest21_search(pEntBuffer,pKeySamples,nTotalSel);
 
     xTimer.vUpdate();
     xAggTimer.vAdd(&xTimer);
@@ -1582,6 +1586,7 @@ void vTest21(void)
 {
   eKE  eEntKind = KE_INT;
   i8   nSamples = C_UNKNOWN;
+  i8   nBuffers = 10;
   i8   nTimes   = 10;
   bool bDump    = false;
 
@@ -1603,18 +1608,18 @@ void vTest21(void)
   // run our tests
   
   pKeySamples->vAscending();
-  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nTimes,bDump);
-  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nTimes,bDump);
+  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nBuffers,bDump);
+  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nBuffers,nTimes,bDump);
 //  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
 
   pKeySamples->vDescending();
-  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nTimes,bDump);
-  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nTimes,bDump);
+  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nBuffers,bDump);
+  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nBuffers,nTimes,bDump);
 //  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
 
   pKeySamples->vRandomise();
-  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nTimes,bDump);
-  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nTimes,bDump);
+  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nBuffers,bDump);
+  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nBuffers,nTimes,bDump);
 //  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
 }
 
