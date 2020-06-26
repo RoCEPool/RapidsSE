@@ -27,7 +27,7 @@ JobClass xJobClass_Distributed =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Distributed_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Local_class;
+  *pNextFun = (pFUN*)nullptr;
   
   return &xJobClass_Distributed;
 }

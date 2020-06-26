@@ -33,8 +33,6 @@ namespace Jobs
 
 #include "Job_Distributed.hpp"
 
-#include "Job_Local.hpp"
-
 #include "XmitOperand.hpp"
 
 #include "JobList.hpp"
