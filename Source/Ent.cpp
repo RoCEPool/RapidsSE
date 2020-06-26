@@ -107,10 +107,8 @@ i8 Ent::nElmSeqSize(void)
 
   if (KE_GENERAL == m_xRef.eKind())
     nBytes = m_xKey.nElmSeqSize();
-  else {
+  else
     nBytes = 0;
-    RASSERT(0); // temp
-  }
   
   return nBytes;
 }

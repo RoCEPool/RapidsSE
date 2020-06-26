@@ -720,6 +720,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   if (0 == m_iBufferHeight) {
     //vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
     //vPositionPriorVecEntry_Alka01(aKey, xPriorVec, nullptr);
+    //vPriorVecInsertedKey_Ray01(aEntry, xPriorVec);
     vPositionPriorVecEntry_Ray04(aKey, xPriorVec);
 //
 //    for (i8 i_Lvl = 0; i_Lvl < AM::nLvlLevels(); i_Lvl++)

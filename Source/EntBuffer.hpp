@@ -129,6 +129,14 @@ namespace Indexing
                                             Ent* aPriorVec[]);
 
 
+    void       vPriorVecInsertedKey_Ray01(Ent* aInsertedEnt,
+                                          Ent* aPriorVec[]);
+  
+    Ent*       aFindEnt_Ray01(i8 iKey_IntElm);
+  
+
+
+
     ////////////////////////////////////////////////////////////////////////////
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

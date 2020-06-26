@@ -1241,7 +1241,7 @@ void vTest20(void)
 /*----------------------------------------------------------------------------*/
 /* test21 : determine the number of int entries which fit into an ent buffer  */
 /*----------------------------------------------------------------------------*/
-i8 nTest21_intEnts(void)
+i8 nTest21_intEnts(eKE eEntKind)
 {
   Ref xRef;
   EntWrk xEntWrk;
@@ -1249,7 +1249,7 @@ i8 nTest21_intEnts(void)
   i8 nEnts = 0;
 
   EntBuffer* pEntBufferCalc = new EntBuffer;
-  pEntBufferCalc->vEntKind(KE_GENERAL);
+  pEntBufferCalc->vEntKind(eEntKind);
   
   for (;;) {
     
@@ -1280,12 +1280,12 @@ i8 nTest21_intEnts(void)
 /*----------------------------------------------------------------------------*/
 /* test21 : create an int set for key samples                                 */
 /*----------------------------------------------------------------------------*/
-IntSet* pTest21_keySamples(i8 nSamples)
+IntSet* pTest21_keySamples(eKE eEntKind, i8 nSamples)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first calculate how many int entries fit into an EntBuffer
   
-  i8 nEntsWhichFit = C_UNKNOWN == nSamples ? nTest21_intEnts() : nSamples;
+  i8 nEntsWhichFit = C_UNKNOWN == nSamples ? nTest21_intEnts(eEntKind) : nSamples;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create that many keys
@@ -1415,12 +1415,26 @@ void vTest21_insert(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalIns_)
 /*----------------------------------------------------------------------------*/
 /* test21 : search entries in EntBuffer using KeySamples                      */
 /*----------------------------------------------------------------------------*/
-void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
+void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
 {
   EntWrk xEntWrk;
 
   i8 nInts = pKeySamples->nInts();
+
+  if (KE_INT == pEntBuffer->eEntKind()) {
+    for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
+          
+      i8 iInt = pKeySamples->iGet(i_Int);
+      Ent* aSearchedEnt = pEntBuffer->aFindEnt_Ray01(iInt);
+
+      nTotalSel_++;
+    }
+    
+    return;
+  }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
           
     i8 iInt = pKeySamples->iGet(i_Int);
@@ -1438,7 +1452,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
     }
     //RASSERT(aSearchedEnt);
 
-    nTotalDel_++;
+    nTotalSel_++;
     
     xEntWrk.vReset();
   }
@@ -1566,7 +1580,7 @@ void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDu
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
 {
-  eKE  eEntKind = KE_GENERAL;
+  eKE  eEntKind = KE_INT;
   i8   nSamples = C_UNKNOWN;
   i8   nTimes   = 10;
   bool bDump    = false;
@@ -1583,7 +1597,7 @@ void vTest21(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create key sample int set
 
-  IntSet* pKeySamples = pTest21_keySamples(nSamples);
+  IntSet* pKeySamples = pTest21_keySamples(eEntKind,nSamples);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run our tests
@@ -1591,17 +1605,17 @@ void vTest21(void)
   pKeySamples->vAscending();
   if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nTimes,bDump);
   if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nTimes,bDump);
-  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
+//  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
 
   pKeySamples->vDescending();
   if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nTimes,bDump);
   if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nTimes,bDump);
-  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
+//  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
 
   pKeySamples->vRandomise();
   if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nTimes,bDump);
   if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nTimes,bDump);
-  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
+//  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
 }
 
 /*----------------------------------------------------------------------------*/
