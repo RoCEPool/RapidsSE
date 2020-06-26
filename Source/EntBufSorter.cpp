@@ -23,7 +23,7 @@ EntBufSorter::EntBufSorter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFSORTER,_FOOTER_);
   
-  MemLib::vZero(m_aaEnt_int,sizeof(m_aaEnt_int),CN_ENTBUFSORTER)
+  MemLib::vZero(m_aaEnt_int,sizeof(m_aaEnt_int),CN_ENTBUFSORTER);
     
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFSORTER,_FOOTER_);
   
