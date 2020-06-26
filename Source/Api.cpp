@@ -93,11 +93,9 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   if (! Api::bPassesLowMem(aJobClass))
     return EC_LOW_MEMORY;
   
-  
-  
-  
-  Job* pJob = aJobClass->pPreJob(axReqTuple,pTagSet);
 
+  Job* pJob = Jobs::pJob_Distributed_pre(aJobClass, axReqTuple, pTagSet);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
   

@@ -14,9 +14,7 @@ JobDesc::JobDesc(
                  eJK  eKind,      // job kind
                  Stz* aComment,   // comment about the job
                  Stz* aCommand1,  // first word of prompt command
-                 Stz* aCommand2,  // optional second word of prompt command
-                 
-                 Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet)
+                 Stz* aCommand2   // optional second word of prompt command
               )
 {
   JobClass* pJobClass = & gxJobCatalog.m_xJobClass[gxJobCatalog.m_nJobClasses++];
@@ -26,8 +24,6 @@ JobDesc::JobDesc(
   pJobClass->m_aComment   = aComment;
   pJobClass->m_aCommand1  = aCommand1;
   pJobClass->m_aCommand2  = aCommand2;
-  
-  pJobClass->m_fpPre      = fpPre;
 }
 
 /*============================================================================*/

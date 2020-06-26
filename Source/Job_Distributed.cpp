@@ -10,9 +10,7 @@ JobClass xJobClass_Distributed =
   JK_DIST2PC,               // job kind
   "distributed"_Stz,        // comment about the job
   nullptr,                  // the prompt command
-  nullptr,                  // the second word
-
-  pJob_Distributed_pre      // prompt pre-process function
+  nullptr                   // the second word
 };
 
 /*----------------------------------------------------------------------------*/

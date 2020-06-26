@@ -29,20 +29,6 @@ JobClass* Jobs::_pJobClass(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new job by running the pre-function                               */
-/*----------------------------------------------------------------------------*/
-Job* JobClass::pPreJob(ReqTuple* aReqTuple, TagSet* pTagSet)
-{
-  // create the job
-  
-  Job* pJob = (*m_fpPre)(this,aReqTuple,pTagSet);
-  
-  //pJob->m_xReqTuple.m_i_Session = -1;
-  
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find job class given class number                                          */
 /*----------------------------------------------------------------------------*/
 pJOBCLASSFUN JobClass::pFirstFun(void)

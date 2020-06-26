@@ -14,10 +14,7 @@ namespace Jobs
       Stz* m_aCommand1;  // first word of prompt command
       Stz* m_aCommand2;  // optional second word of prompt command
   
-      Job* (*m_fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);
-  
     public:
-      Job* pPreJob(ReqTuple* aReqTuple, TagSet* pTagSet);
   
       // - -
   
