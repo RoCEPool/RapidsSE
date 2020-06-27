@@ -9,32 +9,17 @@
 /*----------------------------------------------------------------------------*/
 : rdCsvCyclic_StartMarker \handler
 
-  ZK_STARTMARKER_handler
+  // open the file for reading
+  file::new to file0[]
+
+  <fileNm> OPEN_READ file0[].get file.open if
+
+    PipeIn[].pipeOut
+  then
+
+  true
 ;
 
-/*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                BEGIN */
-/*----------------------------------------------------------------------------*/
-: rdCsvCyclic_PulseMarker \handler
-
-  ZK_PULSEDMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: rdCsvCyclic_CsvBuffer \handler
-
-  ZK_CSVBUFFER_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
-/*----------------------------------------------------------------------------*/
-: rdCsvCyclic_EosMarker \handler
-
-  ZK_EOSMARKER_handler
-;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -48,9 +33,6 @@
 
   op__topology
 
-  find: rdCsvCyclic_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: rdCsvCyclic_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: rdCsvCyclic_PulseMarker ZK_PULSEMARKER op[].handler!
   find: rdCsvCyclic_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
@@ -63,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: rdCsvCyclic :: rdCsvCyclic ;
+cmdSyntax: rdCsvCyclic :: rdCsvCyclic <fileNm> ;
 
 : rdCsvCyclic _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 

@@ -87,6 +87,7 @@ assert::stack_0
         "OP_bufferGen.sen"            include
         "OP_burst.sen"                include
 
+        "OP_catFile.sen"              include
         "OP_changeFolder.sen"         include
         "OP_chunk.sen"                include
         "OP_compactIndex.sen"         include
