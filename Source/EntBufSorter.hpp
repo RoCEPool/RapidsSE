@@ -5,13 +5,17 @@
 
 namespace Indexing
 {
-static const i8 C_SRT_ENT_INT = C_32KB;
+  static const i8 C_SRT_ENT_INT = C_32KB;
+
+  int iEntBufSortCompare_IntElm0(const void * a, const void * b);
+  int iEntBufSortCompare_Lvl_IntElm0(const void * a, const void * b);
+
 
   class EntBufSorter : public Object
   {
   private:
  
-    Ent_int* m_aaEnt_int[C_SRT_ENT_INT];
+    tET m_taRevisedTicket[C_SRT_ENT_INT];
   
     // must be last
     Footer m_xFooter;

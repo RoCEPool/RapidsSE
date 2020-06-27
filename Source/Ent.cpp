@@ -206,7 +206,7 @@ void Ent::vKind(eKE eKind)
 /*----------------------------------------------------------------------------*/
 tET Ent::tNextEntry(i8 i_Level)
 {
-  ASSERT(i_Level >= 0 && i_Level < nSkipLevels());
+  ASSERT(i_Level >= 0 && i_Level < C_MAX_LVL_LEVELS);
 
   tET tNextEntry = m_taNextEntry[i_Level];
   
@@ -218,7 +218,7 @@ tET Ent::tNextEntry(i8 i_Level)
 /*----------------------------------------------------------------------------*/
 void Ent::vNextEntry(i8 i_Level, tET tNextEntry)
 {
-  ASSERT(i_Level >= 0 && i_Level < nSkipLevels());
+  ASSERT(i_Level >= 0 && i_Level < C_MAX_LVL_LEVELS);
 
   m_taNextEntry[i_Level] = tNextEntry;
 }
@@ -295,13 +295,19 @@ void Ent::vSetEntry(Ent* aFromEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry
   
-  byte* aDstKey  = this->ayElmSeq();
-  byte* aSrcKey  = aFromEntry->ayElmSeq();
-  i8    nKeySize = aFromEntry->nElmSeqSize();
+  if (KE_INT == eKind()) {
+    i8 iInt = aFromEntry->iIntElm0();
+    m_iIntElm0 = iInt;
+  }
+  else {
+    byte* aDstKey  = this->ayElmSeq();
+    byte* aSrcKey  = aFromEntry->ayElmSeq();
+    i8    nKeySize = aFromEntry->nElmSeqSize();
   
-  m_xKey.vElmSeqSize(nKeySize);
+    m_xKey.vElmSeqSize(nKeySize);
 
-  MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
+    MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

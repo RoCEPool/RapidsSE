@@ -466,7 +466,7 @@ void EntBuffer::vPositionPriorVecEntry_Ray03(Key* aFindKey,
 
 #define NEXT_TICKET(aEnt,i_Lvl) ( aEnt->tNextEntry(i_Lvl) )
 
-#define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
+#define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm >= iNextElm )
 
 
 void EntBuffer::vPositionPriorVecEntry_Ray04(Key* aKey,
@@ -651,7 +651,7 @@ Ent* EntBuffer::aFindEnt_Ray01(i8 iKey_IntElm)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Ent_int* aScanEnt = (Ent_int*)aSkipRoots;
-  for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
+  for (i4 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
     
     for (tET tNextEnt = NEXT_TICKET(aScanEnt,i_Level);
          ! END_TICKET(tNextEnt);
@@ -659,6 +659,8 @@ Ent* EntBuffer::aFindEnt_Ray01(i8 iKey_IntElm)
 
       Ent_int* aNextEnt_int = GET_ENTRY(tNextEnt);
       i8 iNextEnt_IntElm = ELM0_OF_ENTRY(aNextEnt_int);
+      
+      //vTrace("@%lld : %lld v %lld\n"_Stz,i_Level,iKey_IntElm,iNextEnt_IntElm);
             
       if (SCAN_IS_AT_PRIOR_POS(iKey_IntElm,iNextEnt_IntElm))
         break;
@@ -668,13 +670,16 @@ Ent* EntBuffer::aFindEnt_Ray01(i8 iKey_IntElm)
 
   }
   
-  Ent* aFoundEnt = aNextEntry((Ent*)aScanEnt,0);
+  Ent_int* aFoundEnt = (Ent_int*)GET_ENTRY(aScanEnt->m_taNextEntry[0]);
 
   if (aFoundEnt) {
     bool b = (iKey_IntElm == ((Ent_int*)aFoundEnt)->m_iIntElm0);
     if (b)
-      return aFoundEnt;
+      return (Ent*)aFoundEnt;
   }
+  vTrace("DID NOT FIND %lld\n"_Stz,iKey_IntElm);
+  
+  NEVER_REACH;
   
   return nullptr;
 }

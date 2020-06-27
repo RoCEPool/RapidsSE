@@ -1405,6 +1405,9 @@ void vTest21_insert(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalIns_)
       break;
     
     Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
+    
+    //pEntBuffer->vShow();
+    
     nTotalIns_++;
     
     xEntWrk.vReset();
@@ -1457,6 +1460,18 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
     xEntWrk.vReset();
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* test21 :sort the ent buffer                                                */
+/*----------------------------------------------------------------------------*/
+void vTest21_sort(EntBuffer* pEntBuffer)
+{
+  EntBufSorter* pEntBufSorter = new EntBufSorter;
+  
+  pEntBufSorter->vSort_int(pEntBuffer);
+  
+  delete pEntBufSorter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1561,6 +1576,22 @@ void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples,
 
     vTest21_insert(pEntBuffer,pKeySamples,nTotalIns);
     
+//    if (bDump) {
+//      pEntBuffer->vDump();
+//    }
+
+    Timer    xSortTimer;
+    xSortTimer.vStart();
+    vTest21_sort(pEntBuffer);
+    xSortTimer.vUpdate();
+    SP_Timer spTimer1;
+    //vTrace("Time to sort : %s\n"_Stz,spTimer1.sz(xSortTimer.iNanoseconds()));
+
+    if (bDump) {
+      //bDump = false;
+      pEntBuffer->vDump(false);
+    }
+
     xTimer.vStart();
     
     for (i8 i_Loop = 0; i_Loop < nTimes; i_Loop++)
@@ -1588,7 +1619,7 @@ void vTest21(void)
   i8   nSamples = C_UNKNOWN;
   i8   nBuffers = 10;
   i8   nTimes   = 10;
-  bool bDump    = false;
+  bool bDump    = true;
 
   bool bInsertTest = true;
   bool bSearchTest = true;
@@ -1608,17 +1639,17 @@ void vTest21(void)
   // run our tests
   
   pKeySamples->vAscending();
-  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nBuffers,bDump);
-  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nBuffers,nTimes,bDump);
+//  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nBuffers,bDump);
+//  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nBuffers,nTimes,bDump);
 //  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
 
   pKeySamples->vDescending();
-  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nBuffers,bDump);
-  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nBuffers,nTimes,bDump);
+//  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nBuffers,bDump);
+//  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nBuffers,nTimes,bDump);
 //  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
 
   pKeySamples->vRandomise();
-  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nBuffers,bDump);
+//  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nBuffers,bDump);
   if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nBuffers,nTimes,bDump);
 //  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
 }
@@ -1683,15 +1714,15 @@ void vTest26(void)
 
   i8 i_NextRnd = C_UNKNOWN;
   
-  static const i8 C_FRQ = 8;
-  static const i8 C_LVL = 8;
+  static const i8 C_FRQ = C_MAX_LVL_LEVELS;
+  static const i8 C_LVL = C_MAX_LVL_RATIO;
   static const i8 C_CNT = 8;
 
-  i8 iaCounts[C_LVL][C_FRQ][C_CNT];
+  i8 iaCounts[C_LVL+1][C_FRQ+1][C_CNT+1];
   
-  for (i8 i_Lvl = 0; i_Lvl < C_LVL; i_Lvl++)
-    for (i8 i_Frq = 0; i_Frq < C_FRQ; i_Frq++)
-      for (i8 i_Cnt = 0; i_Cnt < C_CNT; i_Cnt++)
+  for (i8 i_Lvl = 0; i_Lvl <= C_LVL; i_Lvl++)
+    for (i8 i_Frq = 0; i_Frq <= C_FRQ; i_Frq++)
+      for (i8 i_Cnt = 0; i_Cnt <= C_CNT; i_Cnt++)
         iaCounts[i_Lvl][i_Frq][i_Cnt] = 0;
 
 
@@ -1705,13 +1736,13 @@ void vTest26(void)
     if (bDumpTable)
       vTrace("  "_Stz);
 
-    for (i8 i_Lvl = 3; i_Lvl < C_LVL; i_Lvl++) {
+    for (i8 i_Lvl = 3; i_Lvl <= C_LVL; i_Lvl++) {
 
       if (bDumpTable)
         if (i_Lvl > 3)
           vTrace(": "_Stz);
 
-      for (i8 i_Frq = 2; i_Frq < C_FRQ; i_Frq++) {
+      for (i8 i_Frq = 2; i_Frq <= C_FRQ; i_Frq++) {
 
         //i8 iLvl = RndLib::iLogLevel(nLevels,iFreq,i_NextRnd);
         i8 i_Cnt = RndLib::iSkipLevel(i_Lvl,i_Frq,i_NextRnd) ;
@@ -1731,14 +1762,14 @@ void vTest26(void)
   
   i8 iXchk = 0;
   vTrace("\n"_Stz);
-  for (i8 i_Lvl = 3; i_Lvl < C_LVL; i_Lvl++) {
+  for (i8 i_Lvl = 3; i_Lvl <= C_LVL; i_Lvl++) {
     vTrace("%lld Levels\n"_Stz,i_Lvl);
 
-    for (i8 i_Frq = 2; i_Frq < C_FRQ; i_Frq++) {
+    for (i8 i_Frq = 2; i_Frq <= C_FRQ; i_Frq++) {
       vTrace("Ratio %lld: "_Stz,i_Frq);
 
       iXchk = 0;
-      for (i8 i_Cnt = 1; i_Cnt < C_CNT; i_Cnt++) {
+      for (i8 i_Cnt = 1; i_Cnt <= C_CNT; i_Cnt++) {
         if (i_Cnt == 1)
           vTrace("%lld "_Stz,iaCounts[i_Lvl][i_Frq][i_Cnt]);
         else {

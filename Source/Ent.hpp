@@ -28,9 +28,11 @@ namespace Entries
                 //   b) row-ref to a crw row in a crwBuffer (occurs at H0 leaf buffers)
   
     tET m_taNextEntry[C_MAX_LVL_LEVELS]; // tickets to next entry by level
+    union {
+    u2  m_uEntryNo;  // used to verify the order of entries
+    tET m_tOriginal; // used to verify the order of entries
+    };
 
-    u2  m_uEntryNo; // used to verify the order of entries
-  
     union {
     Key m_xKey;     // the key (for the general case)
     i8  m_iIntElm0; // or first int element of a special case ent

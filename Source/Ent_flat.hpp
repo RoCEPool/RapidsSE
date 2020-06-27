@@ -23,7 +23,10 @@ namespace Entries
     } Ref;         // 64b                                             // 1 word
   
     tET m_taNextEntry[C_MAX_LVL_LEVELS];  // tickets                  // 2 words
-    u2  m_uEntryNo;       // entry number (not always set)
+    union {
+    u2  m_uEntryNo;  // used to verify the order of entries
+    tET m_tOriginal; // used to verify the order of entries
+    };
 
     i8  m_iIntElm0;       // first element of an integer key          // 1 word
                                                                       //--------
@@ -49,8 +52,11 @@ namespace Entries
     } Ref;         // 64b
   
     tET m_taNextEntry[C_MAX_LVL_LEVELS]; // tickets
-    u2  m_uEntryNo;       // entry number (not always set)
-  
+    union {
+    u2  m_uEntryNo;  // used to verify the order of entries
+    tET m_tOriginal; // used to verify the order of entries
+    };
+
     i8 m_nElmSeqSize;     // total size of the key's elements
     i8 m_iIntElm0;        // first element of an integer key 
   };
