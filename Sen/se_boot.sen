@@ -151,6 +151,7 @@ assert::stack_0
 
         "OP_rdCsvChunk.sen"           include
         "OP_receiver.sen"             include
+        "OP_recv.sen"                 include
         "OP_recurring.sen"            include
         "OP_report.sen"               include
 

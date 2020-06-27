@@ -109,12 +109,12 @@ Job::Job(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(eCN eClass, ReqTuple* aReqTuple)
-: Focal(eClass,AM::iNextJobId(),aReqTuple->m_iForId)
+Job::Job(eCN eClassNo, ReqTuple* aReqTuple)
+: Focal(eClassNo,AM::iNextJobId(),aReqTuple->m_iForId)
 , m_xReqTuple(aReqTuple)
 , CRM<Job>(this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClass);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
     
   
   // m_xReqTuple
@@ -154,7 +154,7 @@ Job::Job(eCN eClass, ReqTuple* aReqTuple)
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClass);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
