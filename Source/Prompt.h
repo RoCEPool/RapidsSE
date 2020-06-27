@@ -54,6 +54,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_file.hpp"
 #include "Prompt_fileCat.hpp"
 #include "Prompt_fileProc.hpp"
+#include "Prompt_fileRand.hpp"
 #include "Prompt_floats.hpp"
 #include "Prompt_funs.hpp"
 
