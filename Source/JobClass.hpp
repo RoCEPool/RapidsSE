@@ -20,8 +20,6 @@ namespace Jobs
   
       static pJOBCLASSFUN pFirstFun(void);
   
-      static JobClass* pFind(eCN eClass);
-      static JobClass* pFind(Stz* aCommand1, Stz* aCommand2);
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
