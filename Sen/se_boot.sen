@@ -155,6 +155,7 @@ assert::stack_0
         "OP_report.sen"               include
 
         "OP_scan.sen"                 include
+        "OP_send.sen"                 include
         "OP_showcluster.sen"          include
         "OP_sink.sen"                 include
         "OP_snapshot.sen"             include
