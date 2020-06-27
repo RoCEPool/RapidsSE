@@ -9,7 +9,17 @@
 /*----------------------------------------------------------------------------*/
 : catFile_csvBuffer
 
-  false
+  csvBuffer::new locals| pCsvBuffer |
+
+  pCsvBuffer file0[] file.readChunk if
+    file0[] file.tell "read a csv chunk (tell %v)" .printf
+    pCsvBuffer to Operand[]
+    Operand[].pipeOut
+    true
+  else
+
+    false
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -349,10 +349,11 @@ public:
   void vFileOpen(void);
   void vFilePathGet(void);
   void vFilePrint(void);
-  void vFileReadLine(void);
   void vFileReadChunk(void);
+  void vFileReadLine(void);
   void vFileSeek(void);
   void vFileSize(void);
+  void vFileTell(void);
   void vFileWriteLine(void);
 
   // flow
