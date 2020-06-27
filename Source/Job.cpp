@@ -67,8 +67,6 @@ Job::Job(eCN eClassNo)
   
   // m_xReqTuple
   
-  m_aJobClass = nullptr;
-  
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
@@ -85,7 +83,6 @@ Job::Job(eCN eClassNo)
   
   //m_oAcksRmg
   
-  m_aJobClass        = nullptr;
   m_pTaskJ           = nullptr;
   m_pOriginatingTask = nullptr;
   m_iOriginatingId   = C_UNKNOWN;
@@ -112,17 +109,15 @@ Job::Job(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
-: Focal(aJobClass->m_eClass,AM::iNextJobId(),aReqTuple->m_iForId)
+Job::Job(eCN eClass, ReqTuple* aReqTuple)
+: Focal(eClass,AM::iNextJobId(),aReqTuple->m_iForId)
 , m_xReqTuple(aReqTuple)
 , CRM<Job>(this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
+  _precondition_(_ADDRESS_,_MAGIC_,eClass);
     
   
   // m_xReqTuple
-  
-  m_aJobClass = aJobClass;
 
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
@@ -159,7 +154,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,16 +220,6 @@ Job* Job::pThisTLSJob(void)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete given job using job class info                                      */
-/*----------------------------------------------------------------------------*/
-void Job::vDeleteJobViaClass(Job* pJob)
-{
-  RASSERT(pJob && pJob->m_aJobClass);
-  
-  pJob->m_aJobClass->vDeleteJob(pJob);
-}
 
 /*----------------------------------------------------------------------------*/
 /* is this a foreign job?                                                     */
@@ -500,35 +485,6 @@ void Job::vIncRowsProcessed(void)
 void Job::vIncRowsInvalid(void)
 {
   m_xResult.m_xJobResponse.m_ixRowsInvalid.iInc();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the job class                                                          */
-/*----------------------------------------------------------------------------*/
-JobClass* Job::aJobClass(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_aJobClass;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job class                                                              */
-/*----------------------------------------------------------------------------*/
-void Job::vJobClass(JobClass* aJobClass, char* azCaller)
-{
-  m_aJobClass = aJobClass;
-  
-//  Thread* pThread = AM::pThisTLSThread();
-  
-//  vTrace("Job %p %s m_aJobClass set to %p %s; thread %p caller %s\n"_Stz,
-//         this,
-//         m_sJobNm.szStz(),
-//         m_aJobClass,
-//         "comment"_Stz, //m_aJobClass->m_aComment->azChar(),
-//         pThread,
-//         azCaller
-//         );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1045,8 +1001,6 @@ void Job::vSeed(eSS eSeed)
     m_oJobTags.vReplace("<seed>"_Stz,aSS[eSeed]);
   else
     m_oJobTags.vInsert("<seed>"_Stz,aSS[eSeed]);
-
-  m_aJobClass->m_bSeedsSpawned[eSeed] = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1114,22 +1068,13 @@ void Job::vSlot(i8 i_Slot)
 /*----------------------------------------------------------------------------*/
 /* set the job trace                                                          */
 /*----------------------------------------------------------------------------*/
-//void Job::vShow(s48K& s)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_);
-//  
-//  vTrace("%s: %s"_Stz,
-//         m_aJobClass ? (Stz*)m_aJobClass->m_aName : "<no jobClass>"_Stz,
-//         s.szStz());
-//}
 void Job::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vTrace("%s %s parentId %03lld seed %s "
+  vTrace("%s parentId %03lld seed %s "
          "i_Session %03lld i_Slot %lld WasReceived %lld\n"_Stz,
          aCN[eClass()],
-         m_aJobClass ? aCN[m_aJobClass->m_eClass] : "<no jobClass>"_Stz,
          m_iParentId,
          aSS[m_eSeed],
          
@@ -1226,7 +1171,7 @@ eEC Jobs::eJob_checkCluster(void)
 /*----------------------------------------------------------------------------*/
 /* post-execute job function                                                  */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
+void Jobs::vJob_post(Job* pJob)
 {
   eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
   pJob->vPrintResult(eResponse);

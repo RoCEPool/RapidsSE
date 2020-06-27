@@ -33,15 +33,9 @@ namespace Jobs
 
 #include "Job_Distributed.hpp"
 
-#include "Job_Local.hpp"
-
 #include "XmitOperand.hpp"
 
 #include "JobList.hpp"
-
-#include "JobDesc.hpp"
-#include "JobClass.hpp"
-#include "JobCatalog.hpp"
 
 #include "SP_Job.hpp"
 

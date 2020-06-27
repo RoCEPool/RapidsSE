@@ -12257,7 +12257,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": receiver_init ( -- )\n"
     "\n"
-    "  CN_JOB_LOCAL task[] task.thread thread.dedicated!\n"
+    "  CN_JOB_DISTRIBUTED task[] task.thread thread.dedicated!\n"
     "\n"
     "  NS_ACTIVE grid::thisNode@ grid::node node.state!\n"
     "\n"

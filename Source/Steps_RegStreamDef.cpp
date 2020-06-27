@@ -217,7 +217,7 @@ void Step::vRegStreamDefParse(void)
 {
   ENTRY();
   
-  Job* pJob_Local = _pJob_Local(m_pDataStack->pPopPtr(__func__));
+  Job* pJob_Local = _pJob_Distributed(m_pDataStack->pPopPtr(__func__));
   
   sSTMT sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);

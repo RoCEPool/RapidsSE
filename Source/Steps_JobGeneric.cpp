@@ -27,21 +27,13 @@ void Step::vJob__BegunNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  JobClass* aJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
-
-  Job* pJobBegun = new Job_Distributed(aJobClass_Distributed,&pDistJob->m_xReqTuple); // new Job__Begun(pDistJob);
+  Job* pJobBegun = new Job_Distributed(&pDistJob->m_xReqTuple); // new Job__Begun(pDistJob);
   pJobBegun->m_iFocalId = pDistJob->m_iFocalId;
   pJobBegun->vParticipantNode(AM::pGrid()->m_iThisNode);
   pJobBegun->vNormalSides(false);
   pJobBegun->vJobKind(JK_GENERIC);
 
-  //JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
-  //pJobBegun->m_aJobClass = pJobClass__Begun;
-
-  pJobBegun->vJobClass(aJobClass_Distributed,(char*)__func__);
-
   pJobBegun->vJobNm("_begun"_Stz);
-  pJobBegun->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobBegun->pJobTags()->vInsert(C_TAG_JOBNM,"_begun"_Stz);
   pJobBegun->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobBegun->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -66,19 +58,13 @@ void Step::vJob__CancelNew(void)
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  JobClass* pJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
   
-  Job* pJobCancel = new Job_Distributed(pJobClass_Distributed,&pDistJob->m_xReqTuple); // new Job__Cancel(pDistJob);
+  Job* pJobCancel = new Job_Distributed(&pDistJob->m_xReqTuple); // new Job__Cancel(pDistJob);
   pJobCancel->m_iFocalId = pDistJob->m_iFocalId;
   pJobCancel->vParticipantNode(AM::pGrid()->m_iThisNode);
   pJobCancel->vJobKind(JK_GENERIC);
 
-  JobClass* aJobClass__Cancel = pJobClass_Distributed;
-  pJobCancel->vJobClass(aJobClass__Cancel,(char*)__func__);
-
   pJobCancel->vJobNm("_cancel"_Stz);
-  pJobCancel->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobCancel->pJobTags()->vInsert(C_TAG_JOBNM,"_cancel"_Stz);
   pJobCancel->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobCancel->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -104,21 +90,15 @@ void Step::vJob__CancelledNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  JobClass* pJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
-
-  Job* pJobCancelled = new Job_Distributed(pJobClass_Distributed,&pDistJob->m_xReqTuple); // new Job__Cancelled(pDistJob);
+  Job* pJobCancelled = new Job_Distributed(&pDistJob->m_xReqTuple); // new Job__Cancelled(pDistJob);
   pJobCancelled->m_iFocalId = pDistJob->m_iFocalId;
   pJobCancelled->vParticipantNode(AM::pGrid()->m_iThisNode);
   pJobCancelled->vNormalSides(false);
   pJobCancelled->vJobKind(JK_GENERIC);
-
-  JobClass* aJobClass__Cancelled = pJobClass_Distributed;
-  pJobCancelled->vJobClass(aJobClass__Cancelled,(char*)__func__);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancelled);
   
   pJobCancelled->vJobNm("_cancelled"_Stz);
-  pJobCancelled->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobCancelled->pJobTags()->vInsert(C_TAG_JOBNM,"_cancelled"_Stz);
   pJobCancelled->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobCancelled->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -141,21 +121,15 @@ void Step::vJob__EndNew(void)
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  JobClass* pJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
   
-  Job* pJobEnd = new Job_Distributed(pJobClass_Distributed,&pDistJob->m_xReqTuple); // new Job__End(pDistJob);
+  Job* pJobEnd = new Job_Distributed(&pDistJob->m_xReqTuple); // new Job__End(pDistJob);
   pJobEnd->m_iFocalId = pDistJob->m_iFocalId;
   pJobEnd->vParticipantNode(AM::pGrid()->m_iThisNode);
   pJobEnd->vJobKind(JK_GENERIC);
-
-  JobClass* aJobClass__End = pJobClass_Distributed;
-  pJobEnd->vJobClass(aJobClass__End,(char*)__func__);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnd);
   
   pJobEnd->vJobNm("_end"_Stz);
-  pJobEnd->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobEnd->pJobTags()->vInsert(C_TAG_JOBNM,"_end"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -178,20 +152,14 @@ void Step::vJob__EndedNew(void)
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  JobClass* pJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
   
-  Job* pJobEnded = new Job_Distributed(pJobClass_Distributed,&pDistJob->m_xReqTuple); // new Job__Ended(pDistJob);
+  Job* pJobEnded = new Job_Distributed(&pDistJob->m_xReqTuple); // new Job__Ended(pDistJob);
   pJobEnded->m_iFocalId = pDistJob->m_iFocalId;
   pJobEnded->vParticipantNode(AM::pGrid()->m_iThisNode);
   pJobEnded->vNormalSides(false);
   pJobEnded->vJobKind(JK_GENERIC);
-
-  JobClass* aJobClass__Ended = pJobClass_Distributed;
-  pJobEnded->vJobClass(aJobClass__Ended,(char*)__func__);
   
   pJobEnded->vJobNm("_ended"_Stz);
-  pJobEnded->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobEnded->pJobTags()->vInsert(C_TAG_JOBNM,"_ended"_Stz);
   pJobEnded->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobEnded->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -216,21 +184,15 @@ void Step::vJob__ExecuteNew(void)
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  JobClass* pJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
   
-  Job* pJobExecute = new Job_Distributed(pJobClass_Distributed,&pDistJob->m_xReqTuple); // new Job__Execute(pDistJob);
+  Job* pJobExecute = new Job_Distributed(&pDistJob->m_xReqTuple); // new Job__Execute(pDistJob);
   pJobExecute->m_iFocalId = pDistJob->m_iFocalId;
   pJobExecute->vParticipantNode(AM::pGrid()->m_iThisNode);
   pJobExecute->vJobKind(JK_GENERIC);
-
-  JobClass* aJobClass__Execute = pJobClass_Distributed;
-  pJobExecute->vJobClass(aJobClass__Execute,(char*)__func__);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecute);
   
   pJobExecute->vJobNm("_execute"_Stz);
-  pJobExecute->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobExecute->pJobTags()->vInsert(C_TAG_JOBNM,"_execute"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -253,20 +215,14 @@ void Step::vJob__ExecutedNew(void)
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  JobClass* pJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
   
-  Job* pJobExecuted = new Job_Distributed(pJobClass_Distributed,&pDistJob->m_xReqTuple); // new Job__Executed(pDistJob);
+  Job* pJobExecuted = new Job_Distributed(&pDistJob->m_xReqTuple); // new Job__Executed(pDistJob);
   pJobExecuted->m_iFocalId = pDistJob->m_iFocalId;
   pJobExecuted->vParticipantNode(AM::pGrid()->m_iThisNode);
   pJobExecuted->vNormalSides(false);
   pJobExecuted->vJobKind(JK_GENERIC);
-
-  JobClass* aJobClass__Executed = pJobClass_Distributed;
-  pJobExecuted->vJobClass(aJobClass__Executed,(char*)__func__);
   
   pJobExecuted->vJobNm("_executed"_Stz);
-  pJobExecuted->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobExecuted->pJobTags()->vInsert(C_TAG_JOBNM,"_executed"_Stz);
   pJobExecuted->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobExecuted->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);

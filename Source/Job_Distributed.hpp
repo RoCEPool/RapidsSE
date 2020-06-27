@@ -17,7 +17,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Distributed(JobClass* aJobClass, ReqTuple* aReqTuple);
+    Job_Distributed(ReqTuple* aReqTuple);
     ~Job_Distributed(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -34,12 +34,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Distributed* _pJob_Distributed(void* aAddr);
   
-  Job* pJob_Distributed_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);
-  Job* pJob_Distributed_new(JobClass* aJobClass, ReqTuple* aReqTuple);
-  void vJob_Distributed_delete(Job* pJob);
-  void vJob_Distributed_show(Job* pJob);
+  Job* pJob_Distributed_pre(ReqTuple* aReqTuple, TagSet* pTagSet);
   
-  JobClass* pJob_Distributed_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

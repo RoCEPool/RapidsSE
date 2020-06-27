@@ -124,9 +124,11 @@ Task::~Task(void) noexcept(false)
 
   delete m_pForth;
   
-  if (m_pJob)
-    Job::vDeleteJobViaClass(m_pJob);
-  
+  if (m_pJob) {
+    //Job::vDeleteJobViaClass(m_pJob);
+    Job_Distributed* pJob_Distributed = _pJob_Distributed(m_pJob);
+    delete pJob_Distributed;
+  }
   delete m_pRegSet;
     
   delete m_pProfile;
@@ -170,10 +172,6 @@ void Task::vTaskLoop(void)
   //RASSERT(! bIsLocked());
 
   ASSERT(! m_pJob || ! m_pJob->pJobTags()->szValue(C_TAG_PATH)->bSame(""_Stz));
-  
-  // TODO: shouldn't have to refind it everytime!!!
-  if (m_pJob)
-    vRefindJobClass();
   
   if (! m_pForth)
     vInitExeContext();
@@ -591,8 +589,8 @@ Stz* Task::szJobName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (m_pJob && m_pJob->aJobClass())
-    return aCN[m_pJob->aJobClass()->m_eClass];
+  if (m_pJob)
+    return aCN[m_pJob->eClass()];
   else if (! m_pJob)
     return "<no job>"_Stz;
   else
@@ -692,22 +690,6 @@ void Task::vQueue(eQK eQueue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_eQueue = eQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set task queue                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vRefindJobClass(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_pJob->aJobClass())
-    return;
-  
-  // find the job class on this node
-  eCN eClass = m_pJob->eClass();
-  JobClass* aJobClass = JobClass::pFind(eClass);
-  m_pJob->vJobClass(aJobClass,(char*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/

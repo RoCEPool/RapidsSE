@@ -59,7 +59,7 @@ namespace Host              {                                                 }
 namespace Indexing          { class EntBuffer;       class IndexTree;         }
 namespace InfoData          {                                                 }
 namespace Interface         { class SessionArray;                             }
-namespace Jobs              { class Job;             struct JobClass;
+namespace Jobs              { class Job;             
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
                               class Job_Distributed;                          }

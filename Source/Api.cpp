@@ -80,28 +80,14 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   
   if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) )
     return EC_INVALID_COMMAND;
-   
-  
-  
-  JobClass* aJobClass = Api::aFindJobClass(pCmdTknVec,pTagSet);
-  
-  if (! aJobClass)
-    return EC_INVALID_COMMAND;
-
       
       
-  if (! Api::bPassesLowMem(aJobClass))
+  if (! Api::bPassesLowMem())
     return EC_LOW_MEMORY;
+  
 
-  if (! Api::bPassesCheck(aJobClass))
-    return EC_ZZZ_OTHER;
-
+  Job* pJob = Jobs::pJob_Distributed_pre(axReqTuple, pTagSet);
   
-  
-  
-  
-  Job* pJob = aJobClass->pPreJob(axReqTuple,pTagSet);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
   
@@ -137,7 +123,7 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   pJob->vSeed(SS_SEED_REQ);
         
   //! ALKA: Come back to this : 3 feb 2020
-  pJob->vJobClass(nullptr, (char*)__func__);
+  //pJob->vJobClass(nullptr, (char*)__func__);
 
   *ppJob = pJob;
 
@@ -187,8 +173,7 @@ void Api::vJob_3_PostJob(Job* pJob)
 {
   _static_
   
-  
-  pJob->aJobClass()->vPostJob(pJob);
+  Jobs::vJob_post(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,65 +184,18 @@ void Api::vJob_4_DeleteJob(Job** ppJob)
   _static_
   
   Job* pJob = * ppJob;
-  JobClass* aJobClass = pJob->aJobClass();
-
-  aJobClass->vDeleteJob(pJob);
-
+  
+  Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
+  delete pJob_Distributed;
+  
   * ppJob = nullptr;
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* attempt to find a job which matches the command tokens                     */
-/*----------------------------------------------------------------------------*/
-JobClass* Api::aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet)
-{
-  _static_
-  
-  //pTagSet->vDumpSet();
-  
-  Stz* aCommand1 = pCmdTknVec->pGet(0,true)->szChars();
-  Stz* aCommand2 = pCmdTknVec->pGet(1,true)->szChars();
-  
-  JobClass* aJobClass = JobClass::pFind(aCommand1, aCommand2);
-
-  if (aJobClass)
-    return aJobClass;
-  
-  // is the command token a forth-word marked as prompt?
-  //if (bIsPromptWord())
-  //  return true;
-  
-  // give command to the universal job
-  if ((eJK)pTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL)
-    aJobClass = JobClass::pFind(CN_JOB_LOCAL);
-  else
-    aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
-  
-  return aJobClass;
-}
-
-/*----------------------------------------------------------------------------*/
-/* passes the pre-condition check function?                                   */
-/*----------------------------------------------------------------------------*/
-bool Api::bPassesCheck(JobClass* aJobCLass)
-{
-  _static_
-
-  eEC eErrorCode = aJobCLass->eCheckJob();
-  
-  if (EC_NONE != eErrorCode) {
-    vTrace("Error: %s\n"_Stz,aEC[eErrorCode]);
-    return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* passes the low-memory condition?                                           */
 /*----------------------------------------------------------------------------*/
-bool Api::bPassesLowMem(JobClass* aJobCLass)
+bool Api::bPassesLowMem(void)
 {
   _static_
 
@@ -768,8 +706,6 @@ void Api::vSpawnJobDedicated(Job* pJob)
 {
   _static_
   
-  
-  ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -851,8 +787,6 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 {
   _static_
   
-  
-  ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
   
   

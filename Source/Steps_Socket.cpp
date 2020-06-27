@@ -918,7 +918,7 @@ void Step::vSocketSendObject(void)
     Job* pJob = _pJob(pObject);
     
     // ray added 25 Aug 2019
-    ASSERT(pJob->aJobClass()->m_fpSend && pJob->aJobClass()->m_fpRecv);
+    //ASSERT(pJob->aJobClass()->m_fpSend && pJob->aJobClass()->m_fpRecv);
     
     if (pJob->m_xReqTuple.m_iDetail)
       JobLog::vNote(pJob,"Send: %s %p socket %llx"_Stz,

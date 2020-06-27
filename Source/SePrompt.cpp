@@ -7,7 +7,6 @@
 extern Args          gxArgs;
 
 extern AttachMap*    gpAttachMap;
-extern JobCatalog    gxJobCatalog;
 extern PromptCatalog gxPromptCatalog;
 
 /*----------------------------------------------------------------------------*/
@@ -277,9 +276,6 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
-    //! ALKA: this should go
-    JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oExtTagSet);
-    
     m_pJob->pJobTags()->vCopy(m_pSsnTagSet);
     
     if (AM::bVerbose())
@@ -312,7 +308,6 @@ void SePrompt::vPromptLoop(void)
       m_pJob->m_xResult.vProcessBufferQueue();
     }
 
-    m_pJob->vJobClass(aJobClass, (char*)__func__);
     Api::vJob_3_PostJob(m_pJob);
     
     

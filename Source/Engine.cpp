@@ -306,21 +306,19 @@ void Engine::vBootCheck(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCallBoot(void)
 {
-  JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_LOCAL);
-  
   ReqTuple xReqTuple("!!BootSE"_Stz,false);
   
-  Job_Local* pJob_Local
-    = static_cast<Job_Local*>(pJobClass_Local->pNewJob(&xReqTuple));
+  Job_Distributed* pJob_Distributed
+    = static_cast<Job_Distributed*>(new Job_Distributed(&xReqTuple));
   
-  pJob_Local->vSeed(SS_SEED_RUN);
+  pJob_Distributed->vSeed(SS_SEED_RUN);
   
-  TagSet* pJobTags = pJob_Local->pJobTags();
+  TagSet* pJobTags = pJob_Distributed->pJobTags();
   pJobTags->vDumpSet();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
   
-  Task* pBootTask = new Task(pJob_Local);
+  Task* pBootTask = new Task(pJob_Distributed);
   pBootTask->vInitExeContext();
 
   pBootTask->vAddAxioms();
@@ -330,7 +328,7 @@ void Engine::vCallBoot(void)
   if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
-  pJob_Local->vTimerStart();
+  pJob_Distributed->vTimerStart();
   
   vCallImmmediate(pBootTask);
   
@@ -376,22 +374,21 @@ void Engine::vCallStart(void)
   
   PsxThd::vMarkNonSeThread();
   
-  JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_LOCAL);
   ReqTuple xReqTuple("!!StartSE"_Stz,false);
   
-  Job_Local* pJob_Local
-  = static_cast<Job_Local*>(pJobClass_Local->pNewJob(&xReqTuple));
+  Job_Distributed* pJob_Distributed
+  = static_cast<Job_Distributed*>(new Job_Distributed(&xReqTuple));
   
-  pJob_Local->vSeed(SS_SEED_RUN);
+  pJob_Distributed->vSeed(SS_SEED_RUN);
   
-  TagSet* pJobTags = pJob_Local->pJobTags();
+  TagSet* pJobTags = pJob_Distributed->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"start_run"_Stz);
   
-  Task* pStartTask = new Task(pJob_Local);
+  Task* pStartTask = new Task(pJob_Distributed);
   pStartTask->vInitExeContext();
   
-  pJob_Local->vTimerStart();
+  pJob_Distributed->vTimerStart();
   
   vCallImmmediate(pStartTask);
   

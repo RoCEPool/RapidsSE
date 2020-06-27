@@ -505,7 +505,7 @@ void Step::vJobPrintMember(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   if (pJob->eClass() == CN_JOB_DISTRIBUTED) {
-    vTrace("Job: %p JobClass: %p\n"_Stz, pJob, pJob->aJobClass());
+    vTrace("Job: %p Class: %p\n"_Stz, pJob, aCN[pJob->eClass()]);
   }
   
   EXIT();
@@ -537,11 +537,9 @@ void Step::vJobDelete(void)
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
   
-  // call the job delete function
-  pJobClass->vDeleteJob(pJob);
-  
+  Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
+  delete pJob_Distributed;
   EXIT();
 }
   
@@ -1012,34 +1010,17 @@ void Step::vJobPostRecv(void)
   ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the job class on this node
-  
-  JobClass* aJobClass = nullptr;
-  eCN eClass = pJob->eClass();
-  
-  if (CN_JOB_DISTRIBUTED == eClass) {
-    eClass = (eCN)pJob->pJobTags()->iValue(C_TAG_JOBCLASS);
-    aJobClass = JobClass::pFind(eClass);
-  }
-  else {
-    aJobClass = JobClass::pFind(eClass);
-  }
-  
-  pJob->vJobClass(aJobClass,(char*)__func__);
-
-  ASSERT(aJobClass->m_fpRecv == vJob_recv);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run the post recv function
+  Jobs::vJob_recv(pJob);
   
-  if (aJobClass->m_fpRecv)
-    (*aJobClass->m_fpRecv)(pJob);
-  else {
-    vTrace("job.postRecv: %s\n"_Stz, pJob->szJobNm());
-    RASSERT(0);
-  }
+//  if (aJobClass->m_fpRecv)
+//    (*aJobClass->m_fpRecv)(pJob);
+//  else {
+//    vTrace("job.postRecv: %s\n"_Stz, pJob->szJobNm());
+//    RASSERT(0);
+//  }
   
   if (pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,
@@ -1063,11 +1044,8 @@ void Step::vJobPreSend(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  JobClass* aJobClass = pJob->aJobClass();
-  
   //ActLog::vAdd(pJob,AN_PRE_SEND,m_pTask->pJob());
-  if (aJobClass->m_fpSend)
-    (*aJobClass->m_fpSend)(pJob);
+  Jobs::vJob_send(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail)
     JobLog::vNote(pJob,
@@ -1085,14 +1063,12 @@ void Step::vJobRecv(void)
 {
   ENTRY();
   
+  RASSERT(0);
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
   
-  // call the job post-receive function
-  pJobClass->vRecvJob(pJob);  // come back to this, remove session as parameter to delete
   
   EXIT();
 }
@@ -1417,12 +1393,8 @@ void Step::vJobSend(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  // find the job in the catalog
-  eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
-  
   // call the job pre-send function
-  pJobClass->vSendJob(pJob);  // come back to this, remove session as parameter to delete
+  Jobs::vJob_send(pJob);  // come back to this, remove session as parameter to delete
   
   EXIT();
 }
@@ -1469,14 +1441,9 @@ void Step::vJobShow(void)
 {
   ENTRY();
   
+  RASSERT(0);
+  
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  // find the job in the catalog
-  eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
-  
-  // call the job delete function
-  pJobClass->vShowJob(pJob);
   
   EXIT();
 }

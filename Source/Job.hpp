@@ -9,7 +9,6 @@ namespace Jobs
               public CRM<Job>
   {
   private:
-    JobClass* m_aJobClass;    // job class THIS WILL GO
     s32       m_sJobNm;       // name of job
     TagSet    m_oJobTags;     // tags for the job
     i8        m_iParentId;    // job id of parent job which spawned this job
@@ -48,7 +47,7 @@ namespace Jobs
     Task*   m_pTaskJ;         // task executing the job
 
   public:
-    Job(JobClass* aJobClass, ReqTuple* aReqTuple);
+    Job(eCN eJobClass, ReqTuple* aReqTuple);
 
     // FIND CASE -- TO BE REMOVED
     Job(eCN eClassNo);
@@ -57,7 +56,6 @@ namespace Jobs
   
     static Job* pThisTLSJob(void);
 
-    static void vDeleteJobViaClass(Job* pJob);
     static bool bIsForeign(i8 iJobId);
     static i8   iJobNo(i8 iJobId);
     static i8   iNodeNo(i8 iJobId);
@@ -80,8 +78,6 @@ namespace Jobs
     void vIncRowsProcessed(void);
     void vIncRowsInvalid(void);
     i8   iJobId(void);
-    JobClass* aJobClass(void);
-    void vJobClass(JobClass* aJobClass, char* azCaller);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
     bool bJobHasError(void);
@@ -159,16 +155,12 @@ namespace Jobs
   eEC  eJob_checkCluster(void);
   void vJob_recv(Job* pJob);
   void vJob_send(Job* pJob);
-  void vJob_post(JobClass* aJobClass, Job* pJob);
+  void vJob_post(Job* pJob);
 }
 
 bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 typedef void* (*pFUN)(void*);
-
-//typedef pFUN (*pJOBCLASSFUN)(JobClass** );
-
-typedef JobClass* (*pJOBCLASSFUN)(pFUN** );
 
 /*============================================================================*/
 /* end                                                                        */
