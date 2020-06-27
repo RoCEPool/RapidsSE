@@ -319,7 +319,7 @@
     scan $Table | toCsv | stageC
 
   stage stageC on origin :
-    toFileOp $File | stageD
+    wrFile $File | stageD
 
   stage stageD on origin :
     sink | stageA

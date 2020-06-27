@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_toFile.sen -- Operator toFile                                           */
+/* OP_wrFile.sen -- write to file                                             */
 /*============================================================================*/
 
-" OP_toFile.sen" .verbose
+" OP_wrFile.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: toFileOp_CsvBuffer \handler
+: wrFile_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
   PipeIn[] to Operand[]
@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: toFileOp_StartMarker \handler
+: wrFile_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: toFileOp_ExitMarker \handler
+: wrFile_ExitMarker \handler
 
   //"Operand:- ZK_EXITMARKER" .verbose
   File0[].isNull not if
@@ -52,17 +52,17 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* execute for toFileOp req                           (on node where spawned) */
+/* execute for wrFile req                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : toFileOp_req \operator
+ : wrFile_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: toFileOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: toFileOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: toFileOp_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: wrFile_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: wrFile_StartMarker ZK_STARTMARKER op[].handler!
+  find: wrFile_ExitMarker  ZK_EXITMARKER  op[].handler!
 
   op__loop
 
@@ -74,9 +74,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toFileOp :: toFileOp <fileNm> ;
+cmdSyntax: wrFile :: wrFile <fileNm> ;
 
-: toFileOp _cmdTags tagCopy: op_tags
+: wrFile _cmdTags tagCopy: op_tags
   tags{ <cmdDesc>  = "--desc for op--" }
 ;
 

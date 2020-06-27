@@ -189,7 +189,6 @@ assert::stack_0
         "OP_toCrwHfast.sen"           include
         "OP_toCsv.sen"                include
         "OP_toDemon.sen"              include
-        "OP_toFile.sen"               include
         "OP_toHshCrw.sen"             include
         "OP_toNstRsb.sen"             include
         "OP_toPtnRsb.sen"             include
@@ -208,6 +207,7 @@ assert::stack_0
         "OP_visualizeTable.sen"       include
 
         "OP_waker.sen"                include
+        "OP_wrFile.sen"               include
 
         "OP_xmit.sen"                 include
 
