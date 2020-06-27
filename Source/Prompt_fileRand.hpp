@@ -3,9 +3,17 @@
 /*============================================================================*/
 #pragma once
 
+struct _fileRand {
+  i8   m_iRandom;
+  char m_caLine[256];
+};
+
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  int Prompt(const void * a, const void * b);
+
   bool bPrompt_fileRand(SePrompt* pPrompt);
 }
 
