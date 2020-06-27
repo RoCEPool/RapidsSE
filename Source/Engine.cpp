@@ -308,17 +308,16 @@ void Engine::vCallBoot(void)
 {
   ReqTuple xReqTuple("!!BootSE"_Stz,false);
   
-  Job_Distributed* pJob_Distributed
-    = static_cast<Job_Distributed*>(new Job_Distributed(&xReqTuple));
+  Job* pJob = new Job(&xReqTuple);
   
-  pJob_Distributed->vSeed(SS_SEED_RUN);
+  pJob->vSeed(SS_SEED_RUN);
   
-  TagSet* pJobTags = pJob_Distributed->pJobTags();
+  TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vDumpSet();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
   
-  Task* pBootTask = new Task(pJob_Distributed);
+  Task* pBootTask = new Task(pJob);
   pBootTask->vInitExeContext();
 
   pBootTask->vAddAxioms();
@@ -328,7 +327,7 @@ void Engine::vCallBoot(void)
   if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
-  pJob_Distributed->vTimerStart();
+  pJob->vTimerStart();
   
   vCallImmmediate(pBootTask);
   
@@ -376,19 +375,18 @@ void Engine::vCallStart(void)
   
   ReqTuple xReqTuple("!!StartSE"_Stz,false);
   
-  Job_Distributed* pJob_Distributed
-  = static_cast<Job_Distributed*>(new Job_Distributed(&xReqTuple));
+  Job* pJob = new Job(&xReqTuple);
   
-  pJob_Distributed->vSeed(SS_SEED_RUN);
+  pJob->vSeed(SS_SEED_RUN);
   
-  TagSet* pJobTags = pJob_Distributed->pJobTags();
+  TagSet* pJobTags = pJob->pJobTags();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"start_run"_Stz);
   
-  Task* pStartTask = new Task(pJob_Distributed);
+  Task* pStartTask = new Task(pJob);
   pStartTask->vInitExeContext();
   
-  pJob_Distributed->vTimerStart();
+  pJob->vTimerStart();
   
   vCallImmmediate(pStartTask);
   

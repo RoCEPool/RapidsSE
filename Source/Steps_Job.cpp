@@ -436,9 +436,9 @@ void Step::vJobBideOperand(void)
 {
   ENTRY();
   
-  Job_Distributed* pJob_Distributed = _pJob_Distributed(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pRegSet->m_xpOperandA = pJob_Distributed->m_pOp->pPopQueue();
+  m_pRegSet->m_xpOperandA = pJob->m_pOp->pPopQueue();
   
   if (m_pRegSet->m_xpOperandA.bIsNull()) {
     m_pTask->vScheduleBide();
@@ -502,11 +502,8 @@ void Step::vJobPrintMember(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  if (pJob->eClass() == CN_JOB_DISTRIBUTED) {
-    vTrace("Job: %p Class: %p\n"_Stz, pJob, aCN[pJob->eClass()]);
-  }
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));  
+  vTrace("Job: %p Class: %p\n"_Stz, pJob, aCN[pJob->eClass()]);
   
   EXIT();
 }
@@ -538,8 +535,7 @@ void Step::vJobDelete(void)
   // find the job in the catalog
   eCN eClass = pJob->eClass();
   
-  Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
-  delete pJob_Distributed;
+  delete pJob;
   EXIT();
 }
   
@@ -761,11 +757,11 @@ void Step::vJobNextOperand(void)
 {
   ENTRY();
   
-  Job_Distributed* pJob_Distributed = _pJob_Distributed(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Op* pOp = pJob_Distributed->m_pOp;
+  Op* pOp = pJob->m_pOp;
   
   if (m_pRegSet->m_xpOperandA.bIsNull())
     m_pRegSet->m_xpOperandA = pOp->pPopQueue();

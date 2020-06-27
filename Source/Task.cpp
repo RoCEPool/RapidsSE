@@ -125,9 +125,8 @@ Task::~Task(void) noexcept(false)
   delete m_pForth;
   
   if (m_pJob) {
-    //Job::vDeleteJobViaClass(m_pJob);
-    Job_Distributed* pJob_Distributed = _pJob_Distributed(m_pJob);
-    delete pJob_Distributed;
+    Job* pJob = _pJob(m_pJob);
+    delete pJob;
   }
   delete m_pRegSet;
     

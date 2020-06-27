@@ -93,7 +93,7 @@ void Step::vIndexDefParse(void)
 {
   ENTRY();
   
-  Job* pJob_Local = _pJob_Distributed(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -111,7 +111,7 @@ void Step::vIndexDefParse(void)
   if (eResult != EC_NONE) {
     
     // set the error in the job
-    pJob_Local->vJobError(eResult);
+    pJob->vJobError(eResult);
     
     // delete IndexDef
     delete pIndexDef;
@@ -160,7 +160,7 @@ void Step::vIndexDefParseTableName(void)
 {
   ENTRY();
   
-  Job* pJob_Local = _pJob_Distributed(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
@@ -176,7 +176,7 @@ void Step::vIndexDefParseTableName(void)
   if (eResult != EC_NONE) {
     
     // set the error in the job
-    pJob_Local->vJobError(eResult);
+    pJob->vJobError(eResult);
   }
   
   m_pDataStack->vPushStr(sTableNm);

@@ -355,11 +355,8 @@ void AM::vPoolAnalyze(void)   { return PoolHelper::vPoolAnalyze(); }
 
 eEC AM::ePopulateJob(Job* pJob, TagSet* pTagSet)
 {
-  eEC eError;
-  //if (pJob->eClass() == CN_JOB_DISTRIBUTED )
-    eError = _pJob_Distributed(pJob)->ePopulateJob(pTagSet);
-//  else
-//    eError = _pJob_Local(pJob)->ePopulateJob(pTagSet);
+  eEC eError = pJob->ePopulateJob(pTagSet);
+
   return eError;
 }
 
@@ -1267,7 +1264,7 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
   // get the jobKind from the cmdTagSet
   eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
   
-  pNewJob = new Job_Distributed(pReqTuple);
+  pNewJob = new Job(pReqTuple);
 
   pNewJob->m_pOp = pOp;
   pNewJob->vSeed(SS_SEED_REQ);

@@ -26,9 +26,6 @@ namespace Jobs
   public:
     Result    m_xResult;      // result of this job
     
-  
-  public:
-    
     // into task? -------------
     Pipeline*  m_pPipeline;   // pipeline
     Op*        m_pOp;         // Op this job is executing
@@ -46,11 +43,19 @@ namespace Jobs
     i8      m_i_Slot;         // slot on its node this job processes
     Task*   m_pTaskJ;         // task executing the job
 
+    // must be last
+    Footer m_xFooter;
+    
   public:
-    Job(eCN eJobClass, ReqTuple* aReqTuple);
+    
+    void* operator new(size_t);
+    void* operator new(size_t, void* aAddress);
+    void  operator delete(void*);
+    
+    Job(ReqTuple* aReqTuple);
 
     // FIND CASE -- TO BE REMOVED
-    Job(eCN eClassNo);
+    Job(eCN eClass);
 
    ~Job(void) noexcept(false);
   
@@ -98,6 +103,7 @@ namespace Jobs
     bool bNoWaitTag(void);
     bool bParticipantHasError(void);
     void vParticipantHasError(bool bHasError);
+    eEC ePopulateJob(TagSet* pTagSet);
     void vPrintResult(eRS eResponse);
     Response* pResponse(void);
     Stz* szResponse(void);
@@ -143,7 +149,7 @@ namespace Jobs
     //void vShow(s48K& s);
   
   private:
-  
+    Footer* aFooter(void);
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

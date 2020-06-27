@@ -21,7 +21,7 @@ Job* Jobs::_pJob(void* aAddr)
   if (pJob && ! _bIsValidJob(pJob->eClass()) )
       vTrace("_pJob got class %s\n"_Stz,aCN[pJob->eClass()]);
       
-  RASSERT( ! pJob || _bIsValidJob(pJob->eClass()) );
+  //RASSERT( ! pJob || _bIsValidJob(pJob->eClass()) );
   
   return pJob;
 }
@@ -46,10 +46,39 @@ Job* Jobs::_pJob(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 bool Jobs::_bIsValidJob(eCN eClass)
 {
-  if (eClass >= CN_JOB__FIND && eClass <= CN_JOB_LOCAL)
+  if (eClass >= CN_JOB && eClass <= CN_JOB_LOCAL)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job::operator new(size_t)
+{
+  Job* pJob =
+  static_cast<Job*>(HeapMem::pAllocate(CN_JOB));
+  
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job::operator new(size_t, void* aAddress)
+{
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job::operator delete(void* aAddress)
+{
+  Job* pJob = static_cast<Job*>(aAddress);
+  
+  HeapMem::vFree(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,12 +138,12 @@ Job::Job(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(eCN eClass, ReqTuple* aReqTuple)
-: Focal(eClass,AM::iNextJobId(),aReqTuple->m_iForId)
+Job::Job(ReqTuple* aReqTuple)
+: Focal(CN_JOB,AM::iNextJobId(),aReqTuple->m_iForId)
 , m_xReqTuple(aReqTuple)
 , CRM<Job>(this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClass);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
     
   
   // m_xReqTuple
@@ -154,7 +183,7 @@ Job::Job(eCN eClass, ReqTuple* aReqTuple)
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClass);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -843,6 +872,37 @@ void Job::vParticipantHasError(bool bHasError)
 }
 
 /*----------------------------------------------------------------------------*/
+/* populate node                                                              */
+/*----------------------------------------------------------------------------*/
+eEC Job::ePopulateJob(TagSet* pTagSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
+  
+  //  bool b = CmdHelper::bParseCmd(pJobTags(),pTknVec);
+  //  if (! b) {
+  //    //vTrace("Unable to match job syntax\n"_Stz);
+  //    vParticipantHasError(true);
+  //    return EC_INVALID_COMMAND;
+  //  }
+  //pTagSet->vDumpSet();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the distid
+  pJobTags()->vInsert(C_TAG_DISTID,m_iFocalId);
+  
+  // copy the tagset into the job tag set
+  pJobTags()->vCopy(pTagSet);
+  
+  eJK eJobKind = (eJK) pJobTags()->iValue(C_TAG_JOBKIND);
+  vJobKind(eJobKind);
+  
+  Stz* szJobNm = pJobTags()->szValue(C_TAG_JOBNM);
+  vJobNm(szJobNm);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print result                                                               */
 /*----------------------------------------------------------------------------*/
 void Job::vPrintResult(eRS eResponse)
@@ -1225,6 +1285,19 @@ bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
     return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+  
+  return &m_xFooter;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

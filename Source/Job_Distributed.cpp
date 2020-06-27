@@ -53,7 +53,7 @@ void Job_Distributed::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Distributed::Job_Distributed(ReqTuple* aReqTuple)
-: Job(CN_JOB_DISTRIBUTED, aReqTuple)
+: Job(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DISTRIBUTED,_FOOTER_);
   

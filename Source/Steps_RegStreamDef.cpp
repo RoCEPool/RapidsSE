@@ -217,7 +217,7 @@ void Step::vRegStreamDefParse(void)
 {
   ENTRY();
   
-  Job* pJob_Local = _pJob_Distributed(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   sSTMT sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
@@ -232,7 +232,7 @@ void Step::vRegStreamDefParse(void)
   
   if (eResult != EC_NONE) {
     
-    pJob_Local->vJobError(eResult);
+    pJob->vJobError(eResult);
     
     // delete tabledef
     delete pStreamDef;

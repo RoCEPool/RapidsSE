@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : receiver_init ( -- )
 
-  CN_JOB_DISTRIBUTED task[] task.thread thread.dedicated!
+  CN_JOB task[] task.thread thread.dedicated!
 
   NS_ACTIVE grid::thisNode@ grid::node node.state!
 

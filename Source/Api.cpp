@@ -86,7 +86,8 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
     return EC_LOW_MEMORY;
   
 
-  Job* pJob = Jobs::pJob_Distributed_pre(axReqTuple, pTagSet);
+  Job* pJob = new Job(axReqTuple);
+  pJob->ePopulateJob(pTagSet);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
@@ -185,8 +186,7 @@ void Api::vJob_4_DeleteJob(Job** ppJob)
   
   Job* pJob = * ppJob;
   
-  Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
-  delete pJob_Distributed;
+  delete pJob;
   
   * ppJob = nullptr;
 }
