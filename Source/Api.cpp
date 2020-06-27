@@ -184,9 +184,7 @@ void Api::vJob_4_DeleteJob(Job** ppJob)
   _static_
   
   Job* pJob = * ppJob;
-  //JobClass* aJobClass = pJob->aJobClass();
-
-  //aJobClass->vDeleteJob(pJob);
+  
   Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
   delete pJob_Distributed;
   
