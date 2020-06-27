@@ -12,7 +12,7 @@ namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  int Prompt(const void * a, const void * b);
+  int iFileRandCompare(const void * a, const void * b);
 
   bool bPrompt_fileRand(SePrompt* pPrompt);
 }

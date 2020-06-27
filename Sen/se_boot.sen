@@ -79,6 +79,7 @@ assert::stack_0
 
         // -- -- -- -- -- -- -- -- -- --
 
+        "OP_aggregate.sen"            include
         "OP_analyzeIndex.sen"         include
         "OP_analyzeTable.sen"         include
         "OP_answer.sen"               include
@@ -116,13 +117,17 @@ assert::stack_0
         "OP_exemplar.sen"             include
 
         "OP_fetch.sen"                include
+        "OP_filter.sen"               include
 
         "OP_genCsv.sen"               include
         "OP_gridSanity.sen"           include
-
+ 
         "OP_insDel.sen"               include
         "OP_insert.sen"               include
 
+        "OP_join.sen"                 include
+
+        "OP_limit.sen"                include
         "OP_listFolders.sen"          include
         "OP_listCatalogs.sen"         include
         "OP_listColumns.sen"          include
@@ -145,6 +150,7 @@ assert::stack_0
         "OP_ping.sen"                 include
         "OP_print.sen"                include
         "OP_progress.sen"             include
+        "OP_project.sen"              include
         "OP_purge.sen"                include
         "OP_pwf.sen"                  include
         "OP_python.sen"               include
@@ -154,12 +160,14 @@ assert::stack_0
         "OP_receiver.sen"             include
         "OP_recv.sen"                 include
         "OP_recurring.sen"            include
+        "OP_reload.sen"               include
         "OP_report.sen"               include
 
         "OP_scan.sen"                 include
         "OP_send.sen"                 include
         "OP_showcluster.sen"          include
         "OP_sink.sen"                 include
+        "OP_sort.sen"                 include
         "OP_snapshot.sen"             include
         "OP_space.sen"                include
         "OP_start.sen"                include
@@ -189,6 +197,7 @@ assert::stack_0
         "OP_truncateIndex.sen"        include
         "OP_truncateTable.sen"        include
 
+        "OP_unload.sen"               include
         "OP_upsert.sen"               include
 
         "OP_verifyIndex.sen"          include
