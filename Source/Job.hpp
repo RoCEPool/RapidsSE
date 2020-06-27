@@ -9,7 +9,6 @@ namespace Jobs
               public CRM<Job>
   {
   private:
-    JobClass* m_aJobClass;    // job class THIS WILL GO
     s32       m_sJobNm;       // name of job
     TagSet    m_oJobTags;     // tags for the job
     i8        m_iParentId;    // job id of parent job which spawned this job
@@ -48,7 +47,7 @@ namespace Jobs
     Task*   m_pTaskJ;         // task executing the job
 
   public:
-    Job(JobClass* aJobClass, ReqTuple* aReqTuple);
+    Job(eCN eJobClass, ReqTuple* aReqTuple);
 
     // FIND CASE -- TO BE REMOVED
     Job(eCN eClassNo);
@@ -79,8 +78,6 @@ namespace Jobs
     void vIncRowsProcessed(void);
     void vIncRowsInvalid(void);
     i8   iJobId(void);
-    JobClass* aJobClass(void);
-    void vJobClass(JobClass* aJobClass, char* azCaller);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
     bool bJobHasError(void);

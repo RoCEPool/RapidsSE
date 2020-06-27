@@ -1273,8 +1273,7 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
 //  }
 //  else {
     //RASSERT(eJobKind == JK_DIST2PC);
-    JobClass* pJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
-    pNewJob = new Job_Distributed(pJobClass_Distributed,pReqTuple);
+    pNewJob = new Job_Distributed(pReqTuple);
 //  }
 
   pNewJob->m_pOp = pOp;

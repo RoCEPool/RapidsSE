@@ -72,8 +72,8 @@ void Job_Distributed::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Distributed::Job_Distributed(JobClass* aJobClass, ReqTuple* aReqTuple)
-: Job(aJobClass, aReqTuple)
+Job_Distributed::Job_Distributed(ReqTuple* aReqTuple)
+: Job(CN_JOB_DISTRIBUTED, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DISTRIBUTED,_FOOTER_);
   
@@ -172,7 +172,7 @@ Footer* Job_Distributed::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Distributed_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet)
 {
-  Job_Distributed* pJob_Distributed = new Job_Distributed(aJobClass,aReqTuple);
+  Job_Distributed* pJob_Distributed = new Job_Distributed(aReqTuple);
   
   eEC eError = pJob_Distributed->ePopulateJob(pTagSet);
 

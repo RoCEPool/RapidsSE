@@ -17,7 +17,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Distributed(JobClass* aJobClass, ReqTuple* aReqTuple);
+    Job_Distributed(ReqTuple* aReqTuple);
     ~Job_Distributed(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

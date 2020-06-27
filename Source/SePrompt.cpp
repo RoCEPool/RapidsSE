@@ -312,7 +312,6 @@ void SePrompt::vPromptLoop(void)
       m_pJob->m_xResult.vProcessBufferQueue();
     }
 
-    m_pJob->vJobClass(aJobClass, (char*)__func__);
     Api::vJob_3_PostJob(m_pJob);
     
     

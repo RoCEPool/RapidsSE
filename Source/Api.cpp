@@ -131,7 +131,7 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   pJob->vSeed(SS_SEED_REQ);
         
   //! ALKA: Come back to this : 3 feb 2020
-  pJob->vJobClass(nullptr, (char*)__func__);
+  //pJob->vJobClass(nullptr, (char*)__func__);
 
   *ppJob = pJob;
 
@@ -746,8 +746,6 @@ void Api::vSpawnJobDedicated(Job* pJob)
 {
   _static_
   
-  
-  ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -829,8 +827,6 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 {
   _static_
   
-  
-  ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
   
   

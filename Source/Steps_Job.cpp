@@ -505,7 +505,7 @@ void Step::vJobPrintMember(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   if (pJob->eClass() == CN_JOB_DISTRIBUTED) {
-    vTrace("Job: %p JobClass: %p\n"_Stz, pJob, pJob->aJobClass());
+    vTrace("Job: %p Class: %p\n"_Stz, pJob, aCN[pJob->eClass()]);
   }
   
   EXIT();
@@ -1014,22 +1014,6 @@ void Step::vJobPostRecv(void)
   ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the job class on this node
-  
-  JobClass* aJobClass = nullptr;
-  eCN eClass = pJob->eClass();
-  
-  if (CN_JOB_DISTRIBUTED == eClass) {
-    eClass = (eCN)pJob->pJobTags()->iValue(C_TAG_JOBCLASS);
-    aJobClass = JobClass::pFind(eClass);
-  }
-  else {
-    aJobClass = JobClass::pFind(eClass);
-  }
-  
-  pJob->vJobClass(aJobClass,(char*)__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run the post recv function
@@ -1064,8 +1048,6 @@ void Step::vJobPreSend(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  JobClass* aJobClass = pJob->aJobClass();
-  
   //ActLog::vAdd(pJob,AN_PRE_SEND,m_pTask->pJob());
   Jobs::vJob_send(pJob);
   
@@ -1090,7 +1072,7 @@ void Step::vJobRecv(void)
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
+  //JobClass* pJobClass = JobClass::pFind(eClass);
   
   // call the job post-receive function
   //pJobClass->vRecvJob(pJob);  // come back to this, remove session as parameter to delete
@@ -1420,7 +1402,7 @@ void Step::vJobSend(void)
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
+  //JobClass* pJobClass = JobClass::pFind(eClass);
   
   // call the job pre-send function
   Jobs::vJob_send(pJob);  // come back to this, remove session as parameter to delete
@@ -1476,7 +1458,7 @@ void Step::vJobShow(void)
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
+  //JobClass* pJobClass = JobClass::pFind(eClass);
   
   // call the job delete function
   //pJobClass->vShowJob(pJob);
