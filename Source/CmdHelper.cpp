@@ -52,7 +52,6 @@ bool CmdHelper::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
       
       //vTrace("    matches\n"_Stz);
       
-      pTagSet->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
       s32 sJobName(pSyntax->pWrdTagSet()->szValue("__cmdNm__"_Stz));
       
       // get the CmdTag words tagSet

@@ -34,7 +34,6 @@ void Step::vJob__BegunNew(void)
   pJobBegun->vJobKind(JK_GENERIC);
 
   pJobBegun->vJobNm("_begun"_Stz);
-  pJobBegun->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobBegun->pJobTags()->vInsert(C_TAG_JOBNM,"_begun"_Stz);
   pJobBegun->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobBegun->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -66,7 +65,6 @@ void Step::vJob__CancelNew(void)
   pJobCancel->vJobKind(JK_GENERIC);
 
   pJobCancel->vJobNm("_cancel"_Stz);
-  pJobCancel->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobCancel->pJobTags()->vInsert(C_TAG_JOBNM,"_cancel"_Stz);
   pJobCancel->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobCancel->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -101,7 +99,6 @@ void Step::vJob__CancelledNew(void)
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancelled);
   
   pJobCancelled->vJobNm("_cancelled"_Stz);
-  pJobCancelled->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobCancelled->pJobTags()->vInsert(C_TAG_JOBNM,"_cancelled"_Stz);
   pJobCancelled->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobCancelled->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -133,7 +130,6 @@ void Step::vJob__EndNew(void)
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnd);
   
   pJobEnd->vJobNm("_end"_Stz);
-  pJobEnd->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobEnd->pJobTags()->vInsert(C_TAG_JOBNM,"_end"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -164,7 +160,6 @@ void Step::vJob__EndedNew(void)
   pJobEnded->vJobKind(JK_GENERIC);
   
   pJobEnded->vJobNm("_ended"_Stz);
-  pJobEnded->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobEnded->pJobTags()->vInsert(C_TAG_JOBNM,"_ended"_Stz);
   pJobEnded->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobEnded->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -198,7 +193,6 @@ void Step::vJob__ExecuteNew(void)
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecute);
   
   pJobExecute->vJobNm("_execute"_Stz);
-  pJobExecute->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobExecute->pJobTags()->vInsert(C_TAG_JOBNM,"_execute"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
@@ -229,7 +223,6 @@ void Step::vJob__ExecutedNew(void)
   pJobExecuted->vJobKind(JK_GENERIC);
   
   pJobExecuted->vJobNm("_executed"_Stz);
-  pJobExecuted->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobExecuted->pJobTags()->vInsert(C_TAG_JOBNM,"_executed"_Stz);
   pJobExecuted->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   pJobExecuted->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iFocalId);
