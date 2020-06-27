@@ -213,8 +213,38 @@ void CsvBuffer::vTake(i8 nBytes)
 i8 CsvBuffer::nTrim(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  i8 nBytes = m_xWsp.nUsed();
+  if (! nBytes)
+    return 0;
+  
+  char* acStart = (char*)m_xWsp.ayArea();
+  
+  char* acChar = acStart + nBytes - 1;
+  
+  if ('\n' == *acChar)
+    return 0;
+  
+  //vTrace("%s\n"_Stz,acStart);
 
-  return 0;
+  i8 nTrimmed = 0;
+  while (acChar >= acStart) {
+    if ('\n' == *acChar)
+      break;
+    acChar--;
+    nTrimmed++;
+  }
+  
+  if (acChar >= acStart) {
+    *(acChar + 1) = '\0';
+  }
+
+  //vTrace("%s\n"_Stz,acStart);
+  
+  i8 nTrimmedBytes = nBytes - nTrimmed;
+  m_xWsp.vUsed(nTrimmedBytes);
+
+  return nTrimmed;
 }
 
 /*============================================================================*/

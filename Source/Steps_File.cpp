@@ -227,6 +227,12 @@ void Step::vFileReadChunk(void)
   i8 nReadBytes = pFile->nReadBytes(pCsvBuffer->ayDataArea(),nFreeBytes);
   
   pCsvBuffer->vTake(nReadBytes);
+  
+  
+  
+  i8 nTrimmed = pCsvBuffer->nTrim();
+  
+  
 
   m_pDataStack->vPushInt(nReadBytes);
 
