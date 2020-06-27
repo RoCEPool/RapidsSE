@@ -7,7 +7,6 @@
 extern Args          gxArgs;
 
 extern AttachMap*    gpAttachMap;
-extern JobCatalog    gxJobCatalog;
 extern PromptCatalog gxPromptCatalog;
 
 /*----------------------------------------------------------------------------*/

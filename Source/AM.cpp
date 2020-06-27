@@ -1265,7 +1265,8 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
   TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(pOp->szOpNm());
   
   // get the jobKind from the cmdTagSet
-  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);  
+  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
+  
   pNewJob = new Job_Distributed(pReqTuple);
 
   pNewJob->m_pOp = pOp;

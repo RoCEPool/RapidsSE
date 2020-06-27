@@ -1068,14 +1068,6 @@ void Job::vSlot(i8 i_Slot)
 /*----------------------------------------------------------------------------*/
 /* set the job trace                                                          */
 /*----------------------------------------------------------------------------*/
-//void Job::vShow(s48K& s)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_);
-//  
-//  vTrace("%s: %s"_Stz,
-//         m_aJobClass ? (Stz*)m_aJobClass->m_aName : "<no jobClass>"_Stz,
-//         s.szStz());
-//}
 void Job::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);

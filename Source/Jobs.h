@@ -37,10 +37,6 @@ namespace Jobs
 
 #include "JobList.hpp"
 
-#include "JobDesc.hpp"
-#include "JobClass.hpp"
-#include "JobCatalog.hpp"
-
 #include "SP_Job.hpp"
 
 /*============================================================================*/

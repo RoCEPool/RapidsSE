@@ -162,10 +162,6 @@ bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 typedef void* (*pFUN)(void*);
 
-//typedef pFUN (*pJOBCLASSFUN)(JobClass** );
-
-typedef JobClass* (*pJOBCLASSFUN)(pFUN** );
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

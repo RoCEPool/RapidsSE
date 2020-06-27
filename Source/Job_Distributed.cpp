@@ -4,26 +4,6 @@
 
 #include "Jobs.h"
 
-JobClass xJobClass_Distributed =
-{
-  CN_JOB_DISTRIBUTED,       // class number
-  JK_DIST2PC,               // job kind
-  "distributed"_Stz,        // comment about the job
-  nullptr,                  // the prompt command
-  nullptr                   // the second word
-};
-
-/*----------------------------------------------------------------------------*/
-/* next function                                                              */
-/*----------------------------------------------------------------------------*/
-JobClass* Jobs::pJob_Distributed_class(pFUN** pNextFun)
-{
-  *pNextFun = (pFUN*)nullptr;
-  
-  return &xJobClass_Distributed;
-}
-
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
