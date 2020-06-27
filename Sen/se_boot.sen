@@ -120,6 +120,7 @@ assert::stack_0
         "OP_genCsv.sen"               include
         "OP_gridSanity.sen"           include
 
+        "OP_insDel.sen"               include
         "OP_insert.sen"               include
 
         "OP_listFolders.sen"          include
