@@ -70,6 +70,8 @@ namespace Indexing
     Ent* aLastEntry(void);
     Ent* aNextEntry(Ent* aPrevEntry);
     void vShowEntry(Ent* pEntry);
+    SkipRoots* aSkipRoots(void);
+
     tET  tToTicket(Ent* pEntry);
   
   private:
@@ -148,7 +150,7 @@ namespace Indexing
     void        vBuildSkipListSorted(void);
     void        vDeleteEntry(Ent** aaEnt);
     void        vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer);
-    void        vDump(void);
+    void        vDump(bool bEntries = true);
     EntBuffer*  pFirstChildBuffer(void);
     Ent*        aInsertEntAbs(Ent* aEntry);
     Ent*        aInsertEntAbsL0(Ent* aEntry, Ent** aaPriorEntry);
@@ -161,12 +163,14 @@ namespace Indexing
     void        vReset(void);
     void        vRestore(void);
     void        vRestoreIndex(Index* pIndex);
-    void        vShow(Ent* aMarkEntry = nullptr);
+    void        vShow(bool bEntries = false, Ent* aMarkEntry = nullptr);
     void        vShowShort(void);
     void        vShowSubList(void);
     void        vShowTree(bool bDumpBuffer=false);
     i8          nSkipLength(i8 i_Level);
-    void        vSkipLengths(i8& iL0Length_, i8& iL1Length_, i8& iL2Length_);
+    void        vSkipLengths(i8& iL0Length_, i8& iL1Length_,
+                             i8& iL2Length_, i8& iL3Length_,
+                             i8& iL4Length_, i8& iL5Length_);
     void        vSpliceAfter(EntBuffer* pSplicedBuffer);
     IrwBuffer*  pToIrwBuffer(void);
     void        vTruncate(void);
@@ -174,6 +178,9 @@ namespace Indexing
     bool        bVerify(void);
     bool        bVerifyKeyOrder(void);
   
+    void        vNumberEntries(void);
+    void        vRecordTickets(void);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
     
@@ -190,7 +197,6 @@ namespace Indexing
     void       vHandleLeftInsert(Ent* aInsertedKeyEntry,
                                  Ent* aOriginalFirstEntry,
                                  EntBuffer** ppRootBuffer);
-    Ent*       aSkipRoots(void);
     EntBuffer* pInsertableBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
     Ent*       aInsertEntAbsLazy(Ent* aEntry);
     Ent*       aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
@@ -210,7 +216,6 @@ namespace Indexing
     // verify functions
   
     bool bCheckPriorVec(Ent* aPriorVec[]);
-    void vNumberEntries(void);
   
     void vQuickVerify(Ent* aSeeEntry=nullptr);
     bool bQuickVerify(Ent* aNotSeeEntry);

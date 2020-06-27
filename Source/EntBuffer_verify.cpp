@@ -72,6 +72,25 @@ void EntBuffer::vNumberEntries(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* number entries                                                             */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vRecordTickets(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  // set entry no
+    
+  for (Ent* aTestEntry_0 = aNextEntry(aSkipRoots(),0);
+       aTestEntry_0;
+       aTestEntry_0 = aNextEntry(aTestEntry_0,0)) {
+
+    tET tTicket = tToTicket(aTestEntry_0);
+    aTestEntry_0->vEntryNo(tTicket);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* quick verify                                                               */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vQuickVerify(Ent* aSeeEntry)

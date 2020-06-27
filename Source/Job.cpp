@@ -144,7 +144,6 @@ Job::Job(ReqTuple* aReqTuple)
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
-    
   
   // m_xReqTuple
 

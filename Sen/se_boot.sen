@@ -120,6 +120,7 @@ assert::stack_0
         "OP_genCsv.sen"               include
         "OP_gridSanity.sen"           include
 
+        "OP_insDel.sen"               include
         "OP_insert.sen"               include
 
         "OP_listFolders.sen"          include
@@ -151,10 +152,12 @@ assert::stack_0
 
         "OP_rdCsvChunk.sen"           include
         "OP_receiver.sen"             include
+        "OP_recv.sen"                 include
         "OP_recurring.sen"            include
         "OP_report.sen"               include
 
         "OP_scan.sen"                 include
+        "OP_send.sen"                 include
         "OP_showcluster.sen"          include
         "OP_sink.sen"                 include
         "OP_snapshot.sen"             include

@@ -567,12 +567,15 @@ void EntBuffer::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vDump(void)
+void EntBuffer::vDump(bool bEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // show this buffer
   vShow();
+  
+  if (! bEntries)
+    return;
   
   // recursively dump the lower level buffers
   if (m_iBufferHeight != 0) {
@@ -1175,16 +1178,28 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get skip roots                                                             */
+/*----------------------------------------------------------------------------*/
+SkipRoots* EntBuffer::aSkipRoots(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  return & m_xSkipRoots;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vShowEntry(Ent* aEnt)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
   Key* aKey = aEnt->aKey();
   i8 iOffset = iToOffset(aEnt);
   
   tET tEntry = tToTicket(aEnt);
   
-  vTrace("Ent %04llx %07lld %p %lluB %7s: "_Stz,
+  vTrace("tET %04llx %07lld %p %lluB %s "_Stz,
          (i8)tEntry,
          iOffset,
          aEnt,
@@ -1202,14 +1217,19 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   //       Tx::iTxNo(m_iTxId)
   //       );
   
+  if (KE_INT == aEnt->eKind()) {
+    Ent_int* aEnt_int = (Ent_int*)aEnt;
+    vTrace(" IntElm0 %lld"_Stz,aEnt_int->m_iIntElm0);
+  }
+  else
   if (m_pIndex)
     aKey->vShow(m_pIndex->pIndexDef());
   else
     aKey->vShowIntKey();
 
-  vTrace(" offsets %lld"_Stz,aEnt->nSkipLevels());
+  vTrace(" Entry %05lld levels %lld"_Stz,aEnt->iEntryNo(),aEnt->nSkipLevels());
   for (i8 i_Level = 0; i_Level < aEnt->nSkipLevels(); i_Level++)
-    vTrace(" %05lld"_Stz,(i8)aEnt->tNextEntry(i_Level));
+    vTrace(" %04llx"_Stz,(i8)aEnt->tNextEntry(i_Level));
   
   vTrace("\n"_Stz);
 }
@@ -1217,7 +1237,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vShow(Ent* aMarkEntry)
+void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1231,8 +1251,11 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   i8 iL0Length;
   i8 iL1Length;
   i8 iL2Length;
-  
-  vSkipLengths(iL0Length,iL1Length,iL2Length);
+  i8 iL3Length;
+  i8 iL4Length;
+  i8 iL5Length;
+
+  vSkipLengths(iL0Length,iL1Length,iL2Length,iL3Length,iL4Length,iL5Length);
   
   vTrace("\n"_Stz);
   vTrace("--------------------------------------------------"
@@ -1247,24 +1270,30 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndex ? m_pIndex->szIndexNm() : C_NULL,m_iPartitionNo,m_iBufferHeight);
   
-  vTrace("  skipRoots: %p[%lld, %lld, %lld]\n"_Stz,
-         aSkipRoots(),
-         aSkipRoots() ? aSkipRoots()->tNextEntry(0) : 0,
-         aSkipRoots() ? aSkipRoots()->tNextEntry(1) : 0,
-         aSkipRoots() ? aSkipRoots()->tNextEntry(2) : 0);
+  SkipRoots* aSkipRoots = this->aSkipRoots();
+  vTrace("  skipRoots: %p[%lld, %lld, %lld, %lld, %lld, %lld]\n"_Stz,
+         aSkipRoots,
+         (i8)aSkipRoots->tNextEntry(0) ,
+         (i8)aSkipRoots->tNextEntry(1) ,
+         (i8)aSkipRoots->tNextEntry(2) ,
+         (i8)aSkipRoots->tNextEntry(3) ,
+         (i8)aSkipRoots->tNextEntry(4) ,
+         (i8)aSkipRoots->tNextEntry(5)
+         );
 
-  vTrace("  listLengths: [%lld, %lld, %lld]\n"_Stz,
-         iL0Length,iL1Length,iL2Length);
+  vTrace("  listLengths: [%lld, %lld, %lld, %lld, %lld, %lld]\n"_Stz,
+         iL0Length,iL1Length,iL2Length,iL3Length,iL4Length,iL5Length);
 
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   
-  ASSERT(aSkipRoots());
+  if (! bEntries)
+    return;
   
   vTrace("\n"_Stz);
   vTrace("Entries (by headEntry vector[0]):\n"_Stz);
   
-  tET tEntry = aSkipRoots()->tNextEntry(0);
+  tET tEntry = aSkipRoots->tNextEntry(0);
   while (C_ENT_END_TICKET != tEntry) {
     Ent* aEnt = aGetEntry(tEntry);
     vShowEntry(aEnt);
@@ -1392,16 +1421,6 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
   
   pChildBuffer->vShowTree(bDumpBuffer);
 }
-/*----------------------------------------------------------------------------*/
-/* get root of skip list (was aka head entry                                  */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aSkipRoots(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  //return m_aHeadEntry;
-  return &m_xSkipRoots;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get the length of a skip list                                              */
@@ -1423,15 +1442,18 @@ i8 EntBuffer::nSkipLength(i8 i_Level)
 /*----------------------------------------------------------------------------*/
 /* get the lengths of the three skip lists                                    */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vSkipLengths(i8& iL0Length_, i8& iL1Length_, i8& iL2Length_)
+void EntBuffer::vSkipLengths(i8& iL0Length_, i8& iL1Length_,
+                             i8& iL2Length_, i8& iL3Length_,
+                             i8& iL4Length_, i8& iL5Length_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   iL0Length_ = nSkipLength(0);
-
   iL1Length_ = nSkipLength(1);
-
   iL2Length_ = nSkipLength(2);
+  iL3Length_ = nSkipLength(3);
+  iL4Length_ = nSkipLength(4);
+  iL5Length_ = nSkipLength(5);
 }
 
 /*----------------------------------------------------------------------------*/
