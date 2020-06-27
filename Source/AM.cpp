@@ -1265,16 +1265,8 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
   TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(pOp->szOpNm());
   
   // get the jobKind from the cmdTagSet
-  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
-  
-//  if (eJobKind == JK_LOCAL) {
-//    JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_LOCAL);
-//    pNewJob = new Job_Local(pJobClass_Local,pReqTuple);
-//  }
-//  else {
-    //RASSERT(eJobKind == JK_DIST2PC);
-    pNewJob = new Job_Distributed(pReqTuple);
-//  }
+  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);  
+  pNewJob = new Job_Distributed(pReqTuple);
 
   pNewJob->m_pOp = pOp;
   pNewJob->vSeed(SS_SEED_REQ);

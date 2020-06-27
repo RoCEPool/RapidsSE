@@ -33,9 +33,6 @@ void Step::vJob__BegunNew(void)
   pJobBegun->vNormalSides(false);
   pJobBegun->vJobKind(JK_GENERIC);
 
-  //JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
-  //pJobBegun->m_aJobClass = pJobClass__Begun;
-
   pJobBegun->vJobNm("_begun"_Stz);
   pJobBegun->pJobTags()->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   pJobBegun->pJobTags()->vInsert(C_TAG_JOBNM,"_begun"_Stz);

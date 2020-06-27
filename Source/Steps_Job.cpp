@@ -537,10 +537,6 @@ void Step::vJobDelete(void)
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  //JobClass* pJobClass = JobClass::pFind(eClass);
-  
-  // call the job delete function
-  //pJobClass->vDeleteJob(pJob);
   
   Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
   delete pJob_Distributed;
@@ -1072,10 +1068,7 @@ void Step::vJobRecv(void)
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  //JobClass* pJobClass = JobClass::pFind(eClass);
   
-  // call the job post-receive function
-  //pJobClass->vRecvJob(pJob);  // come back to this, remove session as parameter to delete
   
   EXIT();
 }
@@ -1400,10 +1393,6 @@ void Step::vJobSend(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  // find the job in the catalog
-  eCN eClass = pJob->eClass();
-  //JobClass* pJobClass = JobClass::pFind(eClass);
-  
   // call the job pre-send function
   Jobs::vJob_send(pJob);  // come back to this, remove session as parameter to delete
   
@@ -1455,13 +1444,6 @@ void Step::vJobShow(void)
   RASSERT(0);
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  // find the job in the catalog
-  eCN eClass = pJob->eClass();
-  //JobClass* pJobClass = JobClass::pFind(eClass);
-  
-  // call the job delete function
-  //pJobClass->vShowJob(pJob);
   
   EXIT();
 }

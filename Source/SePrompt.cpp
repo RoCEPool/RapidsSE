@@ -278,7 +278,7 @@ void SePrompt::vPromptLoop(void)
     }
     
     //! ALKA: this should go
-    JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oExtTagSet);
+    //JobClass* aJobClass = Api::aFindJobClass(m_pInpTknVec,&m_oExtTagSet);
     
     m_pJob->pJobTags()->vCopy(m_pSsnTagSet);
     
