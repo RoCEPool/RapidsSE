@@ -26,7 +26,7 @@
     nRecs 0
     do
       //I 0 "%v,String%v" str.format .
-      I 0 "%v,String%v\n" str.format pFile file.write
+      I 0 "%v,String%v\n" str.format pFile file.writeLine
     loop
   then
 

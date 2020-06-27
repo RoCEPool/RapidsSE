@@ -46,7 +46,7 @@
       0 1 uint.random
       0 1 uint.random
       I
-      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
+      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.writeLine
     loop
   then
 
@@ -112,7 +112,7 @@
       1920 1960 generateDate
       1900 1920 generateDate
       I
-      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
+      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.writeLine
     loop
   then
 
@@ -194,7 +194,7 @@
       I 10 %
       I 7 %
       I
-      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
+      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.writeLine
     loop
   then
 
@@ -246,7 +246,7 @@
       I 10 %
       I 7 %
       I
-      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
+      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.writeLine
     loop
   then
 
@@ -298,7 +298,7 @@
       I 10 % str.random
       I 7 % str.random
       I
-      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
+      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.writeLine
     loop
   then
 

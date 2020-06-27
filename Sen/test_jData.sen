@@ -19,14 +19,14 @@
 
   1000 0
   do
-    I >str          pFile file.write
-    "|"             pFile file.write
-    I >DigitWords   pFile file.write
-    "|"             pFile file.write
-    I 100 % >str    pFile file.write
-    "|"             pFile file.write
-    I 10 % >str     pFile file.write
-    "\n"            pFile file.write
+    I >str          pFile file.writeLine
+    "|"             pFile file.writeLine
+    I >DigitWords   pFile file.writeLine
+    "|"             pFile file.writeLine
+    I 100 % >str    pFile file.writeLine
+    "|"             pFile file.writeLine
+    I 10 % >str     pFile file.writeLine
+    "\n"            pFile file.writeLine
   loop
 
   pFile file.close
@@ -47,12 +47,12 @@
 
   100 0
   do
-    I >str          pFile file.write
-    "|"             pFile file.write
-    I >DigitWords   pFile file.write
-    "|"             pFile file.write
-    I 10 % >str     pFile file.write
-    "\n"            pFile file.write
+    I >str          pFile file.writeLine
+    "|"             pFile file.writeLine
+    I >DigitWords   pFile file.writeLine
+    "|"             pFile file.writeLine
+    I 10 % >str     pFile file.writeLine
+    "\n"            pFile file.writeLine
   loop
 
   pFile file.close
@@ -73,10 +73,10 @@
 
   10 0
   do
-    I >str          pFile file.write
-    "|"             pFile file.write
-    I >DigitWords   pFile file.write
-    "\n"            pFile file.write
+    I >str          pFile file.writeLine
+    "|"             pFile file.writeLine
+    I >DigitWords   pFile file.writeLine
+    "\n"            pFile file.writeLine
   loop
 
   pFile file.close
@@ -97,11 +97,11 @@
 
   27 0
   do
-    I >str          pFile file.write
-    "|"             pFile file.write
-    I >DigitWords   pFile file.write
-    "|0"            pFile file.write
-    "\n"            pFile file.write
+    I >str          pFile file.writeLine
+    "|"             pFile file.writeLine
+    I >DigitWords   pFile file.writeLine
+    "|0"            pFile file.writeLine
+    "\n"            pFile file.writeLine
   loop
 
   pFile file.close

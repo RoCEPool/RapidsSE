@@ -5,9 +5,30 @@
 " OP_catFile.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* action                                                                     */
+/* catFile csvBuffer                                                          */
+/*----------------------------------------------------------------------------*/
+: catFile_csvBuffer
+
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/* catFile action                                                             */
 /*----------------------------------------------------------------------------*/
 : catFile_action
+
+  file::new to file0[]
+
+  <fileNm> OPEN_READ file0[].get file.open if
+    <fileNm> "File %v opened" .printf
+
+    begin
+      catFile_csvBuffer
+    while repeat
+
+    file0[].get file.close
+    <fileNm> "File %v closed" .printf
+  then
 
   true
 ;

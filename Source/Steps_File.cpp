@@ -15,18 +15,18 @@ void Step::vAddSteps_File(void)
   vAddStep("file0[].size"_Stz,           &Step::vFile0Size);
   vAddStep("file0[].set"_Stz,            &Step::vFile0Set);
   
-  vAddStep("file::new"_Stz,       &Step::vFileNew);
-  vAddStep("file::print"_Stz,     &Step::vFilePrint);
-  vAddStep("file::size"_Stz,      &Step::vFileSize);
+  vAddStep("file::new"_Stz,              &Step::vFileNew);
+  vAddStep("file::print"_Stz,            &Step::vFilePrint);
+  vAddStep("file::size"_Stz,             &Step::vFileSize);
 
-  vAddStep("file.close"_Stz,      &Step::vFileClose);
-  vAddStep("file.delete"_Stz,     &Step::vFileDelete);
-  vAddStep("file.open"_Stz,       &Step::vFileOpen);
-  vAddStep("file.path@"_Stz,      &Step::vFilePathGet);
-  vAddStep("file.read"_Stz,       &Step::vFileRead);
-  vAddStep("file.readChunk"_Stz,  &Step::vFileReadChunk);
-  vAddStep("file.seek"_Stz,       &Step::vFileSeek);
-  vAddStep("file.write"_Stz,      &Step::vFileWrite);
+  vAddStep("file.close"_Stz,             &Step::vFileClose);
+  vAddStep("file.delete"_Stz,            &Step::vFileDelete);
+  vAddStep("file.open"_Stz,              &Step::vFileOpen);
+  vAddStep("file.path@"_Stz,             &Step::vFilePathGet);
+  vAddStep("file.readLine"_Stz,          &Step::vFileReadLine);
+  vAddStep("file.readChunk"_Stz,         &Step::vFileReadChunk);
+  vAddStep("file.seek"_Stz,              &Step::vFileSeek);
+  vAddStep("file.writeLine"_Stz,         &Step::vFileWriteLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,9 +208,9 @@ void Step::vFilePrint(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.read -- read line from a file ( pFile -- sLine 1 | 0 )                */
+/* file.readLine -- read line from a file ( pFile -- sLine 1 | 0 )            */
 /*----------------------------------------------------------------------------*/
-void Step::vFileRead(void)
+void Step::vFileReadLine(void)
 {
   ENTRY();
   
@@ -233,7 +233,7 @@ void Step::vFileRead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.read -- read line from a file ( pFile -- sLine 1 | 0 )                */
+/* file.readLine -- read line from a file ( pFile -- sLine 1 | 0 )                */
 /*----------------------------------------------------------------------------*/
 void Step::vFileReadChunk(void)
 {
@@ -291,9 +291,9 @@ void Step::vFileSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.write -- write to a file ( sLine pFile -- )                           */
+/* file.writeLine -- write to a file ( sLine pFile -- )                       */
 /*----------------------------------------------------------------------------*/
-void Step::vFileWrite(void)
+void Step::vFileWriteLine(void)
 {
   ENTRY();
   
