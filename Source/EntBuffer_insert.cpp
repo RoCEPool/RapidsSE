@@ -718,9 +718,9 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   Key* aKey = aEntry->aKey();
   
   if (0 == m_iBufferHeight) {
-    //vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
+    vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
     //vPositionPriorVecEntry_Alka01(aKey, xPriorVec, nullptr);
-    vPriorVecInsertedKey_Ray01(aEntry, xPriorVec);
+    //vPriorVecInsertedKey_Ray01(aEntry, xPriorVec);
     //vPositionPriorVecEntry_Ray04(aKey, xPriorVec);
 //
 //    for (i8 i_Lvl = 0; i_Lvl < AM::nLvlLevels(); i_Lvl++)
