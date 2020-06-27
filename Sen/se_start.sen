@@ -543,6 +543,31 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+: start::defineProcedures4
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy file
+  sPath
+  "
+  procedure copyFile
+    parameters $FileIn $FileOut
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | catFile $FileIn | wrFile $FileOut | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // copyFile "/Users/Shared/tpch/SF1/nation.csv" "/Users/Shared/tpch/SF1/nation_COPY.csv" ;
+;
+
+/*----------------------------------------------------------------------------*/
 /* define apriori tables                                                      */
 /*----------------------------------------------------------------------------*/
 : start::defineTables
@@ -864,6 +889,7 @@
   start::defineProcedures1
   start::defineProcedures2
   start::defineProcedures3
+  start::defineProcedures4
 
   // define the apriori system tables
   start::defineTables
