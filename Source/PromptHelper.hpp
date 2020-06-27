@@ -8,9 +8,6 @@ namespace Prompt
   class PromptHelper
   {
   public:
-    static void vCommandFlags(EnumFlags& oFlags,
-                              Stz* szGroupNm,
-                              TokenVec* pTknVec);
   
     static void vEnumFlags(EnumFlags* pFlags,
                            Stz* szGroupNm,
