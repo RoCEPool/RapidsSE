@@ -100,16 +100,6 @@ byte* CsvBuffer::ayDataArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the recoords pointer                                                   */
-/*----------------------------------------------------------------------------*/
-void CsvBuffer::vTake(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
-  
-  m_xWsp.vTake(nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of data bytes                                                   */
 /*----------------------------------------------------------------------------*/
 i8 CsvBuffer::nDataBytes(void)
@@ -205,6 +195,26 @@ void CsvBuffer::vReportNm(Stz* szReportNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
     
   m_sReportNm = szReportNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* take bytes                                                                 */
+/*----------------------------------------------------------------------------*/
+void CsvBuffer::vTake(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  m_xWsp.vTake(nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* trim backwards till new line                                               */
+/*----------------------------------------------------------------------------*/
+i8 CsvBuffer::nTrim(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+
+  return 0;
 }
 
 /*============================================================================*/

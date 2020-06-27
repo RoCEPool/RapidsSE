@@ -42,6 +42,7 @@ namespace DataBuffers
     void       vReset(void);
     void       vReportNm(Stz* szReportNm);
     void       vTake(i8 nBytes);
+    i8         nTrim(void);
 
   private:
     Footer* aFooter(void);

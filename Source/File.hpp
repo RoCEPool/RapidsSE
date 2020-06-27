@@ -83,6 +83,7 @@ namespace Resources
     bool bReadLine(Stz* szDst);
     void vReset(void);
     void vSeek(i8 iOffset);
+    void vSeekBackwards(i8 iOffset);
     void vSeekStart(void);
     void vSeekEnd(void);
     void vSetBuffering(i8 nBytes);

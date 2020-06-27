@@ -732,19 +732,19 @@ void File::vSeek(i8 iOffset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seek to start                                                              */
+/* seek backwards from current position                                       */
 /*----------------------------------------------------------------------------*/
-void File::vSeekStart(void)
+void File::vSeekBackwards(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-  
+
   m_oSysCall.vClear();
   
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nSeeks++;
 #endif
   
-  i8 iResult = fseeko(m_aFile,0,SEEK_SET);
+  i8 iResult = fseeko(m_aFile,(- nBytes),SEEK_CUR); // observe minus sign
   
   if (iResult) {
     m_oSysCall.vError(errno);
@@ -769,6 +769,30 @@ void File::vSeekEnd(void)
 #endif
   
   i8 iResult = fseeko(m_aFile,0,SEEK_END);
+  
+  if (iResult) {
+    m_oSysCall.vError(errno);
+    vWarn("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
+    return;
+  }
+  
+  m_oSysCall.vSuccess();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seek to start                                                              */
+/*----------------------------------------------------------------------------*/
+void File::vSeekStart(void)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  m_oSysCall.vClear();
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.File.m_nSeeks++;
+#endif
+  
+  i8 iResult = fseeko(m_aFile,0,SEEK_SET);
   
   if (iResult) {
     m_oSysCall.vError(errno);
