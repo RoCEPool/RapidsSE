@@ -173,10 +173,6 @@ void Task::vTaskLoop(void)
 
   ASSERT(! m_pJob || ! m_pJob->pJobTags()->szValue(C_TAG_PATH)->bSame(""_Stz));
   
-  // TODO: shouldn't have to refind it everytime!!!
-  if (m_pJob)
-    vRefindJobClass();
-  
   if (! m_pForth)
     vInitExeContext();
 
@@ -694,22 +690,6 @@ void Task::vQueue(eQK eQueue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_eQueue = eQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set task queue                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vRefindJobClass(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  //if (m_pJob->aJobClass())
-  //  return;
-  
-  // find the job class on this node
-  //eCN eClass = m_pJob->eClass();
-  //JobClass* aJobClass = JobClass::pFind(eClass);
-  //m_pJob->vJobClass(aJobClass,(char*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/

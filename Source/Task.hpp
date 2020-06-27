@@ -94,7 +94,6 @@ namespace Tasks
     void vProfile(Profile* pProfile);
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
-    void vRefindJobClass(void);
     RegSet* pRegSet(void);
     void vRenderPortrait(s256& sTaskPortrait);
     void vReseed(void);
