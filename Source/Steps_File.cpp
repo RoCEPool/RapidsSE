@@ -228,12 +228,13 @@ void Step::vFileReadChunk(void)
   
   pCsvBuffer->vTake(nReadBytes);
   
-  
-  
   i8 nTrimmed = pCsvBuffer->nTrim();
   
+  if (nTrimmed) {
+    pFile->vSeekBackwards(nTrimmed);
+    nReadBytes -= nTrimmed;
+  }
   
-
   m_pDataStack->vPushInt(nReadBytes);
 
   EXIT();
