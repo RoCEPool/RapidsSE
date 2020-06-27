@@ -80,21 +80,13 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   
   if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) )
     return EC_INVALID_COMMAND;
-   
-  
-  
-  JobClass* aJobClass = Api::aFindJobClass(pCmdTknVec,pTagSet);
-  
-  if (! aJobClass)
-    return EC_INVALID_COMMAND;
-
       
       
-  if (! Api::bPassesLowMem(aJobClass))
+  if (! Api::bPassesLowMem())
     return EC_LOW_MEMORY;
   
 
-  Job* pJob = Jobs::pJob_Distributed_pre(aJobClass, axReqTuple, pTagSet);
+  Job* pJob = Jobs::pJob_Distributed_pre(axReqTuple, pTagSet);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
@@ -203,39 +195,9 @@ void Api::vJob_4_DeleteJob(Job** ppJob)
 
 
 /*----------------------------------------------------------------------------*/
-/* attempt to find a job which matches the command tokens                     */
-/*----------------------------------------------------------------------------*/
-JobClass* Api::aFindJobClass(TokenVec* pCmdTknVec, TagSet* pTagSet)
-{
-  _static_
-  
-  //pTagSet->vDumpSet();
-  
-  Stz* aCommand1 = pCmdTknVec->pGet(0,true)->szChars();
-  Stz* aCommand2 = pCmdTknVec->pGet(1,true)->szChars();
-  
-  JobClass* aJobClass = JobClass::pFind(aCommand1, aCommand2);
-
-  if (aJobClass)
-    return aJobClass;
-  
-  // is the command token a forth-word marked as prompt?
-  //if (bIsPromptWord())
-  //  return true;
-  
-  // give command to the universal job
-//  if ((eJK)pTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL)
-//    aJobClass = JobClass::pFind(CN_JOB_LOCAL);
-//  else
-    aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
-  
-  return aJobClass;
-}
-
-/*----------------------------------------------------------------------------*/
 /* passes the low-memory condition?                                           */
 /*----------------------------------------------------------------------------*/
-bool Api::bPassesLowMem(JobClass* aJobCLass)
+bool Api::bPassesLowMem(void)
 {
   _static_
 

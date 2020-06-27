@@ -170,7 +170,7 @@ Footer* Job_Distributed::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Distributed_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet)
+Job* Jobs::pJob_Distributed_pre( ReqTuple* aReqTuple, TagSet* pTagSet)
 {
   Job_Distributed* pJob_Distributed = new Job_Distributed(aReqTuple);
   

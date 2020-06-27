@@ -34,7 +34,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Distributed* _pJob_Distributed(void* aAddr);
   
-  Job* pJob_Distributed_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);
+  Job* pJob_Distributed_pre(ReqTuple* aReqTuple, TagSet* pTagSet);
   
   JobClass* pJob_Distributed_class(pFUN** aaFun);
 }
