@@ -27,6 +27,7 @@ void Step::vAddSteps_File(void)
   vAddStep("file.readChunk"_Stz,         &Step::vFileReadChunk);
   vAddStep("file.readLine"_Stz,          &Step::vFileReadLine);
   vAddStep("file.seek"_Stz,              &Step::vFileSeek);
+  vAddStep("file.size"_Stz,              &Step::vFileSize);
   vAddStep("file.tell"_Stz,              &Step::vFileTell);
   vAddStep("file.writeLine"_Stz,         &Step::vFileWriteLine);
 }
@@ -289,10 +290,10 @@ void Step::vFileSize(void)
 {
   ENTRY();
   
-  s256 sPath;
-  m_pDataStack->vPopStr(sPath,__func__);
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  ASSERT(pFile);
 
-  i8 nSize = File::nSize(sPath);
+  i8 nSize = pFile->iSize();
   
   m_pDataStack->vPushInt(nSize);
                          

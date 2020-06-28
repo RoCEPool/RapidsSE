@@ -87,6 +87,7 @@ namespace Resources
     void vSeekStart(void);
     void vSeekEnd(void);
     void vSetBuffering(i8 nBytes);
+    i8   iSize(void);
     SysCall& oSysCall(void);
     i8   iTell(void);
     void vUngetChar(char cChar);

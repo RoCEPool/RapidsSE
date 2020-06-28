@@ -29,7 +29,7 @@
   file::new to file0[]
 
   <fileNm> OPEN_READ file0[].get file.open if
-    <fileNm> "File %v opened" .printf
+    file0[] file.size <fileNm> "File %v opened (%v bytes)" .printf
 
     begin
       catFile_csvBuffer
