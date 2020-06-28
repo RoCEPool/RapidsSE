@@ -36,9 +36,15 @@
 
     file0[] file.seekRndCsv
 
-    begin
-      rdCsvCyclic_catCsv
-    while repeat
+    <nTimes> >int 0 do
+
+      begin
+        rdCsvCyclic_catCsv
+      while repeat
+
+      0 file0[] file.seek
+
+    loop
 
     file0[].get file.close
     <fileNm> "File %v closed" .printf
@@ -72,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: rdCsvCyclic :: rdCsvCyclic <fileNm> ;
+cmdSyntax: rdCsvCyclic :: rdCsvCyclic <fileNm> <nTimes> ;
 
 : rdCsvCyclic _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
