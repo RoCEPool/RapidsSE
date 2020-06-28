@@ -597,7 +597,8 @@
 
             | catFile $File
 
-            // | toRsb $Table
+            | toRsb $Table
+            | toPtnRsb
 
             | output | sink | stageA
 

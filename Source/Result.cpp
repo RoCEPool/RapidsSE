@@ -208,6 +208,8 @@ void Result::vPrintOldJobResponses(void)
 /*----------------------------------------------------------------------------*/
 void Result::vProcessBufferQueue(void)
 {
+  SP_DataBuffer spDataBuffer;
+  
   StreamDef* pStreamDef = nullptr;
   bool bHasError = false;
   i8 iTotalUnits = C_UNKNOWN;
@@ -371,6 +373,8 @@ void Result::vProcessBufferQueue(void)
         
       case CN_RSBBUFFER: {
         RsbBuffer* pRsbBuffer = _pRsbBuffer(pOperand);
+        if (AM::bDeveloper())
+          vTrace("[[RsbBuffer %s]]\n"_Stz,spDataBuffer.sz(pRsbBuffer));
         m_xJobResponse.m_ixRowsProcessed += pRsbBuffer->nRsb();
         pRsbBuffer->vPrintRows();
         AM::vDeleteOperand(pOperand);
