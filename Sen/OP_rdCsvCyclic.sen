@@ -5,16 +5,43 @@
 " OP_rdCsvCyclic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* catFile csvBuffer                                                          */
+/*----------------------------------------------------------------------------*/
+: rdCsvCyclic_catCsv
+
+  csvBuffer::new locals| pCsvBuffer |
+
+  pCsvBuffer file0[] file.readChunk if
+    file0[] file.tell "read a csv chunk (tell %v)" .printf
+    pCsvBuffer to Operand[]
+    Operand[].pipeOut
+    true
+  else
+    false
+  then
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : rdCsvCyclic_StartMarker \handler
 
-  // open the file for reading
+  PipeIn[].pipeOut
+
   file::new to file0[]
 
-  <fileNm> OPEN_READ file0[].get file.open if
+  <fileNm> OPEN_READ file0[] file.open if
+    file0[] file.size <fileNm> "File %v opened (%v bytes)" .printf
 
-    PipeIn[].pipeOut
+    file0[] file.seekRndCsv
+
+    begin
+      rdCsvCyclic_catCsv
+    while repeat
+
+    file0[].get file.close
+    <fileNm> "File %v closed" .printf
   then
 
   true

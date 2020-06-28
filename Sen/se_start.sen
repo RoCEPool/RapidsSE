@@ -565,6 +565,26 @@
   api::addProcedure
 
   // copyFile "/Users/Shared/tpch/SF1/nation.csv" "/Users/Shared/tpch/SF1/nation_COPY.csv" ;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cycle read file
+  sPath
+  "
+  procedure cyclicRdFile
+    parameters $FileIn
+  begin
+
+    stage stageA on origin :
+      start | periodicOp once | rdCsvCyclic $FileIn | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+// cyclicRdFile "/Users/Shared/tpch/SF1/nation.csv"  ;
+// cyclicRdFile "/Users/Shared/tpch/SF1/supplier.csv" ;
+// cyclicRdFile "/Users/Shared/tpch/SF1/part.csv" ;
+
 ;
 
 /*----------------------------------------------------------------------------*/
