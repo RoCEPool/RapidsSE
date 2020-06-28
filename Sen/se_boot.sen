@@ -198,6 +198,7 @@ assert::stack_0
         "OP_truncateIndex.sen"        include
         "OP_truncateTable.sen"        include
 
+        "OP_union.sen"                include
         "OP_unload.sen"               include
         "OP_upsert.sen"               include
 

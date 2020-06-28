@@ -352,7 +352,9 @@ public:
   void vFileReadChunk(void);
   void vFileReadLine(void);
   void vFileSeek(void);
+  void vFileSeekRndCsv(void);
   void vFileSize(void);
+  void vFileSizeNm(void);
   void vFileTell(void);
   void vFileWriteLine(void);
 

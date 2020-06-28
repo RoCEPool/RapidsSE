@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 : munge_ProcessSenFile params| sSenFileNm pCppFile i_File |
 
-  sSenFileNm file::size locals| nBytes |
+  sSenFileNm file::sizeNm locals| nBytes |
   nBytes sSenFileNm i_File "[%v] %v %v bytes" .printf
 
   file::new locals| pSenFile |

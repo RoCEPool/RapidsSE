@@ -18,7 +18,7 @@ void Step::vAddSteps_File(void)
   
   vAddStep("file::new"_Stz,              &Step::vFileNew);
   vAddStep("file::print"_Stz,            &Step::vFilePrint);
-  vAddStep("file::size"_Stz,             &Step::vFileSize);
+  vAddStep("file::sizeNm"_Stz,           &Step::vFileSizeNm);
 
   vAddStep("file.close"_Stz,             &Step::vFileClose);
   vAddStep("file.delete"_Stz,            &Step::vFileDelete);
@@ -27,6 +27,7 @@ void Step::vAddSteps_File(void)
   vAddStep("file.readChunk"_Stz,         &Step::vFileReadChunk);
   vAddStep("file.readLine"_Stz,          &Step::vFileReadLine);
   vAddStep("file.seek"_Stz,              &Step::vFileSeek);
+  vAddStep("file.seekRndCsv"_Stz,        &Step::vFileSeekRndCsv);
   vAddStep("file.size"_Stz,              &Step::vFileSize);
   vAddStep("file.tell"_Stz,              &Step::vFileTell);
   vAddStep("file.writeLine"_Stz,         &Step::vFileWriteLine);
@@ -63,7 +64,7 @@ void Step::vFile0GetEofLocation(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* file0[].isNull -- is file null ?                                            */
+/* file0[].isNull -- is file null ?                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vFile0IsNull(void)
 {
@@ -284,6 +285,40 @@ void Step::vFileSeek(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* file.seekRndCsv -- seek to random position in csv file                     */
+/*----------------------------------------------------------------------------*/
+void Step::vFileSeekRndCsv(void)
+{
+  ENTRY();
+  
+  s48K sBuffer;
+  
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  ASSERT(pFile);
+
+  i8 nFileSize = pFile->iSize();
+  
+  if (nFileSize > C_MAX_RECORD * 2) {
+    i8 iRndLoc = RndLib::iInteger(nFileSize - C_MAX_RECORD);
+    pFile->vSeek(iRndLoc);
+  
+    pFile->nReadBytes(sBuffer.ayByte(),C_MAX_RECORD * 2);
+    
+    char* acStart = (char*)sBuffer.ayByte();
+    char* acNewLine = acStart;
+    if (StrLib::bFind(&acNewLine,'\n')) {
+      i8 iAdjust = nDifference(acNewLine,acStart) + 1;
+      pFile->vSeek(iRndLoc + iAdjust);
+    }
+  }
+  else {
+    pFile->vSeek(0);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* file0[].size -- gett size of file0                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vFileSize(void)
@@ -294,6 +329,23 @@ void Step::vFileSize(void)
   ASSERT(pFile);
 
   i8 nSize = pFile->iSize();
+  
+  m_pDataStack->vPushInt(nSize);
+                         
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file0[].sizeNm -- gett size of file by name                                */
+/*----------------------------------------------------------------------------*/
+void Step::vFileSizeNm(void)
+{
+  ENTRY();
+  
+  s256 sPath;
+  m_pDataStack->vPopStr(sPath,__func__);
+
+  i8 nSize = File::nSize(sPath);
   
   m_pDataStack->vPushInt(nSize);
                          
