@@ -9,7 +9,16 @@
 /*----------------------------------------------------------------------------*/
 : insDel_CrwBuffer \handler
 
-  ZK_CRWBUFFER_handler
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
+
+  tablePtn[] tablePtnGrabWrite
+  //Operand[].insdelIntoTable
+  tablePtn[] tablePtnDropWrite
+
+  Operand[].delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -17,7 +26,12 @@
 /*----------------------------------------------------------------------------*/
 : insDel_StartMarker \handler
 
-  ZK_STARTMARKER_handler
+  <tableNm> op__table if
+    Table[].tablePtn@ to tablePtn[]
+    PipeIn[].pipeOut
+  then
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +39,11 @@
 /*----------------------------------------------------------------------------*/
 : insDel_StreamDef \handler
 
-  ZK_STREAMDEF_handler
+  PipeIn[].delete
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
