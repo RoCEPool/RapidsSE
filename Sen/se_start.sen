@@ -585,6 +585,29 @@
   // listFile "/Users/Shared/tpch/SF1/nation.csv" ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // xyz file
+  sPath
+  "
+  procedure xyzFile
+    parameters $Table $File
+  begin
+
+    stage stageA on origin :
+      start | periodicOp once
+
+            | catFile $File
+
+            // | toRsb $Table
+
+            | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // xyzFile nation "/Users/Shared/tpch/SF1/nation.csv" ;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle read file
   sPath
   "
@@ -603,6 +626,15 @@
 // cyclicRdFile "/Users/Shared/tpch/SF1/nation.csv" 3 ;
 // cyclicRdFile "/Users/Shared/tpch/SF1/supplier.csv" 3 ;
 // cyclicRdFile "/Users/Shared/tpch/SF1/part.csv" 3 ;
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+: start::defineProc_SteadyState
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 1
@@ -1023,6 +1055,7 @@
   start::defineProcedures2
   start::defineProcedures3
   start::defineProcedures4
+  start::defineProc_SteadyState
 
   // define the apriori system tables
   start::defineTables
