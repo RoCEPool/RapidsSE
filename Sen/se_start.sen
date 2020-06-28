@@ -589,25 +589,33 @@
   sPath
   "
   procedure xyzFile
-    parameters $Table $File
+    parameters $Table $File $Ntimes
   begin
 
     stage stageA on origin :
-      start | periodicOp once
+      start
+        | periodicOp once
+//        | catFile $File
+        | rdCsvCyclic $File $NTimes
+        | toRsb $Table
+        | toPtnRsb
+        | toNstRsb
+        | stageB hashed
 
-            | catFile $File
+    stage stageB on all partitions :
+      noop
+        | stageC
 
-            | toRsb $Table
-            | toPtnRsb
-            | toNstRsb
-
-            | output | sink | stageA
+    stage stageC on origin :
+      output
+        | sink
+        | stageA
 
   end ;
   "
   api::addProcedure
 
-  // xyzFile nation "/Users/Shared/tpch/SF1/nation.csv" ;
+  // xyzFile nation "/Users/Shared/tpch/SF1/nation.csv" 3 ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle read file

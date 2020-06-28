@@ -48,6 +48,10 @@
 
     file0[].get file.close
     <fileNm> "File %v closed" .printf
+
+    Operand[].newEosMarker
+    Operand[].pipeOut
+
   then
 
   true
