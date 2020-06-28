@@ -13,7 +13,7 @@
   nullptr to PipeIn[]
 
   tablePtn[] tablePtnGrabWrite
-  //Operand[].insdelIntoTable
+  Operand[].insdelIntoTable
   tablePtn[] tablePtnDropWrite
 
   Operand[].delete
