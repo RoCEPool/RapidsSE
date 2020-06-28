@@ -586,6 +586,49 @@
 // cyclicRdFile "/Users/Shared/tpch/SF1/supplier.csv" 3 ;
 // cyclicRdFile "/Users/Shared/tpch/SF1/part.csv" 3 ;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // steady state test 1
+  sPath
+  "
+  procedure steadyState_1
+    parameters $Table $File
+  begin
+
+    stage stageA on origin :
+
+      start |
+ 
+      periodicOp once |
+
+      catFile $File |
+
+      toRsb $Table |
+
+      toPtnRsb |
+
+      toNstRsb |
+
+      toHshCrw |
+
+      stageB hashed
+
+    stage stageB on all partitions :
+
+      insert $Table |
+
+      stageC
+
+    stage stageC on origin :
+
+      output |
+
+      sink |
+
+      stageA
+
+  end ;
+  "
+  api::addProcedure
 ;
 
 /*----------------------------------------------------------------------------*/
