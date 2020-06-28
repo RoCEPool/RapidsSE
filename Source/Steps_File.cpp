@@ -212,7 +212,7 @@ void Step::vFilePrint(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.readLChunk-- read read csv chunk returning bytes read                 */
+/* file.readChunk-- read read csv chunk returning bytes read                  */
 /*----------------------------------------------------------------------------*/
 void Step::vFileReadChunk(void)
 {
@@ -226,7 +226,7 @@ void Step::vFileReadChunk(void)
   
   i8 nFreeBytes = pCsvBuffer->nFreeBytes();
   
-  i8 nReadBytes = pFile->nReadBytes(pCsvBuffer->ayDataArea(),nFreeBytes);
+  i8 nReadBytes = pFile->nReadBytes(pCsvBuffer->ayDataArea(),nFreeBytes-1);
   
   pCsvBuffer->vTake(nReadBytes);
   
@@ -236,6 +236,7 @@ void Step::vFileReadChunk(void)
     pFile->vSeekBackwards(nTrimmed);
     nReadBytes -= nTrimmed;
   }
+  pCsvBuffer->ayDataArea()[nReadBytes] = 0;
   
   m_pDataStack->vPushInt(nReadBytes);
 
@@ -299,7 +300,7 @@ void Step::vFileSeekRndCsv(void)
   i8 nFileSize = pFile->iSize();
   
   if (nFileSize > C_MAX_RECORD * 2) {
-    i8 iRndLoc = RndLib::iInteger(nFileSize - C_MAX_RECORD);
+    i8 iRndLoc = RndLib::iInteger(nFileSize - C_MAX_RECORD * 2);
     pFile->vSeek(iRndLoc);
   
     pFile->nReadBytes(sBuffer.ayByte(),C_MAX_RECORD * 2);
@@ -309,6 +310,9 @@ void Step::vFileSeekRndCsv(void)
     if (StrLib::bFind(&acNewLine,'\n')) {
       i8 iAdjust = nDifference(acNewLine,acStart) + 1;
       pFile->vSeek(iRndLoc + iAdjust);
+    }
+    else {
+      NEVER_REACH;
     }
   }
   else {

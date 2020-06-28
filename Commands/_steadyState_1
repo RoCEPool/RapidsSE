@@ -9,9 +9,9 @@ print section "Steady State 1";
 
 _lineitem
 
-/time steadyState_1 lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv" ;
+// /time steadyState_1 lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv" ;
 // /time steadyState_1 lineitem "/Users/Shared/tpch/SF1/lineItem.csv" ;
-// /time steadyState_1 lineitem "/Users/Shared/tpch/SF10/lineItem.csv" ;
+/time steadyState_1 lineitem "/Users/Shared/tpch/SF10/lineItem.csv" ;
 
 tableSizes;
 

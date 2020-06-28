@@ -23,9 +23,9 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* on ZK_PULSEMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
-: rdCsvCyclic_StartMarker \handler
+: rdCsvCyclic_PulseMarker \handler
 
   PipeIn[].pipeOut
 
@@ -66,7 +66,7 @@
 
   op__topology
 
-  find: rdCsvCyclic_StartMarker ZK_STARTMARKER op[].handler!
+  find: rdCsvCyclic_PulseMarker ZK_PULSEMARKER op[].handler!
 
   op__loop
 

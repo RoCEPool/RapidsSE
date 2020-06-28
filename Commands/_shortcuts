@@ -34,6 +34,7 @@ shortcut r3   _ray3;
 shortcut rs   "../FASTLOAD/commands/_rowSlabTest";
 shortcut s    _select;
 shortcut ss1  _steadyState_1;
+shortcut ss2  _steadyState_2;
 shortcut t    _unitTestA;
 shortcut u    _upsertRJH;
 shortcut v    vortex;

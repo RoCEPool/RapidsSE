@@ -629,6 +629,57 @@
   end ;
   "
   api::addProcedure
+
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // steady state test 2
+   sPath
+   "
+   procedure steadyState_2
+     parameters $Table $File $NTimes
+   begin
+
+     stage stageA on origin :
+
+       start |
+
+       periodicOp once |
+
+       rdCsvCyclic $File $NTimes |
+
+       stageB robin
+
+
+     stage stageB on all partitions on origin  :
+
+       toRsb $Table |
+
+       toPtnRsb |
+
+       toNstRsb |
+
+       toHshCrw |
+
+       stageC hashed
+
+
+     stage stageC on all partitions :
+
+       insert $Table |
+
+       stageD
+
+
+     stage stageD on origin :
+
+       output |
+
+       sink |
+
+       stageA
+
+   end ;
+   "
+   api::addProcedure
 ;
 
 /*----------------------------------------------------------------------------*/

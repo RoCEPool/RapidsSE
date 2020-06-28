@@ -781,9 +781,11 @@ L_Integer:
       THROW_USER("vConvertIntegerFast"_Stz);
   }
   
-  if (! bOnce)
+  if (! bOnce) {
+    vTrace("%s\n"_Stz,azCsvInput);
     THROW_USER("vConvertIntegerFast"_Stz);
-
+  }
+  
   iFinalResult = bNegative ? - uPartialResult : uPartialResult;
   pRowSlab->vDeposit(iFinalResult);
 
