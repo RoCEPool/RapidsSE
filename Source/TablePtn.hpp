@@ -51,6 +51,7 @@ namespace Partitioning
     bool bGrabWrite(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
+    void vInsdelBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);
     void vInsertIndexEntries(Crw* aCrw, Ref& xRowRef);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
     bool bIsLocked(void);
