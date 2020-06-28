@@ -306,7 +306,7 @@ void Step::vRegOperandInsdelIntoTable(void)
   i8 iPartition = pOp->nPartition();
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
   
-  m_pRegSet->m_xpTable->vUpsertBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
+  m_pRegSet->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
   
   // will delete this buffer
   pCrwBuffer->vIsPermanent(false);
