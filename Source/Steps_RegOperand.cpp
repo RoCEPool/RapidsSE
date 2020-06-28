@@ -293,23 +293,36 @@ void Step::vRegOperandHandleAggEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].insdelIntoTable -- insert-delete operand into the table         */
+/* Operand[].insdelIntoTable -- insert-delete operand into the table          */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandInsdelIntoTable(void)
 {
   ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandA);
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   i8 iPartition = pOp->nPartition();
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
+
+  if (CN_CRWBUFFER == (*m_pRegSet->m_xpOperandA)->eClass()) {
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
+    m_pRegSet->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
   
-  m_pRegSet->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
+    // will delete this buffer
+    pCrwBuffer->vIsPermanent(false);
+  }
+  else
+  if (CN_RSBBUFFER == (*m_pRegSet->m_xpOperandA)->eClass()) {
+    RsbBuffer* pRsbBuffer = _pRsbBuffer(*m_pRegSet->m_xpOperandA);
+    //m_pRegSet->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
   
-  // will delete this buffer
-  pCrwBuffer->vIsPermanent(false);
+    // will delete this buffer
+    pRsbBuffer->vIsPermanent(false);
+  }
+  else {
+    NEVER_REACH;
+  }
   
   EXIT();
 }
