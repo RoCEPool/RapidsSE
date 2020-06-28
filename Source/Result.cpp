@@ -374,7 +374,9 @@ void Result::vProcessBufferQueue(void)
       case CN_RSBBUFFER: {
         RsbBuffer* pRsbBuffer = _pRsbBuffer(pOperand);
         if (AM::bDeveloper())
-          vTrace("[[RsbBuffer %s]]\n"_Stz,spDataBuffer.sz(pRsbBuffer));
+          vTrace("[[RsbBuffer %s ; Rsbs=%lld]]\n"_Stz,
+                 spDataBuffer.sz(pRsbBuffer),
+                 pRsbBuffer->nRsb());
         m_xJobResponse.m_ixRowsProcessed += pRsbBuffer->nRsb();
         pRsbBuffer->vPrintRows();
         AM::vDeleteOperand(pOperand);
