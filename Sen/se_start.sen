@@ -566,6 +566,24 @@
 
   // copyFile "/Users/Shared/tpch/SF1/nation.csv" "/Users/Shared/tpch/SF1/nation_COPY.csv" ;
 
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // list file
+  sPath
+  "
+  procedure listFile
+    parameters $File
+  begin
+
+    stage stageA on origin :
+      start | periodicOp once | catFile $File | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // listFile "/Users/Shared/tpch/SF1/nation.csv" ;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle read file
   sPath

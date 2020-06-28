@@ -21,8 +21,9 @@ namespace DataBuffers
     RsbBuffer(void);
    ~RsbBuffer(void) noexcept(false);
 
-    RowSlab* pRowSlab(void);
-
+    RowSlab*   pRowSlab(void);
+    i8         nRsb(void);
+    void       vPrintRows(void);
     CsvBuffer* pToCsvBuffer(void);
 
   private:

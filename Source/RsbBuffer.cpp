@@ -45,6 +45,38 @@ RowSlab* RsbBuffer::pRowSlab(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of rsb's                                                        */
+/*----------------------------------------------------------------------------*/
+i8 RsbBuffer::nRsb(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
+  
+  SP_RowPix spRowPix(m_oRowSlab.nCols(),m_oRowSlab.axaColPix());
+
+  i8 nRsb = m_oRowSlab.nRows();
+  
+  return nRsb;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print rows                                                                 */
+/*----------------------------------------------------------------------------*/
+void RsbBuffer::vPrintRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
+  
+  SP_RowPix spRowPix(m_oRowSlab.nCols(),m_oRowSlab.axaColPix());
+
+  i8 nRsb = m_oRowSlab.nRows();
+  
+  for (i8 i_Rsb = 0; i_Rsb < nRsb; i_Rsb++) {
+    Rsb* aRsb = m_oRowSlab.aRsbAdr(i_Rsb);
+    Stz* szRsb = spRowPix.sz(aRsb);
+    vTrace("%s\n"_Stz,szRsb);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert this rsb buffer into one or more csv buffers                       */
 /*----------------------------------------------------------------------------*/
 CsvBuffer* RsbBuffer::pToCsvBuffer(void)

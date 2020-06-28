@@ -369,6 +369,16 @@ void Result::vProcessBufferQueue(void)
         
       // -- -- -- -- -- --
         
+      case CN_RSBBUFFER: {
+        RsbBuffer* pRsbBuffer = _pRsbBuffer(pOperand);
+        m_xJobResponse.m_ixRowsProcessed += pRsbBuffer->nRsb();
+        pRsbBuffer->vPrintRows();
+        AM::vDeleteOperand(pOperand);
+        break;
+      }
+        
+      // -- -- -- -- -- --
+        
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         m_xJobResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
