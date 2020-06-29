@@ -71,7 +71,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.preSend"_Stz,          &Step::vJobPreSend);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
-  vAddStep("job.recv"_Stz,             &Step::vJobRecv);
   vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
@@ -1042,23 +1041,6 @@ void Step::vJobPreSend(void)
                           aCN[pJob->eClass()],
                           pJob);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.recv -- post-receive function                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRecv(void)
-{
-  ENTRY();
-  
-  RASSERT(0);
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  // find the job in the catalog
-  eCN eClass = pJob->eClass();
-  
-  
   EXIT();
 }
 
