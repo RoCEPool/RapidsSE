@@ -7,6 +7,8 @@ bc;
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Steady State 2";
 
+trackMemory;
+
 _lineitemFixed
 _lineitemIndex
 
@@ -19,8 +21,8 @@ _lineitemIndex
 
 tableSizes;
 
-//drop table lineitem;
-
+drop table lineitem;
+memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

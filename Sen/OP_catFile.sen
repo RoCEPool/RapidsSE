@@ -17,6 +17,7 @@
     Operand[].pipeOut
     true
   else
+    pCsvBuffer csvBuffer.delete
     false
   then
 ;
