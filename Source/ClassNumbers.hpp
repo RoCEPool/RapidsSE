@@ -138,9 +138,6 @@ enum eCN : u2 // Class Number
   /* */ CN__J__,
   /* */ CN_JOB,
   /* */ CN_JOB__FIND,
-  /* */ CN_JOB_DISTRIBUTED,
-  /* */ CN_JOB_LOCAL,
-  /* */ CN_JOB_OPERAND,
   /* */ CN_JOBLIST,
   
   /* */ CN__K__,
@@ -478,9 +475,6 @@ static Stz* aCN[]
   /* */ "_J__"_Stz,                // CN__J__
   /* */ "JOB"_Stz,                 // CN_JOB
   /* */ "JOB__FIND"_Stz,           // CN_JOB__FIND
-  /* */ "JOB_DISTRIBUTED"_Stz,     // CN_JOB_DISTRIBUTED
-  /* */ "JOB_LOCAL"_Stz,           // CN_JOB_LOCAL
-  /* */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
   /* */ "JOBLIST"_Stz,             // CN_JOBLIST
   
   /* */ "_K__"_Stz,                // CN__K__

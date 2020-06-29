@@ -46,7 +46,7 @@ Job* Jobs::_pJob(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 bool Jobs::_bIsValidJob(eCN eClass)
 {
-  if (eClass >= CN_JOB && eClass <= CN_JOB_LOCAL)
+  if (eClass >= CN_JOB && eClass <= CN_JOB__FIND)
     return true;
   else
     return false;
