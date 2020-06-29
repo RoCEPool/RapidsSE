@@ -513,6 +513,7 @@ void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
   
   IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
   IndexDef* pIndexDef = pIndexTree->pIndex()->pIndexDef();
+  
   StreamDef* pStreamDef = pIndexTree->pIndex()->pTable()->pStreamDef();
   Encoding* pEncoding_upsert = new Encoding(pStreamDef);
   
@@ -588,6 +589,9 @@ void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
     
     vDebugPoint();
   }
+  
+  // delete the encoding
+  delete pEncoding_upsert;
 }
 
 /*----------------------------------------------------------------------------*/
