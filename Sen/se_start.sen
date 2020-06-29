@@ -651,42 +651,30 @@
   sPath
   "
   procedure steadyState_1
-    parameters $Table $File
+    parameters $Table $File $NTimes
   begin
 
     stage stageA on origin :
-
-      start |
- 
-      periodicOp once |
-
-      catFile $File |
-
-      toRsb $Table |
-
-      toPtnRsb |
-
-      toNstRsb |
-
-      toHshCrw |
-
-      stageB hashed
+      start
+        | periodicOp once
+        //|  rdCsvCyclic $File $NTimes
+        | catFile $File
+        | toRsb $Table
+        | toPtnRsb
+        | stageB hashed
 
     stage stageB on all partitions :
-
-      insert $Table |
-
-      stageC
+      noop
+      //insdel $Table
+        |  stageC
 
     stage stageC on origin :
-
-      output |
-
-      sink |
-
-      stageA
+      output
+        | sink
+        | stageA
 
   end ;
+
   "
   api::addProcedure
 

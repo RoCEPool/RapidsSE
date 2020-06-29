@@ -7,6 +7,7 @@ bc;
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Steady State 1";
 
+/*
 _lineitem
 
 // /time steadyState_1 lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv" ;
@@ -16,7 +17,15 @@ _lineitem
 tableSizes;
 
 drop table lineitem;
+*/
 
+_nation
+
+steadyState_1 nation "/Users/Shared/tpch/SF1/nation.csv" 1 ;
+
+tableSizes;
+
+drop table nation;
 
 /*============================================================================*/
 /* end                                                                        */
