@@ -26,7 +26,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Birth),              HT_INVALID           }, // CN_BIRTH
   { sizeof(BolVal),             HT_INVALID           }, // CN_BOLVAL
   { sizeof(BPA),                HT_TRANSIENT_MEDIUM  }, // CN_BPA
-  { sizeof(BucketMap),          HT_TRANSIENT_MEDIUM  }, // CN_BUCKETMAP
+  { sizeof(BucketMap),          HT_TRANSIENT_LARGE   }, // CN_BUCKETMAP
   { sizeof(BufferCursor),       HT_TRANSIENT_LARGE   }, // CN_BUFFERCURSOR
   { sizeof(BufferPool),         HT_INVALID           }, // CN_BUFFERPOOL
   { sizeof(ByteRate),           HT_TRANSIENT_TINY    }, // CN_BYTERATE

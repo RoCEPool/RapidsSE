@@ -1175,6 +1175,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_PARTITIONS     = %lld\n"_Stz,C_MAX_PARTITIONS);
   vTrace("  C_MAX_PATH           = %lld\n"_Stz,C_MAX_PATH);
   vTrace("  C_MAX_PREDICATEVEC   = %lld\n"_Stz,C_MAX_PREDICATEVEC);
+  vTrace("  C_MAX__PTNS          = %lld\n"_Stz,C_MAX__PTNS);
   vTrace("  C_MAX_RECORD         = %lld\n"_Stz,C_MAX_RECORD);
   vTrace("  C_MAX_SEEKOFFSETS    = %lld\n"_Stz,C_MAX_SEEKOFFSETS);
   vTrace("  C_MAX_SESSIONS       = %lld\n"_Stz,C_MAX_SESSIONS);

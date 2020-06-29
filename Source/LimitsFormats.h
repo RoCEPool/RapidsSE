@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_MAX_BUCKETS       = 1024;
+static const i8 C_MAX_BUCKETS       = C_64KB;
 static const i8 C_MAX_COLUMNS       = 150;    // max columns per table
 static const i8 C_MAX_COLUMNVECS    = 32;     // max column vectors per streamDef
 static const i8 C_MAX_DEFCOLUMNS    = 256;    // max columns in a stream definition
@@ -21,6 +21,7 @@ static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
 static const i8 C_MAX_OPS           = 256;
 static const i8 C_MAX_PATH          = 256;    // max length of file path
 static const i8 C_MAX_PREDICATEVEC  = 16;
+static const i8 C_MAX__PTNS         = C_64KB;
 static const i8 C_MAX_SEEKOFFSETS   = 16;
 static const i8 C_MAX_SESSIONS      = 4;      // max number of sessions
 static const i8 C_MAX_SHORTCUTS     = 1024;
