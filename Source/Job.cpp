@@ -46,7 +46,7 @@ Job* Jobs::_pJob(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 bool Jobs::_bIsValidJob(eCN eClass)
 {
-  if (eClass >= CN_JOB && eClass <= CN_JOB_LOCAL)
+  if (eClass >= CN_JOB && eClass <= CN_JOB__FIND)
     return true;
   else
     return false;
@@ -1041,8 +1041,7 @@ Stz* Job::szSeed(void)
     default: NEVER_REACH;
   }
 
-  if ( ! szSeed )
-    szSeed = m_oJobTags.szValue("<seed>"_Stz);
+  ASSERT(szSeed)
   
   return szSeed;
 }
@@ -1055,11 +1054,6 @@ void Job::vSeed(eSS eSeed)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eSeed = eSeed;
-  
-  if (m_oJobTags.bHasName("<seed>"_Stz))
-    m_oJobTags.vReplace("<seed>"_Stz,aSS[eSeed]);
-  else
-    m_oJobTags.vInsert("<seed>"_Stz,aSS[eSeed]);
 }
 
 /*----------------------------------------------------------------------------*/

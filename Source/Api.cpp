@@ -598,8 +598,6 @@ void Api::vCreateTaskForJob(Job* pJob)
 {
   _static_
   
-  
-  //ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -593,7 +593,6 @@ public:
   void vJobPreSend(void);
   void vJobPrintMember(void);
 
-  void vJobRecv(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
@@ -622,8 +621,6 @@ public:
 
   void vJobTaskFetch(void);
   void vJobTaskStore(void);
-
-  void vJobWaitParticipant(void);
 
   // job ref
   void vJobRefHasTask(void);

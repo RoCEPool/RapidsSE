@@ -71,7 +71,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.preSend"_Stz,          &Step::vJobPreSend);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
-  vAddStep("job.recv"_Stz,             &Step::vJobRecv);
   vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
@@ -100,8 +99,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
- 
-  vAddStep("job::waitParticipant"_Stz, &Step::vJobWaitParticipant);
 }
 
 
@@ -1011,13 +1008,6 @@ void Step::vJobPostRecv(void)
   // run the post recv function
   Jobs::vJob_recv(pJob);
   
-//  if (aJobClass->m_fpRecv)
-//    (*aJobClass->m_fpRecv)(pJob);
-//  else {
-//    vTrace("job.postRecv: %s\n"_Stz, pJob->szJobNm());
-//    RASSERT(0);
-//  }
-  
   if (pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,
                           "PostRecv: %s %p"_Stz,
@@ -1049,23 +1039,6 @@ void Step::vJobPreSend(void)
                           aCN[pJob->eClass()],
                           pJob);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.recv -- post-receive function                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRecv(void)
-{
-  ENTRY();
-  
-  RASSERT(0);
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  // find the job in the catalog
-  eCN eClass = pJob->eClass();
-  
-  
   EXIT();
 }
 
@@ -1615,33 +1588,6 @@ void Step::vJobTaskStore(void)
   // for the moment this should always be null
   ASSERT(! pTask);
   pJob->vTask(pTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job::waitParticipant -- wait for participant till found in participant jobs*/
-/*----------------------------------------------------------------------------*/
-void Step::vJobWaitParticipant(void)
-{
-  ENTRY();
-  
-  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
-  
-  Job__Find* pFindJob = new Job__Find;
-  pFindJob->m_iFocalId = iJobId;
-
-  Job* pJobFound = nullptr;
-
-  while ( ! pJobFound ) {
-    AM::pParticipatingJobs()->vGrabLock();
-    pJobFound = AM::pParticipatingJobs()->pFindJob(pFindJob);
-    AM::pParticipatingJobs()->vDropLock();
-  }
-
-  delete pFindJob;
-  
-  m_pDataStack->vPushPtr(pJobFound);
   
   EXIT();
 }

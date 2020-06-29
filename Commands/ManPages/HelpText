@@ -158,8 +158,6 @@ hw           - Show information about the hardware
 .br 
 job          - Print information about a job
 .br 
-jobCat       - Show job catalog
-.br 
 locks        - Show lock report
 .br 
 ls           - List contents of current directory
