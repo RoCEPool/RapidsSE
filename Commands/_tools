@@ -13,7 +13,6 @@ date;         // show current date and time
 hashdefs;     // show #def's
 heapMem;      // information about the heap
 indexEntries; // set index entries
-jobcat;       // show the job cataloig
 locks;        // locks report
 masks;        // masks report
 numbers;      // show important numbers

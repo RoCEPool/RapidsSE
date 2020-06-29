@@ -58,7 +58,6 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_HW);
   gxPromptCatalog.vFuns(PF_INDEXENTRIES);
   gxPromptCatalog.vFuns(PF_JOB);
-  gxPromptCatalog.vFuns(PF_JOBCAT);
   gxPromptCatalog.vFuns(PF_JOBCLASS);
   gxPromptCatalog.vFuns(PF_LOCKS);
   gxPromptCatalog.vFuns(PF_LOGNOTE);
