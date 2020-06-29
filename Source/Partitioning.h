@@ -21,6 +21,7 @@ namespace Partitioning
 
 #include "BucketMap.hpp"
 #include "TablePtn.hpp"
+#include "PtnStream.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
