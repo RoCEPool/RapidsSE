@@ -14,8 +14,8 @@ namespace Partitioning
 
 //------------------------------------------------------------------------------
 
-//#define TRACE_UPSERT(smt) smt EndDefine
-#define TRACE_UPSERT(smt) EndDefine
+#define TRACE_UPSERT(smt) smt EndDefine
+//#define TRACE_UPSERT(smt) EndDefine
 
 //------------------------------------------------------------------------------
 

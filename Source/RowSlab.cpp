@@ -144,6 +144,39 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return column value from rsb for given column number                       */
+/*----------------------------------------------------------------------------*/
+i8 RowSlab::iColumn(Rsb* aRsb, i8 iColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  i8 iVal;
+  Stz* szSrcStz;
+    
+  eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[iColumn].m_uDatum;
+  
+  i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(iColumn);
+  
+  if (DM_VCH == eDatum) {
+    // vch datum
+    
+    if (C_DATUM_NULL == aRsb->iVal_ntv(i_Cell_ntv)) {
+      return C_DATUM_NULL;
+    }
+    else {
+      szSrcStz = aRsb->szVal_ntv(i_Cell_ntv);
+      return (i8)szSrcStz;
+    }
+  }
+  else {
+    // all others
+    
+    iVal = aRsb->iVal_ntv(i_Cell_ntv);
+    return iVal;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump given row                                                             */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vDumpAllRows(void)

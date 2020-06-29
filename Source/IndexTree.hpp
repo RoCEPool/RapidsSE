@@ -54,6 +54,7 @@ namespace Indexing
     void       vVisualize(void);
 
     void       vExtractKey(EntWrk* pEntWrk, Crw* aCrw);
+    void       vExtractKey(EntWrk* pEntWrk, RowSlab* pRsbSlab, i8 i_Row);
     void       vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row);
 
     Footer*   aFooter(void);

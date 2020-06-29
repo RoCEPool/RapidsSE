@@ -639,6 +639,31 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract a key from given row into EntWrk                                   */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vExtractKey(EntWrk* pEntWrk, RowSlab* pRowSlab, i8 i_Row)
+{
+  // get stream def
+  StreamDef* pStreamDef = pEntWrk->pStreamDef();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  IndexDef* pIndexDef = m_pIndex->pIndexDef();
+  
+  i8 nIdxCols = pIndexDef->nColumns();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Rsb* aRsb = pRowSlab->aRsbAdr(i_Row);
+  for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
+    
+    Column* pColumn = pIndexDef->pGetColumn(i_Col);
+    
+    // add the column value to the key
+    pEntWrk->vAppendElement(pRowSlab,aRsb,pColumn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* extract a key from row into EntWrk                                         */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)

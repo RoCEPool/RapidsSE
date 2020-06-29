@@ -46,6 +46,7 @@ namespace Rows
       
     ColPix* axaColPix(void);
     i8    nCols(void);
+    i8    iColumn(Rsb* aRsb, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
     void  vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
 //    void  vDeposit(d8 dVal);

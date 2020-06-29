@@ -8,8 +8,9 @@ bc;
 print section "Steady State 2";
 
 _lineitem
+_lineitemIndex
 
-/time steadyState_2 lineitem "../Data/tpch/lineItem10k.csv" 1;
+/time steadyState_2 lineitem "../Data/tpch/lineItem10.csv" 1;
 
 // /time steadyState_2 lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv"  3;
 // /time steadyState_2 lineitem "/Users/Shared/tpch/SF1/lineItem.csv"  10;

@@ -125,6 +125,38 @@ void EntWrk::vAppendElement(RowSingle* pRow, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add element from row to key                                                */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElement(RowSlab* pRowSlab, Rsb* aRsb, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 iValue = pRowSlab->iColumn(aRsb, pCol->iColumnNo());
+  
+  if (Null::bIsNull(iValue)) {
+    //    byte* ayDst = (byte*)ayElmNext();
+    //    nElmSize = Null::nCopy(ayDst);
+    //    vIncElmSeqSize(nElmSize);
+    vAppendNull();
+    return;
+  }
+  
+  if (DM_VCH == pCol->eDatum()) {
+    Stz* szSrc = (Stz*)iValue;
+    //    char* aDst = (char*)ayElmNext();
+    //    nElmSize = StrLib::iWordFlip(aDst, aSrc);
+    //    vIncElmSeqSize(nElmSize);
+    vAppendStz(szSrc);
+  }
+  else {
+    //    byte* ayDst = ayElmNext();
+    //    nElmSize = Dtm::nCopy(ayDst,iValue);
+    //    vIncElmSeqSize(nElmSize);
+    vAppendInt(iValue);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* add int element to key                                                     */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAppendInt(i8 iArg)
