@@ -20,6 +20,7 @@ namespace Partitioning
 //------------------------------------------------------------------------------
 
 #include "BucketMap.hpp"
+#include "PtnMap.hpp"
 #include "TablePtn.hpp"
 #include "PtnStream.hpp"
 

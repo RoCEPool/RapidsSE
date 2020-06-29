@@ -196,6 +196,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Profile),            HT_TRANSIENT_MEDIUM  }, // CN_PROFILE
   { sizeof(PsxThd),             HT_TRANSIENT_TINY    }, // CN_PSXTHD
   { sizeof(PtnColVec),          HT_TRANSIENT_MEDIUM  }, // CN_PTNCOLVEC
+  { sizeof(PtnMap),             HT_TRANSIENT_LARGE   }, // CN_PTNMAP
   { sizeof(PtnStream),          HT_TRANSIENT_TINY    }, // CN_PTNSTREAM
   { sizeof(PtrVal),             HT_INVALID           }, // CN_PTRVAL
 
