@@ -666,7 +666,7 @@
     stage stageB on all partitions :
       noop
       //insdel $Table
-        |  stageC
+        | stageC
 
     stage stageC on origin :
       output
@@ -678,56 +678,88 @@
   "
   api::addProcedure
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   // steady state test 2
-   sPath
-   "
-   procedure steadyState_2
-     parameters $Table $File $NTimes
-   begin
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // steady state test 2
+  sPath
+  "
+  procedure steadyState_2
+    parameters $Table $File $NTimes
+  begin
 
-     stage stageA on origin :
+    stage stageA on origin :
+      start
+        | periodicOp once
+        //|  rdCsvCyclic $File $NTimes
+        | catFile $File
+        | toRsb $Table
+        | toPtnRsb
+        | stageB hashed
 
-       start |
+    stage stageB on all partitions :
+      //noop
+      insdel $Table
+        | stageC
 
-       periodicOp once |
+    stage stageC on origin :
+      output
+        | sink
+        | stageA
 
-       rdCsvCyclic $File $NTimes |
+  end ;
 
-       stageB robin
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // steady state test 3
+  sPath
+  "
+  procedure steadyState_3
+   parameters $Table $File $NTimes
+  begin
+
+   stage stageA on origin :
+
+     start |
+
+     periodicOp once |
+
+     rdCsvCyclic $File $NTimes |
+
+     stageB robin
 
 
-     stage stageB on all partitions on origin  :
+   stage stageB on all partitions on origin  :
 
-       toRsb $Table |
+     toRsb $Table |
 
-       toPtnRsb |
+     toPtnRsb |
 
-       toNstRsb |
+     toNstRsb |
 
-       toHshCrw |
+     toHshCrw |
 
-       stageC hashed
-
-
-     stage stageC on all partitions :
-
-       insert $Table |
-
-       stageD
+     stageC hashed
 
 
-     stage stageD on origin :
+   stage stageC on all partitions :
 
-       output |
+     insert $Table |
 
-       sink |
+     stageD
 
-       stageA
 
-   end ;
-   "
-   api::addProcedure
+   stage stageD on origin :
+
+     output |
+
+     sink |
+
+     stageA
+
+  end ;
+  "
+  api::addProcedure
 ;
 
 /*----------------------------------------------------------------------------*/

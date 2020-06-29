@@ -379,9 +379,9 @@ void Table::vInsdelBuffer(i8 iTxId, i8 iSlot, RsbBuffer* pRsbBuffer)
 
   TablePtn* pPartition = this->pPartition(iSlot);
 
-  t8 tPerspectibe = AM::tThisTLSPespective();
+  t8 tPerspective = 0; //AM::tThisTLSPespective();
 
-  pPartition->vInsdelBuffer(pRsbBuffer,tPerspectibe);
+  pPartition->vInsdelBuffer(pRsbBuffer,tPerspective);
 }
 
 /*----------------------------------------------------------------------------*/

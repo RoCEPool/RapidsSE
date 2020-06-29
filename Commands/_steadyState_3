@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* _steadyState_3 -- steady state test 3                                      */
+/*============================================================================*/
+
+bc;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "Steady State 3";
+
+_lineitem
+
+// /time steadyState_3 lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv"  3;
+/time steadyState_3 lineitem "/Users/Shared/tpch/SF1/lineItem.csv"  10;
+// /time steadyState_3 lineitem "/Users/Shared/tpch/SF10/lineItem.csv" 3;
+
+tableSizes;
+
+drop table lineitem;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
