@@ -497,9 +497,21 @@ void TablePtn::vInsdelBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
 /*----------------------------------------------------------------------------*/
 /* WIP: insdel entries from a row buffer                                      */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer_insdel, t8 tPerspective)
+void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  SP_DataBuffer spDataBuffer;
+
+  vTrace("vInsdelBuffer() :- [[RsbBuffer %s ; Rsbs=%lld]]\n"_Stz,
+         spDataBuffer.sz(pRsbBuffer),
+         pRsbBuffer->nRsb());
+  
+  pRsbBuffer->vPrintRows();
+
+//  i8 nRsb = pRsbBuffer->nRsb();
+//  for (i8 i_Rsb = 0; i_Rsb < nRsb; i_Rsb++) {
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
