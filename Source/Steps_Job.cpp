@@ -99,8 +99,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
- 
-  vAddStep("job::waitParticipant"_Stz, &Step::vJobWaitParticipant);
 }
 
 
@@ -1590,33 +1588,6 @@ void Step::vJobTaskStore(void)
   // for the moment this should always be null
   ASSERT(! pTask);
   pJob->vTask(pTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job::waitParticipant -- wait for participant till found in participant jobs*/
-/*----------------------------------------------------------------------------*/
-void Step::vJobWaitParticipant(void)
-{
-  ENTRY();
-  
-  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
-  
-  Job__Find* pFindJob = new Job__Find;
-  pFindJob->m_iFocalId = iJobId;
-
-  Job* pJobFound = nullptr;
-
-  while ( ! pJobFound ) {
-    AM::pParticipatingJobs()->vGrabLock();
-    pJobFound = AM::pParticipatingJobs()->pFindJob(pFindJob);
-    AM::pParticipatingJobs()->vDropLock();
-  }
-
-  delete pFindJob;
-  
-  m_pDataStack->vPushPtr(pJobFound);
   
   EXIT();
 }
