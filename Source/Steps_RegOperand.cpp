@@ -307,18 +307,17 @@ void Step::vRegOperandInsdelIntoTable(void)
 
   if (CN_CRWBUFFER == (*m_pRegSet->m_xpOperandA)->eClass()) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
-    m_pRegSet->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
-  
     // will delete this buffer
     pCrwBuffer->vIsPermanent(false);
+    m_pRegSet->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
+  
   }
   else
   if (CN_RSBBUFFER == (*m_pRegSet->m_xpOperandA)->eClass()) {
-    RsbBuffer* pRsbBuffer = _pRsbBuffer(*m_pRegSet->m_xpOperandA);
-    //m_pRegSet->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
-  
     // will delete this buffer
+    RsbBuffer* pRsbBuffer = _pRsbBuffer(*m_pRegSet->m_xpOperandA);
     pRsbBuffer->vIsPermanent(false);
+    m_pRegSet->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pRsbBuffer);
   }
   else {
     NEVER_REACH;

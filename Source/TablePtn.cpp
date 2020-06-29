@@ -495,6 +495,14 @@ void TablePtn::vInsdelBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
 }
 
 /*----------------------------------------------------------------------------*/
+/* WIP: insdel entries from a row buffer                                      */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer_insdel, t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert entries into all indexes for given row                              */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vInsertIndexEntries(Crw* aCrw, Ref& xRowRef)
