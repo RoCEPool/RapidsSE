@@ -18,7 +18,7 @@ PromptFun __Prompt_fileRand (
   ""_Stz                 // description
 );
 
-int Prompt::Prompt(const void* aLeft, const void* aRight)
+int Prompt::iFileRandCompare(const void* aLeft, const void* aRight)
 {
   _fileRand* aFileRandLeft  = (_fileRand*)aLeft;
   _fileRand* aFileRandRight = (_fileRand*)aRight;
@@ -32,8 +32,8 @@ int Prompt::Prompt(const void* aLeft, const void* aRight)
     return 0;
 }
 
-// fileRand "/Users/Shared/tpch/SF1/lineitem.csv" "/tmp/lineitemRnd.csv" ;
-
+// fileRand "/Users/Shared/tpch/SF1/nation.csv"   "/tmp/nation_RND.csv" ;
+// fileRand "/Users/Shared/tpch/SF1/lineItem.csv" "/tmp/lineItem_RND.csv" ;
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
@@ -42,6 +42,12 @@ bool Prompt::bPrompt_fileRand(SePrompt* pPrompt)
   s256 sPathIn;
   s256 sPathOut;
 
+  i8 nLines = 0;
+  
+  Timer    xTimer;
+  SP_Timer spTimer;
+
+  
   _fileRand* aFileRand = (_fileRand*)malloc(sizeof(_fileRand) * C_10M);
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -62,13 +68,43 @@ bool Prompt::bPrompt_fileRand(SePrompt* pPrompt)
     goto L_Exit;
   }
 
-  bOpened = pFileIn->bOpenWrite(sPathOut);
+  bOpened = pFileOut->bOpenWrite(sPathOut);
   if (!bOpened) {
     vTrace("Unable to open output file %s\n"_Stz,sPathOut.szStz());
     goto L_Exit;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  xTimer.vStart();
+  while (pFileIn->bReadLine((Stz*)aFileRand[nLines].m_caLine))
+    nLines++;
+  xTimer.vUpdate();
+  vTrace("Read %lld lines (%s)\n"_Stz,nLines,spTimer.sz(&xTimer));
   
+  xTimer.vStart();
+  for (i8 i_Line = 0; i_Line < nLines; i_Line++)
+    aFileRand[i_Line].m_iRandom = RndLib::iInteger();
+  xTimer.vUpdate();
+  vTrace("Set random numbers (%s)\n"_Stz,spTimer.sz(&xTimer));
+
+  xTimer.vStart();
+  qsort(aFileRand,
+        nLines,
+        sizeof(_fileRand),
+        Prompt::iFileRandCompare
+        );
+  xTimer.vUpdate();
+  vTrace("Sorted (%s)\n"_Stz,spTimer.sz(&xTimer));
+
+  xTimer.vStart();
+  for (i8 i_Line = 0; i_Line < nLines; i_Line++)
+    pFileOut->vPrint("%s\n"_Stz,aFileRand[i_Line].m_caLine);
+  xTimer.vUpdate();
+  vTrace("Written (%s)\n"_Stz,spTimer.sz(&xTimer));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 L_Exit:
   pFileIn->vClose();
   pFileOut->vClose();

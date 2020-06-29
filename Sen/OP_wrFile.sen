@@ -1,0 +1,85 @@
+/*============================================================================*/
+/* OP_wrFile.sen -- write to file                                             */
+/*============================================================================*/
+
+" OP_wrFile.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CSVBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: wrFile_CsvBuffer \handler
+
+  //"Operand:- ZK_CSVBUFFER" .verbose
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
+  Operand[].writetoFile0
+  Operand[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: wrFile_StartMarker \handler
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  // open the file for writing
+  <fileNm> OPEN_WRITE op__file if
+    PipeIn[].pipeOut
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EXITMARKER ...                                              */
+/*----------------------------------------------------------------------------*/
+: wrFile_ExitMarker \handler
+
+  //"Operand:- ZK_EXITMARKER" .verbose
+  File0[].isNull not if
+    File0[].get file.close
+    File0[].get file.delete
+  then
+
+  PipeIn[].pipeOut
+  Op.ackPipelineJob
+
+  false
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* execute for wrFile req                             (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : wrFile_req \operator
+ 
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: wrFile_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: wrFile_StartMarker ZK_STARTMARKER op[].handler!
+  find: wrFile_ExitMarker  ZK_EXITMARKER  op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: wrFile :: wrFile <fileNm> ;
+
+: wrFile _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc>  = "--desc for op--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

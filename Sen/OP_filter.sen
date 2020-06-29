@@ -1,68 +1,57 @@
 /*============================================================================*/
-/* OP_toFile.sen -- Operator toFile                                           */
+/* OP_filter.sen -- filter                                                    */
 /*============================================================================*/
 
-" OP_toFile.sen" .verbose
+" OP_filter.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CSVBUFFER ...                                               */
+/* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
-: toFileOp_CsvBuffer \handler
+: filter_StartMarker \handler
 
-  //"Operand:- ZK_CSVBUFFER" .verbose
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
-  Operand[].writetoFile0
-  Operand[].delete
-
-  true
+  ZK_STARTMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* on ZK_PULSEMARKER ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
-: toFileOp_StartMarker \handler
+: filter_PulseMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
-
-  // open the file for writing
-  <fileNm> OPEN_WRITE op__file if
-    PipeIn[].pipeOut
-  then
-
-  true
+  ZK_PULSEDMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
+/* on ZK_CSVBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
-: toFileOp_ExitMarker \handler
+: filter_CsvBuffer \handler
 
-  //"Operand:- ZK_EXITMARKER" .verbose
-  File0[].isNull not if
-    File0[].get file.close
-    File0[].get file.delete
-  then
-
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-
-  false
+  ZK_CSVBUFFER_handler
 ;
 
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: filter_EosMarker \handler
+
+  ZK_EOSMARKER_handler
+;
 
 /*----------------------------------------------------------------------------*/
-/* execute for toFileOp req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : toFileOp_req \operator
- 
+
+/*----------------------------------------------------------------------------*/
+/* filter request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: filter_req \operator
+
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: toFileOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: toFileOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: toFileOp_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: filter_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: filter_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: filter_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: filter_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -74,11 +63,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toFileOp :: toFileOp <fileNm> ;
+cmdSyntax: filter :: filter ;
 
-: toFileOp _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc>  = "--desc for op--" }
-;
+: filter _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -12,12 +12,12 @@
   pSenFile file.path@ locals| sFileNm |
 
   "\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-  pCppFile file.write
+  pCppFile file.writeLine
 
   sFileNm i_File "  // munge of [%v] %v\n" str.format
-  pCppFile file.write
+  pCppFile file.writeLine
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -28,21 +28,21 @@
   pSenFile file.path@ locals| sFileNm |
 
   "\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "  sFileContents =\n"
-  pCppFile file.write
+  pCppFile file.writeLine
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "    \"\\\"\"\n" pCppFile file.write
+  "    \"\\\"\"\n" pCppFile file.writeLine
 
-  "    \"\\\\\\\"munged " pCppFile file.write
-  sFileNm pCppFile file.write
+  "    \"\\\\\\\"munged " pCppFile file.writeLine
+  sFileNm pCppFile file.writeLine
 
-  " \\\\\\\" .verbose \\n\"\n" pCppFile file.write
+  " \\\\\\\" .verbose \\n\"\n" pCppFile file.writeLine
 
   "" locals| sSenLine |
-  begin pSenFile file.read while
+  begin pSenFile file.readLine while
 
     str.escape str.escape to sSenLine
 
@@ -50,27 +50,27 @@
       " ;" to sSenLine
     then
 
-    "    \""  pCppFile file.write
-    sSenLine  pCppFile file.write
-    "\\n\""   pCppFile file.write
-    "\n"      pCppFile file.write
+    "    \""  pCppFile file.writeLine
+    sSenLine  pCppFile file.writeLine
+    "\\n\""   pCppFile file.writeLine
+    "\n"      pCppFile file.writeLine
 
   repeat
 
-  "    \"\\\"\"\n" pCppFile file.write
+  "    \"\\\"\"\n" pCppFile file.writeLine
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  sFileNm "  \" CONSTANT %v \"_Stz\n" str.format pCppFile file.write
+  sFileNm "  \" CONSTANT %v \"_Stz\n" str.format pCppFile file.writeLine
   "  ;\n"
-  pCppFile file.write
+  pCppFile file.writeLine
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "  vCompileMungedColon(sFileContents);\n"
-  pCppFile file.write
+  pCppFile file.writeLine
 ;
 /*----------------------------------------------------------------------------*/
 : munge_WriteSenText_v2 params| pSenFile pCppFile i_File |
@@ -78,19 +78,19 @@
   pSenFile file.path@ locals| sFileNm |
 
   "\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   i_File "  gszaMungedText[%v] =\n" str.format
-  pCppFile file.write
+  pCppFile file.writeLine
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //"    \"\\\"\"\n" pCppFile file.write
+  //"    \"\\\"\"\n" pCppFile file.writeLine
 
   sFileNm "    \"\\\" munged %v \\\" .verbose \\n\"\n" str.format
-  pCppFile file.write
+  pCppFile file.writeLine
 
   "" locals| sSenLine |
-  begin pSenFile file.read while
+  begin pSenFile file.readLine while
 
     //str.escape
     str.escape to sSenLine
@@ -99,43 +99,43 @@
       " ;" to sSenLine
     then
 
-    "    \""  pCppFile file.write
-    sSenLine  pCppFile file.write
-    "\\n\""   pCppFile file.write
-    "\n"      pCppFile file.write
+    "    \""  pCppFile file.writeLine
+    sSenLine  pCppFile file.writeLine
+    "\\n\""   pCppFile file.writeLine
+    "\n"      pCppFile file.writeLine
 
   repeat
 
   "    \"\\n\"\n"
-  pCppFile file.write
+  pCppFile file.writeLine
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 //  sFileNm "  \" CONSTANT %v \"_Stz\n" str.format
-//  pCppFile file.write
+//  pCppFile file.writeLine
   "    \"\"_Stz\n" str.format
-  pCppFile file.write
+  pCppFile file.writeLine
 
   "  ;\n"
-  pCppFile file.write
+  pCppFile file.writeLine
 
 //  "\n"
-//  pCppFile file.write
+//  pCppFile file.writeLine
 //  i_File "  vCompileMungedColon((i8)%v);\n" str.format
-//  pCppFile file.write
+//  pCppFile file.writeLine
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "  szSubScriptDef ="
-  pCppFile file.write
+  pCppFile file.writeLine
 
   sFileNm i_File " \" %v CONSTANT %v \"_Stz;\n" str.format
-  pCppFile file.write
+  pCppFile file.writeLine
 
   "  vCompileMungedColon(szSubScriptDef);\n" str.format
-  pCppFile file.write
+  pCppFile file.writeLine
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 : munge_ProcessSenFile params| sSenFileNm pCppFile i_File |
 
-  sSenFileNm file::size locals| nBytes |
+  sSenFileNm file::sizeNm locals| nBytes |
   nBytes sSenFileNm i_File "[%v] %v %v bytes" .printf
 
   file::new locals| pSenFile |
@@ -203,27 +203,27 @@
 : munge_WriteCppHeader params| pCppFile |
 
   "/*============================================================================*/\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "/* MungedSen.cpp - munged sen files                                           */\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "/*============================================================================*/\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "#include \"StorageEngine.h\"\n"
-  pCppFile file.write
+  pCppFile file.writeLine
 
   "\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "Stz* gszaMungedText[1024];\n"
-  pCppFile file.write
+  pCppFile file.writeLine
 
   "\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "void Task::vAddMunged(Forth* pForth)\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "{\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "  Stz* szSubScriptDef;\n"
-  pCppFile file.write
+  pCppFile file.writeLine
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -232,16 +232,16 @@
 : munge_WriteCppFooter params| pCppFile |
 
   "}\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "\n"
-  pCppFile file.write
+  pCppFile file.writeLine
 
   "/*============================================================================*/\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "/* end                                                                        */\n"
-  pCppFile file.write
+  pCppFile file.writeLine
   "/*============================================================================*/\n"
-  pCppFile file.write
+  pCppFile file.writeLine
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -349,11 +349,14 @@ public:
   void vFileOpen(void);
   void vFilePathGet(void);
   void vFilePrint(void);
-  void vFileRead(void);
   void vFileReadChunk(void);
+  void vFileReadLine(void);
   void vFileSeek(void);
+  void vFileSeekRndCsv(void);
   void vFileSize(void);
-  void vFileWrite(void);
+  void vFileSizeNm(void);
+  void vFileTell(void);
+  void vFileWriteLine(void);
 
   // flow
   void vFlowExecute(void);
@@ -1099,6 +1102,7 @@ public:
   void vRegOperandIsNull(void);
   void vRegOperandIsReport(void);
   void vRegOperandItemCountFetch(void);
+  void vRegOperandInsdelIntoTable(void);
   void vRegOperandInvokePython(void);
   void vRegOperandInvokePythonShell(void);
   void vRegOperandKind(void);

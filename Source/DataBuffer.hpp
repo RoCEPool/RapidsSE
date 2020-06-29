@@ -23,8 +23,8 @@ namespace DataBuffers
     
     i8          iAgeSec(void);
 
-    void        vBufferHeight(i8 iBufferHeight);
     i8          iBufferHeight(void);
+    void        vBufferHeight(i8 iBufferHeight);
   
     void        vDropWrite(void);
     void        vGrabWrite(void);

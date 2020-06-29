@@ -208,6 +208,8 @@ void Result::vPrintOldJobResponses(void)
 /*----------------------------------------------------------------------------*/
 void Result::vProcessBufferQueue(void)
 {
+  SP_DataBuffer spDataBuffer;
+  
   StreamDef* pStreamDef = nullptr;
   bool bHasError = false;
   i8 iTotalUnits = C_UNKNOWN;
@@ -364,6 +366,20 @@ void Result::vProcessBufferQueue(void)
           default:
             ASSERT(0);
         }
+        break;
+      }
+        
+      // -- -- -- -- -- --
+        
+      case CN_RSBBUFFER: {
+        RsbBuffer* pRsbBuffer = _pRsbBuffer(pOperand);
+        if (AM::bDeveloper())
+          vTrace("[[RsbBuffer %s ; Rsbs=%lld]]\n"_Stz,
+                 spDataBuffer.sz(pRsbBuffer),
+                 pRsbBuffer->nRsb());
+        m_xJobResponse.m_ixRowsProcessed += pRsbBuffer->nRsb();
+        pRsbBuffer->vPrintRows();
+        AM::vDeleteOperand(pOperand);
         break;
       }
         

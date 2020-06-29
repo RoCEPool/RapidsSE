@@ -1,0 +1,91 @@
+/*============================================================================*/
+/* OP_rdCsvCyclic.sen -- read csv cyclically                                  */
+/*============================================================================*/
+
+" OP_rdCsvCyclic.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* catFile csvBuffer                                                          */
+/*----------------------------------------------------------------------------*/
+: rdCsvCyclic_catCsv
+
+  csvBuffer::new locals| pCsvBuffer |
+
+  pCsvBuffer file0[] file.readChunk if
+    file0[] file.tell "read a csv chunk (tell %v)" .printf
+    pCsvBuffer to Operand[]
+    Operand[].pipeOut
+    true
+  else
+    false
+  then
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: rdCsvCyclic_PulseMarker \handler
+
+  PipeIn[].pipeOut
+
+  file::new to file0[]
+
+  <fileNm> OPEN_READ file0[] file.open if
+    file0[] file.size <fileNm> "File %v opened (%v bytes)" .printf
+
+    file0[] file.seekRndCsv
+
+    <nTimes> >int 0 do
+
+      begin
+        rdCsvCyclic_catCsv
+      while repeat
+
+      0 file0[] file.seek
+
+    loop
+
+    file0[].get file.close
+    <fileNm> "File %v closed" .printf
+
+    Operand[].newEosMarker
+    Operand[].pipeOut
+
+  then
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* rdCsvCyclic request                                                  SPAWN */
+/*----------------------------------------------------------------------------*/
+: rdCsvCyclic_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: rdCsvCyclic_PulseMarker ZK_PULSEMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: rdCsvCyclic :: rdCsvCyclic <fileNm> <nTimes> ;
+
+: rdCsvCyclic _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

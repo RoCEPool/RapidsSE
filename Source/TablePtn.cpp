@@ -396,6 +396,125 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* WIP: insdel entries from a row buffer                                      */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vInsdelBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  EntWrk xEntWrk;
+  
+  SP_Record spRecord;
+  
+  StreamDef* pStreamDef = pCrwBuffer_upsert->pStreamDef();
+  
+  IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
+  IndexDef* pIndexDef = pIndexTree->pIndex()->pIndexDef();
+  
+  HV_Row hvRow_upsert(pStreamDef,C_ALL);
+  
+  Encoding* pEncoding_upsert = new Encoding(pStreamDef);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iteration of rows from the incoming crw buffer
+  
+  i8 nRows = pCrwBuffer_upsert->nRowCount();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // get upsert row, re-encode it for this table, and extract key
+    
+    Crw* aCrw_upsert = pCrwBuffer_upsert->aCrw(i_Row);
+    
+    pCrwBuffer_upsert->vGetRow(hvRow_upsert,i_Row);
+    TRACE_UPSERT( vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hvRow_upsert)); )
+    
+    pEncoding_upsert->vEncodeSrw(hvRow_upsert);
+
+    xEntWrk.vElmSeqSize(0);
+    pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer_upsert,i_Row);
+    SP_Ent spEnt;
+    TRACE_UPSERT( vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIndexDef)); )
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // possible insert (can we find the row using primary key)
+    
+    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
+    if (! pEntH0Buf) {
+      TRACE_UPSERT( vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+      continue;
+    }
+    
+    Ent* aEnt_prior = pEntH0Buf->aPositionPriorEntry(xEntWrk.aKey());
+    if (! aEnt_prior) {
+      TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+      continue;
+    }
+    
+    SP_Key spKey;
+    TRACE_UPSERT( vTrace("Key Prior: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIndexDef)); )
+    vDebugPoint();
+    
+    Ent* aEnt_found = pEntH0Buf->aNextEntry(aEnt_prior,0);
+    if (! aEnt_found) {
+      TRACE_UPSERT( vTrace("No aEnt_found @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+     continue;
+    }
+    
+    TRACE_UPSERT( vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIndexDef)); )
+    
+    if (KC_SAME != Key::eCompare(aEnt_found->aKey(),xEntWrk.aKey())) {
+      TRACE_UPSERT( vTrace("NOT SAME @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+      continue;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // upsert (we have a crw matching the key)
+    
+    SP_Ent spRef;
+    TRACE_UPSERT( vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef)); )
+    
+    Crw* aCrw_exists = CrwBuffer::pRefdCrw(aEnt_found->rxRef());
+    if (! aCrw_exists) {
+      TRACE_UPSERT( vTrace("No aCrw @%lld; skipping...\n"_Stz,(i8)__LINE__); )
+      continue;
+    }
+    
+    vUpsertRow_update(aCrw_exists,aEnt_found,pEncoding_upsert,tPerspective);
+    
+    vDebugPoint();
+
+  } // for i_Row
+  
+  delete pEncoding_upsert;
+}
+
+/*----------------------------------------------------------------------------*/
+/* WIP: insdel entries from a row buffer                                      */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  SP_DataBuffer spDataBuffer;
+
+  vTrace("vInsdelBuffer() :- [[RsbBuffer %s ; Rsbs=%lld]]\n"_Stz,
+         spDataBuffer.sz(pRsbBuffer),
+         pRsbBuffer->nRsb());
+  
+  pRsbBuffer->vPrintRows();
+
+//  i8 nRsb = pRsbBuffer->nRsb();
+//  for (i8 i_Rsb = 0; i_Rsb < nRsb; i_Rsb++) {
+//  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert entries into all indexes for given row                              */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vInsertIndexEntries(Crw* aCrw, Ref& xRowRef)

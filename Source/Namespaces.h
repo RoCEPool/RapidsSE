@@ -17,7 +17,8 @@ namespace ControlData       {                                                 }
 namespace Correctness       { class Cell;            class Focal;
                               class Header;          class Object;
                               class Statistics;                               }
-namespace DataBuffers       { class DataBuffer;      class CsvBuffer;         }
+namespace DataBuffers       { class DataBuffer;      class CsvBuffer;
+                              class RsbBuffer;                                }
 namespace DataOperators     {                                                 }
 namespace Datums            { class Datum_h;
                               template <i8 SPACE> class Datum_t;              }

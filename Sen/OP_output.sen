@@ -88,6 +88,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_RSBBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: output_RsbBuffer \handler
+
+  //"Operand:- ZK_RSBBUFFER" .verbose
+  PipeIn[].pipeToJob
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_SRTBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : output_SrtBuffer \handler
@@ -149,6 +160,7 @@ true
   find: output_ErrorMarker ZK_ERRORMARKER op[].handler!
   find: output_IrwBuffer   ZK_IRWBUFFER   op[].handler!
   find: output_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: output_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: output_SrtBuffer   ZK_SRTBUFFER   op[].handler!
   find: output_StartMarker ZK_STARTMARKER op[].handler!
   find: output_StreamDef   ZK_STREAMDEF   op[].handler!

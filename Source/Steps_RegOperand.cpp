@@ -22,6 +22,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].delete"_Stz,         &Step::vRegOperandDelete);
   vAddStep("Operand[].firstRow@"_Stz,      &Step::vRegOperandFirstRowFetch);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vRegOperandHandleAggEnd);
+  vAddStep("Operand[].insdelIntoTable"_Stz,&Step::vRegOperandInsdelIntoTable);
   vAddStep("Operand[].isNull"_Stz,         &Step::vRegOperandIsNull);
   vAddStep("Operand[].isReport"_Stz,       &Step::vRegOperandIsReport);
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vRegOperandItemCountFetch);
@@ -287,6 +288,40 @@ void Step::vRegOperandHandleAggEnd(void)
 //  }
 //  else
 //    AM::vDeleteOperand(*m_pRegSet->m_xpOperandA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].insdelIntoTable -- insert-delete operand into the table          */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandInsdelIntoTable(void)
+{
+  ENTRY();
+  
+  ASSERT(*m_pRegSet->m_xpOperandA);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  i8 iPartition = pOp->nPartition();
+  i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
+
+  if (CN_CRWBUFFER == (*m_pRegSet->m_xpOperandA)->eClass()) {
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
+    // will delete this buffer
+    pCrwBuffer->vIsPermanent(false);
+    m_pRegSet->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
+  
+  }
+  else
+  if (CN_RSBBUFFER == (*m_pRegSet->m_xpOperandA)->eClass()) {
+    // will delete this buffer
+    RsbBuffer* pRsbBuffer = _pRsbBuffer(*m_pRegSet->m_xpOperandA);
+    pRsbBuffer->vIsPermanent(false);
+    m_pRegSet->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pRsbBuffer);
+  }
+  else {
+    NEVER_REACH;
+  }
   
   EXIT();
 }

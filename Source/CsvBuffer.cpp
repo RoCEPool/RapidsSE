@@ -100,16 +100,6 @@ byte* CsvBuffer::ayDataArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the recoords pointer                                                   */
-/*----------------------------------------------------------------------------*/
-void CsvBuffer::vTake(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
-  
-  m_xWsp.vTake(nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of data bytes                                                   */
 /*----------------------------------------------------------------------------*/
 i8 CsvBuffer::nDataBytes(void)
@@ -205,6 +195,56 @@ void CsvBuffer::vReportNm(Stz* szReportNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
     
   m_sReportNm = szReportNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* take bytes                                                                 */
+/*----------------------------------------------------------------------------*/
+void CsvBuffer::vTake(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  m_xWsp.vTake(nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* trim backwards till new line                                               */
+/*----------------------------------------------------------------------------*/
+i8 CsvBuffer::nTrim(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  i8 nBytes = m_xWsp.nUsed();
+  if (! nBytes)
+    return 0;
+  
+  char* acStart = (char*)m_xWsp.ayArea();
+  
+  char* acChar = acStart + nBytes - 1;
+  
+  if ('\n' == *acChar)
+    return 0;
+  
+  //vTrace("%s\n"_Stz,acStart);
+
+  i8 nTrimmed = 0;
+  while (acChar >= acStart) {
+    if ('\n' == *acChar)
+      break;
+    acChar--;
+    nTrimmed++;
+  }
+  
+  if (acChar >= acStart) {
+    *(acChar + 1) = '\0';
+  }
+
+  //vTrace("%s\n"_Stz,acStart);
+  
+  i8 nTrimmedBytes = nBytes - nTrimmed;
+  m_xWsp.vUsed(nTrimmedBytes);
+
+  return nTrimmed;
 }
 
 /*============================================================================*/

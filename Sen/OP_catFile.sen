@@ -1,0 +1,65 @@
+/*============================================================================*/
+/* OP_catFile.sen -- cat file                                                 */
+/*============================================================================*/
+
+" OP_catFile.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* catFile csvBuffer                                                          */
+/*----------------------------------------------------------------------------*/
+: catFile_csvBuffer
+
+  csvBuffer::new locals| pCsvBuffer |
+
+  pCsvBuffer file0[] file.readChunk if
+    file0[] file.tell "read a csv chunk (tell %v)" .printf
+    pCsvBuffer to Operand[]
+    Operand[].pipeOut
+    true
+  else
+    false
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* catFile action                                                             */
+/*----------------------------------------------------------------------------*/
+: catFile_action
+
+  file::new to file0[]
+
+  <fileNm> OPEN_READ file0[] file.open if
+    file0[] file.size <fileNm> "File %v opened (%v bytes)" .printf
+
+    //file0[] file.seekRndCsv
+
+    begin
+      catFile_csvBuffer
+    while repeat
+
+    file0[].get file.close
+    <fileNm> "File %v closed" .printf
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: catFile :: catFile <FileNm> ;
+
+: catFile _cmdTags tagCopy: localLiteOp_tags
+  tags{
+    <cmdDesc>     = "--desc for op--"
+    <params>      = 1
+  }
+;
+
+// catFile "/Users/Shared/tpch/SF1/nation.csv" ;
+// catFile "/Users/Shared/tpch/SF1/supplier.csv" ;
+// catFile "/Users/Shared/tpch/SF1/part.csv" ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

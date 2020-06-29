@@ -54,9 +54,9 @@ i8 Birth::iElapsedSsec(void)
 {
   _precondition_(_MAGIC_,CN_BIRTH,_FOOTER_);
   
-  // get current tsp as Ivl
-  Ivl wCurrentIvl = IvlLib::wGetCurrIvl();
-  
+  Tsp wTsp = TspLib::wGetCurrTsp_local();
+  Ivl wCurrentIvl = IvlLib::wToIvl(m_wTsp);
+
   u8 uMicros = IvlLib::uSubtract(wCurrentIvl, m_wIvl);
   
   return uMicros/C_1M;

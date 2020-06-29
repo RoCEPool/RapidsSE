@@ -17,7 +17,7 @@ begin
 
   stage outputCsv on origin:
 
-    toFileOp "/tmp/LineItemB.csv" | output
+    wrFile "/tmp/LineItemB.csv" | output
  
 end
 ;
