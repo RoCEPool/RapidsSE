@@ -30,7 +30,7 @@ namespace Entries
   
     void  vAppendDatum(Datum* pDatum, Column* pCol);
     void  vAppendElement(RowSingle* pRow, Column* pCol);
-    void  vAppendElement(RowSlab* pRowSlab, Rsb* aRsb, Column* pCol);
+    void  vAppendElement(Rsb* aRsb, Column* pCol);
     void  vAppendInt(i8 iArg);
     void  vAppendMinusInfinity(void);
     void  vAppendNull(void);

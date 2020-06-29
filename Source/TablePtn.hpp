@@ -74,7 +74,11 @@ namespace Partitioning
     void vUpsertBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);
     void vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
                            Encoding* pEncoding_upsert, t8 tPerspective);
+    void vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
+                           Encoding* pEncoding_upsert, t8 tPerspective);
     void vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_Found,
+                           Encoding* pEncoding_upsert, t8 tPerspective);
+    void vUpsertRow_update2(Crw* aCrw_exists, Ent* aEnt_Found,
                            Encoding* pEncoding_upsert, t8 tPerspective);
     bool bVerifyTable(void);
     void vVisualizeTable(void);

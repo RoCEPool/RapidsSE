@@ -1,0 +1,47 @@
+/*============================================================================*/
+/*  _lineitem - create TPC-H Lineitem table                                   */
+/*============================================================================*/
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    CHAR(1) NOT NULL,         //  8)  2B   2B
+  L_LINESTATUS    CHAR(1) NOT NULL,         //  9)  2B   2B
+  L_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
+  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
+  L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
+  L_SHIPINSTRUCT  CHAR(25) NOT NULL,        // 13) 26B  13B
+  L_SHIPMODE      CHAR(10) NOT NULL,        // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+  //                                              ---- ----
+  // 16 columns                                   174B  91B
+  //
+  // SF0  :              273MB used ;
+  //
+  // No indexes:
+  // SF1  :   6M rows ;   1.6GB used ;   1278 buf ; 233B/row; 4,696 rows/buf
+  // SF10 :  60M rows ;  12.7GB used ;  12674 buf ; 200B/row; 4,734 rows/buf
+  // SF30 : 180M rows ;  37.7GB used ;  38006 buf ; 209B/row; 4,735 rows/buf
+  // SF100: 600M rows ; 124.5GB used ; 127096 buf ;
+  // SF1K :   6B rows ;
+  // SF10K:  60B rows ;
+  //
+  //
+  // index on l_partkey
+  // SF1  :   6M rows ;   1.9GB used
+  // SF10 :  60M rows ;  16.4GB used
+  // SF30 : 180M rows ;  48.6GB used
+  // SF100: 600M rows ; 161.9GB used
+) rowsize 256;
+
+CREATE INDEX lineitem_idx ON lineitem(L_ORDERKEY, L_LINENUMBER);
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

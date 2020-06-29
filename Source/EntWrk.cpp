@@ -127,32 +127,24 @@ void EntWrk::vAppendElement(RowSingle* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* add element from row to key                                                */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAppendElement(RowSlab* pRowSlab, Rsb* aRsb, Column* pCol)
+void EntWrk::vAppendElement(Rsb* aRsb, Column* pColumn)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iValue = pRowSlab->iColumn(aRsb, pCol->iColumnNo());
+  i8 i_Column = pColumn->iColumnNo();
+  i8 iCell = aRsb->i_ColToCell_ntv(i_Column);
   
-  if (Null::bIsNull(iValue)) {
-    //    byte* ayDst = (byte*)ayElmNext();
-    //    nElmSize = Null::nCopy(ayDst);
-    //    vIncElmSeqSize(nElmSize);
+  if (aRsb->bIsNull_ntv(iCell)) {
     vAppendNull();
     return;
   }
   
-  if (DM_VCH == pCol->eDatum()) {
-    Stz* szSrc = (Stz*)iValue;
-    //    char* aDst = (char*)ayElmNext();
-    //    nElmSize = StrLib::iWordFlip(aDst, aSrc);
-    //    vIncElmSeqSize(nElmSize);
+  if (DM_VCH == pColumn->eDatum()) {
+    Stz* szSrc = aRsb->szVal_ntv(iCell);
     vAppendStz(szSrc);
   }
   else {
-    //    byte* ayDst = ayElmNext();
-    //    nElmSize = Dtm::nCopy(ayDst,iValue);
-    //    vIncElmSeqSize(nElmSize);
-    vAppendInt(iValue);
+    vAppendInt(aRsb->iVal_ntv(iCell));
   }
 }
 
