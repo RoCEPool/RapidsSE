@@ -417,18 +417,16 @@ public:
   void vIndexColumnCountFetch(void);
   void vIndexCompact(void);
   void vIndexDump(void);
-  void vIndexFetchNextN(void);
+  void vIndexFetchNext(void);
   void vIndexGenEntBuffer(void);
   void vIndexGenEntBuffers(void);
-  void vIndexPositionN(void);
+  void vIndexPosition(void);
   void vIndexSize(void);
   void vIndexVerify(void);
   void vIndexVisualize(void);
 
   // index steps - to go
   void vIndexColumnFetch(void);
-  void vIndexColumnName(void);
-  void vIndexColumnType(void);
   void vIndexDelete(void);
   void vIndexDeleteNext(void);
   void vIndexIndexDefFetch(void);

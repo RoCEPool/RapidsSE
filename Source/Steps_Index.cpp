@@ -14,12 +14,10 @@ void Step::vAddSteps_Index(void)
   
   vAddStep("index[].columnCount@"_Stz,  &Step::vIndexColumnCountFetch);
   vAddStep("index[].column@"_Stz,       &Step::vIndexColumnFetch);
-  vAddStep("index.columnName"_Stz,      &Step::vIndexColumnName);
-  vAddStep("index.columnType"_Stz,      &Step::vIndexColumnType);
   vAddStep("index[].compact"_Stz,       &Step::vIndexCompact);
   vAddStep("index[].deleteNext"_Stz,    &Step::vIndexDeleteNext);
   vAddStep("index[].dump"_Stz,          &Step::vIndexDump);
-  vAddStep("index[].fetchNext"_Stz,     &Step::vIndexFetchNextN);
+  vAddStep("index[].fetchNext"_Stz,     &Step::vIndexFetchNext);
   vAddStep("index[].genEntBuffer"_Stz,  &Step::vIndexGenEntBuffer);
   vAddStep("index[].genEntBuffers"_Stz, &Step::vIndexGenEntBuffers);
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
@@ -29,9 +27,9 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
   vAddStep("index.isValidUniqueIndex"_Stz,&Step::vIndexIsValidUniqueIndex);
-  vAddStep("index.name@"_Stz,           &Step::vIndexNameFetch);
+  vAddStep("index[].name@"_Stz,         &Step::vIndexNameFetch);
   vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
-  vAddStep("index[].position"_Stz,      &Step::vIndexPositionN);
+  vAddStep("index[].position"_Stz,      &Step::vIndexPosition);
   vAddStep("index[].size"_Stz,          &Step::vIndexSize);
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
   vAddStep("index.table!"_Stz,          &Step::vIndexTableStore);
@@ -70,48 +68,6 @@ void Step::vIndexColumnCountFetch(void)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   m_pDataStack->vPushInt(pIndex->nColumns());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.columnName -- get column name                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexColumnName(void)
-{
-  ENTRY();
-  
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  i8 iIndex = m_pDataStack->iPopInt(__func__);
-  
-  ASSERT(iIndex < pIndex->nColumns());
-  Column* pColumn = pIndex->pGetColumn(iIndex);
-  
-  s32 sColNm(pColumn->szColNm());
-  m_pDataStack->vPushStr(sColNm);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.columnType -- get column type                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexColumnType(void)
-{
-  ENTRY();
-  
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  i8 iIndex = m_pDataStack->iPopInt(__func__);
-  
-  ASSERT(iIndex < pIndex->nColumns());
-  Column* pColumn = pIndex->pGetColumn(iIndex);
-  s32 sColumnType = aCT[pColumn->eColumnType()];
-  
-  m_pDataStack->vPushStr(sColumnType);
   
   EXIT();
 }
@@ -577,7 +533,7 @@ void Step::vIndexIsValidUniqueIndex(void)
 /*----------------------------------------------------------------------------*/
 /* index[].fetchNext -- return rows within range                              */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexFetchNextN(void)
+void Step::vIndexFetchNext(void)
 {
   ENTRY();
   
@@ -706,7 +662,7 @@ L_Exit:
 /*----------------------------------------------------------------------------*/
 /* index[].position -- position for lower bound and upper bound key           */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexPositionN(void)
+void Step::vIndexPosition(void)
 {
   ENTRY();
   
@@ -921,7 +877,9 @@ void Step::vIndexNameFetch(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the index
+  Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   s32 sIndexName = pIndex->szIndexNm();
