@@ -308,6 +308,25 @@ i8 TablePtn::nCrwBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete an existing row                                                     */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vDeleteRow(Crw* aCrw_exists, Ent* aEnt_found)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  StreamDef* pStreamDef = m_pTable->pStreamDef();
+  
+  HV_Row hvRow_exists(pStreamDef,C_ALL);
+  CrwBuffer::vToRow(hvRow_exists,aCrw_exists);
+  SP_Record spRec;
+  TRACE_UPSERT( vTrace("Exists   : %s\n"_Stz,spRec.sz(hvRow_exists)); )
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop a read lock on the partition                                          */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDropRead(void)
@@ -585,7 +604,7 @@ void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
       continue;
     }
     
-    vUpsertRow_update2(aCrw_exists,aEnt_found,pEncoding_upsert,tPerspective);
+    vDeleteRow(aCrw_exists,aEnt_found);
     
     vDebugPoint();
   }
@@ -1164,32 +1183,6 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
 }
 
 /*----------------------------------------------------------------------------*/
-/* WIP: update an existing row                                                */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vUpsertRow_update2(Crw* aCrw_exists, Ent* aEnt_found,
-                                 Encoding* pEncoding_upsert, t8 tPerspective)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  StreamDef* pStreamDef = m_pTable->pStreamDef();
-  
-  HV_Row hvRow_exists(pStreamDef,C_ALL);
-  CrwBuffer::vToRow(hvRow_exists,aCrw_exists);
-  SP_Record spRec;
-  TRACE_UPSERT( vTrace("Exists   : %s\n"_Stz,spRec.sz(hvRow_exists)); )
-  
-  SP_Encoding spEncoding;
-  TRACE_UPSERT( vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Packing::vPackCrw(aCrw_exists,pEncoding_upsert);
-  
-  // set perspective
-  aCrw_exists->vPerspective(tPerspective);
-}
-
-/*----------------------------------------------------------------------------*/
 /* verify the table data of this partition                                    */
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bVerifyTable(void)
@@ -1208,6 +1201,7 @@ bool TablePtn::bVerifyTable(void)
   
   return bVerify;
 }
+
 /*----------------------------------------------------------------------------*/
 /* visualize the table data of this partition                                 */
 /*----------------------------------------------------------------------------*/

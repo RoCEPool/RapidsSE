@@ -1,0 +1,295 @@
+/*============================================================================*/
+/* OP_delete.sen -- Operator delete                                           */
+/*============================================================================*/
+
+" OP_delete.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* position and begin delete                                                  */
+/*----------------------------------------------------------------------------*/
+: positionBeginDelete ( "iPhrase" "lowerKey" "upperKey" )
+
+  params| upperKey lowerKey iPhrase |
+  0 locals| sIndexNm |
+
+  // find the index
+  iPhrase planner[].indexNm@ to sIndexNm
+  <tableNm> sIndexNm op__index assert
+
+  // grab the table ptn read lock
+  tablePtn[] tablePtnGrabRead
+
+  // position in the index
+  iPhrase  // phrase
+  lowerKey // lower
+  upperKey // upper
+  planner[] tablePtn[] index[].position
+
+  // fetch next buffer
+  //rowOnce[].isNull if
+  //  nullptr
+  //else
+  //  rowOnce[]
+  //then
+  index[].deleteNext
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin the delete                                                           */
+/*----------------------------------------------------------------------------*/
+: beginDelete ( iPhrase -- )
+
+  params| iPhrase |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the fetch technique
+  iPhrase planner[].fetchTechnique@
+
+  case
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an exact select using index
+    AT_EXACT of
+      "*exact*" .verbose
+
+      iPhrase                  // phrase
+      iPhrase planner[].key@   // lower key
+      iPhrase planner[].key@   // upper key
+      positionBeginDelete
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lower bound select using index
+    AT_LOWER of
+      "*lower*" .verbose
+
+      iPhrase                     // phrase
+      iPhrase planner[].lowKey@   // lower key
+      ""                          // upper key
+      positionBeginDelete
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an upper bound select using index
+    AT_UPPER of
+      "*upper*" .verbose
+
+      iPhrase                     // phrase
+      ""                          // lower key
+      iPhrase planner[].upperKey@ // upper key
+      positionBeginDelete
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // a range select using index
+    AT_RANGE of
+      "*range" .verbose
+
+      iPhrase                     // phrase
+      iPhrase planner[].lowKey@   // lower key
+      iPhrase planner[].upperKey@ // upper key
+      positionBeginDelete
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // full scan (no index)
+    AT_SCAN of
+      "*scan*" .verbose
+      // now get excat key rows from index
+      tablePtn[] tablePtnGrabRead
+      tablePtn[].root to Subset[]
+      Subset[] to Operand[]
+    endof
+
+  endcase
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate plan for the fetch                                                */
+/*----------------------------------------------------------------------------*/
+: generatePlan ( -- )
+
+  0 locals| sPredicate |
+
+  //sWhere "generatePlan" "%v %v" str.format .
+
+  ( cdt_0 ) planner[].new
+  ( cdt_1 ) Table[] Planner[].table!
+
+  ( cdt_2 ) <predicate> Planner[].parseWhere  //"parseWheres" .
+
+  ( cdt_3 ) Planner[].genPaths           //"genPaths" .
+  ( cdt_4 ) Planner[].scorePaths         //"scorePaths" .
+  //( cdt_5 ) Planner[].showPaths
+
+  ( cdt_6 ) Planner[].matchPaths         //"matchPaths" .
+  //( cdt_6 ) Planner[].showPaths
+
+  ( cdt_7 ) Planner[].choosePaths        //"choosePaths" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: delete_CancelMarker \handler
+
+  //"ZK_CANCELMARKER_handler" .verbose
+  nullptr to Operand[]
+  PipeIn[].pipeOut
+  Op.ackPipelineJob
+
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CRWBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+/*
+: delete_CrwBuffer \handler
+
+  //"Operand:- ZK_CRWBUFFER" .verbose
+
+  // pipeout the Operand
+  Operand[].pipeOut
+
+  // get the fetchTechnique
+  Counter1[] planner[].fetchTechnique@
+  case
+    AT_SCAN of
+      Subset[].nextBuffer to Operand[]
+    endof
+
+    // all other types of fetches, just fetchNext
+    index[].deleteNext
+
+  endcase
+
+  // no more data for counter1[] phrase ?
+  Operand[].isNull if
+
+    // any more phrases ?
+    Counter1[] 1 + to Counter1[]
+    Counter1[] Counter0[] >= if
+      // all done
+      tablePtn[] tablePtnDropRead
+
+      // delete the planner
+      planner[].delete
+
+      // pipeout an eosMarker
+      Operand[].newEosMarker
+      Operand[].pipeOut
+    else
+      // position and begin delete for next phrase
+      Counter1[] beginDelete
+    then
+  then
+
+  true
+ */
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: delete_PulseMarker \handler
+
+  0 locals| iPhrases |
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  PipeIn[].pipeOut
+
+  // new a stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get no of phrases
+  planner[].phrases@ to Counter0[]
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert we have at least one phrase
+  Counter0[] 1 >= assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set counter1[] to 0
+  0 to Counter1[]
+
+  // position and begin delete for the first phrase
+  Counter1[] beginDelete
+
+  // any data ?
+  Operand[].isNull if
+    tablePtn[] tablePtnDropRead
+
+    // delete the planner
+    planner[].delete
+
+    // pipeout an eosMarker
+    Operand[].newEosMarker
+    Operand[].pipeOut
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: delete_StartMarker \handler
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  0 locals| iPhrases |
+
+  <tableNm> op__table if
+    Table[].tablePtn@ to tablePtn[]
+    PipeIn[].pipeOut
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the plan for the fetch
+  generatePlan
+
+  //planner[].showPaths
+
+  // assert we have a plan
+  planner[].isNull not assert
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* delete request                                     (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: delete_req \operator
+
+  LogReqEntry SEED_REQ
+  //<tableNm> <predicate> "PARAMETERS %v %v" str.format .
+
+  op__topology
+
+  find: delete_CancelMarker ZK_CANCELMARKER op[].handler!
+  //find: delete_CrwBuffer    ZK_CRWBUFFER    op[].handler!
+  find: delete_PulseMarker  ZK_PULSEMARKER  op[].handler!
+  find: delete_StartMarker  ZK_STARTMARKER  op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: delete :: delete <tableNm> <predicate> ;
+
+: delete _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -17,6 +17,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.columnName"_Stz,      &Step::vIndexColumnName);
   vAddStep("index.columnType"_Stz,      &Step::vIndexColumnType);
   vAddStep("index[].compact"_Stz,       &Step::vIndexCompact);
+  vAddStep("index[].deleteNext"_Stz,    &Step::vIndexDeleteNext);
   vAddStep("index[].dump"_Stz,          &Step::vIndexDump);
   vAddStep("index[].fetchNext"_Stz,     &Step::vIndexFetchNextN);
   vAddStep("index[].genEntBuffer"_Stz,  &Step::vIndexGenEntBuffer);
@@ -131,7 +132,7 @@ void Step::vIndexCompact(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index::new -- delete an instance of index                                  */
+/* index::delete -- delete an instance of index                               */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDelete(void)
 {
@@ -140,6 +141,104 @@ void Step::vIndexDelete(void)
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
 
   delete pIndex;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index[].deleteNext -- delete rows within the range                         */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDeleteNext(void)
+{
+  ENTRY();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the index and the table
+  Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table
+  Table* pTable = pIndex->pTable();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the lower and upper entries
+  Ent* aLowerEntry = m_pRegSet->m_aLowerEntry;
+  Ent* aUpperEntry = m_pRegSet->m_aUpperEntry;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the entry buffer to start from
+  EntBuffer* pEntBuffer = m_pRegSet->m_pEntBuffer;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  HV_Row hRow(pTable->pStreamDef(),C_ALL);
+  HV_Rec hvRec(pTable->pStreamDef(),C_ALL);
+  
+  bool bBefore = true;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // did we get a lower entry ?
+  if ( ! aLowerEntry) {
+    goto L_Exit;
+  }
+  
+  vTrace("------------------------------------------\n"_Stz);
+  vTrace("Deleting rows:\n"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru the buffers starting from aLowerEntry
+  while (aLowerEntry) {
+    
+    // is lowerEntry before upperEntry ?
+    if (aUpperEntry)
+      bBefore = (aLowerEntry == aUpperEntry) ? false : true;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lowerEntry is before upperEntry
+    if (bBefore) {
+      
+      // get the crw entry from the lowerEntry
+      Ref xRef = aLowerEntry->rxRef();
+        
+      Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
+      
+      RowInflator::vInflateRow(hRow,aCrw);
+      hvRec->vAppend(hRow);
+      hvRec->vPrintRow();
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // move to next entry in the buffer
+      aLowerEntry = pEntBuffer->aNextEntry(aLowerEntry, 0);
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // no more entries ?
+      if ( ! aLowerEntry ) {
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // move to next buffer
+        pEntBuffer = pEntBuffer->pNextBuffer();
+        
+        // next buffer ?
+        if ( pEntBuffer )
+          aLowerEntry = pEntBuffer->aLeadEntry();
+      }
+    }
+    else {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // we are done
+      aLowerEntry = nullptr;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // check if session exiting
+    //if (pSession->m_bSessionExiting)
+    //  aItem = nullptr;
+  }
+  
+L_Exit:
+  vTrace("------------------------------------------\n"_Stz);
+  m_pRegSet->m_pEntBuffer = pEntBuffer;
+  m_pRegSet->m_aLowerEntry = aLowerEntry;
   
   EXIT();
 }

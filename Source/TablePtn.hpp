@@ -44,6 +44,7 @@ namespace Partitioning
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
     void vAppendRow(RowCompactor* pRowCompactor, RowSingle* pRow);
     i8   nCrwBuffers(void);
+    void vDeleteRow(Crw* aCrw_exists, Ent* aEnt_Found);
     void vDropRead(void);
     void vDropWrite();
     void vDump(void);
@@ -77,8 +78,6 @@ namespace Partitioning
     void vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
                            Encoding* pEncoding_upsert, t8 tPerspective);
     void vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_Found,
-                           Encoding* pEncoding_upsert, t8 tPerspective);
-    void vUpsertRow_update2(Crw* aCrw_exists, Ent* aEnt_Found,
                            Encoding* pEncoding_upsert, t8 tPerspective);
     bool bVerifyTable(void);
     void vVisualizeTable(void);

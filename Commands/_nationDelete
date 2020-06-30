@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _nationDelete - delete rows from TPC-H Nation table                        */
+/*============================================================================*/
+
+bc;
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+
+create index nation_idx1 ON nation(N_NationKey);
+load nation "/DATA/TPCH/nation.csv" ;
+
+tableScan nation;
+
+print "------------------";
+print "N_NationKey 14 =";
+print "------------------";
+predicateFetch nation "N_NationKey 14 =";
+delete nation "N_NationKey 14 =";
+
+print "------------------";
+print "N_NationKey 13 <=";
+print "------------------";
+predicateFetch nation "N_NationKey 13 <=";
+delete nation "N_NationKey 13 <=";
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

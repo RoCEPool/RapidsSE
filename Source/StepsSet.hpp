@@ -430,6 +430,7 @@ public:
   void vIndexColumnName(void);
   void vIndexColumnType(void);
   void vIndexDelete(void);
+  void vIndexDeleteNext(void);
   void vIndexIndexDefFetch(void);
   void vIndexIndexDefStore(void);
   void vIndexIndexTree(void);
