@@ -115,7 +115,23 @@ Table::~Table(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  vTidyUp();
+  m_pIdxVec->vClear();
+  
+  delete m_pIdxVec;
+  delete m_pBucketMap;
+  delete m_pPtnMap;
+
+  delete m_pStreamDef;
+  delete m_pPtnStreamDef;
+  
+  // delete the TablePtn's
+  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
+    delete m_pTablePtnVec->pGet(i_Slot);
+  }
+  m_pTablePtnVec->vClear();
+  
+  // delete the partition vector
+  delete m_pTablePtnVec;
 }
 
 
@@ -642,32 +658,6 @@ Stz* Table::szTableNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_sTableNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* tidyup                                                                     */
-/*----------------------------------------------------------------------------*/
-void Table::vTidyUp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  m_pIdxVec->vClear();
-  
-  delete m_pIdxVec;
-  delete m_pBucketMap;
-  delete m_pPtnMap;
-
-  delete m_pStreamDef;
-  delete m_pPtnStreamDef;
-  
-  // delete the TablePtn's
-  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
-    delete m_pTablePtnVec->pGet(i_Slot);
-  }
-  m_pTablePtnVec->vClear();
-  
-  // delete the partition vector
-  delete m_pTablePtnVec;
 }
 
 /*----------------------------------------------------------------------------*/

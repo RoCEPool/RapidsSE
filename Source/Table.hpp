@@ -66,7 +66,6 @@ namespace MetaData
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);
-    void    vTidyUp(void);
     void    vTidyUpIndex(i8 iIndexNo);
     i8      iToPartition(i8 iRowHash);
     
