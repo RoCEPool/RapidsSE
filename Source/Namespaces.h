@@ -77,7 +77,8 @@ namespace MetaData          { class Table;           class IdxColVec;
 namespace Metrics           {                                                 }
 namespace Oblique           { class AM;                                       }
 namespace Operands          { class Operand;                                  }
-namespace Partitioning      { class BucketMap;       class TablePtn;          }
+namespace Partitioning      { class BucketMap;       class PtnMap;
+                              class TablePtn;                                 }
 namespace Persistence       { class CarryOver;                                }
 namespace Pipelines         { class Xmits;           class Op;
                               class Pipeline;        class Stage;
