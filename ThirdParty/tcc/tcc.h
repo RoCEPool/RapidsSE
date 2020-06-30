@@ -1465,7 +1465,12 @@ ST_FUNC void relocate_plt(TCCState *s1);
 
 /* ------------ xxx-gen.c ------------ */
 
-ST_DATA const int reg_classes[NB_REGS];
+ST_DATA const int reg_classes[NB_REGS] =
+{ 0,0,0,0,0,
+  0,0,0,0,0,
+  0,0,0,0,0,
+  0,0,0,0,0,
+  0,0,0,0,0 };
 
 ST_FUNC void gsym_addr(int t, int a);
 ST_FUNC void gsym(int t);
