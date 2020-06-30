@@ -4,13 +4,15 @@
 
 bc;
 
-print "creating LineItem..." ;
+print "creating LineItem...";
 
 _lineitem
 
-print "loading LineItem..." ;
+print "loading LineItem...";
 
-/time load lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" ;
+/time load lineItem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
+
+tableScan lineItem;
 
 /*============================================================================*/
 /* end                                                                        */
