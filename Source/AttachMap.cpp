@@ -118,7 +118,7 @@ AttachMap::AttachMap(void)
   m_pLexiconArticle->vAppend(pSubLex->pArticle());
   
   m_pBucketMap = nullptr;
-  m_pPtnMap = nullptr;
+  m_pPtnMap    = nullptr;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }
@@ -129,6 +129,8 @@ AttachMap::AttachMap(void)
 AttachMap::~AttachMap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

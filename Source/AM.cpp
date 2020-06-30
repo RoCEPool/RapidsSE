@@ -59,6 +59,7 @@ SessionArray* AM::pSessionArray(void) { return gpAttachMap->m_pSessionArray;  }
 
 
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
+i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 CarryOver* AM::pCarryOver(void)   { return gpAttachMap->m_pCarryOver;         }
 EnumFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }

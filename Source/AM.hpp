@@ -61,6 +61,7 @@ namespace Oblique
     //
     static SessionArray* pSessionArray(void);
     static bool bBootError(void);
+    static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
     static CarryOver* pCarryOver(void);
     static EnumFlags* pClassFlags(void);

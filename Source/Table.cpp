@@ -14,48 +14,10 @@ Atomic gixTable;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Table* MetaData::_pTable(void* aAddr)
-{
-  Table* pTable = reinterpret_cast<Table*>(aAddr);
-  
-  if (pTable && CN_TABLE != pTable->eClass())
-    vTrace("_pTable got class %s\n"_Stz,aCN[pTable->eClass()]);
-  
-  RASSERT_TYPE(pTable,CN_TABLE);
-  
-  return pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Table::operator new(size_t)
-{
-  Table* pTable = (Table*)HeapMem::pAllocate(CN_TABLE);
-  
-  return pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Table::operator new(size_t, Table* pTable)
-{
-  return pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Table::operator delete(void* pAddress)
-{
-  Table* pTable = reinterpret_cast<Table*>(pAddress);
-
-  HeapMem::vFree(pTable);
-}
+__pCastFunction(MetaData,Table,CN_TABLE)
+__aNewFunction(Table,CN_TABLE)
+__vDeleteFunction(Table,CN_TABLE)
+__aFooterFunction(Table)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -72,7 +34,7 @@ Table::Table(Stz* szTableNm)
   m_sTableNm   = szTableNm;
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
-  m_pBucketMap = new BucketMap(AM::nPartitions());
+  m_pBucketMap = new BucketMap(AM::nBuckets());
   m_pPtnMap    = new PtnMap(AM::nPartitions());
   m_bIsLoading = false;
   m_bDefinitionOnly = false;
@@ -793,20 +755,6 @@ bool Table::bVerifyTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Table::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE);
-  
-  return &m_xFooter;
-}
-
-/*----------------------------------------------------------------------------*/
 /* compact index                                                              */
 /*----------------------------------------------------------------------------*/
 void Table::vCompactIndex(Index* pIndex)
@@ -818,10 +766,6 @@ void Table::vCompactIndex(Index* pIndex)
     pIndexTree->vCompact();
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/*--- TO GO ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*============================================================================*/
 /* end                                                                        */
