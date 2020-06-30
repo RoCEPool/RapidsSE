@@ -359,7 +359,7 @@ void TablePtn::vDump(void)
     
   while (pCrwBuffer) {
     pCrwBuffer->vShow();
-    pCrwBuffer = pCrwBuffer->pNextBuffer();
+    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
 
 }
@@ -738,7 +738,7 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
   
   while (pCrwBuffer) {
     pIndexTree->vInsertEntries(pCrwBuffer);
-    pCrwBuffer = pCrwBuffer->pNextBuffer();
+    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
 
   return true;
@@ -833,7 +833,7 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
   CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
   
   // get next entry buffer
-  m_pRootCrwBuffer = m_pRootCrwBuffer->pNextBuffer();
+  m_pRootCrwBuffer = m_pRootCrwBuffer->pNextCrwBuffer();
   
   // set prev pointer to null
   if (m_pRootCrwBuffer) {
@@ -1196,7 +1196,7 @@ bool TablePtn::bVerifyTable(void)
     bVerify = pCrwBuffer->bVerify();
     if (! bVerify )
       break;
-    pCrwBuffer = pCrwBuffer->pNextBuffer();
+    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
   
   return bVerify;
@@ -1215,7 +1215,7 @@ void TablePtn::vVisualizeTable(void)
   while (pCrwBuffer) {
     // print the decile of the this buffer
     vTrace("%lld"_Stz, pCrwBuffer->iDecile());
-    pCrwBuffer = pCrwBuffer->pNextBuffer();
+    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
   vTrace("\n"_Stz);
 }

@@ -89,7 +89,7 @@ CrwBuffer* PtnStream::pRead(void)
 
   CrwBuffer* pReadBuffer = m_pNextBuffer;
   
-  m_pNextBuffer = m_pNextBuffer->pNextBuffer();
+  m_pNextBuffer = m_pNextBuffer->pNextCrwBuffer();
   
   if (pReadBuffer)
     m_iLglBufferNo++;
@@ -122,7 +122,7 @@ bool PtnStream::bSeek(i8 iBufferNo)
     vReset();
   
   while (iBufferNo < m_iLglBufferNo) {
-    m_pNextBuffer = m_pNextBuffer->pNextBuffer();
+    m_pNextBuffer = m_pNextBuffer->pNextCrwBuffer();
     if (! m_pNextBuffer)
       return false;
     m_iLglBufferNo++;

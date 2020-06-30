@@ -45,10 +45,11 @@ namespace CompactBuffers
     void       vCopy(CrwBuffer* pArgCrwBuffer);
     i8         iDecile(void);
     i8         iLengthList(void);
-    CrwBuffer* pNextBuffer(void);
-    void       vNextBuffer(CrwBuffer* pNextBuffer);
-    CrwBuffer* pPrevBuffer(void);
-    void       vPrevBuffer(CrwBuffer* pPrevBuffer);
+    CrwBuffer* pNextCrwBuffer(void);
+    CrwBuffer* pNextCrwBuffer(PtnStream* pPtnStream);
+    void       vNextCrwBuffer(CrwBuffer* pNextBuffer);
+    CrwBuffer* pPrevCrwBuffer(void);
+    void       vPrevCrwBuffer(CrwBuffer* pPrevBuffer);
     void       vPrintRows(StreamDef* pStreamDef);
     CsvBuffer* pToCsvBuffer(void);
     //SrtBuffer* pToSrtBuffer(i8 iKeyCol);

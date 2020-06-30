@@ -43,7 +43,7 @@
     "Scan awake" .
   then
 
-  // move next buffer to Operand
+  // move next buffer to Operand -- CHECK: CAUSES THIS HANDLER TO BE CALLED AGAIN
   Subset[] to Operand[]
 
   Operand[].isNull if

@@ -147,14 +147,14 @@ CrwBuffer* CrwHash::pFullCrwBuffer(i8 iPtn)
   CrwBuffer* pFullCrwBuffer = nullptr;
   
   CrwBuffer* pCrwBuffer = m_pCrwBuffer[iPtn] ?
-                            m_pCrwBuffer[iPtn]->pNextBuffer() : nullptr;
+                            m_pCrwBuffer[iPtn]->pNextCrwBuffer() : nullptr;
   while (pCrwBuffer) {
     pFullCrwBuffer = pCrwBuffer;
-    pCrwBuffer = pCrwBuffer->pNextBuffer();
+    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
   
   if (pFullCrwBuffer) {
-    CrwBuffer* pPrevBuffer = pFullCrwBuffer->pPrevBuffer();
+    CrwBuffer* pPrevBuffer = pFullCrwBuffer->pPrevCrwBuffer();
     pPrevBuffer->vNextBuffer(nullptr);
   }
   

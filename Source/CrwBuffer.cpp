@@ -162,7 +162,7 @@ void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows)
 //                           iBuffers,
 //                           pNextBuffer->nRowCount());
     
-    pNextBuffer = pNextBuffer->pNextBuffer();
+    pNextBuffer = pNextBuffer->pNextCrwBuffer();
     
   } while (pNextBuffer);
   
@@ -267,11 +267,11 @@ void CrwBuffer::vBufferCount(i8& nBuffers)
   
   RASSERT(pTable());
   
-  pNextBuffer = this->pNextBuffer();
+  pNextBuffer = this->pNextCrwBuffer();
   nBuffers++;
   
   while (pNextBuffer) {
-    pNextBuffer = pNextBuffer->pNextBuffer();
+    pNextBuffer = pNextBuffer->pNextCrwBuffer();
     nBuffers++;
   }
 }
@@ -389,7 +389,7 @@ i8 CrwBuffer::iLengthList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   i8 iLength = 0;
-  for (CrwBuffer* pLn = this; pLn; pLn = pLn->pNextBuffer())
+  for (CrwBuffer* pLn = this; pLn; pLn = pLn->pNextCrwBuffer())
     iLength++;
   
   return iLength;
@@ -398,7 +398,7 @@ i8 CrwBuffer::iLengthList(void)
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* CrwBuffer::pNextBuffer(void)
+CrwBuffer* CrwBuffer::pNextCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
@@ -408,7 +408,7 @@ CrwBuffer* CrwBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vNextBuffer(CrwBuffer* pNextBuffer)
+void CrwBuffer::vNextCrwBuffer(CrwBuffer* pNextBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
@@ -445,7 +445,7 @@ void CrwBuffer::vOperandDump(i8 iDetail)
 /*----------------------------------------------------------------------------*/
 /* get prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* CrwBuffer::pPrevBuffer(void)
+CrwBuffer* CrwBuffer::pPrevCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
@@ -455,7 +455,7 @@ CrwBuffer* CrwBuffer::pPrevBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vPrevBuffer(CrwBuffer* pPrevBuffer)
+void CrwBuffer::vPrevCrwBuffer(CrwBuffer* pPrevBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
@@ -793,11 +793,11 @@ void CrwBuffer::vTruncate(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pNextBuffer = this->pNextBuffer();
+  pNextBuffer = this->pNextCrwBuffer();
   
   while (pNextBuffer) {
     CrwBuffer* pThisBuffer = pNextBuffer;
-    pNextBuffer = pNextBuffer->pNextBuffer();
+    pNextBuffer = pNextBuffer->pNextCrwBuffer();
     delete pThisBuffer;
   }
   delete this;

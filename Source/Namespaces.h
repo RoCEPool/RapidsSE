@@ -78,7 +78,7 @@ namespace Metrics           {                                                 }
 namespace Oblique           { class AM;                                       }
 namespace Operands          { class Operand;                                  }
 namespace Partitioning      { class BucketMap;       class PtnMap;
-                              class TablePtn;                                 }
+                              class PtnStream;       class TablePtn;          }
 namespace Persistence       { class CarryOver;                                }
 namespace Pipelines         { class Xmits;           class Op;
                               class Pipeline;        class Stage;
