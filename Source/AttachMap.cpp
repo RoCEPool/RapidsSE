@@ -117,6 +117,9 @@ AttachMap::AttachMap(void)
   pSubLex = new Lexicon("__threads"_Stz);
   m_pLexiconArticle->vAppend(pSubLex->pArticle());
   
+  m_pBucketMap = nullptr;
+  m_pPtnMap = nullptr;
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }
 

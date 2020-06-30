@@ -56,6 +56,7 @@ namespace StorageEngine
     } Arg;
     
     bool          m_bBootError;
+    BucketMap*    m_pBucketMap;
     BufferPool*   m_pBufferPool;
     CarryOver*    m_pCarryOver;
     EnumFlags     m_oClassFlags;
@@ -82,6 +83,7 @@ namespace StorageEngine
     NextGid       m_inNextTaskId;
     NextGid       m_inNextThreadId;
     NextGid       m_inNextTxId;
+    PtnMap*       m_pPtnMap;
     Queues*       m_pQueues;
     i8            m_iQuit;
     ResourceTracker m_oResourceTracker;
