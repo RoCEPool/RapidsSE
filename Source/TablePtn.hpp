@@ -44,7 +44,7 @@ namespace Partitioning
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
     void vAppendRow(RowCompactor* pRowCompactor, RowSingle* pRow);
     i8   nCrwBuffers(void);
-    void vDeleteRow(Crw* aCrw_exists, Ent* aEnt_Found);
+    void vDeleteRow(IndexTree* pIndexTree, EntBuffer* pEntBuffer, Ent* aEnt);
     void vDropRead(void);
     void vDropWrite();
     void vDump(void);

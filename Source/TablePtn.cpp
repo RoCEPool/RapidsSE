@@ -310,19 +310,18 @@ i8 TablePtn::nCrwBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* delete an existing row                                                     */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vDeleteRow(Crw* aCrw_exists, Ent* aEnt_found)
+void TablePtn::vDeleteRow(IndexTree* pIndexTree, EntBuffer* pEntBuffer, Ent* aEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  StreamDef* pStreamDef = m_pTable->pStreamDef();
-  
-  HV_Row hvRow_exists(pStreamDef,C_ALL);
-  CrwBuffer::vToRow(hvRow_exists,aCrw_exists);
-  SP_Record spRec;
-  TRACE_UPSERT( vTrace("Exists   : %s\n"_Stz,spRec.sz(hvRow_exists)); )
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete the crw
+  bool bDeleted = CrwBuffer::bDeleteRefdCrw(aEnt->rxRef());
+  ASSERT(bDeleted);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  // now purge the entry
+  pIndexTree->vDelete(pEntBuffer, aEnt);
   
 }
 
@@ -604,7 +603,7 @@ void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
       continue;
     }
     
-    vDeleteRow(aCrw_exists,aEnt_found);
+    vDeleteRow(pIndexTree, pEntH0Buf, aEnt_found);
     
     vDebugPoint();
   }

@@ -10,24 +10,40 @@ print section "Steady State 2";
 trackMemory;
 
 _lineitemFixed
-_lineitemIndex
 
-// /time steadyState_2 lineitem "../Data/tpch/lineItem10k.csv" 1;
+Print "-----------------------------";
+Print "TABLE SIZE";
+Print "-----------------------------";
+tableSizes;
 
-/time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
-/time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
-/time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
-/time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
+/time steadyState_2 lineitem "../Data/tpch/lineItem10.csv" 1;
+Print "-----------------------------";
+Print "TABLE SIZE";
+Print "-----------------------------";
+tableSizes;
+anidx lineitem lineitem_idx1;
+dumpidx lineitem lineitem_idx1;
+
+/time steadyState_2 lineitem "../Data/tpch/lineItem10k.csv" 1;
+Print "-----------------------------";
+Print "TABLE SIZE";
+Print "-----------------------------";
+tableSizes;
+anidx lineitem lineitem_idx1;
+dumpidx lineitem lineitem_idx1;
+
+// /time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
+// /time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
+// /time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
+// /time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
 
 // /time steadyState_2 lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv"  3;
 // /time steadyState_2 lineitem "/Users/Shared/tpch/SF1/lineItem.csv"  10;
 // /time steadyState_2 lineitem "/Users/Shared/tpch/SF10/lineItem.csv" 3;
 
-tableSizes;
-
-drop table lineitem;
-memoryLeaks;
-
+//drop table lineitem;
+//memoryLeaks;
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
