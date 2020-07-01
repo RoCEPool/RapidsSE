@@ -256,13 +256,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default operator loop                                                      */
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-  
-: op__loop
-
-[? 1 ?if
+/*----------------------------------------------------------------------------*/
+/* wait till pipeline job has stabilised                                      */
+/*----------------------------------------------------------------------------*/
+: op__pipelineJobWait
 
   // get the pipeline job of the operator
   Op.pipelineJob@ locals| pPipelineJob |
@@ -271,11 +271,12 @@
 
   // wait till the pipeline job is in a list
   begin
-  pPipelineJob job.jobList@ JL_NONE ==
+    pPipelineJob job.jobList@ JL_NONE ==
   while
     //pPipelineJob job.jobList@ "Job list %v" .printf
     task::yield
   repeat
+
 
   // ensure pipeline job is executing and task is waiting
   // for the non-demon jobs
@@ -283,7 +284,7 @@
 
     // wait till the parent job is executing
     begin
-    pPipelineJob job.phase@ JP_EXECUTING == not
+      pPipelineJob job.phase@ JP_EXECUTING == not
     while
       //pPipelineJob job.phase@ "Job phase %v" .printf
       task::yield
@@ -293,14 +294,27 @@
     // possibilty of _execute not have arrived yet
     pPipelineJob job.task@ locals| pPipelineTask |
     begin
-    pPipelineTask task.isWaiting
+      pPipelineTask task.isWaiting
     not while
       //pPipelineTask task.isWaiting "task waiting %v" .printf
       task::yield
     repeat
 
   then
+;
 
+/*----------------------------------------------------------------------------*/
+/* default operator loop                                                      */
+/*----------------------------------------------------------------------------*/
+
+  
+: op__loop
+
+[? 1 ?if
+ 
+  op__pipelineJobWait
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin
 
     Operand[].isNull if
@@ -349,42 +363,9 @@
  
   WOULD BE AN ERROR
  
-  // get the pipeline job of the operator
-  Op.pipelineJob@ locals| pPipelineJob |
+  op__pipelineJobWait
 
-  //pPipelineJob job.jobList@  "Job list %v" .printf
-
-  // wait till the pipeline job is in a list
-  begin
-  pPipelineJob job.jobList@ JL_NONE ==
-  while
-    //pPipelineJob job.jobList@ "Job list %v" .printf
-    task::yield
-  repeat
-
-  // ensure pipeline job is executing and task is waiting
-  // for the non-demon jobs
-  pPipelineJob job.jobList@ JL_PARTICIPATING == if
-
-    // wait till the parent job is executing
-    begin
-    pPipelineJob job.phase@ JP_EXECUTING == not
-    while
-      //pPipelineJob job.phase@ "Job phase %v" .printf
-      task::yield
-    repeat
-
-    // wait till the pipelinetask is in a WAIT state
-    // possibilty of _execute not have arrived yet
-    pPipelineJob job.task@ locals| pPipelineTask |
-    begin
-    pPipelineTask task.isWaiting
-    not while
-      //pPipelineTask task.isWaiting "task waiting %v" .printf
-      task::yield
-    repeat
-
-  then
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   begin
 
