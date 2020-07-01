@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : Scan_CancelMarker \handler
 
-  //"ZK_CANCELMARKER_handler" .verbose
   nullptr to Operand[]
   PipeIn[].pipeOut
   Op.ackPipelineJob
@@ -35,8 +34,6 @@
   "<rateSecs>" job[] job.tagSet@ tagSet.hasName if
     <rateSecs> >int to rateSecs
   then
-
-  //"Operand:- ZK_CRWBUFFER" .verbose
 
   // get next buffer
   Subset[].nextBuffer to Subset[]
@@ -79,8 +76,6 @@
   "<rateSecs>" job[] job.tagSet@ tagSet.hasName if
     <rateSecs> >int to rateSecs
   then
-
-  //"Operand:- ZK_CRWBUFFER" .verbose
 
   // get next buffer
   Subset[].nextBuffer to Subset[]
@@ -126,9 +121,6 @@
  
   debug::flag@ if "(Revised) scan_PulseMarker handler" . then
  
-  0 locals| rateSecs |
-
-  //"Operand:- ZK_PULSEMARKER" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -137,27 +129,6 @@
 
   // grab the table ptn read lock
   tablePtn[] tablePtnGrabRead
-
-
-//  // -- partition stream test --
-//  tablePtn[] ptnStream::new to ptnStream[]
-//
-//  ptnStream[] ptnStream.open if
-//
-//    begin
-//      ptnStream[] ptnStream.read to Operand[]
-//      Operand[].isNull not
-//    while
-//      Operand[].pipeout
-//    repeat
-//
-//    ptnStream[] ptnStream.close
-//  then
-//
-//  ptnStream[] ptnStream.delete
-//  nullptr to ptnStream[]
-//  // -- end partition stream test --
-
 
   // pipeout all subsets from tablePtn
   tablePtn[].root to Subset[]
@@ -179,9 +150,6 @@
   
   debug::flag@ if "(Original) scan_PulseMarker handler" . then
   
-  0 locals| rateSecs |
-
-  //"Operand:- ZK_PULSEMARKER" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -190,27 +158,6 @@
 
   // grab the table ptn read lock
   tablePtn[] tablePtnGrabRead
-
-
-  //  // -- partition stream test --
-  //  tablePtn[] ptnStream::new to ptnStream[]
-  //
-  //  ptnStream[] ptnStream.open if
-  //
-  //    begin
-  //      ptnStream[] ptnStream.read to Operand[]
-  //      Operand[].isNull not
-  //    while
-  //      Operand[].pipeout
-  //    repeat
-  //
-  //    ptnStream[] ptnStream.close
-  //  then
-  //
-  //  ptnStream[] ptnStream.delete
-  //  nullptr to ptnStream[]
-  //  // -- end partition stream test --
-
 
   // pipeout all subsets from tablePtn
   tablePtn[].root to Subset[]
@@ -227,12 +174,30 @@
 ?] //???????????????????????????????????????????????????????????????????????????
 ;
 
+//  // -- partition stream test --
+//  tablePtn[] ptnStream::new to ptnStream[]
+//
+//  ptnStream[] ptnStream.open if
+//
+//    begin
+//      ptnStream[] ptnStream.read to Operand[]
+//      Operand[].isNull not
+//    while
+//      Operand[].pipeout
+//    repeat
+//
+//    ptnStream[] ptnStream.close
+//  then
+//
+//  ptnStream[] ptnStream.delete
+//  nullptr to ptnStream[]
+//  // -- end partition stream test --
+
+
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : scan_StartMarker \handler
-
-  //"Operand:- ZK_STARTMARKER" .verbose
 
   <tableNm> op__table if
     Table[].tablePtn@ to tablePtn[]
