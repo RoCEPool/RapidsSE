@@ -308,7 +308,9 @@
       PipeIn[].next
 
       // execute the operator's handler for the operand
-      PipeIn[].kind op[].handler@ execute
+      PipeIn[].kind op[].handler@
+        dup regSet::handler!
+        execute
 
     else
 
@@ -327,7 +329,9 @@
       else
 
         // execute operand handler
-        Operand[].kind op[].handler@ execute
+        Operand[].kind op[].handler@
+          dup regSet::handler!
+          execute
 
       then
 

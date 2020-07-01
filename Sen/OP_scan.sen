@@ -50,6 +50,10 @@
     tablePtn[] tablePtnDropRead
     Operand[].newEosMarker
     Operand[].pipeOut
+
+    false regset::callAgain!
+  else
+    true regset::callAgain!
   then
 
   true
@@ -71,6 +75,27 @@
 
   // grab the table ptn read lock
   tablePtn[] tablePtnGrabRead
+
+
+//  // -- partition stream test --
+//  tablePtn[] ptnStream::new to ptnStream[]
+//
+//  ptnStream[] ptnStream.open if
+//
+//    begin
+//      ptnStream[] ptnStream.read to Operand[]
+//      Operand[].isNull not
+//    while
+//      Operand[].pipeout
+//    repeat
+//
+//    ptnStream[] ptnStream.close
+//  then
+//
+//  ptnStream[] ptnStream.delete
+//  nullptr to ptnStream[]
+//  // -- end partition stream test --
+
 
   // pipeout all subsets from tablePtn
   tablePtn[].root to Subset[]
