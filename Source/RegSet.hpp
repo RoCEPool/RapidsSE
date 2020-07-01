@@ -16,6 +16,9 @@ namespace Tasks
     i8               m_i_NextRnd;  // which next repeatable random nummber?
     Node*            m_pSendNode;  // node to send to
   
+    REG<Word>        m_xpHandler;  // which handler is to be/was called
+    bool             m_bCallAgain; // call same handler again
+  
     REF<Job>         m_xpJobRef;   // job reference
     REF<Node>        m_xpNodeRef;  // node reference
 

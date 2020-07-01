@@ -50,6 +50,9 @@ RegSet::RegSet(Task* pTask)
   m_i_NextRnd  = AM::bDeveloper() ? 0 : C_UNKNOWN;
   m_pSendNode  = nullptr;
   
+  m_xpHandler  = nullptr;
+  m_bCallAgain = false;
+  
   m_xpNow = new Now;
   
   m_iCounter0 = 0;
