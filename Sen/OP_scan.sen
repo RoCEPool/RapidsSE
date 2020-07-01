@@ -19,6 +19,8 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
+": scan_CrwBuffer" .
+
 : scan_CrwBuffer \handler
 
 [? args.condCode ?if //?????????????????????????????????????????????????????????
@@ -124,6 +126,8 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
+": scan_PulseMarker" .
+
 : scan_PulseMarker \handler
 
 [? args.condCode ?if //?????????????????????????????????????????????????????????
@@ -133,7 +137,7 @@
   //
  
   debug::flag@ if "(Revised) scan_PulseMarker handler" . then
- 
+
   // pipe out the pulse marker
   PipeIn[].pipeOut
 
@@ -143,27 +147,27 @@
 
   // grab table ptn read lock
   tablePtn[] tablePtnGrabRead
- 
+
   // new a partition stream for access crw buffer
   tablePtn[] ptnStream::new to ptnStream[]
- 
+
   // open partition stream to access the crw buffers
   ptnStream[] ptnStream.open if
 
     // force op loop to call scan_CrwBuffer to start processing buffers
-    find: scan_CrwBuffer regSet::handler!
+    "scan_CrwBuffer" word::find stk regSet::handler!
     true regSet::callAgain!
 
   else
     // unable to open partition stream (this would be unusual)
- 
+
     // delete partition stream
     ptnStream[] ptnStream.delete
     nullptr to ptnStream[]
 
     // drop table ptn lock
     tablePtn[] tablePtnDropRead
- 
+
     // send an eos marker (there was no data)
     Operand[].newEosMarker
     Operand[].pipeOut
@@ -227,6 +231,8 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
+": scan_StartMarker" .
+
 : scan_StartMarker \handler
 
   <tableNm> op__table if
