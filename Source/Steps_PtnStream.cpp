@@ -11,7 +11,7 @@ void Step::vAddSteps_PtnStream(void)
 {
   vAddStep("ptnStream[]"_Stz,           &Step::vPtnStreamGet);
   vAddStep("ptnStream[].get"_Stz,       &Step::vPtnStreamGet);
-  vAddStep("ptnStream[].set"_Stz,       &Step::vPtnStreamGet);
+  vAddStep("ptnStream[].set"_Stz,       &Step::vPtnStreamSet);
 
   vAddStep("ptnStream::new"_Stz,        &Step::vPtnStreamNew);
   
