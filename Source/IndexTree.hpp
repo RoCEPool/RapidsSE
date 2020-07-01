@@ -34,6 +34,7 @@ namespace Indexing
     Stz*       pAnalyze(void);
     void       vCompact(void);
     i8         iCountH0Entries(void);
+    void       vDelete(EntBuffer* pEntryBuffer, Ent* pEnt);
     void       vDump(bool bSameHeight);
     i8         nEntBuffers(void);
     EntBuffer* pFirstH0Buffer(void);

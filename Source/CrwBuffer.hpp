@@ -26,12 +26,14 @@ namespace CompactBuffers
     CrwBuffer(void);
     ~CrwBuffer(void) noexcept(false);
 
+    static bool       bDeleteRefdCrw(Ref xRef);
     static void       vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Crw*       pRefdCrw(Ref xRef);
     static CrwBuffer* pRefdCrwBuffer(Ref& xRef);
     static CrwBuffer* pToCrwBuffer(void* aAddr);
     static void       vToRow(RowSingle* pRow, Crw* aCrw);
 
+    void       vDelete(Crw* aCrw);
     HeadLine*  aGetHead(i8 i_Row);
     void       vOperandDump(i8 iDetail);
     i8         nRowCount(void);

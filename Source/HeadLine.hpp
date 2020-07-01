@@ -7,7 +7,8 @@ namespace CompactBuffers
 {
   static const i8 C_HEADLINE_OFS_WORDS = 0;
   static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;
-
+  static const i8 C_HEADLINE_DELETED = 127;
+  
   class HeadLine : public Line
   {
   public:
@@ -19,6 +20,8 @@ namespace CompactBuffers
   
     byte* ayAdrLogical(i8 i_Offset);
     i8   nBytes(void);
+    void vDelete(void);
+    bool bIsDeleted(void);
     void vDump(void);
     i8   nFreeSpace(StreamDef* pStreamDef);
     eMC  eGetEncoding(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,

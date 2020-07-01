@@ -24,6 +24,8 @@ namespace Structures
     i8 m_nHeadBytes;  // number of bytes allocated from the head
     i8 m_nHeadBytes_used;  // number of bytes used in the large encode headline
  
+    i8 m_nHeadDeleted;  // number of items deleted
+    
     i8 m_nTailItems;  // number of items allocated from the tail
     i8 m_nTailUnits;  // number of space units allocated from the tail
     i8 m_nTailBytes;  // number of bytes allocated from the tail
@@ -57,6 +59,7 @@ namespace Structures
     TAIL* aAllotTail(i8 nTailSize);
     i8    nAllotedBytes(void);
     i8    nAreaBytes(void);
+    void  vDelete(HEAD* aHeadLine);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     void  vDumpStrings(void);
@@ -72,6 +75,7 @@ namespace Structures
     i8    nHeadBytes(void);
     i8    nHeadBytes_used(void);
     void  vHeadBytes_used(i8 nBytes);
+    i8    nHeadsDeleted(void);
     bool  bHasSpace(i8 nBytes);
     i8    nItems(void);
     TAIL* aLastStr(void);
@@ -161,7 +165,8 @@ Nub_t<CN,HEAD,OVER,TAIL,DESC>::Nub_t(void)
   m_nHeadWords  = 0;
   m_nHeadBytes  = 0;
   m_nHeadBytes_used = 0;
-
+  m_nHeadDeleted = 0;
+  
   m_nTailItems  = 0;
   m_nTailUnits  = 0;
   m_nTailBytes  = 0;
@@ -411,6 +416,18 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nAreaBytes(void)
   i8 nBytes = C_SPACEUNIT_QUANTA * m_nSpaceUnits;
   
   return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete an item                                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDelete(HEAD* aHeadLine)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  aHeadLine->vDelete();
+  m_nHeadDeleted++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -673,6 +690,17 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vHeadBytes_used(i8 nBytes)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_nHeadBytes_used = nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current number of head items                                           */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nHeadsDeleted(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  return m_nHeadDeleted;
 }
 
 /*----------------------------------------------------------------------------*/

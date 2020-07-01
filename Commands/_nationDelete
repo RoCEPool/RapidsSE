@@ -14,19 +14,46 @@ create table nation (
 create index nation_idx1 ON nation(N_NationKey);
 load nation "/DATA/TPCH/nation.csv" ;
 
+print "\n\n------------------";
+print "TableScan";
+print "------------------";
 tableScan nation;
 
-print "------------------";
-print "N_NationKey 14 =";
-print "------------------";
+print "\n\n-------------------------";
+print "Fetching N_NationKey 14 =";
+print "-------------------------";
 predicateFetch nation "N_NationKey 14 =";
+
+print "--------------------------";
+print "Deleteing N_NationKey 14 =";
+print "--------------------------";
 delete nation "N_NationKey 14 =";
 
-print "------------------";
-print "N_NationKey 13 <=";
-print "------------------";
+print "-------------------------";
+print "Fetching N_NationKey 14 =";
+print "-------------------------";
+predicateFetch nation "N_NationKey 14 =";
+
+print "\n\n--------------------------";
+print "Fetching N_NationKey 13 <=";
+print "--------------------------";
 predicateFetch nation "N_NationKey 13 <=";
+
+print "--------------------------";
+print "Deleting N_NationKey 13 <=";
+print "--------------------------";
 delete nation "N_NationKey 13 <=";
+
+print "--------------------------";
+print "Fetching N_NationKey 13 <=";
+print "--------------------------";
+predicateFetch nation "N_NationKey 13 <=";
+
+print "\n\n------------------";
+print "TableScan";
+print "------------------";
+tableScan nation;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
