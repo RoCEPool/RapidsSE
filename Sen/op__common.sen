@@ -318,7 +318,7 @@
   begin
 
     Operand[].isNull if
-
+ 
       // bide till next operand is available
       PipeIn[].bide
 
@@ -326,19 +326,21 @@
       PipeIn[].next
 
       // execute the operator's handler for the operand
+      debug::flag@ if "Calling handler for NEXT operand" . then
       PipeIn[].kind op[].handler@
         dup regSet::handler!
         execute
 
     else
 
-      // get the Out-of_Order Operand
+      // process as Out-of_Order Operand
       OperandOoO[].next if
-
+   
         OperandOoO[] to PipeIn[]
         nullptr to OperandOoO[]
 
         // execute the operator's handler for the Out-of_Order operand
+        debug::flag@ if "Calling handler for OoO operand" . then
         PipeIn[].kind op[].handler@ execute
 
         // assert Operand is null
@@ -347,6 +349,7 @@
       else
 
         // execute operand handler
+        debug::flag@ if "Calling handler AGAIN operand" . then
         Operand[].kind op[].handler@
           dup regSet::handler!
           execute

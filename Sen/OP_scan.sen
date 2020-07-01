@@ -122,7 +122,9 @@
     PipeIn[].pipeOut
   then
 
-  1 debug::flag!
+  args.developer if
+    1 debug::flag!
+  then
 
   true
 ;
