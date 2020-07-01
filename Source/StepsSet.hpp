@@ -1002,6 +1002,9 @@ public:
   void vPromptNew(void);
   void vPromptSession(void);
 
+  // ptnStream
+  void vPtnStreamNew(void);
+
   // push
   void vPushI(void);
   void vPushJ(void);
