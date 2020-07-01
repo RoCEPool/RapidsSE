@@ -49,6 +49,7 @@ void Constants::vAddConstantsArgs(void)
 {
   // Args
   Constants::vAddConstant("args.addNode"_Stz,           gxArgs.m_bAddNode);
+  Constants::vAddConstant("args.condCode"_Stz,          gxArgs.m_iCondCode);
   Constants::vAddConstant("args.config"_Stz,            gxArgs.m_bConfig);
   Constants::vAddConstant("args.developer"_Stz,         gxArgs.m_bDeveloper);
   Constants::vAddConstant("args.dontFree"_Stz,          gxArgs.m_bDontFree);

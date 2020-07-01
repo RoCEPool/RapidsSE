@@ -64,6 +64,7 @@ Args::Args(void)
 
   // options
   m_bConfig          = true;
+  m_iCondCode        = 0;
   m_bDebugMode       = false;
   m_bDeveloper       = false;
   m_bDontFree        = false;
@@ -248,6 +249,12 @@ bool Args::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--commands"_Stz)) {
       m_sCommandsDir = (Stz*)argv[++i_Arg];
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--condCode"_Stz)) {
+      m_iCondCode = argv[++i_Arg].iToI8();
       continue;
     }
     

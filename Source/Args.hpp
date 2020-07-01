@@ -54,6 +54,7 @@ namespace Arguments
 
     // options
     s256 m_sCommand;         // command to run
+    i8   m_iCondCode;        // conditional compilation cond value
     bool m_bConfig;          // print configuration information
     bool m_bDebugMode;       // debug mode
     bool m_bDeveloper;       // user is a developer
