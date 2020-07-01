@@ -1108,6 +1108,7 @@ public:
   void vRegOperandFirstRowFetch(void);
   void vRegOperandGet(void);
   void vRegOperandHandleAggEnd(void);
+  void vRegOperandIsNotNull(void);
   void vRegOperandIsNull(void);
   void vRegOperandIsReport(void);
   void vRegOperandItemCountFetch(void);

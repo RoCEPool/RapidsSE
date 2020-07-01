@@ -23,6 +23,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].firstRow@"_Stz,      &Step::vRegOperandFirstRowFetch);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vRegOperandHandleAggEnd);
   vAddStep("Operand[].insdelIntoTable"_Stz,&Step::vRegOperandInsdelIntoTable);
+  vAddStep("Operand[].isNotNull"_Stz,      &Step::vRegOperandIsNotNull);
   vAddStep("Operand[].isNull"_Stz,         &Step::vRegOperandIsNull);
   vAddStep("Operand[].isReport"_Stz,       &Step::vRegOperandIsReport);
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vRegOperandItemCountFetch);
@@ -322,6 +323,18 @@ void Step::vRegOperandInsdelIntoTable(void)
   else {
     NEVER_REACH;
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].isNotNull -- is operand not null ?                               */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandIsNotNull(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pRegSet->m_xpOperandA.bIsNull() ? 0 : 1);
   
   EXIT();
 }

@@ -29,22 +29,16 @@
   
   debug::flag@ if "(Revised) scan_CrwBuffer handler" . then
 
-  0 locals| rateSecs |
-
-  "<rateSecs>" job[] job.tagSet@ tagSet.hasName if
-    <rateSecs> >int to rateSecs
-  then
-
-  // get next buffer
-
+  // read next buffer from ptn stream
   ptnStream[] ptnStream.read to Operand[]
-  Operand[].isNull not if
-    // more crw buffers
+ 
+  Operand[].isNotNull if
+    // read a next crw buffer
 
-    // pipeout the crw buffer
+    // pipe out the read crw buffer
     Operand[].pipeOut
  
-    // call this handler again
+    // call this handler again to process next buffer
     true regSet::callAgain!
  
   else
@@ -64,7 +58,16 @@
 
   then
  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
   // check for rate metering
+ 
+  0 locals| rateSecs |
+
+  "<rateSecs>" job[] job.tagSet@ tagSet.hasName if
+    <rateSecs> >int to rateSecs
+  then
+
   rateSecs if
     rateSecs "Scan Pausing for %v secs" str.format .
     rateSecs task::sleepSsec
@@ -134,17 +137,17 @@
   // pipe out the pulse marker
   PipeIn[].pipeOut
 
-  // pipeout a new a stream def
+  // pipe out a new a stream def
   Operand[].newStreamDef
   Operand[].pipeOut
 
   // grab table ptn read lock
   tablePtn[] tablePtnGrabRead
  
-  // new a partition stream
+  // new a partition stream for access crw buffer
   tablePtn[] ptnStream::new to ptnStream[]
  
-  // open partition stream to access crw buffers
+  // open partition stream to access the crw buffers
   ptnStream[] ptnStream.open if
 
     // force op loop to call scan_CrwBuffer to start processing buffers
