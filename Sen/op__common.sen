@@ -363,9 +363,7 @@
 /*----------------------------------------------------------------------------*/
  
 ?else
- 
-  WOULD BE AN ERROR
- 
+  
   op__pipelineJobWait
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -378,6 +376,7 @@
       OperandOoO[] to PipeIn[]
       nullptr to OperandOoO[]
 
+      debug::flag@ if "Calling handler for OoO operand" . then
       PipeIn[].kind op[].handler@ execute
 
       PipeIn[].isNull assert
@@ -386,6 +385,7 @@
  
       regSet::callAgain@ if
 
+        debug::flag@ if "Calling handler AGAIN operand" . then
         regSet::callAgain@ execute
 
       else
@@ -397,6 +397,7 @@
         PipeIn[].next
 
         // execute the operator's handler for the operand
+        debug::flag@ if "Calling handler for NEXT operand" . then
         PipeIn[].kind op[].handler@
           dup regSet::handler!
           execute
