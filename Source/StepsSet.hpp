@@ -1003,7 +1003,13 @@ public:
   void vPromptSession(void);
 
   // ptnStream
+  void vPtnStreamBufferNo(void);
+  void vPtnStreamClose(void);
+  void vPtnStreamDelete(void);
   void vPtnStreamNew(void);
+  void vPtnStreamOpen(void);
+  void vPtnStreamRead(void);
+  void vPtnStreamSeek(void);
 
   // push
   void vPushI(void);
