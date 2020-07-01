@@ -9,8 +9,16 @@ print section "Steady State 2";
 
 trackMemory;
 
-_lineitemFixed
+_lineitemSteady
 
+ /time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
+antbl lineitem;
+vistbl lineitem;
+
+/time steadyState_2 lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv" 1;
+antbl lineitem;
+vistbl lineitem;
+/*
 Print "-----------------------------";
 Print "TABLE SIZE";
 Print "-----------------------------";
@@ -21,8 +29,7 @@ Print "-----------------------------";
 Print "TABLE SIZE";
 Print "-----------------------------";
 tableSizes;
-anidx lineitem lineitem_idx1;
-dumpidx lineitem lineitem_idx1;
+
 
 /time steadyState_2 lineitem "../Data/tpch/lineItem10k.csv" 1;
 Print "-----------------------------";
@@ -32,7 +39,6 @@ tableSizes;
 anidx lineitem lineitem_idx1;
 dumpidx lineitem lineitem_idx1;
 
-// /time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
 // /time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
 // /time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;
 // /time steadyState_2 lineitem "/TPCH/SF1/lineItem.csv"  1;

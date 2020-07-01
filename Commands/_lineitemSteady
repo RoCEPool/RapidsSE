@@ -38,7 +38,7 @@ create table lineitem (
   // SF10 :  60M rows ;  16.4GB used
   // SF30 : 180M rows ;  48.6GB used
   // SF100: 600M rows ; 161.9GB used
-) rowsize 256;
+);
 
 CREATE INDEX lineitem_idx ON lineitem(L_ORDERKEY, L_LINENUMBER);
 
