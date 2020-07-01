@@ -76,6 +76,10 @@
   // -- partition stream test --
   tablePtn[] ptnStream::new to ptnStream[]
 
+  ptnStream[] ptnStream.open if
+    ptnStream[] ptnStream.close
+  then
+
   ptnStream[] ptnStream.delete
   nullptr to ptnStream[]
   // -- end partition stream test --

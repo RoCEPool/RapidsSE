@@ -120,6 +120,10 @@ void Step::vPtnStreamRead(void)
     
   PtnStream* pPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
   
+  CrwBuffer* pCrwBuffer = pPtnStream->pRead();
+
+  m_pDataStack->vPushPtr(pCrwBuffer);
+
   EXIT();
 }
 

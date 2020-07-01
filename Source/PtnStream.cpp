@@ -71,10 +71,8 @@ bool PtnStream::bOpen(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
   
   vReset();
-  
-  bool bResult = bSeek(0);
-  
-  return bResult;
+    
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,7 +119,7 @@ bool PtnStream::bSeek(i8 iBufferNo)
   if (iBufferNo < m_iLglBufferNo)
     vReset();
   
-  while (iBufferNo < m_iLglBufferNo) {
+  while (m_iLglBufferNo < iBufferNo) {
     m_pNextBuffer = m_pNextBuffer->pNextCrwBuffer();
     if (! m_pNextBuffer)
       return false;
