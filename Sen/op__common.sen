@@ -388,42 +388,40 @@
 
   begin
 
-    Operand[].isNull if
+    // attempt to get an Out-of_Order Operand
+    OperandOoO[].next if
 
-      // bide till next operand is available
-      PipeIn[].bide
+      OperandOoO[] to PipeIn[]
+      nullptr to OperandOoO[]
 
-      // pop next operand from queue into PipeIn[]
-      PipeIn[].next
+      PipeIn[].kind op[].handler@ execute
 
-      // execute the operator's handler for the operand
-      PipeIn[].kind op[].handler@
-        dup regSet::handler!
-        execute
+      PipeIn[].isNull assert
 
     else
+ 
+      regSet::callAgain@ if
 
-      // get the Out-of_Order Operand
-      OperandOoO[].next if
-
-        OperandOoO[] to PipeIn[]
-        nullptr to OperandOoO[]
-
-        // execute the operator's handler for the Out-of_Order operand
-        PipeIn[].kind op[].handler@ execute
-
-        // assert Operand is null
-        Operand[].isNull assert
+        regSet::callAgain@ execute
 
       else
+ 
+        // bide till next operand is available
+        PipeIn[].bide
 
-        // execute operand handler
-        Operand[].kind op[].handler@
+        // pop next operand from queue into PipeIn[]
+        PipeIn[].next
+
+        // execute the operator's handler for the operand
+        PipeIn[].kind op[].handler@
           dup regSet::handler!
           execute
 
-      then
+        // assert Operand is null
+        PipeIn[].isNull assert
 
+      then
+  
     then
 
   while assert::stack_0 repeat
