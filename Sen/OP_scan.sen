@@ -36,29 +36,39 @@
   then
 
   // get next buffer
-  Subset[].nextBuffer to Subset[]
 
-  // pipeout the operand
-  Operand[].pipeOut
+  ptnStream[] ptnStream.read to Operand[]
+  Operand[].isNull not if
+    // more crw buffers
 
-  // check for rate
+    // pipeout the crw buffer
+    Operand[].pipeOut
+ 
+    // call this handler again
+    true regSet::callAgain!
+ 
+  else
+    // no more crw buffers
+ 
+    // close and delete partition stream
+    ptnStream[] ptnStream.close
+    ptnStream[] ptnStream.delete
+    nullptr to ptnStream[]
+ 
+    // drop partition lock
+    tablePtn[] tablePtnDropRead
+ 
+    // pipe out an eos marker
+    Operand[].newEosMarker
+    Operand[].pipeOut
+
+  then
+ 
+  // check for rate metering
   rateSecs if
     rateSecs "Scan Pausing for %v secs" str.format .
     rateSecs task::sleepSsec
     "Scan awake" .
-  then
-
-  // move next buffer to Operand -- CHECK: CAUSES THIS HANDLER TO BE CALLED AGAIN
-  Subset[] to Operand[]
-
-  Operand[].isNull if
-    tablePtn[] tablePtnDropRead
-    Operand[].newEosMarker
-    Operand[].pipeOut
-
-    false regset::callAgain!
-  else
-    true regset::callAgain!
   then
 
   true
@@ -121,25 +131,42 @@
  
   debug::flag@ if "(Revised) scan_PulseMarker handler" . then
  
+  // pipe out the pulse marker
   PipeIn[].pipeOut
 
-  // new a stream def
+  // pipeout a new a stream def
   Operand[].newStreamDef
   Operand[].pipeOut
 
-  // grab the table ptn read lock
+  // grab table ptn read lock
   tablePtn[] tablePtnGrabRead
+ 
+  // new a partition stream
+  tablePtn[] ptnStream::new to ptnStream[]
+ 
+  // open partition stream to access crw buffers
+  ptnStream[] ptnStream.open if
 
-  // pipeout all subsets from tablePtn
-  tablePtn[].root to Subset[]
-  Subset[] to Operand[]
+    // force op loop to call scan_CrwBuffer to start processing buffers
+    find: scan_CrwBuffer regSet::handler!
+    true regSet::callAgain!
 
-  Operand[].isNull if
+  else
+    // unable to open partition stream (this would be unusual)
+ 
+    // delete partition stream
+    ptnStream[] ptnStream.delete
+    nullptr to ptnStream[]
+
+    // drop table ptn lock
     tablePtn[] tablePtnDropRead
+ 
+    // send an eos marker (there was no data)
     Operand[].newEosMarker
     Operand[].pipeOut
-  then
 
+  then
+ 
   true
  
 ?else //????????????????????????????????????????????????????????????????????????

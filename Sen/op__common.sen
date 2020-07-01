@@ -331,9 +331,11 @@
 
     else
  
+      // test for call again
       regSet::callAgain@ if
 
         debug::flag@ if "(Revised) Calling handler AGAIN operand" . then
+        false regSet::callAgain!
         regSet::callAgain@ execute
 
       else
@@ -348,7 +350,7 @@
         debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
         PipeIn[].kind op[].handler@
           dup regSet::handler!
-          execute
+            execute
 
         // assert Operand is null
         PipeIn[].isNull assert
