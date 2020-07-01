@@ -122,6 +122,8 @@
     PipeIn[].pipeOut
   then
 
+  1 debug::flag!
+
   true
 ;
 

@@ -52,7 +52,8 @@ RegSet::RegSet(Task* pTask)
   
   m_xpHandler  = nullptr;
   m_bCallAgain = false;
-  
+  m_iDebugFlag = 0;
+
   m_xpNow = new Now;
   
   m_iCounter0 = 0;

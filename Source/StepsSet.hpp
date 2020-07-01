@@ -204,6 +204,8 @@ public:
 
   // debug
   void vDebugTrap(void);
+  void vDebugFlagFetch(void);
+  void vDebugFlagStore(void);
 
   // dic
   void vDicDelete(void);

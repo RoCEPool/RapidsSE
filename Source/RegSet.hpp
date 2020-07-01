@@ -19,6 +19,8 @@ namespace Tasks
     REG<Word>        m_xpHandler;  // which handler is to be/was called
     bool             m_bCallAgain; // call same handler again
   
+    i8               m_iDebugFlag; // general purpose debug flag
+  
     REF<Job>         m_xpJobRef;   // job reference
     REF<Node>        m_xpNodeRef;  // node reference
 
