@@ -1006,10 +1006,12 @@ public:
   void vPtnStreamBufferNo(void);
   void vPtnStreamClose(void);
   void vPtnStreamDelete(void);
+  void vPtnStreamGet(void);
   void vPtnStreamNew(void);
   void vPtnStreamOpen(void);
   void vPtnStreamRead(void);
   void vPtnStreamSeek(void);
+  void vPtnStreamSet(void);
 
   // push
   void vPushI(void);

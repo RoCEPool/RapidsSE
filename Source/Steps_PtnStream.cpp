@@ -9,6 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PtnStream(void)
 {
+  vAddStep("ptnStream[]"_Stz,           &Step::vPtnStreamGet);
+  vAddStep("ptnStream[].get"_Stz,       &Step::vPtnStreamGet);
+  vAddStep("ptnStream[].set"_Stz,       &Step::vPtnStreamGet);
+
   vAddStep("ptnStream::new"_Stz,        &Step::vPtnStreamNew);
   
   vAddStep("ptnStream.bufferNo"_Stz,    &Step::vPtnStreamBufferNo);
@@ -59,6 +63,18 @@ void Step::vPtnStreamDelete(void)
   PtnStream* pPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
   
   delete pPtnStream;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ptnStream[] -- get partition stream                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vPtnStreamGet(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpPtnStream);
   
   EXIT();
 }
@@ -124,6 +140,19 @@ void Step::vPtnStreamSeek(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* ptnStream[].set -- set partition stream                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vPtnStreamSet(void)
+{
+  ENTRY();
+  
+  m_pRegSet->m_xpPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
