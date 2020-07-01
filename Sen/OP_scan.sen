@@ -50,6 +50,10 @@
     tablePtn[] tablePtnDropRead
     Operand[].newEosMarker
     Operand[].pipeOut
+
+    false regset::callAgain!
+  else
+    true regset::callAgain!
   then
 
   true
@@ -77,7 +81,7 @@
 //  tablePtn[] ptnStream::new to ptnStream[]
 //
 //  ptnStream[] ptnStream.open if
-// 
+//
 //    begin
 //      ptnStream[] ptnStream.read to Operand[]
 //      Operand[].isNull not
