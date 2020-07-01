@@ -258,7 +258,11 @@
 /*----------------------------------------------------------------------------*/
 /* default operator loop                                                      */
 /*----------------------------------------------------------------------------*/
+
+  
 : op__loop
+
+[? 1 ?if
 
   // get the pipeline job of the operator
   Op.pipelineJob@ locals| pPipelineJob |
@@ -338,8 +342,95 @@
     then
 
   while assert::stack_0 repeat
-;
 
+/*----------------------------------------------------------------------------*/
+ 
+?else
+ 
+  WOULD BE AN ERROR
+ 
+  // get the pipeline job of the operator
+  Op.pipelineJob@ locals| pPipelineJob |
+
+  //pPipelineJob job.jobList@  "Job list %v" .printf
+
+  // wait till the pipeline job is in a list
+  begin
+  pPipelineJob job.jobList@ JL_NONE ==
+  while
+    //pPipelineJob job.jobList@ "Job list %v" .printf
+    task::yield
+  repeat
+
+  // ensure pipeline job is executing and task is waiting
+  // for the non-demon jobs
+  pPipelineJob job.jobList@ JL_PARTICIPATING == if
+
+    // wait till the parent job is executing
+    begin
+    pPipelineJob job.phase@ JP_EXECUTING == not
+    while
+      //pPipelineJob job.phase@ "Job phase %v" .printf
+      task::yield
+    repeat
+
+    // wait till the pipelinetask is in a WAIT state
+    // possibilty of _execute not have arrived yet
+    pPipelineJob job.task@ locals| pPipelineTask |
+    begin
+    pPipelineTask task.isWaiting
+    not while
+      //pPipelineTask task.isWaiting "task waiting %v" .printf
+      task::yield
+    repeat
+
+  then
+
+  begin
+
+    Operand[].isNull if
+
+      // bide till next operand is available
+      PipeIn[].bide
+
+      // pop next operand from queue into PipeIn[]
+      PipeIn[].next
+
+      // execute the operator's handler for the operand
+      PipeIn[].kind op[].handler@
+        dup regSet::handler!
+        execute
+
+    else
+
+      // get the Out-of_Order Operand
+      OperandOoO[].next if
+
+        OperandOoO[] to PipeIn[]
+        nullptr to OperandOoO[]
+
+        // execute the operator's handler for the Out-of_Order operand
+        PipeIn[].kind op[].handler@ execute
+
+        // assert Operand is null
+        Operand[].isNull assert
+
+      else
+
+        // execute operand handler
+        Operand[].kind op[].handler@
+          dup regSet::handler!
+          execute
+
+      then
+
+    then
+
+  while assert::stack_0 repeat
+
+?]
+
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
