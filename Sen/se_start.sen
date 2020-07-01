@@ -817,6 +817,34 @@
   api::addProcedure
 
   // unload LineItem "/tmp/lineitem.crw" ;
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reload
+  sPath
+  "
+  procedure reload
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    rdCsvChunk $File | stageC
+
+  stage stageC on origin :
+    insert $Table | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+// unload LineItem "/tmp/lineitem.crw" ;
+
 ;
 
 /*----------------------------------------------------------------------------*/
