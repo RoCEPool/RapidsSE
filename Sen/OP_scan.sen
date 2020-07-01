@@ -72,6 +72,12 @@
   // grab the table ptn read lock
   tablePtn[] tablePtnGrabRead
 
+
+  // -- partition stream test --
+  tablePtn[] ptnStream::new ptnStream.delete
+  // -- end partition stream test --
+
+
   // pipeout all subsets from tablePtn
   tablePtn[].root to Subset[]
   Subset[] to Operand[]

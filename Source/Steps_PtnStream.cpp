@@ -88,9 +88,9 @@ void Step::vPtnStreamNew(void)
   
   TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
-  PtnStream* pFile = new PtnStream(pTablePtn);
+  PtnStream* pPtnStream = new PtnStream(pTablePtn);
   
-  m_pDataStack->vPushPtr(pFile);
+  m_pDataStack->vPushPtr(pPtnStream);
   
   EXIT();
 }
