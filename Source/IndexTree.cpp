@@ -227,6 +227,18 @@ i8 IndexTree::iCountH0Entries(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete an entry from an entryBuffer                                        */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vDelete(EntBuffer* pEntryBuffer, Ent* pEnt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // purge the entry
+  pEntryBuffer->vPurgeUpwards(pEnt, &m_pRootEntBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump the index                                                             */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vDump(bool bSameHeight)

@@ -55,6 +55,23 @@ CrwBuffer::~CrwBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* delete a crw                                                               */
+/*----------------------------------------------------------------------------*/
+bool CrwBuffer::bDeleteRefdCrw(Ref xRef)
+{
+  // get the referenced row buffer
+  CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
+  if (! pCrwBuffer)
+    return false;
+  
+  // get the referenced row
+  Crw* aCrw = pCrwBuffer->aCrw(xRef.iItem());
+  
+  pCrwBuffer->m_oRowTray.pNub()->vDelete(aCrw);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump entry buffer                                                          */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
@@ -472,12 +489,16 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
   HV_Row hRow(pStreamDef,C_ALL);
   HV_Rec hvRec(pStreamDef,C_ALL);
   
-  i8 nRows = nRowCount();
+  i8 nRows = m_oRowTray.pNub()->nHeads();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     // get the compact row
     Crw* aCrw = (Crw*)aGetHead(i_Row);
+    
+    // ignore deleted rows
+    if (aCrw->bIsDeleted())
+      continue;
     
     // inflate compact row into row
     RowInflator::vInflateRow(hRow,aCrw);
@@ -495,7 +516,7 @@ i8 CrwBuffer::nRowCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  return m_oRowTray.pNub()->nHeads();
+  return m_oRowTray.pNub()->nHeads() - m_oRowTray.pNub()->nHeadsDeleted();
 }
 
 /*----------------------------------------------------------------------------*/

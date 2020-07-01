@@ -31,7 +31,7 @@
   //else
   //  rowOnce[]
   //then
-  index[].deleteNext
+  tablePtn[] index[].deleteNext
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +160,7 @@
     endof
 
     // all other types of fetches, just fetchNext
-    index[].deleteNext
+    tablePtn[] index[].deleteNext
 
   endcase
 

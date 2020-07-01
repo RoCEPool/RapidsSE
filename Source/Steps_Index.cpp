@@ -118,6 +118,10 @@ void Step::vIndexDeleteNext(void)
   Table* pTable = pIndex->pTable();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table partition
+  TablePtn* pPartition = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the lower and upper entries
   Ent* aLowerEntry = m_pRegSet->m_aLowerEntry;
   Ent* aUpperEntry = m_pRegSet->m_aUpperEntry;
@@ -127,10 +131,16 @@ void Step::vIndexDeleteNext(void)
   EntBuffer* pEntBuffer = m_pRegSet->m_pEntBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get IndexTree
+  i8 iIndexNo = pIndex->iIndexNo();
+  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   HV_Row hRow(pTable->pStreamDef(),C_ALL);
   HV_Rec hvRec(pTable->pStreamDef(),C_ALL);
   
   bool bBefore = true;
+  Ent* aEntryToDelete;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get a lower entry ?
@@ -163,8 +173,21 @@ void Step::vIndexDeleteNext(void)
       hvRec->vPrintRow();
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // delete the refernced crw
+      bool bDeleted = CrwBuffer::bDeleteRefdCrw(xRef);
+      ASSERT(bDeleted);
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // save the entry
+      aEntryToDelete = aLowerEntry;
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to next entry in the buffer
       aLowerEntry = pEntBuffer->aNextEntry(aLowerEntry, 0);
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // now purge the entry
+      pIndexTree->vDelete(pEntBuffer, aEntryToDelete);
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // no more entries ?
