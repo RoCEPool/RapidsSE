@@ -785,6 +785,41 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+: start::defineProc_UnloadReload
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // unload
+  sPath
+  "
+  procedure unload
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    scan $Table | stageC
+
+  stage stageC on origin :
+    wrFile $File | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // unload LineItem "/tmp/lineitem.crw" ;
+;
+
+/*----------------------------------------------------------------------------*/
 /* define apriori tables                                                      */
 /*----------------------------------------------------------------------------*/
 : start::defineTables
@@ -1108,6 +1143,7 @@
   start::defineProcedures3
   start::defineProcedures4
   start::defineProc_SteadyState
+  start::defineProc_UnloadReload
 
   // define the apriori system tables
   start::defineTables

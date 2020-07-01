@@ -10,9 +10,11 @@ _lineitem
 
 print "loading LineItem...";
 
-/time load lineItem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
+/time fload LineItem "/Users/Shared/tpch/SF1/lineitem.csv";
 
-tableScan lineItem;
+//tableScan lineItem;
+
+/time unload LineItem "/tmp/lineitem.crw" ;
 
 /*============================================================================*/
 /* end                                                                        */

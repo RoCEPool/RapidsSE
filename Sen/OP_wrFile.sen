@@ -5,13 +5,27 @@
 " OP_wrFile.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CRWBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: wrFile_CrwBuffer \handler
+
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
+
+  Operand[].writetoFile0
+  nullptr to Operand[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : wrFile_CsvBuffer \handler
 
-  //"Operand:- ZK_CSVBUFFER" .verbose
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
+
   Operand[].writetoFile0
   Operand[].delete
 
@@ -22,8 +36,6 @@
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : wrFile_StartMarker \handler
-
-  //"Operand:- ZK_STARTMARKER" .verbose
 
   // open the file for writing
   <fileNm> OPEN_WRITE op__file if
@@ -38,7 +50,6 @@
 /*----------------------------------------------------------------------------*/
 : wrFile_ExitMarker \handler
 
-  //"Operand:- ZK_EXITMARKER" .verbose
   File0[].isNull not if
     File0[].get file.close
     File0[].get file.delete
@@ -60,6 +71,7 @@
 
   op__topology
 
+  find: wrFile_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: wrFile_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: wrFile_StartMarker ZK_STARTMARKER op[].handler!
   find: wrFile_ExitMarker  ZK_EXITMARKER  op[].handler!

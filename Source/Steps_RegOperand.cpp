@@ -917,11 +917,23 @@ void Step::vRegOperandWriteToFile0(void)
   ASSERT(*m_pRegSet->m_xpFile0);
   ASSERT(m_pRegSet->m_xpFile0->bIsOpen());
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA) ;
-  char* aData = (char*)pCsvBuffer->ayDataArea();
+  if (CN_CSVBUFFER == (*m_pRegSet->m_xpOperandA)->eClass()) {
+    CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA) ;
+    char* aData = (char*)pCsvBuffer->ayDataArea();
   
-  m_pRegSet->m_xpFile0->vPrint("%s"_Stz,aData);
-  m_pRegSet->m_xpFile0->vFlush();
+    m_pRegSet->m_xpFile0->vPrint("%s"_Stz,aData);
+    //m_pRegSet->m_xpFile0->vFlush();
+  }
+  else
+  if (CN_CRWBUFFER == (*m_pRegSet->m_xpOperandA)->eClass()) {
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA) ;
+
+    bool b = m_pRegSet->m_xpFile0->bWriteBytes(pCrwBuffer,sizeof(CrwBuffer));
+    ASSERT(b);
+  }
+  else {
+    NEVER_REACH;
+  }
   
   // delete the buffer 
   //delete pCsvBuffer;
