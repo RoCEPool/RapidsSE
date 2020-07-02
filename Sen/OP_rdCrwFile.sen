@@ -1,0 +1,57 @@
+/*============================================================================*/
+/* OP_rdCrwFile.sen -- read crw file                                         */
+/*============================================================================*/
+
+" OP_rdCrwFile.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* rdCrwFile crwBuffer                                                        */
+/*----------------------------------------------------------------------------*/
+: rdCrwFile_crwBuffer
+
+//  crwBuffer::new locals| pCrwBuffer |
+//
+//  pCrwBuffer file0[] file.readChunk if
+//    file0[] file.tell "read a crw block (tell %v)" .printf
+//    pCrwBuffer to Operand[]
+//    Operand[].pipeOut
+//    true
+//  else
+//    pCrwBuffer crwBuffer.delete
+//    false
+//  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* rdCrwFile action                                                           */
+/*----------------------------------------------------------------------------*/
+: rdCrwFile_action
+
+  file::new to file0[]
+
+  <fileNm> OPEN_READ file0[] file.open if
+    file0[] file.size <fileNm> "File %v opened (%v bytes)" .printf
+
+    //file0[] file.seekRndCsv
+
+    begin
+      rdCrwFile_crwBuffer
+    while repeat
+
+    file0[].get file.close
+    <fileNm> "File %v closed" .printf
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: rdCrwFile :: rdCrwFile <FileNm> ;
+
+: rdCrwFile _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
