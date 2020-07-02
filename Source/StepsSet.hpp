@@ -464,6 +464,17 @@ public:
   void vRegIndexGet(void);
   void vRegIndexSet(void);
 
+  // indexStream
+  void vIndexStreamBufferNo(void);
+  void vIndexStreamClose(void);
+  void vIndexStreamDelete(void);
+  void vIndexStreamGet(void);
+  void vIndexStreamNew(void);
+  void vIndexStreamOpen(void);
+  void vIndexStreamRead(void);
+  void vIndexStreamSeek(void);
+  void vIndexStreamSet(void);
+
   // index tree
   void vIndexTreeInsEntBuffer(void);
 
