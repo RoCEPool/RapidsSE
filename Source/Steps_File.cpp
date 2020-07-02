@@ -257,6 +257,8 @@ void Step::vFileReadCrwBlock(void)
 
   i8 nReadBytes = pFile->nReadBytes(pCrwBuffer,sizeof(CrwBuffer));
 
+  RASSERT(CN_CRWBUFFER == pCrwBuffer->eClass());
+  
   m_pDataStack->vPushInt(nReadBytes);
   
   EXIT();
