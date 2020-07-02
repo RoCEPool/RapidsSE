@@ -278,10 +278,10 @@ void IndexStream::vPosition(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp,
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // exact key ?
-    if (eLowerRelnOp == RO_EQUAL_TO) {
-      bExactQuery = true;
-      eLowerRelnOp = RO_GREATER_EQUAL;
-    }
+//    if (eLowerRelnOp == RO_EQUAL_TO) {
+//      bExactQuery = true;
+//      eLowerRelnOp = RO_GREATER_EQUAL;
+//    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // first position at a level 0 buffer with lowerKey
@@ -335,13 +335,13 @@ void IndexStream::vPosition(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get upper relational OP
-  if (bExactQuery) {
-    eUpperRelnOp = RO_LESS_EQUAL;
-  }
-  else {
-    ASSERT(RO_NONE != eUpperRelnOp);
-    //eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
-  }
+//  if (bExactQuery) {
+//    eUpperRelnOp = RO_LESS_EQUAL;
+//  }
+//  else {
+//    ASSERT(RO_NONE != eUpperRelnOp);
+//    //eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer for the upper key

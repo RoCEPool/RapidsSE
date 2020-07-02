@@ -101,8 +101,7 @@ void Step::vIndexStreamOpen(void)
   IndexStream* pIndexStream = _pIndexStream(*m_pRegSet->m_xpIndexStream);
   
   bool bOpened = pIndexStream->bOpen();
-  
-  m_pDataStack->vPushInt(bOpened);
+  ASSERT(bOpened);
   
   EXIT();
 }
@@ -176,11 +175,16 @@ void Step::vIndexStreamSeek(void)
     eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   }
   
-  if ( ! StrLib::bSame(szUpperKey->azChar(), "") ) {
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the lower relational OP
-    eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+  if (eLowerRelnOp == RO_EQUAL_TO) {
+    eLowerRelnOp = RO_GREATER_EQUAL;
+    eUpperRelnOp = RO_LESS_EQUAL;
   }
+  else
+    if ( ! StrLib::bSame(szUpperKey->azChar(), "") ) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // get the lower relational OP
+      eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+    }
   
   pIndexStream->vPosition(eLowerRelnOp, szLowerKey, eUpperRelnOp, szUpperKey);
   
