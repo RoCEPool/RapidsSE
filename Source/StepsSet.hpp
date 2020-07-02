@@ -181,7 +181,9 @@ public:
 
 
   // crwBuffer
+  void vCrwBufferDelete(void);
   void vCrwBufferOperandDump(void);
+  void vCrwBufferNew(void);
   void vCrwBufferSnapshot(void);
 
   // csv buffer
