@@ -17,7 +17,7 @@ __aFooterFunction(IndexStream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IndexStream::IndexStream(TablePtn* pTablePtn, Index* pIndex)
-: Object(CN_PTNSTREAM)
+: Object(CN_INDEXSTREAM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
   
@@ -30,7 +30,7 @@ IndexStream::IndexStream(TablePtn* pTablePtn, Index* pIndex)
   m_aLowerEntry  = nullptr;
   m_aUpperEntry  = nullptr;
   
-  _checkInitialised_(CN_PTNSTREAM);
+  _checkInitialised_(CN_INDEXSTREAM);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
 }
