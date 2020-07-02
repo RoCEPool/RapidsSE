@@ -210,6 +210,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("IndexStream[]"_Stz)) {
+    pCurrentWord->vEncodeCall("IndexStream[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("IndexTree[]"_Stz)) {
     pCurrentWord->vEncodeCall("IndexTree[].set"_Stz);
     EXIT();

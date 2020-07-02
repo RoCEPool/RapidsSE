@@ -35,6 +35,7 @@ namespace Tasks
     REG<CrwHash>     m_xpCrwHash;
     REG<Index>       m_xpIndex;
     REG<IndexDef>    m_xpIndexDef;
+    REG<IndexStream> m_xpIndexStream;
     REG<IndexTree>   m_xpIndexTree;
     REG<Operand>     m_xpInfoSet;
     REG<Table>       m_xpInfoSetTable;
