@@ -14,7 +14,17 @@ print "loading LineItem...";
 
 //tableScan lineItem;
 
+tableSizes ;
+
 /time unload LineItem "/tmp/lineitem.crw" ;
+
+/time truncate LineItem;
+
+tableSizes ;
+
+/time reload LineItem "/tmp/lineitem.crw" ;
+
+tableSizes ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -9,17 +9,17 @@
 /*----------------------------------------------------------------------------*/
 : rdCrwFile_crwBuffer
 
-//  crwBuffer::new locals| pCrwBuffer |
-//
-//  pCrwBuffer file0[] file.readChunk if
-//    file0[] file.tell "read a crw block (tell %v)" .printf
-//    pCrwBuffer to Operand[]
-//    Operand[].pipeOut
-//    true
-//  else
-//    pCrwBuffer crwBuffer.delete
-//    false
-//  then
+  crwBuffer::new locals| pCrwBuffer |
+
+  pCrwBuffer file0[] file.readCrwBlock if
+    //file0[] file.tell "read a crw block (tell %v)" .printf
+    pCrwBuffer to Operand[]
+    Operand[].pipeOut
+    true
+  else
+    pCrwBuffer crwBuffer.delete
+    false
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +50,12 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: rdCrwFile :: rdCrwFile <FileNm> ;
 
-: rdCrwFile _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: rdCrwFile _cmdTags tagCopy: localLiteOp_tags
+  tags{
+    <cmdDesc>     = "--desc for op--"
+    <params>      = 1
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */

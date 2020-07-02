@@ -816,7 +816,7 @@
   "
   api::addProcedure
 
-  // unload LineItem "/tmp/lineitem.crw" ;
+  // /time unload LineItem "/tmp/lineitem.crw" ;
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -828,22 +828,19 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodicOp once | rdCrwFile $File | stageB
 
   stage stageB on all partitions :
-    rdCsvChunk $File | stageC
+    insert $Table | stageC
 
   stage stageC on origin :
-    insert $Table | stageD
-
-  stage stageD on origin :
     sink | stageA
 
   end ;
   "
   api::addProcedure
 
-// unload LineItem "/tmp/lineitem.crw" ;
+  // /time reload LineItem "/tmp/lineitem.crw" ;
 
 ;
 
