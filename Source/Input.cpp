@@ -1305,7 +1305,51 @@ void Input::vCollectCppOther(void)
       // push back the unconsumed char
       vUngetAnnCharStripped();
       
-      // set last single character as .
+      // set last single character as |
+      m_xAnnChar.m_cChar = '|';
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather *| as a string
+  if (m_xAnnChar.bIsAsterisk()) {
+    
+    vGetAnnCharStripped();
+    
+    if (m_xAnnChar.bIsPipe()) {
+      *z++ = '*';
+      *z++ = '|';
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_STRING);
+      return;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetAnnCharStripped();
+      
+      // set last single character as *
+      m_xAnnChar.m_cChar = '*';
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather |# as a string
+  if (m_xAnnChar.bIsPipe()) {
+    
+    vGetAnnCharStripped();
+    
+    if (m_xAnnChar.bIsHash()) {
+      *z++ = '|';
+      *z++ = '#';
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_STRING);
+      return;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetAnnCharStripped();
+      
+      // set last single character as |
       m_xAnnChar.m_cChar = '|';
     }
   }

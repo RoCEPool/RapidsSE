@@ -64,19 +64,26 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
 
   *ppJob = nullptr;
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Word* pProcWord = Procedure::pFindProcedure(pCmdTknVec);
-  if (pProcWord) {
-    sSTMT sPipelineSmt;
-    if (Procedure::bTranslateProcedure(sPipelineSmt.pString(),
-                                       pCmdTknVec,pProcWord)) {
-      
-      pCmdTknVec->vSoftReset();
-      pCmdTknVec->vTokenise(sPipelineSmt);
+  if (bShortForm(pCmdTknVec)) {
+    if (! bExpandToLongForm(pCmdTknVec)) {
+      return EC_INVALID_COMMAND;
     }
   }
+  else {
+    Word* pProcWord = Procedure::pFindProcedure(pCmdTknVec);
+    if (pProcWord) {
+      sSTMT sPipelineSmt;
+      if (Procedure::bTranslateProcedure(sPipelineSmt.pString(),
+                                         pCmdTknVec,pProcWord)) {
+      
+        pCmdTknVec->vSoftReset();
+        pCmdTknVec->vTokenise(sPipelineSmt);
+      }
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) )
     return EC_INVALID_COMMAND;
@@ -191,6 +198,122 @@ void Api::vJob_4_DeleteJob(Job** ppJob)
   * ppJob = nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is the command a shortform?                                                */
+/*----------------------------------------------------------------------------*/
+bool Api::bShortForm(TokenVec* pCmdTknVec)
+{
+
+  i8 i_Fan = pCmdTknVec->iFindToken("*|"_Stz);
+  if (C_UNKNOWN != i_Fan)
+    return true;
+
+  i_Fan = pCmdTknVec->iFindToken("|#"_Stz);
+  if (C_UNKNOWN != i_Fan)
+    return true;
+
+  return false;
+  
+//  Token* pTkn0 = pCmdTknVec->pGet(0);
+//
+//  Dic* pRootDic = AM::pRootDic();
+//
+//  Word* pOperatorCatg = pRootDic->pFindWord("\\operator"_Stz);
+//
+//  s32 sOpReq = pTkn0->szChars();
+//  sOpReq.vConcat("_req"_Stz);
+//
+//  Word* pOp_maybe = pRootDic->pFindWord(sOpReq);
+//
+//  if (pOp_maybe && pOp_maybe->pCategory() == pOperatorCatg)
+//    return true;
+//  else
+//    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* expand shortform into longform                                             */
+/*----------------------------------------------------------------------------*/
+bool Api::bExpandToLongForm(TokenVec* pCmdTknVec)
+{
+  TokenVec* pAllPtnVec;
+  TokenVec* pOnOriginVec;
+  
+  s48K sLongForm;
+  
+  
+  i8 nTkn = pCmdTknVec->nTokens();
+  
+  i8 i_Fan = pCmdTknVec->iFindToken("*|"_Stz);
+  
+  if (C_UNKNOWN != i_Fan) {
+    pAllPtnVec   = TokenVec::pGetSubVec(pCmdTknVec,0,i_Fan-1);
+    pOnOriginVec = TokenVec::pGetSubVec(pCmdTknVec,i_Fan+1,nTkn-1);
+    
+    sLongForm =
+      "pipeline fanin "
+      "begin "
+      " "
+      "  stage stageA on origin : "
+      "    start | periodicOp once | stageB "
+      " "
+      "  stage stageB on all partitions : "
+      "    /ALL_PARTITIONS/ | stageC "
+      " "
+      "  stage stageC on origin : "
+      "    /ON_ORIGIN/ | stageD "
+      " "
+      "  stage stageD on origin : "
+      "    sink | stageA "
+      " "
+      "end ;"_Stz;
+  }
+  else {
+    i_Fan = pCmdTknVec->iFindToken("|#"_Stz);
+    pOnOriginVec = TokenVec::pGetSubVec(pCmdTknVec,0,i_Fan-1);
+    pAllPtnVec   = TokenVec::pGetSubVec(pCmdTknVec,i_Fan+1,nTkn-1);
+    
+    sLongForm =
+      "pipeline fanout "
+      "begin "
+      " "
+      "  stage stageA on origin : "
+      "    start | periodicOp once | /ON_ORIGIN/ | stageB "
+      " "
+      "  stage stageB on all partitions : "
+      "    /ALL_PARTITIONS/ | stageC "
+      " "
+      "  stage stageC on origin : "
+      "    sink | stageA "
+      " "
+      "end ;"_Stz;
+  }
+  
+  s4K sAllPtn;
+  s4K sOnOrigin;
+
+  pAllPtnVec->vToTknString(sAllPtn);
+  pOnOriginVec->vToTknString(sOnOrigin);
+  
+  vTrace("%s\n"_Stz,sAllPtn.azChar());
+  vTrace("%s\n"_Stz,sOnOrigin.azChar());
+
+  StrLib::bReplace(sLongForm.azChar(),
+                   "/ALL_PARTITIONS/",
+                   sAllPtn.azChar());
+  
+  StrLib::bReplace(sLongForm.azChar(),
+                   "/ON_ORIGIN/",
+                   sOnOrigin.azChar());
+  
+  vTrace("%s\n"_Stz,sLongForm.azChar());
+  
+  pCmdTknVec->vSoftReset();
+  
+  pCmdTknVec->vTokenise(sLongForm);
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* passes the low-memory condition?                                           */

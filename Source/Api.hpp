@@ -24,6 +24,9 @@ namespace Interface
   static void vJob_3_PostJob(Job* pJob);
   static void vJob_4_DeleteJob(Job** ppJob);
 
+  static bool bShortForm(TokenVec* pCmdTknVec);
+  static bool bExpandToLongForm(TokenVec* pCmdTknVec);
+
   static bool bPassesLowMem(void);
 
   static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);

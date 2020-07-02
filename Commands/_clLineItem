@@ -10,21 +10,27 @@ _lineitem
 
 print "loading LineItem...";
 
-/time fload LineItem "/Users/Shared/tpch/SF1/lineitem.csv";
+/time fload LineItem "../FASTLOAD/data/lineitem_100.csv";
+// /time fload LineItem "/Users/Shared/tpch/SF1/lineitem.csv";
 
 //tableScan lineItem;
 
 tableSizes ;
 
-/time unload LineItem "/tmp/lineitem.crw" ;
+///time unload LineItem "/tmp/lineitem.crw" ;
+//
+///time truncate LineItem;
+//
+//tableSizes ;
+//
+///time reload LineItem "/tmp/lineitem.crw" ;
+//
+//tableSizes ;
 
-/time truncate LineItem;
 
-tableSizes ;
+// scan LineItem *| wrFile "/tmp/lineitem.crw" ;
 
-/time reload LineItem "/tmp/lineitem.crw" ;
-
-tableSizes ;
+// rdCrwFile "/tmp/lineitem.crw" |# insert LineItem ;
 
 /*============================================================================*/
 /* end                                                                        */
