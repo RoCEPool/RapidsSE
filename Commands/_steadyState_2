@@ -7,6 +7,47 @@ bc;
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Steady State 2";
 
+_lineitemSteady
+
+space;
+
+Print "\n\n-------------------------------------------------";
+Print "FIRST ITERATION";
+Print "-------------------------------------------------";
+steadyState_2 lineitem "/DATA/TPCH/lineItem10k.csv" 1 ;
+tableSizes;
+antbl lineitem;
+anidx lineitem lineitem_idx;
+
+Print "\n\n-------------------------------------------------";
+Print "SECOND ITERATION";
+Print "-------------------------------------------------";
+steadyState_2 lineitem "/DATA/TPCH/lineItem10k.csv" 1 ;
+tableSizes;
+antbl lineitem;
+anidx lineitem lineitem_idx;
+
+Print "\n\n-------------------------------------------------";
+Print "THIRD ITERATION";
+Print "-------------------------------------------------";
+steadyState_2 lineitem "/DATA/TPCH/lineItem10k.csv" 1 ;
+tableSizes;
+antbl lineitem;
+anidx lineitem lineitem_idx;
+
+Print "\n\n-------------------------------------------------";
+Print "FOURTH ITERATION";
+Print "-------------------------------------------------";
+steadyState_2 lineitem "/DATA/TPCH/lineItem10k.csv" 1 ;
+tableSizes;
+antbl lineitem;
+anidx lineitem lineitem_idx;
+
+space;
+
+drop table nation;
+
+/*
 trackMemory;
 
 _lineitemSteady
@@ -18,7 +59,7 @@ vistbl lineitem;
 /time steadyState_2 lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv" 1;
 antbl lineitem;
 vistbl lineitem;
-/*
+
 Print "-----------------------------";
 Print "TABLE SIZE";
 Print "-----------------------------";
