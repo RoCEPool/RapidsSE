@@ -85,7 +85,7 @@ namespace Pipelines         { class Xmits;           class Op;
                               class StageVec;                                 }
 namespace PipelineSpecs     { class OpSpec;          class PipelineSpec;
                               class StageSpec;                                }
-namespace Plans             {                                                 }
+namespace Plans             { class Planner;                                  }
 namespace Pool              { class BufferPool;      class HeapBuffer;
                               class HeapMem;         class PoolBuffer;        }
 namespace Prompt            {   class SePrompt;                               }

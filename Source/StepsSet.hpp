@@ -469,6 +469,7 @@ public:
   void vIndexStreamClose(void);
   void vIndexStreamDelete(void);
   void vIndexStreamGet(void);
+  void vIndexStreamIsNull(void);
   void vIndexStreamNew(void);
   void vIndexStreamOpen(void);
   void vIndexStreamRead(void);
@@ -1023,6 +1024,7 @@ public:
   void vPtnStreamClose(void);
   void vPtnStreamDelete(void);
   void vPtnStreamGet(void);
+  void vPtnStreamIsNull(void);
   void vPtnStreamNew(void);
   void vPtnStreamOpen(void);
   void vPtnStreamRead(void);

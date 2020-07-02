@@ -11,8 +11,9 @@ void Step::vAddSteps_PtnStream(void)
 {
   vAddStep("ptnStream[]"_Stz,           &Step::vPtnStreamGet);
   vAddStep("ptnStream[].get"_Stz,       &Step::vPtnStreamGet);
+  vAddStep("ptnStream[].isNull"_Stz,    &Step::vPtnStreamIsNull);
   vAddStep("ptnStream[].set"_Stz,       &Step::vPtnStreamSet);
-
+  
   vAddStep("ptnStream::new"_Stz,        &Step::vPtnStreamNew);
   
   vAddStep("ptnStream.bufferNo"_Stz,    &Step::vPtnStreamBufferNo);
@@ -75,6 +76,18 @@ void Step::vPtnStreamGet(void)
   ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpPtnStream);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ptnStream[].isNull -- is ptnStream null ?                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vPtnStreamIsNull(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pRegSet->m_xpPtnStream.bIsNull() ? 1 : 0);
   
   EXIT();
 }
