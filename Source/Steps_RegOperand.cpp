@@ -918,7 +918,7 @@ void Step::vRegOperandWriteToFile0(void)
   ASSERT(m_pRegSet->m_xpFile0->bIsOpen());
   
   if (CN_CSVBUFFER == (*m_pRegSet->m_xpOperandA)->eClass()) {
-    CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA) ;
+    CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
     char* aData = (char*)pCsvBuffer->ayDataArea();
   
     m_pRegSet->m_xpFile0->vPrint("%s"_Stz,aData);
@@ -926,9 +926,12 @@ void Step::vRegOperandWriteToFile0(void)
   }
   else
   if (CN_CRWBUFFER == (*m_pRegSet->m_xpOperandA)->eClass()) {
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA) ;
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
+    
+    byte* aCrwProper = aAdd<byte*>(pCrwBuffer,sizeof(DataBuffer));
+    i8 nSizeCrwProper = sizeof(CrwBuffer) - sizeof(DataBuffer);
 
-    bool b = m_pRegSet->m_xpFile0->bWriteBytes(pCrwBuffer,sizeof(CrwBuffer));
+    bool b = m_pRegSet->m_xpFile0->bWriteBytes(aCrwProper,nSizeCrwProper);
     ASSERT(b);
   }
   else {

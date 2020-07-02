@@ -255,7 +255,10 @@ void Step::vFileReadCrwBlock(void)
 
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
 
-  i8 nReadBytes = pFile->nReadBytes(pCrwBuffer,sizeof(CrwBuffer));
+  byte* aCrwProper = aAdd<byte*>(pCrwBuffer,sizeof(DataBuffer));
+  i8 nSizeCrwProper = sizeof(CrwBuffer) - sizeof(DataBuffer);
+  
+  i8 nReadBytes = pFile->nReadBytes(aCrwProper,nSizeCrwProper);
 
   RASSERT(CN_CRWBUFFER == pCrwBuffer->eClass());
   
