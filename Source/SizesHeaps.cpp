@@ -117,6 +117,7 @@ SizeHeap gxaSizeHeap[]
   { 'I' - ('A' - 1),            HT_INVALID           }, // CN__I__
   { sizeof(Index),              HT_TRANSIENT_TINY    }, // CN_INDEX
   { sizeof(IndexDef),           HT_TRANSIENT_MEDIUM  }, // CN_INDEXDEF
+  { sizeof(IndexStream),        HT_TRANSIENT_TINY    }, // CN_INDEXSTREAM
   { sizeof(IndexTree),          HT_TRANSIENT_TINY    }, // CN_INDEXTREE
   { sizeof(IndexTreeVec),       HT_TRANSIENT_MEDIUM  }, // CN_INDEXTREEVEC
   { sizeof(IdxVec),             HT_TRANSIENT_MEDIUM  }, // CN_IDXVEC

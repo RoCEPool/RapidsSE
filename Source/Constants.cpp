@@ -280,6 +280,7 @@ void Constants::vAddConstantsCpp(void)
   /* 27 */ vAddConstant("CN_HEAPBUFFER"_Stz,   CN_HEAPBUFFER);
   
   /* 28 */ vAddConstant("CN_INDEX"_Stz,        CN_INDEX);
+  /*    */ vAddConstant("CN_INDEXSTREAM"_Stz,  CN_INDEXSTREAM);
   /*    */ //vAddConstant("CN_INDEXDEFN"_Stz,    CN_INDEXDEFN);
   /*  4 */ vAddConstant("CN_INTVAL"_Stz,       CN_INTVAL);
 
