@@ -25,6 +25,7 @@ void Step::vAddSteps_File(void)
   vAddStep("file.open"_Stz,              &Step::vFileOpen);
   vAddStep("file.path@"_Stz,             &Step::vFilePathGet);
   vAddStep("file.readChunk"_Stz,         &Step::vFileReadChunk);
+  vAddStep("file.readCrwBlock"_Stz,      &Step::vFileReadCrwBlock);
   vAddStep("file.readLine"_Stz,          &Step::vFileReadLine);
   vAddStep("file.seek"_Stz,              &Step::vFileSeek);
   vAddStep("file.seekRndCsv"_Stz,        &Step::vFileSeekRndCsv);
@@ -240,6 +241,24 @@ void Step::vFileReadChunk(void)
   
   m_pDataStack->vPushInt(nReadBytes);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file.readCrwBlock -- read a crw block returning bytes read                 */
+/*----------------------------------------------------------------------------*/
+void Step::vFileReadCrwBlock(void)
+{
+  ENTRY();
+  
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+
+  i8 nReadBytes = pFile->nReadBytes(pCrwBuffer,sizeof(CrwBuffer));
+
+  m_pDataStack->vPushInt(nReadBytes);
+  
   EXIT();
 }
 

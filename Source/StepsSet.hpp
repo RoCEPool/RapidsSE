@@ -354,6 +354,7 @@ public:
   void vFilePathGet(void);
   void vFilePrint(void);
   void vFileReadChunk(void);
+  void vFileReadCrwBlock(void);
   void vFileReadLine(void);
   void vFileSeek(void);
   void vFileSeekRndCsv(void);
