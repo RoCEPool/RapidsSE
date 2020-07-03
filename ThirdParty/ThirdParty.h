@@ -13,7 +13,10 @@
 #include "Mersenne.hpp"
 #include "shoco.h"
 #include "xxhash.hpp"
+
+#ifdef WITH_APPLE
 #include "libtcc_rjh.hpp"
+#endif
 
 
 //#pragma GCC diagnostic warning "-Wunused-variable"
