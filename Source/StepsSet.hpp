@@ -341,6 +341,13 @@ public:
   void vExecutableIsDebug(void);
   void vExecutableIsRelease(void);
 
+  // expression evaluation vector
+  void vExprVecDelete(void);
+  void vExprVecEvalAll(void);
+  void vExprVecEvalOne(void);
+  void vExprVecGet(void);
+  void vExprVecNew(void);
+
   // file
   void vFile0Get(void);
   void vFile0GetEofLocation(void);
