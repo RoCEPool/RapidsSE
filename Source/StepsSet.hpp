@@ -343,6 +343,10 @@ public:
 
   // expression evaluator
   void vExprCompile(void);
+  void vExprDelete(void);
+  void vExprNew(void);
+  void vExprSourceFetch(void);
+  void vExprSourceStore(void);
 
   // expression evaluation vector
   void vExprVecDelete(void);
