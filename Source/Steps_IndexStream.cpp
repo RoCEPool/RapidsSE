@@ -186,7 +186,7 @@ void Step::vIndexStreamSeek(void)
       eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
     }
   
-  pIndexStream->vPosition(eLowerRelnOp, szLowerKey, eUpperRelnOp, szUpperKey);
+  pIndexStream->vSeek(eLowerRelnOp, szLowerKey, eUpperRelnOp, szUpperKey);
   
   EXIT();
 }

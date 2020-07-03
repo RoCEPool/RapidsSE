@@ -23,8 +23,6 @@ IndexStream::IndexStream(TablePtn* pTablePtn, Index* pIndex)
   
   m_pTablePtn    = pTablePtn;
   m_pIndex       = pIndex;
-  m_pNextBuffer  = nullptr;
-  m_iLglBufferNo = -1; // correct
 
   m_pEntBuffer   = nullptr;
   m_aLowerEntry  = nullptr;
@@ -49,23 +47,13 @@ IndexStream::~IndexStream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get current buffer no                                                      */
-/*----------------------------------------------------------------------------*/
-i8 IndexStream::iBufferNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
- 
-  return m_iLglBufferNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* close                                                                      */
 /*----------------------------------------------------------------------------*/
 void IndexStream::vClose(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
  
-  m_pNextBuffer = nullptr;
+  m_pEntBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,14 +175,13 @@ void IndexStream::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
  
-  m_pNextBuffer  = m_pTablePtn->pRootCrwBuffer();
-  m_iLglBufferNo = -1; // correct
+  m_pEntBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* position                                                                   */
 /*----------------------------------------------------------------------------*/
-void IndexStream::vPosition(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz* szUpperKey)
+void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz* szUpperKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
   

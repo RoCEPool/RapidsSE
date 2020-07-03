@@ -13,9 +13,6 @@ namespace Partitioning
     EntBuffer* m_pEntBuffer;
     Ent*       m_aLowerEntry;
     Ent*       m_aUpperEntry;
-    
-    CrwBuffer* m_pNextBuffer;
-    i8         m_iLglBufferNo;
 
     // must be last
     Footer m_xFooter;
@@ -27,12 +24,11 @@ namespace Partitioning
     IndexStream(TablePtn* pTablePtn, Index* pIndex);
    ~IndexStream(void) noexcept(false);
   
-    i8   iBufferNo(void);
     void vClose(void);
     bool bOpen(void);
     CrwBuffer* pRead(RowOnce* pRowOnce);
     void vReset(void);
-    void vPosition(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz* szUpperKey);
+    void vSeek(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz* szUpperKey);
 
   private:
     Footer* aFooter(void);
