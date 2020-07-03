@@ -78,6 +78,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ENUMFLAGS,
   /* */ CN_EXEMPLAR,
   /* */ CN_EXPR,
+  /* */ CN_EXPRVEC,
 
   /* */ CN__F__,
   /* */ CN_FETCHBUFFER,
@@ -419,6 +420,7 @@ static Stz* aCN[]
   /* */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
   /* */ "EXEMPLAR"_Stz,            // CN_EXEMPLAR
   /* */ "EXPR"_Stz,                // CN_EXPR
+  /* */ "EXPRVEC"_Stz,             // CN_EXPRVEC
 
   /* */ "_F__"_Stz,                // CN__F__
   /* */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER

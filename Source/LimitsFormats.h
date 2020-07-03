@@ -7,6 +7,7 @@ static const i8 C_MAX_BUCKETS       = C_64KB;
 static const i8 C_MAX_COLUMNS       = 150;    // max columns per table
 static const i8 C_MAX_COLUMNVECS    = 32;     // max column vectors per streamDef
 static const i8 C_MAX_DEFCOLUMNS    = 256;    // max columns in a stream definition
+static const i8 C_MAX_EXPR          = 256;    // max expressions in expr vec
 static const i8 C_MAX_FROMVEC       = 16;
 static const i8 C_MAX_IDXCOLVEC     = 16;
 static const i8 C_MAX_INDEXES       = 16;     // max indexes per table

@@ -1158,6 +1158,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_COLUMNS        = %lld\n"_Stz,C_MAX_COLUMNS);
   vTrace("  C_MAX_COLUMNVECS     = %lld\n"_Stz,C_MAX_COLUMNVECS);
   vTrace("  C_MAX_DEFCOLUMNS     = %lld\n"_Stz,C_MAX_DEFCOLUMNS);
+  vTrace("  C_MAX_EXPR           = %lld\n"_Stz,C_MAX_EXPR);
   vTrace("  C_MAX_FLT_PRECISION  = %lld\n"_Stz,C_MAX_FLT_PRECISION);
   vTrace("  C_MAX_FROMVEC        = %lld\n"_Stz,C_MAX_FROMVEC);
   vTrace("  C_MAX_IDXCOLVEC      = %lld\n"_Stz,C_MAX_IDXCOLVEC);
