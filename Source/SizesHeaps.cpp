@@ -63,6 +63,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Dir),                HT_TRANSIENT_TINY    }, // CN_DIR
   { sizeof(DteVal),             HT_INVALID           }, // CN_DTEVAL
   { sizeof(Dynamo),             HT_TRANSIENT_TINY    }, // CN_DYNAMO
+  { sizeof(DynFun),             HT_TRANSIENT_TINY    }, // CN_DYNFUN
 
   { 'E' - ('A' - 1),            HT_INVALID           }, // CN__E__
   { sizeof(EdtVal),             HT_INVALID           }, // CN_EDTVAL

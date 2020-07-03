@@ -14,6 +14,7 @@ namespace Expressions
 
 //------------------------------------------------------------------------------
 
+#include "DynFun.hpp"
 #include "Expr.hpp"
 #include "ExprVec.hpp"
 

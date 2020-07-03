@@ -67,7 +67,8 @@ enum eCN : u2 // Class Number
   /* */ CN_DIR,
   /* */ CN_DTEVAL,
   /* */ CN_DYNAMO,
-  
+  /* */ CN_DYNFUN,
+
   /* */ CN__E__,
   /* */ CN_EDTVAL,
   /* */ CN_ENCODING,
@@ -409,7 +410,8 @@ static Stz* aCN[]
   /* */ "DIR"_Stz,                 // CN_DIR
   /* */ "DTEVAL"_Stz,              // CN_DTEVAL
   /* */ "DYNAMO"_Stz,              // CN_DYNAMO
-  
+  /* */ "DYNFUN"_Stz,              // CN_DYNFUN
+
   /* */ "_E__"_Stz,                // CN__E__
   /* */ "EDTVAL"_Stz,              // CN_EDTVAL
   /* */ "ENCODING"_Stz,            // CN_ENCODING
