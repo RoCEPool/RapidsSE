@@ -46,6 +46,7 @@ namespace Esses             { template <int BYTES> class String_t;
                               typedef Bytes_t<C_32K>   b32K;  // note: K, not KB
                               typedef Bytes_t<C_256K>  b256K; // note: K, not KB
                                                                               }
+namespace Expressions       {                                                 }
 namespace Focals            { class ReqTuple;                                 }
 namespace Folders           {                                                 }
 namespace FrontEnd          { class Clause_Project;  class Clause_From;
