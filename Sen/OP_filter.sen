@@ -21,11 +21,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                   EACH */
+/* on ZK_RSBBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
-: filter_CsvBuffer \handler
+: filter_RsbBuffer \handler
 
-  ZK_CSVBUFFER_handler
+  ZK_RSBBUFFER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -48,9 +48,9 @@
 
   op__topology
 
-  find: filter_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: filter_EosMarker   ZK_EOSMARKER   op[].handler!
   find: filter_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: filter_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: filter_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
