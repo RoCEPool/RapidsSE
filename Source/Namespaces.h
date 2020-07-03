@@ -138,6 +138,7 @@ using namespace DynamoCompiler;
 using namespace Entries;
 using namespace Enums;
 using namespace Esses;
+using namespace Expressions;
 using namespace Focals;
 using namespace Folders;
 using namespace FrontEnd;
