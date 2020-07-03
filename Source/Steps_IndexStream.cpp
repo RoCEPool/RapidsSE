@@ -14,6 +14,7 @@ void Step::vAddSteps_IndexStream(void)
   vAddStep("indexStream[]"_Stz,          &Step::vIndexStreamGet);
   vAddStep("indexStream[].close"_Stz,    &Step::vIndexStreamClose);
   vAddStep("indexStream[].delete"_Stz,   &Step::vIndexStreamDelete);
+  vAddStep("indexStream[].deleteNext"_Stz, &Step::vIndexStreamDeleteNext);
   vAddStep("indexStream[].get"_Stz,      &Step::vIndexStreamGet);
   vAddStep("indexStream[].isNull"_Stz,   &Step::vIndexStreamIsNull);
   vAddStep("indexStream[].open"_Stz,     &Step::vIndexStreamOpen);
@@ -50,6 +51,21 @@ void Step::vIndexStreamDelete(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* IndexStream[].deleteNext                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexStreamDeleteNext(void)
+{
+  ENTRY();
+  
+  IndexStream* pIndexStream = _pIndexStream(*m_pRegSet->m_xpIndexStream);
+  
+  bool bMoreToDelete = pIndexStream->bDelete();
+  
+  m_pDataStack->vPushInt(bMoreToDelete);
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* indexStream[] -- get partition stream                                      */
 /*----------------------------------------------------------------------------*/

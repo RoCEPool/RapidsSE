@@ -57,6 +57,101 @@ void IndexStream::vClose(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete next buffer                                                         */
+/*----------------------------------------------------------------------------*/
+bool IndexStream::bDelete(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert we have a lower entry ?
+  ASSERT( m_aLowerEntry );
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Table* pTable = m_pIndex->pTable();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get IndexTree
+  i8 iIndexNo = m_pIndex->iIndexNo();
+  IndexTree* pIndexTree = m_pTablePtn->pIndexTree(iIndexNo);
+  
+  HV_Row hRow(pTable->pStreamDef(),C_ALL);
+  HV_Rec hvRec(pTable->pStreamDef(),C_ALL);
+  
+  bool bBefore = true;
+  
+  vTrace("------------------------------------------\n"_Stz);
+  vTrace("Deleting rows:\n"_Stz);
+  
+  Ent* aEntryToDelete;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru the buffers starting from aLowerEntry
+  while (m_aLowerEntry) {
+    
+    // is lowerEntry before upperEntry ?
+    if (m_aUpperEntry)
+      bBefore = (m_aLowerEntry == m_aUpperEntry) ? false : true;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lowerEntry is before upperEntry
+    if (bBefore) {
+      
+      // get the crw entry from the lowerEntry
+      Ref xRef = m_aLowerEntry->rxRef();
+      
+      Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
+      
+      RowInflator::vInflateRow(hRow,aCrw);
+      hvRec->vAppend(hRow);
+      hvRec->vPrintRow();
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // delete the refernced crw
+      bool bDeleted = CrwBuffer::bDeleteRefdCrw(xRef);
+      ASSERT(bDeleted);
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // save the entry
+      aEntryToDelete = m_aLowerEntry;
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // move to next entry in the buffer
+      m_aLowerEntry = m_pEntBuffer->aNextEntry(m_aLowerEntry, 0);
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // now purge the entry
+      pIndexTree->vDelete(m_pEntBuffer, aEntryToDelete);
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // no more entries ?
+      if ( ! m_aLowerEntry ) {
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // move to next buffer
+        m_pEntBuffer = m_pEntBuffer->pNextBuffer();
+        
+        // next buffer ?
+        if ( m_pEntBuffer )
+          m_aLowerEntry = m_pEntBuffer->aLeadEntry();
+      }
+    }
+    else {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // we are done
+      m_aLowerEntry = nullptr;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // check if session exiting
+    //if (pSession->m_bSessionExiting)
+    //  aItem = nullptr;
+  }
+  
+  return m_aLowerEntry ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* open                                                                       */
 /*----------------------------------------------------------------------------*/
 bool IndexStream::bOpen(void)

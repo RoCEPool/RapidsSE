@@ -28,6 +28,7 @@
 : toPtnRsb_RsbBuffer \handler
 
   PipeIn[] ToPtnRsb[].convert
+  nullptr to Pipein[]
 
   grid::partitions 0
   do

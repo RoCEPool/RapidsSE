@@ -19,19 +19,17 @@
   // grab the table ptn read lock
   tablePtn[] tablePtnGrabRead
 
+  // new an index stream
+  index[] tablePtn[] indexStream::new to indexStream[]
+
+  // open index stream to access index
+  indexStream[].open
+
   // position in the index
   iPhrase  // phrase
   lowerKey // lower
   upperKey // upper
-  planner[] tablePtn[] index[].position
-
-  // fetch next buffer
-  //rowOnce[].isNull if
-  //  nullptr
-  //else
-  //  rowOnce[]
-  //then
-  tablePtn[] index[].deleteNext
+  planner[] indexStream[].seek
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -97,8 +95,10 @@
       "*scan*" .verbose
       // now get excat key rows from index
       tablePtn[] tablePtnGrabRead
-      tablePtn[].root to Subset[]
-      Subset[] to Operand[]
+      tablePtn[] ptnStream::new to ptnStream[]
+
+      // open ptn stream for the tablePtn
+      ptnStream[] ptnStream.open assert
     endof
 
   endcase
@@ -142,35 +142,46 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                               */
+/* handler for delete_rows ...                                                */
 /*----------------------------------------------------------------------------*/
-/*
-: delete_CrwBuffer \handler
+: delete_rows \handler
 
-  //"Operand:- ZK_CRWBUFFER" .verbose
+  "Handler:- delete_rows" .verbose
 
-  // pipeout the Operand
-  Operand[].pipeOut
+  0 locals| bMoreToDelete |
 
   // get the fetchTechnique
   Counter1[] planner[].fetchTechnique@
   case
     AT_SCAN of
-      Subset[].nextBuffer to Operand[]
+     0 assert
     endof
 
-    // all other types of fetches, just fetchNext
-    tablePtn[] index[].deleteNext
+    indexStream[].deleteNext to bMoreToDelete
 
   endcase
 
   // no more data for counter1[] phrase ?
-  Operand[].isNull if
+  bMoreToDelete not if
 
     // any more phrases ?
     Counter1[] 1 + to Counter1[]
     Counter1[] Counter0[] >= if
       // all done
+      // close and delete partition stream
+      ptnStream[].isNull not if
+        ptnStream[] ptnStream.close
+        ptnStream[] ptnStream.delete
+        nullptr to ptnStream[]
+      then
+
+      // close and delete index stream
+      indexStream[].isNull not if
+        indexStream[].close
+        indexStream[].delete
+        nullptr to indexStream[]
+      then
+
       tablePtn[] tablePtnDropRead
 
       // delete the planner
@@ -180,13 +191,16 @@
       Operand[].newEosMarker
       Operand[].pipeOut
     else
-      // position and begin delete for next phrase
+      // position and fetch first buffer for next phrase
       Counter1[] beginDelete
     then
-  then
 
-  true
- */
+  else
+
+    // call this handler again to process next buffer
+    true regSet::callAgain!
+
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -218,17 +232,9 @@
   // position and begin delete for the first phrase
   Counter1[] beginDelete
 
-  // any data ?
-  Operand[].isNull if
-    tablePtn[] tablePtnDropRead
-
-    // delete the planner
-    planner[].delete
-
-    // pipeout an eosMarker
-    Operand[].newEosMarker
-    Operand[].pipeOut
-  then
+  // force op loop to call fetch_CrwBuffer to start processing buffers
+  "delete_rows" word::find regSet::handler!
+  true regSet::callAgain!
 
   true
 ;

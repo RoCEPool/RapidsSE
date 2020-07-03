@@ -468,6 +468,7 @@ public:
   void vIndexStreamBufferNo(void);
   void vIndexStreamClose(void);
   void vIndexStreamDelete(void);
+  void vIndexStreamDeleteNext(void);
   void vIndexStreamGet(void);
   void vIndexStreamIsNull(void);
   void vIndexStreamNew(void);

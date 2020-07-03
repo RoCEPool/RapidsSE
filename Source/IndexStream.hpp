@@ -25,6 +25,7 @@ namespace Partitioning
    ~IndexStream(void) noexcept(false);
   
     void vClose(void);
+    bool bDelete(void);
     bool bOpen(void);
     CrwBuffer* pRead(RowOnce* pRowOnce);
     void vReset(void);
