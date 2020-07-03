@@ -28,6 +28,7 @@
 : toNstRsb_RsbBuffer \handler
 
   PipeIn[] ToNstRsb[].convert to OperandB[]
+  nullptr to PipeIn[]
 
   OperandB[].pipeOut
 
