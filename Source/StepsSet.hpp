@@ -341,6 +341,9 @@ public:
   void vExecutableIsDebug(void);
   void vExecutableIsRelease(void);
 
+  // expression evaluator
+  void vExprCompile(void);
+
   // expression evaluation vector
   void vExprVecDelete(void);
   void vExprVecEvalAll(void);

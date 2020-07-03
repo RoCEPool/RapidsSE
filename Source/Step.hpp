@@ -53,6 +53,7 @@ namespace Steps
     static void vAddSteps_Env(void);
     static void vAddSteps_Error(void);
     static void vAddSteps_Executable(void);
+    static void vAddSteps_Expr(void);
     static void vAddSteps_ExprVec(void);
 
     static void vAddSteps_FetchTest(void);

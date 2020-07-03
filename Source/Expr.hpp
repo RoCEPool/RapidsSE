@@ -8,7 +8,8 @@ namespace Expressions
   class Expr : public Object
   {
   private:
- 
+    s2K m_sSource;
+  
     // must be last
     Footer m_xFooter;
 

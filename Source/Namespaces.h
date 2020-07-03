@@ -29,6 +29,7 @@ namespace Enums             {                                                 }
 namespace Esses             { template <int BYTES> class String_t;
                               typedef String_t<32>     s32;
                               typedef String_t<256>    s256;
+                              typedef String_t<C_2K>   s2K;   // note: 2K not 2KB
                               typedef String_t<C_4K>   s4K;   // note: 4K not 4KB
                               typedef String_t<C_16KB> s16KB; // note: this is 16KB
                               typedef String_t<C_24KB> s24KB; // note: this is 17KB
