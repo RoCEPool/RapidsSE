@@ -14,6 +14,7 @@ namespace Entries
 
 //------------------------------------------------------------------------------
 
+#include "Pay.hpp"
 #include "Key.hpp"
 #include "NEO.h"
 #include "Ent.hpp"
