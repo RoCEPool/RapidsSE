@@ -27,7 +27,7 @@ bool Prompt::bPrompt_calc(SePrompt* pPrompt)
 
   Calculator* pCalculator = new Calculator;
  
-  if (! pCalculator->bCompile(pTknVec, nullptr, 1, pTknVec->nTokens())) {
+  if (! pCalculator->bCompile(pTknVec, nullptr, 1, pTknVec->nTokens() - 1)) {
     delete pCalculator;
     return true;
   }
