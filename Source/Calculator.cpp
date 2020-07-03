@@ -2,40 +2,16 @@
 /* Calculator.cpp -- Calculator                                               */
 /*============================================================================*/
 
-#include "Utilities.h"
-
-
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Calculator* Utilities::_pCalculator(void* aAddr)
-{
-  Calculator* pCalculator = reinterpret_cast<Calculator*>(aAddr);
-  
-  RASSERT_TYPE(pCalculator,CN_CALCULATOR);
-  
-  return pCalculator;
-}
+#include "Expressions.h"
 
 /*----------------------------------------------------------------------------*/
-/* new                                                                        */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void* Calculator::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_CALCULATOR);
-  
-  return pObject;
-}
 
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Calculator::operator delete(void* aAddr)
-{
-  Calculator* pCalculator = reinterpret_cast<Calculator*>(aAddr);
-  
-  HeapMem::vFree(pCalculator);
-}
+__pCastFunction(Expressions,Calculator,CN_CALCULATOR)
+__aNewFunction(Calculator,CN_CALCULATOR)
+__vDeleteFunction(Calculator,CN_CALCULATOR)
+__aFooterFunction(Calculator)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -380,11 +356,6 @@ i8 Calculator::iEvaluate(RowSingle* pRow)
   
   return m_iaStack[0];
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Calculator);
 
 /*============================================================================*/
 /* end                                                                        */
