@@ -19,6 +19,34 @@
   // grab the table ptn read lock
   tablePtn[] tablePtnGrabRead
 
+  // new an index stream
+  index[] tablePtn[] indexStream::new to indexStream[]
+
+  // open index stream to access index
+  indexStream[].open
+
+  // position in the index
+  iPhrase  // phrase
+  lowerKey // lower
+  upperKey // upper
+  planner[] indexStream[].seek
+;
+
+/*----------------------------------------------------------------------------*/
+/* position and begin fetch                                                   */
+/*----------------------------------------------------------------------------*/
+: positionBeginFetch2 ( "iPhrase" "lowerKey" "upperKey" )
+
+  params| upperKey lowerKey iPhrase |
+  0 locals| sIndexNm |
+
+  // find the index
+  iPhrase planner[].indexNm@ to sIndexNm
+  <tableNm> sIndexNm op__index assert
+
+  // grab the table ptn read lock
+  tablePtn[] tablePtnGrabRead
+
   // position in the index
   iPhrase  // phrase
   lowerKey // lower
@@ -31,6 +59,7 @@
   else
     rowOnce[]
   then
+
   tablePtn[] index[].fetchNext
 ;
 
@@ -55,7 +84,7 @@
       iPhrase                  // phrase
       iPhrase planner[].key@   // lower key
       iPhrase planner[].key@   // upper key
-      positionBeginFetch to Operand[]
+      positionBeginFetch
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -66,7 +95,7 @@
       iPhrase                     // phrase
       iPhrase planner[].lowKey@   // lower key
       ""                          // upper key
-      positionBeginFetch to Operand[]
+      positionBeginFetch
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,7 +106,7 @@
       iPhrase                     // phrase
       ""                          // lower key
       iPhrase planner[].upperKey@ // upper key
-      positionBeginFetch to Operand[]
+      positionBeginFetch
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -88,7 +117,85 @@
       iPhrase                     // phrase
       iPhrase planner[].lowKey@   // lower key
       iPhrase planner[].upperKey@ // upper key
-      positionBeginFetch to Operand[]
+      positionBeginFetch
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // full scan (no index)
+    AT_SCAN of
+      "*scan*" .verbose
+      // now get excat key rows from index
+      tablePtn[] tablePtnGrabRead
+      tablePtn[] ptnStream::new to ptnStream[]
+
+      // open ptn stream for the tablePtn
+      ptnStream[] ptnStream.open assert
+
+    endof
+
+  endcase
+
+  // force op loop to call fetch_CrwBuffer to start processing buffers
+  "fetch_CrwBuffer" word::find regSet::handler!
+  true regSet::callAgain!
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* fetch first buffer for phrase                                              */
+/*----------------------------------------------------------------------------*/
+: fetchFirstBuffer2 ( iPhrase -- )
+
+  params| iPhrase |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the fetch technique
+  iPhrase planner[].fetchTechnique@
+
+  case
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an exact select using index
+    AT_EXACT of
+      "*exact*" .verbose
+
+      iPhrase                  // phrase
+      iPhrase planner[].key@   // lower key
+      iPhrase planner[].key@   // upper key
+      positionBeginFetch2 to Operand[]
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lower bound select using index
+    AT_LOWER of
+      "*lower*" .verbose
+
+      iPhrase                     // phrase
+      iPhrase planner[].lowKey@   // lower key
+      ""                          // upper key
+      positionBeginFetch2 to Operand[]
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an upper bound select using index
+    AT_UPPER of
+      "*upper*" .verbose
+
+      iPhrase                     // phrase
+      ""                          // lower key
+      iPhrase planner[].upperKey@ // upper key
+      positionBeginFetch2 to Operand[]
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // a range select using index
+    AT_RANGE of
+      "*range" .verbose
+
+      iPhrase                     // phrase
+      iPhrase planner[].lowKey@   // lower key
+      iPhrase planner[].upperKey@ // upper key
+      positionBeginFetch2 to Operand[]
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -146,16 +253,20 @@
 /*----------------------------------------------------------------------------*/
 : fetch_CrwBuffer \handler
 
+[? args.condCode ?if //?????????????????????????????????????????????????????????
+ 
+ //
+ // revised call again model
+ //
+ 
   //"Operand:- ZK_CRWBUFFER" .verbose
-
-  // pipeout the Operand
-  Operand[].pipeOut
 
   // get the fetchTechnique
   Counter1[] planner[].fetchTechnique@
   case
     AT_SCAN of
-      Subset[].nextBuffer to Operand[]
+      // read next buffer from ptn stream
+      ptnStream[] ptnStream.read to Operand[]
     endof
 
     // all other types of fetches, just fetchNext
@@ -164,7 +275,7 @@
     else
       rowOnce[]
     then
-    tablePtn[] index[].fetchNext to Operand[]
+    indexStream[].read to Operand[]
 
   endcase
 
@@ -175,6 +286,20 @@
     Counter1[] 1 + to Counter1[]
     Counter1[] Counter0[] >= if
       // all done
+      // close and delete partition stream
+      ptnStream[].isNull not if
+        ptnStream[] ptnStream.close
+        ptnStream[] ptnStream.delete
+        nullptr to ptnStream[]
+      then
+ 
+      // close and delete index stream
+      indexStream[].isNull not if
+        indexStream[].close
+        indexStream[].delete
+        nullptr to indexStream[]
+      then
+ 
       tablePtn[] tablePtnDropRead
 
       // delete the planner
@@ -182,7 +307,7 @@
 
       // delete the rowOnce skipList
       rowOnce[].isNull not if
-      rowOnce[].delete
+        rowOnce[].delete
       then
 
       // pipeout an eosMarker
@@ -192,9 +317,76 @@
       // position and fetch first buffer for next phrase
       Counter1[] fetchFirstBuffer
     then
+ 
+  else
+ 
+    // pipe out the read crw buffer
+    Operand[].pipeOut
+ 
+    // call this handler again to process next buffer
+    true regSet::callAgain!
+ 
   then
 
   true
+ 
+ ?else //????????????????????????????????????????????????????????????????????????
+ 
+   //
+   // original call again model
+   //
+ 
+   //"Operand:- ZK_CRWBUFFER" .verbose
+ 
+   // pipeout the Operand
+   Operand[].pipeOut
+ 
+   // get the fetchTechnique
+   Counter1[] planner[].fetchTechnique@
+   case
+     AT_SCAN of
+      Subset[].nextBuffer to Operand[]
+     endof
+ 
+     // all other types of fetches, just fetchNext
+     rowOnce[].isNull if
+      nullptr
+     else
+      rowOnce[]
+     then
+     tablePtn[] index[].fetchNext to Operand[]
+ 
+   endcase
+ 
+   // no more data for counter1[] phrase ?
+   Operand[].isNull if
+ 
+     // any more phrases ?
+     Counter1[] 1 + to Counter1[]
+     Counter1[] Counter0[] >= if
+       // all done
+       tablePtn[] tablePtnDropRead
+ 
+       // delete the planner
+       planner[].delete
+ 
+       // delete the rowOnce skipList
+       rowOnce[].isNull not if
+        rowOnce[].delete
+       then
+ 
+       // pipeout an eosMarker
+       Operand[].newEosMarker
+       Operand[].pipeOut
+     else
+      // position and fetch first buffer for next phrase
+      Counter1[] fetchFirstBuffer
+     then
+   then
+ 
+ true
+ 
+ ?] //???????????????????????????????????????????????????????????????????????????
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -202,6 +394,12 @@
 /*----------------------------------------------------------------------------*/
 : fetch_PulseMarker \handler
 
+[? args.condCode ?if //?????????????????????????????????????????????????????????
+ 
+  //
+  // revised call again model
+  //
+ 
   0 locals| iPhrases |
 
   //"Operand:- ZK_PULSEMARKER" .verbose
@@ -227,28 +425,67 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set counter1[] to 0
   0 to Counter1[]
-
+ 
   // position and fetch the first buffer for the first phrase
   Counter1[] fetchFirstBuffer
 
-  // any data ?
-  Operand[].isNull if
-    tablePtn[] tablePtnDropRead
-
-    // delete the planner
-    planner[].delete
-
-    // delete the rowOnce skipList
-    rowOnce[].isNull not if
-      rowOnce[].delete
-    then
-
-    // pipeout an eosMarker
-    Operand[].newEosMarker
-    Operand[].pipeOut
-  then
-
   true
+ 
+ ?else //????????????????????????????????????????????????????????????????????????
+ 
+   //
+   // original call again model
+   //
+ 
+   0 locals| iPhrases |
+ 
+   //"Operand:- ZK_PULSEMARKER" .verbose
+   PipeIn[].pipeOut
+ 
+   // new a stream def
+   Operand[].newStreamDef
+   Operand[].pipeOut
+ 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // get no of phrases
+   planner[].phrases@ to Counter0[]
+ 
+   // if multiple phrases create a rowOnce skipList
+   Counter0[] 1 > if
+     RowOnce[].new
+   then
+ 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // assert we have at least one phrase
+   Counter0[] 1 >= assert
+ 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // set counter1[] to 0
+   0 to Counter1[]
+ 
+   // position and fetch the first buffer for the first phrase
+   Counter1[] fetchFirstBuffer2
+ 
+   // any data ?
+   Operand[].isNull if
+     tablePtn[] tablePtnDropRead
+ 
+     // delete the planner
+     planner[].delete
+ 
+     // delete the rowOnce skipList
+     rowOnce[].isNull not if
+        rowOnce[].delete
+   then
+ 
+   // pipeout an eosMarker
+   Operand[].newEosMarker
+   Operand[].pipeOut
+   then
+ 
+   true
+ 
+ ?] //???????????????????????????????????????????????????????????????????????????
 ;
 
 /*----------------------------------------------------------------------------*/
