@@ -31,6 +31,7 @@ namespace Expressions
     bool bCompileTest(TokenVec* pTknVec);
 
     i8   iEvaluate(RowSingle* pRow);
+    i8   iEvaluate(Rsb* aRsb, RowSlab* pRowSlab);
 
     Footer* aFooter(void);
   };

@@ -7,8 +7,9 @@ enum eEO : i1 // expression operators
 {
   /*  0 */ EO_NONE=0,
   
-  /*    */ EO_COLUMN,
   /*    */ EO_INTEGER,
+  
+  /*    */ EO_PUSHCOLI,
   /*    */ EO_PUSHNULL,
   /*    */ EO_PUSH0,
   /*    */ EO_PUSH1,
@@ -42,8 +43,9 @@ static Stz* aEO[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "EO_COLUMN"_Stz,
   /*    */ "EO_INTEGER"_Stz,
+  
+  /*    */ "EO_PUSHCOLI"_Stz,
   /*    */ "EO_PUSHNULL"_Stz,
   /*    */ "EO_PUSH0"_Stz,
   /*    */ "EO_PUSH1"_Stz,
