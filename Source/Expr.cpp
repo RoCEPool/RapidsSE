@@ -21,6 +21,9 @@ Expr::Expr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
   
+  // m_sSource
+  m_pDynFun = nullptr;
+  
   _checkInitialised_(CN_EXPR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
