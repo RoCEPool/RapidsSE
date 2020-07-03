@@ -20,6 +20,7 @@ EntWrk::EntWrk(void)
 
   m_pStreamDef = nullptr;
   m_pIndexDef  = nullptr;
+  m_bPayLoad   = false;
   
   // -- entry --
   m_xEnt.vBuffer(0);
@@ -27,6 +28,9 @@ EntWrk::EntWrk(void)
   m_xEnt.vSkipLevels(0);
   
   m_xEnt.vElmSeqSize(0);
+  
+  vPayBytes(0);
+  
   // -- end entry --
 
 #ifdef WITH_CHECK_INITIALISED
@@ -404,6 +408,78 @@ void EntWrk::vOffsets(i8 nLevels)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xEnt.vSkipLevels(nLevels);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get key address                                                            */
+/*----------------------------------------------------------------------------*/
+Pay* EntWrk::aPay(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 nEntSize = nSize_EntKey();
+  
+  Pay* aPay = aAdd<Pay*>(&m_xEnt,nEntSize);
+  return aPay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get payload bytes                                                          */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nPayBytes(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = this->aPay();
+
+  i8 nPayBytes = aPay->nPayBytes();
+  
+  return nPayBytes;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get payload                                                                */
+/*----------------------------------------------------------------------------*/
+byte* EntWrk::ayPayBytes(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = this->aPay();
+  
+  return aPay->ayaPayBytes();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set payload bytes                                                          */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vPayBytes(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = this->aPay();
+
+  aPay->vPayBytes(nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a payload?                                                        */
+/*----------------------------------------------------------------------------*/
+bool EntWrk::bPayload(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+    
+  return m_bPayLoad;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is there a payload                                                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vPayload(bool bPayload)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+    
+  m_bPayLoad = bPayload;
 }
 
 /*----------------------------------------------------------------------------*/

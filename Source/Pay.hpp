@@ -8,9 +8,9 @@ namespace Entries
   class Pay
   {
   private:
-    i8   m_nPayBytes; // size of element sequence (in bytes)
-    byte m_yaByte[];  // payload bytes
-
+    i8   m_nPayBytes; // size of payload (in bytes)
+    // .. payload bytes
+  
   public:
     void* operator new(size_t);
   
@@ -25,9 +25,9 @@ namespace Entries
     /*------------------------------------------------------------------------*/
     /* get the payload bytes                                                  */
     /*------------------------------------------------------------------------*/
-    inline byte* ayaBytes(void)
+    inline byte* ayaPayBytes(void)
     {
-      return m_yaByte;
+      return aAdd<byte*>(this,sizeof(m_nPayBytes));
     }
   };
   

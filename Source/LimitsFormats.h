@@ -20,6 +20,7 @@ static const i8 C_MAX_NESTED_WORDS  = 16;
 static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
 static const i8 C_MAX_OPS           = 256;
 static const i8 C_MAX_PATH          = 256;    // max length of file path
+static const i8 C_MAX_PAY           = C_1KB;  // max length of index entry payload
 static const i8 C_MAX_PREDICATEVEC  = 16;
 static const i8 C_MAX__PTNS         = C_64KB;
 static const i8 C_MAX_SEEKOFFSETS   = 16;

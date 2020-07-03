@@ -13,13 +13,20 @@ namespace Entries
   
     StreamDef* m_pStreamDef;     // stream definition
     IndexDef*  m_pIndexDef;      // index definition
-
-    // - - - - - - - - - - - - - //
-    //       entry proper        //
-    Ent    m_xEnt;               // the index entry being formed
-    byte   m_yaSpace[C_MAX_KEY]; // the bytes of the key
-    // - - - - - - - - - - - - - //
   
+    bool  m_bPayLoad;  // is there a payload?
+
+    // - - - - - - - - - - - - - - - //
+    //        entry                  //
+    Ent    m_xEnt;                   // the index entry being formed
+    byte   m_yaSpace[C_MAX_KEY];     // the bytes of the key
+    // - - - - - - - - - - - - - - - //
+  
+    // - - - - - - - - - - - - - - - //
+    //     opt. payload              //
+    byte   m_yaPaySpace[C_MAX_PAY];  // more space to cater for payload
+    // - - - - - - - - - - - - - - - //
+    
     Footer m_xFooter;
   
   public:
@@ -59,6 +66,13 @@ namespace Entries
     
     i8    nOffsets(void);
     void  vOffsets(i8 nLevels);
+  
+    Pay*  aPay(void);
+    byte* ayPayBytes(void);
+    i8    nPayBytes(void);
+    void  vPayBytes(i8 nBytes);
+    bool  bPayload(void);
+    void  vPayload(bool bPayload);
 
     void  vRandomEnt(IndexDef* pIndexDef);
     Ref&  rxRef(void);
