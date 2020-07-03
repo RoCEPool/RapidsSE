@@ -13,6 +13,8 @@
 #include "Mersenne.hpp"
 #include "shoco.h"
 #include "xxhash.hpp"
+#include "libtcc_rjh.hpp"
+
 
 //#pragma GCC diagnostic warning "-Wunused-variable"
 

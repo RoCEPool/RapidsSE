@@ -278,7 +278,7 @@ bool Api::bExpandToLongForm(TokenVec* pCmdTknVec)
       "begin "
       " "
       "  stage stageA on origin : "
-      "    start | periodicOp once | /ON_ORIGIN/ | stageB "
+      "    start | periodicOp once | /ON_ORIGIN/ | stageB hashed "
       " "
       "  stage stageB on all partitions : "
       "    /ALL_PARTITIONS/ | stageC "
