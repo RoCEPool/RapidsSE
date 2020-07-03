@@ -331,7 +331,11 @@ bool RowCompactor::bAllotCrw(void)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  i8 nBytesNeeded = m_pEncoding->nBytesNeeded();
+  i8 nBytesNeeded;
+  if (m_pStreamDef->m_nFixedSized == 0)
+    nBytesNeeded = m_pEncoding->nBytesNeeded();
+  else
+    nBytesNeeded = m_pStreamDef->m_nFixedSized;
   
   if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
     m_aHeadLine = nullptr;
@@ -346,7 +350,8 @@ bool RowCompactor::bAllotCrw(void)
   
   // allot a head line in nub (the <W> is init'd by iAllotHead())
   m_aHeadLine = m_pCrwNub->aAllotHead(m_pEncoding->m_nHeadSize);
-
+  ASSERT(m_aHeadLine);
+  
   // do we allot an over line?
   if (! m_pEncoding->bOverFlowed()) {
     m_aOverLine = nullptr;

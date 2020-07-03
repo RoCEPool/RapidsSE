@@ -10,6 +10,7 @@
 : toHshCrw_StreamDef \handler
 
   PipeIn[] to StreamDef[]
+  nullptr to PipeIn[]
 
   StreamDef[].duplicate to OperandB[]
 
@@ -42,6 +43,7 @@
 : toHshCrw_RsbBuffer \handler
 
   PipeIn[] ToHshCrw[].convert
+  nullptr to PipeIn[]
 
   grid::partitions 0
   do

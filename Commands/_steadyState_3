@@ -7,15 +7,17 @@ bc;
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Steady State 3";
 
-_lineitem
+_lineitemSteady
+
+/time steadyState_3 lineitem "/DATA/TPCH/lineItem10k.csv" 100 ;
 
 // /time steadyState_3 lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv"  3;
-/time steadyState_3 lineitem "/Users/Shared/tpch/SF1/lineItem.csv"  10;
+// /time steadyState_3 lineitem "/Users/Shared/tpch/SF1/lineItem.csv"  10;
 // /time steadyState_3 lineitem "/Users/Shared/tpch/SF10/lineItem.csv" 3;
 
 tableSizes;
 
-drop table lineitem;
+//drop table lineitem;
 
 
 /*============================================================================*/
