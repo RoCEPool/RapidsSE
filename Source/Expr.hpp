@@ -8,6 +8,7 @@ namespace Expressions
   class Expr : public Object
   {
   private:
+    eUK     m_eKind;
     s2K     m_sSource;
     DynFun* m_pDynFun;
   
@@ -20,7 +21,15 @@ namespace Expressions
     
     Expr(void);
    ~Expr(void) noexcept(false);
+   
+    bool bCompile(void);
   
+    eUK  eKind(void);
+    void vKind(eUK eKind);
+  
+    Stz* szSource(void);
+    void vSource(Stz* szSource);
+
   private:
     Footer* aFooter(void);
   };

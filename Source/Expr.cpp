@@ -21,6 +21,8 @@ Expr::Expr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
   
+  m_eKind = UK_NONE;
+  
   // m_sSource
   m_pDynFun = nullptr;
   
@@ -35,6 +37,56 @@ Expr::Expr(void)
 Expr::~Expr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* compile                                                                    */
+/*----------------------------------------------------------------------------*/
+bool Expr::bCompile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get function kind                                                          */
+/*----------------------------------------------------------------------------*/
+eUK Expr::eKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
+  
+  return m_eKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set function kind                                                          */
+/*----------------------------------------------------------------------------*/
+void Expr::vKind(eUK eKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
+  
+  m_eKind = eKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get source                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Expr::szSource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
+  
+  return m_sSource;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set source                                                                 */
+/*----------------------------------------------------------------------------*/
+void Expr::vSource(Stz* szSource)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
+  
+  m_sSource = szSource;
 }
 
 /*============================================================================*/
