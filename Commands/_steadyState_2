@@ -7,6 +7,8 @@ bc;
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Steady State 2";
 
+trackMemory;
+
 _lineitemSteady
 
 space;
@@ -43,10 +45,11 @@ tableSizes;
 antbl lineitem;
 anidx lineitem lineitem_idx;
 
+drop table lineitem;
+
 space;
 
-drop table nation;
-
+memoryLeaks;
 /*
 trackMemory;
 

@@ -316,8 +316,29 @@ void TablePtn::vDeleteRow(IndexTree* pIndexTree, EntBuffer* pEntBuffer, Ent* aEn
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete the crw
-  bool bDeleted = CrwBuffer::bDeleteRefdCrw(aEnt->rxRef());
-  ASSERT(bDeleted);
+  bool bBufferEmpty = CrwBuffer::bDeleteRefdCrw(aEnt->rxRef());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is the crw buffer empty ?
+  if ( bBufferEmpty) {
+    
+    // get the referenced buffer
+    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->rxRef());
+    
+    // unlink the buffer
+    pCrwBuffer->vUnLink();
+    
+    // is it the currentBuffer ?
+    if (m_pCurrentCrwBuffer == pCrwBuffer)
+      m_pCurrentCrwBuffer = nullptr;
+    
+    // is it the root buffer ?
+    if (m_pRootCrwBuffer == pCrwBuffer)
+      m_pRootCrwBuffer = nullptr;
+    
+    // now delete the buffer
+    delete pCrwBuffer;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now purge the entry

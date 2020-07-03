@@ -68,7 +68,12 @@ bool CrwBuffer::bDeleteRefdCrw(Ref xRef)
   Crw* aCrw = pCrwBuffer->aCrw(xRef.iItem());
   
   pCrwBuffer->m_oRowTray.pNub()->vDelete(aCrw);
-  return true;
+  
+  if (pCrwBuffer->nRowCount() == 0) {
+    return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
