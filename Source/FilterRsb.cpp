@@ -22,6 +22,8 @@ FilterRsb::FilterRsb(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
 
   // m_oHashSet
+  
+  m_pPot = nullptr;
 
   m_pFromRsbBuffer = nullptr;
 
@@ -45,11 +47,13 @@ FilterRsb::~FilterRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void FilterRsb::vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr)
+void FilterRsb::vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr, Pot* pPot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
   
   m_pFromRsbBuffer = pRsbBuffer;
+  
+  m_pPot = pPot;
   
   i8 i_Ptn = 0;
   

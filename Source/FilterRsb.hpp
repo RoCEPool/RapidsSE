@@ -10,6 +10,8 @@ namespace Expressions
   private:
     
     HashSet    m_oHashSet;
+  
+    Pot*       m_pPot;  
 
     RsbBuffer* m_pFromRsbBuffer; // the
   
@@ -26,7 +28,7 @@ namespace Expressions
     FilterRsb(void);
    ~FilterRsb(void) noexcept(false);
   
-    void vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr);
+    void vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr, Pot* pPot);
   
     RsbBuffer* pCompleted(i8 i_Ptn);
     RsbBuffer* pDangling(i8 i_Ptn);
