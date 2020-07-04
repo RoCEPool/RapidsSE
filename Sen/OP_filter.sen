@@ -31,7 +31,18 @@
 /*----------------------------------------------------------------------------*/
 : filter_RsbBuffer \handler
 
-  PipeIn[].pipeOut
+  PipeIn[] FilterRsb[].filter
+  nullptr to Pipein[]
+
+  FilterRsb[].completed to OperandB[]
+
+  begin
+    OperandB[].isNull not
+  while
+    OperandB[].pipeOut
+    FilterRsb[].completed to OperandB[]
+  repeat
+
   true
 ;
 
@@ -39,6 +50,15 @@
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : filter_EosMarker \handler
+
+  FilterRsb[].dangling to OperandB[]
+
+  begin
+    OperandB[].isNull not
+  while
+    OperandB[].pipeOut
+    FilterRsb[].dangling to OperandB[]
+  repeat
 
   FilterRsb[].delete
   Expr[].delete
