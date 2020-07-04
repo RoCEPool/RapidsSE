@@ -9,14 +9,15 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_StreamDefOut(void)
 {
-  vAddStep("StreamDefOut[]"_Stz,           &Step::vStreamDefOutGet);
-  vAddStep("StreamDefOut[].addColumn"_Stz, &Step::vStreamDefOutAddColumn);
-  vAddStep("StreamDefOut[].delete"_Stz,    &Step::vStreamDefOutDelete);
-  vAddStep("StreamDefOut[].new"_Stz,       &Step::vStreamDefOutNew);
+  vAddStep("StreamDefOut[]"_Stz,            &Step::vStreamDefOutGet);
+  vAddStep("StreamDefOut[].addColumn"_Stz,  &Step::vStreamDefOutAddColumn);
+  vAddStep("StreamDefOut[].addColumns"_Stz, &Step::vStreamDefOutAddColumns);
+  vAddStep("StreamDefOut[].delete"_Stz,     &Step::vStreamDefOutDelete);
+  vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDefOut[].delete -- delete stream definition out                      */
+/* StreamDefOut[].addColumn -- add a column                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamDefOutAddColumn(void)
 {
@@ -34,6 +35,21 @@ void Step::vStreamDefOutAddColumn(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].addColumns -- add columns from given stream def             */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutAddColumns(void)
+{
+  ENTRY();
+    
+  StreamDef* pStreamDefSrc = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  StreamDef* pStreamDefOut = * m_pRegSet->m_xpStreamDefOut;
+  
+  pStreamDefOut->vAddColumns(pStreamDefSrc);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* StreamDefOut[].delete -- delete stream definition out                      */
