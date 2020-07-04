@@ -65,7 +65,7 @@ void FilterRsb::vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr, Pot* pPot)
     i8 bCopy = pExpr->iEvaluate(aRsbSrc, pRowSlab);
         
     if (bCopy)
-      vCopyRsb(i_Ptn,aRsbSrc);
+      vCopyRsb(aRsbSrc);
   }
 }
 
@@ -76,12 +76,12 @@ void FilterRsb::vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr, Pot* pPot)
 /*----------------------------------------------------------------------------*/
 /* copy source rsb into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void FilterRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
+void FilterRsb::vCopyRsb(Rsb* aRsbSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
     
   // new a destination row in target partition row slab
-  vNewDstRsb(i_Ptn);
+  vNewDstRsb();
   
   // copy that
   bool bSrcHasPtnHash = true;
@@ -92,7 +92,7 @@ void FilterRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
 /*----------------------------------------------------------------------------*/
 /* new a destination rsb row in rsb slab in hash set                          */
 /*----------------------------------------------------------------------------*/
-void FilterRsb::vNewDstRsb(i8 i_Ptn)
+void FilterRsb::vNewDstRsb(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
     
@@ -116,7 +116,7 @@ void FilterRsb::vNewDstRsb(i8 i_Ptn)
     ASSERT(bNewed);
   }
   
-  pDstRsbBuffer->vPartitionNo(i_Ptn);
+  pDstRsbBuffer->vPartitionNo(0);
   
   m_pIntoRowSlab = pDstRsbBuffer->pRowSlab();
 }

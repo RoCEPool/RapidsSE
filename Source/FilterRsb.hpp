@@ -29,8 +29,8 @@ namespace Expressions
     void vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr, Pot* pPot);
     
   private:
-    void vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc);
-    void vNewDstRsb(i8 i_Ptn);
+    void vCopyRsb(Rsb* aRsbSrc);
+    void vNewDstRsb(void);
 
     Footer* aFooter(void);
   };
