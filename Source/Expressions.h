@@ -22,6 +22,7 @@ namespace Expressions
 #include "ExprVec.hpp"
 
 #include "FilterRsb.hpp"
+#include "ProjectRsb.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
