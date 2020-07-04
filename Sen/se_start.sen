@@ -855,27 +855,33 @@
   // filtered load
   sPath
   "
-  procedure filteredLoad_1
+  procedure expr_filter_1
     parameters $Table $File
   begin
 
-    stage stageA on origin :
-      start
-        | periodicOp once
-        | catFile $File
-        | toRsb $Table
-        | filter
-        | toPtnRsb
-        | stageB hashed
+  stage stageA on origin :
+    start
+      | periodicOp once
+      | chunk $file
+      | rdCsvChunk $file
+      | stageB robin
 
-    stage stageB on all partitions :
-      insert $Table
-        | stageC
 
-    stage stageC on origin :
-      output
-        | sink
-        | stageA
+  stage stageB on all partitions on origin :
+    toRsb $table
+      | toPtnRsb
+      | toNstRsb
+      | toHshCrw
+      | stageC hashed
+
+  stage stageC on all partitions :
+    insert $table
+      | stageD
+
+  stage stageD on origin :
+    output
+      | sink
+      | stageA
 
   end ;
   "
