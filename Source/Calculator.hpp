@@ -33,6 +33,8 @@ namespace Expressions
 
     i8   iEvaluate(RowSingle* pRow);
     i8   iEvaluate(Rsb* aRsb, RowSlab* pRowSlab);
+    i8   iEvaluate(Rsb* aDstRsb, RowSlab* pDstRowSlab,
+                   Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
 
     Footer* aFooter(void);
   };
