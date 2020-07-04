@@ -12,6 +12,8 @@ namespace Expressions
     s2K     m_sSource;
     DynFun* m_pDynFun;
   
+    Calculator* m_pCalculator;
+  
     // must be last
     Footer m_xFooter;
 
@@ -24,6 +26,8 @@ namespace Expressions
    
     bool bCompile(void);
   
+    i8   iEvaluate(Rsb* aRsb, RowSlab* pRowSlab);
+
     eUK  eKind(void);
     void vKind(eUK eKind);
   
