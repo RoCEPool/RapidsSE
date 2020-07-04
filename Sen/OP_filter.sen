@@ -9,6 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : filter_StartMarker \handler
 
+  FilterRsb[].new
+
+  Expr[].new
+  "1 1 +" Expr[].source!
+  Expr[].compile assert
+
   ZK_STARTMARKER_handler
 ;
 
@@ -33,6 +39,9 @@
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : filter_EosMarker \handler
+
+  FilterRsb[].delete
+  Expr[].delete
 
   ZK_EOSMARKER_handler
 ;

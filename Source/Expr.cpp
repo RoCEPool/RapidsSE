@@ -46,7 +46,7 @@ bool Expr::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
   
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
