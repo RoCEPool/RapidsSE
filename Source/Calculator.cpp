@@ -101,6 +101,15 @@ bool Calculator::bCompile(TokenVec* pTknVec)
 //      i_Code += sizeof(i8);
 //      continue;
 //    }
+    
+    if (pTkn->bSame("@"_Stz)) {
+      m_eaCode[i_Code++] = EO_PUSHCOLI;
+      pTkn = pTknVec->pGet(++i_Tkn);
+      piArg = (i8*) & m_eaCode[i_Code];
+      * piArg = iArg;
+      i_Code += sizeof(i8);
+      continue;
+    }
     if (pTkn->bIsInteger()) {
       m_eaCode[i_Code++] = EO_INTEGER;
       iArg = pTkn->iToI8();

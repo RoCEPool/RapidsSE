@@ -12,7 +12,7 @@
   FilterRsb[].new
 
   Expr[].new
-  "1 1 +" Expr[].source!
+  "@ 0 2 %" Expr[].source!
   Expr[].compile assert
 
   ZK_STARTMARKER_handler
