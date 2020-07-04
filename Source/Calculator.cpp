@@ -65,6 +65,7 @@ bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn
 
     if (pTkn->bSame("+"_Stz)) { m_eaCode[i_Code++] = EO_ADD;      continue; }
     if (pTkn->bSame("/"_Stz)) { m_eaCode[i_Code++] = EO_DIVIDE;   continue; }
+    if (pTkn->bSame("%"_Stz)) { m_eaCode[i_Code++] = EO_MODULO;   continue; }
     if (pTkn->bSame("*"_Stz)) { m_eaCode[i_Code++] = EO_MULTIPLY; continue; }
     if (pTkn->bSame("-"_Stz)) { m_eaCode[i_Code++] = EO_SUBTRACT; continue; }
 
@@ -240,6 +241,13 @@ i8 Calculator::iEvaluate(RowSingle* pRow)
         iArgB = m_iaStack[i_TopVal--];
         iArgA = m_iaStack[i_TopVal--];
         iRes  = iArgA / iArgB;
+        m_iaStack[++i_TopVal] = iRes;
+        break;
+        
+      case EO_MODULO:
+        iArgB = m_iaStack[i_TopVal--];
+        iArgA = m_iaStack[i_TopVal--];
+        iRes  = iArgA % iArgB;
         m_iaStack[++i_TopVal] = iRes;
         break;
         
@@ -424,6 +432,13 @@ i8 Calculator::iEvaluate(Rsb* aRsb, RowSlab* pRowSlab)
         iArgB = m_iaStack[i_TopVal--];
         iArgA = m_iaStack[i_TopVal--];
         iRes  = iArgA / iArgB;
+        m_iaStack[++i_TopVal] = iRes;
+        break;
+        
+      case EO_MODULO:
+        iArgB = m_iaStack[i_TopVal--];
+        iArgA = m_iaStack[i_TopVal--];
+        iRes  = iArgA % iArgB;
         m_iaStack[++i_TopVal] = iRes;
         break;
         

@@ -16,6 +16,7 @@ enum eEO : i1 // expression operators
 
   /*    */ EO_ADD,
   /*    */ EO_DIVIDE,
+  /*    */ EO_MODULO,
   /*    */ EO_MULTIPLY,
   /*    */ EO_NEGATE,
   /*    */ EO_SUBTRACT,
@@ -52,6 +53,7 @@ static Stz* aEO[]
 
   /*    */ "EO_ADD"_Stz,
   /*    */ "EO_DIVIDE"_Stz,
+  /*    */ "EO_MODULO"_Stz,
   /*    */ "EO_MULTIPLY"_Stz,
   /*    */ "EO_NEGATE"_Stz,
   /*    */ "EO_SUBTRACT"_Stz,
