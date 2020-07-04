@@ -13,6 +13,8 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].addColumn"_Stz,  &Step::vStreamDefOutAddColumn);
   vAddStep("StreamDefOut[].addColumns"_Stz, &Step::vStreamDefOutAddColumns);
   vAddStep("StreamDefOut[].delete"_Stz,     &Step::vStreamDefOutDelete);
+  vAddStep("StreamDefOut[].name@"_Stz,      &Step::vStreamDefOutNameFetch);
+  vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
 }
 
@@ -76,6 +78,35 @@ void Step::vStreamDefOutGet(void)
     
   m_pDataStack->vPushPtr(* m_pRegSet->m_xpStreamDefOut);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].name@ -- get name                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutNameFetch(void)
+{
+  ENTRY();
+    
+  s32 sName = m_pRegSet->m_xpStreamDefOut->szName();
+  
+  m_pDataStack->vPushStz(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].name! -- set name                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutNameStore(void)
+{
+  ENTRY();
+    
+  s32 sName;
+  m_pDataStack->vPopStr(sName,__func__);
+
+  m_pRegSet->m_xpStreamDefOut->vName(sName);
+  
   EXIT();
 }
 

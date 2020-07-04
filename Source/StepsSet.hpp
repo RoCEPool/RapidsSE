@@ -1408,6 +1408,8 @@ public:
   void vStreamDefOutAddColumns(void);
   void vStreamDefOutDelete(void);
   void vStreamDefOutGet(void);
+  void vStreamDefOutNameFetch(void);
+  void vStreamDefOutNameStore(void);
   void vStreamDefOutNew(void);
 
   // reg stream set
