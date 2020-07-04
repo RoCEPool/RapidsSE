@@ -869,6 +869,7 @@
 
   stage stageB on all partitions on origin :
     toRsb $table
+      | filter
       | toPtnRsb
       | toNstRsb
       | toHshCrw
