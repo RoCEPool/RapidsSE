@@ -1024,6 +1024,12 @@ public:
   // plist (participant list)
   void vPlistFindJob(void);
 
+  // pot
+  void vPotCompleted(void);
+  void vPotDangling(void);
+  void vPotDelete(void);
+  void vPotNew(void);
+
   // procedure
   void vProcedureAdd(void);
 

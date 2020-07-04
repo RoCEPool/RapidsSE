@@ -107,6 +107,7 @@ namespace Steps
     static void vAddSteps_Pipeline(void);
     static void vAddSteps_Planner(void);
     static void vAddSteps_Plist(void);
+    static void vAddSteps_Pot(void);
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
     static void vAddSteps_Profile(void);
