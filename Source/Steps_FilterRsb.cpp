@@ -11,6 +11,7 @@ void Step::vAddSteps_FilterRsb(void)
 {
   vAddStep("FilterRsb[]"_Stz,           &Step::vFilterRsbGet);
   vAddStep("FilterRsb[].delete"_Stz,    &Step::vFilterRsbDelete);
+  vAddStep("FilterRsb[].filter"_Stz,    &Step::vFilterRsbFilter);
   vAddStep("FilterRsb[].get"_Stz,       &Step::vFilterRsbGet);
   vAddStep("FilterRsb[].new"_Stz,       &Step::vFilterRsbNew);
 }
@@ -27,6 +28,18 @@ void Step::vFilterRsbDelete(void)
   m_pRegSet->m_xpFilterRsb = nullptr;
   
   delete pFilterRsb;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* FilterRsb.filter -- filter an rsb buffer                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vFilterRsbFilter(void)
+{
+  ENTRY();
+
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }

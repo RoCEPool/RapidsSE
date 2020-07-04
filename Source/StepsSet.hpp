@@ -380,6 +380,7 @@ public:
 
   // filter
   void vFilterRsbDelete(void);
+  void vFilterRsbFilter(void);
   void vFilterRsbGet(void);
   void vFilterRsbNew(void);
 
