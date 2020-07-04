@@ -8,18 +8,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Expressions,FilterRsb,CN_TOPTNRSB)
-__aNewFunction(FilterRsb,CN_TOPTNRSB)
-__vDeleteFunction(FilterRsb,CN_TOPTNRSB)
+__pCastFunction(Expressions,FilterRsb,CN_FILTERRSB)
+__aNewFunction(FilterRsb,CN_FILTERRSB)
+__vDeleteFunction(FilterRsb,CN_FILTERRSB)
 __aFooterFunction(FilterRsb)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FilterRsb::FilterRsb(void)
-: Object(CN_TOPTNRSB)
+: Object(CN_FILTERRSB)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
 
   // m_oHashSet
 
@@ -27,7 +27,7 @@ FilterRsb::FilterRsb(void)
 
   m_pIntoRowSlab   = nullptr;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ FilterRsb::FilterRsb(void)
 /*----------------------------------------------------------------------------*/
 FilterRsb::~FilterRsb(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +47,7 @@ FilterRsb::~FilterRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void FilterRsb::vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
   
   m_pFromRsbBuffer = pRsbBuffer;
   
@@ -59,9 +59,7 @@ void FilterRsb::vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     Rsb* aRsbSrc = pRowSlab->aRsbAdr(i_Row);
-    
-    i_Ptn = pRowSlab->iPtnOfRsb(aRsbSrc);
-    
+        
     vCopyRsb(i_Ptn,aRsbSrc);
   }
 }
@@ -71,7 +69,7 @@ void FilterRsb::vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr)
 /*----------------------------------------------------------------------------*/
 RsbBuffer* FilterRsb::pCompleted(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
   
   RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
   
@@ -83,7 +81,7 @@ RsbBuffer* FilterRsb::pCompleted(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 RsbBuffer* FilterRsb::pDangling(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
   
   RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
   
@@ -98,13 +96,13 @@ RsbBuffer* FilterRsb::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 void FilterRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
     
   // new a destination row in target partition row slab
   vNewDstRsb(i_Ptn);
   
   // copy that
-  bool bSrcHasPtnHash = true;
+  bool bSrcHasPtnHash = false;
   bool bCopyPtnHash   = false;
   m_pIntoRowSlab->vCopyRsb(aRsbSrc,bSrcHasPtnHash,bCopyPtnHash);
 }
@@ -114,7 +112,7 @@ void FilterRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
 /*----------------------------------------------------------------------------*/
 void FilterRsb::vNewDstRsb(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
     
   // get rsb buffer for given partition (new a first buffer if ncessary)
   RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_oHashSet.pBuffer(i_Ptn));

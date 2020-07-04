@@ -96,6 +96,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Filter_SubQry),      HT_TRANSIENT_MEDIUM  }, // CN_FILTER_SUBQRY
   { sizeof(Filter_Where),       HT_TRANSIENT_MEDIUM  }, // CN_FILTER_WHERE
   { sizeof(Filter_Zed),         HT_TRANSIENT_MEDIUM  }, // CN_FILTER_ZED
+  { sizeof(FilterRsb),          HT_TRANSIENT_LARGE   }, // CN_FILTERRSB
   { sizeof(FipVal),             HT_INVALID           }, // CN_FIPVAL
   { sizeof(FltVal),             HT_INVALID           }, // CN_FLTVAL
   { sizeof(FocalObjects),       HT_TRANSIENT_LARGE   }, // CN_FOCALOBJECTS
