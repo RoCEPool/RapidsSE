@@ -35,6 +35,7 @@ namespace MetaData
     
     void vAdd(StreamDef* pStreamDef);
     void vAddColumn(Stz* ColumnNm, eCT eColumnType);
+    void vAddColumns(StreamDef* pStreamDef);
     void vAsString(String* pString);
     i8 nColumns(i8 iSubSet);
     eEC eParse(Stz* szCmd);

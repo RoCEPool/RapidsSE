@@ -181,6 +181,26 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add all columns from given stream definition                               */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vAddColumns(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  for (i8 i_StreamDef = 0; i_StreamDef < m_nDefSets; i_StreamDef++) {
+    m_nDefColumns[i_StreamDef] = pStreamDef->m_nDefColumns[i_StreamDef];
+    m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
+    
+    for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns[i_StreamDef]; i_DefCol++) {
+      m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
+    }
+    
+  }
+    
+  //m_nFixedSized = pStreamDef->m_nFixedSized;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert streamDef to a string                                              */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vAsString(String* pString)
