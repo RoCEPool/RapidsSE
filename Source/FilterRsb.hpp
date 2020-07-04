@@ -27,10 +27,7 @@ namespace Expressions
    ~FilterRsb(void) noexcept(false);
   
     void vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr, Pot* pPot);
-  
-    RsbBuffer* pCompleted(i8 i_Ptn);
-    RsbBuffer* pDangling(i8 i_Ptn);
-  
+    
   private:
     void vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc);
     void vNewDstRsb(i8 i_Ptn);

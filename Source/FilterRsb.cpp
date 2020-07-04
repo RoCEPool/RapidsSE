@@ -70,29 +70,6 @@ void FilterRsb::vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr, Pot* pPot)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get any completed/full buffer                                              */
-/*----------------------------------------------------------------------------*/
-RsbBuffer* FilterRsb::pCompleted(i8 i_Ptn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
-  
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pPot->pCompleted());
-  
-  return pRsbBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get any dangling/last buffer                                               */
-/*----------------------------------------------------------------------------*/
-RsbBuffer* FilterRsb::pDangling(i8 i_Ptn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
-  
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pPot->pDangling());
-  
-  return pRsbBuffer;}
-
-/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
