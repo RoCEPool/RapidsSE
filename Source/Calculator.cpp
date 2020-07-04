@@ -705,6 +705,13 @@ i8 Calculator::iEvaluate(Rsb* aDstRsb, RowSlab* pDstRowSlab,
         
       // -- -- -- -- -- -- -- -- -- -- --
           
+      case EO_POPCOLI:
+        iArgA = * (i8*)peCode;
+        peCode += 8;
+        iRes = m_iaStack[++i_TopVal];
+        pDstRowSlab->vDeposit(iRes);
+        break;
+        
       case EO_PUSHCOLI:
         iArgA = * (i8*)peCode;
         peCode += 8;

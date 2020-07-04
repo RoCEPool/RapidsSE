@@ -9,6 +9,7 @@ enum eEO : i1 // expression operators
   
   /*    */ EO_INTEGER,
   
+  /*    */ EO_POPCOLI,
   /*    */ EO_PUSHCOLI,
   /*    */ EO_PUSHNULL,
   /*    */ EO_PUSH0,
@@ -46,6 +47,7 @@ static Stz* aEO[]
   
   /*    */ "EO_INTEGER"_Stz,
   
+  /*    */ "EO_POPCOLI"_Stz,
   /*    */ "EO_PUSHCOLI"_Stz,
   /*    */ "EO_PUSHNULL"_Stz,
   /*    */ "EO_PUSH0"_Stz,

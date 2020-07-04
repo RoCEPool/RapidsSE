@@ -440,7 +440,7 @@ void Step::vInfoSetPipeOut(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* InfoSet[].readChunk -- reach a chunk from file given the infoSet           */
+/* InfoSet[].rdCsvChunk -- reach a chunk from file given the infoSet          */
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetRdCsvChunk(void)
 {
