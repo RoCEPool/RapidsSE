@@ -42,6 +42,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vRegOperandNewStartedMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vRegOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,           &Step::vRegOperandNext);
+  vAddStep("Operand[].pipeIn"_Stz,         &Step::vRegOperandPipeIn);
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vRegOperandPipeOut);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vRegOperandPipeOutSet);
   vAddStep("Operand[].pipeToJob"_Stz,      &Step::vRegOperandPipeToJob);
@@ -711,6 +712,22 @@ void Step::vRegOperandNewStreamDef(void)
     m_pRegSet->m_xpOperandA = new StreamDef();
   else
     m_pRegSet->m_xpOperandA = new StreamDef(m_pRegSet->m_xpTable->pStreamDef());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].pipeIn -- append operand onto next operator in pipeline          */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandPipeIn(void)
+{
+  ENTRY();
+  
+  Operand* pOperand = * m_pRegSet->m_xpPipein;
+
+  m_pRegSet->m_xpPipein = nullptr;
+    
+  m_pRegSet->m_xpOperandA = pOperand;
   
   EXIT();
 }

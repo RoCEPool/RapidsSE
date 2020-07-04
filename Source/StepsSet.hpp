@@ -1172,6 +1172,7 @@ public:
   void vRegOperandNewStartedMarker(void);
   void vRegOperandNewStreamDef(void);
   void vRegOperandNext(void);
+  void vRegOperandPipeIn(void);
   void vRegOperandPipeOut(void);
   void vRegOperandPipeOutSet(void);
   void vRegOperandPipeToJob(void);
