@@ -11,7 +11,7 @@
 
   begin
     Pot[].completed to OperandB[]
-    OperandB[].isNull not
+    OperandB[].isNotNull
   while
     OperandB[].pipeOut
   repeat
@@ -24,7 +24,7 @@
 
   begin
     Pot[].dangling to OperandB[]
-    OperandB[].isNull not
+    OperandB[].isNotNull
   while
     OperandB[].pipeOut
   repeat

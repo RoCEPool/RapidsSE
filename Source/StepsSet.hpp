@@ -1187,6 +1187,7 @@ public:
   void vRegOperandBAppendClose(void);
   void vRegOperandBDelete(void);
   void vRegOperandBGet(void);
+  void vRegOperandBIsNotNull(void);
   void vRegOperandBIsNull(void);
   void vRegOperandBPipeOut(void);
   void vRegOperandBSet(void);

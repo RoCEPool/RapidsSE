@@ -13,6 +13,7 @@ void Step::vAddSteps_RegOperandB(void)
   vAddStep("OperandB[].appendClose"_Stz,    &Step::vRegOperandBAppendClose);
   vAddStep("OperandB[].delete"_Stz,         &Step::vRegOperandBDelete);
   vAddStep("OperandB[].get"_Stz,            &Step::vRegOperandBGet);
+  vAddStep("OperandB[].isNotNull"_Stz,      &Step::vRegOperandBIsNotNull);
   vAddStep("OperandB[].isNull"_Stz,         &Step::vRegOperandBIsNull);
   vAddStep("OperandB[].pipeOut"_Stz,        &Step::vRegOperandBPipeOut);
   vAddStep("OperandB[].set"_Stz,            &Step::vRegOperandBSet);
@@ -53,6 +54,18 @@ void Step::vRegOperandBGet(void)
   ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpOperandB);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* OperandB[].isNotNull -- is operandB not null ?                             */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandBIsNotNull(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pRegSet->m_xpOperandB.bIsNull() ? 0 : 1);
   
   EXIT();
 }
