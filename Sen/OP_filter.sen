@@ -28,32 +28,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pipe out all completed buffers in the pot                                  */
-/*----------------------------------------------------------------------------*/
-: Pot[].pipeoutAllCompleted
-
-  begin
-    Pot[].completed to OperandB[]
-    OperandB[].isNull not
-  while
-    OperandB[].pipeOut
-  repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/* pipe out all dangling buffers in the pot                                   */
-/*----------------------------------------------------------------------------*/
-: Pot[].pipeoutAllDangling
-
-  begin
-    Pot[].dangling to OperandB[]
-    OperandB[].isNull not
-  while
-    OperandB[].pipeOut
-  repeat
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_RSBBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : filter_RsbBuffer \handler
