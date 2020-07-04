@@ -79,6 +79,10 @@ void Step::vFilterRsbFilter(void)
 
   RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pDataStack->pPopPtr(__func__));
 
+  Expr* pExpr = * m_pRegSet->m_xpExpr;
+  
+  m_pRegSet->m_xpFilterRsb->vFilter(pRsbBuffer,pExpr);
+  
   EXIT();
 }
 

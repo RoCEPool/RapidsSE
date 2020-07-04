@@ -102,7 +102,7 @@ void FilterRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
   vNewDstRsb(i_Ptn);
   
   // copy that
-  bool bSrcHasPtnHash = false;
+  bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
   m_pIntoRowSlab->vCopyRsb(aRsbSrc,bSrcHasPtnHash,bCopyPtnHash);
 }
@@ -119,7 +119,7 @@ void FilterRsb::vNewDstRsb(i8 i_Ptn)
   if (! pDstRsbBuffer) {
     pDstRsbBuffer = new RsbBuffer;
     pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
-    pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
+    //pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
     m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
   }
   
@@ -128,7 +128,7 @@ void FilterRsb::vNewDstRsb(i8 i_Ptn)
   if (! bNewed) {
     pDstRsbBuffer = new RsbBuffer;
     pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
-    pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
+    //pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
     m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
     bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
     ASSERT(bNewed);
