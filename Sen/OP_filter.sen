@@ -28,12 +28,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_RSBBUFFER ...                                                   EACH */
+/* pipe out all completed buffers in the pot                                  */
 /*----------------------------------------------------------------------------*/
-: filter_RsbBuffer \handler
-
-  PipeIn[] FilterRsb[].filter
-  nullptr to Pipein[]
+: Pot[].pipeoutAllCompleted
 
   Pot[].completed to OperandB[]
   begin
@@ -42,6 +39,31 @@
     OperandB[].pipeOut
     Pot[].completed to OperandB[]
   repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* pipe out all dangling buffers in the pot                                   */
+/*----------------------------------------------------------------------------*/
+: Pot[].pipeoutAllDangling
+
+  Pot[].dangling to OperandB[]
+  begin
+    OperandB[].isNull not
+  while
+    OperandB[].pipeOut
+    Pot[].dangling to OperandB[]
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_RSBBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: filter_RsbBuffer \handler
+
+  PipeIn[] FilterRsb[].filter
+  nullptr to Pipein[]
+
+  Pot[].pipeoutAllCompleted
 
   true
 ;
@@ -51,13 +73,7 @@
 /*----------------------------------------------------------------------------*/
 : filter_EosMarker \handler
 
-  Pot[].dangling to OperandB[]
-  begin
-    OperandB[].isNull not
-  while
-    OperandB[].pipeOut
-    Pot[].dangling to OperandB[]
-  repeat
+  Pot[].pipeoutAllDangling
 
   FilterRsb[].delete
   Expr[].delete
