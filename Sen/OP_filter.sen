@@ -32,8 +32,9 @@
 /*----------------------------------------------------------------------------*/
 : filter_RsbBuffer \handler
 
-  PipeIn[] FilterRsb[].filter
-  nullptr to Pipein[]
+  Operand[].pipeIn
+  FilterRsb[].filter
+  Operand[].delete
 
   Pot[].pipeoutAllCompleted
 
