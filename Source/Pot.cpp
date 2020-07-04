@@ -49,6 +49,18 @@ void Pot::vAddBuffer(DataBuffer* pDataBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current buffer                                                         */
+/*----------------------------------------------------------------------------*/
+DataBuffer* Pot::pBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
+  
+  DataBuffer* pDataBuffer = m_oHashSet.pBuffer(0);
+  
+  return pDataBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get any completed/full buffer                                              */
 /*----------------------------------------------------------------------------*/
 DataBuffer* Pot::pCompleted(void)

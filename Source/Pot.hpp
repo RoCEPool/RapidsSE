@@ -23,6 +23,7 @@ namespace DataBuffers
   
     void vAddBuffer(DataBuffer* pDataBuffer);
 
+    DataBuffer* pBuffer(void);
     DataBuffer* pCompleted(void);
     DataBuffer* pDangling(void);
   
