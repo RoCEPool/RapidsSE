@@ -887,6 +887,45 @@
   end ;
   "
   api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // filtered load
+  sPath
+  "
+  procedure expr_project_1
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+    start
+      | periodicOp once
+      | chunk $file
+      | rdCsvChunk $file
+      | stageB robin
+
+
+  stage stageB on all partitions on origin :
+    toRsb $table
+      | filter
+   // | project
+      | toPtnRsb
+      | toNstRsb
+      | toHshCrw
+      | stageC hashed
+
+  stage stageC on all partitions :
+    insert $table
+      | stageD
+
+  stage stageD on origin :
+    output
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
 ;
 
 /*----------------------------------------------------------------------------*/

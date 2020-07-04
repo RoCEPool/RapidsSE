@@ -15,6 +15,7 @@ shortcut l    _loadPipeline;
 shortcut d    _pipeline;
 shortcut dl   _pipelineLineItem;
 shortcut ef1  "../Expressions/_expr_filter_1";
+shortcut ep1  "../Expressions/_expr_project_1";
 shortcut f    _fetchLineItemRJH;
 shortcut fl   "../FASTLOAD/commands/_fl";
 shortcut flf  "../FASTLOAD/commands/_flf";
