@@ -48,7 +48,8 @@ namespace Tasks
     REG<PtnStream>   m_xpPtnStream;
     REG<Row>         m_xpRow;
     REG<RowOnce>     m_xpRowOnce;
-    REG<StreamDef>   m_xpStreamDef;
+    REG<StreamDef>   m_xpStreamDef;     // maybe rename this to stream def in ?
+    REG<StreamDef>   m_xpStreamDefOut;
     REG<Operand>     m_xpStreamSet;
     REG<Table>       m_xpStreamSetTable;
     REG<Operand>     m_xpSubset;
