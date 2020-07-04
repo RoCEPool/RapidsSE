@@ -572,7 +572,14 @@ void Constants::vAddConstantsCpp(void)
   /*  5 */ vAddConstant("TS_SLEEPING"_Stz,   TS_SLEEPING);
   /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
   /*  7 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
-  
+ 
+  // UK_ : function type
+  /*  0 */ vAddConstant("UK_NONE"_Stz,       UK_NONE);
+  /*  0 */ vAddConstant("UK_AGG"_Stz,        UK_AGG);
+  /*  0 */ vAddConstant("UK_FILTER"_Stz,     UK_FILTER);
+  /*  0 */ vAddConstant("UK_KEY"_Stz,        UK_KEY);
+  /*  0 */ vAddConstant("UK_PROJECT"_Stz,    UK_PROJECT);
+
   // WK_ : word type
   /*  0 */ vAddConstant("WK_NONE"_Stz,       WK_NONE);
   /*  0 */ vAddConstant("WK_CPPOBJECT"_Stz,  WK_CPPOBJECT);
