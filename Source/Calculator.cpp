@@ -105,19 +105,36 @@ bool Calculator::bCompile(TokenVec* pTknVec)
     if (pTkn->bSame("@"_Stz)) {
       m_eaCode[i_Code++] = EO_PUSHCOLI;
       pTkn = pTknVec->pGet(++i_Tkn);
+      iArg = pTkn->iToI8();
       piArg = (i8*) & m_eaCode[i_Code];
       * piArg = iArg;
       i_Code += sizeof(i8);
       continue;
     }
+
     if (pTkn->bSame("!"_Stz)) {
       m_eaCode[i_Code++] = EO_POPCOLI;
       pTkn = pTknVec->pGet(++i_Tkn);
+      iArg = pTkn->iToI8();
       piArg = (i8*) & m_eaCode[i_Code];
       * piArg = iArg;
       i_Code += sizeof(i8);
       continue;
     }
+
+    if (pTkn->bSame("="_Stz)) {
+      m_eaCode[i_Code++] = EO_COPYCOL;
+      pTkn = pTknVec->pGet(++i_Tkn);
+      iArg = pTkn->iToI8();
+      piArg = (i8*) & m_eaCode[i_Code];
+      * piArg = iArg;
+      i_Code += sizeof(i8);
+    }
+
+    if (pTkn->bSame("=*"_Stz)) {
+      m_eaCode[i_Code++] = EO_COPYALL;
+    }
+    
     if (pTkn->bIsInteger()) {
       m_eaCode[i_Code++] = EO_INTEGER;
       iArg = pTkn->iToI8();

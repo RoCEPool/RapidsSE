@@ -8,7 +8,10 @@ enum eEO : i1 // expression operators
   /*  0 */ EO_NONE=0,
   
   /*    */ EO_INTEGER,
-  
+
+  /*    */ EO_COPYALL,
+  /*    */ EO_COPYCOL,
+
   /*    */ EO_POPCOLI,
   /*    */ EO_PUSHCOLI,
   /*    */ EO_PUSHNULL,
@@ -46,6 +49,9 @@ static Stz* aEO[]
   /*  0 */ "NONE"_Stz,
   
   /*    */ "EO_INTEGER"_Stz,
+  
+  /*    */ "EO_COPYALL"_Stz,
+  /*    */ "EO_COPYCOL"_Stz,
   
   /*    */ "EO_POPCOLI"_Stz,
   /*    */ "EO_PUSHCOLI"_Stz,
