@@ -845,6 +845,44 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+: start::defineProc_Expressions
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // filtered load
+  sPath
+  "
+  procedure filteredLoad_1
+    parameters $Table $File
+  begin
+
+    stage stageA on origin :
+      start
+        | periodicOp once
+        | catFile $File
+        | toRsb $Table
+        | filter
+        | toPtnRsb
+        | stageB hashed
+
+    stage stageB on all partitions :
+      insert $Table
+        | stageC
+
+    stage stageC on origin :
+      output
+        | sink
+        | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
 /* define apriori tables                                                      */
 /*----------------------------------------------------------------------------*/
 : start::defineTables
@@ -1169,6 +1207,7 @@
   start::defineProcedures4
   start::defineProc_SteadyState
   start::defineProc_UnloadReload
+  start::defineProc_Expressions
 
   // define the apriori system tables
   start::defineTables
