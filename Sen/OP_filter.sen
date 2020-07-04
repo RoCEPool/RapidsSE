@@ -10,6 +10,7 @@
 : filter_StartMarker \handler
 
   FilterRsb[].new
+  Pot[].new
 
   Expr[].new
   "@ 0 2 %" Expr[].source!
@@ -62,6 +63,7 @@
 
   FilterRsb[].delete
   Expr[].delete
+  Pot[].delete
 
   ZK_EOSMARKER_handler
 ;
