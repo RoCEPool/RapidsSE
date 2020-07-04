@@ -32,12 +32,11 @@
 /*----------------------------------------------------------------------------*/
 : Pot[].pipeoutAllCompleted
 
-  Pot[].completed to OperandB[]
   begin
+    Pot[].completed to OperandB[]
     OperandB[].isNull not
   while
     OperandB[].pipeOut
-    Pot[].completed to OperandB[]
   repeat
 ;
 
@@ -46,12 +45,11 @@
 /*----------------------------------------------------------------------------*/
 : Pot[].pipeoutAllDangling
 
-  Pot[].dangling to OperandB[]
   begin
+    Pot[].dangling to OperandB[]
     OperandB[].isNull not
   while
     OperandB[].pipeOut
-    Pot[].dangling to OperandB[]
   repeat
 ;
 
