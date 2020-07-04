@@ -1403,6 +1403,11 @@ public:
   void vStrTailInt(void);
   void vStrToStrVec(void);
 
+  // stream definition (out)
+  void vStreamDefOutDelete(void);
+  void vStreamDefOutGet(void);
+  void vStreamDefOutNew(void);
+
   // reg stream set
   void vStreamSetAddAnalyzeIndex(void);
   void vStreamSetAddAnalyzeTable(void);
