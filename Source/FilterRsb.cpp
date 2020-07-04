@@ -20,8 +20,6 @@ FilterRsb::FilterRsb(void)
 : Object(CN_FILTERRSB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
-
-  // m_oHashSet
   
   m_pPot = nullptr;
 
@@ -78,7 +76,7 @@ RsbBuffer* FilterRsb::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
   
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pPot->pCompleted());
   
   return pRsbBuffer;
 }
@@ -90,7 +88,7 @@ RsbBuffer* FilterRsb::pDangling(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
   
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pPot->pDangling());
   
   return pRsbBuffer;}
 
@@ -122,12 +120,12 @@ void FilterRsb::vNewDstRsb(i8 i_Ptn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
     
   // get rsb buffer for given partition (new a first buffer if ncessary)
-  RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_oHashSet.pBuffer(i_Ptn));
+  RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_pPot->pBuffer());
   if (! pDstRsbBuffer) {
     pDstRsbBuffer = new RsbBuffer;
     pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
     //pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
-    m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
+    m_pPot->vAddBuffer(pDstRsbBuffer);
   }
   
   // new a row in rsb buffer (new another rsb buffer if necessary)
@@ -136,7 +134,7 @@ void FilterRsb::vNewDstRsb(i8 i_Ptn)
     pDstRsbBuffer = new RsbBuffer;
     pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
     //pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
-    m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
+    m_pPot->vAddBuffer(pDstRsbBuffer);
     bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
     ASSERT(bNewed);
   }

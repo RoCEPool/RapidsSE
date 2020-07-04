@@ -8,9 +8,7 @@ namespace Expressions
   class FilterRsb : public Object
   {
   private:
-    
-    HashSet    m_oHashSet;
-  
+      
     Pot*       m_pPot;  
 
     RsbBuffer* m_pFromRsbBuffer; // the
