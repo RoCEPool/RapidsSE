@@ -378,6 +378,11 @@ public:
   void vFileTell(void);
   void vFileWriteLine(void);
 
+  // filter
+  void vFilterRsbDelete(void);
+  void vFilterRsbGet(void);
+  void vFilterRsbNew(void);
+
   // flow
   void vFlowExecute(void);
   void vFlowHazard(void);
