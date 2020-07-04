@@ -10,9 +10,30 @@
 void Step::vAddSteps_StreamDefOut(void)
 {
   vAddStep("StreamDefOut[]"_Stz,           &Step::vStreamDefOutGet);
+  vAddStep("StreamDefOut[].addColumn"_Stz, &Step::vStreamDefOutAddColumn);
   vAddStep("StreamDefOut[].delete"_Stz,    &Step::vStreamDefOutDelete);
   vAddStep("StreamDefOut[].new"_Stz,       &Step::vStreamDefOutNew);
 }
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].delete -- delete stream definition out                      */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutAddColumn(void)
+{
+  ENTRY();
+    
+  s32 sColNm;
+  m_pDataStack->vPopStr(sColNm,__func__);
+
+  eCT eColType = (eCT)m_pDataStack->iPopInt(__func__);
+
+  StreamDef* pStreamDefOut = * m_pRegSet->m_xpStreamDefOut;
+  
+  pStreamDefOut->vAddColumn(sColNm,eColType);
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* StreamDefOut[].delete -- delete stream definition out                      */

@@ -1404,6 +1404,7 @@ public:
   void vStrToStrVec(void);
 
   // stream definition (out)
+  void vStreamDefOutAddColumn(void);
   void vStreamDefOutDelete(void);
   void vStreamDefOutGet(void);
   void vStreamDefOutNew(void);
