@@ -54,7 +54,7 @@ bool Expr::bCompile(void)
   
   TokenVec* pTknVec = TokenVec::pTokenise(m_sSource);
   
-  bool b = m_pCalculator->bCompileTest(pTknVec);
+  bool b = m_pCalculator->bCompile(pTknVec);
   
   delete pTknVec;
   

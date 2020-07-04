@@ -59,8 +59,11 @@ void FilterRsb::vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     Rsb* aRsbSrc = pRowSlab->aRsbAdr(i_Row);
+    
+    i8 bCopy = pExpr->iEvaluate(aRsbSrc, pRowSlab);
         
-    vCopyRsb(i_Ptn,aRsbSrc);
+    if (bCopy)
+      vCopyRsb(i_Ptn,aRsbSrc);
   }
 }
 
