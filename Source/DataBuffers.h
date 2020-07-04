@@ -27,6 +27,7 @@ typedef       HV <RowSingle,   StreamDef>                      HV_Row;
 #include "RsbBuffer.hpp"
 
 #include "HashSet.hpp"
+#include "Pot.hpp"
 
 #include "SP_DataBuffer.hpp"
 

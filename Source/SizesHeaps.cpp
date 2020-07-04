@@ -197,6 +197,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PipelineSpec),       HT_TRANSIENT_SMALL   }, // CN_PIPELINESPEC
   { sizeof(Plan),               HT_TRANSIENT_MEDIUM  }, // CN_PLAN
   { sizeof(Planner),            HT_TRANSIENT_MEDIUM  }, // CN_PLANNER
+  { sizeof(Pot),                HT_TRANSIENT_LARGE   }, // CN_POT
   { sizeof(Predicate),          HT_TRANSIENT_TINY    }, // CN_PREDICATE
   { sizeof(PredicateVec),       HT_TRANSIENT_MEDIUM  }, // CN_PREDICATEVEC
   { sizeof(Profile),            HT_TRANSIENT_MEDIUM  }, // CN_PROFILE
