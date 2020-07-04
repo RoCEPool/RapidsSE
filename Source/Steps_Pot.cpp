@@ -40,7 +40,7 @@ void Step::vPotDangling(void)
   
   Pot* pPot = *m_pRegSet->m_xpPot;
     
-  DataBuffer* pDataBuffer = pPot->pCompleted();
+  DataBuffer* pDataBuffer = pPot->pDangling();
 
   m_pDataStack->vPushPtr(pDataBuffer);
 

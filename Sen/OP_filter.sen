@@ -35,13 +35,12 @@
   PipeIn[] FilterRsb[].filter
   nullptr to Pipein[]
 
-  FilterRsb[].completed to OperandB[]
-
+  Pot[].completed to OperandB[]
   begin
     OperandB[].isNull not
   while
     OperandB[].pipeOut
-    FilterRsb[].completed to OperandB[]
+    Pot[].completed to OperandB[]
   repeat
 
   true
@@ -52,13 +51,12 @@
 /*----------------------------------------------------------------------------*/
 : filter_EosMarker \handler
 
-  FilterRsb[].dangling to OperandB[]
-
+  Pot[].dangling to OperandB[]
   begin
     OperandB[].isNull not
   while
     OperandB[].pipeOut
-    FilterRsb[].dangling to OperandB[]
+    Pot[].dangling to OperandB[]
   repeat
 
   FilterRsb[].delete
