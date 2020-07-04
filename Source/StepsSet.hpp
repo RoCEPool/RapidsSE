@@ -379,6 +379,8 @@ public:
   void vFileWriteLine(void);
 
   // filter
+  void vFilterRsbCompleted(void);
+  void vFilterRsbDangling(void);
   void vFilterRsbDelete(void);
   void vFilterRsbFilter(void);
   void vFilterRsbGet(void);

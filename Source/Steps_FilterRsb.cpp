@@ -10,6 +10,8 @@
 void Step::vAddSteps_FilterRsb(void)
 {
   vAddStep("FilterRsb[]"_Stz,           &Step::vFilterRsbGet);
+  vAddStep("FilterRsb[].completed"_Stz, &Step::vFilterRsbCompleted);
+  vAddStep("FilterRsb[].dangling"_Stz,  &Step::vFilterRsbDangling);
   vAddStep("FilterRsb[].delete"_Stz,    &Step::vFilterRsbDelete);
   vAddStep("FilterRsb[].filter"_Stz,    &Step::vFilterRsbFilter);
   vAddStep("FilterRsb[].get"_Stz,       &Step::vFilterRsbGet);
@@ -17,7 +19,43 @@ void Step::vAddSteps_FilterRsb(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* FilterRsb.delete -- delete rsb stream filter                               */
+/* FilterRsb[].completed -- get any completed/full buffer                     */
+/*----------------------------------------------------------------------------*/
+void Step::vFilterRsbCompleted(void)
+{
+  ENTRY();
+  
+  FilterRsb* pFilterRsb = * m_pRegSet->m_xpFilterRsb;
+
+  i8 i_Ptn = 0;
+  
+  RsbBuffer* pRsbBuffer = pFilterRsb->pCompleted(i_Ptn);
+
+  m_pDataStack->vPushPtr(pRsbBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* FilterRsb[].danglingRsbBuffer -- get any dangling/last buffer              */
+/*----------------------------------------------------------------------------*/
+void Step::vFilterRsbDangling(void)
+{
+  ENTRY();
+  
+  FilterRsb* pFilterRsb = * m_pRegSet->m_xpFilterRsb;
+
+  i8 i_Ptn = 0;
+
+  RsbBuffer* pRsbBuffer = pFilterRsb->pDangling(i_Ptn);
+  
+  m_pDataStack->vPushPtr(pRsbBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* FilterRsb[].delete -- delete rsb stream filter                             */
 /*----------------------------------------------------------------------------*/
 void Step::vFilterRsbDelete(void)
 {
@@ -33,7 +71,7 @@ void Step::vFilterRsbDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* FilterRsb.filter -- filter an rsb buffer                                   */
+/* FilterRsb[].filter -- filter an rsb buffer                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vFilterRsbFilter(void)
 {
@@ -45,7 +83,7 @@ void Step::vFilterRsbFilter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* FilterRsb.get -- get rsb stream filter                                     */
+/* FilterRsb[].get -- get rsb stream filter                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vFilterRsbGet(void)
 {
@@ -57,7 +95,7 @@ void Step::vFilterRsbGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* FilterRsb.new -- new rsb stream filter                                     */
+/* FilterRsb[].new -- new rsb stream filter                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vFilterRsbNew(void)
 {
