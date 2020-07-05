@@ -63,6 +63,7 @@ namespace Rows
     bool  bNewRow(void);
     NmlStr* pNmlStr(void);
     void  vNormaliseStrings(void);
+    void  vPositionOnCell(i8 i_Col);
     bool  bPtnHash(void);
     i8    iPtnOfRsb(Rsb* aRsb);
     Rsb*  aRsbAdr(i8 i_Row);
