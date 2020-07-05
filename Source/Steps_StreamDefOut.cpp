@@ -16,6 +16,7 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].name@"_Stz,      &Step::vStreamDefOutNameFetch);
   vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
+  vAddStep("StreamDefOut[].print"_Stz,      &Step::vStreamDefOutPrint);
   vAddStep("StreamDefOut[].set"_Stz,        &Step::vStreamDefOutSet);
 }
 
@@ -120,6 +121,20 @@ void Step::vStreamDefOutNew(void)
     
   m_pRegSet->m_xpStreamDefOut = new StreamDef;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].print -- print streamDefOut                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutPrint(void)
+{
+  ENTRY();
+    
+  StreamDef* pStreamDefOut = _pStreamDef(*m_pRegSet->m_xpStreamDefOut);
+  
+  pStreamDefOut->vPrint();
+
   EXIT();
 }
 
