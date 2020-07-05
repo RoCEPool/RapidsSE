@@ -24,6 +24,9 @@ ProjectRsb::ProjectRsb(void)
   m_pPot          = nullptr;
   m_pSrcRsbBuffer = nullptr;
   m_pDstRowSlab   = nullptr;
+  m_pStreamDefOut = nullptr;
+  
+  m_bPixInited    = false;
   
   _checkInitialised_(CN_PROJECTRSB);
 
@@ -45,15 +48,21 @@ ProjectRsb::~ProjectRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ProjectRsb::vProject(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot)
+void ProjectRsb::vProject(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot,
+                          StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTRSB,_FOOTER_);
   
+  m_pStreamDefOut = pStreamDefOut;
+
   m_pSrcRsbBuffer = pSrcRsbBuffer;
   
   m_pPot = pPot;
-  
-  i8 i_Ptn = 0;
+
+  if (! m_bPixInited) {
+    m_bPixInited = true;
+    m_pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+  }
   
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   
@@ -62,10 +71,12 @@ void ProjectRsb::vProject(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot)
     
     Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
     
-    i8 bCopy = pExpr->iEvaluate(aSrcRsb, pSrcRowSlab);
+    // new a destination row in destination partition row slab
+    vNewDstRsb();
+
+    //i8 bCopy = pExpr->iEvaluate(aSrcRsb, pSrcRowSlab);
         
-    if (bCopy)
-      vCopyIntoDst(aSrcRsb);
+    vCopyIntoDst(aSrcRsb);
   }
 }
 
@@ -80,10 +91,7 @@ void ProjectRsb::vCopyIntoDst(Rsb* aSrcRsb)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTRSB,_FOOTER_);
     
-  // new a destination row in target partition row slab
-  vNewDstRsb();
-  
-  // copy that
+  // copy src into rst
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
   m_pDstRowSlab->vCopyRsb(aSrcRsb,bSrcHasPtnHash,bCopyPtnHash);
@@ -100,7 +108,8 @@ void ProjectRsb::vNewDstRsb(void)
   RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_pPot->pBuffer());
   if (! pDstRsbBuffer) {
     pDstRsbBuffer = new RsbBuffer;
-    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pSrcRsbBuffer->pRowSlab()->aStreamPix());
+    pDstRsbBuffer->pRowSlab()->vCopyPix(&m_oStreamPix);
+    //pDstRsbBuffer->pRowSlab()->vCopyPix(m_pSrcRsbBuffer->pRowSlab()->aStreamPix());
     //pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
     m_pPot->vAddBuffer(pDstRsbBuffer);
   }
@@ -109,7 +118,8 @@ void ProjectRsb::vNewDstRsb(void)
   bool bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
   if (! bNewed) {
     pDstRsbBuffer = new RsbBuffer;
-    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pSrcRsbBuffer->pRowSlab()->aStreamPix());
+    pDstRsbBuffer->pRowSlab()->vCopyPix(&m_oStreamPix);
+    //pDstRsbBuffer->pRowSlab()->vCopyPix(m_pSrcRsbBuffer->pRowSlab()->aStreamPix());
     //pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
     m_pPot->vAddBuffer(pDstRsbBuffer);
     bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
