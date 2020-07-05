@@ -757,23 +757,23 @@
 
      toPtnRsb |
 
-     toNstRsb |
+     //toNstRsb |
 
-     toHshCrw |
+     //toHshCrw |
 
      stageC hashed
 
 
    stage stageC on all partitions :
 
-     insert $Table |
+     insdel $Table |
 
      stageD
 
 
    stage stageD on origin :
 
-     output |
+     //output |
 
      sink |
 

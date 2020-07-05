@@ -9,8 +9,9 @@ print section "Steady State 3";
 
 _lineitemSteady
 
-/time steadyState_3 lineitem "/DATA/TPCH/lineItem10k.csv" 100 ;
+// /time steadyState_3 lineitem "/TPCH/SF1/lineItem.csv" 10 ;
 
+ /time steadyState_3 lineitem "/DATA/TPCH/lineItem10k.csv" 1000 ;
 // /time steadyState_3 lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv"  3;
 // /time steadyState_3 lineitem "/Users/Shared/tpch/SF1/lineItem.csv"  10;
 // /time steadyState_3 lineitem "/Users/Shared/tpch/SF10/lineItem.csv" 3;

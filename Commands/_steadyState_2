@@ -20,6 +20,8 @@ steadyState_2 lineitem "/DATA/TPCH/lineItem10k.csv" 1 ;
 tableSizes;
 antbl lineitem;
 anidx lineitem lineitem_idx;
+vistbl lineitem;
+visidx lineitem lineitem_idx;
 
 Print "\n\n-------------------------------------------------";
 Print "SECOND ITERATION";
@@ -28,6 +30,8 @@ steadyState_2 lineitem "/DATA/TPCH/lineItem10k.csv" 1 ;
 tableSizes;
 antbl lineitem;
 anidx lineitem lineitem_idx;
+vistbl lineitem;
+visidx lineitem lineitem_idx;
 
 Print "\n\n-------------------------------------------------";
 Print "THIRD ITERATION";
@@ -36,6 +40,8 @@ steadyState_2 lineitem "/DATA/TPCH/lineItem10k.csv" 1 ;
 tableSizes;
 antbl lineitem;
 anidx lineitem lineitem_idx;
+vistbl lineitem;
+visidx lineitem lineitem_idx;
 
 Print "\n\n-------------------------------------------------";
 Print "FOURTH ITERATION";
@@ -44,6 +50,8 @@ steadyState_2 lineitem "/DATA/TPCH/lineItem10k.csv" 1 ;
 tableSizes;
 antbl lineitem;
 anidx lineitem lineitem_idx;
+vistbl lineitem;
+visidx lineitem lineitem_idx;
 
 drop table lineitem;
 

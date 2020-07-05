@@ -330,11 +330,12 @@ void TablePtn::vDeleteRow(IndexTree* pIndexTree, EntBuffer* pEntBuffer, Ent* aEn
     
     // is it the currentBuffer ?
     if (m_pCurrentCrwBuffer == pCrwBuffer)
-      m_pCurrentCrwBuffer = nullptr;
+      m_pCurrentCrwBuffer = m_pCurrentCrwBuffer->pPrevCrwBuffer();
     
     // is it the root buffer ?
-    if (m_pRootCrwBuffer == pCrwBuffer)
-      m_pRootCrwBuffer = nullptr;
+    if (m_pRootCrwBuffer == pCrwBuffer) {
+      m_pRootCrwBuffer = m_pRootCrwBuffer->pNextCrwBuffer();
+    }
     
     // now delete the buffer
     delete pCrwBuffer;

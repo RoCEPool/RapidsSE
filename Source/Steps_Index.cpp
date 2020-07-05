@@ -1018,7 +1018,7 @@ void Step::vIndexVerify(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.visualize -- visualize the index                                     */
+/* index[].visualize -- visualize the index                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexVisualize(void)
 {
