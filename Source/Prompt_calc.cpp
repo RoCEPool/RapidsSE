@@ -27,7 +27,9 @@ bool Prompt::bPrompt_calc(SePrompt* pPrompt)
 
   Calculator* pCalculator = new Calculator;
  
-  if (! pCalculator->bCompile(pTknVec, nullptr, 1, pTknVec->nTokens() - 1)) {
+  TokenVec* pCalcTknVec = TokenVec::pGetSubVec(pTknVec,1, pTknVec->nTokens() - 1);
+  
+  if (! pCalculator->bCompile(pCalcTknVec)) {
     delete pCalculator;
     return true;
   }
@@ -46,6 +48,8 @@ bool Prompt::bPrompt_calc(SePrompt* pPrompt)
   vTrace("  %lld\n"_Stz,iResult);
   
   delete pCalculator;
+  
+  delete pCalcTknVec;
   
   return true;
 }

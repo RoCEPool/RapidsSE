@@ -33,8 +33,6 @@ namespace Expressions
    ~Calculator(void) noexcept(false);
   
     bool bCompile(TokenVec* pTknVec);
-    bool bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn, i8 iEndTkn);
-    bool bCompileTest(TokenVec* pTknVec);
 
     i8   iCalc(void);
     i8   iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab);

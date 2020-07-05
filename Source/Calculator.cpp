@@ -98,6 +98,11 @@ bool Calculator::bCompile(TokenVec* pTknVec)
     
     // -- -- -- -- -- -- -- -- -- -- --
 
+    if (pTkn->bSame("dup"_Stz)) { m_eaCode[i_Code++] = EO_DUP;   continue; }
+    if (pTkn->bSame("."_Stz))   { m_eaCode[i_Code++] = EO_PRINT; continue; }
+
+    // -- -- -- -- -- -- -- -- -- -- --
+
 //    if (pTkn->bIsName()) {
 //      m_eaCode[i_Code++] = EO_PUSHCOLI;
 //      i8 iColVec;
@@ -177,145 +182,6 @@ bool Calculator::bCompile(TokenVec* pTknVec)
   m_eaCode[i_Code++] = EO_RETURN;
   vTrace("\n"_Stz);
 
-  return true;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* compile                                                                    */
-/*----------------------------------------------------------------------------*/
-bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn, i8 iEndTkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-  //bCompileTest(pTknVec);
-  
-  i8* piArg;
-  i8  iArg = 0;
-
-  i8 i_Code = 0;
-  for (i8 i_Tkn = iStartTkn; i_Tkn <= iEndTkn; i_Tkn++) {
-    Token* pTkn = pTknVec->pGet(i_Tkn);
-    
-    vTrace(" >%s<"_Stz,pTkn->szChars());
-    
-    // -- -- -- -- -- -- -- -- -- -- --
-
-    if (pTkn->bSame("+"_Stz))  { m_eaCode[i_Code++] = EO_ADD;      continue; }
-    if (pTkn->bSame("/"_Stz))  { m_eaCode[i_Code++] = EO_DIVIDE;   continue; }
-    if (pTkn->bSame("%"_Stz))  { m_eaCode[i_Code++] = EO_MODULO;   continue; }
-    if (pTkn->bSame("*"_Stz))  { m_eaCode[i_Code++] = EO_MULTIPLY; continue; }
-    if (pTkn->bSame("-"_Stz))  { m_eaCode[i_Code++] = EO_SUBTRACT; continue; }
-
-    // -- -- -- -- -- -- -- -- -- -- --
-
-    if (pTkn->bSame("<"_Stz))  { m_eaCode[i_Code++] = EO_LESSTHAN;     continue; }
-    if (pTkn->bSame("<="_Stz)) { m_eaCode[i_Code++] = EO_LESSEQUAL;    continue; }
-    if (pTkn->bSame("=="_Stz)) { m_eaCode[i_Code++] = EO_EQUAL;        continue; }
-    if (pTkn->bSame("!="_Stz)) { m_eaCode[i_Code++] = EO_NOTEQUAL;     continue; }
-    if (pTkn->bSame(">="_Stz)) { m_eaCode[i_Code++] = EO_GREATEREQUAL; continue; }
-    if (pTkn->bSame(">"_Stz))  { m_eaCode[i_Code++] = EO_GREATERTHAN;  continue; }
-    
-    // -- -- -- -- -- -- -- -- -- -- --
-    
-    if (pTkn->bSame("and"_Stz)) { m_eaCode[i_Code++] = EO_AND; continue; }
-    if (pTkn->bSame("or"_Stz))  { m_eaCode[i_Code++] = EO_OR;  continue; }
-    if (pTkn->bSame("not"_Stz)) { m_eaCode[i_Code++] = EO_NOT; continue; }
-
-    // -- -- -- -- -- -- -- -- -- -- --
-    
-    if (pTkn->bSame("isNull"_Stz))    { m_eaCode[i_Code++] = EO_ISNULL;    continue; }
-    if (pTkn->bSame("isNotNull"_Stz)) { m_eaCode[i_Code++] = EO_ISNOTNULL; continue; }
-    
-    // -- -- -- -- -- -- -- -- -- -- --
-
-    if (pTkn->bSame("dup"_Stz)) { m_eaCode[i_Code++] = EO_DUP;   continue; }
-    if (pTkn->bSame("."_Stz))   { m_eaCode[i_Code++] = EO_PRINT; continue; }
-
-    // -- -- -- -- -- -- -- -- -- -- --
-
-    if (pTkn->bIsName()) {
-      m_eaCode[i_Code++] = EO_PUSHCOLI;
-      i8 iColVec;
-      piArg = (i8*) & m_eaCode[i_Code];
-      * piArg = pStreamDef->iFindColumn(pTkn->azChars(), iColVec);
-      i_Code += sizeof(i8);
-      continue;
-    }
-    if (pTkn->bIsInteger()) {
-      m_eaCode[i_Code++] = EO_INTEGER;
-      iArg = pTkn->iToI8();
-      piArg = (i8*) & m_eaCode[i_Code];
-      * piArg = iArg;
-      i_Code += sizeof(i8);
-      continue;
-    }
-    if (pTkn->bSame(C_NULL)) {
-      m_eaCode[i_Code++] = EO_INTEGER;
-      iArg = C_DATUM_NULL;
-      piArg = (i8*) & m_eaCode[i_Code];
-      i_Code += sizeof(i8);
-      continue;
-    }
-    if (pTkn->bSame("0"_Stz)) {
-      m_eaCode[i_Code++] = EO_INTEGER;
-      iArg = 0;
-      piArg = (i8*) & m_eaCode[i_Code];
-      * piArg = iArg;
-      i_Code += sizeof(i8);
-      continue;
-    }
-    if (pTkn->bSame("1"_Stz)) {
-      m_eaCode[i_Code++] = EO_INTEGER;
-      iArg = 1;
-      piArg = (i8*) & m_eaCode[i_Code];
-      * piArg = iArg;
-      i_Code += sizeof(i8);
-      continue;
-    }
-
-    // -- -- -- -- -- -- -- -- -- -- --
-    
-    m_eaCode[i_Code++] = EO_RETURN;
-    vTrace("Error: %s\n"_Stz,pTkn->szChars());
-    return false;
-  }
-
-  m_eaCode[i_Code++] = EO_RETURN;
-  vTrace("\n"_Stz);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compile test (simple hard coded expr)                                      */
-/*----------------------------------------------------------------------------*/
-bool Calculator::bCompileTest(TokenVec* pTknVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-  i8* piArg;
-  
-  i8 i_Code = 0;
-  
-  // COLUMN(1) INTEGER(41) ADD PUSH1 ADD NEGATE RETURN
-  
-  m_eaCode[i_Code++] = EO_PUSHCOLI;
-  piArg = (i8*) & m_eaCode[i_Code];
-  * piArg = 1;
-  i_Code += sizeof(i8);
-  
-  m_eaCode[i_Code++] = EO_INTEGER;
-  piArg = (i8*) & m_eaCode[i_Code];
-  * piArg = 41;
-  i_Code += sizeof(i8);
-  
-  m_eaCode[i_Code++] = EO_ADD;
-  m_eaCode[i_Code++] = EO_PUSH1;
-  m_eaCode[i_Code++] = EO_ADD;
-  m_eaCode[i_Code++] = EO_NEGATE;
-  m_eaCode[i_Code++] = EO_RETURN;
-  
   return true;
 }
 
