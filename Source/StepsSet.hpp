@@ -1411,6 +1411,7 @@ public:
   void vStreamDefNewCount(void);
   void vStreamDefNewToCsv(void);
   void vStreamDefParse(void);
+  void vStreamDefPipeIn(void);
   void vStreamDefPipeOut(void);
   void vStreamDefRowSize(void);
   void vStreamDefSet(void);

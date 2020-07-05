@@ -717,7 +717,7 @@ void Step::vRegOperandNewStreamDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].pipeIn -- append operand onto next operator in pipeline          */
+/* Operand[].pipeIn -- move pipein operand into operandA                      */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandPipeIn(void)
 {

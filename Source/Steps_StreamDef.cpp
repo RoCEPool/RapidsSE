@@ -22,6 +22,7 @@ void Step::vAddSteps_StreamDef(void)
   vAddStep("StreamDef[].new"_Stz,             &Step::vStreamDefNew);
   vAddStep("StreamDef[].newToCsvStream"_Stz,  &Step::vStreamDefNewToCsv);
   vAddStep("StreamDef::parse"_Stz,            &Step::vStreamDefParse);
+  vAddStep("StreamDef[].pipeIn"_Stz,          &Step::vStreamDefPipeIn);
   vAddStep("StreamDef[].pipeOut"_Stz,         &Step::vStreamDefPipeOut);
   vAddStep("StreamDef[].rowSize"_Stz,         &Step::vStreamDefRowSize);
   vAddStep("StreamDef[].set"_Stz,             &Step::vStreamDefSet);
@@ -241,6 +242,22 @@ void Step::vStreamDefParse(void)
   }
   
   m_pDataStack->vPushPtr(pStreamDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].pipeIn -- move pipein operand into StreamDef[]                 */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefPipeIn(void)
+{
+  ENTRY();
+  
+  Operand* pOperand = * m_pRegSet->m_xpPipein;
+
+  m_pRegSet->m_xpPipein = nullptr;
+    
+  m_pRegSet->m_xpStreamDef = _pStreamDef(pOperand);
   
   EXIT();
 }
