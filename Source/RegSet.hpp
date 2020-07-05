@@ -45,6 +45,7 @@ namespace Tasks
     REG<Loader>      m_xpLoader;
     REG<Operand>     m_xpPipein;    // Pipein
     REG<Planner>     m_xpPlanner;
+    REG<ProjectRsb>  m_xpProjectRsb;
     REG<PtnStream>   m_xpPtnStream;
     REG<Row>         m_xpRow;
     REG<RowOnce>     m_xpRowOnce;
