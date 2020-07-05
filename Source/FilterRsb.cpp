@@ -62,7 +62,7 @@ void FilterRsb::vFilter(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot)
     
     Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
     
-    i8 bCopy = pExpr->iEvaluate(aSrcRsb, pSrcRowSlab);
+    i8 bCopy = pExpr->iFilter(aSrcRsb, pSrcRowSlab);
         
     if (bCopy)
       vCopyIntoDst(aSrcRsb);

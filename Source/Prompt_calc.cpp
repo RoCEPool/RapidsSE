@@ -41,7 +41,7 @@ bool Prompt::bPrompt_calc(SePrompt* pPrompt)
     iResult = pCalculator->iEvaluate(aiColValues);
 */
   
-  i8 iResult = pCalculator->iEvaluate(nullptr);
+  i8 iResult = pCalculator->iCalc();
   
   vTrace("  %lld\n"_Stz,iResult);
   

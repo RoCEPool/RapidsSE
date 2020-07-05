@@ -26,7 +26,9 @@ namespace Expressions
    
     bool bCompile(void);
   
-    i8   iEvaluate(Rsb* aRsb, RowSlab* pRowSlab);
+    i8   iFilter(Rsb* aRsb, RowSlab* pRowSlab);
+
+    i8   iProject(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
 
     eUK  eKind(void);
     void vKind(eUK eKind);

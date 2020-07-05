@@ -62,13 +62,25 @@ bool Expr::bCompile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* evaluate                                                                    */
+/* evaluate                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Expr::iEvaluate(Rsb* aRsb, RowSlab* pRowSlab)
+i8 Expr::iFilter(Rsb* aRsb, RowSlab* pRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
     
-  i8 i = m_pCalculator->iEvaluate(aRsb,pRowSlab);
+  i8 i = m_pCalculator->iFilter(aRsb,pRowSlab);
+  
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate                                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Expr::iProject(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
+    
+  i8 i = m_pCalculator->iProject(pDstRowSlab,aSrcRsb,pSrcRowSlab);
   
   return i;
 }

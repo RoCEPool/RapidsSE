@@ -11,6 +11,11 @@ namespace Expressions
   class Calculator : public Object
   {
   private:
+    RowSlab* m_pDstRowSlab;
+
+    Rsb*     m_aSrcRsb;
+    RowSlab* m_pSrcRowSlab;
+  
     eEO  m_eaCode[C_CALC_CODE];   // { EO_code [<bytes>] }
                                   // EO_COLUMN <colNo> ...
     i8   m_iaStack[C_CALC_STACK];
@@ -31,10 +36,12 @@ namespace Expressions
     bool bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn, i8 iEndTkn);
     bool bCompileTest(TokenVec* pTknVec);
 
-    i8   iEvaluate(RowSingle* pRow);
-    i8   iEvaluate(Rsb* aRsb, RowSlab* pRowSlab);
-    i8   iEvaluate(Rsb* aDstRsb, RowSlab* pDstRowSlab,
-                   Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iCalc(void);
+    i8   iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iProject(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+
+  private:
+    i8   iCompute(void);
 
     Footer* aFooter(void);
   };

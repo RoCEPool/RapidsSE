@@ -9,7 +9,9 @@ namespace Expressions
   {
   private:
     Pot*       m_pPot;          // working pot of destination buffers
+  
     RsbBuffer* m_pSrcRsbBuffer; // source rsb buffer
+  
     RowSlab*   m_pDstRowSlab;   // current destination slab (in pot)
   
     StreamDef* m_pStreamDefOut; // output stream def
