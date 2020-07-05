@@ -9,6 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : project_StartMarker \handler
 
+  FilterRsb[].new
+  Pot[].new
+
+  Expr[].new
+  "@ 0 2 %" Expr[].source!
+  Expr[].compile assert
+
   ZK_STARTMARKER_handler
 ;
 
@@ -21,17 +28,29 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                   EACH */
+/* on ZK_RSBBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
-: project_CsvBuffer \handler
+: project_RsbBuffer \handler
 
-  ZK_CSVBUFFER_handler
+  Operand[].pipeIn
+  FilterRsb[].filter
+  Operand[].delete
+
+  Pot[].pipeoutAllCompleted
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : project_EosMarker \handler
+
+  Pot[].pipeoutAllDangling
+
+  FilterRsb[].delete
+  Expr[].delete
+  Pot[].delete
 
   ZK_EOSMARKER_handler
 ;
@@ -40,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* project request                                                      SPAWN */
+/* filter request                                                       SPAWN */
 /*----------------------------------------------------------------------------*/
 : project_req \operator
 
@@ -48,9 +67,9 @@
 
   op__topology
 
-  find: project_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: project_EosMarker   ZK_EOSMARKER   op[].handler!
   find: project_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: project_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: project_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
@@ -63,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: project :: project ;
+cmdSyntax: project :: filter ;
 
 : project _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
