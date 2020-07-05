@@ -285,6 +285,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("StreamDefOut[]"_Stz)) {
+    pCurrentWord->vEncodeCall("StreamDefOut[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("StreamSetTable[]"_Stz)) {
     pCurrentWord->vEncodeCall("StreamSetTable[].set"_Stz);
     EXIT();
