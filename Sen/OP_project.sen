@@ -13,7 +13,7 @@
   Pot[].new
 
   Expr[].new
-  "=" Expr[].source!
+  "= @ 3 10 * ! 3" Expr[].source!
   Expr[].compile assert
 
   ZK_STARTMARKER_handler

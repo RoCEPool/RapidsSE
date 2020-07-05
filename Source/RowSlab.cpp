@@ -253,7 +253,7 @@ bool RowSlab::bNewRow(void)
   if (C_UNKNOWN == m_i_Cell)
     m_i_Cell = C_FIRST_LGL_CELL + 1;
   else {
-    ASSERT(m_i_Cell == m_i_Row - nCols());
+    //ASSERT(m_i_Cell == m_i_Row - nCols());
     
     m_i_Cell = m_i_Row - nCols();
   }

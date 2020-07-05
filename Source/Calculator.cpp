@@ -286,7 +286,7 @@ i8 Calculator::iCompute(void)
       case EO_DEPOSITCOLI:
         iArgA = * (i8*)peCode;
         peCode += 8;
-        iRes = m_iaStack[++i_TopVal];
+        iRes = m_iaStack[i_TopVal--];
         m_pDstRowSlab->vPositionOnCell(iArgA);
         m_pDstRowSlab->vDeposit(iRes);
         break;
