@@ -21,12 +21,12 @@ FilterRsb::FilterRsb(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
   
-  m_pPot = nullptr;
-
-  m_pFromRsbBuffer = nullptr;
-
-  m_pIntoRowSlab   = nullptr;
+  m_pPot          = nullptr;
+  m_pSrcRsbBuffer = nullptr;
+  m_pDstRowSlab   = nullptr;
   
+  _checkInitialised_(CN_FILTERRSB);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
 }
 
@@ -45,27 +45,27 @@ FilterRsb::~FilterRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void FilterRsb::vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr, Pot* pPot)
+void FilterRsb::vFilter(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
   
-  m_pFromRsbBuffer = pRsbBuffer;
+  m_pSrcRsbBuffer = pSrcRsbBuffer;
   
   m_pPot = pPot;
   
   i8 i_Ptn = 0;
   
-  RowSlab* pRowSlab = pRsbBuffer->pRowSlab();
+  RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   
-  i8 nRows = pRowSlab->nRows();
+  i8 nRows = pSrcRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    Rsb* aRsbSrc = pRowSlab->aRsbAdr(i_Row);
+    Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
     
-    i8 bCopy = pExpr->iEvaluate(aRsbSrc, pRowSlab);
+    i8 bCopy = pExpr->iEvaluate(aSrcRsb, pSrcRowSlab);
         
     if (bCopy)
-      vCopyRsb(aRsbSrc);
+      vCopyIntoDst(aSrcRsb);
   }
 }
 
@@ -74,9 +74,9 @@ void FilterRsb::vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr, Pot* pPot)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy source rsb into target partition row slab                             */
+/* copy source rsb into destination partition row slab                        */
 /*----------------------------------------------------------------------------*/
-void FilterRsb::vCopyRsb(Rsb* aRsbSrc)
+void FilterRsb::vCopyIntoDst(Rsb* aSrcRsb)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
     
@@ -86,11 +86,11 @@ void FilterRsb::vCopyRsb(Rsb* aRsbSrc)
   // copy that
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
-  m_pIntoRowSlab->vCopyRsb(aRsbSrc,bSrcHasPtnHash,bCopyPtnHash);
+  m_pDstRowSlab->vCopyRsb(aSrcRsb,bSrcHasPtnHash,bCopyPtnHash);
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a destination rsb row in rsb slab in hash set                          */
+/* new a destination rsb row                                                  */
 /*----------------------------------------------------------------------------*/
 void FilterRsb::vNewDstRsb(void)
 {
@@ -100,7 +100,7 @@ void FilterRsb::vNewDstRsb(void)
   RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_pPot->pBuffer());
   if (! pDstRsbBuffer) {
     pDstRsbBuffer = new RsbBuffer;
-    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
+    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pSrcRsbBuffer->pRowSlab()->aStreamPix());
     //pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
     m_pPot->vAddBuffer(pDstRsbBuffer);
   }
@@ -109,7 +109,7 @@ void FilterRsb::vNewDstRsb(void)
   bool bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
   if (! bNewed) {
     pDstRsbBuffer = new RsbBuffer;
-    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
+    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pSrcRsbBuffer->pRowSlab()->aStreamPix());
     //pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
     m_pPot->vAddBuffer(pDstRsbBuffer);
     bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
@@ -118,7 +118,7 @@ void FilterRsb::vNewDstRsb(void)
   
   pDstRsbBuffer->vPartitionNo(0);
   
-  m_pIntoRowSlab = pDstRsbBuffer->pRowSlab();
+  m_pDstRowSlab = pDstRsbBuffer->pRowSlab();
 }
 
 /*============================================================================*/

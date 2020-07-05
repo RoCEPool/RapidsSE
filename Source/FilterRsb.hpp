@@ -8,13 +8,9 @@ namespace Expressions
   class FilterRsb : public Object
   {
   private:
-      
-    Pot*       m_pPot;  
-
-    RsbBuffer* m_pFromRsbBuffer; // the
-  
-    RsbBuffer* m_pIntoRsbBuffer; // the
-    RowSlab*   m_pIntoRowSlab;
+    Pot*       m_pPot;          // working pot of destination buffers
+    RsbBuffer* m_pSrcRsbBuffer; // source rsb buffer
+    RowSlab*   m_pDstRowSlab;   // current destination slab (in pot)
   
     // must be last
     Footer m_xFooter;
@@ -26,10 +22,10 @@ namespace Expressions
     FilterRsb(void);
    ~FilterRsb(void) noexcept(false);
   
-    void vFilter(RsbBuffer* pRsbBuffer, Expr* pExpr, Pot* pPot);
+    void vFilter(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot);
     
   private:
-    void vCopyRsb(Rsb* aRsbSrc);
+    void vCopyIntoDst(Rsb* aSrcRsbc);
     void vNewDstRsb(void);
 
     Footer* aFooter(void);
