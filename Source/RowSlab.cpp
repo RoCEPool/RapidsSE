@@ -37,11 +37,14 @@ RowSlab::RowSlab(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_nItems   = 0;
+  m_i_Row    = C_UNKNOWN;
   m_i_Cell   = C_UNKNOWN;
  
   // m_oStreamPix
   
-  //MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ENCODING);
+  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ROWSLAB);
+  
+  // m_oNmlStr
 
 #ifdef WITH_DEBUG_VERSION
   m_xWsp.vZero(CN_ROWSLAB);
@@ -249,7 +252,14 @@ bool RowSlab::bNewRow(void)
   
   if (C_UNKNOWN == m_i_Cell)
     m_i_Cell = C_FIRST_LGL_CELL + 1;
+  else {
+    ASSERT(m_i_Cell == m_i_Row - nCols());
     
+    m_i_Cell = m_i_Row - nCols();
+  }
+  
+  m_i_Row = m_i_Cell;
+  
   m_nItems++;
   
   i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;

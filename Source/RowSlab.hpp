@@ -24,14 +24,15 @@ namespace Rows
     i8   m_i_Trim;      // where trim occurred     NOT USED YET
 
     i8   m_nItems;      // number of items in this row-slab
+    i8   m_i_Row;       // cell 0 of current row
     i8   m_i_Cell;      // current working cell
-  
+
     StreamPix m_oStreamPix; // condensed stream def
-  
+ 
+    SingleWord m__PadToCacheLine[7]; // padding to cache line
+
     NmlStr m_oNmlStr;   // normalised string set
     
-    //SingleWord m__PadToCacheLine[5]; // padding to cache line
-
     WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
   
     // must be last
