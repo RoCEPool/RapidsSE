@@ -118,7 +118,7 @@ bool Calculator::bCompile(TokenVec* pTknVec)
     }
 
     if (pTkn->bSame("!"_Stz)) {
-      m_eaCode[i_Code++] = EO_POPCOLI;
+      m_eaCode[i_Code++] = EO_DEPOSITCOLI;
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
       piArg = (i8*) & m_eaCode[i_Code];
@@ -128,16 +128,8 @@ bool Calculator::bCompile(TokenVec* pTknVec)
     }
 
     if (pTkn->bSame("="_Stz)) {
-      m_eaCode[i_Code++] = EO_COPYCOL;
-      pTkn = pTknVec->pGet(++i_Tkn);
-      iArg = pTkn->iToI8();
-      piArg = (i8*) & m_eaCode[i_Code];
-      * piArg = iArg;
-      i_Code += sizeof(i8);
-    }
-
-    if (pTkn->bSame("=*"_Stz)) {
       m_eaCode[i_Code++] = EO_COPYALL;
+      continue;
     }
     
     if (pTkn->bIsInteger()) {
@@ -408,13 +400,24 @@ i8 Calculator::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- --
           
-      case EO_POPCOLI:
+      case EO_COPYALL:
+      {
+        bool bSrcHasPtnHash = true;
+        bool bCopyPtnHash   = false;
+        m_pDstRowSlab->vPositionOnCell(0);
+        m_pDstRowSlab->vCopyRsb(m_aSrcRsb,bSrcHasPtnHash,bCopyPtnHash);
+        break;
+      }
+        
+      case EO_DEPOSITCOLI:
         iArgA = * (i8*)peCode;
         peCode += 8;
         iRes = m_iaStack[++i_TopVal];
+        m_pDstRowSlab->vPositionOnCell(iArgA);
         m_pDstRowSlab->vDeposit(iRes);
         break;
         
+      // -- -- -- -- -- -- -- -- -- -- --
       case EO_PUSHCOLI:
         iArgA = * (i8*)peCode;
         peCode += 8;
