@@ -34,7 +34,12 @@
 
   ": project_StreamDef \handler" .
 
-  ZK_STREAMDEF_handler
+  StreamDef[].pipeIn
+
+  StreamDef[].duplicate to OperandB[]
+  OperandB[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -61,6 +66,8 @@
   ProjectRsb[].delete
   Expr[].delete
   Pot[].delete
+
+  StreamDef[].delete
 
   ZK_EOSMARKER_handler
 ;
