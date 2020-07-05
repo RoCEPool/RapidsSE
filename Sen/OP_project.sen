@@ -41,6 +41,9 @@
 
   StreamDef[].print
 
+  StreamDef[].duplicate to StreamDefOut[]
+  StreamDefOut[].print
+
   true
 ;
 
@@ -70,6 +73,7 @@
   Pot[].delete
 
   StreamDef[].delete
+  StreamDefOut[].delete
 
   ZK_EOSMARKER_handler
 ;
