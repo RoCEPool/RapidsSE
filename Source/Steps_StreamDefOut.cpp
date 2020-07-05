@@ -16,6 +16,7 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].name@"_Stz,      &Step::vStreamDefOutNameFetch);
   vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
+  vAddStep("StreamDefOut[].set"_Stz,        &Step::vStreamDefOutSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,6 +119,18 @@ void Step::vStreamDefOutNew(void)
   ENTRY();
     
   m_pRegSet->m_xpStreamDefOut = new StreamDef;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].set -- set streamDefOut                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutSet(void)
+{
+  ENTRY();
+  
+  m_pRegSet->m_xpStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

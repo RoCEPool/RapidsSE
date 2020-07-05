@@ -1425,6 +1425,7 @@ public:
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
   void vStreamDefOutNew(void);
+  void vStreamDefOutSet(void);
 
   // reg stream set
   void vStreamSetAddAnalyzeIndex(void);
