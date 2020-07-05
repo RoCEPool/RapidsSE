@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : project_StartMarker \handler
 
-  FilterRsb[].new
+  ProjectRsb[].new
   Pot[].new
 
   Expr[].new
@@ -33,7 +33,7 @@
 : project_RsbBuffer \handler
 
   Operand[].pipeIn
-  FilterRsb[].filter
+  ProjectRsb[].project
   Operand[].delete
 
   Pot[].pipeoutAllCompleted
@@ -48,7 +48,7 @@
 
   Pot[].pipeoutAllDangling
 
-  FilterRsb[].delete
+  ProjectRsb[].delete
   Expr[].delete
   Pot[].delete
 
