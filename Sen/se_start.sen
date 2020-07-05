@@ -890,7 +890,7 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // filtered load
+  // filtered projected load
   sPath
   "
   procedure expr_project_1
@@ -908,7 +908,7 @@
   stage stageB on all partitions on origin :
     toRsb $table
       | filter
-   // | project
+      | project
       | toPtnRsb
       | toNstRsb
       | toHshCrw
