@@ -64,10 +64,12 @@ void ProjectRsb::vProject(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot,
     
     Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
     
-    i8 bCopy = pExpr->iEvaluate(aSrcRsb, pSrcRowSlab);
+    // new a destination row in destination partition row slab
+    vNewDstRsb();
+
+    //i8 bCopy = pExpr->iEvaluate(aSrcRsb, pSrcRowSlab);
         
-    if (bCopy)
-      vCopyIntoDst(aSrcRsb);
+    vCopyIntoDst(aSrcRsb);
   }
 }
 
@@ -82,10 +84,7 @@ void ProjectRsb::vCopyIntoDst(Rsb* aSrcRsb)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTRSB,_FOOTER_);
     
-  // new a destination row in target partition row slab
-  vNewDstRsb();
-  
-  // copy that
+  // copy src into rst
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
   m_pDstRowSlab->vCopyRsb(aSrcRsb,bSrcHasPtnHash,bCopyPtnHash);
