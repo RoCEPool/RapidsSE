@@ -13,7 +13,7 @@
   Pot[].new
 
   Expr[].new
-  "1" Expr[].source!
+  "=" Expr[].source!
   Expr[].compile assert
 
   ZK_STARTMARKER_handler
