@@ -130,6 +130,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Procedure();
   Step::vAddSteps_Process();
   Step::vAddSteps_Profile();
+  Step::vAddSteps_ProjectRsb();
   Step::vAddSteps_PtnStream();
   Step::vAddSteps_Push();
   
