@@ -7,30 +7,30 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_RegStreamDef(void)
+void Step::vAddSteps_StreamDef(void)
 {
-  vAddStep("StreamDef[]"_Stz,                 &Step::vRegStreamDefGet);
-  vAddStep("StreamDef[].asStr"_Stz,           &Step::vRegStreamDefAsStr);
-  vAddStep("StreamDef[].columnCount@"_Stz,    &Step::vRegStreamDefColumnCountFetch);
-  vAddStep("StreamDef[].column@"_Stz,         &Step::vRegStreamDefColumnFetch);
-  vAddStep("StreamDef[].delete"_Stz,          &Step::vRegStreamDefDelete);
-  vAddStep("StreamDef[].duplicate"_Stz,       &Step::vRegStreamDefDuplicate);
-  vAddStep("StreamDef[].get"_Stz,             &Step::vRegStreamDefGet);
-  vAddStep("StreamDef[].isNull"_Stz,          &Step::vRegStreamDefIsNull);
-  vAddStep("StreamDef[].name"_Stz,            &Step::vRegStreamDefName);
-  vAddStep("StreamDef[].newCountStream"_Stz,  &Step::vRegStreamDefNewCount);
-  vAddStep("StreamDef[].new"_Stz,             &Step::vRegStreamDefNew);
-  vAddStep("StreamDef[].newToCsvStream"_Stz,  &Step::vRegStreamDefNewToCsv);
-  vAddStep("StreamDef::parse"_Stz,            &Step::vRegStreamDefParse);
-  vAddStep("StreamDef[].pipeOut"_Stz,         &Step::vRegStreamDefPipeOut);
-  vAddStep("StreamDef[].rowSize"_Stz,         &Step::vRegStreamDefRowSize);
-  vAddStep("StreamDef[].set"_Stz,             &Step::vRegStreamDefSet);
+  vAddStep("StreamDef[]"_Stz,                 &Step::vStreamDefGet);
+  vAddStep("StreamDef[].asStr"_Stz,           &Step::vStreamDefAsStr);
+  vAddStep("StreamDef[].columnCount@"_Stz,    &Step::vStreamDefColumnCountFetch);
+  vAddStep("StreamDef[].column@"_Stz,         &Step::vStreamDefColumnFetch);
+  vAddStep("StreamDef[].delete"_Stz,          &Step::vStreamDefDelete);
+  vAddStep("StreamDef[].duplicate"_Stz,       &Step::vStreamDefDuplicate);
+  vAddStep("StreamDef[].get"_Stz,             &Step::vStreamDefGet);
+  vAddStep("StreamDef[].isNull"_Stz,          &Step::vStreamDefIsNull);
+  vAddStep("StreamDef[].name"_Stz,            &Step::vStreamDefName);
+  vAddStep("StreamDef[].newCountStream"_Stz,  &Step::vStreamDefNewCount);
+  vAddStep("StreamDef[].new"_Stz,             &Step::vStreamDefNew);
+  vAddStep("StreamDef[].newToCsvStream"_Stz,  &Step::vStreamDefNewToCsv);
+  vAddStep("StreamDef::parse"_Stz,            &Step::vStreamDefParse);
+  vAddStep("StreamDef[].pipeOut"_Stz,         &Step::vStreamDefPipeOut);
+  vAddStep("StreamDef[].rowSize"_Stz,         &Step::vStreamDefRowSize);
+  vAddStep("StreamDef[].set"_Stz,             &Step::vStreamDefSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].asStr -- get streamDef as a string                             */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefAsStr(void)
+void Step::vStreamDefAsStr(void)
 {
   ENTRY();
   
@@ -48,7 +48,7 @@ void Step::vRegStreamDefAsStr(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].column@ -- get column from streamDef                           */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefColumnFetch(void)
+void Step::vStreamDefColumnFetch(void)
 {
   ENTRY();
   
@@ -64,7 +64,7 @@ void Step::vRegStreamDefColumnFetch(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].columnCount@ -- get column count from streamDef                */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefColumnCountFetch(void)
+void Step::vStreamDefColumnCountFetch(void)
 {
   ENTRY();
   
@@ -78,7 +78,7 @@ void Step::vRegStreamDefColumnCountFetch(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].delete -- delete streamDef                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefDelete(void)
+void Step::vStreamDefDelete(void)
 {
   ENTRY();
 
@@ -92,7 +92,7 @@ void Step::vRegStreamDefDelete(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].duplicate -- new a duplicate stream def from Table[]           */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefDuplicate(void)
+void Step::vStreamDefDuplicate(void)
 {
   ENTRY();
   
@@ -108,7 +108,7 @@ void Step::vRegStreamDefDuplicate(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].get -- get streamDef                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefGet(void)
+void Step::vStreamDefGet(void)
 {
   ENTRY();
   
@@ -120,7 +120,7 @@ void Step::vRegStreamDefGet(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].isNull -- is streamDef null ?                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefIsNull(void)
+void Step::vStreamDefIsNull(void)
 {
   ENTRY();
   
@@ -132,7 +132,7 @@ void Step::vRegStreamDefIsNull(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].name -- get streamDef name                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefName(void)
+void Step::vStreamDefName(void)
 {
   ENTRY();
   
@@ -147,7 +147,7 @@ void Step::vRegStreamDefName(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].new -- new a stream def from Table[]                           */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefNew(void)
+void Step::vStreamDefNew(void)
 {
   ENTRY();
   
@@ -163,7 +163,7 @@ void Step::vRegStreamDefNew(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].newCount -- new a countOp streamDef                            */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefNewCount(void)
+void Step::vStreamDefNewCount(void)
 {
   ENTRY();
   
@@ -188,7 +188,7 @@ void Step::vRegStreamDefNewCount(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].newToCsvStream -- new a ToCsv streamDef                        */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefNewToCsv(void)
+void Step::vStreamDefNewToCsv(void)
 {
   ENTRY();
   
@@ -213,7 +213,7 @@ void Step::vRegStreamDefNewToCsv(void)
 /*----------------------------------------------------------------------------*/
 /* streamDef::parse -- parse Create Table statement and produce a streamDef   */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefParse(void)
+void Step::vStreamDefParse(void)
 {
   ENTRY();
   
@@ -248,7 +248,7 @@ void Step::vRegStreamDefParse(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].pipeOut -- append streamDef onto next operator in pipeline     */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefPipeOut(void)
+void Step::vStreamDefPipeOut(void)
 {
   ENTRY();
   
@@ -266,7 +266,7 @@ void Step::vRegStreamDefPipeOut(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].rowSize -- get row size from streamDef                         */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefRowSize(void)
+void Step::vStreamDefRowSize(void)
 {
   ENTRY();
   
@@ -281,7 +281,7 @@ void Step::vRegStreamDefRowSize(void)
 /*----------------------------------------------------------------------------*/
 /* StreamDef[].set -- set streamDef                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vRegStreamDefSet(void)
+void Step::vStreamDefSet(void)
 {
   ENTRY();
   

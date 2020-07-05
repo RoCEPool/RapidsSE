@@ -1241,23 +1241,6 @@ public:
   void vRegPipeinSet(void);
   void vRegPipeinWriteProfile(void);
 
-  // reg stream def
-  void vRegStreamDefAsStr(void);
-  void vRegStreamDefColumnFetch(void);
-  void vRegStreamDefColumnCountFetch(void);
-  void vRegStreamDefDelete(void);
-  void vRegStreamDefDuplicate(void);
-  void vRegStreamDefGet(void);
-  void vRegStreamDefIsNull(void);
-  void vRegStreamDefName(void);
-  void vRegStreamDefNew(void);
-  void vRegStreamDefNewCount(void);
-  void vRegStreamDefNewToCsv(void);
-  void vRegStreamDefParse(void);
-  void vRegStreamDefPipeOut(void);
-  void vRegStreamDefRowSize(void);
-  void vRegStreamDefSet(void);
-
   // reg task
   void vRegTaskGet(void);
 
@@ -1414,6 +1397,23 @@ public:
   void vStrSub(void);
   void vStrTailInt(void);
   void vStrToStrVec(void);
+
+  // stream def
+  void vStreamDefAsStr(void);
+  void vStreamDefColumnFetch(void);
+  void vStreamDefColumnCountFetch(void);
+  void vStreamDefDelete(void);
+  void vStreamDefDuplicate(void);
+  void vStreamDefGet(void);
+  void vStreamDefIsNull(void);
+  void vStreamDefName(void);
+  void vStreamDefNew(void);
+  void vStreamDefNewCount(void);
+  void vStreamDefNewToCsv(void);
+  void vStreamDefParse(void);
+  void vStreamDefPipeOut(void);
+  void vStreamDefRowSize(void);
+  void vStreamDefSet(void);
 
   // stream definition (out)
   void vStreamDefOutAddColumn(void);

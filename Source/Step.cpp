@@ -152,7 +152,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegPath();
   Step::vAddSteps_RegPipein();
   Step::vAddSteps_RegSet();
-  Step::vAddSteps_RegStreamDef();
   Step::vAddSteps_RegTask();
   Step::vAddSteps_RegTimer();
   Step::vAddSteps_RegXmits();
@@ -168,6 +167,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_SsnState();
   Step::vAddSteps_StepTiming();
   Step::vAddSteps_Str();
+  Step::vAddSteps_StreamDef();
   Step::vAddSteps_StreamDefOut();
   Step::vAddSteps_StreamSet();
   Step::vAddSteps_StreamSetTable();

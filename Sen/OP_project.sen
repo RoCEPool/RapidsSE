@@ -28,6 +28,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: project_StreamDef \handler
+
+  ": project_StreamDef \handler" .
+
+  ZK_STREAMDEF_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_RSBBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : project_RsbBuffer \handler
@@ -71,6 +81,7 @@
   find: project_PulseMarker ZK_PULSEMARKER op[].handler!
   find: project_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: project_StartMarker ZK_STARTMARKER op[].handler!
+  find: project_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
 
