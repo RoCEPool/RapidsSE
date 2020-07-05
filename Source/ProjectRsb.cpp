@@ -24,6 +24,7 @@ ProjectRsb::ProjectRsb(void)
   m_pPot          = nullptr;
   m_pSrcRsbBuffer = nullptr;
   m_pDstRowSlab   = nullptr;
+  m_pStreamDefOut = nullptr;
   
   _checkInitialised_(CN_PROJECTRSB);
 
@@ -45,7 +46,8 @@ ProjectRsb::~ProjectRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ProjectRsb::vProject(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot)
+void ProjectRsb::vProject(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot,
+                          StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTRSB,_FOOTER_);
   
@@ -53,7 +55,7 @@ void ProjectRsb::vProject(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot)
   
   m_pPot = pPot;
   
-  i8 i_Ptn = 0;
+  m_pStreamDefOut = pStreamDefOut;
   
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   

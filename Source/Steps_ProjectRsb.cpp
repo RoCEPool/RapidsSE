@@ -39,13 +39,15 @@ void Step::vProjectRsbProject(void)
 {
   ENTRY();
 
+  StreamDef* pStreamDefOut = * m_pRegSet->m_xpStreamDefOut;
+  
   RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
 
   Expr* pExpr = * m_pRegSet->m_xpExpr;
 
   Pot* pPot = * m_pRegSet->m_xpPot;
 
-  m_pRegSet->m_xpProjectRsb->vProject(pRsbBuffer,pExpr,pPot);
+  m_pRegSet->m_xpProjectRsb->vProject(pRsbBuffer,pExpr,pPot,pStreamDefOut);
   
   EXIT();
 }
