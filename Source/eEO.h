@@ -9,7 +9,7 @@ enum eEO : i1 // expression operators
   
   /*    */ EO_INTEGER,
 
-  /*    */ EO_COPYALL,
+  /*    */ EO_COPYRSB,
   /*    */ EO_DEPOSITCOLI,
 
   /*    */ EO_PUSHCOLI,
@@ -38,6 +38,8 @@ enum eEO : i1 // expression operators
   /*    */ EO_ISNULL,
   /*    */ EO_ISNOTNULL,
   
+  /*    */ EO_DUP,
+  /*    */ EO_PRINT,
   /*    */ EO_RETURN,
 
   /*    */ EO_ENUMS
@@ -49,7 +51,7 @@ static Stz* aEO[]
   
   /*    */ "EO_INTEGER"_Stz,
   
-  /*    */ "EO_COPYALL"_Stz,
+  /*    */ "EO_COPYRSB"_Stz,
   /*    */ "EO_DEPOSITCOLI"_Stz,
   
   /*    */ "EO_PUSHCOLI"_Stz,
@@ -78,6 +80,8 @@ static Stz* aEO[]
   /*    */ "EO_ISNULL"_Stz,
   /*    */ "EO_ISNOTNULL"_Stz,
   
+  /*    */ "EO_DUP"_Stz,
+  /*    */ "EO_PRINT"_Stz,
   /*    */ "EO_RETURN"_Stz,
   
   /*    */ "ENUMS"_Stz

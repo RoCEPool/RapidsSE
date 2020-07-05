@@ -107,6 +107,7 @@ bool Calculator::bCompile(TokenVec* pTknVec)
 //      continue;
 //    }
     
+    // push src column value
     if (pTkn->bSame("@"_Stz)) {
       m_eaCode[i_Code++] = EO_PUSHCOLI;
       pTkn = pTknVec->pGet(++i_Tkn);
@@ -117,6 +118,7 @@ bool Calculator::bCompile(TokenVec* pTknVec)
       continue;
     }
 
+    // deposit dst column value
     if (pTkn->bSame("!"_Stz)) {
       m_eaCode[i_Code++] = EO_DEPOSITCOLI;
       pTkn = pTknVec->pGet(++i_Tkn);
@@ -127,8 +129,9 @@ bool Calculator::bCompile(TokenVec* pTknVec)
       continue;
     }
 
+    // copy src row into dst
     if (pTkn->bSame("="_Stz)) {
-      m_eaCode[i_Code++] = EO_COPYALL;
+      m_eaCode[i_Code++] = EO_COPYRSB;
       continue;
     }
     
@@ -198,11 +201,11 @@ bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn
     
     // -- -- -- -- -- -- -- -- -- -- --
 
-    if (pTkn->bSame("+"_Stz)) { m_eaCode[i_Code++] = EO_ADD;      continue; }
-    if (pTkn->bSame("/"_Stz)) { m_eaCode[i_Code++] = EO_DIVIDE;   continue; }
-    if (pTkn->bSame("%"_Stz)) { m_eaCode[i_Code++] = EO_MODULO;   continue; }
-    if (pTkn->bSame("*"_Stz)) { m_eaCode[i_Code++] = EO_MULTIPLY; continue; }
-    if (pTkn->bSame("-"_Stz)) { m_eaCode[i_Code++] = EO_SUBTRACT; continue; }
+    if (pTkn->bSame("+"_Stz))  { m_eaCode[i_Code++] = EO_ADD;      continue; }
+    if (pTkn->bSame("/"_Stz))  { m_eaCode[i_Code++] = EO_DIVIDE;   continue; }
+    if (pTkn->bSame("%"_Stz))  { m_eaCode[i_Code++] = EO_MODULO;   continue; }
+    if (pTkn->bSame("*"_Stz))  { m_eaCode[i_Code++] = EO_MULTIPLY; continue; }
+    if (pTkn->bSame("-"_Stz))  { m_eaCode[i_Code++] = EO_SUBTRACT; continue; }
 
     // -- -- -- -- -- -- -- -- -- -- --
 
@@ -224,6 +227,11 @@ bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn
     if (pTkn->bSame("isNull"_Stz))    { m_eaCode[i_Code++] = EO_ISNULL;    continue; }
     if (pTkn->bSame("isNotNull"_Stz)) { m_eaCode[i_Code++] = EO_ISNOTNULL; continue; }
     
+    // -- -- -- -- -- -- -- -- -- -- --
+
+    if (pTkn->bSame("dup"_Stz)) { m_eaCode[i_Code++] = EO_DUP;   continue; }
+    if (pTkn->bSame("."_Stz))   { m_eaCode[i_Code++] = EO_PRINT; continue; }
+
     // -- -- -- -- -- -- -- -- -- -- --
 
     if (pTkn->bIsName()) {
@@ -400,7 +408,7 @@ i8 Calculator::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- --
           
-      case EO_COPYALL:
+      case EO_COPYRSB:
       {
         bool bSrcHasPtnHash = true;
         bool bCopyPtnHash   = false;
@@ -560,6 +568,16 @@ i8 Calculator::iCompute(void)
         break;
         
       // -- -- -- -- -- -- -- -- -- -- --
+
+      case EO_DUP:
+        iRes = m_iaStack[i_TopVal];
+        m_iaStack[++i_TopVal] = iRes;
+        break;
+
+      case EO_PRINT:
+        iRes = m_iaStack[i_TopVal--];
+        vTrace("%lld\n"_Stz,iRes);
+        break;
         
       case EO_RETURN:
         iRes = m_iaStack[i_TopVal--];
