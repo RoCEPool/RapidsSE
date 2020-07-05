@@ -22,7 +22,7 @@ namespace Expressions
     FilterRsb(void);
    ~FilterRsb(void) noexcept(false);
   
-    void vFilter(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot);
+    void vFilter(Pot* pPot, RsbBuffer* pSrcRsbBuffer, Expr* pExpr);
     
   private:
     void vCopyIntoDst(Rsb* aSrcRsbc);

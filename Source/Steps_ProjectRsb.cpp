@@ -47,7 +47,7 @@ void Step::vProjectRsbProject(void)
 
   Pot* pPot = * m_pRegSet->m_xpPot;
 
-  m_pRegSet->m_xpProjectRsb->vProject(pRsbBuffer,pExpr,pPot,pStreamDefOut);
+  m_pRegSet->m_xpProjectRsb->vProject(pPot,pRsbBuffer,pExpr,pStreamDefOut);
   
   EXIT();
 }

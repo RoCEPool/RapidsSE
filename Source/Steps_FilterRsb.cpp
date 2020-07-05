@@ -45,7 +45,7 @@ void Step::vFilterRsbFilter(void)
 
   Pot* pPot = * m_pRegSet->m_xpPot;
 
-  m_pRegSet->m_xpFilterRsb->vFilter(pRsbBuffer,pExpr,pPot);
+  m_pRegSet->m_xpFilterRsb->vFilter(pPot,pRsbBuffer,pExpr);
   
   EXIT();
 }
@@ -77,4 +77,3 @@ void Step::vFilterRsbNew(void)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-

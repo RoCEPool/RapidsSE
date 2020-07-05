@@ -9,16 +9,12 @@ namespace Expressions
   {
   private:
     Pot*       m_pPot;          // working pot of destination buffers
-  
-    RsbBuffer* m_pSrcRsbBuffer; // source rsb buffer
-  
     RowSlab*   m_pDstRowSlab;   // current destination slab (in pot)
-  
+    RsbBuffer* m_pSrcRsbBuffer; // source rsb buffer
     StreamDef* m_pStreamDefOut; // output stream def
   
     bool       m_bPixInited;
-    StreamPix  m_oStreamPix; // condensed stream def
-
+    StreamPix  m_oStreamPix;    // condensed stream def
   
     // must be last
     Footer m_xFooter;
@@ -30,8 +26,8 @@ namespace Expressions
     ProjectRsb(void);
    ~ProjectRsb(void) noexcept(false);
   
-    void vProject(RsbBuffer* pSrcRsbBuffer, Expr* pExpr, Pot* pPot,
-                  StreamDef* pStreamDefOut);
+    void vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
+                  Expr* pExpr, StreamDef* pStreamDefOut);
     
   private:
     void vCopyIntoDst(Rsb* aSrcRsbc);
