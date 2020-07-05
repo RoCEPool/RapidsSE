@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter.hpp -- Filter RsbBuffers into new RsbBuffers                        */
+/* FilterRsb.hpp -- Filter RsbBuffers into new RsbBuffers                     */
 /*============================================================================*/
 #pragma once
 
