@@ -14,6 +14,10 @@ namespace Expressions
   
     StreamDef* m_pStreamDefOut; // output stream def
   
+    bool       m_bPixInited;
+    StreamPix  m_oStreamPix; // condensed stream def
+
+  
     // must be last
     Footer m_xFooter;
 
