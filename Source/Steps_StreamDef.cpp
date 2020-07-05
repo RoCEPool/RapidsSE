@@ -24,6 +24,7 @@ void Step::vAddSteps_StreamDef(void)
   vAddStep("StreamDef::parse"_Stz,            &Step::vStreamDefParse);
   vAddStep("StreamDef[].pipeIn"_Stz,          &Step::vStreamDefPipeIn);
   vAddStep("StreamDef[].pipeOut"_Stz,         &Step::vStreamDefPipeOut);
+  vAddStep("StreamDef[].print"_Stz,           &Step::vStreamDefPrint);
   vAddStep("StreamDef[].rowSize"_Stz,         &Step::vStreamDefRowSize);
   vAddStep("StreamDef[].set"_Stz,             &Step::vStreamDefSet);
 }
@@ -277,6 +278,20 @@ void Step::vStreamDefPipeOut(void)
   
   m_pRegSet->m_xpStreamDef = nullptr;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].print -- print streamDef                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefPrint(void)
+{
+  ENTRY();
+    
+  StreamDef* pStreamDef = _pStreamDef(*m_pRegSet->m_xpStreamDef);
+  
+  pStreamDef->vPrint();
+
   EXIT();
 }
 

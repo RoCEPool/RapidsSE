@@ -417,6 +417,23 @@ L_RETURN:
 }
 
 /*----------------------------------------------------------------------------*/
+/* print the stream def                                                       */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  vTrace("StreamDef %s\n"_Stz,m_sName.szStz());
+  
+  i8 nCols = this->nColumns(C_ALL);
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column* pColumn = pGetColumn(i_Col);
+
+    pColumn->vShow();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert streamDef to colPix format                                         */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)

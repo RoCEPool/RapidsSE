@@ -1413,6 +1413,7 @@ public:
   void vStreamDefParse(void);
   void vStreamDefPipeIn(void);
   void vStreamDefPipeOut(void);
+  void vStreamDefPrint(void);
   void vStreamDefRowSize(void);
   void vStreamDefSet(void);
 

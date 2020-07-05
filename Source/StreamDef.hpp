@@ -38,11 +38,12 @@ namespace MetaData
     void vAddColumns(StreamDef* pStreamDef);
     void vAsString(String* pString);
     i8 nColumns(i8 iSubSet);
-    eEC eParse(Stz* szCmd);
     i8 iFindColumn(char* sColumnNm, i8& iColVec);
     Column* pGetColumn(i8 iColumn);
     void vName(Stz* sName);
     Stz* szName(void);
+    eEC eParse(Stz* szCmd);
+    void vPrint(void);
     void vToColPix(ColPix* axColPix, bool bPtnHash);
     void vToStreamPix(StreamPix* aStreamPix, bool bPtnHash);
     void vToMetadata(Stz* sMetaData);

@@ -39,6 +39,8 @@
   StreamDef[].duplicate to OperandB[]
   OperandB[].pipeOut
 
+  StreamDef[].print
+
   true
 ;
 
