@@ -33,6 +33,11 @@ int main(int argc, char* argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  s256 sFlagValue;
+  
+  if (Env::bGet("SE_DBG_PAYLOAD"_Stz,sFlagValue)) {
+    gxDebugFlags.m_iPayload = StrLib::iToI8(sFlagValue.azChar());
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

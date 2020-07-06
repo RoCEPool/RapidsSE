@@ -7,7 +7,7 @@ namespace Base
 { 
   struct DebugFlags {
     
-    i8 m_iPayloadTest;
+    i8 m_iPayload;
     
   };
 }

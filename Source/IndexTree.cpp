@@ -468,7 +468,7 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
   vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
   xEntWrk.vRef(xRowRef);
   
-  if (gxDebugFlags.m_iPayloadTest) {
+  if (gxDebugFlags.m_iPayload) {
     vDebugPoint();
   }
   
