@@ -33,11 +33,14 @@ Calculator::Calculator(void)
   
   m_i_Code = 0;
   m_i_CodeKey = 0;
+  
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,    sizeof(m_eaCode),    CN_CALCULATOR);
   MemLib::vZero(m_eaCodeKey, sizeof(m_eaCodeKey), CN_CALCULATOR);
   MemLib::vZero(m_iaStack,   sizeof(m_iaStack),   CN_CALCULATOR);
 #endif
+  
+  // m_oEntWrk
   
   _checkInitialised_(CN_CALCULATOR);
 
