@@ -30,6 +30,7 @@ shortcut ln   show nodes;
 shortcut nd   _nationDelete;
 shortcut nl   "../FASTLOAD/commands/_normalLoad";
 shortcut o    olist;
+shortcut pay  "../WIP/payload/_payload_1";
 shortcut pt   _passthru;
 shortcut r    _lineitemrjh;
 shortcut r2   _ray2;
