@@ -69,11 +69,17 @@ namespace Entries
     eKE   eKind(void);
     void  vKind(eKE eKind);
 
-
     tET   tNextEntry(i8 i_Level);
     void  vNextEntry(i8 i_Level, tET tNextEntry);
     void  vNextEntryDump(void);
     void  vNextEntryReset(void);
+
+    Pay*  aPay(void);
+    byte* ayPayload(void);
+    bool  bPayload(void);
+    void  vPayload(bool bPayload);
+    i8    nPaySize(void);
+    void  vPaySize(i8 nPaySize);
 
     Ref&  rxRef(void);
     void  vRef(Ref xRef);

@@ -119,7 +119,7 @@ void Ref::vKind(eKE eKind)
 /*----------------------------------------------------------------------------*/
 /* is there a payload after ent?                                              */
 /*----------------------------------------------------------------------------*/
-bool Ref::bPayLoad(void)
+bool Ref::bPayload(void)
 {
   return (bool)m_uPayload;
 }

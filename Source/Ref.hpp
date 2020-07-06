@@ -36,7 +36,7 @@ namespace Rows
     void  vItem(i8 iItem);
     eKE   eKind(void);
     void  vKind(eKE eKind);
-    bool  bPayLoad(void);
+    bool  bPayload(void);
     void  vPayload(bool bPayLoad);
     void  vReset(void);
     void  vSet(Ref xwRef);
