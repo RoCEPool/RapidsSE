@@ -11,11 +11,13 @@ CREATE INDEX lineitem_idx1 ON lineitem(L_ORDERKEY);
 
 print "fast load of LineItem...";
 
-/time fload LineItem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
+/time fload LineItem "/Users/Shared/tpch/SF0/lineitem_100.csv";
 
 tableSizes ;
 
 /time predicateFetch lineitem "l_orderKey 20 <" ;
+
+dumpIdx lineitem lineitem_idx1;
 
 /*============================================================================*/
 /* end                                                                        */

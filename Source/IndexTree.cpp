@@ -257,7 +257,7 @@ void IndexTree::vDump(bool bSameHeight)
   else {
     // start with the root
     if (m_pRootEntBuffer)
-      m_pRootEntBuffer->vDump();
+      m_pRootEntBuffer->vDump(true);
   }
 }
 

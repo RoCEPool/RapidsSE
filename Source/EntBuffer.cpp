@@ -573,7 +573,7 @@ void EntBuffer::vDump(bool bEntries)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // show this buffer
-  vShow();
+  vShow(bEntries);
   
   if (! bEntries)
     return;
@@ -1195,11 +1195,12 @@ void EntBuffer::vShowEntry(Ent* aEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Key* aKey = aEnt->aKey();
+  Key* aKey  = aEnt->aKey();
   i8 iOffset = iToOffset(aEnt);
-  
   tET tEntry = tToTicket(aEnt);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vTrace("tET %04llx %07lld %p %lluB %s "_Stz,
          (i8)tEntry,
          iOffset,
@@ -1207,6 +1208,13 @@ void EntBuffer::vShowEntry(Ent* aEnt)
          aEnt->nSizeBytes(),
          aKE[aEnt->eKind()]
          );
+  
+  if (aEnt->bPayload())
+    vTrace("Pay "_Stz);
+  else
+    vTrace("NoPay "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vTrace("Ref %lld.%05lld"_Stz,
          aEnt->rxRef().iBuffer(),
@@ -1218,6 +1226,8 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   //       Tx::iTxNo(m_iTxId)
   //       );
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (KE_INT == aEnt->eKind()) {
     Ent_int* aEnt_int = (Ent_int*)aEnt;
     vTrace(" IntElm0 %lld"_Stz,aEnt_int->m_iIntElm0);
@@ -1228,7 +1238,16 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   else
     aKey->vShowIntKey();
 
-  vTrace(" Entry %05lld levels %lld"_Stz,aEnt->iEntryNo(),aEnt->nSkipLevels());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (aEnt->bPayload()) {
+    i8 nPaySize = aEnt->nPaySize();
+    vTrace(" PaySize %lld"_Stz,nPaySize);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vTrace(" EntNo %05lld levels %lld"_Stz,aEnt->iEntryNo(),aEnt->nSkipLevels());
   for (i8 i_Level = 0; i_Level < aEnt->nSkipLevels(); i_Level++)
     vTrace(" %04llx"_Stz,(i8)aEnt->tNextEntry(i_Level));
   
