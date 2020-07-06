@@ -617,6 +617,7 @@ void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
     // upsert (we have a crw matching the key)
   
     SP_Ent spRef;
+    vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef));
     TRACE_UPSERT( vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef)); )
     
     Crw* aCrw_exists = CrwBuffer::pRefdCrw(aEnt_found->rxRef());
@@ -624,9 +625,10 @@ void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
       TRACE_UPSERT( vTrace("No aCrw @%lld; skipping...\n"_Stz,(i8)__LINE__); )
       continue;
     }
+    pIndexTree->vDump(true);
     
     vDeleteRow(pIndexTree, pEntH0Buf, aEnt_found);
-    
+    ASSERT(pIndexTree->bVerifyIndex());
     vDebugPoint();
   }
   
