@@ -29,6 +29,7 @@ namespace Base
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
 #include "CommonTypes.h"
+#include "DebugFlags.h"
 #include "Gid.h"
 #include "i3.hpp"
 #include "Null.hpp"

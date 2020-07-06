@@ -4,8 +4,9 @@
 
 #include "Indexing.h"
 
-
 bool mbCheckPriorVec = false;
+
+extern DebugFlags gxDebugFlags;;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

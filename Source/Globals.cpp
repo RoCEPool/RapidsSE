@@ -4,7 +4,8 @@
 
 #include "StorageEngine.h"
 
-Args     gxArgs;
+Args          gxArgs;
+DebugFlags    gxDebugFlags;
 FnCatalog     gxFnCatalog;
 
 AttachMap*    gpAttachMap   = nullptr;
