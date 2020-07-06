@@ -28,7 +28,11 @@ Calculator::Calculator(void)
   
   m_aSrcRsb_right     = nullptr;
   m_pSrcRowSlab_right = nullptr;
-  
+ 
+  m_pEnt = nullptr;
+  // m_oEntWrk
+  m_pIndexTree = nullptr;
+
   m_bCompilingKey = false;
   
   m_i_Code = 0;
@@ -37,10 +41,9 @@ Calculator::Calculator(void)
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,    sizeof(m_eaCode),    CN_CALCULATOR);
   MemLib::vZero(m_eaCodeKey, sizeof(m_eaCodeKey), CN_CALCULATOR);
+  
   MemLib::vZero(m_iaStack,   sizeof(m_iaStack),   CN_CALCULATOR);
 #endif
-  
-  // m_oEntWrk
   
   _checkInitialised_(CN_CALCULATOR);
 

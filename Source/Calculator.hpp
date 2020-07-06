@@ -19,6 +19,10 @@ namespace Expressions
     Rsb*     m_aSrcRsb_right;
     RowSlab* m_pSrcRowSlab_right;
    
+    Ent*       m_pEnt;
+    EntWrk     m_oEntWrk;
+    IndexTree* m_pIndexTree;
+  
     bool   m_bCompilingKey;
 
     i8     m_i_Code;
@@ -26,9 +30,9 @@ namespace Expressions
   
     i8     m_i_CodeKey;
     eEO    m_eaCodeKey[C_CALC_CODE]; // { EO_code [<bytes>] }
+  
     i8     m_iaStack[C_CALC_STACK];
 
-    EntWrk m_oEntWrk;
   
   private:
   
