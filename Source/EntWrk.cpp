@@ -602,14 +602,23 @@ void EntWrk::vStreamDef(StreamDef* pStreamDef)
 i8 EntWrk::nTotalSize(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nSizeEntProper = sizeof(Ent);
-  i8 nSizeElmSeq    = m_xEnt.nElmSeqSize();
-  
-  i8 nSize = nSizeEntProper + nSizeElmSeq;
+    
+  i8 nSize = m_xEnt.nSizeBytes();
   
   return nSize;
 }
+/*----------------------------------------------------------------------------*/
+//i8 EntWrk::nTotalSize(void)
+//{
+//  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+//
+//  i8 nSizeEntProper = sizeof(Ent);
+//  i8 nSizeElmSeq    = m_xEnt.nElmSeqSize();
+//
+//  i8 nSize = nSizeEntProper + nSizeElmSeq;
+//
+//  return nSize;
+//}
 
 
 /*============================================================================*/

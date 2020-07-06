@@ -315,6 +315,8 @@ void Ent::vSetEntry(Ent* aFromEntry)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeBytes(void)
 {
+  ASSERT(! m_xRef.bPayLoad());
+  
   i8 nProperBytes = sizeof(Ent) + nElmSeqSize();
   
   i8 nRoundedBytes = MemLib::nRoundUp(nProperBytes,C_ENT_QUANTA);
