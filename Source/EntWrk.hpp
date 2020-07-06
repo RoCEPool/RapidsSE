@@ -68,11 +68,11 @@ namespace Entries
     void  vOffsets(i8 nLevels);
   
     Pay*  aPay(void);
-    byte* ayPayBytes(void);
-    i8    nPayBytes(void);
-    void  vPayBytes(i8 nBytes);
+    byte* ayPayload(void);
     bool  bPayload(void);
     void  vPayload(bool bPayload);
+    i8    nPaySize(void);
+    void  vPaySize(i8 nSize);
 
     void  vRandomEnt(IndexDef* pIndexDef);
     Ref&  rxRef(void);

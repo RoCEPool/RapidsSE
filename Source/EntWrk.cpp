@@ -30,7 +30,7 @@ EntWrk::EntWrk(void)
   
   m_xEnt.vElmSeqSize(0);
   
-  vPayBytes(0);
+  vPaySize(0);
   
   // -- end entry --
 
@@ -426,45 +426,6 @@ Pay* EntWrk::aPay(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get payload bytes                                                          */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nPayBytes(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  Pay* aPay = this->aPay();
-
-  i8 nPayBytes = aPay->nPaySize();
-  
-  return nPayBytes;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get payload                                                                */
-/*----------------------------------------------------------------------------*/
-byte* EntWrk::ayPayBytes(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  Pay* aPay = this->aPay();
-  
-  return aPay->ayaPayload();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set payload bytes                                                          */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vPayBytes(i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  Pay* aPay = this->aPay();
-
-  aPay->vPaySize(nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
 /* is there a payload?                                                        */
 /*----------------------------------------------------------------------------*/
 bool EntWrk::bPayload(void)
@@ -475,6 +436,18 @@ bool EntWrk::bPayload(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get payload                                                                */
+/*----------------------------------------------------------------------------*/
+byte* EntWrk::ayPayload(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = this->aPay();
+  
+  return aPay->ayaPayload();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set is there a payload                                                     */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vPayload(bool bPayload)
@@ -482,6 +455,32 @@ void EntWrk::vPayload(bool bPayload)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
     
   m_bPayLoad = bPayload;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get payload size                                                           */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nPaySize(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = this->aPay();
+
+  i8 nSize = aPay->nPaySize();
+  
+  return nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set payload size                                                           */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vPaySize(i8 nSize)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = this->aPay();
+
+  aPay->vPaySize(nSize);
 }
 
 /*----------------------------------------------------------------------------*/
