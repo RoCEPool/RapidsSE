@@ -23,6 +23,7 @@ namespace Expressions
 
 #include "FilterRsb.hpp"
 #include "ProjectRsb.hpp"
+#include "JoinRsb.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
