@@ -13,11 +13,13 @@ namespace Expressions
   private:
     RowSlab* m_pDstRowSlab;
 
-    Rsb*     m_aSrcRsb;
-    RowSlab* m_pSrcRowSlab;
-  
+    Rsb*     m_aSrcRsb_left;
+    RowSlab* m_pSrcRowSlab_left;
+ 
+    Rsb*     m_aSrcRsb_right;
+    RowSlab* m_pSrcRowSlab_right;
+
     eEO  m_eaCode[C_CALC_CODE];   // { EO_code [<bytes>] }
-                                  // EO_COLUMN <colNo> ...
     i8   m_iaStack[C_CALC_STACK];
 
   private:
@@ -37,6 +39,9 @@ namespace Expressions
     i8   iCalc(void);
     i8   iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     i8   iProject(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iJoin(RowSlab* pDstRowSlab,
+               Rsb* aSrcRsb_left,  RowSlab* pSrcRowSlab_left,
+               Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right);
 
   private:
     i8   iCompute(void);
