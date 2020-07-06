@@ -14633,7 +14633,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/*                                                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "cmdSyntax: join :: join ;\n"
+    "cmdSyntax: join :: join <tableNm> <indexNm> ;\n"
     "\n"
     ": join _cmdTags tagCopy: op_tags tags{ <cmdDesc> = \"--desc for op--\" } ;\n"
     "\n"

@@ -106,7 +106,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: join :: join ;
+cmdSyntax: join :: join <tableNm> <indexNm> ;
 
 : join _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
