@@ -8,7 +8,7 @@ namespace Host {
   class Env
   {
   public:
-    static bool bGet(s32& sName, s256& sValue);
+    static bool bGet(Stz* szName, String* pValue);
   };
 
 }

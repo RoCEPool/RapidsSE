@@ -7,13 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* translate environment variable                                             */
 /*----------------------------------------------------------------------------*/
-bool Env::bGet(s32& sName, s256& sValue)
+bool Env::bGet(Stz* szName, String* pValue)
 {
-  char* aValue = getenv(sName.azChar());
+  char* aValue = getenv(szName->azChar());
   if ( ! aValue )
     return false;
   
-  sValue.vCopy((Stz*)aValue);
+  pValue->vCopy((Stz*)aValue);
   
   return true;
 }
