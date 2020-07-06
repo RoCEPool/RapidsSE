@@ -19,15 +19,21 @@ namespace Expressions
     Rsb*     m_aSrcRsb_right;
     RowSlab* m_pSrcRowSlab_right;
    
-    bool m_bCompilingKey;
-
-    i8   m_i_Code;
-    eEO  m_eaCode[C_CALC_CODE];    // { EO_code [<bytes>] }
+    Ent*       m_pEnt;
+    EntWrk     m_oEntWrk;
+    IndexTree* m_pIndexTree;
   
-    i8   m_i_CodeKey;
-    eEO  m_eaCodeKey[C_CALC_CODE]; // { EO_code [<bytes>] }
-    i8   m_iaStack[C_CALC_STACK];
+    bool   m_bCompilingKey;
 
+    i8     m_i_Code;
+    eEO    m_eaCode[C_CALC_CODE];    // { EO_code [<bytes>] }
+  
+    i8     m_i_CodeKey;
+    eEO    m_eaCodeKey[C_CALC_CODE]; // { EO_code [<bytes>] }
+  
+    i8     m_iaStack[C_CALC_STACK];
+
+  
   private:
   
     // must be last
