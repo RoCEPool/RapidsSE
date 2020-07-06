@@ -101,7 +101,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobGeneric();
   Step::vAddSteps_JobPipeline();
   Step::vAddSteps_JobRef();
-  
+  Step::vAddSteps_JoinRsb();
+
   Step::vAddSteps_Loader();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
