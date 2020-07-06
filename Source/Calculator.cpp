@@ -28,7 +28,11 @@ Calculator::Calculator(void)
   
   m_aSrcRsb_right     = nullptr;
   m_pSrcRowSlab_right = nullptr;
-
+  
+  m_bCompilingKey = false;
+  
+  m_i_Code = 0;
+  m_i_CodeKey = 0;
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,    sizeof(m_eaCode),    CN_CALCULATOR);
   MemLib::vZero(m_eaCodeKey, sizeof(m_eaCodeKey), CN_CALCULATOR);
@@ -57,6 +61,8 @@ Calculator::~Calculator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Calculator::bCompile(TokenVec* pTknVec)
 {
+  m_bCompilingKey = false;
+
   bool b = bCompile(pTknVec,false);
   return b;
   
@@ -67,7 +73,12 @@ bool Calculator::bCompile(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 bool Calculator::bCompileKey(TokenVec* pTknVec)
 {
+  m_bCompilingKey = true;
+
   bool b = bCompile(pTknVec,true);
+
+  m_bCompilingKey = false;
+
   return b;
 }
 
@@ -159,6 +170,19 @@ i8 Calculator::iJoin(RowSlab* pDstRowSlab,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add code                                                                   */
+/*----------------------------------------------------------------------------*/
+void Calculator::vAddCode(eEO eCode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  if (m_bCompilingKey)
+    m_eaCodeKey[m_i_CodeKey++] = eCode;
+  else
+    m_eaCode[m_i_Code++] = eCode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
 bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
@@ -172,7 +196,6 @@ bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
 
   i8 nTkns = pTknVec->nTokens();
   
-  i8 i_Code = 0;
   for (i8 i_Tkn = 0; i_Tkn < nTkns; i_Tkn++) {
     Token* pTkn = pTknVec->pGet(i_Tkn);
     
@@ -180,116 +203,116 @@ bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
     
     // -- -- -- -- -- -- -- -- -- -- --
 
-    if (pTkn->bSame("+"_Stz)) { m_eaCode[i_Code++] = EO_ADD;      continue; }
-    if (pTkn->bSame("/"_Stz)) { m_eaCode[i_Code++] = EO_DIVIDE;   continue; }
-    if (pTkn->bSame("%"_Stz)) { m_eaCode[i_Code++] = EO_MODULO;   continue; }
-    if (pTkn->bSame("*"_Stz)) { m_eaCode[i_Code++] = EO_MULTIPLY; continue; }
-    if (pTkn->bSame("-"_Stz)) { m_eaCode[i_Code++] = EO_SUBTRACT; continue; }
+    if (pTkn->bSame("+"_Stz)) { m_eaCode[m_i_Code++] = EO_ADD;      continue; }
+    if (pTkn->bSame("/"_Stz)) { m_eaCode[m_i_Code++] = EO_DIVIDE;   continue; }
+    if (pTkn->bSame("%"_Stz)) { m_eaCode[m_i_Code++] = EO_MODULO;   continue; }
+    if (pTkn->bSame("*"_Stz)) { m_eaCode[m_i_Code++] = EO_MULTIPLY; continue; }
+    if (pTkn->bSame("-"_Stz)) { m_eaCode[m_i_Code++] = EO_SUBTRACT; continue; }
 
     // -- -- -- -- -- -- -- -- -- -- --
 
-    if (pTkn->bSame("<"_Stz))  { m_eaCode[i_Code++] = EO_LESSTHAN;     continue; }
-    if (pTkn->bSame("<="_Stz)) { m_eaCode[i_Code++] = EO_LESSEQUAL;    continue; }
-    if (pTkn->bSame("=="_Stz)) { m_eaCode[i_Code++] = EO_EQUAL;        continue; }
-    if (pTkn->bSame("!="_Stz)) { m_eaCode[i_Code++] = EO_NOTEQUAL;     continue; }
-    if (pTkn->bSame(">="_Stz)) { m_eaCode[i_Code++] = EO_GREATEREQUAL; continue; }
-    if (pTkn->bSame(">"_Stz))  { m_eaCode[i_Code++] = EO_GREATERTHAN;  continue; }
+    if (pTkn->bSame("<"_Stz))  { m_eaCode[m_i_Code++] = EO_LESSTHAN;     continue; }
+    if (pTkn->bSame("<="_Stz)) { m_eaCode[m_i_Code++] = EO_LESSEQUAL;    continue; }
+    if (pTkn->bSame("=="_Stz)) { m_eaCode[m_i_Code++] = EO_EQUAL;        continue; }
+    if (pTkn->bSame("!="_Stz)) { m_eaCode[m_i_Code++] = EO_NOTEQUAL;     continue; }
+    if (pTkn->bSame(">="_Stz)) { m_eaCode[m_i_Code++] = EO_GREATEREQUAL; continue; }
+    if (pTkn->bSame(">"_Stz))  { m_eaCode[m_i_Code++] = EO_GREATERTHAN;  continue; }
     
     // -- -- -- -- -- -- -- -- -- -- --
     
-    if (pTkn->bSame("and"_Stz)) { m_eaCode[i_Code++] = EO_AND; continue; }
-    if (pTkn->bSame("or"_Stz))  { m_eaCode[i_Code++] = EO_OR;  continue; }
-    if (pTkn->bSame("not"_Stz)) { m_eaCode[i_Code++] = EO_NOT; continue; }
+    if (pTkn->bSame("and"_Stz)) { m_eaCode[m_i_Code++] = EO_AND; continue; }
+    if (pTkn->bSame("or"_Stz))  { m_eaCode[m_i_Code++] = EO_OR;  continue; }
+    if (pTkn->bSame("not"_Stz)) { m_eaCode[m_i_Code++] = EO_NOT; continue; }
 
     // -- -- -- -- -- -- -- -- -- -- --
     
-    if (pTkn->bSame("isNull"_Stz))    { m_eaCode[i_Code++] = EO_ISNULL;    continue; }
-    if (pTkn->bSame("isNotNull"_Stz)) { m_eaCode[i_Code++] = EO_ISNOTNULL; continue; }
+    if (pTkn->bSame("isNull"_Stz))    { m_eaCode[m_i_Code++] = EO_ISNULL;    continue; }
+    if (pTkn->bSame("isNotNull"_Stz)) { m_eaCode[m_i_Code++] = EO_ISNOTNULL; continue; }
     
     // -- -- -- -- -- -- -- -- -- -- --
 
-    if (pTkn->bSame("dup"_Stz)) { m_eaCode[i_Code++] = EO_DUP;   continue; }
-    if (pTkn->bSame("."_Stz))   { m_eaCode[i_Code++] = EO_PRINT; continue; }
+    if (pTkn->bSame("dup"_Stz)) { m_eaCode[m_i_Code++] = EO_DUP;   continue; }
+    if (pTkn->bSame("."_Stz))   { m_eaCode[m_i_Code++] = EO_PRINT; continue; }
 
     // -- -- -- -- -- -- -- -- -- -- --
 
 //    if (pTkn->bIsName()) {
-//      m_eaCode[i_Code++] = EO_PUSHCOLI;
+//      m_eaCode[m_i_Code++] = EO_PUSHCOLI;
 //      i8 iColVec;
-//      piArg = (i8*) & m_eaCode[i_Code];
+//      piArg = (i8*) & m_eaCode[m_i_Code];
 //      * piArg = pStreamDef->iFindColumn(pTkn->azChars(), iColVec);
-//      i_Code += sizeof(i8);
+//      m_i_Code += sizeof(i8);
 //      continue;
 //    }
     
     // push src column value
     if (pTkn->bSame("@"_Stz)) {
-      m_eaCode[i_Code++] = EO_PUSHCOLI;
+      m_eaCode[m_i_Code++] = EO_PUSHCOLI;
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
-      piArg = (i8*) & m_eaCode[i_Code];
+      piArg = (i8*) & m_eaCode[m_i_Code];
       * piArg = iArg;
-      i_Code += sizeof(i8);
+      m_i_Code += sizeof(i8);
       continue;
     }
 
     // deposit dst column value
     if (pTkn->bSame("!"_Stz)) {
-      m_eaCode[i_Code++] = EO_DEPOSITCOLI;
+      m_eaCode[m_i_Code++] = EO_DEPOSITCOLI;
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
-      piArg = (i8*) & m_eaCode[i_Code];
+      piArg = (i8*) & m_eaCode[m_i_Code];
       * piArg = iArg;
-      i_Code += sizeof(i8);
+      m_i_Code += sizeof(i8);
       continue;
     }
 
     // copy src row into dst
     if (pTkn->bSame("="_Stz)) {
-      m_eaCode[i_Code++] = EO_COPYRSB;
+      m_eaCode[m_i_Code++] = EO_COPYRSB;
       continue;
     }
     
     if (pTkn->bIsInteger()) {
-      m_eaCode[i_Code++] = EO_INTEGER;
+      m_eaCode[m_i_Code++] = EO_INTEGER;
       iArg = pTkn->iToI8();
-      piArg = (i8*) & m_eaCode[i_Code];
+      piArg = (i8*) & m_eaCode[m_i_Code];
       * piArg = iArg;
-      i_Code += sizeof(i8);
+      m_i_Code += sizeof(i8);
       continue;
     }
     if (pTkn->bSame(C_NULL)) {
-      m_eaCode[i_Code++] = EO_INTEGER;
+      m_eaCode[m_i_Code++] = EO_INTEGER;
       iArg = C_DATUM_NULL;
-      piArg = (i8*) & m_eaCode[i_Code];
-      i_Code += sizeof(i8);
+      piArg = (i8*) & m_eaCode[m_i_Code];
+      m_i_Code += sizeof(i8);
       continue;
     }
     if (pTkn->bSame("0"_Stz)) {
-      m_eaCode[i_Code++] = EO_INTEGER;
+      m_eaCode[m_i_Code++] = EO_INTEGER;
       iArg = 0;
-      piArg = (i8*) & m_eaCode[i_Code];
+      piArg = (i8*) & m_eaCode[m_i_Code];
       * piArg = iArg;
-      i_Code += sizeof(i8);
+      m_i_Code += sizeof(i8);
       continue;
     }
     if (pTkn->bSame("1"_Stz)) {
-      m_eaCode[i_Code++] = EO_INTEGER;
+      m_eaCode[m_i_Code++] = EO_INTEGER;
       iArg = 1;
-      piArg = (i8*) & m_eaCode[i_Code];
+      piArg = (i8*) & m_eaCode[m_i_Code];
       * piArg = iArg;
-      i_Code += sizeof(i8);
+      m_i_Code += sizeof(i8);
       continue;
     }
 
     // -- -- -- -- -- -- -- -- -- -- --
     
-    m_eaCode[i_Code++] = EO_RETURN;
+    m_eaCode[m_i_Code++] = EO_RETURN;
     vTrace("Error: %s\n"_Stz,pTkn->szChars());
     return false;
   }
 
-  m_eaCode[i_Code++] = EO_RETURN;
+  m_eaCode[m_i_Code++] = EO_RETURN;
   vTrace("\n"_Stz);
 
   return true;
