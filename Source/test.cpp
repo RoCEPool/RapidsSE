@@ -1259,7 +1259,7 @@ i8 nTest21_intEnts(eKE eEntKind)
     xEntWrk.vAppendInt(nEnts);
     xEntWrk.vOffsets(nOffsets);
     
-    i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
+    i8 nBytesNeeded = xEntWrk.nSize_EntKey();
     if (! pEntBufferCalc->bHasSpace(nBytesNeeded))
       break;
     
@@ -1400,7 +1400,7 @@ void vTest21_insert(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalIns_)
     i8 nOffsets = AM::nRndSkipLevel();
     xEntWrk.vOffsets(nOffsets);
     
-    i8 nBytesNeeded = xEntWrk.nSize_EntKeyNeo();
+    i8 nBytesNeeded = xEntWrk.nSize_EntKey();
     if (! pEntBuffer->bHasSpace(nBytesNeeded))
       break;
     
