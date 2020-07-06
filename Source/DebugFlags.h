@@ -6,7 +6,9 @@
 namespace Base
 { 
   struct DebugFlags {
-    bool m_bPayloadTest;
+    
+    i8 m_iPayloadTest;
+    
   };
 }
 
