@@ -19,7 +19,8 @@ namespace Expressions
     Rsb*     m_aSrcRsb_right;
     RowSlab* m_pSrcRowSlab_right;
 
-    eEO  m_eaCode[C_CALC_CODE];   // { EO_code [<bytes>] }
+    eEO  m_eaCode[C_CALC_CODE];    // { EO_code [<bytes>] }
+    eEO  m_eaCodeKey[C_CALC_CODE]; // { EO_code [<bytes>] }
     i8   m_iaStack[C_CALC_STACK];
 
   private:
@@ -35,6 +36,7 @@ namespace Expressions
    ~Calculator(void) noexcept(false);
   
     bool bCompile(TokenVec* pTknVec);
+    bool bCompileKey(TokenVec* pTknVec);
 
     i8   iCalc(void);
     i8   iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
@@ -44,6 +46,7 @@ namespace Expressions
                Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right);
 
   private:
+    bool bCompile(TokenVec* pTknVec, bool bKeyCode);
     i8   iCompute(void);
 
     Footer* aFooter(void);

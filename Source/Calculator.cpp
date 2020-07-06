@@ -21,7 +21,7 @@ Calculator::Calculator(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  m_pDstRowSlab       = nullptr;
+  m_pDstRowSlab = nullptr;
 
   m_aSrcRsb_left      = nullptr;
   m_pSrcRowSlab_left  = nullptr;
@@ -30,8 +30,9 @@ Calculator::Calculator(void)
   m_pSrcRowSlab_right = nullptr;
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_eaCode, sizeof(m_eaCode), CN_CALCULATOR);
-  MemLib::vZero(m_iaStack,sizeof(m_iaStack),CN_CALCULATOR);
+  MemLib::vZero(m_eaCode,    sizeof(m_eaCode),    CN_CALCULATOR);
+  MemLib::vZero(m_eaCodeKey, sizeof(m_eaCodeKey), CN_CALCULATOR);
+  MemLib::vZero(m_iaStack,   sizeof(m_iaStack),   CN_CALCULATOR);
 #endif
   
   _checkInitialised_(CN_CALCULATOR);
@@ -55,6 +56,112 @@ Calculator::~Calculator(void) noexcept(false)
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
 bool Calculator::bCompile(TokenVec* pTknVec)
+{
+  bool b = bCompile(pTknVec,false);
+  return b;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* compile                                                                    */
+/*----------------------------------------------------------------------------*/
+bool Calculator::bCompileKey(TokenVec* pTknVec)
+{
+  bool b = bCompile(pTknVec,true);
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calc compute                                                               */
+/*----------------------------------------------------------------------------*/
+i8 Calculator::iCalc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  m_pDstRowSlab = nullptr;
+
+  m_aSrcRsb_left      = nullptr;
+  m_pSrcRowSlab_left  = nullptr;
+
+  m_aSrcRsb_right     = nullptr;
+  m_pSrcRowSlab_right = nullptr;
+  
+  i8 iResult = iCompute();
+  
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* filter compute                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Calculator::iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  m_pDstRowSlab = nullptr;
+
+  m_aSrcRsb_left      = aSrcRsb;
+  m_pSrcRowSlab_left  = pSrcRowSlab;
+
+  m_aSrcRsb_right     = nullptr;
+  m_pSrcRowSlab_right = nullptr;
+
+  i8 iResult = iCompute();
+  
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* project compute                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Calculator::iProject(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  m_pDstRowSlab = pDstRowSlab;
+
+  m_aSrcRsb_left      = aSrcRsb;
+  m_pSrcRowSlab_left  = pSrcRowSlab;
+
+  m_aSrcRsb_right     = nullptr;
+  m_pSrcRowSlab_right = nullptr;
+
+  i8 iResult = iCompute();
+  
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* joint compute                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Calculator::iJoin(RowSlab* pDstRowSlab,
+                     Rsb* aSrcRsb_left,  RowSlab* pSrcRowSlab_left,
+                     Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  m_pDstRowSlab = pDstRowSlab;
+
+  m_aSrcRsb_left      = aSrcRsb_left;
+  m_pSrcRowSlab_left  = pSrcRowSlab_left;
+
+  m_aSrcRsb_right     = aSrcRsb_right;
+  m_pSrcRowSlab_right = pSrcRowSlab_right;
+
+  i8 iResult = iCompute();
+  
+  return iResult;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* -- private ----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compile                                                                    */
+/*----------------------------------------------------------------------------*/
+bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
@@ -187,93 +294,6 @@ bool Calculator::bCompile(TokenVec* pTknVec)
 
   return true;
 }
-
-/*----------------------------------------------------------------------------*/
-/* calc compute                                                               */
-/*----------------------------------------------------------------------------*/
-i8 Calculator::iCalc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-  m_pDstRowSlab = nullptr;
-
-  m_aSrcRsb_left      = nullptr;
-  m_pSrcRowSlab_left  = nullptr;
-
-  m_aSrcRsb_right     = nullptr;
-  m_pSrcRowSlab_right = nullptr;
-  
-  i8 iResult = iCompute();
-  
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* filter compute                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Calculator::iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-  m_pDstRowSlab = nullptr;
-
-  m_aSrcRsb_left      = aSrcRsb;
-  m_pSrcRowSlab_left  = pSrcRowSlab;
-
-  m_aSrcRsb_right     = nullptr;
-  m_pSrcRowSlab_right = nullptr;
-
-  i8 iResult = iCompute();
-  
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* project compute                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Calculator::iProject(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-  m_pDstRowSlab = pDstRowSlab;
-
-  m_aSrcRsb_left      = aSrcRsb;
-  m_pSrcRowSlab_left  = pSrcRowSlab;
-
-  m_aSrcRsb_right     = nullptr;
-  m_pSrcRowSlab_right = nullptr;
-
-  i8 iResult = iCompute();
-  
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* joint compute                                                              */
-/*----------------------------------------------------------------------------*/
-i8 Calculator::iJoin(RowSlab* pDstRowSlab,
-                     Rsb* aSrcRsb_left,  RowSlab* pSrcRowSlab_left,
-                     Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-  m_pDstRowSlab = pDstRowSlab;
-
-  m_aSrcRsb_left      = aSrcRsb_left;
-  m_pSrcRowSlab_left  = pSrcRowSlab_left;
-
-  m_aSrcRsb_right     = aSrcRsb_right;
-  m_pSrcRowSlab_right = pSrcRowSlab_right;
-
-  i8 iResult = iCompute();
-  
-  return iResult;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* -- private ----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
