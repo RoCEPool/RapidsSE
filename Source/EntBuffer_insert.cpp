@@ -585,6 +585,8 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
 {
   _static_
 
+  ASSERT(! aEnt->bPayload());
+  
   EntBuffer* pRootEntBuffer = *ppRootEntBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

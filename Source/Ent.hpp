@@ -87,9 +87,7 @@ namespace Entries
     void  vReset(void);
   
     void  vSetEntry(Ent* aFromEntry);
-
     i8    nSizeBytes(void);
-
     i8    nSkipLevels(void);
     void  vSkipLevels(i8 nLevels);
 
