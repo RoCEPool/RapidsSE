@@ -419,7 +419,7 @@ Pay* EntWrk::aPay(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nEntSize = nSize_EntKey();
+  i8 nEntSize = nTotalSize();
   
   Pay* aPay = aAdd<Pay*>(&m_xEnt,nEntSize);
   return aPay;
@@ -577,21 +577,6 @@ void EntWrk::vShow(IndexDef* pIndexDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the size this (Ent+Key)                                                */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nSize_EntKey(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nSizeEnt    = sizeof(Ent);
-  i8 nSizeElmSeq = m_xEnt.nElmSeqSize();
-  
-  i8 nSize = nSizeEnt + nSizeElmSeq;
-  
-  return nSize;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get stream definition                                                      */
 /*----------------------------------------------------------------------------*/
 StreamDef* EntWrk::pStreamDef(void)
@@ -610,6 +595,22 @@ void EntWrk::vStreamDef(StreamDef* pStreamDef)
   
   m_pStreamDef = pStreamDef;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get the total size of this (Ent+Key)                                       */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nTotalSize(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 nSizeEntProper = sizeof(Ent);
+  i8 nSizeElmSeq    = m_xEnt.nElmSeqSize();
+  
+  i8 nSize = nSizeEntProper + nSizeElmSeq;
+  
+  return nSize;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

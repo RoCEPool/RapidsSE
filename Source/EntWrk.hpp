@@ -81,9 +81,10 @@ namespace Entries
 
     void  vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry);
     void  vShow(IndexDef* pIndexDef);
-    i8    nSize_EntKey(void);
     StreamDef* pStreamDef(void);
     void  vStreamDef(StreamDef* pStreamDef);
+
+    i8    nTotalSize(void);
 
   private:
 

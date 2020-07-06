@@ -284,7 +284,7 @@ void Step::vIndexGenEntBuffer(void)
 
     //oEntWrk.vShow(pIndexDef);
 
-    i8 nBytes = oEntWrk.nSize_EntKey();
+    i8 nBytes = oEntWrk.nTotalSize();
 
     Ent* aEnt = (Ent*)pEntBuffer->ayAllotBytes(nBytes);
     if (! aEnt)
@@ -366,7 +366,7 @@ void Step::vIndexGenEntBuffers(void)
       
       //oEntWrk.vShow(pIndexDef);
       
-      i8 nBytes = oEntWrk.nSize_EntKey();
+      i8 nBytes = oEntWrk.nTotalSize();
       
       Ent* aEnt = (Ent*)pEntBuffer->ayAllotBytes(nBytes);
       if (! aEnt)
