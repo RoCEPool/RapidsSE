@@ -16,7 +16,7 @@ space;
 Print "\n\n-------------------------------------------------";
 Print "FIRST ITERATION";
 Print "-------------------------------------------------";
-steadyState_2 lineitem "/DATA/TPCH/lineItem10k.csv" 1 ;
+steadyState_2 lineitem "/DATA/TPCH/lineItem_100k.csv" 1 ;
 tableSizes;
 antbl lineitem;
 anidx lineitem lineitem_idx;
@@ -26,13 +26,13 @@ visidx lineitem lineitem_idx;
 Print "\n\n-------------------------------------------------";
 Print "SECOND ITERATION";
 Print "-------------------------------------------------";
-steadyState_2 lineitem "/DATA/TPCH/lineItem10k.csv" 1 ;
+steadyState_2 lineitem "/DATA/TPCH/lineItem_100k.csv" 1 ;
 tableSizes;
 antbl lineitem;
 anidx lineitem lineitem_idx;
 vistbl lineitem;
 visidx lineitem lineitem_idx;
-
+/*
 Print "\n\n-------------------------------------------------";
 Print "THIRD ITERATION";
 Print "-------------------------------------------------";
@@ -58,7 +58,7 @@ drop table lineitem;
 space;
 
 memoryLeaks;
-/*
+
 trackMemory;
 
 _lineitemSteady

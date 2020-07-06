@@ -15,6 +15,10 @@
     file0[] file.tell "read a csv chunk (tell %v)" .printf
     pCsvBuffer to Operand[]
     Operand[].pipeOut
+
+    "SLEEPING for 1 sec" .
+    1 task::sleepSsec
+
     true
   else
     false
@@ -38,12 +42,16 @@
 
     <nTimes> >int 0 do
 
+      task::yield
+
       begin
         rdCsvCyclic_catCsv
       while repeat
 
       0 file0[] file.seek
 
+      "SLEEPING for 1 secs" .
+      1 task::sleepSsec
     loop
 
     file0[].get file.close
