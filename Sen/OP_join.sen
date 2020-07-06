@@ -9,6 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : join_StartMarker \handler
 
+  ProjectRsb[].new
+  Pot[].new
+
+  Expr[].new
+  "= @ 3 10 * ! 3" Expr[].source!
+  Expr[].compile assert
+
   ZK_STARTMARKER_handler
 ;
 
@@ -21,17 +28,52 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                   EACH */
+/* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: join_CsvBuffer \handler
+: join_StreamDef \handler
 
-  ZK_CSVBUFFER_handler
+  ": join_StreamDef \handler" .
+
+  StreamDef[].pipeIn
+
+  StreamDef[].duplicate to OperandB[]
+  OperandB[].pipeOut
+
+  StreamDef[].print
+
+  StreamDef[].duplicate to StreamDefOut[]
+  StreamDefOut[].print
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_RSBBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: join_RsbBuffer \handler
+
+  Operand[].pipeIn
+  ProjectRsb[].project
+  Operand[].delete
+
+  Pot[].pipeoutAllCompleted
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : join_EosMarker \handler
+
+  Pot[].pipeoutAllDangling
+
+  ProjectRsb[].delete
+  Expr[].delete
+  Pot[].delete
+
+  StreamDef[].delete
+  StreamDefOut[].delete
 
   ZK_EOSMARKER_handler
 ;
@@ -40,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* join request                                                       SPAWN */
+/* project request                                                      SPAWN */
 /*----------------------------------------------------------------------------*/
 : join_req \operator
 
@@ -48,10 +90,11 @@
 
   op__topology
 
-  find: join_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: join_EosMarker   ZK_EOSMARKER   op[].handler!
   find: join_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: join_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: join_StartMarker ZK_STARTMARKER op[].handler!
+  find: join_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
 

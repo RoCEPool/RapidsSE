@@ -53,7 +53,7 @@ void Step::vJoinRsbProject(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* JoinRsb[].get -- get rsb stream project                                 */
+/* JoinRsb[].get -- get rsb stream project                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vJoinRsbGet(void)
 {
@@ -65,7 +65,7 @@ void Step::vJoinRsbGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* JoinRsb[].new -- create a new rsb stream project                        */
+/* JoinRsb[].new -- create a new rsb stream project                           */
 /*----------------------------------------------------------------------------*/
 void Step::vJoinRsbNew(void)
 {
