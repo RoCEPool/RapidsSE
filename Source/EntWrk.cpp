@@ -434,7 +434,7 @@ i8 EntWrk::nPayBytes(void)
   
   Pay* aPay = this->aPay();
 
-  i8 nPayBytes = aPay->nPayBytes();
+  i8 nPayBytes = aPay->nPaySize();
   
   return nPayBytes;
 }
@@ -449,7 +449,7 @@ byte* EntWrk::ayPayBytes(void)
   
   Pay* aPay = this->aPay();
   
-  return aPay->ayaPayBytes();
+  return aPay->ayaPayload();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -461,7 +461,7 @@ void EntWrk::vPayBytes(i8 nBytes)
   
   Pay* aPay = this->aPay();
 
-  aPay->vPayBytes(nBytes);
+  aPay->vPaySize(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/

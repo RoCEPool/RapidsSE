@@ -317,7 +317,10 @@ i8 Ent::nSizeBytes(void)
 {
   ASSERT(! m_xRef.bPayLoad());
   
-  i8 nProperBytes = sizeof(Ent) + nElmSeqSize();
+  i8 nSizeEntProper = sizeof(Ent);
+  i8 nSizeElmSeq    = nElmSeqSize();
+  
+  i8 nProperBytes = nSizeEntProper + nSizeElmSeq;
   
   i8 nRoundedBytes = MemLib::nRoundUp(nProperBytes,C_ENT_QUANTA);
 

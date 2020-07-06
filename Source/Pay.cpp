@@ -51,25 +51,25 @@ Pay::~Pay(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* increment the size of the payload                                          */
 /*----------------------------------------------------------------------------*/
-void Pay::vIncPayBytes(i8 nDeltaBytes)
+void Pay::vIncPaySize(i8 nDelta)
 {
-  m_nPayBytes += nDeltaBytes;
+  m_nPaySize += nDelta;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get size of the payload                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Pay::nPayBytes(void)
+i8 Pay::nPaySize(void)
 {
-  return m_nPayBytes;
+  return m_nPaySize;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set size of the payload                                                    */
 /*----------------------------------------------------------------------------*/
-void Pay::vPayBytes(i8 nBytes)
+void Pay::vPaySize(i8 nBytes)
 {
-  m_nPayBytes = nBytes;
+  m_nPaySize = nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@ void Pay::vPayBytes(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void Pay::vReset(void)
 {
-  m_nPayBytes = 0;
+  m_nPaySize = 0;
 }
 
 /*============================================================================*/

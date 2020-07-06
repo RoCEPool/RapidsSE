@@ -8,7 +8,7 @@ namespace Entries
   class Pay
   {
   private:
-    i8   m_nPayBytes; // size of payload (in bytes)
+    i8   m_nPaySize; // size of payload (in bytes)
     // .. payload bytes
   
   public:
@@ -17,17 +17,17 @@ namespace Entries
     Pay(void);
    ~Pay(void) noexcept(false);
   
-    void vIncPayBytes(i8 nDeltaBytes);
-    i8   nPayBytes(void);
-    void vPayBytes(i8 nBytes);
+    void vIncPaySize(i8 nDelta);
+    i8   nPaySize(void);
+    void vPaySize(i8 nSize);
     void vReset(void);
 
     /*------------------------------------------------------------------------*/
     /* get the payload bytes                                                  */
     /*------------------------------------------------------------------------*/
-    inline byte* ayaPayBytes(void)
+    inline byte* ayaPayload(void)
     {
-      return aAdd<byte*>(this,sizeof(m_nPayBytes));
+      return aAdd<byte*>(this,sizeof(m_nPaySize));
     }
   };
   
