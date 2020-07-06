@@ -35,6 +35,7 @@ EntWrk::EntWrk(void)
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_yaSpace,sizeof(m_yaSpace),CN_ENTWRK);
+  MemLib::vZero(m_yaPaySpace,sizeof(m_yaPaySpace),CN_ENTWRK);
 #else
   m_yaSpace[0] = '\0';
 #endif
