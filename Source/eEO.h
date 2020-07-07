@@ -42,6 +42,10 @@ enum eEO : i1 // expression operators
   /*    */ EO_DUP,
   /*    */ EO_PRINT,
   /*    */ EO_RETURN,
+  
+  /*    */ EO_JMP,
+  /*    */ EO_JMPFALSE,
+  /*    */ EO_JMPTRUE,
 
   /*    */ EO_ENUMS
 };
@@ -85,7 +89,11 @@ static Stz* aEO[]
   /*    */ "EO_DUP"_Stz,
   /*    */ "EO_PRINT"_Stz,
   /*    */ "EO_RETURN"_Stz,
-  
+
+  /*    */ "EO_JMP"_Stz,
+  /*    */ "EO_JMPFALSE"_Stz,
+  /*    */ "EO_JMPTRUE"_Stz,
+
   /*    */ "ENUMS"_Stz
 };
 

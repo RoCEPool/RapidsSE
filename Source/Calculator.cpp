@@ -296,6 +296,27 @@ bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
       continue;
     }
     
+    // label/location
+    if (pTkn->bSame("L"_Stz)) {
+      ASSERT(0);
+    }
+
+    // jump
+    if (pTkn->bSame("j"_Stz)) {
+      ASSERT(0);
+    }
+
+    // jump on false
+    if (pTkn->bSame("jf"_Stz)) {
+      ASSERT(0);
+    }
+    
+    // jump on true
+    if (pTkn->bSame("jt"_Stz)) {
+      ASSERT(0);
+    }
+
+
     if (pTkn->bIsInteger()) {
       vAddCode(EO_INTEGER);
       iArg = pTkn->iToI8();
@@ -563,7 +584,21 @@ i8 Calculator::iCompute(void)
         return iRes;
         
       // -- -- -- -- -- -- -- -- -- -- --
+
+      case EO_JMP:
+        ASSERT(0); // net yet implemented
+        break;
         
+      case EO_JMPFALSE:
+        ASSERT(0); // net yet implemented
+        break;
+      
+      case EO_JMPTRUE:
+        ASSERT(0); // net yet implemented
+        break;
+    
+      // -- -- -- -- -- -- -- -- -- -- --
+
       default:
         vTrace(" unknown opcode in calculator\n"_Stz);
         return C_DATUM_NULL;
