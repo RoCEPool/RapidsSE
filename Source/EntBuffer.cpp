@@ -1201,7 +1201,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTrace("tET %04llx %07lld %p %lluB %s "_Stz,
+  vTrace("tET %04llx %07lld %p %3lluB %s "_Stz,
          (i8)tEntry,
          iOffset,
          aEnt,
@@ -1242,7 +1242,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   
   if (aEnt->bPayload()) {
     i8 nPaySize = aEnt->nPaySize();
-    vTrace(" PaySize %lld"_Stz,nPaySize);
+    vTrace(" PaySize %2lld"_Stz,nPaySize);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

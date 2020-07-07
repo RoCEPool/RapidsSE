@@ -374,6 +374,19 @@ void Ent::vSetEntry(Ent* aFromEntry)
 
     MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy payload
+
+  if (aFromEntry->bPayload()) {
+    
+    Pay* aSrcPay = aFromEntry->aPay();
+    i8   nPaySize = aSrcPay->nPaySize();
+    
+    Pay* aDstPay = this->aPay();
+
+    MemLib::vCopy(aDstPay,aSrcPay,nPaySize,CN_ENT);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
