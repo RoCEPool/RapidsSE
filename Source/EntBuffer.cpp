@@ -549,7 +549,7 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
   
   i8 nEntSize = aEnt->nSizeBytes();
   vFreeItem(aEnt,nEntSize);
-  vGiveSpace(nEntSize);
+  //vGiveSpace(nEntSize);
   
   // entry no longer exists, set the pointer to be null
   *aaEnt = nullptr;
