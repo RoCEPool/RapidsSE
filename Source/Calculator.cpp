@@ -656,6 +656,8 @@ i8 Calculator::iCompute(void)
   eEO* aeCode = & m_eaCode[0];
   i8*  aiDstk = &m_iaDataStack[0];
 
+  eEO** aaeRstk = &m_aaReturnStack[0];
+
   for (;;) {
   
     eCode = *aeCode++;
@@ -903,9 +905,13 @@ i8 Calculator::iCompute(void)
         break;
 
       case EO_RETURN:
-        iRes = *(aiDstk--);
-        return iRes;
-        
+        if (aaeRstk == &m_aaReturnStack[0]) {
+          iRes = *(aiDstk--);
+          return iRes;
+        }
+        ASSERT(0);
+        break;
+
       // -- -- -- -- -- -- -- -- -- -- --
         
       default:
