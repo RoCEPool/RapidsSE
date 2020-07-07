@@ -28,7 +28,8 @@ namespace Expressions
   
     void vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
                   Expr* pExpr, StreamDef* pStreamDefOut);
-    
+    void vAgg(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
+                  Expr* pExpr, StreamDef* pStreamDefOut);
   private:
     void vCopyIntoDst(Rsb* aSrcRsbc);
     void vNewDstRsb(void);

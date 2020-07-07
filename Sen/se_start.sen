@@ -926,6 +926,39 @@
   end ;
   "
   api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sum
+  sPath
+  "
+  procedure sum
+    parameters $Table $File $Column
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | chunk $file
+    | rdCsvChunk $file
+    | stageB robin
+
+  stage stageB on all partitions :
+    toRsb $table
+    | aggregate $table $column
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  ;
+
 ;
 
 /*----------------------------------------------------------------------------*/

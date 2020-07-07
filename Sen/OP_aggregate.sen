@@ -9,6 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : aggregate_StartMarker \handler
 
+  ProjectRsb[].new
+  Pot[].new
+
+  Expr[].new
+  "@ 0 # 0 + ! 0" Expr[].source!
+  Expr[].compile assert
+
   ZK_STARTMARKER_handler
 ;
 
@@ -21,17 +28,49 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                   EACH */
+/* on ZK_RSBBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
-: aggregate_CsvBuffer \handler
+: aggregate_RsbBuffer \handler
 
-  ZK_CSVBUFFER_handler
+  Operand[].pipeIn
+  projectRsb[].agg
+  Operand[].delete
+
+  Pot[].pipeoutAllCompleted
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: aggregate_StreamDef \handler
+
+  ": aggregate_StreamDef \handler" .
+
+  Pipein[].delete
+
+  StreamDefOut[].new
+  CT_INTEGER "sum" StreamDefOut[].addColumn
+  StreamDefOut[] to StreamDef[]
+  StreamDef[].duplicate to StreamDef[]
+  StreamDef[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : aggregate_EosMarker \handler
+
+  Pot[].pipeoutAllDangling
+
+  ProjectRsb[].delete
+  Expr[].delete
+  Pot[].delete
+
+  StreamDefOut[].delete
 
   ZK_EOSMARKER_handler
 ;
@@ -48,10 +87,11 @@
 
   op__topology
 
-  find: aggregate_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: aggregate_EosMarker   ZK_EOSMARKER   op[].handler!
   find: aggregate_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: aggregate_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: aggregate_StartMarker ZK_STARTMARKER op[].handler!
+  find: aggregate_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
 
@@ -63,7 +103,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: aggregate :: aggregate ;
+cmdSyntax: aggregate :: aggregate <tableNm> <columnNm> ;
 
 : aggregate _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 

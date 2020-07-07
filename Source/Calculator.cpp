@@ -253,7 +253,7 @@ bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
     
     // push src column value
     if (pTkn->bSame("@"_Stz)) {
-      vAddCode(EO_PUSHCOLI);
+      vAddCode(EO_PUSHSRCCOLI);
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
       piArg = (i8*) & m_eaCode[m_i_Code];
@@ -262,6 +262,17 @@ bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
       continue;
     }
 
+    // push dst column value
+    if (pTkn->bSame("#"_Stz)) {
+      vAddCode(EO_PUSHDSTCOLI);
+      pTkn = pTknVec->pGet(++i_Tkn);
+      iArg = pTkn->iToI8();
+      piArg = (i8*) & m_eaCode[m_i_Code];
+      * piArg = iArg;
+      m_i_Code += sizeof(i8);
+      continue;
+    }
+    
     // deposit dst column value
     if (pTkn->bSame("!"_Stz)) {
       vAddCode(EO_DEPOSITCOLI);
@@ -334,10 +345,13 @@ i8 Calculator::iCompute(void)
   i8 iArgA;
   i8 iArgB;
   i8 iRes;
-
+  i8 i_Cell_ntv;
+  
   eEO  eCode;
   eEO* peCode = & m_eaCode[0];
  
+  Rsb* aRsb;
+  
   i8 i_TopVal = 0;
   m_iaStack[i_TopVal] = C_DATUM_NULL;
 
@@ -375,15 +389,25 @@ i8 Calculator::iCompute(void)
         break;
         
       // -- -- -- -- -- -- -- -- -- -- --
-      case EO_PUSHCOLI:
+      case EO_PUSHDSTCOLI:
         iArgA = * (i8*)peCode;
         peCode += 8;
-        iRes = m_aSrcRsb_left->iVal_ntv(m_aSrcRsb_left->i_ColToCell_ntv(iArgA));
+        aRsb = m_pDstRowSlab->aRsbAdr(0);
+        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArgA);
+        iRes = aRsb->iVal_ntv(i_Cell_ntv);
         m_iaStack[++i_TopVal] = iRes;
         break;
         
       case EO_PUSHNULL:
         m_iaStack[++i_TopVal] = C_DATUM_NULL;
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- --
+      case EO_PUSHSRCCOLI:
+        iArgA = * (i8*)peCode;
+        peCode += 8;
+        iRes = m_aSrcRsb_left->iVal_ntv(m_aSrcRsb_left->i_ColToCell_ntv(iArgA));
+        m_iaStack[++i_TopVal] = iRes;
         break;
         
       case EO_PUSH0:
