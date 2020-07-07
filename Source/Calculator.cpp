@@ -327,6 +327,8 @@ void Calculator::vPrintLabels(void)
 
 // calc 10 l a dup . dec dup jt a ;
 
+// calc 1 l a dup . inc dup 10 > jf a;
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -385,6 +387,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("--"_Stz))  { vAddCode(EO_DEC);   continue; }
     if (pTkn->bSame("dec"_Stz)) { vAddCode(EO_DEC);   continue; }
     if (pTkn->bSame("dup"_Stz)) { vAddCode(EO_DUP);   continue; }
+    if (pTkn->bSame("pop"_Stz)) { vAddCode(EO_POP);   continue; }
     if (pTkn->bSame("."_Stz))   { vAddCode(EO_PRINT); continue; }
 
     // -- -- -- -- -- -- -- -- -- -- --
@@ -731,6 +734,10 @@ i8 Calculator::iCompute(void)
         m_iaStack[++i_TopVal] = iRes;
         break;
 
+      case EO_POP:
+        iRes = m_iaStack[i_TopVal];
+        break;
+
       case EO_PRINT:
         iRes = m_iaStack[i_TopVal--];
         vTrace("%lld\n"_Stz,iRes);
@@ -743,11 +750,20 @@ i8 Calculator::iCompute(void)
       // -- -- -- -- -- -- -- -- -- -- --
 
       case EO_JMP:
-        ASSERT(0); // net yet implemented
+        iRes = * (i8*)peCode;
+        peCode += 8;
+        
+        peCode = & m_eaCode[iRes];
         break;
         
       case EO_JMPFALSE:
-        ASSERT(0); // net yet implemented
+        iRes = * (i8*)peCode;
+        peCode += 8;
+        
+        iArgA = m_iaStack[i_TopVal--];
+        if (! iArgA)
+          peCode = & m_eaCode[iRes];
+        
         break;
       
       case EO_JMPTRUE:

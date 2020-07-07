@@ -42,6 +42,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_INC,
   /*    */ EO_DEC,
   /*    */ EO_DUP,
+  /*    */ EO_POP,
   /*    */ EO_PRINT,
   /*    */ EO_RETURN,
   
@@ -91,6 +92,7 @@ static Stz* aEO[]
   /*    */ "EO_INC"_Stz,
   /*    */ "EO_DEC"_Stz,
   /*    */ "EO_DUP"_Stz,
+  /*    */ "EO_POP"_Stz,
   /*    */ "EO_PRINT"_Stz,
   /*    */ "EO_RETURN"_Stz,
 
