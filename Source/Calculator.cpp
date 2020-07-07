@@ -215,6 +215,32 @@ void Calculator::vAddCode(eEO eCode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add code                                                                   */
+/*----------------------------------------------------------------------------*/
+void Calculator::vAddCode(eEO eCode, Stz* szLabelNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  if (m_bCompilingKey)
+    m_eaCodeKey[m_i_CodeKey++] = eCode;
+  else
+    m_eaCode[m_i_Code++] = eCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add label                                                                  */
+/*----------------------------------------------------------------------------*/
+void Calculator::vAddLabel(Stz* szLabelNm, bool bKnown)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  m_xaJumpLabel[m_nLabels].m_sLabel = szLabelNm;
+  m_xaJumpLabel[m_nLabels].m_bKnown = bKnown;
+  m_xaJumpLabel[m_nLabels].m_i_Code = m_i_Code;
+  m_nLabels++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
 bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
@@ -318,24 +344,27 @@ bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
     
     // label/location
     if (pTkn->bSame("L"_Stz)) {
-      ASSERT(0);
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vDefineLabel(pTkn->szChars());
     }
 
     // jump
     if (pTkn->bSame("j"_Stz)) {
-      ASSERT(0);
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCode(EO_JMP,pTkn->szChars());
     }
 
     // jump on false
     if (pTkn->bSame("jf"_Stz)) {
-      ASSERT(0);
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCode(EO_JMPFALSE,pTkn->szChars());
     }
     
     // jump on true
     if (pTkn->bSame("jt"_Stz)) {
-      ASSERT(0);
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCode(EO_JMPTRUE,pTkn->szChars());
     }
-
 
     if (pTkn->bIsInteger()) {
       vAddCode(EO_INTEGER);
@@ -381,6 +410,61 @@ bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
 
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* correct label chain                                                        */
+/*----------------------------------------------------------------------------*/
+void Calculator::vCorrectLabel(i8 i_Label)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  ASSERT(! m_xaJumpLabel[i_Label].m_bKnown);
+  
+  i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Code;
+  while (C_UNKNOWN != i_Chain) {
+    
+    i8* piArg = (i8*) & m_eaCode[i_Chain];
+ 
+    i_Chain = * piArg;
+
+    * piArg = m_i_Code;
+  }
+
+  m_xaJumpLabel[i_Label].m_bKnown = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* define label                                                               */
+/*----------------------------------------------------------------------------*/
+void Calculator::vDefineLabel(Stz* szLabelNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  i8 i_Label = iFindLabel(szLabelNm);
+  
+  if (C_UNKNOWN == i_Label)
+    vAddLabel(szLabelNm,true);
+  else
+    vCorrectLabel(i_Label);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add label                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Calculator::iFindLabel(Stz* szLabelNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  for (i8 i_Label = 0; i_Label < C_CALC_LABEL; i_Label++)
+    if (m_xaJumpLabel[i_Label].m_sLabel.bSame(szLabelNm))
+      return i_Label;
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */

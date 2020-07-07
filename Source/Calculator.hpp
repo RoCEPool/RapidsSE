@@ -72,9 +72,15 @@ namespace Expressions
 
   private:
     void vAddCode(eEO eCode);
+    void vAddCode(eEO eCode, Stz* szLabelNm);
+    void vAddLabel(Stz* szLabelNm, bool bKnown);
     bool bCompile(TokenVec* pTknVec, bool bKeyCode);
+    void vDefineLabel(Stz* szLabelNm);
+    i8   iFindLabel(Stz* szLabelNm);
+    void vCorrectLabel(i8 i_Label);
+
+    // last
     i8   iCompute(void);
-  
 
     Footer* aFooter(void);
   };
