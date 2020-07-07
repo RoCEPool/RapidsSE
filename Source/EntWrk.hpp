@@ -14,8 +14,6 @@ namespace Entries
     StreamDef* m_pStreamDef;     // stream definition
     IndexDef*  m_pIndexDef;      // index definition
   
-    bool  m_bPayLoad;  // is there a payload?
-
     // - - - - - - - - - - - - - - - //
     //        entry                  //
     Ent    m_xEnt;                   // the index entry being formed

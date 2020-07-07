@@ -5,6 +5,25 @@
 #include "Library.h"
 
 /*----------------------------------------------------------------------------*/
+/* generate random bytes of given length                                      */
+/*----------------------------------------------------------------------------*/
+void RndLib::vBytes(byte* ayBytes, i8 iLength)
+{
+  static char caCharSet[69] = // 68 actual chars + the '\0'
+    "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-#?!";
+  // 01234567890123456789012345678901234567890123456789012345678901234567
+  // 0         1         2         3         4         5         6      6
+  
+  byte* z = ayBytes;
+  
+  for (i8 i = 0; i < iLength; i++)
+    *z++ = caCharSet[iInteger(68)];
+  
+  *z = '\0';
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* generate a random number                                                   */
 /*----------------------------------------------------------------------------*/
 i8 RndLib::iInteger(void)
@@ -228,14 +247,14 @@ i8 RndLib::iSkipLevel(i8 nLvlLevels, i8 iLvlRatio, i8& i_NextRnd)
 /*----------------------------------------------------------------------------*/
 /* generate a random string of given length                                   */
 /*----------------------------------------------------------------------------*/
-void RndLib::vString(s256& sStr, i8 iLength)
+void RndLib::vString(String* pString, i8 iLength)
 {
   static char caCharSet[69] = // 68 actual chars + the '\0'
     "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-#?!";
   // 01234567890123456789012345678901234567890123456789012345678901234567
   // 0         1         2         3         4         5         6      6
   
-  char* z = sStr.azChar();
+  char* z = pString->azStr();
   
   for (i8 i = 0; i < iLength; i++)
     *z++ = caCharSet[iInteger(68)];

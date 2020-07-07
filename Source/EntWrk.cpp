@@ -21,7 +21,6 @@ EntWrk::EntWrk(void)
 
   m_pStreamDef = nullptr;
   m_pIndexDef  = nullptr;
-  m_bPayLoad   = false;
   
   // -- entry --
   m_xEnt.vBuffer(0);
@@ -432,8 +431,10 @@ Pay* EntWrk::aPay(void)
 bool EntWrk::bPayload(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-    
-  return m_bPayLoad;
+  
+  bool bPayLoad = m_xEnt.bPayload();
+  
+  return bPayLoad;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -455,7 +456,7 @@ void EntWrk::vPayload(bool bPayload)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
     
-  m_bPayLoad = bPayload;
+  m_xEnt.vPayload(bPayload);
 }
 
 /*----------------------------------------------------------------------------*/
