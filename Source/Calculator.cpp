@@ -181,17 +181,6 @@ i8 Calculator::iJoin(RowSlab* pDstRowSlab,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add argument                                                               */
-/*----------------------------------------------------------------------------*/
-void Calculator::vAddArg(i8 iArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* add code                                                                   */
 /*----------------------------------------------------------------------------*/
 void Calculator::vAddCode(eEO eCode)
@@ -199,6 +188,21 @@ void Calculator::vAddCode(eEO eCode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
   m_eaCode[m_i_Code++] = eCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add code with argument                                                     */
+/*----------------------------------------------------------------------------*/
+void Calculator::vAddCode(eEO eCode, i8 iArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  m_eaCode[m_i_Code++] = eCode;
+
+  i8* piArg = (i8*) & m_eaCode[m_i_Code];
+  * piArg = iArg;
+  
+  m_i_Code += sizeof(i8);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -316,6 +320,8 @@ void Calculator::vPrintLabels(void)
 }
 
 // calc l a 1 ;
+
+// calc 10 l a dup . -- dup jt a ;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -456,11 +462,12 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     }
 
     if (pTkn->bIsInteger()) {
-      vAddCode(EO_INTEGER);
       iArg = pTkn->iToI8();
-      piArg = (i8*) & m_eaCode[m_i_Code];
-      * piArg = iArg;
-      m_i_Code += sizeof(i8);
+      vAddCode(EO_INTEGER,iArg);
+//      iArg = pTkn->iToI8();
+//      piArg = (i8*) & m_eaCode[m_i_Code];
+//      * piArg = iArg;
+//      m_i_Code += sizeof(i8);
       continue;
     }
     

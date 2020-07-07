@@ -66,8 +66,8 @@ namespace Expressions
                Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right);
 
   private:
-    void vAddArg(i8 iArg);
     void vAddCode(eEO eCode);
+    void vAddCode(eEO eCode, i8 iArg);
     void vAddCode(eEO eCode, Stz* szLabelNm);
     i8   iAddLabel(Stz* szLabelNm, bool bKnown);
     void vCorrectLabel(i8 i_Label);
