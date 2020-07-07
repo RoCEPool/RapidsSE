@@ -21,6 +21,7 @@ namespace Expressions
   class Calculator : public Object
   {
   private:
+
     RowSlab* m_pDstRowSlab;
 
     Rsb*     m_aSrcRsb_left;
@@ -58,6 +59,7 @@ namespace Expressions
     Calculator(void);
    ~Calculator(void) noexcept(false);
   
+    i8   iAggregate(byte* aPayLoad, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     bool bCompile(TokenVec* pTknVec);
     bool bCompileKey(TokenVec* pTknVec);
 

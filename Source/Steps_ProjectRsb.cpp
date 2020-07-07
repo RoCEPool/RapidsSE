@@ -10,31 +10,10 @@
 void Step::vAddSteps_ProjectRsb(void)
 {
   vAddStep("ProjectRsb[]"_Stz,           &Step::vProjectRsbGet);
-  vAddStep("ProjectRsb[].agg"_Stz,       &Step::vProjectRsbAgg);
   vAddStep("ProjectRsb[].delete"_Stz,    &Step::vProjectRsbDelete);
   vAddStep("ProjectRsb[].project"_Stz,   &Step::vProjectRsbProject);
   vAddStep("ProjectRsb[].get"_Stz,       &Step::vProjectRsbGet);
   vAddStep("ProjectRsb[].new"_Stz,       &Step::vProjectRsbNew);
-}
-
-/*----------------------------------------------------------------------------*/
-/* ProjectRsb[].agg -- agg an rsb buffer                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vProjectRsbAgg(void)
-{
-  ENTRY();
-  
-  StreamDef* pStreamDefOut = * m_pRegSet->m_xpStreamDefOut;
-  IndexTree* pIndexTree = * m_pRegSet->m_xpIndexTree;
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
-  
-  Expr* pExpr = * m_pRegSet->m_xpExpr;
-  
-  Pot* pPot = * m_pRegSet->m_xpPot;
-  
-  m_pRegSet->m_xpProjectRsb->vAgg(pPot,pRsbBuffer,pIndexTree,pExpr,pStreamDefOut);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

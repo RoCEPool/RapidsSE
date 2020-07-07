@@ -69,6 +69,26 @@ Calculator::~Calculator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* project compute                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Calculator::iAggregate(byte* ayPayload, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  //m_ayDstPayload = ayPayload;
+  
+  m_aSrcRsb_left      = aSrcRsb;
+  m_pSrcRowSlab_left  = pSrcRowSlab;
+  
+  m_aSrcRsb_right     = nullptr;
+  m_pSrcRowSlab_right = nullptr;
+  
+  i8 iResult = iCompute();
+  
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
 bool Calculator::bCompile(TokenVec* pTknVec)

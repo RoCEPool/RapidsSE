@@ -503,6 +503,7 @@ public:
   void vIndexStreamSet(void);
 
   // index tree
+  void vIndexTreeAggregate(void);
   void vIndexTreeDelete(void);
   void vIndexTreeGet(void);
   void vIndexTreeInsEntBuffer(void);
@@ -1051,7 +1052,6 @@ public:
   void vProfileStart(void);
 
   // project
-  void vProjectRsbAgg(void);
   void vProjectRsbDelete(void);
   void vProjectRsbProject(void);
   void vProjectRsbGet(void);

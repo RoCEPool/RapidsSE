@@ -509,6 +509,39 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert an entry for given row into this index at level 0                   */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aInsertPayloadEntry(EntWrk& xEntWrk, i8 nPayloadBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+  
+  Pay* aPay = nullptr;
+  
+  xEntWrk.vPayload(true);
+  xEntWrk.vPayloadBytes(nPayloadBytes);
+  
+  byte* ayPayLoad = xEntWrk.ayPayload();
+  RndLib::vBytes(ayPayLoad,nPayloadBytes);
+  
+  aPay = xEntWrk.aPay();
+
+  if (! m_pRootEntBuffer) {
+    EntBuffer* pRootBuffer = pNewRootBuffer();
+  }
+  
+  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
+  ASSERT(aInsertedEntry);
+  
+  //m_pRootEntBuffer->bVerify();
+  
+  m_okLock.vDropWrite();
+  
+  return aInsertedEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* build skip lists for the index                                             */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vLazyBuild(void)

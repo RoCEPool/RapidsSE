@@ -19,9 +19,8 @@
   // get the agg column
   <columnNm> Table[].findColumn to pColumn
 
-  // create the projectRsb and Pot
-  ProjectRsb[].new
-  Pot[].new
+  // create the Pot
+  // Pot[].new
 
   // create the expr
   Expr[].new
@@ -57,10 +56,10 @@
 : aggregate_RsbBuffer \handler
 
   Operand[].pipeIn
-  projectRsb[].agg
+  indexTree[].aggregate
   Operand[].delete
 
-  Pot[].pipeoutAllCompleted
+  //Pot[].pipeoutAllCompleted
 
   true
 ;
@@ -88,11 +87,10 @@
 /*----------------------------------------------------------------------------*/
 : aggregate_EosMarker \handler
 
-  Pot[].pipeoutAllDangling
+  //Pot[].pipeoutAllDangling
 
-  ProjectRsb[].delete
   Expr[].delete
-  Pot[].delete
+  //Pot[].delete
   IndexTree[].delete
 
   StreamDefOut[].delete

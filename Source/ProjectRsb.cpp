@@ -81,56 +81,6 @@ void ProjectRsb::vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert                                                                    */
-/*----------------------------------------------------------------------------*/
-void ProjectRsb::vAgg(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
-                          IndexTree* pIndexTree, Expr* pExpr, StreamDef* pStreamDefOut)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTRSB,_FOOTER_);
-  
-  m_pStreamDefOut = pStreamDefOut;
-  
-  m_pSrcRsbBuffer = pSrcRsbBuffer;
-  
-  m_pPot = pPot;
-  
-  if (! m_bPixInited) {
-    m_bPixInited = true;
-    m_pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
-  }
-  
-  RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
-  EntWrk xEntWrk;
-  SP_Ent spEnt;
-  
-  IndexDef* pIndexDef = pIndexTree->pIndexDef();
-  
-  i8 nRows = pSrcRowSlab->nRows();
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    // get the srcRsb
-    Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
-    
-    // extract the key from the SrcRsb
-    xEntWrk.vElmSeqSize(0);
-    pIndexTree->vExtractKey(&xEntWrk,aSrcRsb);
-    vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIndexDef));
- 
-    // find an existing accumulator in the IndexTree
-    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
-    if (! pEntH0Buf) {
-      vTrace("Accumulator not found!\n"_Stz);
-    
-      // create an accumulator for the key
-      vNewDstRsb();
-    }
-    i8 bCopy = pExpr->iProject(m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
-    
-    //vCopyIntoDst(aSrcRsb);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
