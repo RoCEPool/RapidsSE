@@ -52,7 +52,8 @@ void Step::vIndexTreeNew(void)
 {
   ENTRY();
   
-  m_pRegSet->m_xpIndexTree = new IndexTree(nullptr, C_UNKNOWN);
+  IndexDef* pIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
+  m_pRegSet->m_xpIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
   
   EXIT();
 }

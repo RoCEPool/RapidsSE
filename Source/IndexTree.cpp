@@ -47,14 +47,14 @@ void IndexTree::operator delete(void* pDataAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
+IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 iPartitionNo)
 : Object(CN_INDEXTREE)
 , m_okLock(LK_INDEX_TREE,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   m_pIndex = pIndex;
-  m_pIndexDef = pIndex ? new IndexDef(pIndex->pIndexDef()) : nullptr;
+  m_pIndexDef = pIndexDef ? new IndexDef(pIndexDef) : nullptr;
   m_iPartitionNo = iPartitionNo;
   m_pRootEntBuffer  = nullptr;
   

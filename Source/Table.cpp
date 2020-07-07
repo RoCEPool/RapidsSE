@@ -166,7 +166,7 @@ void Table::vAddIndex(Index* pIndex)
   // create an IndexTree for the index in each partition
   for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
     TablePtn* pPartition = this->pPartition(iPartition);
-    pPartition->vAddIndex(new IndexTree(pIndex, iPartition));
+    pPartition->vAddIndex(new IndexTree(pIndex, pIndex->pIndexDef(), iPartition));
   }
 }
 

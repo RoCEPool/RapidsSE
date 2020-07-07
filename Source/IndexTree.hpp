@@ -26,7 +26,7 @@ namespace Indexing
     void* operator new(size_t, IndexTree* pIndexTree);
     void  operator delete(void*);
     
-    IndexTree(Index* pIndex, i8 iPartitionNo);
+    IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 iPartitionNo);
    ~IndexTree(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

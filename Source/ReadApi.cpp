@@ -27,7 +27,8 @@ ReadApi::ReadApi(void)
   
   m_pStreamDef = nullptr;
   
-  m_pIndexTree = new IndexTree(pReadApiIndex,0);
+  m_pIndexTree = new IndexTree(pReadApiIndex,
+                               pReadApiIndex ? pReadApiIndex->pIndexDef() : nullptr, 0);
   
   m_pCrvBufferHead = nullptr;
   m_pCrvBufferTail = nullptr;
