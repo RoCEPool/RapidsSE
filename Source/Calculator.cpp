@@ -32,15 +32,11 @@ Calculator::Calculator(void)
   m_pEnt = nullptr;
   // m_oEntWrk
   m_pIndexTree = nullptr;
-
-  m_bCompilingKey = false;
   
   m_i_Code = 0;
-  m_i_CodeKey = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,    sizeof(m_eaCode),    CN_CALCULATOR);
-  MemLib::vZero(m_eaCodeKey, sizeof(m_eaCodeKey), CN_CALCULATOR);
   
   MemLib::vZero(m_iaStack,   sizeof(m_iaStack),   CN_CALCULATOR);
 #endif
@@ -93,24 +89,7 @@ i8 Calculator::iAggregate(byte* ayPayload, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 /*----------------------------------------------------------------------------*/
 bool Calculator::bCompile(TokenVec* pTknVec)
 {
-  m_bCompilingKey = false;
-
-  bool b = bCompile(pTknVec,false);
-  return b;
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* compile                                                                    */
-/*----------------------------------------------------------------------------*/
-bool Calculator::bCompileKey(TokenVec* pTknVec)
-{
-  m_bCompilingKey = true;
-
-  bool b = bCompile(pTknVec,true);
-
-  m_bCompilingKey = false;
-
+  bool b = bCompileCode(pTknVec);
   return b;
 }
 
@@ -208,10 +187,7 @@ void Calculator::vAddCode(eEO eCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  if (m_bCompilingKey)
-    m_eaCodeKey[m_i_CodeKey++] = eCode;
-  else
-    m_eaCode[m_i_Code++] = eCode;
+  m_eaCode[m_i_Code++] = eCode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,29 +197,105 @@ void Calculator::vAddCode(eEO eCode, Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  if (m_bCompilingKey)
-    m_eaCodeKey[m_i_CodeKey++] = eCode;
-  else
-    m_eaCode[m_i_Code++] = eCode;
+  m_eaCode[m_i_Code++] = eCode;
 }
 
 /*----------------------------------------------------------------------------*/
 /* add label                                                                  */
 /*----------------------------------------------------------------------------*/
-void Calculator::vAddLabel(Stz* szLabelNm, bool bKnown)
+i8 Calculator::iAddLabel(Stz* szLabelNm, bool bKnown)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  m_xaJumpLabel[m_nLabels].m_sLabel = szLabelNm;
-  m_xaJumpLabel[m_nLabels].m_bKnown = bKnown;
-  m_xaJumpLabel[m_nLabels].m_i_Code = m_i_Code;
+  i8 i_Label = m_nLabels;
+  
+  m_xaJumpLabel[i_Label].m_sLabel = szLabelNm;
+  m_xaJumpLabel[i_Label].m_bKnown = bKnown;
+  m_xaJumpLabel[i_Label].m_i_Code = m_i_Code;
   m_nLabels++;
+  
+  return i_Label;
 }
+
+/*----------------------------------------------------------------------------*/
+/* correct label chain                                                        */
+/*----------------------------------------------------------------------------*/
+void Calculator::vCorrectLabel(i8 i_Label)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  ASSERT(! m_xaJumpLabel[i_Label].m_bKnown);
+  
+  i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Code;
+  while (C_UNKNOWN != i_Chain) {
+    
+    i8* piArg = (i8*) & m_eaCode[i_Chain];
+ 
+    i_Chain = * piArg;
+
+    * piArg = m_i_Code;
+  }
+
+  m_xaJumpLabel[i_Label].m_bKnown = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add label                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Calculator::iDecodeLabel(Stz* szLabelNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  i8 i_Label = iFindLabel(szLabelNm);
+
+  if (C_UNKNOWN == i_Label)
+    i_Label = iAddLabel(szLabelNm,false);
+  
+  i8 i_Code = m_xaJumpLabel[i_Label].m_i_Code;
+ 
+  m_xaJumpLabel[i_Label].m_i_Code = m_i_Code;
+  
+  return i_Code;
+}
+
+/*----------------------------------------------------------------------------*/
+/* define label                                                               */
+/*----------------------------------------------------------------------------*/
+void Calculator::vDefineLabel(Stz* szLabelNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  // has this label been used yet?
+  i8 i_Label = iFindLabel(szLabelNm);
+  
+  if (C_UNKNOWN == i_Label)
+    i_Label = iAddLabel(szLabelNm,true);
+  else
+    vCorrectLabel(i_Label);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add label                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Calculator::iFindLabel(Stz* szLabelNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  for (i8 i_Label = 0; i_Label < C_CALC_LABEL; i_Label++)
+    if (m_xaJumpLabel[i_Label].m_sLabel.bSame(szLabelNm))
+      return i_Label;
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
+bool Calculator::bCompileCode(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
@@ -407,64 +459,13 @@ bool Calculator::bCompile(TokenVec* pTknVec, bool bKeyCode)
 
   vAddCode(EO_RETURN);
   vTrace("\n"_Stz);
+  
+  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
+    if (! m_xaJumpLabel[i_Label].m_bKnown)
+      return false;
 
   return true;
 }
-
-/*----------------------------------------------------------------------------*/
-/* correct label chain                                                        */
-/*----------------------------------------------------------------------------*/
-void Calculator::vCorrectLabel(i8 i_Label)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-  ASSERT(! m_xaJumpLabel[i_Label].m_bKnown);
-  
-  i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Code;
-  while (C_UNKNOWN != i_Chain) {
-    
-    i8* piArg = (i8*) & m_eaCode[i_Chain];
- 
-    i_Chain = * piArg;
-
-    * piArg = m_i_Code;
-  }
-
-  m_xaJumpLabel[i_Label].m_bKnown = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* define label                                                               */
-/*----------------------------------------------------------------------------*/
-void Calculator::vDefineLabel(Stz* szLabelNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-  i8 i_Label = iFindLabel(szLabelNm);
-  
-  if (C_UNKNOWN == i_Label)
-    vAddLabel(szLabelNm,true);
-  else
-    vCorrectLabel(i_Label);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add label                                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Calculator::iFindLabel(Stz* szLabelNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-  for (i8 i_Label = 0; i_Label < C_CALC_LABEL; i_Label++)
-    if (m_xaJumpLabel[i_Label].m_sLabel.bSame(szLabelNm))
-      return i_Label;
-
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */

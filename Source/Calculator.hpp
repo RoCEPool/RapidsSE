@@ -34,14 +34,10 @@ namespace Expressions
     EntWrk     m_oEntWrk;
     IndexTree* m_pIndexTree;
   
-    bool   m_bCompilingKey;
 
     i8     m_i_Code;
     eEO    m_eaCode[C_CALC_CODE];    // { EO_code [<bytes>] }
-  
-    i8     m_i_CodeKey;
-    eEO    m_eaCodeKey[C_CALC_CODE]; // { EO_code [<bytes>] }
-  
+    
     i8     m_iaStack[C_CALC_STACK];
 
     i8     m_nLabels;
@@ -61,7 +57,6 @@ namespace Expressions
   
     i8   iAggregate(byte* aPayLoad, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     bool bCompile(TokenVec* pTknVec);
-    bool bCompileKey(TokenVec* pTknVec);
 
     i8   iCalc(void);
     i8   iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
@@ -73,13 +68,14 @@ namespace Expressions
   private:
     void vAddCode(eEO eCode);
     void vAddCode(eEO eCode, Stz* szLabelNm);
-    void vAddLabel(Stz* szLabelNm, bool bKnown);
-    bool bCompile(TokenVec* pTknVec, bool bKeyCode);
+    i8   iAddLabel(Stz* szLabelNm, bool bKnown);
+    void vCorrectLabel(i8 i_Label);
+    i8   iDecodeLabel(Stz* szLabelNm);
     void vDefineLabel(Stz* szLabelNm);
     i8   iFindLabel(Stz* szLabelNm);
-    void vCorrectLabel(i8 i_Label);
 
     // last
+    bool bCompileCode(TokenVec* pTknVec);
     i8   iCompute(void);
 
     Footer* aFooter(void);
