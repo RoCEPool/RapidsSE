@@ -78,6 +78,9 @@ namespace Expressions
 
     // last
     bool bCompileCode(TokenVec* pTknVec);
+    void vDumpCode(void);
+    void vDumpCode(i8& i_Code, eEO eCode);
+    void vDumpCode(eEO eCode, i8& i_Code);
     i8   iCompute(void);
 
     Footer* aFooter(void);
