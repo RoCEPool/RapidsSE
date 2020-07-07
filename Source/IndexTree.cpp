@@ -469,13 +469,13 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
   xEntWrk.vRef(xRowRef);
   
   if (gxDebugFlags.m_iPayload) {
-    i8 nPaySize = RndLib::iInteger(1,gxDebugFlags.m_iPayload-1);
+    i8 nPayloadBytes = RndLib::iInteger(1,gxDebugFlags.m_iPayload-1);
     
     xEntWrk.vPayload(true);
-    xEntWrk.vPaySize(nPaySize);
+    xEntWrk.vPayloadBytes(nPayloadBytes);
     
     byte* ayPayLoad = xEntWrk.ayPayload();
-    RndLib::vBytes(ayPayLoad,nPaySize);
+    RndLib::vBytes(ayPayLoad,nPayloadBytes);
   }
   
   if (! m_pRootEntBuffer) {

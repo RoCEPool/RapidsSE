@@ -69,8 +69,8 @@ namespace Entries
     byte* ayPayload(void);
     bool  bPayload(void);
     void  vPayload(bool bPayload);
-    i8    nPaySize(void);
-    void  vPaySize(i8 nSize);
+    i8    nPayloadBytes(void);
+    void  vPayloadBytes(i8 nPayloadBytes);
 
     void  vRandomEnt(IndexDef* pIndexDef);
     Ref&  rxRef(void);

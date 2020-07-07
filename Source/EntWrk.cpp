@@ -462,27 +462,27 @@ void EntWrk::vPayload(bool bPayload)
 /*----------------------------------------------------------------------------*/
 /* get payload size                                                           */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk::nPaySize(void)
+i8 EntWrk::nPayloadBytes(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   Pay* aPay = this->aPay();
 
-  i8 nSize = aPay->nPaySize();
+  i8 nPayloadBytes = aPay->nPayloadBytes();
   
-  return nSize;
+  return nPayloadBytes;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set payload size                                                           */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vPaySize(i8 nSize)
+void EntWrk::vPayloadBytes(i8 nPayloadBytes)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   Pay* aPay = this->aPay();
 
-  aPay->vPaySize(nSize);
+  aPay->vPayloadBytes(nPayloadBytes);
 }
 
 /*----------------------------------------------------------------------------*/
