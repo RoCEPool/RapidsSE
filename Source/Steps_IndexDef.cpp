@@ -10,7 +10,11 @@
 void Step::vAddSteps_IndexDef(void)
 {
   vAddStep("indexDef[]"_Stz,          &Step::vIndexDefGet);
+  vAddStep("indexDef[].addColumn"_Stz,&Step::vIndexDefAddColumn);
+  vAddStep("indexDef[].delete"_Stz,   &Step::vIndexDefDelete);
   vAddStep("indexDef[].isNull"_Stz,   &Step::vIndexDefIsNull);
+  vAddStep("indexDef[].name!"_Stz,    &Step::vIndexDefNameStore);
+  vAddStep("indexDef[].new"_Stz,      &Step::vIndexDefNew);
   vAddStep("indexDef::parse"_Stz,     &Step::vIndexDefParse);
   vAddStep("indexDef::parseOLD"_Stz,  &Step::vIndexDefParseOLD);
   vAddStep("indexDef::parseTableName"_Stz, &Step::vIndexDefParseTableName);
@@ -18,6 +22,41 @@ void Step::vAddSteps_IndexDef(void)
   vAddStep("indexDef[].set"_Stz,      &Step::vIndexDefSet);
   vAddStep("indexDef::syntax"_Stz,    &Step::vIndexDefSyntax);
   vAddStep("indexDef[].tableName@"_Stz, &Step::vIndexDefTableNameFetch);
+}
+
+/*----------------------------------------------------------------------------*/
+/* indexDef[].addColumn -- add a columnto the indexDef                        */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefAddColumn(void)
+{
+  ENTRY();
+  
+  s32 sColNm;
+  m_pDataStack->vPopStr(sColNm,__func__);
+  
+  eCT eColType = (eCT)m_pDataStack->iPopInt(__func__);
+  
+  IndexDef* pIndexDef = * m_pRegSet->m_xpIndexDef;
+  
+  //pIndexDef->vAddColumn(sColNm,eColType);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* indexDef[].delete -- delete index definition                               */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefDelete(void)
+{
+  ENTRY();
+  
+  IndexDef* pIndexDef = * m_pRegSet->m_xpIndexDef;
+  
+  m_pRegSet->m_xpIndexDef = nullptr;
+  
+  delete pIndexDef;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,6 +79,33 @@ void Step::vIndexDefIsNull(void)
   ENTRY();
   
   m_pDataStack->vPushInt(m_pRegSet->m_xpIndexDef.bIsNull() ? 1 : 0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].name! -- set name                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefNameStore(void)
+{
+  ENTRY();
+  
+  s32 sName;
+  m_pDataStack->vPopStr(sName,__func__);
+  
+  //m_pRegSet->m_xpIndexDef->vName(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].new -- new a stream definition out                          */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefNew(void)
+{
+  ENTRY();
+  
+  m_pRegSet->m_xpIndexDef = new IndexDef;
   
   EXIT();
 }

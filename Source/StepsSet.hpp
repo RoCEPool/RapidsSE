@@ -471,8 +471,12 @@ public:
 
 
   // index definition
+  void vIndexDefAddColumn(void);
+  void vIndexDefDelete(void);
   void vIndexDefGet(void);
   void vIndexDefIsNull(void);
+  void vIndexDefNameStore(void);
+  void vIndexDefNew(void);
   void vIndexDefParse(void);
   void vIndexDefParseOLD(void);
   void vIndexDefSet(void);
