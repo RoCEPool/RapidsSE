@@ -38,7 +38,8 @@ namespace Expressions
     i8     m_i_Code;
     eEO    m_eaCode[C_CALC_CODE];    // { EO_code [<bytes>] }
     
-    i8     m_iaStack[C_CALC_STACK];
+    i8     m_iaDataStack[C_CALC_STACK];
+    eEO*   m_aaReturnStack[C_CALC_STACK];
 
     i8     m_nLabels;
     JumpLabel m_xaJumpLabel[C_CALC_LABEL];
