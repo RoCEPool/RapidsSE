@@ -9,12 +9,22 @@
 /*----------------------------------------------------------------------------*/
 : aggregate_StartMarker \handler
 
+  // create the projectRsb and Pot
   ProjectRsb[].new
   Pot[].new
 
+  // create the expr
   Expr[].new
   "@ 0 # 0 + ! 0" Expr[].source!
   Expr[].compile assert
+
+  // create the indexDef
+  indexDef[].new
+  "agg" indexDef[].name!
+  CT_INTEGER "sum" indexDef[].addColumn
+
+  // create an indexTree
+  indexDef[] indexTree[].new
 
   ZK_STARTMARKER_handler
 ;
@@ -69,6 +79,7 @@
   ProjectRsb[].delete
   Expr[].delete
   Pot[].delete
+  IndexDef[].delete
 
   StreamDefOut[].delete
 

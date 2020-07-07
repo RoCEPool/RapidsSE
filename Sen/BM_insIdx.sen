@@ -59,7 +59,7 @@
 
   // insert all the entries into tree
   //   NB: registers are available in the step!!
-  Operand[] IndexTree[].get IndexTree.insEntBuffer // <- focal pt of bm
+  Operand[] IndexTree[] IndexTree.insEntBuffer // <- focal pt of bm
     counter1[] + to counter1[]
 
   counter0[] 1 + to counter0[]

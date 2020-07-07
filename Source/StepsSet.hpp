@@ -503,11 +503,11 @@ public:
   void vIndexStreamSet(void);
 
   // index tree
+  void vIndexTreeDelete(void);
+  void vIndexTreeGet(void);
   void vIndexTreeInsEntBuffer(void);
-
-  // index reg
-  void vRegIndexTreeGet(void);
-  void vRegIndexTreeSet(void);
+  void vIndexTreeNew(void);
+  void vIndexTreeSet(void);
 
   // reg info set
   void vInfoSetAddLockStats(void);
