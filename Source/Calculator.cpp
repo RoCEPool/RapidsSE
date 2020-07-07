@@ -212,7 +212,9 @@ void Calculator::vAddCode(eEO eCode, Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  m_eaCode[m_i_Code++] = eCode;
+  i8 iArg = iDecodeLabel(szLabelNm);
+
+  vAddCode(eCode,iArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -270,6 +272,8 @@ i8 Calculator::iDecodeLabel(Stz* szLabelNm)
  
   m_xaJumpLabel[i_Label].m_i_Code = m_i_Code;
   
+  vPrintLabels();
+  
   return i_Code;
 }
 
@@ -321,7 +325,7 @@ void Calculator::vPrintLabels(void)
 
 // calc l a 1 ;
 
-// calc 10 l a dup . -- dup jt a ;
+// calc 10 l a dup . dec dup jt a ;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -747,7 +751,13 @@ i8 Calculator::iCompute(void)
         break;
       
       case EO_JMPTRUE:
-        ASSERT(0); // net yet implemented
+        iRes = * (i8*)peCode;
+        peCode += 8;
+        
+        iArgA = m_iaStack[i_TopVal--];
+        if (iArgA)
+          peCode = & m_eaCode[iRes];
+        
         break;
     
       // -- -- -- -- -- -- -- -- -- -- --
