@@ -14,8 +14,6 @@ namespace Entries
     StreamDef* m_pStreamDef;     // stream definition
     IndexDef*  m_pIndexDef;      // index definition
   
-    bool  m_bPayLoad;  // is there a payload?
-
     // - - - - - - - - - - - - - - - //
     //        entry                  //
     Ent    m_xEnt;                   // the index entry being formed
@@ -68,11 +66,11 @@ namespace Entries
     void  vOffsets(i8 nLevels);
   
     Pay*  aPay(void);
-    byte* ayPayBytes(void);
-    i8    nPayBytes(void);
-    void  vPayBytes(i8 nBytes);
+    byte* ayPayload(void);
     bool  bPayload(void);
     void  vPayload(bool bPayload);
+    i8    nPayloadBytes(void);
+    void  vPayloadBytes(i8 nPayloadBytes);
 
     void  vRandomEnt(IndexDef* pIndexDef);
     Ref&  rxRef(void);
@@ -81,10 +79,10 @@ namespace Entries
 
     void  vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry);
     void  vShow(IndexDef* pIndexDef);
-    i8    nSize_EntKey(void);
-    i8    nSize_EntKeyNeo(void);
     StreamDef* pStreamDef(void);
     void  vStreamDef(StreamDef* pStreamDef);
+
+    i8    nTotalSize(void);
 
   private:
 

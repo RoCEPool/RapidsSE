@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Base
 { 
   struct _WordAsBytes {
     union {

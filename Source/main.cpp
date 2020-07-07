@@ -13,6 +13,7 @@ extern Stz* gsBuildUserName;
 extern Stz* gsBuildBranch;
 
 extern Args gxArgs;
+extern DebugFlags gxDebugFlags;;
 
 extern i8   gi_argc;
 extern s256 gi_szaArgv[];
@@ -30,6 +31,14 @@ int main(int argc, char* argv[])
   printf("sizeof(Ent_flat) %lld\n",     (i8)sizeof(Ent_flat));
   printf("sizeof(Ent_int) %lld\n",      (i8)sizeof(Ent_int));
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  s256 sFlagValue;
+  
+  if (Env::bGet("SE_DBG_PAYLOAD"_Stz,sFlagValue)) {
+    gxDebugFlags.m_iPayload = StrLib::iToI8(sFlagValue.azChar());
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //ThirdParty::libtcc_rjh(0,argv);

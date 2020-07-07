@@ -249,6 +249,72 @@ void Ent::vNextEntryReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of Pay                                                         */
+/*----------------------------------------------------------------------------*/
+Pay* Ent::aPay(void)
+{
+  Key* aKey = this->aKey();
+  
+  i8   nElmSeqSize = this->nElmSeqSize();
+
+  Pay* aPay = aAdd<Pay*>(aKey,sizeof(Key) + nElmSeqSize);
+  
+  return aPay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of Pay                                                         */
+/*----------------------------------------------------------------------------*/
+byte* Ent::ayPayload(void)
+{
+  Pay* aPay = this->aPay();
+  
+  byte* ayPayload = aPay->ayaPayload();
+  
+  return ayPayload;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a payload?                                                        */
+/*----------------------------------------------------------------------------*/
+bool Ent::bPayload(void)
+{
+  bool bPayload = m_xRef.bPayload();
+  
+  return bPayload;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is there a payload?                                                    */
+/*----------------------------------------------------------------------------*/
+void Ent::vPayload(bool bPayload)
+{
+  m_xRef.vPayload(bPayload);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of payload                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Ent::nPaySize(void)
+{
+  Pay* aPay = this->aPay();
+  
+  i8 nPaySize = aPay->nPaySize();
+
+  return nPaySize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set size of payload                                                        */
+/*----------------------------------------------------------------------------*/
+void Ent::vPaySize(i8 nPaySize)
+{
+  Pay* aPay = this->aPay();
+  
+  aPay->vPayloadBytes(nPaySize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
 Ref& Ent::rxRef(void)
@@ -315,7 +381,19 @@ void Ent::vSetEntry(Ent* aFromEntry)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeBytes(void)
 {
-  i8 nProperBytes = sizeof(Ent) + nElmSeqSize();
+  i8 nSizeEntProper = sizeof(Ent);
+  
+  i8 nSizeElmSeq = nElmSeqSize();
+  
+  i8 nSizePayload = 0;
+  if (bPayload()) {
+    Pay* aPay = this->aPay();
+    nSizePayload = aPay->nPaySize();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 nProperBytes  = nSizeEntProper + nSizeElmSeq + nSizePayload;
   
   i8 nRoundedBytes = MemLib::nRoundUp(nProperBytes,C_ENT_QUANTA);
 

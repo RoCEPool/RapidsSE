@@ -4,10 +4,11 @@
 
 #include "Entries.h"
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+__aFooterFunction(EntWrk)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -20,16 +21,16 @@ EntWrk::EntWrk(void)
 
   m_pStreamDef = nullptr;
   m_pIndexDef  = nullptr;
-  m_bPayLoad   = false;
   
   // -- entry --
   m_xEnt.vBuffer(0);
   m_xEnt.vItem(0);
   m_xEnt.vSkipLevels(0);
+  m_xEnt.vPayload(false);
   
   m_xEnt.vElmSeqSize(0);
   
-  vPayBytes(0);
+  //vPaySize(0);  CANT SET THIS YET
   
   // -- end entry --
 
@@ -412,55 +413,15 @@ void EntWrk::vOffsets(i8 nLevels)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get key address                                                            */
+/* get pay address                                                            */
 /*----------------------------------------------------------------------------*/
 Pay* EntWrk::aPay(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+    
+  Pay* aPay = m_xEnt.aPay();
   
-  i8 nEntSize = nSize_EntKey();
-  
-  Pay* aPay = aAdd<Pay*>(&m_xEnt,nEntSize);
   return aPay;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get payload bytes                                                          */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nPayBytes(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  Pay* aPay = this->aPay();
-
-  i8 nPayBytes = aPay->nPayBytes();
-  
-  return nPayBytes;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get payload                                                                */
-/*----------------------------------------------------------------------------*/
-byte* EntWrk::ayPayBytes(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  Pay* aPay = this->aPay();
-  
-  return aPay->ayaPayBytes();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set payload bytes                                                          */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vPayBytes(i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  Pay* aPay = this->aPay();
-
-  aPay->vPayBytes(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -469,8 +430,22 @@ void EntWrk::vPayBytes(i8 nBytes)
 bool EntWrk::bPayload(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-    
-  return m_bPayLoad;
+  
+  bool bPayLoad = m_xEnt.bPayload();
+  
+  return bPayLoad;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get payload                                                                */
+/*----------------------------------------------------------------------------*/
+byte* EntWrk::ayPayload(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = this->aPay();
+  
+  return aPay->ayaPayload();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -480,7 +455,33 @@ void EntWrk::vPayload(bool bPayload)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
     
-  m_bPayLoad = bPayload;
+  m_xEnt.vPayload(bPayload);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get payload size                                                           */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nPayloadBytes(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = this->aPay();
+
+  i8 nPayloadBytes = aPay->nPayloadBytes();
+  
+  return nPayloadBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set payload size                                                           */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vPayloadBytes(i8 nPayloadBytes)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = this->aPay();
+
+  aPay->vPayloadBytes(nPayloadBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -576,33 +577,6 @@ void EntWrk::vShow(IndexDef* pIndexDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the size this (Ent+Key)                                                */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nSize_EntKey(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nSizeEnt    = sizeof(Ent);
-  i8 nSizeElmSeq = m_xEnt.nElmSeqSize();
-  
-  i8 nSize = nSizeEnt + nSizeElmSeq;
-  
-  return nSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the size this (Ent+Key+Neo)                                            */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nSize_EntKeyNeo(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nSize = m_xEnt.nSizeBytes();
-
-  return nSize;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get stream definition                                                      */
 /*----------------------------------------------------------------------------*/
 StreamDef* EntWrk::pStreamDef(void)
@@ -622,16 +596,30 @@ void EntWrk::vStreamDef(StreamDef* pStreamDef)
   m_pStreamDef = pStreamDef;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the total size of this (Ent+Key)                                       */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nTotalSize(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+    
+  i8 nSize = m_xEnt.nSizeBytes();
+  
+  return nSize;
+}
+/*----------------------------------------------------------------------------*/
+//i8 EntWrk::nTotalSize(void)
+//{
+//  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+//
+//  i8 nSizeEntProper = sizeof(Ent);
+//  i8 nSizeElmSeq    = m_xEnt.nElmSeqSize();
+//
+//  i8 nSize = nSizeEntProper + nSizeElmSeq;
+//
+//  return nSize;
+//}
 
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(EntWrk)
 
 /*============================================================================*/
 /* end                                                                        */
