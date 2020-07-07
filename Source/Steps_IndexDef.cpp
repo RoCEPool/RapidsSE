@@ -31,14 +31,14 @@ void Step::vIndexDefAddColumn(void)
 {
   ENTRY();
   
-  s32 sColNm;
-  m_pDataStack->vPopStr(sColNm,__func__);
+  s32 sColumnNm;
+  m_pDataStack->vPopStr(sColumnNm,__func__);
   
   eCT eColType = (eCT)m_pDataStack->iPopInt(__func__);
   
   IndexDef* pIndexDef = * m_pRegSet->m_xpIndexDef;
   
-  //pIndexDef->vAddColumn(sColNm,eColType);
+  pIndexDef->vAddColumn(sColumnNm,eColType);
   
   EXIT();
 }
@@ -84,7 +84,7 @@ void Step::vIndexDefIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDefOut[].name! -- set name                                           */
+/* indexDef[].name! -- set name                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefNameStore(void)
 {
@@ -93,13 +93,13 @@ void Step::vIndexDefNameStore(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  //m_pRegSet->m_xpIndexDef->vName(sName);
+  m_pRegSet->m_xpIndexDef->vIndexNm(sName);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDefOut[].new -- new a stream definition out                          */
+/* indexDef[].new -- new a stream definition out                              */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefNew(void)
 {

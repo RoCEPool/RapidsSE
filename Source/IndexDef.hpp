@@ -33,9 +33,11 @@ namespace MetaData
     static eEC eSyntax(Stz* szCmd);
     static eEC eParseTableName(Stz* szCmd, Stz* szTableNm);
     
+    void    vAddColumn(Stz* szColumnNm, eCT eColumnType);
     i8      nColumns(void);
     Column* pGetColumn(i8 iColumn);
     Stz*   szIndexNm(void);
+    void   vIndexNm(Stz* szIndexNm);
     Stz*   szTableNm(void);
     eEC    eParse(Table* pTable, Stz* szCmd);
     bool   bIsPrimaryKey(void);

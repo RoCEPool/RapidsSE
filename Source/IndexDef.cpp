@@ -90,6 +90,21 @@ IndexDef::~IndexDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a column to the indexDef                                               */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_xaColumn[m_nColumns].vColumnNo(m_nColumns);
+  
+  m_nColumns++;
+  
+  m_xaColumn[m_nColumns].vColumnNm(szColumnNm);
+  m_xaColumn[m_nColumns].vColumnType(eColumnType);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the no of columns in the index                                         */
 /*----------------------------------------------------------------------------*/
 i8 IndexDef::nColumns(void)
@@ -107,6 +122,16 @@ Stz* IndexDef::szIndexNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   return m_sIndexNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the index name                                                         */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vIndexNm(Stz* szIndexNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_sIndexNm = szIndexNm;
 }
 
 /*----------------------------------------------------------------------------*/
