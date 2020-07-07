@@ -96,11 +96,13 @@ static Stz* aEO[]
   /*    */ "EO_DUP"_Stz,
   /*    */ "EO_POP"_Stz,
   /*    */ "EO_PRINT"_Stz,
-  /*    */ "EO_RETURN"_Stz,
 
   /*    */ "EO_JMP"_Stz,
   /*    */ "EO_JMPFALSE"_Stz,
   /*    */ "EO_JMPTRUE"_Stz,
+
+  /*    */ "EO_CALL"_Stz,
+  /*    */ "EO_RETURN"_Stz,
 
   /*    */ "ENUMS"_Stz
 };

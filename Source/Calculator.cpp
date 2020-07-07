@@ -644,18 +644,17 @@ i8 Calculator::iCompute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  i8 iArgA;
-  i8 iArgB;
+  i8 iArg;
+  i8 iTopA;
+  i8 iTopB;
   i8 iRes;
   i8 i_Cell_ntv;
+  Rsb* aRsb;
+
   
   eEO  eCode;
   eEO* aeCode = & m_eaCode[0];
- 
-  Rsb* aRsb;
-  
-  i8 i_TopVal = 0;
-  m_iaDataStack[i_TopVal] = C_DATUM_NULL;
+  i8*  aiDstk = &m_iaDataStack[0];
 
   for (;;) {
   
@@ -666,9 +665,9 @@ i8 Calculator::iCompute(void)
       // -- -- -- -- -- -- -- -- -- -- --
         
       case EO_INTEGER:
-        iRes = * (i8*)aeCode;
+        iArg = * (i8*)aeCode;
         aeCode += 8;
-        m_iaDataStack[++i_TopVal] = iRes;
+        *(++aiDstk) = iArg;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- --
@@ -683,217 +682,217 @@ i8 Calculator::iCompute(void)
       }
         
       case EO_DEPOSITCOLI:
-        iArgA = * (i8*)aeCode;
+        iArg = * (i8*)aeCode;
         aeCode += 8;
-        iRes = m_iaDataStack[i_TopVal--];
-        m_pDstRowSlab->vPositionOnCell(iArgA);
+        iRes = *(aiDstk--);
+        m_pDstRowSlab->vPositionOnCell(iArg);
         m_pDstRowSlab->vDeposit(iRes);
         break;
         
       // -- -- -- -- -- -- -- -- -- -- --
       case EO_PUSHDSTCOLI:
-        iArgA = * (i8*)aeCode;
+        iArg = * (i8*)aeCode;
         aeCode += 8;
         aRsb = m_pDstRowSlab->aRsbAdr(0);
-        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArgA);
+        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
         iRes = aRsb->iVal_ntv(i_Cell_ntv);
-        m_iaDataStack[++i_TopVal] = iRes;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_PUSHNULL:
-        m_iaDataStack[++i_TopVal] = C_DATUM_NULL;
+        *(++aiDstk) = C_DATUM_NULL;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- --
       case EO_PUSHSRCCOLI:
-        iArgA = * (i8*)aeCode;
+        iArg = * (i8*)aeCode;
         aeCode += 8;
-        iRes = m_aSrcRsb_left->iVal_ntv(m_aSrcRsb_left->i_ColToCell_ntv(iArgA));
-        m_iaDataStack[++i_TopVal] = iRes;
+        iRes = m_aSrcRsb_left->iVal_ntv(m_aSrcRsb_left->i_ColToCell_ntv(iArg));
+        *(++aiDstk) = iRes;
         break;
         
       case EO_PUSH0:
-        m_iaDataStack[++i_TopVal] = 0;
+        *(++aiDstk) = 0;
         break;
         
       case EO_PUSH1:
-        m_iaDataStack[++i_TopVal] = 1;
+        *(++aiDstk) = 1;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- --
         
       case EO_ADD:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = iArgA + iArgB;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA + iTopB;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_DIVIDE:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = iArgA / iArgB;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA / iTopB;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_MODULO:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = iArgA % iArgB;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA % iTopB;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_MULTIPLY:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = iArgA * iArgB;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA * iTopB;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_NEGATE:
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = - iArgA;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopA = *(aiDstk--);
+        iRes  = - iTopA;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_SUBTRACT:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = iArgA - iArgB;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA - iTopB;
+        *(++aiDstk) = iRes;
         break;
 
       // -- -- -- -- -- -- -- -- -- -- --
         
       case EO_LESSTHAN:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = iArgA < iArgB;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA < iTopB;
+        *(++aiDstk) = iRes;
         break;
 
       case EO_LESSEQUAL:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = iArgA <= iArgB;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA <= iTopB;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_EQUAL:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = iArgA == iArgB;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA == iTopB;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_NOTEQUAL:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = iArgA != iArgB;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA != iTopB;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_GREATEREQUAL:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = iArgA >= iArgB;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA >= iTopB;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_GREATERTHAN:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = iArgA > iArgB;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA > iTopB;
+        *(++aiDstk) = iRes;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- --
         
       case EO_AND:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = (iArgA && iArgB) ? 1 : 0;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = (iTopA && iTopB) ? 1 : 0;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_OR:
-        iArgB = m_iaDataStack[i_TopVal--];
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = (iArgA || iArgB) ? 1 : 0;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = (iTopA || iTopB) ? 1 : 0;
+        *(++aiDstk) = iRes;
         break;
         
       case EO_NOT:
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = (! iArgA) ? 1 : 0;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopA = *(aiDstk--);
+        iRes  = (! iTopA) ? 1 : 0;
+        *(++aiDstk) = iRes;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- --
       case EO_ISNULL:
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = (C_DATUM_NULL == iArgA) ? 1 : 0;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopA = *(aiDstk--);
+        iRes  = (C_DATUM_NULL == iTopA) ? 1 : 0;
+        *(++aiDstk) = iRes;
         break;
 
       case EO_ISNOTNULL:
-        iArgA = m_iaDataStack[i_TopVal--];
-        iRes  = (C_DATUM_NULL != iArgA) ? 1 : 0;
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopA = *(aiDstk--);
+        iRes  = (C_DATUM_NULL != iTopA) ? 1 : 0;
+        *(++aiDstk) = iRes;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- --
 
       case EO_INC:
-        iRes = m_iaDataStack[i_TopVal];
-        m_iaDataStack[i_TopVal] = iRes + 1;
+        iTopA = *aiDstk;
+        *aiDstk = iTopA + 1;
         break;
 
       case EO_DEC:
-        iRes = m_iaDataStack[i_TopVal];
-        m_iaDataStack[i_TopVal] = iRes - 1;
+        iTopA = *aiDstk;
+        *aiDstk = iTopA - 1;
         break;
 
       case EO_DUP:
-        iRes = m_iaDataStack[i_TopVal];
-        m_iaDataStack[++i_TopVal] = iRes;
+        iTopA = *aiDstk;
+        *(++aiDstk) = iTopA;
         break;
 
       case EO_POP:
-        iRes = m_iaDataStack[i_TopVal];
+        iTopA = *aiDstk;
         break;
 
       case EO_PRINT:
-        iRes = m_iaDataStack[i_TopVal--];
-        vTrace("%lld\n"_Stz,iRes);
+        iTopA = *(aiDstk--);
+        vTrace("%lld\n"_Stz,iTopA);
         break;
         
       // -- -- -- -- -- -- -- -- -- -- --
 
       case EO_JMP:
-        iRes = * (i8*)aeCode;
+        iArg = * (i8*)aeCode;
         aeCode += 8;
         
-        aeCode = & m_eaCode[iRes];
+        aeCode = & m_eaCode[iArg];
         break;
         
       case EO_JMPFALSE:
-        iRes = * (i8*)aeCode;
+        iArg = * (i8*)aeCode;
         aeCode += 8;
         
-        iArgA = m_iaDataStack[i_TopVal--];
-        if (! iArgA)
-          aeCode = & m_eaCode[iRes];
+        iTopA = *(aiDstk--);
+        if (! iTopA)
+          aeCode = & m_eaCode[iArg];
         
         break;
       
       case EO_JMPTRUE:
-        iRes = * (i8*)aeCode;
+        iArg = * (i8*)aeCode;
         aeCode += 8;
         
-        iArgA = m_iaDataStack[i_TopVal--];
-        if (iArgA)
-          aeCode = & m_eaCode[iRes];
+        iTopA = *(aiDstk--);
+        if (iTopA)
+          aeCode = & m_eaCode[iArg];
         
         break;
     
@@ -904,7 +903,7 @@ i8 Calculator::iCompute(void)
         break;
 
       case EO_RETURN:
-        iRes = m_iaDataStack[i_TopVal--];
+        iRes = *(aiDstk--);
         return iRes;
         
       // -- -- -- -- -- -- -- -- -- -- --
