@@ -396,34 +396,25 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     
     // push src column value
     if (pTkn->bSame("@"_Stz)) {
-      vAddCode(EO_PUSHSRCCOLI);
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
-      piArg = (i8*) & m_eaCode[m_i_Code];
-      * piArg = iArg;
-      m_i_Code += sizeof(i8);
+      vAddCode(EO_PUSHSRCCOLI,iArg);
       continue;
     }
 
     // push dst column value
     if (pTkn->bSame("#"_Stz)) {
-      vAddCode(EO_PUSHDSTCOLI);
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
-      piArg = (i8*) & m_eaCode[m_i_Code];
-      * piArg = iArg;
-      m_i_Code += sizeof(i8);
+      vAddCode(EO_PUSHDSTCOLI,iArg);
       continue;
     }
     
     // deposit dst column value
     if (pTkn->bSame("!"_Stz)) {
-      vAddCode(EO_DEPOSITCOLI);
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
-      piArg = (i8*) & m_eaCode[m_i_Code];
-      * piArg = iArg;
-      m_i_Code += sizeof(i8);
+      vAddCode(EO_DEPOSITCOLI,iArg);
       continue;
     }
 
