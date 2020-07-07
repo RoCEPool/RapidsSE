@@ -45,6 +45,12 @@ Calculator::Calculator(void)
   MemLib::vZero(m_iaStack,   sizeof(m_iaStack),   CN_CALCULATOR);
 #endif
   
+  m_nLabels = 0;
+  for (i8 i_Label = 0; i_Label < C_CALC_LABEL; i_Label++) {
+    m_xaJumpLabel[i_Label].m_bKnown = false;
+    m_xaJumpLabel[i_Label].m_i_Code = C_UNKNOWN;
+  }
+  
   _checkInitialised_(CN_CALCULATOR);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);

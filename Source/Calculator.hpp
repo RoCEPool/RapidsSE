@@ -7,6 +7,16 @@ namespace Expressions
 {
   static const i8 C_CALC_CODE  = C_4KB;
   static const i8 C_CALC_STACK = C_4KB;
+  static const i8 C_CALC_LABEL = 16;
+
+  struct JumpLabel
+  {
+    s32  m_sLabel;
+    bool m_bKnown;
+    i8   m_i_Code;
+  };
+
+  //----------------------------------------------------------------------------
 
   class Calculator : public Object
   {
@@ -33,6 +43,8 @@ namespace Expressions
   
     i8     m_iaStack[C_CALC_STACK];
 
+    i8     m_nLabels;
+    JumpLabel m_xaJumpLabel[C_CALC_LABEL];
   
   private:
   
