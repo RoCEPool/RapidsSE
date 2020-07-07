@@ -391,6 +391,10 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("."_Stz))   { vAddCode(EO_PRINT); continue; }
 
     // -- -- -- -- -- -- -- -- -- -- --
+    
+    if (pTkn->bSame("ret"_Stz)) { vAddCode(EO_RETURN); continue; }
+    
+    // -- -- -- -- -- -- -- -- -- -- --
 
 //    if (pTkn->bIsName()) {
 //      vAddCode(EO_PUSHCOLI;
@@ -456,6 +460,13 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("jt"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       vAddCode(EO_JMPTRUE,pTkn->szChars());
+      continue;
+    }
+
+    // call subroutine
+    if (pTkn->bSame("call"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCode(EO_CALL,pTkn->szChars());
       continue;
     }
 
@@ -532,26 +543,23 @@ void Calculator::vDumpCode(void)
     
     switch (eCode) {
         
-      // -- -- -- -- -- -- -- -- -- -- --
-        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_INTEGER:        vDumpCode(EO_INTEGER,i_Code);              break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
-          
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_COPYRSB:        vDumpCode(i_Code,EO_COPYRSB);              break;
       case EO_DEPOSITCOLI:    vDumpCode(EO_DEPOSITCOLI,i_Code);          break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_PUSHDSTCOLI:    vDumpCode(EO_PUSHDSTCOLI,i_Code);          break;
       case EO_PUSHNULL:       vDumpCode(i_Code,EO_PUSHNULL);             break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_PUSHSRCCOLI:    vDumpCode(i_Code,EO_PUSHSRCCOLI);          break;
       case EO_PUSH0:          vDumpCode(i_Code,EO_PUSH0);                break;
       case EO_PUSH1:          vDumpCode(i_Code,EO_PUSH1);                break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
-        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_ADD:            vDumpCode(i_Code,EO_ADD);                  break;
       case EO_DIVIDE:         vDumpCode(i_Code,EO_DIVIDE);               break;
       case EO_MODULO:         vDumpCode(i_Code,EO_MODULO);               break;
@@ -559,8 +567,7 @@ void Calculator::vDumpCode(void)
       case EO_NEGATE:         vDumpCode(i_Code,EO_NEGATE);               break;
       case EO_SUBTRACT:       vDumpCode(i_Code,EO_SUBTRACT);             break;
 
-      // -- -- -- -- -- -- -- -- -- -- --
-        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_LESSTHAN:       vDumpCode(i_Code,EO_LESSTHAN);             break;
       case EO_LESSEQUAL:      vDumpCode(i_Code,EO_LESSEQUAL);            break;
       case EO_EQUAL:          vDumpCode(i_Code,EO_EQUAL);                break;
@@ -568,33 +575,32 @@ void Calculator::vDumpCode(void)
       case EO_GREATEREQUAL:   vDumpCode(i_Code,EO_GREATEREQUAL);         break;
       case EO_GREATERTHAN:    vDumpCode(i_Code,EO_GREATERTHAN);          break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
-        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_AND:            vDumpCode(i_Code,EO_AND);                  break;
       case EO_OR:             vDumpCode(i_Code,EO_OR);                   break;
       case EO_NOT:            vDumpCode(i_Code,EO_NOT);                  break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_ISNULL:         vDumpCode(i_Code,EO_ISNULL);               break;
       case EO_ISNOTNULL:      vDumpCode(i_Code,EO_ISNOTNULL);            break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
-
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_INC:            vDumpCode(i_Code,EO_INC);                  break;
       case EO_DEC:            vDumpCode(i_Code,EO_DEC);                  break;
       case EO_DUP:            vDumpCode(i_Code,EO_DUP);                  break;
       case EO_POP:            vDumpCode(i_Code,EO_POP);                  break;
       case EO_PRINT:          vDumpCode(i_Code,EO_PRINT);                break;
-      case EO_RETURN:         vDumpCode(i_Code,EO_RETURN);               break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
-
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_JMP:            vDumpCode(EO_JMP,i_Code);                  break;
       case EO_JMPFALSE:       vDumpCode(EO_JMPFALSE,i_Code);             break;
       case EO_JMPTRUE:        vDumpCode(EO_JMPTRUE,i_Code);              break;
-    
-      // -- -- -- -- -- -- -- -- -- -- --
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_CALL:           vDumpCode(i_Code,EO_CALL);                 break;
+      case EO_RETURN:         vDumpCode(i_Code,EO_RETURN);               break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       default:
         vTrace(" unknown opcode in calculator\n"_Stz);
         ASSERT(0);
@@ -611,7 +617,7 @@ void Calculator::vDumpCode(i8& i_Code, eEO eCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  vTrace("%04lld: %12s\n"_Stz,i_Code,aEO[eCode]);
+  vTrace("%04lld: %15s\n"_Stz,i_Code,aEO[eCode]);
   
   i_Code++;
 }
@@ -626,7 +632,7 @@ void Calculator::vDumpCode(eEO eCode, i8& i_Code)
   i8* piArg = (i8*) & m_eaCode[i_Code+1];
   i8 iArg = * piArg;
 
-  vTrace("%04lld: %12s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
+  vTrace("%04lld: %15s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
 
   i_Code += 1 + sizeof(i8);
 }
@@ -862,10 +868,6 @@ i8 Calculator::iCompute(void)
         vTrace("%lld\n"_Stz,iRes);
         break;
         
-      case EO_RETURN:
-        iRes = m_iaStack[i_TopVal--];
-        return iRes;
-        
       // -- -- -- -- -- -- -- -- -- -- --
 
       case EO_JMP:
@@ -897,6 +899,16 @@ i8 Calculator::iCompute(void)
     
       // -- -- -- -- -- -- -- -- -- -- --
 
+      case EO_CALL:
+        ASSERT(0);
+        break;
+
+      case EO_RETURN:
+        iRes = m_iaStack[i_TopVal--];
+        return iRes;
+        
+      // -- -- -- -- -- -- -- -- -- -- --
+        
       default:
         vTrace(" unknown opcode in calculator\n"_Stz);
         return C_DATUM_NULL;

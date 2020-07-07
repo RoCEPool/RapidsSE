@@ -44,11 +44,13 @@ enum eEO : i1 // expression operators
   /*    */ EO_DUP,
   /*    */ EO_POP,
   /*    */ EO_PRINT,
-  /*    */ EO_RETURN,
   
   /*    */ EO_JMP,
   /*    */ EO_JMPFALSE,
   /*    */ EO_JMPTRUE,
+
+  /*    */ EO_CALL,
+  /*    */ EO_RETURN,
 
   /*    */ EO_ENUMS
 };
