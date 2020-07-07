@@ -73,6 +73,7 @@ namespace Expressions
     i8   iDecodeLabel(Stz* szLabelNm);
     void vDefineLabel(Stz* szLabelNm);
     i8   iFindLabel(Stz* szLabelNm);
+    void vPrintLabels(void);
 
     // last
     bool bCompileCode(TokenVec* pTknVec);

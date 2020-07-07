@@ -272,6 +272,8 @@ void Calculator::vDefineLabel(Stz* szLabelNm)
     i_Label = iAddLabel(szLabelNm,true);
   else
     vCorrectLabel(i_Label);
+  
+  vPrintLabels();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,6 +289,22 @@ i8 Calculator::iFindLabel(Stz* szLabelNm)
 
   return C_UNKNOWN;
 }
+
+/*----------------------------------------------------------------------------*/
+/* print labels                                                               */
+/*----------------------------------------------------------------------------*/
+void Calculator::vPrintLabels(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
+    vTrace("  %s %lld: %4lld\n"_Stz,
+           m_xaJumpLabel[i_Label].m_sLabel.szStz(),
+           m_xaJumpLabel[i_Label].m_bKnown,
+           m_xaJumpLabel[i_Label].m_i_Code);
+}
+
+// calc l a 1 ;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -309,7 +327,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
   for (i8 i_Tkn = 0; i_Tkn < nTkns; i_Tkn++) {
     Token* pTkn = pTknVec->pGet(i_Tkn);
     
-    vTrace(" >%s<"_Stz,pTkn->szChars());
+    vTrace(" >%s<\n"_Stz,pTkn->szChars());
     
     // -- -- -- -- -- -- -- -- -- -- --
 
@@ -398,24 +416,28 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("L"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       vDefineLabel(pTkn->szChars());
+      continue;
     }
 
     // jump
     if (pTkn->bSame("j"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       vAddCode(EO_JMP,pTkn->szChars());
+      continue;
     }
 
     // jump on false
     if (pTkn->bSame("jf"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       vAddCode(EO_JMPFALSE,pTkn->szChars());
+      continue;
     }
     
     // jump on true
     if (pTkn->bSame("jt"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       vAddCode(EO_JMPTRUE,pTkn->szChars());
+      continue;
     }
 
     if (pTkn->bIsInteger()) {
@@ -426,6 +448,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
       m_i_Code += sizeof(i8);
       continue;
     }
+    
     if (pTkn->bSame(C_NULL)) {
       vAddCode(EO_INTEGER);
       iArg = C_DATUM_NULL;
@@ -433,6 +456,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
       m_i_Code += sizeof(i8);
       continue;
     }
+    
     if (pTkn->bSame("0"_Stz)) {
       vAddCode(EO_INTEGER);
       iArg = 0;
@@ -441,6 +465,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
       m_i_Code += sizeof(i8);
       continue;
     }
+    
     if (pTkn->bSame("1"_Stz)) {
       vAddCode(EO_INTEGER);
       iArg = 1;
