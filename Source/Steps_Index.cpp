@@ -38,7 +38,7 @@ void Step::vAddSteps_Index(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.column@ -- get the column from the index                             */
+/* index[].column@ -- get the column from the index                           */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexColumnFetch(void)
 {

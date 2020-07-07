@@ -11,9 +11,10 @@ namespace Indexing
   class IndexTree : public Object
   {
   private:
-    Lock   m_okLock;        // lock on the buffer tree
-    Index* m_pIndex;        // which index
-    i8     m_iPartitionNo;  // which partition no
+    Lock      m_okLock;        // lock on the buffer tree
+    Index*    m_pIndex;        // which index
+    IndexDef* m_pIndexDef;     // index definition
+    i8        m_iPartitionNo;  // which partition no
     
     EntBuffer* m_pRootEntBuffer;    // the root ent buffer
 

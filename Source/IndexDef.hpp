@@ -28,6 +28,7 @@ namespace MetaData
     void  operator delete(void*);
     
     IndexDef(void);
+    IndexDef(IndexDef* pIndexDef);
    ~IndexDef(void) noexcept(false);
   
     static eEC eSyntax(Stz* szCmd);
@@ -38,6 +39,7 @@ namespace MetaData
     Column* pGetColumn(i8 iColumn);
     Stz*   szIndexNm(void);
     void   vIndexNm(Stz* szIndexNm);
+    eIT    eIndexType(void);
     Stz*   szTableNm(void);
     eEC    eParse(Table* pTable, Stz* szCmd);
     bool   bIsPrimaryKey(void);

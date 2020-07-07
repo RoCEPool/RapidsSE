@@ -73,6 +73,30 @@ IndexDef::IndexDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+IndexDef::IndexDef(IndexDef* pIndexDef)
+: Definition(CN_INDEXDEF)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_sIndexNm      = pIndexDef->szIndexNm();
+  m_sTableNm      = pIndexDef->szTableNm();
+  m_eIndexType    = pIndexDef->eIndexType();
+  
+  m_bIsPrimaryKey = pIndexDef->bIsPrimaryKey();
+  m_bIsUnique     = pIndexDef->bIsUnique();
+  
+  m_nColumns      = pIndexDef->nColumns();
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
+    m_xaColumn[i_Col].vCopy(pIndexDef->pGetColumn(i_Col));
+  
+  _checkInitialised_(CN_INDEXDEF);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 IndexDef::~IndexDef(void) noexcept(false)
@@ -134,6 +158,16 @@ void IndexDef::vIndexNm(Stz* szIndexNm)
   m_sIndexNm = szIndexNm;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the index type                                                         */
+/*----------------------------------------------------------------------------*/
+eIT IndexDef::eIndexType(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_eIndexType;
+}
+                            
 /*----------------------------------------------------------------------------*/
 /* get the table name                                                         */
 /*----------------------------------------------------------------------------*/

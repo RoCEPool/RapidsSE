@@ -440,6 +440,7 @@ public:
 
 
   // index
+  void vIndexColumnFetch(void);
   void vIndexColumnCountFetch(void);
   void vIndexCompact(void);
   void vIndexDump(void);
@@ -452,7 +453,6 @@ public:
   void vIndexVisualize(void);
 
   // index steps - to go
-  void vIndexColumnFetch(void);
   void vIndexDelete(void);
   void vIndexDeleteNext(void);
   void vIndexIndexDefFetch(void);
