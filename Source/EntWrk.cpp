@@ -413,15 +413,14 @@ void EntWrk::vOffsets(i8 nLevels)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get key address                                                            */
+/* get pay address                                                            */
 /*----------------------------------------------------------------------------*/
 Pay* EntWrk::aPay(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+    
+  Pay* aPay = m_xEnt.aPay();
   
-  i8 nEntSize = nTotalSize();
-  
-  Pay* aPay = aAdd<Pay*>(&m_xEnt,nEntSize);
   return aPay;
 }
 

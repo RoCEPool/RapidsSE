@@ -381,8 +381,6 @@ void Ent::vSetEntry(Ent* aFromEntry)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeBytes(void)
 {
-  ASSERT(! m_xRef.bPayload());
-  
   i8 nSizeEntProper = sizeof(Ent);
   
   i8 nSizeElmSeq = nElmSeqSize();

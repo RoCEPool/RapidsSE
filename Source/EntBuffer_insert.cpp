@@ -584,8 +584,6 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
 Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
 {
   _static_
-
-  ASSERT(! aEnt->bPayload());
   
   EntBuffer* pRootEntBuffer = *ppRootEntBuffer;
   

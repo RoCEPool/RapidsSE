@@ -468,6 +468,7 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
   vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
   xEntWrk.vRef(xRowRef);
   
+  Pay* aPay = nullptr;
   if (gxDebugFlags.m_iPayload) {
     i8 nPayloadBytes = RndLib::iInteger(1,gxDebugFlags.m_iPayload-1);
     
@@ -476,6 +477,9 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
     
     byte* ayPayLoad = xEntWrk.ayPayload();
     RndLib::vBytes(ayPayLoad,nPayloadBytes);
+    
+    aPay = xEntWrk.aPay();
+    vDebugPoint();
   }
   
   if (! m_pRootEntBuffer) {
