@@ -1047,6 +1047,7 @@ public:
   void vProfileStart(void);
 
   // project
+  void vProjectRsbAgg(void);
   void vProjectRsbDelete(void);
   void vProjectRsbProject(void);
   void vProjectRsbGet(void);

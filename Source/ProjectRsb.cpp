@@ -81,6 +81,41 @@ void ProjectRsb::vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert                                                                    */
+/*----------------------------------------------------------------------------*/
+void ProjectRsb::vAgg(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
+                          Expr* pExpr, StreamDef* pStreamDefOut)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTRSB,_FOOTER_);
+  
+  m_pStreamDefOut = pStreamDefOut;
+  
+  m_pSrcRsbBuffer = pSrcRsbBuffer;
+  
+  m_pPot = pPot;
+  
+  if (! m_bPixInited) {
+    m_bPixInited = true;
+    m_pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+  }
+  
+  RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
+  
+  // new a destination row in destination partition row slab
+  vNewDstRsb();
+  
+  i8 nRows = pSrcRowSlab->nRows();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
+    
+    i8 bCopy = pExpr->iProject(m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
+    
+    //vCopyIntoDst(aSrcRsb);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

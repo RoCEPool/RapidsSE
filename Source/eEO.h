@@ -12,8 +12,9 @@ enum eEO : i1 // expression operators
   /*    */ EO_COPYRSB,
   /*    */ EO_DEPOSITCOLI,
 
-  /*    */ EO_PUSHCOLI,
+  /*    */ EO_PUSHDSTCOLI,
   /*    */ EO_PUSHNULL,
+  /*    */ EO_PUSHSRCCOLI,
   /*    */ EO_PUSH0,
   /*    */ EO_PUSH1,
 
@@ -54,8 +55,9 @@ static Stz* aEO[]
   /*    */ "EO_COPYRSB"_Stz,
   /*    */ "EO_DEPOSITCOLI"_Stz,
   
-  /*    */ "EO_PUSHCOLI"_Stz,
+  /*    */ "EO_PUSHDSTCOLI"_Stz,
   /*    */ "EO_PUSHNULL"_Stz,
+  /*    */ "EO_PUSHSRCCOLI"_Stz,
   /*    */ "EO_PUSH0"_Stz,
   /*    */ "EO_PUSH1"_Stz,
 
