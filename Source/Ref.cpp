@@ -155,7 +155,7 @@ void Ref::vSet(Ref xwRef)
   m_uItem    = xwRef.m_uItem;
   m_uLevels  = xwRef.m_uLevels;
   m_uKind    = xwRef.m_uKind;
-  m_uPayload = 0;
+  m_uPayload = xwRef.m_uPayload;
   m_uSpare   = 0;
 }
 
