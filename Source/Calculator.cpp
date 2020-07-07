@@ -370,6 +370,10 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     
     // -- -- -- -- -- -- -- -- -- -- --
 
+    if (pTkn->bSame("++"_Stz))  { vAddCode(EO_INC);   continue; }
+    if (pTkn->bSame("inc"_Stz)) { vAddCode(EO_INC);   continue; }
+    if (pTkn->bSame("--"_Stz))  { vAddCode(EO_DEC);   continue; }
+    if (pTkn->bSame("dec"_Stz)) { vAddCode(EO_DEC);   continue; }
     if (pTkn->bSame("dup"_Stz)) { vAddCode(EO_DUP);   continue; }
     if (pTkn->bSame("."_Stz))   { vAddCode(EO_PRINT); continue; }
 
@@ -709,6 +713,16 @@ i8 Calculator::iCompute(void)
         break;
         
       // -- -- -- -- -- -- -- -- -- -- --
+
+      case EO_INC:
+        iRes = m_iaStack[i_TopVal];
+        m_iaStack[i_TopVal] = iRes + 1;
+        break;
+
+      case EO_DEC:
+        iRes = m_iaStack[i_TopVal];
+        m_iaStack[i_TopVal] = iRes - 1;
+        break;
 
       case EO_DUP:
         iRes = m_iaStack[i_TopVal];
