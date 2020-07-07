@@ -121,11 +121,10 @@ void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   m_xaColumn[m_nColumns].vColumnNo(m_nColumns);
-  
-  m_nColumns++;
-  
   m_xaColumn[m_nColumns].vColumnNm(szColumnNm);
   m_xaColumn[m_nColumns].vColumnType(eColumnType);
+  m_xaColumn[m_nColumns].vDatum(DM_INT); //! ALKA COME BCAK
+  m_nColumns++;
 }
 
 /*----------------------------------------------------------------------------*/

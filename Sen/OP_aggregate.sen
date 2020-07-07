@@ -9,6 +9,16 @@
 /*----------------------------------------------------------------------------*/
 : aggregate_StartMarker \handler
 
+  0 locals| pColumn |
+
+  // find the table
+  <tableNm> op__table if
+    Table[].tablePtn@ to tablePtn[]
+  then
+
+  // get the agg column
+  <columnNm> Table[].findColumn to pColumn
+
   // create the projectRsb and Pot
   ProjectRsb[].new
   Pot[].new
@@ -20,10 +30,14 @@
 
   // create the indexDef
   indexDef[].new
-  "agg" indexDef[].name!
-  CT_INTEGER "sum" indexDef[].addColumn
+  "aggregateIdx" indexDef[].name!
 
-  // create an indexTree
+  // add the agg column to the indexDef
+  pColumn column.type@
+  pColumn column.name@
+  indexDef[].addColumn
+
+  // create an indexTree with the indexDef
   indexDef[] indexTree[].new
 
   ZK_STARTMARKER_handler
@@ -79,7 +93,7 @@
   ProjectRsb[].delete
   Expr[].delete
   Pot[].delete
-  IndexDef[].delete
+  IndexTree[].delete
 
   StreamDefOut[].delete
 

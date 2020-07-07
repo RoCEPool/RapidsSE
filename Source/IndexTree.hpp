@@ -41,6 +41,7 @@ namespace Indexing
     EntBuffer* pFirstH0Buffer(void);
     Ref        xwGetRef(Key* aFindKey);
     Index*     pIndex(void);
+    IndexDef*  pIndexDef(void);
     void       vInsertEntries(CrwBuffer* pCrwBuffer);
     bool       bInsertEntry(Ent* aEnt);
     bool       bInsertEntry(Crw* aCrw, Ref& xRowRef);

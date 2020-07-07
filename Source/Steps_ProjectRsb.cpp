@@ -25,14 +25,14 @@ void Step::vProjectRsbAgg(void)
   ENTRY();
   
   StreamDef* pStreamDefOut = * m_pRegSet->m_xpStreamDefOut;
-  
+  IndexTree* pIndexTree = * m_pRegSet->m_xpIndexTree;
   RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
   
   Expr* pExpr = * m_pRegSet->m_xpExpr;
   
   Pot* pPot = * m_pRegSet->m_xpPot;
   
-  m_pRegSet->m_xpProjectRsb->vAgg(pPot,pRsbBuffer,pExpr,pStreamDefOut);
+  m_pRegSet->m_xpProjectRsb->vAgg(pPot,pRsbBuffer,pIndexTree,pExpr,pStreamDefOut);
   
   EXIT();
 }

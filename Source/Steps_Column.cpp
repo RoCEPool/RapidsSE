@@ -110,10 +110,7 @@ void Step::vColumnTypeFetch(void)
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
-  s32 sColumnType;
-  sColumnType = aCT[pColumn->eColumnType()];
-  
-  m_pDataStack->vPushStr(sColumnType);
+  m_pDataStack->vPushInt(pColumn->eColumnType());
   
   EXIT();
 }

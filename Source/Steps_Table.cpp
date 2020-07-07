@@ -21,7 +21,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
   vAddStep("table[].dump"_Stz,             &Step::vTableDump);
-  vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);  
+  vAddStep("table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table[].genCsvBuffer"_Stz,     &Step::vTableGenCsvBuffer);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
@@ -295,7 +295,7 @@ void Step::vTableFindColumn(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   
   s32 sColumnName;
   m_pDataStack->vPopStr(sColumnName,__func__);

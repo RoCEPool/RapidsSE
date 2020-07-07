@@ -366,6 +366,16 @@ Index* IndexTree::pIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the indexDef                                                           */
+/*----------------------------------------------------------------------------*/
+IndexDef* IndexTree::pIndexDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  return m_pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the index buffers used                                                 */
 /*----------------------------------------------------------------------------*/
 i8 IndexTree::nEntBuffers(void)
@@ -677,15 +687,13 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Rsb* pRsb)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IndexDef* pIndexDef = m_pIndex->pIndexDef();
-  
-  i8 nIdxCols = pIndexDef->nColumns();
+  i8 nIdxCols = m_pIndexDef->nColumns();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
     
     // add the column value to the key
-    pEntWrk->vAppendElement(pRsb, pIndexDef->pGetColumn(i_Col));
+    pEntWrk->vAppendElement(pRsb, m_pIndexDef->pGetColumn(i_Col));
   }
 }
 
