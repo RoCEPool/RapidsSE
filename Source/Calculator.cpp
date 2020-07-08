@@ -218,6 +218,7 @@ void Calculator::vAddCode(eEO eCode, Stz* szLabelNm)
     i_Label = iAddLabel(szLabelNm,false);
     m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
     vAddCode(eCode,C_UNKNOWN);
+    vPrintLabels();
     return;
   }
 
@@ -229,6 +230,7 @@ void Calculator::vAddCode(eEO eCode, Stz* szLabelNm)
   i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Chain;
   m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
   vAddCode(eCode,i_Chain);
+  vPrintLabels();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -579,8 +581,6 @@ void Calculator::vDumpCode(void)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_PUSHDSTCOLI:    vDumpCode(EO_PUSHDSTCOLI,i_Code);          break;
       case EO_PUSHNULL:       vDumpCode(i_Code,EO_PUSHNULL);             break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_PUSHSRCCOLI:    vDumpCode(i_Code,EO_PUSHSRCCOLI);          break;
       case EO_PUSH0:          vDumpCode(i_Code,EO_PUSH0);                break;
       case EO_PUSH1:          vDumpCode(i_Code,EO_PUSH1);                break;
@@ -623,12 +623,12 @@ void Calculator::vDumpCode(void)
       case EO_JMPTRUE:        vDumpCode(EO_JMPTRUE,i_Code);              break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_CALL:           vDumpCode(i_Code,EO_CALL);                 break;
+      case EO_CALL:           vDumpCode(EO_CALL,i_Code);                 break;
       case EO_RETURN:         vDumpCode(i_Code,EO_RETURN);               break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       default:
-        vTrace(" unknown opcode in calculator\n"_Stz);
+        vTrace(" unknown opcode in calculator %lld\n"_Stz,(i8)eCode);
         ASSERT(0);
     }
 
