@@ -13,6 +13,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'A' - ('A' - 1),            HT_INVALID           }, // CN__A__
   { sizeof(AccessPath),         HT_TRANSIENT_MEDIUM  }, // CN_ACCESSPATH
+  { sizeof(AggregateRsb),       HT_TRANSIENT_LARGE   }, // CN_AGGREGATERSB
   { sizeof(AggTimer),           HT_TRANSIENT_TINY    }, // CN_AGGTIMER
   { sizeof(Arg),                HT_TRANSIENT_TINY    }, // CN_ARG
   { sizeof(Args),               HT_INVALID           }, // CN_ARGUMENTS

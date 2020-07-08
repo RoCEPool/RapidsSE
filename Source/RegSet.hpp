@@ -32,6 +32,7 @@ namespace Tasks
 
     REG<Dynamo>      m_xpDynamo;   // dynamo pipleine compiler
   
+    REG<AggregateRsb> m_xpAggregateRsb;
     REG<CrwHash>     m_xpCrwHash;
     REG<Expr>        m_xpExpr;
     REG<ExprVec>     m_xpExprVec;

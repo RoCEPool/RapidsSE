@@ -41,6 +41,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_AccessPath();
   Step::vAddSteps_AggTimer();
   Step::vAddSteps_Address();
+  Step::vAddSteps_AggregateRsb();
   Step::vAddSteps_Api();
   Step::vAddSteps_Args();
   Step::vAddSteps_Arrange();
