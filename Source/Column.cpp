@@ -91,6 +91,27 @@ Column::~Column(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is the bcd size valid ?                                                    */
 /*----------------------------------------------------------------------------*/
+eDM Column::eDatum(eCT eColumnType)
+{
+  switch(eColumnType) {
+    case CT_BOOLEAN   : return DM_BOL;
+    case CT_CHAR      : return DM_VCH;
+    case CT_DATE      : return DM_DTE;
+    case CT_DECIMAL   : return DM_BCD;
+    case CT_FLOAT     : return DM_FLT;
+    case CT_INTEGER   : return DM_INT;
+    case CT_INTERVAL  : return DM_IVL;
+    case CT_TIME      : return DM_TME;
+    case CT_TIMESTAMP : return DM_TSP;
+    case CT_VARCHAR   : return DM_VCH;
+    default:
+      ASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the bcd size valid ?                                                    */
+/*----------------------------------------------------------------------------*/
 bool Column::bValidBcd(i8 iPrecision, i8 iScale)
 {
   if (iPrecision > C_MAX_BCD_PRECISION)

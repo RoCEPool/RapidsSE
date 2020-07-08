@@ -137,6 +137,7 @@ void Step::vStreamDefOutNew(void)
   ENTRY();
     
   m_pRegSet->m_xpStreamDefOut = new StreamDef;
+  (* m_pRegSet->m_xpStreamDefOut)->m_nDefSets++;
   
   EXIT();
 }

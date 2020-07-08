@@ -124,10 +124,11 @@ namespace Datums
     Column(void);
    ~Column(void) noexcept(false);
   
+    static eDM  eDatum(eCT eColumnType);
     static bool bValidBcd(i8 iPrecision, i8 iScale);
     static bool bValidFlt(i8 iSize);
     static bool bValidVch(i8 iSize);
-  
+    
     i8   iColumnLength(void);
     void vColumnLength(i8 iColumnLength);
   

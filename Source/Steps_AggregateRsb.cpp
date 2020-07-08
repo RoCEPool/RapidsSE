@@ -103,9 +103,9 @@ void Step::vAggregateRsbNewRow(void)
 {
   ENTRY();
   
-  AggregateRsb* pAggregateRsp = _pAggregateRsb(* m_pRegSet->m_xpAggregateRsb);
+  AggregateRsb* pAggregateRsb = _pAggregateRsb(* m_pRegSet->m_xpAggregateRsb);
   
-  pAggregateRsp->vNewDstRsb();
+  pAggregateRsb->vNewDstRsb();
   
   EXIT();
 }
