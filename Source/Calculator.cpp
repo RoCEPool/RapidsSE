@@ -572,16 +572,14 @@ void Calculator::vDumpCode(void)
     switch (eCode) {
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_INTEGER:        vDumpCode(EO_INTEGER,i_Code);              break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_COPYRSB:        vDumpCode(i_Code,EO_COPYRSB);              break;
       case EO_DEPOSITCOLI:    vDumpCode(EO_DEPOSITCOLI,i_Code);          break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_PUSHDSTCOLI:    vDumpCode(EO_PUSHDSTCOLI,i_Code);          break;
-      case EO_PUSHNULL:       vDumpCode(i_Code,EO_PUSHNULL);             break;
       case EO_PUSHSRCCOLI:    vDumpCode(EO_PUSHSRCCOLI,i_Code);          break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_INTEGER:        vDumpCode(EO_INTEGER,i_Code);              break;
+      case EO_PUSHNULL:       vDumpCode(i_Code,EO_PUSHNULL);             break;
       case EO_PUSH0:          vDumpCode(i_Code,EO_PUSH0);                break;
       case EO_PUSH1:          vDumpCode(i_Code,EO_PUSH1);                break;
         
@@ -690,16 +688,7 @@ i8 Calculator::iCompute(void)
     
     switch (eCode) {
         
-      // -- -- -- -- -- -- -- -- -- -- --
-        
-      case EO_INTEGER:
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
-        *(++aiDstk) = iArg;
-        break;
-        
-      // -- -- -- -- -- -- -- -- -- -- --
-          
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_COPYRSB:
       {
         bool bSrcHasPtnHash = true;
@@ -717,7 +706,6 @@ i8 Calculator::iCompute(void)
         m_pDstRowSlab->vDeposit(iRes);
         break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
       case EO_PUSHDSTCOLI:
         iArg = * (i8*)aeCode;
         aeCode += 8;
@@ -727,16 +715,22 @@ i8 Calculator::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_PUSHNULL:
-        *(++aiDstk) = C_DATUM_NULL;
-        break;
-        
-      // -- -- -- -- -- -- -- -- -- -- --
       case EO_PUSHSRCCOLI:
         iArg = * (i8*)aeCode;
         aeCode += 8;
         iRes = m_aSrcRsb_left->iVal_ntv(m_aSrcRsb_left->i_ColToCell_ntv(iArg));
         *(++aiDstk) = iRes;
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_INTEGER:
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        *(++aiDstk) = iArg;
+        break;
+      
+      case EO_PUSHNULL:
+        *(++aiDstk) = C_DATUM_NULL;
         break;
         
       case EO_PUSH0:
@@ -747,8 +741,7 @@ i8 Calculator::iCompute(void)
         *(++aiDstk) = 1;
         break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
-        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_ADD:
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
@@ -790,8 +783,7 @@ i8 Calculator::iCompute(void)
         *(++aiDstk) = iRes;
         break;
 
-      // -- -- -- -- -- -- -- -- -- -- --
-        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_LESSTHAN:
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
@@ -834,8 +826,7 @@ i8 Calculator::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
-        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_AND:
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
@@ -856,7 +847,7 @@ i8 Calculator::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_ISNULL:
         iTopA = *(aiDstk--);
         iRes  = (C_DATUM_NULL == iTopA) ? 1 : 0;
@@ -869,8 +860,7 @@ i8 Calculator::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
-
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_INC:
         iTopA = *aiDstk;
         *aiDstk = iTopA + 1;
@@ -895,8 +885,7 @@ i8 Calculator::iCompute(void)
         vTrace("%lld\n"_Stz,iTopA);
         break;
         
-      // -- -- -- -- -- -- -- -- -- -- --
-
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_JMP:
         iArg = * (i8*)aeCode;
         aeCode += 8;
@@ -924,8 +913,7 @@ i8 Calculator::iCompute(void)
         
         break;
     
-      // -- -- -- -- -- -- -- -- -- -- --
-
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_CALL:
         iArg = * (i8*)aeCode;
         aeCode += 8;
@@ -941,8 +929,7 @@ i8 Calculator::iCompute(void)
         aeCode = * (--aaeRstk);
         break;
 
-      // -- -- -- -- -- -- -- -- -- -- --
-        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       default:
         vTrace(" unknown opcode in calculator %lld\n"_Stz,(i8)eCode);
         return C_DATUM_NULL;

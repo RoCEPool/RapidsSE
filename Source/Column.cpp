@@ -105,7 +105,7 @@ eDM Column::eDatum(eCT eColumnType)
     case CT_TIMESTAMP : return DM_TSP;
     case CT_VARCHAR   : return DM_VCH;
     default:
-      ASSERT(0);
+      RASSERT(0);
   }
 }
 

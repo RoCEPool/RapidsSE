@@ -7,14 +7,13 @@ enum eEO : i1 // expression operators
 {
   /*  0 */ EO_NONE=0,
   
-  /*    */ EO_INTEGER,
-
   /*    */ EO_COPYRSB,
   /*    */ EO_DEPOSITCOLI,
-
   /*    */ EO_PUSHDSTCOLI,
-  /*    */ EO_PUSHNULL,
   /*    */ EO_PUSHSRCCOLI,
+
+  /*    */ EO_INTEGER,
+  /*    */ EO_PUSHNULL,
   /*    */ EO_PUSH0,
   /*    */ EO_PUSH1,
 
@@ -58,15 +57,14 @@ enum eEO : i1 // expression operators
 static Stz* aEO[]
 {
   /*  0 */ "NONE"_Stz,
-  
-  /*    */ "EO_INTEGER"_Stz,
-  
+    
   /*    */ "EO_COPYRSB"_Stz,
   /*    */ "EO_DEPOSITCOLI"_Stz,
-  
   /*    */ "EO_PUSHDSTCOLI"_Stz,
-  /*    */ "EO_PUSHNULL"_Stz,
   /*    */ "EO_PUSHSRCCOLI"_Stz,
+
+  /*    */ "EO_INTEGER"_Stz,
+  /*    */ "EO_PUSHNULL"_Stz,
   /*    */ "EO_PUSH0"_Stz,
   /*    */ "EO_PUSH1"_Stz,
 
