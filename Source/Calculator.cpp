@@ -581,7 +581,7 @@ void Calculator::vDumpCode(void)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_PUSHDSTCOLI:    vDumpCode(EO_PUSHDSTCOLI,i_Code);          break;
       case EO_PUSHNULL:       vDumpCode(i_Code,EO_PUSHNULL);             break;
-      case EO_PUSHSRCCOLI:    vDumpCode(i_Code,EO_PUSHSRCCOLI);          break;
+      case EO_PUSHSRCCOLI:    vDumpCode(EO_PUSHSRCCOLI,i_Code);          break;
       case EO_PUSH0:          vDumpCode(i_Code,EO_PUSH0);                break;
       case EO_PUSH1:          vDumpCode(i_Code,EO_PUSH1);                break;
         

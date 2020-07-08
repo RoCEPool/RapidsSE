@@ -19,6 +19,7 @@ namespace Steps
 
     static void vAddSteps_AccessPath(void);
     static void vAddSteps_Address(void);
+    static void vAddSteps_AggregateRsb(void);
     static void vAddSteps_AggTimer(void);
     static void vAddSteps_Api(void);
     static void vAddSteps_Args(void);

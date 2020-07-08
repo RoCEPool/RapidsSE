@@ -1,0 +1,135 @@
+/*============================================================================*/
+/* OP_aggregateGby.sen -- aggregate with group by                             */
+/*============================================================================*/
+
+" OP_aggregateGby.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: aggregateGby_StartMarker \handler
+
+  0 locals| pColumn |
+
+  // find the table
+  <tableNm> op__table if
+    Table[].tablePtn@ to tablePtn[]
+  then
+
+  // get the agg column
+  <columnNm> Table[].findColumn to pColumn
+
+  // create the Pot
+  // Pot[].new
+
+  // create the expr
+  Expr[].new
+  "@ 0 # 0 + ! 0" Expr[].source!
+  Expr[].compile assert
+
+  // create the indexDef
+  indexDef[].new
+  "aggregateGbyIdx" indexDef[].name!
+
+  // add the agg column to the indexDef
+  pColumn column.type@
+  pColumn column.name@
+  indexDef[].addColumn
+
+  // create an indexTree with the indexDef
+  indexDef[] indexTree[].new
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                BEGIN */
+/*----------------------------------------------------------------------------*/
+: aggregateGby_PulseMarker \handler
+
+  ZK_PULSEDMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_RSBBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: aggregateGby_RsbBuffer \handler
+
+  Operand[].pipeIn
+  //indexTree[].aggregateGby
+  Operand[].delete
+
+  //Pot[].pipeoutAllCompleted
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: aggregateGby_StreamDef \handler
+
+  ": aggregateGby_StreamDef \handler" .
+
+  Pipein[].delete
+
+  StreamDefOut[].new
+  CT_INTEGER "sum" StreamDefOut[].addColumn
+  StreamDefOut[] to StreamDef[]
+  StreamDef[].duplicate to StreamDef[]
+  StreamDef[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: aggregateGby_EosMarker \handler
+
+  //Pot[].pipeoutAllDangling
+
+  Expr[].delete
+  //Pot[].delete
+  IndexTree[].delete
+
+  StreamDefOut[].delete
+
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* aggregateGby request                                                    SPAWN */
+/*----------------------------------------------------------------------------*/
+: aggregateGby_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: aggregateGby_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: aggregateGby_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: aggregateGby_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: aggregateGby_StartMarker ZK_STARTMARKER op[].handler!
+  find: aggregateGby_StreamDef   ZK_STREAMDEF   op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: aggregateGby :: aggregateGby <tableNm> <columnNm> ;
+
+: aggregateGby _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
