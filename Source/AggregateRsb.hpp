@@ -23,15 +23,16 @@ namespace Expressions
     void* operator new(size_t);
     void  operator delete(void*);
     
-    AggregateRsb(void);
+    AggregateRsb(Pot* pPot, StreamDef* pStreamDefOut);
    ~AggregateRsb(void) noexcept(false);
   
-    void vAggregate(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
-                  IndexTree* pIndexTree, Expr* pExpr, StreamDef* pStreamDefOut);
+    void vAggregate(RsbBuffer* pSrcRsbBuffer, Expr* pExpr);
+    void vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree, Expr* pExpr);
+    void vNewDstRsb(void);
+    
   private:
     void vCopyIntoDst(Rsb* aSrcRsbc);
-    void vNewDstRsb(void);
-
+    
     Footer* aFooter(void);
   };
 

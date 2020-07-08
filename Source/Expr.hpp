@@ -24,7 +24,7 @@ namespace Expressions
     Expr(void);
    ~Expr(void) noexcept(false);
    
-    i8   iAggregate(byte* ayPayLoad, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     bool bCompile(void);
   
     i8   iFilter(Rsb* aRsb, RowSlab* pRowSlab);

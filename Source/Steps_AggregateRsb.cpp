@@ -10,30 +10,45 @@
 void Step::vAddSteps_AggregateRsb(void)
 {
   vAddStep("AggregateRsb[]"_Stz,           &Step::vAggregateRsbGet);
+  vAddStep("AggregateRsb[].aggregate"_Stz, &Step::vAggregateRsbAggregate);
+  vAddStep("AggregateRsb[].aggregateGby"_Stz, &Step::vAggregateRsbAggregateGby);
   vAddStep("AggregateRsb[].delete"_Stz,    &Step::vAggregateRsbDelete);
-  vAddStep("AggregateRsb[].Aggregate"_Stz, &Step::vAggregateRsbAggregate);
   vAddStep("AggregateRsb[].get"_Stz,       &Step::vAggregateRsbGet);
   vAddStep("AggregateRsb[].new"_Stz,       &Step::vAggregateRsbNew);
+  vAddStep("AggregateRsb[].newRow"_Stz,    &Step::vAggregateRsbNewRow);
 }
 
 /*----------------------------------------------------------------------------*/
-/* AggregateRsb[].Aggregate -- Aggregate an rsb buffer                        */
+/* AggregateRsb[].aggregate -- Aggregate an rsb buffer                        */
 /*----------------------------------------------------------------------------*/
 void Step::vAggregateRsbAggregate(void)
 {
   ENTRY();
   
-  StreamDef* pStreamDefOut = * m_pRegSet->m_xpStreamDefOut;
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
+  
+  Expr* pExpr = * m_pRegSet->m_xpExpr;
+  
+  m_pRegSet->m_xpAggregateRsb->vAggregate(pRsbBuffer,pExpr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AggregateRsb[].AggregateGby -- Aggregate with group by an rsb buffer       */
+/*----------------------------------------------------------------------------*/
+void Step::vAggregateRsbAggregateGby(void)
+{
+  ENTRY();
+
   
   RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
   
   Expr* pExpr = * m_pRegSet->m_xpExpr;
   
-  Pot* pPot = * m_pRegSet->m_xpPot;
-  
   IndexTree* pIndexTree = _pIndexTree(* m_pRegSet->m_xpIndexTree);
   
-  m_pRegSet->m_xpAggregateRsb->vAggregate(pPot,pRsbBuffer,pIndexTree,pExpr,pStreamDefOut);
+  m_pRegSet->m_xpAggregateRsb->vAggregateGby(pRsbBuffer,pIndexTree,pExpr);
   
   EXIT();
 }
@@ -72,8 +87,25 @@ void Step::vAggregateRsbGet(void)
 void Step::vAggregateRsbNew(void)
 {
   ENTRY();
-    
-  m_pRegSet->m_xpAggregateRsb = new AggregateRsb;
+  
+  Pot* pPot = * m_pRegSet->m_xpPot;
+  StreamDef* pStreamDefOut = * m_pRegSet->m_xpStreamDefOut;
+  
+  m_pRegSet->m_xpAggregateRsb = new AggregateRsb(pPot, pStreamDefOut);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AggregateRsb[].newRow -- create a row in the rsb stream Aggregate          */
+/*----------------------------------------------------------------------------*/
+void Step::vAggregateRsbNewRow(void)
+{
+  ENTRY();
+  
+  AggregateRsb* pAggregateRsp = _pAggregateRsb(* m_pRegSet->m_xpAggregateRsb);
+  
+  pAggregateRsp->vNewDstRsb();
   
   EXIT();
 }

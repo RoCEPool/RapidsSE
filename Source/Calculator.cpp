@@ -67,11 +67,11 @@ Calculator::~Calculator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* project compute                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Calculator::iAggregate(byte* ayPayload, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+i8 Calculator::iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-  //m_ayDstPayload = ayPayload;
+    
+  m_pDstRowSlab = pDstRowSlab;
   
   m_aSrcRsb_left      = aSrcRsb;
   m_pSrcRowSlab_left  = pSrcRowSlab;

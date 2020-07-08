@@ -48,11 +48,11 @@ Expr::~Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* aggregate                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Expr::iAggregate(byte* ayPayLoad, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+i8 Expr::iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
   
-  i8 i = m_pCalculator->iAggregate(ayPayLoad,aSrcRsb,pSrcRowSlab);
+  i8 i = m_pCalculator->iAggregate(pDstRowSlab,aSrcRsb,pSrcRowSlab);
   
   return i;
 }

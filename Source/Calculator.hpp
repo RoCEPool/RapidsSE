@@ -59,7 +59,7 @@ namespace Expressions
     Calculator(void);
    ~Calculator(void) noexcept(false);
   
-    i8   iAggregate(byte* aPayLoad, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     bool bCompile(TokenVec* pTknVec);
 
     i8   iCalc(void);

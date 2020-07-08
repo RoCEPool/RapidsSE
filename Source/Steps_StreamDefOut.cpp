@@ -13,6 +13,7 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].addColumn"_Stz,  &Step::vStreamDefOutAddColumn);
   vAddStep("StreamDefOut[].addColumns"_Stz, &Step::vStreamDefOutAddColumns);
   vAddStep("StreamDefOut[].delete"_Stz,     &Step::vStreamDefOutDelete);
+  vAddStep("StreamDefOut[].duplicate"_Stz,  &Step::vStreamDefOutDuplicate);
   vAddStep("StreamDefOut[].name@"_Stz,      &Step::vStreamDefOutNameFetch);
   vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
@@ -68,6 +69,22 @@ void Step::vStreamDefOutDelete(void)
   
   delete pStreamDefOut;
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].duplicate -- new a duplicate stream def                     */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutDuplicate(void)
+{
+  ENTRY();
+  
+  ASSERT (* m_pRegSet->m_xpStreamDefOut);
+  
+  StreamDef* pStreamDef = new StreamDef(* m_pRegSet->m_xpStreamDefOut);
+  
+  m_pDataStack->vPushPtr(pStreamDef);
+  
   EXIT();
 }
 

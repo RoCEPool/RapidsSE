@@ -64,7 +64,7 @@
   true
 ;
 
-/*----------------------------------------------------------------------------*/
+/*-----------------------------------------------------------≥®-----------------*/
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : aggregateGby_StreamDef \handler
@@ -75,9 +75,11 @@
 
   StreamDefOut[].new
   CT_INTEGER "sum" StreamDefOut[].addColumn
-  StreamDefOut[] to StreamDef[]
-  StreamDef[].duplicate to StreamDef[]
+
+  StreamDefOut[].duplicate to StreamDef[]
   StreamDef[].pipeout
+
+  StreamDefOut[].print
 
   true
 ;

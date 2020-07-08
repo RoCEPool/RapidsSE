@@ -12,32 +12,18 @@
   0 locals| pColumn |
 
   // find the table
-  <tableNm> op__table if
-    Table[].tablePtn@ to tablePtn[]
-  then
-
-  // get the agg column
-  <columnNm> Table[].findColumn to pColumn
+  //<tableNm> op__table if
+  //  Table[].tablePtn@ to tablePtn[]
+  //then
 
   // create the Pot
-  // Pot[].new
+  Pot[].new
 
   // create the expr
   Expr[].new
   "@ 0 # 0 + ! 0" Expr[].source!
   Expr[].compile assert
 
-  // create the indexDef
-  indexDef[].new
-  "aggregateIdx" indexDef[].name!
-
-  // add the agg column to the indexDef
-  pColumn column.type@
-  pColumn column.name@
-  indexDef[].addColumn
-
-  // create an indexTree with the indexDef
-  indexDef[] indexTree[].new
 
   ZK_STARTMARKER_handler
 ;
@@ -56,10 +42,10 @@
 : aggregate_RsbBuffer \handler
 
   Operand[].pipeIn
-  indexTree[].aggregate
+  aggregateRsb[].aggregate
   Operand[].delete
 
-  //Pot[].pipeoutAllCompleted
+  Pot[].pipeoutAllCompleted
 
   true
 ;
@@ -75,9 +61,17 @@
 
   StreamDefOut[].new
   CT_INTEGER "sum" StreamDefOut[].addColumn
-  StreamDefOut[] to StreamDef[]
-  StreamDef[].duplicate to StreamDef[]
+
+  StreamDefOut[].duplicate to StreamDef[]
   StreamDef[].pipeout
+
+  StreamDefOut[].print
+
+  // new a aggregateRsb
+  aggregateRsb[].new
+
+  // new a row in aggregateRsb
+  aggregateRsb[].newRow
 
   true
 ;
@@ -87,11 +81,11 @@
 /*----------------------------------------------------------------------------*/
 : aggregate_EosMarker \handler
 
-  //Pot[].pipeoutAllDangling
+  Pot[].pipeoutAllDangling
 
+  AggregateRsb[].delete
   Expr[].delete
-  //Pot[].delete
-  IndexTree[].delete
+  Pot[].delete
 
   StreamDefOut[].delete
 

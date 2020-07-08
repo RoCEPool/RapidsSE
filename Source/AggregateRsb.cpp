@@ -16,17 +16,18 @@ __aFooterFunction(AggregateRsb)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-AggregateRsb::AggregateRsb(void)
+AggregateRsb::AggregateRsb(Pot* pPot, StreamDef* pStreamDefOut)
 : Object(CN_AGGREGATERSB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
-  
-  m_pPot          = nullptr;
+ 
+  m_pPot          = pPot;
   m_pSrcRsbBuffer = nullptr;
   m_pDstRowSlab   = nullptr;
-  m_pStreamDefOut = nullptr;
+  m_pStreamDefOut = pStreamDefOut;
   
-  m_bPixInited    = false;
+  m_bPixInited = true;
+  m_pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
   
   _checkInitialised_(CN_AGGREGATERSB);
 
@@ -48,21 +49,33 @@ AggregateRsb::~AggregateRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void AggregateRsb::vAggregate(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
-                              IndexTree* pIndexTree, Expr* pExpr, StreamDef* pStreamDefOut)
+void AggregateRsb::vAggregate(RsbBuffer* pSrcRsbBuffer, Expr* pExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
   
-  m_pStreamDefOut = pStreamDefOut;
-
   m_pSrcRsbBuffer = pSrcRsbBuffer;
   
-  m_pPot = pPot;
-
-  if (! m_bPixInited) {
-    m_bPixInited = true;
-    m_pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+  RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
+  
+  i8 nRows = pSrcRowSlab->nRows();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
+    
+    i8 bCopy = pExpr->iAggregate(m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
+    
+    //vCopyIntoDst(aSrcRsb);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert                                                                    */
+/*----------------------------------------------------------------------------*/
+void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree, Expr* pExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
+  
+  m_pSrcRsbBuffer = pSrcRsbBuffer;
   
   EntWrk xEntWrk;
   SP_Ent spEnt;
@@ -168,7 +181,7 @@ void AggregateRsb::vCopyIntoDst(Rsb* aSrcRsb)
 void AggregateRsb::vNewDstRsb(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
-    
+  
   // get rsb buffer for given partition (new a first buffer if ncessary)
   RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_pPot->pBuffer());
   if (! pDstRsbBuffer) {

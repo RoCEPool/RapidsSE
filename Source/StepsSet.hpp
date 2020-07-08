@@ -32,9 +32,11 @@ public:
 
   // aggregate
   void vAggregateRsbAggregate(void);
+  void vAggregateRsbAggregateGby(void);
   void vAggregateRsbDelete(void);
   void vAggregateRsbGet(void);
   void vAggregateRsbNew(void);
+  void vAggregateRsbNewRow(void);
 
   // agg timer
   void vAggTimerAdd(void);
@@ -1438,6 +1440,7 @@ public:
   void vStreamDefOutAddColumn(void);
   void vStreamDefOutAddColumns(void);
   void vStreamDefOutDelete(void);
+  void vStreamDefOutDuplicate(void);
   void vStreamDefOutGet(void);
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
