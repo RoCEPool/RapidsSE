@@ -44,7 +44,7 @@ Calculator::Calculator(void)
   m_nLabels = 0;
   for (i8 i_Label = 0; i_Label < C_CALC_LABEL; i_Label++) {
     m_xaJumpLabel[i_Label].m_bKnown = false;
-    m_xaJumpLabel[i_Label].m_i_Code = C_UNKNOWN;
+    m_xaJumpLabel[i_Label].m_i_Chain = C_UNKNOWN;
   }
   
   _checkInitialised_(CN_CALCULATOR);
@@ -228,7 +228,7 @@ i8 Calculator::iAddLabel(Stz* szLabelNm, bool bKnown)
   
   m_xaJumpLabel[i_Label].m_sLabel = szLabelNm;
   m_xaJumpLabel[i_Label].m_bKnown = bKnown;
-  m_xaJumpLabel[i_Label].m_i_Code = m_i_Code;
+  m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code;
   m_nLabels++;
   
   return i_Label;
@@ -243,7 +243,7 @@ void Calculator::vCorrectLabel(i8 i_Label)
   
   ASSERT(! m_xaJumpLabel[i_Label].m_bKnown);
   
-  i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Code;
+  i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Chain;
   while (C_UNKNOWN != i_Chain) {
     
     i8* piArg = (i8*) & m_eaCode[i_Chain];
@@ -268,9 +268,9 @@ i8 Calculator::iDecodeLabel(Stz* szLabelNm)
   if (C_UNKNOWN == i_Label)
     i_Label = iAddLabel(szLabelNm,false);
   
-  i8 i_Code = m_xaJumpLabel[i_Label].m_i_Code;
+  i8 i_Code = m_xaJumpLabel[i_Label].m_i_Chain;
  
-  m_xaJumpLabel[i_Label].m_i_Code = m_i_Code;
+  m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code;
   
   vPrintLabels();
   
@@ -302,7 +302,7 @@ i8 Calculator::iFindLabel(Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  for (i8 i_Label = 0; i_Label < C_CALC_LABEL; i_Label++)
+  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
     if (m_xaJumpLabel[i_Label].m_sLabel.bSame(szLabelNm))
       return i_Label;
 
@@ -320,7 +320,7 @@ void Calculator::vPrintLabels(void)
     vTrace("  %s %lld: %4lld\n"_Stz,
            m_xaJumpLabel[i_Label].m_sLabel.szStz(),
            m_xaJumpLabel[i_Label].m_bKnown,
-           m_xaJumpLabel[i_Label].m_i_Code);
+           m_xaJumpLabel[i_Label].m_i_Chain);
 }
 
 // calc l a 1 ;
@@ -328,6 +328,8 @@ void Calculator::vPrintLabels(void)
 // calc 10 l a dup . dec dup jt a ;
 
 // calc 1 l a dup . inc dup 10 > jf a;
+
+// calc 1 l a call p inc dup 10 > jf a ret l p dup . ret;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -435,6 +437,13 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
       continue;
     }
     
+    // call subroutine
+    if (pTkn->bSame("call"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCode(EO_CALL,pTkn->szChars());
+      continue;
+    }
+
     // label/location
     if (pTkn->bSame("L"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
@@ -460,13 +469,6 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("jt"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       vAddCode(EO_JMPTRUE,pTkn->szChars());
-      continue;
-    }
-
-    // call subroutine
-    if (pTkn->bSame("call"_Stz)) {
-      pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCode(EO_CALL,pTkn->szChars());
       continue;
     }
 

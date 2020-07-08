@@ -13,7 +13,10 @@ namespace Expressions
   {
     s32  m_sLabel;
     bool m_bKnown;
-    i8   m_i_Code;
+    union {
+      i8 m_i_Code;
+      i8 m_i_Chain;
+    };
   };
 
   //----------------------------------------------------------------------------
