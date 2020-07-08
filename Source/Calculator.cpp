@@ -927,7 +927,10 @@ i8 Calculator::iCompute(void)
       // -- -- -- -- -- -- -- -- -- -- --
 
       case EO_CALL:
-        ASSERT(0);
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        * (aaeRstk++) = aeCode;
+        aeCode = & m_eaCode[iArg];
         break;
 
       case EO_RETURN:
@@ -935,13 +938,13 @@ i8 Calculator::iCompute(void)
           iRes = *(aiDstk--);
           return iRes;
         }
-        ASSERT(0);
+        aeCode = * (--aaeRstk);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- --
         
       default:
-        vTrace(" unknown opcode in calculator\n"_Stz);
+        vTrace(" unknown opcode in calculator %lld\n"_Stz,(i8)eCode);
         return C_DATUM_NULL;
     }
   }
