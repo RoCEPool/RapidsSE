@@ -380,16 +380,14 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     
     vTrace(" >%s<\n"_Stz,pTkn->szChars());
     
-    // -- -- -- -- -- -- -- -- -- -- --
-
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     if (pTkn->bSame("+"_Stz)) { vAddCode(EO_ADD);      continue; }
     if (pTkn->bSame("/"_Stz)) { vAddCode(EO_DIVIDE);   continue; }
     if (pTkn->bSame("%"_Stz)) { vAddCode(EO_MODULO);   continue; }
     if (pTkn->bSame("*"_Stz)) { vAddCode(EO_MULTIPLY); continue; }
     if (pTkn->bSame("-"_Stz)) { vAddCode(EO_SUBTRACT); continue; }
 
-    // -- -- -- -- -- -- -- -- -- -- --
-
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     if (pTkn->bSame("<"_Stz))  { vAddCode(EO_LESSTHAN);     continue; }
     if (pTkn->bSame("<="_Stz)) { vAddCode(EO_LESSEQUAL);    continue; }
     if (pTkn->bSame("=="_Stz)) { vAddCode(EO_EQUAL);        continue; }
@@ -397,19 +395,16 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame(">="_Stz)) { vAddCode(EO_GREATEREQUAL); continue; }
     if (pTkn->bSame(">"_Stz))  { vAddCode(EO_GREATERTHAN);  continue; }
     
-    // -- -- -- -- -- -- -- -- -- -- --
-    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     if (pTkn->bSame("and"_Stz)) { vAddCode(EO_AND); continue; }
     if (pTkn->bSame("or"_Stz))  { vAddCode(EO_OR);  continue; }
     if (pTkn->bSame("not"_Stz)) { vAddCode(EO_NOT); continue; }
 
-    // -- -- -- -- -- -- -- -- -- -- --
-    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     if (pTkn->bSame("isNull"_Stz))    { vAddCode(EO_ISNULL);    continue; }
     if (pTkn->bSame("isNotNull"_Stz)) { vAddCode(EO_ISNOTNULL); continue; }
     
-    // -- -- -- -- -- -- -- -- -- -- --
-
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     if (pTkn->bSame("++"_Stz))  { vAddCode(EO_INC);   continue; }
     if (pTkn->bSame("inc"_Stz)) { vAddCode(EO_INC);   continue; }
     if (pTkn->bSame("--"_Stz))  { vAddCode(EO_DEC);   continue; }
@@ -418,12 +413,10 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("pop"_Stz)) { vAddCode(EO_POP);   continue; }
     if (pTkn->bSame("."_Stz))   { vAddCode(EO_PRINT); continue; }
 
-    // -- -- -- -- -- -- -- -- -- -- --
-    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     if (pTkn->bSame("ret"_Stz)) { vAddCode(EO_RETURN); continue; }
     
-    // -- -- -- -- -- -- -- -- -- -- --
-
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 //    if (pTkn->bIsName()) {
 //      vAddCode(EO_PUSHCOLI;
 //      i8 iColVec;
@@ -534,8 +527,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
       continue;
     }
 
-    // -- -- -- -- -- -- -- -- -- -- --
-    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     vAddCode(EO_RETURN);
     vTrace("Error: %s\n"_Stz,pTkn->szChars());
     return false;
