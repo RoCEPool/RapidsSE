@@ -12,7 +12,7 @@ namespace Expressions
   struct JumpLabel
   {
     s32  m_sLabel;
-    bool m_bKnown;
+    bool m_bDefined;
     union {
       i8 m_i_Code;
       i8 m_i_Chain;
@@ -73,7 +73,7 @@ namespace Expressions
     void vAddCode(eEO eCode);
     void vAddCode(eEO eCode, i8 iArg);
     void vAddCode(eEO eCode, Stz* szLabelNm);
-    i8   iAddLabel(Stz* szLabelNm, bool bKnown);
+    i8   iAddLabel(Stz* szLabelNm, bool bDefined);
     void vCorrectLabel(i8 i_Label);
     i8   iDecodeLabel(Stz* szLabelNm);
     void vDefineLabel(Stz* szLabelNm);

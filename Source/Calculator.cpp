@@ -43,7 +43,7 @@ Calculator::Calculator(void)
   
   m_nLabels = 0;
   for (i8 i_Label = 0; i_Label < C_CALC_LABEL; i_Label++) {
-    m_xaJumpLabel[i_Label].m_bKnown = false;
+    m_xaJumpLabel[i_Label].m_bDefined = false;
     m_xaJumpLabel[i_Label].m_i_Chain = C_UNKNOWN;
   }
   
@@ -212,10 +212,34 @@ void Calculator::vAddCode(eEO eCode, Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  i8 iArg = iDecodeLabel(szLabelNm);
+  i8 i_Label = iFindLabel(szLabelNm);
+  
+  if (C_UNKNOWN == i_Label) {
+    i_Label = iAddLabel(szLabelNm,false);
+    m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
+    vAddCode(eCode,C_UNKNOWN);
+    return;
+  }
 
-  vAddCode(eCode,iArg);
+  if (m_xaJumpLabel[i_Label].m_bDefined) {
+    vAddCode(eCode,m_xaJumpLabel[i_Label].m_i_Code);
+    return;
+  }
+  
+  i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Chain;
+  m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
+  vAddCode(eCode,i_Chain);
 }
+
+/*----------------------------------------------------------------------------*/
+//void Calculator::vAddCode(eEO eCode, Stz* szLabelNm)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+//
+//  i8 iArg = iDecodeLabel(szLabelNm);
+//
+//  vAddCode(eCode,iArg);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* add label                                                                  */
@@ -227,7 +251,7 @@ i8 Calculator::iAddLabel(Stz* szLabelNm, bool bKnown)
   i8 i_Label = m_nLabels;
   
   m_xaJumpLabel[i_Label].m_sLabel = szLabelNm;
-  m_xaJumpLabel[i_Label].m_bKnown = bKnown;
+  m_xaJumpLabel[i_Label].m_bDefined = bKnown;
   m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code;
   m_nLabels++;
   
@@ -241,7 +265,7 @@ void Calculator::vCorrectLabel(i8 i_Label)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  ASSERT(! m_xaJumpLabel[i_Label].m_bKnown);
+  ASSERT(! m_xaJumpLabel[i_Label].m_bDefined);
   
   i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Chain;
   while (C_UNKNOWN != i_Chain) {
@@ -253,7 +277,7 @@ void Calculator::vCorrectLabel(i8 i_Label)
     * piArg = m_i_Code;
   }
 
-  m_xaJumpLabel[i_Label].m_bKnown = true;
+  m_xaJumpLabel[i_Label].m_bDefined = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,7 +343,7 @@ void Calculator::vPrintLabels(void)
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
     vTrace("  %s %lld: %4lld\n"_Stz,
            m_xaJumpLabel[i_Label].m_sLabel.szStz(),
-           m_xaJumpLabel[i_Label].m_bKnown,
+           m_xaJumpLabel[i_Label].m_bDefined,
            m_xaJumpLabel[i_Label].m_i_Chain);
 }
 
@@ -519,7 +543,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
   vTrace("\n"_Stz);
   
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    if (! m_xaJumpLabel[i_Label].m_bKnown)
+    if (! m_xaJumpLabel[i_Label].m_bDefined)
       return false;
 
   vDumpCode();
