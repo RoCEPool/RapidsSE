@@ -564,57 +564,72 @@ void Calculator::vDumpCode(void)
     switch (eCode) {
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_COPYRSB:        vDumpCode(i_Code,EO_COPYRSB);              break;
-      case EO_DEPOSITCOLI:    vDumpCode(EO_DEPOSITCOLI,i_Code);          break;
-      case EO_PUSHDSTCOLI:    vDumpCode(EO_PUSHDSTCOLI,i_Code);          break;
-      case EO_PUSHSRCCOLI:    vDumpCode(EO_PUSHSRCCOLI,i_Code);          break;
+      case EO_RESETENTWRK:      vDumpCode(i_Code,EO_RESETENTWRK);         break;
+      case EO_APPENDELMI:       vDumpCode(EO_APPENDELMI,i_Code);          break;
+      case EO_POSENTPRIOR:      vDumpCode(i_Code,EO_POSENTPRIOR);         break;
+      case EO_NEXTENT:          vDumpCode(i_Code,EO_NEXTENT);             break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_INTEGER:        vDumpCode(EO_INTEGER,i_Code);              break;
-      case EO_PUSHNULL:       vDumpCode(i_Code,EO_PUSHNULL);             break;
-      case EO_PUSH0:          vDumpCode(i_Code,EO_PUSH0);                break;
-      case EO_PUSH1:          vDumpCode(i_Code,EO_PUSH1);                break;
+      case EO_ENT_LESSTHAN:     vDumpCode(i_Code,EO_LESSTHAN);            break;
+      case EO_ENT_LESSEQUAL:    vDumpCode(i_Code,EO_LESSEQUAL);           break;
+      case EO_ENT_EQUAL:        vDumpCode(i_Code,EO_EQUAL);               break;
+      case EO_ENT_NOTEQUAL:     vDumpCode(i_Code,EO_NOTEQUAL);            break;
+      case EO_ENT_GREATEREQUAL: vDumpCode(i_Code,EO_GREATEREQUAL);        break;
+      case EO_ENT_GREATERTHAN:  vDumpCode(i_Code,EO_GREATERTHAN);         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_ADD:            vDumpCode(i_Code,EO_ADD);                  break;
-      case EO_DIVIDE:         vDumpCode(i_Code,EO_DIVIDE);               break;
-      case EO_MODULO:         vDumpCode(i_Code,EO_MODULO);               break;
-      case EO_MULTIPLY:       vDumpCode(i_Code,EO_MULTIPLY);             break;
-      case EO_NEGATE:         vDumpCode(i_Code,EO_NEGATE);               break;
-      case EO_SUBTRACT:       vDumpCode(i_Code,EO_SUBTRACT);             break;
+      case EO_COPYRSB:          vDumpCode(i_Code,EO_COPYRSB);             break;
+      case EO_DEPOSITCOLI:      vDumpCode(EO_DEPOSITCOLI,i_Code);         break;
+      case EO_PUSHDSTCOLI:      vDumpCode(EO_PUSHDSTCOLI,i_Code);         break;
+      case EO_PUSHSRCCOLI:      vDumpCode(EO_PUSHSRCCOLI,i_Code);         break;
+      case EO_PUSHALTCOLI:      vDumpCode(EO_PUSHALTCOLI,i_Code);         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_LESSTHAN:       vDumpCode(i_Code,EO_LESSTHAN);             break;
-      case EO_LESSEQUAL:      vDumpCode(i_Code,EO_LESSEQUAL);            break;
-      case EO_EQUAL:          vDumpCode(i_Code,EO_EQUAL);                break;
-      case EO_NOTEQUAL:       vDumpCode(i_Code,EO_NOTEQUAL);             break;
-      case EO_GREATEREQUAL:   vDumpCode(i_Code,EO_GREATEREQUAL);         break;
-      case EO_GREATERTHAN:    vDumpCode(i_Code,EO_GREATERTHAN);          break;
+      case EO_INTEGER:          vDumpCode(EO_INTEGER,i_Code);             break;
+      case EO_PUSHNULL:         vDumpCode(i_Code,EO_PUSHNULL);            break;
+      case EO_PUSH0:            vDumpCode(i_Code,EO_PUSH0);               break;
+      case EO_PUSH1:            vDumpCode(i_Code,EO_PUSH1);               break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_AND:            vDumpCode(i_Code,EO_AND);                  break;
-      case EO_OR:             vDumpCode(i_Code,EO_OR);                   break;
-      case EO_NOT:            vDumpCode(i_Code,EO_NOT);                  break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_ISNULL:         vDumpCode(i_Code,EO_ISNULL);               break;
-      case EO_ISNOTNULL:      vDumpCode(i_Code,EO_ISNOTNULL);            break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_INC:            vDumpCode(i_Code,EO_INC);                  break;
-      case EO_DEC:            vDumpCode(i_Code,EO_DEC);                  break;
-      case EO_DUP:            vDumpCode(i_Code,EO_DUP);                  break;
-      case EO_POP:            vDumpCode(i_Code,EO_POP);                  break;
-      case EO_PRINT:          vDumpCode(i_Code,EO_PRINT);                break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_JMP:            vDumpCode(EO_JMP,i_Code);                  break;
-      case EO_JMPFALSE:       vDumpCode(EO_JMPFALSE,i_Code);             break;
-      case EO_JMPTRUE:        vDumpCode(EO_JMPTRUE,i_Code);              break;
+      case EO_ADD:              vDumpCode(i_Code,EO_ADD);                 break;
+      case EO_DIVIDE:           vDumpCode(i_Code,EO_DIVIDE);              break;
+      case EO_MODULO:           vDumpCode(i_Code,EO_MODULO);              break;
+      case EO_MULTIPLY:         vDumpCode(i_Code,EO_MULTIPLY);            break;
+      case EO_NEGATE:           vDumpCode(i_Code,EO_NEGATE);              break;
+      case EO_SUBTRACT:         vDumpCode(i_Code,EO_SUBTRACT);            break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_CALL:           vDumpCode(EO_CALL,i_Code);                 break;
-      case EO_RETURN:         vDumpCode(i_Code,EO_RETURN);               break;
+      case EO_LESSTHAN:         vDumpCode(i_Code,EO_LESSTHAN);            break;
+      case EO_LESSEQUAL:        vDumpCode(i_Code,EO_LESSEQUAL);           break;
+      case EO_EQUAL:            vDumpCode(i_Code,EO_EQUAL);               break;
+      case EO_NOTEQUAL:         vDumpCode(i_Code,EO_NOTEQUAL);            break;
+      case EO_GREATEREQUAL:     vDumpCode(i_Code,EO_GREATEREQUAL);        break;
+      case EO_GREATERTHAN:      vDumpCode(i_Code,EO_GREATERTHAN);         break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_AND:              vDumpCode(i_Code,EO_AND);                 break;
+      case EO_OR:               vDumpCode(i_Code,EO_OR);                  break;
+      case EO_NOT:              vDumpCode(i_Code,EO_NOT);                 break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_ISNULL:           vDumpCode(i_Code,EO_ISNULL);              break;
+      case EO_ISNOTNULL:        vDumpCode(i_Code,EO_ISNOTNULL);           break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_INC:              vDumpCode(i_Code,EO_INC);                 break;
+      case EO_DEC:              vDumpCode(i_Code,EO_DEC);                 break;
+      case EO_DUP:              vDumpCode(i_Code,EO_DUP);                 break;
+      case EO_POP:              vDumpCode(i_Code,EO_POP);                 break;
+      case EO_PRINT:            vDumpCode(i_Code,EO_PRINT);               break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_JMP:              vDumpCode(EO_JMP,i_Code);                 break;
+      case EO_JMPFALSE:         vDumpCode(EO_JMPFALSE,i_Code);            break;
+      case EO_JMPTRUE:          vDumpCode(EO_JMPTRUE,i_Code);             break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_CALL:             vDumpCode(EO_CALL,i_Code);                break;
+      case EO_RETURN:           vDumpCode(i_Code,EO_RETURN);              break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       default:

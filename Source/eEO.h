@@ -7,10 +7,23 @@ enum eEO : i1 // expression operators
 {
   /*  0 */ EO_NONE=0,
   
-  /*    */ EO_COPYRSB,
-  /*    */ EO_DEPOSITCOLI,
-  /*    */ EO_PUSHDSTCOLI,
-  /*    */ EO_PUSHSRCCOLI,
+  /*    */ EO_RESETENTWRK,      // reset m_oEntWrk
+  /*    */ EO_APPENDELMI,       // append next element value (int)
+  /*    */ EO_POSENTPRIOR,      // position m_pEnt prior using m_oEntWrk.key
+  /*    */ EO_NEXTENT,          // move to next m_pEnt
+  
+  /*    */ EO_ENT_LESSTHAN,     // test if m_pEnt.key <  m_oEntWrk.key
+  /*    */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
+  /*    */ EO_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
+  /*    */ EO_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
+  /*    */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
+  /*    */ EO_ENT_GREATERTHAN,  // test if m_pEnt.key >  m_oEntWrk.key
+
+  /*    */ EO_COPYRSB,          // copy src rsb to dst rsb       IS THIS NEEDED?
+  /*    */ EO_DEPOSITCOLI,      // pop and deposit top into dst column
+  /*    */ EO_PUSHDSTCOLI,      // push dst column
+  /*    */ EO_PUSHSRCCOLI,      // push src column
+  /*    */ EO_PUSHALTCOLI,      // push alt column
 
   /*    */ EO_INTEGER,
   /*    */ EO_PUSHNULL,
@@ -58,10 +71,23 @@ static Stz* aEO[]
 {
   /*  0 */ "NONE"_Stz,
     
+  /*    */ "EO_RESETENTWRK"_Stz,
+  /*    */ "EO_APPENDELMI"_Stz,
+  /*    */ "EO_POSENTPRIOR"_Stz,
+  /*    */ "EO_NEXTENT"_Stz,
+  
+  /*    */ "EO_ENT_LESSTHAN"_Stz,
+  /*    */ "EO_ENT_LESSEQUAL"_Stz,
+  /*    */ "EO_ENT_EQUAL"_Stz,
+  /*    */ "EO_ENT_NOTEQUAL"_Stz,
+  /*    */ "EO_ENT_GREATEREQUAL"_Stz,
+  /*    */ "EO_ENT_GREATERTHAN"_Stz,
+
   /*    */ "EO_COPYRSB"_Stz,
   /*    */ "EO_DEPOSITCOLI"_Stz,
   /*    */ "EO_PUSHDSTCOLI"_Stz,
   /*    */ "EO_PUSHSRCCOLI"_Stz,
+  /*    */ "EO_PUSHALTCOLI"_Stz,
 
   /*    */ "EO_INTEGER"_Stz,
   /*    */ "EO_PUSHNULL"_Stz,
