@@ -25,44 +25,44 @@ enum eEO : i1 // expression operators
   /*    */ EO_PUSHSRCCOLI,      // push src column
   /*    */ EO_PUSHALTCOLI,      // push alt column
 
-  /*    */ EO_INTEGER,
-  /*    */ EO_PUSHNULL,
-  /*    */ EO_PUSH0,
-  /*    */ EO_PUSH1,
+  /*    */ EO_INTEGER,          // push integer
+  /*    */ EO_PUSHNULL,         // push null
+  /*    */ EO_PUSH0,            // push integer 0
+  /*    */ EO_PUSH1,            // push integer 1
 
-  /*    */ EO_ADD,
-  /*    */ EO_DIVIDE,
-  /*    */ EO_MODULO,
-  /*    */ EO_MULTIPLY,
-  /*    */ EO_NEGATE,
-  /*    */ EO_SUBTRACT,
+  /*    */ EO_ADD,              // add top two int's push result
+  /*    */ EO_DIVIDE,           // divide top int by second push result
+  /*    */ EO_MODULO,           // modulo top int be second push result
+  /*    */ EO_MULTIPLY,         // multiply top two int's push result
+  /*    */ EO_NEGATE,           // negate the top value
+  /*    */ EO_SUBTRACT,         // subtract second int from top push result
 
-  /*    */ EO_LESSTHAN,
-  /*    */ EO_LESSEQUAL,
-  /*    */ EO_EQUAL,
-  /*    */ EO_NOTEQUAL,
-  /*    */ EO_GREATEREQUAL,
-  /*    */ EO_GREATERTHAN,
+  /*    */ EO_LESSTHAN,         // test top < 2nd, push result
+  /*    */ EO_LESSEQUAL,        // test top <= 2nd, push result
+  /*    */ EO_EQUAL,            // test top == 2nd, push result
+  /*    */ EO_NOTEQUAL,         // test top != 2nd, push result
+  /*    */ EO_GREATEREQUAL,     // test top >= 2nd, push result
+  /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
-  /*    */ EO_AND,
-  /*    */ EO_OR,
-  /*    */ EO_NOT,
+  /*    */ EO_AND,              // logical and top two int's, push result
+  /*    */ EO_OR,               // logical or top two int's, push result
+  /*    */ EO_NOT,              // logical not top int, push result
   
-  /*    */ EO_ISNULL,
-  /*    */ EO_ISNOTNULL,
+  /*    */ EO_ISNULL,           // test if top is null, push result
+  /*    */ EO_ISNOTNULL,        // test if top is not null, push result
   
-  /*    */ EO_INC,
-  /*    */ EO_DEC,
-  /*    */ EO_DUP,
-  /*    */ EO_POP,
-  /*    */ EO_PRINT,
+  /*    */ EO_INC,              // increment top, push result
+  /*    */ EO_DEC,              // decrement top, push result
+  /*    */ EO_DUP,              // duplicate top
+  /*    */ EO_POP,              // pop / discard top
+  /*    */ EO_PRINT,            // print top
   
-  /*    */ EO_JMP,
-  /*    */ EO_JMPFALSE,
-  /*    */ EO_JMPTRUE,
+  /*    */ EO_JMP,              // jump to location
+  /*    */ EO_JMPFALSE,         // pop top and jump to location if false
+  /*    */ EO_JMPTRUE,          // pop top and jump to location if true
 
-  /*    */ EO_CALL,
-  /*    */ EO_RETURN,
+  /*    */ EO_CALL,             // call subroutine at location
+  /*    */ EO_RETURN,           // return from subroutine and
 
   /*    */ EO_ENUMS
 };

@@ -682,7 +682,9 @@ i8 Calculator::iCompute(void)
   i8 i_Cell_ntv;
   Rsb* aRsb;
 
-  
+  bool bSrcHasPtnHash = true;
+  bool bCopyPtnHash   = false;
+
   eEO  eCode;
   eEO* aeCode = & m_eaCode[0];
   i8*  aiDstk = &m_iaDataStack[0];
@@ -696,16 +698,26 @@ i8 Calculator::iCompute(void)
     switch (eCode) {
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_COPYRSB:
-      {
-        bool bSrcHasPtnHash = true;
-        bool bCopyPtnHash   = false;
+      case EO_RESETENTWRK:      NEVER_REACH; // not yet implemented
+      case EO_APPENDELMI:       NEVER_REACH; // not yet implemented
+      case EO_POSENTPRIOR:      NEVER_REACH; // not yet implemented
+      case EO_NEXTENT:          NEVER_REACH; // not yet implemented
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_ENT_LESSTHAN:     NEVER_REACH; // not yet implemented
+      case EO_ENT_LESSEQUAL:    NEVER_REACH; // not yet implemented
+      case EO_ENT_EQUAL:        NEVER_REACH; // not yet implemented
+      case EO_ENT_NOTEQUAL:     NEVER_REACH; // not yet implemented
+      case EO_ENT_GREATEREQUAL: NEVER_REACH; // not yet implemented
+      case EO_ENT_GREATERTHAN:  NEVER_REACH; // not yet implemented
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_COPYRSB: // copy src rsb to dst rsb
         m_pDstRowSlab->vPositionOnCell(0);
         m_pDstRowSlab->vCopyRsb(m_aSrcRsb_left,bSrcHasPtnHash,bCopyPtnHash);
         break;
-      }
         
-      case EO_DEPOSITCOLI:
+      case EO_DEPOSITCOLI: // pop and deposit top into dst column
         iArg = * (i8*)aeCode;
         aeCode += 8;
         iRes = *(aiDstk--);
@@ -713,7 +725,7 @@ i8 Calculator::iCompute(void)
         m_pDstRowSlab->vDeposit(iRes);
         break;
         
-      case EO_PUSHDSTCOLI:
+      case EO_PUSHDSTCOLI: // push dst column
         iArg = * (i8*)aeCode;
         aeCode += 8;
         aRsb = m_pDstRowSlab->aRsbAdr(0);
@@ -722,68 +734,70 @@ i8 Calculator::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_PUSHSRCCOLI:
+      case EO_PUSHSRCCOLI: // push src column
         iArg = * (i8*)aeCode;
         aeCode += 8;
         iRes = m_aSrcRsb_left->iVal_ntv(m_aSrcRsb_left->i_ColToCell_ntv(iArg));
         *(++aiDstk) = iRes;
         break;
         
+      case EO_PUSHALTCOLI:     NEVER_REACH; // not yet implemented
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_INTEGER:
+      case EO_INTEGER: // push integer
         iArg = * (i8*)aeCode;
         aeCode += 8;
         *(++aiDstk) = iArg;
         break;
       
-      case EO_PUSHNULL:
+      case EO_PUSHNULL: // push null
         *(++aiDstk) = C_DATUM_NULL;
         break;
-        
-      case EO_PUSH0:
+         
+      case EO_PUSH0: // push integer 0
         *(++aiDstk) = 0;
         break;
         
-      case EO_PUSH1:
+      case EO_PUSH1: // push integer 1
         *(++aiDstk) = 1;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_ADD:
+      case EO_ADD: // add top two int's push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA + iTopB;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_DIVIDE:
+      case EO_DIVIDE: // divide top int by second push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA / iTopB;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_MODULO:
+      case EO_MODULO: // modulo top int be second push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA % iTopB;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_MULTIPLY:
+      case EO_MULTIPLY: // multiply top two int's push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA * iTopB;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_NEGATE:
+      case EO_NEGATE: // negate the top value
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_SUBTRACT:
+      case EO_SUBTRACT: // subtract second int from top push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA - iTopB;
@@ -791,42 +805,42 @@ i8 Calculator::iCompute(void)
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_LESSTHAN:
+      case EO_LESSTHAN: // test top < 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA < iTopB;
         *(++aiDstk) = iRes;
         break;
 
-      case EO_LESSEQUAL:
+      case EO_LESSEQUAL: // test top <= 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA <= iTopB;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_EQUAL:
+      case EO_EQUAL: // test top == 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA == iTopB;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_NOTEQUAL:
+      case EO_NOTEQUAL: // test top != 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA != iTopB;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_GREATEREQUAL:
+      case EO_GREATEREQUAL: // test top >= 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA >= iTopB;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_GREATERTHAN:
+      case EO_GREATERTHAN: // test top > 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA > iTopB;
@@ -834,73 +848,73 @@ i8 Calculator::iCompute(void)
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_AND:
+      case EO_AND: // logical and top two int's, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = (iTopA && iTopB) ? 1 : 0;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_OR:
+      case EO_OR: // logical or top two int's, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = (iTopA || iTopB) ? 1 : 0;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_NOT:
+      case EO_NOT: // logical not top int, push result
         iTopA = *(aiDstk--);
         iRes  = (! iTopA) ? 1 : 0;
         *(++aiDstk) = iRes;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_ISNULL:
+      case EO_ISNULL: // test if top is null, push result
         iTopA = *(aiDstk--);
         iRes  = (C_DATUM_NULL == iTopA) ? 1 : 0;
         *(++aiDstk) = iRes;
         break;
 
-      case EO_ISNOTNULL:
+      case EO_ISNOTNULL: // test if top is not null, push result
         iTopA = *(aiDstk--);
         iRes  = (C_DATUM_NULL != iTopA) ? 1 : 0;
         *(++aiDstk) = iRes;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_INC:
+      case EO_INC: // increment top, push result
         iTopA = *aiDstk;
         *aiDstk = iTopA + 1;
         break;
 
-      case EO_DEC:
+      case EO_DEC: // decrement top, push result
         iTopA = *aiDstk;
         *aiDstk = iTopA - 1;
         break;
 
-      case EO_DUP:
+      case EO_DUP: // duplicate top
         iTopA = *aiDstk;
         *(++aiDstk) = iTopA;
         break;
 
-      case EO_POP:
+      case EO_POP: // pop / discard top
         iTopA = *aiDstk;
         break;
 
-      case EO_PRINT:
+      case EO_PRINT: // print top
         iTopA = *(aiDstk--);
         vTrace("%lld\n"_Stz,iTopA);
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_JMP:
+      case EO_JMP: // jump to location
         iArg = * (i8*)aeCode;
         aeCode += 8;
         
         aeCode = & m_eaCode[iArg];
         break;
         
-      case EO_JMPFALSE:
+      case EO_JMPFALSE: // pop top and jump to location if false
         iArg = * (i8*)aeCode;
         aeCode += 8;
         
@@ -910,7 +924,7 @@ i8 Calculator::iCompute(void)
         
         break;
       
-      case EO_JMPTRUE:
+      case EO_JMPTRUE: // pop top and jump to location if true
         iArg = * (i8*)aeCode;
         aeCode += 8;
         
@@ -921,14 +935,14 @@ i8 Calculator::iCompute(void)
         break;
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_CALL:
+      case EO_CALL: // call subroutine at location
         iArg = * (i8*)aeCode;
         aeCode += 8;
         * (aaeRstk++) = aeCode;
         aeCode = & m_eaCode[iArg];
         break;
 
-      case EO_RETURN:
+      case EO_RETURN: // return from subroutine and
         if (aaeRstk == &m_aaReturnStack[0]) {
           iRes = *(aiDstk--);
           return iRes;
