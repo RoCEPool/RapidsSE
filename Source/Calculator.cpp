@@ -587,9 +587,11 @@ void Calculator::vDumpCode(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
-      case EO_ENT_POSPRIOR:     vDumpCode(i_Code,EO_ENT_POSPRIOR);        break;
+      case EO_ENT_CREATEPAY:    vDumpCode(i_Code,EO_ENT_CREATEPAY);       break;
+      case EO_ENT_INSERTPAY:    vDumpCode(i_Code,EO_ENT_INSERTPAY);       break;
       case EO_ENT_NEXT:         vDumpCode(i_Code,EO_ENT_NEXT);            break;
-
+      case EO_ENT_POSPRIOR:     vDumpCode(i_Code,EO_ENT_POSPRIOR);        break;
+      
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
       case EO_ENT_LESSTHAN:     vDumpCode(i_Code,EO_LESSTHAN);            break;
@@ -601,8 +603,8 @@ void Calculator::vDumpCode(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entWrk
-      case EO_ENTWRK_RESET:     vDumpCode(i_Code,EO_ENTWRK_RESET);        break;
       case EO_ENTWRK_APPENDELMI:vDumpCode(EO_ENTWRK_APPENDELMI,i_Code);   break;
+      case EO_ENTWRK_RESET:     vDumpCode(i_Code,EO_ENTWRK_RESET);        break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
@@ -800,17 +802,19 @@ i8 Calculator::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
-      case EO_ENT_POSPRIOR:
-        m_pEnt = m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
+      case EO_ENT_CREATEPAY: NEVER_REACH; // not yet implemented
+        
+      case EO_ENT_INSERTPAY:
+        m_pEnt = m_pIndexTree->aInsertEntryPay(m_oEntWrk.aEnt());
+        ASSERT(m_pEnt);
         break;
         
       case EO_ENT_NEXT:
         EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
         break;
-
-      case EO_ENT_INSERTPAY:
-        m_pEnt = m_pIndexTree->aInsertEntryPay(m_oEntWrk.aEnt());
-        ASSERT(m_pEnt);
+        
+      case EO_ENT_POSPRIOR:
+        m_pEnt = m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -828,15 +832,18 @@ i8 Calculator::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entWrk
-      case EO_ENTWRK_RESET:
-        m_oEntWrk.vReset();
-        break;
         
       case EO_ENTWRK_APPENDELMI:
         iArg = * (i8*)aeCode;
         aeCode += 8;
         m_oEntWrk.vAppendElement(m_aSrcRsb_left, pIndexDef->pGetColumn(iArg));
         break;
+        
+      case EO_ENTWRK_RESET:
+        m_oEntWrk.vReset();
+        break;
+       
+      // entry relational operators
       case EO_ENT_EQUAL:
         iRes  = KC_SAME == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         *(++aiDstk) = iRes;

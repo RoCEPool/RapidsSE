@@ -21,9 +21,10 @@ enum eEO : i1 // expression operators
   /*    */ EO_JMPTRUE,          // pop top and jump to location if true
   
   // entry
-  /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
-  /*    */ EO_ENT_NEXT,         // move to next m_pEnt
+  /*    */ EO_ENT_CREATEPAY,    // create a payload entry
   /*    */ EO_ENT_INSERTPAY,    // insert a payload entry into the indexTree
+  /*    */ EO_ENT_NEXT,         // move to next m_pEnt
+  /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
   
   // entry relational operators
   /*    */ EO_ENT_LESSTHAN,     // test if m_pEnt.key <  m_oEntWrk.key
@@ -34,8 +35,8 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENT_GREATERTHAN,  // test if m_pEnt.key >  m_oEntWrk.key
   
   // entWrk
-  /*    */ EO_ENTWRK_RESET,        // reset m_oEntWrk
   /*    */ EO_ENTWRK_APPENDELMI,   // append next element value (int)
+  /*    */ EO_ENTWRK_RESET,        // reset m_oEntWrk
   
   // logical operators
   /*    */ EO_AND,              // logical and top two int's, push result
@@ -103,9 +104,10 @@ static Stz* aEO[]
   /*    */ "EO_JMPTRUE"_Stz,
 
   // entry
-  /*    */ "EO_ENT_POSPRIOR"_Stz,
-  /*    */ "EO_ENT_NEXT"_Stz,
+  /*    */ "EO_ENT_CREATEPAY"_Stz,
   /*    */ "EO_ENT_INSERTPAY"_Stz,
+  /*    */ "EO_ENT_NEXT"_Stz,
+  /*    */ "EO_ENT_POSPRIOR"_Stz,
   
   // entry relational operators
   /*    */ "EO_ENT_LESSTHAN"_Stz,
@@ -116,8 +118,8 @@ static Stz* aEO[]
   /*    */ "EO_ENT_GREATERTHAN"_Stz,
   
   // entWrk
-  /*    */ "EO_ENTWRK_RESET"_Stz,
   /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
+  /*    */ "EO_ENTWRK_RESET"_Stz,
 
   // logical operators
   /*    */ "EO_AND"_Stz,
