@@ -6108,7 +6108,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // create the expr\n"
     "  Expr[].new\n"
-    "  \"@ 0 # 0 + ! 0\" Expr[].source!\n"
+    "  \"@ 0 PF 0 + PS 0\" Expr[].source!\n"
     "  Expr[].compile assert\n"
     "\n"
     "  // create the indexDef\n"

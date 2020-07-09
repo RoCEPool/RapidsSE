@@ -175,9 +175,9 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
       
     }
     
-    aRsb = (Rsb*)aPayloadEntry->ayPayload();
-    //i8 iAgg = pExpr->iAggregate(nullptr,aRsb,aSrcRsb,pSrcRowSlab);
+    //i8 iAgg = pExpr->iAggregateGby(pIndexTree,aPayloadEntry,nullptr,aSrcRsb,pSrcRowSlab);
     //vTrace("Aggregate value so far: %lld\n"_Stz,iAgg);
+    pIndexTree->vDump(false);
   }
 }
 

@@ -24,7 +24,7 @@
 
   // create the expr
   Expr[].new
-  "@ 0 # 0 + ! 0" Expr[].source!
+  "@ 0 PF 0 + PS 0" Expr[].source!
   Expr[].compile assert
 
   // create the indexDef

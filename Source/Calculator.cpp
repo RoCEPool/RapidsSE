@@ -477,6 +477,22 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
       continue;
     }
 
+    // fetch pay col
+    if (pTkn->bSame("pf"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      iArg = pTkn->iToI8();
+      vAddCode(EO_PAY_FETCH_COL,iArg);
+      continue;
+    }
+    
+    // store pay col
+    if (pTkn->bSame("ps"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      iArg = pTkn->iToI8();
+      vAddCode(EO_PAY_STORE_COL,iArg);
+      continue;
+    }
+    
     // jump
     if (pTkn->bSame("j"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
@@ -620,8 +636,8 @@ void Calculator::vDumpCode(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
-      case EO_PAY_FETCH_COL:    vDumpCode(i_Code,EO_PAY_FETCH_COL);       break;
-      case EO_PAY_STORE_COL:    vDumpCode(i_Code,EO_PAY_STORE_COL);       break;
+      case EO_PAY_FETCH_COL:    vDumpCode(EO_PAY_FETCH_COL,i_Code);       break;
+      case EO_PAY_STORE_COL:    vDumpCode(EO_PAY_STORE_COL,i_Code);       break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pushes
@@ -914,19 +930,19 @@ i8 Calculator::iCompute(void)
       case EO_PAY_FETCH_COL:
         iArg = * (i8*)aeCode;
         aeCode += 8;
-        iRes = *(aiDstk--);
-        aRsb = (Rsb*)m_oEntWrk.ayPayload();
+        aRsb = (Rsb*)m_pEnt->ayPayload();
         i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
-        aRsb->vVal_ntv(i_Cell_ntv, iRes);
+        iRes = aRsb->iVal_ntv(i_Cell_ntv);
+        *(++aiDstk) = iRes;
         break;
         
       case EO_PAY_STORE_COL:
         iArg = * (i8*)aeCode;
         aeCode += 8;
-        aRsb = (Rsb*)m_oEntWrk.ayPayload();
+        iRes = *(aiDstk--);
+        aRsb = (Rsb*)m_pEnt->ayPayload();
         i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
-        iRes = aRsb->iVal_ntv(i_Cell_ntv);
-        *(++aiDstk) = iRes;
+        aRsb->vVal_ntv(i_Cell_ntv, iRes);
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
