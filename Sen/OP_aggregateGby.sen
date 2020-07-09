@@ -16,11 +16,11 @@
     Table[].tablePtn@ to tablePtn[]
   then
 
+  // create the Pot
+  Pot[].new
+
   // get the agg column
   <columnNm> Table[].findColumn to pColumn
-
-  // create the Pot
-  // Pot[].new
 
   // create the expr
   Expr[].new
@@ -56,7 +56,7 @@
 : aggregateGby_RsbBuffer \handler
 
   Operand[].pipeIn
-  //indexTree[].aggregateGby
+  aggregateRsb[].aggregateGby
   Operand[].delete
 
   //Pot[].pipeoutAllCompleted
@@ -64,7 +64,7 @@
   true
 ;
 
-/*-----------------------------------------------------------≥®-----------------*/
+/*----------------------------------------------------------------------------*/
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : aggregateGby_StreamDef \handler
@@ -81,6 +81,9 @@
 
   StreamDefOut[].print
 
+  // new a aggregateRsb
+  aggregateRsb[].new
+
   true
 ;
 
@@ -89,10 +92,11 @@
 /*----------------------------------------------------------------------------*/
 : aggregateGby_EosMarker \handler
 
-  //Pot[].pipeoutAllDangling
+  Pot[].pipeoutAllDangling
 
+  AggregateRsb[].delete
   Expr[].delete
-  //Pot[].delete
+  Pot[].delete
   IndexTree[].delete
 
   StreamDefOut[].delete
@@ -104,7 +108,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* aggregateGby request                                                    SPAWN */
+/* aggregateGby request                                                 SPAWN */
 /*----------------------------------------------------------------------------*/
 : aggregateGby_req \operator
 
