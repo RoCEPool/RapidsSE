@@ -194,7 +194,7 @@ void Calculator::vAddCode(eEO eCode)
 /*----------------------------------------------------------------------------*/
 /* add code with argument                                                     */
 /*----------------------------------------------------------------------------*/
-void Calculator::vAddCode(eEO eCode, i8 iArg)
+void Calculator::vAddCodeArg(eEO eCode, i8 iArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
@@ -209,7 +209,7 @@ void Calculator::vAddCode(eEO eCode, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* add code                                                                   */
 /*----------------------------------------------------------------------------*/
-void Calculator::vAddCode(eEO eCode, Stz* szLabelNm)
+void Calculator::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
@@ -218,19 +218,19 @@ void Calculator::vAddCode(eEO eCode, Stz* szLabelNm)
   if (C_UNKNOWN == i_Label) {
     i_Label = iAddLabel(szLabelNm,false);
     m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
-    vAddCode(eCode,C_UNKNOWN);
+    vAddCodeArg(eCode,C_UNKNOWN);
     vPrintLabels();
     return;
   }
 
   if (m_xaJumpLabel[i_Label].m_bDefined) {
-    vAddCode(eCode,m_xaJumpLabel[i_Label].m_i_Code);
+    vAddCodeArg(eCode,m_xaJumpLabel[i_Label].m_i_Code);
     return;
   }
   
   i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Chain;
   m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
-  vAddCode(eCode,i_Chain);
+  vAddCodeArg(eCode,i_Chain);
   vPrintLabels();
 }
 
@@ -437,7 +437,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("@"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
-      vAddCode(EO_PUSHSRCCOLI,iArg);
+      vAddCodeArg(EO_PUSHSRCCOLI,iArg);
       continue;
     }
 
@@ -445,7 +445,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("#"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
-      vAddCode(EO_PUSHDSTCOLI,iArg);
+      vAddCodeArg(EO_PUSHDSTCOLI,iArg);
       continue;
     }
     
@@ -453,7 +453,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("!"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
-      vAddCode(EO_DEPOSITCOLI,iArg);
+      vAddCodeArg(EO_DEPOSITCOLI,iArg);
       continue;
     }
 
@@ -466,7 +466,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     // call subroutine
     if (pTkn->bSame("call"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCode(EO_CALL,pTkn->szChars());
+      vAddCodeLabel(EO_CALL,pTkn->szChars());
       continue;
     }
 
@@ -481,7 +481,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("pf"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
-      vAddCode(EO_PAY_FETCH_COL,iArg);
+      vAddCodeArg(EO_PAY_FETCH_COL,iArg);
       continue;
     }
     
@@ -489,34 +489,34 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("ps"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       iArg = pTkn->iToI8();
-      vAddCode(EO_PAY_STORE_COL,iArg);
+      vAddCodeArg(EO_PAY_STORE_COL,iArg);
       continue;
     }
     
     // jump
     if (pTkn->bSame("j"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCode(EO_JMP,pTkn->szChars());
+      vAddCodeLabel(EO_JMP,pTkn->szChars());
       continue;
     }
 
     // jump on false
     if (pTkn->bSame("jf"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCode(EO_JMPFALSE,pTkn->szChars());
+      vAddCodeLabel(EO_JMPFALSE,pTkn->szChars());
       continue;
     }
     
     // jump on true
     if (pTkn->bSame("jt"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCode(EO_JMPTRUE,pTkn->szChars());
+      vAddCodeLabel(EO_JMPTRUE,pTkn->szChars());
       continue;
     }
 
     if (pTkn->bIsInteger()) {
       iArg = pTkn->iToI8();
-      vAddCode(EO_INTEGER,iArg);
+      vAddCodeArg(EO_INTEGER,iArg);
 //      iArg = pTkn->iToI8();
 //      piArg = (i8*) & m_eaCode[m_i_Code];
 //      * piArg = iArg;
