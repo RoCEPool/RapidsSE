@@ -31,6 +31,7 @@ Calculator::Calculator(void)
  
   m_pEnt = nullptr;
   // m_oEntWrk
+  m_pEntBuffer = nullptr;
   m_pIndexTree = nullptr;
   
   m_i_Code = 0;
@@ -679,6 +680,7 @@ i8 Calculator::iCompute(void)
   i8 iTopA;
   i8 iTopB;
   i8 iRes;
+  i8 iCmp;
   i8 i_Cell_ntv;
   Rsb* aRsb;
 
@@ -698,19 +700,64 @@ i8 Calculator::iCompute(void)
     switch (eCode) {
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_RESETENTWRK:      NEVER_REACH; // not yet implemented
+      case EO_RESETENTWRK:
+        m_oEntWrk.vReset();
+        break;
+        
       case EO_APPENDELMI:       NEVER_REACH; // not yet implemented
-      case EO_POSENTPRIOR:      NEVER_REACH; // not yet implemented
-      case EO_NEXTENT:          NEVER_REACH; // not yet implemented
+        
+      case EO_POSENTPRIOR:
+        m_pEnt = m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
+        break;
+        
+      case EO_NEXTENT:
+        EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
+        break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_ENT_LESSTHAN:     NEVER_REACH; // not yet implemented
-      case EO_ENT_LESSEQUAL:    NEVER_REACH; // not yet implemented
-      case EO_ENT_EQUAL:        NEVER_REACH; // not yet implemented
-      case EO_ENT_NOTEQUAL:     NEVER_REACH; // not yet implemented
-      case EO_ENT_GREATEREQUAL: NEVER_REACH; // not yet implemented
-      case EO_ENT_GREATERTHAN:  NEVER_REACH; // not yet implemented
+      case EO_ENT_LESSTHAN:
+        iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_LESSEQUAL:
+        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
+        iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_EQUAL:
+        iRes  = KC_SAME == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_NOTEQUAL:
+        iRes  = KC_SAME != Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_GREATEREQUAL:
+        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
+        iRes = (KC_SAME == iCmp || KC_AFTER == iCmp ) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_GREATERTHAN:
+        iRes  = KC_AFTER == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_INSERT_ENTPAY:
+        m_pEnt = m_pIndexTree->aInsertEntryPay(m_oEntWrk.aEnt());
+        ASSERT(m_pEnt);
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_FETCH_PAY_COL: NEVER_REACH; // not yet implemented
+        
+      case EO_STORE_PAY_COL: NEVER_REACH; // not yet implemented
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_COPYRSB: // copy src rsb to dst rsb
         m_pDstRowSlab->vPositionOnCell(0);

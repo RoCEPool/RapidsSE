@@ -47,6 +47,7 @@ namespace Indexing
     bool       bInsertEntry(Crw* aCrw, Ref& xRowRef);
     bool       bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef);
     Ent*       aInsertPayloadEntry(EntWrk& xEntWrk, i8 nPayloadBytes);
+    Ent*       aInsertEntryPay(Ent* aEnt);
     void       vLazyBuild(void);
     EntBuffer* pNewRootBuffer(void);
     EntBuffer* pPositionH0Buffer(Key* aFindKey);

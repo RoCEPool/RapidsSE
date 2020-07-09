@@ -7,11 +7,14 @@ enum eEO : i1 // expression operators
 {
   /*  0 */ EO_NONE=0,
   
+  // entry
   /*    */ EO_RESETENTWRK,      // reset m_oEntWrk
   /*    */ EO_APPENDELMI,       // append next element value (int)
   /*    */ EO_POSENTPRIOR,      // position m_pEnt prior using m_oEntWrk.key
   /*    */ EO_NEXTENT,          // move to next m_pEnt
+  /*    */ EO_INSERT_ENTPAY,    // insert a payload entry into the indexTree
   
+  // ent relational operators
   /*    */ EO_ENT_LESSTHAN,     // test if m_pEnt.key <  m_oEntWrk.key
   /*    */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
   /*    */ EO_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
@@ -19,17 +22,24 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
   /*    */ EO_ENT_GREATERTHAN,  // test if m_pEnt.key >  m_oEntWrk.key
 
+  // rsb operators
   /*    */ EO_COPYRSB,          // copy src rsb to dst rsb       IS THIS NEEDED?
   /*    */ EO_DEPOSITCOLI,      // pop and deposit top into dst column
   /*    */ EO_PUSHDSTCOLI,      // push dst column
   /*    */ EO_PUSHSRCCOLI,      // push src column
   /*    */ EO_PUSHALTCOLI,      // push alt column
-
+  
+  // pay load
+  /*    */ EO_FETCH_PAY_COL,    // fetch a column from the entry payload
+  /*    */ EO_STORE_PAY_COL,    // store in column of the entry payload
+  
+  // pushes
   /*    */ EO_INTEGER,          // push integer
   /*    */ EO_PUSHNULL,         // push null
   /*    */ EO_PUSH0,            // push integer 0
   /*    */ EO_PUSH1,            // push integer 1
 
+  // arithmetic operators
   /*    */ EO_ADD,              // add top two int's push result
   /*    */ EO_DIVIDE,           // divide top int by second push result
   /*    */ EO_MODULO,           // modulo top int be second push result
@@ -37,6 +47,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_NEGATE,           // negate the top value
   /*    */ EO_SUBTRACT,         // subtract second int from top push result
 
+  // relational operators
   /*    */ EO_LESSTHAN,         // test top < 2nd, push result
   /*    */ EO_LESSEQUAL,        // test top <= 2nd, push result
   /*    */ EO_EQUAL,            // test top == 2nd, push result
@@ -44,23 +55,28 @@ enum eEO : i1 // expression operators
   /*    */ EO_GREATEREQUAL,     // test top >= 2nd, push result
   /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
+  // logical operators
   /*    */ EO_AND,              // logical and top two int's, push result
   /*    */ EO_OR,               // logical or top two int's, push result
   /*    */ EO_NOT,              // logical not top int, push result
   
+  // test operators
   /*    */ EO_ISNULL,           // test if top is null, push result
   /*    */ EO_ISNOTNULL,        // test if top is not null, push result
   
+  // stack operators
   /*    */ EO_INC,              // increment top, push result
   /*    */ EO_DEC,              // decrement top, push result
   /*    */ EO_DUP,              // duplicate top
   /*    */ EO_POP,              // pop / discard top
   /*    */ EO_PRINT,            // print top
   
+  // conditional operators
   /*    */ EO_JMP,              // jump to location
   /*    */ EO_JMPFALSE,         // pop top and jump to location if false
   /*    */ EO_JMPTRUE,          // pop top and jump to location if true
 
+  // subroutine operators
   /*    */ EO_CALL,             // call subroutine at location
   /*    */ EO_RETURN,           // return from subroutine and
 
@@ -75,6 +91,7 @@ static Stz* aEO[]
   /*    */ "EO_APPENDELMI"_Stz,
   /*    */ "EO_POSENTPRIOR"_Stz,
   /*    */ "EO_NEXTENT"_Stz,
+  /*    */ "EO_INSERT_ENTPAY"_Stz,
   
   /*    */ "EO_ENT_LESSTHAN"_Stz,
   /*    */ "EO_ENT_LESSEQUAL"_Stz,
@@ -89,6 +106,9 @@ static Stz* aEO[]
   /*    */ "EO_PUSHSRCCOLI"_Stz,
   /*    */ "EO_PUSHALTCOLI"_Stz,
 
+  /*    */ "EO_STORE_PAY_COL"_Stz,
+  /*    */ "EO_FETCH_PAY_COL"_Stz,
+  
   /*    */ "EO_INTEGER"_Stz,
   /*    */ "EO_PUSHNULL"_Stz,
   /*    */ "EO_PUSH0"_Stz,

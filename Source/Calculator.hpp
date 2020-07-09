@@ -35,6 +35,8 @@ namespace Expressions
    
     Ent*       m_pEnt;
     EntWrk     m_oEntWrk;
+    EntBuffer* m_pEntBuffer;
+    
     IndexTree* m_pIndexTree;
   
 

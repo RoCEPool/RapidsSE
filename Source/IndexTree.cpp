@@ -542,6 +542,29 @@ Ent* IndexTree::aInsertPayloadEntry(EntWrk& xEntWrk, i8 nPayloadBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert an entry for given row into this index at level 0                   */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aInsertEntryPay(Ent* pEnt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+  
+  if (! m_pRootEntBuffer) {
+    EntBuffer* pRootBuffer = pNewRootBuffer();
+  }
+  
+  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(pEnt,&m_pRootEntBuffer);
+  ASSERT(aInsertedEntry);
+  
+  //m_pRootEntBuffer->bVerify();
+  
+  m_okLock.vDropWrite();
+  
+  return aInsertedEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* build skip lists for the index                                             */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vLazyBuild(void)
