@@ -22,7 +22,8 @@ enum eEO : i1 // expression operators
   
   // entry
   /*    */ EO_ENT_CREATEPAY,    // create a payload entry
-  /*    */ EO_ENT_INSERTPAY,    // insert a payload entry into the indexTree
+  /*    */ EO_ENT_INSERT,       // insert an entry into the indexTree
+  /*    */ EO_ENT_INSERTPAY,    // insert a payload into an entry
   /*    */ EO_ENT_NEXT,         // move to next m_pEnt
   /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
   
@@ -105,6 +106,7 @@ static Stz* aEO[]
 
   // entry
   /*    */ "EO_ENT_CREATEPAY"_Stz,
+  /*    */ "EO_ENT_INSERT"_Stz,
   /*    */ "EO_ENT_INSERTPAY"_Stz,
   /*    */ "EO_ENT_NEXT"_Stz,
   /*    */ "EO_ENT_POSPRIOR"_Stz,

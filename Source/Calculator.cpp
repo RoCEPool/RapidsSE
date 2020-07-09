@@ -588,6 +588,7 @@ void Calculator::vDumpCode(void)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
       case EO_ENT_CREATEPAY:    vDumpCode(i_Code,EO_ENT_CREATEPAY);       break;
+      case EO_ENT_INSERT:       vDumpCode(i_Code,EO_ENT_INSERT);          break;
       case EO_ENT_INSERTPAY:    vDumpCode(i_Code,EO_ENT_INSERTPAY);       break;
       case EO_ENT_NEXT:         vDumpCode(i_Code,EO_ENT_NEXT);            break;
       case EO_ENT_POSPRIOR:     vDumpCode(i_Code,EO_ENT_POSPRIOR);        break;
@@ -802,10 +803,17 @@ i8 Calculator::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
-      case EO_ENT_CREATEPAY: NEVER_REACH; // not yet implemented
+      case EO_ENT_CREATEPAY:
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        m_oEntWrk.vPayload(true);
+        m_oEntWrk.vPayloadBytes(iArg);
+        break;
         
-      case EO_ENT_INSERTPAY:
-        m_pEnt = m_pIndexTree->aInsertEntryPay(m_oEntWrk.aEnt());
+      case EO_ENT_INSERTPAY: NEVER_REACH; // not yet implemented
+        
+      case EO_ENT_INSERT:
+        m_pEnt = m_pIndexTree->aInsertEntry(m_oEntWrk.aEnt());
         ASSERT(m_pEnt);
         break;
         

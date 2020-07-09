@@ -544,7 +544,7 @@ Ent* IndexTree::aInsertPayloadEntry(EntWrk& xEntWrk, i8 nPayloadBytes)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-Ent* IndexTree::aInsertEntryPay(Ent* pEnt)
+Ent* IndexTree::aInsertEntry(Ent* pEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
