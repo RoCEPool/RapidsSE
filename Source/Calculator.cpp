@@ -207,6 +207,18 @@ void Calculator::vAddCodeArg(eEO eCode, i8 iArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add code with argument                                                     */
+/*----------------------------------------------------------------------------*/
+void Calculator::vAddCodeArg(eEO eCode,Token* pTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  i8 iArg = pTkn->iToI8();
+  
+  vAddCodeArg(EO_PUSHSRCCOLI,iArg);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add code                                                                   */
 /*----------------------------------------------------------------------------*/
 void Calculator::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
@@ -235,14 +247,14 @@ void Calculator::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
 }
 
 /*----------------------------------------------------------------------------*/
-//void Calculator::vAddCode(eEO eCode, Stz* szLabelNm)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-//
-//  i8 iArg = iDecodeLabel(szLabelNm);
-//
-//  vAddCode(eCode,iArg);
-//}
+/* add code                                                                   */
+/*----------------------------------------------------------------------------*/
+void Calculator::vAddCodeLabel(eEO eCode, Token* pTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+
+  vAddCodeLabel(eCode,pTkn->szChars());
+}
 
 /*----------------------------------------------------------------------------*/
 /* add label                                                                  */
@@ -377,8 +389,8 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
   i8 nTkns = pTknVec->nTokens();
   
   for (i8 i_Tkn = 0; i_Tkn < nTkns; i_Tkn++) {
-    Token* pTkn = pTknVec->pGet(i_Tkn);
     
+    Token* pTkn = pTknVec->pGet(i_Tkn);
     vTrace(" >%s<\n"_Stz,pTkn->szChars());
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -436,24 +448,21 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     // push src column value
     if (pTkn->bSame("@"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      iArg = pTkn->iToI8();
-      vAddCodeArg(EO_PUSHSRCCOLI,iArg);
+      vAddCodeArg(EO_PUSHSRCCOLI,pTkn);
       continue;
     }
 
     // push dst column value
     if (pTkn->bSame("#"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      iArg = pTkn->iToI8();
-      vAddCodeArg(EO_PUSHDSTCOLI,iArg);
+      vAddCodeArg(EO_PUSHDSTCOLI,pTkn);
       continue;
     }
     
     // deposit dst column value
     if (pTkn->bSame("!"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      iArg = pTkn->iToI8();
-      vAddCodeArg(EO_DEPOSITCOLI,iArg);
+      vAddCodeArg(EO_DEPOSITCOLI,pTkn);
       continue;
     }
 
@@ -466,7 +475,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     // call subroutine
     if (pTkn->bSame("call"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeLabel(EO_CALL,pTkn->szChars());
+      vAddCodeLabel(EO_CALL,pTkn);
       continue;
     }
 
@@ -480,37 +489,35 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     // fetch pay col
     if (pTkn->bSame("pf"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      iArg = pTkn->iToI8();
-      vAddCodeArg(EO_PAY_FETCH_COL,iArg);
+      vAddCodeArg(EO_PAY_FETCH_COL,pTkn);
       continue;
     }
     
     // store pay col
     if (pTkn->bSame("ps"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      iArg = pTkn->iToI8();
-      vAddCodeArg(EO_PAY_STORE_COL,iArg);
+      vAddCodeArg(EO_PAY_STORE_COL,pTkn);
       continue;
     }
     
     // jump
     if (pTkn->bSame("j"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeLabel(EO_JMP,pTkn->szChars());
+      vAddCodeLabel(EO_JMP,pTkn);
       continue;
     }
 
     // jump on false
     if (pTkn->bSame("jf"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeLabel(EO_JMPFALSE,pTkn->szChars());
+      vAddCodeLabel(EO_JMPFALSE,pTkn);
       continue;
     }
     
     // jump on true
     if (pTkn->bSame("jt"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeLabel(EO_JMPTRUE,pTkn->szChars());
+      vAddCodeLabel(EO_JMPTRUE,pTkn);
       continue;
     }
 
@@ -525,28 +532,17 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     }
     
     if (pTkn->bSame(C_NULL)) {
-      vAddCode(EO_INTEGER);
-      iArg = C_DATUM_NULL;
-      piArg = (i8*) & m_eaCode[m_i_Code];
-      m_i_Code += sizeof(i8);
+      vAddCodeArg(EO_INTEGER,C_DATUM_NULL);
       continue;
     }
     
     if (pTkn->bSame("0"_Stz)) {
-      vAddCode(EO_INTEGER);
-      iArg = 0;
-      piArg = (i8*) & m_eaCode[m_i_Code];
-      * piArg = iArg;
-      m_i_Code += sizeof(i8);
+      vAddCodeArg(EO_INTEGER,(i8)0);
       continue;
     }
     
     if (pTkn->bSame("1"_Stz)) {
-      vAddCode(EO_INTEGER);
-      iArg = 1;
-      piArg = (i8*) & m_eaCode[m_i_Code];
-      * piArg = iArg;
-      m_i_Code += sizeof(i8);
+      vAddCodeArg(EO_INTEGER,1);
       continue;
     }
 
@@ -560,9 +556,12 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
   vTrace("\n"_Stz);
   
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    if (! m_xaJumpLabel[i_Label].m_bDefined)
+    if (! m_xaJumpLabel[i_Label].m_bDefined) {
+      vTrace("Error: undefined label %s\n"_Stz,
+             m_xaJumpLabel[i_Label].m_sLabel.szStz());
       return false;
-
+    }
+  
   vDumpCode();
   
   return true;

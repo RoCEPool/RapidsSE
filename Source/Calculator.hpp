@@ -74,7 +74,9 @@ namespace Expressions
   private:
     void vAddCode(eEO eCode);
     void vAddCodeArg(eEO eCode, i8 iArg);
+    void vAddCodeArg(eEO eCode, Token* pTkn);
     void vAddCodeLabel(eEO eCode, Stz* szLabelNm);
+    void vAddCodeLabel(eEO eCode, Token* pTkn);
     i8   iAddLabel(Stz* szLabelNm, bool bDefined);
     void vCorrectLabel(i8 i_Label);
     i8   iDecodeLabel(Stz* szLabelNm);
