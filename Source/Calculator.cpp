@@ -382,6 +382,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     vTrace(" >%s<\n"_Stz,pTkn->szChars());
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // arithmetic operators
     if (pTkn->bSame("+"_Stz)) { vAddCode(EO_ADD);      continue; }
     if (pTkn->bSame("/"_Stz)) { vAddCode(EO_DIVIDE);   continue; }
     if (pTkn->bSame("%"_Stz)) { vAddCode(EO_MODULO);   continue; }
@@ -389,6 +390,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("-"_Stz)) { vAddCode(EO_SUBTRACT); continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // entry relational operators
     if (pTkn->bSame("<"_Stz))  { vAddCode(EO_LESSTHAN);     continue; }
     if (pTkn->bSame("<="_Stz)) { vAddCode(EO_LESSEQUAL);    continue; }
     if (pTkn->bSame("=="_Stz)) { vAddCode(EO_EQUAL);        continue; }
@@ -397,15 +399,18 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame(">"_Stz))  { vAddCode(EO_GREATERTHAN);  continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // logical operators
     if (pTkn->bSame("and"_Stz)) { vAddCode(EO_AND); continue; }
     if (pTkn->bSame("or"_Stz))  { vAddCode(EO_OR);  continue; }
     if (pTkn->bSame("not"_Stz)) { vAddCode(EO_NOT); continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // null test operators
     if (pTkn->bSame("isNull"_Stz))    { vAddCode(EO_ISNULL);    continue; }
     if (pTkn->bSame("isNotNull"_Stz)) { vAddCode(EO_ISNOTNULL); continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // stack operators
     if (pTkn->bSame("++"_Stz))  { vAddCode(EO_INC);   continue; }
     if (pTkn->bSame("inc"_Stz)) { vAddCode(EO_INC);   continue; }
     if (pTkn->bSame("--"_Stz))  { vAddCode(EO_DEC);   continue; }
@@ -415,6 +420,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("."_Stz))   { vAddCode(EO_PRINT); continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // subroutine operators
     if (pTkn->bSame("ret"_Stz)) { vAddCode(EO_RETURN); continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -565,12 +571,27 @@ void Calculator::vDumpCode(void)
     switch (eCode) {
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_RESETENTWRK:      vDumpCode(i_Code,EO_RESETENTWRK);         break;
-      case EO_APPENDELMI:       vDumpCode(EO_APPENDELMI,i_Code);          break;
-      case EO_POSENTPRIOR:      vDumpCode(i_Code,EO_POSENTPRIOR);         break;
-      case EO_NEXTENT:          vDumpCode(i_Code,EO_NEXTENT);             break;
+      // arithmetic operators
+      case EO_ADD:              vDumpCode(i_Code,EO_ADD);                 break;
+      case EO_DIVIDE:           vDumpCode(i_Code,EO_DIVIDE);              break;
+      case EO_MODULO:           vDumpCode(i_Code,EO_MODULO);              break;
+      case EO_MULTIPLY:         vDumpCode(i_Code,EO_MULTIPLY);            break;
+      case EO_NEGATE:           vDumpCode(i_Code,EO_NEGATE);              break;
+      case EO_SUBTRACT:         vDumpCode(i_Code,EO_SUBTRACT);            break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // branch operators
+      case EO_JMP:              vDumpCode(EO_JMP,i_Code);                 break;
+      case EO_JMPFALSE:         vDumpCode(EO_JMPFALSE,i_Code);            break;
+      case EO_JMPTRUE:          vDumpCode(EO_JMPTRUE,i_Code);             break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // entry
+      case EO_ENT_POSENTPRIOR:  vDumpCode(i_Code,EO_ENT_POSENTPRIOR);     break;
+      case EO_ENT_NEXT:         vDumpCode(i_Code,EO_ENT_NEXT);            break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // entry relational operators
       case EO_ENT_LESSTHAN:     vDumpCode(i_Code,EO_LESSTHAN);            break;
       case EO_ENT_LESSEQUAL:    vDumpCode(i_Code,EO_LESSEQUAL);           break;
       case EO_ENT_EQUAL:        vDumpCode(i_Code,EO_EQUAL);               break;
@@ -579,27 +600,35 @@ void Calculator::vDumpCode(void)
       case EO_ENT_GREATERTHAN:  vDumpCode(i_Code,EO_GREATERTHAN);         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_COPYRSB:          vDumpCode(i_Code,EO_COPYRSB);             break;
-      case EO_DEPOSITCOLI:      vDumpCode(EO_DEPOSITCOLI,i_Code);         break;
-      case EO_PUSHDSTCOLI:      vDumpCode(EO_PUSHDSTCOLI,i_Code);         break;
-      case EO_PUSHSRCCOLI:      vDumpCode(EO_PUSHSRCCOLI,i_Code);         break;
-      case EO_PUSHALTCOLI:      vDumpCode(EO_PUSHALTCOLI,i_Code);         break;
-
+      // entWrk
+      case EO_ENTWRK_RESET:     vDumpCode(i_Code,EO_ENTWRK_RESET);        break;
+      case EO_ENTWRK_APPENDELMI:vDumpCode(EO_ENTWRK_APPENDELMI,i_Code);   break;
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // logical operators
+      case EO_AND:              vDumpCode(i_Code,EO_AND);                 break;
+      case EO_OR:               vDumpCode(i_Code,EO_OR);                  break;
+      case EO_NOT:              vDumpCode(i_Code,EO_NOT);                 break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // null test operators
+      case EO_ISNULL:           vDumpCode(i_Code,EO_ISNULL);              break;
+      case EO_ISNOTNULL:        vDumpCode(i_Code,EO_ISNOTNULL);           break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // pay load
+      case EO_PAY_FETCH_COL:    vDumpCode(i_Code,EO_PAY_FETCH_COL);       break;
+      case EO_PAY_STORE_COL:    vDumpCode(i_Code,EO_PAY_STORE_COL);       break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // pushes
       case EO_INTEGER:          vDumpCode(EO_INTEGER,i_Code);             break;
       case EO_PUSHNULL:         vDumpCode(i_Code,EO_PUSHNULL);            break;
       case EO_PUSH0:            vDumpCode(i_Code,EO_PUSH0);               break;
       case EO_PUSH1:            vDumpCode(i_Code,EO_PUSH1);               break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_ADD:              vDumpCode(i_Code,EO_ADD);                 break;
-      case EO_DIVIDE:           vDumpCode(i_Code,EO_DIVIDE);              break;
-      case EO_MODULO:           vDumpCode(i_Code,EO_MODULO);              break;
-      case EO_MULTIPLY:         vDumpCode(i_Code,EO_MULTIPLY);            break;
-      case EO_NEGATE:           vDumpCode(i_Code,EO_NEGATE);              break;
-      case EO_SUBTRACT:         vDumpCode(i_Code,EO_SUBTRACT);            break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // relational operators
       case EO_LESSTHAN:         vDumpCode(i_Code,EO_LESSTHAN);            break;
       case EO_LESSEQUAL:        vDumpCode(i_Code,EO_LESSEQUAL);           break;
       case EO_EQUAL:            vDumpCode(i_Code,EO_EQUAL);               break;
@@ -608,31 +637,27 @@ void Calculator::vDumpCode(void)
       case EO_GREATERTHAN:      vDumpCode(i_Code,EO_GREATERTHAN);         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_AND:              vDumpCode(i_Code,EO_AND);                 break;
-      case EO_OR:               vDumpCode(i_Code,EO_OR);                  break;
-      case EO_NOT:              vDumpCode(i_Code,EO_NOT);                 break;
-        
+      // rsb operators
+      case EO_COPYRSB:          vDumpCode(i_Code,EO_COPYRSB);             break;
+      case EO_DEPOSITCOLI:      vDumpCode(EO_DEPOSITCOLI,i_Code);         break;
+      case EO_PUSHDSTCOLI:      vDumpCode(EO_PUSHDSTCOLI,i_Code);         break;
+      case EO_PUSHSRCCOLI:      vDumpCode(EO_PUSHSRCCOLI,i_Code);         break;
+      case EO_PUSHALTCOLI:      vDumpCode(EO_PUSHALTCOLI,i_Code);         break;
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_ISNULL:           vDumpCode(i_Code,EO_ISNULL);              break;
-      case EO_ISNOTNULL:        vDumpCode(i_Code,EO_ISNOTNULL);           break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // stack operators
       case EO_INC:              vDumpCode(i_Code,EO_INC);                 break;
       case EO_DEC:              vDumpCode(i_Code,EO_DEC);                 break;
       case EO_DUP:              vDumpCode(i_Code,EO_DUP);                 break;
       case EO_POP:              vDumpCode(i_Code,EO_POP);                 break;
       case EO_PRINT:            vDumpCode(i_Code,EO_PRINT);               break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_JMP:              vDumpCode(EO_JMP,i_Code);                 break;
-      case EO_JMPFALSE:         vDumpCode(EO_JMPFALSE,i_Code);            break;
-      case EO_JMPTRUE:          vDumpCode(EO_JMPTRUE,i_Code);             break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_CALL:             vDumpCode(EO_CALL,i_Code);                break;
       case EO_RETURN:           vDumpCode(i_Code,EO_RETURN);              break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // subroutine operators
       default:
         vTrace(" unknown opcode in calculator %lld\n"_Stz,(i8)eCode);
         ASSERT(0);
@@ -690,6 +715,8 @@ i8 Calculator::iCompute(void)
   eEO  eCode;
   eEO* aeCode = & m_eaCode[0];
   i8*  aiDstk = &m_iaDataStack[0];
+  
+  IndexDef* pIndexDef = m_pIndexTree->pIndexDef();
 
   eEO** aaeRstk = &m_aaReturnStack[0];
 
@@ -700,116 +727,7 @@ i8 Calculator::iCompute(void)
     switch (eCode) {
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_RESETENTWRK:
-        m_oEntWrk.vReset();
-        break;
-        
-      case EO_APPENDELMI:       NEVER_REACH; // not yet implemented
-        
-      case EO_POSENTPRIOR:
-        m_pEnt = m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
-        break;
-        
-      case EO_NEXTENT:
-        EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
-        break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_ENT_LESSTHAN:
-        iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
-        *(++aiDstk) = iRes;
-        break;
-        
-      case EO_ENT_LESSEQUAL:
-        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
-        iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
-        *(++aiDstk) = iRes;
-        break;
-        
-      case EO_ENT_EQUAL:
-        iRes  = KC_SAME == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
-        *(++aiDstk) = iRes;
-        break;
-        
-      case EO_ENT_NOTEQUAL:
-        iRes  = KC_SAME != Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
-        *(++aiDstk) = iRes;
-        break;
-        
-      case EO_ENT_GREATEREQUAL:
-        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
-        iRes = (KC_SAME == iCmp || KC_AFTER == iCmp ) ? 1 : 0;
-        *(++aiDstk) = iRes;
-        break;
-        
-      case EO_ENT_GREATERTHAN:
-        iRes  = KC_AFTER == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
-        *(++aiDstk) = iRes;
-        break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_INSERT_ENTPAY:
-        m_pEnt = m_pIndexTree->aInsertEntryPay(m_oEntWrk.aEnt());
-        ASSERT(m_pEnt);
-        break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_FETCH_PAY_COL: NEVER_REACH; // not yet implemented
-        
-      case EO_STORE_PAY_COL: NEVER_REACH; // not yet implemented
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_COPYRSB: // copy src rsb to dst rsb
-        m_pDstRowSlab->vPositionOnCell(0);
-        m_pDstRowSlab->vCopyRsb(m_aSrcRsb_left,bSrcHasPtnHash,bCopyPtnHash);
-        break;
-        
-      case EO_DEPOSITCOLI: // pop and deposit top into dst column
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
-        iRes = *(aiDstk--);
-        m_pDstRowSlab->vPositionOnCell(iArg);
-        m_pDstRowSlab->vDeposit(iRes);
-        break;
-        
-      case EO_PUSHDSTCOLI: // push dst column
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
-        aRsb = m_pDstRowSlab->aRsbAdr(0);
-        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
-        iRes = aRsb->iVal_ntv(i_Cell_ntv);
-        *(++aiDstk) = iRes;
-        break;
-        
-      case EO_PUSHSRCCOLI: // push src column
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
-        iRes = m_aSrcRsb_left->iVal_ntv(m_aSrcRsb_left->i_ColToCell_ntv(iArg));
-        *(++aiDstk) = iRes;
-        break;
-        
-      case EO_PUSHALTCOLI:     NEVER_REACH; // not yet implemented
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_INTEGER: // push integer
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
-        *(++aiDstk) = iArg;
-        break;
-      
-      case EO_PUSHNULL: // push null
-        *(++aiDstk) = C_DATUM_NULL;
-        break;
-         
-      case EO_PUSH0: // push integer 0
-        *(++aiDstk) = 0;
-        break;
-        
-      case EO_PUSH1: // push integer 1
-        *(++aiDstk) = 1;
-        break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // arithmetic operators
       case EO_ADD: // add top two int's push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
@@ -852,13 +770,165 @@ i8 Calculator::iCompute(void)
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // branch operators
+      case EO_JMP: // jump to location
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        
+        aeCode = & m_eaCode[iArg];
+        break;
+        
+      case EO_JMPFALSE: // pop top and jump to location if false
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        
+        iTopA = *(aiDstk--);
+        if (! iTopA)
+          aeCode = & m_eaCode[iArg];
+        
+        break;
+        
+      case EO_JMPTRUE: // pop top and jump to location if true
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        
+        iTopA = *(aiDstk--);
+        if (iTopA)
+          aeCode = & m_eaCode[iArg];
+        
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // entry
+      case EO_ENT_POSENTPRIOR:
+        m_pEnt = m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
+        break;
+        
+      case EO_ENT_NEXT:
+        EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
+        break;
+
+      case EO_ENT_INSERTPAY:
+        m_pEnt = m_pIndexTree->aInsertEntryPay(m_oEntWrk.aEnt());
+        ASSERT(m_pEnt);
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // entry relational operators
+      case EO_ENT_LESSTHAN:
+        iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_LESSEQUAL:
+        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
+        iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // entWrk
+      case EO_ENTWRK_RESET:
+        m_oEntWrk.vReset();
+        break;
+        
+      case EO_ENTWRK_APPENDELMI:
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        m_oEntWrk.vAppendElement(m_aSrcRsb_left, pIndexDef->pGetColumn(iArg));
+        break;
+      case EO_ENT_EQUAL:
+        iRes  = KC_SAME == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_NOTEQUAL:
+        iRes  = KC_SAME != Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_GREATEREQUAL:
+        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
+        iRes = (KC_SAME == iCmp || KC_AFTER == iCmp ) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_GREATERTHAN:
+        iRes  = KC_AFTER == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+      
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // logical operators
+      case EO_AND: // logical and top two int's, push result
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = (iTopA && iTopB) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_OR: // logical or top two int's, push result
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = (iTopA || iTopB) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_NOT: // logical not top int, push result
+        iTopA = *(aiDstk--);
+        iRes  = (! iTopA) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // null test operators
+      case EO_ISNULL: // test if top is null, push result
+        iTopA = *(aiDstk--);
+        iRes  = (C_DATUM_NULL == iTopA) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ISNOTNULL: // test if top is not null, push result
+        iTopA = *(aiDstk--);
+        iRes  = (C_DATUM_NULL != iTopA) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // pay load
+      case EO_PAY_FETCH_COL: NEVER_REACH; // not yet implemented
+        
+      case EO_PAY_STORE_COL: NEVER_REACH; // not yet implemented
+      
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // pushes
+      case EO_INTEGER: // push integer
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        *(++aiDstk) = iArg;
+        break;
+        
+      case EO_PUSHNULL: // push null
+        *(++aiDstk) = C_DATUM_NULL;
+        break;
+        
+      case EO_PUSH0: // push integer 0
+        *(++aiDstk) = 0;
+        break;
+        
+      case EO_PUSH1: // push integer 1
+        *(++aiDstk) = 1;
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // relational operators
       case EO_LESSTHAN: // test top < 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA < iTopB;
         *(++aiDstk) = iRes;
         break;
-
+        
       case EO_LESSEQUAL: // test top <= 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
@@ -895,40 +965,40 @@ i8 Calculator::iCompute(void)
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_AND: // logical and top two int's, push result
-        iTopB = *(aiDstk--);
-        iTopA = *(aiDstk--);
-        iRes  = (iTopA && iTopB) ? 1 : 0;
+      // rsb operators
+      case EO_COPYRSB: // copy src rsb to dst rsb
+        m_pDstRowSlab->vPositionOnCell(0);
+        m_pDstRowSlab->vCopyRsb(m_aSrcRsb_left,bSrcHasPtnHash,bCopyPtnHash);
+        break;
+        
+      case EO_DEPOSITCOLI: // pop and deposit top into dst column
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        iRes = *(aiDstk--);
+        m_pDstRowSlab->vPositionOnCell(iArg);
+        m_pDstRowSlab->vDeposit(iRes);
+        break;
+        
+      case EO_PUSHDSTCOLI: // push dst column
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        aRsb = m_pDstRowSlab->aRsbAdr(0);
+        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
+        iRes = aRsb->iVal_ntv(i_Cell_ntv);
         *(++aiDstk) = iRes;
         break;
         
-      case EO_OR: // logical or top two int's, push result
-        iTopB = *(aiDstk--);
-        iTopA = *(aiDstk--);
-        iRes  = (iTopA || iTopB) ? 1 : 0;
+      case EO_PUSHSRCCOLI: // push src column
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        iRes = m_aSrcRsb_left->iVal_ntv(m_aSrcRsb_left->i_ColToCell_ntv(iArg));
         *(++aiDstk) = iRes;
         break;
         
-      case EO_NOT: // logical not top int, push result
-        iTopA = *(aiDstk--);
-        iRes  = (! iTopA) ? 1 : 0;
-        *(++aiDstk) = iRes;
-        break;
-        
+      case EO_PUSHALTCOLI:     NEVER_REACH; // not yet implemented
+      
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_ISNULL: // test if top is null, push result
-        iTopA = *(aiDstk--);
-        iRes  = (C_DATUM_NULL == iTopA) ? 1 : 0;
-        *(++aiDstk) = iRes;
-        break;
-
-      case EO_ISNOTNULL: // test if top is not null, push result
-        iTopA = *(aiDstk--);
-        iRes  = (C_DATUM_NULL != iTopA) ? 1 : 0;
-        *(++aiDstk) = iRes;
-        break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // stack operators
       case EO_INC: // increment top, push result
         iTopA = *aiDstk;
         *aiDstk = iTopA + 1;
@@ -952,36 +1022,9 @@ i8 Calculator::iCompute(void)
         iTopA = *(aiDstk--);
         vTrace("%lld\n"_Stz,iTopA);
         break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_JMP: // jump to location
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
-        
-        aeCode = & m_eaCode[iArg];
-        break;
-        
-      case EO_JMPFALSE: // pop top and jump to location if false
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
-        
-        iTopA = *(aiDstk--);
-        if (! iTopA)
-          aeCode = & m_eaCode[iArg];
-        
-        break;
-      
-      case EO_JMPTRUE: // pop top and jump to location if true
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
-        
-        iTopA = *(aiDstk--);
-        if (iTopA)
-          aeCode = & m_eaCode[iArg];
-        
-        break;
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // subroutine operators
       case EO_CALL: // call subroutine at location
         iArg = * (i8*)aeCode;
         aeCode += 8;
