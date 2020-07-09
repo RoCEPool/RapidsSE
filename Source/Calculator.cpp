@@ -719,7 +719,7 @@ i8 Calculator::iCompute(void)
   eEO* aeCode = & m_eaCode[0];
   i8*  aiDstk = &m_iaDataStack[0];
   
-  IndexDef* pIndexDef = m_pIndexTree->pIndexDef();
+  IndexDef* pIndexDef = m_pIndexTree ? m_pIndexTree->pIndexDef() : nullptr;
 
   eEO** aaeRstk = &m_aaReturnStack[0];
 
@@ -810,7 +810,14 @@ i8 Calculator::iCompute(void)
         m_oEntWrk.vPayloadBytes(iArg);
         break;
         
-      case EO_ENT_INSERTPAY: NEVER_REACH; // not yet implemented
+      case EO_ENT_INSERTPAY:
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        iRes = *(aiDstk--);
+        aRsb = (Rsb*)m_oEntWrk.ayPayload();
+        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
+        aRsb->vVal_ntv(i_Cell_ntv, iRes);
+        break;
         
       case EO_ENT_INSERT:
         m_pEnt = m_pIndexTree->aInsertEntry(m_oEntWrk.aEnt());
