@@ -94,6 +94,9 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
   // get no of rows in the srcRsbSlab
   i8 nRows = pSrcRowSlab->nRows();
   
+  i8 i_Cell_ntv;
+  Rsb* aRsb;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
   // for each row
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
@@ -116,9 +119,18 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
     if (! pEntH0Buf) {
       vTrace("Key not found!\n"_Stz);
       
-      // add the key with a load
+      // create a payload for the entry
+      xEntWrk.vPayload(true);
+      xEntWrk.vPayloadBytes(8);
+      
+      // insert 0 in the payload at cell 0
+      aRsb = (Rsb*)xEntWrk.ayPayload();
+      i_Cell_ntv = aRsb->i_ColToCell_ntv(0);
+      aRsb->vVal_ntv(i_Cell_ntv, (i8)0);
+      
+      // insert the entry in the indexTree
       vTrace("Inserting a payload entry for key.\n"_Stz);
-      aPayloadEntry = pIndexTree->aInsertPayloadEntry(xEntWrk, 8);
+      aPayloadEntry = pIndexTree->aInsertEntry(xEntWrk.aEnt());
     }
     else {
       
@@ -140,9 +152,18 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
         else {
           vTrace("Key not found!\n"_Stz);
           
-          // add the key with a load
+          // create a payload for the entry
+          xEntWrk.vPayload(true);
+          xEntWrk.vPayloadBytes(8);
+          
+          // insert 0 in the payload at cell 0
+          aRsb = (Rsb*)xEntWrk.ayPayload();
+          i_Cell_ntv = aRsb->i_ColToCell_ntv(0);
+          aRsb->vVal_ntv(i_Cell_ntv, (i8)0);
+          
+          // insert the entry in the indexTree
           vTrace("Inserting a payload entry for key.\n"_Stz);
-          aPayloadEntry = pIndexTree->aInsertPayloadEntry(xEntWrk, 8);
+          aPayloadEntry = pIndexTree->aInsertEntry(xEntWrk.aEnt());
         }
       }
       
@@ -153,7 +174,9 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
       ASSERT(aPay->nPayloadBytes() == 8);
       
     }
-    //i8 iAgg = pExpr->iAggregate(aPayloadEntry->ayPayload(),aSrcRsb,pSrcRowSlab);
+    
+    aRsb = (Rsb*)aPayloadEntry->ayPayload();
+    //i8 iAgg = pExpr->iAggregate(nullptr,aRsb,aSrcRsb,pSrcRowSlab);
     //vTrace("Aggregate value so far: %lld\n"_Stz,iAgg);
   }
 }

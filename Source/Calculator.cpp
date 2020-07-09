@@ -810,14 +810,7 @@ i8 Calculator::iCompute(void)
         m_oEntWrk.vPayloadBytes(iArg);
         break;
         
-      case EO_ENT_INSERTPAY:
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
-        iRes = *(aiDstk--);
-        aRsb = (Rsb*)m_oEntWrk.ayPayload();
-        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
-        aRsb->vVal_ntv(i_Cell_ntv, iRes);
-        break;
+      case EO_ENT_INSERTPAY: NEVER_REACH; // not yet implemented
         
       case EO_ENT_INSERT:
         m_pEnt = m_pIndexTree->aInsertEntry(m_oEntWrk.aEnt());
@@ -918,10 +911,24 @@ i8 Calculator::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
-      case EO_PAY_FETCH_COL: NEVER_REACH; // not yet implemented
+      case EO_PAY_FETCH_COL:
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        iRes = *(aiDstk--);
+        aRsb = (Rsb*)m_oEntWrk.ayPayload();
+        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
+        aRsb->vVal_ntv(i_Cell_ntv, iRes);
+        break;
         
-      case EO_PAY_STORE_COL: NEVER_REACH; // not yet implemented
-      
+      case EO_PAY_STORE_COL:
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        aRsb = (Rsb*)m_oEntWrk.ayPayload();
+        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
+        iRes = aRsb->iVal_ntv(i_Cell_ntv);
+        *(++aiDstk) = iRes;
+        break;
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pushes
       case EO_INTEGER: // push integer
