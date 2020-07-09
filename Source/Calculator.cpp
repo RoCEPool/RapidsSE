@@ -587,7 +587,7 @@ void Calculator::vDumpCode(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
-      case EO_ENT_POSENTPRIOR:  vDumpCode(i_Code,EO_ENT_POSENTPRIOR);     break;
+      case EO_ENT_POSPRIOR:     vDumpCode(i_Code,EO_ENT_POSPRIOR);        break;
       case EO_ENT_NEXT:         vDumpCode(i_Code,EO_ENT_NEXT);            break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -800,7 +800,7 @@ i8 Calculator::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
-      case EO_ENT_POSENTPRIOR:
+      case EO_ENT_POSPRIOR:
         m_pEnt = m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
         break;
         
