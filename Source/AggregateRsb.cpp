@@ -96,6 +96,7 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
   
   i8 i_Cell_ntv;
   Rsb* aRsb;
+  EntBuffer* pEntH0Buf;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
   // for each row
@@ -113,10 +114,10 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
     // position in the indexTree
-    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
+    Ent* aEnt_prior = pIndexTree->aPositionPriorEntry(xEntWrk.aKey(), &pEntH0Buf);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
-    if (! pEntH0Buf) {
+    if (! aEnt_prior) {
       vTrace("Key not found!\n"_Stz);
       
       // create a payload for the entry
@@ -133,10 +134,6 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
       aPayloadEntry = pIndexTree->aInsertEntry(xEntWrk.aEnt());
     }
     else {
-      
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
-      // position at prior entry
-      Ent* aEnt_prior = pEntH0Buf->aPositionPriorEntry(xEntWrk.aKey());
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
       // prior entry match the key ?
