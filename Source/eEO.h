@@ -39,6 +39,7 @@ enum eEO : i1 // expression operators
   
   // entWrk
   /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
+  /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   
   // index tree
@@ -74,8 +75,12 @@ enum eEO : i1 // expression operators
   /*    */ EO_RSB_DST_NEW,      // create new destination rsb
   /*    */ EO_RSB_SRC_BEGIN,    // begin linear traverse
   /*    */ EO_RSB_SRC_NEXT,     // move to next rsb
+  /*    */ EO_RSB_SRC_PUSHOFS,  // push offset of source rsb
+  /*    */ EO_RSB_SRC_SETBYOFS, // set src rsb by using offset on stack
   /*    */ EO_RSB_ALT_BEGIN,    // begin linear traverse
   /*    */ EO_RSB_ALT_NEXT,     // move to next rsb
+  /*    */ EO_RSB_ALT_PUSHOFS,  // push offset of alt rsb
+  /*    */ EO_RSB_ALT_SETBYOFS, // set alt rsb by using offset on stack
 
   // relational operators
   /*    */ EO_LESSTHAN,         // test top < 2nd, push result
@@ -142,6 +147,7 @@ static Stz* aEO[]
   
   // entWrk
   /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
+  /*    */ "EO_ENTWRK_POPREF"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
 
   // index tree
@@ -177,8 +183,12 @@ static Stz* aEO[]
   /*    */ "EO_RSB_DST_NEW"_Stz,
   /*    */ "EO_RSB_SRC_BEGIN"_Stz,
   /*    */ "EO_RSB_SRC_NEXT"_Stz,
+  /*    */ "EO_RSB_SRC_PUSHOFS"_Stz,
+  /*    */ "EO_RSB_SRC_SETBYOFS"_Stz,
   /*    */ "EO_RSB_ALT_BEGIN"_Stz,
   /*    */ "EO_RSB_ALT_NEXT"_Stz,
+  /*    */ "EO_RSB_ALT_PUSHOFS"_Stz,
+  /*    */ "EO_RSB_ALT_SETBYOFS"_Stz,
 
   // relational operators
   /*    */ "EO_LESSTHAN"_Stz,

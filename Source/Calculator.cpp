@@ -698,6 +698,7 @@ void Calculator::vDumpCode(void)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entWrk
       case EO_ENTWRK_APPENDELMI:vDumpCode(EO_ENTWRK_APPENDELMI,i_Code);   break;
+      case EO_ENTWRK_POPREF:    vDumpCode(i_Code,EO_ENTWRK_POPREF);       break;
       case EO_ENTWRK_RESET:     vDumpCode(i_Code,EO_ENTWRK_RESET);        break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -734,8 +735,12 @@ void Calculator::vDumpCode(void)
       case EO_RSB_DST_NEW:      vDumpCode(i_Code,EO_RSB_DST_NEW);         break;
       case EO_RSB_SRC_BEGIN:    vDumpCode(i_Code,EO_RSB_SRC_BEGIN);       break;
       case EO_RSB_SRC_NEXT:     vDumpCode(i_Code,EO_RSB_SRC_NEXT);        break;
+      case EO_RSB_SRC_PUSHOFS:  vDumpCode(i_Code,EO_RSB_SRC_PUSHOFS);     break;
+      case EO_RSB_SRC_SETBYOFS: vDumpCode(i_Code,EO_RSB_SRC_SETBYOFS);    break;
       case EO_RSB_ALT_BEGIN:    vDumpCode(i_Code,EO_RSB_ALT_BEGIN);       break;
       case EO_RSB_ALT_NEXT:     vDumpCode(i_Code,EO_RSB_ALT_NEXT);        break;
+      case EO_RSB_ALT_PUSHOFS:  vDumpCode(i_Code,EO_RSB_ALT_PUSHOFS);     break;
+      case EO_RSB_ALT_SETBYOFS: vDumpCode(i_Code,EO_RSB_ALT_SETBYOFS);    break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // relational operators
@@ -763,11 +768,11 @@ void Calculator::vDumpCode(void)
       case EO_PRINT:            vDumpCode(i_Code,EO_PRINT);               break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // subroutine operators
       case EO_CALL:             vDumpCode(EO_CALL,i_Code);                break;
       case EO_RETURN:           vDumpCode(i_Code,EO_RETURN);              break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // subroutine operators
       default:
         vTrace(" unknown opcode in calculator %lld\n"_Stz,(i8)eCode);
         ASSERT(0);
@@ -989,6 +994,8 @@ i8 Calculator::iCompute(void)
         break;
       }
         
+      case EO_ENTWRK_POPREF: NEVER_REACH; // not yet implemented
+
       case EO_ENTWRK_RESET: // reset m_oEntWrk
         m_oEntWrk.vReset();
         break;
@@ -1077,11 +1084,15 @@ i8 Calculator::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb / rowslab
-      case EO_RSB_DST_NEW:   NEVER_REACH; // not yet implemented
-      case EO_RSB_SRC_BEGIN: NEVER_REACH; // not yet implemented
-      case EO_RSB_SRC_NEXT:  NEVER_REACH; // not yet implemented
-      case EO_RSB_ALT_BEGIN: NEVER_REACH; // not yet implemented
-      case EO_RSB_ALT_NEXT:  NEVER_REACH; // not yet implemented
+      case EO_RSB_DST_NEW:      NEVER_REACH; // not yet implemented
+      case EO_RSB_SRC_BEGIN:    NEVER_REACH; // not yet implemented
+      case EO_RSB_SRC_NEXT:     NEVER_REACH; // not yet implemented
+      case EO_RSB_SRC_PUSHOFS:  NEVER_REACH; // not yet implemented
+      case EO_RSB_SRC_SETBYOFS: NEVER_REACH; // not yet implemented
+      case EO_RSB_ALT_BEGIN:    NEVER_REACH; // not yet implemented
+      case EO_RSB_ALT_NEXT:     NEVER_REACH; // not yet implemented
+      case EO_RSB_ALT_PUSHOFS:  NEVER_REACH; // not yet implemented
+      case EO_RSB_ALT_SETBYOFS: NEVER_REACH; // not yet implemented
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // relational operators
