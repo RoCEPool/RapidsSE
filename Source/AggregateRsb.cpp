@@ -74,7 +74,7 @@ void AggregateRsb::vAggregate(RsbBuffer* pSrcRsbBuffer, Expr* pExpr)
 void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree, Expr* pExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
-  
+  /*
   m_pSrcRsbBuffer = pSrcRsbBuffer;
   
   EntWrk xEntWrk;
@@ -141,8 +141,8 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
         aPayloadEntry = aEnt_prior;
       }
       else {
-        // move to next entry greater than equal to
-        aPayloadEntry = EntBuffer::pMoveToGreaterEqualEntry(aEnt_prior, xEntWrk.aKey(), &pEntH0Buf);
+        // move to next entry 
+        aPayloadEntry = EntBuffer::pMoveToNextEntry(aEnt_prior, &pEntH0Buf);
         if ( aPayloadEntry && KC_SAME == Key::eCompare(aPayloadEntry->aKey(),xEntWrk.aKey())) {
           vTrace("Key Found: %s\n"_Stz,spKey.sz(aPayloadEntry->aKey(),pIndexDef));
         }
@@ -174,6 +174,30 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
     
     //i8 iAgg = pExpr->iAggregateGby(pIndexTree,aPayloadEntry,nullptr,aSrcRsb,pSrcRowSlab);
     //vTrace("Aggregate value so far: %lld\n"_Stz,iAgg);
+    pIndexTree->vDump(false);
+  }
+  */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the indexDef
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the src rowSlab from the SrcRsbBuffer
+  m_pSrcRsbBuffer = pSrcRsbBuffer;
+  RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get no of rows in the srcRsbSlab
+  i8 nRows = pSrcRowSlab->nRows();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
+  // for each row in the rowSlab
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
+    
+    bool bResult = pExpr->iAggregateGby(pIndexTree,nullptr,aSrcRsb,pSrcRowSlab);
     pIndexTree->vDump(false);
   }
 }

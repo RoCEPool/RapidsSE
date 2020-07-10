@@ -354,6 +354,7 @@ public:
   void vExprDelete(void);
   void vExprGet(void);
   void vExprNew(void);
+  void vExprNewAggGby(void);
   void vExprSourceFetch(void);
   void vExprSourceStore(void);
 

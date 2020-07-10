@@ -19,7 +19,7 @@
   // create the Pot
   Pot[].new
 
-  // create the expr
+  // create the aggregattion expr
   Expr[].new
   "@ 0 # 0 + ! 0" Expr[].source!
   Expr[].compile assert

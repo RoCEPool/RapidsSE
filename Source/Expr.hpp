@@ -24,7 +24,12 @@ namespace Expressions
     Expr(void);
    ~Expr(void) noexcept(false);
    
+    //! TEMP: TO GO
+    void vGenerateAggGby(void);
+    
     i8   iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iAggregateGby(IndexTree* pIndexTree, RowSlab* pDstRowSlab,
+                       Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     bool bCompile(void);
   
     i8   iFilter(Rsb* aRsb, RowSlab* pRowSlab);

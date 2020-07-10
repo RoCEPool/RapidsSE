@@ -22,10 +22,9 @@
   // get the agg column
   <columnNm> Table[].findColumn to pColumn
 
-  // create the expr
-  Expr[].new
-  "@ 0 PF 0 + PS 0" Expr[].source!
-  Expr[].compile assert
+  // create the aggregation expr
+  Expr[].newAggGby
+  //Expr[].compile assert
 
   // create the indexDef
   indexDef[].new

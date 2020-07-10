@@ -65,8 +65,52 @@ Calculator::~Calculator(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+//! TEMP : TO GO
 /*----------------------------------------------------------------------------*/
-/* project compute                                                            */
+/* compile                                                                    */
+/*----------------------------------------------------------------------------*/
+void Calculator::vGenerateAggGby(void)
+{
+  // append the key element to entwrk
+  vAddCode(EO_ENTWRK_RESET);
+  vAddCodeArg(EO_ENTWRK_APPENDELMI,(i8)0);
+  
+  // find the key in the indexTree
+  vAddCode(EO_ENT_POSPRIOR);
+  vAddCode(EO_ENT_PUSH);
+  vAddCode(EO_PUSH0);
+  vAddCode(EO_NOTEQUAL);
+  vAddCodeLabel(EO_JMPFALSE, "NOT_FOUND"_Stz);
+  
+  vAddCode(EO_ENT_NEXT);
+  vAddCode(EO_ENT_PUSH);
+  vAddCode(EO_PUSH0);
+  vAddCode(EO_NOTEQUAL);
+  vAddCodeLabel(EO_JMPFALSE, "NOT_FOUND"_Stz);
+  
+  vAddCode(EO_ENT_EQUAL);
+  vAddCodeLabel(EO_JMPTRUE, "FOUND"_Stz);
+  
+  // NOT_FOUND:
+  vDefineLabel("NOT_FOUND"_Stz);
+  vAddCodeArg(EO_ENT_CREATEPAY, 8);
+  vAddCode(EO_ENT_INSERT);
+  vAddCode(EO_PUSH0);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
+  
+  // FOUND:
+  vDefineLabel("FOUND"_Stz);
+  vAddCodeArg(EO_PAY_FETCH_COL, (i8)0);
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);
+  vAddCode(EO_ADD);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
+  vAddCode(EO_RETURN);
+  
+  vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* aggregate compute                                                          */
 /*----------------------------------------------------------------------------*/
 i8 Calculator::iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 {
@@ -79,6 +123,38 @@ i8 Calculator::iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSl
   
   m_aSrcRsb_right     = nullptr;
   m_pSrcRowSlab_right = nullptr;
+  
+  m_pEnt              = nullptr;
+  //m_oEntWrk
+  m_pEntBuffer        = nullptr;
+  m_pIndexTree        = nullptr;
+  
+  i8 iResult = iCompute();
+  
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* group by aggregate compute                                                 */
+/*----------------------------------------------------------------------------*/
+i8 Calculator::iAggregateGby(IndexTree* pIndexTree, RowSlab* pDstRowSlab,
+                             Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  m_pDstRowSlab = pDstRowSlab;
+  
+  m_aSrcRsb_left      = aSrcRsb;
+  m_pSrcRowSlab_left  = pSrcRowSlab;
+  
+  m_aSrcRsb_right     = nullptr;
+  m_pSrcRowSlab_right = nullptr;
+  
+  m_pEnt              = nullptr;
+  //m_oEntWrk
+  m_pEntBuffer        = nullptr;
+  
+  m_pIndexTree        = pIndexTree;
   
   i8 iResult = iCompute();
   
@@ -606,11 +682,12 @@ void Calculator::vDumpCode(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
-      case EO_ENT_CREATEPAY:    vDumpCode(i_Code,EO_ENT_CREATEPAY);       break;
+      case EO_ENT_CREATEPAY:    vDumpCode(EO_ENT_CREATEPAY,i_Code);       break;
       case EO_ENT_INSERT:       vDumpCode(i_Code,EO_ENT_INSERT);          break;
       case EO_ENT_INSERTPAY:    vDumpCode(i_Code,EO_ENT_INSERTPAY);       break;
       case EO_ENT_NEXT:         vDumpCode(i_Code,EO_ENT_NEXT);            break;
       case EO_ENT_POSPRIOR:     vDumpCode(i_Code,EO_ENT_POSPRIOR);        break;
+      case EO_ENT_PUSH:         vDumpCode(i_Code,EO_ENT_PUSH);            break;
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
@@ -829,50 +906,40 @@ i8 Calculator::iCompute(void)
         break;
         
       case EO_ENT_INSERT: // insert an entry into the indexTree
+      {
+        SP_Ent spEnt;
+        vTrace("Inserting entry"_Stz);
+        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
         m_pEnt = m_pIndexTree->aInsertEntry(m_oEntWrk.aEnt());
+        vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pEnt,m_pIndexTree->pIndexDef()));
         ASSERT(m_pEnt);
+      }
         break;
         
       case EO_ENT_INSERTPAY: NEVER_REACH; // not yet implemented
         
       case EO_ENT_NEXT: // move to next m_pEnt
-        EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
+        m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
         break;
         
       case EO_ENT_POSPRIOR: // position m_pEnt prior using m_oEntWrk.key
         m_pEnt = m_pIndexTree->aPositionPriorEntry(m_oEntWrk.aKey(), &m_pEntBuffer);
         break;
         
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // entry relational operators
-      case EO_ENT_LESSTHAN: // test if m_pEnt.key <  m_oEntWrk.key
-        iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
-        *(++aiDstk) = iRes;
-        break;
-        
-      case EO_ENT_LESSEQUAL: // test if m_pEnt.key <= m_oEntWrk.key
-        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
-        iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
-        *(++aiDstk) = iRes;
+      case EO_ENT_PUSH: // push entry on the stack
+        *(++aiDstk) = (i8)m_pEnt;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // entWrk
-      case EO_ENTWRK_APPENDELMI: // append next element value (int)
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
-        m_oEntWrk.vAppendElement(m_aSrcRsb_left, pIndexDef->pGetColumn(iArg));
-        break;
-        
-      case EO_ENTWRK_RESET: // reset m_oEntWrk
-        m_oEntWrk.vReset();
-        break;
-       
       // entry relational operators
-      case EO_ENT_EQUAL:
+      case EO_ENT_EQUAL: {
+        SP_Ent spEnt;
+        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
+        vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pEnt,m_pIndexTree->pIndexDef()));
         iRes  = KC_SAME == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         *(++aiDstk) = iRes;
         break;
+     }
         
       case EO_ENT_NOTEQUAL:
         iRes  = KC_SAME != Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
@@ -888,6 +955,33 @@ i8 Calculator::iCompute(void)
       case EO_ENT_GREATERTHAN:
         iRes  = KC_AFTER == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_LESSTHAN: // test if m_pEnt.key <  m_oEntWrk.key
+        iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_LESSEQUAL: // test if m_pEnt.key <= m_oEntWrk.key
+        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
+        iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
+        *(++aiDstk) = iRes;
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // entWrk
+      case EO_ENTWRK_APPENDELMI: // append next element value (int)
+      {
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+        m_oEntWrk.vAppendElement(m_aSrcRsb_left, pIndexDef->pGetColumn(iArg));
+        SP_Ent spEnt;
+        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
+        break;
+      }
+        
+      case EO_ENTWRK_RESET: // reset m_oEntWrk
+        m_oEntWrk.vReset();
         break;
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
