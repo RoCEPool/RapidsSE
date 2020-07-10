@@ -108,6 +108,9 @@ enum eEO : i1 // expression operators
   /*    */ EO_CALL,             // call subroutine at location
   /*    */ EO_RETURN,           // return from subroutine and
 
+  // misc
+  /*    */ EO_NOOP,             // no op
+  
   /*    */ EO_ENUMS
 };
 
@@ -215,6 +218,9 @@ static Stz* aEO[]
   // subroutine operators
   /*    */ "EO_CALL"_Stz,
   /*    */ "EO_RETURN"_Stz,
+
+  // misc
+  /*    */ "EO_NOOP"_Stz,
 
   /*    */ "ENUMS"_Stz
 };

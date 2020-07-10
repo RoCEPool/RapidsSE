@@ -67,11 +67,13 @@ Calculator::~Calculator(void) noexcept(false)
 
 //! TEMP : TO GO
 /*----------------------------------------------------------------------------*/
-/* compile                                                                    */
+/* generate agg group by                                                      */
 /*----------------------------------------------------------------------------*/
 void Calculator::vGenerateAggGby(void)
 {
-  // append the key element to entwrk
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+    // append the key element to entwrk
   vAddCode(EO_ENTWRK_RESET);
   vAddCodeArg(EO_ENTWRK_APPENDELMI,(i8)0);
   
@@ -80,16 +82,16 @@ void Calculator::vGenerateAggGby(void)
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
   vAddCode(EO_NOTEQUAL);
-  vAddCodeLabel(EO_JMPFALSE, "NOT_FOUND"_Stz);
+  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
   vAddCode(EO_NOTEQUAL);
-  vAddCodeLabel(EO_JMPFALSE, "NOT_FOUND"_Stz);
+  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_EQUAL);
-  vAddCodeLabel(EO_JMPTRUE, "FOUND"_Stz);
+  vAddCodeLabel(EO_JMPTRUE,"FOUND"_Stz);
   
   // NOT_FOUND:
   vDefineLabel("NOT_FOUND"_Stz);
@@ -107,6 +109,60 @@ void Calculator::vGenerateAggGby(void)
   vAddCode(EO_RETURN);
   
   vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate sort test code                                                    */
+/*----------------------------------------------------------------------------*/
+void Calculator::vGenerateSort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+
+  // -- -- -- -- -- -- -- -- -- -- --
+  // insert each rsb
+  
+  // forearch src rsb
+  vAddCode(EO_RSB_SRC_BEGIN);
+  
+  vDefineLabel("NEXT_RSB_SRC:"_Stz);
+
+  vAddCode(EO_RSB_SRC_NEXT);
+  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  
+  // key
+  vAddCode(EO_NOOP);
+
+  // offset
+  vAddCode(EO_RSB_SRC_PUSHOFS);
+  vAddCode(EO_ENTWRK_POPREF);
+
+  // insert entry
+  vAddCode(EO_ENT_INSERT);
+
+  vAddCodeLabel(EO_JMP,"NEXT_RSB_SRC:"_Stz);
+
+  vDefineLabel("END_RSB_SRC:"_Stz);
+
+  // -- -- -- -- -- -- -- -- -- -- --
+
+  // copy src to dst rsb in inde order
+
+  // forearch src rsb
+  vAddCode(EO_IXT_TRV_BEGIN);
+
+  vDefineLabel("NEXT_IXT_ENT:"_Stz);
+
+  vAddCode(EO_IXT_TRV_NEXT);
+  vAddCodeLabel(EO_JMPFALSE,"END_IXT_ENT:"_Stz);
+  
+
+  // ...
+  
+  vDefineLabel("END_IXT_ENT:"_Stz);
+
+  
+  vDumpCode();
+
 }
 
 /*----------------------------------------------------------------------------*/

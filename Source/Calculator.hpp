@@ -63,7 +63,8 @@ namespace Expressions
   
     //! TEMP: TO GO
     void vGenerateAggGby(void);
-    
+    void vGenerateSort(void);
+
     i8   iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     i8   iAggregateGby(IndexTree* pIndexTree, RowSlab* pDstRowSlab,
                        Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
