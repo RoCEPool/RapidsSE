@@ -20,6 +20,9 @@ enum eEO : i1 // expression operators
   /*    */ EO_JMPFALSE,         // pop top and jump to location if false
   /*    */ EO_JMPTRUE,          // pop top and jump to location if true
   
+  // crw
+  /*    */ EO_CRW_GETREFD,      // get ref'd crw
+  
   // entry
   /*    */ EO_ENT_CREATEPAY,    // create a payload in entwrk
   /*    */ EO_ENT_INSERT,       // insert an entry into the indexTree
@@ -104,6 +107,9 @@ static Stz* aEO[]
   /*    */ "EO_JMPFALSE"_Stz,
   /*    */ "EO_JMPTRUE"_Stz,
 
+  // crw
+  /*    */ "EO_CRW_GETREFD"_Stz,
+  
   // entry
   /*    */ "EO_ENT_CREATEPAY"_Stz,
   /*    */ "EO_ENT_INSERT"_Stz,
