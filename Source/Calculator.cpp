@@ -219,7 +219,7 @@ void Calculator::vAddCodeArg(eEO eCode,Token* pTkn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add code                                                                   */
+/* add code with named label                                                  */
 /*----------------------------------------------------------------------------*/
 void Calculator::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
 {
@@ -247,7 +247,7 @@ void Calculator::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add code                                                                   */
+/* add code with label name in given token                                    */
 /*----------------------------------------------------------------------------*/
 void Calculator::vAddCodeLabel(eEO eCode, Token* pTkn)
 {
@@ -296,7 +296,7 @@ void Calculator::vCorrectLabel(i8 i_Label)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add label                                                                  */
+/* decode label into subscript                                                */
 /*----------------------------------------------------------------------------*/
 i8 Calculator::iDecodeLabel(Stz* szLabelNm)
 {
