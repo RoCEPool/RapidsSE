@@ -11,6 +11,7 @@ void Step::vAddSteps_AggregateRsb(void)
 {
   vAddStep("AggregateRsb[]"_Stz,           &Step::vAggregateRsbGet);
   vAddStep("AggregateRsb[].aggregate"_Stz, &Step::vAggregateRsbAggregate);
+  vAddStep("AggregateRsb[].aggregateCpy"_Stz, &Step::vAggregateRsbAggregateCpy);
   vAddStep("AggregateRsb[].aggregateGby"_Stz, &Step::vAggregateRsbAggregateGby);
   vAddStep("AggregateRsb[].delete"_Stz,    &Step::vAggregateRsbDelete);
   vAddStep("AggregateRsb[].get"_Stz,       &Step::vAggregateRsbGet);
@@ -30,6 +31,22 @@ void Step::vAggregateRsbAggregate(void)
   Expr* pExpr = * m_pRegSet->m_xpExpr;
   
   m_pRegSet->m_xpAggregateRsb->vAggregate(pRsbBuffer,pExpr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AggregateRsb[].AggregateCpy -- copy aggregate results from indexTree to rsb */
+/*----------------------------------------------------------------------------*/
+void Step::vAggregateRsbAggregateCpy(void)
+{
+  ENTRY();
+  
+  Expr* pExpr = nullptr; //* m_pRegSet->m_xpExpr;
+  
+  IndexTree* pIndexTree = _pIndexTree(* m_pRegSet->m_xpIndexTree);
+  
+  m_pRegSet->m_xpAggregateRsb->vAggregateCpy(pIndexTree,pExpr);
   
   EXIT();
 }

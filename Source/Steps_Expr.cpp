@@ -15,6 +15,7 @@ void Step::vAddSteps_Expr(void)
   vAddStep("Expr[].get"_Stz,       &Step::vExprGet);
   vAddStep("Expr[].new"_Stz,       &Step::vExprNew);
   vAddStep("Expr[].newAggGby"_Stz, &Step::vExprNewAggGby);  //! TEMP : to go
+  vAddStep("Expr[].newCpyAgg"_Stz, &Step::vExprNewCpyAgg);  //! TEMP : to go
   vAddStep("Expr[].source@"_Stz,   &Step::vExprSourceFetch);
   vAddStep("Expr[].source!"_Stz,   &Step::vExprSourceStore);
 }
@@ -70,6 +71,19 @@ void Step::vExprNew(void)
     
   m_pRegSet->m_xpExpr = new Expr;
   m_pRegSet->m_xpExpr->vGenerateAggGby();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Expr[].newCpyAgg -- new a copy aggregate result expression                 */
+/*----------------------------------------------------------------------------*/
+void Step::vExprNewCpyAgg(void)
+{
+  ENTRY();
+  
+  m_pRegSet->m_xpExpr = new Expr;
+  //m_pRegSet->m_xpExpr->vGenerateCpyAgg();
   
   EXIT();
 }
