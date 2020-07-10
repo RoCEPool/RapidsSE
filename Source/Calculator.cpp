@@ -832,7 +832,7 @@ i8 Calculator::iCompute(void)
         break;
         
       case EO_ENT_POSPRIOR: // position m_pEnt prior using m_oEntWrk.key
-        m_pEnt = m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
+        m_pEnt = m_pIndexTree->aPositionPriorEntry(m_oEntWrk.aKey(), &m_pEntBuffer);
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

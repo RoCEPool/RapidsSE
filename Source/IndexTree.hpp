@@ -51,6 +51,7 @@ namespace Indexing
     void       vLazyBuild(void);
     EntBuffer* pNewRootBuffer(void);
     EntBuffer* pPositionH0Buffer(Key* aFindKey);
+    Ent*       aPositionPriorEntry(Key* aFindKey, EntBuffer** ppEntBuffer);
     EntBuffer* pRootBuffer(void);
     void       vRootBuffer(EntBuffer* pRootBuffer);
     void       vTruncate(void);

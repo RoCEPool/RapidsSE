@@ -611,6 +611,37 @@ EntBuffer* IndexTree::pPositionH0Buffer(Key* aFindKey)
 }
 
 /*----------------------------------------------------------------------------*/
+/* position to the first H0 buffer which has given key                        */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aPositionPriorEntry(Key* aFindKey, EntBuffer** ppEntBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  EntBuffer* pEntBuffer;
+  
+  // root buffer ?
+  if ( ! m_pRootEntBuffer )
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+  // position at H0 buffer
+  pEntBuffer = m_pRootEntBuffer->pPositionH0Buffer(aFindKey);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
+  // position at prior entry
+  Ent* aEnt_prior = pEntBuffer->aPositionPriorEntry(aFindKey);
+  
+  // entry ?
+  if ( ! aEnt_prior )
+    return nullptr;
+  
+  // return the prior entry and the buffer
+  *ppEntBuffer = pEntBuffer;
+  return aEnt_prior;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new root buffer                                                   */
 /*----------------------------------------------------------------------------*/
 EntBuffer* IndexTree::pNewRootBuffer(void)
