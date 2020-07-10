@@ -730,6 +730,13 @@ void Calculator::vDumpCode(void)
       case EO_REF_ALTRSB:       vDumpCode(i_Code,EO_REF_ALTRSB);          break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // rsb / rowslab
+      case EO_RSB_SRC_BEGIN:    vDumpCode(i_Code,EO_RSB_SRC_BEGIN);       break;
+      case EO_RSB_SRC_NEXT:     vDumpCode(i_Code,EO_RSB_SRC_NEXT);        break;
+      case EO_RSB_ALT_BEGIN:    vDumpCode(i_Code,EO_RSB_ALT_BEGIN);       break;
+      case EO_RSB_ALT_NEXT:     vDumpCode(i_Code,EO_RSB_ALT_NEXT);        break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // relational operators
       case EO_LESSTHAN:         vDumpCode(i_Code,EO_LESSTHAN);            break;
       case EO_LESSEQUAL:        vDumpCode(i_Code,EO_LESSEQUAL);           break;
@@ -1066,6 +1073,13 @@ i8 Calculator::iCompute(void)
       case EO_REF_GETCRW: NEVER_REACH; // not yet implemented
       case EO_REF_SRCRSB: NEVER_REACH; // not yet implemented
       case EO_REF_ALTRSB: NEVER_REACH; // not yet implemented
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // rsb / rowslab
+      case EO_RSB_SRC_BEGIN: NEVER_REACH; // not yet implemented
+      case EO_RSB_SRC_NEXT:  NEVER_REACH; // not yet implemented
+      case EO_RSB_ALT_BEGIN: NEVER_REACH; // not yet implemented
+      case EO_RSB_ALT_NEXT:  NEVER_REACH; // not yet implemented
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // relational operators

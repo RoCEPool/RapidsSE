@@ -70,6 +70,12 @@ enum eEO : i1 // expression operators
   /*    */ EO_REF_SRCRSB,       // get ref'd src rsb
   /*    */ EO_REF_ALTRSB,       // get ref'd alt rsb
 
+  // rsb / rowslab
+  /*    */ EO_RSB_SRC_BEGIN,    // begin linear traverse
+  /*    */ EO_RSB_SRC_NEXT,     // move to next rsb
+  /*    */ EO_RSB_ALT_BEGIN,    // begin linear traverse
+  /*    */ EO_RSB_ALT_NEXT,     // move to next rsb
+
   // relational operators
   /*    */ EO_LESSTHAN,         // test top < 2nd, push result
   /*    */ EO_LESSEQUAL,        // test top <= 2nd, push result
@@ -166,6 +172,12 @@ static Stz* aEO[]
   /*    */ "EO_REF_SRCRSB"_Stz,
   /*    */ "EO_REF_ALTRSB"_Stz,
   
+  // rsb / rowslab
+  /*    */ "EO_RSB_SRC_BEGIN"_Stz,
+  /*    */ "EO_RSB_SRC_NEXT"_Stz,
+  /*    */ "EO_RSB_ALT_BEGIN"_Stz,
+  /*    */ "EO_RSB_ALT_NEXT"_Stz,
+
   // relational operators
   /*    */ "EO_LESSTHAN"_Stz,
   /*    */ "EO_LESSEQUAL"_Stz,
