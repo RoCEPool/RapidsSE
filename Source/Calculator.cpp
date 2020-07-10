@@ -215,7 +215,7 @@ void Calculator::vAddCodeArg(eEO eCode,Token* pTkn)
   
   i8 iArg = pTkn->iToI8();
   
-  vAddCodeArg(EO_PUSHSRCCOLI,iArg);
+  vAddCodeArg(eCode,iArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -792,62 +792,57 @@ i8 Calculator::iCompute(void)
       case EO_JMP: // jump to location
         iArg = * (i8*)aeCode;
         aeCode += 8;
-        
         aeCode = & m_eaCode[iArg];
         break;
         
       case EO_JMPFALSE: // pop top and jump to location if false
         iArg = * (i8*)aeCode;
         aeCode += 8;
-        
         iTopA = *(aiDstk--);
         if (! iTopA)
           aeCode = & m_eaCode[iArg];
-        
         break;
         
       case EO_JMPTRUE: // pop top and jump to location if true
         iArg = * (i8*)aeCode;
         aeCode += 8;
-        
         iTopA = *(aiDstk--);
         if (iTopA)
           aeCode = & m_eaCode[iArg];
-        
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
-      case EO_ENT_CREATEPAY:
+      case EO_ENT_CREATEPAY: // create a payload in entwrk
         iArg = * (i8*)aeCode;
         aeCode += 8;
         m_oEntWrk.vPayload(true);
         m_oEntWrk.vPayloadBytes(iArg);
         break;
         
-      case EO_ENT_INSERTPAY: NEVER_REACH; // not yet implemented
-        
-      case EO_ENT_INSERT:
+      case EO_ENT_INSERT: // insert an entry into the indexTree
         m_pEnt = m_pIndexTree->aInsertEntry(m_oEntWrk.aEnt());
         ASSERT(m_pEnt);
         break;
         
-      case EO_ENT_NEXT:
+      case EO_ENT_INSERTPAY: NEVER_REACH; // not yet implemented
+        
+      case EO_ENT_NEXT: // move to next m_pEnt
         EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
         break;
         
-      case EO_ENT_POSPRIOR:
+      case EO_ENT_POSPRIOR: // position m_pEnt prior using m_oEntWrk.key
         m_pEnt = m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
-      case EO_ENT_LESSTHAN:
+      case EO_ENT_LESSTHAN: // test if m_pEnt.key <  m_oEntWrk.key
         iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         *(++aiDstk) = iRes;
         break;
         
-      case EO_ENT_LESSEQUAL:
+      case EO_ENT_LESSEQUAL: // test if m_pEnt.key <= m_oEntWrk.key
         iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
         iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
         *(++aiDstk) = iRes;
@@ -855,14 +850,13 @@ i8 Calculator::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entWrk
-        
-      case EO_ENTWRK_APPENDELMI:
+      case EO_ENTWRK_APPENDELMI: // append next element value (int)
         iArg = * (i8*)aeCode;
         aeCode += 8;
         m_oEntWrk.vAppendElement(m_aSrcRsb_left, pIndexDef->pGetColumn(iArg));
         break;
         
-      case EO_ENTWRK_RESET:
+      case EO_ENTWRK_RESET: // reset m_oEntWrk
         m_oEntWrk.vReset();
         break;
        
@@ -926,7 +920,7 @@ i8 Calculator::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
-      case EO_PAY_FETCH_COL:
+      case EO_PAY_FETCH_COL: // fetch a column from the entry payload
         iArg = * (i8*)aeCode;
         aeCode += 8;
         aRsb = (Rsb*)m_pEnt->ayPayload();
@@ -935,7 +929,7 @@ i8 Calculator::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_PAY_STORE_COL:
+      case EO_PAY_STORE_COL: // store a column of the entry payload
         iArg = * (i8*)aeCode;
         aeCode += 8;
         iRes = *(aiDstk--);

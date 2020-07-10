@@ -21,7 +21,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_JMPTRUE,          // pop top and jump to location if true
   
   // entry
-  /*    */ EO_ENT_CREATEPAY,    // create a payload entry
+  /*    */ EO_ENT_CREATEPAY,    // create a payload in entwrk
   /*    */ EO_ENT_INSERT,       // insert an entry into the indexTree
   /*    */ EO_ENT_INSERTPAY,    // insert a payload into an entry
   /*    */ EO_ENT_NEXT,         // move to next m_pEnt
@@ -36,8 +36,8 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENT_GREATERTHAN,  // test if m_pEnt.key >  m_oEntWrk.key
   
   // entWrk
-  /*    */ EO_ENTWRK_APPENDELMI,   // append next element value (int)
-  /*    */ EO_ENTWRK_RESET,        // reset m_oEntWrk
+  /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
+  /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   
   // logical operators
   /*    */ EO_AND,              // logical and top two int's, push result
@@ -50,7 +50,7 @@ enum eEO : i1 // expression operators
   
   // pay load
   /*    */ EO_PAY_FETCH_COL,    // fetch a column from the entry payload
-  /*    */ EO_PAY_STORE_COL,    // store in column of the entry payload
+  /*    */ EO_PAY_STORE_COL,    // store a column of the entry payload
   
   // pushes
   /*    */ EO_INTEGER,          // push integer
