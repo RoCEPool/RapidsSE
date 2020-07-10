@@ -391,7 +391,7 @@ void EntBuffer::vHandleFirstInsert(Ent* aInsertedKeyEntry,
     
     //Key* aInsertedFirstKey = _aKey(aInsertedKeyEntry->aDataArea());
     
-    IndexDef* pIndexDef = m_pIndex->pIndexDef();
+    //IndexDef* pIndexDef = m_pIndex->pIndexDef();
     
     //if (aInsertedFirstKey->bNotEqual(aOriginalFirstKey,pIndexDef))
     if (Key::bNotEqual(aInsertedKeyEntry->aKey(), aOriginalFirstEntry->aKey()))

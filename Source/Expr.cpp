@@ -58,6 +58,28 @@ i8 Expr::iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* group by aggregate                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Expr::iAggregateGby(IndexTree* pIndexTree, RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
+  
+  i8 i = m_pCalculator->iAggregateGby(pIndexTree,pDstRowSlab,aSrcRsb,pSrcRowSlab);
+  
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compile                                                                    */
+/*----------------------------------------------------------------------------*/
+void Expr::vGenerateAggGby(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
+  
+  m_pCalculator->vGenerateAggGby();
+}
+
+/*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
 bool Expr::bCompile(void)

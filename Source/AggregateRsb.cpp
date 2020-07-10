@@ -71,10 +71,52 @@ void AggregateRsb::vAggregate(RsbBuffer* pSrcRsbBuffer, Expr* pExpr)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree, Expr* pExpr)
+void AggregateRsb::vAggregateCpy(IndexTree* pIndexTree, Expr* pExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
   
+  EntWrk xEntWrk;
+  SP_Ent spEnt;
+  SP_Key spKey;
+  Ent* aEnt;
+
+  i8 i_Cell_ntv;
+  Rsb* aRsb;
+  EntBuffer* pEntBuffer;
+  i8 iAgg;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
+  // for each entry buffer
+  for (EntBuffer* pEntBuffer = pIndexTree->pFirstH0Buffer();
+        pEntBuffer; pEntBuffer = pEntBuffer->pNextBuffer()) {
+
+   // get the first entry
+   Ent* aEnt = pEntBuffer->aLeadEntry();
+   
+   while (aEnt) {
+
+     // new a destination row in destination partition row slab
+     vNewDstRsb();
+     
+     aRsb = (Rsb*)aEnt->ayPayload();
+     i_Cell_ntv = aRsb->i_ColToCell_ntv(0);
+     iAgg = aRsb->iVal_ntv(i_Cell_ntv);
+     m_pDstRowSlab->vPositionOnCell(0);
+     m_pDstRowSlab->vDeposit(iAgg);
+     
+     // move to the next entry
+     aEnt = pEntBuffer->aNextEntry(aEnt, 0);
+   }
+  }
+}
+  
+/*----------------------------------------------------------------------------*/
+/* convert                                                                    */
+/*----------------------------------------------------------------------------*/
+void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree, Expr* pExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
+  /*
   m_pSrcRsbBuffer = pSrcRsbBuffer;
   
   EntWrk xEntWrk;
@@ -96,6 +138,7 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
   
   i8 i_Cell_ntv;
   Rsb* aRsb;
+  EntBuffer* pEntH0Buf;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
   // for each row
@@ -113,10 +156,10 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
     // position in the indexTree
-    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
+    Ent* aEnt_prior = pIndexTree->aPositionPriorEntry(xEntWrk.aKey(), &pEntH0Buf);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
-    if (! pEntH0Buf) {
+    if (! aEnt_prior) {
       vTrace("Key not found!\n"_Stz);
       
       // create a payload for the entry
@@ -135,17 +178,13 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
     else {
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
-      // position at prior entry
-      Ent* aEnt_prior = pEntH0Buf->aPositionPriorEntry(xEntWrk.aKey());
-      
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
       // prior entry match the key ?
       if (KC_SAME == Key::eCompare(aEnt_prior->aKey(),xEntWrk.aKey())) {
         aPayloadEntry = aEnt_prior;
       }
       else {
-        // move to next entry greater than equal to
-        aPayloadEntry = EntBuffer::pMoveToGreaterEqualEntry(aEnt_prior, xEntWrk.aKey(), &pEntH0Buf);
+        // move to next entry 
+        aPayloadEntry = EntBuffer::pMoveToNextEntry(aEnt_prior, &pEntH0Buf);
         if ( aPayloadEntry && KC_SAME == Key::eCompare(aPayloadEntry->aKey(),xEntWrk.aKey())) {
           vTrace("Key Found: %s\n"_Stz,spKey.sz(aPayloadEntry->aKey(),pIndexDef));
         }
@@ -177,6 +216,30 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
     
     //i8 iAgg = pExpr->iAggregateGby(pIndexTree,aPayloadEntry,nullptr,aSrcRsb,pSrcRowSlab);
     //vTrace("Aggregate value so far: %lld\n"_Stz,iAgg);
+    pIndexTree->vDump(false);
+  }
+  */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the indexDef
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the src rowSlab from the SrcRsbBuffer
+  m_pSrcRsbBuffer = pSrcRsbBuffer;
+  RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get no of rows in the srcRsbSlab
+  i8 nRows = pSrcRowSlab->nRows();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
+  // for each row in the rowSlab
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
+    
+    bool bResult = pExpr->iAggregateGby(pIndexTree,nullptr,aSrcRsb,pSrcRowSlab);
     pIndexTree->vDump(false);
   }
 }

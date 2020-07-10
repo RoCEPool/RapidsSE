@@ -29,6 +29,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENT_INSERTPAY,    // insert a payload into an entry
   /*    */ EO_ENT_NEXT,         // move to next m_pEnt
   /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
+  /*    */ EO_ENT_PUSH,         // push entry
   
   // entry relational operators
   /*    */ EO_ENT_LESSTHAN,     // test if m_pEnt.key <  m_oEntWrk.key
@@ -116,6 +117,7 @@ static Stz* aEO[]
   /*    */ "EO_ENT_INSERTPAY"_Stz,
   /*    */ "EO_ENT_NEXT"_Stz,
   /*    */ "EO_ENT_POSPRIOR"_Stz,
+  /*    */ "EO_ENT_PUSH"_Stz,
   
   // entry relational operators
   /*    */ "EO_ENT_LESSTHAN"_Stz,

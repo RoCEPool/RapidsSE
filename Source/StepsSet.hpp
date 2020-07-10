@@ -32,6 +32,7 @@ public:
 
   // aggregate
   void vAggregateRsbAggregate(void);
+  void vAggregateRsbAggregateCpy(void);
   void vAggregateRsbAggregateGby(void);
   void vAggregateRsbDelete(void);
   void vAggregateRsbGet(void);
@@ -354,6 +355,8 @@ public:
   void vExprDelete(void);
   void vExprGet(void);
   void vExprNew(void);
+  void vExprNewCpyAgg(void);
+  void vExprNewAggGby(void);
   void vExprSourceFetch(void);
   void vExprSourceStore(void);
 

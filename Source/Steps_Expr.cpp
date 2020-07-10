@@ -14,12 +14,14 @@ void Step::vAddSteps_Expr(void)
   vAddStep("Expr[].delete"_Stz,    &Step::vExprDelete);
   vAddStep("Expr[].get"_Stz,       &Step::vExprGet);
   vAddStep("Expr[].new"_Stz,       &Step::vExprNew);
+  vAddStep("Expr[].newAggGby"_Stz, &Step::vExprNewAggGby);  //! TEMP : to go
+  vAddStep("Expr[].newCpyAgg"_Stz, &Step::vExprNewCpyAgg);  //! TEMP : to go
   vAddStep("Expr[].source@"_Stz,   &Step::vExprSourceFetch);
   vAddStep("Expr[].source!"_Stz,   &Step::vExprSourceStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Expr.compile -- compile an expression                                      */
+/* Expr[].compile -- compile an expression                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vExprCompile(void)
 {
@@ -33,7 +35,7 @@ void Step::vExprCompile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Expr.delete -- delete an expression evaluator                              */
+/* Expr[].delete -- delete an expression evaluator                            */
 /*----------------------------------------------------------------------------*/
 void Step::vExprDelete(void)
 {
@@ -49,7 +51,7 @@ void Step::vExprDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Expr.get -- get expression evaluator                                       */
+/* Expr[].get -- get expression evaluator                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vExprGet(void)
 {
@@ -61,19 +63,46 @@ void Step::vExprGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Expr.new -- new an expression evaluator                                    */
+/* Expr[].new -- new an expression evaluator                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vExprNew(void)
 {
   ENTRY();
     
   m_pRegSet->m_xpExpr = new Expr;
+  m_pRegSet->m_xpExpr->vGenerateAggGby();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Expr.source@ -- fetch source for expression evaluator                      */
+/* Expr[].newCpyAgg -- new a copy aggregate result expression                 */
+/*----------------------------------------------------------------------------*/
+void Step::vExprNewCpyAgg(void)
+{
+  ENTRY();
+  
+  m_pRegSet->m_xpExpr = new Expr;
+  //m_pRegSet->m_xpExpr->vGenerateCpyAgg();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Expr[].newAggGby -- new a group by aggregate expression                    */
+/*----------------------------------------------------------------------------*/
+void Step::vExprNewAggGby(void)
+{
+  ENTRY();
+  
+  m_pRegSet->m_xpExpr = new Expr;
+  m_pRegSet->m_xpExpr->vGenerateAggGby();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Expr[].source@ -- fetch source for expression evaluator                    */
 /*----------------------------------------------------------------------------*/
 void Step::vExprSourceFetch(void)
 {
@@ -87,7 +116,7 @@ void Step::vExprSourceFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Expr.source! -- store source for expression evaluator                      */
+/* Expr[].source! -- store source for expression evaluator                    */
 /*----------------------------------------------------------------------------*/
 void Step::vExprSourceStore(void)
 {

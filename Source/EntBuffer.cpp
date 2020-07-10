@@ -1243,6 +1243,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   if (aEnt->bPayload()) {
     i8 nPaySize = aEnt->nPaySize();
     vTrace(" PaySize %2lld"_Stz,nPaySize);
+    vTrace(" Payload %2lld"_Stz,*((i8*)aEnt->ayPayload()));
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
