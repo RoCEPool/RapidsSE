@@ -76,38 +76,38 @@ void AggregateRsb::vAggregateCpy(IndexTree* pIndexTree, Expr* pExpr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
   
   EntWrk xEntWrk;
-   SP_Ent spEnt;
-   SP_Key spKey;
-   Ent* aEnt;
-  
-   i8 i_Cell_ntv;
-   Rsb* aRsb;
-   EntBuffer* pEntBuffer;
-   i8 iAgg;
+  SP_Ent spEnt;
+  SP_Key spKey;
+  Ent* aEnt;
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
-   // for each entry buffer
-   for (EntBuffer* pEntBuffer = pIndexTree->pFirstH0Buffer();
-          pEntBuffer; pEntBuffer = pEntBuffer->pNextBuffer()) {
-    
-     // get the first entry
-     Ent* aEnt = pEntBuffer->aLeadEntry();
+  i8 i_Cell_ntv;
+  Rsb* aRsb;
+  EntBuffer* pEntBuffer;
+  i8 iAgg;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
+  // for each entry buffer
+  for (EntBuffer* pEntBuffer = pIndexTree->pFirstH0Buffer();
+        pEntBuffer; pEntBuffer = pEntBuffer->pNextBuffer()) {
+
+   // get the first entry
+   Ent* aEnt = pEntBuffer->aLeadEntry();
+   
+   while (aEnt) {
+
+     // new a destination row in destination partition row slab
+     vNewDstRsb();
      
-     while (aEnt) {
-    
-       // new a destination row in destination partition row slab
-       vNewDstRsb();
-       
-       aRsb = (Rsb*)aEnt->ayPayload();
-       i_Cell_ntv = aRsb->i_ColToCell_ntv(0);
-       iAgg = aRsb->iVal_ntv(i_Cell_ntv);
-       m_pDstRowSlab->vPositionOnCell(0);
-       m_pDstRowSlab->vDeposit(iAgg);
-       
-       // move to the next entry
-       aEnt = pEntBuffer->aNextEntry(aEnt, 0);
-     }
+     aRsb = (Rsb*)aEnt->ayPayload();
+     i_Cell_ntv = aRsb->i_ColToCell_ntv(0);
+     iAgg = aRsb->iVal_ntv(i_Cell_ntv);
+     m_pDstRowSlab->vPositionOnCell(0);
+     m_pDstRowSlab->vDeposit(iAgg);
+     
+     // move to the next entry
+     aEnt = pEntBuffer->aNextEntry(aEnt, 0);
    }
+  }
 }
   
 /*----------------------------------------------------------------------------*/
