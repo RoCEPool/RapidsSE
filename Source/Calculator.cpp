@@ -219,7 +219,7 @@ void Calculator::vAddCodeArg(eEO eCode,Token* pTkn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add code                                                                   */
+/* add code with named label                                                  */
 /*----------------------------------------------------------------------------*/
 void Calculator::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
 {
@@ -247,7 +247,7 @@ void Calculator::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add code                                                                   */
+/* add code with label name in given token                                    */
 /*----------------------------------------------------------------------------*/
 void Calculator::vAddCodeLabel(eEO eCode, Token* pTkn)
 {
@@ -296,7 +296,7 @@ void Calculator::vCorrectLabel(i8 i_Label)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add label                                                                  */
+/* decode label into subscript                                                */
 /*----------------------------------------------------------------------------*/
 i8 Calculator::iDecodeLabel(Stz* szLabelNm)
 {
@@ -601,6 +601,10 @@ void Calculator::vDumpCode(void)
       case EO_JMPTRUE:          vDumpCode(EO_JMPTRUE,i_Code);             break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // crw
+      case EO_CRW_GETREFD:      vDumpCode(i_Code,EO_CRW_GETREFD);         break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
       case EO_ENT_CREATEPAY:    vDumpCode(i_Code,EO_ENT_CREATEPAY);       break;
       case EO_ENT_INSERT:       vDumpCode(i_Code,EO_ENT_INSERT);          break;
@@ -811,6 +815,10 @@ i8 Calculator::iCompute(void)
           aeCode = & m_eaCode[iArg];
         break;
         
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // crw
+      case EO_CRW_GETREFD: NEVER_REACH; // not yet implemented
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
       case EO_ENT_CREATEPAY: // create a payload in entwrk
