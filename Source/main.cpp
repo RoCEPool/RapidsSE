@@ -38,7 +38,10 @@ int main(int argc, char* argv[])
   if (Env::bGet("SE_DBG_PAYLOAD"_Stz,sFlagValue)) {
     gxDebugFlags.m_iPayload = StrLib::iToI8(sFlagValue.azChar());
   }
-  
+  if (Env::bGet("SE_DBG_RAY"_Stz,sFlagValue)) {
+    gxDebugFlags.m_iRay = StrLib::iToI8(sFlagValue.azChar());
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //ThirdParty::libtcc_rjh(0,argv);

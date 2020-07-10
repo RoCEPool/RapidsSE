@@ -9,6 +9,8 @@ namespace Base
     
     i8 m_iPayload;
     
+    i8 m_iRay;
+    
   };
 }
 

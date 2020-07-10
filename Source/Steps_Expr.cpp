@@ -4,6 +4,8 @@
 
 #include "Steps.h"
 
+extern DebugFlags gxDebugFlags;;
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -70,7 +72,8 @@ void Step::vExprNew(void)
   ENTRY();
     
   m_pRegSet->m_xpExpr = new Expr;
-  m_pRegSet->m_xpExpr->vGenerateAggGby();
+  if (! gxDebugFlags.m_iRay)
+    m_pRegSet->m_xpExpr->vGenerateAggGby();
   
   EXIT();
 }

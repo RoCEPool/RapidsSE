@@ -8,7 +8,7 @@ enum eEO : i1 // expression operators
   /*  0 */ EO_NONE=0,
   
   // arithmetic operators
-  /*    */ EO_ADD,                // add top two int's push result
+  /*    */ EO_ADD,              // add top two int's push result
   /*    */ EO_DIVIDE,           // divide top int by second push result
   /*    */ EO_MODULO,           // modulo top int be second push result
   /*    */ EO_MULTIPLY,         // multiply top two int's push result
@@ -43,6 +43,12 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   
+  // index tree
+  /*    */ EO_IXT_INS_ENT,      // insert ent
+  /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
+  /*    */ EO_IXT_TRV_NEXT,     // move to next entry
+  /*    */ EO_IXT_TRV_PUSHREF,  // push ref of current entry
+
   // logical operators
   /*    */ EO_AND,              // logical and top two int's, push result
   /*    */ EO_OR,               // logical or top two int's, push result
@@ -130,6 +136,12 @@ static Stz* aEO[]
   // entWrk
   /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
+
+  // index tree
+  /*    */ "EO_IXT_INS_ENT"_Stz,
+  /*    */ "EO_IXT_TRV_BEGIN"_Stz,
+  /*    */ "EO_IXT_TRV_NEXT"_Stz,
+  /*    */ "EO_IXT_TRV_PUSHREF"_Stz,
 
   // logical operators
   /*    */ "EO_AND"_Stz,
