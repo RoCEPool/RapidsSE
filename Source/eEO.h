@@ -71,6 +71,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_REF_ALTRSB,       // get ref'd alt rsb
 
   // rsb / rowslab
+  /*    */ EO_RSB_DST_NEW,      // create new destination rsb
   /*    */ EO_RSB_SRC_BEGIN,    // begin linear traverse
   /*    */ EO_RSB_SRC_NEXT,     // move to next rsb
   /*    */ EO_RSB_ALT_BEGIN,    // begin linear traverse
@@ -173,6 +174,7 @@ static Stz* aEO[]
   /*    */ "EO_REF_ALTRSB"_Stz,
   
   // rsb / rowslab
+  /*    */ "EO_RSB_DST_NEW"_Stz,
   /*    */ "EO_RSB_SRC_BEGIN"_Stz,
   /*    */ "EO_RSB_SRC_NEXT"_Stz,
   /*    */ "EO_RSB_ALT_BEGIN"_Stz,

@@ -731,6 +731,7 @@ void Calculator::vDumpCode(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb / rowslab
+      case EO_RSB_DST_NEW:      vDumpCode(i_Code,EO_RSB_DST_NEW);         break;
       case EO_RSB_SRC_BEGIN:    vDumpCode(i_Code,EO_RSB_SRC_BEGIN);       break;
       case EO_RSB_SRC_NEXT:     vDumpCode(i_Code,EO_RSB_SRC_NEXT);        break;
       case EO_RSB_ALT_BEGIN:    vDumpCode(i_Code,EO_RSB_ALT_BEGIN);       break;
@@ -1076,6 +1077,7 @@ i8 Calculator::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb / rowslab
+      case EO_RSB_DST_NEW:   NEVER_REACH; // not yet implemented
       case EO_RSB_SRC_BEGIN: NEVER_REACH; // not yet implemented
       case EO_RSB_SRC_NEXT:  NEVER_REACH; // not yet implemented
       case EO_RSB_ALT_BEGIN: NEVER_REACH; // not yet implemented
