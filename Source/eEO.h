@@ -20,9 +20,6 @@ enum eEO : i1 // expression operators
   /*    */ EO_JMPFALSE,         // pop top and jump to location if false
   /*    */ EO_JMPTRUE,          // pop top and jump to location if true
   
-  // crw
-  /*    */ EO_CRW_GETREFD,      // get ref'd crw
-  
   // entry
   /*    */ EO_ENT_CREATEPAY,    // create a payload in entwrk
   /*    */ EO_ENT_INSERT,       // insert an entry into the indexTree
@@ -30,7 +27,8 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENT_NEXT,         // move to next m_pEnt
   /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
   /*    */ EO_ENT_PUSH,         // push entry
-  
+  /*    */ EO_ENT_PUSHREF,      // push ref of current entry
+
   // entry relational operators
   /*    */ EO_ENT_LESSTHAN,     // test if m_pEnt.key <  m_oEntWrk.key
   /*    */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
@@ -47,8 +45,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_IXT_INS_ENT,      // insert ent
   /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
   /*    */ EO_IXT_TRV_NEXT,     // move to next entry
-  /*    */ EO_IXT_TRV_PUSHREF,  // push ref of current entry
-
+ 
   // logical operators
   /*    */ EO_AND,              // logical and top two int's, push result
   /*    */ EO_OR,               // logical or top two int's, push result
@@ -67,6 +64,11 @@ enum eEO : i1 // expression operators
   /*    */ EO_PUSHNULL,         // push null
   /*    */ EO_PUSH0,            // push integer 0
   /*    */ EO_PUSH1,            // push integer 1
+
+  // ref
+  /*    */ EO_REF_GETCRW,       // get ref'd crw
+  /*    */ EO_REF_SRCRSB,       // get ref'd src rsb
+  /*    */ EO_REF_ALTRSB,       // get ref'd alt rsb
 
   // relational operators
   /*    */ EO_LESSTHAN,         // test top < 2nd, push result
@@ -114,9 +116,6 @@ static Stz* aEO[]
   /*    */ "EO_JMPFALSE"_Stz,
   /*    */ "EO_JMPTRUE"_Stz,
 
-  // crw
-  /*    */ "EO_CRW_GETREFD"_Stz,
-  
   // entry
   /*    */ "EO_ENT_CREATEPAY"_Stz,
   /*    */ "EO_ENT_INSERT"_Stz,
@@ -124,7 +123,8 @@ static Stz* aEO[]
   /*    */ "EO_ENT_NEXT"_Stz,
   /*    */ "EO_ENT_POSPRIOR"_Stz,
   /*    */ "EO_ENT_PUSH"_Stz,
-  
+  /*    */ "EO_ENT_PUSHREF"_Stz,
+
   // entry relational operators
   /*    */ "EO_ENT_LESSTHAN"_Stz,
   /*    */ "EO_ENT_LESSEQUAL"_Stz,
@@ -141,7 +141,6 @@ static Stz* aEO[]
   /*    */ "EO_IXT_INS_ENT"_Stz,
   /*    */ "EO_IXT_TRV_BEGIN"_Stz,
   /*    */ "EO_IXT_TRV_NEXT"_Stz,
-  /*    */ "EO_IXT_TRV_PUSHREF"_Stz,
 
   // logical operators
   /*    */ "EO_AND"_Stz,
@@ -162,6 +161,11 @@ static Stz* aEO[]
   /*    */ "EO_PUSH0"_Stz,
   /*    */ "EO_PUSH1"_Stz,
 
+  // ref
+  /*    */ "EO_REF_GETCRW"_Stz,
+  /*    */ "EO_REF_SRCRSB"_Stz,
+  /*    */ "EO_REF_ALTRSB"_Stz,
+  
   // relational operators
   /*    */ "EO_LESSTHAN"_Stz,
   /*    */ "EO_LESSEQUAL"_Stz,

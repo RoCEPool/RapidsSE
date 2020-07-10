@@ -677,10 +677,6 @@ void Calculator::vDumpCode(void)
       case EO_JMPTRUE:          vDumpCode(EO_JMPTRUE,i_Code);             break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // crw
-      case EO_CRW_GETREFD:      vDumpCode(i_Code,EO_CRW_GETREFD);         break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
       case EO_ENT_CREATEPAY:    vDumpCode(EO_ENT_CREATEPAY,i_Code);       break;
       case EO_ENT_INSERT:       vDumpCode(i_Code,EO_ENT_INSERT);          break;
@@ -688,7 +684,8 @@ void Calculator::vDumpCode(void)
       case EO_ENT_NEXT:         vDumpCode(i_Code,EO_ENT_NEXT);            break;
       case EO_ENT_POSPRIOR:     vDumpCode(i_Code,EO_ENT_POSPRIOR);        break;
       case EO_ENT_PUSH:         vDumpCode(i_Code,EO_ENT_PUSH);            break;
-      
+      case EO_ENT_PUSHREF:      vDumpCode(i_Code,EO_ENT_PUSHREF);         break;
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
       case EO_ENT_LESSTHAN:     vDumpCode(i_Code,EO_LESSTHAN);            break;
@@ -725,6 +722,12 @@ void Calculator::vDumpCode(void)
       case EO_PUSHNULL:         vDumpCode(i_Code,EO_PUSHNULL);            break;
       case EO_PUSH0:            vDumpCode(i_Code,EO_PUSH0);               break;
       case EO_PUSH1:            vDumpCode(i_Code,EO_PUSH1);               break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // ref
+      case EO_REF_GETCRW:       vDumpCode(i_Code,EO_REF_GETCRW);          break;
+      case EO_REF_SRCRSB:       vDumpCode(i_Code,EO_REF_SRCRSB);          break;
+      case EO_REF_ALTRSB:       vDumpCode(i_Code,EO_REF_ALTRSB);          break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // relational operators
@@ -893,10 +896,6 @@ i8 Calculator::iCompute(void)
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // crw
-      case EO_CRW_GETREFD: NEVER_REACH; // not yet implemented
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
       case EO_ENT_CREATEPAY: // create a payload in entwrk
         iArg = * (i8*)aeCode;
@@ -929,6 +928,8 @@ i8 Calculator::iCompute(void)
       case EO_ENT_PUSH: // push entry on the stack
         *(++aiDstk) = (i8)m_pEnt;
         break;
+        
+      case EO_ENT_PUSHREF: NEVER_REACH; // not yet implemented
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
@@ -1060,6 +1061,12 @@ i8 Calculator::iCompute(void)
         *(++aiDstk) = 1;
         break;
         
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // ref
+      case EO_REF_GETCRW: NEVER_REACH; // not yet implemented
+      case EO_REF_SRCRSB: NEVER_REACH; // not yet implemented
+      case EO_REF_ALTRSB: NEVER_REACH; // not yet implemented
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // relational operators
       case EO_LESSTHAN: // test top < 2nd, push result
