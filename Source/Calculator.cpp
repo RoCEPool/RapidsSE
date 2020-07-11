@@ -137,15 +137,17 @@ Calculator::Calculator(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
+  m_pPot        = nullptr;
   m_pDstRowSlab = nullptr;
 
+  m_nSrcRows          = C_UNKNOWN;
   m_aSrcRsb_left      = nullptr;
   m_pSrcRowSlab_left  = nullptr;
   
+  m_nAltRows          = C_UNKNOWN;
   m_aSrcRsb_right     = nullptr;
   m_pSrcRowSlab_right = nullptr;
 
-  m_pPot = nullptr;
 
   m_pEnt = nullptr;
   // m_oEntWrk
@@ -412,12 +414,10 @@ i8 Calculator::iProject(Pot* pPot, RowSlab* pDstRowSlab,
   
   m_pPot = pPot;
   m_pDstRowSlab = pDstRowSlab;
-
+  
   m_aSrcRsb_left      = aSrcRsb;
   m_pSrcRowSlab_left  = pSrcRowSlab;
-
-  m_aSrcRsb_right     = nullptr;
-  m_pSrcRowSlab_right = nullptr;
+  m_nSrcRows = m_pSrcRowSlab_left->nRows();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();
@@ -426,6 +426,7 @@ i8 Calculator::iProject(Pot* pPot, RowSlab* pDstRowSlab,
   m_pPot = nullptr;
   m_pDstRowSlab = nullptr;
 
+  m_nSrcRows          = C_UNKNOWN;
   m_aSrcRsb_left      = nullptr;
   m_pSrcRowSlab_left  = nullptr;
 

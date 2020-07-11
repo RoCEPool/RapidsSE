@@ -31,16 +31,17 @@ namespace Expressions
   {
   private:
 
+    Pot*     m_pPot;
     RowSlab* m_pDstRowSlab;
 
+    i8       m_nSrcRows;
     Rsb*     m_aSrcRsb_left;
     RowSlab* m_pSrcRowSlab_left;
  
+    i8       m_nAltRows;
     Rsb*     m_aSrcRsb_right;
     RowSlab* m_pSrcRowSlab_right;
   
-    Pot*     m_pPot;
-   
     Ent*       m_pEnt;
     EntWrk     m_oEntWrk;
     EntBuffer* m_pEntBuffer;
