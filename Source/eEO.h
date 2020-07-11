@@ -39,6 +39,7 @@ enum eEO : i1 // expression operators
   
   // entWrk
   /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
+  /*    */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
   /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   
@@ -72,6 +73,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_REF_ALTRSB,       // get ref'd alt rsb
 
   // rsb / rowslab
+  /*    */ EO_RSB_DST_COPYSRC,  // copy src rsb to dst rsb
   /*    */ EO_RSB_DST_NEW,      // create new destination rsb
   /*    */ EO_RSB_SRC_BEGIN,    // begin linear traverse
   /*    */ EO_RSB_SRC_NEXT,     // move to next rsb
@@ -91,7 +93,6 @@ enum eEO : i1 // expression operators
   /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
   // rsb operators
-  /*    */ EO_COPYRSB,          // copy src rsb to dst rsb       IS THIS NEEDED?
   /*    */ EO_DEPOSITCOLI,      // pop and deposit top into dst column
   /*    */ EO_PUSHDSTCOLI,      // push dst column
   /*    */ EO_PUSHSRCCOLI,      // push src column
@@ -150,6 +151,7 @@ static Stz* aEO[]
   
   // entWrk
   /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
+  /*    */ "EO_ENTWRK_POPOFS"_Stz,
   /*    */ "EO_ENTWRK_POPREF"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
 
@@ -183,6 +185,7 @@ static Stz* aEO[]
   /*    */ "EO_REF_ALTRSB"_Stz,
   
   // rsb / rowslab
+  /*    */ "EO_RSB_DST_COPYSRC"_Stz,
   /*    */ "EO_RSB_DST_NEW"_Stz,
   /*    */ "EO_RSB_SRC_BEGIN"_Stz,
   /*    */ "EO_RSB_SRC_NEXT"_Stz,
@@ -202,7 +205,6 @@ static Stz* aEO[]
   /*    */ "EO_GREATERTHAN"_Stz,
   
   // rsb operators
-  /*    */ "EO_COPYRSB"_Stz,
   /*    */ "EO_DEPOSITCOLI"_Stz,
   /*    */ "EO_PUSHDSTCOLI"_Stz,
   /*    */ "EO_PUSHSRCCOLI"_Stz,

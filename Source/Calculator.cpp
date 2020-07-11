@@ -128,24 +128,32 @@ void Calculator::vGenerateSort(void)
 
   vAddCode(EO_RSB_SRC_NEXT);
   vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
-  
-  // key
-  vAddCode(EO_NOOP);
 
-  // offset
+  // reset entwrk
+  vAddCode(EO_ENTWRK_RESET);
+
+  // add key
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
+  vAddCodeArg(EO_ENTWRK_APPENDELMI,(i8)0);
+
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)3);
+  vAddCodeArg(EO_ENTWRK_APPENDELMI,(i8)3);
+
+  // add offset
   vAddCode(EO_RSB_SRC_PUSHOFS);
   vAddCode(EO_ENTWRK_POPREF);
 
-  // insert entry
+  // insert entry into index tree
   vAddCode(EO_ENT_INSERT);
 
   vAddCodeLabel(EO_JMP,"NEXT_RSB_SRC:"_Stz);
-
+  
   vDefineLabel("END_RSB_SRC:"_Stz);
 
+  
   // -- -- -- -- -- -- -- -- -- -- --
 
-  // copy src to dst rsb in inde order
+  // copy src to dst rsb in index order
 
   // forearch src rsb
   vAddCode(EO_IXT_TRV_BEGIN);
@@ -157,8 +165,17 @@ void Calculator::vGenerateSort(void)
   
 
   // ...
+  vAddCode(EO_RSB_DST_NEW);
+  vAddCode(EO_REF_SRCRSB);
+  vAddCode(EO_RSB_DST_COPYSRC);
+
+  vAddCodeLabel(EO_JMP,"NEXT_IXT_ENT:"_Stz);
+
   
+  // -- -- -- -- -- -- -- -- -- -- --
+
   vDefineLabel("END_IXT_ENT:"_Stz);
+  vAddCode(EO_RETURN);
 
   
   vDumpCode();
@@ -600,7 +617,7 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
 
     // copy src row into dst
     if (pTkn->bSame("="_Stz)) {
-      vAddCode(EO_COPYRSB);
+      vAddCode(EO_RSB_DST_COPYSRC);
       continue;
     }
     
@@ -788,6 +805,7 @@ void Calculator::vDumpCode(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb / rowslab
+      case EO_RSB_DST_COPYSRC:  vDumpCode(i_Code,EO_RSB_DST_COPYSRC);     break;
       case EO_RSB_DST_NEW:      vDumpCode(i_Code,EO_RSB_DST_NEW);         break;
       case EO_RSB_SRC_BEGIN:    vDumpCode(i_Code,EO_RSB_SRC_BEGIN);       break;
       case EO_RSB_SRC_NEXT:     vDumpCode(i_Code,EO_RSB_SRC_NEXT);        break;
@@ -809,7 +827,6 @@ void Calculator::vDumpCode(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb operators
-      case EO_COPYRSB:          vDumpCode(i_Code,EO_COPYRSB);             break;
       case EO_DEPOSITCOLI:      vDumpCode(EO_DEPOSITCOLI,i_Code);         break;
       case EO_PUSHDSTCOLI:      vDumpCode(EO_PUSHDSTCOLI,i_Code);         break;
       case EO_PUSHSRCCOLI:      vDumpCode(EO_PUSHSRCCOLI,i_Code);         break;
@@ -1140,6 +1157,11 @@ i8 Calculator::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb / rowslab
+      case EO_RSB_DST_COPYSRC: // copy src rsb to dst rsb
+        m_pDstRowSlab->vPositionOnCell(0);
+        m_pDstRowSlab->vCopyRsb(m_aSrcRsb_left,bSrcHasPtnHash,bCopyPtnHash);
+        break;
+        
       case EO_RSB_DST_NEW:      NEVER_REACH; // not yet implemented
       case EO_RSB_SRC_BEGIN:    NEVER_REACH; // not yet implemented
       case EO_RSB_SRC_NEXT:     NEVER_REACH; // not yet implemented
@@ -1196,11 +1218,6 @@ i8 Calculator::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb operators
-      case EO_COPYRSB: // copy src rsb to dst rsb
-        m_pDstRowSlab->vPositionOnCell(0);
-        m_pDstRowSlab->vCopyRsb(m_aSrcRsb_left,bSrcHasPtnHash,bCopyPtnHash);
-        break;
-        
       case EO_DEPOSITCOLI: // pop and deposit top into dst column
         iArg = * (i8*)aeCode;
         aeCode += 8;
