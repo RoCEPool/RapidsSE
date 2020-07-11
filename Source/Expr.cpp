@@ -110,11 +110,12 @@ i8 Expr::iFilter(Rsb* aRsb, RowSlab* pRowSlab)
 /*----------------------------------------------------------------------------*/
 /* evaluate                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Expr::iProject(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+i8 Expr::iProject(Pot* pPot, RowSlab* pDstRowSlab,
+                  Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
     
-  i8 i = m_pCalculator->iProject(pDstRowSlab,aSrcRsb,pSrcRowSlab);
+  i8 i = m_pCalculator->iProject(pPot,pDstRowSlab,aSrcRsb,pSrcRowSlab);
   
   return i;
 }

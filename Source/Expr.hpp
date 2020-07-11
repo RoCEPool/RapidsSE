@@ -34,7 +34,8 @@ namespace Expressions
   
     i8   iFilter(Rsb* aRsb, RowSlab* pRowSlab);
 
-    i8   iProject(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iProject(Pot* pPot, RowSlab* pDstRowSlab,
+                  Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
 
     eUK  eKind(void);
     void vKind(eUK eKind);

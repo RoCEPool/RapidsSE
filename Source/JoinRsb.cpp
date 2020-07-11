@@ -74,7 +74,7 @@ void JoinRsb::vJoin(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
     // new a destination row in destination partition row slab
     vNewDstRsb();
 
-    i8 bCopy = pExpr->iProject(m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
+    i8 bCopy = pExpr->iProject(pPot,m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
         
     //vCopyIntoDst(aSrcRsb);
   }

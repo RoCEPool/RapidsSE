@@ -144,7 +144,9 @@ Calculator::Calculator(void)
   
   m_aSrcRsb_right     = nullptr;
   m_pSrcRowSlab_right = nullptr;
- 
+
+  m_pPot = nullptr;
+
   m_pEnt = nullptr;
   // m_oEntWrk
   m_pEntBuffer = nullptr;
@@ -403,10 +405,12 @@ i8 Calculator::iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 /*----------------------------------------------------------------------------*/
 /* project compute                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Calculator::iProject(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+i8 Calculator::iProject(Pot* pPot, RowSlab* pDstRowSlab,
+                        Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
+  m_pPot = pPot;
   m_pDstRowSlab = pDstRowSlab;
 
   m_aSrcRsb_left      = aSrcRsb;
@@ -415,8 +419,16 @@ i8 Calculator::iProject(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab
   m_aSrcRsb_right     = nullptr;
   m_pSrcRowSlab_right = nullptr;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pPot = nullptr;
+  m_pDstRowSlab = nullptr;
+
+  m_aSrcRsb_left      = nullptr;
+  m_pSrcRowSlab_left  = nullptr;
+
   return iResult;
 }
 
