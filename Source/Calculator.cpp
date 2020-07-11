@@ -140,19 +140,20 @@ Calculator::Calculator(void)
   m_pPot        = nullptr;
   m_pDstRowSlab = nullptr;
 
-  m_nSrcRows          = C_UNKNOWN;
-  m_aSrcRsb_left      = nullptr;
-  m_pSrcRowSlab_left  = nullptr;
+  m_i_SrcRow    = C_UNKNOWN;
+  m_nSrcRows    = C_UNKNOWN;
+  m_aSrcRsb     = nullptr;
+  m_pSrcRowSlab = nullptr;
   
-  m_nAltRows          = C_UNKNOWN;
-  m_aSrcRsb_right     = nullptr;
-  m_pSrcRowSlab_right = nullptr;
+  m_i_AltRow    = C_UNKNOWN;
+  m_nAltRows    = C_UNKNOWN;
+  m_aAltRsb     = nullptr;
+  m_pAltRowSlab = nullptr;
 
-
-  m_pEnt = nullptr;
+  m_pEnt        = nullptr;
   // m_oEntWrk
-  m_pEntBuffer = nullptr;
-  m_pIndexTree = nullptr;
+  m_pEntBuffer  = nullptr;
+  m_pIndexTree  = nullptr;
   
   m_i_Code = 0;
   
@@ -312,11 +313,11 @@ i8 Calculator::iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSl
     
   m_pDstRowSlab = pDstRowSlab;
   
-  m_aSrcRsb_left      = aSrcRsb;
-  m_pSrcRowSlab_left  = pSrcRowSlab;
+  m_aSrcRsb      = aSrcRsb;
+  m_pSrcRowSlab  = pSrcRowSlab;
   
-  m_aSrcRsb_right     = nullptr;
-  m_pSrcRowSlab_right = nullptr;
+  m_aAltRsb     = nullptr;
+  m_pAltRowSlab = nullptr;
   
   m_pEnt              = nullptr;
   //m_oEntWrk
@@ -338,11 +339,11 @@ i8 Calculator::iAggregateGby(IndexTree* pIndexTree, RowSlab* pDstRowSlab,
   
   m_pDstRowSlab = pDstRowSlab;
   
-  m_aSrcRsb_left      = aSrcRsb;
-  m_pSrcRowSlab_left  = pSrcRowSlab;
+  m_aSrcRsb      = aSrcRsb;
+  m_pSrcRowSlab  = pSrcRowSlab;
   
-  m_aSrcRsb_right     = nullptr;
-  m_pSrcRowSlab_right = nullptr;
+  m_aAltRsb     = nullptr;
+  m_pAltRowSlab = nullptr;
   
   m_pEnt              = nullptr;
   //m_oEntWrk
@@ -373,11 +374,11 @@ i8 Calculator::iCalc(void)
   
   m_pDstRowSlab = nullptr;
 
-  m_aSrcRsb_left      = nullptr;
-  m_pSrcRowSlab_left  = nullptr;
+  m_aSrcRsb      = nullptr;
+  m_pSrcRowSlab  = nullptr;
 
-  m_aSrcRsb_right     = nullptr;
-  m_pSrcRowSlab_right = nullptr;
+  m_aAltRsb     = nullptr;
+  m_pAltRowSlab = nullptr;
   
   i8 iResult = iCompute();
   
@@ -393,11 +394,11 @@ i8 Calculator::iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
   
   m_pDstRowSlab = nullptr;
 
-  m_aSrcRsb_left      = aSrcRsb;
-  m_pSrcRowSlab_left  = pSrcRowSlab;
+  m_aSrcRsb      = aSrcRsb;
+  m_pSrcRowSlab  = pSrcRowSlab;
 
-  m_aSrcRsb_right     = nullptr;
-  m_pSrcRowSlab_right = nullptr;
+  m_aAltRsb     = nullptr;
+  m_pAltRowSlab = nullptr;
 
   i8 iResult = iCompute();
   
@@ -415,9 +416,9 @@ i8 Calculator::iProject(Pot* pPot, RowSlab* pDstRowSlab,
   m_pPot = pPot;
   m_pDstRowSlab = pDstRowSlab;
   
-  m_aSrcRsb_left      = aSrcRsb;
-  m_pSrcRowSlab_left  = pSrcRowSlab;
-  m_nSrcRows = m_pSrcRowSlab_left->nRows();
+  m_aSrcRsb      = aSrcRsb;
+  m_pSrcRowSlab  = pSrcRowSlab;
+  m_nSrcRows = m_pSrcRowSlab->nRows();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();
@@ -427,8 +428,8 @@ i8 Calculator::iProject(Pot* pPot, RowSlab* pDstRowSlab,
   m_pDstRowSlab = nullptr;
 
   m_nSrcRows          = C_UNKNOWN;
-  m_aSrcRsb_left      = nullptr;
-  m_pSrcRowSlab_left  = nullptr;
+  m_aSrcRsb      = nullptr;
+  m_pSrcRowSlab  = nullptr;
 
   return iResult;
 }
@@ -444,11 +445,11 @@ i8 Calculator::iJoin(RowSlab* pDstRowSlab,
   
   m_pDstRowSlab = pDstRowSlab;
 
-  m_aSrcRsb_left      = aSrcRsb_left;
-  m_pSrcRowSlab_left  = pSrcRowSlab_left;
+  m_aSrcRsb      = aSrcRsb_left;
+  m_pSrcRowSlab  = pSrcRowSlab_left;
 
-  m_aSrcRsb_right     = aSrcRsb_right;
-  m_pSrcRowSlab_right = pSrcRowSlab_right;
+  m_aAltRsb     = aSrcRsb_right;
+  m_pAltRowSlab = pSrcRowSlab_right;
 
   i8 iResult = iCompute();
   
@@ -1132,7 +1133,7 @@ i8 Calculator::iCompute(void)
         iArg = * (i8*)aeCode;
         dCC1(eCode,iArg);
         aeCode += 8;
-        m_oEntWrk.vAppendElement(m_aSrcRsb_left, pIndexDef->pGetColumn(iArg));
+        m_oEntWrk.vAppendElement(m_aSrcRsb, pIndexDef->pGetColumn(iArg));
         SP_Ent spEnt;
         vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
         break;
@@ -1243,7 +1244,7 @@ i8 Calculator::iCompute(void)
       case EO_RSB_DST_COPYSRC: // copy src rsb to dst rsb
         dCC0(eCode);
         m_pDstRowSlab->vPositionOnCell(0);
-        m_pDstRowSlab->vCopyRsb(m_aSrcRsb_left,bSrcHasPtnHash,bCopyPtnHash);
+        m_pDstRowSlab->vCopyRsb(m_aSrcRsb,bSrcHasPtnHash,bCopyPtnHash);
         break;
         
       case EO_RSB_DST_NEW:      NEVER_REACH; // not yet implemented
@@ -1330,7 +1331,7 @@ i8 Calculator::iCompute(void)
       case EO_PUSHSRCCOLI: // push src column
         iArg = * (i8*)aeCode;
         aeCode += 8;
-        iRes = m_aSrcRsb_left->iVal_ntv(m_aSrcRsb_left->i_ColToCell_ntv(iArg));
+        iRes = m_aSrcRsb->iVal_ntv(m_aSrcRsb->i_ColToCell_ntv(iArg));
         dCC2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
         break;
