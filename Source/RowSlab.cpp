@@ -209,9 +209,19 @@ void RowSlab::vDumpRow(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
+  Rsb* aRsb = this->aRsbAdr(i_Row);
+  vDumpRow(i_Row,aRsb);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump given row                                                             */
+/*----------------------------------------------------------------------------*/
+void RowSlab::vDumpRow(i8 i_Row, Rsb* aRsb)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
   SP_RowPix spRowPix(this->nCols(),this->axaColPix());
   
-  Rsb* aRsb = this->aRsbAdr(i_Row);
   Stz* szRow = spRowPix.sz(aRsb);
   vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
 }
