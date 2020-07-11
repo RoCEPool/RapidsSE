@@ -5,6 +5,122 @@
 #include "Expressions.h"
 
 /*----------------------------------------------------------------------------*/
+/* Description of EO Args                                                     */
+/*----------------------------------------------------------------------------*/
+EoArg EoArgs[]
+{
+  { 0 },  // EO_NONE
+  
+  // arithmetic operators
+  { 0 },  // EO_ADD
+  { 0 },  // EO_DIVIDE
+  { 0 },  // EO_MODULO
+  { 0 },  // EO_MULTIPLY
+  { 0 },  // EO_NEGATE
+  { 0 },  // EO_SUBTRACT
+
+  // branch operators
+  { 8 },  // EO_JMP
+  { 8 },  // EO_JMPFALSE
+  { 8 },  // EO_JMPTRUE
+
+  // entry
+  { 8 },  // EO_ENT_CREATEPAY
+  { 0 },  // EO_ENT_INSERT
+  { 0 },  // EO_ENT_INSERTPAY
+  { 0 },  // EO_ENT_NEXT
+  { 0 },  // EO_ENT_POSPRIOR
+  { 0 },  // EO_ENT_PUSH
+  { 0 },  // EO_ENT_PUSHREF
+
+  // entry relational operators
+  { 0 },  // EO_ENT_LESSTHAN
+  { 0 },  // EO_ENT_LESSEQUAL
+  { 0 },  // EO_ENT_EQUAL
+  { 0 },  // EO_ENT_NOTEQUAL
+  { 0 },  // EO_ENT_GREATEREQUAL
+  { 0 },  // EO_ENT_GREATERTHAN
+
+  // entWrk
+  { 8 },  // EO_ENTWRK_APPENDELMI
+  { 0 },  // EO_ENTWRK_POPOFS
+  { 0 },  // EO_ENTWRK_POPREF
+  { 0 },  // EO_ENTWRK_RESET
+
+  // index tree
+  { 0 },  // EO_IXT_INS_ENT
+  { 0 },  // EO_IXT_TRV_BEGIN
+  { 0 },  // EO_IXT_TRV_NEXT
+
+  // logical operators
+  { 0 },  // EO_AND
+  { 0 },  // EO_OR
+  { 0 },  // EO_NOT
+
+  // null test operators
+  { 0 },  // EO_ISNULL
+  { 0 },  // EO_ISNOTNULL
+
+  // pay load
+  { 8 },  // EO_PAY_FETCH_COL
+  { 8 },  // EO_PAY_STORE_COL
+
+  // pushes
+  { 8 },  // EO_INTEGER
+  { 0 },  // EO_PUSHNULL
+  { 0 },  // EO_PUSH0
+  { 0 },  // EO_PUSH1
+
+  // ref
+  { 0 },  // EO_REF_GETCRW
+  { 0 },  // EO_REF_SRCRSB
+  { 0 },  // EO_REF_ALTRSB
+
+  // rsb / rowslab
+  { 0 },  // EO_RSB_DST_COPYSRC
+  { 0 },  // EO_RSB_DST_NEW
+  { 0 },  // EO_RSB_SRC_BEGIN
+  { 0 },  // EO_RSB_SRC_NEXT
+  { 0 },  // EO_RSB_SRC_PUSHOFS
+  { 0 },  // EO_RSB_SRC_SETBYOFS
+  { 0 },  // EO_RSB_ALT_BEGIN
+  { 0 },  // EO_RSB_ALT_NEXT
+  { 0 },  // EO_RSB_ALT_PUSHOFS
+  { 0 },  // EO_RSB_ALT_SETBYOFS
+
+  // relational operators
+  { 0 },  // EO_LESSTHAN
+  { 0 },  // EO_LESSEQUAL
+  { 0 },  // EO_EQUAL
+  { 0 },  // EO_NOTEQUAL
+  { 0 },  // EO_GREATEREQUAL
+  { 0 },  // EO_GREATERTHAN
+
+  // rsb operators
+  { 8 },  // EO_DEPOSITCOLI
+  { 8 },  // EO_PUSHDSTCOLI
+  { 8 },  // EO_PUSHSRCCOLI
+  { 8 },  // EO_PUSHALTCOLI
+
+  // stack operators
+  { 0 },  // EO_INC
+  { 0 },  // EO_DEC
+  { 0 },  // EO_DUP
+  { 0 },  // EO_POP
+  { 0 },  // EO_PRINT
+
+  // subroutine operators
+  { 8 },  // EO_CALL
+  { 0 },  // EO_RETURN
+
+  // misc
+  { 0 },  // EO_NOO
+
+  // -- end --
+  { 0 },  // EO_ENUMS
+};
+
+/*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -19,6 +19,11 @@ namespace Expressions
     };
   };
 
+  struct EoArg
+  {
+    i8  m_nArgBytes;
+  };
+
   //----------------------------------------------------------------------------
 
   class Calculator : public Object
