@@ -37,6 +37,7 @@ namespace Enums
 #include "eDM.h"
 #include "eDS.h"
 
+#include "eEA.h"
 #include "eEC.h"
 #include "eEK.h"
 #include "eEO.h"
