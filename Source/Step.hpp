@@ -130,7 +130,7 @@ namespace Steps
     static void vAddSteps_RegOperandOoO(void);
     static void vAddSteps_RegPath(void);
     static void vAddSteps_RegPipein(void);
-    static void vAddSteps_RegSet(void);
+    static void vAddSteps_LogicUnit(void);
     static void vAddSteps_RegTask(void);
     static void vAddSteps_RegTimer(void);
     static void vAddSteps_RegXmits(void);

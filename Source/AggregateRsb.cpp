@@ -58,7 +58,7 @@ void AggregateRsb::vAggregate(RsbBuffer* pSrcRsbBuffer)
   
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   
-  LogicUnit* pLogicUnit = AM::pThisTLSRegSet();
+  LogicUnit* pLogicUnit = AM::pThisTLSLogicUnit();
 
   i8 nRows = pSrcRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
@@ -122,7 +122,7 @@ void AggregateRsb::vAggregateCpy(Pot* pPot, IndexTree* pIndexTree)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
   // for each row in the rowSlab
   
-  LogicUnit* pLogicUnit = AM::pThisTLSRegSet();
+  LogicUnit* pLogicUnit = AM::pThisTLSLogicUnit();
 
   bool bResult = pLogicUnit->iAggregateGby(pPot, pIndexTree,nullptr,nullptr,nullptr);
   
@@ -255,7 +255,7 @@ void AggregateRsb::vAggregateGby(Pot* pPot, IndexTree* pIndexTree,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
   // for each row in the rowSlab
   
-  LogicUnit* pLogicUnit = AM::pThisTLSRegSet();
+  LogicUnit* pLogicUnit = AM::pThisTLSLogicUnit();
 
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     

@@ -1272,10 +1272,10 @@ public:
   void vRegister0Set(void);
 
   // regset
-  void vRegSetCallAgainFetch(void);
-  void vRegSetCallAgainStore(void);
-  void vRegSetHandlerFetch(void);
-  void vRegSetHandlerStore(void);
+  void vLogicUnitCallAgainFetch(void);
+  void vLogicUnitCallAgainStore(void);
+  void vLogicUnitHandlerFetch(void);
+  void vLogicUnitHandlerStore(void);
 
   void vRowIntColumnFetch(void);
 

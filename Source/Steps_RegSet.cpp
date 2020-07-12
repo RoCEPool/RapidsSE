@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_RegSet.cpp - reg set step group                                      */
+/* Steps_LogicUnit.cpp - Logic Unit step group                                */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,18 +7,18 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_RegSet(void)
+void Step::vAddSteps_LogicUnit(void)
 {
-  vAddStep("regset::callAgain@"_Stz,   &Step::vRegSetCallAgainFetch);
-  vAddStep("regset::callAgain!"_Stz,   &Step::vRegSetCallAgainStore);
-  vAddStep("regset::handler@"_Stz,     &Step::vRegSetHandlerFetch);
-  vAddStep("regset::handler!"_Stz,     &Step::vRegSetHandlerStore);
+  vAddStep("regset::callAgain@"_Stz,   &Step::vLogicUnitCallAgainFetch);
+  vAddStep("regset::callAgain!"_Stz,   &Step::vLogicUnitCallAgainStore);
+  vAddStep("regset::handler@"_Stz,     &Step::vLogicUnitHandlerFetch);
+  vAddStep("regset::handler!"_Stz,     &Step::vLogicUnitHandlerStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* regset::callAgain@ --                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSetCallAgainFetch(void)
+void Step::vLogicUnitCallAgainFetch(void)
 {
   ENTRY();
   
@@ -30,7 +30,7 @@ void Step::vRegSetCallAgainFetch(void)
 /*----------------------------------------------------------------------------*/
 /* regset::callAgain! --                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSetCallAgainStore(void)
+void Step::vLogicUnitCallAgainStore(void)
 {
   ENTRY();
 
@@ -44,7 +44,7 @@ void Step::vRegSetCallAgainStore(void)
 /*----------------------------------------------------------------------------*/
 /* regset::handler@ --                                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSetHandlerFetch(void)
+void Step::vLogicUnitHandlerFetch(void)
 {
   ENTRY();
   
@@ -56,7 +56,7 @@ void Step::vRegSetHandlerFetch(void)
 /*----------------------------------------------------------------------------*/
 /* regset::handler! --                                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vRegSetHandlerStore(void)
+void Step::vLogicUnitHandlerStore(void)
 {
   ENTRY();
 

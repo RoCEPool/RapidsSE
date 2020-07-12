@@ -159,7 +159,7 @@ namespace Oblique
     static i8   nRndSkipLevel(void);
     static Job* pThisTLSJob(void);
     static t8   tThisTLSPespective(void);
-    static LogicUnit* pThisTLSRegSet(void);
+    static LogicUnit* pThisTLSLogicUnit(void);
     static Task* pThisTLSTask(void);
     static Thread* pThisTLSThread(void);
     static Tx* pThisTLSTx(void);
@@ -298,7 +298,7 @@ namespace Oblique
     static void vTaskMutexUnlock(Task* pTask);
     static void vTaskMutexWait(Task* pTask);
     static i8   iTaskQueue(Task* pTask);
-    static LogicUnit* pTaskRegSet(Task* pTask);
+    static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

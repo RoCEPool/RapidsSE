@@ -70,7 +70,7 @@ void ProjectRsb::vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
 
   //i8 bCopy = pExpr->iProject(m_pPot,m_pDstRowSlab,nullptr,pSrcRowSlab);
   
-  LogicUnit* pLogicUnit = AM::pThisTLSRegSet();
+  LogicUnit* pLogicUnit = AM::pThisTLSLogicUnit();
   i8 bCopy = pLogicUnit->iProject(m_pPot,m_pDstRowSlab,nullptr,pSrcRowSlab);
 
 }

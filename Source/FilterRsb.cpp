@@ -57,7 +57,7 @@ void FilterRsb::vFilter(Pot* pPot, RsbBuffer* pSrcRsbBuffer)
   
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   
-  LogicUnit* pLogicUnit = AM::pThisTLSRegSet();
+  LogicUnit* pLogicUnit = AM::pThisTLSLogicUnit();
 
   
   i8 nRows = pSrcRowSlab->nRows();
