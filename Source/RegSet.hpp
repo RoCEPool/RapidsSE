@@ -92,7 +92,8 @@ namespace Expressions
     Calculator       m_oCalculator;
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+    // ..from Calculator
+
     Pot*     m_pPot;
     Rsb*     m_aDstRsb;
     RowSlab* m_pDstRowSlab;
@@ -138,6 +139,54 @@ namespace Expressions
     void vContentDump(void);
 
     Calculator* pCalculator(void);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ..from Calculator
+  
+    //! TEMP: TO GO
+    void vGenerateAggCpy(void);
+    void vGenerateAggGby(void);
+    void vGenerateSort(void);
+
+    i8   iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iAggregateGby(Pot* pPot, IndexTree* pIndexTree, RowSlab* pDstRowSlab,
+                       Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    bool bCompile(void);
+    bool bCompile(TokenVec* pTknVec);
+
+    i8   iCalc(void);
+    i8   iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iProject(Pot* pPot, RowSlab* pDstRowSlab,
+                  Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iJoin(RowSlab* pDstRowSlab,
+               Rsb* aSrcRsb_left,  RowSlab* pSrcRowSlab_left,
+               Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right);
+  
+    Stz* szSource(void);
+    void vSource(Stz* szSource);
+
+
+  private:
+    void vAddCode(eEO eCode);
+    void vAddCodeArg(eEO eCode, i8 iArg);
+    void vAddCodeArg(eEO eCode, Token* pTkn);
+    void vAddCodeLabel(eEO eCode, Stz* szLabelNm);
+    void vAddCodeLabel(eEO eCode, Token* pTkn);
+    i8   iAddLabel(Stz* szLabelNm, bool bDefined);
+    void vCorrectLabel(i8 i_Label);
+    i8   iDecodeLabel(Stz* szLabelNm);
+    void vDefineLabel(Stz* szLabelNm);
+    i8   iFindLabel(Stz* szLabelNm);
+    void vPrintLabels(void);
+
+    // last
+    bool bCompileCode(TokenVec* pTknVec);
+    void vDumpCode1(void);
+    void vDumpCode2(void);
+    void vDumpCode(i8& i_Code, eEO eCode);
+    void vDumpCode(eEO eCode, i8& i_Code);
+    i8   iCompute(void);
+
 
   private:
     Footer* aFooter(void);
