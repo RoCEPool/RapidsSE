@@ -77,7 +77,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Error();
   Step::vAddSteps_Executable();
   Step::vAddSteps_Expr();
-  Step::vAddSteps_ExprVec();
 
   Step::vAddSteps_File();
   Step::vAddSteps_FilterRsb();
