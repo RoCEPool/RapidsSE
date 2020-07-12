@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ExprVec.cpp -- Expression Evaluator step group                        */
+/* Steps_LogicUnit.cpp -- LogicUnit step group                                */
 /*============================================================================*/
 
 #include "Steps.h"
