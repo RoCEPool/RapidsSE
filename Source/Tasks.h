@@ -15,7 +15,6 @@ namespace Tasks
 //------------------------------------------------------------------------------
 
 #include "Profile.hpp"
-#include "RegSet.hpp"
 #include "Task.hpp"
 #include "TaskList.hpp"
 #include "TaskQueue.hpp"
