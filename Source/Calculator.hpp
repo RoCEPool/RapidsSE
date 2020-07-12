@@ -6,8 +6,8 @@
 namespace Expressions
 {
   static const i8 C_CALC_CODE  = C_4KB;
-  static const i8 C_CALC_STACK = C_4KB;
-  static const i8 C_CALC_LABEL = 16;
+  static const i8 C_CALC_STACK = C_1KB;
+  static const i8 C_CALC_LABEL = 64;
 
   struct JumpLabel
   {
