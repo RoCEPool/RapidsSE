@@ -29,7 +29,7 @@ void Step::vExprCompile(void)
 {
   ENTRY();
   
-  bool b = m_pRegSet->m_xpExpr->bCompile();
+  bool b = m_pRegSet->m_oCalculator.bCompile();
   
   m_pDataStack->vPushInt((i8)b);
     

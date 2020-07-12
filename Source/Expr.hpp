@@ -25,9 +25,7 @@ namespace Expressions
    
     //! TEMP: TO GO
     void vGenerateAggGby(void);
-    
-    bool bCompile(void);
-  
+      
 
     eUK  eKind(void);
     void vKind(eUK eKind);
