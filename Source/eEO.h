@@ -76,7 +76,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_RSB_DST_COPYSRC,  // copy src rsb to dst rsb
   /*    */ EO_RSB_DST_PRINT,    // print dst rsb
   /*    */ EO_RSB_DST_NEW,      // create new destination rsb
-  /*    */ EO_RSB_SRC_BEGIN,    // begin linear traverse
+  /*    */ EO_RSB_SRC_BEGIN,    // begin src rsb traverse
   /*    */ EO_RSB_SRC_NEXT,     // move to next src rsb
   /*    */ EO_RSB_SRC_PRINT,    // print src rsb
   /*    */ EO_RSB_SRC_PUSHOFS,  // push offset of source rsb

@@ -14,7 +14,7 @@
 
   Expr[].new
   //"= @ 3 10 * ! 3" Expr[].source!
-  "bs L NEXT gs jf END nd .src = @ 3 10 * ! 3 .dst j NEXT L END ret" Expr[].source!
+  "bs L GET gs jf END nd .s = @ 3 10 * ! 3 .d j GET L END ret" Expr[].source!
   Expr[].compile assert
 
   ZK_STARTMARKER_handler

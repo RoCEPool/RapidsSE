@@ -647,13 +647,13 @@ void Calculator::vPrintLabels(void)
            m_xaJumpLabel[i_Label].m_i_Chain);
 }
 
-// calc l a 1 ;
+// calc L AGAIN 1 ;
 
-// calc 10 l a dup . dec dup jt a ;
+// calc 10 L AGAIN dup . dec dup jt aAGAIN ;
 
-// calc 1 l a dup . inc dup 10 > jf a;
+// calc 1 L AGAIN dup . inc dup 10 > jf AGAIN;
 
-// calc 1 l a call p inc dup 10 > jf a ret l p dup . ret;
+// calc 1 L AGAIN call PRINT inc dup 10 > jf AGAIN ret L PRINT dup . ret;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -722,9 +722,9 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("gs"_Stz))   { vAddCode(EO_RSB_SRC_NEXT);  continue; }
     if (pTkn->bSame("nd"_Stz))   { vAddCode(EO_RSB_DST_NEW);   continue; }
 
-    if (pTkn->bSame(".dst"_Stz)) { vAddCode(EO_RSB_DST_PRINT); continue; }
-    if (pTkn->bSame(".src"_Stz)) { vAddCode(EO_RSB_SRC_PRINT); continue; }
-    if (pTkn->bSame(".alt"_Stz)) { vAddCode(EO_RSB_ALT_PRINT); continue; }
+    if (pTkn->bSame(".d"_Stz))   { vAddCode(EO_RSB_DST_PRINT); continue; }
+    if (pTkn->bSame(".s"_Stz))   { vAddCode(EO_RSB_SRC_PRINT); continue; }
+    if (pTkn->bSame(".a"_Stz))   { vAddCode(EO_RSB_ALT_PRINT); continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subroutine operators
@@ -1106,7 +1106,7 @@ i8 Calculator::iCompute(void)
         dCC1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
-     }
+      }
         
       case EO_ENT_NOTEQUAL:
         iRes  = KC_SAME != Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
@@ -1262,7 +1262,7 @@ i8 Calculator::iCompute(void)
         m_pDstRowSlab->vCopyRsb(m_aSrcRsb,bSrcHasPtnHash,bCopyPtnHash);
         break;
 
-      case EO_RSB_DST_PRINT: // print src rsb
+      case EO_RSB_DST_PRINT: // print dst rsb
         m_pDstRowSlab->vDumpRow(-1,m_aDstRsb);
         break;
 
@@ -1274,15 +1274,15 @@ i8 Calculator::iCompute(void)
         m_pAltRowSlab->vDumpRow(-1,m_aAltRsb);
         break;
 
-      case EO_RSB_DST_NEW:
+      case EO_RSB_DST_NEW: // create new destination rsb
         m_aDstRsb = m_pPot->aNewDstRsb(&m_pDstRowSlab);
         break;
 
-      case EO_RSB_SRC_BEGIN:
+      case EO_RSB_SRC_BEGIN: // begin src rsb traverse
         m_i_SrcRow = -1;
         break;
 
-      case EO_RSB_SRC_NEXT:
+      case EO_RSB_SRC_NEXT: // move to next src rsb
         if (++m_i_SrcRow < m_nSrcRows) {
           m_aSrcRsb = m_pSrcRowSlab->aRsbAdr(m_i_SrcRow);
           *(++aiDstk) = 1;
@@ -1433,11 +1433,11 @@ i8 Calculator::iCompute(void)
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // misc
       case EO_NOOP: // no op
         dCC0(eCode);
         break;
 
-        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       default:
         vTrace(" unknown opcode in calculator %lld\n"_Stz,(i8)eCode);
