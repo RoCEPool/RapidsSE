@@ -160,6 +160,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LOCK,
   /* */ CN_LOG,
   /* */ CN_LOGENTRY,
+  /* */ CN_LOGICUNIT,
   /* */ CN_LRW,
   /* */ CN_LRWBUFFER,
 
@@ -218,7 +219,6 @@ enum eCN : u2 // Class Number
   /* */ CN_READAPI,
   /* */ CN_RECORD,
   /* */ CN_RECORDBUFFER,
-  /* */ CN_REGSET,
   /* */ CN_RELOP,
   /* */ CN_RESOURCETRACKER,
   /* */ CN_RESPONSE,
@@ -504,6 +504,7 @@ static Stz* aCN[]
   /* */ "LOCK"_Stz,                // CN_LOCK
   /* */ "LOG"_Stz,                 // CN_LOG
   /* */ "LOGENTRY"_Stz,            // CN_LOGENTRY
+  /* */ "LOGICUNIT"_Stz,           // CN_LOGICUNIT
   /* */ "LRW"_Stz,                 // CN_LRW
   /* */ "LRWBUFFER"_Stz,           // CN_LRWBUFFER
 
@@ -562,7 +563,6 @@ static Stz* aCN[]
   /* */ "READAPI"_Stz,             // CN_READAPI
   /* */ "RECORD"_Stz,              // CN_RECORD
   /* */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
-  /* */ "REGSET"_Stz,              // CN_REGSET
   /* */ "RELOP"_Stz,               // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,     // CN_RESOURCETRACKER
   /* */ "RESPONSE"_Stz,            // CN_RESPONSE

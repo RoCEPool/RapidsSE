@@ -156,6 +156,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Lock),               HT_INVALID           }, // CN_LOCK
   { sizeof(Log),                HT_INVALID           }, // CN_LOG
   { sizeof(LogEntry),           HT_INVALID           }, // CN_LOGENTRY
+  { sizeof(LogicUnit),          HT_TRANSIENT_MEDIUM  }, // CN_LOGICUNIT
   { sizeof(Lrw),                HT_TRANSIENT_SMALL   }, // CN_LRW
   { sizeof(LrwBuffer),          HT_TRANSIENT_LARGE   }, // CN_LRWBUFFER
 
@@ -214,7 +215,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ReadApi),            HT_TRANSIENT_TINY    }, // CN_READAPI
   { sizeof(Record),             HT_TRANSIENT_MEDIUM  }, // CN_RECORD
   { sizeof(RecordBuffer),       HT_TRANSIENT_LARGE   }, // CN_RECORDBUFFER
-  { sizeof(RegSet),             HT_TRANSIENT_MEDIUM  }, // CN_REGSET
   { sizeof(RelOp),              HT_TRANSIENT_TINY    }, // CN_RELOP
   { sizeof(ResourceTracker),    HT_TRANSIENT_TINY    }, // CN_RESOURCETRACKER
   { sizeof(Response),           HT_TRANSIENT_MEDIUM  }, // CN_RESPONSE

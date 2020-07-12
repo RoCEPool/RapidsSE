@@ -11,7 +11,7 @@ namespace SenVM
   
   protected:
     Task*     m_pTask;        // which task
-    RegSet*   m_pRegSet;      // associated register set
+    LogicUnit*   m_pRegSet;      // associated register set
 
     Word*     m_pSeedWord;      // seed
     Word*     m_pExceptionWord; // seed
@@ -40,7 +40,7 @@ namespace SenVM
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Forth(Task* pTask, RegSet* pRegSet);
+    Forth(Task* pTask, LogicUnit* pRegSet);
    ~Forth(void) noexcept(false);
   
     void vCheckBreakPt(void);

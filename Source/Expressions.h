@@ -19,7 +19,7 @@ namespace Expressions
 #include "ProjectRsb.hpp"
 #include "JoinRsb.hpp"
 
-#include "RegSet.hpp"
+#include "LogicUnit.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

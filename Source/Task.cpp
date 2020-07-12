@@ -533,7 +533,7 @@ void Task::vInitExeContext(void)
     return;
   
   m_pProfile = new Profile;
-  m_pRegSet  = new RegSet(this);
+  m_pRegSet  = new LogicUnit(this);
   m_pForth   = new Forth(this,m_pRegSet);
 }
 
@@ -694,7 +694,7 @@ void Task::vQueue(eQK eQueue)
 /*----------------------------------------------------------------------------*/
 /* get register set                                                           */
 /*----------------------------------------------------------------------------*/
-RegSet* Task::pRegSet(void)
+LogicUnit* Task::pRegSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

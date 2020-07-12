@@ -39,7 +39,7 @@ void Forth::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Forth::Forth(Task* pTask, RegSet* pRegSet)
+Forth::Forth(Task* pTask, LogicUnit* pRegSet)
 : Object(CN_FORTH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);

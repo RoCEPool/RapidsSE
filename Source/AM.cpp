@@ -394,7 +394,7 @@ void AM::vTaskDump(void) {
     AM::pThisTLSTask()->vDump();
 }
 
-RegSet* AM::pTaskRegSet(Task* pTask)   { return pTask->pRegSet(); }
+LogicUnit* AM::pTaskRegSet(Task* pTask)   { return pTask->pRegSet(); }
 
 i8 AM::iTaskQueue(Task* pTask) {
   eQK eQueue = pTask->eQueue();
@@ -435,9 +435,9 @@ t8 AM::tThisTLSPespective(void)
 //  Task* pTask = pThread->pTask();
 //  return pTask;
 //}
-RegSet* AM::pThisTLSRegSet(void) {
+LogicUnit* AM::pThisTLSRegSet(void) {
   Task* pTask = Task::pThisTLSTask();
-  RegSet* pRegSet = pTask->pRegSet();
+  LogicUnit* pRegSet = pTask->pRegSet();
 
   return pRegSet;
 }

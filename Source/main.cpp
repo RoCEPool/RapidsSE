@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
   printf("sizeof(Ent_flat) %lld\n",     (i8)sizeof(Ent_flat));
   printf("sizeof(Ent_int) %lld\n",      (i8)sizeof(Ent_int));
   printf("sizeof(EntWrk) %lld\n",       (i8)sizeof(EntWrk));
-  printf("sizeof(RegSet) %lld\n",       (i8)sizeof(RegSet));
+  printf("sizeof(LogicUnit) %lld\n",       (i8)sizeof(LogicUnit));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

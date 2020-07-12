@@ -66,7 +66,7 @@ void JoinRsb::vJoin(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
   
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   
-  RegSet* pRegSet = AM::pThisTLSRegSet();
+  LogicUnit* pRegSet = AM::pThisTLSRegSet();
 
   i8 nRows = pSrcRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
