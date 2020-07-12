@@ -34,7 +34,6 @@ namespace Expressions
   
     REG<AggregateRsb> m_xpAggregateRsb;
     REG<CrwHash>     m_xpCrwHash;
-    REG<Expr>        m_xpExpr;
     REG<FilterRsb>   m_xpFilterRsb;
     REG<Index>       m_xpIndex;
     REG<IndexDef>    m_xpIndexDef;
