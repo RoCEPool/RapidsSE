@@ -24,9 +24,6 @@ void Step::vExprVecDelete(void)
 {
   ENTRY();
     
-  ExprVec* pExprVev = *m_pRegSet->m_xpExprVec;
-  
-  m_pRegSet->m_xpExprVec = nullptr;
 
   EXIT();
 }
@@ -58,7 +55,6 @@ void Step::vExprVecGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpExprVec);
 
   EXIT();
 }
@@ -70,7 +66,6 @@ void Step::vExprVecNew(void)
 {
   ENTRY();
   
-  m_pRegSet->m_xpExprVec = new ExprVec;
     
   EXIT();
 }
