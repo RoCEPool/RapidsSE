@@ -57,13 +57,16 @@ void AggregateRsb::vAggregate(RsbBuffer* pSrcRsbBuffer, Expr* pExpr)
   
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   
+  Calculator* pCalculator = AM::pThisTLSRegSet()->pCalculator();
+
   i8 nRows = pSrcRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
     
-    i8 bCopy = pExpr->iAggregate(m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
-    
+    //i8 bCopy = pExpr->iAggregate(m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
+    i8 bCopy = pCalculator->iAggregate(m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
+
     //vCopyIntoDst(aSrcRsb);
   }
 }
