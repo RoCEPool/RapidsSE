@@ -78,13 +78,16 @@ EoArg EoArgs[]
 
   // rsb / rowslab
   { EA_NONE,  0 },  // EO_RSB_DST_COPYSRC
+  { EA_NONE,  0 },  // EO_RSB_DST_PRINT
   { EA_NONE,  0 },  // EO_RSB_DST_NEW
   { EA_NONE,  0 },  // EO_RSB_SRC_BEGIN
   { EA_NONE,  0 },  // EO_RSB_SRC_NEXT
+  { EA_NONE,  0 },  // EO_RSB_SRC_PRINT
   { EA_NONE,  0 },  // EO_RSB_SRC_PUSHOFS
   { EA_NONE,  0 },  // EO_RSB_SRC_SETBYOFS
   { EA_NONE,  0 },  // EO_RSB_ALT_BEGIN
   { EA_NONE,  0 },  // EO_RSB_ALT_NEXT
+  { EA_NONE,  0 },  // EO_RSB_ALT_PRINT
   { EA_NONE,  0 },  // EO_RSB_ALT_PUSHOFS
   { EA_NONE,  0 },  // EO_RSB_ALT_SETBYOFS
 
@@ -705,13 +708,16 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // stack operators
-    if (pTkn->bSame("++"_Stz))  { vAddCode(EO_INC);   continue; }
-    if (pTkn->bSame("inc"_Stz)) { vAddCode(EO_INC);   continue; }
-    if (pTkn->bSame("--"_Stz))  { vAddCode(EO_DEC);   continue; }
-    if (pTkn->bSame("dec"_Stz)) { vAddCode(EO_DEC);   continue; }
-    if (pTkn->bSame("dup"_Stz)) { vAddCode(EO_DUP);   continue; }
-    if (pTkn->bSame("pop"_Stz)) { vAddCode(EO_POP);   continue; }
-    if (pTkn->bSame("."_Stz))   { vAddCode(EO_PRINT); continue; }
+    if (pTkn->bSame("++"_Stz))   { vAddCode(EO_INC);           continue; }
+    if (pTkn->bSame("inc"_Stz))  { vAddCode(EO_INC);           continue; }
+    if (pTkn->bSame("--"_Stz))   { vAddCode(EO_DEC);           continue; }
+    if (pTkn->bSame("dec"_Stz))  { vAddCode(EO_DEC);           continue; }
+    if (pTkn->bSame("dup"_Stz))  { vAddCode(EO_DUP);           continue; }
+    if (pTkn->bSame("pop"_Stz))  { vAddCode(EO_POP);           continue; }
+    if (pTkn->bSame("."_Stz))    { vAddCode(EO_PRINT);         continue; }
+    if (pTkn->bSame(".dst"_Stz)) { vAddCode(EO_RSB_DST_PRINT); continue; }
+    if (pTkn->bSame(".src"_Stz)) { vAddCode(EO_RSB_SRC_PRINT); continue; }
+    if (pTkn->bSame(".alt"_Stz)) { vAddCode(EO_RSB_ALT_PRINT); continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subroutine operators
@@ -1245,9 +1251,22 @@ i8 Calculator::iCompute(void)
       case EO_RSB_DST_COPYSRC: // copy src rsb to dst rsb
         dCC0(eCode);
         m_pDstRowSlab->vPositionOnCell(0);
+        m_aDstRsb = m_pDstRowSlab->aRsb();
         m_pDstRowSlab->vCopyRsb(m_aSrcRsb,bSrcHasPtnHash,bCopyPtnHash);
         break;
-        
+
+      case EO_RSB_DST_PRINT: // print src rsb
+        m_pDstRowSlab->vDumpRow(-1,m_aDstRsb);
+        break;
+
+      case EO_RSB_SRC_PRINT: // print src rsb
+        m_pSrcRowSlab->vDumpRow(-1,m_aSrcRsb);
+        break;
+
+      case EO_RSB_ALT_PRINT: // print alt rsb
+        m_pAltRowSlab->vDumpRow(-1,m_aAltRsb);
+        break;
+
       case EO_RSB_DST_NEW:      NEVER_REACH; // not yet implemented
       case EO_RSB_SRC_BEGIN:    NEVER_REACH; // not yet implemented
       case EO_RSB_SRC_NEXT:     NEVER_REACH; // not yet implemented

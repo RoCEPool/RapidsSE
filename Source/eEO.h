@@ -74,13 +74,16 @@ enum eEO : i1 // expression operators
 
   // rsb / rowslab
   /*    */ EO_RSB_DST_COPYSRC,  // copy src rsb to dst rsb
+  /*    */ EO_RSB_DST_PRINT,    // print dst rsb
   /*    */ EO_RSB_DST_NEW,      // create new destination rsb
   /*    */ EO_RSB_SRC_BEGIN,    // begin linear traverse
-  /*    */ EO_RSB_SRC_NEXT,     // move to next rsb
+  /*    */ EO_RSB_SRC_NEXT,     // move to next src rsb
+  /*    */ EO_RSB_SRC_PRINT,    // print src rsb
   /*    */ EO_RSB_SRC_PUSHOFS,  // push offset of source rsb
   /*    */ EO_RSB_SRC_SETBYOFS, // set src rsb by using offset on stack
   /*    */ EO_RSB_ALT_BEGIN,    // begin linear traverse
   /*    */ EO_RSB_ALT_NEXT,     // move to next rsb
+  /*    */ EO_RSB_ALT_PRINT,    // print alt rsb
   /*    */ EO_RSB_ALT_PUSHOFS,  // push offset of alt rsb
   /*    */ EO_RSB_ALT_SETBYOFS, // set alt rsb by using offset on stack
 
@@ -186,13 +189,16 @@ static Stz* aEO[]
   
   // rsb / rowslab
   /*    */ "EO_RSB_DST_COPYSRC"_Stz,
+  /*    */ "EO_RSB_DST_PRINT"_Stz,
   /*    */ "EO_RSB_DST_NEW"_Stz,
   /*    */ "EO_RSB_SRC_BEGIN"_Stz,
   /*    */ "EO_RSB_SRC_NEXT"_Stz,
+  /*    */ "EO_RSB_SRC_PRINT"_Stz,
   /*    */ "EO_RSB_SRC_PUSHOFS"_Stz,
   /*    */ "EO_RSB_SRC_SETBYOFS"_Stz,
   /*    */ "EO_RSB_ALT_BEGIN"_Stz,
   /*    */ "EO_RSB_ALT_NEXT"_Stz,
+  /*    */ "EO_RSB_ALT_PRINT"_Stz,
   /*    */ "EO_RSB_ALT_PUSHOFS"_Stz,
   /*    */ "EO_RSB_ALT_SETBYOFS"_Stz,
 

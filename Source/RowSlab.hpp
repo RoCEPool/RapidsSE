@@ -67,6 +67,7 @@ namespace Rows
     void  vPositionOnCell(i8 i_Col);
     bool  bPtnHash(void);
     i8    iPtnOfRsb(Rsb* aRsb);
+    Rsb*  aRsb(void);
     Rsb*  aRsbAdr(i8 i_Row);
     i8    nRows(void);
     void  vSlabReport(void);

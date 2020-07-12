@@ -401,6 +401,21 @@ i8 RowSlab::iPtnOfRsb(Rsb* aRsb)
 /*----------------------------------------------------------------------------*/
 /* get address of an rsb                                                      */
 /*----------------------------------------------------------------------------*/
+Rsb* RowSlab::aRsb(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  m8* amCellVec = amSlabCellVec();
+
+  i8 i_Cell = m_i_Row - 1;
+  Rsb* aRsb = (Rsb*) & amCellVec[i_Cell];
+
+  return aRsb;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of an rsb                                                      */
+/*----------------------------------------------------------------------------*/
 Rsb* RowSlab::aRsbAdr(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
