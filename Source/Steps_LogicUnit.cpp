@@ -11,17 +11,17 @@ extern DebugFlags gxDebugFlags;;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Expr(void)
 {
-  vAddStep("LogicUnit[].compile"_Stz,   &Step::vExprCompile);
-  vAddStep("LogicUnit[].newAggGby"_Stz, &Step::vExprNewAggGby);  //! TEMP : to go
-  vAddStep("LogicUnit[].newAggCpy"_Stz, &Step::vExprNewAggCpy);  //! TEMP : to go
-  vAddStep("LogicUnit[].source@"_Stz,   &Step::vExprSourceFetch);
-  vAddStep("LogicUnit[].source!"_Stz,   &Step::vExprSourceStore);
+  vAddStep("LogicUnit[].compile"_Stz,   &Step::vLogicUnitCompile);
+  vAddStep("LogicUnit[].newAggGby"_Stz, &Step::vLogicUnitNewAggGby);  //! TEMP : to go
+  vAddStep("LogicUnit[].newAggCpy"_Stz, &Step::vLogicUnitNewAggCpy);  //! TEMP : to go
+  vAddStep("LogicUnit[].source@"_Stz,   &Step::vLogicUnitSourceFetch);
+  vAddStep("LogicUnit[].source!"_Stz,   &Step::vLogicUnitSourceStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* LogicUnit[].compile -- compile an expression                               */
 /*----------------------------------------------------------------------------*/
-void Step::vExprCompile(void)
+void Step::vLogicUnitCompile(void)
 {
   ENTRY();
   
@@ -35,7 +35,7 @@ void Step::vExprCompile(void)
 /*----------------------------------------------------------------------------*/
 /* LogicUnit[].newAggCpy -- new a copy aggregate result expression            */
 /*----------------------------------------------------------------------------*/
-void Step::vExprNewAggCpy(void)
+void Step::vLogicUnitNewAggCpy(void)
 {
   ENTRY();
   
@@ -47,7 +47,7 @@ void Step::vExprNewAggCpy(void)
 /*----------------------------------------------------------------------------*/
 /* LogicUnit[].newAggGby -- new a group by aggregate expression               */
 /*----------------------------------------------------------------------------*/
-void Step::vExprNewAggGby(void)
+void Step::vLogicUnitNewAggGby(void)
 {
   ENTRY();
   
@@ -59,7 +59,7 @@ void Step::vExprNewAggGby(void)
 /*----------------------------------------------------------------------------*/
 /* LogicUnit[].source@ -- fetch source for expression evaluator               */
 /*----------------------------------------------------------------------------*/
-void Step::vExprSourceFetch(void)
+void Step::vLogicUnitSourceFetch(void)
 {
   ENTRY();
     
@@ -73,7 +73,7 @@ void Step::vExprSourceFetch(void)
 /*----------------------------------------------------------------------------*/
 /* LogicUnit[].source! -- store source for expression evaluator               */
 /*----------------------------------------------------------------------------*/
-void Step::vExprSourceStore(void)
+void Step::vLogicUnitSourceStore(void)
 {
   ENTRY();
     

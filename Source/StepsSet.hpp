@@ -350,13 +350,6 @@ public:
   void vExecutableIsDebug(void);
   void vExecutableIsRelease(void);
 
-  // expression evaluator
-  void vExprCompile(void);
-  void vExprNewAggCpy(void);
-  void vExprNewAggGby(void);
-  void vExprSourceFetch(void);
-  void vExprSourceStore(void);
-
   // expression evaluation vector
   void vExprVecDelete(void);
   void vExprVecEvalAll(void);
@@ -907,6 +900,13 @@ public:
   void vLogicAnd(void);
   void vLogicNot(void);
   void vLogicOr(void);
+
+  // logic unit
+  void vLogicUnitCompile(void);
+  void vLogicUnitNewAggCpy(void);
+  void vLogicUnitNewAggGby(void);
+  void vLogicUnitSourceFetch(void);
+  void vLogicUnitSourceStore(void);
 
   // machine
   void vMachineCoreCount(void);
