@@ -364,8 +364,26 @@ i8 Calculator::iAggregateGby(IndexTree* pIndexTree, RowSlab* pDstRowSlab,
 /*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
+bool Calculator::bCompile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  TokenVec* pTknVec = TokenVec::pTokenise(m_sSource);
+  
+  bool b = bCompile(pTknVec);
+  
+  delete pTknVec;
+  
+  return b;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* compile                                                                    */
+/*----------------------------------------------------------------------------*/
 bool Calculator::bCompile(TokenVec* pTknVec)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   bool b = bCompileCode(pTknVec);
   return b;
 }

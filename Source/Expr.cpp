@@ -88,12 +88,8 @@ bool Expr::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
   
-  TokenVec* pTknVec = TokenVec::pTokenise(m_pCalculator->szSource());
-  
-  bool b = m_pCalculator->bCompile(pTknVec);
-  
-  delete pTknVec;
-  
+  bool b = m_pCalculator->bCompile();
+    
   return b;
 }
 
