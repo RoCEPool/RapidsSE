@@ -111,7 +111,7 @@ void Step::vExprSourceFetch(void)
 {
   ENTRY();
     
-  s2K sSource = m_pRegSet->m_xpExpr->szSource();
+  s2K sSource = m_pRegSet->m_oCalculator.szSource();
 
   m_pDataStack->vPushStr(sSource);
 
@@ -128,7 +128,7 @@ void Step::vExprSourceStore(void)
   s2K sSource;
   m_pDataStack->vPopStr(sSource,__func__);
   
-  m_pRegSet->m_xpExpr->vSource(sSource);
+  m_pRegSet->m_oCalculator.vSource(sSource);
   
   EXIT();
 }

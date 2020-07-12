@@ -26,9 +26,6 @@ namespace Expressions
     eUK  eKind(void);
     void vKind(eUK eKind);
   
-    Stz* szSource(void);
-    void vSource(Stz* szSource);
-
   private:
     Footer* aFooter(void);
   };
