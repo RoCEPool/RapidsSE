@@ -26,7 +26,9 @@ Expr::Expr(void)
   // m_sSource
   m_pDynFun = nullptr;
   
-  m_pCalculator = new Calculator;
+  RegSet* pRegSet = AM::pThisTLSRegSet();
+
+  m_pCalculator = pRegSet->pCalculator();
   
   _checkInitialised_(CN_EXPR);
   
@@ -42,7 +44,7 @@ Expr::~Expr(void) noexcept(false)
   
   delete m_pDynFun;
   
-  delete m_pCalculator;
+  //delete m_pCalculator;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -159,6 +159,7 @@ namespace Oblique
     static i8   nRndSkipLevel(void);
     static Job* pThisTLSJob(void);
     static t8   tThisTLSPespective(void);
+    static RegSet* pThisTLSRegSet(void);
     static Task* pThisTLSTask(void);
     static Thread* pThisTLSThread(void);
     static Tx* pThisTLSTx(void);

@@ -5,36 +5,13 @@
 #include "Expressions.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-RegSet* Expressions::_pRegSet(void* aAddr)
-{
-  RegSet* pRegSet = reinterpret_cast<RegSet*>(aAddr);
-  
-  RASSERT_TYPE(pRegSet,CN_REGSET);
-  
-  return pRegSet;
-}
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* RegSet::operator new(size_t)
-{
-  RegSet* pRegSet = (RegSet*)(HeapMem::pAllocate(CN_REGSET));
-  
-  return pRegSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void RegSet::operator delete(void* aAddress)
-{
-  RegSet* pRegSet = reinterpret_cast<RegSet*>(aAddress);
-  
-  HeapMem::vFree(pRegSet);
-}
+__pCastFunction(Expressions,RegSet,CN_REGSET)
+__aNewFunction(RegSet,CN_REGSET)
+__vDeleteFunction(RegSet,CN_REGSET)
+__aFooterFunction(RegSet)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -120,11 +97,15 @@ void RegSet::vContentDump(void)
 
 }
 
-
 /*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
+/* content dump                                                               */
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(RegSet)
+Calculator* RegSet::pCalculator(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
+  
+  return & m_oCalculator;
+}
 
 /*============================================================================*/
 /* end                                                                        */

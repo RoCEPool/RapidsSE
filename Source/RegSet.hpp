@@ -105,6 +105,8 @@ namespace Expressions
   
     void vContentDump(void);
 
+    Calculator* pCalculator(void);
+
   private:
     Footer* aFooter(void);
   };

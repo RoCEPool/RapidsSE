@@ -435,6 +435,13 @@ t8 AM::tThisTLSPespective(void)
 //  Task* pTask = pThread->pTask();
 //  return pTask;
 //}
+RegSet* AM::pThisTLSRegSet(void) {
+  Task* pTask = Task::pThisTLSTask();
+  RegSet* pRegSet = pTask->pRegSet();
+
+  return pRegSet;
+}
+
 Tasks::Task* AM::pThisTLSTask(void) {
   Task* pTask = Task::pThisTLSTask();
   return pTask;
