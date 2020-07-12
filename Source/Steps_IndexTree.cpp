@@ -32,12 +32,12 @@ void Step::vIndexTreeAggregate(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the indexTree
-  IndexTree* pIndexTree = * m_pRegSet->m_xpIndexTree;
+  IndexTree* pIndexTree = * m_pLogicUnit->m_xpIndexTree;
   IndexDef* pIndexDef = pIndexTree->pIndexDef();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the src rsb buffer
-  RsbBuffer* pSrcRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
+  RsbBuffer* pSrcRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -117,9 +117,9 @@ void Step::vIndexTreeDelete(void)
 {
   ENTRY();
   
-  IndexTree* pIndexTree = * m_pRegSet->m_xpIndexTree;
+  IndexTree* pIndexTree = * m_pLogicUnit->m_xpIndexTree;
   
-  m_pRegSet->m_xpIndexTree = nullptr;
+  m_pLogicUnit->m_xpIndexTree = nullptr;
   
   delete pIndexTree;
   
@@ -133,7 +133,7 @@ void Step::vIndexTreeGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpIndexTree);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIndexTree);
   
   EXIT();
 }
@@ -146,7 +146,7 @@ void Step::vIndexTreeNew(void)
   ENTRY();
   
   IndexDef* pIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
-  m_pRegSet->m_xpIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
+  m_pLogicUnit->m_xpIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
   
   EXIT();
 }
@@ -158,7 +158,7 @@ void Step::vIndexTreeSet(void)
 {
   ENTRY();
   
-  m_pRegSet->m_xpIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

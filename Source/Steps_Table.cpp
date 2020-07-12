@@ -61,7 +61,7 @@ void Step::vTableGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpTable);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTable);
   
   EXIT();
 }
@@ -73,7 +73,7 @@ void Step::vTableSet(void)
 {
   ENTRY();
   
-  m_pRegSet->m_xpTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -138,7 +138,7 @@ void Step::vTableColumnFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
@@ -156,7 +156,7 @@ void Step::vTableColumnCountFetch(void)
 {
   ENTRY();
   
-  StreamDef* pStreamDef = m_pRegSet->m_xpTable->pStreamDef();
+  StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
   i8 nColumns = pStreamDef->nColumns(C_ALL);
   
   m_pDataStack->vPushInt(nColumns);
@@ -189,7 +189,7 @@ void Step::vTableDump(void)
   
   vTrace("TableDump\n"_Stz);
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);
@@ -207,7 +207,7 @@ void Step::vTableGenCsvBuffer(void)
 {
   ENTRY();
 
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   StreamDef* pStreamDef = pTable->pStreamDef();
   
   CsvBuffer* pCsvBuffer = new CsvBuffer;
@@ -244,7 +244,7 @@ void Step::vTableStreamDefFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   
@@ -260,7 +260,7 @@ void Step::vTableTablePtnFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   Job* pJob = m_pTask->m_pJob;
   
@@ -295,7 +295,7 @@ void Step::vTableFindColumn(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   s32 sColumnName;
   m_pDataStack->vPopStr(sColumnName,__func__);
@@ -362,7 +362,7 @@ void Step::vTableIsDefinitionOnlyFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   m_pDataStack->vPushInt(pTable->bIsDefinitionOnly());
   
@@ -376,7 +376,7 @@ void Step::vTableIsDefinitionOnlyStore(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   pTable->vIsDefinitionOnly(m_pDataStack->iPopInt(__func__));
   
@@ -407,7 +407,7 @@ void Step::vTablePtnStreamDefFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   StreamDef* pStreamDef = pTable->pPtnStreamDef();
@@ -549,7 +549,7 @@ void Step::vTableSize(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   i8 iBuffers = pTable->nCrwBuffers();
   i8 iSize = iBuffers * C_SIZE_POOL_BUFFER;
@@ -580,7 +580,7 @@ void Step::vTableVerify(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   bool bVerified = pTable->bVerifyTable();
   
@@ -596,7 +596,7 @@ void Step::vTableVisualize(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);

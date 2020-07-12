@@ -24,11 +24,11 @@ void Step::vDdlLockDropRead(void)
 {
   ENTRY();
   
-  ASSERT(LH_HAVE_READ_LOCK == m_pRegSet->m_eDdlLocked);
+  ASSERT(LH_HAVE_READ_LOCK == m_pLogicUnit->m_eDdlLocked);
 
 
   AM::pDdlLock()->vDropRead();
-  m_pRegSet->m_eDdlLocked = LH_HAVE_NO_LOCK;
+  m_pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
 
   EXIT();
 }
@@ -40,10 +40,10 @@ void Step::vDdlLockDropWrite(void)
 {
   ENTRY();
   
-  ASSERT(LH_HAVE_WRITE_LOCK == m_pRegSet->m_eDdlLocked);
+  ASSERT(LH_HAVE_WRITE_LOCK == m_pLogicUnit->m_eDdlLocked);
   
   AM::pDdlLock()->vDropWrite();
-  m_pRegSet->m_eDdlLocked = LH_HAVE_NO_LOCK;
+  m_pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
 
   EXIT();
 }
@@ -55,10 +55,10 @@ void Step::vDdlLockGrabRead(void)
 {
   ENTRY();
   
-  ASSERT(! m_pRegSet->m_eDdlLocked);
+  ASSERT(! m_pLogicUnit->m_eDdlLocked);
   
   AM::pDdlLock()->vGrabRead();
-  m_pRegSet->m_eDdlLocked = LH_HAVE_READ_LOCK;
+  m_pLogicUnit->m_eDdlLocked = LH_HAVE_READ_LOCK;
 
   EXIT();
 }
@@ -70,10 +70,10 @@ void Step::vDdlLockGrabWrite(void)
 {
   ENTRY();
   
-  ASSERT(! m_pRegSet->m_eDdlLocked);
+  ASSERT(! m_pLogicUnit->m_eDdlLocked);
   
   AM::pDdlLock()->vGrabWrite();
-  m_pRegSet->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
+  m_pLogicUnit->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
 
   EXIT();
 }
@@ -85,7 +85,7 @@ void Step::vDdlLockNone(void)
 {
   ENTRY();
 
-  if (LH_HAVE_NO_LOCK != m_pRegSet->m_eDdlLocked)
+  if (LH_HAVE_NO_LOCK != m_pLogicUnit->m_eDdlLocked)
     THROW("DdlLock[].none : register still has ddl locked"_Stz);
 
   EXIT();
@@ -98,16 +98,16 @@ void Step::vDdlLockTestDrop(void)
 {
   ENTRY();
   
-  if (LH_HAVE_READ_LOCK == m_pRegSet->m_eDdlLocked) {
+  if (LH_HAVE_READ_LOCK == m_pLogicUnit->m_eDdlLocked) {
     
     AM::pDdlLock()->vDropRead();
-    m_pRegSet->m_eDdlLocked = LH_HAVE_NO_LOCK;
+    m_pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
   }
   else
-  if (LH_HAVE_WRITE_LOCK == m_pRegSet->m_eDdlLocked) {
+  if (LH_HAVE_WRITE_LOCK == m_pLogicUnit->m_eDdlLocked) {
     
     AM::pDdlLock()->vDropWrite();
-    m_pRegSet->m_eDdlLocked = LH_HAVE_NO_LOCK;
+    m_pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
   }
   
   EXIT();

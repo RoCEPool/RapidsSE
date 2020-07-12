@@ -29,8 +29,8 @@ void Step::vRegOperandCCollect(void)
 
   Operand* pCollectingTail = nullptr;
   
-  if (! m_pRegSet->m_xpOperandC.bIsNull())
-    pCollectingTail = *m_pRegSet->m_xpOperandC;
+  if (! m_pLogicUnit->m_xpOperandC.bIsNull())
+    pCollectingTail = *m_pLogicUnit->m_xpOperandC;
 
   if (pCollectingTail) {
     DataBuffer* pCollect_dataBuffer = _pDataBuffer(pCollectingTail);
@@ -45,7 +45,7 @@ void Step::vRegOperandCCollect(void)
     pCollectingTail = pOperand;
   }
 
-  m_pRegSet->m_xpOperandC = pCollectingTail;
+  m_pLogicUnit->m_xpOperandC = pCollectingTail;
   
   EXIT();
 }
@@ -57,7 +57,7 @@ void Step::vRegOperandCGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpOperandC);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpOperandC);
   
   EXIT();
 }
@@ -69,13 +69,13 @@ void Step::vRegOperandCPipeOut(void)
 {
   ENTRY();
   
-  ASSERT(*m_pRegSet->m_xpOperandC);
+  ASSERT(*m_pLogicUnit->m_xpOperandC);
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
 
-  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpOperandC,m_pTask);
+  pOp->vPipeOut_nextOp(*m_pLogicUnit->m_xpOperandC,m_pTask);
   
-  m_pRegSet->m_xpOperandA = nullptr;
+  m_pLogicUnit->m_xpOperandA = nullptr;
   
   EXIT();
 }
@@ -87,14 +87,14 @@ void Step::vRegOperandCPipeOutSet(void)
 {
   ENTRY();
   
-  if (m_pRegSet->m_xpOperandC.bIsNull())
+  if (m_pLogicUnit->m_xpOperandC.bIsNull())
     return;
     
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
-  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpOperandC,m_pTask,true);
+  pOp->vPipeOut_nextOp(*m_pLogicUnit->m_xpOperandC,m_pTask,true);
   
-  m_pRegSet->m_xpOperandC = nullptr;
+  m_pLogicUnit->m_xpOperandC = nullptr;
   
   EXIT();
 }
@@ -107,8 +107,8 @@ void Step::vRegOperandCSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pOperand || m_pRegSet->m_xpOperandC.bIsNull());
-  m_pRegSet->m_xpOperandC = _pOperand(pOperand);
+  ASSERT(! pOperand || m_pLogicUnit->m_xpOperandC.bIsNull());
+  m_pLogicUnit->m_xpOperandC = _pOperand(pOperand);
   
   EXIT();
 }
@@ -120,10 +120,10 @@ void Step::vRegOperandCSetFirst(void)
 {
   ENTRY();
   
-  if (m_pRegSet->m_xpOperandC.bIsNull())
+  if (m_pLogicUnit->m_xpOperandC.bIsNull())
     return;
 
-  Operand* pCollect = *m_pRegSet->m_xpOperandC;
+  Operand* pCollect = *m_pLogicUnit->m_xpOperandC;
   
   // move to first buffer
   DataBuffer* pCollect_dataBuffer = _pDataBuffer(pCollect);
@@ -132,7 +132,7 @@ void Step::vRegOperandCSetFirst(void)
   
   Operand* pCollect_first = _pOperand(pCollect_dataBuffer);
 
-  m_pRegSet->m_xpOperandC = pCollect_first;
+  m_pLogicUnit->m_xpOperandC = pCollect_first;
   
   EXIT();
 }

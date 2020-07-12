@@ -25,7 +25,7 @@ void Step::vLogicUnitCompile(void)
 {
   ENTRY();
   
-  bool b = m_pRegSet->bCompile();
+  bool b = m_pLogicUnit->bCompile();
   
   m_pDataStack->vPushInt((i8)b);
     
@@ -39,7 +39,7 @@ void Step::vLogicUnitNewAggCpy(void)
 {
   ENTRY();
   
-  m_pRegSet->vGenerateAggCpy();
+  m_pLogicUnit->vGenerateAggCpy();
   
   EXIT();
 }
@@ -51,7 +51,7 @@ void Step::vLogicUnitNewAggGby(void)
 {
   ENTRY();
   
-  m_pRegSet->vGenerateAggGby();
+  m_pLogicUnit->vGenerateAggGby();
   
   EXIT();
 }
@@ -63,7 +63,7 @@ void Step::vLogicUnitSourceFetch(void)
 {
   ENTRY();
     
-  s2K sSource = m_pRegSet->szSource();
+  s2K sSource = m_pLogicUnit->szSource();
 
   m_pDataStack->vPushStr(sSource);
 
@@ -80,7 +80,7 @@ void Step::vLogicUnitSourceStore(void)
   s2K sSource;
   m_pDataStack->vPopStr(sSource,__func__);
   
-  m_pRegSet->vSource(sSource);
+  m_pLogicUnit->vSource(sSource);
   
   EXIT();
 }

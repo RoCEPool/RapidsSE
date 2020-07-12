@@ -23,9 +23,9 @@ void Step::vFilterRsbDelete(void)
 {
   ENTRY();
     
-  FilterRsb* pFilterRsb = * m_pRegSet->m_xpFilterRsb;
+  FilterRsb* pFilterRsb = * m_pLogicUnit->m_xpFilterRsb;
   
-  m_pRegSet->m_xpFilterRsb = nullptr;
+  m_pLogicUnit->m_xpFilterRsb = nullptr;
   
   delete pFilterRsb;
 
@@ -39,11 +39,11 @@ void Step::vFilterRsbFilter(void)
 {
   ENTRY();
 
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
 
-  Pot* pPot = * m_pRegSet->m_xpPot;
+  Pot* pPot = * m_pLogicUnit->m_xpPot;
 
-  m_pRegSet->m_xpFilterRsb->vFilter(pPot,pRsbBuffer);
+  m_pLogicUnit->m_xpFilterRsb->vFilter(pPot,pRsbBuffer);
   
   EXIT();
 }
@@ -55,7 +55,7 @@ void Step::vFilterRsbGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(* m_pRegSet->m_xpFilterRsb);
+  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpFilterRsb);
 
   EXIT();
 }
@@ -67,7 +67,7 @@ void Step::vFilterRsbNew(void)
 {
   ENTRY();
     
-  m_pRegSet->m_xpFilterRsb = new FilterRsb;
+  m_pLogicUnit->m_xpFilterRsb = new FilterRsb;
   
   EXIT();
 }

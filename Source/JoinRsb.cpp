@@ -66,7 +66,7 @@ void JoinRsb::vJoin(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
   
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   
-  LogicUnit* pRegSet = AM::pThisTLSRegSet();
+  LogicUnit* pLogicUnit = AM::pThisTLSRegSet();
 
   i8 nRows = pSrcRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
@@ -77,7 +77,7 @@ void JoinRsb::vJoin(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
     vNewDstRsb();
 
     //i8 bCopy = pExpr->iProject(pPot,m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
-    i8 bCopy = pRegSet->iProject(pPot,m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
+    i8 bCopy = pLogicUnit->iProject(pPot,m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
 
     //vCopyIntoDst(aSrcRsb);
   }

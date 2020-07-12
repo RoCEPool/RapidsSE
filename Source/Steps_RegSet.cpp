@@ -22,7 +22,7 @@ void Step::vRegSetCallAgainFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pRegSet->m_bCallAgain);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_bCallAgain);
   
   EXIT();
 }
@@ -36,7 +36,7 @@ void Step::vRegSetCallAgainStore(void)
 
   i8 iCallAgain = m_pDataStack->iPopInt(__func__);
   
-  m_pRegSet->m_bCallAgain = (bool)iCallAgain;
+  m_pLogicUnit->m_bCallAgain = (bool)iCallAgain;
   
   EXIT();
 }
@@ -48,7 +48,7 @@ void Step::vRegSetHandlerFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpHandler);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpHandler);
 
   EXIT();
 }
@@ -62,7 +62,7 @@ void Step::vRegSetHandlerStore(void)
 
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  m_pRegSet->m_xpHandler = pHandler;
+  m_pLogicUnit->m_xpHandler = pHandler;
   
   EXIT();
 }

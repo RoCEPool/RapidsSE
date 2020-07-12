@@ -22,7 +22,7 @@ void Step::vInfoSetTableColumnFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpInfoSetTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
@@ -42,7 +42,7 @@ void Step::vInfoSetTableDump(void)
   
   vTrace("TableDump\n"_Stz);
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpInfoSetTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);
@@ -60,7 +60,7 @@ void Step::vInfoSetTableGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpInfoSetTable);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpInfoSetTable);
   
   EXIT();
 }
@@ -72,7 +72,7 @@ void Step::vInfoSetTableSet(void)
 {
   ENTRY();
   
-  m_pRegSet->m_xpInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

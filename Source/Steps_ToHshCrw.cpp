@@ -23,7 +23,7 @@ void Step::vToHshCrwRegCompleted(void)
 {
   ENTRY();
   
-  ToHshCrw* pToHshCrw = *m_pRegSet->m_xpToHshCrw;
+  ToHshCrw* pToHshCrw = *m_pLogicUnit->m_xpToHshCrw;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -41,7 +41,7 @@ void Step::vToHshCrwRegConvert(void)
 {
   ENTRY();
 
-  ToHshCrw* pToHshCrw = *m_pRegSet->m_xpToHshCrw;
+  ToHshCrw* pToHshCrw = *m_pLogicUnit->m_xpToHshCrw;
     
   RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -57,9 +57,9 @@ void Step::vToHshCrwRegCreate(void)
 {
   ENTRY();
     
-  ToHshCrw* pToHshCrw = new ToHshCrw(* m_pRegSet->m_xpStreamDef);
+  ToHshCrw* pToHshCrw = new ToHshCrw(* m_pLogicUnit->m_xpStreamDef);
       
-  m_pRegSet->m_xpToHshCrw = pToHshCrw;
+  m_pLogicUnit->m_xpToHshCrw = pToHshCrw;
 
   EXIT();
 }
@@ -71,7 +71,7 @@ void Step::vToHshCrwRegDangling(void)
 {
   ENTRY();
   
-  ToHshCrw* pToHshCrw = *m_pRegSet->m_xpToHshCrw;
+  ToHshCrw* pToHshCrw = *m_pLogicUnit->m_xpToHshCrw;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -89,8 +89,8 @@ void Step::vToHshCrwRegDelete(void)
 {
   ENTRY();
   
-  ToHshCrw* pToHshCrw = *m_pRegSet->m_xpToHshCrw;
-  m_pRegSet->m_xpToHshCrw = nullptr;
+  ToHshCrw* pToHshCrw = *m_pLogicUnit->m_xpToHshCrw;
+  m_pLogicUnit->m_xpToHshCrw = nullptr;
   
   delete pToHshCrw;
   

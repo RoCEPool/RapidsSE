@@ -32,7 +32,7 @@ void Step::vTablePtnAppendBuffer(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
   
   // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*m_pRegSet->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
   
   // append the buffer to the tablePtn
   pTablePtn->vAppendBuffer(pCrwBuffer);
@@ -47,7 +47,7 @@ void Step::vTablePtnGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpTablePtn);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTablePtn);
   
   EXIT();
 }
@@ -63,7 +63,7 @@ void Step::vTablePtnGenCrwBuffers(void)
   i8 nBuffers = m_pDataStack->iPopInt(__func__);
   
   // get the table ptn
-  TablePtn* pTablePtn = *m_pRegSet->m_xpTablePtn;
+  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
   
   // get the table and streamdef
   Table* pTable = pTablePtn->pTable();
@@ -142,8 +142,8 @@ void Step::vTablePtnInflateCrwBuffer(void)
 {
   ENTRY();
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
-  TablePtn* pTablePtn = *m_pRegSet->m_xpTablePtn;
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
+  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
   StreamDef* pStreamDef = pTablePtn->pTable()->pStreamDef();
   
   // create a row
@@ -181,7 +181,7 @@ void Step::vTablePtnPurge(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = *m_pRegSet->m_xpTablePtn;
+  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
   
   // get the oldest perspective
   t8 tOldestPsp = AM::pTxSet()->tOldestPsp();
@@ -197,7 +197,7 @@ void Step::vTablePtnRoot(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = _pTablePtn(*m_pRegSet->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());
   
@@ -211,7 +211,7 @@ void Step::vTablePtnSet(void)
 {
   ENTRY();
   
-  m_pRegSet->m_xpTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -223,7 +223,7 @@ void Step::vTablePtnTruncate(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = *m_pRegSet->m_xpTablePtn;
+  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
   pTablePtn->vTruncate();
   
   EXIT();
@@ -239,7 +239,7 @@ void Step::vTablePtnTruncateIndex(void)
   // get the index to be truncated
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
-  TablePtn* pTablePtn = *m_pRegSet->m_xpTablePtn;
+  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
   pTablePtn->vTruncateIndex(pIndex);
   
   EXIT();

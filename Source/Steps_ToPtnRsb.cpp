@@ -23,7 +23,7 @@ void Step::vToPtnRsbRegCompleted(void)
 {
   ENTRY();
   
-  ToPtnRsb* pToPtnRsb = *m_pRegSet->m_xpToPtnRsb;
+  ToPtnRsb* pToPtnRsb = *m_pLogicUnit->m_xpToPtnRsb;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -41,7 +41,7 @@ void Step::vToPtnRsbRegConvert(void)
 {
   ENTRY();
 
-  ToPtnRsb* pToPtnRsb = *m_pRegSet->m_xpToPtnRsb;
+  ToPtnRsb* pToPtnRsb = *m_pLogicUnit->m_xpToPtnRsb;
     
   RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -61,7 +61,7 @@ void Step::vToPtnRsbRegCreate(void)
     
   ToPtnRsb* pToPtnRsb = new ToPtnRsb;
       
-  m_pRegSet->m_xpToPtnRsb = pToPtnRsb;
+  m_pLogicUnit->m_xpToPtnRsb = pToPtnRsb;
 
   EXIT();
 }
@@ -73,7 +73,7 @@ void Step::vToPtnRsbRegDangling(void)
 {
   ENTRY();
   
-  ToPtnRsb* pToPtnRsb = *m_pRegSet->m_xpToPtnRsb;
+  ToPtnRsb* pToPtnRsb = *m_pLogicUnit->m_xpToPtnRsb;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -91,8 +91,8 @@ void Step::vToPtnRsbRegDelete(void)
 {
   ENTRY();
   
-  ToPtnRsb* pToPtnRsb = *m_pRegSet->m_xpToPtnRsb;
-  m_pRegSet->m_xpToPtnRsb = nullptr;
+  ToPtnRsb* pToPtnRsb = *m_pLogicUnit->m_xpToPtnRsb;
+  m_pLogicUnit->m_xpToPtnRsb = nullptr;
   
   delete pToPtnRsb;
   

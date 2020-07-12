@@ -23,9 +23,9 @@ void Step::vJoinRsbDelete(void)
 {
   ENTRY();
     
-  JoinRsb* pJoinRsb = * m_pRegSet->m_xpJoinRsb;
+  JoinRsb* pJoinRsb = * m_pLogicUnit->m_xpJoinRsb;
   
-  m_pRegSet->m_xpJoinRsb = nullptr;
+  m_pLogicUnit->m_xpJoinRsb = nullptr;
   
   delete pJoinRsb;
 
@@ -39,13 +39,13 @@ void Step::vJoinRsbProject(void)
 {
   ENTRY();
 
-  StreamDef* pStreamDefOut = * m_pRegSet->m_xpStreamDefOut;
+  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
   
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
 
-  Pot* pPot = * m_pRegSet->m_xpPot;
+  Pot* pPot = * m_pLogicUnit->m_xpPot;
 
-  m_pRegSet->m_xpJoinRsb->vJoin(pPot,pRsbBuffer,pStreamDefOut);
+  m_pLogicUnit->m_xpJoinRsb->vJoin(pPot,pRsbBuffer,pStreamDefOut);
   
   EXIT();
 }
@@ -57,7 +57,7 @@ void Step::vJoinRsbGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(* m_pRegSet->m_xpJoinRsb);
+  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpJoinRsb);
 
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vJoinRsbNew(void)
 {
   ENTRY();
     
-  m_pRegSet->m_xpJoinRsb = new JoinRsb;
+  m_pLogicUnit->m_xpJoinRsb = new JoinRsb;
   
   EXIT();
 }

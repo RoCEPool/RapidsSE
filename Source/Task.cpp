@@ -81,7 +81,7 @@ Task::Task(Job* pJob)
   // m_oWakeup
   
   m_pForth       = nullptr;
-  m_pRegSet      = nullptr;
+  m_pLogicUnit      = nullptr;
 
   m_iTraceMask   = C_TRACE_NONE;
   m_eWhatJob     = pJob->eClass();
@@ -128,7 +128,7 @@ Task::~Task(void) noexcept(false)
     Job* pJob = _pJob(m_pJob);
     delete pJob;
   }
-  delete m_pRegSet;
+  delete m_pLogicUnit;
     
   delete m_pProfile;
   m_pProfile = nullptr;
@@ -222,7 +222,7 @@ void Task::vAssertStructure(void)
   
   // must have these
   RASSERT(m_pForth);
-  RASSERT(m_pRegSet);
+  RASSERT(m_pLogicUnit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -374,7 +374,7 @@ void Task::vCaught(Exception xException)
 
   AM::vJobContentDump(m_pJob);
   
-  m_pRegSet->vContentDump();
+  m_pLogicUnit->vContentDump();
 
   m_pForth->vContentDump();
 
@@ -448,7 +448,7 @@ void Task::vDump(void)
   
   AM::vJobContentDump(m_pJob);
   
-  m_pRegSet->vContentDump();
+  m_pLogicUnit->vContentDump();
   
   m_pForth->vContentDump();
   
@@ -498,7 +498,7 @@ void Task::vFocalOutline(s4K& sOutline)
                                       
                    aTS[m_eState],
                    aQK[m_eQueue],
-                   m_pRegSet->m_eDdlLocked ? " DdlLocked"_Stz : ""_Stz
+                   m_pLogicUnit->m_eDdlLocked ? " DdlLocked"_Stz : ""_Stz
                    );
   
   vDropTaskLock();
@@ -533,8 +533,8 @@ void Task::vInitExeContext(void)
     return;
   
   m_pProfile = new Profile;
-  m_pRegSet  = new LogicUnit(this);
-  m_pForth   = new Forth(this,m_pRegSet);
+  m_pLogicUnit  = new LogicUnit(this);
+  m_pForth   = new Forth(this,m_pLogicUnit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -648,7 +648,7 @@ void Task::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 i8& Task::i_NextRnd(void)
 {
-  return m_pRegSet->m_i_NextRnd;
+  return m_pLogicUnit->m_i_NextRnd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -694,11 +694,11 @@ void Task::vQueue(eQK eQueue)
 /*----------------------------------------------------------------------------*/
 /* get register set                                                           */
 /*----------------------------------------------------------------------------*/
-LogicUnit* Task::pRegSet(void)
+LogicUnit* Task::pLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pRegSet;
+  return m_pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -786,7 +786,7 @@ Grids::Node* Task::pSendNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pRegSet->m_pSendNode;
+  return m_pLogicUnit->m_pSendNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -796,7 +796,7 @@ void Task::vSendNode(Grids::Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pRegSet->m_pSendNode = pNode;
+  m_pLogicUnit->m_pSendNode = pNode;
 }
 
 /*----------------------------------------------------------------------------*/

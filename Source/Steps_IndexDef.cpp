@@ -36,7 +36,7 @@ void Step::vIndexDefAddColumn(void)
   
   eCT eColType = (eCT)m_pDataStack->iPopInt(__func__);
   
-  IndexDef* pIndexDef = * m_pRegSet->m_xpIndexDef;
+  IndexDef* pIndexDef = * m_pLogicUnit->m_xpIndexDef;
   
   pIndexDef->vAddColumn(sColumnNm,eColType);
   
@@ -50,9 +50,9 @@ void Step::vIndexDefDelete(void)
 {
   ENTRY();
   
-  IndexDef* pIndexDef = * m_pRegSet->m_xpIndexDef;
+  IndexDef* pIndexDef = * m_pLogicUnit->m_xpIndexDef;
   
-  m_pRegSet->m_xpIndexDef = nullptr;
+  m_pLogicUnit->m_xpIndexDef = nullptr;
   
   delete pIndexDef;
   
@@ -66,7 +66,7 @@ void Step::vIndexDefGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpIndexDef);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIndexDef);
   
   EXIT();
 }
@@ -78,7 +78,7 @@ void Step::vIndexDefIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pRegSet->m_xpIndexDef.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpIndexDef.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -93,7 +93,7 @@ void Step::vIndexDefNameStore(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  m_pRegSet->m_xpIndexDef->vIndexNm(sName);
+  m_pLogicUnit->m_xpIndexDef->vIndexNm(sName);
   
   EXIT();
 }
@@ -105,7 +105,7 @@ void Step::vIndexDefNew(void)
 {
   ENTRY();
   
-  m_pRegSet->m_xpIndexDef = new IndexDef;
+  m_pLogicUnit->m_xpIndexDef = new IndexDef;
   
   EXIT();
 }
@@ -197,7 +197,7 @@ void Step::vIndexDefSet(void)
 {
   ENTRY();
   
-  m_pRegSet->m_xpIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -257,13 +257,13 @@ void Step::vIndexDefPipeOut(void)
 {
   ENTRY();
   
-  ASSERT(*m_pRegSet->m_xpIndexDef);
+  ASSERT(*m_pLogicUnit->m_xpIndexDef);
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpIndexDef,m_pTask);
+  pOp->vPipeOut_nextOp(*m_pLogicUnit->m_xpIndexDef,m_pTask);
   
-  m_pRegSet->m_xpIndexDef = nullptr;
+  m_pLogicUnit->m_xpIndexDef = nullptr;
   
   EXIT();
 }
@@ -275,7 +275,7 @@ void Step::vIndexDefTableNameFetch(void)
 {
   ENTRY();
   
-  IndexDef* pIndexDef = *m_pRegSet->m_xpIndexDef;
+  IndexDef* pIndexDef = *m_pLogicUnit->m_xpIndexDef;
   
   s32 sTableNm = pIndexDef->szTableNm();
   

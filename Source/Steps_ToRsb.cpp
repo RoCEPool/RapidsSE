@@ -23,7 +23,7 @@ void Step::vToRsbRegCompleted(void)
 {
   ENTRY();
   
-  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
+  ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
   
   RsbBuffer* pRsbBuffer = pToRsb->pFullRsbBuffer();
   
@@ -42,9 +42,9 @@ void Step::vToRsbRegConvert(void)
 {
   ENTRY();
 
-  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
+  ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpOperandA);
   
   char* azSrc  = (char*)pCsvBuffer->ayDataArea();
   
@@ -60,12 +60,12 @@ void Step::vToRsbRegCreate(void)
 {
   ENTRY();
   
-  StreamDef* pStreamDef = m_pRegSet->m_xpTable->pStreamDef();
+  StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
   
   bool bPtnHash = true;
   ToRsb* pToRsb = new ToRsb(pStreamDef,AM::pFmt(),bPtnHash);
       
-  m_pRegSet->m_xpToRsb = pToRsb;
+  m_pLogicUnit->m_xpToRsb = pToRsb;
   
   EXIT();
 }
@@ -77,7 +77,7 @@ void Step::vToRsbRegDangling(void)
 {
   ENTRY();
   
-  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
+  ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
   
   RsbBuffer* pRsbBuffer = pToRsb->pDanglingRsbBuffer();
   if (pRsbBuffer)
@@ -95,8 +95,8 @@ void Step::vToRsbRegDelete(void)
 {
   ENTRY();
   
-  ToRsb* pToRsb = *m_pRegSet->m_xpToRsb;
-  m_pRegSet->m_xpToRsb = nullptr;
+  ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
+  m_pLogicUnit->m_xpToRsb = nullptr;
   
   delete pToRsb;
   

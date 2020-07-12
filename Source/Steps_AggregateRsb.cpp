@@ -26,9 +26,9 @@ void Step::vAggregateRsbAggregate(void)
 {
   ENTRY();
   
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
     
-  m_pRegSet->m_xpAggregateRsb->vAggregate(pRsbBuffer);
+  m_pLogicUnit->m_xpAggregateRsb->vAggregate(pRsbBuffer);
   
   EXIT();
 }
@@ -40,11 +40,11 @@ void Step::vAggregateRsbAggregateCpy(void)
 {
   ENTRY();
     
-  IndexTree* pIndexTree = _pIndexTree(* m_pRegSet->m_xpIndexTree);
+  IndexTree* pIndexTree = _pIndexTree(* m_pLogicUnit->m_xpIndexTree);
   
-  Pot* pPot = * m_pRegSet->m_xpPot;
+  Pot* pPot = * m_pLogicUnit->m_xpPot;
   
-  m_pRegSet->m_xpAggregateRsb->vAggregateCpy(pPot,pIndexTree);
+  m_pLogicUnit->m_xpAggregateRsb->vAggregateCpy(pPot,pIndexTree);
   
   EXIT();
 }
@@ -57,13 +57,13 @@ void Step::vAggregateRsbAggregateGby(void)
   ENTRY();
 
   
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
     
-  IndexTree* pIndexTree = _pIndexTree(* m_pRegSet->m_xpIndexTree);
+  IndexTree* pIndexTree = _pIndexTree(* m_pLogicUnit->m_xpIndexTree);
 
-  Pot* pPot = * m_pRegSet->m_xpPot;
+  Pot* pPot = * m_pLogicUnit->m_xpPot;
   
-  m_pRegSet->m_xpAggregateRsb->vAggregateGby(pPot,pIndexTree,pRsbBuffer);
+  m_pLogicUnit->m_xpAggregateRsb->vAggregateGby(pPot,pIndexTree,pRsbBuffer);
   
   EXIT();
 }
@@ -75,9 +75,9 @@ void Step::vAggregateRsbDelete(void)
 {
   ENTRY();
     
-  AggregateRsb* pAggregateRsb = * m_pRegSet->m_xpAggregateRsb;
+  AggregateRsb* pAggregateRsb = * m_pLogicUnit->m_xpAggregateRsb;
   
-  m_pRegSet->m_xpAggregateRsb = nullptr;
+  m_pLogicUnit->m_xpAggregateRsb = nullptr;
   
   delete pAggregateRsb;
 
@@ -91,7 +91,7 @@ void Step::vAggregateRsbGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(* m_pRegSet->m_xpAggregateRsb);
+  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpAggregateRsb);
 
   EXIT();
 }
@@ -103,10 +103,10 @@ void Step::vAggregateRsbNew(void)
 {
   ENTRY();
   
-  Pot* pPot = * m_pRegSet->m_xpPot;
-  StreamDef* pStreamDefOut = * m_pRegSet->m_xpStreamDefOut;
+  Pot* pPot = * m_pLogicUnit->m_xpPot;
+  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
   
-  m_pRegSet->m_xpAggregateRsb = new AggregateRsb(pPot, pStreamDefOut);
+  m_pLogicUnit->m_xpAggregateRsb = new AggregateRsb(pPot, pStreamDefOut);
   
   EXIT();
 }
@@ -118,7 +118,7 @@ void Step::vAggregateRsbNewRow(void)
 {
   ENTRY();
   
-  AggregateRsb* pAggregateRsb = _pAggregateRsb(* m_pRegSet->m_xpAggregateRsb);
+  AggregateRsb* pAggregateRsb = _pAggregateRsb(* m_pLogicUnit->m_xpAggregateRsb);
   
   pAggregateRsb->vNewDstRsb();
   

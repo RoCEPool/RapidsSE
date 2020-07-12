@@ -34,7 +34,7 @@ namespace Tasks
     Sleep        m_oWakeup;      // wakeup time from sleeping
 
     SMA<Forth>   m_pForth;       // forth execution context
-    SMA<LogicUnit>  m_pRegSet;      // set of registers for the task steps
+    SMA<LogicUnit>  m_pLogicUnit;      // set of registers for the task steps
 
     i8           m_iTraceMask;   // tracing mask
     eCN          m_eWhatJob;     // what job this task is/was for (debugging)
@@ -94,7 +94,7 @@ namespace Tasks
     void vProfile(Profile* pProfile);
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
-    LogicUnit* pRegSet(void);
+    LogicUnit* pLogicUnit(void);
     void vRenderPortrait(s256& sTaskPortrait);
     void vReseed(void);
     bool bSeeded(void);

@@ -21,7 +21,7 @@ void Step::vToNstRsbRegConvert(void)
 {
   ENTRY();
 
-  ToNstRsb* pToNstRsb = *m_pRegSet->m_xpToNstRsb;
+  ToNstRsb* pToNstRsb = *m_pLogicUnit->m_xpToNstRsb;
   
   RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -41,7 +41,7 @@ void Step::vToNstRsbRegCreate(void)
     
   ToNstRsb* pToNstRsb = new ToNstRsb;
       
-  m_pRegSet->m_xpToNstRsb = pToNstRsb;
+  m_pLogicUnit->m_xpToNstRsb = pToNstRsb;
 
   EXIT();
 }
@@ -53,9 +53,9 @@ void Step::vToNstRsbRegDelete(void)
 {
   ENTRY();
   
-  ToNstRsb* pToNstRsb = *m_pRegSet->m_xpToNstRsb;
+  ToNstRsb* pToNstRsb = *m_pLogicUnit->m_xpToNstRsb;
   
-  m_pRegSet->m_xpToNstRsb = nullptr;
+  m_pLogicUnit->m_xpToNstRsb = nullptr;
   
   delete pToNstRsb;
   

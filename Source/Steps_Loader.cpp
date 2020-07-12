@@ -27,12 +27,12 @@ void Step::vLoaderCreate(void)
   if (AM::bVerbose())
     pJobTags->vContentDump();
   
-  Loader* pLoader = new Loader(*m_pRegSet->m_xpTable,*m_pRegSet->m_xpCrwHash);
+  Loader* pLoader = new Loader(*m_pLogicUnit->m_xpTable,*m_pLogicUnit->m_xpCrwHash);
   bool bResult = pLoader->bSetFormat(pJobTags);
   
   if (bResult) {
     m_pDataStack->vPushInt(true);
-    m_pRegSet->m_xpLoader = pLoader;
+    m_pLogicUnit->m_xpLoader = pLoader;
   }
   else {
     m_pDataStack->vPushInt(false);
@@ -49,10 +49,10 @@ void Step::vLoaderDelete(void)
 {
   ENTRY();
   
-  Loader* pLoader = *m_pRegSet->m_xpLoader;
+  Loader* pLoader = *m_pLogicUnit->m_xpLoader;
   delete pLoader;
   
-  m_pRegSet->m_xpLoader = nullptr;
+  m_pLogicUnit->m_xpLoader = nullptr;
   
   EXIT();
 }

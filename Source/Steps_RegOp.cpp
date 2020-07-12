@@ -23,7 +23,7 @@ void Step::vRegOpGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpOp);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpOp);
 
   EXIT();
 }
@@ -37,7 +37,7 @@ void Step::vRegOpHandlerFetch(void)
 
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
 
-  Word* pHandler = m_pRegSet->m_xpOp->pOperandHandler(i_OperandKind);
+  Word* pHandler = m_pLogicUnit->m_xpOp->pOperandHandler(i_OperandKind);
     
   m_pDataStack->vPushPtr(pHandler);
 
@@ -55,7 +55,7 @@ void Step::vRegOpHandlerStore(void)
   
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  m_pRegSet->m_xpOp->vOperandHandler(i_OpKind,pHandler);
+  m_pLogicUnit->m_xpOp->vOperandHandler(i_OpKind,pHandler);
     
   EXIT();
 }
@@ -70,7 +70,7 @@ void Step::vRegOpHandlerAllStore(void)
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
   for (i8 i_OpKind = 0; i_OpKind < ZK_ENUMS; i_OpKind++)
-    m_pRegSet->m_xpOp->vOperandHandler(i_OpKind,pHandler);
+    m_pLogicUnit->m_xpOp->vOperandHandler(i_OpKind,pHandler);
     
   EXIT();
 }
@@ -84,7 +84,7 @@ void Step::vRegOpInit(void)
 
   Op* pOp = m_pTask->m_pJob->m_pOp;
 
-  m_pRegSet->m_xpOp = pOp;
+  m_pLogicUnit->m_xpOp = pOp;
 
   EXIT();
 }

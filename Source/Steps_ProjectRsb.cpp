@@ -23,9 +23,9 @@ void Step::vProjectRsbDelete(void)
 {
   ENTRY();
     
-  ProjectRsb* pProjectRsb = * m_pRegSet->m_xpProjectRsb;
+  ProjectRsb* pProjectRsb = * m_pLogicUnit->m_xpProjectRsb;
   
-  m_pRegSet->m_xpProjectRsb = nullptr;
+  m_pLogicUnit->m_xpProjectRsb = nullptr;
   
   delete pProjectRsb;
 
@@ -39,13 +39,13 @@ void Step::vProjectRsbProject(void)
 {
   ENTRY();
 
-  StreamDef* pStreamDefOut = * m_pRegSet->m_xpStreamDefOut;
+  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
   
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
 
-  Pot* pPot = * m_pRegSet->m_xpPot;
+  Pot* pPot = * m_pLogicUnit->m_xpPot;
 
-  m_pRegSet->m_xpProjectRsb->vProject(pPot,pRsbBuffer,pStreamDefOut);
+  m_pLogicUnit->m_xpProjectRsb->vProject(pPot,pRsbBuffer,pStreamDefOut);
   
   EXIT();
 }
@@ -57,7 +57,7 @@ void Step::vProjectRsbGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(* m_pRegSet->m_xpProjectRsb);
+  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpProjectRsb);
 
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vProjectRsbNew(void)
 {
   ENTRY();
     
-  m_pRegSet->m_xpProjectRsb = new ProjectRsb;
+  m_pLogicUnit->m_xpProjectRsb = new ProjectRsb;
   
   EXIT();
 }

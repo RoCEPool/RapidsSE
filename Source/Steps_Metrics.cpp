@@ -19,7 +19,7 @@ void Step::vMetricsLockSample(void)
 {
   ENTRY();
 
-  StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
+  StreamDef* pStreamDef = *m_pLogicUnit->m_xpStreamDef;
     
   //InfoSet* pInfoSet = LockMetrics::pSample(pStreamDef);
   

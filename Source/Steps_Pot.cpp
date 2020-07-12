@@ -22,7 +22,7 @@ void Step::vPotCompleted(void)
 {
   ENTRY();
   
-  Pot* pPot = *m_pRegSet->m_xpPot;
+  Pot* pPot = *m_pLogicUnit->m_xpPot;
     
   DataBuffer* pDataBuffer = pPot->pCompleted();
 
@@ -38,7 +38,7 @@ void Step::vPotDangling(void)
 {
   ENTRY();
   
-  Pot* pPot = *m_pRegSet->m_xpPot;
+  Pot* pPot = *m_pLogicUnit->m_xpPot;
     
   DataBuffer* pDataBuffer = pPot->pDangling();
 
@@ -54,8 +54,8 @@ void Step::vPotDelete(void)
 {
   ENTRY();
   
-  Pot* pPot = *m_pRegSet->m_xpPot;
-  m_pRegSet->m_xpPot = nullptr;
+  Pot* pPot = *m_pLogicUnit->m_xpPot;
+  m_pLogicUnit->m_xpPot = nullptr;
   
   delete pPot;
   
@@ -71,7 +71,7 @@ void Step::vPotNew(void)
     
   Pot* pPot = new Pot;
       
-  m_pRegSet->m_xpPot = pPot;
+  m_pLogicUnit->m_xpPot = pPot;
 
   EXIT();
 }
