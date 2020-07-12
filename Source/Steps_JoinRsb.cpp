@@ -43,8 +43,6 @@ void Step::vJoinRsbProject(void)
   
   RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
 
-  Expr* pExpr = * m_pRegSet->m_xpExpr;
-
   Pot* pPot = * m_pRegSet->m_xpPot;
 
   m_pRegSet->m_xpJoinRsb->vJoin(pPot,pRsbBuffer,pStreamDefOut);

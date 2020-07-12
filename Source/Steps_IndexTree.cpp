@@ -29,11 +29,7 @@ void Step::vIndexTreeAggregate(void)
   SP_Ent spEnt;
   SP_Key spKey;
   Ent* aPayloadEntry = nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the expr
-  Expr* pExpr = * m_pRegSet->m_xpExpr;
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the indexTree
   IndexTree* pIndexTree = * m_pRegSet->m_xpIndexTree;

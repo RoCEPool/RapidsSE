@@ -12,7 +12,6 @@
   ProjectRsb[].new
   Pot[].new
 
-  Expr[].new
   "= @ 3 10 * ! 3" Expr[].source!
   Expr[].compile assert
 
@@ -69,7 +68,7 @@
   Pot[].pipeoutAllDangling
 
   ProjectRsb[].delete
-  Expr[].delete
+
   Pot[].delete
 
   StreamDef[].delete

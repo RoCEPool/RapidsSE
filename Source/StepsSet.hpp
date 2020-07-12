@@ -352,8 +352,6 @@ public:
 
   // expression evaluator
   void vExprCompile(void);
-  void vExprDelete(void);
-  void vExprNew(void);
   void vExprNewAggCpy(void);
   void vExprNewAggGby(void);
   void vExprSourceFetch(void);

@@ -20,7 +20,6 @@
   Pot[].new
 
   // create the aggregattion expr
-  Expr[].new
   "@ 0 # 0 + ! 0" Expr[].source!
   Expr[].compile assert
 
@@ -84,7 +83,7 @@
   Pot[].pipeoutAllDangling
 
   AggregateRsb[].delete
-  Expr[].delete
+
   Pot[].delete
 
   StreamDefOut[].delete

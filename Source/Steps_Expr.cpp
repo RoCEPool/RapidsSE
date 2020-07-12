@@ -12,8 +12,6 @@ extern DebugFlags gxDebugFlags;;
 void Step::vAddSteps_Expr(void)
 {
   vAddStep("Expr[].compile"_Stz,   &Step::vExprCompile);
-  vAddStep("Expr[].delete"_Stz,    &Step::vExprDelete);
-  vAddStep("Expr[].new"_Stz,       &Step::vExprNew);
   vAddStep("Expr[].newAggGby"_Stz, &Step::vExprNewAggGby);  //! TEMP : to go
   vAddStep("Expr[].newAggCpy"_Stz, &Step::vExprNewAggCpy);  //! TEMP : to go
   vAddStep("Expr[].source@"_Stz,   &Step::vExprSourceFetch);
@@ -35,41 +33,12 @@ void Step::vExprCompile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Expr[].delete -- delete an expression evaluator                            */
-/*----------------------------------------------------------------------------*/
-void Step::vExprDelete(void)
-{
-  ENTRY();
-    
-  Expr* pExpr = * m_pRegSet->m_xpExpr;
-  
-  m_pRegSet->m_xpExpr = nullptr;
-  
-  delete pExpr;
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Expr[].new -- new an expression evaluator                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vExprNew(void)
-{
-  ENTRY();
-    
-  m_pRegSet->m_xpExpr = new Expr;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Expr[].newAggCpy -- new a copy aggregate result expression                 */
 /*----------------------------------------------------------------------------*/
 void Step::vExprNewAggCpy(void)
 {
   ENTRY();
   
-  m_pRegSet->m_xpExpr = new Expr;
   m_pRegSet->m_oCalculator.vGenerateAggCpy();
   
   EXIT();
@@ -82,7 +51,6 @@ void Step::vExprNewAggGby(void)
 {
   ENTRY();
   
-  m_pRegSet->m_xpExpr = new Expr;
   m_pRegSet->m_oCalculator.vGenerateAggGby();
   
   EXIT();

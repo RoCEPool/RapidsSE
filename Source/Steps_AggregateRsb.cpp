@@ -27,9 +27,7 @@ void Step::vAggregateRsbAggregate(void)
   ENTRY();
   
   RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
-  
-  Expr* pExpr = * m_pRegSet->m_xpExpr;
-  
+    
   m_pRegSet->m_xpAggregateRsb->vAggregate(pRsbBuffer);
   
   EXIT();
@@ -41,10 +39,9 @@ void Step::vAggregateRsbAggregate(void)
 void Step::vAggregateRsbAggregateCpy(void)
 {
   ENTRY();
-  
-  Expr* pExpr = nullptr; //* m_pRegSet->m_xpExpr;
-  
+    
   IndexTree* pIndexTree = _pIndexTree(* m_pRegSet->m_xpIndexTree);
+  
   Pot* pPot = * m_pRegSet->m_xpPot;
   
   m_pRegSet->m_xpAggregateRsb->vAggregateCpy(pPot,pIndexTree);
@@ -61,10 +58,9 @@ void Step::vAggregateRsbAggregateGby(void)
 
   
   RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pRegSet->m_xpOperandA);
-  
-  Expr* pExpr = * m_pRegSet->m_xpExpr;
-  
+    
   IndexTree* pIndexTree = _pIndexTree(* m_pRegSet->m_xpIndexTree);
+
   Pot* pPot = * m_pRegSet->m_xpPot;
   
   m_pRegSet->m_xpAggregateRsb->vAggregateGby(pPot,pIndexTree,pRsbBuffer);
