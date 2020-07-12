@@ -1274,9 +1274,23 @@ i8 Calculator::iCompute(void)
         m_pAltRowSlab->vDumpRow(-1,m_aAltRsb);
         break;
 
-      case EO_RSB_DST_NEW:      NEVER_REACH; // not yet implemented
-      case EO_RSB_SRC_BEGIN:    NEVER_REACH; // not yet implemented
-      case EO_RSB_SRC_NEXT:     NEVER_REACH; // not yet implemented
+      case EO_RSB_DST_NEW:
+        NEVER_REACH; // not yet implemented
+        
+      case EO_RSB_SRC_BEGIN:
+        m_i_SrcRow = -1;
+        break;
+
+      case EO_RSB_SRC_NEXT:
+        if (++m_i_SrcRow >= m_nSrcRows) {
+          *(++aiDstk) = 0;
+        }
+        else {
+          m_aSrcRsb = m_pSrcRowSlab->aRsbAdr(m_i_SrcRow);
+          *(++aiDstk) = 1;
+        }
+        break;
+
       case EO_RSB_SRC_PUSHOFS:  NEVER_REACH; // not yet implemented
       case EO_RSB_SRC_SETBYOFS: NEVER_REACH; // not yet implemented
       case EO_RSB_ALT_BEGIN:    NEVER_REACH; // not yet implemented

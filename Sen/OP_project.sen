@@ -13,7 +13,7 @@
   Pot[].new
 
   Expr[].new
-  ".src = @ 3 10 * ! 3 .dst" Expr[].source!
+  "= @ 3 10 * ! 3" Expr[].source!
   //"bs L NEXT gs jf END nd .src = @ 3 10 * ! 3 .dst j NEXT L END ret" Expr[].source!
   Expr[].compile assert
 
