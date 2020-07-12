@@ -219,7 +219,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ReadApi),            HT_TRANSIENT_TINY    }, // CN_READAPI
   { sizeof(Record),             HT_TRANSIENT_MEDIUM  }, // CN_RECORD
   { sizeof(RecordBuffer),       HT_TRANSIENT_LARGE   }, // CN_RECORDBUFFER
-  { sizeof(RegSet),             HT_TRANSIENT_TINY    }, // CN_REGSET
+  { sizeof(RegSet),             HT_TRANSIENT_MEDIUM  }, // CN_REGSET
   { sizeof(RelOp),              HT_TRANSIENT_TINY    }, // CN_RELOP
   { sizeof(ResourceTracker),    HT_TRANSIENT_TINY    }, // CN_RESOURCETRACKER
   { sizeof(Response),           HT_TRANSIENT_MEDIUM  }, // CN_RESPONSE

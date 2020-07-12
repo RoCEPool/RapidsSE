@@ -89,6 +89,10 @@ namespace Expressions
     REG<Object>      m_xpRegister2; // general purpose reg 2[]
     REG<Object>      m_xpRegister3; // general purpose reg 3[]
   
+  
+    // EXPERIMENT
+    Calculator       m_oCalculator;
+  
     // must be last
     Footer m_xFooter;
   
