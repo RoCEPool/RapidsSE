@@ -57,13 +57,17 @@ void FilterRsb::vFilter(Pot* pPot, RsbBuffer* pSrcRsbBuffer, Expr* pExpr)
   
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   
+  Calculator* pCalculator = AM::pThisTLSRegSet()->pCalculator();
+
+  
   i8 nRows = pSrcRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
     
-    i8 bCopy = pExpr->iFilter(aSrcRsb, pSrcRowSlab);
-        
+    //i8 bCopy = pExpr->iFilter(aSrcRsb, pSrcRowSlab);
+    i8 bCopy = pCalculator->iFilter(aSrcRsb, pSrcRowSlab);
+
     if (bCopy)
       vCopyIntoDst(aSrcRsb);
   }
