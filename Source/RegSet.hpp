@@ -91,6 +91,40 @@ namespace Expressions
     // EXPERIMENT
     Calculator       m_oCalculator;
   
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    Pot*     m_pPot;
+    Rsb*     m_aDstRsb;
+    RowSlab* m_pDstRowSlab;
+
+    i8       m_i_SrcRow;
+    i8       m_nSrcRows;
+    Rsb*     m_aSrcRsb;
+    RowSlab* m_pSrcRowSlab;
+
+    i8       m_i_AltRow;
+    i8       m_nAltRows;
+    Rsb*     m_aAltRsb;
+    RowSlab* m_pAltRowSlab;
+    Rsb*     m_aPayRsb;
+
+    Ent*       m_pEnt;
+    EntWrk     m_oEntWrk;
+//    EntBuffer* m_pEntBuffer;
+    IndexTree* m_pIndexTree;
+
+    i8     m_i_Code;
+    eEO    m_eaCode[C_CALC_CODE];    // { EO_code [<bytes>] }
+
+    i8     m_iaDataStack[C_CALC_STACK];
+    eEO*   m_aaReturnStack[C_CALC_STACK];
+
+    i8        m_nLabels;
+    JumpLabel m_xaJumpLabel[C_CALC_LABEL];
+
+    s2K     m_sSource;
+
+  
     // must be last
     Footer m_xFooter;
   

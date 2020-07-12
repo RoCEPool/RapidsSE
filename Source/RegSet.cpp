@@ -41,6 +41,42 @@ RegSet::RegSet(Task* pTask)
   m_aUpperEntry = nullptr;
   m_pEntBuffer  = nullptr;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pPot        = nullptr;
+  m_aDstRsb     = nullptr;
+  m_pDstRowSlab = nullptr;
+
+  m_i_SrcRow    = C_UNKNOWN;
+  m_nSrcRows    = C_UNKNOWN;
+  m_aSrcRsb     = nullptr;
+  m_pSrcRowSlab = nullptr;
+  
+  m_i_AltRow    = C_UNKNOWN;
+  m_nAltRows    = C_UNKNOWN;
+  m_aAltRsb     = nullptr;
+  m_pAltRowSlab = nullptr;
+
+  m_pEnt        = nullptr;
+  // m_oEntWrk
+  m_pEntBuffer  = nullptr;
+  m_pIndexTree  = nullptr;
+  m_aPayRsb     = nullptr;
+  
+  m_i_Code = 0;
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_CALCULATOR);
+  MemLib::vZero(m_iaDataStack,sizeof(m_iaDataStack),CN_CALCULATOR);
+  MemLib::vZero(m_aaReturnStack,sizeof(m_aaReturnStack),CN_CALCULATOR);
+#endif
+  
+  m_nLabels = 0;
+  for (i8 i_Label = 0; i_Label < C_CALC_LABEL; i_Label++) {
+    m_xaJumpLabel[i_Label].m_bDefined = false;
+    m_xaJumpLabel[i_Label].m_i_Chain = C_UNKNOWN;
+  }
+
   _checkInitialised_(CN_REGSET);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
