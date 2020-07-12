@@ -64,7 +64,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Dir),                HT_TRANSIENT_TINY    }, // CN_DIR
   { sizeof(DteVal),             HT_INVALID           }, // CN_DTEVAL
   { sizeof(Dynamo),             HT_TRANSIENT_TINY    }, // CN_DYNAMO
-  { sizeof(DynFun),             HT_TRANSIENT_TINY    }, // CN_DYNFUN
 
   { 'E' - ('A' - 1),            HT_INVALID           }, // CN__E__
   { sizeof(EdtVal),             HT_INVALID           }, // CN_EDTVAL
@@ -75,9 +74,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntWrk),             HT_INVALID           }, // CN_ENTWRK
   { sizeof(EnumFlags),          HT_TRANSIENT_TINY    }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_TRANSIENT_TINY    }, // CN_EXEMPLAR
-  { sizeof(Expr),               HT_TRANSIENT_SMALL   }, // CN_EXPR
-  { sizeof(ExprCompiler),       HT_TRANSIENT_SMALL   }, // CN_EXPRCOMPILER
-  { sizeof(ExprVec),            HT_TRANSIENT_MEDIUM  }, // CN_EXPRVEC
 
   { 'F' - ('A' - 1),            HT_INVALID           }, // CN__F__
   { sizeof(FetchBuffer),        HT_TRANSIENT_LARGE   }, // CN_FETCHBUFFER

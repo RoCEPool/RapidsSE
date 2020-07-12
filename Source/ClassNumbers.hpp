@@ -68,7 +68,6 @@ enum eCN : u2 // Class Number
   /* */ CN_DIR,
   /* */ CN_DTEVAL,
   /* */ CN_DYNAMO,
-  /* */ CN_DYNFUN,
 
   /* */ CN__E__,
   /* */ CN_EDTVAL,
@@ -79,9 +78,6 @@ enum eCN : u2 // Class Number
   /* */ CN_ENTWRK,
   /* */ CN_ENUMFLAGS,
   /* */ CN_EXEMPLAR,
-  /* */ CN_EXPR,
-  /* */ CN_EXPRCOMPILER,
-  /* */ CN_EXPRVEC,
 
   /* */ CN__F__,
   /* */ CN_FETCHBUFFER,
@@ -417,7 +413,6 @@ static Stz* aCN[]
   /* */ "DIR"_Stz,                 // CN_DIR
   /* */ "DTEVAL"_Stz,              // CN_DTEVAL
   /* */ "DYNAMO"_Stz,              // CN_DYNAMO
-  /* */ "DYNFUN"_Stz,              // CN_DYNFUN
 
   /* */ "_E__"_Stz,                // CN__E__
   /* */ "EDTVAL"_Stz,              // CN_EDTVAL
@@ -428,9 +423,6 @@ static Stz* aCN[]
   /* */ "ENTWRK"_Stz,              // CN_ENTWRK
   /* */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
   /* */ "EXEMPLAR"_Stz,            // CN_EXEMPLAR
-  /* */ "EXPR"_Stz,                // CN_EXPR
-  /* */ "EXPRCOMPILER"_Stz,        // CN_EXPRCOMPILER
-  /* */ "EXPRVEC"_Stz,             // CN_EXPRVEC
 
   /* */ "_F__"_Stz,                // CN__F__
   /* */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER

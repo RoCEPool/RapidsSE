@@ -16,11 +16,6 @@ namespace Expressions
 
 #include "Calculator.hpp"
 
-#include "DynFun.hpp"
-#include "ExprCompiler.hpp"
-#include "Expr.hpp"
-#include "ExprVec.hpp"
-
 #include "AggregateRsb.hpp"
 #include "FilterRsb.hpp"
 #include "ProjectRsb.hpp"
