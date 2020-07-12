@@ -20,8 +20,8 @@
   Pot[].new
 
   // create the aggregattion expr
-  "@ 0 # 0 + ! 0" Expr[].source!
-  Expr[].compile assert
+  "@ 0 # 0 + ! 0" LogicUnit[].source!
+  LogicUnit[].compile assert
 
 
   ZK_STARTMARKER_handler

@@ -23,8 +23,8 @@
   <columnNm> Table[].findColumn to pColumn
 
   // create the aggregation expr
-  Expr[].newAggGby
-  //Expr[].compile assert
+  LogicUnit[].newAggGby
+  //LogicUnit[].compile assert
 
   // create the indexDef
   indexDef[].new
@@ -92,8 +92,8 @@
 : aggregateGby_EosMarker \handler
 
   // create the aggregation expr
-  Expr[].newAggCpy
-  //Expr[].compile assert
+  LogicUnit[].newAggCpy
+  //LogicUnit[].compile assert
 
   aggregateRsb[].aggregateCpy
 

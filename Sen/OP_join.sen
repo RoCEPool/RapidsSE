@@ -12,8 +12,8 @@
   ProjectRsb[].new
   Pot[].new
 
-  "= @ 3 10 * ! 3" Expr[].source!
-  Expr[].compile assert
+  "= @ 3 10 * ! 3" LogicUnit[].source!
+  LogicUnit[].compile assert
 
   ZK_STARTMARKER_handler
 ;

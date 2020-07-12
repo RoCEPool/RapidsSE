@@ -12,8 +12,8 @@
   FilterRsb[].new
   Pot[].new
 
-  "@ 0 2 %" Expr[].source!
-  Expr[].compile assert
+  "@ 0 2 %" LogicUnit[].source!
+  LogicUnit[].compile assert
 
   ZK_STARTMARKER_handler
 ;
