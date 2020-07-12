@@ -113,7 +113,8 @@ Rsb* Pot::aNewDstRsb(RowSlab** ppRowSlab)
   
   pDstRsbBuffer->vPartitionNo(0);
   
-  Rsb* aDstRsb = pDstRsbBuffer->pRowSlab()->aRsbAdr(0);
+  i8 iRow = pDstRsbBuffer->pRowSlab()->nRows() - 1;
+  Rsb* aDstRsb = pDstRsbBuffer->pRowSlab()->aRsbAdr(iRow);
   
   * ppRowSlab = pDstRsbBuffer->pRowSlab();
   

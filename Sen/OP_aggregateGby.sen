@@ -93,7 +93,10 @@
 
   Expr[].delete
 
-  //Expr[].newCpyAgg
+  // create the aggregation expr
+  Expr[].newAggCpy
+  //Expr[].compile assert
+
   aggregateRsb[].aggregateCpy
 
   Pot[].pipeoutAllDangling

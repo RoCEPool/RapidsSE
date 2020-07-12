@@ -27,8 +27,9 @@ namespace Expressions
    ~AggregateRsb(void) noexcept(false);
   
     void vAggregate(RsbBuffer* pSrcRsbBuffer, Expr* pExpr);
-    void vAggregateCpy(IndexTree* pIndexTree, Expr* pExpr);
-    void vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree, Expr* pExpr);
+    void vAggregateCpy(Pot* pPot, IndexTree* pIndexTree, Expr* pExpr);
+    void vAggregateGby(Pot* pPot, IndexTree* pIndexTree, Expr* pExpr,
+                       RsbBuffer* pSrcRsbBuffer);
     void vNewDstRsb(void);
     
   private:

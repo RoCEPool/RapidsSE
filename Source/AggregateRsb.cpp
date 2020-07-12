@@ -28,6 +28,7 @@ AggregateRsb::AggregateRsb(Pot* pPot, StreamDef* pStreamDefOut)
   
   m_bPixInited = true;
   m_pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+  m_pPot->vStreamPix(&m_oStreamPix);
   
   _checkInitialised_(CN_AGGREGATERSB);
 
@@ -74,10 +75,11 @@ void AggregateRsb::vAggregate(RsbBuffer* pSrcRsbBuffer, Expr* pExpr)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void AggregateRsb::vAggregateCpy(IndexTree* pIndexTree, Expr* pExpr)
+void AggregateRsb::vAggregateCpy(Pot* pPot, IndexTree* pIndexTree, Expr* pExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
   
+  /*
   EntWrk xEntWrk;
   SP_Ent spEnt;
   SP_Key spKey;
@@ -87,6 +89,7 @@ void AggregateRsb::vAggregateCpy(IndexTree* pIndexTree, Expr* pExpr)
   Rsb* aRsb;
   EntBuffer* pEntBuffer;
   i8 iAgg;
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
   // for each entry buffer
@@ -111,12 +114,25 @@ void AggregateRsb::vAggregateCpy(IndexTree* pIndexTree, Expr* pExpr)
      aEnt = pEntBuffer->aNextEntry(aEnt, 0);
    }
   }
+  */
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the indexDef
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
+  // for each row in the rowSlab
+  
+  Calculator* pCalculator = AM::pThisTLSRegSet()->pCalculator();
+
+  bool bResult = pCalculator->iAggregateGby(pPot, pIndexTree,nullptr,nullptr,nullptr);
+  
 }
   
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree, Expr* pExpr)
+void AggregateRsb::vAggregateGby(Pot* pPot, IndexTree* pIndexTree, Expr* pExpr,
+                                 RsbBuffer* pSrcRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
   /*
@@ -246,7 +262,7 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
     Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
     
     //bool bResult = pExpr->iAggregateGby(pIndexTree,nullptr,aSrcRsb,pSrcRowSlab);
-    bool bResult = pCalculator->iAggregateGby(pIndexTree,nullptr,aSrcRsb,pSrcRowSlab);
+    bool bResult = pCalculator->iAggregateGby(nullptr, pIndexTree,nullptr,aSrcRsb,pSrcRowSlab);
     pIndexTree->vDump(false);
   }
 }

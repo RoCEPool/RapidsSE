@@ -355,7 +355,7 @@ public:
   void vExprDelete(void);
   void vExprGet(void);
   void vExprNew(void);
-  void vExprNewCpyAgg(void);
+  void vExprNewAggCpy(void);
   void vExprNewAggGby(void);
   void vExprSourceFetch(void);
   void vExprSourceStore(void);

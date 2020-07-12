@@ -76,11 +76,12 @@ namespace Expressions
    ~Calculator(void) noexcept(false);
   
     //! TEMP: TO GO
+    void vGenerateAggCpy(void);
     void vGenerateAggGby(void);
     void vGenerateSort(void);
 
     i8   iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
-    i8   iAggregateGby(IndexTree* pIndexTree, RowSlab* pDstRowSlab,
+    i8   iAggregateGby(Pot* pPot, IndexTree* pIndexTree, RowSlab* pDstRowSlab,
                        Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     bool bCompile(void);
     bool bCompile(TokenVec* pTknVec);

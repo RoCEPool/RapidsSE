@@ -192,6 +192,40 @@ Calculator::~Calculator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 //! TEMP : TO GO
+
+/*----------------------------------------------------------------------------*/
+/* generate agg group by                                                      */
+/*----------------------------------------------------------------------------*/
+void Calculator::vGenerateAggCpy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  m_i_Code = 0;
+  
+  // begin index tree traversal
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMPFALSE,"END_IXT_SRC:"_Stz);
+  
+  vDefineLabel("NEXT_IXT_SRC:"_Stz);
+  
+  // new a dst rsb row
+  vAddCode(EO_RSB_DST_NEW);
+  vAddCodeArg(EO_PAY_FETCH_COL, (i8)0);
+  vAddCodeArg(EO_DEPOSITCOLI,(i8)0);
+  vAddCode(EO_RSB_DST_PRINT);
+  vAddCode(EO_ENT_NEXT);
+  vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  
+  //vAddCode(EO_IXT_TRV_NEXT);
+  //vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  
+  vDefineLabel("END_IXT_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  //vDumpCode1();
+  vDumpCode2();
+}
+
 /*----------------------------------------------------------------------------*/
 /* generate agg group by                                                      */
 /*----------------------------------------------------------------------------*/
@@ -211,9 +245,6 @@ void Calculator::vGenerateAggGby(void)
   vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
-  vAddCode(EO_ENT_PUSH);
-  vAddCode(EO_PUSH0);
-  vAddCode(EO_NOTEQUAL);
   vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_EQUAL);
@@ -337,11 +368,12 @@ i8 Calculator::iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSl
 /*----------------------------------------------------------------------------*/
 /* group by aggregate compute                                                 */
 /*----------------------------------------------------------------------------*/
-i8 Calculator::iAggregateGby(IndexTree* pIndexTree, RowSlab* pDstRowSlab,
+i8 Calculator::iAggregateGby(Pot* pPot, IndexTree* pIndexTree, RowSlab* pDstRowSlab,
                              Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
+  m_pPot        = pPot;
   m_pDstRowSlab = pDstRowSlab;
   
   m_aSrcRsb      = aSrcRsb;
@@ -350,11 +382,11 @@ i8 Calculator::iAggregateGby(IndexTree* pIndexTree, RowSlab* pDstRowSlab,
   m_aAltRsb     = nullptr;
   m_pAltRowSlab = nullptr;
   
-  m_pEnt              = nullptr;
+  m_pEnt        = nullptr;
   //m_oEntWrk
-  m_pEntBuffer        = nullptr;
+  m_pEntBuffer  = nullptr;
   
-  m_pIndexTree        = pIndexTree;
+  m_pIndexTree  = pIndexTree;
   
   i8 iResult = iCompute();
   
@@ -1127,6 +1159,10 @@ i8 Calculator::iCompute(void)
       case EO_ENT_NEXT: // move to next m_pEnt
         dCC0(eCode);
         m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
+        if (m_pEnt)
+          *(++aiDstk) = 1;
+        else
+          *(++aiDstk) = 0;
         break;
         
       case EO_ENT_POSPRIOR: // position m_pEnt prior using m_oEntWrk.key
@@ -1205,6 +1241,37 @@ i8 Calculator::iCompute(void)
         m_oEntWrk.vReset();
         break;
       
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // index tree operators
+      case EO_IXT_INS_ENT:      // insert ent
+        RASSERT(0);
+        
+      case EO_IXT_TRV_BEGIN:    // begin linear traverse
+        m_pEntBuffer = m_pIndexTree->pFirstH0Buffer();
+        if (m_pEntBuffer) {
+          m_pEnt = m_pEntBuffer->aLeadEntry();
+          if (m_pEnt)
+            *(++aiDstk) = 1;
+          else
+            *(++aiDstk) = 0;
+        }
+        else
+          *(++aiDstk) = 0;
+        break;
+        
+      case EO_IXT_TRV_NEXT:     // move to next entry
+        m_pEntBuffer = m_pEntBuffer->pNextBuffer();
+        if (m_pEntBuffer) {
+          m_pEnt = m_pEntBuffer->aLeadEntry();
+          if (m_pEnt)
+            *(++aiDstk) = 1;
+          else
+            *(++aiDstk) = 0;
+        }
+        else
+          *(++aiDstk) = 0;
+        break;
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
       case EO_AND: // logical and top two int's, push result
