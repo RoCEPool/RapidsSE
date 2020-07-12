@@ -22,10 +22,6 @@ namespace Expressions
     
     Expr(void);
    ~Expr(void) noexcept(false);
-   
-    //! TEMP: TO GO
-    void vGenerateAggGby(void);
-      
 
     eUK  eKind(void);
     void vKind(eUK eKind);

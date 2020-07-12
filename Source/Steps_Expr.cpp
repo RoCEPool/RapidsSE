@@ -73,7 +73,7 @@ void Step::vExprNew(void)
     
   m_pRegSet->m_xpExpr = new Expr;
   if (! gxDebugFlags.m_iRay)
-    m_pRegSet->m_xpExpr->vGenerateAggGby();
+    m_pRegSet->m_oCalculator.vGenerateAggGby();
   
   EXIT();
 }
@@ -99,7 +99,7 @@ void Step::vExprNewAggGby(void)
   ENTRY();
   
   m_pRegSet->m_xpExpr = new Expr;
-  m_pRegSet->m_xpExpr->vGenerateAggGby();
+  m_pRegSet->m_oCalculator.vGenerateAggGby();
   
   EXIT();
 }
