@@ -14,8 +14,6 @@ namespace Expressions
 
 //------------------------------------------------------------------------------
 
-#include "Calculator.hpp"
-
 #include "AggregateRsb.hpp"
 #include "FilterRsb.hpp"
 #include "ProjectRsb.hpp"

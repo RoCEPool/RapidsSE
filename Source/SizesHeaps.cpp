@@ -34,7 +34,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(s32),                HT_INVALID           }, // CN_BYTES_T
 
   { 'C' - ('A' - 1),            HT_INVALID           }, // CN__C__
-  { sizeof(Calculator),         HT_TRANSIENT_LARGE   }, // CN_CALCULATOR
   { sizeof(CarryOver),          HT_INVALID           }, // CN_CARRYOVER
   { sizeof(Catalog),            HT_INVALID           }, // CN_CATALOG
   { sizeof(Charser),            HT_TRANSIENT_MEDIUM  }, // CN_CHARSER

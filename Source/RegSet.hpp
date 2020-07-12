@@ -5,6 +5,28 @@
 
 namespace Expressions
 {
+  static const i8 C_CALC_CODE  = C_4KB;
+  static const i8 C_CALC_STACK = C_1KB;
+  static const i8 C_CALC_LABEL = 64;
+
+  struct JumpLabel
+  {
+    s32  m_sLabel;
+    bool m_bDefined;
+    union {
+      i8 m_i_Code;
+      i8 m_i_Chain;
+    };
+  };
+
+  struct EoArg
+  {
+    eEA m_eArgument;
+    i8  m_nArgBytes;
+  };
+
+  //----------------------------------------------------------------------------
+
   class RegSet : public Object
   {
   friend class Tasks::Task;

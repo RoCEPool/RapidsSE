@@ -38,7 +38,6 @@ enum eCN : u2 // Class Number
   /* */ CN_BYTES_T,
   
   /* */ CN__C__,
-  /* */ CN_CALCULATOR,
   /* */ CN_CARRYOVER,
   /* */ CN_CATALOG,
   /* */ CN_CHARSER,
@@ -383,7 +382,6 @@ static Stz* aCN[]
   /* */ "BYTES_T"_Stz,             // CN_BYTES_T
   
   /* */ "_C__"_Stz,                // CN__C__
-  /* */ "CALCULATOR"_Stz,          // CN_CALCULATOR
   /* */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /* */ "CATALOG"_Stz,             // CN_CATALOG
   /* */ "CHARSER"_Stz,             // CN_CHARSER

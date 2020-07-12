@@ -143,7 +143,125 @@ void RegSet::vContentDump(void)
 // ..from Calculator
 //
 
-extern EoArg EoArgs[];
+/*----------------------------------------------------------------------------*/
+/* Description of EO Args                                                     */
+/*----------------------------------------------------------------------------*/
+EoArg EoArgs[]
+{
+  { EA_NONE,  0 },  // EO_NONE
+  
+  // arithmetic operators
+  { EA_NONE,  0 },  // EO_ADD
+  { EA_NONE,  0 },  // EO_DIVIDE
+  { EA_NONE,  0 },  // EO_MODULO
+  { EA_NONE,  0 },  // EO_MULTIPLY
+  { EA_NONE,  0 },  // EO_NEGATE
+  { EA_NONE,  0 },  // EO_SUBTRACT
+
+  // branch operators
+  { EA_LABEL, 8 },  // EO_JMP
+  { EA_LABEL, 8 },  // EO_JMPFALSE
+  { EA_LABEL, 8 },  // EO_JMPTRUE
+
+  // entry
+  { EA_INT,   8 },  // EO_ENT_CREATEPAY
+  { EA_NONE,  0 },  // EO_ENT_INSERT
+  { EA_NONE,  0 },  // EO_ENT_INSERTPAY
+  { EA_NONE,  0 },  // EO_ENT_NEXT
+  { EA_NONE,  0 },  // EO_ENT_POSPRIOR
+  { EA_NONE,  0 },  // EO_ENT_PUSH
+  { EA_NONE,  0 },  // EO_ENT_PUSHREF
+
+  // entry relational operators
+  { EA_NONE,  0 },  // EO_ENT_LESSTHAN
+  { EA_NONE,  0 },  // EO_ENT_LESSEQUAL
+  { EA_NONE,  0 },  // EO_ENT_EQUAL
+  { EA_NONE,  0 },  // EO_ENT_NOTEQUAL
+  { EA_NONE,  0 },  // EO_ENT_GREATEREQUAL
+  { EA_NONE,  0 },  // EO_ENT_GREATERTHAN
+
+  // entWrk
+  { EA_INT,   8 },  // EO_ENTWRK_APPENDELMI
+  { EA_NONE,  0 },  // EO_ENTWRK_POPOFS
+  { EA_NONE,  0 },  // EO_ENTWRK_POPREF
+  { EA_NONE,  0 },  // EO_ENTWRK_RESET
+
+  // index tree
+  { EA_NONE,  0 },  // EO_IXT_INS_ENT
+  { EA_NONE,  0 },  // EO_IXT_TRV_BEGIN
+  { EA_NONE,  0 },  // EO_IXT_TRV_NEXT
+
+  // logical operators
+  { EA_NONE,  0 },  // EO_AND
+  { EA_NONE,  0 },  // EO_OR
+  { EA_NONE,  0 },  // EO_NOT
+
+  // null test operators
+  { EA_NONE,  0 },  // EO_ISNULL
+  { EA_NONE,  0 },  // EO_ISNOTNULL
+
+  // pay load
+  { EA_INT,   8 },  // EO_PAY_FETCH_COL
+  { EA_INT,   8 },  // EO_PAY_STORE_COL
+
+  // pushes
+  { EA_INT,   8 },  // EO_INTEGER
+  { EA_NONE,  0 },  // EO_PUSHNULL
+  { EA_NONE,  0 },  // EO_PUSH0
+  { EA_NONE,  0 },  // EO_PUSH1
+
+  // ref
+  { EA_NONE,  0 },  // EO_REF_GETCRW
+  { EA_NONE,  0 },  // EO_REF_SRCRSB
+  { EA_NONE,  0 },  // EO_REF_ALTRSB
+
+  // rsb / rowslab
+  { EA_NONE,  0 },  // EO_RSB_DST_COPYSRC
+  { EA_NONE,  0 },  // EO_RSB_DST_PRINT
+  { EA_NONE,  0 },  // EO_RSB_DST_NEW
+  { EA_NONE,  0 },  // EO_RSB_SRC_BEGIN
+  { EA_NONE,  0 },  // EO_RSB_SRC_NEXT
+  { EA_NONE,  0 },  // EO_RSB_SRC_PRINT
+  { EA_NONE,  0 },  // EO_RSB_SRC_PUSHOFS
+  { EA_NONE,  0 },  // EO_RSB_SRC_SETBYOFS
+  { EA_NONE,  0 },  // EO_RSB_ALT_BEGIN
+  { EA_NONE,  0 },  // EO_RSB_ALT_NEXT
+  { EA_NONE,  0 },  // EO_RSB_ALT_PRINT
+  { EA_NONE,  0 },  // EO_RSB_ALT_PUSHOFS
+  { EA_NONE,  0 },  // EO_RSB_ALT_SETBYOFS
+
+  // relational operators
+  { EA_NONE,  0 },  // EO_LESSTHAN
+  { EA_NONE,  0 },  // EO_LESSEQUAL
+  { EA_NONE,  0 },  // EO_EQUAL
+  { EA_NONE,  0 },  // EO_NOTEQUAL
+  { EA_NONE,  0 },  // EO_GREATEREQUAL
+  { EA_NONE,  0 },  // EO_GREATERTHAN
+
+  // rsb operators
+  { EA_INT,   8 },  // EO_DEPOSITCOLI
+  { EA_INT,   8 },  // EO_PUSHDSTCOLI
+  { EA_INT,   8 },  // EO_PUSHSRCCOLI
+  { EA_INT,   8 },  // EO_PUSHALTCOLI
+
+  // stack operators
+  { EA_NONE,  0 },  // EO_INC
+  { EA_NONE,  0 },  // EO_DEC
+  { EA_NONE,  0 },  // EO_DUP
+  { EA_NONE,  0 },  // EO_POP
+  { EA_NONE,  0 },  // EO_PRINT
+
+  // subroutine operators
+  { EA_LABEL, 8 },  // EO_CALL
+  { EA_NONE,  0 },  // EO_RETURN
+
+  // misc
+  { EA_NONE,  0 },  // EO_NOOP
+
+  // -- end --
+  { EA_NONE,  0 },  // EO_ENUMS
+};
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
