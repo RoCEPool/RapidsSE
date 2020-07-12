@@ -235,11 +235,15 @@ void AggregateRsb::vAggregateGby(RsbBuffer* pSrcRsbBuffer, IndexTree* pIndexTree
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
   // for each row in the rowSlab
+  
+  Calculator* pCalculator = AM::pThisTLSRegSet()->pCalculator();
+
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
     
-    bool bResult = pExpr->iAggregateGby(pIndexTree,nullptr,aSrcRsb,pSrcRowSlab);
+    //bool bResult = pExpr->iAggregateGby(pIndexTree,nullptr,aSrcRsb,pSrcRowSlab);
+    bool bResult = pCalculator->iAggregateGby(pIndexTree,nullptr,aSrcRsb,pSrcRowSlab);
     pIndexTree->vDump(false);
   }
 }

@@ -66,6 +66,8 @@ void JoinRsb::vJoin(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
   
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   
+  Calculator* pCalculator = AM::pThisTLSRegSet()->pCalculator();
+  
   i8 nRows = pSrcRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
@@ -74,8 +76,9 @@ void JoinRsb::vJoin(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
     // new a destination row in destination partition row slab
     vNewDstRsb();
 
-    i8 bCopy = pExpr->iProject(pPot,m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
-        
+    //i8 bCopy = pExpr->iProject(pPot,m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
+    i8 bCopy = pCalculator->iProject(pPot,m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
+
     //vCopyIntoDst(aSrcRsb);
   }
 }
