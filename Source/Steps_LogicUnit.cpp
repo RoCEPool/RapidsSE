@@ -25,7 +25,7 @@ void Step::vLogicUnitCompile(void)
 {
   ENTRY();
   
-  bool b = m_pRegSet->m_oCalculator.bCompile();
+  bool b = m_pRegSet->bCompile();
   
   m_pDataStack->vPushInt((i8)b);
     
@@ -39,7 +39,7 @@ void Step::vLogicUnitNewAggCpy(void)
 {
   ENTRY();
   
-  m_pRegSet->m_oCalculator.vGenerateAggCpy();
+  m_pRegSet->vGenerateAggCpy();
   
   EXIT();
 }
@@ -51,7 +51,7 @@ void Step::vLogicUnitNewAggGby(void)
 {
   ENTRY();
   
-  m_pRegSet->m_oCalculator.vGenerateAggGby();
+  m_pRegSet->vGenerateAggGby();
   
   EXIT();
 }
@@ -63,7 +63,7 @@ void Step::vLogicUnitSourceFetch(void)
 {
   ENTRY();
     
-  s2K sSource = m_pRegSet->m_oCalculator.szSource();
+  s2K sSource = m_pRegSet->szSource();
 
   m_pDataStack->vPushStr(sSource);
 
@@ -80,7 +80,7 @@ void Step::vLogicUnitSourceStore(void)
   s2K sSource;
   m_pDataStack->vPopStr(sSource,__func__);
   
-  m_pRegSet->m_oCalculator.vSource(sSource);
+  m_pRegSet->vSource(sSource);
   
   EXIT();
 }

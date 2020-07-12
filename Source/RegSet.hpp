@@ -89,7 +89,7 @@ namespace Expressions
   
   
     // EXPERIMENT
-    Calculator       m_oCalculator;
+    //Calculator       m_oCalculator;
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ..from Calculator
@@ -137,8 +137,6 @@ namespace Expressions
    ~RegSet(void) noexcept(false);
   
     void vContentDump(void);
-
-    Calculator* pCalculator(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ..from Calculator

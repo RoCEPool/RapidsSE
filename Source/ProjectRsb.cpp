@@ -70,8 +70,8 @@ void ProjectRsb::vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
 
   //i8 bCopy = pExpr->iProject(m_pPot,m_pDstRowSlab,nullptr,pSrcRowSlab);
   
-  Calculator* pCalculator = AM::pThisTLSRegSet()->pCalculator();
-  i8 bCopy = pCalculator->iProject(m_pPot,m_pDstRowSlab,nullptr,pSrcRowSlab);
+  RegSet* pRegSet = AM::pThisTLSRegSet();
+  i8 bCopy = pRegSet->iProject(m_pPot,m_pDstRowSlab,nullptr,pSrcRowSlab);
 
 }
 /*----------------------------------------------------------------------------*/
