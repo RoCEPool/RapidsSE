@@ -54,7 +54,6 @@ namespace Steps
     static void vAddSteps_Env(void);
     static void vAddSteps_Error(void);
     static void vAddSteps_Executable(void);
-    static void vAddSteps_Expr(void);
 
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
@@ -88,7 +87,8 @@ namespace Steps
     static void vAddSteps_LockTracker(void);
     static void vAddSteps_Log(void);
     static void vAddSteps_Logic(void);
-  
+    static void vAddSteps_LogicUnit(void);
+
     static void vAddSteps_Machine(void);
     static void vAddSteps_Magnitude(void);
     static void vAddSteps_Memory(void);
@@ -130,7 +130,6 @@ namespace Steps
     static void vAddSteps_RegOperandOoO(void);
     static void vAddSteps_RegPath(void);
     static void vAddSteps_RegPipein(void);
-    static void vAddSteps_LogicUnit(void);
     static void vAddSteps_RegTask(void);
     static void vAddSteps_RegTimer(void);
     static void vAddSteps_RegXmits(void);
