@@ -105,8 +105,8 @@
   endcase
 
   // force op loop to call fetch_CrwBuffer to start processing buffers
-  "fetch_CrwBuffer" word::find regSet::handler!
-  true regSet::callAgain!
+  "fetch_CrwBuffer" word::find LogicUnit[].handler!
+  true LogicUnit[].callAgain!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -216,7 +216,7 @@
     Operand[].pipeOut
  
     // call this handler again to process next buffer
-    true regSet::callAgain!
+    true LogicUnit[].callAgain!
  
   then
 

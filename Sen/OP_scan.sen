@@ -35,7 +35,7 @@
     Operand[].pipeOut
  
     // call this handler again to process next buffer
-    true regSet::callAgain!
+    true LogicUnit[].callAgain!
  
   else
     // no more crw buffers
@@ -99,8 +99,8 @@
   ptnStream[] ptnStream.open if
 
     // force op loop to call scan_CrwBuffer to start processing buffers
-    "scan_CrwBuffer" word::find stk regSet::handler!
-    true regSet::callAgain!
+    "scan_CrwBuffer" word::find stk LogicUnit[].handler!
+    true LogicUnit[].callAgain!
 
   else
     // unable to open partition stream (this would be unusual)

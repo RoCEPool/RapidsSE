@@ -9,14 +9,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogicUnit(void)
 {
-  vAddStep("regset::callAgain@"_Stz,   &Step::vLogicUnitCallAgainFetch);
-  vAddStep("regset::callAgain!"_Stz,   &Step::vLogicUnitCallAgainStore);
-  vAddStep("regset::handler@"_Stz,     &Step::vLogicUnitHandlerFetch);
-  vAddStep("regset::handler!"_Stz,     &Step::vLogicUnitHandlerStore);
+  vAddStep("LogicUnit[].callAgain@"_Stz,   &Step::vLogicUnitCallAgainFetch);
+  vAddStep("LogicUnit[].callAgain!"_Stz,   &Step::vLogicUnitCallAgainStore);
+  vAddStep("LogicUnit[].handler@"_Stz,     &Step::vLogicUnitHandlerFetch);
+  vAddStep("LogicUnit[].handler!"_Stz,     &Step::vLogicUnitHandlerStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* regset::callAgain@ --                                                      */
+/* LogicUnit[].callAgain@ --                                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vLogicUnitCallAgainFetch(void)
 {
@@ -28,7 +28,7 @@ void Step::vLogicUnitCallAgainFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* regset::callAgain! --                                                      */
+/* LogicUnit[].callAgain! --                                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vLogicUnitCallAgainStore(void)
 {
@@ -42,7 +42,7 @@ void Step::vLogicUnitCallAgainStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* regset::handler@ --                                                        */
+/* LogicUnit[].handler@ --                                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vLogicUnitHandlerFetch(void)
 {
@@ -54,7 +54,7 @@ void Step::vLogicUnitHandlerFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* regset::handler! --                                                        */
+/* LogicUnit[].handler! --                                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vLogicUnitHandlerStore(void)
 {
