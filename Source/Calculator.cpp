@@ -891,7 +891,7 @@ void Calculator::vDumpCode(i8& i_Code, eEO eCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  vTrace("%04lld: %15s\n"_Stz,i_Code,aEO[eCode]);
+  vTrace("%04lld: %18s\n"_Stz,i_Code,aEO[eCode]);
   
   i_Code++;
 }
@@ -906,7 +906,7 @@ void Calculator::vDumpCode(eEO eCode, i8& i_Code)
   i8* piArg = (i8*) & m_eaCode[i_Code+1];
   i8 iArg = * piArg;
 
-  vTrace("%04lld: %15s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
+  vTrace("%04lld: %18s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
 
   i_Code += 1 + sizeof(i8);
 }

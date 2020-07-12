@@ -52,11 +52,11 @@ void ProjectRsb::vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
                           Expr* pExpr, StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTRSB,_FOOTER_);
-  
+
   m_pStreamDefOut = pStreamDefOut;
 
   m_pSrcRsbBuffer = pSrcRsbBuffer;
-  
+
   m_pPot = pPot;
 
   if (! m_bPixInited) {
@@ -64,22 +64,46 @@ void ProjectRsb::vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
     m_pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
     m_pPot->vStreamPix(&m_oStreamPix);
   }
-  
-  RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
-  
-  i8 nRows = pSrcRowSlab->nRows();
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
-    
-    // new a destination row in destination partition row slab
-    vNewDstRsb();
 
-    i8 bCopy = pExpr->iProject(m_pPot,m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
-        
-    //vCopyIntoDst(aSrcRsb);
-  }
+  RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
+
+
+  i8 bCopy = pExpr->iProject(m_pPot,m_pDstRowSlab,nullptr,pSrcRowSlab);
+
 }
+/*----------------------------------------------------------------------------*/
+//void ProjectRsb::vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
+//                          Expr* pExpr, StreamDef* pStreamDefOut)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTRSB,_FOOTER_);
+//
+//  m_pStreamDefOut = pStreamDefOut;
+//
+//  m_pSrcRsbBuffer = pSrcRsbBuffer;
+//
+//  m_pPot = pPot;
+//
+//  if (! m_bPixInited) {
+//    m_bPixInited = true;
+//    m_pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+//    m_pPot->vStreamPix(&m_oStreamPix);
+//  }
+//
+//  RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
+//
+//  i8 nRows = pSrcRowSlab->nRows();
+//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+//
+//    Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
+//
+//    // new a destination row in destination partition row slab
+//    vNewDstRsb();
+//
+//    i8 bCopy = pExpr->iProject(m_pPot,m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
+//
+//    //vCopyIntoDst(aSrcRsb);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
