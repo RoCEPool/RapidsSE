@@ -32,6 +32,7 @@ namespace Expressions
   private:
 
     Pot*     m_pPot;
+    Rsb*     m_aDstRsb;
     RowSlab* m_pDstRowSlab;
 
     i8       m_i_SrcRow;
@@ -43,7 +44,8 @@ namespace Expressions
     i8       m_nAltRows;
     Rsb*     m_aAltRsb;
     RowSlab* m_pAltRowSlab;
-  
+    Rsb*     m_aPayRsb;
+
     Ent*       m_pEnt;
     EntWrk     m_oEntWrk;
     EntBuffer* m_pEntBuffer;

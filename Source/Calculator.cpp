@@ -138,6 +138,7 @@ Calculator::Calculator(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
   m_pPot        = nullptr;
+  m_aDstRsb     = nullptr;
   m_pDstRowSlab = nullptr;
 
   m_i_SrcRow    = C_UNKNOWN;
@@ -154,6 +155,7 @@ Calculator::Calculator(void)
   // m_oEntWrk
   m_pEntBuffer  = nullptr;
   m_pIndexTree  = nullptr;
+  m_aPayRsb     = nullptr;
   
   m_i_Code = 0;
   
@@ -944,7 +946,6 @@ i8 Calculator::iCompute(void)
   i8 iRes;
   i8 iCmp;
   i8 i_Cell_ntv;
-  Rsb* aRsb;
   
   bool bTrace = true;
 
@@ -1192,9 +1193,9 @@ i8 Calculator::iCompute(void)
       case EO_PAY_FETCH_COL: // fetch a column from the entry payload
         iArg = * (i8*)aeCode;
         aeCode += 8;
-        aRsb = (Rsb*)m_pEnt->ayPayload();
-        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
-        iRes = aRsb->iVal_ntv(i_Cell_ntv);
+        m_aPayRsb = (Rsb*)m_pEnt->ayPayload();
+        i_Cell_ntv = m_aPayRsb->i_ColToCell_ntv(iArg);
+        iRes = m_aPayRsb->iVal_ntv(i_Cell_ntv);
         dCC2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
         break;
@@ -1204,9 +1205,9 @@ i8 Calculator::iCompute(void)
         aeCode += 8;
         iRes = *(aiDstk--);
         dCC2(eCode,iArg,iRes);
-        aRsb = (Rsb*)m_pEnt->ayPayload();
-        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
-        aRsb->vVal_ntv(i_Cell_ntv, iRes);
+        m_aPayRsb = (Rsb*)m_pEnt->ayPayload();
+        i_Cell_ntv = m_aPayRsb->i_ColToCell_ntv(iArg);
+        m_aPayRsb->vVal_ntv(i_Cell_ntv, iRes);
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1321,9 +1322,9 @@ i8 Calculator::iCompute(void)
       case EO_PUSHDSTCOLI: // push dst column
         iArg = * (i8*)aeCode;
         aeCode += 8;
-        aRsb = m_pDstRowSlab->aRsbAdr(0);
-        i_Cell_ntv = aRsb->i_ColToCell_ntv(iArg);
-        iRes = aRsb->iVal_ntv(i_Cell_ntv);
+        m_aDstRsb = m_pDstRowSlab->aRsbAdr(0);
+        i_Cell_ntv = m_aDstRsb->i_ColToCell_ntv(iArg);
+        iRes = m_aDstRsb->iVal_ntv(i_Cell_ntv);
         dCC2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
         break;
