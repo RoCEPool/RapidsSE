@@ -62,6 +62,7 @@ void ProjectRsb::vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
   if (! m_bPixInited) {
     m_bPixInited = true;
     m_pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+    m_pPot->vStreamPix(&m_oStreamPix);
   }
   
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();

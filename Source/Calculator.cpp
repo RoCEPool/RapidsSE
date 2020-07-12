@@ -1275,19 +1275,20 @@ i8 Calculator::iCompute(void)
         break;
 
       case EO_RSB_DST_NEW:
-        NEVER_REACH; // not yet implemented
-        
+        m_aDstRsb = m_pPot->aNewDstRsb(&m_pDstRowSlab);
+        break;
+
       case EO_RSB_SRC_BEGIN:
         m_i_SrcRow = -1;
         break;
 
       case EO_RSB_SRC_NEXT:
-        if (++m_i_SrcRow >= m_nSrcRows) {
-          *(++aiDstk) = 0;
-        }
-        else {
+        if (++m_i_SrcRow < m_nSrcRows) {
           m_aSrcRsb = m_pSrcRowSlab->aRsbAdr(m_i_SrcRow);
           *(++aiDstk) = 1;
+        }
+        else {
+          *(++aiDstk) = 0;
         }
         break;
 

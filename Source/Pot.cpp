@@ -20,7 +20,9 @@ Pot::Pot(void)
 : Object(CN_POT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
-
+  
+  m_pStreamPix = nullptr;
+  
   // m_oHashSet
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
@@ -82,6 +84,52 @@ DataBuffer* Pot::pDangling(void)
   DataBuffer* pDataBuffer = m_oHashSet.pDanglingBuffer(0);
 
   return pDataBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create new destination rsb (possible new row slab)                         */
+/*----------------------------------------------------------------------------*/
+Rsb* Pot::aNewDstRsb(RowSlab** ppRowSlab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
+  
+  // get rsb buffer for given partition (new a first buffer if ncessary)
+  RsbBuffer* pDstRsbBuffer = _pRsbBuffer(pBuffer());
+  if (! pDstRsbBuffer) {
+    pDstRsbBuffer = new RsbBuffer;
+    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pStreamPix);
+    vAddBuffer(pDstRsbBuffer);
+  }
+  
+  // new a row in rsb buffer (new another rsb buffer if necessary)
+  bool bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
+  if (! bNewed) {
+    pDstRsbBuffer = new RsbBuffer;
+    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pStreamPix);
+    vAddBuffer(pDstRsbBuffer);
+    bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
+    ASSERT(bNewed);
+  }
+  
+  pDstRsbBuffer->vPartitionNo(0);
+  
+  Rsb* aDstRsb = pDstRsbBuffer->pRowSlab()->aRsbAdr(0);
+  
+  * ppRowSlab = pDstRsbBuffer->pRowSlab();
+  
+  return aDstRsb;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stream pix                                                             */
+/*----------------------------------------------------------------------------*/
+void Pot::vStreamPix(StreamPix* pStreamPix)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
+  
+  if (! m_pStreamPix) {
+    m_pStreamPix = pStreamPix;
+  }
 }
 
 /*============================================================================*/

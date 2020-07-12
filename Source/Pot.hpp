@@ -9,7 +9,9 @@ namespace DataBuffers
   {
   private:
   
-    HashSet  m_oHashSet; // using this as an interim step
+    StreamPix* m_pStreamPix;    // condensed stream def
+
+    HashSet    m_oHashSet; // using this as an interim step
     
     // must be last
     Footer m_xFooter;
@@ -26,6 +28,8 @@ namespace DataBuffers
     DataBuffer* pBuffer(void);
     DataBuffer* pCompleted(void);
     DataBuffer* pDangling(void);
+    Rsb* aNewDstRsb(RowSlab** ppRowSlab);
+    void vStreamPix(StreamPix* pStreamPix);
   
     Footer* aFooter(void);
   };
