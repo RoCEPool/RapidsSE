@@ -48,30 +48,6 @@ Expr::~Expr(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* aggregate                                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Expr::iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
-  
-  i8 i = m_pCalculator->iAggregate(pDstRowSlab,aSrcRsb,pSrcRowSlab);
-  
-  return i;
-}
-
-/*----------------------------------------------------------------------------*/
-/* group by aggregate                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Expr::iAggregateGby(IndexTree* pIndexTree, RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
-  
-  i8 i = m_pCalculator->iAggregateGby(pIndexTree,pDstRowSlab,aSrcRsb,pSrcRowSlab);
-  
-  return i;
-}
-
-/*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
 void Expr::vGenerateAggGby(void)
@@ -91,31 +67,6 @@ bool Expr::bCompile(void)
   bool b = m_pCalculator->bCompile();
     
   return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate                                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Expr::iFilter(Rsb* aRsb, RowSlab* pRowSlab)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
-    
-  i8 i = m_pCalculator->iFilter(aRsb,pRowSlab);
-  
-  return i;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate                                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Expr::iProject(Pot* pPot, RowSlab* pDstRowSlab,
-                  Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
-    
-  i8 i = m_pCalculator->iProject(pPot,pDstRowSlab,aSrcRsb,pSrcRowSlab);
-  
-  return i;
 }
 
 /*----------------------------------------------------------------------------*/

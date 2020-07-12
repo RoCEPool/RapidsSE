@@ -26,15 +26,8 @@ namespace Expressions
     //! TEMP: TO GO
     void vGenerateAggGby(void);
     
-    i8   iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
-    i8   iAggregateGby(IndexTree* pIndexTree, RowSlab* pDstRowSlab,
-                       Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     bool bCompile(void);
   
-    i8   iFilter(Rsb* aRsb, RowSlab* pRowSlab);
-
-    i8   iProject(Pot* pPot, RowSlab* pDstRowSlab,
-                  Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
 
     eUK  eKind(void);
     void vKind(eUK eKind);
