@@ -715,6 +715,13 @@ bool Calculator::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("dup"_Stz))  { vAddCode(EO_DUP);           continue; }
     if (pTkn->bSame("pop"_Stz))  { vAddCode(EO_POP);           continue; }
     if (pTkn->bSame("."_Stz))    { vAddCode(EO_PRINT);         continue; }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // rsb operators
+    if (pTkn->bSame("bs"_Stz))   { vAddCode(EO_RSB_SRC_BEGIN); continue; }
+    if (pTkn->bSame("gs"_Stz))   { vAddCode(EO_RSB_SRC_NEXT);  continue; }
+    if (pTkn->bSame("nd"_Stz))   { vAddCode(EO_RSB_DST_NEW);   continue; }
+
     if (pTkn->bSame(".dst"_Stz)) { vAddCode(EO_RSB_DST_PRINT); continue; }
     if (pTkn->bSame(".src"_Stz)) { vAddCode(EO_RSB_SRC_PRINT); continue; }
     if (pTkn->bSame(".alt"_Stz)) { vAddCode(EO_RSB_ALT_PRINT); continue; }
