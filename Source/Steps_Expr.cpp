@@ -11,10 +11,8 @@ extern DebugFlags gxDebugFlags;;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Expr(void)
 {
-  vAddStep("Expr[]"_Stz,           &Step::vExprGet);
   vAddStep("Expr[].compile"_Stz,   &Step::vExprCompile);
   vAddStep("Expr[].delete"_Stz,    &Step::vExprDelete);
-  vAddStep("Expr[].get"_Stz,       &Step::vExprGet);
   vAddStep("Expr[].new"_Stz,       &Step::vExprNew);
   vAddStep("Expr[].newAggGby"_Stz, &Step::vExprNewAggGby);  //! TEMP : to go
   vAddStep("Expr[].newAggCpy"_Stz, &Step::vExprNewAggCpy);  //! TEMP : to go
@@ -48,18 +46,6 @@ void Step::vExprDelete(void)
   m_pRegSet->m_xpExpr = nullptr;
   
   delete pExpr;
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Expr[].get -- get expression evaluator                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vExprGet(void)
-{
-  ENTRY();
-    
-  m_pDataStack->vPushPtr(* m_pRegSet->m_xpExpr);
 
   EXIT();
 }
