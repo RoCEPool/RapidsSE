@@ -60,6 +60,9 @@ namespace Expressions
     i8        m_nLabels;
     JumpLabel m_xaJumpLabel[C_CALC_LABEL];
   
+    s2K     m_sSource;
+
+  
   private:
   
     // must be last
@@ -88,6 +91,10 @@ namespace Expressions
     i8   iJoin(RowSlab* pDstRowSlab,
                Rsb* aSrcRsb_left,  RowSlab* pSrcRowSlab_left,
                Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right);
+  
+    Stz* szSource(void);
+    void vSource(Stz* szSource);
+
 
   private:
     void vAddCode(eEO eCode);
@@ -109,6 +116,7 @@ namespace Expressions
     void vDumpCode(i8& i_Code, eEO eCode);
     void vDumpCode(eEO eCode, i8& i_Code);
     i8   iCompute(void);
+
 
     Footer* aFooter(void);
   };

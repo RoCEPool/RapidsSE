@@ -9,7 +9,6 @@ namespace Expressions
   {
   private:
     eUK     m_eKind;
-    s2K     m_sSource;
     DynFun* m_pDynFun;
   
     Calculator* m_pCalculator;

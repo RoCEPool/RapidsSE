@@ -647,6 +647,27 @@ void Calculator::vPrintLabels(void)
            m_xaJumpLabel[i_Label].m_i_Chain);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get source                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Calculator::szSource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  return m_sSource;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set source                                                                 */
+/*----------------------------------------------------------------------------*/
+void Calculator::vSource(Stz* szSource)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  m_sSource = szSource;
+}
+
+
 // calc L AGAIN 1 ;
 
 // calc 10 L AGAIN dup . dec dup jt aAGAIN ;
@@ -945,6 +966,12 @@ void Calculator::vDumpCode(eEO eCode, i8& i_Code)
   #define dCC0(eCode)
 
 #endif
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */

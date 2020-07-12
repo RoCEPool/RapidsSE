@@ -88,7 +88,7 @@ bool Expr::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
   
-  TokenVec* pTknVec = TokenVec::pTokenise(m_sSource);
+  TokenVec* pTknVec = TokenVec::pTokenise(m_pCalculator->szSource());
   
   bool b = m_pCalculator->bCompile(pTknVec);
   
@@ -149,7 +149,7 @@ Stz* Expr::szSource(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
   
-  return m_sSource;
+  return m_pCalculator->szSource();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +159,7 @@ void Expr::vSource(Stz* szSource)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPR,_FOOTER_);
   
-  m_sSource = szSource;
+  m_pCalculator->vSource(szSource);
 }
 
 /*============================================================================*/
