@@ -27,7 +27,7 @@ namespace Expressions
    ~JoinRsb(void) noexcept(false);
   
     void vJoin(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
-                  Expr* pExpr, StreamDef* pStreamDefOut);
+                  StreamDef* pStreamDefOut);
     
   private:
     void vCopyIntoDst(Rsb* aSrcRsbc);

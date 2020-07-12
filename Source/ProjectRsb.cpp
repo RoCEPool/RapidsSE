@@ -49,7 +49,7 @@ ProjectRsb::~ProjectRsb(void) noexcept(false)
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
 void ProjectRsb::vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
-                          Expr* pExpr, StreamDef* pStreamDefOut)
+                          StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTRSB,_FOOTER_);
 

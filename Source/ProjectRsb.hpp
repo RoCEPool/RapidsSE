@@ -26,8 +26,7 @@ namespace Expressions
     ProjectRsb(void);
    ~ProjectRsb(void) noexcept(false);
   
-    void vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
-                  Expr* pExpr, StreamDef* pStreamDefOut);
+    void vProject(Pot* pPot, RsbBuffer* pSrcRsbBuffer, StreamDef* pStreamDefOut);
   private:
     void vCopyIntoDst(Rsb* aSrcRsbc);
     void vNewDstRsb(void);

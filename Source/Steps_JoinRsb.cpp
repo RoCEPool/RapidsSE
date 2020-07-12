@@ -47,7 +47,7 @@ void Step::vJoinRsbProject(void)
 
   Pot* pPot = * m_pRegSet->m_xpPot;
 
-  m_pRegSet->m_xpJoinRsb->vJoin(pPot,pRsbBuffer,pExpr,pStreamDefOut);
+  m_pRegSet->m_xpJoinRsb->vJoin(pPot,pRsbBuffer,pStreamDefOut);
   
   EXIT();
 }

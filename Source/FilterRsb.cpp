@@ -45,7 +45,7 @@ FilterRsb::~FilterRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void FilterRsb::vFilter(Pot* pPot, RsbBuffer* pSrcRsbBuffer, Expr* pExpr)
+void FilterRsb::vFilter(Pot* pPot, RsbBuffer* pSrcRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
   

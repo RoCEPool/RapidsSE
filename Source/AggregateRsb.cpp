@@ -50,7 +50,7 @@ AggregateRsb::~AggregateRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void AggregateRsb::vAggregate(RsbBuffer* pSrcRsbBuffer, Expr* pExpr)
+void AggregateRsb::vAggregate(RsbBuffer* pSrcRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
   
@@ -75,7 +75,7 @@ void AggregateRsb::vAggregate(RsbBuffer* pSrcRsbBuffer, Expr* pExpr)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void AggregateRsb::vAggregateCpy(Pot* pPot, IndexTree* pIndexTree, Expr* pExpr)
+void AggregateRsb::vAggregateCpy(Pot* pPot, IndexTree* pIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
   
@@ -131,7 +131,7 @@ void AggregateRsb::vAggregateCpy(Pot* pPot, IndexTree* pIndexTree, Expr* pExpr)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void AggregateRsb::vAggregateGby(Pot* pPot, IndexTree* pIndexTree, Expr* pExpr,
+void AggregateRsb::vAggregateGby(Pot* pPot, IndexTree* pIndexTree,
                                  RsbBuffer* pSrcRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
