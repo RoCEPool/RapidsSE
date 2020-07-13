@@ -43,6 +43,8 @@ LogicUnit::LogicUnit(Task* pTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  m_bPixInited  = false;
+  // m_oStreamPix
   m_pPot        = nullptr;
   m_aDstRsb     = nullptr;
   m_pDstRowSlab = nullptr;
@@ -609,14 +611,14 @@ i8 LogicUnit::iCalc(void)
 /*----------------------------------------------------------------------------*/
 /* filter compute                                                             */
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iFilter(Pot* pPot, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+i8 LogicUnit::iFilter(RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pPot = * m_xpPot; //pPot;
+  m_pPot = * m_xpPot;
   m_pDstRowSlab = nullptr;
 
-  m_aSrcRsb     = aSrcRsb;
+  m_aSrcRsb     = nullptr;
   m_pSrcRowSlab = pSrcRowSlab;
   m_nSrcRows    = m_pSrcRowSlab->nRows();
 
@@ -641,18 +643,26 @@ i8 LogicUnit::iFilter(Pot* pPot, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 /*----------------------------------------------------------------------------*/
 /* project compute                                                            */
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iProject(Pot* pPot, RowSlab* pDstRowSlab,
-                        Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+i8 LogicUnit::iProject(RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pPot = pPot;
-  m_pDstRowSlab = pDstRowSlab;
+  m_pPot = * m_xpPot;
+  m_pDstRowSlab = nullptr;
   
-  m_aSrcRsb     = aSrcRsb;
+  m_aSrcRsb     = nullptr;
   m_pSrcRowSlab = pSrcRowSlab;
   m_nSrcRows    = m_pSrcRowSlab->nRows();
 
+  
+  if (! m_bPixInited) {
+    m_bPixInited = true;
+    m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+    m_pPot->vStreamPix(&m_oStreamPix);
+  }
+
+  
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

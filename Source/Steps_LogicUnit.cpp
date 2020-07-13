@@ -23,6 +23,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].handler!"_Stz,   &Step::vLogicUnitHandlerStore);
   
   vAddStep("LogicUnit[].filter"_Stz,     &Step::vLogicUnitFilter);
+  vAddStep("LogicUnit[].project"_Stz,    &Step::vLogicUnitProject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,12 +158,22 @@ void Step::vLogicUnitFilter(void)
   ENTRY();
 
   RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
-
-  Pot* pPot = * m_pLogicUnit->m_xpPot;
-
-  //m_pLogicUnit->m_xpFilterRsb->vFilter(pPot,pRsbBuffer);
   
-  i8 bCopy = m_pLogicUnit->iFilter(nullptr, nullptr, pRsbBuffer->pRowSlab());
+  i8 bCopy = m_pLogicUnit->iFilter(pRsbBuffer->pRowSlab());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].project -- project an rsb buffer                               */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitProject(void)
+{
+  ENTRY();
+
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
+  
+  i8 bCopy = m_pLogicUnit->iProject(pRsbBuffer->pRowSlab());
 
   EXIT();
 }

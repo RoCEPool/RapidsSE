@@ -77,7 +77,7 @@ void JoinRsb::vJoin(Pot* pPot, RsbBuffer* pSrcRsbBuffer,
     vNewDstRsb();
 
     //i8 bCopy = pExpr->iProject(pPot,m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
-    i8 bCopy = pLogicUnit->iProject(pPot,m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
+    i8 bCopy = pLogicUnit->iProject(pSrcRowSlab);
 
     //vCopyIntoDst(aSrcRsb);
   }

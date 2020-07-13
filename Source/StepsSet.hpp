@@ -903,6 +903,7 @@ public:
   void vLogicUnitSourceStore(void);
 
   void vLogicUnitFilter(void);
+  void vLogicUnitProject(void);
 
 
   // machine
@@ -1055,12 +1056,6 @@ public:
   // profile
   void vProfileEnd(void);
   void vProfileStart(void);
-
-  // project
-  void vProjectRsbDelete(void);
-  void vProjectRsbProject(void);
-  void vProjectRsbGet(void);
-  void vProjectRsbNew(void);
 
   // prompt
   void vPromptContinue(void);

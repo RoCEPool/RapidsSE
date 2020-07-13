@@ -115,6 +115,9 @@ namespace Expressions
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ..from Calculator
 
+    bool       m_bPixInited;
+    StreamPix  m_oStreamPix;    // condensed stream def
+
     Pot*     m_pPot;
     Rsb*     m_aDstRsb;
     RowSlab* m_pDstRowSlab;
@@ -176,9 +179,8 @@ namespace Expressions
     bool bCompile(TokenVec* pTknVec);
 
     i8   iCalc(void);
-    i8   iFilter(Pot* pPot, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
-    i8   iProject(Pot* pPot, RowSlab* pDstRowSlab,
-                  Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iFilter(RowSlab* pSrcRowSlab);
+    i8   iProject(RowSlab* pSrcRowSlab);
     i8   iJoin(RowSlab* pDstRowSlab,
                Rsb* aSrcRsb_left,  RowSlab* pSrcRowSlab_left,
                Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right);
