@@ -96,7 +96,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FILTER_SUBQRY,
   /* */ CN_FILTER_WHERE,
   /* */ CN_FILTER_ZED,
-  /* */ CN_FILTERRSB,
   /* */ CN_FIPVAL,
   /* */ CN_FLTVAL,
   /* */ CN_FOCALOBJECTS,
@@ -440,7 +439,6 @@ static Stz* aCN[]
   /* */ "FILTER_SUBQRY"_Stz,       // CN_FILTER_SUBQRY
   /* */ "FILTER_WHERE"_Stz,        // CN_FILTER_WHERE
   /* */ "FILTER_ZED"_Stz,          // CN_FILTER_ZED
-  /* */ "FILTERRSB"_Stz,           // CN_FILTERRSB
   /* */ "FIPVAL"_Stz,              // CN_FIPVAL
   /* */ "FLTVAL"_Stz,              // CN_FLTVAL
   /* */ "FOCALOBJECTS"_Stz,        // CN_FOCALOBJECTS

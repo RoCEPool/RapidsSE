@@ -15,7 +15,6 @@ namespace Expressions
 //------------------------------------------------------------------------------
 
 #include "AggregateRsb.hpp"
-#include "FilterRsb.hpp"
 #include "ProjectRsb.hpp"
 #include "JoinRsb.hpp"
 
