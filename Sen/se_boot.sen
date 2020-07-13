@@ -173,9 +173,10 @@ assert::stack_0
         "OP_send.sen"                 include
         "OP_showcluster.sen"          include
         "OP_sink.sen"                 include
-        "OP_sort.sen"                 include
         "OP_snapshot.sen"             include
+        "OP_sort.sen"                 include
         "OP_space.sen"                include
+        "OP_sql.sen"                  include
         "OP_start.sen"                include
         "OP_stats.sen"                include
         "OP_status.sen"               include
