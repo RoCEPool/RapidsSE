@@ -523,12 +523,16 @@ i8 LogicUnit::iFilter(Pot* pPot, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pPot = pPot;
+  m_pPot = * m_xpPot; //pPot;
   m_pDstRowSlab = nullptr;
 
   m_aSrcRsb     = aSrcRsb;
   m_pSrcRowSlab = pSrcRowSlab;
   m_nSrcRows    = m_pSrcRowSlab->nRows();
+
+  // temp, needs fixing
+  StreamPix* aStreamPix = pSrcRowSlab->aStreamPix();
+  m_pPot->vStreamPix(aStreamPix);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();

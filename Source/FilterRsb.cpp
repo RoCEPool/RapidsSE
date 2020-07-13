@@ -53,8 +53,8 @@ void FilterRsb::vFilter(Pot* pPot, RsbBuffer* pSrcRsbBuffer)
   
   m_pPot = pPot;
   
-  StreamPix* aStreamPix = pSrcRsbBuffer->pRowSlab()->aStreamPix();
-  m_pPot->vStreamPix(aStreamPix);
+  //StreamPix* aStreamPix = pSrcRsbBuffer->pRowSlab()->aStreamPix();
+  //m_pPot->vStreamPix(aStreamPix);
   
   i8 i_Ptn = 0;
   
