@@ -31,6 +31,9 @@ void Step::vAddSteps_LogicUnit(void)
   
   // TPCH Queries
   vAddStep("LogicUnit[].exprQuery6"_Stz,    &Step::vLogicUnitExprQuery6);
+  
+  // other tests
+  vAddStep("LogicUnit[].test1001Sort"_Stz,  &Step::vLogicUnitTest1001Sort);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -234,6 +237,18 @@ void Step::vLogicUnitExprQuery6(void)
   ENTRY();
   
   m_pLogicUnit->vGenerateQuery6();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].test1001Sort -- generate expr for sort test 1001               */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitTest1001Sort(void)
+{
+  ENTRY();
+  
+  m_pLogicUnit->vGenerateSort1001();
   
   EXIT();
 }

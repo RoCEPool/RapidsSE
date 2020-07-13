@@ -908,6 +908,8 @@ public:
 
   void vLogicUnitExprQuery6(void);
 
+  void vLogicUnitTest1001Sort(void);
+
   // machine
   void vMachineCoreCount(void);
   void vMachineCpuFreq(void);

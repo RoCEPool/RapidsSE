@@ -474,7 +474,7 @@ void LogicUnit::vGenerateAggGby(void)
 /*----------------------------------------------------------------------------*/
 /* generate sort test code                                                    */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateSort(void)
+void LogicUnit::vGenerateSort1001(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
