@@ -284,14 +284,15 @@ void LogicUnit::vGenerateQuery6(void)
   
   // begin RSB traversal
   vAddCode(EO_RSB_SRC_BEGIN);
+
+  vDefineLabel("NEXT_RSB_SRC:"_Stz);
+  
+  vAddCode(EO_RSB_SRC_NEXT);
   vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
   
-  vDefineLabel("NEXT_RSB_SRC:"_Stz);
-  vAddCode(EO_RSB_SRC_NEXT);
-  
   // call the filter subroutine
-  vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
-  vAddCodeLabel(EO_JMPFALSE, "NEXT_RSB_SRC:"_Stz);
+  //vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
+  //vAddCodeLabel(EO_JMPFALSE, "NEXT_RSB_SRC:"_Stz);
   
   // call the aggregate subroutine
   vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
@@ -712,6 +713,38 @@ i8 LogicUnit::iProject(RowSlab* pSrcRowSlab)
   m_aSrcRsb      = nullptr;
   m_pSrcRowSlab  = nullptr;
 
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* filter compute                                                             */
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::iQuery(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_pPot = * m_xpPot;
+  m_pDstRowSlab = nullptr;
+  
+  m_aSrcRsb     = nullptr;
+  m_pSrcRowSlab = pSrcRowSlab;
+  m_nSrcRows    = m_pSrcRowSlab->nRows();
+  
+  // temp, needs fixing
+  pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+  m_pPot->vStreamPix(&m_oStreamPix);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  i8 iResult = iCompute();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pPot         = nullptr;
+  m_pDstRowSlab  = nullptr;
+  
+  m_nSrcRows     = C_UNKNOWN;
+  m_aSrcRsb      = nullptr;
+  m_pSrcRowSlab  = nullptr;
+  
   return iResult;
 }
 

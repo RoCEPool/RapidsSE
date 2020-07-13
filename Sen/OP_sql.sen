@@ -21,10 +21,6 @@
       queryNo "QUERY %v" .printf
     endof
 
-    2 of
-      queryNo "QUERY %v" .printf
-    endof
-
     3 of
       queryNo "QUERY %v" .printf
     endof
@@ -33,13 +29,9 @@
       queryNo "QUERY %v" .printf
     endof
 
-    5 of
-      queryNo "QUERY %v" .printf
-    endof
-
     6 of
       queryNo "QUERY %v" .printf
-      LogicUnit[].query6
+      LogicUnit[].exprQuery6
     endof
 
   endcase
@@ -63,7 +55,7 @@
 : sql_RsbBuffer \handler
 
   Operand[].pipeIn
-  LogicUnit[].filter
+  LogicUnit[].query
   Operand[].delete
 
   Pot[].pipeoutAllCompleted
@@ -84,6 +76,47 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: sql_StreamDef \handler
+
+  0 0 locals| queryNo pColumn |
+
+  Pipein[] to StreamDef[]
+  nullptr to Pipein[]
+
+  <queryNo> >int to queryNo
+  queryNo case
+    1 of
+    endof
+
+    3 of
+    endof
+
+    4 of
+    endof
+
+    6 of
+      StreamDefOut[].new
+      5 StreamDef[].column@ to pColumn
+
+      pColumn column.type@
+      "revenue"
+      StreamDefOut[].addColumn
+      StreamDef[].delete
+
+      StreamDefOut[].duplicate to StreamDef[]
+      StreamDef[].pipeout
+
+      StreamDefOut[].print
+    endof
+
+  endcase
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -99,6 +132,7 @@
   find: sql_PulseMarker ZK_PULSEMARKER op[].handler!
   find: sql_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: sql_StartMarker ZK_STARTMARKER op[].handler!
+  find: sql_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
 

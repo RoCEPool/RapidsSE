@@ -27,9 +27,10 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].aggregate"_Stz,  &Step::vLogicUnitAggregate);
   vAddStep("LogicUnit[].filter"_Stz,     &Step::vLogicUnitFilter);
   vAddStep("LogicUnit[].project"_Stz,    &Step::vLogicUnitProject);
+  vAddStep("LogicUnit[].query"_Stz,      &Step::vLogicUnitQuery);
   
   // TPCH Queries
-  vAddStep("LogicUnit[].query6"_Stz,    &Step::vLogicUnitQuery6);
+  vAddStep("LogicUnit[].exprQuery6"_Stz,    &Step::vLogicUnitExprQuery6);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,11 +211,25 @@ void Step::vLogicUnitProject(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].query -- query                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitQuery(void)
+{
+  ENTRY();
+  
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
+  StreamDef* pStreamDefOut = _pStreamDef(* m_pLogicUnit->m_xpStreamDefOut);
+  
+  i8 bCopy = m_pLogicUnit->iQuery(pRsbBuffer->pRowSlab(), pStreamDefOut);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
-/* LogicUnit[].query6 -- project an rsb buffer                               */
+/* LogicUnit[].exprQuery6 -- generate expr for query6                         */
 /*----------------------------------------------------------------------------*/
-void Step::vLogicUnitQuery6(void)
+void Step::vLogicUnitExprQuery6(void)
 {
   ENTRY();
   

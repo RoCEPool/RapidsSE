@@ -904,7 +904,9 @@ public:
   void vLogicUnitAggregate(void);
   void vLogicUnitFilter(void);
   void vLogicUnitProject(void);
-  void vLogicUnitQuery6(void);
+  void vLogicUnitQuery(void);
+
+  void vLogicUnitExprQuery6(void);
 
   // machine
   void vMachineCoreCount(void);
