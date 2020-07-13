@@ -553,12 +553,12 @@ i8 LogicUnit::iFilter(RowSlab* pSrcRowSlab)
 /*----------------------------------------------------------------------------*/
 /* project compute                                                            */
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iProject(RowSlab* pDstRowSlab, RowSlab* pSrcRowSlab)
+i8 LogicUnit::iProject(RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   m_pPot = * m_xpPot;
-  m_pDstRowSlab = pDstRowSlab;
+  m_pDstRowSlab = nullptr;
   
   m_aSrcRsb     = nullptr;
   m_pSrcRowSlab = pSrcRowSlab;
