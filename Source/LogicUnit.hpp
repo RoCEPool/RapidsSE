@@ -168,11 +168,12 @@ namespace Expressions
     //! TEMP: TO GO
     void vGenerateQuery6(void);
     
+    void vGenerateAgg(void);
     void vGenerateAggCpy(void);
     void vGenerateAggGby(void);
     void vGenerateSort(void);
 
-    i8   iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iAggregate(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut);
     i8   iAggregateGby(Pot* pPot, IndexTree* pIndexTree, RowSlab* pDstRowSlab,
                        Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     bool bCompile(void);

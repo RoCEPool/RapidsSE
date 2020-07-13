@@ -19,10 +19,8 @@
   // create the Pot
   Pot[].new
 
-  // create the aggregattion expr
-  "@ 0 # 0 + ! 0" LogicUnit[].source!
-  LogicUnit[].compile assert
-
+  // create the aggregation expr
+  LogicUnit[].newAgg
 
   ZK_STARTMARKER_handler
 ;
@@ -41,7 +39,7 @@
 : aggregate_RsbBuffer \handler
 
   Operand[].pipeIn
-  aggregateRsb[].aggregate
+  LogicUnit[].aggregate
   Operand[].delete
 
   Pot[].pipeoutAllCompleted
@@ -66,12 +64,6 @@
 
   StreamDefOut[].print
 
-  // new a aggregateRsb
-  aggregateRsb[].new
-
-  // new a row in aggregateRsb
-  aggregateRsb[].newRow
-
   true
 ;
 
@@ -82,7 +74,7 @@
 
   Pot[].pipeoutAllDangling
 
-  AggregateRsb[].delete
+  //AggregateRsb[].delete
 
   Pot[].delete
 

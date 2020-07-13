@@ -362,6 +362,39 @@ void LogicUnit::vGenerateQuery6(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate agg                                                               */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAgg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_i_Code = 0;
+
+  // new a dst rsb row
+  vAddCode(EO_RSB_DST_NEW);
+  
+  vAddCode(EO_RSB_SRC_BEGIN);
+  
+  vDefineLabel("NEXT_RSB_SRC:"_Stz);
+  vAddCode(EO_RSB_SRC_NEXT);
+  
+  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);
+  vAddCodeArg(EO_PUSHDSTCOLI,(i8)0);
+  vAddCode(EO_ADD);
+  vAddCodeArg(EO_DEPOSITCOLI,(i8)0);
+  vAddCodeLabel(EO_JMP,"NEXT_RSB_SRC:"_Stz);
+  
+  vDefineLabel("END_RSB_SRC:"_Stz);
+  vAddCode(EO_RSB_DST_PRINT);
+  vAddCode(EO_RETURN);
+  
+  //vDumpCode1();
+  vDumpCode2();
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate agg group by                                                      */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateAggCpy(void)
@@ -511,17 +544,22 @@ void LogicUnit::vGenerateSort(void)
 /*----------------------------------------------------------------------------*/
 /* aggregate compute                                                          */
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iAggregate(RowSlab* pDstRowSlab, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+i8 LogicUnit::iAggregate(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-    
-  m_pDstRowSlab = pDstRowSlab;
   
-  m_aSrcRsb      = aSrcRsb;
+  m_pPot = * m_xpPot;
+  m_pDstRowSlab = nullptr;
+  
+  m_aSrcRsb      = nullptr;
   m_pSrcRowSlab  = pSrcRowSlab;
+  m_nSrcRows    = m_pSrcRowSlab->nRows();
   
   m_aAltRsb     = nullptr;
   m_pAltRowSlab = nullptr;
+  
+  pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+  m_pPot->vStreamPix(&m_oStreamPix);
   
   m_pEnt              = nullptr;
   //m_oEntWrk

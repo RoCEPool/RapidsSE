@@ -12,8 +12,10 @@ extern DebugFlags gxDebugFlags;;
 void Step::vAddSteps_LogicUnit(void)
 {
   vAddStep("LogicUnit[].compile"_Stz,    &Step::vLogicUnitCompile);
-  vAddStep("LogicUnit[].newAggGby"_Stz,  &Step::vLogicUnitNewAggGby);  //! TEMP : to go
+  vAddStep("LogicUnit[].newAgg"_Stz,     &Step::vLogicUnitNewAgg);  //! TEMP : to go
   vAddStep("LogicUnit[].newAggCpy"_Stz,  &Step::vLogicUnitNewAggCpy);  //! TEMP : to go
+  vAddStep("LogicUnit[].newAggGby"_Stz,  &Step::vLogicUnitNewAggGby);  //! TEMP : to go
+  
   vAddStep("LogicUnit[].source@"_Stz,    &Step::vLogicUnitSourceFetch);
   vAddStep("LogicUnit[].source!"_Stz,    &Step::vLogicUnitSourceStore);
   
@@ -22,6 +24,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].handler@"_Stz,   &Step::vLogicUnitHandlerFetch);
   vAddStep("LogicUnit[].handler!"_Stz,   &Step::vLogicUnitHandlerStore);
   
+  vAddStep("LogicUnit[].aggregate"_Stz,  &Step::vLogicUnitAggregate);
   vAddStep("LogicUnit[].filter"_Stz,     &Step::vLogicUnitFilter);
   vAddStep("LogicUnit[].project"_Stz,    &Step::vLogicUnitProject);
 }
@@ -37,6 +40,18 @@ void Step::vLogicUnitCompile(void)
   
   m_pDataStack->vPushInt((i8)b);
     
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].newAgg -- new an aggregate expression                          */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitNewAgg(void)
+{
+  ENTRY();
+  
+  m_pLogicUnit->vGenerateAgg();
+  
   EXIT();
 }
 
@@ -148,7 +163,20 @@ void Step::vLogicUnitHandlerStore(void)
   EXIT();
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].aggregate -- aggregate an rsb                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitAggregate(void)
+{
+  ENTRY();
+  
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
+  StreamDef* pStreamDefOut = _pStreamDef(* m_pLogicUnit->m_xpStreamDefOut);
+  
+  i8 bCopy = m_pLogicUnit->iAggregate(pRsbBuffer->pRowSlab(), pStreamDefOut);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* LogicUnit[].filter -- filter an rsb buffer                                 */

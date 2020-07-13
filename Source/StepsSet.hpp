@@ -31,13 +31,11 @@ public:
   void vAddressStore(void);
 
   // aggregate
-  void vAggregateRsbAggregate(void);
   void vAggregateRsbAggregateCpy(void);
   void vAggregateRsbAggregateGby(void);
   void vAggregateRsbDelete(void);
   void vAggregateRsbGet(void);
   void vAggregateRsbNew(void);
-  void vAggregateRsbNewRow(void);
 
   // agg timer
   void vAggTimerAdd(void);
@@ -897,11 +895,13 @@ public:
 
   // logic unit
   void vLogicUnitCompile(void);
+  void vLogicUnitNewAgg(void);
   void vLogicUnitNewAggCpy(void);
   void vLogicUnitNewAggGby(void);
   void vLogicUnitSourceFetch(void);
   void vLogicUnitSourceStore(void);
 
+  void vLogicUnitAggregate(void);
   void vLogicUnitFilter(void);
   void vLogicUnitProject(void);
 

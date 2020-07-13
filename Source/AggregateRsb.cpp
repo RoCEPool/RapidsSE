@@ -46,32 +46,6 @@ AggregateRsb::~AggregateRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* convert                                                                    */
-/*----------------------------------------------------------------------------*/
-void AggregateRsb::vAggregate(RsbBuffer* pSrcRsbBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_AGGREGATERSB,_FOOTER_);
-  
-  m_pSrcRsbBuffer = pSrcRsbBuffer;
-  
-  RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
-  
-  LogicUnit* pLogicUnit = AM::pThisTLSLogicUnit();
-
-  i8 nRows = pSrcRowSlab->nRows();
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
-    
-    //i8 bCopy = pExpr->iAggregate(m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
-    i8 bCopy = pLogicUnit->iAggregate(m_pDstRowSlab,aSrcRsb,pSrcRowSlab);
-
-    //vCopyIntoDst(aSrcRsb);
-  }
-}
-
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/

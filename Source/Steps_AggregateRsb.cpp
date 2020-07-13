@@ -10,27 +10,11 @@
 void Step::vAddSteps_AggregateRsb(void)
 {
   vAddStep("AggregateRsb[]"_Stz,           &Step::vAggregateRsbGet);
-  vAddStep("AggregateRsb[].aggregate"_Stz, &Step::vAggregateRsbAggregate);
   vAddStep("AggregateRsb[].aggregateCpy"_Stz, &Step::vAggregateRsbAggregateCpy);
   vAddStep("AggregateRsb[].aggregateGby"_Stz, &Step::vAggregateRsbAggregateGby);
   vAddStep("AggregateRsb[].delete"_Stz,    &Step::vAggregateRsbDelete);
   vAddStep("AggregateRsb[].get"_Stz,       &Step::vAggregateRsbGet);
   vAddStep("AggregateRsb[].new"_Stz,       &Step::vAggregateRsbNew);
-  vAddStep("AggregateRsb[].newRow"_Stz,    &Step::vAggregateRsbNewRow);
-}
-
-/*----------------------------------------------------------------------------*/
-/* AggregateRsb[].aggregate -- Aggregate an rsb buffer                        */
-/*----------------------------------------------------------------------------*/
-void Step::vAggregateRsbAggregate(void)
-{
-  ENTRY();
-  
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
-    
-  m_pLogicUnit->m_xpAggregateRsb->vAggregate(pRsbBuffer);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,20 +91,6 @@ void Step::vAggregateRsbNew(void)
   StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
   
   m_pLogicUnit->m_xpAggregateRsb = new AggregateRsb(pPot, pStreamDefOut);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* AggregateRsb[].newRow -- create a row in the rsb stream Aggregate          */
-/*----------------------------------------------------------------------------*/
-void Step::vAggregateRsbNewRow(void)
-{
-  ENTRY();
-  
-  AggregateRsb* pAggregateRsb = _pAggregateRsb(* m_pLogicUnit->m_xpAggregateRsb);
-  
-  pAggregateRsb->vNewDstRsb();
   
   EXIT();
 }

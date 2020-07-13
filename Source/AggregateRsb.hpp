@@ -26,7 +26,6 @@ namespace Expressions
     AggregateRsb(Pot* pPot, StreamDef* pStreamDefOut);
    ~AggregateRsb(void) noexcept(false);
   
-    void vAggregate(RsbBuffer* pSrcRsbBuffer);
     void vAggregateCpy(Pot* pPot, IndexTree* pIndexTree);
     void vAggregateGby(Pot* pPot, IndexTree* pIndexTree, RsbBuffer* pSrcRsbBuffer);
     void vNewDstRsb(void);
