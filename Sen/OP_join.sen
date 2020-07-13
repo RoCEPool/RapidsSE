@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : join_StartMarker \handler
 
-  ProjectRsb[].new
   Pot[].new
 
   "= @ 3 10 * ! 3" LogicUnit[].source!
@@ -66,8 +65,6 @@
 : join_EosMarker \handler
 
   Pot[].pipeoutAllDangling
-
-  ProjectRsb[].delete
 
   Pot[].delete
 
