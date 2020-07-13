@@ -381,7 +381,6 @@ public:
 
   // filter
   void vFilterRsbDelete(void);
-  void vFilterRsbFilter(void);
   void vFilterRsbGet(void);
   void vFilterRsbNew(void);
 
@@ -907,6 +906,9 @@ public:
   void vLogicUnitNewAggGby(void);
   void vLogicUnitSourceFetch(void);
   void vLogicUnitSourceStore(void);
+
+  void vLogicUnitFilter(void);
+
 
   // machine
   void vMachineCoreCount(void);

@@ -21,6 +21,8 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].callAgain!"_Stz, &Step::vLogicUnitCallAgainStore);
   vAddStep("LogicUnit[].handler@"_Stz,   &Step::vLogicUnitHandlerFetch);
   vAddStep("LogicUnit[].handler!"_Stz,   &Step::vLogicUnitHandlerStore);
+  
+  vAddStep("LogicUnit[].filter"_Stz,     &Step::vLogicUnitFilter);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -146,7 +148,25 @@ void Step::vLogicUnitHandlerStore(void)
 }
 
 
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].filter -- filter an rsb buffer                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitFilter(void)
+{
+  ENTRY();
+
+  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
+
+  Pot* pPot = * m_pLogicUnit->m_xpPot;
+
+  //m_pLogicUnit->m_xpFilterRsb->vFilter(pPot,pRsbBuffer);
+  
+  i8 bCopy = m_pLogicUnit->iFilter(nullptr, nullptr, pRsbBuffer->pRowSlab());
+
+  EXIT();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-

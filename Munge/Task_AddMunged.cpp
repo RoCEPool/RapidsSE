@@ -13337,7 +13337,7 @@ void Task::vAddMunged(Forth* pForth)
     ": filter_RsbBuffer \\handler\n"
     "\n"
     "  Operand[].pipeIn\n"
-    "  FilterRsb[].filter\n"
+    "  LogicUnit[].filter\n"
     "  Operand[].delete\n"
     "\n"
     "  Pot[].pipeoutAllCompleted\n"

@@ -35,7 +35,7 @@
 : filter_RsbBuffer \handler
 
   Operand[].pipeIn
-  FilterRsb[].filter
+  LogicUnit[].filter
   Operand[].delete
 
   Pot[].pipeoutAllCompleted
