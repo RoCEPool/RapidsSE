@@ -990,6 +990,45 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+: start::defineProc_TPCH
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // filtered load
+  sPath
+  "
+  procedure Query6
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+  start
+    | periodicOp once
+    | chunk $file
+    | rdCsvChunk $file
+    | stageB robin
+
+
+  stage stageB on all partitions on origin :
+    toRsb $table
+    | sql q6
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* define apriori tables                                                      */
 /*----------------------------------------------------------------------------*/
 : start::defineTables
@@ -1315,6 +1354,7 @@
   start::defineProc_SteadyState
   start::defineProc_UnloadReload
   start::defineProc_Expressions
+  start::defineProc_TPCH
 
   // define the apriori system tables
   start::defineTables
