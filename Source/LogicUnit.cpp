@@ -270,6 +270,96 @@ EoArg EoArgs[]
 //! TEMP : TO GO
 
 /*----------------------------------------------------------------------------*/
+/* generate query6                                                            */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery6(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_i_Code = 0;
+  
+  vAddCode(EO_RSB_DST_NEW);
+  
+  // begin RSB traversal
+  vAddCode(EO_RSB_SRC_BEGIN);
+  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  
+  vDefineLabel("NEXT_RSB_SRC:"_Stz);
+  vAddCode(EO_RSB_SRC_NEXT);
+  
+  // call the filter subroutine
+  vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
+  vAddCodeLabel(EO_JMPFALSE, "NEXT_RSB_SRC:"_Stz);
+  
+  // call the aggregate subroutine
+  vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
+  vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
+  
+  vDefineLabel("END_RSB_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // FILTER SUBROUTINE
+  vDefineLabel("SUBROUTINE_FILTER:"_Stz);
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
+  //vAddCodeArg(EO_PUSHDATE, "1994-01-01"_Stz);
+  vAddCode(EO_GREATEREQUAL);
+  vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
+  
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
+  //vAddCodeArg(EO_PUSHDATE, "1995-01-01"_Stz);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
+  
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
+  vAddCodeArg(EO_INTEGER, 3);
+  vAddCode(EO_GREATERTHAN);
+  vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
+  
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
+  vAddCodeArg(EO_INTEGER, 5);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
+  
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)4);   // l_quantity
+  vAddCodeArg(EO_INTEGER, 24);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
+  
+  // return true
+  vAddCode(EO_PUSH1);
+  vAddCodeLabel(EO_JMP,"RETURN:"_Stz);
+  
+  // return false
+  vDefineLabel("RETURN_FALSE:"_Stz);
+  vAddCode(EO_PUSH0);
+  
+  // return
+  vDefineLabel("RETURN:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // AGGREGATE SUBROUTINE
+  vDefineLabel("SUBROUTINE_AGGREGATE:"_Stz);
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)5);   // l_exetendedprice
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
+  vAddCode(EO_MULTIPLY);                // *
+  vAddCode(EO_PUSH1);
+  vAddCode(EO_DIVIDE);
+  
+  vAddCodeArg(EO_PUSHDSTCOLI,(i8)0);
+  vAddCode(EO_ADD);
+  vAddCodeArg(EO_DEPOSITCOLI,(i8)0);
+  
+  vAddCode(EO_RSB_DST_PRINT);
+  vAddCode(EO_RETURN);
+
+  
+  //vDumpCode1();
+  vDumpCode2();
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate agg group by                                                      */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateAggCpy(void)

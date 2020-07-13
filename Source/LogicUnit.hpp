@@ -163,6 +163,8 @@ namespace Expressions
     // ..from Calculator
   
     //! TEMP: TO GO
+    void vGenerateQuery6(void);
+    
     void vGenerateAggCpy(void);
     void vGenerateAggGby(void);
     void vGenerateSort(void);
