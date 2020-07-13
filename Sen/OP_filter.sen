@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : filter_StartMarker \handler
 
-  FilterRsb[].new
   Pot[].new
 
   //"@ 0 2 %" LogicUnit[].source!
@@ -49,8 +48,6 @@
 : filter_EosMarker \handler
 
   Pot[].pipeoutAllDangling
-
-  FilterRsb[].delete
 
   Pot[].delete
 
