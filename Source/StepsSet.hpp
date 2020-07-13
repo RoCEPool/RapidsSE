@@ -1057,11 +1057,6 @@ public:
   void vProfileEnd(void);
   void vProfileStart(void);
 
-  // project
-  void vProjectRsbDelete(void);
-  void vProjectRsbGet(void);
-  void vProjectRsbNew(void);
-
   // prompt
   void vPromptContinue(void);
   void vPromptExecuteFunction(void);
