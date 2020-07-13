@@ -175,7 +175,7 @@ namespace Expressions
     bool bCompile(TokenVec* pTknVec);
 
     i8   iCalc(void);
-    i8   iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iFilter(Pot* pPot, Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     i8   iProject(Pot* pPot, RowSlab* pDstRowSlab,
                   Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     i8   iJoin(RowSlab* pDstRowSlab,

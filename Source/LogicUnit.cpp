@@ -519,20 +519,28 @@ i8 LogicUnit::iCalc(void)
 /*----------------------------------------------------------------------------*/
 /* filter compute                                                             */
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iFilter(Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
+i8 LogicUnit::iFilter(Pot* pPot, Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  m_pPot = pPot;
   m_pDstRowSlab = nullptr;
 
-  m_aSrcRsb      = aSrcRsb;
-  m_pSrcRowSlab  = pSrcRowSlab;
+  m_aSrcRsb     = aSrcRsb;
+  m_pSrcRowSlab = pSrcRowSlab;
+  m_nSrcRows    = m_pSrcRowSlab->nRows();
 
-  m_aAltRsb     = nullptr;
-  m_pAltRowSlab = nullptr;
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pPot         = nullptr;
+  m_pDstRowSlab  = nullptr;
+
+  m_nSrcRows     = C_UNKNOWN;
+  m_aSrcRsb      = nullptr;
+  m_pSrcRowSlab  = nullptr;
+
   return iResult;
 }
 
@@ -547,9 +555,9 @@ i8 LogicUnit::iProject(Pot* pPot, RowSlab* pDstRowSlab,
   m_pPot = pPot;
   m_pDstRowSlab = pDstRowSlab;
   
-  m_aSrcRsb      = aSrcRsb;
-  m_pSrcRowSlab  = pSrcRowSlab;
-  m_nSrcRows = m_pSrcRowSlab->nRows();
+  m_aSrcRsb     = aSrcRsb;
+  m_pSrcRowSlab = pSrcRowSlab;
+  m_nSrcRows    = m_pSrcRowSlab->nRows();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();
@@ -558,7 +566,7 @@ i8 LogicUnit::iProject(Pot* pPot, RowSlab* pDstRowSlab,
   m_pPot = nullptr;
   m_pDstRowSlab = nullptr;
 
-  m_nSrcRows          = C_UNKNOWN;
+  m_nSrcRows     = C_UNKNOWN;
   m_aSrcRsb      = nullptr;
   m_pSrcRowSlab  = nullptr;
 
@@ -1058,7 +1066,7 @@ void LogicUnit::vDumpCode(eEO eCode, i8& i_Code)
   i_Code += 1 + sizeof(i8);
 }
 
-#if 0
+#if 1
 
   #define dCC3(eCode,iA,iB,iC) \
     if (bTrace) \
@@ -1113,7 +1121,7 @@ i8 LogicUnit::iCompute(void)
   i8 iCmp;
   i8 i_Cell_ntv;
   
-  bool bTrace = true;
+  bool bTrace = false;
 
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
@@ -1451,26 +1459,32 @@ i8 LogicUnit::iCompute(void)
         break;
 
       case EO_RSB_DST_PRINT: // print dst rsb
+        dCC0(eCode);
         m_pDstRowSlab->vDumpRow(-1,m_aDstRsb);
         break;
 
       case EO_RSB_SRC_PRINT: // print src rsb
+        dCC0(eCode);
         m_pSrcRowSlab->vDumpRow(-1,m_aSrcRsb);
         break;
 
       case EO_RSB_ALT_PRINT: // print alt rsb
+        dCC0(eCode);
         m_pAltRowSlab->vDumpRow(-1,m_aAltRsb);
         break;
 
       case EO_RSB_DST_NEW: // create new destination rsb
+        dCC0(eCode);
         m_aDstRsb = m_pPot->aNewDstRsb(&m_pDstRowSlab);
         break;
 
       case EO_RSB_SRC_BEGIN: // begin src rsb traverse
+        dCC0(eCode);
         m_i_SrcRow = -1;
         break;
 
       case EO_RSB_SRC_NEXT: // move to next src rsb
+        dCC0(eCode);
         if (++m_i_SrcRow < m_nSrcRows) {
           m_aSrcRsb = m_pSrcRowSlab->aRsbAdr(m_i_SrcRow);
           *(++aiDstk) = 1;

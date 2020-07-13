@@ -128,9 +128,9 @@ void Pot::vStreamPix(StreamPix* pStreamPix)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
-  if (! m_pStreamPix) {
+  //if (! m_pStreamPix) {
     m_pStreamPix = pStreamPix;
-  }
+  //}
 }
 
 /*============================================================================*/

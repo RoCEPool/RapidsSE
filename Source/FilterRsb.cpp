@@ -53,25 +53,46 @@ void FilterRsb::vFilter(Pot* pPot, RsbBuffer* pSrcRsbBuffer)
   
   m_pPot = pPot;
   
+  StreamPix* aStreamPix = pSrcRsbBuffer->pRowSlab()->aStreamPix();
+  m_pPot->vStreamPix(aStreamPix);
+  
   i8 i_Ptn = 0;
   
   RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
   
   LogicUnit* pLogicUnit = AM::pThisTLSLogicUnit();
-
   
-  i8 nRows = pSrcRowSlab->nRows();
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
-    
-    //i8 bCopy = pExpr->iFilter(aSrcRsb, pSrcRowSlab);
-    i8 bCopy = pLogicUnit->iFilter(aSrcRsb, pSrcRowSlab);
+  i8 bCopy = pLogicUnit->iFilter(m_pPot, nullptr, pSrcRowSlab);
 
-    if (bCopy)
-      vCopyIntoDst(aSrcRsb);
-  }
 }
+/*----------------------------------------------------------------------------*/
+//void FilterRsb::vFilter(Pot* pPot, RsbBuffer* pSrcRsbBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTERRSB,_FOOTER_);
+//
+//  m_pSrcRsbBuffer = pSrcRsbBuffer;
+//
+//  m_pPot = pPot;
+//
+//  i8 i_Ptn = 0;
+//
+//  RowSlab* pSrcRowSlab = pSrcRsbBuffer->pRowSlab();
+//
+//  LogicUnit* pLogicUnit = AM::pThisTLSLogicUnit();
+//
+//
+//  i8 nRows = pSrcRowSlab->nRows();
+//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+//
+//    Rsb* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
+//
+//    //i8 bCopy = pExpr->iFilter(aSrcRsb, pSrcRowSlab);
+//    i8 bCopy = pLogicUnit->iFilter(aSrcRsb, pSrcRowSlab);
+//
+//    if (bCopy)
+//      vCopyIntoDst(aSrcRsb);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
