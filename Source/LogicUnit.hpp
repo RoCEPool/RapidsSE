@@ -178,8 +178,7 @@ namespace Expressions
 
     i8   iCalc(void);
     i8   iFilter(RowSlab* pSrcRowSlab);
-    i8   iProject(RowSlab* pDstRowSlab,
-                  Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
+    i8   iProject(RowSlab* pDstRowSlab, RowSlab* pSrcRowSlab);
     i8   iJoin(RowSlab* pDstRowSlab,
                Rsb* aSrcRsb_left,  RowSlab* pSrcRowSlab_left,
                Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right);
