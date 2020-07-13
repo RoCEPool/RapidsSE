@@ -34,8 +34,15 @@
       LogicUnit[].exprQuery6
     endof
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     1001 of
       queryNo "QUERY %v" .printf
+
+      "bs L GET gs jf END @ 0 2 % jf GET nd .s = .d j GET L END ret"
+      LogicUnit[].source!
+
+      LogicUnit[].compile assert
     endof
 
     1002 of
@@ -123,6 +130,8 @@
 
       StreamDefOut[].print
     endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     1001 of
     endof
