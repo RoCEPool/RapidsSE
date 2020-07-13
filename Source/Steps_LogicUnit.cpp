@@ -157,12 +157,8 @@ void Step::vLogicUnitFilter(void)
   ENTRY();
 
   RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
-
-  Pot* pPot = * m_pLogicUnit->m_xpPot;
-
-  //m_pLogicUnit->m_xpFilterRsb->vFilter(pPot,pRsbBuffer);
   
-  i8 bCopy = m_pLogicUnit->iFilter(nullptr, nullptr, pRsbBuffer->pRowSlab());
+  i8 bCopy = m_pLogicUnit->iFilter(pRsbBuffer->pRowSlab());
 
   EXIT();
 }
