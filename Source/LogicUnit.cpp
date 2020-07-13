@@ -43,6 +43,8 @@ LogicUnit::LogicUnit(Task* pTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  m_bPixInited  = false;
+  // m_oStreamPix
   m_pPot        = nullptr;
   m_aDstRsb     = nullptr;
   m_pDstRowSlab = nullptr;
@@ -556,7 +558,7 @@ i8 LogicUnit::iProject(Pot* pPot, RowSlab* pDstRowSlab,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pPot = pPot;
+  m_pPot = * m_xpPot; //pPot;
   m_pDstRowSlab = pDstRowSlab;
   
   m_aSrcRsb     = aSrcRsb;
