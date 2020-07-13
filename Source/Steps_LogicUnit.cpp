@@ -33,7 +33,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].exprQuery6"_Stz,    &Step::vLogicUnitExprQuery6);
   
   // other tests
-  vAddStep("LogicUnit[].test1001Sort"_Stz,  &Step::vLogicUnitTest1001Sort);
+  vAddStep("LogicUnit[].test1003Sort"_Stz,  &Step::vLogicUnitTest1003Sort);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,13 +242,13 @@ void Step::vLogicUnitExprQuery6(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* LogicUnit[].test1001Sort -- generate expr for sort test 1001               */
+/* LogicUnit[].test1003Sort -- generate expr for sort test 1003               */
 /*----------------------------------------------------------------------------*/
-void Step::vLogicUnitTest1001Sort(void)
+void Step::vLogicUnitTest1003Sort(void)
 {
   ENTRY();
   
-  m_pLogicUnit->vGenerateSort1001();
+  m_pLogicUnit->vGenerateSort1003();
   
   EXIT();
 }

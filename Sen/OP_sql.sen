@@ -34,6 +34,19 @@
       LogicUnit[].exprQuery6
     endof
 
+    1001 of
+      queryNo "QUERY %v" .printf
+    endof
+
+    1002 of
+      queryNo "QUERY %v" .printf
+    endof
+
+    1003 of
+      queryNo "QUERY %v" .printf
+      LogicUnit[].test1003Sort
+    endof
+
   endcase
 
   //LogicUnit[].compile assert
@@ -109,6 +122,15 @@
       StreamDef[].pipeout
 
       StreamDefOut[].print
+    endof
+
+    1001 of
+    endof
+
+    1002 of
+    endof
+
+    1003 of
     endof
 
   endcase

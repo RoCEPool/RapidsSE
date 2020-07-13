@@ -908,7 +908,7 @@ public:
 
   void vLogicUnitExprQuery6(void);
 
-  void vLogicUnitTest1001Sort(void);
+  void vLogicUnitTest1003Sort(void);
 
   // machine
   void vMachineCoreCount(void);
