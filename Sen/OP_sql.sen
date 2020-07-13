@@ -9,13 +9,42 @@
 /*----------------------------------------------------------------------------*/
 : sql_StartMarker \handler
 
+  0 locals| queryNo |
+
   Pot[].new
 
   //"@ 0 2 %" LogicUnit[].source!
 
-  "bs L GET gs jf END @ 0 2 % jf GET nd .s = .d j GET L END ret" LogicUnit[].source!
+  <queryNo> >int to queryNo
+  queryNo case
+    1 of
+      queryNo "QUERY %v" .printf
+    endof
 
-  LogicUnit[].compile assert
+    2 of
+      queryNo "QUERY %v" .printf
+    endof
+
+    3 of
+      queryNo "QUERY %v" .printf
+    endof
+
+    4 of
+      queryNo "QUERY %v" .printf
+    endof
+
+    5 of
+      queryNo "QUERY %v" .printf
+    endof
+
+    6 of
+      queryNo "QUERY %v" .printf
+      LogicUnit[].query6
+    endof
+
+  endcase
+
+  //LogicUnit[].compile assert
 
   ZK_STARTMARKER_handler
 ;
@@ -81,7 +110,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: sql :: sql ;
+cmdSyntax: sql :: sql <queryNo> ;
 
 : sql _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 

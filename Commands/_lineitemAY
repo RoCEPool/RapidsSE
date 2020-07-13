@@ -61,8 +61,12 @@ space;
 load lineitem "/DATA/TPCH/lineitem10.csv";
 tableScan lineitem;
 
-sum lineitem "/DATA/TPCH/lineitem10.csv" l_orderkey;
+//expr_filter_1 lineitem "/DATA/TPCH/lineitem10.csv";
+
+//sum lineitem "/DATA/TPCH/lineitem10.csv" l_orderkey;
 //sumGby lineitem "/DATA/TPCH/lineitem10.csv" l_orderkey;
+
+Query6 lineitem "/DATA/TPCH/lineitem10.csv";
 
 // /time ctas lineitem lineitem2;
 

@@ -27,6 +27,9 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].aggregate"_Stz,  &Step::vLogicUnitAggregate);
   vAddStep("LogicUnit[].filter"_Stz,     &Step::vLogicUnitFilter);
   vAddStep("LogicUnit[].project"_Stz,    &Step::vLogicUnitProject);
+  
+  // TPCH Queries
+  vAddStep("LogicUnit[].query6"_Stz,    &Step::vLogicUnitQuery6);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,6 +206,20 @@ void Step::vLogicUnitProject(void)
   
   i8 bCopy = m_pLogicUnit->iProject(pRsbBuffer->pRowSlab());
 
+  EXIT();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].query6 -- project an rsb buffer                               */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitQuery6(void)
+{
+  ENTRY();
+  
+  m_pLogicUnit->vGenerateQuery6();
+  
   EXIT();
 }
 

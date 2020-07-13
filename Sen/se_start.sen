@@ -1012,9 +1012,9 @@
     | stageB robin
 
 
-  stage stageB on all partitions on origin :
+  stage stageB on all partitions :
     toRsb $table
-    | sql q6
+    | sql 6
     | stageC
 
   stage stageC on origin :
