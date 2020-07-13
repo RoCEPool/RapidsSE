@@ -57,7 +57,6 @@ namespace Steps
 
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
-    static void vAddSteps_FilterRsb(void);
     static void vAddSteps_Flow(void);
     static void vAddSteps_Forth(void);
 

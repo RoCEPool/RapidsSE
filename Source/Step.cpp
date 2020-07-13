@@ -78,7 +78,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Executable();
 
   Step::vAddSteps_File();
-  Step::vAddSteps_FilterRsb();
   Step::vAddSteps_Flow();
   Step::vAddSteps_Forth();
 
