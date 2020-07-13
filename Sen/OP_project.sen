@@ -53,7 +53,7 @@
 : project_RsbBuffer \handler
 
   Operand[].pipeIn
-  ProjectRsb[].project
+  LogicUnit[].project
   Operand[].delete
 
   Pot[].pipeoutAllCompleted
