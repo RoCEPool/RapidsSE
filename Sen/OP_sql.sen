@@ -39,7 +39,6 @@
     1001 of
       queryNo "QUERY %v" .printf
 
-      //"bs L GET gs jf END @ 0 2 % jf GET nd .s = .d j GET L END ret"
       "ss pi bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ret"
       LogicUnit[].source!
 
@@ -48,6 +47,11 @@
 
     1002 of
       queryNo "QUERY %v" .printf
+
+      "ss po bs L GET gs jf END nd .s = @ 3 10 * ! 3 .d j GET L END ret"
+      LogicUnit[].source!
+ 
+      LogicUnit[].compile assert
     endof
 
     1003 of
@@ -80,6 +84,14 @@
   queryNo case
 
     1001 of
+      Operand[].pipeIn
+      LogicUnit[].transform
+      Operand[].delete
+
+      Pot[].pipeoutAllCompleted
+    endof
+
+    1002 of
       Operand[].pipeIn
       LogicUnit[].transform
       Operand[].delete
@@ -153,6 +165,15 @@
     endof
 
     1002 of
+      //StreamDef[].pipeIn
+
+      StreamDef[].duplicate to OperandB[]
+      OperandB[].pipeOut
+
+      StreamDef[].print
+
+      StreamDef[].duplicate to StreamDefOut[]
+      StreamDefOut[].print
     endof
 
     1003 of

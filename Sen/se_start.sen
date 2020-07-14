@@ -908,8 +908,10 @@
 
   stage stageB on all partitions on origin :
     toRsb $table
-      | filter
-      | project
+      //| filter
+      | sql 1001
+      //| project
+      | sql 1002
       | toPtnRsb
       | toNstRsb
       | toHshCrw

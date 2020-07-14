@@ -659,6 +659,8 @@ i8 LogicUnit::iFilter(RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  NEVER_REACH;
+  
 //  m_pPot = * m_xpPot;
 //  m_pDstRowSlab = nullptr;
 
@@ -691,6 +693,8 @@ i8 LogicUnit::iProject(RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  NEVER_REACH;
+
 //  m_pPot = * m_xpPot;
 //  m_pDstRowSlab = nullptr;
 //  
