@@ -188,6 +188,10 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_ENTWRK_POPREF
   { EA_NONE,  0 },  // EO_ENTWRK_RESET
 
+  // initiialise
+  { EA_NONE,  0 },  // EO_INI_POT_PIX
+  { EA_NONE,  0 },  // EO_INI_SRC_SLAB
+  
   // index tree
   { EA_NONE,  0 },  // EO_IXT_INS_ENT
   { EA_NONE,  0 },  // EO_IXT_TRV_BEGIN
@@ -1500,6 +1504,11 @@ i8 LogicUnit::iCompute(void)
         m_oEntWrk.vReset();
         break;
       
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // initialise
+      case EO_INI_POT_PIX:  NEVER_REACH; // not yet implemented
+      case EO_INI_SRC_SLAB: NEVER_REACH; // not yet implemented
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
       case EO_IXT_INS_ENT:      // insert ent

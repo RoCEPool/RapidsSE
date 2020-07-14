@@ -74,11 +74,25 @@
 /*----------------------------------------------------------------------------*/
 : sql_RsbBuffer \handler
 
-  Operand[].pipeIn
-  LogicUnit[].query
-  Operand[].delete
+  <queryNo> >int locals| queryNo |
 
-  Pot[].pipeoutAllCompleted
+  queryNo case
+
+    1001 of
+      Operand[].pipeIn
+      LogicUnit[].filter
+      Operand[].delete
+
+      Pot[].pipeoutAllCompleted
+    endof
+
+    Operand[].pipeIn
+    LogicUnit[].query
+    Operand[].delete
+
+    Pot[].pipeoutAllCompleted
+
+  endcase
 
   true
 ;

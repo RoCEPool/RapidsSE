@@ -43,6 +43,10 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   
+  // initialise
+  /*    */ EO_INI_POT_PIX,      // init m_pPot stream pix etc
+  /*    */ EO_INI_SRC_SLAB,     // init m_pSrcRowSlab etc
+
   // index tree
   /*    */ EO_IXT_INS_ENT,      // insert ent
   /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
@@ -157,6 +161,10 @@ static Stz* aEO[]
   /*    */ "EO_ENTWRK_POPOFS"_Stz,
   /*    */ "EO_ENTWRK_POPREF"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
+
+  // initialise
+  /*    */ "EO_INI_POT_PIX"_Stz,
+  /*    */ "EO_INI_SRC_SLAB"_Stz,
 
   // index tree
   /*    */ "EO_IXT_INS_ENT"_Stz,
