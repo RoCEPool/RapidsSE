@@ -28,6 +28,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].filter"_Stz,     &Step::vLogicUnitFilter);
   vAddStep("LogicUnit[].project"_Stz,    &Step::vLogicUnitProject);
   vAddStep("LogicUnit[].query"_Stz,      &Step::vLogicUnitQuery);
+  vAddStep("LogicUnit[].toStreamPix"_Stz,&Step::vLogicUnitToStreamPix);
   vAddStep("LogicUnit[].transform"_Stz,  &Step::vLogicUnitTransform);
 
   // TPCH Queries
@@ -230,6 +231,18 @@ void Step::vLogicUnitQuery(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].toStreamPix -- convert streamDef to streamPix in logicUnit     */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitToStreamPix(void)
+{
+  ENTRY();
+  
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  pStreamDef->vToStreamPix(&m_pLogicUnit->m_oStreamPix,true);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* LogicUnit[].transform -- transform                                         */

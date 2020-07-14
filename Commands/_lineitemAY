@@ -58,15 +58,16 @@ space;
 ///time load lineitem "/tpch/SF0/lineitem_100k.csv" <max_errors> =  100;
 ///time fload lineitem "/tpch/SF1/lineitem.csv"; // <max_errors> =  100;
 
-load lineitem "/DATA/TPCH/lineitem1.csv";
-tableScan lineitem;
+//load lineitem "/tpch/SF1/lineitem.csv";
+//tableScan lineitem;
 
 //expr_filter_1 lineitem "/DATA/TPCH/lineitem10.csv";
 
 //sum lineitem "/DATA/TPCH/lineitem10.csv" l_orderkey;
 //sumGby lineitem "/DATA/TPCH/lineitem10.csv" l_orderkey;
 
-Query6 lineitem "/DATA/TPCH/lineitem1.csv";
+/time Query6 lineitem "/tpch/SF1/lineitem.csv";
+//Query6 lineitem "/DATA/TPCH/lineitem10k.csv";
 
 // /time ctas lineitem lineitem2;
 

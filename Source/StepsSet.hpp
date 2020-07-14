@@ -905,6 +905,7 @@ public:
   void vLogicUnitFilter(void);
   void vLogicUnitProject(void);
   void vLogicUnitQuery(void);
+  void vLogicUnitToStreamPix(void);
   void vLogicUnitTransform(void);
 
   void vLogicUnitExprQuery6(void);
@@ -1049,6 +1050,8 @@ public:
   void vPotDangling(void);
   void vPotDelete(void);
   void vPotNew(void);
+  void vPotNewDstRsb(void);
+  void vPotSetStreamPix(void);
 
   // procedure
   void vProcedureAdd(void);

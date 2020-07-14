@@ -283,8 +283,24 @@ void LogicUnit::vGenerateQuery6(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  // generate the lower bound date
+  s32 sDateLower = "1994-01-01"_Stz;
+  SN_Dte snDteLower;
+  char* aDateLower = sDateLower.azChar();
+  i8 iDateLower = snDteLower.i(&aDateLower, AM::pFmt());
+  
+  // generate the upper bound date
+  s32 sDateUpper = "1995-01-01"_Stz;
+  SN_Dte snDteUpper;
+  char* aDateUpper = sDateUpper.azChar();
+  i8 iDateUpper = snDteUpper.i(&aDateUpper, AM::pFmt());
+  
+  // init the code
   m_i_Code = 0;
   
+  // create a dst row
+  //vAddCode(EO_RSB_DST_NEW);
+
   // begin RSB traversal
   vAddCode(EO_RSB_SRC_BEGIN);
 
@@ -307,29 +323,30 @@ void LogicUnit::vGenerateQuery6(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // FILTER SUBROUTINE
   vDefineLabel("SUBROUTINE_FILTER:"_Stz);
-/*
+
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
-  //vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
+  
+  vAddCodeArg(EO_DATE, iDateLower);
   vAddCode(EO_GREATEREQUAL);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
-  
+
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
-  //vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
+  vAddCodeArg(EO_DATE, iDateUpper);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
-*/
+
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
-  vAddCodeArg(EO_INTEGER, 3);
+  vAddCodeArg(EO_INTEGER, 5);
   vAddCode(EO_GREATERTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
   
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
-  vAddCodeArg(EO_INTEGER, 9);
+  vAddCodeArg(EO_INTEGER, 7);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
   
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)4);   // l_quantity
-  vAddCodeArg(EO_INTEGER, 4000);
+  vAddCodeArg(EO_INTEGER, 2400);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
   
@@ -348,8 +365,7 @@ void LogicUnit::vGenerateQuery6(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AGGREGATE SUBROUTINE
   vDefineLabel("SUBROUTINE_AGGREGATE:"_Stz);
-  vAddCode(EO_RSB_SRC_PRINT);
-  vAddCode(EO_RSB_DST_NEW);
+  //vAddCode(EO_RSB_SRC_PRINT);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)5);   // l_exetendedprice
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
   vAddCode(EO_MULTIPLY);                // *
@@ -360,7 +376,7 @@ void LogicUnit::vGenerateQuery6(void)
   vAddCode(EO_ADD);
   vAddCodeArg(EO_DEPOSITCOLI,(i8)0);
   
-  vAddCode(EO_RSB_DST_PRINT);
+  //vAddCode(EO_RSB_DST_PRINT);
   vAddCode(EO_RETURN);
 
   
@@ -730,22 +746,23 @@ i8 LogicUnit::iQuery(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   m_pPot = * m_xpPot;
-  m_pDstRowSlab = nullptr;
+  //m_pDstRowSlab = nullptr;
   
   m_aSrcRsb     = nullptr;
   m_pSrcRowSlab = pSrcRowSlab;
   m_nSrcRows    = m_pSrcRowSlab->nRows();
   
   // temp, needs fixing
-  pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
-  m_pPot->vStreamPix(&m_oStreamPix);
+  //pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+  //m_pPot->vStreamPix(&m_oStreamPix);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pPot         = nullptr;
-  m_pDstRowSlab  = nullptr;
+  //m_pDstRowSlab  = nullptr;
+  //m_aDstRsb      = m_pPot->aNewDstRsb(&m_pDstRowSlab);
   
   m_nSrcRows     = C_UNKNOWN;
   m_aSrcRsb      = nullptr;
