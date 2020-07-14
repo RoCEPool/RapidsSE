@@ -659,8 +659,8 @@ i8 LogicUnit::iFilter(RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pPot = * m_xpPot;
-  m_pDstRowSlab = nullptr;
+//  m_pPot = * m_xpPot;
+//  m_pDstRowSlab = nullptr;
 
 //  m_aSrcRsb     = nullptr;
 //  m_pSrcRowSlab = pSrcRowSlab;
@@ -691,12 +691,12 @@ i8 LogicUnit::iProject(RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pPot = * m_xpPot;
-  m_pDstRowSlab = nullptr;
-  
-  m_aSrcRsb     = nullptr;
-  m_pSrcRowSlab = pSrcRowSlab;
-  m_nSrcRows    = m_pSrcRowSlab->nRows();
+//  m_pPot = * m_xpPot;
+//  m_pDstRowSlab = nullptr;
+//  
+//  m_aSrcRsb     = nullptr;
+//  m_pSrcRowSlab = pSrcRowSlab;
+//  m_nSrcRows    = m_pSrcRowSlab->nRows();
 
   
 //  if (! m_bPixInited) {
