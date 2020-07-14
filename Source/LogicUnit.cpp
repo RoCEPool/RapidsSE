@@ -708,16 +708,7 @@ i8 LogicUnit::iTransform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pPot = nullptr;
-  m_pDstRowSlab = nullptr;
-
-  m_nSrcRows     = C_UNKNOWN;
-  m_aSrcRsb      = nullptr;
-  m_pSrcRowSlab  = nullptr;
 
   return iResult;
 }
