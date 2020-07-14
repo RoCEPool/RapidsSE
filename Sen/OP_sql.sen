@@ -112,7 +112,7 @@
     1003 of
       queryNo "QUERY %v" .printf
       //1003 LogicUnit[].genCode
-      "ss pi bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ft ret"
+      "1 tr ss pi bs 0 tr L GET gs jf END nd = j GET L END ft ret"
       LogicUnit[].source!
       LogicUnit[].compile assert
 
@@ -158,6 +158,8 @@
     endof
 
     1003 of
+
+      "--------------------------- 1003 RSBBUFFER ---------------------------" .
       Operand[].pipeIn
       LogicUnit[].transform
       Operand[].delete

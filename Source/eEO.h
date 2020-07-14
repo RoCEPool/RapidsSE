@@ -122,6 +122,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_RETURN,           // return from subroutine and
 
   // misc
+  /*    */ EO_TRACE,            // set trace
   /*    */ EO_NOOP,             // no op
   
   /*    */ EO_ENUMS
@@ -194,6 +195,7 @@ static Stz* aEO[]
   /*    */ "EO_PAY_STORE_COL"_Stz,
   
   // pushes
+  /*    */ "EO_DATE"_Stz,
   /*    */ "EO_INTEGER"_Stz,
   /*    */ "EO_PUSHNULL"_Stz,
   /*    */ "EO_PUSH0"_Stz,
@@ -245,6 +247,7 @@ static Stz* aEO[]
   /*    */ "EO_RETURN"_Stz,
 
   // misc
+  /*    */ "EO_TRACE"_Stz,
   /*    */ "EO_NOOP"_Stz,
 
   /*    */ "ENUMS"_Stz

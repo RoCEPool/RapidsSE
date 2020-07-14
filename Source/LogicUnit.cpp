@@ -267,6 +267,7 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_RETURN
 
   // misc
+  { EA_NONE,  0 },  // EO_TRACE
   { EA_NONE,  0 },  // EO_NOOP
 
   // -- end --
@@ -1072,6 +1073,10 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("ret"_Stz)) { vAddCode(EO_RETURN); continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // misc
+    if (pTkn->bSame("tr"_Stz)) { vAddCode(EO_TRACE); continue; }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 //    if (pTkn->bIsName()) {
 //      vAddCode(EO_PUSHCOLI;
 //      i8 iColVec;
@@ -1254,25 +1259,25 @@ void LogicUnit::vDumpCode(eEO eCode, i8& i_Code)
 
 #if 1
 
-  #define dCC3(eCode,iA,iB,iC) \
+  #define dLU3(eCode,iA,iB,iC) \
     if (bTrace) \
       vTrace("%lld : %12s %lld %lld %lld\n"_Stz,\
              nDifference(m_eaCode,aeCode-1),\
              aEO[eCode],iA,iB,iC);
 
-  #define dCC2(eCode,iA,iB) \
+  #define dLU2(eCode,iA,iB) \
     if (bTrace) \
       vTrace("%lld : %12s %lld %lld\n"_Stz,\
              nDifference(m_eaCode,aeCode-1),\
              aEO[eCode],iA,iB);
 
-  #define dCC1(eCode,iA) \
+  #define dLU1(eCode,iA) \
     if (bTrace) \
       vTrace("%lld : %12s %lld\n"_Stz,\
              nDifference(m_eaCode,aeCode-1),\
              aEO[eCode],iA);
 
-  #define dCC0(eCode) \
+  #define dLU0(eCode) \
     if (bTrace) \
       vTrace("%lld : %12s\n"_Stz,\
              nDifference(m_eaCode,aeCode-1),\
@@ -1280,10 +1285,10 @@ void LogicUnit::vDumpCode(eEO eCode, i8& i_Code)
 
 #else
 
-  #define dCC3(eCode,iA,iB,iC)
-  #define dCC2(eCode,iA,iB)
-  #define dCC1(eCode,iA)
-  #define dCC0(eCode)
+  #define dLU3(eCode,iA,iB,iC)
+  #define dLU2(eCode,iA,iB)
+  #define dLU1(eCode,iA)
+  #define dLU0(eCode)
 
 #endif
 
@@ -1332,7 +1337,7 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA + iTopB;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1340,7 +1345,7 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA / iTopB;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1348,7 +1353,7 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA % iTopB;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1356,14 +1361,14 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA * iTopB;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
       case EO_NEGATE: // negate the top value
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
-        dCC2(eCode,iTopA,iRes);
+        dLU2(eCode,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1371,7 +1376,7 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA - iTopB;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
 
@@ -1379,14 +1384,14 @@ i8 LogicUnit::iCompute(void)
       // branch operators
       case EO_JMP: // jump to location
         iArg = * (i8*)aeCode;
-        dCC1(eCode,iArg);
+        dLU1(eCode,iArg);
         aeCode += 8;
         aeCode = & m_eaCode[iArg];
         break;
         
       case EO_JMPFALSE: // pop top and jump to location if false
         iArg = * (i8*)aeCode;
-        dCC1(eCode,iArg);
+        dLU1(eCode,iArg);
         aeCode += 8;
         iTopA = *(aiDstk--);
         if (! iTopA)
@@ -1395,7 +1400,7 @@ i8 LogicUnit::iCompute(void)
         
       case EO_JMPTRUE: // pop top and jump to location if true
         iArg = * (i8*)aeCode;
-        dCC1(eCode,iArg);
+        dLU1(eCode,iArg);
         aeCode += 8;
         iTopA = *(aiDstk--);
         if (iTopA)
@@ -1406,7 +1411,7 @@ i8 LogicUnit::iCompute(void)
       // entry
       case EO_ENT_CREATEPAY: // create a payload in entwrk
         iArg = * (i8*)aeCode;
-        dCC1(eCode,iArg);
+        dLU1(eCode,iArg);
         aeCode += 8;
         m_oEntWrk.vPayload(true);
         m_oEntWrk.vPayloadBytes(iArg);
@@ -1414,7 +1419,7 @@ i8 LogicUnit::iCompute(void)
         
       case EO_ENT_INSERT: // insert an entry into the indexTree
       {
-        dCC0(eCode);
+        dLU0(eCode);
         SP_Ent spEnt;
         vTrace("Inserting entry"_Stz);
         vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
@@ -1427,7 +1432,7 @@ i8 LogicUnit::iCompute(void)
       case EO_ENT_INSERTPAY: NEVER_REACH; // not yet implemented
         
       case EO_ENT_NEXT: // move to next m_pEnt
-        dCC0(eCode);
+        dLU0(eCode);
         m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
         if (m_pEnt)
           *(++aiDstk) = 1;
@@ -1436,12 +1441,12 @@ i8 LogicUnit::iCompute(void)
         break;
         
       case EO_ENT_POSPRIOR: // position m_pEnt prior using m_oEntWrk.key
-        dCC0(eCode);
+        dLU0(eCode);
         m_pEnt = m_pIndexTree->aPositionPriorEntry(m_oEntWrk.aKey(), &m_pEntBuffer);
         break;
         
       case EO_ENT_PUSH: // push entry on the stack
-        dCC0(eCode);
+        dLU0(eCode);
         *(++aiDstk) = (i8)m_pEnt;
         break;
         
@@ -1454,40 +1459,40 @@ i8 LogicUnit::iCompute(void)
         vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
         vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pEnt,m_pIndexTree->pIndexDef()));
         iRes  = KC_SAME == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
-        dCC1(eCode,iRes);
+        dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
       }
         
       case EO_ENT_NOTEQUAL:
         iRes  = KC_SAME != Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
-        dCC1(eCode,iRes);
+        dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
         
       case EO_ENT_GREATEREQUAL:
         iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
         iRes = (KC_SAME == iCmp || KC_AFTER == iCmp ) ? 1 : 0;
-        dCC1(eCode,iRes);
+        dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
         
       case EO_ENT_GREATERTHAN:
         iRes  = KC_AFTER == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
-        dCC1(eCode,iRes);
+        dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
         
       case EO_ENT_LESSTHAN: // test if m_pEnt.key <  m_oEntWrk.key
         iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
-        dCC1(eCode,iRes);
+        dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
         
       case EO_ENT_LESSEQUAL: // test if m_pEnt.key <= m_oEntWrk.key
         iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
         iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
-        dCC1(eCode,iRes);
+        dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1496,7 +1501,7 @@ i8 LogicUnit::iCompute(void)
       case EO_ENTWRK_APPENDELMI: // append next element value (int)
       {
         iArg = * (i8*)aeCode;
-        dCC1(eCode,iArg);
+        dLU1(eCode,iArg);
         aeCode += 8;
         m_oEntWrk.vAppendElement(m_aSrcRsb, pIndexDef->pGetColumn(iArg));
         SP_Ent spEnt;
@@ -1507,13 +1512,14 @@ i8 LogicUnit::iCompute(void)
       case EO_ENTWRK_POPREF: NEVER_REACH; // not yet implemented
 
       case EO_ENTWRK_RESET: // reset m_oEntWrk
-        dCC0(eCode);
+        dLU0(eCode);
         m_oEntWrk.vReset();
         break;
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // finalise
       case EO_FIN_TRANSFORM: // standard finalise
+        dLU0(eCode);
         m_pPot        = nullptr;
         m_pDstRowSlab = nullptr;
 
@@ -1525,6 +1531,7 @@ i8 LogicUnit::iCompute(void)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // initialise
       case EO_INI_PIX_DEFOUT: // init m_pPot pix from stream def out
+        dLU0(eCode);
         if (! m_bPixInited) {
           m_bPixInited = true;
           m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
@@ -1534,12 +1541,14 @@ i8 LogicUnit::iCompute(void)
         
       case EO_INI_PIX_SLABIN: // init m_pPot pix from inp slab
       {
+        dLU0(eCode);
         StreamPix* aStreamPix = m_pSrcRowSlab->aStreamPix();
         m_pPot->vStreamPix(aStreamPix);
       }
         break;
         
       case EO_INI_SRC_SLAB: // init m_pSrcRowSlab etc
+        dLU0(eCode);
         m_pPot = * m_xpPot;
         m_pDstRowSlab = nullptr;
 
@@ -1554,6 +1563,7 @@ i8 LogicUnit::iCompute(void)
         RASSERT(0);
         
       case EO_IXT_TRV_BEGIN:    // begin linear traverse
+        dLU0(eCode);
         m_pEntBuffer = m_pIndexTree->pFirstH0Buffer();
         if (m_pEntBuffer) {
           m_pEnt = m_pEntBuffer->aLeadEntry();
@@ -1567,6 +1577,7 @@ i8 LogicUnit::iCompute(void)
         break;
         
       case EO_IXT_TRV_NEXT:     // move to next entry
+        dLU0(eCode);
         m_pEntBuffer = m_pEntBuffer->pNextBuffer();
         if (m_pEntBuffer) {
           m_pEnt = m_pEntBuffer->aLeadEntry();
@@ -1585,7 +1596,7 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = (iTopA && iTopB) ? 1 : 0;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1593,14 +1604,14 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = (iTopA || iTopB) ? 1 : 0;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
       case EO_NOT: // logical not top int, push result
         iTopA = *(aiDstk--);
         iRes  = (! iTopA) ? 1 : 0;
-        dCC2(eCode,iTopA,iRes);
+        dLU2(eCode,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1609,14 +1620,14 @@ i8 LogicUnit::iCompute(void)
       case EO_ISNULL: // test if top is null, push result
         iTopA = *(aiDstk--);
         iRes  = (C_DATUM_NULL == iTopA) ? 1 : 0;
-        dCC2(eCode,iTopA,iRes);
+        dLU2(eCode,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;
         
       case EO_ISNOTNULL: // test if top is not null, push result
         iTopA = *(aiDstk--);
         iRes  = (C_DATUM_NULL != iTopA) ? 1 : 0;
-        dCC2(eCode,iTopA,iRes);
+        dLU2(eCode,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1628,7 +1639,7 @@ i8 LogicUnit::iCompute(void)
         m_aPayRsb = (Rsb*)m_pEnt->ayPayload();
         i_Cell_ntv = m_aPayRsb->i_ColToCell_ntv(iArg);
         iRes = m_aPayRsb->iVal_ntv(i_Cell_ntv);
-        dCC2(eCode,iArg,iRes);
+        dLU2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1636,7 +1647,7 @@ i8 LogicUnit::iCompute(void)
         iArg = * (i8*)aeCode;
         aeCode += 8;
         iRes = *(aiDstk--);
-        dCC2(eCode,iArg,iRes);
+        dLU2(eCode,iArg,iRes);
         m_aPayRsb = (Rsb*)m_pEnt->ayPayload();
         i_Cell_ntv = m_aPayRsb->i_ColToCell_ntv(iArg);
         m_aPayRsb->vVal_ntv(i_Cell_ntv, iRes);
@@ -1647,7 +1658,7 @@ i8 LogicUnit::iCompute(void)
         
       case EO_DATE: // push date
         iArg = * (i8*)aeCode;
-        dCC1(eCode,iArg);
+        dLU1(eCode,iArg);
         aeCode += 8;
         // convert date string to an m8
         
@@ -1656,23 +1667,23 @@ i8 LogicUnit::iCompute(void)
         
       case EO_INTEGER: // push integer
         iArg = * (i8*)aeCode;
-        dCC1(eCode,iArg);
+        dLU1(eCode,iArg);
         aeCode += 8;
         *(++aiDstk) = iArg;
         break;
         
       case EO_PUSHNULL: // push null
-        dCC0(eCode);
+        dLU0(eCode);
         *(++aiDstk) = C_DATUM_NULL;
         break;
         
       case EO_PUSH0: // push integer 0
-        dCC0(eCode);
+        dLU0(eCode);
         *(++aiDstk) = 0;
         break;
         
       case EO_PUSH1: // push integer 1
-        dCC0(eCode);
+        dLU0(eCode);
         *(++aiDstk) = 1;
         break;
         
@@ -1685,39 +1696,39 @@ i8 LogicUnit::iCompute(void)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb / rowslab
       case EO_RSB_DST_COPYSRC: // copy src rsb to dst rsb
-        dCC0(eCode);
+        dLU0(eCode);
         m_pDstRowSlab->vPositionOnCell(0);
         m_aDstRsb = m_pDstRowSlab->aRsb();
         m_pDstRowSlab->vCopyRsb(m_aSrcRsb,bSrcHasPtnHash,bCopyPtnHash);
         break;
 
       case EO_RSB_DST_PRINT: // print dst rsb
-        dCC0(eCode);
+        dLU0(eCode);
         m_pDstRowSlab->vDumpRow(-1,m_aDstRsb);
         break;
 
       case EO_RSB_SRC_PRINT: // print src rsb
-        dCC0(eCode);
+        dLU0(eCode);
         m_pSrcRowSlab->vDumpRow(-1,m_aSrcRsb);
         break;
 
       case EO_RSB_ALT_PRINT: // print alt rsb
-        dCC0(eCode);
+        dLU0(eCode);
         m_pAltRowSlab->vDumpRow(-1,m_aAltRsb);
         break;
 
       case EO_RSB_DST_NEW: // create new destination rsb
-        dCC0(eCode);
+        dLU0(eCode);
         m_aDstRsb = m_pPot->aNewDstRsb(&m_pDstRowSlab);
         break;
 
       case EO_RSB_SRC_BEGIN: // begin src rsb traverse
-        dCC0(eCode);
+        dLU0(eCode);
         m_i_SrcRow = -1;
         break;
 
       case EO_RSB_SRC_NEXT: // move to next src rsb
-        dCC0(eCode);
+        dLU0(eCode);
         if (++m_i_SrcRow < m_nSrcRows) {
           m_aSrcRsb = m_pSrcRowSlab->aRsbAdr(m_i_SrcRow);
           *(++aiDstk) = 1;
@@ -1740,7 +1751,7 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA < iTopB;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1748,7 +1759,7 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA <= iTopB;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1756,7 +1767,7 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA == iTopB;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1764,7 +1775,7 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA != iTopB;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1772,7 +1783,7 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA >= iTopB;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1780,7 +1791,7 @@ i8 LogicUnit::iCompute(void)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA > iTopB;
-        dCC3(eCode,iTopA,iTopB,iRes);
+        dLU3(eCode,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1790,7 +1801,7 @@ i8 LogicUnit::iCompute(void)
         iArg = * (i8*)aeCode;
         aeCode += 8;
         iRes = *(aiDstk--);
-        dCC2(eCode,iArg,iRes);
+        dLU2(eCode,iArg,iRes);
         m_pDstRowSlab->vPositionOnCell(iArg);
         m_pDstRowSlab->vDeposit(iRes);
         break;
@@ -1801,7 +1812,7 @@ i8 LogicUnit::iCompute(void)
         m_aDstRsb = m_pDstRowSlab->aRsbAdr(0);
         i_Cell_ntv = m_aDstRsb->i_ColToCell_ntv(iArg);
         iRes = m_aDstRsb->iVal_ntv(i_Cell_ntv);
-        dCC2(eCode,iArg,iRes);
+        dLU2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1809,7 +1820,7 @@ i8 LogicUnit::iCompute(void)
         iArg = * (i8*)aeCode;
         aeCode += 8;
         iRes = m_aSrcRsb->iVal_ntv(m_aSrcRsb->i_ColToCell_ntv(iArg));
-        dCC2(eCode,iArg,iRes);
+        dLU2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
         break;
         
@@ -1820,31 +1831,31 @@ i8 LogicUnit::iCompute(void)
       case EO_INC: // increment top, push result
         iTopA = *aiDstk;
         iRes = iTopA + 1;
-        dCC2(eCode,iTopA,iRes);
+        dLU2(eCode,iTopA,iRes);
         *aiDstk = iRes;
         break;
 
       case EO_DEC: // decrement top, push result
         iTopA = *aiDstk;
         iRes = iTopA - 1;
-        dCC2(eCode,iTopA,iRes);
+        dLU2(eCode,iTopA,iRes);
         *aiDstk = iRes;
         break;
 
       case EO_DUP: // duplicate top
         iTopA = *aiDstk;
-        dCC1(eCode,iTopA);
+        dLU1(eCode,iTopA);
         *(++aiDstk) = iTopA;
         break;
 
       case EO_POP: // pop / discard top
         iTopA = *aiDstk;
-        dCC1(eCode,iTopA);
+        dLU1(eCode,iTopA);
         break;
 
       case EO_PRINT: // print top
         iTopA = *(aiDstk--);
-        dCC1(eCode,iTopA);
+        dLU1(eCode,iTopA);
         vTrace("%lld\n"_Stz,iTopA);
         break;
     
@@ -1852,14 +1863,14 @@ i8 LogicUnit::iCompute(void)
       // subroutine operators
       case EO_CALL: // call subroutine at location
         iArg = * (i8*)aeCode;
-        dCC1(eCode,iArg);
+        dLU1(eCode,iArg);
         aeCode += 8;
         * (aaeRstk++) = aeCode;
         aeCode = & m_eaCode[iArg];
         break;
 
       case EO_RETURN: // return from subroutine and
-        dCC0(eCode);
+        dLU0(eCode);
         if (aaeRstk == &m_aaReturnStack[0]) {
           iRes = *(aiDstk--);
           return iRes;
@@ -1869,8 +1880,13 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // misc
+      case EO_TRACE: // set trace
+        bTrace = (bool)*aiDstk;
+        dLU1(eCode,(i8)bTrace);
+        break;
+        
       case EO_NOOP: // no op
-        dCC0(eCode);
+        dLU0(eCode);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
