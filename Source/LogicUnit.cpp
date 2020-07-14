@@ -1069,7 +1069,8 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // entWrk
-    if (pTkn->bSame("wr"_Stz))   { vAddCode(EO_ENTWRK_RESET);  continue; }
+    if (pTkn->bSame("wr"_Stz))   { vAddCode(EO_ENTWRK_RESET);       continue; }
+    if (pTkn->bSame("ae"_Stz))   { vAddCode(EO_ENTWRK_APPENDELMI);  continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subroutine operators
