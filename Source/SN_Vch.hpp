@@ -19,7 +19,7 @@ namespace Datums
     ~SN_Vch(void) noexcept(false);
     
     Stz* sz(char** aacCrs,
-            Column* pCol,
+            i8 iLength,
             Format* pFmt,
             bool bSawLeadingEnclosed,
             i8& nChars_);

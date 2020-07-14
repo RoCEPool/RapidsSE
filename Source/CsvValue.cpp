@@ -47,7 +47,7 @@ bool CsvValue::bToBcd(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
   SN_Bcd snBcd;
   
   try {
-    pDatum->vBcd(snBcd.i(aazCrs,pCol,pFmt));
+    pDatum->vBcd(snBcd.i(aazCrs,pCol->iColumnLength(), pCol->iColumnScale(),pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -201,7 +201,7 @@ bool CsvValue::bToVch(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
   try {
     
     i8 nChars = 0;
-    * pDatum = snVch.sz(aazCrs,pCol,pFmt,bSawEnclosedLeading,nChars);
+    * pDatum = snVch.sz(aazCrs,pCol->iColumnLength(),pFmt,bSawEnclosedLeading,nChars);
 
     //pDatum->vStzDump();
 

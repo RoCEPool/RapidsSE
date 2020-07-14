@@ -506,7 +506,7 @@ namespace Load
     Bcd xBcd;
     SN_Bcd snBcd;
 
-    xBcd = snBcd.i(&m_acChr,m_pCol,m_pFmt);
+    xBcd = snBcd.i(&m_acChr,m_pCol->iColumnLength(), m_pCol->iColumnScale(),m_pFmt);
   
     m_pRowSlab->vDeposit(xBcd);
     m_oDatum.vBcd(xBcd);
@@ -813,7 +813,8 @@ namespace Load
     i8 nChars = 0;
     bool bSawEnclosedLeading = CsvValue::bIsEnclosedString(&m_acChr,m_pFmt);
 
-    m_oDatum = snVch.sz(&m_acChr,m_pCol,m_pFmt,bSawEnclosedLeading,nChars);
+    m_oDatum = snVch.sz(&m_acChr,m_pCol->iColumnLength(),
+                        m_pFmt,bSawEnclosedLeading,nChars);
   
     char* szStr = m_pRowSlab->azDepositString_begin();
     StrLib::vCopy(szStr,m_oDatum.azChar());

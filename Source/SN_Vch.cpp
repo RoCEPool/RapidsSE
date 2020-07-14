@@ -32,7 +32,7 @@ SN_Vch::~SN_Vch(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SN_Vch::sz(char** aacCrs, Column* pCol, Format* pFmt,
+Stz* SN_Vch::sz(char** aacCrs, i8 iLength, Format* pFmt,
                bool bSawLeadingEnclosed,
                i8& nChars_)
 {
@@ -40,7 +40,7 @@ Stz* SN_Vch::sz(char** aacCrs, Column* pCol, Format* pFmt,
   
   if ( ! StrLib::bExtractVarchar(aacCrs,
                                  m_caVch,
-                                 pCol->iColumnLength(),
+                                 iLength,
                                  bSawLeadingEnclosed,
                                  pFmt->m_cEnclosedBy_Leading,
                                  pFmt->m_cEnclosedBy_Trailing,

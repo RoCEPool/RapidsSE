@@ -32,12 +32,12 @@ SN_Bcd::~SN_Bcd(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 SN_Bcd::i(char** aacCrs, Column* pCol, Format* pFmt)
+i8 SN_Bcd::i(char** aacCrs, i8 iLength, i8 iScale, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNBCD);
   
   if ( ! StrLib::bExtractDecimal(aacCrs,m_wDtm.m_wBcd.m_iAsI8,
-                                 pCol->iColumnLength(),pCol->iColumnScale()) )
+                                 iLength,iScale) )
     THROW_USER("StrLib::bExtractDecimal"_Stz);
   
   return m_wDtm;
