@@ -313,9 +313,6 @@ void LogicUnit::vGenerateQuery6(void)
   
   // init the code
   m_i_Code = 0;
-  
-  // create a dst row
-  //vAddCode(EO_RSB_DST_NEW);
 
   // begin RSB traversal
   vAddCode(EO_RSB_SRC_BEGIN);
@@ -326,8 +323,15 @@ void LogicUnit::vGenerateQuery6(void)
   vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
   
   // call the filter subroutine
-  vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
-  vAddCodeLabel(EO_JMPFALSE, "NEXT_RSB_SRC:"_Stz);
+  //vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
+  //vAddCodeLabel(EO_JMPFALSE, "NEXT_RSB_SRC:"_Stz);
+  
+  
+  // create a dst row
+  //vAddCode(EO_RSB_DST_NEW);
+  //vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);   // l_shipdate
+  //vAddCodeArg(EO_DEPOSITCOLI, (i8)0);   // l_shipdate
+  //vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
   // call the aggregate subroutine
   vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
@@ -340,8 +344,7 @@ void LogicUnit::vGenerateQuery6(void)
   // FILTER SUBROUTINE
   vDefineLabel("SUBROUTINE_FILTER:"_Stz);
 
-  vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
-  
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate  
   vAddCodeArg(EO_DATE, iDateLower);
   vAddCode(EO_GREATEREQUAL);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
@@ -353,19 +356,19 @@ void LogicUnit::vGenerateQuery6(void)
 
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
   vAddCodeArg(EO_INTEGER, 5);
-  vAddCode(EO_GREATERTHAN);
+  vAddCode(EO_GREATEREQUAL);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
   
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
   vAddCodeArg(EO_INTEGER, 7);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
-  
+
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)4);   // l_quantity
   vAddCodeArg(EO_INTEGER, 2400);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
-  
+
   // return true
   vAddCode(EO_PUSH1);
   vAddCodeLabel(EO_JMP,"RETURN:"_Stz);

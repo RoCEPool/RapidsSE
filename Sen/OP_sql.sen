@@ -31,12 +31,13 @@
 
     6 of
       queryNo "QUERY %v" .printf
-      LogicUnit[].exprQuery6
+      6 LogicUnit[].genCode
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     1001 of
+      // FILTER
       queryNo "QUERY %v" .printf
 
       "ss pi bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ret"
@@ -46,6 +47,7 @@
     endof
 
     1002 of
+      // PROJECT
       queryNo "QUERY %v" .printf
 
       "ss po bs L GET gs jf END nd .s = @ 3 10 * ! 3 .d j GET L END ret"
