@@ -45,6 +45,7 @@ enum eEO : i1 // expression operators
   
   // initialise
   /*    */ EO_INI_PIX_DEFOUT,   // init m_pPot pix from stream def out
+  /*    */ EO_INI_PIX_SLABIN,   // init m_pPot pix from input slab
   /*    */ EO_INI_SRC_SLAB,     // init m_pSrcRowSlab etc
 
   // index tree
@@ -164,6 +165,7 @@ static Stz* aEO[]
 
   // initialise
   /*    */ "EO_INI_PIX_DEFOUT"_Stz,
+  /*    */ "EO_INI_PIX_SLABIN"_Stz,
   /*    */ "EO_INI_SRC_SLAB"_Stz,
 
   // index tree

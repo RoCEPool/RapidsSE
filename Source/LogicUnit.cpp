@@ -190,6 +190,7 @@ EoArg EoArgs[]
 
   // initiialise
   { EA_NONE,  0 },  // EO_INI_PIX_DEFOUT
+  { EA_NONE,  0 },  // EO_INI_PIX_SLABIN
   { EA_NONE,  0 },  // EO_INI_SRC_SLAB
   
   // index tree
@@ -666,8 +667,8 @@ i8 LogicUnit::iFilter(RowSlab* pSrcRowSlab)
   m_nSrcRows    = m_pSrcRowSlab->nRows();
 
   // temp, needs fixing
-  StreamPix* aStreamPix = pSrcRowSlab->aStreamPix();
-  m_pPot->vStreamPix(aStreamPix);
+//  StreamPix* aStreamPix = pSrcRowSlab->aStreamPix();
+//  m_pPot->vStreamPix(aStreamPix);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();
@@ -1063,6 +1064,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // initialise
     if (pTkn->bSame("po"_Stz))   { vAddCode(EO_INI_PIX_DEFOUT);   continue; }
+    if (pTkn->bSame("pi"_Stz))   { vAddCode(EO_INI_PIX_SLABIN);   continue; }
 
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1517,6 +1519,13 @@ i8 LogicUnit::iCompute(void)
           m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
           m_pPot->vStreamPix(&m_oStreamPix);
         }
+        break;
+        
+      case EO_INI_PIX_SLABIN: // init m_pPot pix from inp slab
+      {
+        StreamPix* aStreamPix = m_pSrcRowSlab->aStreamPix();
+        m_pPot->vStreamPix(aStreamPix);
+      }
         break;
         
       case EO_INI_SRC_SLAB: NEVER_REACH; // not yet implemented

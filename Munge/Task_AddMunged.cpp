@@ -13560,7 +13560,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  //\"@ 0 2 %\" LogicUnit[].source!\n"
     "\n"
-    "  \"bs L GET gs jf END @ 0 2 % jf GET nd .s = .d j GET L END ret\" LogicUnit[].source!\n"
+    "  \"pi bs L GET gs jf END @ 0 2 % jf GET nd .s = .d j GET L END ret\" LogicUnit[].source!\n"
     "\n"
     "  LogicUnit[].compile assert\n"
     "\n"
