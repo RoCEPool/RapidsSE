@@ -905,6 +905,7 @@ public:
   void vLogicUnitFilter(void);
   void vLogicUnitProject(void);
   void vLogicUnitQuery(void);
+  void vLogicUnitTransform(void);
 
   void vLogicUnitExprQuery6(void);
 

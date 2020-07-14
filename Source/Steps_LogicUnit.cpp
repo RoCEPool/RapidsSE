@@ -28,7 +28,8 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].filter"_Stz,     &Step::vLogicUnitFilter);
   vAddStep("LogicUnit[].project"_Stz,    &Step::vLogicUnitProject);
   vAddStep("LogicUnit[].query"_Stz,      &Step::vLogicUnitQuery);
-  
+  vAddStep("LogicUnit[].transform"_Stz,  &Step::vLogicUnitTransform);
+
   // TPCH Queries
   vAddStep("LogicUnit[].exprQuery6"_Stz,    &Step::vLogicUnitExprQuery6);
   
@@ -225,6 +226,19 @@ void Step::vLogicUnitQuery(void)
   StreamDef* pStreamDefOut = _pStreamDef(* m_pLogicUnit->m_xpStreamDefOut);
   
   i8 bCopy = m_pLogicUnit->iQuery(pRsbBuffer->pRowSlab(), pStreamDefOut);
+  
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].transform -- transform                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitTransform(void)
+{
+  ENTRY();
+  
+  i8 bResult = m_pLogicUnit->iTransform();
   
   EXIT();
 }

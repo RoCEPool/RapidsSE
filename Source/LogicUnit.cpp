@@ -188,6 +188,11 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_ENTWRK_POPREF
   { EA_NONE,  0 },  // EO_ENTWRK_RESET
 
+  // initiialise
+  { EA_NONE,  0 },  // EO_INI_PIX_DEFOUT
+  { EA_NONE,  0 },  // EO_INI_PIX_SLABIN
+  { EA_NONE,  0 },  // EO_INI_SRC_SLAB
+  
   // index tree
   { EA_NONE,  0 },  // EO_IXT_INS_ENT
   { EA_NONE,  0 },  // EO_IXT_TRV_BEGIN
@@ -655,16 +660,16 @@ i8 LogicUnit::iFilter(RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pPot = * m_xpPot;
-  m_pDstRowSlab = nullptr;
+//  m_pPot = * m_xpPot;
+//  m_pDstRowSlab = nullptr;
 
-  m_aSrcRsb     = nullptr;
-  m_pSrcRowSlab = pSrcRowSlab;
-  m_nSrcRows    = m_pSrcRowSlab->nRows();
+//  m_aSrcRsb     = nullptr;
+//  m_pSrcRowSlab = pSrcRowSlab;
+//  m_nSrcRows    = m_pSrcRowSlab->nRows();
 
   // temp, needs fixing
-  StreamPix* aStreamPix = pSrcRowSlab->aStreamPix();
-  m_pPot->vStreamPix(aStreamPix);
+//  StreamPix* aStreamPix = pSrcRowSlab->aStreamPix();
+//  m_pPot->vStreamPix(aStreamPix);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();
@@ -687,19 +692,19 @@ i8 LogicUnit::iProject(RowSlab* pSrcRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pPot = * m_xpPot;
-  m_pDstRowSlab = nullptr;
-  
-  m_aSrcRsb     = nullptr;
-  m_pSrcRowSlab = pSrcRowSlab;
-  m_nSrcRows    = m_pSrcRowSlab->nRows();
+//  m_pPot = * m_xpPot;
+//  m_pDstRowSlab = nullptr;
+//  
+//  m_aSrcRsb     = nullptr;
+//  m_pSrcRowSlab = pSrcRowSlab;
+//  m_nSrcRows    = m_pSrcRowSlab->nRows();
 
   
-  if (! m_bPixInited) {
-    m_bPixInited = true;
-    m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
-    m_pPot->vStreamPix(&m_oStreamPix);
-  }
+//  if (! m_bPixInited) {
+//    m_bPixInited = true;
+//    m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+//    m_pPot->vStreamPix(&m_oStreamPix);
+//  }
 
   
   
@@ -771,6 +776,26 @@ i8 LogicUnit::iJoin(RowSlab* pDstRowSlab,
   return iResult;
 }
 
+/*----------------------------------------------------------------------------*/
+/* transform compute                                                          */
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::iTransform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  i8 iResult = iCompute();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pPot = nullptr;
+  m_pDstRowSlab = nullptr;
+
+  m_nSrcRows     = C_UNKNOWN;
+  m_aSrcRsb      = nullptr;
+  m_pSrcRowSlab  = nullptr;
+
+  return iResult;
+}
 
 /*----------------------------------------------------------------------------*/
 /* -- private ----------------------------------------------------------------*/
@@ -1057,6 +1082,13 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame(".s"_Stz))   { vAddCode(EO_RSB_SRC_PRINT); continue; }
     if (pTkn->bSame(".a"_Stz))   { vAddCode(EO_RSB_ALT_PRINT); continue; }
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // initialise
+    if (pTkn->bSame("po"_Stz))   { vAddCode(EO_INI_PIX_DEFOUT);   continue; }
+    if (pTkn->bSame("pi"_Stz))   { vAddCode(EO_INI_PIX_SLABIN);   continue; }
+    if (pTkn->bSame("ss"_Stz))   { vAddCode(EO_INI_SRC_SLAB);     continue; }
+
+    
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subroutine operators
     if (pTkn->bSame("ret"_Stz)) { vAddCode(EO_RETURN); continue; }
@@ -1501,6 +1533,32 @@ i8 LogicUnit::iCompute(void)
         m_oEntWrk.vReset();
         break;
       
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // initialise
+      case EO_INI_PIX_DEFOUT: // init m_pPot pix from stream def out
+        if (! m_bPixInited) {
+          m_bPixInited = true;
+          m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+          m_pPot->vStreamPix(&m_oStreamPix);
+        }
+        break;
+        
+      case EO_INI_PIX_SLABIN: // init m_pPot pix from inp slab
+      {
+        StreamPix* aStreamPix = m_pSrcRowSlab->aStreamPix();
+        m_pPot->vStreamPix(aStreamPix);
+      }
+        break;
+        
+      case EO_INI_SRC_SLAB: // init m_pSrcRowSlab etc
+        m_pPot = * m_xpPot;
+        m_pDstRowSlab = nullptr;
+
+        m_aSrcRsb     = nullptr;
+        m_pSrcRowSlab = _pRsbBuffer(* m_xpOperandA)->pRowSlab();
+        m_nSrcRows    = m_pSrcRowSlab->nRows();
+        break;
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
       case EO_IXT_INS_ENT:      // insert ent
