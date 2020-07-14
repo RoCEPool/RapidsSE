@@ -43,6 +43,9 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   
+  // finalise
+  /*    */ EO_FIN_TRANSFORM,    // standard finalise
+
   // initialise
   /*    */ EO_INI_PIX_DEFOUT,   // init m_pPot pix from stream def out
   /*    */ EO_INI_PIX_SLABIN,   // init m_pPot pix from input slab
@@ -163,6 +166,9 @@ static Stz* aEO[]
   /*    */ "EO_ENTWRK_POPOFS"_Stz,
   /*    */ "EO_ENTWRK_POPREF"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
+
+  // finalise
+  /*    */ "EO_FIN_TRANSFORM"_Stz,
 
   // initialise
   /*    */ "EO_INI_PIX_DEFOUT"_Stz,

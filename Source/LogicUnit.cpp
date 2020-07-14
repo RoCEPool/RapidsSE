@@ -188,7 +188,10 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_ENTWRK_POPREF
   { EA_NONE,  0 },  // EO_ENTWRK_RESET
 
-  // initiialise
+  // finalise
+  { EA_NONE,  0 },  // EO_FIN_TRANSFORM
+  
+  // initialise
   { EA_NONE,  0 },  // EO_INI_PIX_DEFOUT
   { EA_NONE,  0 },  // EO_INI_PIX_SLABIN
   { EA_NONE,  0 },  // EO_INI_SRC_SLAB
@@ -1006,6 +1009,10 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // initialise
+    if (pTkn->bSame("ft"_Stz))   { vAddCode(EO_FIN_TRANSFORM);    continue; }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // initialise
     if (pTkn->bSame("po"_Stz))   { vAddCode(EO_INI_PIX_DEFOUT);   continue; }
     if (pTkn->bSame("pi"_Stz))   { vAddCode(EO_INI_PIX_SLABIN);   continue; }
     if (pTkn->bSame("ss"_Stz))   { vAddCode(EO_INI_SRC_SLAB);     continue; }
@@ -1455,6 +1462,17 @@ i8 LogicUnit::iCompute(void)
         m_oEntWrk.vReset();
         break;
       
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // finalise
+      case EO_FIN_TRANSFORM: // standard finalise
+        m_pPot        = nullptr;
+        m_pDstRowSlab = nullptr;
+
+        m_nSrcRows    = C_UNKNOWN;
+        m_aSrcRsb     = nullptr;
+        m_pSrcRowSlab = nullptr;
+        break;
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // initialise
       case EO_INI_PIX_DEFOUT: // init m_pPot pix from stream def out
