@@ -8579,7 +8579,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "    1003 of\n"
     "      queryNo \"QUERY %v\" .printf\n"
-    "      LogicUnit[].test1003Sort\n"
+    "      1003 LogicUnit[].genCode\n"
     "    endof\n"
     "\n"
     "  endcase\n"

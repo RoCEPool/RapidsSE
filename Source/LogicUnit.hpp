@@ -164,6 +164,8 @@ namespace Expressions
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ..from Calculator
+
+    void vGenCode(i8 iTestNo);
   
     //! TEMP: TO GO
     void vGenerateQuery6(void);

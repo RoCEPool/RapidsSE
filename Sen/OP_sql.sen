@@ -56,7 +56,7 @@
 
     1003 of
       queryNo "QUERY %v" .printf
-      LogicUnit[].test1003Sort
+      1003 LogicUnit[].genCode
     endof
 
   endcase

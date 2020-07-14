@@ -889,6 +889,7 @@ public:
 
   // logic unit
   void vLogicUnitCompile(void);
+  void vLogicUnitGenCode(void);
   void vLogicUnitNewAgg(void);
   void vLogicUnitNewAggCpy(void);
   void vLogicUnitNewAggGby(void);
@@ -900,8 +901,6 @@ public:
   void vLogicUnitTransform(void);
 
   void vLogicUnitExprQuery6(void);
-
-  void vLogicUnitTest1003Sort(void);
 
   // machine
   void vMachineCoreCount(void);
