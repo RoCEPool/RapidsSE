@@ -32,10 +32,12 @@ void Step::vStreamDefOutAddColumn(void)
   m_pDataStack->vPopStr(sColNm,__func__);
 
   eCT eColType = (eCT)m_pDataStack->iPopInt(__func__);
-
+  i8 eColLength = (eCT)m_pDataStack->iPopInt(__func__);
+  i8 eColScale = (eCT)m_pDataStack->iPopInt(__func__);
+  
   StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
   
-  pStreamDefOut->vAddColumn(sColNm,eColType);
+  pStreamDefOut->vAddColumn(sColNm,eColType,eColLength,eColScale);
   
   EXIT();
 }

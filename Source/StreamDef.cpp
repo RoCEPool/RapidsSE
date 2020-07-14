@@ -182,6 +182,29 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a column to the stream def to the current def set                      */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  m_i_DefStart[m_nDefSets-1] = 0;
+  
+  //! ALKA come back to this
+  m_nDefColumns[m_nDefSets-1]++;
+  i8 i_DefCol = m_nDefColumns[m_nDefSets-1];
+  
+  m_xaColumn[i_DefCol].vColumnNo(m_nDefColumns[i_DefCol]);
+  m_xaColumn[i_DefCol].vColumnNm(sColumnNm);
+  m_xaColumn[i_DefCol].vColumnType(eColumnType);
+  m_xaColumn[i_DefCol].vColumnLength(iColumnLength);
+  m_xaColumn[i_DefCol].vColumnScale(iColumnScale);
+  m_xaColumn[i_DefCol].vDatum(Column::eDatum(eColumnType));
+  
+  m_nDefColumns[m_nDefSets-1]++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add all columns from given stream definition                               */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vAddColumns(StreamDef* pStreamDef)

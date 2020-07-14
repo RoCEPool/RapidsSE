@@ -519,6 +519,12 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
   
+  // C_MAX : MAX
+  /*  0 */ vAddConstant("C_MAX_BCD_PRECISION"_Stz, C_MAX_BCD_PRECISION);
+  /*  0 */ vAddConstant("C_MAX_FLT_PRECISION"_Stz, C_MAX_FLT_PRECISION);
+  /*  0 */ vAddConstant("C_MAX_INT_PRECISION"_Stz, C_MAX_INT_PRECISION);
+  /*  0 */ vAddConstant("C_MAX_VCH_PRECISION"_Stz, C_MAX_VCH_PRECISION);
+  
   // NS_ : node state
   /*  0 */ vAddConstant("NS_NONE"_Stz,      NS_NONE);
   /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    NS_ACTIVE);

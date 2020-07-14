@@ -57,7 +57,7 @@
   Pipein[].delete
 
   StreamDefOut[].new
-  CT_INTEGER "sum" StreamDefOut[].addColumn
+  0 C_MAX_INT_PRECISION CT_INTEGER "sum" StreamDefOut[].addColumn
 
   StreamDefOut[].duplicate to StreamDef[]
   StreamDef[].pipeout
