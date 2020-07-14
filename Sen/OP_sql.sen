@@ -81,7 +81,7 @@
 
     1001 of
       Operand[].pipeIn
-      LogicUnit[].filter
+      LogicUnit[].transform
       Operand[].delete
 
       Pot[].pipeoutAllCompleted

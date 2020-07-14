@@ -186,6 +186,8 @@ namespace Expressions
     i8   iJoin(RowSlab* pDstRowSlab,
                Rsb* aSrcRsb_left,  RowSlab* pSrcRowSlab_left,
                Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right);
+    i8   iTransform(void);
+
   
     Stz* szSource(void);
     void vSource(Stz* szSource);
