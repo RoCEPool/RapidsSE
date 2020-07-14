@@ -1067,14 +1067,17 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("pi"_Stz))   { vAddCode(EO_INI_PIX_SLABIN);   continue; }
     if (pTkn->bSame("ss"_Stz))   { vAddCode(EO_INI_SRC_SLAB);     continue; }
 
-    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // entWrk
+    if (pTkn->bSame("wr"_Stz))   { vAddCode(EO_ENTWRK_RESET);  continue; }
+
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subroutine operators
-    if (pTkn->bSame("ret"_Stz)) { vAddCode(EO_RETURN); continue; }
+    if (pTkn->bSame("ret"_Stz))  { vAddCode(EO_RETURN); continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // misc
-    if (pTkn->bSame("tr"_Stz)) { vAddCode(EO_TRACE); continue; }
+    if (pTkn->bSame("tr"_Stz))   { vAddCode(EO_TRACE); continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 //    if (pTkn->bIsName()) {
