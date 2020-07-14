@@ -96,7 +96,6 @@
 
       "ss pi bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ft ret"
       LogicUnit[].source!
-
       LogicUnit[].compile assert
     endof
 
@@ -104,15 +103,18 @@
       // PROJECT
       queryNo "QUERY %v" .printf
 
-      "ss po bs L GET gs jf END nd .s = @ 3 10 * ! 3 .d j GET L END ft ret"
+      //"ss po bs L GET gs jf END nd .s = @ 3 10 * ! 3 .d j GET L END ft ret"
+      "ss po bs L GET gs jf END nd = @ 3 10 * ! 3 j GET L END ft ret"
       LogicUnit[].source!
- 
       LogicUnit[].compile assert
     endof
 
     1003 of
       queryNo "QUERY %v" .printf
-      1003 LogicUnit[].genCode
+      //1003 LogicUnit[].genCode
+      "ss pi bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ft ret"
+      LogicUnit[].source!
+      LogicUnit[].compile assert
     endof
 
   endcase
@@ -148,6 +150,14 @@
     endof
 
     1002 of
+      Operand[].pipeIn
+      LogicUnit[].transform
+      Operand[].delete
+
+      Pot[].pipeoutAllCompleted
+    endof
+
+    1003 of
       Operand[].pipeIn
       LogicUnit[].transform
       Operand[].delete
@@ -240,6 +250,7 @@
     endof
 
     1003 of
+      StreamDef[].pipeout
     endof
 
   endcase
