@@ -129,7 +129,6 @@ assert::stack_0
         "OP_insDel.sen"               include
         "OP_insert.sen"               include
 
-        "OP_limit.sen"                include
         "OP_listFolders.sen"          include
         "OP_listCatalogs.sen"         include
         "OP_listColumns.sen"          include
@@ -172,7 +171,6 @@ assert::stack_0
         "OP_showcluster.sen"          include
         "OP_sink.sen"                 include
         "OP_snapshot.sen"             include
-        "OP_sort.sen"                 include
         "OP_space.sen"                include
         "OP_sql.sen"                  include
         "OP_start.sen"                include
