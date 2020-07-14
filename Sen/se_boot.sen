@@ -121,7 +121,6 @@ assert::stack_0
         "OP_exemplar.sen"             include
 
         "OP_fetch.sen"                include
-        "OP_filter.sen"               include
 
         "OP_genCsv.sen"               include
         "OP_gridSanity.sen"           include
@@ -151,7 +150,6 @@ assert::stack_0
         "OP_ping.sen"                 include
         "OP_print.sen"                include
         "OP_progress.sen"             include
-        "OP_project.sen"              include
         "OP_purge.sen"                include
         "OP_pwf.sen"                  include
         "OP_python.sen"               include
@@ -170,6 +168,8 @@ assert::stack_0
         "OP_send.sen"                 include
         "OP_showcluster.sen"          include
         "OP_sink.sen"                 include
+        "OP_sizeIndex.sen"            include
+        "OP_sizeTable.sen"            include
         "OP_snapshot.sen"             include
         "OP_space.sen"                include
         "OP_sql.sen"                  include
@@ -177,8 +177,6 @@ assert::stack_0
         "OP_stats.sen"                include
         "OP_status.sen"               include
         "OP_statWrite.sen"            include
-        "OP_sizeIndex.sen"            include
-        "OP_sizeTable.sen"            include
         "OP_supervisor.sen"           include
         "OP_syntaxIndex.sen"          include
         "OP_syntaxTable.sen"          include
@@ -199,7 +197,6 @@ assert::stack_0
         "OP_truncateIndex.sen"        include
         "OP_truncateTable.sen"        include
 
-        "OP_union.sen"                include
         "OP_unload.sen"               include
         "OP_upsert.sen"               include
 
