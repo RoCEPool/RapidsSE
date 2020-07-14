@@ -293,6 +293,19 @@ void LogicUnit::vGenCode(i8 iTestNo)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* generate code for super for given test                                     */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenCodeSuper(i8 iTestNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  switch (iTestNo) {
+    case    6: vGenerateQuerySuper6();   break;
+    default:
+      NEVER_REACH;
+  }
+}
 
 //! TEMP : TO GO
 
@@ -327,9 +340,8 @@ void LogicUnit::vGenerateQuery6(void)
   vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
   
   // call the filter subroutine
-  //vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
-  //vAddCodeLabel(EO_JMPFALSE, "NEXT_RSB_SRC:"_Stz);
-  
+  vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
+  vAddCodeLabel(EO_JMPFALSE, "NEXT_RSB_SRC:"_Stz);
   
   // create a dst row
   //vAddCode(EO_RSB_DST_NEW);
@@ -402,6 +414,48 @@ void LogicUnit::vGenerateQuery6(void)
   //vAddCode(EO_RSB_DST_PRINT);
   vAddCode(EO_RETURN);
 
+  
+  //vDumpCode1();
+  vDumpCode2();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate query6 super                                                      */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuerySuper6(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // init the code
+  m_i_Code = 0;
+  
+  // begin RSB traversal
+  vAddCode(EO_RSB_SRC_BEGIN);
+  
+  vDefineLabel("NEXT_RSB_SRC:"_Stz);
+  
+  vAddCode(EO_RSB_SRC_NEXT);
+  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  
+  // call the aggregate subroutine
+  vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
+  vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
+  
+  vDefineLabel("END_RSB_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // AGGREGATE SUBROUTINE
+  vDefineLabel("SUBROUTINE_AGGREGATE:"_Stz);
+  vAddCode(EO_RSB_SRC_PRINT);
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);
+  vAddCodeArg(EO_PUSHDSTCOLI,(i8)0);
+  vAddCode(EO_ADD);
+  vAddCodeArg(EO_DEPOSITCOLI,(i8)0);
+  
+  vAddCode(EO_RSB_DST_PRINT);
+  vAddCode(EO_RETURN);
+  
   
   //vDumpCode1();
   vDumpCode2();

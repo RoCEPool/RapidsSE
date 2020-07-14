@@ -166,9 +166,11 @@ namespace Expressions
     // ..from Calculator
 
     void vGenCode(i8 iTestNo);
+    void vGenCodeSuper(i8 iTestNo);
   
     //! TEMP: TO GO
     void vGenerateQuery6(void);
+    void vGenerateQuerySuper6(void);
     
     void vGenerateAgg(void);
     void vGenerateAggCpy(void);

@@ -1021,7 +1021,8 @@
     | stageC
 
   stage stageC on origin :
-    output
+    sqlSuper 6
+    | output
     | sink
     | stageA
 

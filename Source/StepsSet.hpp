@@ -890,6 +890,7 @@ public:
   // logic unit
   void vLogicUnitCompile(void);
   void vLogicUnitGenCode(void);
+  void vLogicUnitGenCodeSuper(void);
   void vLogicUnitNewAgg(void);
   void vLogicUnitNewAggCpy(void);
   void vLogicUnitNewAggGby(void);

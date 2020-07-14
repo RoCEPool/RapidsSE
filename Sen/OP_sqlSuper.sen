@@ -1,0 +1,178 @@
+/*============================================================================*/
+/* OP_sqlSuper.sen -- sql                                                     */
+/*============================================================================*/
+
+" OP_sql.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: sqlSuper_StartMarker \handler
+
+  0 locals| queryNo |
+
+  Pot[].new
+
+  //"@ 0 2 %" LogicUnit[].source!
+
+  <queryNo> >int to queryNo
+  queryNo case
+    1 of
+      queryNo "QUERY %v" .printf
+    endof
+
+    3 of
+      queryNo "QUERY %v" .printf
+    endof
+
+    4 of
+      queryNo "QUERY %v" .printf
+    endof
+
+    6 of
+      queryNo "SUPER QUERY %v" .printf
+      6 LogicUnit[].genCodeSuper
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    1001 of
+      // FILTER
+      queryNo "QUERY %v" .printf
+
+      "ss pi bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ft ret"
+      LogicUnit[].source!
+
+      LogicUnit[].compile assert
+    endof
+
+    1002 of
+      // PROJECT
+      queryNo "QUERY %v" .printf
+
+      "ss po bs L GET gs jf END nd .s = @ 3 10 * ! 3 .d j GET L END ft ret"
+      LogicUnit[].source!
+ 
+      LogicUnit[].compile assert
+    endof
+
+    1003 of
+      queryNo "QUERY %v" .printf
+      1003 LogicUnit[].genCode
+    endof
+
+  endcase
+
+  //LogicUnit[].compile assert
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                BEGIN */
+/*----------------------------------------------------------------------------*/
+: sqlSuper_PulseMarker \handler
+
+  ZK_PULSEDMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_RSBBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: sqlSuper_RsbBuffer \handler
+
+  <queryNo> >int locals| queryNo |
+
+  queryNo case
+
+    1001 of
+      Operand[].pipeIn
+      LogicUnit[].transform
+      Operand[].delete
+
+      Pot[].pipeoutAllCompleted
+    endof
+
+    1002 of
+      Operand[].pipeIn
+      LogicUnit[].transform
+      Operand[].delete
+
+      Pot[].pipeoutAllCompleted
+    endof
+
+    Operand[].pipeIn
+    LogicUnit[].query
+    Operand[].delete
+
+    Pot[].pipeoutAllCompleted
+
+  endcase
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: sqlSuper_EosMarker \handler
+
+  Pot[].pipeoutAllDangling
+
+  Pot[].delete
+
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: sqlSuper_StreamDef \handler
+
+  Pipein[] to StreamDefOut[]
+  nullptr to Pipein[]
+  StreamDefOut[].duplicate to StreamDef[]
+  StreamDef[].pipeout
+
+  StreamDefOut[] LogicUnit[].toStreamPix
+  Pot[].SetStreamPix
+  Pot[].newDstRsb
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* sql request                                                          SPAWN */
+/*----------------------------------------------------------------------------*/
+: sqlSuper_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: sqlSuper_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: sqlSuper_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: sqlSuper_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: sqlSuper_StartMarker ZK_STARTMARKER op[].handler!
+  find: sqlSuper_StreamDef   ZK_STREAMDEF   op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: sqlSuper :: sqlSuper <queryNo> ;
+
+: sqlSuper _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

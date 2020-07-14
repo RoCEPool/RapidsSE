@@ -13,6 +13,7 @@ void Step::vAddSteps_LogicUnit(void)
 {
   vAddStep("LogicUnit[].compile"_Stz,    &Step::vLogicUnitCompile);
   vAddStep("LogicUnit[].genCode"_Stz,    &Step::vLogicUnitGenCode);
+  vAddStep("LogicUnit[].genCodeSuper"_Stz, &Step::vLogicUnitGenCodeSuper);
   vAddStep("LogicUnit[].newAgg"_Stz,     &Step::vLogicUnitNewAgg);  //! TEMP : to go
   vAddStep("LogicUnit[].newAggCpy"_Stz,  &Step::vLogicUnitNewAggCpy);  //! TEMP : to go
   vAddStep("LogicUnit[].newAggGby"_Stz,  &Step::vLogicUnitNewAggGby);  //! TEMP : to go
@@ -58,6 +59,20 @@ void Step::vLogicUnitGenCode(void)
   i8 iTestNo = m_pDataStack->iPopInt(__func__);
       
   m_pLogicUnit->vGenCode(iTestNo);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genCodeSuper -- generate code for super for given test         */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenCodeSuper(void)
+{
+  ENTRY();
+  
+  i8 iTestNo = m_pDataStack->iPopInt(__func__);
+  
+  m_pLogicUnit->vGenCodeSuper(iTestNo);
   
   EXIT();
 }
