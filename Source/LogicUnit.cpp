@@ -307,17 +307,17 @@ void LogicUnit::vGenerateQuery6(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // FILTER SUBROUTINE
   vDefineLabel("SUBROUTINE_FILTER:"_Stz);
-  /*
+/*
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
-  //vAddCodeArg(EO_PUSHDATE, "1994-01-01"_Stz);
+  //vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
   vAddCode(EO_GREATEREQUAL);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
   
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
-  //vAddCodeArg(EO_PUSHDATE, "1995-01-01"_Stz);
+  //vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
-  */
+*/
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
   vAddCodeArg(EO_INTEGER, 3);
   vAddCode(EO_GREATERTHAN);
@@ -1655,6 +1655,16 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pushes
+        
+      case EO_DATE: // push date
+        iArg = * (i8*)aeCode;
+        dCC1(eCode,iArg);
+        aeCode += 8;
+        // convert date string to an m8
+        
+        *(++aiDstk) = iArg;
+        break;
+        
       case EO_INTEGER: // push integer
         iArg = * (i8*)aeCode;
         dCC1(eCode,iArg);

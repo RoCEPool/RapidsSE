@@ -32,7 +32,7 @@ SN_Bol::~SN_Bol(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 SN_Bol::i(char** aacCrs, Column* pCol, Format* pFmt)
+i8 SN_Bol::i(char** aacCrs, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNBOL);
   

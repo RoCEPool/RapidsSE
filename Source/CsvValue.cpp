@@ -64,7 +64,7 @@ bool CsvValue::bToBol(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
   SN_Bol snBol;
   
   try {
-    pDatum->vBol(snBol.i(aazCrs,pCol,pFmt));
+    pDatum->vBol(snBol.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -81,7 +81,7 @@ bool CsvValue::bToDte(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
   SN_Dte snDte;
   
   try {
-    pDatum->vDte(snDte.i(aazCrs,pCol,pFmt));
+    pDatum->vDte(snDte.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -98,7 +98,7 @@ bool CsvValue::bToFlt(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
   SN_Flt snFlt;
   
   try {
-    pDatum->vFlt(snFlt.d(aazCrs,pCol,pFmt));
+    pDatum->vFlt(snFlt.d(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -115,7 +115,7 @@ bool CsvValue::bToInt(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
   SN_Int snInt;
   
   try {
-    pDatum->vInt(snInt.i(aazCrs,pCol,pFmt));
+    pDatum->vInt(snInt.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -140,7 +140,7 @@ bool CsvValue::bToIvl(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
   SN_Ivl snIvl;
   
   try {
-    pDatum->vIvl(snIvl.i(aazCrs,pCol,pFmt));
+    pDatum->vIvl(snIvl.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -157,7 +157,7 @@ bool CsvValue::bToTme(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
   SN_Tme snTme;
   
   try {
-    pDatum->vTme(snTme.i(aazCrs,pCol,pFmt));
+    pDatum->vTme(snTme.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -174,7 +174,7 @@ bool CsvValue::bToTsp(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
   SN_Tsp snTsp;
   
   try {
-    pDatum->vTsp(snTsp.i(aazCrs,pCol,pFmt));
+    pDatum->vTsp(snTsp.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;

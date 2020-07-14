@@ -281,7 +281,7 @@ namespace Load
     Bol xBol;
     SN_Bol snBol;
 
-    xBol = snBol.i(&m_acChr,m_pCol,m_pFmt);
+    xBol = snBol.i(&m_acChr,m_pFmt);
   
     m_pRowSlab->vDeposit(xBol);
     m_oDatum.vBol(xBol);
@@ -299,7 +299,7 @@ namespace Load
     Dte xDte;
     SN_Dte snDte;
 
-    xDte = snDte.i(&m_acChr,m_pCol,m_pFmt);
+    xDte = snDte.i(&m_acChr,m_pFmt);
   
     m_pRowSlab->vDeposit(xDte);
     m_oDatum.vDte(xDte);
@@ -624,7 +624,7 @@ namespace Load
     Flt xFlt;
     SN_Flt snFlt;
 
-    xFlt = snFlt.d(&m_acChr,m_pCol,m_pFmt);
+    xFlt = snFlt.d(&m_acChr,m_pFmt);
   
     m_pRowSlab->vDeposit(xFlt.m_dFlt);
     m_oDatum.vFlt(xFlt);
@@ -672,7 +672,7 @@ namespace Load
 //           );
 //  }
   
-    xInt = snInt.i(&m_acChr,m_pCol,m_pFmt);
+    xInt = snInt.i(&m_acChr,m_pFmt);
   
     m_pRowSlab->vDeposit(xInt);
     m_oDatum.vInt(xInt);
@@ -757,7 +757,7 @@ namespace Load
     Ivl xIvl;
     SN_Ivl snIvl;
 
-    xIvl = snIvl.i(&m_acChr,m_pCol,m_pFmt);
+    xIvl = snIvl.i(&m_acChr,m_pFmt);
   
     m_pRowSlab->vDeposit(xIvl);
     m_oDatum.vIvl(xIvl);
@@ -775,7 +775,7 @@ namespace Load
     Tme xTme;
     SN_Tme snTme;
 
-    xTme = snTme.i(&m_acChr,m_pCol,m_pFmt);
+    xTme = snTme.i(&m_acChr,m_pFmt);
   
     m_pRowSlab->vDeposit(xTme);
     m_oDatum.vTme(xTme);
@@ -793,7 +793,7 @@ namespace Load
     Tsp xTsp;
     SN_Tsp snTsp;
 
-    xTsp = snTsp.i(&m_acChr,m_pCol,m_pFmt);
+    xTsp = snTsp.i(&m_acChr,m_pFmt);
   
     m_pRowSlab->vDeposit(xTsp);
     m_oDatum.vTsp(xTsp);
