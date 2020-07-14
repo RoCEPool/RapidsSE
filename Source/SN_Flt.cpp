@@ -32,7 +32,7 @@ SN_Flt::~SN_Flt(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-d8 SN_Flt::d(char** aacCrs, Column* pCol, Format* pFmt)
+d8 SN_Flt::d(char** aacCrs, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNFLT);
   

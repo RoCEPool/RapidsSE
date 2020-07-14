@@ -67,6 +67,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_PAY_STORE_COL,    // store a column of the entry payload
   
   // pushes
+  /*    */ EO_DATE,             // push date
   /*    */ EO_INTEGER,          // push integer
   /*    */ EO_PUSHNULL,         // push null
   /*    */ EO_PUSH0,            // push integer 0

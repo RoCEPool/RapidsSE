@@ -147,6 +147,8 @@
       StreamDefOut[].new
       5 StreamDef[].column@ to pColumn
 
+      pColumn column.scale@
+      pColumn column.length@
       pColumn column.type@
       "revenue"
       StreamDefOut[].addColumn

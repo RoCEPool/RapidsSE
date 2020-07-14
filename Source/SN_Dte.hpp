@@ -16,7 +16,7 @@ namespace Datums
     SN_Dte(void);
     ~SN_Dte(void) noexcept(false);
   
-    i8 i(char** aacCrs, Column* pCol, Format* pFmt);
+    i8 i(char** aacCrs, Format* pFmt);
   
     Footer* aFooter(void);
   };

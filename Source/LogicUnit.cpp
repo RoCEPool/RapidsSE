@@ -285,8 +285,6 @@ void LogicUnit::vGenerateQuery6(void)
   
   m_i_Code = 0;
   
-  vAddCode(EO_RSB_DST_NEW);
-  
   // begin RSB traversal
   vAddCode(EO_RSB_SRC_BEGIN);
 
@@ -296,8 +294,8 @@ void LogicUnit::vGenerateQuery6(void)
   vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
   
   // call the filter subroutine
-  //vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
-  //vAddCodeLabel(EO_JMPFALSE, "NEXT_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
+  vAddCodeLabel(EO_JMPFALSE, "NEXT_RSB_SRC:"_Stz);
   
   // call the aggregate subroutine
   vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
@@ -309,28 +307,29 @@ void LogicUnit::vGenerateQuery6(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // FILTER SUBROUTINE
   vDefineLabel("SUBROUTINE_FILTER:"_Stz);
+/*
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
-  //vAddCodeArg(EO_PUSHDATE, "1994-01-01"_Stz);
+  //vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
   vAddCode(EO_GREATEREQUAL);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
   
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
-  //vAddCodeArg(EO_PUSHDATE, "1995-01-01"_Stz);
+  //vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
-  
+*/
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
   vAddCodeArg(EO_INTEGER, 3);
   vAddCode(EO_GREATERTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
   
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
-  vAddCodeArg(EO_INTEGER, 5);
+  vAddCodeArg(EO_INTEGER, 9);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
   
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)4);   // l_quantity
-  vAddCodeArg(EO_INTEGER, 24);
+  vAddCodeArg(EO_INTEGER, 4000);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
   
@@ -349,10 +348,12 @@ void LogicUnit::vGenerateQuery6(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AGGREGATE SUBROUTINE
   vDefineLabel("SUBROUTINE_AGGREGATE:"_Stz);
+  vAddCode(EO_RSB_SRC_PRINT);
+  vAddCode(EO_RSB_DST_NEW);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)5);   // l_exetendedprice
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
   vAddCode(EO_MULTIPLY);                // *
-  vAddCode(EO_PUSH1);
+  vAddCodeArg(EO_INTEGER,100);
   vAddCode(EO_DIVIDE);
   
   vAddCodeArg(EO_PUSHDSTCOLI,(i8)0);
@@ -1658,6 +1659,16 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pushes
+        
+      case EO_DATE: // push date
+        iArg = * (i8*)aeCode;
+        dCC1(eCode,iArg);
+        aeCode += 8;
+        // convert date string to an m8
+        
+        *(++aiDstk) = iArg;
+        break;
+        
       case EO_INTEGER: // push integer
         iArg = * (i8*)aeCode;
         dCC1(eCode,iArg);

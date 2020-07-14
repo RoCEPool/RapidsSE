@@ -870,7 +870,7 @@ L_Boolean:
     Bol xBol;
     SN_Bol snBol;
   
-    xBol = snBol.i(&acCsvSrc,m_pCol,m_pFmt);
+    xBol = snBol.i(&acCsvSrc,m_pFmt);
     pRowSlab->vDeposit(xBol);
   }
   goto L_PostField;
@@ -889,7 +889,7 @@ L_Float:
     Flt xFlt;
     SN_Flt snFlt;
 
-    xFlt = snFlt.d(&acCsvSrc,m_pCol,m_pFmt);
+    xFlt = snFlt.d(&acCsvSrc,m_pFmt);
     pRowSlab->vDeposit(xFlt.m_dFlt);
   }
   goto L_PostField;
@@ -908,7 +908,7 @@ L_Interval:
     Ivl xIvl;
     SN_Ivl snIvl;
 
-    xIvl = snIvl.i(&acCsvSrc,m_pCol,m_pFmt);
+    xIvl = snIvl.i(&acCsvSrc,m_pFmt);
     pRowSlab->vDeposit(xIvl);
   }
   goto L_PostField;
@@ -927,7 +927,7 @@ L_Time:
     Tme xTme;
     SN_Tme snTme;
 
-    xTme = snTme.i(&acCsvSrc,m_pCol,m_pFmt);
+    xTme = snTme.i(&acCsvSrc,m_pFmt);
     pRowSlab->vDeposit(xTme);
   }
   goto L_PostField;
@@ -946,7 +946,7 @@ L_Timestamp:
     Tsp xTsp;
     SN_Tsp snTsp;
 
-    xTsp = snTsp.i(&acCsvSrc,m_pCol,m_pFmt);
+    xTsp = snTsp.i(&acCsvSrc,m_pFmt);
     pRowSlab->vDeposit(xTsp);
   }
   goto L_PostField;
