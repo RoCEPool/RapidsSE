@@ -662,9 +662,9 @@ i8 LogicUnit::iFilter(RowSlab* pSrcRowSlab)
   m_pPot = * m_xpPot;
   m_pDstRowSlab = nullptr;
 
-  m_aSrcRsb     = nullptr;
-  m_pSrcRowSlab = pSrcRowSlab;
-  m_nSrcRows    = m_pSrcRowSlab->nRows();
+//  m_aSrcRsb     = nullptr;
+//  m_pSrcRowSlab = pSrcRowSlab;
+//  m_nSrcRows    = m_pSrcRowSlab->nRows();
 
   // temp, needs fixing
 //  StreamPix* aStreamPix = pSrcRowSlab->aStreamPix();
@@ -1065,6 +1065,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     // initialise
     if (pTkn->bSame("po"_Stz))   { vAddCode(EO_INI_PIX_DEFOUT);   continue; }
     if (pTkn->bSame("pi"_Stz))   { vAddCode(EO_INI_PIX_SLABIN);   continue; }
+    if (pTkn->bSame("ss"_Stz))   { vAddCode(EO_INI_SRC_SLAB);     continue; }
 
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1528,7 +1529,14 @@ i8 LogicUnit::iCompute(void)
       }
         break;
         
-      case EO_INI_SRC_SLAB: NEVER_REACH; // not yet implemented
+      case EO_INI_SRC_SLAB: // init m_pSrcRowSlab etc
+        m_pPot = * m_xpPot;
+        m_pDstRowSlab = nullptr;
+
+        m_aSrcRsb     = nullptr;
+        m_pSrcRowSlab = _pRsbBuffer(* m_xpOperandA)->pRowSlab();
+        m_nSrcRows    = m_pSrcRowSlab->nRows();
+        break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators

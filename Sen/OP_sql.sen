@@ -40,7 +40,7 @@
       queryNo "QUERY %v" .printf
 
       //"bs L GET gs jf END @ 0 2 % jf GET nd .s = .d j GET L END ret"
-      "bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ret"
+      "ss pi bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ret"
       LogicUnit[].source!
 
       LogicUnit[].compile assert
