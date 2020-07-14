@@ -25,8 +25,6 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].handler!"_Stz,   &Step::vLogicUnitHandlerStore);
   
   vAddStep("LogicUnit[].aggregate"_Stz,  &Step::vLogicUnitAggregate);
-  vAddStep("LogicUnit[].filter"_Stz,     &Step::vLogicUnitFilter);
-  vAddStep("LogicUnit[].project"_Stz,    &Step::vLogicUnitProject);
   vAddStep("LogicUnit[].query"_Stz,      &Step::vLogicUnitQuery);
   vAddStep("LogicUnit[].transform"_Stz,  &Step::vLogicUnitTransform);
 
@@ -185,35 +183,6 @@ void Step::vLogicUnitAggregate(void)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].filter -- filter an rsb buffer                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitFilter(void)
-{
-  ENTRY();
-
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
-  
-  i8 bCopy = m_pLogicUnit->iFilter(pRsbBuffer->pRowSlab());
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].project -- project an rsb buffer                               */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitProject(void)
-{
-  ENTRY();
-
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
-  
-  i8 bCopy = m_pLogicUnit->iProject(pRsbBuffer->pRowSlab());
-
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* LogicUnit[].query -- query                                                 */

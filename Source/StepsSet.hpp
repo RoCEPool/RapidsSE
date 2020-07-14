@@ -896,8 +896,6 @@ public:
   void vLogicUnitSourceStore(void);
 
   void vLogicUnitAggregate(void);
-  void vLogicUnitFilter(void);
-  void vLogicUnitProject(void);
   void vLogicUnitQuery(void);
   void vLogicUnitTransform(void);
 
