@@ -188,7 +188,10 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_ENTWRK_POPREF
   { EA_NONE,  0 },  // EO_ENTWRK_RESET
 
-  // initiialise
+  // finalise
+  { EA_NONE,  0 },  // EO_FIN_TRANSFORM
+  
+  // initialise
   { EA_NONE,  0 },  // EO_INI_PIX_DEFOUT
   { EA_NONE,  0 },  // EO_INI_PIX_SLABIN
   { EA_NONE,  0 },  // EO_INI_SRC_SLAB
@@ -212,6 +215,7 @@ EoArg EoArgs[]
   { EA_INT,   8 },  // EO_PAY_STORE_COL
 
   // pushes
+  { EA_INT,   8 },  // EO_DATE
   { EA_INT,   8 },  // EO_INTEGER
   { EA_NONE,  0 },  // EO_PUSHNULL
   { EA_NONE,  0 },  // EO_PUSH0
@@ -708,16 +712,7 @@ i8 LogicUnit::iTransform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 iResult = iCompute();
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pPot = nullptr;
-  m_pDstRowSlab = nullptr;
-
-  m_nSrcRows     = C_UNKNOWN;
-  m_aSrcRsb      = nullptr;
-  m_pSrcRowSlab  = nullptr;
 
   return iResult;
 }
@@ -1007,6 +1002,10 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame(".s"_Stz))   { vAddCode(EO_RSB_SRC_PRINT); continue; }
     if (pTkn->bSame(".a"_Stz))   { vAddCode(EO_RSB_ALT_PRINT); continue; }
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // initialise
+    if (pTkn->bSame("ft"_Stz))   { vAddCode(EO_FIN_TRANSFORM);    continue; }
+    
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // initialise
     if (pTkn->bSame("po"_Stz))   { vAddCode(EO_INI_PIX_DEFOUT);   continue; }
@@ -1458,6 +1457,17 @@ i8 LogicUnit::iCompute(void)
         m_oEntWrk.vReset();
         break;
       
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // finalise
+      case EO_FIN_TRANSFORM: // standard finalise
+        m_pPot        = nullptr;
+        m_pDstRowSlab = nullptr;
+
+        m_nSrcRows    = C_UNKNOWN;
+        m_aSrcRsb     = nullptr;
+        m_pSrcRowSlab = nullptr;
+        break;
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // initialise
       case EO_INI_PIX_DEFOUT: // init m_pPot pix from stream def out

@@ -40,7 +40,7 @@
       // FILTER
       queryNo "QUERY %v" .printf
 
-      "ss pi bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ret"
+      "ss pi bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ft ret"
       LogicUnit[].source!
 
       LogicUnit[].compile assert
@@ -50,7 +50,7 @@
       // PROJECT
       queryNo "QUERY %v" .printf
 
-      "ss po bs L GET gs jf END nd .s = @ 3 10 * ! 3 .d j GET L END ret"
+      "ss po bs L GET gs jf END nd .s = @ 3 10 * ! 3 .d j GET L END ft ret"
       LogicUnit[].source!
  
       LogicUnit[].compile assert
