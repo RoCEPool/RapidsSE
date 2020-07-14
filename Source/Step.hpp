@@ -78,7 +78,6 @@ namespace Steps
     static void vAddSteps_JobGeneric(void);
     static void vAddSteps_JobPipeline(void);
     static void vAddSteps_JobRef(void);
-    static void vAddSteps_JoinRsb(void);
 
     static void vAddSteps_Loader(void);
     static void vAddSteps_Locals(void);

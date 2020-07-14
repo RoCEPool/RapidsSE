@@ -164,6 +164,8 @@ namespace Expressions
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ..from Calculator
+
+    void vGenCode(i8 iTestNo);
   
     //! TEMP: TO GO
     void vGenerateQuery6(void);
@@ -179,15 +181,8 @@ namespace Expressions
     bool bCompile(void);
     bool bCompile(TokenVec* pTknVec);
 
-    i8   iCalc(void);
-    i8   iFilter(RowSlab* pSrcRowSlab);
-    i8   iProject(RowSlab* pSrcRowSlab);
     i8   iQuery(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut);
-    i8   iJoin(RowSlab* pDstRowSlab,
-               Rsb* aSrcRsb_left,  RowSlab* pSrcRowSlab_left,
-               Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right);
     i8   iTransform(void);
-
   
     Stz* szSource(void);
     void vSource(Stz* szSource);

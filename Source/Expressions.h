@@ -15,7 +15,6 @@ namespace Expressions
 //------------------------------------------------------------------------------
 
 #include "AggregateRsb.hpp"
-#include "JoinRsb.hpp"
 
 #include "LogicUnit.hpp"
 

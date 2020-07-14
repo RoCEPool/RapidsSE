@@ -274,6 +274,22 @@ EoArg EoArgs[]
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* generate code for given test                                               */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenCode(i8 iTestNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  switch (iTestNo) {
+    case    6: vGenerateQuery6();   break;
+    case 1003: vGenerateSort1003(); break;
+    default:
+      NEVER_REACH;
+  }
+}
+
+
 //! TEMP : TO GO
 
 /*----------------------------------------------------------------------------*/
@@ -650,95 +666,6 @@ bool LogicUnit::bCompile(TokenVec* pTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calc compute                                                               */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iCalc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  m_pDstRowSlab = nullptr;
-
-  m_aSrcRsb      = nullptr;
-  m_pSrcRowSlab  = nullptr;
-
-  m_aAltRsb     = nullptr;
-  m_pAltRowSlab = nullptr;
-  
-  i8 iResult = iCompute();
-  
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* filter compute                                                             */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iFilter(RowSlab* pSrcRowSlab)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-//  m_pPot = * m_xpPot;
-//  m_pDstRowSlab = nullptr;
-
-//  m_aSrcRsb     = nullptr;
-//  m_pSrcRowSlab = pSrcRowSlab;
-//  m_nSrcRows    = m_pSrcRowSlab->nRows();
-
-  // temp, needs fixing
-//  StreamPix* aStreamPix = pSrcRowSlab->aStreamPix();
-//  m_pPot->vStreamPix(aStreamPix);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  i8 iResult = iCompute();
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pPot         = nullptr;
-  m_pDstRowSlab  = nullptr;
-
-  m_nSrcRows     = C_UNKNOWN;
-  m_aSrcRsb      = nullptr;
-  m_pSrcRowSlab  = nullptr;
-
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* project compute                                                            */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iProject(RowSlab* pSrcRowSlab)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-//  m_pPot = * m_xpPot;
-//  m_pDstRowSlab = nullptr;
-//  
-//  m_aSrcRsb     = nullptr;
-//  m_pSrcRowSlab = pSrcRowSlab;
-//  m_nSrcRows    = m_pSrcRowSlab->nRows();
-
-  
-//  if (! m_bPixInited) {
-//    m_bPixInited = true;
-//    m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
-//    m_pPot->vStreamPix(&m_oStreamPix);
-//  }
-
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  i8 iResult = iCompute();
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pPot = nullptr;
-  m_pDstRowSlab = nullptr;
-
-  m_nSrcRows     = C_UNKNOWN;
-  m_aSrcRsb      = nullptr;
-  m_pSrcRowSlab  = nullptr;
-
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
 /* filter compute                                                             */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iQuery(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
@@ -767,28 +694,6 @@ i8 LogicUnit::iQuery(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
   m_nSrcRows     = C_UNKNOWN;
   m_aSrcRsb      = nullptr;
   m_pSrcRowSlab  = nullptr;
-  
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* joint compute                                                              */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iJoin(RowSlab* pDstRowSlab,
-                     Rsb* aSrcRsb_left,  RowSlab* pSrcRowSlab_left,
-                     Rsb* aSrcRsb_right, RowSlab* pSrcRowSlab_right)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  m_pDstRowSlab = pDstRowSlab;
-
-  m_aSrcRsb      = aSrcRsb_left;
-  m_pSrcRowSlab  = pSrcRowSlab_left;
-
-  m_aAltRsb     = aSrcRsb_right;
-  m_pAltRowSlab = pSrcRowSlab_right;
-
-  i8 iResult = iCompute();
   
   return iResult;
 }

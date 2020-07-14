@@ -12,6 +12,7 @@ extern DebugFlags gxDebugFlags;;
 void Step::vAddSteps_LogicUnit(void)
 {
   vAddStep("LogicUnit[].compile"_Stz,    &Step::vLogicUnitCompile);
+  vAddStep("LogicUnit[].genCode"_Stz,    &Step::vLogicUnitGenCode);
   vAddStep("LogicUnit[].newAgg"_Stz,     &Step::vLogicUnitNewAgg);  //! TEMP : to go
   vAddStep("LogicUnit[].newAggCpy"_Stz,  &Step::vLogicUnitNewAggCpy);  //! TEMP : to go
   vAddStep("LogicUnit[].newAggGby"_Stz,  &Step::vLogicUnitNewAggGby);  //! TEMP : to go
@@ -25,17 +26,12 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].handler!"_Stz,   &Step::vLogicUnitHandlerStore);
   
   vAddStep("LogicUnit[].aggregate"_Stz,  &Step::vLogicUnitAggregate);
-  vAddStep("LogicUnit[].filter"_Stz,     &Step::vLogicUnitFilter);
-  vAddStep("LogicUnit[].project"_Stz,    &Step::vLogicUnitProject);
   vAddStep("LogicUnit[].query"_Stz,      &Step::vLogicUnitQuery);
   vAddStep("LogicUnit[].toStreamPix"_Stz,&Step::vLogicUnitToStreamPix);
   vAddStep("LogicUnit[].transform"_Stz,  &Step::vLogicUnitTransform);
 
   // TPCH Queries
   vAddStep("LogicUnit[].exprQuery6"_Stz,    &Step::vLogicUnitExprQuery6);
-  
-  // other tests
-  vAddStep("LogicUnit[].test1003Sort"_Stz,  &Step::vLogicUnitTest1003Sort);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,6 +45,20 @@ void Step::vLogicUnitCompile(void)
   
   m_pDataStack->vPushInt((i8)b);
     
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genCode -- generate code for given test                        */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenCode(void)
+{
+  ENTRY();
+  
+  i8 iTestNo = m_pDataStack->iPopInt(__func__);
+      
+  m_pLogicUnit->vGenCode(iTestNo);
+  
   EXIT();
 }
 
@@ -188,35 +198,6 @@ void Step::vLogicUnitAggregate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* LogicUnit[].filter -- filter an rsb buffer                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitFilter(void)
-{
-  ENTRY();
-
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
-  
-  i8 bCopy = m_pLogicUnit->iFilter(pRsbBuffer->pRowSlab());
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].project -- project an rsb buffer                               */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitProject(void)
-{
-  ENTRY();
-
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
-  
-  i8 bCopy = m_pLogicUnit->iProject(pRsbBuffer->pRowSlab());
-
-  EXIT();
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* LogicUnit[].query -- query                                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vLogicUnitQuery(void)
@@ -264,18 +245,6 @@ void Step::vLogicUnitExprQuery6(void)
   ENTRY();
   
   m_pLogicUnit->vGenerateQuery6();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].test1003Sort -- generate expr for sort test 1003               */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitTest1003Sort(void)
-{
-  ENTRY();
-  
-  m_pLogicUnit->vGenerateSort1003();
   
   EXIT();
 }

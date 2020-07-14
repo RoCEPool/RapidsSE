@@ -841,12 +841,6 @@ public:
   void vJob_WalkIndexStore(void);
   void vJob_WalkTableStore(void);
 
-  // join
-  void vJoinRsbDelete(void);
-  void vJoinRsbProject(void);
-  void vJoinRsbGet(void);
-  void vJoinRsbNew(void);
-
   // loader
   void vLoaderCreate(void);
   void vLoaderDelete(void);
@@ -895,6 +889,7 @@ public:
 
   // logic unit
   void vLogicUnitCompile(void);
+  void vLogicUnitGenCode(void);
   void vLogicUnitNewAgg(void);
   void vLogicUnitNewAggCpy(void);
   void vLogicUnitNewAggGby(void);
@@ -902,15 +897,11 @@ public:
   void vLogicUnitSourceStore(void);
 
   void vLogicUnitAggregate(void);
-  void vLogicUnitFilter(void);
-  void vLogicUnitProject(void);
   void vLogicUnitQuery(void);
   void vLogicUnitToStreamPix(void);
   void vLogicUnitTransform(void);
 
   void vLogicUnitExprQuery6(void);
-
-  void vLogicUnitTest1003Sort(void);
 
   // machine
   void vMachineCoreCount(void);
