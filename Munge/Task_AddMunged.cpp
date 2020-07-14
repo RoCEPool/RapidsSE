@@ -22164,7 +22164,7 @@ void Task::vAddMunged(Forth* pForth)
     "  Pot[].new\n"
     "\n"
     "  //\"= @ 3 10 * ! 3\" LogicUnit[].source!\n"
-    "  \"bs L GET gs jf END nd .s = @ 3 10 * ! 3 .d j GET L END ret\" LogicUnit[].source!\n"
+    "  \"po bs L GET gs jf END nd .s = @ 3 10 * ! 3 .d j GET L END ret\" LogicUnit[].source!\n"
     "  LogicUnit[].compile assert\n"
     "\n"
     "  ZK_STARTMARKER_handler\n"

@@ -189,7 +189,7 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_ENTWRK_RESET
 
   // initiialise
-  { EA_NONE,  0 },  // EO_INI_POT_PIX
+  { EA_NONE,  0 },  // EO_INI_PIX_DEFOUT
   { EA_NONE,  0 },  // EO_INI_SRC_SLAB
   
   // index tree
@@ -698,11 +698,11 @@ i8 LogicUnit::iProject(RowSlab* pSrcRowSlab)
   m_nSrcRows    = m_pSrcRowSlab->nRows();
 
   
-  if (! m_bPixInited) {
-    m_bPixInited = true;
-    m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
-    m_pPot->vStreamPix(&m_oStreamPix);
-  }
+//  if (! m_bPixInited) {
+//    m_bPixInited = true;
+//    m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+//    m_pPot->vStreamPix(&m_oStreamPix);
+//  }
 
   
   
@@ -1060,6 +1060,11 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame(".s"_Stz))   { vAddCode(EO_RSB_SRC_PRINT); continue; }
     if (pTkn->bSame(".a"_Stz))   { vAddCode(EO_RSB_ALT_PRINT); continue; }
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // initialise
+    if (pTkn->bSame("po"_Stz))   { vAddCode(EO_INI_PIX_DEFOUT);   continue; }
+
+    
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subroutine operators
     if (pTkn->bSame("ret"_Stz)) { vAddCode(EO_RETURN); continue; }
@@ -1506,7 +1511,14 @@ i8 LogicUnit::iCompute(void)
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // initialise
-      case EO_INI_POT_PIX:  NEVER_REACH; // not yet implemented
+      case EO_INI_PIX_DEFOUT: // init m_pPot pix from stream def out
+        if (! m_bPixInited) {
+          m_bPixInited = true;
+          m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+          m_pPot->vStreamPix(&m_oStreamPix);
+        }
+        break;
+        
       case EO_INI_SRC_SLAB: NEVER_REACH; // not yet implemented
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

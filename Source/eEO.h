@@ -44,7 +44,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   
   // initialise
-  /*    */ EO_INI_POT_PIX,      // init m_pPot stream pix etc
+  /*    */ EO_INI_PIX_DEFOUT,   // init m_pPot pix from stream def out
   /*    */ EO_INI_SRC_SLAB,     // init m_pSrcRowSlab etc
 
   // index tree
@@ -163,7 +163,7 @@ static Stz* aEO[]
   /*    */ "EO_ENTWRK_RESET"_Stz,
 
   // initialise
-  /*    */ "EO_INI_POT_PIX"_Stz,
+  /*    */ "EO_INI_PIX_DEFOUT"_Stz,
   /*    */ "EO_INI_SRC_SLAB"_Stz,
 
   // index tree
