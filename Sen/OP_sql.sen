@@ -115,11 +115,11 @@
       "ss pi bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ft ret"
       LogicUnit[].source!
       LogicUnit[].compile assert
+
+      idxDef_int indexDef[] indexTree[].new
     endof
 
   endcase
-
-  //LogicUnit[].compile assert
 
   ZK_STARTMARKER_handler
 ;
@@ -184,6 +184,16 @@
   Pot[].pipeoutAllDangling
 
   Pot[].delete
+
+  <queryNo> >int locals| queryNo |
+
+  queryNo case
+
+    1003 of
+      IndexTree[].delete
+    endof
+
+  endcase
 
   ZK_EOSMARKER_handler
 ;
