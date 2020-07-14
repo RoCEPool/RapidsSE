@@ -841,12 +841,6 @@ public:
   void vJob_WalkIndexStore(void);
   void vJob_WalkTableStore(void);
 
-  // join
-  void vJoinRsbDelete(void);
-  void vJoinRsbProject(void);
-  void vJoinRsbGet(void);
-  void vJoinRsbNew(void);
-
   // loader
   void vLoaderCreate(void);
   void vLoaderDelete(void);
