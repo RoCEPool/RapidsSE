@@ -103,13 +103,17 @@ void SP_Ent::vSprintEnt(Ent* aEnt, IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  SP_Ref spRef;
   SP_Key spKey;
-  
+  SP_Ref spRef;
+
+  Stz* szKey = spKey.sz(aEnt->aKey(),pIndexDef);
+
+  Stz* szRef = spRef.sz(aEnt->rxRef());
+
   StrLib::vSprint(m_caEnt,
                   "%s %s; NEO:"_Stz,
-                  spRef.sz(aEnt->rxRef()),
-                  spKey.sz(aEnt->aKey(),pIndexDef));
+                  szRef,
+                  szKey);
   
   for (i8 i_Level = 0; i_Level < aEnt->nSkipLevels(); i_Level++)
     StrLib::vSprintCat((Stz*)m_caEnt," %d"_Stz,aEnt->tNextEntry(i_Level));

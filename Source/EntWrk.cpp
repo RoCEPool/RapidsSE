@@ -155,6 +155,16 @@ void EntWrk::vAppendElement(Rsb* aRsb, Column* pColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add element from row to key                                                */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElementInt(Rsb* aRsb, i8 iInt)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+    vAppendInt(iInt);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add int element to key                                                     */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAppendInt(i8 iArg)

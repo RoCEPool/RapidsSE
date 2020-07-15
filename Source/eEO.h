@@ -42,6 +42,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
   /*    */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
   /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
+  /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   
   // finalise
@@ -168,6 +169,7 @@ static Stz* aEO[]
   /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
   /*    */ "EO_ENTWRK_POPOFS"_Stz,
   /*    */ "EO_ENTWRK_POPREF"_Stz,
+  /*    */ "EO_ENTWRK_PRINT"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
 
   // finalise
