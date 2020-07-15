@@ -27,7 +27,6 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].toStreamPix"_Stz,&Step::vLogicUnitToStreamPix);
   vAddStep("LogicUnit[].transform"_Stz,  &Step::vLogicUnitTransform);
   
-  vAddStep("LogicUnit[].newAgg"_Stz,     &Step::vLogicUnitNewAgg);  //! TEMP : to go
   vAddStep("LogicUnit[].newAggCpy"_Stz,  &Step::vLogicUnitNewAggCpy);  //! TEMP : to go
   vAddStep("LogicUnit[].newAggGby"_Stz,  &Step::vLogicUnitNewAggGby);  //! TEMP : to go
 }
@@ -56,18 +55,6 @@ void Step::vLogicUnitGenCode(void)
   i8 iTestNo = m_pDataStack->iPopInt(__func__);
       
   m_pLogicUnit->vGenCode(iTestNo);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].newAgg -- new an aggregate expression                          */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitNewAgg(void)
-{
-  ENTRY();
-  
-  //m_pLogicUnit->vGenerateAgg();
   
   EXIT();
 }

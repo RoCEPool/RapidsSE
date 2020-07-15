@@ -80,7 +80,6 @@ assert::stack_0
 
         // -- -- -- -- -- -- -- -- -- --
 
-        "OP_aggregate.sen"            include
         "OP_aggregateGby.sen"         include
         "OP_analyzeIndex.sen"         include
         "OP_analyzeTable.sen"         include
