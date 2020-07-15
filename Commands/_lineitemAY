@@ -67,7 +67,7 @@ space;
 
 // /time Query6 lineitem "/tpch/SF1/lineitem.csv";
 aggregate lineitem "/DATA/TPCH/lineitem10K.csv";
-
+expr_project_1 lineitem "/DATA/TPCH/lineitem10K.csv";
 // /time ctas lineitem lineitem2;
 
 //load lineitem "/DATA/TPCH/lineitem10.csv";

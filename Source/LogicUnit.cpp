@@ -45,7 +45,6 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_bPixInited  = false;
   // m_oStreamPix
-  m_pPot        = nullptr;
   m_aDstRsb     = nullptr;
   m_pDstRowSlab = nullptr;
 
@@ -675,7 +674,6 @@ i8 LogicUnit::iAggregate(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pPot = * m_xpPot;
   m_pDstRowSlab = nullptr;
   
   m_aSrcRsb      = nullptr;
@@ -686,7 +684,7 @@ i8 LogicUnit::iAggregate(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
   m_pAltRowSlab = nullptr;
   
   pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
-  m_pPot->vStreamPix(&m_oStreamPix);
+  m_xpPot->vStreamPix(&m_oStreamPix);
   
   m_pEnt              = nullptr;
   //m_oEntWrk
@@ -706,7 +704,7 @@ i8 LogicUnit::iAggregateGby(Pot* pPot, IndexTree* pIndexTree, RowSlab* pDstRowSl
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_pPot        = pPot;
+  m_xpPot       = pPot;
   m_pDstRowSlab = pDstRowSlab;
   
   m_aSrcRsb      = aSrcRsb;
@@ -760,7 +758,6 @@ i8 LogicUnit::iQuery(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
-  m_pPot = * m_xpPot;
   //m_pDstRowSlab = nullptr;
   
   m_aSrcRsb     = nullptr;
@@ -775,7 +772,6 @@ i8 LogicUnit::iQuery(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
   i8 iResult = iCompute();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pPot         = nullptr;
   //m_pDstRowSlab  = nullptr;
   //m_aDstRsb      = m_pPot->aNewDstRsb(&m_pDstRowSlab);
   
@@ -1564,7 +1560,7 @@ i8 LogicUnit::iCompute(void)
       // finalise
       case EO_FIN_TRANSFORM: // standard finalise
         dLU0(eCode);
-        m_pPot        = nullptr;
+        //m_pPot        = nullptr;
         m_pDstRowSlab = nullptr;
 
         m_nSrcRows    = C_UNKNOWN;
@@ -1579,7 +1575,7 @@ i8 LogicUnit::iCompute(void)
         if (! m_bPixInited) {
           m_bPixInited = true;
           m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
-          m_pPot->vStreamPix(&m_oStreamPix);
+          m_xpPot->vStreamPix(&m_oStreamPix);
         }
         break;
         
@@ -1587,13 +1583,13 @@ i8 LogicUnit::iCompute(void)
       {
         dLU0(eCode);
         StreamPix* aStreamPix = m_pSrcRowSlab->aStreamPix();
-        m_pPot->vStreamPix(aStreamPix);
+        m_xpPot->vStreamPix(aStreamPix);
       }
         break;
         
       case EO_INI_SRC_SLAB: // init m_pSrcRowSlab etc
         dLU0(eCode);
-        m_pPot = * m_xpPot;
+        //m_pPot = * m_xpPot;
         //m_pDstRowSlab = nullptr;
 
         m_aSrcRsb     = nullptr;
@@ -1763,7 +1759,7 @@ i8 LogicUnit::iCompute(void)
 
       case EO_RSB_DST_NEW: // create new destination rsb
         dLU0(eCode);
-        m_aDstRsb = m_pPot->aNewDstRsb(&m_pDstRowSlab);
+        m_aDstRsb = m_xpPot->aNewDstRsb(&m_pDstRowSlab);
         break;
 
       case EO_RSB_DST_TEST: // test if there is a destination rsb

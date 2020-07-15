@@ -118,7 +118,6 @@ namespace Expressions
     bool       m_bPixInited;
     StreamPix  m_oStreamPix;    // condensed stream def
 
-    Pot*     m_pPot;
     Rsb*     m_aDstRsb;
     RowSlab* m_pDstRowSlab;
 
