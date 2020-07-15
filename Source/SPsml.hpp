@@ -21,6 +21,11 @@ namespace Esses
     SPsml(void);
    ~SPsml(void) noexcept(false);
   
+    Stz* sz(void);
+    
+    Stz* szFormat(void);
+    void vFormat(const Stz* szFormat);
+
     Stz* szResult(void);
     void vResult(Stz* szResult);
 

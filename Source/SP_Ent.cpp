@@ -8,48 +8,47 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Ent::SP_Ent(void)
-: Sprint(CN_KEY)
+
 {
-  _precondition_(_MAGIC_,CN_KEY,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
   
   // set default enclosing char
   vFormat(F_VCH_enclose);
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caEnt,sizeof(m_caEnt),CN_KEY);
+  MemLib::vZero(m_caEnt,sizeof(m_caEnt),CN_SPSML);
 #else
   m_caEnt[0] = '\0';
 #endif
   
   //! FIX RAY
-  //_checkInitialised_(CN_KEY);
+  //_checkInitialised_(CN_SPSML);
   
-  _postcondition_(_MAGIC_,CN_KEY,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSML,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Ent::SP_Ent(Ent* aEnt, IndexDef* pIndexDef)
-: Sprint(CN_KEY)
 {
-  _precondition_(_MAGIC_,CN_KEY,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
   
   // set default enclosing char
   vFormat(F_VCH_enclose);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caEnt,sizeof(m_caEnt),CN_KEY);
+  MemLib::vZero(m_caEnt,sizeof(m_caEnt),CN_SPSML);
 #else
   m_caEnt[0] = '\0';
 #endif
   
   //! FIX RAY
-  //_checkInitialised_(CN_KEY);
+  //_checkInitialised_(CN_SPSML);
   
   vSprintEnt(aEnt,pIndexDef);
   
-  _postcondition_(_MAGIC_,CN_KEY,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSML,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +56,7 @@ SP_Ent::SP_Ent(Ent* aEnt, IndexDef* pIndexDef)
 /*----------------------------------------------------------------------------*/
 SP_Ent::~SP_Ent(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_KEY,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +68,7 @@ SP_Ent::~SP_Ent(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void SP_Ent::vReset(void)
 {
-  _precondition_(_MAGIC_,CN_KEY);
+  _precondition_(_MAGIC_,CN_SPSML);
   
   m_caEnt[0] = '\0';
 }

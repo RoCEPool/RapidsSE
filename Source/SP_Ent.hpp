@@ -5,7 +5,7 @@
 
 namespace Records
 {
-  class SP_Ent : public Sprint
+  class SP_Ent : public SPsml
   {
   public:
     char  m_caEnt[C_4KB];
