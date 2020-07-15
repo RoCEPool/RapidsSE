@@ -14,12 +14,6 @@ SP_Ent::SP_Ent(void)
   
   // set default enclosing char
   vFormat(F_VCH_enclose);
-
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caEnt,sizeof(m_caEnt),CN_SPSMALL);
-#else
-  m_caEnt[0] = '\0';
-#endif
   
   //! FIX RAY
   //_checkInitialised_(CN_SPSMALL);
@@ -36,12 +30,6 @@ SP_Ent::SP_Ent(Ent* aEnt, IndexDef* pIndexDef)
   
   // set default enclosing char
   vFormat(F_VCH_enclose);
-  
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caEnt,sizeof(m_caEnt),CN_SPSMALL);
-#else
-  m_caEnt[0] = '\0';
-#endif
   
   //! FIX RAY
   //_checkInitialised_(CN_SPSMALL);
@@ -70,7 +58,7 @@ void SP_Ent::vReset(void)
 {
   _precondition_(_MAGIC_,CN_SPSMALL);
   
-  m_caEnt[0] = '\0';
+  m_caResult[0] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +68,7 @@ Stz* SP_Ent::sz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caEnt[0];
+  return (Stz*) &m_caResult[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +80,7 @@ Stz* SP_Ent::sz(Ent* aEnt, IndexDef* pIndexDef)
 
   vSprintEnt(aEnt,pIndexDef);
   
-  return (Stz*) &m_caEnt[0];
+  return (Stz*) &m_caResult[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,13 +97,13 @@ void SP_Ent::vSprintEnt(Ent* aEnt, IndexDef* pIndexDef)
 
   Stz* szRef = spRef.sz(aEnt->rxRef());
 
-  StrLib::vSprint(m_caEnt,
+  StrLib::vSprint(m_caResult,
                   "%s %s; NEO:"_Stz,
                   szRef,
                   szKey);
   
   for (i8 i_Level = 0; i_Level < aEnt->nSkipLevels(); i_Level++)
-    StrLib::vSprintCat((Stz*)m_caEnt," %d"_Stz,aEnt->tNextEntry(i_Level));
+    StrLib::vSprintCat((Stz*)m_caResult," %d"_Stz,aEnt->tNextEntry(i_Level));
 
 }
 

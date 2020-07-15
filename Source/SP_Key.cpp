@@ -13,12 +13,6 @@ SP_Key::SP_Key(void)
   
   // set default enclosing char
   vFormat(F_VCH_enclose);
-
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caKey,sizeof(m_caKey),CN_SPSMALL);
-#else
-  m_caKey[0] = '\0';
-#endif
   
   //! FIX RAY
   //_checkInitialised_(CN_SPSMALL);
@@ -35,13 +29,7 @@ SP_Key::SP_Key(Key* pKey, IndexDef* pIndexDef)
   
   // set default enclosing char
   vFormat(F_VCH_enclose);
-  
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caKey,sizeof(m_caKey),CN_SPSMALL);
-#else
-  m_caKey[0] = '\0';
-#endif
-  
+    
   //! FIX RAY
   //_checkInitialised_(CN_SPSMALL);
   
@@ -69,7 +57,7 @@ void SP_Key::vReset(void)
 {
   _precondition_(_MAGIC_,CN_SPSMALL);
   
-  m_caKey[0] = '\0';
+  m_caResult[0] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +67,7 @@ Stz* SP_Key::sz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caKey[0];
+  return (Stz*) &m_caResult[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,7 +79,7 @@ Stz* SP_Key::sz(Key* pKey, IndexDef* pIndexDef)
 
   vSprintKey(pKey,pIndexDef);
   
-  return (Stz*) &m_caKey[0];
+  return (Stz*) &m_caResult[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +98,7 @@ void SP_Key::vSprintKey(Key* pKey, IndexDef* pIndexDef)
   
   vReset();
 
-  StrLib::vSprint((Stz*)m_caKey,"Key[%lldB]; "_Stz,pKey->nElmSeqSize());
+  StrLib::vSprint((Stz*)m_caResult,"Key[%lldB]; "_Stz,pKey->nElmSeqSize());
 
   i8 nIdxCols = pIndexDef->nColumns();
   for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
@@ -127,7 +115,7 @@ void SP_Key::vSprintKey(Key* pKey, IndexDef* pIndexDef)
       CsvValue::vInto((Stz*)caLiteral,ayElm,pCol);
  
     if (i_IdxCol)
-      StrLib::vConcat(m_caKey,", ");
+      StrLib::vConcat(m_caResult,", ");
 
     StrLib::vSprint((Stz*)caElm,"Elm[%lld %s %lldB] %s"_Stz,
                     i_IdxCol,
@@ -135,7 +123,7 @@ void SP_Key::vSprintKey(Key* pKey, IndexDef* pIndexDef)
                     nElmBytes,
                     caLiteral);
     
-    StrLib::vConcat(m_caKey,caElm);
+    StrLib::vConcat(m_caResult,caElm);
   }
 
 }

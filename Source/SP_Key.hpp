@@ -8,8 +8,7 @@ namespace Records
   class SP_Key : public SPsmall
   {
   public:
-    char  m_caKey[C_4KB];
-  
+   
     // must be last
     Footer m_xFooter;
     
