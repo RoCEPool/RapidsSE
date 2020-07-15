@@ -5,7 +5,7 @@
 
 namespace Records
 {
-  class SP_Key : public Sprint
+  class SP_Key : public SPsml
   {
   public:
     char  m_caKey[C_4KB];
