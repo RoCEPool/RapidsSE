@@ -141,39 +141,30 @@
 
   queryNo case
 
-    1001 of
-      Operand[].pipeIn
-      LogicUnit[].transform
-      Operand[].delete
+    6 of
+      //"--------------------------- 6 RSBBUFFER ---------------------------" .
+    endof
 
-      Pot[].pipeoutAllCompleted
+    1001 of
+      //"--------------------------- 1001 RSBBUFFER ---------------------------" .
     endof
 
     1002 of
-      Operand[].pipeIn
-      LogicUnit[].transform
-      Operand[].delete
-
-      Pot[].pipeoutAllCompleted
+      //"--------------------------- 1002 RSBBUFFER ---------------------------" .
     endof
 
     1003 of
-
       "--------------------------- 1003 RSBBUFFER ---------------------------" .
-      Operand[].pipeIn
-      LogicUnit[].transform
-      Operand[].delete
-
-      Pot[].pipeoutAllCompleted
     endof
 
-    Operand[].pipeIn
-    LogicUnit[].query
-    Operand[].delete
-
-    Pot[].pipeoutAllCompleted
 
   endcase
+
+  Operand[].pipeIn
+  LogicUnit[].transform
+  Operand[].delete
+
+  Pot[].pipeoutAllCompleted
 
   true
 ;
@@ -237,9 +228,9 @@
 
       StreamDefOut[].print
 
-      StreamDefOut[] LogicUnit[].toStreamPix
-      Pot[].SetStreamPix
-      Pot[].newDstRsb
+      //StreamDefOut[] LogicUnit[].toStreamPix
+      //Pot[].SetStreamPix
+      //Pot[].newDstRsb
 
     endof
 
