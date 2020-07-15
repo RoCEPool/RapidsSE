@@ -87,6 +87,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_RSB_DST_COPYSRC,  // copy src rsb to dst rsb
   /*    */ EO_RSB_DST_PRINT,    // print dst rsb
   /*    */ EO_RSB_DST_NEW,      // create new destination rsb
+  /*    */ EO_RSB_DST_TEST,     // test if destination rsb
   /*    */ EO_RSB_SRC_BEGIN,    // begin src rsb traverse
   /*    */ EO_RSB_SRC_NEXT,     // move to next src rsb
   /*    */ EO_RSB_SRC_PRINT,    // print src rsb
@@ -214,6 +215,7 @@ static Stz* aEO[]
   /*    */ "EO_RSB_DST_COPYSRC"_Stz,
   /*    */ "EO_RSB_DST_PRINT"_Stz,
   /*    */ "EO_RSB_DST_NEW"_Stz,
+  /*    */ "EO_RSB_DST_TEST"_Stz,
   /*    */ "EO_RSB_SRC_BEGIN"_Stz,
   /*    */ "EO_RSB_SRC_NEXT"_Stz,
   /*    */ "EO_RSB_SRC_PRINT"_Stz,

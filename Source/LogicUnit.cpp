@@ -232,6 +232,7 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_RSB_DST_COPYSRC
   { EA_NONE,  0 },  // EO_RSB_DST_PRINT
   { EA_NONE,  0 },  // EO_RSB_DST_NEW
+  { EA_NONE,  0 },  // EO_RSB_DST_TEST
   { EA_NONE,  0 },  // EO_RSB_SRC_BEGIN
   { EA_NONE,  0 },  // EO_RSB_SRC_NEXT
   { EA_NONE,  0 },  // EO_RSB_SRC_PRINT
@@ -333,7 +334,20 @@ void LogicUnit::vGenerateQuery6(void)
   
   // init the code
   m_i_Code = 0;
-
+  
+  // initialize srcSlab etc
+  vAddCode(EO_INI_SRC_SLAB);
+  
+  // init m_pPot pix from streamDef out
+  vAddCode(EO_INI_PIX_DEFOUT);
+  
+  // new a rsb dst row if not there
+  vAddCode(EO_RSB_DST_TEST);
+  vAddCodeLabel(EO_JMPTRUE,"RSB_SRC_BEGIN:"_Stz);
+  vAddCode(EO_RSB_DST_NEW);
+  
+  vDefineLabel("RSB_SRC_BEGIN:"_Stz);
+  
   // begin RSB traversal
   vAddCode(EO_RSB_SRC_BEGIN);
 
@@ -735,14 +749,14 @@ bool LogicUnit::bCompile(TokenVec* pTknVec)
 i8 LogicUnit::iQuery(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
+
   m_pPot = * m_xpPot;
   //m_pDstRowSlab = nullptr;
   
   m_aSrcRsb     = nullptr;
   m_pSrcRowSlab = pSrcRowSlab;
   m_nSrcRows    = m_pSrcRowSlab->nRows();
-  
+
   // temp, needs fixing
   //pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
   //m_pPot->vStreamPix(&m_oStreamPix);
@@ -1570,7 +1584,7 @@ i8 LogicUnit::iCompute(void)
       case EO_INI_SRC_SLAB: // init m_pSrcRowSlab etc
         dLU0(eCode);
         m_pPot = * m_xpPot;
-        m_pDstRowSlab = nullptr;
+        //m_pDstRowSlab = nullptr;
 
         m_aSrcRsb     = nullptr;
         m_pSrcRowSlab = _pRsbBuffer(* m_xpOperandA)->pRowSlab();
@@ -1742,6 +1756,14 @@ i8 LogicUnit::iCompute(void)
         m_aDstRsb = m_pPot->aNewDstRsb(&m_pDstRowSlab);
         break;
 
+      case EO_RSB_DST_TEST: // test if there is a destination rsb
+        dLU0(eCode);
+        if (m_aDstRsb)
+          *(++aiDstk) = 1;
+        else
+          *(++aiDstk) = 0;
+        break;
+        
       case EO_RSB_SRC_BEGIN: // begin src rsb traverse
         dLU0(eCode);
         m_i_SrcRow = -1;
