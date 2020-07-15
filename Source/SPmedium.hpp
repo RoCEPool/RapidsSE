@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* SPmed.hpp - Sprint buffers (medium m_caResult)                             */
+/* SPmedium.hpp - Sprint buffers (medium m_caResult)                             */
 /*============================================================================*/
 #pragma once
 
 namespace Esses
 {
-  static const i8 C_SPLRG_FORMAT = 32;
-  static const i8 C_SPLRG_RESULT = C_MAX_STATEMENT;
+  static const i8 C_SPMEDIUM_FORMAT = 32;
+  static const i8 C_SPMEDIUM_RESULT = C_MAX_STATEMENT;
   
-  class SPmed : public StackObject
+  class SPmedium : public StackObject
   {
   public:
-    char m_caFormat[C_SPLRG_FORMAT];
-    char m_caResult[C_SPLRG_RESULT];
+    char m_caFormat[C_SPMEDIUM_FORMAT];
+    char m_caResult[C_SPMEDIUM_RESULT];
 
     // must be last
     Footer m_xFooter;
     
   public:
-    SPmed(eCN eClass);
-   ~SPmed(void) noexcept(false);
+    SPmedium(eCN eClass);
+   ~SPmedium(void) noexcept(false);
   
     Stz* szResult(void);
     void vResult(Stz* szResult);

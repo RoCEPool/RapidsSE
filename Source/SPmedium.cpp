@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SPmed.cpp - Sprint buffers (medium m_caResult)                             */
+/* SPmedium.cpp - Sprint buffers (medium m_caResult)                             */
 /*============================================================================*/
 
 #include "Esses.h"
@@ -7,28 +7,28 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SPmed::SPmed(eCN eClassNo)
-: StackObject(CN_SPMED)
+SPmedium::SPmedium(eCN eClassNo)
+: StackObject(CN_SPMEDIUM)
 {
-  _precondition_(_MAGIC_,CN_SPMED,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caFormat,sizeof(m_caFormat),CN_SPMED);
-  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPMED);
+  MemLib::vZero(m_caFormat,sizeof(m_caFormat),CN_SPMEDIUM);
+  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPMEDIUM);
 #else
   m_caFormat[0] = '\0';
   m_caResult[0] = '\0';
 #endif
   
-  _postcondition_(_MAGIC_,CN_SPMED,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SPmed::~SPmed(void) noexcept(false)
+SPmedium::~SPmedium(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPMED,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,9 +38,9 @@ SPmed::~SPmed(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get Stz* of m_caResult                                                     */
 /*----------------------------------------------------------------------------*/
-Stz* SPmed::szResult(void)
+Stz* SPmedium::szResult(void)
 {
-  _precondition_(_MAGIC_,CN_SPMED,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 
   return (Stz*) &m_caResult[0];
 }
@@ -48,9 +48,9 @@ Stz* SPmed::szResult(void)
 /*----------------------------------------------------------------------------*/
 /* put Stz* into m_caResult                                                   */
 /*----------------------------------------------------------------------------*/
-void SPmed::vResult(Stz* szResult)
+void SPmedium::vResult(Stz* szResult)
 {
-  _precondition_(_MAGIC_,CN_SPMED,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 
   StrLib::vCopy(m_caResult,szResult->azChar());
 }
@@ -58,7 +58,7 @@ void SPmed::vResult(Stz* szResult)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(SPmed)
+__aFooterFunction(SPmedium)
 
 /*============================================================================*/
 /* end                                                                        */
