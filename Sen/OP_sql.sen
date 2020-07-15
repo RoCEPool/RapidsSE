@@ -117,6 +117,7 @@
     1003 of
       queryNo "QUERY %v" .printf
       //1003 LogicUnit[].genCode
+      //"ss pi bs L GET gs jf END nd = wr @ 0 ae .w j GET L END ft ret"
       "ss pi bs L GET gs jf END nd = wr j GET L END ft ret"
       LogicUnit[].source!
       LogicUnit[].compile assert

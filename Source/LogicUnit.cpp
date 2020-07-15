@@ -187,6 +187,7 @@ EoArg EoArgs[]
   { EA_INT,   8 },  // EO_ENTWRK_APPENDELMI
   { EA_NONE,  0 },  // EO_ENTWRK_POPOFS
   { EA_NONE,  0 },  // EO_ENTWRK_POPREF
+  { EA_NONE,  0 },  // EO_ENTWRK_PRINT
   { EA_NONE,  0 },  // EO_ENTWRK_RESET
 
   // finalise
@@ -1010,8 +1011,6 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  //bCompileTest(pTknVec);
-  
   i8* piArg;
   i8  iArg = 0;
 
@@ -1084,6 +1083,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     // entWrk
     if (pTkn->bSame("wr"_Stz))   { vAddCode(EO_ENTWRK_RESET);       continue; }
     if (pTkn->bSame("ae"_Stz))   { vAddCode(EO_ENTWRK_APPENDELMI);  continue; }
+    if (pTkn->bSame(".w"_Stz))   { vAddCode(EO_ENTWRK_PRINT);       continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subroutine operators
@@ -1329,6 +1329,9 @@ i8 LogicUnit::iCompute(void)
   i8 iCmp;
   i8 i_Cell_ntv;
   
+  SP_Ent spEnt;
+  Ent* aEnt;
+
   bool bTrace = false;
 
   bool bSrcHasPtnHash = true;
@@ -1527,18 +1530,19 @@ i8 LogicUnit::iCompute(void)
       }
         
       case EO_ENTWRK_APPENDELMI: // append next element value (int)
-      {
-        iArg = * (i8*)aeCode;
-        dLU1(eCode,iArg);
-        aeCode += 8;
-        m_oEntWrk.vAppendElement(m_aSrcRsb, pIndexDef->pGetColumn(iArg));
-        SP_Ent spEnt;
-        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
+        iTopA = *(aiDstk--);
+        dLU1(eCode,iTopA);
+        m_oEntWrk.vAppendElementInt(m_aSrcRsb,iTopA);
         break;
-      }
         
       case EO_ENTWRK_POPREF: NEVER_REACH; // not yet implemented
 
+      case EO_ENTWRK_PRINT: // print m_oEntWrk
+        aEnt = m_oEntWrk.aEnt();
+        pIndexDef = m_xpIndexTree->pIndexDef();
+        vTrace("EntWrk : %s\n"_Stz,spEnt.sz(aEnt,pIndexDef));
+        break;
+        
       case EO_ENTWRK_RESET: // reset m_oEntWrk
         dLU0(eCode);
         m_oEntWrk.vReset();

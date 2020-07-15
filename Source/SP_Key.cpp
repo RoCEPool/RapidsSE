@@ -114,7 +114,8 @@ void SP_Key::vSprintKey(Key* pKey, IndexDef* pIndexDef)
 
   StrLib::vSprint((Stz*)m_caKey,"Key[%lldB]; "_Stz,pKey->nElmSeqSize());
 
-  for (i8 i_IdxCol = 0; i_IdxCol < pIndexDef->nColumns(); i_IdxCol++) {
+  i8 nIdxCols = pIndexDef->nColumns();
+  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
     
     Column* pCol = pIndexDef->pGetColumn(i_IdxCol);
     
