@@ -173,7 +173,6 @@ assert::stack_0
         "OP_snapshot.sen"             include
         "OP_space.sen"                include
         "OP_sql.sen"                  include
-        "OP_sqlSuper.sen"             include
         "OP_start.sen"                include
         "OP_stats.sen"                include
         "OP_status.sen"               include
