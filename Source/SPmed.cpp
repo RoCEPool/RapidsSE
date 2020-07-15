@@ -7,16 +7,20 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SPmed::SPmed(eCN eClass)
-: StackObject(eClass)
+SPmed::SPmed(eCN eClassNo)
+: StackObject(CN_SPMED)
 {
+  _precondition_(_MAGIC_,CN_SPMED,_FOOTER_);
+  
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caFormat,sizeof(m_caFormat),eClass);
-  MemLib::vZero(m_caResult,sizeof(m_caResult),eClass);
+  MemLib::vZero(m_caFormat,sizeof(m_caFormat),CN_SPMED);
+  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPMED);
 #else
   m_caFormat[0] = '\0';
   m_caResult[0] = '\0';
 #endif
+  
+  _postcondition_(_MAGIC_,CN_SPMED,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +28,7 @@ SPmed::SPmed(eCN eClass)
 /*----------------------------------------------------------------------------*/
 SPmed::~SPmed(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMED,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,8 +40,8 @@ SPmed::~SPmed(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* SPmed::szResult(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
-  
+  _precondition_(_MAGIC_,CN_SPMED,_FOOTER_);
+
   return (Stz*) &m_caResult[0];
 }
 
@@ -46,8 +50,8 @@ Stz* SPmed::szResult(void)
 /*----------------------------------------------------------------------------*/
 void SPmed::vResult(Stz* szResult)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
-  
+  _precondition_(_MAGIC_,CN_SPMED,_FOOTER_);
+
   StrLib::vCopy(m_caResult,szResult->azChar());
 }
 

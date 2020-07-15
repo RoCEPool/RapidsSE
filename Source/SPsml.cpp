@@ -7,16 +7,22 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SPsml::SPsml(eCN eClass)
-: StackObject(eClass)
+SPsml::SPsml(eCN eClassNo)
+: StackObject(CN_SPSML)
 {
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caFormat,sizeof(m_caFormat),eClass);
-  MemLib::vZero(m_caResult,sizeof(m_caResult),eClass);
+  MemLib::vZero(m_caFormat,sizeof(m_caFormat),CN_SPSML);
+  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPSML);
 #else
   m_caFormat[0] = '\0';
   m_caResult[0] = '\0';
 #endif
+  
+  _checkInitialised_(CN_SPSML);
+
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +30,7 @@ SPsml::SPsml(eCN eClass)
 /*----------------------------------------------------------------------------*/
 SPsml::~SPsml(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,8 +42,8 @@ SPsml::~SPsml(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* SPsml::szResult(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
-  
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+
   return (Stz*) &m_caResult[0];
 }
 
@@ -46,8 +52,8 @@ Stz* SPsml::szResult(void)
 /*----------------------------------------------------------------------------*/
 void SPsml::vResult(Stz* szResult)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
-  
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+
   StrLib::vCopy(m_caResult,szResult->azChar());
 }
 
