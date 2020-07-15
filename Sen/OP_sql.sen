@@ -71,21 +71,26 @@
 
   <queryNo> >int to queryNo
   queryNo case
-    1 of
+    100 of
       queryNo "QUERY %v" .printf
     endof
 
-    3 of
+    300 of
       queryNo "QUERY %v" .printf
     endof
 
-    4 of
+    400 of
       queryNo "QUERY %v" .printf
     endof
 
-    6 of
+    600 of
       queryNo "QUERY %v" .printf
-      6 LogicUnit[].genCode
+      600 LogicUnit[].genCode
+    endof
+
+    601 of
+      queryNo "QUERY %v" .printf
+      601 LogicUnit[].genCode
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -141,8 +146,12 @@
 
   queryNo case
 
-    6 of
-      //"--------------------------- 6 RSBBUFFER ---------------------------" .
+    600 of
+      //"--------------------------- 600 RSBBUFFER ---------------------------" .
+    endof
+
+    601 of
+      //"--------------------------- 601 RSBBUFFER ---------------------------" .
     endof
 
     1001 of
@@ -203,16 +212,17 @@
 
   <queryNo> >int to queryNo
   queryNo case
-    1 of
+
+    100 of
     endof
 
-    3 of
+    300 of
     endof
 
-    4 of
+    400 of
     endof
 
-    6 of
+    600 of
       StreamDefOut[].new
       5 StreamDef[].column@ to pColumn
 
@@ -232,6 +242,11 @@
       //Pot[].SetStreamPix
       //Pot[].newDstRsb
 
+    endof
+
+    601 of
+      StreamDef[].duplicate to StreamDefOut[]
+      StreamDef[].pipeout
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

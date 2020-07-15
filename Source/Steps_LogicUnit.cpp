@@ -72,7 +72,7 @@ void Step::vLogicUnitGenCodeSuper(void)
   
   i8 iTestNo = m_pDataStack->iPopInt(__func__);
   
-  m_pLogicUnit->vGenCodeSuper(iTestNo);
+  //m_pLogicUnit->vGenCodeSuper(iTestNo);
   
   EXIT();
 }
@@ -259,7 +259,7 @@ void Step::vLogicUnitExprQuery6(void)
 {
   ENTRY();
   
-  m_pLogicUnit->vGenerateQuery6();
+  //m_pLogicUnit->vGenerateQuery6();
   
   EXIT();
 }

@@ -1016,12 +1016,12 @@
 
   stage stageB on all partitions :
     toRsb $table
-    | sql 6
+    | sql 600
     | stageC
 
   stage stageC on origin :
-    //sqlSuper 6
-    output
+    sql 601
+    | output
     | sink
     | stageA
 

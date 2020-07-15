@@ -289,22 +289,9 @@ void LogicUnit::vGenCode(i8 iTestNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   switch (iTestNo) {
-    case    6: vGenerateQuery6();   break;
-    case 1003: vGenerateSort1003(); break;
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate code for super for given test                                     */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vGenCodeSuper(i8 iTestNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  switch (iTestNo) {
-    case    6: vGenerateQuerySuper6();   break;
+    case    600: vGenerateQuery600(); break;
+    case    601: vGenerateQuery601(); break;
+    case   1003: vGenerateSort1003(); break;
     default:
       NEVER_REACH;
   }
@@ -315,7 +302,7 @@ void LogicUnit::vGenCodeSuper(i8 iTestNo)
 /*----------------------------------------------------------------------------*/
 /* generate query6                                                            */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery6(void)
+void LogicUnit::vGenerateQuery600(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -345,9 +332,8 @@ void LogicUnit::vGenerateQuery6(void)
   vAddCodeLabel(EO_JMPTRUE,"RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_DST_NEW);
   
-  vDefineLabel("RSB_SRC_BEGIN:"_Stz);
-  
   // begin RSB traversal
+  vDefineLabel("RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_SRC_BEGIN);
 
   vDefineLabel("NEXT_RSB_SRC:"_Stz);
@@ -436,16 +422,28 @@ void LogicUnit::vGenerateQuery6(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate query6 super                                                      */
+/* generate query601 (super agg for query 6)                                  */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuerySuper6(void)
+void LogicUnit::vGenerateQuery601(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // init the code
   m_i_Code = 0;
   
+  // initialize srcSlab etc
+  vAddCode(EO_INI_SRC_SLAB);
+  
+  // init m_pPot pix from streamDef out
+  vAddCode(EO_INI_PIX_DEFOUT);
+  
+  // new a rsb dst row if not there
+  vAddCode(EO_RSB_DST_TEST);
+  vAddCodeLabel(EO_JMPTRUE,"RSB_SRC_BEGIN:"_Stz);
+  vAddCode(EO_RSB_DST_NEW);
+  
   // begin RSB traversal
+  vDefineLabel("RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_SRC_BEGIN);
   
   vDefineLabel("NEXT_RSB_SRC:"_Stz);
