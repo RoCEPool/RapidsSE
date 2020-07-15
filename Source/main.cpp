@@ -34,6 +34,7 @@ int main(int argc, char* argv[])
   printf("sizeof(LogicUnit) %lld\n",    (i8)sizeof(LogicUnit));
   printf("sizeof(SP_Ent) %lld\n",       (i8)sizeof(SP_Ent));
   printf("sizeof(SP_Key) %lld\n",       (i8)sizeof(SP_Key));
+  printf("sizeof(SP_Ref) %lld\n",       (i8)sizeof(SP_Ref));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

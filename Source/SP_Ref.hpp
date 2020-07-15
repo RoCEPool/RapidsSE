@@ -5,7 +5,7 @@
 
 namespace Rows
 {
-  class SP_Ref : public Sprint
+  class SP_Ref : public SPsml
   {
   public:
     

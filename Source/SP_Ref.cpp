@@ -8,16 +8,15 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Ref::SP_Ref(void)
-: Sprint(CN_ROW)
 {
-  _precondition_(_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
   
   // set default enclosing char
   vFormat(F_VCH_enclose);
   
-  _checkInitialised_(CN_ROW);
+  _checkInitialised_(CN_SPSML);
   
-  _postcondition_(_MAGIC_,CN_ROW,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSML,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +24,7 @@ SP_Ref::SP_Ref(void)
 /*----------------------------------------------------------------------------*/
 SP_Ref::~SP_Ref(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,8 +36,8 @@ SP_Ref::~SP_Ref(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void SP_Ref::vRef(Ref wRef)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
-  
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+
   StrLib::vSprint(m_caResult,
                   "%lld.%04lld+%lld"_Stz,
                   
@@ -52,8 +51,8 @@ void SP_Ref::vRef(Ref wRef)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Ref::sz(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
-  
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+
   return (Stz*) &m_caResult[0];
 }
 
@@ -62,13 +61,12 @@ Stz* SP_Ref::sz(void)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Ref::sz(Ref wRef)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
 
   vRef(wRef);
   
   return (Stz*) &m_caResult[0];
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
