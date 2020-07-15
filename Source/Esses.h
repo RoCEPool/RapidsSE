@@ -18,8 +18,8 @@ namespace Esses
 #include "String_t.hpp"
 
 #include "SP.hpp"
-
-
+#include "SPmed.hpp"
+#include "SPsml.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
