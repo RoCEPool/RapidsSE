@@ -125,6 +125,12 @@
       idxDef_int indexDef[] indexTree[].new
     endof
 
+    1004 of
+      // AGGREGATE
+      queryNo "QUERY %v" .printf
+      1004 LogicUnit[].genCode
+    endof
+
   endcase
 
   ZK_STARTMARKER_handler
@@ -167,6 +173,9 @@
       "--------------------------- 1003 RSBBUFFER ---------------------------" .
     endof
 
+    1004 of
+      //"--------------------------- 1003 RSBBUFFER ---------------------------" .
+    endof
 
   endcase
 
@@ -265,6 +274,14 @@
     endof
 
     1003 of
+      StreamDef[].pipeout
+    endof
+
+    1004 of
+      StreamDefOut[].new
+      0 C_MAX_INT_PRECISION CT_INTEGER "sum" StreamDefOut[].addColumn
+
+      StreamDefOut[].duplicate to StreamDef[]
       StreamDef[].pipeout
     endof
 

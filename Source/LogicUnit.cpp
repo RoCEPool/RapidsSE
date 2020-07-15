@@ -293,6 +293,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case    600: vGenerateQuery600(); break;
     case    601: vGenerateQuery601(); break;
     case   1003: vGenerateSort1003(); break;
+    case   1004: vGenerateAgg1004(); break;
     default:
       NEVER_REACH;
   }
@@ -477,20 +478,31 @@ void LogicUnit::vGenerateQuery601(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate agg                                                               */
+/* generate aggregate query 1004                                              */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAgg(void)
+void LogicUnit::vGenerateAgg1004(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   m_i_Code = 0;
 
-  // new a dst rsb row
+  // initialize srcSlab etc
+  vAddCode(EO_INI_SRC_SLAB);
+  
+  // init m_pPot pix from streamDef out
+  vAddCode(EO_INI_PIX_DEFOUT);
+  
+  // new a rsb dst row if not there
+  vAddCode(EO_RSB_DST_TEST);
+  vAddCodeLabel(EO_JMPTRUE,"RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_DST_NEW);
   
+  // begin RSB traversal
+  vDefineLabel("RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_SRC_BEGIN);
   
   vDefineLabel("NEXT_RSB_SRC:"_Stz);
+  
   vAddCode(EO_RSB_SRC_NEXT);
   
   vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);

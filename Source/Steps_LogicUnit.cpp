@@ -67,7 +67,7 @@ void Step::vLogicUnitNewAgg(void)
 {
   ENTRY();
   
-  m_pLogicUnit->vGenerateAgg();
+  //m_pLogicUnit->vGenerateAgg();
   
   EXIT();
 }

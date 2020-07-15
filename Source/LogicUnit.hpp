@@ -167,11 +167,11 @@ namespace Expressions
 
     void vGenCode(i8 iTestNo);
   
-    //! TEMP: TO GO
     void vGenerateQuery600(void);
     void vGenerateQuery601(void);
     
-    void vGenerateAgg(void);
+    //! TEMP: TO GO
+    void vGenerateAgg1004(void);
     void vGenerateAggCpy(void);
     void vGenerateAggGby(void);
     void vGenerateSort1003(void);

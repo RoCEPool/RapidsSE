@@ -931,11 +931,11 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // sum
+  // aggregate (sum)
   sPath
   "
-  procedure sum
-    parameters $Table $File $Column
+  procedure aggregate
+    parameters $Table $File
   begin
 
   stage stageA on origin :
@@ -947,11 +947,12 @@
 
   stage stageB on all partitions :
     toRsb $table
-    | aggregate $table $column
+    | sql 1004  // agg
     | stageC
 
   stage stageC on origin :
-    output
+    sql 1004  // super agg
+    | output
     | sink
     | stageA
 
