@@ -38,6 +38,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENT_GREATERTHAN,  // test if m_pEnt.key >  m_oEntWrk.key
   
   // entWrk
+  /*    */ EO_ENTWRK_APPENDELM, // append next element value
   /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
   /*    */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
   /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
@@ -163,6 +164,7 @@ static Stz* aEO[]
   /*    */ "EO_ENT_GREATERTHAN"_Stz,
   
   // entWrk
+  /*    */ "EO_ENTWRK_APPENDELM"_Stz,
   /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
   /*    */ "EO_ENTWRK_POPOFS"_Stz,
   /*    */ "EO_ENTWRK_POPREF"_Stz,

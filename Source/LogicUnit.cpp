@@ -183,6 +183,7 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_ENT_GREATERTHAN
 
   // entWrk
+  { EA_INT,   8 },  // EO_ENTWRK_APPENDELM
   { EA_INT,   8 },  // EO_ENTWRK_APPENDELMI
   { EA_NONE,  0 },  // EO_ENTWRK_POPOFS
   { EA_NONE,  0 },  // EO_ENTWRK_POPREF
@@ -537,7 +538,7 @@ void LogicUnit::vGenerateAggGby(void)
   
     // append the key element to entwrk
   vAddCode(EO_ENTWRK_RESET);
-  vAddCodeArg(EO_ENTWRK_APPENDELMI,(i8)0);
+  vAddCodeArg(EO_ENTWRK_APPENDELM,(i8)0);
   
   // find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);
@@ -594,10 +595,10 @@ void LogicUnit::vGenerateSort1003(void)
 
   // add key
   vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
-  vAddCodeArg(EO_ENTWRK_APPENDELMI,(i8)0);
+  vAddCodeArg(EO_ENTWRK_APPENDELM,(i8)0);
 
   vAddCodeArg(EO_PUSHSRCCOLI,(i8)3);
-  vAddCodeArg(EO_ENTWRK_APPENDELMI,(i8)3);
+  vAddCodeArg(EO_ENTWRK_APPENDELM,(i8)3);
 
   // add offset
   vAddCode(EO_RSB_SRC_PUSHOFS);
@@ -1502,6 +1503,17 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entWrk
+      case EO_ENTWRK_APPENDELM: // append next element value
+      {
+        iArg = * (i8*)aeCode;
+        dLU1(eCode,iArg);
+        aeCode += 8;
+        m_oEntWrk.vAppendElement(m_aSrcRsb, pIndexDef->pGetColumn(iArg));
+        SP_Ent spEnt;
+        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
+        break;
+      }
+        
       case EO_ENTWRK_APPENDELMI: // append next element value (int)
       {
         iArg = * (i8*)aeCode;
