@@ -895,9 +895,6 @@ public:
   void vLogicUnitSourceFetch(void);
   void vLogicUnitSourceStore(void);
 
-  void vLogicUnitAggregate(void);
-  void vLogicUnitQuery(void);
-  void vLogicUnitToStreamPix(void);
   void vLogicUnitTransform(void);
 
   // machine

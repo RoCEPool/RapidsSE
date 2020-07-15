@@ -22,9 +22,6 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].handler@"_Stz,   &Step::vLogicUnitHandlerFetch);
   vAddStep("LogicUnit[].handler!"_Stz,   &Step::vLogicUnitHandlerStore);
   
-  vAddStep("LogicUnit[].aggregate"_Stz,  &Step::vLogicUnitAggregate);
-  vAddStep("LogicUnit[].query"_Stz,      &Step::vLogicUnitQuery);
-  vAddStep("LogicUnit[].toStreamPix"_Stz,&Step::vLogicUnitToStreamPix);
   vAddStep("LogicUnit[].transform"_Stz,  &Step::vLogicUnitTransform);
   
   vAddStep("LogicUnit[].newAggCpy"_Stz,  &Step::vLogicUnitNewAggCpy);  //! TEMP : to go
@@ -163,49 +160,6 @@ void Step::vLogicUnitHandlerStore(void)
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
   
   m_pLogicUnit->m_xpHandler = pHandler;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].aggregate -- aggregate an rsb                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitAggregate(void)
-{
-  ENTRY();
-  
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
-  StreamDef* pStreamDefOut = _pStreamDef(* m_pLogicUnit->m_xpStreamDefOut);
-  
-  i8 bCopy = m_pLogicUnit->iAggregate(pRsbBuffer->pRowSlab(), pStreamDefOut);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].query -- query                                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitQuery(void)
-{
-  ENTRY();
-  
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(* m_pLogicUnit->m_xpOperandA);
-  StreamDef* pStreamDefOut = _pStreamDef(* m_pLogicUnit->m_xpStreamDefOut);
-  
-  i8 bCopy = m_pLogicUnit->iQuery(pRsbBuffer->pRowSlab(), pStreamDefOut);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].toStreamPix -- convert streamDef to streamPix in logicUnit     */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitToStreamPix(void)
-{
-  ENTRY();
-  
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  pStreamDef->vToStreamPix(&m_pLogicUnit->m_oStreamPix,true);
   
   EXIT();
 }
