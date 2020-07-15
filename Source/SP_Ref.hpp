@@ -5,7 +5,7 @@
 
 namespace Rows
 {
-  class SP_Ref : public SPsml
+  class SP_Ref : public SPsmall
   {
   public:
     

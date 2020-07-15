@@ -5,7 +5,7 @@
 
 namespace Records
 {
-  class SP_Ent : public SPsml
+  class SP_Ent : public SPsmall
   {
   public:
     char  m_caEnt[C_4KB];

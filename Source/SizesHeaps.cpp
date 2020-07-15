@@ -279,7 +279,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SP_Vch),             HT_INVALID           }, // CN_SPVCH
   
   { sizeof(SPmed),              HT_INVALID           }, // CN_SPMED
-  { sizeof(SPsml),              HT_INVALID           }, // CN_SPSML
+  { sizeof(SPsmall),            HT_INVALID           }, // CN_SPSMALL
 
   { sizeof(SrtBuffer),          HT_TRANSIENT_LARGE   }, // CN_SRTBUFFER
   { sizeof(SrtSet),             HT_INVALID           }, // CN_SRTSET

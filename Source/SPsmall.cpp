@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SPsml.cpp - Sprint buffers (small m_caResult)                              */
+/* SPsmall.cpp - Sprint buffers (small m_caResult)                              */
 /*============================================================================*/
 
 #include "Esses.h"
@@ -7,30 +7,30 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SPsml::SPsml(void)
-: StackObject(CN_SPSML)
+SPsmall::SPsmall(void)
+: StackObject(CN_SPSMALL)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caFormat,sizeof(m_caFormat),CN_SPSML);
-  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPSML);
+  MemLib::vZero(m_caFormat,sizeof(m_caFormat),CN_SPSMALL);
+  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPSMALL);
 #else
   m_caFormat[0] = '\0';
   m_caResult[0] = '\0';
 #endif
   
-  _checkInitialised_(CN_SPSML);
+  _checkInitialised_(CN_SPSMALL);
 
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SPsml::~SPsml(void) noexcept(false)
+SPsmall::~SPsmall(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,9 +40,9 @@ SPsml::~SPsml(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get result as Stz*                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* SPsml::sz(void)
+Stz* SPsmall::sz(void)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 
   return (Stz*) &m_caResult[0];
 }
@@ -50,9 +50,9 @@ Stz* SPsml::sz(void)
 /*----------------------------------------------------------------------------*/
 /* get format as Stz*                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* SPsml::szFormat(void)
+Stz* SPsmall::szFormat(void)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 
   return (Stz*) &m_caFormat[0];
 }
@@ -60,9 +60,9 @@ Stz* SPsml::szFormat(void)
 /*----------------------------------------------------------------------------*/
 /* set format                                                                 */
 /*----------------------------------------------------------------------------*/
-void SPsml::vFormat(const Stz* szFormat)
+void SPsmall::vFormat(const Stz* szFormat)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 
   StrLib::vCopy(m_caFormat,(char*)szFormat);
 }
@@ -70,9 +70,9 @@ void SPsml::vFormat(const Stz* szFormat)
 /*----------------------------------------------------------------------------*/
 /* get Stz* of m_caResult                                                     */
 /*----------------------------------------------------------------------------*/
-Stz* SPsml::szResult(void)
+Stz* SPsmall::szResult(void)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 
   return (Stz*) &m_caResult[0];
 }
@@ -80,9 +80,9 @@ Stz* SPsml::szResult(void)
 /*----------------------------------------------------------------------------*/
 /* put Stz* into m_caResult                                                   */
 /*----------------------------------------------------------------------------*/
-void SPsml::vResult(Stz* szResult)
+void SPsmall::vResult(Stz* szResult)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 
   StrLib::vCopy(m_caResult,szResult->azChar());
 }
@@ -90,7 +90,7 @@ void SPsml::vResult(Stz* szResult)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(SPsml)
+__aFooterFunction(SPsmall)
 
 /*============================================================================*/
 /* end                                                                        */

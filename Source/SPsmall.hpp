@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* SPsml.hpp - Sprint buffers (small m_caResult)                              */
+/* SPsmall.hpp - Sprint buffers (small m_caResult)                              */
 /*============================================================================*/
 #pragma once
 
 namespace Esses
 {
-  static const i8 C_SPSML_FORMAT = 32;
-  static const i8 C_SPSML_RESULT = C_4KB;
+  static const i8 C_SPSMALL_FORMAT = 32;
+  static const i8 C_SPSMALL_RESULT = C_4KB;
   
-  class SPsml : public StackObject
+  class SPsmall : public StackObject
   {
   public:
-    char m_caFormat[C_SPSML_FORMAT];
-    char m_caResult[C_SPSML_RESULT];
+    char m_caFormat[C_SPSMALL_FORMAT];
+    char m_caResult[C_SPSMALL_RESULT];
 
     // must be last
     Footer m_xFooter;
     
   public:
-    SPsml(void);
-   ~SPsml(void) noexcept(false);
+    SPsmall(void);
+   ~SPsmall(void) noexcept(false);
   
     Stz* sz(void);
     

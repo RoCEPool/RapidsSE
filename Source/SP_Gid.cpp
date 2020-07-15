@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 SP_Gid::SP_Gid(void)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
-  _checkInitialised_(CN_SPSML);
+  _checkInitialised_(CN_SPSMALL);
   
-  _postcondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -21,7 +21,7 @@ SP_Gid::SP_Gid(void)
 /*----------------------------------------------------------------------------*/
 SP_Gid::~SP_Gid(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ SP_Gid::~SP_Gid(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Gid::sz(i8 iGid)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   if (C_UNKNOWN == iGid) {
     StrLib::vSprint(m_caResult,"-.---"_Stz);
@@ -60,7 +60,7 @@ Stz* SP_Gid::sz(i8 iGid)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Gid::sz(eIK eKind, i8 iGid)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   if (C_UNKNOWN == iGid) {
     StrLib::vSprint(m_caResult,"%s-.---"_Stz,aIK_3c[eKind]);
@@ -88,7 +88,7 @@ Stz* SP_Gid::sz(eIK eKind, i8 iGid)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Gid::sz(eEK eKind, i8 iGid)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   if (C_UNKNOWN == iGid) {
     StrLib::vSprint(m_caResult,"%s-.---"_Stz,aEK[eKind]);

@@ -5,7 +5,7 @@
 
 namespace Records
 {
-  class SP_Key : public SPsml
+  class SP_Key : public SPsmall
   {
   public:
     char  m_caKey[C_4KB];

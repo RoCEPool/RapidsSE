@@ -9,21 +9,21 @@
 /*----------------------------------------------------------------------------*/
 SP_Key::SP_Key(void)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   // set default enclosing char
   vFormat(F_VCH_enclose);
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caKey,sizeof(m_caKey),CN_SPSML);
+  MemLib::vZero(m_caKey,sizeof(m_caKey),CN_SPSMALL);
 #else
   m_caKey[0] = '\0';
 #endif
   
   //! FIX RAY
-  //_checkInitialised_(CN_SPSML);
+  //_checkInitialised_(CN_SPSMALL);
   
-  _postcondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,23 +31,23 @@ SP_Key::SP_Key(void)
 /*----------------------------------------------------------------------------*/
 SP_Key::SP_Key(Key* pKey, IndexDef* pIndexDef)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   // set default enclosing char
   vFormat(F_VCH_enclose);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caKey,sizeof(m_caKey),CN_SPSML);
+  MemLib::vZero(m_caKey,sizeof(m_caKey),CN_SPSMALL);
 #else
   m_caKey[0] = '\0';
 #endif
   
   //! FIX RAY
-  //_checkInitialised_(CN_SPSML);
+  //_checkInitialised_(CN_SPSMALL);
   
   vSprintKey(pKey,pIndexDef);
   
-  _postcondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@ SP_Key::SP_Key(Key* pKey, IndexDef* pIndexDef)
 /*----------------------------------------------------------------------------*/
 SP_Key::~SP_Key(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,7 +67,7 @@ SP_Key::~SP_Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void SP_Key::vReset(void)
 {
-  _precondition_(_MAGIC_,CN_SPSML);
+  _precondition_(_MAGIC_,CN_SPSMALL);
   
   m_caKey[0] = '\0';
 }
