@@ -239,10 +239,6 @@
 
       StreamDefOut[].print
 
-      //StreamDefOut[] LogicUnit[].toStreamPix
-      //Pot[].SetStreamPix
-      //Pot[].newDstRsb
-
     endof
 
     601 of

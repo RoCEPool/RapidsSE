@@ -13,8 +13,6 @@ void Step::vAddSteps_Pot(void)
   vAddStep("pot[].dangling"_Stz,  &Step::vPotDangling);
   vAddStep("pot[].delete"_Stz,    &Step::vPotDelete);
   vAddStep("pot[].new"_Stz,       &Step::vPotNew);
-  vAddStep("pot[].newDstRsb"_Stz, &Step::vPotNewDstRsb);
-  vAddStep("pot[].setStreamPix"_Stz, &Step::vPotSetStreamPix);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,35 +73,6 @@ void Step::vPotNew(void)
       
   m_pLogicUnit->m_xpPot = pPot;
 
-  EXIT();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* pot[].newDstRsb -- create new rsb dst row                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vPotNewDstRsb(void)
-{
-  ENTRY();
-  
-  Pot* pPot = _pPot(* m_pLogicUnit->m_xpPot);
-  
-  m_pLogicUnit->m_aDstRsb = pPot->aNewDstRsb(&m_pLogicUnit->m_pDstRowSlab);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* pot[].setStreamPix -- set the streamPix in the pot                         */
-/*----------------------------------------------------------------------------*/
-void Step::vPotSetStreamPix(void)
-{
-  ENTRY();
-  
-  Pot* pPot = _pPot(* m_pLogicUnit->m_xpPot);
-  
-  pPot->vStreamPix(&m_pLogicUnit->m_oStreamPix);
-  
   EXIT();
 }
 
