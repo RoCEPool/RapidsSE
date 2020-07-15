@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SPsml::SPsml(eCN eClassNo)
+SPsml::SPsml(void)
 : StackObject(CN_SPSML)
 {
   _precondition_(_MAGIC_,CN_SPSML,_FOOTER_);

@@ -5,7 +5,7 @@
 
 namespace Focals
 {
-  class SP_Gid : public SP
+  class SP_Gid : public SPsml
   {
   public:
 
