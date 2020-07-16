@@ -21,7 +21,6 @@ namespace Records
     Stz* sz(void);
     Stz* sz(Ent* aEnt, IndexDef* pIndexDef);
   
-    void vReset(void);
     void vSprintEnt(Ent* aEnt, IndexDef* pIndexDef);
 
     Footer* aFooter(void);

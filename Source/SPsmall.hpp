@@ -26,6 +26,8 @@ namespace Esses
     Stz* szFormat(void);
     void vFormat(const Stz* szFormat);
 
+    void vReset(void);
+  
     Stz* szResult(void);
     void vResult(Stz* szResult);
 
