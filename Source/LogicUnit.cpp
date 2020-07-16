@@ -1031,77 +1031,82 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // arithmetic operators
-    if (pTkn->bSame("+"_Stz)) { vAddCode(EO_ADD);      continue; }
-    if (pTkn->bSame("/"_Stz)) { vAddCode(EO_DIVIDE);   continue; }
-    if (pTkn->bSame("%"_Stz)) { vAddCode(EO_MODULO);   continue; }
-    if (pTkn->bSame("*"_Stz)) { vAddCode(EO_MULTIPLY); continue; }
-    if (pTkn->bSame("-"_Stz)) { vAddCode(EO_SUBTRACT); continue; }
+    if (pTkn->bSame("+"_Stz))   { vAddCode(EO_ADD);                 continue; }
+    if (pTkn->bSame("/"_Stz))   { vAddCode(EO_DIVIDE);              continue; }
+    if (pTkn->bSame("%"_Stz))   { vAddCode(EO_MODULO);              continue; }
+    if (pTkn->bSame("*"_Stz))   { vAddCode(EO_MULTIPLY);            continue; }
+    if (pTkn->bSame("-"_Stz))   { vAddCode(EO_SUBTRACT);            continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // entry relational operators
-    if (pTkn->bSame("<"_Stz))  { vAddCode(EO_LESSTHAN);     continue; }
-    if (pTkn->bSame("<="_Stz)) { vAddCode(EO_LESSEQUAL);    continue; }
-    if (pTkn->bSame("=="_Stz)) { vAddCode(EO_EQUAL);        continue; }
-    if (pTkn->bSame("!="_Stz)) { vAddCode(EO_NOTEQUAL);     continue; }
-    if (pTkn->bSame(">="_Stz)) { vAddCode(EO_GREATEREQUAL); continue; }
-    if (pTkn->bSame(">"_Stz))  { vAddCode(EO_GREATERTHAN);  continue; }
+    if (pTkn->bSame("<"_Stz))   { vAddCode(EO_LESSTHAN);            continue; }
+    if (pTkn->bSame("<="_Stz))  { vAddCode(EO_LESSEQUAL);           continue; }
+    if (pTkn->bSame("=="_Stz))  { vAddCode(EO_EQUAL);               continue; }
+    if (pTkn->bSame("!="_Stz))  { vAddCode(EO_NOTEQUAL);            continue; }
+    if (pTkn->bSame(">="_Stz))  { vAddCode(EO_GREATEREQUAL);        continue; }
+    if (pTkn->bSame(">"_Stz))   { vAddCode(EO_GREATERTHAN);         continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // logical operators
-    if (pTkn->bSame("and"_Stz)) { vAddCode(EO_AND); continue; }
-    if (pTkn->bSame("or"_Stz))  { vAddCode(EO_OR);  continue; }
-    if (pTkn->bSame("not"_Stz)) { vAddCode(EO_NOT); continue; }
+    if (pTkn->bSame("and"_Stz)) { vAddCode(EO_AND);                 continue; }
+    if (pTkn->bSame("or"_Stz))  { vAddCode(EO_OR);                  continue; }
+    if (pTkn->bSame("not"_Stz)) { vAddCode(EO_NOT);                 continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // null test operators
-    if (pTkn->bSame("isNull"_Stz))    { vAddCode(EO_ISNULL);    continue; }
-    if (pTkn->bSame("isNotNull"_Stz)) { vAddCode(EO_ISNOTNULL); continue; }
+    if (pTkn->bSame("isn"_Stz)) { vAddCode(EO_ISNULL);              continue; }
+    if (pTkn->bSame("inn"_Stz)) { vAddCode(EO_ISNOTNULL);           continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // stack operators
-    if (pTkn->bSame("++"_Stz))   { vAddCode(EO_INC);           continue; }
-    if (pTkn->bSame("inc"_Stz))  { vAddCode(EO_INC);           continue; }
-    if (pTkn->bSame("--"_Stz))   { vAddCode(EO_DEC);           continue; }
-    if (pTkn->bSame("dec"_Stz))  { vAddCode(EO_DEC);           continue; }
-    if (pTkn->bSame("dup"_Stz))  { vAddCode(EO_DUP);           continue; }
-    if (pTkn->bSame("pop"_Stz))  { vAddCode(EO_POP);           continue; }
-    if (pTkn->bSame("."_Stz))    { vAddCode(EO_PRINT);         continue; }
+    if (pTkn->bSame("++"_Stz))  { vAddCode(EO_INC);                 continue; }
+    if (pTkn->bSame("inc"_Stz)) { vAddCode(EO_INC);                 continue; }
+    if (pTkn->bSame("--"_Stz))  { vAddCode(EO_DEC);                 continue; }
+    if (pTkn->bSame("dec"_Stz)) { vAddCode(EO_DEC);                 continue; }
+    if (pTkn->bSame("dup"_Stz)) { vAddCode(EO_DUP);                 continue; }
+    if (pTkn->bSame("pop"_Stz)) { vAddCode(EO_POP);                 continue; }
+    if (pTkn->bSame("."_Stz))   { vAddCode(EO_PRINT);               continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // rsb operators
-    if (pTkn->bSame("bs"_Stz))   { vAddCode(EO_RSB_SRC_BEGIN);   continue; }
-    if (pTkn->bSame("gs"_Stz))   { vAddCode(EO_RSB_SRC_NEXT);    continue; }
-    if (pTkn->bSame("os"_Stz))   { vAddCode(EO_RSB_SRC_PUSHOFS); continue; }
-    if (pTkn->bSame("nd"_Stz))   { vAddCode(EO_RSB_DST_NEW);     continue; }
+    if (pTkn->bSame("bs"_Stz))  { vAddCode(EO_RSB_SRC_BEGIN);       continue; }
+    if (pTkn->bSame("gs"_Stz))  { vAddCode(EO_RSB_SRC_NEXT);        continue; }
+    if (pTkn->bSame("os"_Stz))  { vAddCode(EO_RSB_SRC_PUSHOFS);     continue; }
+    if (pTkn->bSame("nd"_Stz))  { vAddCode(EO_RSB_DST_NEW);         continue; }
 
-    if (pTkn->bSame(".d"_Stz))   { vAddCode(EO_RSB_DST_PRINT); continue; }
-    if (pTkn->bSame(".s"_Stz))   { vAddCode(EO_RSB_SRC_PRINT); continue; }
-    if (pTkn->bSame(".a"_Stz))   { vAddCode(EO_RSB_ALT_PRINT); continue; }
+    if (pTkn->bSame(".d"_Stz))  { vAddCode(EO_RSB_DST_PRINT);       continue; }
+    if (pTkn->bSame(".s"_Stz))  { vAddCode(EO_RSB_SRC_PRINT);       continue; }
+    if (pTkn->bSame(".a"_Stz))  { vAddCode(EO_RSB_ALT_PRINT);       continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // finalise
-    if (pTkn->bSame("ft"_Stz))   { vAddCode(EO_FIN_TRANSFORM);    continue; }
+    if (pTkn->bSame("ft"_Stz))  { vAddCode(EO_FIN_TRANSFORM);       continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // initialise
-    if (pTkn->bSame("po"_Stz))   { vAddCode(EO_INI_PIX_DEFOUT);   continue; }
-    if (pTkn->bSame("pi"_Stz))   { vAddCode(EO_INI_PIX_SLABIN);   continue; }
-    if (pTkn->bSame("ss"_Stz))   { vAddCode(EO_INI_SRC_SLAB);     continue; }
+    if (pTkn->bSame("po"_Stz))  { vAddCode(EO_INI_PIX_DEFOUT);      continue; }
+    if (pTkn->bSame("pi"_Stz))  { vAddCode(EO_INI_PIX_SLABIN);      continue; }
+    if (pTkn->bSame("ss"_Stz))  { vAddCode(EO_INI_SRC_SLAB);        continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // entWrk
-    if (pTkn->bSame("wo"_Stz))   { vAddCode(EO_ENTWRK_POPOFS);      continue; }
-    if (pTkn->bSame("wr"_Stz))   { vAddCode(EO_ENTWRK_RESET);       continue; }
-    if (pTkn->bSame("ae"_Stz))   { vAddCode(EO_ENTWRK_APPENDELMI);  continue; }
-    if (pTkn->bSame(".w"_Stz))   { vAddCode(EO_ENTWRK_PRINT);       continue; }
+    if (pTkn->bSame("wo"_Stz))  { vAddCode(EO_ENTWRK_POPOFS);       continue; }
+    if (pTkn->bSame("wr"_Stz))  { vAddCode(EO_ENTWRK_RESET);        continue; }
+    if (pTkn->bSame("ae"_Stz))  { vAddCode(EO_ENTWRK_APPENDELMI);   continue; }
+    if (pTkn->bSame(".w"_Stz))  { vAddCode(EO_ENTWRK_PRINT);        continue; }
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // entWrk
+    if (pTkn->bSame("xd"_Stz))  { vAddCode(EO_IXT_DUMP);            continue; }
+    if (pTkn->bSame("xi"_Stz))  { vAddCode(EO_IXT_INS_ENT);         continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subroutine operators
-    if (pTkn->bSame("ret"_Stz))  { vAddCode(EO_RETURN); continue; }
+    if (pTkn->bSame("ret"_Stz)) { vAddCode(EO_RETURN);              continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // misc
-    if (pTkn->bSame("tr"_Stz))   { vAddCode(EO_TRACE); continue; }
+    if (pTkn->bSame("tr"_Stz))  { vAddCode(EO_TRACE);               continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 //    if (pTkn->bIsName()) {
@@ -1595,8 +1600,10 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
-      case EO_IXT_DUMP: NEVER_REACH; // not yet implemented
-        
+      case EO_IXT_DUMP: // dump index tree
+        m_pIndexTree->vDump(false);
+        break;
+
       case EO_IXT_INS_ENT: // insert an entry into the indexTree
       {
         dLU0(eCode);
