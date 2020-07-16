@@ -1585,6 +1585,10 @@ i8 LogicUnit::iCompute(void)
         dLU0(eCode);
         StreamPix* aStreamPix = m_pSrcRowSlab->aStreamPix();
         m_xpPot->vStreamPix(aStreamPix);
+      
+        // temp hack by ray
+        m_pIndexTree = * m_xpIndexTree;
+        // end temp hack
       }
         break;
         
