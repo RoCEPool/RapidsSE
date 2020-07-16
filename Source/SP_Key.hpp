@@ -22,7 +22,6 @@ namespace Records
     Stz* sz(void);
     Stz* sz(Key* pKey, IndexDef* pIndexDef);
   
-    void vReset(void);
     void vSprintKey(Key* pKey, IndexDef* pIndexDef);
 
     Footer* aFooter(void);
