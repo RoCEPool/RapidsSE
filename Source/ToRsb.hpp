@@ -49,6 +49,7 @@ namespace Load
     ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash);
    ~ToRsb(void) noexcept(false);
   
+    bool bConvert(CrwBuffer* pCrwBuffer);
     bool bConvert(char* azSrc);
     bool bConvertFast(char* azSrc);
     bool bConvertFastInline(char* azSrc);

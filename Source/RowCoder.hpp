@@ -18,6 +18,7 @@ namespace CompactBuffers
   public:
     static i8   iAuxLen(eMC eMetaCode);
     static i8   iBaseOffsetData(StreamDef* pStreamDef);
+    static i8   iBaseOffsetData(StreamPix* pStreamPix);
     static i8   iBaseOffsetMeta(void);
     static i8   nControlSize(void);
     static i8   nDataSize(eMC eMetaCode);
@@ -27,6 +28,7 @@ namespace CompactBuffers
     static bool bHasAuxLen(eMC eMetaCode);
     static i8   nHeadSize(StreamDef* pStreamDef);
     static i8   nMetaSize(StreamDef* pStreamDef);
+    static i8   nMetaSize(StreamPix* pStreamPix);
   };
 }
 

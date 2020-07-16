@@ -1150,12 +1150,13 @@ public:
   void vRegOperandAddColumnDef(void);
   void vRegOperandCsvAppend(void);
   void vRegOperandBide(void);
+  void vRegOperandCrwDuplicate(void);
+  void vRegOperandCrwToCsv(void);
+  void vRegOperandCrwToRsb(void);
   void vRegOperandCsvData(void);
   void vRegOperandCsvToCrwH(void);
   void vRegOperandCsvToRsb(void);
   void vRegOperandCsvToRsbFast(void);
-  void vRegOperandCrwDuplicate(void);
-  void vRegOperandCrwToCsv(void);
   void vRegOperandDelete(void);
   void vRegOperandFirstRowFetch(void);
   void vRegOperandGet(void);

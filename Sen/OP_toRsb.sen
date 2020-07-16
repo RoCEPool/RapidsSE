@@ -49,6 +49,34 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CRWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: toRsb_CrwBuffer \handler
+
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
+
+  profile.start
+
+  Operand[].crwToRsb
+
+  profile.end
+
+  // test for any completed
+  ToRsb[].completed to OperandB[]
+  begin
+    OperandB[].isNull not
+  while
+    OperandB[].pipeOut
+    ToRsb[].completed to OperandB[]
+  repeat
+
+  Operand[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_CSVBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : toRsb_CsvBuffer \handler
@@ -116,6 +144,7 @@
 
   op__topology
 
+  find: toRsb_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: toRsb_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: toRsb_EosMarker   ZK_EOSMARKER   op[].handler!
   find: toRsb_PulseMarker ZK_PULSEMARKER op[].handler!

@@ -19,6 +19,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].csvToRsbFast"_Stz,   &Step::vRegOperandCsvToRsbFast);
   vAddStep("Operand[].crwDuplicate"_Stz,   &Step::vRegOperandCrwDuplicate);
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
+  vAddStep("Operand[].crwToRsb"_Stz,       &Step::vRegOperandCrwToRsb);
   vAddStep("Operand[].delete"_Stz,         &Step::vRegOperandDelete);
   vAddStep("Operand[].firstRow@"_Stz,      &Step::vRegOperandFirstRowFetch);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vRegOperandHandleAggEnd);
@@ -117,6 +118,22 @@ void Step::vRegOperandCrwToCsv(void)
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
   m_pLogicUnit->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].crwToRsb -- convert crw buffer operand to rsb buffer             */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandCrwToRsb(void)
+{
+  ENTRY();
+  
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
+  
+  ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
+  
+  bool b = pToRsb->bConvert(pCrwBuffer);
   
   EXIT();
 }
