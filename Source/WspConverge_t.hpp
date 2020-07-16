@@ -31,6 +31,7 @@ namespace Alignment
     byte* ayLatterHead(void);
     byte* ayLatterTail(void);
     i8    nLength(void);
+    i8    iOffset(byte* ayAllotted);
     void  vReset(void);
     i8    nSize(void);
     Stz*  szStz(void);
@@ -156,15 +157,6 @@ i8 WspConverge_t<LENGTH>::nFree(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get length of byte area                                                    */
-/*----------------------------------------------------------------------------*/
-template<int LENGTH>
-i8 WspConverge_t<LENGTH>::nLength(void)
-{
-  return LENGTH;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of next available chunk in byte areafrom head                  */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
@@ -184,6 +176,26 @@ byte* WspConverge_t<LENGTH>::ayLatterTail(void)
   byte* ayNext = &ayArea()[LENGTH - nUsedTail() - 1];
   
   return ayNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get length of byte area                                                    */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+i8 WspConverge_t<LENGTH>::nLength(void)
+{
+  return LENGTH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get offset of an allotted                                                  */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+i8 WspConverge_t<LENGTH>::iOffset(byte* ayAllotted)
+{
+  i8 iOfs = nDifference(ayAllotted,m_yaByteArea);
+  
+  return iOfs;
 }
 
 /*----------------------------------------------------------------------------*/

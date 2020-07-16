@@ -363,6 +363,18 @@ L_Exit:
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the offset of rsb                                                      */
+/*----------------------------------------------------------------------------*/
+i8 RowSlab::iOfsOfRsb(Rsb* aRsb)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  i8 iOfs = m_xWsp.iOffset((byte*)aRsb);
+  
+  return iOfs;
+}
+
+/*----------------------------------------------------------------------------*/
 /* position on given cell in current rsb                                      */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vPositionOnCell(i8 i_Col)

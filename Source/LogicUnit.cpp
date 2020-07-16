@@ -1069,16 +1069,17 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // rsb operators
-    if (pTkn->bSame("bs"_Stz))   { vAddCode(EO_RSB_SRC_BEGIN); continue; }
-    if (pTkn->bSame("gs"_Stz))   { vAddCode(EO_RSB_SRC_NEXT);  continue; }
-    if (pTkn->bSame("nd"_Stz))   { vAddCode(EO_RSB_DST_NEW);   continue; }
+    if (pTkn->bSame("bs"_Stz))   { vAddCode(EO_RSB_SRC_BEGIN);   continue; }
+    if (pTkn->bSame("gs"_Stz))   { vAddCode(EO_RSB_SRC_NEXT);    continue; }
+    if (pTkn->bSame("os"_Stz))   { vAddCode(EO_RSB_SRC_PUSHOFS); continue; }
+    if (pTkn->bSame("nd"_Stz))   { vAddCode(EO_RSB_DST_NEW);     continue; }
 
     if (pTkn->bSame(".d"_Stz))   { vAddCode(EO_RSB_DST_PRINT); continue; }
     if (pTkn->bSame(".s"_Stz))   { vAddCode(EO_RSB_SRC_PRINT); continue; }
     if (pTkn->bSame(".a"_Stz))   { vAddCode(EO_RSB_ALT_PRINT); continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // initialise
+    // finalise
     if (pTkn->bSame("ft"_Stz))   { vAddCode(EO_FIN_TRANSFORM);    continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1089,6 +1090,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // entWrk
+    if (pTkn->bSame("wo"_Stz))   { vAddCode(EO_ENTWRK_POPOFS);      continue; }
     if (pTkn->bSame("wr"_Stz))   { vAddCode(EO_ENTWRK_RESET);       continue; }
     if (pTkn->bSame("ae"_Stz))   { vAddCode(EO_ENTWRK_APPENDELMI);  continue; }
     if (pTkn->bSame(".w"_Stz))   { vAddCode(EO_ENTWRK_PRINT);       continue; }
@@ -1543,6 +1545,12 @@ i8 LogicUnit::iCompute(void)
         m_oEntWrk.vAppendElementInt(m_aSrcRsb,iTopA);
         break;
         
+      case EO_ENTWRK_POPOFS: // pop m_oEntWrk.ref.buffer/offset
+        iTopA = *(aiDstk--);
+        dLU1(eCode,iTopA);
+        m_oEntWrk.vBuffer(iTopA);
+        break;
+
       case EO_ENTWRK_POPREF: NEVER_REACH; // not yet implemented
 
       case EO_ENTWRK_PRINT: // print m_oEntWrk
@@ -1786,7 +1794,12 @@ i8 LogicUnit::iCompute(void)
         }
         break;
 
-      case EO_RSB_SRC_PUSHOFS:  NEVER_REACH; // not yet implemented
+      case EO_RSB_SRC_PUSHOFS:
+        dLU0(eCode);
+        iRes = m_pSrcRowSlab->iOfsOfRsb(m_aSrcRsb);
+        *(++aiDstk) = iRes;
+        break;
+
       case EO_RSB_SRC_SETBYOFS: NEVER_REACH; // not yet implemented
       case EO_RSB_ALT_BEGIN:    NEVER_REACH; // not yet implemented
       case EO_RSB_ALT_NEXT:     NEVER_REACH; // not yet implemented
