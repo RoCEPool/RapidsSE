@@ -18,7 +18,7 @@ namespace Esses
     Footer m_xFooter;
     
   public:
-    SPmedium(eCN eClass);
+    SPmedium(void);
    ~SPmedium(void) noexcept(false);
   
     Stz* szResult(void);

@@ -5,7 +5,7 @@
 
 namespace LexicalAnalysis
 {
-  class SP_TknVecStr : public SP
+  class SP_TknVecStr : public SPmedium
   {
   public:
 

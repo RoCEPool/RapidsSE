@@ -5,7 +5,7 @@
 
 namespace Gadgets
 {
-  class SP_TagSet : public SP
+  class SP_TagSet : public SPmedium
   {
   public:
 

@@ -8,13 +8,12 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_TagSet::SP_TagSet(void)
-: SP(CN_SPELAPSED)
 {
-  _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  _checkInitialised_(CN_SPELAPSED);
+  _checkInitialised_(CN_SPMEDIUM);
   
-  _postcondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,7 +21,7 @@ SP_TagSet::SP_TagSet(void)
 /*----------------------------------------------------------------------------*/
 SP_TagSet::~SP_TagSet(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +33,7 @@ SP_TagSet::~SP_TagSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* SP_TagSet::sz(TagSet* pTagSet)
 {
-  _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
    StrLib::vSprint(m_caResult,"{ "_Stz);
   

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SPmedium::SPmedium(eCN eClassNo)
+SPmedium::SPmedium(void)
 : StackObject(CN_SPMEDIUM)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
