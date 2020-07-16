@@ -182,7 +182,7 @@ EoArg EoArgs[]
 
   // entWrk
   { EA_INT,   8 },  // EO_ENTWRK_APPENDELM
-  { EA_INT,   8 },  // EO_ENTWRK_APPENDELMI
+  { EA_NONE,  0 },  // EO_ENTWRK_APPENDELMI
   { EA_NONE,  0 },  // EO_ENTWRK_POPOFS
   { EA_NONE,  0 },  // EO_ENTWRK_POPREF
   { EA_NONE,  0 },  // EO_ENTWRK_PRINT
@@ -197,6 +197,7 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_INI_SRC_SLAB
   
   // index tree
+  { EA_NONE,  0 },  // EO_IXT_DUMP
   { EA_NONE,  0 },  // EO_IXT_INS_ENT
   { EA_NONE,  0 },  // EO_IXT_TRV_BEGIN
   { EA_NONE,  0 },  // EO_IXT_TRV_NEXT
@@ -1594,6 +1595,8 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
+      case EO_IXT_DUMP: NEVER_REACH; // not yet implemented
+        
       case EO_IXT_INS_ENT: // insert an entry into the indexTree
       {
         dLU0(eCode);

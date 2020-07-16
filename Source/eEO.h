@@ -53,6 +53,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_INI_SRC_SLAB,     // init m_pSrcRowSlab etc
 
   // index tree
+  /*    */ EO_IXT_DUMP,         // dump index tree
   /*    */ EO_IXT_INS_ENT,      // insert an entry into the indexTree
   /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
   /*    */ EO_IXT_TRV_NEXT,     // move to next entry
@@ -180,6 +181,7 @@ static Stz* aEO[]
   /*    */ "EO_INI_SRC_SLAB"_Stz,
 
   // index tree
+  /*    */ "EO_IXT_DUMP"_Stz,
   /*    */ "EO_IXT_INS_ENT"_Stz,
   /*    */ "EO_IXT_TRV_BEGIN"_Stz,
   /*    */ "EO_IXT_TRV_NEXT"_Stz,
