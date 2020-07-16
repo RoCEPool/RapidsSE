@@ -49,7 +49,7 @@ space;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time load lineitem "/tpch/SF0/lineitem_1.csv" <max_errors> =  100;
 //time load lineitem "/tpch/SF1/lineitem.csv" <max_errors> =  100;
-//time load lineitem "/DATA/TPCH/lineitem10.csv" <max_errors> =  100;
+// /time load lineitem "/DATA/TPCH/lineitem1.csv"; // <max_errors> =  100;
 //time load lineitem "/tpch/SF1/lineitem.csv" <max_errors> =  100;
 //time load lineitem "/DATA/TPCH/lineitem10K.csv" <max_errors> =  100;
 //time load lineitem "/DATA/TPCH/lineitem10k.csv" <max_errors> =  100;
@@ -58,16 +58,67 @@ space;
 ///time load lineitem "/tpch/SF0/lineitem_100k.csv" <max_errors> =  100;
 ///time fload lineitem "/tpch/SF1/lineitem.csv"; // <max_errors> =  100;
 
-//load lineitem "/tpch/SF1/lineitem.csv";
+//fload lineitem "/tpch/SF1/lineitem.csv";
+/time fload lineitem "/tpch/SF1/lineitem.csv";
 //tableScan lineitem;
 
 //expr_filter_1 lineitem "/DATA/TPCH/lineitem10.csv";
 //sum lineitem "/DATA/TPCH/lineitem10.csv" l_orderkey;
 //sumGby lineitem "/DATA/TPCH/lineitem10.csv" l_orderkey;
 
-// /time Query6 lineitem "/tpch/SF1/lineitem.csv";
-aggregate lineitem "/DATA/TPCH/lineitem10K.csv";
-expr_project_1 lineitem "/DATA/TPCH/lineitem10K.csv";
+///time Query6_Exp1 lineitem "/tpch/SF1/lineitem.csv";
+/time Query6_Exp2 lineitem "/tpch/SF1/lineitem.csv";
+
+//tableScan lineitem;
+/*
+pipeline Query6_
+
+begin
+
+stage stageA on origin :
+  start
+  | periodicOp once
+  | stageB robin
+
+stage stageB on all partitions :
+  scan lineitem
+  | toRsb lineitem
+  | sql 600
+  | stageC
+
+stage stageC on origin :
+  sql 601
+  | output
+  | sink
+  | stageA
+
+end ;
+
+pipeline Query6
+
+begin
+
+stage stageA on origin :
+  start
+  | periodicOp once
+  | stageB robin
+
+stage stageB on all partitions :
+  scan lineitem
+  | toRsb lineitem
+  | sql 600
+  | stageC
+
+stage stageC on origin :
+  sql 601
+  | output
+  | sink
+  | stageA
+
+end ;
+*/
+//aggregate lineitem "/DATA/TPCH/lineitem10K.csv";
+//expr_project_1 lineitem "/DATA/TPCH/lineitem10K.csv";
 // /time ctas lineitem lineitem2;
 
 //load lineitem "/DATA/TPCH/lineitem10.csv";

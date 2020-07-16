@@ -32,6 +32,8 @@ shortcut nl   "../FASTLOAD/commands/_normalLoad";
 shortcut o    olist;
 shortcut pay  "../WIP/payload/_payload_1";
 shortcut pt   _passthru;
+shortcut q1   _Query1;
+shortcut q6   _Query6;
 shortcut r    _lineitemrjh;
 shortcut r2   _ray2;
 shortcut r3   _ray3;
