@@ -166,7 +166,6 @@ EoArg EoArgs[]
 
   // entry
   { EA_INT,   8 },  // EO_ENT_CREATEPAY
-  { EA_NONE,  0 },  // EO_ENT_INSERT
   { EA_NONE,  0 },  // EO_ENT_INSERTPAY
   { EA_NONE,  0 },  // EO_ENT_NEXT
   { EA_NONE,  0 },  // EO_ENT_POSPRIOR
@@ -580,7 +579,7 @@ void LogicUnit::vGenerateAggGby(void)
   // NOT_FOUND:
   vDefineLabel("NOT_FOUND"_Stz);
   vAddCodeArg(EO_ENT_CREATEPAY, 8);
-  vAddCode(EO_ENT_INSERT);
+  vAddCode(EO_IXT_INS_ENT);
   vAddCode(EO_PUSH0);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
   
@@ -629,7 +628,7 @@ void LogicUnit::vGenerateSort1003(void)
   vAddCode(EO_ENTWRK_POPREF);
 
   // insert entry into index tree
-  vAddCode(EO_ENT_INSERT);
+  vAddCode(EO_IXT_INS_ENT);
 
   vAddCodeLabel(EO_JMP,"NEXT_RSB_SRC:"_Stz);
   
@@ -1447,18 +1446,6 @@ i8 LogicUnit::iCompute(void)
         m_oEntWrk.vPayloadBytes(iArg);
         break;
         
-      case EO_ENT_INSERT: // insert an entry into the indexTree
-      {
-        dLU0(eCode);
-        SP_Ent spEnt;
-        vTrace("Inserting entry"_Stz);
-        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
-        m_pEnt = m_pIndexTree->aInsertEntry(m_oEntWrk.aEnt());
-        vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pEnt,m_pIndexTree->pIndexDef()));
-        ASSERT(m_pEnt);
-      }
-        break;
-        
       case EO_ENT_INSERTPAY: NEVER_REACH; // not yet implemented
         
       case EO_ENT_NEXT: // move to next m_pEnt
@@ -1607,8 +1594,17 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
-      case EO_IXT_INS_ENT:      // insert ent
-        RASSERT(0);
+      case EO_IXT_INS_ENT: // insert an entry into the indexTree
+      {
+        dLU0(eCode);
+        SP_Ent spEnt;
+        vTrace("Inserting entry"_Stz);
+        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
+        m_pEnt = m_pIndexTree->aInsertEntry(m_oEntWrk.aEnt());
+        vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pEnt,m_pIndexTree->pIndexDef()));
+        ASSERT(m_pEnt);
+      }
+        break;
         
       case EO_IXT_TRV_BEGIN:    // begin linear traverse
         dLU0(eCode);

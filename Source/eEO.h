@@ -22,7 +22,6 @@ enum eEO : i1 // expression operators
   
   // entry
   /*    */ EO_ENT_CREATEPAY,    // create a payload in entwrk
-  /*    */ EO_ENT_INSERT,       // insert an entry into the indexTree
   /*    */ EO_ENT_INSERTPAY,    // insert a payload into an entry
   /*    */ EO_ENT_NEXT,         // move to next m_pEnt
   /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
@@ -54,7 +53,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_INI_SRC_SLAB,     // init m_pSrcRowSlab etc
 
   // index tree
-  /*    */ EO_IXT_INS_ENT,      // insert ent
+  /*    */ EO_IXT_INS_ENT,      // insert an entry into the indexTree
   /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
   /*    */ EO_IXT_TRV_NEXT,     // move to next entry
  
@@ -150,7 +149,6 @@ static Stz* aEO[]
 
   // entry
   /*    */ "EO_ENT_CREATEPAY"_Stz,
-  /*    */ "EO_ENT_INSERT"_Stz,
   /*    */ "EO_ENT_INSERTPAY"_Stz,
   /*    */ "EO_ENT_NEXT"_Stz,
   /*    */ "EO_ENT_POSPRIOR"_Stz,
