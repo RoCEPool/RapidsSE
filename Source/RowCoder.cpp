@@ -330,7 +330,7 @@ i8 RowCoder::nMetaSize(StreamPix* pStreamPix)
   //  i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
   //                   + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
   
-  i8 nMetaBytes = pStreamPix->m_nCols;
+  i8 nMetaBytes = pStreamPix->m_nCols - pStreamPix->m_nExtraCols;
   
   return nMetaBytes;
 }

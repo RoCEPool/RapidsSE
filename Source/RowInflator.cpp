@@ -816,7 +816,7 @@ void RowInflator::vInflateRow(RowSlab* pRowSlab, HeadLine* aHeadLine)
   
   //char* acString = (char*)pRow->m_xWsp.ayArea();
   
-  i8 nCols = pRowSlab->nCols();
+  i8 nCols = pRowSlab->aStreamPix()->m_nCols - pRowSlab->aStreamPix()->m_nExtraCols;
   
   eMC*  aeMetaCode = aHeadLine->aeMetaArea();
   
@@ -1130,6 +1130,7 @@ void RowInflator::vInflateRow(RowSlab* pRowSlab, HeadLine* aHeadLine)
 //        acString   += nLength;
 //        *acString++ = '\0';
 //
+        
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;

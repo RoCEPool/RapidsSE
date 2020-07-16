@@ -99,7 +99,7 @@
   ptnStream[] ptnStream.open if
 
     // force op loop to call scan_CrwBuffer to start processing buffers
-    "scan_CrwBuffer" word::find stk LogicUnit[].handler!
+    "scan_CrwBuffer" word::find LogicUnit[].handler!
     true LogicUnit[].callAgain!
 
   else

@@ -246,7 +246,7 @@
       StreamDefOut[].duplicate to StreamDef[]
       StreamDef[].pipeout
 
-      StreamDefOut[].print
+      //StreamDefOut[].print
 
     endof
 
@@ -270,7 +270,7 @@
       StreamDef[].print
 
       StreamDef[].duplicate to StreamDefOut[]
-      StreamDefOut[].print
+      //StreamDefOut[].print
     endof
 
     1003 of

@@ -1003,12 +1003,12 @@
   // filtered load
   sPath
   "
-  procedure Query6
+  procedure Query6_Exp1
     parameters $Table $File
   begin
 
   stage stageA on origin :
-  start
+    start
     | periodicOp once
     | chunk $file
     | rdCsvChunk $file
@@ -1017,6 +1017,35 @@
 
   stage stageB on all partitions :
     toRsb $table
+    | sql 600
+    | stageC
+
+  stage stageC on origin :
+    sql 601
+    | output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // filtered load
+  sPath
+  "
+  procedure Query6_Exp2
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+  start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | toRsb $table
     | sql 600
     | stageC
 

@@ -378,6 +378,18 @@ void CrwBuffer::vGetRow(RowSingle* pRow, i8 i_Row)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the compact row from the buffer                                        */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vGetRow(RowSlab* pRowSlab, i8 i_Row)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  Crw* aCrw = (Crw*)aGetHead(i_Row);
+  
+  RowInflator::vInflateRow(pRowSlab,aCrw);
+}
+
+/*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
 /*----------------------------------------------------------------------------*/
 bool CrwBuffer::bHasSpace(i8 nBytes)

@@ -85,15 +85,80 @@ ToRsb::~ToRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert a crwbuffer into a rsbBuffer                                       */
 /*----------------------------------------------------------------------------*/
+//bool ToRsb::bConvert(CrwBuffer* pCrwBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+//
+////#ifdef WITH_CONVERT_FAST_INLINE
+//
+//  //return bConvertFastInline(azSrc);
+//
+////#else
+//
+//  HV_Row hRow(m_pStreamDef,C_ALL);
+//
+//  i8 nRows = pCrwBuffer->nRowCount();
+//
+//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+//
+//    // get the inflated compact row
+//    pCrwBuffer->vGetRow(hRow, i_Row);
+//
+//    // each record thats fits
+//
+//    if (! m_pRowSlab->bNewRow()) {
+//      vNewRsbBuffer();
+//      bool b = m_pRowSlab->bNewRow();
+//      ASSERT(b);
+//    }
+//
+//    for (i8 m_i_Fld = 0; m_i_Fld < m_pRowSlab->nCols(); m_i_Fld++ ) {
+//
+//      eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
+//
+//      // currently needed by the SN_ scanners (will go)
+//      m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
+//
+//      if ( DM_VCH == eDatum) {
+//        if (C_DATUM_NULL == hRow->m_waColVal[m_i_Fld].m_iWrd) {
+//            m_pRowSlab->vDeposit(C_DATUM_NULL);
+//        }
+//        else {
+//          Stz* szSrcStz = hRow->m_waColVal[m_i_Fld].m_szVch;
+//          m_pRowSlab->vDeposit(szSrcStz);
+//        }
+//      }
+//      else {
+//        i8 iVal = hRow->m_waColVal[m_i_Fld];
+//        m_pRowSlab->vDeposit(iVal);
+//      }
+//
+//    }
+//
+//  } // end-data
+//
+//  //RASSERT(m_dCalc != 1.0);
+//
+//  //m_pRowSlab->vDumpAllRows();
+//  //m_pRowSlab->vSlabReport();
+//
+//  return true;
+////#endif
+//
+//}
+
+/*----------------------------------------------------------------------------*/
+/* convert a crwbuffer into a rsbBuffer                                       */
+/*----------------------------------------------------------------------------*/
 bool ToRsb::bConvert(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
-//#ifdef WITH_CONVERT_FAST_INLINE
+  //#ifdef WITH_CONVERT_FAST_INLINE
   
   //return bConvertFastInline(azSrc);
   
-//#else
+  //#else
   
   HV_Row hRow(m_pStreamDef,C_ALL);
   
@@ -101,39 +166,14 @@ bool ToRsb::bConvert(CrwBuffer* pCrwBuffer)
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    // get the inflated compact row
-    pCrwBuffer->vGetRow(hRow, i_Row);
-  
-    // each record thats fits
-    
     if (! m_pRowSlab->bNewRow()) {
       vNewRsbBuffer();
       bool b = m_pRowSlab->bNewRow();
       ASSERT(b);
     }
     
-    for (i8 m_i_Fld = 0; m_i_Fld < m_pRowSlab->nCols(); m_i_Fld++ ) {
-      
-      eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
-      
-      // currently needed by the SN_ scanners (will go)
-      m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-      
-      if ( DM_VCH == eDatum) {
-        if (C_DATUM_NULL == hRow->m_waColVal[m_i_Fld].m_iWrd) {
-            m_pRowSlab->vDeposit(C_DATUM_NULL);
-        }
-        else {
-          Stz* szSrcStz = hRow->m_waColVal[m_i_Fld].m_szVch;
-          m_pRowSlab->vDeposit(szSrcStz);
-        }
-      }
-      else {
-        i8 iVal = hRow->m_waColVal[m_i_Fld];
-        m_pRowSlab->vDeposit(iVal);
-      }
-      
-    }
+    // get the inflated compact row
+    pCrwBuffer->vGetRow(m_pRowSlab, i_Row);
     
   } // end-data
   
@@ -143,7 +183,7 @@ bool ToRsb::bConvert(CrwBuffer* pCrwBuffer)
   //m_pRowSlab->vSlabReport();
   
   return true;
-//#endif
+  //#endif
   
 }
 
