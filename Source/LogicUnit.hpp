@@ -125,11 +125,13 @@ namespace Expressions
     i8       m_nSrcRows;
     Rsb*     m_aSrcRsb;
     RowSlab* m_pSrcRowSlab;
+    IndexTree* m_pSrcIdxTree;
 
     i8       m_i_AltRow;
     i8       m_nAltRows;
     Rsb*     m_aAltRsb;
     RowSlab* m_pAltRowSlab;
+    IndexTree* m_pAltIdxTree;
     Rsb*     m_aPayRsb;
 
     Ent*       m_pEnt;

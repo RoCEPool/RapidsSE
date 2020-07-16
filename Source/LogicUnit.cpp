@@ -52,11 +52,13 @@ LogicUnit::LogicUnit(Task* pTask)
   m_nSrcRows    = C_UNKNOWN;
   m_aSrcRsb     = nullptr;
   m_pSrcRowSlab = nullptr;
-  
+  m_pSrcIdxTree = nullptr;
+
   m_i_AltRow    = C_UNKNOWN;
   m_nAltRows    = C_UNKNOWN;
   m_aAltRsb     = nullptr;
   m_pAltRowSlab = nullptr;
+  m_pAltIdxTree = nullptr;
 
   m_pEnt        = nullptr;
   // m_oEntWrk
