@@ -142,6 +142,12 @@
       idxDef_int indexDef[] indexTree[].new
     endof
 
+    14001 of
+      // AGGREGATE WITH GROUPBY (COPY)
+      queryNo "QUERY %v" .printf
+      14001 LogicUnit[].genCode
+    endof
+
   endcase
 
   ZK_STARTMARKER_handler
@@ -164,40 +170,8 @@
 
   queryNo case
 
-    100 of
-      //"--------------------------- 100 RSBBUFFER ---------------------------" .
-    endof
-
-    101 of
-      //"--------------------------- 101 RSBBUFFER ---------------------------" .
-    endof
-
-    600 of
-      //"--------------------------- 600 RSBBUFFER ---------------------------" .
-    endof
-
-    601 of
-      //"--------------------------- 601 RSBBUFFER ---------------------------" .
-    endof
-
-    10000 of
-      //"--------------------------- 10000 RSBBUFFER ---------------------------" .
-    endof
-
-    11000 of
-      //"--------------------------- 11000 RSBBUFFER ---------------------------" .
-    endof
-
     12000 of
       "--------------------------- 12000 RSBBUFFER ---------------------------" .
-    endof
-
-    13000 of
-      //"--------------------------- 13000 RSBBUFFER ---------------------------" .
-    endof
-
-    14000 of
-      //"--------------------------- 14000 RSBBUFFER ---------------------------" .
     endof
 
   endcase
@@ -228,7 +202,7 @@
       IndexTree[].delete
     endof
 
-    14000 of
+    14001 of
       IndexTree[].delete
     endof
 
@@ -343,9 +317,14 @@
 
     14000 of
       StreamDefOut[].new
-      0 C_MAX_INT_PRECISION CT_INTEGER "sum" StreamDefOut[].addColumn
+      0 C_MAX_INT_PRECISION CT_INTEGER "sumGby" StreamDefOut[].addColumn
 
       StreamDefOut[].duplicate to StreamDef[]
+      StreamDef[].pipeout
+    endof
+
+    14001 of
+      StreamDef[].duplicate to StreamDefOut[]
       StreamDef[].pipeout
     endof
 

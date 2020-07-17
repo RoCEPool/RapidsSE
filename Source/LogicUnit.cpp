@@ -1577,7 +1577,8 @@ i8 LogicUnit::iCompute(void)
         m_xpPot->vStreamPix(aStreamPix);
       
         // temp hack by ray
-        m_pIndexTree = * m_xpIndexTree;
+        if ( ! m_xpIndexTree.bIsNull() )  // alka added :-)
+          m_pIndexTree = * m_xpIndexTree;
         // end temp hack
       }
         break;
