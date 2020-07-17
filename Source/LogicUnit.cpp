@@ -376,11 +376,13 @@ void LogicUnit::vGenerateQuery600(void)
 
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate  
   vAddCodeArg(EO_DATE, iDateLower);
+  //vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
   vAddCode(EO_GREATEREQUAL);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
 
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
   vAddCodeArg(EO_DATE, iDateUpper);
+  //vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
 
@@ -813,6 +815,23 @@ void LogicUnit::vAddCodeArg(eEO eCode,Token* pTkn)
   i8 iArg = pTkn->iToI8();
   
   vAddCodeArg(eCode,iArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add code with date argument                                                */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vAddCodeArg(eEO eCode, Stz* szLiteral)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  ASSERT(EA_DATE == EoArgs[eCode].m_eArgument);
+  
+  char* acCrs = szLiteral->azChar();
+  
+  SN_Dte snDate;
+  i8 iDate = snDate.i(&acCrs,AM::pFmt());
+  
+  vAddCodeArg(eCode,iDate);
 }
 
 /*----------------------------------------------------------------------------*/
