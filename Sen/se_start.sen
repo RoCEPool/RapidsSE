@@ -1017,7 +1017,7 @@
     | stageC
 
   stage stageC on origin :
-    | output
+    output
     | sink
     | stageA
 

@@ -146,7 +146,16 @@
       // SUPER AGGREGATE WITH GROUPBY
       queryNo "QUERY %v" .printf
       14001 LogicUnit[].genCode
-      endof
+    endof
+
+    20000 of
+      // SRC INDEX WALK TEST 1
+      queryNo "QUERY %v" .printf
+      "dn dp dn dy . ret"
+         LogicUnit[].source!
+      LogicUnit[].compile assert
+    endof
+
   endcase
 
   ZK_STARTMARKER_handler
@@ -156,6 +165,24 @@
 /* on ZK_PULSEMARKER ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
 : sql_PulseMarker \handler
+
+  <queryNo> >int locals| queryNo |
+
+  queryNo case
+
+    20000 of
+      "-------------------------- 20000 PULSEMARKER --------------------------" .
+
+      "lineItem" "lineItem_Idx1" op__table_index assert
+
+      Index[].indexTree to IndexTree[]
+      IndexTree[].asSrc
+
+      LogicUnit[].transform
+
+    endof
+
+  endcase
 
   ZK_PULSEDMARKER_handler
 ;
