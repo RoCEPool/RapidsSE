@@ -1000,7 +1000,37 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // filtered load
+  // Query 1
+  sPath
+  "
+  procedure Query1_Exp1
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | toRsb $table
+    | sql 100
+    | stageC
+
+  stage stageC on origin :
+    sql 101
+    | output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // query 6 (reading from file into RSB)
   sPath
   "
   procedure Query6_Exp1
@@ -1031,7 +1061,7 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // filtered load
+  // Query 6 - converting loaded CRW data into RSB
   sPath
   "
   procedure Query6_Exp2

@@ -75,6 +75,10 @@
       queryNo "QUERY %v" .printf
     endof
 
+    101 of
+    queryNo "QUERY %v" .printf
+    endof
+
     300 of
       queryNo "QUERY %v" .printf
     endof
@@ -153,6 +157,14 @@
 
   queryNo case
 
+    100 of
+      //"--------------------------- 100 RSBBUFFER ---------------------------" .
+    endof
+
+    101 of
+      //"--------------------------- 101 RSBBUFFER ---------------------------" .
+    endof
+
     600 of
       //"--------------------------- 600 RSBBUFFER ---------------------------" .
     endof
@@ -224,6 +236,34 @@
   queryNo case
 
     100 of
+      StreamDefOut[].new
+
+      // add column L_RETURNFLAG
+      8 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      "l_returnflag"
+      StreamDefOut[].addColumn
+
+
+      // add column SUM(L_QUANTITY) as SUM_QTY
+      4 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      "sum_qty"
+      StreamDefOut[].addColumn
+
+      StreamDef[].delete
+
+      StreamDefOut[].duplicate to StreamDef[]
+      StreamDef[].pipeout
+    endof
+
+    101 of
+      StreamDef[].duplicate to StreamDefOut[]
+      StreamDef[].pipeout
     endof
 
     300 of
@@ -234,6 +274,8 @@
 
     600 of
       StreamDefOut[].new
+
+      // add column L_EXTENTEDPRICE
       5 StreamDef[].column@ to pColumn
 
       pColumn column.scale@
