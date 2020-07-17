@@ -53,7 +53,7 @@
   "BM_InsIdx_EntBuffer" .
 
   // get index partition for current partition
-  index[] index.IndexTree to IndexTree[] // IndexTree
+  index[].IndexTree to IndexTree[]
 
   BM_TimerBegin
 

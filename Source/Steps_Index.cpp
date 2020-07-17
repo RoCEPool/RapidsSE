@@ -22,7 +22,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index[].genEntBuffers"_Stz, &Step::vIndexGenEntBuffers);
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
-  vAddStep("index.IndexTree"_Stz,       &Step::vIndexIndexTree);
+  vAddStep("index[].IndexTree"_Stz,     &Step::vIndexIndexTree);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
@@ -426,14 +426,14 @@ void Step::vIndexIndexDefStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.IndexTree -- get  index tree of given index for current partition    */
+/* index[].IndexTree -- get index tree of index[] for current partition       */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIndexTree(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  
+  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
+
   // -- -- -- -- -- -- -- -- -- -- -- --
   
   Job* pJob = m_pTask->m_pJob;

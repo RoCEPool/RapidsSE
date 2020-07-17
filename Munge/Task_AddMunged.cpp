@@ -412,7 +412,7 @@ void Task::vAddMunged(Forth* pForth)
     "  \"BM_InsIdx_EntBuffer\" .\n"
     "\n"
     "  // get index partition for current partition\n"
-    "  index[] index.IndexTree to IndexTree[] // IndexTree\n"
+    "  index[] index[].IndexTree to IndexTree[] // IndexTree\n"
     "\n"
     "  BM_TimerBegin\n"
     "\n"
