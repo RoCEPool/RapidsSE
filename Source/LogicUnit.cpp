@@ -172,6 +172,11 @@ EoArg EoArgs[]
   { EA_LABEL, 8 },  // EO_JMPFALSE
   { EA_LABEL, 8 },  // EO_JMPTRUE
 
+  // date operators
+  { EA_NONE,  0 },  // EO_DTE_NOW
+  { EA_NONE,  0 },  // EO_DTE_PRINT
+  { EA_NONE,  0 },  // EO_DTE_YEAR
+  
   // entry
   { EA_NONE,  0 },  // EO_ENT_NEXT
   { EA_NONE,  0 },  // EO_ENT_POSPRIOR
@@ -1355,6 +1360,12 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("-"_Stz))   { vAddCode(EO_SUBTRACT);            continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // date operators
+    if (pTkn->bSame("dn"_Stz))  { vAddCode(EO_DTE_NOW);             continue; }
+    if (pTkn->bSame("dp"_Stz))  { vAddCode(EO_DTE_PRINT);           continue; }
+    if (pTkn->bSame("dy"_Stz))  { vAddCode(EO_DTE_YEAR);            continue; }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // entry relational operators
     if (pTkn->bSame("<"_Stz))   { vAddCode(EO_LESSTHAN);            continue; }
     if (pTkn->bSame("<="_Stz))  { vAddCode(EO_LESSEQUAL);           continue; }
@@ -1722,6 +1733,43 @@ i8 LogicUnit::iCompute(void)
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // date operators
+      case EO_DTE_NOW: // push current date
+      {
+        Now oNow;
+        Dtm wDte;
+
+        wDte.m_wDte.m_uDay = oNow.m_wTsp.m_uDay;
+        wDte.m_wDte.m_uMonth = oNow.m_wTsp.m_uMonth;
+        wDte.m_wDte.m_uYearDelta = oNow.m_wTsp.m_uYearDelta;
+        wDte.m_wDte.m_uSpare = 0;
+
+        iRes = wDte.iAsI8();
+        dLU1(eCode,iRes);
+        *(++aiDstk) = iRes;
+      }
+        break;
+        
+      case EO_DTE_PRINT: // pop top and print as date
+      {
+        SP_Dte spDate;
+        iTopA = *(aiDstk--);
+        dLU1(eCode,iTopA);
+        vTrace("%s\n"_Stz,spDate.sz(iTopA));
+      }
+        break;
+
+      case EO_DTE_YEAR: // pop top, push year of date
+      {
+        Dtm wDte;
+        wDte = *(aiDstk--);
+        iRes = wDte.m_wDte.m_uYearDelta + C_YEAR_BASE;
+        dLU2(eCode,wDte.iAsI8(),iRes);
+        *(++aiDstk) = iRes;
+      }
+        break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
       case EO_ENT_NEXT: // move to next m_pEnt
         dLU0(eCode);
@@ -1760,7 +1808,8 @@ i8 LogicUnit::iCompute(void)
       // entry relational operators
       case EO_ENT_EQUAL: {
         SP_Ent spEnt;
-        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
+        vTrace("\n\nEntWrk : %s\n"_Stz,
+               spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
         vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pEnt,m_pIndexTree->pIndexDef()));
         iRes  = KC_SAME == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(eCode,iRes);

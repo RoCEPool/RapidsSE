@@ -20,6 +20,11 @@ enum eEO : i1 // expression operators
   /*    */ EO_JMPFALSE,         // pop top and jump to location if false
   /*    */ EO_JMPTRUE,          // pop top and jump to location if true
   
+  // date operators
+  /*    */ EO_DTE_NOW,          // push current date
+  /*    */ EO_DTE_PRINT,        // pop top and print as date
+  /*    */ EO_DTE_YEAR,         // pop top, push year of date
+  
   // entry
   /*    */ EO_ENT_NEXT,         // move to next m_pEnt
   /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
@@ -156,6 +161,11 @@ static Stz* aEO[]
   /*    */ "EO_JMPFALSE"_Stz,
   /*    */ "EO_JMPTRUE"_Stz,
 
+  // date operators
+  /*    */ "EO_DTE_NOW"_Stz,
+  /*    */ "EO_DTE_PRINT"_Stz,
+  /*    */ "EO_DTE_YEAR"_Stz,
+  
   // entry
   /*    */ "EO_ENT_NEXT"_Stz,
   /*    */ "EO_ENT_POSPRIOR"_Stz,

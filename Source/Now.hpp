@@ -7,7 +7,8 @@ namespace Gadgets
 {
   class Now : public Object
   {
-  private:
+  //private:
+  public:
     char m_caResult[32];
     i8   m_iSinceEpoch;
     Tsp  m_wTsp;

@@ -121,7 +121,7 @@
     12000 of
       queryNo "QUERY %v" .printf
       //12000 LogicUnit[].genCode
-      "ss pi bs L GET gs jf END nd = wr @ 0 ae .w os wo .w xi xd j GET L END ft ret"
+      "dn dp dn dy . ss pi bs L GET gs jf END nd = wr @ 0 ae .w os wo .w xi xd j GET L END ft ret"
       //"ss pi bs L GET gs jf END nd = wr j GET L END ft ret"
       LogicUnit[].source!
       LogicUnit[].compile assert
