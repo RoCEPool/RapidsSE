@@ -176,10 +176,10 @@ namespace Expressions
     void vGenerateQuery601(void);
     
     //! TEMP: TO GO
-    void vGenerateAgg1004(void);
-    void vGenerateAggCpy(void);
-    void vGenerateAggGby(void);
-    void vGenerateSort1003(void);
+    void vGenerateAgg13000(void);
+    void vGenerateAggCpy14000(void);
+    void vGenerateAggGby14001(void);
+    void vGenerateSort12000(void);
 
     i8   iAggregate(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut);
     i8   iAggregateGby(Pot* pPot, IndexTree* pIndexTree, RowSlab* pDstRowSlab,
@@ -187,7 +187,6 @@ namespace Expressions
     bool bCompile(void);
     bool bCompile(TokenVec* pTknVec);
 
-    i8   iQuery(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut);
     i8   iTransform(void);
   
     Stz* szSource(void);

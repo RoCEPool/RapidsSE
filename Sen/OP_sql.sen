@@ -99,7 +99,7 @@
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    1001 of
+    10000 of
       // FILTER
       queryNo "QUERY %v" .printf
 
@@ -108,7 +108,7 @@
       LogicUnit[].compile assert
     endof
 
-    1002 of
+    11000 of
       // PROJECT
       queryNo "QUERY %v" .printf
 
@@ -118,9 +118,9 @@
       LogicUnit[].compile assert
     endof
 
-    1003 of
+    12000 of
       queryNo "QUERY %v" .printf
-      //1003 LogicUnit[].genCode
+      //12000 LogicUnit[].genCode
       "ss pi bs L GET gs jf END nd = wr @ 0 ae .w os wo .w xi xd j GET L END ft ret"
       //"ss pi bs L GET gs jf END nd = wr j GET L END ft ret"
       LogicUnit[].source!
@@ -129,10 +129,17 @@
       idxDef_int indexDef[] indexTree[].new
     endof
 
-    1004 of
+    13000 of
       // AGGREGATE
       queryNo "QUERY %v" .printf
-      1004 LogicUnit[].genCode
+      13000 LogicUnit[].genCode
+    endof
+
+    14000 of
+      // AGGREGATE WITH GROUPBY
+      queryNo "QUERY %v" .printf
+      14000 LogicUnit[].genCode
+      idxDef_int indexDef[] indexTree[].new
     endof
 
   endcase
@@ -173,20 +180,24 @@
       //"--------------------------- 601 RSBBUFFER ---------------------------" .
     endof
 
-    1001 of
-      //"--------------------------- 1001 RSBBUFFER ---------------------------" .
+    10000 of
+      //"--------------------------- 10000 RSBBUFFER ---------------------------" .
     endof
 
-    1002 of
-      //"--------------------------- 1002 RSBBUFFER ---------------------------" .
+    11000 of
+      //"--------------------------- 11000 RSBBUFFER ---------------------------" .
     endof
 
-    1003 of
-      "--------------------------- 1003 RSBBUFFER ---------------------------" .
+    12000 of
+      "--------------------------- 12000 RSBBUFFER ---------------------------" .
     endof
 
-    1004 of
-      //"--------------------------- 1003 RSBBUFFER ---------------------------" .
+    13000 of
+      //"--------------------------- 13000 RSBBUFFER ---------------------------" .
+    endof
+
+    14000 of
+      //"--------------------------- 14000 RSBBUFFER ---------------------------" .
     endof
 
   endcase
@@ -213,7 +224,11 @@
 
   queryNo case
 
-    1003 of
+    12000 of
+      IndexTree[].delete
+    endof
+
+    14000 of
       IndexTree[].delete
     endof
 
@@ -245,7 +260,6 @@
       pColumn column.type@
       "l_returnflag"
       StreamDefOut[].addColumn
-
 
       // add column SUM(L_QUANTITY) as SUM_QTY
       4 StreamDef[].column@ to pColumn
@@ -299,11 +313,11 @@
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    1001 of
+    10000 of
       StreamDef[].pipeout
     endof
 
-    1002 of
+    11000 of
       //StreamDef[].pipeIn
 
       StreamDef[].duplicate to OperandB[]
@@ -315,11 +329,19 @@
       //StreamDefOut[].print
     endof
 
-    1003 of
+    12000 of
       StreamDef[].pipeout
     endof
 
-    1004 of
+    13000 of
+      StreamDefOut[].new
+      0 C_MAX_INT_PRECISION CT_INTEGER "sum" StreamDefOut[].addColumn
+
+      StreamDefOut[].duplicate to StreamDef[]
+      StreamDef[].pipeout
+    endof
+
+    14000 of
       StreamDefOut[].new
       0 C_MAX_INT_PRECISION CT_INTEGER "sum" StreamDefOut[].addColumn
 

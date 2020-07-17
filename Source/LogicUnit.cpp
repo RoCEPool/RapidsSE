@@ -298,10 +298,10 @@ void LogicUnit::vGenCode(i8 iTestNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   switch (iTestNo) {
-    case    600: vGenerateQuery600(); break;
-    case    601: vGenerateQuery601(); break;
-    case   1003: vGenerateSort1003(); break;
-    case   1004: vGenerateAgg1004(); break;
+    case     600: vGenerateQuery600();  break;
+    case     601: vGenerateQuery601();  break;
+    case   12000: vGenerateSort12000(); break;
+    case   13000: vGenerateAgg13000();  break;
     default:
       NEVER_REACH;
   }
@@ -486,9 +486,9 @@ void LogicUnit::vGenerateQuery601(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate aggregate query 1004                                              */
+/* generate aggregate query 13000                                             */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAgg1004(void)
+void LogicUnit::vGenerateAgg13000(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -532,7 +532,7 @@ void LogicUnit::vGenerateAgg1004(void)
 /*----------------------------------------------------------------------------*/
 /* generate agg group by                                                      */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAggCpy(void)
+void LogicUnit::vGenerateAggCpy14000(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -565,7 +565,7 @@ void LogicUnit::vGenerateAggCpy(void)
 /*----------------------------------------------------------------------------*/
 /* generate agg group by                                                      */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAggGby(void)
+void LogicUnit::vGenerateAggGby14001(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -608,7 +608,7 @@ void LogicUnit::vGenerateAggGby(void)
 /*----------------------------------------------------------------------------*/
 /* generate sort test code                                                    */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateSort1003(void)
+void LogicUnit::vGenerateSort12000(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
@@ -758,37 +758,6 @@ bool LogicUnit::bCompile(TokenVec* pTknVec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   bool b = bCompileCode(pTknVec);
   return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* filter compute                                                             */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iQuery(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-  //m_pDstRowSlab = nullptr;
-  
-  m_aSrcRsb     = nullptr;
-  m_pSrcRowSlab = pSrcRowSlab;
-  m_nSrcRows    = m_pSrcRowSlab->nRows();
-
-  // temp, needs fixing
-  //pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
-  //m_pPot->vStreamPix(&m_oStreamPix);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  i8 iResult = iCompute();
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //m_pDstRowSlab  = nullptr;
-  //m_aDstRsb      = m_pPot->aNewDstRsb(&m_pDstRowSlab);
-  
-  m_nSrcRows     = C_UNKNOWN;
-  m_aSrcRsb      = nullptr;
-  m_pSrcRowSlab  = nullptr;
-  
-  return iResult;
 }
 
 /*----------------------------------------------------------------------------*/
