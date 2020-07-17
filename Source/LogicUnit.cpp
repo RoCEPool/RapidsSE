@@ -1256,23 +1256,28 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump code 2                                                                */
+/* dump code                                                                  */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vDumpCode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-    
-  i8* piArg;
-  i8  iArg = 0;
-  
+      
   for (i8 i_Code = 0; i_Code < m_i_Code; ) {
     
     eEO eCode = m_eaCode[i_Code];
     
-    if (EoArgs[eCode].m_nArgBytes)
-      vDumpCode(eCode,i_Code);
-    else
-      vDumpCode(i_Code,eCode);
+    if (EoArgs[eCode].m_nArgBytes) {
+      //vDumpCode(eCode,i_Code);
+      i8* piArg = (i8*) & m_eaCode[i_Code+1];
+      i8 iArg = * piArg;
+      vTrace("%04lld: %18s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
+      i_Code += 1 + sizeof(i8);
+    }
+    else {
+      //vDumpCode(i_Code,eCode);
+      vTrace("%04lld: %18s\n"_Stz,i_Code,aEO[eCode]);
+      i_Code++;
+    }
   }
 }
 
