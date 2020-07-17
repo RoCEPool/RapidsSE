@@ -302,10 +302,12 @@ void LogicUnit::vGenCode(i8 iTestNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   switch (iTestNo) {
-    case     600: vGenerateQuery600();  break;
-    case     601: vGenerateQuery601();  break;
-    case   12000: vGenerateSort12000(); break;
-    case   13000: vGenerateAgg13000();  break;
+    case     600: vGenerateQuery600();    break;
+    case     601: vGenerateQuery601();    break;
+    case   12000: vGenerateSort12000();   break;
+    case   13000: vGenerateAgg13000();    break;
+    case   14000: vGenerateAggGby14000(); break;
+    case   14001: vGenerateAggGby14001(); break;
     default:
       NEVER_REACH;
   }
@@ -538,45 +540,32 @@ void LogicUnit::vGenerateAgg13000(void)
 /*----------------------------------------------------------------------------*/
 /* generate agg group by                                                      */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAggCpy14000(void)
+void LogicUnit::vGenerateAggGby14000(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_i_Code = 0;
+  // initialize srcSlab etc
+  vAddCode(EO_INI_SRC_SLAB);
   
-  // begin index tree traversal
-  vAddCode(EO_IXT_TRV_BEGIN);
-  vAddCodeLabel(EO_JMPFALSE,"END_IXT_SRC:"_Stz);
+  // init m_pPot pix from streamDef out
+  vAddCode(EO_INI_PIX_DEFOUT);
   
-  vDefineLabel("NEXT_IXT_SRC:"_Stz);
+  // -- -- -- -- -- -- -- -- -- -- --
+  // insert each rsb
   
-  // new a dst rsb row
-  vAddCode(EO_RSB_DST_NEW);
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)0);
-  vAddCodeArg(EO_DEPOSITCOLI,(i8)0);
-  vAddCode(EO_RSB_DST_PRINT);
-  vAddCode(EO_ENT_NEXT);
-  vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  // forearch src rsb
+  vAddCode(EO_RSB_SRC_BEGIN);
   
-  //vAddCode(EO_IXT_TRV_NEXT);
-  //vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  vDefineLabel("NEXT_RSB_SRC:"_Stz);
   
-  vDefineLabel("END_IXT_SRC:"_Stz);
-  vAddCode(EO_RETURN);
+  vAddCode(EO_RSB_SRC_NEXT);
+  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
   
-  //vDumpCode1();
-  vDumpCode2();
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate agg group by                                                      */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAggGby14001(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-    // append the key element to entwrk
+  // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
+  
+  // add key
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
   vAddCodeArg(EO_ENTWRK_APPENDELM,(i8)0);
   
   // find the key in the indexTree
@@ -605,6 +594,49 @@ void LogicUnit::vGenerateAggGby14001(void)
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);
   vAddCode(EO_ADD);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
+  
+  vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
+  
+  vDefineLabel("END_RSB_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  //vDumpCode1();
+  vDumpCode2();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate agg group by                                                      */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAggGby14001(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_i_Code = 0;
+  
+  // initialize srcSlab etc
+  vAddCode(EO_INI_SRC_SLAB);
+  
+  // init m_pPot pix from streamDef out
+  vAddCode(EO_INI_PIX_DEFOUT);
+  
+  // begin index tree traversal
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMPFALSE,"END_IXT_SRC:"_Stz);
+  
+  vDefineLabel("NEXT_IXT_SRC:"_Stz);
+  
+  // new a dst rsb row
+  vAddCode(EO_RSB_DST_NEW);
+  vAddCodeArg(EO_PAY_FETCH_COL, (i8)0);
+  vAddCodeArg(EO_DEPOSITCOLI,(i8)0);
+  vAddCode(EO_RSB_DST_PRINT);
+  vAddCode(EO_ENT_NEXT);
+  vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  
+  //vAddCode(EO_IXT_TRV_NEXT);
+  //vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  
+  vDefineLabel("END_IXT_SRC:"_Stz);
   vAddCode(EO_RETURN);
   
   //vDumpCode1();
@@ -1356,11 +1388,11 @@ i8 LogicUnit::iCompute(void)
   eEO  eCode;
   eEO* aeCode = & m_eaCode[0];
   i8*  aiDstk = &m_iaDataStack[0];
-  
-  IndexDef* pIndexDef = m_pIndexTree ? m_pIndexTree->pIndexDef() : nullptr;
 
   eEO** aaeRstk = &m_aaReturnStack[0];
 
+  IndexDef* pIndexDef = nullptr;
+  
   for (;;) {
   
     eCode = *aeCode++;
@@ -1529,7 +1561,7 @@ i8 LogicUnit::iCompute(void)
         iArg = * (i8*)aeCode;
         dLU1(eCode,iArg);
         aeCode += 8;
-        m_oEntWrk.vAppendElement(m_aSrcRsb, pIndexDef->pGetColumn(iArg));
+        m_oEntWrk.vAppendElement(m_aSrcRsb, m_pIndexTree->pIndexDef()->pGetColumn(iArg));
         SP_Ent spEnt;
         vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
         break;
@@ -1588,6 +1620,11 @@ i8 LogicUnit::iCompute(void)
           m_bPixInited = true;
           m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
           m_xpPot->vStreamPix(&m_oStreamPix);
+          
+          // temp hack by alka
+          if ( ! m_xpIndexTree.bIsNull() )
+            m_pIndexTree = * m_xpIndexTree;
+          // end temp hack
         }
         break;
         
@@ -1610,8 +1647,9 @@ i8 LogicUnit::iCompute(void)
         //m_pDstRowSlab = nullptr;
 
         m_aSrcRsb     = nullptr;
-        m_pSrcRowSlab = _pRsbBuffer(* m_xpOperandA)->pRowSlab();
-        m_nSrcRows    = m_pSrcRowSlab->nRows();
+        m_pSrcRowSlab = m_xpOperandA.bIsNull() ?
+                        nullptr : _pRsbBuffer(* m_xpOperandA)->pRowSlab();
+        m_nSrcRows    = m_pSrcRowSlab ? m_pSrcRowSlab->nRows() : 0;
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
