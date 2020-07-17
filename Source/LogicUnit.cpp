@@ -436,8 +436,7 @@ void LogicUnit::vGenerateQuery600(void)
   vAddCode(EO_RETURN);
 
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,8 +489,7 @@ void LogicUnit::vGenerateQuery601(void)
   vAddCode(EO_RETURN);
   
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -534,8 +532,7 @@ void LogicUnit::vGenerateAgg13000(void)
   vAddCode(EO_RSB_DST_PRINT);
   vAddCode(EO_RETURN);
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -601,8 +598,7 @@ void LogicUnit::vGenerateAggGby14000(void)
   vDefineLabel("END_RSB_SRC:"_Stz);
   vAddCode(EO_RETURN);
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -640,8 +636,7 @@ void LogicUnit::vGenerateAggGby14001(void)
   vDefineLabel("END_IXT_SRC:"_Stz);
   vAddCode(EO_RETURN);
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -710,9 +705,7 @@ void LogicUnit::vGenerateSort12000(void)
   vDefineLabel("END_IXT_ENT:"_Stz);
   vAddCode(EO_RETURN);
 
-  
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1257,8 +1250,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
       return false;
     }
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 
   return true;
 }
@@ -1266,7 +1258,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* dump code 2                                                                */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vDumpCode2(void)
+void LogicUnit::vDumpCode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
     
@@ -1282,8 +1274,8 @@ void LogicUnit::vDumpCode2(void)
     else
       vDumpCode(i_Code,eCode);
   }
-
 }
+
 /*----------------------------------------------------------------------------*/
 /* dump code                                                                  */
 /*----------------------------------------------------------------------------*/
