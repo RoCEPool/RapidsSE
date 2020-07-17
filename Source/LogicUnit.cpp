@@ -58,8 +58,8 @@ LogicUnit::LogicUnit(Task* pTask)
   m_i_AltRow    = C_UNKNOWN;
   m_nAltRows    = C_UNKNOWN;
   m_aAltRsb     = nullptr;
-  m_aAltEnt     = nullptr;
   m_pAltRowSlab = nullptr;
+  m_aAltEnt     = nullptr;
   m_pAltIdxTree = nullptr;
 
   m_pEnt        = nullptr;
@@ -170,7 +170,6 @@ EoArg EoArgs[]
 
   // entry
   { EA_INT,   8 },  // EO_ENT_CREATEPAY
-  { EA_NONE,  0 },  // EO_ENT_INSERTPAY
   { EA_NONE,  0 },  // EO_ENT_NEXT
   { EA_NONE,  0 },  // EO_ENT_POSPRIOR
   { EA_NONE,  0 },  // EO_ENT_PUSH
@@ -1461,9 +1460,7 @@ i8 LogicUnit::iCompute(void)
         m_oEntWrk.vPayload(true);
         m_oEntWrk.vPayloadBytes(iArg);
         break;
-        
-      case EO_ENT_INSERTPAY: NEVER_REACH; // not yet implemented
-        
+                
       case EO_ENT_NEXT: // move to next m_pEnt
         dLU0(eCode);
         m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
