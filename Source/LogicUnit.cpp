@@ -284,6 +284,7 @@ EoArg EoArgs[]
   // misc
   { EA_NONE,  0 },  // EO_TRACE
   { EA_NONE,  0 },  // EO_NOOP
+  { EA_NONE,  0 },  // EO_ERROR
 
   // -- end --
   { EA_NONE,  0 },  // EO_ENUMS
@@ -1240,6 +1241,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     vAddCode(EO_RETURN);
+    m_eaCode[0] = EO_ERROR;
     vTrace("Error: %s\n"_Stz,pTkn->szChars());
     return false;
   }
@@ -1249,6 +1251,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
   
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
     if (! m_xaJumpLabel[i_Label].m_bDefined) {
+      m_eaCode[0] = EO_ERROR;
       vTrace("Error: undefined label %s\n"_Stz,
              m_xaJumpLabel[i_Label].m_sLabel.szStz());
       return false;
@@ -2045,6 +2048,12 @@ i8 LogicUnit::iCompute(void)
         
       case EO_NOOP: // no op
         dLU0(eCode);
+        break;
+
+      case EO_ERROR: // error marker
+        dLU0(eCode);
+        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+               "Code compiled with error"_Stz);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
