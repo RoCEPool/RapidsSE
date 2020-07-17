@@ -54,6 +54,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pSrcRowSlab = nullptr;
   m_aSrcEnt     = nullptr;
   m_pSrcIdxTree = nullptr;
+  m_pSrcEntBuffer = nullptr;
 
   m_i_AltRow    = C_UNKNOWN;
   m_nAltRows    = C_UNKNOWN;
@@ -61,6 +62,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pAltRowSlab = nullptr;
   m_aAltEnt     = nullptr;
   m_pAltIdxTree = nullptr;
+  m_pAltEntBuffer = nullptr;
 
   m_pEnt        = nullptr;
   // m_oEntWrk
@@ -282,6 +284,7 @@ EoArg EoArgs[]
   // misc
   { EA_NONE,  0 },  // EO_TRACE
   { EA_NONE,  0 },  // EO_NOOP
+  { EA_NONE,  0 },  // EO_ERROR
 
   // -- end --
   { EA_NONE,  0 },  // EO_ENUMS
@@ -433,8 +436,7 @@ void LogicUnit::vGenerateQuery600(void)
   vAddCode(EO_RETURN);
 
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -487,8 +489,7 @@ void LogicUnit::vGenerateQuery601(void)
   vAddCode(EO_RETURN);
   
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -531,8 +532,7 @@ void LogicUnit::vGenerateAgg13000(void)
   vAddCode(EO_RSB_DST_PRINT);
   vAddCode(EO_RETURN);
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -600,8 +600,7 @@ void LogicUnit::vGenerateAggGby14000(void)
   vDefineLabel("END_RSB_SRC:"_Stz);
   vAddCode(EO_RETURN);
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -641,8 +640,7 @@ void LogicUnit::vGenerateAggGby14001(void)
   vDefineLabel("END_IXT_SRC:"_Stz);
   vAddCode(EO_RETURN);
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -711,9 +709,7 @@ void LogicUnit::vGenerateSort12000(void)
   vDefineLabel("END_IXT_ENT:"_Stz);
   vAddCode(EO_RETURN);
 
-  
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1048,7 +1044,7 @@ void LogicUnit::vSource(Stz* szSource)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compile                                                                    */
+/* compile short cut source in token vector                                   */
 /*----------------------------------------------------------------------------*/
 bool LogicUnit::bCompileCode(TokenVec* pTknVec)
 {
@@ -1063,6 +1059,9 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     
     Token* pTkn = pTknVec->pGet(i_Tkn);
     vTrace(" >%s<\n"_Stz,pTkn->szChars());
+    
+    if (pTkn->bSame("0"_Stz))   { vAddCode(EO_PUSH0);               continue; }
+    if (pTkn->bSame("1"_Stz))   { vAddCode(EO_PUSH1);               continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // arithmetic operators
@@ -1109,6 +1108,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("os"_Stz))  { vAddCode(EO_RSB_SRC_PUSHOFS);     continue; }
     if (pTkn->bSame("nd"_Stz))  { vAddCode(EO_RSB_DST_NEW);         continue; }
 
+    if (pTkn->bSame("="_Stz))   { vAddCode(EO_RSB_DST_COPYSRC);     continue; }
     if (pTkn->bSame(".d"_Stz))  { vAddCode(EO_RSB_DST_PRINT);       continue; }
     if (pTkn->bSame(".s"_Stz))  { vAddCode(EO_RSB_SRC_PRINT);       continue; }
     if (pTkn->bSame(".a"_Stz))  { vAddCode(EO_RSB_ALT_PRINT);       continue; }
@@ -1143,15 +1143,8 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     // misc
     if (pTkn->bSame("tr"_Stz))  { vAddCode(EO_TRACE);               continue; }
     
+    
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-//    if (pTkn->bIsName()) {
-//      vAddCode(EO_PUSHCOLI;
-//      i8 iColVec;
-//      piArg = (i8*) & m_eaCode[m_i_Code];
-//      * piArg = pStreamDef->iFindColumn(pTkn->azChars(), iColVec);
-//      m_i_Code += sizeof(i8);
-//      continue;
-//    }
     
     // push src column value
     if (pTkn->bSame("@"_Stz)) {
@@ -1174,12 +1167,6 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
       continue;
     }
 
-    // copy src row into dst
-    if (pTkn->bSame("="_Stz)) {
-      vAddCode(EO_RSB_DST_COPYSRC);
-      continue;
-    }
-    
     // call subroutine
     if (pTkn->bSame("call"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
@@ -1194,20 +1181,6 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
       continue;
     }
 
-    // fetch pay col
-    if (pTkn->bSame("pf"_Stz)) {
-      pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeArg(EO_PAY_FETCH_COL,pTkn);
-      continue;
-    }
-    
-    // store pay col
-    if (pTkn->bSame("ps"_Stz)) {
-      pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeArg(EO_PAY_STORE_COL,pTkn);
-      continue;
-    }
-    
     // jump
     if (pTkn->bSame("j"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
@@ -1229,13 +1202,23 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
       continue;
     }
 
+    // fetch pay col
+    if (pTkn->bSame("pf"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeArg(EO_PAY_FETCH_COL,pTkn);
+      continue;
+    }
+    
+    // store pay col
+    if (pTkn->bSame("ps"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeArg(EO_PAY_STORE_COL,pTkn);
+      continue;
+    }
+    
     if (pTkn->bIsInteger()) {
       iArg = pTkn->iToI8();
       vAddCodeArg(EO_INTEGER,iArg);
-//      iArg = pTkn->iToI8();
-//      piArg = (i8*) & m_eaCode[m_i_Code];
-//      * piArg = iArg;
-//      m_i_Code += sizeof(i8);
       continue;
     }
     
@@ -1244,18 +1227,18 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
       continue;
     }
     
-    if (pTkn->bSame("0"_Stz)) {
-      vAddCodeArg(EO_INTEGER,(i8)0);
-      continue;
-    }
-    
-    if (pTkn->bSame("1"_Stz)) {
-      vAddCodeArg(EO_INTEGER,1);
-      continue;
-    }
+    //    if (pTkn->bIsName()) {
+    //      vAddCode(EO_PUSHCOLI;
+    //      i8 iColVec;
+    //      piArg = (i8*) & m_eaCode[m_i_Code];
+    //      * piArg = pStreamDef->iFindColumn(pTkn->azChars(), iColVec);
+    //      m_i_Code += sizeof(i8);
+    //      continue;
+    //    }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     vAddCode(EO_RETURN);
+    m_eaCode[0] = EO_ERROR;
     vTrace("Error: %s\n"_Stz,pTkn->szChars());
     return false;
   }
@@ -1265,63 +1248,41 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
   
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
     if (! m_xaJumpLabel[i_Label].m_bDefined) {
+      m_eaCode[0] = EO_ERROR;
       vTrace("Error: undefined label %s\n"_Stz,
              m_xaJumpLabel[i_Label].m_sLabel.szStz());
       return false;
     }
   
-  //vDumpCode1();
-  vDumpCode2();
+  vDumpCode();
 
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump code 2                                                                */
+/* dump code                                                                  */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vDumpCode2(void)
+void LogicUnit::vDumpCode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-    
-  i8* piArg;
-  i8  iArg = 0;
-  
+      
   for (i8 i_Code = 0; i_Code < m_i_Code; ) {
     
     eEO eCode = m_eaCode[i_Code];
     
-    if (EoArgs[eCode].m_nArgBytes)
-      vDumpCode(eCode,i_Code);
-    else
-      vDumpCode(i_Code,eCode);
+    if (EoArgs[eCode].m_nArgBytes) {
+      //vDumpCode(eCode,i_Code);
+      i8* piArg = (i8*) & m_eaCode[i_Code+1];
+      i8 iArg = * piArg;
+      vTrace("%04lld: %18s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
+      i_Code += 1 + sizeof(i8);
+    }
+    else {
+      //vDumpCode(i_Code,eCode);
+      vTrace("%04lld: %18s\n"_Stz,i_Code,aEO[eCode]);
+      i_Code++;
+    }
   }
-
-}
-/*----------------------------------------------------------------------------*/
-/* dump code                                                                  */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vDumpCode(i8& i_Code, eEO eCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  vTrace("%04lld: %18s\n"_Stz,i_Code,aEO[eCode]);
-  
-  i_Code++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump code                                                                  */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vDumpCode(eEO eCode, i8& i_Code)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  i8* piArg = (i8*) & m_eaCode[i_Code+1];
-  i8 iArg = * piArg;
-
-  vTrace("%04lld: %18s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
-
-  i_Code += 1 + sizeof(i8);
 }
 
 #if 1
@@ -1672,7 +1633,7 @@ i8 LogicUnit::iCompute(void)
       }
         break;
         
-      case EO_IXT_TRV_BEGIN:    // begin linear traverse
+      case EO_IXT_TRV_BEGIN: // begin linear traverse
         dLU0(eCode);
         m_pEntBuffer = m_pIndexTree->pFirstH0Buffer();
         if (m_pEntBuffer) {
@@ -1686,7 +1647,7 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
         
-      case EO_IXT_TRV_NEXT:     // move to next entry
+      case EO_IXT_TRV_NEXT: // move to next entry
         dLU0(eCode);
         m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
         if (m_pEnt)
@@ -1695,11 +1656,52 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
         
-      case EO_IXT_SRC_BEGIN: NEVER_REACH; // not yet implemented
-      case EO_IXT_SRC_NEXT:  NEVER_REACH; // not yet implemented
-      case EO_IXT_ALT_BEGIN: NEVER_REACH; // not yet implemented
-      case EO_IXT_ALT_NEXT:  NEVER_REACH; // not yet implemented
-        
+      case EO_IXT_SRC_BEGIN: // begin linear traverse
+        dLU0(eCode);
+        m_pSrcEntBuffer = m_pSrcIdxTree->pFirstH0Buffer();
+        if (m_pSrcEntBuffer) {
+          m_aSrcEnt = m_pSrcEntBuffer->aLeadEntry();
+          if (m_pEnt)
+            *(++aiDstk) = 1;
+          else
+            *(++aiDstk) = 0;
+        }
+        else
+          *(++aiDstk) = 0;
+        break;
+
+      case EO_IXT_SRC_NEXT: // move to next entry
+        dLU0(eCode);
+        m_aSrcEnt = EntBuffer::pMoveToNextEntry(m_aSrcEnt, &m_pSrcEntBuffer);
+        if (m_aSrcEnt)
+          *(++aiDstk) = 1;
+        else
+          *(++aiDstk) = 0;
+        break;
+
+      case EO_IXT_ALT_BEGIN: // begin linear traverse
+        dLU0(eCode);
+        m_pAltEntBuffer = m_pAltIdxTree->pFirstH0Buffer();
+        if (m_pAltEntBuffer) {
+          m_aAltEnt = m_pAltEntBuffer->aLeadEntry();
+          if (m_pEnt)
+            *(++aiDstk) = 1;
+          else
+            *(++aiDstk) = 0;
+        }
+        else
+          *(++aiDstk) = 0;
+        break;
+
+      case EO_IXT_ALT_NEXT:
+        dLU0(eCode);
+        m_aAltEnt = EntBuffer::pMoveToNextEntry(m_aAltEnt, &m_pAltEntBuffer);
+        if (m_aAltEnt)
+          *(++aiDstk) = 1;
+        else
+          *(++aiDstk) = 0;
+        break;
+
       case EO_IXT_JOI_MATCH: // test for join match (src.key == alt.key)
         iRes  = KC_SAME == Key::eCompare(m_aSrcEnt->aKey(),m_aAltEnt->aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
@@ -2020,6 +2022,12 @@ i8 LogicUnit::iCompute(void)
         
       case EO_NOOP: // no op
         dLU0(eCode);
+        break;
+
+      case EO_ERROR: // error marker
+        dLU0(eCode);
+        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+               "Code compiled with error"_Stz);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

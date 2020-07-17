@@ -108,10 +108,6 @@ namespace Expressions
     REG<Object>      m_xpRegister2; // general purpose reg 2[]
     REG<Object>      m_xpRegister3; // general purpose reg 3[]
   
-  
-    // EXPERIMENT
-    //Calculator       m_oCalculator;
-  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ..from Calculator
 
@@ -128,6 +124,7 @@ namespace Expressions
 
     Ent*       m_aSrcEnt;
     IndexTree* m_pSrcIdxTree;
+    EntBuffer* m_pSrcEntBuffer;
 
     i8         m_i_AltRow;
     i8         m_nAltRows;
@@ -136,6 +133,7 @@ namespace Expressions
 
     Ent*       m_aAltEnt;
     IndexTree* m_pAltIdxTree;
+    EntBuffer* m_pAltEntBuffer;
     Rsb*       m_aPayRsb;
 
     Ent*       m_pEnt;
@@ -209,10 +207,7 @@ namespace Expressions
 
     // last
     bool bCompileCode(TokenVec* pTknVec);
-    void vDumpCode1(void);
-    void vDumpCode2(void);
-    void vDumpCode(i8& i_Code, eEO eCode);
-    void vDumpCode(eEO eCode, i8& i_Code);
+    void vDumpCode(void);
     i8   iCompute(void);
 
 

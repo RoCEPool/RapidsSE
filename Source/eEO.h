@@ -134,7 +134,8 @@ enum eEO : i1 // expression operators
   // misc
   /*    */ EO_TRACE,            // set trace
   /*    */ EO_NOOP,             // no op
-  
+  /*    */ EO_ERROR,            // error marker
+
   /*    */ EO_ENUMS
 };
 
@@ -270,6 +271,7 @@ static Stz* aEO[]
   // misc
   /*    */ "EO_TRACE"_Stz,
   /*    */ "EO_NOOP"_Stz,
+  /*    */ "EO_ERROR"_Stz,
 
   /*    */ "ENUMS"_Stz
 };
