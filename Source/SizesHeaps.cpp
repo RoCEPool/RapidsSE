@@ -267,7 +267,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SP_Elapsed),         HT_INVALID           }, // CN_SPELAPSED
   { sizeof(SP_Gid),             HT_INVALID           }, // CN_SPID
   { sizeof(SP_String),          HT_INVALID           }, // CN_SPSTRING
-  { sizeof(SP_TknVecStr),       HT_INVALID           }, // CN_SPTKNVECSTR
   
   { sizeof(SPmedium),           HT_INVALID           }, // CN_SPMEDIUM
   { sizeof(SPsmall),            HT_INVALID           }, // CN_SPSMALL

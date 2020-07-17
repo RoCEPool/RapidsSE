@@ -271,7 +271,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SPELAPSED,
   /* */ CN_SPID,
   /* */ CN_SPSTRING,
-  /* */ CN_SPTKNVECSTR,
   
   /* */ CN_SPMEDIUM,
   /* */ CN_SPSMALL,
@@ -607,7 +606,6 @@ static Stz* aCN[]
   /* */ "SPELAPSED"_Stz,           // CN_SPELAPSED
   /* */ "SPID"_Stz,                // CN_SPID
   /* */ "SPSTRING"_Stz,            // CN_SPSTRING
-  /* */ "SPTKNVECSTR"_Stz,         // CN_SPTKNVECSTR
   
   /* */ "SPMEDIUM"_Stz,            // CN_SPMEDIUM
   /* */ "SPSMALL"_Stz,             // CN_SPSMALL
