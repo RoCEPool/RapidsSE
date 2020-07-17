@@ -54,6 +54,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pSrcRowSlab = nullptr;
   m_aSrcEnt     = nullptr;
   m_pSrcIdxTree = nullptr;
+  m_pSrcEntBuffer = nullptr;
 
   m_i_AltRow    = C_UNKNOWN;
   m_nAltRows    = C_UNKNOWN;
@@ -61,6 +62,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pAltRowSlab = nullptr;
   m_aAltEnt     = nullptr;
   m_pAltIdxTree = nullptr;
+  m_pAltEntBuffer = nullptr;
 
   m_pEnt        = nullptr;
   // m_oEntWrk
@@ -1630,7 +1632,7 @@ i8 LogicUnit::iCompute(void)
       }
         break;
         
-      case EO_IXT_TRV_BEGIN:    // begin linear traverse
+      case EO_IXT_TRV_BEGIN: // begin linear traverse
         dLU0(eCode);
         m_pEntBuffer = m_pIndexTree->pFirstH0Buffer();
         if (m_pEntBuffer) {
@@ -1644,7 +1646,7 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
         
-      case EO_IXT_TRV_NEXT:     // move to next entry
+      case EO_IXT_TRV_NEXT: // move to next entry
         dLU0(eCode);
         m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
         if (m_pEnt)
@@ -1653,11 +1655,52 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
         
-      case EO_IXT_SRC_BEGIN: NEVER_REACH; // not yet implemented
-      case EO_IXT_SRC_NEXT:  NEVER_REACH; // not yet implemented
-      case EO_IXT_ALT_BEGIN: NEVER_REACH; // not yet implemented
-      case EO_IXT_ALT_NEXT:  NEVER_REACH; // not yet implemented
-        
+      case EO_IXT_SRC_BEGIN: // begin linear traverse
+        dLU0(eCode);
+        m_pSrcEntBuffer = m_pSrcIdxTree->pFirstH0Buffer();
+        if (m_pSrcEntBuffer) {
+          m_aSrcEnt = m_pSrcEntBuffer->aLeadEntry();
+          if (m_pEnt)
+            *(++aiDstk) = 1;
+          else
+            *(++aiDstk) = 0;
+        }
+        else
+          *(++aiDstk) = 0;
+        break;
+
+      case EO_IXT_SRC_NEXT: // move to next entry
+        dLU0(eCode);
+        m_aSrcEnt = EntBuffer::pMoveToNextEntry(m_aSrcEnt, &m_pSrcEntBuffer);
+        if (m_aSrcEnt)
+          *(++aiDstk) = 1;
+        else
+          *(++aiDstk) = 0;
+        break;
+
+      case EO_IXT_ALT_BEGIN: // begin linear traverse
+        dLU0(eCode);
+        m_pAltEntBuffer = m_pAltIdxTree->pFirstH0Buffer();
+        if (m_pAltEntBuffer) {
+          m_aAltEnt = m_pAltEntBuffer->aLeadEntry();
+          if (m_pEnt)
+            *(++aiDstk) = 1;
+          else
+            *(++aiDstk) = 0;
+        }
+        else
+          *(++aiDstk) = 0;
+        break;
+
+      case EO_IXT_ALT_NEXT:
+        dLU0(eCode);
+        m_aAltEnt = EntBuffer::pMoveToNextEntry(m_aAltEnt, &m_pAltEntBuffer);
+        if (m_aAltEnt)
+          *(++aiDstk) = 1;
+        else
+          *(++aiDstk) = 0;
+        break;
+
       case EO_IXT_JOI_MATCH: // test for join match (src.key == alt.key)
         iRes  = KC_SAME == Key::eCompare(m_aSrcEnt->aKey(),m_aAltEnt->aKey()) ? 1 : 0;
         dLU1(eCode,iRes);

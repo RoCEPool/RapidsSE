@@ -128,6 +128,7 @@ namespace Expressions
 
     Ent*       m_aSrcEnt;
     IndexTree* m_pSrcIdxTree;
+    EntBuffer* m_pSrcEntBuffer;
 
     i8         m_i_AltRow;
     i8         m_nAltRows;
@@ -136,6 +137,7 @@ namespace Expressions
 
     Ent*       m_aAltEnt;
     IndexTree* m_pAltIdxTree;
+    EntBuffer* m_pAltEntBuffer;
     Rsb*       m_aPayRsb;
 
     Ent*       m_pEnt;
