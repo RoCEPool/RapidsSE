@@ -63,7 +63,7 @@ void Step::vLogicUnitNewAggCpy(void)
 {
   ENTRY();
   
-  m_pLogicUnit->vGenerateAggCpy();
+  m_pLogicUnit->vGenerateAggCpy14000();
   
   EXIT();
 }
@@ -75,7 +75,7 @@ void Step::vLogicUnitNewAggGby(void)
 {
   ENTRY();
   
-  m_pLogicUnit->vGenerateAggGby();
+  m_pLogicUnit->vGenerateAggGby14001();
   
   EXIT();
 }

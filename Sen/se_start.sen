@@ -870,7 +870,7 @@
   stage stageB on all partitions on origin :
     toRsb $table
       //| filter
-      | sql 1001
+      | sql 10000
       | toPtnRsb
       | toNstRsb
       | toHshCrw
@@ -908,9 +908,9 @@
 
   stage stageB on all partitions on origin :
     toRsb $table
-      //| sql 1001  // filter
-      //| sql 1002  // project
-      | sql 1003  // filter (should be sort)
+      //| sql 10000  // filter
+      //| sql 11000  // project
+      | sql 12000  // filter (should be sort)
       | toPtnRsb
       | toNstRsb
       | toHshCrw
@@ -947,11 +947,11 @@
 
   stage stageB on all partitions :
     toRsb $table
-    | sql 1004  // agg
+    | sql 13000  // agg
     | stageC
 
   stage stageC on origin :
-    sql 1004  // super agg
+    sql 13000  // super agg
     | output
     | sink
     | stageA
