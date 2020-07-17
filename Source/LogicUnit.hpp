@@ -177,6 +177,7 @@ namespace Expressions
     void vGenerateAgg13000(void);
     void vGenerateAggGby14000(void);
     void vGenerateAggGby14001(void);
+    void vGenerateAggGby14002(void);
     void vGenerateSort12000(void);
 
     i8   iAggregate(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut);

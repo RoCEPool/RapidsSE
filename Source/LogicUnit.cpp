@@ -309,6 +309,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case   13000: vGenerateAgg13000();    break;
     case   14000: vGenerateAggGby14000(); break;
     case   14001: vGenerateAggGby14001(); break;
+    case   14002: vGenerateAggGby14002(); break;
     default:
       NEVER_REACH;
   }
@@ -638,6 +639,74 @@ void LogicUnit::vGenerateAggGby14001(void)
   //vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
   
   vDefineLabel("END_IXT_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate super agg group by                                                */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAggGby14002(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // initialize srcSlab etc
+  vAddCode(EO_INI_SRC_SLAB);
+  
+  // init m_pPot pix from streamDef out
+  vAddCode(EO_INI_PIX_DEFOUT);
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // insert each rsb
+  
+  // forearch src rsb
+  vAddCode(EO_RSB_SRC_BEGIN);
+  
+  vDefineLabel("NEXT_RSB_SRC:"_Stz);
+  
+  vAddCode(EO_RSB_SRC_NEXT);
+  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  
+  // reset entwrk
+  vAddCode(EO_ENTWRK_RESET);
+  
+  // add key
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
+  vAddCodeArg(EO_ENTWRK_APPENDELM,(i8)0);
+  
+  // find the key in the indexTree
+  vAddCode(EO_ENT_POSPRIOR);
+  vAddCode(EO_ENT_PUSH);
+  vAddCode(EO_PUSH0);
+  vAddCode(EO_NOTEQUAL);
+  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  
+  vAddCode(EO_ENT_NEXT);
+  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  
+  vAddCode(EO_ENT_EQUAL);
+  vAddCodeLabel(EO_JMPTRUE,"FOUND"_Stz);
+  
+  // NOT_FOUND:
+  vDefineLabel("NOT_FOUND"_Stz);
+  vAddCodeArg(EO_ENTWRK_CREATEPAY, 8);
+  vAddCode(EO_IXT_INS_ENT);
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
+  vAddCode(EO_PUSH0);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
+  
+  // FOUND:
+  vDefineLabel("FOUND"_Stz);
+  vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)1);
+  vAddCode(EO_ADD);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
+  
+  vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
+  
+  vDefineLabel("END_RSB_SRC:"_Stz);
   vAddCode(EO_RETURN);
   
   vDumpCode();

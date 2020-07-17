@@ -142,6 +142,11 @@
       idxDef_int indexDef[] indexTree[].new
     endof
 
+    14002 of
+      // SUPER AGGREGATE WITH GROUPBY
+      queryNo "QUERY %v" .printf
+      14001 LogicUnit[].genCode
+      endof
   endcase
 
   ZK_STARTMARKER_handler
@@ -336,6 +341,11 @@
       StreamDef[].pipeout
 
       StreamDefOut[].print
+    endof
+
+    14002 of
+      StreamDef[].duplicate to StreamDefOut[]
+      StreamDef[].pipeout
     endof
 
   endcase
