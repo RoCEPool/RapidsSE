@@ -1046,7 +1046,7 @@ void LogicUnit::vSource(Stz* szSource)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compile                                                                    */
+/* compile short cut source in token vector                                   */
 /*----------------------------------------------------------------------------*/
 bool LogicUnit::bCompileCode(TokenVec* pTknVec)
 {
@@ -1061,6 +1061,9 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     
     Token* pTkn = pTknVec->pGet(i_Tkn);
     vTrace(" >%s<\n"_Stz,pTkn->szChars());
+    
+    if (pTkn->bSame("0"_Stz))   { vAddCode(EO_PUSH0);               continue; }
+    if (pTkn->bSame("1"_Stz))   { vAddCode(EO_PUSH1);               continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // arithmetic operators
@@ -1107,6 +1110,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("os"_Stz))  { vAddCode(EO_RSB_SRC_PUSHOFS);     continue; }
     if (pTkn->bSame("nd"_Stz))  { vAddCode(EO_RSB_DST_NEW);         continue; }
 
+    if (pTkn->bSame("="_Stz))   { vAddCode(EO_RSB_DST_COPYSRC);     continue; }
     if (pTkn->bSame(".d"_Stz))  { vAddCode(EO_RSB_DST_PRINT);       continue; }
     if (pTkn->bSame(".s"_Stz))  { vAddCode(EO_RSB_SRC_PRINT);       continue; }
     if (pTkn->bSame(".a"_Stz))  { vAddCode(EO_RSB_ALT_PRINT);       continue; }
@@ -1141,15 +1145,8 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     // misc
     if (pTkn->bSame("tr"_Stz))  { vAddCode(EO_TRACE);               continue; }
     
+    
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-//    if (pTkn->bIsName()) {
-//      vAddCode(EO_PUSHCOLI;
-//      i8 iColVec;
-//      piArg = (i8*) & m_eaCode[m_i_Code];
-//      * piArg = pStreamDef->iFindColumn(pTkn->azChars(), iColVec);
-//      m_i_Code += sizeof(i8);
-//      continue;
-//    }
     
     // push src column value
     if (pTkn->bSame("@"_Stz)) {
@@ -1172,12 +1169,6 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
       continue;
     }
 
-    // copy src row into dst
-    if (pTkn->bSame("="_Stz)) {
-      vAddCode(EO_RSB_DST_COPYSRC);
-      continue;
-    }
-    
     // call subroutine
     if (pTkn->bSame("call"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
@@ -1192,20 +1183,6 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
       continue;
     }
 
-    // fetch pay col
-    if (pTkn->bSame("pf"_Stz)) {
-      pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeArg(EO_PAY_FETCH_COL,pTkn);
-      continue;
-    }
-    
-    // store pay col
-    if (pTkn->bSame("ps"_Stz)) {
-      pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeArg(EO_PAY_STORE_COL,pTkn);
-      continue;
-    }
-    
     // jump
     if (pTkn->bSame("j"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
@@ -1227,13 +1204,23 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
       continue;
     }
 
+    // fetch pay col
+    if (pTkn->bSame("pf"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeArg(EO_PAY_FETCH_COL,pTkn);
+      continue;
+    }
+    
+    // store pay col
+    if (pTkn->bSame("ps"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeArg(EO_PAY_STORE_COL,pTkn);
+      continue;
+    }
+    
     if (pTkn->bIsInteger()) {
       iArg = pTkn->iToI8();
       vAddCodeArg(EO_INTEGER,iArg);
-//      iArg = pTkn->iToI8();
-//      piArg = (i8*) & m_eaCode[m_i_Code];
-//      * piArg = iArg;
-//      m_i_Code += sizeof(i8);
       continue;
     }
     
@@ -1242,15 +1229,14 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
       continue;
     }
     
-    if (pTkn->bSame("0"_Stz)) {
-      vAddCodeArg(EO_INTEGER,(i8)0);
-      continue;
-    }
-    
-    if (pTkn->bSame("1"_Stz)) {
-      vAddCodeArg(EO_INTEGER,1);
-      continue;
-    }
+    //    if (pTkn->bIsName()) {
+    //      vAddCode(EO_PUSHCOLI;
+    //      i8 iColVec;
+    //      piArg = (i8*) & m_eaCode[m_i_Code];
+    //      * piArg = pStreamDef->iFindColumn(pTkn->azChars(), iColVec);
+    //      m_i_Code += sizeof(i8);
+    //      continue;
+    //    }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     vAddCode(EO_RETURN);
