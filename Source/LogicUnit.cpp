@@ -172,6 +172,8 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_ENT_NEXT
   { EA_NONE,  0 },  // EO_ENT_POSPRIOR
   { EA_NONE,  0 },  // EO_ENT_PUSH
+  { EA_NONE,  0 },  // EO_ENT_PUSHELMI0
+  { EA_NONE,  0 },  // EO_ENT_PUSHOFS
   { EA_NONE,  0 },  // EO_ENT_PUSHREF
 
   // entry relational operators
@@ -1472,7 +1474,9 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = (i8)m_pEnt;
         break;
         
-      case EO_ENT_PUSHREF: NEVER_REACH; // not yet implemented
+      case EO_ENT_PUSHELMI0: NEVER_REACH; // not yet implemented
+      case EO_ENT_PUSHOFS:   NEVER_REACH; // not yet implemented
+      case EO_ENT_PUSHREF:   NEVER_REACH; // not yet implemented
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
@@ -1659,7 +1663,12 @@ i8 LogicUnit::iCompute(void)
       case EO_IXT_SRC_NEXT:  NEVER_REACH; // not yet implemented
       case EO_IXT_ALT_BEGIN: NEVER_REACH; // not yet implemented
       case EO_IXT_ALT_NEXT:  NEVER_REACH; // not yet implemented
-      case EO_IXT_JOI_MATCH: NEVER_REACH; // not yet implemented
+        
+      case EO_IXT_JOI_MATCH: // test for join match (src.key == alt.key)
+        iRes  = KC_SAME == Key::eCompare(m_aSrcEnt->aKey(),m_aAltEnt->aKey()) ? 1 : 0;
+        dLU1(eCode,iRes);
+        *(++aiDstk) = iRes;
+        break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators

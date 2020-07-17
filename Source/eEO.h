@@ -24,6 +24,8 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENT_NEXT,         // move to next m_pEnt
   /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
   /*    */ EO_ENT_PUSH,         // push entry
+  /*    */ EO_ENT_PUSHELMI0,    // push elm 0 int
+  /*    */ EO_ENT_PUSHOFS,      // push entry offset
   /*    */ EO_ENT_PUSHREF,      // push ref of current entry
 
   // entry relational operators
@@ -157,6 +159,8 @@ static Stz* aEO[]
   /*    */ "EO_ENT_NEXT"_Stz,
   /*    */ "EO_ENT_POSPRIOR"_Stz,
   /*    */ "EO_ENT_PUSH"_Stz,
+  /*    */ "EO_ENT_PUSHELMI0"_Stz,
+  /*    */ "EO_ENT_PUSHOFS"_Stz,
   /*    */ "EO_ENT_PUSHREF"_Stz,
 
   // entry relational operators
