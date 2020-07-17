@@ -7,6 +7,7 @@ enum eEA // expression argument
 {
   /*  0 */ EA_NONE=0,
   
+  /*    */ EA_DATE,
   /*    */ EA_INT,
   /*    */ EA_LABEL,
   
@@ -17,6 +18,7 @@ static Stz* aEA[]
 {
   /*  0 */ "EA_NONE"_Stz,
   
+  /*  0 */ "EA_DATE"_Stz,
   /*  0 */ "EA_INT"_Stz,
   /*  0 */ "EA_LABEL"_Stz,
 

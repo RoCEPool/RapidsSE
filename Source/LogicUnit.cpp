@@ -227,7 +227,7 @@ EoArg EoArgs[]
   { EA_INT,   8 },  // EO_PAY_STORE_COL
 
   // pushes
-  { EA_INT,   8 },  // EO_DATE
+  { EA_DATE,  8 },  // EO_DATE
   { EA_INT,   8 },  // EO_INTEGER
   { EA_NONE,  0 },  // EO_PUSHNULL
   { EA_NONE,  0 },  // EO_PUSH0
@@ -378,11 +378,13 @@ void LogicUnit::vGenerateQuery600(void)
 
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate  
   vAddCodeArg(EO_DATE, iDateLower);
+  //vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
   vAddCode(EO_GREATEREQUAL);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
 
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
   vAddCodeArg(EO_DATE, iDateUpper);
+  //vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
 
@@ -845,6 +847,23 @@ void LogicUnit::vAddCodeArg(eEO eCode,Token* pTkn)
   i8 iArg = pTkn->iToI8();
   
   vAddCodeArg(eCode,iArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add code with date argument                                                */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vAddCodeArg(eEO eCode, Stz* szLiteral)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  ASSERT(EA_DATE == EoArgs[eCode].m_eArgument);
+  
+  char* acCrs = szLiteral->azChar();
+  
+  SN_Dte snDate;
+  i8 iDate = snDate.i(&acCrs,AM::pFmt());
+  
+  vAddCodeArg(eCode,iDate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1665,14 +1684,9 @@ i8 LogicUnit::iCompute(void)
         
       case EO_IXT_TRV_NEXT:     // move to next entry
         dLU0(eCode);
-        m_pEntBuffer = m_pEntBuffer->pNextBuffer();
-        if (m_pEntBuffer) {
-          m_pEnt = m_pEntBuffer->aLeadEntry();
-          if (m_pEnt)
-            *(++aiDstk) = 1;
-          else
-            *(++aiDstk) = 0;
-        }
+        m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
+        if (m_pEnt)
+          *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
         break;
