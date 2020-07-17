@@ -990,7 +990,41 @@
   "
   api::addProcedure
 
-  ;
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+: start::defineProc_IndexWalk
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // src index walk test
+  sPath
+  "
+  procedure srcidx_walk_1
+    parameters $Table $Index
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+     sql 20000
+    | stageC
+
+  stage stageC on origin :
+    | output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -1418,6 +1452,7 @@
   start::defineProc_SteadyState
   start::defineProc_UnloadReload
   start::defineProc_Expressions
+  start::defineProc_IndexWalk
   start::defineProc_TPCH
 
   // define the apriori system tables
