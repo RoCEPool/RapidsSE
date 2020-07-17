@@ -121,18 +121,22 @@ namespace Expressions
     Rsb*     m_aDstRsb;
     RowSlab* m_pDstRowSlab;
 
-    i8       m_i_SrcRow;
-    i8       m_nSrcRows;
-    Rsb*     m_aSrcRsb;
-    RowSlab* m_pSrcRowSlab;
+    i8         m_i_SrcRow;
+    i8         m_nSrcRows;
+    Rsb*       m_aSrcRsb;
+    RowSlab*   m_pSrcRowSlab;
+
+    Ent*       m_aSrcEnt;
     IndexTree* m_pSrcIdxTree;
 
-    i8       m_i_AltRow;
-    i8       m_nAltRows;
-    Rsb*     m_aAltRsb;
-    RowSlab* m_pAltRowSlab;
+    i8         m_i_AltRow;
+    i8         m_nAltRows;
+    Rsb*       m_aAltRsb;
+    RowSlab*   m_pAltRowSlab;
+
+    Ent*       m_aAltEnt;
     IndexTree* m_pAltIdxTree;
-    Rsb*     m_aPayRsb;
+    Rsb*       m_aPayRsb;
 
     Ent*       m_pEnt;
     EntWrk     m_oEntWrk;

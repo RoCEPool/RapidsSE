@@ -52,11 +52,13 @@ LogicUnit::LogicUnit(Task* pTask)
   m_nSrcRows    = C_UNKNOWN;
   m_aSrcRsb     = nullptr;
   m_pSrcRowSlab = nullptr;
+  m_aSrcEnt     = nullptr;
   m_pSrcIdxTree = nullptr;
 
   m_i_AltRow    = C_UNKNOWN;
   m_nAltRows    = C_UNKNOWN;
   m_aAltRsb     = nullptr;
+  m_aAltEnt     = nullptr;
   m_pAltRowSlab = nullptr;
   m_pAltIdxTree = nullptr;
 
@@ -203,6 +205,12 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_IXT_INS_ENT
   { EA_NONE,  0 },  // EO_IXT_TRV_BEGIN
   { EA_NONE,  0 },  // EO_IXT_TRV_NEXT
+
+  { EA_NONE,  0 },  // EO_IXT_SRC_BEGIN
+  { EA_NONE,  0 },  // EO_IXT_SRC_NEXT
+  { EA_NONE,  0 },  // EO_IXT_ALT_BEGIN
+  { EA_NONE,  0 },  // EO_IXT_ALT_NEXT
+  { EA_NONE,  0 },  // EO_IXT_JOI_MATCH
 
   // logical operators
   { EA_NONE,  0 },  // EO_AND
@@ -1650,6 +1658,12 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
         
+      case EO_IXT_SRC_BEGIN: NEVER_REACH; // not yet implemented
+      case EO_IXT_SRC_NEXT:  NEVER_REACH; // not yet implemented
+      case EO_IXT_ALT_BEGIN: NEVER_REACH; // not yet implemented
+      case EO_IXT_ALT_NEXT:  NEVER_REACH; // not yet implemented
+      case EO_IXT_JOI_MATCH: NEVER_REACH; // not yet implemented
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
       case EO_AND: // logical and top two int's, push result

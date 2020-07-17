@@ -57,7 +57,13 @@ enum eEO : i1 // expression operators
   /*    */ EO_IXT_INS_ENT,      // insert an entry into the indexTree
   /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
   /*    */ EO_IXT_TRV_NEXT,     // move to next entry
- 
+  
+  /*    */ EO_IXT_SRC_BEGIN,    // begin linear traverse
+  /*    */ EO_IXT_SRC_NEXT,     // move to next entry
+  /*    */ EO_IXT_ALT_BEGIN,    // begin linear traverse
+  /*    */ EO_IXT_ALT_NEXT,     // move to next entry
+  /*    */ EO_IXT_JOI_MATCH,    // test for join match (src.key == alt.key)
+
   // logical operators
   /*    */ EO_AND,              // logical and top two int's, push result
   /*    */ EO_OR,               // logical or top two int's, push result
@@ -185,6 +191,13 @@ static Stz* aEO[]
   /*    */ "EO_IXT_INS_ENT"_Stz,
   /*    */ "EO_IXT_TRV_BEGIN"_Stz,
   /*    */ "EO_IXT_TRV_NEXT"_Stz,
+  
+  /*    */ "EO_IXT_SRC_BEGIN"_Stz,
+  /*    */ "EO_IXT_SRC_NEXT"_Stz,
+  /*    */ "EO_IXT_ALT_BEGIN"_Stz,
+  /*    */ "EO_IXT_ALT_NEXT"_Stz,
+  /*    */ "EO_IXT_JOI_MATCH"_Stz,
+
 
   // logical operators
   /*    */ "EO_AND"_Stz,
