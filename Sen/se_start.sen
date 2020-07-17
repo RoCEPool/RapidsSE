@@ -951,7 +951,7 @@
     | stageC
 
   stage stageC on origin :
-    sql 13000  // super agg
+    sql 13000   // super agg
     | output
     | sink
     | stageA
@@ -961,10 +961,10 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // sumGby
+  // aggregateGby
   sPath
   "
-  procedure sumGby
+  procedure aggregateGby
     parameters $Table $File $Column
   begin
 
@@ -977,11 +977,12 @@
 
   stage stageB on all partitions :
     toRsb $table
-    | aggregateGby $table $column
+    | sql 14000
     | stageC
 
   stage stageC on origin :
-    output
+    sql 14001   
+    | output
     | sink
     | stageA
 
