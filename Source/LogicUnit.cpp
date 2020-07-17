@@ -1474,8 +1474,18 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = (i8)m_pEnt;
         break;
         
-      case EO_ENT_PUSHELMI0: NEVER_REACH; // not yet implemented
-      case EO_ENT_PUSHOFS:   NEVER_REACH; // not yet implemented
+      case EO_ENT_PUSHELMI0: //  push entry elm 0 int
+        dLU0(eCode);
+        iRes = m_pEnt->aKey()->iGetIntElm();
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_PUSHOFS: // push entry offset
+        dLU0(eCode);
+        iRes = m_pEnt->iBuffer();
+        *(++aiDstk) = iRes;
+        break;
+        
       case EO_ENT_PUSHREF:   NEVER_REACH; // not yet implemented
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
