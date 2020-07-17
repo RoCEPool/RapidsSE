@@ -314,10 +314,28 @@
 
     14000 of
       StreamDefOut[].new
-      0 C_MAX_INT_PRECISION CT_INTEGER "sumGby" StreamDefOut[].addColumn
+
+      // get column L_ORDERKEY
+      0 StreamDef[].column@ to pColumn
+
+      // add column L_ORDERKEY
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      pColumn column.name@
+      StreamDefOut[].addColumn
+
+      // add sumGby for l_orderkey
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      "sumGby"
+      StreamDefOut[].addColumn
 
       StreamDefOut[].duplicate to StreamDef[]
       StreamDef[].pipeout
+
+      StreamDefOut[].print
     endof
 
   endcase

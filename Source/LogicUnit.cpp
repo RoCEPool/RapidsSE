@@ -583,15 +583,17 @@ void LogicUnit::vGenerateAggGby14000(void)
   vDefineLabel("NOT_FOUND"_Stz);
   vAddCodeArg(EO_ENTWRK_CREATEPAY, 8);
   vAddCode(EO_IXT_INS_ENT);
-  vAddCode(EO_PUSH0);
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
+  vAddCode(EO_PUSH0);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
   
   // FOUND:
   vDefineLabel("FOUND"_Stz);
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)0);
+  vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
   
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
@@ -627,6 +629,8 @@ void LogicUnit::vGenerateAggGby14001(void)
   vAddCode(EO_RSB_DST_NEW);
   vAddCodeArg(EO_PAY_FETCH_COL, (i8)0);
   vAddCodeArg(EO_DEPOSITCOLI,(i8)0);
+  vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
+  vAddCodeArg(EO_DEPOSITCOLI,(i8)1);
   vAddCode(EO_RSB_DST_PRINT);
   vAddCode(EO_ENT_NEXT);
   vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);

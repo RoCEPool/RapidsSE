@@ -34,6 +34,7 @@ namespace MetaData
     static eCT eColumn(Stz* szType);
     
     void vAdd(StreamDef* pStreamDef);
+    void vAddDefSet(void);
     void vAddColumn(Stz* ColumnNm, eCT eColumnType);
     void vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
     void vAddColumns(StreamDef* pStreamDef);

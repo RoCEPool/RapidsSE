@@ -54,7 +54,7 @@ StreamDef::StreamDef(void)
   
   for (i8 i_StreamDefs = 0; i_StreamDefs < C_MAX_STREAMDEFS; i_StreamDefs++) {
     m_i_DefStart[i_StreamDefs] = C_UNKNOWN;
-    m_nDefColumns[i_StreamDefs] = C_UNKNOWN;
+    m_nDefColumns[i_StreamDefs] = 0;
   }
   //m_xaColumn[C_MAX_DEFCOLUMNS];
   
@@ -161,16 +161,24 @@ void StreamDef::vAdd(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a def set to the stream def                                            */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vAddDefSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  m_nDefSets++;
+  m_i_DefStart[m_nDefSets-1] = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a column to the stream def to the current def set                      */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  m_i_DefStart[m_nDefSets-1] = 0;
-  
   //! ALKA come back to this
-  m_nDefColumns[m_nDefSets-1]++;
   i8 i_DefCol = m_nDefColumns[m_nDefSets-1];
  
   m_xaColumn[i_DefCol].vColumnNo(m_nDefColumns[i_DefCol]);
@@ -188,13 +196,10 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  m_i_DefStart[m_nDefSets-1] = 0;
-  
   //! ALKA come back to this
-  m_nDefColumns[m_nDefSets-1]++;
   i8 i_DefCol = m_nDefColumns[m_nDefSets-1];
   
-  m_xaColumn[i_DefCol].vColumnNo(m_nDefColumns[i_DefCol]);
+  m_xaColumn[i_DefCol].vColumnNo(i_DefCol);
   m_xaColumn[i_DefCol].vColumnNm(sColumnNm);
   m_xaColumn[i_DefCol].vColumnType(eColumnType);
   m_xaColumn[i_DefCol].vColumnLength(iColumnLength);

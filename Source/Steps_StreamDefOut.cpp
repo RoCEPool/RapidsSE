@@ -139,7 +139,7 @@ void Step::vStreamDefOutNew(void)
   ENTRY();
     
   m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
-  (* m_pLogicUnit->m_xpStreamDefOut)->m_nDefSets++;
+  (* m_pLogicUnit->m_xpStreamDefOut)->vAddDefSet();
   
   EXIT();
 }
