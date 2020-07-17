@@ -1640,8 +1640,6 @@ i8 LogicUnit::iCompute(void)
   IndexDef* pIndexDef = nullptr;
   
   for (;;) {
-  
-    ASSERT(m_aaReturnStack[0] == nullptr);
     
     eCode = *aeCode++;
     
@@ -2321,7 +2319,6 @@ i8 LogicUnit::iCompute(void)
         return C_DATUM_NULL;
     }
     
-    _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   }
   
   return m_iaDataStack[0];
