@@ -227,7 +227,7 @@ EoArg EoArgs[]
   { EA_INT,   8 },  // EO_PAY_STORE_COL
 
   // pushes
-  { EA_INT,   8 },  // EO_DATE
+  { EA_DATE,  8 },  // EO_DATE
   { EA_INT,   8 },  // EO_INTEGER
   { EA_NONE,  0 },  // EO_PUSHNULL
   { EA_NONE,  0 },  // EO_PUSH0
