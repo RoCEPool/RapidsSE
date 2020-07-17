@@ -75,8 +75,8 @@
       queryNo "QUERY %v" .printf
     endof
 
-    101 of
-    queryNo "QUERY %v" .printf
+    102 of
+      queryNo "QUERY %v" .printf
     endof
 
     300 of
@@ -193,6 +193,14 @@
 
   queryNo case
 
+    100 of
+      // AGGREGATE WITH GROUPBY (COPY)
+      queryNo "QUERY %v" .printf
+      101 LogicUnit[].genCode
+      LogicUnit[].transform
+      IndexTree[].delete
+    endof
+
     12000 of
       IndexTree[].delete
     endof
@@ -251,7 +259,7 @@
       StreamDef[].pipeout
     endof
 
-    101 of
+    102 of
       StreamDef[].duplicate to StreamDefOut[]
       StreamDef[].pipeout
     endof

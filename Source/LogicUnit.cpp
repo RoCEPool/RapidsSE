@@ -305,10 +305,17 @@ void LogicUnit::vGenCode(i8 iTestNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   switch (iTestNo) {
+    case     100: vGenerateQuery100();    break;
+    case     101: vGenerateQuery101();    break;
+    case     102: vGenerateQuery102();    break;
+      
     case     600: vGenerateQuery600();    break;
     case     601: vGenerateQuery601();    break;
+      
     case   12000: vGenerateSort12000();   break;
+      
     case   13000: vGenerateAgg13000();    break;
+      
     case   14000: vGenerateAggGby14000(); break;
     case   14001: vGenerateAggGby14001(); break;
     case   14002: vGenerateAggGby14002(); break;
@@ -319,6 +326,189 @@ void LogicUnit::vGenCode(i8 iTestNo)
 
 //! TEMP : TO GO
 
+/*----------------------------------------------------------------------------*/
+/* generate agg group by                                                      */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery100(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 100;
+  
+  // initialize srcSlab etc
+  vAddCode(EO_INI_SRC_SLAB);
+  
+  // init m_pPot pix from streamDef out
+  vAddCode(EO_INI_PIX_DEFOUT);
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // insert each rsb
+  
+  // forearch src rsb
+  vAddCode(EO_RSB_SRC_BEGIN);
+  
+  vDefineLabel("NEXT_RSB_SRC:"_Stz);
+  
+  vAddCode(EO_RSB_SRC_NEXT);
+  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  
+  // reset entwrk
+  vAddCode(EO_ENTWRK_RESET);
+  
+  // add key
+  vAddCodeArg(EO_ENTWRK_APPENDELM,(i8)0);
+  
+  // find the key in the indexTree
+  vAddCode(EO_ENT_POSPRIOR);
+  vAddCode(EO_ENT_PUSH);
+  vAddCode(EO_PUSH0);
+  vAddCode(EO_NOTEQUAL);
+  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  
+  vAddCode(EO_ENT_NEXT);
+  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  
+  vAddCode(EO_ENT_EQUAL);
+  vAddCodeLabel(EO_JMPTRUE,"FOUND"_Stz);
+  
+  // NOT_FOUND:
+  vDefineLabel("NOT_FOUND"_Stz);
+  vAddCodeArg(EO_ENTWRK_CREATEPAY, 8);
+  vAddCode(EO_IXT_INS_ENT);
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
+  vAddCode(EO_PUSH0);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
+  
+  // FOUND:
+  vDefineLabel("FOUND"_Stz);
+  vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);
+  vAddCode(EO_ADD);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
+  
+  vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
+  
+  vDefineLabel("END_RSB_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate agg group by                                                      */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery101(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 101;
+  
+  m_i_Code = 0;
+  
+  // initialize srcSlab etc
+  vAddCode(EO_INI_SRC_SLAB);
+  
+  // init m_pPot pix from streamDef out
+  vAddCode(EO_INI_PIX_DEFOUT);
+  
+  // begin index tree traversal
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMPFALSE,"END_IXT_SRC:"_Stz);
+  
+  vDefineLabel("NEXT_IXT_SRC:"_Stz);
+  
+  // new a dst rsb row
+  vAddCode(EO_RSB_DST_NEW);
+  vAddCodeArg(EO_PAY_FETCH_COL, (i8)0);
+  vAddCodeArg(EO_DEPOSITCOLI,(i8)0);
+  vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
+  vAddCodeArg(EO_DEPOSITCOLI,(i8)1);
+  vAddCode(EO_RSB_DST_PRINT);
+  vAddCode(EO_ENT_NEXT);
+  vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  
+  //vAddCode(EO_IXT_TRV_NEXT);
+  //vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  
+  vDefineLabel("END_IXT_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate super agg group by                                                */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery102(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 102;
+  
+  // initialize srcSlab etc
+  vAddCode(EO_INI_SRC_SLAB);
+  
+  // init m_pPot pix from streamDef out
+  vAddCode(EO_INI_PIX_DEFOUT);
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // insert each rsb
+  
+  // forearch src rsb
+  vAddCode(EO_RSB_SRC_BEGIN);
+  
+  vDefineLabel("NEXT_RSB_SRC:"_Stz);
+  
+  vAddCode(EO_RSB_SRC_NEXT);
+  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  
+  // reset entwrk
+  vAddCode(EO_ENTWRK_RESET);
+  
+  // add key
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
+  vAddCodeArg(EO_ENTWRK_APPENDELM,(i8)0);
+  
+  // find the key in the indexTree
+  vAddCode(EO_ENT_POSPRIOR);
+  vAddCode(EO_ENT_PUSH);
+  vAddCode(EO_PUSH0);
+  vAddCode(EO_NOTEQUAL);
+  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  
+  vAddCode(EO_ENT_NEXT);
+  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  
+  vAddCode(EO_ENT_EQUAL);
+  vAddCodeLabel(EO_JMPTRUE,"FOUND"_Stz);
+  
+  // NOT_FOUND:
+  vDefineLabel("NOT_FOUND"_Stz);
+  vAddCodeArg(EO_ENTWRK_CREATEPAY, 8);
+  vAddCode(EO_IXT_INS_ENT);
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
+  vAddCode(EO_PUSH0);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
+  
+  // FOUND:
+  vDefineLabel("FOUND"_Stz);
+  vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)1);
+  vAddCode(EO_ADD);
+  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
+  
+  vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
+  
+  vDefineLabel("END_RSB_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  vDumpCode();
+}
 /*----------------------------------------------------------------------------*/
 /* generate query6                                                            */
 /*----------------------------------------------------------------------------*/
@@ -337,6 +527,9 @@ void LogicUnit::vGenerateQuery600(void)
   SN_Dte snDteUpper;
   char* aDateUpper = sDateUpper.azChar();
   i8 iDateUpper = snDteUpper.i(&aDateUpper, AM::pFmt());
+  
+  // set the query no
+  m_iSql = 600;
   
   // init the code
   m_i_Code = 0;
@@ -364,12 +557,6 @@ void LogicUnit::vGenerateQuery600(void)
   // call the filter subroutine
   vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
   vAddCodeLabel(EO_JMPFALSE, "NEXT_RSB_SRC:"_Stz);
-  
-  // create a dst row
-  //vAddCode(EO_RSB_DST_NEW);
-  //vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);   // l_shipdate
-  //vAddCodeArg(EO_DEPOSITCOLI, (i8)0);   // l_shipdate
-  //vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
   // call the aggregate subroutine
   vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
@@ -449,6 +636,9 @@ void LogicUnit::vGenerateQuery601(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  // set the query no
+  m_iSql = 601;
+  
   // init the code
   m_i_Code = 0;
   
@@ -502,6 +692,10 @@ void LogicUnit::vGenerateAgg13000(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  // set the query no
+  m_iSql = 13000;
+  
+  // init the code
   m_i_Code = 0;
 
   // initialize srcSlab etc
@@ -545,7 +739,11 @@ void LogicUnit::vGenerateAggGby14000(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  // set the query no
   m_iSql = 14000;
+  
+  // init the code
+  m_i_Code = 0;
   
   // initialize srcSlab etc
   vAddCode(EO_INI_SRC_SLAB);
@@ -614,8 +812,10 @@ void LogicUnit::vGenerateAggGby14001(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  // set the query no
   m_iSql = 14001;
   
+  // init the code
   m_i_Code = 0;
   
   // initialize srcSlab etc
@@ -656,7 +856,11 @@ void LogicUnit::vGenerateAggGby14002(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  // set the query no
   m_iSql = 14002;
+  
+  // init the code
+  m_i_Code = 0;
   
   // initialize srcSlab etc
   vAddCode(EO_INI_SRC_SLAB);
@@ -726,6 +930,9 @@ void LogicUnit::vGenerateSort12000(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  // set the query no
+  m_iSql = 12000;
+  
   // -- -- -- -- -- -- -- -- -- -- --
   // insert each rsb
   
