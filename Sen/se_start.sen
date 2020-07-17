@@ -965,7 +965,7 @@
   sPath
   "
   procedure aggregateGby
-    parameters $Table $File $Column
+    parameters $Table $File
   begin
 
   stage stageA on origin :
@@ -981,7 +981,7 @@
     | stageC
 
   stage stageC on origin :
-    sql 14001   
+    sql 14000
     | output
     | sink
     | stageA

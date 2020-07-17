@@ -142,12 +142,6 @@
       idxDef_int indexDef[] indexTree[].new
     endof
 
-    14001 of
-      // AGGREGATE WITH GROUPBY (COPY)
-      queryNo "QUERY %v" .printf
-      14001 LogicUnit[].genCode
-    endof
-
   endcase
 
   ZK_STARTMARKER_handler
@@ -190,10 +184,6 @@
 /*----------------------------------------------------------------------------*/
 : sql_EosMarker \handler
 
-  Pot[].pipeoutAllDangling
-
-  Pot[].delete
-
   <queryNo> >int locals| queryNo |
 
   queryNo case
@@ -202,11 +192,18 @@
       IndexTree[].delete
     endof
 
-    14001 of
+    14000 of
+      // AGGREGATE WITH GROUPBY (COPY)
+      queryNo "QUERY %v" .printf
+      14001 LogicUnit[].genCode
+      LogicUnit[].transform
       IndexTree[].delete
     endof
 
   endcase
+
+  Pot[].pipeoutAllDangling
+  Pot[].delete
 
   ZK_EOSMARKER_handler
 ;
@@ -320,11 +317,6 @@
       0 C_MAX_INT_PRECISION CT_INTEGER "sumGby" StreamDefOut[].addColumn
 
       StreamDefOut[].duplicate to StreamDef[]
-      StreamDef[].pipeout
-    endof
-
-    14001 of
-      StreamDef[].duplicate to StreamDefOut[]
       StreamDef[].pipeout
     endof
 
