@@ -1646,14 +1646,9 @@ i8 LogicUnit::iCompute(void)
         
       case EO_IXT_TRV_NEXT:     // move to next entry
         dLU0(eCode);
-        m_pEntBuffer = m_pEntBuffer->pNextBuffer();
-        if (m_pEntBuffer) {
-          m_pEnt = m_pEntBuffer->aLeadEntry();
-          if (m_pEnt)
-            *(++aiDstk) = 1;
-          else
-            *(++aiDstk) = 0;
-        }
+        m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
+        if (m_pEnt)
+          *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
         break;
