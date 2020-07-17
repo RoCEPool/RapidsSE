@@ -22,7 +22,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index[].genEntBuffers"_Stz, &Step::vIndexGenEntBuffers);
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
-  vAddStep("index[].IndexTree"_Stz,     &Step::vIndexIndexTree);
+  vAddStep("index[].indexTree"_Stz,     &Step::vIndexIndexTree);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);

@@ -11,6 +11,8 @@ void Step::vAddSteps_IndexTree(void)
 {
   vAddStep("IndexTree[]"_Stz,           &Step::vIndexTreeGet);
   vAddStep("IndexTree[].aggregate"_Stz, &Step::vIndexTreeAggregate);
+  vAddStep("IndexTree[].asAlt"_Stz,     &Step::vIndexTreeAsAlt);
+  vAddStep("IndexTree[].asSrc"_Stz,     &Step::vIndexTreeAsSrc);
   vAddStep("IndexTree[].delete"_Stz,    &Step::vIndexTreeDelete);
   vAddStep("IndexTree[].new"_Stz,       &Step::vIndexTreeNew);
   vAddStep("IndexTree[].set"_Stz,       &Step::vIndexTreeSet);
@@ -106,6 +108,30 @@ void Step::vIndexTreeAggregate(void)
     //i8 iAgg = pExpr->iAggregate(aPayloadEntry->ayPayload(),aSrcRsb,pSrcRowSlab);
     //vTrace("Aggregate value so far: %lld\n"_Stz,iAgg);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexTree[].asAlt -- set this index tree as m_pAltIdxTree                  */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexTreeAsAlt(void)
+{
+  ENTRY();
+  
+  m_pLogicUnit->m_pAltIdxTree = * m_pLogicUnit->m_xpIndexTree;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexTree[].asSrc -- set this index tree as m_pSrcIdxTree                  */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexTreeAsSrc(void)
+{
+  ENTRY();
+  
+  m_pLogicUnit->m_pSrcIdxTree = * m_pLogicUnit->m_xpIndexTree;
   
   EXIT();
 }
