@@ -8,13 +8,12 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Bol::SP_Bol(void)
-: Sprint(CN_SPBOL)
 {
-  _precondition_(_MAGIC_,CN_SPBOL,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
-  _checkInitialised_(CN_SPBOL);
+  _checkInitialised_(CN_SPSMALL);
   
-  _postcondition_(_MAGIC_,CN_SPBOL,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,7 +21,7 @@ SP_Bol::SP_Bol(void)
 /*----------------------------------------------------------------------------*/
 SP_Bol::~SP_Bol(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPBOL,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +88,7 @@ Stz* SP_Bol::szMin(void)
 /*----------------------------------------------------------------------------*/
 Footer* SP_Bol::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SPBOL);
+  _precondition_(_MAGIC_,CN_SPSMALL);
   
   return &m_xFooter;
 }

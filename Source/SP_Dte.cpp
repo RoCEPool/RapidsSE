@@ -8,16 +8,15 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Dte::SP_Dte(void)
-: Sprint(CN_SPDTE)
 {
-  _precondition_(_MAGIC_,CN_SPDTE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   // set default Dte format
   vFormat(F_DTE);
   
-  _checkInitialised_(CN_SPDTE);
+  _checkInitialised_(CN_SPSMALL);
   
-  _postcondition_(_MAGIC_,CN_SPDTE,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +24,7 @@ SP_Dte::SP_Dte(void)
 /*----------------------------------------------------------------------------*/
 SP_Dte::~SP_Dte(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPDTE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,7 +96,7 @@ Stz* SP_Dte::szMin(void)
 /*----------------------------------------------------------------------------*/
 Footer* SP_Dte::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SPDTE);
+  _precondition_(_MAGIC_,CN_SPSMALL);
   
   return &m_xFooter;
 }

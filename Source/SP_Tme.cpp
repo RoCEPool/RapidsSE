@@ -8,16 +8,15 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Tme::SP_Tme(void)
-: Sprint(CN_SPTME)
 {
-  _precondition_(_MAGIC_,CN_SPTME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   // set default Tme format
   vFormat(F_TME);
   
-  _checkInitialised_(CN_SPTME);
+  _checkInitialised_(CN_SPSMALL);
   
-  _postcondition_(_MAGIC_,CN_SPTME,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +24,7 @@ SP_Tme::SP_Tme(void)
 /*----------------------------------------------------------------------------*/
 SP_Tme::~SP_Tme(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPTME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +112,7 @@ Stz* SP_Tme::szMin(void)
 /*----------------------------------------------------------------------------*/
 Footer* SP_Tme::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SPTME);
+  _precondition_(_MAGIC_,CN_SPSMALL);
   
   return &m_xFooter;
 }

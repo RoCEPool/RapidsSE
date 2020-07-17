@@ -8,22 +8,21 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Vch::SP_Vch(void)
-: Sprint(CN_SPVCH)
 {
-  _precondition_(_MAGIC_,CN_SPVCH,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   // set default enclosing char
   vFormat(F_VCH_enclose);
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caVch,sizeof(m_caVch),CN_SPVCH);
+  MemLib::vZero(m_caVch,sizeof(m_caVch),CN_SPSMALL);
 #else
   m_caVch[0] = '\0';
 #endif
   
-  _checkInitialised_(CN_SPVCH);
+  _checkInitialised_(CN_SPSMALL);
   
-  _postcondition_(_MAGIC_,CN_SPVCH,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +30,7 @@ SP_Vch::SP_Vch(void)
 /*----------------------------------------------------------------------------*/
 SP_Vch::~SP_Vch(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPVCH,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +128,7 @@ Stz* SP_Vch::szMin(void)
 /*----------------------------------------------------------------------------*/
 Footer* SP_Vch::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SPVCH);
+  _precondition_(_MAGIC_,CN_SPSMALL);
   
   return &m_xFooter;
 }

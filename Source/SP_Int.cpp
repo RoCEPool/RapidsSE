@@ -8,16 +8,15 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Int::SP_Int(void)
-: Sprint(CN_SPINT)
 {
-  _precondition_(_MAGIC_,CN_SPINT,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   // set default Int format
   vFormat(F_INT);
   
-  _checkInitialised_(CN_SPINT);
+  _checkInitialised_(CN_SPSMALL);
   
-  _postcondition_(_MAGIC_,CN_SPINT,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +24,7 @@ SP_Int::SP_Int(void)
 /*----------------------------------------------------------------------------*/
 SP_Int::~SP_Int(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPINT,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,7 +90,7 @@ Stz* SP_Int::szMin(void)
 /*----------------------------------------------------------------------------*/
 Footer* SP_Int::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SPINT);
+  _precondition_(_MAGIC_,CN_SPSMALL);
   
   return &m_xFooter;
 }

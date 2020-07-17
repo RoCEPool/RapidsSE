@@ -8,16 +8,15 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Ivl::SP_Ivl(void)
-: Sprint(CN_SPIVL)
 {
-  _precondition_(_MAGIC_,CN_SPIVL,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   // set default Ivl format
   vFormat(F_IVL);
   
-  _checkInitialised_(CN_SPIVL);
+  _checkInitialised_(CN_SPSMALL);
   
-  _postcondition_(_MAGIC_,CN_SPIVL,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +24,7 @@ SP_Ivl::SP_Ivl(void)
 /*----------------------------------------------------------------------------*/
 SP_Ivl::~SP_Ivl(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPIVL,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +104,7 @@ Stz* SP_Ivl::szMin(void)
 /*----------------------------------------------------------------------------*/
 Footer* SP_Ivl::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SPIVL);
+  _precondition_(_MAGIC_,CN_SPSMALL);
   
   return &m_xFooter;
 }

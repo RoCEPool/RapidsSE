@@ -5,7 +5,7 @@
 
 namespace Datums
 {
-  class SP_Bol : public Sprint
+  class SP_Bol : public SPsmall
   {
   public:
   

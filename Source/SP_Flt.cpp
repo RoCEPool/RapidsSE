@@ -8,16 +8,15 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Flt::SP_Flt(void)
-: Sprint(CN_SPFLT)
 {
-  _precondition_(_MAGIC_,CN_SPFLT,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   // set default Flt format
   vFormat(F_FLT);
   
-  _checkInitialised_(CN_SPFLT);
+  _checkInitialised_(CN_SPSMALL);
   
-  _postcondition_(_MAGIC_,CN_SPFLT,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +24,7 @@ SP_Flt::SP_Flt(void)
 /*----------------------------------------------------------------------------*/
 SP_Flt::~SP_Flt(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPFLT,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,7 +90,7 @@ Stz* SP_Flt::szMin(void)
 /*----------------------------------------------------------------------------*/
 Footer* SP_Flt::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SPFLT);
+  _precondition_(_MAGIC_,CN_SPSMALL);
   
   return &m_xFooter;
 }

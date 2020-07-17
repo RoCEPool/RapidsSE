@@ -8,16 +8,15 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Bcd::SP_Bcd(void)
-: Sprint(CN_SPBCD)
 {
-  _precondition_(_MAGIC_,CN_SPBCD,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   // set default Bcd format
   vFormat(F_BCD_frac);
   
-  _checkInitialised_(CN_SPBCD);
+  _checkInitialised_(CN_SPSMALL);
   
-  _postcondition_(_MAGIC_,CN_SPBCD,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +24,7 @@ SP_Bcd::SP_Bcd(void)
 /*----------------------------------------------------------------------------*/
 SP_Bcd::~SP_Bcd(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPBCD,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,7 +126,7 @@ Stz* SP_Bcd::szMin(void)
 /*----------------------------------------------------------------------------*/
 Footer* SP_Bcd::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SPBCD);
+  _precondition_(_MAGIC_,CN_SPSMALL);
   
   return &m_xFooter;
 }

@@ -8,16 +8,15 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Tsp::SP_Tsp(void)
-: Sprint(CN_SPTSP)
 {
-  _precondition_(_MAGIC_,CN_SPTSP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   // set default Tsp format
   vFormat(F_TSP);
   
-  _checkInitialised_(CN_SPTSP);
+  _checkInitialised_(CN_SPSMALL);
   
-  _postcondition_(_MAGIC_,CN_SPTSP,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +24,7 @@ SP_Tsp::SP_Tsp(void)
 /*----------------------------------------------------------------------------*/
 SP_Tsp::~SP_Tsp(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPTSP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
 
 
@@ -123,7 +122,7 @@ Stz* SP_Tsp::sz(i8 iTsp)
 /*----------------------------------------------------------------------------*/
 Footer* SP_Tsp::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SPTSP);
+  _precondition_(_MAGIC_,CN_SPSMALL);
   
   return &m_xFooter;
 }
