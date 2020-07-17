@@ -444,6 +444,18 @@ Rsb* RowSlab::aRsbAdr(i8 i_Row)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of an rsb by its offset                                        */
+/*----------------------------------------------------------------------------*/
+Rsb* RowSlab::aRsbByOfs(i8 iOfs)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  Rsb* aRsb = aAdd<Rsb*>(m_xWsp.ayArea(),iOfs);
+  
+  return aRsb;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of rows                                                         */
 /*----------------------------------------------------------------------------*/
 i8 RowSlab::nRows(void)

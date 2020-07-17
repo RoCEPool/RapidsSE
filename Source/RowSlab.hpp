@@ -69,6 +69,7 @@ namespace Rows
     bool  bPtnHash(void);
     Rsb*  aRsb(void);
     Rsb*  aRsbAdr(i8 i_Row);
+    Rsb*  aRsbByOfs(i8 iOfs);
     i8    iOfsOfRsb(Rsb* aRsb);
     i8    nRows(void);
     void  vSlabReport(void);
