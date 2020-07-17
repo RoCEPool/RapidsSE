@@ -1842,7 +1842,11 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
 
-      case EO_RSB_SRC_SETBYOFS: NEVER_REACH; // not yet implemented
+      case EO_RSB_SRC_SETBYOFS: // set src rsb by using offset on stack
+        iTopA = *(aiDstk--);
+        m_aSrcRsb = m_pSrcRowSlab->aRsbByOfs(iTopA);
+        break;
+
       case EO_RSB_ALT_BEGIN:    NEVER_REACH; // not yet implemented
       case EO_RSB_ALT_NEXT:     NEVER_REACH; // not yet implemented
       case EO_RSB_ALT_PUSHOFS:  NEVER_REACH; // not yet implemented
