@@ -1281,33 +1281,6 @@ void LogicUnit::vDumpCode(void)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* dump code                                                                  */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vDumpCode(i8& i_Code, eEO eCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  vTrace("%04lld: %18s\n"_Stz,i_Code,aEO[eCode]);
-  
-  i_Code++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump code                                                                  */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vDumpCode(eEO eCode, i8& i_Code)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  i8* piArg = (i8*) & m_eaCode[i_Code+1];
-  i8 iArg = * piArg;
-
-  vTrace("%04lld: %18s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
-
-  i_Code += 1 + sizeof(i8);
-}
-
 #if 1
 
   #define dLU3(eCode,iA,iB,iC) \
