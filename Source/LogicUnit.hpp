@@ -111,6 +111,8 @@ namespace Expressions
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ..from Calculator
 
+    i8         m_iSql;
+    
     bool       m_bPixInited;
     StreamPix  m_oStreamPix;    // condensed stream def
 

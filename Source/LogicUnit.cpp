@@ -43,6 +43,8 @@ LogicUnit::LogicUnit(Task* pTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  m_iSql        = C_UNKNOWN;
+  
   m_bPixInited  = false;
   // m_oStreamPix
   m_aDstRsb     = nullptr;
@@ -543,6 +545,8 @@ void LogicUnit::vGenerateAggGby14000(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  m_iSql = 14000;
+  
   // initialize srcSlab etc
   vAddCode(EO_INI_SRC_SLAB);
   
@@ -564,7 +568,6 @@ void LogicUnit::vGenerateAggGby14000(void)
   vAddCode(EO_ENTWRK_RESET);
   
   // add key
-  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
   vAddCodeArg(EO_ENTWRK_APPENDELM,(i8)0);
   
   // find the key in the indexTree
@@ -611,6 +614,8 @@ void LogicUnit::vGenerateAggGby14001(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  m_iSql = 14001;
+  
   m_i_Code = 0;
   
   // initialize srcSlab etc
@@ -650,6 +655,8 @@ void LogicUnit::vGenerateAggGby14001(void)
 void LogicUnit::vGenerateAggGby14002(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_iSql = 14002;
   
   // initialize srcSlab etc
   vAddCode(EO_INI_SRC_SLAB);
@@ -1427,6 +1434,8 @@ i8 LogicUnit::iCompute(void)
   
   for (;;) {
   
+    ASSERT(m_aaReturnStack[0] == nullptr);
+    
     eCode = *aeCode++;
     
     switch (eCode) {
@@ -2104,6 +2113,8 @@ i8 LogicUnit::iCompute(void)
         vTrace(" unknown opcode in calculator %lld\n"_Stz,(i8)eCode);
         return C_DATUM_NULL;
     }
+    
+    _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   }
   
   return m_iaDataStack[0];
