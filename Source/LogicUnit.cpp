@@ -169,7 +169,6 @@ EoArg EoArgs[]
   { EA_LABEL, 8 },  // EO_JMPTRUE
 
   // entry
-  { EA_INT,   8 },  // EO_ENT_CREATEPAY
   { EA_NONE,  0 },  // EO_ENT_NEXT
   { EA_NONE,  0 },  // EO_ENT_POSPRIOR
   { EA_NONE,  0 },  // EO_ENT_PUSH
@@ -186,6 +185,7 @@ EoArg EoArgs[]
   // entWrk
   { EA_INT,   8 },  // EO_ENTWRK_APPENDELM
   { EA_NONE,  0 },  // EO_ENTWRK_APPENDELMI
+  { EA_INT,   8 },  // EO_ENTWRK_CREATEPAY
   { EA_NONE,  0 },  // EO_ENTWRK_POPOFS
   { EA_NONE,  0 },  // EO_ENTWRK_POPREF
   { EA_NONE,  0 },  // EO_ENTWRK_PRINT
@@ -588,7 +588,7 @@ void LogicUnit::vGenerateAggGby(void)
   
   // NOT_FOUND:
   vDefineLabel("NOT_FOUND"_Stz);
-  vAddCodeArg(EO_ENT_CREATEPAY, 8);
+  vAddCodeArg(EO_ENTWRK_CREATEPAY, 8);
   vAddCode(EO_IXT_INS_ENT);
   vAddCode(EO_PUSH0);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
@@ -1453,14 +1453,6 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
-      case EO_ENT_CREATEPAY: // create a payload in entwrk
-        iArg = * (i8*)aeCode;
-        dLU1(eCode,iArg);
-        aeCode += 8;
-        m_oEntWrk.vPayload(true);
-        m_oEntWrk.vPayloadBytes(iArg);
-        break;
-                
       case EO_ENT_NEXT: // move to next m_pEnt
         dLU0(eCode);
         m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
@@ -1545,6 +1537,14 @@ i8 LogicUnit::iCompute(void)
         m_oEntWrk.vAppendElementInt(m_aSrcRsb,iTopA);
         break;
         
+      case EO_ENTWRK_CREATEPAY: // create a payload in entwrk
+        iArg = * (i8*)aeCode;
+        dLU1(eCode,iArg);
+        aeCode += 8;
+        m_oEntWrk.vPayload(true);
+        m_oEntWrk.vPayloadBytes(iArg);
+        break;
+                
       case EO_ENTWRK_POPOFS: // pop m_oEntWrk.ref.buffer/offset
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);

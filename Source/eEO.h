@@ -21,7 +21,6 @@ enum eEO : i1 // expression operators
   /*    */ EO_JMPTRUE,          // pop top and jump to location if true
   
   // entry
-  /*    */ EO_ENT_CREATEPAY,    // create a payload in entwrk
   /*    */ EO_ENT_NEXT,         // move to next m_pEnt
   /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
   /*    */ EO_ENT_PUSH,         // push entry
@@ -38,6 +37,7 @@ enum eEO : i1 // expression operators
   // entWrk
   /*    */ EO_ENTWRK_APPENDELM, // append next element value
   /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
+  /*    */ EO_ENTWRK_CREATEPAY,    // create a payload in entwrk
   /*    */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
   /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
   /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
@@ -154,7 +154,6 @@ static Stz* aEO[]
   /*    */ "EO_JMPTRUE"_Stz,
 
   // entry
-  /*    */ "EO_ENT_CREATEPAY"_Stz,
   /*    */ "EO_ENT_NEXT"_Stz,
   /*    */ "EO_ENT_POSPRIOR"_Stz,
   /*    */ "EO_ENT_PUSH"_Stz,
@@ -171,6 +170,7 @@ static Stz* aEO[]
   // entWrk
   /*    */ "EO_ENTWRK_APPENDELM"_Stz,
   /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
+  /*    */ "EO_ENTWRK_CREATEPAY"_Stz,
   /*    */ "EO_ENTWRK_POPOFS"_Stz,
   /*    */ "EO_ENTWRK_POPREF"_Stz,
   /*    */ "EO_ENTWRK_PRINT"_Stz,
