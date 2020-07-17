@@ -268,19 +268,10 @@ enum eCN : u2 // Class Number
   /* */ CN_SNTSP,
   /* */ CN_SNVCH,
   /* */ CN_SOCKET,
-  /* */ CN_SPBCD,
-  /* */ CN_SPBOL,
-  /* */ CN_SPDTE,
   /* */ CN_SPELAPSED,
-  /* */ CN_SPFLT,
   /* */ CN_SPID,
-  /* */ CN_SPINT,
-  /* */ CN_SPIVL,
   /* */ CN_SPSTRING,
   /* */ CN_SPTKNVECSTR,
-  /* */ CN_SPTME,
-  /* */ CN_SPTSP,
-  /* */ CN_SPVCH,
   
   /* */ CN_SPMEDIUM,
   /* */ CN_SPSMALL,
@@ -613,19 +604,10 @@ static Stz* aCN[]
   /* */ "SNTSP"_Stz,               // CN_SNTSP
   /* */ "SNVCH"_Stz,               // CN_SNVCH
   /* */ "SOCKET"_Stz,              // CN_SOCKET
-  /* */ "SPBCD"_Stz,               // CN_SPBCD
-  /* */ "SPBOL"_Stz,               // CN_SPBOL
-  /* */ "SPDTE"_Stz,               // CN_SPDTE
   /* */ "SPELAPSED"_Stz,           // CN_SPELAPSED
-  /* */ "SPFLT"_Stz,               // CN_SPFLT
   /* */ "SPID"_Stz,                // CN_SPID
-  /* */ "SPINT"_Stz,               // CN_SPINT
-  /* */ "SPIVL"_Stz,               // CN_SPIVL
   /* */ "SPSTRING"_Stz,            // CN_SPSTRING
   /* */ "SPTKNVECSTR"_Stz,         // CN_SPTKNVECSTR
-  /* */ "SPTME"_Stz,               // CN_SPTME
-  /* */ "SPTSP"_Stz,               // CN_SPTSP
-  /* */ "SPVCH"_Stz,               // CN_SPVCH
   
   /* */ "SPMEDIUM"_Stz,            // CN_SPMEDIUM
   /* */ "SPSMALL"_Stz,             // CN_SPSMALL

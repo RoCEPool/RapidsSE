@@ -264,19 +264,10 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SN_Tsp),             HT_INVALID           }, // CN_SNTSP
   { sizeof(SN_Vch),             HT_INVALID           }, // CN_SNVCH
   { sizeof(Socket),             HT_TRANSIENT_TINY    }, // CN_SOCKET
-  { sizeof(SP_Bcd),             HT_INVALID           }, // CN_SPBCD
-  { sizeof(SP_Bol),             HT_INVALID           }, // CN_SPBOL
-  { sizeof(SP_Dte),             HT_INVALID           }, // CN_SPDTE
   { sizeof(SP_Elapsed),         HT_INVALID           }, // CN_SPELAPSED
-  { sizeof(SP_Flt),             HT_INVALID           }, // CN_SPFLT
   { sizeof(SP_Gid),             HT_INVALID           }, // CN_SPID
-  { sizeof(SP_Int),             HT_INVALID           }, // CN_SPINT
-  { sizeof(SP_Ivl),             HT_INVALID           }, // CN_SPIVL
   { sizeof(SP_String),          HT_INVALID           }, // CN_SPSTRING
   { sizeof(SP_TknVecStr),       HT_INVALID           }, // CN_SPTKNVECSTR
-  { sizeof(SP_Tme),             HT_INVALID           }, // CN_SPTME
-  { sizeof(SP_Tsp),             HT_INVALID           }, // CN_SPTSP
-  { sizeof(SP_Vch),             HT_INVALID           }, // CN_SPVCH
   
   { sizeof(SPmedium),           HT_INVALID           }, // CN_SPMEDIUM
   { sizeof(SPsmall),            HT_INVALID           }, // CN_SPSMALL
