@@ -1768,15 +1768,15 @@ i8 LogicUnit::iCompute(void)
       // branch operators
       case EO_JMP: // jump to location
         iArg = * (i8*)aeCode;
-        dLU1(eCode,iArg);
         aeCode += 8;
+        dLU1(eCode,iArg);
         aeCode = & m_eaCode[iArg];
         break;
         
       case EO_JMPFALSE: // pop top and jump to location if false
         iArg = * (i8*)aeCode;
-        dLU1(eCode,iArg);
         aeCode += 8;
+        dLU1(eCode,iArg);
         iTopA = *(aiDstk--);
         if (! iTopA)
           aeCode = & m_eaCode[iArg];
@@ -1784,8 +1784,8 @@ i8 LogicUnit::iCompute(void)
         
       case EO_JMPTRUE: // pop top and jump to location if true
         iArg = * (i8*)aeCode;
-        dLU1(eCode,iArg);
         aeCode += 8;
+        dLU1(eCode,iArg);
         iTopA = *(aiDstk--);
         if (iTopA)
           aeCode = & m_eaCode[iArg];
@@ -1942,8 +1942,9 @@ i8 LogicUnit::iCompute(void)
       case EO_ENTWRK_APPENDELM: // append next element value
       {
         iArg = * (i8*)aeCode;
-        dLU1(eCode,iArg);
         aeCode += 8;
+        dLU1(eCode,iArg);
+
         m_oEntWrk.vAppendElement(m_aSrcRsb, m_pIndexTree->pIndexDef()->pGetColumn(iArg));
         SP_Ent spEnt;
         vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
@@ -1958,8 +1959,9 @@ i8 LogicUnit::iCompute(void)
         
       case EO_ENTWRK_CREATEPAY: // create a payload in entwrk
         iArg = * (i8*)aeCode;
-        dLU1(eCode,iArg);
         aeCode += 8;
+        dLU1(eCode,iArg);
+        
         m_oEntWrk.vPayload(true);
         m_oEntWrk.vPayloadBytes(iArg);
         break;
@@ -2206,8 +2208,8 @@ i8 LogicUnit::iCompute(void)
         
       case EO_DATE: // push date
         iArg = * (i8*)aeCode;
-        dLU1(eCode,iArg);
         aeCode += 8;
+        dLU1(eCode,iArg);
         // convert date string to an m8
         
         *(++aiDstk) = iArg;
@@ -2215,8 +2217,8 @@ i8 LogicUnit::iCompute(void)
         
       case EO_INTEGER: // push integer
         iArg = * (i8*)aeCode;
-        dLU1(eCode,iArg);
         aeCode += 8;
+        dLU1(eCode,iArg);
         *(++aiDstk) = iArg;
         break;
         
@@ -2428,8 +2430,9 @@ i8 LogicUnit::iCompute(void)
       // subroutine operators
       case EO_CALL: // call subroutine at location
         iArg = * (i8*)aeCode;
-        dLU1(eCode,iArg);
         aeCode += 8;
+        dLU1(eCode,iArg);
+
         * (aaeRstk++) = aeCode;
         aeCode = & m_eaCode[iArg];
         break;
