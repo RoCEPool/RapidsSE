@@ -174,6 +174,10 @@ EoArg EoArgs[]
   { EA_LABEL, 8 },  // EO_JMPFALSE
   { EA_LABEL, 8 },  // EO_JMPTRUE
 
+  // col operators
+  { EA_INT,   8 },  // EO_COL_SRC_FETCH
+  { EA_INT,   8 },  // EO_COL_SRC_FETCH
+  
   // crw operators
   { EA_NONE,  0 },  // EO_CRW_SRC_FETCH
   { EA_NONE,  0 },  // EO_CRW_ALT_FETCH
@@ -1751,7 +1755,15 @@ i8 LogicUnit::iCompute(void)
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // branch operators
+      // col operators
+      case EO_COL_SRC_FETCH: // fetch column value from m_aSrcCrw
+        break;
+        
+      case EO_COL_ALT_FETCH: // fetch column value from m_aAltCrw
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // crw operators
       case EO_CRW_SRC_FETCH: // fetch m_aSrcCrw using m_aSrcEnt.ref
         m_aSrcCrw = CrwBuffer::pRefdCrw(m_aSrcEnt->rxRef());
         break;
