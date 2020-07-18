@@ -176,7 +176,7 @@ EoArg EoArgs[]
 
   // col operators
   { EA_INT,   8 },  // EO_COL_SRC_FETCH
-  { EA_INT,   8 },  // EO_COL_SRC_FETCH
+  { EA_INT,   8 },  // EO_COL_ALT_FETCH
   
   // crw operators
   { EA_NONE,  0 },  // EO_CRW_SRC_FETCH
@@ -1448,8 +1448,8 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("xan"_Stz)) { vAddCode(EO_IXT_ALT_NEXT);        continue; }
     if (pTkn->bSame("xap"_Stz)) { vAddCode(EO_IXT_ALT_PRINT);       continue; }
 
-    if (pTkn->bSame("csf"_Stz)) { vAddCode(EO_CRW_SRC_FETCH);       continue; }
-    if (pTkn->bSame("caf"_Stz)) { vAddCode(EO_CRW_ALT_FETCH);       continue; }
+    if (pTkn->bSame("rsf"_Stz)) { vAddCode(EO_CRW_SRC_FETCH);       continue; }
+    if (pTkn->bSame("raf"_Stz)) { vAddCode(EO_CRW_ALT_FETCH);       continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subroutine operators
@@ -1489,11 +1489,18 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
       vAddCodeLabel(EO_CALL,pTkn);
       continue;
     }
-
-    // label/location
-    if (pTkn->bSame("L"_Stz)) {
+    
+    // fetch column value from m_aSrcCrw
+    if (pTkn->bSame("csf"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vDefineLabel(pTkn->szChars());
+      vAddCodeArg(EO_COL_SRC_FETCH,pTkn);
+      continue;
+    }
+
+    // fetch column value from m_aAltCrw
+    if (pTkn->bSame("caf"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeArg(EO_COL_ALT_FETCH,pTkn);
       continue;
     }
 
@@ -1515,6 +1522,13 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("jt"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       vAddCodeLabel(EO_JMPTRUE,pTkn);
+      continue;
+    }
+
+    // label/location
+    if (pTkn->bSame("L"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vDefineLabel(pTkn->szChars());
       continue;
     }
 
@@ -1757,6 +1771,16 @@ i8 LogicUnit::iCompute(void)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
       case EO_COL_SRC_FETCH: // fetch column value from m_aSrcCrw
+      {
+        iArg = * (i8*)aeCode;
+        aeCode += 8;
+
+        HV_Row hRow(m_xpTable->pStreamDef(),C_ALL);
+        RowInflator::vInflateColumn(hRow,m_aSrcCrw,iArg);
+        iRes = hRow->m_waColVal[iArg].m_iWrd;
+        dLU2(eCode,iArg,iRes);
+        *(++aiDstk) = iRes;
+      }
         break;
         
       case EO_COL_ALT_FETCH: // fetch column value from m_aAltCrw

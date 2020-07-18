@@ -151,7 +151,7 @@
     20000 of
       // SRC INDEX WALK TEST 1
       queryNo "QUERY %v" .printf
-      "dn dp xsb jf END L NXT xsp csf bp xsn jt NXT L END ret"
+      "dn dp xsb jf END L NXT xsp rsf csf 0 . bp xsn jt NXT L END ret"
          LogicUnit[].source!
       LogicUnit[].compile assert
     endof
