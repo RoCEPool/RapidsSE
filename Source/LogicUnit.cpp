@@ -1600,6 +1600,11 @@ void LogicUnit::vDumpCode(void)
     
     eEO eCode = m_eaCode[i_Code];
     
+    if (eCode <= EO_NONE || eCode >= EO_ENUMS) {
+      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+             "Invalid eo code sequence detected"_Stz);
+    }
+    
     if (EoArgs[eCode].m_nArgBytes) {
       //vDumpCode(eCode,i_Code);
       i8* piArg = (i8*) & m_eaCode[i_Code+1];
@@ -2443,7 +2448,7 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       default:
-        vTrace(" unknown opcode in calculator %lld\n"_Stz,(i8)eCode);
+        vTrace("Unknown eo opcode %lld\n"_Stz,(i8)eCode);
         return C_DATUM_NULL;
     }
     
