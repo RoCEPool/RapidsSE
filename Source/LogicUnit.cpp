@@ -2022,6 +2022,8 @@ i8 LogicUnit::iCompute(void)
         break;
 
       case EO_IXT_SRC_PRINT: // print src ent
+        pIndexDef = m_pSrcIdxTree->pIndexDef();
+        vTrace("SrcEnt : %s\n"_Stz,spEnt.sz(m_aSrcEnt,pIndexDef));
         break;
 
       case EO_IXT_ALT_BEGIN: // begin linear traverse
@@ -2048,8 +2050,10 @@ i8 LogicUnit::iCompute(void)
         break;
 
       case EO_IXT_ALT_PRINT: // print alt ent
+        pIndexDef = m_pSrcIdxTree->pIndexDef();
+        vTrace("AltEnt : %s\n"_Stz,spEnt.sz(m_aAltEnt,pIndexDef));
         break;
-
+        
       case EO_IXT_JOI_MATCH: // test for join match (src.key == alt.key)
         iRes  = KC_SAME == Key::eCompare(m_aSrcEnt->aKey(),m_aAltEnt->aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
