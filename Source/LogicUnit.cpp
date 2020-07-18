@@ -1793,10 +1793,10 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
-      case EO_COL_SRC_FETCH: // fetch column value from m_aSrcCrw
+      case EO_COL_SRC_FETCH: GetArg(iArg); // fetch column value from m_aSrcCrw
       {
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
 
         HV_Row hRow(m_xpTable->pStreamDef(),C_ALL);
         RowInflator::vInflateColumn(hRow,m_aSrcCrw,iArg);
@@ -1806,7 +1806,8 @@ i8 LogicUnit::iCompute(void)
       }
         break;
         
-      case EO_COL_ALT_FETCH: // fetch column value from m_aAltCrw
+      case EO_COL_ALT_FETCH: GetArg(iArg); // fetch column value from m_aAltCrw
+        NEVER_REACH;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1939,10 +1940,10 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entWrk
-      case EO_ENTWRK_APPENDELM: // append next element value
+      case EO_ENTWRK_APPENDELM: GetArg(iArg); // append next element value
       {
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         dLU1(eCode,iArg);
 
         m_oEntWrk.vAppendElement(m_aSrcRsb, m_pIndexTree->pIndexDef()->pGetColumn(iArg));
@@ -1957,9 +1958,9 @@ i8 LogicUnit::iCompute(void)
         m_oEntWrk.vAppendElementInt(m_aSrcRsb,iTopA);
         break;
         
-      case EO_ENTWRK_CREATEPAY: // create a payload in entwrk
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_ENTWRK_CREATEPAY: GetArg(iArg); // create a payload in entwrk
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         dLU1(eCode,iArg);
         
         m_oEntWrk.vPayload(true);
@@ -2183,9 +2184,9 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
-      case EO_PAY_FETCH_COL: // fetch a column from the entry payload
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_PAY_FETCH_COL: GetArg(iArg); // fetch a column from the entry payload
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         m_aPayRsb = (Rsb*)m_pEnt->ayPayload();
         i_Cell_ntv = m_aPayRsb->i_ColToCell_ntv(iArg);
         iRes = m_aPayRsb->iVal_ntv(i_Cell_ntv);
@@ -2193,9 +2194,9 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_PAY_STORE_COL: // store a column of the entry payload
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_PAY_STORE_COL: GetArg(iArg); // store a column of the entry payload
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         iRes = *(aiDstk--);
         dLU2(eCode,iArg,iRes);
         m_aPayRsb = (Rsb*)m_pEnt->ayPayload();
@@ -2206,18 +2207,18 @@ i8 LogicUnit::iCompute(void)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pushes
         
-      case EO_DATE: // push date
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_DATE: GetArg(iArg); // push date
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         dLU1(eCode,iArg);
         // convert date string to an m8
         
         *(++aiDstk) = iArg;
         break;
         
-      case EO_INTEGER: // push integer
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_INTEGER: GetArg(iArg); // push integer
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         dLU1(eCode,iArg);
         *(++aiDstk) = iArg;
         break;
@@ -2364,18 +2365,18 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb operators
-      case EO_DEPOSITCOLI: // pop and deposit top into dst column
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_DEPOSITCOLI: GetArg(iArg); // pop and deposit top into dst column
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         iRes = *(aiDstk--);
         dLU2(eCode,iArg,iRes);
         m_pDstRowSlab->vPositionOnCell(iArg);
         m_pDstRowSlab->vDeposit(iRes);
         break;
         
-      case EO_PUSHDSTCOLI: // push dst column
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_PUSHDSTCOLI: GetArg(iArg); // push dst column
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         m_aDstRsb = m_pDstRowSlab->aRsbAdr(0);
         i_Cell_ntv = m_aDstRsb->i_ColToCell_ntv(iArg);
         iRes = m_aDstRsb->iVal_ntv(i_Cell_ntv);
@@ -2383,15 +2384,15 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_PUSHSRCCOLI: // push src column
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_PUSHSRCCOLI: GetArg(iArg); // push src column
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         iRes = m_aSrcRsb->iVal_ntv(m_aSrcRsb->i_ColToCell_ntv(iArg));
         dLU2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
         break;
         
-      case EO_PUSHALTCOLI:     NEVER_REACH; // not yet implemented
+      case EO_PUSHALTCOLI: NEVER_REACH; // not yet implemented
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // stack operators
@@ -2428,9 +2429,9 @@ i8 LogicUnit::iCompute(void)
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // subroutine operators
-      case EO_CALL: // call subroutine at location
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_CALL: GetArg(iArg); // call subroutine at location
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         dLU1(eCode,iArg);
 
         * (aaeRstk++) = aeCode;
