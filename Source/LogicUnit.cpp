@@ -57,6 +57,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_aSrcEnt     = nullptr;
   m_pSrcIdxTree = nullptr;
   m_pSrcEntBuffer = nullptr;
+  m_aSrcCrw     = nullptr;
 
   m_i_AltRow    = C_UNKNOWN;
   m_nAltRows    = C_UNKNOWN;
@@ -65,6 +66,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_aAltEnt     = nullptr;
   m_pAltIdxTree = nullptr;
   m_pAltEntBuffer = nullptr;
+  m_aAltCrw     = nullptr;
 
   m_pEnt        = nullptr;
   // m_oEntWrk
@@ -172,6 +174,10 @@ EoArg EoArgs[]
   { EA_LABEL, 8 },  // EO_JMPFALSE
   { EA_LABEL, 8 },  // EO_JMPTRUE
 
+  // crw operators
+  { EA_NONE,  0 },  // EO_CRW_SRC_FETCH
+  { EA_NONE,  0 },  // EO_CRW_ALT_FETCH
+  
   // date operators
   { EA_NONE,  0 },  // EO_DTE_NOW
   { EA_NONE,  0 },  // EO_DTE_PRINT
@@ -1438,6 +1444,9 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("xan"_Stz)) { vAddCode(EO_IXT_ALT_NEXT);        continue; }
     if (pTkn->bSame("xap"_Stz)) { vAddCode(EO_IXT_ALT_PRINT);       continue; }
 
+    if (pTkn->bSame("csf"_Stz)) { vAddCode(EO_CRW_SRC_FETCH);       continue; }
+    if (pTkn->bSame("caf"_Stz)) { vAddCode(EO_CRW_ALT_FETCH);       continue; }
+    
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subroutine operators
     if (pTkn->bSame("ret"_Stz)) { vAddCode(EO_RETURN);              continue; }
@@ -1446,7 +1455,6 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     // misc
     if (pTkn->bSame("bp"_Stz))  { vAddCode(EO_BREAKPOINT);          continue; }
     if (pTkn->bSame("tr"_Stz))  { vAddCode(EO_TRACE);               continue; }
-    
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
@@ -1740,6 +1748,14 @@ i8 LogicUnit::iCompute(void)
         iTopA = *(aiDstk--);
         if (iTopA)
           aeCode = & m_eaCode[iArg];
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // branch operators
+      case EO_CRW_SRC_FETCH: // fetch m_aSrcCrw using m_aSrcEnt.ref
+        break;
+        
+      case EO_CRW_ALT_FETCH: // fetch m_aAltCrw using m_aAltEnt.ref
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

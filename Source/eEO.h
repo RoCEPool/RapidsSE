@@ -20,6 +20,10 @@ enum eEO : i1 // expression operators
   /*    */ EO_JMPFALSE,         // pop top and jump to location if false
   /*    */ EO_JMPTRUE,          // pop top and jump to location if true
   
+  // crw operators
+  /*    */ EO_CRW_SRC_FETCH,    // fetch m_aSrcCrw using m_aSrcEnt.ref
+  /*    */ EO_CRW_ALT_FETCH,    // fetch m_aAltCrw using m_aAltEnt.ref
+
   // date operators
   /*    */ EO_DTE_NOW,          // push current date
   /*    */ EO_DTE_PRINT,        // pop top and print as date
@@ -164,6 +168,10 @@ static Stz* aEO[]
   /*    */ "EO_JMPFALSE"_Stz,
   /*    */ "EO_JMPTRUE"_Stz,
 
+  // crw operators
+  /*    */ "EO_CRW_SRC_FETCH"_Stz,
+  /*    */ "EO_CRW_ALT_FETCH"_Stz,
+  
   // date operators
   /*    */ "EO_DTE_NOW"_Stz,
   /*    */ "EO_DTE_PRINT"_Stz,

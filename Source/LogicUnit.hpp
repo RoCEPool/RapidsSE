@@ -127,11 +127,13 @@ namespace Expressions
     Ent*       m_aSrcEnt;
     IndexTree* m_pSrcIdxTree;
     EntBuffer* m_pSrcEntBuffer;
-
+    Crw*       m_aSrcCrw;
+  
     i8         m_i_AltRow;
     i8         m_nAltRows;
     Rsb*       m_aAltRsb;
     RowSlab*   m_pAltRowSlab;
+    Crw*       m_aAltCrw;
 
     Ent*       m_aAltEnt;
     IndexTree* m_pAltIdxTree;
