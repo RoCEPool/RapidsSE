@@ -2003,7 +2003,7 @@ i8 LogicUnit::iCompute(void)
         m_pSrcEntBuffer = m_pSrcIdxTree->pFirstH0Buffer();
         if (m_pSrcEntBuffer) {
           m_aSrcEnt = m_pSrcEntBuffer->aLeadEntry();
-          if (m_pEnt)
+          if (m_aSrcEnt)
             *(++aiDstk) = 1;
           else
             *(++aiDstk) = 0;
@@ -2031,7 +2031,7 @@ i8 LogicUnit::iCompute(void)
         m_pAltEntBuffer = m_pAltIdxTree->pFirstH0Buffer();
         if (m_pAltEntBuffer) {
           m_aAltEnt = m_pAltEntBuffer->aLeadEntry();
-          if (m_pEnt)
+          if (m_aAltEnt)
             *(++aiDstk) = 1;
           else
             *(++aiDstk) = 0;
