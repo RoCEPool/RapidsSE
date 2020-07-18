@@ -1655,12 +1655,26 @@ void LogicUnit::vDumpCode(void)
              nDifference(m_eaCode,aeCode-1),\
              aEO[eCode]);
 
+  #define GetArg(iArg) \
+    ASSERT(8 == EoArgs[eCode].m_nArgBytes); \
+    iArg = * (i8*)aeCode; \
+    aeCode += 8;
+
+  #define NoArg() \
+    ASSERT(0 == EoArgs[eCode].m_nArgBytes);
+
 #else
 
   #define dLU3(eCode,iA,iB,iC)
   #define dLU2(eCode,iA,iB)
   #define dLU1(eCode,iA)
   #define dLU0(eCode)
+
+  #define GetArg(iArg) \
+    iArg = * (i8*)aeCode; \
+    aeCode += 8;
+
+  #define NoArg()
 
 #endif
 
@@ -1703,7 +1717,7 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // arithmetic operators
-      case EO_ADD: // add top two int's push result
+      case EO_ADD: NoArg(); // add top two int's push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA + iTopB;
@@ -1711,7 +1725,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_DIVIDE: // divide top int by second push result
+      case EO_DIVIDE: NoArg(); // divide top int by second push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA / iTopB;
@@ -1719,7 +1733,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_MODULO: // modulo top int be second push result
+      case EO_MODULO: NoArg(); // modulo top int be second push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA % iTopB;
@@ -1727,7 +1741,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_MULTIPLY: // multiply top two int's push result
+      case EO_MULTIPLY: NoArg(); // multiply top two int's push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA * iTopB;
@@ -1735,14 +1749,14 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_NEGATE: // negate the top value
+      case EO_NEGATE: NoArg(); // negate the top value
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
         dLU2(eCode,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;
         
-      case EO_SUBTRACT: // subtract second int from top push result
+      case EO_SUBTRACT: NoArg(); // subtract second int from top push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA - iTopB;
@@ -1797,17 +1811,17 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // crw operators
-      case EO_CRW_SRC_FETCH: // fetch m_aSrcCrw using m_aSrcEnt.ref
+      case EO_CRW_SRC_FETCH: NoArg(); // fetch m_aSrcCrw using m_aSrcEnt.ref
         m_aSrcCrw = CrwBuffer::pRefdCrw(m_aSrcEnt->rxRef());
         break;
         
-      case EO_CRW_ALT_FETCH: // fetch m_aAltCrw using m_aAltEnt.ref
+      case EO_CRW_ALT_FETCH: NoArg(); // fetch m_aAltCrw using m_aAltEnt.ref
         m_aAltCrw = CrwBuffer::pRefdCrw(m_aAltEnt->rxRef());
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // date operators
-      case EO_DTE_NOW: // push current date
+      case EO_DTE_NOW: NoArg(); // push current date
       {
         Now oNow;
         Dtm wDte;
@@ -1823,7 +1837,7 @@ i8 LogicUnit::iCompute(void)
       }
         break;
         
-      case EO_DTE_PRINT: // pop top and print as date
+      case EO_DTE_PRINT: NoArg(); // pop top and print as date
       {
         SP_Dte spDate;
         iTopA = *(aiDstk--);
@@ -1832,7 +1846,7 @@ i8 LogicUnit::iCompute(void)
       }
         break;
 
-      case EO_DTE_YEAR: // pop top, push year of date
+      case EO_DTE_YEAR: NoArg(); // pop top, push year of date
       {
         Dtm wDte;
         wDte = *(aiDstk--);
@@ -1844,7 +1858,7 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
-      case EO_ENT_NEXT: // move to next m_pEnt
+      case EO_ENT_NEXT: NoArg(); // move to next m_pEnt
         dLU0(eCode);
         m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
         if (m_pEnt)
@@ -1853,33 +1867,47 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
         
-      case EO_ENT_POSPRIOR: // position m_pEnt prior using m_oEntWrk.key
+      case EO_ENT_POSPRIOR: NoArg(); // position m_pEnt prior using m_oEntWrk.key
         dLU0(eCode);
         m_pEnt = m_pIndexTree->aPositionPriorEntry(m_oEntWrk.aKey(), &m_pEntBuffer);
         break;
         
-      case EO_ENT_PUSH: // push entry on the stack
+      case EO_ENT_PUSH: NoArg(); // push entry on the stack
         dLU0(eCode);
         *(++aiDstk) = (i8)m_pEnt;
         break;
         
-      case EO_ENT_PUSHELMI0: //  push entry elm 0 int
+      case EO_ENT_PUSHELMI0: NoArg(); //  push entry elm 0 int
         dLU0(eCode);
         iRes = m_pEnt->aKey()->iGetIntElm();
         *(++aiDstk) = iRes;
         break;
         
-      case EO_ENT_PUSHOFS: // push entry offset
+      case EO_ENT_PUSHOFS: NoArg(); // push entry offset
         dLU0(eCode);
         iRes = m_pEnt->iBuffer();
         *(++aiDstk) = iRes;
         break;
         
-      case EO_ENT_PUSHREF:   NEVER_REACH; // not yet implemented
+      case EO_ENT_PUSHREF: NEVER_REACH; // not yet implemented
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
-      case EO_ENT_EQUAL: {
+      case EO_ENT_LESSTHAN: NoArg(); // test if m_pEnt.key <  m_oEntWrk.key
+        iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        dLU1(eCode,iRes);
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_LESSEQUAL: NoArg(); // test if m_pEnt.key <= m_oEntWrk.key
+        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
+        iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
+        dLU1(eCode,iRes);
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_ENT_EQUAL: NoArg();
+      {
         SP_Ent spEnt;
         vTrace("\n\nEntWrk : %s\n"_Stz,
                spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
@@ -1890,34 +1918,21 @@ i8 LogicUnit::iCompute(void)
         break;
       }
         
-      case EO_ENT_NOTEQUAL:
+      case EO_ENT_NOTEQUAL: NoArg();
         iRes  = KC_SAME != Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
         
-      case EO_ENT_GREATEREQUAL:
+      case EO_ENT_GREATEREQUAL: NoArg();
         iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
         iRes = (KC_SAME == iCmp || KC_AFTER == iCmp ) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
         
-      case EO_ENT_GREATERTHAN:
+      case EO_ENT_GREATERTHAN: NoArg();
         iRes  = KC_AFTER == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
-        dLU1(eCode,iRes);
-        *(++aiDstk) = iRes;
-        break;
-        
-      case EO_ENT_LESSTHAN: // test if m_pEnt.key <  m_oEntWrk.key
-        iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
-        dLU1(eCode,iRes);
-        *(++aiDstk) = iRes;
-        break;
-        
-      case EO_ENT_LESSEQUAL: // test if m_pEnt.key <= m_oEntWrk.key
-        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
-        iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
@@ -1935,7 +1950,7 @@ i8 LogicUnit::iCompute(void)
         break;
       }
         
-      case EO_ENTWRK_APPENDELMI: // append next element value (int)
+      case EO_ENTWRK_APPENDELMI: NoArg(); // append next element value (int)
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
         m_oEntWrk.vAppendElementInt(m_aSrcRsb,iTopA);
@@ -1949,7 +1964,7 @@ i8 LogicUnit::iCompute(void)
         m_oEntWrk.vPayloadBytes(iArg);
         break;
                 
-      case EO_ENTWRK_POPOFS: // pop m_oEntWrk.ref.buffer/offset
+      case EO_ENTWRK_POPOFS: NoArg(); // pop m_oEntWrk.ref.buffer/offset
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
         m_oEntWrk.vBuffer(iTopA);
@@ -1957,20 +1972,20 @@ i8 LogicUnit::iCompute(void)
 
       case EO_ENTWRK_POPREF: NEVER_REACH; // not yet implemented
 
-      case EO_ENTWRK_PRINT: // print m_oEntWrk
+      case EO_ENTWRK_PRINT: NoArg(); // print m_oEntWrk
         aEnt = m_oEntWrk.aEnt();
         pIndexDef = m_xpIndexTree->pIndexDef();
         vTrace("EntWrk : %s\n"_Stz,spEnt.sz(aEnt,pIndexDef));
         break;
         
-      case EO_ENTWRK_RESET: // reset m_oEntWrk
+      case EO_ENTWRK_RESET: NoArg(); // reset m_oEntWrk
         dLU0(eCode);
         m_oEntWrk.vReset();
         break;
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // finalise
-      case EO_FIN_TRANSFORM: // standard finalise
+      case EO_FIN_TRANSFORM: NoArg(); // standard finalise
         dLU0(eCode);
         //m_pPot        = nullptr;
         m_pDstRowSlab = nullptr;
@@ -1982,7 +1997,7 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // initialise
-      case EO_INI_PIX_DEFOUT: // init m_pPot pix from stream def out
+      case EO_INI_PIX_DEFOUT: NoArg(); // init m_pPot pix from stream def out
         dLU0(eCode);
         if (! m_bPixInited) {
           m_bPixInited = true;
@@ -1996,7 +2011,7 @@ i8 LogicUnit::iCompute(void)
         }
         break;
         
-      case EO_INI_PIX_SLABIN: // init m_pPot pix from inp slab
+      case EO_INI_PIX_SLABIN: NoArg(); // init m_pPot pix from inp slab
       {
         dLU0(eCode);
         StreamPix* aStreamPix = m_pSrcRowSlab->aStreamPix();
@@ -2009,7 +2024,7 @@ i8 LogicUnit::iCompute(void)
       }
         break;
         
-      case EO_INI_SRC_SLAB: // init m_pSrcRowSlab etc
+      case EO_INI_SRC_SLAB: NoArg(); // init m_pSrcRowSlab etc
         dLU0(eCode);
         //m_pPot = * m_xpPot;
         //m_pDstRowSlab = nullptr;
@@ -2022,11 +2037,11 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
-      case EO_IXT_DUMP: // dump index tree
+      case EO_IXT_DUMP: NoArg(); // dump index tree
         m_pIndexTree->vDump(false);
         break;
 
-      case EO_IXT_INS_ENT: // insert an entry into the indexTree
+      case EO_IXT_INS_ENT: NoArg(); // insert an entry into the indexTree
       {
         dLU0(eCode);
         SP_Ent spEnt;
@@ -2038,7 +2053,7 @@ i8 LogicUnit::iCompute(void)
       }
         break;
         
-      case EO_IXT_TRV_BEGIN: // begin linear traverse
+      case EO_IXT_TRV_BEGIN: NoArg(); // begin linear traverse
         dLU0(eCode);
         m_pEntBuffer = m_pIndexTree->pFirstH0Buffer();
         if (m_pEntBuffer) {
@@ -2052,7 +2067,7 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
         
-      case EO_IXT_TRV_NEXT: // move to next entry
+      case EO_IXT_TRV_NEXT: NoArg(); // move to next entry
         dLU0(eCode);
         m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
         if (m_pEnt)
@@ -2061,7 +2076,7 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
         
-      case EO_IXT_SRC_BEGIN: // begin linear traverse
+      case EO_IXT_SRC_BEGIN: NoArg(); // begin linear traverse
         dLU0(eCode);
         m_pSrcEntBuffer = m_pSrcIdxTree->pFirstH0Buffer();
         if (m_pSrcEntBuffer) {
@@ -2075,7 +2090,7 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
 
-      case EO_IXT_SRC_NEXT: // move to next entry
+      case EO_IXT_SRC_NEXT: NoArg(); // move to next entry
         dLU0(eCode);
         m_aSrcEnt = EntBuffer::pMoveToNextEntry(m_aSrcEnt, &m_pSrcEntBuffer);
         if (m_aSrcEnt)
@@ -2084,12 +2099,12 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
 
-      case EO_IXT_SRC_PRINT: // print src ent
+      case EO_IXT_SRC_PRINT: NoArg(); // print src ent
         pIndexDef = m_pSrcIdxTree->pIndexDef();
         vTrace("SrcEnt : %s\n"_Stz,spEnt.sz(m_aSrcEnt,pIndexDef));
         break;
 
-      case EO_IXT_ALT_BEGIN: // begin linear traverse
+      case EO_IXT_ALT_BEGIN: NoArg(); // begin linear traverse
         dLU0(eCode);
         m_pAltEntBuffer = m_pAltIdxTree->pFirstH0Buffer();
         if (m_pAltEntBuffer) {
@@ -2103,7 +2118,7 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
 
-      case EO_IXT_ALT_NEXT:
+      case EO_IXT_ALT_NEXT: NoArg();
         dLU0(eCode);
         m_aAltEnt = EntBuffer::pMoveToNextEntry(m_aAltEnt, &m_pAltEntBuffer);
         if (m_aAltEnt)
@@ -2112,12 +2127,12 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
 
-      case EO_IXT_ALT_PRINT: // print alt ent
+      case EO_IXT_ALT_PRINT: NoArg(); // print alt ent
         pIndexDef = m_pSrcIdxTree->pIndexDef();
         vTrace("AltEnt : %s\n"_Stz,spEnt.sz(m_aAltEnt,pIndexDef));
         break;
         
-      case EO_IXT_JOI_MATCH: // test for join match (src.key == alt.key)
+      case EO_IXT_JOI_MATCH: NoArg(); // test for join match (src.key == alt.key)
         iRes  = KC_SAME == Key::eCompare(m_aSrcEnt->aKey(),m_aAltEnt->aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
@@ -2125,7 +2140,7 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
-      case EO_AND: // logical and top two int's, push result
+      case EO_AND: NoArg(); // logical and top two int's, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = (iTopA && iTopB) ? 1 : 0;
@@ -2133,7 +2148,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_OR: // logical or top two int's, push result
+      case EO_OR: NoArg(); // logical or top two int's, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = (iTopA || iTopB) ? 1 : 0;
@@ -2141,7 +2156,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_NOT: // logical not top int, push result
+      case EO_NOT: NoArg(); // logical not top int, push result
         iTopA = *(aiDstk--);
         iRes  = (! iTopA) ? 1 : 0;
         dLU2(eCode,iTopA,iRes);
@@ -2150,14 +2165,14 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // null test operators
-      case EO_ISNULL: // test if top is null, push result
+      case EO_ISNULL: NoArg(); // test if top is null, push result
         iTopA = *(aiDstk--);
         iRes  = (C_DATUM_NULL == iTopA) ? 1 : 0;
         dLU2(eCode,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;
         
-      case EO_ISNOTNULL: // test if top is not null, push result
+      case EO_ISNOTNULL: NoArg(); // test if top is not null, push result
         iTopA = *(aiDstk--);
         iRes  = (C_DATUM_NULL != iTopA) ? 1 : 0;
         dLU2(eCode,iTopA,iRes);
@@ -2205,17 +2220,17 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iArg;
         break;
         
-      case EO_PUSHNULL: // push null
+      case EO_PUSHNULL: NoArg(); // push null
         dLU0(eCode);
         *(++aiDstk) = C_DATUM_NULL;
         break;
         
-      case EO_PUSH0: // push integer 0
+      case EO_PUSH0: NoArg(); // push integer 0
         dLU0(eCode);
         *(++aiDstk) = 0;
         break;
         
-      case EO_PUSH1: // push integer 1
+      case EO_PUSH1: NoArg(); // push integer 1
         dLU0(eCode);
         *(++aiDstk) = 1;
         break;
@@ -2228,34 +2243,34 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb / rowslab
-      case EO_RSB_DST_COPYSRC: // copy src rsb to dst rsb
+      case EO_RSB_DST_COPYSRC: NoArg(); // copy src rsb to dst rsb
         dLU0(eCode);
         m_pDstRowSlab->vPositionOnCell(0);
         m_aDstRsb = m_pDstRowSlab->aRsb();
         m_pDstRowSlab->vCopyRsb(m_aSrcRsb,bSrcHasPtnHash,bCopyPtnHash);
         break;
 
-      case EO_RSB_DST_PRINT: // print dst rsb
+      case EO_RSB_DST_PRINT: NoArg(); // print dst rsb
         dLU0(eCode);
         m_pDstRowSlab->vDumpRow(-1,m_aDstRsb);
         break;
 
-      case EO_RSB_SRC_PRINT: // print src rsb
+      case EO_RSB_SRC_PRINT: NoArg(); // print src rsb
         dLU0(eCode);
         m_pSrcRowSlab->vDumpRow(-1,m_aSrcRsb);
         break;
 
-      case EO_RSB_ALT_PRINT: // print alt rsb
+      case EO_RSB_ALT_PRINT: NoArg(); // print alt rsb
         dLU0(eCode);
         m_pAltRowSlab->vDumpRow(-1,m_aAltRsb);
         break;
 
-      case EO_RSB_DST_NEW: // create new destination rsb
+      case EO_RSB_DST_NEW: NoArg(); // create new destination rsb
         dLU0(eCode);
         m_aDstRsb = m_xpPot->aNewDstRsb(&m_pDstRowSlab);
         break;
 
-      case EO_RSB_DST_TEST: // test if there is a destination rsb
+      case EO_RSB_DST_TEST: NoArg(); // test if there is a destination rsb
         dLU0(eCode);
         if (m_aDstRsb)
           *(++aiDstk) = 1;
@@ -2263,12 +2278,12 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
         
-      case EO_RSB_SRC_BEGIN: // begin src rsb traverse
+      case EO_RSB_SRC_BEGIN: NoArg(); // begin src rsb traverse
         dLU0(eCode);
         m_i_SrcRow = -1;
         break;
 
-      case EO_RSB_SRC_NEXT: // move to next src rsb
+      case EO_RSB_SRC_NEXT: NoArg(); // move to next src rsb
         dLU0(eCode);
         if (++m_i_SrcRow < m_nSrcRows) {
           m_aSrcRsb = m_pSrcRowSlab->aRsbAdr(m_i_SrcRow);
@@ -2279,13 +2294,13 @@ i8 LogicUnit::iCompute(void)
         }
         break;
 
-      case EO_RSB_SRC_PUSHOFS:
+      case EO_RSB_SRC_PUSHOFS: NoArg();
         dLU0(eCode);
         iRes = m_pSrcRowSlab->iOfsOfRsb(m_aSrcRsb);
         *(++aiDstk) = iRes;
         break;
 
-      case EO_RSB_SRC_SETBYOFS: // set src rsb by using offset on stack
+      case EO_RSB_SRC_SETBYOFS: NoArg();  // set src rsb by using offset on stack
         iTopA = *(aiDstk--);
         m_aSrcRsb = m_pSrcRowSlab->aRsbByOfs(iTopA);
         break;
@@ -2297,7 +2312,7 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // relational operators
-      case EO_LESSTHAN: // test top < 2nd, push result
+      case EO_LESSTHAN: NoArg(); // test top < 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA < iTopB;
@@ -2305,7 +2320,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_LESSEQUAL: // test top <= 2nd, push result
+      case EO_LESSEQUAL: NoArg(); // test top <= 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA <= iTopB;
@@ -2313,7 +2328,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_EQUAL: // test top == 2nd, push result
+      case EO_EQUAL: NoArg(); // test top == 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA == iTopB;
@@ -2321,7 +2336,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_NOTEQUAL: // test top != 2nd, push result
+      case EO_NOTEQUAL: NoArg(); // test top != 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA != iTopB;
@@ -2329,7 +2344,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_GREATEREQUAL: // test top >= 2nd, push result
+      case EO_GREATEREQUAL: NoArg(); // test top >= 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA >= iTopB;
@@ -2337,7 +2352,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_GREATERTHAN: // test top > 2nd, push result
+      case EO_GREATERTHAN: NoArg(); // test top > 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA > iTopB;
@@ -2378,32 +2393,32 @@ i8 LogicUnit::iCompute(void)
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // stack operators
-      case EO_INC: // increment top, push result
+      case EO_INC: NoArg(); // increment top, push result
         iTopA = *aiDstk;
         iRes = iTopA + 1;
         dLU2(eCode,iTopA,iRes);
         *aiDstk = iRes;
         break;
 
-      case EO_DEC: // decrement top, push result
+      case EO_DEC: NoArg(); // decrement top, push result
         iTopA = *aiDstk;
         iRes = iTopA - 1;
         dLU2(eCode,iTopA,iRes);
         *aiDstk = iRes;
         break;
 
-      case EO_DUP: // duplicate top
+      case EO_DUP: NoArg(); // duplicate top
         iTopA = *aiDstk;
         dLU1(eCode,iTopA);
         *(++aiDstk) = iTopA;
         break;
 
-      case EO_POP: // pop / discard top
+      case EO_POP: NoArg(); // pop / discard top
         iTopA = *aiDstk;
         dLU1(eCode,iTopA);
         break;
 
-      case EO_PRINT: // print top
+      case EO_PRINT: NoArg(); // print top
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
         vTrace("%lld\n"_Stz,iTopA);
@@ -2419,7 +2434,7 @@ i8 LogicUnit::iCompute(void)
         aeCode = & m_eaCode[iArg];
         break;
 
-      case EO_RETURN: // return from subroutine and
+      case EO_RETURN: NoArg(); // return from subroutine and
         dLU0(eCode);
         if (aaeRstk == &m_aaReturnStack[0]) {
           iRes = *(aiDstk--);
@@ -2430,21 +2445,21 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // misc
-      case EO_BREAKPOINT: // breakpoint
+      case EO_BREAKPOINT: NoArg(); // breakpoint
         dLU0(eCode);
         vDebugPoint();
         break;
         
-      case EO_TRACE: // set trace
-        bTrace = (bool)*aiDstk;
+      case EO_TRACE: NoArg(); // set trace
+        bTrace = (bool)*(aiDstk--);
         dLU1(eCode,(i8)bTrace);
         break;
         
-      case EO_NOOP: // no op
+      case EO_NOOP: NoArg(); // no op
         dLU0(eCode);
         break;
 
-      case EO_ERROR: // error marker
+      case EO_ERROR: NoArg(); // error marker
         dLU0(eCode);
         vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                "Code compiled with error"_Stz);
