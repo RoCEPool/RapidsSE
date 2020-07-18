@@ -218,8 +218,10 @@ EoArg EoArgs[]
 
   { EA_NONE,  0 },  // EO_IXT_SRC_BEGIN
   { EA_NONE,  0 },  // EO_IXT_SRC_NEXT
+  { EA_NONE,  0 },  // EO_IXT_SRC_PRINT
   { EA_NONE,  0 },  // EO_IXT_ALT_BEGIN
   { EA_NONE,  0 },  // EO_IXT_ALT_NEXT
+  { EA_NONE,  0 },  // EO_IXT_ALT_PRINT
   { EA_NONE,  0 },  // EO_IXT_JOI_MATCH
 
   // logical operators
@@ -1426,9 +1428,15 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame(".w"_Stz))  { vAddCode(EO_ENTWRK_PRINT);        continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // entWrk
+    // index trees
     if (pTkn->bSame("xd"_Stz))  { vAddCode(EO_IXT_DUMP);            continue; }
     if (pTkn->bSame("xi"_Stz))  { vAddCode(EO_IXT_INS_ENT);         continue; }
+    if (pTkn->bSame("xsb"_Stz)) { vAddCode(EO_IXT_SRC_BEGIN);       continue; }
+    if (pTkn->bSame("xsn"_Stz)) { vAddCode(EO_IXT_SRC_NEXT);        continue; }
+    if (pTkn->bSame("xsp"_Stz)) { vAddCode(EO_IXT_SRC_PRINT);       continue; }
+    if (pTkn->bSame("xab"_Stz)) { vAddCode(EO_IXT_ALT_BEGIN);       continue; }
+    if (pTkn->bSame("xan"_Stz)) { vAddCode(EO_IXT_ALT_NEXT);        continue; }
+    if (pTkn->bSame("xap"_Stz)) { vAddCode(EO_IXT_ALT_PRINT);       continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subroutine operators
@@ -2013,6 +2021,9 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 0;
         break;
 
+      case EO_IXT_SRC_PRINT: // print src ent
+        break;
+
       case EO_IXT_ALT_BEGIN: // begin linear traverse
         dLU0(eCode);
         m_pAltEntBuffer = m_pAltIdxTree->pFirstH0Buffer();
@@ -2034,6 +2045,9 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
+        break;
+
+      case EO_IXT_ALT_PRINT: // print alt ent
         break;
 
       case EO_IXT_JOI_MATCH: // test for join match (src.key == alt.key)

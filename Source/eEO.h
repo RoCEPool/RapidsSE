@@ -66,8 +66,10 @@ enum eEO : i1 // expression operators
   
   /*    */ EO_IXT_SRC_BEGIN,    // begin linear traverse
   /*    */ EO_IXT_SRC_NEXT,     // move to next entry
+  /*    */ EO_IXT_SRC_PRINT,    // print src ent
   /*    */ EO_IXT_ALT_BEGIN,    // begin linear traverse
   /*    */ EO_IXT_ALT_NEXT,     // move to next entry
+  /*    */ EO_IXT_ALT_PRINT,    // print src ent
   /*    */ EO_IXT_JOI_MATCH,    // test for join match (src.key == alt.key)
 
   // logical operators
@@ -208,8 +210,10 @@ static Stz* aEO[]
   
   /*    */ "EO_IXT_SRC_BEGIN"_Stz,
   /*    */ "EO_IXT_SRC_NEXT"_Stz,
+  /*    */ "EO_IXT_SRC_PRINT"_Stz,
   /*    */ "EO_IXT_ALT_BEGIN"_Stz,
   /*    */ "EO_IXT_ALT_NEXT"_Stz,
+  /*    */ "EO_IXT_ALT_PRINT"_Stz,
   /*    */ "EO_IXT_JOI_MATCH"_Stz,
 
 
