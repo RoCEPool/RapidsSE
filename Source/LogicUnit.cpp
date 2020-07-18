@@ -1766,25 +1766,25 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // branch operators
-      case EO_JMP: // jump to location
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_JMP: GetArg(iArg); // jump to location
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         dLU1(eCode,iArg);
         aeCode = & m_eaCode[iArg];
         break;
         
-      case EO_JMPFALSE: // pop top and jump to location if false
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_JMPFALSE: GetArg(iArg); // pop top and jump to location if false
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         dLU1(eCode,iArg);
         iTopA = *(aiDstk--);
         if (! iTopA)
           aeCode = & m_eaCode[iArg];
         break;
         
-      case EO_JMPTRUE: // pop top and jump to location if true
-        iArg = * (i8*)aeCode;
-        aeCode += 8;
+      case EO_JMPTRUE: GetArg(iArg); // pop top and jump to location if true
+        //iArg = * (i8*)aeCode;
+        //aeCode += 8;
         dLU1(eCode,iArg);
         iTopA = *(aiDstk--);
         if (iTopA)
