@@ -148,7 +148,23 @@
       14001 LogicUnit[].genCode
     endof
 
-    20000 of
+    20001 of
+      // SRC INDEX WALK TEST 1
+      queryNo "QUERY %v" .printf
+      "dn dp xsb jf END L NXT xsp rsf csf 0 . bp xsn jt NXT L END ret"
+         LogicUnit[].source!
+      LogicUnit[].compile assert
+    endof
+
+    20002 of
+      // SRC INDEX WALK TEST 1
+      queryNo "QUERY %v" .printf
+      "dn dp xsb jf END L NXT xsp rsf csf 0 . bp xsn jt NXT L END ret"
+         LogicUnit[].source!
+      LogicUnit[].compile assert
+    endof
+
+    20003 of
       // SRC INDEX WALK TEST 1
       queryNo "QUERY %v" .printf
       "dn dp xsb jf END L NXT xsp rsf csf 0 . bp xsn jt NXT L END ret"
@@ -170,10 +186,34 @@
 
   queryNo case
 
-    20000 of
-      "-------------------------- 20000 PULSEMARKER --------------------------" .
+    20001 of
+      "-------------------------- 20001 PULSEMARKER --------------------------" .
 
       "lineItem" "lineItem_Idx1" op__table_index assert
+
+      Index[].indexTree to IndexTree[]
+      IndexTree[].asSrc
+
+      LogicUnit[].transform
+
+    endof
+
+    20002 of
+      "-------------------------- 20002 PULSEMARKER --------------------------" .
+
+      "orders" "orders_Idx1" op__table_index assert
+
+      Index[].indexTree to IndexTree[]
+      IndexTree[].asSrc
+
+      LogicUnit[].transform
+
+    endof
+
+    20003 of
+      "-------------------------- 20003 PULSEMARKER --------------------------" .
+
+      "customers" "customers_Idx1" op__table_index assert
 
       Index[].indexTree to IndexTree[]
       IndexTree[].asSrc

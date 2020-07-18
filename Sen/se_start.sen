@@ -1000,7 +1000,7 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // src index walk test
+  // src index walk test 1
   sPath
   "
   procedure srcidx_walk_1
@@ -1013,7 +1013,59 @@
     | stageB
 
   stage stageB on all partitions :
-     sql 20000
+     sql 20001
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // src index walk test 2
+  sPath
+  "
+  procedure srcidx_walk_2
+    parameters $Table $Index
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+     sql 20002
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // src index walk test 3
+  sPath
+  "
+  procedure srcidx_walk_3
+    parameters $Table $Index
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+     sql 20003
     | stageC
 
   stage stageC on origin :
