@@ -15,11 +15,6 @@ enum eEO : i1 // expression operators
   /*    */ EO_NEGATE,           // negate the top value
   /*    */ EO_SUBTRACT,         // subtract second int from top push result
 
-  // branch operators
-  /*    */ EO_JMP,              // jump to location
-  /*    */ EO_JMPFALSE,         // pop top and jump to location if false
-  /*    */ EO_JMPTRUE,          // pop top and jump to location if true
-  
   // col operators
   /*    */ EO_COL_SRC_FETCH,    // fetch column value from m_aSrcCrw
   /*    */ EO_COL_ALT_FETCH,    // fetch column value from m_aAltCrw
@@ -80,6 +75,11 @@ enum eEO : i1 // expression operators
   /*    */ EO_IXT_ALT_PRINT,    // print src ent
   /*    */ EO_IXT_JOI_MATCH,    // test for join match (src.key == alt.key)
 
+  // jump operators
+  /*    */ EO_JMP,              // jump to location
+  /*    */ EO_JMP_FALSE,        // pop top and jump to location if false
+  /*    */ EO_JMP_TRUE,         // pop top and jump to location if true
+  
   // logical operators
   /*    */ EO_AND,              // logical and top two int's, push result
   /*    */ EO_OR,               // logical or top two int's, push result
@@ -167,11 +167,6 @@ static Stz* aEO[]
   /*    */ "EO_NEGATE"_Stz,
   /*    */ "EO_SUBTRACT"_Stz,
   
-  // branch operators
-  /*    */ "EO_JMP"_Stz,
-  /*    */ "EO_JMPFALSE"_Stz,
-  /*    */ "EO_JMPTRUE"_Stz,
-
   // col operators
   /*    */ "EO_COL_SRC_FETCH"_Stz,
   /*    */ "EO_COL_SRC_FETCH"_Stz,
@@ -232,6 +227,10 @@ static Stz* aEO[]
   /*    */ "EO_IXT_ALT_PRINT"_Stz,
   /*    */ "EO_IXT_JOI_MATCH"_Stz,
 
+  // jump operators
+  /*    */ "EO_JMP"_Stz,
+  /*    */ "EO_JMP_FALSE"_Stz,
+  /*    */ "EO_JMP_TRUE"_Stz,
 
   // logical operators
   /*    */ "EO_AND"_Stz,

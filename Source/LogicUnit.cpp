@@ -169,11 +169,6 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_NEGATE
   { EA_NONE,  0 },  // EO_SUBTRACT
 
-  // branch operators
-  { EA_LABEL, 8 },  // EO_JMP
-  { EA_LABEL, 8 },  // EO_JMPFALSE
-  { EA_LABEL, 8 },  // EO_JMPTRUE
-
   // col operators
   { EA_INT,   8 },  // EO_COL_SRC_FETCH
   { EA_INT,   8 },  // EO_COL_ALT_FETCH
@@ -233,6 +228,11 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_IXT_ALT_NEXT
   { EA_NONE,  0 },  // EO_IXT_ALT_PRINT
   { EA_NONE,  0 },  // EO_IXT_JOI_MATCH
+
+  // jump operators
+  { EA_LABEL, 8 },  // EO_JMP
+  { EA_LABEL, 8 },  // EO_JMP_FALSE
+  { EA_LABEL, 8 },  // EO_JMP_TRUE
 
   // logical operators
   { EA_NONE,  0 },  // EO_AND
@@ -369,7 +369,7 @@ void LogicUnit::vGenerateQuery100(void)
   vDefineLabel("NEXT_RSB_SRC:"_Stz);
   
   vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
   
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
@@ -382,13 +382,13 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
   vAddCode(EO_NOTEQUAL);
-  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_EQUAL);
-  vAddCodeLabel(EO_JMPTRUE,"FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"FOUND"_Stz);
   
   // NOT_FOUND:
   vDefineLabel("NOT_FOUND"_Stz);
@@ -434,7 +434,7 @@ void LogicUnit::vGenerateQuery101(void)
   
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
-  vAddCodeLabel(EO_JMPFALSE,"END_IXT_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
   
   vDefineLabel("NEXT_IXT_SRC:"_Stz);
   
@@ -446,10 +446,10 @@ void LogicUnit::vGenerateQuery101(void)
   vAddCodeArg(EO_DEPOSITCOLI,(i8)1);
   vAddCode(EO_RSB_DST_PRINT);
   vAddCode(EO_ENT_NEXT);
-  vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"NEXT_IXT_SRC:"_Stz);
   
   //vAddCode(EO_IXT_TRV_NEXT);
-  //vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  //vAddCodeLabel(EO_JMP_TRUE,"NEXT_IXT_SRC:"_Stz);
   
   vDefineLabel("END_IXT_SRC:"_Stz);
   vAddCode(EO_RETURN);
@@ -482,7 +482,7 @@ void LogicUnit::vGenerateQuery102(void)
   vDefineLabel("NEXT_RSB_SRC:"_Stz);
   
   vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
   
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
@@ -496,13 +496,13 @@ void LogicUnit::vGenerateQuery102(void)
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
   vAddCode(EO_NOTEQUAL);
-  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_EQUAL);
-  vAddCodeLabel(EO_JMPTRUE,"FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"FOUND"_Stz);
   
   // NOT_FOUND:
   vDefineLabel("NOT_FOUND"_Stz);
@@ -560,7 +560,7 @@ void LogicUnit::vGenerateQuery600(void)
   
   // new a rsb dst row if not there
   vAddCode(EO_RSB_DST_TEST);
-  vAddCodeLabel(EO_JMPTRUE,"RSB_SRC_BEGIN:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_DST_NEW);
   
   // begin RSB traversal
@@ -570,11 +570,11 @@ void LogicUnit::vGenerateQuery600(void)
   vDefineLabel("NEXT_RSB_SRC:"_Stz);
   
   vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
   
   // call the filter subroutine
   vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
-  vAddCodeLabel(EO_JMPFALSE, "NEXT_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "NEXT_RSB_SRC:"_Stz);
   
   // call the aggregate subroutine
   vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
@@ -591,28 +591,28 @@ void LogicUnit::vGenerateQuery600(void)
   vAddCodeArg(EO_DATE, iDateLower);
   //vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
   vAddCode(EO_GREATEREQUAL);
-  vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
 
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)10);   // l_shipdate
   vAddCodeArg(EO_DATE, iDateUpper);
   //vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
   vAddCode(EO_LESSTHAN);
-  vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
 
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
   vAddCodeArg(EO_INTEGER, 5);
   vAddCode(EO_GREATEREQUAL);
-  vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
   
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)6);   // l_discount
   vAddCodeArg(EO_INTEGER, 7);
   vAddCode(EO_LESSTHAN);
-  vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
 
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)4);   // l_quantity
   vAddCodeArg(EO_INTEGER, 2400);
   vAddCode(EO_LESSTHAN);
-  vAddCodeLabel(EO_JMPFALSE, "RETURN_FALSE:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
 
   // return true
   vAddCode(EO_PUSH1);
@@ -668,7 +668,7 @@ void LogicUnit::vGenerateQuery601(void)
   
   // new a rsb dst row if not there
   vAddCode(EO_RSB_DST_TEST);
-  vAddCodeLabel(EO_JMPTRUE,"RSB_SRC_BEGIN:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_DST_NEW);
   
   // begin RSB traversal
@@ -678,7 +678,7 @@ void LogicUnit::vGenerateQuery601(void)
   vDefineLabel("NEXT_RSB_SRC:"_Stz);
   
   vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
   
   // call the aggregate subroutine
   vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
@@ -724,7 +724,7 @@ void LogicUnit::vGenerateAgg13000(void)
   
   // new a rsb dst row if not there
   vAddCode(EO_RSB_DST_TEST);
-  vAddCodeLabel(EO_JMPTRUE,"RSB_SRC_BEGIN:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_DST_NEW);
   
   // begin RSB traversal
@@ -735,7 +735,7 @@ void LogicUnit::vGenerateAgg13000(void)
   
   vAddCode(EO_RSB_SRC_NEXT);
   
-  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
   
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);
   vAddCodeArg(EO_PUSHDSTCOLI,(i8)0);
@@ -778,7 +778,7 @@ void LogicUnit::vGenerateAggGby14000(void)
   vDefineLabel("NEXT_RSB_SRC:"_Stz);
   
   vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
   
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
@@ -791,13 +791,13 @@ void LogicUnit::vGenerateAggGby14000(void)
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
   vAddCode(EO_NOTEQUAL);
-  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_EQUAL);
-  vAddCodeLabel(EO_JMPTRUE,"FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"FOUND"_Stz);
   
   // NOT_FOUND:
   vDefineLabel("NOT_FOUND"_Stz);
@@ -844,7 +844,7 @@ void LogicUnit::vGenerateAggGby14001(void)
   
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
-  vAddCodeLabel(EO_JMPFALSE,"END_IXT_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
   
   vDefineLabel("NEXT_IXT_SRC:"_Stz);
   
@@ -856,10 +856,10 @@ void LogicUnit::vGenerateAggGby14001(void)
   vAddCodeArg(EO_DEPOSITCOLI,(i8)1);
   vAddCode(EO_RSB_DST_PRINT);
   vAddCode(EO_ENT_NEXT);
-  vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"NEXT_IXT_SRC:"_Stz);
   
   //vAddCode(EO_IXT_TRV_NEXT);
-  //vAddCodeLabel(EO_JMPTRUE,"NEXT_IXT_SRC:"_Stz);
+  //vAddCodeLabel(EO_JMP_TRUE,"NEXT_IXT_SRC:"_Stz);
   
   vDefineLabel("END_IXT_SRC:"_Stz);
   vAddCode(EO_RETURN);
@@ -895,7 +895,7 @@ void LogicUnit::vGenerateAggGby14002(void)
   vDefineLabel("NEXT_RSB_SRC:"_Stz);
   
   vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
   
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
@@ -909,13 +909,13 @@ void LogicUnit::vGenerateAggGby14002(void)
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
   vAddCode(EO_NOTEQUAL);
-  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"NOT_FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_EQUAL);
-  vAddCodeLabel(EO_JMPTRUE,"FOUND"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"FOUND"_Stz);
   
   // NOT_FOUND:
   vDefineLabel("NOT_FOUND"_Stz);
@@ -960,7 +960,7 @@ void LogicUnit::vGenerateSort12000(void)
   vDefineLabel("NEXT_RSB_SRC:"_Stz);
 
   vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"END_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
 
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
@@ -994,7 +994,7 @@ void LogicUnit::vGenerateSort12000(void)
   vDefineLabel("NEXT_IXT_ENT:"_Stz);
 
   vAddCode(EO_IXT_TRV_NEXT);
-  vAddCodeLabel(EO_JMPFALSE,"END_IXT_ENT:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_IXT_ENT:"_Stz);
   
 
   // ...
@@ -1518,14 +1518,14 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     // jump on false
     if (pTkn->bSame("jf"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeLabel(EO_JMPFALSE,pTkn);
+      vAddCodeLabel(EO_JMP_FALSE,pTkn);
       continue;
     }
     
     // jump on true
     if (pTkn->bSame("jt"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeLabel(EO_JMPTRUE,pTkn);
+      vAddCodeLabel(EO_JMP_TRUE,pTkn);
       continue;
     }
 
@@ -1771,27 +1771,6 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
 
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // branch operators
-      case EO_JMP: GetArg(iArg); // jump to location
-        dLU1(eCode,iArg);
-        aeCode = & m_eaCode[iArg];
-        break;
-        
-      case EO_JMPFALSE: GetArg(iArg); // pop top and jump to location if false
-        dLU1(eCode,iArg);
-        iTopA = *(aiDstk--);
-        if (! iTopA)
-          aeCode = & m_eaCode[iArg];
-        break;
-        
-      case EO_JMPTRUE: GetArg(iArg); // pop top and jump to location if true
-        dLU1(eCode,iArg);
-        iTopA = *(aiDstk--);
-        if (iTopA)
-          aeCode = & m_eaCode[iArg];
-        break;
-        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
       case EO_COL_SRC_FETCH: GetArg(iArg); // fetch column value from m_aSrcCrw
@@ -2134,6 +2113,27 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // jump operators
+      case EO_JMP: GetArg(iArg); // jump to location
+        dLU1(eCode,iArg);
+        aeCode = & m_eaCode[iArg];
+        break;
+        
+      case EO_JMP_FALSE: GetArg(iArg); // pop top and jump to location if false
+        dLU1(eCode,iArg);
+        iTopA = *(aiDstk--);
+        if (! iTopA)
+          aeCode = & m_eaCode[iArg];
+        break;
+        
+      case EO_JMP_TRUE: GetArg(iArg); // pop top and jump to location if true
+        dLU1(eCode,iArg);
+        iTopA = *(aiDstk--);
+        if (iTopA)
+          aeCode = & m_eaCode[iArg];
+        break;
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
       case EO_AND: NoArg(); // logical and top two int's, push result
