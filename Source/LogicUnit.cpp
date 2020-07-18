@@ -289,6 +289,7 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_RETURN
 
   // misc
+  { EA_NONE,  0 },  // EO_BREAKPOINT
   { EA_NONE,  0 },  // EO_TRACE
   { EA_NONE,  0 },  // EO_NOOP
   { EA_NONE,  0 },  // EO_ERROR
@@ -1435,6 +1436,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // misc
+    if (pTkn->bSame("bp"_Stz))  { vAddCode(EO_BREAKPOINT);          continue; }
     if (pTkn->bSame("tr"_Stz))  { vAddCode(EO_TRACE);               continue; }
     
     
@@ -2347,6 +2349,11 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // misc
+      case EO_BREAKPOINT: // breakpoint
+        dLU0(eCode);
+        vDebugPoint();
+        break;
+        
       case EO_TRACE: // set trace
         bTrace = (bool)*aiDstk;
         dLU1(eCode,(i8)bTrace);
