@@ -1120,6 +1120,8 @@ void LogicUnit::vAddCode(eEO eCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  ASSERT(0 == EoArgs[eCode].m_nArgBytes);
+  
   m_eaCode[m_i_Code++] = eCode;
 }
 
@@ -1129,6 +1131,8 @@ void LogicUnit::vAddCode(eEO eCode)
 void LogicUnit::vAddCodeArg(eEO eCode, i8 iArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  ASSERT(8 == EoArgs[eCode].m_nArgBytes);
   
   m_eaCode[m_i_Code++] = eCode;
 
