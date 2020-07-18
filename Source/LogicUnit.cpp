@@ -1711,6 +1711,13 @@ i8 LogicUnit::iCompute(void)
   
   for (;;) {
     
+    // check for stack growth
+    i8 nStkUse = nDifference(aiDstk,m_iaDataStack);
+    i8 iStkPct = (nStkUse * 100) / C_CALC_STACK;
+    if (iStkPct > 80)
+      vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
+    
+    
     eCode = *aeCode++;
     
     switch (eCode) {
