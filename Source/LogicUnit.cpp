@@ -58,6 +58,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pSrcIdxTree = nullptr;
   m_pSrcEntBuffer = nullptr;
   m_aSrcCrw     = nullptr;
+  m_pSrcStreamDef = nullptr;
 
   m_i_AltRow    = C_UNKNOWN;
   m_nAltRows    = C_UNKNOWN;
@@ -67,6 +68,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pAltIdxTree = nullptr;
   m_pAltEntBuffer = nullptr;
   m_aAltCrw     = nullptr;
+  m_pAltStreamDef = nullptr;
 
   m_pEnt        = nullptr;
   // m_oEntWrk
@@ -170,8 +172,8 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_SUBTRACT
 
   // col operators
-  { EA_INT,   8 },  // EO_COL_SRC_FETCH
-  { EA_INT,   8 },  // EO_COL_ALT_FETCH
+  { EA_INT,   8 },  // EO_COL_SRC_PUSH
+  { EA_INT,   8 },  // EO_COL_ALT_PUSH
   
   // crw operators
   { EA_NONE,  0 },  // EO_CRW_SRC_FETCH
@@ -1497,14 +1499,14 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     // fetch column value from m_aSrcCrw
     if (pTkn->bSame("csf"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeArg(EO_COL_SRC_FETCH,pTkn);
+      vAddCodeArg(EO_COL_SRC_PUSH,pTkn);
       continue;
     }
 
     // fetch column value from m_aAltCrw
     if (pTkn->bSame("caf"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeArg(EO_COL_ALT_FETCH,pTkn);
+      vAddCodeArg(EO_COL_ALT_PUSH,pTkn);
       continue;
     }
 
@@ -1773,7 +1775,7 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
-      case EO_COL_SRC_FETCH: GetArg(iArg); // fetch column value from m_aSrcCrw
+      case EO_COL_SRC_PUSH: GetArg(iArg); // push column value from m_aSrcCrw
       {
         HV_Row hRow(m_xpTable->pStreamDef(),C_ALL);
         RowInflator::vInflateColumn(hRow,m_aSrcCrw,iArg);
@@ -1783,7 +1785,7 @@ i8 LogicUnit::iCompute(void)
       }
         break;
         
-      case EO_COL_ALT_FETCH: GetArg(iArg); // fetch column value from m_aAltCrw
+      case EO_COL_ALT_PUSH: GetArg(iArg); // push column value from m_aAltCrw
         NEVER_REACH;
         break;
         

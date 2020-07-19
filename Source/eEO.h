@@ -16,8 +16,8 @@ enum eEO : i1 // expression operators
   /*    */ EO_SUBTRACT,         // subtract second int from top push result
 
   // col operators
-  /*    */ EO_COL_SRC_FETCH,    // fetch column value from m_aSrcCrw
-  /*    */ EO_COL_ALT_FETCH,    // fetch column value from m_aAltCrw
+  /*    */ EO_COL_SRC_PUSH,     // push column value from m_aSrcCrw
+  /*    */ EO_COL_ALT_PUSH,     // push column value from m_aAltCrw
 
   // crw operators
   /*    */ EO_CRW_SRC_FETCH,    // fetch m_aSrcCrw using m_aSrcEnt.ref
@@ -168,8 +168,8 @@ static Stz* aEO[]
   /*    */ "EO_SUBTRACT"_Stz,
   
   // col operators
-  /*    */ "EO_COL_SRC_FETCH"_Stz,
-  /*    */ "EO_COL_SRC_FETCH"_Stz,
+  /*    */ "EO_COL_SRC_PUSH"_Stz,
+  /*    */ "EO_COL_SRC_PUSH"_Stz,
   
   // crw operators
   /*    */ "EO_CRW_SRC_FETCH"_Stz,

@@ -128,12 +128,14 @@ namespace Expressions
     IndexTree* m_pSrcIdxTree;
     EntBuffer* m_pSrcEntBuffer;
     Crw*       m_aSrcCrw;
+    StreamDef* m_pSrcStreamDef;
   
     i8         m_i_AltRow;
     i8         m_nAltRows;
     Rsb*       m_aAltRsb;
     RowSlab*   m_pAltRowSlab;
     Crw*       m_aAltCrw;
+    StreamDef* m_pAltStreamDef;
 
     Ent*       m_aAltEnt;
     IndexTree* m_pAltIdxTree;
