@@ -231,6 +231,7 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_IXT_ALT_PRINT
   { EA_NONE,  0 },  // EO_IXT_JOI_MATCH
   { EA_NONE,  0 },  // EO_IXT_CMP_SRCALT
+  { EA_NONE,  0 },  // EO_IXT_POS_ALTBYSRC
 
   // jump operators
   { EA_LABEL, 8 },  // EO_JMP
@@ -2206,6 +2207,8 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
 
+      case EO_IXT_POS_ALTBYSRC: NEVER_REACH; // not yet implemented
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // jump operators
       case EO_JMP: GetArg(iArg); // jump to location
