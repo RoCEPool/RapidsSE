@@ -230,6 +230,7 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_IXT_ALT_NEXT
   { EA_NONE,  0 },  // EO_IXT_ALT_PRINT
   { EA_NONE,  0 },  // EO_IXT_JOI_MATCH
+  { EA_NONE,  0 },  // EO_IXT_CMP_SRCALT
 
   // jump operators
   { EA_LABEL, 8 },  // EO_JMP
@@ -1461,6 +1462,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("xab"_Stz)) { vAddCode(EO_IXT_ALT_BEGIN);       continue; }
     if (pTkn->bSame("xan"_Stz)) { vAddCode(EO_IXT_ALT_NEXT);        continue; }
     if (pTkn->bSame("xap"_Stz)) { vAddCode(EO_IXT_ALT_PRINT);       continue; }
+    if (pTkn->bSame("xcm"_Stz)) { vAddCode(EO_IXT_CMP_SRCALT);      continue; }
 
     if (pTkn->bSame("rsf"_Stz)) { vAddCode(EO_CRW_SRC_FETCH);       continue; }
     if (pTkn->bSame("raf"_Stz)) { vAddCode(EO_CRW_ALT_FETCH);       continue; }
@@ -2171,6 +2173,8 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
 
+      case EO_IXT_CMP_SRCALT: NoArg(); NEVER_REACH; // not yet implemented
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // jump operators
       case EO_JMP: GetArg(iArg); // jump to location
