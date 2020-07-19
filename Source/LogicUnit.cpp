@@ -193,12 +193,12 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_ENT_PUSHREF
 
   // entry relational operators
-  { EA_NONE,  0 },  // EO_ENT_LESSTHAN
+  { EA_NONE,  0 },  // EO_ENT_LESS
   { EA_NONE,  0 },  // EO_ENT_LESSEQUAL
   { EA_NONE,  0 },  // EO_ENT_EQUAL
   { EA_NONE,  0 },  // EO_ENT_NOTEQUAL
   { EA_NONE,  0 },  // EO_ENT_GREATEREQUAL
-  { EA_NONE,  0 },  // EO_ENT_GREATERTHAN
+  { EA_NONE,  0 },  // EO_ENT_GREATER
 
   // entWrk
   { EA_INT,   8 },  // EO_ENTWRK_APPENDELM
@@ -1887,7 +1887,7 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
-      case EO_ENT_LESSTHAN: NoArg(); // test if m_pEnt.key <  m_oEntWrk.key
+      case EO_ENT_LESS: NoArg(); // test if m_pEnt.key <  m_oEntWrk.key
         iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
@@ -1925,7 +1925,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_ENT_GREATERTHAN: NoArg();
+      case EO_ENT_GREATER: NoArg();
         iRes  = KC_AFTER == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;

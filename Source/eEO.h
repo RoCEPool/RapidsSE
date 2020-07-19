@@ -37,17 +37,17 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENT_PUSHREF,      // push ref of current entry
 
   // entry relational operators
-  /*    */ EO_ENT_LESSTHAN,     // test if m_pEnt.key <  m_oEntWrk.key
+  /*    */ EO_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
   /*    */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
   /*    */ EO_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
   /*    */ EO_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
   /*    */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
-  /*    */ EO_ENT_GREATERTHAN,  // test if m_pEnt.key >  m_oEntWrk.key
+  /*    */ EO_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
   
   // entWrk
   /*    */ EO_ENTWRK_APPENDELM, // append next element value
   /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
-  /*    */ EO_ENTWRK_CREATEPAY,    // create a payload in entwrk
+  /*    */ EO_ENTWRK_CREATEPAY, // create a payload in entwrk
   /*    */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
   /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
   /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
@@ -196,12 +196,12 @@ static Stz* aEO[]
   /*    */ "EO_ENT_PUSHREF"_Stz,
 
   // entry relational operators
-  /*    */ "EO_ENT_LESSTHAN"_Stz,
+  /*    */ "EO_ENT_LESS"_Stz,
   /*    */ "EO_ENT_LESSEQUAL"_Stz,
   /*    */ "EO_ENT_EQUAL"_Stz,
   /*    */ "EO_ENT_NOTEQUAL"_Stz,
   /*    */ "EO_ENT_GREATEREQUAL"_Stz,
-  /*    */ "EO_ENT_GREATERTHAN"_Stz,
+  /*    */ "EO_ENT_GREATER"_Stz,
   
   // entWrk
   /*    */ "EO_ENTWRK_APPENDELM"_Stz,
