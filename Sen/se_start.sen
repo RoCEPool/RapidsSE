@@ -1103,6 +1103,32 @@
   "
   api::addProcedure
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // src index walk test 5
+  sPath
+  "
+  procedure srcidx_walk_5
+
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+     sql 20005
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
 ;
 
 /*----------------------------------------------------------------------------*/

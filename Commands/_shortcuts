@@ -46,6 +46,7 @@ shortcut sw1  "../Expressions/_srcidx_walk_1";
 shortcut sw2  "../Expressions/_srcidx_walk_2";
 shortcut sw3  "../Expressions/_srcidx_walk_3";
 shortcut sw4  "../Expressions/_srcidx_walk_4";
+shortcut sw5  "../Expressions/_srcidx_walk_5";
 shortcut t    _unitTestA;
 shortcut u    _upsertRJH;
 shortcut v    vortex;
