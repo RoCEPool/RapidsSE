@@ -1539,6 +1539,48 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
       continue;
     }
 
+    // jump on less than
+    if (pTkn->bSame("jlt"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_LESS,pTkn);
+      continue;
+    }
+
+    // jump on less than or equal to
+    if (pTkn->bSame("jle"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_LESSEQUAL,pTkn);
+      continue;
+    }
+
+    // jump on equal to
+    if (pTkn->bSame("jeq"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_EQUAL,pTkn);
+      continue;
+    }
+
+    // jump on not equal to
+    if (pTkn->bSame("jne"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_NOTEQUAL,pTkn);
+      continue;
+    }
+
+    // jump on greater than or equal to
+    if (pTkn->bSame("jge"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_GREATEREQUAL,pTkn);
+      continue;
+    }
+
+    // jump on greater than
+    if (pTkn->bSame("jgt"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_GREATER,pTkn);
+      continue;
+    }
+
     // label/location
     if (pTkn->bSame("L"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
