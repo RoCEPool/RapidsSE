@@ -1759,7 +1759,11 @@ i8 LogicUnit::iCompute(void)
   i8 iRes;
   i8 iCmp;
   i8 i_Cell_ntv;
+  eKC eCmp;
   
+  Key* aSrcKey;
+  Key* aAltKey;
+
   SP_Ent spEnt;
   Ent* aEnt;
 
@@ -2184,10 +2188,24 @@ i8 LogicUnit::iCompute(void)
         iRes  = KC_SAME == Key::eCompare(m_aSrcEnt->aKey(),m_aAltEnt->aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
+        NEVER_REACH; // not used??
         break;
 
-      case EO_IXT_CMP_SRCALT: NoArg(); NEVER_REACH; // not yet implemented
-        
+      case EO_IXT_CMP_SRCALT: NoArg(); // compare src.key to alt.key
+        aSrcKey = m_aSrcEnt->aKey();
+        aAltKey = m_aAltEnt->aKey();
+        eCmp = Key::eCompare(aSrcKey,aAltKey);
+        if (KC_BEFORE == eCmp)
+          iRes = -1;
+        else
+        if (KC_SAME == eCmp)
+          iRes = 0;
+        else
+          iRes = 1;
+        dLU1(eCode,iRes);
+        *(++aiDstk) = iRes;
+        break;
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // jump operators
       case EO_JMP: GetArg(iArg); // jump to location
