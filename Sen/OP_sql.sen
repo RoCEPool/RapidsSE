@@ -156,7 +156,7 @@
     20001 of
       // SRC INDEX WALK TEST 1
       queryNo "QUERY %v" .printf
-      "dn dp xsb jf END L NXT xsp rsf csf 0 . bp xsn jt NXT L END ret"
+      "dn dp xsb jf END L NXT .xs rsf csf 0 . bp xsn jt NXT L END ret"
          LogicUnit[].source!
       LogicUnit[].compile assert
     endof
@@ -164,7 +164,7 @@
     20002 of
       // SRC INDEX WALK TEST 2
       queryNo "QUERY %v" .printf
-      "dn dp xsb jf END L NXT xsp rsf csf 0 . bp xsn jt NXT L END ret"
+      "dn dp xsb jf END L NXT .xs rsf csf 0 . bp xsn jt NXT L END ret"
          LogicUnit[].source!
       LogicUnit[].compile assert
     endof
@@ -172,7 +172,7 @@
     20003 of
       // SRC INDEX WALK TEST 3
       queryNo "QUERY %v" .printf
-      "dn dp xsb jf END L NXT xsp rsf csf 0 . bp xsn jt NXT L END ret"
+      "dn dp xsb jf END L NXT .xs rsf csf 0 . bp xsn jt NXT L END ret"
          LogicUnit[].source!
       LogicUnit[].compile assert
     endof
@@ -180,8 +180,8 @@
     20004 of
       // SRC INDEX WALK TEST 4
       queryNo "QUERY %v" .printf
-      "dn dp xsb jf ALT L NXT_S xsp rsf csf 0 . bp xsn jt NXT_S
-       L ALT xab jf END L NXT_A xap raf csf 0 . bp xan jt NXT_A
+      "dn dp xsb jf ALT L NXT_S .xs rsf csf 0 . bp xsn jt NXT_S
+       L ALT xab jf END L NXT_A .xa raf caf 0 . bp xan jt NXT_A
        L END ret"
          LogicUnit[].source!
       LogicUnit[].compile assert

@@ -1472,11 +1472,12 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     
     if (pTkn->bSame("xsb"_Stz)) { vAddCode(EO_IXT_SRC_BEGIN);       continue; }
     if (pTkn->bSame("xsn"_Stz)) { vAddCode(EO_IXT_SRC_NEXT);        continue; }
-    if (pTkn->bSame("xsp"_Stz)) { vAddCode(EO_IXT_SRC_PRINT);       continue; }
+    if (pTkn->bSame(".xs"_Stz)) { vAddCode(EO_IXT_SRC_PRINT);       continue; }
     if (pTkn->bSame("xab"_Stz)) { vAddCode(EO_IXT_ALT_BEGIN);       continue; }
     if (pTkn->bSame("xan"_Stz)) { vAddCode(EO_IXT_ALT_NEXT);        continue; }
-    if (pTkn->bSame("xap"_Stz)) { vAddCode(EO_IXT_ALT_PRINT);       continue; }
+    if (pTkn->bSame(".xa"_Stz)) { vAddCode(EO_IXT_ALT_PRINT);       continue; }
     if (pTkn->bSame("xcm"_Stz)) { vAddCode(EO_IXT_CMP_SRCALT);      continue; }
+    if (pTkn->bSame("xpa"_Stz)) { vAddCode(EO_IXT_POS_ALTBYSRC);    continue; }
 
     if (pTkn->bSame("rsf"_Stz)) { vAddCode(EO_CRW_SRC_FETCH);       continue; }
     if (pTkn->bSame("raf"_Stz)) { vAddCode(EO_CRW_ALT_FETCH);       continue; }
@@ -2181,12 +2182,14 @@ i8 LogicUnit::iCompute(void)
         break;
 
       case EO_IXT_ALT_PRINT: NoArg(); // print alt ent
-        pIndexDef = m_pSrcIdxTree->pIndexDef();
+        pIndexDef = m_pAltIdxTree->pIndexDef();
         vTrace("AltEnt : %s\n"_Stz,spEnt.sz(m_aAltEnt,pIndexDef));
         break;
         
       case EO_IXT_JOI_MATCH: NoArg(); // test for join match (src.key == alt.key)
-        iRes  = KC_SAME == Key::eCompare(m_aSrcEnt->aKey(),m_aAltEnt->aKey()) ? 1 : 0;
+        aSrcKey = m_aSrcEnt->aKey();
+        aAltKey = m_aAltEnt->aKey();
+        iRes = KC_SAME == Key::eCompare(aSrcKey,aAltKey) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         NEVER_REACH; // not used??
@@ -2207,8 +2210,20 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
 
-      case EO_IXT_POS_ALTBYSRC: NEVER_REACH; // not yet implemented
-        
+      case EO_IXT_POS_ALTBYSRC: NoArg(); // position alt ixt using src.key
+        aSrcKey = m_aSrcEnt->aKey();
+        m_aAltEnt = m_pIndexTree->aPositionPriorEntry(aSrcKey,&m_pAltEntBuffer);
+        if (m_pAltEntBuffer) {
+          m_aAltEnt = m_pAltEntBuffer->aLeadEntry();
+          if (m_aAltEnt)
+            *(++aiDstk) = 1;
+          else
+            *(++aiDstk) = 0;
+        }
+        else
+          *(++aiDstk) = 0;
+        break;
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // jump operators
       case EO_JMP: GetArg(iArg); // jump to location
