@@ -1482,6 +1482,8 @@ public:
 
   // table
   void vTableAddIndex(void);
+  void vTableAsAltStreamDef(void);
+  void vTableAsSrcStreamDef(void);
   void vTableColumnCountFetch(void);
   void vTableColumnFetch(void);
   void vTableCreatePtnDef(void);

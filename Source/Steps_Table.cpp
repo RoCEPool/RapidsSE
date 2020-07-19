@@ -16,6 +16,8 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].set"_Stz,              &Step::vTableSet);
   
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
+  vAddStep("table[].asAltStreamDef"_Stz,   &Step::vTableAsAltStreamDef);
+  vAddStep("table[].asSrcStreamDef"_Stz,   &Step::vTableAsSrcStreamDef);
   vAddStep("table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
   vAddStep("table[].column@"_Stz,          &Step::vTableColumnFetch);
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
@@ -89,6 +91,38 @@ void Step::vTableAddIndex(void)
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
   pTable->vAddIndex(pIndex);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].asAltStreamDef -- use this tables stream def as alt stream def     */
+/*----------------------------------------------------------------------------*/
+void Step::vTableAsAltStreamDef(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+    
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  m_pLogicUnit->m_pAltStreamDef = pStreamDef;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].asSrcStreamDef -- use this tables stream def as src stream def     */
+/*----------------------------------------------------------------------------*/
+void Step::vTableAsSrcStreamDef(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+    
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  m_pLogicUnit->m_pSrcStreamDef = pStreamDef;
   
   EXIT();
 }
