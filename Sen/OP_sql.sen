@@ -188,11 +188,14 @@
     endof
 
     20005 of
-      // SRC INDEX WALK TEST 4
+      // SRC INDEX WALK TEST 5
       queryNo "QUERY %v" .printf
-      "dn dp xsb jf ALT L NXT_S .xs rsf csf 0 . bp xsn jt NXT_S
-       L ALT xab jf END L NXT_A .xa raf caf 0 . bp xan jt NXT_A
-       L END ret"
+      "         dn dp
+                xsb jf END
+       L GOT_S  .xs call ALL_A xsn jt GOT_S
+       L END    ret
+       L ALL_A  12321 . ret
+      "
          LogicUnit[].source!
       LogicUnit[].compile assert
     endof
