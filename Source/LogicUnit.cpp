@@ -2209,12 +2209,47 @@ i8 LogicUnit::iCompute(void)
           aeCode = & m_eaCode[iArg];
         break;
         
-      case EO_JMP_LESS:         GetArg(iArg); NEVER_REACH; // not yet implemented
-      case EO_JMP_LESSEQUAL:    GetArg(iArg); NEVER_REACH; // not yet implemented
-      case EO_JMP_EQUAL:        GetArg(iArg); NEVER_REACH; // not yet implemented
-      case EO_JMP_NOTEQUAL:     GetArg(iArg); NEVER_REACH; // not yet implemented
-      case EO_JMP_GREATEREQUAL: GetArg(iArg); NEVER_REACH; // not yet implemented
-      case EO_JMP_GREATER:      GetArg(iArg); NEVER_REACH; // not yet implemented
+      case EO_JMP_LESS: GetArg(iArg); // pop top and jump to location if <
+        dLU1(eCode,iArg);
+        iTopA = *(aiDstk--);
+        if (iTopA < 0)
+          aeCode = & m_eaCode[iArg];
+        break;
+
+      case EO_JMP_LESSEQUAL: GetArg(iArg); // pop top and jump to location if <=
+        dLU1(eCode,iArg);
+        iTopA = *(aiDstk--);
+        if (iTopA <=0)
+          aeCode = & m_eaCode[iArg];
+        break;
+
+      case EO_JMP_EQUAL: GetArg(iArg); // pop top and jump to location if ==
+        dLU1(eCode,iArg);
+        iTopA = *(aiDstk--);
+        if (iTopA == 0)
+          aeCode = & m_eaCode[iArg];
+        break;
+
+      case EO_JMP_NOTEQUAL: GetArg(iArg); // pop top and jump to location if !=
+        dLU1(eCode,iArg);
+        iTopA = *(aiDstk--);
+        if (iTopA != 0)
+          aeCode = & m_eaCode[iArg];
+        break;
+
+      case EO_JMP_GREATEREQUAL: GetArg(iArg); // pop top and jump to location if >=
+        dLU1(eCode,iArg);
+        iTopA = *(aiDstk--);
+        if (iTopA >= 0)
+          aeCode = & m_eaCode[iArg];
+        break;
+
+      case EO_JMP_GREATER: GetArg(iArg); // pop top and jump to location if >
+        dLU1(eCode,iArg);
+        iTopA = *(aiDstk--);
+        if (iTopA > 0)
+          aeCode = & m_eaCode[iArg];
+        break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
