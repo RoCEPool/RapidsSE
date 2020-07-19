@@ -89,9 +89,9 @@ enum eEO : i1 // expression operators
   /*    */ EO_JMP_GREATER,      // pop top and jump to location if >
                                     
   // logical operators
-  /*    */ EO_AND,              // logical and top two int's, push result
-  /*    */ EO_OR,               // logical or top two int's, push result
-  /*    */ EO_NOT,              // logical not top int, push result
+  /*    */ EO_LGL_AND,          // logical and top two int's, push result
+  /*    */ EO_LGL_OR,           // logical or top two int's, push result
+  /*    */ EO_LGL_NOT,          // logical not top int, push result
   
   // null test operators
   /*    */ EO_ISNULL,           // test if top is null, push result
@@ -133,7 +133,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_LESSTHAN,         // test top < 2nd, push result
   /*    */ EO_LESSEQUAL,        // test top <= 2nd, push result
   /*    */ EO_EQUAL,            // test top == 2nd, push result
-  /*    */ EO_NOTEQUAL,         // test top != 2nd, push result
+  /*    */ EO_LGL_NOTEQUAL,         // test top != 2nd, push result
   /*    */ EO_GREATEREQUAL,     // test top >= 2nd, push result
   /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
@@ -249,9 +249,9 @@ static Stz* aEO[]
   /*    */ "EO_JMP_GREATER"_Stz,
                                     
   // logical operators
-  /*    */ "EO_AND"_Stz,
-  /*    */ "EO_OR"_Stz,
-  /*    */ "EO_NOT"_Stz,
+  /*    */ "EO_LGL_AND"_Stz,
+  /*    */ "EO_LGL_OR"_Stz,
+  /*    */ "EO_LGL_NOT"_Stz,
   
   // null test operators
   /*    */ "EO_ISNULL"_Stz,
@@ -293,7 +293,7 @@ static Stz* aEO[]
   /*    */ "EO_LESSTHAN"_Stz,
   /*    */ "EO_LESSEQUAL"_Stz,
   /*    */ "EO_EQUAL"_Stz,
-  /*    */ "EO_NOTEQUAL"_Stz,
+  /*    */ "EO_LGL_NOTEQUAL"_Stz,
   /*    */ "EO_GREATEREQUAL"_Stz,
   /*    */ "EO_GREATERTHAN"_Stz,
   

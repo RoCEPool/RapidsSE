@@ -245,9 +245,9 @@ EoArg EoArgs[]
   { EA_LABEL, 8 },  // EO_JMP_GREATEREQUAL
 
   // logical operators
-  { EA_NONE,  0 },  // EO_AND
-  { EA_NONE,  0 },  // EO_OR
-  { EA_NONE,  0 },  // EO_NOT
+  { EA_NONE,  0 },  // EO_LGL_AND
+  { EA_NONE,  0 },  // EO_LGL_OR
+  { EA_NONE,  0 },  // EO_LGL_NOT
 
   // null test operators
   { EA_NONE,  0 },  // EO_ISNULL
@@ -289,7 +289,7 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_LESSTHAN
   { EA_NONE,  0 },  // EO_LESSEQUAL
   { EA_NONE,  0 },  // EO_EQUAL
-  { EA_NONE,  0 },  // EO_NOTEQUAL
+  { EA_NONE,  0 },  // EO_LGL_NOTEQUAL
   { EA_NONE,  0 },  // EO_GREATEREQUAL
   { EA_NONE,  0 },  // EO_GREATERTHAN
 
@@ -394,7 +394,7 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_ENT_POSPRIOR);
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
-  vAddCode(EO_NOTEQUAL);
+  vAddCode(EO_LGL_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
@@ -515,7 +515,7 @@ void LogicUnit::vGenerateQuery102(void)
   vAddCode(EO_ENT_POSPRIOR);
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
-  vAddCode(EO_NOTEQUAL);
+  vAddCode(EO_LGL_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
@@ -810,7 +810,7 @@ void LogicUnit::vGenerateAggGby14000(void)
   vAddCode(EO_ENT_POSPRIOR);
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
-  vAddCode(EO_NOTEQUAL);
+  vAddCode(EO_LGL_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
@@ -929,7 +929,7 @@ void LogicUnit::vGenerateAggGby14002(void)
   vAddCode(EO_ENT_POSPRIOR);
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
-  vAddCode(EO_NOTEQUAL);
+  vAddCode(EO_LGL_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
@@ -1410,15 +1410,15 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("<"_Stz))   { vAddCode(EO_LESSTHAN);            continue; }
     if (pTkn->bSame("<="_Stz))  { vAddCode(EO_LESSEQUAL);           continue; }
     if (pTkn->bSame("=="_Stz))  { vAddCode(EO_EQUAL);               continue; }
-    if (pTkn->bSame("!="_Stz))  { vAddCode(EO_NOTEQUAL);            continue; }
+    if (pTkn->bSame("!="_Stz))  { vAddCode(EO_LGL_NOTEQUAL);        continue; }
     if (pTkn->bSame(">="_Stz))  { vAddCode(EO_GREATEREQUAL);        continue; }
     if (pTkn->bSame(">"_Stz))   { vAddCode(EO_GREATERTHAN);         continue; }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // logical operators
-    if (pTkn->bSame("and"_Stz)) { vAddCode(EO_AND);                 continue; }
-    if (pTkn->bSame("or"_Stz))  { vAddCode(EO_OR);                  continue; }
-    if (pTkn->bSame("not"_Stz)) { vAddCode(EO_NOT);                 continue; }
+    if (pTkn->bSame("and"_Stz)) { vAddCode(EO_LGL_AND);             continue; }
+    if (pTkn->bSame("or"_Stz))  { vAddCode(EO_LGL_OR);              continue; }
+    if (pTkn->bSame("not"_Stz)) { vAddCode(EO_LGL_NOT);             continue; }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // null test operators
@@ -2271,7 +2271,7 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
-      case EO_AND: NoArg(); // logical and top two int's, push result
+      case EO_LGL_AND: NoArg(); // logical and top two int's, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = (iTopA && iTopB) ? 1 : 0;
@@ -2279,7 +2279,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_OR: NoArg(); // logical or top two int's, push result
+      case EO_LGL_OR: NoArg(); // logical or top two int's, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = (iTopA || iTopB) ? 1 : 0;
@@ -2287,7 +2287,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_NOT: NoArg(); // logical not top int, push result
+      case EO_LGL_NOT: NoArg(); // logical not top int, push result
         iTopA = *(aiDstk--);
         iRes  = (! iTopA) ? 1 : 0;
         dLU2(eCode,iTopA,iRes);
@@ -2459,7 +2459,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_NOTEQUAL: NoArg(); // test top != 2nd, push result
+      case EO_LGL_NOTEQUAL: NoArg(); // test top != 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA != iTopB;
