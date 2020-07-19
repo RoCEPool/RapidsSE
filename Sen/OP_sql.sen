@@ -73,10 +73,14 @@
   queryNo case
     100 of
       queryNo "QUERY %v" .printf
+      100 LogicUnit[].genCode
+      idxDef_int indexDef[] indexTree[].new
     endof
 
     102 of
       queryNo "QUERY %v" .printf
+      102 LogicUnit[].genCode
+      idxDef_int indexDef[] indexTree[].new
     endof
 
     300 of
@@ -300,7 +304,15 @@
   queryNo case
 
     100 of
-      // AGGREGATE WITH GROUPBY (COPY)
+      // AGGREGATE WITH GROUPBY
+      queryNo "QUERY %v" .printf
+      101 LogicUnit[].genCode
+      LogicUnit[].transform
+      IndexTree[].delete
+    endof
+
+    102 of
+      // AGGREGATE WITH GROUPBY (SUPER)
       queryNo "QUERY %v" .printf
       101 LogicUnit[].genCode
       LogicUnit[].transform
@@ -312,7 +324,7 @@
     endof
 
     14000 of
-      // AGGREGATE WITH GROUPBY (COPY)
+      // AGGREGATE WITH GROUPBY
       queryNo "QUERY %v" .printf
       14001 LogicUnit[].genCode
       LogicUnit[].transform
@@ -320,7 +332,7 @@
     endof
 
     14002 of
-      // AGGREGATE WITH GROUPBY (COPY)
+      // AGGREGATE WITH GROUPBY (SUPER)
       queryNo "QUERY %v" .printf
       14001 LogicUnit[].genCode
       LogicUnit[].transform
@@ -352,11 +364,11 @@
       StreamDefOut[].new
 
       // add column L_RETURNFLAG
-      8 StreamDef[].column@ to pColumn
+      3 StreamDef[].column@ to pColumn
       pColumn column.scale@
       pColumn column.length@
       pColumn column.type@
-      "l_returnflag"
+      pColumn column.name@
       StreamDefOut[].addColumn
 
       // add column SUM(L_QUANTITY) as SUM_QTY

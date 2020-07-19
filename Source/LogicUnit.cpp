@@ -364,6 +364,8 @@ void LogicUnit::vGenerateQuery100(void)
   // set the query no
   m_iSql = 100;
   
+  m_i_Code = 0;
+  
   // initialize srcSlab etc
   vAddCode(EO_INI_SRC_SLAB);
   
@@ -384,8 +386,9 @@ void LogicUnit::vGenerateQuery100(void)
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
   
-  // add key
-  vAddCodeArg(EO_ENTWRK_APPENDELM,(i8)0);
+  // add key L_RETURNFLAG (col8) (TEMP:LINENUMBER)
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)3);
+  vAddCode(EO_ENTWRK_APPENDELMI);
   
   // find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);
@@ -404,15 +407,21 @@ void LogicUnit::vGenerateQuery100(void)
   vDefineLabel("NOT_FOUND"_Stz);
   vAddCodeArg(EO_ENTWRK_CREATEPAY, 8);
   vAddCode(EO_IXT_INS_ENT);
-  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
+  
+  // store L_RETURNFLAG (col8)(TEMP:LINENUMBER) -> payload(col0)
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)3);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
+  
+  // set sum(L_QUANTITY) to 0 -> payload(col1)
   vAddCode(EO_PUSH0);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
   
   // FOUND:
   vDefineLabel("FOUND"_Stz);
+  
+  // sum(L_QUANTITY) (col4) -> payload (col1)
   vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
-  vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)4);
   vAddCode(EO_ADD);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
   
@@ -477,6 +486,8 @@ void LogicUnit::vGenerateQuery102(void)
   // set the query no
   m_iSql = 102;
   
+  m_i_Code = 0;
+  
   // initialize srcSlab etc
   vAddCode(EO_INI_SRC_SLAB);
   
@@ -498,7 +509,6 @@ void LogicUnit::vGenerateQuery102(void)
   vAddCode(EO_ENTWRK_RESET);
   
   // add key
-  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
   vAddCodeArg(EO_ENTWRK_APPENDELM,(i8)0);
   
   // find the key in the indexTree

@@ -1132,7 +1132,7 @@
     | stageC
 
   stage stageC on origin :
-    sql 101
+    sql 102
     | output
     | sink
     | stageA
