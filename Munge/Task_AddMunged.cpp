@@ -8752,7 +8752,7 @@ void Task::vAddMunged(Forth* pForth)
     "    20003 of\n"
     "      \"-------------------------- 20003 PULSEMARKER --------------------------\" .\n"
     "\n"
-    "      \"customers\" \"customers_Idx1\" op__table_index assert\n"
+    "      \"customer\" \"customer_Idx1\" op__table_index assert\n"
     "\n"
     "      Index[].indexTree to IndexTree[]\n"
     "      IndexTree[].asSrc\n"
