@@ -1077,6 +1077,32 @@
   "
   api::addProcedure
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // src index walk test 4
+  sPath
+  "
+  procedure srcidx_walk_4
+    parameters $TableSrc $IndexSrc $TableAlt $IndexAlt
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+     sql 20004
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
 ;
 
 /*----------------------------------------------------------------------------*/

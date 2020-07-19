@@ -157,7 +157,7 @@
     endof
 
     20002 of
-      // SRC INDEX WALK TEST 1
+      // SRC INDEX WALK TEST 2
       queryNo "QUERY %v" .printf
       "dn dp xsb jf END L NXT xsp rsf csf 0 . bp xsn jt NXT L END ret"
          LogicUnit[].source!
@@ -165,7 +165,15 @@
     endof
 
     20003 of
-      // SRC INDEX WALK TEST 1
+      // SRC INDEX WALK TEST 3
+      queryNo "QUERY %v" .printf
+      "dn dp xsb jf END L NXT xsp rsf csf 0 . bp xsn jt NXT L END ret"
+         LogicUnit[].source!
+      LogicUnit[].compile assert
+    endof
+
+    20004 of
+      // SRC INDEX WALK TEST 4
       queryNo "QUERY %v" .printf
       "dn dp xsb jf END L NXT xsp rsf csf 0 . bp xsn jt NXT L END ret"
          LogicUnit[].source!
@@ -214,6 +222,18 @@
       "-------------------------- 20003 PULSEMARKER --------------------------" .
 
       "customer" "customer_Idx1" op__table_index assert
+
+      Index[].indexTree to IndexTree[]
+      IndexTree[].asSrc
+
+      LogicUnit[].transform
+
+    endof
+
+    20004 of
+      "-------------------------- 20004 PULSEMARKER --------------------------" .
+
+      "orders" "orders_Idx1" op__table_index assert
 
       Index[].indexTree to IndexTree[]
       IndexTree[].asSrc
