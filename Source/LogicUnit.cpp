@@ -85,7 +85,7 @@ LogicUnit::LogicUnit(Task* pTask)
 #endif
   
   m_nLabels = 0;
-  for (i8 i_Label = 0; i_Label < C_CALC_LABEL; i_Label++) {
+  for (i8 i_Label = 0; i_Label < C_LOGIC_LABEL; i_Label++) {
     m_xaJumpLabel[i_Label].m_bDefined = false;
     m_xaJumpLabel[i_Label].m_i_Chain = C_UNKNOWN;
   }
@@ -1723,7 +1723,7 @@ i8 LogicUnit::iCompute(void)
     
     // check for stack growth
     i8 nStkUse = nDifference(aiDstk,m_iaDataStack);
-    i8 iStkPct = (nStkUse * 100) / C_CALC_STACK;
+    i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
     if (iStkPct > 80)
       vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
     
