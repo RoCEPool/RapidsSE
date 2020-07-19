@@ -2212,9 +2212,8 @@ i8 LogicUnit::iCompute(void)
 
       case EO_IXT_POS_ALTBYSRC: NoArg(); // position alt ixt using src.key
         aSrcKey = m_aSrcEnt->aKey();
-        m_aAltEnt = m_pIndexTree->aPositionPriorEntry(aSrcKey,&m_pAltEntBuffer);
+        m_aAltEnt = m_pAltIdxTree->aPositionPriorEntry(aSrcKey,&m_pAltEntBuffer);
         if (m_pAltEntBuffer) {
-          m_aAltEnt = m_pAltEntBuffer->aLeadEntry();
           if (m_aAltEnt)
             *(++aiDstk) = 1;
           else
