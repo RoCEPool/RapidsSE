@@ -194,7 +194,14 @@
                 xsb jf END
        L GOT_S  .xs call ALL_A xsn jt GOT_S
        L END    ret
-       L ALL_A  xpa jf RET_A xan . .xa bp L RET_A ret
+
+       L ALL_A  xpa jf RET_A
+       L NXT_A  xan jf RET_A
+                .xa
+                xcm jne RET_A
+                bp
+                j NXT_A
+       L RET_A  0 . ret
       "
          LogicUnit[].source!
       LogicUnit[].compile assert
