@@ -813,6 +813,8 @@ void LogicUnit::vGenerateAggGby14000(void)
   // FOUND:
   vDefineLabel("FOUND"_Stz);
   vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
+  
+  // aggregate column 0
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);
   vAddCode(EO_ADD);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
@@ -826,7 +828,7 @@ void LogicUnit::vGenerateAggGby14000(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate agg group by                                                      */
+/* generate agg group by (copy)                                               */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateAggGby14001(void)
 {
@@ -870,7 +872,7 @@ void LogicUnit::vGenerateAggGby14001(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate super agg group by                                                */
+/* generate super agg group by (super agg)                                    */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateAggGby14002(void)
 {
@@ -903,7 +905,6 @@ void LogicUnit::vGenerateAggGby14002(void)
   vAddCode(EO_ENTWRK_RESET);
   
   // add key
-  vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
   vAddCodeArg(EO_ENTWRK_APPENDELM,(i8)0);
   
   // find the key in the indexTree
@@ -931,6 +932,8 @@ void LogicUnit::vGenerateAggGby14002(void)
   // FOUND:
   vDefineLabel("FOUND"_Stz);
   vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
+  
+  // super agg of column 1
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)1);
   vAddCode(EO_ADD);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)1);

@@ -145,7 +145,8 @@
     14002 of
       // SUPER AGGREGATE WITH GROUPBY
       queryNo "QUERY %v" .printf
-      14001 LogicUnit[].genCode
+      14002 LogicUnit[].genCode
+      idxDef_int indexDef[] indexTree[].new
     endof
 
     20001 of
@@ -301,6 +302,14 @@
     endof
 
     14000 of
+      // AGGREGATE WITH GROUPBY (COPY)
+      queryNo "QUERY %v" .printf
+      14001 LogicUnit[].genCode
+      LogicUnit[].transform
+      IndexTree[].delete
+    endof
+
+    14002 of
       // AGGREGATE WITH GROUPBY (COPY)
       queryNo "QUERY %v" .printf
       14001 LogicUnit[].genCode
