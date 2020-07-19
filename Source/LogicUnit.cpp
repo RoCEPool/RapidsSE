@@ -1447,6 +1447,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     // index trees
     if (pTkn->bSame("xd"_Stz))  { vAddCode(EO_IXT_DUMP);            continue; }
     if (pTkn->bSame("xi"_Stz))  { vAddCode(EO_IXT_INS_ENT);         continue; }
+    
     if (pTkn->bSame("xsb"_Stz)) { vAddCode(EO_IXT_SRC_BEGIN);       continue; }
     if (pTkn->bSame("xsn"_Stz)) { vAddCode(EO_IXT_SRC_NEXT);        continue; }
     if (pTkn->bSame("xsp"_Stz)) { vAddCode(EO_IXT_SRC_PRINT);       continue; }

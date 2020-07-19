@@ -175,7 +175,9 @@
     20004 of
       // SRC INDEX WALK TEST 4
       queryNo "QUERY %v" .printf
-      "dn dp xsb jf END L NXT xsp rsf csf 0 . bp xsn jt NXT L END ret"
+      "dn dp xsb jf ALT L NXT_S xsp rsf csf 0 . bp xsn jt NXT_S
+       L ALT xab jf END L NXT_A xap raf csf 0 . bp xan jt NXT_A
+       L END ret"
          LogicUnit[].source!
       LogicUnit[].compile assert
     endof
@@ -246,14 +248,15 @@
       Index[].indexTree to IndexTree[]
       IndexTree[].asSrc
 
-      LogicUnit[].transform
-
+     
       "lineItem" "lineItem_Idx1" op__table_index assert
 
       Table[].asAltStreamDef
 
       Index[].indexTree to IndexTree[]
       IndexTree[].asAlt
+
+      LogicUnit[].transform
 
     endof
 
