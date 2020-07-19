@@ -85,7 +85,7 @@ LogicUnit::LogicUnit(Task* pTask)
 #endif
   
   m_nLabels = 0;
-  for (i8 i_Label = 0; i_Label < C_CALC_LABEL; i_Label++) {
+  for (i8 i_Label = 0; i_Label < C_LOGIC_LABEL; i_Label++) {
     m_xaJumpLabel[i_Label].m_bDefined = false;
     m_xaJumpLabel[i_Label].m_i_Chain = C_UNKNOWN;
   }
@@ -193,12 +193,12 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_ENT_PUSHREF
 
   // entry relational operators
-  { EA_NONE,  0 },  // EO_ENT_LESSTHAN
+  { EA_NONE,  0 },  // EO_ENT_LESS
   { EA_NONE,  0 },  // EO_ENT_LESSEQUAL
   { EA_NONE,  0 },  // EO_ENT_EQUAL
   { EA_NONE,  0 },  // EO_ENT_NOTEQUAL
   { EA_NONE,  0 },  // EO_ENT_GREATEREQUAL
-  { EA_NONE,  0 },  // EO_ENT_GREATERTHAN
+  { EA_NONE,  0 },  // EO_ENT_GREATER
 
   // entWrk
   { EA_INT,   8 },  // EO_ENTWRK_APPENDELM
@@ -230,11 +230,19 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_IXT_ALT_NEXT
   { EA_NONE,  0 },  // EO_IXT_ALT_PRINT
   { EA_NONE,  0 },  // EO_IXT_JOI_MATCH
+  { EA_NONE,  0 },  // EO_IXT_CMP_SRCALT
 
   // jump operators
   { EA_LABEL, 8 },  // EO_JMP
   { EA_LABEL, 8 },  // EO_JMP_FALSE
   { EA_LABEL, 8 },  // EO_JMP_TRUE
+
+  { EA_LABEL, 8 },  // EO_JMP_LESSTHAN
+  { EA_LABEL, 8 },  // EO_JMP_LESSEQUAL
+  { EA_LABEL, 8 },  // EO_JMP_EQUAL
+  { EA_LABEL, 8 },  // EO_JMP_NOTEQUAL
+  { EA_LABEL, 8 },  // EO_JMP_GREATEREQUAL
+  { EA_LABEL, 8 },  // EO_JMP_GREATEREQUAL
 
   // logical operators
   { EA_NONE,  0 },  // EO_AND
@@ -1450,12 +1458,14 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     // index trees
     if (pTkn->bSame("xd"_Stz))  { vAddCode(EO_IXT_DUMP);            continue; }
     if (pTkn->bSame("xi"_Stz))  { vAddCode(EO_IXT_INS_ENT);         continue; }
+    
     if (pTkn->bSame("xsb"_Stz)) { vAddCode(EO_IXT_SRC_BEGIN);       continue; }
     if (pTkn->bSame("xsn"_Stz)) { vAddCode(EO_IXT_SRC_NEXT);        continue; }
     if (pTkn->bSame("xsp"_Stz)) { vAddCode(EO_IXT_SRC_PRINT);       continue; }
     if (pTkn->bSame("xab"_Stz)) { vAddCode(EO_IXT_ALT_BEGIN);       continue; }
     if (pTkn->bSame("xan"_Stz)) { vAddCode(EO_IXT_ALT_NEXT);        continue; }
     if (pTkn->bSame("xap"_Stz)) { vAddCode(EO_IXT_ALT_PRINT);       continue; }
+    if (pTkn->bSame("xcm"_Stz)) { vAddCode(EO_IXT_CMP_SRCALT);      continue; }
 
     if (pTkn->bSame("rsf"_Stz)) { vAddCode(EO_CRW_SRC_FETCH);       continue; }
     if (pTkn->bSame("raf"_Stz)) { vAddCode(EO_CRW_ALT_FETCH);       continue; }
@@ -1531,6 +1541,48 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("jt"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
       vAddCodeLabel(EO_JMP_TRUE,pTkn);
+      continue;
+    }
+
+    // jump on less than
+    if (pTkn->bSame("jlt"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_LESS,pTkn);
+      continue;
+    }
+
+    // jump on less than or equal to
+    if (pTkn->bSame("jle"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_LESSEQUAL,pTkn);
+      continue;
+    }
+
+    // jump on equal to
+    if (pTkn->bSame("jeq"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_EQUAL,pTkn);
+      continue;
+    }
+
+    // jump on not equal to
+    if (pTkn->bSame("jne"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_NOTEQUAL,pTkn);
+      continue;
+    }
+
+    // jump on greater than or equal to
+    if (pTkn->bSame("jge"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_GREATEREQUAL,pTkn);
+      continue;
+    }
+
+    // jump on greater than
+    if (pTkn->bSame("jgt"_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn);
+      vAddCodeLabel(EO_JMP_GREATER,pTkn);
       continue;
     }
 
@@ -1718,7 +1770,7 @@ i8 LogicUnit::iCompute(void)
     
     // check for stack growth
     i8 nStkUse = nDifference(aiDstk,m_iaDataStack);
-    i8 iStkPct = (nStkUse * 100) / C_CALC_STACK;
+    i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
     if (iStkPct > 80)
       vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
     
@@ -1882,7 +1934,7 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
-      case EO_ENT_LESSTHAN: NoArg(); // test if m_pEnt.key <  m_oEntWrk.key
+      case EO_ENT_LESS: NoArg(); // test if m_pEnt.key <  m_oEntWrk.key
         iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
@@ -1920,7 +1972,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_ENT_GREATERTHAN: NoArg();
+      case EO_ENT_GREATER: NoArg();
         iRes  = KC_AFTER == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
@@ -2124,6 +2176,8 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
 
+      case EO_IXT_CMP_SRCALT: NoArg(); NEVER_REACH; // not yet implemented
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // jump operators
       case EO_JMP: GetArg(iArg); // jump to location
@@ -2145,6 +2199,13 @@ i8 LogicUnit::iCompute(void)
           aeCode = & m_eaCode[iArg];
         break;
         
+      case EO_JMP_LESS:         GetArg(iArg); NEVER_REACH; // not yet implemented
+      case EO_JMP_LESSEQUAL:    GetArg(iArg); NEVER_REACH; // not yet implemented
+      case EO_JMP_EQUAL:        GetArg(iArg); NEVER_REACH; // not yet implemented
+      case EO_JMP_NOTEQUAL:     GetArg(iArg); NEVER_REACH; // not yet implemented
+      case EO_JMP_GREATEREQUAL: GetArg(iArg); NEVER_REACH; // not yet implemented
+      case EO_JMP_GREATER:      GetArg(iArg); NEVER_REACH; // not yet implemented
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
       case EO_AND: NoArg(); // logical and top two int's, push result

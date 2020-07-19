@@ -1082,7 +1082,7 @@
   sPath
   "
   procedure srcidx_walk_4
-    parameters $TableSrc $IndexSrc $TableAlt $IndexAlt
+  
   begin
 
   stage stageA on origin :

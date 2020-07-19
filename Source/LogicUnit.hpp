@@ -5,9 +5,9 @@
 
 namespace Expressions
 {
-  static const i8 C_CALC_CODE  = C_4KB;
-  static const i8 C_CALC_STACK = C_1KB;
-  static const i8 C_CALC_LABEL = 64;
+  static const i8 C_LOGIC_CODE  = C_4KB;
+  static const i8 C_LOGIC_STACK = C_1KB;
+  static const i8 C_LOGIC_LABEL = 64;
 
   struct JumpLabel
   {
@@ -148,13 +148,13 @@ namespace Expressions
     IndexTree* m_pIndexTree;
 
     i8     m_i_Code;
-    eEO    m_eaCode[C_CALC_CODE];    // { EO_code [<bytes>] }
+    eEO    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
 
-    i8     m_iaDataStack[C_CALC_STACK];
-    eEO*   m_aaReturnStack[C_CALC_STACK];
+    i8     m_iaDataStack[C_LOGIC_STACK];
+    eEO*   m_aaReturnStack[C_LOGIC_STACK];
 
     i8        m_nLabels;
-    JumpLabel m_xaJumpLabel[C_CALC_LABEL];
+    JumpLabel m_xaJumpLabel[C_LOGIC_LABEL];
 
     s2K     m_sSource;
 

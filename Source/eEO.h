@@ -37,17 +37,17 @@ enum eEO : i1 // expression operators
   /*    */ EO_ENT_PUSHREF,      // push ref of current entry
 
   // entry relational operators
-  /*    */ EO_ENT_LESSTHAN,     // test if m_pEnt.key <  m_oEntWrk.key
+  /*    */ EO_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
   /*    */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
   /*    */ EO_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
   /*    */ EO_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
   /*    */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
-  /*    */ EO_ENT_GREATERTHAN,  // test if m_pEnt.key >  m_oEntWrk.key
+  /*    */ EO_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
   
   // entWrk
   /*    */ EO_ENTWRK_APPENDELM, // append next element value
   /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
-  /*    */ EO_ENTWRK_CREATEPAY,    // create a payload in entwrk
+  /*    */ EO_ENTWRK_CREATEPAY, // create a payload in entwrk
   /*    */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
   /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
   /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
@@ -74,12 +74,20 @@ enum eEO : i1 // expression operators
   /*    */ EO_IXT_ALT_NEXT,     // move to next entry
   /*    */ EO_IXT_ALT_PRINT,    // print src ent
   /*    */ EO_IXT_JOI_MATCH,    // test for join match (src.key == alt.key)
+  /*    */ EO_IXT_CMP_SRCALT,   // compare src.key to alt.key
 
   // jump operators
   /*    */ EO_JMP,              // jump to location
   /*    */ EO_JMP_FALSE,        // pop top and jump to location if false
   /*    */ EO_JMP_TRUE,         // pop top and jump to location if true
   
+  /*    */ EO_JMP_LESS,         // pop top and jump to location if <
+  /*    */ EO_JMP_LESSEQUAL,    // pop top and jump to location if <=
+  /*    */ EO_JMP_EQUAL,        // pop top and jump to location if ==
+  /*    */ EO_JMP_NOTEQUAL,     // pop top and jump to location if !=
+  /*    */ EO_JMP_GREATEREQUAL, // pop top and jump to location if >=
+  /*    */ EO_JMP_GREATER,      // pop top and jump to location if >
+                                    
   // logical operators
   /*    */ EO_AND,              // logical and top two int's, push result
   /*    */ EO_OR,               // logical or top two int's, push result
@@ -189,12 +197,12 @@ static Stz* aEO[]
   /*    */ "EO_ENT_PUSHREF"_Stz,
 
   // entry relational operators
-  /*    */ "EO_ENT_LESSTHAN"_Stz,
+  /*    */ "EO_ENT_LESS"_Stz,
   /*    */ "EO_ENT_LESSEQUAL"_Stz,
   /*    */ "EO_ENT_EQUAL"_Stz,
   /*    */ "EO_ENT_NOTEQUAL"_Stz,
   /*    */ "EO_ENT_GREATEREQUAL"_Stz,
-  /*    */ "EO_ENT_GREATERTHAN"_Stz,
+  /*    */ "EO_ENT_GREATER"_Stz,
   
   // entWrk
   /*    */ "EO_ENTWRK_APPENDELM"_Stz,
@@ -226,12 +234,20 @@ static Stz* aEO[]
   /*    */ "EO_IXT_ALT_NEXT"_Stz,
   /*    */ "EO_IXT_ALT_PRINT"_Stz,
   /*    */ "EO_IXT_JOI_MATCH"_Stz,
-
+  /*    */ "EO_IXT_CMP_SRCALT"_Stz,
+  
   // jump operators
   /*    */ "EO_JMP"_Stz,
   /*    */ "EO_JMP_FALSE"_Stz,
   /*    */ "EO_JMP_TRUE"_Stz,
 
+  /*    */ "EO_JMP_LESS"_Stz,
+  /*    */ "EO_JMP_LESSEQUAL"_Stz,
+  /*    */ "EO_JMP_EQUAL"_Stz,
+  /*    */ "EO_JMP_NOTEQUAL"_Stz,
+  /*    */ "EO_JMP_GREATEREQUAL"_Stz,
+  /*    */ "EO_JMP_GREATER"_Stz,
+                                    
   // logical operators
   /*    */ "EO_AND"_Stz,
   /*    */ "EO_OR"_Stz,
