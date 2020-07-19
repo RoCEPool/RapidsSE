@@ -248,6 +248,13 @@
 
       LogicUnit[].transform
 
+      "lineItem" "lineItem_Idx1" op__table_index assert
+
+      Table[].asAltStreamDef
+
+      Index[].indexTree to IndexTree[]
+      IndexTree[].asAlt
+
     endof
 
   endcase
