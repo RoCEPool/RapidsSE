@@ -1777,7 +1777,7 @@ i8 LogicUnit::iCompute(void)
       // col operators
       case EO_COL_SRC_PUSH: GetArg(iArg); // push column value from m_aSrcCrw
       {
-        HV_Row hRow(m_xpTable->pStreamDef(),C_ALL);
+        HV_Row hRow(m_pSrcStreamDef,C_ALL);
         RowInflator::vInflateColumn(hRow,m_aSrcCrw,iArg);
         iRes = hRow->m_waColVal[iArg].m_iWrd;
         dLU2(eCode,iArg,iRes);
@@ -1786,7 +1786,13 @@ i8 LogicUnit::iCompute(void)
         break;
         
       case EO_COL_ALT_PUSH: GetArg(iArg); // push column value from m_aAltCrw
-        NEVER_REACH;
+      {
+        HV_Row hRow(m_pAltStreamDef,C_ALL);
+        RowInflator::vInflateColumn(hRow,m_aAltCrw,iArg);
+        iRes = hRow->m_waColVal[iArg].m_iWrd;
+        dLU2(eCode,iArg,iRes);
+        *(++aiDstk) = iRes;
+      }
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

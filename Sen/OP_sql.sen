@@ -199,6 +199,8 @@
 
       "lineItem" "lineItem_Idx1" op__table_index assert
 
+      Table[].asSrcStreamDef
+
       Index[].indexTree to IndexTree[]
       IndexTree[].asSrc
 
@@ -210,6 +212,8 @@
       "-------------------------- 20002 PULSEMARKER --------------------------" .
 
       "orders" "orders_Idx1" op__table_index assert
+
+      Table[].asSrcStreamDef
 
       Index[].indexTree to IndexTree[]
       IndexTree[].asSrc
@@ -223,6 +227,8 @@
 
       "customer" "customer_Idx1" op__table_index assert
 
+      Table[].asSrcStreamDef
+
       Index[].indexTree to IndexTree[]
       IndexTree[].asSrc
 
@@ -234,6 +240,8 @@
       "-------------------------- 20004 PULSEMARKER --------------------------" .
 
       "orders" "orders_Idx1" op__table_index assert
+
+      Table[].asSrcStreamDef
 
       Index[].indexTree to IndexTree[]
       IndexTree[].asSrc
