@@ -80,6 +80,13 @@ enum eEO : i1 // expression operators
   /*    */ EO_JMP_FALSE,        // pop top and jump to location if false
   /*    */ EO_JMP_TRUE,         // pop top and jump to location if true
   
+  /*    */ EO_JMP_LESS,         // pop top and jump to location if <
+  /*    */ EO_JMP_LESSEQUAL,    // pop top and jump to location if <=
+  /*    */ EO_JMP_EQUAL,        // pop top and jump to location if ==
+  /*    */ EO_JMP_NOTEQUAL,     // pop top and jump to location if !=
+  /*    */ EO_JMP_GREATEREQUAL, // pop top and jump to location if >=
+  /*    */ EO_JMP_GREATER,      // pop top and jump to location if >
+                                    
   // logical operators
   /*    */ EO_AND,              // logical and top two int's, push result
   /*    */ EO_OR,               // logical or top two int's, push result
@@ -232,6 +239,13 @@ static Stz* aEO[]
   /*    */ "EO_JMP_FALSE"_Stz,
   /*    */ "EO_JMP_TRUE"_Stz,
 
+  /*    */ "EO_JMP_LESS"_Stz,
+  /*    */ "EO_JMP_LESSEQUAL"_Stz,
+  /*    */ "EO_JMP_EQUAL"_Stz,
+  /*    */ "EO_JMP_NOTEQUAL"_Stz,
+  /*    */ "EO_JMP_GREATEREQUAL"_Stz,
+  /*    */ "EO_JMP_GREATER"_Stz,
+                                    
   // logical operators
   /*    */ "EO_AND"_Stz,
   /*    */ "EO_OR"_Stz,

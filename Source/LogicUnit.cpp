@@ -236,6 +236,13 @@ EoArg EoArgs[]
   { EA_LABEL, 8 },  // EO_JMP_FALSE
   { EA_LABEL, 8 },  // EO_JMP_TRUE
 
+  { EA_LABEL, 8 },  // EO_JMP_LESSTHAN
+  { EA_LABEL, 8 },  // EO_JMP_LESSEQUAL
+  { EA_LABEL, 8 },  // EO_JMP_EQUAL
+  { EA_LABEL, 8 },  // EO_JMP_NOTEQUAL
+  { EA_LABEL, 8 },  // EO_JMP_GREATEREQUAL
+  { EA_LABEL, 8 },  // EO_JMP_GREATEREQUAL
+
   // logical operators
   { EA_NONE,  0 },  // EO_AND
   { EA_NONE,  0 },  // EO_OR
@@ -2143,6 +2150,13 @@ i8 LogicUnit::iCompute(void)
           aeCode = & m_eaCode[iArg];
         break;
         
+      case EO_JMP_LESS:         GetArg(iArg); NEVER_REACH; // not yet implemented
+      case EO_JMP_LESSEQUAL:    GetArg(iArg); NEVER_REACH; // not yet implemented
+      case EO_JMP_EQUAL:        GetArg(iArg); NEVER_REACH; // not yet implemented
+      case EO_JMP_NOTEQUAL:     GetArg(iArg); NEVER_REACH; // not yet implemented
+      case EO_JMP_GREATEREQUAL: GetArg(iArg); NEVER_REACH; // not yet implemented
+      case EO_JMP_GREATER:      GetArg(iArg); NEVER_REACH; // not yet implemented
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
       case EO_AND: NoArg(); // logical and top two int's, push result
