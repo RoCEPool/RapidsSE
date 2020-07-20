@@ -1132,6 +1132,40 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* define procedures for prequery tests                                       */
+/*----------------------------------------------------------------------------*/
+: start::defineProc_PreQuery
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // src index walk test 1
+  sPath
+  "
+  procedure preQuery_4
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+     sql 400
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 : start::defineProc_TPCH
@@ -1557,6 +1591,7 @@
   start::defineProc_UnloadReload
   start::defineProc_Expressions
   start::defineProc_IndexWalk
+  start::defineProc_PreQuery
   start::defineProc_TPCH
 
   // define the apriori system tables
