@@ -580,8 +580,18 @@ void LogicUnit::vGenerateQuery400(void)
   vDefineLabel("GOT_S:"_Stz);
   vAddCode(EO_IXT_SRC_PRINT);
 
+  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCodeArg(EO_COL_SRC_PUSH,O_ORDERDATE);
+  vAddCode(EO_DUP);
+  vAddCode(EO_DTE_PRINT);
+  vAddCodeArg(EO_DATE,"1993-07-01"_Stz);
+  vAddCode(EO_GREATEREQUAL);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_S:"_Stz);
+
   vAddCodeLabel(EO_CALL,"ALL_A:"_Stz);
 
+  vDefineLabel("NXT_S:"_Stz);
+  vAddCode(EO_BREAKPOINT);
   vAddCode(EO_IXT_SRC_NEXT);
   vAddCodeLabel(EO_JMP_TRUE,"GOT_S:"_Stz);
 
@@ -599,7 +609,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_IXT_ALT_PRINT);
   vAddCode(EO_IXT_CMP_SRCALT);
   vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A:"_Stz);
-  vAddCode(EO_BREAKPOINT);
+  //vAddCode(EO_BREAKPOINT);
   vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
 
   vDefineLabel("RET_A:"_Stz);
