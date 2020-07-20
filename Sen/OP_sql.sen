@@ -112,6 +112,7 @@
 
     300 of
       queryNo "QUERY %v" .printf
+      300 LogicUnit[].genCode
     endof
 
     400 of
@@ -225,6 +226,32 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+: sql_PulseMarker_300
+
+  "--------------------------- 300 PULSEMARKER ---------------------------" .
+
+  "orders" "orders_Idx1" op__table_index assert
+
+  Table[].asSrcStreamDef
+
+  Index[].indexTree to IndexTree[]
+  IndexTree[].asSrc
+
+
+  "lineItem" "lineItem_Idx1" op__table_index assert
+
+  Table[].asAltStreamDef
+
+  Index[].indexTree to IndexTree[]
+  IndexTree[].asAlt
+
+
+  LogicUnit[].transform
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : sql_PulseMarker_400
 
   "--------------------------- 400 PULSEMARKER ---------------------------" .
@@ -273,6 +300,8 @@
   <queryNo> >int locals| queryNo |
 
   queryNo case
+
+      300 of sql_PulseMarker_300   endof
 
       400 of sql_PulseMarker_400   endof
 

@@ -1139,7 +1139,32 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // src index walk test 1
+  // q 3 prelim
+  sPath
+  "
+  procedure preQuery_3
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+     sql 300
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // q 4 prelim
   sPath
   "
   procedure preQuery_4

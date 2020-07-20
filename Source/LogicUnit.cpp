@@ -338,6 +338,8 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     101: vGenerateQuery101();    break;
     case     102: vGenerateQuery102();    break;
  
+    case     300: vGenerateQuery300();    break;
+      
     case     400: vGenerateQuery400();    break;
 
     case     600: vGenerateQuery600();    break;
@@ -551,6 +553,27 @@ void LogicUnit::vGenerateQuery102(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate code for query 3                                                  */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery300(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 300;
+  
+  m_i_Code = 0;
+  
+  vAddCode(EO_PUSH0);
+  vAddCode(EO_PRINT);
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate code for query 4                                                  */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery400(void)
@@ -614,21 +637,36 @@ void LogicUnit::vGenerateQuery400(void)
 
   vDefineLabel("TST_A:"_Stz);
   vAddCode(EO_IXT_POS_ALTBYSRC);
-  vAddCodeLabel(EO_JMP_FALSE,"RET_A_t:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A_f:"_Stz);
   vDefineLabel("NXT_A:"_Stz);
   vAddCode(EO_IXT_ALT_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"RET_A_t:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A_f:"_Stz);
   vAddCode(EO_IXT_ALT_PRINT);
   vAddCode(EO_IXT_CMP_SRCALT);
-  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A_t:"_Stz);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A_f:"_Stz);
+  
+
+  // test L_COMMITDATE < L_RECEIPTDATE
+  vAddCode(EO_CRW_ALT_FETCH);
+  vAddCodeArg(EO_COL_ALT_PUSH,L_COMMITDATE);
+  vAddCodeArg(EO_COL_ALT_PUSH,L_RECEIPTDATE);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_A:"_Stz);
+  vAddCodeLabel(EO_JMP,"RET_A_t:"_Stz);
+
+  
   //vAddCode(EO_BREAKPOINT);
   vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
 
   vDefineLabel("RET_A_t:"_Stz);
   vAddCode(EO_PUSH1);
+  vAddCode(EO_PRINT);
+  vAddCode(EO_PUSH1);
   vAddCode(EO_RETURN);
 
   vDefineLabel("RET_A_f:"_Stz);
+  vAddCode(EO_PUSH0);
+  vAddCode(EO_PRINT);
   vAddCode(EO_PUSH0);
   vAddCode(EO_RETURN);
 
