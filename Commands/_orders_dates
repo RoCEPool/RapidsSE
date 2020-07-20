@@ -1,0 +1,19 @@
+/*============================================================================*/
+/* _orders_datea - create TPC-H Orders table (using dates, not timestamps)    */
+/*============================================================================*/
+
+create table orders (
+	 O_ORDERKEY        INTEGER       NOT NULL,  // 0)
+	 O_CUSTKEY         INTEGER       NOT NULL,  // 1)
+	 O_ORDERSTATUS     CHAR(1)       NOT NULL,  // 2)
+	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,  // 3)
+	 O_ORDERDATE       DATE          NOT NULL,  // 4)
+	 O_ORDERPRIORITY   CHAR(15)      NOT NULL,  // 5)
+	 O_CLERK           CHAR(15)      NOT NULL,  // 6)
+	 O_SHIPPRIORITY    INTEGER       NOT NULL,  // 7)
+	 O_COMMENT         VARCHAR(79)   NOT NULL   // 8)
+);
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

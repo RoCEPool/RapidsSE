@@ -574,35 +574,63 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_PRINT);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  
+  // iterate all ORDERS
   vAddCode(EO_IXT_SRC_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"END:"_Stz);
   vDefineLabel("GOT_S:"_Stz);
   vAddCode(EO_IXT_SRC_PRINT);
 
-  vAddCodeLabel(EO_CALL,"ALL_A:"_Stz);
-
+  // test O_ORDERDATE
+  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCodeArg(EO_COL_SRC_PUSH,O_ORDERDATE);
+  vAddCode(EO_DUP);
+  vAddCode(EO_DTE_PRINT);
+  vAddCodeArg(EO_DATE,"1993-07-01"_Stz);
+  vAddCode(EO_GREATEREQUAL);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_S:"_Stz);
+  vAddCodeArg(EO_COL_SRC_PUSH,O_ORDERDATE); // doubled, not efficient
+  vAddCodeArg(EO_DATE,"1993-10-01"_Stz);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_S:"_Stz);
+  
+  // test for a matching LINEITEM
+  vAddCodeLabel(EO_CALL,"TST_A:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_S:"_Stz);
+  
+  // ... more ...
+  
+  // next ORDERS
+  vDefineLabel("NXT_S:"_Stz);
+  vAddCode(EO_BREAKPOINT);
   vAddCode(EO_IXT_SRC_NEXT);
   vAddCodeLabel(EO_JMP_TRUE,"GOT_S:"_Stz);
 
+  // end of ORDERS
   vDefineLabel("END:"_Stz);
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for a matching LINEITEM
 
-  vDefineLabel("ALL_A:"_Stz);
+  vDefineLabel("TST_A:"_Stz);
   vAddCode(EO_IXT_POS_ALTBYSRC);
-  vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A_t:"_Stz);
   vDefineLabel("NXT_A:"_Stz);
   vAddCode(EO_IXT_ALT_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A_t:"_Stz);
   vAddCode(EO_IXT_ALT_PRINT);
   vAddCode(EO_IXT_CMP_SRCALT);
-  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A:"_Stz);
-  vAddCode(EO_BREAKPOINT);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A_t:"_Stz);
+  //vAddCode(EO_BREAKPOINT);
   vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
 
-  vDefineLabel("RET_A:"_Stz);
+  vDefineLabel("RET_A_t:"_Stz);
+  vAddCode(EO_PUSH1);
+  vAddCode(EO_RETURN);
+
+  vDefineLabel("RET_A_f:"_Stz);
+  vAddCode(EO_PUSH0);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
