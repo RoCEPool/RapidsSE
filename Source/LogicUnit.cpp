@@ -683,7 +683,11 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
   vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);
   vAddCode(EO_STR_COMPARE);
-  vAddCode(EO_PRINT);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"NXT_S:"_Stz);
+
+  
+  vAddCodeLabel(EO_CALL,"JOI_A:"_Stz);
+
 
   // next CUSTOMER
   vDefineLabel("NXT_S:"_Stz);
@@ -692,6 +696,13 @@ void LogicUnit::vGenerateQuery300(void)
 
   // end of CUSTOMER
   vDefineLabel("END:"_Stz);
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vDefineLabel("JOI_A:"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"Join ORDERS"_Stz);
+  vAddCode(EO_STR_PRINTADR);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2865,7 +2876,7 @@ i8 LogicUnit::iCompute(void)
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // string operators
-      case EO_STR_COMPARE: NoArg(); // pop top two strings and compare
+      case EO_STR_COMPARE: NoArg(); // pop top stradr and compare str on stack
       {
         char* azTopA;
         char* azTopB;
