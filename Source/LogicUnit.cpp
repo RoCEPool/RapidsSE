@@ -568,6 +568,11 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeArg(EO_DATE, "1993-10-01"_Stz);
   vAddCode(EO_DTE_PRINT);
 
+  vAddCodeArg(EO_DATE, "1993-07-01"_Stz);
+  vAddCodeArg(EO_DATE, "1993-10-01"_Stz);
+  vAddCode(EO_LESSTHAN);
+  vAddCode(EO_PRINT);
+
   vAddCode(EO_RETURN);
   
   vDumpCode();
