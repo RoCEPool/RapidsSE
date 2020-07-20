@@ -173,6 +173,7 @@ EoArg EoArgs[]
 
   // col operators
   { EA_INT,     8 },  // EO_COL_SRC_PUSH
+  { EA_INT,     8 },  // EO_COL_SRC_PUSHSTR
   { EA_INT,     8 },  // EO_COL_ALT_PUSH
   
   // crw operators
@@ -627,7 +628,7 @@ void LogicUnit::vGenerateQuery400(void)
   
   
   // some string tests
-//  vAddCodeArg(EO_COL_SRC_PUSH,O_COMMENT);
+//  vAddCodeArg(EO_COL_SRC_PUSHSTR,O_COMMENT);
 //  vAddCode(EO_STR_PRINTSTK);
 
   
@@ -2019,6 +2020,16 @@ i8 LogicUnit::iCompute(void)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
       case EO_COL_SRC_PUSH: GetArg(iArg); // push column value from m_aSrcCrw
+      {
+        HV_Row hRow(m_pSrcStreamDef,C_ALL);
+        RowInflator::vInflateColumn(hRow,m_aSrcCrw,iArg);
+        iRes = hRow->m_waColVal[iArg].m_iWrd;
+        dLU2(eCode,iArg,iRes);
+        *(++aiDstk) = iRes;
+      }
+        break;
+        
+      case EO_COL_SRC_PUSHSTR: GetArg(iArg); // push column value from m_aSrcCrw
       {
         HV_Row hRow(m_pSrcStreamDef,C_ALL);
         RowInflator::vInflateColumn(hRow,m_aSrcCrw,iArg);

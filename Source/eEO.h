@@ -17,6 +17,7 @@ enum eEO : i1 // expression operators
 
   // col operators
   /*    */ EO_COL_SRC_PUSH,     // push column value from m_aSrcCrw
+  /*    */ EO_COL_SRC_PUSHSTR,  // push column str value from m_aSrcCrw
   /*    */ EO_COL_ALT_PUSH,     // push column value from m_aAltCrw
 
   // crw operators
@@ -183,6 +184,7 @@ static Stz* aEO[]
   
   // col operators
   /*    */ "EO_COL_SRC_PUSH"_Stz,
+  /*    */ "EO_COL_SRC_PUSHSTR"_Stz,
   /*    */ "EO_COL_SRC_PUSH"_Stz,
   
   // crw operators
