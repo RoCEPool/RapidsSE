@@ -39,6 +39,7 @@ shortcut r2   _ray2;
 shortcut r3   _ray3;
 shortcut rs   "../FASTLOAD/commands/_rowSlabTest";
 shortcut s    _select;
+shortcut sq3  "../Expressions/_query_3";
 shortcut sq4  "../Expressions/_query_4";
 shortcut ss1  _steadyState_1;
 shortcut ss2  _steadyState_2;
