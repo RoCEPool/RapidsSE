@@ -9,6 +9,24 @@ namespace Expressions
   static const i8 C_LOGIC_STACK = C_1KB;
   static const i8 C_LOGIC_LABEL = 64;
 
+  // lineitem columns
+  static const i8 L_ORDERKEY      = 0;
+  static const i8 L_PARTKEY       = 1;
+  static const i8 L_SUPPKEY       = 2;
+  static const i8 L_LINENUMBER    = 3;
+  static const i8 L_QUANTITY      = 4;
+  static const i8 L_EXTENDEDPRICE = 5;
+  static const i8 L_DISCOUNT      = 6;
+  static const i8 L_TAX           = 7;
+  static const i8 L_RETURNFLAG    = 8;
+  static const i8 L_LINESTATUS    = 9;
+  static const i8 L_SHIPDATE      = 10;
+  static const i8 L_COMMITDATE    = 11;
+  static const i8 L_RECEIPTDATE   = 12;
+  static const i8 L_SHIPINSTRUCT  = 13;
+  static const i8 L_SHIPMODE      = 14;
+  static const i8 L_COMMENT       = 15;
+  
   struct JumpLabel
   {
     s32  m_sLabel;
