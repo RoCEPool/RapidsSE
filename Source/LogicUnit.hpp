@@ -50,16 +50,16 @@ namespace Expressions
 
 
   // query1 output
-  static const i8 O_RETURNFLAG     = 0;  // L_RETURNFLAG
-  static const i8 O_LINESTATUS     = 1;  // O_LINESTATUS
-  static const i8 O_SUM_QTY        = 2;  // SUM(L_QUANTITY)
-  static const i8 O_SUM_BASE_PRICE = 3;  // SUM(L_EXTENDEDPRICE)
-  static const i8 O_SUM_DISC_PRICE = 4;  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT))
-  static const i8 O_SUM_CHARGE     = 5;  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX))
-  static const i8 O_AVG_QTY        = 6;  // AVG(L_QUANTITY)
-  static const i8 O_AVG_PRICE      = 7;  // AVG(L_EXTENDEDPRICE)
-  static const i8 O_AVG_DISC       = 8;  // AVG(L_DISCOUNT)
-  static const i8 O_COUNT_ORDER    = 9;  // COUNT(*)
+  static const i8 Q1_RETURNFLAG     = 0;  // L_RETURNFLAG
+  static const i8 Q1_LINESTATUS     = 1;  // O_LINESTATUS
+  static const i8 Q1_SUM_QTY        = 2;  // SUM(L_QUANTITY)
+  static const i8 Q1_SUM_BASE_PRICE = 3;  // SUM(L_EXTENDEDPRICE)
+  static const i8 Q1_SUM_DISC_PRICE = 4;  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT))
+  static const i8 Q1_SUM_CHARGE     = 5;  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX))
+  static const i8 Q1_AVG_QTY        = 6;  // AVG(L_QUANTITY)
+  static const i8 Q1_AVG_PRICE      = 7;  // AVG(L_EXTENDEDPRICE)
+  static const i8 Q1_AVG_DISC       = 8;  // AVG(L_DISCOUNT)
+  static const i8 Q1_COUNT_ORDER    = 9;  // COUNT(*)
   
   struct JumpLabel
   {
