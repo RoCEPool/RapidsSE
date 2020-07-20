@@ -338,6 +338,8 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     101: vGenerateQuery101();    break;
     case     102: vGenerateQuery102();    break;
  
+    case     300: vGenerateQuery300();    break;
+      
     case     400: vGenerateQuery400();    break;
 
     case     600: vGenerateQuery600();    break;
@@ -547,6 +549,27 @@ void LogicUnit::vGenerateQuery102(void)
   
   vDefineLabel("END_RSB_SRC:"_Stz);
   vAddCode(EO_RETURN);
+  
+  vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for query 3                                                  */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery300(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 300;
+  
+  m_i_Code = 0;
+  
+  vAddCode(EO_PUSH0);
+  vAddCode(EO_PRINT);
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vDumpCode();
 }
