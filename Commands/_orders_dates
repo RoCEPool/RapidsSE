@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _orders_date - create TPC-H Orders table (using dates, not timestamps)     */
+/* _orders_datea - create TPC-H Orders table (using dates, not timestamps)    */
 /*============================================================================*/
 
 create table orders (
