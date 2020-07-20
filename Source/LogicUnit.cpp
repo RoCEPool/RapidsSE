@@ -615,21 +615,36 @@ void LogicUnit::vGenerateQuery400(void)
 
   vDefineLabel("TST_A:"_Stz);
   vAddCode(EO_IXT_POS_ALTBYSRC);
-  vAddCodeLabel(EO_JMP_FALSE,"RET_A_t:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A_f:"_Stz);
   vDefineLabel("NXT_A:"_Stz);
   vAddCode(EO_IXT_ALT_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"RET_A_t:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A_f:"_Stz);
   vAddCode(EO_IXT_ALT_PRINT);
   vAddCode(EO_IXT_CMP_SRCALT);
-  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A_t:"_Stz);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A_f:"_Stz);
+  
+
+  // test L_COMMITDATE < L_RECEIPTDATE
+  vAddCode(EO_CRW_ALT_FETCH);
+  vAddCodeArg(EO_COL_ALT_PUSH,L_COMMITDATE);
+  vAddCodeArg(EO_COL_ALT_PUSH,L_RECEIPTDATE);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_A:"_Stz);
+  vAddCodeLabel(EO_JMP,"RET_A_t:"_Stz);
+
+  
   //vAddCode(EO_BREAKPOINT);
   vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
 
   vDefineLabel("RET_A_t:"_Stz);
   vAddCode(EO_PUSH1);
+  vAddCode(EO_PRINT);
+  vAddCode(EO_PUSH1);
   vAddCode(EO_RETURN);
 
   vDefineLabel("RET_A_f:"_Stz);
+  vAddCode(EO_PUSH0);
+  vAddCode(EO_PRINT);
   vAddCode(EO_PUSH0);
   vAddCode(EO_RETURN);
 
