@@ -36,6 +36,7 @@ namespace Entries
     void  vAppendDatum(Datum* pDatum, Column* pCol);
     void  vAppendElement(RowSingle* pRow, Column* pCol);
     void  vAppendElement(Rsb* aRsb, Column* pCol);
+    void  vAppendElement(Rsb* aRsb, StreamPix* pStreamPix, i8 i_Col);
     void  vAppendElementInt(Rsb* aRsb, i8 iInt);
     void  vAppendInt(i8 iArg);
     void  vAppendMinusInfinity(void);

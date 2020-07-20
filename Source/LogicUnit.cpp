@@ -389,9 +389,8 @@ void LogicUnit::vGenerateQuery100(void)
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
   
-  // add key L_RETURNFLAG (col8) (TEMP:LINENUMBER)
-  vAddCodeArg(EO_PUSHSRCCOLI,(i8)L_LINENUMBER);
-  vAddCode(EO_ENTWRK_APPENDELMI);
+  // add key L_RETURNFLAG (col8)
+  vAddCodeArg(EO_ENTWRK_APPENDELM, (i8)L_RETURNFLAG);
   
   // find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);
@@ -411,8 +410,8 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeArg(EO_ENTWRK_CREATEPAY, 8);
   vAddCode(EO_IXT_INS_ENT);
   
-  // store L_RETURNFLAG (col8)(TEMP:LINENUMBER) -> payload(col0)
-  vAddCodeArg(EO_PUSHSRCCOLI,(i8)L_LINENUMBER);
+  // store L_RETURNFLAG (col8) -> payload(col0)
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)L_RETURNFLAG);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
   
   // set sum(L_QUANTITY) to 0 -> payload(col1)
@@ -2089,7 +2088,7 @@ i8 LogicUnit::iCompute(void)
       case EO_ENTWRK_APPENDELM: GetArg(iArg); // append next element value
       {
         dLU1(eCode,iArg);
-        m_oEntWrk.vAppendElement(m_aSrcRsb, m_pIndexTree->pIndexDef()->pGetColumn(iArg));
+        m_oEntWrk.vAppendElement(m_aSrcRsb, &m_pSrcRowSlab->m_oStreamPix, iArg);
         SP_Ent spEnt;
         vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
         break;
