@@ -308,7 +308,8 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PRINT
 
   // string operators
-  { EA_NONE,    0 },  // EO_STR_PRINT
+  { EA_NONE,    0 },  // EO_STR_PRINTADR
+  { EA_NONE,    0 },  // EO_STR_PRINTSTK
   { EA_STRING, -1 },  // EO_DEC
   
   // subroutine operators
@@ -572,7 +573,7 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_PRINT);
   
   vAddCodeString(EO_STR_LITERAL,"Hello World!"_Stz);
-  vAddCode(EO_STR_PRINT);
+  vAddCode(EO_STR_PRINTADR);
 
   vAddCode(EO_RETURN);
 
@@ -624,12 +625,16 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_S:"_Stz);
   
+  
+  // some string tests
+//  vAddCodeArg(EO_COL_SRC_PUSH,O_COMMENT);
+//  vAddCode(EO_STR_PRINTSTK);
+
+  
   // test for a matching LINEITEM
   vAddCodeLabel(EO_CALL,"TST_A:"_Stz);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_S:"_Stz);
-  
-  // ... more ...
-  
+    
   // next ORDERS
   vDefineLabel("NXT_S:"_Stz);
   vAddCode(EO_BREAKPOINT);
@@ -2727,7 +2732,13 @@ i8 LogicUnit::iCompute(void)
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // string operators
-      case EO_STR_PRINT: NoArg(); // pop top and print as string
+      case EO_STR_PRINTADR: NoArg(); // pop top and print iArg as addr of string
+        iTopA = *(aiDstk--);
+        dLU1(eCode,iTopA);
+        vTrace("%lls\n"_Stz,iTopA);
+        break;
+        
+      case EO_STR_PRINTSTK: NoArg(); // pop string from top and print
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
         vTrace("%lls\n"_Stz,iTopA);

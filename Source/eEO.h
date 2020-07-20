@@ -152,7 +152,8 @@ enum eEO : i1 // expression operators
   /*    */ EO_PRINT,            // print top
 
   // string operators
-  /*    */ EO_STR_PRINT,        // pop top and print as string
+  /*    */ EO_STR_PRINTADR,     // pop top and print iArg as addr of string
+  /*    */ EO_STR_PRINTSTK,     // pop string from top and print
   /*    */ EO_STR_LITERAL,      // push address of string literal
 
   // subroutine operators
@@ -317,7 +318,8 @@ static Stz* aEO[]
   /*    */ "EO_PRINT"_Stz,
 
   // string operators
-  /*    */ "EO_STR_PRINT"_Stz,
+  /*    */ "EO_STR_PRINTADR"_Stz,
+  /*    */ "EO_STR_PRINTSTK"_Stz,
   /*    */ "EO_STR_LITERAL"_Stz,
   
   // subroutine operators
