@@ -568,10 +568,46 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeArg(EO_DATE, "1993-10-01"_Stz);
   vAddCode(EO_DTE_PRINT);
 
+  vAddCodeArg(EO_DATE, "1993-07-01"_Stz);
+  vAddCodeArg(EO_DATE, "1993-10-01"_Stz);
+  vAddCode(EO_LESSTHAN);
+  vAddCode(EO_PRINT);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vAddCode(EO_IXT_SRC_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"END:"_Stz);
+  vDefineLabel("GOT_S:"_Stz);
+  vAddCode(EO_IXT_SRC_PRINT);
+
+  vAddCodeLabel(EO_CALL,"ALL_A:"_Stz);
+
+  vAddCode(EO_IXT_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_TRUE,"GOT_S:"_Stz);
+
+  vDefineLabel("END:"_Stz);
   vAddCode(EO_RETURN);
   
-  vDumpCode();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  vDefineLabel("ALL_A:"_Stz);
+  vAddCode(EO_IXT_POS_ALTBYSRC);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
+  vDefineLabel("NXT_A:"_Stz);
+  vAddCode(EO_IXT_ALT_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
+  vAddCode(EO_IXT_ALT_PRINT);
+  vAddCode(EO_IXT_CMP_SRCALT);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A:"_Stz);
+  vAddCode(EO_BREAKPOINT);
+  vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
+
+  vDefineLabel("RET_A:"_Stz);
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
