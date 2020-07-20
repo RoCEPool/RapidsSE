@@ -700,9 +700,30 @@ void LogicUnit::vGenerateQuery300(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // join ORDERS
   vDefineLabel("JOI_A:"_Stz);
   vAddCodeString(EO_STR_LITERAL,"Join ORDERS"_Stz);
   vAddCode(EO_STR_PRINTADR);
+  
+  vAddCode(EO_IXT_POS_ALTBYSRC);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
+  vDefineLabel("NXT_A:"_Stz);
+  vAddCode(EO_IXT_ALT_NEXT);
+  
+  vAddCode(EO_IXT_SRC_PRINT);
+  vAddCode(EO_IXT_ALT_PRINT);
+
+  vAddCode(EO_BREAKPOINT);
+
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
+  vAddCode(EO_IXT_CMP_SRCALT);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A:"_Stz);
+
+  vAddCode(EO_IXT_ALT_PRINT);
+
+  vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
+  
+  vDefineLabel("RET_A:"_Stz);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

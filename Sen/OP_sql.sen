@@ -238,7 +238,7 @@
   IndexTree[].asSrc
 
 
-  "orders" "orders_Idx1" op__table_index assert
+  "orders" "orders_Idx2" op__table_index assert
 
   Table[].asAltStreamDef
 
