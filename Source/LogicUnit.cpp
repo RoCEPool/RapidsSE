@@ -571,7 +571,6 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_RETURN);
   
   vDumpCode();
-
 }
 
 /*----------------------------------------------------------------------------*/

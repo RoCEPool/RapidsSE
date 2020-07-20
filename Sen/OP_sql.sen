@@ -59,6 +59,33 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: sql_StartMarker_20005
+
+  // SRC INDEX WALK TEST 5
+  20005 "QUERY %v" .printf
+
+  "         dn dp
+            xsb jf END
+   L GOT_S  .xs call ALL_A xsn jt GOT_S
+   L END    ret
+
+   L ALL_A  xpa jf RET_A
+   L NXT_A  xan jf RET_A
+            .xa
+            xcm jne RET_A
+            bp
+            j NXT_A
+   L RET_A  0 . ret
+  "
+     LogicUnit[].source!
+
+  LogicUnit[].compile assert
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : sql_StartMarker \handler
@@ -89,6 +116,7 @@
 
     400 of
       queryNo "QUERY %v" .printf
+      400 LogicUnit[].genCode
     endof
 
     600 of
@@ -187,29 +215,54 @@
       LogicUnit[].compile assert
     endof
 
-    20005 of
-      // SRC INDEX WALK TEST 5
-      queryNo "QUERY %v" .printf
-      "         dn dp
-                xsb jf END
-       L GOT_S  .xs call ALL_A xsn jt GOT_S
-       L END    ret
-
-       L ALL_A  xpa jf RET_A
-       L NXT_A  xan jf RET_A
-                .xa
-                xcm jne RET_A
-                bp
-                j NXT_A
-       L RET_A  0 . ret
-      "
-         LogicUnit[].source!
-      LogicUnit[].compile assert
-    endof
+    20005 of sql_StartMarker_20005 endof
 
   endcase
 
   ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: sql_PulseMarker_400
+
+  "--------------------------- 400 PULSEMARKER ---------------------------" .
+
+  "orders" "orders_Idx1" op__table_index assert
+
+  Table[].asSrcStreamDef
+
+  Index[].indexTree to IndexTree[]
+  IndexTree[].asSrc
+
+
+  "lineItem" "lineItem_Idx1" op__table_index assert
+
+  Table[].asAltStreamDef
+
+  Index[].indexTree to IndexTree[]
+  IndexTree[].asAlt
+
+
+  LogicUnit[].transform
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: sql_PulseMarker_20001
+
+  "-------------------------- 20001 PULSEMARKER --------------------------" .
+
+  "lineItem" "lineItem_Idx1" op__table_index assert
+
+  Table[].asSrcStreamDef
+
+  Index[].indexTree to IndexTree[]
+  IndexTree[].asSrc
+
+  LogicUnit[].transform
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -221,19 +274,9 @@
 
   queryNo case
 
-    20001 of
-      "-------------------------- 20001 PULSEMARKER --------------------------" .
+      400 of sql_PulseMarker_400   endof
 
-      "lineItem" "lineItem_Idx1" op__table_index assert
-
-      Table[].asSrcStreamDef
-
-      Index[].indexTree to IndexTree[]
-      IndexTree[].asSrc
-
-      LogicUnit[].transform
-
-    endof
+    20001 of sql_PulseMarker_20001 endof
 
     20002 of
       "-------------------------- 20002 PULSEMARKER --------------------------" .
