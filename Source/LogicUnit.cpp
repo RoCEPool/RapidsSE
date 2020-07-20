@@ -570,6 +570,10 @@ void LogicUnit::vGenerateQuery300(void)
   
   vAddCode(EO_PUSH0);
   vAddCode(EO_PRINT);
+  
+  vAddCodeString(EO_STR_LITERAL,"Hello World!"_Stz);
+  vAddCode(EO_STR_PRINT);
+
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1365,6 +1369,22 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Token* pTkn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add code with string literal                                               */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vAddCodeString(eEO eCode, Stz* szString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  ASSERT(-1 == EoArgs[eCode].m_nArgBytes);
+  
+  m_eaCode[m_i_Code++] = eCode;
+
+  for (char* acChr = szString->azChar(); *acChr; acChr++)
+    m_eaCode[m_i_Code++] = (eEO)*acChr;
+  m_eaCode[m_i_Code++] = (eEO)0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add label                                                                  */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iAddLabel(Stz* szLabelNm, bool bKnown)
@@ -1809,6 +1829,12 @@ void LogicUnit::vDumpCode(void)
              "Invalid eo code sequence detected"_Stz);
     }
     
+    if (-1 == EoArgs[eCode].m_nArgBytes) {
+      char* azArg = (char*) & m_eaCode[i_Code+1];
+      vTrace("%04lld: %18s (%lls)\n"_Stz,i_Code,aEO[eCode],azArg);
+      i_Code += 1 + StrLib::nSize(azArg);
+    }
+    else
     if (EoArgs[eCode].m_nArgBytes) {
       //vDumpCode(eCode,i_Code);
       i8* piArg = (i8*) & m_eaCode[i_Code+1];
@@ -1862,7 +1888,7 @@ void LogicUnit::vDumpCode(void)
 
   #define GetStr(iArg) \
     ASSERT(-1 == EoArgs[eCode].m_nArgBytes); \
-    iArg = (i8)aeCode \
+    iArg = (i8)aeCode; \
     while (*(char*)aeCode) aeCode++; \
     aeCode++;
 
@@ -1880,7 +1906,7 @@ void LogicUnit::vDumpCode(void)
     aeCode += 8;
 
   #define GetStr(iArg) \
-    iArg = (i8)aeCode \
+    iArg = (i8)aeCode; \
     while (*(char*)aeCode) aeCode++; \
     aeCode++;
 
@@ -2702,9 +2728,14 @@ i8 LogicUnit::iCompute(void)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // string operators
       case EO_STR_PRINT: NoArg(); // pop top and print as string
+        iTopA = *(aiDstk--);
+        dLU1(eCode,iTopA);
+        vTrace("%lls\n"_Stz,iTopA);
         break;
         
-      case EO_STR_LITERAL: NoArg(); // push address of string literal
+      case EO_STR_LITERAL: GetStr(iArg); // push address of string literal
+        dLU1(eCode,iArg);
+        *(++aiDstk) = iArg;
         break;
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

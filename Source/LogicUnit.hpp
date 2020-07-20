@@ -265,6 +265,7 @@ namespace Expressions
     void vAddCodeArg(eEO eCode, Stz* szLiteral);
     void vAddCodeLabel(eEO eCode, Stz* szLabelNm);
     void vAddCodeLabel(eEO eCode, Token* pTkn);
+    void vAddCodeString(eEO eCode, Stz* szString);
     i8   iAddLabel(Stz* szLabelNm, bool bDefined);
     void vCorrectLabel(i8 i_Label);
     i8   iDecodeLabel(Stz* szLabelNm);
