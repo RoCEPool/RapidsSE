@@ -161,164 +161,168 @@ void LogicUnit::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 EoArg EoArgs[]
 {
-  { EA_NONE,  0 },  // EO_NONE
+  { EA_NONE,    0 },  // EO_NONE
   
   // arithmetic operators
-  { EA_NONE,  0 },  // EO_ADD
-  { EA_NONE,  0 },  // EO_DIVIDE
-  { EA_NONE,  0 },  // EO_MODULO
-  { EA_NONE,  0 },  // EO_MULTIPLY
-  { EA_NONE,  0 },  // EO_NEGATE
-  { EA_NONE,  0 },  // EO_SUBTRACT
+  { EA_NONE,    0 },  // EO_ADD
+  { EA_NONE,    0 },  // EO_DIVIDE
+  { EA_NONE,    0 },  // EO_MODULO
+  { EA_NONE,    0 },  // EO_MULTIPLY
+  { EA_NONE,    0 },  // EO_NEGATE
+  { EA_NONE,    0 },  // EO_SUBTRACT
 
   // col operators
-  { EA_INT,   8 },  // EO_COL_SRC_PUSH
-  { EA_INT,   8 },  // EO_COL_ALT_PUSH
+  { EA_INT,     8 },  // EO_COL_SRC_PUSH
+  { EA_INT,     8 },  // EO_COL_ALT_PUSH
   
   // crw operators
-  { EA_NONE,  0 },  // EO_CRW_SRC_FETCH
-  { EA_NONE,  0 },  // EO_CRW_ALT_FETCH
+  { EA_NONE,    0 },  // EO_CRW_SRC_FETCH
+  { EA_NONE,    0 },  // EO_CRW_ALT_FETCH
   
   // date operators
-  { EA_NONE,  0 },  // EO_DTE_NOW
-  { EA_NONE,  0 },  // EO_DTE_PRINT
-  { EA_NONE,  0 },  // EO_DTE_YEAR
+  { EA_NONE,    0 },  // EO_DTE_NOW
+  { EA_NONE,    0 },  // EO_DTE_PRINT
+  { EA_NONE,    0 },  // EO_DTE_YEAR
   
   // entry
-  { EA_NONE,  0 },  // EO_ENT_NEXT
-  { EA_NONE,  0 },  // EO_ENT_POSPRIOR
-  { EA_NONE,  0 },  // EO_ENT_PUSH
-  { EA_NONE,  0 },  // EO_ENT_PUSHELMI0
-  { EA_NONE,  0 },  // EO_ENT_PUSHOFS
-  { EA_NONE,  0 },  // EO_ENT_PUSHREF
+  { EA_NONE,    0 },  // EO_ENT_NEXT
+  { EA_NONE,    0 },  // EO_ENT_POSPRIOR
+  { EA_NONE,    0 },  // EO_ENT_PUSH
+  { EA_NONE,    0 },  // EO_ENT_PUSHELMI0
+  { EA_NONE,    0 },  // EO_ENT_PUSHOFS
+  { EA_NONE,    0 },  // EO_ENT_PUSHREF
 
   // entry relational operators
-  { EA_NONE,  0 },  // EO_ENT_LESS
-  { EA_NONE,  0 },  // EO_ENT_LESSEQUAL
-  { EA_NONE,  0 },  // EO_ENT_EQUAL
-  { EA_NONE,  0 },  // EO_ENT_NOTEQUAL
-  { EA_NONE,  0 },  // EO_ENT_GREATEREQUAL
-  { EA_NONE,  0 },  // EO_ENT_GREATER
+  { EA_NONE,    0 },  // EO_ENT_LESS
+  { EA_NONE,    0 },  // EO_ENT_LESSEQUAL
+  { EA_NONE,    0 },  // EO_ENT_EQUAL
+  { EA_NONE,    0 },  // EO_ENT_NOTEQUAL
+  { EA_NONE,    0 },  // EO_ENT_GREATEREQUAL
+  { EA_NONE,    0 },  // EO_ENT_GREATER
 
   // entWrk
-  { EA_INT,   8 },  // EO_ENTWRK_APPENDELM
-  { EA_NONE,  0 },  // EO_ENTWRK_APPENDELMI
-  { EA_INT,   8 },  // EO_ENTWRK_CREATEPAY
-  { EA_NONE,  0 },  // EO_ENTWRK_POPOFS
-  { EA_NONE,  0 },  // EO_ENTWRK_POPREF
-  { EA_NONE,  0 },  // EO_ENTWRK_PRINT
-  { EA_NONE,  0 },  // EO_ENTWRK_RESET
+  { EA_INT,     8 },  // EO_ENTWRK_APPENDELM
+  { EA_NONE,    0 },  // EO_ENTWRK_APPENDELMI
+  { EA_INT,     8 },  // EO_ENTWRK_CREATEPAY
+  { EA_NONE,    0 },  // EO_ENTWRK_POPOFS
+  { EA_NONE,    0 },  // EO_ENTWRK_POPREF
+  { EA_NONE,    0 },  // EO_ENTWRK_PRINT
+  { EA_NONE,    0 },  // EO_ENTWRK_RESET
 
   // finalise
-  { EA_NONE,  0 },  // EO_FIN_TRANSFORM
+  { EA_NONE,    0 },  // EO_FIN_TRANSFORM
   
   // initialise
-  { EA_NONE,  0 },  // EO_INI_PIX_DEFOUT
-  { EA_NONE,  0 },  // EO_INI_PIX_SLABIN
-  { EA_NONE,  0 },  // EO_INI_SRC_SLAB
+  { EA_NONE,    0 },  // EO_INI_PIX_DEFOUT
+  { EA_NONE,    0 },  // EO_INI_PIX_SLABIN
+  { EA_NONE,    0 },  // EO_INI_SRC_SLAB
   
   // index tree
-  { EA_NONE,  0 },  // EO_IXT_DUMP
-  { EA_NONE,  0 },  // EO_IXT_INS_ENT
-  { EA_NONE,  0 },  // EO_IXT_TRV_BEGIN
-  { EA_NONE,  0 },  // EO_IXT_TRV_NEXT
+  { EA_NONE,    0 },  // EO_IXT_DUMP
+  { EA_NONE,    0 },  // EO_IXT_INS_ENT
+  { EA_NONE,    0 },  // EO_IXT_TRV_BEGIN
+  { EA_NONE,    0 },  // EO_IXT_TRV_NEXT
 
-  { EA_NONE,  0 },  // EO_IXT_SRC_BEGIN
-  { EA_NONE,  0 },  // EO_IXT_SRC_NEXT
-  { EA_NONE,  0 },  // EO_IXT_SRC_PRINT
-  { EA_NONE,  0 },  // EO_IXT_ALT_BEGIN
-  { EA_NONE,  0 },  // EO_IXT_ALT_NEXT
-  { EA_NONE,  0 },  // EO_IXT_ALT_PRINT
-  { EA_NONE,  0 },  // EO_IXT_JOI_MATCH
-  { EA_NONE,  0 },  // EO_IXT_CMP_SRCALT
-  { EA_NONE,  0 },  // EO_IXT_POS_ALTBYSRC
+  { EA_NONE,    0 },  // EO_IXT_SRC_BEGIN
+  { EA_NONE,    0 },  // EO_IXT_SRC_NEXT
+  { EA_NONE,    0 },  // EO_IXT_SRC_PRINT
+  { EA_NONE,    0 },  // EO_IXT_ALT_BEGIN
+  { EA_NONE,    0 },  // EO_IXT_ALT_NEXT
+  { EA_NONE,    0 },  // EO_IXT_ALT_PRINT
+  { EA_NONE,    0 },  // EO_IXT_JOI_MATCH
+  { EA_NONE,    0 },  // EO_IXT_CMP_SRCALT
+  { EA_NONE,    0 },  // EO_IXT_POS_ALTBYSRC
 
   // jump operators
-  { EA_LABEL, 8 },  // EO_JMP
-  { EA_LABEL, 8 },  // EO_JMP_FALSE
-  { EA_LABEL, 8 },  // EO_JMP_TRUE
+  { EA_LABEL,   8 },  // EO_JMP
+  { EA_LABEL,   8 },  // EO_JMP_FALSE
+  { EA_LABEL,   8 },  // EO_JMP_TRUE
 
-  { EA_LABEL, 8 },  // EO_JMP_LESSTHAN
-  { EA_LABEL, 8 },  // EO_JMP_LESSEQUAL
-  { EA_LABEL, 8 },  // EO_JMP_EQUAL
-  { EA_LABEL, 8 },  // EO_JMP_NOTEQUAL
-  { EA_LABEL, 8 },  // EO_JMP_GREATEREQUAL
-  { EA_LABEL, 8 },  // EO_JMP_GREATEREQUAL
+  { EA_LABEL,   8 },  // EO_JMP_LESSTHAN
+  { EA_LABEL,   8 },  // EO_JMP_LESSEQUAL
+  { EA_LABEL,   8 },  // EO_JMP_EQUAL
+  { EA_LABEL,   8 },  // EO_JMP_NOTEQUAL
+  { EA_LABEL,   8 },  // EO_JMP_GREATEREQUAL
+  { EA_LABEL,   8 },  // EO_JMP_GREATEREQUAL
 
   // logical operators
-  { EA_NONE,  0 },  // EO_LGL_AND
-  { EA_NONE,  0 },  // EO_LGL_OR
-  { EA_NONE,  0 },  // EO_LGL_NOT
+  { EA_NONE,    0 },  // EO_LGL_AND
+  { EA_NONE,    0 },  // EO_LGL_OR
+  { EA_NONE,    0 },  // EO_LGL_NOT
 
   // null test operators
-  { EA_NONE,  0 },  // EO_ISNULL
-  { EA_NONE,  0 },  // EO_ISNOTNULL
+  { EA_NONE,    0 },  // EO_ISNULL
+  { EA_NONE,    0 },  // EO_ISNOTNULL
 
   // pay load
-  { EA_INT,   8 },  // EO_PAY_FETCH_COL
-  { EA_INT,   8 },  // EO_PAY_STORE_COL
+  { EA_INT,     8 },  // EO_PAY_FETCH_COL
+  { EA_INT,     8 },  // EO_PAY_STORE_COL
 
   // pushes
-  { EA_DATE,  8 },  // EO_DATE
-  { EA_INT,   8 },  // EO_INTEGER
-  { EA_NONE,  0 },  // EO_PUSHNULL
-  { EA_NONE,  0 },  // EO_PUSH0
-  { EA_NONE,  0 },  // EO_PUSH1
+  { EA_DATE,    8 },  // EO_DATE
+  { EA_INT,     8 },  // EO_INTEGER
+  { EA_NONE,    0 },  // EO_PUSHNULL
+  { EA_NONE,    0 },  // EO_PUSH0
+  { EA_NONE,    0 },  // EO_PUSH1
 
   // ref
-  { EA_NONE,  0 },  // EO_REF_GETCRW
-  { EA_NONE,  0 },  // EO_REF_SRCRSB
-  { EA_NONE,  0 },  // EO_REF_ALTRSB
+  { EA_NONE,    0 },  // EO_REF_GETCRW
+  { EA_NONE,    0 },  // EO_REF_SRCRSB
+  { EA_NONE,    0 },  // EO_REF_ALTRSB
 
   // rsb / rowslab
-  { EA_NONE,  0 },  // EO_RSB_DST_COPYSRC
-  { EA_NONE,  0 },  // EO_RSB_DST_PRINT
-  { EA_NONE,  0 },  // EO_RSB_DST_NEW
-  { EA_NONE,  0 },  // EO_RSB_DST_TEST
-  { EA_NONE,  0 },  // EO_RSB_SRC_BEGIN
-  { EA_NONE,  0 },  // EO_RSB_SRC_NEXT
-  { EA_NONE,  0 },  // EO_RSB_SRC_PRINT
-  { EA_NONE,  0 },  // EO_RSB_SRC_PUSHOFS
-  { EA_NONE,  0 },  // EO_RSB_SRC_SETBYOFS
-  { EA_NONE,  0 },  // EO_RSB_ALT_BEGIN
-  { EA_NONE,  0 },  // EO_RSB_ALT_NEXT
-  { EA_NONE,  0 },  // EO_RSB_ALT_PRINT
-  { EA_NONE,  0 },  // EO_RSB_ALT_PUSHOFS
-  { EA_NONE,  0 },  // EO_RSB_ALT_SETBYOFS
+  { EA_NONE,    0 },  // EO_RSB_DST_COPYSRC
+  { EA_NONE,    0 },  // EO_RSB_DST_PRINT
+  { EA_NONE,    0 },  // EO_RSB_DST_NEW
+  { EA_NONE,    0 },  // EO_RSB_DST_TEST
+  { EA_NONE,    0 },  // EO_RSB_SRC_BEGIN
+  { EA_NONE,    0 },  // EO_RSB_SRC_NEXT
+  { EA_NONE,    0 },  // EO_RSB_SRC_PRINT
+  { EA_NONE,    0 },  // EO_RSB_SRC_PUSHOFS
+  { EA_NONE,    0 },  // EO_RSB_SRC_SETBYOFS
+  { EA_NONE,    0 },  // EO_RSB_ALT_BEGIN
+  { EA_NONE,    0 },  // EO_RSB_ALT_NEXT
+  { EA_NONE,    0 },  // EO_RSB_ALT_PRINT
+  { EA_NONE,    0 },  // EO_RSB_ALT_PUSHOFS
+  { EA_NONE,    0 },  // EO_RSB_ALT_SETBYOFS
 
   // relational operators
-  { EA_NONE,  0 },  // EO_LESSTHAN
-  { EA_NONE,  0 },  // EO_LESSEQUAL
-  { EA_NONE,  0 },  // EO_EQUAL
-  { EA_NONE,  0 },  // EO_NOTEQUAL
-  { EA_NONE,  0 },  // EO_GREATEREQUAL
-  { EA_NONE,  0 },  // EO_GREATERTHAN
+  { EA_NONE,    0 },  // EO_LESSTHAN
+  { EA_NONE,    0 },  // EO_LESSEQUAL
+  { EA_NONE,    0 },  // EO_EQUAL
+  { EA_NONE,    0 },  // EO_NOTEQUAL
+  { EA_NONE,    0 },  // EO_GREATEREQUAL
+  { EA_NONE,    0 },  // EO_GREATERTHAN
 
   // rsb operators
-  { EA_INT,   8 },  // EO_DEPOSITCOLI
-  { EA_INT,   8 },  // EO_PUSHDSTCOLI
-  { EA_INT,   8 },  // EO_PUSHSRCCOLI
-  { EA_INT,   8 },  // EO_PUSHALTCOLI
+  { EA_INT,     8 },  // EO_DEPOSITCOLI
+  { EA_INT,     8 },  // EO_PUSHDSTCOLI
+  { EA_INT,     8 },  // EO_PUSHSRCCOLI
+  { EA_INT,     8 },  // EO_PUSHALTCOLI
 
   // stack operators
-  { EA_NONE,  0 },  // EO_INC
-  { EA_NONE,  0 },  // EO_DEC
-  { EA_NONE,  0 },  // EO_DUP
-  { EA_NONE,  0 },  // EO_POP
-  { EA_NONE,  0 },  // EO_PRINT
+  { EA_NONE,    0 },  // EO_INC
+  { EA_NONE,    0 },  // EO_DEC
+  { EA_NONE,    0 },  // EO_DUP
+  { EA_NONE,    0 },  // EO_POP
+  { EA_NONE,    0 },  // EO_PRINT
 
+  // string operators
+  { EA_NONE,    0 },  // EO_STR_PRINT
+  { EA_STRING, -1 },  // EO_DEC
+  
   // subroutine operators
-  { EA_LABEL, 8 },  // EO_CALL
-  { EA_NONE,  0 },  // EO_RETURN
+  { EA_LABEL,   8 },  // EO_CALL
+  { EA_NONE,    0 },  // EO_RETURN
 
   // misc
-  { EA_NONE,  0 },  // EO_BREAKPOINT
-  { EA_NONE,  0 },  // EO_TRACE
-  { EA_NONE,  0 },  // EO_NOOP
-  { EA_NONE,  0 },  // EO_ERROR
+  { EA_NONE,    0 },  // EO_BREAKPOINT
+  { EA_NONE,    0 },  // EO_TRACE
+  { EA_NONE,    0 },  // EO_NOOP
+  { EA_NONE,    0 },  // EO_ERROR
 
   // -- end --
-  { EA_NONE,  0 },  // EO_ENUMS
+  { EA_NONE,    0 },  // EO_ENUMS
 };
 
 
@@ -2685,6 +2689,14 @@ i8 LogicUnit::iCompute(void)
         vTrace("%lld\n"_Stz,iTopA);
         break;
     
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // string operators
+      case EO_STR_PRINT: NoArg(); // pop top and print as string
+        break;
+        
+      case EO_STR_LITERAL: NoArg(); // push address of string literal
+        break;
+      
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // subroutine operators
       case EO_CALL: GetArg(iArg); // call subroutine at location

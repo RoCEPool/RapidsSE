@@ -151,6 +151,10 @@ enum eEO : i1 // expression operators
   /*    */ EO_POP,              // pop / discard top
   /*    */ EO_PRINT,            // print top
 
+  // string operators
+  /*    */ EO_STR_PRINT,        // pop top and print as string
+  /*    */ EO_STR_LITERAL,      // push address of string literal
+
   // subroutine operators
   /*    */ EO_CALL,             // call subroutine at location
   /*    */ EO_RETURN,           // return from subroutine and
@@ -312,6 +316,10 @@ static Stz* aEO[]
   /*    */ "EO_POP"_Stz,
   /*    */ "EO_PRINT"_Stz,
 
+  // string operators
+  /*    */ "EO_STR_PRINT"_Stz,
+  /*    */ "EO_STR_LITERAL"_Stz,
+  
   // subroutine operators
   /*    */ "EO_CALL"_Stz,
   /*    */ "EO_RETURN"_Stz,
