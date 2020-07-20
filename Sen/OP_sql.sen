@@ -101,13 +101,13 @@
     100 of
       queryNo "QUERY %v" .printf
       100 LogicUnit[].genCode
-      idxDef_int indexDef[] indexTree[].new
+      idxDef_vch indexDef[] indexTree[].new
     endof
 
     102 of
       queryNo "QUERY %v" .printf
       102 LogicUnit[].genCode
-      idxDef_int indexDef[] indexTree[].new
+      idxDef_vch indexDef[] indexTree[].new
     endof
 
     300 of
@@ -480,7 +480,7 @@
       StreamDefOut[].new
 
       // add column L_RETURNFLAG
-      3 StreamDef[].column@ to pColumn
+      8 StreamDef[].column@ to pColumn
       pColumn column.scale@
       pColumn column.length@
       pColumn column.type@

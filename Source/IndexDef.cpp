@@ -123,7 +123,7 @@ void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType)
   m_xaColumn[m_nColumns].vColumnNo(m_nColumns);
   m_xaColumn[m_nColumns].vColumnNm(szColumnNm);
   m_xaColumn[m_nColumns].vColumnType(eColumnType);
-  m_xaColumn[m_nColumns].vDatum(DM_INT); //! ALKA COME BCAK
+  m_xaColumn[m_nColumns].vDatum(Column::eDatum(eColumnType));
   m_nColumns++;
 }
 

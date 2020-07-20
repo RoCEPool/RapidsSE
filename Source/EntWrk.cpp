@@ -146,6 +146,28 @@ void EntWrk::vAppendElement(Rsb* aRsb, Column* pColumn)
   }
   
   if (DM_VCH == pColumn->eDatum()) {
+      Stz* szSrc = aRsb->szVal_ntv(iCell);
+      vAppendStz(szSrc);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add element from row to key                                                */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElement(Rsb* aRsb, StreamPix* pStreamPix, i8 i_Col)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  eDM eDatum = (eDM)pStreamPix->m_xaColPix[i_Col].m_uDatum;
+  
+  i8 iCell = aRsb->i_ColToCell_ntv(i_Col);
+  
+  if (aRsb->bIsNull_ntv(iCell)) {
+    vAppendNull();
+    return;
+  }
+  
+  if (DM_VCH == eDatum) {
     Stz* szSrc = aRsb->szVal_ntv(iCell);
     vAppendStz(szSrc);
   }
