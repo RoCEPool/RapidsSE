@@ -490,17 +490,17 @@ byte* Column::ayValue(i8& nBytes, byte** aayCursor)
   }
   */
   
-  if (DM_VCH == m_eDatum) {
-    szElem = (Stz*)ayValue;
-    nBytes = 0;
-    
-    while (*szElem->azChar() != '\0') {
-      nBytes++;
-      szElem++;
-    }
-    nBytes++;    
-  }
-  else
+//  if (DM_VCH == m_eDatum) {
+//    szElem = (Stz*)ayValue;
+//    nBytes = 0;
+//
+//    while (*szElem->azChar() != '\0') {
+//      nBytes++;
+//      szElem++;
+//    }
+//    nBytes++;
+//  }
+//  else
     nBytes = sizeof(i8);
   
   *aayCursor = aAdd<byte*>(ayValue,nBytes);
