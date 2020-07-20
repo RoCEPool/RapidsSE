@@ -628,8 +628,8 @@ void LogicUnit::vGenerateQuery400(void)
   
   
   // some string tests
-//  vAddCodeArg(EO_COL_SRC_PUSHSTR,O_COMMENT);
-//  vAddCode(EO_STR_PRINTSTK);
+  vAddCodeArg(EO_COL_SRC_PUSHSTR,O_COMMENT);
+  vAddCode(EO_STR_PRINTSTK);
 
   
   // test for a matching LINEITEM
@@ -2035,7 +2035,11 @@ i8 LogicUnit::iCompute(void)
         RowInflator::vInflateColumn(hRow,m_aSrcCrw,iArg);
         iRes = hRow->m_waColVal[iArg].m_iWrd;
         dLU2(eCode,iArg,iRes);
-        *(++aiDstk) = iRes;
+        i8 nSize = StrLib::nSize((char*)iRes);
+        char* azDst = (char*)(++aiDstk);
+        StrLib::vCopy(azDst,(char*)iRes);
+        aiDstk += nSize / 8;
+        *(++aiDstk) = nSize;
       }
         break;
         
@@ -2752,7 +2756,8 @@ i8 LogicUnit::iCompute(void)
       case EO_STR_PRINTSTK: NoArg(); // pop string from top and print
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("%lls\n"_Stz,iTopA);
+        vTrace("%lls\n"_Stz,(aiDstk-iTopA/8));
+        aiDstk -= iTopA/8;
         break;
         
       case EO_STR_LITERAL: GetStr(iArg); // push address of string literal
