@@ -161,7 +161,7 @@ namespace Expressions
     REG<Object>      m_xpRegister3; // general purpose reg 3[]
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // ..from Calculator
+    // inner loop
 
     i8         m_iSql;
     
