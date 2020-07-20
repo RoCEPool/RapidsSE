@@ -9,6 +9,16 @@ namespace Expressions
   static const i8 C_LOGIC_STACK = C_1KB;
   static const i8 C_LOGIC_LABEL = 64;
 
+  // customer columns
+  static const i8 C_CUSTKEY       = 0;
+  static const i8 C_NAME          = 1;
+  static const i8 C_ADDRESS       = 2;
+  static const i8 C_NATIONKEY     = 3;
+  static const i8 C_PHONE         = 4;
+  static const i8 C_ACCTBAL       = 5;
+  static const i8 C_MKTSEGMENT    = 6;
+  static const i8 C_COMMENT       = 7;
+
   // lineitem columns
   static const i8 L_ORDERKEY      = 0;
   static const i8 L_PARTKEY       = 1;
@@ -27,6 +37,17 @@ namespace Expressions
   static const i8 L_SHIPMODE      = 14;
   static const i8 L_COMMENT       = 15;
   
+  // orders columns
+  static const i8 O_ORDERKEY      = 0;
+  static const i8 O_CUSTKEY       = 1;
+  static const i8 O_ORDERSTATUS   = 2;
+  static const i8 O_TOTALPRICE    = 3;
+  static const i8 O_ORDERDATE     = 4;
+  static const i8 O_ORDERPRIORITY = 5;
+  static const i8 O_CLERK         = 6;
+  static const i8 O_SHIPPRIORITY  = 7;
+  static const i8 O_COMMENT       = 8;
+
   struct JumpLabel
   {
     s32  m_sLabel;
