@@ -390,7 +390,7 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_ENTWRK_RESET);
   
   // add key L_RETURNFLAG (col8) (TEMP:LINENUMBER)
-  vAddCodeArg(EO_PUSHSRCCOLI,(i8)3);
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)L_LINENUMBER);
   vAddCode(EO_ENTWRK_APPENDELMI);
   
   // find the key in the indexTree
@@ -412,7 +412,7 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_IXT_INS_ENT);
   
   // store L_RETURNFLAG (col8)(TEMP:LINENUMBER) -> payload(col0)
-  vAddCodeArg(EO_PUSHSRCCOLI,(i8)3);
+  vAddCodeArg(EO_PUSHSRCCOLI,(i8)L_LINENUMBER);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
   
   // set sum(L_QUANTITY) to 0 -> payload(col1)
@@ -424,7 +424,7 @@ void LogicUnit::vGenerateQuery100(void)
   
   // sum(L_QUANTITY) (col4) -> payload (col1)
   vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
-  vAddCodeArg(EO_PUSHSRCCOLI, (i8)4);
+  vAddCodeArg(EO_PUSHSRCCOLI, (i8)L_QUANTITY);
   vAddCode(EO_ADD);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
   

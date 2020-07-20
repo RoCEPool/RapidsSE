@@ -27,6 +27,18 @@ namespace Expressions
   static const i8 L_SHIPMODE      = 14;
   static const i8 L_COMMENT       = 15;
   
+  // query1 output
+  static const i8 O_RETURNFLAG     = 0;  // L_RETURNFLAG
+  static const i8 O_LINESTATUS     = 1;  // O_LINESTATUS
+  static const i8 O_SUM_QTY        = 2;  // SUM(L_QUANTITY)
+  static const i8 O_SUM_BASE_PRICE = 3;  // SUM(L_EXTENDEDPRICE)
+  static const i8 O_SUM_DISC_PRICE = 4;  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT))
+  static const i8 O_SUM_CHARGE     = 5;  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX))
+  static const i8 O_AVG_QTY        = 6;  // AVG(L_QUANTITY)
+  static const i8 O_AVG_PRICE      = 7;  // AVG(L_EXTENDEDPRICE)
+  static const i8 O_AVG_DISC       = 8;  // AVG(L_DISCOUNT)
+  static const i8 O_COUNT_ORDER    = 9;  // COUNT(*)
+  
   struct JumpLabel
   {
     s32  m_sLabel;
