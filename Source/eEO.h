@@ -134,7 +134,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_LESSTHAN,         // test top < 2nd, push result
   /*    */ EO_LESSEQUAL,        // test top <= 2nd, push result
   /*    */ EO_EQUAL,            // test top == 2nd, push result
-  /*    */ EO_LGL_NOTEQUAL,         // test top != 2nd, push result
+  /*    */ EO_NOTEQUAL,         // test top != 2nd, push result
   /*    */ EO_GREATEREQUAL,     // test top >= 2nd, push result
   /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
@@ -295,7 +295,7 @@ static Stz* aEO[]
   /*    */ "EO_LESSTHAN"_Stz,
   /*    */ "EO_LESSEQUAL"_Stz,
   /*    */ "EO_EQUAL"_Stz,
-  /*    */ "EO_LGL_NOTEQUAL"_Stz,
+  /*    */ "EO_NOTEQUAL"_Stz,
   /*    */ "EO_GREATEREQUAL"_Stz,
   /*    */ "EO_GREATERTHAN"_Stz,
   

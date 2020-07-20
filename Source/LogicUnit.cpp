@@ -290,7 +290,7 @@ EoArg EoArgs[]
   { EA_NONE,  0 },  // EO_LESSTHAN
   { EA_NONE,  0 },  // EO_LESSEQUAL
   { EA_NONE,  0 },  // EO_EQUAL
-  { EA_NONE,  0 },  // EO_LGL_NOTEQUAL
+  { EA_NONE,  0 },  // EO_NOTEQUAL
   { EA_NONE,  0 },  // EO_GREATEREQUAL
   { EA_NONE,  0 },  // EO_GREATERTHAN
 
@@ -337,7 +337,9 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     100: vGenerateQuery100();    break;
     case     101: vGenerateQuery101();    break;
     case     102: vGenerateQuery102();    break;
-      
+ 
+    case     400: vGenerateQuery400();    break;
+
     case     600: vGenerateQuery600();    break;
     case     601: vGenerateQuery601();    break;
       
@@ -395,7 +397,7 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_ENT_POSPRIOR);
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
-  vAddCode(EO_LGL_NOTEQUAL);
+  vAddCode(EO_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
@@ -516,7 +518,7 @@ void LogicUnit::vGenerateQuery102(void)
   vAddCode(EO_ENT_POSPRIOR);
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
-  vAddCode(EO_LGL_NOTEQUAL);
+  vAddCode(EO_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
@@ -548,6 +550,30 @@ void LogicUnit::vGenerateQuery102(void)
   
   vDumpCode();
 }
+
+/*----------------------------------------------------------------------------*/
+/* generate code for query 4                                                  */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery400(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 400;
+  
+  m_i_Code = 0;
+  
+  vAddCodeArg(EO_DATE, "1993-07-01"_Stz);
+  vAddCode(EO_DTE_PRINT);
+  vAddCodeArg(EO_DATE, "1993-10-01"_Stz);
+  vAddCode(EO_DTE_PRINT);
+
+  vAddCode(EO_RETURN);
+  
+  vDumpCode();
+
+}
+
 /*----------------------------------------------------------------------------*/
 /* generate query6                                                            */
 /*----------------------------------------------------------------------------*/
@@ -811,7 +837,7 @@ void LogicUnit::vGenerateAggGby14000(void)
   vAddCode(EO_ENT_POSPRIOR);
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
-  vAddCode(EO_LGL_NOTEQUAL);
+  vAddCode(EO_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
@@ -930,7 +956,7 @@ void LogicUnit::vGenerateAggGby14002(void)
   vAddCode(EO_ENT_POSPRIOR);
   vAddCode(EO_ENT_PUSH);
   vAddCode(EO_PUSH0);
-  vAddCode(EO_LGL_NOTEQUAL);
+  vAddCode(EO_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
@@ -1411,7 +1437,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("<"_Stz))   { vAddCode(EO_LESSTHAN);            continue; }
     if (pTkn->bSame("<="_Stz))  { vAddCode(EO_LESSEQUAL);           continue; }
     if (pTkn->bSame("=="_Stz))  { vAddCode(EO_EQUAL);               continue; }
-    if (pTkn->bSame("!="_Stz))  { vAddCode(EO_LGL_NOTEQUAL);        continue; }
+    if (pTkn->bSame("!="_Stz))  { vAddCode(EO_NOTEQUAL);        continue; }
     if (pTkn->bSame(">="_Stz))  { vAddCode(EO_GREATEREQUAL);        continue; }
     if (pTkn->bSame(">"_Stz))   { vAddCode(EO_GREATERTHAN);         continue; }
     
@@ -2476,7 +2502,7 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
-      case EO_LGL_NOTEQUAL: NoArg(); // test top != 2nd, push result
+      case EO_NOTEQUAL: NoArg(); // test top != 2nd, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA != iTopB;
