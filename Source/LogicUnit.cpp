@@ -1860,9 +1860,14 @@ void LogicUnit::vDumpCode(void)
     iArg = * (i8*)aeCode; \
     aeCode += 8;
 
+  #define GetStr(iArg) \
+    ASSERT(-1 == EoArgs[eCode].m_nArgBytes); \
+    iArg = (i8)aeCode \
+    while (*(char*)aeCode) aeCode++; \
+    aeCode++;
+
   #define NoArg() \
     ASSERT(0 == EoArgs[eCode].m_nArgBytes);
-
 #else
 
   #define dLU3(eCode,iA,iB,iC)
@@ -1873,6 +1878,11 @@ void LogicUnit::vDumpCode(void)
   #define GetArg(iArg) \
     iArg = * (i8*)aeCode; \
     aeCode += 8;
+
+  #define GetStr(iArg) \
+    iArg = (i8)aeCode \
+    while (*(char*)aeCode) aeCode++; \
+    aeCode++;
 
   #define NoArg()
 
