@@ -309,6 +309,7 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PRINT
 
   // string operators
+  { EA_NONE,    0 },  // EO_STR_COMPARE
   { EA_NONE,    0 },  // EO_STR_PRINTADR
   { EA_NONE,    0 },  // EO_STR_PRINTSTK
   { EA_STRING, -1 },  // EO_DEC
@@ -675,7 +676,15 @@ void LogicUnit::vGenerateQuery300(void)
   vDefineLabel("GOT_S:"_Stz);
   vAddCode(EO_IXT_SRC_PRINT);
   
+  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
+  vAddCode(EO_STR_PRINTSTK);
   
+  vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
+  vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);
+  vAddCode(EO_STR_COMPARE);
+  vAddCode(EO_PRINT);
+
   // next CUSTOMER
   vDefineLabel("NXT_S:"_Stz);
   vAddCode(EO_IXT_SRC_NEXT);
@@ -2073,7 +2082,7 @@ i8 LogicUnit::iCompute(void)
     
     eCode = *aeCode++;
     
-    vTrace("%s\n"_Stz, aEO[eCode]);
+    vTrace("%s  (StkUse %lld)\n"_Stz,aEO[eCode],nStkUse);
     
     switch (eCode) {
         
@@ -2856,6 +2865,19 @@ i8 LogicUnit::iCompute(void)
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // string operators
+      case EO_STR_COMPARE: NoArg(); // pop top two strings and compare
+      {
+        char* azTopA;
+        char* azTopB;
+        azTopA = (char*) *(aiDstk--);
+        iTopB = *(aiDstk--);
+        azTopB = (char*) (aiDstk-iTopB/8);
+        iRes = StrLib::iCompare(azTopA,azTopB);
+        aiDstk -= (iTopB/8) + 1;
+        *(++aiDstk) = iRes;
+      }
+        break;
+        
       case EO_STR_PRINTADR: NoArg(); // pop top and print iArg as addr of string
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
@@ -2866,7 +2888,7 @@ i8 LogicUnit::iCompute(void)
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
         vTrace("%lls\n"_Stz,(aiDstk-iTopA/8));
-        aiDstk -= iTopA/8;
+        aiDstk -= (iTopA/8) + 1;
         break;
         
       case EO_STR_LITERAL: GetStr(iArg); // push address of string literal

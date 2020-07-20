@@ -153,6 +153,7 @@ enum eEO : i1 // expression operators
   /*    */ EO_PRINT,            // print top
 
   // string operators
+  /*    */ EO_STR_COMPARE,      // pop top two strings and compare
   /*    */ EO_STR_PRINTADR,     // pop top and print iArg as addr of string
   /*    */ EO_STR_PRINTSTK,     // pop string from top and print
   /*    */ EO_STR_LITERAL,      // push address of string literal
@@ -320,6 +321,7 @@ static Stz* aEO[]
   /*    */ "EO_PRINT"_Stz,
 
   // string operators
+  /*    */ "EO_STR_COMPARE"_Stz,
   /*    */ "EO_STR_PRINTADR"_Stz,
   /*    */ "EO_STR_PRINTSTK"_Stz,
   /*    */ "EO_STR_LITERAL"_Stz,
