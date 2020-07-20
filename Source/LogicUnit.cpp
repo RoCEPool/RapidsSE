@@ -663,17 +663,30 @@ void LogicUnit::vGenerateQuery300(void)
   m_iSql = 300;
   
   m_i_Code = 0;
-  
-  vAddCode(EO_PUSH0);
-  vAddCode(EO_PRINT);
-  
+    
   vAddCodeString(EO_STR_LITERAL,"Hello World!"_Stz);
   vAddCode(EO_STR_PRINTADR);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // iterate all CUSTOMER
+  vAddCode(EO_IXT_SRC_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"END:"_Stz);
+  vDefineLabel("GOT_S:"_Stz);
+  vAddCode(EO_IXT_SRC_PRINT);
+  
+  
+  // next CUSTOMER
+  vDefineLabel("NXT_S:"_Stz);
+  vAddCode(EO_IXT_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_TRUE,"GOT_S:"_Stz);
+
+  // end of CUSTOMER
+  vDefineLabel("END:"_Stz);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   vDumpCode();
 }
 
