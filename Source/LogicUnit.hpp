@@ -51,7 +51,7 @@ namespace Expressions
 
   // query1 output
   static const i8 Q1_RETURNFLAG     = 0;  // L_RETURNFLAG
-  static const i8 Q1_LINESTATUS     = 1;  // O_LINESTATUS
+  static const i8 Q1_LINESTATUS     = 1;  // L_LINESTATUS
   static const i8 Q1_SUM_QTY        = 2;  // SUM(L_QUANTITY)
   static const i8 Q1_SUM_BASE_PRICE = 3;  // SUM(L_EXTENDEDPRICE)
   static const i8 Q1_SUM_DISC_PRICE = 4;  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT))

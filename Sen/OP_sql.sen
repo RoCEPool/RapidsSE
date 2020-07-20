@@ -101,13 +101,13 @@
     100 of
       queryNo "QUERY %v" .printf
       100 LogicUnit[].genCode
-      idxDef_vch indexDef[] indexTree[].new
+      idxDef_int indexDef[] indexTree[].new
     endof
 
     102 of
       queryNo "QUERY %v" .printf
       102 LogicUnit[].genCode
-      idxDef_vch indexDef[] indexTree[].new
+      idxDef_int indexDef[] indexTree[].new
     endof
 
     300 of
@@ -487,6 +487,14 @@
       pColumn column.name@
       StreamDefOut[].addColumn
 
+      // add column L_LINESTATUS
+      9 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      pColumn column.name@
+      StreamDefOut[].addColumn
+
       // add column SUM(L_QUANTITY) as SUM_QTY
       4 StreamDef[].column@ to pColumn
       pColumn column.scale@
@@ -494,6 +502,31 @@
       pColumn column.type@
       "sum_qty"
       StreamDefOut[].addColumn
+
+      // add column SUM(L_EXTENDEDPRICE) as SUM_BASE_PRICESUM_QTY
+      5 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      "sum_base_price"
+      StreamDefOut[].addColumn
+
+      // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) as SUM_DISC_PRICE
+      5 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      "sum_disc_price"
+      StreamDefOut[].addColumn
+
+      // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) as SUM_CHARGESUM_QTY
+      5 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      "sum_charge"
+      StreamDefOut[].addColumn
+
 
       StreamDef[].delete
 
