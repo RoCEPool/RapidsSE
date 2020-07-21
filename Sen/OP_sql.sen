@@ -102,6 +102,7 @@
 
   <queryNo> >int to queryNo
   queryNo case
+
     100 of
       queryNo "QUERY %v" .printf
       100 LogicUnit[].genCode
@@ -115,6 +116,7 @@
     endof
 
     300 of
+      "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 300=STARTMARKER" .
       queryNo "QUERY %v" .printf
       300 LogicUnit[].genCode
 
@@ -125,6 +127,7 @@
     endof
 
     301 of
+      "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 301=STARTMARKER" .
       queryNo "QUERY %v" .printf
       301 LogicUnit[].genCode
 
@@ -159,7 +162,7 @@
 /*----------------------------------------------------------------------------*/
 : sql_PulseMarker_300
 
-  "--------------------------- 300 PULSEMARKER ---------------------------" .
+  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 300=PULSEMARKER" .
 
   "customer" "customer_Idx1" op__table_index assert
 
@@ -188,7 +191,7 @@
 /*----------------------------------------------------------------------------*/
 : sql_PulseMarker_301
 
-  "--------------------------- 301 PULSEMARKER ---------------------------" .
+  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 301=PULSEMARKER" .
 
   "lineitem" "lineitem_Idx1" op__table_index assert
 
@@ -209,7 +212,8 @@
 /*----------------------------------------------------------------------------*/
 : sql_PulseMarker_400
 
-  "--------------------------- 400 PULSEMARKER ---------------------------" .
+  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 400=PULSEMARKER" .
+
 
   "orders" "orders_Idx1" op__table_index assert
 
@@ -258,8 +262,8 @@
 
   queryNo case
 
-    12000 of
-      "--------------------------- 12000 RSBBUFFER ---------------------------" .
+    301 of
+      "---------------------------- 301=RSBBUFFER ----------------------------" .
     endof
 
   endcase
@@ -296,6 +300,14 @@
       101 LogicUnit[].genCode
       LogicUnit[].transform
       IndexTree[].delete
+    endof
+
+    300 of
+      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 300=EOSMARKER" .
+    endof
+
+    301 of
+      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 301=EOSMARKER" .
     endof
 
   endcase
@@ -390,8 +402,13 @@
     endof
 
     300 of
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 300=STREAMDEF" .
+      // the stream def has been piped out in sql_StartMarker
     endof
+
     301 of
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 301=STREAMDEF" .
+      // the stream def has been piped out in sql_StartMarker
     endof
 
     400 of
