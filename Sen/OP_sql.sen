@@ -184,6 +184,9 @@
 
   Pot[].pipeoutAllDangling
   Pot[].delete
+
+  Operand[].newEosMarker
+  Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
