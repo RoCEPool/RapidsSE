@@ -309,6 +309,7 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PRINT
 
   // string operators
+  { EA_NONE,    0 },  // EO_STR_COMPARE
   { EA_NONE,    0 },  // EO_STR_PRINTADR
   { EA_NONE,    0 },  // EO_STR_PRINTSTK
   { EA_STRING, -1 },  // EO_DEC
@@ -345,7 +346,8 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     102: vGenerateQuery102();    break;
  
     case     300: vGenerateQuery300();    break;
-      
+    case     301: vGenerateQuery301();    break;
+
     case     400: vGenerateQuery400();    break;
 
     case     600: vGenerateQuery600();    break;
@@ -669,18 +671,101 @@ void LogicUnit::vGenerateQuery300(void)
   m_iSql = 300;
   
   m_i_Code = 0;
-  
-  vAddCode(EO_PUSH0);
-  vAddCode(EO_PRINT);
-  
+    
   vAddCodeString(EO_STR_LITERAL,"Hello World!"_Stz);
   vAddCode(EO_STR_PRINTADR);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // iterate all CUSTOMER
+  vAddCode(EO_IXT_SRC_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"END:"_Stz);
+  vDefineLabel("GOT_S:"_Stz);
+  vAddCode(EO_IXT_SRC_PRINT);
+  
+  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
+  vAddCode(EO_STR_PRINTSTK);
+  
+  vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
+  vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);
+  vAddCode(EO_STR_COMPARE);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"NXT_S:"_Stz);
+
+  
+  vAddCodeLabel(EO_CALL,"JOI_A:"_Stz);
+
+
+  // next CUSTOMER
+  vDefineLabel("NXT_S:"_Stz);
+  vAddCode(EO_IXT_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_TRUE,"GOT_S:"_Stz);
+
+  // end of CUSTOMER
+  vDefineLabel("END:"_Stz);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // join ORDERS
+  vDefineLabel("JOI_A:"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"Join ORDERS"_Stz);
+  vAddCode(EO_STR_PRINTADR);
+  
+  vAddCode(EO_IXT_POS_ALTBYSRC);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
+  vDefineLabel("NXT_A:"_Stz);
+  vAddCode(EO_IXT_ALT_NEXT);
+  
+  vAddCode(EO_IXT_SRC_PRINT);
+  vAddCode(EO_IXT_ALT_PRINT);
+
+
+  vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
+  vAddCode(EO_IXT_CMP_SRCALT);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A:"_Stz);
+
+  vAddCode(EO_IXT_ALT_PRINT);
+  
+  vAddCode(EO_CRW_ALT_FETCH);
+  vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
+  vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_A:"_Stz);
+
+  vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
+  vAddCode(EO_DTE_PRINT);
+
+  vAddCode(EO_BREAKPOINT);
+
+  vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
+  
+  vDefineLabel("RET_A:"_Stz);
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for query 3                                                  */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery301(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 301;
+  
+  m_i_Code = 0;
+  
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vDumpCode();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2068,7 +2153,7 @@ i8 LogicUnit::iCompute(void)
     
     eCode = *aeCode++;
     
-    vTrace("%s\n"_Stz, aEO[eCode]);
+    vTrace("%s  (StkUse %lld)\n"_Stz,aEO[eCode],nStkUse);
     
     switch (eCode) {
         
@@ -2849,6 +2934,19 @@ i8 LogicUnit::iCompute(void)
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // string operators
+      case EO_STR_COMPARE: NoArg(); // pop top stradr and compare str on stack
+      {
+        char* azTopA;
+        char* azTopB;
+        azTopA = (char*) *(aiDstk--);
+        iTopB = *(aiDstk--);
+        azTopB = (char*) (aiDstk-iTopB/8);
+        iRes = StrLib::iCompare(azTopA,azTopB);
+        aiDstk -= (iTopB/8) + 1;
+        *(++aiDstk) = iRes;
+      }
+        break;
+        
       case EO_STR_PRINTADR: NoArg(); // pop top and print iArg as addr of string
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
@@ -2859,7 +2957,7 @@ i8 LogicUnit::iCompute(void)
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
         vTrace("%lls\n"_Stz,(aiDstk-iTopA/8));
-        aiDstk -= iTopA/8;
+        aiDstk -= (iTopA/8) + 1;
         break;
         
       case EO_STR_LITERAL: GetStr(iArg); // push address of string literal

@@ -230,7 +230,7 @@
 
   "--------------------------- 300 PULSEMARKER ---------------------------" .
 
-  "orders" "orders_Idx1" op__table_index assert
+  "customer" "customer_Idx1" op__table_index assert
 
   Table[].asSrcStreamDef
 
@@ -238,7 +238,7 @@
   IndexTree[].asSrc
 
 
-  "lineItem" "lineItem_Idx1" op__table_index assert
+  "orders" "orders_Idx2" op__table_index assert
 
   Table[].asAltStreamDef
 
