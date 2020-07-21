@@ -1164,6 +1164,32 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // q 3b prelim
+  sPath
+  "
+  procedure preQuery_3b
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+     sql 300
+    | sql 301
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 4 prelim
   sPath
   "
