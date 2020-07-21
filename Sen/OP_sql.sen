@@ -151,7 +151,16 @@
       Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
       StreamDef[].pipeout
+    endof
 
+    301 of
+      queryNo "QUERY %v" .printf
+      301 LogicUnit[].genCode
+
+      streamDefOut_301
+      Pot[].useStreamDefOut
+      StreamDefOut[].duplicate to StreamDef[]
+      StreamDef[].pipeout
     endof
 
     400 of
@@ -294,6 +303,35 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+: sql_PulseMarker_301
+
+  "--------------------------- 301 PULSEMARKER ---------------------------" .
+
+  "customer" "customer_Idx1" op__table_index assert
+
+  Table[].asSrcStreamDef
+
+  Index[].indexTree to IndexTree[]
+  IndexTree[].asSrc
+
+
+  "orders" "orders_Idx2" op__table_index assert
+
+  Table[].asAltStreamDef
+
+  Index[].indexTree to IndexTree[]
+  IndexTree[].asAlt
+
+
+  LogicUnit[].transform
+
+  Pot[].pipeoutAllDangling
+  Pot[].delete
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : sql_PulseMarker_400
 
   "--------------------------- 400 PULSEMARKER ---------------------------" .
@@ -344,6 +382,7 @@
   queryNo case
 
       300 of sql_PulseMarker_300   endof
+      301 of sql_PulseMarker_301   endof
 
       400 of sql_PulseMarker_400   endof
 
@@ -581,6 +620,8 @@
     endof
 
     300 of
+    endof
+    301 of
     endof
 
     400 of
