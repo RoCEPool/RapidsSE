@@ -59,24 +59,32 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* outbound streaam def for 300                                               */
+/* outbound stream def for 300                                                */
 /*----------------------------------------------------------------------------*/
 : streamDefOut_300
 
   StreamDefOut[].new  "Q300_out" StreamDefOut[].name!
 
-  0 19   CT_INTEGER "o_orderkey"     StreamDefOut[].addColumn
-  0 0    CT_DATE    "o_orderdate"    StreamDefOut[].addColumn
-  0 19   CT_INTEGER "o_shippriority" StreamDefOut[].addColumn
+  0 19 CT_INTEGER "o_orderkey"     StreamDefOut[].addColumn
+  0 0  CT_DATE    "o_orderdate"    StreamDefOut[].addColumn
+  0 19 CT_INTEGER "o_shippriority" StreamDefOut[].addColumn
 
   StreamDefOut[].print
 ;
 
 /*----------------------------------------------------------------------------*/
-/* outbound streaam def for 301                                               */
+/* outbound stream def for 301                                                */
 /*----------------------------------------------------------------------------*/
 : streamDefOut_301
 
+  StreamDefOut[].new  "Q301_out" StreamDefOut[].name!
+
+  0 19 CT_INTEGER "l_orderkey"     StreamDefOut[].addColumn
+  2 17 CT_DECIMAL "revenue"        StreamDefOut[].addColumn
+  0 0  CT_DATE    "o_orderdate"    StreamDefOut[].addColumn
+  0 19 CT_INTEGER "o_shippriority" StreamDefOut[].addColumn
+
+  StreamDefOut[].print
 ;
 
 /*----------------------------------------------------------------------------*/
