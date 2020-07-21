@@ -75,6 +75,7 @@ namespace Entries
     void  vNextEntryReset(void);
 
     Pay*  aPay(void);
+    i8*   aiPayload(void);
     i8*   aiPayCell(i8 iCell);
     byte* ayPayload(void);
     bool  bPayload(void);

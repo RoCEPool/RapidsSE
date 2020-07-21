@@ -263,12 +263,25 @@ Pay* Ent::aPay(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address where the payload cells start                                  */
+/*----------------------------------------------------------------------------*/
+i8* Ent::aiPayload(void)
+{
+  i8* aiPay = (i8*)this->aPay();
+  
+  // skip cell 0 which has the payload size
+  i8* aiPayload = &aiPay[1];
+  
+  return aiPayload;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get payload at cell                                                        */
 /*----------------------------------------------------------------------------*/
 i8* Ent::aiPayCell(i8 iCell)
 {
-  Pay* aPay = this->aPay();
-  i8* aiPay = (i8*)&aPay[iCell+1];
+  i8* aiPayload = this->aiPayload();
+  i8* aiPay = (i8*)&aiPayload[iCell];
   
   return aiPay;
 }
