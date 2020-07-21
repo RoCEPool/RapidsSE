@@ -68,6 +68,7 @@ namespace Entries
     void  vOffsets(i8 nLevels);
   
     Pay*  aPay(void);
+    i8*   aiPayCell(i8 iCell);
     byte* ayPayload(void);
     bool  bPayload(void);
     void  vPayload(bool bPayload);
