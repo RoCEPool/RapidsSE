@@ -9,7 +9,7 @@ namespace Datums
   union ColPix  // condensed column def 
   {
     struct {
-      u4 m_uDatum     :  4; // up to 16 types
+      u4 m_uDatum     :  4; // up to 16 types eDM
       u4 m_uLength    : 16; // up to 65,536
       u4 m_uScale     :  5; // up to 31 places
       u4 m_bNullable  :  1; // is allowed to be null?
@@ -81,6 +81,22 @@ namespace Datums
       i8 nSize = nBytes(m_nCols);
     
       return nSize;
+    }
+  
+    // print
+    void vPrint(void)
+    {
+      vTrace("StreamPix: %lld cols\n"_Stz,m_nCols);
+      for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
+        vTrace("[%02lld] %s(%lld,%lld) %s\n"_Stz,
+               i_Col,
+               aDM[m_xaColPix[i_Col].m_uDatum],
+               (i8)m_xaColPix[i_Col].m_uLength,
+               (i8)m_xaColPix[i_Col].m_uScale,
+               m_xaColPix[i_Col].m_bPtnKey ? "#PtnKey" :""
+               );
+
+      }
     }
   
   };

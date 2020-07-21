@@ -261,6 +261,9 @@ EoArg EoArgs[]
   { EA_INT,     8 },  // EO_PAY_STORE_COLI
   { EA_INT,     8 },  // EO_PAY_STORE_COLS
 
+  // pix
+  { EA_NONE,    0 },  // EO_PIX_STM_PRINT
+  
   // pushes
   { EA_DATE,    8 },  // EO_DATE
   { EA_INT,     8 },  // EO_INTEGER
@@ -797,6 +800,7 @@ void LogicUnit::vGenerateQuery301(void)
   
   m_i_Code = 0;
   
+  vAddCode(EO_PIX_STM_PRINT);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2799,8 +2803,14 @@ i8 LogicUnit::iCompute(void)
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // pix
+      case EO_PIX_STM_PRINT: NoArg(); // print stream pix
+        dLU0(eCode);
+        m_oStreamPix.vPrint();
+        break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pushes
-        
       case EO_DATE: GetArg(iArg); // push date
         dLU1(eCode,iArg);
         // convert date string to an m8

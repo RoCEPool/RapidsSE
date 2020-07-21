@@ -105,6 +105,9 @@ enum eEO : i1 // expression operators
   /*    */ EO_PAY_STORE_COLI,    // store a column of the entry payload
   /*    */ EO_PAY_STORE_COLS,   // store a column of the entry payload
   
+  // pix operators
+  /*    */ EO_PIX_STM_PRINT,    // print stream pix
+  
   // pushes
   /*    */ EO_DATE,             // push date
   /*    */ EO_INTEGER,          // push integer
@@ -276,6 +279,9 @@ static Stz* aEO[]
   /*    */ "EO_PAY_FETCH_COLS"_Stz,
   /*    */ "EO_PAY_STORE_COLI"_Stz,
   /*    */ "EO_PAY_STORE_COLS"_Stz,
+  
+  // pix
+  /*    */ "EO_PIX_STM_PRINT"_Stz,
   
   // pushes
   /*    */ "EO_DATE"_Stz,
