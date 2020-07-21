@@ -140,6 +140,7 @@
       300 LogicUnit[].genCode
 
       streamDefOut_300
+      Pot[].useStreamDefOut
 
     endof
 

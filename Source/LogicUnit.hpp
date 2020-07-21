@@ -61,6 +61,12 @@ namespace Expressions
   static const i8 Q1_AVG_DISC       = 6;  // AVG(L_DISCOUNT)
   static const i8 Q1_COUNT_ORDER    = 7;  // COUNT(*)
   
+  // q300 output
+  static const i8 Q300_ORDERKEY     = 0;
+  static const i8 Q300_ORDERDATE    = 1;
+  static const i8 Q300_SHIPPRIORITY = 2;
+
+
   struct JumpLabel
   {
     s32  m_sLabel;
