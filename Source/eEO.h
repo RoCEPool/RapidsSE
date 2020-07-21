@@ -142,12 +142,12 @@ enum eEO : i1 // expression operators
   /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
   // rsb operators
-  /*    */ EO_DEPOSITCOLI,      // pop and deposit top into dst column
-  /*    */ EO_DEPOSITCOLS,      // pop and deposit top into dst column
-  /*    */ EO_PUSHDSTCOLI,      // push dst column
-  /*    */ EO_PUSHSRCCOLI,      // push src column (integer)
-  /*    */ EO_PUSHSRCCOLS,      // push src column (string)
-  /*    */ EO_PUSHALTCOLI,      // push alt column
+  /*    */ EO_RSB_DST_POPCOLI,  // pop and deposit top into dst column
+  /*    */ EO_RSB_DST_POPCOLS,  // pop and deposit top into dst column
+  /*    */ EO_RSB_DST_PUSHCOLI, // push dst column
+  /*    */ EO_RSB_SRC_PUSHCOLI, // push src column (integer)
+  /*    */ EO_RSB_SRC_PUSHCOLS, // push src column (string)
+  /*    */ EO_RSB_ALT_PUSHCOLI, // push alt column
   
   // stack operators
   /*    */ EO_INC,              // increment top, push result
@@ -314,13 +314,12 @@ static Stz* aEO[]
   /*    */ "EO_GREATERTHAN"_Stz,
   
   // rsb operators
-  /*    */ "EO_DEPOSITCOLI"_Stz,
-  /*    */ "EO_DEPOSITCOLS"_Stz,
-  /*    */ "EO_PUSHDSTCOLI"_Stz,
-  /*    */ "EO_PUSHSRCCOLI"_Stz,
-  /*    */ "EO_PUSHSRCCOLS"_Stz,
-  /*    */ "EO_PUSHALTCOLI"_Stz,
-  
+  /*    */ "EO_RSB_DST_POPCOLI"_Stz,
+  /*    */ "EO_RSB_DST_POPCOLS"_Stz,
+  /*    */ "EO_RSB_DST_PUSHCOLI"_Stz,
+  /*    */ "EO_RSB_SRC_PUSHCOLI"_Stz,
+  /*    */ "EO_RSB_SRC_PUSHCOLS"_Stz,
+  /*    */ "EO_RSB_ALT_PUSHCOLI"_Stz,
   
   // stack operators
   /*    */ "EO_INC"_Stz,
