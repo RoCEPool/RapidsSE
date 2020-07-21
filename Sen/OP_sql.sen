@@ -141,6 +141,8 @@
 
       streamDefOut_300
       Pot[].useStreamDefOut
+      StreamDefOut[].duplicate to StreamDef[]
+      StreamDef[].pipeout
 
     endof
 
@@ -276,6 +278,9 @@
 
 
   LogicUnit[].transform
+
+  Pot[].pipeoutAllDangling
+  Pot[].delete
 ;
 
 /*----------------------------------------------------------------------------*/
