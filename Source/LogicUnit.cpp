@@ -465,7 +465,7 @@ void LogicUnit::vGenerateQuery100(void)
 
   // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) -> Q1_SUM_DISC_PRICE
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)L_EXTENDEDPRICE);
-  vAddCode(EO_PUSH1);
+  vAddCodeArg(EO_INTEGER,100);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)L_DISCOUNT);
   vAddCode(EO_SUBTRACT);
   vAddCode(EO_MULTIPLY);
@@ -479,15 +479,20 @@ void LogicUnit::vGenerateQuery100(void)
   // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) -> Q1_SUM_CHARGE
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)L_EXTENDEDPRICE);
   
-  vAddCode(EO_PUSH1);
+  vAddCodeArg(EO_INTEGER,100);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)L_DISCOUNT);
   vAddCode(EO_SUBTRACT);
+  
   vAddCode(EO_MULTIPLY);
   
-  vAddCode(EO_PUSH1);
+  vAddCodeArg(EO_INTEGER,100);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)L_TAX);
   vAddCode(EO_ADD);
+  
   vAddCode(EO_MULTIPLY);
+  
+  vAddCodeArg(EO_INTEGER,10000);
+  vAddCode(EO_DIVIDE);
   
   vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_CHARGE);
   vAddCode(EO_ADD);
@@ -735,6 +740,15 @@ void LogicUnit::vGenerateQuery300(void)
 
   vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
   vAddCode(EO_DTE_PRINT);
+
+  vAddCode(EO_RSB_DST_NEW);
+  vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERKEY);
+  vAddCodeArg(EO_DEPOSITCOLI,Q300_ORDERKEY);
+  vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
+  vAddCodeArg(EO_DEPOSITCOLI,Q300_ORDERDATE);
+  vAddCodeArg(EO_COL_ALT_PUSH,O_SHIPPRIORITY);
+  vAddCodeArg(EO_DEPOSITCOLI,Q300_SHIPPRIORITY);
+  vAddCode(EO_RSB_DST_PRINT);
 
   vAddCode(EO_BREAKPOINT);
 
@@ -2013,6 +2027,10 @@ void LogicUnit::vDumpCode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
       
+  SP_Dte spDate;
+
+  vTrace("Code Dump for %lld\n"_Stz,m_iSql);
+  
   for (i8 i_Code = 0; i_Code < m_i_Code; ) {
     
     eEO eCode = m_eaCode[i_Code];
@@ -2026,6 +2044,13 @@ void LogicUnit::vDumpCode(void)
       char* azArg = (char*) & m_eaCode[i_Code+1];
       vTrace("%04lld: %18s (%lls)\n"_Stz,i_Code,aEO[eCode],azArg);
       i_Code += 1 + StrLib::nSize(azArg);
+    }
+    else
+    if (EA_DATE == EoArgs[eCode].m_eArgument) {
+      i8* piArg = (i8*) & m_eaCode[i_Code+1];
+      i8 iArg = * piArg;
+      vTrace("%04lld: %18s (%lls)\n"_Stz,i_Code,aEO[eCode],spDate.sz(iArg));
+      i_Code += 1 + sizeof(i8);
     }
     else
     if (EoArgs[eCode].m_nArgBytes) {
