@@ -307,15 +307,7 @@
 
   "--------------------------- 301 PULSEMARKER ---------------------------" .
 
-  "customer" "customer_Idx1" op__table_index assert
-
-  Table[].asSrcStreamDef
-
-  Index[].indexTree to IndexTree[]
-  IndexTree[].asSrc
-
-
-  "orders" "orders_Idx2" op__table_index assert
+  "lineitem" "lineitem_Idx1" op__table_index assert
 
   Table[].asAltStreamDef
 
@@ -323,10 +315,10 @@
   IndexTree[].asAlt
 
 
-  LogicUnit[].transform
-
-  Pot[].pipeoutAllDangling
-  Pot[].delete
+//  LogicUnit[].transform
+//
+//  Pot[].pipeoutAllDangling
+//  Pot[].delete
 ;
 
 /*----------------------------------------------------------------------------*/

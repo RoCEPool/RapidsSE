@@ -299,6 +299,7 @@ EoArg EoArgs[]
 
   // rsb operators
   { EA_INT,     8 },  // EO_DEPOSITCOLI
+  { EA_INT,     8 },  // EO_DEPOSITCOLS
   { EA_INT,     8 },  // EO_PUSHDSTCOLI
   { EA_INT,     8 },  // EO_PUSHSRCCOLI
   { EA_INT,     8 },  // EO_PUSHSRCCOLS
@@ -315,7 +316,7 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_STR_COMPARE
   { EA_NONE,    0 },  // EO_STR_PRINTADR
   { EA_NONE,    0 },  // EO_STR_PRINTSTK
-  { EA_STRING, -1 },  // EO_DEC
+  { EA_STRING, -1 },  // EO_STR_LITERAL
   
   // subroutine operators
   { EA_LABEL,   8 },  // EO_CALL
