@@ -234,6 +234,8 @@ namespace Expressions
     void vGenerateQuery102(void);
 
     void vGenerateQuery300(void);
+    void vGenerateQuery301(void);
+
     void vGenerateQuery400(void);
   
     void vGenerateQuery600(void);

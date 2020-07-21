@@ -346,7 +346,8 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     102: vGenerateQuery102();    break;
  
     case     300: vGenerateQuery300();    break;
-      
+    case     301: vGenerateQuery301();    break;
+
     case     400: vGenerateQuery400();    break;
 
     case     600: vGenerateQuery600();    break;
@@ -739,6 +740,26 @@ void LogicUnit::vGenerateQuery300(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for query 3                                                  */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery301(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 301;
+  
+  m_i_Code = 0;
+  
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vDumpCode();
+
 }
 
 /*----------------------------------------------------------------------------*/
