@@ -268,7 +268,7 @@ Pay* Ent::aPay(void)
 i8* Ent::aiPayCell(i8 iCell)
 {
   Pay* aPay = this->aPay();
-  i8* aiPay = (i8*)&aPay[iCell];
+  i8* aiPay = (i8*)&aPay[iCell+1];
   
   return aiPay;
 }

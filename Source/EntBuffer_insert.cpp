@@ -510,7 +510,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   // set the new entry
   
   aInsertedEntry->vSetEntry(aEnt);
-  
+  EntBuffer::vShowEntry(aInsertedEntry);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the new entry into the skip list
   

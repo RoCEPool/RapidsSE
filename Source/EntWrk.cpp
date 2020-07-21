@@ -475,7 +475,7 @@ i8* EntWrk::aiPayCell(i8 iCell)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Pay* aPay = this->aPay();
+  Pay* aPay = m_xEnt.aPay();
   i8* aiPay = (i8*)&aPay[iCell];
   
   return aiPay;
@@ -488,7 +488,7 @@ byte* EntWrk::ayPayload(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Pay* aPay = this->aPay();
+  Pay* aPay = m_xEnt.aPay();
   
   return aPay->ayaPayload();
 }
@@ -510,7 +510,7 @@ i8 EntWrk::nPayloadBytes(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Pay* aPay = this->aPay();
+  Pay* aPay = m_xEnt.aPay();
 
   i8 nPayloadBytes = aPay->nPayloadBytes();
   
@@ -524,7 +524,7 @@ void EntWrk::vPayloadBytes(i8 nPayloadBytes)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Pay* aPay = this->aPay();
+  Pay* aPay = m_xEnt.aPay();
 
   aPay->vPayloadBytes(nPayloadBytes);
 }

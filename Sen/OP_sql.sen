@@ -494,7 +494,7 @@
       pColumn column.type@
       pColumn column.name@
       StreamDefOut[].addColumn
-
+*/
       // add column SUM(L_QUANTITY) as SUM_QTY
       4 StreamDef[].column@ to pColumn
       pColumn column.scale@
@@ -502,7 +502,7 @@
       pColumn column.type@
       "sum_qty"
       StreamDefOut[].addColumn
-*/
+
       // add column SUM(L_EXTENDEDPRICE) as SUM_BASE_PRICESUM_QTY
       5 StreamDef[].column@ to pColumn
       pColumn column.scale@
@@ -510,7 +510,7 @@
       pColumn column.type@
       "sum_base_price"
       StreamDefOut[].addColumn
-/*
+
       // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) as SUM_DISC_PRICE
       5 StreamDef[].column@ to pColumn
       pColumn column.scale@
@@ -526,7 +526,7 @@
       pColumn column.type@
       "sum_charge"
       StreamDefOut[].addColumn
-*/
+
       StreamDef[].delete
 
       StreamDefOut[].duplicate to StreamDef[]
