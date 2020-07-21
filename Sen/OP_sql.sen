@@ -92,33 +92,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: sql_StartMarker_20005
-
-  // SRC INDEX WALK TEST 5
-  20005 "QUERY %v" .printf
-
-  "         dn dp
-            xsb jf END
-   L GOT_S  .xs call ALL_A xsn jt GOT_S
-   L END    ret
-
-   L ALL_A  xpa jf RET_A
-   L NXT_A  xan jf RET_A
-            .xa
-            xcm jne RET_A
-            bp
-            j NXT_A
-   L RET_A  0 . ret
-  "
-     LogicUnit[].source!
-
-  LogicUnit[].compile assert
-
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : sql_StartMarker \handler
@@ -126,8 +99,6 @@
   0 locals| queryNo |
 
   Pot[].new
-
-  //"@ 0 2 %" LogicUnit[].source!
 
   <queryNo> >int to queryNo
   queryNo case
@@ -177,94 +148,6 @@
       queryNo "QUERY %v" .printf
       601 LogicUnit[].genCode
     endof
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    10000 of
-      // FILTER
-      queryNo "QUERY %v" .printf
-
-      "ss pi bs L GET gs jf END @ 0 2 % jf GET nd = j GET L END ft ret"
-      LogicUnit[].source!
-      LogicUnit[].compile assert
-    endof
-
-    11000 of
-      // PROJECT
-      queryNo "QUERY %v" .printf
-
-      //"ss po bs L GET gs jf END nd .s = @ 3 10 * ! 3 .d j GET L END ft ret"
-      "ss po bs L GET gs jf END nd = @ 3 10 * ! 3 j GET L END ft ret"
-      LogicUnit[].source!
-      LogicUnit[].compile assert
-    endof
-
-    12000 of
-      queryNo "QUERY %v" .printf
-      //12000 LogicUnit[].genCode
-      "dn dp dn dy . ss pi bs L GET gs jf END nd = wr @ 0 ae .w os wo .w xi xd j GET L END ft ret"
-      //"ss pi bs L GET gs jf END nd = wr j GET L END ft ret"
-      LogicUnit[].source!
-      LogicUnit[].compile assert
-
-      idxDef_int indexDef[] indexTree[].new
-    endof
-
-    13000 of
-      // AGGREGATE
-      queryNo "QUERY %v" .printf
-      13000 LogicUnit[].genCode
-    endof
-
-    14000 of
-      // AGGREGATE WITH GROUPBY
-      queryNo "QUERY %v" .printf
-      14000 LogicUnit[].genCode
-      idxDef_int indexDef[] indexTree[].new
-    endof
-
-    14002 of
-      // SUPER AGGREGATE WITH GROUPBY
-      queryNo "QUERY %v" .printf
-      14002 LogicUnit[].genCode
-      idxDef_int indexDef[] indexTree[].new
-    endof
-
-    20001 of
-      // SRC INDEX WALK TEST 1
-      queryNo "QUERY %v" .printf
-      "dn dp xsb jf END L NXT .xs rsf csf 0 . bp xsn jt NXT L END ret"
-         LogicUnit[].source!
-      LogicUnit[].compile assert
-    endof
-
-    20002 of
-      // SRC INDEX WALK TEST 2
-      queryNo "QUERY %v" .printf
-      "dn dp xsb jf END L NXT .xs rsf csf 0 . bp xsn jt NXT L END ret"
-         LogicUnit[].source!
-      LogicUnit[].compile assert
-    endof
-
-    20003 of
-      // SRC INDEX WALK TEST 3
-      queryNo "QUERY %v" .printf
-      "dn dp xsb jf END L NXT .xs rsf csf 0 . bp xsn jt NXT L END ret"
-         LogicUnit[].source!
-      LogicUnit[].compile assert
-    endof
-
-    20004 of
-      // SRC INDEX WALK TEST 4
-      queryNo "QUERY %v" .printf
-      "dn dp xsb jf ALT L NXT_S .xs rsf csf 0 . bp xsn jt NXT_S
-       L ALT xab jf END L NXT_A .xa raf caf 0 . bp xan jt NXT_A
-       L END ret"
-         LogicUnit[].source!
-      LogicUnit[].compile assert
-    endof
-
-    20005 of sql_StartMarker_20005 endof
 
   endcase
 
@@ -348,23 +231,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: sql_PulseMarker_20001
-
-  "-------------------------- 20001 PULSEMARKER --------------------------" .
-
-  "lineItem" "lineItem_Idx1" op__table_index assert
-
-  Table[].asSrcStreamDef
-
-  Index[].indexTree to IndexTree[]
-  IndexTree[].asSrc
-
-  LogicUnit[].transform
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
 : sql_PulseMarker \handler
@@ -373,86 +239,10 @@
 
   queryNo case
 
-      300 of sql_PulseMarker_300   endof
-      301 of sql_PulseMarker_301   endof
+    300 of sql_PulseMarker_300   endof
+    301 of sql_PulseMarker_301   endof
 
-      400 of sql_PulseMarker_400   endof
-
-    20001 of sql_PulseMarker_20001 endof
-
-    20002 of
-      "-------------------------- 20002 PULSEMARKER --------------------------" .
-
-      "orders" "orders_Idx1" op__table_index assert
-
-      Table[].asSrcStreamDef
-
-      Index[].indexTree to IndexTree[]
-      IndexTree[].asSrc
-
-      LogicUnit[].transform
-
-    endof
-
-    20003 of
-      "-------------------------- 20003 PULSEMARKER --------------------------" .
-
-      "customer" "customer_Idx1" op__table_index assert
-
-      Table[].asSrcStreamDef
-
-      Index[].indexTree to IndexTree[]
-      IndexTree[].asSrc
-
-      LogicUnit[].transform
-
-    endof
-
-    20004 of
-      "-------------------------- 20004 PULSEMARKER --------------------------" .
-
-      "orders" "orders_Idx1" op__table_index assert
-
-      Table[].asSrcStreamDef
-
-      Index[].indexTree to IndexTree[]
-      IndexTree[].asSrc
-
-     
-      "lineItem" "lineItem_Idx1" op__table_index assert
-
-      Table[].asAltStreamDef
-
-      Index[].indexTree to IndexTree[]
-      IndexTree[].asAlt
-
-
-      LogicUnit[].transform
-
-    endof
-
-    20005 of
-      "-------------------------- 20005 PULSEMARKER --------------------------" .
-
-      "orders" "orders_Idx1" op__table_index assert
-
-      Table[].asSrcStreamDef
-
-      Index[].indexTree to IndexTree[]
-      IndexTree[].asSrc
-
-  
-      "lineItem" "lineItem_Idx1" op__table_index assert
-
-      Table[].asAltStreamDef
-
-      Index[].indexTree to IndexTree[]
-      IndexTree[].asAlt
-
-
-      LogicUnit[].transform
-
-    endof
+    400 of sql_PulseMarker_400   endof
 
   endcase
 
@@ -504,26 +294,6 @@
       // AGGREGATE WITH GROUPBY (SUPER)
       queryNo "QUERY %v" .printf
       101 LogicUnit[].genCode
-      LogicUnit[].transform
-      IndexTree[].delete
-    endof
-
-    12000 of
-      IndexTree[].delete
-    endof
-
-    14000 of
-      // AGGREGATE WITH GROUPBY
-      queryNo "QUERY %v" .printf
-      14001 LogicUnit[].genCode
-      LogicUnit[].transform
-      IndexTree[].delete
-    endof
-
-    14002 of
-      // AGGREGATE WITH GROUPBY (SUPER)
-      queryNo "QUERY %v" .printf
-      14001 LogicUnit[].genCode
       LogicUnit[].transform
       IndexTree[].delete
     endof
@@ -648,67 +418,6 @@
     endof
 
     601 of
-      StreamDef[].duplicate to StreamDefOut[]
-      StreamDef[].pipeout
-    endof
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    10000 of
-      StreamDef[].pipeout
-    endof
-
-    11000 of
-      //StreamDef[].pipeIn
-
-      StreamDef[].duplicate to OperandB[]
-      OperandB[].pipeOut
-
-      StreamDef[].print
-
-      StreamDef[].duplicate to StreamDefOut[]
-      //StreamDefOut[].print
-    endof
-
-    12000 of
-      StreamDef[].pipeout
-    endof
-
-    13000 of
-      StreamDefOut[].new
-      0 C_MAX_INT_PRECISION CT_INTEGER "sum" StreamDefOut[].addColumn
-
-      StreamDefOut[].duplicate to StreamDef[]
-      StreamDef[].pipeout
-    endof
-
-    14000 of
-      StreamDefOut[].new
-
-      // get column L_ORDERKEY
-      0 StreamDef[].column@ to pColumn
-
-      // add column L_ORDERKEY
-      pColumn column.scale@
-      pColumn column.length@
-      pColumn column.type@
-      pColumn column.name@
-      StreamDefOut[].addColumn
-
-      // add sumGby for l_orderkey
-      pColumn column.scale@
-      pColumn column.length@
-      pColumn column.type@
-      "sumGby"
-      StreamDefOut[].addColumn
-
-      StreamDefOut[].duplicate to StreamDef[]
-      StreamDef[].pipeout
-
-      StreamDefOut[].print
-    endof
-
-    14002 of
       StreamDef[].duplicate to StreamDefOut[]
       StreamDef[].pipeout
     endof
