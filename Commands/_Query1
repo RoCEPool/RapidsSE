@@ -34,6 +34,8 @@ create table LineItem                      // SF * 6,000,000 rows
 // 10 ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 /time load lineitem "/DATA/TPCH/lineitem10.csv";
+tableScan lineitem;
+
 /time Query1_Exp1 lineitem "/DATA/TPCH/lineitem10.csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
