@@ -9,10 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pot(void)
 {
-  vAddStep("pot[].completed"_Stz, &Step::vPotCompleted);
-  vAddStep("pot[].dangling"_Stz,  &Step::vPotDangling);
-  vAddStep("pot[].delete"_Stz,    &Step::vPotDelete);
-  vAddStep("pot[].new"_Stz,       &Step::vPotNew);
+  vAddStep("pot[].completed"_Stz,       &Step::vPotCompleted);
+  vAddStep("pot[].dangling"_Stz,        &Step::vPotDangling);
+  vAddStep("pot[].delete"_Stz,          &Step::vPotDelete);
+  vAddStep("pot[].new"_Stz,             &Step::vPotNew);
+  vAddStep("pot[].useStreamDefOut"_Stz, &Step::vPotUseStreamDefOut);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,6 +73,19 @@ void Step::vPotNew(void)
   Pot* pPot = new Pot;
       
   m_pLogicUnit->m_xpPot = pPot;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pot[].usesStreamDefOut -- use stream def out for this pot                  */
+/*----------------------------------------------------------------------------*/
+void Step::vPotUseStreamDefOut(void)
+{
+  ENTRY();
+    
+ m_pLogicUnit->m_xpStreamDefOut->vToStreamPix(&m_pLogicUnit->m_oStreamPix,true);
+ m_pLogicUnit->m_xpPot->vStreamPix(&m_pLogicUnit->m_oStreamPix);
 
   EXIT();
 }

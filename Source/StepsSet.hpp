@@ -1037,6 +1037,7 @@ public:
   void vPotDangling(void);
   void vPotDelete(void);
   void vPotNew(void);
+  void vPotUseStreamDefOut(void);
 
   // procedure
   void vProcedureAdd(void);
