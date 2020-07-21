@@ -2022,6 +2022,10 @@ void LogicUnit::vDumpCode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
       
+  SP_Dte spDate;
+
+  vTrace("Code Dump for %lld\n"_Stz,m_iSql);
+  
   for (i8 i_Code = 0; i_Code < m_i_Code; ) {
     
     eEO eCode = m_eaCode[i_Code];
@@ -2035,6 +2039,13 @@ void LogicUnit::vDumpCode(void)
       char* azArg = (char*) & m_eaCode[i_Code+1];
       vTrace("%04lld: %18s (%lls)\n"_Stz,i_Code,aEO[eCode],azArg);
       i_Code += 1 + StrLib::nSize(azArg);
+    }
+    else
+    if (EA_DATE == EoArgs[eCode].m_eArgument) {
+      i8* piArg = (i8*) & m_eaCode[i_Code+1];
+      i8 iArg = * piArg;
+      vTrace("%04lld: %18s (%lls)\n"_Stz,i_Code,aEO[eCode],spDate.sz(iArg));
+      i_Code += 1 + sizeof(i8);
     }
     else
     if (EoArgs[eCode].m_nArgBytes) {
