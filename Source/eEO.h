@@ -100,9 +100,9 @@ enum eEO : i1 // expression operators
   /*    */ EO_ISNOTNULL,        // test if top is not null, push result
   
   // pay load
-  /*    */ EO_PAY_FETCH_COL,    // fetch a column from the entry payload
+  /*    */ EO_PAY_FETCH_COLI,    // fetch a column from the entry payload
   /*    */ EO_PAY_FETCH_COLS,   // fetch a column from the entry payload
-  /*    */ EO_PAY_STORE_COL,    // store a column of the entry payload
+  /*    */ EO_PAY_STORE_COLI,    // store a column of the entry payload
   /*    */ EO_PAY_STORE_COLS,   // store a column of the entry payload
   
   // pushes
@@ -272,9 +272,9 @@ static Stz* aEO[]
   /*    */ "EO_ISNOTNULL"_Stz,
   
   // pay load
-  /*    */ "EO_PAY_FETCH_COL"_Stz,
+  /*    */ "EO_PAY_FETCH_COLI"_Stz,
   /*    */ "EO_PAY_FETCH_COLS"_Stz,
-  /*    */ "EO_PAY_STORE_COL"_Stz,
+  /*    */ "EO_PAY_STORE_COLI"_Stz,
   /*    */ "EO_PAY_STORE_COLS"_Stz,
   
   // pushes

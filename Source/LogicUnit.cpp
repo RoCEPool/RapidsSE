@@ -256,9 +256,9 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ISNOTNULL
 
   // pay load
-  { EA_INT,     8 },  // EO_PAY_FETCH_COL
+  { EA_INT,     8 },  // EO_PAY_FETCH_COLI
   { EA_INT,     8 },  // EO_PAY_FETCH_COLS
-  { EA_INT,     8 },  // EO_PAY_STORE_COL
+  { EA_INT,     8 },  // EO_PAY_STORE_COLI
   { EA_INT,     8 },  // EO_PAY_STORE_COLS
 
   // pushes
@@ -435,36 +435,36 @@ void LogicUnit::vGenerateQuery100(void)
 
   // set sum(L_QUANTITY) -> Q1_SUM_QTY
   vAddCode(EO_PUSH0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_QTY);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_QTY);
   
   // set sum(L_QUANTITY) -> Q1_SUM_BASE_PRICE
   vAddCode(EO_PUSH0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_BASE_PRICE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_BASE_PRICE);
   
   // set sum(L_QUANTITY) -> Q1_SUM_DISC_PRICE
   vAddCode(EO_PUSH0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_DISC_PRICE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_DISC_PRICE);
   
   // set sum(L_QUANTITY) -> Q1_SUM_CHARGE
   vAddCode(EO_PUSH0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_CHARGE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_CHARGE);
   vAddCode(EO_IXT_DUMP);
   
   // FOUND:
   vDefineLabel("FOUND"_Stz);
 
   // sum(L_QUANTITY) -> Q1_SUM_QTY
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_QTY);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_QTY);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)L_QUANTITY);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_QTY);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_QTY);
   vAddCode(EO_IXT_DUMP);
 
   // SUM(L_EXTENDEDPRICE) -> Q1_SUM_BASE_PRICE
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_BASE_PRICE);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_BASE_PRICE);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)L_EXTENDEDPRICE);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_BASE_PRICE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_BASE_PRICE);
 
   // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) -> Q1_SUM_DISC_PRICE
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)L_EXTENDEDPRICE);
@@ -475,9 +475,9 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeArg(EO_INTEGER,100);
   vAddCode(EO_DIVIDE);
 
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_DISC_PRICE);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_DISC_PRICE);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_DISC_PRICE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_DISC_PRICE);
 
   // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) -> Q1_SUM_CHARGE
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)L_EXTENDEDPRICE);
@@ -497,9 +497,9 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeArg(EO_INTEGER,10000);
   vAddCode(EO_DIVIDE);
   
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_CHARGE);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_CHARGE);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_CHARGE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_CHARGE);
 
   vAddCode(EO_IXT_DUMP);
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
@@ -543,16 +543,16 @@ void LogicUnit::vGenerateQuery101(void)
   vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q1_LINESTATUS);
   vAddCodeArg(EO_DEPOSITCOLS,(i8)Q1_LINESTATUS);
   
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_QTY);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_QTY);
   vAddCodeArg(EO_DEPOSITCOLI,(i8)Q1_SUM_QTY);
   
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_BASE_PRICE);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_BASE_PRICE);
   vAddCodeArg(EO_DEPOSITCOLI,(i8)Q1_SUM_BASE_PRICE);
 
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_DISC_PRICE);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_DISC_PRICE);
   vAddCodeArg(EO_DEPOSITCOLI,(i8)Q1_SUM_DISC_PRICE);
   
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_CHARGE);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_CHARGE);
   vAddCodeArg(EO_DEPOSITCOLI,(i8)Q1_SUM_CHARGE);
 
   vAddCode(EO_RSB_DST_PRINT);
@@ -620,45 +620,45 @@ void LogicUnit::vGenerateQuery102(void)
   vDefineLabel("NOT_FOUND"_Stz);
   vAddCodeArg(EO_ENTWRK_CREATEPAY, 32);
   vAddCode(EO_IXT_INS_ENT);
-  //vAddCodeArg(EO_PUSHSRCCOLI,(i8)Q1_RETURNFLAG);
-  //vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_RETURNFLAG);
+  vAddCodeArg(EO_PUSHSRCCOLS,(i8)Q1_RETURNFLAG);
+  vAddCodeArg(EO_PAY_STORE_COLS, (i8)Q1_RETURNFLAG);
   
-  //vAddCodeArg(EO_PUSHSRCCOLI,(i8)Q1_LINESTATUS);
-  //vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_LINESTATUS);
-  
-  vAddCode(EO_PUSH0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_QTY);
+  vAddCodeArg(EO_PUSHSRCCOLS,(i8)Q1_LINESTATUS);
+  vAddCodeArg(EO_PAY_STORE_COLS, (i8)Q1_LINESTATUS);
   
   vAddCode(EO_PUSH0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_BASE_PRICE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_QTY);
   
   vAddCode(EO_PUSH0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_DISC_PRICE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_BASE_PRICE);
   
   vAddCode(EO_PUSH0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_CHARGE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_DISC_PRICE);
+  
+  vAddCode(EO_PUSH0);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_CHARGE);
   
   // FOUND:
   vDefineLabel("FOUND"_Stz);
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_QTY);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_QTY);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)Q1_SUM_QTY);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_QTY);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_QTY);
   
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_BASE_PRICE);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_BASE_PRICE);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)Q1_SUM_BASE_PRICE);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_BASE_PRICE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_BASE_PRICE);
   
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_DISC_PRICE);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_DISC_PRICE);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)Q1_SUM_DISC_PRICE);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_DISC_PRICE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_DISC_PRICE);
   
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_CHARGE);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q1_SUM_CHARGE);
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)Q1_SUM_CHARGE);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_CHARGE);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q1_SUM_CHARGE);
   
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
@@ -1169,18 +1169,18 @@ void LogicUnit::vGenerateAggGby14000(void)
   vAddCode(EO_ENTWRK_PRINT);
   vAddCode(EO_IXT_INS_ENT);
   vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)0);
   vAddCode(EO_PUSH0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)1);
   
   // FOUND:
   vDefineLabel("FOUND"_Stz);
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)1);
   
   // aggregate column 0
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)0);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)1);
   
   vAddCode(EO_IXT_DUMP);
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
@@ -1218,9 +1218,9 @@ void LogicUnit::vGenerateAggGby14001(void)
   
   // new a dst rsb row
   vAddCode(EO_RSB_DST_NEW);
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)0);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)0);
   vAddCodeArg(EO_DEPOSITCOLI,(i8)0);
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)1);
   vAddCodeArg(EO_DEPOSITCOLI,(i8)1);
   vAddCode(EO_RSB_DST_PRINT);
   vAddCode(EO_ENT_NEXT);
@@ -1289,18 +1289,18 @@ void LogicUnit::vGenerateAggGby14002(void)
   vAddCodeArg(EO_ENTWRK_CREATEPAY, 8);
   vAddCode(EO_IXT_INS_ENT);
   vAddCodeArg(EO_PUSHSRCCOLI,(i8)0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)0);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)0);
   vAddCode(EO_PUSH0);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)1);
   
   // FOUND:
   vDefineLabel("FOUND"_Stz);
-  vAddCodeArg(EO_PAY_FETCH_COL, (i8)1);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)1);
   
   // super agg of column 1
   vAddCodeArg(EO_PUSHSRCCOLI, (i8)1);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)1);
+  vAddCodeArg(EO_PAY_STORE_COLI, (i8)1);
   
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
@@ -1969,14 +1969,14 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     // fetch pay col
     if (pTkn->bSame("pf"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeArg(EO_PAY_FETCH_COL,pTkn);
+      vAddCodeArg(EO_PAY_FETCH_COLI,pTkn);
       continue;
     }
     
     // store pay col
     if (pTkn->bSame("ps"_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn);
-      vAddCodeArg(EO_PAY_STORE_COL,pTkn);
+      vAddCodeArg(EO_PAY_STORE_COLI,pTkn);
       continue;
     }
     
@@ -2735,7 +2735,7 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
-      case EO_PAY_FETCH_COL: GetArg(iArg); // fetch a column from the entry payload
+      case EO_PAY_FETCH_COLI: GetArg(iArg); // fetch a column from the entry payload
         m_aPayload = m_pEnt->aiPayCell(iArg);
         iRes = *m_aPayload;
         dLU2(eCode,iArg,iRes);
@@ -2756,7 +2756,7 @@ i8 LogicUnit::iCompute(void)
       }
         break;
         
-      case EO_PAY_STORE_COL: GetArg(iArg); // store a column of the entry payload
+      case EO_PAY_STORE_COLI: GetArg(iArg); // store a column of the entry payload
         iRes = *(aiDstk--);
         dLU2(eCode,iArg,iRes);
         m_aPayload = m_pEnt->aiPayCell(iArg);
