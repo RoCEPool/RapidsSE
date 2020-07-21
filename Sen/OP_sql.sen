@@ -406,12 +406,13 @@
 
     300 of
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 300=STREAMDEF" .
-      // the stream def has been piped out in sql_StartMarker
+      // sql 300 should not get a stream def
+      0 assert
     endof
 
     301 of
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 301=STREAMDEF" .
-      // the stream def has been piped out in sql_StartMarker
+      // the stream def was  piped out in sql_StartMarker by 300
     endof
 
     400 of

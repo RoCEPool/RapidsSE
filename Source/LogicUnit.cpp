@@ -2192,6 +2192,9 @@ i8 LogicUnit::iCompute(void)
 
   IndexDef* pIndexDef = nullptr;
   
+  vTrace("\nLogic Unit :: sql %lld\n\n"_Stz,m_iSql);
+  vDebugPoint();
+
   for (;;) {
     
     // check for stack growth
@@ -3080,6 +3083,7 @@ i8 LogicUnit::iCompute(void)
         dLU0(eCode);
         if (aaeRstk == &m_aaReturnStack[0]) {
           iRes = *(aiDstk--);
+          vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,m_iSql);
           return iRes;
         }
         aeCode = * (--aaeRstk);
