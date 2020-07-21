@@ -1764,7 +1764,7 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
     if (pTkn->bSame("<"_Stz))   { vAddCode(EO_LESSTHAN);            continue; }
     if (pTkn->bSame("<="_Stz))  { vAddCode(EO_LESSEQUAL);           continue; }
     if (pTkn->bSame("=="_Stz))  { vAddCode(EO_EQUAL);               continue; }
-    if (pTkn->bSame("!="_Stz))  { vAddCode(EO_NOTEQUAL);        continue; }
+    if (pTkn->bSame("!="_Stz))  { vAddCode(EO_NOTEQUAL);            continue; }
     if (pTkn->bSame(">="_Stz))  { vAddCode(EO_GREATEREQUAL);        continue; }
     if (pTkn->bSame(">"_Stz))   { vAddCode(EO_GREATERTHAN);         continue; }
     
@@ -2061,6 +2061,8 @@ void LogicUnit::vDumpCode(void)
       i_Code++;
     }
   }
+  
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
