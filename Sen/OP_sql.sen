@@ -608,6 +608,14 @@
       "sum_charge"
       StreamDefOut[].addColumn
 
+      // add column AVG(L_QUANTITY) as AVG_QTY
+      4 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      "avg_qty"
+      StreamDefOut[].addColumn
+
       StreamDef[].delete
 
       StreamDefOut[].duplicate to StreamDef[]
