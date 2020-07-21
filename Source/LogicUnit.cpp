@@ -713,13 +713,23 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_IXT_SRC_PRINT);
   vAddCode(EO_IXT_ALT_PRINT);
 
-  vAddCode(EO_BREAKPOINT);
 
   vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
   vAddCode(EO_IXT_CMP_SRCALT);
   vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A:"_Stz);
 
   vAddCode(EO_IXT_ALT_PRINT);
+  
+  vAddCode(EO_CRW_ALT_FETCH);
+  vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
+  vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_A:"_Stz);
+
+  vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
+  vAddCode(EO_DTE_PRINT);
+
+  vAddCode(EO_BREAKPOINT);
 
   vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
   
