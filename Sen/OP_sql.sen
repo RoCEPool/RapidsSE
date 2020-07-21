@@ -558,8 +558,8 @@
   queryNo case
 
     100 of
+
       StreamDefOut[].new
-/*
       // add column L_RETURNFLAG
       8 StreamDef[].column@ to pColumn
       pColumn column.scale@
@@ -575,7 +575,7 @@
       pColumn column.type@
       pColumn column.name@
       StreamDefOut[].addColumn
-*/
+
       // add column SUM(L_QUANTITY) as SUM_QTY
       4 StreamDef[].column@ to pColumn
       pColumn column.scale@

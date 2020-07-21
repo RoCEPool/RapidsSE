@@ -257,7 +257,9 @@ EoArg EoArgs[]
 
   // pay load
   { EA_INT,     8 },  // EO_PAY_FETCH_COL
+  { EA_INT,     8 },  // EO_PAY_FETCH_COLS
   { EA_INT,     8 },  // EO_PAY_STORE_COL
+  { EA_INT,     8 },  // EO_PAY_STORE_COLS
 
   // pushes
   { EA_DATE,    8 },  // EO_DATE
@@ -299,6 +301,7 @@ EoArg EoArgs[]
   { EA_INT,     8 },  // EO_DEPOSITCOLI
   { EA_INT,     8 },  // EO_PUSHDSTCOLI
   { EA_INT,     8 },  // EO_PUSHSRCCOLI
+  { EA_INT,     8 },  // EO_PUSHSRCCOLS
   { EA_INT,     8 },  // EO_PUSHALTCOLI
 
   // stack operators
@@ -421,15 +424,15 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeArg(EO_ENTWRK_CREATEPAY, 32);
   vAddCode(EO_IXT_INS_ENT);
   vAddCode(EO_IXT_DUMP);
-/*
+
   // store L_RETURNFLAG -> Q1_RETURNFLAG
-  vAddCodeArg(EO_COL_SRC_PUSHSTR, (i8)L_RETURNFLAG);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_RETURNFLAG);
+  vAddCodeArg(EO_PUSHSRCCOLS, (i8)L_RETURNFLAG);
+  vAddCodeArg(EO_PAY_STORE_COLS, (i8)Q1_RETURNFLAG);
   
   // store Q1_LINESTATUS -> Q1_LINESTATUS
-  vAddCodeArg(EO_COL_SRC_PUSHSTR, (i8)L_LINESTATUS);
-  vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_LINESTATUS);
- */
+  vAddCodeArg(EO_PUSHSRCCOLS, (i8)L_LINESTATUS);
+  vAddCodeArg(EO_PAY_STORE_COLS, (i8)Q1_LINESTATUS);
+
   // set sum(L_QUANTITY) -> Q1_SUM_QTY
   vAddCode(EO_PUSH0);
   vAddCodeArg(EO_PAY_STORE_COL, (i8)Q1_SUM_QTY);
@@ -534,11 +537,11 @@ void LogicUnit::vGenerateQuery101(void)
   // new a dst rsb row
   vAddCode(EO_RSB_DST_NEW);
   
-  //vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_RETURNFLAG);
-  //vAddCodeArg(EO_DEPOSITCOLI,(i8)Q1_RETURNFLAG);
+  vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q1_RETURNFLAG);
+  vAddCodeArg(EO_DEPOSITCOLS,(i8)Q1_RETURNFLAG);
   
-  //vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_LINESTATUS);
-  //vAddCodeArg(EO_DEPOSITCOLI,(i8)Q1_LINESTATUS);
+  vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q1_LINESTATUS);
+  vAddCodeArg(EO_DEPOSITCOLS,(i8)Q1_LINESTATUS);
   
   vAddCodeArg(EO_PAY_FETCH_COL, (i8)Q1_SUM_QTY);
   vAddCodeArg(EO_DEPOSITCOLI,(i8)Q1_SUM_QTY);
@@ -2739,11 +2742,37 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
         
+      case EO_PAY_FETCH_COLS: GetArg(iArg); // fetch a column from the entry payload
+      {
+        m_aPayload = m_pEnt->aiPayCell(iArg);
+        char* azSrc = (char*)m_aPayload;
+        i8 nSize = StrLib::nSize(azSrc);
+        ASSERT(nSize < 8);
+        dLU2(eCode,iArg,(i8)azSrc);
+        char* azDst = (char*)(++aiDstk);
+        StrLib::vCopy(azDst,azSrc);
+        aiDstk++;
+        *(++aiDstk) = nSize;
+      }
+        break;
+        
       case EO_PAY_STORE_COL: GetArg(iArg); // store a column of the entry payload
         iRes = *(aiDstk--);
         dLU2(eCode,iArg,iRes);
         m_aPayload = m_pEnt->aiPayCell(iArg);
         *m_aPayload = iRes;
+        break;
+      
+      case EO_PAY_STORE_COLS: GetArg(iArg); // store a column of the entry payload
+      {
+        i8 nSize = *(aiDstk--);
+        RASSERT(nSize < 8);
+        dLU2(eCode,iArg,nSize);
+        m_aPayload = m_pEnt->aiPayCell(iArg);
+        char* azSrc = (char*)(--aiDstk);
+        aiDstk--;
+        StrLib::vCopy((char*)m_aPayload,azSrc);
+      }
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -2910,6 +2939,20 @@ i8 LogicUnit::iCompute(void)
         m_pDstRowSlab->vDeposit(iRes);
         break;
         
+      case EO_DEPOSITCOLS: GetArg(iArg); // pop and deposit top into dst column
+      {
+        i8 nSize = *(aiDstk--);
+        dLU2(eCode,iArg,nSize);
+        ASSERT(nSize < 8);
+        char* azSrc = (char*)(--aiDstk);
+        m_pDstRowSlab->vPositionOnCell(iArg);
+        char* azDst = m_pDstRowSlab->azDepositString_begin();
+        StrLib::vCopy(azDst,azSrc);
+        m_pDstRowSlab->vDepositString_end(nSize);
+        aiDstk--;
+      }
+        break;
+        
       case EO_PUSHDSTCOLI: GetArg(iArg); // push dst column
         m_aDstRsb = m_pDstRowSlab->aRsbAdr(0);
         i_Cell_ntv = m_aDstRsb->i_ColToCell_ntv(iArg);
@@ -2922,6 +2965,18 @@ i8 LogicUnit::iCompute(void)
         iRes = m_aSrcRsb->iVal_ntv(m_aSrcRsb->i_ColToCell_ntv(iArg));
         dLU2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
+        break;
+        
+      case EO_PUSHSRCCOLS: GetArg(iArg); // push src column
+      {
+        char* azSrc = (char*)m_aSrcRsb->szVal_ntv(m_aSrcRsb->i_ColToCell_ntv(iArg));
+        dLU2(eCode,iArg,(i8)azSrc);
+        i8 nSize = StrLib::nSize(azSrc);
+        char* azDst = (char*)(++aiDstk);
+        StrLib::vCopy(azDst,azSrc);
+        aiDstk++;
+        *(++aiDstk) = nSize;
+      }
         break;
         
       case EO_PUSHALTCOLI: NEVER_REACH; // not yet implemented

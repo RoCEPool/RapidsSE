@@ -101,7 +101,9 @@ enum eEO : i1 // expression operators
   
   // pay load
   /*    */ EO_PAY_FETCH_COL,    // fetch a column from the entry payload
+  /*    */ EO_PAY_FETCH_COLS,   // fetch a column from the entry payload
   /*    */ EO_PAY_STORE_COL,    // store a column of the entry payload
+  /*    */ EO_PAY_STORE_COLS,   // store a column of the entry payload
   
   // pushes
   /*    */ EO_DATE,             // push date
@@ -141,8 +143,10 @@ enum eEO : i1 // expression operators
 
   // rsb operators
   /*    */ EO_DEPOSITCOLI,      // pop and deposit top into dst column
+  /*    */ EO_DEPOSITCOLS,      // pop and deposit top into dst column
   /*    */ EO_PUSHDSTCOLI,      // push dst column
-  /*    */ EO_PUSHSRCCOLI,      // push src column
+  /*    */ EO_PUSHSRCCOLI,      // push src column (integer)
+  /*    */ EO_PUSHSRCCOLS,      // push src column (string)
   /*    */ EO_PUSHALTCOLI,      // push alt column
   
   // stack operators
@@ -269,7 +273,9 @@ static Stz* aEO[]
   
   // pay load
   /*    */ "EO_PAY_FETCH_COL"_Stz,
+  /*    */ "EO_PAY_FETCH_COLS"_Stz,
   /*    */ "EO_PAY_STORE_COL"_Stz,
+  /*    */ "EO_PAY_STORE_COLS"_Stz,
   
   // pushes
   /*    */ "EO_DATE"_Stz,
@@ -309,9 +315,12 @@ static Stz* aEO[]
   
   // rsb operators
   /*    */ "EO_DEPOSITCOLI"_Stz,
+  /*    */ "EO_DEPOSITCOLS"_Stz,
   /*    */ "EO_PUSHDSTCOLI"_Stz,
   /*    */ "EO_PUSHSRCCOLI"_Stz,
+  /*    */ "EO_PUSHSRCCOLS"_Stz,
   /*    */ "EO_PUSHALTCOLI"_Stz,
+  
   
   // stack operators
   /*    */ "EO_INC"_Stz,
