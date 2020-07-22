@@ -265,17 +265,7 @@ namespace Expressions
   
     void vGenerateQuery600(void);
     void vGenerateQuery601(void);
-    
-    //! TEMP: TO GO
-    void vGenerateAgg13000(void);
-    void vGenerateAggGby14000(void);
-    void vGenerateAggGby14001(void);
-    void vGenerateAggGby14002(void);
-    void vGenerateSort12000(void);
 
-    i8   iAggregate(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut);
-    i8   iAggregateGby(Pot* pPot, IndexTree* pIndexTree, RowSlab* pDstRowSlab,
-                       Rsb* aSrcRsb, RowSlab* pSrcRowSlab);
     bool bCompile(void);
     bool bCompile(TokenVec* pTknVec);
 
