@@ -223,6 +223,7 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_INS_ENT
   { EA_NONE,    0 },  // EO_IXT_TRV_BEGIN
   { EA_NONE,    0 },  // EO_IXT_TRV_NEXT
+  { EA_NONE,    0 },  // EO_IXT_TMP_ENTRIES
 
   { EA_NONE,    0 },  // EO_IXT_SRC_BEGIN
   { EA_NONE,    0 },  // EO_IXT_SRC_NEXT
@@ -2341,6 +2342,12 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
+        break;
+        
+      case EO_IXT_TMP_ENTRIES: NoArg(); // push number of entries in tmp index
+        iRes = m_pIndexTree->iCountH0Entries();
+        dLU1(eCode,iRes);
+        *(++aiDstk) = iRes;
         break;
         
       case EO_IXT_SRC_BEGIN: NoArg(); // begin linear traverse
