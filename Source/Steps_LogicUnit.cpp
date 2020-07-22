@@ -23,9 +23,6 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].handler!"_Stz,   &Step::vLogicUnitHandlerStore);
   
   vAddStep("LogicUnit[].transform"_Stz,  &Step::vLogicUnitTransform);
-  
-  vAddStep("LogicUnit[].newAggCpy"_Stz,  &Step::vLogicUnitNewAggCpy);  //! TEMP : to go
-  vAddStep("LogicUnit[].newAggGby"_Stz,  &Step::vLogicUnitNewAggGby);  //! TEMP : to go
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,30 +49,6 @@ void Step::vLogicUnitGenCode(void)
   i8 iTestNo = m_pDataStack->iPopInt(__func__);
       
   m_pLogicUnit->vGenCode(iTestNo);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].newAggCpy -- new a copy aggregate result expression            */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitNewAggCpy(void)
-{
-  ENTRY();
-  
-  m_pLogicUnit->vGenerateAggGby14001();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].newAggGby -- new a group by aggregate expression               */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitNewAggGby(void)
-{
-  ENTRY();
-  
-  m_pLogicUnit->vGenerateAggGby14000();
   
   EXIT();
 }
@@ -108,9 +81,6 @@ void Step::vLogicUnitSourceStore(void)
   
   EXIT();
 }
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* LogicUnit[].callAgain@ --                                                  */
