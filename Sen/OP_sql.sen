@@ -406,6 +406,13 @@
       "count_qty"
       StreamDefOut[].addColumn
 
+      // add column COUNT(L_EXTENDEDPRICE)
+      0
+      19
+      CT_INTEGER
+      "count_price"
+      StreamDefOut[].addColumn
+
       StreamDef[].delete
 
       StreamDefOut[].duplicate to StreamDef[]
@@ -462,8 +469,16 @@
       pColumn column.name@
       StreamDefOut[].addColumn
 
-      // add column COUNT(L_QUANTITY) as AVG_QTY
+      // add column AVG(L_QUANTITY) as AVG_QTY
       2 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      "avg_qty"
+      StreamDefOut[].addColumn
+
+      // add column AVG(L_QUANTITY) as AVG_PRICE
+      5 StreamDef[].column@ to pColumn
       pColumn column.scale@
       pColumn column.length@
       pColumn column.type@
