@@ -861,8 +861,6 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
   vAddCode(EO_RSB_DST_PRINT);
 
-  vAddCode(EO_BREAKPOINT);
-
   vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
   
   vDefineLabel("RET_A:"_Stz);
@@ -954,6 +952,32 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeLabel(EO_JMP,"NXT_AGG:"_Stz);
   
   vDefineLabel("RET_AGG_f:"_Stz);
+  
+  // not quite right...
+  vAddCodeLabel(EO_CALL,"LIM_SBR:"_Stz);
+
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vDefineLabel("LIM_SBR:"_Stz);
+
+  vAddCode(EO_ENTWRK_RESET);
+
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERKEY);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERDATE);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_REVENUE);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_SHIPPRIORITY);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+
+  vAddCode(EO_IXT_INS_ENT);
+
+  vAddCode(EO_IXT_TMP_ENTRIES);
+  vAddCode(EO_PRINT);
+  vAddCode(EO_BREAKPOINT);
+
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

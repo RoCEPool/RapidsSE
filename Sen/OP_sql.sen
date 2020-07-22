@@ -207,6 +207,9 @@
   Index[].indexTree to IndexTree[]
   IndexTree[].asAlt
 
+  idxDef_int indexDef[] indexTree[].new
+  indexTree[].asTmp
+
 
 //  LogicUnit[].transform
 //
