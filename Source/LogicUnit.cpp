@@ -802,16 +802,40 @@ void LogicUnit::vGenerateQuery301(void)
   
   vAddCode(EO_PIX_STM_PRINT);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vAddCode(EO_RSB_SRC_BEGIN);
   
-  vDefineLabel("NXT_S:"_Stz);
+  vDefineLabel("NXT_SRC:"_Stz);
   vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"END_S:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_SRC:"_Stz);
 
+  vAddCodeLabel(EO_CALL,"MOV_DST:"_Stz);
+  vAddCodeLabel(EO_CALL,"AGG_REVENUE:"_Stz);
+
+  vAddCodeLabel(EO_JMP,"NXT_SRC:"_Stz);
+
+  vDefineLabel("END_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vDefineLabel("MOV_DST:"_Stz);
+  
   vAddCode(EO_RSB_SRC_PRINT);
-  vAddCodeLabel(EO_JMP,"NXT_S:"_Stz);
 
-  vDefineLabel("END_A:"_Stz);
+  vAddCode(EO_RSB_DST_NEW);
+
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_ORDERKEY);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERDATE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_ORDERDATE);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_SHIPPRIORITY);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_SHIPPRIORITY);
+
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vDefineLabel("AGG_REVENUE:"_Stz);
+  
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
