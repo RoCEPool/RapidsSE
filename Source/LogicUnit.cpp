@@ -223,6 +223,7 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_INS_ENT
   { EA_NONE,    0 },  // EO_IXT_TRV_BEGIN
   { EA_NONE,    0 },  // EO_IXT_TRV_NEXT
+  { EA_NONE,    0 },  // EO_IXT_TMP_ENTRIES
 
   { EA_NONE,    0 },  // EO_IXT_SRC_BEGIN
   { EA_NONE,    0 },  // EO_IXT_SRC_NEXT
@@ -860,8 +861,6 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
   vAddCode(EO_RSB_DST_PRINT);
 
-  vAddCode(EO_BREAKPOINT);
-
   vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
   
   vDefineLabel("RET_A:"_Stz);
@@ -953,6 +952,40 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeLabel(EO_JMP,"NXT_AGG:"_Stz);
   
   vDefineLabel("RET_AGG_f:"_Stz);
+  
+  // not quite right...
+  vAddCodeLabel(EO_CALL,"LIM_SBR:"_Stz);
+
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vDefineLabel("LIM_SBR:"_Stz);
+
+  vAddCode(EO_IXT_TMP_ENTRIES);
+  vAddCode(EO_PRINT);
+  vAddCode(EO_BREAKPOINT);
+
+  vAddCode(EO_ENTWRK_RESET);
+
+  vAddCode(EO_IXT_TMP_ENTRIES);
+  vAddCodeArg(EO_INTEGER,10);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMP_FALSE,"LIM_RET:"_Stz);
+
+  vDefineLabel("LIM_INS:"_Stz);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERKEY);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERDATE);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_REVENUE);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_SHIPPRIORITY);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+
+  vAddCode(EO_IXT_INS_ENT);
+
+
+  vDefineLabel("LIM_RET:"_Stz);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2341,6 +2374,12 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
+        break;
+        
+      case EO_IXT_TMP_ENTRIES: NoArg(); // push number of entries in tmp index
+        iRes = m_pIndexTree->iCountH0Entries();
+        dLU1(eCode,iRes);
+        *(++aiDstk) = iRes;
         break;
         
       case EO_IXT_SRC_BEGIN: NoArg(); // begin linear traverse

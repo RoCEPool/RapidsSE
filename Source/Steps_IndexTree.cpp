@@ -13,6 +13,7 @@ void Step::vAddSteps_IndexTree(void)
   vAddStep("IndexTree[].aggregate"_Stz, &Step::vIndexTreeAggregate);
   vAddStep("IndexTree[].asAlt"_Stz,     &Step::vIndexTreeAsAlt);
   vAddStep("IndexTree[].asSrc"_Stz,     &Step::vIndexTreeAsSrc);
+  vAddStep("IndexTree[].asTmp"_Stz,     &Step::vIndexTreeAsTmp);
   vAddStep("IndexTree[].delete"_Stz,    &Step::vIndexTreeDelete);
   vAddStep("IndexTree[].new"_Stz,       &Step::vIndexTreeNew);
   vAddStep("IndexTree[].set"_Stz,       &Step::vIndexTreeSet);
@@ -132,6 +133,18 @@ void Step::vIndexTreeAsSrc(void)
   ENTRY();
   
   m_pLogicUnit->m_pSrcIdxTree = * m_pLogicUnit->m_xpIndexTree;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexTree[].asTmp -- set this index tree as m_pIndexTree                   */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexTreeAsTmp(void)
+{
+  ENTRY();
+  
+  m_pLogicUnit->m_pIndexTree = * m_pLogicUnit->m_xpIndexTree;
   
   EXIT();
 }

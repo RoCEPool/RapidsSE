@@ -13,7 +13,7 @@ extern Stz* gsBuildUserName;
 extern Stz* gsBuildBranch;
 
 extern Args gxArgs;
-extern DebugFlags gxDebugFlags;;
+extern DebugFlags gxDebugFlags;
 
 extern i8   gi_argc;
 extern s256 gi_szaArgv[];
