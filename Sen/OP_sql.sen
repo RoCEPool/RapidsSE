@@ -164,6 +164,8 @@
 
   "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 300=PULSEMARKER" .
 
+  ZK_PULSEMARKER_handler
+
   "customer" "customer_Idx1" op__table_index assert
 
   Table[].asSrcStreamDef
@@ -196,6 +198,8 @@
 
   "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 301=PULSEMARKER" .
 
+  ZK_PULSEMARKER_handler
+
   "lineitem" "lineitem_Idx1" op__table_index assert
 
   Table[].asAltStreamDef
@@ -217,6 +221,7 @@
 
   "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 400=PULSEMARKER" .
 
+  ZK_PULSEMARKER_handler
 
   "orders" "orders_Idx1" op__table_index assert
 
@@ -251,9 +256,9 @@
 
     400 of sql_PulseMarker_400   endof
 
-  endcase
+    ZK_PULSEMARKER_handler
 
-  ZK_PULSEDMARKER_handler
+  endcase
 ;
 
 /*----------------------------------------------------------------------------*/

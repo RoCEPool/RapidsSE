@@ -232,7 +232,9 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_ALT_PRINT
   { EA_NONE,    0 },  // EO_IXT_JOI_MATCH
   { EA_NONE,    0 },  // EO_IXT_CMP_SRCALT
+  { EA_NONE,    0 },  // EO_IXT_CMP_WRKALT
   { EA_NONE,    0 },  // EO_IXT_POS_ALTBYSRC
+  { EA_NONE,    0 },  // EO_IXT_POS_ALTBYWRK
 
   // jump operators
   { EA_LABEL,   8 },  // EO_JMP
@@ -836,6 +838,21 @@ void LogicUnit::vGenerateQuery301(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("AGG_REVENUE:"_Stz);
   
+  vAddCode(EO_ENTWRK_RESET);
+
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+
+  vAddCode(EO_IXT_POS_ALTBYWRK);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_AGG_f:"_Stz);
+  vDefineLabel("NXT_AGG:"_Stz);
+  vAddCode(EO_IXT_ALT_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_AGG_f:"_Stz);
+  vAddCode(EO_IXT_ALT_PRINT);
+  vAddCode(EO_IXT_CMP_WRKALT);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_AGG_f:"_Stz);
+
+  vDefineLabel("RET_AGG_f:"_Stz);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2213,6 +2230,7 @@ i8 LogicUnit::iCompute(void)
   
   Key* aSrcKey;
   Key* aAltKey;
+  Key* aWrkKey;
 
   SP_Ent spEnt;
   Ent* aEnt;
@@ -2677,9 +2695,37 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = iRes;
         break;
 
+      case EO_IXT_CMP_WRKALT: NoArg(); // compare wrk.key to alt.key
+        aWrkKey = m_oEntWrk.aKey();
+        aAltKey = m_aAltEnt->aKey();
+        eCmp = Key::eCompare(aWrkKey,aAltKey);
+        if (KC_BEFORE == eCmp)
+          iRes = -1;
+        else
+        if (KC_SAME == eCmp)
+          iRes = 0;
+        else
+          iRes = 1;
+        dLU1(eCode,iRes);
+        *(++aiDstk) = iRes;
+        break;
+
       case EO_IXT_POS_ALTBYSRC: NoArg(); // position alt ixt using src.key
         aSrcKey = m_aSrcEnt->aKey();
         m_aAltEnt = m_pAltIdxTree->aPositionPriorEntry(aSrcKey,&m_pAltEntBuffer);
+        if (m_pAltEntBuffer) {
+          if (m_aAltEnt)
+            *(++aiDstk) = 1;
+          else
+            *(++aiDstk) = 0;
+        }
+        else
+          *(++aiDstk) = 0;
+        break;
+
+      case EO_IXT_POS_ALTBYWRK: NoArg(); // position alt ixt using entwrk.key
+        aWrkKey = m_oEntWrk.aKey();
+        m_aAltEnt = m_pAltIdxTree->aPositionPriorEntry(aWrkKey,&m_pAltEntBuffer);
         if (m_pAltEntBuffer) {
           if (m_aAltEnt)
             *(++aiDstk) = 1;

@@ -76,7 +76,9 @@ enum eEO : i1 // expression operators
   /*    */ EO_IXT_ALT_PRINT,    // print src ent
   /*    */ EO_IXT_JOI_MATCH,    // test for join match (src.key == alt.key)
   /*    */ EO_IXT_CMP_SRCALT,   // compare src.key to alt.key
+  /*    */ EO_IXT_CMP_WRKALT,   // compare wrk.key to alt.key
   /*    */ EO_IXT_POS_ALTBYSRC, // position alt ixt using src.key
+  /*    */ EO_IXT_POS_ALTBYWRK, // position alt ixt using entwrk.key
 
   // jump operators
   /*    */ EO_JMP,              // jump to location
@@ -251,8 +253,10 @@ static Stz* aEO[]
   /*    */ "EO_IXT_ALT_PRINT"_Stz,
   /*    */ "EO_IXT_JOI_MATCH"_Stz,
   /*    */ "EO_IXT_CMP_SRCALT"_Stz,
+  /*    */ "EO_IXT_CMP_WRKALT"_Stz,
   /*    */ "EO_IXT_POS_ALTBYSRC"_Stz,
-
+  /*    */ "EO_IXT_POS_ALTBYWRK"_Stz,
+  
   // jump operators
   /*    */ "EO_JMP"_Stz,
   /*    */ "EO_JMP_FALSE"_Stz,
