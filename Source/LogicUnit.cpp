@@ -948,6 +948,8 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_DIVIDE);
 
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q301_REVENUE);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_REVENUE);
+  vAddCode(EO_PRINT);
 
   vAddCodeLabel(EO_JMP,"NXT_AGG:"_Stz);
   
@@ -965,22 +967,38 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_PRINT);
   vAddCode(EO_BREAKPOINT);
 
-  vAddCode(EO_ENTWRK_RESET);
-
   vAddCode(EO_IXT_TMP_ENTRIES);
   vAddCodeArg(EO_INTEGER,10);
   vAddCode(EO_LESSTHAN);
-  vAddCodeLabel(EO_JMP_FALSE,"LIM_RET:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"LIM_INS:"_Stz);
 
-  vDefineLabel("LIM_INS:"_Stz);
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERKEY);
-  vAddCode(EO_ENTWRK_APPENDELMI);
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERDATE);
-  vAddCode(EO_ENTWRK_APPENDELMI);
+  
+  vDefineLabel("LIM_TST:"_Stz);
+  
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"LIM_RET:"_Stz); // need an assert
+
+  vAddCode(EO_ENT_PUSHELMI0);
   vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_REVENUE);
+  vAddCode(EO_GREATERTHAN);
+  vAddCodeLabel(EO_JMP_TRUE,"LIM_RET:"_Stz);
+
+
+  
+  vDefineLabel("LIM_INS:"_Stz);
+
+  vAddCode(EO_ENTWRK_RESET);
+
+//  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERKEY);
+//  vAddCode(EO_ENTWRK_APPENDELMI);
+//  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERDATE);
+//  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_REVENUE);
+  vAddCode(EO_DUP);
+  vAddCode(EO_PRINT);
   vAddCode(EO_ENTWRK_APPENDELMI);
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_SHIPPRIORITY);
-  vAddCode(EO_ENTWRK_APPENDELMI);
+//  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_SHIPPRIORITY);
+//  vAddCode(EO_ENTWRK_APPENDELMI);
 
   vAddCode(EO_IXT_INS_ENT);
 
@@ -2836,7 +2854,7 @@ i8 LogicUnit::iCompute(void)
         break;
         
       case EO_RSB_DST_PUSHCOLI: GetArg(iArg); // push dst column
-        m_aDstRsb = m_pDstRowSlab->aRsbAdr(0);
+        m_aDstRsb = m_pDstRowSlab->aRsbAdr(m_pDstRowSlab->nRows()-1);
         i_Cell_ntv = m_aDstRsb->i_ColToCell_ntv(iArg);
         iRes = m_aDstRsb->iVal_ntv(i_Cell_ntv);
         dLU2(eCode,iArg,iRes);
