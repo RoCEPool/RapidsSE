@@ -801,12 +801,22 @@ void LogicUnit::vGenerateQuery301(void)
   m_i_Code = 0;
   
   vAddCode(EO_PIX_STM_PRINT);
+  
+  vAddCode(EO_RSB_SRC_BEGIN);
+  
+  vDefineLabel("NXT_S:"_Stz);
+  vAddCode(EO_RSB_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE,"END_S:"_Stz);
+
+  vAddCode(EO_RSB_SRC_PRINT);
+  vAddCodeLabel(EO_JMP,"NXT_S:"_Stz);
+
+  vDefineLabel("END_A:"_Stz);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vDumpCode();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2884,6 +2894,8 @@ i8 LogicUnit::iCompute(void)
       case EO_RSB_SRC_BEGIN: NoArg(); // begin src rsb traverse
         dLU0(eCode);
         m_i_SrcRow = -1;
+        m_aSrcRsb  = nullptr;
+        m_nSrcRows = m_pSrcRowSlab ? m_pSrcRowSlab->nRows() : 0;
         break;
 
       case EO_RSB_SRC_NEXT: NoArg(); // move to next src rsb

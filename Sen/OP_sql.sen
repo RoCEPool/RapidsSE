@@ -267,13 +267,19 @@
 
     301 of
       "---------------------------- 301=RSBBUFFER ----------------------------" .
+      Operand[].pipeIn
+      Operand[].asSrcRowSlab
+      LogicUnit[].transform
+      Operand[].delete
+
     endof
 
-  endcase
+    "------------------------------ =RSBBUFFER -----------------------------" .
+    Operand[].pipeIn
+    LogicUnit[].transform
+    Operand[].delete
 
-  Operand[].pipeIn
-  LogicUnit[].transform
-  Operand[].delete
+  endcase
 
   Pot[].pipeoutAllCompleted
 
