@@ -399,6 +399,10 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_RSB_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
   
+  // call the filter subroutine
+  vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "NEXT_RSB_SRC:"_Stz);
+  
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
   
@@ -544,6 +548,32 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
   vDefineLabel("END_RSB_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // FILTER SUBROUTINE
+  vDefineLabel("SUBROUTINE_FILTER:"_Stz);
+  
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_SHIPDATE);
+  vAddCodeArg(EO_DATE, "1998-09-01"_Stz);
+  vAddCode(EO_GREATEREQUAL);
+  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
+  
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_SHIPDATE);
+  vAddCodeArg(EO_DATE, "1998-12-01"_Stz);
+  vAddCode(EO_LESSEQUAL);
+  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
+  
+  // return true
+  vAddCode(EO_PUSH1);
+  vAddCodeLabel(EO_JMP,"RETURN:"_Stz);
+  
+  // return false
+  vDefineLabel("RETURN_FALSE:"_Stz);
+  vAddCode(EO_PUSH0);
+  
+  // return
+  vDefineLabel("RETURN:"_Stz);
   vAddCode(EO_RETURN);
   
   vDumpCode();
