@@ -851,6 +851,13 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_IXT_ALT_PRINT);
   vAddCode(EO_IXT_CMP_WRKALT);
   vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_AGG_f:"_Stz);
+  
+  vAddCode(EO_CRW_ALT_FETCH);
+
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI,Q301_REVENUE);
+  vAddCodeArg(EO_COL_ALT_PUSH,L_EXTENDEDPRICE);
+  vAddCode(EO_ADD);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,Q301_REVENUE);
 
   vDefineLabel("RET_AGG_f:"_Stz);
   vAddCode(EO_RETURN);
@@ -3094,8 +3101,12 @@ i8 LogicUnit::iCompute(void)
       }
         break;
         
-      case EO_RSB_ALT_PUSHCOLI: NEVER_REACH; // not yet implemented
-      
+      case EO_RSB_ALT_PUSHCOLI: GetArg(iArg); // push alt column
+        iRes = m_aAltRsb->iVal_ntv(m_aAltRsb->i_ColToCell_ntv(iArg));
+        dLU2(eCode,iArg,iRes);
+        *(++aiDstk) = iRes;
+        break;
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // stack operators
       case EO_INC: NoArg(); // increment top, push result
