@@ -311,7 +311,7 @@
     102 of
       // AGGREGATE WITH GROUPBY (SUPER)
       queryNo "QUERY %v" .printf
-      101 LogicUnit[].genCode
+      103 LogicUnit[].genCode
       LogicUnit[].transform
       IndexTree[].delete
     endof
