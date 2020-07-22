@@ -1142,64 +1142,6 @@ void LogicUnit::vGenerateQuery601(void)
   vDumpCode();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* aggregate compute                                                          */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iAggregate(RowSlab* pSrcRowSlab, StreamDef* pStreamDefOut)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  m_pDstRowSlab = nullptr;
-  
-  m_aSrcRsb      = nullptr;
-  m_pSrcRowSlab  = pSrcRowSlab;
-  m_nSrcRows    = m_pSrcRowSlab->nRows();
-  
-  m_aAltRsb     = nullptr;
-  m_pAltRowSlab = nullptr;
-  
-  pStreamDefOut->vToStreamPix(&m_oStreamPix,true);
-  m_xpPot->vStreamPix(&m_oStreamPix);
-  
-  m_pEnt              = nullptr;
-  //m_oEntWrk
-  m_pEntBuffer        = nullptr;
-  m_pIndexTree        = nullptr;
-  
-  i8 iResult = iCompute();
-  
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* group by aggregate compute                                                 */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iAggregateGby(Pot* pPot, IndexTree* pIndexTree, RowSlab* pDstRowSlab,
-                             Rsb* aSrcRsb, RowSlab* pSrcRowSlab)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  m_xpPot       = pPot;
-  m_pDstRowSlab = pDstRowSlab;
-  
-  m_aSrcRsb      = aSrcRsb;
-  m_pSrcRowSlab  = pSrcRowSlab;
-  
-  m_aAltRsb     = nullptr;
-  m_pAltRowSlab = nullptr;
-  
-  m_pEnt        = nullptr;
-  //m_oEntWrk
-  m_pEntBuffer  = nullptr;
-  
-  m_pIndexTree  = pIndexTree;
-  
-  i8 iResult = iCompute();
-  
-  return iResult;
-}
-
 /*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
