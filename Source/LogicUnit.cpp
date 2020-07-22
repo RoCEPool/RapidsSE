@@ -4,6 +4,8 @@
 
 #include "Expressions.h"
 
+extern DebugFlags gxDebugFlags;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -223,6 +225,7 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_INS_ENT
   { EA_NONE,    0 },  // EO_IXT_TRV_BEGIN
   { EA_NONE,    0 },  // EO_IXT_TRV_NEXT
+  { EA_NONE,    0 },  // EO_IXT_TMP_ENTRIES
 
   { EA_NONE,    0 },  // EO_IXT_SRC_BEGIN
   { EA_NONE,    0 },  // EO_IXT_SRC_NEXT
@@ -707,11 +710,11 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_IXT_SRC_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"END:"_Stz);
   vDefineLabel("GOT_S:"_Stz);
-  vAddCode(EO_IXT_SRC_PRINT);
+  //vAddCode(EO_IXT_SRC_PRINT);
   
   vAddCode(EO_CRW_SRC_FETCH);
-  vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
-  vAddCode(EO_STR_PRINTSTK);
+  //vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
+  //vAddCode(EO_STR_PRINTSTK);
   
   vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
   vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);
@@ -743,15 +746,15 @@ void LogicUnit::vGenerateQuery300(void)
   vDefineLabel("NXT_A:"_Stz);
   vAddCode(EO_IXT_ALT_NEXT);
   
-  vAddCode(EO_IXT_SRC_PRINT);
-  vAddCode(EO_IXT_ALT_PRINT);
+  //vAddCode(EO_IXT_SRC_PRINT);
+  //vAddCode(EO_IXT_ALT_PRINT);
 
 
   vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
   vAddCode(EO_IXT_CMP_SRCALT);
   vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A:"_Stz);
 
-  vAddCode(EO_IXT_ALT_PRINT);
+  //vAddCode(EO_IXT_ALT_PRINT);
   
   vAddCode(EO_CRW_ALT_FETCH);
   vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
@@ -759,8 +762,8 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_A:"_Stz);
 
-  vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
-  vAddCode(EO_DTE_PRINT);
+  //vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
+  //vAddCode(EO_DTE_PRINT);
 
   vAddCode(EO_RSB_DST_NEW);
   vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERKEY);
@@ -769,7 +772,7 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERDATE);
   vAddCodeArg(EO_COL_ALT_PUSH,O_SHIPPRIORITY);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
-  vAddCode(EO_RSB_DST_PRINT);
+  //vAddCode(EO_RSB_DST_PRINT);
 
   vAddCode(EO_BREAKPOINT);
 
@@ -815,7 +818,7 @@ void LogicUnit::vGenerateQuery301(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("MOV_DST:"_Stz);
   
-  vAddCode(EO_RSB_SRC_PRINT);
+  //vAddCode(EO_RSB_SRC_PRINT);
 
   vAddCode(EO_RSB_DST_NEW);
 
@@ -1901,7 +1904,8 @@ i8 LogicUnit::iCompute(void)
     
     eCode = *aeCode++;
     
-    vTrace("%s  (StkUse %lld)\n"_Stz,aEO[eCode],nStkUse);
+    if (! gxDebugFlags.m_iRay)
+      vTrace("%s  (StkUse %lld)\n"_Stz,aEO[eCode],nStkUse);
     
     switch (eCode) {
         
@@ -2252,6 +2256,11 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
+        break;
+        
+      case EO_IXT_TMP_ENTRIES: NoArg(); // push number of entries in tmp index
+        iRes = m_pIndexTree->iCountH0Entries();
+        dLU1(eCode,iRes);
         break;
         
       case EO_IXT_SRC_BEGIN: NoArg(); // begin linear traverse
