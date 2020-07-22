@@ -663,7 +663,7 @@ void LogicUnit::vGenerateQuery102(void)
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q101_COUNT_QTY);
   
   vAddCode(EO_IXT_DUMP);
-  
+  vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
   // FOUND:
   vDefineLabel("FOUND"_Stz);

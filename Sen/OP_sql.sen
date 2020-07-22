@@ -396,8 +396,71 @@
       "sum_charge"
       StreamDefOut[].addColumn
 
-      // add column AVG(L_QUANTITY) as AVG_QTY
+      // add column COUNT(L_QUANTITY) as COUNT_QTY
+      0
+      19
+      CT_INTEGER
+      "count_qty"
+      StreamDefOut[].addColumn
+
+      StreamDef[].delete
+
+      StreamDefOut[].duplicate to StreamDef[]
+      StreamDef[].pipeout
+    endof
+
+    102 of
+      StreamDefOut[].new
+      // add column L_RETURNFLAG
+      0 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      pColumn column.name@
+      StreamDefOut[].addColumn
+
+      // add column L_LINESTATUS
+      1 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      pColumn column.name@
+      StreamDefOut[].addColumn
+
+      // add column SUM(L_QUANTITY) as SUM_QTY
+      2 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      pColumn column.name@
+      StreamDefOut[].addColumn
+
+      // add column SUM(L_EXTENDEDPRICE) as SUM_BASE_PRICESUM_QTY
+      3 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      pColumn column.name@
+      StreamDefOut[].addColumn
+
+      // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) as SUM_DISC_PRICE
       4 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      pColumn column.name@
+      StreamDefOut[].addColumn
+
+      // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) as SUM_CHARGESUM_QTY
+      5 StreamDef[].column@ to pColumn
+      pColumn column.scale@
+      pColumn column.length@
+      pColumn column.type@
+      pColumn column.name@
+      StreamDefOut[].addColumn
+
+      // add column COUNT(L_QUANTITY) as AVG_QTY
+      2 StreamDef[].column@ to pColumn
       pColumn column.scale@
       pColumn column.length@
       pColumn column.type@
@@ -408,11 +471,7 @@
 
       StreamDefOut[].duplicate to StreamDef[]
       StreamDef[].pipeout
-    endof
 
-    102 of
-      StreamDef[].duplicate to StreamDefOut[]
-      StreamDef[].pipeout
     endof
 
     300 of
