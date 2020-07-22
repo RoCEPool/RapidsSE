@@ -961,8 +961,18 @@ void LogicUnit::vGenerateQuery301(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("LIM_SBR:"_Stz);
 
+  vAddCode(EO_IXT_TMP_ENTRIES);
+  vAddCode(EO_PRINT);
+  vAddCode(EO_BREAKPOINT);
+
   vAddCode(EO_ENTWRK_RESET);
 
+  vAddCode(EO_IXT_TMP_ENTRIES);
+  vAddCodeArg(EO_INTEGER,10);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMP_FALSE,"LIM_RET:"_Stz);
+
+  vDefineLabel("LIM_INS:"_Stz);
   vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERKEY);
   vAddCode(EO_ENTWRK_APPENDELMI);
   vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERDATE);
@@ -974,10 +984,8 @@ void LogicUnit::vGenerateQuery301(void)
 
   vAddCode(EO_IXT_INS_ENT);
 
-  vAddCode(EO_IXT_TMP_ENTRIES);
-  vAddCode(EO_PRINT);
-  vAddCode(EO_BREAKPOINT);
 
+  vDefineLabel("LIM_RET:"_Stz);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
