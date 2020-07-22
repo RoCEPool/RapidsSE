@@ -405,7 +405,7 @@
   "count_price"
   StreamDefOut[].addColumn
 
-  // add column SUM(L_DISCOUNT)) as SUM_discount
+  // add column SUM(L_DISCOUNT)) as SUM_DISCOUNT
   6 StreamDef[].column@ to pColumn
   pColumn column.scale@
   pColumn column.length@
@@ -418,6 +418,13 @@
   19
   CT_INTEGER
   "count_discount"
+  StreamDefOut[].addColumn
+
+  // add column COUNT(*) as COUNT_ORDER
+  0
+  19
+  CT_INTEGER
+  "count_order"
   StreamDefOut[].addColumn
 
   StreamDef[].delete
@@ -505,6 +512,14 @@
   pColumn column.length@
   pColumn column.type@
   "avg_disc"
+  StreamDefOut[].addColumn
+
+  // add column Q101_COUNT_ORDER as COUNT_ORDER
+  10 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "count_order"
   StreamDefOut[].addColumn
 
   StreamDef[].delete
