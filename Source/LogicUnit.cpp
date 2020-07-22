@@ -857,8 +857,19 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeArg(EO_RSB_DST_PUSHCOLI,Q301_REVENUE);
   vAddCodeArg(EO_COL_ALT_PUSH,L_EXTENDEDPRICE);
   vAddCode(EO_ADD);
+
+  vAddCodeArg(EO_INTEGER,100);
+  vAddCodeArg(EO_COL_ALT_PUSH,L_DISCOUNT);
+  vAddCode(EO_SUBTRACT);
+  
+  vAddCode(EO_MULTIPLY);
+  vAddCodeArg(EO_INTEGER,100);
+  vAddCode(EO_DIVIDE);
+
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q301_REVENUE);
 
+  vAddCodeLabel(EO_JMP,"NXT_AGG:"_Stz);
+  
   vDefineLabel("RET_AGG_f:"_Stz);
   vAddCode(EO_RETURN);
 
