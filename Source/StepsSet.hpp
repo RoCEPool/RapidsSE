@@ -499,6 +499,7 @@ public:
   void vIndexTreeAggregate(void);
   void vIndexTreeAsAlt(void);
   void vIndexTreeAsSrc(void);
+  void vIndexTreeAsTmp(void);
   void vIndexTreeDelete(void);
   void vIndexTreeGet(void);
   void vIndexTreeInsEntBuffer(void);
