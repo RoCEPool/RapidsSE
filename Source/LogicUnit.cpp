@@ -1013,9 +1013,14 @@ void LogicUnit::vGenerateQuery301(void)
   
   m_i_Code = 0;
   
+  vAddCode(EO_PUSH1);
+  vAddCode(EO_TRACE);
   vAddCode(EO_PIX_STM_PRINT);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vAddCode(EO_RSB_DST_NEW);
+
   vAddCode(EO_RSB_SRC_BEGIN);
   
   vDefineLabel("NXT_SRC:"_Stz);
@@ -1038,7 +1043,7 @@ void LogicUnit::vGenerateQuery301(void)
   
   vAddCode(EO_RSB_SRC_PRINT);
 
-  vAddCode(EO_RSB_DST_NEW);
+  vAddCode(EO_RSB_DST_ZERO);
 
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY);
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_ORDERKEY);

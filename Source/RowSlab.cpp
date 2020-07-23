@@ -522,7 +522,9 @@ void RowSlab::vZeroRsb(Rsb *aRsb)
 
   i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
 
-  MemLib::vZero(aRsb,nCellBytes,CN_ROWSLAB);
+  void* aDst = aAdd<void*>(aRsb, - (m_oStreamPix.m_nCols - 1) * C_BYTES_PER_WORD);
+  
+  MemLib::vZero(aDst,nCellBytes,CN_ROWSLAB);
 }
 
 /*----------------------------------------------------------------------------*/
