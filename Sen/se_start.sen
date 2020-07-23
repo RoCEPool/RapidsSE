@@ -941,7 +941,7 @@
   sPath
   "
   procedure Query1
-    parameters $Table $File
+    parameters $Table
   begin
 
   stage stageA on origin :
@@ -971,7 +971,7 @@
   sPath
   "
   procedure Query6
-    parameters $Table $File
+    parameters $Table
   begin
 
   stage stageA on origin :
