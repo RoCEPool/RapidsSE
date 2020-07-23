@@ -50,6 +50,7 @@ shortcut sw3  "../Expressions/_srcidx_walk_3";
 shortcut sw4  "../Expressions/_srcidx_walk_4";
 shortcut sw5  "../Expressions/_srcidx_walk_5";
 shortcut t    _unitTestA;
+shortcut tpch _TPCH_SF1;
 shortcut u    _upsertRJH;
 shortcut v    vortex;
 shortcut x    exp3;
