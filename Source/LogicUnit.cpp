@@ -1106,10 +1106,10 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"LIM_RET:"_Stz); // need an assert
 
-  //vAddCode(EO_ENT_PUSHELMI0);
-  //vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_REVENUE);
-  //vAddCode(EO_GREATERTHAN);
-  //vAddCodeLabel(EO_JMP_TRUE,"LIM_RET:"_Stz);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_REVENUE);
+  vAddCode(EO_ENT_PUSHELMI0);
+  vAddCode(EO_LESSEQUAL);
+  vAddCodeLabel(EO_JMP_TRUE,"LIM_RET:"_Stz);
 
   vAddCode(EO_IXT_DEL_ENT);
 
