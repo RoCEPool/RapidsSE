@@ -937,10 +937,10 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 1
+  // Query 1 - converting loaded CRW data into RSB
   sPath
   "
-  procedure Query1_Exp1
+  procedure Query1
     parameters $Table $File
   begin
 
@@ -967,41 +967,10 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // query 6 (reading from file into RSB)
-  sPath
-  "
-  procedure Query6_Exp1
-    parameters $Table $File
-  begin
-
-  stage stageA on origin :
-    start
-    | periodicOp once
-    | chunk $file
-    | rdCsvChunk $file
-    | stageB robin
-
-
-  stage stageB on all partitions :
-    toRsb $table
-    | sql 600
-    | stageC
-
-  stage stageC on origin :
-    sql 601
-    | output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - converting loaded CRW data into RSB
   sPath
   "
-  procedure Query6_Exp2
+  procedure Query6
     parameters $Table $File
   begin
 

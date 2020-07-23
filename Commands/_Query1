@@ -34,19 +34,19 @@ create table LineItem                      // SF * 6,000,000 rows
 // 10 ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 ///time load lineitem "/DATA/TPCH/lineitem10.csv";
-///time Query1_Exp1 lineitem "/DATA/TPCH/lineitem10.csv";
+///time Query1 lineitem "/DATA/TPCH/lineitem10.csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 10K ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 /time load lineitem "/DATA/TPCH/lineitem10k.csv";
-/time Query1_Exp1 lineitem "/DATA/TPCH/lineitem10k.csv";
+/time Query1 lineitem "/DATA/TPCH/lineitem10k.csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-// SF1 : EXP1
+// SF1 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 ///time load lineitem "/tpch/SF1/lineitem.csv";
-///time Query1_Exp1 lineitem "/tpch/SF1/lineitem.csv";
+///time Query1 lineitem "/tpch/SF1/lineitem.csv";
 
 
 /*============================================================================*/
