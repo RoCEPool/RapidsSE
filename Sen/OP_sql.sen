@@ -529,6 +529,31 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ... (600)                                        STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: sql_StreamDef_600
+
+  0 locals| pColumn |
+
+  StreamDefOut[].new
+
+  // add column SUM(L_EXTENDEDPRICE*L_DISCOUNT) as REVENUE
+  5 StreamDef[].column@ to pColumn
+
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "revenue"
+  StreamDefOut[].addColumn
+
+  StreamDef[].delete
+  StreamDefOut[].duplicate to StreamDef[]
+  StreamDef[].pipeout
+
+  //StreamDefOut[].print
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : sql_StreamDef \handler
@@ -564,23 +589,7 @@
     endof
 
     600 of
-      StreamDefOut[].new
-
-      // add column L_EXTENTEDPRICE
-      5 StreamDef[].column@ to pColumn
-
-      pColumn column.scale@
-      pColumn column.length@
-      pColumn column.type@
-      "revenue"
-      StreamDefOut[].addColumn
-      StreamDef[].delete
-
-      StreamDefOut[].duplicate to StreamDef[]
-      StreamDef[].pipeout
-
-      //StreamDefOut[].print
-
+      sql_StreamDef_600
     endof
 
     601 of
