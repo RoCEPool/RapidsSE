@@ -285,6 +285,7 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_RSB_DST_PRINT
   { EA_NONE,    0 },  // EO_RSB_DST_NEW
   { EA_NONE,    0 },  // EO_RSB_DST_TEST
+  { EA_NONE,    0 },  // EO_RSB_DST_ZERO
   { EA_NONE,    0 },  // EO_RSB_SRC_BEGIN
   { EA_NONE,    0 },  // EO_RSB_SRC_NEXT
   { EA_NONE,    0 },  // EO_RSB_SRC_PRINT
@@ -2931,6 +2932,11 @@ i8 LogicUnit::iCompute(void)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
+        break;
+        
+      case EO_RSB_DST_ZERO: NoArg(); // zero destination rsb
+        dLU0(eCode);
+        m_pDstRowSlab->vZeroRsb(m_aDstRsb);
         break;
         
       case EO_RSB_SRC_BEGIN: NoArg(); // begin src rsb traverse

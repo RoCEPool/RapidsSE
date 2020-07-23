@@ -74,6 +74,7 @@ namespace Rows
     i8    nRows(void);
     void  vSlabReport(void);
     StreamPix* aStreamPix(void);
+    void  vZeroRsb(Rsb* aRsb);
 
   private:
     m8*     amSlabCellVec(void);
