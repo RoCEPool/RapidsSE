@@ -452,7 +452,7 @@ void LogicUnit::vGenerateQuery100(void)
   // set sum(L_QUANTITY) -> Q100_SUM_CHARGE
   vAddCode(EO_PUSH0);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_CHARGE);
-  //vAddCode(EO_IXT_DUMP);
+  vAddCode(EO_IXT_DUMP);
   
   // FOUND:
   vDefineLabel("FOUND"_Stz);
@@ -462,7 +462,6 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_QUANTITY);
   vAddCode(EO_ADD);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_QTY);
-  //vAddCode(EO_IXT_DUMP);
 
   // SUM(L_EXTENDEDPRICE) -> Q100_SUM_BASE_PRICE
   vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_BASE_PRICE);
@@ -544,7 +543,7 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_INC);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_ORDER);
   
-  //vAddCode(EO_IXT_DUMP);
+  vAddCode(EO_IXT_DUMP);
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
   vDefineLabel("END_RSB_SRC:"_Stz);
