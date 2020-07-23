@@ -1100,7 +1100,7 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_TRUE,"LIM_INS:"_Stz);
 
-  
+  // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_TST:"_Stz);
   
   vAddCode(EO_IXT_TRV_BEGIN);
@@ -1114,24 +1114,29 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_IXT_DEL_ENT);
 
   
+  // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_INS:"_Stz);
 
   vAddCode(EO_ENTWRK_RESET);
 
-//  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERKEY);
-//  vAddCode(EO_ENTWRK_APPENDELMI);
-//  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERDATE);
-//  vAddCode(EO_ENTWRK_APPENDELMI);
   vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_REVENUE);
   vAddCode(EO_DUP);
   vAddCode(EO_PRINT);
   vAddCode(EO_ENTWRK_APPENDELMI);
-//  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_SHIPPRIORITY);
-//  vAddCode(EO_ENTWRK_APPENDELMI);
+  
+  vAddCodeArg(EO_ENTWRK_CREATEPAY, 3 * C_BYTES_PER_WORD);
 
   vAddCode(EO_IXT_INS_ENT);
+  
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERKEY);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERDATE);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)1);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_SHIPPRIORITY);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)2);
 
 
+  // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_RET:"_Stz);
   vAddCode(EO_IXT_DUMP);
   vAddCode(EO_BREAKPOINT);
