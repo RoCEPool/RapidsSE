@@ -219,6 +219,7 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_INI_SRC_SLAB
   
   // index tree
+  { EA_NONE,    0 },  // EO_IXT_DEL_ENT
   { EA_NONE,    0 },  // EO_IXT_DUMP
   { EA_NONE,    0 },  // EO_IXT_INS_ENT
   { EA_NONE,    0 },  // EO_IXT_TRV_BEGIN
@@ -2493,6 +2494,10 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
+      case EO_IXT_DEL_ENT: NoArg(); // delete current entry from indexTree
+        m_pIndexTree->vDelete(m_pEntBuffer,m_pEnt);
+        break;
+
       case EO_IXT_DUMP: NoArg(); // dump index tree
         m_pIndexTree->vDump(false);
         break;
