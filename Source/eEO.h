@@ -128,6 +128,7 @@ enum eEO : i1 // expression operators
   // rsb / rowslab
   /*    */ EO_RSB_DST_COPYSRC,  // copy src rsb to dst rsb
   /*    */ EO_RSB_DST_PRINT,    // print dst rsb
+  /*    */ EO_RSB_DST_RESET,    // reset dst rowslab
   /*    */ EO_RSB_DST_NEW,      // create new destination rsb
   /*    */ EO_RSB_DST_TEST,     // test if destination rsb
   /*    */ EO_RSB_DST_ZERO,     // zero destination rsb
@@ -308,6 +309,7 @@ static Stz* aEO[]
   // rsb / rowslab
   /*    */ "EO_RSB_DST_COPYSRC"_Stz,
   /*    */ "EO_RSB_DST_PRINT"_Stz,
+  /*    */ "EO_RSB_DST_RESET"_Stz,
   /*    */ "EO_RSB_DST_NEW"_Stz,
   /*    */ "EO_RSB_DST_TEST"_Stz,
   /*    */ "EO_RSB_DST_ZERO"_Stz,

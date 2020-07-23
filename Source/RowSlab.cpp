@@ -411,6 +411,20 @@ i8 RowSlab::iPtnOfRsb(Rsb* aRsb)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset this rowslab                                                         */
+/*----------------------------------------------------------------------------*/
+void RowSlab::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  m_nItems   = 0;
+  m_i_Row    = C_UNKNOWN;
+  m_i_Cell   = C_UNKNOWN;
+
+  m_xWsp.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of an rsb                                                      */
 /*----------------------------------------------------------------------------*/
 Rsb* RowSlab::aRsb(void)

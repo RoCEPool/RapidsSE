@@ -283,6 +283,7 @@ EoArg EoArgs[]
   // rsb / rowslab
   { EA_NONE,    0 },  // EO_RSB_DST_COPYSRC
   { EA_NONE,    0 },  // EO_RSB_DST_PRINT
+  { EA_NONE,    0 },  // EO_RSB_DST_RESET
   { EA_NONE,    0 },  // EO_RSB_DST_NEW
   { EA_NONE,    0 },  // EO_RSB_DST_TEST
   { EA_NONE,    0 },  // EO_RSB_DST_ZERO
@@ -2926,6 +2927,10 @@ i8 LogicUnit::iCompute(void)
         m_aDstRsb = m_xpPot->aNewDstRsb(&m_pDstRowSlab);
         break;
 
+      case EO_RSB_DST_RESET: NoArg(); // reset dst rowslab
+        m_pDstRowSlab->vReset();
+        break;
+        
       case EO_RSB_DST_TEST: NoArg(); // test if there is a destination rsb
         dLU0(eCode);
         if (m_aDstRsb)

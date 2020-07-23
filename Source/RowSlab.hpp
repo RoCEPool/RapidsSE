@@ -67,6 +67,7 @@ namespace Rows
     i8    iPtnOfRsb(Rsb* aRsb);
     void  vPositionOnCell(i8 i_Col);
     bool  bPtnHash(void);
+    void  vReset(void);
     Rsb*  aRsb(void);
     Rsb*  aRsbAdr(i8 i_Row);
     Rsb*  aRsbByOfs(i8 iOfs);
