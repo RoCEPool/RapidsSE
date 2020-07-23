@@ -1152,21 +1152,55 @@ void LogicUnit::vGenerateQuery301(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+//  vDefineLabel("TRV_IXT:"_Stz);
+//
+//  vAddCode(EO_IXT_TRV_BEGIN);
+//  vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
+//
+//  vDefineLabel("TRV_ECH:"_Stz);
+//
+//  vAddCode(EO_ENT_PUSHELMI0);
+//  vAddCode(EO_PRINT);
+//  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
+//  vAddCode(EO_PRINT);
+//  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)1);
+//  vAddCode(EO_DTE_PRINT);
+//  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)2);
+//  vAddCode(EO_PRINT);
+//
+//
+//  vDefineLabel("TRV_NXT:"_Stz);
+//  vAddCode(EO_IXT_TRV_NEXT);
+//  vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
+//
+//  vDefineLabel("TRV_RET:"_Stz);
+//  vAddCode(EO_BREAKPOINT);
+//  vAddCode(EO_RETURN);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vDefineLabel("TRV_IXT:"_Stz);
+  
+  vAddCode(EO_RSB_DST_RESET);
+
   
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
 
   vDefineLabel("TRV_ECH:"_Stz);
   
+  vAddCode(EO_RSB_DST_NEW);
+
+  
   vAddCode(EO_ENT_PUSHELMI0);
-  vAddCode(EO_PRINT);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_REVENUE);
+
   vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
-  vAddCode(EO_PRINT);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_ORDERKEY);
   vAddCodeArg(EO_PAY_FETCH_COLI,(i8)1);
-  vAddCode(EO_DTE_PRINT);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_ORDERDATE);
   vAddCodeArg(EO_PAY_FETCH_COLI,(i8)2);
-  vAddCode(EO_PRINT);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_SHIPPRIORITY);
 
 
   vDefineLabel("TRV_NXT:"_Stz);
@@ -1176,7 +1210,7 @@ void LogicUnit::vGenerateQuery301(void)
   vDefineLabel("TRV_RET:"_Stz);
   vAddCode(EO_BREAKPOINT);
   vAddCode(EO_RETURN);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vDumpCode();
