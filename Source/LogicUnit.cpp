@@ -2085,7 +2085,10 @@ void LogicUnit::vDumpCode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
  
-#ifdef WITH_TRACE_LOGICUNIT
+//#ifdef WITH_TRACE_LOGICUNIT
+  
+  if (301 != m_iSql)
+    return;
   
   SP_Dte spDate;
 
@@ -2128,7 +2131,7 @@ void LogicUnit::vDumpCode(void)
   }
   
   vDebugPoint();
-#endif
+//#endif
   
 }
 
