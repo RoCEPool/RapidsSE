@@ -1269,6 +1269,12 @@ void LogicUnit::vGenerateQuery600(void)
   vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_DST_NEW);
   
+  // initialze the row
+  vAddCode(EO_PUSH0);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
+  
+  vAddCode(EO_RSB_DST_PRINT);
+  
   // begin RSB traversal
   vDefineLabel("RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_SRC_BEGIN);
@@ -1340,13 +1346,11 @@ void LogicUnit::vGenerateQuery600(void)
   vAddCodeArg(EO_INTEGER,100);
   vAddCode(EO_DIVIDE);
   
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI,(i8)Q601_REVENUE);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI,(i8)Q600_REVENUE);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q601_REVENUE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
   
-  //vAddCode(EO_RSB_DST_PRINT);
   vAddCode(EO_RETURN);
-
   
   vDumpCode();
 }
@@ -1375,6 +1379,11 @@ void LogicUnit::vGenerateQuery601(void)
   vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_DST_NEW);
   
+  // initialize the row
+  vAddCode(EO_PUSH0);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
+  vAddCode(EO_RSB_DST_PRINT);
+  
   // begin RSB traversal
   vDefineLabel("RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_SRC_BEGIN);
@@ -1396,11 +1405,10 @@ void LogicUnit::vGenerateQuery601(void)
   vDefineLabel("SUBROUTINE_AGGREGATE:"_Stz);
   vAddCode(EO_RSB_SRC_PRINT);
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)Q600_REVENUE);
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI,(i8)Q600_REVENUE);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI,(i8)Q601_REVENUE);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q601_REVENUE);
   
-  vAddCode(EO_RSB_DST_PRINT);
   vAddCode(EO_RETURN);
   
   
