@@ -568,6 +568,10 @@ void Correctness::vTraceWithout(void)
 #ifndef WITH_TRACE_PURGING
   vTrace("  WITH_TRACE_PURGING\n"_Stz);
 #endif
+ 
+#ifndef WITH_TRACE_LOGICUNIT
+  vTrace("  WITH_TRACE_LOGICUNIT\n"_Stz);
+#endif
   
 }
 

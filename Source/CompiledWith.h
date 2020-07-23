@@ -48,6 +48,7 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
 #define WITH_TRACE_PURGING EndDefine         // trace purging
 //#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
+#define WITH_TRACE_LOGICUNIT EndDefine       // trace LOGIC UNIT
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
@@ -74,6 +75,7 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
 //#define WITH_TRACE_PURGING EndDefine       // trace purging
 //#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
+//#define WITH_TRACE_QUERIES EndDefine         // trace procedure
 
 #endif
 

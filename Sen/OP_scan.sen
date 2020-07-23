@@ -153,9 +153,9 @@
     PipeIn[].pipeOut
   then
 
-  args.developer if
-    1 debug::flag!
-  then
+  //args.developer if
+  //  1 debug::flag!
+  //then
 
   true
 ;

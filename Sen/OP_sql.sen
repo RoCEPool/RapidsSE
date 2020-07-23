@@ -104,13 +104,13 @@
   queryNo case
 
     100 of
-      queryNo "QUERY %v" .printf
+      //queryNo "QUERY %v" .printf
       100 LogicUnit[].genCode
       idxDef_vchvch indexDef[] indexTree[].new
     endof
 
     102 of
-      queryNo "QUERY %v" .printf
+      //queryNo "QUERY %v" .printf
       102 LogicUnit[].genCode
       idxDef_vchvch indexDef[] indexTree[].new
     endof
@@ -143,12 +143,12 @@
     endof
 
     600 of
-      queryNo "QUERY %v" .printf
+      //queryNo "QUERY %v" .printf
       600 LogicUnit[].genCode
     endof
 
     601 of
-      queryNo "QUERY %v" .printf
+      //queryNo "QUERY %v" .printf
       601 LogicUnit[].genCode
     endof
 
@@ -282,7 +282,7 @@
 
     endof
 
-    "------------------------------ =RSBBUFFER -----------------------------" .
+    //"------------------------------ =RSBBUFFER -----------------------------" .
     Operand[].pipeIn
     LogicUnit[].transform
     Operand[].delete
@@ -305,7 +305,7 @@
 
     100 of
       // AGGREGATE WITH GROUPBY
-      queryNo "QUERY %v" .printf
+      //queryNo "QUERY %v" .printf
       101 LogicUnit[].genCode
       LogicUnit[].transform
       IndexTree[].delete
@@ -313,7 +313,7 @@
 
     102 of
       // AGGREGATE WITH GROUPBY (SUPER)
-      queryNo "QUERY %v" .printf
+      //queryNo "QUERY %v" .printf
       103 LogicUnit[].genCode
       LogicUnit[].transform
       IndexTree[].delete

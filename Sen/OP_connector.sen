@@ -12,18 +12,18 @@
   params| pSocket |
 
   // find the __nodeinfo table
-  C_TDEF_NODEINFO op__tableDef_infoSet "T1" . assert
+  C_TDEF_NODEINFO op__tableDef_infoSet assert
 
   // create an infoSet operand
   infoSetTable[] infoSet[].new
 
   // add nodeInfo to the infoSet
-  infoSetTable[] infoSet[].addnodeInfo "T2" . assert
+  infoSetTable[] infoSet[].addnodeInfo assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node
   pSocket socket.grabWrite
-  infoSet[] pSocket socket.sendObject "T3" . assert
+  infoSet[] pSocket socket.sendObject assert
   pSocket socket.dropWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

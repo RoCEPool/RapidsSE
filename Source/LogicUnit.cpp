@@ -370,7 +370,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate agg group by                                                      */
+/* generate agg group by (Query 1)                                            */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery100(void)
 {
@@ -580,7 +580,7 @@ void LogicUnit::vGenerateQuery100(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate agg group by (copy)                                               */
+/* generate copy for agg group by (Query 1)                                   */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery101(void)
 {
@@ -651,7 +651,7 @@ void LogicUnit::vGenerateQuery101(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate super agg group by                                                */
+/* generate super agg group by (Query 1)                                      */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery102(void)
 {
@@ -819,7 +819,7 @@ void LogicUnit::vGenerateQuery102(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate super agg group by (copy)                                         */
+/* generate copy for super agg group by (Query 1)                             */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery103(void)
 {
@@ -1246,7 +1246,7 @@ void LogicUnit::vGenerateQuery400(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate query6                                                            */
+/* generate agg code (query6)                                                 */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery600(void)
 {
@@ -1336,7 +1336,7 @@ void LogicUnit::vGenerateQuery600(void)
 
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_EXTENDEDPRICE);
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_DISCOUNT);
-  vAddCode(EO_MULTIPLY);                // *
+  vAddCode(EO_MULTIPLY);
   vAddCodeArg(EO_INTEGER,100);
   vAddCode(EO_DIVIDE);
   
@@ -1352,7 +1352,7 @@ void LogicUnit::vGenerateQuery600(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate query601 (super agg for query 6)                                  */
+/* generate super agg (query 6)                                               */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery601(void)
 {
@@ -1661,11 +1661,14 @@ void LogicUnit::vPrintLabels(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+#ifdef WITH_TRACE_LOGICUNIT
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
     vTrace("  %s %lld: %4lld\n"_Stz,
            m_xaJumpLabel[i_Label].m_sLabel.szStz(),
            m_xaJumpLabel[i_Label].m_bDefined,
            m_xaJumpLabel[i_Label].m_i_Chain);
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1708,7 +1711,6 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  i8* piArg;
   i8  iArg = 0;
 
   i8 nTkns = pTknVec->nTokens();
@@ -1997,7 +1999,9 @@ bool LogicUnit::bCompileCode(TokenVec* pTknVec)
 void LogicUnit::vDumpCode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-      
+ 
+#ifdef WITH_TRACE_LOGICUNIT
+  
   SP_Dte spDate;
 
   vTrace("Code Dump for %lld\n"_Stz,m_iSql);
@@ -2039,6 +2043,8 @@ void LogicUnit::vDumpCode(void)
   }
   
   vDebugPoint();
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2141,8 +2147,10 @@ i8 LogicUnit::iCompute(void)
 
   IndexDef* pIndexDef = nullptr;
   
+#ifdef WITH_TRACE_LOGICUNIT
   vTrace("\nLogic Unit :: sql %lld\n\n"_Stz,m_iSql);
   vDebugPoint();
+#endif
 
   for (;;) {
     
@@ -2273,12 +2281,14 @@ i8 LogicUnit::iCompute(void)
         break;
         
       case EO_DTE_PRINT: NoArg(); // pop top and print as date
+#ifdef WITH_TRACE_LOGICUNIT
       {
         SP_Dte spDate;
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
         vTrace("%s\n"_Stz,spDate.sz(iTopA));
       }
+#endif
         break;
 
       case EO_DTE_YEAR: NoArg(); // pop top, push year of date
@@ -2343,10 +2353,12 @@ i8 LogicUnit::iCompute(void)
         
       case EO_ENT_EQUAL: NoArg();
       {
+#ifdef WITH_TRACE_LOGICUNIT
         SP_Ent spEnt;
         vTrace("\n\nEntWrk : %s\n"_Stz,
                spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
         vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pEnt,m_pIndexTree->pIndexDef()));
+#endif
         iRes  = KC_SAME == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
@@ -2378,8 +2390,11 @@ i8 LogicUnit::iCompute(void)
       {
         dLU1(eCode,iArg);
         m_oEntWrk.vAppendElement(m_aSrcRsb, &m_pSrcRowSlab->m_oStreamPix, iArg);
+        
+#ifdef WITH_TRACE_LOGICUNIT
         SP_Ent spEnt;
         vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
+#endif
         break;
       }
         
@@ -2405,9 +2420,11 @@ i8 LogicUnit::iCompute(void)
       case EO_ENTWRK_POPREF: NEVER_REACH; // not yet implemented
 
       case EO_ENTWRK_PRINT: NoArg(); // print m_oEntWrk
+#ifdef WITH_TRACE_LOGICUNIT
         aEnt = m_oEntWrk.aEnt();
         pIndexDef = m_xpIndexTree->pIndexDef();
         vTrace("EntWrk : %s\n"_Stz,spEnt.sz(aEnt,pIndexDef));
+#endif
         break;
         
       case EO_ENTWRK_RESET: NoArg(); // reset m_oEntWrk
@@ -2476,11 +2493,15 @@ i8 LogicUnit::iCompute(void)
       case EO_IXT_INS_ENT: NoArg(); // insert an entry into the indexTree
       {
         dLU0(eCode);
+#ifdef WITH_TRACE_LOGICUNIT
         SP_Ent spEnt;
         vTrace("Inserting entry"_Stz);
         vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
+#endif
         m_pEnt = m_pIndexTree->aInsertEntry(m_oEntWrk.aEnt());
+#ifdef WITH_TRACE_LOGICUNIT
         vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pEnt,m_pIndexTree->pIndexDef()));
+#endif
         ASSERT(m_pEnt);
       }
         break;
@@ -2539,7 +2560,9 @@ i8 LogicUnit::iCompute(void)
 
       case EO_IXT_SRC_PRINT: NoArg(); // print src ent
         pIndexDef = m_pSrcIdxTree->pIndexDef();
+#ifdef WITH_TRACE_LOGICUNIT
         vTrace("SrcEnt : %s\n"_Stz,spEnt.sz(m_aSrcEnt,pIndexDef));
+#endif
         break;
 
       case EO_IXT_ALT_BEGIN: NoArg(); // begin linear traverse
@@ -2567,7 +2590,9 @@ i8 LogicUnit::iCompute(void)
 
       case EO_IXT_ALT_PRINT: NoArg(); // print alt ent
         pIndexDef = m_pAltIdxTree->pIndexDef();
+#ifdef WITH_TRACE_LOGICUNIT
         vTrace("AltEnt : %s\n"_Stz,spEnt.sz(m_aAltEnt,pIndexDef));
+#endif
         break;
         
       case EO_IXT_JOI_MATCH: NoArg(); // test for join match (src.key == alt.key)
@@ -3048,16 +3073,20 @@ i8 LogicUnit::iCompute(void)
         break;
         
       case EO_STR_PRINTADR: NoArg(); // pop top and print iArg as addr of string
+#ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
         vTrace("%lls\n"_Stz,iTopA);
+#endif
         break;
         
       case EO_STR_PRINTSTK: NoArg(); // pop string from top and print
+#ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
         vTrace("%lls\n"_Stz,(aiDstk-iTopA/8));
         aiDstk -= (iTopA/8) + 1;
+#endif
         break;
         
       case EO_STR_LITERAL: GetStr(iArg); // push address of string literal
@@ -3078,7 +3107,9 @@ i8 LogicUnit::iCompute(void)
         dLU0(eCode);
         if (aaeRstk == &m_aaReturnStack[0]) {
           iRes = *(aiDstk--);
+#ifdef WITH_TRACE_LOGICUNIT
           vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,m_iSql);
+#endif
           return iRes;
         }
         aeCode = * (--aaeRstk);
