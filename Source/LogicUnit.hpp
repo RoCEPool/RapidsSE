@@ -61,7 +61,7 @@ namespace Expressions
   static const i8 Q100_SUM_DISC       = 8;  // SUM(L_DISCOUNT)
   static const i8 Q100_COUNT_DISC     = 9;  // COUNT(L_DISCOUNT)
   static const i8 Q100_COUNT_ORDER    = 10; // COUNT(*)
-  static const i8 Q100_COLUMNS        = 11;  // TOTAL COLUMNS
+  static const i8 Q100_COLUMNS        = 11; // TOTAL COLUMNS
   
   // query1 101 output
   static const i8 Q101_RETURNFLAG     = 0;  // L_RETURNFLAG
@@ -75,7 +75,7 @@ namespace Expressions
   static const i8 Q101_SUM_DISC       = 8;  // SUM(L_DISCOUNT)
   static const i8 Q101_COUNT_DISC     = 9;  // COUNT(L_DISCOUNT)
   static const i8 Q101_COUNT_ORDER    = 10; // COUNT(*)
-  static const i8 Q101_COLUMNS        = 11;  // TOTAL COLUMNS
+  static const i8 Q101_COLUMNS        = 11; // TOTAL COLUMNS
   
   // query1 103 output
   static const i8 Q103_RETURNFLAG     = 0;  // L_RETURNFLAG
