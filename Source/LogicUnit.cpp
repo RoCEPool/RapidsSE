@@ -1026,6 +1026,9 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeLabel(EO_JMP,"NXT_SRC:"_Stz);
 
   vDefineLabel("END_SRC:"_Stz);
+  
+  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+  
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1085,7 +1088,7 @@ void LogicUnit::vGenerateQuery301(void)
   
   // not quite right...
   vAddCodeLabel(EO_CALL,"LIM_SBR:"_Stz);
-
+  
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1093,7 +1096,6 @@ void LogicUnit::vGenerateQuery301(void)
 
   vAddCode(EO_IXT_TMP_ENTRIES);
   vAddCode(EO_PRINT);
-  vAddCode(EO_BREAKPOINT);
 
   vAddCode(EO_IXT_TMP_ENTRIES);
   vAddCodeArg(EO_INTEGER,10);
@@ -1139,9 +1141,35 @@ void LogicUnit::vGenerateQuery301(void)
   // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_RET:"_Stz);
   vAddCode(EO_IXT_DUMP);
-  vAddCode(EO_BREAKPOINT);
   vAddCode(EO_RETURN);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vDefineLabel("TRV_IXT:"_Stz);
+  
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
+
+  vDefineLabel("TRV_ECH:"_Stz);
+  
+  vAddCode(EO_ENT_PUSHELMI0);
+  vAddCode(EO_PRINT);
+  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
+  vAddCode(EO_PRINT);
+  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)1);
+  vAddCode(EO_DTE_PRINT);
+  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)2);
+  vAddCode(EO_PRINT);
+
+
+  vDefineLabel("TRV_NXT:"_Stz);
+  vAddCode(EO_IXT_TRV_NEXT);
+  vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
+
+  vDefineLabel("TRV_RET:"_Stz);
+  vAddCode(EO_BREAKPOINT);
+  vAddCode(EO_RETURN);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vDumpCode();
