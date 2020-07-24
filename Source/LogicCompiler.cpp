@@ -154,10 +154,12 @@ void LogicCompiler::v_preliminary(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
-  "  typedef long long i8;"
-  "  "
-  "  static const i8 C_LOGIC_STACK = 4096;"
-  "  "
+  "typedef long long i8;"
+  ""
+  "static const i8 C_LOGIC_STACK = 4096;"
+  ""
+  "i8 iCompute(void)"
+  "{"
   "  i8 iaDataStack[C_LOGIC_STACK];"
   "";
   
@@ -172,6 +174,9 @@ void LogicCompiler::v_concluding(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
+  ""
+  "  return 0;"
+  "}"
   "";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
