@@ -1,10 +1,8 @@
 /*============================================================================*/
-/* LogicCompiler.hpp -- Logic Compiler                                        */
+/* LogicCompiler.cpp -- Logic Compiler                                        */
 /*============================================================================*/
 
 #include "Expressions.h"
-
-//#define __TINYC
 
 #ifdef __TINYC
 #include "libtcc.h"
@@ -101,6 +99,8 @@ void LogicCompiler::vAcquire(void)
   RASSERT(m_aTccState);
   
   tcc_set_output_type((TCCState*)m_aTccState,TCC_OUTPUT_MEMORY);
+  
+  tcc_set_error_func((TCCState*)m_aTccState, nullptr, vTinyError);
 #endif
 }
 
@@ -163,6 +163,16 @@ void LogicCompiler::vSymbols(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* tiny-c callback for error printing                                         */
+/*----------------------------------------------------------------------------*/
+void vTinyError(void *aOpaque, const char *azMsg)
+{
+  vTrace("TinyError: %s\n"_Stz,azMsg);
+  
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::v_preliminary(void)
@@ -170,13 +180,13 @@ void LogicCompiler::v_preliminary(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
-  "typedef long long i8;"
+  "typedef long long i8; xyz \n"
   ""
-  "static const i8 C_LOGIC_STACK = 4096;"
+  "static const i8 C_LOGIC_STACK = 4096; \n"
   ""
-  "i8 iCompute(void)"
-  "{"
-  "  i8 iaDataStack[C_LOGIC_STACK];"
+  "i8 iCompute(void) \n"
+  "{ \n"
+  "  i8 iaDataStack[C_LOGIC_STACK]; \n"
   "";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
@@ -191,8 +201,8 @@ void LogicCompiler::v_concluding(void)
   
   char* azFrag = (char*)
   ""
-  "  return 0;"
-  "}"
+  "  return 0; \n"
+  "} \n"
   "";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);

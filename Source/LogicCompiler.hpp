@@ -57,6 +57,8 @@ namespace Expressions
   LogicCompiler* _pLogicCompiler(void* aAddr);
 }
 
+  void vTinyError(void *aOpaque, const char *azMsg);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
