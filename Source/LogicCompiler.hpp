@@ -22,6 +22,16 @@ namespace Expressions
     void vCompile(i8 nCodes, eEO eaCode[]);
   
   private:
+  
+    void v_EO_INTEGER (i8& ri_Code, eEO eaCode[]);
+    void v_EO_ADD     (i8& ri_Code, eEO eaCode[]);
+    void v_EO_PRINT   (i8& ri_Code, eEO eaCode[]);
+    void v_EO_RETURN  (i8& ri_Code, eEO eaCode[]);
+  
+    void vBegin(void);
+    void vEnd(void);
+    void vRelease(void);
+
     Footer* aFooter(void);
   };
   
