@@ -146,6 +146,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegOperandOoO();
   Step::vAddSteps_RegPath();
   Step::vAddSteps_RegPipein();
+  Step::vAddSteps_LogicCompiler();
   Step::vAddSteps_LogicUnit();
   Step::vAddSteps_RegTask();
   Step::vAddSteps_RegTimer();

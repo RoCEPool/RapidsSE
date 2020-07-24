@@ -84,6 +84,7 @@ namespace Steps
     static void vAddSteps_LockTracker(void);
     static void vAddSteps_Log(void);
     static void vAddSteps_Logic(void);
+    static void vAddSteps_LogicCompiler(void);
     static void vAddSteps_LogicUnit(void);
 
     static void vAddSteps_Machine(void);

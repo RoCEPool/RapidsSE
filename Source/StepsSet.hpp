@@ -890,6 +890,10 @@ public:
   void vLogicNot(void);
   void vLogicOr(void);
 
+  // logic compiler
+  void vLogicCompilerDelete(void);
+  void vLogicCompilerNew(void);
+
   // logic unit
   void vLogicUnitCompile(void);
   void vLogicUnitGenCode(void);
