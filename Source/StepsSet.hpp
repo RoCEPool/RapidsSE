@@ -1040,7 +1040,9 @@ public:
 
   // pot
   void vPotCompleted(void);
+  void vPotCompletedPtn(void);
   void vPotDangling(void);
+  void vPotDanglingPtn(void);
   void vPotDelete(void);
   void vPotNew(void);
   void vPotUseStreamDefOut(void);
