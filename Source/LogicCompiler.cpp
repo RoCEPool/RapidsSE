@@ -4,7 +4,11 @@
 
 #include "Expressions.h"
 
+//#define __TINYC
+
+#ifdef __TINYC
 #include "libtcc.h"
+#endif
 
 
 /*----------------------------------------------------------------------------*/
@@ -71,6 +75,12 @@ i8 LogicCompiler::iCompile(i8 nCodes, eEO eaCode[])
 
   i8 iResult = iToSource(nCodes,eaCode);
   
+  vAcquire();
+  
+  bCompile();
+
+  vRelease();
+  
   return iResult;
 }
 
@@ -86,10 +96,12 @@ void LogicCompiler::vAcquire(void)
   
   RASSERT(! m_aTccState);
   
+#ifdef __TINYC
   m_aTccState = tcc_new();
   RASSERT(m_aTccState);
   
   tcc_set_output_type((TCCState*)m_aTccState,TCC_OUTPUT_MEMORY);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,8 +120,10 @@ bool LogicCompiler::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
+#ifdef __TINYC
   if (-1 == tcc_compile_string((TCCState*)m_aTccState,m_caSource))
     return false;
+#endif
   
   return true;
 }
@@ -130,8 +144,10 @@ void LogicCompiler::vRelease(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
+#ifdef __TINYC
   tcc_delete((TCCState*)m_aTccState);
-  
+#endif
+
   m_aTccState = nullptr;
 }
 
@@ -260,8 +276,10 @@ i8 LogicCompiler::iToSource(i8 nCodes, eEO eaCode[])
   }
 
   v_concluding();
+  
+  vTrace("c:: %s\n"_Stz,m_caSource);
 
-  return C_UNKNOWN;
+  return 1;
 }
 
 /*============================================================================*/

@@ -9,9 +9,20 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogicCompiler(void)
 {
+  vAddStep("LogicCompiler[].call"_Stz,      &Step::vLogicCompilerCall);
   vAddStep("LogicCompiler[].compile"_Stz,   &Step::vLogicCompilerCompile);
   vAddStep("LogicCompiler[].delete"_Stz,    &Step::vLogicCompilerDelete);
   vAddStep("LogicCompiler[].new"_Stz,       &Step::vLogicCompilerNew);
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicCompiler[].call -- call compiled code                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicCompilerCall(void)
+{
+  ENTRY();
+    
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

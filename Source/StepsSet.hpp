@@ -891,6 +891,7 @@ public:
   void vLogicOr(void);
 
   // logic compiler
+  void vLogicCompilerCall(void);
   void vLogicCompilerCompile(void);
   void vLogicCompilerDelete(void);
   void vLogicCompilerNew(void);

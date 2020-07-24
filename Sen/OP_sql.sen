@@ -158,7 +158,9 @@
 
       logicCompiler[].new
       logicCompiler[].compile
-  endof
+      logicCompiler[].call
+      logicCompiler[].delete
+    endof
 
   endcase
 
