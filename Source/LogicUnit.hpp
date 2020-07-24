@@ -290,6 +290,8 @@ namespace Expressions
     void vGenerateQuery600(void);
     void vGenerateQuery601(void);
 
+    void vGenerate100000(void);
+
     bool bCompile(void);
     bool bCompile(TokenVec* pTknVec);
 

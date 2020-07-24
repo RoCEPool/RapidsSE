@@ -932,7 +932,7 @@
 /*----------------------------------------------------------------------------*/
 /* define procedures for dynamic compiler                                     */
 /*----------------------------------------------------------------------------*/
-: start::defineProc_DymCompiler
+: start::defineProc_DynCompiler
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -1357,7 +1357,7 @@
   start::defineProc_SteadyState
   start::defineProc_UnloadReload
   start::defineProc_PreQuery
-  start::defineProc_DymCompiler
+  start::defineProc_DynCompiler
   start::defineProc_TPCH
 
   // define the apriori system tables

@@ -357,6 +357,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   switch (iTestNo) {
+      
     case     100: vGenerateQuery100();    break;
     case     101: vGenerateQuery101();    break;
     case     102: vGenerateQuery102();    break;
@@ -370,6 +371,8 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     600: vGenerateQuery600();    break;
     case     601: vGenerateQuery601();    break;
   
+    case  100000: vGenerate100000();      break;
+      
     default:
       NEVER_REACH;
   }
@@ -1491,6 +1494,28 @@ void LogicUnit::vGenerateQuery601(void)
   
   vAddCode(EO_RETURN);
   
+  
+  vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for dynamic compilation test 100000                          */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerate100000(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 100000;
+  
+  // init the code
+  m_i_Code = 0;
+  
+  vAddCodeArg(EO_INTEGER,1);
+  vAddCodeArg(EO_INTEGER,2);
+  vAddCode(EO_ADD);
+  vAddCode(EO_PRINT);
+  vAddCode(EO_RETURN);
   
   vDumpCode();
 }

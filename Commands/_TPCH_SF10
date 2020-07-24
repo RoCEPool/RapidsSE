@@ -34,7 +34,7 @@ create table LineItem                      // SF * 6,000,000 rows
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // SF1 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-/time load lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
+/time fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
 /time Query1 lineitem ;
 /time Query6 lineitem ;
 
@@ -43,15 +43,15 @@ create table LineItem                      // SF * 6,000,000 rows
 /*============================================================================*/
 
 /*
-Date Query Config time(ms) Results
-23/7 Q1    1N-1P  2211     N,O,2254654.00,3380080450.16,3210744015.69,3338991760.47,25.49,38220.63,0.05,88436
-           1N-4P  723
-           2N-4P  664
-           3N-4P  768
+Date Query Mac Config time(ms) Results
+24/7 Q1    Ray 1N-1P
+               1N-4P
+               2N-4P
+               3N-4P
 
-     Q6    1N-4P  2162     75207429.08,76033
-           1N-4P  752
-           2N-4P  676
-           3N-4P  802
+     Q6        1N-4P
+               1N-4P
+               2N-4P
+               3N-4P
 */
 
