@@ -268,6 +268,9 @@ EoArg EoArgs[]
   // pix
   { EA_NONE,    0 },  // EO_PIX_STM_PRINT
   
+  // partitioning
+  { EA_NONE,    0 },  // EO_PTN_DST
+  
   // pushes
   { EA_DATE,    8 },  // EO_DATE
   { EA_INT,     8 },  // EO_INTEGER
@@ -2903,6 +2906,13 @@ i8 LogicUnit::iCompute(void)
       case EO_PIX_STM_PRINT: NoArg(); // print stream pix
         dLU0(eCode);
         m_oStreamPix.vPrint();
+        break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // partitioning
+      case EO_PTN_DST: NoArg(); // calc ptn using dst stream def
+        dLU0(eCode);
+        NEVER_REACH;
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
