@@ -2120,7 +2120,7 @@ void LogicUnit::vDumpCode(void)
   
   SP_Dte spDate;
 
-  vTrace("Code Dump for %lld\n"_Stz,m_iSql);
+  vTrace("EO code for %lld:\n"_Stz,m_iSql);
   
   for (i8 i_Code = 0; i_Code < m_i_Code; ) {
     
