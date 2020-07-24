@@ -113,6 +113,9 @@ enum eEO : i1 // expression operators
   // pix operators
   /*    */ EO_PIX_STM_PRINT,    // print stream pix
   
+  // partitioning
+  /*    */ EO_PTN_DST,          // calc ptn using dst stream def
+  
   // pushes
   /*    */ EO_DATE,             // push date
   /*    */ EO_INTEGER,          // push integer
@@ -293,6 +296,9 @@ static Stz* aEO[]
   
   // pix
   /*    */ "EO_PIX_STM_PRINT"_Stz,
+  
+  // partitioning operators
+  /*    */ "EO_PTN_DST"_Stz,
   
   // pushes
   /*    */ "EO_DATE"_Stz,
