@@ -37,6 +37,7 @@ namespace Expressions
   
     void vAcquire(void);
     void vBegin(void);
+    void vCall(void);
     bool bCompile(void);
     void vEnd(void);
     void vRelease(void);

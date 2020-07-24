@@ -76,6 +76,10 @@ i8 LogicCompiler::iCompile(i8 nCodes, eEO eaCode[])
   vAcquire();
   
   bCompile();
+  
+  vSymbols();
+  
+  vCall();
 
   vRelease();
   
@@ -111,6 +115,21 @@ void LogicCompiler::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::vCall(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  i8 (*afDyn)(void);
+
+  afDyn = (i8 (*)(void))tcc_get_symbol((TCCState*)m_aTccState,"iDynCompute");
+  RASSERT(afDyn);
+  
+  afDyn();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,6 +176,11 @@ void LogicCompiler::vRelease(void)
 void LogicCompiler::vSymbols(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  /* relocate the code */
+  if (tcc_relocate((TCCState*)m_aTccState, TCC_RELOCATE_AUTO) < 0) {
+    RASSERT(0);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,14 +204,22 @@ void LogicCompiler::v_preliminary(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
-  "typedef long long i8; xyz \n"
-  ""
-  "static const i8 C_LOGIC_STACK = 4096; \n"
-  ""
-  "i8 iCompute(void) \n"
-  "{ \n"
-  "  i8 iaDataStack[C_LOGIC_STACK]; \n"
-  "";
+  "   #include <tcclib.h>\n" /* include the "Simple libc header for TCC" */
+  "\n  typedef long long i8;"
+  "\n"
+  "\n  static const i8 C_LOGIC_STACK = 4096;"
+  "\n  "
+  "\n  i8 iDynCompute(void)"
+  "\n  { "
+  "\n    i8 iaDataStack[C_LOGIC_STACK];"
+  "\n"
+  "\n    i8* aiDstk = &iaDataStack[0];"
+  "\n"
+  "\n    i8 iArg;"
+  "\n    i8 iTopA;"
+  "\n    i8 iTopB;"
+  "\n    i8 iRes;"
+  "\n";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
@@ -200,10 +232,10 @@ void LogicCompiler::v_concluding(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
-  ""
-  "  return 0; \n"
-  "} \n"
-  "";
+  "\n"
+  "\n    return 0;"
+  "\n  }"
+  "\n";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
@@ -216,8 +248,10 @@ void LogicCompiler::v_EO_INTEGER(i8& ri_Code, eEO eaCode[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
-  "";
-  
+  "\n    // EO_INTEGER"
+  "\n    *(++aiDstk) = 1;"
+  "\n";
+
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
@@ -229,8 +263,13 @@ void LogicCompiler::v_EO_ADD(i8& ri_Code, eEO eaCode[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
-  "";
-  
+  "\n    // EO_ADD"
+  "\n    iTopB = *(aiDstk--);"
+  "\n    iTopA = *(aiDstk--);"
+  "\n    iRes  = iTopA + iTopB;"
+  "\n    *(++aiDstk) = iRes;"
+  "\n";
+
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
@@ -242,8 +281,11 @@ void LogicCompiler::v_EO_PRINT(i8& ri_Code, eEO eaCode[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
-  "";
-  
+  "\n    // EO_PRINT"
+  "\n    iTopA = *(aiDstk--);"
+  "\n    printf(\"EO_PRINT: %lld\\n\",iTopA);"
+  "\n";
+
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
@@ -255,7 +297,9 @@ void LogicCompiler::v_EO_RETURN(i8& ri_Code, eEO eaCode[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
-  "";
+  "\n    // EO_RETURN"
+  "\n    return;"
+  "\n";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
