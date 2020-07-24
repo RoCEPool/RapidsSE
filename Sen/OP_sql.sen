@@ -152,6 +152,14 @@
       601 LogicUnit[].genCode
     endof
 
+    100000 of
+      //queryNo "QUERY %v" .printf
+      100000 LogicUnit[].genCode
+
+      logicCompiler[].new
+      logicCompiler[].compile
+  endof
+
   endcase
 
   ZK_STARTMARKER_handler

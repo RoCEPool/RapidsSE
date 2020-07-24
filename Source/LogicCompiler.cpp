@@ -24,8 +24,8 @@ LogicCompiler::LogicCompiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
-#ifdef WITH_DEBUG
-  MemLib::vSet(m_caSource,0xFF, i8 C_LOGIC_SOURCE,CN_LOGICCOMPILER);
+#ifdef WITH_DEBUG_VERSION
+  MemLib::vSet(m_caSource,0xFF,C_LOGIC_SOURCE,CN_LOGICCOMPILER);
 #endif
   
   m_caSource[0] = '\0';

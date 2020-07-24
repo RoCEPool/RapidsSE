@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogicCompiler(void)
 {
-  vAddStep("LogicUnit[].compile"_Stz,   &Step::vLogicCompilerCompile);
-  vAddStep("LogicUnit[].delete"_Stz,    &Step::vLogicCompilerDelete);
-  vAddStep("LogicUnit[].new"_Stz,       &Step::vLogicCompilerNew);
+  vAddStep("LogicCompiler[].compile"_Stz,   &Step::vLogicCompilerCompile);
+  vAddStep("LogicCompiler[].delete"_Stz,    &Step::vLogicCompilerDelete);
+  vAddStep("LogicCompiler[].new"_Stz,       &Step::vLogicCompilerNew);
 }
 
 /*----------------------------------------------------------------------------*/
