@@ -1514,6 +1514,8 @@ void LogicUnit::vGenerate100000(void)
   vAddCodeArg(EO_INTEGER,1);
   vAddCodeArg(EO_INTEGER,2);
   vAddCode(EO_ADD);
+  vAddCodeArg(EO_INTEGER,4);
+  vAddCode(EO_MULTIPLY);
   vAddCode(EO_PRINT);
   vAddCode(EO_RETURN);
   

@@ -177,10 +177,14 @@ void LogicCompiler::vSymbols(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
-  /* relocate the code */
+  // add external symbols
+  tcc_add_symbol((TCCState*)m_aTccState, "iMul", (const void *)iMul);
+  
+  // relocate the code
   if (tcc_relocate((TCCState*)m_aTccState, TCC_RELOCATE_AUTO) < 0) {
     RASSERT(0);
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -197,6 +201,14 @@ void vTinyError(void *aOpaque, const char *azMsg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* extern function test : iMul()                                              */
+/*----------------------------------------------------------------------------*/
+i8 iMul(i8 iTopA, i8 iTopB)
+{
+  return iTopA * iTopB;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::v_preliminary(void)
@@ -210,7 +222,9 @@ void LogicCompiler::v_preliminary(void)
   "\n  typedef long long i8;"
   "\n"
   "\n  static const i8 C_LOGIC_STACK = 4096;"
-  "\n  "
+  "\n"
+  "\n  extern i8 iMul(i8 iTopA, i8 iTopB);"
+  "\n"
   "\n  i8 iDynCompute(void)" // the dynamic function is: iDynCompute()
   "\n  { "
   "\n    i8 iaDataStack[C_LOGIC_STACK];"
@@ -287,6 +301,25 @@ void LogicCompiler::v_EO_ADD(i8& ri_Code, eEO eaCode[])
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void LogicCompiler::v_EO_MULTIPLY(i8& ri_Code, eEO eaCode[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "\n"
+  "\n    // EO_MULTIPLY"
+  "\n    iTopB = *(aiDstk--);"
+  "\n    iTopA = *(aiDstk--);"
+  "\n    iRes  = iMul(iTopA,iTopB);"
+  "\n    *(++aiDstk) = iRes;"
+  "";
+
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void LogicCompiler::v_EO_PRINT(i8& ri_Code, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
@@ -332,10 +365,11 @@ i8 LogicCompiler::iToSource(i8 nCodes, eEO eaCode[])
 
     switch (eCode) {
         
-      case EO_INTEGER: v_EO_INTEGER (i_Code,eaCode); break;
-      case EO_ADD:     v_EO_ADD     (i_Code,eaCode); break;
-      case EO_PRINT:   v_EO_PRINT   (i_Code,eaCode); break;
-      case EO_RETURN:  v_EO_RETURN  (i_Code,eaCode); break;
+      case EO_INTEGER:  v_EO_INTEGER  (i_Code,eaCode); break;
+      case EO_ADD:      v_EO_ADD      (i_Code,eaCode); break;
+      case EO_MULTIPLY: v_EO_MULTIPLY (i_Code,eaCode); break;
+      case EO_PRINT:    v_EO_PRINT    (i_Code,eaCode); break;
+      case EO_RETURN:   v_EO_RETURN   (i_Code,eaCode); break;
 
       default:
         break;

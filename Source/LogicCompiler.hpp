@@ -47,6 +47,7 @@ namespace Expressions
     void v_concluding(void);
     void v_EO_INTEGER (i8& ri_Code, eEO eaCode[]);
     void v_EO_ADD     (i8& ri_Code, eEO eaCode[]);
+    void v_EO_MULTIPLY(i8& ri_Code, eEO eaCode[]);
     void v_EO_PRINT   (i8& ri_Code, eEO eaCode[]);
     void v_EO_RETURN  (i8& ri_Code, eEO eaCode[]);
   
@@ -59,6 +60,7 @@ namespace Expressions
 }
 
   void vTinyError(void *aOpaque, const char *azMsg);
+  i8 iMul(i8 iTopA, i8 iTopB);
 
 /*============================================================================*/
 /* end                                                                        */
