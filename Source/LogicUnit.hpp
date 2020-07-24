@@ -163,6 +163,7 @@ namespace Expressions
     REG<Table>       m_xpInfoSetTable;
     REG<JoinRsb>     m_xpJoinRsb;
     REG<Loader>      m_xpLoader;
+    REG<LogicCompiler> m_xpLogicCompiler;
     REG<Operand>     m_xpPipein;    // Pipein
     REG<Planner>     m_xpPlanner;
     REG<ProjectRsb>  m_xpProjectRsb;

@@ -14,8 +14,9 @@ namespace Expressions
 
 //------------------------------------------------------------------------------
 
-#include "LogicUnit.hpp"
 #include "LogicCompiler.hpp"
+
+#include "LogicUnit.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
