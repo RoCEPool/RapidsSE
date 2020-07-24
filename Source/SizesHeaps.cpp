@@ -153,7 +153,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Lock),               HT_INVALID           }, // CN_LOCK
   { sizeof(Log),                HT_INVALID           }, // CN_LOG
   { sizeof(LogEntry),           HT_INVALID           }, // CN_LOGENTRY
-  { sizeof(LogicCompiler),      HT_TRANSIENT_MEDIUM  }, // CN_LOGICCOMPILER
+  { sizeof(LogicCompiler),      HT_TRANSIENT_LARGE   }, // CN_LOGICCOMPILER
   { sizeof(LogicUnit),          HT_TRANSIENT_MEDIUM  }, // CN_LOGICUNIT
   { sizeof(Lrw),                HT_TRANSIENT_SMALL   }, // CN_LRW
   { sizeof(LrwBuffer),          HT_TRANSIENT_LARGE   }, // CN_LRWBUFFER

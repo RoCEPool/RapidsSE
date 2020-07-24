@@ -21,8 +21,9 @@ void Step::vLogicCompilerCompile(void)
 {
   ENTRY();
     
-  m_pLogicUnit->m_xpLogicCompiler->vCompile(m_pLogicUnit->m_i_Code,
-                                            m_pLogicUnit->m_eaCode);
+  i8 iResult =
+    m_pLogicUnit->m_xpLogicCompiler->iCompile(m_pLogicUnit->m_i_Code,
+                                              m_pLogicUnit->m_eaCode);
   
   EXIT();
 }

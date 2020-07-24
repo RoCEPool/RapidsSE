@@ -5,9 +5,20 @@
 
 namespace Expressions
 {
+  static const i8 C_LOGIC_SOURCE  = C_SIZE_LARGE_OBJECT - C_1KB;
+
+  //----------------------------------------------------------------------------
+
   class LogicCompiler : public Object
   {
   private:
+  
+    char  m_caSource[C_LOGIC_SOURCE];
+  
+    char* m_azSrcCrs;
+  
+    void* m_aTccState;
+
   
     // must be last
     Footer m_xFooter;
@@ -19,19 +30,24 @@ namespace Expressions
     LogicCompiler(void);
    ~LogicCompiler(void) noexcept(false);
 
-    void vCompile(i8 nCodes, eEO eaCode[]);
+    i8 iCall(void);
+    i8 iCompile(i8 nCodes, eEO eaCode[]);
   
   private:
   
+    void vBegin(void);
+    bool bCompile(void);
+    void vEnd(void);
+    void vRelease(void);
+    void vSymbols(void);
+
     void v_EO_INTEGER (i8& ri_Code, eEO eaCode[]);
     void v_EO_ADD     (i8& ri_Code, eEO eaCode[]);
     void v_EO_PRINT   (i8& ri_Code, eEO eaCode[]);
     void v_EO_RETURN  (i8& ri_Code, eEO eaCode[]);
   
-    void vBegin(void);
-    void vEnd(void);
-    void vRelease(void);
-
+    i8 iToSource(i8 nCodes, eEO eaCode[]);
+  
     Footer* aFooter(void);
   };
   
