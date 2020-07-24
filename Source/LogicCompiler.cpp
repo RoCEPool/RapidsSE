@@ -149,9 +149,40 @@ void LogicCompiler::vSymbols(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void LogicCompiler::v_preliminary(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::v_concluding(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void LogicCompiler::v_EO_INTEGER(i8& ri_Code, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,6 +191,11 @@ void LogicCompiler::v_EO_INTEGER(i8& ri_Code, eEO eaCode[])
 void LogicCompiler::v_EO_ADD(i8& ri_Code, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,6 +204,11 @@ void LogicCompiler::v_EO_ADD(i8& ri_Code, eEO eaCode[])
 void LogicCompiler::v_EO_PRINT(i8& ri_Code, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,6 +217,11 @@ void LogicCompiler::v_EO_PRINT(i8& ri_Code, eEO eaCode[])
 void LogicCompiler::v_EO_RETURN(i8& ri_Code, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,17 +231,26 @@ i8 LogicCompiler::iToSource(i8 nCodes, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
+  v_preliminary();
+  
   for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
     
     eEO eCode = eaCode[i_Code];
 
     switch (eCode) {
         
+      case EO_INTEGER: v_EO_INTEGER (i_Code,eaCode); break;
+      case EO_ADD:     v_EO_ADD     (i_Code,eaCode); break;
+      case EO_PRINT:   v_EO_PRINT   (i_Code,eaCode); break;
+      case EO_RETURN:  v_EO_RETURN  (i_Code,eaCode); break;
+
       default:
         break;
     }
   }
-  
+
+  v_concluding();
+
   return C_UNKNOWN;
 }
 
