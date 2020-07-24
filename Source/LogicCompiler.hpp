@@ -19,6 +19,8 @@ namespace Expressions
     LogicCompiler(void);
    ~LogicCompiler(void) noexcept(false);
 
+    void vCompile(i8 nCodes, eEO eaCode[]);
+  
   private:
     Footer* aFooter(void);
   };
