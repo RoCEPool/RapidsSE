@@ -35,6 +35,7 @@ namespace Expressions
   
   private:
   
+    void vAcquire(void);
     void vBegin(void);
     bool bCompile(void);
     void vEnd(void);

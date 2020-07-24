@@ -80,14 +80,25 @@ i8 LogicCompiler::iCompile(i8 nCodes, eEO eaCode[])
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vBegin(void)
+void LogicCompiler::vAcquire(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  RASSERT(! m_aTccState);
   
   m_aTccState = tcc_new();
   RASSERT(m_aTccState);
   
-  tcc_set_output_type((TCCState*)m_aTccState, TCC_OUTPUT_MEMORY);
+  tcc_set_output_type((TCCState*)m_aTccState,TCC_OUTPUT_MEMORY);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::vBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,9 +108,6 @@ bool LogicCompiler::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
-  /* MUST BE CALLED before any compilation */
-  tcc_set_output_type((TCCState*)m_aTccState, TCC_OUTPUT_MEMORY);
-
   if (-1 == tcc_compile_string((TCCState*)m_aTccState,m_caSource))
     return false;
   
@@ -113,9 +121,6 @@ void LogicCompiler::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
-  tcc_delete((TCCState*)m_aTccState);
-  
-  m_aTccState = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,6 +129,10 @@ void LogicCompiler::vEnd(void)
 void LogicCompiler::vRelease(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  tcc_delete((TCCState*)m_aTccState);
+  
+  m_aTccState = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
