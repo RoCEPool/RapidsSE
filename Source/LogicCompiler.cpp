@@ -80,14 +80,25 @@ i8 LogicCompiler::iCompile(i8 nCodes, eEO eaCode[])
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vBegin(void)
+void LogicCompiler::vAcquire(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  RASSERT(! m_aTccState);
   
   m_aTccState = tcc_new();
   RASSERT(m_aTccState);
   
-  tcc_set_output_type((TCCState*)m_aTccState, TCC_OUTPUT_MEMORY);
+  tcc_set_output_type((TCCState*)m_aTccState,TCC_OUTPUT_MEMORY);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::vBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,9 +108,6 @@ bool LogicCompiler::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
-  /* MUST BE CALLED before any compilation */
-  tcc_set_output_type((TCCState*)m_aTccState, TCC_OUTPUT_MEMORY);
-
   if (-1 == tcc_compile_string((TCCState*)m_aTccState,m_caSource))
     return false;
   
@@ -113,9 +121,6 @@ void LogicCompiler::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
-  tcc_delete((TCCState*)m_aTccState);
-  
-  m_aTccState = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,6 +129,10 @@ void LogicCompiler::vEnd(void)
 void LogicCompiler::vRelease(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  tcc_delete((TCCState*)m_aTccState);
+  
+  m_aTccState = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,9 +149,50 @@ void LogicCompiler::vSymbols(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void LogicCompiler::v_preliminary(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "typedef long long i8;"
+  ""
+  "static const i8 C_LOGIC_STACK = 4096;"
+  ""
+  "i8 iCompute(void)"
+  "{"
+  "  i8 iaDataStack[C_LOGIC_STACK];"
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::v_concluding(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  ""
+  "  return 0;"
+  "}"
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void LogicCompiler::v_EO_INTEGER(i8& ri_Code, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,6 +201,11 @@ void LogicCompiler::v_EO_INTEGER(i8& ri_Code, eEO eaCode[])
 void LogicCompiler::v_EO_ADD(i8& ri_Code, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,6 +214,11 @@ void LogicCompiler::v_EO_ADD(i8& ri_Code, eEO eaCode[])
 void LogicCompiler::v_EO_PRINT(i8& ri_Code, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,6 +227,11 @@ void LogicCompiler::v_EO_PRINT(i8& ri_Code, eEO eaCode[])
 void LogicCompiler::v_EO_RETURN(i8& ri_Code, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,17 +241,26 @@ i8 LogicCompiler::iToSource(i8 nCodes, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
+  v_preliminary();
+  
   for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
     
     eEO eCode = eaCode[i_Code];
 
     switch (eCode) {
         
+      case EO_INTEGER: v_EO_INTEGER (i_Code,eaCode); break;
+      case EO_ADD:     v_EO_ADD     (i_Code,eaCode); break;
+      case EO_PRINT:   v_EO_PRINT   (i_Code,eaCode); break;
+      case EO_RETURN:  v_EO_RETURN  (i_Code,eaCode); break;
+
       default:
         break;
     }
   }
-  
+
+  v_concluding();
+
   return C_UNKNOWN;
 }
 

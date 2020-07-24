@@ -930,6 +930,40 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* define procedures for dynamic compiler                                     */
+/*----------------------------------------------------------------------------*/
+: start::defineProc_DymCompiler
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // q 3 prelim
+  sPath
+  "
+  procedure dynCompiler
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+     sql 100000
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 : start::defineProc_TPCH
@@ -1323,6 +1357,7 @@
   start::defineProc_SteadyState
   start::defineProc_UnloadReload
   start::defineProc_PreQuery
+  start::defineProc_DymCompiler
   start::defineProc_TPCH
 
   // define the apriori system tables

@@ -13,6 +13,7 @@ shortcut cp   _cancelPipeline;
 shortcut ct   /flow create table t (a integer);
 shortcut l    _loadPipeline;
 shortcut d    _pipeline;
+shortcut dc   "../Expressions/_dynCompiler";
 shortcut dl   _pipelineLineItem;
 shortcut ef1  "../Expressions/_expr_filter_1";
 shortcut ep1  "../Expressions/_expr_project_1";

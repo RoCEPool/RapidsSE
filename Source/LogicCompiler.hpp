@@ -35,12 +35,15 @@ namespace Expressions
   
   private:
   
+    void vAcquire(void);
     void vBegin(void);
     bool bCompile(void);
     void vEnd(void);
     void vRelease(void);
     void vSymbols(void);
 
+    void v_preliminary(void);
+    void v_concluding(void);
     void v_EO_INTEGER (i8& ri_Code, eEO eaCode[]);
     void v_EO_ADD     (i8& ri_Code, eEO eaCode[]);
     void v_EO_PRINT   (i8& ri_Code, eEO eaCode[]);
