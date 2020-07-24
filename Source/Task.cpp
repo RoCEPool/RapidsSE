@@ -532,7 +532,7 @@ void Task::vInitExeContext(void)
   if (m_pForth)
     return;
   
-  m_pProfile = new Profile;
+  m_pProfile = new Profile(m_pJob->m_pOp ? m_pJob->m_pOp->szOpNm() : ""_Stz);
   m_pLogicUnit  = new LogicUnit(this);
   m_pForth   = new Forth(this,m_pLogicUnit);
 }

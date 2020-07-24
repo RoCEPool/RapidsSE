@@ -575,7 +575,7 @@ void Step::vSocketRecvObject(void)
     }
      
     case CN_PROFILE: {
-      Profile* pProfile = new Profile();
+      Profile* pProfile = new Profile(""_Stz);
       
       MemLib::vCopy(pProfile,pObject,sizeof(Object),CN_PROFILE);
       

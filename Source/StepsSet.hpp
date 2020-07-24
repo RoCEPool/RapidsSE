@@ -1055,6 +1055,7 @@ public:
 
   // profile
   void vProfileEnd(void);
+  void vProfileNameStore(void);
   void vProfileStart(void);
 
   // prompt

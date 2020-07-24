@@ -77,7 +77,7 @@ void RU_Cpu::vWriteReport(File* pFile)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RUCPU,_FOOTER_);
   
-  AM::vFilePrint(pFile, "  Buffers#, Rows# Ms#\n"_Stz);
+  AM::vFilePrint(pFile, "  Buffers#, Rows# Time(ms)\n"_Stz);
     
   AM::vFilePrint(pFile, "  %6lld, %6lld %6lld\n"_Stz,
          m_nBuffers,

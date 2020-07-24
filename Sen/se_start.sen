@@ -992,6 +992,7 @@
   stage stageC on origin :
     sql 102
     | output
+    | toStatDemon
     | sink
     | stageA
 

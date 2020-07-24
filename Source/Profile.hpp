@@ -9,6 +9,8 @@ namespace Tasks
   {
   private:
     
+    s256 m_sOpName;
+    
     // timestamp
     // version
     // git hash
@@ -23,9 +25,10 @@ namespace Tasks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Profile(void);
+    Profile(Stz* szOpName);
    ~Profile(void) noexcept(false);
     
+    void       vOpName(Stz* aName);
     RU_Cpu*    pRU_Cpu();
     RU_Memory* pRU_Memory();
     void       vWriteReport(File* pFile);

@@ -17,11 +17,12 @@ __aFooterFunction(Profile)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Profile::Profile(void)
+Profile::Profile(Stz* szOpName)
 : Operand(CN_PROFILE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROFILE,_FOOTER_);
-    
+  
+  m_sOpName = szOpName;
   _checkInitialised_(CN_PROFILE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PROFILE,_FOOTER_);
@@ -38,6 +39,16 @@ Profile::~Profile(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set the OpName                                                             */
+/*----------------------------------------------------------------------------*/
+void Profile::vOpName(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROFILE,_FOOTER_);
+  
+  m_sOpName = szName;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get cpu usage                                                              */
@@ -66,6 +77,7 @@ void Profile::vWriteReport(File* pFile)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROFILE,_FOOTER_);
   
+  AM::vFilePrint(pFile, "OP: %s\n"_Stz, m_sOpName.azChar());
   m_oRU_Memory.vWriteReport(pFile);
   m_oRU_Cpu.vWriteReport(pFile);
 }
