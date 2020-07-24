@@ -2607,7 +2607,9 @@ i8 LogicUnit::iCompute(void)
         break;
 
       case EO_IXT_DUMP: NoArg(); // dump index tree
+#ifdef WITH_TRACE_LOGICUNIT
         m_pIndexTree->vDump(false);
+#endif
         break;
 
       case EO_IXT_INS_ENT: NoArg(); // insert an entry into the indexTree
