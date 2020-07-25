@@ -24,6 +24,12 @@ enum eEO : u1 // expression operators
   /*    */ EO_CRW_SRC_FETCH,    // fetch m_aSrcCrw using m_aSrcEnt.ref
   /*    */ EO_CRW_ALT_FETCH,    // fetch m_aAltCrw using m_aAltEnt.ref
 
+  // counter
+  /*    */ EO_CTR_0_DEC,        // dec counter 0
+  /*    */ EO_CTR_0_INC,        // inc counter 0
+  /*    */ EO_CTR_0_POP,        // pop counter 0
+  /*    */ EO_CTR_0_PUSH,       // push counter 0
+
   // date operators
   /*    */ EO_DTE_NOW,          // push current date
   /*    */ EO_DTE_PRINT,        // pop top and print as date
@@ -210,6 +216,12 @@ static Stz* aEO[]
   /*    */ "EO_CRW_SRC_FETCH"_Stz,
   /*    */ "EO_CRW_ALT_FETCH"_Stz,
   
+  // counter
+  /*    */ "EO_CTR_0_DEC"_Stz,
+  /*    */ "EO_CTR_0_INC"_Stz,
+  /*    */ "EO_CTR_0_POP"_Stz,
+  /*    */ "EO_CTR_0_PUSH"_Stz,
+
   // date operators
   /*    */ "EO_DTE_NOW"_Stz,
   /*    */ "EO_DTE_PRINT"_Stz,

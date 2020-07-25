@@ -180,6 +180,12 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_CRW_SRC_FETCH
   { EA_NONE,    0 },  // EO_CRW_ALT_FETCH
   
+  // counter
+  { EA_NONE,    0 },  // EO_CTR_0_DEC
+  { EA_NONE,    0 },  // EO_CTR_0_INC
+  { EA_NONE,    0 },  // EO_CTR_0_POP
+  { EA_NONE,    0 },  // EO_CTR_0_PUSH
+  
   // date operators
   { EA_NONE,    0 },  // EO_DTE_NOW
   { EA_NONE,    0 },  // EO_DTE_PRINT
@@ -2267,6 +2273,7 @@ i8 LogicUnit::iCompute(void)
   IndexDef* pIndexDef = nullptr;
   
   i8 i_Ptn = 0;
+  i8 iCtr0 = 0;
   
 #ifdef WITH_TRACE_LOGICUNIT
   vTrace("\nLogic Unit :: sql %lld\n\n"_Stz,m_iSql);
@@ -2383,6 +2390,28 @@ i8 LogicUnit::iCompute(void)
         m_aAltCrw = CrwBuffer::pRefdCrw(m_aAltEnt->rxRef());
         break;
         
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // counter
+      case EO_CTR_0_DEC: NoArg(); // dec counter 0
+        iCtr0--;
+        dLU1(eCode,iCtr0);
+        break;
+
+      case EO_CTR_0_INC: NoArg(); // inc counter 0
+        iCtr0++;
+        dLU1(eCode,iCtr0);
+        break;
+
+      case EO_CTR_0_POP: NoArg(); // pop counter 0
+        iCtr0 = *(aiDstk--);
+        dLU1(eCode,iCtr0);
+        break;
+
+      case EO_CTR_0_PUSH: NoArg(); // push counter 0
+        dLU1(eCode,iCtr0);
+        *(++aiDstk) = iCtr0;
+        break;
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // date operators
       case EO_DTE_NOW: NoArg(); // push current date
