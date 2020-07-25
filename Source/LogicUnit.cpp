@@ -1039,8 +1039,9 @@ void LogicUnit::vGenerateQuery301(void)
   
   m_i_Code = 0;
   
-  vAddCode(EO_PUSH1);
-  vAddCode(EO_TRACE);
+  vDefineLabel("QRY_301:"_Stz);
+  //vAddCode(EO_PUSH1);
+  //vAddCode(EO_TRACE);
   vAddCode(EO_PIX_STM_PRINT);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2322,10 +2323,12 @@ i8 LogicUnit::iCompute(void)
 
   IndexDef* pIndexDef = nullptr;
   
-  i8 i_Ptn = 0;
   i8 iCtr0 = 0;
+
+  i8 nPtns = AM::nPartitions();
   i8 iHash = 0;
-  
+  i8 i_Ptn = 0;
+
   Timer oTimer;
   AggTimer oAggTimer;
   
@@ -3045,7 +3048,7 @@ i8 LogicUnit::iCompute(void)
         break;
 
       case EO_PTN_INGRID: NoArg(); // get the number of partitions in grid
-        iRes = AM::nSlotsPerNode() * AM::nConnectedNodes();
+        iRes = AM::nPartitions();
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
