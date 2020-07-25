@@ -216,6 +216,10 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENTWRK_PRINT
   { EA_NONE,    0 },  // EO_ENTWRK_RESET
 
+  // hashing
+  { EA_NONE,    0 },  // EO_HSH_ADD_HASHI
+  { EA_NONE,    0 },  // EO_HSH_RESET
+
   // finalise
   { EA_NONE,    0 },  // EO_FIN_TRANSFORM
   
@@ -2282,6 +2286,7 @@ i8 LogicUnit::iCompute(void)
   
   i8 i_Ptn = 0;
   i8 iCtr0 = 0;
+  i8 iHash = 0;
   
   Timer oTimer;
   AggTimer oAggTimer;
@@ -2605,6 +2610,20 @@ i8 LogicUnit::iCompute(void)
         m_pSrcRowSlab = nullptr;
         break;
         
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // hashing
+      case EO_HSH_ADD_HASHI: NoArg(); // add hash of top int to running hash
+        iTopA = *(aiDstk--);
+        iRes = HshLib::iHash((byte*)&iTopA,sizeof(w8));
+        iHash += iRes;
+        dLU3(eCode,iTopA,iRes,iHash);
+        break;
+        
+      case EO_HSH_RESET: NoArg(); // reset hash
+        dLU0(eCode);
+        iHash = 0;
+        break;
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // initialise
       case EO_INI_PIX_DEFOUT: NoArg(); // init m_pPot pix from stream def out

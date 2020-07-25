@@ -63,6 +63,10 @@ enum eEO : u1 // expression operators
   // finalise
   /*    */ EO_FIN_TRANSFORM,    // standard finalise
 
+  // hashing
+  /*    */ EO_HSH_ADD_HASHI,    // add hash of top int to running hash
+  /*    */ EO_HSH_RESET,        // reset hash
+
   // initialise
   /*    */ EO_INI_PIX_DEFOUT,   // init m_pPot pix from stream def out
   /*    */ EO_INI_PIX_SLABIN,   // init m_pPot pix from input slab
@@ -262,6 +266,10 @@ static Stz* aEO[]
 
   // finalise
   /*    */ "EO_FIN_TRANSFORM"_Stz,
+
+  // hashing
+  /*    */ "EO_HSH_ADD_HASHI"_Stz,
+  /*    */ "EO_HSH_RESET"_Stz,
 
   // initialise
   /*    */ "EO_INI_PIX_DEFOUT"_Stz,
