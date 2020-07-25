@@ -280,6 +280,7 @@ EoArg EoArgs[]
   
   // partitioning
   { EA_NONE,    0 },  // EO_PTN_DST
+  { EA_NONE,    0 },  // EO_PTN_INGRID
   { EA_NONE,    0 },  // EO_PTN_SET
 
   // pushes
@@ -3004,6 +3005,12 @@ i8 LogicUnit::iCompute(void)
       case EO_PTN_DST: NoArg(); // calc ptn using dst stream def
         dLU0(eCode);
         NEVER_REACH;
+        break;
+
+      case EO_PTN_INGRID: NoArg(); // get the number of partitions in grid
+        iRes = AM::nSlotsPerNode() * AM::nConnectedNodes();
+        dLU1(eCode,iRes);
+        *(++aiDstk) = iRes;
         break;
 
       case EO_PTN_SET: NoArg(); // set i_Ptn register

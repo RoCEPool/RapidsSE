@@ -125,6 +125,7 @@ enum eEO : u1 // expression operators
   
   // partitioning
   /*    */ EO_PTN_DST,          // calc ptn using dst stream def
+  /*    */ EO_PTN_INGRID,       // get the number of partitions in grid
   /*    */ EO_PTN_SET,          // set i_Ptn register
 
   // pushes
@@ -326,8 +327,9 @@ static Stz* aEO[]
   // pix
   /*    */ "EO_PIX_STM_PRINT"_Stz,
   
-  // partitioning operators
+  // partitioning
   /*    */ "EO_PTN_DST"_Stz,
+  /*    */ "EO_PTN_INGRID"_Stz,
   /*    */ "EO_PTN_SET"_Stz,
   
   // pushes
