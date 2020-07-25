@@ -115,7 +115,8 @@ enum eEO : i1 // expression operators
   
   // partitioning
   /*    */ EO_PTN_DST,          // calc ptn using dst stream def
-  
+  /*    */ EO_PTN_SET,          // set i_Ptn register
+
   // pushes
   /*    */ EO_DATE,             // push date
   /*    */ EO_INTEGER,          // push integer
@@ -299,6 +300,7 @@ static Stz* aEO[]
   
   // partitioning operators
   /*    */ "EO_PTN_DST"_Stz,
+  /*    */ "EO_PTN_SET"_Stz,
   
   // pushes
   /*    */ "EO_DATE"_Stz,

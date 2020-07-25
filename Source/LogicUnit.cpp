@@ -270,7 +270,8 @@ EoArg EoArgs[]
   
   // partitioning
   { EA_NONE,    0 },  // EO_PTN_DST
-  
+  { EA_NONE,    0 },  // EO_PTN_SET
+
   // pushes
   { EA_DATE,    8 },  // EO_DATE
   { EA_INT,     8 },  // EO_INTEGER
@@ -2265,6 +2266,8 @@ i8 LogicUnit::iCompute(void)
 
   IndexDef* pIndexDef = nullptr;
   
+  i8 i_Ptn = 0;
+  
 #ifdef WITH_TRACE_LOGICUNIT
   vTrace("\nLogic Unit :: sql %lld\n\n"_Stz,m_iSql);
   vDebugPoint();
@@ -2942,6 +2945,11 @@ i8 LogicUnit::iCompute(void)
       case EO_PTN_DST: NoArg(); // calc ptn using dst stream def
         dLU0(eCode);
         NEVER_REACH;
+        break;
+
+      case EO_PTN_SET: NoArg(); // set i_Ptn register
+        dLU0(eCode);
+        i_Ptn = *(aiDstk--);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
