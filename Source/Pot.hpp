@@ -23,14 +23,16 @@ namespace DataBuffers
     Pot(void);
    ~Pot(void) noexcept(false);
   
-    void vAddBuffer(DataBuffer* pDataBuffer);
-
+  public:
     DataBuffer* pBuffer(void);
     DataBuffer* pCompleted(void);
     DataBuffer* pDangling(void);
     Rsb* aNewDstRsb(RowSlab** ppRowSlab);
     void vStreamPix(StreamPix* pStreamPix);
   
+  private:
+    void vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer);
+
     Footer* aFooter(void);
   };
 

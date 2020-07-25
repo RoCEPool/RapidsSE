@@ -41,16 +41,6 @@ Pot::~Pot(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add row as first into buffer chain for partition                           */
-/*----------------------------------------------------------------------------*/
-void Pot::vAddBuffer(DataBuffer* pDataBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
-
-  m_oHashSet.vAddBuffer(0,pDataBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get current buffer                                                         */
 /*----------------------------------------------------------------------------*/
 DataBuffer* Pot::pBuffer(void)
@@ -98,7 +88,7 @@ Rsb* Pot::aNewDstRsb(RowSlab** ppRowSlab)
   if (! pDstRsbBuffer) {
     pDstRsbBuffer = new RsbBuffer;
     pDstRsbBuffer->pRowSlab()->vCopyPix(m_pStreamPix);
-    vAddBuffer(pDstRsbBuffer);
+    vAddBuffer(0,pDstRsbBuffer);
   }
   
   // new a row in rsb buffer (new another rsb buffer if necessary)
@@ -106,7 +96,7 @@ Rsb* Pot::aNewDstRsb(RowSlab** ppRowSlab)
   if (! bNewed) {
     pDstRsbBuffer = new RsbBuffer;
     pDstRsbBuffer->pRowSlab()->vCopyPix(m_pStreamPix);
-    vAddBuffer(pDstRsbBuffer);
+    vAddBuffer(0,pDstRsbBuffer);
     bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
     ASSERT(bNewed);
   }
@@ -132,6 +122,21 @@ void Pot::vStreamPix(StreamPix* pStreamPix)
     m_pStreamPix = pStreamPix;
   //}
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add row as first into buffer chain for partition                           */
+/*----------------------------------------------------------------------------*/
+void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
+
+  m_oHashSet.vAddBuffer(i_Ptn,pDataBuffer);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
