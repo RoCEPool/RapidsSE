@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-enum eEO : i1 // expression operators
+enum eEO : u1 // expression operators
 {
   /*  0 */ EO_NONE=0,
   

@@ -201,6 +201,8 @@ void vTinyError(void *aOpaque, const char *azMsg)
   vTrace("TinyError: %s\n"_Stz,azMsg);
   
   vDebugPoint();
+  
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
