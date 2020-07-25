@@ -3005,7 +3005,7 @@ i8 LogicUnit::iCompute(void)
 
       case EO_RSB_DST_NEW: NoArg(); // create new destination rsb
         dLU0(eCode);
-        m_aDstRsb = m_xpPot->aNewDstRsb(&m_pDstRowSlab);
+        m_aDstRsb = m_xpPot->aNewDstRsb(0,&m_pDstRowSlab);
         break;
 
       case EO_RSB_DST_RESET: NoArg(); // reset dst rowslab

@@ -24,10 +24,11 @@ namespace DataBuffers
    ~Pot(void) noexcept(false);
   
   public:
-    DataBuffer* pBuffer(void);
-    DataBuffer* pCompleted(void);
-    DataBuffer* pDangling(void);
-    Rsb* aNewDstRsb(RowSlab** ppRowSlab);
+    DataBuffer* pBuffer(i8 i_Ptn);
+    DataBuffer* pCompleted(i8 i_Ptn);
+    DataBuffer* pDangling(i8 i_Ptn);
+    Rsb* aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab);
+  
     void vStreamPix(StreamPix* pStreamPix);
   
   private:
