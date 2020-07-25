@@ -283,6 +283,10 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PTN_INGRID
   { EA_NONE,    0 },  // EO_PTN_SET
 
+  { EA_NONE,    0 },  // EO_PTN_CALC
+  { EA_NONE,    0 },  // EO_PTN_RESET
+  { EA_NONE,    0 },  // EO_PTN_RUNNING
+
   // pushes
   { EA_DATE,    8 },  // EO_DATE
   { EA_INT,     8 },  // EO_INTEGER
@@ -2326,7 +2330,7 @@ i8 LogicUnit::iCompute(void)
   i8 iCtr0 = 0;
 
   i8 nPtns = AM::nPartitions();
-  i8 iHash = 0;
+  i8 iHash = PtnLib::iResetRunning();
   i8 i_Ptn = 0;
 
   Timer oTimer;
@@ -3056,6 +3060,22 @@ i8 LogicUnit::iCompute(void)
       case EO_PTN_SET: NoArg(); // set i_Ptn register
         dLU0(eCode);
         i_Ptn = *(aiDstk--);
+        break;
+
+      case EO_PTN_CALC: NoArg(); // calculate i_Ptn using running iHash
+        dLU0(eCode);
+        i_Ptn = PtnLib::iPartition(iHash,nPtns);
+        break;
+
+      case EO_PTN_RESET: NoArg(); // reset running iHash
+        dLU0(eCode);
+        iHash = PtnLib::iResetRunning();
+        break;
+
+      case EO_PTN_RUNNING: NoArg(); // mix top into running iHash
+        iTopA = *(aiDstk--);
+        dLU0(eCode);
+        PtnLib::vRunning(&iHash,iTopA);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
