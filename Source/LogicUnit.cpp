@@ -341,6 +341,14 @@ EoArg EoArgs[]
   { EA_LABEL,   8 },  // EO_CALL
   { EA_NONE,    0 },  // EO_RETURN
 
+  // timer
+  { EA_INT,     8 },  // EO_TMR_START
+  { EA_INT,     8 },  // EO_TMR_NSECS
+  { EA_INT,     8 },  // EO_TMR_UPDATE
+  { EA_INT,     8 },  // EO_TMR_AGG_ADD
+  { EA_INT,     8 },  // EO_TMR_AGG_NSECS
+  { EA_INT,     8 },  // EO_TMR_AGG_RESET
+
   // misc
   { EA_NONE,    0 },  // EO_BREAKPOINT
   { EA_NONE,    0 },  // EO_TRACE
@@ -2275,6 +2283,9 @@ i8 LogicUnit::iCompute(void)
   i8 i_Ptn = 0;
   i8 iCtr0 = 0;
   
+  Timer oTimer;
+  AggTimer oAggTimer;
+  
 #ifdef WITH_TRACE_LOGICUNIT
   vTrace("\nLogic Unit :: sql %lld\n\n"_Stz,m_iSql);
   vDebugPoint();
@@ -3293,6 +3304,40 @@ i8 LogicUnit::iCompute(void)
         aeCode = * (--aaeRstk);
         break;
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // counter
+      case EO_TMR_START: NoArg(); // timer start
+        dLU0(eCode);
+        oTimer.vStart();
+        break;
+        
+      case EO_TMR_NSECS: NoArg(); // push timer nanoseconds
+        iRes = oTimer.iNanoseconds();
+        dLU1(eCode,iRes);
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_TMR_UPDATE: NoArg(); // timer update
+        dLU0(eCode);
+        oTimer.vUpdate();
+        break;
+        
+      case EO_TMR_AGG_ADD: NoArg(); // add timer to agg timer
+        dLU0(eCode);
+        oAggTimer.vAdd(&oTimer);
+        break;
+        
+      case EO_TMR_AGG_NSECS: NoArg(); // push agg nanoseconds
+        iRes = oAggTimer.iNanoseconds();
+        dLU1(eCode,iRes);
+        *(++aiDstk) = iRes;
+        break;
+        
+      case EO_TMR_AGG_RESET: NoArg(); // reset agg timer
+        dLU0(eCode);
+        oTimer.vReset();
+        break;
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // misc
       case EO_BREAKPOINT: NoArg(); // breakpoint

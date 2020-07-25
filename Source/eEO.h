@@ -186,6 +186,14 @@ enum eEO : u1 // expression operators
   /*    */ EO_CALL,             // call subroutine at location
   /*    */ EO_RETURN,           // return from subroutine and
 
+  // timer
+  /*    */ EO_TMR_START,        // timer start
+  /*    */ EO_TMR_NSECS,        // push timer nanoseconds
+  /*    */ EO_TMR_UPDATE,       // timer update
+  /*    */ EO_TMR_AGG_ADD,      // add timer to agg timer
+  /*    */ EO_TMR_AGG_NSECS,    // push agg nanoseconds
+  /*    */ EO_TMR_AGG_RESET,    // reset agg timer
+
   // misc
   /*    */ EO_BREAKPOINT,       // break point
   /*    */ EO_TRACE,            // set trace
@@ -376,6 +384,14 @@ static Stz* aEO[]
   // subroutine operators
   /*    */ "EO_CALL"_Stz,
   /*    */ "EO_RETURN"_Stz,
+
+  // timer
+  /*    */ "EO_TMR_START"_Stz,
+  /*    */ "EO_TMR_NSECS"_Stz,
+  /*    */ "EO_TMR_UPDATE"_Stz,
+  /*    */ "EO_TMR_AGG_ADD"_Stz,
+  /*    */ "EO_TMR_AGG_NSECS"_Stz,
+  /*    */ "EO_TMR_AGG_RESET"_Stz,
 
   // misc
   /*    */ "EO_BREAKPOINT"_Stz,
