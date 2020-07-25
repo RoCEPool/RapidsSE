@@ -172,9 +172,9 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_SUBTRACT
 
   // col operators
-  { EA_INT,     8 },  // EO_COL_SRC_PUSH
-  { EA_INT,     8 },  // EO_COL_SRC_PUSHSTR
-  { EA_INT,     8 },  // EO_COL_ALT_PUSH
+  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSH
+  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHSTR
+  { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSH
   
   // crw operators
   { EA_NONE,    0 },  // EO_CRW_SRC_FETCH
@@ -208,7 +208,7 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENT_GREATER
 
   // entWrk
-  { EA_INT,     8 },  // EO_ENTWRK_APPENDELM
+  { EA_SUBSCR,  8 },  // EO_ENTWRK_APPENDELM
   { EA_NONE,    0 },  // EO_ENTWRK_APPENDELMI
   { EA_INT,     8 },  // EO_ENTWRK_CREATEPAY
   { EA_NONE,    0 },  // EO_ENTWRK_POPOFS
@@ -270,10 +270,10 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ISNOTNULL
 
   // pay load
-  { EA_INT,     8 },  // EO_PAY_FETCH_COLI
-  { EA_INT,     8 },  // EO_PAY_FETCH_COLS
-  { EA_INT,     8 },  // EO_PAY_STORE_COLI
-  { EA_INT,     8 },  // EO_PAY_STORE_COLS
+  { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLI
+  { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLS
+  { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLI
+  { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLS
 
   // pix
   { EA_NONE,    0 },  // EO_PIX_STM_PRINT
@@ -322,12 +322,12 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_GREATERTHAN
 
   // rsb operators
-  { EA_INT,     8 },  // EO_RSB_DST_POPCOLI
-  { EA_INT,     8 },  // EO_RSB_DST_POPCOLS
-  { EA_INT,     8 },  // EO_RSB_DST_PUSHCOLI
-  { EA_INT,     8 },  // EO_RSB_SRC_PUSHCOLI
-  { EA_INT,     8 },  // EO_RSB_SRC_PUSHCOLS
-  { EA_INT,     8 },  // EO_RSB_ALT_PUSHCOLI
+  { EA_SUBSCR,  8 },  // EO_RSB_DST_POPCOLI
+  { EA_SUBSCR,  8 },  // EO_RSB_DST_POPCOLS
+  { EA_SUBSCR,  8 },  // EO_RSB_DST_PUSHCOLI
+  { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLI
+  { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLS
+  { EA_SUBSCR,  8 },  // EO_RSB_ALT_PUSHCOLI
 
   // stack operators
   { EA_NONE,    0 },  // EO_INC
