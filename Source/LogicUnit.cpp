@@ -1734,6 +1734,7 @@ void LogicUnit::vCorrectLabel(i8 i_Label)
   }
 
   m_xaJumpLabel[i_Label].m_bDefined = true;
+  m_xaJumpLabel[i_Label].m_i_Code   = m_i_Code;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1776,7 +1777,21 @@ void LogicUnit::vDefineLabel(Stz* szLabelNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add label                                                                  */
+/* find code                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* LogicUnit::szFindCode(i8 i_Code)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
+    if (i_Code == m_xaJumpLabel[i_Label].m_i_Code)
+      return m_xaJumpLabel[i_Label].m_sLabel;
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find label                                                                 */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iFindLabel(Stz* szLabelNm)
 {
@@ -2137,7 +2152,8 @@ void LogicUnit::vDumpCode(void)
  
 //#ifdef WITH_TRACE_LOGICUNIT
   
-  if (100000 != m_iSql)
+  //if (100000 != m_iSql)
+  if (301 != m_iSql)
     return;
   
   SP_Dte spDate;
@@ -2148,6 +2164,9 @@ void LogicUnit::vDumpCode(void)
     
     eEO eCode = m_eaCode[i_Code];
     
+    Stz* szLabel = szFindCode(i_Code);
+    vTrace("%12s "_Stz,szLabel ? szLabel : ""_Stz);
+      
     if (eCode <= EO_NONE || eCode >= EO_ENUMS) {
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "Invalid eo code sequence detected"_Stz);

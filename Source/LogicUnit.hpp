@@ -313,6 +313,7 @@ namespace Expressions
     void vCorrectLabel(i8 i_Label);
     i8   iDecodeLabel(Stz* szLabelNm);
     void vDefineLabel(Stz* szLabelNm);
+    Stz* szFindCode(i8 i_Code);
     i8   iFindLabel(Stz* szLabelNm);
     void vPrintLabels(void);
 
