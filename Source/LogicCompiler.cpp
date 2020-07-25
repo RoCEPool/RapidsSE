@@ -124,12 +124,14 @@ void LogicCompiler::vCall(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
+#ifdef __TINYC
   i8 (*afDyn)(void);
 
   afDyn = (i8 (*)(void))tcc_get_symbol((TCCState*)m_aTccState,"iDynCompute");
   RASSERT(afDyn);
   
   afDyn();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,6 +179,7 @@ void LogicCompiler::vSymbols(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
+#ifdef __TINYC
   // add external symbols
   tcc_add_symbol((TCCState*)m_aTccState, "iMul", (const void *)iMul);
   
@@ -184,7 +187,7 @@ void LogicCompiler::vSymbols(void)
   if (tcc_relocate((TCCState*)m_aTccState, TCC_RELOCATE_AUTO) < 0) {
     RASSERT(0);
   }
-  
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

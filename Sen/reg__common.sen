@@ -18,6 +18,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* pipe out all completed buffers in the pot for all partitions               */
+/*----------------------------------------------------------------------------*/
+: Pot[].pipeoutAllCompletedPtns
+
+  grid::partitions 0
+  do
+    begin
+      I Pot[].completedPtn to OperandB[]
+      OperandB[].isNotNull
+    while
+      OperandB[].pipeOut
+    repeat
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
 /* pipe out all dangling buffers in the pot                                   */
 /*----------------------------------------------------------------------------*/
 : Pot[].pipeoutAllDangling
@@ -28,6 +44,22 @@
   while
     OperandB[].pipeOut
   repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* pipe out all dangling buffers in the pot for all partitions                */
+/*----------------------------------------------------------------------------*/
+: Pot[].pipeoutAllDanglingPtns
+
+  grid::partitions 0
+  do
+    begin
+      I Pot[].danglingPtn to OperandB[]
+      OperandB[].isNotNull
+    while
+      OperandB[].pipeOut
+    repeat
+  loop
 ;
 
 /*============================================================================*/
