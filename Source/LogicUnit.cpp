@@ -279,10 +279,6 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PIX_STM_PRINT
   
   // partitioning
-  { EA_NONE,    0 },  // EO_PTN_DST
-  { EA_NONE,    0 },  // EO_PTN_INGRID
-  { EA_NONE,    0 },  // EO_PTN_SET
-
   { EA_NONE,    0 },  // EO_PTN_CALC
   { EA_NONE,    0 },  // EO_PTN_RESET
   { EA_NONE,    0 },  // EO_PTN_RUNNING
@@ -3046,22 +3042,6 @@ i8 LogicUnit::iCompute(void)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // partitioning
-      case EO_PTN_DST: NoArg(); // calc ptn using dst stream def
-        dLU0(eCode);
-        NEVER_REACH;
-        break;
-
-      case EO_PTN_INGRID: NoArg(); // get the number of partitions in grid
-        iRes = AM::nPartitions();
-        dLU1(eCode,iRes);
-        *(++aiDstk) = iRes;
-        break;
-
-      case EO_PTN_SET: NoArg(); // set i_Ptn register
-        dLU0(eCode);
-        i_Ptn = *(aiDstk--);
-        break;
-
       case EO_PTN_CALC: NoArg(); // calculate i_Ptn using running iHash
         dLU0(eCode);
         i_Ptn = PtnLib::iPartition(iHash,nPtns);

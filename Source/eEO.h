@@ -124,10 +124,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_PIX_STM_PRINT,    // print stream pix
   
   // partitioning
-  /*    */ EO_PTN_DST,          // calc ptn using dst stream def
-  /*    */ EO_PTN_INGRID,       // get the number of partitions in grid
-  /*    */ EO_PTN_SET,          // set i_Ptn register
-
   /*    */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
   /*    */ EO_PTN_RESET,        // reset running iHash
   /*    */ EO_PTN_RUNNING,      // mix top into running iHash
@@ -332,10 +328,6 @@ static Stz* aEO[]
   /*    */ "EO_PIX_STM_PRINT"_Stz,
   
   // partitioning
-  /*    */ "EO_PTN_DST"_Stz,
-  /*    */ "EO_PTN_INGRID"_Stz,
-  /*    */ "EO_PTN_SET"_Stz,
-  
   /*    */ "EO_PTN_CALC"_Stz,
   /*    */ "EO_PTN_RESET"_Stz,
   /*    */ "EO_PTN_RUNNING"_Stz,
