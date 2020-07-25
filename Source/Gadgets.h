@@ -89,6 +89,7 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 #include "Decider.hpp"
 #include "EnumFlags.hpp"
 #include "FreqDist.hpp"
+#include "HshLib.hpp"
 #include "HV.hpp"
 #include "MemTest.hpp"
 #include "NextGid.hpp"
