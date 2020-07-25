@@ -553,6 +553,7 @@ bool ToRsb::bConvertFastInline(char* azCsvInput)
   ColPix* aColPix = pRowSlab->axaColPix();
 
   i8 nPtns = AM::nPartitions();
+  i8 iHash = 0;
   i8 i_Ptn = 0;
 
   
@@ -894,6 +895,10 @@ L_Integer:
   iFinalResult = bNegative ? - uPartialResult : uPartialResult;
   pRowSlab->vDeposit(iFinalResult);
 
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    iHash += HshLib::iHash((byte*)&iFinalResult,sizeof(w8));
+    
   goto L_PostField;                                            // end of integer
 
   
@@ -1096,11 +1101,12 @@ L_EndOfFields:
   }
 #endif
 
-  // set partition hash CURRENTLY ROUND ROBIN.  DISCUSS W ALKA
+  // set partition hash
   if (m_bPtnHash) {
+    i_Ptn = iHash % nPtns;
+    //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
     pRowSlab->vDeposit((i8)i_Ptn);
-    if (++i_Ptn >= nPtns)
-      i_Ptn = 0;
+    iHash = 0;
   }
   
   m_i_Rec++;
