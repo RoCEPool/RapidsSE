@@ -2174,27 +2174,38 @@ void LogicUnit::vDumpCode(void)
     
     if (-1 == EoArgs[eCode].m_nArgBytes) {
       char* azArg = (char*) & m_eaCode[i_Code+1];
-      vTrace("%04lld: %18s (%lls)\n"_Stz,i_Code,aEO[eCode],azArg);
+      vTrace("%04lld: %20s (%lls)\n"_Stz,i_Code,aEO[eCode],azArg);
       i_Code += 1 + StrLib::nSize(azArg);
     }
     else
     if (EA_DATE == EoArgs[eCode].m_eArgument) {
       i8* piArg = (i8*) & m_eaCode[i_Code+1];
       i8 iArg = * piArg;
-      vTrace("%04lld: %18s (%lls)\n"_Stz,i_Code,aEO[eCode],spDate.sz(iArg));
+      vTrace("%04lld: %20s (%lls)\n"_Stz,i_Code,aEO[eCode],spDate.sz(iArg));
+      i_Code += 1 + sizeof(i8);
+    }
+    else
+    if (EA_LABEL == EoArgs[eCode].m_eArgument) {
+      i8* piArg = (i8*) & m_eaCode[i_Code+1];
+      i8 iArg = * piArg;
+      Stz* szLabel = szFindCode(iArg);
+      vTrace("%04lld: %20s => %s @%lld\n"_Stz,
+             i_Code,
+             aEO[eCode],
+             szLabel ? szLabel : "<unknown>"_Stz,
+             iArg
+             );
       i_Code += 1 + sizeof(i8);
     }
     else
     if (EoArgs[eCode].m_nArgBytes) {
-      //vDumpCode(eCode,i_Code);
       i8* piArg = (i8*) & m_eaCode[i_Code+1];
       i8 iArg = * piArg;
-      vTrace("%04lld: %18s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
+      vTrace("%04lld: %20s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
       i_Code += 1 + sizeof(i8);
     }
     else {
-      //vDumpCode(i_Code,eCode);
-      vTrace("%04lld: %18s\n"_Stz,i_Code,aEO[eCode]);
+      vTrace("%04lld: %20s\n"_Stz,i_Code,aEO[eCode]);
       i_Code++;
     }
   }
