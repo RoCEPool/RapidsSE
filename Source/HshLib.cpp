@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 i8 HshLib::iHash(byte* ayaKey, i8 nBytes)
 {
+  _static_
+  
   i8 iHash = XXH32(ayaKey,nBytes,0);
 
   return iHash;
@@ -19,6 +21,8 @@ i8 HshLib::iHash(byte* ayaKey, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 HshLib::iHash32(byte* ayaKey, i8 nBytes)
 {
+  _static_
+  
   i8 iHash = XXH32(ayaKey,nBytes,0);
   
   return iHash;
@@ -29,6 +33,8 @@ i8 HshLib::iHash32(byte* ayaKey, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 HshLib::iHash64(byte* ayaKey, i8 nBytes)
 {
+  _static_
+  
   i8 iHash = XXH64(ayaKey,nBytes,0);
   
   return iHash;
@@ -39,6 +45,8 @@ i8 HshLib::iHash64(byte* ayaKey, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 HshLib::iHashReverse(byte* ayaKey, i8 nBytes)
 {
+  _static_
+  
   byte yaPerturbedKey[nBytes];
   
   // reverse the key
@@ -57,6 +65,8 @@ i8 HshLib::iHashReverse(byte* ayaKey, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 HshLib::iHashReverseRotate(byte* ayaKey, i8 nBytes, i8 nRotate)
 {
+  _static_
+  
   byte yaPerturbedKey[32];//[nBytes];
 
   // reverse the key
@@ -80,6 +90,8 @@ i8 HshLib::iHashReverseRotate(byte* ayaKey, i8 nBytes, i8 nRotate)
 /*----------------------------------------------------------------------------*/
 i8 HshLib::iHashRotate(byte* ayaKey, i8 nBytes, i8 nRotate)
 {
+  _static_
+  
   byte yaPerturbedKey[32];//[nBytes];
   
   // rotate the key
@@ -99,6 +111,8 @@ i8 HshLib::iHashRotate(byte* ayaKey, i8 nBytes, i8 nRotate)
 /*----------------------------------------------------------------------------*/
 i8 HshLib::iHashRotateReverse(byte* ayaKey, i8 nBytes, i8 nRotate)
 {
+  _static_
+  
   byte yaPerturbedKey[32];//[nBytes];
   byte yaPerturbedKey2[32];//[nBytes];
 

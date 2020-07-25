@@ -553,7 +553,7 @@ bool ToRsb::bConvertFastInline(char* azCsvInput)
   ColPix* aColPix = pRowSlab->axaColPix();
 
   i8 nPtns = AM::nPartitions();
-  i8 iHash = 0;
+  i8 iHash = PtnLib::iResetRunning();
   i8 i_Ptn = 0;
 
   
@@ -897,8 +897,9 @@ L_Integer:
 
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    iHash += HshLib::iHash((byte*)&iFinalResult,sizeof(w8));
-    
+    //iHash += HshLib::iHash((byte*)&iFinalResult,sizeof(w8));
+    PtnLib::vRunning(&iHash,iFinalResult);
+  
   goto L_PostField;                                            // end of integer
 
   
@@ -1103,10 +1104,11 @@ L_EndOfFields:
 
   // set partition hash
   if (m_bPtnHash) {
-    i_Ptn = iHash % nPtns;
+    //i_Ptn = iHash % nPtns;
+    i_Ptn = PtnLib::iPartition(iHash,nPtns);
     //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
     pRowSlab->vDeposit((i8)i_Ptn);
-    iHash = 0;
+    iHash = PtnLib::iResetRunning();
   }
   
   m_i_Rec++;
