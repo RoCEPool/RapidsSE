@@ -347,12 +347,12 @@ EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_RETURN
 
   // timer
-  { EA_INT,     8 },  // EO_TMR_START
-  { EA_INT,     8 },  // EO_TMR_NSECS
-  { EA_INT,     8 },  // EO_TMR_UPDATE
-  { EA_INT,     8 },  // EO_TMR_AGG_ADD
-  { EA_INT,     8 },  // EO_TMR_AGG_NSECS
-  { EA_INT,     8 },  // EO_TMR_AGG_RESET
+  { EA_NONE,    0 },  // EO_TMR_START
+  { EA_NONE,    0 },  // EO_TMR_NSECS
+  { EA_NONE,    0 },  // EO_TMR_UPDATE
+  { EA_NONE,    0 },  // EO_TMR_AGG_ADD
+  { EA_NONE,    0 },  // EO_TMR_AGG_NSECS
+  { EA_NONE,    0 },  // EO_TMR_AGG_RESET
 
   // misc
   { EA_NONE,    0 },  // EO_BREAKPOINT
@@ -2195,6 +2195,13 @@ void LogicUnit::vDumpCode(void)
              szLabel ? szLabel : "<unknown>"_Stz,
              iArg
              );
+      i_Code += 1 + sizeof(i8);
+    }
+    else
+    if (EA_SUBSCR == EoArgs[eCode].m_eArgument) {
+      i8* piArg = (i8*) & m_eaCode[i_Code+1];
+      i8 iArg = * piArg;
+      vTrace("%04lld: %20s [%lld]\n"_Stz,i_Code,aEO[eCode],iArg);
       i_Code += 1 + sizeof(i8);
     }
     else
