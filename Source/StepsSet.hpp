@@ -897,11 +897,11 @@ public:
   void vLogicCompilerNew(void);
 
   // logic unit
+  void vLogicUnitCallAgainFetch(void);
+  void vLogicUnitCallAgainStore(void);
   void vLogicUnitGenCode(void);
-
-  void vLogicUnitSourceFetch(void);
-  void vLogicUnitSourceStore(void);
-
+  void vLogicUnitHandlerFetch(void);
+  void vLogicUnitHandlerStore(void);
   void vLogicUnitTransform(void);
 
   // machine
@@ -1266,12 +1266,6 @@ public:
   // register
   void vRegister0Get(void);
   void vRegister0Set(void);
-
-  // regset
-  void vLogicUnitCallAgainFetch(void);
-  void vLogicUnitCallAgainStore(void);
-  void vLogicUnitHandlerFetch(void);
-  void vLogicUnitHandlerStore(void);
 
   void vRowIntColumnFetch(void);
 

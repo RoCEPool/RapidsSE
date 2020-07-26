@@ -622,25 +622,6 @@ void LogicUnit::vPrintLabels(void)
   
 }
 
-/*----------------------------------------------------------------------------*/
-/* get source                                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* LogicUnit::szSource(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  return m_sSource;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set source                                                                 */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vSource(Stz* szSource)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  m_sSource = szSource;
-}
 
 
 // calc L AGAIN 1 ;

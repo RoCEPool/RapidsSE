@@ -256,8 +256,6 @@ namespace Expressions
     i8        m_nLabels;
     JumpLabel m_xaJumpLabel[C_LOGIC_LABEL];
 
-    s2K     m_sSource;
-
   
     // must be last
     Footer m_xFooter;
@@ -294,10 +292,6 @@ namespace Expressions
 
     i8   iTransform(void);
   
-    Stz* szSource(void);
-    void vSource(Stz* szSource);
-
-
   private:
     void vAddCode(eEO eCode);
     void vAddCodeArg(eEO eCode, i8 iArg);

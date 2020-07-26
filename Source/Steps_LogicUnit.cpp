@@ -12,10 +12,7 @@ extern DebugFlags gxDebugFlags;;
 void Step::vAddSteps_LogicUnit(void)
 {
   vAddStep("LogicUnit[].genCode"_Stz,    &Step::vLogicUnitGenCode);
-  
-  vAddStep("LogicUnit[].source@"_Stz,    &Step::vLogicUnitSourceFetch);
-  vAddStep("LogicUnit[].source!"_Stz,    &Step::vLogicUnitSourceStore);
-  
+    
   vAddStep("LogicUnit[].callAgain@"_Stz, &Step::vLogicUnitCallAgainFetch);
   vAddStep("LogicUnit[].callAgain!"_Stz, &Step::vLogicUnitCallAgainStore);
   vAddStep("LogicUnit[].handler@"_Stz,   &Step::vLogicUnitHandlerFetch);
@@ -34,35 +31,6 @@ void Step::vLogicUnitGenCode(void)
   i8 iTestNo = m_pDataStack->iPopInt(__func__);
       
   m_pLogicUnit->vGenCode(iTestNo);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].source@ -- fetch source for expression evaluator               */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitSourceFetch(void)
-{
-  ENTRY();
-    
-  s2K sSource = m_pLogicUnit->szSource();
-
-  m_pDataStack->vPushStr(sSource);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].source! -- store source for expression evaluator               */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitSourceStore(void)
-{
-  ENTRY();
-    
-  s2K sSource;
-  m_pDataStack->vPopStr(sSource,__func__);
-  
-  m_pLogicUnit->vSource(sSource);
   
   EXIT();
 }
