@@ -47,7 +47,7 @@ DataBuffer* Pot::pBuffer(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
-  ASSERT(0 == i_Ptn);
+  //ASSERT(0 == i_Ptn);
   
   DataBuffer* pDataBuffer = m_oHashSet.pBuffer(i_Ptn);
   
@@ -61,7 +61,7 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
-  ASSERT(0 == i_Ptn);
+  //ASSERT(0 == i_Ptn);
   
   DataBuffer* pDataBuffer = m_oHashSet.pCompletedBuffer(i_Ptn);
   
@@ -75,7 +75,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
-  ASSERT(0 == i_Ptn);
+  //ASSERT(0 == i_Ptn);
   
   DataBuffer* pDataBuffer = m_oHashSet.pDanglingBuffer(i_Ptn);
 
@@ -89,7 +89,7 @@ Rsb* Pot::aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
-  ASSERT(0 == i_Ptn);
+  //ASSERT(0 == i_Ptn);
   
   // get rsb buffer for given partition (new a first buffer if ncessary)
   RsbBuffer* pDstRsbBuffer = _pRsbBuffer(pBuffer(i_Ptn));

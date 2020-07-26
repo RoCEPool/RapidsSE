@@ -670,9 +670,9 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERKEY);
   vAddCode(EO_PTN_RUNNING);
   vAddCode(EO_PTN_CALC);
-  vAddCode(EO_PTN_PUSH);
-  vAddCode(EO_LGL_NOT);
-  vAddCode(EO_ASSERT);
+//  vAddCode(EO_PTN_PUSH);
+//  vAddCode(EO_LGL_NOT);
+//  vAddCode(EO_ASSERT);
 
   
   vAddCode(EO_RSB_DST_NEW);

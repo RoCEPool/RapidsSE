@@ -1343,8 +1343,6 @@ i8 LogicUnit::iCompute(void)
       // pushes
       case EO_DATE: GetArg(iArg); // push date
         dLU1(eCode,iArg);
-        // convert date string to an m8
-        
         *(++aiDstk) = iArg;
         break;
         
@@ -1400,7 +1398,7 @@ i8 LogicUnit::iCompute(void)
 
       case EO_RSB_DST_NEW: NoArg(); // create new destination rsb
         dLU0(eCode);
-        ASSERT(0 == i_Ptn);
+        //ASSERT(0 == i_Ptn);
         m_aDstRsb = m_xpPot->aNewDstRsb(i_Ptn,&m_pDstRowSlab);
         break;
 
