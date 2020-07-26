@@ -585,6 +585,7 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_PIX_STM_PRINT);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q300 
 
   // iterate all CUSTOMER
   vAddCode(EO_IXT_SRC_BEGIN);
@@ -602,7 +603,7 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeLabel(EO_JMP_NOTEQUAL,"NXT_S:"_Stz);
 
   
-  vAddCodeLabel(EO_CALL,"JOI_A:"_Stz);
+  vAddCodeLabel(EO_CALL,"JOI_ORD:"_Stz);
 
 
   // next CUSTOMER
@@ -615,24 +616,24 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  //                                                                Q300 JOI_ORD
   // join ORDERS
-  vDefineLabel("JOI_A:"_Stz);
+  vDefineLabel("JOI_ORD:"_Stz);
   vAddCodeString(EO_STR_LITERAL,"Join ORDERS"_Stz);
   vAddCode(EO_STR_PRINTADR);
   
   vAddCode(EO_IXT_POS_ALTBYSRC);
-  vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
-  vDefineLabel("NXT_A:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
+  vDefineLabel("NXT_ORD:"_Stz);
   vAddCode(EO_IXT_ALT_NEXT);
   
   vAddCode(EO_IXT_SRC_PRINT);
   vAddCode(EO_IXT_ALT_PRINT);
 
 
-  vAddCodeLabel(EO_JMP_FALSE,"RET_A:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
   vAddCode(EO_IXT_CMP_SRCALT);
-  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A:"_Stz);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_ORD:"_Stz);
 
   vAddCode(EO_IXT_ALT_PRINT);
   
@@ -640,7 +641,7 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
   vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
   vAddCode(EO_LESSTHAN);
-  vAddCodeLabel(EO_JMP_FALSE,"NXT_A:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
 
   vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
   vAddCode(EO_DTE_PRINT);
@@ -654,9 +655,9 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
   vAddCode(EO_RSB_DST_PRINT);
 
-  vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
+  vAddCodeLabel(EO_JMP,"NXT_ORD:"_Stz);
   
-  vDefineLabel("RET_A:"_Stz);
+  vDefineLabel("RET_ORD:"_Stz);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
