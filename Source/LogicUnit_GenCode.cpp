@@ -646,6 +646,25 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
   vAddCode(EO_DTE_PRINT);
 
+  vAddCodeLabel(EO_CALL,"DST_PUT:"_Stz);
+//  vAddCode(EO_RSB_DST_NEW);
+//  vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERKEY);
+//  vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERKEY);
+//  vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
+//  vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERDATE);
+//  vAddCodeArg(EO_COL_ALT_PUSH,O_SHIPPRIORITY);
+//  vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
+//  vAddCode(EO_RSB_DST_PRINT);
+
+  vAddCodeLabel(EO_JMP,"NXT_ORD:"_Stz);
+  
+  vDefineLabel("RET_ORD:"_Stz);
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q300 DST_PUT
+  vDefineLabel("DST_PUT:"_Stz);
+  
   vAddCode(EO_RSB_DST_NEW);
   vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERKEY);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERKEY);
@@ -655,11 +674,8 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
   vAddCode(EO_RSB_DST_PRINT);
 
-  vAddCodeLabel(EO_JMP,"NXT_ORD:"_Stz);
-  
-  vDefineLabel("RET_ORD:"_Stz);
   vAddCode(EO_RETURN);
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vDumpCode();
