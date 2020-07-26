@@ -580,7 +580,7 @@ void LogicUnit::vGenerateQuery300(void)
   m_i_Code = 0;
     
   vDefineLabel("QRY_300:"_Stz);
-  vAddCodeString(EO_STR_LITERAL,"Hello World!"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"**QRY_300**"_Stz);
   vAddCode(EO_STR_PRINTADR);
   vAddCode(EO_PIX_STM_PRINT);
 
@@ -591,11 +591,11 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_IXT_SRC_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"END_CUS:"_Stz);
   vDefineLabel("GOT_CUS:"_Stz);
-  vAddCode(EO_IXT_SRC_PRINT);
+  //vAddCode(EO_IXT_SRC_PRINT);
   
   vAddCode(EO_CRW_SRC_FETCH);
-  vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
-  vAddCode(EO_STR_PRINTSTK);
+  //vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
+  //vAddCode(EO_STR_PRINTSTK);
   
   vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
   vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);
@@ -619,23 +619,23 @@ void LogicUnit::vGenerateQuery300(void)
   //                                                                Q300 JOI_ORD
   // join ORDERS
   vDefineLabel("JOI_ORD:"_Stz);
-  vAddCodeString(EO_STR_LITERAL,"Join ORDERS"_Stz);
-  vAddCode(EO_STR_PRINTADR);
+  //vAddCodeString(EO_STR_LITERAL,"Join ORDERS"_Stz);
+  //vAddCode(EO_STR_PRINTADR);
   
   vAddCode(EO_IXT_POS_ALTBYSRC);
   vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
   vDefineLabel("NXT_ORD:"_Stz);
   vAddCode(EO_IXT_ALT_NEXT);
   
-  vAddCode(EO_IXT_SRC_PRINT);
-  vAddCode(EO_IXT_ALT_PRINT);
+  //vAddCode(EO_IXT_SRC_PRINT);
+  //vAddCode(EO_IXT_ALT_PRINT);
 
 
   vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
   vAddCode(EO_IXT_CMP_SRCALT);
   vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_ORD:"_Stz);
 
-  vAddCode(EO_IXT_ALT_PRINT);
+  //vAddCode(EO_IXT_ALT_PRINT);
   
   vAddCode(EO_CRW_ALT_FETCH);
   vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);

@@ -235,7 +235,7 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
     i_Label = iAddLabel(szLabelNm,false);
     m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
     vAddCodeArg(eCode,C_UNKNOWN);
-    vPrintLabels();
+    //vPrintLabels();
     return;
   }
 
@@ -247,7 +247,7 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
   i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Chain;
   m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
   vAddCodeArg(eCode,i_Chain);
-  vPrintLabels();
+  //vPrintLabels();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -332,7 +332,7 @@ i8 LogicUnit::iDecodeLabel(Stz* szLabelNm)
  
   m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code;
   
-  vPrintLabels();
+  //vPrintLabels();
   
   return i_Code;
 }
@@ -352,7 +352,7 @@ void LogicUnit::vDefineLabel(Stz* szLabelNm)
   else
     vCorrectLabel(i_Label);
   
-  vPrintLabels();
+  //vPrintLabels();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -604,6 +604,7 @@ i8 LogicUnit::iCompute(void)
   i8 nPtns = AM::nPartitions();
   i8 iHash = PtnLib::iResetRunning();
   i8 i_Ptn = 0;
+  i8 i_Slot = AM::pTaskJob()->m_pOp->nPartition();
 
   Timer oTimer;
   AggTimer oAggTimer;
@@ -769,7 +770,7 @@ i8 LogicUnit::iCompute(void)
         SP_Dte spDate;
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("[Q%lld] %s\n"_Stz,m_iSql,spDate.sz(iTopA));
+        vTrace("[Q%lld.%lld] %s\n"_Stz,m_iSql,i_Slot,spDate.sz(iTopA));
       }
 #endif
         break;
@@ -1588,7 +1589,7 @@ i8 LogicUnit::iCompute(void)
       case EO_PRINT: NoArg(); // print top
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("[Q%lld] %lld\n"_Stz,m_iSql,iTopA);
+        vTrace("[Q%lld.%lld] %lld\n"_Stz,m_iSql,i_Slot,iTopA);
         break;
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1610,7 +1611,7 @@ i8 LogicUnit::iCompute(void)
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("[Q%lld] %lls\n"_Stz,m_iSql,iTopA);
+        vTrace("[Q%lld.%lld] %lls\n"_Stz,m_iSql,i_Slot,iTopA);
 #endif
         break;
         
@@ -1618,7 +1619,7 @@ i8 LogicUnit::iCompute(void)
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("[Q%lld] %lls\n"_Stz,m_iSql,(aiDstk-iTopA/8));
+        vTrace("[Q%lld,%lld] %lls\n"_Stz,m_iSql,i_Slot,(aiDstk-iTopA/8));
         aiDstk -= (iTopA/8) + 1;
 #endif
         break;
