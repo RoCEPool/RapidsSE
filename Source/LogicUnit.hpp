@@ -292,9 +292,6 @@ namespace Expressions
 
     void vGenerate100000(void);
 
-    bool bCompile(void);
-    bool bCompile(TokenVec* pTknVec);
-
     i8   iTransform(void);
   
     Stz* szSource(void);

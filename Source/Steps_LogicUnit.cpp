@@ -11,7 +11,6 @@ extern DebugFlags gxDebugFlags;;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogicUnit(void)
 {
-  vAddStep("LogicUnit[].compile"_Stz,    &Step::vLogicUnitCompile);
   vAddStep("LogicUnit[].genCode"_Stz,    &Step::vLogicUnitGenCode);
   
   vAddStep("LogicUnit[].source@"_Stz,    &Step::vLogicUnitSourceFetch);
@@ -23,20 +22,6 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].handler!"_Stz,   &Step::vLogicUnitHandlerStore);
   
   vAddStep("LogicUnit[].transform"_Stz,  &Step::vLogicUnitTransform);
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].compile -- compile an expression                               */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitCompile(void)
-{
-  ENTRY();
-  
-  bool b = m_pLogicUnit->bCompile();
-  
-  m_pDataStack->vPushInt((i8)b);
-    
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

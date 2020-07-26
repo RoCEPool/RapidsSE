@@ -371,33 +371,6 @@ EoArg EoArgs[]
 
 
 /*----------------------------------------------------------------------------*/
-/* compile                                                                    */
-/*----------------------------------------------------------------------------*/
-bool LogicUnit::bCompile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  TokenVec* pTknVec = TokenVec::pTokenise(m_sSource);
-  
-  bool b = bCompile(pTknVec);
-  
-  delete pTknVec;
-  
-  return b;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* compile                                                                    */
-/*----------------------------------------------------------------------------*/
-bool LogicUnit::bCompile(TokenVec* pTknVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  bool b = bCompileCode(pTknVec);
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
 /* transform compute                                                          */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iTransform(void)

@@ -897,7 +897,6 @@ public:
   void vLogicCompilerNew(void);
 
   // logic unit
-  void vLogicUnitCompile(void);
   void vLogicUnitGenCode(void);
 
   void vLogicUnitSourceFetch(void);
