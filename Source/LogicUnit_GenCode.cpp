@@ -882,11 +882,12 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_PRINT);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  //                                                                Q400
+
   // iterate all ORDERS
   vAddCode(EO_IXT_SRC_BEGIN);
-  vAddCodeLabel(EO_JMP_FALSE,"END:"_Stz);
-  vDefineLabel("GOT_S:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
+  vDefineLabel("GOT_ORD:"_Stz);
   vAddCode(EO_IXT_SRC_PRINT);
 
   // test O_ORDERDATE
@@ -896,11 +897,11 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_DTE_PRINT);
   vAddCodeArg(EO_DATE,"1993-07-01"_Stz);
   vAddCode(EO_GREATEREQUAL);
-  vAddCodeLabel(EO_JMP_FALSE,"NXT_S:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
   vAddCodeArg(EO_COL_SRC_PUSH,O_ORDERDATE); // doubled, not efficient
   vAddCodeArg(EO_DATE,"1993-10-01"_Stz);
   vAddCode(EO_LESSTHAN);
-  vAddCodeLabel(EO_JMP_FALSE,"NXT_S:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
   
   
   // some string tests
@@ -909,31 +910,32 @@ void LogicUnit::vGenerateQuery400(void)
 
   
   // test for a matching LINEITEM
-  vAddCodeLabel(EO_CALL,"TST_A:"_Stz);
-  vAddCodeLabel(EO_JMP_FALSE,"NXT_S:"_Stz);
+  vAddCodeLabel(EO_CALL,"TST_ITM:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
     
   // next ORDERS
-  vDefineLabel("NXT_S:"_Stz);
+  vDefineLabel("NXT_ORD:"_Stz);
   vAddCode(EO_BREAKPOINT);
   vAddCode(EO_IXT_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_TRUE,"GOT_S:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"GOT_ORD:"_Stz);
 
   // end of ORDERS
-  vDefineLabel("END:"_Stz);
+  vDefineLabel("RET_ORD:"_Stz);
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q400 TST_ITM
   // test for a matching LINEITEM
 
-  vDefineLabel("TST_A:"_Stz);
+  vDefineLabel("TST_ITM:"_Stz);
   vAddCode(EO_IXT_POS_ALTBYSRC);
-  vAddCodeLabel(EO_JMP_FALSE,"RET_A_f:"_Stz);
-  vDefineLabel("NXT_A:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_ITM_f:"_Stz);
+  vDefineLabel("NXT_ITM:"_Stz);
   vAddCode(EO_IXT_ALT_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"RET_A_f:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_ITM_f:"_Stz);
   vAddCode(EO_IXT_ALT_PRINT);
   vAddCode(EO_IXT_CMP_SRCALT);
-  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_A_f:"_Stz);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_ITM_f:"_Stz);
   
 
   // test L_COMMITDATE < L_RECEIPTDATE
@@ -941,20 +943,20 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeArg(EO_COL_ALT_PUSH,L_COMMITDATE);
   vAddCodeArg(EO_COL_ALT_PUSH,L_RECEIPTDATE);
   vAddCode(EO_LESSTHAN);
-  vAddCodeLabel(EO_JMP_FALSE,"NXT_A:"_Stz);
-  vAddCodeLabel(EO_JMP,"RET_A_t:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_ITM:"_Stz);
+  vAddCodeLabel(EO_JMP,"RET_ITM_t:"_Stz);
 
   
   //vAddCode(EO_BREAKPOINT);
-  vAddCodeLabel(EO_JMP,"NXT_A:"_Stz);
+  vAddCodeLabel(EO_JMP,"NXT_ITM:"_Stz);
 
-  vDefineLabel("RET_A_t:"_Stz);
+  vDefineLabel("RET_ITM_t:"_Stz);
   vAddCode(EO_PUSH1);
   vAddCode(EO_PRINT);
   vAddCode(EO_PUSH1);
   vAddCode(EO_RETURN);
 
-  vDefineLabel("RET_A_f:"_Stz);
+  vDefineLabel("RET_ITM_f:"_Stz);
   vAddCode(EO_PUSH0);
   vAddCode(EO_PRINT);
   vAddCode(EO_PUSH0);
