@@ -203,6 +203,8 @@ enum eEO : u1 // expression operators
   // misc
   /*    */ EO_ASSERT,           // pop top and assert
   /*    */ EO_BREAKPOINT,       // break point
+  /*    */ EO_SLEEP,            // sleep for top seconds
+  /*    */ EO_SLOT,             // push i_Slot
   /*    */ EO_TRACE,            // set trace
   /*    */ EO_NOOP,             // no op
   /*    */ EO_ERROR,            // error marker
@@ -411,6 +413,8 @@ static Stz* aEO[]
   // misc
   /*    */ "EO_ASSERT"_Stz,
   /*    */ "EO_BREAKPOINT"_Stz,
+  /*    */ "EO_SLEEP"_Stz,
+  /*    */ "EO_SLOT"_Stz,
   /*    */ "EO_TRACE"_Stz,
   /*    */ "EO_NOOP"_Stz,
   /*    */ "EO_ERROR"_Stz,
@@ -628,6 +632,8 @@ static EoArg EoArgs[]
   // misc
   { EA_NONE,    0 },  // EO_ASSERT
   { EA_NONE,    0 },  // EO_BREAKPOINT
+  { EA_NONE,    0 },  // EO_SLEEP
+  { EA_NONE,    0 },  // EO_SLOT
   { EA_NONE,    0 },  // EO_TRACE
   { EA_NONE,    0 },  // EO_NOOP
   { EA_NONE,    0 },  // EO_ERROR

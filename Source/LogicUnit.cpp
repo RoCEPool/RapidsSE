@@ -1697,6 +1697,17 @@ i8 LogicUnit::iCompute(void)
         vDebugPoint();
         break;
         
+      case EO_SLEEP: NoArg(); // sleep for top seconds
+        iTopA = *(aiDstk--);
+        dLU1(eCode,iTopA);
+        sleep((u4)iTopA);
+        break;
+              
+      case EO_SLOT: NoArg(); // sleep for top seconds
+        dLU1(eCode,i_Slot);
+        *(++aiDstk) = i_Slot;
+        break;
+              
       case EO_TRACE: NoArg(); // set trace
         bTrace = (bool)*(aiDstk--);
         dLU1(eCode,(i8)bTrace);

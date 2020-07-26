@@ -578,11 +578,22 @@ void LogicUnit::vGenerateQuery300(void)
   m_iSql = 300;
   
   m_i_Code = 0;
-    
+      
+  vAddCode(EO_SLOT);
+  vAddCodeArg(EO_INTEGER,1);
+  vAddCode(EO_EQUAL);
+  vAddCodeLabel(EO_JMP_FALSE,"QRY_300:"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"SLEEPING"_Stz);
+  vAddCode(EO_STR_PRINTADR);
+  vAddCodeArg(EO_INTEGER,10);
+  vAddCode(EO_SLEEP);
+
   vDefineLabel("QRY_300:"_Stz);
   vAddCodeString(EO_STR_LITERAL,"**QRY_300**"_Stz);
   vAddCode(EO_STR_PRINTADR);
   vAddCode(EO_PIX_STM_PRINT);
+  
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q300
