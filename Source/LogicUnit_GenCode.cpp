@@ -589,8 +589,8 @@ void LogicUnit::vGenerateQuery300(void)
 
   // iterate all CUSTOMER
   vAddCode(EO_IXT_SRC_BEGIN);
-  vAddCodeLabel(EO_JMP_FALSE,"END:"_Stz);
-  vDefineLabel("GOT_S:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"END_CUS:"_Stz);
+  vDefineLabel("GOT_CUS:"_Stz);
   vAddCode(EO_IXT_SRC_PRINT);
   
   vAddCode(EO_CRW_SRC_FETCH);
@@ -600,19 +600,19 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
   vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);
   vAddCode(EO_STR_COMPARE);
-  vAddCodeLabel(EO_JMP_NOTEQUAL,"NXT_S:"_Stz);
+  vAddCodeLabel(EO_JMP_NOTEQUAL,"NXT_CUS:"_Stz);
 
   
   vAddCodeLabel(EO_CALL,"JOI_ORD:"_Stz);
 
 
   // next CUSTOMER
-  vDefineLabel("NXT_S:"_Stz);
+  vDefineLabel("NXT_CUS:"_Stz);
   vAddCode(EO_IXT_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_TRUE,"GOT_S:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"GOT_CUS:"_Stz);
 
   // end of CUSTOMER
-  vDefineLabel("END:"_Stz);
+  vDefineLabel("END_CUS:"_Stz);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
