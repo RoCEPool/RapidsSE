@@ -116,14 +116,18 @@ void Step::vPotNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pot[].usesStreamDefOut -- use stream def out for this pot                  */
+/* pot[].useStreamDefOut -- use stream def out for this pot                   */
 /*----------------------------------------------------------------------------*/
 void Step::vPotUseStreamDefOut(void)
 {
   ENTRY();
     
- m_pLogicUnit->m_xpStreamDefOut->vToStreamPix(&m_pLogicUnit->m_oStreamPix,true);
- m_pLogicUnit->m_xpPot->vStreamPix(&m_pLogicUnit->m_oStreamPix);
+  i8 iAddPtnHsh = m_pDataStack->iPopInt(__func__);
+  
+  m_pLogicUnit->m_xpStreamDefOut->vToStreamPix(&m_pLogicUnit->m_oStreamPix,
+                                               (bool)iAddPtnHsh);
+  
+  m_pLogicUnit->m_xpPot->vStreamPix(&m_pLogicUnit->m_oStreamPix);
 
   EXIT();
 }

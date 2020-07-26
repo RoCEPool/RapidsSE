@@ -123,7 +123,7 @@
       300 LogicUnit[].genCode
 
       streamDefOut_300
-      Pot[].useStreamDefOut
+      true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
       StreamDef[].pipeout
     endof
@@ -134,7 +134,7 @@
       301 LogicUnit[].genCode
 
       streamDefOut_301
-      Pot[].useStreamDefOut
+      true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
       StreamDef[].pipeout
     endof
