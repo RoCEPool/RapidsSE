@@ -88,12 +88,13 @@ namespace Datums
     {
       vTrace("StreamPix: %lld cols\n"_Stz,m_nCols);
       for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-        vTrace("[%02lld] %s(%lld,%lld) %s\n"_Stz,
+        vTrace("[%02lld] %s(%lld,%lld)%s%s\n"_Stz,
                i_Col,
                aDM[m_xaColPix[i_Col].m_uDatum],
                (i8)m_xaColPix[i_Col].m_uLength,
                (i8)m_xaColPix[i_Col].m_uScale,
-               m_xaColPix[i_Col].m_bPtnKey ? "#PtnKey" :""
+               m_xaColPix[i_Col].m_bPtnKey ? " !PtnKey" : "",
+               i_Col + 1 == m_nCols && m_nExtraCols ? " #PtnHsh" : ""
                );
 
       }
