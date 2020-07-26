@@ -1687,6 +1687,12 @@ i8 LogicUnit::iCompute(void)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // misc
+      case EO_ASSERT: NoArg(); // pop top and assert
+        iTopA = *(aiDstk--);
+        dLU1(eCode,iTopA);
+        RASSERT(iTopA);
+        break;
+              
       case EO_BREAKPOINT: NoArg(); // breakpoint
         dLU0(eCode);
         vDebugPoint();

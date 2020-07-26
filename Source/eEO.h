@@ -201,6 +201,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_TMR_AGG_RESET,    // reset agg timer
 
   // misc
+  /*    */ EO_ASSERT,           // pop top and assert
   /*    */ EO_BREAKPOINT,       // break point
   /*    */ EO_TRACE,            // set trace
   /*    */ EO_NOOP,             // no op
@@ -408,6 +409,7 @@ static Stz* aEO[]
   /*    */ "EO_TMR_AGG_RESET"_Stz,
 
   // misc
+  /*    */ "EO_ASSERT"_Stz,
   /*    */ "EO_BREAKPOINT"_Stz,
   /*    */ "EO_TRACE"_Stz,
   /*    */ "EO_NOOP"_Stz,
@@ -624,6 +626,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_TMR_AGG_RESET
 
   // misc
+  { EA_NONE,    0 },  // EO_ASSERT
   { EA_NONE,    0 },  // EO_BREAKPOINT
   { EA_NONE,    0 },  // EO_TRACE
   { EA_NONE,    0 },  // EO_NOOP

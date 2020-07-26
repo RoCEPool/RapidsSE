@@ -665,12 +665,14 @@ void LogicUnit::vGenerateQuery300(void)
   //                                                                Q300 DST_PUT
   vDefineLabel("DST_PUT:"_Stz);
   
+  // calc i_Ptn (should be zero for the moment)
   vAddCode(EO_PTN_RESET);
   vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERKEY);
   vAddCode(EO_PTN_RUNNING);
   vAddCode(EO_PTN_CALC);
   vAddCode(EO_PTN_PUSH);
-  vAddCode(EO_PRINT);
+  vAddCode(EO_LGL_NOT);
+  vAddCode(EO_ASSERT);
 
   
   vAddCode(EO_RSB_DST_NEW);
