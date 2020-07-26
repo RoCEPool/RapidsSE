@@ -196,7 +196,7 @@
 
   LogicUnit[].transform
 
-  Pot[].pipeoutAllDangling
+  Pot[].pipeoutAllDanglingPtns
   Pot[].delete
 
   Operand[].newEosMarker
