@@ -309,7 +309,6 @@ namespace Expressions
     void vPrintLabels(void);
 
     // last
-    bool bCompileCode(TokenVec* pTknVec);
     void vDumpCode(void);
     i8   iCompute(void);
 
