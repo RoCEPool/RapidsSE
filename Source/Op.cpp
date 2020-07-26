@@ -1509,7 +1509,10 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet, e
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
+  ASSERT(eXmitKind == XK_NORMAL ||
+         eXmitKind == XK_ROBIN  ||
+         eXmitKind == XK_HASHED);   // ray added XK_HASHED 26 jul 2020 re q301
+  
   m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
   vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
   

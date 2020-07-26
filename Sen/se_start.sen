@@ -890,10 +890,13 @@
 
   stage stageB on all partitions :
      sql 300
-    | sql 301
-    | stageC
+    | stageC hashed
 
-  stage stageC on origin :
+  stage stageC on all partitions :
+    sql 301
+    | stageD
+
+  stage stageD on origin :
     output
     | sink
     | stageA
