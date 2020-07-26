@@ -889,7 +889,7 @@
     | stageB
 
   stage stageB on all partitions :
-     sql 300
+    sql 300
     | stageC hashed
 
   stage stageC on all partitions :
@@ -918,7 +918,7 @@
     | stageB
 
   stage stageB on all partitions :
-     sql 400
+    sql 400
     | stageC
 
   stage stageC on origin :
@@ -952,7 +952,7 @@
     | stageB
 
   stage stageB on all partitions :
-     sql 100000
+    sql 100000
     | stageC
 
   stage stageC on origin :
@@ -1013,7 +1013,7 @@
   begin
 
   stage stageA on origin :
-  start
+    start
     | periodicOp once
     | stageB
 
