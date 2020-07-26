@@ -1323,6 +1323,11 @@ i8 LogicUnit::iCompute(void)
         i_Ptn = PtnLib::iPartition(iHash,nPtns);
         break;
 
+      case EO_PTN_PUSH: NoArg(); // push i_Ptn
+        dLU1(eCode,i_Ptn);
+        *(++aiDstk) = i_Ptn;
+        break;
+
       case EO_PTN_RESET: NoArg(); // reset running iHash
         dLU0(eCode);
         iHash = PtnLib::iResetRunning();
@@ -1585,7 +1590,7 @@ i8 LogicUnit::iCompute(void)
       case EO_PRINT: NoArg(); // print top
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("%lld\n"_Stz,iTopA);
+        vTrace("[Q%lld] %lld\n"_Stz,m_iSql,iTopA);
         break;
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

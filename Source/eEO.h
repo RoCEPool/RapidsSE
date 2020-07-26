@@ -125,6 +125,7 @@ enum eEO : u1 // expression operators
   
   // partitioning
   /*    */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
+  /*    */ EO_PTN_PUSH,         // push i_Ptn
   /*    */ EO_PTN_RESET,        // reset running iHash
   /*    */ EO_PTN_RUNNING,      // mix top into running iHash
 
@@ -331,6 +332,7 @@ static Stz* aEO[]
   
   // partitioning
   /*    */ "EO_PTN_CALC"_Stz,
+  /*    */ "EO_PTN_PUSH"_Stz,
   /*    */ "EO_PTN_RESET"_Stz,
   /*    */ "EO_PTN_RUNNING"_Stz,
   
@@ -546,6 +548,7 @@ static EoArg EoArgs[]
   
   // partitioning
   { EA_NONE,    0 },  // EO_PTN_CALC
+  { EA_NONE,    0 },  // EO_PTN_PUSH
   { EA_NONE,    0 },  // EO_PTN_RESET
   { EA_NONE,    0 },  // EO_PTN_RUNNING
 
