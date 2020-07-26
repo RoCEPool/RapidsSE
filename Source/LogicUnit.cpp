@@ -944,8 +944,10 @@ void LogicUnit::vGenerateQuery300(void)
   
   m_i_Code = 0;
     
+  vDefineLabel("QRY_300:"_Stz);
   vAddCodeString(EO_STR_LITERAL,"Hello World!"_Stz);
   vAddCode(EO_STR_PRINTADR);
+  vAddCode(EO_PIX_STM_PRINT);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2493,7 +2495,7 @@ i8 LogicUnit::iCompute(void)
         SP_Dte spDate;
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("%s\n"_Stz,spDate.sz(iTopA));
+        vTrace("[Q%lld] %s\n"_Stz,m_iSql,spDate.sz(iTopA));
       }
 #endif
         break;
@@ -3331,7 +3333,7 @@ i8 LogicUnit::iCompute(void)
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("%lls\n"_Stz,iTopA);
+        vTrace("[Q%lld] %lls\n"_Stz,m_iSql,iTopA);
 #endif
         break;
         
@@ -3339,7 +3341,7 @@ i8 LogicUnit::iCompute(void)
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("%lls\n"_Stz,(aiDstk-iTopA/8));
+        vTrace("[Q%lld] %lls\n"_Stz,m_iSql,(aiDstk-iTopA/8));
         aiDstk -= (iTopA/8) + 1;
 #endif
         break;
