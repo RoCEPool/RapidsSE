@@ -118,12 +118,6 @@ namespace Expressions
     };
   };
 
-  struct EoArg
-  {
-    eEA m_eArgument;
-    i8  m_nArgBytes;
-  };
-
   //----------------------------------------------------------------------------
 
   class LogicUnit : public Object
