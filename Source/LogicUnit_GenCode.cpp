@@ -585,7 +585,7 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_PIX_STM_PRINT);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q300 
+  //                                                                Q300
 
   // iterate all CUSTOMER
   vAddCode(EO_IXT_SRC_BEGIN);
@@ -683,6 +683,7 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_PIX_STM_PRINT);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q301
 
   vAddCode(EO_RSB_DST_NEW);
 
@@ -693,7 +694,7 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeLabel(EO_JMP_FALSE,"END_SRC:"_Stz);
 
   vAddCodeLabel(EO_CALL,"MOV_DST:"_Stz);
-  vAddCodeLabel(EO_CALL,"AGG_REVENUE:"_Stz);
+  vAddCodeLabel(EO_CALL,"AGG_REV:"_Stz);
 
   vAddCodeLabel(EO_JMP,"NXT_SRC:"_Stz);
 
@@ -704,6 +705,7 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q301 MOV_DST
   vDefineLabel("MOV_DST:"_Stz);
   
   vAddCode(EO_RSB_SRC_PRINT);
@@ -720,7 +722,8 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vDefineLabel("AGG_REVENUE:"_Stz);
+  //                                                                Q301 AGG_REV
+  vDefineLabel("AGG_REV:"_Stz);
   
   vAddCode(EO_ENTWRK_RESET);
 
@@ -764,6 +767,7 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q301 LIM_SBR
   vDefineLabel("LIM_SBR:"_Stz);
 
   vAddCode(EO_IXT_TMP_ENTRIES);
@@ -814,35 +818,9 @@ void LogicUnit::vGenerateQuery301(void)
   vDefineLabel("LIM_RET:"_Stz);
   vAddCode(EO_IXT_DUMP);
   vAddCode(EO_RETURN);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  vDefineLabel("TRV_IXT:"_Stz);
-//
-//  vAddCode(EO_IXT_TRV_BEGIN);
-//  vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
-//
-//  vDefineLabel("TRV_ECH:"_Stz);
-//
-//  vAddCode(EO_ENT_PUSHELMI0);
-//  vAddCode(EO_PRINT);
-//  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
-//  vAddCode(EO_PRINT);
-//  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)1);
-//  vAddCode(EO_DTE_PRINT);
-//  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)2);
-//  vAddCode(EO_PRINT);
-//
-//
-//  vDefineLabel("TRV_NXT:"_Stz);
-//  vAddCode(EO_IXT_TRV_NEXT);
-//  vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
-//
-//  vDefineLabel("TRV_RET:"_Stz);
-//  vAddCode(EO_BREAKPOINT);
-//  vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q301 TRV_IXT
 
   vDefineLabel("TRV_IXT:"_Stz);
   
