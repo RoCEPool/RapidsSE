@@ -608,6 +608,13 @@ void LogicUnit::vGenerateQuery300(void)
 
   // next CUSTOMER
   vDefineLabel("NXT_CUS:"_Stz);
+ 
+  vAddCode(EO_CTR_0_PUSH);
+  vAddCodeArg(EO_INTEGER,10);
+  vAddCode(EO_LESSEQUAL);
+  vAddCodeLabel(EO_JMP_FALSE,"END_CUS:"_Stz);
+
+
   vAddCode(EO_IXT_SRC_NEXT);
   vAddCodeLabel(EO_JMP_TRUE,"GOT_CUS:"_Stz);
 
@@ -683,6 +690,9 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_COL_ALT_PUSH,O_SHIPPRIORITY);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
   vAddCode(EO_RSB_DST_PRINT);
+  
+  vAddCode(EO_CTR_0_INC);
+
 
   vAddCode(EO_RETURN);
   
