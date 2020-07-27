@@ -1238,6 +1238,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeLabel(EO_CALL,"TST_ITM:"_Stz);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
   
+  // matching lineitem
   vAddCode(EO_CTR_0_INC);
 
   // next ORDERS
@@ -1287,6 +1288,44 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_PUSH0);
   vAddCode(EO_RETURN);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q400 GET_AGR
+  // get aggregator for o_orderpriority
+  vDefineLabel("GET_AGR:"_Stz);
+  
+  // reset entwrk
+  vAddCode(EO_ENTWRK_RESET);
+  
+  // add key O_ORDERPRIORITY
+  vAddCodeArg(EO_COL_SRC_PUSH,O_ORDERPRIORITY);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  
+  // attempt to find the key in the indexTree
+  vAddCode(EO_ENT_POSPRIOR);
+  vAddCode(EO_ENT_PUSH);
+  vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
+
+  vAddCode(EO_ENT_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
+  
+  vAddCode(EO_ENT_EQUAL);
+  vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
+  
+  // found the agg
+  vAddCode(EO_RETURN);
+
+  // did not find agg, new one
+  vDefineLabel("NEW_AGR:"_Stz);
+  
+  vAddCodeArg(EO_ENTWRK_CREATEPAY, 3 * C_BYTES_PER_WORD);
+  
+  vAddCode(EO_IXT_INS_ENT);
+  
+  vAddCode(EO_PUSH0);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
+
+  vAddCode(EO_RETURN);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vDumpCode();
