@@ -88,6 +88,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* outbound stream def for 302                                                */
+/*----------------------------------------------------------------------------*/
+: streamDefOut_302
+
+  StreamDefOut[].new  "Q302_out" StreamDefOut[].name!
+
+  0 19 CT_INTEGER "l_orderkey"     StreamDefOut[].addColumn
+  2 17 CT_DECIMAL "revenue"        StreamDefOut[].addColumn
+  0 0  CT_DATE    "o_orderdate"    StreamDefOut[].addColumn
+  0 19 CT_INTEGER "o_shippriority" StreamDefOut[].addColumn
+
+  StreamDefOut[].print
+;
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -134,6 +149,17 @@
       301 LogicUnit[].genCode
 
       streamDefOut_301
+      true Pot[].useStreamDefOut
+      StreamDefOut[].duplicate to StreamDef[]
+      StreamDef[].pipeout
+    endof
+
+    302 of
+      "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 302=STARTMARKER" .
+      queryNo "QUERY %v" .printf
+      302 LogicUnit[].genCode
+
+      streamDefOut_302
       true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
       StreamDef[].pipeout
@@ -232,6 +258,19 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+: sql_PulseMarker_302
+
+  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 302=PULSEMARKER" .
+
+  ZK_PULSEMARKER_handler
+
+  idxDef_int indexDef[] indexTree[].new
+  indexTree[].asTmp
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : sql_PulseMarker_400
 
   "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 400=PULSEMARKER" .
@@ -268,6 +307,7 @@
 
     300 of sql_PulseMarker_300   endof
     301 of sql_PulseMarker_301   endof
+    302 of sql_PulseMarker_302   endof
 
     400 of sql_PulseMarker_400   endof
 
@@ -289,6 +329,15 @@
 
     301 of
       "---------------------------- 301=RSBBUFFER ----------------------------" .
+      Operand[].pipeIn
+      Operand[].asSrcRowSlab
+      LogicUnit[].transform
+      Operand[].delete
+
+    endof
+
+    302 of
+      "---------------------------- 302=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].transform
@@ -341,6 +390,10 @@
 
     301 of
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 301=EOSMARKER" .
+    endof
+
+    302 of
+      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 302=EOSMARKER" .
     endof
 
   endcase
@@ -603,6 +656,11 @@
 
     301 of
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 301=STREAMDEF" .
+      // the stream def was  piped out in sql_StartMarker by 300
+    endof
+
+    302 of
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 302=STREAMDEF" .
       // the stream def was  piped out in sql_StartMarker by 300
     endof
 

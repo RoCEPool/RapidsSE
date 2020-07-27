@@ -100,6 +100,12 @@ namespace Expressions
   static const i8 Q301_ORDERDATE    = 2;
   static const i8 Q301_SHIPPRIORITY = 3;
 
+  // q302 output
+  static const i8 Q302_ORDERKEY     = 0;
+  static const i8 Q302_REVENUE      = 1;
+  static const i8 Q302_ORDERDATE    = 2;
+  static const i8 Q302_SHIPPRIORITY = 3;
+
   // query6 600 output
   static const i8 Q600_REVENUE    = 0;  // SUM(L_EXTENDEDPRICE*L_DISCOUNT)
   static const i8 Q600_COLUMNS    = 1;  // TOTAL COLUMNS
@@ -276,6 +282,7 @@ namespace Expressions
 
     void vGenerateQuery300(void);
     void vGenerateQuery301(void);
+    void vGenerateQuery302(void);
 
     void vGenerateQuery400(void);
   

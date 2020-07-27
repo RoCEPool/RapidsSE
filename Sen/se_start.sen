@@ -890,19 +890,22 @@
 
   stage stageB on all partitions :
     sql 300
-    | stageC hashed
+    | stageC
 
-  stage stageC on all partitions :
+  stage stageC on origin :
+    stageD hashed
+
+  stage stageD on all partitions :
     sql 301
-    | stageD
+    | stageE
 
-  stage stageD on origin :
-    output
+  stage stageE on origin :
+    sql 302
+    | output
     | sink
     | stageA
 
-  end ;
-  "
+  end ;  "
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

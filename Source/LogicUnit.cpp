@@ -424,7 +424,7 @@ void LogicUnit::vDumpCode(void)
 //#ifdef WITH_TRACE_LOGICUNIT
   
   //if (100000 != m_iSql)
-  if (301 != m_iSql)
+  if (302 != m_iSql)
     return;
   
   SP_Dte spDate;
@@ -432,9 +432,9 @@ void LogicUnit::vDumpCode(void)
   vTrace("EO code for %lld:\n"_Stz,m_iSql);
   
   for (i8 i_Code = 0; i_Code < m_i_Code; ) {
-    
+        
     eEO eCode = m_eaCode[i_Code];
-    
+        
     Stz* szLabel = szFindCode(i_Code);
     vTrace("%12s "_Stz,szLabel ? szLabel : ""_Stz);
       
@@ -486,6 +486,9 @@ void LogicUnit::vDumpCode(void)
       vTrace("%04lld: %20s\n"_Stz,i_Code,aEO[eCode]);
       i_Code++;
     }
+    
+    if (EO_RETURN == eCode)
+      vTrace("\n"_Stz);
   }
   
   vDebugPoint();
@@ -1367,6 +1370,12 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = 1;
         break;
         
+      case EO_RANDOM: GetArg(iArg); // push random number 0..arg-1
+        iRes = RndLib::iInteger(iArg);
+        dLU2(eCode,iArg,iRes);
+        *(++aiDstk) = iRes;
+        break;
+      
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ref
       case EO_REF_GETCRW: NEVER_REACH; // not yet implemented
