@@ -151,7 +151,7 @@ void LogicUnit::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* transform compute                                                          */
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iTransform(void)
+i8 LogicUnit::iTransform(i8 nArgs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   

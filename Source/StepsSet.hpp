@@ -903,6 +903,7 @@ public:
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
   void vLogicUnitTransform(void);
+  void vLogicUnitTransformArgs(void);
 
   // machine
   void vMachineCoreCount(void);

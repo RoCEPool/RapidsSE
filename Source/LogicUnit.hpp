@@ -291,7 +291,7 @@ namespace Expressions
 
     void vGenerate100000(void);
 
-    i8   iTransform(void);
+    i8   iTransform(i8 nArgs);
   
   private:
     void vAddCode(eEO eCode);
