@@ -937,8 +937,60 @@ void LogicUnit::vGenerateQuery302(void)
   vAddCode(EO_RETURN);
 
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q302 LIM_SBR
+  vDefineLabel("LIM_SBR:"_Stz);
+
+  vAddCode(EO_IXT_TMP_ENTRIES);
+  vAddCode(EO_PRINT);
+
+  vAddCode(EO_IXT_TMP_ENTRIES);
+  vAddCodeArg(EO_INTEGER,10);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMP_TRUE,"LIM_INS:"_Stz);
+
+  // -- -- -- -- -- -- -- -- --
+  vDefineLabel("LIM_TST:"_Stz);
   
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"LIM_RET:"_Stz); // need an assert
+
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q302_REVENUE);
+  vAddCode(EO_ENT_PUSHELMI0);
+  vAddCode(EO_LESSEQUAL);
+  vAddCodeLabel(EO_JMP_TRUE,"LIM_RET:"_Stz);
+
+  vAddCode(EO_IXT_DEL_ENT);
+
   
+  // -- -- -- -- -- -- -- -- --
+  vDefineLabel("LIM_INS:"_Stz);
+
+  vAddCode(EO_ENTWRK_RESET);
+
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q302_REVENUE);
+  vAddCode(EO_DUP);
+  vAddCode(EO_PRINT);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  
+  vAddCodeArg(EO_ENTWRK_CREATEPAY, 3 * C_BYTES_PER_WORD);
+
+  vAddCode(EO_IXT_INS_ENT);
+  
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q302_ORDERKEY);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q302_ORDERDATE);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)1);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q302_SHIPPRIORITY);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)2);
+
+
+  // -- -- -- -- -- -- -- -- --
+  vDefineLabel("LIM_RET:"_Stz);
+  vAddCode(EO_IXT_DUMP);
+  vAddCode(EO_RETURN);
+  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q302 TRV_IXT
   vDefineLabel("TRV_IXT:"_Stz);
@@ -974,7 +1026,6 @@ void LogicUnit::vGenerateQuery302(void)
   vAddCode(EO_RETURN);
 
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q302 CPY_DST
   vDefineLabel("CPY_DST:"_Stz);
