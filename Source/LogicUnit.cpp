@@ -1725,9 +1725,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = i_Slot;
         break;
               
-      case EO_TRACE: NoArg(); // set trace
-        bTrace = (bool)*(aiDstk--);
-        dLU1(eCode,(i8)bTrace);
+      case EO_TRACEOFF: NoArg(); // set trace
+        bTrace = 0;
+        break;
+        
+      case EO_TRACEON: NoArg(); // set trace
+        bTrace = 1;
         break;
         
       case EO_NOOP: NoArg(); // no op

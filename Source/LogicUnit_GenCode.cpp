@@ -1213,8 +1213,7 @@ void LogicUnit::vGenerateQuery400(void)
   //                                                                Q400
   vDefineLabel("QRY_400:"_Stz);
 
-  //vAddCodeArg(EO_INTEGER,1);
-  //vAddCode(EO_TRACE);
+  //vAddCode(EO_TRACEON);
 
   // iterate all ORDERS
   vAddCode(EO_IXT_SRC_BEGIN);
