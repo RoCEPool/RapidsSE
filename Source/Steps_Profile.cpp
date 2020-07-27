@@ -51,8 +51,33 @@ void Step::vProfileStart(void)
 {
   ENTRY();
   
+  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
+                                         
   Profile* pProfile = m_pTask->pProfile();
   RU_Cpu* pRU_Cpu = pProfile->pRU_Cpu();
+  
+  if (pDataBuffer) {
+    switch (pDataBuffer->eClass()) {
+      
+      case CN_CRWBUFFER: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
+        pRU_Cpu->vBuffersInc();
+        pRU_Cpu->vRowsAdd(pCrwBuffer->nRowCount());
+        break;
+      }
+      
+      case CN_RSBBUFFER: {
+        RsbBuffer* pRsbBuffer = _pRsbBuffer(pDataBuffer);
+        pRU_Cpu->vBuffersInc();
+        pRU_Cpu->vRowsAdd(pRsbBuffer->pRowSlab()->nRows());
+        break;
+      }
+      
+    default:
+      RASSERT(0);
+    }
+  }
+  
   pRU_Cpu->vStart();
   
   EXIT();

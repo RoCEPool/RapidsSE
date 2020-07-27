@@ -76,11 +76,13 @@ void RU_Memory::vWriteReport(File* pFile)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RUMEMORY,_FOOTER_);
   
+  AM::vFilePrint(pFile, "  Class#,ClassName,Allocs#,Frees#,Max#\n"_Stz);
+                 
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (! xClass[i_Class].m_nAlloc)
       continue;
     
-    AM::vFilePrint(pFile, "  %lld %24s %6lld %6lld %6lld\n"_Stz,
+    AM::vFilePrint(pFile, "  %lld,%24s,%6lld,%6lld,%6lld\n"_Stz,
            i_Class,
            aCN[i_Class],
 

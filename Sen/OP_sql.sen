@@ -323,7 +323,8 @@
 
   <queryNo> >int locals| queryNo |
 
-  //profile.start
+  PipeIn[]
+  profile.start
 
   queryNo case
 
@@ -352,7 +353,7 @@
 
   endcase
 
-  //profile.end
+  profile.end
 
   Pot[].pipeoutAllCompleted
 
@@ -398,13 +399,13 @@
 
   endcase
 
+  Pot[].pipeoutAllDangling
+  Pot[].delete
+
   // get the profile from the task
   task[] task.profile@ to Operand[]
   nullptr task[] task.profile!
   Operand[].pipeOut
-
-  Pot[].pipeoutAllDangling
-  Pot[].delete
 
   ZK_EOSMARKER_handler
 ;
