@@ -570,7 +570,7 @@ void LogicUnit::vDumpCode(void)
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iArg0)
+i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -617,7 +617,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iArg0)
   vDebugPoint();
 #endif
 
-    
+  if (nOuterArgs) {
+    *(++aiDstk) = iOuterArg0;
+  }
+  
   for (;;) {
     
     // check for stack growth

@@ -586,7 +586,7 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeLabel(EO_JMP_FALSE,"QRY_300:"_Stz);
   vAddCodeString(EO_STR_LITERAL,"SLEEPING"_Stz);
   vAddCode(EO_STR_PRINTADR);
-  vAddCodeArg(EO_INTEGER,10);
+  vAddCodeArg(EO_INTEGER,5);
   vAddCode(EO_SLEEP);
 
   vDefineLabel("QRY_300:"_Stz);
@@ -923,6 +923,8 @@ void LogicUnit::vGenerateQuery302(void)
   //                                                                Q302
   vDefineLabel("QRY_302:"_Stz);
 
+  vAddCodeLabel(EO_JMP_FALSE,"QRY_END:"_Stz);
+
   vAddCode(EO_RSB_SRC_BEGIN);
   
   vDefineLabel("NXT_SRC:"_Stz);
@@ -938,6 +940,7 @@ void LogicUnit::vGenerateQuery302(void)
   
   vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
   
+  vDefineLabel("QRY_END:"_Stz);
   vAddCode(EO_RETURN);
 
   
