@@ -897,7 +897,8 @@
     | stageD
 
   stage stageD on origin :
-    output
+    sql 302
+    | output
     | sink
     | stageA
 

@@ -915,9 +915,43 @@ void LogicUnit::vGenerateQuery302(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  // set the query no
+  m_iSql = 302;
+  
+  m_i_Code = 0;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q301
-  vDefineLabel("QRY_301:"_Stz);
+  //                                                                Q302
+  vDefineLabel("QRY_302:"_Stz);
+
+  vAddCode(EO_RSB_SRC_BEGIN);
+  
+  vDefineLabel("NXT_SRC:"_Stz);
+  vAddCode(EO_RSB_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE,"END_SRC:"_Stz);
+
+  vAddCodeLabel(EO_CALL,"CPY_DST:"_Stz);
+
+  vAddCodeLabel(EO_JMP,"NXT_SRC:"_Stz);
+
+  vDefineLabel("END_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q302 CPY_DST
+  vDefineLabel("CPY_DST:"_Stz);
+  
+  vAddCode(EO_RSB_DST_NEW);
+  vAddCode(EO_RSB_DST_ZERO);
+
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q301_ORDERKEY);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_ORDERKEY);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q301_REVENUE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_REVENUE);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q301_ORDERDATE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_ORDERDATE);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q301_SHIPPRIORITY);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_SHIPPRIORITY);
 
   vAddCode(EO_RETURN);
 

@@ -424,7 +424,7 @@ void LogicUnit::vDumpCode(void)
 //#ifdef WITH_TRACE_LOGICUNIT
   
   //if (100000 != m_iSql)
-  if (301 != m_iSql)
+  if (302 != m_iSql)
     return;
   
   SP_Dte spDate;
