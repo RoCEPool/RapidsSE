@@ -17,6 +17,7 @@ namespace Operands
     Operand(eCN eClass);
     ~Operand(void) noexcept(false);
     
+    bool bIsBuffer(void);
     bool bIsInfoSet(void);
     bool bIsMarker(void);
     bool bIsStreamDef(void);

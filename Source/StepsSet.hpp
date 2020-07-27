@@ -965,6 +965,7 @@ public:
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
   void vOpPipeOut(void);
+  void vOpStageNameFetch(void);
   void vOpTopologyStore(void);
   void vOpXmitKindStore(void);
 

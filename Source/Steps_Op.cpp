@@ -16,6 +16,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
+  vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
   vAddStep("Op.xmitKind!"_Stz,        &Step::vOpXmitKindStore);
 }
@@ -94,6 +95,21 @@ void Step::vOpPipeOut(void)
 
   pOp->vPipeOut_nextOp(pOperand,m_pTask);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.stageName@ -- fetch operator stage name                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vOpStageNameFetch(void)
+{
+  ENTRY();
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  s256 sStageName = pOp->szStageName();
+  
+  m_pDataStack->vPushStr(sStageName);
+  
   EXIT();
 }
 

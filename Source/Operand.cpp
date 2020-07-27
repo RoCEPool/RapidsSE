@@ -66,6 +66,21 @@ Operand::~Operand(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this operand a buffer ?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Operand::bIsBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  eCN eClass = this->eClass();
+  
+  if (eClass == CN_INFOSET || eClass == CN_MARKER ||
+      eClass == CN_PROFILE || eClass == CN_STREAMDEF)
+    return false;
+  else
+    return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this operand an InfoSet ?                                               */
 /*----------------------------------------------------------------------------*/
 bool Operand::bIsInfoSet(void)
