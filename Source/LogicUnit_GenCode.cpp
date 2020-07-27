@@ -20,7 +20,8 @@ void LogicUnit::vGenCode(i8 iTestNo)
  
     case     300: vGenerateQuery300();    break;
     case     301: vGenerateQuery301();    break;
-    case     302: vGenerateQuery302();    break;
+    //case     302: vGenerateQuery302();    break;
+    case     302: vGenerateQuery302b();    break;
 
     case     400: vGenerateQuery400();    break;
 
@@ -1046,6 +1047,140 @@ void LogicUnit::vGenerateQuery302(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_SHIPPRIORITY);
 
   vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for query 3                                                  */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery302b(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 302;
+  
+  m_i_Code = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q302
+  vDefineLabel("QRY_302:"_Stz);
+
+  vAddCodeLabel(EO_JMP_FALSE,"QRY_OUT:"_Stz);
+
+  
+  // --
+  vAddCode(EO_RSB_SRC_BEGIN);
+  
+  vDefineLabel("NXT_SRC:"_Stz);
+  vAddCode(EO_RSB_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE,"QRY_END:"_Stz);
+
+  //vAddCodeLabel(EO_CALL,"CPY_DST:"_Stz);
+  vAddCodeLabel(EO_CALL,"LIM_SBR:"_Stz);
+
+  vAddCodeLabel(EO_JMP,"NXT_SRC:"_Stz);
+
+  vDefineLabel("END_SRC:"_Stz);
+  
+  
+  // --
+  vDefineLabel("QRY_OUT:"_Stz);
+  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+  
+  
+  // --
+  vDefineLabel("QRY_END:"_Stz);
+  vAddCode(EO_RETURN);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q302 LIM_SBR
+  vDefineLabel("LIM_SBR:"_Stz);
+
+  vAddCode(EO_IXT_TMP_ENTRIES);
+  vAddCode(EO_PRINT);
+
+  vAddCode(EO_IXT_TMP_ENTRIES);
+  vAddCodeArg(EO_INTEGER,10);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMP_TRUE,"LIM_INS:"_Stz);
+
+  // -- -- -- -- -- -- -- -- --
+  vDefineLabel("LIM_TST:"_Stz);
+  
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"LIM_RET:"_Stz); // need an assert
+
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_REVENUE);
+  vAddCode(EO_ENT_PUSHELMI0);
+  vAddCode(EO_LESSEQUAL);
+  vAddCodeLabel(EO_JMP_TRUE,"LIM_RET:"_Stz);
+
+  vAddCode(EO_IXT_DEL_ENT);
+
+  
+  // -- -- -- -- -- -- -- -- --
+  vDefineLabel("LIM_INS:"_Stz);
+
+  vAddCode(EO_ENTWRK_RESET);
+
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_REVENUE);
+  vAddCode(EO_DUP);
+  vAddCode(EO_PRINT);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  
+  vAddCodeArg(EO_ENTWRK_CREATEPAY, 3 * C_BYTES_PER_WORD);
+
+  vAddCode(EO_IXT_INS_ENT);
+  
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_ORDERKEY);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_ORDERDATE);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)1);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_SHIPPRIORITY);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)2);
+
+
+  // -- -- -- -- -- -- -- -- --
+  vDefineLabel("LIM_RET:"_Stz);
+  vAddCode(EO_IXT_DUMP);
+  vAddCode(EO_RETURN);
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q302 TRV_IXT
+  vDefineLabel("TRV_IXT:"_Stz);
+    
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
+
+  vDefineLabel("TRV_ECH:"_Stz);
+  
+  vAddCode(EO_RSB_DST_NEW);
+
+  vAddCode(EO_ENT_PUSHELMI0);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_REVENUE);
+
+  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_ORDERKEY);
+  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)1);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_ORDERDATE);
+  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)2);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_SHIPPRIORITY);
+
+
+  vDefineLabel("TRV_NXT:"_Stz);
+  vAddCode(EO_IXT_TRV_NEXT);
+  vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
+
+  vDefineLabel("TRV_RET:"_Stz);
+  vAddCode(EO_BREAKPOINT);
+  vAddCode(EO_RETURN);
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
