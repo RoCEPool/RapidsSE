@@ -95,7 +95,7 @@ void Step::vLogicUnitTransform(void)
 {
   ENTRY();
   
-  i8 bResult = m_pLogicUnit->iTransform(0);
+  i8 bResult = m_pLogicUnit->iTransform(0,C_UNKNOWN);
   
   EXIT();
 }
@@ -107,7 +107,14 @@ void Step::vLogicUnitTransformArgs(void)
 {
   ENTRY();
   
-  i8 bResult = m_pLogicUnit->iTransform(0);
+  i8 nArgs = m_pDataStack->iPopInt(__func__);
+
+  if (nArgs) {
+    RASSERT(1 == nArgs);
+  }
+  i8 iArg0 = m_pDataStack->iPopInt(__func__);
+
+  i8 bResult = m_pLogicUnit->iTransform(nArgs,iArg0);
   
   EXIT();
 }
