@@ -896,11 +896,12 @@ L_Integer:
   pRowSlab->vDeposit(iFinalResult);
 
   // compute running hash of partitioning column
-  if (xColPix.m_bPtnKey)
+  if (xColPix.m_bPtnKey) {
     if (0 != m_i_Fld)
       vDebugPoint();
     //iHash += HshLib::iHash((byte*)&iFinalResult,sizeof(w8));
     PtnLib::vRunning(&iHash,iFinalResult);
+  }
   
   goto L_PostField;                                            // end of integer
 

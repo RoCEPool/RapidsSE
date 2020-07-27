@@ -620,10 +620,10 @@ void LogicUnit::vGenerateQuery300(void)
   // next CUSTOMER
   vDefineLabel("NXT_CUS:"_Stz);
  
-  vAddCode(EO_CTR_0_PUSH);
-  vAddCodeArg(EO_INTEGER,10);
-  vAddCode(EO_LESSEQUAL);
-  vAddCodeLabel(EO_JMP_FALSE,"END_CUS:"_Stz);
+//  vAddCode(EO_CTR_0_PUSH);
+//  vAddCodeArg(EO_INTEGER,10);
+//  vAddCode(EO_LESSEQUAL);
+//  vAddCodeLabel(EO_JMP_FALSE,"END_CUS:"_Stz);
 
 
   vAddCode(EO_IXT_SRC_NEXT);
