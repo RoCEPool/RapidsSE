@@ -432,9 +432,9 @@ void LogicUnit::vDumpCode(void)
   vTrace("EO code for %lld:\n"_Stz,m_iSql);
   
   for (i8 i_Code = 0; i_Code < m_i_Code; ) {
-    
+        
     eEO eCode = m_eaCode[i_Code];
-    
+        
     Stz* szLabel = szFindCode(i_Code);
     vTrace("%12s "_Stz,szLabel ? szLabel : ""_Stz);
       
@@ -486,6 +486,9 @@ void LogicUnit::vDumpCode(void)
       vTrace("%04lld: %20s\n"_Stz,i_Code,aEO[eCode]);
       i_Code++;
     }
+    
+    if (EO_RETURN == eCode)
+      vTrace("\n"_Stz);
   }
   
   vDebugPoint();
