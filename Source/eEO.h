@@ -135,6 +135,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_PUSHNULL,         // push null
   /*    */ EO_PUSH0,            // push integer 0
   /*    */ EO_PUSH1,            // push integer 1
+  /*    */ EO_RANDOM,           // push random number 0..arg-1
 
   // ref
   /*    */ EO_REF_GETCRW,       // get ref'd crw
@@ -345,7 +346,8 @@ static Stz* aEO[]
   /*    */ "EO_PUSHNULL"_Stz,
   /*    */ "EO_PUSH0"_Stz,
   /*    */ "EO_PUSH1"_Stz,
-
+  /*    */ "EO_RANDOM"_Stz,
+  
   // ref
   /*    */ "EO_REF_GETCRW"_Stz,
   /*    */ "EO_REF_SRCRSB"_Stz,
@@ -564,6 +566,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSHNULL
   { EA_NONE,    0 },  // EO_PUSH0
   { EA_NONE,    0 },  // EO_PUSH1
+  { EA_INT,     8 },  // EO_RANDOM
 
   // ref
   { EA_NONE,    0 },  // EO_REF_GETCRW

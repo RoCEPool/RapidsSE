@@ -1370,6 +1370,12 @@ i8 LogicUnit::iCompute(void)
         *(++aiDstk) = 1;
         break;
         
+      case EO_RANDOM: GetArg(iArg); // push random number 0..arg-1
+        iRes = RndLib::iInteger(iArg);
+        dLU2(eCode,iArg,iRes);
+        *(++aiDstk) = iRes;
+        break;
+      
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ref
       case EO_REF_GETCRW: NEVER_REACH; // not yet implemented
