@@ -113,6 +113,8 @@
 
   0 locals| queryNo |
 
+  ZK_STARTMARKER_handler
+
   Pot[].new
 
   <queryNo> >int to queryNo
@@ -191,8 +193,6 @@
     endof
 
   endcase
-
-  ZK_STARTMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
