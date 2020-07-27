@@ -283,6 +283,7 @@ namespace Expressions
     void vGenerateQuery300(void);
     void vGenerateQuery301(void);
     void vGenerateQuery302(void);
+    void vGenerateQuery302b(void);
 
     void vGenerateQuery400(void);
   
@@ -291,7 +292,7 @@ namespace Expressions
 
     void vGenerate100000(void);
 
-    i8   iTransform(void);
+    i8   iTransform(i8 nArgs, i8 iArg0);
   
   private:
     void vAddCode(eEO eCode);
@@ -311,7 +312,7 @@ namespace Expressions
 
     // last
     void vDumpCode(void);
-    i8   iCompute(void);
+    i8   iCompute(i8 nOuterArgs, i8 iArg0);
 
 
   private:

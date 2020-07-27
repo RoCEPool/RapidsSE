@@ -335,14 +335,18 @@
       LogicUnit[].transform
       Operand[].delete
 
+      Pot[].pipeoutAllCompleted
+
     endof
 
     302 of
       "---------------------------- 302=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      LogicUnit[].transform
+      true 1 LogicUnit[].transformArgs
       Operand[].delete
+
+      Pot[].pipeoutAllCompleted
 
     endof
 
@@ -351,11 +355,11 @@
     LogicUnit[].transform
     Operand[].delete
 
+    Pot[].pipeoutAllCompleted
+
   endcase
 
   profile.end
-
-  Pot[].pipeoutAllCompleted
 
   true
 ;
@@ -395,6 +399,7 @@
 
     302 of
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 302=EOSMARKER" .
+      false 1 LogicUnit[].transformArgs
     endof
 
   endcase

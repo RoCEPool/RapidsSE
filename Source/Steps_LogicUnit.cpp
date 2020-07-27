@@ -11,14 +11,15 @@ extern DebugFlags gxDebugFlags;;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogicUnit(void)
 {
-  vAddStep("LogicUnit[].genCode"_Stz,    &Step::vLogicUnitGenCode);
+  vAddStep("LogicUnit[].genCode"_Stz,       &Step::vLogicUnitGenCode);
     
-  vAddStep("LogicUnit[].callAgain@"_Stz, &Step::vLogicUnitCallAgainFetch);
-  vAddStep("LogicUnit[].callAgain!"_Stz, &Step::vLogicUnitCallAgainStore);
-  vAddStep("LogicUnit[].handler@"_Stz,   &Step::vLogicUnitHandlerFetch);
-  vAddStep("LogicUnit[].handler!"_Stz,   &Step::vLogicUnitHandlerStore);
+  vAddStep("LogicUnit[].callAgain@"_Stz,    &Step::vLogicUnitCallAgainFetch);
+  vAddStep("LogicUnit[].callAgain!"_Stz,    &Step::vLogicUnitCallAgainStore);
+  vAddStep("LogicUnit[].handler@"_Stz,      &Step::vLogicUnitHandlerFetch);
+  vAddStep("LogicUnit[].handler!"_Stz,      &Step::vLogicUnitHandlerStore);
   
-  vAddStep("LogicUnit[].transform"_Stz,  &Step::vLogicUnitTransform);
+  vAddStep("LogicUnit[].transform"_Stz,     &Step::vLogicUnitTransform);
+  vAddStep("LogicUnit[].transformArgs"_Stz, &Step::vLogicUnitTransformArgs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +95,26 @@ void Step::vLogicUnitTransform(void)
 {
   ENTRY();
   
-  i8 bResult = m_pLogicUnit->iTransform();
+  i8 bResult = m_pLogicUnit->iTransform(0,C_UNKNOWN);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].transformArgs -- transform (with arguments)                    */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitTransformArgs(void)
+{
+  ENTRY();
+  
+  i8 nArgs = m_pDataStack->iPopInt(__func__);
+
+  if (nArgs) {
+    RASSERT(1 == nArgs);
+  }
+  i8 iArg0 = m_pDataStack->iPopInt(__func__);
+
+  i8 bResult = m_pLogicUnit->iTransform(nArgs,iArg0);
   
   EXIT();
 }

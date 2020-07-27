@@ -151,11 +151,11 @@ void LogicUnit::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* transform compute                                                          */
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iTransform(void)
+i8 LogicUnit::iTransform(i8 nArgs, i8 iArg0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  i8 iResult = iCompute();
+  i8 iResult = iCompute(nArgs,iArg0);
 
   return iResult;
 }
@@ -570,7 +570,7 @@ void LogicUnit::vDumpCode(void)
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iCompute(void)
+i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -617,6 +617,10 @@ i8 LogicUnit::iCompute(void)
   vDebugPoint();
 #endif
 
+  if (nOuterArgs) {
+    *(++aiDstk) = iOuterArg0;
+  }
+  
   for (;;) {
     
     // check for stack growth
