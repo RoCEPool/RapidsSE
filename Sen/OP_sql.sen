@@ -283,7 +283,7 @@
 
   <queryNo> >int locals| queryNo |
 
-  profile.start
+  //profile.start
 
   queryNo case
 
@@ -303,7 +303,7 @@
 
   endcase
 
-  profile.end
+  //profile.end
 
   Pot[].pipeoutAllCompleted
 

@@ -56,11 +56,11 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  profile.start
+  //profile.start
 
   Operand[].crwToRsb
 
-  profile.end
+  //profile.end
 
   // test for any completed
   ToRsb[].completed to OperandB[]
@@ -84,11 +84,11 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  profile.start
+  //profile.start
 
   Operand[].csvToRsb
 
-  profile.end
+  //profile.end
 
   // test for any completed
   ToRsb[].completed to OperandB[]
