@@ -1537,7 +1537,7 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet, e
   }
   
   m_iXmitNode = TablePtn::iPartitionToNode(i_SendPtn);
-  vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+  vSend(pOperand, bSet, m_iXmitNode, i_SendPtn);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
