@@ -1509,11 +1509,34 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet, e
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  i8 i_SendPtn = C_UNKNOWN;
+  
   ASSERT(eXmitKind == XK_NORMAL ||
          eXmitKind == XK_ROBIN  ||
          eXmitKind == XK_HASHED);   // ray added XK_HASHED 26 jul 2020 re q301
   
-  m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+  switch (eXmitKind) {
+      
+    case XK_HASHED : {
+      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+      i_SendPtn = pDataBuffer->iPartitionNo();
+      break;
+    }
+      
+    case XK_NORMAL:
+      i_SendPtn = i_Ptn;
+      break;
+      
+    case XK_ROBIN:
+      m_iRobin++;
+      i_SendPtn = m_iRobin % AM::pGrid()->nPartitions();
+      break;
+      
+    default:
+      ASSERT(0);
+  }
+  
+  m_iXmitNode = TablePtn::iPartitionToNode(i_SendPtn);
   vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
   
   // delete the operand
