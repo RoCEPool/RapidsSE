@@ -624,12 +624,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   for (;;) {
     
     // check for stack growth
+    if (aiDstk >= &m_iaDataStack[C_LOGIC_STACK-4])
+      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+             "LogicUnit data stack exhausted\n"_Stz);
+    
     i8 nStkUse = nDifference(aiDstk,m_iaDataStack);
     i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
     if (iStkPct > 80)
       vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
     
-    
+  
     eCode = *aeCode++;
     
     //vTrace("%s  (StkUse %lld)\n"_Stz,aEO[eCode],nStkUse);
