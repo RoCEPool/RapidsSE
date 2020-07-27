@@ -929,11 +929,15 @@ void LogicUnit::vGenerateQuery302(void)
   vAddCode(EO_RSB_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE,"END_SRC:"_Stz);
 
-  vAddCodeLabel(EO_CALL,"CPY_DST:"_Stz);
+  //vAddCodeLabel(EO_CALL,"CPY_DST:"_Stz);
+  vAddCodeLabel(EO_CALL,"LIM_SBR:"_Stz);
 
   vAddCodeLabel(EO_JMP,"NXT_SRC:"_Stz);
 
   vDefineLabel("END_SRC:"_Stz);
+  
+  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+  
   vAddCode(EO_RETURN);
 
   
@@ -955,7 +959,7 @@ void LogicUnit::vGenerateQuery302(void)
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"LIM_RET:"_Stz); // need an assert
 
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q302_REVENUE);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_REVENUE);
   vAddCode(EO_ENT_PUSHELMI0);
   vAddCode(EO_LESSEQUAL);
   vAddCodeLabel(EO_JMP_TRUE,"LIM_RET:"_Stz);
@@ -968,7 +972,7 @@ void LogicUnit::vGenerateQuery302(void)
 
   vAddCode(EO_ENTWRK_RESET);
 
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q302_REVENUE);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_REVENUE);
   vAddCode(EO_DUP);
   vAddCode(EO_PRINT);
   vAddCode(EO_ENTWRK_APPENDELMI);
@@ -977,11 +981,11 @@ void LogicUnit::vGenerateQuery302(void)
 
   vAddCode(EO_IXT_INS_ENT);
   
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q302_ORDERKEY);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_ORDERKEY);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q302_ORDERDATE);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_ORDERDATE);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)1);
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q302_SHIPPRIORITY);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_SHIPPRIORITY);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)2);
 
 
@@ -994,10 +998,7 @@ void LogicUnit::vGenerateQuery302(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q302 TRV_IXT
   vDefineLabel("TRV_IXT:"_Stz);
-  
-  vAddCode(EO_RSB_DST_RESET);
-
-  
+    
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
 
@@ -1005,7 +1006,6 @@ void LogicUnit::vGenerateQuery302(void)
   
   vAddCode(EO_RSB_DST_NEW);
 
-  
   vAddCode(EO_ENT_PUSHELMI0);
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_REVENUE);
 
