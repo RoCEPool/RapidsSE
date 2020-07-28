@@ -314,6 +314,12 @@
   indexTree[].asTmp
 
   LogicUnit[].transform
+
+  Pot[].pipeoutAllDangling
+  Pot[].delete
+
+  Operand[].newEosMarker
+  Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
