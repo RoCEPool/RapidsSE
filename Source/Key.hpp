@@ -28,6 +28,7 @@ namespace Entries
 
     i8   iGetIntElm(void);
     i8   iGetIntElm(IndexDef* pIndexDef, i8 i_Element);
+    Stz* szGetStrElm(void);
     void vIncElmSeqSize(i8 nDeltaBytes);
     i8   nElmSeqSize(void);
     void vElmSeqSize(i8 nElmSeqSize);

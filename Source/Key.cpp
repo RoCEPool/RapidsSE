@@ -190,6 +190,16 @@ i8 Key::iGetIntElm(IndexDef* pIndexDef, i8 i_Element)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first element as stz (assuming stz)                                    */
+/*----------------------------------------------------------------------------*/
+Stz* Key::szGetStrElm(void)
+{
+  Stz* szVal = (Stz*)ayElmSeq();
+  
+  return szVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* increment the size of the element sequence                                 */
 /*----------------------------------------------------------------------------*/
 void Key::vIncElmSeqSize(i8 nDeltaBytes)
