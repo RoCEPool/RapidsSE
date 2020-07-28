@@ -109,7 +109,20 @@
 
   StreamDefOut[].new  "Q400_out" StreamDefOut[].name!
 
-  0 12 CT_VARCHAR "o_orderpriority" StreamDefOut[].addColumn
+  0 15 CT_VARCHAR "o_orderpriority" StreamDefOut[].addColumn
+  0 19 CT_INTEGER "order_count"     StreamDefOut[].addColumn
+
+  StreamDefOut[].print
+;
+
+/*----------------------------------------------------------------------------*/
+/* outbound stream def for 401                                                */
+/*----------------------------------------------------------------------------*/
+: streamDefOut_401
+
+  StreamDefOut[].new  "Q401_out" StreamDefOut[].name!
+
+  0 15 CT_VARCHAR "o_orderpriority" StreamDefOut[].addColumn
   0 19 CT_INTEGER "order_count"     StreamDefOut[].addColumn
 
   StreamDefOut[].print
@@ -185,6 +198,16 @@
       queryNo "QUERY %v" .printf
       400 LogicUnit[].genCode
       streamDefOut_400
+      true Pot[].useStreamDefOut
+      StreamDefOut[].duplicate to StreamDef[]
+      StreamDef[].pipeout
+    endof
+
+    401 of
+      "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 401=STARTMARKER" .
+      queryNo "QUERY %v" .printf
+      401 LogicUnit[].genCode
+      streamDefOut_401
       true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
       StreamDef[].pipeout
@@ -323,6 +346,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: sql_PulseMarker_401
+
+  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 401=PULSEMARKER" .
+
+  ZK_PULSEMARKER_handler
+
+  idxDef_vch indexDef[] indexTree[].new
+  indexTree[].asTmp
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
 : sql_PulseMarker \handler
@@ -336,6 +372,7 @@
     302 of sql_PulseMarker_302   endof
 
     400 of sql_PulseMarker_400   endof
+    401 of sql_PulseMarker_401   endof
 
     ZK_PULSEMARKER_handler
 
@@ -697,6 +734,9 @@
     endof
 
     400 of
+    endof
+
+    401 of
     endof
 
     600 of
