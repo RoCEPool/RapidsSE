@@ -1340,6 +1340,32 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   //                                                                Q400 TRV_IXT
+   vDefineLabel("TRV_IXT:"_Stz);
+   
+   vAddCode(EO_RSB_DST_RESET);
+
+   
+   vAddCode(EO_IXT_TRV_BEGIN);
+   vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
+
+   vDefineLabel("TRV_ECH:"_Stz);
+   
+   vAddCode(EO_RSB_DST_NEW);
+
+   
+   vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
+   vAddCodeArg(EO_RSB_DST_POPCOLI, Q400_ORDERCOUNT);
+
+   vDefineLabel("TRV_NXT:"_Stz);
+   vAddCode(EO_IXT_TRV_NEXT);
+   vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
+
+   vDefineLabel("TRV_RET:"_Stz);
+   vAddCode(EO_BREAKPOINT);
+   vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vDumpCode();
 }
