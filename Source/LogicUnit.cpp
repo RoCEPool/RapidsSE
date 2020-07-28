@@ -823,6 +823,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;
         
+      case EO_ENT_PUSHELMS0: NoArg(); //  push entry elm 0 str
+        NEVER_REACH;
+        break;
+        
       case EO_ENT_PUSHOFS: NoArg(); // push entry offset
         dLU0(eCode);
         iRes = m_pEnt->iBuffer();
