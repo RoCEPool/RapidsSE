@@ -57,7 +57,10 @@ void Step::vProfileStart(void)
   RU_Cpu* pRU_Cpu = pProfile->pRU_Cpu();
   
   if (pDataBuffer) {
-    switch (pDataBuffer->eClass()) {
+    
+    eCN eClassNo = pDataBuffer->eClass();
+    
+    switch (eClassNo) {
       
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
@@ -74,7 +77,7 @@ void Step::vProfileStart(void)
       }
       
     default:
-      //RASSERT(0);
+      RASSERT(0);
       break;
     }
   }
