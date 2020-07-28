@@ -59,20 +59,28 @@ void Step::vProfileStart(void)
   if (pDataBuffer) {
     
     eCN eClassNo = pDataBuffer->eClass();
+    i8 nRowCount = 0;
     
     switch (eClassNo) {
       
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
-        pRU_Cpu->vBuffersInc();
-        pRU_Cpu->vRowsAdd(pCrwBuffer->nRowCount());
+        nRowCount = pCrwBuffer->nRowCount();
         break;
       }
       
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case CN_CSVBUFFER: {
+        CsvBuffer* pCsvBuffer = _pCsvBuffer(pDataBuffer);
+        nRowCount = pCsvBuffer->nRecords();
+        break;
+      }
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case CN_RSBBUFFER: {
         RsbBuffer* pRsbBuffer = _pRsbBuffer(pDataBuffer);
-        pRU_Cpu->vBuffersInc();
-        pRU_Cpu->vRowsAdd(pRsbBuffer->pRowSlab()->nRows());
+        nRowCount = pRsbBuffer->pRowSlab()->nRows();
         break;
       }
       
@@ -80,7 +88,13 @@ void Step::vProfileStart(void)
       //RASSERT(0);
       break;
     }
+    
+    pRU_Cpu->vBuffersInc();
+    pRU_Cpu->vRowsAdd(nRowCount);
+    
   }
+  
+  
   
   pRU_Cpu->vStart();
   
