@@ -183,7 +183,17 @@ void EntWrk::vAppendElementInt(Rsb* aRsb, i8 iInt)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-    vAppendInt(iInt);
+  vAppendInt(iInt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add element from row to key                                                */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElementStz(Rsb* aRsb, Stz* szStr)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  vAppendStz(szStr);
 }
 
 /*----------------------------------------------------------------------------*/

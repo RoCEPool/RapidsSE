@@ -38,6 +38,7 @@ namespace Entries
     void  vAppendElement(Rsb* aRsb, Column* pCol);
     void  vAppendElement(Rsb* aRsb, StreamPix* pStreamPix, i8 i_Col);
     void  vAppendElementInt(Rsb* aRsb, i8 iInt);
+    void  vAppendElementStz(Rsb* aRsb, Stz* szStr);
     void  vAppendInt(i8 iArg);
     void  vAppendMinusInfinity(void);
     void  vAppendNull(void);

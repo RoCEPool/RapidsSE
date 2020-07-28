@@ -292,6 +292,8 @@
   Index[].indexTree to IndexTree[]
   IndexTree[].asAlt
 
+  idxDef_vch indexDef[] indexTree[].new
+  indexTree[].asTmp
 
   LogicUnit[].transform
 ;

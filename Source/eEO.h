@@ -54,6 +54,7 @@ enum eEO : u1 // expression operators
   // entWrk
   /*    */ EO_ENTWRK_APPENDELM, // append next element value
   /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
+  /*    */ EO_ENTWRK_APPENDELMS,// append next element value (str)
   /*    */ EO_ENTWRK_CREATEPAY, // create a payload in entwrk
   /*    */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
   /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
@@ -267,6 +268,7 @@ static Stz* aEO[]
   // entWrk
   /*    */ "EO_ENTWRK_APPENDELM"_Stz,
   /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
+  /*    */ "EO_ENTWRK_APPENDELMS"_Stz,
   /*    */ "EO_ENTWRK_CREATEPAY"_Stz,
   /*    */ "EO_ENTWRK_POPOFS"_Stz,
   /*    */ "EO_ENTWRK_POPREF"_Stz,
@@ -488,6 +490,7 @@ static EoArg EoArgs[]
   // entWrk
   { EA_SUBSCR,  8 },  // EO_ENTWRK_APPENDELM
   { EA_NONE,    0 },  // EO_ENTWRK_APPENDELMI
+  { EA_NONE,    0 },  // EO_ENTWRK_APPENDELMS
   { EA_INT,     8 },  // EO_ENTWRK_CREATEPAY
   { EA_NONE,    0 },  // EO_ENTWRK_POPOFS
   { EA_NONE,    0 },  // EO_ENTWRK_POPREF

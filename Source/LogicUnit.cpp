@@ -899,6 +899,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         m_oEntWrk.vAppendElementInt(m_aSrcRsb,iTopA);
         break;
         
+      case EO_ENTWRK_APPENDELMS: NoArg(); // append next element value (str)
+        iTopA = *(aiDstk--);
+        dLU1(eCode,iTopA);
+        m_oEntWrk.vAppendElementStz(m_aSrcRsb,(Stz*)(aiDstk-iTopA/8));
+        aiDstk -= (iTopA/8) + 1;
+        break;
+        
       case EO_ENTWRK_CREATEPAY: GetArg(iArg); // create a payload in entwrk
         dLU1(eCode,iArg);
         
