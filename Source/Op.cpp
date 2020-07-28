@@ -893,7 +893,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     eXmitKind = XK_NORMAL;
   
   // is the operand an InfoSet ?
-  if (pOperand->bIsInfoSet())
+  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
     eXmitKind = XK_ROBIN;
   
   switch(m_eTopologyX) {

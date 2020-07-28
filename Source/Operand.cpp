@@ -101,6 +101,16 @@ bool Operand::bIsMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this operand a Profile ?                                                */
+/*----------------------------------------------------------------------------*/
+bool Operand::bIsProfile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return eClass() == CN_PROFILE ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this operand a streamDef ?                                              */
 /*----------------------------------------------------------------------------*/
 bool Operand::bIsStreamDef(void)
