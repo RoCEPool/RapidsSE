@@ -1392,6 +1392,8 @@ void LogicUnit::vGenerateQuery401(void)
 
   vAddCode(EO_TRACEON);
   
+  vAddCodeLabel(EO_JMP_FALSE,"ITR_SRC:"_Stz);
+
   vAddCodeLabel(EO_CALL,"ITR_SRC:"_Stz);
   
   vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);

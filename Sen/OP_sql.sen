@@ -417,7 +417,7 @@
       "---------------------------- 401=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      LogicUnit[].transform
+      true 1 LogicUnit[].transformArgs
       Operand[].delete
 
       Pot[].pipeoutAllCompleted
@@ -472,6 +472,11 @@
     endof
 
     302 of
+      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 302=EOSMARKER" .
+      false 1 LogicUnit[].transformArgs
+    endof
+
+    401 of
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 302=EOSMARKER" .
       false 1 LogicUnit[].transformArgs
     endof
