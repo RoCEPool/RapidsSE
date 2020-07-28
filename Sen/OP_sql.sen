@@ -103,6 +103,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* outbound stream def for 400                                                */
+/*----------------------------------------------------------------------------*/
+: streamDefOut_400
+
+  StreamDefOut[].new  "Q400_out" StreamDefOut[].name!
+
+  0 12 CT_VARCHAR "o_orderpriority" StreamDefOut[].addColumn
+  0 19 CT_INTEGER "order_count"     StreamDefOut[].addColumn
+
+  StreamDefOut[].print
+;
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -168,8 +181,13 @@
     endof
 
     400 of
+      "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 400=STARTMARKER" .
       queryNo "QUERY %v" .printf
       400 LogicUnit[].genCode
+      streamDefOut_400
+      true Pot[].useStreamDefOut
+      StreamDefOut[].duplicate to StreamDef[]
+      StreamDef[].pipeout
     endof
 
     600 of
