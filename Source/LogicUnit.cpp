@@ -825,6 +825,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENT_PUSHELMS0: NoArg(); // push entry elm 0 str
       {
+        dLU0(eCode);
         char* azSrc = (char*)m_pEnt->aKey()->szGetStrElm();
         i8 nSize = StrLib::nSize(azSrc);
         char* azDst = (char*)(++aiDstk);
@@ -1552,7 +1553,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       {
         i8 nSize = *(aiDstk--);
         dLU2(eCode,iArg,nSize);
-        ASSERT(nSize < 8);
         char* azSrc = (char*)(--aiDstk);
         m_pDstRowSlab->vPositionOnCell(iArg);
         char* azDst = m_pDstRowSlab->azDepositString_begin();

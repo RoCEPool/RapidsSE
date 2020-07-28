@@ -77,7 +77,7 @@ void Step::vProfileStart(void)
       }
       
     default:
-      RASSERT(0);
+      //RASSERT(0);
       break;
     }
   }

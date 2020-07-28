@@ -1256,6 +1256,9 @@ void LogicUnit::vGenerateQuery400(void)
   
   vAddCode(EO_CTR_0_PUSH);
   vAddCode(EO_PRINT);
+  
+  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1297,7 +1300,6 @@ void LogicUnit::vGenerateQuery400(void)
   //                                                                Q400 GET_AGR
   // get aggregator for o_orderpriority
   vDefineLabel("GET_AGR:"_Stz);
-  vAddCode(EO_TRACEON);
 
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
@@ -1335,35 +1337,35 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_IXT_DUMP);
 
   vDefineLabel("END_AGR:"_Stz);
-  vAddCode(EO_TRACEOFF);
-  vAddCode(EO_BREAKPOINT);
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   //                                                                Q400 TRV_IXT
-   vDefineLabel("TRV_IXT:"_Stz);
-   
-   vAddCode(EO_RSB_DST_RESET);
+  //                                                                Q400 TRV_IXT
+  vDefineLabel("TRV_IXT:"_Stz);
 
-   
-   vAddCode(EO_IXT_TRV_BEGIN);
-   vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
+  vAddCode(EO_TRACEON);
 
-   vDefineLabel("TRV_ECH:"_Stz);
-   
-   vAddCode(EO_RSB_DST_NEW);
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
 
-   
-   vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
-   vAddCodeArg(EO_RSB_DST_POPCOLI, Q400_ORDERCOUNT);
+  vDefineLabel("TRV_ECH:"_Stz);
 
-   vDefineLabel("TRV_NXT:"_Stz);
-   vAddCode(EO_IXT_TRV_NEXT);
-   vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
+  vAddCode(EO_RSB_DST_NEW);
 
-   vDefineLabel("TRV_RET:"_Stz);
-   vAddCode(EO_BREAKPOINT);
-   vAddCode(EO_RETURN);
+  vAddCode(EO_ENT_PUSHELMS0);
+  vAddCodeArg(EO_RSB_DST_POPCOLS, Q400_ORDERPRIORITY);
+
+  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q400_ORDERCOUNT);
+
+  vDefineLabel("TRV_NXT:"_Stz);
+  vAddCode(EO_IXT_TRV_NEXT);
+  vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
+
+  vDefineLabel("TRV_RET:"_Stz);
+  vAddCode(EO_TRACEOFF);
+  vAddCode(EO_BREAKPOINT);
+  vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
