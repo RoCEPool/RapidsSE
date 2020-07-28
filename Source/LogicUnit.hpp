@@ -110,6 +110,10 @@ namespace Expressions
   static const i8 Q400_ORDERPRIORITY = 0;
   static const i8 Q400_ORDERCOUNT    = 1;
 
+  // q401 output
+  static const i8 Q401_ORDERPRIORITY = 0;
+  static const i8 Q401_ORDERCOUNT    = 1;
+
   // query6 600 output
   static const i8 Q600_REVENUE    = 0;  // SUM(L_EXTENDEDPRICE*L_DISCOUNT)
   static const i8 Q600_COLUMNS    = 1;  // TOTAL COLUMNS
@@ -290,7 +294,8 @@ namespace Expressions
     void vGenerateQuery302b(void);
 
     void vGenerateQuery400(void);
-  
+    void vGenerateQuery401(void);
+
     void vGenerateQuery600(void);
     void vGenerateQuery601(void);
 

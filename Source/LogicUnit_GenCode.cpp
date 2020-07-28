@@ -1373,6 +1373,27 @@ void LogicUnit::vGenerateQuery400(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate code for query 4                                                  */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery401(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 401;
+  
+  m_i_Code = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q401
+  vDefineLabel("QRY_401:"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate agg code (query6)                                                 */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery600(void)
