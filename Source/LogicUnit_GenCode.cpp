@@ -591,15 +591,16 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_INTEGER,5);
   vAddCode(EO_SLEEP);
 
-  vDefineLabel("QRY_300:"_Stz);
-  vAddCodeString(EO_STR_LITERAL,"**QRY_300**"_Stz);
-  vAddCode(EO_STR_PRINTADR);
-  vAddCode(EO_PIX_STM_PRINT);
-  
+
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q300
+  vDefineLabel("QRY_300:"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"**QRY_300**"_Stz);
+  vAddCode(EO_STR_PRINTADR);
+  vAddCode(EO_PIX_STM_PRINT);
+  vAddCode(EO_TRACEON);
 
   // iterate all CUSTOMER
   vAddCode(EO_IXT_SRC_BEGIN);
@@ -1426,9 +1427,9 @@ void LogicUnit::vGenerateQuery401(void)
   vDefineLabel("SUP_AGR:"_Stz);
 
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q400_ORDERCOUNT);
-  vAddCodeArg(EO_PAY_FETCH_COLS,  Q401_ORDERCOUNT);
+  vAddCodeArg(EO_PAY_FETCH_COLI,  (i8)0);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COLI,  Q401_ORDERCOUNT);
+  vAddCodeArg(EO_PAY_STORE_COLI,  (i8)0);
 
   vDefineLabel("SUP_END:"_Stz);
   vAddCode(EO_RETURN);

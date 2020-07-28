@@ -561,20 +561,32 @@ void LogicUnit::vDumpCode(void)
 #endif
 
 
-#define PushStr(azStr) \
-  nSize = StrLib::nSize((char*)iRes); \
+#define S_PushStr(__azStr) \
+  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8); \
+  nSize = StrLib::nSize((char*)__azStr); \
   azDst = (char*)(++aiDstk); \
-  StrLib::vCopy(azDst,(char*)iRes); \
+  StrLib::vCopy(azDst,(char*)__azStr); \
   aiDstk += (nSize / 8) + 1; \
   *(++aiDstk) = nSize; \
-  MemLib::vDump(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);
+  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);
 
-#define PopStr(azDst,azSrc) \
+#define S_PopStr(__azDst) \
+  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8); \
   nSize = *(aiDstk--); \
   azSrc = (char*)(aiDstk - ((nSize / 8) + 1)); \
-  StrLib::vCopy((char*)m_aPayload,azSrc); \
-  aiDstk -= (nSize / 8) + 1); \
-  MemLib::vDump(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);
+  StrLib::vCopy(__azDst,azSrc); \
+  aiDstk -= (nSize / 8) + 2; \
+  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);
+
+#define S_UseStr(__azStz) \
+  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8); \
+  nSize = *(aiDstk--); \
+  __azStz = (char*)(aiDstk - ((nSize / 8) + 1));
+
+#define S_UseEnd() \
+  aiDstk -= (nSize / 8) + 2; \
+  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);
+
 
 
 
@@ -599,7 +611,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   eKC eCmp;
   i8 nSize;
   char* azDst;
-  
+  char* azSrc;
+  char* azArg;
+
   Key* aSrcKey;
   Key* aAltKey;
   Key* aWrkKey;
@@ -615,7 +629,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   eEO  eCode;
   eEO* aeCode = & m_eaCode[0];
   i8*  aiDstk = &m_iaDataStack[0];
-
+  *aiDstk = 0xFFFFFFFFFFFFFFFF;
+  
   eEO** aaeRstk = &m_aaReturnStack[0];
 
   IndexDef* pIndexDef = nullptr;
@@ -723,13 +738,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       {
         HV_Row hRow(m_pSrcStreamDef,C_ALL);
         RowInflator::vInflateColumn(hRow,m_aSrcCrw,iArg);
-        iRes = hRow->m_waColVal[iArg].m_iWrd;
-        dLU2(eCode,iArg,iRes);
-        i8 nSize = StrLib::nSize((char*)iRes);
-        char* azDst = (char*)(++aiDstk);
-        StrLib::vCopy(azDst,(char*)iRes);
-        aiDstk += nSize / 8;
-        *(++aiDstk) = nSize;
+        azArg = (char*)hRow->m_waColVal[iArg].m_iWrd;
+        dLU1(eCode,iArg);
+//        i8 nSize = StrLib::nSize((char*)iRes);
+//        char* azDst = (char*)(++aiDstk);
+//        StrLib::vCopy(azDst,(char*)iRes);
+//        aiDstk += nSize / 8;
+//        *(++aiDstk) = nSize;
+        S_PushStr(azArg);
+        if (bTrace)
+          vDebugPoint();
       }
         break;
         
@@ -849,11 +867,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       
         StrLib::iWordFlipBack(acFlipped,azSrc);
       
-        i8 nSize = StrLib::nSize(acFlipped);
-        char* azDst = (char*)(++aiDstk);
-        StrLib::vCopy(azDst,acFlipped);
-        aiDstk++;
-        *(++aiDstk) = nSize;
+//        i8 nSize = StrLib::nSize(acFlipped);
+//        char* azDst = (char*)(++aiDstk);
+//        StrLib::vCopy(azDst,acFlipped);
+//        aiDstk++;
+//        *(++aiDstk) = nSize;
+        S_PushStr((char*)acFlipped);
+        if (bTrace)
+          vDebugPoint();
       }
         break;
         
@@ -935,11 +956,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENTWRK_APPENDELMS: NoArg(); // append next element value (str)
       {
-        iTopA = *(aiDstk--);
-        dLU1(eCode,iTopA);
-        Stz* szStr = (Stz*)(aiDstk-iTopA/8);
-        m_oEntWrk.vAppendElementStz(m_aSrcRsb,szStr);
-        aiDstk -= (iTopA/8) + 1;
+        dLU0(eCode);
+//        iTopA = *(aiDstk--);
+//        dLU1(eCode,iTopA);
+//        Stz* szStr = (Stz*)(aiDstk-iTopA/8);
+//        m_oEntWrk.vAppendElementStz(m_aSrcRsb,szStr);
+//        aiDstk -= (iTopA/8) + 1;
+        S_UseStr(azSrc);
+        m_oEntWrk.vAppendElementStz(m_aSrcRsb,(Stz*)azSrc);
+        S_UseEnd();
+        if (bTrace)
+          vDebugPoint();
       }
         break;
         
@@ -1339,10 +1366,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         i8 nSize = StrLib::nSize(azSrc);
         ASSERT(nSize < 8);
         dLU2(eCode,iArg,(i8)azSrc);
-        char* azDst = (char*)(++aiDstk);
-        StrLib::vCopy(azDst,azSrc);
-        aiDstk++;
-        *(++aiDstk) = nSize;
+//        char* azDst = (char*)(++aiDstk);
+//        StrLib::vCopy(azDst,azSrc);
+//        aiDstk++;
+//        *(++aiDstk) = nSize;
+        S_PushStr(azSrc);
+        if (bTrace)
+          vDebugPoint();
       }
         break;
         
@@ -1355,13 +1385,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       
       case EO_PAY_STORE_COLS: GetArg(iArg); // store a column of the entry payload
       {
-        i8 nSize = *(aiDstk--);
-        RASSERT(nSize < 8);
-        dLU2(eCode,iArg,nSize);
-        m_aPayload = m_pEnt->aiPayCell(iArg);
-        char* azSrc = (char*)(--aiDstk);
-        aiDstk--;
-        StrLib::vCopy((char*)m_aPayload,azSrc);
+//        i8 nSize = *(aiDstk--);
+//        RASSERT(nSize < 8);
+//        dLU2(eCode,iArg,nSize);
+//        m_aPayload = m_pEnt->aiPayCell(iArg);
+//        char* azSrc = (char*)(--aiDstk);
+//        aiDstk--;
+//        StrLib::vCopy((char*)m_aPayload,azSrc);
+      
+        S_PopStr((char*)m_aPayload);
+        vDebugPoint();
       }
         break;
         
@@ -1576,14 +1609,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_RSB_DST_POPCOLS: GetArg(iArg); // pop and deposit top into dst column
       {
-        i8 nSize = *(aiDstk--);
-        dLU2(eCode,iArg,nSize);
-        char* azSrc = (char*)(--aiDstk);
+//        i8 nSize = *(aiDstk--);
+//        dLU2(eCode,iArg,nSize);
+//        char* azSrc = (char*)(--aiDstk);
         m_pDstRowSlab->vPositionOnCell(iArg);
         char* azDst = m_pDstRowSlab->azDepositString_begin();
-        StrLib::vCopy(azDst,azSrc);
+//        StrLib::vCopy(azDst,azSrc);
+        S_PopStr(azDst);
         m_pDstRowSlab->vDepositString_end(nSize);
-        aiDstk--;
+//        aiDstk--;
+        if (bTrace)
+          vDebugPoint();
       }
         break;
         
@@ -1605,11 +1641,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       {
         char* azSrc = (char*)m_aSrcRsb->szVal_ntv(m_aSrcRsb->i_ColToCell_ntv(iArg));
         dLU2(eCode,iArg,(i8)azSrc);
-        i8 nSize = StrLib::nSize(azSrc);
-        char* azDst = (char*)(++aiDstk);
-        StrLib::vCopy(azDst,azSrc);
-        aiDstk++;
-        *(++aiDstk) = nSize;
+//        i8 nSize = StrLib::nSize(azSrc);
+//        char* azDst = (char*)(++aiDstk);
+//        StrLib::vCopy(azDst,azSrc);
+//        aiDstk++;
+//        *(++aiDstk) = nSize;
+        S_PushStr(azSrc);
+        if (bTrace)
+          vDebugPoint();
       }
         break;
         
@@ -1656,14 +1695,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // string operators
       case EO_STR_COMPARE: NoArg(); // pop top stradr and compare str on stack
       {
+        dLU0(eCode);
         char* azTopA;
         char* azTopB;
         azTopA = (char*) *(aiDstk--);
+      
         iTopB = *(aiDstk--);
-        azTopB = (char*) (aiDstk-iTopB/8);
+        azTopB = (char*) (aiDstk-(iTopB/8 + 1));
         iRes = StrLib::iCompare(azTopA,azTopB);
-        aiDstk -= (iTopB/8) + 1;
+        aiDstk -= (iTopB/8) + 2;
         *(++aiDstk) = iRes;
+        if (bTrace)
+          vDebugPoint();
       }
         break;
         
