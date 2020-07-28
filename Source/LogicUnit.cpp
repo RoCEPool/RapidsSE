@@ -817,14 +817,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = (i8)m_pEnt;
         break;
         
-      case EO_ENT_PUSHELMI0: NoArg(); //  push entry elm 0 int
+      case EO_ENT_PUSHELMI0: NoArg(); // push entry elm 0 int
         dLU0(eCode);
         iRes = m_pEnt->aKey()->iGetIntElm();
         *(++aiDstk) = iRes;
         break;
         
-      case EO_ENT_PUSHELMS0: NoArg(); //  push entry elm 0 str
-        NEVER_REACH;
+      case EO_ENT_PUSHELMS0: NoArg(); // push entry elm 0 str
+      {
+        char* azSrc = (char*)m_pEnt->aKey()->szGetStrElm();
+        i8 nSize = StrLib::nSize(azSrc);
+        char* azDst = (char*)(++aiDstk);
+        StrLib::vCopy(azDst,azSrc);
+        aiDstk++;
+        *(++aiDstk) = nSize;
+      }
         break;
         
       case EO_ENT_PUSHOFS: NoArg(); // push entry offset
