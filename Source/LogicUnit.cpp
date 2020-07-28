@@ -561,6 +561,22 @@ void LogicUnit::vDumpCode(void)
 #endif
 
 
+#define PushStr(azStr) \
+  nSize = StrLib::nSize((char*)iRes); \
+  azDst = (char*)(++aiDstk); \
+  StrLib::vCopy(azDst,(char*)iRes); \
+  aiDstk += (nSize / 8) + 1; \
+  *(++aiDstk) = nSize; \
+  MemLib::vDump(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);
+
+#define PopStr(azDst,azSrc) \
+  nSize = *(aiDstk--); \
+  azSrc = (char*)(aiDstk - ((nSize / 8) + 1)); \
+  StrLib::vCopy((char*)m_aPayload,azSrc); \
+  aiDstk -= (nSize / 8) + 1); \
+  MemLib::vDump(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);
+
+
 
 /*============================================================================*/
 /* - - - - - - - - - - - - - RELATIONAL LOGIC UNIT - - - - - - - - - - - - - -*/
@@ -581,6 +597,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iCmp;
   i8 i_Cell_ntv;
   eKC eCmp;
+  i8 nSize;
+  char* azDst;
   
   Key* aSrcKey;
   Key* aAltKey;

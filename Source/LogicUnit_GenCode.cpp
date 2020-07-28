@@ -1408,6 +1408,8 @@ void LogicUnit::vGenerateQuery401(void)
   vAddCode(EO_RSB_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE,"ITR_END:"_Stz);
 
+  vAddCode(EO_RSB_SRC_PRINT);
+  
   vAddCodeLabel(EO_CALL,"GET_AGR:"_Stz);
 
   vAddCodeLabel(EO_CALL,"SUP_AGR:"_Stz);
