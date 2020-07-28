@@ -20,6 +20,7 @@ namespace Operands
     bool bIsBuffer(void);
     bool bIsInfoSet(void);
     bool bIsMarker(void);
+    bool bIsProfile(void);
     bool bIsStreamDef(void);
     void vTailProcessing(eTP eTailProcessing);
     eTP  eTailProcessing(void);
