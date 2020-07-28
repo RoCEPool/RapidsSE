@@ -825,11 +825,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENT_PUSHELMS0: NoArg(); // push entry elm 0 str
       {
+        char acFlipped[128];
         dLU0(eCode);
         char* azSrc = (char*)m_pEnt->aKey()->szGetStrElm();
-        i8 nSize = StrLib::nSize(azSrc);
+      
+        StrLib::iWordFlipBack(acFlipped,azSrc);
+      
+        i8 nSize = StrLib::nSize(acFlipped);
         char* azDst = (char*)(++aiDstk);
-        StrLib::vCopy(azDst,azSrc);
+        StrLib::vCopy(azDst,acFlipped);
         aiDstk++;
         *(++aiDstk) = nSize;
       }
@@ -912,10 +916,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
         
       case EO_ENTWRK_APPENDELMS: NoArg(); // append next element value (str)
+      {
         iTopA = *(aiDstk--);
         dLU1(eCode,iTopA);
-        m_oEntWrk.vAppendElementStz(m_aSrcRsb,(Stz*)(aiDstk-iTopA/8));
+        Stz* szStr = (Stz*)(aiDstk-iTopA/8);
+        m_oEntWrk.vAppendElementStz(m_aSrcRsb,szStr);
         aiDstk -= (iTopA/8) + 1;
+      }
         break;
         
       case EO_ENTWRK_CREATEPAY: GetArg(iArg); // create a payload in entwrk

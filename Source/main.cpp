@@ -37,6 +37,42 @@ int main(int argc, char* argv[])
   printf("sizeof(SP_Ref) %lld\n",       (i8)sizeof(SP_Ref));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // some word flip experiments
+  
+  char acText[128];
+  char acFlipped[128];
+
+  StrLib::vCopy(acText,"1-URGENT");
+  printf("%s\n",acText);
+  StrLib::iWordFlip(acFlipped,acText);
+  StrLib::iWordFlipBack(acText,acFlipped);
+  printf("%s\n",acText);
+
+  StrLib::vCopy(acText,"2-HIGH");
+  printf("%s\n",acText);
+  StrLib::iWordFlip(acFlipped,acText);
+  StrLib::iWordFlipBack(acText,acFlipped);
+  printf("%s\n",acText);
+
+  StrLib::vCopy(acText,"3-MEDIUM");
+  printf("%s\n",acText);
+  StrLib::iWordFlip(acFlipped,acText);
+  StrLib::iWordFlipBack(acText,acFlipped);
+  printf("%s\n",acText);
+
+  StrLib::vCopy(acText,"4-NOT SPECIFIED***");
+  printf("%s\n",acText);
+  StrLib::iWordFlip(acFlipped,acText);
+  StrLib::iWordFlipBack(acText,acFlipped);
+  printf("%s\n",acText);
+
+  StrLib::vCopy(acText,"5-LOW");
+  printf("%s\n",acText);
+  StrLib::iWordFlip(acFlipped,acText);
+  StrLib::iWordFlipBack(acText,acFlipped);
+  printf("%s\n",acText);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   s256 sFlagValue;
   
