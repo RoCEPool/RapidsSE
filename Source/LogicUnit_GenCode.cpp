@@ -1242,6 +1242,9 @@ void LogicUnit::vGenerateQuery400(void)
   
   vAddCodeLabel(EO_CALL,"GET_AGR:"_Stz);
 
+  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
+  vAddCode(EO_INC);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
 
   // next ORDERS
   vDefineLabel("NXT_ORD:"_Stz);
@@ -1322,7 +1325,7 @@ void LogicUnit::vGenerateQuery400(void)
   // did not find agg, new one
   vDefineLabel("NEW_AGR:"_Stz);
   
-  vAddCodeArg(EO_ENTWRK_CREATEPAY, 3 * C_BYTES_PER_WORD);
+  vAddCodeArg(EO_ENTWRK_CREATEPAY, 1 * C_BYTES_PER_WORD);
   
   vAddCode(EO_IXT_INS_ENT);
   
