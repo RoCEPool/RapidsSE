@@ -1392,6 +1392,8 @@ void LogicUnit::vGenerateQuery401(void)
   vAddCode(EO_TRACEON);
   
   vAddCodeLabel(EO_CALL,"ITR_SRC:"_Stz);
+  
+  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
 
   vAddCode(EO_RETURN);
 
@@ -1418,8 +1420,8 @@ void LogicUnit::vGenerateQuery401(void)
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q401 SUP_AGG
-  vDefineLabel("SUP_AGG:"_Stz);
+  //                                                                Q401 SUP_AGR
+  vDefineLabel("SUP_AGR:"_Stz);
 
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q400_ORDERCOUNT);
   vAddCodeArg(EO_PAY_FETCH_COLS,  Q401_ORDERCOUNT);

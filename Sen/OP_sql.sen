@@ -413,6 +413,17 @@
 
     endof
 
+    401 of
+      "---------------------------- 401=RSBBUFFER ----------------------------" .
+      Operand[].pipeIn
+      Operand[].asSrcRowSlab
+      LogicUnit[].transform
+      Operand[].delete
+
+      Pot[].pipeoutAllCompleted
+
+    endof
+
     //"------------------------------ =RSBBUFFER -----------------------------" .
     Operand[].pipeIn
     LogicUnit[].transform
