@@ -884,12 +884,12 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eTopologyX)
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
       iXmits = AM::pGrid()->nSlotsPerNode();
       break;
-      
+     
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
       iXmits = AM::pGrid()->nPartitions();
       break;
-    
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+      
     case PX_ORIGIN_TO_ORIGIN:
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ORIGIN_TO_ALL_NODES:

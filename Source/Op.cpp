@@ -940,7 +940,12 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
-      vSendToPartition(pOperand, pTriggeringTask, bSet, eXmitKind, m_nPartition);
+      if (pOperand->bIsBuffer()) {
+        vSendToPartition(pOperand, pTriggeringTask, bSet, eXmitKind, m_nPartition);
+      }
+      else {
+        vSendToAllPartitions(pOperand, pTriggeringTask, bSet, eXmitKind);
+      }
       break;
     }
      
