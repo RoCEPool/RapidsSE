@@ -24,6 +24,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     302: vGenerateQuery302b();    break;
 
     case     400: vGenerateQuery400();    break;
+    case     401: vGenerateQuery401();    break;
 
     case     600: vGenerateQuery600();    break;
     case     601: vGenerateQuery601();    break;
@@ -1256,6 +1257,9 @@ void LogicUnit::vGenerateQuery400(void)
   
   vAddCode(EO_CTR_0_PUSH);
   vAddCode(EO_PRINT);
+  
+  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1297,7 +1301,6 @@ void LogicUnit::vGenerateQuery400(void)
   //                                                                Q400 GET_AGR
   // get aggregator for o_orderpriority
   vDefineLabel("GET_AGR:"_Stz);
-  vAddCode(EO_TRACEON);
 
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
@@ -1335,35 +1338,169 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_IXT_DUMP);
 
   vDefineLabel("END_AGR:"_Stz);
-  vAddCode(EO_TRACEOFF);
-  vAddCode(EO_BREAKPOINT);
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   //                                                                Q400 TRV_IXT
-   vDefineLabel("TRV_IXT:"_Stz);
-   
-   vAddCode(EO_RSB_DST_RESET);
+  //                                                                Q400 TRV_IXT
+  vDefineLabel("TRV_IXT:"_Stz);
 
-   
-   vAddCode(EO_IXT_TRV_BEGIN);
-   vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
+  //vAddCode(EO_TRACEON);
 
-   vDefineLabel("TRV_ECH:"_Stz);
-   
-   vAddCode(EO_RSB_DST_NEW);
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
 
-   
-   vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
-   vAddCodeArg(EO_RSB_DST_POPCOLI, Q400_ORDERCOUNT);
+  vDefineLabel("TRV_ECH:"_Stz);
 
-   vDefineLabel("TRV_NXT:"_Stz);
-   vAddCode(EO_IXT_TRV_NEXT);
-   vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
+  vAddCode(EO_RSB_DST_NEW);
 
-   vDefineLabel("TRV_RET:"_Stz);
-   vAddCode(EO_BREAKPOINT);
-   vAddCode(EO_RETURN);
+  vAddCode(EO_ENT_PUSHELMS0);
+  vAddCodeArg(EO_RSB_DST_POPCOLS, Q400_ORDERPRIORITY);
+
+  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q400_ORDERCOUNT);
+
+  vDefineLabel("TRV_NXT:"_Stz);
+  vAddCode(EO_IXT_TRV_NEXT);
+  vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
+
+  vDefineLabel("TRV_RET:"_Stz);
+  //vAddCode(EO_TRACEOFF);
+  //vAddCode(EO_BREAKPOINT);
+  vAddCode(EO_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for query 4                                                  */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery401(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 401;
+  
+  m_i_Code = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q401
+  vDefineLabel("QRY_401:"_Stz);
+
+  vAddCode(EO_TRACEON);
+  
+  vAddCodeLabel(EO_CALL,"ITR_SRC:"_Stz);
+  
+  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+
+  vAddCode(EO_RETURN);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q401 ITR_SRC
+  vDefineLabel("ITR_SRC:"_Stz);
+
+  vAddCode(EO_RSB_SRC_BEGIN);
+  
+  vDefineLabel("NXT_SRC:"_Stz);
+  vAddCode(EO_RSB_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE,"ITR_END:"_Stz);
+
+  vAddCodeLabel(EO_CALL,"GET_AGR:"_Stz);
+
+  vAddCodeLabel(EO_CALL,"SUP_AGR:"_Stz);
+
+  vAddCodeLabel(EO_JMP,"NXT_SRC:"_Stz);
+  
+  // --
+  vDefineLabel("ITR_END:"_Stz);
+  vAddCode(EO_RETURN);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q401 SUP_AGR
+  vDefineLabel("SUP_AGR:"_Stz);
+
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q400_ORDERCOUNT);
+  vAddCodeArg(EO_PAY_FETCH_COLS,  Q401_ORDERCOUNT);
+  vAddCode(EO_ADD);
+  vAddCodeArg(EO_PAY_STORE_COLI,  Q401_ORDERCOUNT);
+
+  vDefineLabel("SUP_END:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q401 GET_AGR
+  // get aggregator for o_orderpriority
+  vDefineLabel("GET_AGR:"_Stz);
+
+  // reset entwrk
+  vAddCode(EO_ENTWRK_RESET);
+  
+  // add key O_ORDERPRIORITY
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLS,Q400_ORDERPRIORITY);
+  vAddCode(EO_ENTWRK_APPENDELMS);
+
+  // attempt to find the key in the indexTree
+  vAddCode(EO_ENT_POSPRIOR);
+  vAddCode(EO_ENT_PUSH);
+  vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
+
+  vAddCode(EO_ENT_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
+  
+  vAddCode(EO_ENT_EQUAL);
+  vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
+  
+  vAddCode(EO_IXT_DUMP);
+
+  // found the agg
+  vAddCodeLabel(EO_JMP,"END_AGR:"_Stz);
+  
+  // did not find agg, new one
+  vDefineLabel("NEW_AGR:"_Stz);
+  
+  vAddCodeArg(EO_ENTWRK_CREATEPAY, 1 * C_BYTES_PER_WORD);
+  
+  vAddCode(EO_IXT_INS_ENT);
+  
+  vAddCode(EO_PUSH0);
+  vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
+  
+  vAddCode(EO_IXT_DUMP);
+
+  vDefineLabel("END_AGR:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //                                                                Q401 TRV_IXT
+  vDefineLabel("TRV_IXT:"_Stz);
+
+  vAddCode(EO_TRACEON);
+
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
+
+  vDefineLabel("TRV_ECH:"_Stz);
+
+  vAddCode(EO_RSB_DST_NEW);
+
+  vAddCode(EO_ENT_PUSHELMS0);
+  vAddCodeArg(EO_RSB_DST_POPCOLS, Q401_ORDERPRIORITY);
+
+  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q401_ORDERCOUNT);
+
+  vDefineLabel("TRV_NXT:"_Stz);
+  vAddCode(EO_IXT_TRV_NEXT);
+  vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
+
+  vDefineLabel("TRV_RET:"_Stz);
+  vAddCode(EO_TRACEOFF);
+  vAddCode(EO_BREAKPOINT);
+  vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
