@@ -582,14 +582,14 @@ void LogicUnit::vGenerateQuery300(void)
   
   m_i_Code = 0;
       
-  vAddCode(EO_SLOT);
-  vAddCodeArg(EO_INTEGER,1);
-  vAddCode(EO_EQUAL);
-  vAddCodeLabel(EO_JMP_FALSE,"QRY_300:"_Stz);
-  vAddCodeString(EO_STR_LITERAL,"SLEEPING"_Stz);
-  vAddCode(EO_STR_PRINTADR);
-  vAddCodeArg(EO_INTEGER,5);
-  vAddCode(EO_SLEEP);
+//  vAddCode(EO_SLOT);
+//  vAddCodeArg(EO_INTEGER,1);
+//  vAddCode(EO_EQUAL);
+//  vAddCodeLabel(EO_JMP_FALSE,"QRY_300:"_Stz);
+//  vAddCodeString(EO_STR_LITERAL,"SLEEPING"_Stz);
+//  vAddCode(EO_STR_PRINTADR);
+//  vAddCodeArg(EO_INTEGER,5);
+//  vAddCode(EO_SLEEP);
 
 
 
