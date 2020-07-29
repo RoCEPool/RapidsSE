@@ -501,7 +501,7 @@ void LogicUnit::vDumpCode(void)
 /*----------------------------------------------------------------------------*/
 
 
-#if 1
+#if 0
 
   #define dLU3(eCode,iA,iB,iC) \
     if (bTrace) \
@@ -540,6 +540,7 @@ void LogicUnit::vDumpCode(void)
 
   #define NoArg() \
     ASSERT(0 == EoArgs[eCode].m_nArgBytes);
+
 #else
 
   #define dLU3(eCode,iA,iB,iC)
