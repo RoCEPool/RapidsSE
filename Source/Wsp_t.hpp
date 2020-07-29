@@ -50,7 +50,7 @@ Wsp_t<LENGTH>::Wsp_t(void)
            m_yaByteArea,nBytesNeeded);
 #endif
   
-  ASSERT(CacheLine::bOnCacheLineBoundary(m_yaByteArea));
+  //ASSERT(CacheLine::bOnCacheLineBoundary(m_yaByteArea));
   
   m_nAreaUsed = 0;
 }
