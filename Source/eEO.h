@@ -16,7 +16,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_SUBTRACT,         // subtract second int from top push result
 
   // col operators
-  /*    */ EO_COL_DST_RESET,    // reset column inflate in dst
+  /*    */ EO_COL_DST_RESET,    // reset column in streamPix of dst
   /*    */ EO_COL_SRC_PUSH,     // push column value from m_aSrcCrw
   /*    */ EO_COL_SRC_PUSHSTR,  // push column str value from m_aSrcCrw
   /*    */ EO_COL_ALT_PUSH,     // push column value from m_aAltCrw

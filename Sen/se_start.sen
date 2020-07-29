@@ -1014,7 +1014,7 @@
 
   stage stageB on all partitions :
     scan lineitem
-    | sql 110
+    | sql 111
     | sql 100
     | stageC
 

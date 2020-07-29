@@ -725,6 +725,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
+      case EO_COL_DST_RESET: GetArg(iArg); // reset column in streamPix of dst
+      {
+        m_oStreamPix.vNotProject(iArg);
+      }
+        break;
+        
       case EO_COL_SRC_PUSH: GetArg(iArg); // push column value from m_aSrcCrw
       {
         HV_Row hRow(m_pSrcStreamDef,C_ALL);
@@ -788,6 +794,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         else {
           *(++aiDstk) = 0;
         }
+        break;
+      
+      case EO_CRW_SRC_TORSB:
+        RowInflator::vInflateColumns(m_pDstRowSlab, m_aSrcCrw);
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
