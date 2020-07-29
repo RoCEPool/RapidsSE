@@ -60,6 +60,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pSrcIdxTree = nullptr;
   m_pSrcEntBuffer = nullptr;
   m_aSrcCrw     = nullptr;
+  m_pSrcCrwBuffer = nullptr;
   m_pSrcStreamDef = nullptr;
 
   m_i_AltRow    = C_UNKNOWN;
@@ -1051,6 +1052,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           m_pIndexTree = * m_xpIndexTree;
         // end temp hack
       }
+        break;
+        
+      case EO_INI_SRC_CRW: NoArg(); // init m_pSrcCrw etc
+        dLU0(eCode);
+        m_aSrcCrw     = nullptr;
+        m_pSrcCrwBuffer = m_xpOperandA.bIsNull() ?
+          nullptr : _pCrwBuffer(* m_xpOperandA);
+        m_nSrcRows    = m_pSrcCrwBuffer ? m_pSrcCrwBuffer->nRowCount() : 0;
         break;
         
       case EO_INI_SRC_SLAB: NoArg(); // init m_pSrcRowSlab etc
