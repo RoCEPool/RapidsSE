@@ -562,30 +562,30 @@ void LogicUnit::vDumpCode(void)
 
 
 #define S_PushStr(__azStr) \
-  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8); \
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);*/ \
   nSize = StrLib::nSize((char*)__azStr); \
   azDst = (char*)(++aiDstk); \
   StrLib::vCopy(azDst,(char*)__azStr); \
   aiDstk += (nSize / 8) + 1; \
   *(++aiDstk) = nSize; \
-  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8); */
 
 #define S_PopStr(__azDst) \
-  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8); \
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);*/ \
   nSize = *(aiDstk--); \
   azSrc = (char*)(aiDstk - ((nSize / 8) + 1)); \
   StrLib::vCopy(__azDst,azSrc); \
   aiDstk -= (nSize / 8) + 2; \
-  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);*/
 
 #define S_UseStr(__azStz) \
-  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8); \
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);*/ \
   nSize = *(aiDstk--); \
   __azStz = (char*)(aiDstk - ((nSize / 8) + 1));
 
 #define S_UseEnd() \
   aiDstk -= (nSize / 8) + 2; \
-  MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);*/
 
 
 
