@@ -17,6 +17,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     101: vGenerateQuery101();    break;
     case     102: vGenerateQuery102();    break;
     case     103: vGenerateQuery103();    break;
+    case     110: vGenerateQuery111();    break;
  
     case     300: vGenerateQuery300();    break;
     case     301: vGenerateQuery301();    break;
@@ -568,6 +569,30 @@ void LogicUnit::vGenerateQuery103(void)
   vAddCode(EO_RETURN);
   
   vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate project into RSB (Query 1)                                        */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery111(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 110;
+  
+  // reset
+  m_i_Code = 0;
+  
+  // initialize srcSlab etc
+  vAddCode(EO_INI_SRC_SLAB);
+  
+  // init m_pPot pix from streamDef out
+  vAddCode(EO_INI_PIX_DEFOUT);
+  
+  //-----
+  
+  vAddCode(EO_RETURN);
 }
 
 /*----------------------------------------------------------------------------*/

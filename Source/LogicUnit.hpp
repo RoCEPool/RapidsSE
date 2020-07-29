@@ -287,6 +287,7 @@ namespace Expressions
     void vGenerateQuery101(void);
     void vGenerateQuery102(void);
     void vGenerateQuery103(void);
+    void vGenerateQuery111(void);
 
     void vGenerateQuery300(void);
     void vGenerateQuery301(void);

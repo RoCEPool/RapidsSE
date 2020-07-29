@@ -1003,6 +1003,37 @@
   // Query 1 - converting loaded CRW data into RSB
   sPath
   "
+  procedure Query1_PerfExp
+    parameters $Table
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | sql 110
+    | sql 100
+    | stageC
+
+  stage stageC on origin :
+    sql 102
+    | output
+    | toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 1 - converting loaded CRW data into RSB
+  sPath
+  "
   procedure Query1
     parameters $Table
   begin
@@ -1028,7 +1059,6 @@
   end ;
   "
   api::addProcedure
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - converting loaded CRW data into RSB
