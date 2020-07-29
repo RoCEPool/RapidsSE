@@ -16,14 +16,18 @@ enum eEO : u1 // expression operators
   /*    */ EO_SUBTRACT,         // subtract second int from top push result
 
   // col operators
+  /*    */ EO_COL_RESET,        // reset column inflate
   /*    */ EO_COL_SRC_PUSH,     // push column value from m_aSrcCrw
   /*    */ EO_COL_SRC_PUSHSTR,  // push column str value from m_aSrcCrw
   /*    */ EO_COL_ALT_PUSH,     // push column value from m_aAltCrw
 
   // crw operators
+  /*    */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
   /*    */ EO_CRW_SRC_FETCH,    // fetch m_aSrcCrw using m_aSrcEnt.ref
   /*    */ EO_CRW_ALT_FETCH,    // fetch m_aAltCrw using m_aAltEnt.ref
-
+  /*    */ EO_CRW_SRC_NEXT,     // move to next src rsb
+  /*    */ EO_CRW_SRC_TORSB,    // convert crw src to rsb
+  
   // counter
   /*    */ EO_CTR_0_DEC,        // dec counter 0
   /*    */ EO_CTR_0_INC,        // inc counter 0
@@ -72,6 +76,7 @@ enum eEO : u1 // expression operators
   // initialise
   /*    */ EO_INI_PIX_DEFOUT,   // init m_pPot pix from stream def out
   /*    */ EO_INI_PIX_SLABIN,   // init m_pPot pix from input slab
+  /*    */ EO_INI_SRC_CRW,      // init m_pSrcCrw etc
   /*    */ EO_INI_SRC_SLAB,     // init m_pSrcRowSlab etc
 
   // index tree
