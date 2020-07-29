@@ -1214,6 +1214,8 @@ void LogicUnit::vGenerateQuery400(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q400
   vDefineLabel("QRY_400:"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"**QRY_400**"_Stz);
+  vAddCode(EO_STR_PRINTADR);
 
   //vAddCode(EO_TRACEON);
 
@@ -1392,12 +1394,17 @@ void LogicUnit::vGenerateQuery401(void)
 
   vAddCode(EO_TRACEON);
   
-  vAddCodeLabel(EO_JMP_FALSE,"ITR_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"QRY_OUT:"_Stz);
 
+  vAddCodeString(EO_STR_LITERAL,"**QRY_401 RSB**"_Stz);
+  vAddCode(EO_STR_PRINTADR);
   vAddCodeLabel(EO_CALL,"ITR_SRC:"_Stz);
-  
-  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+  vAddCode(EO_RETURN);
 
+  vDefineLabel("QRY_OUT:"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"**QRY_401 EOS**"_Stz);
+  vAddCode(EO_STR_PRINTADR);
+  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
   vAddCode(EO_RETURN);
 
   
