@@ -160,6 +160,11 @@
       idxDef_vchvch indexDef[] indexTree[].new
     endof
 
+    111 of
+      //queryNo "QUERY %v" .printf
+      111 LogicUnit[].genCode
+    endof
+
     300 of
       "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 300=STARTMARKER" .
       queryNo "QUERY %v" .printf
@@ -463,6 +468,13 @@
       IndexTree[].delete
     endof
 
+    111 of
+      // PROJECT RELEVANT COLUMNS
+      //queryNo "QUERY %v" .printf
+      111 LogicUnit[].genCode
+      LogicUnit[].transform
+    endof
+
     300 of
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 300=EOSMARKER" .
     endof
@@ -731,6 +743,11 @@
 
     102 of
       sql_StreamDef_102
+    endof
+
+    111 of
+      StreamDef[].duplicate to StreamDefOut[]
+      StreamDef[].pipeout
     endof
 
     300 of
