@@ -16,14 +16,18 @@ enum eEO : u1 // expression operators
   /*    */ EO_SUBTRACT,         // subtract second int from top push result
 
   // col operators
+  /*    */ EO_COL_DST_RESET,    // reset column inflate in dst
   /*    */ EO_COL_SRC_PUSH,     // push column value from m_aSrcCrw
   /*    */ EO_COL_SRC_PUSHSTR,  // push column str value from m_aSrcCrw
   /*    */ EO_COL_ALT_PUSH,     // push column value from m_aAltCrw
 
   // crw operators
+  /*    */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
   /*    */ EO_CRW_SRC_FETCH,    // fetch m_aSrcCrw using m_aSrcEnt.ref
   /*    */ EO_CRW_ALT_FETCH,    // fetch m_aAltCrw using m_aAltEnt.ref
-
+  /*    */ EO_CRW_SRC_NEXT,     // move to next src rsb
+  /*    */ EO_CRW_SRC_TORSB,    // convert crw src to rsb
+  
   // counter
   /*    */ EO_CTR_0_DEC,        // dec counter 0
   /*    */ EO_CTR_0_INC,        // inc counter 0
@@ -72,6 +76,7 @@ enum eEO : u1 // expression operators
   // initialise
   /*    */ EO_INI_PIX_DEFOUT,   // init m_pPot pix from stream def out
   /*    */ EO_INI_PIX_SLABIN,   // init m_pPot pix from input slab
+  /*    */ EO_INI_SRC_CRW,      // init m_pSrcCrw etc
   /*    */ EO_INI_SRC_SLAB,     // init m_pSrcRowSlab etc
 
   // index tree
@@ -231,13 +236,17 @@ static Stz* aEO[]
   /*    */ "EO_SUBTRACT"_Stz,
   
   // col operators
+  /*    */ "EO_COL_DST_RESET"_Stz,
   /*    */ "EO_COL_SRC_PUSH"_Stz,
   /*    */ "EO_COL_SRC_PUSHSTR"_Stz,
   /*    */ "EO_COL_SRC_PUSH"_Stz,
   
   // crw operators
+  /*    */ "EO_CRW_SRC_BEGIN"_Stz,
   /*    */ "EO_CRW_SRC_FETCH"_Stz,
   /*    */ "EO_CRW_ALT_FETCH"_Stz,
+  /*    */ "EO_CRW_SRC_NEXT"_Stz,
+  /*    */ "EO_CRW_SRC_TORSB"_Stz,
   
   // counter
   /*    */ "EO_CTR_0_DEC"_Stz,
@@ -287,6 +296,7 @@ static Stz* aEO[]
   // initialise
   /*    */ "EO_INI_PIX_DEFOUT"_Stz,
   /*    */ "EO_INI_PIX_SLABIN"_Stz,
+  /*    */ "EO_INI_SRC_CRW"_Stz,
   /*    */ "EO_INI_SRC_SLAB"_Stz,
 
   // index tree
@@ -454,13 +464,17 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_SUBTRACT
 
   // col operators
+  { EA_SUBSCR,  8 },  // EO_COL_DST_RESET
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSH
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHSTR
   { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSH
   
   // crw operators
+  { EA_NONE,    0 },  // EO_CRW_SRC_BEGIN
   { EA_NONE,    0 },  // EO_CRW_SRC_FETCH
   { EA_NONE,    0 },  // EO_CRW_ALT_FETCH
+  { EA_NONE,    0 },  // EO_CRW_SRC_NEXT
+  { EA_NONE,    0 },  // EO_CRW_SRC_TORSB
   
   // counter
   { EA_NONE,    0 },  // EO_CTR_0_DEC
@@ -510,6 +524,7 @@ static EoArg EoArgs[]
   // initialise
   { EA_NONE,    0 },  // EO_INI_PIX_DEFOUT
   { EA_NONE,    0 },  // EO_INI_PIX_SLABIN
+  { EA_NONE,    0 },  // EO_INI_SRC_CRW
   { EA_NONE,    0 },  // EO_INI_SRC_SLAB
   
   // index tree

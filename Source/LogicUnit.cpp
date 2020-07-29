@@ -1392,7 +1392,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        char* azSrc = (char*)(--aiDstk);
 //        aiDstk--;
 //        StrLib::vCopy((char*)m_aPayload,azSrc);
-      
+        m_aPayload = m_pEnt->aiPayCell(iArg);
         S_PopStr((char*)m_aPayload);
         vDebugPoint();
       }
