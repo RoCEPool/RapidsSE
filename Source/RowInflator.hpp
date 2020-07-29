@@ -14,6 +14,7 @@ namespace CompactBuffers
     //! Highly performance-critical functions
   
     static void vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve);
+    static void vInflateColumns(RowSlab* pRsbSlab, HeadLine* aHeadLine);
     
     static void vInflateRow(RowSingle* pRow, HeadLine* aHeadLine);
     static void vInflateRow(RowSlab* pRsbSlab, HeadLine* aHeadLine);

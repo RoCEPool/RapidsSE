@@ -60,6 +60,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pSrcIdxTree = nullptr;
   m_pSrcEntBuffer = nullptr;
   m_aSrcCrw     = nullptr;
+  m_pSrcCrwBuffer = nullptr;
   m_pSrcStreamDef = nullptr;
 
   m_i_AltRow    = C_UNKNOWN;
@@ -725,6 +726,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
+      case EO_COL_DST_RESET: GetArg(iArg); // reset column in streamPix of dst
+      {
+        m_oStreamPix.vNotProject(iArg);
+      }
+        break;
+        
       case EO_COL_SRC_PUSH: GetArg(iArg); // push column value from m_aSrcCrw
       {
         HV_Row hRow(m_pSrcStreamDef,C_ALL);
@@ -764,12 +771,34 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // crw operators
+      case EO_CRW_SRC_BEGIN: NoArg(); // begin src rsb traverse
+        dLU0(eCode);
+        m_i_SrcRow = -1;
+        m_aSrcCrw  = nullptr;
+        m_nSrcRows = m_pSrcCrwBuffer ? m_pSrcCrwBuffer->nRowCount() : 0;
+        break;
+        
       case EO_CRW_SRC_FETCH: NoArg(); // fetch m_aSrcCrw using m_aSrcEnt.ref
         m_aSrcCrw = CrwBuffer::pRefdCrw(m_aSrcEnt->rxRef());
         break;
         
       case EO_CRW_ALT_FETCH: NoArg(); // fetch m_aAltCrw using m_aAltEnt.ref
         m_aAltCrw = CrwBuffer::pRefdCrw(m_aAltEnt->rxRef());
+        break;
+       
+      case EO_CRW_SRC_NEXT: NoArg(); // move to next src rsb
+        dLU0(eCode);
+        if (++m_i_SrcRow < m_nSrcRows) {
+          m_aSrcCrw = m_pSrcCrwBuffer->aCrw(m_i_SrcRow);
+          *(++aiDstk) = 1;
+        }
+        else {
+          *(++aiDstk) = 0;
+        }
+        break;
+      
+      case EO_CRW_SRC_TORSB:
+        RowInflator::vInflateColumns(m_pDstRowSlab, m_aSrcCrw);
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1052,6 +1081,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           m_pIndexTree = * m_xpIndexTree;
         // end temp hack
       }
+        break;
+        
+      case EO_INI_SRC_CRW: NoArg(); // init m_pSrcCrw etc
+        dLU0(eCode);
+        m_aSrcCrw     = nullptr;
+        m_pSrcCrwBuffer = m_xpOperandA.bIsNull() ?
+          nullptr : _pCrwBuffer(* m_xpOperandA);
+        m_nSrcRows    = m_pSrcCrwBuffer ? m_pSrcCrwBuffer->nRowCount() : 0;
         break;
         
       case EO_INI_SRC_SLAB: NoArg(); // init m_pSrcRowSlab etc

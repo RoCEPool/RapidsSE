@@ -236,6 +236,7 @@ namespace Expressions
     IndexTree* m_pSrcIdxTree;
     EntBuffer* m_pSrcEntBuffer;
     Crw*       m_aSrcCrw;
+    CrwBuffer* m_pSrcCrwBuffer;
     StreamDef* m_pSrcStreamDef;
   
     i8         m_i_AltRow;

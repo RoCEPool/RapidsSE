@@ -42,8 +42,11 @@ namespace Datums
     b8 m_bPtnHash;    // is there a partition hash ?
     i8 m_nMaxRowSize; //
 
+    u8 m_uColumnLower;    // bits 0-64 representing columns 0-64 to be projected
+    u8 m_uColumnHigher;   // bits 0-64 representing columns 65-127 to be projected
+    
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // col pix (C++ flexible member array must be last)
-  
+    
     // constructor
     StreamPix(void)
     {
@@ -51,7 +54,10 @@ namespace Datums
       m_nExtraCols  = 0;
       m_bPtnHash    = false;
       m_nMaxRowSize = 256;  // FOR TESTING PURPOSES
-
+      
+      m_uColumnLower  = C_ALL_BITS_ON;
+      m_uColumnHigher = C_ALL_BITS_ON;
+      
       for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
         m_xaColPix[i_Col].m_uAsI4 = 0;
     }
@@ -59,11 +65,29 @@ namespace Datums
     // calc number of bytes
     i8 nBytes(i8 nCols)
     {
-      i8 nBytes = (3 * (i8)sizeof(i8)) + (nCols * (i8)sizeof(ColPix));
+      i8 nBytes = (5 * (i8)sizeof(i8)) + (nCols * (i8)sizeof(ColPix));
     
       return nBytes;
     }
   
+    // is column being projected
+    i8 bIsProjected(i8 i_Col)
+    {
+      if ((u8)i_Col < C_BITS_PER_WORD)
+        return BitLib::bIsOn(m_uColumnLower, i_Col) ? true : false;
+      else
+        return BitLib::bIsOn(m_uColumnHigher, (i8)(i_Col + C_BITS_PER_WORD - 1)) ? true : false;
+    }
+    
+    // mark column to be not projected
+    void vNotProject(i8 i_Col)
+    {
+      if ((u8)i_Col < C_BITS_PER_WORD)
+        BitLib::vSetOff(m_uColumnLower, i_Col);
+      else
+        BitLib::vSetOff(m_uColumnHigher, i_Col + C_BITS_PER_WORD - 1);
+    }
+    
     // remove partition metadata column
     void vRemovePtnHash(void)
     {
@@ -88,8 +112,9 @@ namespace Datums
     {
       vTrace("StreamPix: %lld cols\n"_Stz,m_nCols);
       for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-        vTrace("[%02lld] %s(%lld,%lld)%s%s\n"_Stz,
+        vTrace("[%02lld] P:%s %s(%lld,%lld)%s%s\n"_Stz,
                i_Col,
+               bIsProjected(i_Col) ? "true"_Stz : "false"_Stz ,
                aDM[m_xaColPix[i_Col].m_uDatum],
                (i8)m_xaColPix[i_Col].m_uLength,
                (i8)m_xaColPix[i_Col].m_uScale,

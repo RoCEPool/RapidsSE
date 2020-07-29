@@ -162,6 +162,7 @@
 
     111 of
       //queryNo "QUERY %v" .printf
+      "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 111=STARTMARKER" .
       111 LogicUnit[].genCode
     endof
 
@@ -385,6 +386,33 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CRWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: sql_CrwBuffer \handler
+
+  <queryNo> >int locals| queryNo |
+
+  PipeIn[]
+  profile.start
+
+  queryNo case
+
+    111 of
+      Operand[].pipeIn
+      LogicUnit[].transform
+      Operand[].delete
+      Pot[].pipeoutAllCompleted
+    endof
+
+    0 assert
+  endcase
+
+profile.end
+
+true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_RSBBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : sql_RsbBuffer \handler
@@ -429,7 +457,7 @@
 
     endof
 
-    //"------------------------------ =RSBBUFFER -----------------------------" .
+    "------------------------------ =RSBBUFFER -----------------------------" .
     Operand[].pipeIn
     LogicUnit[].transform
     Operand[].delete
@@ -466,13 +494,6 @@
       103 LogicUnit[].genCode
       LogicUnit[].transform
       IndexTree[].delete
-    endof
-
-    111 of
-      // PROJECT RELEVANT COLUMNS
-      //queryNo "QUERY %v" .printf
-      111 LogicUnit[].genCode
-      LogicUnit[].transform
     endof
 
     300 of
@@ -798,6 +819,7 @@
 
   op__topology
 
+  find: sql_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: sql_EosMarker   ZK_EOSMARKER   op[].handler!
   find: sql_PulseMarker ZK_PULSEMARKER op[].handler!
   find: sql_RsbBuffer   ZK_RSBBUFFER   op[].handler!
