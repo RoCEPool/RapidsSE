@@ -95,7 +95,7 @@ void LogicUnit::vGenerateQuery100(void)
   vDefineLabel("NOT_FOUND"_Stz);
   vAddCodeArg(EO_ENTWRK_CREATEPAY, Q100_COLUMNS * C_BYTES_PER_WORD);
   vAddCode(EO_IXT_INS_ENT);
-  //vAddCode(EO_IXT_DUMP); ray commented 30 jul 2020
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0); ray commented 30 jul 2020
 
   // store L_RETURNFLAG -> Q100_RETURNFLAG
   vAddCodeArg(EO_RSB_SRC_PUSHCOLS, (i8)L_RETURNFLAG);
@@ -120,7 +120,7 @@ void LogicUnit::vGenerateQuery100(void)
   // set sum(L_QUANTITY) -> Q100_SUM_CHARGE
   vAddCode(EO_PUSH0);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_CHARGE);
-  //vAddCode(EO_IXT_DUMP); ray commented 30 jul 2020
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0); ray commented 30 jul 2020
   
   // FOUND:
   vDefineLabel("FOUND"_Stz);
@@ -211,7 +211,7 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_INC);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_ORDER);
   
-  //vAddCode(EO_IXT_DUMP); ray commented 30 jul 2020
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0); ray commented 30 jul 2020
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
   vDefineLabel("END_RSB_SRC:"_Stz);
@@ -371,7 +371,7 @@ void LogicUnit::vGenerateQuery102(void)
   vDefineLabel("NOT_FOUND"_Stz);
   vAddCodeArg(EO_ENTWRK_CREATEPAY, Q101_COLUMNS * C_BYTES_PER_WORD);
   vAddCode(EO_IXT_INS_ENT);
-  //vAddCode(EO_IXT_DUMP);
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
   
   // store Q101_RETURNFLAG -> Q101_RETURNFLAG
   vAddCodeArg(EO_RSB_SRC_PUSHCOLS, (i8)Q101_RETURNFLAG);
@@ -417,7 +417,7 @@ void LogicUnit::vGenerateQuery102(void)
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)Q101_COUNT_ORDER);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q101_COUNT_ORDER);
   
-  //vAddCode(EO_IXT_DUMP);
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
   // FOUND:
@@ -923,7 +923,7 @@ void LogicUnit::vGenerateQuery301(void)
 
   // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_RET:"_Stz);
-  vAddCode(EO_IXT_DUMP);
+  vAddCodeArg(EO_IXT_DUMP,(i8)0);
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1052,7 +1052,7 @@ void LogicUnit::vGenerateQuery302(void)
 
   // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_RET:"_Stz);
-  //vAddCode(EO_IXT_DUMP);
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
   vAddCode(EO_RETURN);
   
 
@@ -1207,7 +1207,7 @@ void LogicUnit::vGenerateQuery302b(void)
 
   // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_RET:"_Stz);
-  //vAddCode(EO_IXT_DUMP);
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
   vAddCode(EO_RETURN);
   
 
@@ -1391,7 +1391,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_ENT_EQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
   
-  //vAddCode(EO_IXT_DUMP);
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
 
   // found the agg
   vAddCodeLabel(EO_JMP,"END_AGR:"_Stz);
@@ -1406,7 +1406,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_PUSH0);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
   
-  //vAddCode(EO_IXT_DUMP);
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
 
   vDefineLabel("END_AGR:"_Stz);
   vAddCode(EO_RETURN);
@@ -1534,7 +1534,7 @@ void LogicUnit::vGenerateQuery401(void)
   vAddCode(EO_ENT_EQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
   
-  //vAddCode(EO_IXT_DUMP);
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
 
   // found the agg
   vAddCodeLabel(EO_JMP,"END_AGR:"_Stz);
@@ -1549,7 +1549,7 @@ void LogicUnit::vGenerateQuery401(void)
   vAddCode(EO_PUSH0);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
   
-  //vAddCode(EO_IXT_DUMP);
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
 
   vDefineLabel("END_AGR:"_Stz);
   vAddCode(EO_RETURN);

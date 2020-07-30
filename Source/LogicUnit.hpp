@@ -5,6 +5,7 @@
 
 namespace Expressions
 {
+  static const i8 C_LOGIC_DEV   = 16;
   static const i8 C_LOGIC_CODE  = C_4KB;
   static const i8 C_LOGIC_STACK = C_1KB;
   static const i8 C_LOGIC_LABEL = 64;
@@ -220,6 +221,7 @@ namespace Expressions
     // inner loop
   
     RLU        m_xRLU;
+    void*      m_aaDev[C_LOGIC_DEV]; // device array
 
     i8         m_iSql;
     
@@ -257,7 +259,7 @@ namespace Expressions
     EntWrk     m_oEntWrk;
 //    EntBuffer* m_pEntBuffer;
     IndexTree* m_pIndexTree;
-
+  
     i8     m_i_Code;
     eEO    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
 

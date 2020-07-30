@@ -15,6 +15,10 @@ void Step::vAddSteps_LogicUnit(void)
     
   vAddStep("LogicUnit[].callAgain@"_Stz,    &Step::vLogicUnitCallAgainFetch);
   vAddStep("LogicUnit[].callAgain!"_Stz,    &Step::vLogicUnitCallAgainStore);
+  
+  vAddStep("LogicUnit[].dev@"_Stz,          &Step::vLogicUnitDevFetch);
+  vAddStep("LogicUnit[].dev!"_Stz,          &Step::vLogicUnitDevStore);
+  
   vAddStep("LogicUnit[].handler@"_Stz,      &Step::vLogicUnitHandlerFetch);
   vAddStep("LogicUnit[].handler!"_Stz,      &Step::vLogicUnitHandlerStore);
   
@@ -58,6 +62,38 @@ void Step::vLogicUnitCallAgainStore(void)
   i8 iCallAgain = m_pDataStack->iPopInt(__func__);
   
   m_pLogicUnit->m_bCallAgain = (bool)iCallAgain;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].dev@ --                                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitDevFetch(void)
+{
+  ENTRY();
+
+  i8 i_Dev = m_pDataStack->iPopInt(__func__);
+  
+  void* aDev = m_pLogicUnit->m_aaDev[i_Dev];
+  
+  m_pDataStack->vPushPtr((Object*)aDev);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].dev! --                                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitDevStore(void)
+{
+  ENTRY();
+
+  i8 i_Dev = m_pDataStack->iPopInt(__func__);
+  
+  void* aDev = m_pDataStack->pPopPtr(__func__);
+  
+  m_pLogicUnit->m_aaDev[i_Dev] = aDev;
   
   EXIT();
 }
