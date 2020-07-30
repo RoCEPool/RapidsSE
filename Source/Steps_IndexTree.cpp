@@ -120,7 +120,7 @@ void Step::vIndexTreeAsAlt(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_pDevIXT->m_pAltIdxTree = * m_pLogicUnit->m_xpIndexTree;
+  m_pLogicUnit->m_pDevAltIxt->m_pAltIdxTree = * m_pLogicUnit->m_xpIndexTree;
   
   EXIT();
 }

@@ -256,7 +256,7 @@ namespace Expressions
 
     
     //==========================
-    DevIXT*    m_pDevIXT;
+    DevIXT*    m_pDevAltIxt;
   
     //Ent*       m_aAltEnt;
     //IndexTree* m_pAltIdxTree;
