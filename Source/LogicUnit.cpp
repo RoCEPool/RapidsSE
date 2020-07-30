@@ -1118,9 +1118,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         m_pIndexTree->vDelete(m_pEntBuffer,m_pEnt);
         break;
 
-      case EO_IXT_DUMP: NoArg(); // dump index tree
+      case EO_IXT_DUMP: GetArg(iArg); // dump index tree
         //m_pIndexTree->vDump(false);
-        ::iDEV_MAP(this,m_aaDev[0],DEV_MAP_DUMP,nullptr,nullptr,0);
+        ::iDEV_MAP(this,m_aaDev[iArg],DEV_MAP_DUMP,nullptr,nullptr,0);
         break;
 
       case EO_IXT_INS_ENT: NoArg(); // insert an entry into the indexTree
