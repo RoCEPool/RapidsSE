@@ -59,12 +59,63 @@ i8 LogicUnit::iRLU_IXT_TRV_NEXT(RLU* aRLU)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void vRLU_IXT_DEL_ENT     (RLU* aRLU) {};
-void vRLU_IXT_DUMP        (RLU* aRLU) {};
-i8   iRLU_IXT_ENTRIES     (RLU* aRLU) { return 0; };
-void vRLU_IXT_INS_ENT     (RLU* aRLU) {};
-i8   iRLU_IXT_TRV_BEGIN   (RLU* aRLU) { return 0; };
-i8   iRLU_IXT_TRV_NEXT    (RLU* aRLU) { return 0; };
+void vRLU_IXT_DEL_ENT(RLU* aRLU)
+{
+  LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
+
+  pLogicUnit->vRLU_IXT_DEL_ENT(aRLU);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void vRLU_IXT_DUMP(RLU* aRLU)
+{
+  LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
+  
+  pLogicUnit->vRLU_IXT_DUMP(aRLU);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+i8 iRLU_IXT_ENTRIES(RLU* aRLU)
+{
+  LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
+  
+  i8 iRes = pLogicUnit->iRLU_IXT_ENTRIES(aRLU);
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void vRLU_IXT_INS_ENT(RLU* aRLU)
+{
+  LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
+
+  pLogicUnit->vRLU_IXT_INS_ENT(aRLU);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+i8 iRLU_IXT_TRV_BEGIN(RLU* aRLU)
+{
+  LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
+  
+  i8 iRes = pLogicUnit->iRLU_IXT_TRV_BEGIN(aRLU);
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+i8 iRLU_IXT_TRV_NEXT(RLU* aRLU)
+{
+  LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
+  
+  i8 iRes = pLogicUnit->iRLU_IXT_TRV_NEXT(aRLU);
+
+  return iRes;
+}
 
 /*============================================================================*/
 /* end                                                                        */
