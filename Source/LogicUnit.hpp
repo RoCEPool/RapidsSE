@@ -307,6 +307,12 @@ namespace Expressions
 
     i8   iTransform(i8 nArgs, i8 iArg0);
   
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    #include "RLU_itf.h"
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   private:
     void vAddCode(eEO eCode);
     void vAddCodeArg(eEO eCode, i8 iArg);

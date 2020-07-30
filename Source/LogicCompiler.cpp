@@ -246,6 +246,8 @@ void LogicCompiler::v_preliminary(void)
   "\n  extern i8 iMul(i8 iTopA, i8 iTopB);"
   "\n  extern struct Qty xMul(i8 iTopA, i8 iTopB);"
   "\n"
+  "\n  enum eDO { DO_A=0, DO_B, DO_C };"
+  "\n"
   "\n  i8 iDynCompute(void* aRLU)" // the dynamic function is: iDynCompute()
   "\n  { "
   "\n    i8 iaDataStack[C_LOGIC_STACK];"
