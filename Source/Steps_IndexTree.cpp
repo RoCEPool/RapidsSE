@@ -132,7 +132,7 @@ void Step::vIndexTreeAsSrc(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_pSrcIdxTree = * m_pLogicUnit->m_xpIndexTree;
+  m_pLogicUnit->m_pDevSrcIxt->m_pIdxTree = * m_pLogicUnit->m_xpIndexTree;
   
   EXIT();
 }

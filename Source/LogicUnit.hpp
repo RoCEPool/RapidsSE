@@ -239,9 +239,9 @@ namespace Expressions
     //==========================
     DevIXT*    m_pDevSrcIxt;
   
-    Ent*       m_aSrcEnt;
-    IndexTree* m_pSrcIdxTree;
-    EntBuffer* m_pSrcEntBuffer;
+    //Ent*       m_aSrcEnt;
+    //IndexTree* m_pSrcIdxTree;
+    //EntBuffer* m_pSrcEntBuffer;
     //==========================
 
     Crw*       m_aSrcCrw;

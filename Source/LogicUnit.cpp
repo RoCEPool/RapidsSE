@@ -62,9 +62,9 @@ LogicUnit::LogicUnit(Task* pTask)
   m_nSrcRows    = C_UNKNOWN;
   m_aSrcRsb     = nullptr;
   m_pSrcRowSlab = nullptr;
-  m_aSrcEnt     = nullptr;
-  m_pSrcIdxTree = nullptr;
-  m_pSrcEntBuffer = nullptr;
+  //m_pDevSrcIxt->m_aEnt     = nullptr;
+  //m_pDevSrcIxt->m_pIdxTree = nullptr;
+  //m_pDevSrcIxt->m_pEntBuffer = nullptr;
   m_aSrcCrw     = nullptr;
   m_pSrcCrwBuffer = nullptr;
   m_pSrcStreamDef = nullptr;
@@ -1257,8 +1257,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         m_nSrcRows = m_pSrcCrwBuffer ? m_pSrcCrwBuffer->nRowCount() : 0;
         break;
         
-      case EO_CRW_SRC_FETCH: NoArg(); // fetch m_aSrcCrw using m_aSrcEnt.ref
-        m_aSrcCrw = CrwBuffer::pRefdCrw(m_aSrcEnt->rxRef());
+      case EO_CRW_SRC_FETCH: NoArg(); // fetch m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref
+        m_aSrcCrw = CrwBuffer::pRefdCrw(m_pDevSrcIxt->m_aEnt->rxRef());
         break;
         
       case EO_CRW_ALT_FETCH: NoArg(); // fetch m_aAltCrw using m_aAltEnt.ref
@@ -1564,10 +1564,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_IXT_SRC_BEGIN: NoArg(); // begin linear traverse
         dLU0(eCode);
-        m_pSrcEntBuffer = m_pSrcIdxTree->pFirstH0Buffer();
-        if (m_pSrcEntBuffer) {
-          m_aSrcEnt = m_pSrcEntBuffer->aLeadEntry();
-          if (m_aSrcEnt)
+        m_pDevSrcIxt->m_pEntBuffer = m_pDevSrcIxt->m_pIdxTree->pFirstH0Buffer();
+        if (m_pDevSrcIxt->m_pEntBuffer) {
+          m_pDevSrcIxt->m_aEnt = m_pDevSrcIxt->m_pEntBuffer->aLeadEntry();
+          if (m_pDevSrcIxt->m_aEnt)
             *(++aiDstk) = 1;
           else
             *(++aiDstk) = 0;
@@ -1578,17 +1578,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_SRC_NEXT: NoArg(); // move to next entry
         dLU0(eCode);
-        m_aSrcEnt = EntBuffer::pMoveToNextEntry(m_aSrcEnt, &m_pSrcEntBuffer);
-        if (m_aSrcEnt)
+        m_pDevSrcIxt->m_aEnt = EntBuffer::pMoveToNextEntry(m_pDevSrcIxt->m_aEnt, &m_pDevSrcIxt->m_pEntBuffer);
+        if (m_pDevSrcIxt->m_aEnt)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
         break;
 
       case EO_IXT_SRC_PRINT: NoArg(); // print src ent
-        pIndexDef = m_pSrcIdxTree->pIndexDef();
+        pIndexDef = m_pDevSrcIxt->m_pIdxTree->pIndexDef();
 #ifdef WITH_TRACE_LOGICUNIT
-        vTrace("SrcEnt : %s\n"_Stz,spEnt.sz(m_aSrcEnt,pIndexDef));
+        vTrace("SrcEnt : %s\n"_Stz,spEnt.sz(m_pDevSrcIxt->m_aEnt,pIndexDef));
 #endif
         break;
 
@@ -1625,7 +1625,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
         
       case EO_IXT_JOI_MATCH: NoArg(); // test for join match (src.key == alt.key)
-        aSrcKey = m_aSrcEnt->aKey();
+        aSrcKey = m_pDevSrcIxt->m_aEnt->aKey();
         aAltKey = m_pDevAltIxt->m_aEnt->aKey();
         iRes = KC_SAME == Key::eCompare(aSrcKey,aAltKey) ? 1 : 0;
         dLU1(eCode,iRes);
@@ -1634,7 +1634,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
 
       case EO_IXT_CMP_SRCALT: NoArg(); // compare src.key to alt.key
-        aSrcKey = m_aSrcEnt->aKey();
+        aSrcKey = m_pDevSrcIxt->m_aEnt->aKey();
         aAltKey = m_pDevAltIxt->m_aEnt->aKey();
         eCmp = Key::eCompare(aSrcKey,aAltKey);
         if (KC_BEFORE == eCmp)
@@ -1664,7 +1664,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
 
       case EO_IXT_POS_ALTBYSRC: NoArg(); // position alt ixt using src.key
-        aSrcKey = m_aSrcEnt->aKey();
+        aSrcKey = m_pDevSrcIxt->m_aEnt->aKey();
         m_pDevAltIxt->m_aEnt =
           m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aSrcKey,&m_pDevAltIxt->m_pEntBuffer);
         if (m_pDevAltIxt->m_pEntBuffer) {
