@@ -5,6 +5,7 @@
 #include "Expressions.h"
 
 #include "DEV_enum.h"
+#include "RLU_itf.h"
 
 extern EoArg EoArgs[];
 
@@ -1113,7 +1114,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
 
       case EO_IXT_DUMP: NoArg(); // dump index tree
-        m_pIndexTree->vDump(false);
+        //m_pIndexTree->vDump(false);
+        ::iDEV_MAP((RLU*)this,m_pIndexTree,DEV_MAP_DUMP,nullptr,nullptr,0);
         break;
 
       case EO_IXT_INS_ENT: NoArg(); // insert an entry into the indexTree
