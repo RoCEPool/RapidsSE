@@ -258,9 +258,9 @@ namespace Expressions
     //==========================
     DevIXT*    m_pDevIXT;
   
-    Ent*       m_aAltEnt;
-    IndexTree* m_pAltIdxTree;
-    EntBuffer* m_pAltEntBuffer;
+    //Ent*       m_aAltEnt;
+    //IndexTree* m_pAltIdxTree;
+    //EntBuffer* m_pAltEntBuffer;
     //==========================
   
   
