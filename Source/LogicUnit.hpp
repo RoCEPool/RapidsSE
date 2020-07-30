@@ -236,16 +236,20 @@ namespace Expressions
     Rsb*       m_aSrcRsb;
     RowSlab*   m_pSrcRowSlab;
 
+    // - -
     Ent*       m_aSrcEnt;
     IndexTree* m_pSrcIdxTree;
     EntBuffer* m_pSrcEntBuffer;
+  
     Crw*       m_aSrcCrw;
     CrwBuffer* m_pSrcCrwBuffer;
     StreamDef* m_pSrcStreamDef;
   
+    // - -
     i8         m_i_AltRow;
     i8         m_nAltRows;
     Rsb*       m_aAltRsb;
+  
     RowSlab*   m_pAltRowSlab;
     Crw*       m_aAltCrw;
     StreamDef* m_pAltStreamDef;
@@ -253,8 +257,7 @@ namespace Expressions
     Ent*       m_aAltEnt;
     IndexTree* m_pAltIdxTree;
     EntBuffer* m_pAltEntBuffer;
-    i8*        m_aPayload;
-
+  
     Ent*       m_pEnt;
     EntWrk     m_oEntWrk;
 //    EntBuffer* m_pEntBuffer;

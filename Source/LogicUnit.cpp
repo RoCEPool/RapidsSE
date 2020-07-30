@@ -83,7 +83,6 @@ LogicUnit::LogicUnit(Task* pTask)
   // m_oEntWrk
   m_pEntBuffer  = nullptr;
   m_pIndexTree  = nullptr;
-  m_aPayload    = nullptr;
   
   m_i_Code = 0;
   
@@ -642,6 +641,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   eEO** aaeRstk = &m_aaReturnStack[0];
 
   IndexDef* pIndexDef = nullptr;
+  i8* aPayload = nullptr;
+
   
   i8 iCtr0 = 0;
 
@@ -1401,16 +1402,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
       case EO_PAY_FETCH_COLI: GetArg(iArg); // fetch a column from the entry payload
-        m_aPayload = m_pEnt->aiPayCell(iArg);
-        iRes = *m_aPayload;
+        aPayload = m_pEnt->aiPayCell(iArg);
+        iRes = *aPayload;
         dLU2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
         break;
         
       case EO_PAY_FETCH_COLS: GetArg(iArg); // fetch a column from the entry payload
       {
-        m_aPayload = m_pEnt->aiPayCell(iArg);
-        char* azSrc = (char*)m_aPayload;
+        aPayload = m_pEnt->aiPayCell(iArg);
+        char* azSrc = (char*)aPayload;
         i8 nSize = StrLib::nSize(azSrc);
         ASSERT(nSize < 8);
         dLU2(eCode,iArg,(i8)azSrc);
@@ -1427,8 +1428,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PAY_STORE_COLI: GetArg(iArg); // store a column of the entry payload
         iRes = *(aiDstk--);
         dLU2(eCode,iArg,iRes);
-        m_aPayload = m_pEnt->aiPayCell(iArg);
-        *m_aPayload = iRes;
+        aPayload = m_pEnt->aiPayCell(iArg);
+        *aPayload = iRes;
         break;
       
       case EO_PAY_STORE_COLS: GetArg(iArg); // store a column of the entry payload
@@ -1436,12 +1437,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        i8 nSize = *(aiDstk--);
 //        RASSERT(nSize < 8);
 //        dLU2(eCode,iArg,nSize);
-//        m_aPayload = m_pEnt->aiPayCell(iArg);
+//        aPayload = m_pEnt->aiPayCell(iArg);
 //        char* azSrc = (char*)(--aiDstk);
 //        aiDstk--;
-//        StrLib::vCopy((char*)m_aPayload,azSrc);
-        m_aPayload = m_pEnt->aiPayCell(iArg);
-        S_PopStr((char*)m_aPayload);
+//        StrLib::vCopy((char*)aPayload,azSrc);
+        aPayload = m_pEnt->aiPayCell(iArg);
+        S_PopStr((char*)aPayload);
         vDebugPoint();
       }
         break;
