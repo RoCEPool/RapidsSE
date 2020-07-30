@@ -236,11 +236,14 @@ namespace Expressions
     Rsb*       m_aSrcRsb;
     RowSlab*   m_pSrcRowSlab;
 
-    // - -
+    //==========================
+    DevIXT*    m_pDevSrcIxt;
+  
     Ent*       m_aSrcEnt;
     IndexTree* m_pSrcIdxTree;
     EntBuffer* m_pSrcEntBuffer;
-  
+    //==========================
+
     Crw*       m_aSrcCrw;
     CrwBuffer* m_pSrcCrwBuffer;
     StreamDef* m_pSrcStreamDef;

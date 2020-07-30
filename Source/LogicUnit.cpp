@@ -86,6 +86,7 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_i_Code = 0;
   
+  m_pDevSrcIxt = new DevIXT;
   m_pDevAltIxt = new DevIXT;
   
 #ifdef WITH_CHECK_INITIALISED
@@ -124,6 +125,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
     delete *m_xpTimer;
   
   delete m_pDevAltIxt;
+  delete m_pDevSrcIxt;
 }
 
 
