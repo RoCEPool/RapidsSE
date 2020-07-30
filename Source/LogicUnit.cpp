@@ -45,6 +45,8 @@ LogicUnit::LogicUnit(Task* pTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  MemLib::vZero(&m_xRLU,sizeof(m_xRLU),CN_LOGICUNIT);
+  
   m_iSql        = C_UNKNOWN;
   
   m_bPixInited  = false;

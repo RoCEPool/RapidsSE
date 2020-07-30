@@ -218,6 +218,8 @@ namespace Expressions
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop
+  
+    RLU        m_xRLU;
 
     i8         m_iSql;
     
