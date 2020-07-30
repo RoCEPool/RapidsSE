@@ -17,6 +17,7 @@ namespace Expressions
 #include "RLU.h"
 
 #include "Device.hpp"
+#include "DevIXT.hpp"
 
 #include "LogicCompiler.hpp"
 
