@@ -254,9 +254,15 @@ namespace Expressions
     Crw*       m_aAltCrw;
     StreamDef* m_pAltStreamDef;
 
+    
+    //==========================
+    DevIXT*    m_pDevIXT;
+  
     Ent*       m_aAltEnt;
     IndexTree* m_pAltIdxTree;
     EntBuffer* m_pAltEntBuffer;
+    //==========================
+  
   
     Ent*       m_pEnt;
     EntWrk     m_oEntWrk;

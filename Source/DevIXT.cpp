@@ -21,6 +21,9 @@ DevIXT::DevIXT(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DEVIXT,_FOOTER_);
   
+  m_aAltEnt       = nullptr;
+  m_pAltIdxTree   = nullptr;
+  m_pAltEntBuffer = nullptr;
 
   _checkInitialised_(CN_DEVIXT);
   
