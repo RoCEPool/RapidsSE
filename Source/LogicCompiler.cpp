@@ -67,7 +67,7 @@ i8 LogicCompiler::iCall(void)
 /*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iCompile(i8 nCodes, eEO eaCode[])
+i8 LogicCompiler::iCompile(RLU* aRLU, i8 nCodes, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
@@ -79,7 +79,7 @@ i8 LogicCompiler::iCompile(i8 nCodes, eEO eaCode[])
   
   vSymbols();
   
-  vCall();
+  vCall(aRLU);
 
   vRelease();
   
@@ -120,17 +120,17 @@ void LogicCompiler::vBegin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vCall(void)
+void LogicCompiler::vCall(RLU* aRLU)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
 #ifdef __TINYC
-  i8 (*afDyn)(void);
+  i8 (*afDyn)(void* aRLU);
 
-  afDyn = (i8 (*)(void))tcc_get_symbol((TCCState*)m_aTccState,"iDynCompute");
+  afDyn = (i8 (*)(void*))tcc_get_symbol((TCCState*)m_aTccState,"iDynCompute");
   RASSERT(afDyn);
   
-  afDyn();
+  afDyn(aRLU);
 #endif
 }
 
@@ -246,7 +246,7 @@ void LogicCompiler::v_preliminary(void)
   "\n  extern i8 iMul(i8 iTopA, i8 iTopB);"
   "\n  extern struct Qty xMul(i8 iTopA, i8 iTopB);"
   "\n"
-  "\n  i8 iDynCompute(void)" // the dynamic function is: iDynCompute()
+  "\n  i8 iDynCompute(void* aRLU)" // the dynamic function is: iDynCompute()
   "\n  { "
   "\n    i8 iaDataStack[C_LOGIC_STACK];"
   "\n"
