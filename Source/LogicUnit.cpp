@@ -1260,7 +1260,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
         
       case EO_CRW_ALT_FETCH: NoArg(); // fetch m_aAltCrw using m_aAltEnt.ref
-        m_aAltCrw = CrwBuffer::pRefdCrw(m_pDevAltIxt->m_aAltEnt->rxRef());
+        m_aAltCrw = CrwBuffer::pRefdCrw(m_pDevAltIxt->m_aEnt->rxRef());
         break;
        
       case EO_CRW_SRC_NEXT: NoArg(); // move to next src rsb
@@ -1592,10 +1592,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_ALT_BEGIN: NoArg(); // begin linear traverse
         dLU0(eCode);
-        m_pDevAltIxt->m_pAltEntBuffer = m_pDevAltIxt->m_pAltIdxTree->pFirstH0Buffer();
-        if (m_pDevAltIxt->m_pAltEntBuffer) {
-          m_pDevAltIxt->m_aAltEnt = m_pDevAltIxt->m_pAltEntBuffer->aLeadEntry();
-          if (m_pDevAltIxt->m_aAltEnt)
+        m_pDevAltIxt->m_pEntBuffer = m_pDevAltIxt->m_pIdxTree->pFirstH0Buffer();
+        if (m_pDevAltIxt->m_pEntBuffer) {
+          m_pDevAltIxt->m_aEnt = m_pDevAltIxt->m_pEntBuffer->aLeadEntry();
+          if (m_pDevAltIxt->m_aEnt)
             *(++aiDstk) = 1;
           else
             *(++aiDstk) = 0;
@@ -1606,25 +1606,25 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_ALT_NEXT: NoArg();
         dLU0(eCode);
-        m_pDevAltIxt->m_aAltEnt =
-          EntBuffer::pMoveToNextEntry(m_pDevAltIxt->m_aAltEnt,
-                                      &m_pDevAltIxt->m_pAltEntBuffer);
-        if (m_pDevAltIxt->m_aAltEnt)
+        m_pDevAltIxt->m_aEnt =
+          EntBuffer::pMoveToNextEntry(m_pDevAltIxt->m_aEnt,
+                                      &m_pDevAltIxt->m_pEntBuffer);
+        if (m_pDevAltIxt->m_aEnt)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
         break;
 
       case EO_IXT_ALT_PRINT: NoArg(); // print alt ent
-        pIndexDef = m_pDevAltIxt->m_pAltIdxTree->pIndexDef();
+        pIndexDef = m_pDevAltIxt->m_pIdxTree->pIndexDef();
 #ifdef WITH_TRACE_LOGICUNIT
-        vTrace("AltEnt : %s\n"_Stz,spEnt.sz(m_pDevAltIxt->m_aAltEnt,pIndexDef));
+        vTrace("AltEnt : %s\n"_Stz,spEnt.sz(m_pDevAltIxt->m_aEnt,pIndexDef));
 #endif
         break;
         
       case EO_IXT_JOI_MATCH: NoArg(); // test for join match (src.key == alt.key)
         aSrcKey = m_aSrcEnt->aKey();
-        aAltKey = m_pDevAltIxt->m_aAltEnt->aKey();
+        aAltKey = m_pDevAltIxt->m_aEnt->aKey();
         iRes = KC_SAME == Key::eCompare(aSrcKey,aAltKey) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
@@ -1633,7 +1633,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_CMP_SRCALT: NoArg(); // compare src.key to alt.key
         aSrcKey = m_aSrcEnt->aKey();
-        aAltKey = m_pDevAltIxt->m_aAltEnt->aKey();
+        aAltKey = m_pDevAltIxt->m_aEnt->aKey();
         eCmp = Key::eCompare(aSrcKey,aAltKey);
         if (KC_BEFORE == eCmp)
           iRes = -1;
@@ -1648,7 +1648,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_CMP_WRKALT: NoArg(); // compare wrk.key to alt.key
         aWrkKey = m_oEntWrk.aKey();
-        aAltKey = m_pDevAltIxt->m_aAltEnt->aKey();
+        aAltKey = m_pDevAltIxt->m_aEnt->aKey();
         eCmp = Key::eCompare(aWrkKey,aAltKey);
         if (KC_BEFORE == eCmp)
           iRes = -1;
@@ -1663,10 +1663,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_POS_ALTBYSRC: NoArg(); // position alt ixt using src.key
         aSrcKey = m_aSrcEnt->aKey();
-        m_pDevAltIxt->m_aAltEnt =
-          m_pDevAltIxt->m_pAltIdxTree->aPositionPriorEntry(aSrcKey,&m_pDevAltIxt->m_pAltEntBuffer);
-        if (m_pDevAltIxt->m_pAltEntBuffer) {
-          if (m_pDevAltIxt->m_aAltEnt)
+        m_pDevAltIxt->m_aEnt =
+          m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aSrcKey,&m_pDevAltIxt->m_pEntBuffer);
+        if (m_pDevAltIxt->m_pEntBuffer) {
+          if (m_pDevAltIxt->m_aEnt)
             *(++aiDstk) = 1;
           else
             *(++aiDstk) = 0;
@@ -1677,10 +1677,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_POS_ALTBYWRK: NoArg(); // position alt ixt using entwrk.key
         aWrkKey = m_oEntWrk.aKey();
-        m_pDevAltIxt->m_aAltEnt =
-          m_pDevAltIxt->m_pAltIdxTree->aPositionPriorEntry(aWrkKey,&m_pDevAltIxt->m_pAltEntBuffer);
-        if (m_pDevAltIxt->m_pAltEntBuffer) {
-          if (m_pDevAltIxt->m_aAltEnt)
+        m_pDevAltIxt->m_aEnt =
+          m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aWrkKey,&m_pDevAltIxt->m_pEntBuffer);
+        if (m_pDevAltIxt->m_pEntBuffer) {
+          if (m_pDevAltIxt->m_aEnt)
             *(++aiDstk) = 1;
           else
             *(++aiDstk) = 0;

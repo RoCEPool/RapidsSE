@@ -9,9 +9,9 @@ namespace Expressions
   {
   public:
   
-    Ent*       m_aAltEnt;
-    IndexTree* m_pAltIdxTree;
-    EntBuffer* m_pAltEntBuffer;
+    Ent*       m_aEnt;
+    IndexTree* m_pIdxTree;
+    EntBuffer* m_pEntBuffer;
 
     // must be last
     Footer m_xFooter;
