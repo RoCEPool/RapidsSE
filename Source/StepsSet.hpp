@@ -900,6 +900,8 @@ public:
   void vLogicUnitCallAgainFetch(void);
   void vLogicUnitCallAgainStore(void);
   void vLogicUnitGenCode(void);
+  void vLogicUnitDevFetch(void);
+  void vLogicUnitDevStore(void);
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
   void vLogicUnitTransform(void);
