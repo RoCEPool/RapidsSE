@@ -45,6 +45,8 @@ LogicUnit::LogicUnit(Task* pTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  MemLib::vZero(&m_xRLU,sizeof(m_xRLU),CN_LOGICUNIT);
+  
   m_iSql        = C_UNKNOWN;
   
   m_bPixInited  = false;
@@ -502,7 +504,7 @@ void LogicUnit::vDumpCode(void)
 /*----------------------------------------------------------------------------*/
 
 
-#if 1
+#if 0
 
   #define dLU3(eCode,iA,iB,iC) \
     if (bTrace) \
@@ -541,6 +543,7 @@ void LogicUnit::vDumpCode(void)
 
   #define NoArg() \
     ASSERT(0 == EoArgs[eCode].m_nArgBytes);
+
 #else
 
   #define dLU3(eCode,iA,iB,iC)

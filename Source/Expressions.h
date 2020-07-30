@@ -14,6 +14,8 @@ namespace Expressions
 
 //------------------------------------------------------------------------------
 
+#include "RLU.h"
+
 #include "LogicCompiler.hpp"
 
 #include "LogicUnit.hpp"

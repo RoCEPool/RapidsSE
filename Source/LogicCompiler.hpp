@@ -31,13 +31,13 @@ namespace Expressions
    ~LogicCompiler(void) noexcept(false);
 
     i8 iCall(void);
-    i8 iCompile(i8 nCodes, eEO eaCode[]);
+    i8 iCompile(RLU* aRLU, i8 nCodes, eEO eaCode[]);
   
   private:
   
     void vAcquire(void);
     void vBegin(void);
-    void vCall(void);
+    void vCall(RLU* aRLU);
     bool bCompile(void);
     void vEnd(void);
     void vRelease(void);
@@ -61,6 +61,8 @@ namespace Expressions
 
   void vTinyError(void *aOpaque, const char *azMsg);
   i8 iMul(i8 iTopA, i8 iTopB);
+
+  Qty xMul(i8 iTopA, i8 iTopB);
 
 /*============================================================================*/
 /* end                                                                        */

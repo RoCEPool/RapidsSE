@@ -37,6 +37,14 @@ int main(int argc, char* argv[])
   printf("sizeof(SP_Ref) %lld\n",       (i8)sizeof(SP_Ref));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Qty xQty;
+  
+  xQty = Datums::xQtyTest();
+  printf("Qty isNull=%lld Value=%lld\n",(i8)xQty.m_bIsNull,xQty.m_iValue);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some word flip experiments
   
 //  char acText[128];

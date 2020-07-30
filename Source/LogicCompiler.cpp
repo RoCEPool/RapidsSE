@@ -67,7 +67,7 @@ i8 LogicCompiler::iCall(void)
 /*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iCompile(i8 nCodes, eEO eaCode[])
+i8 LogicCompiler::iCompile(RLU* aRLU, i8 nCodes, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
@@ -79,7 +79,7 @@ i8 LogicCompiler::iCompile(i8 nCodes, eEO eaCode[])
   
   vSymbols();
   
-  vCall();
+  vCall(aRLU);
 
   vRelease();
   
@@ -120,17 +120,17 @@ void LogicCompiler::vBegin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vCall(void)
+void LogicCompiler::vCall(RLU* aRLU)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
 #ifdef __TINYC
-  i8 (*afDyn)(void);
+  i8 (*afDyn)(void* aRLU);
 
-  afDyn = (i8 (*)(void))tcc_get_symbol((TCCState*)m_aTccState,"iDynCompute");
+  afDyn = (i8 (*)(void*))tcc_get_symbol((TCCState*)m_aTccState,"iDynCompute");
   RASSERT(afDyn);
   
-  afDyn();
+  afDyn(aRLU);
 #endif
 }
 
@@ -182,7 +182,8 @@ void LogicCompiler::vSymbols(void)
 #ifdef __TINYC
   // add external symbols
   tcc_add_symbol((TCCState*)m_aTccState, "iMul", (const void *)iMul);
-  
+  tcc_add_symbol((TCCState*)m_aTccState, "xMul", (const void *)xMul);
+
   // relocate the code
   if (tcc_relocate((TCCState*)m_aTccState, TCC_RELOCATE_AUTO) < 0) {
     RASSERT(0);
@@ -214,6 +215,17 @@ i8 iMul(i8 iTopA, i8 iTopB)
 }
 
 /*----------------------------------------------------------------------------*/
+/* extern function test : iMul()                                              */
+/*----------------------------------------------------------------------------*/
+Qty xMul(i8 iTopA, i8 iTopB)
+{
+  Qty xRes;
+  
+  xRes.m_iValue = iTopA * iTopB;
+  return xRes;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::v_preliminary(void)
@@ -224,13 +236,17 @@ void LogicCompiler::v_preliminary(void)
   "\n"
   "\n  #include <tcclib.h>" // include libc header for TCC
   "\n"
+  "\n  typedef char      i1;"
   "\n  typedef long long i8;"
+  "\n"
+  "\n  #include \"../Source/Qty.h\""
   "\n"
   "\n  static const i8 C_LOGIC_STACK = 4096;"
   "\n"
   "\n  extern i8 iMul(i8 iTopA, i8 iTopB);"
+  "\n  extern struct Qty xMul(i8 iTopA, i8 iTopB);"
   "\n"
-  "\n  i8 iDynCompute(void)" // the dynamic function is: iDynCompute()
+  "\n  i8 iDynCompute(void* aRLU)" // the dynamic function is: iDynCompute()
   "\n  { "
   "\n    i8 iaDataStack[C_LOGIC_STACK];"
   "\n"
@@ -239,6 +255,7 @@ void LogicCompiler::v_preliminary(void)
   "\n    i8 iTopA;"
   "\n    i8 iTopB;"
   "\n    i8 iRes;"
+  "\n    struct Qty xRes;"
   "";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
@@ -311,12 +328,20 @@ void LogicCompiler::v_EO_MULTIPLY(i8& ri_Code, eEO eaCode[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
+//  "\n"
+//  "\n    // EO_MULTIPLY"
+//  "\n    iTopB = *(aiDstk--);"
+//  "\n    iTopA = *(aiDstk--);"
+//  "\n    iRes  = iMul(iTopA,iTopB);"
+//  "\n    *(++aiDstk) = iRes;"
+//  "";
+
   "\n"
   "\n    // EO_MULTIPLY"
   "\n    iTopB = *(aiDstk--);"
   "\n    iTopA = *(aiDstk--);"
-  "\n    iRes  = iMul(iTopA,iTopB);"
-  "\n    *(++aiDstk) = iRes;"
+  "\n    xRes  = xMul(iTopA,iTopB);"
+  "\n    *(++aiDstk) = xRes.m_iValue;"
   "";
 
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
