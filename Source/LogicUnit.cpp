@@ -49,7 +49,8 @@ LogicUnit::LogicUnit(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   MemLib::vZero(&m_xRLU,sizeof(m_xRLU),CN_LOGICUNIT);
-  
+  MemLib::vZero(&m_aaDev,sizeof(m_aaDev),CN_LOGICUNIT);
+
   m_iSql        = C_UNKNOWN;
   
   m_bPixInited  = false;
@@ -652,6 +653,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   Timer oTimer;
   AggTimer oAggTimer;
   
+  // temp
+  m_aaDev[0] = m_pIndexTree;
+  // end temp
+  
 #ifdef WITH_TRACE_LOGICUNIT
   vTrace("\nLogic Unit :: sql %lld\n\n"_Stz,m_iSql);
   vDebugPoint();
@@ -1115,7 +1120,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_DUMP: NoArg(); // dump index tree
         //m_pIndexTree->vDump(false);
-        ::iDEV_MAP(this,m_pIndexTree,DEV_MAP_DUMP,nullptr,nullptr,0);
+        ::iDEV_MAP(this,m_aaDev[0],DEV_MAP_DUMP,nullptr,nullptr,0);
         break;
 
       case EO_IXT_INS_ENT: NoArg(); // insert an entry into the indexTree
