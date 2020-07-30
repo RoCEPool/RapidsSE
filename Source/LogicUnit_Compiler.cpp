@@ -6,37 +6,21 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vRLU_IXT_DEL_ENT(RLU* aRLU)
+void LogicUnit::vRLU_IXT_DEL_ENT(RLU* aRLU, void* aDev)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vRLU_IXT_DUMP(RLU* aRLU)
+void LogicUnit::vRLU_IXT_DUMP(RLU* aRLU, void* aDev)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iRLU_IXT_ENTRIES(RLU* aRLU)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  return 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vRLU_IXT_INS_ENT(RLU* aRLU)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iRLU_IXT_TRV_BEGIN(RLU* aRLU)
+i8 LogicUnit::iRLU_IXT_ENTRIES(RLU* aRLU, void* aDev)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -45,7 +29,23 @@ i8 LogicUnit::iRLU_IXT_TRV_BEGIN(RLU* aRLU)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iRLU_IXT_TRV_NEXT(RLU* aRLU)
+void LogicUnit::vRLU_IXT_INS_ENT(RLU* aRLU, void* aDev)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::iRLU_IXT_TRV_BEGIN(RLU* aRLU, void* aDev)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::iRLU_IXT_TRV_NEXT(RLU* aRLU, void* aDev)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -57,62 +57,64 @@ i8 LogicUnit::iRLU_IXT_TRV_NEXT(RLU* aRLU)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+#include "RLU_itf.h"
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void vRLU_IXT_DEL_ENT(RLU* aRLU)
+void vRLU_IXT_DEL_ENT(RLU* aRLU, void* aDev)
 {
   LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
 
-  pLogicUnit->vRLU_IXT_DEL_ENT(aRLU);
+  pLogicUnit->vRLU_IXT_DEL_ENT(aRLU,aDev);
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void vRLU_IXT_DUMP(RLU* aRLU)
+void vRLU_IXT_DUMP(RLU* aRLU, void* aDev)
 {
   LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
   
-  pLogicUnit->vRLU_IXT_DUMP(aRLU);
+  pLogicUnit->vRLU_IXT_DUMP(aRLU,aDev);
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-i8 iRLU_IXT_ENTRIES(RLU* aRLU)
+i8 iRLU_IXT_ENTRIES(RLU* aRLU, void* aDev)
 {
   LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
   
-  i8 iRes = pLogicUnit->iRLU_IXT_ENTRIES(aRLU);
+  i8 iRes = pLogicUnit->iRLU_IXT_ENTRIES(aRLU,aDev);
 
   return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void vRLU_IXT_INS_ENT(RLU* aRLU)
+void vRLU_IXT_INS_ENT(RLU* aRLU, void* aDev)
 {
   LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
 
-  pLogicUnit->vRLU_IXT_INS_ENT(aRLU);
+  pLogicUnit->vRLU_IXT_INS_ENT(aRLU,aDev);
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-i8 iRLU_IXT_TRV_BEGIN(RLU* aRLU)
+i8 iRLU_IXT_TRV_BEGIN(RLU* aRLU, void* aDev)
 {
   LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
   
-  i8 iRes = pLogicUnit->iRLU_IXT_TRV_BEGIN(aRLU);
+  i8 iRes = pLogicUnit->iRLU_IXT_TRV_BEGIN(aRLU,aDev);
 
   return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-i8 iRLU_IXT_TRV_NEXT(RLU* aRLU)
+i8 iRLU_IXT_TRV_NEXT(RLU* aRLU, void* aDev)
 {
   LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
   
-  i8 iRes = pLogicUnit->iRLU_IXT_TRV_NEXT(aRLU);
+  i8 iRes = pLogicUnit->iRLU_IXT_TRV_NEXT(aRLU,aDev);
 
   return iRes;
 }
