@@ -251,10 +251,45 @@ void RowSlab::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
 /*----------------------------------------------------------------------------*/
 /* start of new row                                                           */
 /*----------------------------------------------------------------------------*/
-bool RowSlab::bNewRow(void)
+bool RowSlab::bNewRow(Rsb** paRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
+  i8 nBytesAvail = m_xWsp.nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
+  
+  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize)
+    return false;
+  
+  if (C_UNKNOWN == m_i_Cell)
+    m_i_Cell = C_FIRST_LGL_CELL + 1;
+  else {
+    //ASSERT(m_i_Cell == m_i_Row - nCols());
+    
+    m_i_Cell = m_i_Row - nCols();
+  }
+  
+  m_i_Row = m_i_Cell;
+  
+  m8* amCellVec = amSlabCellVec();
+  *paRow = (Rsb*) & amCellVec[m_i_Row];
+  
+  m_nItems++;
+  
+  i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
+  m_xWsp.vTakeTail(nCellBytes);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* start of new row                                                           */
+/*----------------------------------------------------------------------------*/
+bool RowSlab::bNewRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
   i8 nBytesAvail = m_xWsp.nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
   
   if (nBytesAvail < m_oStreamPix.m_nMaxRowSize)
@@ -274,7 +309,7 @@ bool RowSlab::bNewRow(void)
   
   i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
   m_xWsp.vTakeTail(nCellBytes);
-
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   return true;

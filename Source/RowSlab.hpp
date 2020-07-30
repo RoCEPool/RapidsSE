@@ -61,6 +61,7 @@ namespace Rows
     void  vDumpRow(i8 i_Row, Rsb* aRsb);
     i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
+    bool  bNewRow(Rsb** paRsb);
     bool  bNewRow(void);
     NmlStr* pNmlStr(void);
     void  vNormaliseStrings(void);

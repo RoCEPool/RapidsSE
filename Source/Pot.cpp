@@ -23,7 +23,10 @@ Pot::Pot(void)
   
   m_pStreamPix = nullptr;
   
-  // m_oHashSet
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PARTITIONS; i_Ptn++)
+    m_paBufferChain[i_Ptn] = nullptr;
+  
+  _checkInitialised_(CN_HASHSET);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 }
@@ -49,9 +52,7 @@ DataBuffer* Pot::pBuffer(i8 i_Ptn)
   
   //ASSERT(0 == i_Ptn);
   
-  DataBuffer* pDataBuffer = m_oHashSet.pBuffer(i_Ptn);
-  
-  return pDataBuffer;
+  return m_paBufferChain[i_Ptn];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,9 +64,23 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
   
   //ASSERT(0 == i_Ptn);
   
-  DataBuffer* pDataBuffer = m_oHashSet.pCompletedBuffer(i_Ptn);
+  DataBuffer* pCompletedBuffer = nullptr;
   
-  return pDataBuffer;
+  DataBuffer* pDataBuffer = (DataBuffer*)
+  (m_paBufferChain[i_Ptn]
+   ? m_paBufferChain[i_Ptn]->pNextBuffer()
+   : nullptr);
+  while (pDataBuffer) {
+    pCompletedBuffer = pDataBuffer;
+    pDataBuffer = (DataBuffer*)pDataBuffer->pNextBuffer();
+  }
+  
+  if (pCompletedBuffer) {
+    DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevBuffer();
+    pPrevBuffer->vNextBuffer(nullptr);
+  }
+  
+  return pCompletedBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,8 +92,10 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
   
   //ASSERT(0 == i_Ptn);
   
-  DataBuffer* pDataBuffer = m_oHashSet.pDanglingBuffer(i_Ptn);
-
+  DataBuffer* pDataBuffer = m_paBufferChain[i_Ptn];
+  
+  m_paBufferChain[i_Ptn] = nullptr;
+  
   return pDataBuffer;
 }
 
@@ -92,9 +109,10 @@ Rsb* Pot::aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab)
   //ASSERT(0 == i_Ptn);
   
   RowSlab* pDstRowSlab;
+  Rsb* aDstRsb;
   
   // get rsb buffer for given partition (new a first buffer if ncessary)
-  RsbBuffer* pDstRsbBuffer = _pRsbBuffer(pBuffer(i_Ptn));
+  RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_paBufferChain[i_Ptn]);
   if (! pDstRsbBuffer) {
     pDstRsbBuffer = new RsbBuffer;
     pDstRowSlab = pDstRsbBuffer->pRowSlab();
@@ -106,20 +124,20 @@ Rsb* Pot::aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab)
   }
   
   // new a row in rsb buffer (new another rsb buffer if necessary)
-  bool bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
+  bool bNewed = pDstRowSlab->bNewRow(&aDstRsb);
   if (! bNewed) {
     pDstRsbBuffer = new RsbBuffer;
     pDstRowSlab = pDstRsbBuffer->pRowSlab();
     pDstRowSlab->vCopyPix(m_pStreamPix);
     vAddBuffer(i_Ptn,pDstRsbBuffer);
-    bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
+    bNewed = pDstRsbBuffer->pRowSlab()->bNewRow(&aDstRsb);
     ASSERT(bNewed);
   }
   
   pDstRsbBuffer->vPartitionNo(i_Ptn);
   
-  i8 iRow = pDstRowSlab->nRows() - 1;
-  Rsb* aDstRsb = pDstRowSlab->aRsbAdr(iRow);
+  //i8 iRow = pDstRowSlab->nRows() - 1;
+  //Rsb* aDstRsb = pDstRowSlab->aRsbAdr(iRow);
   
   * ppRowSlab = pDstRowSlab;
   
@@ -149,7 +167,13 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
-  m_oHashSet.vAddBuffer(i_Ptn,pDataBuffer);
+  // link the old with this
+  pDataBuffer->vNextBuffer(m_paBufferChain[i_Ptn]);
+  
+  if (m_paBufferChain[i_Ptn])
+    m_paBufferChain[i_Ptn]->vPrevBuffer(pDataBuffer);
+  
+  m_paBufferChain[i_Ptn] = pDataBuffer;
 }
 
 

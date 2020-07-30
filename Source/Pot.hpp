@@ -11,8 +11,9 @@ namespace DataBuffers
   
     StreamPix* m_pStreamPix;    // condensed stream def
 
-    HashSet    m_oHashSet; // using this as an interim step
-    
+    //HashSet    m_oHashSet; // using this as an interim step
+    DataBuffer*  m_paBufferChain[C_MAX_PARTITIONS];
+
     // must be last
     Footer m_xFooter;
 
@@ -24,6 +25,7 @@ namespace DataBuffers
    ~Pot(void) noexcept(false);
   
   public:
+    
     DataBuffer* pBuffer(i8 i_Ptn);
     DataBuffer* pCompleted(i8 i_Ptn);
     DataBuffer* pDangling(i8 i_Ptn);
