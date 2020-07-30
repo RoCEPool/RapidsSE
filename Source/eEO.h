@@ -7,6 +7,9 @@ enum eEO : u1 // expression operators
 {
   /*  0 */ EO_NONE=0,
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // simple eo
+  
   // arithmetic operators
   /*    */ EO_ADD,              // add top two int's push result
   /*    */ EO_DIVIDE,           // divide top int by second push result
@@ -14,19 +17,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_MULTIPLY,         // multiply top two int's push result
   /*    */ EO_NEGATE,           // negate the top value
   /*    */ EO_SUBTRACT,         // subtract second int from top push result
-
-  // col operators
-  /*    */ EO_COL_DST_RESET,    // reset column in streamPix of dst
-  /*    */ EO_COL_SRC_PUSH,     // push column value from m_aSrcCrw
-  /*    */ EO_COL_SRC_PUSHSTR,  // push column str value from m_aSrcCrw
-  /*    */ EO_COL_ALT_PUSH,     // push column value from m_aAltCrw
-
-  // crw operators
-  /*    */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
-  /*    */ EO_CRW_SRC_FETCH,    // fetch m_aSrcCrw using m_aSrcEnt.ref
-  /*    */ EO_CRW_ALT_FETCH,    // fetch m_aAltCrw using m_aAltEnt.ref
-  /*    */ EO_CRW_SRC_NEXT,     // move to next src rsb
-  /*    */ EO_CRW_SRC_TORSB,    // convert crw src to rsb
   
   // counter
   /*    */ EO_CTR_0_DEC,        // dec counter 0
@@ -39,66 +29,9 @@ enum eEO : u1 // expression operators
   /*    */ EO_DTE_PRINT,        // pop top and print as date
   /*    */ EO_DTE_YEAR,         // pop top, push year of date
   
-  // entry
-  /*    */ EO_ENT_NEXT,         // move to next m_pEnt
-  /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
-  /*    */ EO_ENT_PUSH,         // push entry
-  /*    */ EO_ENT_PUSHELMI0,    // push entry elm 0 int
-  /*    */ EO_ENT_PUSHELMS0,    // push entry elm 0 str
-  /*    */ EO_ENT_PUSHOFS,      // push entry offset
-  /*    */ EO_ENT_PUSHREF,      // push ref of current entry
-
-  // entry relational operators
-  /*    */ EO_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
-  /*    */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
-  /*    */ EO_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
-  /*    */ EO_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
-  /*    */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
-  /*    */ EO_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
-  
-  // entWrk
-  /*    */ EO_ENTWRK_APPENDELM, // append next element value
-  /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
-  /*    */ EO_ENTWRK_APPENDELMS,// append next element value (str)
-  /*    */ EO_ENTWRK_CREATEPAY, // create a payload in entwrk
-  /*    */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
-  /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
-  /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
-  /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
-  
-  // finalise
-  /*    */ EO_FIN_TRANSFORM,    // standard finalise
-
   // hashing
   /*    */ EO_HSH_ADD_HASHI,    // add hash of top int to running hash
   /*    */ EO_HSH_RESET,        // reset hash
-
-  // initialise
-  /*    */ EO_INI_PIX_DEFOUT,   // init m_pPot pix from stream def out
-  /*    */ EO_INI_PIX_SLABIN,   // init m_pPot pix from input slab
-  /*    */ EO_INI_SRC_CRW,      // init m_pSrcCrw etc
-  /*    */ EO_INI_SRC_SLAB,     // init m_pSrcRowSlab etc
-
-  // index tree
-  /*    */ EO_IXT_DEL_ENT,      // delete current entry from indexTree
-  /*    */ EO_IXT_DUMP,         // dump index tree
-  /*    */ EO_IXT_INS_ENT,      // insert an entry into the indexTree
-  /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
-  /*    */ EO_IXT_TRV_NEXT,     // move to next entry
-  /*    */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index
-
-  
-  /*    */ EO_IXT_SRC_BEGIN,    // begin linear traverse
-  /*    */ EO_IXT_SRC_NEXT,     // move to next entry
-  /*    */ EO_IXT_SRC_PRINT,    // print src ent
-  /*    */ EO_IXT_ALT_BEGIN,    // begin linear traverse
-  /*    */ EO_IXT_ALT_NEXT,     // move to next entry
-  /*    */ EO_IXT_ALT_PRINT,    // print src ent
-  /*    */ EO_IXT_JOI_MATCH,    // test for join match (src.key == alt.key)
-  /*    */ EO_IXT_CMP_SRCALT,   // compare src.key to alt.key
-  /*    */ EO_IXT_CMP_WRKALT,   // compare wrk.key to alt.key
-  /*    */ EO_IXT_POS_ALTBYSRC, // position alt ixt using src.key
-  /*    */ EO_IXT_POS_ALTBYWRK, // position alt ixt using entwrk.key
 
   // jump operators
   /*    */ EO_JMP,              // jump to location
@@ -121,21 +54,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_ISNULL,           // test if top is null, push result
   /*    */ EO_ISNOTNULL,        // test if top is not null, push result
   
-  // pay load
-  /*    */ EO_PAY_FETCH_COLI,   // fetch a column from the entry payload
-  /*    */ EO_PAY_FETCH_COLS,   // fetch a column from the entry payload
-  /*    */ EO_PAY_STORE_COLI,   // store a column of the entry payload
-  /*    */ EO_PAY_STORE_COLS,   // store a column of the entry payload
-  
-  // pix operators
-  /*    */ EO_PIX_STM_PRINT,    // print stream pix
-  
-  // partitioning
-  /*    */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
-  /*    */ EO_PTN_PUSH,         // push i_Ptn
-  /*    */ EO_PTN_RESET,        // reset running iHash
-  /*    */ EO_PTN_RUNNING,      // mix top into running iHash
-
   // pushes
   /*    */ EO_DATE,             // push date
   /*    */ EO_INTEGER,          // push integer
@@ -143,29 +61,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_PUSH0,            // push integer 0
   /*    */ EO_PUSH1,            // push integer 1
   /*    */ EO_RANDOM,           // push random number 0..arg-1
-
-  // ref
-  /*    */ EO_REF_GETCRW,       // get ref'd crw
-  /*    */ EO_REF_SRCRSB,       // get ref'd src rsb
-  /*    */ EO_REF_ALTRSB,       // get ref'd alt rsb
-
-  // rsb / rowslab
-  /*    */ EO_RSB_DST_COPYSRC,  // copy src rsb to dst rsb
-  /*    */ EO_RSB_DST_PRINT,    // print dst rsb
-  /*    */ EO_RSB_DST_RESET,    // reset dst rowslab
-  /*    */ EO_RSB_DST_NEW,      // create new destination rsb
-  /*    */ EO_RSB_DST_TEST,     // test if destination rsb
-  /*    */ EO_RSB_DST_ZERO,     // zero destination rsb
-  /*    */ EO_RSB_SRC_BEGIN,    // begin src rsb traverse
-  /*    */ EO_RSB_SRC_NEXT,     // move to next src rsb
-  /*    */ EO_RSB_SRC_PRINT,    // print src rsb
-  /*    */ EO_RSB_SRC_PUSHOFS,  // push offset of source rsb
-  /*    */ EO_RSB_SRC_SETBYOFS, // set src rsb by using offset on stack
-  /*    */ EO_RSB_ALT_BEGIN,    // begin linear traverse
-  /*    */ EO_RSB_ALT_NEXT,     // move to next rsb
-  /*    */ EO_RSB_ALT_PRINT,    // print alt rsb
-  /*    */ EO_RSB_ALT_PUSHOFS,  // push offset of alt rsb
-  /*    */ EO_RSB_ALT_SETBYOFS, // set alt rsb by using offset on stack
 
   // relational operators
   /*    */ EO_LESSTHAN,         // test top < 2nd, push result
@@ -175,14 +70,12 @@ enum eEO : u1 // expression operators
   /*    */ EO_GREATEREQUAL,     // test top >= 2nd, push result
   /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
-  // rsb operators
-  /*    */ EO_RSB_DST_POPCOLI,  // pop and deposit top into dst column
-  /*    */ EO_RSB_DST_POPCOLS,  // pop and deposit top into dst column
-  /*    */ EO_RSB_DST_PUSHCOLI, // push dst column
-  /*    */ EO_RSB_SRC_PUSHCOLI, // push src column (integer)
-  /*    */ EO_RSB_SRC_PUSHCOLS, // push src column (string)
-  /*    */ EO_RSB_ALT_PUSHCOLI, // push alt column
-  
+  // partitioning
+  /*    */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
+  /*    */ EO_PTN_PUSH,         // push i_Ptn
+  /*    */ EO_PTN_RESET,        // reset running iHash
+  /*    */ EO_PTN_RUNNING,      // mix top into running iHash
+
   // stack operators
   /*    */ EO_INC,              // increment top, push result
   /*    */ EO_DEC,              // decrement top, push result
@@ -218,9 +111,123 @@ enum eEO : u1 // expression operators
   /*    */ EO_NOOP,             // no op
   /*    */ EO_ERROR,            // error marker
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // complex eo
+  
+  // col operators
+  /*    */ EO_COL_DST_RESET,    // reset column in streamPix of dst
+  /*    */ EO_COL_SRC_PUSH,     // push column value from m_aSrcCrw
+  /*    */ EO_COL_SRC_PUSHSTR,  // push column str value from m_aSrcCrw
+  /*    */ EO_COL_ALT_PUSH,     // push column value from m_aAltCrw
+
+  // crw operators
+  /*    */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
+  /*    */ EO_CRW_SRC_FETCH,    // fetch m_aSrcCrw using m_aSrcEnt.ref
+  /*    */ EO_CRW_ALT_FETCH,    // fetch m_aAltCrw using m_aAltEnt.ref
+  /*    */ EO_CRW_SRC_NEXT,     // move to next src rsb
+  /*    */ EO_CRW_SRC_TORSB,    // convert crw src to rsb
+  
+  // entry
+  /*    */ EO_ENT_NEXT,         // move to next m_pEnt
+  /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
+  /*    */ EO_ENT_PUSH,         // push entry
+  /*    */ EO_ENT_PUSHELMI0,    // push entry elm 0 int
+  /*    */ EO_ENT_PUSHELMS0,    // push entry elm 0 str
+  /*    */ EO_ENT_PUSHOFS,      // push entry offset
+  /*    */ EO_ENT_PUSHREF,      // push ref of current entry
+
+  // entry relational operators
+  /*    */ EO_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
+  /*    */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
+  /*    */ EO_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
+  /*    */ EO_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
+  /*    */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
+  /*    */ EO_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
+  
+  // entWrk
+  /*    */ EO_ENTWRK_APPENDELM, // append next element value
+  /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
+  /*    */ EO_ENTWRK_APPENDELMS,// append next element value (str)
+  /*    */ EO_ENTWRK_CREATEPAY, // create a payload in entwrk
+  /*    */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
+  /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
+  /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
+  /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
+  
+  // finalise
+  /*    */ EO_FIN_TRANSFORM,    // standard finalise
+
+  // initialise
+  /*    */ EO_INI_PIX_DEFOUT,   // init m_pPot pix from stream def out
+  /*    */ EO_INI_PIX_SLABIN,   // init m_pPot pix from input slab
+  /*    */ EO_INI_SRC_CRW,      // init m_pSrcCrw etc
+  /*    */ EO_INI_SRC_SLAB,     // init m_pSrcRowSlab etc
+
+  // index tree
+  /*    */ EO_IXT_DEL_ENT,      // delete current entry from indexTree
+  /*    */ EO_IXT_DUMP,         // dump index tree
+  /*    */ EO_IXT_INS_ENT,      // insert an entry into the indexTree
+  /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
+  /*    */ EO_IXT_TRV_NEXT,     // move to next entry
+  /*    */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index
+
+  
+  /*    */ EO_IXT_SRC_BEGIN,    // begin linear traverse
+  /*    */ EO_IXT_SRC_NEXT,     // move to next entry
+  /*    */ EO_IXT_SRC_PRINT,    // print src ent
+  /*    */ EO_IXT_ALT_BEGIN,    // begin linear traverse
+  /*    */ EO_IXT_ALT_NEXT,     // move to next entry
+  /*    */ EO_IXT_ALT_PRINT,    // print src ent
+  /*    */ EO_IXT_JOI_MATCH,    // test for join match (src.key == alt.key)
+  /*    */ EO_IXT_CMP_SRCALT,   // compare src.key to alt.key
+  /*    */ EO_IXT_CMP_WRKALT,   // compare wrk.key to alt.key
+  /*    */ EO_IXT_POS_ALTBYSRC, // position alt ixt using src.key
+  /*    */ EO_IXT_POS_ALTBYWRK, // position alt ixt using entwrk.key
+
+  // pay load
+  /*    */ EO_PAY_FETCH_COLI,   // fetch a column from the entry payload
+  /*    */ EO_PAY_FETCH_COLS,   // fetch a column from the entry payload
+  /*    */ EO_PAY_STORE_COLI,   // store a column of the entry payload
+  /*    */ EO_PAY_STORE_COLS,   // store a column of the entry payload
+  
+  // pix operators
+  /*    */ EO_PIX_STM_PRINT,    // print stream pix
+  
+  // ref
+  /*    */ EO_REF_GETCRW,       // get ref'd crw
+  /*    */ EO_REF_SRCRSB,       // get ref'd src rsb
+  /*    */ EO_REF_ALTRSB,       // get ref'd alt rsb
+
+  // rsb / rowslab
+  /*    */ EO_RSB_DST_COPYSRC,  // copy src rsb to dst rsb
+  /*    */ EO_RSB_DST_PRINT,    // print dst rsb
+  /*    */ EO_RSB_DST_RESET,    // reset dst rowslab
+  /*    */ EO_RSB_DST_NEW,      // create new destination rsb
+  /*    */ EO_RSB_DST_TEST,     // test if destination rsb
+  /*    */ EO_RSB_DST_ZERO,     // zero destination rsb
+  /*    */ EO_RSB_SRC_BEGIN,    // begin src rsb traverse
+  /*    */ EO_RSB_SRC_NEXT,     // move to next src rsb
+  /*    */ EO_RSB_SRC_PRINT,    // print src rsb
+  /*    */ EO_RSB_SRC_PUSHOFS,  // push offset of source rsb
+  /*    */ EO_RSB_SRC_SETBYOFS, // set src rsb by using offset on stack
+  /*    */ EO_RSB_ALT_BEGIN,    // begin linear traverse
+  /*    */ EO_RSB_ALT_NEXT,     // move to next rsb
+  /*    */ EO_RSB_ALT_PRINT,    // print alt rsb
+  /*    */ EO_RSB_ALT_PUSHOFS,  // push offset of alt rsb
+  /*    */ EO_RSB_ALT_SETBYOFS, // set alt rsb by using offset on stack
+
+  // rsb operators
+  /*    */ EO_RSB_DST_POPCOLI,  // pop and deposit top into dst column
+  /*    */ EO_RSB_DST_POPCOLS,  // pop and deposit top into dst column
+  /*    */ EO_RSB_DST_PUSHCOLI, // push dst column
+  /*    */ EO_RSB_SRC_PUSHCOLI, // push src column (integer)
+  /*    */ EO_RSB_SRC_PUSHCOLS, // push src column (string)
+  /*    */ EO_RSB_ALT_PUSHCOLI, // push alt column
+  
   /*    */ EO_ENUMS
 };
 
+//----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 
 static Stz* aEO[]
@@ -235,19 +242,6 @@ static Stz* aEO[]
   /*    */ "EO_NEGATE"_Stz,
   /*    */ "EO_SUBTRACT"_Stz,
   
-  // col operators
-  /*    */ "EO_COL_DST_RESET"_Stz,
-  /*    */ "EO_COL_SRC_PUSH"_Stz,
-  /*    */ "EO_COL_SRC_PUSHSTR"_Stz,
-  /*    */ "EO_COL_SRC_PUSH"_Stz,
-  
-  // crw operators
-  /*    */ "EO_CRW_SRC_BEGIN"_Stz,
-  /*    */ "EO_CRW_SRC_FETCH"_Stz,
-  /*    */ "EO_CRW_ALT_FETCH"_Stz,
-  /*    */ "EO_CRW_SRC_NEXT"_Stz,
-  /*    */ "EO_CRW_SRC_TORSB"_Stz,
-  
   // counter
   /*    */ "EO_CTR_0_DEC"_Stz,
   /*    */ "EO_CTR_0_INC"_Stz,
@@ -259,66 +253,10 @@ static Stz* aEO[]
   /*    */ "EO_DTE_PRINT"_Stz,
   /*    */ "EO_DTE_YEAR"_Stz,
   
-  // entry
-  /*    */ "EO_ENT_NEXT"_Stz,
-  /*    */ "EO_ENT_POSPRIOR"_Stz,
-  /*    */ "EO_ENT_PUSH"_Stz,
-  /*    */ "EO_ENT_PUSHELMI0"_Stz,
-  /*    */ "EO_ENT_PUSHELMS0"_Stz,
-  /*    */ "EO_ENT_PUSHOFS"_Stz,
-  /*    */ "EO_ENT_PUSHREF"_Stz,
-
-  // entry relational operators
-  /*    */ "EO_ENT_LESS"_Stz,
-  /*    */ "EO_ENT_LESSEQUAL"_Stz,
-  /*    */ "EO_ENT_EQUAL"_Stz,
-  /*    */ "EO_ENT_NOTEQUAL"_Stz,
-  /*    */ "EO_ENT_GREATEREQUAL"_Stz,
-  /*    */ "EO_ENT_GREATER"_Stz,
-  
-  // entWrk
-  /*    */ "EO_ENTWRK_APPENDELM"_Stz,
-  /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
-  /*    */ "EO_ENTWRK_APPENDELMS"_Stz,
-  /*    */ "EO_ENTWRK_CREATEPAY"_Stz,
-  /*    */ "EO_ENTWRK_POPOFS"_Stz,
-  /*    */ "EO_ENTWRK_POPREF"_Stz,
-  /*    */ "EO_ENTWRK_PRINT"_Stz,
-  /*    */ "EO_ENTWRK_RESET"_Stz,
-
-  // finalise
-  /*    */ "EO_FIN_TRANSFORM"_Stz,
-
   // hashing
   /*    */ "EO_HSH_ADD_HASHI"_Stz,
   /*    */ "EO_HSH_RESET"_Stz,
 
-  // initialise
-  /*    */ "EO_INI_PIX_DEFOUT"_Stz,
-  /*    */ "EO_INI_PIX_SLABIN"_Stz,
-  /*    */ "EO_INI_SRC_CRW"_Stz,
-  /*    */ "EO_INI_SRC_SLAB"_Stz,
-
-  // index tree
-  /*    */ "EO_IXT_DEL_ENT"_Stz,
-  /*    */ "EO_IXT_DUMP"_Stz,
-  /*    */ "EO_IXT_INS_ENT"_Stz,
-  /*    */ "EO_IXT_TRV_BEGIN"_Stz,
-  /*    */ "EO_IXT_TRV_NEXT"_Stz,
-  /*    */ "EO_IXT_TMP_ENTRIES"_Stz,
-  
-  /*    */ "EO_IXT_SRC_BEGIN"_Stz,
-  /*    */ "EO_IXT_SRC_NEXT"_Stz,
-  /*    */ "EO_IXT_SRC_PRINT"_Stz,
-  /*    */ "EO_IXT_ALT_BEGIN"_Stz,
-  /*    */ "EO_IXT_ALT_NEXT"_Stz,
-  /*    */ "EO_IXT_ALT_PRINT"_Stz,
-  /*    */ "EO_IXT_JOI_MATCH"_Stz,
-  /*    */ "EO_IXT_CMP_SRCALT"_Stz,
-  /*    */ "EO_IXT_CMP_WRKALT"_Stz,
-  /*    */ "EO_IXT_POS_ALTBYSRC"_Stz,
-  /*    */ "EO_IXT_POS_ALTBYWRK"_Stz,
-  
   // jump operators
   /*    */ "EO_JMP"_Stz,
   /*    */ "EO_JMP_FALSE"_Stz,
@@ -340,21 +278,6 @@ static Stz* aEO[]
   /*    */ "EO_ISNULL"_Stz,
   /*    */ "EO_ISNOTNULL"_Stz,
   
-  // pay load
-  /*    */ "EO_PAY_FETCH_COLI"_Stz,
-  /*    */ "EO_PAY_FETCH_COLS"_Stz,
-  /*    */ "EO_PAY_STORE_COLI"_Stz,
-  /*    */ "EO_PAY_STORE_COLS"_Stz,
-  
-  // pix
-  /*    */ "EO_PIX_STM_PRINT"_Stz,
-  
-  // partitioning
-  /*    */ "EO_PTN_CALC"_Stz,
-  /*    */ "EO_PTN_PUSH"_Stz,
-  /*    */ "EO_PTN_RESET"_Stz,
-  /*    */ "EO_PTN_RUNNING"_Stz,
-  
   // pushes
   /*    */ "EO_DATE"_Stz,
   /*    */ "EO_INTEGER"_Stz,
@@ -363,29 +286,6 @@ static Stz* aEO[]
   /*    */ "EO_PUSH1"_Stz,
   /*    */ "EO_RANDOM"_Stz,
   
-  // ref
-  /*    */ "EO_REF_GETCRW"_Stz,
-  /*    */ "EO_REF_SRCRSB"_Stz,
-  /*    */ "EO_REF_ALTRSB"_Stz,
-  
-  // rsb / rowslab
-  /*    */ "EO_RSB_DST_COPYSRC"_Stz,
-  /*    */ "EO_RSB_DST_PRINT"_Stz,
-  /*    */ "EO_RSB_DST_RESET"_Stz,
-  /*    */ "EO_RSB_DST_NEW"_Stz,
-  /*    */ "EO_RSB_DST_TEST"_Stz,
-  /*    */ "EO_RSB_DST_ZERO"_Stz,
-  /*    */ "EO_RSB_SRC_BEGIN"_Stz,
-  /*    */ "EO_RSB_SRC_NEXT"_Stz,
-  /*    */ "EO_RSB_SRC_PRINT"_Stz,
-  /*    */ "EO_RSB_SRC_PUSHOFS"_Stz,
-  /*    */ "EO_RSB_SRC_SETBYOFS"_Stz,
-  /*    */ "EO_RSB_ALT_BEGIN"_Stz,
-  /*    */ "EO_RSB_ALT_NEXT"_Stz,
-  /*    */ "EO_RSB_ALT_PRINT"_Stz,
-  /*    */ "EO_RSB_ALT_PUSHOFS"_Stz,
-  /*    */ "EO_RSB_ALT_SETBYOFS"_Stz,
-
   // relational operators
   /*    */ "EO_LESSTHAN"_Stz,
   /*    */ "EO_LESSEQUAL"_Stz,
@@ -394,13 +294,11 @@ static Stz* aEO[]
   /*    */ "EO_GREATEREQUAL"_Stz,
   /*    */ "EO_GREATERTHAN"_Stz,
   
-  // rsb operators
-  /*    */ "EO_RSB_DST_POPCOLI"_Stz,
-  /*    */ "EO_RSB_DST_POPCOLS"_Stz,
-  /*    */ "EO_RSB_DST_PUSHCOLI"_Stz,
-  /*    */ "EO_RSB_SRC_PUSHCOLI"_Stz,
-  /*    */ "EO_RSB_SRC_PUSHCOLS"_Stz,
-  /*    */ "EO_RSB_ALT_PUSHCOLI"_Stz,
+  // partitioning
+  /*    */ "EO_PTN_CALC"_Stz,
+  /*    */ "EO_PTN_PUSH"_Stz,
+  /*    */ "EO_PTN_RESET"_Stz,
+  /*    */ "EO_PTN_RUNNING"_Stz,
   
   // stack operators
   /*    */ "EO_INC"_Stz,
@@ -437,6 +335,117 @@ static Stz* aEO[]
   /*    */ "EO_NOOP"_Stz,
   /*    */ "EO_ERROR"_Stz,
 
+  //----------------------------------------------------------------------------
+
+  // col operators
+  /*    */ "EO_COL_DST_RESET"_Stz,
+  /*    */ "EO_COL_SRC_PUSH"_Stz,
+  /*    */ "EO_COL_SRC_PUSHSTR"_Stz,
+  /*    */ "EO_COL_SRC_PUSH"_Stz,
+  
+  // crw operators
+  /*    */ "EO_CRW_SRC_BEGIN"_Stz,
+  /*    */ "EO_CRW_SRC_FETCH"_Stz,
+  /*    */ "EO_CRW_ALT_FETCH"_Stz,
+  /*    */ "EO_CRW_SRC_NEXT"_Stz,
+  /*    */ "EO_CRW_SRC_TORSB"_Stz,
+  
+  // entry
+  /*    */ "EO_ENT_NEXT"_Stz,
+  /*    */ "EO_ENT_POSPRIOR"_Stz,
+  /*    */ "EO_ENT_PUSH"_Stz,
+  /*    */ "EO_ENT_PUSHELMI0"_Stz,
+  /*    */ "EO_ENT_PUSHELMS0"_Stz,
+  /*    */ "EO_ENT_PUSHOFS"_Stz,
+  /*    */ "EO_ENT_PUSHREF"_Stz,
+
+  // entry relational operators
+  /*    */ "EO_ENT_LESS"_Stz,
+  /*    */ "EO_ENT_LESSEQUAL"_Stz,
+  /*    */ "EO_ENT_EQUAL"_Stz,
+  /*    */ "EO_ENT_NOTEQUAL"_Stz,
+  /*    */ "EO_ENT_GREATEREQUAL"_Stz,
+  /*    */ "EO_ENT_GREATER"_Stz,
+  
+  // entWrk
+  /*    */ "EO_ENTWRK_APPENDELM"_Stz,
+  /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
+  /*    */ "EO_ENTWRK_APPENDELMS"_Stz,
+  /*    */ "EO_ENTWRK_CREATEPAY"_Stz,
+  /*    */ "EO_ENTWRK_POPOFS"_Stz,
+  /*    */ "EO_ENTWRK_POPREF"_Stz,
+  /*    */ "EO_ENTWRK_PRINT"_Stz,
+  /*    */ "EO_ENTWRK_RESET"_Stz,
+
+  // finalise
+  /*    */ "EO_FIN_TRANSFORM"_Stz,
+
+  // initialise
+  /*    */ "EO_INI_PIX_DEFOUT"_Stz,
+  /*    */ "EO_INI_PIX_SLABIN"_Stz,
+  /*    */ "EO_INI_SRC_CRW"_Stz,
+  /*    */ "EO_INI_SRC_SLAB"_Stz,
+
+  // index tree
+  /*    */ "EO_IXT_DEL_ENT"_Stz,
+  /*    */ "EO_IXT_DUMP"_Stz,
+  /*    */ "EO_IXT_INS_ENT"_Stz,
+  /*    */ "EO_IXT_TRV_BEGIN"_Stz,
+  /*    */ "EO_IXT_TRV_NEXT"_Stz,
+  /*    */ "EO_IXT_TMP_ENTRIES"_Stz,
+  
+  /*    */ "EO_IXT_SRC_BEGIN"_Stz,
+  /*    */ "EO_IXT_SRC_NEXT"_Stz,
+  /*    */ "EO_IXT_SRC_PRINT"_Stz,
+  /*    */ "EO_IXT_ALT_BEGIN"_Stz,
+  /*    */ "EO_IXT_ALT_NEXT"_Stz,
+  /*    */ "EO_IXT_ALT_PRINT"_Stz,
+  /*    */ "EO_IXT_JOI_MATCH"_Stz,
+  /*    */ "EO_IXT_CMP_SRCALT"_Stz,
+  /*    */ "EO_IXT_CMP_WRKALT"_Stz,
+  /*    */ "EO_IXT_POS_ALTBYSRC"_Stz,
+  /*    */ "EO_IXT_POS_ALTBYWRK"_Stz,
+  
+  // pay load
+  /*    */ "EO_PAY_FETCH_COLI"_Stz,
+  /*    */ "EO_PAY_FETCH_COLS"_Stz,
+  /*    */ "EO_PAY_STORE_COLI"_Stz,
+  /*    */ "EO_PAY_STORE_COLS"_Stz,
+  
+  // pix
+  /*    */ "EO_PIX_STM_PRINT"_Stz,
+  
+  // ref
+  /*    */ "EO_REF_GETCRW"_Stz,
+  /*    */ "EO_REF_SRCRSB"_Stz,
+  /*    */ "EO_REF_ALTRSB"_Stz,
+  
+  // rsb / rowslab
+  /*    */ "EO_RSB_DST_COPYSRC"_Stz,
+  /*    */ "EO_RSB_DST_PRINT"_Stz,
+  /*    */ "EO_RSB_DST_RESET"_Stz,
+  /*    */ "EO_RSB_DST_NEW"_Stz,
+  /*    */ "EO_RSB_DST_TEST"_Stz,
+  /*    */ "EO_RSB_DST_ZERO"_Stz,
+  /*    */ "EO_RSB_SRC_BEGIN"_Stz,
+  /*    */ "EO_RSB_SRC_NEXT"_Stz,
+  /*    */ "EO_RSB_SRC_PRINT"_Stz,
+  /*    */ "EO_RSB_SRC_PUSHOFS"_Stz,
+  /*    */ "EO_RSB_SRC_SETBYOFS"_Stz,
+  /*    */ "EO_RSB_ALT_BEGIN"_Stz,
+  /*    */ "EO_RSB_ALT_NEXT"_Stz,
+  /*    */ "EO_RSB_ALT_PRINT"_Stz,
+  /*    */ "EO_RSB_ALT_PUSHOFS"_Stz,
+  /*    */ "EO_RSB_ALT_SETBYOFS"_Stz,
+
+  // rsb operators
+  /*    */ "EO_RSB_DST_POPCOLI"_Stz,
+  /*    */ "EO_RSB_DST_POPCOLS"_Stz,
+  /*    */ "EO_RSB_DST_PUSHCOLI"_Stz,
+  /*    */ "EO_RSB_SRC_PUSHCOLI"_Stz,
+  /*    */ "EO_RSB_SRC_PUSHCOLS"_Stz,
+  /*    */ "EO_RSB_ALT_PUSHCOLI"_Stz,
+  
   /*    */ "ENUMS"_Stz
 };
 
@@ -463,19 +472,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_NEGATE
   { EA_NONE,    0 },  // EO_SUBTRACT
 
-  // col operators
-  { EA_SUBSCR,  8 },  // EO_COL_DST_RESET
-  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSH
-  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHSTR
-  { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSH
-  
-  // crw operators
-  { EA_NONE,    0 },  // EO_CRW_SRC_BEGIN
-  { EA_NONE,    0 },  // EO_CRW_SRC_FETCH
-  { EA_NONE,    0 },  // EO_CRW_ALT_FETCH
-  { EA_NONE,    0 },  // EO_CRW_SRC_NEXT
-  { EA_NONE,    0 },  // EO_CRW_SRC_TORSB
-  
   // counter
   { EA_NONE,    0 },  // EO_CTR_0_DEC
   { EA_NONE,    0 },  // EO_CTR_0_INC
@@ -487,65 +483,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DTE_PRINT
   { EA_NONE,    0 },  // EO_DTE_YEAR
   
-  // entry
-  { EA_NONE,    0 },  // EO_ENT_NEXT
-  { EA_NONE,    0 },  // EO_ENT_POSPRIOR
-  { EA_NONE,    0 },  // EO_ENT_PUSH
-  { EA_NONE,    0 },  // EO_ENT_PUSHELMI0
-  { EA_NONE,    0 },  // EO_ENT_PUSHELMS0
-  { EA_NONE,    0 },  // EO_ENT_PUSHOFS
-  { EA_NONE,    0 },  // EO_ENT_PUSHREF
-
-  // entry relational operators
-  { EA_NONE,    0 },  // EO_ENT_LESS
-  { EA_NONE,    0 },  // EO_ENT_LESSEQUAL
-  { EA_NONE,    0 },  // EO_ENT_EQUAL
-  { EA_NONE,    0 },  // EO_ENT_NOTEQUAL
-  { EA_NONE,    0 },  // EO_ENT_GREATEREQUAL
-  { EA_NONE,    0 },  // EO_ENT_GREATER
-
-  // entWrk
-  { EA_SUBSCR,  8 },  // EO_ENTWRK_APPENDELM
-  { EA_NONE,    0 },  // EO_ENTWRK_APPENDELMI
-  { EA_NONE,    0 },  // EO_ENTWRK_APPENDELMS
-  { EA_INT,     8 },  // EO_ENTWRK_CREATEPAY
-  { EA_NONE,    0 },  // EO_ENTWRK_POPOFS
-  { EA_NONE,    0 },  // EO_ENTWRK_POPREF
-  { EA_NONE,    0 },  // EO_ENTWRK_PRINT
-  { EA_NONE,    0 },  // EO_ENTWRK_RESET
-
   // hashing
   { EA_NONE,    0 },  // EO_HSH_ADD_HASHI
   { EA_NONE,    0 },  // EO_HSH_RESET
-
-  // finalise
-  { EA_NONE,    0 },  // EO_FIN_TRANSFORM
-  
-  // initialise
-  { EA_NONE,    0 },  // EO_INI_PIX_DEFOUT
-  { EA_NONE,    0 },  // EO_INI_PIX_SLABIN
-  { EA_NONE,    0 },  // EO_INI_SRC_CRW
-  { EA_NONE,    0 },  // EO_INI_SRC_SLAB
-  
-  // index tree
-  { EA_NONE,    0 },  // EO_IXT_DEL_ENT
-  { EA_INT,     8 },  // EO_IXT_DUMP
-  { EA_NONE,    0 },  // EO_IXT_INS_ENT
-  { EA_NONE,    0 },  // EO_IXT_TRV_BEGIN
-  { EA_NONE,    0 },  // EO_IXT_TRV_NEXT
-  { EA_NONE,    0 },  // EO_IXT_TMP_ENTRIES
-
-  { EA_NONE,    0 },  // EO_IXT_SRC_BEGIN
-  { EA_NONE,    0 },  // EO_IXT_SRC_NEXT
-  { EA_NONE,    0 },  // EO_IXT_SRC_PRINT
-  { EA_NONE,    0 },  // EO_IXT_ALT_BEGIN
-  { EA_NONE,    0 },  // EO_IXT_ALT_NEXT
-  { EA_NONE,    0 },  // EO_IXT_ALT_PRINT
-  { EA_NONE,    0 },  // EO_IXT_JOI_MATCH
-  { EA_NONE,    0 },  // EO_IXT_CMP_SRCALT
-  { EA_NONE,    0 },  // EO_IXT_CMP_WRKALT
-  { EA_NONE,    0 },  // EO_IXT_POS_ALTBYSRC
-  { EA_NONE,    0 },  // EO_IXT_POS_ALTBYWRK
 
   // jump operators
   { EA_LABEL,   8 },  // EO_JMP
@@ -568,21 +508,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ISNULL
   { EA_NONE,    0 },  // EO_ISNOTNULL
 
-  // pay load
-  { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLI
-  { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLS
-  { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLI
-  { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLS
-
-  // pix
-  { EA_NONE,    0 },  // EO_PIX_STM_PRINT
-  
-  // partitioning
-  { EA_NONE,    0 },  // EO_PTN_CALC
-  { EA_NONE,    0 },  // EO_PTN_PUSH
-  { EA_NONE,    0 },  // EO_PTN_RESET
-  { EA_NONE,    0 },  // EO_PTN_RUNNING
-
   // pushes
   { EA_DATE,    8 },  // EO_DATE
   { EA_INT,     8 },  // EO_INTEGER
@@ -590,29 +515,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH0
   { EA_NONE,    0 },  // EO_PUSH1
   { EA_INT,     8 },  // EO_RANDOM
-
-  // ref
-  { EA_NONE,    0 },  // EO_REF_GETCRW
-  { EA_NONE,    0 },  // EO_REF_SRCRSB
-  { EA_NONE,    0 },  // EO_REF_ALTRSB
-
-  // rsb / rowslab
-  { EA_NONE,    0 },  // EO_RSB_DST_COPYSRC
-  { EA_NONE,    0 },  // EO_RSB_DST_PRINT
-  { EA_NONE,    0 },  // EO_RSB_DST_RESET
-  { EA_NONE,    0 },  // EO_RSB_DST_NEW
-  { EA_NONE,    0 },  // EO_RSB_DST_TEST
-  { EA_NONE,    0 },  // EO_RSB_DST_ZERO
-  { EA_NONE,    0 },  // EO_RSB_SRC_BEGIN
-  { EA_NONE,    0 },  // EO_RSB_SRC_NEXT
-  { EA_NONE,    0 },  // EO_RSB_SRC_PRINT
-  { EA_NONE,    0 },  // EO_RSB_SRC_PUSHOFS
-  { EA_NONE,    0 },  // EO_RSB_SRC_SETBYOFS
-  { EA_NONE,    0 },  // EO_RSB_ALT_BEGIN
-  { EA_NONE,    0 },  // EO_RSB_ALT_NEXT
-  { EA_NONE,    0 },  // EO_RSB_ALT_PRINT
-  { EA_NONE,    0 },  // EO_RSB_ALT_PUSHOFS
-  { EA_NONE,    0 },  // EO_RSB_ALT_SETBYOFS
 
   // relational operators
   { EA_NONE,    0 },  // EO_LESSTHAN
@@ -622,13 +524,11 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_GREATEREQUAL
   { EA_NONE,    0 },  // EO_GREATERTHAN
 
-  // rsb operators
-  { EA_SUBSCR,  8 },  // EO_RSB_DST_POPCOLI
-  { EA_SUBSCR,  8 },  // EO_RSB_DST_POPCOLS
-  { EA_SUBSCR,  8 },  // EO_RSB_DST_PUSHCOLI
-  { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLI
-  { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLS
-  { EA_SUBSCR,  8 },  // EO_RSB_ALT_PUSHCOLI
+  // partitioning
+  { EA_NONE,    0 },  // EO_PTN_CALC
+  { EA_NONE,    0 },  // EO_PTN_PUSH
+  { EA_NONE,    0 },  // EO_PTN_RESET
+  { EA_NONE,    0 },  // EO_PTN_RUNNING
 
   // stack operators
   { EA_NONE,    0 },  // EO_INC
@@ -664,6 +564,117 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_TRACEON
   { EA_NONE,    0 },  // EO_NOOP
   { EA_NONE,    0 },  // EO_ERROR
+
+  //----------------------------------------------------------------------------
+  
+  // col operators
+  { EA_SUBSCR,  8 },  // EO_COL_DST_RESET
+  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSH
+  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHSTR
+  { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSH
+  
+  // crw operators
+  { EA_NONE,    0 },  // EO_CRW_SRC_BEGIN
+  { EA_NONE,    0 },  // EO_CRW_SRC_FETCH
+  { EA_NONE,    0 },  // EO_CRW_ALT_FETCH
+  { EA_NONE,    0 },  // EO_CRW_SRC_NEXT
+  { EA_NONE,    0 },  // EO_CRW_SRC_TORSB
+  
+  // entry
+  { EA_NONE,    0 },  // EO_ENT_NEXT
+  { EA_NONE,    0 },  // EO_ENT_POSPRIOR
+  { EA_NONE,    0 },  // EO_ENT_PUSH
+  { EA_NONE,    0 },  // EO_ENT_PUSHELMI0
+  { EA_NONE,    0 },  // EO_ENT_PUSHELMS0
+  { EA_NONE,    0 },  // EO_ENT_PUSHOFS
+  { EA_NONE,    0 },  // EO_ENT_PUSHREF
+
+  // entry relational operators
+  { EA_NONE,    0 },  // EO_ENT_LESS
+  { EA_NONE,    0 },  // EO_ENT_LESSEQUAL
+  { EA_NONE,    0 },  // EO_ENT_EQUAL
+  { EA_NONE,    0 },  // EO_ENT_NOTEQUAL
+  { EA_NONE,    0 },  // EO_ENT_GREATEREQUAL
+  { EA_NONE,    0 },  // EO_ENT_GREATER
+
+  // entWrk
+  { EA_SUBSCR,  8 },  // EO_ENTWRK_APPENDELM
+  { EA_NONE,    0 },  // EO_ENTWRK_APPENDELMI
+  { EA_NONE,    0 },  // EO_ENTWRK_APPENDELMS
+  { EA_INT,     8 },  // EO_ENTWRK_CREATEPAY
+  { EA_NONE,    0 },  // EO_ENTWRK_POPOFS
+  { EA_NONE,    0 },  // EO_ENTWRK_POPREF
+  { EA_NONE,    0 },  // EO_ENTWRK_PRINT
+  { EA_NONE,    0 },  // EO_ENTWRK_RESET
+
+  // finalise
+  { EA_NONE,    0 },  // EO_FIN_TRANSFORM
+  
+  // initialise
+  { EA_NONE,    0 },  // EO_INI_PIX_DEFOUT
+  { EA_NONE,    0 },  // EO_INI_PIX_SLABIN
+  { EA_NONE,    0 },  // EO_INI_SRC_CRW
+  { EA_NONE,    0 },  // EO_INI_SRC_SLAB
+  
+  // index tree
+  { EA_NONE,    0 },  // EO_IXT_DEL_ENT
+  { EA_INT,     8 },  // EO_IXT_DUMP
+  { EA_NONE,    0 },  // EO_IXT_INS_ENT
+  { EA_NONE,    0 },  // EO_IXT_TRV_BEGIN
+  { EA_NONE,    0 },  // EO_IXT_TRV_NEXT
+  { EA_NONE,    0 },  // EO_IXT_TMP_ENTRIES
+
+  { EA_NONE,    0 },  // EO_IXT_SRC_BEGIN
+  { EA_NONE,    0 },  // EO_IXT_SRC_NEXT
+  { EA_NONE,    0 },  // EO_IXT_SRC_PRINT
+  { EA_NONE,    0 },  // EO_IXT_ALT_BEGIN
+  { EA_NONE,    0 },  // EO_IXT_ALT_NEXT
+  { EA_NONE,    0 },  // EO_IXT_ALT_PRINT
+  { EA_NONE,    0 },  // EO_IXT_JOI_MATCH
+  { EA_NONE,    0 },  // EO_IXT_CMP_SRCALT
+  { EA_NONE,    0 },  // EO_IXT_CMP_WRKALT
+  { EA_NONE,    0 },  // EO_IXT_POS_ALTBYSRC
+  { EA_NONE,    0 },  // EO_IXT_POS_ALTBYWRK
+
+  // pay load
+  { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLI
+  { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLS
+  { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLI
+  { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLS
+
+  // pix
+  { EA_NONE,    0 },  // EO_PIX_STM_PRINT
+  
+  // ref
+  { EA_NONE,    0 },  // EO_REF_GETCRW
+  { EA_NONE,    0 },  // EO_REF_SRCRSB
+  { EA_NONE,    0 },  // EO_REF_ALTRSB
+
+  // rsb / rowslab
+  { EA_NONE,    0 },  // EO_RSB_DST_COPYSRC
+  { EA_NONE,    0 },  // EO_RSB_DST_PRINT
+  { EA_NONE,    0 },  // EO_RSB_DST_RESET
+  { EA_NONE,    0 },  // EO_RSB_DST_NEW
+  { EA_NONE,    0 },  // EO_RSB_DST_TEST
+  { EA_NONE,    0 },  // EO_RSB_DST_ZERO
+  { EA_NONE,    0 },  // EO_RSB_SRC_BEGIN
+  { EA_NONE,    0 },  // EO_RSB_SRC_NEXT
+  { EA_NONE,    0 },  // EO_RSB_SRC_PRINT
+  { EA_NONE,    0 },  // EO_RSB_SRC_PUSHOFS
+  { EA_NONE,    0 },  // EO_RSB_SRC_SETBYOFS
+  { EA_NONE,    0 },  // EO_RSB_ALT_BEGIN
+  { EA_NONE,    0 },  // EO_RSB_ALT_NEXT
+  { EA_NONE,    0 },  // EO_RSB_ALT_PRINT
+  { EA_NONE,    0 },  // EO_RSB_ALT_PUSHOFS
+  { EA_NONE,    0 },  // EO_RSB_ALT_SETBYOFS
+
+  // rsb operators
+  { EA_SUBSCR,  8 },  // EO_RSB_DST_POPCOLI
+  { EA_SUBSCR,  8 },  // EO_RSB_DST_POPCOLS
+  { EA_SUBSCR,  8 },  // EO_RSB_DST_PUSHCOLI
+  { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLI
+  { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLS
+  { EA_SUBSCR,  8 },  // EO_RSB_ALT_PUSHCOLI
 
   // -- end --
   { EA_NONE,    0 },  // EO_ENUMS
