@@ -42,7 +42,7 @@ namespace Datums
     b8 m_bPtnHash;    // is there a partition hash ?
     i8 m_nMaxRowSize; //
 
-    bool   m_abGetCol[C_MAX_DEFCOLUMNS];
+    bool   m_bProject[C_MAX_DEFCOLUMNS];
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // col pix (C++ flexible member array must be last)
     
     // constructor
@@ -55,7 +55,7 @@ namespace Datums
       
       for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
         m_xaColPix[i_Col].m_uAsI4 = 0;
-        m_abGetCol[i_Col] = true;
+        m_bProject[i_Col] = true;
       }
     }
   
@@ -70,13 +70,13 @@ namespace Datums
     // is column being projected
     inline i8 bIsProjected(i8 i_Col)
     {
-      return m_abGetCol[i_Col];
+      return m_bProject[i_Col];
     }
     
     // mark column to be not projected
     void vNotProject(i8 i_Col)
     {
-      m_abGetCol[i_Col] = false;
+      m_bProject[i_Col] = false;
     }
     
     // remove partition metadata column
