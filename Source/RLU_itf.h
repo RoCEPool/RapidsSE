@@ -2,14 +2,14 @@
 /* RLU_itf.h -- Interface for RLU                                             */
 /*============================================================================*/
 
-// IXT m_pIndexTree
+i8 iDEV_MAP(RLU* aRLU, void* aDev, i8 eDO, void** aaCrs, void* aArg, i8 iArg);
 
-void vRLU_IXT_DEL_ENT     (RLU* aRLU, void* aDev, void* aArg, i8 iArg);
-void vRLU_IXT_DUMP        (RLU* aRLU, void* aDev, void* aArg, i8 iArg);
-i8   iRLU_IXT_ENTRIES     (RLU* aRLU, void* aDev, void* aArg, i8 iArg);
-void vRLU_IXT_INS_ENT     (RLU* aRLU, void* aDev, void* aArg, i8 iArg);
-i8   iRLU_IXT_TRV_BEGIN   (RLU* aRLU, void* aDev, void* aArg, i8 iArg);
-i8   iRLU_IXT_TRV_NEXT    (RLU* aRLU, void* aDev, void* aArg, i8 iArg);
+i8 iDEV_MAP_DEL_ENT   (RLU* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
+i8 iDEV_MAP_DUMP      (RLU* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
+i8 iDEV_MAP_ENTRIES   (RLU* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
+i8 iDEV_MAP_INS_ENT   (RLU* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
+i8 iDEV_MAP_TRV_BEGIN (RLU* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
+i8 iDEV_MAP_TRV_NEXT  (RLU* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
 
 /*============================================================================*/
 /* end                                                                        */

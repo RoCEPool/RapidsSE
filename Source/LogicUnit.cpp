@@ -4,6 +4,8 @@
 
 #include "Expressions.h"
 
+#include "DEV_enum.h"
+
 extern EoArg EoArgs[];
 
 /*----------------------------------------------------------------------------*/
