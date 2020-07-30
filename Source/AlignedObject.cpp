@@ -5,7 +5,7 @@
 #include "Alignment.h"
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AlignedObject::AlignedObject(eCN eClassNo, i8 nChildSize)
 : Object(eClassNo)
