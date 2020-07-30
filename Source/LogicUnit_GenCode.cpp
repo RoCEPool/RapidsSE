@@ -307,7 +307,7 @@ void LogicUnit::vGenerateQuery101(void)
   vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_ORDER);
   vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_COUNT_ORDER);
   
-  vAddCode(EO_RSB_DST_PRINT);
+  //vAddCode(EO_RSB_DST_PRINT);
   vAddCode(EO_ENT_NEXT);
   vAddCodeLabel(EO_JMP_TRUE,"NEXT_IXT_SRC:"_Stz);
   
@@ -559,7 +559,7 @@ void LogicUnit::vGenerateQuery103(void)
   vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_COUNT_ORDER);
   vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q103_COUNT_ORDER);
   
-  vAddCode(EO_RSB_DST_PRINT);
+  //vAddCode(EO_RSB_DST_PRINT);
   
   // NEXT_IXT_SRC:
   vAddCode(EO_ENT_NEXT);
@@ -614,7 +614,7 @@ void LogicUnit::vGenerateQuery111(void)
   
   // inflate the src CRW to RSB
   vAddCode(EO_CRW_SRC_TORSB);
-  vAddCode(EO_RSB_DST_PRINT);
+  //vAddCode(EO_RSB_DST_PRINT);
   
   vAddCodeLabel(EO_JMP, "NEXT_CRW_SRC:"_Stz);
   
