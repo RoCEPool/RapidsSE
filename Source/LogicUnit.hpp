@@ -307,6 +307,17 @@ namespace Expressions
 
     i8   iTransform(i8 nArgs, i8 iArg0);
   
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    void vRLU_IXT_DEL_ENT     (RLU* aRLU);
+    void vRLU_IXT_DUMP        (RLU* aRLU);
+    i8   iRLU_IXT_ENTRIES     (RLU* aRLU);
+    void vRLU_IXT_INS_ENT     (RLU* aRLU);
+    i8   iRLU_IXT_TRV_BEGIN   (RLU* aRLU);
+    i8   iRLU_IXT_TRV_NEXT    (RLU* aRLU);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   private:
     void vAddCode(eEO eCode);
     void vAddCodeArg(eEO eCode, i8 iArg);
