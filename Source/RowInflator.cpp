@@ -455,6 +455,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
   
   //i8* aiColVal = & pRow->m_waColVal[0].m_iWrd;
   m8* aCell;
+ 
+  i8* iaRowSlabCells = (i8*)pRowSlab->m_xWsp.ayArea();
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
@@ -464,10 +466,13 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
     
     eMetaCode = *aeMetaCode++;
     
+    
     // column to be projected ?
     if ( ! pStreamPix->bIsProjected(i_Col) ) {
       
-      pRowSlab->vDeposit(C_UNKNOWN);
+      //pRowSlab->vDeposit(C_UNKNOWN);
+      
+      iaRowSlabCells[--pRowSlab->m_i_Cell] = C_UNKNOWN;
       //*aiColVal++ = C_UNKNOWN;
       
     L_SkipCodeSwitch:
@@ -513,7 +518,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_NULL:
-        pRowSlab->vDeposit(C_DATUM_NULL);
+        //pRowSlab->vDeposit(C_DATUM_NULL);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = C_DATUM_NULL;
         //*aiColVal++ = C_DATUM_NULL;
         break;
         
@@ -524,7 +530,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
       case MC_IVL_1B:
       case MC_TME_1B:
         //*aiColVal++ = *(u1*)(ayDataByte);
-        pRowSlab->vDeposit((i8)(*(u1*)(ayDataByte)));
+        //pRowSlab->vDeposit((i8)(*(u1*)(ayDataByte)));
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = (i8)(*(u1*)(ayDataByte));
         ayDataByte += C_1B;
         break;
         
@@ -535,7 +542,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
       case MC_IVL_2B:
       case MC_TME_2B:
         //*aiColVal++ = *(u2*)(ayDataByte);
-        pRowSlab->vDeposit((i8)(*(u2*)(ayDataByte)));
+        //pRowSlab->vDeposit((i8)(*(u2*)(ayDataByte)));
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = (i8)(*(u2*)(ayDataByte));
         ayDataByte += C_2B;
         break;
         
@@ -550,7 +558,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         wWord.m_yaByte[1] = *ayDataByte++;
         wWord.m_yaByte[2] = *ayDataByte++;
         //*aiColVal++ = wWord.m_iI8;
-        pRowSlab->vDeposit((i8)wWord.m_iI8);
+        //pRowSlab->vDeposit((i8)wWord.m_iI8);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = wWord.m_iI8;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -560,7 +569,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
       case MC_IVL_4B:
       case MC_TME_4B:
         //*aiColVal++ = *(u4*)(ayDataByte);
-        pRowSlab->vDeposit((i8)(*(u4*)(ayDataByte)));
+        //pRowSlab->vDeposit((i8)(*(u4*)(ayDataByte)));
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = (i8)(*(u4*)(ayDataByte));
         ayDataByte += C_4B;
         break;
         
@@ -577,7 +587,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         wWord.m_yaByte[3] = *ayDataByte++;
         wWord.m_yaByte[4] = *ayDataByte++;
         //*aiColVal++ = wWord.m_iI8;
-        pRowSlab->vDeposit((i8)wWord.m_iI8);
+        //pRowSlab->vDeposit((i8)wWord.m_iI8);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = wWord.m_iI8;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -594,7 +605,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         wWord.m_yaByte[4] = *ayDataByte++;
         wWord.m_yaByte[5] = *ayDataByte++;
         //*aiColVal++ = wWord.m_iI8;
-        pRowSlab->vDeposit((i8)wWord.m_iI8);
+        //pRowSlab->vDeposit((i8)wWord.m_iI8);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = wWord.m_iI8;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -612,7 +624,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         wWord.m_yaByte[5] = *ayDataByte++;
         wWord.m_yaByte[6] = *ayDataByte++;
         //*aiColVal++ = wWord.m_iI8;
-        pRowSlab->vDeposit((i8)wWord.m_iI8);
+        //pRowSlab->vDeposit((i8)wWord.m_iI8);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = wWord.m_iI8;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -623,7 +636,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
       case MC_TME_8B:
       case MC_TSP_8B:
         //*aiColVal++ = *(u8*)(ayDataByte);
-        pRowSlab->vDeposit((i8)(*(u8*)(ayDataByte)));
+        //pRowSlab->vDeposit((i8)(*(u8*)(ayDataByte)));
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = (i8)(*(u8*)(ayDataByte));
         ayDataByte += C_8B;
         break;
         
@@ -631,96 +645,110 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
       case MC_BCD_M_ONE:
       case MC_INT_M_ONE:
         //*aiColVal++ = -1;
-        pRowSlab->vDeposit((i8)-1);
+        //pRowSlab->vDeposit((i8)-1);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = (i8)-1;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_ZERO:
       case MC_INT_ZERO:
         //*aiColVal++ =  0;
-        pRowSlab->vDeposit((i8)0);
+        //pRowSlab->vDeposit((i8)0);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 0;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_ONE:
       case MC_INT_ONE:
         //*aiColVal++ =  1;
-        pRowSlab->vDeposit((i8)1);
+        //pRowSlab->vDeposit((i8)1);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 1;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_TWO:
       case MC_INT_TWO:
         //*aiColVal++ =  2;
-        pRowSlab->vDeposit((i8)2);
+        //pRowSlab->vDeposit((i8)2);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 2;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_THREE:
       case MC_INT_THREE:
         //*aiColVal++ =  3;
-        pRowSlab->vDeposit((i8)3);
+        //pRowSlab->vDeposit((i8)3);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 3;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_FOUR:
       case MC_INT_FOUR:
         //*aiColVal++ =  4;
-        pRowSlab->vDeposit((i8)4);
+        //pRowSlab->vDeposit((i8)4);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 4;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_FIVE:
       case MC_INT_FIVE:
         //*aiColVal++ =  5;
-        pRowSlab->vDeposit((i8)5);
+        //pRowSlab->vDeposit((i8)5);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 5;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_SIX:
       case MC_INT_SIX:
         //*aiColVal++ =  6;
-        pRowSlab->vDeposit((i8)6);
+        //pRowSlab->vDeposit((i8)6);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 6;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_SEVEN:
       case MC_INT_SEVEN:
         //*aiColVal++ =  7;
-        pRowSlab->vDeposit((i8)7);
+        //pRowSlab->vDeposit((i8)7);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 7;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_EIGHT:
       case MC_INT_EIGHT:
         //*aiColVal++ =  8;
-        pRowSlab->vDeposit((i8)8);
+        //pRowSlab->vDeposit((i8)8);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 8;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_NINE:
       case MC_INT_NINE:
         //*aiColVal++ =  9;
-        pRowSlab->vDeposit((i8)9);
+        //pRowSlab->vDeposit((i8)9);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 9;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_TEN:
       case MC_INT_TEN:
         //*aiColVal++ = 10;
-        pRowSlab->vDeposit((i8)10);
+        //pRowSlab->vDeposit((i8)10);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 10;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BOL_FALSE:
         //*aiColVal++ =  0;
-        pRowSlab->vDeposit((i8)0);
+        //pRowSlab->vDeposit((i8)0);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 0;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BOL_TRUE:
         //*aiColVal++ =  1;
-        pRowSlab->vDeposit((i8)1);
+        //pRowSlab->vDeposit((i8)1);
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = 1;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -728,10 +756,12 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         //*aiColVal++ = *(u2*)ayDataByte;
         //ayDataByte += C_2B;
         //vDteFromEdt((aiColVal-1),C_ERA_0);
-        pRowSlab->vDeposit((i8)(*(u2*)(ayDataByte)));
+        //pRowSlab->vDeposit((i8)(*(u2*)(ayDataByte)));
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = (i8)(*(u2*)(ayDataByte));
         ayDataByte += C_2B;
-        pRowSlab->vDepositCursor(&aCell);
-        vDteFromEdt((i8*)aCell,C_ERA_0);
+        //pRowSlab->vDepositCursor(&aCell);
+        //vDteFromEdt((i8*)aCell,C_ERA_0);
+        vDteFromEdt((i8*)&iaRowSlabCells[pRowSlab->m_i_Cell],C_ERA_0);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -739,10 +769,12 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         //*aiColVal++ = *(u2*)ayDataByte;
         //ayDataByte += C_2B;
         //vDteFromEdt((aiColVal-1),C_ERA_1);
-        pRowSlab->vDeposit((i8)(*(u2*)(ayDataByte)));
+        //pRowSlab->vDeposit((i8)(*(u2*)(ayDataByte)));
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = (i8)(*(u2*)(ayDataByte));
         ayDataByte += C_2B;
-        pRowSlab->vDepositCursor(&aCell);
-        vDteFromEdt((i8*)aCell,C_ERA_1);
+        //pRowSlab->vDepositCursor(&aCell);
+        //vDteFromEdt((i8*)aCell,C_ERA_1);
+        vDteFromEdt((i8*)&iaRowSlabCells[pRowSlab->m_i_Cell],C_ERA_1);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -750,10 +782,12 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         //*aiColVal++ = *(u2*)ayDataByte;
         //ayDataByte += C_2B;
         //vDteFromEdt((aiColVal-1),C_ERA_2);
-        pRowSlab->vDeposit((i8)(*(u2*)(ayDataByte)));
+        //pRowSlab->vDeposit((i8)(*(u2*)(ayDataByte)));
+        iaRowSlabCells[--pRowSlab->m_i_Cell] = (i8)(*(u2*)(ayDataByte));
         ayDataByte += C_2B;
-        pRowSlab->vDepositCursor(&aCell);
-        vDteFromEdt((i8*)aCell,C_ERA_2);
+        //pRowSlab->vDepositCursor(&aCell);
+        //vDteFromEdt((i8*)aCell,C_ERA_2);
+        vDteFromEdt((i8*)&iaRowSlabCells[pRowSlab->m_i_Cell],C_ERA_2);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
