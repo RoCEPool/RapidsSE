@@ -42,9 +42,7 @@ namespace Datums
     b8 m_bPtnHash;    // is there a partition hash ?
     i8 m_nMaxRowSize; //
 
-    u8 m_uColumnLower;    // bits 0-64 representing columns 0-64 to be projected
-    u8 m_uColumnHigher;   // bits 0-64 representing columns 65-127 to be projected
-    
+    bool   m_bProject[C_MAX_DEFCOLUMNS];
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // col pix (C++ flexible member array must be last)
     
     // constructor
@@ -55,37 +53,30 @@ namespace Datums
       m_bPtnHash    = false;
       m_nMaxRowSize = 256;  // FOR TESTING PURPOSES
       
-      m_uColumnLower  = C_ALL_BITS_ON;
-      m_uColumnHigher = C_ALL_BITS_ON;
-      
-      for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++)
+      for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
         m_xaColPix[i_Col].m_uAsI4 = 0;
+        m_bProject[i_Col] = true;
+      }
     }
   
     // calc number of bytes
     i8 nBytes(i8 nCols)
     {
-      i8 nBytes = (5 * (i8)sizeof(i8)) + (nCols * (i8)sizeof(ColPix));
+      i8 nBytes = (3 * (i8)sizeof(i8)) + (nCols * ((i8)sizeof(ColPix) + sizeof(bool)));
     
       return nBytes;
     }
   
     // is column being projected
-    i8 bIsProjected(i8 i_Col)
+    inline i8 bIsProjected(i8 i_Col)
     {
-      if ((u8)i_Col < C_BITS_PER_WORD)
-        return BitLib::bIsOn(m_uColumnLower, i_Col) ? true : false;
-      else
-        return BitLib::bIsOn(m_uColumnHigher, (i8)(i_Col + C_BITS_PER_WORD - 1)) ? true : false;
+      return m_bProject[i_Col];
     }
     
     // mark column to be not projected
     void vNotProject(i8 i_Col)
     {
-      if ((u8)i_Col < C_BITS_PER_WORD)
-        BitLib::vSetOff(m_uColumnLower, i_Col);
-      else
-        BitLib::vSetOff(m_uColumnHigher, i_Col + C_BITS_PER_WORD - 1);
+      m_bProject[i_Col] = false;
     }
     
     // remove partition metadata column

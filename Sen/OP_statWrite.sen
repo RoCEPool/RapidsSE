@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : OP_statWrite_LockStats \handler
 
-  "statWrite_InfoSet --- --- ---" .
+  //"statWrite_InfoSet --- --- ---" .
 
 //! ALKA TO CHECK WITH RAY
 //  File0[].isNull not if
@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 : OP_statWrite_Profile \handler
 
-  "statWrite_Profile --- --- ---" .
+  //"statWrite_Profile --- --- ---" .
 
   // open the file for writing
   "/tmp/SE_Profile.csv" OPEN_APPEND op__file if
