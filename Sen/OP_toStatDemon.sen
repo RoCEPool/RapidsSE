@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 : OP_toStatDemon_Profile \handler
 
-  "OP_toStatD_Profile +++ +++ +++" .
+  //"OP_toStatD_Profile +++ +++ +++" .
 
   PipeIn[]
   "__statDemon" find dup if

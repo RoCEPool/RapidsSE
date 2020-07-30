@@ -35,8 +35,9 @@ create table LineItem                      // SF * 6,000,000 rows
 // SF1 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 /time load lineitem "/tpch/SF1/lineitem.csv";
-/time Query1 lineitem ;
-/time Query6 lineitem ;
+///time Query1 lineitem ;
+/time Query1_PerfExp lineitem;
+///time Query6 lineitem ;
 
 /*============================================================================*/
 /* end                                                                        */
