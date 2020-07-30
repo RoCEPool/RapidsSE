@@ -295,6 +295,8 @@
   idxDef_int indexDef[] indexTree[].new
   indexTree[].asTmp
 
+  indexTree[] 0 LogicUnit[].dev!
+
 
 //  LogicUnit[].transform
 //
@@ -313,6 +315,8 @@
 
   idxDef_int indexDef[] indexTree[].new
   indexTree[].asTmp
+
+  indexTree[] 0 LogicUnit[].dev!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -342,6 +346,9 @@
   idxDef_vch indexDef[] indexTree[].new
   indexTree[].asTmp
 
+  indexTree[] 0 LogicUnit[].dev!
+
+
   LogicUnit[].transform
 
   Pot[].pipeoutAllDangling
@@ -362,6 +369,8 @@
 
   idxDef_vch indexDef[] indexTree[].new
   indexTree[].asTmp
+
+  indexTree[] 0 LogicUnit[].dev!
 ;
 
 /*----------------------------------------------------------------------------*/
