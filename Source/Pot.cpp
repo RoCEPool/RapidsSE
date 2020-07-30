@@ -91,19 +91,26 @@ Rsb* Pot::aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab)
   
   //ASSERT(0 == i_Ptn);
   
+  RowSlab* pDstRowSlab;
+  
   // get rsb buffer for given partition (new a first buffer if ncessary)
   RsbBuffer* pDstRsbBuffer = _pRsbBuffer(pBuffer(i_Ptn));
   if (! pDstRsbBuffer) {
     pDstRsbBuffer = new RsbBuffer;
-    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pStreamPix);
+    pDstRowSlab = pDstRsbBuffer->pRowSlab();
+    pDstRowSlab->vCopyPix(m_pStreamPix);
     vAddBuffer(i_Ptn,pDstRsbBuffer);
+  }
+  else {
+    pDstRowSlab = pDstRsbBuffer->pRowSlab();
   }
   
   // new a row in rsb buffer (new another rsb buffer if necessary)
   bool bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
   if (! bNewed) {
     pDstRsbBuffer = new RsbBuffer;
-    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pStreamPix);
+    pDstRowSlab = pDstRsbBuffer->pRowSlab();
+    pDstRowSlab->vCopyPix(m_pStreamPix);
     vAddBuffer(i_Ptn,pDstRsbBuffer);
     bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
     ASSERT(bNewed);
@@ -111,10 +118,10 @@ Rsb* Pot::aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab)
   
   pDstRsbBuffer->vPartitionNo(i_Ptn);
   
-  i8 iRow = pDstRsbBuffer->pRowSlab()->nRows() - 1;
-  Rsb* aDstRsb = pDstRsbBuffer->pRowSlab()->aRsbAdr(iRow);
+  i8 iRow = pDstRowSlab->nRows() - 1;
+  Rsb* aDstRsb = pDstRowSlab->aRsbAdr(iRow);
   
-  * ppRowSlab = pDstRsbBuffer->pRowSlab();
+  * ppRowSlab = pDstRowSlab;
   
   return aDstRsb;
 }
