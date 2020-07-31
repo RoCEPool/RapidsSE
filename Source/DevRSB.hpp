@@ -9,6 +9,12 @@ namespace Expressions
   {
   public:
   
+    i8         m_i_Row;
+    i8         m_nRows;
+    Rsb*       m_aRsb;
+    RowSlab*   m_pRowSlab;
+    StreamDef* m_pStreamDef;
+  
     // must be last
     Footer m_xFooter;
   

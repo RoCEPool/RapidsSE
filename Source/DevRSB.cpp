@@ -21,6 +21,13 @@ DevRSB::DevRSB(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DEVRSB,_FOOTER_);
   
+  m_i_Row      = C_UNKNOWN;
+  m_nRows      = C_UNKNOWN;
+  m_aRsb       = nullptr;
+  m_pRowSlab   = nullptr;
+  m_pStreamDef = nullptr;
+
+  
   _checkInitialised_(CN_DEVRSB);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DEVRSB,_FOOTER_);
