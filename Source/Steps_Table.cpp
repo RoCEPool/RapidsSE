@@ -122,7 +122,7 @@ void Step::vTableAsSrcStreamDef(void)
     
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  m_pLogicUnit->m_pSrcStreamDef = pStreamDef;
+  m_pLogicUnit->m_pDevSrcRsb->m_pStreamDef = pStreamDef;
   
   EXIT();
 }

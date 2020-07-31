@@ -241,8 +241,8 @@ namespace Expressions
     //i8         m_i_SrcRow;
     //i8         m_nSrcRows;
     //Rsb*       m_aSrcRsb;
-    RowSlab*   m_pSrcRowSlab;
-    StreamDef* m_pSrcStreamDef;
+    //RowSlab*   m_pSrcRowSlab;
+    //StreamDef* m_pSrcStreamDef;
     //==========================
 
   

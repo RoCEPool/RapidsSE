@@ -61,13 +61,13 @@ LogicUnit::LogicUnit(Task* pTask)
   //m_i_SrcRow    = C_UNKNOWN;
   //m_nSrcRows    = C_UNKNOWN;
   //m_pDevSrcRsb->m_aRsb     = nullptr;
-  m_pSrcRowSlab = nullptr;
+  //m_pDevSrcRsb->m_pRowSlab = nullptr;
   //m_pDevSrcIxt->m_aEnt     = nullptr;
   //m_pDevSrcIxt->m_pIdxTree = nullptr;
   //m_pDevSrcIxt->m_pEntBuffer = nullptr;
   //m_aSrcCrw     = nullptr;
   //m_pSrcCrwBuffer = nullptr;
-  m_pSrcStreamDef = nullptr;
+  //m_pDevSrcRsb->m_pStreamDef = nullptr;
 
   m_i_AltRow    = C_UNKNOWN;
   m_nAltRows    = C_UNKNOWN;
@@ -1220,7 +1220,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_COL_SRC_PUSH: GetArg(iArg); // push column value from m_aSrcCrw
       {
-        HV_Row hRow(m_pSrcStreamDef,C_ALL);
+        HV_Row hRow(m_pDevSrcRsb->m_pStreamDef,C_ALL);
         RowInflator::vInflateColumn(hRow,m_pDevSrcIxt->m_aCrw,iArg);
         iRes = hRow->m_waColVal[iArg].m_iWrd;
         dLU2(eCode,iArg,iRes);
@@ -1230,7 +1230,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_COL_SRC_PUSHSTR: GetArg(iArg); // push column value from m_aSrcCrw
       {
-        HV_Row hRow(m_pSrcStreamDef,C_ALL);
+        HV_Row hRow(m_pDevSrcRsb->m_pStreamDef,C_ALL);
         RowInflator::vInflateColumn(hRow,m_pDevSrcIxt->m_aCrw,iArg);
         azArg = (char*)hRow->m_waColVal[iArg].m_iWrd;
         dLU1(eCode,iArg);
@@ -1402,7 +1402,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ENTWRK_APPENDELM: GetArg(iArg); // append next element value
       {
         dLU1(eCode,iArg);
-        m_oEntWrk.vAppendElement(m_pDevSrcRsb->m_aRsb, &m_pSrcRowSlab->m_oStreamPix, iArg);
+        m_oEntWrk.vAppendElement(m_pDevSrcRsb->m_aRsb, &m_pDevSrcRsb->m_pRowSlab->m_oStreamPix, iArg);
         
 #ifdef WITH_TRACE_LOGICUNIT
         SP_Ent spEnt;
@@ -1470,7 +1470,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         //m_nSrcRows    = C_UNKNOWN;
         m_pDevSrcRsb->m_aRsb     = nullptr;
-        m_pSrcRowSlab = nullptr;
+        m_pDevSrcRsb->m_pRowSlab = nullptr;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1492,7 +1492,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_INI_PIX_SLABIN: NoArg(); // init m_pPot pix from inp slab
       {
         dLU0(eCode);
-        StreamPix* aStreamPix = m_pSrcRowSlab->aStreamPix();
+        StreamPix* aStreamPix = m_pDevSrcRsb->m_pRowSlab->aStreamPix();
         m_xpPot->vStreamPix(aStreamPix);
       
         // temp hack by ray
@@ -1513,15 +1513,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
             m_pDevSrcIxt->m_pCrwBuffer->nRowCount() : 0;
         break;
         
-      case EO_INI_SRC_SLAB: NoArg(); // init m_pSrcRowSlab etc
+      case EO_INI_SRC_SLAB: NoArg(); // init m_pDevSrcRsb->m_pRowSlab etc
         dLU0(eCode);
         //m_pPot = * m_xpPot;
         //m_pDstRowSlab = nullptr;
 
         m_pDevSrcRsb->m_aRsb     = nullptr;
-        m_pSrcRowSlab = m_xpOperandA.bIsNull() ?
+        m_pDevSrcRsb->m_pRowSlab = m_xpOperandA.bIsNull() ?
                         nullptr : _pRsbBuffer(* m_xpOperandA)->pRowSlab();
-        m_pDevSrcIxt->m_nRows    = m_pSrcRowSlab ? m_pSrcRowSlab->nRows() : 0;
+        m_pDevSrcIxt->m_nRows    = m_pDevSrcRsb->m_pRowSlab ? m_pDevSrcRsb->m_pRowSlab->nRows() : 0;
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1782,7 +1782,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_RSB_SRC_PRINT: NoArg(); // print src rsb
         dLU0(eCode);
-        m_pSrcRowSlab->vDumpRow(-1,m_pDevSrcRsb->m_aRsb);
+        m_pDevSrcRsb->m_pRowSlab->vDumpRow(-1,m_pDevSrcRsb->m_aRsb);
         break;
 
       case EO_RSB_ALT_PRINT: NoArg(); // print alt rsb
@@ -1817,13 +1817,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(eCode);
         m_pDevSrcRsb->m_i_Row = -1;
         m_pDevSrcRsb->m_aRsb  = nullptr;
-        m_pDevSrcRsb->m_nRows = m_pSrcRowSlab ? m_pSrcRowSlab->nRows() : 0;
+        m_pDevSrcRsb->m_nRows = m_pDevSrcRsb->m_pRowSlab ? m_pDevSrcRsb->m_pRowSlab->nRows() : 0;
         break;
 
       case EO_RSB_SRC_NEXT: NoArg(); // move to next src rsb
         dLU0(eCode);
         if (++m_pDevSrcRsb->m_i_Row  < m_pDevSrcRsb->m_nRows) {
-          m_pDevSrcRsb->m_aRsb = m_pSrcRowSlab->aRsbAdr(m_pDevSrcRsb->m_i_Row );
+          m_pDevSrcRsb->m_aRsb = m_pDevSrcRsb->m_pRowSlab->aRsbAdr(m_pDevSrcRsb->m_i_Row );
           *(++aiDstk) = 1;
         }
         else {
@@ -1833,13 +1833,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_RSB_SRC_PUSHOFS: NoArg();
         dLU0(eCode);
-        iRes = m_pSrcRowSlab->iOfsOfRsb(m_pDevSrcRsb->m_aRsb);
+        iRes = m_pDevSrcRsb->m_pRowSlab->iOfsOfRsb(m_pDevSrcRsb->m_aRsb);
         *(++aiDstk) = iRes;
         break;
 
       case EO_RSB_SRC_SETBYOFS: NoArg();  // set src rsb by using offset on stack
         iTopA = *(aiDstk--);
-        m_pDevSrcRsb->m_aRsb = m_pSrcRowSlab->aRsbByOfs(iTopA);
+        m_pDevSrcRsb->m_aRsb = m_pDevSrcRsb->m_pRowSlab->aRsbByOfs(iTopA);
         break;
 
       case EO_RSB_ALT_BEGIN:    NEVER_REACH; // not yet implemented
