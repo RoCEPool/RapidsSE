@@ -800,10 +800,12 @@ true
 
     100 of
       sql_StreamDef_100
+      true Pot[].useStreamDefOut
     endof
 
     102 of
       sql_StreamDef_102
+      true Pot[].useStreamDefOut
     endof
 
     111 of
@@ -835,11 +837,13 @@ true
 
     600 of
       sql_StreamDef_600
+      true Pot[].useStreamDefOut
     endof
 
     601 of
       StreamDef[].duplicate to StreamDefOut[]
       StreamDef[].pipeout
+      true Pot[].useStreamDefOut
     endof
 
   endcase

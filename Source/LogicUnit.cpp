@@ -1468,17 +1468,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // initialise
       case EO_POT_INI_DEFOUT: NoArg(); // init m_pPot pix from stream def out
-        dLU0(eCode);
-        if (! m_bPixInited) {
-          m_bPixInited = true;
-          m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
-          m_xpPot->vStreamPix(&m_oStreamPix);
-          
-          // temp hack by alka
-          //if (! m_pDevTmpIxt->m_pIdxTree &&  ! m_xpIndexTree.bIsNull())
-          //  m_pDevTmpIxt->m_pIdxTree = * m_xpIndexTree;
-          // end temp hack
-        }
+//        dLU0(eCode);
+//        if (! m_bPixInited) {
+//          m_bPixInited = true;
+//          m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
+//          m_xpPot->vStreamPix(&m_oStreamPix);
+//          
+//          // temp hack by alka
+//          //if (! m_pDevTmpIxt->m_pIdxTree &&  ! m_xpIndexTree.bIsNull())
+//          //  m_pDevTmpIxt->m_pIdxTree = * m_xpIndexTree;
+//          // end temp hack
+//        }
         break;
                         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
