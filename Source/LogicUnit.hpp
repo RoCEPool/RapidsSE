@@ -227,6 +227,10 @@ namespace Expressions
     
     bool       m_bPixInited;
     StreamPix  m_oStreamPix;    // condensed stream def
+  
+  
+    EntWrk     m_oEntWrk;
+
 
     Rsb*     m_aDstRsb;
     RowSlab* m_pDstRowSlab;
@@ -235,6 +239,7 @@ namespace Expressions
     i8         m_nSrcRows;
     Rsb*       m_aSrcRsb;
     RowSlab*   m_pSrcRowSlab;
+    StreamDef* m_pSrcStreamDef;
 
   
   
@@ -250,13 +255,11 @@ namespace Expressions
   
   
     CrwBuffer* m_pSrcCrwBuffer;
-    StreamDef* m_pSrcStreamDef;
   
     // - -
     i8         m_i_AltRow;
     i8         m_nAltRows;
     Rsb*       m_aAltRsb;
-  
     RowSlab*   m_pAltRowSlab;
     StreamDef* m_pAltStreamDef;
 
@@ -280,8 +283,6 @@ namespace Expressions
     //EntBuffer* m_pEntBuffer;
     //IndexTree* m_pIndexTree;
     //==========================
-
-    EntWrk     m_oEntWrk;
 
     i8     m_i_Code;
     eEO    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }

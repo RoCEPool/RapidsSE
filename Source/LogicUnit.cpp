@@ -1255,7 +1255,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // crw operators
       case EO_CRW_SRC_BEGIN: NoArg(); // begin src rsb traverse
         dLU0(eCode);
-        m_i_SrcRow = -1;
+        m_pDevSrcIxt->m_i_Row = -1;
         m_pDevSrcIxt->m_aCrw = nullptr;
         m_nSrcRows = m_pSrcCrwBuffer ? m_pSrcCrwBuffer->nRowCount() : 0;
         break;
@@ -1272,8 +1272,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
        
       case EO_CRW_SRC_NEXT: NoArg(); // move to next src rsb
         dLU0(eCode);
-        if (++m_i_SrcRow < m_nSrcRows) {
-          m_pDevSrcIxt->m_aCrw = m_pSrcCrwBuffer->aCrw(m_i_SrcRow);
+        if (++m_pDevSrcIxt->m_i_Row < m_nSrcRows) {
+          m_pDevSrcIxt->m_aCrw = m_pSrcCrwBuffer->aCrw(m_pDevSrcIxt->m_i_Row);
           *(++aiDstk) = 1;
         }
         else {
