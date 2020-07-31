@@ -76,7 +76,7 @@ LogicUnit::LogicUnit(Task* pTask)
   //m_aAltEnt     = nullptr;
   //m_pAltIdxTree = nullptr;
   //m_pAltEntBuffer = nullptr;
-  m_aAltCrw     = nullptr;
+  //m_aAltCrw     = nullptr;
   m_pAltStreamDef = nullptr;
 
   //m_pEnt        = nullptr;
@@ -1244,7 +1244,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_COL_ALT_PUSH: GetArg(iArg); // push column value from m_aAltCrw
       {
         HV_Row hRow(m_pAltStreamDef,C_ALL);
-        RowInflator::vInflateColumn(hRow,m_aAltCrw,iArg);
+        RowInflator::vInflateColumn(hRow,m_pDevAltIxt->m_aCrw,iArg);
         iRes = hRow->m_waColVal[iArg].m_iWrd;
         dLU2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
@@ -1265,7 +1265,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
         
       case EO_CRW_ALT_FETCH: NoArg(); // fetch m_aAltCrw using m_aAltEnt.ref
-        m_aAltCrw = CrwBuffer::pRefdCrw(m_pDevAltIxt->m_aEnt->rxRef());
+        m_pDevAltIxt->m_aCrw =
+          CrwBuffer::pRefdCrw(m_pDevAltIxt->m_aEnt->rxRef());
         break;
        
       case EO_CRW_SRC_NEXT: NoArg(); // move to next src rsb

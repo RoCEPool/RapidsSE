@@ -269,7 +269,7 @@ namespace Expressions
     //IndexTree* m_pAltIdxTree;
     //EntBuffer* m_pAltEntBuffer;
     //==========================
-    Crw*       m_aAltCrw;
+    //Crw*       m_aAltCrw;
 
   
   
