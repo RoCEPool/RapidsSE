@@ -232,8 +232,15 @@ namespace Expressions
     EntWrk     m_oEntWrk;
 
 
-    Rsb*     m_aDstRsb;
-    RowSlab* m_pDstRowSlab;
+    //==========================
+    DevRSB*    m_pDevDstRsb;
+  
+    Rsb*       m_aDstRsb;
+    RowSlab*   m_pDstRowSlab;
+    //==========================
+
+  
+  
 
     //==========================
     DevRSB*    m_pDevSrcRsb;
