@@ -72,7 +72,7 @@ LogicUnit::LogicUnit(Task* pTask)
   //m_i_AltRow    = C_UNKNOWN;
   //m_nAltRows    = C_UNKNOWN;
   //m_aAltRsb     = nullptr;
-  m_pAltRowSlab = nullptr;
+  //m_pAltRowSlab = nullptr;
   //m_aAltEnt     = nullptr;
   //m_pAltIdxTree = nullptr;
   //m_pAltEntBuffer = nullptr;
@@ -1777,7 +1777,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_RSB_ALT_PRINT: NoArg(); // print alt rsb
         dLU0(eCode);
-        m_pAltRowSlab->vDumpRow(-1,m_pDevAltRsb->m_aRsb);
+        m_pDevAltRsb->m_pRowSlab->vDumpRow(-1,m_pDevAltRsb->m_aRsb);
         break;
 
       case EO_RSB_DST_NEW: NoArg(); // create new destination rsb
