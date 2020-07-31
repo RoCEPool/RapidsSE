@@ -51,7 +51,7 @@ void LogicUnit::vGenerateQuery100(void)
   m_i_Code = 0;
     
   // init m_pPot pix from streamDef out
-  vAddCode(EO_INI_PIX_DEFOUT);
+  vAddCode(EO_POT_INI_DEFOUT);
   
   // -- -- -- -- -- -- -- -- -- -- --
   // insert each rsb -> indexTree
@@ -257,7 +257,7 @@ void LogicUnit::vGenerateQuery101(void)
   m_i_Code = 0;
     
   // init m_pPot pix from streamDef out
-  vAddCode(EO_INI_PIX_DEFOUT);
+  vAddCode(EO_POT_INI_DEFOUT);
   
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
@@ -325,7 +325,7 @@ void LogicUnit::vGenerateQuery102(void)
   m_i_Code = 0;
     
   // init m_pPot pix from streamDef out
-  vAddCode(EO_INI_PIX_DEFOUT);
+  vAddCode(EO_POT_INI_DEFOUT);
   
   // -- -- -- -- -- -- -- -- -- -- --
   // insert each rsb
@@ -490,7 +490,7 @@ void LogicUnit::vGenerateQuery103(void)
   m_i_Code = 0;
     
   // init m_pPot pix from streamDef out
-  vAddCode(EO_INI_PIX_DEFOUT);
+  vAddCode(EO_POT_INI_DEFOUT);
   
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
@@ -573,7 +573,7 @@ void LogicUnit::vGenerateQuery111(void)
   m_i_Code = 0;
     
   // init m_pPot pix from streamDef out
-  vAddCode(EO_INI_PIX_DEFOUT);
+  vAddCode(EO_POT_INI_DEFOUT);
   
   // RESET COLUMNS NOT NEEDED
   vAddCodeArg(EO_COL_DST_RESET, L_ORDERKEY);
@@ -1586,7 +1586,7 @@ void LogicUnit::vGenerateQuery600(void)
   m_i_Code = 0;
     
   // init m_pPot pix from streamDef out
-  vAddCode(EO_INI_PIX_DEFOUT);
+  vAddCode(EO_POT_INI_DEFOUT);
   
   // new a rsb dst row if not there
   vAddCode(EO_RSB_DST_TEST);
@@ -1693,7 +1693,7 @@ void LogicUnit::vGenerateQuery601(void)
   m_i_Code = 0;
     
   // init m_pPot pix from streamDef out
-  vAddCode(EO_INI_PIX_DEFOUT);
+  vAddCode(EO_POT_INI_DEFOUT);
   
   // new a rsb dst row if not there
   vAddCode(EO_RSB_DST_TEST);

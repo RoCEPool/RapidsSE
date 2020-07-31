@@ -155,7 +155,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   
   // initialise
-  /*    */ EO_INI_PIX_DEFOUT,   // init m_pPot pix from stream def out
+  /*    */ EO_POT_INI_DEFOUT,   // init m_pPot pix from stream def out
 
   // index tree
   /*    */ EO_IXT_DEL_ENT,      // delete current entry from indexTree
@@ -367,7 +367,7 @@ static Stz* aEO[]
   /*    */ "EO_ENTWRK_RESET"_Stz,
 
   // initialise
-  /*    */ "EO_INI_PIX_DEFOUT"_Stz,
+  /*    */ "EO_POT_INI_DEFOUT"_Stz,
 
   // index tree
   /*    */ "EO_IXT_DEL_ENT"_Stz,
@@ -586,7 +586,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENTWRK_RESET
 
   // initialise
-  { EA_NONE,    0 },  // EO_INI_PIX_DEFOUT
+  { EA_NONE,    0 },  // EO_POT_INI_DEFOUT
   
   // index tree
   { EA_NONE,    0 },  // EO_IXT_DEL_ENT

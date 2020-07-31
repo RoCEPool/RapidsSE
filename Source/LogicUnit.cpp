@@ -1467,7 +1467,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // initialise
-      case EO_INI_PIX_DEFOUT: NoArg(); // init m_pPot pix from stream def out
+      case EO_POT_INI_DEFOUT: NoArg(); // init m_pPot pix from stream def out
         dLU0(eCode);
         if (! m_bPixInited) {
           m_bPixInited = true;
