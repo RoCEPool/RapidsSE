@@ -235,8 +235,8 @@ namespace Expressions
     //==========================
     DevRSB*    m_pDevDstRsb;
   
-    Rsb*       m_aDstRsb;
-    RowSlab*   m_pDstRowSlab;
+    //Rsb*       m_aDstRsb;
+    //RowSlab*   m_pDstRowSlab;
     //==========================
 
   

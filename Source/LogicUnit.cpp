@@ -55,8 +55,8 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_bPixInited  = false;
   // m_oStreamPix
-  m_aDstRsb     = nullptr;
-  m_pDstRowSlab = nullptr;
+  //m_pDevDstRsb->m_aRsb     = nullptr;
+  //m_pDevDstRsb->m_pRowSlab = nullptr;
 
   //m_i_SrcRow    = C_UNKNOWN;
   //m_nSrcRows    = C_UNKNOWN;
@@ -1292,7 +1292,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
       
       case EO_CRW_SRC_TORSB:
-        RowInflator::vInflateColumns(m_pDstRowSlab,m_pDevSrcIxt->m_aCrw);
+        RowInflator::vInflateColumns(m_pDevDstRsb->m_pRowSlab,m_pDevSrcIxt->m_aCrw);
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1508,7 +1508,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_INI_SRC_SLAB: NoArg(); // init m_pDevSrcRsb->m_pRowSlab etc
         dLU0(eCode);
         //m_pPot = * m_xpPot;
-        //m_pDstRowSlab = nullptr;
+        //m_pDevDstRsb->m_pRowSlab = nullptr;
 
         m_pDevSrcRsb->m_aRsb     = nullptr;
         m_pDevSrcRsb->m_pRowSlab = m_xpOperandA.bIsNull() ?
@@ -1762,14 +1762,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // rsb / rowslab
       case EO_RSB_DST_COPYSRC: NoArg(); // copy src rsb to dst rsb
         dLU0(eCode);
-        m_pDstRowSlab->vPositionOnCell(0);
-        m_aDstRsb = m_pDstRowSlab->aRsb();
-        m_pDstRowSlab->vCopyRsb(m_pDevSrcRsb->m_aRsb,bSrcHasPtnHash,bCopyPtnHash);
+        m_pDevDstRsb->m_pRowSlab->vPositionOnCell(0);
+        m_pDevDstRsb->m_aRsb = m_pDevDstRsb->m_pRowSlab->aRsb();
+        m_pDevDstRsb->m_pRowSlab->vCopyRsb(m_pDevSrcRsb->m_aRsb,bSrcHasPtnHash,bCopyPtnHash);
         break;
 
       case EO_RSB_DST_PRINT: NoArg(); // print dst rsb
         dLU0(eCode);
-        m_pDstRowSlab->vDumpRow(-1,m_aDstRsb);
+        m_pDevDstRsb->m_pRowSlab->vDumpRow(-1,m_pDevDstRsb->m_aRsb);
         break;
 
       case EO_RSB_SRC_PRINT: NoArg(); // print src rsb
@@ -1785,16 +1785,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_RSB_DST_NEW: NoArg(); // create new destination rsb
         dLU0(eCode);
         //ASSERT(0 == i_Ptn);
-        m_aDstRsb = m_xpPot->aNewDstRsb(i_Ptn,&m_pDstRowSlab);
+        m_pDevDstRsb->m_aRsb = m_xpPot->aNewDstRsb(i_Ptn,&m_pDevDstRsb->m_pRowSlab);
         break;
 
       case EO_RSB_DST_RESET: NoArg(); // reset dst rowslab
-        m_pDstRowSlab->vReset();
+        m_pDevDstRsb->m_pRowSlab->vReset();
         break;
         
       case EO_RSB_DST_TEST: NoArg(); // test if there is a destination rsb
         dLU0(eCode);
-        if (m_aDstRsb)
+        if (m_pDevDstRsb->m_aRsb)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
@@ -1802,7 +1802,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_RSB_DST_ZERO: NoArg(); // zero destination rsb
         dLU0(eCode);
-        m_pDstRowSlab->vZeroRsb(m_aDstRsb);
+        m_pDevDstRsb->m_pRowSlab->vZeroRsb(m_pDevDstRsb->m_aRsb);
         break;
         
       case EO_RSB_SRC_BEGIN: NoArg(); // begin src rsb traverse
@@ -1844,8 +1844,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_RSB_DST_POPCOLI: GetArg(iArg); // pop and deposit top into dst column
         iRes = *(aiDstk--);
         dLU2(eCode,iArg,iRes);
-        m_pDstRowSlab->vPositionOnCell(iArg);
-        m_pDstRowSlab->vDeposit(iRes);
+        m_pDevDstRsb->m_pRowSlab->vPositionOnCell(iArg);
+        m_pDevDstRsb->m_pRowSlab->vDeposit(iRes);
         break;
         
       case EO_RSB_DST_POPCOLS: GetArg(iArg); // pop and deposit top into dst column
@@ -1853,11 +1853,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        i8 nSize = *(aiDstk--);
 //        dLU2(eCode,iArg,nSize);
 //        char* azSrc = (char*)(--aiDstk);
-        m_pDstRowSlab->vPositionOnCell(iArg);
-        char* azDst = m_pDstRowSlab->azDepositString_begin();
+        m_pDevDstRsb->m_pRowSlab->vPositionOnCell(iArg);
+        char* azDst = m_pDevDstRsb->m_pRowSlab->azDepositString_begin();
 //        StrLib::vCopy(azDst,azSrc);
         S_PopStr(azDst);
-        m_pDstRowSlab->vDepositString_end(nSize);
+        m_pDevDstRsb->m_pRowSlab->vDepositString_end(nSize);
 //        aiDstk--;
         if (bTrace)
           vDebugPoint();
@@ -1865,9 +1865,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
         
       case EO_RSB_DST_PUSHCOLI: GetArg(iArg); // push dst column
-        m_aDstRsb = m_pDstRowSlab->aRsbAdr(m_pDstRowSlab->nRows()-1);
-        i_Cell_ntv = m_aDstRsb->i_ColToCell_ntv(iArg);
-        iRes = m_aDstRsb->iVal_ntv(i_Cell_ntv);
+        m_pDevDstRsb->m_aRsb = m_pDevDstRsb->m_pRowSlab->aRsbAdr(m_pDevDstRsb->m_pRowSlab->nRows()-1);
+        i_Cell_ntv = m_pDevDstRsb->m_aRsb->i_ColToCell_ntv(iArg);
+        iRes = m_pDevDstRsb->m_aRsb->iVal_ntv(i_Cell_ntv);
         dLU2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
         break;
