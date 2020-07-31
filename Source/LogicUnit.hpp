@@ -235,11 +235,15 @@ namespace Expressions
     Rsb*     m_aDstRsb;
     RowSlab* m_pDstRowSlab;
 
+    //==========================
+    DevRSB*    m_pDevSrcRsb;
+  
     i8         m_i_SrcRow;
     i8         m_nSrcRows;
     Rsb*       m_aSrcRsb;
     RowSlab*   m_pSrcRowSlab;
     StreamDef* m_pSrcStreamDef;
+    //==========================
 
   
   
