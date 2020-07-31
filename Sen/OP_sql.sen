@@ -433,15 +433,29 @@ true
 
   queryNo case
 
+    100 of
+      "---------------------------- 100=RSBBUFFER ----------------------------" .
+      Operand[].pipeIn
+      LogicUnit[].transform
+      Operand[].delete
+      Pot[].pipeoutAllCompleted
+    endof
+
+    102 of
+      "---------------------------- 102=RSBBUFFER ----------------------------" .
+      Operand[].pipeIn
+      LogicUnit[].transform
+      Operand[].delete
+      Pot[].pipeoutAllCompleted
+    endof
+
     301 of
       "---------------------------- 301=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].transform
       Operand[].delete
-
       Pot[].pipeoutAllCompleted
-
     endof
 
     302 of
@@ -450,7 +464,6 @@ true
       Operand[].asSrcRowSlab
       true 1 LogicUnit[].transformArgs
       Operand[].delete
-
       Pot[].pipeoutAllCompleted
 
     endof
@@ -461,12 +474,11 @@ true
       Operand[].asSrcRowSlab
       true 1 LogicUnit[].transformArgs
       Operand[].delete
-
       Pot[].pipeoutAllCompleted
 
     endof
 
-    //"------------------------------ =RSBBUFFER -----------------------------" .
+    "------------------------------- =RSBBUFFER ------------------------------" .
     Operand[].pipeIn
     LogicUnit[].transform
     Operand[].delete
