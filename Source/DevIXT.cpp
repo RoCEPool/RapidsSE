@@ -21,10 +21,14 @@ DevIXT::DevIXT(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DEVIXT,_FOOTER_);
   
-  m_aEnt       = nullptr;
   m_pIdxTree   = nullptr;
+  
+  m_aEnt       = nullptr;
   m_pEntBuffer = nullptr;
 
+  m_aCrw       = nullptr;
+  m_pCrwBuffer = nullptr;
+  
   _checkInitialised_(CN_DEVIXT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DEVIXT,_FOOTER_);
