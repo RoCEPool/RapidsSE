@@ -40,6 +40,8 @@ Args::Args(void)
 #endif
   m_nSlotsPerNode        = 4;
 
+  m_iLiftNo = 0;
+  
   // node configuration
   m_nNodes = 0;
   
@@ -761,6 +763,13 @@ bool Args::bParse(i8 argc, s256 argv[])
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    if (szArg->bSame("--liftNo"_Stz)) {
+      m_iLiftNo = argv[++i_Arg].iToI8();
+      continue;
+    }
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if ('<' == * szArg->azChar()) {
       

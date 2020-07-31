@@ -49,10 +49,7 @@ void LogicUnit::vGenerateQuery100(void)
   
   // reset
   m_i_Code = 0;
-  
-  // initialize srcSlab etc
-  vAddCode(EO_INI_SRC_SLAB);
-  
+    
   // init m_pPot pix from streamDef out
   vAddCode(EO_INI_PIX_DEFOUT);
   
@@ -258,10 +255,7 @@ void LogicUnit::vGenerateQuery101(void)
   
   // reset
   m_i_Code = 0;
-  
-  // initialize srcSlab etc
-  vAddCode(EO_INI_SRC_SLAB);
-  
+    
   // init m_pPot pix from streamDef out
   vAddCode(EO_INI_PIX_DEFOUT);
   
@@ -329,10 +323,7 @@ void LogicUnit::vGenerateQuery102(void)
   
   // reset
   m_i_Code = 0;
-  
-  // initialize srcSlab etc
-  vAddCode(EO_INI_SRC_SLAB);
-  
+    
   // init m_pPot pix from streamDef out
   vAddCode(EO_INI_PIX_DEFOUT);
   
@@ -497,10 +488,7 @@ void LogicUnit::vGenerateQuery103(void)
   
   // reset
   m_i_Code = 0;
-  
-  // initialize srcSlab etc
-  vAddCode(EO_INI_SRC_SLAB);
-  
+    
   // init m_pPot pix from streamDef out
   vAddCode(EO_INI_PIX_DEFOUT);
   
@@ -1599,10 +1587,7 @@ void LogicUnit::vGenerateQuery600(void)
   
   // init the code
   m_i_Code = 0;
-  
-  // initialize srcSlab etc
-  vAddCode(EO_INI_SRC_SLAB);
-  
+    
   // init m_pPot pix from streamDef out
   vAddCode(EO_INI_PIX_DEFOUT);
   
@@ -1709,10 +1694,7 @@ void LogicUnit::vGenerateQuery601(void)
   
   // init the code
   m_i_Code = 0;
-  
-  // initialize srcSlab etc
-  vAddCode(EO_INI_SRC_SLAB);
-  
+    
   // init m_pPot pix from streamDef out
   vAddCode(EO_INI_PIX_DEFOUT);
   
