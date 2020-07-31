@@ -18,6 +18,7 @@ namespace Expressions
 
 #include "Device.hpp"
 #include "DevIXT.hpp"
+#include "DevRSB.hpp"
 
 #include "LogicCompiler.hpp"
 
