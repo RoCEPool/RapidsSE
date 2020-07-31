@@ -494,13 +494,9 @@ true
       Pot[].pipeoutAllCompleted
     endof
 
-    "------------------------------- =RSBBUFFER ------------------------------" .
-    Operand[].pipeIn
-    LogicUnit[].transform
-    Operand[].delete
-
-    Pot[].pipeoutAllCompleted
-
+    // default
+    queryNo "ERROR : Unexpected queryno %v" .printf
+    0 assert
   endcase
 
   profile.end
