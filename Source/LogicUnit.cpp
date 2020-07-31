@@ -69,8 +69,8 @@ LogicUnit::LogicUnit(Task* pTask)
   //m_pSrcCrwBuffer = nullptr;
   //m_pDevSrcRsb->m_pStreamDef = nullptr;
 
-  m_i_AltRow    = C_UNKNOWN;
-  m_nAltRows    = C_UNKNOWN;
+  //m_i_AltRow    = C_UNKNOWN;
+  //m_nAltRows    = C_UNKNOWN;
   m_aAltRsb     = nullptr;
   m_pAltRowSlab = nullptr;
   //m_aAltEnt     = nullptr;
