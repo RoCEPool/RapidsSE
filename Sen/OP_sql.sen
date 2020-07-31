@@ -407,12 +407,15 @@
   queryNo case
 
     111 of
+      "++++++++++++++++++++++++++++ 111=CRWBUFFER ++++++++++++++++++++++++++++" .
       Operand[].pipeIn
+      Operand[].asSrcCrwBuffer
       LogicUnit[].transform
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
 
+    // default
     0 assert
   endcase
 
