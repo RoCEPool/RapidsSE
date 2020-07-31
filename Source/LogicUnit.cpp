@@ -88,7 +88,8 @@ LogicUnit::LogicUnit(Task* pTask)
   m_i_Code = 0;
   
   m_pDevSrcRsb = new DevRSB;
-  
+  m_pDevAltRsb = new DevRSB;
+
   m_pDevSrcIxt = new DevIXT;
   m_pDevAltIxt = new DevIXT;
   m_pDevTmpIxt = new DevIXT;
@@ -129,7 +130,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
     delete *m_xpTimer;
   
   delete m_pDevSrcRsb;
-  
+  delete m_pDevAltRsb;
+
   delete m_pDevTmpIxt;
   delete m_pDevAltIxt;
   delete m_pDevSrcIxt;

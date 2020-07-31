@@ -260,12 +260,15 @@ namespace Expressions
   
   
   
-    // - -
+    //==========================
+    DevRSB*    m_pDevAltRsb;
+  
     i8         m_i_AltRow;
     i8         m_nAltRows;
     Rsb*       m_aAltRsb;
     RowSlab*   m_pAltRowSlab;
     StreamDef* m_pAltStreamDef;
+    //==========================
 
     
   
