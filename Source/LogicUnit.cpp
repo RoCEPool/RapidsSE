@@ -1475,8 +1475,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           m_xpPot->vStreamPix(&m_oStreamPix);
           
           // temp hack by alka
-          if ( ! m_xpIndexTree.bIsNull() )
-            m_pDevTmpIxt->m_pIdxTree = * m_xpIndexTree;
+          //if (! m_pDevTmpIxt->m_pIdxTree &&  ! m_xpIndexTree.bIsNull())
+          //  m_pDevTmpIxt->m_pIdxTree = * m_xpIndexTree;
           // end temp hack
         }
         break;
