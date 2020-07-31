@@ -71,7 +71,7 @@ LogicUnit::LogicUnit(Task* pTask)
 
   //m_i_AltRow    = C_UNKNOWN;
   //m_nAltRows    = C_UNKNOWN;
-  m_aAltRsb     = nullptr;
+  //m_aAltRsb     = nullptr;
   m_pAltRowSlab = nullptr;
   //m_aAltEnt     = nullptr;
   //m_pAltIdxTree = nullptr;
@@ -1777,7 +1777,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_RSB_ALT_PRINT: NoArg(); // print alt rsb
         dLU0(eCode);
-        m_pAltRowSlab->vDumpRow(-1,m_aAltRsb);
+        m_pAltRowSlab->vDumpRow(-1,m_pDevAltRsb->m_aRsb);
         break;
 
       case EO_RSB_DST_NEW: NoArg(); // create new destination rsb
@@ -1893,7 +1893,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
         
       case EO_RSB_ALT_PUSHCOLI: GetArg(iArg); // push alt column
-        iRes = m_aAltRsb->iVal_ntv(m_aAltRsb->i_ColToCell_ntv(iArg));
+        iRes = m_pDevAltRsb->m_aRsb->iVal_ntv(m_pDevAltRsb->m_aRsb->i_ColToCell_ntv(iArg));
         dLU2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
         break;
