@@ -1496,13 +1496,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_INI_SRC_CRW: NoArg(); // init m_pSrcCrw etc
         dLU0(eCode);
-        m_pDevSrcIxt->m_aCrw = nullptr;
+        //m_pDevSrcIxt->m_aCrw = nullptr;
         m_pDevSrcIxt->m_pCrwBuffer =
           m_xpOperandA.bIsNull() ?
             nullptr : _pCrwBuffer(* m_xpOperandA);
-        m_pDevSrcIxt->m_nRows =
-          m_pDevSrcIxt->m_pCrwBuffer ?
-            m_pDevSrcIxt->m_pCrwBuffer->nRowCount() : 0;
+        //m_pDevSrcIxt->m_nRows =
+        //  m_pDevSrcIxt->m_pCrwBuffer ?
+        //    m_pDevSrcIxt->m_pCrwBuffer->nRowCount() : 0;
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
