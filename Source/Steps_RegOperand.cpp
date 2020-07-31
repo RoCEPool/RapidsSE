@@ -11,6 +11,7 @@ void Step::vAddSteps_RegOperand(void)
 {
   vAddStep("Operand[]"_Stz,                &Step::vRegOperandGet);
   vAddStep("Operand[].addColumnDef"_Stz,   &Step::vRegOperandAddColumnDef);
+  vAddStep("Operand[].asSrcCrwBuffer"_Stz, &Step::vRegOperandAsSrcCrwBuffer);
   vAddStep("Operand[].asSrcRowSlab"_Stz,   &Step::vRegOperandAsSrcRowSlab);
   vAddStep("Operand[].bide"_Stz,           &Step::vRegOperandBide);
   vAddStep("Operand[].csvAppend"_Stz,      &Step::vRegOperandCsvAppend);
@@ -74,6 +75,20 @@ void Step::vRegOperandAddColumnDef(void)
   
   pStreamDef->vAddColumn(sColumnNm, eColumnType);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].asSrcCrwBuffer -- use this operand as src crw buffer             */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandAsSrcCrwBuffer(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
+
+  m_pLogicUnit->m_pDevSrcIxt->m_pCrwBuffer = pCrwBuffer;
+
   EXIT();
 }
 
