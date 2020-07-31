@@ -29,6 +29,9 @@ DevIXT::DevIXT(void)
   m_aCrw       = nullptr;
   m_pCrwBuffer = nullptr;
   
+  m_i_Row      = C_UNKNOWN;
+  m_nRows      = C_UNKNOWN;
+
   _checkInitialised_(CN_DEVIXT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DEVIXT,_FOOTER_);

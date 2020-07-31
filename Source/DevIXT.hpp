@@ -17,6 +17,9 @@ namespace Expressions
     Crw*       m_aCrw;
     CrwBuffer* m_pCrwBuffer;
 
+    i8         m_i_Row;
+    i8         m_nRows;
+
     // must be last
     Footer m_xFooter;
   
