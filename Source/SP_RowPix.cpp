@@ -95,7 +95,7 @@ void SP_RowPix::vAppendDte(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 
   i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
   i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
-  
+    
   SP_Dte spDte;
   StrLib::vAppendString(&m_azCursor,(char*)spDte.sz(iVal));
 }
@@ -195,6 +195,10 @@ void SP_RowPix::vPutRow(Rsb* aRsb, bool bNewLine)
       StrLib::vAppendChar(&m_azCursor,',');
 
     i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
+    if (aRsb->bIsNull_ntv(i_Cell_ntv)) {
+      StrLib::vAppendString(&m_azCursor,(char*)"NULL"_Stz);
+      continue;
+    }
     
     i8 iVal = aRsb->iVal_ntv(i_Cell_ntv);
     

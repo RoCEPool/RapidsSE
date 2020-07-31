@@ -455,6 +455,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
   
   //i8* aiColVal = & pRow->m_waColVal[0].m_iWrd;
   m8* aCell;
+  i8 i_Ofs;
+  char* azStz;
  
   i8* iaRowSlabCells = (i8*)pRowSlab->m_xWsp.ayArea();
   
@@ -466,13 +468,15 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
     
     eMetaCode = *aeMetaCode++;
     
+    //pRowSlab->vDumpRow(0);
     
     // column to be projected ?
     if ( ! pStreamPix->bIsProjected(i_Col) ) {
       
       //pRowSlab->vDeposit(C_UNKNOWN);
       
-      iaRowSlabCells[--pRowSlab->m_i_Cell] = C_UNKNOWN;
+      //iaRowSlabCells[--pRowSlab->m_i_Cell] = C_DATUM_NULL;
+      --pRowSlab->m_i_Cell;
       //*aiColVal++ = C_UNKNOWN;
       
     L_SkipCodeSwitch:
@@ -810,6 +814,7 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
 //        ayDataByte += nLength;
 //        acString   += nLength;
 //        *acString++ = '\0';
+        /*
         aString = pRowSlab->azDepositString_begin();
         nLength = *(u1*)ayDataByte++;
         MemLib::vCopy((byte*)aString,
@@ -820,6 +825,24 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         aString    += nLength;
         *aString = '\0';
         pRowSlab->vDepositString_end(nLength);
+  */
+        azStz = (char*)pRowSlab->m_xWsp.ayLatterHead();
+                 --pRowSlab->m_i_Cell;
+        i_Ofs = - (nDifference(azStz, & iaRowSlabCells[pRowSlab->m_i_Cell]));
+        iaRowSlabCells[pRowSlab->m_i_Cell] = i_Ofs;
+        
+         nLength = *(u1*)ayDataByte++;
+        
+        MemLib::vCopy((byte*)azStz,
+         (byte*)ayDataByte,
+         nLength,
+         CN_ROWCOMPACTOR);
+         ayDataByte += nLength;
+         
+        azStz    += nLength;
+        *azStz = '\0';
+        pRowSlab->m_xWsp.vTakeHead(nLength);
+        //pRowSlab->vDepositString_end(nLength);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

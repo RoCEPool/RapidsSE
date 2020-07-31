@@ -162,7 +162,7 @@ i8 WspConverge_t<LENGTH>::nFree(void)
 template<int LENGTH>
 byte* WspConverge_t<LENGTH>::ayLatterHead(void)
 {
-  byte* ayNext = &ayArea()[nUsedHead()];
+  byte* ayNext = &ayArea()[m_nUsedHead];
   
   return ayNext;
 }

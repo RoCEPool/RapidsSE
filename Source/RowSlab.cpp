@@ -265,13 +265,15 @@ bool RowSlab::bNewRow(Rsb** paRow)
   else {
     //ASSERT(m_i_Cell == m_i_Row - nCols());
     
-    m_i_Cell = m_i_Row - nCols();
+    m_i_Cell = m_i_Row - m_oStreamPix.m_nCols;
   }
   
   m_i_Row = m_i_Cell;
   
-  m8* amCellVec = amSlabCellVec();
-  *paRow = (Rsb*) & amCellVec[m_i_Row];
+  m8* amCellVec = (m8*)m_xWsp.ayArea();
+  i8 iLglRow = m_nItems * m_oStreamPix.m_nCols;
+  i8 i_RowCells = C_FIRST_LGL_CELL - iLglRow;
+  *paRow = (Rsb*) & amCellVec[i_RowCells];
   
   m_nItems++;
   
