@@ -128,7 +128,7 @@ void Step::vIndexDeleteNext(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the entry buffer to start from
-  EntBuffer* pEntBuffer = m_pLogicUnit->m_pEntBuffer;
+  EntBuffer* pEntBuffer = m_pLogicUnit->m_pEntBufferOuter;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get IndexTree
@@ -216,7 +216,7 @@ void Step::vIndexDeleteNext(void)
   
 L_Exit:
   vTrace("------------------------------------------\n"_Stz);
-  m_pLogicUnit->m_pEntBuffer = pEntBuffer;
+  m_pLogicUnit->m_pEntBufferOuter = pEntBuffer;
   m_pLogicUnit->m_aLowerEntry = aLowerEntry;
   
   EXIT();
@@ -584,7 +584,7 @@ void Step::vIndexFetchNext(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the entry buffer to start from
-  EntBuffer* pEntBuffer = m_pLogicUnit->m_pEntBuffer;
+  EntBuffer* pEntBuffer = m_pLogicUnit->m_pEntBufferOuter;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   CrwBuffer* pCrwBuffer = nullptr;
@@ -669,7 +669,7 @@ void Step::vIndexFetchNext(void)
   }
   
 L_Exit:
-  m_pLogicUnit->m_pEntBuffer = pEntBuffer;
+  m_pLogicUnit->m_pEntBufferOuter = pEntBuffer;
   m_pLogicUnit->m_aLowerEntry = aLowerEntry;
   
   // cleanup and return the buffer
@@ -888,7 +888,7 @@ L_Exit:
   // set registers
   m_pLogicUnit->m_aLowerEntry = aLowerEntry;
   m_pLogicUnit->m_aUpperEntry = aUpperEntry;
-  m_pLogicUnit->m_pEntBuffer  = aLowerEntBuffer;
+  m_pLogicUnit->m_pEntBufferOuter = aLowerEntBuffer;
   
   EXIT();
 }

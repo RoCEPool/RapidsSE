@@ -44,7 +44,7 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_aLowerEntry = nullptr;
   m_aUpperEntry = nullptr;
-  m_pEntBuffer  = nullptr;
+  m_pEntBufferOuter = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

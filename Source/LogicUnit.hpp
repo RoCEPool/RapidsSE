@@ -210,7 +210,7 @@ namespace Expressions
     
     Ent*             m_aLowerEntry;
     Ent*             m_aUpperEntry;
-    EntBuffer*       m_pEntBuffer;
+    EntBuffer*       m_pEntBufferOuter;
     
     REG<Object>      m_xpRegister0; // general purpose reg 0[]
     REG<Object>      m_xpRegister1; // general purpose reg 1[]
@@ -268,10 +268,11 @@ namespace Expressions
   
   
     Ent*       m_pEnt;
-    EntWrk     m_oEntWrk;
-//    EntBuffer* m_pEntBuffer;
+    EntBuffer* m_pEntBuffer;
     IndexTree* m_pIndexTree;
   
+    EntWrk     m_oEntWrk;
+
     i8     m_i_Code;
     eEO    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
 
