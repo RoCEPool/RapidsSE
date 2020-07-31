@@ -436,6 +436,7 @@ true
     100 of
       "---------------------------- 100=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
+      Operand[].asSrcRowSlab
       LogicUnit[].transform
       Operand[].delete
       Pot[].pipeoutAllCompleted
@@ -444,6 +445,7 @@ true
     102 of
       "---------------------------- 102=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
+      Operand[].asSrcRowSlab
       LogicUnit[].transform
       Operand[].delete
       Pot[].pipeoutAllCompleted
@@ -481,6 +483,7 @@ true
     600 of
       "---------------------------- 600=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
+      Operand[].asSrcRowSlab
       LogicUnit[].transform
       Operand[].delete
       Pot[].pipeoutAllCompleted
@@ -489,6 +492,7 @@ true
     601 of
       "---------------------------- 601=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
+      Operand[].asSrcRowSlab
       LogicUnit[].transform
       Operand[].delete
       Pot[].pipeoutAllCompleted
