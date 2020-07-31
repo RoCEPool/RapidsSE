@@ -238,8 +238,8 @@ namespace Expressions
     //==========================
     DevRSB*    m_pDevSrcRsb;
   
-    i8         m_i_SrcRow;
-    i8         m_nSrcRows;
+    //i8         m_i_SrcRow;
+    //i8         m_nSrcRows;
     Rsb*       m_aSrcRsb;
     RowSlab*   m_pSrcRowSlab;
     StreamDef* m_pSrcStreamDef;

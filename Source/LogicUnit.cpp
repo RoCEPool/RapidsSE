@@ -58,8 +58,8 @@ LogicUnit::LogicUnit(Task* pTask)
   m_aDstRsb     = nullptr;
   m_pDstRowSlab = nullptr;
 
-  m_i_SrcRow    = C_UNKNOWN;
-  m_nSrcRows    = C_UNKNOWN;
+  //m_i_SrcRow    = C_UNKNOWN;
+  //m_nSrcRows    = C_UNKNOWN;
   m_aSrcRsb     = nullptr;
   m_pSrcRowSlab = nullptr;
   //m_pDevSrcIxt->m_aEnt     = nullptr;
@@ -1261,7 +1261,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(eCode);
         m_pDevSrcIxt->m_i_Row = -1;
         m_pDevSrcIxt->m_aCrw = nullptr;
-        m_nSrcRows = m_pDevSrcIxt->m_pCrwBuffer ?
+        m_pDevSrcIxt->m_nRows = m_pDevSrcIxt->m_pCrwBuffer ?
                          m_pDevSrcIxt->m_pCrwBuffer->nRowCount() : 0;
         break;
         
@@ -1277,7 +1277,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
        
       case EO_CRW_SRC_NEXT: NoArg(); // move to next src rsb
         dLU0(eCode);
-        if (++m_pDevSrcIxt->m_i_Row < m_nSrcRows) {
+        if (++m_pDevSrcIxt->m_i_Row < m_pDevSrcIxt->m_nRows) {
           m_pDevSrcIxt->m_aCrw =
             m_pDevSrcIxt->m_pCrwBuffer->aCrw(m_pDevSrcIxt->m_i_Row);
           *(++aiDstk) = 1;
@@ -1468,7 +1468,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //m_pPot        = nullptr;
         m_pDstRowSlab = nullptr;
 
-        m_nSrcRows    = C_UNKNOWN;
+        //m_nSrcRows    = C_UNKNOWN;
         m_aSrcRsb     = nullptr;
         m_pSrcRowSlab = nullptr;
         break;
@@ -1508,7 +1508,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         m_pDevSrcIxt->m_pCrwBuffer =
           m_xpOperandA.bIsNull() ?
             nullptr : _pCrwBuffer(* m_xpOperandA);
-        m_nSrcRows =
+        m_pDevSrcIxt->m_nRows =
           m_pDevSrcIxt->m_pCrwBuffer ?
             m_pDevSrcIxt->m_pCrwBuffer->nRowCount() : 0;
         break;
@@ -1521,7 +1521,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         m_aSrcRsb     = nullptr;
         m_pSrcRowSlab = m_xpOperandA.bIsNull() ?
                         nullptr : _pRsbBuffer(* m_xpOperandA)->pRowSlab();
-        m_nSrcRows    = m_pSrcRowSlab ? m_pSrcRowSlab->nRows() : 0;
+        m_pDevSrcIxt->m_nRows    = m_pSrcRowSlab ? m_pSrcRowSlab->nRows() : 0;
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1815,15 +1815,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_RSB_SRC_BEGIN: NoArg(); // begin src rsb traverse
         dLU0(eCode);
-        m_i_SrcRow = -1;
+        m_pDevSrcRsb->m_i_Row = -1;
         m_aSrcRsb  = nullptr;
-        m_nSrcRows = m_pSrcRowSlab ? m_pSrcRowSlab->nRows() : 0;
+        m_pDevSrcRsb->m_nRows = m_pSrcRowSlab ? m_pSrcRowSlab->nRows() : 0;
         break;
 
       case EO_RSB_SRC_NEXT: NoArg(); // move to next src rsb
         dLU0(eCode);
-        if (++m_i_SrcRow < m_nSrcRows) {
-          m_aSrcRsb = m_pSrcRowSlab->aRsbAdr(m_i_SrcRow);
+        if (++m_pDevSrcRsb->m_i_Row  < m_pDevSrcRsb->m_nRows) {
+          m_aSrcRsb = m_pSrcRowSlab->aRsbAdr(m_pDevSrcRsb->m_i_Row );
           *(++aiDstk) = 1;
         }
         else {
