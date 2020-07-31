@@ -156,7 +156,6 @@ enum eEO : u1 // expression operators
   
   // initialise
   /*    */ EO_INI_PIX_DEFOUT,   // init m_pPot pix from stream def out
-  /*    */ EO_INI_PIX_SLABIN,   // init m_pPot pix from input slab
 
   // index tree
   /*    */ EO_IXT_DEL_ENT,      // delete current entry from indexTree
@@ -369,7 +368,6 @@ static Stz* aEO[]
 
   // initialise
   /*    */ "EO_INI_PIX_DEFOUT"_Stz,
-  /*    */ "EO_INI_PIX_SLABIN"_Stz,
 
   // index tree
   /*    */ "EO_IXT_DEL_ENT"_Stz,
@@ -589,7 +587,6 @@ static EoArg EoArgs[]
 
   // initialise
   { EA_NONE,    0 },  // EO_INI_PIX_DEFOUT
-  { EA_NONE,    0 },  // EO_INI_PIX_SLABIN
   
   // index tree
   { EA_NONE,    0 },  // EO_IXT_DEL_ENT

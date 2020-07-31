@@ -1480,20 +1480,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           // end temp hack
         }
         break;
-        
-      case EO_INI_PIX_SLABIN: NoArg(); // init m_pPot pix from inp slab
-      {
-        dLU0(eCode);
-        StreamPix* aStreamPix = m_pDevSrcRsb->m_pRowSlab->aStreamPix();
-        m_xpPot->vStreamPix(aStreamPix);
-      
-        // temp hack by ray
-        if ( ! m_xpIndexTree.bIsNull() )  // alka added :-)
-          m_pDevTmpIxt->m_pIdxTree = * m_xpIndexTree;
-        // end temp hack
-      }
-        break;
-                
+                        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
       case EO_IXT_DEL_ENT: NoArg(); // delete current entry from indexTree
