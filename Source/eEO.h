@@ -192,11 +192,6 @@ enum eEO : u1 // expression operators
   
   // pix operators
   /*    */ EO_PIX_STM_PRINT,    // print stream pix
-  
-  // ref
-  /*    */ EO_REF_GETCRW,       // get ref'd crw
-  /*    */ EO_REF_SRCRSB,       // get ref'd src rsb
-  /*    */ EO_REF_ALTRSB,       // get ref'd alt rsb
 
   // rsb / rowslab
   /*    */ EO_RSB_DST_COPYSRC,  // copy src rsb to dst rsb
@@ -414,11 +409,6 @@ static Stz* aEO[]
   
   // pix
   /*    */ "EO_PIX_STM_PRINT"_Stz,
-  
-  // ref
-  /*    */ "EO_REF_GETCRW"_Stz,
-  /*    */ "EO_REF_SRCRSB"_Stz,
-  /*    */ "EO_REF_ALTRSB"_Stz,
   
   // rsb / rowslab
   /*    */ "EO_RSB_DST_COPYSRC"_Stz,
@@ -645,11 +635,6 @@ static EoArg EoArgs[]
   // pix
   { EA_NONE,    0 },  // EO_PIX_STM_PRINT
   
-  // ref
-  { EA_NONE,    0 },  // EO_REF_GETCRW
-  { EA_NONE,    0 },  // EO_REF_SRCRSB
-  { EA_NONE,    0 },  // EO_REF_ALTRSB
-
   // rsb / rowslab
   { EA_NONE,    0 },  // EO_RSB_DST_COPYSRC
   { EA_NONE,    0 },  // EO_RSB_DST_PRINT

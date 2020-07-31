@@ -1756,12 +1756,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // ref
-      case EO_REF_GETCRW: NEVER_REACH; // not yet implemented
-      case EO_REF_SRCRSB: NEVER_REACH; // not yet implemented
-      case EO_REF_ALTRSB: NEVER_REACH; // not yet implemented
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb / rowslab
       case EO_RSB_DST_COPYSRC: NoArg(); // copy src rsb to dst rsb
         dLU0(eCode);
