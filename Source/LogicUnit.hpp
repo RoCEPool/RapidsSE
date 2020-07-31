@@ -227,15 +227,33 @@ namespace Expressions
     
     bool       m_bPixInited;
     StreamPix  m_oStreamPix;    // condensed stream def
+  
+  
+    EntWrk     m_oEntWrk;
 
-    Rsb*     m_aDstRsb;
-    RowSlab* m_pDstRowSlab;
 
-    i8         m_i_SrcRow;
-    i8         m_nSrcRows;
-    Rsb*       m_aSrcRsb;
-    RowSlab*   m_pSrcRowSlab;
+    //==========================
+    DevRSB*    m_pDevDstRsb;
+  
+    //Rsb*       m_aDstRsb;
+    //RowSlab*   m_pDstRowSlab;
+    //==========================
 
+  
+  
+
+    //==========================
+    DevRSB*    m_pDevSrcRsb;
+  
+    //i8         m_i_SrcRow;
+    //i8         m_nSrcRows;
+    //Rsb*       m_aSrcRsb;
+    //RowSlab*   m_pSrcRowSlab;
+    //StreamDef* m_pSrcStreamDef;
+    //==========================
+
+  
+  
     //==========================
     DevIXT*    m_pDevSrcIxt;
   
@@ -243,21 +261,24 @@ namespace Expressions
     //IndexTree* m_pSrcIdxTree;
     //EntBuffer* m_pSrcEntBuffer;
     //==========================
+    //Crw*       m_aSrcCrw;
+    //CrwBuffer* m_pSrcCrwBuffer;
 
-    Crw*       m_aSrcCrw;
-    CrwBuffer* m_pSrcCrwBuffer;
-    StreamDef* m_pSrcStreamDef;
   
-    // - -
-    i8         m_i_AltRow;
-    i8         m_nAltRows;
-    Rsb*       m_aAltRsb;
   
-    RowSlab*   m_pAltRowSlab;
-    Crw*       m_aAltCrw;
-    StreamDef* m_pAltStreamDef;
+  
+    //==========================
+    DevRSB*    m_pDevAltRsb;
+  
+    //i8         m_i_AltRow;
+    //i8         m_nAltRows;
+    //Rsb*       m_aAltRsb;
+    //RowSlab*   m_pAltRowSlab;
+    //StreamDef* m_pAltStreamDef;
+    //==========================
 
     
+  
     //==========================
     DevIXT*    m_pDevAltIxt;
   
@@ -265,6 +286,8 @@ namespace Expressions
     //IndexTree* m_pAltIdxTree;
     //EntBuffer* m_pAltEntBuffer;
     //==========================
+    //Crw*       m_aAltCrw;
+
   
   
     //==========================
@@ -274,8 +297,6 @@ namespace Expressions
     //EntBuffer* m_pEntBuffer;
     //IndexTree* m_pIndexTree;
     //==========================
-
-    EntWrk     m_oEntWrk;
 
     i8     m_i_Code;
     eEO    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }

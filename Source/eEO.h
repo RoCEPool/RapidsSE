@@ -154,9 +154,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   
-  // finalise
-  /*    */ EO_FIN_TRANSFORM,    // standard finalise
-
   // initialise
   /*    */ EO_INI_PIX_DEFOUT,   // init m_pPot pix from stream def out
   /*    */ EO_INI_PIX_SLABIN,   // init m_pPot pix from input slab
@@ -371,9 +368,6 @@ static Stz* aEO[]
   /*    */ "EO_ENTWRK_POPREF"_Stz,
   /*    */ "EO_ENTWRK_PRINT"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
-
-  // finalise
-  /*    */ "EO_FIN_TRANSFORM"_Stz,
 
   // initialise
   /*    */ "EO_INI_PIX_DEFOUT"_Stz,
@@ -597,9 +591,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENTWRK_PRINT
   { EA_NONE,    0 },  // EO_ENTWRK_RESET
 
-  // finalise
-  { EA_NONE,    0 },  // EO_FIN_TRANSFORM
-  
   // initialise
   { EA_NONE,    0 },  // EO_INI_PIX_DEFOUT
   { EA_NONE,    0 },  // EO_INI_PIX_SLABIN
