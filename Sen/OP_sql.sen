@@ -478,6 +478,22 @@ true
 
     endof
 
+    600 of
+      "---------------------------- 600=RSBBUFFER ----------------------------" .
+      Operand[].pipeIn
+      LogicUnit[].transform
+      Operand[].delete
+      Pot[].pipeoutAllCompleted
+    endof
+
+    601 of
+      "---------------------------- 601=RSBBUFFER ----------------------------" .
+      Operand[].pipeIn
+      LogicUnit[].transform
+      Operand[].delete
+      Pot[].pipeoutAllCompleted
+    endof
+
     "------------------------------- =RSBBUFFER ------------------------------" .
     Operand[].pipeIn
     LogicUnit[].transform
