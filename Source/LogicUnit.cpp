@@ -1510,10 +1510,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //m_pPot = * m_xpPot;
         //m_pDevDstRsb->m_pRowSlab = nullptr;
 
-        m_pDevSrcRsb->m_aRsb     = nullptr;
+        //m_pDevSrcRsb->m_aRsb     = nullptr;
         m_pDevSrcRsb->m_pRowSlab = m_xpOperandA.bIsNull() ?
                         nullptr : _pRsbBuffer(* m_xpOperandA)->pRowSlab();
-        m_pDevSrcIxt->m_nRows    = m_pDevSrcRsb->m_pRowSlab ? m_pDevSrcRsb->m_pRowSlab->nRows() : 0;
+        //m_pDevSrcIxt->m_nRows    = m_pDevSrcRsb->m_pRowSlab ? m_pDevSrcRsb->m_pRowSlab->nRows() : 0;
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
