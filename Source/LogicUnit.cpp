@@ -79,11 +79,12 @@ LogicUnit::LogicUnit(Task* pTask)
   m_aAltCrw     = nullptr;
   m_pAltStreamDef = nullptr;
 
-  m_pEnt        = nullptr;
+  //m_pEnt        = nullptr;
+  //m_pEntBuffer  = nullptr;
+  //m_pDevTmpIxt->m_pIdxTree  = nullptr;
+
   // m_oEntWrk
-  m_pEntBuffer  = nullptr;
-  m_pIndexTree  = nullptr;
-  
+
   m_i_Code = 0;
   
   m_pDevSrcIxt = new DevIXT;
@@ -663,7 +664,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   AggTimer oAggTimer;
   
   // temp
-  m_aaDev[0] = m_pIndexTree;
+  m_aaDev[0] = m_pDevTmpIxt->m_pIdxTree;
   // end temp
   
 #ifdef WITH_TRACE_LOGICUNIT
@@ -1286,8 +1287,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // entry
       case EO_ENT_NEXT: NoArg(); // move to next m_pEnt
         dLU0(eCode);
-        m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
-        if (m_pEnt)
+        m_pDevTmpIxt->m_aEnt =
+          EntBuffer::pMoveToNextEntry(m_pDevTmpIxt->m_aEnt,
+                                      &m_pDevTmpIxt->m_pEntBuffer);
+        if (m_pDevTmpIxt->m_aEnt)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
@@ -1295,17 +1298,19 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENT_POSPRIOR: NoArg(); // position m_pEnt prior using m_oEntWrk.key
         dLU0(eCode);
-        m_pEnt = m_pIndexTree->aPositionPriorEntry(m_oEntWrk.aKey(), &m_pEntBuffer);
+        m_pDevTmpIxt->m_aEnt =
+          m_pDevTmpIxt->m_pIdxTree->aPositionPriorEntry(m_oEntWrk.aKey(),
+                                                        &m_pDevTmpIxt->m_pEntBuffer);
         break;
         
       case EO_ENT_PUSH: NoArg(); // push entry on the stack
         dLU0(eCode);
-        *(++aiDstk) = (i8)m_pEnt;
+        *(++aiDstk) = (i8)m_pDevTmpIxt->m_aEnt;
         break;
         
       case EO_ENT_PUSHELMI0: NoArg(); // push entry elm 0 int
         dLU0(eCode);
-        iRes = m_pEnt->aKey()->iGetIntElm();
+        iRes = m_pDevTmpIxt->m_aEnt->aKey()->iGetIntElm();
         *(++aiDstk) = iRes;
         break;
         
@@ -1313,7 +1318,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       {
         char acFlipped[128];
         dLU0(eCode);
-        char* azSrc = (char*)m_pEnt->aKey()->szGetStrElm();
+        char* azSrc = (char*)m_pDevTmpIxt->m_aEnt->aKey()->szGetStrElm();
       
         StrLib::iWordFlipBack(acFlipped,azSrc);
       
@@ -1330,7 +1335,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENT_PUSHOFS: NoArg(); // push entry offset
         dLU0(eCode);
-        iRes = m_pEnt->iBuffer();
+        iRes = m_pDevTmpIxt->m_aEnt->iBuffer();
         *(++aiDstk) = iRes;
         break;
         
@@ -1339,13 +1344,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
       case EO_ENT_LESS: NoArg(); // test if m_pEnt.key <  m_oEntWrk.key
-        iRes  = KC_BEFORE == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        iRes  = KC_BEFORE == Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
         
       case EO_ENT_LESSEQUAL: NoArg(); // test if m_pEnt.key <= m_oEntWrk.key
-        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
+        iCmp = Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey());
         iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
@@ -1356,30 +1361,30 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
         SP_Ent spEnt;
         vTrace("\n\nEntWrk : %s\n"_Stz,
-               spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
-        vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pEnt,m_pIndexTree->pIndexDef()));
+               spEnt.sz(m_oEntWrk.aEnt(),m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
+        vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pDevTmpIxt->m_aEnt,m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
 #endif
-        iRes  = KC_SAME == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        iRes  = KC_SAME == Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
       }
         
       case EO_ENT_NOTEQUAL: NoArg();
-        iRes  = KC_SAME != Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        iRes  = KC_SAME != Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
         
       case EO_ENT_GREATEREQUAL: NoArg();
-        iCmp = Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey());
+        iCmp = Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey());
         iRes = (KC_SAME == iCmp || KC_AFTER == iCmp ) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
         
       case EO_ENT_GREATER: NoArg();
-        iRes  = KC_AFTER == Key::eCompare(m_pEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        iRes  = KC_AFTER == Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
@@ -1393,7 +1398,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 #ifdef WITH_TRACE_LOGICUNIT
         SP_Ent spEnt;
-        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
+        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
 #endif
         break;
       }
@@ -1471,7 +1476,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           
           // temp hack by alka
           if ( ! m_xpIndexTree.bIsNull() )
-            m_pIndexTree = * m_xpIndexTree;
+            m_pDevTmpIxt->m_pIdxTree = * m_xpIndexTree;
           // end temp hack
         }
         break;
@@ -1484,7 +1489,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       
         // temp hack by ray
         if ( ! m_xpIndexTree.bIsNull() )  // alka added :-)
-          m_pIndexTree = * m_xpIndexTree;
+          m_pDevTmpIxt->m_pIdxTree = * m_xpIndexTree;
         // end temp hack
       }
         break;
@@ -1511,11 +1516,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
       case EO_IXT_DEL_ENT: NoArg(); // delete current entry from indexTree
-        m_pIndexTree->vDelete(m_pEntBuffer,m_pEnt);
+        m_pDevTmpIxt->m_pIdxTree->vDelete(m_pDevTmpIxt->m_pEntBuffer,m_pDevTmpIxt->m_aEnt);
         break;
 
       case EO_IXT_DUMP: GetArg(iArg); // dump index tree
-        //m_pIndexTree->vDump(false);
+        //m_pDevTmpIxt->m_pIdxTree->vDump(false);
         ::iDEV_MAP(this,m_aaDev[iArg],DEV_MAP_DUMP,nullptr,nullptr,0);
         break;
 
@@ -1525,22 +1530,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
         SP_Ent spEnt;
         vTrace("Inserting entry"_Stz);
-        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pIndexTree->pIndexDef()));
+        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
 #endif
-        m_pEnt = m_pIndexTree->aInsertEntry(m_oEntWrk.aEnt());
+        m_pDevTmpIxt->m_aEnt = m_pDevTmpIxt->m_pIdxTree->aInsertEntry(m_oEntWrk.aEnt());
 #ifdef WITH_TRACE_LOGICUNIT
-        vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pEnt,m_pIndexTree->pIndexDef()));
+        vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pDevTmpIxt->m_aEnt,m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
 #endif
-        ASSERT(m_pEnt);
+        ASSERT(m_pDevTmpIxt->m_aEnt);
       }
         break;
         
       case EO_IXT_TRV_BEGIN: NoArg(); // begin linear traverse
         dLU0(eCode);
-        m_pEntBuffer = m_pIndexTree->pFirstH0Buffer();
-        if (m_pEntBuffer) {
-          m_pEnt = m_pEntBuffer->aLeadEntry();
-          if (m_pEnt)
+        m_pDevTmpIxt->m_pEntBuffer = m_pDevTmpIxt->m_pIdxTree->pFirstH0Buffer();
+        if (m_pDevTmpIxt->m_pEntBuffer) {
+          m_pDevTmpIxt->m_aEnt = m_pDevTmpIxt->m_pEntBuffer->aLeadEntry();
+          if (m_pDevTmpIxt->m_aEnt)
             *(++aiDstk) = 1;
           else
             *(++aiDstk) = 0;
@@ -1551,15 +1556,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_IXT_TRV_NEXT: NoArg(); // move to next entry
         dLU0(eCode);
-        m_pEnt = EntBuffer::pMoveToNextEntry(m_pEnt, &m_pEntBuffer);
-        if (m_pEnt)
+        m_pDevTmpIxt->m_aEnt =
+           EntBuffer::pMoveToNextEntry(m_pDevTmpIxt->m_aEnt,
+                                       &m_pDevTmpIxt->m_pEntBuffer);
+        if (m_pDevTmpIxt->m_aEnt)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
         break;
         
       case EO_IXT_TMP_ENTRIES: NoArg(); // push number of entries in tmp index
-        iRes = m_pIndexTree->iCountH0Entries();
+        iRes = m_pDevTmpIxt->m_pIdxTree->iCountH0Entries();
         dLU1(eCode,iRes);
         *(++aiDstk) = iRes;
         break;
@@ -1696,7 +1703,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
       case EO_PAY_FETCH_COLI: GetArg(iArg); // fetch a column from the entry payload
-        aPayload = m_pEnt->aiPayCell(iArg);
+        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         iRes = *aPayload;
         dLU2(eCode,iArg,iRes);
         *(++aiDstk) = iRes;
@@ -1704,7 +1711,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_PAY_FETCH_COLS: GetArg(iArg); // fetch a column from the entry payload
       {
-        aPayload = m_pEnt->aiPayCell(iArg);
+        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         char* azSrc = (char*)aPayload;
         i8 nSize = StrLib::nSize(azSrc);
         ASSERT(nSize < 8);
@@ -1722,7 +1729,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PAY_STORE_COLI: GetArg(iArg); // store a column of the entry payload
         iRes = *(aiDstk--);
         dLU2(eCode,iArg,iRes);
-        aPayload = m_pEnt->aiPayCell(iArg);
+        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         *aPayload = iRes;
         break;
       
@@ -1735,7 +1742,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        char* azSrc = (char*)(--aiDstk);
 //        aiDstk--;
 //        StrLib::vCopy((char*)aPayload,azSrc);
-        aPayload = m_pEnt->aiPayCell(iArg);
+        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         S_PopStr((char*)aPayload);
         vDebugPoint();
       }

@@ -270,9 +270,9 @@ namespace Expressions
     //==========================
     DevIXT*    m_pDevTmpIxt;
   
-    Ent*       m_pEnt;
-    EntBuffer* m_pEntBuffer;
-    IndexTree* m_pIndexTree;
+    //Ent*       m_pEnt;
+    //EntBuffer* m_pEntBuffer;
+    //IndexTree* m_pIndexTree;
     //==========================
 
     EntWrk     m_oEntWrk;

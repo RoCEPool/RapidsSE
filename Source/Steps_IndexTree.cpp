@@ -144,7 +144,7 @@ void Step::vIndexTreeAsTmp(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_pIndexTree = * m_pLogicUnit->m_xpIndexTree;
+  m_pLogicUnit->m_pDevTmpIxt->m_pIdxTree = * m_pLogicUnit->m_xpIndexTree;
   
   EXIT();
 }
