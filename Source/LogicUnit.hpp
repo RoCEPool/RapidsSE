@@ -267,7 +267,7 @@ namespace Expressions
     //i8         m_nAltRows;
     //Rsb*       m_aAltRsb;
     //RowSlab*   m_pAltRowSlab;
-    StreamDef* m_pAltStreamDef;
+    //StreamDef* m_pAltStreamDef;
     //==========================
 
     

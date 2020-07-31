@@ -106,7 +106,7 @@ void Step::vTableAsAltStreamDef(void)
     
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  m_pLogicUnit->m_pAltStreamDef = pStreamDef;
+  m_pLogicUnit->m_pDevAltRsb->m_pStreamDef = pStreamDef;
 
   EXIT();
 }

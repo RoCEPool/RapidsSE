@@ -77,7 +77,7 @@ LogicUnit::LogicUnit(Task* pTask)
   //m_pAltIdxTree = nullptr;
   //m_pAltEntBuffer = nullptr;
   //m_aAltCrw     = nullptr;
-  m_pAltStreamDef = nullptr;
+  //m_pAltStreamDef = nullptr;
 
   //m_pEnt        = nullptr;
   //m_pEntBuffer  = nullptr;
@@ -1249,7 +1249,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_COL_ALT_PUSH: GetArg(iArg); // push column value from m_aAltCrw
       {
-        HV_Row hRow(m_pAltStreamDef,C_ALL);
+        HV_Row hRow(m_pDevAltRsb->m_pStreamDef,C_ALL);
         RowInflator::vInflateColumn(hRow,m_pDevAltIxt->m_aCrw,iArg);
         iRes = hRow->m_waColVal[iArg].m_iWrd;
         dLU2(eCode,iArg,iRes);
