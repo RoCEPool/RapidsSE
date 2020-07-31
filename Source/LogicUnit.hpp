@@ -245,7 +245,7 @@ namespace Expressions
     //IndexTree* m_pSrcIdxTree;
     //EntBuffer* m_pSrcEntBuffer;
     //==========================
-    Crw*       m_aSrcCrw;
+    //Crw*       m_aSrcCrw;
   
   
   
