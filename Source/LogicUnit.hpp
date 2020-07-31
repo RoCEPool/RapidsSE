@@ -251,10 +251,10 @@ namespace Expressions
     //EntBuffer* m_pSrcEntBuffer;
     //==========================
     //Crw*       m_aSrcCrw;
+    //CrwBuffer* m_pSrcCrwBuffer;
+
   
   
-  
-    CrwBuffer* m_pSrcCrwBuffer;
   
     // - -
     i8         m_i_AltRow;
