@@ -1493,18 +1493,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         // end temp hack
       }
         break;
-        
-      case EO_INI_SRC_CRW: NoArg(); // init m_pSrcCrw etc
-        dLU0(eCode);
-        //m_pDevSrcIxt->m_aCrw = nullptr;
-        //m_pDevSrcIxt->m_pCrwBuffer =
-        //  m_xpOperandA.bIsNull() ?
-        //    nullptr : _pCrwBuffer(* m_xpOperandA);
-        //m_pDevSrcIxt->m_nRows =
-        //  m_pDevSrcIxt->m_pCrwBuffer ?
-        //    m_pDevSrcIxt->m_pCrwBuffer->nRowCount() : 0;
-        break;
-        
+                
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
       case EO_IXT_DEL_ENT: NoArg(); // delete current entry from indexTree

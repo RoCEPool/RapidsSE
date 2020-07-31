@@ -571,10 +571,7 @@ void LogicUnit::vGenerateQuery111(void)
   
   // reset
   m_i_Code = 0;
-  
-  // initialize srcCrw etc
-  vAddCode(EO_INI_SRC_CRW);
-  
+    
   // init m_pPot pix from streamDef out
   vAddCode(EO_INI_PIX_DEFOUT);
   
