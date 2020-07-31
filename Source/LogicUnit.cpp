@@ -1462,18 +1462,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // finalise
-      case EO_FIN_TRANSFORM: NoArg(); // standard finalise
-        dLU0(eCode);
-        //m_pPot        = nullptr;
-        m_pDstRowSlab = nullptr;
-
-        //m_nSrcRows    = C_UNKNOWN;
-        m_pDevSrcRsb->m_aRsb     = nullptr;
-        m_pDevSrcRsb->m_pRowSlab = nullptr;
-        break;
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // initialise
       case EO_INI_PIX_DEFOUT: NoArg(); // init m_pPot pix from stream def out
         dLU0(eCode);
