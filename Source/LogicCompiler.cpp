@@ -54,10 +54,66 @@ LogicCompiler::~LogicCompiler(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* extract EO_fragments                                                       */
+/*----------------------------------------------------------------------------*/
 void LogicCompiler::vExtract(void)
 {
   _static_
+  
+  vTrace("LogicCompiler::vExtract -- Extract EO_Fragments\n"_Stz);
+  File* pFile = new File(nullptr);
+  
+  bool b = pFile->bOpenRead("../Source/LogicUnit.cpp"_Stz);
+  RASSERT(b);
+  
+  s4K sTok;
+  while (pFile->bNextLiteTok(sTok)) {
+    
+    if (sTok.bSame("//+ExtractBegin"_Stz)) {
+      vTrace("Found +ExtractBegin\n"_Stz);
+      while (bExtractAll(pFile))
+        {;}
+    }
+  }
+  
+  pFile->vClose();
+  
+  delete pFile;
 }
+
+/*----------------------------------------------------------------------------*/
+/* extract all EO_fragments                                                   */
+/*----------------------------------------------------------------------------*/
+bool LogicCompiler::bExtractAll(File* pFile)
+{
+  _static_
+  
+  s4K sTok;
+  while (pFile->bNextLiteTok(sTok)) {
+    if (sTok.bSame("case"_Stz)) {
+      bool b = pFile->bNextLiteTok(sTok);
+      vExtractFragment(pFile);
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an EO_fragment                                                     */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::vExtractFragment(File* pFile)
+{
+  _static_
+  
+  s4K sTok;
+  bool b = pFile->bNextLiteTok(sTok);
+  vTrace("Fragment %s\n"_Stz,sTok.szStz());
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

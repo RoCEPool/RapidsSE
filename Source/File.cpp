@@ -520,10 +520,14 @@ bool File::bNextLiteTok(Stz *szDst)
     if ('/' == cNextChar) {
       *az++ = '/';
       *az++ = '/';
-      do {
+      for (;;) {
         cNextChar = getc(m_aFile);
+        if ('\n' == cNextChar) {
+          ungetc(cNextChar,m_aFile);
+          break;
+        }
         *az++ = cNextChar;
-      } while ('\n' != cNextChar);
+      }
       *az = '\0';
       return true;
     }
