@@ -233,6 +233,10 @@ namespace Expressions
     Timer      m_oTimer;
     AggTimer   m_oAggTimer;
 
+    i8         m_nPtns;
+    i8         m_iHash;
+    i8         m_i_Ptn;
+    i8         m_i_Slot;
 
 
     i8         m_iSql;

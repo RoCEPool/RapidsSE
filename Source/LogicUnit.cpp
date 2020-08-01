@@ -54,7 +54,13 @@ LogicUnit::LogicUnit(Task* pTask)
   m_aeCode  = nullptr;
   m_aaeRstk = nullptr;
   m_aiDstk  = nullptr;
+  
   m_iCtr0   = 0;
+
+  m_nPtns   = AM::nPartitions();
+  m_iHash   = PtnLib::iResetRunning();
+  m_i_Ptn   = 0;
+  m_i_Slot  = 0;
 
   m_iSql    = C_UNKNOWN;
   
@@ -655,17 +661,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
 
-  
-
   IndexDef* pIndexDef = nullptr;
   i8* aPayload = nullptr;
 
   
-
-  i8 nPtns = AM::nPartitions();
-  i8 iHash = PtnLib::iResetRunning();
-  i8 i_Ptn = 0;
-  i8 i_Slot = AM::pTaskJob()->m_pOp->nPartition();
 
   
   // -- -- -- -- -- -- -- -- -- --
@@ -674,6 +673,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   m_aiDstk  = &m_iaDataStack[0];
   *m_aiDstk = 0xFFFFFFFFFFFFFFFF;
 
+  m_i_Slot  = AM::pTaskJob()->m_pOp->nPartition();
   
   // temp
   m_aaDev[0] = m_pDevTmpIxt->m_pIdxTree;
@@ -803,7 +803,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         SP_Dte spDate;
         iTopA = *(m_aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("[Q%lld.%lld] %s\n"_Stz,m_iSql,i_Slot,spDate.sz(iTopA));
+        vTrace("[Q%lld.%lld] %s\n"_Stz,m_iSql,m_i_Slot,spDate.sz(iTopA));
       }
 #endif
         break;
@@ -823,13 +823,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_HSH_ADD_HASHI: NoArg(); // add hash of top int to running hash
         iTopA = *(m_aiDstk--);
         iRes = HshLib::iHash((byte*)&iTopA,sizeof(w8));
-        iHash += iRes;
-        dLU3(eCode,iTopA,iRes,iHash);
+        m_iHash += iRes;
+        dLU3(eCode,iTopA,iRes,m_iHash);
         break;
         
       case EO_HSH_RESET: NoArg(); // reset hash
         dLU0(eCode);
-        iHash = 0;
+        m_iHash = 0;
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1022,25 +1022,25 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // partitioning
-      case EO_PTN_CALC: NoArg(); // calculate i_Ptn using running iHash
+      case EO_PTN_CALC: NoArg(); // calculate m_i_Ptn using running m_iHash
         dLU0(eCode);
-        i_Ptn = PtnLib::iPartition(iHash,nPtns);
+        m_i_Ptn = PtnLib::iPartition(m_iHash,m_nPtns);
         break;
 
-      case EO_PTN_PUSH: NoArg(); // push i_Ptn
-        dLU1(eCode,i_Ptn);
-        *(++m_aiDstk) = i_Ptn;
+      case EO_PTN_PUSH: NoArg(); // push m_i_Ptn
+        dLU1(eCode,m_i_Ptn);
+        *(++m_aiDstk) = m_i_Ptn;
         break;
 
-      case EO_PTN_RESET: NoArg(); // reset running iHash
+      case EO_PTN_RESET: NoArg(); // reset running m_iHash
         dLU0(eCode);
-        iHash = PtnLib::iResetRunning();
+        m_iHash = PtnLib::iResetRunning();
         break;
 
-      case EO_PTN_RUNNING: NoArg(); // mix top into running iHash
+      case EO_PTN_RUNNING: NoArg(); // mix top into running m_iHash
         iTopA = *(m_aiDstk--);
         dLU0(eCode);
-        PtnLib::vRunning(&iHash,iTopA);
+        PtnLib::vRunning(&m_iHash,iTopA);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1073,7 +1073,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PRINT: NoArg(); // print top
         iTopA = *(m_aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("[Q%lld.%lld] %lld\n"_Stz,m_iSql,i_Slot,iTopA);
+        vTrace("[Q%lld.%lld] %lld\n"_Stz,m_iSql,m_i_Slot,iTopA);
         break;
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1099,7 +1099,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(m_aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("[Q%lld.%lld] %lls\n"_Stz,m_iSql,i_Slot,iTopA);
+        vTrace("[Q%lld.%lld] %lls\n"_Stz,m_iSql,m_i_Slot,iTopA);
 #endif
         break;
         
@@ -1107,7 +1107,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(m_aiDstk--);
         dLU1(eCode,iTopA);
-        vTrace("[Q%lld,%lld] %lls\n"_Stz,m_iSql,i_Slot,(m_aiDstk-iTopA/8));
+        vTrace("[Q%lld,%lld] %lls\n"_Stz,m_iSql,m_i_Slot,(m_aiDstk-iTopA/8));
         m_aiDstk -= (iTopA/8) + 1;
 #endif
         break;
@@ -1192,8 +1192,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
               
       case EO_SLOT: NoArg(); // sleep for top seconds
-        dLU1(eCode,i_Slot);
-        *(++m_aiDstk) = i_Slot;
+        dLU1(eCode,m_i_Slot);
+        *(++m_aiDstk) = m_i_Slot;
         break;
               
       case EO_TRACEOFF: NoArg(); // set trace
@@ -1737,8 +1737,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_RSB_DST_NEW: NoArg(); // create new destination rsb
         dLU0(eCode);
-        //ASSERT(0 == i_Ptn);
-        m_pDevDstRsb->m_aRsb = m_xpPot->aNewDstRsb(i_Ptn,&m_pDevDstRsb->m_pRowSlab);
+        //ASSERT(0 == m_i_Ptn);
+        m_pDevDstRsb->m_aRsb = m_xpPot->aNewDstRsb(m_i_Ptn,&m_pDevDstRsb->m_pRowSlab);
         break;
 
       case EO_RSB_DST_RESET: NoArg(); // reset dst rowslab
