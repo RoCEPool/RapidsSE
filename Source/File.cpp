@@ -472,10 +472,19 @@ bool File::bNextLiteTok(Stz *szDst)
 
   char *az = szDst->azChar();
 
-  // skip spaces
   char cNextChar = getc(m_aFile);
-  while (' ' == cNextChar)
-    cNextChar = getc(m_aFile);
+  
+  // skip spaces
+  if (' ' == cNextChar) {
+    while (' ' == cNextChar) {
+      *az++ = cNextChar;
+      cNextChar = getc(m_aFile);
+    }
+    ungetc(cNextChar,m_aFile);
+    *az = '\0';
+    return true;
+  }
+  
   ungetc(cNextChar,m_aFile);
 
   for (;;) {
