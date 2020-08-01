@@ -1464,23 +1464,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(eCode);
         m_oEntWrk.vReset();
         break;
-      
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // initialise
-      case EO_POT_INI_DEFOUT: NoArg(); // init m_pPot pix from stream def out
-//        dLU0(eCode);
-//        if (! m_bPixInited) {
-//          m_bPixInited = true;
-//          m_xpStreamDefOut->vToStreamPix(&m_oStreamPix,true);
-//          m_xpPot->vStreamPix(&m_oStreamPix);
-//          
-//          // temp hack by alka
-//          //if (! m_pDevTmpIxt->m_pIdxTree &&  ! m_xpIndexTree.bIsNull())
-//          //  m_pDevTmpIxt->m_pIdxTree = * m_xpIndexTree;
-//          // end temp hack
-//        }
-        break;
-                        
+                              
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
       case EO_IXT_DEL_ENT: NoArg(); // delete current entry from indexTree
