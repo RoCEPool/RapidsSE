@@ -1273,8 +1273,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++m_aiDstk) = iRes;
         break;//+endCase
         
-      case EO_ENT_PUSHREF: NEVER_REACH; // not yet implemented
-        
+      case EO_ENT_PUSHREF: NoArg(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
       case EO_ENT_LESS: NoArg(); // test if m_pEnt.key <  m_oEntWrk.key
@@ -1372,7 +1374,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         m_oEntWrk.vBuffer(iTopA);
         break;//+endCase
 
-      case EO_ENTWRK_POPREF: NEVER_REACH; // not yet implemented
+      case EO_ENTWRK_POPREF: NoArg(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
 
       case EO_ENTWRK_PRINT: NoArg(); // print m_oEntWrk
 #ifdef WITH_TRACE_LOGICUNIT
@@ -1711,10 +1715,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         m_pDevSrcRsb->m_aRsb = m_pDevSrcRsb->m_pRowSlab->aRsbByOfs(iTopA);
         break;//+endCase
 
-      case EO_RSB_ALT_BEGIN:    NEVER_REACH; // not yet implemented
-      case EO_RSB_ALT_NEXT:     NEVER_REACH; // not yet implemented
-      case EO_RSB_ALT_PUSHOFS:  NEVER_REACH; // not yet implemented
-      case EO_RSB_ALT_SETBYOFS: NEVER_REACH; // not yet implemented
+      case EO_RSB_ALT_BEGIN: NoArg(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_RSB_ALT_NEXT: NoArg(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_RSB_ALT_PUSHOFS: NoArg(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_RSB_ALT_SETBYOFS: NoArg(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb operators
