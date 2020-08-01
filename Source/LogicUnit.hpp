@@ -127,6 +127,7 @@ namespace Expressions
   {
     s32  m_sLabel;
     bool m_bDefined;
+    bool m_bSubroutine;
     union {
       i8 m_i_Code;
       i8 m_i_Chain;

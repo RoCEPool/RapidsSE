@@ -118,6 +118,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_nLabels = 0;
   for (i8 i_Label = 0; i_Label < C_LOGIC_LABEL; i_Label++) {
     m_xaJumpLabel[i_Label].m_bDefined = false;
+    m_xaJumpLabel[i_Label].m_bSubroutine = false;
     m_xaJumpLabel[i_Label].m_i_Chain = C_UNKNOWN;
   }
 
@@ -274,19 +275,22 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
     i_Label = iAddLabel(szLabelNm,false);
     m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
     vAddCodeArg(eCode,C_UNKNOWN);
-    //vPrintLabels();
-    return;
   }
-
+  else
   if (m_xaJumpLabel[i_Label].m_bDefined) {
     vAddCodeArg(eCode,m_xaJumpLabel[i_Label].m_i_Code);
-    return;
+  }
+  else {
+    i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Chain;
+    m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
+    vAddCodeArg(eCode,i_Chain);
   }
   
-  i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Chain;
-  m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
-  vAddCodeArg(eCode,i_Chain);
+  if (EO_CALL == eCode)
+    m_xaJumpLabel[i_Label].m_bSubroutine = true;
+
   //vPrintLabels();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,25 +433,18 @@ void LogicUnit::vPrintLabels(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-#ifdef WITH_TRACE_LOGICUNIT
+//#ifdef WITH_TRACE_LOGICUNIT
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    vTrace("  %s %lld: %4lld\n"_Stz,
+    vTrace("  %s %lld: %4lld%s\n"_Stz,
            m_xaJumpLabel[i_Label].m_sLabel.szStz(),
-           m_xaJumpLabel[i_Label].m_bDefined,
-           m_xaJumpLabel[i_Label].m_i_Chain);
-#endif
+           (i8)m_xaJumpLabel[i_Label].m_bDefined,
+           m_xaJumpLabel[i_Label].m_i_Chain,
+           m_xaJumpLabel[i_Label].m_bSubroutine ? " subroutine" : "");
+//#endif
   
 }
 
 
-
-// calc L AGAIN 1 ;
-
-// calc 10 L AGAIN dup . dec dup jt aAGAIN ;
-
-// calc 1 L AGAIN dup . inc dup 10 > jf AGAIN;
-
-// calc 1 L AGAIN call PRINT inc dup 10 > jf AGAIN ret L PRINT dup . ret;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -531,6 +528,8 @@ void LogicUnit::vDumpCode(void)
   }
   
   vDebugPoint();
+  
+  vPrintLabels();
 //#endif
   
 }
