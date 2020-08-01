@@ -550,20 +550,32 @@ i8 LogicCompiler::iToSource2(i8 nCodes, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
+  s4K sReplaced;
+  char caInt[32];
+  
   v_preliminary();
   
   for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
     
     eEO eCode = eaCode[i_Code];
 
-    char* azFrag = (char*)gszaEoFragments[eCode];
-
     StrLib::vAppendString(&m_azSrcCrs,"    // ");
     StrLib::vAppendString(&m_azSrcCrs,aEO[eCode]->azChar());
     StrLib::vAppendString(&m_azSrcCrs,":\n");
     StrLib::vAppendString(&m_azSrcCrs,"       ");
 
-    StrLib::vAppendString(&m_azSrcCrs,azFrag);
+    char* azFrag = (char*)gszaEoFragments[eCode];
+    
+    if (EA_INT == EoArgs[eCode].m_eArgument) {
+      i8 iArg = *(i8*)&eaCode[i_Code+1];
+      StrLib::bReplace(sReplaced.azChar(),azFrag,
+                       "iArg",StrLib::wToString(iArg,caInt));
+      StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
+    }
+    else {
+      StrLib::vAppendString(&m_azSrcCrs,azFrag);
+    }
+    
     
     i_Code += EoArgs[eCode].m_nArgBytes;
   }
