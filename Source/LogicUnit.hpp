@@ -229,6 +229,10 @@ namespace Expressions
     i8*        m_aiDstk;
 
     i8         m_iCtr0;
+  
+    Timer      m_oTimer;
+    AggTimer   m_oAggTimer;
+
 
 
     i8         m_iSql;

@@ -667,9 +667,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 i_Ptn = 0;
   i8 i_Slot = AM::pTaskJob()->m_pOp->nPartition();
 
-  Timer oTimer;
-  AggTimer oAggTimer;
-
   
   // -- -- -- -- -- -- -- -- -- --
   m_aeCode  = & m_eaCode[0];
@@ -1142,37 +1139,37 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // counter
+      // timer
       case EO_TMR_START: NoArg(); // timer start
         dLU0(eCode);
-        oTimer.vStart();
+        m_oTimer.vStart();
         break;
         
       case EO_TMR_NSECS: NoArg(); // push timer nanoseconds
-        iRes = oTimer.iNanoseconds();
+        iRes = m_oTimer.iNanoseconds();
         dLU1(eCode,iRes);
         *(++m_aiDstk) = iRes;
         break;
         
       case EO_TMR_UPDATE: NoArg(); // timer update
         dLU0(eCode);
-        oTimer.vUpdate();
+        m_oTimer.vUpdate();
         break;
         
       case EO_TMR_AGG_ADD: NoArg(); // add timer to agg timer
         dLU0(eCode);
-        oAggTimer.vAdd(&oTimer);
+        m_oAggTimer.vAdd(&m_oTimer);
         break;
         
       case EO_TMR_AGG_NSECS: NoArg(); // push agg nanoseconds
-        iRes = oAggTimer.iNanoseconds();
+        iRes = m_oAggTimer.iNanoseconds();
         dLU1(eCode,iRes);
         *(++m_aiDstk) = iRes;
         break;
         
       case EO_TMR_AGG_RESET: NoArg(); // reset agg timer
         dLU0(eCode);
-        oTimer.vReset();
+        m_oTimer.vReset();
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
