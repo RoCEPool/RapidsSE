@@ -1022,7 +1022,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PRINT: NoArg(); // print top
         iTopA = *(aiDstk--);
         dLU1(EO_PRINT,iTopA);
-        vTrace("[Q%lld.%lld] %lld\n"_Stz,m_iSql,m_i_Slot,iTopA);
+        //vTrace("[Q%lld.%lld] %lld\n"_Stz,m_iSql,m_i_Slot,iTopA);
+        printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
         break;//+endCase
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

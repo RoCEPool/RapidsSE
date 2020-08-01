@@ -11,6 +11,8 @@
 char gcaEoFragments[C_128K];
 Stz* gszaEoFragments[EO_ENUMS];
 
+extern EoArg EoArgs[];
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -137,7 +139,7 @@ void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs)
     StrLib::vAppendString(aazCrs,sTok.azChar());
   }
   
-  StrLib::vAppendChar(aazCrs,'$');
+  //StrLib::vAppendChar(aazCrs,'\n');
   StrLib::vAppendChar(aazCrs,'\n');
   StrLib::vAppendChar(aazCrs,'\0');
 }
@@ -339,6 +341,9 @@ void LogicCompiler::v_preliminary(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
+  "\n  /*====================================================================*/"
+  "\n  /* Dynamically Generated Code                                         */"
+  "\n  /*====================================================================*/"
   "\n"
   "\n  #include <tcclib.h>" // include libc header for TCC
   "\n"
@@ -354,6 +359,16 @@ void LogicCompiler::v_preliminary(void)
   "\n"
   "\n  enum eDO { DO_A=0, DO_B, DO_C };"
   "\n"
+  "\n  #define NoArg() "
+  "\n  #define GetArg(x) "
+  "\n  #define dLU0(x) "
+  "\n  #define dLU1(x,a) "
+  "\n  #define dLU2(x,a,b) "
+  "\n  #define dLU3(x,a,b,c) "
+  "\n"
+  "\n  /*--------------------------------------------------------------------*/"
+  "\n  /* rlu compute function                                               */"
+  "\n  /*--------------------------------------------------------------------*/"
   "\n  i8 iDynCompute(void* aRLU)" // the dynamic function is: iDynCompute()
   "\n  { "
   "\n    i8 iaDataStack[C_LOGIC_STACK];"
@@ -364,6 +379,8 @@ void LogicCompiler::v_preliminary(void)
   "\n    i8 iTopB;"
   "\n    i8 iRes;"
   "\n    struct Qty xRes;"
+  "\n"
+  "\n"
   "";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
@@ -381,6 +398,11 @@ void LogicCompiler::v_concluding(void)
   "\n    // hazard"
   "\n    return 0;"
   "\n  }"
+  "\n"
+  "\n  /*====================================================================*/"
+  "\n  /* end                                                                */"
+  "\n  /*====================================================================*/"
+  "\n"
   "";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
@@ -534,17 +556,11 @@ i8 LogicCompiler::iToSource2(i8 nCodes, eEO eaCode[])
     
     eEO eCode = eaCode[i_Code];
 
-    switch (eCode) {
-        
-      case EO_INTEGER:  v_EO_INTEGER  (i_Code,eaCode); break;
-      case EO_ADD:      v_EO_ADD      (i_Code,eaCode); break;
-      case EO_MULTIPLY: v_EO_MULTIPLY (i_Code,eaCode); break;
-      case EO_PRINT:    v_EO_PRINT    (i_Code,eaCode); break;
-      case EO_RETURN:   v_EO_RETURN   (i_Code,eaCode); break;
+    char* azFrag = (char*)gszaEoFragments[eCode];
 
-      default:
-        break;
-    }
+    StrLib::vAppendString(&m_azSrcCrs,azFrag);
+    
+    i_Code += EoArgs[eCode].m_nArgBytes;
   }
 
   v_concluding();
