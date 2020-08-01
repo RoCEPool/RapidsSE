@@ -485,113 +485,116 @@ bool File::bNextLiteTok(Stz *szDst)
     return true;
   }
   
-  ungetc(cNextChar,m_aFile);
-
-  for (;;) {
-
-    // get next char
-    cNextChar = getc(m_aFile);
+  if ('\n' == cNextChar) {
+    *az++ = '\n';
+    *az = '\0';
+    return true;
+  }
     
-    if (' ' == cNextChar) {
-      *az = '\0';
-      return true;
-    }
-    
-    if ((char)EOF == cNextChar) {
-      if (az == szDst->azChar()) {
-        *az = '\0';
-        return false;
-      }
-      else {
-        ungetc(EOF,m_aFile);
-        *az = '\0';
-        return true;
-      }
-    }
-    
-    if ('/' == cNextChar) {
-      cNextChar = getc(m_aFile);
-      if ('/' == cNextChar) {
-        *az++ = '/';
-        *az++ = '/';
-        do {
-          cNextChar = getc(m_aFile);
-          *az++ = cNextChar;
-        } while ('\n' != cNextChar);
-        *az = '\0';
-        return true;
-      }
-
-      ungetc(cNextChar,m_aFile);
-      cNextChar = '/';
-    }
-    
-    if ('/' == cNextChar) {
-      cNextChar = getc(m_aFile);
-      if ('*' == cNextChar) {
-        char cPrevChar;
-        do {
-          cPrevChar = cNextChar;
-          cNextChar = getc(m_aFile);
-          *az++ = cNextChar;
-        } while (! ('*' == cPrevChar && '/' == cNextChar) );
-
-        *az = '\0';
-        return true;
-      }
-      ungetc(cNextChar,m_aFile);
-      cNextChar = '/';
-    }
-
-    if ('"' == cNextChar) {
-      
-      for (;;) {
-        *az++ = cNextChar;
-        cNextChar = getc(m_aFile);
-        if ('\\' == cNextChar) {
-          *az++ = cNextChar;
-          cNextChar = getc(m_aFile);
-          *az++ = cNextChar;
-          continue;
-        }
-        if ('"' == cNextChar) {
-          *az++ = cNextChar;
-          *az = '\0';
-          return true;
-        }
-      }
-      
-    }
-    
-    if ('\'' == cNextChar) {
-      for (;;) {
-        *az++ = cNextChar;
-        cNextChar = getc(m_aFile);
-        if ('\\' == cNextChar) {
-          *az++ = cNextChar;
-          cNextChar = getc(m_aFile);
-          *az++ = cNextChar;
-          continue;
-        }
-        if ('\\' == cNextChar) {
-          *az++ = cNextChar;
-          *az = '\0';
-          return true;
-        }
-      }
-    }
-    
-    if ('\n' == cNextChar) {
-      *az++ = '\n';
-      *az = '\0';
-      return true;
-    }
-    
-    *az++ = cNextChar;
-
+  if (' ' == cNextChar) {
+    *az = '\0';
+    ungetc(cNextChar,m_aFile);
+    return true;
   }
   
-  return false;
+  if ('\n' == cNextChar) {
+    *az = '\0';
+    ungetc(cNextChar,m_aFile);
+    return true;
+  }
+  
+  if ((char)EOF == cNextChar) {
+    if (az == szDst->azChar()) {
+      *az = '\0';
+      return false;
+    }
+    else {
+      ungetc(EOF,m_aFile);
+      *az = '\0';
+      return true;
+    }
+  }
+  
+  if ('/' == cNextChar) {
+    cNextChar = getc(m_aFile);
+    if ('/' == cNextChar) {
+      *az++ = '/';
+      *az++ = '/';
+      do {
+        cNextChar = getc(m_aFile);
+        *az++ = cNextChar;
+      } while ('\n' != cNextChar);
+      *az = '\0';
+      return true;
+    }
+
+    ungetc(cNextChar,m_aFile);
+    cNextChar = '/';
+  }
+  
+  if ('/' == cNextChar) {
+    cNextChar = getc(m_aFile);
+    if ('*' == cNextChar) {
+      char cPrevChar;
+      do {
+        cPrevChar = cNextChar;
+        cNextChar = getc(m_aFile);
+        *az++ = cNextChar;
+      } while (! ('*' == cPrevChar && '/' == cNextChar) );
+
+      *az = '\0';
+      return true;
+    }
+    ungetc(cNextChar,m_aFile);
+    cNextChar = '/';
+  }
+
+  if ('"' == cNextChar) {
+    
+    for (;;) {
+      *az++ = cNextChar;
+      cNextChar = getc(m_aFile);
+      if ('\\' == cNextChar) {
+        *az++ = cNextChar;
+        cNextChar = getc(m_aFile);
+        *az++ = cNextChar;
+        continue;
+      }
+      if ('"' == cNextChar) {
+        *az++ = cNextChar;
+        *az = '\0';
+        return true;
+      }
+    }
+    
+  }
+  
+  if ('\'' == cNextChar) {
+    for (;;) {
+      *az++ = cNextChar;
+      cNextChar = getc(m_aFile);
+      if ('\\' == cNextChar) {
+        *az++ = cNextChar;
+        cNextChar = getc(m_aFile);
+        *az++ = cNextChar;
+        continue;
+      }
+      if ('\\' == cNextChar) {
+        *az++ = cNextChar;
+        *az = '\0';
+        return true;
+      }
+    }
+  }
+       
+  do {
+    *az++ = cNextChar;
+    cNextChar = getc(m_aFile);
+  } while (' ' != cNextChar && '\n' != cNextChar && EOF != cNextChar);
+  ungetc(cNextChar,m_aFile);
+
+  *az = '\0';
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

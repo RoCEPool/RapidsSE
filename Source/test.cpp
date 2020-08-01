@@ -1909,7 +1909,7 @@ void vTest31(void)
         vTrace(">>%s<<\n"_Stz,sTok.szStz());
         if (! (pFile->bNextLiteTok(sTok)))
           goto L_Close;
-      } while (! sTok.bSame("break;//+endCase\n"_Stz));
+      } while (! sTok.bSame("break;//+endCase"_Stz));
       vTrace(">>%s<<\n"_Stz,sTok.szStz());
       goto L_Close;
     }
