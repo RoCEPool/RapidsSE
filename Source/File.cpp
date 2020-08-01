@@ -525,6 +525,23 @@ bool File::bNextLiteTok(Stz *szDst)
       ungetc(cNextChar,m_aFile);
       cNextChar = '/';
     }
+    
+    if ('/' == cNextChar) {
+      cNextChar = getc(m_aFile);
+      if ('*' == cNextChar) {
+        char cPrevChar;
+        do {
+          cPrevChar = cNextChar;
+          cNextChar = getc(m_aFile);
+          *az++ = cNextChar;
+        } while (! ('*' == cPrevChar && '/' == cNextChar) );
+
+        *az = '\0';
+        return true;
+      }
+      ungetc(cNextChar,m_aFile);
+      cNextChar = '/';
+    }
 
     if ('"' == cNextChar) {
       

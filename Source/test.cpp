@@ -1901,9 +1901,22 @@ void vTest31(void)
   RASSERT(b);
   
   s4K sTok;
-  while (pFile->bNextLiteTok(sTok))
-    vTrace(">>%s<<\n"_Stz,sTok.szStz());
+  while (pFile->bNextLiteTok(sTok)) {
+    
+    if (sTok.bSame("EO_ADD:"_Stz)) {
+      
+      do {
+        vTrace(">>%s<<\n"_Stz,sTok.szStz());
+        if (! (pFile->bNextLiteTok(sTok)))
+          goto L_Close;
+      } while (! sTok.bSame("break;//+endCase\n"_Stz));
+      vTrace(">>%s<<\n"_Stz,sTok.szStz());
+      goto L_Close;
+    }
   
+  }
+  
+  L_Close:
   pFile->vClose();
   
   delete pFile;
