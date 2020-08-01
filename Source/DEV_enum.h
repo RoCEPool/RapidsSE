@@ -13,6 +13,15 @@ enum eDEV_MAP
   DEV_MAP_TRV_NEXT
 };
 
+enum eDEV_RLU
+{
+  RLU_ADD = 0,
+  RLU_DIVIDE,
+  RLU_MODULO,
+  RLU_MULTIPLY,
+  RLU_NEGATE,
+  RLU_SUBTRACT
+};
 
 // CRW_SRC
 

@@ -100,7 +100,7 @@ LogicUnit::LogicUnit(Task* pTask)
 
   m_i_Code = 0;
   
-  m_pDevRlu    = new DevRlu;
+  m_pDevRlu    = new DevRLU;
   m_pDevDstRsb = new DevRSB;
   m_pDevSrcRsb = new DevRSB;
   m_pDevAltRsb = new DevRSB;
