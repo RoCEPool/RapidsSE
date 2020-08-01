@@ -63,6 +63,8 @@ void LogicCompiler::vExtract(void)
 {
   _static_
   
+  return;
+  
   vTrace("LogicCompiler::vExtract -- Extract EO_Fragments\n"_Stz);
   File* pFile = new File(nullptr);
   
@@ -78,6 +80,8 @@ void LogicCompiler::vExtract(void)
         {;}
     }
   }
+  
+  vTrace("Fragments:: %s\n"_Stz,gcaEoFragments);
   
   pFile->vClose();
   
@@ -114,8 +118,17 @@ void LogicCompiler::vExtractFragment(File* pFile)
   bool b = pFile->bNextLiteTok(sTok);
   
   StrLib::vStrip(sTok.azChar(),':');
-  vTrace("Fragment %s [%lld]\n"_Stz,sTok.szStz(),(i8)eFindEO(sTok));
+  
+  i8 i_EO = eFindEO(sTok);
+  vTrace("Fragment %s [%lld]\n"_Stz,sTok.szStz(),i_EO);
 
+  for (;;) {
+    b = pFile->bNextLiteTok(sTok);
+    if (!b || sTok.bSame("break;//+endCase"_Stz))
+      return;
+    
+    StrLib::vConcat(gcaEoFragments,sTok.azChar());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
