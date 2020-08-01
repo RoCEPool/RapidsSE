@@ -53,8 +53,9 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_aeCode = nullptr;
   m_aiDstk = nullptr;
+  m_iCtr0  = 0;
 
-  m_iSql        = C_UNKNOWN;
+  m_iSql   = C_UNKNOWN;
   
   m_bPixInited  = false;
   // m_oStreamPix
@@ -653,10 +654,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
 
-  m_aeCode = & m_eaCode[0];
-  
-  m_aiDstk = &m_iaDataStack[0];
-  *m_aiDstk = 0xFFFFFFFFFFFFFFFF;
   
   eEO** aaeRstk = &m_aaReturnStack[0];
 
@@ -664,7 +661,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8* aPayload = nullptr;
 
   
-  i8 iCtr0 = 0;
 
   i8 nPtns = AM::nPartitions();
   i8 iHash = PtnLib::iResetRunning();
@@ -673,6 +669,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
   Timer oTimer;
   AggTimer oAggTimer;
+
+  
+  // -- -- -- -- -- -- -- -- -- --
+  m_aeCode  = & m_eaCode[0];
+  m_aiDstk  = &m_iaDataStack[0];
+  *m_aiDstk = 0xFFFFFFFFFFFFFFFF;
+
   
   // temp
   m_aaDev[0] = m_pDevTmpIxt->m_pIdxTree;
@@ -759,23 +762,23 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // counter
       case EO_CTR_0_DEC: NoArg(); // dec counter 0
-        iCtr0--;
-        dLU1(eCode,iCtr0);
+        m_iCtr0--;
+        dLU1(eCode,m_iCtr0);
         break;
 
       case EO_CTR_0_INC: NoArg(); // inc counter 0
-        iCtr0++;
-        dLU1(eCode,iCtr0);
+        m_iCtr0++;
+        dLU1(eCode,m_iCtr0);
         break;
 
       case EO_CTR_0_POP: NoArg(); // pop counter 0
-        iCtr0 = *(m_aiDstk--);
-        dLU1(eCode,iCtr0);
+        m_iCtr0 = *(m_aiDstk--);
+        dLU1(eCode,m_iCtr0);
         break;
 
       case EO_CTR_0_PUSH: NoArg(); // push counter 0
-        dLU1(eCode,iCtr0);
-        *(++m_aiDstk) = iCtr0;
+        dLU1(eCode,m_iCtr0);
+        *(++m_aiDstk) = m_iCtr0;
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
