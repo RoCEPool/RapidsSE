@@ -100,6 +100,7 @@ LogicUnit::LogicUnit(Task* pTask)
 
   m_i_Code = 0;
   
+  m_pDevRlu    = new DevRlu;
   m_pDevDstRsb = new DevRSB;
   m_pDevSrcRsb = new DevRSB;
   m_pDevAltRsb = new DevRSB;
@@ -142,7 +143,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   
   if (! m_xpTimer.bIsNull())
     delete *m_xpTimer;
-  
+
+  delete m_pDevRlu;
+
   delete m_pDevDstRsb;
   delete m_pDevSrcRsb;
   delete m_pDevAltRsb;

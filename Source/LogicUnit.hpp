@@ -250,6 +250,8 @@ namespace Expressions
     EntWrk     m_oEntWrk;
 
 
+    DevRLU*    m_pDevRlu;
+
     //==========================
     DevRSB*    m_pDevDstRsb;
   
