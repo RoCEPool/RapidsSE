@@ -225,8 +225,9 @@ namespace Expressions
   
   
     eEO*       m_aeCode;
+    eEO**      m_aaeRstk;
     i8*        m_aiDstk;
-  
+
     i8         m_iCtr0;
 
 

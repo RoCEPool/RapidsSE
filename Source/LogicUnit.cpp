@@ -51,11 +51,12 @@ LogicUnit::LogicUnit(Task* pTask)
   MemLib::vZero(&m_xRLU,sizeof(m_xRLU),CN_LOGICUNIT);
   MemLib::vZero(&m_aaDev,sizeof(m_aaDev),CN_LOGICUNIT);
   
-  m_aeCode = nullptr;
-  m_aiDstk = nullptr;
-  m_iCtr0  = 0;
+  m_aeCode  = nullptr;
+  m_aaeRstk = nullptr;
+  m_aiDstk  = nullptr;
+  m_iCtr0   = 0;
 
-  m_iSql   = C_UNKNOWN;
+  m_iSql    = C_UNKNOWN;
   
   m_bPixInited  = false;
   // m_oStreamPix
@@ -655,7 +656,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   bool bCopyPtnHash   = false;
 
   
-  eEO** aaeRstk = &m_aaReturnStack[0];
 
   IndexDef* pIndexDef = nullptr;
   i8* aPayload = nullptr;
@@ -673,6 +673,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   
   // -- -- -- -- -- -- -- -- -- --
   m_aeCode  = & m_eaCode[0];
+  m_aaeRstk = &m_aaReturnStack[0];
   m_aiDstk  = &m_iaDataStack[0];
   *m_aiDstk = 0xFFFFFFFFFFFFFFFF;
 
@@ -1124,20 +1125,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_CALL: GetArg(iArg); // call subroutine at location
         dLU1(eCode,iArg);
 
-        * (aaeRstk++) = m_aeCode;
+        * (m_aaeRstk++) = m_aeCode;
         m_aeCode = & m_eaCode[iArg];
         break;
 
       case EO_RETURN: NoArg(); // return from subroutine and
         dLU0(eCode);
-        if (aaeRstk == &m_aaReturnStack[0]) {
+        if (m_aaeRstk == &m_aaReturnStack[0]) {
           iRes = *(m_aiDstk--);
 #ifdef WITH_TRACE_LOGICUNIT
           vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,m_iSql);
 #endif
           return iRes;
         }
-        m_aeCode = * (--aaeRstk);
+        m_aeCode = * (--m_aaeRstk);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
