@@ -177,7 +177,7 @@ i8 LogicCompiler::iCompile(RLU* aRLU, i8 nCodes, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
-  i8 iResult = iToSource(nCodes,eaCode);
+  i8 iResult = iToSource2(nCodes,eaCode);
   
   vAcquire();
   
@@ -492,6 +492,39 @@ void LogicCompiler::v_EO_RETURN(i8& ri_Code, eEO eaCode[])
 /* to source code                                                             */
 /*----------------------------------------------------------------------------*/
 i8 LogicCompiler::iToSource(i8 nCodes, eEO eaCode[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  v_preliminary();
+  
+  for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
+    
+    eEO eCode = eaCode[i_Code];
+
+    switch (eCode) {
+        
+      case EO_INTEGER:  v_EO_INTEGER  (i_Code,eaCode); break;
+      case EO_ADD:      v_EO_ADD      (i_Code,eaCode); break;
+      case EO_MULTIPLY: v_EO_MULTIPLY (i_Code,eaCode); break;
+      case EO_PRINT:    v_EO_PRINT    (i_Code,eaCode); break;
+      case EO_RETURN:   v_EO_RETURN   (i_Code,eaCode); break;
+
+      default:
+        break;
+    }
+  }
+
+  v_concluding();
+  
+  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
+
+  return 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* to source code                                                             */
+/*----------------------------------------------------------------------------*/
+i8 LogicCompiler::iToSource2(i8 nCodes, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   

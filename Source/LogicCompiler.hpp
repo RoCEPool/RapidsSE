@@ -58,7 +58,8 @@ namespace Expressions
     void v_EO_RETURN  (i8& ri_Code, eEO eaCode[]);
   
     i8 iToSource(i8 nCodes, eEO eaCode[]);
-  
+    i8 iToSource2(i8 nCodes, eEO eaCode[]);
+
     Footer* aFooter(void);
   };
   
