@@ -68,30 +68,30 @@ char* StrLib::wAllocate(const char* s)
 /*----------------------------------------------------------------------------*/
 /* append character to end of workspace                                       */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendChar(char** pz, char cChar)
+void StrLib::vAppendChar(char** aazCrs, char cChar)
 {
   _static_
   
-  *(*pz)++ = cChar;
+  *(*aazCrs)++ = cChar;
   
-  *(*pz) = '\0';
+  *(*aazCrs) = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
 /* append number in decimal to workspace                                      */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendDecimal(char** pz, i8 iNumber)
+void StrLib::vAppendDecimal(char** aazCrs, i8 iNumber)
 {
   _static_
   
   if (iNumber < 0) {
-    *((*pz)++) = '-';
+    *((*aazCrs)++) = '-';
     
     iNumber *= -1;
   }
   
-  char* pBwd = *pz;
-  char* pFwd = *pz;
+  char* pBwd = *aazCrs;
+  char* pFwd = *aazCrs;
   
   
   i8 v = iNumber;
@@ -113,18 +113,18 @@ void StrLib::vAppendDecimal(char** pz, i8 iNumber)
   
   *pEnd = '\0';
   
-  *pz = pEnd;
+  *aazCrs = pEnd;
 }
 
 /*----------------------------------------------------------------------------*/
 /* vAppendHex: append number in hexadecimal to workspace                      */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendHex(char** pz, i8 iNumber)
+void StrLib::vAppendHex(char** aazCrs, i8 iNumber)
 {
   _static_
   
-  char* pBwd = *pz;
-  char* pFwd = *pz;
+  char* pBwd = *aazCrs;
+  char* pFwd = *aazCrs;
   
   i8 v = iNumber;
   
@@ -144,13 +144,13 @@ void StrLib::vAppendHex(char** pz, i8 iNumber)
 
   *pEnd = '\0';
 
-  *pz = pEnd;
+  *aazCrs = pEnd;
 }
 
 /*----------------------------------------------------------------------------*/
 /* vAppendPad: pad to given length                                            */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendPad(char** pz, const char* pString, i8 nLength)
+void StrLib::vAppendPad(char** aazCrs, const char* pString, i8 nLength)
 {
   _static_
   
@@ -159,40 +159,40 @@ void StrLib::vAppendPad(char** pz, const char* pString, i8 nLength)
   if (nCurLen >= nLength)
     return;
   
-  char *z = *pz;
+  char *z = *aazCrs;
   
   while (nCurLen++ < nLength)
     *z++ = ' ';
   *z = '\0';
   
-  *pz = z;
+  *aazCrs = z;
 }
 
 /*----------------------------------------------------------------------------*/
 /* vAppendNull: append null character to end of workspace                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendNull(char** pz)
+void StrLib::vAppendNull(char** aazCrs)
 {
   _static_
   
-  *(*pz)++ = '\0';
+  *(*aazCrs)++ = '\0';
 }
   
 /*----------------------------------------------------------------------------*/
 /* vAppendString: append string to workspace                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendString(char** pz, const char* pString)
+void StrLib::vAppendString(char** aazCrs, const char* pString)
 {
   _static_
   
-  char *z = *pz;
+  char *z = *aazCrs;
   
   while (*pString)
     *z++ = *pString++;
   
   *z = '\0';
   
-  *pz = z;
+  *aazCrs = z;
 }
 
 /*----------------------------------------------------------------------------*/

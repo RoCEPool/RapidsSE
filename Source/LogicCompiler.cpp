@@ -57,31 +57,36 @@ LogicCompiler::~LogicCompiler(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* extract EO_fragments                                                       */
+/* extract EO_ code fragments                                                 */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vExtract(void)
 {
   _static_
+    
+  vTrace("LogicCompiler::vExtract -- Extract EO_ Fragments\n"_Stz);
   
-  return;
-  
-  vTrace("LogicCompiler::vExtract -- Extract EO_Fragments\n"_Stz);
   File* pFile = new File(nullptr);
   
   bool b = pFile->bOpenRead("../Source/LogicUnit.cpp"_Stz);
   RASSERT(b);
+  
+  char* azCrs = gcaEoFragments;
   
   s4K sTok;
   while (pFile->bNextLiteTok(sTok)) {
     
     if (sTok.bSame("//+ExtractBegin"_Stz)) {
       vTrace("Found +ExtractBegin\n"_Stz);
-      while (bExtractAll(pFile))
+      while (bExtractAll(pFile,&azCrs))
         {;}
     }
   }
   
   vTrace("Fragments:: %s\n"_Stz,gcaEoFragments);
+  
+  for (i8 i_EO = 1; i_EO < EO_ENUMS; i_EO++) {
+    vTrace("Fragment:: %s\n%s\n"_Stz,aEO[i_EO],gszaEoFragments[i_EO]);
+  }
   
   pFile->vClose();
   
@@ -91,7 +96,7 @@ void LogicCompiler::vExtract(void)
 /*----------------------------------------------------------------------------*/
 /* extract all EO_fragments                                                   */
 /*----------------------------------------------------------------------------*/
-bool LogicCompiler::bExtractAll(File* pFile)
+bool LogicCompiler::bExtractAll(File* pFile, char** aazCrs)
 {
   _static_
   
@@ -99,7 +104,7 @@ bool LogicCompiler::bExtractAll(File* pFile)
   while (pFile->bNextLiteTok(sTok)) {
     if (sTok.bSame("case"_Stz)) {
       bool b = pFile->bNextLiteTok(sTok);
-      vExtractFragment(pFile);
+      vExtractFragment(pFile,aazCrs);
       return true;
     }
   }
@@ -110,7 +115,7 @@ bool LogicCompiler::bExtractAll(File* pFile)
 /*----------------------------------------------------------------------------*/
 /* extract an EO_fragment                                                     */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vExtractFragment(File* pFile)
+void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs)
 {
   _static_
   
@@ -122,13 +127,19 @@ void LogicCompiler::vExtractFragment(File* pFile)
   i8 i_EO = eFindEO(sTok);
   vTrace("Fragment %s [%lld]\n"_Stz,sTok.szStz(),i_EO);
 
+  gszaEoFragments[i_EO] = (Stz*)*aazCrs;
+  
   for (;;) {
     b = pFile->bNextLiteTok(sTok);
     if (!b || sTok.bSame("break;//+endCase"_Stz))
-      return;
+      break;
     
-    StrLib::vConcat(gcaEoFragments,sTok.azChar());
+    StrLib::vAppendString(aazCrs,sTok.azChar());
   }
+  
+  StrLib::vAppendChar(aazCrs,'$');
+  StrLib::vAppendChar(aazCrs,'\n');
+  StrLib::vAppendChar(aazCrs,'\0');
 }
 
 /*----------------------------------------------------------------------------*/
