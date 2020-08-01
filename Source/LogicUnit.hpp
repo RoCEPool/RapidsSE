@@ -392,6 +392,7 @@ namespace Expressions
     i8   iCompute(i8 nOuterArgs, i8 iArg0);
 
     i8   iCompute2(i8 nOuterArgs, i8 iArg0);
+    i8   iCompute3(i8 nOuterArgs, i8 iArg0);
 
 
   private:
