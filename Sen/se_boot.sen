@@ -314,8 +314,10 @@ assert::stack_0
 //............................................................................//
 
 "Creating default folders" .verbose
-
 makeDefaultFolders
+
+"Extracting EO_ fragments" .verbose
+LogicCompiler[].extract
 
 assert::stack_0
 

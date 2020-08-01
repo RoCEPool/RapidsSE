@@ -29,6 +29,8 @@ namespace Expressions
 
     LogicCompiler(void);
    ~LogicCompiler(void) noexcept(false);
+  
+    static void vExtract(void);
 
     i8 iCall(void);
     i8 iCompile(RLU* aRLU, i8 nCodes, eEO eaCode[]);
