@@ -62,6 +62,8 @@ LogicUnit::LogicUnit(Task* pTask)
   m_i_Ptn   = 0;
   m_i_Slot  = 0;
 
+  m_bTrace  = false;
+
   m_iSql    = C_UNKNOWN;
   
   m_bPixInited  = false;
@@ -538,25 +540,25 @@ void LogicUnit::vDumpCode(void)
 #if 0
 
   #define dLU3(eCode,iA,iB,iC) \
-    if (bTrace) \
+    if (m_bTrace) \
       vTrace("%lld : %12s %lld %lld %lld\n"_Stz,\
              nDifference(m_eaCode,m_aeCode-1),\
              aEO[eCode],iA,iB,iC);
 
   #define dLU2(eCode,iA,iB) \
-    if (bTrace) \
+    if (m_bTrace) \
       vTrace("%lld : %12s %lld %lld\n"_Stz,\
              nDifference(m_eaCode,m_aeCode-1),\
              aEO[eCode],iA,iB);
 
   #define dLU1(eCode,iA) \
-    if (bTrace) \
+    if (m_bTrace) \
       vTrace("%lld : %12s %lld\n"_Stz,\
              nDifference(m_eaCode,m_aeCode-1),\
              aEO[eCode],iA);
 
   #define dLU0(eCode) \
-    if (bTrace) \
+    if (m_bTrace) \
       vTrace("%lld : %12s\n"_Stz,\
              nDifference(m_eaCode,m_aeCode-1),\
              aEO[eCode]);
@@ -656,7 +658,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   SP_Ent spEnt;
   Ent* aEnt;
 
-  bool bTrace = false;
 
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
@@ -1090,7 +1091,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes = StrLib::iCompare(azTopA,azTopB);
         m_aiDstk -= (iTopB/8) + 2;
         *(++m_aiDstk) = iRes;
-        if (bTrace)
+        if (m_bTrace)
           vDebugPoint();
       }
         break;
@@ -1197,11 +1198,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;
               
       case EO_TRACEOFF: NoArg(); // set trace
-        bTrace = 0;
+        m_bTrace = 0;
         break;
         
       case EO_TRACEON: NoArg(); // set trace
-        bTrace = 1;
+        m_bTrace = 1;
         break;
         
       case EO_NOOP: NoArg(); // no op
@@ -1248,7 +1249,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        m_aiDstk += nSize / 8;
 //        *(++m_aiDstk) = nSize;
         S_PushStr(azArg);
-        if (bTrace)
+        if (m_bTrace)
           vDebugPoint();
       }
         break;
@@ -1347,7 +1348,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        m_aiDstk++;
 //        *(++m_aiDstk) = nSize;
         S_PushStr((char*)acFlipped);
-        if (bTrace)
+        if (m_bTrace)
           vDebugPoint();
       }
         break;
@@ -1439,7 +1440,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         S_UseStr(azSrc);
         m_oEntWrk.vAppendElementStz(m_pDevSrcRsb->m_aRsb,(Stz*)azSrc);
         S_UseEnd();
-        if (bTrace)
+        if (m_bTrace)
           vDebugPoint();
       }
         break;
@@ -1683,7 +1684,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        m_aiDstk++;
 //        *(++m_aiDstk) = nSize;
         S_PushStr(azSrc);
-        if (bTrace)
+        if (m_bTrace)
           vDebugPoint();
       }
         break;
@@ -1822,7 +1823,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         S_PopStr(azDst);
         m_pDevDstRsb->m_pRowSlab->vDepositString_end(nSize);
 //        m_aiDstk--;
-        if (bTrace)
+        if (m_bTrace)
           vDebugPoint();
       }
         break;
@@ -1852,7 +1853,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        m_aiDstk++;
 //        *(++m_aiDstk) = nSize;
         S_PushStr(azSrc);
-        if (bTrace)
+        if (m_bTrace)
           vDebugPoint();
       }
         break;

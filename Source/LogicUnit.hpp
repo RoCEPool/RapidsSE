@@ -238,6 +238,8 @@ namespace Expressions
     i8         m_i_Ptn;
     i8         m_i_Slot;
 
+    bool       m_bTrace;
+
 
     i8         m_iSql;
     
