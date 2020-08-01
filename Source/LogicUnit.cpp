@@ -538,12 +538,100 @@ void LogicUnit::vDumpCode(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-
 /*============================================================================*/
 /* - - - - - - - - - - - - - RELATIONAL LOGIC UNIT - - - - - - - - - - - - - -*/
 /*============================================================================*/
 
+#if 0
+
+  #define dLU3(eCode,iA,iB,iC) \
+    if (m_bTrace) \
+      vTrace("%lld : %12s %lld %lld %lld\n"_Stz,\
+             nDifference(m_eaCode,m_aeCode-1),\
+             aEO[eCode],iA,iB,iC);
+
+  #define dLU2(eCode,iA,iB) \
+    if (m_bTrace) \
+      vTrace("%lld : %12s %lld %lld\n"_Stz,\
+             nDifference(m_eaCode,m_aeCode-1),\
+             aEO[eCode],iA,iB);
+
+  #define dLU1(eCode,iA) \
+    if (m_bTrace) \
+      vTrace("%lld : %12s %lld\n"_Stz,\
+             nDifference(m_eaCode,m_aeCode-1),\
+             aEO[eCode],iA);
+
+  #define dLU0(eCode) \
+    if (m_bTrace) \
+      vTrace("%lld : %12s\n"_Stz,\
+             nDifference(m_eaCode,m_aeCode-1),\
+             aEO[eCode]);
+
+  #define GetArg(iArg) \
+    ASSERT(8 == EoArgs[eCode].m_nArgBytes); \
+    iArg = * (i8*)m_aeCode; \
+    m_aeCode += 8;
+
+  #define GetStr(iArg) \
+    ASSERT(-1 == EoArgs[eCode].m_nArgBytes); \
+    iArg = (i8)m_aeCode; \
+    while (*(char*)m_aeCode) m_aeCode++; \
+    m_aeCode++;
+
+  #define NoArg() \
+    ASSERT(0 == EoArgs[eCode].m_nArgBytes);
+
+#else
+
+  #define dLU3(eCode,iA,iB,iC)
+  #define dLU2(eCode,iA,iB)
+  #define dLU1(eCode,iA)
+  #define dLU0(eCode)
+
+  #define GetArg(iArg) \
+    iArg = * (i8*)m_aeCode; \
+    m_aeCode += 8;
+
+  #define GetStr(iArg) \
+    iArg = (i8)m_aeCode; \
+    while (*(char*)m_aeCode) m_aeCode++; \
+    m_aeCode++;
+
+  #define NoArg()
+
+#endif
+
+
+#define S_PushStr(__azStr) \
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,m_aiDstk)+8);*/ \
+  nSize = StrLib::nSize((char*)__azStr); \
+  azDst = (char*)(++m_aiDstk); \
+  StrLib::vCopy(azDst,(char*)__azStr); \
+  m_aiDstk += (nSize / 8) + 1; \
+  *(++m_aiDstk) = nSize; \
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,m_aiDstk)+8); */
+
+#define S_PopStr(__azDst) \
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,m_aiDstk)+8);*/ \
+  nSize = *(m_aiDstk--); \
+  azSrc = (char*)(m_aiDstk - ((nSize / 8) + 1)); \
+  StrLib::vCopy(__azDst,azSrc); \
+  m_aiDstk -= (nSize / 8) + 2; \
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,m_aiDstk)+8);*/
+
+#define S_UseStr(__azStz) \
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,m_aiDstk)+8);*/ \
+  nSize = *(m_aiDstk--); \
+  __azStz = (char*)(m_aiDstk - ((nSize / 8) + 1));
+
+#define S_UseEnd() \
+  m_aiDstk -= (nSize / 8) + 2; \
+  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,m_aiDstk)+8);*/
+
+
+#define JumpTo(__iArg) \
+  m_aeCode = & m_eaCode[__iArg];
 
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
@@ -750,63 +838,63 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // jump operators
       case EO_JMP: GetArg(iArg); // jump to location
         dLU1(EO_JMP,iArg);
-        m_aeCode = & m_eaCode[iArg];
+        JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
         break;//+endCase
         
       case EO_JMP_FALSE: GetArg(iArg); // pop top and jump to location if false
         dLU1(EO_JMP_FALSE,iArg);
         iTopA = *(m_aiDstk--);
         if (! iTopA)
-          m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
         break;//+endCase
         
       case EO_JMP_TRUE: GetArg(iArg); // pop top and jump to location if true
         dLU1(EO_JMP_TRUE,iArg);
         iTopA = *(m_aiDstk--);
         if (iTopA)
-          m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
         break;//+endCase
         
       case EO_JMP_LESS: GetArg(iArg); // pop top and jump to location if <
         dLU1(EO_JMP_LESS,iArg);
         iTopA = *(m_aiDstk--);
         if (iTopA < 0)
-          m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_LESSEQUAL: GetArg(iArg); // pop top and jump to location if <=
         dLU1(EO_JMP_LESSEQUAL,iArg);
         iTopA = *(m_aiDstk--);
         if (iTopA <=0)
-          m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_EQUAL: GetArg(iArg); // pop top and jump to location if ==
         dLU1(EO_JMP_EQUAL,iArg);
         iTopA = *(m_aiDstk--);
         if (iTopA == 0)
-          m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_NOTEQUAL: GetArg(iArg); // pop top and jump to location if !=
         dLU1(EO_JMP_NOTEQUAL,iArg);
         iTopA = *(m_aiDstk--);
         if (iTopA != 0)
-          m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_GREATEREQUAL: GetArg(iArg); // pop top and jump to location if >=
         dLU1(EO_JMP_GREATEREQUAL,iArg);
         iTopA = *(m_aiDstk--);
         if (iTopA >= 0)
-          m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_GREATER: GetArg(iArg); // pop top and jump to location if >
         dLU1(EO_JMP_GREATER,iArg);
         iTopA = *(m_aiDstk--);
         if (iTopA > 0)
-          m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
