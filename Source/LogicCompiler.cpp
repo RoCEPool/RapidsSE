@@ -8,6 +8,8 @@
 #include "libtcc.h"
 #endif
 
+char gcaEoFragments[C_128K];
+Stz* gszaEoFragments[EO_ENUMS];
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -110,10 +112,25 @@ void LogicCompiler::vExtractFragment(File* pFile)
   
   s4K sTok;
   bool b = pFile->bNextLiteTok(sTok);
-  vTrace("Fragment %s\n"_Stz,sTok.szStz());
+  
+  StrLib::vStrip(sTok.azChar(),':');
+  vTrace("Fragment %s [%lld]\n"_Stz,sTok.szStz(),(i8)eFindEO(sTok));
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* extract an EO_fragment                                                     */
+/*----------------------------------------------------------------------------*/
+eEO LogicCompiler::eFindEO(Stz* szEOname)
+{
+  _static_
+  
+  for (i8 i_EO = 1; i_EO < EO_ENUMS; i_EO++)
+    if (StrLib::bSame(aEO[i_EO]->azChar(), szEOname->azChar()))
+      return (eEO)i_EO;
+  
+  return EO_NONE;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

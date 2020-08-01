@@ -327,7 +327,7 @@ static Stz* aEO[]
   /*    */ "EO_COL_DST_RESET"_Stz,
   /*    */ "EO_COL_SRC_PUSH"_Stz,
   /*    */ "EO_COL_SRC_PUSHSTR"_Stz,
-  /*    */ "EO_COL_SRC_PUSH"_Stz,
+  /*    */ "EO_COL_ALT_PUSH"_Stz,
   
   // crw operators
   /*    */ "EO_CRW_SRC_BEGIN"_Stz,

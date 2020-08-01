@@ -34,6 +34,8 @@ namespace Expressions
     static bool bExtractAll(File* pFile);
     static void vExtractFragment(File* pFile);
 
+    static eEO  eFindEO(Stz* szEOname);
+
     i8 iCall(void);
     i8 iCompile(RLU* aRLU, i8 nCodes, eEO eaCode[]);
   
