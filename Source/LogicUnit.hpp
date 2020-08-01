@@ -226,7 +226,6 @@ namespace Expressions
   
   
     eEO*       m_aeCode;
-    eEO**      m_aaeRstk;
 
     i8         m_iCtr0;
   
@@ -320,9 +319,6 @@ namespace Expressions
 
     i8     m_i_Code;
     eEO    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
-
-    i8     m_iaDataStack[C_LOGIC_STACK];
-    eEO*   m_aaReturnStack[C_LOGIC_STACK];
 
     i8        m_nLabels;
     JumpLabel m_xaJumpLabel[C_LOGIC_LABEL];

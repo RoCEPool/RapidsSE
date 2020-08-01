@@ -52,7 +52,6 @@ LogicUnit::LogicUnit(Task* pTask)
   MemLib::vZero(&m_aaDev,sizeof(m_aaDev),CN_LOGICUNIT);
   
   m_aeCode  = nullptr;
-  m_aaeRstk = nullptr;
   
   m_iCtr0   = 0;
 
@@ -110,8 +109,6 @@ LogicUnit::LogicUnit(Task* pTask)
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_LOGICUNIT);
-  MemLib::vZero(m_iaDataStack,sizeof(m_iaDataStack),CN_LOGICUNIT);
-  MemLib::vZero(m_aaReturnStack,sizeof(m_aaReturnStack),CN_LOGICUNIT);
 #endif
   
   m_nLabels = 0;
@@ -603,30 +600,30 @@ void LogicUnit::vDumpCode(void)
 
 
 #define S_PushStr(__azStr) \
-  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);*/ \
+  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
   nSize = StrLib::nSize((char*)__azStr); \
   azDst = (char*)(++aiDstk); \
   StrLib::vCopy(azDst,(char*)__azStr); \
   aiDstk += (nSize / 8) + 1; \
   *(++aiDstk) = nSize; \
-  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8); */
+  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8); */
 
 #define S_PopStr(__azDst) \
-  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);*/ \
+  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
   nSize = *(aiDstk--); \
   azSrc = (char*)(aiDstk - ((nSize / 8) + 1)); \
   StrLib::vCopy(__azDst,azSrc); \
   aiDstk -= (nSize / 8) + 2; \
-  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);*/
+  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
 
 #define S_UseStr(__azStz) \
-  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);*/ \
+  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
   nSize = *(aiDstk--); \
   __azStz = (char*)(aiDstk - ((nSize / 8) + 1));
 
 #define S_UseEnd() \
   aiDstk -= (nSize / 8) + 2; \
-  /*MemLib::vDumpWords(m_iaDataStack,nDifference(m_iaDataStack,aiDstk)+8);*/
+  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
 
 
 #define JumpTo(__iArg) \
@@ -667,12 +664,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8* aPayload = nullptr;
 
   
+  i8     iaDataStack[C_LOGIC_STACK];
+  eEO*   aaReturnStack[C_LOGIC_STACK];
 
   
   // -- -- -- -- -- -- -- -- -- --
   m_aeCode  = & m_eaCode[0];
-  m_aaeRstk = &m_aaReturnStack[0];
-  aiDstk  = &m_iaDataStack[0];
+  eEO** aaeRstk = &aaReturnStack[0];
+  aiDstk  = &iaDataStack[0];
   *aiDstk = 0xFFFFFFFFFFFFFFFF;
 
   m_i_Slot  = AM::pTaskJob()->m_pOp->nPartition();
@@ -694,11 +693,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     
 #ifdef WITH_TRACE_LOGICUNIT
     // check for stack growth
-    if (aiDstk >= &m_iaDataStack[C_LOGIC_STACK-4])
+    if (aiDstk >= &iaDataStack[C_LOGIC_STACK-4])
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "LogicUnit data stack exhausted\n"_Stz);
     
-    i8 nStkUse = nDifference(aiDstk,m_iaDataStack);
+    i8 nStkUse = nDifference(aiDstk,iaDataStack);
     i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
     if (iStkPct > 80)
       vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
@@ -1072,20 +1071,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_CALL: GetArg(iArg); // call subroutine at location
         dLU1(EO_CALL,iArg);
 
-        * (m_aaeRstk++) = m_aeCode;
+        * (aaeRstk++) = m_aeCode;
         m_aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_RETURN: NoArg(); // return from subroutine and
         dLU0(EO_RETURN);
-        if (m_aaeRstk == &m_aaReturnStack[0]) {
+        if (aaeRstk == &aaReturnStack[0]) {
           iRes = *(aiDstk--);
 #ifdef WITH_TRACE_LOGICUNIT
           vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,m_iSql);
 #endif
           return iRes;
         }
-        m_aeCode = * (--m_aaeRstk);
+        m_aeCode = * (--aaeRstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1894,7 +1893,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     
   }
   
-  return m_iaDataStack[0];
+  return iaDataStack[0];
 }
 
 /*============================================================================*/
