@@ -558,6 +558,11 @@ i8 LogicCompiler::iToSource2(i8 nCodes, eEO eaCode[])
 
     char* azFrag = (char*)gszaEoFragments[eCode];
 
+    StrLib::vAppendString(&m_azSrcCrs,"    // ");
+    StrLib::vAppendString(&m_azSrcCrs,aEO[eCode]->azChar());
+    StrLib::vAppendString(&m_azSrcCrs,":\n");
+    StrLib::vAppendString(&m_azSrcCrs,"       ");
+
     StrLib::vAppendString(&m_azSrcCrs,azFrag);
     
     i_Code += EoArgs[eCode].m_nArgBytes;
