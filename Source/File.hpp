@@ -73,6 +73,7 @@ namespace Resources
     bool bIsOpen(void);
     bool bIsStdin(void);
     bool bIsStdout(void);
+    bool bNextLiteTok(Stz* szDst);
     bool bOpenAppend(Stz* szFilePath);
     bool bOpenMode(Stz* szFilePath, Stz* aOpenMode);
     bool bOpenRead(Stz* szFilePath);

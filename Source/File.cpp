@@ -462,6 +462,93 @@ bool File::bIsStdout(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next lite/simple token                                                 */
+/*----------------------------------------------------------------------------*/
+bool File::bNextLiteTok(Stz *szDst)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  m_oSysCall.vClear();
+
+  char *az = szDst->azChar();
+
+  // skip spaces
+  char cNextChar = getc(m_aFile);
+  while (' ' == cNextChar)
+    cNextChar = getc(m_aFile);
+  ungetc(cNextChar,m_aFile);
+
+  for (;;) {
+
+    // get next char
+    cNextChar = getc(m_aFile);
+    
+    if (' ' == cNextChar) {
+      *az = '\0';
+      return true;
+    }
+    
+    if ((char)EOF == cNextChar) {
+      if (az == szDst->azChar()) {
+        *az = '\0';
+        return false;
+      }
+      else {
+        ungetc(EOF,m_aFile);
+        *az = '\0';
+        return true;
+      }
+    }
+
+    if ('"' == cNextChar) {
+      
+      for (;;) {
+        *az++ = cNextChar;
+        cNextChar = getc(m_aFile);
+        if ('\\' == cNextChar) {
+          *az++ = cNextChar;
+          cNextChar = getc(m_aFile);
+          *az++ = cNextChar;
+          continue;
+        }
+        if ('"' == cNextChar) {
+          *az++ = cNextChar;
+          *az = '\0';
+          return true;
+        }
+      }
+      
+    }
+    
+    if ('\'' == cNextChar) {
+      for (;;) {
+        *az++ = cNextChar;
+        cNextChar = getc(m_aFile);
+        if ('\\' == cNextChar) {
+          *az++ = cNextChar;
+          cNextChar = getc(m_aFile);
+          *az++ = cNextChar;
+          continue;
+        }
+        if ('\\' == cNextChar) {
+          *az++ = cNextChar;
+          *az = '\0';
+          return true;
+        }
+      }
+    }
+    
+    if ('\n' == cNextChar) {
+      *az++ = '\n';
+      *az = '\0';
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* open file for append                                                       */
 /*----------------------------------------------------------------------------*/
 bool File::bOpenAppend(Stz* szFilePath)
