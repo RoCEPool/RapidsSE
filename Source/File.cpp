@@ -499,6 +499,23 @@ bool File::bNextLiteTok(Stz *szDst)
         return true;
       }
     }
+    
+    if ('/' == cNextChar) {
+      cNextChar = getc(m_aFile);
+      if ('/' == cNextChar) {
+        *az++ = '/';
+        *az++ = '/';
+        do {
+          cNextChar = getc(m_aFile);
+          *az++ = cNextChar;
+        } while ('\n' != cNextChar);
+        *az = '\0';
+        return true;
+      }
+
+      ungetc(cNextChar,m_aFile);
+      cNextChar = '/';
+    }
 
     if ('"' == cNextChar) {
       
@@ -543,6 +560,9 @@ bool File::bNextLiteTok(Stz *szDst)
       *az = '\0';
       return true;
     }
+    
+    *az++ = cNextChar;
+
   }
   
   return false;

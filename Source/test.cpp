@@ -1894,6 +1894,19 @@ void vTest30(void)
 /*----------------------------------------------------------------------------*/
 void vTest31(void)
 {
+  vTrace("Test31 -- Lite tokenise of file\n"_Stz);
+  File* pFile = new File(nullptr);
+  
+  bool b = pFile->bOpenRead("../Source/LogicUnit.cpp"_Stz);
+  RASSERT(b);
+  
+  s4K sTok;
+  while (pFile->bNextLiteTok(sTok))
+    vTrace(">>%s<<\n"_Stz,sTok.szStz());
+  
+  pFile->vClose();
+  
+  delete pFile;
 }
 
 /*----------------------------------------------------------------------------*/
