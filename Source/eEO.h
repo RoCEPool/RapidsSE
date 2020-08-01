@@ -84,14 +84,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_CALL,             // call subroutine at location
   /*    */ EO_RETURN,           // return from subroutine and
 
-  // timer
-  /*    */ EO_TMR_START,        // timer start
-  /*    */ EO_TMR_NSECS,        // push timer nanoseconds
-  /*    */ EO_TMR_UPDATE,       // timer update
-  /*    */ EO_TMR_AGG_ADD,      // add timer to agg timer
-  /*    */ EO_TMR_AGG_NSECS,    // push agg nanoseconds
-  /*    */ EO_TMR_AGG_RESET,    // reset agg timer
-
   // misc
   /*    */ EO_ASSERT,           // pop top and assert
   /*    */ EO_BREAKPOINT,       // break point
@@ -112,6 +104,14 @@ enum eEO : u1 // expression operators
   // hashing
   /*    */ EO_HSH_ADD_HASHI,    // add hash of top int to running hash
   /*    */ EO_HSH_RESET,        // reset hash
+
+  // timer
+  /*    */ EO_TMR_START,        // timer start
+  /*    */ EO_TMR_NSECS,        // push timer nanoseconds
+  /*    */ EO_TMR_UPDATE,       // timer update
+  /*    */ EO_TMR_AGG_ADD,      // add timer to agg timer
+  /*    */ EO_TMR_AGG_NSECS,    // push agg nanoseconds
+  /*    */ EO_TMR_AGG_RESET,    // reset agg timer
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complex eo
@@ -296,14 +296,6 @@ static Stz* aEO[]
   /*    */ "EO_CALL"_Stz,
   /*    */ "EO_RETURN"_Stz,
 
-  // timer
-  /*    */ "EO_TMR_START"_Stz,
-  /*    */ "EO_TMR_NSECS"_Stz,
-  /*    */ "EO_TMR_UPDATE"_Stz,
-  /*    */ "EO_TMR_AGG_ADD"_Stz,
-  /*    */ "EO_TMR_AGG_NSECS"_Stz,
-  /*    */ "EO_TMR_AGG_RESET"_Stz,
-
   // misc
   /*    */ "EO_ASSERT"_Stz,
   /*    */ "EO_BREAKPOINT"_Stz,
@@ -324,6 +316,14 @@ static Stz* aEO[]
   // hashing
   /*    */ "EO_HSH_ADD_HASHI"_Stz,
   /*    */ "EO_HSH_RESET"_Stz,
+
+  // timer
+  /*    */ "EO_TMR_START"_Stz,
+  /*    */ "EO_TMR_NSECS"_Stz,
+  /*    */ "EO_TMR_UPDATE"_Stz,
+  /*    */ "EO_TMR_AGG_ADD"_Stz,
+  /*    */ "EO_TMR_AGG_NSECS"_Stz,
+  /*    */ "EO_TMR_AGG_RESET"_Stz,
 
   //----------------------------------------------------------------------------
 
@@ -514,14 +514,6 @@ static EoArg EoArgs[]
   { EA_LABEL,   8 },  // EO_CALL
   { EA_NONE,    0 },  // EO_RETURN
 
-  // timer
-  { EA_NONE,    0 },  // EO_TMR_START
-  { EA_NONE,    0 },  // EO_TMR_NSECS
-  { EA_NONE,    0 },  // EO_TMR_UPDATE
-  { EA_NONE,    0 },  // EO_TMR_AGG_ADD
-  { EA_NONE,    0 },  // EO_TMR_AGG_NSECS
-  { EA_NONE,    0 },  // EO_TMR_AGG_RESET
-
   // misc
   { EA_NONE,    0 },  // EO_ASSERT
   { EA_NONE,    0 },  // EO_BREAKPOINT
@@ -542,6 +534,14 @@ static EoArg EoArgs[]
   // hashing
   { EA_NONE,    0 },  // EO_HSH_ADD_HASHI
   { EA_NONE,    0 },  // EO_HSH_RESET
+
+  // timer
+  { EA_NONE,    0 },  // EO_TMR_START
+  { EA_NONE,    0 },  // EO_TMR_NSECS
+  { EA_NONE,    0 },  // EO_TMR_UPDATE
+  { EA_NONE,    0 },  // EO_TMR_AGG_ADD
+  { EA_NONE,    0 },  // EO_TMR_AGG_NSECS
+  { EA_NONE,    0 },  // EO_TMR_AGG_RESET
 
   //----------------------------------------------------------------------------
   

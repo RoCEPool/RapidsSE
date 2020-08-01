@@ -1088,40 +1088,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // timer
-      case EO_TMR_START: NoArg(); // timer start
-        dLU0(EO_TMR_START);
-        m_oTimer.vStart();
-        break;//+endCase
-        
-      case EO_TMR_NSECS: NoArg(); // push timer nanoseconds
-        iRes = m_oTimer.iNanoseconds();
-        dLU1(EO_TMR_NSECS,iRes);
-        *(++m_aiDstk) = iRes;
-        break;//+endCase
-        
-      case EO_TMR_UPDATE: NoArg(); // timer update
-        dLU0(EO_TMR_UPDATE);
-        m_oTimer.vUpdate();
-        break;//+endCase
-        
-      case EO_TMR_AGG_ADD: NoArg(); // add timer to agg timer
-        dLU0(EO_TMR_AGG_ADD);
-        m_oAggTimer.vAdd(&m_oTimer);
-        break;//+endCase
-        
-      case EO_TMR_AGG_NSECS: NoArg(); // push agg nanoseconds
-        iRes = m_oAggTimer.iNanoseconds();
-        dLU1(EO_TMR_AGG_NSECS,iRes);
-        *(++m_aiDstk) = iRes;
-        break;//+endCase
-        
-      case EO_TMR_AGG_RESET: NoArg(); // reset agg timer
-        dLU0(EO_TMR_AGG_RESET);
-        m_oTimer.vReset();
-        break;//+endCase
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // misc
       case EO_ASSERT: NoArg(); // pop top and assert
         iTopA = *(m_aiDstk--);
@@ -1220,6 +1186,40 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         m_iHash = 0;
         break;//+endCase
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // timer
+      case EO_TMR_START: NoArg(); // timer start
+        dLU0(EO_TMR_START);
+        m_oTimer.vStart();
+        break;//+endCase
+        
+      case EO_TMR_NSECS: NoArg(); // push timer nanoseconds
+        iRes = m_oTimer.iNanoseconds();
+        dLU1(EO_TMR_NSECS,iRes);
+        *(++m_aiDstk) = iRes;
+        break;//+endCase
+        
+      case EO_TMR_UPDATE: NoArg(); // timer update
+        dLU0(EO_TMR_UPDATE);
+        m_oTimer.vUpdate();
+        break;//+endCase
+        
+      case EO_TMR_AGG_ADD: NoArg(); // add timer to agg timer
+        dLU0(EO_TMR_AGG_ADD);
+        m_oAggTimer.vAdd(&m_oTimer);
+        break;//+endCase
+        
+      case EO_TMR_AGG_NSECS: NoArg(); // push agg nanoseconds
+        iRes = m_oAggTimer.iNanoseconds();
+        dLU1(EO_TMR_AGG_NSECS,iRes);
+        *(++m_aiDstk) = iRes;
+        break;//+endCase
+        
+      case EO_TMR_AGG_RESET: NoArg(); // reset agg timer
+        dLU0(EO_TMR_AGG_RESET);
+        m_oTimer.vReset();
+        break;//+endCase
+          
 
       //------------------------------------------------------------------------
       //------------------------------------------------------------------------
