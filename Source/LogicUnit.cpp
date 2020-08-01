@@ -782,59 +782,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // date operators
-      case EO_DTE_NOW: NoArg(); // push current date
-      {
-        Now oNow;
-        Dtm wDte;
-
-        wDte.m_wDte.m_uDay = oNow.m_wTsp.m_uDay;
-        wDte.m_wDte.m_uMonth = oNow.m_wTsp.m_uMonth;
-        wDte.m_wDte.m_uYearDelta = oNow.m_wTsp.m_uYearDelta;
-        wDte.m_wDte.m_uSpare = 0;
-
-        iRes = wDte.iAsI8();
-        dLU1(EO_DTE_NOW,iRes);
-        *(++m_aiDstk) = iRes;
-      }
-        break;//+endCase
-        
-      case EO_DTE_PRINT: NoArg(); // pop top and print as date
-#ifdef WITH_TRACE_LOGICUNIT
-      {
-        SP_Dte spDate;
-        iTopA = *(m_aiDstk--);
-        dLU1(EO_DTE_PRINT,iTopA);
-        vTrace("[Q%lld.%lld] %s\n"_Stz,m_iSql,m_i_Slot,spDate.sz(iTopA));
-      }
-#endif
-        break;//+endCase
-
-      case EO_DTE_YEAR: NoArg(); // pop top, push year of date
-      {
-        Dtm wDte;
-        wDte = *(m_aiDstk--);
-        iRes = wDte.m_wDte.m_uYearDelta + C_YEAR_BASE;
-        dLU2(EO_DTE_YEAR,wDte.iAsI8(),iRes);
-        *(++m_aiDstk) = iRes;
-      }
-        break;//+endCase
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // hashing
-      case EO_HSH_ADD_HASHI: NoArg(); // add hash of top int to running hash
-        iTopA = *(m_aiDstk--);
-        iRes = HshLib::iHash((byte*)&iTopA,sizeof(w8));
-        m_iHash += iRes;
-        dLU3(EO_HSH_ADD_HASHI,iTopA,iRes,m_iHash);
-        break;//+endCase
-        
-      case EO_HSH_RESET: NoArg(); // reset hash
-        dLU0(EO_HSH_RESET);
-        m_iHash = 0;
-        break;//+endCase
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // jump operators
       case EO_JMP: GetArg(iArg); // jump to location
         dLU1(EO_JMP,iArg);
@@ -1215,6 +1162,64 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                "Code compiled with error"_Stz);
         break;//+endCase
+        
+
+      //------------------------------------------------------------------------
+      //------------------------------------------------------------------------
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // date operators
+      case EO_DTE_NOW: NoArg(); // push current date
+      {
+        Now oNow;
+        Dtm wDte;
+
+        wDte.m_wDte.m_uDay = oNow.m_wTsp.m_uDay;
+        wDte.m_wDte.m_uMonth = oNow.m_wTsp.m_uMonth;
+        wDte.m_wDte.m_uYearDelta = oNow.m_wTsp.m_uYearDelta;
+        wDte.m_wDte.m_uSpare = 0;
+
+        iRes = wDte.iAsI8();
+        dLU1(EO_DTE_NOW,iRes);
+        *(++m_aiDstk) = iRes;
+      }
+        break;//+endCase
+        
+      case EO_DTE_PRINT: NoArg(); // pop top and print as date
+#ifdef WITH_TRACE_LOGICUNIT
+      {
+        SP_Dte spDate;
+        iTopA = *(m_aiDstk--);
+        dLU1(EO_DTE_PRINT,iTopA);
+        vTrace("[Q%lld.%lld] %s\n"_Stz,m_iSql,m_i_Slot,spDate.sz(iTopA));
+      }
+#endif
+        break;//+endCase
+
+      case EO_DTE_YEAR: NoArg(); // pop top, push year of date
+      {
+        Dtm wDte;
+        wDte = *(m_aiDstk--);
+        iRes = wDte.m_wDte.m_uYearDelta + C_YEAR_BASE;
+        dLU2(EO_DTE_YEAR,wDte.iAsI8(),iRes);
+        *(++m_aiDstk) = iRes;
+      }
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // hashing
+      case EO_HSH_ADD_HASHI: NoArg(); // add hash of top int to running hash
+        iTopA = *(m_aiDstk--);
+        iRes = HshLib::iHash((byte*)&iTopA,sizeof(w8));
+        m_iHash += iRes;
+        dLU3(EO_HSH_ADD_HASHI,iTopA,iRes,m_iHash);
+        break;//+endCase
+        
+      case EO_HSH_RESET: NoArg(); // reset hash
+        dLU0(EO_HSH_RESET);
+        m_iHash = 0;
+        break;//+endCase
+
 
       //------------------------------------------------------------------------
       //------------------------------------------------------------------------

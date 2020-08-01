@@ -24,15 +24,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_CTR_0_POP,        // pop counter 0
   /*    */ EO_CTR_0_PUSH,       // push counter 0
 
-  // date operators
-  /*    */ EO_DTE_NOW,          // push current date
-  /*    */ EO_DTE_PRINT,        // pop top and print as date
-  /*    */ EO_DTE_YEAR,         // pop top, push year of date
-  
-  // hashing
-  /*    */ EO_HSH_ADD_HASHI,    // add hash of top int to running hash
-  /*    */ EO_HSH_RESET,        // reset hash
-
   // jump operators
   /*    */ EO_JMP,              // jump to location
   /*    */ EO_JMP_FALSE,        // pop top and jump to location if false
@@ -110,6 +101,17 @@ enum eEO : u1 // expression operators
   /*    */ EO_TRACEON,          // set trace on
   /*    */ EO_NOOP,             // no op
   /*    */ EO_ERROR,            // error marker
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // date operators
+  /*    */ EO_DTE_NOW,          // push current date
+  /*    */ EO_DTE_PRINT,        // pop top and print as date
+  /*    */ EO_DTE_YEAR,         // pop top, push year of date
+  
+  // hashing
+  /*    */ EO_HSH_ADD_HASHI,    // add hash of top int to running hash
+  /*    */ EO_HSH_RESET,        // reset hash
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complex eo
@@ -234,15 +236,6 @@ static Stz* aEO[]
   /*    */ "EO_CTR_0_POP"_Stz,
   /*    */ "EO_CTR_0_PUSH"_Stz,
 
-  // date operators
-  /*    */ "EO_DTE_NOW"_Stz,
-  /*    */ "EO_DTE_PRINT"_Stz,
-  /*    */ "EO_DTE_YEAR"_Stz,
-  
-  // hashing
-  /*    */ "EO_HSH_ADD_HASHI"_Stz,
-  /*    */ "EO_HSH_RESET"_Stz,
-
   // jump operators
   /*    */ "EO_JMP"_Stz,
   /*    */ "EO_JMP_FALSE"_Stz,
@@ -320,6 +313,17 @@ static Stz* aEO[]
   /*    */ "EO_TRACEON"_Stz,
   /*    */ "EO_NOOP"_Stz,
   /*    */ "EO_ERROR"_Stz,
+
+  //----------------------------------------------------------------------------
+  
+  // date operators
+  /*    */ "EO_DTE_NOW"_Stz,
+  /*    */ "EO_DTE_PRINT"_Stz,
+  /*    */ "EO_DTE_YEAR"_Stz,
+  
+  // hashing
+  /*    */ "EO_HSH_ADD_HASHI"_Stz,
+  /*    */ "EO_HSH_RESET"_Stz,
 
   //----------------------------------------------------------------------------
 
@@ -450,15 +454,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_CTR_0_POP
   { EA_NONE,    0 },  // EO_CTR_0_PUSH
   
-  // date operators
-  { EA_NONE,    0 },  // EO_DTE_NOW
-  { EA_NONE,    0 },  // EO_DTE_PRINT
-  { EA_NONE,    0 },  // EO_DTE_YEAR
-  
-  // hashing
-  { EA_NONE,    0 },  // EO_HSH_ADD_HASHI
-  { EA_NONE,    0 },  // EO_HSH_RESET
-
   // jump operators
   { EA_LABEL,   8 },  // EO_JMP
   { EA_LABEL,   8 },  // EO_JMP_FALSE
@@ -536,6 +531,17 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_TRACEON
   { EA_NONE,    0 },  // EO_NOOP
   { EA_NONE,    0 },  // EO_ERROR
+
+  //----------------------------------------------------------------------------
+
+  // date operators
+  { EA_NONE,    0 },  // EO_DTE_NOW
+  { EA_NONE,    0 },  // EO_DTE_PRINT
+  { EA_NONE,    0 },  // EO_DTE_YEAR
+  
+  // hashing
+  { EA_NONE,    0 },  // EO_HSH_ADD_HASHI
+  { EA_NONE,    0 },  // EO_HSH_RESET
 
   //----------------------------------------------------------------------------
   
