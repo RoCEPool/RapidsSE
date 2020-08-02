@@ -504,7 +504,7 @@ void LogicCompiler::v_SbrPreliminary(i8 i_Code)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
-  "\n  voic v%s(void"
+  "\n  i8 ai%s(i8* aiDstk)"
   "\n  { "
   "\n"
   "";
@@ -520,6 +520,8 @@ void LogicCompiler::v_SbrConcluding(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
+  "    // ** End **"
+  "\n    return aiDstk;"
   "\n  }"
   "\n"
   "";
