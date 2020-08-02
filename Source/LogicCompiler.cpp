@@ -349,8 +349,10 @@ i8 LogicCompiler::iToSource(i8 nCodes, eEO eaCode[])
   s4K sReplaced;
   char caInt[32];
   
-  v_preliminary();
-  
+  v_DynPreliminary();
+
+  v_FunPreliminary();
+
   for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
     
     eEO eCode = eaCode[i_Code];
@@ -376,7 +378,9 @@ i8 LogicCompiler::iToSource(i8 nCodes, eEO eaCode[])
     i_Code += EoArgs[eCode].m_nArgBytes;
   }
 
-  v_concluding();
+  v_FunConcluding();
+
+  v_DynConcluding();
   
   vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
 
@@ -386,7 +390,7 @@ i8 LogicCompiler::iToSource(i8 nCodes, eEO eaCode[])
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::v_preliminary(void)
+void LogicCompiler::v_DynPreliminary(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -410,15 +414,45 @@ void LogicCompiler::v_preliminary(void)
   "\n"
   "\n  enum eDO { DO_A=0, DO_B, DO_C };"
   "\n"
-  "\n  #define SbrCall() "
-  "\n  #define SbrReturn() "
   "\n  #define ArgNil() "
   "\n  #define ArgGet(x) "
   "\n  #define dLU0(x) "
   "\n  #define dLU1(x,a) "
   "\n  #define dLU2(x,a,b) "
   "\n  #define dLU3(x,a,b,c) "
+  "\n  #define SbrCall() "
+  "\n  #define SbrReturn() "
   "\n"
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::v_DynConcluding(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "\n  /*====================================================================*/"
+  "\n  /* end                                                                */"
+  "\n  /*====================================================================*/"
+  "\n"
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::v_FunPreliminary(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* rlu compute function                                               */"
   "\n  /*--------------------------------------------------------------------*/"
@@ -444,22 +478,34 @@ void LogicCompiler::v_preliminary(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::v_concluding(void)
+void LogicCompiler::v_FunConcluding(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
+
   char* azFrag = (char*)
   "    // ** Hazard **"
   "\n    return 0;"
   "\n  }"
   "\n"
-  "\n  /*====================================================================*/"
-  "\n  /* end                                                                */"
-  "\n  /*====================================================================*/"
-  "\n"
   "";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::v_SbrPreliminary(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::v_SbrConcluding(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 }
 
 /*============================================================================*/

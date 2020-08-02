@@ -50,9 +50,15 @@ namespace Expressions
     void vSymbols(void);
 
     i8 iToSource(i8 nCodes, eEO eaCode[]);
-    void v_preliminary(void);
-    void v_concluding(void);
+    void v_DynPreliminary(void);
+    void v_DynConcluding(void);
 
+    void v_FunPreliminary(void);
+    void v_FunConcluding(void);
+
+    void v_SbrPreliminary(void);
+    void v_SbrConcluding(void);
+  
     Footer* aFooter(void);
   };
   
