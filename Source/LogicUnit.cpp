@@ -409,6 +409,20 @@ Stz* LogicUnit::szFindCode(i8 i_Code)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find code                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::iFindLabel(i8 i_Code)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
+    if (i_Code == m_xaJumpLabel[i_Label].m_i_Code)
+      return i_Code;
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find label                                                                 */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iFindLabel(Stz* szLabelNm)

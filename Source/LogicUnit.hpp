@@ -370,8 +370,9 @@ namespace Expressions
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    i8   iFindLabel(i8 i_Code);
     i8   iFindLabel(Stz* szLabelNm);
-  
+
   private:
     void vAddCode(eEO eCode);
     void vAddCodeArg(eEO eCode, i8 iArg);

@@ -181,8 +181,16 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, RLU* aRLU,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
-  i8 iResult = iToSource(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel);
+  v_DynPreliminary();
   
+  i8 iResult = iToSourceSbr(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel);
+  
+  iResult = iToSourceFun(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel);
+
+  v_DynConcluding();
+  
+  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
+
   vAcquire();
   
   bCompile();
@@ -342,9 +350,9 @@ Qty xMul(i8 iTopA, i8 iTopB)
 //L_Label: ;
 
 /*----------------------------------------------------------------------------*/
-/* to source code                                                             */
+/* to source code (function)                                                  */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSource(LogicUnit* pLogicUnit,
+i8 LogicCompiler::iToSourceFun(LogicUnit* pLogicUnit,
                             i8 nCodes, eEO eaCode[],
                             i8 nLabels, struct JumpLabel xaJumpLabel[])
 {
@@ -353,7 +361,6 @@ i8 LogicCompiler::iToSource(LogicUnit* pLogicUnit,
   s4K sReplaced;
   char caInt[32];
   
-  v_DynPreliminary();
 
   v_FunPreliminary();
 
@@ -384,11 +391,57 @@ i8 LogicCompiler::iToSource(LogicUnit* pLogicUnit,
 
   v_FunConcluding();
 
-  v_DynConcluding();
   
-  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
-
   return 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* to source code (subroutine)                                                */
+/*----------------------------------------------------------------------------*/
+i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
+                               i8 nCodes, eEO eaCode[],
+                               i8 nLabels, struct JumpLabel xaJumpLabel[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  
+  
+   return 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* to source code (subroutine)                                                */
+/*----------------------------------------------------------------------------*/
+bool LogicCompiler::bFindSbr(LogicUnit* pLogicUnit,
+                            i8 nCodes, eEO eaCode[],
+                            i8 nLabels, struct JumpLabel xaJumpLabel[],
+                            i8& ri_From, i8& ri_Start, i8& ri_End)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  for (ri_From++; ri_From < nLabels; ri_From++) {
+    
+    if (xaJumpLabel[ri_From].m_bSubroutine) {
+      
+      ri_Start = xaJumpLabel[ri_From].m_i_Code;
+      
+      for (ri_End = ri_Start; ri_End < nCodes; ri_End++) {
+        
+        i8 i_Label = pLogicUnit->iFindLabel(ri_End);
+        if (C_UNKNOWN != i_Label && xaJumpLabel[i_Label].m_bSubroutine) {
+          ri_End--;
+          return true;
+        }
+      }
+      
+      ri_End = nCodes - 1;
+      return true;
+      
+    }
+  }
+  
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
