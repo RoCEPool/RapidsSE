@@ -428,7 +428,7 @@ i8 LogicCompiler::iToSourceFun(eEO eaCode[],
       continue;
     }
     
-    if (xaJumpLabel[i_Label].m_bSubroutine)
+    if (m_pLogicUnit->bLabelIsSbr(i_Label))
       break;
     
     i_CodeTill++;
@@ -497,14 +497,14 @@ bool LogicCompiler::bFindSbr(eEO eaCode[],
 
   for (ri_Label++; ri_Label < nLabels; ri_Label++) {
     
-    if (xaJumpLabel[ri_Label].m_bSubroutine) {
+    if (m_pLogicUnit->bLabelIsSbr(ri_Label)) {
       
       ri_CodeFrom = xaJumpLabel[ri_Label].m_i_Code;
       
       for (ri_CodeTill = ri_CodeFrom + 1; ri_CodeTill < nCodes; ri_CodeTill++) {
         
         i8 i_Label = m_pLogicUnit->iFindLabel(ri_CodeTill);
-        if (C_UNKNOWN != i_Label && xaJumpLabel[i_Label].m_bSubroutine) {
+        if (C_UNKNOWN != i_Label && m_pLogicUnit->bLabelIsSbr(i_Label)) {
           ri_CodeTill--;
           return true;
         }

@@ -238,6 +238,18 @@ i8 LogicUnit::iFindLabel(Stz* szLabelNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given label a subroutine?                                               */
+/*----------------------------------------------------------------------------*/
+bool LogicUnit::bLabelIsSbr(i8 i_Label)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  bool bIsSbr = m_xaJumpLabel[i_Label].m_bSubroutine;
+  
+  return bIsSbr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return number of labels                                                    */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::nLabels(void)
