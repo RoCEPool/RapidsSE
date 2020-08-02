@@ -466,7 +466,7 @@ i8 LogicCompiler::iToSourceSbr(eEO eaCode[],
     s4K sReplaced;
 
     i8 i_Label = m_pLogicUnit->iFindLabel(i_CodeFrom);
-    sFun = xaJumpLabel[i_Label].m_sLabel;
+    sFun = m_pLogicUnit->szLabelNm(i_Label);
     
     StrLib::vStrip(sFun.azChar(),':');
     
@@ -686,7 +686,7 @@ void LogicCompiler::v_CallSbr(i8 i_Label, struct JumpLabel xaJumpLabel[])
   s32 sFun;
   s4K sReplaced;
 
-  sFun = xaJumpLabel[i_Label].m_sLabel;
+  sFun = m_pLogicUnit->szLabelNm(i_Label);
   
   StrLib::vStrip(sFun.azChar(),':');
   

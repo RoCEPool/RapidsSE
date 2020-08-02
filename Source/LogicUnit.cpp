@@ -259,6 +259,18 @@ i8 LogicUnit::nLabels(void)
   return m_i_Code;
 }
 
+/*----------------------------------------------------------------------------*/
+/* return number of labels                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* LogicUnit::szLabelNm(i8 i_Label)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  Stz* szLblNm = m_xaJumpLabel[i_Label].m_sLabel;
+  
+  return szLblNm;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* -- private ----------------------------------------------------------------*/

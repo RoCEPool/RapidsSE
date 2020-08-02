@@ -344,7 +344,8 @@ namespace Expressions
     i8   iFindLabel(Stz* szLabelNm);
     bool bLabelIsSbr(i8 i_Label);
     i8   nLabels(void);
-  
+    Stz* szLabelNm(i8 i_Label);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vGenCode(i8 iTestNo);
