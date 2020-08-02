@@ -360,6 +360,7 @@ namespace Expressions
     void vGenerateQuery601(void);
 
     void vGenerate100000(void);
+    void vGenerate100001(void);
 
     i8   iTransform(i8 nArgs, i8 iArg0);
   

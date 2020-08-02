@@ -239,6 +239,16 @@
       logicCompiler[].delete
     endof
 
+    100001 of
+      //queryNo "QUERY %v" .printf
+      100001 LogicUnit[].genCode
+
+      logicCompiler[].new
+      logicCompiler[].compile
+      logicCompiler[].call
+      logicCompiler[].delete
+    endof
+
   endcase
 ;
 
