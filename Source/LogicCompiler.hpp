@@ -37,7 +37,9 @@ namespace Expressions
     static eEO  eFindEO(Stz* szEOname);
 
     i8 iCall(void);
-    i8 iCompile(RLU* aRLU, i8 nCodes, eEO eaCode[]);
+    i8 iCompile(LogicUnit* pLogicUnit, RLU* aRLU,
+                i8 nCodes, eEO eaCode[],
+                i8 nLabels, struct JumpLabel xaJumpLabel[]);
   
   private:
   
@@ -49,14 +51,16 @@ namespace Expressions
     void vRelease(void);
     void vSymbols(void);
 
-    i8 iToSource(i8 nCodes, eEO eaCode[]);
+    i8 iToSource(LogicUnit* pLogicUnit,
+                 i8 nCodes, eEO eaCode[],
+                 i8 nLabels, struct JumpLabel xaJumpLabel[]);
     void v_DynPreliminary(void);
     void v_DynConcluding(void);
 
     void v_FunPreliminary(void);
     void v_FunConcluding(void);
 
-    void v_SbrPreliminary(void);
+    void v_SbrPreliminary(i8 i_Code);
     void v_SbrConcluding(void);
   
     Footer* aFooter(void);

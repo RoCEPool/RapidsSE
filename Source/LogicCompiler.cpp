@@ -175,11 +175,13 @@ i8 LogicCompiler::iCall(void)
 /*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iCompile(RLU* aRLU, i8 nCodes, eEO eaCode[])
+i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, RLU* aRLU,
+                           i8 nCodes, eEO eaCode[],
+                           i8 nLabels, struct JumpLabel xaJumpLabel[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
-  i8 iResult = iToSource(nCodes,eaCode);
+  i8 iResult = iToSource(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel);
   
   vAcquire();
   
@@ -342,7 +344,9 @@ Qty xMul(i8 iTopA, i8 iTopB)
 /*----------------------------------------------------------------------------*/
 /* to source code                                                             */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSource(i8 nCodes, eEO eaCode[])
+i8 LogicCompiler::iToSource(LogicUnit* pLogicUnit,
+                            i8 nCodes, eEO eaCode[],
+                            i8 nLabels, struct JumpLabel xaJumpLabel[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -495,9 +499,17 @@ void LogicCompiler::v_FunConcluding(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::v_SbrPreliminary(void)
+void LogicCompiler::v_SbrPreliminary(i8 i_Code)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "\n  voic v%s(void"
+  "\n  { "
+  "\n"
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -506,6 +518,13 @@ void LogicCompiler::v_SbrPreliminary(void)
 void LogicCompiler::v_SbrConcluding(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "\n  }"
+  "\n"
+  "";
+  
+  StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
 
 /*============================================================================*/
