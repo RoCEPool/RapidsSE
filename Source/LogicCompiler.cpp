@@ -415,42 +415,22 @@ i8 LogicCompiler::iToSourceFun(LogicUnit* pLogicUnit,
 
   v_FunPreliminary();
 
-  vToSource(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel,0,nCodes-1);
-//  for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
-//
-//    eEO eCode = eaCode[i_Code];
-//
-//    if (EO_CALL == eCode) {
-//
-//      i8 iArg = *(i8*)&eaCode[i_Code+1];
-//      i8 i_Label = pLogicUnit->iFindLabel(iArg);
-//
-//      v_CallSbr(i_Label,xaJumpLabel);
-//
-//      i_Code += EoArgs[eCode].m_nArgBytes;
-//      continue;
-//    }
-//
-//    StrLib::vAppendString(&m_azSrcCrs,"    // ");
-//    StrLib::vAppendString(&m_azSrcCrs,aEO[eCode]->azChar());
-//    StrLib::vAppendString(&m_azSrcCrs,":\n");
-//    StrLib::vAppendString(&m_azSrcCrs,"       ");
-//
-//    char* azFrag = (char*)gszaEoFragments[eCode];
-//
-//    if (EA_INT == EoArgs[eCode].m_eArgument) {
-//      i8 iArg = *(i8*)&eaCode[i_Code+1];
-//      StrLib::bReplace(sReplaced.azChar(),azFrag,
-//                       "iArg",StrLib::wToString(iArg,caInt));
-//      StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
-//    }
-//    else {
-//      StrLib::vAppendString(&m_azSrcCrs,azFrag);
-//    }
-//
-//
-//    i_Code += EoArgs[eCode].m_nArgBytes;
-//  }
+  i8 i_End = 0;
+  
+  while (i_End + 1 < nCodes) {
+    i8 i_Label = pLogicUnit->iFindLabel(i_End+1);
+    if (C_UNKNOWN == i_Label) {
+      i_End++;
+      continue;
+    }
+    
+    if (xaJumpLabel[i_Label].m_bSubroutine)
+      break;
+    
+    i_End++;
+  }
+  
+  vToSource(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel,0,i_End);
 
   v_FunConcluding();
 
@@ -479,7 +459,20 @@ i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
       break;
     
     
+    s32 sFun;
+    s4K sReplaced;
+
+    i8 i_Label = pLogicUnit->iFindLabel(i_Start);
+    sFun = xaJumpLabel[i_Label].m_sLabel;
     
+    StrLib::vStrip(sFun.azChar(),':');
+    
+    
+    v_SbrPreliminary(sFun);
+
+    vToSource(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel,i_Start,i_End);
+
+    v_SbrConcluding();
     
     i_From = i_End;
   }
@@ -503,7 +496,7 @@ bool LogicCompiler::bFindSbr(LogicUnit* pLogicUnit,
       
       ri_Start = xaJumpLabel[ri_From].m_i_Code;
       
-      for (ri_End = ri_Start; ri_End < nCodes; ri_End++) {
+      for (ri_End = ri_Start + 1; ri_End < nCodes; ri_End++) {
         
         i8 i_Label = pLogicUnit->iFindLabel(ri_End);
         if (C_UNKNOWN != i_Label && xaJumpLabel[i_Label].m_bSubroutine) {
@@ -631,7 +624,7 @@ void LogicCompiler::v_FunConcluding(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::v_SbrPreliminary(i8 i_Code)
+void LogicCompiler::v_SbrPreliminary(Stz* szFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -639,12 +632,20 @@ void LogicCompiler::v_SbrPreliminary(i8 i_Code)
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* subroutine                                                         */"
   "\n  /*--------------------------------------------------------------------*/"
-  "\n  i8 ai%s(i8* aiDstk)"
+  "\n  i8* %s(i8* aiDstk)"
   "\n  { "
+  "\n    i8 iTopA;"
+  "\n    i8 iTopB;"
+  "\n    i8 iRes;"
+  "\n"
   "\n"
   "";
   
-  StrLib::vAppendString(&m_azSrcCrs,azFrag);
+  s4K sReplaced;
+
+  sReplaced.vSprint((Stz*)azFrag,szFunNm->azChar());
+  
+  StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -74,7 +74,7 @@ namespace Expressions
     void v_FunPreliminary(void);
     void v_FunConcluding(void);
 
-    void v_SbrPreliminary(i8 i_Code);
+    void v_SbrPreliminary(Stz* szFunNm);
     void v_SbrConcluding(void);
   
     void v_CallSbr(i8 i_Label, struct JumpLabel xaJumpLabel[]);
