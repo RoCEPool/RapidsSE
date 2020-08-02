@@ -404,9 +404,19 @@ i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
+  i8 i_From  = -1;
+  i8 i_Start = -1;
+  i8 i_End   = -1;
+
+  for (;;) {
+    bool bFound = bFindSbr(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel,
+                         i_From,i_Start,i_End);
+                         
+    ASSERT(! bFound);
+    break;
+  }
   
-  
-   return 1;
+  return 1;
 }
 
 /*----------------------------------------------------------------------------*/
