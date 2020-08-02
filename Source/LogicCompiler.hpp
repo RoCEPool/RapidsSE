@@ -62,7 +62,7 @@ namespace Expressions
     i8 iToSourceSbr(eEO eaCode[],
                     struct JumpLabel xaJumpLabel[]);
   
-    bool bFindSbr(eEO eaCode[],
+    bool bEachSbr(eEO eaCode[],
                   struct JumpLabel xaJumpLabel[],
                   i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill);
   

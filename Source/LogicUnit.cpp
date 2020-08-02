@@ -231,7 +231,7 @@ i8 LogicUnit::iFindLabel(Stz* szLabelNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    if (m_xaJumpLabel[i_Label].m_sLabel.bSame(szLabelNm))
+    if (m_xaJumpLabel[i_Label].m_sLabelNm.bSame(szLabelNm))
       return i_Label;
 
   return C_UNKNOWN;
@@ -266,7 +266,7 @@ Stz* LogicUnit::szLabelNm(i8 i_Label)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  Stz* szLblNm = m_xaJumpLabel[i_Label].m_sLabel;
+  Stz* szLblNm = m_xaJumpLabel[i_Label].m_sLabelNm;
   
   return szLblNm;
 }
@@ -400,7 +400,7 @@ i8 LogicUnit::iAddLabel(Stz* szLabelNm, bool bKnown)
   
   i8 i_Label = m_nLabels;
   
-  m_xaJumpLabel[i_Label].m_sLabel = szLabelNm;
+  m_xaJumpLabel[i_Label].m_sLabelNm = szLabelNm;
   m_xaJumpLabel[i_Label].m_bDefined = bKnown;
   m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code;
   m_nLabels++;
@@ -479,7 +479,7 @@ Stz* LogicUnit::szFindCode(i8 i_Code)
   
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
     if (i_Code == m_xaJumpLabel[i_Label].m_i_Code)
-      return m_xaJumpLabel[i_Label].m_sLabel;
+      return m_xaJumpLabel[i_Label].m_sLabelNm;
 
   return nullptr;
 }
@@ -494,7 +494,7 @@ void LogicUnit::vPrintLabels(void)
 //#ifdef WITH_TRACE_LOGICUNIT
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
     vTrace("  %s %lld: %4lld%s\n"_Stz,
-           m_xaJumpLabel[i_Label].m_sLabel.szStz(),
+           m_xaJumpLabel[i_Label].m_sLabelNm.szStz(),
            (i8)m_xaJumpLabel[i_Label].m_bDefined,
            m_xaJumpLabel[i_Label].m_i_Chain,
            m_xaJumpLabel[i_Label].m_bSubroutine ? " subroutine" : "");

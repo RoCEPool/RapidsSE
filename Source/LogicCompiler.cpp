@@ -450,13 +450,13 @@ i8 LogicCompiler::iToSourceSbr(eEO eaCode[],
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
-  i8 i_From  = -1;
+  i8 i_Label  = -1;
   i8 i_CodeFrom = -1;
   i8 i_CodeTill   = -1;
 
   for (;;) {
-    bool bFound = bFindSbr(eaCode,xaJumpLabel,
-                         i_From,i_CodeFrom,i_CodeTill);
+    bool bFound = bEachSbr(eaCode,xaJumpLabel,
+                         i_Label,i_CodeFrom,i_CodeTill);
                          
     if (! bFound)
       break;
@@ -484,9 +484,9 @@ i8 LogicCompiler::iToSourceSbr(eEO eaCode[],
 }
 
 /*----------------------------------------------------------------------------*/
-/* to source code (subroutine)                                                */
+/* step thru each subroutine                                                  */
 /*----------------------------------------------------------------------------*/
-bool LogicCompiler::bFindSbr(eEO eaCode[],
+bool LogicCompiler::bEachSbr(eEO eaCode[],
                             struct JumpLabel xaJumpLabel[],
                             i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
 {

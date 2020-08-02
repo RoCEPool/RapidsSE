@@ -125,7 +125,7 @@ namespace Expressions
   
   struct JumpLabel
   {
-    s32  m_sLabel;
+    s32  m_sLabelNm;
     bool m_bDefined;
     bool m_bSubroutine;
     union {
