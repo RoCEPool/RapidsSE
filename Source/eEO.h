@@ -61,12 +61,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_GREATEREQUAL,     // test top >= 2nd, push result
   /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
-  // partitioning
-  /*    */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
-  /*    */ EO_PTN_PUSH,         // push i_Ptn
-  /*    */ EO_PTN_RESET,        // reset running iHash
-  /*    */ EO_PTN_RUNNING,      // mix top into running iHash
-
   // stack operators
   /*    */ EO_INC,              // increment top, push result
   /*    */ EO_DEC,              // decrement top, push result
@@ -104,6 +98,12 @@ enum eEO : u1 // expression operators
   // hashing
   /*    */ EO_HSH_ADD_HASHI,    // add hash of top int to running hash
   /*    */ EO_HSH_RESET,        // reset hash
+
+  // partitioning
+  /*    */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
+  /*    */ EO_PTN_PUSH,         // push i_Ptn
+  /*    */ EO_PTN_RESET,        // reset running iHash
+  /*    */ EO_PTN_RUNNING,      // mix top into running iHash
 
   // timer
   /*    */ EO_TMR_START,        // timer start
@@ -273,12 +273,6 @@ static Stz* aEO[]
   /*    */ "EO_GREATEREQUAL"_Stz,
   /*    */ "EO_GREATERTHAN"_Stz,
   
-  // partitioning
-  /*    */ "EO_PTN_CALC"_Stz,
-  /*    */ "EO_PTN_PUSH"_Stz,
-  /*    */ "EO_PTN_RESET"_Stz,
-  /*    */ "EO_PTN_RUNNING"_Stz,
-  
   // stack operators
   /*    */ "EO_INC"_Stz,
   /*    */ "EO_DEC"_Stz,
@@ -317,6 +311,12 @@ static Stz* aEO[]
   /*    */ "EO_HSH_ADD_HASHI"_Stz,
   /*    */ "EO_HSH_RESET"_Stz,
 
+  // partitioning
+  /*    */ "EO_PTN_CALC"_Stz,
+  /*    */ "EO_PTN_PUSH"_Stz,
+  /*    */ "EO_PTN_RESET"_Stz,
+  /*    */ "EO_PTN_RUNNING"_Stz,
+  
   // timer
   /*    */ "EO_TMR_START"_Stz,
   /*    */ "EO_TMR_NSECS"_Stz,
@@ -491,12 +491,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_GREATEREQUAL
   { EA_NONE,    0 },  // EO_GREATERTHAN
 
-  // partitioning
-  { EA_NONE,    0 },  // EO_PTN_CALC
-  { EA_NONE,    0 },  // EO_PTN_PUSH
-  { EA_NONE,    0 },  // EO_PTN_RESET
-  { EA_NONE,    0 },  // EO_PTN_RUNNING
-
   // stack operators
   { EA_NONE,    0 },  // EO_INC
   { EA_NONE,    0 },  // EO_DEC
@@ -534,6 +528,12 @@ static EoArg EoArgs[]
   // hashing
   { EA_NONE,    0 },  // EO_HSH_ADD_HASHI
   { EA_NONE,    0 },  // EO_HSH_RESET
+
+  // partitioning
+  { EA_NONE,    0 },  // EO_PTN_CALC
+  { EA_NONE,    0 },  // EO_PTN_PUSH
+  { EA_NONE,    0 },  // EO_PTN_RESET
+  { EA_NONE,    0 },  // EO_PTN_RUNNING
 
   // timer
   { EA_NONE,    0 },  // EO_TMR_START

@@ -976,29 +976,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // partitioning
-      case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
-        dLU0(EO_PTN_CALC);
-        m_i_Ptn = PtnLib::iPartition(m_iHash,m_nPtns);
-        break;//+endCase
-
-      case EO_PTN_PUSH: ArgNil(); // push m_i_Ptn
-        dLU1(EO_PTN_PUSH,m_i_Ptn);
-        *(++aiDstk) = m_i_Ptn;
-        break;//+endCase
-
-      case EO_PTN_RESET: ArgNil(); // reset running m_iHash
-        dLU0(EO_PTN_RESET);
-        m_iHash = PtnLib::iResetRunning();
-        break;//+endCase
-
-      case EO_PTN_RUNNING: ArgNil(); // mix top into running m_iHash
-        iTopA = *(aiDstk--);
-        dLU0(EO_PTN_RUNNING);
-        PtnLib::vRunning(&m_iHash,iTopA);
-        break;//+endCase
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // stack operators
       case EO_INC: ArgNil(); // increment top, push result
         iTopA = *aiDstk;
@@ -1189,6 +1166,29 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_HSH_RESET: ArgNil(); // reset hash
         dLU0(EO_HSH_RESET);
         m_iHash = 0;
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // partitioning
+      case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
+        dLU0(EO_PTN_CALC);
+        m_i_Ptn = PtnLib::iPartition(m_iHash,m_nPtns);
+        break;//+endCase
+
+      case EO_PTN_PUSH: ArgNil(); // push m_i_Ptn
+        dLU1(EO_PTN_PUSH,m_i_Ptn);
+        *(++aiDstk) = m_i_Ptn;
+        break;//+endCase
+
+      case EO_PTN_RESET: ArgNil(); // reset running m_iHash
+        dLU0(EO_PTN_RESET);
+        m_iHash = PtnLib::iResetRunning();
+        break;//+endCase
+
+      case EO_PTN_RUNNING: ArgNil(); // mix top into running m_iHash
+        iTopA = *(aiDstk--);
+        dLU0(EO_PTN_RUNNING);
+        PtnLib::vRunning(&m_iHash,iTopA);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
