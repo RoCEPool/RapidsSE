@@ -245,7 +245,7 @@ void LogicCompiler::vCall(RLU* aRLU)
 #ifdef __TINYC
   i8 (*afDyn)(void* aRLU);
 
-  afDyn = (i8 (*)(void*))tcc_get_symbol((TCCState*)m_aTccState,"iDynCompute");
+  afDyn = (i8 (*)(void*))tcc_get_symbol((TCCState*)m_aTccState,"aiDynCompute");
   RASSERT(afDyn);
   
   afDyn(aRLU);
@@ -350,7 +350,7 @@ Qty xMul(i8 iTopA, i8 iTopB)
 //L_Label: ;
 
 /*----------------------------------------------------------------------------*/
-/* to source code                                            */
+/* to source code                                                             */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vToSource(LogicUnit* pLogicUnit,
                             i8 nCodes, eEO eaCode[],
@@ -585,7 +585,7 @@ void LogicCompiler::v_FunPreliminary(void)
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* rlu compute function                                               */"
   "\n  /*--------------------------------------------------------------------*/"
-  "\n  i8 iDynCompute(void* aRLU)" // the dynamic function is: iDynCompute()
+  "\n  i8* aiDynCompute(void* aRLU)" // the dynamic function is: iDynCompute()
   "\n  { "
   "\n    i8 iaDataStack[C_LOGIC_STACK];"
   "\n    eEO* aaReturnStack[C_LOGIC_STACK];"

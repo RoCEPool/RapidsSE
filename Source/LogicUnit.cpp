@@ -1073,6 +1073,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_RETURN: ArgNil(); // return from subroutine and
         dLU0(EO_RETURN);
+#ifdef __TINYC__
+        return aiDstk;
+#else
         if (aaeRstk == &aaReturnStack[0]) {
           iRes = *(aiDstk--);
 #ifdef WITH_TRACE_LOGICUNIT
@@ -1080,7 +1083,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
           return iRes;
         }
-        SbrReturn();
+        m_aeCode = * (--aaeRstk);
+#endif
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
