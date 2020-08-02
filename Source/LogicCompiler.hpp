@@ -49,16 +49,9 @@ namespace Expressions
     void vRelease(void);
     void vSymbols(void);
 
+    i8 iToSource(i8 nCodes, eEO eaCode[]);
     void v_preliminary(void);
     void v_concluding(void);
-    void v_EO_INTEGER (i8& ri_Code, eEO eaCode[]);
-    void v_EO_ADD     (i8& ri_Code, eEO eaCode[]);
-    void v_EO_MULTIPLY(i8& ri_Code, eEO eaCode[]);
-    void v_EO_PRINT   (i8& ri_Code, eEO eaCode[]);
-    void v_EO_RETURN  (i8& ri_Code, eEO eaCode[]);
-  
-    i8 iToSource(i8 nCodes, eEO eaCode[]);
-    i8 iToSource2(i8 nCodes, eEO eaCode[]);
 
     Footer* aFooter(void);
   };

@@ -179,7 +179,7 @@ i8 LogicCompiler::iCompile(RLU* aRLU, i8 nCodes, eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
-  i8 iResult = iToSource2(nCodes,eaCode);
+  i8 iResult = iToSource(nCodes,eaCode);
   
   vAcquire();
   
@@ -333,6 +333,56 @@ Qty xMul(i8 iTopA, i8 iTopB)
   return xRes;
 }
 
+
+//  void* pLabel = && L_Label;
+//
+//  goto *pLabel;
+//L_Label: ;
+
+/*----------------------------------------------------------------------------*/
+/* to source code                                                             */
+/*----------------------------------------------------------------------------*/
+i8 LogicCompiler::iToSource(i8 nCodes, eEO eaCode[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  s4K sReplaced;
+  char caInt[32];
+  
+  v_preliminary();
+  
+  for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
+    
+    eEO eCode = eaCode[i_Code];
+
+    StrLib::vAppendString(&m_azSrcCrs,"    // ");
+    StrLib::vAppendString(&m_azSrcCrs,aEO[eCode]->azChar());
+    StrLib::vAppendString(&m_azSrcCrs,":\n");
+    StrLib::vAppendString(&m_azSrcCrs,"       ");
+
+    char* azFrag = (char*)gszaEoFragments[eCode];
+    
+    if (EA_INT == EoArgs[eCode].m_eArgument) {
+      i8 iArg = *(i8*)&eaCode[i_Code+1];
+      StrLib::bReplace(sReplaced.azChar(),azFrag,
+                       "iArg",StrLib::wToString(iArg,caInt));
+      StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
+    }
+    else {
+      StrLib::vAppendString(&m_azSrcCrs,azFrag);
+    }
+    
+    
+    i_Code += EoArgs[eCode].m_nArgBytes;
+  }
+
+  v_concluding();
+  
+  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
+
+  return 1;
+}
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -360,6 +410,7 @@ void LogicCompiler::v_preliminary(void)
   "\n"
   "\n  enum eDO { DO_A=0, DO_B, DO_C };"
   "\n"
+  "\n  #define SbrCall() "
   "\n  #define SbrReturn() "
   "\n  #define NoArg() "
   "\n  #define GetArg(x) "
@@ -409,185 +460,6 @@ void LogicCompiler::v_concluding(void)
   "";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void LogicCompiler::v_EO_INTEGER(i8& ri_Code, eEO eaCode[])
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  char* azFrag = (char*)
-  "\n"
-  "\n    // EO_INTEGER"
-  "\n    *(++aiDstk) = %lld;"
-  "";
-
-  //StrLib::vAppendString(&m_azSrcCrs,azFrag);
-  
-  eEO* aeCode = &eaCode[ri_Code + 1];
-  i8 iArg = * (i8*)aeCode;
-  StrLib::vSprintCat((Stz*)m_azSrcCrs,(Stz*)azFrag,iArg);
-  
-  m_azSrcCrs = StrLib::zNullTerminator(m_azSrcCrs);
-  ri_Code += 8;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void LogicCompiler::v_EO_ADD(i8& ri_Code, eEO eaCode[])
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  char* azFrag = (char*)
-  "\n"
-  "\n    // EO_ADD"
-  "\n    iTopB = *(aiDstk--);"
-  "\n    iTopA = *(aiDstk--);"
-  "\n    iRes  = iTopA + iTopB;"
-  "\n    *(++aiDstk) = iRes;"
-  "";
-
-  StrLib::vAppendString(&m_azSrcCrs,azFrag);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void LogicCompiler::v_EO_MULTIPLY(i8& ri_Code, eEO eaCode[])
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  char* azFrag = (char*)
-//  "\n"
-//  "\n    // EO_MULTIPLY"
-//  "\n    iTopB = *(aiDstk--);"
-//  "\n    iTopA = *(aiDstk--);"
-//  "\n    iRes  = iMul(iTopA,iTopB);"
-//  "\n    *(++aiDstk) = iRes;"
-//  "";
-
-  "\n"
-  "\n    // EO_MULTIPLY"
-  "\n    iTopB = *(aiDstk--);"
-  "\n    iTopA = *(aiDstk--);"
-  "\n    xRes  = xMul(iTopA,iTopB);"
-  "\n    *(++aiDstk) = xRes.m_iValue;"
-  "";
-
-  StrLib::vAppendString(&m_azSrcCrs,azFrag);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void LogicCompiler::v_EO_PRINT(i8& ri_Code, eEO eaCode[])
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  char* azFrag = (char*)
-  "\n"
-  "\n    // EO_PRINT"
-  "\n    iTopA = *(aiDstk--);"
-  "\n    printf(\"EO_PRINT: %lld\\n\",iTopA);"
-  "";
-
-  StrLib::vAppendString(&m_azSrcCrs,azFrag);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void LogicCompiler::v_EO_RETURN(i8& ri_Code, eEO eaCode[])
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  char* azFrag = (char*)
-  "\n"
-  "\n    // EO_RETURN"
-  "\n    return 1;"
-  "";
-
-  StrLib::vAppendString(&m_azSrcCrs,azFrag);
-}
-
-/*----------------------------------------------------------------------------*/
-/* to source code                                                             */
-/*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSource(i8 nCodes, eEO eaCode[])
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  v_preliminary();
-  
-  for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
-    
-    eEO eCode = eaCode[i_Code];
-
-    switch (eCode) {
-        
-      case EO_INTEGER:  v_EO_INTEGER  (i_Code,eaCode); break;
-      case EO_ADD:      v_EO_ADD      (i_Code,eaCode); break;
-      case EO_MULTIPLY: v_EO_MULTIPLY (i_Code,eaCode); break;
-      case EO_PRINT:    v_EO_PRINT    (i_Code,eaCode); break;
-      case EO_RETURN:   v_EO_RETURN   (i_Code,eaCode); break;
-
-      default:
-        break;
-    }
-  }
-
-  v_concluding();
-  
-  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
-
-  return 1;
-}
-
-/*----------------------------------------------------------------------------*/
-/* to source code                                                             */
-/*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSource2(i8 nCodes, eEO eaCode[])
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  s4K sReplaced;
-  char caInt[32];
-  
-  v_preliminary();
-  
-  for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
-    
-    eEO eCode = eaCode[i_Code];
-
-    StrLib::vAppendString(&m_azSrcCrs,"    // ");
-    StrLib::vAppendString(&m_azSrcCrs,aEO[eCode]->azChar());
-    StrLib::vAppendString(&m_azSrcCrs,":\n");
-    StrLib::vAppendString(&m_azSrcCrs,"       ");
-
-    char* azFrag = (char*)gszaEoFragments[eCode];
-    
-    if (EA_INT == EoArgs[eCode].m_eArgument) {
-      i8 iArg = *(i8*)&eaCode[i_Code+1];
-      StrLib::bReplace(sReplaced.azChar(),azFrag,
-                       "iArg",StrLib::wToString(iArg,caInt));
-      StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
-    }
-    else {
-      StrLib::vAppendString(&m_azSrcCrs,azFrag);
-    }
-    
-    
-    i_Code += EoArgs[eCode].m_nArgBytes;
-  }
-
-  v_concluding();
-  
-  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
-
-  return 1;
 }
 
 /*============================================================================*/
