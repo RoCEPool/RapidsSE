@@ -54,7 +54,7 @@ namespace Expressions
     void vToSource(LogicUnit* pLogicUnit,
                  i8 nCodes, eEO eaCode[],
                  i8 nLabels, struct JumpLabel xaJumpLabel[],
-                 i8 i_Start, i8 i_End);
+                 i8 i_CodeFrom, i8 i_CodeTill);
   
     i8 iToSourceFun(LogicUnit* pLogicUnit,
                  i8 nCodes, eEO eaCode[],
@@ -66,7 +66,7 @@ namespace Expressions
     bool bFindSbr(LogicUnit* pLogicUnit,
                   i8 nCodes, eEO eaCode[],
                   i8 nLabels, struct JumpLabel xaJumpLabel[],
-                  i8& ri_Label, i8& ri_Start, i8& ri_End);
+                  i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill);
   
     void v_DynPreliminary(void);
     void v_DynConcluding(void);
