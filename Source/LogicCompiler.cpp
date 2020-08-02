@@ -347,7 +347,8 @@ void LogicCompiler::v_preliminary(void)
   "\n"
   "\n  #include <tcclib.h>" // include libc header for TCC
   "\n"
-  "\n  typedef char      i1;"
+  "\n  typedef unsigned char eEO;"
+  "\n  typedef char i1;"
   "\n  typedef long long i8;"
   "\n"
   "\n  #include \"../Source/Qty.h\""
@@ -359,6 +360,7 @@ void LogicCompiler::v_preliminary(void)
   "\n"
   "\n  enum eDO { DO_A=0, DO_B, DO_C };"
   "\n"
+  "\n  #define SbrReturn() "
   "\n  #define NoArg() "
   "\n  #define GetArg(x) "
   "\n  #define dLU0(x) "
@@ -372,8 +374,10 @@ void LogicCompiler::v_preliminary(void)
   "\n  i8 iDynCompute(void* aRLU)" // the dynamic function is: iDynCompute()
   "\n  { "
   "\n    i8 iaDataStack[C_LOGIC_STACK];"
+  "\n    eEO* aaReturnStack[C_LOGIC_STACK];"
   "\n"
   "\n    i8* aiDstk = &iaDataStack[0];"
+  "\n    eEO** aaeRstk = &aaReturnStack[0];"
   "\n"
   "\n    i8 iTopA;"
   "\n    i8 iTopB;"
@@ -394,8 +398,7 @@ void LogicCompiler::v_concluding(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
-  "\n"
-  "\n    // hazard"
+  "    // ** Hazard **"
   "\n    return 0;"
   "\n  }"
   "\n"

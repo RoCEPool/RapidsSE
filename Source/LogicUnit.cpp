@@ -629,6 +629,9 @@ void LogicUnit::vDumpCode(void)
 #define JumpTo(__iArg) \
   m_aeCode = & m_eaCode[__iArg];
 
+#define SbrReturn(__iArg) \
+  m_aeCode = * (--aaeRstk);
+
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
 /*----------------------------------------------------------------------------*/
@@ -1084,7 +1087,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
           return iRes;
         }
-        m_aeCode = * (--aaeRstk);
+        SbrReturn();
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
