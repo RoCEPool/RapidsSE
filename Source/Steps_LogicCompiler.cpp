@@ -38,8 +38,7 @@ void Step::vLogicCompilerCompile(void)
   i8 iResult =
     m_pLogicUnit->m_xpLogicCompiler->iCompile(m_pLogicUnit,
                                               aRLU,
-                                              m_pLogicUnit->m_eaCode,
-                                              m_pLogicUnit->m_xaJumpLabel
+                                              m_pLogicUnit->m_eaCode
                                               );
   
   EXIT();

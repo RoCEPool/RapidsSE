@@ -177,8 +177,7 @@ i8 LogicCompiler::iCall(void)
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
 i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, RLU* aRLU,
-                           eEO eaCode[],
-                           struct JumpLabel xaJumpLabel[])
+                           eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
@@ -188,9 +187,9 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, RLU* aRLU,
   
   v_DynPreliminary();
   
-  i8 iResult = iToSourceSbr(eaCode,xaJumpLabel);
+  i8 iResult = iToSourceSbr(eaCode);
   
-  iResult = iToSourceFun(eaCode,xaJumpLabel);
+  iResult = iToSourceFun(eaCode);
 
   v_DynConcluding();
   
@@ -358,7 +357,6 @@ Qty xMul(i8 iTopA, i8 iTopB)
 /* to source code                                                             */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vToSource(eEO eaCode[],
-                            struct JumpLabel xaJumpLabel[],
                             i8 i_CodeFrom, i8 i_CodeTill)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
@@ -375,7 +373,7 @@ void LogicCompiler::vToSource(eEO eaCode[],
       i8 iArg = *(i8*)&eaCode[i_Code+1];
       i8 i_Label = m_pLogicUnit->iFindLabel(iArg);
       
-      v_CallSbr(i_Label,xaJumpLabel);
+      v_CallSbr(i_Label);
 
       i_Code += EoArgs[eCode].m_nArgBytes;
       continue;
@@ -407,8 +405,7 @@ void LogicCompiler::vToSource(eEO eaCode[],
 /*----------------------------------------------------------------------------*/
 /* to source code (function)                                                  */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSourceFun(eEO eaCode[],
-                            struct JumpLabel xaJumpLabel[])
+i8 LogicCompiler::iToSourceFun(eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -434,7 +431,7 @@ i8 LogicCompiler::iToSourceFun(eEO eaCode[],
     i_CodeTill++;
   }
   
-  vToSource(eaCode,xaJumpLabel,0,i_CodeTill);
+  vToSource(eaCode,0,i_CodeTill);
 
   v_FunConcluding();
 
@@ -445,8 +442,7 @@ i8 LogicCompiler::iToSourceFun(eEO eaCode[],
 /*----------------------------------------------------------------------------*/
 /* to source code (subroutine)                                                */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSourceSbr(eEO eaCode[],
-                               struct JumpLabel xaJumpLabel[])
+i8 LogicCompiler::iToSourceSbr(eEO eaCode[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -455,7 +451,7 @@ i8 LogicCompiler::iToSourceSbr(eEO eaCode[],
   i8 i_CodeTill   = -1;
 
   for (;;) {
-    bool bFound = bEachSbr(eaCode,xaJumpLabel,
+    bool bFound = bEachSbr(eaCode,
                          i_Label,i_CodeFrom,i_CodeTill);
                          
     if (! bFound)
@@ -473,7 +469,7 @@ i8 LogicCompiler::iToSourceSbr(eEO eaCode[],
     
     v_SbrPreliminary(sFun);
 
-    vToSource(eaCode,xaJumpLabel,i_CodeFrom,i_CodeTill);
+    vToSource(eaCode,i_CodeFrom,i_CodeTill);
 
     v_SbrConcluding();
     
@@ -487,7 +483,6 @@ i8 LogicCompiler::iToSourceSbr(eEO eaCode[],
 /* step thru each subroutine                                                  */
 /*----------------------------------------------------------------------------*/
 bool LogicCompiler::bEachSbr(eEO eaCode[],
-                            struct JumpLabel xaJumpLabel[],
                             i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
@@ -499,7 +494,7 @@ bool LogicCompiler::bEachSbr(eEO eaCode[],
     
     if (m_pLogicUnit->bLabelIsSbr(ri_Label)) {
       
-      ri_CodeFrom = xaJumpLabel[ri_Label].m_i_Code;
+      ri_CodeFrom = m_pLogicUnit->iLabelCode(ri_Label);
       
       for (ri_CodeTill = ri_CodeFrom + 1; ri_CodeTill < nCodes; ri_CodeTill++) {
         
@@ -672,7 +667,7 @@ void LogicCompiler::v_SbrConcluding(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::v_CallSbr(i8 i_Label, struct JumpLabel xaJumpLabel[])
+void LogicCompiler::v_CallSbr(i8 i_Label)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   

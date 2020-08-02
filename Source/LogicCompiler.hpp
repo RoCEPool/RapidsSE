@@ -39,8 +39,7 @@ namespace Expressions
 
     i8 iCall(void);
     i8 iCompile(LogicUnit* pLogicUnit, RLU* aRLU,
-                eEO eaCode[],
-                struct JumpLabel xaJumpLabel[]);
+                eEO eaCode[]);
   
   private:
   
@@ -53,17 +52,13 @@ namespace Expressions
     void vSymbols(void);
 
     void vToSource(eEO eaCode[],
-                 struct JumpLabel xaJumpLabel[],
                  i8 i_CodeFrom, i8 i_CodeTill);
   
-    i8 iToSourceFun(eEO eaCode[],
-                 struct JumpLabel xaJumpLabel[]);
+    i8 iToSourceFun(eEO eaCode[]);
   
-    i8 iToSourceSbr(eEO eaCode[],
-                    struct JumpLabel xaJumpLabel[]);
+    i8 iToSourceSbr(eEO eaCode[]);
   
     bool bEachSbr(eEO eaCode[],
-                  struct JumpLabel xaJumpLabel[],
                   i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill);
   
     void v_DynPreliminary(void);
@@ -75,7 +70,7 @@ namespace Expressions
     void v_SbrPreliminary(Stz* szFunNm);
     void v_SbrConcluding(void);
   
-    void v_CallSbr(i8 i_Label, struct JumpLabel xaJumpLabel[]);
+    void v_CallSbr(i8 i_Label);
   
     Footer* aFooter(void);
   };

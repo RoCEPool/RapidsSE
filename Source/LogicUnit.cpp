@@ -238,6 +238,18 @@ i8 LogicUnit::iFindLabel(Stz* szLabelNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get code point of label                                                    */
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::iLabelCode(i8 i_Label)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  i8 i_Code = m_xaJumpLabel[i_Label].m_i_Code;
+  
+  return i_Code;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given label a subroutine?                                               */
 /*----------------------------------------------------------------------------*/
 bool LogicUnit::bLabelIsSbr(i8 i_Label)
