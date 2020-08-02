@@ -350,21 +350,19 @@ Qty xMul(i8 iTopA, i8 iTopB)
 //L_Label: ;
 
 /*----------------------------------------------------------------------------*/
-/* to source code (function)                                                  */
+/* to source code                                            */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSourceFun(LogicUnit* pLogicUnit,
+void LogicCompiler::vToSource(LogicUnit* pLogicUnit,
                             i8 nCodes, eEO eaCode[],
-                            i8 nLabels, struct JumpLabel xaJumpLabel[])
+                            i8 nLabels, struct JumpLabel xaJumpLabel[],
+                            i8 i_Start, i8 i_End)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   s4K sReplaced;
   char caInt[32];
   
-
-  v_FunPreliminary();
-
-  for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
+  for (i8 i_Code = i_Start; i_Code <= i_End; i_Code++) {
     
     eEO eCode = eaCode[i_Code];
     
@@ -399,6 +397,60 @@ i8 LogicCompiler::iToSourceFun(LogicUnit* pLogicUnit,
     
     i_Code += EoArgs[eCode].m_nArgBytes;
   }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* to source code (function)                                                  */
+/*----------------------------------------------------------------------------*/
+i8 LogicCompiler::iToSourceFun(LogicUnit* pLogicUnit,
+                            i8 nCodes, eEO eaCode[],
+                            i8 nLabels, struct JumpLabel xaJumpLabel[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  s4K sReplaced;
+  char caInt[32];
+  
+
+  v_FunPreliminary();
+
+  vToSource(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel,0,nCodes-1);
+//  for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
+//
+//    eEO eCode = eaCode[i_Code];
+//
+//    if (EO_CALL == eCode) {
+//
+//      i8 iArg = *(i8*)&eaCode[i_Code+1];
+//      i8 i_Label = pLogicUnit->iFindLabel(iArg);
+//
+//      v_CallSbr(i_Label,xaJumpLabel);
+//
+//      i_Code += EoArgs[eCode].m_nArgBytes;
+//      continue;
+//    }
+//
+//    StrLib::vAppendString(&m_azSrcCrs,"    // ");
+//    StrLib::vAppendString(&m_azSrcCrs,aEO[eCode]->azChar());
+//    StrLib::vAppendString(&m_azSrcCrs,":\n");
+//    StrLib::vAppendString(&m_azSrcCrs,"       ");
+//
+//    char* azFrag = (char*)gszaEoFragments[eCode];
+//
+//    if (EA_INT == EoArgs[eCode].m_eArgument) {
+//      i8 iArg = *(i8*)&eaCode[i_Code+1];
+//      StrLib::bReplace(sReplaced.azChar(),azFrag,
+//                       "iArg",StrLib::wToString(iArg,caInt));
+//      StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
+//    }
+//    else {
+//      StrLib::vAppendString(&m_azSrcCrs,azFrag);
+//    }
+//
+//
+//    i_Code += EoArgs[eCode].m_nArgBytes;
+//  }
 
   v_FunConcluding();
 
@@ -425,6 +477,9 @@ i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
                          
     if (! bFound)
       break;
+    
+    
+    
     
     i_From = i_End;
   }

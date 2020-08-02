@@ -51,6 +51,11 @@ namespace Expressions
     void vRelease(void);
     void vSymbols(void);
 
+    void vToSource(LogicUnit* pLogicUnit,
+                 i8 nCodes, eEO eaCode[],
+                 i8 nLabels, struct JumpLabel xaJumpLabel[],
+                 i8 i_Start, i8 i_End);
+  
     i8 iToSourceFun(LogicUnit* pLogicUnit,
                  i8 nCodes, eEO eaCode[],
                  i8 nLabels, struct JumpLabel xaJumpLabel[]);
