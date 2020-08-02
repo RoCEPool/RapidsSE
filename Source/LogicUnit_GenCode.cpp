@@ -1736,7 +1736,7 @@ void LogicUnit::vGenerate100000(void)
   vAddCode(EO_MULTIPLY);
   vAddCode(EO_PRINT);
   vAddCode(EO_RETURN);
-  
+
   vDumpCode();
 }
 
@@ -1748,11 +1748,16 @@ void LogicUnit::vGenerate100001(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 100000;
+  m_iSql = 100001;
   
   // init the code
   m_i_Code = 0;
   
+  vDefineLabel("TST_SBR:"_Stz);
+  vAddCodeLabel(EO_CALL,"SBR_ADD:"_Stz);
+  vAddCode(EO_RETURN);
+
+  vDefineLabel("SBR_ADD:"_Stz);
   vAddCodeArg(EO_INTEGER,1);
   vAddCodeArg(EO_INTEGER,2);
   vAddCode(EO_ADD);
@@ -1761,6 +1766,7 @@ void LogicUnit::vGenerate100001(void)
   vAddCode(EO_PRINT);
   vAddCode(EO_RETURN);
   
+
   vDumpCode();
 }
 

@@ -417,7 +417,7 @@ i8 LogicUnit::iFindLabel(i8 i_Code)
   
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
     if (i_Code == m_xaJumpLabel[i_Label].m_i_Code)
-      return i_Code;
+      return i_Label;
 
   return C_UNKNOWN;
 }
@@ -469,8 +469,8 @@ void LogicUnit::vDumpCode(void)
  
 //#ifdef WITH_TRACE_LOGICUNIT
   
-  //if (100000 != m_iSql)
-  if (302 != m_iSql)
+  if (100001 != m_iSql)
+  //if (302 != m_iSql)
     return;
   
   SP_Dte spDate;
@@ -641,10 +641,6 @@ void LogicUnit::vDumpCode(void)
 
 
 #define JumpTo(__iArg) \
-  m_aeCode = & m_eaCode[__iArg];
-
-#define SbrCall(__iArg) \
-  * (aaeRstk++) = m_aeCode; \
   m_aeCode = & m_eaCode[__iArg];
 
 #define SbrReturn(__iArg) \
@@ -1068,7 +1064,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // subroutine operators
       case EO_CALL: ArgGet(iArg); // call subroutine at location
         dLU1(EO_CALL,iArg);
-        SbrCall(iArg);
+#ifdef __TINYC__
+#else
+        * (aaeRstk++) = m_aeCode;
+        m_aeCode = & m_eaCode[iArg];
+#endif
         break;//+endCase
 
       case EO_RETURN: ArgNil(); // return from subroutine and

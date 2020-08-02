@@ -367,6 +367,17 @@ i8 LogicCompiler::iToSourceFun(LogicUnit* pLogicUnit,
   for (i8 i_Code = 0; i_Code < nCodes; i_Code++) {
     
     eEO eCode = eaCode[i_Code];
+    
+    if (EO_CALL == eCode) {
+      
+      i8 iArg = *(i8*)&eaCode[i_Code+1];
+      i8 i_Label = pLogicUnit->iFindLabel(iArg);
+      
+      v_CallSbr(i_Label,xaJumpLabel);
+
+      i_Code += EoArgs[eCode].m_nArgBytes;
+      continue;
+    }
 
     StrLib::vAppendString(&m_azSrcCrs,"    // ");
     StrLib::vAppendString(&m_azSrcCrs,aEO[eCode]->azChar());
@@ -412,8 +423,10 @@ i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
     bool bFound = bFindSbr(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel,
                          i_From,i_Start,i_End);
                          
-    ASSERT(! bFound);
-    break;
+    if (! bFound)
+      break;
+    
+    i_From = i_End;
   }
   
   return 1;
@@ -450,7 +463,9 @@ bool LogicCompiler::bFindSbr(LogicUnit* pLogicUnit,
     }
   }
   
-  
+  ri_Start = -1;
+  ri_End   = -1;
+
   return false;
 }
 
@@ -487,7 +502,6 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #define dLU1(x,a) "
   "\n  #define dLU2(x,a,b) "
   "\n  #define dLU3(x,a,b,c) "
-  "\n  #define SbrCall() "
   "\n  #define SbrReturn() "
   "\n"
   "";
@@ -567,6 +581,9 @@ void LogicCompiler::v_SbrPreliminary(i8 i_Code)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
+  "\n  /*--------------------------------------------------------------------*/"
+  "\n  /* subroutine                                                         */"
+  "\n  /*--------------------------------------------------------------------*/"
   "\n  i8 ai%s(i8* aiDstk)"
   "\n  { "
   "\n"
@@ -591,6 +608,33 @@ void LogicCompiler::v_SbrConcluding(void)
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::v_CallSbr(i8 i_Label, struct JumpLabel xaJumpLabel[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "\n    // EO_CALL:"
+  "\n        aiDstk = %s(aiDstk);"
+  "\n"
+  "\n"
+  "";
+
+  s32 sFun;
+  s4K sReplaced;
+
+  sFun = xaJumpLabel[i_Label].m_sLabel;
+  
+  StrLib::vStrip(sFun.azChar(),':');
+  
+  sReplaced.vSprint((Stz*)azFrag,sFun.azChar());
+  
+  StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

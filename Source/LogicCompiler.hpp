@@ -72,6 +72,8 @@ namespace Expressions
     void v_SbrPreliminary(i8 i_Code);
     void v_SbrConcluding(void);
   
+    void v_CallSbr(i8 i_Label, struct JumpLabel xaJumpLabel[]);
+  
     Footer* aFooter(void);
   };
   
