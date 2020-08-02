@@ -40,6 +40,8 @@ LogicCompiler::LogicCompiler(void)
   
   m_aTccState = nullptr;
   
+  m_pLogicUnit = nullptr;
+  
   _checkInitialised_(CN_LOGICCOMPILER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
@@ -180,11 +182,15 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, RLU* aRLU,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
+  m_pLogicUnit = pLogicUnit;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   v_DynPreliminary();
   
-  i8 iResult = iToSourceSbr(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel);
+  i8 iResult = iToSourceSbr(nCodes,eaCode,nLabels,xaJumpLabel);
   
-  iResult = iToSourceFun(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel);
+  iResult = iToSourceFun(nCodes,eaCode,nLabels,xaJumpLabel);
 
   v_DynConcluding();
   
@@ -351,8 +357,7 @@ Qty xMul(i8 iTopA, i8 iTopB)
 /*----------------------------------------------------------------------------*/
 /* to source code                                                             */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vToSource(LogicUnit* pLogicUnit,
-                            i8 nCodes, eEO eaCode[],
+void LogicCompiler::vToSource(i8 nCodes, eEO eaCode[],
                             i8 nLabels, struct JumpLabel xaJumpLabel[],
                             i8 i_CodeFrom, i8 i_CodeTill)
 {
@@ -368,7 +373,7 @@ void LogicCompiler::vToSource(LogicUnit* pLogicUnit,
     if (EO_CALL == eCode) {
       
       i8 iArg = *(i8*)&eaCode[i_Code+1];
-      i8 i_Label = pLogicUnit->iFindLabel(iArg);
+      i8 i_Label = m_pLogicUnit->iFindLabel(iArg);
       
       v_CallSbr(i_Label,xaJumpLabel);
 
@@ -402,8 +407,7 @@ void LogicCompiler::vToSource(LogicUnit* pLogicUnit,
 /*----------------------------------------------------------------------------*/
 /* to source code (function)                                                  */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSourceFun(LogicUnit* pLogicUnit,
-                            i8 nCodes, eEO eaCode[],
+i8 LogicCompiler::iToSourceFun(i8 nCodes, eEO eaCode[],
                             i8 nLabels, struct JumpLabel xaJumpLabel[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
@@ -417,7 +421,7 @@ i8 LogicCompiler::iToSourceFun(LogicUnit* pLogicUnit,
   i8 i_CodeTill = 0;
   
   while (i_CodeTill + 1 < nCodes) {
-    i8 i_Label = pLogicUnit->iFindLabel(i_CodeTill+1);
+    i8 i_Label = m_pLogicUnit->iFindLabel(i_CodeTill+1);
     if (C_UNKNOWN == i_Label) {
       i_CodeTill++;
       continue;
@@ -429,7 +433,7 @@ i8 LogicCompiler::iToSourceFun(LogicUnit* pLogicUnit,
     i_CodeTill++;
   }
   
-  vToSource(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel,0,i_CodeTill);
+  vToSource(nCodes,eaCode,nLabels,xaJumpLabel,0,i_CodeTill);
 
   v_FunConcluding();
 
@@ -440,8 +444,7 @@ i8 LogicCompiler::iToSourceFun(LogicUnit* pLogicUnit,
 /*----------------------------------------------------------------------------*/
 /* to source code (subroutine)                                                */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
-                               i8 nCodes, eEO eaCode[],
+i8 LogicCompiler::iToSourceSbr(i8 nCodes, eEO eaCode[],
                                i8 nLabels, struct JumpLabel xaJumpLabel[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
@@ -451,7 +454,7 @@ i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
   i8 i_CodeTill   = -1;
 
   for (;;) {
-    bool bFound = bFindSbr(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel,
+    bool bFound = bFindSbr(nCodes,eaCode,nLabels,xaJumpLabel,
                          i_From,i_CodeFrom,i_CodeTill);
                          
     if (! bFound)
@@ -461,7 +464,7 @@ i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
     s32 sFun;
     s4K sReplaced;
 
-    i8 i_Label = pLogicUnit->iFindLabel(i_CodeFrom);
+    i8 i_Label = m_pLogicUnit->iFindLabel(i_CodeFrom);
     sFun = xaJumpLabel[i_Label].m_sLabel;
     
     StrLib::vStrip(sFun.azChar(),':');
@@ -469,7 +472,7 @@ i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
     
     v_SbrPreliminary(sFun);
 
-    vToSource(pLogicUnit,nCodes,eaCode,nLabels,xaJumpLabel,i_CodeFrom,i_CodeTill);
+    vToSource(nCodes,eaCode,nLabels,xaJumpLabel,i_CodeFrom,i_CodeTill);
 
     v_SbrConcluding();
     
@@ -482,8 +485,7 @@ i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
 /*----------------------------------------------------------------------------*/
 /* to source code (subroutine)                                                */
 /*----------------------------------------------------------------------------*/
-bool LogicCompiler::bFindSbr(LogicUnit* pLogicUnit,
-                            i8 nCodes, eEO eaCode[],
+bool LogicCompiler::bFindSbr(i8 nCodes, eEO eaCode[],
                             i8 nLabels, struct JumpLabel xaJumpLabel[],
                             i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
 {
@@ -497,7 +499,7 @@ bool LogicCompiler::bFindSbr(LogicUnit* pLogicUnit,
       
       for (ri_CodeTill = ri_CodeFrom + 1; ri_CodeTill < nCodes; ri_CodeTill++) {
         
-        i8 i_Label = pLogicUnit->iFindLabel(ri_CodeTill);
+        i8 i_Label = m_pLogicUnit->iFindLabel(ri_CodeTill);
         if (C_UNKNOWN != i_Label && xaJumpLabel[i_Label].m_bSubroutine) {
           ri_CodeTill--;
           return true;
@@ -549,7 +551,6 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #define dLU1(x,a) "
   "\n  #define dLU2(x,a,b) "
   "\n  #define dLU3(x,a,b,c) "
-  "\n  #define SbrReturn() "
   "\n"
   "";
   

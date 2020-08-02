@@ -643,9 +643,6 @@ void LogicUnit::vDumpCode(void)
 #define JumpTo(__iArg) \
   m_aeCode = & m_eaCode[__iArg];
 
-#define SbrReturn(__iArg) \
-  m_aeCode = * (--aaeRstk);
-
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
 /*----------------------------------------------------------------------------*/
