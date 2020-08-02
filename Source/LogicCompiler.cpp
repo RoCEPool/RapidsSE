@@ -139,7 +139,6 @@ void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs)
     StrLib::vAppendString(aazCrs,sTok.azChar());
   }
   
-  //StrLib::vAppendChar(aazCrs,'\n');
   StrLib::vAppendChar(aazCrs,'\n');
   StrLib::vAppendChar(aazCrs,'\0');
 }
@@ -486,15 +485,15 @@ i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
 bool LogicCompiler::bFindSbr(LogicUnit* pLogicUnit,
                             i8 nCodes, eEO eaCode[],
                             i8 nLabels, struct JumpLabel xaJumpLabel[],
-                            i8& ri_From, i8& ri_Start, i8& ri_End)
+                            i8& ri_Label, i8& ri_Start, i8& ri_End)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
-  for (ri_From++; ri_From < nLabels; ri_From++) {
+  for (ri_Label++; ri_Label < nLabels; ri_Label++) {
     
-    if (xaJumpLabel[ri_From].m_bSubroutine) {
+    if (xaJumpLabel[ri_Label].m_bSubroutine) {
       
-      ri_Start = xaJumpLabel[ri_From].m_i_Code;
+      ri_Start = xaJumpLabel[ri_Label].m_i_Code;
       
       for (ri_End = ri_Start + 1; ri_End < nCodes; ri_End++) {
         
