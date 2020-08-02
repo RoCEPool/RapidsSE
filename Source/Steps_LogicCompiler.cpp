@@ -39,7 +39,6 @@ void Step::vLogicCompilerCompile(void)
     m_pLogicUnit->m_xpLogicCompiler->iCompile(m_pLogicUnit,
                                               aRLU,
                                               m_pLogicUnit->m_eaCode,
-                                              m_pLogicUnit->m_nLabels,
                                               m_pLogicUnit->m_xaJumpLabel
                                               );
   
