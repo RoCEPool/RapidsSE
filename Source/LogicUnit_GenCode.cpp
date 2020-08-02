@@ -1755,17 +1755,24 @@ void LogicUnit::vGenerate100001(void)
   
   vDefineLabel("TST_SBR:"_Stz);
   vAddCodeLabel(EO_CALL,"SBR_ADD:"_Stz);
+  vAddCodeLabel(EO_CALL,"SBR_MUL:"_Stz);
+  vAddCodeLabel(EO_CALL,"SBR_PRT:"_Stz);
   vAddCode(EO_RETURN);
 
   vDefineLabel("SBR_ADD:"_Stz);
   vAddCodeArg(EO_INTEGER,1);
   vAddCodeArg(EO_INTEGER,2);
   vAddCode(EO_ADD);
-  vAddCodeArg(EO_INTEGER,4);
-  vAddCode(EO_MULTIPLY);
+  vAddCode(EO_RETURN);
+  
+  vDefineLabel("SBR_PRT:"_Stz);
   vAddCode(EO_PRINT);
   vAddCode(EO_RETURN);
   
+  vDefineLabel("SBR_MUL:"_Stz);
+  vAddCodeArg(EO_INTEGER,4);
+  vAddCode(EO_MULTIPLY);
+  vAddCode(EO_RETURN);
 
   vDumpCode();
 }

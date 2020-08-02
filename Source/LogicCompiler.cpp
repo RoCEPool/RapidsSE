@@ -474,7 +474,7 @@ i8 LogicCompiler::iToSourceSbr(LogicUnit* pLogicUnit,
 
     v_SbrConcluding();
     
-    i_From = i_End;
+    //i_From = i_End;
   }
   
   return 1;
@@ -673,7 +673,7 @@ void LogicCompiler::v_CallSbr(i8 i_Label, struct JumpLabel xaJumpLabel[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   char* azFrag = (char*)
-  "\n    // EO_CALL:"
+  "    // EO_CALL:"
   "\n        aiDstk = %s(aiDstk);"
   "\n"
   "\n"
