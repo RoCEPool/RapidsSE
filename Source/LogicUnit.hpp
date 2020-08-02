@@ -335,9 +335,16 @@ namespace Expressions
    ~LogicUnit(void) noexcept(false);
   
     void vContentDump(void);
+    i8   iTransform(i8 nArgs, i8 iArg0);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    i8   nCodes(void);
+    i8   iFindLabel(i8 i_Code);
+    i8   iFindLabel(Stz* szLabelNm);
+    i8   nLabels(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // ..from Calculator
 
     void vGenCode(i8 iTestNo);
   
@@ -362,16 +369,9 @@ namespace Expressions
     void vGenerate100000(void);
     void vGenerate100001(void);
 
-    i8   iTransform(i8 nArgs, i8 iArg0);
-  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     #include "RLU_itf.h"
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    i8   iFindLabel(i8 i_Code);
-    i8   iFindLabel(Stz* szLabelNm);
 
   private:
     void vAddCode(eEO eCode);

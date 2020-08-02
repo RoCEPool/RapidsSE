@@ -197,6 +197,58 @@ i8 LogicUnit::iTransform(i8 nArgs, i8 iArg0)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* return number of eo codes                                                  */
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::nCodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  return m_i_Code;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find label which is at given i_Code                                        */
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::iFindLabel(i8 i_Code)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
+    if (i_Code == m_xaJumpLabel[i_Label].m_i_Code)
+      return i_Label;
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find label by name and return i_Label                                      */
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::iFindLabel(Stz* szLabelNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
+    if (m_xaJumpLabel[i_Label].m_sLabel.bSame(szLabelNm))
+      return i_Label;
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return number of labels                                                    */
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::nLabels(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  return m_i_Code;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* -- private ----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -406,34 +458,6 @@ Stz* LogicUnit::szFindCode(i8 i_Code)
       return m_xaJumpLabel[i_Label].m_sLabel;
 
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find code                                                                  */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iFindLabel(i8 i_Code)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    if (i_Code == m_xaJumpLabel[i_Label].m_i_Code)
-      return i_Label;
-
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find label                                                                 */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iFindLabel(Stz* szLabelNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    if (m_xaJumpLabel[i_Label].m_sLabel.bSame(szLabelNm))
-      return i_Label;
-
-  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
