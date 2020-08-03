@@ -160,11 +160,11 @@ enum eEO : u1 // expression operators
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   
   // index tree
-  /*    */ EO_IXT_DEL_ENT,      // delete current entry from indexTree
+  /*    */ EO_IXT_DEL_ENT,      // delete current m_aEnt from indexTree
   /*    */ EO_IXT_DUMP,         // dump index tree
   /*    */ EO_IXT_INS_ENT,      // insert an entry into the indexTree
   /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
-  /*    */ EO_IXT_TRV_NEXT,     // move to next entry
+  /*    */ EO_IXT_TRV_NEXT,     // traverse to next entry
   /*    */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index
 
   
@@ -183,10 +183,10 @@ enum eEO : u1 // expression operators
   /*    */ EO_IXT_POS_ALTBYWRK, // position alt ixt using entwrk.key
 
   // pay load
-  /*    */ EO_PAY_FETCH_COLI,   // fetch a column from the entry payload
-  /*    */ EO_PAY_FETCH_COLS,   // fetch a column from the entry payload
-  /*    */ EO_PAY_STORE_COLI,   // store a column of the entry payload
-  /*    */ EO_PAY_STORE_COLS,   // store a column of the entry payload
+  /*    */ EO_PAY_FETCH_COLI,   // fetch a column from entry payload
+  /*    */ EO_PAY_FETCH_COLS,   // fetch a column from entry payload
+  /*    */ EO_PAY_STORE_COLI,   // store a column into entry payload
+  /*    */ EO_PAY_STORE_COLS,   // store a column into entry payload
   
   // pix operators
   /*    */ EO_PIX_STM_PRINT,    // print stream pix

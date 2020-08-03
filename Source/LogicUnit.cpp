@@ -1616,7 +1616,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
                               
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
-/**/  case EO_IXT_DEL_ENT: ArgNil(); // delete current entry from indexTree
+/**/  case EO_IXT_DEL_ENT: ArgNil(); // delete current m_aEnt from indexTree
         //vDev_IXT_DEL_ENT(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_DEL_ENT);
         m_pDevTmpIxt->m_pIdxTree->vDelete(m_pDevTmpIxt->m_pEntBuffer,m_pDevTmpIxt->m_aEnt);
@@ -1660,7 +1660,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           *(++aiDstk) = 0;
         break;//+endCase
         
-/**/ case EO_IXT_TRV_NEXT: ArgNil(); // move to next entry
+/**/ case EO_IXT_TRV_NEXT: ArgNil(); // traverse to next entry
         //iDev_IXT_TRV_NEXT(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_TRV_NEXT);
         m_pDevTmpIxt->m_aEnt =
@@ -1844,7 +1844,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
-/**/  case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from the entry payload
+/**/  case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from entry payload
         //iDev_PAY_FETCH_COLI(pRLU,m_pDevTmpIxti8, iArg);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         iRes = *aPayload;
@@ -1852,7 +1852,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
         
-/**/  case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from the entry payload
+/**/  case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from entry payload
       {
         //szDev_PAY_FETCH_COLS(pRLU,m_pDevTmpIxti8, iArg);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
@@ -1870,7 +1870,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       }
         break;//+endCase
         
-/**/  case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column of the entry payload
+/**/  case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column into entry payload
         iTopA = *(aiDstk--);
         //vDev_PAY_STORE_COLI(pRLU,m_pDevTmpIxt,iArg,iRes);
         dLU2(EO_PAY_STORE_COLI,iArg,iRes);
@@ -1878,7 +1878,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *aPayload = iTopA;
         break;//+endCase
       
-/**/  case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column of the entry payload
+/**/  case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column into entry payload
       {
         dLU1(EO_PAY_STORE_COLI,iArg);
 //        i8 nSize = *(aiDstk--);
