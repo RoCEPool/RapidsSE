@@ -95,7 +95,7 @@ void LogicCompiler::vExtract(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract all EO_fragments                                                   */
+/* extract all EO_ fragments                                                  */
 /*----------------------------------------------------------------------------*/
 bool LogicCompiler::bExtractAll(File* pFile, char** aazCrs)
 {
@@ -114,7 +114,7 @@ bool LogicCompiler::bExtractAll(File* pFile, char** aazCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract an EO_fragment                                                     */
+/* extract an EO_ fragment                                                    */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs)
 {
