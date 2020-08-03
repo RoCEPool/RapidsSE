@@ -32,7 +32,8 @@ namespace Expressions
     DevIXT(void);
    ~DevIXT(void) noexcept(false);
   
-
+    eKC e_ENT_COMPARE(LogicUnit* pLogicUnit);
+  
   private:
     Footer* aFooter(void);
   };

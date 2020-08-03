@@ -350,6 +350,10 @@ namespace Expressions
     Stz* szLabelNm(i8 i_Label);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    EntWrk* pEntWrk(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vGenCode(i8 iTestNo);
   
