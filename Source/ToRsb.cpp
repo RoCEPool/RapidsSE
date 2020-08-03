@@ -937,7 +937,7 @@ L_Varchar:
   while (cSrc) {
         
     // test for field separator (because its not enclosed)
-    if (',' == cSrc)
+    if (m_cFldSep == cSrc)
       break;
     
     if (nChars++ < nPixLength)
