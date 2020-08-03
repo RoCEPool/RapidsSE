@@ -370,7 +370,7 @@ void LogicCompiler::vToSource(eEO eaCode[],
     
     if (EO_CALL == eCode) {
       
-      i8 iArg = *(i8*)&eaCode[i_Code+1];
+      i8 iArg = m_pLogicUnit->iCodeArg(i_Code+1);
       i8 i_Label = m_pLogicUnit->iFindLabel(iArg);
       
       v_CallSbr(i_Label);
@@ -387,7 +387,7 @@ void LogicCompiler::vToSource(eEO eaCode[],
     char* azFrag = (char*)gszaEoFragments[eCode];
     
     if (EA_INT == EoArgs[eCode].m_eArgument) {
-      i8 iArg = *(i8*)&eaCode[i_Code+1];
+      i8 iArg = m_pLogicUnit->iCodeArg(i_Code+1);
       StrLib::bReplace(sReplaced.azChar(),azFrag,
                        "iArg",StrLib::wToString(iArg,caInt));
       StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());

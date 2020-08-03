@@ -210,6 +210,18 @@ i8 LogicUnit::nCodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get iArg at given i_Code                                                   */
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::iCodeArg(i8 i_Code)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  i8 iArg = * (i8*)&m_eaCode[i_Code];
+
+  return iArg;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find label which is at given i_Code                                        */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iFindLabel(i8 i_Code)
