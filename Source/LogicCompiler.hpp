@@ -38,13 +38,13 @@ namespace Expressions
     static eEO  eFindEO(Stz* szEOname);
 
     i8 iCall(void);
-    i8 iCompile(LogicUnit* pLogicUnit, RLU* aRLU);
+    i8 iCompile(LogicUnit* pLogicUnit, void* aDynArg);
   
   private:
   
     void vAcquire(void);
     void vBegin(void);
-    void vCall(RLU* aRLU);
+    void vCall(void* aDynArg);
     bool bCompile(void);
     void vEnd(void);
     void vRelease(void);

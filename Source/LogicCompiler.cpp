@@ -176,7 +176,7 @@ i8 LogicCompiler::iCall(void)
 /*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, RLU* aRLU)
+i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
@@ -200,7 +200,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, RLU* aRLU)
   
   vSymbols();
   
-  vCall(aRLU);
+  vCall(aDynArg);
 
   vRelease();
   
@@ -241,7 +241,7 @@ void LogicCompiler::vBegin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vCall(RLU* aRLU)
+void LogicCompiler::vCall(void* aDynArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -251,7 +251,7 @@ void LogicCompiler::vCall(RLU* aRLU)
   afDyn = (i8 (*)(void*))tcc_get_symbol((TCCState*)m_aTccState,"aiDynCompute");
   RASSERT(afDyn);
   
-  afDyn(aRLU);
+  afDyn(aDynArg);
 #endif
 }
 
