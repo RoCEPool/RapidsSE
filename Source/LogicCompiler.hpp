@@ -53,7 +53,7 @@ namespace Expressions
     void vAddFragment(i8 i_CodeFrom, i8 i_CodeTill);
     bool bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill);
   
-    void vFunSource(void);
+    void vRtnSource(void);
     void vSbrSource(void);
   
     void v_DynPreliminary(void);

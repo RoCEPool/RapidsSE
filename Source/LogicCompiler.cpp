@@ -8,10 +8,10 @@
 #include "libtcc.h"
 #endif
 
+extern EoArg EoArgs[];
+
 char gcaEoFragments[C_128K];
 Stz* gszaEoFragments[EO_ENUMS];
-
-extern EoArg EoArgs[];
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -53,7 +53,6 @@ LogicCompiler::LogicCompiler(void)
 LogicCompiler::~LogicCompiler(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,19 +184,16 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   v_DynPreliminary();
-  
   vSbrSource();
-  
-  vFunSource();
-
+  vRtnSource();
   v_DynConcluding();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
 
   vAcquire();
-  
   bCompile();
-  
   vSymbols();
   
   vCall(aDynArg);
@@ -440,7 +436,7 @@ bool LogicCompiler::bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
 /*----------------------------------------------------------------------------*/
 /* to source code (function)                                                  */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vFunSource(void)
+void LogicCompiler::vRtnSource(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -450,7 +446,6 @@ void LogicCompiler::vFunSource(void)
   i8 nCodes = m_pLogicUnit->nCodes();
   
   i8 i_CodeTill = 0;
-  
   while (i_CodeTill + 1 < nCodes) {
     i8 i_Label = m_pLogicUnit->iFindLabel(i_CodeTill+1);
     if (C_UNKNOWN == i_Label) {
@@ -464,11 +459,8 @@ void LogicCompiler::vFunSource(void)
     i_CodeTill++;
   }
   
-  
   v_FunPreliminary();
-
   vAddFragment(0,i_CodeTill);
-
   v_FunConcluding();
 }
 
@@ -479,30 +471,24 @@ void LogicCompiler::vSbrSource(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
-  i8 i_Label  = -1;
+  i8 i_Label    = -1;
   i8 i_CodeFrom = -1;
-  i8 i_CodeTill   = -1;
+  i8 i_CodeTill = -1;
 
+  s32 sFun;
+  s4K sReplaced;
+  
   for (;;) {
     bool bFound = bEachSbr(i_Label,i_CodeFrom,i_CodeTill);
-                         
     if (! bFound)
       break;
     
-    
-    s32 sFun;
-    s4K sReplaced;
-
     i8 i_Label = m_pLogicUnit->iFindLabel(i_CodeFrom);
     sFun = m_pLogicUnit->szLabelNm(i_Label);
-    
     StrLib::vStrip(sFun.azChar(),':');
     
-    
     v_SbrPreliminary(sFun);
-
     vAddFragment(i_CodeFrom,i_CodeTill);
-
     v_SbrConcluding();
   }
 }
