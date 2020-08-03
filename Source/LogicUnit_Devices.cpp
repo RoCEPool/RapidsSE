@@ -44,9 +44,9 @@ i8 iDev_ENT_PUSHELMI0(void* pRLU, void* aDev)
 /*----------------------------------------------------------------------------*/
 /* push entry elm 0 str                                                       */
 /*----------------------------------------------------------------------------*/
-i8 szDev_ENT_PUSHELMS0(void* pRLU, void* aDev)
+Stz* szDev_ENT_PUSHELMS0(void* pRLU, void* aDev)
 {
-  return 0;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,9 +140,9 @@ i8 iDev_PAY_FETCH_COLI(void* pRLU, void* aDev, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* fetch a column from entry payload                                          */
 /*----------------------------------------------------------------------------*/
-i8 szDev_PAY_FETCH_COLS(void* pRLU, void* aDev, i8 iArg)
+Stz* szDev_PAY_FETCH_COLS(void* pRLU, void* aDev, i8 iArg)
 {
-  return 0;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,7 +156,7 @@ void vDev_PAY_STORE_COLI(void* pRLU, void* aDev, i8 iArg, i8 iTopA)
 /*----------------------------------------------------------------------------*/
 /* store a column into entry payload                                          */
 /*----------------------------------------------------------------------------*/
-void vDev_PAY_STORE_COLS(void* pRLU, void* aDev, i8 iArg, i8 iStrInf)
+void vDev_PAY_STORE_COLS(void* pRLU, void* aDev, i8 iArg, Stz* azDst)
 {
   
 }

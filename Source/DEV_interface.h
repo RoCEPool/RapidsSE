@@ -17,7 +17,7 @@ i8   iDev_ENT_COMPARE(void* pRLU, void* m_pDev);
 i8   iDev_ENT_NEXT(void* pRLU, void* m_pDev);
 void vDev_ENT_POSPRIOR(void* pRLU, void* m_pDev);
 i8   iDev_ENT_PUSHELMI0(void* pRLU, void* m_pDev);
-i8   szDev_ENT_PUSHELMS0(void* pRLU, void* m_pDev);
+Stz* szDev_ENT_PUSHELMS0(void* pRLU, void* m_pDev);
 i8   iDev_ENT_PUSHOFS(void* pRLU, void* m_pDev);
 
 void vDev_ENTWRK_APPENDELM(void* pRLU, void* m_pDev);
@@ -32,10 +32,10 @@ i8   iDev_IXT_TRV_BEGIN(void* pRLU, void* m_pDev);
 i8   iDev_IXT_TRV_NEXT(void* pRLU, void* m_pDev);
 
 i8   iDev_PAY_FETCH_COLI(void* pRLU, void* m_pDev, i8 iArg);
-i8   szDev_PAY_FETCH_COLS(void* pRLU, void* m_pDev, i8 iArg);
+Stz* szDev_PAY_FETCH_COLS(void* pRLU, void* m_pDev, i8 iArg);
 
 void vDev_PAY_STORE_COLI(void* pRLU, void* m_pDev, i8 iArg, i8 iTopA);
-void vDev_PAY_STORE_COLS(void* pRLU, void* m_pDev, i8 iArg, i8 iStrInf);
+void vDev_PAY_STORE_COLS(void* pRLU, void* m_pDev, i8 iArg, Stz* azDst);
 
 /*============================================================================*/
 /* end                                                                        */
