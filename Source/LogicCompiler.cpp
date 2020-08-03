@@ -512,7 +512,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* rlu compute function                                               */"
   "\n  /*--------------------------------------------------------------------*/"
-  "\n  i8* aiDynCompute(void* aRLU)"
+  "\n  i8* aiDynCompute(void* pRLU)"
   "\n  { "
   "\n    i8 iaDataStack[C_LOGIC_STACK];"
   "\n"
