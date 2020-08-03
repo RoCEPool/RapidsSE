@@ -50,6 +50,8 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   
   m_pRsbBuffer = nullptr;
   
+  m_bFirst = true;
+  
 //  m_pRowSlab = m_pRsbBuffer->pRowSlab();
 //  m_pRowSlab->vInitPix(m_pStreamDef);
   m_pRowSlab = nullptr;
@@ -554,6 +556,22 @@ bool ToRsb::bConvertFastInline(char* azCsvInput)
   i8 iHash = PtnLib::iResetRunning();
   i8 i_Ptn = 0;
 
+  // hack
+  if (m_bFirst) {
+    m_bFirst = false;
+    
+    for (char* acTest = acCsvSrc; *acTest; acTest++) {
+      if (',' == *acTest) {
+        m_cFldSep = ',';
+        break;
+      }
+      if ('|' == *acTest) {
+        m_cFldSep = '|';
+        break;
+      }
+    }
+  }
+  // end-hack
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) while more csv data
@@ -937,7 +955,7 @@ L_Varchar:
   while (cSrc) {
         
     // test for field separator (because its not enclosed)
-    if (',' == cSrc)
+    if (m_cFldSep == cSrc)
       break;
     
     if (nChars++ < nPixLength)

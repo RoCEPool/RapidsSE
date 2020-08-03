@@ -95,7 +95,7 @@ void LogicCompiler::vExtract(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract all EO_fragments                                                   */
+/* extract all EO_ fragments                                                  */
 /*----------------------------------------------------------------------------*/
 bool LogicCompiler::bExtractAll(File* pFile, char** aazCrs)
 {
@@ -114,7 +114,7 @@ bool LogicCompiler::bExtractAll(File* pFile, char** aazCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract an EO_fragment                                                     */
+/* extract an EO_ fragment                                                    */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs)
 {
@@ -512,7 +512,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* rlu compute function                                               */"
   "\n  /*--------------------------------------------------------------------*/"
-  "\n  i8* aiDynCompute(void* aRLU)"
+  "\n  i8* aiDynCompute(void* pRLU)"
   "\n  { "
   "\n    i8 iaDataStack[C_LOGIC_STACK];"
   "\n"

@@ -38,6 +38,8 @@ namespace Load
   
     RowSlab*   m_pRowSlab;
     RsbBuffer* m_pRsbBuffer;
+  
+    bool       m_bFirst;
 
     // must be last
     Footer m_xFooter;
