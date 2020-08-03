@@ -14,11 +14,9 @@ namespace Expressions
   private:
   
     char  m_caSource[C_LOGIC_SOURCE];
-  
     char* m_azSrcCrs;
-  
     void* m_aTccState;
-
+  
     LogicUnit* m_pLogicUnit;
   
     // must be last

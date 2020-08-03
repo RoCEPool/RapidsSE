@@ -35,12 +35,10 @@ LogicCompiler::LogicCompiler(void)
 #endif
   
   m_caSource[0] = '\0';
+  m_azSrcCrs    = m_caSource;
+  m_aTccState   = nullptr;
   
-  m_azSrcCrs = m_caSource;
-  
-  m_aTccState = nullptr;
-  
-  m_pLogicUnit = nullptr;
+  m_pLogicUnit  = nullptr;
   
   _checkInitialised_(CN_LOGICCOMPILER);
   
@@ -231,7 +229,6 @@ void LogicCompiler::vAcquire(void)
 void LogicCompiler::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,7 +269,6 @@ bool LogicCompiler::bCompile(void)
 void LogicCompiler::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -390,7 +386,6 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
       StrLib::vAppendString(&m_azSrcCrs,azFrag);
     }
     
-    
     i_Code += EoArgs[eCode].m_nArgBytes;
   }
   
@@ -423,7 +418,6 @@ bool LogicCompiler::bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
       
       ri_CodeTill = nCodes - 1;
       return true;
-      
     }
   }
   
