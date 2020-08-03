@@ -51,12 +51,10 @@ namespace Expressions
     void vSymbols(void);
 
     void vAddFragment(i8 i_CodeFrom, i8 i_CodeTill);
-  
-    i8 iToSourceFun(void);
-  
-    i8 iToSourceSbr(void);
-  
     bool bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill);
+  
+    void vFunSource(void);
+    void vSbrSource(void);
   
     void v_DynPreliminary(void);
     void v_DynConcluding(void);

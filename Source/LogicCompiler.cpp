@@ -186,9 +186,9 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   
   v_DynPreliminary();
   
-  i8 iResult = iToSourceSbr();
+  vSbrSource();
   
-  iResult = iToSourceFun();
+  vFunSource();
 
   v_DynConcluding();
   
@@ -204,7 +204,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 
   vRelease();
   
-  return iResult;
+  return 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -401,80 +401,6 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 }
 
 /*----------------------------------------------------------------------------*/
-/* to source code (function)                                                  */
-/*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSourceFun(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  s4K sReplaced;
-  char caInt[32];
-  
-  i8 nCodes = m_pLogicUnit->nCodes();
-  
-  v_FunPreliminary();
-
-  i8 i_CodeTill = 0;
-  
-  while (i_CodeTill + 1 < nCodes) {
-    i8 i_Label = m_pLogicUnit->iFindLabel(i_CodeTill+1);
-    if (C_UNKNOWN == i_Label) {
-      i_CodeTill++;
-      continue;
-    }
-    
-    if (m_pLogicUnit->bLabelIsSbr(i_Label))
-      break;
-    
-    i_CodeTill++;
-  }
-  
-  vAddFragment(0,i_CodeTill);
-
-  v_FunConcluding();
-
-  
-  return 1;
-}
-
-/*----------------------------------------------------------------------------*/
-/* to source code (subroutine)                                                */
-/*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSourceSbr(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  i8 i_Label  = -1;
-  i8 i_CodeFrom = -1;
-  i8 i_CodeTill   = -1;
-
-  for (;;) {
-    bool bFound = bEachSbr(i_Label,i_CodeFrom,i_CodeTill);
-                         
-    if (! bFound)
-      break;
-    
-    
-    s32 sFun;
-    s4K sReplaced;
-
-    i8 i_Label = m_pLogicUnit->iFindLabel(i_CodeFrom);
-    sFun = m_pLogicUnit->szLabelNm(i_Label);
-    
-    StrLib::vStrip(sFun.azChar(),':');
-    
-    
-    v_SbrPreliminary(sFun);
-
-    vAddFragment(i_CodeFrom,i_CodeTill);
-
-    v_SbrConcluding();
-  }
-  
-  return 1;
-}
-
-/*----------------------------------------------------------------------------*/
 /* step thru each subroutine                                                  */
 /*----------------------------------------------------------------------------*/
 bool LogicCompiler::bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
@@ -509,6 +435,76 @@ bool LogicCompiler::bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
   ri_CodeTill = -1;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* to source code (function)                                                  */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::vFunSource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  s4K sReplaced;
+  char caInt[32];
+  
+  i8 nCodes = m_pLogicUnit->nCodes();
+  
+  i8 i_CodeTill = 0;
+  
+  while (i_CodeTill + 1 < nCodes) {
+    i8 i_Label = m_pLogicUnit->iFindLabel(i_CodeTill+1);
+    if (C_UNKNOWN == i_Label) {
+      i_CodeTill++;
+      continue;
+    }
+    
+    if (m_pLogicUnit->bLabelIsSbr(i_Label))
+      break;
+    
+    i_CodeTill++;
+  }
+  
+  
+  v_FunPreliminary();
+
+  vAddFragment(0,i_CodeTill);
+
+  v_FunConcluding();
+}
+
+/*----------------------------------------------------------------------------*/
+/* to source code (subroutine)                                                */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::vSbrSource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  i8 i_Label  = -1;
+  i8 i_CodeFrom = -1;
+  i8 i_CodeTill   = -1;
+
+  for (;;) {
+    bool bFound = bEachSbr(i_Label,i_CodeFrom,i_CodeTill);
+                         
+    if (! bFound)
+      break;
+    
+    
+    s32 sFun;
+    s4K sReplaced;
+
+    i8 i_Label = m_pLogicUnit->iFindLabel(i_CodeFrom);
+    sFun = m_pLogicUnit->szLabelNm(i_Label);
+    
+    StrLib::vStrip(sFun.azChar(),':');
+    
+    
+    v_SbrPreliminary(sFun);
+
+    vAddFragment(i_CodeFrom,i_CodeTill);
+
+    v_SbrConcluding();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
