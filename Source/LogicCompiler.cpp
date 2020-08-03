@@ -176,8 +176,7 @@ i8 LogicCompiler::iCall(void)
 /*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, RLU* aRLU,
-                           eEO eaCode[])
+i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, RLU* aRLU)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
@@ -187,9 +186,9 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, RLU* aRLU,
   
   v_DynPreliminary();
   
-  i8 iResult = iToSourceSbr(eaCode);
+  i8 iResult = iToSourceSbr();
   
-  iResult = iToSourceFun(eaCode);
+  iResult = iToSourceFun();
 
   v_DynConcluding();
   
@@ -356,8 +355,7 @@ Qty xMul(i8 iTopA, i8 iTopB)
 /*----------------------------------------------------------------------------*/
 /* to source code                                                             */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vToSource(eEO eaCode[],
-                            i8 i_CodeFrom, i8 i_CodeTill)
+void LogicCompiler::vToSource(i8 i_CodeFrom, i8 i_CodeTill)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -405,7 +403,7 @@ void LogicCompiler::vToSource(eEO eaCode[],
 /*----------------------------------------------------------------------------*/
 /* to source code (function)                                                  */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSourceFun(eEO eaCode[])
+i8 LogicCompiler::iToSourceFun(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -431,7 +429,7 @@ i8 LogicCompiler::iToSourceFun(eEO eaCode[])
     i_CodeTill++;
   }
   
-  vToSource(eaCode,0,i_CodeTill);
+  vToSource(0,i_CodeTill);
 
   v_FunConcluding();
 
@@ -442,7 +440,7 @@ i8 LogicCompiler::iToSourceFun(eEO eaCode[])
 /*----------------------------------------------------------------------------*/
 /* to source code (subroutine)                                                */
 /*----------------------------------------------------------------------------*/
-i8 LogicCompiler::iToSourceSbr(eEO eaCode[])
+i8 LogicCompiler::iToSourceSbr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -451,8 +449,7 @@ i8 LogicCompiler::iToSourceSbr(eEO eaCode[])
   i8 i_CodeTill   = -1;
 
   for (;;) {
-    bool bFound = bEachSbr(eaCode,
-                         i_Label,i_CodeFrom,i_CodeTill);
+    bool bFound = bEachSbr(i_Label,i_CodeFrom,i_CodeTill);
                          
     if (! bFound)
       break;
@@ -469,7 +466,7 @@ i8 LogicCompiler::iToSourceSbr(eEO eaCode[])
     
     v_SbrPreliminary(sFun);
 
-    vToSource(eaCode,i_CodeFrom,i_CodeTill);
+    vToSource(i_CodeFrom,i_CodeTill);
 
     v_SbrConcluding();
     
@@ -482,8 +479,7 @@ i8 LogicCompiler::iToSourceSbr(eEO eaCode[])
 /*----------------------------------------------------------------------------*/
 /* step thru each subroutine                                                  */
 /*----------------------------------------------------------------------------*/
-bool LogicCompiler::bEachSbr(eEO eaCode[],
-                            i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
+bool LogicCompiler::bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   

@@ -36,10 +36,7 @@ void Step::vLogicCompilerCompile(void)
   RLU* aRLU = &m_pLogicUnit->m_xRLU;
   
   i8 iResult =
-    m_pLogicUnit->m_xpLogicCompiler->iCompile(m_pLogicUnit,
-                                              aRLU,
-                                              m_pLogicUnit->m_eaCode
-                                              );
+    m_pLogicUnit->m_xpLogicCompiler->iCompile(m_pLogicUnit,aRLU);
   
   EXIT();
 }

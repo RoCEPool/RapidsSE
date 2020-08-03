@@ -38,8 +38,7 @@ namespace Expressions
     static eEO  eFindEO(Stz* szEOname);
 
     i8 iCall(void);
-    i8 iCompile(LogicUnit* pLogicUnit, RLU* aRLU,
-                eEO eaCode[]);
+    i8 iCompile(LogicUnit* pLogicUnit, RLU* aRLU);
   
   private:
   
@@ -51,15 +50,13 @@ namespace Expressions
     void vRelease(void);
     void vSymbols(void);
 
-    void vToSource(eEO eaCode[],
-                 i8 i_CodeFrom, i8 i_CodeTill);
+    void vToSource(i8 i_CodeFrom, i8 i_CodeTill);
   
-    i8 iToSourceFun(eEO eaCode[]);
+    i8 iToSourceFun(void);
   
-    i8 iToSourceSbr(eEO eaCode[]);
+    i8 iToSourceSbr(void);
   
-    bool bEachSbr(eEO eaCode[],
-                  i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill);
+    bool bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill);
   
     void v_DynPreliminary(void);
     void v_DynConcluding(void);
