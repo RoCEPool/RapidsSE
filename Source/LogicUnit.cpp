@@ -5,7 +5,7 @@
 #include "Expressions.h"
 
 #include "DEV_enum.h"
-#include "RLU_itf.h"
+#include "InterfaceDEV.h"
 
 extern EoArg EoArgs[];
 
@@ -1845,7 +1845,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
 /**/  case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from the entry payload
-        //iDev_PAY_FETCH_COLI(pRLU,m_pDevTmpIxt);
+        //iDev_PAY_FETCH_COLI(pRLU,m_pDevTmpIxti8, iArg, i8 iRes);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         iRes = *aPayload;
         dLU2(EO_PAY_FETCH_COLI,iArg,iRes);
@@ -1854,7 +1854,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /**/  case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from the entry payload
       {
-        //szDev_PAY_FETCH_COLS(pRLU,m_pDevTmpIxt);
+        //szDev_PAY_FETCH_COLS(pRLU,m_pDevTmpIxti8, iArg, i8 iRes);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         char* azSrc = (char*)aPayload;
         i8 nSize = StrLib::nSize(azSrc);
@@ -1872,7 +1872,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /**/  case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column of the entry payload
         iRes = *(aiDstk--);
-        //vDev_PAY_FETCH_COLI(pRLU,m_pDevTmpIxt,iArg,iRes);
+        //vDev_PAY_STORE_COLI(pRLU,m_pDevTmpIxt,iArg,iRes);
         dLU2(EO_PAY_STORE_COLI,iArg,iRes);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         *aPayload = iRes;
@@ -1888,7 +1888,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        char* azSrc = (char*)(--aiDstk);
 //        aiDstk--;
 //        StrLib::vCopy((char*)aPayload,azSrc);
-        //vDev_PAY_FETCH_COLS(pRLU,m_pDevTmpIxt,iArg,iRes);
+        //vDev_PAY_STORE_COLS(pRLU,m_pDevTmpIxt,iArg,iRes);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         S_PopStr((char*)aPayload);
         vDebugPoint();

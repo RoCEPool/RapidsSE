@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RLU_itf.h -- Interface for RLU                                             */
+/* DEV_itf.h -- Interface for RLU Devices                                     */
 /*============================================================================*/
 
 i8 iDEV_MAP(void* aRLU, void* aDev, i8 eDO, void** aaCrs, void* aArg, i8 iArg);
@@ -13,29 +13,27 @@ i8 iDEV_MAP_TRV_NEXT  (void* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg
 
 
 // prototypes
+i8   iDev_ENT_COMPARE(void* pRLU, void* m_pDevTmpIxt);
+i8   iDev_ENT_NEXT(void* pRLU, void* m_pDevTmpIxt);
 void vDev_ENT_POSPRIOR(void* pRLU, void* m_pDevTmpIxt);
+i8   iDev_ENT_PUSHELMI0(void* pRLU, void* m_pDevTmpIxt);
+i8   szDev_ENT_PUSHELMS0(void* pRLU, void* m_pDevTmpIxt);
+i8   iDev_ENT_PUSHOFS(void* pRLU, void* m_pDevTmpIxt);
+
 void vDev_ENTWRK_APPENDELM(void* pRLU, void* m_pDevTmpIxt);
 
 void vDev_IXT_DEL_ENT(void* pRLU, void* m_pDevTmpIxt);
 void vDev_IXT_DUMP(void* pRLU, void* m_pDevTmpIxt);
 void vDev_IXT_INS_ENT(void* pRLU, void* m_pDevTmpIxt);
+i8   iDev_IXT_TMP_ENTRIES(void* pRLU, void* m_pDevTmpIxt);
+i8   iDev_IXT_TRV_BEGIN(void* pRLU, void* m_pDevTmpIxt);
+i8   iDev_IXT_TRV_NEXT(void* pRLU, void* m_pDevTmpIxt);
 
-void vDev_PAY_FETCH_COLI(void* pRLU, void* m_pDevTmpIxt,i8 iArg, i8 iRes);
-void vDev_PAY_FETCH_COLS(void* pRLU, void* m_pDevTmpIxt,i8 iArg, i8 iRes);
+void vDev_PAY_FETCH_COLI(void* pRLU, void* m_pDevTmpIxt);
+void vDev_PAY_FETCH_COLS(void* pRLU, void* m_pDevTmpIxt);
 
-i8 iDev_ENT_NEXT(void* pRLU, void* m_pDevTmpIxt);
-i8 iDev_ENT_PUSHELMI0(void* pRLU, void* m_pDevTmpIxt);
-i8 iDev_ENT_PUSHOFS(void* pRLU, void* m_pDevTmpIxt);
-i8 iDev_ENT_COMPARE(void* pRLU, void* m_pDevTmpIxt);
-
-i8 iDev_IXT_TRV_BEGIN(void* pRLU, void* m_pDevTmpIxt);
-i8 iDev_IXT_TRV_NEXT(void* pRLU, void* m_pDevTmpIxt);
-i8 iDev_IXT_TMP_ENTRIES(void* pRLU, void* m_pDevTmpIxt);
-i8 iDev_PAY_FETCH_COLI(void* pRLU, void* m_pDevTmpIxt);
-
-i8 szDev_ENT_PUSHELMS0(void* pRLU, void* m_pDevTmpIxt);
-
-i8 szDev_PAY_FETCH_COLS(void* pRLU, void* m_pDevTmpIxt);
+i8   iDev_PAY_FETCH_COLI(void* pRLU, void* m_pDevTmpIxt, i8 iArg, i8 iRes);
+i8   szDev_PAY_FETCH_COLS(void* pRLU, void* m_pDevTmpIxt, i8 iArg, i8 iRes);
 
 /*============================================================================*/
 /* end                                                                        */
