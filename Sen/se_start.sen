@@ -1021,7 +1021,7 @@
   stage stageC on origin :
     sql 102
     | output
-    | toStatDemon
+    //| toStatDemon
     | sink
     | stageA
 
@@ -1050,7 +1050,7 @@
   stage stageC on origin :
     sql 102
     | output
-    | toStatDemon
+    //| toStatDemon
     | sink
     | stageA
 
@@ -1080,7 +1080,7 @@
   stage stageC on origin :
     sql 102
     | output
-    | toStatDemon
+    //| toStatDemon
     | sink
     | stageA
 
@@ -1110,7 +1110,7 @@
   stage stageC on origin :
     sql 601
     | output
-    | toStatDemon
+    //| toStatDemon
     | sink
     | stageA
 
