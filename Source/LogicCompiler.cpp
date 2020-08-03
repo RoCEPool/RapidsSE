@@ -353,9 +353,9 @@ Qty xMul(i8 iTopA, i8 iTopB)
 //L_Label: ;
 
 /*----------------------------------------------------------------------------*/
-/* to source code                                                             */
+/* add source code fragment                                                   */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vToSource(i8 i_CodeFrom, i8 i_CodeTill)
+void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -429,7 +429,7 @@ i8 LogicCompiler::iToSourceFun(void)
     i_CodeTill++;
   }
   
-  vToSource(0,i_CodeTill);
+  vAddFragment(0,i_CodeTill);
 
   v_FunConcluding();
 
@@ -466,11 +466,9 @@ i8 LogicCompiler::iToSourceSbr(void)
     
     v_SbrPreliminary(sFun);
 
-    vToSource(i_CodeFrom,i_CodeTill);
+    vAddFragment(i_CodeFrom,i_CodeTill);
 
     v_SbrConcluding();
-    
-    //i_From = i_CodeTill;
   }
   
   return 1;

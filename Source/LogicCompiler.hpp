@@ -50,7 +50,7 @@ namespace Expressions
     void vRelease(void);
     void vSymbols(void);
 
-    void vToSource(i8 i_CodeFrom, i8 i_CodeTill);
+    void vAddFragment(i8 i_CodeFrom, i8 i_CodeTill);
   
     i8 iToSourceFun(void);
   
