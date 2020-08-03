@@ -21,6 +21,8 @@ i8   szDev_ENT_PUSHELMS0(void* pRLU, void* m_pDev);
 i8   iDev_ENT_PUSHOFS(void* pRLU, void* m_pDev);
 
 void vDev_ENTWRK_APPENDELM(void* pRLU, void* m_pDev);
+void vDev_ENTWRK_APPENDELMI(void* pRLU, void* m_pDev, i8 iTopA);
+void vDev_ENTWRK_APPENDELMS(void* pRLU, void* m_pDev, Stz* azSrc);
 
 void vDev_IXT_DEL_ENT(void* pRLU, void* m_pDev);
 void vDev_IXT_DUMP(void* pRLU, void* m_pDev);

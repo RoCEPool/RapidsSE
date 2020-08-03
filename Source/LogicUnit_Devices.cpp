@@ -66,6 +66,22 @@ void vDev_ENTWRK_APPENDELM(void* pRLU, void* aDev)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append next element value                                                  */
+/*----------------------------------------------------------------------------*/
+void vDev_ENTWRK_APPENDELMI(void* pRLU, void* aDev, i8 iTopA)
+{
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* append next element value                                                  */
+/*----------------------------------------------------------------------------*/
+void vDev_ENTWRK_APPENDELMS(void* pRLU, void* aDev, Stz* azSrc)
+{
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete current entry m_aEnt from indexTree                                 */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_DEL_ENT(void* pRLU, void* aDev)

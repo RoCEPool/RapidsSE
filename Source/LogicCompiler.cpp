@@ -462,6 +462,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  typedef unsigned char eEO;"
   "\n  typedef char i1;"
   "\n  typedef long long i8;"
+  "\n  typedef char Stz;"
   "\n"
   "\n  #include \"../Source/Qty.h\""
   "\n"

@@ -1581,6 +1581,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /**/  case EO_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)
         iTopA = *(aiDstk--);
+        //vDev_ENTWRK_APPENDELMI(pRLU,m_pDevTmpIxt,iTopA);
         dLU1(EO_ENTWRK_APPENDELMI,iTopA);
         m_oEntWrk.vAppendElementInt(m_pDevSrcRsb->m_aRsb,iTopA);
         break;//+endCase
@@ -1596,6 +1597,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         S_UseStr(azSrc);
         m_oEntWrk.vAppendElementStz(m_pDevSrcRsb->m_aRsb,(Stz*)azSrc);
         S_UseEnd();
+        //vDev_ENTWRK_APPENDELMS(pRLU,m_pDevTmpIxt,azSrc);
         if (m_bTrace)
           vDebugPoint();
       }
