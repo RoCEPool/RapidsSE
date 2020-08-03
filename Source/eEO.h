@@ -384,8 +384,10 @@ static Stz* aEO[]
   /*    */ "EO_IXT_TMP_ENTRIES"_Stz,
   
   /*    */ "EO_IXT_SRC_BEGIN"_Stz,
+  /*    */ "EO_IXT_SRC_LBOUND"_Stz,
   /*    */ "EO_IXT_SRC_NEXT"_Stz,
   /*    */ "EO_IXT_SRC_PRINT"_Stz,
+  /*    */ "EO_IXT_SRC_UBOUND"_Stz,
   /*    */ "EO_IXT_ALT_BEGIN"_Stz,
   /*    */ "EO_IXT_ALT_NEXT"_Stz,
   /*    */ "EO_IXT_ALT_PRINT"_Stz,
