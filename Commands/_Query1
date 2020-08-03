@@ -30,6 +30,8 @@ create table LineItem                      // SF * 6,000,000 rows
   // 16 columns                                  174B  91B
 );
 
+create index idx on lineitem (l_shipdate);
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 10 ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -41,6 +43,8 @@ create table LineItem                      // SF * 6,000,000 rows
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 /time load lineitem "/DATA/TPCH/lineitem10k.csv";
 /time Query1 lineitem;
+///time Query1_PerfExp1 lineitem;
+///time Query1_PerfExp2 lineitem idx;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // SF1 

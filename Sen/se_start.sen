@@ -1003,7 +1003,7 @@
   // Query 1 - converting loaded CRW data into RSB
   sPath
   "
-  procedure Query1_PerfExp
+  procedure Query1_PerfExp1
     parameters $Table
   begin
 
@@ -1029,6 +1029,34 @@
   "
   api::addProcedure
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 1 - iterating index on l_shipdate
+  sPath
+  "
+  procedure Query1_PerfExp2
+    parameters $Table $Index
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    sql 112 $Table $Index
+    | sql 100
+    | stageC
+
+  stage stageC on origin :
+    sql 102
+    | output
+    | toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - converting loaded CRW data into RSB

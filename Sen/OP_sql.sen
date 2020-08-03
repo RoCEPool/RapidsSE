@@ -166,6 +166,17 @@
       111 LogicUnit[].genCode
     endof
 
+    112 of
+      //queryNo "QUERY %v" .printf
+      //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 112=STARTMARKER" .
+      <tableNm> <indexNm> op__table_index not if
+        false
+        exit
+      then
+      index[].indexTree to indexTree[].asTmp
+      112 LogicUnit[].genCode
+    endof
+
     300 of
       "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 300=STARTMARKER" .
       queryNo "QUERY %v" .printf
@@ -820,6 +831,13 @@ true
 
     111 of
       StreamDef[].duplicate to StreamDefOut[]
+      true Pot[].useStreamDefOut
+      StreamDef[].pipeout
+    endof
+
+    112 of
+      StreamDef[].duplicate to StreamDefOut[]
+      true Pot[].useStreamDefOut
       StreamDef[].pipeout
     endof
 
@@ -891,6 +909,7 @@ true
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: sql :: sql <queryNo> ;
+cmdSyntax: sql :: sql <queryNo> <tableNm> <indexNm> ;
 
 : sql _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
