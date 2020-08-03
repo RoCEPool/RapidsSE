@@ -56,10 +56,10 @@ namespace Expressions
     void v_DynPreliminary(void);
     void v_DynConcluding(void);
 
-    void v_FunPreliminary(void);
-    void v_FunConcluding(void);
+    void v_RtnPreliminary(void);
+    void v_RtnConcluding(void);
 
-    void v_SbrPreliminary(Stz* szFunNm);
+    void v_SbrPreliminary(Stz* szSbrNm);
     void v_SbrConcluding(void);
   
     void v_CallSbr(i8 i_Label);
