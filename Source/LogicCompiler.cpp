@@ -580,13 +580,11 @@ void LogicCompiler::v_FunPreliminary(void)
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* rlu compute function                                               */"
   "\n  /*--------------------------------------------------------------------*/"
-  "\n  i8* aiDynCompute(void* aRLU)" // the dynamic function is: iDynCompute()
+  "\n  i8* aiDynCompute(void* aRLU)"
   "\n  { "
   "\n    i8 iaDataStack[C_LOGIC_STACK];"
-  "\n    eEO* aaReturnStack[C_LOGIC_STACK];"
   "\n"
   "\n    i8* aiDstk = &iaDataStack[0];"
-  "\n    eEO** aaeRstk = &aaReturnStack[0];"
   "\n"
   "\n    i8 iTopA;"
   "\n    i8 iTopB;"
@@ -685,7 +683,6 @@ void LogicCompiler::v_CallSbr(i8 i_Label)
   
   StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
