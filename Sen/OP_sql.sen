@@ -428,7 +428,7 @@
   queryNo case
 
     111 of
-      "++++++++++++++++++++++++++++ 111=CRWBUFFER ++++++++++++++++++++++++++++" .
+      //"++++++++++++++++++++++++++++ 111=CRWBUFFER ++++++++++++++++++++++++++++" .
       Operand[].pipeIn
       Operand[].asSrcCrwBuffer
       LogicUnit[].transform
@@ -458,7 +458,7 @@ true
   queryNo case
 
     100 of
-      "---------------------------- 100=RSBBUFFER ----------------------------" .
+      //"---------------------------- 100=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].transform
@@ -467,7 +467,7 @@ true
     endof
 
     102 of
-      "---------------------------- 102=RSBBUFFER ----------------------------" .
+      //"---------------------------- 102=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].transform
@@ -505,7 +505,7 @@ true
     endof
 
     600 of
-      "---------------------------- 600=RSBBUFFER ----------------------------" .
+      //"---------------------------- 600=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].transform
@@ -514,7 +514,7 @@ true
     endof
 
     601 of
-      "---------------------------- 601=RSBBUFFER ----------------------------" .
+      //"---------------------------- 601=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].transform
