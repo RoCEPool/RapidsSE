@@ -787,6 +787,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     *(++aiDstk) = iOuterArg0;
   }
   
+  LogicUnit* pRLU = this;
+  
   for (;;) {
     
 #ifdef WITH_TRACE_LOGICUNIT
@@ -1416,6 +1418,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
 /**/  case EO_ENT_NEXT: ArgNil(); // move to next m_pEnt
+        //iDev_ENT_NEXT(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_NEXT);
         m_pDevTmpIxt->m_aEnt =
           EntBuffer::pMoveToNextEntry(m_pDevTmpIxt->m_aEnt,
@@ -1427,6 +1430,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /**/  case EO_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
+        //vDev_ENT_POSPRIOR(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_POSPRIOR);
         m_pDevTmpIxt->m_aEnt =
           m_pDevTmpIxt->m_pIdxTree->aPositionPriorEntry(m_oEntWrk.aKey(),
@@ -1434,11 +1438,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /**/  case EO_ENT_PUSH: ArgNil(); // push entry on the stack
+        //aDev_ENT_PUSH(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_PUSH);
         *(++aiDstk) = (i8)m_pDevTmpIxt->m_aEnt;
         break;//+endCase
         
 /**/  case EO_ENT_PUSHELMI0: ArgNil(); // push entry elm 0 int
+        //iDev_ENT_PUSHELMI0(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_PUSHELMI0);
         iRes = m_pDevTmpIxt->m_aEnt->aKey()->iGetIntElm();
         *(++aiDstk) = iRes;
@@ -1446,6 +1452,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /**/  case EO_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str
       {
+        //szDev_ENT_PUSHELMS0(pRLU,m_pDevTmpIxt);
         char acFlipped[128];
         dLU0(EO_ENT_PUSHELMS0);
         char* azSrc = (char*)m_pDevTmpIxt->m_aEnt->aKey()->szGetStrElm();
@@ -1464,6 +1471,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /**/  case EO_ENT_PUSHOFS: ArgNil(); // push entry offset
+        //iDev_ENT_PUSHOFS(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_PUSHOFS);
         iRes = m_pDevTmpIxt->m_aEnt->iBuffer();
         *(++aiDstk) = iRes;
@@ -1476,12 +1484,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
 /**/  case EO_ENT_LESS: ArgNil(); // test if m_pEnt.key <  m_oEntWrk.key
+        //iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt);
         iRes  = KC_BEFORE == Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(EO_ENT_LESS,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
 /**/  case EO_ENT_LESSEQUAL: ArgNil(); // test if m_pEnt.key <= m_oEntWrk.key
+        //iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt);
         iCmp = Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey());
         iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
         dLU1(EO_ENT_LESSEQUAL,iRes);
@@ -1490,6 +1500,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /**/  case EO_ENT_EQUAL: ArgNil();
       {
+        //iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt);
 #ifdef WITH_TRACE_LOGICUNIT
         SP_Ent spEnt;
         vTrace("\n\nEntWrk : %s\n"_Stz,
@@ -1503,12 +1514,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       }
         
 /**/  case EO_ENT_NOTEQUAL: ArgNil();
+        //iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt);
         iRes  = KC_SAME != Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(EO_ENT_NOTEQUAL,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
 /**/  case EO_ENT_GREATEREQUAL: ArgNil();
+        //iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt);
         iCmp = Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey());
         iRes = (KC_SAME == iCmp || KC_AFTER == iCmp ) ? 1 : 0;
         dLU1(EO_ENT_GREATEREQUAL,iRes);
@@ -1516,6 +1529,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /**/  case EO_ENT_GREATER: ArgNil();
+        //iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt);
         iRes  = KC_AFTER == Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
         dLU1(EO_ENT_GREATER,iRes);
         *(++aiDstk) = iRes;
@@ -1525,6 +1539,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // entWrk
 /**/  case EO_ENTWRK_APPENDELM: ArgGet(iArg); // append next element value
       {
+        //vDev_ENTWRK_APPENDELM(pRLU,m_pDevTmpIxt);
         dLU1(EO_ENTWRK_APPENDELM,iArg);
         m_oEntWrk.vAppendElement(m_pDevSrcRsb->m_aRsb, &m_pDevSrcRsb->m_pRowSlab->m_oStreamPix, iArg);
         
@@ -1590,17 +1605,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
 /**/  case EO_IXT_DEL_ENT: ArgNil(); // delete current entry from indexTree
+        //vDev_IXT_DEL_ENT(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_DEL_ENT);
         m_pDevTmpIxt->m_pIdxTree->vDelete(m_pDevTmpIxt->m_pEntBuffer,m_pDevTmpIxt->m_aEnt);
         break;//+endCase
 
 /**/  case EO_IXT_DUMP: ArgGet(iArg); // dump index tree
+        //vDev_IXT_DUMP(pRLU,m_pDevTmpIxt);
         //m_pDevTmpIxt->m_pIdxTree->vDump(false);
         ::iDEV_MAP(this,m_aaDev[iArg],DEV_MAP_DUMP,nullptr,nullptr,0);
         break;//+endCase
 
 /**/  case EO_IXT_INS_ENT: ArgNil(); // insert an entry into the indexTree
       {
+        //vDev_IXT_INS_ENT(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_INS_ENT);
 #ifdef WITH_TRACE_LOGICUNIT
         SP_Ent spEnt;
@@ -1617,6 +1635,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /**/  case EO_IXT_TRV_BEGIN: ArgNil(); // begin linear traverse
         dLU0(EO_IXT_TRV_BEGIN);
+        //iDev_IXT_TRV_BEGIN(pRLU,m_pDevTmpIxt);
         m_pDevTmpIxt->m_pEntBuffer = m_pDevTmpIxt->m_pIdxTree->pFirstH0Buffer();
         if (m_pDevTmpIxt->m_pEntBuffer) {
           m_pDevTmpIxt->m_aEnt = m_pDevTmpIxt->m_pEntBuffer->aLeadEntry();
@@ -1630,6 +1649,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /**/ case EO_IXT_TRV_NEXT: ArgNil(); // move to next entry
+        //iDev_IXT_TRV_NEXT(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_TRV_NEXT);
         m_pDevTmpIxt->m_aEnt =
            EntBuffer::pMoveToNextEntry(m_pDevTmpIxt->m_aEnt,
@@ -1641,6 +1661,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /**/ case EO_IXT_TMP_ENTRIES: ArgNil(); // push number of entries in tmp index
+        //iDev_IXT_TMP_ENTRIES(pRLU,m_pDevTmpIxt);
         iRes = m_pDevTmpIxt->m_pIdxTree->iCountH0Entries();
         dLU1(EO_IXT_TMP_ENTRIES,iRes);
         *(++aiDstk) = iRes;
@@ -1780,6 +1801,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
 /**/  case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from the entry payload
+        //iDev_PAY_FETCH_COLI(pRLU,m_pDevTmpIxt);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         iRes = *aPayload;
         dLU2(EO_PAY_FETCH_COLI,iArg,iRes);
@@ -1788,6 +1810,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /**/  case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from the entry payload
       {
+        //szDev_PAY_FETCH_COLS(pRLU,m_pDevTmpIxt);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         char* azSrc = (char*)aPayload;
         i8 nSize = StrLib::nSize(azSrc);
@@ -1805,6 +1828,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /**/  case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column of the entry payload
         iRes = *(aiDstk--);
+        //vDev_PAY_FETCH_COLI(pRLU,m_pDevTmpIxt,iArg,iRes);
         dLU2(EO_PAY_STORE_COLI,iArg,iRes);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         *aPayload = iRes;
@@ -1820,6 +1844,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        char* azSrc = (char*)(--aiDstk);
 //        aiDstk--;
 //        StrLib::vCopy((char*)aPayload,azSrc);
+        //vDev_PAY_FETCH_COLS(pRLU,m_pDevTmpIxt,iArg,iRes);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         S_PopStr((char*)aPayload);
         vDebugPoint();
