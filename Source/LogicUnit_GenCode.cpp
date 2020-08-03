@@ -18,7 +18,8 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     102: vGenerateQuery102();    break;
     case     103: vGenerateQuery103();    break;
     case     111: vGenerateQuery111();    break;
- 
+    case     112: vGenerateQuery112();    break;
+      
     case     300: vGenerateQuery300();    break;
     case     301: vGenerateQuery301();    break;
     //case     302: vGenerateQuery302();    break;
@@ -561,6 +562,52 @@ void LogicUnit::vGenerateQuery111(void)
   // reset
   m_i_Code = 0;
       
+  // RESET COLUMNS NOT NEEDED
+  vAddCodeArg(EO_COL_DST_RESET, L_ORDERKEY);
+  vAddCodeArg(EO_COL_DST_RESET, L_PARTKEY);
+  vAddCodeArg(EO_COL_DST_RESET, L_SUPPKEY);
+  vAddCodeArg(EO_COL_DST_RESET, L_LINENUMBER);
+  vAddCodeArg(EO_COL_DST_RESET, L_COMMITDATE);
+  vAddCodeArg(EO_COL_DST_RESET, L_RECEIPTDATE);
+  vAddCodeArg(EO_COL_DST_RESET, L_SHIPINSTRUCT);
+  vAddCodeArg(EO_COL_DST_RESET, L_SHIPMODE);
+  vAddCodeArg(EO_COL_DST_RESET, L_COMMENT);
+  
+  // forearch src rsb
+  vAddCode(EO_CRW_SRC_BEGIN);
+  
+  // NEXT_CRW_SRC:
+  vDefineLabel("NEXT_CRW_SRC:"_Stz);
+  vAddCode(EO_CRW_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE,"END_CRW_SRC:"_Stz);
+  
+  // create a new rsb
+  vAddCode(EO_RSB_DST_NEW);
+  
+  // inflate the src CRW to RSB
+  vAddCode(EO_CRW_SRC_TORSB);
+  //vAddCode(EO_RSB_DST_PRINT);
+  
+  vAddCodeLabel(EO_JMP, "NEXT_CRW_SRC:"_Stz);
+  
+  vDefineLabel("END_CRW_SRC:"_Stz);
+  
+  vAddCode(EO_RETURN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate iterating index on l_shipdate & project into RSB (Query 1)        */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery112(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_iSql = 111;
+  
+  // reset
+  m_i_Code = 0;
+  
   // RESET COLUMNS NOT NEEDED
   vAddCodeArg(EO_COL_DST_RESET, L_ORDERKEY);
   vAddCodeArg(EO_COL_DST_RESET, L_PARTKEY);
