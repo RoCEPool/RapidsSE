@@ -58,7 +58,7 @@ LogicCompiler::~LogicCompiler(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* extract EO_ code fragments                                                 */
+/* extract the EO_ code fragments from LogicUnit interpreter                  */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vExtract(void)
 {
@@ -143,7 +143,7 @@ void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract an EO_fragment                                                     */
+/* find eEO by name                                                           */
 /*----------------------------------------------------------------------------*/
 eEO LogicCompiler::eFindEO(Stz* szEOname)
 {
@@ -161,7 +161,7 @@ eEO LogicCompiler::eFindEO(Stz* szEOname)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* call                                                                       */
+/* call the dynamic generated function                                        */
 /*----------------------------------------------------------------------------*/
 i8 LogicCompiler::iCall(void)
 {
@@ -171,7 +171,7 @@ i8 LogicCompiler::iCall(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile                                                                    */
+/* compile the EO code into machine code                                      */
 /*----------------------------------------------------------------------------*/
 i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 {
@@ -191,9 +191,10 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
 
   vAcquire();
-  bCompile();
+  bool b = bCompile();
   vSymbols();
-  
+  vRelocate();
+
   vCall(aDynArg);
 
   vRelease();
@@ -205,7 +206,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* acquire compiler resources                                                 */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vAcquire(void)
 {
@@ -224,15 +225,7 @@ void LogicCompiler::vAcquire(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void LogicCompiler::vBegin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* call the dynamic function                                                  */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vCall(void* aDynArg)
 {
@@ -249,7 +242,7 @@ void LogicCompiler::vCall(void* aDynArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* compile the synthesised code                                               */
 /*----------------------------------------------------------------------------*/
 bool LogicCompiler::bCompile(void)
 {
@@ -264,15 +257,7 @@ bool LogicCompiler::bCompile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void LogicCompiler::vEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* release compiler resources                                                 */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vRelease(void)
 {
@@ -286,7 +271,22 @@ void LogicCompiler::vRelease(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* relocate object to machine code                                            */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::vRelocate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+#ifdef __TINYC
+  // relocate the code
+  if (tcc_relocate((TCCState*)m_aTccState, TCC_RELOCATE_AUTO) < 0) {
+    RASSERT(0);
+  }
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add in any symbols                                                         */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vSymbols(void)
 {
@@ -296,53 +296,11 @@ void LogicCompiler::vSymbols(void)
   // add external symbols
   tcc_add_symbol((TCCState*)m_aTccState, "iMul", (const void *)iMul);
   tcc_add_symbol((TCCState*)m_aTccState, "xMul", (const void *)xMul);
-
-  // relocate the code
-  if (tcc_relocate((TCCState*)m_aTccState, TCC_RELOCATE_AUTO) < 0) {
-    RASSERT(0);
-  }
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* tiny-c callback for error printing                                         */
-/*----------------------------------------------------------------------------*/
-void vTinyError(void *aOpaque, const char *azMsg)
-{
-  vTrace("TinyError: %s\n"_Stz,azMsg);
-  
-  vDebugPoint();
-  
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extern function test : iMul()                                              */
-/*----------------------------------------------------------------------------*/
-i8 iMul(i8 iTopA, i8 iTopB)
-{
-  return iTopA * iTopB;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extern function test : iMul()                                              */
-/*----------------------------------------------------------------------------*/
-Qty xMul(i8 iTopA, i8 iTopB)
-{
-  Qty xRes;
-  
-  xRes.m_iValue = iTopA * iTopB;
-  return xRes;
-}
-
-
-//  void* pLabel = && L_Label;
-//
-//  goto *pLabel;
-//L_Label: ;
 
 /*----------------------------------------------------------------------------*/
 /* add source code fragment                                                   */
@@ -657,6 +615,47 @@ void LogicCompiler::v_CallSbr(i8 i_Label)
   
   StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* tiny-c callback for error printing                                         */
+/*----------------------------------------------------------------------------*/
+void vTinyError(void *aOpaque, const char *azMsg)
+{
+  vTrace("TinyError: %s\n"_Stz,azMsg);
+  
+  vDebugPoint();
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extern function test : iMul()                                              */
+/*----------------------------------------------------------------------------*/
+i8 iMul(i8 iTopA, i8 iTopB)
+{
+  return iTopA * iTopB;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extern function test : iMul()                                              */
+/*----------------------------------------------------------------------------*/
+Qty xMul(i8 iTopA, i8 iTopB)
+{
+  Qty xRes;
+  
+  xRes.m_iValue = iTopA * iTopB;
+  return xRes;
+}
+
+
+//  void* pLabel = && L_Label;
+//
+//  goto *pLabel;
+//L_Label: ;
+
 
 /*============================================================================*/
 /* end                                                                        */

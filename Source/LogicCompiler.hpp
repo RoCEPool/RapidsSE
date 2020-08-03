@@ -41,11 +41,10 @@ namespace Expressions
   private:
   
     void vAcquire(void);
-    void vBegin(void);
     void vCall(void* aDynArg);
     bool bCompile(void);
-    void vEnd(void);
     void vRelease(void);
+    void vRelocate(void);
     void vSymbols(void);
 
     void vAddFragment(i8 i_CodeFrom, i8 i_CodeTill);
