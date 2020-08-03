@@ -138,6 +138,9 @@ enum eEO : u1 // expression operators
   /*    */ EO_ENT_PUSHOFS,      // push entry offset
   /*    */ EO_ENT_PUSHREF,      // push ref of current entry
 
+  /*    */ EO_ENT_SRC_PUSH,     // push src entry
+  /*    */ EO_ENT_SRC_PUSHUPPER,// push src upper entry
+  
   // entry relational operators
   /*    */ EO_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
   /*    */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
@@ -161,15 +164,15 @@ enum eEO : u1 // expression operators
   /*    */ EO_IXT_DUMP,         // dump index tree
   /*    */ EO_IXT_INS_ENT,      // insert an entry into the indexTree
   /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
-  /*    */ EO_IXT_TRV_BOUND,    // move to next entry within bounds
   /*    */ EO_IXT_TRV_NEXT,     // move to next entry
-  /*    */ EO_IXT_TRV_SEEK,     // position at lower entry
   /*    */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index
 
   
   /*    */ EO_IXT_SRC_BEGIN,    // begin linear traverse
+  /*    */ EO_IXT_SRC_LBOUND,   // position at lower bound
   /*    */ EO_IXT_SRC_NEXT,     // move to next entry
   /*    */ EO_IXT_SRC_PRINT,    // print src ent
+  /*    */ EO_IXT_SRC_UBOUND,   // get upper bound
   /*    */ EO_IXT_ALT_BEGIN,    // begin linear traverse
   /*    */ EO_IXT_ALT_NEXT,     // move to next entry
   /*    */ EO_IXT_ALT_PRINT,    // print src ent
@@ -351,6 +354,9 @@ static Stz* aEO[]
   /*    */ "EO_ENT_PUSHOFS"_Stz,
   /*    */ "EO_ENT_PUSHREF"_Stz,
 
+  /*    */ "EO_ENT_SRC_PUSH"_Stz,
+  /*    */ "EO_ENT_SRC_PUSHUPPER"_Stz,
+  
   // entry relational operators
   /*    */ "EO_ENT_LESS"_Stz,
   /*    */ "EO_ENT_LESSEQUAL"_Stz,
@@ -374,9 +380,7 @@ static Stz* aEO[]
   /*    */ "EO_IXT_DUMP"_Stz,
   /*    */ "EO_IXT_INS_ENT"_Stz,
   /*    */ "EO_IXT_TRV_BEGIN"_Stz,
-  /*    */ "EO_IXT_TRV_SEEK"_Stz,
   /*    */ "EO_IXT_TRV_NEXT"_Stz,
-  /*    */ "EO_IXT_TRV_BOUND"_Stz,
   /*    */ "EO_IXT_TMP_ENTRIES"_Stz,
   
   /*    */ "EO_IXT_SRC_BEGIN"_Stz,
@@ -579,6 +583,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENT_GREATEREQUAL
   { EA_NONE,    0 },  // EO_ENT_GREATER
 
+  { EA_NONE,    0 },  // EO_ENT_SRC_PUSH
+  { EA_NONE,    0 },  // EO_ENT_SRC_PUSHUPPER
+  
   // entWrk
   { EA_SUBSCR,  8 },  // EO_ENTWRK_APPENDELM
   { EA_NONE,    0 },  // EO_ENTWRK_APPENDELMI
@@ -598,8 +605,10 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_TMP_ENTRIES
 
   { EA_NONE,    0 },  // EO_IXT_SRC_BEGIN
+  { EA_NONE,    0 },  // EO_IXT_SRC_LBOUND
   { EA_NONE,    0 },  // EO_IXT_SRC_NEXT
   { EA_NONE,    0 },  // EO_IXT_SRC_PRINT
+  { EA_NONE,    0 },  // EO_IXT_SRC_UBOUND
   { EA_NONE,    0 },  // EO_IXT_ALT_BEGIN
   { EA_NONE,    0 },  // EO_IXT_ALT_NEXT
   { EA_NONE,    0 },  // EO_IXT_ALT_PRINT

@@ -24,6 +24,8 @@ DevIXT::DevIXT(void)
   m_pIdxTree   = nullptr;
   
   m_aEnt       = nullptr;
+  m_aUpperEnt  = nullptr;
+  
   m_pEntBuffer = nullptr;
 
   m_aCrw       = nullptr;

@@ -168,12 +168,13 @@
 
     112 of
       //queryNo "QUERY %v" .printf
-      //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 112=STARTMARKER" .
+      "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 112=STARTMARKER" .
       <tableNm> <indexNm> op__table_index not if
         false
         exit
       then
-      index[].indexTree to indexTree[].asTmp
+      index[].indexTree to indexTree[]
+      indexTree[].asSrc
       112 LogicUnit[].genCode
     endof
 
@@ -402,6 +403,14 @@
   <queryNo> >int locals| queryNo |
 
   queryNo case
+
+    112 of
+      "++++++++++++++++++++++++++++ 112=PULSEMARKER ++++++++++++++++++++++++++++" .
+      Operand[].pipeIn
+      LogicUnit[].transform
+      Operand[].delete
+      Pot[].pipeoutAllCompleted
+    endof
 
     300 of sql_PulseMarker_300   endof
     301 of sql_PulseMarker_301   endof

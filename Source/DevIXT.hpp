@@ -12,6 +12,8 @@ namespace Expressions
     IndexTree* m_pIdxTree;
   
     Ent*       m_aEnt;
+    Ent*       m_aUpperEnt;
+    
     EntBuffer* m_pEntBuffer;
 
     Crw*       m_aCrw;

@@ -42,7 +42,7 @@ create index idx on lineitem (l_shipdate);
 // 10K ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 /time load lineitem "/DATA/TPCH/lineitem10k.csv";
-/time Query1 lineitem;
+///time Query1 lineitem;
 ///time Query1_PerfExp1 lineitem;
 ///time Query1_PerfExp2 lineitem idx;
 

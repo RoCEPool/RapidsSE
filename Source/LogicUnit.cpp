@@ -1481,6 +1481,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         NEVER_REACH;
         break;//+endCase
 
+/**/  case EO_ENT_SRC_PUSH: ArgNil(); // push entry on the stack
+        //aDev_ENT_PUSH(pRLU,m_pDevSrcIxt);
+        dLU0(EO_ENT_SRC_PUSH);
+        *(++aiDstk) = (i8)m_pDevSrcIxt->m_aEnt;
+        break;//+endCase
+        
+/**/  case EO_ENT_SRC_PUSHUPPER: ArgNil(); // push entry on the stack
+        //aDev_ENT_PUSH(pRLU,m_pDevTmpIxt);
+        dLU0(EO_ENT_SRC_PUSHUPPER);
+        *(++aiDstk) = (i8)m_pDevSrcIxt->m_aUpperEnt;
+        break;//+endCase
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry relational operators
 /**/  case EO_ENT_LESS: ArgNil(); // test if m_pEnt.key <  m_oEntWrk.key
@@ -1647,9 +1659,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         else
           *(++aiDstk) = 0;
         break;//+endCase
-      
-      case EO_IXT_TRV_BOUND: ArgNil(); // move to next entry within bounds
-        break;//+endCase
         
 /**/ case EO_IXT_TRV_NEXT: ArgNil(); // move to next entry
         //iDev_IXT_TRV_NEXT(pRLU,m_pDevTmpIxt);
@@ -1661,9 +1670,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
-        break;//+endCase
-      
-      case EO_IXT_TRV_SEEK: ArgNil(); // begin traverse by seeking to lower bound
         break;//+endCase
         
 /**/ case EO_IXT_TMP_ENTRIES: ArgNil(); // push number of entries in tmp index
@@ -1686,7 +1692,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         else
           *(++aiDstk) = 0;
         break;//+endCase
-
+        
+      case EO_IXT_SRC_LBOUND: ArgNil(); // position in buffer to entry before LBOUND
+        dLU0(EO_IXT_TRV_LBOUND);
+        //iDev_EO_IXT_TRV_LBOUND(pRLU,m_pDevTmpIxt);
+        m_pDevSrcIxt->m_pEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
+        if (m_pDevTmpIxt->m_pEntBuffer) {
+          m_pDevTmpIxt->m_aEnt = m_pDevSrcIxt->m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
+          if (m_pDevSrcIxt->m_aEnt)
+            *(++aiDstk) = 1;
+          else
+            *(++aiDstk) = 0;
+        }
+        else
+          *(++aiDstk) = 0;
+        break;//+endCase
+        
       case EO_IXT_SRC_NEXT: ArgNil(); // move to next entry
         dLU0(EO_IXT_SRC_NEXT);
         m_pDevSrcIxt->m_aEnt = EntBuffer::pMoveToNextEntry(m_pDevSrcIxt->m_aEnt, &m_pDevSrcIxt->m_pEntBuffer);
@@ -1703,6 +1724,23 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
         break;//+endCase
 
+      case EO_IXT_SRC_UBOUND: ArgNil(); // position in buffer to entry for UBOUND
+      {
+        dLU0(EO_IXT_TRV_UBOUND);
+        //iDev_EO_IXT_TRV_LBOUND(pRLU,m_pDevTmpIxt);
+        EntBuffer* pUpperEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
+        if (pUpperEntBuffer) {
+          m_pDevSrcIxt->m_aUpperEnt = pUpperEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
+          if (m_pDevSrcIxt->m_aUpperEnt)
+            *(++aiDstk) = 1;
+          else
+            *(++aiDstk) = 0;
+        }
+        else
+          *(++aiDstk) = 0;
+      }
+        break;//+endCase
+        
       case EO_IXT_ALT_BEGIN: ArgNil(); // begin linear traverse
         dLU0(EO_IXT_ALT_BEGIN);
         m_pDevAltIxt->m_pEntBuffer = m_pDevAltIxt->m_pIdxTree->pFirstH0Buffer();

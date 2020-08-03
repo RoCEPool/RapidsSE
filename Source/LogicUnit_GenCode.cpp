@@ -619,15 +619,27 @@ void LogicUnit::vGenerateQuery112(void)
   vAddCodeArg(EO_COL_DST_RESET, L_SHIPMODE);
   vAddCodeArg(EO_COL_DST_RESET, L_COMMENT);
   
-  // create upper bound key
-  // create lower bound key
-  
   // begin index tree traversal
-  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCode(EO_IXT_SRC_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
   
-  vAddCode(EO_IXT_TRV_NEXT);
-  vDefineLabel("TRV_ECH:"_Stz);
+  // lower key
+  vAddCodeArg(EO_DATE, "1998-09-01"_Stz);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_IXT_SRC_LBOUND);
+  
+  // upper key
+  vAddCodeArg(EO_DATE, "1998-12-01"_Stz);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_IXT_SRC_UBOUND);
+  
+  vAddCode(EO_IXT_SRC_NEXT);
+  vAddCode(EO_ENT_SRC_PUSH);
+  vAddCode(EO_ENT_SRC_PUSHUPPER);
+  vAddCode(EO_GREATERTHAN);
+  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+  
+  vAddCode(EO_CRW_SRC_FETCH);
   
   // create a new rsb
   vAddCode(EO_RSB_DST_NEW);
