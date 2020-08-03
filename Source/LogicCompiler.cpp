@@ -366,8 +366,8 @@ void LogicCompiler::vToSource(eEO eaCode[],
   
   for (i8 i_Code = i_CodeFrom; i_Code <= i_CodeTill; i_Code++) {
     
-    eEO eCode = eaCode[i_Code];
-    
+    eEO eCode = m_pLogicUnit->eCode(i_Code);
+
     if (EO_CALL == eCode) {
       
       i8 iArg = m_pLogicUnit->iCodeArg(i_Code+1);
