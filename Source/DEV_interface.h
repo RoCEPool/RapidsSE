@@ -29,11 +29,11 @@ i8   iDev_IXT_TMP_ENTRIES(void* pRLU, void* m_pDevTmpIxt);
 i8   iDev_IXT_TRV_BEGIN(void* pRLU, void* m_pDevTmpIxt);
 i8   iDev_IXT_TRV_NEXT(void* pRLU, void* m_pDevTmpIxt);
 
-void vDev_PAY_FETCH_COLI(void* pRLU, void* m_pDevTmpIxt);
-void vDev_PAY_FETCH_COLS(void* pRLU, void* m_pDevTmpIxt);
+i8   iDev_PAY_FETCH_COLI(void* pRLU, void* m_pDevTmpIxt, i8 iArg);
+i8   szDev_PAY_FETCH_COLS(void* pRLU, void* m_pDevTmpIxt, i8 iArg);
 
-i8   iDev_PAY_FETCH_COLI(void* pRLU, void* m_pDevTmpIxt, i8 iArg, i8 iRes);
-i8   szDev_PAY_FETCH_COLS(void* pRLU, void* m_pDevTmpIxt, i8 iArg, i8 iRes);
+void vDev_PAY_STORE_COLI(void* pRLU, void* m_pDevTmpIxt, i8 iArg, i8 iTopA);
+void vDev_PAY_STORE_COLS(void* pRLU, void* m_pDevTmpIxt, i8 iArg, i8 iStrInf);
 
 /*============================================================================*/
 /* end                                                                        */
