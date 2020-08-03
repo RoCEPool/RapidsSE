@@ -1579,13 +1579,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
       }
         
-      case EO_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)
+/**/  case EO_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)
         iTopA = *(aiDstk--);
         dLU1(EO_ENTWRK_APPENDELMI,iTopA);
         m_oEntWrk.vAppendElementInt(m_pDevSrcRsb->m_aRsb,iTopA);
         break;//+endCase
         
-      case EO_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)
+/**/  case EO_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)
       {
         dLU0(EO_ENTWRK_APPENDELMS);
 //        iTopA = *(aiDstk--);
