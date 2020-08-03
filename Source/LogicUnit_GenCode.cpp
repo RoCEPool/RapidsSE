@@ -603,7 +603,7 @@ void LogicUnit::vGenerateQuery112(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 111;
+  m_iSql = 112;
   
   // reset
   m_i_Code = 0;
@@ -619,13 +619,15 @@ void LogicUnit::vGenerateQuery112(void)
   vAddCodeArg(EO_COL_DST_RESET, L_SHIPMODE);
   vAddCodeArg(EO_COL_DST_RESET, L_COMMENT);
   
-  // forearch src rsb
-  vAddCode(EO_CRW_SRC_BEGIN);
+  // create upper bound key
+  // create lower bound key
   
-  // NEXT_CRW_SRC:
-  vDefineLabel("NEXT_CRW_SRC:"_Stz);
-  vAddCode(EO_CRW_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"END_CRW_SRC:"_Stz);
+  // begin index tree traversal
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
+  
+  vAddCode(EO_IXT_TRV_NEXT);
+  vDefineLabel("TRV_ECH:"_Stz);
   
   // create a new rsb
   vAddCode(EO_RSB_DST_NEW);
@@ -634,10 +636,9 @@ void LogicUnit::vGenerateQuery112(void)
   vAddCode(EO_CRW_SRC_TORSB);
   //vAddCode(EO_RSB_DST_PRINT);
   
-  vAddCodeLabel(EO_JMP, "NEXT_CRW_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP, "TRV_NXT:"_Stz);
   
-  vDefineLabel("END_CRW_SRC:"_Stz);
-  
+  vDefineLabel("TRV_RET:"_Stz);
   vAddCode(EO_RETURN);
 }
 

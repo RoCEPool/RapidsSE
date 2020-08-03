@@ -161,7 +161,9 @@ enum eEO : u1 // expression operators
   /*    */ EO_IXT_DUMP,         // dump index tree
   /*    */ EO_IXT_INS_ENT,      // insert an entry into the indexTree
   /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
+  /*    */ EO_IXT_TRV_BOUND,    // move to next entry within bounds
   /*    */ EO_IXT_TRV_NEXT,     // move to next entry
+  /*    */ EO_IXT_TRV_SEEK,     // position at lower entry
   /*    */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index
 
   
@@ -372,7 +374,9 @@ static Stz* aEO[]
   /*    */ "EO_IXT_DUMP"_Stz,
   /*    */ "EO_IXT_INS_ENT"_Stz,
   /*    */ "EO_IXT_TRV_BEGIN"_Stz,
+  /*    */ "EO_IXT_TRV_SEEK"_Stz,
   /*    */ "EO_IXT_TRV_NEXT"_Stz,
+  /*    */ "EO_IXT_TRV_BOUND"_Stz,
   /*    */ "EO_IXT_TMP_ENTRIES"_Stz,
   
   /*    */ "EO_IXT_SRC_BEGIN"_Stz,

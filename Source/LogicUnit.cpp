@@ -1647,6 +1647,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         else
           *(++aiDstk) = 0;
         break;//+endCase
+      
+      case EO_IXT_TRV_BOUND: ArgNil(); // move to next entry within bounds
+        break;//+endCase
         
 /**/ case EO_IXT_TRV_NEXT: ArgNil(); // move to next entry
         //iDev_IXT_TRV_NEXT(pRLU,m_pDevTmpIxt);
@@ -1658,6 +1661,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           *(++aiDstk) = 1;
         else
           *(++aiDstk) = 0;
+        break;//+endCase
+      
+      case EO_IXT_TRV_SEEK: ArgNil(); // begin traverse by seeking to lower bound
         break;//+endCase
         
 /**/ case EO_IXT_TMP_ENTRIES: ArgNil(); // push number of entries in tmp index
