@@ -303,7 +303,7 @@ void LogicCompiler::vSymbols(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add source code fragment                                                   */
+/* add source code fragment for given rangeof eo codes                        */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 {
@@ -386,7 +386,7 @@ bool LogicCompiler::bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
 }
 
 /*----------------------------------------------------------------------------*/
-/* to source code (function)                                                  */
+/* add source code fragment for main routine                                  */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vRtnSource(void)
 {
@@ -411,13 +411,13 @@ void LogicCompiler::vRtnSource(void)
     i_CodeTill++;
   }
   
-  v_FunPreliminary();
+  v_RtnPreliminary();
   vAddFragment(0,i_CodeTill);
-  v_FunConcluding();
+  v_RtnConcluding();
 }
 
 /*----------------------------------------------------------------------------*/
-/* to source code (subroutine)                                                */
+/* add source code fragment for all subroutines                               */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vSbrSource(void)
 {
@@ -446,7 +446,7 @@ void LogicCompiler::vSbrSource(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* the preliminary code fragment for this compilation unit                    */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::v_DynPreliminary(void)
 {
@@ -485,7 +485,7 @@ void LogicCompiler::v_DynPreliminary(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* the concluding code fragment for this compilation unit                     */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::v_DynConcluding(void)
 {
@@ -502,9 +502,9 @@ void LogicCompiler::v_DynConcluding(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* the preliminary code fragment for the main routine                         */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::v_FunPreliminary(void)
+void LogicCompiler::v_RtnPreliminary(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -530,9 +530,9 @@ void LogicCompiler::v_FunPreliminary(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* the concluding code fragment for the main routine                          */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::v_FunConcluding(void)
+void LogicCompiler::v_RtnConcluding(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
@@ -547,9 +547,9 @@ void LogicCompiler::v_FunConcluding(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* the preliminary code fragment for a subroutine                             */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::v_SbrPreliminary(Stz* szFunNm)
+void LogicCompiler::v_SbrPreliminary(Stz* szSbrNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
@@ -568,13 +568,13 @@ void LogicCompiler::v_SbrPreliminary(Stz* szFunNm)
   
   s4K sReplaced;
 
-  sReplaced.vSprint((Stz*)azFrag,szFunNm->azChar());
+  sReplaced.vSprint((Stz*)azFrag,szSbrNm->azChar());
   
   StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* the concluding code fragment for a subroutine                              */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::v_SbrConcluding(void)
 {
@@ -591,7 +591,7 @@ void LogicCompiler::v_SbrConcluding(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* the code fragment for calling a subroutine                                 */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::v_CallSbr(i8 i_Label)
 {
