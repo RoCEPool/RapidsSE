@@ -1532,7 +1532,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
                spEnt.sz(m_oEntWrk.aEnt(),m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
         vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pDevTmpIxt->m_aEnt,m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
 #endif
-        iRes  = KC_SAME == Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+//        iRes  =
+//          KC_SAME == Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),
+//                                  m_oEntWrk.aKey())
+//                       ? 1 : 0;
+        iRes = KC_SAME == ::iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt) ? 1 : 0;
         dLU1(EO_ENT_EQUAL,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase

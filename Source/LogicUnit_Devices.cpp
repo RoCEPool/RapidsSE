@@ -8,15 +8,19 @@
 /*----------------------------------------------------------------------------*/
 /* compare m_pEnt.key to m_oEntWrk.key                                        */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_COMPARE(void* pRLU, void* m_pDev)
+i8 iDev_ENT_COMPARE(void* pRLU, void* aDev)
 {
-  return 0;
+  DevIXT* pDevIxt = _pDevIXT(aDev);
+  
+  i8 iRes = pDevIxt->e_ENT_COMPARE(_pLogicUnit(pRLU));
+  
+  return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
 /* move to next m_pEnt                                                        */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_NEXT(void* pRLU, void* m_pDev)
+i8 iDev_ENT_NEXT(void* pRLU, void* aDev)
 {
   return 0;
 }
@@ -24,7 +28,7 @@ i8 iDev_ENT_NEXT(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /* position m_pEnt prior using m_oEntWrk.key                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_POSPRIOR(void* pRLU, void* m_pDev)
+void vDev_ENT_POSPRIOR(void* pRLU, void* aDev)
 {
   
 }
@@ -32,7 +36,7 @@ void vDev_ENT_POSPRIOR(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /* push entry elm 0 int                                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_PUSHELMI0(void* pRLU, void* m_pDev)
+i8 iDev_ENT_PUSHELMI0(void* pRLU, void* aDev)
 {
   return 0;
 }
@@ -40,7 +44,7 @@ i8 iDev_ENT_PUSHELMI0(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /* push entry elm 0 str                                                       */
 /*----------------------------------------------------------------------------*/
-i8 szDev_ENT_PUSHELMS0(void* pRLU, void* m_pDev)
+i8 szDev_ENT_PUSHELMS0(void* pRLU, void* aDev)
 {
   return 0;
 }
@@ -48,7 +52,7 @@ i8 szDev_ENT_PUSHELMS0(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /* push entry offset                                                          */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_PUSHOFS(void* pRLU, void* m_pDev)
+i8 iDev_ENT_PUSHOFS(void* pRLU, void* aDev)
 {
   return 0;
 }
@@ -56,7 +60,7 @@ i8 iDev_ENT_PUSHOFS(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELM(void* pRLU, void* m_pDev)
+void vDev_ENTWRK_APPENDELM(void* pRLU, void* aDev)
 {
   
 }
@@ -64,7 +68,7 @@ void vDev_ENTWRK_APPENDELM(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /* delete current entry m_aEnt from indexTree                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_DEL_ENT(void* pRLU, void* m_pDev)
+void vDev_IXT_DEL_ENT(void* pRLU, void* aDev)
 {
   
 }
@@ -72,7 +76,7 @@ void vDev_IXT_DEL_ENT(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /* dump index tree                                                            */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_DUMP(void* pRLU, void* m_pDev)
+void vDev_IXT_DUMP(void* pRLU, void* aDev)
 {
   
 }
@@ -80,7 +84,7 @@ void vDev_IXT_DUMP(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_INS_ENT(void* pRLU, void* m_pDev)
+void vDev_IXT_INS_ENT(void* pRLU, void* aDev)
 {
   
 }
@@ -88,7 +92,7 @@ void vDev_IXT_INS_ENT(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /*  push number of entries in tmp index                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_TMP_ENTRIES(void* pRLU, void* m_pDev)
+i8 iDev_IXT_TMP_ENTRIES(void* pRLU, void* aDev)
 {
   return 0;
 }
@@ -96,7 +100,7 @@ i8 iDev_IXT_TMP_ENTRIES(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /* begin linear traverse                                                      */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_TRV_BEGIN(void* pRLU, void* m_pDev)
+i8 iDev_IXT_TRV_BEGIN(void* pRLU, void* aDev)
 {
   return 0;
 }
@@ -104,7 +108,7 @@ i8 iDev_IXT_TRV_BEGIN(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /* traverse to next entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_TRV_NEXT(void* pRLU, void* m_pDev)
+i8 iDev_IXT_TRV_NEXT(void* pRLU, void* aDev)
 {
   return 0;
 }
@@ -112,7 +116,7 @@ i8 iDev_IXT_TRV_NEXT(void* pRLU, void* m_pDev)
 /*----------------------------------------------------------------------------*/
 /* fetch a column from entry payload                                          */
 /*----------------------------------------------------------------------------*/
-i8 iDev_PAY_FETCH_COLI(void* pRLU, void* m_pDev, i8 iArg)
+i8 iDev_PAY_FETCH_COLI(void* pRLU, void* aDev, i8 iArg)
 {
   return 0;
 }
@@ -120,7 +124,7 @@ i8 iDev_PAY_FETCH_COLI(void* pRLU, void* m_pDev, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* fetch a column from entry payload                                          */
 /*----------------------------------------------------------------------------*/
-i8 szDev_PAY_FETCH_COLS(void* pRLU, void* m_pDev, i8 iArg)
+i8 szDev_PAY_FETCH_COLS(void* pRLU, void* aDev, i8 iArg)
 {
   return 0;
 }
@@ -128,7 +132,7 @@ i8 szDev_PAY_FETCH_COLS(void* pRLU, void* m_pDev, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* store a column into entry payload                                          */
 /*----------------------------------------------------------------------------*/
-void vDev_PAY_STORE_COLI(void* pRLU, void* m_pDev, i8 iArg, i8 iTopA)
+void vDev_PAY_STORE_COLI(void* pRLU, void* aDev, i8 iArg, i8 iTopA)
 {
   
 }
@@ -136,7 +140,7 @@ void vDev_PAY_STORE_COLI(void* pRLU, void* m_pDev, i8 iArg, i8 iTopA)
 /*----------------------------------------------------------------------------*/
 /* store a column into entry payload                                          */
 /*----------------------------------------------------------------------------*/
-void vDev_PAY_STORE_COLS(void* pRLU, void* m_pDev, i8 iArg, i8 iStrInf)
+void vDev_PAY_STORE_COLS(void* pRLU, void* aDev, i8 iArg, i8 iStrInf)
 {
   
 }
