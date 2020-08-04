@@ -16,6 +16,7 @@ i8 iDEV_MAP_TRV_NEXT  (void* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg
 i8   iDev_ENT_COMPARE(void* pRLU, void* m_pDev);
 i8   iDev_ENT_NEXT(void* pRLU, void* m_pDev);
 void vDev_ENT_POSPRIOR(void* pRLU, void* m_pDev);
+void* aDev_ENT_PUSH(void* pRLU, void* m_pDev);
 i8   iDev_ENT_PUSHELMI0(void* pRLU, void* m_pDev);
 Stz* szDev_ENT_PUSHELMS0(void* pRLU, void* m_pDev);
 i8   iDev_ENT_PUSHOFS(void* pRLU, void* m_pDev);

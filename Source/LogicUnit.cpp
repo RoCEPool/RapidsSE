@@ -1792,15 +1792,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
         break;//+endCase
         
-      case EO_IXT_JOI_MATCH: ArgNil(); // test for join match (src.key == alt.key)
-        aSrcKey = m_pDevSrcIxt->m_aEnt->aKey();
-        aAltKey = m_pDevAltIxt->m_aEnt->aKey();
-        iRes = KC_SAME == Key::eCompare(aSrcKey,aAltKey) ? 1 : 0;
-        dLU1(EO_IXT_JOI_MATCH,iRes);
-        *(++aiDstk) = iRes;
-        NEVER_REACH; // not used??
-        break;//+endCase
-
       case EO_IXT_CMP_SRCALT: ArgNil(); // compare src.key to alt.key
         aSrcKey = m_pDevSrcIxt->m_aEnt->aKey();
         aAltKey = m_pDevAltIxt->m_aEnt->aKey();

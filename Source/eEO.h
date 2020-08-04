@@ -176,7 +176,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_IXT_ALT_BEGIN,    // begin linear traverse
   /*    */ EO_IXT_ALT_NEXT,     // move to next entry
   /*    */ EO_IXT_ALT_PRINT,    // print src ent
-  /*    */ EO_IXT_JOI_MATCH,    // test for join match (src.key == alt.key)
   /*    */ EO_IXT_CMP_SRCALT,   // compare src.key to alt.key
   /*    */ EO_IXT_CMP_WRKALT,   // compare wrk.key to alt.key
   /*    */ EO_IXT_POS_ALTBYSRC, // position alt ixt using src.key
@@ -391,7 +390,6 @@ static Stz* aEO[]
   /*    */ "EO_IXT_ALT_BEGIN"_Stz,
   /*    */ "EO_IXT_ALT_NEXT"_Stz,
   /*    */ "EO_IXT_ALT_PRINT"_Stz,
-  /*    */ "EO_IXT_JOI_MATCH"_Stz,
   /*    */ "EO_IXT_CMP_SRCALT"_Stz,
   /*    */ "EO_IXT_CMP_WRKALT"_Stz,
   /*    */ "EO_IXT_POS_ALTBYSRC"_Stz,
@@ -614,7 +612,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_ALT_BEGIN
   { EA_NONE,    0 },  // EO_IXT_ALT_NEXT
   { EA_NONE,    0 },  // EO_IXT_ALT_PRINT
-  { EA_NONE,    0 },  // EO_IXT_JOI_MATCH
   { EA_NONE,    0 },  // EO_IXT_CMP_SRCALT
   { EA_NONE,    0 },  // EO_IXT_CMP_WRKALT
   { EA_NONE,    0 },  // EO_IXT_POS_ALTBYSRC
