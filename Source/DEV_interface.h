@@ -12,7 +12,9 @@ i8 iDEV_MAP_TRV_BEGIN (void* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg
 i8 iDEV_MAP_TRV_NEXT  (void* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
 
 
-// prototypes
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// prototypes for dev IXT
+
 i8   iDev_ENT_COMPARE(void* pRLU, void* m_pDev);
 i8   iDev_ENT_NEXT(void* pRLU, void* m_pDev);
 void vDev_ENT_POSPRIOR(void* pRLU, void* m_pDev);
@@ -37,6 +39,9 @@ Stz* szDev_PAY_FETCH_COLS(void* pRLU, void* m_pDev, i8 iArg);
 
 void vDev_PAY_STORE_COLI(void* pRLU, void* m_pDev, i8 iArg, i8 iTop);
 void vDev_PAY_STORE_COLS(void* pRLU, void* m_pDev, i8 iArg, Stz* azTop);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// prototypes for dev RSB
 
 /*============================================================================*/
 /* end                                                                        */
