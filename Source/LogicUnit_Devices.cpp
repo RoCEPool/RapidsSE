@@ -76,7 +76,7 @@ void vDev_ENTWRK_APPENDELM(void* pRLU, void* aDev)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELMI(void* pRLU, void* aDev, i8 iTopA)
+void vDev_ENTWRK_APPENDELMI(void* pRLU, void* aDev, i8 iTop)
 {
   
 }
@@ -84,7 +84,7 @@ void vDev_ENTWRK_APPENDELMI(void* pRLU, void* aDev, i8 iTopA)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELMS(void* pRLU, void* aDev, Stz* azSrc)
+void vDev_ENTWRK_APPENDELMS(void* pRLU, void* aDev, Stz* azTop)
 {
   
 }
@@ -156,7 +156,7 @@ Stz* szDev_PAY_FETCH_COLS(void* pRLU, void* aDev, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* store a column into entry payload                                          */
 /*----------------------------------------------------------------------------*/
-void vDev_PAY_STORE_COLI(void* pRLU, void* aDev, i8 iArg, i8 iTopA)
+void vDev_PAY_STORE_COLI(void* pRLU, void* aDev, i8 iArg, i8 iTop)
 {
   
 }
@@ -164,7 +164,7 @@ void vDev_PAY_STORE_COLI(void* pRLU, void* aDev, i8 iArg, i8 iTopA)
 /*----------------------------------------------------------------------------*/
 /* store a column into entry payload                                          */
 /*----------------------------------------------------------------------------*/
-void vDev_PAY_STORE_COLS(void* pRLU, void* aDev, i8 iArg, Stz* azDst)
+void vDev_PAY_STORE_COLS(void* pRLU, void* aDev, i8 iArg, Stz* azTop)
 {
   
 }
