@@ -23,10 +23,6 @@ i8   iDev_ENT_PUSHELMI0(void* pRLU, void* m_pDev);
 Stz* szDev_ENT_PUSHELMS0(void* pRLU, void* m_pDev);
 i8   iDev_ENT_PUSHOFS(void* pRLU, void* m_pDev);
 
-void vDev_ENTWRK_APPENDELM(void* pRLU, void* m_pDev);
-void vDev_ENTWRK_APPENDELMI(void* pRLU, void* m_pDev, i8 iTop);
-void vDev_ENTWRK_APPENDELMS(void* pRLU, void* m_pDev, Stz* azTop);
-
 void vDev_IXT_DEL_ENT(void* pRLU, void* m_pDev);
 void vDev_IXT_DUMP(void* pRLU, void* m_pDev);
 void vDev_IXT_INS_ENT(void* pRLU, void* m_pDev);
@@ -42,6 +38,11 @@ void vDev_PAY_STORE_COLS(void* pRLU, void* m_pDev, i8 iArg, Stz* azTop);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev RSB
+
+void vDev_ENTWRK_APPENDELM(void* pRLU, void* m_pDev);
+void vDev_ENTWRK_APPENDELMI(void* pRLU, void* m_pDev, i8 iTop);
+void vDev_ENTWRK_APPENDELMS(void* pRLU, void* m_pDev, Stz* azTop);
+
 
 /*============================================================================*/
 /* end                                                                        */
