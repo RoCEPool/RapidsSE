@@ -813,14 +813,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     *(++aiDstk) = iOuterArg0;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // this code equates to aiDynCompute() preliminary
+  
   LogicUnit* pLU = this;
   
-  
   struct RluCommon* aRluCommon = aRlu_INIT(pLU); // temp... should be nullptr
+  ASSERT(123456789 == aRluCommon->m_iCmnMagic);
+  ASSERT(987654321 == aRluCommon->m_iCmnFooter);
+
   
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+  //                    interpretative inner loop proper                      //
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+
   for (;;) {
     
 #ifdef WITH_TRACE_LOGICUNIT
@@ -1221,8 +1227,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef __TINYC__
         aiDstk = & aRluCommon->m_iaDataStack[0];
 #endif
-        printf("[Q%lld.%lld] INIT: %lld %lld\n",(i8)0,(i8)0
-               ,aRluCommon->m_iCmnMagic,aRluCommon->m_iCmnFooter);
+        printf("[Q%lld.%lld] INIT: %lld %lld\n",(i8)0,(i8)0,
+               aRluCommon->m_iCmnMagic,aRluCommon->m_iCmnFooter);
         break;//+endCase
         
       case EO_SANITY: ArgNil(); // sanity check
