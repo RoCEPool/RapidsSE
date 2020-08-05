@@ -41,10 +41,6 @@ namespace Expressions
     Stz*  sz_ENT_PUSHELMS0(LogicUnit* pLogicUnit);
     i8    i_ENT_PUSHOFS(LogicUnit* pLogicUnit);
   
-    void  v_ENTWRK_APPENDELM(LogicUnit* pLogicUnit);
-    void  v_ENTWRK_APPENDELMI(LogicUnit* pLogicUnit, i8 iTop);
-    void  v_ENTWRK_APPENDELMS(LogicUnit* pLogicUnit, Stz* azTop);
-
     void  v_IXT_DEL_ENT(LogicUnit* pLogicUnit);
     void  v_IXT_DUMP(LogicUnit* pLogicUnit);
     void  v_IXT_INS_ENT(LogicUnit* pLogicUnit);

@@ -25,6 +25,10 @@ namespace Expressions
     DevRSB(void);
    ~DevRSB(void) noexcept(false);
   
+    void  v_ENTWRK_APPENDELM(LogicUnit* pLogicUnit);
+    void  v_ENTWRK_APPENDELMI(LogicUnit* pLogicUnit, i8 iTop);
+    void  v_ENTWRK_APPENDELMS(LogicUnit* pLogicUnit, Stz* azTop);
+
 
   private:
     Footer* aFooter(void);

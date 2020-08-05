@@ -1354,6 +1354,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /*R*/ case EO_COL_SRC_PUSH: ArgGet(iArg); // push column value from m_aSrcCrw
       {
+        //vDev_COL_SRC_PUSH(RLU,m_pDevSrcRsb,iArg);
         HV_Row hRow(m_pDevSrcRsb->m_pStreamDef,C_ALL);
         RowInflator::vInflateColumn(hRow,m_pDevSrcIxt->m_aCrw,iArg);
         iRes = hRow->m_waColVal[iArg].m_iWrd;
@@ -1927,6 +1928,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
 /*R*/ case EO_RSB_SRC_PRINT: ArgNil(); // print src rsb
+        //vDev_RSB_SRC_PRINT(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_PRINT);
         m_pDevSrcRsb->m_pRowSlab->vDumpRow(-1,m_pDevSrcRsb->m_aRsb);
         break;//+endCase
@@ -1961,6 +1963,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /*R*/ case EO_RSB_SRC_BEGIN: ArgNil(); // begin src rsb traverse
+        //vDev_RSB_SRC_BEGIN(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_BEGIN);
         m_pDevSrcRsb->m_i_Row = -1;
         m_pDevSrcRsb->m_aRsb  = nullptr;
@@ -1968,6 +1971,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
 /*R*/ case EO_RSB_SRC_NEXT: ArgNil(); // move to next src rsb
+        //iDev_RSB_SRC_NEXT(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_NEXT);
         if (++m_pDevSrcRsb->m_i_Row  < m_pDevSrcRsb->m_nRows) {
           m_pDevSrcRsb->m_aRsb = m_pDevSrcRsb->m_pRowSlab->aRsbAdr(m_pDevSrcRsb->m_i_Row );
@@ -1979,12 +1983,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
 /*R*/ case EO_RSB_SRC_PUSHOFS: ArgNil();
+        //iDev_RSB_SRC_PUSHOFS(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_PUSHOFS);
         iRes = m_pDevSrcRsb->m_pRowSlab->iOfsOfRsb(m_pDevSrcRsb->m_aRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
 
 /*R*/ case EO_RSB_SRC_SETBYOFS: ArgNil();  // set src rsb by using offset on stack
+        //iDev_RSB_SRC_SETBYOFS(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_SETBYOFS);
         iTopA = *(aiDstk--);
         m_pDevSrcRsb->m_aRsb = m_pDevSrcRsb->m_pRowSlab->aRsbByOfs(iTopA);
@@ -2041,6 +2047,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /*R*/ case EO_RSB_SRC_PUSHCOLI: ArgGet(iArg); // push src column
+        //iDev_RSB_SRC_PUSHCOLI(pRLU,m_pDevSrcRsb,iArg);
         iRes =
           m_pDevSrcRsb->m_aRsb->iVal_ntv(m_pDevSrcRsb->m_aRsb->i_ColToCell_ntv(iArg));
         dLU2(EO_RSB_SRC_PUSHCOLI,iArg,iRes);
@@ -2049,6 +2056,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /*R*/ case EO_RSB_SRC_PUSHCOLS: ArgGet(iArg); // push src column
       {
+        //szDev_RSB_SRC_PUSHCOLS(pRLU,m_pDevSrcRsb,iArg);
         char* azSrc = (char*)m_pDevSrcRsb->m_aRsb->szVal_ntv(m_pDevSrcRsb->m_aRsb->i_ColToCell_ntv(iArg));
         dLU2(EO_RSB_SRC_PUSHCOLS,iArg,(i8)azSrc);
 //        i8 nSize = StrLib::nSize(azSrc);
