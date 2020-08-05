@@ -297,7 +297,12 @@ void LogicCompiler::vSymbols(void)
 #ifdef __TINYC
   // add external symbols
   
-  tcc_add_symbol((TCCState*)m_aTccState, "aRlu_INIT", (const void *)aRlu_INIT);
+  tcc_add_symbol((TCCState*)m_aTccState,
+                 "aRlu_INIT", (const void *)aRlu_INIT);
+
+  tcc_add_symbol((TCCState*)m_aTccState,
+                 "iLib_RANDOM", (const void *)iLib_RANDOM);
+
   tcc_add_symbol((TCCState*)m_aTccState, "iMul", (const void *)iMul);
   tcc_add_symbol((TCCState*)m_aTccState, "xMul", (const void *)xMul);
 #endif
@@ -560,7 +565,7 @@ void LogicCompiler::v_SbrPreliminary(Stz* szSbrNm)
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* subroutine                                                         */"
   "\n  /*--------------------------------------------------------------------*/"
-  "\n  i8* %s(i8* aiDstk, struct RluCommon* aRluCommon)"
+  "\n  i8* %s(void* pLU, i8* aiDstk, struct RluCommon* aRluCommon)"
   "\n  { "
   "\n    i8 iTopA;"
   "\n    i8 iTopB;"
@@ -602,7 +607,7 @@ void LogicCompiler::v_CallSbr(i8 i_Label)
   
   char* azFrag = (char*)
   "    // EO_CALL:"
-  "\n        aiDstk = %s(aiDstk,aRluCommon);"
+  "\n        aiDstk = %s(pLU,aiDstk,aRluCommon);"
   "\n"
   "\n"
   "";

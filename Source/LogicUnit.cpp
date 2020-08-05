@@ -612,6 +612,7 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* pLU)
   return & m_xRluCommon;
 }
 
+i8 LogicUnit::iLib_RANDOM(void *pLU, i8 iArg) { NEVER_REACH; return 1; }
 /*============================================================================*/
 /* - - - - - - - - - - - - - RELATIONAL LOGIC UNIT - - - - - - - - - - - - - -*/
 /*============================================================================*/
@@ -1011,7 +1012,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /*f*/ case EO_RANDOM: ArgGet(iArg); // push random number 0..arg-1
-        iRes = RndLib::iInteger(iArg);
+        iRes = iLib_RANDOM(pLU,iArg);
         dLU2(EO_RANDOM,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase

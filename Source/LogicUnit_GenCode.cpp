@@ -1831,7 +1831,7 @@ void LogicUnit::vGenerate100001(void)
   vAddCode(EO_RETURN);
   
   vDefineLabel("SBR_MUL:"_Stz);
-  vAddCodeArg(EO_INTEGER,4);
+  vAddCodeArg(EO_RANDOM,100);
   vAddCode(EO_MULTIPLY);
   vAddCode(EO_RETURN);
 

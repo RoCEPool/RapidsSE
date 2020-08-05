@@ -18,6 +18,11 @@ i8 iDEV_MAP_TRV_NEXT  (void* pLU, void* aDev, void** aaCrs, void* aArg, i8 iArg)
 struct RluCommon* aRlu_INIT(void* pLU);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// prototypes for lib
+
+i8 iLib_RANDOM(void* pLU, i8 iArg);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT
 
 i8   iDev_ENT_COMPARE(void* pLU, void* pDevIXT);
