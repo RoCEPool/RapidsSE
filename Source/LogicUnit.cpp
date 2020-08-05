@@ -1976,14 +1976,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         }
         break;//+endCase
 
-/*R*/ case EO_RSB_SRC_PUSHOFS: ArgNil();
+/*R*/ case EO_RSB_SRC_PUSHOFS: ArgNil(); // push offset of source rsb
         //iDev_RSB_PUSHOFS(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_PUSHOFS);
         iRes = m_pDevSrcRsb->m_pRowSlab->iOfsOfRsb(m_pDevSrcRsb->m_aRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
 
-/*R*/ case EO_RSB_SRC_SETBYOFS: ArgNil();  // set src rsb by using offset on stack
+/*R*/ case EO_RSB_SRC_SETBYOFS: ArgNil(); // set src rsb by using offset on stack
         //iDev_RSB_SETBYOFS(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_SETBYOFS);
         iTopA = *(aiDstk--);
