@@ -2,8 +2,6 @@
 /* DEV_interface.h -- Interface for RLU Devices                               */
 /*============================================================================*/
 
-i8 iDEV_MAP(void* pLU, void* aDev, i8 eDO, void** aaCrs, void* aArg, i8 iArg);
-
 i8 iDEV_MAP_DEL_ENT   (void* pLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
 i8 iDEV_MAP_DUMP      (void* pLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
 i8 iDEV_MAP_ENTRIES   (void* pLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
@@ -12,15 +10,7 @@ i8 iDEV_MAP_TRV_BEGIN (void* pLU, void* aDev, void** aaCrs, void* aArg, i8 iArg)
 i8 iDEV_MAP_TRV_NEXT  (void* pLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
 
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// prototypes for rlu
-
 struct RluCommon* aRlu_INIT(void* pLU);
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// prototypes for lib
-
-i8 iLib_RANDOM(void* pLU, i8 iArg);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT

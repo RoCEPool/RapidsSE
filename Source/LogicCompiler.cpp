@@ -14,6 +14,7 @@ char gcaEoFragments[C_128K];
 Stz* gszaEoFragments[EO_ENUMS];
 
 #include "DEV_interface.h"
+#include "LIB_interface.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
