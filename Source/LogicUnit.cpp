@@ -873,22 +873,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // counter
-      case EO_CTR_0_DEC: ArgNil(); // dec counter 0
+/*M*/ case EO_CTR_0_DEC: ArgNil(); // dec counter 0
         m_iCtr0--;
         dLU1(EO_CTR_0_DEC,m_iCtr0);
         break;//+endCase
 
-      case EO_CTR_0_INC: ArgNil(); // inc counter 0
+/*M*/ case EO_CTR_0_INC: ArgNil(); // inc counter 0
         m_iCtr0++;
         dLU1(EO_CTR_0_INC,m_iCtr0);
         break;//+endCase
 
-      case EO_CTR_0_POP: ArgNil(); // pop counter 0
+/*M*/ case EO_CTR_0_POP: ArgNil(); // pop counter 0
         m_iCtr0 = *(aiDstk--);
         dLU1(EO_CTR_0_POP,m_iCtr0);
         break;//+endCase
 
-      case EO_CTR_0_PUSH: ArgNil(); // push counter 0
+/*M*/ case EO_CTR_0_PUSH: ArgNil(); // push counter 0
         dLU1(EO_CTR_0_PUSH,m_iCtr0);
         *(++aiDstk) = m_iCtr0;
         break;//+endCase
@@ -1024,7 +1024,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = 1;
         break;//+endCase
         
-      case EO_RANDOM: ArgGet(iArg); // push random number 0..arg-1
+/*f*/ case EO_RANDOM: ArgGet(iArg); // push random number 0..arg-1
         iRes = RndLib::iInteger(iArg);
         dLU2(EO_RANDOM,iArg,iRes);
         *(++aiDstk) = iRes;
@@ -1117,7 +1117,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // string operators
-      case EO_STR_COMPARE: ArgNil(); // pop top stradr and compare str on stack
+/*f*/ case EO_STR_COMPARE: ArgNil(); // pop top stradr and compare str on stack
       {
         dLU0(EO_STR_COMPARE);
         char* azTopA;
@@ -1202,16 +1202,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         sleep((u4)iTopA);
         break;//+endCase
               
-      case EO_SLOT: ArgNil(); // sleep for top seconds
+/*M*/ case EO_SLOT: ArgNil(); // sleep for top seconds
         dLU1(EO_SLOT,m_i_Slot);
         *(++aiDstk) = m_i_Slot;
         break;//+endCase
               
-      case EO_TRACEOFF: ArgNil(); // set trace
+/*M*/ case EO_TRACEOFF: ArgNil(); // set trace
         m_bTrace = 0;
         break;//+endCase
         
-      case EO_TRACEON: ArgNil(); // set trace
+/*M*/ case EO_TRACEON: ArgNil(); // set trace
         m_bTrace = 1;
         break;//+endCase
         
@@ -1219,7 +1219,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_NOOP);
         break;//+endCase
 
-      case EO_ERROR: ArgNil(); // error marker
+/*f*/ case EO_ERROR: ArgNil(); // error marker
         dLU0(EO_ERROR);
         vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                "Code compiled with error"_Stz);
@@ -1231,7 +1231,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // date operators
-      case EO_DTE_NOW: ArgNil(); // push current date
+/*f*/ case EO_DTE_NOW: ArgNil(); // push current date
       {
         Now oNow;
         Dtm wDte;
@@ -1247,7 +1247,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       }
         break;//+endCase
         
-      case EO_DTE_PRINT: ArgNil(); // pop top and print as date
+/*f*/ case EO_DTE_PRINT: ArgNil(); // pop top and print as date
 #ifdef WITH_TRACE_LOGICUNIT
       {
         SP_Dte spDate;
@@ -1258,7 +1258,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
         break;//+endCase
 
-      case EO_DTE_YEAR: ArgNil(); // pop top, push year of date
+/*f*/ case EO_DTE_YEAR: ArgNil(); // pop top, push year of date
       {
         Dtm wDte;
         wDte = *(aiDstk--);
@@ -1270,36 +1270,36 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // hashing
-      case EO_HSH_ADD_HASHI: ArgNil(); // add hash of top int to running hash
+/*f*/ case EO_HSH_ADD_HASHI: ArgNil(); // add hash of top int to running hash
         iTopA = *(aiDstk--);
         iRes = HshLib::iHash((byte*)&iTopA,sizeof(w8));
         m_iHash += iRes;
         dLU3(EO_HSH_ADD_HASHI,iTopA,iRes,m_iHash);
         break;//+endCase
         
-      case EO_HSH_RESET: ArgNil(); // reset hash
+/*f*/ case EO_HSH_RESET: ArgNil(); // reset hash
         dLU0(EO_HSH_RESET);
         m_iHash = 0;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // partitioning
-      case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
+/*f*/ case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
         dLU0(EO_PTN_CALC);
         m_i_Ptn = PtnLib::iPartition(m_iHash,m_nPtns);
         break;//+endCase
 
-      case EO_PTN_PUSH: ArgNil(); // push m_i_Ptn
+/*M*/ case EO_PTN_PUSH: ArgNil(); // push m_i_Ptn
         dLU1(EO_PTN_PUSH,m_i_Ptn);
         *(++aiDstk) = m_i_Ptn;
         break;//+endCase
 
-      case EO_PTN_RESET: ArgNil(); // reset running m_iHash
+/*f*/ case EO_PTN_RESET: ArgNil(); // reset running m_iHash
         dLU0(EO_PTN_RESET);
         m_iHash = PtnLib::iResetRunning();
         break;//+endCase
 
-      case EO_PTN_RUNNING: ArgNil(); // mix top into running m_iHash
+/*f*/ case EO_PTN_RUNNING: ArgNil(); // mix top into running m_iHash
         iTopA = *(aiDstk--);
         dLU0(EO_PTN_RUNNING);
         PtnLib::vRunning(&m_iHash,iTopA);
@@ -1307,34 +1307,34 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // timer
-      case EO_TMR_START: ArgNil(); // timer start
+/*M*/ case EO_TMR_START: ArgNil(); // timer start
         dLU0(EO_TMR_START);
         m_oTimer.vStart();
         break;//+endCase
         
-      case EO_TMR_NSECS: ArgNil(); // push timer nanoseconds
+/*M*/ case EO_TMR_NSECS: ArgNil(); // push timer nanoseconds
         iRes = m_oTimer.iNanoseconds();
         dLU1(EO_TMR_NSECS,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_TMR_UPDATE: ArgNil(); // timer update
+/*M*/ case EO_TMR_UPDATE: ArgNil(); // timer update
         dLU0(EO_TMR_UPDATE);
         m_oTimer.vUpdate();
         break;//+endCase
         
-      case EO_TMR_AGG_ADD: ArgNil(); // add timer to agg timer
+/*M*/ case EO_TMR_AGG_ADD: ArgNil(); // add timer to agg timer
         dLU0(EO_TMR_AGG_ADD);
         m_oAggTimer.vAdd(&m_oTimer);
         break;//+endCase
         
-      case EO_TMR_AGG_NSECS: ArgNil(); // push agg nanoseconds
+/*M*/ case EO_TMR_AGG_NSECS: ArgNil(); // push agg nanoseconds
         iRes = m_oAggTimer.iNanoseconds();
         dLU1(EO_TMR_AGG_NSECS,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_TMR_AGG_RESET: ArgNil(); // reset agg timer
+/*M*/ case EO_TMR_AGG_RESET: ArgNil(); // reset agg timer
         dLU0(EO_TMR_AGG_RESET);
         m_oTimer.vReset();
         break;//+endCase
@@ -1346,7 +1346,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
-      case EO_COL_DST_RESET: ArgGet(iArg); // reset column in streamPix of dst
+/*M*/ case EO_COL_DST_RESET: ArgGet(iArg); // reset column in streamPix of dst
       {
         m_oStreamPix.vNotProject(iArg);
       }
@@ -1606,6 +1606,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_ENTWRK_CREATEPAY: ArgGet(iArg); // create a payload in entwrk
+        //vDev_ENTWRK_CREATEPAY(pRLU,m_pDevTmpIxt,iArg);
         dLU1(EO_ENTWRK_CREATEPAY,iArg);
         
         m_oEntWrk.vPayload(true);
@@ -1613,6 +1614,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
                 
       case EO_ENTWRK_POPOFS: ArgNil(); // pop m_oEntWrk.ref.buffer/offset
+        //vDev_ENTWRK_POPOFS(pRLU,m_pDevTmpIxt,iArg);
         iTopA = *(aiDstk--);
         dLU1(EO_ENTWRK_POPOFS,iTopA);
         m_oEntWrk.vBuffer(iTopA);
@@ -1623,6 +1625,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_ENTWRK_PRINT: ArgNil(); // print m_oEntWrk
+        //vDev_ENTWRK_PRINT(pRLU,m_pDevTmpIxt);
 #ifdef WITH_TRACE_LOGICUNIT
         aEnt = m_oEntWrk.aEnt();
         pIndexDef = m_xpIndexTree->pIndexDef();
@@ -1631,6 +1634,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_ENTWRK_RESET: ArgNil(); // reset m_oEntWrk
+        //vDev_ENTWRK_RESET(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENTWRK_RESET);
         m_oEntWrk.vReset();
         break;//+endCase
@@ -1748,7 +1752,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_IXT_SRC_UBOUND: ArgNil(); // position in buffer to entry for UBOUND
       {
         dLU0(EO_IXT_TRV_UBOUND);
-        //iDev_EO_IXT_TRV_LBOUND(pRLU,m_pDevTmpIxt);
+        //iDev_EO_IXT_TRV_UBOUND(pRLU,m_pDevTmpIxt);
         EntBuffer* pUpperEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
         if (pUpperEntBuffer) {
           m_pDevSrcIxt->m_aUpperEnt = pUpperEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());

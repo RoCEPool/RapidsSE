@@ -43,6 +43,13 @@ void vDev_ENTWRK_APPENDELM(void* pRLU, void* pDevRSB);
 void vDev_ENTWRK_APPENDELMI(void* pRLU, void* pDevRSB, i8 iTop);
 void vDev_ENTWRK_APPENDELMS(void* pRLU, void* pDevRSB, Stz* szTop);
 
+void vDev_ENTWRK_POPOFS(void* pRLU, void* pDevRSB, i8 iTop);
+void vDev_ENTWRK_PRINT(void* pRLU, void* pDevRSB);
+void vDev_ENTWRK_RESET(void* pRLU, void* pDevRSB);
+
+void vDev_ENTWRK_CREATEPAY(void* pRLU, void* pDevRSB, i8 iArg);
+
+
 void vDev_RSB_PRINT(void* pRLU, void* pDevRSB);
 void vDev_RSB_BEGIN(void* pRLU, void* pDevRSB);
 i8   iDev_RSB_NEXT(void* pRLU, void* pDevRSB);
