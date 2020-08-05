@@ -15,6 +15,10 @@ struct RluCommon
   i8   m_iSql;
   i8   m_bTrace;
 
+  i8   m_i_Slot;
+
+  i8   m_nPtns;
+
   i8 m_iaDataStack[C_LOGIC_STACK];
 
   i8 m_iCmnFooter;

@@ -54,10 +54,8 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_iCmnMagic  = 123456789;
   m_xRluCommon.m_iCmnFooter = 987654321;
   
-  m_nPtns   = AM::nPartitions();
   m_iHash   = PtnLib::iResetRunning();
   m_i_Ptn   = 0;
-  m_i_Slot  = 0;
   
   // m_oEntWrk
 
@@ -754,7 +752,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   
   // -- -- -- -- -- -- -- -- -- --
 
-  m_i_Slot  = AM::pTaskJob()->m_pOp->nPartition();
   
   // temp
   m_aaDev[0] = m_pDevTmpIxt->m_pIdxTree;
@@ -780,6 +777,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     *(++aiDstk) = iOuterArg0;
   }
   
+  aRluCommon->m_nPtns  = AM::nPartitions();
+  aRluCommon->m_i_Slot = AM::pTaskJob()->m_pOp->nPartition();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // required for interpretative inner loop
   
@@ -1099,7 +1099,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PRINT: ArgNil(); // print top
         iTopA = *(aiDstk--);
         dLU1(EO_PRINT,iTopA);
-        //vTrace("[Q%lld.%lld] %lld\n"_Stz,aRluCommon->m_iSql,m_i_Slot,iTopA);
+        //vTrace("[Q%lld.%lld] %lld\n"_Stz,aRluCommon->m_iSql,aRluCommon->m_i_Slot,iTopA);
         printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
         break;//+endCase
     
@@ -1126,7 +1126,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(EO_STR_PRINTADR,iTopA);
-        vTrace("[Q%lld.%lld] %lls\n"_Stz,aRluCommon->m_iSql,m_i_Slot,iTopA);
+        vTrace("[Q%lld.%lld] %lls\n"_Stz,aRluCommon->m_iSql,aRluCommon->m_i_Slot,iTopA);
 #endif
         break;//+endCase
         
@@ -1134,7 +1134,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(EO_STR_PRINTSTK,iTopA);
-        vTrace("[Q%lld,%lld] %lls\n"_Stz,aRluCommon->m_iSql,m_i_Slot,(aiDstk-iTopA/8));
+        vTrace("[Q%lld,%lld] %lls\n"_Stz,aRluCommon->m_iSql,aRluCommon->m_i_Slot,(aiDstk-iTopA/8));
         aiDstk -= (iTopA/8) + 1;
 #endif
         break;//+endCase
@@ -1205,8 +1205,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
               
 /*M*/ case EO_SLOT: ArgNil(); // push i_Slot
-        dLU1(EO_SLOT,m_i_Slot);
-        *(++aiDstk) = m_i_Slot;
+        dLU1(EO_SLOT,aRluCommon->m_i_Slot);
+        *(++aiDstk) = aRluCommon->m_i_Slot;
         break;//+endCase
               
 /*M*/ case EO_TRACEOFF: ArgNil(); // set trace off
@@ -1255,7 +1255,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         SP_Dte spDate;
         iTopA = *(aiDstk--);
         dLU1(EO_DTE_PRINT,iTopA);
-        vTrace("[Q%lld.%lld] %s\n"_Stz,aRluCommon->m_iSql,m_i_Slot,spDate.sz(iTopA));
+        vTrace("[Q%lld.%lld] %s\n"_Stz,aRluCommon->m_iSql,aRluCommon->m_i_Slot,spDate.sz(iTopA));
       }
 #endif
         break;//+endCase
@@ -1288,7 +1288,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // partitioning
 /*f*/ case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
         dLU0(EO_PTN_CALC);
-        m_i_Ptn = PtnLib::iPartition(m_iHash,m_nPtns);
+        m_i_Ptn = PtnLib::iPartition(m_iHash,aRluCommon->m_nPtns);
         break;//+endCase
 
 /*M*/ case EO_PTN_PUSH: ArgNil(); // push m_i_Ptn
