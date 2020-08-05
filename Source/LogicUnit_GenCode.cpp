@@ -47,7 +47,7 @@ void LogicUnit::vGenerateQuery100(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 100;
+  m_xRluCommon.m_iSql = 100;
   
   // reset
   m_i_Code = 0;
@@ -250,7 +250,7 @@ void LogicUnit::vGenerateQuery101(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 101;
+  m_xRluCommon.m_iSql = 101;
   
   // reset
   m_i_Code = 0;
@@ -315,7 +315,7 @@ void LogicUnit::vGenerateQuery102(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 102;
+  m_xRluCommon.m_iSql = 102;
   
   // reset
   m_i_Code = 0;
@@ -477,7 +477,7 @@ void LogicUnit::vGenerateQuery103(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 103;
+  m_xRluCommon.m_iSql = 103;
   
   // reset
   m_i_Code = 0;
@@ -557,7 +557,7 @@ void LogicUnit::vGenerateQuery111(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 111;
+  m_xRluCommon.m_iSql = 111;
   
   // reset
   m_i_Code = 0;
@@ -603,7 +603,7 @@ void LogicUnit::vGenerateQuery112(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 112;
+  m_xRluCommon.m_iSql = 112;
   
   // reset
   m_i_Code = 0;
@@ -662,7 +662,7 @@ void LogicUnit::vGenerateQuery300(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 300;
+  m_xRluCommon.m_iSql = 300;
   
   m_i_Code = 0;
       
@@ -808,7 +808,7 @@ void LogicUnit::vGenerateQuery301(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 301;
+  m_xRluCommon.m_iSql = 301;
   
   m_i_Code = 0;
   
@@ -1004,7 +1004,7 @@ void LogicUnit::vGenerateQuery302(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 302;
+  m_xRluCommon.m_iSql = 302;
   
   m_i_Code = 0;
   
@@ -1149,7 +1149,7 @@ void LogicUnit::vGenerateQuery302b(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 302;
+  m_xRluCommon.m_iSql = 302;
   
   m_i_Code = 0;
   
@@ -1286,7 +1286,7 @@ void LogicUnit::vGenerateQuery400(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 400;
+  m_xRluCommon.m_iSql = 400;
   
   m_i_Code = 0;
   
@@ -1483,7 +1483,7 @@ void LogicUnit::vGenerateQuery401(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 401;
+  m_xRluCommon.m_iSql = 401;
   
   m_i_Code = 0;
   
@@ -1626,7 +1626,7 @@ void LogicUnit::vGenerateQuery600(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 600;
+  m_xRluCommon.m_iSql = 600;
   
   // init the code
   m_i_Code = 0;
@@ -1730,7 +1730,7 @@ void LogicUnit::vGenerateQuery601(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 601;
+  m_xRluCommon.m_iSql = 601;
   
   // init the code
   m_i_Code = 0;
@@ -1784,7 +1784,7 @@ void LogicUnit::vGenerate100000(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 100000;
+  m_xRluCommon.m_iSql = 100000;
   
   // init the code
   m_i_Code = 0;
@@ -1808,12 +1808,12 @@ void LogicUnit::vGenerate100001(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 100001;
+  m_xRluCommon.m_iSql = 100001;
   
   // init the code
   m_i_Code = 0;
   
-  vDefineLabel("TST_RTN:"_Stz);
+  vDefineLabel("RTN_TST:"_Stz);
   vAddCode(EO_INIT);
   vAddCodeLabel(EO_CALL,"SBR_ADD:"_Stz);
   vAddCodeLabel(EO_CALL,"SBR_MUL:"_Stz);

@@ -58,8 +58,6 @@ LogicUnit::LogicUnit(Task* pTask)
   m_iHash   = PtnLib::iResetRunning();
   m_i_Ptn   = 0;
   m_i_Slot  = 0;
-
-  m_iSql    = C_UNKNOWN;
   
   // m_oEntWrk
 
@@ -530,13 +528,13 @@ void LogicUnit::vDumpCode(void)
  
 //#ifdef WITH_TRACE_LOGICUNIT
   
-  if (100001 != m_iSql)
-  //if (302 != m_iSql)
+  if (100001 != m_xRluCommon.m_iSql)
+  //if (302 != m_xRluCommon.m_iSql)
     return;
   
   SP_Dte spDate;
 
-  vTrace("EO code for %lld:\n"_Stz,m_iSql);
+  vTrace("EO code for %lld:\n"_Stz,m_xRluCommon.m_iSql);
   
   for (i8 i_Code = 0; i_Code < m_i_Code; ) {
         
@@ -722,7 +720,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   #ifdef WITH_TRACE_LOGICUNIT
-    vTrace("\nLogic Unit :: sql %lld\n\n"_Stz,m_iSql);
+    vTrace("\nLogic Unit :: sql %lld\n\n"_Stz,m_xRluCommon.m_iSql);
     vDebugPoint();
   #endif
 
@@ -1101,7 +1099,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PRINT: ArgNil(); // print top
         iTopA = *(aiDstk--);
         dLU1(EO_PRINT,iTopA);
-        //vTrace("[Q%lld.%lld] %lld\n"_Stz,m_iSql,m_i_Slot,iTopA);
+        //vTrace("[Q%lld.%lld] %lld\n"_Stz,aRluCommon->m_iSql,m_i_Slot,iTopA);
         printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
         break;//+endCase
     
@@ -1128,7 +1126,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(EO_STR_PRINTADR,iTopA);
-        vTrace("[Q%lld.%lld] %lls\n"_Stz,m_iSql,m_i_Slot,iTopA);
+        vTrace("[Q%lld.%lld] %lls\n"_Stz,aRluCommon->m_iSql,m_i_Slot,iTopA);
 #endif
         break;//+endCase
         
@@ -1136,7 +1134,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(EO_STR_PRINTSTK,iTopA);
-        vTrace("[Q%lld,%lld] %lls\n"_Stz,m_iSql,m_i_Slot,(aiDstk-iTopA/8));
+        vTrace("[Q%lld,%lld] %lls\n"_Stz,aRluCommon->m_iSql,m_i_Slot,(aiDstk-iTopA/8));
         aiDstk -= (iTopA/8) + 1;
 #endif
         break;//+endCase
@@ -1165,7 +1163,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         if (aeaRstk == &eaReturnStack[0]) {
           iRes = *(aiDstk--);
 #ifdef WITH_TRACE_LOGICUNIT
-          vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,m_iSql);
+          vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,aRluCommon->m_iSql);
 #endif
           return iRes;
         }
@@ -1257,7 +1255,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         SP_Dte spDate;
         iTopA = *(aiDstk--);
         dLU1(EO_DTE_PRINT,iTopA);
-        vTrace("[Q%lld.%lld] %s\n"_Stz,m_iSql,m_i_Slot,spDate.sz(iTopA));
+        vTrace("[Q%lld.%lld] %s\n"_Stz,aRluCommon->m_iSql,m_i_Slot,spDate.sz(iTopA));
       }
 #endif
         break;//+endCase

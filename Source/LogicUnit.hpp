@@ -233,79 +233,17 @@ namespace Expressions
     i8         m_i_Slot;
 
 
-
-    i8         m_iSql;
     
     StreamPix  m_oStreamPix;    // condensed stream def
   
-  
     EntWrk     m_oEntWrk;
 
-    //==========================
     DevRSB*    m_pDevDstRsb;
-  
-    //Rsb*       m_aDstRsb;
-    //RowSlab*   m_pDstRowSlab;
-    //==========================
-
-  
-  
-
-    //==========================
     DevRSB*    m_pDevSrcRsb;
-  
-    //i8         m_i_SrcRow;
-    //i8         m_nSrcRows;
-    //Rsb*       m_aSrcRsb;
-    //RowSlab*   m_pSrcRowSlab;
-    //StreamDef* m_pSrcStreamDef;
-    //==========================
-
-  
-  
-    //==========================
     DevIXT*    m_pDevSrcIxt;
-  
-    //Ent*       m_aSrcEnt;
-    //IndexTree* m_pSrcIdxTree;
-    //EntBuffer* m_pSrcEntBuffer;
-    //==========================
-    //Crw*       m_aSrcCrw;
-    //CrwBuffer* m_pSrcCrwBuffer;
-
-  
-  
-  
-    //==========================
     DevRSB*    m_pDevAltRsb;
-  
-    //i8         m_i_AltRow;
-    //i8         m_nAltRows;
-    //Rsb*       m_aAltRsb;
-    //RowSlab*   m_pAltRowSlab;
-    //StreamDef* m_pAltStreamDef;
-    //==========================
-
-    
-  
-    //==========================
     DevIXT*    m_pDevAltIxt;
-  
-    //Ent*       m_aAltEnt;
-    //IndexTree* m_pAltIdxTree;
-    //EntBuffer* m_pAltEntBuffer;
-    //==========================
-    //Crw*       m_aAltCrw;
-
-  
-  
-    //==========================
     DevIXT*    m_pDevTmpIxt;
-  
-    //Ent*       m_pEnt;
-    //EntBuffer* m_pEntBuffer;
-    //IndexTree* m_pIndexTree;
-    //==========================
 
     i8     m_i_Code;
     eEO    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
