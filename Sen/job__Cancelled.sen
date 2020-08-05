@@ -103,6 +103,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all job__cancelled's have been received, so this job is the decider
 
+  begin
+    JobRef[].references
+  1 > while
+  repeat
+
   // remove the originating job from the originator jobs
   JobRef[] job.removeOriginator
 
