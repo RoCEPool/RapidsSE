@@ -127,9 +127,9 @@ void Engine::vPreliminary(void)
   
   vCheckNodes();
   
-  vCheckPort();
+  //vCheckPort();
 
-  vCheckGrid();
+  //vCheckGrid();
 
 //  if (AM::bVerboseProgress()) {
 //    vInfo("\n*\n* %lld) Attach Map Contents\n*\n"_Stz,giProgressPoint++);
