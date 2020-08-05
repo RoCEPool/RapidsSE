@@ -56,7 +56,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
 //  m_pRowSlab->vInitPix(m_pStreamDef);
   m_pRowSlab = nullptr;
   
-  m_pFmt->vShow();
+  //m_pFmt->vShow();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
