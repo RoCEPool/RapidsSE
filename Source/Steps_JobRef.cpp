@@ -12,6 +12,7 @@ void Step::vAddSteps_JobRef(void)
   vAddStep("JobRef[]"_Stz,         &Step::vJobRefPointer);
   vAddStep("JobRef[].none"_Stz,    &Step::vJobRefNone);
   vAddStep("JobRef[].return"_Stz,  &Step::vJobRefReturn);
+  vAddStep("JobRef[].references"_Stz,  &Step::vJobRefReferences);
   vAddStep("JobRef[].hasTask"_Stz, &Step::vJobRefHasTask);
 }
 
@@ -52,6 +53,18 @@ void Step::vJobRefNone(void)
   
   if (m_pLogicUnit->m_xpJobRef.pReferencedObject())
     THROW("JobRef[].none : register still has reference to a job"_Stz);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* JobRef[].references -- return the job references                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRefReferences(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpJobRef.nReferences());
   
   EXIT();
 }
