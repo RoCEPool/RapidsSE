@@ -32,11 +32,9 @@ void Step::vLogicCompilerCall(void)
 void Step::vLogicCompilerCompile(void)
 {
   ENTRY();
-    
-  RLU* aRLU = &m_pLogicUnit->m_xRLU;
-  
+      
   i8 iResult =
-    m_pLogicUnit->m_xpLogicCompiler->iCompile(m_pLogicUnit,aRLU);
+    m_pLogicUnit->m_xpLogicCompiler->iCompile(m_pLogicUnit,nullptr);
   
   EXIT();
 }

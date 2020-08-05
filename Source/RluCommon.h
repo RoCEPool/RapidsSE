@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* RLU.h -- Struct of RLU                                                     */
+/* RluCommon.h -- Commnon variables between C & C++ rlu inner loops           */
 /*============================================================================*/
 
-struct RLU
+struct RluCommon
 {
   i8 m_iValue;
 };

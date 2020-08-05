@@ -464,6 +464,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  typedef long long i8;"
   "\n  typedef char Stz;"
   "\n"
+  "\n  #include \"../Source/RluCommon.h\""
   "\n  #include \"../Source/Qty.h\""
   "\n"
   "\n  static const i8 C_LOGIC_STACK = 4096;"

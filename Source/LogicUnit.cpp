@@ -48,7 +48,7 @@ LogicUnit::LogicUnit(Task* pTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  MemLib::vZero(&m_xRLU,sizeof(m_xRLU),CN_LOGICUNIT);
+  MemLib::vZero(&m_xRluCommon,sizeof(m_xRluCommon),CN_LOGICUNIT);
   MemLib::vZero(&m_aaDev,sizeof(m_aaDev),CN_LOGICUNIT);
   
   m_aeCode  = nullptr;

@@ -221,7 +221,8 @@ namespace Expressions
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop
   
-    RLU        m_xRLU;
+    RluCommon  m_xRluCommon ;
+  
     void*      m_aaDev[C_LOGIC_DEV]; // device array
   
   
