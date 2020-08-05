@@ -297,7 +297,7 @@ void LogicCompiler::vSymbols(void)
 #ifdef __TINYC
   // add external symbols
   
-  tcc_add_symbol((TCCState*)m_aTccState, "aFun_INIT", (const void *)aFun_INIT);
+  tcc_add_symbol((TCCState*)m_aTccState, "aRlu_INIT", (const void *)aRlu_INIT);
   tcc_add_symbol((TCCState*)m_aTccState, "iMul", (const void *)iMul);
   tcc_add_symbol((TCCState*)m_aTccState, "xMul", (const void *)xMul);
 #endif
@@ -519,7 +519,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* rlu compute function                                               */"
   "\n  /*--------------------------------------------------------------------*/"
-  "\n  i8* aiDynCompute(void* pRLU)"
+  "\n  i8* aiDynCompute(void* pLU)"
   "\n  { "
   "\n    i8 iaDataStack[C_LOGIC_STACK];"
   "\n"
@@ -529,7 +529,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    i8 iTopB;"
   "\n    i8 iRes;"
   "\n    struct Qty xRes;"
-  "\n    struct RluCommon* aRluCommon;"
+  "\n    struct RluCommon* aRluCommon = 0;"
   "\n"
   "\n"
   "";

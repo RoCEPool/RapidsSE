@@ -651,7 +651,7 @@ void LogicUnit::vDumpCode(void)
 /*----------------------------------------------------------------------------*/
 /* initialise and return address of rlu common                                */
 /*----------------------------------------------------------------------------*/
-struct RluCommon* LogicUnit::aFun_INIT(void* pRLU)
+struct RluCommon* LogicUnit::aRlu_INIT(void* pLU)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
@@ -813,10 +813,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     *(++aiDstk) = iOuterArg0;
   }
   
-  LogicUnit* pRLU = this;
+  LogicUnit* pLU = this;
   
   
-  struct RluCommon* aRluCommon = aFun_INIT(pRLU); // temp... should be nullptr
+  struct RluCommon* aRluCommon = aRlu_INIT(pLU); // temp... should be nullptr
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1217,7 +1217,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_INIT: ArgNil(); // initialise the rlu common
         dLU0(EO_INIT);
-        aRluCommon = aFun_INIT(pRLU);
+        aRluCommon = aRlu_INIT(pLU);
         printf("[Q%lld.%lld] INIT: %lld %lld\n",(i8)0,(i8)0
                ,aRluCommon->m_iCmnMagic,aRluCommon->m_iCmnFooter);
         break;//+endCase
@@ -1232,16 +1232,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         sleep((u4)iTopA);
         break;//+endCase
               
-/*M*/ case EO_SLOT: ArgNil(); // sleep for top seconds
+/*M*/ case EO_SLOT: ArgNil(); // push i_Slot
         dLU1(EO_SLOT,m_i_Slot);
         *(++aiDstk) = m_i_Slot;
         break;//+endCase
               
-/*M*/ case EO_TRACEOFF: ArgNil(); // set trace
+/*M*/ case EO_TRACEOFF: ArgNil(); // set trace off
         m_bTrace = 0;
         break;//+endCase
         
-/*M*/ case EO_TRACEON: ArgNil(); // set trace
+/*M*/ case EO_TRACEON: ArgNil(); // set trace on
         m_bTrace = 1;
         break;//+endCase
         
@@ -1568,7 +1568,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //          KC_SAME == Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),
 //                                  m_oEntWrk.aKey())
 //                       ? 1 : 0;
-        iRes = KC_SAME == ::iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt) ? 1 : 0;
+        iRes = KC_SAME == ::iDev_ENT_COMPARE(pLU,m_pDevTmpIxt) ? 1 : 0;
         dLU1(EO_ENT_EQUAL,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
