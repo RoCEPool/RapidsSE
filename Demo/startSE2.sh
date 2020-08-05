@@ -4,7 +4,7 @@
 
 # Get the relative path to this file.
 DIR=$(dirname "$0")
-ROOT_DIR="${DIR}/../.."
+ROOT_DIR="${DIR}/.."
 
 NOHUP_FILE="${ROOT_DIR}/nohupSE.out"
 PIDFILE="${ROOT_DIR}/se.pid"
