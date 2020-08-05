@@ -30,13 +30,15 @@ create table LineItem                      // SF * 6,000,000 rows
   // 16 columns                                  174B  91B
 );
 
+create index idx on lineitem(l_shipdate);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // SF1 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 /time fload lineitem "/TPCH/SF1/lineitem.csv";
-/time Query1 lineitem ;
-/time Query6 lineitem ;
+predicateFetch lineitem "l_shipdate '1994-01-01' >= l_shipdate '1995-01-01' < and";
+///time Query1 lineitem ;
+///time Query6 lineitem ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,0 +1,85 @@
+/*============================================================================*/
+/* TPCH queries - SF10 (Beijingg lab)                                         */
+/*============================================================================*/
+
+print section "TPCH SF10 ...";
+
+// -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+print section "creating Customer...";
+_customer
+create index Customer_Idx1 ON Customer(C_CUSTKEY);
+
+// -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+print section "creating LineItem...";
+_lineitem_dates
+create index lineItem_Idx1 ON LineItem(L_ORDERKEY);
+
+// -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+print section "creating Orders...";
+_orders_dates
+create index Orders_Idx1 ON Orders(O_ORDERKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Loading Tables...";
+/time fload customer "/data1/tpch/sf10/customer.tbl";
+/time fload lineitem "/data1/tpch/sf10/lineitem.tbl";
+/time fload orders "/data1/tpch/sf10/orders.tbl";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Compacting Indexes...";
+compactIdx Customer Customer_Idx1;
+compactIdx Orders Orders_Idx1;
+compactIdx Lineitem lineItem_Idx1;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Query 1...";
+/time Query1 lineitem ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Query 6...";
+/time Query6 lineitem ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Query 4...";
+/time preQuery_4b ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Dropping Orders Table...";
+drop table Orders;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "creating Orders...";
+_orders_by_O_CUSTKEY
+create index Orders_Idx1 ON Orders(O_ORDERKEY);
+create index Orders_Idx2 ON Orders(O_CUSTKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Loading Orders...";
+/time fload orders "/data1/tpch/sf10/orders.tbl";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Compacting Orders Indexes...";
+compactIdx Orders Orders_Idx1;
+compactIdx Orders Orders_Idx2;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Query 3...";
+/time preQuery_3b ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
+/*
+Date Query Config time(ms) Results
+23/7 Q1    1N-1P  2211     N,O,2254654.00,3380080450.16,3210744015.69,3338991760.47,25.49,38220.63,0.05,88436
+1N-4P  723
+2N-4P  664
+3N-4P  768
+
+Q6    1N-1P  2162     75207429.08,76033
+1N-4P  752
+2N-4P  676
+3N-4P  802
+*/
+
