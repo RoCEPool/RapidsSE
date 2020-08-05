@@ -842,9 +842,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
   
     eEO eCode = *m_aeCode++;
-    
-    //vTrace("%s  (StkUse %lld)\n"_Stz,aEO[eCode],nStkUse);
-    
+        
     switch (eCode) { //+ExtractBegin
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
