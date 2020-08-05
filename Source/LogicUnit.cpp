@@ -1365,6 +1365,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /*R*/ case EO_COL_SRC_PUSHSTR: ArgGet(iArg); // push column value from m_aSrcCrw
       {
+        //szDev_RSB_SRC_PUSHCOLS(RLU,m_pDevSrcRsb,iArg);
         HV_Row hRow(m_pDevSrcRsb->m_pStreamDef,C_ALL);
         RowInflator::vInflateColumn(hRow,m_pDevSrcIxt->m_aCrw,iArg);
         azArg = (char*)hRow->m_waColVal[iArg].m_iWrd;
@@ -1581,14 +1582,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       }
         
 /*R*/ case EO_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)
-        iTopA = *(aiDstk--);
         //vDev_ENTWRK_APPENDELMI(pRLU,m_pDevTmpIxt,iTopA);
+        iTopA = *(aiDstk--);
         dLU1(EO_ENTWRK_APPENDELMI,iTopA);
         m_oEntWrk.vAppendElementInt(m_pDevSrcRsb->m_aRsb,iTopA);
         break;//+endCase
         
 /*R*/ case EO_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)
       {
+        //vDev_ENTWRK_APPENDELMS(pRLU,m_pDevTmpIxt,szTop);
         dLU0(EO_ENTWRK_APPENDELMS);
 //        iTopA = *(aiDstk--);
 //        dLU1(eCode,iTopA);
@@ -1598,7 +1600,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         S_UseStr(azSrc);
         m_oEntWrk.vAppendElementStz(m_pDevSrcRsb->m_aRsb,(Stz*)azSrc);
         S_UseEnd();
-        //vDev_ENTWRK_APPENDELMS(pRLU,m_pDevTmpIxt,azSrc);
         if (m_bTrace)
           vDebugPoint();
       }
@@ -1666,8 +1667,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /*I*/ case EO_IXT_TRV_BEGIN: ArgNil(); // begin linear traverse
-        dLU0(EO_IXT_TRV_BEGIN);
         //iDev_IXT_TRV_BEGIN(pRLU,m_pDevTmpIxt);
+        dLU0(EO_IXT_TRV_BEGIN);
         m_pDevTmpIxt->m_pEntBuffer = m_pDevTmpIxt->m_pIdxTree->pFirstH0Buffer();
         if (m_pDevTmpIxt->m_pEntBuffer) {
           m_pDevTmpIxt->m_aEnt = m_pDevTmpIxt->m_pEntBuffer->aLeadEntry();
@@ -1882,8 +1883,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /*I*/ case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column into entry payload
-        iTopA = *(aiDstk--);
         //vDev_PAY_STORE_COLI(pRLU,m_pDevTmpIxt,iArg,iRes);
+        iTopA = *(aiDstk--);
         dLU2(EO_PAY_STORE_COLI,iArg,iRes);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         *aPayload = iTopA;
@@ -1891,6 +1892,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       
 /*I*/ case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column into entry payload
       {
+        //vDev_PAY_STORE_COLS(pRLU,m_pDevTmpIxt,iArg,iRes);
         dLU1(EO_PAY_STORE_COLI,iArg);
 //        i8 nSize = *(aiDstk--);
 //        RASSERT(nSize < 8);
@@ -1899,7 +1901,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        char* azSrc = (char*)(--aiDstk);
 //        aiDstk--;
 //        StrLib::vCopy((char*)aPayload,azSrc);
-        //vDev_PAY_STORE_COLS(pRLU,m_pDevTmpIxt,iArg,iRes);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         S_PopStr((char*)aPayload);
         vDebugPoint();
