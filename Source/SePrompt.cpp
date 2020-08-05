@@ -832,7 +832,7 @@ bool SePrompt::bRedirectFromFile(void)
   
   Stz* szPath = m_pInpTknVec->pGet(0)->szChars();
 
-  if (! File::bExists(szPath))
+  if (! File::bExists(szPath, false))
     return false;
       
   m_pInput->vPushCharser();
