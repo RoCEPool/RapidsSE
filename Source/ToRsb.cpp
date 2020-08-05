@@ -63,9 +63,9 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   vNewRsbBuffer();
 
   
-  s48K sDef;
-  m_pStreamDef->vAsString(sDef);
-  vTrace("%s\n"_Stz,sDef.szStz());
+  //s48K sDef;
+  //m_pStreamDef->vAsString(sDef);
+  //vTrace("%s\n"_Stz,sDef.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
