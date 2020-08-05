@@ -541,7 +541,7 @@ void LogicCompiler::v_RtnConcluding(void)
 
   char* azFrag = (char*)
   "    // ** Hazard **"
-  "\n    return 0;"
+  "\n    return aiDstk;"
   "\n  }"
   "\n"
   "";

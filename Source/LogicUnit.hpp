@@ -224,11 +224,6 @@ namespace Expressions
   
     void*      m_aaDev[C_LOGIC_DEV]; // device array
   
-  
-    eEO*       m_aeCode;
-
-    i8         m_iCtr0;
-  
     Timer      m_oTimer;
     AggTimer   m_oAggTimer;
 

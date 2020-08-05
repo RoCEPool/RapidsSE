@@ -48,16 +48,12 @@ LogicUnit::LogicUnit(Task* pTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  MemLib::vZero(&m_xRluCommon,sizeof(m_xRluCommon),CN_LOGICUNIT);
   MemLib::vZero(&m_aaDev,sizeof(m_aaDev),CN_LOGICUNIT);
   
+  MemLib::vZero(&m_xRluCommon,sizeof(m_xRluCommon),CN_LOGICUNIT);
   m_xRluCommon.m_iCmnMagic  = 123456789;
   m_xRluCommon.m_iCmnFooter = 987654321;
-
-  m_aeCode  = nullptr;
   
-  m_iCtr0   = 0;
-
   m_nPtns   = AM::nPartitions();
   m_iHash   = PtnLib::iResetRunning();
   m_i_Ptn   = 0;
@@ -667,37 +663,37 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* pLU)
   #define dLU3(eCode,iA,iB,iC) \
     if (m_bTrace) \
       vTrace("%lld : %12s %lld %lld %lld\n"_Stz,\
-             nDifference(m_eaCode,m_aeCode-1),\
+             nDifference(m_eaCode,aeCode-1),\
              aEO[eCode],iA,iB,iC);
 
   #define dLU2(eCode,iA,iB) \
     if (m_bTrace) \
       vTrace("%lld : %12s %lld %lld\n"_Stz,\
-             nDifference(m_eaCode,m_aeCode-1),\
+             nDifference(m_eaCode,aeCode-1),\
              aEO[eCode],iA,iB);
 
   #define dLU1(eCode,iA) \
     if (m_bTrace) \
       vTrace("%lld : %12s %lld\n"_Stz,\
-             nDifference(m_eaCode,m_aeCode-1),\
+             nDifference(m_eaCode,aeCode-1),\
              aEO[eCode],iA);
 
   #define dLU0(eCode) \
     if (m_bTrace) \
       vTrace("%lld : %12s\n"_Stz,\
-             nDifference(m_eaCode,m_aeCode-1),\
+             nDifference(m_eaCode,aeCode-1),\
              aEO[eCode]);
 
   #define ArgGet(iArg) \
     ASSERT(8 == EoArgs[eCode].m_nArgBytes); \
-    iArg = * (i8*)m_aeCode; \
-    m_aeCode += 8;
+    iArg = * (i8*)aeCode; \
+    aeCode += 8;
 
   #define GetStr(iArg) \
     ASSERT(-1 == EoArgs[eCode].m_nArgBytes); \
-    iArg = (i8)m_aeCode; \
-    while (*(char*)m_aeCode) m_aeCode++; \
-    m_aeCode++;
+    iArg = (i8)aeCode; \
+    while (*(char*)aeCode) aeCode++; \
+    aeCode++;
 
   #define ArgNil() \
     ASSERT(0 == EoArgs[eCode].m_nArgBytes);
@@ -710,13 +706,13 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* pLU)
   #define dLU0(eCode)
 
   #define ArgGet(iArg) \
-    iArg = * (i8*)m_aeCode; \
-    m_aeCode += 8;
+    iArg = * (i8*)aeCode; \
+    aeCode += 8;
 
   #define GetStr(iArg) \
-    iArg = (i8)m_aeCode; \
-    while (*(char*)m_aeCode) m_aeCode++; \
-    m_aeCode++;
+    iArg = (i8)aeCode; \
+    while (*(char*)aeCode) aeCode++; \
+    aeCode++;
 
   #define ArgNil()
 
@@ -751,7 +747,7 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* pLU)
 
 
 #define JumpTo(__iArg) \
-  m_aeCode = & m_eaCode[__iArg];
+  aeCode = & m_eaCode[__iArg];
 
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
@@ -760,6 +756,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  #ifdef WITH_TRACE_LOGICUNIT
+    vTrace("\nLogic Unit :: sql %lld\n\n"_Stz,m_iSql);
+    vDebugPoint();
+  #endif
+
   i8 iArg;
   i8 iTopA;
   i8 iTopB;
@@ -779,7 +780,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   SP_Ent spEnt;
   Ent* aEnt;
 
-  i8*  aiDstk = nullptr;
 
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
@@ -788,15 +788,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8* aPayload = nullptr;
 
   
-  i8     iaDataStack[C_LOGIC_STACK];
-  eEO*   aaReturnStack[C_LOGIC_STACK];
-
   
   // -- -- -- -- -- -- -- -- -- --
-  m_aeCode  = & m_eaCode[0];
-  eEO** aaeRstk = &aaReturnStack[0];
-  aiDstk  = &iaDataStack[0];
-  *aiDstk = 0xFFFFFFFFFFFFFFFF;
 
   m_i_Slot  = AM::pTaskJob()->m_pOp->nPartition();
   
@@ -804,14 +797,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   m_aaDev[0] = m_pDevTmpIxt->m_pIdxTree;
   // end temp
   
-#ifdef WITH_TRACE_LOGICUNIT
-  vTrace("\nLogic Unit :: sql %lld\n\n"_Stz,m_iSql);
-  vDebugPoint();
-#endif
-
-  if (nOuterArgs) {
-    *(++aiDstk) = iOuterArg0;
-  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this code equates to aiDynCompute() preliminary
@@ -822,7 +807,24 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   ASSERT(123456789 == aRluCommon->m_iCmnMagic);
   ASSERT(987654321 == aRluCommon->m_iCmnFooter);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // temp / incorrect place
   
+  i8* aiDstk = aRluCommon->m_iaDataStack;
+  *aiDstk = 0xFFFFFFFFFFFFFFFF;
+
+  if (nOuterArgs) {
+    *(++aiDstk) = iOuterArg0;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // required for interpretative inner loop
+  
+  eEO*  eaReturnStack[C_LOGIC_STACK];
+  eEO** aeaRstk = &eaReturnStack[0];
+  eEO*  aeCode  = & m_eaCode[0];
+  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
   //                    interpretative inner loop proper                      //
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
@@ -831,17 +833,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     
 #ifdef WITH_TRACE_LOGICUNIT
     // check for stack growth
-    if (aiDstk >= &iaDataStack[C_LOGIC_STACK-4])
+    if (aiDstk >= &aRluCommon->m_iaDataStack[C_LOGIC_STACK-4])
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "LogicUnit data stack exhausted\n"_Stz);
     
-    i8 nStkUse = nDifference(aiDstk,iaDataStack);
+    i8 nStkUse = nDifference(aiDstk,aRluCommon->m_iaDataStack);
     i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
     if (iStkPct > 80)
       vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
 #endif
   
-    eEO eCode = *m_aeCode++;
+    eEO eCode = *aeCode++;
         
     switch (eCode) { //+ExtractBegin
         
@@ -897,86 +899,86 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // counter
 /*M*/ case EO_CTR_0_DEC: ArgNil(); // dec counter 0
-        m_iCtr0--;
-        dLU1(EO_CTR_0_DEC,m_iCtr0);
+        aRluCommon->m_iCtr0--;
+        dLU1(EO_CTR_0_DEC,aRluCommon->m_iCtr0);
         break;//+endCase
 
 /*M*/ case EO_CTR_0_INC: ArgNil(); // inc counter 0
-        m_iCtr0++;
-        dLU1(EO_CTR_0_INC,m_iCtr0);
+        aRluCommon->m_iCtr0++;
+        dLU1(EO_CTR_0_INC,aRluCommon->m_iCtr0);
         break;//+endCase
 
 /*M*/ case EO_CTR_0_POP: ArgNil(); // pop counter 0
-        m_iCtr0 = *(aiDstk--);
-        dLU1(EO_CTR_0_POP,m_iCtr0);
+        aRluCommon->m_iCtr0 = *(aiDstk--);
+        dLU1(EO_CTR_0_POP,aRluCommon->m_iCtr0);
         break;//+endCase
 
 /*M*/ case EO_CTR_0_PUSH: ArgNil(); // push counter 0
-        dLU1(EO_CTR_0_PUSH,m_iCtr0);
-        *(++aiDstk) = m_iCtr0;
+        dLU1(EO_CTR_0_PUSH,aRluCommon->m_iCtr0);
+        *(++aiDstk) = aRluCommon->m_iCtr0;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // jump operators
       case EO_JMP: ArgGet(iArg); // jump to location
         dLU1(EO_JMP,iArg);
-        JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
+        JumpTo(iArg); // aeCode = & m_eaCode[iArg];
         break;//+endCase
         
       case EO_JMP_FALSE: ArgGet(iArg); // pop top and jump to location if false
         dLU1(EO_JMP_FALSE,iArg);
         iTopA = *(aiDstk--);
         if (! iTopA)
-          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // aeCode = & m_eaCode[iArg];
         break;//+endCase
         
       case EO_JMP_TRUE: ArgGet(iArg); // pop top and jump to location if true
         dLU1(EO_JMP_TRUE,iArg);
         iTopA = *(aiDstk--);
         if (iTopA)
-          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // aeCode = & m_eaCode[iArg];
         break;//+endCase
         
       case EO_JMP_LESS: ArgGet(iArg); // pop top and jump to location if <
         dLU1(EO_JMP_LESS,iArg);
         iTopA = *(aiDstk--);
         if (iTopA < 0)
-          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_LESSEQUAL: ArgGet(iArg); // pop top and jump to location if <=
         dLU1(EO_JMP_LESSEQUAL,iArg);
         iTopA = *(aiDstk--);
         if (iTopA <=0)
-          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_EQUAL: ArgGet(iArg); // pop top and jump to location if ==
         dLU1(EO_JMP_EQUAL,iArg);
         iTopA = *(aiDstk--);
         if (iTopA == 0)
-          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_NOTEQUAL: ArgGet(iArg); // pop top and jump to location if !=
         dLU1(EO_JMP_NOTEQUAL,iArg);
         iTopA = *(aiDstk--);
         if (iTopA != 0)
-          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_GREATEREQUAL: ArgGet(iArg); // pop top and jump to location if >=
         dLU1(EO_JMP_GREATEREQUAL,iArg);
         iTopA = *(aiDstk--);
         if (iTopA >= 0)
-          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_GREATER: ArgGet(iArg); // pop top and jump to location if >
         dLU1(EO_JMP_GREATER,iArg);
         iTopA = *(aiDstk--);
         if (iTopA > 0)
-          JumpTo(iArg); // m_aeCode = & m_eaCode[iArg];
+          JumpTo(iArg); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1185,8 +1187,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU1(EO_CALL,iArg);
 #ifdef __TINYC__
 #else
-        * (aaeRstk++) = m_aeCode;
-        m_aeCode = & m_eaCode[iArg];
+        * (aeaRstk++) = aeCode;
+        aeCode = & m_eaCode[iArg];
 #endif
         break;//+endCase
 
@@ -1195,14 +1197,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef __TINYC__
         return aiDstk;
 #else
-        if (aaeRstk == &aaReturnStack[0]) {
+        if (aeaRstk == &eaReturnStack[0]) {
           iRes = *(aiDstk--);
 #ifdef WITH_TRACE_LOGICUNIT
           vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,m_iSql);
 #endif
           return iRes;
         }
-        m_aeCode = * (--aaeRstk);
+        aeCode = * (--aeaRstk);
 #endif
         break;//+endCase
 
@@ -2119,7 +2121,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     
   }
   
-  return iaDataStack[0];
+  return -1;
 }
 
 /*============================================================================*/
