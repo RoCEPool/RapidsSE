@@ -8,6 +8,8 @@ struct RluCommon
   
   i8 m_iValue;
   
+  i8 m_iaDataStack[4096];
+
   i8 m_iCmnFooter;
 };
 

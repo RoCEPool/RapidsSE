@@ -485,6 +485,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #define dLU1(x,a) "
   "\n  #define dLU2(x,a,b) "
   "\n  #define dLU3(x,a,b,c) "
+  "\n  #define nullptr 0"
   "\n"
   "";
   
@@ -529,7 +530,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    i8 iTopB;"
   "\n    i8 iRes;"
   "\n    struct Qty xRes;"
-  "\n    struct RluCommon* aRluCommon = 0;"
+  "\n    struct RluCommon* aRluCommon = nullptr;"
   "\n"
   "\n"
   "";
