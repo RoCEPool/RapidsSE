@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : syntaxTable_PulseMarker
 
-  job[] job.tagSet@ tagSet.asStr .
+  //job[] job.tagSet@ tagSet.asStr .
 
   <etc> <tableNm> "create table %v %v ;" str.format dup .
   job[] streamDef::parse to streamDef[]
