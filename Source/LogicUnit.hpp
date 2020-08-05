@@ -227,8 +227,6 @@ namespace Expressions
     Timer      m_oTimer;
     AggTimer   m_oAggTimer;
 
-    i8         m_iHash;
-    i8         m_i_Ptn;
     
     StreamPix  m_oStreamPix;    // condensed stream def
   

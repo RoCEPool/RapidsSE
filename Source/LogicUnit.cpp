@@ -54,9 +54,6 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_iCmnMagic  = 123456789;
   m_xRluCommon.m_iCmnFooter = 987654321;
   
-  m_iHash   = PtnLib::iResetRunning();
-  m_i_Ptn   = 0;
-  
   // m_oEntWrk
 
   m_i_Code = 0;
@@ -777,8 +774,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     *(++aiDstk) = iOuterArg0;
   }
   
-  aRluCommon->m_nPtns  = AM::nPartitions();
   aRluCommon->m_i_Slot = AM::pTaskJob()->m_pOp->nPartition();
+  aRluCommon->m_nPtns  = AM::nPartitions();
+  aRluCommon->m_iHash  = PtnLib::iResetRunning();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // required for interpretative inner loop
@@ -1275,36 +1273,37 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*f*/ case EO_HSH_ADD_HASHI: ArgNil(); // add hash of top int to running hash
         iTopA = *(aiDstk--);
         iRes = HshLib::iHash((byte*)&iTopA,sizeof(w8));
-        m_iHash += iRes;
+        aRluCommon->m_iHash += iRes;
         dLU3(EO_HSH_ADD_HASHI,iTopA,iRes,m_iHash);
         break;//+endCase
         
 /*f*/ case EO_HSH_RESET: ArgNil(); // reset hash
         dLU0(EO_HSH_RESET);
-        m_iHash = 0;
+        aRluCommon->m_iHash = 0;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // partitioning
 /*f*/ case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
         dLU0(EO_PTN_CALC);
-        m_i_Ptn = PtnLib::iPartition(m_iHash,aRluCommon->m_nPtns);
+        aRluCommon->m_i_Ptn =
+          PtnLib::iPartition(aRluCommon->m_iHash,aRluCommon->m_nPtns);
         break;//+endCase
 
 /*M*/ case EO_PTN_PUSH: ArgNil(); // push m_i_Ptn
-        dLU1(EO_PTN_PUSH,m_i_Ptn);
-        *(++aiDstk) = m_i_Ptn;
+        dLU1(EO_PTN_PUSH,aRluCommon->m_i_Ptn);
+        *(++aiDstk) = aRluCommon->m_i_Ptn;
         break;//+endCase
 
 /*f*/ case EO_PTN_RESET: ArgNil(); // reset running m_iHash
         dLU0(EO_PTN_RESET);
-        m_iHash = PtnLib::iResetRunning();
+        aRluCommon->m_iHash = PtnLib::iResetRunning();
         break;//+endCase
 
 /*f*/ case EO_PTN_RUNNING: ArgNil(); // mix top into running m_iHash
         iTopA = *(aiDstk--);
         dLU0(EO_PTN_RUNNING);
-        PtnLib::vRunning(&m_iHash,iTopA);
+        PtnLib::vRunning(&aRluCommon->m_iHash,iTopA);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1941,7 +1940,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_RSB_DST_NEW: ArgNil(); // create new destination rsb
         dLU0(EO_RSB_DST_NEW);
         //ASSERT(0 == m_i_Ptn);
-        m_pDevDstRsb->m_aRsb = m_xpPot->aNewDstRsb(m_i_Ptn,&m_pDevDstRsb->m_pRowSlab);
+        m_pDevDstRsb->m_aRsb = m_xpPot->aNewDstRsb(aRluCommon->m_i_Ptn,&m_pDevDstRsb->m_pRowSlab);
         break;//+endCase
 
       case EO_RSB_DST_RESET: ArgNil(); // reset dst rowslab
