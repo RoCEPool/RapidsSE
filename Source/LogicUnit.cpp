@@ -1134,10 +1134,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_PRINT: ArgNil(); // print top
+#ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(EO_PRINT,iTopA);
         //vTrace("[Q%lld.%lld] %lld\n"_Stz,m_iSql,m_i_Slot,iTopA);
         printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
+#endif
         break;//+endCase
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1227,8 +1229,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef __TINYC__
         aiDstk = & aRluCommon->m_iaDataStack[0];
 #endif
-        printf("[Q%lld.%lld] INIT: %lld %lld\n",(i8)0,(i8)0,
-               aRluCommon->m_iCmnMagic,aRluCommon->m_iCmnFooter);
+        //printf("[Q%lld.%lld] INIT: %lld %lld\n",(i8)0,(i8)0,
+        //       aRluCommon->m_iCmnMagic,aRluCommon->m_iCmnFooter);
         break;//+endCase
         
       case EO_SANITY: ArgNil(); // sanity check
@@ -1953,8 +1955,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pix
       case EO_PIX_STM_PRINT: ArgNil(); // print stream pix
+#ifdef WITH_TRACE_LOGICUNIT
         dLU0(EO_PIX_STM_PRINT);
         m_oStreamPix.vPrint();
+#endif
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
