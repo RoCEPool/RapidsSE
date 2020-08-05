@@ -524,6 +524,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    i8 iTopB;"
   "\n    i8 iRes;"
   "\n    struct Qty xRes;"
+  "\n    struct RluCommon* aRluCommon;"
   "\n"
   "\n"
   "";
@@ -559,7 +560,7 @@ void LogicCompiler::v_SbrPreliminary(Stz* szSbrNm)
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* subroutine                                                         */"
   "\n  /*--------------------------------------------------------------------*/"
-  "\n  i8* %s(i8* aiDstk)"
+  "\n  i8* %s(i8* aiDstk, struct RluCommon* aRluCommon)"
   "\n  { "
   "\n    i8 iTopA;"
   "\n    i8 iTopB;"
@@ -601,7 +602,7 @@ void LogicCompiler::v_CallSbr(i8 i_Label)
   
   char* azFrag = (char*)
   "    // EO_CALL:"
-  "\n        aiDstk = %s(aiDstk);"
+  "\n        aiDstk = %s(aiDstk,aRluCommon);"
   "\n"
   "\n"
   "";

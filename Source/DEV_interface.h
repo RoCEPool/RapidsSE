@@ -13,6 +13,10 @@ i8 iDEV_MAP_TRV_NEXT  (void* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// prototypes for rlu fun
+struct RluCommon* aFun_INIT(void* pRLU);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT
 
 i8   iDev_ENT_COMPARE(void* pRLU, void* pDevIXT);

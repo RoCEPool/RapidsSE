@@ -9,7 +9,7 @@ enum eEO : u1 // expression operators
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // simple eo
-  
+
   // arithmetic operators
   /*    */ EO_ADD,              // add top two int's push result
   /*    */ EO_DIVIDE,           // divide top int by second push result
@@ -81,6 +81,7 @@ enum eEO : u1 // expression operators
   // misc
   /*    */ EO_ASSERT,           // pop top and assert
   /*    */ EO_BREAKPOINT,       // break point
+  /*    */ EO_INIT,             // initialise the rlu common
   /*    */ EO_SLEEP,            // sleep for top seconds
   /*    */ EO_SLOT,             // push i_Slot
   /*    */ EO_TRACEOFF,         // set trace off
@@ -296,6 +297,7 @@ static Stz* aEO[]
   // misc
   /*    */ "EO_ASSERT"_Stz,
   /*    */ "EO_BREAKPOINT"_Stz,
+  /*    */ "EO_INIT"_Stz,
   /*    */ "EO_SLEEP"_Stz,
   /*    */ "EO_SLOT"_Stz,
   /*    */ "EO_TRACEOFF"_Stz,
@@ -517,6 +519,7 @@ static EoArg EoArgs[]
   // misc
   { EA_NONE,    0 },  // EO_ASSERT
   { EA_NONE,    0 },  // EO_BREAKPOINT
+  { EA_NONE,    0 },  // EO_INIT
   { EA_NONE,    0 },  // EO_SLEEP
   { EA_NONE,    0 },  // EO_SLOT
   { EA_NONE,    0 },  // EO_TRACEOFF

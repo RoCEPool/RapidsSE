@@ -51,6 +51,9 @@ LogicUnit::LogicUnit(Task* pTask)
   MemLib::vZero(&m_xRluCommon,sizeof(m_xRluCommon),CN_LOGICUNIT);
   MemLib::vZero(&m_aaDev,sizeof(m_aaDev),CN_LOGICUNIT);
   
+  m_xRluCommon.m_iCmnMagic  = 123456789;
+  m_xRluCommon.m_iCmnFooter = 987654321;
+
   m_aeCode  = nullptr;
   
   m_iCtr0   = 0;
@@ -1194,6 +1197,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_BREAKPOINT: ArgNil(); // breakpoint
         dLU0(EO_BREAKPOINT);
         vDebugPoint();
+        break;//+endCase
+        
+      case EO_INIT: ArgNil(); // initialise the rlu common
+        dLU0(EO_INIT);
         break;//+endCase
         
       case EO_SLEEP: ArgNil(); // sleep for top seconds
