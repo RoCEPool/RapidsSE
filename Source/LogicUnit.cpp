@@ -1203,6 +1203,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_INIT);
         break;//+endCase
         
+      case EO_SANITY: ArgNil(); // sanity check
+        dLU0(EO_SANITY);
+        break;//+endCase
+        
       case EO_SLEEP: ArgNil(); // sleep for top seconds
         iTopA = *(aiDstk--);
         dLU1(EO_SLEEP,iTopA);

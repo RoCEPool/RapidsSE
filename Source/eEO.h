@@ -82,6 +82,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_ASSERT,           // pop top and assert
   /*    */ EO_BREAKPOINT,       // break point
   /*    */ EO_INIT,             // initialise the rlu common
+  /*    */ EO_SANITY,           // sanity check
   /*    */ EO_SLEEP,            // sleep for top seconds
   /*    */ EO_SLOT,             // push i_Slot
   /*    */ EO_TRACEOFF,         // set trace off
@@ -298,6 +299,7 @@ static Stz* aEO[]
   /*    */ "EO_ASSERT"_Stz,
   /*    */ "EO_BREAKPOINT"_Stz,
   /*    */ "EO_INIT"_Stz,
+  /*    */ "EO_SANITY"_Stz,
   /*    */ "EO_SLEEP"_Stz,
   /*    */ "EO_SLOT"_Stz,
   /*    */ "EO_TRACEOFF"_Stz,
@@ -520,6 +522,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ASSERT
   { EA_NONE,    0 },  // EO_BREAKPOINT
   { EA_NONE,    0 },  // EO_INIT
+  { EA_NONE,    0 },  // EO_SANITY
   { EA_NONE,    0 },  // EO_SLEEP
   { EA_NONE,    0 },  // EO_SLOT
   { EA_NONE,    0 },  // EO_TRACEOFF
