@@ -7,7 +7,6 @@ namespace Expressions
 {
   static const i8 C_LOGIC_DEV   = 16;
   static const i8 C_LOGIC_CODE  = C_4KB;
-  static const i8 C_LOGIC_STACK = C_1KB;
   static const i8 C_LOGIC_LABEL = 64;
 
   // customer columns
