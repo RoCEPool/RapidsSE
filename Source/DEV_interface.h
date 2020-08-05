@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DEV_itf.h -- Interface for RLU Devices                                     */
+/* DEV_interface.h -- Interface for RLU Devices                               */
 /*============================================================================*/
 
 i8 iDEV_MAP(void* aRLU, void* aDev, i8 eDO, void** aaCrs, void* aArg, i8 iArg);
@@ -13,7 +13,8 @@ i8 iDEV_MAP_TRV_NEXT  (void* aRLU, void* aDev, void** aaCrs, void* aArg, i8 iArg
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// prototypes for rlu fun
+// prototypes for rlu FUN
+
 struct RluCommon* aFun_INIT(void* pRLU);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

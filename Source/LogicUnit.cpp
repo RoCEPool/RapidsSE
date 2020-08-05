@@ -648,6 +648,16 @@ void LogicUnit::vDumpCode(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* initialise and return address of rlu common                                */
+/*----------------------------------------------------------------------------*/
+struct RluCommon* LogicUnit::aFun_INIT(void* pRLU)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  return & m_xRluCommon;
+}
+
 /*============================================================================*/
 /* - - - - - - - - - - - - - RELATIONAL LOGIC UNIT - - - - - - - - - - - - - -*/
 /*============================================================================*/
@@ -804,6 +814,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   }
   
   LogicUnit* pRLU = this;
+  
+  
+  struct RluCommon* aRluCommon = aFun_INIT(pRLU); // temp... should be nullptr
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (;;) {
     
@@ -1201,6 +1217,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_INIT: ArgNil(); // initialise the rlu common
         dLU0(EO_INIT);
+        aRluCommon = aFun_INIT(pRLU);
         break;//+endCase
         
       case EO_SANITY: ArgNil(); // sanity check

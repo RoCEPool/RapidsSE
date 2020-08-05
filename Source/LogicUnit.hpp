@@ -355,6 +355,8 @@ namespace Expressions
     EntWrk* pEntWrk(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
     void vGenCode(i8 iTestNo);
   
