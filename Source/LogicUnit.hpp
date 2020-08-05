@@ -236,14 +236,10 @@ namespace Expressions
 
     i8         m_iSql;
     
-    bool       m_bPixInited;
     StreamPix  m_oStreamPix;    // condensed stream def
   
   
     EntWrk     m_oEntWrk;
-
-
-    DevRLU*    m_pDevRlu;
 
     //==========================
     DevRSB*    m_pDevDstRsb;

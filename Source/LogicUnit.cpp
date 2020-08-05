@@ -61,41 +61,10 @@ LogicUnit::LogicUnit(Task* pTask)
 
   m_iSql    = C_UNKNOWN;
   
-  m_bPixInited  = false;
-  // m_oStreamPix
-  //m_pDevDstRsb->m_aRsb     = nullptr;
-  //m_pDevDstRsb->m_pRowSlab = nullptr;
-
-  //m_i_SrcRow    = C_UNKNOWN;
-  //m_nSrcRows    = C_UNKNOWN;
-  //m_pDevSrcRsb->m_aRsb     = nullptr;
-  //m_pDevSrcRsb->m_pRowSlab = nullptr;
-  //m_pDevSrcIxt->m_aEnt     = nullptr;
-  //m_pDevSrcIxt->m_pIdxTree = nullptr;
-  //m_pDevSrcIxt->m_pEntBuffer = nullptr;
-  //m_aSrcCrw     = nullptr;
-  //m_pSrcCrwBuffer = nullptr;
-  //m_pDevSrcRsb->m_pStreamDef = nullptr;
-
-  //m_i_AltRow    = C_UNKNOWN;
-  //m_nAltRows    = C_UNKNOWN;
-  //m_aAltRsb     = nullptr;
-  //m_pAltRowSlab = nullptr;
-  //m_aAltEnt     = nullptr;
-  //m_pAltIdxTree = nullptr;
-  //m_pAltEntBuffer = nullptr;
-  //m_aAltCrw     = nullptr;
-  //m_pAltStreamDef = nullptr;
-
-  //m_pEnt        = nullptr;
-  //m_pEntBuffer  = nullptr;
-  //m_pDevTmpIxt->m_pIdxTree  = nullptr;
-
   // m_oEntWrk
 
   m_i_Code = 0;
   
-  m_pDevRlu    = new DevRLU;
   m_pDevDstRsb = new DevRSB;
   m_pDevSrcRsb = new DevRSB;
   m_pDevAltRsb = new DevRSB;
@@ -137,8 +106,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   
   if (! m_xpTimer.bIsNull())
     delete *m_xpTimer;
-
-  delete m_pDevRlu;
 
   delete m_pDevDstRsb;
   delete m_pDevSrcRsb;
