@@ -1915,13 +1915,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb / rowslab
-/*R*/ case EO_RSB_DST_COPYSRC: ArgNil(); // copy src rsb to dst rsb
-        dLU0(EO_RSB_DST_COPYSRC);
-        m_pDevDstRsb->m_pRowSlab->vPositionOnCell(0);
-        m_pDevDstRsb->m_aRsb = m_pDevDstRsb->m_pRowSlab->aRsb();
-        m_pDevDstRsb->m_pRowSlab->vCopyRsb(m_pDevSrcRsb->m_aRsb,bSrcHasPtnHash,bCopyPtnHash);
-        break;//+endCase
-
       case EO_RSB_DST_PRINT: ArgNil(); // print dst rsb
         dLU0(EO_RSB_DST_PRINT);
         m_pDevDstRsb->m_pRowSlab->vDumpRow(-1,m_pDevDstRsb->m_aRsb);

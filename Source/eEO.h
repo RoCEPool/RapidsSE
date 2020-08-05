@@ -191,7 +191,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_PIX_STM_PRINT,    // print stream pix
 
   // rsb / rowslab
-  /*    */ EO_RSB_DST_COPYSRC,  // copy src rsb to dst rsb
   /*    */ EO_RSB_DST_PRINT,    // print dst rsb
   /*    */ EO_RSB_DST_RESET,    // reset dst rowslab
   /*    */ EO_RSB_DST_NEW,      // create new destination rsb
@@ -405,7 +404,6 @@ static Stz* aEO[]
   /*    */ "EO_PIX_STM_PRINT"_Stz,
   
   // rsb / rowslab
-  /*    */ "EO_RSB_DST_COPYSRC"_Stz,
   /*    */ "EO_RSB_DST_PRINT"_Stz,
   /*    */ "EO_RSB_DST_RESET"_Stz,
   /*    */ "EO_RSB_DST_NEW"_Stz,
@@ -627,7 +625,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PIX_STM_PRINT
   
   // rsb / rowslab
-  { EA_NONE,    0 },  // EO_RSB_DST_COPYSRC
   { EA_NONE,    0 },  // EO_RSB_DST_PRINT
   { EA_NONE,    0 },  // EO_RSB_DST_RESET
   { EA_NONE,    0 },  // EO_RSB_DST_NEW
