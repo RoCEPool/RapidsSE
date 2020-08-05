@@ -13,6 +13,8 @@ extern EoArg EoArgs[];
 char gcaEoFragments[C_128K];
 Stz* gszaEoFragments[EO_ENUMS];
 
+#include "DEV_interface.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -294,6 +296,8 @@ void LogicCompiler::vSymbols(void)
   
 #ifdef __TINYC
   // add external symbols
+  
+  tcc_add_symbol((TCCState*)m_aTccState, "aFun_INIT", (const void *)aFun_INIT);
   tcc_add_symbol((TCCState*)m_aTccState, "iMul", (const void *)iMul);
   tcc_add_symbol((TCCState*)m_aTccState, "xMul", (const void *)xMul);
 #endif
@@ -464,6 +468,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  typedef long long i8;"
   "\n  typedef char Stz;"
   "\n"
+  "\n  #include \"../Source/DEV_interface.h\""
   "\n  #include \"../Source/RluCommon.h\""
   "\n  #include \"../Source/Qty.h\""
   "\n"

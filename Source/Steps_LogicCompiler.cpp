@@ -34,7 +34,7 @@ void Step::vLogicCompilerCompile(void)
   ENTRY();
       
   i8 iResult =
-    m_pLogicUnit->m_xpLogicCompiler->iCompile(m_pLogicUnit,nullptr);
+    m_pLogicUnit->m_xpLogicCompiler->iCompile(m_pLogicUnit,m_pLogicUnit);
   
   EXIT();
 }

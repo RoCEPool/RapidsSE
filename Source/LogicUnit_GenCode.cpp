@@ -1813,7 +1813,8 @@ void LogicUnit::vGenerate100001(void)
   // init the code
   m_i_Code = 0;
   
-  vDefineLabel("TST_SBR:"_Stz);
+  vDefineLabel("TST_RTN:"_Stz);
+  vAddCode(EO_INIT);
   vAddCodeLabel(EO_CALL,"SBR_ADD:"_Stz);
   vAddCodeLabel(EO_CALL,"SBR_MUL:"_Stz);
   vAddCodeLabel(EO_CALL,"SBR_PRT:"_Stz);

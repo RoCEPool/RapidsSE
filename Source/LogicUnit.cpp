@@ -1218,6 +1218,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_INIT: ArgNil(); // initialise the rlu common
         dLU0(EO_INIT);
         aRluCommon = aFun_INIT(pRLU);
+        printf("[Q%lld.%lld] INIT: %lld %lld\n",(i8)0,(i8)0
+               ,aRluCommon->m_iCmnMagic,aRluCommon->m_iCmnFooter);
         break;//+endCase
         
       case EO_SANITY: ArgNil(); // sanity check
