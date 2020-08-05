@@ -954,7 +954,7 @@ void LogicUnit::vGenerateQuery301(void)
 
   // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_RET:"_Stz);
-  vAddCodeArg(EO_IXT_DUMP,(i8)0);
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
