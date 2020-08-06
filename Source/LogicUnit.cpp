@@ -723,6 +723,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iArg;
   i8 iTopA;
   i8 iTopB;
+  char* azTopA;
+  char* azTopB;
   i8 iRes;
   i8 iCmp;
   i8 i_Cell_ntv;
@@ -860,22 +862,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // counter
-/*M*/ case EO_CTR_0_DEC: ArgNil(); // dec counter 0
+/*c*/ case EO_CTR_0_DEC: ArgNil(); // dec counter 0
         aRluCommon->m_iCtr0--;
         dLU1(EO_CTR_0_DEC,aRluCommon->m_iCtr0);
         break;//+endCase
 
-/*M*/ case EO_CTR_0_INC: ArgNil(); // inc counter 0
+/*c*/ case EO_CTR_0_INC: ArgNil(); // inc counter 0
         aRluCommon->m_iCtr0++;
         dLU1(EO_CTR_0_INC,aRluCommon->m_iCtr0);
         break;//+endCase
 
-/*M*/ case EO_CTR_0_POP: ArgNil(); // pop counter 0
+/*c*/ case EO_CTR_0_POP: ArgNil(); // pop counter 0
         aRluCommon->m_iCtr0 = *(aiDstk--);
         dLU1(EO_CTR_0_POP,aRluCommon->m_iCtr0);
         break;//+endCase
 
-/*M*/ case EO_CTR_0_PUSH: ArgNil(); // push counter 0
+/*c*/ case EO_CTR_0_PUSH: ArgNil(); // push counter 0
         dLU1(EO_CTR_0_PUSH,aRluCommon->m_iCtr0);
         *(++aiDstk) = aRluCommon->m_iCtr0;
         break;//+endCase
@@ -1011,7 +1013,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = 1;
         break;//+endCase
         
-/*f*/ case EO_RANDOM: ArgGet(iArg); // push random number 0..arg-1
+/*l*/ case EO_RANDOM: ArgGet(iArg); // push random number 0..arg-1
         iRes = iLib_RANDOM(pLU,iArg);
         dLU2(EO_RANDOM,iArg,iRes);
         *(++aiDstk) = iRes;
@@ -1104,11 +1106,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // string operators
-/*f*/ case EO_STR_COMPARE: ArgNil(); // pop top stradr and compare str on stack
-      {
+/*l*/ case EO_STR_COMPARE: ArgNil(); // pop top stradr and compare str on stack
         dLU0(EO_STR_COMPARE);
-        char* azTopA;
-        char* azTopB;
         azTopA = (char*) *(aiDstk--);
       
         iTopB = *(aiDstk--);
@@ -1118,22 +1117,24 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         if (aRluCommon->m_bTrace)
           vDebugPoint();
-      }
         break;//+endCase
         
       case EO_STR_PRINTADR: ArgNil(); // pop top and print iArg as addr of string
 #ifdef WITH_TRACE_LOGICUNIT
-        iTopA = *(aiDstk--);
+        azTopA = (char*) *(aiDstk--);
         dLU1(EO_STR_PRINTADR,iTopA);
-        vTrace("[Q%lld.%lld] %lls\n"_Stz,aRluCommon->m_iSql,aRluCommon->m_i_Slot,iTopA);
+        printf("[Q%lld.%lld] %s\n",
+               aRluCommon->m_iSql,aRluCommon->m_i_Slot,azTopA);
 #endif
         break;//+endCase
         
       case EO_STR_PRINTSTK: ArgNil(); // pop string from top and print
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
+        azTopA = (char*) *(aiDstk--);
         dLU1(EO_STR_PRINTSTK,iTopA);
-        vTrace("[Q%lld,%lld] %lls\n"_Stz,aRluCommon->m_iSql,aRluCommon->m_i_Slot,(aiDstk-iTopA/8));
+        printf("[Q%lld,%lld] %s\n",
+               aRluCommon->m_iSql,aRluCommon->m_i_Slot,azTopA);
         aiDstk -= (iTopA/8) + 1;
 #endif
         break;//+endCase
@@ -1183,7 +1184,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDebugPoint();
         break;//+endCase
         
-      case EO_INIT: ArgNil(); // initialise the rlu common
+/*r*/ case EO_INIT: ArgNil(); // initialise the rlu common
         dLU0(EO_INIT);
         aRluCommon = aRlu_INIT(pLU);
 #ifdef __TINYC__
@@ -1197,22 +1198,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_SANITY);
         break;//+endCase
         
-      case EO_SLEEP: ArgNil(); // sleep for top seconds
+/*l*/ case EO_SLEEP: ArgNil(); // sleep for top seconds
         iTopA = *(aiDstk--);
         dLU1(EO_SLEEP,iTopA);
         sleep((u4)iTopA);
         break;//+endCase
               
-/*M*/ case EO_SLOT: ArgNil(); // push i_Slot
+/*c*/ case EO_SLOT: ArgNil(); // push i_Slot
         dLU1(EO_SLOT,aRluCommon->m_i_Slot);
         *(++aiDstk) = aRluCommon->m_i_Slot;
         break;//+endCase
               
-/*M*/ case EO_TRACEOFF: ArgNil(); // set trace off
+/*c*/ case EO_TRACEOFF: ArgNil(); // set trace off
         aRluCommon->m_bTrace = 0;
         break;//+endCase
         
-/*M*/ case EO_TRACEON: ArgNil(); // set trace on
+/*c*/ case EO_TRACEON: ArgNil(); // set trace on
         aRluCommon->m_bTrace = 1;
         break;//+endCase
         
@@ -1220,7 +1221,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_NOOP);
         break;//+endCase
 
-/*f*/ case EO_ERROR: ArgNil(); // error marker
+/*r*/ case EO_ERROR: ArgNil(); // error marker
         dLU0(EO_ERROR);
         vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                "Code compiled with error"_Stz);
@@ -1232,7 +1233,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // date operators
-/*f*/ case EO_DTE_NOW: ArgNil(); // push current date
+/*l*/ case EO_DTE_NOW: ArgNil(); // push current date
       {
         Now oNow;
         Dtm wDte;
@@ -1248,18 +1249,19 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       }
         break;//+endCase
         
-/*f*/ case EO_DTE_PRINT: ArgNil(); // pop top and print as date
+/*l*/ case EO_DTE_PRINT: ArgNil(); // pop top and print as date
 #ifdef WITH_TRACE_LOGICUNIT
       {
         SP_Dte spDate;
         iTopA = *(aiDstk--);
         dLU1(EO_DTE_PRINT,iTopA);
-        vTrace("[Q%lld.%lld] %s\n"_Stz,aRluCommon->m_iSql,aRluCommon->m_i_Slot,spDate.sz(iTopA));
+        printf("[Q%lld.%lld] %s\n",
+               aRluCommon->m_iSql,aRluCommon->m_i_Slot,(char*)spDate.sz(iTopA));
       }
 #endif
         break;//+endCase
 
-/*f*/ case EO_DTE_YEAR: ArgNil(); // pop top, push year of date
+/*l*/ case EO_DTE_YEAR: ArgNil(); // pop top, push year of date
       {
         Dtm wDte;
         wDte = *(aiDstk--);
@@ -1271,37 +1273,37 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // hashing
-/*f*/ case EO_HSH_ADD_HASHI: ArgNil(); // add hash of top int to running hash
+/*l*/ case EO_HSH_ADD_HASHI: ArgNil(); // add hash of top int to running hash
         iTopA = *(aiDstk--);
         iRes = HshLib::iHash((byte*)&iTopA,sizeof(w8));
         aRluCommon->m_iHash += iRes;
         dLU3(EO_HSH_ADD_HASHI,iTopA,iRes,m_iHash);
         break;//+endCase
         
-/*f*/ case EO_HSH_RESET: ArgNil(); // reset hash
+/*c*/ case EO_HSH_RESET: ArgNil(); // reset hash
         dLU0(EO_HSH_RESET);
         aRluCommon->m_iHash = 0;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // partitioning
-/*f*/ case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
+/*l*/ case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
         dLU0(EO_PTN_CALC);
         aRluCommon->m_i_Ptn =
           PtnLib::iPartition(aRluCommon->m_iHash,aRluCommon->m_nPtns);
         break;//+endCase
 
-/*M*/ case EO_PTN_PUSH: ArgNil(); // push m_i_Ptn
+/*c*/ case EO_PTN_PUSH: ArgNil(); // push m_i_Ptn
         dLU1(EO_PTN_PUSH,aRluCommon->m_i_Ptn);
         *(++aiDstk) = aRluCommon->m_i_Ptn;
         break;//+endCase
 
-/*f*/ case EO_PTN_RESET: ArgNil(); // reset running m_iHash
+/*?*/ case EO_PTN_RESET: ArgNil(); // reset running m_iHash
         dLU0(EO_PTN_RESET);
         aRluCommon->m_iHash = PtnLib::iResetRunning();
         break;//+endCase
 
-/*f*/ case EO_PTN_RUNNING: ArgNil(); // mix top into running m_iHash
+/*l*/ case EO_PTN_RUNNING: ArgNil(); // mix top into running m_iHash
         iTopA = *(aiDstk--);
         dLU0(EO_PTN_RUNNING);
         PtnLib::vRunning(&aRluCommon->m_iHash,iTopA);
@@ -1309,34 +1311,34 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // timer
-/*M*/ case EO_TMR_START: ArgNil(); // timer start
+/*r*/ case EO_TMR_START: ArgNil(); // timer start
         dLU0(EO_TMR_START);
         m_oTimer.vStart();
         break;//+endCase
         
-/*M*/ case EO_TMR_NSECS: ArgNil(); // push timer nanoseconds
+/*r*/ case EO_TMR_NSECS: ArgNil(); // push timer nanoseconds
         iRes = m_oTimer.iNanoseconds();
         dLU1(EO_TMR_NSECS,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-/*M*/ case EO_TMR_UPDATE: ArgNil(); // timer update
+/*r*/ case EO_TMR_UPDATE: ArgNil(); // timer update
         dLU0(EO_TMR_UPDATE);
         m_oTimer.vUpdate();
         break;//+endCase
         
-/*M*/ case EO_TMR_AGG_ADD: ArgNil(); // add timer to agg timer
+/*r*/ case EO_TMR_AGG_ADD: ArgNil(); // add timer to agg timer
         dLU0(EO_TMR_AGG_ADD);
         m_oAggTimer.vAdd(&m_oTimer);
         break;//+endCase
         
-/*M*/ case EO_TMR_AGG_NSECS: ArgNil(); // push agg nanoseconds
+/*r*/ case EO_TMR_AGG_NSECS: ArgNil(); // push agg nanoseconds
         iRes = m_oAggTimer.iNanoseconds();
         dLU1(EO_TMR_AGG_NSECS,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-/*M*/ case EO_TMR_AGG_RESET: ArgNil(); // reset agg timer
+/*r*/ case EO_TMR_AGG_RESET: ArgNil(); // reset agg timer
         dLU0(EO_TMR_AGG_RESET);
         m_oTimer.vReset();
         break;//+endCase
@@ -1348,7 +1350,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
-/*M*/ case EO_COL_DST_RESET: ArgGet(iArg); // reset column in streamPix of dst
+/*r*/ case EO_COL_DST_RESET: ArgGet(iArg); // reset column in streamPix of dst
       {
         m_oStreamPix.vNotProject(iArg);
       }

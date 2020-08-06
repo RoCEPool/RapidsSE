@@ -477,6 +477,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n"
   "\n  #include \"../Source/LIB_interface.h\""
   "\n  #include \"../Source/DEV_interface.h\""
+  "\n  #include \"../Source/RLU_interface.h\""
   "\n  #include \"../Source/RluCommon.h\""
   "\n"
   "\n  extern i8 iMul(i8 iTopA, i8 iTopB);"

@@ -7,7 +7,6 @@
 
 i8 iLib_RANDOM(void* pLU, i8 iArg);
 
-i8   iDev_ENT_COMPARE(void* pLU, void* pDevIXT);
 
 /*============================================================================*/
 /* end                                                                        */
