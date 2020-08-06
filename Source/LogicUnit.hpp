@@ -364,6 +364,7 @@ namespace Expressions
     void vGenerateQuery101(void);
     void vGenerateQuery102(void);
     void vGenerateQuery103(void);
+    void vGenerateQuery110(void);
     void vGenerateQuery111(void);
     void vGenerateQuery112(void);
 

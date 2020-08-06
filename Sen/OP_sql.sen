@@ -150,6 +150,7 @@
 
     100 of
       //queryNo "QUERY %v" .printf
+      //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 100=STARTMARKER" .
       100 LogicUnit[].genCode
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
     endof
@@ -157,6 +158,13 @@
     102 of
       //queryNo "QUERY %v" .printf
       102 LogicUnit[].genCode
+      idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
+    endof
+
+    110 of
+      //queryNo "QUERY %v" .printf
+      //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 1  0=STARTMARKER" .
+      110 LogicUnit[].genCode
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
     endof
 
@@ -406,10 +414,23 @@
 
     112 of
       //"++++++++++++++++++++++++++++ 112=PULSEMARKER ++++++++++++++++++++++++++++" .
-      Operand[].pipeIn
+      ZK_PULSEMARKER_handler
+      // pipe out a new a stream def
+      Operand[].newStreamDef
+      Operand[] to StreamDef[]
+      nullptr to Operand[]
+      StreamDef[].duplicate to StreamDefOut[]
+      true Pot[].useStreamDefOut
+      StreamDef[].pipeout
+
       LogicUnit[].transform
-      Operand[].delete
       Pot[].pipeoutAllCompleted
+      Pot[].pipeoutAllDangling
+
+      // pipeout an EOS MARKER
+      Operand[].newEosMarker
+      Operand[].pipeOut
+
     endof
 
     300 of sql_PulseMarker_300   endof
@@ -419,9 +440,12 @@
     400 of sql_PulseMarker_400   endof
     401 of sql_PulseMarker_401   endof
 
+    //"++++++++++++++++++++++++++++ OTHER=PULSEMARKER ++++++++++++++++++++++++++++" .
     ZK_PULSEMARKER_handler
 
   endcase
+
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -476,7 +500,16 @@ true
     endof
 
     102 of
-      //"---------------------------- 102=RSBBUFFER ----------------------------" .
+     // "---------------------------- 102=RSBBUFFER ----------------------------" .
+      Operand[].pipeIn
+      Operand[].asSrcRowSlab
+      LogicUnit[].transform
+      Operand[].delete
+      Pot[].pipeoutAllCompleted
+    endof
+
+    110 of
+      //"---------------------------- 110=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].transform
@@ -551,6 +584,7 @@ true
   queryNo case
 
     100 of
+      //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 100=EOSMARKER" .
       // AGGREGATE WITH GROUPBY
       //queryNo "QUERY %v" .printf
       101 LogicUnit[].genCode
@@ -562,6 +596,15 @@ true
       // AGGREGATE WITH GROUPBY (SUPER)
       //queryNo "QUERY %v" .printf
       103 LogicUnit[].genCode
+      LogicUnit[].transform
+      IndexTree[].delete
+    endof
+
+    110 of
+      //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 1  0=EOSMARKER" .
+      // AGGREGATE WITH GROUPBY
+      //queryNo "QUERY %v" .printf
+      101 LogicUnit[].genCode
       LogicUnit[].transform
       IndexTree[].delete
     endof
@@ -829,6 +872,7 @@ true
   queryNo case
 
     100 of
+      //"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 100=STREAMDEF" .
       sql_StreamDef_100
       true Pot[].useStreamDefOut
     endof
@@ -838,13 +882,13 @@ true
       true Pot[].useStreamDefOut
     endof
 
-    111 of
-      StreamDef[].duplicate to StreamDefOut[]
+    110 of
+      //"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 110=STREAMDEF" .
+      sql_StreamDef_100
       true Pot[].useStreamDefOut
-      StreamDef[].pipeout
     endof
 
-    112 of
+    111 of
       StreamDef[].duplicate to StreamDefOut[]
       true Pot[].useStreamDefOut
       StreamDef[].pipeout

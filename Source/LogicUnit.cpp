@@ -1763,12 +1763,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_TRV_LBOUND);
         //iDev_EO_IXT_TRV_LBOUND(pRLU,m_pDevTmpIxt);
         m_pDevSrcIxt->m_pEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
-        if (m_pDevTmpIxt->m_pEntBuffer) {
-          m_pDevTmpIxt->m_aEnt = m_pDevSrcIxt->m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
-          if (m_pDevSrcIxt->m_aEnt)
-            *(++aiDstk) = 1;
-          else
-            *(++aiDstk) = 0;
+        if (m_pDevSrcIxt->m_pEntBuffer) {
+          m_pDevSrcIxt->m_aEnt = m_pDevSrcIxt->m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
+        }
+        if (m_pDevSrcIxt->m_aEnt) {
+          *(++aiDstk) = 1;
         }
         else
           *(++aiDstk) = 0;
@@ -1797,8 +1796,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         EntBuffer* pUpperEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
         if (pUpperEntBuffer) {
           m_pDevSrcIxt->m_aUpperEnt = pUpperEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
-          if (m_pDevSrcIxt->m_aUpperEnt)
-            *(++aiDstk) = 1;
+          if (m_pDevSrcIxt->m_aUpperEnt) {
+            m_pDevSrcIxt->m_aUpperEnt = EntBuffer::pMoveToGreaterThanEntry(m_pDevSrcIxt->m_aUpperEnt, m_oEntWrk.aKey(), &pUpperEntBuffer);
+            if (m_pDevSrcIxt->m_aUpperEnt)
+              *(++aiDstk) = 1;
+            else
+              *(++aiDstk) = 0;
+          }
           else
             *(++aiDstk) = 0;
         }
