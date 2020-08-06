@@ -300,10 +300,17 @@ void LogicCompiler::vSymbols(void)
   // add external symbols
   
   tcc_add_symbol((TCCState*)m_aTccState,
-                 "aRlu_INIT", (const void *)aRlu_INIT);
+                 "iLib_DTE_NOW",    (const void *)iLib_DTE_NOW);
+  tcc_add_symbol((TCCState*)m_aTccState,
+                 "szLib_DTE_PRINT", (const void *)szLib_DTE_PRINT);
+  tcc_add_symbol((TCCState*)m_aTccState,
+                 "iLib_DTE_YEAR",   (const void *)iLib_DTE_YEAR);
 
   tcc_add_symbol((TCCState*)m_aTccState,
                  "iLib_RANDOM", (const void *)iLib_RANDOM);
+
+  tcc_add_symbol((TCCState*)m_aTccState,
+                 "aRlu_INIT", (const void *)aRlu_INIT);
 
   tcc_add_symbol((TCCState*)m_aTccState, "iMul", (const void *)iMul);
   tcc_add_symbol((TCCState*)m_aTccState, "xMul", (const void *)xMul);
@@ -535,6 +542,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    i8 iTopA;"
   "\n    i8 iTopB;"
   "\n    i8 iRes;"
+  "\n    Stz* szRes;"
   "\n"
   "";
   

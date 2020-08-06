@@ -6,6 +6,64 @@
 
 #include "LIB_interface.h"
 
+
+/*----------------------------------------------------------------------------*/
+/* push current date                                                          */
+/*----------------------------------------------------------------------------*/
+i8 iLib_DTE_NOW(void* pLU)
+{
+  _static_
+  
+  Now oNow;
+  Dtm wDte;
+
+  wDte.m_wDte.m_uDay = oNow.m_wTsp.m_uDay;
+  wDte.m_wDte.m_uMonth = oNow.m_wTsp.m_uMonth;
+  wDte.m_wDte.m_uYearDelta = oNow.m_wTsp.m_uYearDelta;
+  wDte.m_wDte.m_uSpare = 0;
+  
+  i8 iRes = wDte.iAsI8();
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* format given date                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* szLib_DTE_PRINT(void* pLU, i8 iTopA)
+{
+  _static_
+  
+  SP_Dte spDate;
+
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  
+  struct RluCommon* aRluCommon = pLogicUnit->aRlu_INIT(pLU);
+
+  StrLib::vCopy(aRluCommon->m_caStrWrk,(char*)spDate.sz(iTopA));
+  
+  return (Stz*)aRluCommon->m_caStrWrk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return year of date                                                        */
+/*----------------------------------------------------------------------------*/
+i8 iLib_DTE_YEAR(void* pLU, i8 iArg)
+{
+  _static_
+  
+  Dtm wDte;
+
+  wDte = iArg;
+ 
+  i8 iRes = wDte.m_wDte.m_uYearDelta + C_YEAR_BASE;
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* push random number 0..arg-1                                                */
 /*----------------------------------------------------------------------------*/

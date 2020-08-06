@@ -20,6 +20,8 @@ struct RluCommon
   i8   m_nPtns;
   i8   m_iHash;
   i8   m_i_Ptn;
+  
+  char m_caStrWrk[128];
 
   i8 m_iaDataStack[C_LOGIC_STACK];
 

@@ -726,6 +726,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   char* azTopA;
   char* azTopB;
   i8 iRes;
+  Stz* szRes;
   i8 iCmp;
   i8 i_Cell_ntv;
   eKC eCmp;
@@ -1234,41 +1235,52 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // date operators
 /*l*/ case EO_DTE_NOW: ArgNil(); // push current date
-      {
-        Now oNow;
-        Dtm wDte;
-
-        wDte.m_wDte.m_uDay = oNow.m_wTsp.m_uDay;
-        wDte.m_wDte.m_uMonth = oNow.m_wTsp.m_uMonth;
-        wDte.m_wDte.m_uYearDelta = oNow.m_wTsp.m_uYearDelta;
-        wDte.m_wDte.m_uSpare = 0;
-
-        iRes = wDte.iAsI8();
+//      {
+//        Now oNow;
+//        Dtm wDte;
+//
+//        wDte.m_wDte.m_uDay = oNow.m_wTsp.m_uDay;
+//        wDte.m_wDte.m_uMonth = oNow.m_wTsp.m_uMonth;
+//        wDte.m_wDte.m_uYearDelta = oNow.m_wTsp.m_uYearDelta;
+//        wDte.m_wDte.m_uSpare = 0;
+//
+//        iRes = wDte.iAsI8();
+//        dLU1(EO_DTE_NOW,iRes);
+//        *(++aiDstk) = iRes;
+//      }
+        iRes = iLib_DTE_NOW(pLU);
         dLU1(EO_DTE_NOW,iRes);
         *(++aiDstk) = iRes;
-      }
         break;//+endCase
         
 /*l*/ case EO_DTE_PRINT: ArgNil(); // pop top and print as date
-#ifdef WITH_TRACE_LOGICUNIT
-      {
-        SP_Dte spDate;
+//#ifdef WITH_TRACE_LOGICUNIT
+//      {
+//        SP_Dte spDate;
+//        iTopA = *(aiDstk--);
+//        dLU1(EO_DTE_PRINT,iTopA);
+//        printf("[Q%lld.%lld] %s\n",
+//               aRluCommon->m_iSql,aRluCommon->m_i_Slot,(char*)spDate.sz(iTopA));
+//      }
+//#endif
         iTopA = *(aiDstk--);
-        dLU1(EO_DTE_PRINT,iTopA);
+        szRes = szLib_DTE_PRINT(pLU,iTopA);
         printf("[Q%lld.%lld] %s\n",
-               aRluCommon->m_iSql,aRluCommon->m_i_Slot,(char*)spDate.sz(iTopA));
-      }
-#endif
+               aRluCommon->m_iSql,aRluCommon->m_i_Slot,(char*)szRes);
         break;//+endCase
 
 /*l*/ case EO_DTE_YEAR: ArgNil(); // pop top, push year of date
-      {
-        Dtm wDte;
-        wDte = *(aiDstk--);
-        iRes = wDte.m_wDte.m_uYearDelta + C_YEAR_BASE;
-        dLU2(EO_DTE_YEAR,wDte.iAsI8(),iRes);
+//      {
+//        Dtm wDte;
+//        wDte = *(aiDstk--);
+//        iRes = wDte.m_wDte.m_uYearDelta + C_YEAR_BASE;
+//        dLU2(EO_DTE_YEAR,wDte.iAsI8(),iRes);
+//        *(++aiDstk) = iRes;
+//      }
+        iTopA = *(aiDstk--);
+        iRes = iLib_DTE_YEAR(pLU,iTopA);
+        dLU1(EO_DTE_NOW,iRes);
         *(++aiDstk) = iRes;
-      }
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

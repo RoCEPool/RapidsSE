@@ -1817,6 +1817,11 @@ void LogicUnit::vGenerate100001(void)
   vAddCode(EO_INIT);
   vAddCodeArg(EO_RANDOM,100);
   vAddCode(EO_PRINT);
+  vAddCode(EO_DTE_NOW);
+  vAddCode(EO_DTE_YEAR);
+  vAddCode(EO_PRINT);
+  vAddCode(EO_DTE_NOW);
+  vAddCode(EO_DTE_PRINT);
   vAddCodeLabel(EO_CALL,"SBR_ADD:"_Stz);
   vAddCodeLabel(EO_CALL,"SBR_MUL:"_Stz);
   vAddCodeLabel(EO_CALL,"SBR_PRT:"_Stz);
@@ -1833,7 +1838,7 @@ void LogicUnit::vGenerate100001(void)
   vAddCode(EO_RETURN);
   
   vDefineLabel("SBR_MUL:"_Stz);
-  vAddCodeArg(EO_RANDOM,100);
+  vAddCodeArg(EO_INTEGER,4);
   vAddCode(EO_MULTIPLY);
   vAddCode(EO_RETURN);
 
