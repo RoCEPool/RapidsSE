@@ -22,13 +22,15 @@ Stz* gszaEoFragments[EO_ENUMS];
 /*----------------------------------------------------------------------------*/
 DynamicSymbol gxaDynamicSymbol[]
 {
-  { "iLib_DTE_NOW"_Stz,    (const void *) iLib_DTE_NOW    },
-  { "szLib_DTE_PRINT"_Stz, (const void *) szLib_DTE_PRINT },
-  { "iLib_DTE_YEAR"_Stz,   (const void *) iLib_DTE_YEAR   },
+  { "iLib_DTE_NOW"_Stz,         (const void *) iLib_DTE_NOW       },
+  { "szLib_DTE_PRINT"_Stz,      (const void *) szLib_DTE_PRINT    },
+  { "iLib_DTE_YEAR"_Stz,        (const void *) iLib_DTE_YEAR      },
 
-  { "iLib_RANDOM"_Stz,     (const void *) iLib_RANDOM     },
+  { "vLib_HSH_ADD_HASHI"_Stz,   (const void *) vLib_HSH_ADD_HASHI },
+  
+  { "iLib_RANDOM"_Stz,          (const void *) iLib_RANDOM        },
 
-  { "aRlu_INIT"_Stz,       (const void *) aRlu_INIT       },
+  { "aRlu_INIT"_Stz,            (const void *) aRlu_INIT          },
   
   { nullptr, nullptr },
 };
@@ -314,19 +316,6 @@ void LogicCompiler::vSymbols(void)
   
 #ifdef __TINYC
     
-//  tcc_add_symbol((TCCState*)m_aTccState,
-//                 "iLib_DTE_NOW",    (const void *)iLib_DTE_NOW);
-//  tcc_add_symbol((TCCState*)m_aTccState,
-//                 "szLib_DTE_PRINT", (const void *)szLib_DTE_PRINT);
-//  tcc_add_symbol((TCCState*)m_aTccState,
-//                 "iLib_DTE_YEAR",   (const void *)iLib_DTE_YEAR);
-//
-//  tcc_add_symbol((TCCState*)m_aTccState,
-//                 "iLib_RANDOM", (const void *)iLib_RANDOM);
-//
-//  tcc_add_symbol((TCCState*)m_aTccState,
-//                 "aRlu_INIT", (const void *)aRlu_INIT);
-
   for (i8 i_Symbol = 0; gxaDynamicSymbol[i_Symbol].m_afSymbol; i_Symbol++)
     tcc_add_symbol((TCCState*)m_aTccState,
                    (char*)gxaDynamicSymbol[i_Symbol].m_szSymbolNm,

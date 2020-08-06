@@ -1822,6 +1822,9 @@ void LogicUnit::vGenerate100001(void)
   vAddCode(EO_PRINT);
   vAddCode(EO_DTE_NOW);
   vAddCode(EO_DTE_PRINT);
+  vAddCode(EO_HSH_RESET);
+  vAddCodeArg(EO_INTEGER,42);
+  vAddCode(EO_HSH_ADD_HASHI);
   vAddCodeLabel(EO_CALL,"SBR_ADD:"_Stz);
   vAddCodeLabel(EO_CALL,"SBR_MUL:"_Stz);
   vAddCodeLabel(EO_CALL,"SBR_PRT:"_Stz);
