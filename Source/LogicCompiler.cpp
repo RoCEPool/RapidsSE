@@ -15,6 +15,7 @@ Stz* gszaEoFragments[EO_ENUMS];
 
 #include "DEV_interface.h"
 #include "LIB_interface.h"
+#include "RLU_interface.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

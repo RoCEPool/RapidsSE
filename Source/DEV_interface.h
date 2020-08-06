@@ -5,8 +5,6 @@
 i8 iDEV_MAP_DUMP      (void* pLU, void* aDev, void** aaCrs, void* aArg, i8 iArg);
 
 
-struct RluCommon* aRlu_INIT(void* pLU);
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT
 
