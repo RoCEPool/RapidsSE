@@ -474,6 +474,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  typedef long long i8;"
   "\n  typedef char Stz;"
   "\n"
+  "\n  #include \"../Source/LIB_interface.h\""
   "\n  #include \"../Source/DEV_interface.h\""
   "\n  #include \"../Source/RluCommon.h\""
   "\n"

@@ -4,7 +4,6 @@
 
 #include "Expressions.h"
 
-#include "DEV_enum.h"
 #include "LIB_interface.h"
 
 extern EoArg EoArgs[];
@@ -249,7 +248,7 @@ i8 LogicUnit::nLabels(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  return m_i_Code;
+  return m_nLabels;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -499,7 +498,8 @@ void LogicUnit::vPrintLabels(void)
   
 //#ifdef WITH_TRACE_LOGICUNIT
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    vTrace("  %s %lld: %4lld%s\n"_Stz,
+    vTrace("  [%02lld] %s %lld: %4lld%s\n"_Stz,
+           i_Label,
            m_xaJumpLabel[i_Label].m_sLabelNm.szStz(),
            (i8)m_xaJumpLabel[i_Label].m_bDefined,
            m_xaJumpLabel[i_Label].m_i_Chain,

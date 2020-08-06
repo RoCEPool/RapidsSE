@@ -1815,6 +1815,8 @@ void LogicUnit::vGenerate100001(void)
   
   vDefineLabel("RTN_TST:"_Stz);
   vAddCode(EO_INIT);
+  vAddCodeArg(EO_RANDOM,100);
+  vAddCode(EO_PRINT);
   vAddCodeLabel(EO_CALL,"SBR_ADD:"_Stz);
   vAddCodeLabel(EO_CALL,"SBR_MUL:"_Stz);
   vAddCodeLabel(EO_CALL,"SBR_PRT:"_Stz);
