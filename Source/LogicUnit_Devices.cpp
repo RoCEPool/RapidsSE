@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LogicUnit_Devices.hpp -- Devices for Logic Unit                            */
+/* LogicUnit_Devices.cpp -- Devices for Logic Unit                            */
 /*============================================================================*/
 
 #include "Expressions.h"
@@ -119,7 +119,9 @@ void vDev_IXT_DEL_ENT(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_DUMP(void* pLU, void* aDevIXT)
 {
-  
+  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+
+  pDevIXT->v_IXT_DUMP((LogicUnit*)pLU);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -292,42 +294,3 @@ Stz* szDev_RSB_COL_PUSHSTR(void* pLU, void* pDevRSB, i8 iArg)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-
-
-
-// TO BE REMOVED ...
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iDEV_MAP_DUMP(void* aRLU, void* aDev,
-                            void** aaCrs, void* aArg, i8 iArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  IndexTree* pIndexTree = _pIndexTree(aDev);
-  
-  pIndexTree->vDump(false);
-
-  return C_IGNORED;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-i8 iDEV_MAP_DUMP(void* aRLU, void* aDev,
-                 void** aaCrs, void* aArg, i8 iArg)
-{
-  LogicUnit* pLogicUnit = _pLogicUnit(aRLU);
-  
-  i8 iRes = pLogicUnit->iDEV_MAP_DUMP(aRLU,aDev,aaCrs,aArg,iArg);
-  
-  return iRes;
-}
-

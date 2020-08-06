@@ -5,6 +5,7 @@
 #include "Expressions.h"
 
 #include "LIB_interface.h"
+#include "DEV_interface.h"
 
 extern EoArg EoArgs[];
 
@@ -1649,9 +1650,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
 /*I*/ case EO_IXT_DUMP: ArgGet(iArg); // dump index tree
-        //vDev_IXT_DUMP(pRLU,m_pDevTmpIxt);
+        vDev_IXT_DUMP(pLU,m_pDevTmpIxt);
         //m_pDevTmpIxt->m_pIdxTree->vDump(false);
-        iDEV_MAP_DUMP(this,m_aaDev[iArg],nullptr,nullptr,0);
+        //iDEV_MAP_DUMP(this,m_aaDev[iArg],nullptr,nullptr,0);
         break;//+endCase
 
 /*I*/ case EO_IXT_INS_ENT: ArgNil(); // insert an entry into the indexTree
