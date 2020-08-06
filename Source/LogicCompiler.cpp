@@ -312,8 +312,6 @@ void LogicCompiler::vSymbols(void)
   tcc_add_symbol((TCCState*)m_aTccState,
                  "aRlu_INIT", (const void *)aRlu_INIT);
 
-  tcc_add_symbol((TCCState*)m_aTccState, "iMul", (const void *)iMul);
-  tcc_add_symbol((TCCState*)m_aTccState, "xMul", (const void *)xMul);
 #endif
 }
 
@@ -487,9 +485,6 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #include \"../Source/RLU_interface.h\""
   "\n  #include \"../Source/RluCommon.h\""
   "\n"
-  "\n  extern i8 iMul(i8 iTopA, i8 iTopB);"
-  "\n  extern struct Qty xMul(i8 iTopA, i8 iTopB);"
-  "\n"
   "\n  enum eDO { DO_A=0, DO_B, DO_C };"
   "\n"
   "\n  #define ArgNil() "
@@ -651,24 +646,6 @@ void vTinyError(void *aOpaque, const char *azMsg)
   NEVER_REACH;
 }
 
-/*----------------------------------------------------------------------------*/
-/* extern function test : iMul()                                              */
-/*----------------------------------------------------------------------------*/
-i8 iMul(i8 iTopA, i8 iTopB)
-{
-  return iTopA * iTopB;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extern function test : iMul()                                              */
-/*----------------------------------------------------------------------------*/
-Qty xMul(i8 iTopA, i8 iTopB)
-{
-  Qty xRes;
-  
-  xRes.m_iValue = iTopA * iTopB;
-  return xRes;
-}
 
 
 //  void* pLabel = && L_Label;

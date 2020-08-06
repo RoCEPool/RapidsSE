@@ -71,9 +71,6 @@ namespace Expressions
 }
 
   void vTinyError(void *aOpaque, const char *azMsg);
-  i8 iMul(i8 iTopA, i8 iTopB);
-
-  Qty xMul(i8 iTopA, i8 iTopB);
 
 /*============================================================================*/
 /* end                                                                        */
