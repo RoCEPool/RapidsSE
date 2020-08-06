@@ -7,6 +7,12 @@ namespace Expressions
 {
   static const i8 C_LOGIC_SOURCE  = C_SIZE_LARGE_OBJECT - C_1KB;
 
+  struct DynamicSymbol
+  {
+    Stz* m_szSymbolNm;
+    const void *m_afSymbol;
+  };
+
   //----------------------------------------------------------------------------
 
   class LogicCompiler : public Object

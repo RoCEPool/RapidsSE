@@ -18,6 +18,22 @@ Stz* gszaEoFragments[EO_ENUMS];
 #include "RLU_interface.h"
 
 /*----------------------------------------------------------------------------*/
+/* symbols for dynamically generated code                                     */
+/*----------------------------------------------------------------------------*/
+DynamicSymbol gxaDynamicSymbol[]
+{
+  { "iLib_DTE_NOW"_Stz,    (const void *) iLib_DTE_NOW    },
+  { "szLib_DTE_PRINT"_Stz, (const void *) szLib_DTE_PRINT },
+  { "iLib_DTE_YEAR"_Stz,   (const void *) iLib_DTE_YEAR   },
+
+  { "iLib_RANDOM"_Stz,     (const void *) iLib_RANDOM     },
+
+  { "aRlu_INIT"_Stz,       (const void *) aRlu_INIT       },
+  
+  { nullptr, nullptr },
+};
+
+/*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -297,21 +313,25 @@ void LogicCompiler::vSymbols(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
 #ifdef __TINYC
-  // add external symbols
+    
+//  tcc_add_symbol((TCCState*)m_aTccState,
+//                 "iLib_DTE_NOW",    (const void *)iLib_DTE_NOW);
+//  tcc_add_symbol((TCCState*)m_aTccState,
+//                 "szLib_DTE_PRINT", (const void *)szLib_DTE_PRINT);
+//  tcc_add_symbol((TCCState*)m_aTccState,
+//                 "iLib_DTE_YEAR",   (const void *)iLib_DTE_YEAR);
+//
+//  tcc_add_symbol((TCCState*)m_aTccState,
+//                 "iLib_RANDOM", (const void *)iLib_RANDOM);
+//
+//  tcc_add_symbol((TCCState*)m_aTccState,
+//                 "aRlu_INIT", (const void *)aRlu_INIT);
+
+  for (i8 i_Symbol = 0; gxaDynamicSymbol[i_Symbol].m_afSymbol; i_Symbol++)
+    tcc_add_symbol((TCCState*)m_aTccState,
+                   (char*)gxaDynamicSymbol[i_Symbol].m_szSymbolNm,
+                   gxaDynamicSymbol[i_Symbol].m_afSymbol);
   
-  tcc_add_symbol((TCCState*)m_aTccState,
-                 "iLib_DTE_NOW",    (const void *)iLib_DTE_NOW);
-  tcc_add_symbol((TCCState*)m_aTccState,
-                 "szLib_DTE_PRINT", (const void *)szLib_DTE_PRINT);
-  tcc_add_symbol((TCCState*)m_aTccState,
-                 "iLib_DTE_YEAR",   (const void *)iLib_DTE_YEAR);
-
-  tcc_add_symbol((TCCState*)m_aTccState,
-                 "iLib_RANDOM", (const void *)iLib_RANDOM);
-
-  tcc_add_symbol((TCCState*)m_aTccState,
-                 "aRlu_INIT", (const void *)aRlu_INIT);
-
 #endif
 }
 
