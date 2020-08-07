@@ -149,7 +149,13 @@ void vDev_IXT_DUMP(void* pLU, void* aDevIXT)
 void vDev_IXT_INS_ENT(void* pLU, void* aDevIXT)
 {
   _static_
-  
+
+  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+
+  pDevIXT->m_aEnt =
+    pDevIXT->m_pIdxTree->aInsertEntry(pLogicUnit->m_oEntWrk.aEnt());
 
 }
 
@@ -160,7 +166,11 @@ i8 iDev_IXT_TMP_ENTRIES(void* pLU, void* aDevIXT)
 {
   _static_
   
-  return 0;
+  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+
+  i8 iRes = pDevIXT->m_pIdxTree->iCountH0Entries();
+
+  return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -169,8 +179,23 @@ i8 iDev_IXT_TMP_ENTRIES(void* pLU, void* aDevIXT)
 i8 iDev_IXT_TRV_BEGIN(void* pLU, void* aDevIXT)
 {
   _static_
+
+  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+
+  i8 iRes;
   
-  return 0;
+  pDevIXT->m_pEntBuffer = pDevIXT->m_pIdxTree->pFirstH0Buffer();
+  if (pDevIXT->m_pEntBuffer) {
+    pDevIXT->m_aEnt = pDevIXT->m_pEntBuffer->aLeadEntry();
+    if (pDevIXT->m_aEnt)
+      iRes = 1;
+    else
+      iRes = 0;
+  }
+  else
+    iRes = 0;
+
+  return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,7 +205,18 @@ i8 iDev_IXT_TRV_NEXT(void* pLU, void* aDevIXT)
 {
   _static_
   
-  return 0;
+  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+
+  i8 iRes;
+  
+  pDevIXT->m_aEnt =
+     EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
+  if (pDevIXT->m_aEnt)
+    iRes = 1;
+  else
+    iRes = 0;
+
+  return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,7 +226,13 @@ i8 iDev_PAY_FETCH_COLI(void* pLU, void* aDevIXT, i8 iArg)
 {
   _static_
   
-  return 0;
+  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+
+  i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
+  
+  i8 iRes = *aPayload;
+  
+  return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,7 +242,15 @@ Stz* szDev_PAY_FETCH_COLS(void* pLU, void* aDevIXT, i8 iArg)
 {
   _static_
   
-  return nullptr;
+  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+
+  i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
+  
+  Stz* szSrc = (Stz*)aPayload;
+  i8 nSize = StrLib::nSize((char*)szSrc);
+  ASSERT(nSize < 8);
+
+  return szSrc;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,17 +260,24 @@ void vDev_PAY_STORE_COLI(void* pLU, void* aDevIXT, i8 iArg, i8 iTop)
 {
   _static_
   
+  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
 
+  i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
+  *aPayload = iTop;
 }
 
 /*----------------------------------------------------------------------------*/
 /* store a column into entry payload                                          */
 /*----------------------------------------------------------------------------*/
-void vDev_PAY_STORE_COLS(void* pLU, void* aDevIXT, i8 iArg, Stz* azTop)
+void vDev_PAY_STORE_COLS(void* pLU, void* aDevIXT, i8 iArg, Stz* szTop)
 {
   _static_
   
+  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
 
+  i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
+
+  StrLib::vCopy((char*)aPayload,(char*)szTop);
 }
 
 
