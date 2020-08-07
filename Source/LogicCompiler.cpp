@@ -542,7 +542,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #include \"../Source/RLU_interface.h\""
   "\n  #include \"../Source/RluCommon.h\""
   "\n"
-  "\n  enum eDO { DO_A=0, DO_B, DO_C };"
+  "\n  enum eKC { KC_BEFORE=1, KC_SAME, KC_AFTER };"
   "\n"
   "\n  #define ArgNil() "
   "\n  #define ArgGet(x) "
