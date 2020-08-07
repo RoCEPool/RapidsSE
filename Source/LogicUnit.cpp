@@ -1305,34 +1305,40 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // timer
 /*r*/ case EO_TMR_START: ArgNil(); // timer start
         dLU0(EO_TMR_START);
-        m_oTimer.vStart();
+        //m_oTimer.vStart();
+        vRlu_TMR_START(pLU);
         break;//+endCase
         
 /*r*/ case EO_TMR_NSECS: ArgNil(); // push timer nanoseconds
-        iRes = m_oTimer.iNanoseconds();
+        //iRes = m_oTimer.iNanoseconds();
+        iRes = iRlu_TMR_NSECS(pLU);
         dLU1(EO_TMR_NSECS,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
 /*r*/ case EO_TMR_UPDATE: ArgNil(); // timer update
         dLU0(EO_TMR_UPDATE);
-        m_oTimer.vUpdate();
+        //m_oTimer.vUpdate();
+        vRlu_TMR_UPDATE(pLU);
         break;//+endCase
         
 /*r*/ case EO_TMR_AGG_ADD: ArgNil(); // add timer to agg timer
         dLU0(EO_TMR_AGG_ADD);
-        m_oAggTimer.vAdd(&m_oTimer);
+        //m_oAggTimer.vAdd(&m_oTimer);
+        vRlu_TMR_AGG_ADD(pLU);
         break;//+endCase
         
 /*r*/ case EO_TMR_AGG_NSECS: ArgNil(); // push agg nanoseconds
-        iRes = m_oAggTimer.iNanoseconds();
+        //iRes = m_oAggTimer.iNanoseconds();
+        iRes = iRlu_TMR_AGG_NSECS(pLU);
         dLU1(EO_TMR_AGG_NSECS,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
 /*r*/ case EO_TMR_AGG_RESET: ArgNil(); // reset agg timer
         dLU0(EO_TMR_AGG_RESET);
-        m_oTimer.vReset();
+        //m_oAggTimer.vReset();
+        vRlu_TMR_AGG_RESET(pLU);
         break;//+endCase
           
 
