@@ -233,6 +233,9 @@ void vDev_ENTWRK_APPENDELM(void* pLU, void* aDevRSB)
 {
   _static_
   
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
 }
 
@@ -243,6 +246,9 @@ void vDev_ENTWRK_APPENDELMI(void* pLU, void* aDevRSB, i8 iTop)
 {
   _static_
   
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
 }
 
@@ -253,6 +259,9 @@ void vDev_ENTWRK_APPENDELMS(void* pLU, void* aDevRSB, Stz* azTop)
 {
   _static_
   
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
 }
 
@@ -263,6 +272,9 @@ void vDev_ENTWRK_CREATEPAY(void* pLU, void* aDevRSB, i8 iArg)
 {
   _static_
   
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
 }
 
@@ -273,6 +285,9 @@ void vDev_ENTWRK_POPOFS(void* pLU, void* aDevRSB, i8 iTop)
 {
   _static_
   
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
 }
 
@@ -283,6 +298,9 @@ void vDev_ENTWRK_PRINT(void* pLU, void* aDevRSB)
 {
   _static_
   
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
 }
 
@@ -293,10 +311,15 @@ void vDev_ENTWRK_RESET(void* pLU, void* aDevRSB)
 {
   _static_
   
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
 }
 
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* print src rsb                                                              */
@@ -305,7 +328,7 @@ void vDev_RSB_PRINT(void* pLU, void* pDevRSB)
 {
   _static_
   
-
+  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -315,7 +338,7 @@ void vDev_RSB_BEGIN(void* pLU, void* pDevRSB)
 {
   _static_
   
-
+  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -324,6 +347,8 @@ void vDev_RSB_BEGIN(void* pLU, void* pDevRSB)
 i8 iDev_RSB_NEXT(void* pLU, void* pDevRSB)
 {
   _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
   
   return 0;
 }
@@ -335,6 +360,8 @@ i8 iDev_RSB_PUSHOFS(void* pLU, void* pDevRSB)
 {
   _static_
   
+  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  
   return 0;
 }
 
@@ -345,7 +372,8 @@ void vDev_RSB_SETBYOFS(void* pLU, void* pDevRSB, i8 iTop)
 {
   _static_
   
-
+  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -354,6 +382,8 @@ void vDev_RSB_SETBYOFS(void* pLU, void* pDevRSB, i8 iTop)
 i8 iDev_RSB_PUSHCOLI(void* pLU, void* pDevRSB, i8 iArg)
 {
   _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
   
   return 0;
 }
@@ -365,6 +395,8 @@ Stz* szDev_RSB_PUSHCOLS(void* pLU, void* pDevRSB, i8 iArg)
 {
   _static_
   
+  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  
   return nullptr;
 }
 
@@ -375,6 +407,8 @@ void vDev_RSB_COL_PUSH(void* pLU, void* pDevRSB, i8 iArg)
 {
   _static_
   
+  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  
 
 }
 
@@ -384,6 +418,8 @@ void vDev_RSB_COL_PUSH(void* pLU, void* pDevRSB, i8 iArg)
 Stz* szDev_RSB_COL_PUSHSTR(void* pLU, void* pDevRSB, i8 iArg)
 {
   _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
   
   return nullptr;
 }
