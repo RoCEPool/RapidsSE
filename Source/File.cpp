@@ -131,7 +131,7 @@ bool File::bAccess(Stz* szFilePath, i8 iPermission)
 /*---------------------------------------------------------------------------*/
 /* test if given file exists in file system                                  */
 /*---------------------------------------------------------------------------*/
-bool File::bExists(Stz* szFilePath)
+bool File::bExists(Stz* szFilePath, bool bWarning)
 {
   struct stat xStat;
   
@@ -143,7 +143,8 @@ bool File::bExists(Stz* szFilePath)
   if (iResult && ENOENT == errno)
     return false;
   
-  vWarn("File::bExists: %s stat() error; errno=%d"_Stz, szFilePath->azChar(), errno);
+  if (bWarning)
+    vWarn("File::bExists: %s stat() error; errno=%d"_Stz, szFilePath->azChar(), errno);
   
   return false;
 }

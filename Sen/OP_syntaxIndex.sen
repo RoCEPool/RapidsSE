@@ -65,7 +65,7 @@
 
   0 0 locals| sTableNm sSmt |
 
-  job[] job.tagSet@ tagSet.asStr .
+  //job[] job.tagSet@ tagSet.asStr .
 
   // is it a unique index ?
   "<unique>" job[] job.tagSet@ tagSet.hasName if

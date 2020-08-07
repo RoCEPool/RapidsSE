@@ -56,7 +56,7 @@ namespace Resources
    ~File(void) noexcept(false);
     
     static bool bAccess(Stz* szFilePath, i8 iPermission);
-    static bool bExists(Stz* szFilePath);
+    static bool bExists(Stz* szFilePath, bool bWarning=true);
     static bool bModTime(Stz* szFilePath, time_t& tTime);
     static void vMonitorPortrait(s48K& sPortrait);
     static bool bRemove(Stz* szFilePath);

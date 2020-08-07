@@ -27,7 +27,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   m_pStreamDef = pStreamDef;
   m_pFmt       = pFmt;
   m_bOrdCsv    = pFmt->bIsOrdCsv();
-  vTrace("ordCsv : %lld\n"_Stz,(i8)m_bOrdCsv);
+  //vTrace("ordCsv : %lld\n"_Stz,(i8)m_bOrdCsv);
   
   m_azSrc   = nullptr;
   m_acChr   = nullptr;
@@ -56,16 +56,16 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
 //  m_pRowSlab->vInitPix(m_pStreamDef);
   m_pRowSlab = nullptr;
   
-  m_pFmt->vShow();
+  //m_pFmt->vShow();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
   vNewRsbBuffer();
 
   
-  s48K sDef;
-  m_pStreamDef->vAsString(sDef);
-  vTrace("%s\n"_Stz,sDef.szStz());
+  //s48K sDef;
+  //m_pStreamDef->vAsString(sDef);
+  //vTrace("%s\n"_Stz,sDef.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ ToRsb::~ToRsb(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
-  vTrace("Converted %lld chars\n"_Stz,m_nChars);
+  //vTrace("Converted %lld chars\n"_Stz,m_nChars);
   
   delete m_pRsbBuffer;
 }

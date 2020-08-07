@@ -311,7 +311,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
       
       sSTMT sEtcSubStr;
       pEtcTknVec->vToTknString(sEtcSubStr);
-      vTrace("sEtcSubStr=%s\n"_Stz,sEtcSubStr.szStz());
+      //vTrace("sEtcSubStr=%s\n"_Stz,sEtcSubStr.szStz());
       
       pInpArgVec->vTrimTokens(i_Etc);
       dPV("pInpArgVec(t)"_Stz,pInpArgVec);

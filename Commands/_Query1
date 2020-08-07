@@ -35,13 +35,18 @@ create index idx on lineitem (l_shipdate);
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 10 ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-///time load lineitem "/DATA/TPCH/lineitem10.csv";
-///time Query1 lineitem;
+/time load lineitem "/DATA/TPCH/lineitem10.csv";
+
+//dumpidx lineitem idx;
+
+/time Query1 lineitem;
+/time Query1_PerfExp1 lineitem;
+/time Query1_PerfExp2 lineitem idx;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 10K ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-/time load lineitem "/DATA/TPCH/lineitem10k.csv";
+///time load lineitem "/DATA/TPCH/lineitem100k.csv";
 ///time Query1 lineitem;
 ///time Query1_PerfExp1 lineitem;
 ///time Query1_PerfExp2 lineitem idx;

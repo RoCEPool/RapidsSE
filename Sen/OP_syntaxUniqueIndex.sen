@@ -65,7 +65,7 @@
 
   0 0 locals| sTableNm sSmt |
 
-  job[] job.tagSet@ tagSet.asStr .
+  //job[] job.tagSet@ tagSet.asStr .
 
   <etc> <indexNm> "create unique index %v %v ;" str.format to sSmt
   

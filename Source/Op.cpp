@@ -599,12 +599,13 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
       pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
     else
       pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
-    
-    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
-                AM::pOperandName(pOperand),
-                m_bAppendRight ? "right"_Stz : "left"_Stz,
-                aCN[pOp->eClass()]);
+   
+    // Can Operand be deleted already ????
+//    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+//                "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+//                AM::pOperandName(pOperand),
+//                m_bAppendRight ? "right"_Stz : "left"_Stz,
+//                aCN[pOp->eClass()]);
   }
   
 }
@@ -628,14 +629,15 @@ void Op::vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
            pOperand);
   
   vAppendLeft(pOperand,pTriggeringTask,bSet);
-    
-  AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-              "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
-              pOperand->eClass() == CN_MARKER ?
-              aOM[(_pMarker(pOperand))->eOpMarker()] :
-              aCN[pOperand->eClass()],
-              m_bAppendRight ? "right"_Stz : "left"_Stz,
-              aCN[eClass()]);
+  
+      // Can Operand be deleted already ????
+//  AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+//              "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+//              pOperand->eClass() == CN_MARKER ?
+//              aOM[(_pMarker(pOperand))->eOpMarker()] :
+//              aCN[pOperand->eClass()],
+//              m_bAppendRight ? "right"_Stz : "left"_Stz,
+//              aCN[eClass()]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -681,13 +683,14 @@ Operand* Op::pPopQueue(void)
   
   pOperand = pQueueLeft()->pPopQueue();
   
-  if (pOperand)
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,
-                "PopQueue operand %s from left queue"_Stz, //!format-LogOpr
-                AM::pOperandName(pOperand));
-  else
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,
-                "PopQueue no operand on left queue"_Stz); //!format-LogOpr
+      // Can Operand be deleted already ????
+//  if (pOperand)
+//    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+//                "PopQueue operand %s from left queue"_Stz, //!format-LogOpr
+//                AM::pOperandName(pOperand));
+//  else
+//    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+//                "PopQueue no operand on left queue"_Stz); //!format-LogOpr
 
   if (! pOperand)
     return nullptr;
@@ -723,13 +726,14 @@ Operand* Op::pPopQueueOoO(void)
   
   pOperand = pQueueLeft()->pPopQueueOoO();
   
-  if (pOperand)
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,
-                "PopQueue operand %s from left queue"_Stz, //!format-LogOpr
-                AM::pOperandName(pOperand));
-  else
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,
-                "PopQueue no operand on left queue"_Stz); //!format-LogOpr
+      // Can Operand be deleted already ????
+//  if (pOperand)
+//    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+//                "PopQueue operand %s from left queue"_Stz, //!format-LogOpr
+//                AM::pOperandName(pOperand));
+//  else
+//    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+//                "PopQueue no operand on left queue"_Stz); //!format-LogOpr
   
   vDropTaskLock();
   
@@ -766,17 +770,18 @@ Operand* Op::pPopQueueLeft(void)
   if (pOperand)
     vDropTaskLock();
   
-  if (pOperand) {
-    if (AM::bVerbose())
-      AM::vLogOpr(SL_INF,this,OA_OP_POP,
-                  "PopQueueLeft operand %s from left queue"_Stz, //!format-LogOpr
-                  AM::pOperandName(pOperand));
-  }
-  else {
-    if (AM::bVerbose())
-      AM::vLogOpr(SL_INF,this,OA_OP_POP,
-                  "PopQueueLeft no operand on left queue"_Stz); //!format-LogOpr
-  }
+      // Can Operand be deleted already ????
+//  if (pOperand) {
+//    if (AM::bVerbose())
+//      AM::vLogOpr(SL_INF,this,OA_OP_POP,
+//                  "PopQueueLeft operand %s from left queue"_Stz, //!format-LogOpr
+//                  AM::pOperandName(pOperand));
+//  }
+//  else {
+//    if (AM::bVerbose())
+//      AM::vLogOpr(SL_INF,this,OA_OP_POP,
+//                  "PopQueueLeft no operand on left queue"_Stz); //!format-LogOpr
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -806,14 +811,15 @@ Operand* Op::pPopQueueRight(void)
   
   if (pOperand)
     vDropTaskLock();
-  
-  if (pOperand)
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,
-                "PopQueueRight operand %s from right queue"_Stz, //!format-LogOpr
-                AM::pOperandName(pOperand));
-  else
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,
-                "PopQueueRight no operand on right queue"_Stz); //!format-LogOpr
+ 
+      // Can Operand be deleted already ????
+//  if (pOperand)
+//    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+//                "PopQueueRight operand %s from right queue"_Stz, //!format-LogOpr
+//                AM::pOperandName(pOperand));
+//  else
+//    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+//                "PopQueueRight no operand on right queue"_Stz); //!format-LogOpr
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1269,11 +1275,12 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
           else
             pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
 
-          AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                      "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
-                      AM::pOperandName(pOperand),
-                      m_bAppendRight ? "right"_Stz : "left"_Stz,
-                      aCN[pOp->eClass()]);
+              // Can Operand be deleted already ????
+//          AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+//                      "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+//                      AM::pOperandName(pOperand),
+//                      m_bAppendRight ? "right"_Stz : "left"_Stz,
+//                      aCN[pOp->eClass()]);
 
         }
         else {
@@ -1323,12 +1330,13 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
               pOp->vAppendRight(pNewOperand,pTriggeringTask,bSet);
             else
               pOp->vAppendLeft(pNewOperand,pTriggeringTask,bSet);
-            
-            AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                        "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
-                        AM::pOperandName(pNewOperand),
-                        m_bAppendRight ? "right"_Stz : "left"_Stz,
-                        aCN[pOp->eClass()]);
+   
+                // Can Operand be deleted already ????
+//            AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+//                        "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+//                        AM::pOperandName(pNewOperand),
+//                        m_bAppendRight ? "right"_Stz : "left"_Stz,
+//                        aCN[pOp->eClass()]);
             
           }
      
@@ -1395,11 +1403,12 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
         else
           pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
         
-        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                    "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
-                    AM::pOperandName(pOperand),
-                    m_bAppendRight ? "right"_Stz : "left"_Stz,
-                    aCN[pOp->eClass()]);
+            // Can Operand be deleted already ????
+//        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+//                    "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+//                    AM::pOperandName(pOperand),
+//                    m_bAppendRight ? "right"_Stz : "left"_Stz,
+//                    aCN[pOp->eClass()]);
         
       }
       else {
@@ -1442,12 +1451,13 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
             pOp->vAppendRight(pNewOperand,pTriggeringTask,bSet);
           else
             pOp->vAppendLeft(pNewOperand,pTriggeringTask,bSet);
-          
-          AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                      "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
-                      AM::pOperandName(pNewOperand),
-                      m_bAppendRight ? "right"_Stz : "left"_Stz,
-                      aCN[pOp->eClass()]);
+         
+              // Can Operand be deleted already ????
+//          AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+//                      "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+//                      AM::pOperandName(pNewOperand),
+//                      m_bAppendRight ? "right"_Stz : "left"_Stz,
+//                      aCN[pOp->eClass()]);
           
         }
         else {

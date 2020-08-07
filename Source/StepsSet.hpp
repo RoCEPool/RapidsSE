@@ -666,6 +666,7 @@ public:
   void vJobRefPointer(void);
   void vJobRefNone(void);
   void vJobRefReturn(void);
+  void vJobRefReferences(void);
 
   // job generic
   void vJob__BegunNew(void);
