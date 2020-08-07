@@ -11,6 +11,7 @@ i8 iDEV_MAP_DUMP      (void* aLU, void* a, void** aaCrs, void* aArg, i8 iArg);
 i8   iDev_ENT_COMPARE(void* aLU, void* aIXT);
 i8   iDev_ENT_NEXT(void* aLU, void* aIXT);
 void vDev_ENT_POSPRIOR(void* aLU, void* aIXT);
+void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT);
 void* aDev_ENT_PUSH(void* aLU, void* aIXT);
 i8   iDev_ENT_PUSHELMI0(void* aLU, void* aIXT);
 Stz* szDev_ENT_PUSHELMS0(void* aLU, void* aIXT);

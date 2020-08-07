@@ -1557,13 +1557,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
   /*I*/ case EO_ENT_PRINTKEYS: ArgNil(); // test if m_pEnt.key == m_oEntWrk.key
-        {
-          SP_Ent spEnt;
-          vTrace("\n\nEntWrk : %s\n"_Stz,
-                 spEnt.sz(m_oEntWrk.aEnt(),m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
-          vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pDevTmpIxt->m_aEnt,m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
-          break;//+endCase
-        }
+        vDev_ENT_PRINTKEYS(pLU,m_pDevTmpIxt);
+        break;
               
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entWrk

@@ -62,6 +62,27 @@ void vDev_ENT_POSPRIOR(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print both m_pEnt.key and m_oEntWrk.key                                    */
+/*----------------------------------------------------------------------------*/
+void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT)
+{
+  _static_
+  
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  SP_Ent spEnt;
+  vTrace("\n\nEntWrk : %s\n"_Stz,
+         spEnt.sz(pLogicUnit->m_oEntWrk.aEnt(),
+                  pDevIxt->m_pIdxTree->pIndexDef()));
+  
+  vTrace("\n\nEnt : %s\n"_Stz,
+         spEnt.sz(pDevIxt->m_aEnt,
+                  pDevIxt->m_pIdxTree->pIndexDef()));
+}
+
+/*----------------------------------------------------------------------------*/
 /* push entry                                                                 */
 /*----------------------------------------------------------------------------*/
 void* aDev_ENT_PUSH(void* aLU, void* aIXT)

@@ -1387,6 +1387,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_ENT_NEXT);
   vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
   
+  vAddCode(EO_ENT_PRINTKEYS);
   vAddCode(EO_ENT_EQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
   
