@@ -467,7 +467,7 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
     eMetaCode = *aeMetaCode++;
     
     // column to be projected ?
-    if ( ! pStreamPix->bIsProjected(i_Col) ) {
+    if ( ! pStreamPix->m_bProject[i_Col] ) {
       
       //pRowSlab->vDeposit(C_UNKNOWN);
       
