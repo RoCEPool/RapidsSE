@@ -14680,7 +14680,7 @@ void Task::vAddMunged(Forth* pForth)
     "    102 of\n"
     "      // AGGREGATE WITH GROUPBY (SUPER)\n"
     "      //queryNo \"QUERY %v\" .printf\n"
-    "      103 LogicUnit[].genCode\n"
+    "      104 LogicUnit[].genCode\n"
     "      LogicUnit[].transform\n"
     "      IndexTree[].delete\n"
     "    endof\n"

@@ -552,7 +552,7 @@
     102 of
       // AGGREGATE WITH GROUPBY (SUPER)
       //queryNo "QUERY %v" .printf
-      103 LogicUnit[].genCode
+      104 LogicUnit[].genCode
       LogicUnit[].transform
       IndexTree[].delete
     endof
