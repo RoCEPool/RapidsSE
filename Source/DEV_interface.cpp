@@ -288,7 +288,7 @@ void vDev_PAY_STORE_COLS(void* pLU, void* aDevIXT, i8 iArg, Stz* szTop)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELM(void* pLU, void* aDevRSB)
+void vDev_ENTWRK_APPENDELM(void* pLU, void* aDevRSB, i8 iArg)
 {
   _static_
   
@@ -296,6 +296,9 @@ void vDev_ENTWRK_APPENDELM(void* pLU, void* aDevRSB)
   
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
+  pLogicUnit->m_oEntWrk.vAppendElement(pDevRsb->m_aRsb,
+                                       &pDevRsb->m_pRowSlab->m_oStreamPix,
+                                       iArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,12 +312,13 @@ void vDev_ENTWRK_APPENDELMI(void* pLU, void* aDevRSB, i8 iTop)
 
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
+  pLogicUnit->m_oEntWrk.vAppendElementInt(pDevRsb->m_aRsb,iTop);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELMS(void* pLU, void* aDevRSB, Stz* azTop)
+void vDev_ENTWRK_APPENDELMS(void* pLU, void* aDevRSB, Stz* szTop)
 {
   _static_
   
@@ -322,6 +326,7 @@ void vDev_ENTWRK_APPENDELMS(void* pLU, void* aDevRSB, Stz* azTop)
 
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
+  pLogicUnit->m_oEntWrk.vAppendElementStz(pDevRsb->m_aRsb,szTop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -335,6 +340,8 @@ void vDev_ENTWRK_CREATEPAY(void* pLU, void* aDevRSB, i8 iArg)
 
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
+  pLogicUnit->m_oEntWrk.vPayload(true);
+  pLogicUnit->m_oEntWrk.vPayloadBytes(iArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,6 +355,7 @@ void vDev_ENTWRK_POPOFS(void* pLU, void* aDevRSB, i8 iTop)
 
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
+  pLogicUnit->m_oEntWrk.vBuffer(iTop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -361,6 +369,12 @@ void vDev_ENTWRK_PRINT(void* pLU, void* aDevRSB)
 
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
+  Ent* aEnt = pLogicUnit->m_oEntWrk.aEnt();
+  IndexDef* pIndexDef = pLogicUnit->m_xpIndexTree->pIndexDef();
+  
+  SP_Ent spEnt;
+
+  vTrace("EntWrk : %s\n"_Stz,spEnt.sz(aEnt,pIndexDef));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -374,6 +388,7 @@ void vDev_ENTWRK_RESET(void* pLU, void* aDevRSB)
 
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
 
+  pLogicUnit->m_oEntWrk.vReset();
 }
 
 

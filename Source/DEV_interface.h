@@ -31,7 +31,7 @@ void vDev_PAY_STORE_COLS(void* pLU, void* pDevIXT, i8 iArg, Stz* szTop);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev RSB
 
-void vDev_ENTWRK_APPENDELM(void* pLU, void* pDevRSB);
+void vDev_ENTWRK_APPENDELM(void* pLU, void* pDevRSB, i8 iArg);
 void vDev_ENTWRK_APPENDELMI(void* pLU, void* pDevRSB, i8 iTop);
 void vDev_ENTWRK_APPENDELMS(void* pLU, void* pDevRSB, Stz* szTop);
 void vDev_ENTWRK_CREATEPAY(void* pLU, void* pDevRSB, i8 iArg);

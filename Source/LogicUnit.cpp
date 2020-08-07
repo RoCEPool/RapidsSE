@@ -741,7 +741,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   Key* aAltKey;
   Key* aWrkKey;
 
-  SP_Ent spEnt;
+  SP_Ent spEnt;  // this will  tidy up
   Ent* aEnt;
 
 
@@ -1632,7 +1632,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //vDev_ENTWRK_PRINT(pRLU,m_pDevTmpIxt);
 #ifdef WITH_TRACE_LOGICUNIT
         aEnt = m_oEntWrk.aEnt();
-        pIndexDef = m_xpIndexTree->pIndexDef();
+        pIndexDef = m_xpIndexTree->pIndexDef(); // WRONG??
         vTrace("EntWrk : %s\n"_Stz,spEnt.sz(aEnt,pIndexDef));
 #endif
         break;//+endCase
