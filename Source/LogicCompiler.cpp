@@ -30,7 +30,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vLib_PTN_RUNNING"_Stz,     (const void *) vLib_PTN_RUNNING   },
   { "iLib_RANDOM"_Stz,          (const void *) iLib_RANDOM        },
   { "vLib_SLEEP"_Stz,           (const void *) vLib_SLEEP         },
-  
+  { "iLib_STR_COMPARE"_Stz,     (const void *) iLib_STR_COMPARE   },
+
   { "aRlu_INIT"_Stz,            (const void *) aRlu_INIT          },
   
   { nullptr, nullptr },

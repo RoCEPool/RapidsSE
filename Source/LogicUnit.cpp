@@ -725,6 +725,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iTopB;
   char* azTopA;
   char* azTopB;
+  Stz* szTopA;
+  Stz* szTopB;
   i8 iRes;
   Stz* szRes;
   i8 iCmp;
@@ -1109,11 +1111,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // string operators
 /*l*/ case EO_STR_COMPARE: ArgNil(); // pop top stradr and compare str on stack
         dLU0(EO_STR_COMPARE);
-        azTopA = (char*) *(aiDstk--);
+        szTopA = (Stz*) *(aiDstk--);
       
         iTopB = *(aiDstk--);
-        azTopB = (char*) (aiDstk-(iTopB/8 + 1));
-        iRes = StrLib::iCompare(azTopA,azTopB);
+        szTopB = (Stz*) (aiDstk-(iTopB/8 + 1));
+//        iRes = StrLib::iCompare(azTopA,azTopB);
+        iRes = iLib_STR_COMPARE(pLU,szTopA,szTopB);
         aiDstk -= (iTopB/8) + 2;
         *(++aiDstk) = iRes;
         if (aRluCommon->m_bTrace)
