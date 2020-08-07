@@ -1516,15 +1516,24 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // entry relational operators
 /*I*/ case EO_ENT_LESS: ArgNil(); // test if m_pEnt.key <  m_oEntWrk.key
         //iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt);
-        iRes  = KC_BEFORE == Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        //iRes = KC_BEFORE ==
+        //  Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        
+        iCmp = iDev_ENT_COMPARE(pLU,m_pDevTmpIxt);
+        iRes = (KC_BEFORE == iCmp);
+
         dLU1(EO_ENT_LESS,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
 /*I*/ case EO_ENT_LESSEQUAL: ArgNil(); // test if m_pEnt.key <= m_oEntWrk.key
         //iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt);
-        iCmp = Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey());
-        iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
+        //iCmp = Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey());
+        //iRes  = (KC_SAME == iCmp || KC_BEFORE == iCmp ) ? 1 : 0;
+        
+        iCmp = iDev_ENT_COMPARE(pLU,m_pDevTmpIxt);
+        iRes = (KC_BEFORE == iCmp || KC_SAME == iCmp);
+        
         dLU1(EO_ENT_LESSEQUAL,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -1542,7 +1551,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //          KC_SAME == Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),
 //                                  m_oEntWrk.aKey())
 //                       ? 1 : 0;
-        iRes = KC_SAME == iDev_ENT_COMPARE(pLU,m_pDevTmpIxt) ? 1 : 0;
+        //iRes = KC_SAME == iDev_ENT_COMPARE(pLU,m_pDevTmpIxt) ? 1 : 0;
+      
+        iCmp = iDev_ENT_COMPARE(pLU,m_pDevTmpIxt);
+        iRes = (KC_SAME == iCmp);
+      
         dLU1(EO_ENT_EQUAL,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -1550,22 +1563,36 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /*I*/ case EO_ENT_NOTEQUAL: ArgNil();
         //iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt);
-        iRes  = KC_SAME != Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        //iRes  = KC_SAME !=
+        //  Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        
+        iCmp = iDev_ENT_COMPARE(pLU,m_pDevTmpIxt);
+        iRes = (KC_SAME != iCmp);
+
         dLU1(EO_ENT_NOTEQUAL,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
 /*I*/ case EO_ENT_GREATEREQUAL: ArgNil();
         //iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt);
-        iCmp = Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey());
-        iRes = (KC_SAME == iCmp || KC_AFTER == iCmp ) ? 1 : 0;
+        //iCmp = Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey());
+        //iRes = (KC_SAME == iCmp || KC_AFTER == iCmp ) ? 1 : 0;
+        
+        iCmp = iDev_ENT_COMPARE(pLU,m_pDevTmpIxt);
+        iRes = (KC_AFTER == iCmp || KC_SAME == iCmp);
+
         dLU1(EO_ENT_GREATEREQUAL,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
 /*I*/ case EO_ENT_GREATER: ArgNil();
         //iDev_ENT_COMPARE(pRLU,m_pDevTmpIxt);
-        iRes  = KC_AFTER == Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        //iRes  = KC_AFTER ==
+        //  Key::eCompare(m_pDevTmpIxt->m_aEnt->aKey(),m_oEntWrk.aKey()) ? 1 : 0;
+        
+        iCmp = iDev_ENT_COMPARE(pLU,m_pDevTmpIxt);
+        iRes = (KC_AFTER == iCmp);
+
         dLU1(EO_ENT_GREATER,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
