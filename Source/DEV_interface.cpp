@@ -415,6 +415,10 @@ void vDev_RSB_BEGIN(void* aLU, void* aRSB)
   _static_
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
+  
+  pDevRsb->m_i_Row = -1;
+  pDevRsb->m_aRsb  = nullptr;
+  pDevRsb->m_nRows = pDevRsb->m_pRowSlab ? pDevRsb->m_pRowSlab->nRows() : 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -426,7 +430,17 @@ i8 iDev_RSB_NEXT(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  return 0;
+  i8 iRes;
+  
+  if (++pDevRsb->m_i_Row  < pDevRsb->m_nRows) {
+    pDevRsb->m_aRsb = pDevRsb->m_pRowSlab->aRsbAdr(pDevRsb->m_i_Row );
+    iRes = 1;
+  }
+  else {
+    iRes = 0;
+  }
+
+  return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -438,7 +452,9 @@ i8 iDev_RSB_PUSHOFS(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  return 0;
+  i8 iRes = pDevRsb->m_pRowSlab->iOfsOfRsb(pDevRsb->m_aRsb);
+
+  return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,6 +466,7 @@ void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
+  pDevRsb->m_aRsb = pDevRsb->m_pRowSlab->aRsbByOfs(iTop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -461,7 +478,10 @@ i8 iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  return 0;
+  i8 iRes =
+    pDevRsb->m_aRsb->iVal_ntv(pDevRsb->m_aRsb->i_ColToCell_ntv(iArg));
+
+  return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -473,19 +493,27 @@ Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  return nullptr;
+  Stz* szSrc = pDevRsb->m_aRsb->szVal_ntv(pDevRsb->m_aRsb->i_ColToCell_ntv(iArg));
+
+  return szSrc;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
+i8 iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
 {
   _static_
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
-  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
+  HV_Row hRow(pDevRsb->m_pStreamDef,C_ALL);
+  RowInflator::vInflateColumn(hRow,pLogicUnit->m_pDevSrcIxt->m_aCrw,iArg);
+  
+  i8 iRes = hRow->m_waColVal[iArg].m_iWrd;
+
+  return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -496,8 +524,14 @@ Stz* szDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg)
   _static_
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  HV_Row hRow(pDevRsb->m_pStreamDef,C_ALL);
+  RowInflator::vInflateColumn(hRow,pLogicUnit->m_pDevSrcIxt->m_aCrw,iArg);
   
-  return nullptr;
+  Stz* szRes = (Stz*)hRow->m_waColVal[iArg].m_iWrd;
+
+  return szRes;
 }
 
 /*============================================================================*/

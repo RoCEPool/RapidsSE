@@ -47,7 +47,7 @@ i8   iDev_RSB_PUSHOFS(void* aLU, void* aRSB);
 void vDev_RSB_PRINT(void* aLU, void* aRSB);
 void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop);
 
-void vDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg);
+i8   iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg);
 Stz* szDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg);
 
 /*============================================================================*/
