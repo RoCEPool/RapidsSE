@@ -35,11 +35,7 @@ compactIdx Lineitem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Query 1...";
-/time Query1 lineitem ;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - -
-print section "Query 1...";
-/time Query1_PerfExp2 lineitem lineItem_Idx2;
+/time Query1 lineitem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Query 6...";
