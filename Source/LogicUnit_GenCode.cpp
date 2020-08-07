@@ -560,7 +560,7 @@ void LogicUnit::vGenerateQuery110(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_iSql = 100;
+  m_xRluCommon.m_iSql = 110;
   
   // reset
   m_i_Code = 0;
