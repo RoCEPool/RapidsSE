@@ -398,31 +398,33 @@ void vDev_ENTWRK_RESET(void* pLU, void* aDevRSB)
 /*----------------------------------------------------------------------------*/
 /* print src rsb                                                              */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_PRINT(void* pLU, void* pDevRSB)
+void vDev_RSB_PRINT(void* pLU, void* aDevRSB)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  
+  pDevRsb->m_pRowSlab->vDumpRow(-1,pDevRsb->m_aRsb);
 }
 
 /*----------------------------------------------------------------------------*/
 /* begin src rsb traverse                                                     */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_BEGIN(void* pLU, void* pDevRSB)
+void vDev_RSB_BEGIN(void* pLU, void* aDevRSB)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
 }
 
 /*----------------------------------------------------------------------------*/
 /* move to next src rsb                                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_NEXT(void* pLU, void* pDevRSB)
+i8 iDev_RSB_NEXT(void* pLU, void* aDevRSB)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
   
   return 0;
 }
@@ -430,11 +432,11 @@ i8 iDev_RSB_NEXT(void* pLU, void* pDevRSB)
 /*----------------------------------------------------------------------------*/
 /* push offset of source rsb                                                  */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_PUSHOFS(void* pLU, void* pDevRSB)
+i8 iDev_RSB_PUSHOFS(void* pLU, void* aDevRSB)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
   
   return 0;
 }
@@ -442,22 +444,22 @@ i8 iDev_RSB_PUSHOFS(void* pLU, void* pDevRSB)
 /*----------------------------------------------------------------------------*/
 /* set src rsb by using offset on stack                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_SETBYOFS(void* pLU, void* pDevRSB, i8 iTop)
+void vDev_RSB_SETBYOFS(void* pLU, void* aDevRSB, i8 iTop)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
   
 }
 
 /*----------------------------------------------------------------------------*/
 /* push src column                                                            */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_PUSHCOLI(void* pLU, void* pDevRSB, i8 iArg)
+i8 iDev_RSB_PUSHCOLI(void* pLU, void* aDevRSB, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
   
   return 0;
 }
@@ -465,11 +467,11 @@ i8 iDev_RSB_PUSHCOLI(void* pLU, void* pDevRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push src column                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* szDev_RSB_PUSHCOLS(void* pLU, void* pDevRSB, i8 iArg)
+Stz* szDev_RSB_PUSHCOLS(void* pLU, void* aDevRSB, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
   
   return nullptr;
 }
@@ -477,11 +479,11 @@ Stz* szDev_RSB_PUSHCOLS(void* pLU, void* pDevRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSH(void* pLU, void* pDevRSB, i8 iArg)
+void vDev_RSB_COL_PUSH(void* pLU, void* aDevRSB, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
   
 
 }
@@ -489,11 +491,11 @@ void vDev_RSB_COL_PUSH(void* pLU, void* pDevRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
-Stz* szDev_RSB_COL_PUSHSTR(void* pLU, void* pDevRSB, i8 iArg)
+Stz* szDev_RSB_COL_PUSHSTR(void* pLU, void* aDevRSB, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(pDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
   
   return nullptr;
 }
