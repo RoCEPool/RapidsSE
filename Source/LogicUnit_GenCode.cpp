@@ -681,9 +681,9 @@ void LogicUnit::vGenerateQuery300(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q300
   vDefineLabel("QRY_300:"_Stz);
-  vAddCodeString(EO_STR_LITERAL,"**QRY_300**"_Stz);
-  vAddCode(EO_STR_PRINTADR);
-  vAddCode(EO_PIX_STM_PRINT);
+  //vAddCodeString(EO_STR_LITERAL,"**QRY_300**"_Stz);
+  //vAddCode(EO_STR_PRINTADR);
+  //vAddCode(EO_PIX_STM_PRINT);
   //vAddCode(EO_TRACEON);
 
   // iterate all CUSTOMER
@@ -816,9 +816,9 @@ void LogicUnit::vGenerateQuery301(void)
   //vAddCodeArg(EO_RANDOM,100);
   //vAddCode(EO_PRINT);
   //vAddCode(EO_BREAKPOINT);
-  vAddCodeString(EO_STR_LITERAL,"**QRY_301**"_Stz);
-  vAddCode(EO_STR_PRINTADR);
-  vAddCode(EO_PIX_STM_PRINT);
+  //vAddCodeString(EO_STR_LITERAL,"**QRY_301**"_Stz);
+  //vAddCode(EO_STR_PRINTADR);
+  //vAddCode(EO_PIX_STM_PRINT);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q301
@@ -954,7 +954,7 @@ void LogicUnit::vGenerateQuery301(void)
 
   // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_RET:"_Stz);
-  vAddCodeArg(EO_IXT_DUMP,(i8)0);
+  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -126,7 +126,9 @@ void vDev_IXT_DEL_ENT(void* pLU, void* aDevIXT)
 {
   _static_
   
+  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
 
+  pDevIXT->m_pIdxTree->vDelete(pDevIXT->m_pEntBuffer,pDevIXT->m_aEnt);
 }
 
 /*----------------------------------------------------------------------------*/
