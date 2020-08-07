@@ -13,6 +13,7 @@ create index Customer_Idx1 ON Customer(C_CUSTKEY);
 print section "creating LineItem...";
 _lineitem_dates
 create index lineItem_Idx1 ON LineItem(L_ORDERKEY);
+create index lineItem_Idx2 ON LineItem(L_SHIPDATE);
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "creating Orders...";
@@ -30,10 +31,15 @@ print section "Compacting Indexes...";
 compactIdx Customer Customer_Idx1;
 compactIdx Orders Orders_Idx1;
 compactIdx Lineitem lineItem_Idx1;
+compactIdx Lineitem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Query 1...";
 /time Query1 lineitem ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Query 1...";
+/time Query1_PerfExp2 lineitem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Query 6...";
