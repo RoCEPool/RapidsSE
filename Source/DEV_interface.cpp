@@ -13,13 +13,13 @@
 /*----------------------------------------------------------------------------*/
 /* compare m_pEnt.key to m_oEntWrk.key                                        */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_COMPARE(void* pLU, void* aDevIXT)
+i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
 {
   _static_
   
-  DevIXT* pDevIxt = _pDevIXT(aDevIXT);
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
   
-  i8 iRes = pDevIxt->e_ENT_COMPARE(_pLogicUnit(pLU));
+  i8 iRes = pDevIxt->e_ENT_COMPARE(_pLogicUnit(aLU));
   
   return iRes;
 }
@@ -27,11 +27,11 @@ i8 iDev_ENT_COMPARE(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /* move to next m_pEnt                                                        */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_NEXT(void* pLU, void* aDevIXT)
+i8 iDev_ENT_NEXT(void* aLU, void* aIXT)
 {
   _static_
   
-  DevIXT* pDevIxt = _pDevIXT(aDevIXT);
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
  
   i8 iRes;
   
@@ -48,13 +48,13 @@ i8 iDev_ENT_NEXT(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /* position m_pEnt prior using m_oEntWrk.key                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_POSPRIOR(void* pLU, void* aDevIXT)
+void vDev_ENT_POSPRIOR(void* aLU, void* aIXT)
 {
   _static_
   
-  DevIXT* pDevIxt = _pDevIXT(aDevIXT);
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
   
-  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pDevIxt->m_aEnt =
     pDevIxt->m_pIdxTree->aPositionPriorEntry(pLogicUnit->m_oEntWrk.aKey(),
@@ -64,11 +64,11 @@ void vDev_ENT_POSPRIOR(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /* push entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void* aDev_ENT_PUSH(void* pLU, void* aDevIXT)
+void* aDev_ENT_PUSH(void* aLU, void* aIXT)
 {
   _static_
   
-  DevIXT* pDevIxt = _pDevIXT(aDevIXT);
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   return pDevIxt->m_aEnt;
 }
@@ -76,11 +76,11 @@ void* aDev_ENT_PUSH(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /* push entry elm 0 int                                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_PUSHELMI0(void* pLU, void* aDevIXT)
+i8 iDev_ENT_PUSHELMI0(void* aLU, void* aIXT)
 {
   _static_
   
-  DevIXT* pDevIxt = _pDevIXT(aDevIXT);
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   i8 iRes = pDevIxt->m_aEnt->aKey()->iGetIntElm();
   
@@ -90,11 +90,11 @@ i8 iDev_ENT_PUSHELMI0(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /* push entry elm 0 str                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* szDev_ENT_PUSHELMS0(void* pLU, void* aDevIXT)
+Stz* szDev_ENT_PUSHELMS0(void* aLU, void* aIXT)
 {
   _static_
   
-  DevIXT* pDevIxt = _pDevIXT(aDevIXT);
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   Stz* szSrc = pDevIxt->m_aEnt->aKey()->szGetStrElm();
 
@@ -104,11 +104,11 @@ Stz* szDev_ENT_PUSHELMS0(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /* push entry offset                                                          */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_PUSHOFS(void* pLU, void* aDevIXT)
+i8 iDev_ENT_PUSHOFS(void* aLU, void* aIXT)
 {
   _static_
   
-  DevIXT* pDevIxt = _pDevIXT(aDevIXT);
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   i8 iRes = pDevIxt->m_aEnt->iBuffer();
   
@@ -122,11 +122,11 @@ i8 iDev_ENT_PUSHOFS(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /* delete current entry m_aEnt from indexTree                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_DEL_ENT(void* pLU, void* aDevIXT)
+void vDev_IXT_DEL_ENT(void* aLU, void* aIXT)
 {
   _static_
   
-  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   pDevIXT->m_pIdxTree->vDelete(pDevIXT->m_pEntBuffer,pDevIXT->m_aEnt);
 }
@@ -134,25 +134,25 @@ void vDev_IXT_DEL_ENT(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /* dump index tree                                                            */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_DUMP(void* pLU, void* aDevIXT)
+void vDev_IXT_DUMP(void* aLU, void* aIXT)
 {
   _static_
   
-  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
 
-  pDevIXT->v_IXT_DUMP((LogicUnit*)pLU);
+  pDevIXT->v_IXT_DUMP((LogicUnit*)aLU);
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_INS_ENT(void* pLU, void* aDevIXT)
+void vDev_IXT_INS_ENT(void* aLU, void* aIXT)
 {
   _static_
 
-  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
 
-  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pDevIXT->m_aEnt =
     pDevIXT->m_pIdxTree->aInsertEntry(pLogicUnit->m_oEntWrk.aEnt());
@@ -162,11 +162,11 @@ void vDev_IXT_INS_ENT(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /*  push number of entries in tmp index                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_TMP_ENTRIES(void* pLU, void* aDevIXT)
+i8 iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT)
 {
   _static_
   
-  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8 iRes = pDevIXT->m_pIdxTree->iCountH0Entries();
 
@@ -176,11 +176,11 @@ i8 iDev_IXT_TMP_ENTRIES(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /* begin linear traverse                                                      */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_TRV_BEGIN(void* pLU, void* aDevIXT)
+i8 iDev_IXT_TRV_BEGIN(void* aLU, void* aIXT)
 {
   _static_
 
-  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8 iRes;
   
@@ -201,11 +201,11 @@ i8 iDev_IXT_TRV_BEGIN(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /* traverse to next entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_TRV_NEXT(void* pLU, void* aDevIXT)
+i8 iDev_IXT_TRV_NEXT(void* aLU, void* aIXT)
 {
   _static_
   
-  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8 iRes;
   
@@ -222,11 +222,11 @@ i8 iDev_IXT_TRV_NEXT(void* pLU, void* aDevIXT)
 /*----------------------------------------------------------------------------*/
 /* fetch a column from entry payload                                          */
 /*----------------------------------------------------------------------------*/
-i8 iDev_PAY_FETCH_COLI(void* pLU, void* aDevIXT, i8 iArg)
+i8 iDev_PAY_FETCH_COLI(void* aLU, void* aIXT, i8 iArg)
 {
   _static_
   
-  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
   
@@ -238,11 +238,11 @@ i8 iDev_PAY_FETCH_COLI(void* pLU, void* aDevIXT, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* fetch a column from entry payload                                          */
 /*----------------------------------------------------------------------------*/
-Stz* szDev_PAY_FETCH_COLS(void* pLU, void* aDevIXT, i8 iArg)
+Stz* szDev_PAY_FETCH_COLS(void* aLU, void* aIXT, i8 iArg)
 {
   _static_
   
-  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
   
@@ -256,11 +256,11 @@ Stz* szDev_PAY_FETCH_COLS(void* pLU, void* aDevIXT, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* store a column into entry payload                                          */
 /*----------------------------------------------------------------------------*/
-void vDev_PAY_STORE_COLI(void* pLU, void* aDevIXT, i8 iArg, i8 iTop)
+void vDev_PAY_STORE_COLI(void* aLU, void* aIXT, i8 iArg, i8 iTop)
 {
   _static_
   
-  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
   *aPayload = iTop;
@@ -269,11 +269,11 @@ void vDev_PAY_STORE_COLI(void* pLU, void* aDevIXT, i8 iArg, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* store a column into entry payload                                          */
 /*----------------------------------------------------------------------------*/
-void vDev_PAY_STORE_COLS(void* pLU, void* aDevIXT, i8 iArg, Stz* szTop)
+void vDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg, Stz* szTop)
 {
   _static_
   
-  DevIXT* pDevIXT = _pDevIXT(aDevIXT);
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
 
@@ -288,13 +288,13 @@ void vDev_PAY_STORE_COLS(void* pLU, void* aDevIXT, i8 iArg, Stz* szTop)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELM(void* pLU, void* aDevRSB, i8 iArg)
+void vDev_ENTWRK_APPENDELM(void* aLU, void* aRSB, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pLogicUnit->m_oEntWrk.vAppendElement(pDevRsb->m_aRsb,
                                        &pDevRsb->m_pRowSlab->m_oStreamPix,
@@ -304,13 +304,13 @@ void vDev_ENTWRK_APPENDELM(void* pLU, void* aDevRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELMI(void* pLU, void* aDevRSB, i8 iTop)
+void vDev_ENTWRK_APPENDELMI(void* aLU, void* aRSB, i8 iTop)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
 
-  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pLogicUnit->m_oEntWrk.vAppendElementInt(pDevRsb->m_aRsb,iTop);
 }
@@ -318,13 +318,13 @@ void vDev_ENTWRK_APPENDELMI(void* pLU, void* aDevRSB, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELMS(void* pLU, void* aDevRSB, Stz* szTop)
+void vDev_ENTWRK_APPENDELMS(void* aLU, void* aRSB, Stz* szTop)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
 
-  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pLogicUnit->m_oEntWrk.vAppendElementStz(pDevRsb->m_aRsb,szTop);
 }
@@ -332,13 +332,13 @@ void vDev_ENTWRK_APPENDELMS(void* pLU, void* aDevRSB, Stz* szTop)
 /*----------------------------------------------------------------------------*/
 /* create payload                                                             */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_CREATEPAY(void* pLU, void* aDevRSB, i8 iArg)
+void vDev_ENTWRK_CREATEPAY(void* aLU, void* aRSB, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
 
-  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pLogicUnit->m_oEntWrk.vPayload(true);
   pLogicUnit->m_oEntWrk.vPayloadBytes(iArg);
@@ -347,13 +347,13 @@ void vDev_ENTWRK_CREATEPAY(void* pLU, void* aDevRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* pop offset                                                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_POPOFS(void* pLU, void* aDevRSB, i8 iTop)
+void vDev_ENTWRK_POPOFS(void* aLU, void* aRSB, i8 iTop)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
 
-  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pLogicUnit->m_oEntWrk.vBuffer(iTop);
 }
@@ -361,13 +361,13 @@ void vDev_ENTWRK_POPOFS(void* pLU, void* aDevRSB, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_PRINT(void* pLU, void* aDevRSB)
+void vDev_ENTWRK_PRINT(void* aLU, void* aRSB)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
 
-  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   Ent* aEnt = pLogicUnit->m_oEntWrk.aEnt();
   IndexDef* pIndexDef = pLogicUnit->m_xpIndexTree->pIndexDef();
@@ -380,13 +380,13 @@ void vDev_ENTWRK_PRINT(void* pLU, void* aDevRSB)
 /*----------------------------------------------------------------------------*/
 /* reset                                                                      */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_RESET(void* pLU, void* aDevRSB)
+void vDev_ENTWRK_RESET(void* aLU, void* aRSB)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
 
-  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pLogicUnit->m_oEntWrk.vReset();
 }
@@ -398,11 +398,11 @@ void vDev_ENTWRK_RESET(void* pLU, void* aDevRSB)
 /*----------------------------------------------------------------------------*/
 /* print src rsb                                                              */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_PRINT(void* pLU, void* aDevRSB)
+void vDev_RSB_PRINT(void* aLU, void* aRSB)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
   
   pDevRsb->m_pRowSlab->vDumpRow(-1,pDevRsb->m_aRsb);
 }
@@ -410,21 +410,21 @@ void vDev_RSB_PRINT(void* pLU, void* aDevRSB)
 /*----------------------------------------------------------------------------*/
 /* begin src rsb traverse                                                     */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_BEGIN(void* pLU, void* aDevRSB)
+void vDev_RSB_BEGIN(void* aLU, void* aRSB)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
 }
 
 /*----------------------------------------------------------------------------*/
 /* move to next src rsb                                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_NEXT(void* pLU, void* aDevRSB)
+i8 iDev_RSB_NEXT(void* aLU, void* aRSB)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
   
   return 0;
 }
@@ -432,11 +432,11 @@ i8 iDev_RSB_NEXT(void* pLU, void* aDevRSB)
 /*----------------------------------------------------------------------------*/
 /* push offset of source rsb                                                  */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_PUSHOFS(void* pLU, void* aDevRSB)
+i8 iDev_RSB_PUSHOFS(void* aLU, void* aRSB)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
   
   return 0;
 }
@@ -444,22 +444,22 @@ i8 iDev_RSB_PUSHOFS(void* pLU, void* aDevRSB)
 /*----------------------------------------------------------------------------*/
 /* set src rsb by using offset on stack                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_SETBYOFS(void* pLU, void* aDevRSB, i8 iTop)
+void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
   
 }
 
 /*----------------------------------------------------------------------------*/
 /* push src column                                                            */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_PUSHCOLI(void* pLU, void* aDevRSB, i8 iArg)
+i8 iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
   
   return 0;
 }
@@ -467,11 +467,11 @@ i8 iDev_RSB_PUSHCOLI(void* pLU, void* aDevRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push src column                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* szDev_RSB_PUSHCOLS(void* pLU, void* aDevRSB, i8 iArg)
+Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
   
   return nullptr;
 }
@@ -479,11 +479,11 @@ Stz* szDev_RSB_PUSHCOLS(void* pLU, void* aDevRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSH(void* pLU, void* aDevRSB, i8 iArg)
+void vDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
   
 
 }
@@ -491,11 +491,11 @@ void vDev_RSB_COL_PUSH(void* pLU, void* aDevRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
-Stz* szDev_RSB_COL_PUSHSTR(void* pLU, void* aDevRSB, i8 iArg)
+Stz* szDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aDevRSB);
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
   
   return nullptr;
 }
