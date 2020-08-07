@@ -27,7 +27,10 @@ DynamicSymbol gxaDynamicSymbol[]
   { "iLib_DTE_YEAR"_Stz,        (const void *) iLib_DTE_YEAR      },
 
   { "vLib_HSH_ADD_HASHI"_Stz,   (const void *) vLib_HSH_ADD_HASHI },
-  
+
+  { "vLib_PTN_CALC"_Stz,        (const void *) vLib_PTN_CALC      },
+  { "vLib_PTN_RUNNING"_Stz,     (const void *) vLib_PTN_RUNNING   },
+
   { "iLib_RANDOM"_Stz,          (const void *) iLib_RANDOM        },
 
   { "aRlu_INIT"_Stz,            (const void *) aRlu_INIT          },

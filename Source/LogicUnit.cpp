@@ -1274,8 +1274,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // partitioning
 /*l*/ case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
         dLU0(EO_PTN_CALC);
-        aRluCommon->m_i_Ptn =
-          PtnLib::iPartition(aRluCommon->m_iHash,aRluCommon->m_nPtns);
+//        aRluCommon->m_i_Ptn =
+//          PtnLib::iPartition(aRluCommon->m_iHash,aRluCommon->m_nPtns);
+        vLib_PTN_CALC(pLU);
         break;//+endCase
 
 /*c*/ case EO_PTN_PUSH: ArgNil(); // push m_i_Ptn
@@ -1291,7 +1292,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*l*/ case EO_PTN_RUNNING: ArgNil(); // mix top into running m_iHash
         iTopA = *(aiDstk--);
         dLU0(EO_PTN_RUNNING);
-        PtnLib::vRunning(&aRluCommon->m_iHash,iTopA);
+//        PtnLib::vRunning(&aRluCommon->m_iHash,iTopA);
+        vLib_PTN_RUNNING(pLU,iTopA);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

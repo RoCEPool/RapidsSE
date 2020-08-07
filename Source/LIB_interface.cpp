@@ -71,14 +71,44 @@ void vLib_HSH_ADD_HASHI(void* pLU, i8 iTopA)
 {
   _static_
 
-  i8 iRes = HshLib::iHash((byte*)&iTopA,sizeof(w8));
-
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
-  
   struct RluCommon* aRluCommon = pLogicUnit->aRlu_INIT(pLU);
+
+  i8 iRes = HshLib::iHash((byte*)&iTopA,sizeof(w8));
 
   aRluCommon->m_iHash += iRes;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* calculate m_i_Ptn using running m_iHash                                    */
+/*----------------------------------------------------------------------------*/
+void vLib_PTN_CALC(void* pLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  struct RluCommon* aRluCommon = pLogicUnit->aRlu_INIT(pLU);
+
+  aRluCommon->m_i_Ptn =
+    PtnLib::iPartition(aRluCommon->m_iHash,aRluCommon->m_nPtns);
+}
+
+/*----------------------------------------------------------------------------*/
+/* mix top into running m_iHash                                               */
+/*----------------------------------------------------------------------------*/
+void vLib_PTN_RUNNING(void* pLU, i8 iTopA)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  struct RluCommon* aRluCommon = pLogicUnit->aRlu_INIT(pLU);
+
+  PtnLib::vRunning(&aRluCommon->m_iHash,iTopA);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

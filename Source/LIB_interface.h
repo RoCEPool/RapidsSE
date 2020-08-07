@@ -12,7 +12,7 @@ i8   iLib_DTE_YEAR(void* pLU, i8 iTopA);
 
 void vLib_HSH_ADD_HASHI(void* pLU, i8 iTopA);
 
-i8   iLib_PTN_CALC(void* pLU);
+void vLib_PTN_CALC(void* pLU);
 void vLib_PTN_RUNNING(void* pLU, i8 iTopA);
 
 i8   iLib_RANDOM(void* pLU, i8 iArg);
