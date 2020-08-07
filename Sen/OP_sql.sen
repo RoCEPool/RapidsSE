@@ -148,13 +148,6 @@
   queryNo "sql %v" str.format profile.name!
   queryNo case
 
-    100 of
-      //queryNo "QUERY %v" .printf
-      //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 100=STARTMARKER" .
-      100 LogicUnit[].genCode
-      idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
-    endof
-
     102 of
       //queryNo "QUERY %v" .printf
       102 LogicUnit[].genCode
