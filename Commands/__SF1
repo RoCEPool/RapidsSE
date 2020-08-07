@@ -37,7 +37,7 @@ create index idx on lineitem (l_shipdate);
 /time fload lineitem "/TPCH/SF1/lineitem.csv";
 /time Query1 lineitem idx;
 
-///time Query6 lineitem ;
+/time Query6 lineitem ;
 //predicateFetch lineitem "l_shipdate '1998-09-01' > l_shipdate '1998-12-01' < and";
 
 /*============================================================================*/

@@ -161,12 +161,6 @@
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
     endof
 
-    111 of
-      //queryNo "QUERY %v" .printf
-      //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 111=STARTMARKER" .
-      111 LogicUnit[].genCode
-    endof
-
     112 of
       //queryNo "QUERY %v" .printf
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 112=STARTMARKER" .
@@ -439,36 +433,6 @@
   endcase
 
 
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_CRWBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: sql_CrwBuffer \handler
-
-  <queryNo> >int locals| queryNo |
-
-  PipeIn[]
-  profile.start
-
-  queryNo case
-
-    111 of
-      //"++++++++++++++++++++++++++++ 111=CRWBUFFER ++++++++++++++++++++++++++++" .
-      Operand[].pipeIn
-      Operand[].asSrcCrwBuffer
-      LogicUnit[].transform
-      Operand[].delete
-      Pot[].pipeoutAllCompleted
-    endof
-
-    // default
-    0 assert
-  endcase
-
-profile.end
-
-true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -881,12 +845,6 @@ true
       true Pot[].useStreamDefOut
     endof
 
-    111 of
-      StreamDef[].duplicate to StreamDefOut[]
-      true Pot[].useStreamDefOut
-      StreamDef[].pipeout
-    endof
-
     300 of
       //"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 300=STREAMDEF" .
       // sql 300 should not get a stream def
@@ -937,7 +895,6 @@ true
 
   op__topology
 
-  find: sql_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: sql_EosMarker   ZK_EOSMARKER   op[].handler!
   find: sql_PulseMarker ZK_PULSEMARKER op[].handler!
   find: sql_RsbBuffer   ZK_RSBBUFFER   op[].handler!
