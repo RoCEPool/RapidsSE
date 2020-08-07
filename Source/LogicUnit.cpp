@@ -1202,7 +1202,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*l*/ case EO_SLEEP: ArgNil(); // sleep for top seconds
         iTopA = *(aiDstk--);
         dLU1(EO_SLEEP,iTopA);
-        sleep((u4)iTopA);
+        //sleep((u4)iTopA);
+        vLib_SLEEP(pLU,iTopA);
         break;//+endCase
               
 /*c*/ case EO_SLOT: ArgNil(); // push i_Slot
