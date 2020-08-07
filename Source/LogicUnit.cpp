@@ -1528,7 +1528,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
         
-/*I*/ case EO_ENT_EQUAL: ArgNil();
+/*I*/ case EO_ENT_EQUAL: ArgNil(); // test if m_pEnt.key == m_oEntWrk.key
       {
 #ifdef WITH_TRACE_LOGICUNIT
         SP_Ent spEnt;
@@ -1543,21 +1543,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
       }
         
-/*I*/ case EO_ENT_NOTEQUAL: ArgNil();
+/*I*/ case EO_ENT_NOTEQUAL: ArgNil(); // test if m_pEnt.key != m_oEntWrk.key
         iCmp = iDev_ENT_COMPARE(pLU,m_pDevTmpIxt);
         iRes = (KC_SAME != iCmp);
         dLU1(EO_ENT_NOTEQUAL,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-/*I*/ case EO_ENT_GREATEREQUAL: ArgNil();
+/*I*/ case EO_ENT_GREATEREQUAL: ArgNil(); // test if m_pEnt.key >= m_oEntWrk.key
         iCmp = iDev_ENT_COMPARE(pLU,m_pDevTmpIxt);
         iRes = (KC_AFTER == iCmp || KC_SAME == iCmp);
         dLU1(EO_ENT_GREATEREQUAL,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-/*I*/ case EO_ENT_GREATER: ArgNil();
+/*I*/ case EO_ENT_GREATER: ArgNil(); // test if m_pEnt.key >  m_oEntWrk.key
         iCmp = iDev_ENT_COMPARE(pLU,m_pDevTmpIxt);
         iRes = (KC_AFTER == iCmp);
         dLU1(EO_ENT_GREATER,iRes);
