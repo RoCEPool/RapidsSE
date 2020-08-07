@@ -780,7 +780,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   
   aRluCommon->m_i_Slot = AM::pTaskJob()->m_pOp->nPartition();
   aRluCommon->m_nPtns  = AM::nPartitions();
-  aRluCommon->m_iHash  = PtnLib::iResetRunning();
+  aRluCommon->m_iHash  = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // required for interpretative inner loop
@@ -1285,7 +1285,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
 /*?*/ case EO_PTN_RESET: ArgNil(); // reset running m_iHash
         dLU0(EO_PTN_RESET);
-        aRluCommon->m_iHash = PtnLib::iResetRunning();
+        aRluCommon->m_iHash = 0;
         break;//+endCase
 
 /*l*/ case EO_PTN_RUNNING: ArgNil(); // mix top into running m_iHash

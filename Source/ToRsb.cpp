@@ -553,7 +553,7 @@ bool ToRsb::bConvertFastInline(char* azCsvInput)
   ColPix* aColPix = pRowSlab->axaColPix();
 
   i8 nPtns = AM::nPartitions();
-  i8 iHash = PtnLib::iResetRunning();
+  i8 iHash = 0;
   i8 i_Ptn = 0;
 
   // hack
@@ -1127,7 +1127,7 @@ L_EndOfFields:
     i_Ptn = PtnLib::iPartition(iHash,nPtns);
     //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
     pRowSlab->vDeposit((i8)i_Ptn);
-    iHash = PtnLib::iResetRunning();
+    iHash = 0;
   }
   
   m_i_Rec++;
