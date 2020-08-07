@@ -150,7 +150,8 @@ enum eEO : u1 // expression operators
   /*    */ EO_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
   /*    */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
   /*    */ EO_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
-  
+  /*    */ EO_ENT_PRINTKEYS,    // print both m_pEnt.key and m_oEntWrk.key
+
   // entWrk
   /*    */ EO_ENTWRK_APPENDELM, // append next element value
   /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
@@ -366,7 +367,8 @@ static Stz* aEO[]
   /*    */ "EO_ENT_NOTEQUAL"_Stz,
   /*    */ "EO_ENT_GREATEREQUAL"_Stz,
   /*    */ "EO_ENT_GREATER"_Stz,
-  
+  /*    */ "EO_ENT_PRINTKEYS"_Stz,
+
   // entWrk
   /*    */ "EO_ENTWRK_APPENDELM"_Stz,
   /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
@@ -586,6 +588,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENT_NOTEQUAL
   { EA_NONE,    0 },  // EO_ENT_GREATEREQUAL
   { EA_NONE,    0 },  // EO_ENT_GREATER
+  { EA_NONE,    0 },  // EO_ENT_PRINTKEYS
 
   { EA_NONE,    0 },  // EO_ENT_SRC_PUSH
   { EA_NONE,    0 },  // EO_ENT_SRC_PUSHUPPER

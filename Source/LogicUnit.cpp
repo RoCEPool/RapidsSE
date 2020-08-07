@@ -1529,19 +1529,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /*I*/ case EO_ENT_EQUAL: ArgNil(); // test if m_pEnt.key == m_oEntWrk.key
-      {
-#ifdef WITH_TRACE_LOGICUNIT
-        SP_Ent spEnt;
-        vTrace("\n\nEntWrk : %s\n"_Stz,
-               spEnt.sz(m_oEntWrk.aEnt(),m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
-        vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pDevTmpIxt->m_aEnt,m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
-#endif
         iCmp = iDev_ENT_COMPARE(pLU,m_pDevTmpIxt);
         iRes = (KC_SAME == iCmp);
         dLU1(EO_ENT_EQUAL,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      }
         
 /*I*/ case EO_ENT_NOTEQUAL: ArgNil(); // test if m_pEnt.key != m_oEntWrk.key
         iCmp = iDev_ENT_COMPARE(pLU,m_pDevTmpIxt);
@@ -1564,6 +1556,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
         
+  /*I*/ case EO_ENT_PRINTKEYS: ArgNil(); // test if m_pEnt.key == m_oEntWrk.key
+        {
+          SP_Ent spEnt;
+          vTrace("\n\nEntWrk : %s\n"_Stz,
+                 spEnt.sz(m_oEntWrk.aEnt(),m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
+          vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pDevTmpIxt->m_aEnt,m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
+          break;//+endCase
+        }
+              
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entWrk
 /*R*/ case EO_ENTWRK_APPENDELM: ArgGet(iArg); // append next element value
