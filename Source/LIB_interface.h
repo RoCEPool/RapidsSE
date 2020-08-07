@@ -10,6 +10,8 @@ i8   iLib_DTE_NOW(void* pLU);
 Stz* szLib_DTE_PRINT(void* pLU, i8 iTopA);
 i8   iLib_DTE_YEAR(void* pLU, i8 iTopA);
 
+void vLib_ERROR(void* pLU, Stz* szErr);
+
 void vLib_HSH_ADD_HASHI(void* pLU, i8 iTopA);
 
 void vLib_PTN_CALC(void* pLU);

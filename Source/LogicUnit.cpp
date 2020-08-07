@@ -1228,8 +1228,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
 /*r*/ case EO_ERROR: ArgNil(); // error marker
         dLU0(EO_ERROR);
-        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-               "Code compiled with error"_Stz);
+//        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+//               "Code compiled with error"_Stz);
+        vLib_ERROR(pLU,"Code compiled with error"_Stz);
         break;//+endCase
         
 
