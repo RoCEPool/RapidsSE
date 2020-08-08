@@ -1551,21 +1551,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entWrk
 /*R*/ case EO_ENTWRK_APPENDELM: ArgGet(iArg); // append next element value
-      {
-        //vDev_ENTWRK_APPENDELM(pRLU,m_pDevTmpIxt);
         dLU1(EO_ENTWRK_APPENDELM,iArg);
-        //m_oEntWrk.vAppendElement(m_pDevSrcRsb->m_aRsb,
-        //  &m_pDevSrcRsb->m_pRowSlab->m_oStreamPix, iArg);
-        
         vDev_ENTWRK_APPENDELM(pLU,m_pDevSrcRsb,iArg);
         break;//+endCase
-      }
         
 /*R*/ case EO_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)
-        //vDev_ENTWRK_APPENDELMI(pRLU,m_pDevTmpIxt,iTopA);
         iTopA = *(aiDstk--);
         dLU1(EO_ENTWRK_APPENDELMI,iTopA);
-        //m_oEntWrk.vAppendElementInt(m_pDevSrcRsb->m_aRsb,iTopA);
         vDev_ENTWRK_APPENDELMI(pLU,m_pDevSrcRsb,iTopA);
         break;//+endCase
         
@@ -1590,8 +1582,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //vDev_ENTWRK_CREATEPAY(pRLU,m_pDevTmpIxt,iArg);
         dLU1(EO_ENTWRK_CREATEPAY,iArg);
         
-        m_oEntWrk.vPayload(true);
-        m_oEntWrk.vPayloadBytes(iArg);
+        //m_oEntWrk.vPayload(true);
+        //m_oEntWrk.vPayloadBytes(iArg);
+        
+        vDev_ENTWRK_CREATEPAY(pLU,m_pDevSrcRsb,iArg);
         break;//+endCase
                 
       case EO_ENTWRK_POPOFS: ArgNil(); // pop m_oEntWrk.ref.buffer/offset
