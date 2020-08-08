@@ -4,6 +4,11 @@
 
 void vDev_COL_NOT_PROJECT(void* aLU, i8 iArg);
 
+void vDev_CRW_BEGIN(void* aLU, void* aRSB);
+void vDev_CRW_FETCH(void* aLU, void* aRSB);
+i8   iDev_CRW_NEXT(void* aLU, void* aRSB);
+void vDev_CRW_TORSB(void* aLU, void* aRSB);
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT
 
