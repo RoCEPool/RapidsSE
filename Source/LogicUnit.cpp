@@ -1557,7 +1557,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        m_oEntWrk.vAppendElementStz(m_pDevSrcRsb->m_aRsb,szStr);
 //        aiDstk -= (iTopA/8) + 1;
         S_UseStr(azSrc);
-        m_oEntWrk.vAppendElementStz(m_pDevSrcRsb->m_aRsb,(Stz*)azSrc);
+        //m_oEntWrk.vAppendElementStz(m_pDevSrcRsb->m_aRsb,(Stz*)azSrc);
+        vDev_ENTWRK_APPENDELMS(pLU,m_pDevSrcRsb,(Stz*)azSrc);
         S_UseEnd();
         if (aRluCommon->m_bTrace)
           vDebugPoint();
@@ -1805,22 +1806,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_PAY_STORE_COLI(pLU,m_pDevTmpIxt,iArg,iTopA);
         break;//+endCase
       
-/*I*/ case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column into entry payload NOT DONE!
-      {
-        //vDev_PAY_STORE_COLS(pRLU,m_pDevTmpIxt,iArg,iRes);
+/*I*/ case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column into entry payload
         dLU1(EO_PAY_STORE_COLI,iArg);
-//        i8 nSize = *(aiDstk--);
-//        RASSERT(nSize < 8);
-//        dLU2(eCode,iArg,nSize);
-//        aPayload = m_pEnt->aiPayCell(iArg);
-//        char* azSrc = (char*)(--aiDstk);
-//        aiDstk--;
-//        StrLib::vCopy((char*)aPayload,azSrc);
-        //aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
         szDst = szDev_PAY_STORE_COLS(pLU,m_pDevTmpIxt,iArg);
         S_PopStr((char*)szDst);
         vDebugPoint();
-      }
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
