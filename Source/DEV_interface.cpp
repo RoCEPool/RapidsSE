@@ -160,8 +160,8 @@ void vDev_IXT_DUMP(void* aLU, void* aIXT)
   _static_
   
   DevIXT* pDevIXT = _pDevIXT(aIXT);
-
-  pDevIXT->v_IXT_DUMP((LogicUnit*)aLU);
+  
+  pDevIXT->m_pIdxTree->vDump(false);
 }
 
 /*----------------------------------------------------------------------------*/

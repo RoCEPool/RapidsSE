@@ -1938,10 +1938,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
 /*R*/ case EO_RSB_SRC_SETBYOFS: ArgNil(); // set src rsb by using offset on stack
-        //iDev_RSB_SETBYOFS(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_SETBYOFS);
         iTopA = *(aiDstk--);
-        //m_pDevSrcRsb->m_aRsb = m_pDevSrcRsb->m_pRowSlab->aRsbByOfs(iTopA);
         vDev_RSB_SETBYOFS(pLU,m_pDevSrcRsb,iTopA);
         break;//+endCase
 
