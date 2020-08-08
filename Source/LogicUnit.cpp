@@ -1932,9 +1932,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
 /*R*/ case EO_RSB_SRC_PUSHOFS: ArgNil(); // push offset of source rsb
-        //iDev_RSB_PUSHOFS(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_PUSHOFS);
-        //iRes = m_pDevSrcRsb->m_pRowSlab->iOfsOfRsb(m_pDevSrcRsb->m_aRsb);
         iRes = iDev_RSB_PUSHOFS(pLU,m_pDevSrcRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -1943,7 +1941,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //iDev_RSB_SETBYOFS(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_SETBYOFS);
         iTopA = *(aiDstk--);
-        m_pDevSrcRsb->m_aRsb = m_pDevSrcRsb->m_pRowSlab->aRsbByOfs(iTopA);
+        //m_pDevSrcRsb->m_aRsb = m_pDevSrcRsb->m_pRowSlab->aRsbByOfs(iTopA);
+        vDev_RSB_SETBYOFS(pLU,m_pDevSrcRsb,iTopA);
         break;//+endCase
 
       case EO_RSB_ALT_BEGIN: ArgNil(); // not yet implemented
