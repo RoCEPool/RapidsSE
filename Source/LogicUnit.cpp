@@ -1453,13 +1453,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /*I*/ case EO_ENT_PUSHELMI0: ArgNil(); // push entry elm 0 int
-        //iDev_ENT_PUSHELMI0(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_PUSHELMI0);
-//        iRes = m_pDevTmpIxt->m_aEnt->aKey()->iGetIntElm();
         *(++aiDstk) = iDev_ENT_PUSHELMI0(pLU,m_pDevTmpIxt);
         break;//+endCase
         
-/*I*/ case EO_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str
+/*I*/ case EO_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str        NOT DONE!!
       {
         //szDev_ENT_PUSHELMS0(pRLU,m_pDevTmpIxt);
         char acFlipped[128];
@@ -1482,8 +1480,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*I*/ case EO_ENT_PUSHOFS: ArgNil(); // push entry offset
         //iDev_ENT_PUSHOFS(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_PUSHOFS);
-        iRes = m_pDevTmpIxt->m_aEnt->iBuffer();
-        *(++aiDstk) = iRes;
+        //iRes = m_pDevTmpIxt->m_aEnt->iBuffer();
+        *(++aiDstk) = iDev_ENT_PUSHOFS(pLU,m_pDevTmpIxt);
         break;//+endCase
         
       case EO_ENT_PUSHREF: ArgNil(); // not yet implemented
