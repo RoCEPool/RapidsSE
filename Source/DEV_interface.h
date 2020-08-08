@@ -2,6 +2,8 @@
 /* DEV_interface.h -- Interface for RLU Devices                               */
 /*============================================================================*/
 
+void vDev_COL_NOT_PROJECT(void* aLU, i8 iArg);
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT
 

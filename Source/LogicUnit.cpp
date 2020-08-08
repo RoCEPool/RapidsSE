@@ -1368,10 +1368,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
-/*r*/ case EO_COL_DST_RESET: ArgGet(iArg); // reset column in streamPix of dst
-      {
-        m_oStreamPix.vNotProject(iArg);
-      }
+/*r*/ case EO_COL_NOT_PROJECT: ArgGet(iArg); // reset column in streamPix of dst
+        vDev_COL_NOT_PROJECT(pLU,iArg);
         break;//+endCase
         
 /*R*/ case EO_COL_SRC_PUSH: ArgGet(iArg); // push column value from m_aSrcCrw

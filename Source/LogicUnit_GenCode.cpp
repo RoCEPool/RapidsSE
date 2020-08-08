@@ -559,15 +559,15 @@ void LogicUnit::vGenerateQuery112(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // RESET COLUMNS NOT NEEDED
-  vAddCodeArg(EO_COL_DST_RESET, L_ORDERKEY);
-  vAddCodeArg(EO_COL_DST_RESET, L_PARTKEY);
-  vAddCodeArg(EO_COL_DST_RESET, L_SUPPKEY);
-  vAddCodeArg(EO_COL_DST_RESET, L_LINENUMBER);
-  vAddCodeArg(EO_COL_DST_RESET, L_COMMITDATE);
-  vAddCodeArg(EO_COL_DST_RESET, L_RECEIPTDATE);
-  vAddCodeArg(EO_COL_DST_RESET, L_SHIPINSTRUCT);
-  vAddCodeArg(EO_COL_DST_RESET, L_SHIPMODE);
-  vAddCodeArg(EO_COL_DST_RESET, L_COMMENT);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_ORDERKEY);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_PARTKEY);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_SUPPKEY);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_LINENUMBER);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_COMMITDATE);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_RECEIPTDATE);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPINSTRUCT);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPMODE);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_COMMENT);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the lower key
