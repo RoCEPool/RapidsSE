@@ -1579,16 +1579,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_ENTWRK_CREATEPAY: ArgGet(iArg); // create a payload in entwrk
-        //vDev_ENTWRK_CREATEPAY(pRLU,m_pDevTmpIxt,iArg);
         dLU1(EO_ENTWRK_CREATEPAY,iArg);
         vDev_ENTWRK_CREATEPAY(pLU,m_pDevSrcRsb,iArg);
         break;//+endCase
                 
       case EO_ENTWRK_POPOFS: ArgNil(); // pop m_oEntWrk.ref.buffer/offset
-        //vDev_ENTWRK_POPOFS(pRLU,m_pDevTmpIxt,iArg);
         iTopA = *(aiDstk--);
         dLU1(EO_ENTWRK_POPOFS,iTopA);
-        //m_oEntWrk.vBuffer(iTopA);
         vDev_ENTWRK_POPOFS(pLU,m_pDevSrcRsb,iTopA);
         break;//+endCase
 
@@ -1608,7 +1605,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ENTWRK_RESET: ArgNil(); // reset m_oEntWrk
         //vDev_ENTWRK_RESET(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENTWRK_RESET);
-        m_oEntWrk.vReset();
+        //m_oEntWrk.vReset();
+        vDev_ENTWRK_RESET(pLU,m_pDevSrcRsb);
         break;//+endCase
                               
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
