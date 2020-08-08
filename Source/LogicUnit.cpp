@@ -1617,33 +1617,35 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*I*/ case EO_IXT_TRV_BEGIN: ArgNil(); // begin linear traverse
         //iDev_IXT_TRV_BEGIN(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_TRV_BEGIN);
-        m_pDevTmpIxt->m_pEntBuffer = m_pDevTmpIxt->m_pIdxTree->pFirstH0Buffer();
-        if (m_pDevTmpIxt->m_pEntBuffer) {
-          m_pDevTmpIxt->m_aEnt = m_pDevTmpIxt->m_pEntBuffer->aLeadEntry();
-          if (m_pDevTmpIxt->m_aEnt)
-            *(++aiDstk) = 1;
-          else
-            *(++aiDstk) = 0;
-        }
-        else
-          *(++aiDstk) = 0;
+//        m_pDevTmpIxt->m_pEntBuffer = m_pDevTmpIxt->m_pIdxTree->pFirstH0Buffer();
+//        if (m_pDevTmpIxt->m_pEntBuffer) {
+//          m_pDevTmpIxt->m_aEnt = m_pDevTmpIxt->m_pEntBuffer->aLeadEntry();
+//          if (m_pDevTmpIxt->m_aEnt)
+//            *(++aiDstk) = 1;
+//          else
+//            *(++aiDstk) = 0;
+//        }
+//        else
+//          *(++aiDstk) = 0;
+        iRes = iDev_IXT_TRV_BEGIN(pLU,m_pDevTmpIxt);
+        *(++aiDstk) = iRes;
         break;//+endCase
         
 /*I*/case EO_IXT_TRV_NEXT: ArgNil(); // traverse to next entry
         //iDev_IXT_TRV_NEXT(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_TRV_NEXT);
-        m_pDevTmpIxt->m_aEnt =
-           EntBuffer::pMoveToNextEntry(m_pDevTmpIxt->m_aEnt,
-                                       &m_pDevTmpIxt->m_pEntBuffer);
-        if (m_pDevTmpIxt->m_aEnt)
-          *(++aiDstk) = 1;
-        else
-          *(++aiDstk) = 0;
+//        m_pDevTmpIxt->m_aEnt =
+//           EntBuffer::pMoveToNextEntry(m_pDevTmpIxt->m_aEnt,
+//                                       &m_pDevTmpIxt->m_pEntBuffer);
+//        if (m_pDevTmpIxt->m_aEnt)
+//          *(++aiDstk) = 1;
+//        else
+//          *(++aiDstk) = 0;
+        iRes = iDev_IXT_TRV_NEXT(pLU,m_pDevTmpIxt);
+        *(++aiDstk) = iRes;
         break;//+endCase
         
 /*I*/case EO_IXT_TMP_ENTRIES: ArgNil(); // push number of entries in tmp index
-        //iDev_IXT_TMP_ENTRIES(pRLU,m_pDevTmpIxt);
-        //iRes = m_pDevTmpIxt->m_pIdxTree->iCountH0Entries();
         iRes = iDev_IXT_TMP_ENTRIES(pLU,m_pDevTmpIxt);
         dLU1(EO_IXT_TMP_ENTRIES,iRes);
         *(++aiDstk) = iRes;
