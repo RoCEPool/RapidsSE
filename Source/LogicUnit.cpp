@@ -1359,15 +1359,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*R*/ case EO_COL_SRC_PUSH: ArgGet(iArg); // push column value from m_aSrcCrw
       {
         //vDev_RSB_COL_PUSH(RLU,m_pDevSrcRsb,iArg);
-        HV_Row hRow(m_pDevSrcRsb->m_pStreamDef,C_ALL);
-        RowInflator::vInflateColumn(hRow,m_pDevSrcIxt->m_aCrw,iArg);
-        iRes = hRow->m_waColVal[iArg].m_iWrd;
+//        HV_Row hRow(m_pDevSrcRsb->m_pStreamDef,C_ALL);
+//        RowInflator::vInflateColumn(hRow,m_pDevSrcIxt->m_aCrw,iArg);
+//        iRes = hRow->m_waColVal[iArg].m_iWrd;
+        iRes = iDev_RSB_COL_PUSH(pLU,m_pDevSrcIxt,iArg);
         dLU2(EO_COL_SRC_PUSH,iArg,iRes);
         *(++aiDstk) = iRes;
       }
         break;//+endCase
         
-/*R*/ case EO_COL_SRC_PUSHSTR: ArgGet(iArg); // push column value from m_aSrcCrw
+/*R*/ case EO_COL_SRC_PUSHSTR: ArgGet(iArg); // push column value from m_aSrcCrw NOT DONE!!
       {
         //vDev_RSB_COL_PUSHSTR(RLU,m_pDevSrcRsb,iArg);
         HV_Row hRow(m_pDevSrcRsb->m_pStreamDef,C_ALL);
@@ -1828,9 +1829,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
 /*I*/ case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from entry payload
-        //iDev_PAY_FETCH_COLI(pRLU,m_pDevTmpIxti8, iArg);
-//        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
-//        iRes = *aPayload;
         iRes = iDev_PAY_FETCH_COLI(pLU,m_pDevTmpIxt,iArg);
         dLU2(EO_PAY_FETCH_COLI,iArg,iRes);
         *(++aiDstk) = iRes;
@@ -1855,11 +1853,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /*I*/ case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column into entry payload
-        //vDev_PAY_STORE_COLI(pRLU,m_pDevTmpIxt,iArg,iRes);
         iTopA = *(aiDstk--);
         dLU2(EO_PAY_STORE_COLI,iArg,iRes);
-//        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
-//        *aPayload = iTopA;
         vDev_PAY_STORE_COLI(pLU,m_pDevTmpIxt,iArg,iTopA);
         break;//+endCase
       

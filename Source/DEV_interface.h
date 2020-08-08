@@ -34,7 +34,7 @@ void vDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg, Stz* szTop); // NOT DON
 
 void vDev_ENTWRK_APPENDELM(void* aLU, void* aRSB, i8 iArg);
 void vDev_ENTWRK_APPENDELMI(void* aLU, void* aRSB, i8 iTop);
-void vDev_ENTWRK_APPENDELMS(void* aLU, void* aRSB, Stz* szTop);// NOT DONE!!
+void vDev_ENTWRK_APPENDELMS(void* aLU, void* aRSB, Stz* szTop); // NOT DONE!!
 void vDev_ENTWRK_CREATEPAY(void* aLU, void* aRSB, i8 iArg);
 void vDev_ENTWRK_POPOFS(void* aLU, void* aRSB, i8 iTop);
 void vDev_ENTWRK_PRINT(void* aLU, void* aRSB);
@@ -49,7 +49,7 @@ void vDev_RSB_PRINT(void* aLU, void* aRSB);
 void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop);
 
 i8   iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg);
-Stz* szDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg);
+Stz* szDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg); // NOT DONE!!
 
 /*============================================================================*/
 /* end                                                                        */
