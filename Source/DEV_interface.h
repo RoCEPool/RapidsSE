@@ -2,9 +2,6 @@
 /* DEV_interface.h -- Interface for RLU Devices                               */
 /*============================================================================*/
 
-i8 iDEV_MAP_DUMP      (void* aLU, void* a, void** aaCrs, void* aArg, i8 iArg);
-
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT
 
