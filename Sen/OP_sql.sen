@@ -148,9 +148,9 @@
   queryNo "sql %v" str.format profile.name!
   queryNo case
 
-    102 of
+    103 of
       //queryNo "QUERY %v" .printf
-      102 LogicUnit[].genCode
+      103 LogicUnit[].genCode
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
     endof
 
@@ -456,8 +456,8 @@
       Pot[].pipeoutAllCompleted
     endof
 
-    102 of
-     // "---------------------------- 102=RSBBUFFER ----------------------------" .
+    103 of
+     // "---------------------------- 103=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].transform
@@ -549,7 +549,7 @@
       IndexTree[].delete
     endof
 
-    102 of
+    103 of
       // AGGREGATE WITH GROUPBY (SUPER)
       //queryNo "QUERY %v" .printf
       104 LogicUnit[].genCode
@@ -696,9 +696,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ... (102)                                        STREAMDEF */
+/* on ZK_STREAMDEF ... (103)                                        STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: sql_StreamDef_102
+: sql_StreamDef_103
 
   0 locals| pColumn |
 
@@ -834,8 +834,8 @@
       true Pot[].useStreamDefOut
     endof
 
-    102 of
-      sql_StreamDef_102
+    103 of
+      sql_StreamDef_103
       true Pot[].useStreamDefOut
     endof
 
