@@ -1448,17 +1448,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /*I*/ case EO_ENT_PUSH: ArgNil(); // push entry on the stack
-        //aDev_ENT_PUSH(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_PUSH);
-//        *(++aiDstk) = (i8)m_pDevTmpIxt->m_aEnt;
         *(++aiDstk) = (i8)aDev_ENT_PUSH(pLU,m_pDevTmpIxt);
         break;//+endCase
         
 /*I*/ case EO_ENT_PUSHELMI0: ArgNil(); // push entry elm 0 int
         //iDev_ENT_PUSHELMI0(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_PUSHELMI0);
-        iRes = m_pDevTmpIxt->m_aEnt->aKey()->iGetIntElm();
-        *(++aiDstk) = iRes;
+//        iRes = m_pDevTmpIxt->m_aEnt->aKey()->iGetIntElm();
+        *(++aiDstk) = iDev_ENT_PUSHELMI0(pLU,m_pDevTmpIxt);
         break;//+endCase
         
 /*I*/ case EO_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str
