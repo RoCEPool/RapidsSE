@@ -1363,24 +1363,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
         
-/*R*/ case EO_COL_SRC_PUSHSTR: ArgGet(iArg); // push column value from m_aSrcCrw NOT DONE!!
-      {
+/*R*/ case EO_COL_SRC_PUSHSTR: ArgGet(iArg); // push column value from m_aSrcCrw
         dLU1(EO_COL_SRC_PUSHSTR,iArg);
-        //vDev_RSB_COL_PUSHSTR(RLU,m_pDevSrcRsb,iArg);
-//        HV_Row hRow(m_pDevSrcRsb->m_pStreamDef,C_ALL);
-//        RowInflator::vInflateColumn(hRow,m_pDevSrcIxt->m_aCrw,iArg);
-//        azArg = (char*)hRow->m_waColVal[iArg].m_iWrd;
-      
         azArg= (char*)szDev_RSB_COL_PUSHSTR(pLU,m_pDevSrcRsb,iArg);
-//        i8 nSize = StrLib::nSize((char*)iRes);
-//        char* azDst = (char*)(++aiDstk);
-//        StrLib::vCopy(azDst,(char*)iRes);
-//        aiDstk += nSize / 8;
-//        *(++aiDstk) = nSize;
         S_PushStr(azArg);
         if (aRluCommon->m_bTrace)
           vDebugPoint();
-      }
         break;//+endCase
         
       case EO_COL_ALT_PUSH: ArgGet(iArg); // push column value from m_aAltCrw
