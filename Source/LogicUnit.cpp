@@ -1589,16 +1589,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_IXT_SRC_BEGIN: ArgNil(); // begin linear traverse
         dLU0(EO_IXT_SRC_BEGIN);
-//        m_pDevSrcIxt->m_pEntBuffer = m_pDevSrcIxt->m_pIdxTree->pFirstH0Buffer();
-//        if (m_pDevSrcIxt->m_pEntBuffer) {
-//          m_pDevSrcIxt->m_aEnt = m_pDevSrcIxt->m_pEntBuffer->aLeadEntry();
-//          if (m_pDevSrcIxt->m_aEnt)
-//            *(++aiDstk) = 1;
-//          else
-//            *(++aiDstk) = 0;
-//        }
-//        else
-//          *(++aiDstk) = 0;
         iRes = iDev_IXT_TRV_BEGIN(pLU,m_pDevSrcIxt);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -1619,11 +1609,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_IXT_SRC_NEXT: ArgNil(); // move to next entry
         dLU0(EO_IXT_SRC_NEXT);
-//        m_pDevSrcIxt->m_aEnt = EntBuffer::pMoveToNextEntry(m_pDevSrcIxt->m_aEnt, &m_pDevSrcIxt->m_pEntBuffer);
-//        if (m_pDevSrcIxt->m_aEnt)
-//          *(++aiDstk) = 1;
-//        else
-//          *(++aiDstk) = 0;
         iRes = iDev_IXT_TRV_NEXT(pLU,m_pDevSrcIxt);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -1659,27 +1644,31 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_IXT_ALT_BEGIN: ArgNil(); // begin linear traverse
         dLU0(EO_IXT_ALT_BEGIN);
-        m_pDevAltIxt->m_pEntBuffer = m_pDevAltIxt->m_pIdxTree->pFirstH0Buffer();
-        if (m_pDevAltIxt->m_pEntBuffer) {
-          m_pDevAltIxt->m_aEnt = m_pDevAltIxt->m_pEntBuffer->aLeadEntry();
-          if (m_pDevAltIxt->m_aEnt)
-            *(++aiDstk) = 1;
-          else
-            *(++aiDstk) = 0;
-        }
-        else
-          *(++aiDstk) = 0;
+//        m_pDevAltIxt->m_pEntBuffer = m_pDevAltIxt->m_pIdxTree->pFirstH0Buffer();
+//        if (m_pDevAltIxt->m_pEntBuffer) {
+//          m_pDevAltIxt->m_aEnt = m_pDevAltIxt->m_pEntBuffer->aLeadEntry();
+//          if (m_pDevAltIxt->m_aEnt)
+//            *(++aiDstk) = 1;
+//          else
+//            *(++aiDstk) = 0;
+//        }
+//        else
+//          *(++aiDstk) = 0;
+        iRes = iDev_IXT_TRV_BEGIN(pLU,m_pDevAltIxt);
+        *(++aiDstk) = iRes;
         break;//+endCase
 
       case EO_IXT_ALT_NEXT: ArgNil();
         dLU0(EO_IXT_ALT_NEXT);
-        m_pDevAltIxt->m_aEnt =
-          EntBuffer::pMoveToNextEntry(m_pDevAltIxt->m_aEnt,
-                                      &m_pDevAltIxt->m_pEntBuffer);
-        if (m_pDevAltIxt->m_aEnt)
-          *(++aiDstk) = 1;
-        else
-          *(++aiDstk) = 0;
+//        m_pDevAltIxt->m_aEnt =
+//          EntBuffer::pMoveToNextEntry(m_pDevAltIxt->m_aEnt,
+//                                      &m_pDevAltIxt->m_pEntBuffer);
+//        if (m_pDevAltIxt->m_aEnt)
+//          *(++aiDstk) = 1;
+//        else
+//          *(++aiDstk) = 0;
+        iRes = iDev_IXT_TRV_NEXT(pLU,m_pDevAltIxt);
+        *(++aiDstk) = iRes;
         break;//+endCase
 
       case EO_IXT_ALT_PRINT: ArgNil(); // print alt ent
