@@ -73,7 +73,7 @@ i8 iDev_CRW_NEXT(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert crw src to rsb                                                     */
+/* convert crw src to rsb                                           NOT RIGHT */
 /*----------------------------------------------------------------------------*/
 void vDev_CRW_TORSB(void* aLU, void* aIXT)
 {
@@ -630,7 +630,7 @@ i8 iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
-Stz* szDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg)
+void vDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg, i8*& raiDstk)
 {
   _static_
   
@@ -640,10 +640,38 @@ Stz* szDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg)
   HV_Row hRow(pDevRsb->m_pStreamDef,C_ALL);
   RowInflator::vInflateColumn(hRow,pLogicUnit->m_pDevSrcIxt->m_aCrw,iArg);
   
-  Stz* szRes = (Stz*)hRow->m_waColVal[iArg].m_iWrd;
+  Stz* szStr = (Stz*)hRow->m_waColVal[iArg].m_iWrd;
 
-  return szRes;
+  i8 nSize = StrLib::nSize((char*)szStr);
+  char* azDst = (char*)(++raiDstk);
+  StrLib::vCopy(azDst,(char*)szStr);
+  raiDstk += (nSize / 8) + 1;
+  *(++raiDstk) = nSize;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* push column value from m_aAltCrw                                 NOT RIGHT */
+/*----------------------------------------------------------------------------*/
+i8 iDev_ALT_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
+{
+  _static_
+  
+  //DevRSB* pDevRsb = _pDevRSB(aRSB); NOT RIGHT
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  HV_Row hRow(pLogicUnit->m_pDevAltRsb->m_pStreamDef,C_ALL);
+  RowInflator::vInflateColumn(hRow,pLogicUnit->m_pDevAltIxt->m_aCrw,iArg);
+  
+  i8 iRes = hRow->m_waColVal[iArg].m_iWrd;
+
+  return iRes;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

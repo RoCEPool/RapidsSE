@@ -541,8 +541,8 @@ void LogicUnit::vDumpCode(void)
  
 //#ifdef WITH_TRACE_LOGICUNIT
   
-  if (100001 != m_xRluCommon.m_iSql)
-  //if (302 != m_xRluCommon.m_iSql)
+  //if (100001 != m_xRluCommon.m_iSql)
+  if (300 != m_xRluCommon.m_iSql)
     return;
   
   SP_Dte spDate;
@@ -634,7 +634,7 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* pLU)
 /* - - - - - - - - - - - - - RELATIONAL LOGIC UNIT - - - - - - - - - - - - - -*/
 /*============================================================================*/
 
-#if 0
+#if 1
 
   #define dLU3(eCode,iA,iB,iC) \
     if (aRluCommon->m_bTrace) \
@@ -1380,14 +1380,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /*R*/ case EO_COL_SRC_PUSHSTR: ArgGet(iArg); // push column value from m_aSrcCrw
         dLU1(EO_COL_SRC_PUSHSTR,iArg);
-        azArg= (char*)szDev_RSB_COL_PUSHSTR(pLU,m_pDevSrcRsb,iArg);
-        S_PushStr(azArg);
+        vDev_RSB_COL_PUSHSTR(pLU,m_pDevSrcRsb,iArg,aiDstk);
+        //S_PushStr(azArg);
         if (aRluCommon->m_bTrace)
           vDebugPoint();
         break;//+endCase
         
 /*R*/ case EO_COL_ALT_PUSH: ArgGet(iArg); // push column value from m_aAltCrw
-        iRes = iDev_RSB_COL_PUSH(pLU,m_pDevAltRsb,iArg);
+        iRes = iDev_ALT_COL_PUSH(pLU,m_pDevAltRsb,iArg);
         dLU2(EO_COL_ALT_PUSH,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -1396,39 +1396,45 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // crw operators
       case EO_CRW_SRC_BEGIN: ArgNil(); // begin src rsb traverse
         dLU0(EO_CRW_SRC_BEGIN);
-        m_pDevSrcIxt->m_i_Row = -1;
-        m_pDevSrcIxt->m_aCrw = nullptr;
-        m_pDevSrcIxt->m_nRows = m_pDevSrcIxt->m_pCrwBuffer ?
-                         m_pDevSrcIxt->m_pCrwBuffer->nRowCount() : 0;
+//        m_pDevSrcIxt->m_i_Row = -1;
+//        m_pDevSrcIxt->m_aCrw = nullptr;
+//        m_pDevSrcIxt->m_nRows = m_pDevSrcIxt->m_pCrwBuffer ?
+//                         m_pDevSrcIxt->m_pCrwBuffer->nRowCount() : 0;
+        vDev_CRW_BEGIN(pLU,m_pDevSrcIxt);
         break;//+endCase
         
       case EO_CRW_SRC_FETCH: ArgNil(); // fetch m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref
         dLU0(EO_CRW_SRC_FETCH);
-        m_pDevSrcIxt->m_aCrw  =
-          CrwBuffer::pRefdCrw(m_pDevSrcIxt->m_aEnt->rxRef());
+//        m_pDevSrcIxt->m_aCrw  =
+//          CrwBuffer::pRefdCrw(m_pDevSrcIxt->m_aEnt->rxRef());
+        vDev_CRW_FETCH(pLU,m_pDevSrcIxt);
         break;//+endCase
         
       case EO_CRW_ALT_FETCH: ArgNil(); // fetch m_aAltCrw using m_aAltEnt.ref
         dLU0(EO_CRW_ALT_FETCH);
-        m_pDevAltIxt->m_aCrw =
-          CrwBuffer::pRefdCrw(m_pDevAltIxt->m_aEnt->rxRef());
+//        m_pDevAltIxt->m_aCrw =
+//          CrwBuffer::pRefdCrw(m_pDevAltIxt->m_aEnt->rxRef());
+        vDev_CRW_FETCH(pLU,m_pDevAltIxt);
         break;//+endCase
        
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src rsb
         dLU0(EO_CRW_SRC_NEXT);
-        if (++m_pDevSrcIxt->m_i_Row < m_pDevSrcIxt->m_nRows) {
-          m_pDevSrcIxt->m_aCrw =
-            m_pDevSrcIxt->m_pCrwBuffer->aCrw(m_pDevSrcIxt->m_i_Row);
-          *(++aiDstk) = 1;
-        }
-        else {
-          *(++aiDstk) = 0;
-        }
+//        if (++m_pDevSrcIxt->m_i_Row < m_pDevSrcIxt->m_nRows) {
+//          m_pDevSrcIxt->m_aCrw =
+//            m_pDevSrcIxt->m_pCrwBuffer->aCrw(m_pDevSrcIxt->m_i_Row);
+//          *(++aiDstk) = 1;
+//        }
+//        else {
+//          *(++aiDstk) = 0;
+//        }
+        iRes = iDev_CRW_NEXT(pLU,m_pDevSrcIxt);
+        *(++aiDstk) = iRes;
         break;//+endCase
       
       case EO_CRW_SRC_TORSB: // convert crw src to rsb
         dLU0(EO_CRW_SRC_TORSB);
-        RowInflator::vInflateColumns(m_pDevDstRsb->m_pRowSlab,m_pDevSrcIxt->m_aCrw);
+//        RowInflator::vInflateColumns(m_pDevDstRsb->m_pRowSlab,m_pDevSrcIxt->m_aCrw);
+        vDev_CRW_TORSB(pLU,m_pDevSrcIxt);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1631,7 +1637,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_IXT_SRC_LBOUND: ArgNil(); // position in buffer to entry before LBOUND
-        dLU0(EO_IXT_TRV_LBOUND);
+        dLU0(EO_IXT_SRC_LBOUND);
         //iDev_EO_IXT_TRV_LBOUND(pRLU,m_pDevTmpIxt);
         m_pDevSrcIxt->m_pEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
         if (m_pDevSrcIxt->m_pEntBuffer) {
@@ -1662,7 +1668,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_SRC_UBOUND: ArgNil(); // position in buffer to entry for UBOUND
       {
-        dLU0(EO_IXT_TRV_UBOUND);
+        dLU0(EO_IXT_SRC_UBOUND);
         //iDev_EO_IXT_TRV_UBOUND(pRLU,m_pDevTmpIxt);
         EntBuffer* pUpperEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
         if (pUpperEntBuffer) {

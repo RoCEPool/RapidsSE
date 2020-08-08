@@ -59,7 +59,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_RSB_SETBYOFS"_Stz,      (const void *) vDev_RSB_SETBYOFS      },
   
   { "iDev_RSB_COL_PUSH"_Stz,      (const void *) iDev_RSB_COL_PUSH      },
-  { "szDev_RSB_COL_PUSHSTR"_Stz,  (const void *) szDev_RSB_COL_PUSHSTR  },
+  { "vDev_RSB_COL_PUSHSTR"_Stz,   (const void *) vDev_RSB_COL_PUSHSTR   },
   
   { "iLib_DTE_NOW"_Stz,           (const void *) iLib_DTE_NOW           },
   { "szLib_DTE_PRINT"_Stz,        (const void *) szLib_DTE_PRINT        },
