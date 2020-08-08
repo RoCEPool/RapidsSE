@@ -30,6 +30,10 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     600: vGenerateQuery600();    break;
     case     601: vGenerateQuery601();    break;
   
+    case    1700: vGenerate1700();        break;
+    case    1701: vGenerate1701();        break;
+    case    1702: vGenerate1702();        break;
+
     case  100000: vGenerate100000();      break;
     case  100001: vGenerate100001();      break;
 
@@ -1743,6 +1747,30 @@ void LogicUnit::vGenerateQuery601(void)
   
   
   vDumpCode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code test 1700                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerate1700(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code test 1701                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerate1701(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code test 1702                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerate1702(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
