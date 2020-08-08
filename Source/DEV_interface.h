@@ -25,9 +25,9 @@ i8   iDev_IXT_TRV_BEGIN(void* aLU, void* aIXT);
 i8   iDev_IXT_TRV_NEXT(void* aLU, void* aIXT);
 
 i8   iDev_PAY_FETCH_COLI(void* aLU, void* aIXT, i8 iArg);
-Stz* szDev_PAY_FETCH_COLS(void* aLU, void* aIXT, i8 iArg);
+Stz* szDev_PAY_FETCH_COLS(void* aLU, void* aIXT, i8 iArg); // NOT DONE!
 void vDev_PAY_STORE_COLI(void* aLU, void* aIXT, i8 iArg, i8 iTop);
-void vDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg, Stz* szTop);
+void vDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg, Stz* szTop); // NOT DONE!
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev RSB

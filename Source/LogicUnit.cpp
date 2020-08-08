@@ -1594,12 +1594,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_ENTWRK_PRINT: ArgNil(); // print m_oEntWrk
-        //vDev_ENTWRK_PRINT(pRLU,m_pDevTmpIxt);
-#ifdef WITH_TRACE_LOGICUNIT
-        aEnt = m_oEntWrk.aEnt();
-        pIndexDef = m_xpIndexTree->pIndexDef(); // WRONG??
-        vTrace("EntWrk : %s\n"_Stz,spEnt.sz(aEnt,pIndexDef));
-#endif
         vDev_ENTWRK_PRINT(pLU,m_pDevSrcRsb);
         break;//+endCase
         
@@ -1835,13 +1829,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // pay load
 /*I*/ case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from entry payload
         //iDev_PAY_FETCH_COLI(pRLU,m_pDevTmpIxti8, iArg);
-        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
-        iRes = *aPayload;
+//        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
+//        iRes = *aPayload;
+        iRes = iDev_PAY_FETCH_COLI(pLU,m_pDevTmpIxt,iArg);
         dLU2(EO_PAY_FETCH_COLI,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-/*I*/ case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from entry payload
+/*I*/ case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from entry payload NOT DONE!!
       {
         //szDev_PAY_FETCH_COLS(pRLU,m_pDevTmpIxti8, iArg);
         aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
@@ -1863,11 +1858,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //vDev_PAY_STORE_COLI(pRLU,m_pDevTmpIxt,iArg,iRes);
         iTopA = *(aiDstk--);
         dLU2(EO_PAY_STORE_COLI,iArg,iRes);
-        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
-        *aPayload = iTopA;
+//        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
+//        *aPayload = iTopA;
+        vDev_PAY_STORE_COLI(pLU,m_pDevTmpIxt,iArg,iTopA);
         break;//+endCase
       
-/*I*/ case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column into entry payload
+/*I*/ case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column into entry payload NOT DONE!
       {
         //vDev_PAY_STORE_COLS(pRLU,m_pDevTmpIxt,iArg,iRes);
         dLU1(EO_PAY_STORE_COLI,iArg);
