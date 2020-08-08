@@ -1600,9 +1600,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
 /*I*/ case EO_IXT_DEL_ENT: ArgNil(); // delete current m_aEnt from indexTree
-        //vDev_IXT_DEL_ENT(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_DEL_ENT);
-        //m_pDevTmpIxt->m_pIdxTree->vDelete(m_pDevTmpIxt->m_pEntBuffer,m_pDevTmpIxt->m_aEnt);
         vDev_IXT_DEL_ENT(pLU,m_pDevTmpIxt);
         break;//+endCase
 
@@ -1614,15 +1612,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       {
         //vDev_IXT_INS_ENT(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_INS_ENT);
-#ifdef WITH_TRACE_LOGICUNIT
-        SP_Ent spEnt;
-        vTrace("Inserting entry"_Stz);
-        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
-#endif
-        m_pDevTmpIxt->m_aEnt = m_pDevTmpIxt->m_pIdxTree->aInsertEntry(m_oEntWrk.aEnt());
-#ifdef WITH_TRACE_LOGICUNIT
-        vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pDevTmpIxt->m_aEnt,m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
-#endif
+//#ifdef WITH_TRACE_LOGICUNIT
+//        SP_Ent spEnt;
+//        vTrace("Inserting entry"_Stz);
+//        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
+//#endif
+//        m_pDevTmpIxt->m_aEnt = m_pDevTmpIxt->m_pIdxTree->aInsertEntry(m_oEntWrk.aEnt());
+//#ifdef WITH_TRACE_LOGICUNIT
+//        vTrace("\n\nEnt : %s\n"_Stz,spEnt.sz(m_pDevTmpIxt->m_aEnt,m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
+//#endif
+        vDev_IXT_INS_ENT(pLU,m_pDevTmpIxt);
         ASSERT(m_pDevTmpIxt->m_aEnt);
       }
         break;//+endCase
