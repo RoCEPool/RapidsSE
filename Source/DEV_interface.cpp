@@ -19,9 +19,15 @@ i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
   
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
-  i8 iRes = pDevIxt->e_ENT_COMPARE(_pLogicUnit(aLU));
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
   
-  return iRes;
+  Key* aEntKey = pDevIxt->m_aEnt->aKey();
+  Key* aWrkKey = pLogicUnit->pEntWrk()->aKey();
+  
+  eKC eCmp = Key::eCompare(aEntKey,aWrkKey);
+
+  return (i8)eCmp;
 }
 
 /*----------------------------------------------------------------------------*/
