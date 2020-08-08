@@ -1600,12 +1600,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         pIndexDef = m_xpIndexTree->pIndexDef(); // WRONG??
         vTrace("EntWrk : %s\n"_Stz,spEnt.sz(aEnt,pIndexDef));
 #endif
+        vDev_ENTWRK_PRINT(pLU,m_pDevSrcRsb);
         break;//+endCase
         
       case EO_ENTWRK_RESET: ArgNil(); // reset m_oEntWrk
-        //vDev_ENTWRK_RESET(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENTWRK_RESET);
-        //m_oEntWrk.vReset();
         vDev_ENTWRK_RESET(pLU,m_pDevSrcRsb);
         break;//+endCase
                               
