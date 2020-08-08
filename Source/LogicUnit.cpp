@@ -1615,32 +1615,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /*I*/ case EO_IXT_TRV_BEGIN: ArgNil(); // begin linear traverse
-        //iDev_IXT_TRV_BEGIN(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_TRV_BEGIN);
-//        m_pDevTmpIxt->m_pEntBuffer = m_pDevTmpIxt->m_pIdxTree->pFirstH0Buffer();
-//        if (m_pDevTmpIxt->m_pEntBuffer) {
-//          m_pDevTmpIxt->m_aEnt = m_pDevTmpIxt->m_pEntBuffer->aLeadEntry();
-//          if (m_pDevTmpIxt->m_aEnt)
-//            *(++aiDstk) = 1;
-//          else
-//            *(++aiDstk) = 0;
-//        }
-//        else
-//          *(++aiDstk) = 0;
         iRes = iDev_IXT_TRV_BEGIN(pLU,m_pDevTmpIxt);
         *(++aiDstk) = iRes;
         break;//+endCase
         
 /*I*/case EO_IXT_TRV_NEXT: ArgNil(); // traverse to next entry
-        //iDev_IXT_TRV_NEXT(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_TRV_NEXT);
-//        m_pDevTmpIxt->m_aEnt =
-//           EntBuffer::pMoveToNextEntry(m_pDevTmpIxt->m_aEnt,
-//                                       &m_pDevTmpIxt->m_pEntBuffer);
-//        if (m_pDevTmpIxt->m_aEnt)
-//          *(++aiDstk) = 1;
-//        else
-//          *(++aiDstk) = 0;
         iRes = iDev_IXT_TRV_NEXT(pLU,m_pDevTmpIxt);
         *(++aiDstk) = iRes;
         break;//+endCase
