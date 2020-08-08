@@ -11,7 +11,7 @@ void vDev_ENT_POSPRIOR(void* aLU, void* aIXT);
 void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT);
 void* aDev_ENT_PUSH(void* aLU, void* aIXT);
 i8   iDev_ENT_PUSHELMI0(void* aLU, void* aIXT);
-Stz* szDev_ENT_PUSHELMS0(void* aLU, void* aIXT); // NOT DONE!!
+Stz* szDev_ENT_PUSHELMS0(void* aLU, void* aIXT); // NOT COMPLETE!!
 i8   iDev_ENT_PUSHOFS(void* aLU, void* aIXT);
 
 void vDev_IXT_DEL_ENT(void* aLU, void* aIXT);

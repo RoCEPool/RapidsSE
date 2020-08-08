@@ -1452,20 +1452,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iDev_ENT_PUSHELMI0(pLU,m_pDevTmpIxt);
         break;//+endCase
         
-/*I*/ case EO_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str        NOT DONE!!
+/*I*/ case EO_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str    NOT COMPLETE!!
       {
-        //szDev_ENT_PUSHELMS0(pRLU,m_pDevTmpIxt);
         char acFlipped[128];
         dLU0(EO_ENT_PUSHELMS0);
-        char* azSrc = (char*)m_pDevTmpIxt->m_aEnt->aKey()->szGetStrElm();
-      
+        azSrc = (char*)szDev_ENT_PUSHELMS0(pLU,m_pDevTmpIxt);
         StrLib::iWordFlipBack(acFlipped,azSrc);
-      
-//        i8 nSize = StrLib::nSize(acFlipped);
-//        char* azDst = (char*)(++aiDstk);
-//        StrLib::vCopy(azDst,acFlipped);
-//        aiDstk++;
-//        *(++aiDstk) = nSize;
         S_PushStr((char*)acFlipped);
         if (aRluCommon->m_bTrace)
           vDebugPoint();
@@ -1473,9 +1465,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
 /*I*/ case EO_ENT_PUSHOFS: ArgNil(); // push entry offset
-        //iDev_ENT_PUSHOFS(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_PUSHOFS);
-        //iRes = m_pDevTmpIxt->m_aEnt->iBuffer();
         *(++aiDstk) = iDev_ENT_PUSHOFS(pLU,m_pDevTmpIxt);
         break;//+endCase
         
@@ -1801,9 +1791,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*I*/ case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from entry payload NOT DONE!!
       {
         //szDev_PAY_FETCH_COLS(pRLU,m_pDevTmpIxti8, iArg);
-        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
-        char* azSrc = (char*)aPayload;
-        i8 nSize = StrLib::nSize(azSrc);
+//        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
+//        char* azSrc = (char*)aPayload;
+        azSrc = (char*)szDev_PAY_FETCH_COLS(pLU,m_pDevTmpIxt, iArg);
+        nSize = StrLib::nSize(azSrc);
         ASSERT(nSize < 8);
         dLU2(EO_PAY_FETCH_COLS,iArg,(i8)azSrc);
 //        char* azDst = (char*)(++aiDstk);
