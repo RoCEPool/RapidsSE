@@ -1122,7 +1122,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(EO_PRINT,iTopA);
-        //vTrace("[Q%lld.%lld] %lld\n"_Stz,aRluCommon->m_iSql,aRluCommon->m_i_Slot,iTopA);
+
         printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
 #endif
         break;//+endCase
@@ -1225,7 +1225,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*l*/ case EO_SLEEP: ArgNil(); // sleep for top seconds
         iTopA = *(aiDstk--);
         dLU1(EO_SLEEP,iTopA);
-        //sleep((u4)iTopA);
         vLib_SLEEP(pLU,iTopA);
         break;//+endCase
               
@@ -1248,8 +1247,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
 /*r*/ case EO_ERROR: ArgNil(); // error marker
         dLU0(EO_ERROR);
-//        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-//               "Code compiled with error"_Stz);
         vLib_ERROR(pLU,"Code compiled with error"_Stz);
         break;//+endCase
         
@@ -1284,9 +1281,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*l*/ case EO_HSH_ADD_HASHI: ArgNil(); // add hash of top int to running hash
         iTopA = *(aiDstk--);
         dLU1(EO_HSH_ADD_HASHI,iTopA);
-//        iRes = HshLib::iHash((byte*)&iTopA,sizeof(w8));
-//        aRluCommon->m_iHash += iRes;
-//        dLU3(EO_HSH_ADD_HASHI,iTopA,iRes,m_iHash);
         vLib_HSH_ADD_HASHI(pLU,iTopA);
         break;//+endCase
         
@@ -1299,8 +1293,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // partitioning
 /*l*/ case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
         dLU0(EO_PTN_CALC);
-//        aRluCommon->m_i_Ptn =
-//          PtnLib::iPartition(aRluCommon->m_iHash,aRluCommon->m_nPtns);
         vLib_PTN_CALC(pLU);
         break;//+endCase
 
@@ -1317,7 +1309,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*l*/ case EO_PTN_RUNNING: ArgNil(); // mix top into running m_iHash
         iTopA = *(aiDstk--);
         dLU0(EO_PTN_RUNNING);
-//        PtnLib::vRunning(&aRluCommon->m_iHash,iTopA);
         vLib_PTN_RUNNING(pLU,iTopA);
         break;//+endCase
 
@@ -1325,12 +1316,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // timer
 /*r*/ case EO_TMR_START: ArgNil(); // timer start
         dLU0(EO_TMR_START);
-        //m_oTimer.vStart();
         vRlu_TMR_START(pLU);
         break;//+endCase
         
 /*r*/ case EO_TMR_NSECS: ArgNil(); // push timer nanoseconds
-        //iRes = m_oTimer.iNanoseconds();
         iRes = iRlu_TMR_NSECS(pLU);
         dLU1(EO_TMR_NSECS,iRes);
         *(++aiDstk) = iRes;
@@ -1338,18 +1327,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /*r*/ case EO_TMR_UPDATE: ArgNil(); // timer update
         dLU0(EO_TMR_UPDATE);
-        //m_oTimer.vUpdate();
         vRlu_TMR_UPDATE(pLU);
         break;//+endCase
         
 /*r*/ case EO_TMR_AGG_ADD: ArgNil(); // add timer to agg timer
         dLU0(EO_TMR_AGG_ADD);
-        //m_oAggTimer.vAdd(&m_oTimer);
         vRlu_TMR_AGG_ADD(pLU);
         break;//+endCase
         
 /*r*/ case EO_TMR_AGG_NSECS: ArgNil(); // push agg nanoseconds
-        //iRes = m_oAggTimer.iNanoseconds();
         iRes = iRlu_TMR_AGG_NSECS(pLU);
         dLU1(EO_TMR_AGG_NSECS,iRes);
         *(++aiDstk) = iRes;
@@ -1357,7 +1343,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /*r*/ case EO_TMR_AGG_RESET: ArgNil(); // reset agg timer
         dLU0(EO_TMR_AGG_RESET);
-        //m_oAggTimer.vReset();
         vRlu_TMR_AGG_RESET(pLU);
         break;//+endCase
           
@@ -1381,7 +1366,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*R*/ case EO_COL_SRC_PUSHSTR: ArgGet(iArg); // push column value from m_aSrcCrw
         dLU1(EO_COL_SRC_PUSHSTR,iArg);
         vDev_RSB_COL_PUSHSTR(pLU,m_pDevSrcRsb,iArg,aiDstk);
-        //S_PushStr(azArg);
         if (aRluCommon->m_bTrace)
           vDebugPoint();
         break;//+endCase
@@ -1396,44 +1380,27 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // crw operators
       case EO_CRW_SRC_BEGIN: ArgNil(); // begin src rsb traverse
         dLU0(EO_CRW_SRC_BEGIN);
-//        m_pDevSrcIxt->m_i_Row = -1;
-//        m_pDevSrcIxt->m_aCrw = nullptr;
-//        m_pDevSrcIxt->m_nRows = m_pDevSrcIxt->m_pCrwBuffer ?
-//                         m_pDevSrcIxt->m_pCrwBuffer->nRowCount() : 0;
         vDev_CRW_BEGIN(pLU,m_pDevSrcIxt);
         break;//+endCase
         
       case EO_CRW_SRC_FETCH: ArgNil(); // fetch m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref
         dLU0(EO_CRW_SRC_FETCH);
-//        m_pDevSrcIxt->m_aCrw  =
-//          CrwBuffer::pRefdCrw(m_pDevSrcIxt->m_aEnt->rxRef());
         vDev_CRW_FETCH(pLU,m_pDevSrcIxt);
         break;//+endCase
         
       case EO_CRW_ALT_FETCH: ArgNil(); // fetch m_aAltCrw using m_aAltEnt.ref
         dLU0(EO_CRW_ALT_FETCH);
-//        m_pDevAltIxt->m_aCrw =
-//          CrwBuffer::pRefdCrw(m_pDevAltIxt->m_aEnt->rxRef());
         vDev_CRW_FETCH(pLU,m_pDevAltIxt);
         break;//+endCase
        
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src rsb
         dLU0(EO_CRW_SRC_NEXT);
-//        if (++m_pDevSrcIxt->m_i_Row < m_pDevSrcIxt->m_nRows) {
-//          m_pDevSrcIxt->m_aCrw =
-//            m_pDevSrcIxt->m_pCrwBuffer->aCrw(m_pDevSrcIxt->m_i_Row);
-//          *(++aiDstk) = 1;
-//        }
-//        else {
-//          *(++aiDstk) = 0;
-//        }
         iRes = iDev_CRW_NEXT(pLU,m_pDevSrcIxt);
         *(++aiDstk) = iRes;
         break;//+endCase
       
       case EO_CRW_SRC_TORSB: // convert crw src to rsb
         dLU0(EO_CRW_SRC_TORSB);
-//        RowInflator::vInflateColumns(m_pDevDstRsb->m_pRowSlab,m_pDevSrcIxt->m_aCrw);
         vDev_CRW_TORSB(pLU,m_pDevSrcIxt);
         break;//+endCase
         
