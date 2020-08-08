@@ -382,6 +382,9 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
+  i8 iArg;
+  i8 i_Label;
+  
   s4K sReplaced;
   char caInt[32];
   
@@ -389,11 +392,20 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     
     eEO eCode = m_pLogicUnit->eCode(i_Code);
 
+    i_Label = m_pLogicUnit->iFindLabel(i_Code);
+    if (C_UNKNOWN != i_Label && m_pLogicUnit->bLabelIsDst(i_Label)) {
+      StrLib::vAppendString(&m_azSrcCrs,"L_");
+      StrLib::vAppendDecimal(&m_azSrcCrs,i_Code);
+      StrLib::vAppendString(&m_azSrcCrs,": // ");
+      StrLib::vAppendString(&m_azSrcCrs,(char*)m_pLogicUnit->szLabelNm(i_Label));
+      StrLib::vAppendString(&m_azSrcCrs,"\n");
+    }
+    
     if (EO_CALL == eCode) {
       
-      i8 iArg = m_pLogicUnit->iCodeArg(i_Code+1);
-      i8 i_Label = m_pLogicUnit->iFindLabel(iArg);
-      
+      iArg = m_pLogicUnit->iCodeArg(i_Code+1);
+      i_Label = m_pLogicUnit->iFindLabel(iArg);
+
       v_CallSbr(i_Label);
 
       i_Code += EoArgs[eCode].m_nArgBytes;
@@ -407,7 +419,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 
     char* azFrag = (char*)gszaEoFragments[eCode];
     
-    if (EA_INT == EoArgs[eCode].m_eArgument) {
+    if (EA_INT == EoArgs[eCode].m_eArgument ||
+        EA_LABEL == EoArgs[eCode].m_eArgument) {
       i8 iArg = m_pLogicUnit->iCodeArg(i_Code+1);
       StrLib::bReplace(sReplaced.azChar(),azFrag,
                        "iArg",StrLib::wToString(iArg,caInt));
@@ -551,6 +564,8 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #define dLU2(x,a,b) "
   "\n  #define dLU3(x,a,b,c) "
   "\n  #define nullptr 0"
+  "\n"
+  "\n  #define JumpTo(__iArg) goto L_##__iArg;"
   "\n"
   "";
   

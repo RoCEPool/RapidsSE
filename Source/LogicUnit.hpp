@@ -268,6 +268,7 @@ namespace Expressions
     i8   iFindLabel(i8 i_Code);
     i8   iFindLabel(Stz* szLabelNm);
     i8   iLabelCode(i8 i_Label);
+    bool bLabelIsDst(i8 i_Label);
     bool bLabelIsSbr(i8 i_Label);
     i8   nLabels(void);
     Stz* szLabelNm(i8 i_Label);
