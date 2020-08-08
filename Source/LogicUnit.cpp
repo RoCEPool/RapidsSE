@@ -1926,15 +1926,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
 /*R*/ case EO_RSB_SRC_NEXT: ArgNil(); // move to next src rsb
-        //iDev_RSB_NEXT(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_NEXT);
-//        if (++m_pDevSrcRsb->m_i_Row  < m_pDevSrcRsb->m_nRows) {
-//          m_pDevSrcRsb->m_aRsb = m_pDevSrcRsb->m_pRowSlab->aRsbAdr(m_pDevSrcRsb->m_i_Row );
-//          *(++aiDstk) = 1;
-//        }
-//        else {
-//          *(++aiDstk) = 0;
-//        }
         iRes = iDev_RSB_NEXT(pLU,m_pDevSrcRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -1942,7 +1934,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*R*/ case EO_RSB_SRC_PUSHOFS: ArgNil(); // push offset of source rsb
         //iDev_RSB_PUSHOFS(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_PUSHOFS);
-        iRes = m_pDevSrcRsb->m_pRowSlab->iOfsOfRsb(m_pDevSrcRsb->m_aRsb);
+        //iRes = m_pDevSrcRsb->m_pRowSlab->iOfsOfRsb(m_pDevSrcRsb->m_aRsb);
+        iRes = iDev_RSB_PUSHOFS(pLU,m_pDevSrcRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
 
