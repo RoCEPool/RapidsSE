@@ -1581,10 +1581,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ENTWRK_CREATEPAY: ArgGet(iArg); // create a payload in entwrk
         //vDev_ENTWRK_CREATEPAY(pRLU,m_pDevTmpIxt,iArg);
         dLU1(EO_ENTWRK_CREATEPAY,iArg);
-        
-        //m_oEntWrk.vPayload(true);
-        //m_oEntWrk.vPayloadBytes(iArg);
-        
         vDev_ENTWRK_CREATEPAY(pLU,m_pDevSrcRsb,iArg);
         break;//+endCase
                 
@@ -1592,7 +1588,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //vDev_ENTWRK_POPOFS(pRLU,m_pDevTmpIxt,iArg);
         iTopA = *(aiDstk--);
         dLU1(EO_ENTWRK_POPOFS,iTopA);
-        m_oEntWrk.vBuffer(iTopA);
+        //m_oEntWrk.vBuffer(iTopA);
+        vDev_ENTWRK_POPOFS(pLU,m_pDevSrcRsb,iTopA);
         break;//+endCase
 
       case EO_ENTWRK_POPREF: ArgNil(); // not yet implemented
