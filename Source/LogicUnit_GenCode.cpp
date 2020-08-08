@@ -1784,6 +1784,9 @@ void LogicUnit::vGenerate100001(void)
   
   vDefineLabel("RTN_TST:"_Stz);
   vAddCode(EO_INIT);
+  //vAddCodeLabel(EO_JMP, "LBL_A:"_Stz);
+
+  vDefineLabel("LBL_A:"_Stz);
   vAddCodeArg(EO_RANDOM,100);
   vAddCode(EO_PRINT);
   vAddCode(EO_DTE_NOW);

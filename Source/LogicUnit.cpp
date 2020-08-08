@@ -74,6 +74,7 @@ LogicUnit::LogicUnit(Task* pTask)
   for (i8 i_Label = 0; i_Label < C_LOGIC_LABEL; i_Label++) {
     m_xaJumpLabel[i_Label].m_bDefined = false;
     m_xaJumpLabel[i_Label].m_bSubroutine = false;
+    m_xaJumpLabel[i_Label].m_bDestination = false;
     m_xaJumpLabel[i_Label].m_i_Chain = C_UNKNOWN;
   }
 
@@ -366,6 +367,8 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
   
   if (EO_CALL == eCode)
     m_xaJumpLabel[i_Label].m_bSubroutine = true;
+  else if (eCode >= EO_JMP && eCode <= EO_JMP_GREATER)
+    m_xaJumpLabel[i_Label].m_bDestination = true;
 
   //vPrintLabels();
 
@@ -499,12 +502,14 @@ void LogicUnit::vPrintLabels(void)
   
 //#ifdef WITH_TRACE_LOGICUNIT
   for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    vTrace("  [%02lld] %s %lld: %4lld%s\n"_Stz,
+    vTrace("  [%02lld] %s %lld: %4lld%s%s\n"_Stz,
            i_Label,
            m_xaJumpLabel[i_Label].m_sLabelNm.szStz(),
            (i8)m_xaJumpLabel[i_Label].m_bDefined,
            m_xaJumpLabel[i_Label].m_i_Chain,
-           m_xaJumpLabel[i_Label].m_bSubroutine ? " subroutine" : "");
+           m_xaJumpLabel[i_Label].m_bSubroutine ? " subroutine" : "",
+           m_xaJumpLabel[i_Label].m_bDestination ? " destination" : ""
+           );
 //#endif
   
 }
