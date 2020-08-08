@@ -296,7 +296,7 @@ void vDev_PAY_STORE_COLI(void* aLU, void* aIXT, i8 iArg, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* store a column into entry payload                                          */
 /*----------------------------------------------------------------------------*/
-void vDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg, Stz* szTop)
+Stz* szDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg)
 {
   _static_
   
@@ -304,7 +304,7 @@ void vDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg, Stz* szTop)
 
   i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
 
-  StrLib::vCopy((char*)aPayload,(char*)szTop);
+  return (Stz*)aPayload;
 }
 
 

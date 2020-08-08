@@ -733,6 +733,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 i_Cell_ntv;
   eKC eCmp;
   i8 nSize;
+  Stz* szDst;
   char* azDst;
   char* azSrc;
   char* azArg;
@@ -1788,23 +1789,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
         
-/*I*/ case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from entry payload NOT DONE!!
-      {
-        //szDev_PAY_FETCH_COLS(pRLU,m_pDevTmpIxti8, iArg);
-//        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
-//        char* azSrc = (char*)aPayload;
+/*I*/ case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from entry payload
         azSrc = (char*)szDev_PAY_FETCH_COLS(pLU,m_pDevTmpIxt, iArg);
         nSize = StrLib::nSize(azSrc);
         ASSERT(nSize < 8);
         dLU2(EO_PAY_FETCH_COLS,iArg,(i8)azSrc);
-//        char* azDst = (char*)(++aiDstk);
-//        StrLib::vCopy(azDst,azSrc);
-//        aiDstk++;
-//        *(++aiDstk) = nSize;
         S_PushStr(azSrc);
         if (aRluCommon->m_bTrace)
           vDebugPoint();
-      }
         break;//+endCase
         
 /*I*/ case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column into entry payload
@@ -1824,8 +1816,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        char* azSrc = (char*)(--aiDstk);
 //        aiDstk--;
 //        StrLib::vCopy((char*)aPayload,azSrc);
-        aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
-        S_PopStr((char*)aPayload);
+        //aPayload = m_pDevTmpIxt->m_aEnt->aiPayCell(iArg);
+        szDst = szDev_PAY_STORE_COLS(pLU,m_pDevTmpIxt,iArg);
+        S_PopStr((char*)szDst);
         vDebugPoint();
       }
         break;//+endCase
