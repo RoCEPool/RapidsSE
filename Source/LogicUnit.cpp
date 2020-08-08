@@ -1437,15 +1437,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
 /*I*/ case EO_ENT_NEXT: ArgNil(); // move to next m_pEnt
-        //iDev_ENT_NEXT(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_NEXT);
-//        m_pDevTmpIxt->m_aEnt =
-//          EntBuffer::pMoveToNextEntry(m_pDevTmpIxt->m_aEnt,
-//                                      &m_pDevTmpIxt->m_pEntBuffer);
-//        if (m_pDevTmpIxt->m_aEnt)
-//          *(++aiDstk) = 1;
-//        else
-//          *(++aiDstk) = 0;
         iRes = iDev_ENT_NEXT(pLU,m_pDevTmpIxt);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -1453,9 +1445,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*I*/ case EO_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
         //vDev_ENT_POSPRIOR(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_POSPRIOR);
-        m_pDevTmpIxt->m_aEnt =
-          m_pDevTmpIxt->m_pIdxTree->aPositionPriorEntry(m_oEntWrk.aKey(),
-                                                        &m_pDevTmpIxt->m_pEntBuffer);
+//        m_pDevTmpIxt->m_aEnt =
+//          m_pDevTmpIxt->m_pIdxTree->aPositionPriorEntry(m_oEntWrk.aKey(),
+//                                                        &m_pDevTmpIxt->m_pEntBuffer);
+        vDev_ENT_POSPRIOR(pLU,m_pDevTmpIxt);
         break;//+endCase
         
 /*I*/ case EO_ENT_PUSH: ArgNil(); // push entry on the stack
