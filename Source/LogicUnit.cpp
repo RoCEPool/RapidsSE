@@ -1554,12 +1554,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       {
         //vDev_ENTWRK_APPENDELM(pRLU,m_pDevTmpIxt);
         dLU1(EO_ENTWRK_APPENDELM,iArg);
-        m_oEntWrk.vAppendElement(m_pDevSrcRsb->m_aRsb, &m_pDevSrcRsb->m_pRowSlab->m_oStreamPix, iArg);
+        //m_oEntWrk.vAppendElement(m_pDevSrcRsb->m_aRsb,
+        //  &m_pDevSrcRsb->m_pRowSlab->m_oStreamPix, iArg);
         
-#ifdef WITH_TRACE_LOGICUNIT
-        SP_Ent spEnt;
-        vTrace("\n\nEntWrk : %s\n"_Stz,spEnt.sz(m_oEntWrk.aEnt(),m_pDevTmpIxt->m_pIdxTree->pIndexDef()));
-#endif
+        vDev_ENTWRK_APPENDELM(pLU,m_pDevSrcRsb,iArg);
         break;//+endCase
       }
         
@@ -1567,10 +1565,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //vDev_ENTWRK_APPENDELMI(pRLU,m_pDevTmpIxt,iTopA);
         iTopA = *(aiDstk--);
         dLU1(EO_ENTWRK_APPENDELMI,iTopA);
-        m_oEntWrk.vAppendElementInt(m_pDevSrcRsb->m_aRsb,iTopA);
+        //m_oEntWrk.vAppendElementInt(m_pDevSrcRsb->m_aRsb,iTopA);
+        vDev_ENTWRK_APPENDELMI(pLU,m_pDevSrcRsb,iTopA);
         break;//+endCase
         
-/*R*/ case EO_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)
+/*R*/ case EO_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)  NOT DONE!!
       {
         //vDev_ENTWRK_APPENDELMS(pRLU,m_pDevTmpIxt,szTop);
         dLU0(EO_ENTWRK_APPENDELMS);

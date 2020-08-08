@@ -34,7 +34,7 @@ void vDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg, Stz* szTop);
 
 void vDev_ENTWRK_APPENDELM(void* aLU, void* aRSB, i8 iArg);
 void vDev_ENTWRK_APPENDELMI(void* aLU, void* aRSB, i8 iTop);
-void vDev_ENTWRK_APPENDELMS(void* aLU, void* aRSB, Stz* szTop);
+void vDev_ENTWRK_APPENDELMS(void* aLU, void* aRSB, Stz* szTop);// NOT DONE!!
 void vDev_ENTWRK_CREATEPAY(void* aLU, void* aRSB, i8 iArg);
 void vDev_ENTWRK_POPOFS(void* aLU, void* aRSB, i8 iTop);
 void vDev_ENTWRK_PRINT(void* aLU, void* aRSB);
