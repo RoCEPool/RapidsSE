@@ -1923,9 +1923,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*R*/ case EO_RSB_SRC_BEGIN: ArgNil(); // begin src rsb traverse
         //vDev_RSB_BEGIN(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_BEGIN);
-        m_pDevSrcRsb->m_i_Row = -1;
-        m_pDevSrcRsb->m_aRsb  = nullptr;
-        m_pDevSrcRsb->m_nRows = m_pDevSrcRsb->m_pRowSlab ? m_pDevSrcRsb->m_pRowSlab->nRows() : 0;
+        vDev_RSB_BEGIN(pLU,m_pDevSrcRsb);
+//        m_pDevSrcRsb->m_i_Row = -1;
+//        m_pDevSrcRsb->m_aRsb  = nullptr;
+//        m_pDevSrcRsb->m_nRows = m_pDevSrcRsb->m_pRowSlab ? m_pDevSrcRsb->m_pRowSlab->nRows() : 0;
         break;//+endCase
 
 /*R*/ case EO_RSB_SRC_NEXT: ArgNil(); // move to next src rsb
