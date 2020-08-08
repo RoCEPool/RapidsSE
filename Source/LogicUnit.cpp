@@ -1602,7 +1602,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*I*/ case EO_IXT_DEL_ENT: ArgNil(); // delete current m_aEnt from indexTree
         //vDev_IXT_DEL_ENT(pRLU,m_pDevTmpIxt);
         dLU0(EO_IXT_DEL_ENT);
-        m_pDevTmpIxt->m_pIdxTree->vDelete(m_pDevTmpIxt->m_pEntBuffer,m_pDevTmpIxt->m_aEnt);
+        //m_pDevTmpIxt->m_pIdxTree->vDelete(m_pDevTmpIxt->m_pEntBuffer,m_pDevTmpIxt->m_aEnt);
+        vDev_IXT_DEL_ENT(pLU,m_pDevTmpIxt);
         break;//+endCase
 
 /*I*/ case EO_IXT_DUMP: ArgGet(iArg); // dump index tree
