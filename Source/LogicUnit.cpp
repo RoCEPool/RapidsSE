@@ -1365,11 +1365,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /*R*/ case EO_COL_SRC_PUSHSTR: ArgGet(iArg); // push column value from m_aSrcCrw NOT DONE!!
       {
-        //vDev_RSB_COL_PUSHSTR(RLU,m_pDevSrcRsb,iArg);
-        HV_Row hRow(m_pDevSrcRsb->m_pStreamDef,C_ALL);
-        RowInflator::vInflateColumn(hRow,m_pDevSrcIxt->m_aCrw,iArg);
-        azArg = (char*)hRow->m_waColVal[iArg].m_iWrd;
         dLU1(EO_COL_SRC_PUSHSTR,iArg);
+        //vDev_RSB_COL_PUSHSTR(RLU,m_pDevSrcRsb,iArg);
+//        HV_Row hRow(m_pDevSrcRsb->m_pStreamDef,C_ALL);
+//        RowInflator::vInflateColumn(hRow,m_pDevSrcIxt->m_aCrw,iArg);
+//        azArg = (char*)hRow->m_waColVal[iArg].m_iWrd;
+      
+        azArg= (char*)szDev_RSB_COL_PUSHSTR(pLU,m_pDevSrcRsb,iArg);
 //        i8 nSize = StrLib::nSize((char*)iRes);
 //        char* azDst = (char*)(++aiDstk);
 //        StrLib::vCopy(azDst,(char*)iRes);
@@ -1547,22 +1549,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ENTWRK_APPENDELMI(pLU,m_pDevSrcRsb,iTopA);
         break;//+endCase
         
-/*R*/ case EO_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)  NOT DONE!!
-      {
-        //vDev_ENTWRK_APPENDELMS(pRLU,m_pDevTmpIxt,szTop);
+/*R*/ case EO_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)
         dLU0(EO_ENTWRK_APPENDELMS);
-//        iTopA = *(aiDstk--);
-//        dLU1(eCode,iTopA);
-//        Stz* szStr = (Stz*)(aiDstk-iTopA/8);
-//        m_oEntWrk.vAppendElementStz(m_pDevSrcRsb->m_aRsb,szStr);
-//        aiDstk -= (iTopA/8) + 1;
         S_UseStr(azSrc);
-        //m_oEntWrk.vAppendElementStz(m_pDevSrcRsb->m_aRsb,(Stz*)azSrc);
         vDev_ENTWRK_APPENDELMS(pLU,m_pDevSrcRsb,(Stz*)azSrc);
         S_UseEnd();
         if (aRluCommon->m_bTrace)
           vDebugPoint();
-      }
         break;//+endCase
         
       case EO_ENTWRK_CREATEPAY: ArgGet(iArg); // create a payload in entwrk
