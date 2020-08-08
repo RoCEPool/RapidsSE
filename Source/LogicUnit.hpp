@@ -283,7 +283,7 @@ namespace Expressions
   
     // TPCH Queries
     void vGenerateQuery101(void);
-    void vGenerateQuery102(void);
+    void vGenerateQuery103(void);
     void vGenerateQuery104(void);
     void vGenerateQuery110(void);
     void vGenerateQuery112(void);
