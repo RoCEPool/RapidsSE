@@ -1386,15 +1386,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           vDebugPoint();
         break;//+endCase
         
-      case EO_COL_ALT_PUSH: ArgGet(iArg); // push column value from m_aAltCrw
-      {
-//        HV_Row hRow(m_pDevAltRsb->m_pStreamDef,C_ALL);
-//        RowInflator::vInflateColumn(hRow,m_pDevAltIxt->m_aCrw,iArg);
-//        iRes = hRow->m_waColVal[iArg].m_iWrd;
+/*R*/ case EO_COL_ALT_PUSH: ArgGet(iArg); // push column value from m_aAltCrw
         iRes = iDev_RSB_COL_PUSH(pLU,m_pDevAltRsb,iArg);
         dLU2(EO_COL_ALT_PUSH,iArg,iRes);
         *(++aiDstk) = iRes;
-      }
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
