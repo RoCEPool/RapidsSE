@@ -21,42 +21,74 @@ void vDev_COL_NOT_PROJECT(void* aLU, i8 iArg)
 
 
 /*----------------------------------------------------------------------------*/
-/*                                         */
+/* begin rsb traverse                                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_CRW_BEGIN(void* aLU, void* aRSB)
+void vDev_CRW_BEGIN(void* aLU, void* aIXT)
 {
   _static_
 
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  
+  pDevIxt->m_i_Row = -1;
+  pDevIxt->m_aCrw = nullptr;
+  pDevIxt->m_nRows = pDevIxt->m_pCrwBuffer ?
+                   pDevIxt->m_pCrwBuffer->nRowCount() : 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                         */
+/* fetch m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref                             */
 /*----------------------------------------------------------------------------*/
-void vDev_CRW_FETCH(void* aLU, void* aRSB)
+void vDev_CRW_FETCH(void* aLU, void* aIXT)
 {
   _static_
   
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  
+  pDevIxt->m_aCrw  =
+    CrwBuffer::pRefdCrw(pDevIxt->m_aEnt->rxRef());
+
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                         */
+/*  move to next src rsb                                                      */
 /*----------------------------------------------------------------------------*/
-i8 iDev_CRW_NEXT(void* aLU, void* aRSB)
+i8 iDev_CRW_NEXT(void* aLU, void* aIXT)
 {
   _static_
   
-  return -1;
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+
+  i8 iRes;
+  
+  if (++pDevIxt->m_i_Row < pDevIxt->m_nRows) {
+    pDevIxt->m_aCrw =
+      pDevIxt->m_pCrwBuffer->aCrw(pDevIxt->m_i_Row);
+    iRes = 1;
+  }
+  else {
+    iRes = 0;
+  }
+
+  return iRes;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                         */
+/* convert crw src to rsb                                                     */
 /*----------------------------------------------------------------------------*/
-void vDev_CRW_TORSB(void* aLU, void* aRSB)
+void vDev_CRW_TORSB(void* aLU, void* aIXT)
 {
   _static_
   
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  RowInflator::vInflateColumns(pLogicUnit->m_pDevDstRsb->m_pRowSlab,
+                               pDevIxt->m_aCrw);
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                                dev IXT                                     */

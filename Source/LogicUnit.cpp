@@ -1426,7 +1426,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         }
         break;//+endCase
       
-      case EO_CRW_SRC_TORSB:
+      case EO_CRW_SRC_TORSB: // convert crw src to rsb
         dLU0(EO_CRW_SRC_TORSB);
         RowInflator::vInflateColumns(m_pDevDstRsb->m_pRowSlab,m_pDevSrcIxt->m_aCrw);
         break;//+endCase
