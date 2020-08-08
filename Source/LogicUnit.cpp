@@ -1449,13 +1449,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
 /*I*/ case EO_ENT_SRC_PUSH: ArgNil(); // push entry on the stack
-        //aDev_ENT_PUSH(pRLU,m_pDevSrcIxt);
         dLU0(EO_ENT_SRC_PUSH);
         *(++aiDstk) = (i8)m_pDevSrcIxt->m_aEnt;
         break;//+endCase
         
 /*I*/ case EO_ENT_SRC_PUSHUPPER: ArgNil(); // push entry on the stack
-        //aDev_ENT_PUSH(pRLU,m_pDevTmpIxt);
         dLU0(EO_ENT_SRC_PUSHUPPER);
         *(++aiDstk) = (i8)m_pDevSrcIxt->m_aUpperEnt;
         break;//+endCase
@@ -1591,16 +1589,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_IXT_SRC_BEGIN: ArgNil(); // begin linear traverse
         dLU0(EO_IXT_SRC_BEGIN);
-        m_pDevSrcIxt->m_pEntBuffer = m_pDevSrcIxt->m_pIdxTree->pFirstH0Buffer();
-        if (m_pDevSrcIxt->m_pEntBuffer) {
-          m_pDevSrcIxt->m_aEnt = m_pDevSrcIxt->m_pEntBuffer->aLeadEntry();
-          if (m_pDevSrcIxt->m_aEnt)
-            *(++aiDstk) = 1;
-          else
-            *(++aiDstk) = 0;
-        }
-        else
-          *(++aiDstk) = 0;
+//        m_pDevSrcIxt->m_pEntBuffer = m_pDevSrcIxt->m_pIdxTree->pFirstH0Buffer();
+//        if (m_pDevSrcIxt->m_pEntBuffer) {
+//          m_pDevSrcIxt->m_aEnt = m_pDevSrcIxt->m_pEntBuffer->aLeadEntry();
+//          if (m_pDevSrcIxt->m_aEnt)
+//            *(++aiDstk) = 1;
+//          else
+//            *(++aiDstk) = 0;
+//        }
+//        else
+//          *(++aiDstk) = 0;
+        iRes = iDev_IXT_TRV_BEGIN(pLU,m_pDevSrcIxt);
+        *(++aiDstk) = iRes;
         break;//+endCase
         
       case EO_IXT_SRC_LBOUND: ArgNil(); // position in buffer to entry before LBOUND
@@ -1619,11 +1619,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_IXT_SRC_NEXT: ArgNil(); // move to next entry
         dLU0(EO_IXT_SRC_NEXT);
-        m_pDevSrcIxt->m_aEnt = EntBuffer::pMoveToNextEntry(m_pDevSrcIxt->m_aEnt, &m_pDevSrcIxt->m_pEntBuffer);
-        if (m_pDevSrcIxt->m_aEnt)
-          *(++aiDstk) = 1;
-        else
-          *(++aiDstk) = 0;
+//        m_pDevSrcIxt->m_aEnt = EntBuffer::pMoveToNextEntry(m_pDevSrcIxt->m_aEnt, &m_pDevSrcIxt->m_pEntBuffer);
+//        if (m_pDevSrcIxt->m_aEnt)
+//          *(++aiDstk) = 1;
+//        else
+//          *(++aiDstk) = 0;
+        iRes = iDev_IXT_TRV_NEXT(pLU,m_pDevSrcIxt);
+        *(++aiDstk) = iRes;
         break;//+endCase
 
       case EO_IXT_SRC_PRINT: ArgNil(); // print src ent

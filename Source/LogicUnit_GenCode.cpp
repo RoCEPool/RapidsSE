@@ -1758,6 +1758,15 @@ void LogicUnit::vGenerateQuery601(void)
 void LogicUnit::vGenerate1700(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_xRluCommon.m_iSql = 1700;
+  m_i_Code = 0;
+
+  vDefineLabel("QRY_1700:"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"**QRY_1700**"_Stz);
+  vAddCode(EO_STR_PRINTADR);
+
+  vAddCode(EO_RETURN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1766,6 +1775,15 @@ void LogicUnit::vGenerate1700(void)
 void LogicUnit::vGenerate1701(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_xRluCommon.m_iSql = 1701;
+  m_i_Code = 0;
+
+  vDefineLabel("QRY_1701:"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"**QRY_1701**"_Stz);
+  vAddCode(EO_STR_PRINTADR);
+
+  vAddCode(EO_RETURN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1774,6 +1792,15 @@ void LogicUnit::vGenerate1701(void)
 void LogicUnit::vGenerate1702(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_xRluCommon.m_iSql = 1702;
+  m_i_Code = 0;
+
+  vDefineLabel("QRY_1702:"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"**QRY_1702**"_Stz);
+  vAddCode(EO_STR_PRINTADR);
+
+  vAddCode(EO_RETURN);
 }
 
 /*----------------------------------------------------------------------------*/
