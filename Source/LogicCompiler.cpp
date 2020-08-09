@@ -22,9 +22,19 @@ Stz* gszaEoFragments[EO_ENUMS];
 /*----------------------------------------------------------------------------*/
 DynamicSymbol gxaDynamicSymbol[]
 {
+  { "iDev_ALT_COL_PUSH"_Stz,      (const void *) iDev_ALT_COL_PUSH      },
+  
+  { "vDev_COL_NOT_PROJECT"_Stz,   (const void *) vDev_COL_NOT_PROJECT   },
+
+  { "vDev_CRW_BEGIN"_Stz,         (const void *) vDev_CRW_BEGIN         },
+  { "vDev_CRW_FETCH"_Stz,         (const void *) vDev_CRW_FETCH         },
+  { "iDev_CRW_NEXT"_Stz,          (const void *) iDev_CRW_NEXT          },
+  { "vDev_CRW_TORSB"_Stz,         (const void *) vDev_CRW_TORSB         },
+
   { "iDev_ENT_COMPARE"_Stz,       (const void *) iDev_ENT_COMPARE       },
   { "iDev_ENT_NEXT"_Stz,          (const void *) iDev_ENT_NEXT          },
   { "vDev_ENT_POSPRIOR"_Stz,      (const void *) vDev_ENT_POSPRIOR      },
+  { "vDev_ENT_PRINTKEYS"_Stz,     (const void *) vDev_ENT_PRINTKEYS     },
   { "aDev_ENT_PUSH"_Stz,          (const void *) aDev_ENT_PUSH          },
   { "iDev_ENT_PUSHELMI0"_Stz,     (const void *) iDev_ENT_PUSHELMI0     },
   { "szDev_ENT_PUSHELMS0"_Stz,    (const void *) szDev_ENT_PUSHELMS0    },
@@ -38,9 +48,17 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_ENTWRK_PRINT"_Stz,      (const void *) vDev_ENTWRK_PRINT      },
   { "vDev_ENTWRK_RESET"_Stz,      (const void *) vDev_ENTWRK_RESET      },
 
+  { "iDev_IXT_CMP_SRCALT"_Stz,    (const void *) iDev_IXT_CMP_SRCALT    },
+  { "iDev_IXT_CMP_WRKALT"_Stz,    (const void *) iDev_IXT_CMP_WRKALT    },
   { "vDev_IXT_DEL_ENT"_Stz,       (const void *) vDev_IXT_DEL_ENT       },
   { "vDev_IXT_DUMP"_Stz,          (const void *) vDev_IXT_DUMP          },
+  { "vDev_IXT_ENT_PRINT"_Stz,     (const void *) vDev_IXT_ENT_PRINT     },
   { "vDev_IXT_INS_ENT"_Stz,       (const void *) vDev_IXT_INS_ENT       },
+  { "iDev_IXT_POS_ALTBYSRC"_Stz,  (const void *) iDev_IXT_POS_ALTBYSRC  },
+  { "iDev_IXT_POS_ALTBYWRK"_Stz,  (const void *) iDev_IXT_POS_ALTBYWRK  },
+  { "iDev_IXT_POS_LBOUND"_Stz,    (const void *) iDev_IXT_POS_LBOUND    },
+  { "iDev_IXT_POS_UBOUND"_Stz,    (const void *) iDev_IXT_POS_UBOUND    },
+  { "iDev_IXT_POS_UBOUND_LT"_Stz, (const void *) iDev_IXT_POS_UBOUND_LT },
   { "iDev_IXT_TMP_ENTRIES"_Stz,   (const void *) iDev_IXT_TMP_ENTRIES   },
   { "iDev_IXT_TRV_BEGIN"_Stz,     (const void *) iDev_IXT_TRV_BEGIN     },
   { "iDev_IXT_TRV_NEXT"_Stz,      (const void *) iDev_IXT_TRV_NEXT      },
@@ -49,18 +67,28 @@ DynamicSymbol gxaDynamicSymbol[]
   { "szDev_PAY_FETCH_COLS"_Stz,   (const void *) szDev_PAY_FETCH_COLS   },
   { "vDev_PAY_STORE_COLI"_Stz,    (const void *) vDev_PAY_STORE_COLI    },
   { "szDev_PAY_STORE_COLS"_Stz,   (const void *) szDev_PAY_STORE_COLS   },
-    
+      
+  { "vDev_PIX_STM_PRINT"_Stz,     (const void *) vDev_PIX_STM_PRINT     },
+  
   { "vDev_RSB_BEGIN"_Stz,         (const void *) vDev_RSB_BEGIN         },
+  { "vDev_RSB_NEW"_Stz,           (const void *) vDev_RSB_NEW           },
   { "iDev_RSB_NEXT"_Stz,          (const void *) iDev_RSB_NEXT          },
+  { "vDev_RSB_POPCOLI"_Stz,       (const void *) vDev_RSB_POPCOLI       },
+  { "vDev_RSB_POPCOLS"_Stz,       (const void *) vDev_RSB_POPCOLS       },
+  { "vDev_RSB_PRINT"_Stz,         (const void *) vDev_RSB_PRINT         },
   { "iDev_RSB_PUSHCOLI"_Stz,      (const void *) iDev_RSB_PUSHCOLI      },
   { "szDev_RSB_PUSHCOLS"_Stz,     (const void *) szDev_RSB_PUSHCOLS     },
   { "iDev_RSB_PUSHOFS"_Stz,       (const void *) iDev_RSB_PUSHOFS       },
-  { "vDev_RSB_PRINT"_Stz,         (const void *) vDev_RSB_PRINT         },
+  { "vDev_RSB_RESET"_Stz,         (const void *) vDev_RSB_RESET         },
   { "vDev_RSB_SETBYOFS"_Stz,      (const void *) vDev_RSB_SETBYOFS      },
-  
+  { "iDev_RSB_TEST"_Stz,          (const void *) iDev_RSB_TEST          },
+  { "vDev_RSB_ZERO"_Stz,          (const void *) vDev_RSB_ZERO          },
+
   { "iDev_RSB_COL_PUSH"_Stz,      (const void *) iDev_RSB_COL_PUSH      },
   { "vDev_RSB_COL_PUSHSTR"_Stz,   (const void *) vDev_RSB_COL_PUSHSTR   },
-  
+
+  { "vLib_ASSERT"_Stz,            (const void *) vLib_ASSERT            },
+  { "vLib_BREAKPOINT"_Stz,        (const void *) vLib_BREAKPOINT        },
   { "iLib_DTE_NOW"_Stz,           (const void *) iLib_DTE_NOW           },
   { "szLib_DTE_PRINT"_Stz,        (const void *) szLib_DTE_PRINT        },
   { "iLib_DTE_YEAR"_Stz,          (const void *) iLib_DTE_YEAR          },
