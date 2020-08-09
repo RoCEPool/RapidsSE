@@ -1205,12 +1205,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ASSERT: ArgNil(); // pop top and assert
         iTopA = *(aiDstk--);
         dLU1(EO_ASSERT,iTopA);
-        RASSERT(iTopA);
+        vLib_ASSERT(pLU,(void*)iTopA);
         break;//+endCase
               
       case EO_BREAKPOINT: ArgNil(); // breakpoint
         dLU0(EO_BREAKPOINT);
-        vDebugPoint();
+        vLib_BREAKPOINT(pLU);
         break;//+endCase
         
 /*r*/ case EO_INIT: ArgNil(); // initialise the rlu common

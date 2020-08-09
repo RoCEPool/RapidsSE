@@ -5,6 +5,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for lib
 
+void vLib_ASSERT(void* pLU, void* aArg);
+void vLib_BREAKPOINT(void* pLU);
 
 i8   iLib_DTE_NOW(void* pLU);
 Stz* szLib_DTE_PRINT(void* pLU, i8 iTopA);
