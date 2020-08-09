@@ -1579,7 +1579,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_IXT_INS_ENT: ArgNil(); // insert an entry into the indexTree
         dLU0(EO_IXT_INS_ENT);
         vDev_IXT_INS_ENT(pLU,aRluCommon->m_pDevTmpIxt);
-        ASSERT(m_pDevTmpIxt->m_aEnt);
+        //ASSERT(m_pDevTmpIxt->m_aEnt);
         break;//+endCase
         
       case EO_IXT_TRV_BEGIN: ArgNil(); // begin linear traverse
