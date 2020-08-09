@@ -614,6 +614,13 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #define dLU3(x,a,b,c) "
   "\n  #define nullptr 0"
   "\n"
+  "\n  #define GetStr(__STR)"
+  "      nSize = strlen(__STR) + 1;"
+  "      szRes = (char*)(++aiDstk);"
+  "      strcpy(szRes,(char*)__STR);"
+  "      aiDstk += (nSize / 8) + 1;"
+  "      *(++aiDstk) = nSize;"
+  "\n"
   "\n  #define JumpTo(__iArg) goto L_##__iArg;"
   "\n"
   "";
@@ -658,7 +665,11 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    i8 iTopA;"
   "\n    i8 iTopB;"
   "\n    i8 iRes;"
+  "\n    Stz* szTopA;"
+  "\n    Stz* szTopB;"
   "\n    Stz* szRes;"
+  "\n    i8 nSize;"
+  "\n"
   "\n"
   "";
   
@@ -717,6 +728,10 @@ void LogicCompiler::v_SbrPreliminary(Stz* szSbrNm)
   "\n    i8 iTopA;"
   "\n    i8 iTopB;"
   "\n    i8 iRes;"
+  "\n    Stz* szTopA;"
+  "\n    Stz* szTopB;"
+  "\n    Stz* szRes;"
+  "\n    i8 nSize;"
   "\n"
   "\n"
   "";

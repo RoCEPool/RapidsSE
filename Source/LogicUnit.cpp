@@ -1163,8 +1163,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes = iLib_STR_COMPARE(pLU,szTopA,szTopB);
         aiDstk -= (iTopB/8) + 2;
         *(++aiDstk) = iRes;
-        if (aRluCommon->m_bTrace)
-          vDebugPoint();
+
         break;//+endCase
         
       case EO_STR_PRINTADR: ArgNil(); // pop top and print iArg as addr of string
@@ -1189,7 +1188,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_STR_LITERAL: GetStr(iArg); // push address of string literal
         dLU1(EO_STR_LITERAL,iArg);
-        *(++aiDstk) = iArg;
+        *(++aiDstk) = (i8)iArg;
         break;//+endCase
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
