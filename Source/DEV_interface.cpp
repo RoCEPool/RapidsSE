@@ -544,6 +544,11 @@ void vDev_RSB_NEW(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  pDevRsb->m_aRsb =
+    pLogicUnit->m_xpPot->aNewDstRsb(pLogicUnit->m_xRluCommon.m_i_Ptn,
+                                   &pDevRsb->m_pRowSlab);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -632,6 +637,7 @@ void vDev_RSB_RESET(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
+  pDevRsb->m_pRowSlab->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -653,7 +659,14 @@ i8 iDev_RSB_TEST(void* aLU, void* aRSB)
 {
   _static_
     
-  i8 iRes = -1;
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+
+  i8 iRes;
+
+  if (pDevRsb->m_aRsb)
+    iRes = 1;
+  else
+    iRes = 0;
 
   return iRes;
 }
@@ -667,6 +680,7 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
+  pDevRsb->m_pRowSlab->vZeroRsb(pDevRsb->m_aRsb);
 }
 
 /*----------------------------------------------------------------------------*/
