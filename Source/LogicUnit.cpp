@@ -1371,8 +1371,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 /*R*/ case EO_COL_SRC_PUSHSTR: ArgGet(iArg); // push column value from m_aSrcCrw
         dLU1(EO_COL_SRC_PUSHSTR,iArg);
         vDev_RSB_COL_PUSHSTR(pLU,m_pDevSrcRsb,iArg,aiDstk);
-        if (aRluCommon->m_bTrace)
-          vDebugPoint();
         break;//+endCase
         
 /*R*/ case EO_COL_ALT_PUSH: ArgGet(iArg); // push column value from m_aAltCrw
