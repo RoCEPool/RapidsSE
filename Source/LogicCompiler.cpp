@@ -423,8 +423,10 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 
     char* azFrag = (char*)gszaEoFragments[eCode];
     
-    if (EA_INT == EoArgs[eCode].m_eArgument ||
-        EA_LABEL == EoArgs[eCode].m_eArgument) {
+    if (EA_DATE   == EoArgs[eCode].m_eArgument ||
+        EA_INT    == EoArgs[eCode].m_eArgument ||
+        EA_LABEL  == EoArgs[eCode].m_eArgument ||
+        EA_SUBSCR == EoArgs[eCode].m_eArgument   ) {
       i8 iArg = m_pLogicUnit->iCodeArg(i_Code+1);
       StrLib::bReplace(sReplaced.azChar(),azFrag,
                        "iArg",StrLib::wToString(iArg,caInt));

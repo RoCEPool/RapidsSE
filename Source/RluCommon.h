@@ -21,6 +21,13 @@ struct RluCommon
   i8   m_iHash;
   i8   m_i_Ptn;
   
+  void*  m_pDevDstRsb;
+  void*  m_pDevSrcRsb;
+  void*  m_pDevSrcIxt;
+  void*  m_pDevAltRsb;
+  void*  m_pDevAltIxt;
+  void*  m_pDevTmpIxt;
+
   char m_caStrWrk[128];
 
   i8 m_iaDataStack[C_LOGIC_STACK];
