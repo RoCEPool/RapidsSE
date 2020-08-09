@@ -721,6 +721,11 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* pLU)
   aiDstk -= (nSize / 8) + 2; \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
 
+#define S_StrAdr() ( (char*) ( (aiDstk-1) - ((*aiDstk / 8) + 1) ) )
+
+#define S_StrDrp() \
+  nSize = *(aiDstk--); \
+  aiDstk -= (nSize / 8) + 2;
 
 #define JumpTo(__iArg) \
   aeCode = & m_eaCode[__iArg];
@@ -1811,8 +1816,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_RSB_DST_POPCOLI: ArgGet(iArg); // pop and deposit top into dst column
         iTopA = *(aiDstk--);
         dLU2(EO_RSB_DST_POPCOLI,iArg,iRes);
-//        m_pDevDstRsb->m_pRowSlab->vPositionOnCell(iArg);
-//        m_pDevDstRsb->m_pRowSlab->vDeposit(iTopA);
         vDev_RSB_POPCOLI(pLU,m_pDevDstRsb,iArg,iTopA);
         break;//+endCase
         
