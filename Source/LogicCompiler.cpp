@@ -738,10 +738,6 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    char* azDst;"
   "\n    char* azArg;"
   "\n"
-  "\n    if (nOuterArgs) {"
-  "\n      *(++aiDstk) = iOuterArg0;"
-  "\n    }"
-  "\n"
   "\n"
   "";
   

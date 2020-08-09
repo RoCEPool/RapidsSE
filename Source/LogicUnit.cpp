@@ -578,7 +578,7 @@ void LogicUnit::vDumpCode(void)
 //#ifdef WITH_TRACE_LOGICUNIT
   
   //if (100001 != m_xRluCommon.m_iSql)
-  if (300 != m_xRluCommon.m_iSql)
+  if (302 != m_xRluCommon.m_iSql)
     return;
   
   SP_Dte spDate;
@@ -1265,6 +1265,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aRluCommon = aRlu_INIT(pLU);
 #ifdef __TINYC__
         aiDstk = & aRluCommon->m_iaDataStack[0];
+        if (nOuterArgs) {
+          *(++aiDstk) = iOuterArg0;
+        }
 #endif
         //printf("[Q%lld.%lld] INIT: %lld %lld\n",(i8)0,(i8)0,
         //       aRluCommon->m_iCmnMagic,aRluCommon->m_iCmnFooter);

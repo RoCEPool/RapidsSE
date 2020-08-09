@@ -177,8 +177,8 @@
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 300=STARTMARKER" .
       //queryNo "QUERY %v" .printf
       300 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
+      //logicCompiler[].new
+      //LogicCompiler[].compile
 
       streamDefOut_300
       true Pot[].useStreamDefOut
@@ -190,8 +190,8 @@
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 301=STARTMARKER" .
       //queryNo "QUERY %v" .printf
       301 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
+      //logicCompiler[].new
+      //LogicCompiler[].compile
 
       streamDefOut_301
       true Pot[].useStreamDefOut
@@ -203,6 +203,8 @@
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 302=STARTMARKER" .
       //queryNo "QUERY %v" .printf
       302 LogicUnit[].genCode
+      logicCompiler[].new
+      LogicCompiler[].compile
 
       streamDefOut_302
       true Pot[].useStreamDefOut
@@ -516,8 +518,8 @@
       //"---------------------------- 301=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      //LogicUnit[].transform
-      LogicUnit[].dynFun
+      LogicUnit[].transform
+      //LogicUnit[].dynFun
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
@@ -526,7 +528,8 @@
       //"---------------------------- 302=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      true 1 LogicUnit[].transformArgs
+      //true 1 LogicUnit[].transformArgs
+      true 1 LogicUnit[].dynFunArgs
       Operand[].delete
       Pot[].pipeoutAllCompleted
 
@@ -615,7 +618,8 @@
 
     302 of
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 302=EOSMARKER" .
-      false 1 LogicUnit[].transformArgs
+      //false 1 LogicUnit[].transformArgs
+      false 1 LogicUnit[].dynFunArgs
     endof
 
     401 of
