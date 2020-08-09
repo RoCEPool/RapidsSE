@@ -37,14 +37,15 @@ enum eLK // lock kind
   /* 29 */ LK_TASK,
   /* 30 */ LK_TASK_QUEUE,
   /* 31 */ LK_TASK_SET,
-  /* 32 */ LK_TEMP_NAME,
-  /* 33 */ LK_THREAD_QUEUE,
-  /* 34 */ LK_THREAD_VECTOR,
-  /* 35 */ LK_TRACE,
-  /* 36 */ LK_TX_SET,
-  /* 37 */ LK_UNKNOWN,
-  /* 38 */ LK_VECTOR,
-  /* 39 */ LK_ENUMS
+  /* 32 */ LK_TCC,
+  /* 33 */ LK_TEMP_NAME,
+  /* 34 */ LK_THREAD_QUEUE,
+  /* 35 */ LK_THREAD_VECTOR,
+  /* 36 */ LK_TRACE,
+  /* 37 */ LK_TX_SET,
+  /* 38 */ LK_UNKNOWN,
+  /* 39 */ LK_VECTOR,
+  /* 40 */ LK_ENUMS
 };
 
 static Stz* aLK[]
@@ -82,15 +83,16 @@ static Stz* aLK[]
   /* 29 */ "LK_TASK"_Stz,
   /* 30 */ "LK_TASK_QUEUE"_Stz,
   /* 31 */ "LK_TASK_SET"_Stz,
-  /* 32 */ "LK_TEMP_NAME"_Stz,
-  /* 33 */ "LK_THREAD_QUEUE"_Stz,
-  /* 34 */ "LK_THREAD_VECTOR"_Stz,
-  /* 35 */ "LK_TRACE"_Stz,
-  /* 36 */ "LK_TX_SET"_Stz,
-  /* 37 */ "LK_UNKNOWN"_Stz,
-  /* 38 */ "LK_VECTOR"_Stz,
+  /* 32 */ "LK_TCC"_Stz,
+  /* 33 */ "LK_TEMP_NAME"_Stz,
+  /* 34 */ "LK_THREAD_QUEUE"_Stz,
+  /* 35 */ "LK_THREAD_VECTOR"_Stz,
+  /* 36 */ "LK_TRACE"_Stz,
+  /* 37 */ "LK_TX_SET"_Stz,
+  /* 38 */ "LK_UNKNOWN"_Stz,
+  /* 39 */ "LK_VECTOR"_Stz,
   
-  /* 39 */ "ENUMS"_Stz
+  /* 40 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

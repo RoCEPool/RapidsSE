@@ -118,6 +118,7 @@ namespace Oblique
     static StepTiming* pStepTiming(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
+    static Lock* pTccLock(void);
     static Word* pTenants(void);
     static i8   iThisNodeNo(void);
     static void vThreadBegins(void);

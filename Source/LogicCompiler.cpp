@@ -277,6 +277,8 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 
   m_pLogicUnit = pLogicUnit;
   
+  AM::pTccLock()->vGrabWrite();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   v_DynPreliminary();
@@ -294,10 +296,10 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   vSymbols();
   vRelocate();
 
-  //vCall(aDynArg);
-
   //vRelease();
-  
+
+  AM::pTccLock()->vDropWrite();
+
   return 1;
 }
 
