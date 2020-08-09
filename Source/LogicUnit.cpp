@@ -1654,11 +1654,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
 
-      case EO_IXT_ALT_PRINT: ArgNil(); // print alt ent                         NOT DONE
-        pIndexDef = m_pDevAltIxt->m_pIdxTree->pIndexDef();
-#ifdef WITH_TRACE_LOGICUNIT
-        vTrace("AltEnt : %s\n"_Stz,spEnt.sz(m_pDevAltIxt->m_aEnt,pIndexDef));
-#endif
+      case EO_IXT_ALT_PRINT: ArgNil(); // print alt ent
         vDev_IXT_ENT_PRINT(pLU,m_pDevAltIxt);
         break;//+endCase
         
@@ -1766,20 +1762,23 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // rsb / rowslab
       case EO_RSB_DST_PRINT: ArgNil(); // print dst rsb
         dLU0(EO_RSB_DST_PRINT);
-        m_pDevDstRsb->m_pRowSlab->vDumpRow(-1,m_pDevDstRsb->m_aRsb);
+        //m_pDevDstRsb->m_pRowSlab->vDumpRow(-1,m_pDevDstRsb->m_aRsb);
+        vDev_RSB_PRINT(pLU,m_pDevDstRsb);
         break;//+endCase
 
 /*R*/ case EO_RSB_SRC_PRINT: ArgNil(); // print src rsb
-        //vDev_RSB_PRINT(pRLU,m_pDevSrcRsb);
         dLU0(EO_RSB_SRC_PRINT);
-        m_pDevSrcRsb->m_pRowSlab->vDumpRow(-1,m_pDevSrcRsb->m_aRsb);
+        //m_pDevSrcRsb->m_pRowSlab->vDumpRow(-1,m_pDevSrcRsb->m_aRsb);
+        vDev_RSB_PRINT(pLU,m_pDevSrcRsb);
         break;//+endCase
 
       case EO_RSB_ALT_PRINT: ArgNil(); // print alt rsb
         dLU0(EO_RSB_ALT_PRINT);
-        m_pDevAltRsb->m_pRowSlab->vDumpRow(-1,m_pDevAltRsb->m_aRsb);
+        //m_pDevAltRsb->m_pRowSlab->vDumpRow(-1,m_pDevAltRsb->m_aRsb);
+        vDev_RSB_PRINT(pLU,m_pDevAltRsb);
         break;//+endCase
 
+        
       case EO_RSB_DST_NEW: ArgNil(); // create new destination rsb
         dLU0(EO_RSB_DST_NEW);
         //ASSERT(0 == m_i_Ptn);
