@@ -21,6 +21,32 @@ struct RluCommon* aRlu_INIT(void* pLU)
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin EO timer                                                             */
+/*----------------------------------------------------------------------------*/
+void vRlu_BEGINTMR(void* aLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  pLogicUnit->m_pLogicTimer->vBeginTmr();
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin EO timer                                                             */
+/*----------------------------------------------------------------------------*/
+void vRlu_ENDTMR(void* aLU, eEO eCode)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  pLogicUnit->m_pLogicTimer->vEndTmr(eCode);
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /* add timer to agg timer                                                     */
 /*----------------------------------------------------------------------------*/
 void vRlu_TMR_AGG_ADD(void* pLU)

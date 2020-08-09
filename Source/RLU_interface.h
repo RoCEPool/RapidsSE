@@ -5,8 +5,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for rlu
 
-struct RluCommon* aRlu_INIT(void* pLU);
+struct RluCommon* aRlu_INIT(void* aLU);
 
+void vRlu_BEGINTMR(void* aLU);
+void vRlu_ENDTMR(void* aLU, eEO eCode);
 
 /*============================================================================*/
 /* end                                                                        */

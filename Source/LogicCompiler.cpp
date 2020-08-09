@@ -101,6 +101,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "iLib_STR_COMPARE"_Stz,       (const void *) iLib_STR_COMPARE       },
     
   { "aRlu_INIT"_Stz,              (const void *) aRlu_INIT              },
+  { "vRlu_BEGINTMR"_Stz,          (const void *) vRlu_BEGINTMR          },
+  { "vRlu_ENDTMR"_Stz,            (const void *) vRlu_ENDTMR            },
   { "vRlu_TMR_AGG_ADD"_Stz,       (const void *) vRlu_TMR_AGG_ADD       },
   { "iRlu_TMR_AGG_NSECS"_Stz,     (const void *) iRlu_TMR_AGG_NSECS     },
   { "vRlu_TMR_AGG_RESET"_Stz,     (const void *) vRlu_TMR_AGG_RESET     },
