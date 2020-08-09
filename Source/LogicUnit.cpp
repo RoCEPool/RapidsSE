@@ -1708,8 +1708,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         ASSERT(nSize < 8);
         dLU2(EO_PAY_FETCH_COLS,iArg,(i8)azSrc);
         S_PushStr(azSrc);
-        if (aRluCommon->m_bTrace)
-          vDebugPoint();
         break;//+endCase
         
 /*I*/ case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column into entry payload
@@ -1728,10 +1726,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pix
       case EO_PIX_STM_PRINT: ArgNil(); // print stream pix
-#ifdef WITH_TRACE_LOGICUNIT
         dLU0(EO_PIX_STM_PRINT);
         vDev_PIX_STM_PRINT(pLU);
-#endif
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1821,12 +1817,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_RSB_DST_POPCOLS: ArgGet(iArg); // pop and deposit top into dst column
         dLU1(EO_RSB_DST_POPCOLS,iArg);
-//        m_pDevDstRsb->m_pRowSlab->vPositionOnCell(iArg);
-//        azDst = m_pDevDstRsb->m_pRowSlab->azDepositString_begin();
-//        S_PopStr(azDst);
-//        m_pDevDstRsb->m_pRowSlab->vDepositString_end(nSize);
-//        if (aRluCommon->m_bTrace)
-//          vDebugPoint();
         szTopA = (Stz*)S_StrAdr();
         vDev_RSB_POPCOLS(pLU,m_pDevDstRsb,iArg,szTopA);
         S_StrDrp();
@@ -1848,8 +1838,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         azSrc = (char*)szDev_RSB_PUSHCOLS(pLU,m_pDevSrcRsb,iArg);
         dLU2(EO_RSB_SRC_PUSHCOLS,iArg,(i8)azSrc);
         S_PushStr(azSrc);
-        if (aRluCommon->m_bTrace)
-          vDebugPoint();
         break;//+endCase
         
       case EO_RSB_ALT_PUSHCOLI: ArgGet(iArg); // push alt column
