@@ -208,11 +208,11 @@ i8 LogicUnit::iCodeArg(i8 i_Code)
 /*----------------------------------------------------------------------------*/
 /* call dynamic function compiled by LogicCompiler                            */
 /*----------------------------------------------------------------------------*/
-i8 LogicUnit::iDynFun(void)
+i8 LogicUnit::iDynFun(i8 nOuterArgs, i8 iOuterArg0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  i8 iRes = m_afDynFun(this);
+  i8 iRes = m_afDynFun(this,nOuterArgs,iOuterArg0);
 
   return iRes;
 }

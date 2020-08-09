@@ -989,6 +989,7 @@ void LogicUnit::vGenerateQuery302(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q302
   vDefineLabel("QRY_302:"_Stz);
+  vAddCode(EO_INIT);
 
   //vAddCode(EO_TRACEON);
   vAddCodeLabel(EO_JMP_FALSE,"QRY_END:"_Stz);

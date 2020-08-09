@@ -332,7 +332,7 @@ void LogicCompiler::vCall(void* aDynArg)
   
 #ifdef __TINYC
 
-  m_pLogicUnit->m_afDynFun(aDynArg);
+  m_pLogicUnit->m_afDynFun(aDynArg,0,C_UNKNOWN);
   
 #endif
 }
@@ -380,7 +380,7 @@ void LogicCompiler::vRelocate(void)
   }
   
   m_pLogicUnit->m_afDynFun =
-    (i8 (*)(void*))tcc_get_symbol((TCCState*)m_aTccState,"aiDynFun");
+    (i8 (*)(void*,i8,i8))tcc_get_symbol((TCCState*)m_aTccState,"aiDynFun");
   RASSERT(m_pLogicUnit->m_afDynFun);
   
 #endif
@@ -720,7 +720,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* rlu compute function                                               */"
   "\n  /*--------------------------------------------------------------------*/"
-  "\n  i8* aiDynFun(void* pLU)"
+  "\n  i8* aiDynFun(void* pLU, i8 nOuterArgs, i8 iOuterArg0)"
   "\n  {"
   "\n    struct RluCommon* aRluCommon = nullptr;"
   "\n"
@@ -737,6 +737,10 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    char* azSrc;"
   "\n    char* azDst;"
   "\n    char* azArg;"
+  "\n"
+  "\n    if (nOuterArgs) {"
+  "\n      *(++aiDstk) = iOuterArg0;"
+  "\n    }"
   "\n"
   "\n"
   "";
