@@ -1606,10 +1606,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_IXT_SRC_PRINT: ArgNil(); // print src ent
-        pIndexDef = m_pDevSrcIxt->m_pIdxTree->pIndexDef();
-#ifdef WITH_TRACE_LOGICUNIT
-        vTrace("SrcEnt : %s\n"_Stz,spEnt.sz(m_pDevSrcIxt->m_aEnt,pIndexDef));
-#endif
+//        pIndexDef = m_pDevSrcIxt->m_pIdxTree->pIndexDef();
+//#ifdef WITH_TRACE_LOGICUNIT
+//        vTrace("SrcEnt : %s\n"_Stz,spEnt.sz(m_pDevSrcIxt->m_aEnt,pIndexDef));
+//#endif
+        vDev_IXT_ENT_PRINT(pLU,m_pDevSrcIxt);
         break;//+endCase
 
       case EO_IXT_SRC_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND
