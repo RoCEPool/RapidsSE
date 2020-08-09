@@ -655,6 +655,25 @@ void vDev_RSB_POPCOLI(void* aLU, void* aRSB, i8 iArg, i8 iTop)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop and deposit top into dst column                                        */
+/*----------------------------------------------------------------------------*/
+void vDev_RSB_POPCOLS(void* aLU, void* aRSB, i8 iArg, Stz* szTop)
+{
+  _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  
+  pDevRsb->m_pRowSlab->vPositionOnCell(iArg);
+  
+  char* azDst = pDevRsb->m_pRowSlab->azDepositString_begin();
+  
+  StrLib::vCopy(azDst,(char*)szTop);
+  i8 nSize = StrLib::nSize(azDst);
+
+  pDevRsb->m_pRowSlab->vDepositString_end(nSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print src rsb                                                              */
 /*----------------------------------------------------------------------------*/
 void vDev_RSB_PRINT(void* aLU, void* aRSB)

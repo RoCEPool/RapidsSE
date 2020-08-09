@@ -1821,12 +1821,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_RSB_DST_POPCOLS: ArgGet(iArg); // pop and deposit top into dst column
         dLU1(EO_RSB_DST_POPCOLS,iArg);
-        m_pDevDstRsb->m_pRowSlab->vPositionOnCell(iArg);
-        azDst = m_pDevDstRsb->m_pRowSlab->azDepositString_begin();
-        S_PopStr(azDst);
-        m_pDevDstRsb->m_pRowSlab->vDepositString_end(nSize);
-        if (aRluCommon->m_bTrace)
-          vDebugPoint();
+//        m_pDevDstRsb->m_pRowSlab->vPositionOnCell(iArg);
+//        azDst = m_pDevDstRsb->m_pRowSlab->azDepositString_begin();
+//        S_PopStr(azDst);
+//        m_pDevDstRsb->m_pRowSlab->vDepositString_end(nSize);
+//        if (aRluCommon->m_bTrace)
+//          vDebugPoint();
+        szTopA = (Stz*)S_StrAdr();
+        vDev_RSB_POPCOLS(pLU,m_pDevDstRsb,iArg,szTopA);
+        S_StrDrp();
         break;//+endCase
         
       case EO_RSB_DST_PUSHCOLI: ArgGet(iArg); // push dst column
