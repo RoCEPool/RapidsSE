@@ -1151,7 +1151,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_STR_PRINTADR: ArgNil(); // pop top and print iArg as addr of string
 #ifdef WITH_TRACE_LOGICUNIT
         azTopA = (char*) *(aiDstk--);
-        dLU1(EO_STR_PRINTADR,iTopA);
+        dLU1(EO_STR_PRINTADR,azTopA);
         printf("[Q%lld.%lld] %s\n",
                aRluCommon->m_iSql,aRluCommon->m_i_Slot,azTopA);
 #endif
@@ -1635,31 +1635,33 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_IXT_CMP_SRCALT: ArgNil(); // compare src.key to alt.key
-        aSrcKey = m_pDevSrcIxt->m_aEnt->aKey();
-        aAltKey = m_pDevAltIxt->m_aEnt->aKey();
-        eCmp = Key::eCompare(aSrcKey,aAltKey);
-        if (KC_BEFORE == eCmp)
-          iRes = -1;
-        else
-        if (KC_SAME == eCmp)
-          iRes = 0;
-        else
-          iRes = 1;
+//        aSrcKey = m_pDevSrcIxt->m_aEnt->aKey();
+//        aAltKey = m_pDevAltIxt->m_aEnt->aKey();
+//        eCmp = Key::eCompare(aSrcKey,aAltKey);
+//        if (KC_BEFORE == eCmp)
+//          iRes = -1;
+//        else
+//        if (KC_SAME == eCmp)
+//          iRes = 0;
+//        else
+//          iRes = 1;
+        iRes = iDev_IXT_CMP_SRCALT(pLU);
         dLU1(EO_IXT_CMP_SRCALT,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
 
       case EO_IXT_CMP_WRKALT: ArgNil(); // compare wrk.key to alt.key
-        aWrkKey = m_oEntWrk.aKey();
-        aAltKey = m_pDevAltIxt->m_aEnt->aKey();
-        eCmp = Key::eCompare(aWrkKey,aAltKey);
-        if (KC_BEFORE == eCmp)
-          iRes = -1;
-        else
-        if (KC_SAME == eCmp)
-          iRes = 0;
-        else
-          iRes = 1;
+//        aWrkKey = m_oEntWrk.aKey();
+//        aAltKey = m_pDevAltIxt->m_aEnt->aKey();
+//        eCmp = Key::eCompare(aWrkKey,aAltKey);
+//        if (KC_BEFORE == eCmp)
+//          iRes = -1;
+//        else
+//        if (KC_SAME == eCmp)
+//          iRes = 0;
+//        else
+//          iRes = 1;
+        iRes = iDev_IXT_CMP_WRKALT(pLU);
         dLU1(EO_IXT_CMP_WRKALT,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase

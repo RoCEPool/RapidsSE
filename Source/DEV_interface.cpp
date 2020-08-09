@@ -231,6 +231,60 @@ i8 iDev_ENT_PUSHOFS(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* compare src.key to alt.key                                                 */
+/*----------------------------------------------------------------------------*/
+i8 iDev_IXT_CMP_SRCALT(void* aLU)
+{
+  _static_
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  i8 iRes;
+  
+  Key* aSrcKey = pLogicUnit->m_pDevSrcIxt->m_aEnt->aKey();
+  Key* aAltKey = pLogicUnit->m_pDevAltIxt->m_aEnt->aKey();
+      
+  eKC  eCmp = Key::eCompare(aSrcKey,aAltKey);
+  
+   if (KC_BEFORE == eCmp)
+     iRes = -1;
+   else
+   if (KC_SAME == eCmp)
+     iRes = 0;
+   else
+     iRes = 1;
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compare wrk.key to alt.key                                                 */
+/*----------------------------------------------------------------------------*/
+i8 iDev_IXT_CMP_WRKALT(void* aLU)
+{
+  _static_
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  i8 iRes;
+  
+  Key* aWrkKey = pLogicUnit->m_oEntWrk.aKey();
+  Key* aAltKey = pLogicUnit->m_pDevAltIxt->m_aEnt->aKey();
+
+  eKC  eCmp = Key::eCompare(aWrkKey,aAltKey);
+  
+   if (KC_BEFORE == eCmp)
+     iRes = -1;
+   else
+   if (KC_SAME == eCmp)
+     iRes = 0;
+   else
+     iRes = 1;
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete current entry m_aEnt from indexTree                                 */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_DEL_ENT(void* aLU, void* aIXT)
