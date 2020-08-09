@@ -289,7 +289,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
+  //vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
 
   vAcquire();
   bool b = bCompile();
@@ -437,13 +437,13 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
       StrLib::vAppendString(&m_azSrcCrs,"\n");
     }
     
-    sPrint.vSprint(
-                   "    printf(\"  *: %s "_Stz,
-                   
-                   aEO[eCode]->azChar());
-    sPrint.vConcat(" %llx\\n\",aiDstk);\n"_Stz);
-
-    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+//    sPrint.vSprint(
+//                   "    printf(\"  *: %s "_Stz,
+//
+//                   aEO[eCode]->azChar());
+//    sPrint.vConcat(" %llx\\n\",aiDstk);\n"_Stz);
+//
+//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
     if (EO_CALL == eCode) {
       

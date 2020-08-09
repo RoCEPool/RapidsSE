@@ -241,6 +241,8 @@ namespace Expressions
     DevRSB*    m_pDevAltRsb;
     DevIXT*    m_pDevAltIxt;
     DevIXT*    m_pDevTmpIxt;
+  
+    LogicTimer* m_pLogicTimer;
 
     i8     m_i_Code;
     eEO    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
@@ -248,7 +250,7 @@ namespace Expressions
     i8        m_nLabels;
     JumpLabel m_xaJumpLabel[C_LOGIC_LABEL];
 
-  
+
     // must be last
     Footer m_xFooter;
   

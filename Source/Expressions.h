@@ -20,6 +20,8 @@ namespace Expressions
 #include "DevIXT.hpp"
 #include "DevRSB.hpp"
 
+#include "LogicTimer.hpp"
+
 #include "LogicCompiler.hpp"
 
 #include "LogicUnit.hpp"
