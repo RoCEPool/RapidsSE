@@ -419,6 +419,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
   s4K sReplaced;
   char caInt[32];
   s4K sString;
+  
+  s4K sPrint;
 
   for (i8 i_Code = i_CodeFrom; i_Code <= i_CodeTill; i_Code++) {
     
@@ -433,6 +435,9 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
       StrLib::vAppendString(&m_azSrcCrs,"\n");
     }
     
+    sPrint.vSprint("    printf(\"  *: %s\\n\");\n"_Stz,aEO[eCode]->azChar());
+    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+
     if (EO_CALL == eCode) {
       
       iArg = m_pLogicUnit->iCodeArg(i_Code+1);

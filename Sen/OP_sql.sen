@@ -298,6 +298,7 @@
 
 
   LogicUnit[].transform
+  //LogicUnit[].dynFun
 
   Pot[].pipeoutAllDanglingPtns
   Pot[].delete
