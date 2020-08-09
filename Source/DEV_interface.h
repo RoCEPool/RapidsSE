@@ -50,6 +50,7 @@ void vDev_ENTWRK_RESET(void* aLU, void* aRSB);
 void vDev_RSB_BEGIN(void* aLU, void* aRSB);
 void vDev_RSB_NEW(void* aLU, void* aRSB);
 i8   iDev_RSB_NEXT(void* aLU, void* aRSB);
+void vDev_RSB_POPCOLI(void* aLU, void* aRSB, i8 iArg, i8 iTop);
 void vDev_RSB_PRINT(void* aLU, void* aRSB);
 i8   iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg);
 Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg);

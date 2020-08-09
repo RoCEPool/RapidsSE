@@ -1524,8 +1524,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         S_UseStr(azSrc);
         vDev_ENTWRK_APPENDELMS(pLU,m_pDevSrcRsb,(Stz*)azSrc);
         S_UseEnd();
-        if (aRluCommon->m_bTrace)
-          vDebugPoint();
         break;//+endCase
         
       case EO_ENTWRK_CREATEPAY: ArgGet(iArg); // create a payload in entwrk
@@ -1606,10 +1604,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_IXT_SRC_PRINT: ArgNil(); // print src ent
-//        pIndexDef = m_pDevSrcIxt->m_pIdxTree->pIndexDef();
-//#ifdef WITH_TRACE_LOGICUNIT
-//        vTrace("SrcEnt : %s\n"_Stz,spEnt.sz(m_pDevSrcIxt->m_aEnt,pIndexDef));
-//#endif
         vDev_IXT_ENT_PRINT(pLU,m_pDevSrcIxt);
         break;//+endCase
 
@@ -1815,10 +1809,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb operators
       case EO_RSB_DST_POPCOLI: ArgGet(iArg); // pop and deposit top into dst column
-        iRes = *(aiDstk--);
+        iTopA = *(aiDstk--);
         dLU2(EO_RSB_DST_POPCOLI,iArg,iRes);
-        m_pDevDstRsb->m_pRowSlab->vPositionOnCell(iArg);
-        m_pDevDstRsb->m_pRowSlab->vDeposit(iRes);
+//        m_pDevDstRsb->m_pRowSlab->vPositionOnCell(iArg);
+//        m_pDevDstRsb->m_pRowSlab->vDeposit(iTopA);
+        vDev_RSB_POPCOLI(pLU,m_pDevDstRsb,iArg,iTopA);
         break;//+endCase
         
       case EO_RSB_DST_POPCOLS: ArgGet(iArg); // pop and deposit top into dst column

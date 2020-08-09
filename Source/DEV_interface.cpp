@@ -642,6 +642,19 @@ i8 iDev_RSB_NEXT(void* aLU, void* aRSB)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop and deposit top into dst column                                        */
+/*----------------------------------------------------------------------------*/
+void vDev_RSB_POPCOLI(void* aLU, void* aRSB, i8 iArg, i8 iTop)
+{
+  _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  
+  pDevRsb->m_pRowSlab->vPositionOnCell(iArg);
+  pDevRsb->m_pRowSlab->vDeposit(iTop);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print src rsb                                                              */
 /*----------------------------------------------------------------------------*/
 void vDev_RSB_PRINT(void* aLU, void* aRSB)
