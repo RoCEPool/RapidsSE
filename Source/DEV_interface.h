@@ -46,12 +46,16 @@ void vDev_ENTWRK_PRINT(void* aLU, void* aRSB);
 void vDev_ENTWRK_RESET(void* aLU, void* aRSB);
 
 void vDev_RSB_BEGIN(void* aLU, void* aRSB);
+void vDev_RSB_NEW(void* aLU, void* aRSB);
 i8   iDev_RSB_NEXT(void* aLU, void* aRSB);
+void vDev_RSB_PRINT(void* aLU, void* aRSB);
 i8   iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg);
 Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg);
 i8   iDev_RSB_PUSHOFS(void* aLU, void* aRSB);
-void vDev_RSB_PRINT(void* aLU, void* aRSB);
+void vDev_RSB_RESET(void* aLU, void* aRSB);
 void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop);
+i8   iDev_RSB_TEST(void* aLU, void* aRSB);
+void vDev_RSB_ZERO(void* aLU, void* aRSB);
 
 i8   iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg);
 void vDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg, i8*& raiDstk);

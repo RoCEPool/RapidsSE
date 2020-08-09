@@ -522,18 +522,6 @@ void vDev_ENTWRK_RESET(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* print src rsb                                                              */
-/*----------------------------------------------------------------------------*/
-void vDev_RSB_PRINT(void* aLU, void* aRSB)
-{
-  _static_
-  
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
-  
-  pDevRsb->m_pRowSlab->vDumpRow(-1,pDevRsb->m_aRsb);
-}
-
-/*----------------------------------------------------------------------------*/
 /* begin src rsb traverse                                                     */
 /*----------------------------------------------------------------------------*/
 void vDev_RSB_BEGIN(void* aLU, void* aRSB)
@@ -545,6 +533,17 @@ void vDev_RSB_BEGIN(void* aLU, void* aRSB)
   pDevRsb->m_i_Row = -1;
   pDevRsb->m_aRsb  = nullptr;
   pDevRsb->m_nRows = pDevRsb->m_pRowSlab ? pDevRsb->m_pRowSlab->nRows() : 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create new rsb                                                             */
+/*----------------------------------------------------------------------------*/
+void vDev_RSB_NEW(void* aLU, void* aRSB)
+{
+  _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -570,29 +569,15 @@ i8 iDev_RSB_NEXT(void* aLU, void* aRSB)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push offset of source rsb                                                  */
+/* print src rsb                                                              */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_PUSHOFS(void* aLU, void* aRSB)
+void vDev_RSB_PRINT(void* aLU, void* aRSB)
 {
   _static_
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  i8 iRes = pDevRsb->m_pRowSlab->iOfsOfRsb(pDevRsb->m_aRsb);
-
-  return iRes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set src rsb by using offset on stack                                       */
-/*----------------------------------------------------------------------------*/
-void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)
-{
-  _static_
-  
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
-  
-  pDevRsb->m_aRsb = pDevRsb->m_pRowSlab->aRsbByOfs(iTop);
+  pDevRsb->m_pRowSlab->vDumpRow(-1,pDevRsb->m_aRsb);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -622,6 +607,66 @@ Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg)
   Stz* szSrc = pDevRsb->m_aRsb->szVal_ntv(pDevRsb->m_aRsb->i_ColToCell_ntv(iArg));
 
   return szSrc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push offset of source rsb                                                  */
+/*----------------------------------------------------------------------------*/
+i8 iDev_RSB_PUSHOFS(void* aLU, void* aRSB)
+{
+  _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  
+  i8 iRes = pDevRsb->m_pRowSlab->iOfsOfRsb(pDevRsb->m_aRsb);
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset rsb                                                                  */
+/*----------------------------------------------------------------------------*/
+void vDev_RSB_RESET(void* aLU, void* aRSB)
+{
+  _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* set src rsb by using offset on stack                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)
+{
+  _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  
+  pDevRsb->m_aRsb = pDevRsb->m_pRowSlab->aRsbByOfs(iTop);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push offset of source rsb                                                  */
+/*----------------------------------------------------------------------------*/
+i8 iDev_RSB_TEST(void* aLU, void* aRSB)
+{
+  _static_
+    
+  i8 iRes = -1;
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* zero rsb                                                                   */
+/*----------------------------------------------------------------------------*/
+void vDev_RSB_SEROvoid* aLU, void* aRSB)
+{
+  _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  
 }
 
 /*----------------------------------------------------------------------------*/
