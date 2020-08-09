@@ -1596,15 +1596,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_IXT_SRC_LBOUND: ArgNil(); // pos in buffer to entry before LBOUND NOT DONE
         dLU0(EO_IXT_SRC_LBOUND);
         //iDev_EO_IXT_TRV_LBOUND(pRLU,m_pDevTmpIxt);
-        m_pDevSrcIxt->m_pEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
-        if (m_pDevSrcIxt->m_pEntBuffer) {
-          m_pDevSrcIxt->m_aEnt = m_pDevSrcIxt->m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
-        }
-        if (m_pDevSrcIxt->m_aEnt) {
-          *(++aiDstk) = 1;
-        }
-        else
-          *(++aiDstk) = 0;
+//        m_pDevSrcIxt->m_pEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
+//        if (m_pDevSrcIxt->m_pEntBuffer) {
+//          m_pDevSrcIxt->m_aEnt = m_pDevSrcIxt->m_pEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
+//        }
+//        if (m_pDevSrcIxt->m_aEnt) {
+//          *(++aiDstk) = 1;
+//        }
+//        else
+//          *(++aiDstk) = 0;
+        iRes = iDev_IXT_POS_LBOUND(pLU,m_pDevSrcIxt);
+        *(++aiDstk) = iRes;
         break;//+endCase
         
       case EO_IXT_SRC_NEXT: ArgNil(); // move to next entry
