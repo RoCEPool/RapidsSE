@@ -208,8 +208,12 @@ Stz* szDev_ENT_PUSHELMS0(void* aLU, void* aIXT)
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   Stz* szSrc = pDevIxt->m_aEnt->aKey()->szGetStrElm();
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
-  return szSrc;
+  StrLib::iWordFlipBack(pLogicUnit->m_xRluCommon.m_caStrWrk,(char*)szSrc);
+
+  return (Stz*)pLogicUnit->m_xRluCommon.m_caStrWrk;
 }
 
 /*----------------------------------------------------------------------------*/
