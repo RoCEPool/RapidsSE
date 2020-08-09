@@ -1033,7 +1033,7 @@
   sPath
   "
   procedure Query6
-    parameters $Table
+    parameters $Table $Index
   begin
 
   stage stageA on origin :
@@ -1042,8 +1042,7 @@
     | stageB
 
   stage stageB on all partitions :
-    scan lineitem
-    | toRsb $table
+    sql 666 $Table $Index
     | sql 600
     | stageC
 

@@ -37,7 +37,7 @@ print section "Query 1...";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Query 6...";
-/time Query6 lineitem ;
+/time Query6 lineitem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Query 4...";

@@ -29,6 +29,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
 
     case     600: vGenerateQuery600();    break;
     case     601: vGenerateQuery601();    break;
+    case     666: vGenerateQuery666();    break;
   
     case    1700: vGenerate1700();        break;
     case    1701: vGenerate1701();        break;
@@ -593,7 +594,7 @@ void LogicUnit::vGenerateQuery112(void)
   vAddCodeArg(EO_DATE, "1998-12-01"_Stz);
   vAddCode(EO_ENTWRK_APPENDELMI);
   vAddCode(EO_IXT_SRC_UBOUND);
-  vAddCodeLabel(EO_JMP_TRUE, "TRV_NEXT:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE, "TRV_NXT:"_Stz);
   
   // no upper key, traverse till end
   vDefineLabel("TRV_TILL_END:"_Stz);
@@ -1595,6 +1596,88 @@ void LogicUnit::vGenerateQuery401(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate iterating index on l_shipdate & project into RSB (Query 6)        */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery666(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_xRluCommon.m_iSql = 666;
+  
+  // reset
+  m_i_Code = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // RESET COLUMNS NOT NEEDED
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_ORDERKEY);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_PARTKEY);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_SUPPKEY);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_LINENUMBER);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_TAX);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_RETURNFLAG);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_LINESTATUS);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPDATE);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_COMMITDATE);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_RECEIPTDATE);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPINSTRUCT);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPMODE);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_COMMENT);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the lower key
+  vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_IXT_SRC_LBOUND);
+  vAddCodeLabel(EO_JMP_TRUE, "UPPERBOUND:"_Stz);
+  
+  // no lower key, start position at beginning of index
+  vAddCode(EO_IXT_SRC_BEGIN);
+  
+  // no entry, return
+  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the upper key
+  vDefineLabel("UPPERBOUND:"_Stz);
+  vAddCode(EO_ENTWRK_RESET);
+  vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_IXT_SRC_UBOUND_LT);
+  vAddCodeLabel(EO_JMP_TRUE, "TRV_NXT:"_Stz);
+  
+  // no upper key, traverse till end
+  vDefineLabel("TRV_TILL_END:"_Stz);
+  vAddCode(EO_IXT_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_RSB_DST_NEW);
+  vAddCode(EO_CRW_SRC_TORSB);
+  //vAddCode(EO_RSB_DST_PRINT);
+  vAddCodeLabel(EO_JMP, "TRV_TILL_END:"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // traverse the index
+  vDefineLabel("TRV_NXT:"_Stz);
+  vAddCode(EO_IXT_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+  vAddCode(EO_ENT_SRC_PUSH);
+  vAddCode(EO_ENT_SRC_PUSHUPPER);
+  vAddCode(EO_EQUAL);
+  vAddCodeLabel(EO_JMP_TRUE, "TRV_RET:"_Stz);
+  
+  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_RSB_DST_NEW);
+  vAddCode(EO_CRW_SRC_TORSB);
+  //vAddCode(EO_RSB_DST_PRINT);
+  vAddCodeLabel(EO_JMP, "TRV_NXT:"_Stz);
+  
+  
+  vDefineLabel("TRV_RET:"_Stz);
+  vAddCode(EO_RETURN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate agg code (query6)                                                 */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery600(void)
@@ -1642,15 +1725,15 @@ void LogicUnit::vGenerateQuery600(void)
   // FILTER SUBROUTINE
   vDefineLabel("SUBROUTINE_FILTER:"_Stz);
 
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_SHIPDATE);
-  vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
-  vAddCode(EO_GREATEREQUAL);
-  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
-
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_SHIPDATE);
-  vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
-  vAddCode(EO_LESSTHAN);
-  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
+//  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_SHIPDATE);
+//  vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
+//  vAddCode(EO_GREATEREQUAL);
+//  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
+//
+//  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_SHIPDATE);
+//  vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
+//  vAddCode(EO_LESSTHAN);
+//  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
 
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_DISCOUNT);
   vAddCodeArg(EO_INTEGER, 5);

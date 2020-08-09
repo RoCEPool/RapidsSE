@@ -1622,6 +1622,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
         
+      case EO_IXT_SRC_UBOUND_LT: ArgNil(); // pos in buffer to entry for UBOUND
+        dLU0(EO_IXT_SRC_UBOUND);
+        iRes = iDev_IXT_POS_UBOUND_LT(pLU,m_pDevSrcIxt);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+        
       case EO_IXT_ALT_BEGIN: ArgNil(); // begin linear traverse
         dLU0(EO_IXT_ALT_BEGIN);
         iRes = iDev_IXT_TRV_BEGIN(pLU,m_pDevAltIxt);
