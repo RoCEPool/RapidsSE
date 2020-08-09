@@ -1432,19 +1432,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iDev_ENT_PUSHELMI0(pLU,m_pDevTmpIxt);
         break;//+endCase
         
-/*I*/ case EO_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str    NOT COMPLETE!!
-//      {
-//        char acFlipped[128];
-//        dLU0(EO_ENT_PUSHELMS0);
-//        azSrc = (char*)szDev_ENT_PUSHELMS0(pLU,m_pDevTmpIxt);
-//        StrLib::iWordFlipBack(acFlipped,azSrc);
-//        S_PushStr((char*)acFlipped);
-//      }
-        
+/*I*/ case EO_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str
         dLU0(EO_ENT_PUSHELMS0);
         azSrc = (char*)szDev_ENT_PUSHELMS0(pLU,m_pDevTmpIxt);
         S_PushStr(azSrc);
-
         break;//+endCase
         
 /*I*/ case EO_ENT_PUSHOFS: ArgNil(); // push entry offset
