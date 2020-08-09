@@ -435,7 +435,12 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
       StrLib::vAppendString(&m_azSrcCrs,"\n");
     }
     
-    sPrint.vSprint("    printf(\"  *: %s\\n\");\n"_Stz,aEO[eCode]->azChar());
+    sPrint.vSprint(
+                   "    printf(\"  *: %s "_Stz,
+                   
+                   aEO[eCode]->azChar());
+    sPrint.vConcat(" %llx\\n\",aiDstk);\n"_Stz);
+
     StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
     if (EO_CALL == eCode) {
@@ -650,11 +655,11 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #define nullptr 0"
   "\n"
   "\n  #define GetStr(__azStr)"
-  "      nSize = strlen(__azStr) + 1;"
-  "      szRes = (char*)(++aiDstk);"
-  "      strcpy(szRes,__azStr);"
-  "      aiDstk += (nSize / 8) + 1;"
-  "      *(++aiDstk) = nSize;"
+//  "      nSize = strlen(__azStr) + 1;"
+//  "      szRes = (char*)(++aiDstk);"
+//  "      strcpy(szRes,__azStr);"
+//  "      aiDstk += (nSize / 8) + 1;"
+//  "      *(++aiDstk) = nSize;"
   "\n"
   "\n  #define S_PushStr(__azStr)"
   "      nSize = strlen(__azStr) + 1;"

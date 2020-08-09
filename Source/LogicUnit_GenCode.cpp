@@ -654,6 +654,8 @@ void LogicUnit::vGenerateQuery300(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q300
   vDefineLabel("QRY_300:"_Stz);
+  vAddCode(EO_INIT);
+  
   //vAddCodeString(EO_STR_LITERAL,"**QRY_300**"_Stz);
   //vAddCode(EO_STR_PRINTADR);
   //vAddCode(EO_PIX_STM_PRINT);

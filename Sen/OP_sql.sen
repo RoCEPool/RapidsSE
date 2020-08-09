@@ -297,8 +297,8 @@
   IndexTree[].asAlt
 
 
-  LogicUnit[].transform
-  //LogicUnit[].dynFun
+  //LogicUnit[].transform
+  LogicUnit[].dynFun
 
   Pot[].pipeoutAllDanglingPtns
   Pot[].delete
