@@ -1623,25 +1623,28 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_IXT_SRC_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND    NOT DONE
-      {
+//      {
+//        dLU0(EO_IXT_SRC_UBOUND);
+//        //iDev_EO_IXT_TRV_UBOUND(pRLU,m_pDevTmpIxt);
+//        EntBuffer* pUpperEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
+//        if (pUpperEntBuffer) {
+//          m_pDevSrcIxt->m_aUpperEnt = pUpperEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
+//          if (m_pDevSrcIxt->m_aUpperEnt) {
+//            m_pDevSrcIxt->m_aUpperEnt = EntBuffer::pMoveToGreaterThanEntry(m_pDevSrcIxt->m_aUpperEnt, m_oEntWrk.aKey(), &pUpperEntBuffer);
+//            if (m_pDevSrcIxt->m_aUpperEnt)
+//              *(++aiDstk) = 1;
+//            else
+//              *(++aiDstk) = 0;
+//          }
+//          else
+//            *(++aiDstk) = 0;
+//        }
+//        else
+//          *(++aiDstk) = 0;
+//      }
         dLU0(EO_IXT_SRC_UBOUND);
-        //iDev_EO_IXT_TRV_UBOUND(pRLU,m_pDevTmpIxt);
-        EntBuffer* pUpperEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
-        if (pUpperEntBuffer) {
-          m_pDevSrcIxt->m_aUpperEnt = pUpperEntBuffer->aPositionPriorEntry(m_oEntWrk.aKey());
-          if (m_pDevSrcIxt->m_aUpperEnt) {
-            m_pDevSrcIxt->m_aUpperEnt = EntBuffer::pMoveToGreaterThanEntry(m_pDevSrcIxt->m_aUpperEnt, m_oEntWrk.aKey(), &pUpperEntBuffer);
-            if (m_pDevSrcIxt->m_aUpperEnt)
-              *(++aiDstk) = 1;
-            else
-              *(++aiDstk) = 0;
-          }
-          else
-            *(++aiDstk) = 0;
-        }
-        else
-          *(++aiDstk) = 0;
-      }
+        iRes = iDev_IXT_POS_UBOUND(pLU,m_pDevSrcIxt);
+        *(++aiDstk) = iRes;
         break;//+endCase
         
       case EO_IXT_ALT_BEGIN: ArgNil(); // begin linear traverse
