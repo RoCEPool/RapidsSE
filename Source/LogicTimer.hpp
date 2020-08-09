@@ -9,6 +9,8 @@ namespace Expressions
   {
   private:
   
+    Timer    m_oTmr;
+    AggTimer m_oAggTmr[EO_ENUMS];
   
     // must be last
     Footer m_xFooter;
@@ -19,7 +21,12 @@ namespace Expressions
 
     LogicTimer(void);
    ~LogicTimer(void) noexcept(false);
-    
+  
+    void vBeginTmr(void);
+    void vEndTmr(eEO eCode);
+
+    void vReport(void);
+
   private:
   
     Footer* aFooter(void);

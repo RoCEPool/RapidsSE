@@ -68,7 +68,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pDevAltIxt = new DevIXT;
   m_pDevTmpIxt = new DevIXT;
   
-  m_pLogicTimer = new LogicTimer;
+  m_pLogicTimer = nullptr;
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_LOGICUNIT);

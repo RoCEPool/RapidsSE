@@ -50,6 +50,8 @@ AggTimer::AggTimer(void)
   
   m_iTicks  = 0;
 
+  m_nTimes  = 0;
+
   _checkInitialised_(CN_AGGTIMER);
 
   _postcondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
@@ -75,6 +77,8 @@ void AggTimer::vAdd(i8 iTicks)
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   m_iTicks += iTicks;
+  
+  m_nTimes++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,6 +89,8 @@ void AggTimer::vAdd(Timer* pTimer)
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   m_iTicks += pTimer->iTickDelta();
+
+  m_nTimes++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,6 +101,8 @@ void AggTimer::vReset(void)
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   m_iTicks = 0;
+  
+  m_nTimes = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,6 +197,16 @@ i8 AggTimer::iTicks(void)
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
     
   return m_iTicks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* number of times                                                            */
+/*----------------------------------------------------------------------------*/
+i8 AggTimer::nTimes(void)
+{
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
+    
+  return m_nTimes;
 }
 
 /*----------------------------------------------------------------------------*/

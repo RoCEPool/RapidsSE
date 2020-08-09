@@ -12,6 +12,8 @@ namespace Gadgets
   private:
   
     i8 m_iTicks;   //
+  
+    i8 m_nTimes;   //
     
     // must be last
     Footer m_xFooter;
@@ -33,7 +35,8 @@ namespace Gadgets
     i8 iMilliseconds(void);
     i8 iSeconds(void);
     i8 iTicks(void);
-  
+    i8 nTimes(void);
+
     d8 dRatePerSec(i8 nItems);
 
     Footer* aFooter(void);

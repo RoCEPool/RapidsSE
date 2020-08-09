@@ -289,7 +289,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
+  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
 
   vAcquire();
   bool b = bCompile();
@@ -299,6 +299,8 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   //vRelease();
 
   AM::pTccLock()->vDropWrite();
+  
+ m_pLogicUnit->m_pLogicTimer = new LogicTimer;
 
   return 1;
 }
