@@ -617,7 +617,7 @@ void LogicCompiler::v_DynPreliminary(void)
   
   char* azFrag = (char*)
   "\n  /*====================================================================*/"
-  "\n  /* Dynamically Generated Code                                         */"
+  "\n  /* Code for Qf%4lld                                                    */"
   "\n  /*====================================================================*/"
   "\n"
   "\n  #include <tcclib.h>" // include libc header for TCC
@@ -673,7 +673,11 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n"
   "";
   
-  StrLib::vAppendString(&m_azSrcCrs,azFrag);
+  s4K sReplaced;
+
+  sReplaced.vSprint((Stz*)azFrag,m_pLogicUnit->iQueryFragment());
+  
+  StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
