@@ -1774,35 +1774,25 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_RSB_ALT_PRINT);
         vDev_RSB_PRINT(pLU,m_pDevAltRsb);
         break;//+endCase
-
         
       case EO_RSB_DST_NEW: ArgNil(); // create new destination rsb
         dLU0(EO_RSB_DST_NEW);
-        //ASSERT(0 == m_i_Ptn);
-//        m_pDevDstRsb->m_aRsb =
-//          m_xpPot->aNewDstRsb(aRluCommon->m_i_Ptn,&m_pDevDstRsb->m_pRowSlab);
         vDev_RSB_NEW(pLU,m_pDevDstRsb);
         break;//+endCase
 
       case EO_RSB_DST_RESET: ArgNil(); // reset dst rowslab
         dLU0(EO_RSB_DST_RESET);
-        //m_pDevDstRsb->m_pRowSlab->vReset();
         vDev_RSB_RESET(pLU,m_pDevDstRsb);
         break;//+endCase
         
       case EO_RSB_DST_TEST: ArgNil(); // test if there is a destination rsb
         dLU0(EO_RSB_DST_TEST);
-//        if (m_pDevDstRsb->m_aRsb)
-//          *(++aiDstk) = 1;
-//        else
-//          *(++aiDstk) = 0;
         iRes = iDev_RSB_TEST(pLU,m_pDevDstRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
         
       case EO_RSB_DST_ZERO: ArgNil(); // zero destination rsb
         dLU0(EO_RSB_DST_ZERO);
-        //m_pDevDstRsb->m_pRowSlab->vZeroRsb(m_pDevDstRsb->m_aRsb);
         vDev_RSB_ZERO(pLU,m_pDevDstRsb);
         break;//+endCase
         
