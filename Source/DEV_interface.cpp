@@ -967,7 +967,7 @@ i8 iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg, i8*& raiDstk)
+void vDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
 {
   _static_
   
@@ -980,10 +980,10 @@ void vDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg, i8*& raiDstk)
   Stz* szStr = (Stz*)hRow->m_waColVal[iArg].m_iWrd;
 
   i8 nSize = StrLib::nSize((char*)szStr);
-  char* azDst = (char*)(++raiDstk);
+  char* azDst = (char*)(++*aaiDstk);
   StrLib::vCopy(azDst,(char*)szStr);
-  raiDstk += (nSize / 8) + 1;
-  *(++raiDstk) = nSize;
+  *aaiDstk += (nSize / 8) + 1;
+  *(++*aaiDstk) = nSize;
 }
 
 
