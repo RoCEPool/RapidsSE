@@ -176,7 +176,7 @@
     300 of
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 300=STARTMARKER" .
       //queryNo "QUERY %v" .printf
-      300 LogicUnit[].genCode        //logicCompiler[].new LogicCompiler[].compile
+      300 LogicUnit[].genCode        logicCompiler[].new LogicCompiler[].compile
 
       streamDefOut_300
       true Pot[].useStreamDefOut

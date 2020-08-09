@@ -57,14 +57,16 @@ namespace Expressions
     bool bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill);
   
     void vRtnSource(void);
+    void vSbrDeclaration(void);
     void vSbrSource(void);
-  
+
     void v_DynPreliminary(void);
     void v_DynConcluding(void);
 
     void v_RtnPreliminary(void);
     void v_RtnConcluding(void);
 
+    void v_SbrDeclaration(Stz* szSbrNm);
     void v_SbrPreliminary(Stz* szSbrNm);
     void v_SbrConcluding(void);
   

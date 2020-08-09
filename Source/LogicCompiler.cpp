@@ -252,6 +252,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   v_DynPreliminary();
+  vSbrDeclaration();
   vSbrSource();
   vRtnSource();
   v_DynConcluding();
@@ -525,6 +526,32 @@ void LogicCompiler::vRtnSource(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add source code fragments to declare all subroutines                       */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::vSbrDeclaration(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  i8 i_Label    = -1;
+  i8 i_CodeFrom = -1;
+  i8 i_CodeTill = -1;
+
+  s32 sFun;
+  
+  for (;;) {
+    bool bFound = bEachSbr(i_Label,i_CodeFrom,i_CodeTill);
+    if (! bFound)
+      break;
+    
+    i8 i_Label = m_pLogicUnit->iFindLabel(i_CodeFrom);
+    sFun = m_pLogicUnit->szLabelNm(i_Label);
+    StrLib::vStrip(sFun.azChar(),':');
+  
+    v_SbrDeclaration(sFun);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* add source code fragment for all subroutines                               */
 /*----------------------------------------------------------------------------*/
 void LogicCompiler::vSbrSource(void)
@@ -653,6 +680,25 @@ void LogicCompiler::v_RtnConcluding(void)
   "";
   
   StrLib::vAppendString(&m_azSrcCrs,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* the preliminary code fragment for a subroutine declaration                 */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::v_SbrDeclaration(Stz* szSbrNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  char* azFrag = (char*)
+  "\n  i8* %s(void* pLU, i8* aiDstk, struct RluCommon* aRluCommon);"
+  "\n"
+  "";
+  
+  s4K sReplaced;
+
+  sReplaced.vSprint((Stz*)azFrag,szSbrNm->azChar());
+  
+  StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
