@@ -331,12 +331,9 @@ void LogicCompiler::vCall(void* aDynArg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
 #ifdef __TINYC
-  i8 (*afDyn)(void* aRLU);
 
-  afDyn = (i8 (*)(void*))tcc_get_symbol((TCCState*)m_aTccState,"aiDynCompute");
-  RASSERT(afDyn);
+  m_pLogicUnit->m_afDynFun(aDynArg);
   
-  afDyn(aDynArg);
 #endif
 }
 
@@ -381,6 +378,11 @@ void LogicCompiler::vRelocate(void)
   if (tcc_relocate((TCCState*)m_aTccState, TCC_RELOCATE_AUTO) < 0) {
     RASSERT(0);
   }
+  
+  m_pLogicUnit->m_afDynFun =
+    (i8 (*)(void*))tcc_get_symbol((TCCState*)m_aTccState,"aiDynFun");
+  RASSERT(m_pLogicUnit->m_afDynFun);
+  
 #endif
 }
 
@@ -708,7 +710,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* rlu compute function                                               */"
   "\n  /*--------------------------------------------------------------------*/"
-  "\n  i8* aiDynCompute(void* pLU)"
+  "\n  i8* aiDynFun(void* pLU)"
   "\n  {"
   "\n    struct RluCommon* aRluCommon = nullptr;"
   "\n"

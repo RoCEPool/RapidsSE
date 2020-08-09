@@ -48,6 +48,8 @@ LogicUnit::LogicUnit(Task* pTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  m_afDynFun = nullptr;
+  
   MemLib::vZero(&m_aaDev,sizeof(m_aaDev),CN_LOGICUNIT);
   
   MemLib::vZero(&m_xRluCommon,sizeof(m_xRluCommon),CN_LOGICUNIT);
@@ -813,7 +815,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // this code equates to aiDynCompute() preliminary
+  // this code equates to aiDynFun() preliminary
   
   LogicUnit* pLU = this;
   
