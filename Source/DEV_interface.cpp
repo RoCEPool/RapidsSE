@@ -255,6 +255,21 @@ void vDev_IXT_DUMP(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print ent                                                                  */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT)
+{
+  _static_
+  
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
+  
+  SP_Ent spEnt;
+  vTrace("Ent : %s\n"_Stz,
+         spEnt.sz(pDevIXT->m_aEnt,
+                  pDevIXT->m_pIdxTree->pIndexDef()));
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_INS_ENT(void* aLU, void* aIXT)

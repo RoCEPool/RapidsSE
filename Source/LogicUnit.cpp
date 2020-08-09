@@ -1659,6 +1659,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #ifdef WITH_TRACE_LOGICUNIT
         vTrace("AltEnt : %s\n"_Stz,spEnt.sz(m_pDevAltIxt->m_aEnt,pIndexDef));
 #endif
+        vDev_IXT_ENT_PRINT(pLU,m_pDevAltIxt);
         break;//+endCase
         
       case EO_IXT_CMP_SRCALT: ArgNil(); // compare src.key to alt.key

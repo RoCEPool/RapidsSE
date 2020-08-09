@@ -23,6 +23,7 @@ i8   iDev_ENT_PUSHOFS(void* aLU, void* aIXT);
 
 void vDev_IXT_DEL_ENT(void* aLU, void* aIXT);
 void vDev_IXT_DUMP(void* aLU, void* aIXT);
+void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT);
 void vDev_IXT_INS_ENT(void* aLU, void* aIXT);
 i8   iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT);
 i8   iDev_IXT_TRV_BEGIN(void* aLU, void* aIXT);
