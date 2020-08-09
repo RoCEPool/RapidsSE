@@ -788,6 +788,8 @@ void LogicUnit::vGenerateQuery301(void)
   m_i_Code = 0;
   
   vDefineLabel("QRY_301:"_Stz);
+  vAddCode(EO_INIT);
+  
   //vAddCodeArg(EO_RANDOM,100);
   //vAddCode(EO_PRINT);
   //vAddCode(EO_BREAKPOINT);

@@ -179,6 +179,7 @@
       300 LogicUnit[].genCode
       logicCompiler[].new
       LogicCompiler[].compile
+
       streamDefOut_300
       true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
@@ -189,6 +190,8 @@
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 301=STARTMARKER" .
       //queryNo "QUERY %v" .printf
       301 LogicUnit[].genCode
+      logicCompiler[].new
+      LogicCompiler[].compile
 
       streamDefOut_301
       true Pot[].useStreamDefOut
@@ -297,8 +300,8 @@
   IndexTree[].asAlt
 
 
-  //LogicUnit[].transform
-  LogicUnit[].dynFun
+  LogicUnit[].transform
+  //LogicUnit[].dynFun
 
   Pot[].pipeoutAllDanglingPtns
   Pot[].delete
@@ -513,7 +516,8 @@
       //"---------------------------- 301=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      LogicUnit[].transform
+      //LogicUnit[].transform
+      LogicUnit[].dynFun
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
