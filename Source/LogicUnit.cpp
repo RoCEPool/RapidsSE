@@ -1653,17 +1653,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_IXT_POS_ALTBYWRK: ArgNil(); // position alt ixt using entwrk.key
-//        aWrkKey = m_oEntWrk.aKey();
-//        m_pDevAltIxt->m_aEnt =
-//          m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aWrkKey,&m_pDevAltIxt->m_pEntBuffer);
-//        if (m_pDevAltIxt->m_pEntBuffer) {
-//          if (m_pDevAltIxt->m_aEnt)
-//            *(++aiDstk) = 1;
-//          else
-//            *(++aiDstk) = 0;
-//        }
-//        else
-//          *(++aiDstk) = 0;
         iRes = iDev_IXT_POS_ALTBYWRK(pLU);
         dLU1(EO_IXT_POS_ALTBYWRK,iRes);
         *(++aiDstk) = iRes;
@@ -1687,7 +1676,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /*I*/ case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column into entry payload
         iTopA = *(aiDstk--);
-        dLU2(EO_PAY_STORE_COLI,iArg,iRes);
+        dLU2(EO_PAY_STORE_COLI,iArg,iTopA);
         vDev_PAY_STORE_COLI(pLU,m_pDevTmpIxt,iArg,iTopA);
         break;//+endCase
       
@@ -1786,7 +1775,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // rsb operators
       case EO_RSB_DST_POPCOLI: ArgGet(iArg); // pop and deposit top into dst column
         iTopA = *(aiDstk--);
-        dLU2(EO_RSB_DST_POPCOLI,iArg,iRes);
+        dLU2(EO_RSB_DST_POPCOLI,iArg,iTopA);
         vDev_RSB_POPCOLI(pLU,m_pDevDstRsb,iArg,iTopA);
         break;//+endCase
         
