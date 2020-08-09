@@ -470,6 +470,50 @@ i8 iDev_IXT_POS_UBOUND(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert an entry into the indexTree                                         */
+/*----------------------------------------------------------------------------*/
+i8 iDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
+{
+  _static_
+  
+  i8 iRes;
+  
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  
+  EntBuffer* pUpperEntBuffer =
+  pDevIXT->m_pIdxTree->pPositionH0Buffer(pLogicUnit->m_oEntWrk.aKey());
+  
+  if (pDevIXT) {
+    
+    pDevIXT->m_aUpperEnt =
+    pUpperEntBuffer->aPositionPriorEntry(pLogicUnit->m_oEntWrk.aKey());
+    
+    if (pDevIXT->m_aUpperEnt) {
+      pDevIXT->m_aUpperEnt =
+      EntBuffer::pMoveToGreaterThanEntry(pDevIXT->m_aUpperEnt,
+                                         pLogicUnit->m_oEntWrk.aKey(),
+                                         &pUpperEntBuffer);
+      if (pDevIXT->m_aUpperEnt)
+        pUpperEntBuffer->aPositionPriorEntry(pLogicUnit->m_oEntWrk.aKey());
+      
+      if (pDevIXT->m_aUpperEnt)
+        iRes = 1;
+      else
+        iRes = 0;
+    }
+    else
+      iRes = 0;
+  }
+  else
+    iRes = 0;
+  
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
 /*  push number of entries in tmp index                                       */
 /*----------------------------------------------------------------------------*/
 i8 iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT)

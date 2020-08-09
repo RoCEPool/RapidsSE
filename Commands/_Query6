@@ -29,12 +29,13 @@ create table LineItem                      // SF * 6,000,000 rows
   //                                             ----  ---
   // 16 columns                                  174B  91B
 );
+create index idx on lineitem (l_shipdate);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 10K ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-// /time load lineitem "/DATA/TPCH/lineitem10k.csv";
-// /time Query6 lineitem;
+ /time load lineitem "/DATA/TPCH/lineitem10k.csv";
+ ///time Query6 lineitem idx;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // SF1
@@ -45,8 +46,8 @@ create table LineItem                      // SF * 6,000,000 rows
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // RAY
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-/time fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
-/time Query6 lineitem;
+///time fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
+///time Query6 lineitem;
 
 /*============================================================================*/
 /* end                                                                        */

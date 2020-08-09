@@ -176,6 +176,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_IXT_SRC_NEXT,     // move to next entry
   /*    */ EO_IXT_SRC_PRINT,    // print src ent
   /*    */ EO_IXT_SRC_UBOUND,   // get upper bound
+  /*    */ EO_IXT_SRC_UBOUND_LT, // get upper bound (less than)
   /*    */ EO_IXT_ALT_BEGIN,    // begin linear traverse
   /*    */ EO_IXT_ALT_NEXT,     // move to next entry
   /*    */ EO_IXT_ALT_PRINT,    // print src ent
@@ -392,6 +393,7 @@ static Stz* aEO[]
   /*    */ "EO_IXT_SRC_NEXT"_Stz,
   /*    */ "EO_IXT_SRC_PRINT"_Stz,
   /*    */ "EO_IXT_SRC_UBOUND"_Stz,
+  /*    */ "EO_IXT_SRC_UBOUND_LT"_Stz,
   /*    */ "EO_IXT_ALT_BEGIN"_Stz,
   /*    */ "EO_IXT_ALT_NEXT"_Stz,
   /*    */ "EO_IXT_ALT_PRINT"_Stz,
@@ -616,6 +618,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_SRC_NEXT
   { EA_NONE,    0 },  // EO_IXT_SRC_PRINT
   { EA_NONE,    0 },  // EO_IXT_SRC_UBOUND
+  { EA_NONE,    0 },  // EO_IXT_SRC_UBOUND_LT
   { EA_NONE,    0 },  // EO_IXT_ALT_BEGIN
   { EA_NONE,    0 },  // EO_IXT_ALT_NEXT
   { EA_NONE,    0 },  // EO_IXT_ALT_PRINT

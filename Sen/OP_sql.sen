@@ -236,6 +236,18 @@
       601 LogicUnit[].genCode
     endof
 
+    666 of
+      //queryNo "QUERY %v" .printf
+      //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 112=STARTMARKER" .
+      <tableNm> <indexNm> op__table_index not if
+        false
+        exit
+      then
+      index[].indexTree to indexTree[]
+      indexTree[].asSrc
+      666 LogicUnit[].genCode
+    endof
+
     100000 of
       //queryNo "QUERY %v" .printf
       100000 LogicUnit[].genCode
@@ -426,6 +438,27 @@
 
     400 of sql_PulseMarker_400   endof
     401 of sql_PulseMarker_401   endof
+
+    666 of
+      //"++++++++++++++++++++++++++++ 112=PULSEMARKER ++++++++++++++++++++++++++++" .
+      ZK_PULSEMARKER_handler
+      // pipe out a new a stream def
+      Operand[].newStreamDef
+      Operand[] to StreamDef[]
+      nullptr to Operand[]
+      StreamDef[].duplicate to StreamDefOut[]
+      true Pot[].useStreamDefOut
+      StreamDef[].pipeout
+
+      LogicUnit[].transform
+      Pot[].pipeoutAllCompleted
+      Pot[].pipeoutAllDangling
+
+      // pipeout an EOS MARKER
+      Operand[].newEosMarker
+      Operand[].pipeOut
+
+    endof
 
     //"++++++++++++++++++++++++++++ OTHER=PULSEMARKER ++++++++++++++++++++++++++++" .
     ZK_PULSEMARKER_handler

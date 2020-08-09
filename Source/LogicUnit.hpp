@@ -300,6 +300,7 @@ namespace Expressions
 
     void vGenerateQuery600(void);
     void vGenerateQuery601(void);
+    void vGenerateQuery666(void);
 
     void vGenerate1700(void);
     void vGenerate1701(void);

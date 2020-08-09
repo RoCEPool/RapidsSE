@@ -31,6 +31,7 @@ i8   iDev_IXT_POS_ALTBYSRC(void* aLU);
 i8   iDev_IXT_POS_ALTBYWRK(void* aLU);
 i8   iDev_IXT_POS_LBOUND(void* aLU, void* aIXT);
 i8   iDev_IXT_POS_UBOUND(void* aLU, void* aIXT);
+i8   iDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT);
 i8   iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT);
 i8   iDev_IXT_TRV_BEGIN(void* aLU, void* aIXT);
 i8   iDev_IXT_TRV_NEXT(void* aLU, void* aIXT);
