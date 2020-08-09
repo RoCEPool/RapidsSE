@@ -187,7 +187,7 @@
     301 of
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 301=STARTMARKER" .
       //queryNo "QUERY %v" .printf
-      301 LogicUnit[].genCode        logicCompiler[].new LogicCompiler[].compile
+      301 LogicUnit[].genCode
 
       streamDefOut_301
       true Pot[].useStreamDefOut
@@ -209,7 +209,7 @@
     400 of
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 400=STARTMARKER" .
       //queryNo "QUERY %v" .printf
-      400 LogicUnit[].genCode
+      400 LogicUnit[].genCode        //logicCompiler[].new LogicCompiler[].compile
       streamDefOut_400
       true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]

@@ -731,10 +731,10 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* pLU)
   aiDstk -= (nSize / 8) + 2; \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
 
-#define S_UseStr(__azStz) \
+#define S_UseStr(__szStz) \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
   nSize = *(aiDstk--); \
-  __azStz = (char*)(aiDstk - ((nSize / 8) + 1));
+  __szStz = (Stz*)(aiDstk - ((nSize / 8) + 1));
 
 #define S_UseEnd() \
   aiDstk -= (nSize / 8) + 2; \
@@ -774,7 +774,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 i_Cell_ntv;
   eKC eCmp;
   i8 nSize;
-  Stz* szDst;
   char* azDst;
   char* azSrc;
   char* azArg;
@@ -1536,8 +1535,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)
         dLU0(EO_ENTWRK_APPENDELMS);
-        S_UseStr(azSrc);
-        vDev_ENTWRK_APPENDELMS(pLU,aRluCommon->m_pDevSrcRsb,(Stz*)azSrc);
+        S_UseStr(szTopA);
+        vDev_ENTWRK_APPENDELMS(pLU,aRluCommon->m_pDevSrcRsb,szTopA);
         S_UseEnd();
         break;//+endCase
         
@@ -1698,8 +1697,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       
       case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column into entry payload
         dLU1(EO_PAY_STORE_COLI,iArg);
-        szDst = szDev_PAY_STORE_COLS(pLU,aRluCommon->m_pDevTmpIxt,iArg);
-        S_PopStr((char*)szDst);
+        azDst = (char*)szDev_PAY_STORE_COLS(pLU,aRluCommon->m_pDevTmpIxt,iArg);
+        S_PopStr(azDst);
         vDebugPoint();
         break;//+endCase
         
