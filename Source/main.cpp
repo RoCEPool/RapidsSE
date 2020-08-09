@@ -43,6 +43,18 @@ int main(int argc, char* argv[])
   xQty = Datums::xQtyTest();
   printf("Qty isNull=%lld Value=%lld\n",(i8)xQty.m_bIsNull,xQty.m_iValue);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  size_t size = C_64KB;
+//
+//  void *prx;
+//  char tmpfname[] = "/tmp/.tccrunXXXXXX";
+//  int fd = mkstemp(tmpfname);
+//  unlink(tmpfname);
+//  ftruncate(fd, size);
+//
+//  prx = mmap (NULL, size, PROT_READ|PROT_EXEC, MAP_SHARED, fd, 0);
+//    if (prx == MAP_FAILED)
+//      printf("could not map memory");
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some word flip experiments
