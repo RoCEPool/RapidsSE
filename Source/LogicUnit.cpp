@@ -1593,7 +1593,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_IXT_SRC_LBOUND: ArgNil(); // position in buffer to entry before LBOUND
+      case EO_IXT_SRC_LBOUND: ArgNil(); // pos in buffer to entry before LBOUND NOT DONE
         dLU0(EO_IXT_SRC_LBOUND);
         //iDev_EO_IXT_TRV_LBOUND(pRLU,m_pDevTmpIxt);
         m_pDevSrcIxt->m_pEntBuffer = m_pDevSrcIxt->m_pIdxTree->pPositionH0Buffer(m_oEntWrk.aKey());
@@ -1620,7 +1620,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
         break;//+endCase
 
-      case EO_IXT_SRC_UBOUND: ArgNil(); // position in buffer to entry for UBOUND
+      case EO_IXT_SRC_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND    NOT DONE
       {
         dLU0(EO_IXT_SRC_UBOUND);
         //iDev_EO_IXT_TRV_UBOUND(pRLU,m_pDevTmpIxt);
@@ -1644,34 +1644,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_IXT_ALT_BEGIN: ArgNil(); // begin linear traverse
         dLU0(EO_IXT_ALT_BEGIN);
-//        m_pDevAltIxt->m_pEntBuffer = m_pDevAltIxt->m_pIdxTree->pFirstH0Buffer();
-//        if (m_pDevAltIxt->m_pEntBuffer) {
-//          m_pDevAltIxt->m_aEnt = m_pDevAltIxt->m_pEntBuffer->aLeadEntry();
-//          if (m_pDevAltIxt->m_aEnt)
-//            *(++aiDstk) = 1;
-//          else
-//            *(++aiDstk) = 0;
-//        }
-//        else
-//          *(++aiDstk) = 0;
         iRes = iDev_IXT_TRV_BEGIN(pLU,m_pDevAltIxt);
         *(++aiDstk) = iRes;
         break;//+endCase
 
       case EO_IXT_ALT_NEXT: ArgNil();
         dLU0(EO_IXT_ALT_NEXT);
-//        m_pDevAltIxt->m_aEnt =
-//          EntBuffer::pMoveToNextEntry(m_pDevAltIxt->m_aEnt,
-//                                      &m_pDevAltIxt->m_pEntBuffer);
-//        if (m_pDevAltIxt->m_aEnt)
-//          *(++aiDstk) = 1;
-//        else
-//          *(++aiDstk) = 0;
         iRes = iDev_IXT_TRV_NEXT(pLU,m_pDevAltIxt);
         *(++aiDstk) = iRes;
         break;//+endCase
 
-      case EO_IXT_ALT_PRINT: ArgNil(); // print alt ent
+      case EO_IXT_ALT_PRINT: ArgNil(); // print alt ent                         NOT DONE
         pIndexDef = m_pDevAltIxt->m_pIdxTree->pIndexDef();
 #ifdef WITH_TRACE_LOGICUNIT
         vTrace("AltEnt : %s\n"_Stz,spEnt.sz(m_pDevAltIxt->m_aEnt,pIndexDef));
@@ -1774,7 +1757,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PIX_STM_PRINT: ArgNil(); // print stream pix
 #ifdef WITH_TRACE_LOGICUNIT
         dLU0(EO_PIX_STM_PRINT);
-        m_oStreamPix.vPrint();
+        vDev_PIX_STM_PRINT(pLU);
 #endif
         break;//+endCase
 
