@@ -182,6 +182,18 @@ i8 LogicUnit::nCodes(void)
 /*----------------------------------------------------------------------------*/
 /* get iArg at given i_Code                                                   */
 /*----------------------------------------------------------------------------*/
+eEO* LogicUnit::aCodeArg(i8 i_Code)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  eEO* aArg = &m_eaCode[i_Code];
+
+  return aArg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get iArg at given i_Code                                                   */
+/*----------------------------------------------------------------------------*/
 i8 LogicUnit::iCodeArg(i8 i_Code)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
