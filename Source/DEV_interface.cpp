@@ -369,6 +369,35 @@ i8 iDev_IXT_POS_ALTBYSRC(void* aLU)
 }
 
 /*----------------------------------------------------------------------------*/
+/*  position alt ixt using entwrk.key                                         */
+/*----------------------------------------------------------------------------*/
+i8 iDev_IXT_POS_ALTBYWRK(void* aLU)
+{
+  _static_
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  i8 iRes;
+  
+  Key* aWrkKey = pLogicUnit->m_oEntWrk.aKey();
+  
+  pLogicUnit->m_pDevAltIxt->m_aEnt =
+    pLogicUnit->m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aWrkKey,
+                                       &pLogicUnit->m_pDevAltIxt->m_pEntBuffer);
+  
+  if (pLogicUnit->m_pDevAltIxt->m_pEntBuffer) {
+    if (pLogicUnit->m_pDevAltIxt->m_aEnt)
+      iRes = 1;
+    else
+      iRes = 0;
+  }
+  else
+    iRes = 0;
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
 i8 iDev_IXT_POS_LBOUND(void* aLU, void* aIXT)

@@ -1647,9 +1647,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_IXT_POS_ALTBYSRC: ArgNil(); // position alt ixt using src.key
-//        aSrcKey = m_pDevSrcIxt->m_aEnt->aKey();
+        iRes = iDev_IXT_POS_ALTBYSRC(pLU);
+        dLU1(EO_IXT_POS_ALTBYSRC,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
+      case EO_IXT_POS_ALTBYWRK: ArgNil(); // position alt ixt using entwrk.key
+//        aWrkKey = m_oEntWrk.aKey();
 //        m_pDevAltIxt->m_aEnt =
-//          m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aSrcKey,&m_pDevAltIxt->m_pEntBuffer);
+//          m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aWrkKey,&m_pDevAltIxt->m_pEntBuffer);
 //        if (m_pDevAltIxt->m_pEntBuffer) {
 //          if (m_pDevAltIxt->m_aEnt)
 //            *(++aiDstk) = 1;
@@ -1658,24 +1664,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        }
 //        else
 //          *(++aiDstk) = 0;
-        iRes = iDev_IXT_POS_ALTBYSRC(pLU);
-        dLU1(EO_IXT_POS_ALTBYSRC,iRes);
-        *(++aiDstk) = iRes;
-        break;//+endCase
-
-      case EO_IXT_POS_ALTBYWRK: ArgNil(); // position alt ixt using entwrk.key
-        aWrkKey = m_oEntWrk.aKey();
-        m_pDevAltIxt->m_aEnt =
-          m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aWrkKey,&m_pDevAltIxt->m_pEntBuffer);
-        if (m_pDevAltIxt->m_pEntBuffer) {
-          if (m_pDevAltIxt->m_aEnt)
-            *(++aiDstk) = 1;
-          else
-            *(++aiDstk) = 0;
-        }
-        else
-          *(++aiDstk) = 0;
+        iRes = iDev_IXT_POS_ALTBYWRK(pLU);
         dLU1(EO_IXT_POS_ALTBYWRK,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
