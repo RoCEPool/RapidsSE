@@ -340,6 +340,35 @@ void vDev_IXT_INS_ENT(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
+/*  position alt ixt using src.key                                            */
+/*----------------------------------------------------------------------------*/
+i8 iDev_IXT_POS_ALTBYSRC(void* aLU)
+{
+  _static_
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  i8 iRes;
+  
+  Key* aSrcKey = pLogicUnit->m_pDevSrcIxt->m_aEnt->aKey();
+  
+  pLogicUnit->m_pDevAltIxt->m_aEnt =
+    pLogicUnit->m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aSrcKey,
+                                       &pLogicUnit->m_pDevAltIxt->m_pEntBuffer);
+  
+  if (pLogicUnit->m_pDevAltIxt->m_pEntBuffer) {
+    if (pLogicUnit->m_pDevAltIxt->m_aEnt)
+      iRes = 1;
+    else
+      iRes = 0;
+  }
+  else
+    iRes = 0;
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
 i8 iDev_IXT_POS_LBOUND(void* aLU, void* aIXT)
