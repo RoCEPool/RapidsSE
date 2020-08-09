@@ -1855,9 +1855,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_RSB_DST_PUSHCOLI: ArgGet(iArg); // push dst column
-//        m_pDevDstRsb->m_aRsb = m_pDevDstRsb->m_pRowSlab->aRsbAdr(m_pDevDstRsb->m_pRowSlab->nRows()-1);
-        i_Cell_ntv = m_pDevDstRsb->m_aRsb->i_ColToCell_ntv(iArg);
-        iRes = m_pDevDstRsb->m_aRsb->iVal_ntv(i_Cell_ntv);
+//        i_Cell_ntv = m_pDevDstRsb->m_aRsb->i_ColToCell_ntv(iArg);
+//        iRes = m_pDevDstRsb->m_aRsb->iVal_ntv(i_Cell_ntv);
+        iRes = iDev_RSB_PUSHCOLI(pLU,m_pDevDstRsb,iArg);
         dLU2(EO_RSB_DST_PUSHCOLI,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
