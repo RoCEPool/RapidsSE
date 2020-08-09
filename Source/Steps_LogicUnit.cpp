@@ -11,6 +11,7 @@ extern DebugFlags gxDebugFlags;;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogicUnit(void)
 {
+  vAddStep("LogicUnit[].dynFun"_Stz,        &Step::vLogicUnitDynFun);
   vAddStep("LogicUnit[].genCode"_Stz,       &Step::vLogicUnitGenCode);
     
   vAddStep("LogicUnit[].callAgain@"_Stz,    &Step::vLogicUnitCallAgainFetch);
@@ -24,6 +25,18 @@ void Step::vAddSteps_LogicUnit(void)
   
   vAddStep("LogicUnit[].transform"_Stz,     &Step::vLogicUnitTransform);
   vAddStep("LogicUnit[].transformArgs"_Stz, &Step::vLogicUnitTransformArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].dynFun -- call dynamic function created by LogicCompiler       */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitDynFun(void)
+{
+  ENTRY();
+  
+  i8 iRes = m_pLogicUnit->iDynFun();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

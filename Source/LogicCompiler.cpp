@@ -294,9 +294,9 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   vSymbols();
   vRelocate();
 
-  vCall(aDynArg);
+  //vCall(aDynArg);
 
-  vRelease();
+  //vRelease();
   
   return 1;
 }

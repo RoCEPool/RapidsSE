@@ -206,6 +206,18 @@ i8 LogicUnit::iCodeArg(i8 i_Code)
 }
 
 /*----------------------------------------------------------------------------*/
+/* call dynamic function compiled by LogicCompiler                            */
+/*----------------------------------------------------------------------------*/
+i8 LogicUnit::iDynFun(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  i8 iRes = m_afDynFun(this);
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find label which is at given i_Code                                        */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iFindLabel(i8 i_Code)

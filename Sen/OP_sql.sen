@@ -254,7 +254,7 @@
 
       logicCompiler[].new
       logicCompiler[].compile
-      logicCompiler[].call
+      logicUnit[].dynFun
       logicCompiler[].delete
     endof
 
@@ -264,7 +264,7 @@
 
       logicCompiler[].new
       logicCompiler[].compile
-      logicCompiler[].call
+      logicUnit[].dynFun
       logicCompiler[].delete
     endof
 
