@@ -1870,7 +1870,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
 /*R*/ case EO_RSB_SRC_PUSHCOLS: ArgGet(iArg); // push src column
         //szDev_RSB_PUSHCOLS(pRLU,m_pDevSrcRsb,iArg);
-        azSrc = (char*)m_pDevSrcRsb->m_aRsb->szVal_ntv(m_pDevSrcRsb->m_aRsb->i_ColToCell_ntv(iArg));
+//        azSrc = (char*)m_pDevSrcRsb->m_aRsb->szVal_ntv(m_pDevSrcRsb->m_aRsb->i_ColToCell_ntv(iArg));
+        azSrc = (char*)szDev_RSB_PUSHCOLS(pLU,m_pDevSrcRsb,iArg);
         dLU2(EO_RSB_SRC_PUSHCOLS,iArg,(i8)azSrc);
         S_PushStr(azSrc);
         if (aRluCommon->m_bTrace)
