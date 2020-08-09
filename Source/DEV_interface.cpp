@@ -661,7 +661,7 @@ i8 iDev_RSB_TEST(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* zero rsb                                                                   */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_SEROvoid* aLU, void* aRSB)
+void vDev_RSB_ZERO(void* aLU, void* aRSB)
 {
   _static_
   
