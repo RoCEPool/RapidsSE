@@ -1731,16 +1731,6 @@ void LogicUnit::vGenerateQuery600(void)
   // FILTER SUBROUTINE
   vDefineLabel("SUBROUTINE_FILTER:"_Stz);
 
-//  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_SHIPDATE);
-//  vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
-//  vAddCode(EO_GREATEREQUAL);
-//  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
-//
-//  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_SHIPDATE);
-//  vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
-//  vAddCode(EO_LESSTHAN);
-//  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
-
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_DISCOUNT);
   vAddCodeArg(EO_INTEGER, 5);
   vAddCode(EO_GREATEREQUAL);
@@ -1784,9 +1774,9 @@ void LogicUnit::vGenerateQuery600(void)
   
   // TEMP !!!
   // COUNT(*) -> Q600_COUNT
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI, (i8)Q600_COUNT);
-  vAddCode(EO_INC);
-  vAddCodeArg(EO_RSB_DST_POPCOLI, (i8)Q600_COUNT);
+//  vAddCodeArg(EO_RSB_DST_PUSHCOLI, (i8)Q600_COUNT);
+//  vAddCode(EO_INC);
+//  vAddCodeArg(EO_RSB_DST_POPCOLI, (i8)Q600_COUNT);
   
   vAddCode(EO_RETURN);
   
@@ -1843,10 +1833,10 @@ void LogicUnit::vGenerateQuery601(void)
   
   // TEMP !!!
   // COUNT(*) -> Q600_COUNT
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)Q600_COUNT);
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI,(i8)Q601_COUNT);
-  vAddCode(EO_ADD);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q601_COUNT);
+//  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)Q600_COUNT);
+//  vAddCodeArg(EO_RSB_DST_PUSHCOLI,(i8)Q601_COUNT);
+//  vAddCode(EO_ADD);
+//  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q601_COUNT);
   
   
   vAddCode(EO_RETURN);

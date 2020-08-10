@@ -852,8 +852,8 @@
   StreamDefOut[].addColumn
 
   // add column COUNT(*)
-  0 19 CT_INTEGER "count"
-  StreamDefOut[].addColumn
+  //0 19 CT_INTEGER "count"
+  //StreamDefOut[].addColumn
 
   StreamDef[].delete
   StreamDefOut[].duplicate to StreamDef[]
