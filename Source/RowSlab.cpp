@@ -275,6 +275,8 @@ bool RowSlab::bNewRow(Rsb** paRow)
   
   m_nItems++;
   
+  m_i_RowLgl++;
+  
   i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
   m_xWsp.vTakeTail(nCellBytes);
 
@@ -303,6 +305,8 @@ bool RowSlab::bNewRow(void)
   m_i_Row_c0 = m_i_CellCrs;
   
   m_nItems++;
+  
+  m_i_RowLgl++;
   
   i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
   m_xWsp.vTakeTail(nCellBytes);
@@ -575,7 +579,6 @@ m8* RowSlab::amSlabCellVec(void)
   
   return amCellArea;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
