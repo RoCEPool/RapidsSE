@@ -1634,6 +1634,9 @@ void LogicUnit::vGenerateQuery666(void)
   // reset
   m_i_Code = 0;
   
+  vDefineLabel("QRY_666:"_Stz);
+  vAddCode(EO_INIT);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // RESET COLUMNS NOT NEEDED
   vAddCodeArg(EO_COL_NOT_PROJECT, L_ORDERKEY);
@@ -1715,7 +1718,10 @@ void LogicUnit::vGenerateQuery600(void)
   
   // init the code
   m_i_Code = 0;
-      
+  
+  vDefineLabel("QRY_600:"_Stz);
+  vAddCode(EO_INIT);
+  
   // new a rsb dst row if not there
   vAddCode(EO_RSB_DST_TEST);
   vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
@@ -1815,7 +1821,10 @@ void LogicUnit::vGenerateQuery601(void)
   
   // init the code
   m_i_Code = 0;
-      
+  
+  vDefineLabel("QRY_601:"_Stz);
+  vAddCode(EO_INIT);
+  
   // new a rsb dst row if not there
   vAddCode(EO_RSB_DST_TEST);
   vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
