@@ -13,8 +13,8 @@ namespace Rows
 
   class RowSlab : public Object
   {
-  public:
-  
+  private:
+
     char m_caModel[32]; // model string
     i8   m_iVersion;    //
     i8   m_iFormat;
@@ -27,7 +27,6 @@ namespace Rows
     i8   m_i_Row_c0;    // cell 0 of current row
     i8   m_i_RowLgl;    // current logical row number
   
-  private:
     i8   m_i_CellCrs;   // current working cell
 
   public:
