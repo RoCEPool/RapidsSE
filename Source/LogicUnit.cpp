@@ -582,7 +582,7 @@ void LogicUnit::vDumpCode(void)
 //#ifdef WITH_TRACE_LOGICUNIT
   
   //if (100001 != m_xRluCommon.m_iSql)
-  if (302 != m_xRluCommon.m_iSql)
+  if (401 != m_xRluCommon.m_iSql)
     return;
   
   SP_Dte spDate;

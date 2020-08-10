@@ -216,6 +216,9 @@
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 400=STARTMARKER" .
       //queryNo "QUERY %v" .printf
       400 LogicUnit[].genCode
+      logicCompiler[].new
+      LogicCompiler[].compile
+
       streamDefOut_400
       true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
@@ -226,6 +229,9 @@
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 401=STARTMARKER" .
       //queryNo "QUERY %v" .printf
       401 LogicUnit[].genCode
+      logicCompiler[].new
+      LogicCompiler[].compile
+
       streamDefOut_401
       true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
@@ -385,7 +391,8 @@
   indexTree[] 0 LogicUnit[].dev!
 
 
-  LogicUnit[].transform
+  //LogicUnit[].transform
+  LogicUnit[].dynFun
 
   Pot[].pipeoutAllDangling
   Pot[].delete
@@ -539,7 +546,8 @@
       //"---------------------------- 401=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      true 1 LogicUnit[].transformArgs
+      //true 1 LogicUnit[].transformArgs
+      true 1 LogicUnit[].dynFunArgs
       Operand[].delete
       Pot[].pipeoutAllCompleted
 
@@ -624,7 +632,8 @@
 
     401 of
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 302=EOSMARKER" .
-      false 1 LogicUnit[].transformArgs
+      //false 1 LogicUnit[].transformArgs
+      false 1 LogicUnit[].dynFunArgs
     endof
 
   endcase

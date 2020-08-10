@@ -1285,6 +1285,8 @@ void LogicUnit::vGenerateQuery400(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q400
   vDefineLabel("QRY_400:"_Stz);
+  vAddCode(EO_INIT);
+
   vAddCodeString(EO_STR_LITERAL,"**QRY_400**"_Stz);
   vAddCode(EO_STR_PRINTADR);
 
@@ -1473,6 +1475,7 @@ void LogicUnit::vGenerateQuery401(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q401
   vDefineLabel("QRY_401:"_Stz);
+  vAddCode(EO_INIT);
 
   //vAddCode(EO_TRACEON);
   
