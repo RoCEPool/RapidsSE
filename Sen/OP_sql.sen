@@ -611,7 +611,9 @@
       // AGGREGATE WITH GROUPBY (SUPER)
       //queryNo "QUERY %v" .printf
       104 LogicUnit[].genCode
-      LogicUnit[].transform
+      logicCompiler[].new
+      LogicCompiler[].compile
+      LogicUnit[].dynFun
       IndexTree[].delete
     endof
 
