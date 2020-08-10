@@ -139,7 +139,7 @@ ToRsb::~ToRsb(void) noexcept(false)
 //
 //  } // end-data
 //
-//  //RASSERT(m_dCalc != 1.0);
+//  //RASSERT(m_dCalc != 3.0);
 //
 //  //m_pRowSlab->vDumpAllRows();
 //  //m_pRowSlab->vSlabReport();
@@ -179,7 +179,7 @@ bool ToRsb::bConvert(CrwBuffer* pCrwBuffer)
     
   } // end-data
   
-  //RASSERT(m_dCalc != 1.0);
+  //RASSERT(m_dCalc != 3.0);
   
   //m_pRowSlab->vDumpAllRows();
   //m_pRowSlab->vSlabReport();
@@ -293,7 +293,7 @@ bool ToRsb::bConvert(char* azSrc)
 
   } // end-data
   
-  RASSERT(m_dCalc != 1.0);
+  RASSERT(m_dCalc != 3.0);
   
   //m_pRowSlab->vDumpAllRows();
   //m_pRowSlab->vSlabReport();
@@ -401,7 +401,7 @@ bool ToRsb::bConvertFast(char* azSrc)
     
   } // end-data
   
-  RASSERT(m_dCalc != 1.0);
+  RASSERT(m_dCalc != 3.0);
   
   //m_pRowSlab->vDumpAllRows();
   //m_pRowSlab->vSlabReport();
@@ -574,7 +574,7 @@ bool ToRsb::bConvertFastInline(char* azCsvInput)
   // end-hack
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) while more csv data
+  // 1) while more csv data in chunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreCsv:
   
@@ -590,6 +590,11 @@ L_TestMoreCsv:
   if (! bMORE_DATA())   // ? macro ?
     goto L_EndOfCsv;
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2) new rsb
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // alloc a new rsb, new another rsbBufer if necessary
   if (! pRowSlab->bNewRow()) {    // ? inline ?
     vNewRsbBuffer();
@@ -600,7 +605,7 @@ L_TestMoreCsv:
   
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 1.a) while more fields
+  // 3) while more fields of current row
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_TestMoreFields:
   
@@ -613,7 +618,6 @@ L_TestMoreFields:
   xColPix = aColPix[m_i_Fld];
   
   ePixDatum = (eDM) xColPix.m_uDatum;
-  //m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
 
   m_bSawFldSep = false;
     
@@ -633,7 +637,7 @@ L_TestMoreFields:
   
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 1.b) date field
+  // 3.a) date field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
 
@@ -776,7 +780,7 @@ L_Date:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 1.c) decimal field
+  // 3.b) decimal field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
 
@@ -865,7 +869,7 @@ L_Decimal:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 1.d) integer
+  // 3.c) integer
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
 
@@ -923,7 +927,7 @@ L_Integer:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 1.e) varchar field
+  // 3.d) varchar field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Varchar:
 
@@ -987,7 +991,7 @@ L_Varchar:
   
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 1.f) boolean field
+  // 3.e) boolean field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Boolean:
   {
@@ -1005,8 +1009,9 @@ L_Boolean:
   }
   goto L_PostField;
   
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 1.g) float field
+  // 3.f) float field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
   {
@@ -1024,8 +1029,9 @@ L_Float:
   }
   goto L_PostField;
 
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 1.h) interval field
+  // 3.g) interval field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
   {
@@ -1043,8 +1049,9 @@ L_Interval:
   }
   goto L_PostField;
 
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 1.i) time field
+  // 3.h) time field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   {
@@ -1062,8 +1069,9 @@ L_Time:
   }
   goto L_PostField;
 
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 1.j) timestamp field
+  // 3.i) timestamp field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Timestamp:
   {
@@ -1083,7 +1091,7 @@ L_Timestamp:
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 1.k) end of fields
+  // 4) end of all fields for row
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
   
@@ -1106,7 +1114,7 @@ L_PostField:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) back to while more csv data
+  // 5) back to while more csv data
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfFields:
   
@@ -1140,7 +1148,7 @@ L_EndOfFields:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3) end of azCsvSrc
+  // 6) end of azCsvSrc slab
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 L_EndOfCsv:
@@ -1152,7 +1160,6 @@ L_EndOfCsv:
   
   return true;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
