@@ -55,7 +55,10 @@ void LogicUnit::vGenerateQuery101(void)
   
   // reset
   m_i_Code = 0;
-    
+  
+  vDefineLabel("QRY_101:"_Stz);
+  vAddCode(EO_INIT);
+  
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
@@ -120,7 +123,10 @@ void LogicUnit::vGenerateQuery103(void)
   
   // reset
   m_i_Code = 0;
-      
+  
+  vDefineLabel("QRY_103:"_Stz);
+  vAddCode(EO_INIT);
+  
   // -- -- -- -- -- -- -- -- -- -- --
   // insert each rsb
   
@@ -282,7 +288,10 @@ void LogicUnit::vGenerateQuery104(void)
   
   // reset
   m_i_Code = 0;
-      
+  
+  vDefineLabel("QRY_104:"_Stz);
+  vAddCode(EO_INIT);
+  
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
@@ -362,6 +371,9 @@ void LogicUnit::vGenerateQuery110(void)
   
   // reset
   m_i_Code = 0;
+  
+  vDefineLabel("QRY_110:"_Stz);
+  vAddCode(EO_INIT);
   
   // -- -- -- -- -- -- -- -- -- -- --
   // insert each rsb -> indexTree
@@ -483,6 +495,8 @@ void LogicUnit::vGenerateQuery110(void)
   vAddCode(EO_INC);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_QTY);
   
+  vDefineLabel("L_QUANTITY_NULL:"_Stz);
+  
   // COUNT(L_EXTENDEDPRICE) -> Q100_COUNT_PRICE
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_EXTENDEDPRICE);
   vAddCode(EO_ISNULL);
@@ -561,6 +575,9 @@ void LogicUnit::vGenerateQuery112(void)
   
   // reset
   m_i_Code = 0;
+  
+  vDefineLabel("QRY_112:"_Stz);
+  vAddCode(EO_INIT);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // RESET COLUMNS NOT NEEDED

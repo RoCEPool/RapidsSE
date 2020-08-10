@@ -185,6 +185,18 @@ void* aDev_ENT_PUSH(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push entry                                                                 */
+/*----------------------------------------------------------------------------*/
+void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT)
+{
+  _static_
+  
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  
+  return pDevIxt->m_aUpperEnt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* push entry elm 0 int                                                       */
 /*----------------------------------------------------------------------------*/
 i8 iDev_ENT_PUSHELMI0(void* aLU, void* aIXT)

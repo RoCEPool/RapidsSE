@@ -1501,12 +1501,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_ENT_SRC_PUSH: ArgNil(); // push entry on the stack
         dLU0(EO_ENT_SRC_PUSH);
-        *(++aiDstk) = (i8)m_pDevSrcIxt->m_aEnt;
+        //*(++aiDstk) = (i8)m_pDevSrcIxt->m_aEnt;
+        aDev_ENT_PUSH(pLU, aRluCommon->m_pDevSrcIxt);
         break;//+endCase
         
       case EO_ENT_SRC_PUSHUPPER: ArgNil(); // push entry on the stack
         dLU0(EO_ENT_SRC_PUSHUPPER);
-        *(++aiDstk) = (i8)m_pDevSrcIxt->m_aUpperEnt;
+        //*(++aiDstk) = (i8)m_pDevSrcIxt->m_aUpperEnt;
+        aDev_ENT_PUSHUPPER(pLU, aRluCommon->m_pDevSrcIxt);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1555,10 +1557,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
         case EO_ENT_PRINTKEYS: ArgNil(); // test if m_pEnt.key == m_oEntWrk.key
         vDev_ENT_PRINTKEYS(pLU,aRluCommon->m_pDevTmpIxt);
-        break;
-              
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // entWrk
+        break;//+endCase
+      
       case EO_ENTWRK_APPENDELM: ArgGet(iArg); // append next element value
         dLU1(EO_ENTWRK_APPENDELM,iArg);
         vDev_ENTWRK_APPENDELM(pLU,aRluCommon->m_pDevSrcRsb,iArg);
@@ -1736,7 +1736,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU1(EO_PAY_STORE_COLI,iArg);
         azDst = (char*)szDev_PAY_STORE_COLS(pLU,aRluCommon->m_pDevTmpIxt,iArg);
         S_PopStr(azDst);
-        vDebugPoint();
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

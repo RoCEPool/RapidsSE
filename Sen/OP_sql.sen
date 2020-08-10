@@ -171,6 +171,8 @@
       index[].indexTree to indexTree[]
       indexTree[].asSrc
       112 LogicUnit[].genCode
+      logicCompiler[].new
+      LogicCompiler[].compile
     endof
 
     300 of
@@ -250,7 +252,7 @@
 
     666 of
       //queryNo "QUERY %v" .printf
-      //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 112=STARTMARKER" .
+      //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 666=STARTMARKER" .
       <tableNm> <indexNm> op__table_index not if
         false
         exit
@@ -436,7 +438,7 @@
       true Pot[].useStreamDefOut
       StreamDef[].pipeout
 
-      LogicUnit[].transform
+      LogicUnit[].dynFun
       Pot[].pipeoutAllCompleted
       Pot[].pipeoutAllDangling
 

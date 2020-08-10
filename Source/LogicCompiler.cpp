@@ -36,6 +36,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_ENT_POSPRIOR"_Stz,      (const void *) vDev_ENT_POSPRIOR      },
   { "vDev_ENT_PRINTKEYS"_Stz,     (const void *) vDev_ENT_PRINTKEYS     },
   { "aDev_ENT_PUSH"_Stz,          (const void *) aDev_ENT_PUSH          },
+  { "aDev_ENT_PUSHUPPER"_Stz,     (const void *) aDev_ENT_PUSHUPPER     },
   { "iDev_ENT_PUSHELMI0"_Stz,     (const void *) iDev_ENT_PUSHELMI0     },
   { "szDev_ENT_PUSHELMS0"_Stz,    (const void *) szDev_ENT_PUSHELMS0    },
   { "iDev_ENT_PUSHOFS"_Stz,       (const void *) iDev_ENT_PUSHOFS       },
@@ -660,6 +661,8 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n"
   "\n  enum eKC { KC_BEFORE=1, KC_SAME, KC_AFTER };"
   "\n"
+  "\n  static const i8 C_DATUM_NULL = -9223372036854775807;"
+  "\n"
   "\n  #define ArgNil() "
   "\n  #define ArgGet(x) "
   "\n  #define dLU0(x) "
@@ -674,6 +677,12 @@ void LogicCompiler::v_DynPreliminary(void)
 //  "      strcpy(szRes,__azStr);"
 //  "      aiDstk += (nSize / 8) + 1;"
 //  "      *(++aiDstk) = nSize;"
+  "\n"
+  "\n  #define S_PopStr(__azDst)"
+  "      nSize = *(aiDstk--);"
+  "      azSrc = (char*)(aiDstk - ((nSize / 8) + 1));"
+  "      strcpy(__azDst,azSrc);"
+  "      aiDstk -= (nSize / 8) + 2;"
   "\n"
   "\n  #define S_PushStr(__azStr)"
   "      nSize = strlen(__azStr) + 1;"
