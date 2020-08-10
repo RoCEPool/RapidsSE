@@ -26,8 +26,11 @@ namespace Rows
     i8   m_nItems;      // number of items in this row-slab
     i8   m_i_Row_c0;    // cell 0 of current row
     i8   m_i_RowLgl;    // current logical row number
+  
+  private:
     i8   m_i_CellCrs;   // current working cell
 
+  public:
     StreamPix m_oStreamPix; // condensed stream def
  
     SingleWord m__PadToCacheLine[7]; // padding to cache line
@@ -47,6 +50,8 @@ namespace Rows
    ~RowSlab(void) noexcept(false);
         
     ColPix* axaColPix(void);
+    i8    i_CellAdv(void);
+    i8    i_CellCrs(void);
     i8    nCols(void);
     i8    iColumn(Rsb* aRsb, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
