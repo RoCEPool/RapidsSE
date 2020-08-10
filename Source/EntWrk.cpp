@@ -137,16 +137,16 @@ void EntWrk::vAppendElement(Rsb* aRsb, Column* pColumn)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 i_Column = pColumn->iColumnNo();
-  i8 iCell = aRsb->i_ColToCell_ntv(i_Column);
+  i8 i_Col = pColumn->iColumnNo();
+  //i8 iCell = aRsb->i_ColToCell_ntv(i_Column);
   
-  if (aRsb->bIsNull_ntv(iCell)) {
+  if (aRsb->bIsNull_ntv(i_Col)) {
     vAppendNull();
     return;
   }
   
   if (DM_VCH == pColumn->eDatum()) {
-      Stz* szSrc = aRsb->szVal_ntv(iCell);
+      Stz* szSrc = aRsb->szVal_ntv(i_Col);
       vAppendStz(szSrc);
   }
 }
@@ -160,19 +160,19 @@ void EntWrk::vAppendElement(Rsb* aRsb, StreamPix* pStreamPix, i8 i_Col)
   
   eDM eDatum = (eDM)pStreamPix->m_xaColPix[i_Col].m_uDatum;
   
-  i8 iCell = aRsb->i_ColToCell_ntv(i_Col);
+  //i8 iCell = aRsb->i_ColToCell_ntv(i_Col);
   
-  if (aRsb->bIsNull_ntv(iCell)) {
+  if (aRsb->bIsNull_ntv(i_Col)) {
     vAppendNull();
     return;
   }
   
   if (DM_VCH == eDatum) {
-    Stz* szSrc = aRsb->szVal_ntv(iCell);
+    Stz* szSrc = aRsb->szVal_ntv(i_Col);
     vAppendStz(szSrc);
   }
   else {
-    vAppendInt(aRsb->iVal_ntv(iCell));
+    vAppendInt(aRsb->iVal_ntv(i_Col));
   }
 }
 

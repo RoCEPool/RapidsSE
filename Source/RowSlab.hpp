@@ -33,7 +33,7 @@ namespace Rows
   public:
     StreamPix m_oStreamPix; // condensed stream def
  
-    SingleWord m__PadToCacheLine[7]; // padding to cache line
+    SingleWord m__PadToCacheLine[6]; // padding to cache line
 
     NmlStr m_oNmlStr;   // normalised string set
     

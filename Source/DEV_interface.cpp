@@ -863,9 +863,9 @@ i8 iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  i8 i_Cell_ntv = pDevRsb->m_aRsb->i_ColToCell_ntv(iArg);
+  //i8 i_Cell_ntv = pDevRsb->m_aRsb->i_ColToCell_ntv(iArg);
   
-  i8 iRes = pDevRsb->m_aRsb->iVal_ntv(i_Cell_ntv);
+  i8 iRes = pDevRsb->m_aRsb->iVal_ntv(iArg);
 
   return iRes;
 }
@@ -879,9 +879,9 @@ Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  i8 i_Cell_ntv = pDevRsb->m_aRsb->i_ColToCell_ntv(iArg);
+  //i8 i_Cell_ntv = pDevRsb->m_aRsb->i_ColToCell_ntv(iArg);
   
-  Stz* szSrc = pDevRsb->m_aRsb->szVal_ntv(i_Cell_ntv);
+  Stz* szSrc = pDevRsb->m_aRsb->szVal_ntv(iArg);
 
   return szSrc;
 }

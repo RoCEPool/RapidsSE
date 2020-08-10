@@ -22,7 +22,7 @@ namespace Rows
 //    i8   iVal_ntv(i8 i_Cell_ntv);
 //    Stz* szVal_ntv(i8 i_Cell_ntv);
   
-  
+  private:
   /*----------------------------------------------------------------------------*/
   /* convert logical cell to cell subscript                                     */
   /*----------------------------------------------------------------------------*/
@@ -32,15 +32,20 @@ namespace Rows
     
     return -1 * i_Col;
   }
+  
+  public:
 
   /*----------------------------------------------------------------------------*/
   /* get i8 integer                                                             */
   /*----------------------------------------------------------------------------*/
-  inline bool bIsNull_ntv(i8 i_Cell)
+  inline bool bIsNull_ntv(i8 i_Col)
   {
-    ASSERT(i_Cell <= 0);
+    ASSERT(i_Col >= 0);
+    i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);
+  
+    ASSERT(i_Cell_ntv <= 0);
     
-    i8* aI8 = (i8*) & m_maCells[i_Cell];
+    i8* aI8 = (i8*) & m_maCells[i_Cell_ntv];
     
     i8 iVal = * aI8;
 
@@ -53,11 +58,14 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* get d8 float                                                               */
   /*----------------------------------------------------------------------------*/
-  inline d8 dVal_ntv(i8 i_Cell)
+  inline d8 dVal_ntv(i8 i_Col)
   {
-    ASSERT(i_Cell <= 0);
+    ASSERT(i_Col >= 0);
+    i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);
     
-    d8* aD8 = (d8*) & m_maCells[i_Cell];
+    ASSERT(i_Cell_ntv <= 0);
+    
+    d8* aD8 = (d8*) & m_maCells[i_Cell_ntv];
     
     d8 dVal = * aD8;
     
@@ -67,11 +75,14 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* set d8 float                                                               */
   /*----------------------------------------------------------------------------*/
-  inline void vVal_ntv(i8 i_Cell, d8 dValue)
+  inline void vVal_ntv(i8 i_Col, d8 dValue)
   {
-    ASSERT(i_Cell <= 0);
+    ASSERT(i_Col >= 0);
+    i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);
+
+    ASSERT(i_Cell_ntv <= 0);
     
-    d8* aD8 = (d8*) & m_maCells[i_Cell];
+    d8* aD8 = (d8*) & m_maCells[i_Cell_ntv];
     
     * aD8 = dValue;
   }
@@ -79,11 +90,14 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* get i8 integer                                                             */
   /*----------------------------------------------------------------------------*/
-  inline i8 iVal_ntv(i8 i_Cell)
+  inline i8 iVal_ntv(i8 i_Col)
   {
-    ASSERT(i_Cell <= 0);
+    ASSERT(i_Col >= 0);
+    i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);
+
+    ASSERT(i_Cell_ntv <= 0);
     
-    i8* aI8 = (i8*) & m_maCells[i_Cell];
+    i8* aI8 = (i8*) & m_maCells[i_Cell_ntv];
     
     i8 iVal = * aI8;
 
@@ -93,11 +107,14 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* set i8 integer                                                             */
   /*----------------------------------------------------------------------------*/
-  inline void vVal_ntv(i8 i_Cell, i8 iVal)
+  inline void vVal_ntv(i8 i_Col, i8 iVal)
   {
-    ASSERT(i_Cell <= 0);
+    ASSERT(i_Col >= 0);
+    i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);
+
+    ASSERT(i_Cell_ntv <= 0);
     
-    i8* aI8 = (i8*) & m_maCells[i_Cell];
+    i8* aI8 = (i8*) & m_maCells[i_Cell_ntv];
     
     * aI8 = iVal;
   }
@@ -105,13 +122,16 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* get Stz* string                                                            */
   /*----------------------------------------------------------------------------*/
-  inline Stz* szVal_ntv(i8 i_Cell)
+  inline Stz* szVal_ntv(i8 i_Col)
   {
-    ASSERT(i_Cell <= 0);
+    ASSERT(i_Col >= 0);
+    i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);
 
-    i8 i_Ofs = (i8) m_maCells[i_Cell];
+    ASSERT(i_Cell_ntv <= 0);
+
+    i8 i_Ofs = (i8) m_maCells[i_Cell_ntv];
       
-    Stz* szStz = aAdd<Stz*>(&m_maCells[i_Cell],i_Ofs);
+    Stz* szStz = aAdd<Stz*>(&m_maCells[i_Cell_ntv],i_Ofs);
         
     return szStz;
   }
