@@ -67,7 +67,7 @@ Date Query Config time(ms) Results
  Date Query Config time(ms) Results
  (Index on shipdate and project of columns requierd by query)
  
- 10/8 Q1    1N-1P  2211     N,O,2254654.00,3380080450.16,3210744015.69,3338991760.47,25.49,38220.63,0.05,88436
+ 10/8 Q1    1N-1P  234     N,O,2254654.00,3380080450.16,3210744015.69,3338991760.47,25.49,38220.63,0.05,88436
             1N-4P  180
             2N-4P  229
             3N-4P  380
