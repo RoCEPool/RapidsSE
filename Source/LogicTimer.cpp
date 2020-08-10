@@ -18,10 +18,12 @@ __aFooterFunction(LogicTimer)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LogicTimer::LogicTimer(void)
+LogicTimer::LogicTimer(i8 iQueryFrag)
 : Object(CN_LOGICTIMER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICTIMER,_FOOTER_);
+  
+  m_iQueryFrag = iQueryFrag;
   
   _checkInitialised_(CN_LOGICTIMER);
   
@@ -71,8 +73,17 @@ void LogicTimer::vReport(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICTIMER,_FOOTER_);
 
+  s256 sFileNm;
+  
+  sFileNm.vSprint("/tmp/Sql%lld.csv"_Stz,m_iQueryFrag);
+  
+  
+  File* pFile = new File(nullptr);
+  
+  pFile->bOpenMode(sFileNm,C_OPEN_WRITE);
+  
   for (i8 i_Code = 1; i_Code < EO_ENUMS; i_Code++) {
-    vTrace(" %lld,%s,%lld,%lld,%lld\n"_Stz,
+    pFile->vPrint(" %lld,%s,%lld,%lld,%lld\n"_Stz,
            
            i_Code,
            aEO[i_Code],
@@ -85,6 +96,9 @@ void LogicTimer::vReport(void)
              : 0
            );
   }
+  
+  pFile->vClose();
+  delete pFile;
 }
 
 /*============================================================================*/

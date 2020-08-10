@@ -302,7 +302,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 
   AM::pTccLock()->vDropWrite();
   
- m_pLogicUnit->m_pLogicTimer = new LogicTimer;
+  m_pLogicUnit->m_pLogicTimer = new LogicTimer(m_pLogicUnit->m_xRluCommon.m_iSql);
 
   return 1;
 }
