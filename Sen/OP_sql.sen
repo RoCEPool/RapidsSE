@@ -158,6 +158,8 @@
       //queryNo "QUERY %v" .printf
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 1  0=STARTMARKER" .
       110 LogicUnit[].genCode
+      logicCompiler[].new
+      LogicCompiler[].compile
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
     endof
 
@@ -518,7 +520,7 @@
       //"---------------------------- 110=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      LogicUnit[].transform
+      LogicUnit[].dynFun
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
