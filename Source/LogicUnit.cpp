@@ -1720,8 +1720,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from entry payload
         azSrc = (char*)szDev_PAY_FETCH_COLS(pLU,aRluCommon->m_pDevTmpIxt, iArg);
-        nSize = StrLib::nSize(azSrc);
-        ASSERT(nSize < 8);
+        //nSize = StrLib::nSize(azSrc);
+        nSize = strlen(azSrc) + 1;
+        //ASSERT(nSize < 8);
         dLU2(EO_PAY_FETCH_COLS,iArg,(i8)azSrc);
         S_PushStr(azSrc);
         break;//+endCase

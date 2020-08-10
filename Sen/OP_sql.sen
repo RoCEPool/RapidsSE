@@ -599,7 +599,9 @@
       // AGGREGATE WITH GROUPBY
       //queryNo "QUERY %v" .printf
       101 LogicUnit[].genCode
-      LogicUnit[].transform
+      logicCompiler[].new
+      LogicCompiler[].compile
+      LogicUnit[].dynFun
       IndexTree[].delete
     endof
 
@@ -616,7 +618,9 @@
       // AGGREGATE WITH GROUPBY
       //queryNo "QUERY %v" .printf
       101 LogicUnit[].genCode
-      LogicUnit[].transform
+      logicCompiler[].new
+      LogicCompiler[].compile
+      LogicUnit[].dynFun
       IndexTree[].delete
     endof
 
