@@ -115,17 +115,7 @@ namespace Rows
         
     return szStz;
   }
-    
-  /*----------------------------------------------------------------------------*/
-  /* set Stz* string                                                            */
-  /*----------------------------------------------------------------------------*/
-  inline void vVal_ntv(i8 i_Cell, Stz* szVal)
-  {
-    ASSERT(i_Cell <= 0);
-    
-    RASSERT(0);
-  }
-    
+        
   };
   
   Rsb* _aRsb(void* aAddr);
