@@ -44,7 +44,7 @@ namespace Rows
 
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
-      
+        
     ColPix* axaColPix(void);
     i8    nCols(void);
     i8    iColumn(Rsb* aRsb, i8 iColumn);
@@ -85,6 +85,14 @@ namespace Rows
   public:
   
   /*----------------------------------------------------------------------------*/
+  /* advance cursor                                                             */
+  /*----------------------------------------------------------------------------*/
+  inline void vAdvanceCursor(void)
+  {
+    m_i_Cell--;
+  };
+  
+  /*----------------------------------------------------------------------------*/
   /* deposit cursor                                                             */
   /*----------------------------------------------------------------------------*/
   inline void vDepositCursor(m8** aaCell)
@@ -104,8 +112,7 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-    // move to previous cell
-    m_i_Cell--;
+    vAdvanceCursor();
     
     d8* daCells = (d8*)m_xWsp.ayArea();
     
@@ -121,9 +128,8 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-    // move to previous cell
-    m_i_Cell--;
-    
+    vAdvanceCursor();
+
     i8* iaCells = (i8*)m_xWsp.ayArea();
     
     iaCells[m_i_Cell] = iVal;
@@ -156,7 +162,7 @@ namespace Rows
 
     char* azStz = (char*)m_xWsp.ayLatterHead();
     
-    m_i_Cell--;
+    vAdvanceCursor();
 
     i8* iaCells = (i8*)amSlabCellVec();
     

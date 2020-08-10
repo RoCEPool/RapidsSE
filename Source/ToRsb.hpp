@@ -486,9 +486,7 @@ namespace Load
     xDte.m_uDay   = iDay;
     xDte.m_uSpare = 0;
     
-    //m_pRowSlab->vDeposit(xDte);
-    // move to previous cell
-    m_pRowSlab->m_i_Cell--;
+    m_pRowSlab->vAdvanceCursor();
     
     i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
     
@@ -607,8 +605,7 @@ namespace Load
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // deposit the decimal
     
-    //m_pRowSlab->vDeposit(iDecimal);
-    m_pRowSlab->m_i_Cell--;
+    m_pRowSlab->vAdvanceCursor();
     i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
     iaCells[m_pRowSlab->m_i_Cell] = iDecimal;
     
@@ -734,8 +731,7 @@ namespace Load
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // deposit the integer
     
-    //m_pRowSlab->vDeposit(xInt);
-    m_pRowSlab->m_i_Cell--;
+    m_pRowSlab->vAdvanceCursor();
     i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
     
     if (bNegative)
@@ -837,11 +833,6 @@ namespace Load
     i8 iMaxColumn = m_pCol->iColumnLength();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // azDepositString_begin
-//    char* azStzCell = (char*)m_pRowSlab->m_xWsp.ayLatterHead();
-//    m_pRowSlab->m_i_Cell--;
-//    i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
-//    iaCells[m_pRowSlab->m_i_Cell] = (i8)azStzCell;
     
     char* azStzCell = m_pRowSlab->azDepositString_begin();
 
