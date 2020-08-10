@@ -486,18 +486,15 @@ i8 iDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
   EntBuffer* pUpperEntBuffer =
   pDevIXT->m_pIdxTree->pPositionH0Buffer(pLogicUnit->m_oEntWrk.aKey());
   
-  if (pDevIXT) {
+  if (pUpperEntBuffer) {
     
     pDevIXT->m_aUpperEnt =
     pUpperEntBuffer->aPositionPriorEntry(pLogicUnit->m_oEntWrk.aKey());
     
     if (pDevIXT->m_aUpperEnt) {
       pDevIXT->m_aUpperEnt =
-      EntBuffer::pMoveToGreaterThanEntry(pDevIXT->m_aUpperEnt,
-                                         pLogicUnit->m_oEntWrk.aKey(),
-                                         &pUpperEntBuffer);
-      if (pDevIXT->m_aUpperEnt)
-        pUpperEntBuffer->aPositionPriorEntry(pLogicUnit->m_oEntWrk.aKey());
+      EntBuffer::pMoveToNextEntry(pDevIXT->m_aUpperEnt,
+                                  &pUpperEntBuffer);
       
       if (pDevIXT->m_aUpperEnt)
         iRes = 1;
