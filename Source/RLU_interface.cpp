@@ -35,13 +35,13 @@ void vRlu_BEGINTMR(void* aLU)
 /*----------------------------------------------------------------------------*/
 /* begin EO timer                                                             */
 /*----------------------------------------------------------------------------*/
-void vRlu_ENDTMR(void* aLU, eEO eCode)
+void vRlu_ENDTMR(void* aLU, i8 iCode)
 {
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
-  pLogicUnit->m_pLogicTimer->vEndTmr(eCode);
+  pLogicUnit->m_pLogicTimer->vEndTmr((eEO)iCode);
 }
 
 

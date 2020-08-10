@@ -449,6 +449,10 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 //
 //    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
+    sPrint.vSprint("    vRlu_BEGINTMR(pLU);\n "_Stz);
+
+    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+
     if (EO_CALL == eCode) {
       
       iArg = m_pLogicUnit->iCodeArg(i_Code+1);
@@ -497,7 +501,10 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
       i_Code += EoArgs[eCode].m_nArgBytes;
     }
     
-    
+    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n "_Stz,aEO[eCode]->azChar());
+
+    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+
     //vTrace("%s<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"_Stz,m_caSource);
     continue;
   }
@@ -649,6 +656,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #include \"../Source/DEV_interface.h\""
   "\n  #include \"../Source/RLU_interface.h\""
   "\n  #include \"../Source/RluCommon.h\""
+  "\n  #include \"../Source/eEO.h\""
   "\n"
   "\n  enum eKC { KC_BEFORE=1, KC_SAME, KC_AFTER };"
   "\n"
@@ -687,7 +695,8 @@ void LogicCompiler::v_DynPreliminary(void)
   "      nSize = *(aiDstk--);"
   "      aiDstk -= (nSize / 8) + 2;"
   "\n"
-  "\n  #define JumpTo(__iArg) goto L_##__iArg;"
+  "\n  #define JumpTo(__iArg,__EO) { vRlu_ENDTMR(pLU,(i8)__EO); goto L_##__iArg; }"
+  "\n  //#define JumpTo(__iArg,__EO) goto L_##__iArg;"
   "\n"
   "";
   
