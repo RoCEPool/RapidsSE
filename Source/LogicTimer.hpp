@@ -9,6 +9,7 @@ namespace Expressions
   {
   private:
   
+    i8       m_iQueryFrag;
     Timer    m_oTmr;
     AggTimer m_oAggTmr[EO_ENUMS];
   
@@ -19,7 +20,7 @@ namespace Expressions
     void* operator new(size_t);
     void  operator delete(void*);
 
-    LogicTimer(void);
+    LogicTimer(i8 iQueryFrag);
    ~LogicTimer(void) noexcept(false);
   
     void vBeginTmr(void);
