@@ -31,7 +31,6 @@ create table LineItem                      // SF * 6,000,000 rows
 );
 
 create index idx on lineitem (l_shipdate);
-
 compactidx lineitem idx;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -41,7 +40,7 @@ compactidx lineitem idx;
 /time Query1 lineitem idx;
 
 /time Query6 lineitem idx;
-//predicateFetch lineitem "l_shipdate '1998-09-01' > l_shipdate '1998-12-01' < and";
+//predicateFetch lineitem "l_shipdate '1994-01-01' >= l_shipdate '1995-01-01' < and";
 
 /*============================================================================*/
 /* end                                                                        */

@@ -116,11 +116,14 @@ namespace Expressions
 
   // query6 600 output
   static const i8 Q600_REVENUE    = 0;  // SUM(L_EXTENDEDPRICE*L_DISCOUNT)
-  static const i8 Q600_COLUMNS    = 1;  // TOTAL COLUMNS
-  
+  static const i8 Q600_COUNT      = 1;
+  static const i8 Q600_COLUMNS    = 2;  // TOTAL COLUMNS
+    
   // query6 601 output
   static const i8 Q601_REVENUE    = 0;  // SUM(L_EXTENDEDPRICE*L_DISCOUNT)
-  static const i8 Q601_COLUMNS    = 1;  // TOTAL COLUMNS
+  static const i8 Q601_COUNT      = 1;
+  static const i8 Q601_COLUMNS    = 2;  // TOTAL COLUMNS
+  
   
   struct JumpLabel
   {

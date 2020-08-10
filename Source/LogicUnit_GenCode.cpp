@@ -1782,6 +1782,12 @@ void LogicUnit::vGenerateQuery600(void)
   vAddCode(EO_ADD);
   vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
   
+  // TEMP !!!
+  // COUNT(*) -> Q600_COUNT
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI, (i8)Q600_COUNT);
+  vAddCode(EO_INC);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, (i8)Q600_COUNT);
+  
   vAddCode(EO_RETURN);
   
   vDumpCode();
@@ -1834,6 +1840,14 @@ void LogicUnit::vGenerateQuery601(void)
   vAddCodeArg(EO_RSB_DST_PUSHCOLI,(i8)Q601_REVENUE);
   vAddCode(EO_ADD);
   vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q601_REVENUE);
+  
+  // TEMP !!!
+  // COUNT(*) -> Q600_COUNT
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)Q600_COUNT);
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI,(i8)Q601_COUNT);
+  vAddCode(EO_ADD);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q601_COUNT);
+  
   
   vAddCode(EO_RETURN);
   
