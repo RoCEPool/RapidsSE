@@ -24,8 +24,9 @@ namespace Rows
     i8   m_i_Trim;      // where trim occurred     NOT USED YET
 
     i8   m_nItems;      // number of items in this row-slab
-    i8   m_i_Row;       // cell 0 of current row
-    i8   m_i_Cell;      // current working cell
+    i8   m_i_Row_c0;    // cell 0 of current row
+    i8   m_i_RowLgl;    // current logical row number
+    i8   m_i_CellCrs;   // current working cell
 
     StreamPix m_oStreamPix; // condensed stream def
  
@@ -89,7 +90,7 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   inline void vAdvanceCursor(void)
   {
-    m_i_Cell--;
+    m_i_CellCrs--;
   };
 
   /*----------------------------------------------------------------------------*/
@@ -99,7 +100,7 @@ namespace Rows
   {
     m8* aCellArea = (m8*)m_xWsp.ayArea();
 
-    m8* aCell = & aCellArea[m_i_Cell];
+    m8* aCell = & aCellArea[m_i_CellCrs];
 
     return aCell;
   };
@@ -117,7 +118,7 @@ namespace Rows
 
     m8* aCells = (m8*)m_xWsp.ayArea();
 
-    *aaCell = & aCells[m_i_Cell];
+    *aaCell = & aCells[m_i_CellCrs];
   }
 
 
@@ -132,7 +133,7 @@ namespace Rows
     
     d8* daCells = (d8*)m_xWsp.ayArea();
     
-    daCells[m_i_Cell] = dVal;
+    daCells[m_i_CellCrs] = dVal;
     
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   }
@@ -148,7 +149,7 @@ namespace Rows
 
     i8* iaCells = (i8*)m_xWsp.ayArea();
     
-    iaCells[m_i_Cell] = iVal;
+    iaCells[m_i_CellCrs] = iVal;
     
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   }
@@ -182,9 +183,9 @@ namespace Rows
 
     i8* iaCells = (i8*)amSlabCellVec();
     
-    i8 i_Ofs = - (nDifference(azStz, & iaCells[m_i_Cell]));
+    i8 i_Ofs = - (nDifference(azStz, & iaCells[m_i_CellCrs]));
     
-    iaCells[m_i_Cell] = i_Ofs;
+    iaCells[m_i_CellCrs] = i_Ofs;
     
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 

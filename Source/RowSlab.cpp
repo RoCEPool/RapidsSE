@@ -36,9 +36,10 @@ RowSlab::RowSlab(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_nItems   = 0;
-  m_i_Row    = C_UNKNOWN;
-  m_i_Cell   = C_UNKNOWN;
+  m_nItems    = 0;
+  m_i_Row_c0  = C_UNKNOWN;
+  m_i_RowLgl  = C_UNKNOWN;
+  m_i_CellCrs = C_UNKNOWN;
  
   // m_oStreamPix
   
@@ -260,15 +261,12 @@ bool RowSlab::bNewRow(Rsb** paRow)
   if (nBytesAvail < m_oStreamPix.m_nMaxRowSize)
     return false;
   
-  if (C_UNKNOWN == m_i_Cell)
-    m_i_Cell = C_FIRST_LGL_CELL + 1;
-  else {
-    //ASSERT(m_i_Cell == m_i_Row - nCols());
-    
-    m_i_Cell = m_i_Row - m_oStreamPix.m_nCols;
-  }
+  if (C_UNKNOWN == m_i_CellCrs)
+    m_i_CellCrs = C_FIRST_LGL_CELL + 1;
+  else
+    m_i_CellCrs = m_i_Row_c0 - m_oStreamPix.m_nCols;
   
-  m_i_Row = m_i_Cell;
+  m_i_Row_c0 = m_i_CellCrs;
   
   m8* amCellVec = (m8*)m_xWsp.ayArea();
   i8 iLglRow = m_nItems * m_oStreamPix.m_nCols;
@@ -297,15 +295,12 @@ bool RowSlab::bNewRow(void)
   if (nBytesAvail < m_oStreamPix.m_nMaxRowSize)
     return false;
   
-  if (C_UNKNOWN == m_i_Cell)
-    m_i_Cell = C_FIRST_LGL_CELL + 1;
-  else {
-    //ASSERT(m_i_Cell == m_i_Row - nCols());
-    
-    m_i_Cell = m_i_Row - nCols();
-  }
+  if (C_UNKNOWN == m_i_CellCrs)
+    m_i_CellCrs = C_FIRST_LGL_CELL + 1;
+  else
+    m_i_CellCrs = m_i_Row_c0 - nCols();
   
-  m_i_Row = m_i_Cell;
+  m_i_Row_c0 = m_i_CellCrs;
   
   m_nItems++;
   
@@ -418,7 +413,7 @@ void RowSlab::vPositionOnCell(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  m_i_Cell = m_i_Row - i_Col;
+  m_i_CellCrs = m_i_Row_c0 - i_Col;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -454,9 +449,10 @@ void RowSlab::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  m_nItems   = 0;
-  m_i_Row    = C_UNKNOWN;
-  m_i_Cell   = C_UNKNOWN;
+  m_nItems    = 0;
+  m_i_Row_c0  = C_UNKNOWN;
+  m_i_RowLgl  = C_UNKNOWN;
+  m_i_CellCrs = C_UNKNOWN;
 
   m_xWsp.vReset();
 }
@@ -470,7 +466,7 @@ Rsb* RowSlab::aRsb(void)
   
   m8* amCellVec = amSlabCellVec();
 
-  i8 i_Cell = m_i_Row - 1;
+  i8 i_Cell = m_i_Row_c0 - 1;
   Rsb* aRsb = (Rsb*) & amCellVec[i_Cell];
 
   return aRsb;

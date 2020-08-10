@@ -490,7 +490,7 @@ namespace Load
     
     i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
     
-    iaCells[m_pRowSlab->m_i_Cell] = xDte.m_iAsI8;
+    iaCells[m_pRowSlab->m_i_CellCrs] = xDte.m_iAsI8;
 
     //m_oDatum.vDte(xDte);
     
@@ -607,7 +607,7 @@ namespace Load
     
     m_pRowSlab->vAdvanceCursor();
     i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
-    iaCells[m_pRowSlab->m_i_Cell] = iDecimal;
+    iaCells[m_pRowSlab->m_i_CellCrs] = iDecimal;
     
     //m_oDatum.vBcd(xBcd);
     
@@ -735,9 +735,9 @@ namespace Load
     i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
     
     if (bNegative)
-      iaCells[m_pRowSlab->m_i_Cell] = - uUnsignedResult;
+      iaCells[m_pRowSlab->m_i_CellCrs] = - uUnsignedResult;
     else
-      iaCells[m_pRowSlab->m_i_Cell] = uUnsignedResult;
+      iaCells[m_pRowSlab->m_i_CellCrs] = uUnsignedResult;
     
     //m_oDatum.vInt(xInt);
     //vSprintInteger();
