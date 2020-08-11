@@ -111,16 +111,6 @@ bool ToRsb::bConvertCrw(CrwBuffer* pCrwBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert one csv chunk (ie multiple records) in one call                    */
-/*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertCsv(char* azSrc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
-
-  return bConvertFastInline(azSrc);
-}
-
-/*----------------------------------------------------------------------------*/
 /* return last remaining dangling rsbBuffer (if any)                          */
 /*----------------------------------------------------------------------------*/
 RsbBuffer* ToRsb::pDanglingRsbBuffer(void)
@@ -220,7 +210,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a chunk                                          */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertFastInline(char* azCsvInput)
+bool ToRsb::bConvertCsv(char* azCsvInput)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   

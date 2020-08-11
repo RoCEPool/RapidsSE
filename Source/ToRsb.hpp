@@ -53,7 +53,6 @@ namespace Load
   
     bool bConvertCrw(CrwBuffer* pCrwBuffer);
     bool bConvertCsv(char* azSrc);
-    bool bConvertFastInline(char* azSrc);
 
     RsbBuffer* pDanglingRsbBuffer(void);
     RsbBuffer* pFullRsbBuffer(void);
