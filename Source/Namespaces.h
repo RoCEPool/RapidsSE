@@ -10,7 +10,8 @@ namespace Base              {                                                 }
 namespace Chunks            { class Format;                                   }
 namespace ClassData         {                                                 }
 namespace CompactBuffers    { class Crw;             class CrwBuffer;
-                              class RowCompactor;    class HeadLine;
+                              class RowCompactor;    class RowInflator;
+                              class HeadLine;
                               class OverLine;        class TailLine;          }
 namespace CompilerOperators {                                                 }
 namespace ControlData       {                                                 }

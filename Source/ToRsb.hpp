@@ -486,7 +486,7 @@ namespace Load
     
     m_pRowSlab->vAdvanceCursor();
     
-    i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
+    i8* iaCells = (i8*)m_pRowSlab->amCellArray();
     
     iaCells[m_pRowSlab->i_CellCrs()] = xDte.m_iAsI8;
 
@@ -604,7 +604,7 @@ namespace Load
     // deposit the decimal
     
     m_pRowSlab->vAdvanceCursor();
-    i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
+    i8* iaCells = (i8*)m_pRowSlab->amCellArray();
     iaCells[m_pRowSlab->i_CellCrs()] = iDecimal;
     
     //m_oDatum.vBcd(xBcd);
@@ -730,7 +730,7 @@ namespace Load
     // deposit the integer
     
     m_pRowSlab->vAdvanceCursor();
-    i8* iaCells = (i8*)m_pRowSlab->m_xWsp.ayArea();
+    i8* iaCells = (i8*)m_pRowSlab->amCellArray();
     
     if (bNegative)
       iaCells[m_pRowSlab->i_CellCrs()] = - uUnsignedResult;

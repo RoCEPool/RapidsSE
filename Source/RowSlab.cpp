@@ -77,6 +77,16 @@ i8 RowSlab::nCols(void)
 /*----------------------------------------------------------------------------*/
 /* get the condensed column pix array                                         */
 /*----------------------------------------------------------------------------*/
+m8* RowSlab::amCellArray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  return (m8*)m_xWsp.ayArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the condensed column pix array                                         */
+/*----------------------------------------------------------------------------*/
 ColPix* RowSlab::axaColPix(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);

@@ -660,7 +660,7 @@ void vDev_ENTWRK_APPENDELM(void* aLU, void* aRSB, i8 iArg)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pLogicUnit->m_oEntWrk.vAppendElement(pDevRsb->m_aRsb,
-                                       &pDevRsb->m_pRowSlab->m_oStreamPix,
+                                       pDevRsb->m_pRowSlab->aStreamPix(),
                                        iArg);
 }
 

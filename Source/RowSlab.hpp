@@ -13,6 +13,9 @@ namespace Rows
 
   class RowSlab : public Object
   {
+    friend class Rsb;
+    friend class CompactBuffers::RowInflator;
+
   private:
 
     char m_caModel[32]; // model string
@@ -29,7 +32,6 @@ namespace Rows
   
     i8   m_i_CellCrs;   // current working cell
 
-  public:
     StreamPix m_oStreamPix; // condensed stream def
  
     SingleWord m__PadToCacheLine[6]; // padding to cache line
@@ -48,6 +50,7 @@ namespace Rows
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
         
+    m8*   amCellArray(void);
     ColPix* axaColPix(void);
     i8    i_CellAdv(void);
     i8    i_CellCrs(void);
