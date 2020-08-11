@@ -472,8 +472,9 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
       //pRowSlab->vDeposit(C_UNKNOWN);
       
       //iaRowSlabCells[pRowSlab->i_CellAdv()] = C_DATUM_NULL;
-      i8 iIgnore = pRowSlab->i_CellAdv();
-
+      //i8 iIgnore = pRowSlab->i_CellAdv();
+      pRowSlab->vAdvanceCursor();
+      
     L_SkipCodeSwitch:
       
       switch(eMetaCode) {
