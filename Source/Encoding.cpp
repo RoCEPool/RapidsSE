@@ -282,9 +282,7 @@ void Encoding::vInitialEncodingRsb(Rsb* aRsb)
     _ColEnc& xrColEnc = xaColEnc[i_Col];
 
     eDM eDatum = xrColEnc.m_pCol->eDatum();
-    
-    //i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
-    
+        
     if (DM_VCH == eDatum) {
       wColVal = aRsb->szVal_ntv(i_Col);
     }

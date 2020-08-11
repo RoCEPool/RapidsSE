@@ -564,8 +564,6 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     
     // -- vch column --
     
-    //i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(i_Col);
-    
     if (aRsb->bIsNull_ntv(i_Col))
       continue;
     

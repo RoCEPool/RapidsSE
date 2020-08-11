@@ -14,14 +14,7 @@ namespace Rows
   public:
     Rsb(void);
    ~Rsb(void) noexcept(false);
-      
-//    i8   i_ColToCell_ntv(i8 i_Col);
-//
-//    bool bIsNull_ntv(i8 i_Cell_ntv);
-//    d8   dVal_ntv(i8 i_Cell_ntv);
-//    i8   iVal_ntv(i8 i_Cell_ntv);
-//    Stz* szVal_ntv(i8 i_Cell_ntv);
-  
+        
   private:
   /*----------------------------------------------------------------------------*/
   /* convert logical cell to cell subscript                                     */
