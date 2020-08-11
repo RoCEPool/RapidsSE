@@ -97,12 +97,12 @@ ColPix* RowSlab::axaColPix(void)
 /*----------------------------------------------------------------------------*/
 /* advance current cell cursor                                                */
 /*----------------------------------------------------------------------------*/
-i8 RowSlab::i_CellAdv(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  return --m_i_CellCrs;
-}
+//i8 RowSlab::i_CellAdv(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//
+//  return --m_i_CellCrs;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get current cell cursor                                                    */
