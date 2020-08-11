@@ -283,6 +283,7 @@ bool RowSlab::bNewRow(Rsb** paRow)
   if (nBytesAvail < m_oStreamPix.m_nMaxRowSize)
     return false;
   
+#ifdef __NATURAL_CELL_ORDER
   if (C_UNKNOWN == m_i_CellCrs)
     m_i_CellCrs = C_FIRST_LGL_CELL + 1;
   else
@@ -294,6 +295,19 @@ bool RowSlab::bNewRow(Rsb** paRow)
   i8 iLglRow = m_nItems * m_oStreamPix.m_nCols;
   i8 i_RowCells = C_FIRST_LGL_CELL - iLglRow;
   *paRow = (Rsb*) & amCellVec[i_RowCells];
+#else
+  if (C_UNKNOWN == m_i_CellCrs)
+    m_i_CellCrs = C_FIRST_LGL_CELL + 1;
+  else
+    m_i_CellCrs = m_i_Row_c0 - m_oStreamPix.m_nCols;
+  
+  m_i_Row_c0 = m_i_CellCrs;
+  
+  m8* amCellVec = (m8*)m_xWsp.ayArea();
+  i8 iLglRow = m_nItems * m_oStreamPix.m_nCols;
+  i8 i_RowCells = C_FIRST_LGL_CELL - iLglRow;
+  *paRow = (Rsb*) & amCellVec[i_RowCells];
+#endif
   
   m_nItems++;
   
@@ -313,26 +327,7 @@ bool RowSlab::bNewRow(Rsb** paRow)
 bool RowSlab::bNewRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-//  i8 nBytesAvail = m_xWsp.nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
-//
-//  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize)
-//    return false;
-//
-//  if (C_UNKNOWN == m_i_CellCrs)
-//    m_i_CellCrs = C_FIRST_LGL_CELL + 1;
-//  else
-//    m_i_CellCrs = m_i_Row_c0 - nCols();
-//
-//  m_i_Row_c0 = m_i_CellCrs;
-//
-//  m_nItems++;
-//
-//  m_i_RowLgl++;
-//
-//  i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
-//  m_xWsp.vTakeTail(nCellBytes);
-  
+    
   Rsb* aRow;
   
   bool b = bNewRow(&aRow);
@@ -490,9 +485,13 @@ Rsb* RowSlab::aRsb(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  m8* amCellVec = amSlabCellVec();
-
+#ifdef __NATURAL_CELL_ORDER
   i8 i_Cell = m_i_Row_c0 - 1;
+#else
+  i8 i_Cell = m_i_Row_c0 - 1;
+#endif
+  
+  m8* amCellVec = amSlabCellVec();
   Rsb* aRsb = (Rsb*) & amCellVec[i_Cell];
 
   return aRsb;
@@ -505,12 +504,15 @@ Rsb* RowSlab::aRsbAdr(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
+#ifdef __NATURAL_CELL_ORDER
   i8 iLglRow = i_Row * m_oStreamPix.m_nCols;
-  
   i8 i_RowCells = C_FIRST_LGL_CELL - iLglRow;
-
+#else
+  i8 iLglRow = i_Row * m_oStreamPix.m_nCols;
+  i8 i_RowCells = C_FIRST_LGL_CELL - iLglRow;
+#endif
+  
   m8* amCellVec = amSlabCellVec();
-
   Rsb* aRsb = (Rsb*) & amCellVec[i_RowCells];
   
   return aRsb;
@@ -581,7 +583,11 @@ void RowSlab::vZeroRsb(Rsb *aRsb)
 
   i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
 
+#ifdef __NATURAL_CELL_ORDER
   void* aDst = aAdd<void*>(aRsb, - (m_oStreamPix.m_nCols - 1) * C_BYTES_PER_WORD);
+#else
+  void* aDst = aAdd<void*>(aRsb, - (m_oStreamPix.m_nCols - 1) * C_BYTES_PER_WORD);
+#endif
   
   MemLib::vZero(aDst,nCellBytes,CN_ROWSLAB);
 }
