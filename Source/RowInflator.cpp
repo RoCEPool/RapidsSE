@@ -793,16 +793,18 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
       case MC_STR_EMPTY:
         //*(char**)(aiColVal++) = acString;
         //*acString++ = '\0';
-//        aString = pRowSlab->azDepositString_begin();
-//        *aString = '\0';
-//        pRowSlab->vDepositString_end(1);
-        azStz = (char*)pRowSlab->m_xWsp.ayLatterHead();
-        pRowSlab->i_CellAdv();
-        i_Ofs = - (nDifference(azStz, & iaRowSlabCells[pRowSlab->i_CellCrs()]));
-        iaRowSlabCells[pRowSlab->i_CellCrs()] = i_Ofs;
-        nLength = *(u1*)ayDataByte++;
-        *azStz = '\0';
-        pRowSlab->m_xWsp.vTakeHead(nLength);
+        aString = pRowSlab->azDepositString_begin();
+        *aString = '\0';
+        pRowSlab->vDepositString_end(1);
+        
+//        azStz = (char*)pRowSlab->m_xWsp.ayLatterHead();
+//        pRowSlab->i_CellAdv();
+//        i_Ofs = - (nDifference(azStz, & iaRowSlabCells[pRowSlab->i_CellCrs()]));
+//        iaRowSlabCells[pRowSlab->i_CellCrs()] = i_Ofs;
+//        nLength = *(u1*)ayDataByte++;
+//        *azStz = '\0';
+//        pRowSlab->m_xWsp.vTakeHead(nLength);
+        
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -816,7 +818,7 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
 //        ayDataByte += nLength;
 //        acString   += nLength;
 //        *acString++ = '\0';
-        /*
+        
         aString = pRowSlab->azDepositString_begin();
         nLength = *(u1*)ayDataByte++;
         MemLib::vCopy((byte*)aString,
@@ -827,22 +829,22 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         aString    += nLength;
         *aString = '\0';
         pRowSlab->vDepositString_end(nLength);
-  */
-        azStz = (char*)pRowSlab->m_xWsp.ayLatterHead();
-        pRowSlab->i_CellAdv();
-        i_Ofs = - (nDifference(azStz, & iaRowSlabCells[pRowSlab->i_CellCrs()]));
-        iaRowSlabCells[pRowSlab->i_CellCrs()] = i_Ofs;
-        nLength = *(u1*)ayDataByte++;
         
-        MemLib::vCopy((byte*)azStz,
-         (byte*)ayDataByte,
-         nLength,
-         CN_ROWCOMPACTOR);
-         ayDataByte += nLength;
-         
-        azStz    += nLength;
-        *azStz = '\0';
-        pRowSlab->m_xWsp.vTakeHead(nLength);
+//        azStz = (char*)pRowSlab->m_xWsp.ayLatterHead();
+//        pRowSlab->i_CellAdv();
+//        i_Ofs = - (nDifference(azStz, & iaRowSlabCells[pRowSlab->i_CellCrs()]));
+//        iaRowSlabCells[pRowSlab->i_CellCrs()] = i_Ofs;
+//        nLength = *(u1*)ayDataByte++;
+//
+//        MemLib::vCopy((byte*)azStz,
+//         (byte*)ayDataByte,
+//         nLength,
+//         CN_ROWCOMPACTOR);
+//         ayDataByte += nLength;
+//
+//        azStz    += nLength;
+//        *azStz = '\0';
+//        pRowSlab->m_xWsp.vTakeHead(nLength);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -859,7 +861,7 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
 //        ayDataByte += nLength;
 //        acString   += nLength;
 //        *acString++ = '\0';
-  /*
+
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
@@ -873,24 +875,24 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         aString   += nLength;
         *aString++ = '\0';
         pRowSlab->vDepositString_end(nLength);
-   */
-        azStz = (char*)pRowSlab->m_xWsp.ayLatterHead();
-        pRowSlab->i_CellAdv();
-        i_Ofs = - (nDifference(azStz, & iaRowSlabCells[pRowSlab->i_CellCrs()]));
-        iaRowSlabCells[pRowSlab->i_CellCrs()] = i_Ofs;
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        nLength = wWord.m_iI8;
-        
-        MemLib::vCopy((byte*)azStz,
-                      (byte*)ayDataByte,
-                      nLength,
-                      CN_ROWCOMPACTOR);
-        ayDataByte += nLength;
-        azStz    += nLength;
-        *azStz = '\0';
-        pRowSlab->m_xWsp.vTakeHead(nLength);
+
+//        azStz = (char*)pRowSlab->m_xWsp.ayLatterHead();
+//        pRowSlab->i_CellAdv();
+//        i_Ofs = - (nDifference(azStz, & iaRowSlabCells[pRowSlab->i_CellCrs()]));
+//        iaRowSlabCells[pRowSlab->i_CellCrs()] = i_Ofs;
+//        wWord.m_iI8 = 0;
+//        wWord.m_yaByte[0] = *ayDataByte++;
+//        wWord.m_yaByte[1] = *ayDataByte++;
+//        nLength = wWord.m_iI8;
+//
+//        MemLib::vCopy((byte*)azStz,
+//                      (byte*)ayDataByte,
+//                      nLength,
+//                      CN_ROWCOMPACTOR);
+//        ayDataByte += nLength;
+//        azStz    += nLength;
+//        *azStz = '\0';
+//        pRowSlab->m_xWsp.vTakeHead(nLength);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -905,7 +907,7 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
 //        *(char**)(aiColVal++) = acString;
 //        acString += nLength;
 //        *acString++ = '\0';
- /*
+
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
@@ -917,26 +919,26 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         aString += nLength;
         *aString++ = '\0';
         pRowSlab->vDepositString_end(nLength);
-  */
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        i_Tail_rel = wWord.m_iI8;
-        aTail = aHeadLine->aGetTailRel(i_Tail_rel);
-        nLength = aTail->w8_1B(+ C_U_1B);
-        
-        azStz = (char*)pRowSlab->m_xWsp.ayLatterHead();
-        pRowSlab->i_CellAdv();
-        i_Ofs = - (nDifference(azStz, & iaRowSlabCells[pRowSlab->i_CellCrs()]));
-        iaRowSlabCells[pRowSlab->i_CellCrs()] = i_Ofs;
-        
-        MemLib::vCopy((byte*)azStz,
-                      (byte*)aTail+C_U_1B+C_L_1B,
-                      nLength,
-                      CN_ROWCOMPACTOR);
-        azStz    += nLength;
-        *azStz = '\0';
-        pRowSlab->m_xWsp.vTakeHead(nLength);
+
+//        wWord.m_iI8 = 0;
+//        wWord.m_yaByte[0] = *ayDataByte++;
+//        wWord.m_yaByte[1] = *ayDataByte++;
+//        i_Tail_rel = wWord.m_iI8;
+//        aTail = aHeadLine->aGetTailRel(i_Tail_rel);
+//        nLength = aTail->w8_1B(+ C_U_1B);
+//
+//        azStz = (char*)pRowSlab->m_xWsp.ayLatterHead();
+//        pRowSlab->i_CellAdv();
+//        i_Ofs = - (nDifference(azStz, & iaRowSlabCells[pRowSlab->i_CellCrs()]));
+//        iaRowSlabCells[pRowSlab->i_CellCrs()] = i_Ofs;
+//
+//        MemLib::vCopy((byte*)azStz,
+//                      (byte*)aTail+C_U_1B+C_L_1B,
+//                      nLength,
+//                      CN_ROWCOMPACTOR);
+//        azStz    += nLength;
+//        *azStz = '\0';
+//        pRowSlab->m_xWsp.vTakeHead(nLength);
         
         break;
         

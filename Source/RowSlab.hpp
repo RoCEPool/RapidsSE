@@ -14,7 +14,6 @@ namespace Rows
   class RowSlab : public Object
   {
     friend class Rsb;
-    friend class CompactBuffers::RowInflator;
 
   private:
 
