@@ -11,25 +11,17 @@ i8 Hardware::iByteOrder(void)
 {
   _static_
 
-#ifdef WITH_APPLE
+  i8 test = 0;
+  char *bytes = (char *) &test;
+  *bytes = 0x1;
   
-  i8     iSize = 0;
-  size_t len = sizeof(iSize);
-  
-  i8 iReturn = sysctlbyname("hw.byteorder", &iSize, &len, 0, 0);
-  if (iReturn) {
-    vWarn("Error while getting byte order %lld\n"_Stz, iReturn);
-    return 0;
+  if (test == 1){
+    return 1234;
   }
-  return iSize;
-  
-#else
-  
-  //vWarn("iCacheLine() not implemented on LINUX!\n");
-  return 0;
+  else {
+    return 4321;
+  }
 
-#endif
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,8 +45,14 @@ i8 Hardware::iCacheLine(void)
   
 #else
   
-  //vWarn("iCacheLine() not implemented on LINUX!\n");
-  return 0;
+  i8 iSize = sysconf(_SC_LEVEL1_DCACHE_LINESIZE);
+
+  if (iSize == -1) {
+    vWarn("sysconf(_SC_LEVEL1_DCACHE_LINESIZE)\n"_Stz, iSize);
+    return 0;
+  }
+
+  return iSize;
 
 #endif
   
@@ -83,7 +81,7 @@ i8 Hardware::iCoreCount(void)
   
   i8 iCount = sysconf(_SC_NPROCESSORS_ONLN);
   if (iCount == -1) {
-    vWarn("Error while getting cpu count %lld\n"_Stz, iCount);
+    vWarn("Error while getting cpu core count %lld\n"_Stz, iCount);
     return 0;
   }
  
@@ -110,10 +108,15 @@ i8 Hardware::iCpuCount(void)
   return iCount;
   
 #else
+ 
+  i8 iCount = sysconf(_SC_NPROCESSORS_CONF);
+   if (iCount == -1) {
+     vWarn("Error while getting cpu count %lld\n"_Stz, iCount);
+     return 0;
+   }
   
-  //vWarn("iCpuCount() not implemented on LINUX!\n");
-  return 0;
-
+   return iCount;
+ 
 #endif
   
 }
@@ -155,9 +158,25 @@ i8 Hardware::iCpuFrequency(void)
   char caBuf[C_BUFSIZ];
   double dFreq;
   i8 iFreq = 0;
+
+  // First try to get the frequency from the file:
+  // /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
+  FILE* aFile = fopen("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", "r");
   
+  if (aFile) {
+    if (fgets(caBuf, C_BUFSIZ, aFile) != NULL) {
+      sscanf(caBuf, "%lld", &iFreq);
+      iFreq *= C_1K; // value returned is in kHz
+      fclose(aFile);
+      return iFreq;
+    }
+    
+    fclose(aFile);
+  }
+
+ 
   // open the /Proc/cpuinfo file
-  FILE* aFile = fopen("/proc/cpuinfo", "r");
+  aFile = fopen("/proc/cpuinfo", "r");
   if (! aFile) {
     vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d"_Stz, errno);
     return 0;
@@ -179,7 +198,7 @@ i8 Hardware::iCpuFrequency(void)
   }
 
   //vTrace("Clock frequency: %lld\n"_Stz, iFreq);
-
+  fclose(aFile);
   return iFreq;
 
 #endif
@@ -206,9 +225,15 @@ i8 Hardware::iL1Cache(void)
   return iSize;
   
 #else
-  
-  //vWarn("iL2Cache() not implemented on LINUX!\n");
-  return 0;
+
+  i8 iSize = sysconf(_SC_LEVEL1_DCACHE_SIZE); 
+
+  if (iSize == -1) {
+    vWarn("sysconf(_SC_LEVEL1_DCACHE_SIZE)\n"_Stz, iSize);
+    return 0;
+  }
+
+  return iSize;
 
 #endif
   
@@ -235,8 +260,14 @@ i8 Hardware::iL2Cache(void)
   
 #else
   
-  //vWarn("iL2Cache() not implemented on LINUX!\n");
-  return 0;
+  i8 iSize = sysconf(_SC_LEVEL2_CACHE_SIZE);
+
+  if (iSize == -1) {
+    vWarn("sysconf(_SC_LEVEL2_CACHE_SIZE)\n"_Stz, iSize);
+    return 0;
+  }
+
+  return iSize;
 
 #endif
   
@@ -263,8 +294,14 @@ i8 Hardware::iL3Cache(void)
   
 #else
   
-  //vWarn("iL3Cache() not implemented on LINUX!\n");
-  return 0;
+  i8 iSize = sysconf(_SC_LEVEL3_CACHE_SIZE);
+
+  if (iSize == -1) {
+    vWarn("sysconf(_SC_LEVEL3_CACHE_SIZE)\n"_Stz, iSize);
+    return 0;
+  }
+
+  return iSize;
 
 #endif
   
@@ -348,16 +385,9 @@ i8 Hardware::iReadTscp(void)
    a ring transition or access to a platform resource.
    */
   
-#ifdef WITH_APPLE
-  
   i8 iTscp = Assembler::iRdtscp();
   return iTscp;
   
-#else
-  
-  return 0;
-  
-#endif
 }
 
 
