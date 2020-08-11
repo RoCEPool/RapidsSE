@@ -137,15 +137,10 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
   i8 nCols = m_oStreamPix.m_nCols;
   
   i8 i_Col;
-  //i8 i_Cell_ntv;
   
   for (i_Col = 0; i_Col < nCols; i_Col++) {
     
     eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
-    
-    
-    //i_Cell_ntv = aRsbSrc->i_ColToCell_ntv(i_Col);
-    
     
     if (DM_VCH == eDatum) {
        // vch datum
@@ -167,7 +162,6 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
   }
 
   if (bSrcHasPtnHash && bCopyPtnHash) {
-    //i_Cell_ntv = aRsbSrc->i_ColToCell_ntv(i_Col);
     iVal = aRsbSrc->iVal_ntv(i_Col);
     vDeposit(iVal);
   }
@@ -188,9 +182,7 @@ i8 RowSlab::iColumn(Rsb* aRsb, i8 i_Col)
   Stz* szSrcStz;
     
   eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
-  
-  //i8 i_Cell_ntv = aRsb->i_ColToCell_ntv(iColumn);
-  
+    
   if (DM_VCH == eDatum) {
     // vch datum
     
@@ -385,7 +377,6 @@ void RowSlab::vNormaliseStrings(void)
     for (i8 i_OuterRow = 0; i_OuterRow < 100; i_OuterRow++) {
       
       Rsb* aOuterRsb = aRsbAdr(i_OuterRow);
-      //i8 i_OuterCell_ntv = aOuterRsb->i_ColToCell_ntv(i_Col);
       
       if (C_DATUM_NULL == aOuterRsb->iVal_ntv(i_Col))
         continue;
@@ -397,12 +388,11 @@ void RowSlab::vNormaliseStrings(void)
       if (nLength < 8)
         continue;
       
-      
-    //for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < nRows; i_InnerRow++) {
-      for (i8 i_InnerRow = i_OuterRow + 1; i_InnerRow < i_OuterRow + 99; i_InnerRow++) {
+      for (i8 i_InnerRow = i_OuterRow + 1;
+           i_InnerRow < i_OuterRow + 99;
+           i_InnerRow++) {
 
         Rsb* aInnerRsb = aRsbAdr(i_InnerRow);
-        //i8 i_InnerCell_ntv = aInnerRsb->i_ColToCell_ntv(i_Col);
 
         if (C_DATUM_NULL == aInnerRsb->iVal_ntv(i_Col))
           continue;
@@ -472,9 +462,7 @@ i8 RowSlab::iPtnOfRsb(Rsb* aRsb)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
   i8 i_HshCol = m_oStreamPix.m_nCols - 1;
-  
-  //i8 i_HashCell_ntv = aRsb->i_ColToCell_ntv(i_HshCol);
-  
+    
   i8 i_Ptn = aRsb->iVal_ntv(i_HshCol);
   
   return i_Ptn;

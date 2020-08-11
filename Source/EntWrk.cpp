@@ -138,7 +138,6 @@ void EntWrk::vAppendElement(Rsb* aRsb, Column* pColumn)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 i_Col = pColumn->iColumnNo();
-  //i8 iCell = aRsb->i_ColToCell_ntv(i_Column);
   
   if (aRsb->bIsNull_ntv(i_Col)) {
     vAppendNull();
@@ -159,9 +158,7 @@ void EntWrk::vAppendElement(Rsb* aRsb, StreamPix* pStreamPix, i8 i_Col)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   eDM eDatum = (eDM)pStreamPix->m_xaColPix[i_Col].m_uDatum;
-  
-  //i8 iCell = aRsb->i_ColToCell_ntv(i_Col);
-  
+    
   if (aRsb->bIsNull_ntv(i_Col)) {
     vAppendNull();
     return;
