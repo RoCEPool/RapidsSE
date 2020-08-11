@@ -173,6 +173,30 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert a Edt into an iDte                                                 */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iDteFromEdt(i8 wEdtArg, i8 iEraBaseYear)
+{
+  Edt xEdt ;
+  
+  xEdt = wEdtArg;
+  
+  i8 iYearInEra = xEdt.m_uYearInEra;
+  i8 iMonth     = xEdt.m_uMonth;
+  i8 iDay       = xEdt.m_uDay;
+    
+  Dte xDte;
+  
+  xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
+  xDte.m_uMonth     = iMonth;
+  xDte.m_uDay       = iDay;
+  xDte.m_uSpare     = 0;
+  
+  return xDte.m_iAsI8;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* convert a Edt into an Dte (in situ)                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDteFromEdt(i8* awEdtDte_rpl, i8 iEraBaseYear)

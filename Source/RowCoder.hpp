@@ -22,6 +22,7 @@ namespace CompactBuffers
     static i8   iBaseOffsetMeta(void);
     static i8   nControlSize(void);
     static i8   nDataSize(eMC eMetaCode);
+    static i8   iDteFromEdt(i8 wEdtDte, i8 iEra);
     static void vDteFromEdt(i8* awEdtDte_rpl, i8 iEra);
     static void vDteFromEdt(i8* awEdtDte_dst, i8 wEdtDte_src, i8 iEra);
     static void vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_);
