@@ -118,14 +118,14 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* deposit cursor                                                             */
   /*----------------------------------------------------------------------------*/
-  inline void vDepositCursor(m8** aaCell)
-  {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-    m8* aCells = (m8*)m_xWsp.ayArea();
-
-    *aaCell = & aCells[m_i_CellCrs];
-  }
+//  inline void vDepositCursor(m8** aaCell)
+//  {
+//    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//
+//    m8* aCells = (m8*)m_xWsp.ayArea();
+//
+//    *aaCell = & aCells[m_i_CellCrs];
+//  }
 
 
   /*----------------------------------------------------------------------------*/
