@@ -475,7 +475,7 @@ i8 RowSlab::iPtnOfRsb(Rsb* aRsb)
   
   //i8 i_HashCell_ntv = aRsb->i_ColToCell_ntv(i_HshCol);
   
-  i8 i_Ptn = aRsb->iVal_ntv(i_HshCol);
+  i8 i_Ptn = i_HshCol; // aRsb->iVal_ntv(i_HshCol);
   
   return i_Ptn;
 }
