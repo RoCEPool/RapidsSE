@@ -569,8 +569,8 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
       case MC_IVL_4B:
       case MC_TME_4B:
         //*aiColVal++ = *(u4*)(ayDataByte);
-        //pRowSlab->vDeposit((i8)(*(u4*)(ayDataByte)));
-        iaRowSlabCells[pRowSlab->i_CellAdv()] = (i8)(*(u4*)(ayDataByte));
+        pRowSlab->vDeposit((i8)(*(u4*)(ayDataByte)));
+        //iaRowSlabCells[pRowSlab->i_CellAdv()] = (i8)(*(u4*)(ayDataByte));
         ayDataByte += C_4B;
         break;
         
@@ -759,9 +759,14 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         //pRowSlab->vDeposit((i8)(*(u2*)(ayDataByte)));
         //pRowSlab->vDepositCursor(&aCell);
         //vDteFromEdt((i8*)aCell,C_ERA_0);
-        iaRowSlabCells[pRowSlab->i_CellAdv()] = (i8)(*(u2*)(ayDataByte));
+        
+//        iaRowSlabCells[pRowSlab->i_CellAdv()] = (i8)(*(u2*)(ayDataByte));
+//        ayDataByte += C_2B;
+//        vDteFromEdt((i8*)&iaRowSlabCells[pRowSlab->i_CellCrs()],C_ERA_0);
+        
+        pRowSlab->vDeposit(iDteFromEdt((i8)(*(u2*)(ayDataByte)),C_ERA_0));
         ayDataByte += C_2B;
-        vDteFromEdt((i8*)&iaRowSlabCells[pRowSlab->i_CellCrs()],C_ERA_0);
+
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -772,9 +777,14 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         //pRowSlab->vDeposit((i8)(*(u2*)(ayDataByte)));
         //pRowSlab->vDepositCursor(&aCell);
         //vDteFromEdt((i8*)aCell,C_ERA_1);
-        iaRowSlabCells[pRowSlab->i_CellAdv()] = (i8)(*(u2*)(ayDataByte));
+        
+//        iaRowSlabCells[pRowSlab->i_CellAdv()] = (i8)(*(u2*)(ayDataByte));
+//        ayDataByte += C_2B;
+//        vDteFromEdt((i8*)&iaRowSlabCells[pRowSlab->i_CellCrs()],C_ERA_1);
+        
+        pRowSlab->vDeposit(iDteFromEdt((i8)(*(u2*)(ayDataByte)),C_ERA_1));
         ayDataByte += C_2B;
-        vDteFromEdt((i8*)&iaRowSlabCells[pRowSlab->i_CellCrs()],C_ERA_1);
+
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -785,9 +795,14 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
         //pRowSlab->vDeposit((i8)(*(u2*)(ayDataByte)));
         //pRowSlab->vDepositCursor(&aCell);
         //vDteFromEdt((i8*)aCell,C_ERA_2);
-        iaRowSlabCells[pRowSlab->i_CellAdv()] = (i8)(*(u2*)(ayDataByte));
+        
+//        iaRowSlabCells[pRowSlab->i_CellAdv()] = (i8)(*(u2*)(ayDataByte));
+//        ayDataByte += C_2B;
+//        vDteFromEdt((i8*)&iaRowSlabCells[pRowSlab->i_CellCrs()],C_ERA_2);
+        
+        pRowSlab->vDeposit(iDteFromEdt((i8)(*(u2*)(ayDataByte)),C_ERA_2));
         ayDataByte += C_2B;
-        vDteFromEdt((i8*)&iaRowSlabCells[pRowSlab->i_CellCrs()],C_ERA_2);
+        
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
