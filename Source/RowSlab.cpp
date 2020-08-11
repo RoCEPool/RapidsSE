@@ -97,12 +97,12 @@ ColPix* RowSlab::axaColPix(void)
 /*----------------------------------------------------------------------------*/
 /* advance current cell cursor                                                */
 /*----------------------------------------------------------------------------*/
-i8 RowSlab::i_CellAdv(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  return --m_i_CellCrs;
-}
+//i8 RowSlab::i_CellAdv(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//
+//  return --m_i_CellCrs;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get current cell cursor                                                    */
@@ -322,28 +322,32 @@ bool RowSlab::bNewRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  i8 nBytesAvail = m_xWsp.nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
+//  i8 nBytesAvail = m_xWsp.nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
+//
+//  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize)
+//    return false;
+//
+//  if (C_UNKNOWN == m_i_CellCrs)
+//    m_i_CellCrs = C_FIRST_LGL_CELL + 1;
+//  else
+//    m_i_CellCrs = m_i_Row_c0 - nCols();
+//
+//  m_i_Row_c0 = m_i_CellCrs;
+//
+//  m_nItems++;
+//
+//  m_i_RowLgl++;
+//
+//  i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
+//  m_xWsp.vTakeTail(nCellBytes);
   
-  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize)
-    return false;
+  Rsb* aRow;
   
-  if (C_UNKNOWN == m_i_CellCrs)
-    m_i_CellCrs = C_FIRST_LGL_CELL + 1;
-  else
-    m_i_CellCrs = m_i_Row_c0 - nCols();
-  
-  m_i_Row_c0 = m_i_CellCrs;
-  
-  m_nItems++;
-  
-  m_i_RowLgl++;
-  
-  i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
-  m_xWsp.vTakeTail(nCellBytes);
+  bool b = bNewRow(&aRow);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  return true;
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/

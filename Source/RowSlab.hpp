@@ -14,7 +14,6 @@ namespace Rows
   class RowSlab : public Object
   {
     friend class Rsb;
-    friend class CompactBuffers::RowInflator;
 
   private:
 
@@ -52,7 +51,7 @@ namespace Rows
         
     m8*   amCellArray(void);
     ColPix* axaColPix(void);
-    i8    i_CellAdv(void);
+//    i8    i_CellAdv(void);
     i8    i_CellCrs(void);
     i8    nCols(void);
     i8    iColumn(Rsb* aRsb, i8 iColumn);
@@ -119,14 +118,14 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* deposit cursor                                                             */
   /*----------------------------------------------------------------------------*/
-  inline void vDepositCursor(m8** aaCell)
-  {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-    m8* aCells = (m8*)m_xWsp.ayArea();
-
-    *aaCell = & aCells[m_i_CellCrs];
-  }
+//  inline void vDepositCursor(m8** aaCell)
+//  {
+//    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//
+//    m8* aCells = (m8*)m_xWsp.ayArea();
+//
+//    *aaCell = & aCells[m_i_CellCrs];
+//  }
 
 
   /*----------------------------------------------------------------------------*/
