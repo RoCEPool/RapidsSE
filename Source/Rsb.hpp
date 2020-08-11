@@ -23,11 +23,7 @@ namespace Rows
   {
     ASSERT(i_Col >= 0);
     
-#ifdef __NATURAL_CELL_ORDER
     return i_Col;
-#else
-    return -1 * i_Col;
-#endif
   }
   
   public:

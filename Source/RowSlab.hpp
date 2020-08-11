@@ -28,14 +28,13 @@ namespace Rows
     i8   m_i_Trim;      // where trim occurred     NOT USED YET
 
     i8   m_nItems;      // number of items in this row-slab
-    i8   m_i_Row_c0;    // cell 0 of current row
     i8   m_i_RowLgl;    // current logical row number
   
     i8   m_i_CellCrs;   // current working cell
 
     StreamPix m_oStreamPix; // condensed stream def
  
-    SingleWord m__PadToCacheLine[6]; // padding to cache line
+    SingleWord m__PadToCacheLine[7]; // padding to cache line
 
     NmlStr m_oNmlStr;   // normalised string set
     
@@ -51,20 +50,12 @@ namespace Rows
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
         
-//    m8*   amCellArray(void);
     ColPix* axaColPix(void);
-//    i8    i_CellAdv(void);
-//    i8    i_CellCrs(void);
     i8    i_Cell0(i8 i_Row);
     i8    nCols(void);
     i8    iColumn(Rsb* aRsb, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
     void  vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
-//    void  vDeposit(d8 dVal);
-//    void  vDeposit(i8 iVal);
-//    void  vDeposit(Stz* szVal);
-//    char* azDepositString_begin(void);
-//    void  vDepositString_end(i8 nSize);
     void  vDumpAllRows(void);
     void  vDumpNst(void);
     void  vDumpRow(i8 i_Row);
@@ -81,7 +72,6 @@ namespace Rows
     void  vReset(void);
     Rsb*  aRsbAdr(i8 i_Row);
     Rsb*  aRsbByOfs(i8 iOfs);
-//    Rsb*  aRsbCur(void);
     i8    iOfsOfRsb(Rsb* aRsb);
     i8    nRows(void);
     void  vSlabReport(void);
@@ -99,11 +89,7 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   inline void vAdvanceCursor(void)
   {
-#ifdef __NATURAL_CELL_ORDER
     m_i_CellCrs++;
-#else
-    m_i_CellCrs--;
-#endif
   };
 
   /*----------------------------------------------------------------------------*/
@@ -122,18 +108,6 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /*----------------------------------------------------------------------------*/
 
-  /*----------------------------------------------------------------------------*/
-  /* deposit cursor                                                             */
-  /*----------------------------------------------------------------------------*/
-//  inline void vDepositCursor(m8** aaCell)
-//  {
-//    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-//
-//    m8* aCells = (m8*)m_xWsp.ayArea();
-//
-//    *aaCell = & aCells[m_i_CellCrs];
-//  }
-
 
   /*----------------------------------------------------------------------------*/
   /* deposit an d8 value into next cell                                         */
@@ -141,18 +115,12 @@ namespace Rows
   inline void vDeposit(d8 dVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-#ifndef __NATURAL_CELL_ORDER
-    vAdvanceCursor();
-#endif
   
     d8* daCells = (d8*)m_xWsp.ayArea();
     
     daCells[m_i_CellCrs] = dVal;
     
-#ifdef __NATURAL_CELL_ORDER
     vAdvanceCursor();
-#endif
 
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   }
@@ -164,17 +132,11 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-    #ifndef __NATURAL_CELL_ORDER
-        vAdvanceCursor();
-    #endif
-
     i8* iaCells = (i8*)m_xWsp.ayArea();
     
     iaCells[m_i_CellCrs] = iVal;
     
-    #ifdef __NATURAL_CELL_ORDER
-      vAdvanceCursor();
-    #endif
+    vAdvanceCursor();
   
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   }
@@ -204,19 +166,13 @@ namespace Rows
 
     char* azStz = (char*)m_xWsp.ayLatterHead();
     
-    #ifndef __NATURAL_CELL_ORDER
-        vAdvanceCursor();
-    #endif
-
     i8* iaCells = (i8*)amSlabCellVec();
     
     i8 i_Ofs = - (nDifference(azStz, & iaCells[m_i_CellCrs]));
     
     iaCells[m_i_CellCrs] = i_Ofs;
     
-    #ifdef __NATURAL_CELL_ORDER
-        vAdvanceCursor();
-    #endif
+    vAdvanceCursor();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
