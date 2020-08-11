@@ -9,6 +9,8 @@ namespace Rows
   static const i8 C_SLAB_CELLS     = C_WSP_ROWSLAB / C_BYTES_PER_WORD;
   static const i8 C_FIRST_LGL_CELL = C_SLAB_CELLS - 1;
 
+  static const i8 C_CELL_BOUNDARY  = C_SLAB_CELLS;
+
   static const i8 C_NML_STR_SPACE  = C_8KB;
 
   class RowSlab : public Object
