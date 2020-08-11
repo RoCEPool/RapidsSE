@@ -49,7 +49,7 @@ namespace Rows
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
         
-    m8*   amCellArray(void);
+//    m8*   amCellArray(void);
     ColPix* axaColPix(void);
 //    i8    i_CellAdv(void);
 //    i8    i_CellCrs(void);

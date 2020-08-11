@@ -456,7 +456,7 @@ void RowInflator::vInflateColumns(RowSlab* pRowSlab, HeadLine* aHeadLine)
   i8 i_Ofs;
   char* azStz;
  
-  i8* iaRowSlabCells = (i8*)pRowSlab->amCellArray();
+  //i8* iaRowSlabCells = (i8*)pRowSlab->amCellArray();
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
