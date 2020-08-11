@@ -784,43 +784,6 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 //}
 
 /*----------------------------------------------------------------------------*/
-/* generate an IrwBuffer from entry buffer                                    */
-/*----------------------------------------------------------------------------*/
-//IrwBuffer* CrwBuffer::pToIrwBuffer(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-//  
-//  StreamDef* pStreamDef = pTable()->pStreamDef();
-//  
-//  IrwBuffer* pIrwBuffer = new IrwBuffer;
-//  Row* pRow;
-//  HV_Row pRowSingle(pStreamDef, C_ALL);
-//  
-//  i8 nRows = nRowCount();
-//  
-//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-//    // get compact row
-//    Crw* aCompactRow = (Crw*)aGetHead(i_Row);
-//    
-//    // inflate compact row into rowSingle
-//    RowInflator::vInflateRow(pRowSingle,aCompactRow);
-//    
-//    if ( ! pIrwBuffer->bCopyRow(pRowSingle) ) {
-//  
-//      IrwBuffer* pNewIrwBuffer = new IrwBuffer;
-//      pIrwBuffer->vNextBuffer(pNewIrwBuffer);
-//      pNewIrwBuffer->vPrevBuffer(pIrwBuffer);
-//      
-//      pIrwBuffer = pNewIrwBuffer;
-//      bool bCopy = pIrwBuffer->bCopyRow(pRowSingle);
-//      ASSERT(bCopy);
-//    }
-//  }
-//  
-//  return pIrwBuffer;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vTruncate(void)

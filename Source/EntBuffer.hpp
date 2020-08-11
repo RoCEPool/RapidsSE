@@ -172,7 +172,6 @@ namespace Indexing
                              i8& iL2Length_, i8& iL3Length_,
                              i8& iL4Length_, i8& iL5Length_);
     void        vSpliceAfter(EntBuffer* pSplicedBuffer);
-    IrwBuffer*  pToIrwBuffer(void);
     void        vTruncate(void);
     EntBuffer*  pUnlinkSubList(void);
     bool        bVerify(void);

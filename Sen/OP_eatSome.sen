@@ -36,7 +36,6 @@
 //  pEastSomeHandler ZK_ERROREDMARKER    op[].handler!
 //  pEastSomeHandler ZK_EXITMARKER       op[].handler!
 //  pEastSomeHandler ZK_EXITEDMARKER     op[].handler!
-//  pEastSomeHandler ZK_IRWBUFFER        op[].handler!
 //  pEastSomeHandler ZK_LOCKSTATS        op[].handler!
 //  pEastSomeHandler ZK_NODEINFO         op[].handler!
 //  pEastSomeHandler ZK_PROFILE          op[].handler!

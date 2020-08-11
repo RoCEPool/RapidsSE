@@ -409,34 +409,6 @@ void Step::vSocketRecvObject(void)
       EXIT();
       return;
     }
-      
-    case CN_IRWBUFFER: {
-      
-      IrwBuffer* pIrwBuffer = new IrwBuffer();
-      
-      MemLib::vCopy(pIrwBuffer,pObject,sizeof(Object),CN_IRWBUFFER);
-      
-      aBody = aAdd<void*>(pIrwBuffer,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_IRWBUFFER].m_nClassSize - sizeof(Object);
-      
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
-      
-      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-      
-      // restore the nub of the crwbuffer
-      //pIrwBuffer->vRestoreNub();
-      
-      m_pDataStack->vPushPtr(pIrwBuffer);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-    }
      
     case CN_CSVBUFFER: {
       
@@ -828,34 +800,6 @@ void Step::vSocketRecvObject_LowMem(void)
       m_pDataStack->vPushInt(true);
       EXIT();
       return;
-  
-    case CN_IRWBUFFER: {
-      
-      IrwBuffer* pIrwBuffer = new IrwBuffer();
-      
-      MemLib::vCopy(pIrwBuffer,pObject,sizeof(Object),CN_IRWBUFFER);
-      
-      aBody = aAdd<void*>(pIrwBuffer,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_IRWBUFFER].m_nClassSize - sizeof(Object);
-      
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
-      
-      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-      
-      // restore the nub of the crwbuffer
-      //pIrwBuffer->vRestoreNub();
-      
-      m_pDataStack->vPushPtr(pIrwBuffer);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-    }
       
     case CN_STREAMDEF:
       pStreamDef = new StreamDef();

@@ -64,17 +64,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_IRWBUFFER ...                                               */
-/*----------------------------------------------------------------------------*/
-: output_IrwBuffer \handler
-
-  //"Operand:- ZK_IRWBUFFER" .verbose
-  PipeIn[].pipeToJob
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_PulseMarker \handler
@@ -158,7 +147,6 @@ true
   find: output_EntBuffer   ZK_ENTBUFFER   op[].handler!
   find: output_EosMarker   ZK_EOSMARKER   op[].handler!
   find: output_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: output_IrwBuffer   ZK_IRWBUFFER   op[].handler!
   find: output_PulseMarker ZK_PULSEMARKER op[].handler!
   find: output_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: output_SrtBuffer   ZK_SRTBUFFER   op[].handler!

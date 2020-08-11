@@ -1508,19 +1508,6 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate an IrwBuffer from entry buffer                                    */
-/*----------------------------------------------------------------------------*/
-IrwBuffer* EntBuffer::pToIrwBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  // INCOMPLETE !!!
-  ASSERT(0);
-  
-  return new IrwBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert entBuffer to srtBuffer                                             */
 /*----------------------------------------------------------------------------*/
 //SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)

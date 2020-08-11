@@ -72,24 +72,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_IRWBUFFER ...                                               */
-/*----------------------------------------------------------------------------*/
-: report_IrwBuffer \handler
-
-  //"Operand:- ZK_IRWBUFFER" .verbose
-  PipeIn[] to Operand[]
-  nullptr to Operand[]
-
-  Operand[].isReport if
-    Operand[].writeToFile0
-  else
-    Operand[].pipeOut
-  then
- 
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_SRTBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : report_SrtBuffer \handler
@@ -135,7 +117,6 @@
   find: report_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: report_EntBuffer   ZK_ENTBUFFER   op[].handler!
   find: report_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: report_IrwBuffer   ZK_IRWBUFFER   op[].handler!
   find: report_SrtBuffer   ZK_SRTBUFFER   op[].handler!
   find: report_StartMarker ZK_STARTMARKER op[].handler!
 

@@ -211,7 +211,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   
   i8 nRows = nItems();
   
-  vTrace("IrwBuffer: %p (buffer %lld): rows: %lld\n"_Stz,
+  vTrace("RowBuffer: %p (buffer %lld): rows: %lld\n"_Stz,
          this,m_iBufferNo,nRows);
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,

@@ -538,7 +538,6 @@ void Step::vRegOperandKind(void)
       break;
     }
       
-    case CN_IRWBUFFER:       eOperand = ZK_IRWBUFFER;       break;
     case CN_MARKER: {
       Marker* pMarker = _pMarker(*m_pLogicUnit->m_xpOperandA);
 
