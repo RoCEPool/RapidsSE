@@ -19,14 +19,14 @@ SOURCES += $(wildcard ../Munge/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/mersenne/*.cpp)
 SOURCES := $(filter-out main.cpp, $(SOURCES))
-#S_SOURCES = $(wildcard *.s)
+S_SOURCES = $(wildcard *.s)
 
 #Man pages
 MAN_PAGES=../Documents/se.man
 
 #Object Files for library
 OBJECTS = $(SOURCES:.cpp=.o)
-#OBJECTS += $(S_SOURCES:.s=.o)
+OBJECTS += $(S_SOURCES:.s=.o)
 
 #Dependency Files for library
 DEPFILES = $(SOURCES:.cpp=.d)

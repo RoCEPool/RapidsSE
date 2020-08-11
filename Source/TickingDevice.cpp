@@ -15,13 +15,7 @@ i8 TickingDevice::iGetTick(void)
 {
   _static_
   
-#ifdef WITH_APPLE
   i8 iTicks = Hardware::iReadTscp();
-#elif defined(WITH_LINUX)
-  i8 iTicks = Hardware::iReadClock();
-#else
-  NEVER_REACH;
-#endif
   
   return iTicks;
 }
@@ -38,13 +32,7 @@ i8 TickingDevice::iTicksPerSec(void)
   if (iFreq)
     return iFreq;
   
-#ifdef WITH_APPLE
   i8 iFrequency = Hardware::iCpuFrequency();
-#elif defined(WITH_LINUX)
-  i8 iFrequency = Hardware::iClockResNsec();
-#else
-  NEVER_REACH;
-#endif
 
   iFreq = iFrequency;
   
