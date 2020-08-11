@@ -55,6 +55,7 @@ namespace Rows
     ColPix* axaColPix(void);
 //    i8    i_CellAdv(void);
 //    i8    i_CellCrs(void);
+    i8    i_Cell0(i8 i_Row);
     i8    nCols(void);
     i8    iColumn(Rsb* aRsb, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);

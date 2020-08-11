@@ -115,6 +115,29 @@ ColPix* RowSlab::axaColPix(void)
 //}
 
 /*----------------------------------------------------------------------------*/
+/* get i_cell for cell[0] of given row                                        */
+/*----------------------------------------------------------------------------*/
+i8 RowSlab::i_Cell0(i8 i_Row)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+#ifdef __NATURAL_CELL_ORDER
+
+  i8 iCell0_row = (i_Row + 1) * m_oStreamPix.m_nCols;
+  
+  i8 i_RowCell0 = C_CELL_BOUNDARY - iCell0_row;
+  
+  return i_RowCell0;
+  
+#else
+  
+  ASSERT(0);
+  return C_UNKNOWN;
+  
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy given stream pix into the stream pix in this rsb                      */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vCopyPix(StreamPix* pStreamPixSrc)
@@ -285,21 +308,13 @@ bool RowSlab::bNewRow(Rsb** paRow)
   
 #ifdef __NATURAL_CELL_ORDER
   
-  if (C_UNKNOWN == m_i_CellCrs)
-    m_i_CellCrs = C_FIRST_LGL_CELL + 1;
-  else
-    m_i_CellCrs = m_i_Row_c0 - m_oStreamPix.m_nCols;
-  
-  m_i_Row_c0 = m_i_CellCrs;
-  
-  m8* amCellVec = (m8*)m_xWsp.ayArea();
-  i8 iLglRow = m_nItems * m_oStreamPix.m_nCols;
-  i8 i_RowCells = C_FIRST_LGL_CELL - iLglRow;
-  *paRow = (Rsb*) & amCellVec[i_RowCells];
-
   m_nItems++;
 
   m_i_RowLgl++;
+  
+  Rsb* aRsb = aRsbAdr(m_i_RowLgl);
+  
+  *paRow = aRsb;
   
 #else
   if (C_UNKNOWN == m_i_CellCrs)
@@ -500,8 +515,7 @@ Rsb* RowSlab::aRsbAdr(i8 i_Row)
        -------*---+---+---*---+---+---*
    */
   
-  i8 iCell0_row = (i_Row + 1) * m_oStreamPix.m_nCols;
-  i8 i_RowCell0 = C_CELL_BOUNDARY - iCell0_row;
+  i8 i_RowCell0 = i_Cell0(iRow);
   
 #else
   i8 iCell0_row = i_Row * m_oStreamPix.m_nCols;
