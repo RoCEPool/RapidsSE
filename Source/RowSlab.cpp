@@ -39,7 +39,8 @@ RowSlab::RowSlab(void)
   m_nItems    = 0;
   m_i_RowLgl  = C_UNKNOWN;
   m_i_CellCrs = C_UNKNOWN;
- 
+  m_amCellCrs = nullptr;
+  
   // m_oStreamPix
   
   MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ROWSLAB);
@@ -84,7 +85,7 @@ ColPix* RowSlab::axaColPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get i_cell for cell[0] of given row                                        */
+/* get i_cell of cell[0] for given row                                        */
 /*----------------------------------------------------------------------------*/
 i8 RowSlab::i_Cell0(i8 i_Row)
 {
@@ -95,6 +96,18 @@ i8 RowSlab::i_Cell0(i8 i_Row)
   i8 i_RowCell0 = C_CELL_BOUNDARY - iCell0_row;
   
   return i_RowCell0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get addr of cell[0] for given row                                          */
+/*----------------------------------------------------------------------------*/
+m8* RowSlab::amCell0(i8 i_Row)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  Rsb* aRsb = aRsbAdr(m_i_RowLgl);
+  
+  return (m8*)aRsb;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,6 +288,7 @@ bool RowSlab::bNewRow(Rsb** paRow)
   *paRow = aRsb;
   
   m_i_CellCrs = i_Cell0(m_i_RowLgl);
+  m_amCellCrs = amCell0(m_i_RowLgl);
   
   i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
   m_xWsp.vTakeTail(nCellBytes);
@@ -400,6 +414,9 @@ void RowSlab::vPositionOnCell(i8 i_Col)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
   m_i_CellCrs = i_Cell0(m_i_RowLgl) + i_Col;
+  
+  m_amCellCrs = amCell0(m_i_RowLgl) + i_Col;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -436,6 +453,7 @@ void RowSlab::vReset(void)
   m_nItems    = 0;
   m_i_RowLgl  = C_UNKNOWN;
   m_i_CellCrs = C_UNKNOWN;
+  m_amCellCrs = nullptr;
 
   m_xWsp.vReset();
 }

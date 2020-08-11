@@ -31,10 +31,11 @@ namespace Rows
     i8   m_i_RowLgl;    // current logical row number
   
     i8   m_i_CellCrs;   // current working cell
+    m8*  m_amCellCrs;   // current working cell
 
     StreamPix m_oStreamPix; // condensed stream def
  
-    SingleWord m__PadToCacheLine[7]; // padding to cache line
+    SingleWord m__PadToCacheLine[6]; // padding to cache line
 
     NmlStr m_oNmlStr;   // normalised string set
     
@@ -52,6 +53,7 @@ namespace Rows
         
     ColPix* axaColPix(void);
     i8    i_Cell0(i8 i_Row);
+    m8*   amCell0(i8 i_Row);
     i8    nCols(void);
     i8    iColumn(Rsb* aRsb, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
@@ -90,6 +92,7 @@ namespace Rows
   inline void vAdvanceCursor(void)
   {
     m_i_CellCrs++;
+    m_amCellCrs++;
   };
 
   /*----------------------------------------------------------------------------*/
@@ -108,7 +111,8 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /*----------------------------------------------------------------------------*/
 
-
+#define __CELL_CRSADR
+  
   /*----------------------------------------------------------------------------*/
   /* deposit an d8 value into next cell                                         */
   /*----------------------------------------------------------------------------*/
@@ -116,9 +120,12 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
+#ifdef __CELL_CRSADR
+    *(d8*)m_amCellCrs = dVal;
+#else
     d8* daCells = (d8*)m_xWsp.ayArea();
-    
     daCells[m_i_CellCrs] = dVal;
+#endif
     
     vAdvanceCursor();
 
@@ -132,10 +139,13 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
+#ifdef __CELL_CRSADR
+    *(i8*)m_amCellCrs = iVal;
+#else
     i8* iaCells = (i8*)m_xWsp.ayArea();
-    
     iaCells[m_i_CellCrs] = iVal;
-    
+#endif
+  
     vAdvanceCursor();
   
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -170,8 +180,12 @@ namespace Rows
     
     i8 i_Ofs = - (nDifference(azStz, & iaCells[m_i_CellCrs]));
     
+#ifdef __CELL_CRSADR
+    *(i8*)m_amCellCrs = i_Ofs;
+#else
     iaCells[m_i_CellCrs] = i_Ofs;
-    
+#endif
+  
     vAdvanceCursor();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
