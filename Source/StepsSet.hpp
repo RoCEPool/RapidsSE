@@ -1176,7 +1176,6 @@ public:
   void vRegOperandCsvData(void);
   void vRegOperandCsvToCrwH(void);
   void vRegOperandCsvToRsb(void);
-  void vRegOperandCsvToRsbFast(void);
   void vRegOperandDelete(void);
   void vRegOperandFirstRowFetch(void);
   void vRegOperandGet(void);
