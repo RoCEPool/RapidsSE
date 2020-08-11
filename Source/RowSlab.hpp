@@ -30,12 +30,11 @@ namespace Rows
     i8   m_nItems;      // number of items in this row-slab
     i8   m_i_RowLgl;    // current logical row number
   
-    i8   m_i_CellCrs;   // current working cell
     m8*  m_amCellCrs;   // current working cell
 
     StreamPix m_oStreamPix; // condensed stream def
  
-    SingleWord m__PadToCacheLine[6]; // padding to cache line
+    SingleWord m__PadToCacheLine[7]; // padding to cache line
 
     NmlStr m_oNmlStr;   // normalised string set
     
@@ -91,7 +90,6 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   inline void vAdvanceCursor(void)
   {
-    m_i_CellCrs++;
     m_amCellCrs++;
   };
 
@@ -100,18 +98,13 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   inline m8* aCurrentCell(void)
   {
-    m8* aCellArea = (m8*)m_xWsp.ayArea();
 
-    m8* aCell = & aCellArea[m_i_CellCrs];
-
-    return aCell;
+    return m_amCellCrs;
   };
 
 
   /*----------------------------------------------------------------------------*/
   /*----------------------------------------------------------------------------*/
-
-#define __CELL_CRSADR
   
   /*----------------------------------------------------------------------------*/
   /* deposit an d8 value into next cell                                         */
@@ -120,12 +113,7 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-#ifdef __CELL_CRSADR
     *(d8*)m_amCellCrs = dVal;
-#else
-    d8* daCells = (d8*)m_xWsp.ayArea();
-    daCells[m_i_CellCrs] = dVal;
-#endif
     
     vAdvanceCursor();
 
@@ -139,12 +127,7 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-#ifdef __CELL_CRSADR
     *(i8*)m_amCellCrs = iVal;
-#else
-    i8* iaCells = (i8*)m_xWsp.ayArea();
-    iaCells[m_i_CellCrs] = iVal;
-#endif
   
     vAdvanceCursor();
   
@@ -176,19 +159,12 @@ namespace Rows
 
     char* azStz = (char*)m_xWsp.ayLatterHead();
     
-    i8* iaCells = (i8*)amSlabCellVec();
-    
-    i8 i_Ofs = - (nDifference(azStz, & iaCells[m_i_CellCrs]));
-    
-#ifdef __CELL_CRSADR
+    i8 i_Ofs = - nDifference(azStz,m_amCellCrs);
     *(i8*)m_amCellCrs = i_Ofs;
-#else
-    iaCells[m_i_CellCrs] = i_Ofs;
-#endif
   
     vAdvanceCursor();
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
     return azStz;
   }
