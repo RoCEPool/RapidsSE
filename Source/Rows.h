@@ -14,7 +14,7 @@ namespace Rows
 
 //------------------------------------------------------------------------------
 
-//#define __NATURAL_CELL_ORDER
+#define __NATURAL_CELL_ORDER
 
 #include "Ref.hpp"
 #include "Row.hpp"

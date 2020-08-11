@@ -99,7 +99,11 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   inline void vAdvanceCursor(void)
   {
+#ifdef __NATURAL_CELL_ORDER
+    m_i_CellCrs++;
+#else
     m_i_CellCrs--;
+#endif
   };
 
   /*----------------------------------------------------------------------------*/
@@ -138,12 +142,18 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
+#ifndef __NATURAL_CELL_ORDER
     vAdvanceCursor();
-    
+#endif
+  
     d8* daCells = (d8*)m_xWsp.ayArea();
     
     daCells[m_i_CellCrs] = dVal;
     
+#ifdef __NATURAL_CELL_ORDER
+    vAdvanceCursor();
+#endif
+
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   }
 
@@ -154,12 +164,18 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-    vAdvanceCursor();
+    #ifndef __NATURAL_CELL_ORDER
+        vAdvanceCursor();
+    #endif
 
     i8* iaCells = (i8*)m_xWsp.ayArea();
     
     iaCells[m_i_CellCrs] = iVal;
     
+    #ifdef __NATURAL_CELL_ORDER
+      vAdvanceCursor();
+    #endif
+  
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   }
 
@@ -188,7 +204,9 @@ namespace Rows
 
     char* azStz = (char*)m_xWsp.ayLatterHead();
     
-    vAdvanceCursor();
+    #ifndef __NATURAL_CELL_ORDER
+        vAdvanceCursor();
+    #endif
 
     i8* iaCells = (i8*)amSlabCellVec();
     
@@ -196,7 +214,11 @@ namespace Rows
     
     iaCells[m_i_CellCrs] = i_Ofs;
     
-    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    #ifdef __NATURAL_CELL_ORDER
+        vAdvanceCursor();
+    #endif
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
     return azStz;
   }

@@ -316,6 +316,8 @@ bool RowSlab::bNewRow(Rsb** paRow)
   
   *paRow = aRsb;
   
+  m_i_CellCrs = i_Cell0(m_i_RowLgl);
+  
 #else
   if (C_UNKNOWN == m_i_CellCrs)
     m_i_CellCrs = C_FIRST_LGL_CELL + 1;
@@ -458,7 +460,12 @@ void RowSlab::vPositionOnCell(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
+#ifdef __NATURAL_CELL_ORDER
+  m_i_CellCrs = i_Cell0(m_i_RowLgl) + i_Col;
+
+#else
   m_i_CellCrs = m_i_Row_c0 - i_Col;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -515,7 +522,7 @@ Rsb* RowSlab::aRsbAdr(i8 i_Row)
        -------*---+---+---*---+---+---*
    */
   
-  i8 i_RowCell0 = i_Cell0(iRow);
+  i8 i_RowCell0 = i_Cell0(i_Row);
   
 #else
   i8 iCell0_row = i_Row * m_oStreamPix.m_nCols;
