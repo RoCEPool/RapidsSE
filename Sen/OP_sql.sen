@@ -252,6 +252,8 @@
     601 of
       //queryNo "QUERY %v" .printf
       601 LogicUnit[].genCode
+      logicCompiler[].new
+      logicCompiler[].compile
     endof
 
     666 of
@@ -574,7 +576,7 @@
       //"---------------------------- 601=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      LogicUnit[].transform
+      LogicUnit[].dynFun
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
