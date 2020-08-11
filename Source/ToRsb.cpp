@@ -4,8 +4,6 @@
 
 #include "Load.h"
 
-#define WITH_CONVERT_FAST_INLINE EndDefine
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -87,80 +85,9 @@ ToRsb::~ToRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert a crwbuffer into a rsbBuffer                                       */
 /*----------------------------------------------------------------------------*/
-//bool ToRsb::bConvert(CrwBuffer* pCrwBuffer)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
-//
-////#ifdef WITH_CONVERT_FAST_INLINE
-//
-//  //return bConvertFastInline(azSrc);
-//
-////#else
-//
-//  HV_Row hRow(m_pStreamDef,C_ALL);
-//
-//  i8 nRows = pCrwBuffer->nRowCount();
-//
-//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-//
-//    // get the inflated compact row
-//    pCrwBuffer->vGetRow(hRow, i_Row);
-//
-//    // each record thats fits
-//
-//    if (! m_pRowSlab->bNewRow()) {
-//      vNewRsbBuffer();
-//      bool b = m_pRowSlab->bNewRow();
-//      ASSERT(b);
-//    }
-//
-//    for (i8 m_i_Fld = 0; m_i_Fld < m_pRowSlab->nCols(); m_i_Fld++ ) {
-//
-//      eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
-//
-//      // currently needed by the SN_ scanners (will go)
-//      m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-//
-//      if ( DM_VCH == eDatum) {
-//        if (C_DATUM_NULL == hRow->m_waColVal[m_i_Fld].m_iWrd) {
-//            m_pRowSlab->vDeposit(C_DATUM_NULL);
-//        }
-//        else {
-//          Stz* szSrcStz = hRow->m_waColVal[m_i_Fld].m_szVch;
-//          m_pRowSlab->vDeposit(szSrcStz);
-//        }
-//      }
-//      else {
-//        i8 iVal = hRow->m_waColVal[m_i_Fld];
-//        m_pRowSlab->vDeposit(iVal);
-//      }
-//
-//    }
-//
-//  } // end-data
-//
-//  //RASSERT(m_dCalc != 3.0);
-//
-//  //m_pRowSlab->vDumpAllRows();
-//  //m_pRowSlab->vSlabReport();
-//
-//  return true;
-////#endif
-//
-//}
-
-/*----------------------------------------------------------------------------*/
-/* convert a crwbuffer into a rsbBuffer                                       */
-/*----------------------------------------------------------------------------*/
 bool ToRsb::bConvert(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
-  
-  //#ifdef WITH_CONVERT_FAST_INLINE
-  
-  //return bConvertFastInline(azSrc);
-  
-  //#else
   
   HV_Row hRow(m_pStreamDef,C_ALL);
   
@@ -185,8 +112,6 @@ bool ToRsb::bConvert(CrwBuffer* pCrwBuffer)
   //m_pRowSlab->vSlabReport();
   
   return true;
-  //#endif
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,111 +121,7 @@ bool ToRsb::bConvert(char* azSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
-#ifdef WITH_CONVERT_FAST_INLINE
-  
   return bConvertFastInline(azSrc);
-  
-#else
-  
-  i8 nPtns = AM::nPartitions();
-  i8 i_Ptn = 0;
-  
-  //vTrace("[>%s<]"_Stz,azSrc);
-  
-  m_azSrc = azSrc;
-  m_acChr = m_azSrc;
-  
-    
-  // while more data
-  while (bMoreData()) {
-    
-    vSkipBlankspace();
-    
-    if (! bMoreFields()) {
-      if (m_bTrace)
-        vTrace("blank line...\n"_Stz);
-      m_acChr++;
-      m_iCol++;
-      m_iLine++;
-      continue;
-    }
-    
-    // each record thats fits
-    
-    if (! m_pRowSlab->bNewRow()) {
-      vNewRsbBuffer();
-      bool b = m_pRowSlab->bNewRow();
-      ASSERT(b);
-    }
-    
-    
-    while (bMoreFields()) {
-    
-      eDM eDatum = (eDM) m_pRowSlab->axaColPix()[m_i_Fld].m_uDatum;
-    
-      if (26 == m_i_Rec && 6 == m_i_Fld)
-        vDebugPoint();
-      
-      vPreField(eDatum);
-  
-      // currently needed by the SN_ scanners (will go)
-      m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
-      
-      switch (eDatum) {
-        case DM_BOL : vConvertBoolean();   break;
-        case DM_DTE : vConvertDate();      break;
-        case DM_BCD : vConvertDecimal();   break;
-        case DM_FLT : vConvertFloat();     break;
-        case DM_INT : vConvertInteger();   break;
-        case DM_IVL : vConvertInterval();  break;
-        case DM_TME : vConvertTime();      break;
-        case DM_TSP : vConvertTimestamp(); break;
-        case DM_VCH : vConvertVarchar();   break;
-        default:
-          RASSERT(0);
-      }
-      
-      vPostField();
-
-      if (m_cFldSep == *m_acChr) {
-        m_acChr++;
-        m_iCol++;
-      }
-  
-      m_i_Fld++;
-      
-    } // end-record
-    
-    if (m_bTrace) {
-      if (! m_bSawFldSep)
-        vTrace("\n"_Stz);
-      vTrace("-- recSep -- \n"_Stz);
-    }
-    
-    // set partition hash CURRENTLY ROUND ROBIN.  DISCUSS W ALKA
-    if (m_bPtnHash) {
-      m_pRowSlab->vDeposit((i8)i_Ptn);
-      if (++i_Ptn >= nPtns)
-        i_Ptn = 0;
-    }
-    
-    m_i_Rec++;
-    m_i_Fld = 0;
-    if (*m_acChr)
-      m_acChr++;
-    m_iLine++;
-    m_iCol = 1;
-
-  } // end-data
-  
-  RASSERT(m_dCalc != 3.0);
-  
-  //m_pRowSlab->vDumpAllRows();
-  //m_pRowSlab->vSlabReport();
-  
-  return true;
-#endif
-  
 }
 
 /*----------------------------------------------------------------------------*/
