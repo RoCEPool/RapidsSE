@@ -369,18 +369,18 @@ L_Date:
     nDigits++;
     
     if (iYear > (u8)C_I8_MAX)
-      THROW_USER("vConvertDateFast"_Stz);
+      THROW_USER("vConvertDate"_Stz);
   }
       
   if (!bOnce)
-    THROW_USER("vConvertDateFast"_Stz);
+    THROW_USER("vConvertDate"_Stz);
   
   if (2 == nDigits) {
     iYear += 2000;
   }
   else
   if (4 != nDigits) {
-    THROW_USER("vConvertDateFast"_Stz);
+    THROW_USER("vConvertDate"_Stz);
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -390,9 +390,9 @@ L_Date:
   nDigits = 2;
 
   if ( ! cSrc )
-    THROW_USER("vConvertDateFast"_Stz);
+    THROW_USER("vConvertDate"_Stz);
   if ('-' != cSrc)
-    THROW_USER("vConvertDateFast"_Stz);
+    THROW_USER("vConvertDate"_Stz);
           
   vADV_SRC();
   
@@ -411,10 +411,10 @@ L_Date:
   }
     
   if (!bOnce)
-    THROW_USER("vConvertDateFast"_Stz);
+    THROW_USER("vConvertDate"_Stz);
   
   if (iMonth < 1 || iMonth > 12)
-    THROW_USER("vConvertDateFast"_Stz);
+    THROW_USER("vConvertDate"_Stz);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day
@@ -423,9 +423,9 @@ L_Date:
   nDigits = 2;
 
   if (! cSrc)
-    THROW_USER("vConvertDateFast"_Stz);
+    THROW_USER("vConvertDate"_Stz);
   if ('-' != cSrc)
-    THROW_USER("vConvertDateFast"_Stz);
+    THROW_USER("vConvertDate"_Stz);
 
   vADV_SRC();
 
@@ -444,7 +444,7 @@ L_Date:
   }
      
   if (!bOnce)
-    THROW_USER("vConvertDateFast"_Stz);
+    THROW_USER("vConvertDate"_Stz);
         
   // ---- ---- ---- ---- ---- ---- ---- ----
   // validate
@@ -460,11 +460,11 @@ L_Date:
 
   if (bLeapYear) {
     if (iDay > (u8)iDaysPerMonthLeap[iMonth-1])
-      THROW_USER("vConvertDateFast"_Stz);
+      THROW_USER("vConvertDate"_Stz);
   }
   else {
     if (iDay > (u8)iDaysPerMonth[iMonth-1])
-      THROW_USER("vConvertDateFast"_Stz);
+      THROW_USER("vConvertDate"_Stz);
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -526,7 +526,7 @@ L_Decimal:
   
   // have we exceeded maximum precision digits?
   if (nPixPrecision < 0)
-    THROW_USER("vConvertDecimalFast"_Stz);
+    THROW_USER("vConvertDecimal"_Stz);
   
   if ('.' == cSrc) {
     
@@ -544,7 +544,7 @@ L_Decimal:
   
   // have we exceeded the max ?
   if (uPartialResult > (u8)C_I8_MAX)
-    THROW_USER("vConvertDecimalFast"_Stz);
+    THROW_USER("vConvertDecimal"_Stz);
   
   // round up if there any more digits after decimal
   if (cSrc >= '0' && cSrc <= '9') {
@@ -559,10 +559,10 @@ L_Decimal:
   
   // have we gone beyond the min ?
   if (iFinalResult != 0 && bNegative && (iFinalResult < C_I8_MIN))
-    THROW_USER("vConvertDecimalFast"_Stz);
+    THROW_USER("vConvertDecimal"_Stz);
 
   if ( ! bOnce )
-    THROW_USER("vConvertDecimalFast"_Stz);
+    THROW_USER("vConvertDecimal"_Stz);
   
   pRowSlab->vDeposit(iFinalResult);
 
@@ -605,12 +605,12 @@ L_Integer:
     uPartialResult = (uPartialResult * 10) + (cSrc - '0');
     
     if (uPartialResult > (u8)C_I8_MAX)
-      THROW_USER("vConvertIntegerFast"_Stz);
+      THROW_USER("vConvertInteger"_Stz);
   }
   
   if (! bOnce) {
     vTrace("%s\n"_Stz,azCsvInput);
-    THROW_USER("vConvertIntegerFast"_Stz);
+    THROW_USER("vConvertInteger"_Stz);
   }
   
   iFinalResult = bNegative ? - uPartialResult : uPartialResult;
@@ -680,7 +680,7 @@ L_Varchar:
   // see the trailing enclosedBy
   if (bSawEnclosedLeading)
     if ( ! bSawEnclosedTrailing )
-      THROW_USER("vConvertVarcharFast"_Stz);
+      THROW_USER("vConvertVarchar"_Stz);
 
   // deposit the string
   pRowSlab->vDepositString_end(nChars+1);
