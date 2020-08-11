@@ -219,12 +219,6 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pInfoSet;
       break;
     }
-    
-    case CN_IRWBUFFER: {
-      IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-      delete pIrwBuffer;
-      break;
-    }
       
     case CN_MARKER: {
       Marker* pMarker = _pMarker(pOperand);

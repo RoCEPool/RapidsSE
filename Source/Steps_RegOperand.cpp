@@ -22,13 +22,10 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
   vAddStep("Operand[].crwToRsb"_Stz,       &Step::vRegOperandCrwToRsb);
   vAddStep("Operand[].delete"_Stz,         &Step::vRegOperandDelete);
-  vAddStep("Operand[].firstRow@"_Stz,      &Step::vRegOperandFirstRowFetch);
-  vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vRegOperandHandleAggEnd);
   vAddStep("Operand[].insdelIntoTable"_Stz,&Step::vRegOperandInsdelIntoTable);
   vAddStep("Operand[].isNotNull"_Stz,      &Step::vRegOperandIsNotNull);
   vAddStep("Operand[].isNull"_Stz,         &Step::vRegOperandIsNull);
   vAddStep("Operand[].isReport"_Stz,       &Step::vRegOperandIsReport);
-  vAddStep("Operand[].itemCount@"_Stz,     &Step::vRegOperandItemCountFetch);
   vAddStep("Operand[].invokePython"_Stz,   &Step::vRegOperandInvokePython);
   vAddStep("Operand[].invokePythonShell"_Stz, &Step::vRegOperandInvokePythonShell);
   vAddStep("Operand[].kind"_Stz,           &Step::vRegOperandKind);
@@ -53,7 +50,6 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].rsbToCsv"_Stz,       &Step::vRegOperandRsbToCsv);
   vAddStep("Operand[].set"_Stz,            &Step::vRegOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vRegOperandUpsertIntoTable);
-  vAddStep("Operand[].workDone"_Stz,       &Step::vRegOperandWorkDone);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vRegOperandWriteToFile0);
 }
 
@@ -254,19 +250,6 @@ void Step::vRegOperandDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].firstRow@ -- fetch operand first row                             */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandFirstRowFetch(void)
-{
-  ENTRY();
-  
-  IrwBuffer* pIrwBuffer = _pIrwBuffer(*m_pLogicUnit->m_xpOperandA);
-  m_pLogicUnit->m_xpRow = pIrwBuffer->aFirstRow();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Operand[].get -- fetch operand                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandGet(void)
@@ -274,50 +257,6 @@ void Step::vRegOperandGet(void)
   ENTRY();
   
   m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpOperandA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].handleAggEnd -- handle agg end                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandHandleAggEnd(void)
-{
-  ENTRY();
-  
-//  ASSERT(*m_pLogicUnit->m_xpOperandA);
-//  
-//  i8 nCount = m_pDataStack->iPopInt(__func__);
-//  
-//  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-//  
-//  if (pOp->nDecLeftEosMarkers() == 0) {
-//    if (pOp->bIsCancelling()) {
-//      AM::vDeleteOperand(*m_pLogicUnit->m_xpOperandA);
-//      pOp->vPipeOut(new Marker(OM_CANCELMARKER));
-//    }
-//    else {
-//      
-//      // create an IrwBuffer
-//      IrwBuffer* pIrwBuffer = new IrwBuffer();
-//      
-//      Row* pRow = pIrwBuffer->aAllotRow(*m_pLogicUnit->m_xpStreamDef);
-//      pRow->m_waColVal[0] = nCount;
-//      
-//      // pipe out the streamdef
-//      pOp->vPipeOut(*m_pLogicUnit->m_xpStreamDef);
-//      
-//      // pipe out the buffer with the count
-//      pOp->vPipeOut(pIrwBuffer);
-//      
-//      pOp->vPipeOut(*m_pLogicUnit->m_xpOperandA);
-//    }
-//  
-//    pOp->vAckJob();
-//    
-//  }
-//  else
-//    AM::vDeleteOperand(*m_pLogicUnit->m_xpOperandA);
   
   EXIT();
 }
@@ -389,21 +328,6 @@ void Step::vRegOperandIsReport(void)
   
   Operand* pOperand = *m_pLogicUnit->m_xpOperandA;
   m_pDataStack->vPushInt(pOperand->eTailProcessing() == TP_REPORT ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].itemCount@ -- fetch the operand item count                       */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandItemCountFetch(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pLogicUnit->m_xpOperandA);
-  IrwBuffer* pIrwBuffer = _pIrwBuffer(*m_pLogicUnit->m_xpOperandA);
-  
-  m_pDataStack->vPushInt(pIrwBuffer->nItems());
   
   EXIT();
 }
@@ -890,63 +814,6 @@ void Step::vRegOperandRsbToCsv(void)
   
   delete pRsbBuffer;
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].workDone -- update work done                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandWorkDone(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pLogicUnit->m_xpOperandA);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-  
-  eCN eClass_op = m_pLogicUnit->m_xpOperandA->eClass();
-  
-  switch (eClass_op) {
-      
-    case CN_CRWBUFFER: {
-      CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
-      pOp->vAddWorkDone(pCrwBuffer->nRowCount());
-      break;
-    }
-      
-    case CN_CSVBUFFER: {
-      CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpOperandA);
-      pOp->vAddWorkDone(pCsvBuffer->nRecords());
-      break;
-    }
-      
-    case CN_ENTBUFFER: {
-      EntBuffer* pEntBuffer = _pEntBuffer(*m_pLogicUnit->m_xpOperandA);
-      pOp->vAddWorkDone(pEntBuffer->nItems());
-      break;
-    }
-      
-    case CN_IRWBUFFER: {
-      IrwBuffer* pIrwBuffer = _pIrwBuffer(*m_pLogicUnit->m_xpOperandA);
-      pOp->vAddWorkDone(pIrwBuffer->nItems());
-      break;
-    }
-      
-    case CN_SRTBUFFER: {
-      SrtBuffer* pSrtBuffer = _pSrtBuffer(*m_pLogicUnit->m_xpOperandA);
-      pOp->vAddWorkDone(pSrtBuffer->nItems());
-      break;
-    }
-      
-    case CN_STREAMDEF: {
-      break;
-    }
-      
-    default:
-      RASSERT(0);
-      break;
-  }
-
   EXIT();
 }
 

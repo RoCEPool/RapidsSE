@@ -1177,13 +1177,10 @@ public:
   void vRegOperandCsvToCrwH(void);
   void vRegOperandCsvToRsb(void);
   void vRegOperandDelete(void);
-  void vRegOperandFirstRowFetch(void);
   void vRegOperandGet(void);
-  void vRegOperandHandleAggEnd(void);
   void vRegOperandIsNotNull(void);
   void vRegOperandIsNull(void);
   void vRegOperandIsReport(void);
-  void vRegOperandItemCountFetch(void);
   void vRegOperandInsdelIntoTable(void);
   void vRegOperandInvokePython(void);
   void vRegOperandInvokePythonShell(void);
@@ -1209,7 +1206,6 @@ public:
   void vRegOperandSet(void);
   void vRegOperandUpsertIntoTable(void);
   void vRegOperandRsbToCsv(void);
-  void vRegOperandWorkDone(void);
   void vRegOperandWriteToFile0(void);
 
   // operandB

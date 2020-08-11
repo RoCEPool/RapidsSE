@@ -296,16 +296,6 @@ void Result::vProcessBufferQueue(void)
         
       // -- -- -- -- -- --
         
-      case CN_IRWBUFFER: {
-        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        m_xJobResponse.m_ixRowsProcessed += pIrwBuffer->nItems();
-        pIrwBuffer->vPrintRows(pStreamDef);
-        AM::vDeleteOperand(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
       case CN_MARKER: {
         Marker* pMarker = _pMarker(pOperand);
         
