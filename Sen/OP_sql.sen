@@ -264,6 +264,8 @@
       index[].indexTree to indexTree[]
       indexTree[].asSrc
       666 LogicUnit[].genCode
+      logicCompiler[].new
+      logicCompiler[].compile
     endof
 
     100000 of
@@ -470,7 +472,7 @@
       true Pot[].useStreamDefOut
       StreamDef[].pipeout
 
-      LogicUnit[].transform
+      LogicUnit[].DynFun
       Pot[].pipeoutAllCompleted
       Pot[].pipeoutAllDangling
 

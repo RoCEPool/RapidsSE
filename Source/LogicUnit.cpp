@@ -886,7 +886,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
   
     eEO eCode = *aeCode++;
-        
+    
     switch (eCode) { //+ExtractBegin
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1502,13 +1502,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ENT_SRC_PUSH: ArgNil(); // push entry on the stack
         dLU0(EO_ENT_SRC_PUSH);
         //*(++aiDstk) = (i8)m_pDevSrcIxt->m_aEnt;
-        aDev_ENT_PUSH(pLU, aRluCommon->m_pDevSrcIxt);
+        *(++aiDstk) = (i8)aDev_ENT_PUSH(pLU, aRluCommon->m_pDevSrcIxt);
         break;//+endCase
         
       case EO_ENT_SRC_PUSHUPPER: ArgNil(); // push entry on the stack
         dLU0(EO_ENT_SRC_PUSHUPPER);
         //*(++aiDstk) = (i8)m_pDevSrcIxt->m_aUpperEnt;
-        aDev_ENT_PUSHUPPER(pLU, aRluCommon->m_pDevSrcIxt);
+        *(++aiDstk) = (i8)aDev_ENT_PUSHUPPER(pLU, aRluCommon->m_pDevSrcIxt);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
