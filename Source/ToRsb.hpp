@@ -275,201 +275,201 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   /* extract boolean                                                          */
   /*--------------------------------------------------------------------------*/
-  inline void vConvertBoolean(void)
-  {
-    vFieldTrace(CT_BOOLEAN);
-               
-    Bol xBol;
-    SN_Bol snBol;
-
-    xBol = snBol.i(&m_acChr,m_pFmt);
-  
-    m_pRowSlab->vDeposit(xBol);
-    m_oDatum.vBol(xBol);
-
-    vSprintBoolean();
-  }
-
-  /*--------------------------------------------------------------------------*/
-  /* extract date                                                             */
-  /*--------------------------------------------------------------------------*/
-  inline void vConvertDate(void)
-  {
-    vFieldTrace(CT_DATE);
-
-    Dte xDte;
-    SN_Dte snDte;
-
-    xDte = snDte.i(&m_acChr,m_pFmt);
-  
-    m_pRowSlab->vDeposit(xDte);
-    m_oDatum.vDte(xDte);
-
-    vSprintDate();
-  }
-
-  /*--------------------------------------------------------------------------*/
-  /* extract date                                                             */
-  /*--------------------------------------------------------------------------*/
-  inline void vConvertDecimal(void)
-  {
-    vFieldTrace(CT_DECIMAL);
-  
-    Bcd xBcd;
-    SN_Bcd snBcd;
-
-    xBcd = snBcd.i(&m_acChr,m_pCol->iColumnLength(), m_pCol->iColumnScale(),m_pFmt);
-  
-    m_pRowSlab->vDeposit(xBcd);
-    m_oDatum.vBcd(xBcd);
-  
-    vSprintDecimal();
-  }
-
+//  inline void vConvertBoolean(void)
+//  {
+//    vFieldTrace(CT_BOOLEAN);
+//
+//    Bol xBol;
+//    SN_Bol snBol;
+//
+//    xBol = snBol.i(&m_acChr,m_pFmt);
+//
+//    m_pRowSlab->vDeposit(xBol);
+//    m_oDatum.vBol(xBol);
+//
+//    vSprintBoolean();
 //  }
-    
-  /*--------------------------------------------------------------------------*/
-  /* extract float                                                            */
-  /*--------------------------------------------------------------------------*/
-  inline void vConvertFloat(void)
-  {
-    vFieldTrace(CT_FLOAT);
 
-    Flt xFlt;
-    SN_Flt snFlt;
-
-    xFlt = snFlt.d(&m_acChr,m_pFmt);
-  
-    m_pRowSlab->vDeposit(xFlt.m_dFlt);
-    m_oDatum.vFlt(xFlt);
-
-    vSprintFloat();
-  }
-
-  /*--------------------------------------------------------------------------*/
-  /* extract integer                                                          */
-  /*--------------------------------------------------------------------------*/
-  inline void vConvertInteger(void)
-  {
-    vFieldTrace(CT_INTEGER);
-
-//    while (bInField()) {
+//  /*--------------------------------------------------------------------------*/
+//  /* extract date                                                             */
+//  /*--------------------------------------------------------------------------*/
+//  inline void vConvertDate(void)
+//  {
+//    vFieldTrace(CT_DATE);
 //
-//      m_dCalc = (CALC) - 4.0;
+//    Dte xDte;
+//    SN_Dte snDte;
 //
-//      if (m_bTrace)
-//        vTrace("%c"_Stz,*m_acChr);
-//      m_acChr++;
-//      m_iCol++;
-//      m_nChars++;
-//    }
-  
-//    i8 iInt;
-//    StrLib::bExtractInteger(&m_acChr,&iInt,true);
+//    xDte = snDte.i(&m_acChr,m_pFmt);
+//  
+//    m_pRowSlab->vDeposit(xDte);
+//    m_oDatum.vDte(xDte);
 //
-//    m_oDatum.vInt(iInt);
-  
-    Int xInt;
-    SN_Int snInt;
-
-//  if (m_iLine > 1199000) {
-//    vTrace("%lld: %c%c%c%c%c%c%c%c\n"_Stz,
-//           m_iLine,
-//           *(m_acChr+0),
-//           *(m_acChr+1),
-//           *(m_acChr+2),
-//           *(m_acChr+3),
-//           *(m_acChr+4),
-//           *(m_acChr+5),
-//           *(m_acChr+6),
-//           *(m_acChr+7)
-//           );
+//    vSprintDate();
 //  }
-  
-    xInt = snInt.i(&m_acChr,m_pFmt);
-  
-    m_pRowSlab->vDeposit(xInt);
-    m_oDatum.vInt(xInt);
-
-    vSprintInteger();
-  }
-      
-  /*--------------------------------------------------------------------------*/
-  /* extract interval                                                         */
-  /*--------------------------------------------------------------------------*/
-  inline void vConvertInterval(void)
-  {
-    vFieldTrace(CT_INTERVAL);
-
-    Ivl xIvl;
-    SN_Ivl snIvl;
-
-    xIvl = snIvl.i(&m_acChr,m_pFmt);
-  
-    m_pRowSlab->vDeposit(xIvl);
-    m_oDatum.vIvl(xIvl);
-
-    vSprintInterval();
-  }
-  
-  /*--------------------------------------------------------------------------*/
-  /* extract time                                                             */
-  /*--------------------------------------------------------------------------*/
-  inline void vConvertTime(void)
-  {
-    vFieldTrace(CT_TIME);
-
-    Tme xTme;
-    SN_Tme snTme;
-
-    xTme = snTme.i(&m_acChr,m_pFmt);
-  
-    m_pRowSlab->vDeposit(xTme);
-    m_oDatum.vTme(xTme);
-
-    vSprintTime();
-  }
-  
-  /*--------------------------------------------------------------------------*/
-  /* extract timestamp                                                        */
-  /*--------------------------------------------------------------------------*/
-  inline void vConvertTimestamp(void)
-  {
-    vFieldTrace(CT_TIMESTAMP);
-
-    Tsp xTsp;
-    SN_Tsp snTsp;
-
-    xTsp = snTsp.i(&m_acChr,m_pFmt);
-  
-    m_pRowSlab->vDeposit(xTsp);
-    m_oDatum.vTsp(xTsp);
-
-    vSprintTimestamp();
-  }
-  
-  /*--------------------------------------------------------------------------*/
-  /* extract varchar                                                          */
-  /*--------------------------------------------------------------------------*/
-  inline void vConvertVarchar(void)
-  {
-    vFieldTrace(CT_VARCHAR);
-             
-    SN_Vch snVch;
-
-    i8 nChars = 0;
-    bool bSawEnclosedLeading = CsvValue::bIsEnclosedString(&m_acChr,m_pFmt);
-
-    m_oDatum = snVch.sz(&m_acChr,m_pCol->iColumnLength(),
-                        m_pFmt,bSawEnclosedLeading,nChars);
-  
-    char* szStr = m_pRowSlab->azDepositString_begin();
-    StrLib::vCopy(szStr,m_oDatum.azChar());
-    m_pRowSlab->vDepositString_end(nChars+1);
-    ASSERT(nChars + 1 == StrLib::nSize(szStr));
-
-    vSprintVarchar();
-  }
+//
+//  /*--------------------------------------------------------------------------*/
+//  /* extract date                                                             */
+//  /*--------------------------------------------------------------------------*/
+//  inline void vConvertDecimal(void)
+//  {
+//    vFieldTrace(CT_DECIMAL);
+//  
+//    Bcd xBcd;
+//    SN_Bcd snBcd;
+//
+//    xBcd = snBcd.i(&m_acChr,m_pCol->iColumnLength(), m_pCol->iColumnScale(),m_pFmt);
+//  
+//    m_pRowSlab->vDeposit(xBcd);
+//    m_oDatum.vBcd(xBcd);
+//  
+//    vSprintDecimal();
+//  }
+//
+////  }
+//    
+//  /*--------------------------------------------------------------------------*/
+//  /* extract float                                                            */
+//  /*--------------------------------------------------------------------------*/
+//  inline void vConvertFloat(void)
+//  {
+//    vFieldTrace(CT_FLOAT);
+//
+//    Flt xFlt;
+//    SN_Flt snFlt;
+//
+//    xFlt = snFlt.d(&m_acChr,m_pFmt);
+//  
+//    m_pRowSlab->vDeposit(xFlt.m_dFlt);
+//    m_oDatum.vFlt(xFlt);
+//
+//    vSprintFloat();
+//  }
+//
+//  /*--------------------------------------------------------------------------*/
+//  /* extract integer                                                          */
+//  /*--------------------------------------------------------------------------*/
+//  inline void vConvertInteger(void)
+//  {
+//    vFieldTrace(CT_INTEGER);
+//
+////    while (bInField()) {
+////
+////      m_dCalc = (CALC) - 4.0;
+////
+////      if (m_bTrace)
+////        vTrace("%c"_Stz,*m_acChr);
+////      m_acChr++;
+////      m_iCol++;
+////      m_nChars++;
+////    }
+//  
+////    i8 iInt;
+////    StrLib::bExtractInteger(&m_acChr,&iInt,true);
+////
+////    m_oDatum.vInt(iInt);
+//  
+//    Int xInt;
+//    SN_Int snInt;
+//
+////  if (m_iLine > 1199000) {
+////    vTrace("%lld: %c%c%c%c%c%c%c%c\n"_Stz,
+////           m_iLine,
+////           *(m_acChr+0),
+////           *(m_acChr+1),
+////           *(m_acChr+2),
+////           *(m_acChr+3),
+////           *(m_acChr+4),
+////           *(m_acChr+5),
+////           *(m_acChr+6),
+////           *(m_acChr+7)
+////           );
+////  }
+//  
+//    xInt = snInt.i(&m_acChr,m_pFmt);
+//  
+//    m_pRowSlab->vDeposit(xInt);
+//    m_oDatum.vInt(xInt);
+//
+//    vSprintInteger();
+//  }
+//      
+//  /*--------------------------------------------------------------------------*/
+//  /* extract interval                                                         */
+//  /*--------------------------------------------------------------------------*/
+//  inline void vConvertInterval(void)
+//  {
+//    vFieldTrace(CT_INTERVAL);
+//
+//    Ivl xIvl;
+//    SN_Ivl snIvl;
+//
+//    xIvl = snIvl.i(&m_acChr,m_pFmt);
+//  
+//    m_pRowSlab->vDeposit(xIvl);
+//    m_oDatum.vIvl(xIvl);
+//
+//    vSprintInterval();
+//  }
+//  
+//  /*--------------------------------------------------------------------------*/
+//  /* extract time                                                             */
+//  /*--------------------------------------------------------------------------*/
+//  inline void vConvertTime(void)
+//  {
+//    vFieldTrace(CT_TIME);
+//
+//    Tme xTme;
+//    SN_Tme snTme;
+//
+//    xTme = snTme.i(&m_acChr,m_pFmt);
+//  
+//    m_pRowSlab->vDeposit(xTme);
+//    m_oDatum.vTme(xTme);
+//
+//    vSprintTime();
+//  }
+//  
+//  /*--------------------------------------------------------------------------*/
+//  /* extract timestamp                                                        */
+//  /*--------------------------------------------------------------------------*/
+//  inline void vConvertTimestamp(void)
+//  {
+//    vFieldTrace(CT_TIMESTAMP);
+//
+//    Tsp xTsp;
+//    SN_Tsp snTsp;
+//
+//    xTsp = snTsp.i(&m_acChr,m_pFmt);
+//  
+//    m_pRowSlab->vDeposit(xTsp);
+//    m_oDatum.vTsp(xTsp);
+//
+//    vSprintTimestamp();
+//  }
+//  
+//  /*--------------------------------------------------------------------------*/
+//  /* extract varchar                                                          */
+//  /*--------------------------------------------------------------------------*/
+//  inline void vConvertVarchar(void)
+//  {
+//    vFieldTrace(CT_VARCHAR);
+//             
+//    SN_Vch snVch;
+//
+//    i8 nChars = 0;
+//    bool bSawEnclosedLeading = CsvValue::bIsEnclosedString(&m_acChr,m_pFmt);
+//
+//    m_oDatum = snVch.sz(&m_acChr,m_pCol->iColumnLength(),
+//                        m_pFmt,bSawEnclosedLeading,nChars);
+//  
+//    char* szStr = m_pRowSlab->azDepositString_begin();
+//    StrLib::vCopy(szStr,m_oDatum.azChar());
+//    m_pRowSlab->vDepositString_end(nChars+1);
+//    ASSERT(nChars + 1 == StrLib::nSize(szStr));
+//
+//    vSprintVarchar();
+//  }
 
   /*--------------------------------------------------------------------------*/
   /*                            - FIELD SUPPORT -                             */
