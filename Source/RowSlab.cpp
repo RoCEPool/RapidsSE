@@ -481,25 +481,6 @@ void RowSlab::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get address of an rsb                                                      */
 /*----------------------------------------------------------------------------*/
-Rsb* RowSlab::aRsb(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-#ifdef __NATURAL_CELL_ORDER
-  i8 i_Cell = m_i_Row_c0 - 1;
-#else
-  i8 i_Cell = m_i_Row_c0 - 1;
-#endif
-  
-  m8* amCellVec = amSlabCellVec();
-  Rsb* aRsb = (Rsb*) & amCellVec[i_Cell];
-
-  return aRsb;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of an rsb                                                      */
-/*----------------------------------------------------------------------------*/
 Rsb* RowSlab::aRsbAdr(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -529,6 +510,25 @@ Rsb* RowSlab::aRsbByOfs(i8 iOfs)
   
   return aRsb;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get address of current rsb                                                 */
+/*----------------------------------------------------------------------------*/
+//Rsb* RowSlab::aRsbCur(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//  
+//#ifdef __NATURAL_CELL_ORDER
+//  i8 i_Cell = m_i_Row_c0 - 1;
+//#else
+//  i8 i_Cell = m_i_Row_c0 - 1;
+//#endif
+//  
+//  m8* amCellVec = amSlabCellVec();
+//  Rsb* aRsb = (Rsb*) & amCellVec[i_Cell];
+//
+//  return aRsb;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get number of rows                                                         */
