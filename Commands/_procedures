@@ -523,60 +523,6 @@ end
 //;
 
 /*----------------------------------------------------------------------------*/
-/* fast load data into a table from a csv file                                */
-/*----------------------------------------------------------------------------*/
-
-// chunk | rdCsvChunk | toRsb | toPtnRsb | toNstRsb | toHshCrw | * 4 |  insert
-procedure floadFast
-  parameters $table $file
-begin
-
-  stage stageA on origin:
-
-    start              |
-
-    periodicOp once    |
-
-    chunk $file        | // read chunks of file, produce (seekOffset) =>
-    // dump seekOffsets 1 |
-
-    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
-    // dump csvBuffer 0   |
-
-    toRsbFast $table   | // (csvBuffer)  => (rsbBuffer)
-    // dump rsbBuffer 1   |
-
-    toPtnRsb           | // (rsbBuffer)  => (rsbBuffer 'ptn)
-    // dump rsbBuffer 1   |
-
-    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
-    //dump rsbBuffer 1   |
-
-    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
-    //dump rsbBuffer 1   |
-
-    stageB hashed
-
-
-  stage stageB on all partitions:
-
-    insert $table      | // (crwBuffer) inserted into table
-
-  stageC
-
-
-    stage stageC on origin:
-
-    output             |
-
-    sink               |
-
-    stageA
-
-end
-;
-
-/*----------------------------------------------------------------------------*/
 //procedure fload
 //  parameters $table $file
 //begin
