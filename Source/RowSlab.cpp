@@ -107,12 +107,12 @@ ColPix* RowSlab::axaColPix(void)
 /*----------------------------------------------------------------------------*/
 /* get current cell cursor                                                    */
 /*----------------------------------------------------------------------------*/
-i8 RowSlab::i_CellCrs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  return m_i_CellCrs;
-}
+//i8 RowSlab::i_CellCrs(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//
+//  return m_i_CellCrs;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* copy given stream pix into the stream pix in this rsb                      */
