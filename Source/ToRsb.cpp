@@ -85,12 +85,10 @@ ToRsb::~ToRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert a crwbuffer into a rsbBuffer                                       */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvert(CrwBuffer* pCrwBuffer)
+bool ToRsb::bConvertCrw(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
-  
-  HV_Row hRow(m_pStreamDef,C_ALL);
-  
+    
   i8 nRows = pCrwBuffer->nRowCount();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
@@ -105,9 +103,7 @@ bool ToRsb::bConvert(CrwBuffer* pCrwBuffer)
     pCrwBuffer->vGetRow(m_pRowSlab, i_Row);
     
   } // end-data
-  
-  //RASSERT(m_dCalc != 3.0);
-  
+    
   //m_pRowSlab->vDumpAllRows();
   //m_pRowSlab->vSlabReport();
   
@@ -117,7 +113,7 @@ bool ToRsb::bConvert(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* convert one csv chunk (ie multiple records) in one call                    */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvert(char* azSrc)
+bool ToRsb::bConvertCsv(char* azSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 

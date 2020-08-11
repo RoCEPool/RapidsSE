@@ -45,7 +45,7 @@ void Step::vToRsbRegConvert(void)
   
   char* azSrc  = (char*)pCsvBuffer->ayDataArea();
   
-  bool bResult = pToRsb->bConvert(azSrc);
+  bool bResult = pToRsb->bConvertCsv(azSrc);
   
   EXIT();
 }

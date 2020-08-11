@@ -162,7 +162,7 @@ void Step::vRegOperandCrwToRsb(void)
   
   ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
   
-  bool b = pToRsb->bConvert(pCrwBuffer);
+  bool b = pToRsb->bConvertCrw(pCrwBuffer);
   
   EXIT();
 }
@@ -234,7 +234,7 @@ void Step::vRegOperandCsvToRsb(void)
 
   ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
   
-  bool b = pToRsb->bConvert(azRecords);
+  bool b = pToRsb->bConvertCsv(azRecords);
 
   EXIT();
 }

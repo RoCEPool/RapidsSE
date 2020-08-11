@@ -51,8 +51,8 @@ namespace Load
     ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash);
    ~ToRsb(void) noexcept(false);
   
-    bool bConvert(CrwBuffer* pCrwBuffer);
-    bool bConvert(char* azSrc);
+    bool bConvertCrw(CrwBuffer* pCrwBuffer);
+    bool bConvertCsv(char* azSrc);
     bool bConvertFastInline(char* azSrc);
 
     RsbBuffer* pDanglingRsbBuffer(void);
