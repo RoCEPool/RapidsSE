@@ -516,10 +516,10 @@ Rsb* RowSlab::aRsbAdr(i8 i_Row)
     
 #ifdef __NATURAL_CELL_ORDER
   
-  /*          v row[1]    v row[0]
-       -------*---+---+---*---+---+---*
-              |   :   :   |   :   :   |///boundary
-       -------*---+---+---*---+---+---*
+  /*           v row[1]       v row[0]
+       -------*----+----+----*----+----+----*
+              | c0 : c1 : cN | c0 : c1 : cN |///boundary
+       -------*----+----+----*----+----+----*
    */
   
   i8 i_RowCell0 = i_Cell0(i_Row);
