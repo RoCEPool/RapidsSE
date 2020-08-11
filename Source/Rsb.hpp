@@ -31,7 +31,7 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* get i8 integer                                                             */
   /*----------------------------------------------------------------------------*/
-  inline bool bIsNull_ntv(i8 i_Col)
+  inline bool bIsNull(i8 i_Col)
   {
     ASSERT(i_Col >= 0);
     i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);
@@ -51,7 +51,7 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* get d8 float                                                               */
   /*----------------------------------------------------------------------------*/
-  inline d8 dVal_ntv(i8 i_Col)
+  inline d8 dVal(i8 i_Col)
   {
     ASSERT(i_Col >= 0);
     i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);
@@ -68,7 +68,7 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* set d8 float                                                               */
   /*----------------------------------------------------------------------------*/
-  inline void vVal_ntv(i8 i_Col, d8 dValue)
+  inline void vVal(i8 i_Col, d8 dValue)
   {
     ASSERT(i_Col >= 0);
     i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);
@@ -83,7 +83,7 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* get i8 integer                                                             */
   /*----------------------------------------------------------------------------*/
-  inline i8 iVal_ntv(i8 i_Col)
+  inline i8 iVal(i8 i_Col)
   {
     ASSERT(i_Col >= 0);
     i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);
@@ -100,7 +100,7 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* set i8 integer                                                             */
   /*----------------------------------------------------------------------------*/
-  inline void vVal_ntv(i8 i_Col, i8 iVal)
+  inline void vVal(i8 i_Col, i8 iVal)
   {
     ASSERT(i_Col >= 0);
     i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);
@@ -115,7 +115,7 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* get Stz* string                                                            */
   /*----------------------------------------------------------------------------*/
-  inline Stz* szVal_ntv(i8 i_Col)
+  inline Stz* szVal(i8 i_Col)
   {
     ASSERT(i_Col >= 0);
     i8 i_Cell_ntv = i_ColToCell_ntv(i_Col);

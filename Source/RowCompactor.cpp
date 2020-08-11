@@ -564,12 +564,12 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     
     // -- vch column --
     
-    if (aRsb->bIsNull_ntv(i_Col))
+    if (aRsb->bIsNull(i_Col))
       continue;
     
     // -- non-null vch column --
     
-    Stz* azStr = aRsb->szVal_ntv(i_Col);
+    Stz* azStr = aRsb->szVal(i_Col);
     if (StrLib::nLength((char*)azStr) < 8)
       continue;
     

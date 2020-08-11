@@ -139,13 +139,13 @@ void EntWrk::vAppendElement(Rsb* aRsb, Column* pColumn)
   
   i8 i_Col = pColumn->iColumnNo();
   
-  if (aRsb->bIsNull_ntv(i_Col)) {
+  if (aRsb->bIsNull(i_Col)) {
     vAppendNull();
     return;
   }
   
   if (DM_VCH == pColumn->eDatum()) {
-      Stz* szSrc = aRsb->szVal_ntv(i_Col);
+      Stz* szSrc = aRsb->szVal(i_Col);
       vAppendStz(szSrc);
   }
 }
@@ -159,17 +159,17 @@ void EntWrk::vAppendElement(Rsb* aRsb, StreamPix* pStreamPix, i8 i_Col)
   
   eDM eDatum = (eDM)pStreamPix->m_xaColPix[i_Col].m_uDatum;
     
-  if (aRsb->bIsNull_ntv(i_Col)) {
+  if (aRsb->bIsNull(i_Col)) {
     vAppendNull();
     return;
   }
   
   if (DM_VCH == eDatum) {
-    Stz* szSrc = aRsb->szVal_ntv(i_Col);
+    Stz* szSrc = aRsb->szVal(i_Col);
     vAppendStz(szSrc);
   }
   else {
-    vAppendInt(aRsb->iVal_ntv(i_Col));
+    vAppendInt(aRsb->iVal(i_Col));
   }
 }
 
