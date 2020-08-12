@@ -996,6 +996,9 @@ void vDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
 {
   _static_
   
+  vDev_RSB_COL_PUSHI(aLU,aRSB,iArg,aaiDstk);
+  
+  /*
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -1009,6 +1012,7 @@ void vDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
   StrLib::vCopy(azDst,(char*)szStr);
   *aaiDstk += (nSize / 8) + 1;
   *(++*aaiDstk) = nSize;
+  */
 }
 
 
