@@ -31,19 +31,26 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // form the set of columns to be retrieved
+  
   i8 nWhichCols = 0;
   i8 iWhichCol[C_MAX_COLUMNS];
   
-  i8 i_ColToRetrieve = *((*aaiDstk)--);
-  RASSERT(i_ColToRetrieve >= 0 && i_ColToRetrieve < nCols);
-
-  iWhichCol[nWhichCols++] = i_ColToRetrieve;
+  i8 i_ColToRetrieve;
+  for (;;) {
+    
+    i_ColToRetrieve = *((*aaiDstk)--);
+    
+    if (-1 == i_ColToRetrieve)
+      break;
+    
+    // must be in ascending order
+    ASSERT(0 == nWhichCols ||
+           i_ColToRetrieve > iWhichCol[nWhichCols-1]);
+    
+    iWhichCol[nWhichCols++] = i_ColToRetrieve;
+  }
   
-  //i8 iEndMarker = **aaiDstk; (*aaiDstk)--;
-  i8 iEndMarker = *((*aaiDstk)--);
-  RASSERT(-1 == iEndMarker);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   
