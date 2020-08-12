@@ -14,22 +14,19 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
   SingleWord wWord;
   
   i8   i_Tail_rel;
-  i8   nCompressed;
   i8   nLength;
-  i8   nBytesPartA;
-  i8   nBytesPartB;
-  char caString[C_4KB];
-  
+
   TailLine* aTail;
     
   char* acString = nullptr;
+  eMC* aeMetaCode = aHeadLine->aeMetaArea();
   
   // ALKA
-  i8 nCols = pStreamDef->nColumns(C_ALL);
+  i8 nCols = pStreamDef->nTotalColumns();
   
-  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(pStreamDef);
-
-  eMC* aeMetaCode = aHeadLine->aeMetaArea();
+  i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
+                        + C_T_8B // (ControlDate) 8 bytes for the perspective
+                        + nCols; // metaSize
 
   byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
   

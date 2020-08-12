@@ -213,6 +213,7 @@ void Table::vCreatePtnDef(void)
     if (pColumn->bIsPtnKey()) {
       m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nDefColumns[0]].vCopy(pColumn);
       m_pPtnStreamDef->m_nDefColumns[0]++;
+      m_pPtnStreamDef->m_nTotalColumns++;
     }
   }
 }
