@@ -972,6 +972,21 @@ i8 iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
+void vDev_RSB_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aamDstk)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  RowInflator::vInflateColI(aamDstk,
+                            pLogicUnit->m_pDevSrcIxt->m_aCrw,
+                            iArg,
+                            pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push column value from m_aSrcCrw                                 NOT RIGHT */
+/*----------------------------------------------------------------------------*/
 void vDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
 {
   _static_

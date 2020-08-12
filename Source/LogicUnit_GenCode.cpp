@@ -1316,13 +1316,13 @@ void LogicUnit::vGenerateQuery400(void)
 
   // test O_ORDERDATE
   vAddCode(EO_CRW_SRC_FETCH);
-  vAddCodeArg(EO_COL_SRC_PUSH,O_ORDERDATE);
+  vAddCodeArg(EO_COL_SRC_PUSHI,O_ORDERDATE);
   //vAddCode(EO_DUP);
   //vAddCode(EO_DTE_PRINT);
   vAddCodeArg(EO_DATE,"1993-07-01"_Stz);
   vAddCode(EO_GREATEREQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
-  vAddCodeArg(EO_COL_SRC_PUSH,O_ORDERDATE); // doubled, not efficient
+  vAddCodeArg(EO_COL_SRC_PUSHI,O_ORDERDATE); // doubled, not efficient
   vAddCodeArg(EO_DATE,"1993-10-01"_Stz);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);

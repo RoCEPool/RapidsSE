@@ -86,6 +86,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_RSB_ZERO"_Stz,          (const void *) vDev_RSB_ZERO          },
 
   { "iDev_RSB_COL_PUSH"_Stz,      (const void *) iDev_RSB_COL_PUSH      },
+  { "vDev_RSB_COL_PUSHI"_Stz,     (const void *) vDev_RSB_COL_PUSHI     },
   { "vDev_RSB_COL_PUSHSTR"_Stz,   (const void *) vDev_RSB_COL_PUSHSTR   },
 
   { "vLib_ASSERT"_Stz,            (const void *) vLib_ASSERT            },
@@ -651,6 +652,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  typedef unsigned char eEO;"
   "\n  typedef char i1;"
   "\n  typedef long long i8;"
+  "\n  typedef unsigned long long m8;"
   "\n  typedef char Stz;"
   "\n"
   "\n  #include \"../Source/LIB_interface.h\""

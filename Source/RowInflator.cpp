@@ -4,6 +4,28 @@
 
 #include "CompactBuffers.h"
 
+
+/*----------------------------------------------------------------------------*/
+/* inflate headline into row                                                  */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflateColI(i8** aamDstk, HeadLine* aHeadLine,
+                               i8 i_ColToRetrieve, StreamDef* pStreamDef)
+{
+  
+  HV_Row hRow(pStreamDef,C_ALL);
+  
+  RowInflator::vInflateColumn(hRow,aHeadLine,i_ColToRetrieve);
+
+  i8 iRes = hRow->m_waColVal[i_ColToRetrieve].m_iWrd;
+
+  *(i8*)(++*aamDstk) = iRes;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
