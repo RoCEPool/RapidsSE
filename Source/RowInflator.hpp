@@ -13,8 +13,9 @@ namespace CompactBuffers
     //! Kept separate for performance reasons
     //! Highly performance-critical functions
   
-    static void vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine, i8 i_ColToRetrieve,
+    static void vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
                                 StreamDef* pStreamDef);
+  
     static void vInflateColumns_stk(i8** aaiDstk, HeadLine* aHeadLine,
                                     StreamPix* pStreamPix);
     

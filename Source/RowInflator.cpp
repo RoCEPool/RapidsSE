@@ -8,7 +8,7 @@
 /* inflate a signle column onto Dstk                                          */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
-                                   i8 i_ColToRetrieve, StreamDef* pStreamDef)
+                                   StreamDef* pStreamDef)
 {
   eMC  eMetaCode;
   SingleWord wWord;
@@ -31,8 +31,8 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
   
   
   
-  i8 iColInflate = *((*aaiDstk)--);
-  RASSERT(iColInflate == i_ColToRetrieve);
+  i8 i_ColToRetrieve = *((*aaiDstk)--);
+  RASSERT(i_ColToRetrieve >= 0 && i_ColToRetrieve < nCols);
 
   
   //i8 iEndMarker = **aaiDstk; (*aaiDstk)--;
