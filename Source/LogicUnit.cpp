@@ -1266,6 +1266,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aRluCommon = aRlu_INIT(pLU);
 #ifdef __TINYC__
         aiDstk = & aRluCommon->m_iaDataStack[0];
+        *aiDstk = 0xFFFFFFFFFFFFFFFF;
         if (nOuterArgs) {
           *(++aiDstk) = iOuterArg0;
         }
@@ -1274,6 +1275,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //       aRluCommon->m_iCmnMagic,aRluCommon->m_iCmnFooter);
         break;//+endCase
         
+      case EO_INTEGRITY: ArgNil(); // integrity  check
+        dLU0(EO_INTEGRITY);
+        if (aRluCommon->m_iaDataStack != aiDstk) {
+          printf("Dstk growth\n");
+          vLib_ASSERT(pLU,(void*)0);
+        }
+        if (0xFFFFFFFFFFFFFFFF != (u8)aRluCommon->m_iaDataStack[0]) {
+          printf("Dstk underflow\n");
+          vLib_ASSERT(pLU,(void*)0);
+        }
+        break;//+endCase
+              
       case EO_SANITY: ArgNil(); // sanity check
         dLU0(EO_SANITY);
         break;//+endCase

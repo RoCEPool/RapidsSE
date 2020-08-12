@@ -664,6 +664,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  typedef char i1;"
   "\n  typedef long long i8;"
   "\n  typedef unsigned long long m8;"
+  "\n  typedef unsigned long long u8;"
   "\n  typedef char Stz;"
   "\n"
   "\n  #include \"../Source/LIB_interface.h\""
