@@ -61,6 +61,7 @@ StreamDef::StreamDef(void)
   m_bTemp = false;
   //vTrace("StreamDef permanent %p\n"_Stz, this);
   
+  m_nTotalColumns = 0;
   m_nFixedSized = 0;
   
   _checkInitialised_(CN_STREAMDEF);
@@ -94,8 +95,8 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   
   m_bTemp = true;
   
+  m_nTotalColumns = pStreamDef->m_nTotalColumns;
   m_nFixedSized = pStreamDef->m_nFixedSized;
-
   
   //_checkInitialised_(CN_STREAMDEF);
   
@@ -155,6 +156,8 @@ void StreamDef::vAdd(StreamDef* pStreamDef)
     
   }
   
+  m_nTotalColumns= pStreamDef->m_nTotalColumns;
+  
   _checkInitialised_(CN_STREAMDEF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
@@ -187,6 +190,7 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType)
   m_xaColumn[i_DefCol].vDatum(Column::eDatum(eColumnType));
   
   m_nDefColumns[m_nDefSets-1]++;
+  m_nTotalColumns++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,6 +211,7 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8
   m_xaColumn[i_DefCol].vDatum(Column::eDatum(eColumnType));
   
   m_nDefColumns[m_nDefSets-1]++;
+  m_nTotalColumns++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,7 +230,8 @@ void StreamDef::vAddColumns(StreamDef* pStreamDef)
     }
     
   }
-    
+  m_nTotalColumns = pStreamDef->m_nTotalColumns;
+  
   //m_nFixedSized = pStreamDef->m_nFixedSized;
 }
 
@@ -421,6 +427,8 @@ eEC StreamDef::eParse(Stz* szCmd)
     if (EC_NONE != eError) {
       goto L_RETURN;
     }
+    m_nTotalColumns++;
+    
     pTkn = pTknVec->pCurrToken(); dPT();
   }
   
@@ -544,6 +552,15 @@ void StreamDef::vToMetadata(Stz* sMetadata)
   sMetadata->vConcat(")"_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get total no of columns in streamDef                                       */
+/*----------------------------------------------------------------------------*/
+i8 StreamDef::nTotalColumns(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  return m_nTotalColumns;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

@@ -17,6 +17,7 @@ namespace MetaData
     Column m_xaColumn[C_MAX_DEFCOLUMNS];
   
     i8     m_nFixedSized;   // is this a fixed size row?
+    i8     m_nTotalColumns; // total columns
     
     bool   m_bTemp;         // is this a temporary definition?
   
@@ -49,6 +50,7 @@ namespace MetaData
     void vToColPix(ColPix* axColPix, bool bPtnHash);
     void vToStreamPix(StreamPix* aStreamPix, bool bPtnHash);
     void vToMetadata(Stz* sMetaData);
+    i8   nTotalColumns(void);
     
   private:
     

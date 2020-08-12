@@ -12,12 +12,12 @@ void LogicUnit::vGenCode(i8 iTestNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   switch (iTestNo) {
-      
+    
+    case     100: vGenerateQuery100();    break;
     case     101: vGenerateQuery101();    break;
     case     102: vGenerateQuery102();    break;
     case     103: vGenerateQuery103();    break;
     case     104: vGenerateQuery104();    break;
-    case     112: vGenerateQuery112();    break;
       
     case     300: vGenerateQuery300();    break;
     case     301: vGenerateQuery301();    break;
@@ -29,8 +29,8 @@ void LogicUnit::vGenCode(i8 iTestNo)
 
     case     600: vGenerateQuery600();    break;
     case     601: vGenerateQuery601();    break;
-    case     666: vGenerateQuery666();    break;
-  
+    case     602: vGenerateQuery602();    break;
+      
     case    1700: vGenerate1700();        break;
     case    1701: vGenerate1701();        break;
     case    1702: vGenerate1702();        break;
@@ -41,6 +41,87 @@ void LogicUnit::vGenCode(i8 iTestNo)
     default:
       NEVER_REACH;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate iterating index on l_shipdate & project into RSB (Query 1)        */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateQuery100(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // set the query no
+  m_xRluCommon.m_iSql = 100;
+  
+  // reset
+  m_i_Code = 0;
+  
+  vDefineLabel("QRY_100:"_Stz);
+  vAddCode(EO_INIT);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // RESET COLUMNS NOT NEEDED
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_ORDERKEY);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_PARTKEY);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_SUPPKEY);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_LINENUMBER);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_COMMITDATE);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_RECEIPTDATE);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPINSTRUCT);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPMODE);
+  vAddCodeArg(EO_COL_NOT_PROJECT, L_COMMENT);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the lower key
+  vAddCodeArg(EO_DATE, "1998-09-01"_Stz);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_IXT_SRC_LBOUND);
+  vAddCodeLabel(EO_JMP_TRUE, "UPPERBOUND:"_Stz);
+  
+  // no lower key, start position at beginning of index
+  vAddCode(EO_IXT_SRC_BEGIN);
+  
+  // no entry, return
+  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the upper key
+  vDefineLabel("UPPERBOUND:"_Stz);
+  vAddCode(EO_ENTWRK_RESET);
+  vAddCodeArg(EO_DATE, "1998-12-01"_Stz);
+  vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_IXT_SRC_UBOUND);
+  vAddCodeLabel(EO_JMP_TRUE, "TRV_NXT:"_Stz);
+  
+  // no upper key, traverse till end
+  vDefineLabel("TRV_TILL_END:"_Stz);
+  vAddCode(EO_IXT_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_RSB_DST_NEW);
+  vAddCode(EO_CRW_SRC_TORSB);
+  //vAddCode(EO_RSB_DST_PRINT);
+  vAddCodeLabel(EO_JMP, "TRV_TILL_END:"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // traverse the index
+  vDefineLabel("TRV_NXT:"_Stz);
+  vAddCode(EO_IXT_SRC_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+  vAddCode(EO_ENT_SRC_PUSH);
+  vAddCode(EO_ENT_SRC_PUSHUPPER);
+  vAddCode(EO_EQUAL);
+  vAddCodeLabel(EO_JMP_TRUE, "TRV_RET:"_Stz);
+  
+  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_RSB_DST_NEW);
+  vAddCode(EO_CRW_SRC_TORSB);
+  //vAddCode(EO_RSB_DST_PRINT);
+  vAddCodeLabel(EO_JMP, "TRV_NXT:"_Stz);
+  
+  
+  vDefineLabel("TRV_RET:"_Stz);
+  vAddCode(EO_RETURN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -561,87 +642,6 @@ void LogicUnit::vGenerateQuery101(void)
   vAddCode(EO_RETURN);
   
   vDumpCode();
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate iterating index on l_shipdate & project into RSB (Query 1)        */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery112(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  // set the query no
-  m_xRluCommon.m_iSql = 112;
-  
-  // reset
-  m_i_Code = 0;
-  
-  vDefineLabel("QRY_112:"_Stz);
-  vAddCode(EO_INIT);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // RESET COLUMNS NOT NEEDED
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_ORDERKEY);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_PARTKEY);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_SUPPKEY);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_LINENUMBER);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_COMMITDATE);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_RECEIPTDATE);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPINSTRUCT);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPMODE);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_COMMENT);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the lower key
-  vAddCodeArg(EO_DATE, "1998-09-01"_Stz);
-  vAddCode(EO_ENTWRK_APPENDELMI);
-  vAddCode(EO_IXT_SRC_LBOUND);
-  vAddCodeLabel(EO_JMP_TRUE, "UPPERBOUND:"_Stz);
-  
-  // no lower key, start position at beginning of index
-  vAddCode(EO_IXT_SRC_BEGIN);
-  
-  // no entry, return
-  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the upper key
-  vDefineLabel("UPPERBOUND:"_Stz);
-  vAddCode(EO_ENTWRK_RESET);
-  vAddCodeArg(EO_DATE, "1998-12-01"_Stz);
-  vAddCode(EO_ENTWRK_APPENDELMI);
-  vAddCode(EO_IXT_SRC_UBOUND);
-  vAddCodeLabel(EO_JMP_TRUE, "TRV_NXT:"_Stz);
-  
-  // no upper key, traverse till end
-  vDefineLabel("TRV_TILL_END:"_Stz);
-  vAddCode(EO_IXT_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
-  vAddCode(EO_CRW_SRC_FETCH);
-  vAddCode(EO_RSB_DST_NEW);
-  vAddCode(EO_CRW_SRC_TORSB);
-  //vAddCode(EO_RSB_DST_PRINT);
-  vAddCodeLabel(EO_JMP, "TRV_TILL_END:"_Stz);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // traverse the index
-  vDefineLabel("TRV_NXT:"_Stz);
-  vAddCode(EO_IXT_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
-  vAddCode(EO_ENT_SRC_PUSH);
-  vAddCode(EO_ENT_SRC_PUSHUPPER);
-  vAddCode(EO_EQUAL);
-  vAddCodeLabel(EO_JMP_TRUE, "TRV_RET:"_Stz);
-  
-  vAddCode(EO_CRW_SRC_FETCH);
-  vAddCode(EO_RSB_DST_NEW);
-  vAddCode(EO_CRW_SRC_TORSB);
-  //vAddCode(EO_RSB_DST_PRINT);
-  vAddCodeLabel(EO_JMP, "TRV_NXT:"_Stz);
-  
-  
-  vDefineLabel("TRV_RET:"_Stz);
-  vAddCode(EO_RETURN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1631,17 +1631,17 @@ void LogicUnit::vGenerateQuery401(void)
 /*----------------------------------------------------------------------------*/
 /* generate iterating index on l_shipdate & project into RSB (Query 6)        */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery666(void)
+void LogicUnit::vGenerateQuery600(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_xRluCommon.m_iSql = 666;
+  m_xRluCommon.m_iSql = 600;
   
   // reset
   m_i_Code = 0;
   
-  vDefineLabel("QRY_666:"_Stz);
+  vDefineLabel("QRY_600:"_Stz);
   vAddCode(EO_INIT);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1716,17 +1716,17 @@ void LogicUnit::vGenerateQuery666(void)
 /*----------------------------------------------------------------------------*/
 /* generate agg code (query6)                                                 */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery600(void)
+void LogicUnit::vGenerateQuery601(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_xRluCommon.m_iSql = 600;
+  m_xRluCommon.m_iSql = 601;
   
   // init the code
   m_i_Code = 0;
   
-  vDefineLabel("QRY_600:"_Stz);
+  vDefineLabel("QRY_601:"_Stz);
   vAddCode(EO_INIT);
   
   // new a rsb dst row if not there
@@ -1819,17 +1819,17 @@ void LogicUnit::vGenerateQuery600(void)
 /*----------------------------------------------------------------------------*/
 /* generate super agg (query 6)                                               */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery601(void)
+void LogicUnit::vGenerateQuery602(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_xRluCommon.m_iSql = 601;
+  m_xRluCommon.m_iSql = 602;
   
   // init the code
   m_i_Code = 0;
   
-  vDefineLabel("QRY_601:"_Stz);
+  vDefineLabel("QRY_602:"_Stz);
   vAddCode(EO_INIT);
   
   // new a rsb dst row if not there
