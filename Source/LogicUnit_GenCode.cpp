@@ -761,6 +761,24 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_PTN_RUNNING);
   vAddCode(EO_PTN_CALC);
   
+  
+#if 0
+  
+  vAddCode(EO_PUSH_MINUS1);
+  vAddCodeArg(EO_INTEGER,O_SHIPPRIORITY);      // 7
+  vAddCodeArg(EO_INTEGER,O_ORDERDATE);         // 4
+  vAddCodeArg(EO_INTEGER,O_ORDERKEY);          // 0
+  
+  vAddCode(EO_COL_ALT_PUSHSET);
+
+  vAddCode(EO_RSB_DST_NEW);
+  
+  vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERDATE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERKEY);
+
+  
+#else
   vAddCode(EO_RSB_DST_NEW);
   vAddCodeArg(EO_COL_ALT_PUSHI,O_ORDERKEY);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERKEY);
@@ -768,6 +786,8 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERDATE);
   vAddCodeArg(EO_COL_ALT_PUSHI,O_SHIPPRIORITY);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
+#endif
+  
   //vAddCode(EO_RSB_DST_PRINT);
   
   vAddCode(EO_CTR_0_INC);

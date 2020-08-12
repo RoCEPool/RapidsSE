@@ -1447,7 +1447,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
       
       case EO_COL_ALT_PUSHSET: ArgNil(); // push column subset from m_aAltCrw
-        *(++aiDstk) = -1;
+        //*(++aiDstk) = -1;
         vDev_ALT_COL_PUSHI(pLU,aRluCommon->m_pDevAltRsb,-1,&aiDstk);
         dLU0(EO_COL_ALT_PUSHSET);
         break;//+endCase

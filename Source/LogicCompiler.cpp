@@ -446,13 +446,14 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
       StrLib::vAppendString(&m_azSrcCrs,"\n");
     }
     
-//    sPrint.vSprint(
-//                   "    printf(\"  *: %s "_Stz,
-//
-//                   aEO[eCode]->azChar());
-//    sPrint.vConcat(" %llx\\n\",aiDstk);\n"_Stz);
-//
-//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    // eo_ trace
+    sPrint.vSprint(
+                   "    printf(\"  *: %s "_Stz,
+
+                   aEO[eCode]->azChar());
+    sPrint.vConcat(" %llx\\n\",aiDstk);\n"_Stz);
+
+    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
     sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
     StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
