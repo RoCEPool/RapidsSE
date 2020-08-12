@@ -29,6 +29,20 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
 
   byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
   
+  
+  
+  i8 iColInflate = *((*aaiDstk)--);
+  RASSERT(iColInflate == i_ColToRetrieve);
+
+  
+  //i8 iEndMarker = **aaiDstk; (*aaiDstk)--;
+  i8 iEndMarker = *((*aaiDstk)--);
+  RASSERT(-1 == iEndMarker);
+
+  
+  
+
+  
   i8* aiColVal = ++*aaiDstk;
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {

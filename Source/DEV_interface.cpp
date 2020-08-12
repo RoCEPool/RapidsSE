@@ -978,6 +978,9 @@ void vDev_RSB_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
   
   LogicUnit* pLogicUnit = (LogicUnit*)aLU; //_pLogicUnit(aLU);
   
+  *(++*aaiDstk) = -1;
+  *(++*aaiDstk) = iArg;
+  
   RowInflator::vInflateColI_stk(aaiDstk,
                    pLogicUnit->m_pDevSrcIxt->m_aCrw,
                    iArg,
@@ -1047,6 +1050,9 @@ void vDev_ALT_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
       
+  *(++*aaiDstk) = -1;
+  *(++*aaiDstk) = iArg;
+
   RowInflator::vInflateColI_stk(aaiDstk,
                    pLogicUnit->m_pDevAltIxt->m_aCrw,
                    iArg,
