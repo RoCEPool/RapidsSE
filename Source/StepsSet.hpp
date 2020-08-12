@@ -437,10 +437,8 @@ public:
   void vIndexColumnCountFetch(void);
   void vIndexCompact(void);
   void vIndexDump(void);
-  void vIndexFetchNext(void);
   void vIndexGenEntBuffer(void);
   void vIndexGenEntBuffers(void);
-  void vIndexPosition(void);
   void vIndexSize(void);
   void vIndexVerify(void);
   void vIndexVisualize(void);
