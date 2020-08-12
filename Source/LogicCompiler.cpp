@@ -24,7 +24,8 @@ Stz* gszaEoFragments[EO_ENUMS];
 DynamicSymbol gxaDynamicSymbol[]
 {
   { "iDev_ALT_COL_PUSH"_Stz,      (const void *) iDev_ALT_COL_PUSH      },
-  
+  { "vDev_ALT_COL_PUSHI"_Stz,     (const void *) vDev_ALT_COL_PUSHI     },
+
   { "vDev_COL_NOT_PROJECT"_Stz,   (const void *) vDev_COL_NOT_PROJECT   },
 
   { "vDev_CRW_BEGIN"_Stz,         (const void *) vDev_CRW_BEGIN         },
@@ -452,9 +453,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 //
 //    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
-    sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
-
-    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+//    sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
+//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
     if (EO_CALL == eCode) {
       
@@ -504,9 +504,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
       i_Code += EoArgs[eCode].m_nArgBytes;
     }
     
-    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
-
-    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+//    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
+//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
 #ifdef WITH_TRACE_LOGICUNIT
     // count no of newlines in the fragment

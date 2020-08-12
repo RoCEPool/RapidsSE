@@ -1438,6 +1438,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
         
+      case EO_COL_ALT_PUSHI: ArgGet(iArg); // push column value from m_aAltCrw
+        vDev_ALT_COL_PUSHI(pLU,aRluCommon->m_pDevAltRsb,iArg,&aiDstk);
+        dLU1(EO_COL_SRC_PUSH,iArg);
+        break;//+endCase
+      
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // crw operators
       case EO_CRW_SRC_BEGIN: ArgNil(); // begin src rsb traverse
