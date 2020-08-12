@@ -18,7 +18,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
 
   TailLine* aTail;
     
-  char* acString = nullptr;
+  char* acString; // = nullptr;
   eMC* aeMetaCode = aHeadLine->aeMetaArea();
   
   // ALKA
