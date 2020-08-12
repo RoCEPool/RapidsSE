@@ -54,7 +54,7 @@ namespace Strings
     static void  vCopyLen(char* psDst, const char* psSrc, i8 nBytes);
     static void  vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit);
     static void  vCopyTill(char* psDst, const char* psSrc, char ccTill);
-  
+    
     static i8    iDigitToI8(char cDigit);
     static void  vDump(const char* s, i8 nMax, const char* pSuffix);
     static char* sDupe(const char* s);
@@ -149,6 +149,7 @@ namespace Strings
     static char* sNew(const char* sFormat, ...);
     static char* zNullTerminator(char* s);
 
+    static i8    iOccurrence(char* ps, const char cArg);
     static bool  bOneOf(char** asaSet, char* sWord);
   
     static void  vPad(char* azDst, i8 iToLength, const char cWith);
