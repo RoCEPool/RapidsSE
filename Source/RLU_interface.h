@@ -10,6 +10,8 @@ struct RluCommon* aRlu_INIT(void* aLU);
 void vRlu_BEGINTMR(void* aLU);
 void vRlu_ENDTMR(void* aLU, i8 iCode);
 
+void vRlu_DUMP(void* aLU, i8* aiDstk);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -683,6 +683,16 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* pLU)
   return & m_xRluCommon;
 }
 
+/*----------------------------------------------------------------------------*/
+/* dump the rlu Dstk                                                          */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vRlu_DUMP(void* pLU, i8* aiDstk)
+{
+  vDebugPoint();
+  
+  
+}
+
 /*============================================================================*/
 /* - - - - - - - - - - - - - RELATIONAL LOGIC UNIT - - - - - - - - - - - - - -*/
 /*============================================================================*/
@@ -1261,6 +1271,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vLib_BREAKPOINT(pLU);
         break;//+endCase
         
+      case EO_DUMP: ArgNil(); // stack dump
+        dLU0(EO_DUMP);
+        vRlu_DUMP(pLU,aiDstk);
+        break;//+endCase
+              
       case EO_INIT: ArgNil(); // initialise the rlu common
         dLU0(EO_INIT);
         aRluCommon = aRlu_INIT(pLU);

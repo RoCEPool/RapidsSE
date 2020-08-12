@@ -86,6 +86,7 @@ enum eEO : u1 // expression operators
   // misc
   /*    */ EO_ASSERT,           // pop top and assert
   /*    */ EO_BREAKPOINT,       // break point
+  /*    */ EO_DUMP,             // stack dump
   /*    */ EO_INIT,             // initialise the rlu common
   /*    */ EO_INTEGRITY,        // integrity check
   /*    */ EO_SANITY,           // sanity check
@@ -312,6 +313,7 @@ static Stz* aEO[]
   // misc
   /*    */ "EO_ASSERT"_Stz,
   /*    */ "EO_BREAKPOINT"_Stz,
+  /*    */ "EO_DUMP"_Stz,
   /*    */ "EO_INIT"_Stz,
   /*    */ "EO_INTEGRITY"_Stz,
   /*    */ "EO_SANITY"_Stz,
@@ -542,6 +544,7 @@ static EoArg EoArgs[]
   // misc
   { EA_NONE,    0 },  // EO_ASSERT
   { EA_NONE,    0 },  // EO_BREAKPOINT
+  { EA_NONE,    0 },  // EO_DUMP
   { EA_NONE,    0 },  // EO_INIT
   { EA_NONE,    0 },  // EO_INTEGRITY
   { EA_NONE,    0 },  // EO_SANITY

@@ -673,6 +673,7 @@ void LogicUnit::vGenerateQuery300(void)
   vDefineLabel("QRY_300:"_Stz);
   vAddCode(EO_INIT);
   vAddCode(EO_INTEGRITY);
+  vAddCode(EO_DUMP);
 
   //vAddCodeString(EO_STR_LITERAL,"**QRY_300**"_Stz);
   //vAddCode(EO_STR_PRINTADR);

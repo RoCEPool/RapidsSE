@@ -106,6 +106,7 @@ DynamicSymbol gxaDynamicSymbol[]
     
   { "aRlu_INIT"_Stz,              (const void *) aRlu_INIT              },
   { "vRlu_BEGINTMR"_Stz,          (const void *) vRlu_BEGINTMR          },
+  { "vRlu_DUMP"_Stz,              (const void *) vRlu_DUMP              },
   { "vRlu_ENDTMR"_Stz,            (const void *) vRlu_ENDTMR            },
   { "vRlu_TMR_AGG_ADD"_Stz,       (const void *) vRlu_TMR_AGG_ADD       },
   { "iRlu_TMR_AGG_NSECS"_Stz,     (const void *) iRlu_TMR_AGG_NSECS     },
