@@ -53,8 +53,9 @@ enum eEO : u1 // expression operators
   /*    */ EO_DATE,             // push date
   /*    */ EO_INTEGER,          // push integer
   /*    */ EO_PUSHNULL,         // push null
-  /*    */ EO_PUSH0,            // push integer 0
-  /*    */ EO_PUSH1,            // push integer 1
+  /*    */ EO_PUSH_MINUS1,      // push integer -1
+  /*    */ EO_PUSH_0,           // push integer 0
+  /*    */ EO_PUSH_1,           // push integer 1
   /*    */ EO_RANDOM,           // push random number 0..arg-1
 
   // relational operators
@@ -276,8 +277,9 @@ static Stz* aEO[]
   /*    */ "EO_DATE"_Stz,
   /*    */ "EO_INTEGER"_Stz,
   /*    */ "EO_PUSHNULL"_Stz,
-  /*    */ "EO_PUSH0"_Stz,
-  /*    */ "EO_PUSH1"_Stz,
+  /*    */ "EO_PUSH_MINUS1"_Stz,
+  /*    */ "EO_PUSH_0"_Stz,
+  /*    */ "EO_PUSH_1"_Stz,
   /*    */ "EO_RANDOM"_Stz,
   
   // relational operators
@@ -503,8 +505,9 @@ static EoArg EoArgs[]
   { EA_DATE,    8 },  // EO_DATE
   { EA_INT,     8 },  // EO_INTEGER
   { EA_NONE,    0 },  // EO_PUSHNULL
-  { EA_NONE,    0 },  // EO_PUSH0
-  { EA_NONE,    0 },  // EO_PUSH1
+  { EA_NONE,    0 },  // EO_PUSH_MINUS1
+  { EA_NONE,    0 },  // EO_PUSH_0
+  { EA_NONE,    0 },  // EO_PUSH_1
   { EA_INT,     8 },  // EO_RANDOM
 
   // relational operators

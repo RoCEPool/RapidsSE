@@ -1073,13 +1073,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
         
-      case EO_PUSH0: ArgNil(); // push integer 0
-        dLU0(EO_PUSH0);
+      case EO_PUSH_MINUS1: ArgNil(); // push integer -1
+        dLU0(EO_PUSH_MINUS1);
+        *(++aiDstk) = -1;
+        break;//+endCase
+        
+      case EO_PUSH_0: ArgNil(); // push integer 0
+        dLU0(EO_PUSH_0);
         *(++aiDstk) = 0;
         break;//+endCase
         
-      case EO_PUSH1: ArgNil(); // push integer 1
-        dLU0(EO_PUSH1);
+      case EO_PUSH_1: ArgNil(); // push integer 1
+        dLU0(EO_PUSH_1);
         *(++aiDstk) = 1;
         break;//+endCase
         

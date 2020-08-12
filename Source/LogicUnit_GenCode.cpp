@@ -229,7 +229,7 @@ void LogicUnit::vGenerateQuery103(void)
   // find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);
   vAddCode(EO_ENT_PUSH);
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   vAddCode(EO_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
@@ -477,7 +477,7 @@ void LogicUnit::vGenerateQuery101(void)
   // find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);
   vAddCode(EO_ENT_PUSH);
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   vAddCode(EO_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
@@ -502,19 +502,19 @@ void LogicUnit::vGenerateQuery101(void)
   vAddCodeArg(EO_PAY_STORE_COLS, (i8)Q100_LINESTATUS);
   
   // set sum(L_QUANTITY) -> Q100_SUM_QTY
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_QTY);
   
   // set sum(L_QUANTITY) -> Q100_SUM_BASE_PRICE
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_BASE_PRICE);
   
   // set sum(L_QUANTITY) -> Q1_SUM_DISC_PRICE
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_DISC_PRICE);
   
   // set sum(L_QUANTITY) -> Q100_SUM_CHARGE
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_CHARGE);
   //vAddCodeArg(EO_IXT_DUMP,(i8)0); ray commented 30 jul 2020
   
@@ -630,12 +630,12 @@ void LogicUnit::vGenerateQuery101(void)
   vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
   
   // return true
-  vAddCode(EO_PUSH1);
+  vAddCode(EO_PUSH_1);
   vAddCodeLabel(EO_JMP,"RETURN:"_Stz);
   
   // return false
   vDefineLabel("RETURN_FALSE:"_Stz);
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   
   // return
   vDefineLabel("RETURN:"_Stz);
@@ -1387,12 +1387,12 @@ void LogicUnit::vGenerateQuery400(void)
 
   // found one matching lineitem
   vDefineLabel("RET_ITM_t:"_Stz);
-  vAddCode(EO_PUSH1);
+  vAddCode(EO_PUSH_1);
   vAddCode(EO_RETURN);
 
   // no matching lineitem
   vDefineLabel("RET_ITM_f:"_Stz);
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1431,7 +1431,7 @@ void LogicUnit::vGenerateQuery400(void)
   
   vAddCode(EO_IXT_INS_ENT);
   
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
   
   //vAddCodeArg(EO_IXT_DUMP,(i8)0);
@@ -1575,7 +1575,7 @@ void LogicUnit::vGenerateQuery401(void)
   
   vAddCode(EO_IXT_INS_ENT);
   
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
   
   //vAddCodeArg(EO_IXT_DUMP,(i8)0);
@@ -1808,7 +1808,7 @@ void LogicUnit::vGenerateQuery601(void)
   vAddCode(EO_RSB_DST_NEW);
   
   // initialze the row
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
   
   //vAddCode(EO_RSB_DST_PRINT);
@@ -1853,12 +1853,12 @@ void LogicUnit::vGenerateQuery601(void)
   vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
 
   // return true
-  vAddCode(EO_PUSH1);
+  vAddCode(EO_PUSH_1);
   vAddCodeLabel(EO_JMP,"RETURN:"_Stz);
   
   // return false
   vDefineLabel("RETURN_FALSE:"_Stz);
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   
   // return
   vDefineLabel("RETURN:"_Stz);
@@ -1911,7 +1911,7 @@ void LogicUnit::vGenerateQuery602(void)
   vAddCode(EO_RSB_DST_NEW);
   
   // initialize the row
-  vAddCode(EO_PUSH0);
+  vAddCode(EO_PUSH_0);
   vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
   //vAddCode(EO_RSB_DST_PRINT);
   
