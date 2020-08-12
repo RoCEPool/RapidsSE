@@ -969,57 +969,49 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_JMP_FALSE: ArgGet(iArg); // pop top and jump to location if false
         dLU1(EO_JMP_FALSE,iArg);
-        iTopA = *(aiDstk--);
-        if (! iTopA)
+        if (! *(aiDstk--))
           JumpTo(iArg,EO_JMP_FALSE); // aeCode = & m_eaCode[iArg];
         break;//+endCase
         
       case EO_JMP_TRUE: ArgGet(iArg); // pop top and jump to location if true
         dLU1(EO_JMP_TRUE,iArg);
-        iTopA = *(aiDstk--);
-        if (iTopA)
+        if (*(aiDstk--))
           JumpTo(iArg,EO_JMP_TRUE); // aeCode = & m_eaCode[iArg];
         break;//+endCase
         
       case EO_JMP_LESS: ArgGet(iArg); // pop top and jump to location if <
         dLU1(EO_JMP_LESS,iArg);
-        iTopA = *(aiDstk--);
-        if (iTopA < 0)
+        if (*(aiDstk--) < 0)
           JumpTo(iArg,EO_JMP_LESS); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_LESSEQUAL: ArgGet(iArg); // pop top and jump to location if <=
         dLU1(EO_JMP_LESSEQUAL,iArg);
-        iTopA = *(aiDstk--);
-        if (iTopA <=0)
+        if (*(aiDstk--) <= 0)
           JumpTo(iArg,EO_JMP_LESSEQUAL); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_EQUAL: ArgGet(iArg); // pop top and jump to location if ==
         dLU1(EO_JMP_EQUAL,iArg);
-        iTopA = *(aiDstk--);
-        if (iTopA == 0)
+        if (*(aiDstk--) == 0)
           JumpTo(iArg,EO_JMP_EQUAL); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_NOTEQUAL: ArgGet(iArg); // pop top and jump to location if !=
         dLU1(EO_JMP_NOTEQUAL,iArg);
-        iTopA = *(aiDstk--);
-        if (iTopA != 0)
+        if (*(aiDstk--) != 0)
           JumpTo(iArg,EO_JMP_NOTEQUAL); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_GREATEREQUAL: ArgGet(iArg); // pop top and jump to location if >=
         dLU1(EO_JMP_GREATEREQUAL,iArg);
-        iTopA = *(aiDstk--);
-        if (iTopA >= 0)
+        if (*(aiDstk--) >= 0)
           JumpTo(iArg,EO_JMP_GREATEREQUAL); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
       case EO_JMP_GREATER: ArgGet(iArg); // pop top and jump to location if >
         dLU1(EO_JMP_GREATER,iArg);
-        iTopA = *(aiDstk--);
-        if (iTopA > 0)
+        if (*(aiDstk--) > 0)
           JumpTo(iArg,EO_JMP_GREATER); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
