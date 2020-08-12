@@ -448,16 +448,18 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     }
     
     // eo_ trace
-    sPrint.vSprint(
-                   "    printf(\"  *: %s "_Stz,
+//    sPrint.vSprint(
+//                   "    printf(\"  *: %s "_Stz,
+//
+//                   aEO[eCode]->azChar());
+//    sPrint.vConcat(" %llx\\n\",aiDstk);\n"_Stz);
+//
+//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
-                   aEO[eCode]->azChar());
-    sPrint.vConcat(" %llx\\n\",aiDstk);\n"_Stz);
-
-    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
-
+    // timer begin
     sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
     StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    
 
     if (EO_CALL == eCode) {
       
@@ -507,6 +509,7 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
       i_Code += EoArgs[eCode].m_nArgBytes;
     }
     
+    // timer end
     sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
     StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 

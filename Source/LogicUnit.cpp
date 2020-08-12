@@ -663,7 +663,7 @@ void LogicUnit::vDumpCode(void)
 /*----------------------------------------------------------------------------*/
 /* initialise and return address of rlu common                                */
 /*----------------------------------------------------------------------------*/
-struct RluCommon* LogicUnit::aRlu_INIT(void* pLU)
+struct RluCommon* LogicUnit::aRlu_INIT(void* aLU)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -686,11 +686,27 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* pLU)
 /*----------------------------------------------------------------------------*/
 /* dump the rlu Dstk                                                          */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vRlu_DUMP(void* pLU, i8* aiDstk)
+void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 {
   vDebugPoint();
   
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  i8* aiDstkBase = pLogicUnit->m_xRluCommon.m_iaDataStack;
+  i8  nUsageBytes = nDifference(pLogicUnit->m_xRluCommon.m_iaDataStack,
+                                pLogicUnit->m_xRluCommon.m_iaDataStack)
+                     + 8;
   
+  vTrace("\nRlu_Dump: base %llx ; aiDstk %llx ; %lld bytes usage\n"_Stz,
+      
+         aiDstkBase,
+         aiDstk,
+         nUsageBytes
+         );
+  
+  MemLib::vHexDump(aiDstkBase,nUsageBytes);
+  
+  vTrace("\n"_Stz);
 }
 
 /*============================================================================*/
