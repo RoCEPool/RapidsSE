@@ -294,9 +294,10 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   v_DynConcluding();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+#ifdef WITH_TRACE_LOGICUNIT
   vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
-
+#endif
+  
   vAcquire();
   bool b = bCompile();
   vSymbols();
