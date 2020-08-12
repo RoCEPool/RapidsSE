@@ -1014,7 +1014,7 @@
 
   stage stageB on all partitions :
     sql 112 $Table $Index
-    | sql 110
+    | sql 101
     | stageC
 
   stage stageC on origin :

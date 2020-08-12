@@ -156,10 +156,10 @@
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
     endof
 
-    110 of
+    101 of
       //queryNo "QUERY %v" .printf
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 1  0=STARTMARKER" .
-      110 LogicUnit[].genCode
+      101 LogicUnit[].genCode
       logicCompiler[].new
       LogicCompiler[].compile
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
@@ -524,8 +524,8 @@
       Pot[].pipeoutAllCompleted
     endof
 
-    110 of
-      //"---------------------------- 110=RSBBUFFER ----------------------------" .
+    101 of
+      //"---------------------------- 101=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].dynFun
@@ -606,7 +606,7 @@
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 100=EOSMARKER" .
       // AGGREGATE WITH GROUPBY
       //queryNo "QUERY %v" .printf
-      101 LogicUnit[].genCode
+      102 LogicUnit[].genCode
       logicCompiler[].new
       LogicCompiler[].compile
       LogicUnit[].dynFun
@@ -623,11 +623,11 @@
       IndexTree[].delete
     endof
 
-    110 of
+    101 of
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 1  0=EOSMARKER" .
       // AGGREGATE WITH GROUPBY
       //queryNo "QUERY %v" .printf
-      101 LogicUnit[].genCode
+      102 LogicUnit[].genCode
       logicCompiler[].new
       LogicCompiler[].compile
       LogicUnit[].dynFun
@@ -913,8 +913,8 @@
       true Pot[].useStreamDefOut
     endof
 
-    110 of
-      //"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 110=STREAMDEF" .
+    101 of
+      //"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 101=STREAMDEF" .
       sql_StreamDef_100
       true Pot[].useStreamDefOut
     endof
