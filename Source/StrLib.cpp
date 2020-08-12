@@ -2613,6 +2613,26 @@ char* StrLib::zNullTerminator(char* s)
 }
 
 /*----------------------------------------------------------------------------*/
+/* iOccurrence: get no of occurrence of given char                            */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iOccurrence(char* ps, const char cArg)
+{
+  _static_
+  
+  i8 iCount = 0;
+  
+  while(*ps) {
+    ps = strchr(ps,cArg);
+    if ( ! ps )
+      break;
+    iCount++;
+    ps++;
+  }
+  
+  return iCount;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bOneOf: is given word one of the words in the given set?                   */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bOneOf(char** asaSet, char* sWord)

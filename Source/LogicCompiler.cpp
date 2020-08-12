@@ -1,3 +1,4 @@
+
 /*============================================================================*/
 /* LogicCompiler.cpp -- Logic Compiler                                        */
 /*============================================================================*/
@@ -451,7 +452,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 //
 //    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
-    sPrint.vSprint("    vRlu_BEGINTMR(pLU);\n "_Stz);
+    sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
+
     StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
     if (EO_CALL == eCode) {
@@ -502,9 +504,19 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
       i_Code += EoArgs[eCode].m_nArgBytes;
     }
     
-    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n "_Stz,aEO[eCode]->azChar());
+    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
+
     StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
+#ifdef WITH_TRACE_LOGICUNIT
+    // count no of newlines in the fragment
+    i8 nNewLines = StrLib::iOccurrence(&m_caSource[0],'\n');
+    
+    // add the line number
+    sPrint.vSprint("    /* %lld */\n "_Stz,nNewLines);
+    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+#endif
+    
     //vTrace("%s<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"_Stz,m_caSource);
     continue;
   }
