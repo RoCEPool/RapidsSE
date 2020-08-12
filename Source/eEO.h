@@ -130,6 +130,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_COL_SRC_PUSHSTR,  // push column str value from m_aSrcCrw
   /*    */ EO_COL_ALT_PUSH,     // push column value from m_aAltCrw
   /*    */ EO_COL_ALT_PUSHI,    // push column int value from m_aAltCrw
+  /*    */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
 
   // crw operators
   /*    */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
@@ -353,7 +354,8 @@ static Stz* aEO[]
   /*    */ "EO_COL_SRC_PUSHSTR"_Stz,
   /*    */ "EO_COL_ALT_PUSH"_Stz,
   /*    */ "EO_COL_ALT_PUSHI"_Stz,
-  
+  /*    */ "EO_COL_ALT_PUSHSET"_Stz,
+
   // crw operators
   /*    */ "EO_CRW_SRC_BEGIN"_Stz,
   /*    */ "EO_CRW_SRC_FETCH"_Stz,
@@ -581,6 +583,7 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHSTR
   { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSH
   { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSHI
+  { EA_NONE,    0 },  // EO_COL_ALT_PUSHSET
 
   // crw operators
   { EA_NONE,    0 },  // EO_CRW_SRC_BEGIN

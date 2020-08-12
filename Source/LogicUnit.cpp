@@ -1420,12 +1420,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_COL_SRC_PUSHI: ArgGet(iArg); // push column value from m_aSrcCrw
+        *(++aiDstk) = -1;
+        *(++aiDstk) = iArg; // col to inflate
         vDev_RSB_COL_PUSHI(pLU,aRluCommon->m_pDevSrcIxt,iArg,&aiDstk);
         dLU1(EO_COL_SRC_PUSH,iArg);
         break;//+endCase
         
       case EO_COL_SRC_PUSHSTR: ArgGet(iArg); // push column value from m_aSrcCrw
         dLU1(EO_COL_SRC_PUSHSTR,iArg);
+        *(++aiDstk) = -1;
+        *(++aiDstk) = iArg; // col to inflate
         vDev_RSB_COL_PUSHSTR(pLU,aRluCommon->m_pDevSrcRsb,iArg,&aiDstk);
         break;//+endCase
         
@@ -1436,10 +1440,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_COL_ALT_PUSHI: ArgGet(iArg); // push column value from m_aAltCrw
+        *(++aiDstk) = -1;
+        *(++aiDstk) = iArg; // col to inflate
         vDev_ALT_COL_PUSHI(pLU,aRluCommon->m_pDevAltRsb,iArg,&aiDstk);
-        dLU1(EO_COL_SRC_PUSH,iArg);
+        dLU1(EO_COL_ALT_PUSHI,iArg);
         break;//+endCase
       
+      case EO_COL_ALT_PUSHSET: ArgNil(); // push column subset from m_aAltCrw
+        *(++aiDstk) = -1;
+        vDev_ALT_COL_PUSHI(pLU,aRluCommon->m_pDevAltRsb,-1,&aiDstk);
+        dLU0(EO_COL_ALT_PUSHSET);
+        break;//+endCase
+    
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // crw operators
       case EO_CRW_SRC_BEGIN: ArgNil(); // begin src rsb traverse
