@@ -6,9 +6,9 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* inflate headline into row                                                  */
+/* inflate a column onto Dstk                                                 */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateColI(i8** aamDstk, HeadLine* aHeadLine,
+void RowInflator::vInflateColI(i8** aaiDstk, HeadLine* aHeadLine,
                                i8 i_ColToRetrieve, StreamDef* pStreamDef)
 {
   
@@ -18,9 +18,370 @@ void RowInflator::vInflateColI(i8** aamDstk, HeadLine* aHeadLine,
 
   i8 iRes = hRow->m_waColVal[i_ColToRetrieve].m_iWrd;
 
-  *(i8*)(++*aamDstk) = iRes;
+  *(i8*)(++*aaiDstk) = iRes;
 }
 
+/*----------------------------------------------------------------------------*/
+/* inflate a column onto Dstk                                                 */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflateColI_stk(i8** aaiDstk,
+                                   HeadLine* aHeadLine, i8 i_ColToRetrieve)
+{
+#if 0
+  
+  eMC  eMetaCode;
+  SingleWord wWord;
+  
+  i8   i_Tail_rel;
+  i8   nCompressed;
+  i8   nLength;
+  i8   nBytesPartA;
+  i8   nBytesPartB;
+  char caString[C_4KB];
+  
+  TailLine* aTail;
+    
+  char* acString = (char*)pRow->m_xWsp.ayArea();
+  
+  i8 nCols = pRow->m_nColumns;
+  
+  eMC* aeMetaCode = aHeadLine->aeMetaArea();
+  
+  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(pRow->m_pStreamDef);
+  
+  byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
+  
+  i8* aiColVal = & pRow->m_waColVal[0].m_iWrd;
+  
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+        
+    eMetaCode = *aeMetaCode++;
+    
+    //! temp experiment
+    if ( i_Col != i_ColToRetrieve ) {
+      
+      *aiColVal++ = C_UNKNOWN;
+      
+    L_SkipCodeSwitch:
+      
+      switch(eMetaCode) {
+          
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        case MC_STR_FIT_1L:
+          nLength = *(u1*)ayDataByte++;
+          ayDataByte += nLength;
+          break;
+          
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        case MC_STR_FIT_2L:
+          wWord.m_iI8 = 0;
+          wWord.m_yaByte[0] = *ayDataByte++;
+          wWord.m_yaByte[1] = *ayDataByte++;
+          nLength = wWord.m_iI8;
+          ayDataByte += nLength;
+          break;
+          
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        case MC_OVERFLOW_2T: {
+          //vDebugPoint();
+          OverLine* aOverLine = aHeadLine->aGetOver();
+          //aOverLine->vDump();
+          
+          eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
+          ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
+          goto L_SkipCodeSwitch;
+          break;
+        }
+          
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        default: ayDataByte += nDataSize(eMetaCode); break;
+      }
+      
+      continue;
+    }
+    
+  L_MetaCodeSwitch:
+    switch (eMetaCode) {
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_NULL:
+        *aiColVal++ = C_DATUM_NULL;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_1B:
+      case MC_FLT_1B:
+      case MC_INT_1B:
+      case MC_IVL_1B:
+      case MC_TME_1B:
+        *aiColVal++ = *(u1*)(ayDataByte);
+        ayDataByte += C_1B;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_2B:
+      case MC_FLT_2B:
+      case MC_INT_2B:
+      case MC_IVL_2B:
+      case MC_TME_2B:
+        *aiColVal++ = *(u2*)(ayDataByte);
+        ayDataByte += C_2B;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_3B:
+      case MC_FLT_3B:
+      case MC_INT_3B:
+      case MC_IVL_3B:
+      case MC_TME_3B:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        wWord.m_yaByte[2] = *ayDataByte++;
+        *aiColVal++ = wWord.m_iI8;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_4B:
+      case MC_FLT_4B:
+      case MC_INT_4B:
+      case MC_IVL_4B:
+      case MC_TME_4B:
+        *aiColVal++ = *(u4*)(ayDataByte);
+        ayDataByte += C_4B;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_5B:
+      case MC_FLT_5B:
+      case MC_INT_5B:
+      case MC_IVL_5B:
+      case MC_TME_5B:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        wWord.m_yaByte[2] = *ayDataByte++;
+        wWord.m_yaByte[3] = *ayDataByte++;
+        wWord.m_yaByte[4] = *ayDataByte++;
+        *aiColVal++ = wWord.m_iI8;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_6B:
+      case MC_FLT_6B:
+      case MC_INT_6B:
+      case MC_IVL_6B:
+      case MC_TME_6B:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        wWord.m_yaByte[2] = *ayDataByte++;
+        wWord.m_yaByte[3] = *ayDataByte++;
+        wWord.m_yaByte[4] = *ayDataByte++;
+        wWord.m_yaByte[5] = *ayDataByte++;
+        *aiColVal++ = wWord.m_iI8;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_7B:
+      case MC_FLT_7B:
+      case MC_INT_7B:
+      case MC_IVL_7B:
+      case MC_TME_7B:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        wWord.m_yaByte[2] = *ayDataByte++;
+        wWord.m_yaByte[3] = *ayDataByte++;
+        wWord.m_yaByte[4] = *ayDataByte++;
+        wWord.m_yaByte[5] = *ayDataByte++;
+        wWord.m_yaByte[6] = *ayDataByte++;
+        *aiColVal++ = wWord.m_iI8;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_8B:
+      case MC_FLT_8B:
+      case MC_INT_8B:
+      case MC_IVL_8B:
+      case MC_TME_8B:
+      case MC_TSP_8B:
+        *aiColVal++ = *(u8*)(ayDataByte);
+        ayDataByte += C_8B;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_M_ONE:
+      case MC_INT_M_ONE:
+        *aiColVal++ = -1;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_ZERO:
+      case MC_INT_ZERO:
+        *aiColVal++ =  0;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_ONE:
+      case MC_INT_ONE:
+        *aiColVal++ =  1;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_TWO:
+      case MC_INT_TWO:
+        *aiColVal++ =  2;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_THREE:
+      case MC_INT_THREE:
+        *aiColVal++ =  3;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_FOUR:
+      case MC_INT_FOUR:
+        *aiColVal++ =  4;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_FIVE:
+      case MC_INT_FIVE:
+        *aiColVal++ =  5;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_SIX:
+      case MC_INT_SIX:
+        *aiColVal++ =  6;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_SEVEN:
+      case MC_INT_SEVEN:
+        *aiColVal++ =  7;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_EIGHT:
+      case MC_INT_EIGHT:
+        *aiColVal++ =  8;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_NINE:
+      case MC_INT_NINE:
+        *aiColVal++ =  9;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BCD_TEN:
+      case MC_INT_TEN:
+        *aiColVal++ = 10;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BOL_FALSE:
+        *aiColVal++ =  0;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_BOL_TRUE:
+        *aiColVal++ =  1;
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_DTE_E0_2B:
+        *aiColVal++ = *(u2*)ayDataByte;
+        ayDataByte += C_2B;
+        vDteFromEdt((aiColVal-1),C_ERA_0);
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_DTE_E1_2B:
+        *aiColVal++ = *(u2*)ayDataByte;
+        ayDataByte += C_2B;
+        vDteFromEdt((aiColVal-1),C_ERA_1);
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_DTE_E2_2B:
+        *aiColVal++ = *(u2*)ayDataByte;
+        ayDataByte += C_2B;
+        vDteFromEdt((aiColVal-1),C_ERA_2);
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_STR_EMPTY:
+        *(char**)(aiColVal++) = acString;
+        *acString++ = '\0';
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_STR_FIT_1L:
+        nLength = *(u1*)ayDataByte++;
+        MemLib::vCopy((byte*)acString,
+                      (byte*)ayDataByte,
+                      nLength,
+                      CN_ROWCOMPACTOR);
+        *(char**)(aiColVal++) = acString;
+        ayDataByte += nLength;
+        acString   += nLength;
+        *acString++ = '\0';
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_STR_FIT_2L:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        nLength = wWord.m_iI8;
+        MemLib::vCopy((byte*)acString,
+                      (byte*)ayDataByte,
+                      nLength,
+                      CN_ROWCOMPACTOR);
+        *(char**)(aiColVal++) = acString;
+        ayDataByte += nLength;
+        acString   += nLength;
+        *acString++ = '\0';
+        break;
+        
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_STR_TAIL_2T:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        i_Tail_rel = wWord.m_iI8;
+        aTail = aHeadLine->aGetTailRel(i_Tail_rel);
+        nLength = aTail->w8_1B(+ C_U_1B);
+        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+C_L_1B,nLength,CN_ROWCOMPACTOR);
+        *(char**)(aiColVal++) = acString;
+        acString += nLength;
+        *acString++ = '\0';
+        break;
+        
+         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_OVERFLOW_2T: {
+        //vDebugPoint();
+        OverLine* aOverLine = aHeadLine->aGetOver();
+        //aOverLine->vDump();
+
+        eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
+        ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
+        goto L_MetaCodeSwitch;
+        break;
+      }
+        
+      default:
+        RASSERT(0);
+    }
+    
+  }
+
+#endif
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
