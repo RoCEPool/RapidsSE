@@ -4,36 +4,12 @@
 
 #include "CompactBuffers.h"
 
-
-/*----------------------------------------------------------------------------*/
-/* inflate a column onto Dstk                                                 */
-/*----------------------------------------------------------------------------*/
-void RowInflator::vInflateColI(i8** aaiDstk, HeadLine* aHeadLine,
-                               i8 i_ColToRetrieve, StreamDef* pStreamDef)
-{
-//  HV_Row hRow(pStreamDef,C_ALL);
-//
-//  RowInflator::vInflateColumn(hRow,aHeadLine,i_ColToRetrieve);
-//
-//  i8 iRes = hRow->m_waColVal[i_ColToRetrieve].m_iWrd;
-
-  i8 iRes = 0;
-  
-  vInflateColI_stk(aaiDstk,aHeadLine,i_ColToRetrieve,pStreamDef,iRes);
-  
-  *(i8*)(++*aaiDstk) = iRes;
-}
-
 /*----------------------------------------------------------------------------*/
 /* inflate a signle column onto Dstk                                          */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
-                                   i8 i_ColToRetrieve, StreamDef* pStreamDef,
-                                   i8& riRes)
+                                   i8 i_ColToRetrieve, StreamDef* pStreamDef)
 {
-#if 1
-  
-   
   eMC  eMetaCode;
   SingleWord wWord;
   
@@ -56,17 +32,14 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
   
   byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
   
-  i8* aiColVal = & riRes;
+  i8* aiColVal = ++*aaiDstk;
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
         
     eMetaCode = *aeMetaCode++;
     
-    //! temp experiment
-    if ( i_Col != i_ColToRetrieve ) {
-      
-      //*aiColVal++ = C_UNKNOWN;
-      
+    if (i_Col != i_ColToRetrieve) {
+            
     L_SkipCodeSwitch:
       
       switch(eMetaCode) {
@@ -85,17 +58,16 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
           break;
           
         case MC_OVERFLOW_2T: {
-          //vDebugPoint();
           OverLine* aOverLine = aHeadLine->aGetOver();
-          //aOverLine->vDump();
-          
           eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
           ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
           goto L_SkipCodeSwitch;
           break;
         }
           
-        default: ayDataByte += nDataSize(eMetaCode); break;
+        default:
+          ayDataByte += nDataSize(eMetaCode);
+          break;
       }
       
       continue;
@@ -386,8 +358,6 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
     
     return;
   }
-
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

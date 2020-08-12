@@ -972,16 +972,21 @@ i8 iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aamDstk)
+void vDev_RSB_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
 {
   _static_
   
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  LogicUnit* pLogicUnit = (LogicUnit*)aLU; //_pLogicUnit(aLU);
   
-  RowInflator::vInflateColI(aamDstk,
-                            pLogicUnit->m_pDevSrcIxt->m_aCrw,
-                            iArg,
-                            pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
+  RowInflator::vInflateColI_stk(aaiDstk,
+                   pLogicUnit->m_pDevSrcIxt->m_aCrw,
+                   iArg,
+                   pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
+  
+//  RowInflator::vInflateColI(aamDstk,
+//                            pLogicUnit->m_pDevSrcIxt->m_aCrw,
+//                            iArg,
+//                            pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1032,16 +1037,16 @@ i8 iDev_ALT_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
-void vDev_ALT_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aamDstk)
+void vDev_ALT_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
 {
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  
-  RowInflator::vInflateColI(aamDstk,
-                            pLogicUnit->m_pDevAltIxt->m_aCrw,
-                            iArg,
-                            pLogicUnit->m_pDevAltRsb->m_pStreamDef);
+      
+  RowInflator::vInflateColI_stk(aaiDstk,
+                   pLogicUnit->m_pDevAltIxt->m_aCrw,
+                   iArg,
+                   pLogicUnit->m_pDevAltRsb->m_pStreamDef);
 }
 
 
