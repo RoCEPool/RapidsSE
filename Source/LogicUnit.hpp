@@ -296,11 +296,11 @@ namespace Expressions
     void vGenCode(i8 iTestNo);
   
     // TPCH Queries
+    void vGenerateQuery100(void);
+    void vGenerateQuery101(void);
     void vGenerateQuery102(void);
     void vGenerateQuery103(void);
     void vGenerateQuery104(void);
-    void vGenerateQuery101(void);
-    void vGenerateQuery112(void);
 
     void vGenerateQuery300(void);
     void vGenerateQuery301(void);
@@ -312,7 +312,7 @@ namespace Expressions
 
     void vGenerateQuery600(void);
     void vGenerateQuery601(void);
-    void vGenerateQuery666(void);
+    void vGenerateQuery602(void);
 
     void vGenerate1700(void);
     void vGenerate1701(void);

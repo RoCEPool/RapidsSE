@@ -1013,7 +1013,7 @@
     | stageB
 
   stage stageB on all partitions :
-    sql 112 $Table $Index
+    sql 100 $Table $Index
     | sql 101
     | stageC
 
@@ -1042,12 +1042,12 @@
     | stageB
 
   stage stageB on all partitions :
-    sql 666 $Table $Index
-    | sql 600
+    sql 600 $Table $Index
+    | sql 601
     | stageC
 
   stage stageC on origin :
-    sql 601
+    sql 602
     | output
     //| toStatDemon
     | sink
