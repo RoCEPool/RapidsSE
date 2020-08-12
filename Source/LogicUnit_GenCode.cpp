@@ -14,9 +14,9 @@ void LogicUnit::vGenCode(i8 iTestNo)
   switch (iTestNo) {
       
     case     101: vGenerateQuery101();    break;
+    case     102: vGenerateQuery102();    break;
     case     103: vGenerateQuery103();    break;
     case     104: vGenerateQuery104();    break;
-    case     110: vGenerateQuery110();    break;
     case     112: vGenerateQuery112();    break;
       
     case     300: vGenerateQuery300();    break;
@@ -46,17 +46,17 @@ void LogicUnit::vGenCode(i8 iTestNo)
 /*----------------------------------------------------------------------------*/
 /* generate copy for agg group by (Query 1)                                   */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery101(void)
+void LogicUnit::vGenerateQuery102(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_xRluCommon.m_iSql = 101;
+  m_xRluCommon.m_iSql = 102;
   
   // reset
   m_i_Code = 0;
   
-  vDefineLabel("QRY_101:"_Stz);
+  vDefineLabel("QRY_102:"_Stz);
   vAddCode(EO_INIT);
   
   // begin index tree traversal
@@ -362,17 +362,17 @@ void LogicUnit::vGenerateQuery104(void)
 /*----------------------------------------------------------------------------*/
 /* generate agg group by (Query 1)                                            */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery110(void)
+void LogicUnit::vGenerateQuery101(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_xRluCommon.m_iSql = 110;
+  m_xRluCommon.m_iSql = 101;
   
   // reset
   m_i_Code = 0;
   
-  vDefineLabel("QRY_110:"_Stz);
+  vDefineLabel("QRY_101:"_Stz);
   vAddCode(EO_INIT);
   
   // -- -- -- -- -- -- -- -- -- -- --
