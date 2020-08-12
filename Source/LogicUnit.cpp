@@ -1171,8 +1171,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_POP: ArgNil(); // pop / discard top
-        iTopA = *aiDstk;
-        dLU1(EO_POP,iTopA);
+        aiDstk--;
+        dLU0(EO_POP);
         break;//+endCase
 
       case EO_PRINT: ArgNil(); // print top

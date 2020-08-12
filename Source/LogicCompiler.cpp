@@ -452,7 +452,6 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 //    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
     sPrint.vSprint("    vRlu_BEGINTMR(pLU);\n "_Stz);
-
     StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
     if (EO_CALL == eCode) {
@@ -504,7 +503,6 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     }
     
     sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n "_Stz,aEO[eCode]->azChar());
-
     StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
     //vTrace("%s<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"_Stz,m_caSource);

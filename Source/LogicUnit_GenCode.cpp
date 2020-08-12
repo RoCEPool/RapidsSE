@@ -1319,10 +1319,17 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeArg(EO_COL_SRC_PUSHI,O_ORDERDATE);
   //vAddCode(EO_DUP);
   //vAddCode(EO_DTE_PRINT);
+  
+  vAddCode(EO_DUP);
+  
   vAddCodeArg(EO_DATE,"1993-07-01"_Stz);
   vAddCode(EO_GREATEREQUAL);
-  vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
-  vAddCodeArg(EO_COL_SRC_PUSHI,O_ORDERDATE); // doubled, not efficient
+  vAddCodeLabel(EO_JMP_TRUE,"TST_2ND:"_Stz);
+  vAddCode(EO_POP);
+  vAddCodeLabel(EO_JMP,"NXT_ORD:"_Stz);
+  
+  
+  vDefineLabel("TST_2ND:"_Stz);
   vAddCodeArg(EO_DATE,"1993-10-01"_Stz);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);

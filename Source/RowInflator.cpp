@@ -11,24 +11,29 @@
 void RowInflator::vInflateColI(i8** aaiDstk, HeadLine* aHeadLine,
                                i8 i_ColToRetrieve, StreamDef* pStreamDef)
 {
-  
-  HV_Row hRow(pStreamDef,C_ALL);
-  
-  RowInflator::vInflateColumn(hRow,aHeadLine,i_ColToRetrieve);
+//  HV_Row hRow(pStreamDef,C_ALL);
+//
+//  RowInflator::vInflateColumn(hRow,aHeadLine,i_ColToRetrieve);
+//
+//  i8 iRes = hRow->m_waColVal[i_ColToRetrieve].m_iWrd;
 
-  i8 iRes = hRow->m_waColVal[i_ColToRetrieve].m_iWrd;
-
+  i8 iRes = 0;
+  
+  vInflateColI_stk(aaiDstk,aHeadLine,i_ColToRetrieve,pStreamDef,iRes);
+  
   *(i8*)(++*aaiDstk) = iRes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* inflate a column onto Dstk                                                 */
+/* inflate a signle column onto Dstk                                          */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateColI_stk(i8** aaiDstk,
-                                   HeadLine* aHeadLine, i8 i_ColToRetrieve)
+void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
+                                   i8 i_ColToRetrieve, StreamDef* pStreamDef,
+                                   i8& riRes)
 {
-#if 0
+#if 1
   
+   
   eMC  eMetaCode;
   SingleWord wWord;
   
@@ -41,17 +46,17 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk,
   
   TailLine* aTail;
     
-  char* acString = (char*)pRow->m_xWsp.ayArea();
+  char* acString = nullptr;
   
-  i8 nCols = pRow->m_nColumns;
+  i8 nCols = pStreamDef->nColumns(C_ALL);
   
   eMC* aeMetaCode = aHeadLine->aeMetaArea();
   
-  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(pRow->m_pStreamDef);
+  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(pStreamDef);
   
   byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
   
-  i8* aiColVal = & pRow->m_waColVal[0].m_iWrd;
+  i8* aiColVal = & riRes;
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
         
@@ -60,19 +65,17 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk,
     //! temp experiment
     if ( i_Col != i_ColToRetrieve ) {
       
-      *aiColVal++ = C_UNKNOWN;
+      //*aiColVal++ = C_UNKNOWN;
       
     L_SkipCodeSwitch:
       
       switch(eMetaCode) {
           
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_STR_FIT_1L:
           nLength = *(u1*)ayDataByte++;
           ayDataByte += nLength;
           break;
           
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_STR_FIT_2L:
           wWord.m_iI8 = 0;
           wWord.m_yaByte[0] = *ayDataByte++;
@@ -81,7 +84,6 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk,
           ayDataByte += nLength;
           break;
           
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_OVERFLOW_2T: {
           //vDebugPoint();
           OverLine* aOverLine = aHeadLine->aGetOver();
@@ -93,12 +95,13 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk,
           break;
         }
           
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         default: ayDataByte += nDataSize(eMetaCode); break;
       }
       
       continue;
     }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   L_MetaCodeSwitch:
     switch (eMetaCode) {
@@ -321,6 +324,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk,
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_FIT_1L:
+        RASSERT(0); // temp
         nLength = *(u1*)ayDataByte++;
         MemLib::vCopy((byte*)acString,
                       (byte*)ayDataByte,
@@ -334,6 +338,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk,
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_FIT_2L:
+        RASSERT(0); // temp
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
@@ -350,6 +355,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk,
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_TAIL_2T:
+        RASSERT(0); // temp
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
@@ -378,6 +384,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk,
         RASSERT(0);
     }
     
+    return;
   }
 
 #endif
