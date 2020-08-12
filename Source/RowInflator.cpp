@@ -24,13 +24,16 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
     
   char* acString = nullptr;
   
+  // ALKA
   i8 nCols = pStreamDef->nColumns(C_ALL);
   
-  eMC* aeMetaCode = aHeadLine->aeMetaArea();
-  
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(pStreamDef);
-  
+
+  eMC* aeMetaCode = aHeadLine->aeMetaArea();
+
   byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
+  
+  // End Alka
   
   i8* aiColVal = ++*aaiDstk;
   

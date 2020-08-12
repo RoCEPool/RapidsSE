@@ -1304,8 +1304,8 @@ void LogicUnit::vGenerateQuery400(void)
   vDefineLabel("QRY_400:"_Stz);
   vAddCode(EO_INIT);
 
-  vAddCodeString(EO_STR_LITERAL,"**QRY_400**"_Stz);
-  vAddCode(EO_STR_PRINTADR);
+  //vAddCodeString(EO_STR_LITERAL,"**QRY_400**"_Stz);
+  //vAddCode(EO_STR_PRINTADR);
 
   //vAddCode(EO_TRACEON);
 
@@ -1355,14 +1355,14 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
   
   
-  vAddCode(EO_TMR_AGG_NSECS);
-  vAddCode(EO_PRINT);
-  vAddCode(EO_CTR_0_PUSH);
-  vAddCode(EO_PRINT);
-  vAddCode(EO_TMR_AGG_NSECS);
-  vAddCode(EO_CTR_0_PUSH);
-  vAddCode(EO_DIVIDE);
-  vAddCode(EO_PRINT);
+  //vAddCode(EO_TMR_AGG_NSECS);
+  //vAddCode(EO_PRINT);
+  //vAddCode(EO_CTR_0_PUSH);
+  //vAddCode(EO_PRINT);
+  //vAddCode(EO_TMR_AGG_NSECS);
+  //vAddCode(EO_CTR_0_PUSH);
+  //vAddCode(EO_DIVIDE);
+  //vAddCode(EO_PRINT);
 
 
   vAddCode(EO_RETURN);
@@ -1373,11 +1373,11 @@ void LogicUnit::vGenerateQuery400(void)
   vDefineLabel("TST_ITM:"_Stz);
   
   // position / iterate
-  vAddCode(EO_TMR_START);
+  //vAddCode(EO_TMR_START);
   vAddCode(EO_IXT_POS_ALTBYSRC);
-  vAddCode(EO_TMR_UPDATE);
-  vAddCode(EO_TMR_AGG_ADD);
-  vAddCode(EO_CTR_0_INC);
+  //vAddCode(EO_TMR_UPDATE);
+  //vAddCode(EO_TMR_AGG_ADD);
+  //vAddCode(EO_CTR_0_INC);
 
   vAddCodeLabel(EO_JMP_FALSE,"RET_ITM_f:"_Stz);
   vDefineLabel("NXT_ITM:"_Stz);
