@@ -17,6 +17,7 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].name@"_Stz,      &Step::vStreamDefOutNameFetch);
   vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
+  vAddStep("StreamDefOut[].pipeout"_Stz,    &Step::vStreamDefOutPipeout);
   vAddStep("StreamDefOut[].print"_Stz,      &Step::vStreamDefOutPrint);
   vAddStep("StreamDefOut[].set"_Stz,        &Step::vStreamDefOutSet);
 }
@@ -140,6 +141,24 @@ void Step::vStreamDefOutNew(void)
     
   m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
   (* m_pLogicUnit->m_xpStreamDefOut)->vAddDefSet();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].pipeOut -- append streamDef onto next operator in pipeline  */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutPipeout(void)
+{
+  ENTRY();
+  
+  ASSERT(*m_pLogicUnit->m_xpStreamDefOut);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
+  
+  pOp->vPipeOut_nextOp(*m_pLogicUnit->m_xpStreamDefOut,m_pTask);
+  
+  m_pLogicUnit->m_xpStreamDefOut = nullptr;
   
   EXIT();
 }

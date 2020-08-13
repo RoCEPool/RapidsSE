@@ -27,7 +27,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     400: vGenerateQuery400();    break;
     case     401: vGenerateQuery401();    break;
 
-    case     600: vGenerateQuery600();    break;
+    case     600: vGenerateQuery600b();    break;
     case     601: vGenerateQuery601();    break;
     case     602: vGenerateQuery602();    break;
       

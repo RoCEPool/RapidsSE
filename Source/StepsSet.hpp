@@ -1436,6 +1436,7 @@ public:
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
   void vStreamDefOutNew(void);
+  void vStreamDefOutPipeout(void);
   void vStreamDefOutPrint(void);
   void vStreamDefOutSet(void);
 
