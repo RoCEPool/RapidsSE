@@ -433,9 +433,7 @@
   ZK_PULSEMARKER_handler
 
   // new a streamDef from table
-  Operand[].newStreamDef
-  Operand[] to StreamDef[]
-  nullptr to Operand[]
+  table[] StreamDef[].new
 
   // new a streamDef to be piped out
   StreamDefOut[].new
