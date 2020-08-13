@@ -799,7 +799,7 @@ void LogicUnit::vGenerateQuery300(void)
   
   //vAddCode(EO_RSB_DST_PRINT);
   
-  vAddCode(EO_CTR_0_INC);
+  //vAddCode(EO_CTR_0_INC);
 
 
   vAddCode(EO_RETURN);
