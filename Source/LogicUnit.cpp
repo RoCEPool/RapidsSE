@@ -42,6 +42,9 @@ LogicUnit::LogicUnit(Task* pTask)
   m_iCounter1 = 0;
   m_iCounter2 = 0;
   
+  for (i8 i_Local = 0; i_Local < C_LOCALS; i_Local++)
+    m_iLocals[i_Local] = C_UNKNOWN;
+  
   m_aLowerEntry = nullptr;
   m_aUpperEntry = nullptr;
   m_pEntBufferOuter = nullptr;
@@ -1197,7 +1200,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aiDstk--;
         dLU0(EO_POP);
         break;//+endCase
-
+        
+      case EO_POP_LOCAL: ArgGet(iArg); // pop into a local reg
+        dLU1(EO_POP_LOCAL, iArg);
+        //ASSERT(iArg < C_LOCALS);
+        m_iLocals[iArg] = (i8)(*(aiDstk--));
+        break;//+endCase
+        
       case EO_PRINT: ArgNil(); // print top
 #ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
@@ -1206,7 +1215,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
 #endif
         break;//+endCase
-    
+        
+      case EO_PUSH_LOCAL: ArgGet(iArg); // push a local reg
+        dLU1(EO_PUSH_LOCAL, iArg);
+        //ASSERT(iArg < C_LOCALS);
+        *(++aiDstk) = m_iLocals[iArg];
+        break;//+endCase
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // string operators
       case EO_STR_COMPARE: ArgNil(); // pop top stradr and compare str on stack
@@ -1522,6 +1537,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_CRW_SRC_TORSB: // convert crw src to rsb
         dLU0(EO_CRW_SRC_TORSB);
         vDev_CRW_TORSB(pLU,aRluCommon->m_pDevSrcIxt);
+        break;//+endCase
+       
+      case EO_COL_SRC_PUSHSET: ArgNil(); // push column subset from m_aSrcCrw
+        //*(++aiDstk) = -1;
+        vDev_SRC_COL_PUSHI(pLU,-1,&aiDstk);
+        dLU0(EO_COL_SRC_PUSHSET);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

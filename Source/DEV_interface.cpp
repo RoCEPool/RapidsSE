@@ -1057,6 +1057,22 @@ void vDev_ALT_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
                    pLogicUnit->m_pDevAltRsb->m_pStreamDef);
 }
 
+/*----------------------------------------------------------------------------*/
+/* push column value from m_aSrcCrw                                 NOT RIGHT */
+/*----------------------------------------------------------------------------*/
+void vDev_SRC_COL_PUSHI(void* aLU, i8 iArg, i8** aaiDstk)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  //  *(++*aaiDstk) = -1;
+  //  *(++*aaiDstk) = iArg; // col to inflate
+  
+  RowInflator::vInflateColI_stk(aaiDstk,
+                                pLogicUnit->m_pDevSrcIxt->m_aCrw,
+                                *pLogicUnit->m_xpStreamDef);
+}
 
 /*----------------------------------------------------------------------------*/
 /* print stream pix                                                           */
