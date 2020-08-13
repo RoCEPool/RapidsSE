@@ -71,7 +71,9 @@ enum eEO : u1 // expression operators
   /*    */ EO_DEC,              // decrement top, push result
   /*    */ EO_DUP,              // duplicate top
   /*    */ EO_POP,              // pop / discard top
+  /*    */ EO_POP_LOCAL,        // pop into a local register
   /*    */ EO_PRINT,            // print top
+  /*    */ EO_PUSH_LOCAL,       // push a local register
 
   // string operators
   /*    */ EO_STR_COMPARE,      // pop top stradr and compare str on stack
@@ -129,6 +131,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_COL_NOT_PROJECT,  // reset column in streamPix of dst
   /*    */ EO_COL_SRC_PUSH,     // push column value from m_aSrcCrw
   /*    */ EO_COL_SRC_PUSHI,    // push column int value from m_aSrcCrw
+  /*    */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw
   /*    */ EO_COL_SRC_PUSHSTR,  // push column str value from m_aSrcCrw
   /*    */ EO_COL_ALT_PUSH,     // push column value from m_aAltCrw
   /*    */ EO_COL_ALT_PUSHI,    // push column int value from m_aAltCrw
@@ -298,7 +301,9 @@ static Stz* aEO[]
   /*    */ "EO_DEC"_Stz,
   /*    */ "EO_DUP"_Stz,
   /*    */ "EO_POP"_Stz,
+  /*    */ "EO_POP_LOCAL"_Stz,
   /*    */ "EO_PRINT"_Stz,
+  /*    */ "EO_PUSH_LOCAL"_Stz,
 
   // string operators
   /*    */ "EO_STR_COMPARE"_Stz,
@@ -355,6 +360,7 @@ static Stz* aEO[]
   /*    */ "EO_COL_NOT_PROJECT"_Stz,
   /*    */ "EO_COL_SRC_PUSH"_Stz,
   /*    */ "EO_COL_SRC_PUSHI"_Stz,
+  /*    */ "EO_COL_SRC_PUSHSET"_Stz,
   /*    */ "EO_COL_SRC_PUSHSTR"_Stz,
   /*    */ "EO_COL_ALT_PUSH"_Stz,
   /*    */ "EO_COL_ALT_PUSHI"_Stz,
@@ -529,8 +535,10 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEC
   { EA_NONE,    0 },  // EO_DUP
   { EA_NONE,    0 },  // EO_POP
+  { EA_NONE,    8 },  // EO_POP_LOCAL
   { EA_NONE,    0 },  // EO_PRINT
-
+  { EA_NONE,    8 },  // EO_PUSH_LOCAL
+  
   // string operators
   { EA_NONE,    0 },  // EO_STR_COMPARE
   { EA_NONE,    0 },  // EO_STR_PRINTADR
@@ -586,6 +594,7 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_COL_NOT_PROJECT
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSH
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHI
+  { EA_NONE,    0 },  // EO_COL_SRC_PUSHSET
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHSTR
   { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSH
   { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSHI

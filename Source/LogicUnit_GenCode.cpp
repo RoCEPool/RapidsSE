@@ -27,7 +27,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     400: vGenerateQuery400();    break;
     case     401: vGenerateQuery401();    break;
 
-    case     600: vGenerateQuery600b();    break;
+    case     600: vGenerateQuery600();    break;
     case     601: vGenerateQuery601();    break;
     case     602: vGenerateQuery602();    break;
       
@@ -1747,22 +1747,6 @@ void LogicUnit::vGenerateQuery600b(void)
   vAddCode(EO_INIT);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // RESET COLUMNS NOT NEEDED
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_ORDERKEY);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_PARTKEY);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_SUPPKEY);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_LINENUMBER);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_TAX);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_RETURNFLAG);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_LINESTATUS);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPDATE);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_COMMITDATE);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_RECEIPTDATE);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPINSTRUCT);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_SHIPMODE);
-  vAddCodeArg(EO_COL_NOT_PROJECT, L_COMMENT);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the lower key
   vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
   vAddCode(EO_ENTWRK_APPENDELMI);
@@ -1788,10 +1772,16 @@ void LogicUnit::vGenerateQuery600b(void)
   vDefineLabel("TRV_TILL_END:"_Stz);
   vAddCode(EO_IXT_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
-  vAddCode(EO_CRW_SRC_FETCH);
-  vAddCode(EO_RSB_DST_NEW);
-  vAddCode(EO_CRW_SRC_TORSB);
+  vAddCode(EO_COL_SRC_PUSHSET);
+  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_DISCOUNT);
+  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_EXTENDEDPRICE);
+  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_QUANTITY);
+  vAddCodeArg(EO_CALL, "AGG_600"_Stz);
+  //vAddCode(EO_CRW_SRC_FETCH);
+  //vAddCode(EO_RSB_DST_NEW);
+  //vAddCode(EO_CRW_SRC_TORSB);
   //vAddCode(EO_RSB_DST_PRINT);
+  
   vAddCodeLabel(EO_JMP, "TRV_TILL_END:"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1804,14 +1794,110 @@ void LogicUnit::vGenerateQuery600b(void)
   vAddCode(EO_EQUAL);
   vAddCodeLabel(EO_JMP_TRUE, "TRV_RET:"_Stz);
   
-  vAddCode(EO_CRW_SRC_FETCH);
-  vAddCode(EO_RSB_DST_NEW);
-  vAddCode(EO_CRW_SRC_TORSB);
+  //vAddCode(EO_CRW_SRC_FETCH);
+  //vAddCode(EO_RSB_DST_NEW);
+  //vAddCode(EO_CRW_SRC_TORSB);
   //vAddCode(EO_RSB_DST_PRINT);
+  
+  vAddCode(EO_PUSH_MINUS1);
+  vAddCodeArg(EO_INTEGER,L_DISCOUNT);
+  vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
+  vAddCodeArg(EO_INTEGER,L_QUANTITY);
+  
+  vAddCode(EO_DUMP);
+  vAddCode(EO_COL_SRC_PUSHSET);
+  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_DISCOUNT);
+  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_EXTENDEDPRICE);
+  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_QUANTITY);
+  vAddCodeArg(EO_CALL, "AGG_600"_Stz);
   vAddCodeLabel(EO_JMP, "TRV_NXT:"_Stz);
-  
-  
+
   vDefineLabel("TRV_RET:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // aggregate
+  vDefineLabel("AGG_600:"_Stz);
+  
+  // new a rsb dst row if not there
+  vAddCode(EO_RSB_DST_TEST);
+  vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
+  vAddCode(EO_RSB_DST_NEW);
+  
+  // initialze the row
+  vAddCode(EO_PUSH_0);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
+  
+  //vAddCode(EO_RSB_DST_PRINT);
+  
+  // call the filter subroutine
+  vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "FILTER_FALSE:"_Stz);
+  
+  // call the aggregate subroutine
+  vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
+  vAddCode(EO_PUSH_0);
+  vAddCodeLabel(EO_JMP, "AGG_DONE:"_Stz);
+  
+  vDefineLabel("FILTER_FALSE:"_Stz);
+  vAddCode(EO_PUSH_0);
+  
+  vDefineLabel("AGG_DONE:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // FILTER SUBROUTINE
+  vDefineLabel("SUBROUTINE_FILTER:"_Stz);
+  
+  vAddCodeArg(EO_PUSH_LOCAL,L_DISCOUNT);
+  vAddCodeArg(EO_INTEGER, 5);
+  vAddCode(EO_GREATEREQUAL);
+  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
+  
+  vAddCodeArg(EO_PUSH_LOCAL,L_DISCOUNT);
+  vAddCodeArg(EO_INTEGER, 7);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
+  
+  vAddCodeArg(EO_PUSH_LOCAL,Q6_LOCAL_QUANTITY);
+  vAddCodeArg(EO_INTEGER, 2400);
+  vAddCode(EO_LESSTHAN);
+  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
+  
+  // return true
+  vAddCode(EO_PUSH_1);
+  vAddCodeLabel(EO_JMP,"RETURN:"_Stz);
+  
+  // return false
+  vDefineLabel("RETURN_FALSE:"_Stz);
+  vAddCode(EO_PUSH_0);
+  
+  // return
+  vDefineLabel("RETURN:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // AGGREGATE SUBROUTINE
+  vDefineLabel("SUBROUTINE_AGGREGATE:"_Stz);
+  
+  vAddCodeArg(EO_PUSH_LOCAL,Q6_LOCAL_DISCOUNT);
+  vAddCodeArg(EO_PUSH_LOCAL,Q6_LOCAL_EXTENDEDPRICE);
+  
+  vAddCode(EO_MULTIPLY);
+  vAddCodeArg(EO_INTEGER,100);
+  vAddCode(EO_DIVIDE);
+  
+  vAddCodeArg(EO_RSB_DST_PUSHCOLI,(i8)Q600_REVENUE);
+  vAddCode(EO_ADD);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
+  
+  // TEMP !!!
+  // COUNT(*) -> Q600_COUNT
+  //  vAddCodeArg(EO_RSB_DST_PUSHCOLI, (i8)Q600_COUNT);
+  //  vAddCode(EO_INC);
+  //  vAddCodeArg(EO_RSB_DST_POPCOLI, (i8)Q600_COUNT);
+  
   vAddCode(EO_RETURN);
 }
 

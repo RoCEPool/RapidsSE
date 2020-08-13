@@ -5,6 +5,7 @@
 void vDev_COL_NOT_PROJECT(void* aLU, i8 iArg);
 
 void vDev_CRW_BEGIN(void* aLU, void* aIXT);
+void vDev_CRW_COL_PUSHI(void* aLU, i8 iArg, i8** aaiDstk);
 void vDev_CRW_FETCH(void* aLU, void* aIXT);
 i8   iDev_CRW_NEXT(void* aLU, void* aIXT);
 void vDev_CRW_TORSB(void* aLU, void* aIXT);
@@ -75,6 +76,8 @@ void vDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk);
 
 i8   iDev_ALT_COL_PUSH(void* aLU, void* aRSB, i8 iArg);
 void vDev_ALT_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aamDstk);
+
+void vDev_SRC_COL_PUSHI(void* aLU, i8 iArg, i8** aamDstk);
 
 void vDev_PIX_STM_PRINT(void* aLU);
 

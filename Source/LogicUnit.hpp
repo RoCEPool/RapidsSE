@@ -8,7 +8,8 @@ namespace Expressions
   static const i8 C_LOGIC_DEV   = 16;
   static const i8 C_LOGIC_CODE  = C_4KB;
   static const i8 C_LOGIC_LABEL = 64;
-
+  static const i8 C_LOCALS      = 8;
+  
   // customer columns
   static const i8 C_CUSTKEY       = 0;
   static const i8 C_NAME          = 1;
@@ -48,7 +49,7 @@ namespace Expressions
   static const i8 O_SHIPPRIORITY  = 7;
   static const i8 O_COMMENT       = 8;
 
-
+  
   // query1 100 output
   static const i8 Q100_RETURNFLAG     = 0;  // L_RETURNFLAG
   static const i8 Q100_LINESTATUS     = 1;  // L_LINESTATUS
@@ -114,6 +115,12 @@ namespace Expressions
   static const i8 Q401_ORDERPRIORITY = 0;
   static const i8 Q401_ORDERCOUNT    = 1;
 
+  // query6 locals
+  static const i8 Q6_LOCAL_QUANTITY      = 0;
+  static const i8 Q6_LOCAL_EXTENDEDPRICE = 1;
+  static const i8 Q6_LOCAL_DISCOUNT      = 2;
+  static const i8 Q6_LOCAL_TOTAL         = 3;
+  
   // query6 600 output
   static const i8 Q600_REVENUE    = 0;  // SUM(L_EXTENDEDPRICE*L_DISCOUNT)
   static const i8 Q600_COLUMNS    = 1;  // TOTAL COLUMNS
@@ -223,6 +230,8 @@ namespace Expressions
     REG<Object>      m_xpRegister2; // general purpose reg 2[]
     REG<Object>      m_xpRegister3; // general purpose reg 3[]
   
+    i8               m_iLocals[C_LOCALS]; // locals regs []
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop
   
