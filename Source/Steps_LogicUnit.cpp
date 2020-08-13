@@ -80,7 +80,7 @@ void Step::vLogicUnitCallAgainFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_bCallAgain);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xRluCommon.m_bCallAgain);
   
   EXIT();
 }
@@ -94,7 +94,7 @@ void Step::vLogicUnitCallAgainStore(void)
 
   i8 iCallAgain = m_pDataStack->iPopInt(__func__);
   
-  m_pLogicUnit->m_bCallAgain = (bool)iCallAgain;
+  m_pLogicUnit->m_xRluCommon.m_bCallAgain = iCallAgain;
   
   EXIT();
 }

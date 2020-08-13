@@ -33,7 +33,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pSendNode  = nullptr;
   
   m_xpHandler  = nullptr;
-  m_bCallAgain = false;
+
   m_iDebugFlag = 0;
 
   m_xpNow = new Now;
@@ -1304,6 +1304,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_BREAKPOINT: ArgNil(); // breakpoint
         dLU0(EO_BREAKPOINT);
         vLib_BREAKPOINT(pLU);
+        break;//+endCase
+        
+      case EO_CALLAGAIN: ArgNil(); // set call again
+        dLU0(EO_CALLAGAIN);
+        aRluCommon->m_bCallAgain = true;
         break;//+endCase
         
       case EO_DUMP: ArgNil(); // stack dump

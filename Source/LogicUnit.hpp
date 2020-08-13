@@ -160,7 +160,6 @@ namespace Expressions
     Node*            m_pSendNode;  // node to send to
   
     REG<Word>        m_xpHandler;  // which handler is to be/was called
-    bool             m_bCallAgain; // call same handler again
   
     i8               m_iDebugFlag; // general purpose debug flag
   
@@ -220,7 +219,7 @@ namespace Expressions
     i8               m_iCounter0;   // counter
     i8               m_iCounter1;   // counter
     i8               m_iCounter2;   // counter
-    
+      
     Ent*             m_aLowerEntry;
     Ent*             m_aUpperEntry;
     EntBuffer*       m_pEntBufferOuter;
