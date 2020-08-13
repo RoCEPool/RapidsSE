@@ -535,9 +535,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEC
   { EA_NONE,    0 },  // EO_DUP
   { EA_NONE,    0 },  // EO_POP
-  { EA_NONE,    8 },  // EO_POP_LOCAL
+  { EA_INT,     8 },  // EO_POP_LOCAL
   { EA_NONE,    0 },  // EO_PRINT
-  { EA_NONE,    8 },  // EO_PUSH_LOCAL
+  { EA_INT,     8 },  // EO_PUSH_LOCAL
   
   // string operators
   { EA_NONE,    0 },  // EO_STR_COMPARE

@@ -144,6 +144,27 @@ void vLib_PTN_RUNNING(void* pLU, i8 iTopA)
   PtnLib::vRunning(&aRluCommon->m_iHash,iTopA);
 }
 
+/*----------------------------------------------------------------------------*/
+/* mix top into running m_iHash                                               */
+/*----------------------------------------------------------------------------*/
+void vLib_SET_LOCAL(void* pLU, i8 iArg, i8 iTopA)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  pLogicUnit->m_iLocals[iArg] = iTopA;
+}
+
+/*----------------------------------------------------------------------------*/
+/* mix top into running m_iHash                                               */
+/*----------------------------------------------------------------------------*/
+i8 iLib_GET_LOCAL(void* pLU, i8 iArg)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  return pLogicUnit->m_iLocals[iArg];
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

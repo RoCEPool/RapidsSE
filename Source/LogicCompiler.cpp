@@ -25,7 +25,8 @@ DynamicSymbol gxaDynamicSymbol[]
 {
   { "iDev_ALT_COL_PUSH"_Stz,      (const void *) iDev_ALT_COL_PUSH      },
   { "vDev_ALT_COL_PUSHI"_Stz,     (const void *) vDev_ALT_COL_PUSHI     },
-
+  { "vDev_SRC_COL_PUSHI"_Stz,     (const void *) vDev_SRC_COL_PUSHI     },
+  
   { "vDev_COL_NOT_PROJECT"_Stz,   (const void *) vDev_COL_NOT_PROJECT   },
 
   { "vDev_CRW_BEGIN"_Stz,         (const void *) vDev_CRW_BEGIN         },
@@ -97,10 +98,12 @@ DynamicSymbol gxaDynamicSymbol[]
   { "szLib_DTE_PRINT"_Stz,        (const void *) szLib_DTE_PRINT        },
   { "iLib_DTE_YEAR"_Stz,          (const void *) iLib_DTE_YEAR          },
   { "vLib_ERROR"_Stz,             (const void *) vLib_ERROR             },
+  { "iLib_GET_LOCAL"_Stz,         (const void *) iLib_GET_LOCAL         },
   { "vLib_HSH_ADD_HASHI"_Stz,     (const void *) vLib_HSH_ADD_HASHI     },
   { "vLib_PTN_CALC"_Stz,          (const void *) vLib_PTN_CALC          },
   { "vLib_PTN_RUNNING"_Stz,       (const void *) vLib_PTN_RUNNING       },
   { "iLib_RANDOM"_Stz,            (const void *) iLib_RANDOM            },
+  { "vLib_SET_LOCAL"_Stz,         (const void *) vLib_SET_LOCAL         },
   { "vLib_SLEEP"_Stz,             (const void *) vLib_SLEEP             },
   { "iLib_STR_COMPARE"_Stz,       (const void *) iLib_STR_COMPARE       },
     
@@ -457,8 +460,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 //    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
     // timer begin
-    sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
-    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    //sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
+    //StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
     
 
     if (EO_CALL == eCode) {
@@ -510,8 +513,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     }
     
     // timer end
-    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
-    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    //sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
+    //StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
 #ifdef WITH_TRACE_LOGICUNIT
     // count no of newlines in the fragment
@@ -722,8 +725,8 @@ void LogicCompiler::v_DynPreliminary(void)
   "      nSize = *(aiDstk--);"
   "      aiDstk -= (nSize / 8) + 2;"
   "\n"
-  "\n  #define JumpTo(__iArg,__EO) { vRlu_ENDTMR(pLU,(i8)__EO); goto L_##__iArg; }"
-  "\n  //#define JumpTo(__iArg,__EO) goto L_##__iArg;"
+  "\n  //#define JumpTo(__iArg,__EO) { vRlu_ENDTMR(pLU,(i8)__EO); goto L_##__iArg; }"
+  "\n  #define JumpTo(__iArg,__EO) goto L_##__iArg;"
   "\n"
   "";
   

@@ -1771,12 +1771,22 @@ void LogicUnit::vGenerateQuery600b(void)
   vDefineLabel("TRV_TILL_END:"_Stz);
   vAddCode(EO_IXT_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+  
+  vAddCode(EO_CRW_SRC_FETCH);
+  //vAddCode(EO_DUMP);
+  vAddCode(EO_PUSH_MINUS1);
+  vAddCodeArg(EO_INTEGER,L_DISCOUNT);
+  vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
+  vAddCodeArg(EO_INTEGER,L_QUANTITY);
+  
   vAddCode(EO_COL_SRC_PUSHSET);
+
   vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_DISCOUNT);
   vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_EXTENDEDPRICE);
   vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_QUANTITY);
-  vAddCodeArg(EO_CALL, "AGG_600"_Stz);
-  //vAddCode(EO_CRW_SRC_FETCH);
+  //vAddCode(EO_DUMP);
+  vAddCodeLabel(EO_CALL, "AGG_600:"_Stz);
+  vAddCode(EO_CRW_SRC_FETCH);
   //vAddCode(EO_RSB_DST_NEW);
   //vAddCode(EO_CRW_SRC_TORSB);
   //vAddCode(EO_RSB_DST_PRINT);
@@ -1793,22 +1803,24 @@ void LogicUnit::vGenerateQuery600b(void)
   vAddCode(EO_EQUAL);
   vAddCodeLabel(EO_JMP_TRUE, "TRV_RET:"_Stz);
   
-  //vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_CRW_SRC_FETCH);
   //vAddCode(EO_RSB_DST_NEW);
   //vAddCode(EO_CRW_SRC_TORSB);
   //vAddCode(EO_RSB_DST_PRINT);
   
+  //vAddCode(EO_DUMP);
   vAddCode(EO_PUSH_MINUS1);
   vAddCodeArg(EO_INTEGER,L_DISCOUNT);
   vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
   vAddCodeArg(EO_INTEGER,L_QUANTITY);
   
-  vAddCode(EO_DUMP);
   vAddCode(EO_COL_SRC_PUSHSET);
+  
   vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_DISCOUNT);
   vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_EXTENDEDPRICE);
   vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_QUANTITY);
-  vAddCodeArg(EO_CALL, "AGG_600"_Stz);
+  //vAddCode(EO_DUMP);
+  vAddCodeLabel(EO_CALL, "AGG_600:"_Stz);
   vAddCodeLabel(EO_JMP, "TRV_NXT:"_Stz);
 
   vDefineLabel("TRV_RET:"_Stz);
@@ -1821,7 +1833,7 @@ void LogicUnit::vGenerateQuery600b(void)
   
   // new a rsb dst row if not there
   vAddCode(EO_RSB_DST_TEST);
-  vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"FILTER:"_Stz);
   vAddCode(EO_RSB_DST_NEW);
   
   // initialze the row
@@ -1831,16 +1843,17 @@ void LogicUnit::vGenerateQuery600b(void)
   //vAddCode(EO_RSB_DST_PRINT);
   
   // call the filter subroutine
+  vDefineLabel("FILTER:"_Stz);
   vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
-  vAddCodeLabel(EO_JMP_FALSE, "FILTER_FALSE:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "AGG_DONE:"_Stz);
   
   // call the aggregate subroutine
   vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
-  vAddCode(EO_PUSH_0);
+  //vAddCode(EO_PUSH_0);
   vAddCodeLabel(EO_JMP, "AGG_DONE:"_Stz);
   
-  vDefineLabel("FILTER_FALSE:"_Stz);
-  vAddCode(EO_PUSH_0);
+  //vDefineLabel("FILTER_FALSE:"_Stz);
+  //vAddCode(EO_PUSH_0);
   
   vDefineLabel("AGG_DONE:"_Stz);
   vAddCode(EO_RETURN);
@@ -1849,12 +1862,12 @@ void LogicUnit::vGenerateQuery600b(void)
   // FILTER SUBROUTINE
   vDefineLabel("SUBROUTINE_FILTER:"_Stz);
   
-  vAddCodeArg(EO_PUSH_LOCAL,L_DISCOUNT);
+  vAddCodeArg(EO_PUSH_LOCAL,Q6_LOCAL_DISCOUNT);
   vAddCodeArg(EO_INTEGER, 5);
   vAddCode(EO_GREATEREQUAL);
   vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
   
-  vAddCodeArg(EO_PUSH_LOCAL,L_DISCOUNT);
+  vAddCodeArg(EO_PUSH_LOCAL,Q6_LOCAL_DISCOUNT);
   vAddCodeArg(EO_INTEGER, 7);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);

@@ -1071,7 +1071,7 @@ void vDev_SRC_COL_PUSHI(void* aLU, i8 iArg, i8** aaiDstk)
   
   RowInflator::vInflateColI_stk(aaiDstk,
                                 pLogicUnit->m_pDevSrcIxt->m_aCrw,
-                                *pLogicUnit->m_xpStreamDef);
+                                *pLogicUnit->m_xpStreamDefOut);
 }
 
 /*----------------------------------------------------------------------------*/

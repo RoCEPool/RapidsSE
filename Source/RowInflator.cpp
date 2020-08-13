@@ -446,8 +446,10 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
     }
 
     // move to next column to retrieve
-    if (++i_WhichCol >= nWhichCols)
+    if (++i_WhichCol >= nWhichCols) {
+      *aaiDstk = --aiColVal;
       return;
+    }
     
     i_ColToRetrieve = iWhichCol[i_WhichCol];
   }
