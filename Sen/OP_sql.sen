@@ -244,13 +244,6 @@
       StreamDef[].pipeout
     endof
 
-    601 of
-      //queryNo "QUERY %v" .printf
-      601 LogicUnit[].genCode
-      logicCompiler[].new
-      logicCompiler[].compile
-    endof
-
     602 of
       //queryNo "QUERY %v" .printf
       602 LogicUnit[].genCode
@@ -429,6 +422,52 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: sql_PulseMarker_600
+
+  //"++++++++++++++++++++++++++++ 600=PULSEMARKER ++++++++++++++++++++++++++++" .
+
+  0 locals| pColumn |
+
+  ZK_PULSEMARKER_handler
+
+  // new a streamDef from table
+  table[] StreamDef[].new
+
+  // new a streamDef to be piped out
+  StreamDefOut[].new
+
+  // add column SUM(L_EXTENDEDPRICE*L_DISCOUNT) as REVENUE
+  5 StreamDef[].column@ to pColumn
+
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "revenue"
+  StreamDefOut[].addColumn
+
+  // add column COUNT(*)
+  //0 19 CT_INTEGER "count"
+  //StreamDefOut[].addColumn
+
+  // messy !!!
+  StreamDefOut[].duplicate to Operand[]
+  StreamDefOut[].pipeout
+  Operand[] to StreamDefOut[]
+  nullptr to Operand[]
+  true Pot[].useStreamDefOut
+
+  LogicUnit[].DynFun
+  Pot[].pipeoutAllCompleted
+  Pot[].pipeoutAllDangling
+
+  // pipeout an EOS MARKER
+  Operand[].newEosMarker
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
 : sql_PulseMarker \handler
@@ -465,26 +504,7 @@
     400 of sql_PulseMarker_400   endof
     401 of sql_PulseMarker_401   endof
 
-    600 of
-      //"++++++++++++++++++++++++++++ 600=PULSEMARKER ++++++++++++++++++++++++++++" .
-      ZK_PULSEMARKER_handler
-      // pipe out a new a stream def
-      Operand[].newStreamDef
-      Operand[] to StreamDef[]
-      nullptr to Operand[]
-      StreamDef[].duplicate to StreamDefOut[]
-      true Pot[].useStreamDefOut
-      StreamDef[].pipeout
-
-      LogicUnit[].DynFun
-      Pot[].pipeoutAllCompleted
-      Pot[].pipeoutAllDangling
-
-      // pipeout an EOS MARKER
-      Operand[].newEosMarker
-      Operand[].pipeOut
-
-    endof
+    600 of sql_PulseMarker_600   endof
 
     //"++++++++++++++++++++++++++++ OTHER=PULSEMARKER ++++++++++++++++++++++++++++" .
     ZK_PULSEMARKER_handler
@@ -563,15 +583,6 @@
       Operand[].delete
       Pot[].pipeoutAllCompleted
 
-    endof
-
-    601 of
-      //"---------------------------- 601=RSBBUFFER ----------------------------" .
-      Operand[].pipeIn
-      Operand[].asSrcRowSlab
-      LogicUnit[].dynFun
-      Operand[].delete
-      Pot[].pipeoutAllCompleted
     endof
 
     602 of
@@ -861,35 +872,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ... (601)                                        STREAMDEF */
-/*----------------------------------------------------------------------------*/
-: sql_StreamDef_601
-
-  0 locals| pColumn |
-
-  StreamDefOut[].new
-
-  // add column SUM(L_EXTENDEDPRICE*L_DISCOUNT) as REVENUE
-  5 StreamDef[].column@ to pColumn
-
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "revenue"
-  StreamDefOut[].addColumn
-
-  // add column COUNT(*)
-  //0 19 CT_INTEGER "count"
-  //StreamDefOut[].addColumn
-
-  StreamDef[].delete
-  StreamDefOut[].duplicate to StreamDef[]
-  StreamDef[].pipeout
-
-  //StreamDefOut[].print
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : sql_StreamDef \handler
@@ -939,11 +921,6 @@
     endof
 
     401 of
-    endof
-
-    601 of
-      sql_StreamDef_601
-      true Pot[].useStreamDefOut
     endof
 
     602 of
