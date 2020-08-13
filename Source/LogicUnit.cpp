@@ -1311,6 +1311,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aRluCommon->m_bCallAgain = true;
         break;//+endCase
         
+      case EO_CALLEDAGAIN: ArgNil(); // push called again
+        dLU0(EO_CALLEDAGAIN);
+        *(++aiDstk) = aRluCommon->m_bCalledAgain;
+        break;//+endCase
+        
       case EO_DUMP: ArgNil(); // stack dump
         dLU0(EO_DUMP);
         vRlu_DUMP(pLU,aiDstk);

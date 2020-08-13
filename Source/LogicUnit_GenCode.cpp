@@ -686,6 +686,7 @@ void LogicUnit::vGenerateQuery300(void)
   vDefineLabel("GOT_CUS:"_Stz);
   //vAddCode(EO_IXT_SRC_PRINT);
   
+  vDefineLabel("AGAIN:"_Stz);
   vAddCode(EO_INTEGRITY);
 
   vAddCode(EO_CRW_SRC_FETCH);
