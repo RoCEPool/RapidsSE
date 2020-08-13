@@ -329,7 +329,10 @@
       LogicUnit[].callAgain@ if
 
         debug::flag@ if "(Revised) Calling handler AGAIN operand" . then
+
         false LogicUnit[].callAgain!
+        true LogicUnit[].calledAgain!
+
         LogicUnit[].handler@ execute
 
       else
