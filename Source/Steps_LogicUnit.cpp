@@ -17,7 +17,9 @@ void Step::vAddSteps_LogicUnit(void)
     
   vAddStep("LogicUnit[].callAgain@"_Stz,    &Step::vLogicUnitCallAgainFetch);
   vAddStep("LogicUnit[].callAgain!"_Stz,    &Step::vLogicUnitCallAgainStore);
-  
+  vAddStep("LogicUnit[].calledAgain@"_Stz,  &Step::vLogicUnitCalledAgainFetch);
+  vAddStep("LogicUnit[].calledAgain!"_Stz,  &Step::vLogicUnitCalledAgainStore);
+
   vAddStep("LogicUnit[].dev@"_Stz,          &Step::vLogicUnitDevFetch);
   vAddStep("LogicUnit[].dev!"_Stz,          &Step::vLogicUnitDevStore);
   
@@ -95,6 +97,32 @@ void Step::vLogicUnitCallAgainStore(void)
   i8 iCallAgain = m_pDataStack->iPopInt(__func__);
   
   m_pLogicUnit->m_xRluCommon.m_bCallAgain = iCallAgain;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].calledAgain@ --                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitCalledAgainFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xRluCommon.m_bCalledAgain);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].calledAgain! --                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitCalledAgainStore(void)
+{
+  ENTRY();
+
+  i8 iCallAgain = m_pDataStack->iPopInt(__func__);
+  
+  m_pLogicUnit->m_xRluCommon.m_bCalledAgain = iCallAgain;
   
   EXIT();
 }

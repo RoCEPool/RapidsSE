@@ -898,6 +898,8 @@ public:
   // logic unit
   void vLogicUnitCallAgainFetch(void);
   void vLogicUnitCallAgainStore(void);
+  void vLogicUnitCalledAgainFetch(void);
+  void vLogicUnitCalledAgainStore(void);
   void vLogicUnitDynFun(void);
   void vLogicUnitDynFunArgs(void);
   void vLogicUnitGenCode(void);

@@ -186,6 +186,23 @@
       logicCompiler[].new
       LogicCompiler[].compile
 
+
+      "customer" "customer_Idx1" op__table_index assert
+
+      Table[].asSrcStreamDef
+
+      Index[].indexTree to IndexTree[]
+      IndexTree[].asSrc
+
+
+      "orders" "orders_Idx2" op__table_index assert
+
+      Table[].asAltStreamDef
+
+      Index[].indexTree to IndexTree[]
+      IndexTree[].asAlt
+
+
       streamDefOut_300
       true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
@@ -297,20 +314,6 @@
 
   ZK_PULSEMARKER_handler
 
-  "customer" "customer_Idx1" op__table_index assert
-
-  Table[].asSrcStreamDef
-
-  Index[].indexTree to IndexTree[]
-  IndexTree[].asSrc
-
-
-  "orders" "orders_Idx2" op__table_index assert
-
-  Table[].asAltStreamDef
-
-  Index[].indexTree to IndexTree[]
-  IndexTree[].asAlt
 
 
   //LogicUnit[].transform
