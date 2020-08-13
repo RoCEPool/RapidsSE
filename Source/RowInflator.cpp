@@ -53,12 +53,11 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  i8* aiDstk_lcl = *aaiDstk;
   
   i8 i_WhichCol = 0;
   i_ColToRetrieve = iWhichCol[i_WhichCol];
-  
-  i8* aiColVal = ++*aaiDstk;
-  
+    
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
         
     eMetaCode = *aeMetaCode++;
@@ -105,7 +104,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_NULL:
-        *aiColVal++ = C_DATUM_NULL;
+        *++aiDstk_lcl = C_DATUM_NULL;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -114,7 +113,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
       case MC_INT_1B:
       case MC_IVL_1B:
       case MC_TME_1B:
-        *aiColVal++ = *(u1*)(ayDataByte);
+        *++aiDstk_lcl = *(u1*)(ayDataByte);
         ayDataByte += C_1B;
         break;
         
@@ -124,7 +123,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
       case MC_INT_2B:
       case MC_IVL_2B:
       case MC_TME_2B:
-        *aiColVal++ = *(u2*)(ayDataByte);
+        *++aiDstk_lcl = *(u2*)(ayDataByte);
         ayDataByte += C_2B;
         break;
         
@@ -138,7 +137,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         wWord.m_yaByte[2] = *ayDataByte++;
-        *aiColVal++ = wWord.m_iI8;
+        *++aiDstk_lcl = wWord.m_iI8;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -147,7 +146,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
       case MC_INT_4B:
       case MC_IVL_4B:
       case MC_TME_4B:
-        *aiColVal++ = *(u4*)(ayDataByte);
+        *++aiDstk_lcl = *(u4*)(ayDataByte);
         ayDataByte += C_4B;
         break;
         
@@ -163,7 +162,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
         wWord.m_yaByte[2] = *ayDataByte++;
         wWord.m_yaByte[3] = *ayDataByte++;
         wWord.m_yaByte[4] = *ayDataByte++;
-        *aiColVal++ = wWord.m_iI8;
+        *++aiDstk_lcl = wWord.m_iI8;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -179,7 +178,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
         wWord.m_yaByte[3] = *ayDataByte++;
         wWord.m_yaByte[4] = *ayDataByte++;
         wWord.m_yaByte[5] = *ayDataByte++;
-        *aiColVal++ = wWord.m_iI8;
+        *++aiDstk_lcl = wWord.m_iI8;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -196,7 +195,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
         wWord.m_yaByte[4] = *ayDataByte++;
         wWord.m_yaByte[5] = *ayDataByte++;
         wWord.m_yaByte[6] = *ayDataByte++;
-        *aiColVal++ = wWord.m_iI8;
+        *++aiDstk_lcl = wWord.m_iI8;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -206,117 +205,118 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
       case MC_IVL_8B:
       case MC_TME_8B:
       case MC_TSP_8B:
-        *aiColVal++ = *(u8*)(ayDataByte);
+        *++aiDstk_lcl = *(u8*)(ayDataByte);
         ayDataByte += C_8B;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_M_ONE:
       case MC_INT_M_ONE:
-        *aiColVal++ = -1;
+        *++aiDstk_lcl = -1;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_ZERO:
       case MC_INT_ZERO:
-        *aiColVal++ =  0;
+        *++aiDstk_lcl =  0;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_ONE:
       case MC_INT_ONE:
-        *aiColVal++ =  1;
+        *++aiDstk_lcl =  1;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_TWO:
       case MC_INT_TWO:
-        *aiColVal++ =  2;
+        *++aiDstk_lcl =  2;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_THREE:
       case MC_INT_THREE:
-        *aiColVal++ =  3;
+        *++aiDstk_lcl =  3;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_FOUR:
       case MC_INT_FOUR:
-        *aiColVal++ =  4;
+        *++aiDstk_lcl =  4;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_FIVE:
       case MC_INT_FIVE:
-        *aiColVal++ =  5;
+        *++aiDstk_lcl =  5;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_SIX:
       case MC_INT_SIX:
-        *aiColVal++ =  6;
+        *++aiDstk_lcl =  6;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_SEVEN:
       case MC_INT_SEVEN:
-        *aiColVal++ =  7;
+        *++aiDstk_lcl =  7;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_EIGHT:
       case MC_INT_EIGHT:
-        *aiColVal++ =  8;
+        *++aiDstk_lcl =  8;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_NINE:
       case MC_INT_NINE:
-        *aiColVal++ =  9;
+        *++aiDstk_lcl =  9;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BCD_TEN:
       case MC_INT_TEN:
-        *aiColVal++ = 10;
+        *++aiDstk_lcl = 10;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BOL_FALSE:
-        *aiColVal++ =  0;
+        *++aiDstk_lcl =  0;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BOL_TRUE:
-        *aiColVal++ =  1;
+        *++aiDstk_lcl =  1;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DTE_E0_2B:
-        *aiColVal++ = *(u2*)ayDataByte;
+        *++aiDstk_lcl = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((aiColVal-1),C_ERA_0);
+        vDteFromEdt(aiDstk_lcl,C_ERA_0);
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DTE_E1_2B:
-        *aiColVal++ = *(u2*)ayDataByte;
+        *++aiDstk_lcl = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((aiColVal-1),C_ERA_1);
+        vDteFromEdt(aiDstk_lcl,C_ERA_1);
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DTE_E2_2B:
-        *aiColVal++ = *(u2*)ayDataByte;
+        *++aiDstk_lcl = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((aiColVal-1),C_ERA_2);
+        vDteFromEdt(aiDstk_lcl,C_ERA_2);
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_STR_EMPTY:
-        *(char**)(aiColVal++) = acString;
-        *acString++ = '\0';
+      case MC_STR_EMPTY: // not implemented yet
+        RASSERT(0);
+        //*(char**)(aiColVal++) = acString;
+        //*acString++ = '\0';
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -335,7 +335,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
         
         nLength = *(u1*)ayDataByte++;
         
-        acString = (char*)*aaiDstk;
+        acString = (char*)++aiDstk_lcl;
         
         MemLib::vCopy((byte*)acString,
                       (byte*)ayDataByte,
@@ -345,8 +345,8 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
         acString   += nLength;
         *acString++ = '\0';
         
-        *aaiDstk += (nLength+1) / 8 + 1;
-        *(++*aaiDstk) = nLength+1;
+        aiDstk_lcl += (nLength+1) / 8 + 1;
+        *++aiDstk_lcl = nLength+1;
 
         ayDataByte += nLength;
         
@@ -374,6 +374,8 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         nLength = wWord.m_iI8;
+        
+        acString = (char*)++aiDstk_lcl;
         
         MemLib::vCopy((byte*)acString,
                      (byte*)ayDataByte,
@@ -446,8 +448,10 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
     }
 
     // move to next column to retrieve
-    if (++i_WhichCol >= nWhichCols)
+    if (++i_WhichCol >= nWhichCols) {
+      *aaiDstk = aiDstk_lcl;
       return;
+    }
     
     i_ColToRetrieve = iWhichCol[i_WhichCol];
   }
