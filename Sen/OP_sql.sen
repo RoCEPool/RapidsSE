@@ -310,25 +310,29 @@
 /*----------------------------------------------------------------------------*/
 : sql_PulseMarker_300
 
-  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 300=PULSEMARKER" .
+  //"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 300=PULSEMARKER" .
 
   LogicUnit[].calledAgain@ not if
-    ZK_PULSEMARKER_handler
+    PipeIn[].pipeOut // ZK_PULSEMARKER_handler
   then
 
 
   //LogicUnit[].transform
   LogicUnit[].dynFun
 
-  Pot[].pipeoutAllDanglingPtns
-  Pot[].delete
+  false LogicUnit[].calledAgain!
 
-  LogicUnit[].callAgain@ not if
+  Pot[].pipeoutAllDanglingPtns
+
+
+  LogicUnit[].callAgain@ if
+    true
+  else
     Operand[].newEosMarker
     Operand[].pipeOut
+    Pot[].delete
+    true
   then
-
-  false LogicUnit[].calledAgain!
 ;
 
 /*----------------------------------------------------------------------------*/

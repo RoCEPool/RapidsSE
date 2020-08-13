@@ -1308,7 +1308,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_CALLAGAIN: ArgNil(); // set call again
         dLU0(EO_CALLAGAIN);
-        aRluCommon->m_bCallAgain = true;
+        aRluCommon->m_bCallAgain = 1;
         break;//+endCase
         
       case EO_CALLEDAGAIN: ArgNil(); // push called again
