@@ -673,7 +673,7 @@ void LogicUnit::vGenerateQuery300(void)
   vDefineLabel("QRY_300:"_Stz);
   vAddCode(EO_INIT);
   vAddCode(EO_INTEGRITY);
-  vAddCode(EO_DUMP);
+  //vAddCode(EO_DUMP);
 
   //vAddCodeString(EO_STR_LITERAL,"**QRY_300**"_Stz);
   //vAddCode(EO_STR_PRINTADR);
@@ -693,6 +693,7 @@ void LogicUnit::vGenerateQuery300(void)
   //vAddCode(EO_STR_PRINTSTK);
   
   vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
+  //vAddCode(EO_DUMP);
   vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);
   vAddCode(EO_STR_COMPARE);
   vAddCodeLabel(EO_JMP_NOTEQUAL,"NXT_CUS:"_Stz);
@@ -773,11 +774,11 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_INTEGER,O_ORDERDATE);         // 4
   vAddCodeArg(EO_INTEGER,O_ORDERKEY);          // 0
   
-  vAddCode(EO_DUMP);
+  //vAddCode(EO_DUMP);
 
   vAddCode(EO_COL_ALT_PUSHSET);
 
-  vAddCode(EO_DUMP);
+  //vAddCode(EO_DUMP);
 
   vAddCode(EO_RSB_DST_NEW);
   
