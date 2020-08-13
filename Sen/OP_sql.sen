@@ -322,12 +322,11 @@
 
   false LogicUnit[].calledAgain!
 
-  Pot[].pipeoutAllDanglingPtns
-
-
   LogicUnit[].callAgain@ if
+    Pot[].pipeoutAllCompletedPtns
     true
   else
+    Pot[].pipeoutAllDanglingPtns
     Operand[].newEosMarker
     Operand[].pipeOut
     Pot[].delete
