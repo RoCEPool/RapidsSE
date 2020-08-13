@@ -766,14 +766,18 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_PTN_CALC);
   
   
-#if 0
+#if 1
   
   vAddCode(EO_PUSH_MINUS1);
   vAddCodeArg(EO_INTEGER,O_SHIPPRIORITY);      // 7
   vAddCodeArg(EO_INTEGER,O_ORDERDATE);         // 4
   vAddCodeArg(EO_INTEGER,O_ORDERKEY);          // 0
   
+  vAddCode(EO_DUMP);
+
   vAddCode(EO_COL_ALT_PUSHSET);
+
+  vAddCode(EO_DUMP);
 
   vAddCode(EO_RSB_DST_NEW);
   

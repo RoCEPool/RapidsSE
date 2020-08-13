@@ -694,7 +694,7 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 
   i8* aiDstkBase = pLogicUnit->m_xRluCommon.m_iaDataStack;
   i8  nUsageBytes = nDifference(pLogicUnit->m_xRluCommon.m_iaDataStack,
-                                pLogicUnit->m_xRluCommon.m_iaDataStack)
+                                aiDstk)
                      + 8;
   
   vTrace("\nRlu_Dump: base %llx ; aiDstk %llx ; %lld bytes usage\n"_Stz,
