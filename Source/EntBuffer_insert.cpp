@@ -718,28 +718,16 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   Key* aKey = aEntry->aKey();
   
   if (0 == m_iBufferHeight) {
-    vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
-    //vPositionPriorVecEntry_Alka01(aKey, xPriorVec, nullptr);
-    //vPriorVecInsertedKey_Ray01(aEntry, xPriorVec);
-    //vPositionPriorVecEntry_Ray04(aKey, xPriorVec);
-//
-//    for (i8 i_Lvl = 0; i_Lvl < AM::nLvlLevels(); i_Lvl++)
-//      if (xPriorVec2[i_Lvl] != xPriorVec[i_Lvl]) {
-//        vShow();
-//        vDumpPriorVec(xPriorVec);
-//        vDumpPriorVec(xPriorVec2);
-//        vPositionPriorVecEntry_Ray04(aKey, xPriorVec2);
-//        vDumpPriorVec(xPriorVec2);
-//        vDebugPoint();
-//      }
+    if (KE_GENERAL == m_eEntKind)
+      vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
+    else
+      vPositionPriorVecEntry_Ray04(aKey, xPriorVec);
   }
   else {
     EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
     vPositionPriorVecBuffer(aKey, xPriorVec, pToBuffer);
   }
-  
-  //vDumpPriorVec(xPriorVec);
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set prior offsets
   
@@ -751,9 +739,58 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
     aEntry->vNextEntry(i_Level,tNextOffset);
     xPriorVec[i_Level]->vNextEntry(i_Level,tEntry);
   }
-  
-  //vShow();
 }
+/*----------------------------------------------------------------------------*/
+//void EntBuffer::vInsertEntSkipList(Ent* aEntry)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // find the entry after which the new entry will be inserted
+//
+//  Ent* xPriorVec[C_MAX_LVL_LEVELS];
+//  Ent* xPriorVec2[C_MAX_LVL_LEVELS];
+//
+//  Key* aKey = aEntry->aKey();
+//
+//  if (0 == m_iBufferHeight) {
+//    vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
+//    //vPositionPriorVecEntry_Alka01(aKey, xPriorVec, nullptr);
+//    //vPriorVecInsertedKey_Ray01(aEntry, xPriorVec);
+//    //vPositionPriorVecEntry_Ray04(aKey, xPriorVec);
+////
+////    for (i8 i_Lvl = 0; i_Lvl < AM::nLvlLevels(); i_Lvl++)
+////      if (xPriorVec2[i_Lvl] != xPriorVec[i_Lvl]) {
+////        vShow();
+////        vDumpPriorVec(xPriorVec);
+////        vDumpPriorVec(xPriorVec2);
+////        vPositionPriorVecEntry_Ray04(aKey, xPriorVec2);
+////        vDumpPriorVec(xPriorVec2);
+////        vDebugPoint();
+////      }
+//  }
+//  else {
+//    EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
+//    vPositionPriorVecBuffer(aKey, xPriorVec, pToBuffer);
+//  }
+//
+//  //vDumpPriorVec(xPriorVec);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // set prior offsets
+//
+//  tET tEntry = tToTicket(aEntry);
+//
+//  i8 nLevels = aEntry->nSkipLevels();
+//  for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
+//    tET tNextOffset = xPriorVec[i_Level]->tNextEntry(i_Level);
+//    aEntry->vNextEntry(i_Level,tNextOffset);
+//    xPriorVec[i_Level]->vNextEntry(i_Level,tEntry);
+//  }
+//
+//  //vShow();
+//}
+
 
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree (handling ripple upwards)        */
