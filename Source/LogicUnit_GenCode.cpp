@@ -677,7 +677,7 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_CTR_0_POP);
 
   
-
+  // test if rtn has been called again
   vAddCode(EO_CALLEDAGAIN);
   vAddCodeLabel(EO_JMP_TRUE,"PRC_CUS:"_Stz);
 
