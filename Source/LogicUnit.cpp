@@ -1323,6 +1323,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vRlu_DUMP(pLU,aiDstk);
         break;//+endCase
               
+      case EO_ENTER: ArgNil(); //  diarise routine enter
+        dLU0(EO_ENTER);
+        break;//+endCase
+        
+      case EO_EXIT: ArgNil(); // diarise routine exit
+        dLU0(EO_EXIT);
+        break;//+endCase
+        
       case EO_INIT: ArgNil(); // initialise the rlu common
         dLU0(EO_INIT);
         aRluCommon = aRlu_INIT(pLU);

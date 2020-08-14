@@ -91,6 +91,8 @@ enum eEO : u1 // expression operators
   /*    */ EO_CALLAGAIN,        // set call again
   /*    */ EO_CALLEDAGAIN,      // push called again
   /*    */ EO_DUMP,             // stack dump
+  /*    */ EO_ENTER,            // diarise routine enter
+  /*    */ EO_EXIT,             // diarise routine exit
   /*    */ EO_INIT,             // initialise the rlu common
   /*    */ EO_INTEGRITY,        // integrity check
   /*    */ EO_SANITY,           // sanity check
@@ -327,6 +329,8 @@ static Stz* aEO[]
   /*    */ "EO_CALLAGAIN"_Stz,
   /*    */ "EO_CALLEDAGAIN"_Stz,
   /*    */ "EO_DUMP"_Stz,
+  /*    */ "EO_ENTER"_Stz,
+  /*    */ "EO_EXIT"_Stz,
   /*    */ "EO_INIT"_Stz,
   /*    */ "EO_INTEGRITY"_Stz,
   /*    */ "EO_SANITY"_Stz,
@@ -567,6 +571,8 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_CALLAGAIN
   { EA_NONE,    0 },  // EO_CALLEDAGAIN
   { EA_NONE,    0 },  // EO_DUMP
+  { EA_NONE,    0 },  // EO_ENTER
+  { EA_NONE,    0 },  // EO_EXIT
   { EA_NONE,    0 },  // EO_INIT
   { EA_NONE,    0 },  // EO_INTEGRITY
   { EA_NONE,    0 },  // EO_SANITY
