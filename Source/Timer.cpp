@@ -124,9 +124,11 @@ i8 Timer::iNanoseconds(void)
 
   i8 iTicksPerSec = TickingDevice::iTicksPerSec();
   
-  i8 iNano = (iTicks * C_1G) / iTicksPerSec;
+  //i8 iNano = (iTicks * C_1G) / iTicksPerSec;
   
-  return iNano;
+  i16 iNano = ((i16)iTicks * (i16)C_1G) / (i16)iTicksPerSec;
+  
+  return (i8)iNano;
 }
 
 /*----------------------------------------------------------------------------*/
