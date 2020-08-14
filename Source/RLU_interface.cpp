@@ -54,6 +54,30 @@ void vRlu_ENDTMR(void* aLU, i8 iCode)
   pLogicUnit->m_pLogicTimer->vEndTmr((eEO)iCode);
 }
 
+/*----------------------------------------------------------------------------*/
+/* diarise enter                                                              */
+/*----------------------------------------------------------------------------*/
+void vRlu_ENTER(void* aLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  pLogicUnit->vEnter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* diarise exit                                                               */
+/*----------------------------------------------------------------------------*/
+void vRlu_EXIT(void* aLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  pLogicUnit->vExit();
+}
+
 
 
 /*----------------------------------------------------------------------------*/

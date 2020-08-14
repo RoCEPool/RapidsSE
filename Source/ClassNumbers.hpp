@@ -224,6 +224,7 @@ enum eCN : u2 // Class Number
   /* */ CN_RESPONSE,
   /* */ CN_RESPONSEVEC,
   /* */ CN_RESULT,
+  /* */ CN_RLUDIARY,
   /* */ CN_RN_RAND,
   /* */ CN_ROUTINE,
   /* */ CN_ROW,
@@ -335,7 +336,6 @@ enum eCN : u2 // Class Number
   /* */ CN_WORD,
 
   /* */ CN__X__,
-  /* */
   /* */ CN_XMITOPERAND,
   /* */ CN_XMITS,
   
@@ -562,6 +562,7 @@ static Stz* aCN[]
   /* */ "RESPONSE"_Stz,            // CN_RESPONSE
   /* */ "RESPONSEVEC"_Stz,         // CN_RESPONSEVEC
   /* */ "RESULT"_Stz,              // CN_RESULT
+  /* */ "RLUDIARY"_Stz,            // CN_RLUDIARY
   /* */ "RN_RAND"_Stz,             // CN_RN_RAND
   /* */ "ROUTINE"_Stz,             // CN_ROUTINE
   /* */ "ROW"_Stz,                 // CN_ROW

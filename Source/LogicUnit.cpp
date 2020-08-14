@@ -227,6 +227,32 @@ i8 LogicUnit::iDynFun(i8 nOuterArgs, i8 iOuterArg0)
 }
 
 /*----------------------------------------------------------------------------*/
+/* diarise dynamic routine entry                                              */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vEnter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_oSince.vUpdate();
+  vTrace("Enter %lld %lld\n"_Stz,
+         m_xRluCommon.m_nEnterCount,
+         m_oSince.iNanoseconds());
+}
+
+/*----------------------------------------------------------------------------*/
+/* diarise dynamic routine exit                                               */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vExit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_oSince.vUpdate();
+  vTrace("Exit %lld %lld\n"_Stz,
+         m_xRluCommon.m_nEnterCount,
+         m_oSince.iNanoseconds());
+}
+
+/*----------------------------------------------------------------------------*/
 /* find label which is at given i_Code                                        */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iFindLabel(i8 i_Code)
@@ -1325,10 +1351,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
               
       case EO_ENTER: ArgNil(); //  diarise routine enter
         dLU0(EO_ENTER);
+        aRluCommon->m_nEnterCount++;
+        vRlu_ENTER(pLU);
         break;//+endCase
         
       case EO_EXIT: ArgNil(); // diarise routine exit
         dLU0(EO_EXIT);
+        vRlu_EXIT(pLU);
         break;//+endCase
         
       case EO_INIT: ArgNil(); // initialise the rlu common

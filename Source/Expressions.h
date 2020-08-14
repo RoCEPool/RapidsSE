@@ -16,6 +16,8 @@ namespace Expressions
 
 #include "RluCommon.h"
 
+#include "RluDiary.hpp"
+
 #include "Device.hpp"
 #include "DevIXT.hpp"
 #include "DevRSB.hpp"
