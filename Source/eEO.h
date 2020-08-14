@@ -119,6 +119,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_PTN_RUNNING,      // mix top into running iHash
 
   // timer
+  /*    */ EO_TMR_SINCE,        // get nsecs since ::constructor
   /*    */ EO_TMR_START,        // timer start
   /*    */ EO_TMR_NSECS,        // push timer nanoseconds
   /*    */ EO_TMR_UPDATE,       // timer update
@@ -351,6 +352,7 @@ static Stz* aEO[]
   /*    */ "EO_PTN_RUNNING"_Stz,
   
   // timer
+  /*    */ "EO_TMR_SINCE"_Stz,
   /*    */ "EO_TMR_START"_Stz,
   /*    */ "EO_TMR_NSECS"_Stz,
   /*    */ "EO_TMR_UPDATE"_Stz,
@@ -587,6 +589,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PTN_RUNNING
 
   // timer
+  { EA_NONE,    0 },  // EO_TMR_SINCE
   { EA_NONE,    0 },  // EO_TMR_START
   { EA_NONE,    0 },  // EO_TMR_NSECS
   { EA_NONE,    0 },  // EO_TMR_UPDATE

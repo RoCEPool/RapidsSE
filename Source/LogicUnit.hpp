@@ -240,6 +240,8 @@ namespace Expressions
   
     void*      m_aaDev[C_LOGIC_DEV]; // device array
   
+    Timer      m_oSince;
+  
     Timer      m_oTimer;
     AggTimer   m_oAggTimer;
 
