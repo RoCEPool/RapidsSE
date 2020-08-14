@@ -73,26 +73,29 @@ void LogicUnit::vGenerateQuery100(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the lower key
-  vAddCodeArg(EO_DATE, "1998-09-01"_Stz);
-  vAddCode(EO_ENTWRK_APPENDELMI);
-  vAddCode(EO_IXT_SRC_LBOUND);
-  vAddCodeLabel(EO_JMP_TRUE, "UPPERBOUND:"_Stz);
+//  vAddCodeArg(EO_DATE, "1998-09-01"_Stz);
+//  vAddCode(EO_ENTWRK_APPENDELMI);
+//  vAddCode(EO_IXT_SRC_LBOUND);
+//  vAddCodeLabel(EO_JMP_TRUE, "UPPERBOUND:"_Stz);
+//
+//  // no lower key, start position at beginning of index
+//  vAddCode(EO_IXT_SRC_BEGIN);
+//
+//  // no entry, return
+//  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+//
   
-  // no lower key, start position at beginning of index
   vAddCode(EO_IXT_SRC_BEGIN);
-  
-  // no entry, return
-  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the upper key
   vDefineLabel("UPPERBOUND:"_Stz);
   vAddCode(EO_ENTWRK_RESET);
-  vAddCodeArg(EO_DATE, "1998-12-01"_Stz);
+  vAddCodeArg(EO_DATE, "1998-09-01"_Stz);
   vAddCode(EO_ENTWRK_APPENDELMI);
   vAddCode(EO_IXT_SRC_UBOUND);
   vAddCodeLabel(EO_JMP_TRUE, "TRV_NXT:"_Stz);
-  
+
   // no upper key, traverse till end
   vDefineLabel("TRV_TILL_END:"_Stz);
   vAddCode(EO_IXT_SRC_NEXT);
