@@ -336,7 +336,6 @@ enum eCN : u2 // Class Number
   /* */ CN_WORD,
 
   /* */ CN__X__,
-  /* */
   /* */ CN_XMITOPERAND,
   /* */ CN_XMITS,
   
