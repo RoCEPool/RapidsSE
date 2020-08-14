@@ -66,13 +66,15 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
   
   DataBuffer* pCompletedBuffer = nullptr;
   
-  DataBuffer* pDataBuffer = (DataBuffer*)
-  (m_paBufferChain[i_Ptn]
-   ? m_paBufferChain[i_Ptn]->pNextBuffer()
-   : nullptr);
-  while (pDataBuffer) {
-    pCompletedBuffer = pDataBuffer;
-    pDataBuffer = (DataBuffer*)pDataBuffer->pNextBuffer();
+  DataBuffer* pNextBuffer =
+    (DataBuffer*)
+      (m_paBufferChain[i_Ptn]
+        ? m_paBufferChain[i_Ptn]->pNextBuffer()
+        : nullptr);
+  
+  while (pNextBuffer) {
+    pCompletedBuffer = pNextBuffer;
+    pNextBuffer = (DataBuffer*)pNextBuffer->pNextBuffer();
   }
   
   if (pCompletedBuffer) {
@@ -92,11 +94,17 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
   
   //ASSERT(0 == i_Ptn);
   
-  DataBuffer* pDataBuffer = m_paBufferChain[i_Ptn];
+  DataBuffer* pDanglingBuffer = m_paBufferChain[i_Ptn];
   
-  m_paBufferChain[i_Ptn] = nullptr;
+  m_paBufferChain[i_Ptn] =
+    pDanglingBuffer
+      ? (DataBuffer*)pDanglingBuffer->pNextBuffer()
+      : nullptr;
   
-  return pDataBuffer;
+  if (pDanglingBuffer)
+    pDanglingBuffer->vNextBuffer(nullptr);
+  
+  return pDanglingBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,17 +171,17 @@ void Pot::vStreamPix(StreamPix* pStreamPix)
 /*----------------------------------------------------------------------------*/
 /* add row as first into buffer chain for partition                           */
 /*----------------------------------------------------------------------------*/
-void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer)
+void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pFirstBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
   // link the old with this
-  pDataBuffer->vNextBuffer(m_paBufferChain[i_Ptn]);
+  pFirstBuffer->vNextBuffer(m_paBufferChain[i_Ptn]);
   
   if (m_paBufferChain[i_Ptn])
-    m_paBufferChain[i_Ptn]->vPrevBuffer(pDataBuffer);
+    m_paBufferChain[i_Ptn]->vPrevBuffer(pFirstBuffer);
   
-  m_paBufferChain[i_Ptn] = pDataBuffer;
+  m_paBufferChain[i_Ptn] = pFirstBuffer;
 }
 
 

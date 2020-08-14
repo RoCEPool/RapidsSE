@@ -323,6 +323,7 @@
   false LogicUnit[].calledAgain!
 
   LogicUnit[].callAgain@ if
+    //"Completed test" .
     Pot[].pipeoutAllCompletedPtns
     true
   else
@@ -567,6 +568,7 @@
     301 of
       //"---------------------------- 301=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
+      Operand[] "RsbBuffer %v\n" .printf
       Operand[].asSrcRowSlab
       //LogicUnit[].transform
       LogicUnit[].dynFun

@@ -27,9 +27,9 @@ void Step::vPotCompleted(void)
   
   Pot* pPot = *m_pLogicUnit->m_xpPot;
     
-  DataBuffer* pDataBuffer = pPot->pCompleted(0);
+  DataBuffer* pCompletedBuffer = pPot->pCompleted(0);
 
-  m_pDataStack->vPushPtr(pDataBuffer);
+  m_pDataStack->vPushPtr(pCompletedBuffer);
 
   EXIT();
 }
@@ -45,9 +45,9 @@ void Step::vPotCompletedPtn(void)
   
   Pot* pPot = *m_pLogicUnit->m_xpPot;
     
-  DataBuffer* pDataBuffer = pPot->pCompleted(i_Ptn);
+  DataBuffer* pCompletedBuffer = pPot->pCompleted(i_Ptn);
 
-  m_pDataStack->vPushPtr(pDataBuffer);
+  m_pDataStack->vPushPtr(pCompletedBuffer);
 
   EXIT();
 }
@@ -61,9 +61,9 @@ void Step::vPotDangling(void)
   
   Pot* pPot = *m_pLogicUnit->m_xpPot;
     
-  DataBuffer* pDataBuffer = pPot->pDangling(0);
+  DataBuffer* pDanglingBuffer = pPot->pDangling(0);
 
-  m_pDataStack->vPushPtr(pDataBuffer);
+  m_pDataStack->vPushPtr(pDanglingBuffer);
 
   EXIT();
 }
@@ -79,9 +79,9 @@ void Step::vPotDanglingPtn(void)
   
   Pot* pPot = *m_pLogicUnit->m_xpPot;
     
-  DataBuffer* pDataBuffer = pPot->pDangling(i_Ptn);
+  DataBuffer* pDanglingBuffer = pPot->pDangling(i_Ptn);
 
-  m_pDataStack->vPushPtr(pDataBuffer);
+  m_pDataStack->vPushPtr(pDanglingBuffer);
 
   EXIT();
 }
