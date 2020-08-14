@@ -241,11 +241,18 @@ void LogicUnit::vEnter(void)
     m_pRluDiary = new RluDiary;
   
   m_oSince.vUpdate();
-  vTrace("Enter (%lld.%lld) %lld %lld\n"_Stz,
+  i8 nNanoSeconds = m_oSince.iNanoseconds();
+  
+  vTrace("Enter (%lld.%lld) %s %lld %lld\n"_Stz,
          m_xRluCommon.m_iSql,
          m_xRluCommon.m_i_Ptn,
+         
+         EnumGroups::szEnumText(EG_ED,ED_ENTER),
+
          m_xRluCommon.m_nEnterCount,
-         m_oSince.iNanoseconds());
+         nNanoSeconds);
+  
+  m_pRluDiary->vAddNote(EG_ED,ED_ENTER,nNanoSeconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,11 +266,18 @@ void LogicUnit::vExit(void)
     m_pRluDiary = new RluDiary;
   
   m_oSince.vUpdate();
-  vTrace("Exit (%lld.%lld) %lld %lld\n"_Stz,
+  i8 nNanoSeconds = m_oSince.iNanoseconds();
+  
+  vTrace("Exit (%lld.%lld) %s %lld %lld\n"_Stz,
          m_xRluCommon.m_iSql,
          m_xRluCommon.m_i_Ptn,
+         
+         EnumGroups::szEnumText(EG_ED,ED_EXIT),
+
          m_xRluCommon.m_nEnterCount,
-         m_oSince.iNanoseconds());
+         nNanoSeconds);
+
+  m_pRluDiary->vAddNote(EG_ED,ED_EXIT,nNanoSeconds);
 }
 
 /*----------------------------------------------------------------------------*/

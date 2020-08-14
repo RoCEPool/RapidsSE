@@ -9,7 +9,7 @@ namespace Expressions
   {
     i2 m_i_EnumGroup;
     i2 m_i_Enum;
-    i8 m_nSecs;
+    i8 m_nNanoSecs;
   };
 
   static const i8 C_DIARY_ENTRIES =
@@ -33,6 +33,8 @@ namespace Expressions
     RluDiary(void);
    ~RluDiary(void) noexcept(false);
   
+    void vAddNote(i8 m_i_EnumGroup, i8 i_Enum, i8 i_nNanoSecs);
+
     void vReport(Stz* szFilePath);
     
   private:
