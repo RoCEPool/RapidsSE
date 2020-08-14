@@ -29,7 +29,7 @@ namespace DataBuffers
     DataBuffer* pBuffer(i8 i_Ptn);
     DataBuffer* pCompleted(i8 i_Ptn);
     DataBuffer* pDangling(i8 i_Ptn);
-    Rsb* aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab);
+    Rsb* aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab, bool* pbNewBuffer);
   
     void vStreamPix(StreamPix* pStreamPix);
   

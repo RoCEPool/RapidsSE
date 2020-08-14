@@ -1863,7 +1863,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_RSB_DST_NEW: ArgNil(); // create new destination rsb
         dLU0(EO_RSB_DST_NEW);
-        vDev_RSB_NEW(pLU,aRluCommon->m_pDevDstRsb);
+        iRes = iDev_RSB_NEW(pLU,aRluCommon->m_pDevDstRsb);
+        aRluCommon->m_bNewPotBuffer = iRes;
         break;//+endCase
 
       case EO_RSB_DST_RESET: ArgNil(); // reset dst rowslab
