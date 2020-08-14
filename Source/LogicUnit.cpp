@@ -1852,6 +1852,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // pot
+      case EO_POT_COMPLETED: ArgNil(); // do we have a full pot buffer ?
+        dLU0(EO_POT_COMPLETED);
+        *(++aiDstk) = aRluCommon->m_bPotCompleted;
+        break;//+endCase
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rsb / rowslab
       case EO_RSB_DST_PRINT: ArgNil(); // print dst rsb
         dLU0(EO_RSB_DST_PRINT);
@@ -1871,7 +1878,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_RSB_DST_NEW: ArgNil(); // create new destination rsb
         dLU0(EO_RSB_DST_NEW);
         iRes = iDev_RSB_NEW(pLU,aRluCommon->m_pDevDstRsb);
-        aRluCommon->m_bNewPotBuffer = iRes;
+        aRluCommon->m_bPotCompleted = iRes;
         break;//+endCase
 
       case EO_RSB_DST_RESET: ArgNil(); // reset dst rowslab
