@@ -13,7 +13,7 @@ enum eMM // meta member
   /*    */ MM_ENUMS
 };
 
-static Stz* aMVM[]
+static Stz* aMM[]
 {
   /*  0 */ "NONE"_Stz,
   

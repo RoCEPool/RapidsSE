@@ -674,6 +674,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  typedef unsigned long long u8;"
   "\n  typedef char Stz;"
   "\n"
+  "\n  #include \"../Source/EnumGroups.h\""
   "\n  #include \"../Source/LIB_interface.h\""
   "\n  #include \"../Source/DEV_interface.h\""
   "\n  #include \"../Source/RLU_interface.h\""
