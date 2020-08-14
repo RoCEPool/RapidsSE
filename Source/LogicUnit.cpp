@@ -53,6 +53,8 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_afDynFun = nullptr;
   
+  m_pRluDiary = nullptr;
+  
   MemLib::vZero(&m_aaDev,sizeof(m_aaDev),CN_LOGICUNIT);
   
   MemLib::vZero(&m_xRluCommon,sizeof(m_xRluCommon),CN_LOGICUNIT);
@@ -109,6 +111,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   
   if (! m_xpTimer.bIsNull())
     delete *m_xpTimer;
+  
+  delete m_pRluDiary;
 
   delete m_pDevDstRsb;
   delete m_pDevSrcRsb;
@@ -233,8 +237,13 @@ void LogicUnit::vEnter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  if (!m_pRluDiary)
+    m_pRluDiary = new RluDiary;
+  
   m_oSince.vUpdate();
-  vTrace("Enter %lld %lld\n"_Stz,
+  vTrace("Enter (%lld.%lld) %lld %lld\n"_Stz,
+         m_xRluCommon.m_iSql,
+         m_xRluCommon.m_i_Ptn,
          m_xRluCommon.m_nEnterCount,
          m_oSince.iNanoseconds());
 }
@@ -246,8 +255,13 @@ void LogicUnit::vExit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  if (!m_pRluDiary)
+    m_pRluDiary = new RluDiary;
+  
   m_oSince.vUpdate();
-  vTrace("Exit %lld %lld\n"_Stz,
+  vTrace("Exit (%lld.%lld) %lld %lld\n"_Stz,
+         m_xRluCommon.m_iSql,
+         m_xRluCommon.m_i_Ptn,
          m_xRluCommon.m_nEnterCount,
          m_oSince.iNanoseconds());
 }
