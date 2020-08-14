@@ -47,12 +47,13 @@ RluDiary::~RluDiary(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* write out                                                                  */
 /*----------------------------------------------------------------------------*/
-void RluDiary::vAddNote(i8 i_EnumGroup, i8 i_Enum, i8 nNanoSecs)
+void RluDiary::vAddNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
   
   m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup = i_EnumGroup;
   m_xaDiaryEnt[m_nDiaryEnt].m_i_Enum      = i_Enum;
+  m_xaDiaryEnt[m_nDiaryEnt].m_iItem       = iItem;
   m_xaDiaryEnt[m_nDiaryEnt].m_nNanoSecs   = nNanoSecs;
 
   m_nDiaryEnt++;
@@ -71,7 +72,7 @@ void RluDiary::vReport(Stz *szFilePath)
   
   for (i8 i_Ent = 0; i_Ent < m_nDiaryEnt; i_Ent++) {
     
-    pFile->vPrint(" %lld,%lld,%lld,%s,%lld\n"_Stz,
+    pFile->vPrint(" %lld,%lld,%lld,%s,%lld,%lld\n"_Stz,
            
                   i_Ent,
                   m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
@@ -80,6 +81,7 @@ void RluDiary::vReport(Stz *szFilePath)
                   EnumGroups::szEnumText(m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
                                         m_xaDiaryEnt[i_Ent].m_i_Enum),
                   
+                  m_xaDiaryEnt[i_Ent].m_iItem,
                   m_xaDiaryEnt[i_Ent].m_nNanoSecs
                   );
   }

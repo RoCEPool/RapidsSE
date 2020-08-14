@@ -18,7 +18,7 @@ namespace Base
   typedef short              i2;   // 2 byte signed integer
   typedef int                i4;   // 4 byte signed integer
   typedef long long          i8;   // 8 byte signed integer
-  typedef __int128           i16;  // 16 byte signed integer
+  typedef __int128           i16;  // 16 byte signed integer (GNU extension)
 
   typedef unsigned char      m1;   // 1 byte memory cell
   typedef unsigned short     m2;   // 2 byte memory cell
@@ -31,7 +31,8 @@ namespace Base
   typedef unsigned short     u2;   // 2 byte unsigned integer
   typedef unsigned int       u4;   // 4 byte unsigned integer
   typedef unsigned long long u8;   // 8 byte unsigned integer
-  
+  typedef unsigned __int128  u16;  // 16 byte unsigned integer (GNU extension)
+
   typedef unsigned long      w4;   // 4 byte word
   typedef unsigned long long w8;   // 8 byte word
 

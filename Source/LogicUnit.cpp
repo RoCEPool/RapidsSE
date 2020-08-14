@@ -246,16 +246,18 @@ void LogicUnit::vEnter(void)
   m_oSince.vUpdate();
   i8 nNanoSeconds = m_oSince.iNanoseconds();
   
-  vTrace("Enter (%lld.%lld) %s %lld %lld\n"_Stz,
-         m_xRluCommon.m_iSql,
-         m_xRluCommon.m_i_Ptn,
-         
-         EnumGroups::szEnumText(EG_ED,ED_ENTER),
-
-         m_xRluCommon.m_nEnterCount,
-         nNanoSeconds);
+//  vTrace("Enter (%lld.%lld) %s %lld %lld\n"_Stz,
+//         m_xRluCommon.m_iSql,
+//         m_xRluCommon.m_i_Ptn,
+//
+//         EnumGroups::szEnumText(EG_ED,ED_ENTER),
+//
+//         m_xRluCommon.m_nEnterCount,
+//         nNanoSeconds);
   
-  m_pRluDiary->vAddNote(EG_ED,ED_ENTER,nNanoSeconds);
+  m_pRluDiary->vAddNote(EG_ED,ED_ENTER,
+                        m_xRluCommon.m_nEnterCount,
+                        nNanoSeconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -271,16 +273,18 @@ void LogicUnit::vExit(void)
   m_oSince.vUpdate();
   i8 nNanoSeconds = m_oSince.iNanoseconds();
   
-  vTrace("Exit (%lld.%lld) %s %lld %lld\n"_Stz,
-         m_xRluCommon.m_iSql,
-         m_xRluCommon.m_i_Ptn,
-         
-         EnumGroups::szEnumText(EG_ED,ED_EXIT),
+//  vTrace("Exit (%lld.%lld) %s %lld %lld\n"_Stz,
+//         m_xRluCommon.m_iSql,
+//         m_xRluCommon.m_i_Ptn,
+//
+//         EnumGroups::szEnumText(EG_ED,ED_EXIT),
+//
+//         m_xRluCommon.m_nEnterCount,
+//         nNanoSeconds);
 
-         m_xRluCommon.m_nEnterCount,
-         nNanoSeconds);
-
-  m_pRluDiary->vAddNote(EG_ED,ED_EXIT,nNanoSeconds);
+  m_pRluDiary->vAddNote(EG_ED,ED_EXIT,
+                        m_xRluCommon.m_nEnterCount,
+                        nNanoSeconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -604,7 +608,7 @@ void LogicUnit::vDiaryReport(void)
   
   sDiaryPath.vSprint("/tmp/RluDiary_%lld_%lld.csv"_Stz,
                      m_xRluCommon.m_iSql,
-                     m_xRluCommon.m_i_Ptn
+                     m_xRluCommon.m_i_Slot
                      );
   
   m_pRluDiary->vReport(sDiaryPath);

@@ -9,6 +9,7 @@ namespace Expressions
   {
     i2 m_i_EnumGroup;
     i2 m_i_Enum;
+    i2 m_iItem;
     i8 m_nNanoSecs;
   };
 
@@ -33,7 +34,7 @@ namespace Expressions
     RluDiary(void);
    ~RluDiary(void) noexcept(false);
   
-    void vAddNote(i8 m_i_EnumGroup, i8 i_Enum, i8 i_nNanoSecs);
+    void vAddNote(i8 m_i_EnumGroup, i8 i_Enum, i8 iItem, i8 i_nNanoSecs);
 
     void vReport(Stz* szFilePath);
     

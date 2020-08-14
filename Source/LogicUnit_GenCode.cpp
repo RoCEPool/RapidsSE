@@ -849,6 +849,7 @@ void LogicUnit::vGenerateQuery301(void)
   
   vDefineLabel("QRY_301:"_Stz);
   vAddCode(EO_INIT);
+  vAddCode(EO_ENTER);
   
   //vAddCodeArg(EO_RANDOM,100);
   //vAddCode(EO_PRINT);
@@ -878,6 +879,7 @@ void LogicUnit::vGenerateQuery301(void)
   
   vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
   
+  vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1050,7 +1052,8 @@ void LogicUnit::vGenerateQuery302(void)
   //                                                                Q302
   vDefineLabel("QRY_302:"_Stz);
   vAddCode(EO_INIT);
-
+  vAddCode(EO_ENTER);
+  
   //vAddCode(EO_TRACEON);
   vAddCodeLabel(EO_JMP_FALSE,"QRY_END:"_Stz);
 
@@ -1070,6 +1073,7 @@ void LogicUnit::vGenerateQuery302(void)
   vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
   
   vDefineLabel("QRY_END:"_Stz);
+  vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
 
   
@@ -1197,6 +1201,7 @@ void LogicUnit::vGenerateQuery302b(void)
   //                                                                Q302
   vDefineLabel("QRY_302:"_Stz);
   vAddCode(EO_INIT);
+  vAddCode(EO_ENTER);
 
   //vAddCode(EO_TRACEON);
   vAddCodeLabel(EO_JMP_FALSE,"QRY_OUT:"_Stz);
@@ -1227,6 +1232,7 @@ void LogicUnit::vGenerateQuery302b(void)
   
   // --
   vDefineLabel("QRY_END:"_Stz);
+  vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
 
   
@@ -1346,6 +1352,7 @@ void LogicUnit::vGenerateQuery400(void)
   //                                                                Q400
   vDefineLabel("QRY_400:"_Stz);
   vAddCode(EO_INIT);
+  vAddCode(EO_ENTER);
 
   //vAddCodeString(EO_STR_LITERAL,"**QRY_400**"_Stz);
   //vAddCode(EO_STR_PRINTADR);
@@ -1408,6 +1415,7 @@ void LogicUnit::vGenerateQuery400(void)
   //vAddCode(EO_PRINT);
 
 
+  vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1543,6 +1551,7 @@ void LogicUnit::vGenerateQuery401(void)
   //                                                                Q401
   vDefineLabel("QRY_401:"_Stz);
   vAddCode(EO_INIT);
+  vAddCode(EO_ENTER);
 
   //vAddCode(EO_TRACEON);
   
