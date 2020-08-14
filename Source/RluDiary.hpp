@@ -5,9 +5,23 @@
 
 namespace Expressions
 {
+  struct RluDiaryEnt
+  {
+    i2 m_i_EnumGroup;
+    i2 m_i_Enum;
+    i8 m_nNanoSecs;
+  };
+
+  static const i8 C_DIARY_ENTRIES =
+    (C_SIZE_LARGE_OBJECT - C_16KB) / sizeof(RluDiaryEnt);
+
   class RluDiary : public Object
   {
   public:
+  
+    i8 m_nDiaryEnt;
+  
+    RluDiaryEnt m_xaDiaryEnt[C_DIARY_ENTRIES];
   
     // must be last
     Footer m_xFooter;
@@ -18,6 +32,10 @@ namespace Expressions
 
     RluDiary(void);
    ~RluDiary(void) noexcept(false);
+  
+    void vAddNote(i8 m_i_EnumGroup, i8 i_Enum, i8 i_nNanoSecs);
+
+    void vReport(Stz* szFilePath);
     
   private:
     Footer* aFooter(void);

@@ -53,6 +53,8 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_afDynFun = nullptr;
   
+  m_pRluDiary = nullptr;
+  
   MemLib::vZero(&m_aaDev,sizeof(m_aaDev),CN_LOGICUNIT);
   
   MemLib::vZero(&m_xRluCommon,sizeof(m_xRluCommon),CN_LOGICUNIT);
@@ -109,7 +111,12 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   
   if (! m_xpTimer.bIsNull())
     delete *m_xpTimer;
-
+  
+  if (m_pRluDiary) {
+    vDiaryReport();
+    delete m_pRluDiary;
+  }
+  
   delete m_pDevDstRsb;
   delete m_pDevSrcRsb;
   delete m_pDevAltRsb;
@@ -233,10 +240,22 @@ void LogicUnit::vEnter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  if (!m_pRluDiary)
+    m_pRluDiary = new RluDiary;
+  
   m_oSince.vUpdate();
-  vTrace("Enter %lld %lld\n"_Stz,
+  i8 nNanoSeconds = m_oSince.iNanoseconds();
+  
+  vTrace("Enter (%lld.%lld) %s %lld %lld\n"_Stz,
+         m_xRluCommon.m_iSql,
+         m_xRluCommon.m_i_Ptn,
+         
+         EnumGroups::szEnumText(EG_ED,ED_ENTER),
+
          m_xRluCommon.m_nEnterCount,
-         m_oSince.iNanoseconds());
+         nNanoSeconds);
+  
+  m_pRluDiary->vAddNote(EG_ED,ED_ENTER,nNanoSeconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -246,10 +265,22 @@ void LogicUnit::vExit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  if (!m_pRluDiary)
+    m_pRluDiary = new RluDiary;
+  
   m_oSince.vUpdate();
-  vTrace("Exit %lld %lld\n"_Stz,
+  i8 nNanoSeconds = m_oSince.iNanoseconds();
+  
+  vTrace("Exit (%lld.%lld) %s %lld %lld\n"_Stz,
+         m_xRluCommon.m_iSql,
+         m_xRluCommon.m_i_Ptn,
+         
+         EnumGroups::szEnumText(EG_ED,ED_EXIT),
+
          m_xRluCommon.m_nEnterCount,
-         m_oSince.iNanoseconds());
+         nNanoSeconds);
+
+  m_pRluDiary->vAddNote(EG_ED,ED_EXIT,nNanoSeconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -560,6 +591,24 @@ void LogicUnit::vDefineLabel(Stz* szLabelNm)
     vCorrectLabel(i_Label);
   
   //vPrintLabels();
+}
+
+/*----------------------------------------------------------------------------*/
+/* diary report                                                               */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vDiaryReport(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  s256 sDiaryPath;
+  
+  sDiaryPath.vSprint("/tmp/RluDiary_%lld_%lld.csv"_Stz,
+                     m_xRluCommon.m_iSql,
+                     m_xRluCommon.m_i_Ptn
+                     );
+  
+  m_pRluDiary->vReport(sDiaryPath);
+  
 }
 
 /*----------------------------------------------------------------------------*/
