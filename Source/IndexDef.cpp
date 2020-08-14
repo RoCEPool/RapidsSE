@@ -4,8 +4,9 @@
 
 #include "MetaData.h"
 
-
 #include "Jobs.h"
+
+extern DebugFlags gxDebugFlags;
 
 
 /*----------------------------------------------------------------------------*/
@@ -158,8 +159,10 @@ void IndexDef::vDetermineKeyKind(void)
     return;
   }
 
-  m_eKeyKind = KE_GENERAL;
-  //m_eKeyKind = KE_INT;
+  if (gxDebugFlags.m_iIntKey)
+    m_eKeyKind = KE_INT;
+  else
+    m_eKeyKind = KE_GENERAL;
 }
 
 /*----------------------------------------------------------------------------*/
