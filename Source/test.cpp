@@ -1248,8 +1248,7 @@ i8 nTest21_intEnts(eKE eEntKind)
   
   i8 nEnts = 0;
 
-  EntBuffer* pEntBufferCalc = new EntBuffer;
-  pEntBufferCalc->vEntKind(eEntKind);
+  EntBuffer* pEntBufferCalc = new EntBuffer(eEntKind);
   
   for (;;) {
     
@@ -1490,8 +1489,7 @@ void vTest21_testDelete(eKE eEntKind, IntSet* pKeySamples,
 
   
   for (i8 i_Buf = 0; i_Buf < nBuffers; i_Buf++) {
-    EntBuffer* pEntBuffer = new EntBuffer;
-    pEntBuffer->vEntKind(eEntKind);
+    EntBuffer* pEntBuffer = new EntBuffer(eEntKind);
 
     vTest21_insert(pEntBuffer,pKeySamples,nTotalDel);
     
@@ -1533,8 +1531,7 @@ void vTest21_testInsert(eKE eEntKind, IntSet* pKeySamples,
   xTimer.vStart();
   
   for (i8 i_Buf = 0; i_Buf < nBuffers; i_Buf++) {
-    EntBuffer* pEntBuffer = new EntBuffer;
-    pEntBuffer->vEntKind(eEntKind);
+    EntBuffer* pEntBuffer = new EntBuffer(eEntKind);
 
     vTest21_insert(pEntBuffer,pKeySamples,nTotalIns);
     if (bDump) {
@@ -1571,8 +1568,7 @@ void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples,
 
   
   for (i8 i_Buf = 0; i_Buf < nBuffers; i_Buf++) {
-    EntBuffer* pEntBuffer = new EntBuffer;
-    pEntBuffer->vEntKind(eEntKind);
+    EntBuffer* pEntBuffer = new EntBuffer(eEntKind);
 
     vTest21_insert(pEntBuffer,pKeySamples,nTotalIns);
     

@@ -56,7 +56,7 @@ void EntBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntBuffer::EntBuffer(void)
+EntBuffer::EntBuffer(eKE eEntKind)
 : DataBuffer(CN_ENTBUFFER, true)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -67,7 +67,7 @@ EntBuffer::EntBuffer(void)
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
   
-  m_eEntKind    = KE_GENERAL;
+  m_eEntKind    = eEntKind;
   
   if (AM::nIndexEntries() != 0)
     vMaxItems(AM::nIndexEntries());
@@ -171,7 +171,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
       //pLeftL0->vShow();
       
       // new left buffer
-      EntBuffer* pNewLeftH0 = new EntBuffer;
+      EntBuffer* pNewLeftH0 = new EntBuffer(pLeftH0->eEntKind());
       pNewLeftH0->vIndex(pIndex);
       pNewLeftH0->vHigherBuffer(pH1);
       

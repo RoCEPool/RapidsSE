@@ -158,7 +158,8 @@ void IndexDef::vDetermineKeyKind(void)
     return;
   }
 
-  m_eKeyKind = KE_INT;
+  m_eKeyKind = KE_GENERAL;
+  //m_eKeyKind = KE_INT;
 }
 
 /*----------------------------------------------------------------------------*/
