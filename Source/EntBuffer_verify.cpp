@@ -587,6 +587,8 @@ bool EntBuffer::bVerifyKeyOrder(void)
    order.
    */
   
+  bool bGreaterEqual;
+  
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get next entry
@@ -594,11 +596,19 @@ bool EntBuffer::bVerifyKeyOrder(void)
     if (! aNextEntry)
       break;
         
-    Key* aCurrKey = aEnt->aKey();
-    Key* aNextKey = aNextEntry->aKey();
-    
     // next key should be greater than or equal to curr key
-    bool bGreaterEqual = Key::bGreaterEqual(aNextKey, aCurrKey);
+    if (KE_GENERAL == m_eEntKind) {
+      Key* aCurrKey = aEnt->aKey();
+      Key* aNextKey = aNextEntry->aKey();
+      
+      bGreaterEqual = Key::bGreaterEqual(aNextKey, aCurrKey);
+    }
+    else {
+      i8 iCurrKey = aEnt->iIntElm0();
+      i8 iNextKey = aNextEntry->iIntElm0();
+      bGreaterEqual = (iNextKey >= iCurrKey);
+    }
+    
     if (! bGreaterEqual) {
       vDump();
       vVerifyFault();
