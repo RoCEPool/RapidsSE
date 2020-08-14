@@ -220,6 +220,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Response),           HT_TRANSIENT_MEDIUM  }, // CN_RESPONSE
   { sizeof(ResponseVec),        HT_TRANSIENT_SMALL   }, // CN_RESPONSEVEC
   { sizeof(Result),             HT_TRANSIENT_MEDIUM  }, // CN_RESULT
+  { sizeof(RluDiary),           HT_TRANSIENT_LARGE   }, // CN_RLUDIARY
   { sizeof(Rand),               HT_INVALID           }, // CN_RN_RAND
   { sizeof(Routine),            HT_TRANSIENT_SMALL   }, // CN_ROUTINE
   { sizeof(Row),                HT_TRANSIENT_LARGE   }, // CN_ROW
