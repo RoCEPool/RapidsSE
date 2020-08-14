@@ -721,7 +721,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
     if (KE_GENERAL == m_eEntKind)
       vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
     else
-      vPositionPriorVecEntry_Ray04(aKey, xPriorVec);
+      vPositionPriorVecEntry_IntOpt(aKey, xPriorVec);
   }
   else {
     EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
@@ -757,14 +757,14 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
 //    vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
 //    //vPositionPriorVecEntry_Alka01(aKey, xPriorVec, nullptr);
 //    //vPriorVecInsertedKey_Ray01(aEntry, xPriorVec);
-//    //vPositionPriorVecEntry_Ray04(aKey, xPriorVec);
+//    //vPositionPriorVecEntry_IntOpt(aKey, xPriorVec);
 ////
 ////    for (i8 i_Lvl = 0; i_Lvl < AM::nLvlLevels(); i_Lvl++)
 ////      if (xPriorVec2[i_Lvl] != xPriorVec[i_Lvl]) {
 ////        vShow();
 ////        vDumpPriorVec(xPriorVec);
 ////        vDumpPriorVec(xPriorVec2);
-////        vPositionPriorVecEntry_Ray04(aKey, xPriorVec2);
+////        vPositionPriorVecEntry_IntOpt(aKey, xPriorVec2);
 ////        vDumpPriorVec(xPriorVec2);
 ////        vDebugPoint();
 ////      }

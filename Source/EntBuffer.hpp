@@ -110,32 +110,10 @@ namespace Indexing
                                       Ent* aPriorVec[],
                                       Ent* aFindEntry);
   
-    void       vPositionPriorVecEntry_Opt01(Key* aFindKey,
-                                            Ent* aPriorVec[],
-                                            Ent* aFindEntry);
-  
-    void       vPositionPriorVecEntry_Alka01(Key* aFindKey,
-                                             Ent* aPriorVec[],
-                                             Ent* aFindEntry);
-  
-    void       vPositionPriorVecEntry_Ray01(Key* aFindKey,
-                                            Ent* aPriorVec[],
-                                            Ent* aFindEntry);
-  
-    void       vPositionPriorVecEntry_Ray02(Key* aFindKey,
+    void       vPositionPriorVecEntry_IntOpt(Key* aFindKey,
                                             Ent* aPriorVec[]);
 
-    void       vPositionPriorVecEntry_Ray03(Key* aFindKey,
-                                            Ent* aPriorVec[]);
-
-    void       vPositionPriorVecEntry_Ray04(Key* aFindKey,
-                                            Ent* aPriorVec[]);
-
-
-    void       vPriorVecInsertedKey_Ray01(Ent* aInsertedEnt,
-                                          Ent* aPriorVec[]);
-  
-    Ent*       aFindEnt_Ray01(i8 iKey_IntElm);
+    Ent*       aFindEnt_IntOpt(i8 iKey_IntElm);
   
 
 
