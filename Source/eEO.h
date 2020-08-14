@@ -209,6 +209,9 @@ enum eEO : u1 // expression operators
   // pix operators
   /*    */ EO_PIX_STM_PRINT,    // print stream pix
 
+  // pot operators
+  /*    */ EO_POT_COMPLETED,    // do we have a full pot buffer ?
+  
   // rsb / rowslab
   /*    */ EO_RSB_DST_PRINT,    // print dst rsb
   /*    */ EO_RSB_DST_RESET,    // reset dst rowslab
@@ -438,6 +441,9 @@ static Stz* aEO[]
   
   // pix
   /*    */ "EO_PIX_STM_PRINT"_Stz,
+  
+  // pot
+  /*    */ "EO_POT_COMPLETED"_Stz,
   
   // rsb / rowslab
   /*    */ "EO_RSB_DST_PRINT"_Stz,
@@ -674,6 +680,9 @@ static EoArg EoArgs[]
 
   // pix
   { EA_NONE,    0 },  // EO_PIX_STM_PRINT
+  
+  // pot
+  { EA_NONE,    0 },  // EO_POT_COMPLETED
   
   // rsb / rowslab
   { EA_NONE,    0 },  // EO_RSB_DST_PRINT

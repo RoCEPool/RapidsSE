@@ -782,7 +782,7 @@ i8 iDev_RSB_NEW(void* aLU, void* aRSB)
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  bool bNewBuffer = false;
+  bool bNewBuffer;
   
   pDevRsb->m_aRsb =
     pLogicUnit->m_xpPot->aNewDstRsb(pLogicUnit->m_xRluCommon.m_i_Ptn,

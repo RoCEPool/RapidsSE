@@ -13,7 +13,7 @@ struct RluCommon
   i8   m_bCallAgain; // call same handler again
   i8   m_bCalledAgain; // was called again
 
-  i8   m_bNewPotBuffer;
+  i8   m_bPotCompleted;
   
   i8   m_iValue;
   i8   m_iCtr0;

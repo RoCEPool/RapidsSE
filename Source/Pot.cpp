@@ -119,6 +119,8 @@ Rsb* Pot::aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab,bool* pbNewBuffer)
   RowSlab* pDstRowSlab;
   Rsb* aDstRsb;
   
+  *pbNewBuffer = false;
+  
   // get rsb buffer for given partition (new a first buffer if ncessary)
   RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_paBufferChain[i_Ptn]);
   if (! pDstRsbBuffer) {
