@@ -37,6 +37,7 @@ namespace MetaData
     
     void    vAddColumn(Stz* szColumnNm, eCT eColumnType);
     i8      nColumns(void);
+    void    vDetermineKeyKind(void);
     Column* pGetColumn(i8 iColumn);
     Stz*   szIndexNm(void);
     void   vIndexNm(Stz* szIndexNm);

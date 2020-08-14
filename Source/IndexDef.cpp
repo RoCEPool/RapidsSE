@@ -140,6 +140,28 @@ i8 IndexDef::nColumns(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* determine key kind                                                         */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vDetermineKeyKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  if (nColumns() > 1) {
+    m_eKeyKind = KE_GENERAL;
+    return;
+  }
+  
+  eCT eColumnType = m_xaColumn[m_nColumns].eColumnType();
+  
+  if (CT_FLOAT == eColumnType || CT_VARCHAR == eColumnType) {
+    m_eKeyKind = KE_GENERAL;
+    return;
+  }
+
+  m_eKeyKind = KE_INT;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the index name                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* IndexDef::szIndexNm(void)
