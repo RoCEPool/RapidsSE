@@ -112,8 +112,11 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   if (! m_xpTimer.bIsNull())
     delete *m_xpTimer;
   
-  delete m_pRluDiary;
-
+  if (m_pRluDiary) {
+    vDiaryReport();
+    delete m_pRluDiary;
+  }
+  
   delete m_pDevDstRsb;
   delete m_pDevSrcRsb;
   delete m_pDevAltRsb;
@@ -588,6 +591,24 @@ void LogicUnit::vDefineLabel(Stz* szLabelNm)
     vCorrectLabel(i_Label);
   
   //vPrintLabels();
+}
+
+/*----------------------------------------------------------------------------*/
+/* diary report                                                               */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vDiaryReport(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  s256 sDiaryPath;
+  
+  sDiaryPath.vSprint("/tmp/RluDiary_%lld_%lld.csv"_Stz,
+                     m_xRluCommon.m_iSql,
+                     m_xRluCommon.m_i_Ptn
+                     );
+  
+  m_pRluDiary->vReport(sDiaryPath);
+  
 }
 
 /*----------------------------------------------------------------------------*/
