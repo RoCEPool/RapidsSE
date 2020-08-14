@@ -673,6 +673,8 @@ void LogicUnit::vGenerateQuery300(void)
   vDefineLabel("QRY_300:"_Stz);
   
   vAddCode(EO_INIT);
+  vAddCode(EO_ENTER);
+
   vAddCode(EO_PUSH_0);
   vAddCode(EO_CTR_0_POP);
 
@@ -703,6 +705,7 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeLabel(EO_JMP_TRUE,"PRC_CUS:"_Stz);
 
   vAddCode(EO_CALLAGAIN);
+  vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
   
   vDefineLabel("PRC_CUS:"_Stz);
@@ -735,6 +738,7 @@ void LogicUnit::vGenerateQuery300(void)
 
   // end of CUSTOMER
   vDefineLabel("END_CUS:"_Stz);
+  vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -62,6 +62,8 @@ void vRlu_ENTER(void* aLU)
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  pLogicUnit->vEnter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,6 +74,8 @@ void vRlu_EXIT(void* aLU)
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  pLogicUnit->vExit();
 }
 
 

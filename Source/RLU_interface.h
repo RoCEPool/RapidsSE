@@ -12,8 +12,6 @@ void vRlu_ENDTMR(void* aLU, i8 iCode);
 
 void vRlu_DUMP(void* aLU, i8* aiDstk);
 
-void vRlu_ENTER(void* aLU);
-void vRlu_EXIT(void* aLU);
 
 /*============================================================================*/
 /* end                                                                        */

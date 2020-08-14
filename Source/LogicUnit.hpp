@@ -286,6 +286,8 @@ namespace Expressions
     eEO* aCodeArg(i8 i_Code);
     i8   iCodeArg(i8 i_Code);
     i8   iDynFun(i8 nOuterArgs, i8 iOuterArg0);
+    void vEnter(void);
+    void vExit(void);
     i8   iFindLabel(i8 i_Code);
     i8   iFindLabel(Stz* szLabelNm);
     i8   iLabelCode(i8 i_Label);
