@@ -1766,6 +1766,9 @@ void LogicUnit::vGenerateQuery600b(void)
   // reset
   m_i_Code = 0;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // BEGIN MAIN: QRY_600
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("QRY_600:"_Stz);
   vAddCode(EO_INIT);
   
@@ -1789,58 +1792,60 @@ void LogicUnit::vGenerateQuery600b(void)
   vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
   vAddCode(EO_ENTWRK_APPENDELMI);
   vAddCode(EO_IXT_SRC_UBOUND_LT);
-  vAddCodeLabel(EO_JMP_TRUE, "TRV_NXT:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE, "TRV_TILL_UPPER:"_Stz);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no upper key, traverse till end
   vDefineLabel("TRV_TILL_END:"_Stz);
   vAddCode(EO_IXT_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE, "QRY_600_DONE:"_Stz);
-  
-  vAddCode(EO_CRW_SRC_FETCH);
-  //vAddCode(EO_DUMP);
-  vAddCode(EO_PUSH_MINUS1);
-  vAddCodeArg(EO_INTEGER,L_DISCOUNT);
-  vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
-  vAddCodeArg(EO_INTEGER,L_QUANTITY);
-  
-  vAddCode(EO_COL_SRC_PUSHSET);
 
-  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_DISCOUNT);
-  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_EXTENDEDPRICE);
-  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_QUANTITY);
-  //vAddCode(EO_DUMP);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // call PROCESSROW subroutine to process the row
   vAddCodeLabel(EO_CALL, "SUBROUTINE_PROCESSROW:"_Stz);
-  vAddCode(EO_CRW_SRC_FETCH);
-  vAddCodeLabel(EO_JMP, "TRV_TILL_END:"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // traverse the index
-  vDefineLabel("TRV_NXT:"_Stz);
+  // loop back to getting next row till end
+  vAddCodeLabel(EO_JMP, "TRV_TILL_END:"_Stz);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // traverse the index till we reach upper bound
+  vDefineLabel("TRV_TILL_UPPER:"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fetch next entry from index
   vAddCode(EO_IXT_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE, "QRY_600_DONE:"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // have we reached the upper entry
   vAddCode(EO_ENT_SRC_PUSH);
   vAddCode(EO_ENT_SRC_PUSHUPPER);
   vAddCode(EO_EQUAL);
   vAddCodeLabel(EO_JMP_TRUE, "QRY_600_DONE:"_Stz);
   
-  vAddCode(EO_CRW_SRC_FETCH);
-  
-  vAddCode(EO_PUSH_MINUS1);
-  vAddCodeArg(EO_INTEGER,L_DISCOUNT);
-  vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
-  vAddCodeArg(EO_INTEGER,L_QUANTITY);
-  
-  vAddCode(EO_COL_SRC_PUSHSET);
-  
-  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_DISCOUNT);
-  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_EXTENDEDPRICE);
-  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_QUANTITY);
-  //vAddCode(EO_DUMP);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // call PROCESSROW subroutine to process the row
   vAddCodeLabel(EO_CALL, "SUBROUTINE_PROCESSROW:"_Stz);
-  vAddCodeLabel(EO_JMP, "TRV_NXT:"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // loop back to getting next row
+  vAddCodeLabel(EO_JMP, "TRV_TILL_UPPER:"_Stz);
 
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // query done
   vDefineLabel("QRY_600_DONE:"_Stz);
   vAddCode(EO_RETURN);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // END MAIN: QRY_600
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
   
   
   
@@ -1849,6 +1854,24 @@ void LogicUnit::vGenerateQuery600b(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("SUBROUTINE_PROCESSROW:"_Stz);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fetch the crw
+  vAddCode(EO_CRW_SRC_FETCH);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // inflate crw required columns
+  vAddCode(EO_PUSH_MINUS1);
+  vAddCodeArg(EO_INTEGER,L_DISCOUNT);
+  vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
+  vAddCodeArg(EO_INTEGER,L_QUANTITY);
+  vAddCode(EO_COL_SRC_PUSHSET);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop inflated columns into the locals register
+  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_DISCOUNT);
+  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_EXTENDEDPRICE);
+  vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_QUANTITY);
+
   // new a rsb dst row if not there
   vAddCode(EO_RSB_DST_TEST);
   vAddCodeLabel(EO_JMP_TRUE,"FILTER:"_Stz);
@@ -1878,6 +1901,9 @@ void LogicUnit::vGenerateQuery600b(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // END SUBROUTINE: SUBROUTINE_PROCESSROW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
+  
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1914,6 +1940,9 @@ void LogicUnit::vGenerateQuery600b(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // END SUBROUTINE: SUBROUTINE_FILTER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // BEGIN SUBROUTINE: SUBROUTINE_AGGREGATE
