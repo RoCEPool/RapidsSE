@@ -1776,7 +1776,7 @@ void LogicUnit::vGenerateQuery600b(void)
   vAddCode(EO_IXT_SRC_BEGIN);
   
   // no entry, return
-  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "QRY_600_DONE:"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the upper key
@@ -1790,7 +1790,7 @@ void LogicUnit::vGenerateQuery600b(void)
   // no upper key, traverse till end
   vDefineLabel("TRV_TILL_END:"_Stz);
   vAddCode(EO_IXT_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "QRY_600_DONE:"_Stz);
   
   vAddCode(EO_CRW_SRC_FETCH);
   //vAddCode(EO_DUMP);
@@ -1805,30 +1805,22 @@ void LogicUnit::vGenerateQuery600b(void)
   vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_EXTENDEDPRICE);
   vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_QUANTITY);
   //vAddCode(EO_DUMP);
-  vAddCodeLabel(EO_CALL, "AGG_600:"_Stz);
+  vAddCodeLabel(EO_CALL, "SUBROUTINE_PROCESSROW:"_Stz);
   vAddCode(EO_CRW_SRC_FETCH);
-  //vAddCode(EO_RSB_DST_NEW);
-  //vAddCode(EO_CRW_SRC_TORSB);
-  //vAddCode(EO_RSB_DST_PRINT);
-  
   vAddCodeLabel(EO_JMP, "TRV_TILL_END:"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // traverse the index
   vDefineLabel("TRV_NXT:"_Stz);
   vAddCode(EO_IXT_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "QRY_600_DONE:"_Stz);
   vAddCode(EO_ENT_SRC_PUSH);
   vAddCode(EO_ENT_SRC_PUSHUPPER);
   vAddCode(EO_EQUAL);
-  vAddCodeLabel(EO_JMP_TRUE, "TRV_RET:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE, "QRY_600_DONE:"_Stz);
   
   vAddCode(EO_CRW_SRC_FETCH);
-  //vAddCode(EO_RSB_DST_NEW);
-  //vAddCode(EO_CRW_SRC_TORSB);
-  //vAddCode(EO_RSB_DST_PRINT);
   
-  //vAddCode(EO_DUMP);
   vAddCode(EO_PUSH_MINUS1);
   vAddCodeArg(EO_INTEGER,L_DISCOUNT);
   vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
@@ -1840,16 +1832,18 @@ void LogicUnit::vGenerateQuery600b(void)
   vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_EXTENDEDPRICE);
   vAddCodeArg(EO_POP_LOCAL,Q6_LOCAL_QUANTITY);
   //vAddCode(EO_DUMP);
-  vAddCodeLabel(EO_CALL, "AGG_600:"_Stz);
+  vAddCodeLabel(EO_CALL, "SUBROUTINE_PROCESSROW:"_Stz);
   vAddCodeLabel(EO_JMP, "TRV_NXT:"_Stz);
 
-  vDefineLabel("TRV_RET:"_Stz);
+  vDefineLabel("QRY_600_DONE:"_Stz);
   vAddCode(EO_RETURN);
   
   
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // aggregate
-  vDefineLabel("AGG_600:"_Stz);
+  // BEGIN SUBROUTINE: SUBROUTINE_PROCESSROW
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vDefineLabel("SUBROUTINE_PROCESSROW:"_Stz);
   
   // new a rsb dst row if not there
   vAddCode(EO_RSB_DST_TEST);
@@ -1865,21 +1859,26 @@ void LogicUnit::vGenerateQuery600b(void)
   // call the filter subroutine
   vDefineLabel("FILTER:"_Stz);
   vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
-  vAddCodeLabel(EO_JMP_FALSE, "AGG_DONE:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE, "PROCESSROW_DONE:"_Stz);
   
   // call the aggregate subroutine
   vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
   //vAddCode(EO_PUSH_0);
-  vAddCodeLabel(EO_JMP, "AGG_DONE:"_Stz);
+  vAddCodeLabel(EO_JMP, "PROCESSROW_DONE:"_Stz);
   
   //vDefineLabel("FILTER_FALSE:"_Stz);
   //vAddCode(EO_PUSH_0);
   
-  vDefineLabel("AGG_DONE:"_Stz);
+  vDefineLabel("PROCESSROW_DONE:"_Stz);
   vAddCode(EO_RETURN);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // END SUBROUTINE: SUBROUTINE_PROCESSROW
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // FILTER SUBROUTINE
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // BEGIN SUBROUTINE: SUBROUTINE_FILTER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("SUBROUTINE_FILTER:"_Stz);
   
   vAddCodeArg(EO_PUSH_LOCAL,Q6_LOCAL_DISCOUNT);
@@ -1908,9 +1907,13 @@ void LogicUnit::vGenerateQuery600b(void)
   // return
   vDefineLabel("RETURN:"_Stz);
   vAddCode(EO_RETURN);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // END SUBROUTINE: SUBROUTINE_FILTER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // AGGREGATE SUBROUTINE
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // BEGIN SUBROUTINE: SUBROUTINE_AGGREGATE
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("SUBROUTINE_AGGREGATE:"_Stz);
   
   vAddCodeArg(EO_PUSH_LOCAL,Q6_LOCAL_DISCOUNT);
@@ -1931,6 +1934,9 @@ void LogicUnit::vGenerateQuery600b(void)
   //  vAddCodeArg(EO_RSB_DST_POPCOLI, (i8)Q600_COUNT);
   
   vAddCode(EO_RETURN);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // END SUBROUTINE: SUBROUTINE_AGGREGATE
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 }
 
 /*----------------------------------------------------------------------------*/
