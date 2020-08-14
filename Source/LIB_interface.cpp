@@ -58,7 +58,7 @@ Stz* szLib_DTE_PRINT(void* pLU, i8 iTopA)
 
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
   
-  struct RluCommon* aRluCommon = pLogicUnit->aRlu_INIT(pLU);
+  struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
 
   StrLib::vCopy(aRluCommon->m_caStrWrk,(char*)spDate.sz(iTopA));
   
@@ -106,7 +106,7 @@ void vLib_HSH_ADD_HASHI(void* pLU, i8 iTopA)
   _static_
 
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
-  struct RluCommon* aRluCommon = pLogicUnit->aRlu_INIT(pLU);
+  struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
 
   i8 iRes = HshLib::iHash((byte*)&iTopA,sizeof(w8));
 
@@ -125,7 +125,7 @@ void vLib_PTN_CALC(void* pLU)
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
-  struct RluCommon* aRluCommon = pLogicUnit->aRlu_INIT(pLU);
+  struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
 
   aRluCommon->m_i_Ptn =
     PtnLib::iPartition(aRluCommon->m_iHash,aRluCommon->m_nPtns);
@@ -139,7 +139,7 @@ void vLib_PTN_RUNNING(void* pLU, i8 iTopA)
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
-  struct RluCommon* aRluCommon = pLogicUnit->aRlu_INIT(pLU);
+  struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
 
   PtnLib::vRunning(&aRluCommon->m_iHash,iTopA);
 }

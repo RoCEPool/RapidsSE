@@ -174,17 +174,22 @@ void Pot::vStreamPix(StreamPix* pStreamPix)
 /*----------------------------------------------------------------------------*/
 /* add row as first into buffer chain for partition                           */
 /*----------------------------------------------------------------------------*/
-void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pFirstBuffer)
+void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
+  //vTrace("Pot::vAddBuffer %lld\n"_Stz,i_Ptn);
+  
+  pAddBuffer->vPartitionNo(i_Ptn);
+  
   // link the old with this
-  pFirstBuffer->vNextBuffer(m_paBufferChain[i_Ptn]);
+  pAddBuffer->vNextBuffer(m_paBufferChain[i_Ptn]);
+  
   
   if (m_paBufferChain[i_Ptn])
-    m_paBufferChain[i_Ptn]->vPrevBuffer(pFirstBuffer);
+    m_paBufferChain[i_Ptn]->vPrevBuffer(pAddBuffer);
   
-  m_paBufferChain[i_Ptn] = pFirstBuffer;
+  m_paBufferChain[i_Ptn] = pAddBuffer;
 }
 
 
