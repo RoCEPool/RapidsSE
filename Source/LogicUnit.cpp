@@ -59,6 +59,8 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_iCmnMagic  = 123456789;
   m_xRluCommon.m_iCmnFooter = 987654321;
   
+  m_oSince.vStart();
+  
   // m_oEntWrk
 
   m_i_Code = 0;
@@ -1321,6 +1323,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vRlu_DUMP(pLU,aiDstk);
         break;//+endCase
               
+      case EO_ENTER: ArgNil(); //  diarise routine enter
+        dLU0(EO_ENTER);
+        break;//+endCase
+        
+      case EO_EXIT: ArgNil(); // diarise routine exit
+        dLU0(EO_EXIT);
+        break;//+endCase
+        
       case EO_INIT: ArgNil(); // initialise the rlu common
         dLU0(EO_INIT);
         aRluCommon = aRlu_INIT(pLU);
@@ -1443,6 +1453,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // timer
+      case EO_TMR_SINCE: ArgNil(); // get nsecs since ::constructor
+        iRes = iRlu_TMR_SINCE(pLU);
+        dLU1(EO_TMR_SINCE,iRes);
+        *(++aiDstk) = iRes;        break;//+endCase
+        
       case EO_TMR_START: ArgNil(); // timer start
         dLU0(EO_TMR_START);
         vRlu_TMR_START(pLU);

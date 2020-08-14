@@ -110,6 +110,22 @@ i8 iRlu_TMR_NSECS(void* pLU)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get nsecs since                                                            */
+/*----------------------------------------------------------------------------*/
+i8 iRlu_TMR_SINCE(void* pLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+
+  pLogicUnit->m_oSince.vUpdate();
+  
+  i8 iRes = pLogicUnit->m_oSince.iNanoseconds();
+
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* timer start                                                                */
 /*----------------------------------------------------------------------------*/
 void vRlu_TMR_START(void* pLU)

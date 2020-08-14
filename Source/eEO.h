@@ -91,6 +91,8 @@ enum eEO : u1 // expression operators
   /*    */ EO_CALLAGAIN,        // set call again
   /*    */ EO_CALLEDAGAIN,      // push called again
   /*    */ EO_DUMP,             // stack dump
+  /*    */ EO_ENTER,            // diarise routine enter
+  /*    */ EO_EXIT,             // diarise routine exit
   /*    */ EO_INIT,             // initialise the rlu common
   /*    */ EO_INTEGRITY,        // integrity check
   /*    */ EO_SANITY,           // sanity check
@@ -119,6 +121,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_PTN_RUNNING,      // mix top into running iHash
 
   // timer
+  /*    */ EO_TMR_SINCE,        // get nsecs since ::constructor
   /*    */ EO_TMR_START,        // timer start
   /*    */ EO_TMR_NSECS,        // push timer nanoseconds
   /*    */ EO_TMR_UPDATE,       // timer update
@@ -326,6 +329,8 @@ static Stz* aEO[]
   /*    */ "EO_CALLAGAIN"_Stz,
   /*    */ "EO_CALLEDAGAIN"_Stz,
   /*    */ "EO_DUMP"_Stz,
+  /*    */ "EO_ENTER"_Stz,
+  /*    */ "EO_EXIT"_Stz,
   /*    */ "EO_INIT"_Stz,
   /*    */ "EO_INTEGRITY"_Stz,
   /*    */ "EO_SANITY"_Stz,
@@ -354,6 +359,7 @@ static Stz* aEO[]
   /*    */ "EO_PTN_RUNNING"_Stz,
   
   // timer
+  /*    */ "EO_TMR_SINCE"_Stz,
   /*    */ "EO_TMR_START"_Stz,
   /*    */ "EO_TMR_NSECS"_Stz,
   /*    */ "EO_TMR_UPDATE"_Stz,
@@ -565,6 +571,8 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_CALLAGAIN
   { EA_NONE,    0 },  // EO_CALLEDAGAIN
   { EA_NONE,    0 },  // EO_DUMP
+  { EA_NONE,    0 },  // EO_ENTER
+  { EA_NONE,    0 },  // EO_EXIT
   { EA_NONE,    0 },  // EO_INIT
   { EA_NONE,    0 },  // EO_INTEGRITY
   { EA_NONE,    0 },  // EO_SANITY
@@ -593,6 +601,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PTN_RUNNING
 
   // timer
+  { EA_NONE,    0 },  // EO_TMR_SINCE
   { EA_NONE,    0 },  // EO_TMR_START
   { EA_NONE,    0 },  // EO_TMR_NSECS
   { EA_NONE,    0 },  // EO_TMR_UPDATE
