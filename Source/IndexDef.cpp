@@ -331,6 +331,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  vDetermineKeyKind();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
