@@ -463,11 +463,11 @@
   //0 19 CT_INTEGER "count"
   //StreamDefOut[].addColumn
 
-  // messy !!!
+  // pipeout the streamDefOut
   StreamDefOut[].duplicate to Operand[]
-  StreamDefOut[].pipeout
-  Operand[] to StreamDefOut[]
-  nullptr to Operand[]
+  Operand[].pipeout
+
+  // set streamDefOut in the pot
   true Pot[].useStreamDefOut
 
   LogicUnit[].DynFun
