@@ -60,7 +60,8 @@ IndexDef::IndexDef(void)
   m_sIndexNm      = C_NO_NAME;
   m_sTableNm      = C_NO_NAME;
   m_eIndexType    = IT_SKIP_LIST;
-  
+  m_eKeyKind      = KE_GENERAL;
+
   m_bIsPrimaryKey = false;
   m_bIsUnique     = false;
   
@@ -83,7 +84,8 @@ IndexDef::IndexDef(IndexDef* pIndexDef)
   m_sIndexNm      = pIndexDef->szIndexNm();
   m_sTableNm      = pIndexDef->szTableNm();
   m_eIndexType    = pIndexDef->eIndexType();
-  
+  m_eKeyKind      = pIndexDef->eKeyKind();
+
   m_bIsPrimaryKey = pIndexDef->bIsPrimaryKey();
   m_bIsUnique     = pIndexDef->bIsUnique();
   
@@ -167,6 +169,26 @@ eIT IndexDef::eIndexType(void)
   return m_eIndexType;
 }
                             
+/*----------------------------------------------------------------------------*/
+/* get the key kind                                                           */
+/*----------------------------------------------------------------------------*/
+eKE IndexDef::eKeyKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_eKeyKind;
+}
+                            
+/*----------------------------------------------------------------------------*/
+/* set the key kind                                                           */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vKeyKind(eKE eKeyKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_eKeyKind = eKeyKind;
+}
+                           
 /*----------------------------------------------------------------------------*/
 /* get the table name                                                         */
 /*----------------------------------------------------------------------------*/
@@ -284,6 +306,9 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
     // -- -- -- --
     pTkn = pTknVec->pNextToken(); dPT();
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

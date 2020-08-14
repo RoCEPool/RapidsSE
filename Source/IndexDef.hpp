@@ -13,6 +13,7 @@ namespace MetaData
     s32    m_sIndexNm;       // name of index
     s32    m_sTableNm;       // name of table
     eIT    m_eIndexType;     // index type
+    eKE    m_eKeyKind;       // key entry kind
   
     bool   m_bIsPrimaryKey;  // is this the primary key?
     bool   m_bIsUnique;      // is this index unique?
@@ -40,6 +41,8 @@ namespace MetaData
     Stz*   szIndexNm(void);
     void   vIndexNm(Stz* szIndexNm);
     eIT    eIndexType(void);
+    eKE    eKeyKind(void);
+    void   vKeyKind(eKE eKeyKind);
     Stz*   szTableNm(void);
     eEC    eParse(Table* pTable, Stz* szCmd);
     bool   bIsPrimaryKey(void);
