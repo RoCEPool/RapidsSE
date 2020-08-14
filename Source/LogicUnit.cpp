@@ -1325,6 +1325,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
               
       case EO_ENTER: ArgNil(); //  diarise routine enter
         dLU0(EO_ENTER);
+        aRluCommon->m_nEnterCount++;
         break;//+endCase
         
       case EO_EXIT: ArgNil(); // diarise routine exit

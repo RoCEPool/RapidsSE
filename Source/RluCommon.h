@@ -15,6 +15,8 @@ struct RluCommon
 
   i8   m_bPotCompleted;
   
+  i8   m_nEnterCount;
+  
   i8   m_iValue;
   i8   m_iCtr0;
   i8   m_iSql;
