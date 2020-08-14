@@ -110,7 +110,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* create new destination rsb (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
-Rsb* Pot::aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab)
+Rsb* Pot::aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab,bool* pbNewBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
@@ -134,6 +134,7 @@ Rsb* Pot::aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab)
   // new a row in rsb buffer (new another rsb buffer if necessary)
   bool bNewed = pDstRowSlab->bNewRow(&aDstRsb);
   if (! bNewed) {
+    *pbNewBuffer = true;
     pDstRsbBuffer = new RsbBuffer;
     pDstRowSlab = pDstRsbBuffer->pRowSlab();
     pDstRowSlab->vCopyPix(m_pStreamPix);

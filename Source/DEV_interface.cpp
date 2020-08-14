@@ -775,17 +775,20 @@ void vDev_RSB_BEGIN(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* create new rsb                                                             */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_NEW(void* aLU, void* aRSB)
+i8 iDev_RSB_NEW(void* aLU, void* aRSB)
 {
   _static_
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
+  bool bNewBuffer = false;
+  
   pDevRsb->m_aRsb =
     pLogicUnit->m_xpPot->aNewDstRsb(pLogicUnit->m_xRluCommon.m_i_Ptn,
-                                   &pDevRsb->m_pRowSlab);
+                                   &pDevRsb->m_pRowSlab, &bNewBuffer);
+  
+  return bNewBuffer ? 1 : 0;
 }
 
 /*----------------------------------------------------------------------------*/
