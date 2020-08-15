@@ -996,7 +996,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
   
     eEO eCode = *aeCode++;
-    //vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
+    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
     
     switch (eCode) { //+ExtractBegin
         
@@ -1290,6 +1290,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iTopA = *(aiDstk--);
         vLib_SET_LOCAL(pLU, iArg, iTopA);
         break;//+endCase
+        
+//      case EO_POP_LOCALS: ArgGet(iArg); // pop into a local reg
+//        dLU1(EO_POP_LOCAL, iArg);
+//        //ASSERT(iArg < C_LOCALS);
+//        //m_iLocals[iArg] = (i8)(*(aiDstk--));
+//        iTopA = *(aiDstk--);
+//        vLib_SET_LOCAL(pLU, iArg, iTopA);
+//        break;//+endCase
         
       case EO_PRINT: ArgNil(); // print top
 #ifdef WITH_TRACE_LOGICUNIT
@@ -1803,7 +1811,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_DEL_ENT(pLU,aRluCommon->m_pDevTmpIxt);
         break;//+endCase
 
-      case EO_IXT_DUMP: ArgGet(iArg); // dump index tree
+      case EO_IXT_DUMP: ArgNil(); // dump index tree
         vDev_IXT_DUMP(pLU,aRluCommon->m_pDevTmpIxt);
         break;//+endCase
 

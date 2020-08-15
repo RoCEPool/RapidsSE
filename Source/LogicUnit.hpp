@@ -49,6 +49,15 @@ namespace Expressions
   static const i8 O_SHIPPRIORITY  = 7;
   static const i8 O_COMMENT       = 8;
 
+  // query1 locals
+  static const i8 Q1_LOCAL_QUANTITY      = 0;
+  static const i8 Q1_LOCAL_EXTENDEDPRICE = 1;
+  static const i8 Q1_LOCAL_DISCOUNT      = 2;
+  static const i8 Q1_LOCAL_TAX           = 3;
+  static const i8 Q1_LOCAL_RETURNFLAG    = 4;
+  static const i8 Q1_LOCAL_LINESTATUS    = 5;
+  static const i8 Q1_LOCAL_SHIPDATE      = 6;
+  static const i8 Q1_LOCAL_TOTAL         = 7;
   
   // query1 100 output
   static const i8 Q100_RETURNFLAG     = 0;  // L_RETURNFLAG

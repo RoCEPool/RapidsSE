@@ -14657,7 +14657,7 @@ void Task::vAddMunged(Forth* pForth)
     "    301 of\n"
     "      //\"---------------------------- 301=RSBBUFFER ----------------------------\" .\n"
     "      Operand[].pipeIn\n"
-    "      Operand[] \"RsbBuffer %v\\n\" .printf\n"
+    "      //Operand[] \"RsbBuffer %v\\n\" .printf\n"
     "      Operand[].asSrcRowSlab\n"
     "      //LogicUnit[].transform\n"
     "      LogicUnit[].dynFun\n"

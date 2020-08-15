@@ -1004,7 +1004,7 @@
   sPath
   "
   procedure Query1
-    parameters $Table $Index
+    parameters $Table
   begin
 
   stage stageA on origin :
@@ -1013,8 +1013,9 @@
     | stageB
 
   stage stageB on all partitions :
-    sql 100 $Table $Index
-    | sql 101
+    scan $Table
+    | sql 100
+    //| sql 101
     | stageC
 
   stage stageC on origin :
