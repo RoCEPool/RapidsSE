@@ -993,10 +993,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
     if (iStkPct > 80)
       vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
+    
+    //vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
 #endif
   
     eEO eCode = *aeCode++;
-    //vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
     
     switch (eCode) { //+ExtractBegin
         
