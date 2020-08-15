@@ -101,9 +101,11 @@ namespace Indexing
     EntBuffer* pPosH0Buffer(Key* aFindKey);
     EntBuffer* pPosH0Buffer_gen(Key* aFindKey);
 
+  
     Ent*       aPosPriorEntry(Key* aFindKey);
     Ent*       aPosPriorEntry_gen(Key* aFindKey);
 
+  
     void       vPosPriorVecBuffer(Key* aFindKey,
                                   Ent* aPriorVec[],
                                   EntBuffer* pToBuffer);
@@ -111,9 +113,13 @@ namespace Indexing
                                       Ent* aPriorVec[],
                                       EntBuffer* pToBuffer);
 
+  
     void       vPosPriorVecEntry(Key* aFindKey,
                                  Ent* aPriorVec[],
                                  Ent* aFindEntry);
+    void       vPosPriorVecEntry_gen(Key* aFindKey,
+                                     Ent* aPriorVec[],
+                                     Ent* aFindEntry);
     void       vPosPriorVecEntry_int(Key* aFindKey,
                                      Ent* aPriorVec[]);
 
