@@ -7,13 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at given height starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pFindH0Buffer(Key* aFindKey)
+EntBuffer* EntBuffer::pFindH0Buffer(Key* aWithKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   EntBuffer* pEntBuffer;
 
-  pEntBuffer = pFindH0Buffer_gen(aFindKey);
+  pEntBuffer = pFindH0Buffer_gen(aWithKey);
   
   return pEntBuffer;
 }
@@ -21,13 +21,13 @@ EntBuffer* EntBuffer::pFindH0Buffer(Key* aFindKey)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aPosPriorToEntry(Key* aFindKey)
+Ent* EntBuffer::aPosPriorToEntry(Key* aWithKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   Ent* aEnt;
   
-  aEnt = aPosPriorToEntry_gen(aFindKey);
+  aEnt = aPosPriorToEntry_gen(aWithKey);
 
   return aEnt;
 }
@@ -36,26 +36,26 @@ Ent* EntBuffer::aPosPriorToEntry(Key* aFindKey)
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorToEntry(Key* aFindKey,
+void EntBuffer::vPosPriorToEntry(Key* aWithKey,
                                   Ent* aPriorVec[],
-                                  Ent* aFindEntry)
+                                  Ent* aToEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  vPosPriorToEntry_gen(aFindKey,aPriorVec,aFindEntry);
+  vPosPriorToEntry_gen(aWithKey,aPriorVec,aToEntry);
 }
 
 /*----------------------------------------------------------------------------*/
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorToBuffer(Key* aFindKey,
+void EntBuffer::vPosPriorToBuffer(Key* aWithKey,
                                    Ent* aPriorVec[],
                                    EntBuffer* pRefdChildBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-  vPosPriorToBuffer_gen(aFindKey,aPriorVec,pRefdChildBuffer);
+  vPosPriorToBuffer_gen(aWithKey,aPriorVec,pRefdChildBuffer);
 }
 
 /*============================================================================*/

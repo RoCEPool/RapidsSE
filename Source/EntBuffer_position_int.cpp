@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* compute prior vector for given int key                                     */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorToEntry_int(Key* aKey_int, Ent* aPriorVec[])
+void EntBuffer::vPosPriorToEntry_int(Key* aWithKey_int, Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
@@ -43,7 +43,7 @@ void EntBuffer::vPosPriorToEntry_int(Key* aKey_int, Ent* aPriorVec[])
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iElm0_int = ELM0_OF_KEY(aKey_int);
+  i8 iElm0_int = ELM0_OF_KEY(aWithKey_int);
 
   Ent* aScanEnt = aSkipRoots;
   for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
@@ -97,7 +97,7 @@ void EntBuffer::vPosPriorToEntry_int(Key* aKey_int, Ent* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* find entry given int key                                                   */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aFindEnt_int(Key* aKey_int)
+Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
@@ -115,7 +115,7 @@ Ent* EntBuffer::aFindEnt_int(Key* aKey_int)
   
   Ent_int* aItemArray = (Ent_int*)this->aItemArray();
   
-  i8 iKey_IntElm = ELM0_OF_KEY(aKey_int);
+  i8 iKey_IntElm = ELM0_OF_KEY(aWithKey_int);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

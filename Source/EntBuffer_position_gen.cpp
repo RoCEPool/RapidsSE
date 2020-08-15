@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at given height starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pFindH0Buffer_gen(Key* aFindKey)
+EntBuffer* EntBuffer::pFindH0Buffer_gen(Key* aWithKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -47,13 +47,13 @@ EntBuffer* EntBuffer::pFindH0Buffer_gen(Key* aFindKey)
     //aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
     //ASSERT(aEnt1);
     
-    aEnt = pEntBuffer->aPosPriorToEntry(aFindKey);
+    aEnt = pEntBuffer->aPosPriorToEntry(aWithKey);
     ASSERT(aEnt);
     Ent* aEntPrev = aEnt;
     
-    aEnt = pEntBuffer->pFindPrevKeyEntry(aEnt, aFindKey, &pEntBuffer);
+    aEnt = pEntBuffer->pFindPrevKeyEntry(aEnt, aWithKey, &pEntBuffer);
     if (! aEnt ) {
-      aFindKey->vShow(m_pIndex->pIndexDef());
+      aWithKey->vShow(m_pIndex->pIndexDef());
       vTrace("\n"_Stz);
       
       aEntPrev->aKey()->vShow(m_pIndex->pIndexDef());
@@ -75,7 +75,7 @@ EntBuffer* EntBuffer::pFindH0Buffer_gen(Key* aFindKey)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aPosPriorToEntry_gen(Key* aFindKey)
+Ent* EntBuffer::aPosPriorToEntry_gen(Key* aWithKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -99,7 +99,7 @@ Ent* EntBuffer::aPosPriorToEntry_gen(Key* aFindKey)
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
-      bNextKeyIsGE = Key::bGreaterEqual(aNextEntry_sl->aKey(),aFindKey);
+      bNextKeyIsGE = Key::bGreaterEqual(aNextEntry_sl->aKey(),aWithKey);
       if (bNextKeyIsGE)
         break;
       
@@ -116,9 +116,9 @@ Ent* EntBuffer::aPosPriorToEntry_gen(Key* aFindKey)
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorToEntry_gen(Key* aFindKey,
+void EntBuffer::vPosPriorToEntry_gen(Key* aWithKey,
                                       Ent* aPriorVec[],
-                                      Ent* aFindEntry)
+                                      Ent* aToEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -140,7 +140,7 @@ void EntBuffer::vPosPriorToEntry_gen(Key* aFindKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iFindLevels = aFindEntry ? (aFindEntry->nSkipLevels() - 1)
+  i8 iFindLevels = aToEntry ? (aToEntry->nSkipLevels() - 1)
                               : (nLvlLevels - 1);
   
   bool bIsJuxta;
@@ -151,15 +151,15 @@ void EntBuffer::vPosPriorToEntry_gen(Key* aFindKey,
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
-      if (aFindEntry == aNextEntry_sl)
+      if (aToEntry == aNextEntry_sl)
         break;
       
       Key* aNextKey = _aKey(aNextEntry_sl->ayElmSeq());
       
-      bIsJuxta = Key::bGreaterEqual(aNextEntry_sl->aKey(), aFindKey);
+      bIsJuxta = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
       
       if (bIsJuxta) {
-        if (! aFindEntry || aNextEntry_sl == aFindEntry)
+        if (! aToEntry || aNextEntry_sl == aToEntry)
           break;
         
         if (i_ScanLevel > iFindLevels)
@@ -179,7 +179,7 @@ void EntBuffer::vPosPriorToEntry_gen(Key* aFindKey,
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorToBuffer_gen(Key* aFindKey,
+void EntBuffer::vPosPriorToBuffer_gen(Key* aWithKey,
                                        Ent* aPriorVec[],
                                        EntBuffer* pRefdChildBuffer)
 {
@@ -249,7 +249,7 @@ void EntBuffer::vPosPriorToBuffer_gen(Key* aFindKey,
 //        vShowEntry(aInsertingEntry);
 //       }
       
-      bool bNextKeyIsGreater = Key::bGreaterThan(aNextEntry_sl->aKey(),aFindKey);
+      bool bNextKeyIsGreater = Key::bGreaterThan(aNextEntry_sl->aKey(),aWithKey);
       if (bNextKeyIsGreater) {
         // nextEntry[sl] > aInsertingEntry, insert at this level after prior entry
         aPriorVec[i_ScanLevel] = aPriorEntry_sl;
@@ -257,7 +257,7 @@ void EntBuffer::vPosPriorToBuffer_gen(Key* aFindKey,
         break;
       }
 
-      bool bKeysAreEqual = Key::bEqualTo(aNextEntry_sl->aKey(),aFindKey);
+      bool bKeysAreEqual = Key::bEqualTo(aNextEntry_sl->aKey(),aWithKey);
       if (! bKeysAreEqual) {
         // haven't found key at this level yet, go right at this level
         aPriorVec[i_ScanLevel] = aNextEntry_sl;//aPriorEntry_sl;
