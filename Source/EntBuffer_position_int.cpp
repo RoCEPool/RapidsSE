@@ -122,7 +122,7 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey)
       i8 iNextInt = aNextEntry_sl->iIntElm0();
       i8 iGivenInt = *(i8*)aGivenKey;
 
-      bNextKeyIsGE = iNextInt >= iGivenInt;
+      bNextKeyIsGE = (iNextInt >= iGivenInt);
       if (bNextKeyIsGE)
         break;
       
@@ -148,14 +148,19 @@ Ent* EntBuffer::pFindEntryPrevTo_int(Ent* aGivenEnt, Key* aWithKey)
   Ent* aEntPrev = aGivenEnt;
   
   while (aGivenEnt) {
-    eKC eCompare = Key::eCompare(aGivenEnt->aKey(),aWithKey);
+    
+    
+    i8 iGivenInt = aGivenEnt->iIntElm0();
+    i8 iWithInt = *(i8*)aWithKey;
+    
+    //eKC eCompare = Key::eCompare(aGivenEnt->aKey(),aWithKey);
 
     // have we reached the key?
-    if (eCompare == KC_SAME)
+    if (iGivenInt == iWithInt)
       break;
     
     // have we moved beyond ?
-    if (eCompare == KC_AFTER)
+    if (iGivenInt > iWithInt)
       return aEntPrev;
     
     aEntPrev = aGivenEnt;
@@ -244,7 +249,11 @@ void EntBuffer::vPosVecPriorToBuffer_int(EntBuffer* pToRefdBuffer,
   //        vShowEntry(aInsertingEntry);
   //       }
         
-        bool bNextKeyIsGreater = Key::bGreaterThan(aNextEntry_sl->aKey(),aWithKey);
+        i8 iNextInt = aNextEntry_sl->iIntElm0();
+        i8 iWithInt = *(i8*)aWithKey;
+
+        //bool bNextKeyIsGreater = Key::bGreaterThan(aNextEntry_sl->aKey(),aWithKey);
+        bool bNextKeyIsGreater = (iNextInt >= iWithInt);
         if (bNextKeyIsGreater) {
           // nextEntry[sl] > aInsertingEntry, insert at this level after prior entry
           aPriorVec[i_ScanLevel] = aPriorEntry_sl;
@@ -252,7 +261,9 @@ void EntBuffer::vPosVecPriorToBuffer_int(EntBuffer* pToRefdBuffer,
           break;
         }
 
-        bool bKeysAreEqual = Key::bEqualTo(aNextEntry_sl->aKey(),aWithKey);
+        //bool bKeysAreEqual = Key::bEqualTo(aNextEntry_sl->aKey(),aWithKey);
+        bool bKeysAreEqual = (iNextInt == iWithInt);
+
         if (! bKeysAreEqual) {
           // haven't found key at this level yet, go right at this level
           aPriorVec[i_ScanLevel] = aNextEntry_sl;//aPriorEntry_sl;
@@ -318,7 +329,7 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
     i8 iFindLevels = aToEntry ? (aToEntry->nSkipLevels() - 1)
                                 : (nLvlLevels - 1);
     
-    bool bIsJuxta;
+    bool bGreaterEqual;
     Ent* aScanEntry_sl = aSkipRoots();
     for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
       
@@ -331,9 +342,13 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
         
         Key* aNextKey = _aKey(aNextEntry_sl->ayElmSeq());
         
-        bIsJuxta = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
+        i8 iNextInt = aNextEntry_sl->iIntElm0();
+        i8 iWithInt = *(i8*)aWithKey;
         
-        if (bIsJuxta) {
+        //bGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
+        bGreaterEqual = (iNextInt >= iWithInt);
+
+        if (bGreaterEqual) {
           if (! aToEntry || aNextEntry_sl == aToEntry)
             break;
           
