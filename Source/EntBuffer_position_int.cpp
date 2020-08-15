@@ -19,12 +19,24 @@
 #define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = aEnt )
 
 /*----------------------------------------------------------------------------*/
+/* position at an index buffer at given height starting from this buffer      */
+/*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pFindH0Buffer_int(Key* aWithKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  RASSERT(KE_INT == m_eEntKind);
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vPosPriorToBuffer_int(Key* aWithKey,
-                                       Ent* aPriorVec[],
-                                       EntBuffer* pRefdChildBuffer)
+                                      Ent* aPriorVec[],
+                                      EntBuffer* pRefdChildBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
@@ -48,8 +60,8 @@ Ent* EntBuffer::aPosPriorToEntry_int(Key* aWithKey)
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vPosPriorToEntry_int(Key* aWithKey,
-                                      Ent* aPriorVec[],
-                                      Ent* aToEntry)
+                                     Ent* aPriorVec[],
+                                     Ent* aToEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -60,7 +72,8 @@ void EntBuffer::vPosPriorToEntry_int(Key* aWithKey,
 /*----------------------------------------------------------------------------*/
 /* compute prior vector for given int key                                     */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorToEntry_int(Key* aWithKey_int, Ent* aPriorVec[])
+void EntBuffer::vPosPriorToEntry_int(Key* aWithKey_int,
+                                     Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     

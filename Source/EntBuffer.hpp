@@ -103,6 +103,7 @@ namespace Indexing
   
     EntBuffer* pFindH0Buffer(Key* aWithKey);
     EntBuffer* pFindH0Buffer_gen(Key* aWithKey);
+    EntBuffer* pFindH0Buffer_int(Key* aWithKey);
 
   
     void       vPosPriorToBuffer(Key* aWithKey,
