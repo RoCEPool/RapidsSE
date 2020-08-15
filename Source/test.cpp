@@ -1427,7 +1427,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
     for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
           
       i8 iInt = pKeySamples->iGet(i_Int);
-      Ent* aSearchedEnt = pEntBuffer->aFindEnt_IntOpt(iInt);
+      //Ent* aSearchedEnt = pEntBuffer->aFindEnt_IntOpt(iInt);
 
       nTotalSel_++;
     }

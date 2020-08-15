@@ -113,7 +113,7 @@ namespace Indexing
     void       vPositionPriorVecEntry_IntOpt(Key* aFindKey,
                                             Ent* aPriorVec[]);
 
-    Ent*       aFindEnt_IntOpt(i8 iKey_IntElm);
+    Ent*       aFindEnt_IntOpt(Key* aFindKey);
   
 
 

@@ -18,8 +18,6 @@
 
 #define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = aEnt )
 
-
-
 /*----------------------------------------------------------------------------*/
 /* compute prior vector for given int key                                     */
 /*----------------------------------------------------------------------------*/
@@ -84,6 +82,8 @@ void EntBuffer::vPositionPriorVecEntry_IntOpt(Key* aKey_int, Ent* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 
 
+#define ELM0_OF_KEY(aKey) ( aKey->iGetIntElm() )
+
 #define ELM0_OF_ENTRY(aEnt_int) ( aEnt_int->m_iIntElm0 )
 
 #define END_TICKET(tNxtEnt) ( C_ENT_END_TICKET == tNxtEnt )
@@ -97,17 +97,17 @@ void EntBuffer::vPositionPriorVecEntry_IntOpt(Key* aKey_int, Ent* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* find entry given int key                                                   */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aFindEnt_IntOpt(i8 iKey_IntElm)
+Ent* EntBuffer::aFindEnt_IntOpt(Key* aKey_int)
 {
-  /*
-   
-     this optimisation explores bringing Key::bGreaterEqual() into line
-   
-   */
-  
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
   RASSERT(KE_INT == m_eEntKind);
+  
+  // if there are no items then the prior vec is the set of skip roots
+  if (nItems() == 0)
+    return nullptr;
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 nLvlLevels = AM::nLvlLevels();
     
@@ -115,14 +115,10 @@ Ent* EntBuffer::aFindEnt_IntOpt(i8 iKey_IntElm)
   
   Ent_int* aItemArray = (Ent_int*)this->aItemArray();
   
+  i8 iKey_IntElm = ELM0_OF_KEY(aKey_int);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // if there are no items then the prior vec is the set of skip roots
-  if (nItems() == 0)
-    return nullptr;
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   Ent_int* aScanEnt = (Ent_int*)aSkipRoots;
   for (i4 i_Level = (i4)nLvlLevels - 1; i_Level >= 0; i_Level--) {
     
@@ -157,6 +153,7 @@ Ent* EntBuffer::aFindEnt_IntOpt(i8 iKey_IntElm)
   return nullptr;
 }
 
+#undef ELM0_OF_KEY
 #undef ELM0_OF_ENTRY
 #undef END_TICKET
 #undef GET_ENTRY
