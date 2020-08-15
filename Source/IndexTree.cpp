@@ -551,6 +551,16 @@ Ent* IndexTree::aInsertEntry(Ent* pEnt)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the key kind                                                           */
+/*----------------------------------------------------------------------------*/
+eKE IndexTree::eKeyKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_pIndexDef->eKeyKind();
+}
+                            
+/*----------------------------------------------------------------------------*/
 /* build skip lists for the index                                             */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vLazyBuild(void)

@@ -370,7 +370,7 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
 /* compute prior vector for given int key                                     */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vPosVecPriorToEntry_int(Key* aWithKey_int,
-                                     Ent* aPriorVec[])
+                                        Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
