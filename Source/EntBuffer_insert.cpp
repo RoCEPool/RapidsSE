@@ -338,32 +338,17 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   Ent* aEntryToBeDeleted = aNextEntry(aPriorEntry,0);
   if (!aEntryToBeDeleted)
     return;
-  
-  //  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
-  //         *nPoolBufferNo(),
-  //         pEntryToBeDeleted->aKey()->iGetInt());
-  
-  //Key* aDeleteEntryKey = _aKey(aEntryToBeDeleted->ayElmSeq());
-  
-  //IndexDef* pIndexDef = m_pIndex->pIndexDef();
-  
-  //if ( ! aDeleteEntryKey->bEqualTo(aDeleteKey,pIndexDef) ) {
-  if ( ! Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteEntry->aKey()) ) {
-    //vShow();
     
-    //vShowTree();
-    
-    //vTrace("Delete key: "_Stz);
-    //aDeleteKey->vShow(pIndexDef);
-    //vTrace("\n"_Stz);
-    
-    //vTrace("Delete entry key found: "_Stz);
-    //aDeleteEntryKey->vShow(pIndexDef);
-    //vTrace("\n"_Stz);
-    
-    return;
+  if (KE_GENERAL == m_eEntKind) {
+    if ( ! Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteEntry->aKey()) )
+      return;
   }
-  //ASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIndexDef));
+  else {
+    i8 iValTbd = *(i8*)aEntryToBeDeleted->aKey();
+    i8 iValDel = *(i8*)aDeleteEntry->aKey();
+    if (iValTbd != iValDel)
+      return;
+  }
   
   Ent* aFirstEntry = this->aLeadEntry();
   if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer) {
@@ -387,17 +372,22 @@ void EntBuffer::vHandleFirstInsert(Ent* aInsertedKeyEntry,
     return;
   
   if (aOriginalFirstEntry) {
-    //Key* aOriginalFirstKey = _aKey(aOriginalFirstEntry->aDataArea());
+
+    if (KE_GENERAL == m_eEntKind) {
     
-    //Key* aInsertedFirstKey = _aKey(aInsertedKeyEntry->aDataArea());
-    
-    //IndexDef* pIndexDef = m_pIndex->pIndexDef();
-    
-    //if (aInsertedFirstKey->bNotEqual(aOriginalFirstKey,pIndexDef))
-    if (Key::bNotEqual(aInsertedKeyEntry->aKey(), aOriginalFirstEntry->aKey()))
-      vHandleLeftInsert(aInsertedKeyEntry,
-                        aOriginalFirstEntry,
-                        ppRootBuffer);
+      if (Key::bNotEqual(aInsertedKeyEntry->aKey(), aOriginalFirstEntry->aKey()))
+        vHandleLeftInsert(aInsertedKeyEntry,
+                          aOriginalFirstEntry,
+                          ppRootBuffer);
+    }
+    else {
+      i8 iInsVal = *(i8*)aInsertedKeyEntry->aKey();
+      i8 iOriVal = *(i8*)aOriginalFirstEntry->aKey();
+      if (iInsVal != iOriVal)
+         vHandleLeftInsert(aInsertedKeyEntry,
+                           aOriginalFirstEntry,
+                           ppRootBuffer);
+    }
   }
   else {
     vHandleLeftInsert(aInsertedKeyEntry,
@@ -843,7 +833,16 @@ bool EntBuffer::bKeyBeforeBuffer(Key* aKey)
   
   Ent* aFirstEntry = this->aLeadEntry();
   
-  bool bLessEqual = Key::bLessEqual(aKey,aFirstEntry->aKey());
+  bool bLessEqual;
+  
+  if (KE_GENERAL == m_eEntKind) {
+    bLessEqual = Key::bLessEqual(aKey,aFirstEntry->aKey());
+  }
+  else {
+    i8 iVal = *(i8*)aKey;
+    i8 iEntVal = *(i8*)aFirstEntry->aKey();
+    bLessEqual = (iVal <= iEntVal);
+  }
   
   return bLessEqual;
 }
@@ -1016,10 +1015,23 @@ void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // does the aEntryToBeDeleted match the aDeleteEntry ?
-  if ( ! Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteEntry->aKey()) ) {
-    return;
+//  if ( ! Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteEntry->aKey()) ) {
+//    return;
+//  }
+  
+  bool bEqualTo;
+  if (KE_GENERAL == m_eEntKind) {
+    bEqualTo = Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteEntry->aKey());
+  }
+  else {
+    i8 iValTbd = *(i8*)aEntryToBeDeleted->aKey();
+    i8 iDelVal = *(i8*)aDeleteEntry->aKey();
+    bEqualTo = (iValTbd == iDelVal);
   }
   
+  if (! bEqualTo)
+    return;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the firstEntry and the next entry
   Ent* aFirstEntry = this->aLeadEntry();
