@@ -787,19 +787,21 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree (handling ripple upwards)        */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntUpwards(Ent* aEntryWork, EntBuffer** ppRootBuffer)
+Ent* EntBuffer::aInsertEntUpwards(Ent* aEnt, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  aEnt->vKind(m_eEntKind);
+
   EntBuffer* pInsertIntoBuffer =
-    pInsertableBuffer(aEntryWork,ppRootBuffer);
+    pInsertableBuffer(aEnt,ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Ent* aInsertedEntry =
-    pInsertIntoBuffer->aInsertEntBuffer(aEntryWork,ppRootBuffer);
+    pInsertIntoBuffer->aInsertEntBuffer(aEnt,ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

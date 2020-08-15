@@ -109,7 +109,22 @@ i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
   Key* aEntKey = pDevIxt->m_aEnt->aKey();
   Key* aWrkKey = pLogicUnit->pEntWrk()->aKey();
   
-  eKC eCmp = Key::eCompare(aEntKey,aWrkKey);
+  if (KE_GENERAL == pDevIxt->m_aEnt->eKind()) {
+    eKC eCmp = Key::eCompare(aEntKey,aWrkKey);
+    return eCmp;
+  }
+  
+  i8 iEntVal = *(i8*)aEntKey;
+  i8 iWrkVal = *(i8*)aWrkKey;
+
+  eKC eCmp;
+  if (iEntVal < iWrkVal)
+    eCmp = KC_BEFORE;
+  else
+  if (iEntVal < iWrkVal)
+    eCmp = KC_SAME;
+  else
+    eCmp = KC_AFTER;
 
   return (i8)eCmp;
 }
@@ -259,16 +274,32 @@ i8 iDev_IXT_CMP_SRCALT(void* aLU)
   
   Key* aSrcKey = pLogicUnit->m_pDevSrcIxt->m_aEnt->aKey();
   Key* aAltKey = pLogicUnit->m_pDevAltIxt->m_aEnt->aKey();
-      
-  eKC  eCmp = Key::eCompare(aSrcKey,aAltKey);
+
+  if (KE_GENERAL == pLogicUnit->m_pDevSrcIxt->m_aEnt->eKind()) {
+    eKC  eCmp = Key::eCompare(aSrcKey,aAltKey);
   
-   if (KC_BEFORE == eCmp)
+    if (KC_BEFORE == eCmp)
      iRes = -1;
-   else
-   if (KC_SAME == eCmp)
+    else
+    if (KC_SAME == eCmp)
      iRes = 0;
-   else
+    else
      iRes = 1;
+    
+    return iRes;
+  }
+  
+
+  i8 iSrcVal = *(i8*)aSrcKey;
+  i8 iAltVal = *(i8*)aAltKey;
+
+  if (iSrcVal < iAltVal)
+     iRes = -1;
+  else
+  if (iSrcVal == iAltVal)
+   iRes = 0;
+  else
+   iRes = 1;
 
   return iRes;
 }
@@ -287,8 +318,10 @@ i8 iDev_IXT_CMP_WRKALT(void* aLU)
   Key* aWrkKey = pLogicUnit->m_oEntWrk.aKey();
   Key* aAltKey = pLogicUnit->m_pDevAltIxt->m_aEnt->aKey();
 
-  eKC  eCmp = Key::eCompare(aWrkKey,aAltKey);
+if (KE_GENERAL == pLogicUnit->m_pDevAltIxt->m_aEnt->eKind()) {
   
+  eKC  eCmp = Key::eCompare(aWrkKey,aAltKey);
+
    if (KC_BEFORE == eCmp)
      iRes = -1;
    else
@@ -296,6 +329,21 @@ i8 iDev_IXT_CMP_WRKALT(void* aLU)
      iRes = 0;
    else
      iRes = 1;
+  
+    return iRes;
+  }
+
+  
+  i8 iWrkVal = *(i8*)aWrkKey;
+  i8 iAltVal = *(i8*)aAltKey;
+
+  if (iWrkVal < iAltVal)
+     iRes = -1;
+  else
+  if (iWrkVal == iAltVal)
+   iRes = 0;
+  else
+   iRes = 1;
 
   return iRes;
 }
