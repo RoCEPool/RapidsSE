@@ -429,7 +429,7 @@ i8 iDev_IXT_POS_LBOUND(void* aLU, void* aIXT)
   
   if (pDevIXT->m_pEntBuffer)
     pDevIXT->m_aEnt =
-      pDevIXT->m_pEntBuffer->aPosPriorToEntry(pLogicUnit->m_oEntWrk.aKey());
+      pDevIXT->m_pEntBuffer->aFindEntryBefore(pLogicUnit->m_oEntWrk.aKey());
   
   i8 iRes;
   if (pDevIXT->m_aEnt)
@@ -460,7 +460,7 @@ i8 iDev_IXT_POS_UBOUND(void* aLU, void* aIXT)
   if (pDevIXT) {
     
     pDevIXT->m_aUpperEnt =
-      pUpperEntBuffer->aPosPriorToEntry(pLogicUnit->m_oEntWrk.aKey());
+      pUpperEntBuffer->aFindEntryBefore(pLogicUnit->m_oEntWrk.aKey());
     
     if (pDevIXT->m_aUpperEnt) {
       pDevIXT->m_aUpperEnt =
@@ -501,7 +501,7 @@ i8 iDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
   if (pUpperEntBuffer) {
     
     pDevIXT->m_aUpperEnt =
-    pUpperEntBuffer->aPosPriorToEntry(pLogicUnit->m_oEntWrk.aKey());
+    pUpperEntBuffer->aFindEntryBefore(pLogicUnit->m_oEntWrk.aKey());
     
     if (pDevIXT->m_aUpperEnt) {
       pDevIXT->m_aUpperEnt =

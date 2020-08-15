@@ -336,7 +336,7 @@ Ref IndexTree::xwGetRef(Key* aFindKey)
   if (! pEntBuffer)
     return xwNilRef;
 
-  Ent* aEntPos = pEntBuffer->aPosPriorToEntry(aFindKey);
+  Ent* aEntPos = pEntBuffer->aFindEntryBefore(aFindKey);
   if (! aEntPos)
     return xwNilRef;
 
@@ -615,7 +615,7 @@ Ent* IndexTree::aPositionPriorEntry(Key* aFindKey, EntBuffer** ppEntBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
   // position at prior entry
-  Ent* aEnt_prior = pEntBuffer->aPosPriorToEntry(aFindKey);
+  Ent* aEnt_prior = pEntBuffer->aFindEntryBefore(aFindKey);
   
   // entry ?
   if ( ! aEnt_prior )

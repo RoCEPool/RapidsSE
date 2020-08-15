@@ -22,18 +22,18 @@ EntBuffer* EntBuffer::pFindH0Buffer(Key* aWithKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/* scan thru skip list and return entry prior to key                          */
+/* scan thru skip list and return entry before given key                      */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aPosPriorToEntry(Key* aWithKey)
+Ent* EntBuffer::aFindEntryBefore(Key* aGivenKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   Ent* aEnt;
   
   if (KE_INT == m_eEntKind)
-    aEnt = aPosPriorToEntry_int(aWithKey);
+    aEnt = aFindEntryBefore_int(aGivenKey);
   else
-    aEnt = aPosPriorToEntry_gen(aWithKey);
+    aEnt = aFindEntryBefore_gen(aGivenKey);
 
   return aEnt;
 }

@@ -49,7 +49,7 @@ EntBuffer* EntBuffer::pFindH0Buffer_gen(Key* aWithKey)
     //aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
     //ASSERT(aEnt1);
     
-    aEnt = pEntBuffer->aPosPriorToEntry_gen(aWithKey);
+    aEnt = pEntBuffer->aFindEntryBefore_gen(aWithKey);
     ASSERT(aEnt);
     Ent* aEntPrev = aEnt;
     
@@ -72,6 +72,48 @@ EntBuffer* EntBuffer::pFindH0Buffer_gen(Key* aWithKey)
   }
   
   return pEntBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan thru skip list and return entry prior to key                          */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aFindEntryBefore_gen(Key* aGivenKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  RASSERT(KE_GENERAL == m_eEntKind);
+
+#ifdef WITH_EB_LAZY_CHAIN
+  ASSERT( ! m_aLazyChain );
+#endif
+  
+  i8 nLvlLevels = AM::nLvlLevels();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (nItems() == 0)
+    return aSkipRoots();
+  
+  Ent* aScanEntry_sl = aSkipRoots();
+  
+  bool bNextKeyIsGE;
+  
+  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+    
+    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
+    while (aNextEntry_sl) {
+      
+      bNextKeyIsGE = Key::bGreaterEqual(aNextEntry_sl->aKey(),aGivenKey);
+      if (bNextKeyIsGE)
+        break;
+      
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
+    }
+    
+  }
+  
+  return aScanEntry_sl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,48 +263,6 @@ void EntBuffer::vPosPriorToBuffer_gen(Key* aWithKey,
 
   } // for scan levels
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* scan thru skip list and return entry prior to key                          */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aPosPriorToEntry_gen(Key* aWithKey)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  RASSERT(KE_GENERAL == m_eEntKind);
-
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-#endif
-  
-  i8 nLvlLevels = AM::nLvlLevels();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (nItems() == 0)
-    return aSkipRoots();
-  
-  Ent* aScanEntry_sl = aSkipRoots();
-  
-  bool bNextKeyIsGE;
-  
-  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
-    
-    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
-    while (aNextEntry_sl) {
-      
-      bNextKeyIsGE = Key::bGreaterEqual(aNextEntry_sl->aKey(),aWithKey);
-      if (bNextKeyIsGE)
-        break;
-      
-      aScanEntry_sl = aNextEntry_sl;
-      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
-    }
-    
-  }
-  
-  return aScanEntry_sl;
 }
 
 /*----------------------------------------------------------------------------*/

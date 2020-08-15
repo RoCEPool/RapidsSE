@@ -31,6 +31,18 @@ EntBuffer* EntBuffer::pFindH0Buffer_int(Key* aWithKey)
 }
 
 /*----------------------------------------------------------------------------*/
+/* scan thru skip list and return entry before entry with given key           */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  RASSERT(KE_INT == m_eEntKind);
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
@@ -41,18 +53,6 @@ void EntBuffer::vPosPriorToBuffer_int(Key* aWithKey,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
   RASSERT(KE_INT == m_eEntKind);
-}
-
-/*----------------------------------------------------------------------------*/
-/* scan thru skip list and return entry prior to key                          */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aPosPriorToEntry_int(Key* aWithKey)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  RASSERT(KE_INT == m_eEntKind);
-
-  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

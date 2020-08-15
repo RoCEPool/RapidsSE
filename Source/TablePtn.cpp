@@ -487,7 +487,7 @@ void TablePtn::vInsdelBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
       continue;
     }
     
-    Ent* aEnt_prior = pEntH0Buf->aPosPriorToEntry(xEntWrk.aKey());
+    Ent* aEnt_prior = pEntH0Buf->aFindEntryBefore(xEntWrk.aKey());
     if (! aEnt_prior) {
       TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
@@ -587,7 +587,7 @@ void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
       continue;
     }
 
-    Ent* aEnt_prior = pEntH0Buf->aPosPriorToEntry(xEntWrk.aKey());
+    Ent* aEnt_prior = pEntH0Buf->aFindEntryBefore(xEntWrk.aKey());
     if (! aEnt_prior) {
       TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
       vUpsertRow_insert(pRowSlab,i_Row, &xEntWrk,pEncoding_upsert,tPerspective);
@@ -1049,7 +1049,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
       continue;
     }
     
-    Ent* aEnt_prior = pEntH0Buf->aPosPriorToEntry(xEntWrk.aKey());
+    Ent* aEnt_prior = pEntH0Buf->aFindEntryBefore(xEntWrk.aKey());
     if (! aEnt_prior) {
       TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
