@@ -602,18 +602,25 @@ bool EntBuffer::bVerifyKeyOrder(void)
       Key* aNextKey = aNextEntry->aKey();
       
       bGreaterEqual = Key::bGreaterEqual(aNextKey, aCurrKey);
+      if (! bGreaterEqual) {
+        vDump();
+        vVerifyFault();
+        return false;
+      }
+      
     }
     else {
       i8 iCurrKey = aEnt->iIntElm0();
       i8 iNextKey = aNextEntry->iIntElm0();
       bGreaterEqual = (iNextKey >= iCurrKey);
+      if (! bGreaterEqual) {
+        vDump();
+        vVerifyFault();
+        return false;
+      }
     }
     
-    if (! bGreaterEqual) {
-      vDump();
-      vVerifyFault();
-      return false;
-    }
+
   }
   
   return true;

@@ -148,6 +148,9 @@ void EntWrk::vAppendElement(Rsb* aRsb, Column* pColumn)
       Stz* szSrc = aRsb->szVal(i_Col);
       vAppendStz(szSrc);
   }
+  else {
+    vAppendInt(aRsb->iVal(i_Col));
+  }
 }
 
 /*----------------------------------------------------------------------------*/

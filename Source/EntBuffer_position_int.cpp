@@ -4,9 +4,9 @@
 
 #include "Indexing.h"
 
-#define ELM0_OF_KEY(aKey)   ( aKey->iGetIntElm() )
+#define ELM0_OF_KEY(aKey)   ( *(i8*)aKey )
 
-#define ELM0_OF_ENTRY(aEnt) ( aEnt->aKey()->iGetIntElm() )
+#define ELM0_OF_ENTRY(aEnt) ( *(i8*)aEnt->aKey() )
 
 #define END_TICKET(tNxtEnt) ( C_ENT_END_TICKET == tNxtEnt )
 
@@ -14,7 +14,7 @@
 
 #define NEXT_TICKET(aEnt,i_Lvl) ( aEnt->tNextEntry(i_Lvl) )
 
-#define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm >= iNextElm )
+#define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
 
 #define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = aEnt )
 
@@ -253,7 +253,7 @@ void EntBuffer::vPosVecPriorToBuffer_int(EntBuffer* pToRefdBuffer,
         i8 iWithInt = *(i8*)aWithKey;
 
         //bool bNextKeyIsGreater = Key::bGreaterThan(aNextEntry_sl->aKey(),aWithKey);
-        bool bNextKeyIsGreater = (iNextInt >= iWithInt);
+        bool bNextKeyIsGreater = (iNextInt > iWithInt);
         if (bNextKeyIsGreater) {
           // nextEntry[sl] > aInsertingEntry, insert at this level after prior entry
           aPriorVec[i_ScanLevel] = aPriorEntry_sl;

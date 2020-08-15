@@ -542,6 +542,7 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
   
   ASSERT(aEnt->nSkipLevels());
   
+  aEnt->vKind(m_eEntKind);
   i8 nEntSizeBytes = aEnt->nSizeBytes();
 
   ASSERT(bHasSpace(nEntSizeBytes));
@@ -635,6 +636,7 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEnt)
     
   ASSERT(aEnt->nSkipLevels());
   
+  aEnt->vKind(m_eEntKind);
   i8 nEntSizeBytes = aEnt->nSizeBytes();
 
   ASSERT(bHasSpace(nEntSizeBytes));

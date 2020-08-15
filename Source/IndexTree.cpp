@@ -555,7 +555,7 @@ Ent* IndexTree::aInsertEntry(Ent* pEnt)
 /*----------------------------------------------------------------------------*/
 eKE IndexTree::eKeyKind(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   return m_pIndexDef->eKeyKind();
 }
@@ -726,16 +726,16 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
   StreamDef* pStreamDef = pEntWrk->pStreamDef();
   
   // inflate row
-  HV_Row hvRow(pStreamDef,C_ALL);
+  HV_Row hRow(pStreamDef,C_ALL);
   
-  RowInflator::vInflateRow(hvRow,aCrw);
+  RowInflator::vInflateRow(hRow,aCrw);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
   i8 nIdxCols = pIndexDef->nColumns();
-  hvRow->m_bGetAll = false;
+  hRow->m_bGetAll = false;
   
   for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
     
@@ -744,40 +744,59 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
     
     // mark column to be retrieved
     i8 i_Col = pColumn->iColumnNo();
-    hvRow->m_abGetCol[i_Col] = true;
-    hvRow->m_iLastCol = (i_Col > hvRow->m_iLastCol)
+    hRow->m_abGetCol[i_Col] = true;
+    hRow->m_iLastCol = (i_Col > hRow->m_iLastCol)
                           ? i_Col
-                          : hvRow->m_iLastCol;
+                          : hRow->m_iLastCol;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (KE_INT == eKeyKind()) {
+    
+    Column* pCol = pIndexDef->pGetColumn(0);
+    i8 iVal = hRow->m_waColVal[pCol->iColumnNo()].m_iWrd;
+    pEntWrk->aEnt()->vKind(KE_INT);
+    pEntWrk->aEnt()->vIntElm0(iVal);
+    
+    return;
+  }
+  
   for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
     
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
     
     // add the column value to the key
-    pEntWrk->vAppendElement(hvRow,pColumn);
+    pEntWrk->vAppendElement(hRow,pColumn);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract a key from given row into EntWrk                                   */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vExtractKey(EntWrk* pEntWrk, Rsb* pRsb)
+void IndexTree::vExtractKey(EntWrk* pEntWrk, Rsb* aRsb)
 {
-  // get stream def
-  StreamDef* pStreamDef = pEntWrk->pStreamDef();
   
+  if (KE_INT == eKeyKind()) {
+    
+    IndexDef* pIndexDef = m_pIndex->pIndexDef();
+    Column* pCol = pIndexDef->pGetColumn(0);
+    i8 iVal = aRsb->iVal(pCol->iColumnNo());
+    pEntWrk->aEnt()->vKind(KE_INT);
+    pEntWrk->aEnt()->vIntElm0(iVal);
+    
+    return;
+  }
+  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 nIdxCols = m_pIndexDef->nColumns();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
     
     // add the column value to the key
-    pEntWrk->vAppendElement(pRsb, m_pIndexDef->pGetColumn(i_Col));
+    pEntWrk->vAppendElement(aRsb, m_pIndexDef->pGetColumn(i_Col));
   }
 }
 
@@ -807,6 +826,18 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
   
   // get the inflated compact row
   pCrwBuffer->vGetRow(hRow, i_Row);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (KE_INT == eKeyKind()) {
+    
+    Column* pCol = pIndexDef->pGetColumn(0);
+    i8 iVal = hRow->m_waColVal[pCol->iColumnNo()].m_iWrd;
+    pEntWrk->aEnt()->vKind(KE_INT);
+    pEntWrk->aEnt()->vIntElm0(iVal);
+    
+    return;
+  }
   
   for (i8 i_Column = 0; i_Column < nIdxCols; i_Column++) {
     
