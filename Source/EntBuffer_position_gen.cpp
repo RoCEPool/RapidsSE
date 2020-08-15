@@ -53,7 +53,7 @@ EntBuffer* EntBuffer::pFindH0Buffer_gen(Key* aWithKey)
     ASSERT(aEnt);
     Ent* aEntPrev = aEnt;
     
-    aEnt = pEntBuffer->pFindPrevKeyEntry_gen(aEnt, aWithKey, &pEntBuffer);
+    aEnt = pEntBuffer->pFindPrevKeyEntry_gen(aWithKey,aEnt,&pEntBuffer);
     if (! aEnt ) {
       aWithKey->vShow(m_pIndex->pIndexDef());
       vTrace("\n"_Stz);
@@ -77,8 +77,8 @@ EntBuffer* EntBuffer::pFindH0Buffer_gen(Key* aWithKey)
 /*----------------------------------------------------------------------------*/
 /* find the prev key entry                                                    */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pFindPrevKeyEntry_gen(Ent* aEnt,
-                                      Key* aGivenKey,
+Ent* EntBuffer::pFindPrevKeyEntry_gen(Key* aWithKey,
+                                      Ent* aGivenEnt,
                                       EntBuffer** ppEntBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -86,13 +86,13 @@ Ent* EntBuffer::pFindPrevKeyEntry_gen(Ent* aEnt,
   EntBuffer* pEntBuffer = *ppEntBuffer;
   ASSERT(pEntBuffer == this);
 
-  if (aEnt == pEntBuffer->aSkipRoots())
-    aEnt = pEntBuffer->aNextEntry(aEnt,0);
+  if (aGivenEnt == pEntBuffer->aSkipRoots())
+    aGivenEnt = pEntBuffer->aNextEntry(aGivenEnt,0);
   
-  Ent* aEntPrev = aEnt;
+  Ent* aEntPrev = aGivenEnt;
   
-  while (aEnt) {
-    eKC eCompare = Key::eCompare(aEnt->aKey(),aGivenKey);
+  while (aGivenEnt) {
+    eKC eCompare = Key::eCompare(aGivenEnt->aKey(),aWithKey);
 
     // have we reached the key?
     if (eCompare == KC_SAME)
@@ -102,10 +102,10 @@ Ent* EntBuffer::pFindPrevKeyEntry_gen(Ent* aEnt,
     if (eCompare == KC_AFTER)
       return aEntPrev;
     
-    aEntPrev = aEnt;
-    aEnt = pEntBuffer->aNextEntry(aEnt,0);
+    aEntPrev = aGivenEnt;
+    aGivenEnt = pEntBuffer->aNextEntry(aGivenEnt,0);
     
-    if ( ! aEnt )
+    if ( ! aGivenEnt )
       return aEntPrev;
   }
   
