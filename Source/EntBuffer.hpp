@@ -107,7 +107,8 @@ namespace Indexing
     Ent*       aFindEntryBefore_int(Key* aGivenKey);
 
     Ent*       pFindEntryPrevTo_gen(Ent* aGivenEnt, Key* aWithKey);
-  
+    Ent*       pFindEntryPrevTo_int(Ent* aGivenEnt, Key* aWithKey);
+
     void       vPosVecPriorToBuffer(EntBuffer* pToRefdBuffer,
                                     Key* aWithKey,
                                     Ent* aPriorVec[]);
