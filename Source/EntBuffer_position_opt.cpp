@@ -4,34 +4,27 @@
 
 #include "Indexing.h"
 
-/*----------------------------------------------------------------------------*/
-/* compute prior vector for given key                                         */
-/*----------------------------------------------------------------------------*/
+#define ELM0_OF_KEY(aKey)   ( aKey->iGetIntElm() )
 
-#define ELM0_OF_KEY(aKey)    ( aKey->iGetIntElm() )
+#define ELM0_OF_ENTRY(aEnt) ( aEnt->aKey()->iGetIntElm() )
 
-#define ELM0_OF_ENTRY(aEnt)  ( aEnt->aKey()->iGetIntElm() )
+#define END_TICKET(tNxtEnt) ( C_ENT_END_TICKET == tNxtEnt )
 
-#define END_TICKET(tNxtEnt)  ( C_ENT_END_TICKET == tNxtEnt )
-
-#define GET_ENTRY(tTicket)   ( aGetItem(iToEntryOffset(tTicket)) )
-
-#define MARK_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = aEnt )
+#define GET_ENTRY(tTicket)  ( aGetItem(iToEntryOffset(tTicket)) )
 
 #define NEXT_TICKET(aEnt,i_Lvl) ( aEnt->tNextEntry(i_Lvl) )
 
 #define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm >= iNextElm )
 
+#define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = aEnt )
 
-void EntBuffer::vPositionPriorVecEntry_IntOpt(Key* aKey,
-                                             Ent* aPriorVec[])
+
+
+/*----------------------------------------------------------------------------*/
+/* compute prior vector for given int key                                     */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vPositionPriorVecEntry_IntOpt(Key* aKey_int, Ent* aPriorVec[])
 {
-  /*
-   
-     this optimisation explores bringing Key::bGreaterEqual() into line
-   
-   */
-  
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
 #ifdef WITH_EB_LAZY_CHAIN
@@ -52,7 +45,7 @@ void EntBuffer::vPositionPriorVecEntry_IntOpt(Key* aKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iKey_IntElm = ELM0_OF_KEY(aKey);
+  i8 iElm0_int = ELM0_OF_KEY(aKey_int);
 
   Ent* aScanEnt = aSkipRoots;
   for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
@@ -62,16 +55,18 @@ void EntBuffer::vPositionPriorVecEntry_IntOpt(Key* aKey,
          tNextEnt = NEXT_TICKET(aScanEnt,i_Level)) {
 
       Ent* aNextEnt = GET_ENTRY(tNextEnt);
-      i8 iNextEnt_IntElm = ELM0_OF_ENTRY(aNextEnt);
+      i8 iNextElm0_int = ELM0_OF_ENTRY(aNextEnt);
             
-      if (SCAN_IS_AT_PRIOR_POS(iKey_IntElm,iNextEnt_IntElm))
+      if (SCAN_IS_AT_PRIOR_POS(iElm0_int,iNextElm0_int))
         break;
       
       aScanEnt = aNextEnt;
-    }
+      
+    } // next aScanEnt at i_Level
 
-    MARK_PRIOR_POS(aPriorVec,i_Level,aScanEnt);
-  }
+    STORE_PRIOR_POS(aPriorVec,i_Level,aScanEnt);
+    
+  } // next i_Level
   
 }
 
@@ -79,13 +74,15 @@ void EntBuffer::vPositionPriorVecEntry_IntOpt(Key* aKey,
 #undef ELM0_OF_ENTRY
 #undef END_TICKET
 #undef GET_ENTRY
-#undef MARK_PRIOR_POS
 #undef NEXT_TICKET
 #undef SCAN_IS_AT_PRIOR_POS
+#undef STORE_PRIOR_POS
+
 
 /*----------------------------------------------------------------------------*/
-/* compute prior vector for given key                                         */
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 #define ELM0_OF_ENTRY(aEnt_int) ( aEnt_int->m_iIntElm0 )
 
@@ -97,7 +94,9 @@ void EntBuffer::vPositionPriorVecEntry_IntOpt(Key* aKey,
 
 #define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
 
-
+/*----------------------------------------------------------------------------*/
+/* find entry given int key                                                   */
+/*----------------------------------------------------------------------------*/
 Ent* EntBuffer::aFindEnt_IntOpt(i8 iKey_IntElm)
 {
   /*
@@ -125,7 +124,7 @@ Ent* EntBuffer::aFindEnt_IntOpt(i8 iKey_IntElm)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Ent_int* aScanEnt = (Ent_int*)aSkipRoots;
-  for (i4 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
+  for (i4 i_Level = (i4)nLvlLevels - 1; i_Level >= 0; i_Level--) {
     
     for (tET tNextEnt = NEXT_TICKET(aScanEnt,i_Level);
          ! END_TICKET(tNextEnt);
@@ -161,7 +160,7 @@ Ent* EntBuffer::aFindEnt_IntOpt(i8 iKey_IntElm)
 #undef ELM0_OF_ENTRY
 #undef END_TICKET
 #undef GET_ENTRY
-#undef MARK_PRIOR_POS
+#undef STORE_PRIOR_POS
 #undef NEXT_TICKET
 #undef SCAN_IS_AT_PRIOR_POS
 
