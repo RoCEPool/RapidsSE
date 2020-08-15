@@ -336,7 +336,7 @@ Ref IndexTree::xwGetRef(Key* aFindKey)
   if (! pEntBuffer)
     return xwNilRef;
 
-  Ent* aEntPos = pEntBuffer->aPositionPriorEntry(aFindKey);
+  Ent* aEntPos = pEntBuffer->aPosPriorEntry(aFindKey);
   if (! aEntPos)
     return xwNilRef;
 
@@ -591,7 +591,7 @@ EntBuffer* IndexTree::pPositionH0Buffer(Key* aFindKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRootEntBuffer)
-    return m_pRootEntBuffer->pPositionH0Buffer(aFindKey);
+    return m_pRootEntBuffer->pPosH0Buffer(aFindKey);
   else
     return nullptr;
 }
@@ -611,11 +611,11 @@ Ent* IndexTree::aPositionPriorEntry(Key* aFindKey, EntBuffer** ppEntBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
   // position at H0 buffer
-  pEntBuffer = m_pRootEntBuffer->pPositionH0Buffer(aFindKey);
+  pEntBuffer = m_pRootEntBuffer->pPosH0Buffer(aFindKey);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
   // position at prior entry
-  Ent* aEnt_prior = pEntBuffer->aPositionPriorEntry(aFindKey);
+  Ent* aEnt_prior = pEntBuffer->aPosPriorEntry(aFindKey);
   
   // entry ?
   if ( ! aEnt_prior )

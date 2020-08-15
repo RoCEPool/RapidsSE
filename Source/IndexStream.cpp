@@ -374,7 +374,7 @@ void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz
     if (aLowerEntBuffer) {
       
       // position in the index buffer at an entry prior to the lowerKey
-      aLowerEntry = aLowerEntBuffer->aPositionPriorEntry(xEntWrkLower.aKey());
+      aLowerEntry = aLowerEntBuffer->aPosPriorEntry(xEntWrkLower.aKey());
       
       if (eLowerRelnOp == RO_GREATER_THAN) {
         aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry,
@@ -433,7 +433,7 @@ void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz
   // do we have an upper Entry buffer ?
   if (aUpperEntBuffer) {
     
-    aUpperEntry = aUpperEntBuffer->aPositionPriorEntry(xEntWrkUpper.aKey());
+    aUpperEntry = aUpperEntBuffer->aPosPriorEntry(xEntWrkUpper.aKey());
     aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, &aUpperEntBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {

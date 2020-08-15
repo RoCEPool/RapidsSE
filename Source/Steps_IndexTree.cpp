@@ -77,7 +77,7 @@ void Step::vIndexTreeAggregate(void)
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
       // position at prior entry
-      Ent* aEnt_prior = pEntH0Buf->aPositionPriorEntry(xEntWrk.aKey());
+      Ent* aEnt_prior = pEntH0Buf->aPosPriorEntry(xEntWrk.aKey());
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
       // prior entry match the key ?
