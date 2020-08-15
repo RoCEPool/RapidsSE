@@ -13,9 +13,9 @@ EntBuffer* EntBuffer::pFindH0Buffer(Key* aWithKey)
   
   EntBuffer* pEntBuffer;
 
-//  if (KE_INT == m_eEntKind)
-//    pEntBuffer = pFindH0Buffer_int(aWithKey);
-//  else
+  if (KE_INT == m_eEntKind)
+    pEntBuffer = pFindH0Buffer_int(aWithKey);
+  else
     pEntBuffer = pFindH0Buffer_gen(aWithKey);
   
   return pEntBuffer;

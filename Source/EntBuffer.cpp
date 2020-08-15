@@ -966,8 +966,11 @@ Ent* EntBuffer::aNextEntry(Ent* aPrevEntry)
 /*----------------------------------------------------------------------------*/
 Ent* EntBuffer::pFindPrevKeyEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
   EntBuffer* pEntBuffer = *ppEntBuffer;
-  
+  ASSERT(pEntBuffer == this);
+
   if (aEnt == pEntBuffer->aSkipRoots())
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
