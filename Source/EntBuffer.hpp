@@ -92,9 +92,6 @@ namespace Indexing
                                          EntBuffer** ppEntBuffer);
     static Ent* pMoveToNextEntry(Ent* aEnt,
                                  EntBuffer** ppEntBuffer);
-    static Ent* pFindPrevKeyEntry(Ent* aEnt, Key* aGivenKey,
-                                  EntBuffer** ppEntBuffer);
-    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key positioning functions
     
@@ -105,6 +102,9 @@ namespace Indexing
     EntBuffer* pFindH0Buffer_gen(Key* aWithKey);
     EntBuffer* pFindH0Buffer_int(Key* aWithKey);
 
+    Ent*       pFindPrevKeyEntry_gen(Key* aWithKey,
+                                     Ent* aGivenEnt,
+                                     EntBuffer** ppEntBuffer);
   
     void       vPosPriorToBuffer(Key* aWithKey,
                                  Ent* aPriorVec[],
