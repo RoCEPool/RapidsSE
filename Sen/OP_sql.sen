@@ -59,6 +59,201 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* outbound stream def for 100                                      STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: streamDefOut_100
+
+  0 locals| pColumn |
+
+  StreamDefOut[].new
+
+  // add column L_RETURNFLAG
+  8 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  pColumn column.name@
+  StreamDefOut[].addColumn
+
+  // add column L_LINESTATUS
+  9 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  pColumn column.name@
+  StreamDefOut[].addColumn
+
+  // add column SUM(L_QUANTITY) as SUM_QTY
+  4 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "sum_qty"
+  StreamDefOut[].addColumn
+
+  // add column SUM(L_EXTENDEDPRICE) as SUM_BASE_PRICESUM_QTY
+  5 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "sum_base_price"
+  StreamDefOut[].addColumn
+
+  // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) as SUM_DISC_PRICE
+  5 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "sum_disc_price"
+  StreamDefOut[].addColumn
+
+  // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) as SUM_CHARGESUM_QTY
+  5 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "sum_charge"
+  StreamDefOut[].addColumn
+
+  // add column COUNT(L_QUANTITY) as COUNT_QTY
+  0
+  19
+  CT_INTEGER
+  "count_qty"
+  StreamDefOut[].addColumn
+
+  // add column COUNT(L_EXTENDEDPRICE)
+  0
+  19
+  CT_INTEGER
+  "count_price"
+  StreamDefOut[].addColumn
+
+  // add column SUM(L_DISCOUNT)) as SUM_DISCOUNT
+  6 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "sum_discount"
+  StreamDefOut[].addColumn
+
+  // add column COUNT(L_DISCOUNT)
+  0
+  19
+  CT_INTEGER
+  "count_discount"
+  StreamDefOut[].addColumn
+
+  // add column COUNT(*) as COUNT_ORDER
+  0
+  19
+  CT_INTEGER
+  "count_order"
+  StreamDefOut[].addColumn
+
+  StreamDefOut[].duplicate to Operand[]
+  Operand[].pipeout
+
+  false Pot[].useStreamDefOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* outbound stream def for 103                                      STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: streamDefOut_103
+
+  0 locals| pColumn |
+
+  StreamDefOut[].new
+
+  // add column Q101_RETURNFLAG
+  0 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  pColumn column.name@
+  StreamDefOut[].addColumn
+
+  // add column Q101_LINESTATUS
+  1 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  pColumn column.name@
+  StreamDefOut[].addColumn
+
+  // add column Q101_SUM_QTY as sum_qty
+  2 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  pColumn column.name@
+  StreamDefOut[].addColumn
+
+  // add column Q101_SUM_BASE_PRICE as SUM_BASE_PRICESUM_QTY
+  3 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  pColumn column.name@
+  StreamDefOut[].addColumn
+
+  // add column Q101_SUM_DISC_PRICE as SUM_DISC_PRICE
+  4 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  pColumn column.name@
+  StreamDefOut[].addColumn
+
+  // add column Q101_SUM_CHARGE as SUM_CHARGE
+  5 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  pColumn column.name@
+  StreamDefOut[].addColumn
+
+  // add column Q101_SUM_QTY/Q101_COUNT_QTY as AVG_QTY
+  2 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "avg_qty"
+  StreamDefOut[].addColumn
+
+  // add column Q101_SUM_BASE_PRICE/Q101_COUNT_PRICE as AVG_PRICE
+  3 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "avg_price"
+  StreamDefOut[].addColumn
+
+  // add column Q101_SUM_DISC/Q101_COUNT_DISC as AVG_DISC
+  8 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "avg_disc"
+  StreamDefOut[].addColumn
+
+  // add column Q101_COUNT_ORDER as COUNT_ORDER
+  10 StreamDef[].column@ to pColumn
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "count_order"
+  StreamDefOut[].addColumn
+
+  StreamDef[].delete
+
+  StreamDefOut[].duplicate to StreamDef[]
+  StreamDef[].pipeout
+  false Pot[].useStreamDefOut
+;
+
+/*----------------------------------------------------------------------------*/
 /* outbound stream def for 300                                                */
 /*----------------------------------------------------------------------------*/
 : streamDefOut_300
@@ -148,35 +343,22 @@
   queryNo "sql %v" str.format profile.name!
   queryNo case
 
-    103 of
-      //queryNo "QUERY %v" .printf
-      103 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
-      idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
-    endof
-
-    101 of
-      //queryNo "QUERY %v" .printf
-      //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 1  0=STARTMARKER" .
-      101 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
-      idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
-    endof
-
     100 of
       //queryNo "QUERY %v" .printf
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 100=STARTMARKER" .
-      <tableNm> <indexNm> op__table_index not if
-        false
-        exit
-      then
-      index[].indexTree to indexTree[]
-      indexTree[].asSrc
       100 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
+      //logicCompiler[].new
+      //LogicCompiler[].compile
+
+      idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
+    endof
+
+    103 of
+      //queryNo "QUERY %v" .printf
+      103 LogicUnit[].genCode
+      //logicCompiler[].new
+      //LogicCompiler[].compile
+      idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
     endof
 
     300 of
@@ -488,27 +670,6 @@
 
   queryNo case
 
-    100 of
-      //"++++++++++++++++++++++++++++ 100=PULSEMARKER ++++++++++++++++++++++++++++" .
-      ZK_PULSEMARKER_handler
-      // pipe out a new a stream def
-      Operand[].newStreamDef
-      Operand[] to StreamDef[]
-      nullptr to Operand[]
-      StreamDef[].duplicate to StreamDefOut[]
-      true Pot[].useStreamDefOut
-      StreamDef[].pipeout
-
-      LogicUnit[].dynFun
-      Pot[].pipeoutAllCompleted
-      Pot[].pipeoutAllDangling
-
-      // pipeout an EOS MARKER
-      Operand[].newEosMarker
-      Operand[].pipeOut
-
-    endof
-
     300 of sql_PulseMarker_300   endof
     301 of sql_PulseMarker_301   endof
     302 of sql_PulseMarker_302   endof
@@ -527,6 +688,29 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CRWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: sql_CrwBuffer \handler
+
+  <queryNo> >int locals| queryNo |
+
+  queryNo case
+
+    100 of
+      //"---------------------------- 100=RSBBUFFER ----------------------------" .
+      Operand[].pipeIn
+      Operand[].asSrcCrwBuffer
+      LogicUnit[].transform
+      Operand[].delete
+      Pot[].pipeoutAllCompleted
+    endof
+
+  endcase
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_RSBBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : sql_RsbBuffer \handler
@@ -538,29 +722,11 @@
 
   queryNo case
 
-    100 of
-      //"---------------------------- 100=RSBBUFFER ----------------------------" .
-      Operand[].pipeIn
-      Operand[].asSrcRowSlab
-      LogicUnit[].transform
-      Operand[].delete
-      Pot[].pipeoutAllCompleted
-    endof
-
     103 of
      // "---------------------------- 103=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      LogicUnit[].dynFun
-      Operand[].delete
-      Pot[].pipeoutAllCompleted
-    endof
-
-    101 of
-      //"---------------------------- 101=RSBBUFFER ----------------------------" .
-      Operand[].pipeIn
-      Operand[].asSrcRowSlab
-      LogicUnit[].dynFun
+      LogicUnit[].transform
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
@@ -631,9 +797,9 @@
       // AGGREGATE WITH GROUPBY
       //queryNo "QUERY %v" .printf
       102 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
-      LogicUnit[].dynFun
+      //logicCompiler[].new
+      //LogicCompiler[].compile
+      LogicUnit[].transform
       IndexTree[].delete
     endof
 
@@ -641,20 +807,9 @@
       // AGGREGATE WITH GROUPBY (SUPER)
       //queryNo "QUERY %v" .printf
       104 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
-      LogicUnit[].dynFun
-      IndexTree[].delete
-    endof
-
-    101 of
-      //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 1  0=EOSMARKER" .
-      // AGGREGATE WITH GROUPBY
-      //queryNo "QUERY %v" .printf
-      102 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
-      LogicUnit[].dynFun
+      //logicCompiler[].new
+      //LogicCompiler[].compile
+      LogicUnit[].transform
       IndexTree[].delete
     endof
 
@@ -692,199 +847,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ... (100)                                        STREAMDEF */
-/*----------------------------------------------------------------------------*/
-: sql_StreamDef_100
-
-  0 locals| pColumn |
-
-  StreamDefOut[].new
-  // add column L_RETURNFLAG
-  8 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column L_LINESTATUS
-  9 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column SUM(L_QUANTITY) as SUM_QTY
-  4 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "sum_qty"
-  StreamDefOut[].addColumn
-
-  // add column SUM(L_EXTENDEDPRICE) as SUM_BASE_PRICESUM_QTY
-  5 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "sum_base_price"
-  StreamDefOut[].addColumn
-
-  // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) as SUM_DISC_PRICE
-  5 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "sum_disc_price"
-  StreamDefOut[].addColumn
-
-  // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) as SUM_CHARGESUM_QTY
-  5 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "sum_charge"
-  StreamDefOut[].addColumn
-
-  // add column COUNT(L_QUANTITY) as COUNT_QTY
-  0
-  19
-  CT_INTEGER
-  "count_qty"
-  StreamDefOut[].addColumn
-
-  // add column COUNT(L_EXTENDEDPRICE)
-  0
-  19
-  CT_INTEGER
-  "count_price"
-  StreamDefOut[].addColumn
-
-  // add column SUM(L_DISCOUNT)) as SUM_DISCOUNT
-  6 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "sum_discount"
-  StreamDefOut[].addColumn
-
-  // add column COUNT(L_DISCOUNT)
-  0
-  19
-  CT_INTEGER
-  "count_discount"
-  StreamDefOut[].addColumn
-
-  // add column COUNT(*) as COUNT_ORDER
-  0
-  19
-  CT_INTEGER
-  "count_order"
-  StreamDefOut[].addColumn
-
-  StreamDef[].delete
-
-  StreamDefOut[].duplicate to StreamDef[]
-  StreamDef[].pipeout
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ... (103)                                        STREAMDEF */
-/*----------------------------------------------------------------------------*/
-: sql_StreamDef_103
-
-  0 locals| pColumn |
-
-  StreamDefOut[].new
-
-  // add column Q101_RETURNFLAG
-  0 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_LINESTATUS
-  1 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_QTY as sum_qty
-  2 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_BASE_PRICE as SUM_BASE_PRICESUM_QTY
-  3 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_DISC_PRICE as SUM_DISC_PRICE
-  4 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_CHARGE as SUM_CHARGE
-  5 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_QTY/Q101_COUNT_QTY as AVG_QTY
-  2 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "avg_qty"
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_BASE_PRICE/Q101_COUNT_PRICE as AVG_PRICE
-  3 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "avg_price"
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_DISC/Q101_COUNT_DISC as AVG_DISC
-  8 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "avg_disc"
-  StreamDefOut[].addColumn
-
-  // add column Q101_COUNT_ORDER as COUNT_ORDER
-  10 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "count_order"
-  StreamDefOut[].addColumn
-
-  StreamDef[].delete
-
-  StreamDefOut[].duplicate to StreamDef[]
-  StreamDef[].pipeout
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : sql_StreamDef \handler
@@ -899,19 +861,12 @@
 
     100 of
       //"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 100=STREAMDEF" .
-      sql_StreamDef_100
-      true Pot[].useStreamDefOut
+      streamDefOut_100
     endof
 
     103 of
-      sql_StreamDef_103
-      true Pot[].useStreamDefOut
-    endof
-
-    101 of
       //"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 101=STREAMDEF" .
-      sql_StreamDef_100
-      true Pot[].useStreamDefOut
+      streamDefOut_103
     endof
 
     300 of
@@ -959,6 +914,7 @@
 
   op__topology
 
+  find: sql_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: sql_EosMarker   ZK_EOSMARKER   op[].handler!
   find: sql_PulseMarker ZK_PULSEMARKER op[].handler!
   find: sql_RsbBuffer   ZK_RSBBUFFER   op[].handler!

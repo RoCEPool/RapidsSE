@@ -661,7 +661,7 @@ static EoArg EoArgs[]
 
   // index tree
   { EA_NONE,    0 },  // EO_IXT_DEL_ENT
-  { EA_INT,     8 },  // EO_IXT_DUMP
+  { EA_NONE,    0 },  // EO_IXT_DUMP
   { EA_NONE,    0 },  // EO_IXT_INS_ENT
   { EA_NONE,    0 },  // EO_IXT_TRV_BEGIN
   { EA_NONE,    0 },  // EO_IXT_TRV_NEXT
