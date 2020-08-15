@@ -58,16 +58,16 @@ void EntBuffer::vPosPriorToEntry(Key* aWithKey,
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorToBuffer(Key* aWithKey,
-                                   Ent* aPriorVec[],
-                                   EntBuffer* pRefdChildBuffer)
+void EntBuffer::vPosPriorToBuffer(EntBuffer* pToRefdBuffer,
+                                  Key* aWithKey,
+                                  Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
   if (KE_INT == m_eEntKind)
-    vPosPriorToBuffer_int(aWithKey,aPriorVec,pRefdChildBuffer);
+    vPosPriorToBuffer_int(pToRefdBuffer,aWithKey,aPriorVec);
   else
-    vPosPriorToBuffer_gen(aWithKey,aPriorVec,pRefdChildBuffer);
+    vPosPriorToBuffer_gen(pToRefdBuffer,aWithKey,aPriorVec);
 }
 
 /*============================================================================*/

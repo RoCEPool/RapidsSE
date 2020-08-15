@@ -725,7 +725,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   }
   else {
     EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
-    vPosPriorToBuffer(aKey, xPriorVec, pToBuffer);
+    vPosPriorToBuffer(pToBuffer, aKey, xPriorVec);
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

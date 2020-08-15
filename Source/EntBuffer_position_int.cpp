@@ -46,9 +46,9 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey)
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorToBuffer_int(Key* aWithKey,
-                                      Ent* aPriorVec[],
-                                      EntBuffer* pRefdChildBuffer)
+void EntBuffer::vPosPriorToBuffer_int(EntBuffer* pToRefdBuffer,
+                                      Key* aWithKey,
+                                      Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 

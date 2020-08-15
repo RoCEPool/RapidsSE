@@ -153,9 +153,9 @@ Ent* EntBuffer::pFindEntPrevTo_gen(Ent* aGivenEnt, Key* aWithKey)
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorToBuffer_gen(Key* aWithKey,
-                                       Ent* aPriorVec[],
-                                       EntBuffer* pRefdChildBuffer)
+void EntBuffer::vPosPriorToBuffer_gen(EntBuffer* pToRefdBuffer,
+                                      Key* aWithKey,
+                                      Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
@@ -245,7 +245,7 @@ void EntBuffer::vPosPriorToBuffer_gen(Key* aWithKey,
 
       // - keys are equal
 
-      if (pRefdChildBuffer != pRefdEntBuffer(aNextEntry_sl)->pPrevBuffer()) {
+      if (pToRefdBuffer != pRefdEntBuffer(aNextEntry_sl)->pPrevBuffer()) {
         // found key but haven't reached buffer, go right at this level
         aPriorVec[i_ScanLevel] = aNextEntry_sl;//aPriorEntry_sl;
         if (! aNextEntry(aNextEntry_sl,i_ScanLevel) )
