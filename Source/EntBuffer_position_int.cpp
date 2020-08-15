@@ -19,12 +19,53 @@
 #define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = aEnt )
 
 /*----------------------------------------------------------------------------*/
+/* compute prior vec for find key, such that next of priorVec[0] is the next  */
+/* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vPosPriorToBuffer_int(Key* aWithKey,
+                                       Ent* aPriorVec[],
+                                       EntBuffer* pRefdChildBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+  RASSERT(KE_INT == m_eEntKind);
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan thru skip list and return entry prior to key                          */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aPosPriorToEntry_int(Key* aWithKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  RASSERT(KE_INT == m_eEntKind);
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute prior vector for find key, such that next of priorVec[0] is        */
+/* specifically the given find entry                                          */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vPosPriorToEntry_int(Key* aWithKey,
+                                      Ent* aPriorVec[],
+                                      Ent* aToEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  RASSERT(KE_INT == m_eEntKind);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute prior vector for given int key                                     */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vPosPriorToEntry_int(Key* aWithKey_int, Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
+  RASSERT(KE_INT == m_eEntKind);
+
 #ifdef WITH_EB_LAZY_CHAIN
   ASSERT(! m_aLazyChain);
 #endif

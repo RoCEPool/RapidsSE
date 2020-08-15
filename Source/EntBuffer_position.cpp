@@ -13,7 +13,10 @@ EntBuffer* EntBuffer::pFindH0Buffer(Key* aWithKey)
   
   EntBuffer* pEntBuffer;
 
-  pEntBuffer = pFindH0Buffer_gen(aWithKey);
+//  if (KE_INT == m_eEntKind)
+//    pEntBuffer = pFindH0Buffer_int(aWithKey);
+//  else
+    pEntBuffer = pFindH0Buffer_gen(aWithKey);
   
   return pEntBuffer;
 }
@@ -27,7 +30,10 @@ Ent* EntBuffer::aPosPriorToEntry(Key* aWithKey)
   
   Ent* aEnt;
   
-  aEnt = aPosPriorToEntry_gen(aWithKey);
+  if (KE_INT == m_eEntKind)
+    aEnt = aPosPriorToEntry_int(aWithKey);
+  else
+    aEnt = aPosPriorToEntry_gen(aWithKey);
 
   return aEnt;
 }
@@ -42,7 +48,10 @@ void EntBuffer::vPosPriorToEntry(Key* aWithKey,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  vPosPriorToEntry_gen(aWithKey,aPriorVec,aToEntry);
+  if (KE_INT == m_eEntKind)
+    vPosPriorToEntry_int(aWithKey,aPriorVec,aToEntry);
+  else
+    vPosPriorToEntry_gen(aWithKey,aPriorVec,aToEntry);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +64,10 @@ void EntBuffer::vPosPriorToBuffer(Key* aWithKey,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-  vPosPriorToBuffer_gen(aWithKey,aPriorVec,pRefdChildBuffer);
+  if (KE_INT == m_eEntKind)
+    vPosPriorToBuffer_int(aWithKey,aPriorVec,pRefdChildBuffer);
+  else
+    vPosPriorToBuffer_gen(aWithKey,aPriorVec,pRefdChildBuffer);
 }
 
 /*============================================================================*/
