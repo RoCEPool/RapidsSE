@@ -95,44 +95,37 @@ namespace Indexing
     static Ent* pFindPrevKeyEntry(Ent* aEnt, Key* aGivenKey,
                                   EntBuffer** ppEntBuffer);
     
-    ////////////////////////////////////////////////////////////////////////////
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key positioning functions
     
-    EntBuffer* pPosH0Buffer(Key* aFindKey);
-    EntBuffer* pPosH0Buffer_gen(Key* aFindKey);
+    Ent*       aFindEnt_int(Key* aWithKey);
+  
+  
+    EntBuffer* pFindH0Buffer(Key* aWithKey);
+    EntBuffer* pFindH0Buffer_gen(Key* aWithKey);
 
   
-    Ent*       aPosPriorEntry(Key* aFindKey);
-    Ent*       aPosPriorEntry_gen(Key* aFindKey);
+    Ent*       aPosPriorToEntry(Key* aWithKey);
+    Ent*       aPosPriorToEntry_gen(Key* aWithKey);
 
   
-    void       vPosPriorVecBuffer(Key* aFindKey,
-                                  Ent* aPriorVec[],
-                                  EntBuffer* pToBuffer);
-    void       vPosPriorVecBuffer_gen(Key* aFindKey,
-                                      Ent* aPriorVec[],
-                                      EntBuffer* pToBuffer);
-
-  
-    void       vPosPriorVecEntry(Key* aFindKey,
+    void       vPosPriorToBuffer(Key* aWithKey,
                                  Ent* aPriorVec[],
-                                 Ent* aFindEntry);
-    void       vPosPriorVecEntry_gen(Key* aFindKey,
+                                 EntBuffer* pToBuffer);
+    void       vPosPriorToBuffer_gen(Key* aWithKey,
                                      Ent* aPriorVec[],
-                                     Ent* aFindEntry);
-    void       vPosPriorVecEntry_int(Key* aFindKey,
-                                     Ent* aPriorVec[]);
+                                     EntBuffer* pToBuffer);
 
   
+    void       vPosPriorToEntry(Key* aWithKey,
+                                Ent* aPriorVec[],
+                                Ent* aToEntry);
+    void       vPosPriorToEntry_gen(Key* aWithKey,
+                                    Ent* aPriorVec[],
+                                    Ent* aToEntry);
+    void       vPosPriorToEntry_int(Key* aWithKey,
+                                    Ent* aPriorVec[]);
   
-  
-    Ent*       aFindEnt_int(Key* aFindKey);
-  
-
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   

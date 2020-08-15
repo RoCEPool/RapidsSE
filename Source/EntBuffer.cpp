@@ -543,7 +543,7 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
   
   Ent* xPriorVec[C_MAX_LVL_LEVELS];
   
-  vPosPriorVecEntry(aEnt->aKey(), xPriorVec, aEnt);
+  vPosPriorToEntry(aEnt->aKey(), xPriorVec, aEnt);
   
   vCutEntry(aEnt,xPriorVec);
   

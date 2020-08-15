@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* compute prior vector for given int key                                     */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorVecEntry_int(Key* aKey_int, Ent* aPriorVec[])
+void EntBuffer::vPosPriorToEntry_int(Key* aKey_int, Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
