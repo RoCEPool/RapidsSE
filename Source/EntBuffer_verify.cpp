@@ -442,16 +442,23 @@ bool EntBuffer::bVerifyFirstKeys(void)
     // get the first entry of the child buffer
     Ent* aChildFirstEntry = pChildEntBuffer->aLeadEntry();
     
-    // get keys of the two entries
-    //Key* aKeyParent = _aKey(aEnt->aDataArea());
-    //Key* aKeyChild  = _aKey(aChildFirstEntry->aDataArea());
-    
-    // the two keys should match
-    //bool bEqual = aKeyChild->bEqualTo(aKeyParent,pIndexDef);
-    bool bEqual = Key::bEqualTo(aChildFirstEntry->aKey(), aEnt->aKey());
-    if (! bEqual) {
-      vVerifyFault();
-      return false;
+   // the two keys should match
+    if (KE_GENERAL == m_eEntKind) {
+      bool bEqual = Key::bEqualTo(aChildFirstEntry->aKey(), aEnt->aKey());
+      if (! bEqual) {
+        vVerifyFault();
+        return false;
+      }
+    }
+    else {
+      i8 iCurrKey = aEnt->iIntElm0();
+      i8 iChildKey = aChildFirstEntry->iIntElm0();
+      bool bEqual = (iChildKey == iCurrKey);
+      if (! bEqual) {
+        vDump();
+        vVerifyFault();
+        return false;
+      }
     }
   }
   

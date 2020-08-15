@@ -141,6 +141,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     // get the elements of the right key
     
     Ref xRef = aRightH0_Entry->rxRef();
+    eKE eEntKind = xRef.eKind();
     byte* ayElmSeq = aRightH0_Entry->ayElmSeq();
     
     i8 nElmSeqSize = aRightH0_Entry->nElmSeqSize();
@@ -151,8 +152,14 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     
     xLeftEntWrk.vRef(xRef);
     
-    xLeftEntWrk.vElmSeq(nElmSeqSize,ayElmSeq);
-    
+    if (KE_GENERAL == eEntKind) {
+      xLeftEntWrk.vElmSeq(nElmSeqSize,ayElmSeq);
+    }
+    else {
+      i8 iVal = aRightH0_Entry->iIntElm0();
+      *(i8*)xLeftEntWrk.aKey() = iVal;
+    }
+
     xLeftEntWrk.vOffsets(nOffsets);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -254,6 +261,7 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   Ent* aFirstL0_ent = pFirstH0->aLeadEntry();
   
   Ref xRef = aFirstL0_ent->rxRef();
+  eKE eEntKind = xRef.eKind();
   byte* aKeyBytes = aFirstL0_ent->ayElmSeq();
   i8 nKeyBytes = aFirstL0_ent->nElmSeqSize();
   i8 nLevels = aFirstL0_ent->nSkipLevels();
@@ -261,11 +269,19 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   i8 iFirstL0_BufferNo = pFirstH0->iBufferNo();
   xRef.vBuffer(iFirstL0_BufferNo);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   EntWrk xFirstH1_ent;
   
   xFirstH1_ent.vRef(xRef);
   
-  xFirstH1_ent.vElmSeq(nKeyBytes,aKeyBytes);
+  if (KE_GENERAL == eEntKind) {
+    xFirstH1_ent.vElmSeq(nKeyBytes,aKeyBytes);
+  }
+  else {
+    i8 iVal = aFirstL0_ent->iIntElm0();
+    *(i8*)xFirstH1_ent.aKey() = iVal;
+  }
   
   xFirstH1_ent.vOffsets(nLevels);
   

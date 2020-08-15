@@ -606,8 +606,18 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   Ref xRef(iBufferNo,i_Item,nLevels);
   vRef(xRef);
   
+  eKE eEntKind = pEntry->eKind();
+  
+  xRef.vKind(eEntKind);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key byte sequence into this entry
+  
+  if (KE_INT == eEntKind) {
+    i8 iVal = pEntry->iIntElm0();
+    *(i8*)aKey() = iVal;
+    return;
+  }
   
   byte* ayByteSeq = pEntry->ayElmSeq();
   i8 nKeyBytes = pEntry->nElmSeqSize();
