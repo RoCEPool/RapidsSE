@@ -721,7 +721,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
     if (KE_GENERAL == m_eEntKind)
       vPosPriorVecEntry(aKey, xPriorVec, nullptr);
     else
-      vPosPriorVecEntry_IntOpt(aKey, xPriorVec);
+      vPosPriorVecEntry_int(aKey, xPriorVec);
   }
   else {
     EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);

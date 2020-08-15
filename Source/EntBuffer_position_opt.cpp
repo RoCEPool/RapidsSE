@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* compute prior vector for given int key                                     */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorVecEntry_IntOpt(Key* aKey_int, Ent* aPriorVec[])
+void EntBuffer::vPosPriorVecEntry_int(Key* aKey_int, Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
@@ -97,7 +97,7 @@ void EntBuffer::vPosPriorVecEntry_IntOpt(Key* aKey_int, Ent* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* find entry given int key                                                   */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aFindEnt_IntOpt(Key* aKey_int)
+Ent* EntBuffer::aFindEnt_int(Key* aKey_int)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
