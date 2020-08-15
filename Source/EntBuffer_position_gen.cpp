@@ -53,8 +53,8 @@ EntBuffer* EntBuffer::pFindH0Buffer_gen(Key* aWithKey)
     ASSERT(aEnt);
     Ent* aEntPrev = aEnt;
     
-    aEnt = pEntBuffer->pFindPrevKeyEntry_gen(aWithKey,aEnt);
-    if (! aEnt ) {
+    aEnt = pEntBuffer->pFindEntPrevTo_gen(aEnt,aWithKey);
+    if (! aEnt) {
       aWithKey->vShow(m_pIndex->pIndexDef());
       vTrace("\n"_Stz);
       
@@ -77,8 +77,7 @@ EntBuffer* EntBuffer::pFindH0Buffer_gen(Key* aWithKey)
 /*----------------------------------------------------------------------------*/
 /* find the prev key entry                                                    */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pFindPrevKeyEntry_gen(Key* aWithKey,
-                                      Ent* aGivenEnt)
+Ent* EntBuffer::pFindEntPrevTo_gen(Ent* aGivenEnt, Key* aWithKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
