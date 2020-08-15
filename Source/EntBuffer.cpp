@@ -962,42 +962,6 @@ Ent* EntBuffer::aNextEntry(Ent* aPrevEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find the prev key entry                                                    */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pFindPrevKeyEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-
-  EntBuffer* pEntBuffer = *ppEntBuffer;
-  ASSERT(pEntBuffer == this);
-
-  if (aEnt == pEntBuffer->aSkipRoots())
-    aEnt = pEntBuffer->aNextEntry(aEnt,0);
-  
-  Ent* aEntPrev = aEnt;
-  
-  while (aEnt) {
-    eKC eCompare = Key::eCompare(aEnt->aKey(),aGivenKey);
-
-    // have we reached the key?
-    if (eCompare == KC_SAME)
-      break;
-    
-    // have we moved beyond ?
-    if (eCompare == KC_AFTER)
-      return aEntPrev;
-    
-    aEntPrev = aEnt;
-    aEnt = pEntBuffer->aNextEntry(aEnt,0);
-    
-    if ( ! aEnt )
-      return aEntPrev;
-  }
-  
-  return aEntPrev;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pNextBuffer(void)
