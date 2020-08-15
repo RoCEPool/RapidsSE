@@ -119,15 +119,15 @@ namespace Indexing
                                      Ent* aPriorVec[]);
 
   
-    void       vPosPriorToEntry(Key* aWithKey,
-                                Ent* aPriorVec[],
-                                Ent* aToEntry);
-    void       vPosPriorToEntry_gen(Key* aWithKey,
-                                    Ent* aPriorVec[],
-                                    Ent* aToEntry);
-    void       vPosPriorToEntry_int(Key* aWithKey,
-                                    Ent* aPriorVec[],
-                                    Ent* aToEntry);
+    void       vPosPriorToEntry(Ent* aToEntry,
+                                Key* aWithKey,
+                                Ent* aPriorVec[]);
+    void       vPosPriorToEntry_gen(Ent* aToEntry,
+                                    Key* aWithKey,
+                                    Ent* aPriorVec[]);
+    void       vPosPriorToEntry_int(Ent* aToEntry,
+                                    Key* aWithKey,
+                                    Ent* aPriorVec[]);
 
     void       vPosPriorToEntry_int(Key* aWithKey,
                                     Ent* aPriorVec[]);

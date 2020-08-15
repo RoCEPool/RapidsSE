@@ -42,16 +42,16 @@ Ent* EntBuffer::aFindEntryBefore(Key* aGivenKey)
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorToEntry(Key* aWithKey,
-                                  Ent* aPriorVec[],
-                                  Ent* aToEntry)
+void EntBuffer::vPosPriorToEntry(Ent* aToEntry,
+                                 Key* aWithKey,
+                                 Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   if (KE_INT == m_eEntKind)
-    vPosPriorToEntry_int(aWithKey,aPriorVec,aToEntry);
+    vPosPriorToEntry_int(aToEntry,aWithKey,aPriorVec);
   else
-    vPosPriorToEntry_gen(aWithKey,aPriorVec,aToEntry);
+    vPosPriorToEntry_gen(aToEntry,aWithKey,aPriorVec);
 }
 
 /*----------------------------------------------------------------------------*/

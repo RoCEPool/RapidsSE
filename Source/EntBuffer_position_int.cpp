@@ -59,9 +59,9 @@ void EntBuffer::vPosPriorToBuffer_int(EntBuffer* pToRefdBuffer,
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPosPriorToEntry_int(Key* aWithKey,
-                                     Ent* aPriorVec[],
-                                     Ent* aToEntry)
+void EntBuffer::vPosPriorToEntry_int(Ent* aToEntry,
+                                     Key* aWithKey,
+                                     Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   

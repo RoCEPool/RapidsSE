@@ -197,7 +197,7 @@ void EntBuffer::vCompact(void)
     //aKey->vShow(pIndexDef);
     //vTrace("\n"_Stz);
     
-    vPosPriorToEntry(aMoveEntry->aKey(), xPriorVec, aMoveEntry);
+    vPosPriorToEntry(aMoveEntry, aMoveEntry->aKey(), xPriorVec);
     
     if (m_iBufferHeight) {
       //vDumpPriorVec(xPriorVec);
@@ -719,7 +719,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   
   if (0 == m_iBufferHeight) {
     if (KE_GENERAL == m_eEntKind)
-      vPosPriorToEntry(aKey, xPriorVec, nullptr);
+      vPosPriorToEntry(nullptr, aKey, xPriorVec);
     else
       vPosPriorToEntry_int(aKey, xPriorVec);
   }
