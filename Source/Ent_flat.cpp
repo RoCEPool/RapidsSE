@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Ent_Int.cpp -- Index Entry / Specific Int case                             */
+/* Ent_flat.cpp -- flattened representations of Index Entry                   */
 /*============================================================================*/
 
 #include "Entries.h"
