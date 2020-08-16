@@ -209,6 +209,28 @@ void IndexTree::vCompact(void)
     //pH1->bVerifyKeyBufferOrder();
   }
   
+  if (KE_INT != m_pIndexDef->eKeyKind())
+    return;
+  
+  EntBufSorter* pEntBufSorter = new EntBufSorter;
+
+  
+    
+  EntBuffer* pEntBuffer = pRootBuffer();
+
+  if (pEntBuffer->iBufferHeight())
+     pEntBuffer = pEntBuffer->pFirstChildBuffer();
+
+  for (;
+       pEntBuffer;
+       pEntBuffer = pEntBuffer->pNextBuffer()) {
+    
+    pEntBufSorter->vSort_int(pEntBuffer);
+
+  }
+  
+  delete pEntBufSorter;
+
 }
 
 /*----------------------------------------------------------------------------*/
