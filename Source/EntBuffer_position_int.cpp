@@ -66,15 +66,15 @@ EntBuffer* EntBuffer::pFindLeafBuffer_int(Key* aForKey)
       aEnt = pEntBuffer->aFindEntryBefore_int(aForKey);
       ASSERT(aEnt);
       Ent* aEntPrev = aEnt;
-      
+
       aEnt = pEntBuffer->pFindEntryPrevTo_int(aEnt,aForKey);
       if (! aEnt) {
         aForKey->vShow(m_pIndex->pIndexDef());
         vTrace("\n"_Stz);
-        
+
         aEntPrev->aKey()->vShow(m_pIndex->pIndexDef());
         vTrace("\n"_Stz);
-        
+
         pEntBuffer->vDump();
       }
       ASSERT(aEnt);
@@ -87,96 +87,6 @@ EntBuffer* EntBuffer::pFindLeafBuffer_int(Key* aForKey)
     
     return pEntBuffer;
 }
-
-/*----------------------------------------------------------------------------*/
-/* scan thru skip list and return entry before entry with given key           */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  RASSERT(KE_INT == m_eEntKind);
-
-  #ifdef WITH_EB_LAZY_CHAIN
-    ASSERT( ! m_aLazyChain );
-  #endif
-    
-  i8 nLvlLevels = AM::nLvlLevels();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (nItems() == 0)
-    return aSkipRoots();
-  
-
-  
-  i8 iElm0_int = ELM0_OF_KEY(aGivenKey_int);
-
-  Ent* aScanEnt = aSkipRoots();
-  for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
-    
-    for (tET tNextEnt = NEXT_TICKET(aScanEnt,i_Level);
-         ! END_TICKET(tNextEnt);
-         tNextEnt = NEXT_TICKET(aScanEnt,i_Level)) {
-
-      Ent* aNextEnt = GET_ENTRY(tNextEnt);
-      i8 iNextElm0_int = ELM0_OF_ENTRY(aNextEnt);
-            
-      if (SCAN_IS_AT_PRIOR_POS(iElm0_int,iNextElm0_int))
-        break;
-      
-      aScanEnt = aNextEnt;
-      
-    } // next aScanEnt at i_Level
-
-  }
-  
-  return aScanEnt;
-}
-/*----------------------------------------------------------------------------*/
-//Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-//
-//  RASSERT(KE_INT == m_eEntKind);
-//
-//  #ifdef WITH_EB_LAZY_CHAIN
-//    ASSERT( ! m_aLazyChain );
-//  #endif
-//
-//  i8 nLvlLevels = AM::nLvlLevels();
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  if (nItems() == 0)
-//    return aSkipRoots();
-//
-//  Ent* aScanEntry_sl = aSkipRoots();
-//
-//  bool bNextKeyIsGE;
-//
-//  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
-//
-//    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
-//    while (aNextEntry_sl) {
-//
-//      //bNextKeyIsGE = Key::bGreaterEqual(aNextEntry_sl->aKey(),aGivenKey);
-//
-//      i8 iNextInt = aNextEntry_sl->iIntElm0();
-//      i8 iGivenInt = *(i8*)aGivenKey;
-//
-//      bNextKeyIsGE = (iNextInt >= iGivenInt);
-//      if (bNextKeyIsGE)
-//        break;
-//
-//      aScanEntry_sl = aNextEntry_sl;
-//      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
-//    }
-//
-//  }
-//
-//  return aScanEntry_sl;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* find the prev key entry                                                    */
@@ -558,3 +468,72 @@ Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+
+#define ELM0_OF_KEY(aKey)   ( *(i8*)aKey )
+
+#define ELM0_OF_ENTRY(aEnt) ( *(i8*)aEnt->aKey() )
+
+#define END_TICKET(tNxtEnt) ( C_ENT_END_TICKET == tNxtEnt )
+
+#define GET_ENTRY(tTicket)  ( aGetItem(iToEntryOffset(tTicket)) )
+
+#define NEXT_TICKET(aEnt,i_Lvl) ( aEnt->tNextEntry(i_Lvl) )
+
+#define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
+
+#define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = aEnt )
+
+/*----------------------------------------------------------------------------*/
+/* scan thru skip list and return entry before entry with given key           */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  RASSERT(KE_INT == m_eEntKind);
+
+  #ifdef WITH_EB_LAZY_CHAIN
+    ASSERT( ! m_aLazyChain );
+  #endif
+    
+  i8 nLvlLevels = AM::nLvlLevels();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (nItems() == 0)
+    return aSkipRoots();
+  
+
+  
+  i8 iElm0_int = ELM0_OF_KEY(aGivenKey_int);
+
+  Ent* aScanEnt = aSkipRoots();
+  for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
+    
+    for (tET tNextEnt = NEXT_TICKET(aScanEnt,i_Level);
+         ! END_TICKET(tNextEnt);
+         tNextEnt = NEXT_TICKET(aScanEnt,i_Level)) {
+
+      Ent* aNextEnt = GET_ENTRY(tNextEnt);
+      i8 iNextElm0_int = ELM0_OF_ENTRY(aNextEnt);
+            
+      if (SCAN_IS_AT_PRIOR_POS(iElm0_int,iNextElm0_int))
+        break;
+      
+      aScanEnt = aNextEnt;
+      
+    } // next aScanEnt at i_Level
+
+  }
+  
+  return aScanEnt;
+}
+
+#undef ELM0_OF_KEY
+#undef ELM0_OF_ENTRY
+#undef END_TICKET
+#undef GET_ENTRY
+#undef NEXT_TICKET
+#undef SCAN_IS_AT_PRIOR_POS
+#undef STORE_PRIOR_POS

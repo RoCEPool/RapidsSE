@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Ent_flat.hpp -- flattened representations of Index Entry                   */
+/* Ent_gen.hpp -- flattened representations of Index Entry                   */
 /*============================================================================*/
 #pragma once
 
 namespace Entries
 {
-  // this is the goal : an int Ent of 32B
+  // the flattened layout for the int case
 
   struct Ent_int
   {
@@ -34,9 +34,9 @@ namespace Entries
 
   //----------------------------------------------------------------------------
   
-  // this is the current flattened layout for the general case
+  // the flattened layout for the general case
 
-  struct Ent_flat
+  struct Ent_gen
   {
     #ifdef __ENT_HEADER
     _Header m_xHeader;

@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
   printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
   printf("sizeof(DataBuffer) %lld\n",   (i8)sizeof(DataBuffer));
   printf("sizeof(Ent) %lld\n",          (i8)sizeof(Ent));
-  printf("sizeof(Ent_flat) %lld\n",     (i8)sizeof(Ent_flat));
+  printf("sizeof(Ent_gen) %lld\n",      (i8)sizeof(Ent_gen));
   printf("sizeof(Ent_int) %lld\n",      (i8)sizeof(Ent_int));
   printf("sizeof(EntWrk) %lld\n",       (i8)sizeof(EntWrk));
   printf("sizeof(LogicUnit) %lld\n",    (i8)sizeof(LogicUnit));

@@ -506,7 +506,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   
   vInsertEntSkipList(aInsertedEntry);
   
-  Ent_flat* pEnt_flat = (Ent_flat*)aInsertedEntry;
+  Ent_gen* pEnt_gen = (Ent_gen*)aInsertedEntry;
   
   //vShow();
   
