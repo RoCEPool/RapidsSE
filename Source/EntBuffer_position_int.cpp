@@ -469,15 +469,15 @@ Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
 /*============================================================================*/
 
 
-#define ELM0_OF_KEY(aKey)   ( *(i8*)aKey )
+#define ELM0_OF_KEY(aKey) ( *(i8*)aKey )
 
-#define ELM0_OF_ENTRY(aEnt) ( *(i8*)aEnt->aKey() )
+#define ELM0_OF_ENTRY(aEnt_int) ( aEnt_int->m_iIntElm0 )
 
 #define END_TICKET(tNxtEnt) ( C_ENT_END_TICKET == tNxtEnt )
 
-#define GET_ENTRY(tTicket)  ( aGetItem(iToEntryOffset(tTicket)) )
+#define GET_ENTRY(tTicket) ( &aItemArray[tTicket] )
 
-#define NEXT_TICKET(aEnt,i_Lvl) ( aEnt->tNextEntry(i_Lvl) )
+#define NEXT_TICKET(aEnt_int,i_Lvl) ( aEnt_int->m_taNextEntry[i_Lvl] )
 
 #define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
 
@@ -511,30 +511,27 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 iElm0_int = ELM0_OF_KEY(aGivenKey_int);
-
-  
-  
-  Ent* aScanEnt = aSkipRoots;
-  for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
+  Ent_int* aScanEnt = (Ent_int*)aSkipRoots;
+  for (i4 i_Level = (i4)nLvlLevels - 1; i_Level >= 0; i_Level--) {
     
     for (tET tNextEnt = NEXT_TICKET(aScanEnt,i_Level);
          ! END_TICKET(tNextEnt);
          tNextEnt = NEXT_TICKET(aScanEnt,i_Level)) {
 
-      Ent* aNextEnt = GET_ENTRY(tNextEnt);
-      i8 iNextElm0_int = ELM0_OF_ENTRY(aNextEnt);
+      Ent_int* aNextEnt_int = GET_ENTRY(tNextEnt);
+      i8 iNextEnt_IntElm = ELM0_OF_ENTRY(aNextEnt_int);
+      
+      //vTrace("@%lld : %lld v %lld\n"_Stz,i_Level,iKey_IntElm,iNextEnt_IntElm);
             
-      if (SCAN_IS_AT_PRIOR_POS(iElm0_int,iNextElm0_int))
+      if (SCAN_IS_AT_PRIOR_POS(iKey_IntElm,iNextEnt_IntElm))
         break;
       
-      aScanEnt = aNextEnt;
-      
-    } // next aScanEnt at i_Level
+      aScanEnt = aNextEnt_int;
+    }
 
   }
-  
-  return aScanEnt;
+
+  return (Ent*)aScanEnt;
 }
 
 #undef ELM0_OF_KEY
