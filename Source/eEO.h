@@ -178,7 +178,8 @@ enum eEO : u1 // expression operators
   /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
   /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
-  
+  /*    */ EO_ENTWRK_SETINTELM, // set int only element value
+
   // index tree
   /*    */ EO_IXT_DEL_ENT,      // delete current m_aEnt from indexTree
   /*    */ EO_IXT_DUMP,         // dump index tree
@@ -414,6 +415,7 @@ static Stz* aEO[]
   /*    */ "EO_ENTWRK_POPREF"_Stz,
   /*    */ "EO_ENTWRK_PRINT"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
+  /*    */ "EO_ENTWRK_SETINTELM"_Stz,
 
   // index tree
   /*    */ "EO_IXT_DEL_ENT"_Stz,
@@ -656,6 +658,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENTWRK_POPREF
   { EA_NONE,    0 },  // EO_ENTWRK_PRINT
   { EA_NONE,    0 },  // EO_ENTWRK_RESET
+  { EA_NONE,    0 },  // EO_ENTWRK_SETINTELM
 
   // index tree
   { EA_NONE,    0 },  // EO_IXT_DEL_ENT

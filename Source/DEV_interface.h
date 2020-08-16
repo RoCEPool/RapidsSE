@@ -53,6 +53,7 @@ void vDev_ENTWRK_CREATEPAY(void* aLU, void* aRSB, i8 iArg);
 void vDev_ENTWRK_POPOFS(void* aLU, void* aRSB, i8 iTop);
 void vDev_ENTWRK_PRINT(void* aLU, void* aRSB);
 void vDev_ENTWRK_RESET(void* aLU, void* aRSB);
+void vDev_ENTWRK_SETINTELM(void* aLU, void* aRSB, i8 iTop);
 
 void vDev_RSB_BEGIN(void* aLU, void* aRSB);
 i8   iDev_RSB_NEW(void* aLU, void* aRSB);

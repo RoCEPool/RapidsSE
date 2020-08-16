@@ -802,6 +802,22 @@ void vDev_ENTWRK_RESET(void* aLU, void* aRSB)
   pLogicUnit->m_oEntWrk.vReset();
 }
 
+/*----------------------------------------------------------------------------*/
+/* set int only element                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_ENTWRK_SETINTELM(void* aLU, void* aRSB, i8 iTop)
+{
+  _static_
+  
+  //DevRSB* pDevRsb = _pDevRSB(aRSB);
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  //pLogicUnit->m_oEntWrk.vAppendElementInt(pDevRsb->m_aRsb,iTop);
+  pLogicUnit->m_oEntWrk.aEnt()->vKind(KE_INT);
+  *(i8*)pLogicUnit->m_oEntWrk.aKey() = iTop;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

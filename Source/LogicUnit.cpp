@@ -1805,6 +1805,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ENTWRK_RESET(pLU,aRluCommon->m_pDevSrcRsb);
         break;//+endCase
                               
+      case EO_ENTWRK_SETINTELM: ArgNil(); // append next element value (int)
+        iTopA = *(aiDstk--);
+        dLU1(EO_ENTWRK_SETINTELM,iTopA);
+        vDev_ENTWRK_SETINTELM(pLU,aRluCommon->m_pDevSrcRsb,iTopA);
+        break;//+endCase
+      
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
       case EO_IXT_DEL_ENT: ArgNil(); // delete current m_aEnt from indexTree

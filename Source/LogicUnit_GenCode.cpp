@@ -1095,7 +1095,10 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_ENTWRK_RESET);
 
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY);
-  vAddCode(EO_ENTWRK_APPENDELMI);
+  //vAddCode(EO_DUP);
+  //vAddCode(EO_PRINT);
+  //vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_ENTWRK_SETINTELM);
 
   vAddCode(EO_IXT_POS_ALTBYWRK);
   vAddCodeLabel(EO_JMP_FALSE,"RET_AGG_f:"_Stz);
@@ -1113,7 +1116,9 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_GREATERTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_AGG:"_Stz);
 
-
+//  vAddCodeString(EO_STR_LITERAL,"GOT AN AGG"_Stz);
+//  vAddCode(EO_STR_PRINTADR);
+  
   vAddCodeArg(EO_RSB_DST_PUSHCOLI,Q301_REVENUE);
   vAddCodeArg(EO_COL_ALT_PUSHI,L_EXTENDEDPRICE);
   vAddCode(EO_ADD);

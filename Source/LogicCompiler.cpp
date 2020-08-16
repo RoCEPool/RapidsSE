@@ -51,6 +51,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_ENTWRK_POPOFS"_Stz,     (const void *) vDev_ENTWRK_POPOFS     },
   { "vDev_ENTWRK_PRINT"_Stz,      (const void *) vDev_ENTWRK_PRINT      },
   { "vDev_ENTWRK_RESET"_Stz,      (const void *) vDev_ENTWRK_RESET      },
+  { "vDev_ENTWRK_SETINTELM"_Stz,  (const void *) vDev_ENTWRK_SETINTELM  },
 
   { "iDev_IXT_CMP_SRCALT"_Stz,    (const void *) iDev_IXT_CMP_SRCALT    },
   { "iDev_IXT_CMP_WRKALT"_Stz,    (const void *) iDev_IXT_CMP_WRKALT    },
@@ -463,8 +464,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 //    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
     // timer begin
-//    sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
-//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    //sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
+    //StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
     
 
     if (EO_CALL == eCode) {
@@ -516,8 +517,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     }
     
     // timer end
-//    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
-//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    //sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
+    //StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
 #ifdef WITH_TRACE_LOGICUNIT
     // count no of newlines in the fragment
