@@ -479,7 +479,7 @@ Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
 
 #define NEXT_TICKET(aEnt_int,i_Lvl) ( aEnt_int->m_taNextEntry[i_Lvl] )
 
-#define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
+#define SCAN_IS_AT_PRIOR_POS(iGivenElm,iNextElm) ( iGivenElm <= iNextElm )
 
 #define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = aEnt )
 
@@ -507,7 +507,7 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
   
   Ent_int* aItemArray = (Ent_int*)this->aItemArray();
 
-  i8 iKey_IntElm = ELM0_OF_KEY(aGivenKey_int);
+  i8 iGivenKey_IntElm = ELM0_OF_KEY(aGivenKey_int);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -523,7 +523,7 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
       
       //vTrace("@%lld : %lld v %lld\n"_Stz,i_Level,iKey_IntElm,iNextEnt_IntElm);
             
-      if (SCAN_IS_AT_PRIOR_POS(iKey_IntElm,iNextEnt_IntElm))
+      if (SCAN_IS_AT_PRIOR_POS(iGivenKey_IntElm,iNextEnt_IntElm))
         break;
       
       aScanEnt = aNextEnt_int;
