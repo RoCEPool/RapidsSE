@@ -407,7 +407,6 @@ Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
 
   RASSERT(KE_INT == m_eEntKind);
   
-  // if there are no items then the prior vec is the set of skip roots
   if (nItems() == 0)
     return nullptr;
     
@@ -496,19 +495,27 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
   #ifdef WITH_EB_LAZY_CHAIN
     ASSERT( ! m_aLazyChain );
   #endif
-    
-  i8 nLvlLevels = AM::nLvlLevels();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (nItems() == 0)
     return aSkipRoots();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  i8 nLvlLevels = AM::nLvlLevels();
   
+  Ent* aSkipRoots = this->aSkipRoots();
+  
+  Ent_int* aItemArray = (Ent_int*)this->aItemArray();
+
+  i8 iKey_IntElm = ELM0_OF_KEY(aGivenKey_int);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   i8 iElm0_int = ELM0_OF_KEY(aGivenKey_int);
 
-  Ent* aScanEnt = aSkipRoots();
+  
+  
+  Ent* aScanEnt = aSkipRoots;
   for (i8 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
     
     for (tET tNextEnt = NEXT_TICKET(aScanEnt,i_Level);
