@@ -18,7 +18,7 @@ namespace Entries
 #include "Key.hpp"
 #include "NEO.h"
 #include "Ent.hpp"
-#include "Ent_gen.hpp"
+#include "Ent_flat.hpp"
 #include "EntWrk.hpp"
 
 #include "SP_Ent.hpp"
