@@ -1107,6 +1107,12 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_AGG_f:"_Stz);
   
   vAddCode(EO_CRW_ALT_FETCH);
+  
+  vAddCodeArg(EO_COL_ALT_PUSHI,L_SHIPDATE);
+  vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
+  vAddCode(EO_GREATERTHAN);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_AGG:"_Stz);
+
 
   vAddCodeArg(EO_RSB_DST_PUSHCOLI,Q301_REVENUE);
   vAddCodeArg(EO_COL_ALT_PUSHI,L_EXTENDEDPRICE);
