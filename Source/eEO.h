@@ -130,7 +130,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_TMR_AGG_RESET,    // reset agg timer
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // complex eo
   
   // col operators
   /*    */ EO_COL_NOT_PROJECT,  // reset column in streamPix of dst
@@ -188,7 +187,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_IXT_TRV_NEXT,     // traverse to next entry
   /*    */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index
 
-  
   /*    */ EO_IXT_SRC_BEGIN,    // begin linear traverse
   /*    */ EO_IXT_SRC_LBOUND,   // position at lower bound
   /*    */ EO_IXT_SRC_NEXT,     // move to next entry

@@ -892,7 +892,7 @@ void LogicUnit::vGenerateQuery300(void)
 
   vAddCode(EO_CTR_0_INC);
   vAddCode(EO_CTR_0_PUSH);
-  vAddCodeArg(EO_INTEGER,10000);
+  vAddCodeArg(EO_INTEGER,20000);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_TRUE,"PRC_CUS:"_Stz);
 
@@ -1635,8 +1635,16 @@ void LogicUnit::vGenerateQuery400(void)
   
   // test L_COMMITDATE < L_RECEIPTDATE
   vAddCode(EO_CRW_ALT_FETCH);
-  vAddCodeArg(EO_COL_ALT_PUSHI,L_COMMITDATE);
-  vAddCodeArg(EO_COL_ALT_PUSHI,L_RECEIPTDATE);
+  
+//  vAddCodeArg(EO_COL_ALT_PUSHI,L_COMMITDATE);
+//  vAddCodeArg(EO_COL_ALT_PUSHI,L_RECEIPTDATE);
+  
+  vAddCode(EO_PUSH_MINUS1);
+  vAddCodeArg(EO_INTEGER,L_RECEIPTDATE);
+  vAddCodeArg(EO_INTEGER,L_COMMITDATE);
+  vAddCode(EO_COL_ALT_PUSHSET);
+
+  
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_ITM:"_Stz);
   vAddCodeLabel(EO_JMP,"RET_ITM_t:"_Stz);
@@ -1755,12 +1763,14 @@ void LogicUnit::vGenerateQuery401(void)
   vAddCodeString(EO_STR_LITERAL,"**QRY_401 RSB**"_Stz);
   vAddCode(EO_STR_PRINTADR);
   vAddCodeLabel(EO_CALL,"ITR_SRC:"_Stz);
+  vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
 
   vDefineLabel("QRY_OUT:"_Stz);
   vAddCodeString(EO_STR_LITERAL,"**QRY_401 EOS**"_Stz);
   vAddCode(EO_STR_PRINTADR);
   vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+  vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
 
   

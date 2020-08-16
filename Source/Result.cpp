@@ -227,7 +227,7 @@ void Result::vProcessBufferQueue(void)
       goto L_EXIT;
     }
     
-    AM::vNapUsec(250,CN_RESULT);
+    AM::vNapUsec(1000,CN_RESULT);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -237,7 +237,7 @@ void Result::vProcessBufferQueue(void)
     Operand* pOperand = _pOperand(m_pOriginBufferQueue->pPop());
     
     if (! pOperand) {
-      AM::vNapUsec(250,CN_RESULT);
+      AM::vNapUsec(1000,CN_RESULT);
       continue;
     }
     

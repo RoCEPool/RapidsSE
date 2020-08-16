@@ -318,19 +318,19 @@ i8 iDev_IXT_CMP_WRKALT(void* aLU)
   Key* aWrkKey = pLogicUnit->m_oEntWrk.aKey();
   Key* aAltKey = pLogicUnit->m_pDevAltIxt->m_aEnt->aKey();
 
-if (KE_GENERAL == pLogicUnit->m_pDevAltIxt->m_aEnt->eKind()) {
+  if (KE_GENERAL == pLogicUnit->m_pDevAltIxt->m_aEnt->eKind()) {
   
-  eKC  eCmp = Key::eCompare(aWrkKey,aAltKey);
+    eKC  eCmp = Key::eCompare(aWrkKey,aAltKey);
 
-   if (KC_BEFORE == eCmp)
+    if (KC_BEFORE == eCmp)
      iRes = -1;
-   else
-   if (KC_SAME == eCmp)
+    else
+    if (KC_SAME == eCmp)
      iRes = 0;
-   else
+    else
      iRes = 1;
-  
-    return iRes;
+
+     return iRes;
   }
 
   
