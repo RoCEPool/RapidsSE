@@ -151,10 +151,8 @@
   "count_order"
   StreamDefOut[].addColumn
 
-  StreamDefOut[].duplicate to Operand[]
-  Operand[].pipeout
-
   false Pot[].useStreamDefOut
+  streamDefOut[].pipeout
 ;
 
 /*----------------------------------------------------------------------------*/
