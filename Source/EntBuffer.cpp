@@ -64,6 +64,7 @@ EntBuffer::EntBuffer(eKE eEntKind)
   ASSERT(CacheLine::bOnCacheLineBoundary(this));
   
   m_pIndex      = nullptr;
+  m_pIndexDef   = nullptr;
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
   
@@ -768,6 +769,26 @@ Index* EntBuffer::pIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the indexDef of the index buffer                                       */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vIndexDef(IndexDef* pIndexDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  m_pIndexDef = pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the indexDef of the index buffer                                       */
+/*----------------------------------------------------------------------------*/
+IndexDef* EntBuffer::pIndexDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  return m_pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get last entry                                                             */
 /*----------------------------------------------------------------------------*/
 Ent* EntBuffer::aLastEntry(void)
@@ -1216,10 +1237,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
     vTrace(" IntElm0 %lld"_Stz,aEnt_int->m_iIntElm0);
   }
   else
-  if (m_pIndex)
-    aKey->vShow(m_pIndex->pIndexDef());
-  else
-    aKey->vShowIntKey();
+    aKey->vShow(m_pIndexDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
