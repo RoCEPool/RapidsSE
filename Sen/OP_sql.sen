@@ -350,6 +350,7 @@
       //logicCompiler[].new
       //LogicCompiler[].compile
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
+      indexDef[].delete
     endof
 
     103 of
@@ -358,6 +359,7 @@
       logicCompiler[].new
       LogicCompiler[].compile
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
+      indexDef[].delete
     endof
 
     300 of
@@ -800,6 +802,7 @@
       //logicCompiler[].new
       //LogicCompiler[].compile
       LogicUnit[].transform
+      //logicCompiler[].delete
       IndexTree[].delete
     endof
 
