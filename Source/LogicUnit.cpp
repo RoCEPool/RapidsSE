@@ -1915,7 +1915,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
         
         aEntNext_int = aRluCommon->m_aAltEnt;
-        if (aEntNext_int && C_ENT_END_TICKET == aEntNext_int->m_taNextEntry[0])
+        if (C_ENT_END_TICKET == aEntNext_int->m_taNextEntry[0])
           aRluCommon->m_aAltEnt =
             aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
         else
