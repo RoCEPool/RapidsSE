@@ -812,6 +812,7 @@
       logicCompiler[].new
       LogicCompiler[].compile
       LogicUnit[].dynFun
+      logicCompiler[].delete
       IndexTree[].delete
     endof
 
