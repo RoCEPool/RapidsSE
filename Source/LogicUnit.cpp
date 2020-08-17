@@ -1906,9 +1906,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_ALT_NEXT: ArgNil();
         dLU0(EO_IXT_ALT_NEXT);
-        aRluCommon->m_aAltEnt =
-          aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
+//        aRluCommon->m_aAltEnt =
+//          aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
+//        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
+        
+        
+        aEntNext_int = aRluCommon->m_aAltEnt;
+        if (aEntNext_int && C_ENT_END_TICKET == aEntNext_int->m_taNextEntry[0])
+          aRluCommon->m_aAltEnt =
+            aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
+        else
+          aRluCommon->m_aAltEnt =
+            aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
+
         break;//+endCase
 
       case EO_IXT_ALT_PRINT: ArgNil(); // print alt ent

@@ -684,6 +684,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  typedef unsigned short tET;"
   "\n"
   "\n  static const i8 C_DATUM_NULL = -9223372036854775807;"
+  "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
   "\n  #define C_MAX_LVL_LEVELS 6"
   "\n"
   "\n  #include \"../Source/EnumGroups.h\""
