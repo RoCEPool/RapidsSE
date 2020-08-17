@@ -648,6 +648,10 @@
   StreamDefOut[].pipeout
 
   LogicUnit[].DynFun
+
+  // delete the table streamDef
+  streamDef[].delete
+
   Pot[].pipeoutAllCompleted
   Pot[].pipeoutAllDangling
 
