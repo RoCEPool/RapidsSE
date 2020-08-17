@@ -101,6 +101,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "iLib_DTE_YEAR"_Stz,          (const void *) iLib_DTE_YEAR          },
   { "vLib_ERROR"_Stz,             (const void *) vLib_ERROR             },
   { "iLib_GET_LOCAL"_Stz,         (const void *) iLib_GET_LOCAL         },
+  { "sLib_GET_LOCALS"_Stz,        (const void *) sLib_GET_LOCALS        },
   { "vLib_HSH_ADD_HASHI"_Stz,     (const void *) vLib_HSH_ADD_HASHI     },
   { "vLib_PTN_CALC"_Stz,          (const void *) vLib_PTN_CALC          },
   { "vLib_PTN_RUNNING"_Stz,       (const void *) vLib_PTN_RUNNING       },
@@ -304,7 +305,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_TRACE_LOGICUNIT
-  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
+  //vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
 #endif
   
   vAcquire();

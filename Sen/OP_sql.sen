@@ -151,10 +151,8 @@
   "count_order"
   StreamDefOut[].addColumn
 
-  StreamDefOut[].duplicate to Operand[]
-  Operand[].pipeout
-
   false Pot[].useStreamDefOut
+  streamDefOut[].pipeout
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -248,9 +246,8 @@
 
   StreamDef[].delete
 
-  StreamDefOut[].duplicate to StreamDef[]
-  StreamDef[].pipeout
   false Pot[].useStreamDefOut
+  streamDefOut[].pipeout
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -349,16 +346,17 @@
       100 LogicUnit[].genCode
       //logicCompiler[].new
       //LogicCompiler[].compile
-
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
+      indexDef[].delete
     endof
 
     103 of
       //queryNo "QUERY %v" .printf
       103 LogicUnit[].genCode
-      //logicCompiler[].new
-      //LogicCompiler[].compile
+      logicCompiler[].new
+      LogicCompiler[].compile
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
+      indexDef[].delete
     endof
 
     300 of
@@ -645,14 +643,16 @@
   //0 19 CT_INTEGER "count"
   //StreamDefOut[].addColumn
 
-  // pipeout the streamDefOut
-  StreamDefOut[].duplicate to Operand[]
-  Operand[].pipeout
-
   // set streamDefOut in the pot
   true Pot[].useStreamDefOut
+  StreamDefOut[].pipeout
 
   LogicUnit[].DynFun
+  LogicCompiler[].delete
+
+  // delete the table streamDef
+  streamDef[].delete
+
   Pot[].pipeoutAllCompleted
   Pot[].pipeoutAllDangling
 
@@ -726,7 +726,7 @@
      // "---------------------------- 103=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      LogicUnit[].transform
+      LogicUnit[].dynFun
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
@@ -769,6 +769,7 @@
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].dynFun
+      LogicCompiler[].delete
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
@@ -793,23 +794,31 @@
   queryNo case
 
     100 of
-      //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 100=EOSMARKER" .
+      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 100=EOSMARKER" .
+      // delete the original source streamDef now
+      streamDef[].delete
+
       // AGGREGATE WITH GROUPBY
       //queryNo "QUERY %v" .printf
+      //logicCompiler[].delete
       102 LogicUnit[].genCode
       //logicCompiler[].new
       //LogicCompiler[].compile
       LogicUnit[].transform
+      //logicCompiler[].delete
       IndexTree[].delete
     endof
 
     103 of
+      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 103=EOSMARKER" .
       // AGGREGATE WITH GROUPBY (SUPER)
       //queryNo "QUERY %v" .printf
+      logicCompiler[].delete
       104 LogicUnit[].genCode
-      //logicCompiler[].new
-      //LogicCompiler[].compile
-      LogicUnit[].transform
+      logicCompiler[].new
+      LogicCompiler[].compile
+      LogicUnit[].dynFun
+      logicCompiler[].delete
       IndexTree[].delete
     endof
 
@@ -892,9 +901,9 @@
     endof
 
     602 of
-      StreamDef[].duplicate to StreamDefOut[]
-      StreamDef[].pipeout
+      StreamDef[] to StreamDefOut[]
       true Pot[].useStreamDefOut
+      StreamDefOut[].pipeout
     endof
 
   endcase
