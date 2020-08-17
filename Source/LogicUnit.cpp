@@ -927,6 +927,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   char* azDst;
   char* azSrc;
   char* azArg;
+  i8 iBuffer;
+  i8 iItem;
+  void* aCrw;
 
   Key* aSrcKey;
   Key* aAltKey;
@@ -1652,11 +1655,32 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_CRW_SRC_FETCH: ArgNil(); // fetch m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref
         dLU0(EO_CRW_SRC_FETCH);
         vDev_CRW_FETCH(pLU,aRluCommon->m_pDevSrcIxt);
+        
+        iBuffer = aRluCommon->m_aSrcEnt->Ref.m_uBuffer;
+        iItem   = aRluCommon->m_aSrcEnt->Ref.m_uItem;
+
+        aCrw = (void*)
+          ( (char*)C_ADR_REGION
+                   + iBuffer* C_1MB
+                   + C_CRW_FIRSTHEAD
+                   + iItem * aRluCommon->m_nSrcHeadSize );
+
+        
         break;//+endCase
         
       case EO_CRW_ALT_FETCH: ArgNil(); // fetch m_aAltCrw using m_aAltEnt.ref
         dLU0(EO_CRW_ALT_FETCH);
         vDev_CRW_FETCH(pLU,aRluCommon->m_pDevAltIxt);
+        
+        iBuffer = aRluCommon->m_aAltEnt->Ref.m_uBuffer;
+        iItem   = aRluCommon->m_aAltEnt->Ref.m_uItem;
+
+        aCrw = (void*)
+          ( (char*)C_ADR_REGION
+                   + iBuffer* C_1MB
+                   + C_CRW_FIRSTHEAD
+                   + iItem * aRluCommon->m_nAltHeadSize );
+
         break;//+endCase
        
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src rsb
