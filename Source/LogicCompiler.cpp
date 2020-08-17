@@ -463,7 +463,7 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 //    sPrint.vConcat(" %llx\\n\",aiDstk);\n"_Stz);
 //
 //    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
-//
+
     
     
     // timer begin
@@ -795,7 +795,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    char* azSrc;"
   "\n    char* azDst;"
   "\n    char* azArg;"
-  "\n    struct Ent_int* aEntNext_int;"
+  "\n    struct Ent_int* aEnt_int;"
   "\n"
 //  "\n    printf(\"Sizeof Ent_Int   : %d\n\",sizeof(struct Ent_int));"
 //  "\n    printf(\"Sizeof RluCommon : %d\n\",sizeof(struct RluCommon));"
@@ -865,7 +865,7 @@ void LogicCompiler::v_SbrPreliminary(Stz* szSbrNm)
   "\n    char* azSrc;"
   "\n    char* azDst;"
   "\n    char* azArg;"
-  "\n    struct Ent_int* aEntNext_int;"
+  "\n    struct Ent_int* aEnt_int;"
   "\n"
   "\n"
   "";
