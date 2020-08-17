@@ -612,22 +612,17 @@ i8 iDev_IXT_TRV_BEGIN(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* traverse to next entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_TRV_NEXT(void* aLU, void* aIXT)
+Ent_int* aDev_IXT_TRV_NEXT(void* aLU, void* aIXT)
 {
   _static_
   
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
-  i8 iRes;
   
   pDevIXT->m_aEnt =
      EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
-  if (pDevIXT->m_aEnt)
-    iRes = 1;
-  else
-    iRes = 0;
-
-  return iRes;
+  
+  return (Ent_int*)pDevIXT->m_aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
