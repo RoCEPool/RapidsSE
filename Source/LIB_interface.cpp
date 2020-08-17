@@ -156,7 +156,7 @@ void vLib_SET_LOCAL(void* pLU, i8 iArg, i8 iTopA)
 }
 
 /*----------------------------------------------------------------------------*/
-/* mix top into running m_iHash                                               */
+/* get local                                                                  */
 /*----------------------------------------------------------------------------*/
 i8 iLib_GET_LOCAL(void* pLU, i8 iArg)
 {
@@ -164,6 +164,17 @@ i8 iLib_GET_LOCAL(void* pLU, i8 iArg)
   
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
   return pLogicUnit->m_iLocals[iArg];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get local string                                                           */
+/*----------------------------------------------------------------------------*/
+char* sLib_GET_LOCALS(void* pLU, i8 iArg)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  return (char*)&pLogicUnit->m_iLocals[iArg];
 }
 
 /*----------------------------------------------------------------------------*/

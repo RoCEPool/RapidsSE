@@ -14,7 +14,6 @@ void LogicUnit::vGenCode(i8 iTestNo)
   switch (iTestNo) {
     
     case     100: vGenerateQuery100();    break;
-    case     101: vGenerateQuery101();    break;
     case     102: vGenerateQuery102();    break;
     case     103: vGenerateQuery103();    break;
     case     104: vGenerateQuery104();    break;
@@ -253,6 +252,8 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_QTY);
   vAddCode(EO_INC);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_QTY);
+  
+  vDefineLabel("L_QUANTITY_NULL:"_Stz);
   
   // COUNT(L_EXTENDEDPRICE) -> Q100_COUNT_PRICE
   vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_EXTENDEDPRICE);
@@ -640,210 +641,6 @@ void LogicUnit::vGenerateQuery104(void)
   vAddCodeLabel(EO_JMP_TRUE,"NEXT_IXT_SRC:"_Stz);
   
   vDefineLabel("END_IXT_SRC:"_Stz);
-  vAddCode(EO_RETURN);
-  
-  vDumpCode();
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate agg group by (Query 1)                                            */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery101(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  // set the query no
-  m_xRluCommon.m_iSql = 101;
-  
-  // reset
-  m_i_Code = 0;
-  
-  vDefineLabel("QRY_101:"_Stz);
-  vAddCode(EO_INIT);
-  
-  // -- -- -- -- -- -- -- -- -- -- --
-  // insert each rsb -> indexTree
-  
-  // forearch src rsb
-  vAddCode(EO_RSB_SRC_BEGIN);
-  
-  // NEXT_RSB_SRC:
-  vDefineLabel("NEXT_RSB_SRC:"_Stz);
-  vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
-  
-  // reset entwrk
-  vAddCode(EO_ENTWRK_RESET);
-  
-  // add key L_RETURNFLAG, L_LINESTATUS
-  vAddCodeArg(EO_ENTWRK_APPENDELM, (i8)L_RETURNFLAG);
-  vAddCodeArg(EO_ENTWRK_APPENDELM, (i8)L_LINESTATUS);
-  
-  // find the key in the indexTree
-  vAddCode(EO_ENT_POSPRIOR);
-  vAddCode(EO_ENT_PUSH);
-  vAddCode(EO_PUSH_0);
-  vAddCode(EO_NOTEQUAL);
-  vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
-  
-  vAddCode(EO_ENT_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
-  
-  vAddCode(EO_ENT_EQUAL);
-  vAddCodeLabel(EO_JMP_TRUE,"FOUND"_Stz);
-  
-  // NOT_FOUND:
-  vDefineLabel("NOT_FOUND"_Stz);
-  vAddCodeArg(EO_ENTWRK_CREATEPAY, Q100_COLUMNS * C_BYTES_PER_WORD);
-  vAddCode(EO_IXT_INS_ENT);
-  //vAddCodeArg(EO_IXT_DUMP,(i8)0); ray commented 30 jul 2020
-  
-  // store L_RETURNFLAG -> Q100_RETURNFLAG
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLS, (i8)L_RETURNFLAG);
-  vAddCodeArg(EO_PAY_STORE_COLS, (i8)Q100_RETURNFLAG);
-  
-  // store Q1_LINESTATUS -> Q100_LINESTATUS
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLS, (i8)L_LINESTATUS);
-  vAddCodeArg(EO_PAY_STORE_COLS, (i8)Q100_LINESTATUS);
-  
-  // set sum(L_QUANTITY) -> Q100_SUM_QTY
-  vAddCode(EO_PUSH_0);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_QTY);
-  
-  // set sum(L_QUANTITY) -> Q100_SUM_BASE_PRICE
-  vAddCode(EO_PUSH_0);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_BASE_PRICE);
-  
-  // set sum(L_QUANTITY) -> Q1_SUM_DISC_PRICE
-  vAddCode(EO_PUSH_0);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_DISC_PRICE);
-  
-  // set sum(L_QUANTITY) -> Q100_SUM_CHARGE
-  vAddCode(EO_PUSH_0);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_CHARGE);
-  //vAddCodeArg(EO_IXT_DUMP,(i8)0); ray commented 30 jul 2020
-  
-  // FOUND:
-  vDefineLabel("FOUND"_Stz);
-  
-  // sum(L_QUANTITY) -> Q100_SUM_QTY
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_QTY);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_QUANTITY);
-  vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_QTY);
-  
-  // SUM(L_EXTENDEDPRICE) -> Q100_SUM_BASE_PRICE
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_BASE_PRICE);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_EXTENDEDPRICE);
-  vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_BASE_PRICE);
-  
-  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) -> Q100_SUM_DISC_PRICE
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_EXTENDEDPRICE);
-  vAddCodeArg(EO_INTEGER,100);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_DISCOUNT);
-  vAddCode(EO_SUBTRACT);
-  vAddCode(EO_MULTIPLY);
-  vAddCodeArg(EO_INTEGER,100);
-  vAddCode(EO_DIVIDE);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_DISC_PRICE);
-  vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_DISC_PRICE);
-  
-  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) -> Q100_SUM_CHARGE
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_EXTENDEDPRICE);
-  
-  vAddCodeArg(EO_INTEGER,100);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_DISCOUNT);
-  vAddCode(EO_SUBTRACT);
-  
-  vAddCode(EO_MULTIPLY);
-  
-  vAddCodeArg(EO_INTEGER,100);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_TAX);
-  vAddCode(EO_ADD);
-  
-  vAddCode(EO_MULTIPLY);
-  
-  vAddCodeArg(EO_INTEGER,10000);
-  vAddCode(EO_DIVIDE);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_CHARGE);
-  vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_CHARGE);
-  
-  // COUNT(L_QUANTITY) -> Q100_COUNT_QTY
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_QUANTITY);
-  vAddCode(EO_ISNULL);
-  vAddCodeLabel(EO_JMP_TRUE,"L_QUANTITY_NULL:"_Stz);
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_QTY);
-  vAddCode(EO_INC);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_QTY);
-  
-  vDefineLabel("L_QUANTITY_NULL:"_Stz);
-  
-  // COUNT(L_EXTENDEDPRICE) -> Q100_COUNT_PRICE
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_EXTENDEDPRICE);
-  vAddCode(EO_ISNULL);
-  vAddCodeLabel(EO_JMP_TRUE,"L_EXTENTEDPRICE_NULL:"_Stz);
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_PRICE);
-  vAddCode(EO_INC);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_PRICE);
-  
-  vDefineLabel("L_EXTENTEDPRICE_NULL:"_Stz);
-  
-  // SUM(L_DISCOUNT) -> Q100_SUM_BASE_PRICE
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_DISC);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_DISCOUNT);
-  vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_DISC);
-  
-  // COUNT(L_DISCOUNT) -> Q100_COUNT_DISC
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_DISCOUNT);
-  vAddCode(EO_ISNULL);
-  vAddCodeLabel(EO_JMP_TRUE,"L_DISCOUNT_NULL:"_Stz);
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_DISC);
-  vAddCode(EO_INC);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_DISC);
-  
-  vDefineLabel("L_DISCOUNT_NULL:"_Stz);
-  
-  // COUNT(*) -> Q100_COUNT_ORDER
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_ORDER);
-  vAddCode(EO_INC);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_ORDER);
-  
-  //vAddCodeArg(EO_IXT_DUMP,(i8)0); ray commented 30 jul 2020
-  vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
-  
-  vDefineLabel("END_RSB_SRC:"_Stz);
-  vAddCode(EO_RETURN);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // FILTER SUBROUTINE
-  vDefineLabel("SUBROUTINE_FILTER:"_Stz);
-  
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_SHIPDATE);
-  vAddCodeArg(EO_DATE, "1998-09-01"_Stz);
-  vAddCode(EO_GREATEREQUAL);
-  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
-  
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_SHIPDATE);
-  vAddCodeArg(EO_DATE, "1998-12-01"_Stz);
-  vAddCode(EO_LESSEQUAL);
-  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
-  
-  // return true
-  vAddCode(EO_PUSH_1);
-  vAddCodeLabel(EO_JMP,"RETURN:"_Stz);
-  
-  // return false
-  vDefineLabel("RETURN_FALSE:"_Stz);
-  vAddCode(EO_PUSH_0);
-  
-  // return
-  vDefineLabel("RETURN:"_Stz);
   vAddCode(EO_RETURN);
   
   vDumpCode();
