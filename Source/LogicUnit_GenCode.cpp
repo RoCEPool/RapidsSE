@@ -712,7 +712,7 @@ void LogicUnit::vGenerateQuery300(void)
   
   vDefineLabel("PRC_CUS:"_Stz);
 
-  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_CRW_SRC_DEREF);
   //vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
   //vAddCode(EO_STR_PRINTSTK);
   
@@ -765,7 +765,7 @@ void LogicUnit::vGenerateQuery300(void)
 
   //vAddCode(EO_IXT_ALT_PRINT);
   
-  vAddCode(EO_CRW_ALT_FETCH);
+  vAddCode(EO_CRW_ALT_DEREF);
   vAddCodeArg(EO_COL_ALT_PUSHI,O_ORDERDATE);
   vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
   vAddCode(EO_LESSTHAN);
@@ -919,7 +919,7 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_IXT_CMP_WRKALT);
   vAddCodeLabel(EO_JMP_FALSE,"RET_AGG_f:"_Stz);
   
-  vAddCode(EO_CRW_ALT_FETCH);
+  vAddCode(EO_CRW_ALT_DEREF);
   
   vAddCodeArg(EO_COL_ALT_PUSHI,L_SHIPDATE);
   vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
@@ -1375,7 +1375,7 @@ void LogicUnit::vGenerateQuery400(void)
   vDefineLabel("GOT_ORD:"_Stz);
 
   // test O_ORDERDATE
-  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_CRW_SRC_DEREF);
   vAddCodeArg(EO_COL_SRC_PUSHI,O_ORDERDATE);
   //vAddCode(EO_DUP);
   //vAddCode(EO_DTE_PRINT);
@@ -1449,7 +1449,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeLabel(EO_JMP_FALSE,"RET_ITM_f:"_Stz);
   
   // test L_COMMITDATE < L_RECEIPTDATE
-  vAddCode(EO_CRW_ALT_FETCH);
+  vAddCode(EO_CRW_ALT_DEREF);
   
 //  vAddCodeArg(EO_COL_ALT_PUSHI,L_COMMITDATE);
 //  vAddCodeArg(EO_COL_ALT_PUSHI,L_RECEIPTDATE);
@@ -1758,7 +1758,7 @@ void LogicUnit::vGenerateQuery600(void)
   vDefineLabel("TRV_TILL_END:"_Stz);
   vAddCode(EO_IXT_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
-  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_CRW_SRC_DEREF);
   vAddCode(EO_RSB_DST_NEW);
   vAddCode(EO_CRW_SRC_TORSB);
   //vAddCode(EO_RSB_DST_PRINT);
@@ -1774,7 +1774,7 @@ void LogicUnit::vGenerateQuery600(void)
   vAddCode(EO_EQUAL);
   vAddCodeLabel(EO_JMP_TRUE, "TRV_RET:"_Stz);
   
-  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_CRW_SRC_DEREF);
   vAddCode(EO_RSB_DST_NEW);
   vAddCode(EO_CRW_SRC_TORSB);
   //vAddCode(EO_RSB_DST_PRINT);
@@ -1888,7 +1888,7 @@ void LogicUnit::vGenerateQuery600b(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fetch the crw
-  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_CRW_SRC_DEREF);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // inflate crw required columns

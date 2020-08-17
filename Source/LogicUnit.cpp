@@ -1646,28 +1646,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // crw operators
-      case EO_CRW_SRC_BEGIN: ArgNil(); // begin src rsb traverse
-        dLU0(EO_CRW_SRC_BEGIN);
-        vDev_CRW_BEGIN(pLU,aRluCommon->m_pDevSrcIxt);
-        break;//+endCase
-        
-      case EO_CRW_SRC_FETCH: ArgNil(); // fetch m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref
-        dLU0(EO_CRW_SRC_FETCH);
-        vDev_CRW_FETCH(pLU,aRluCommon->m_pDevSrcIxt);
-        
-        iBuffer = aRluCommon->m_aSrcEnt->Ref.m_uBuffer;
-        iItem   = aRluCommon->m_aSrcEnt->Ref.m_uItem;
-
-        aRluCommon->m_aSrcCrw = (void*)
-          ( (char*)C_ADR_REGION
-                   + iBuffer* C_1MB
-                   + C_CRW_FIRSTHEAD
-                   + iItem * aRluCommon->m_nSrcHeadSize );
-
-        break;//+endCase
-        
-      case EO_CRW_ALT_FETCH: ArgNil(); // fetch m_aAltCrw using m_aAltEnt.ref
-        dLU0(EO_CRW_ALT_FETCH);
+      case EO_CRW_ALT_DEREF: ArgNil(); // deref m_aAltCrw using m_aAltEnt.ref
+        dLU0(EO_CRW_ALT_DEREF);
         vDev_CRW_FETCH(pLU,aRluCommon->m_pDevAltIxt);
         
         iBuffer = aRluCommon->m_aAltEnt->Ref.m_uBuffer;
@@ -1681,6 +1661,26 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         break;//+endCase
        
+      case EO_CRW_SRC_BEGIN: ArgNil(); // begin src rsb traverse
+        dLU0(EO_CRW_SRC_BEGIN);
+        vDev_CRW_BEGIN(pLU,aRluCommon->m_pDevSrcIxt);
+        break;//+endCase
+        
+      case EO_CRW_SRC_DEREF: ArgNil(); // deref m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref
+        dLU0(EO_CRW_SRC_DEREF);
+        vDev_CRW_FETCH(pLU,aRluCommon->m_pDevSrcIxt);
+        
+        iBuffer = aRluCommon->m_aSrcEnt->Ref.m_uBuffer;
+        iItem   = aRluCommon->m_aSrcEnt->Ref.m_uItem;
+
+        aRluCommon->m_aSrcCrw = (void*)
+          ( (char*)C_ADR_REGION
+                   + iBuffer* C_1MB
+                   + C_CRW_FIRSTHEAD
+                   + iItem * aRluCommon->m_nSrcHeadSize );
+
+        break;//+endCase
+        
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src rsb
         dLU0(EO_CRW_SRC_NEXT);
         iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);

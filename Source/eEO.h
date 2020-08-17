@@ -144,9 +144,9 @@ enum eEO : u1 // expression operators
   /*    */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
 
   // crw operators
+  /*    */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref
   /*    */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
-  /*    */ EO_CRW_SRC_FETCH,    // fetch m_aSrcCrw using m_aSrcEnt.ref
-  /*    */ EO_CRW_ALT_FETCH,    // fetch m_aAltCrw using m_aAltEnt.ref
+  /*    */ EO_CRW_SRC_DEREF,    // deref m_aSrcCrw using m_aSrcEnt.ref
   /*    */ EO_CRW_SRC_NEXT,     // move to next src rsb
   /*    */ EO_CRW_SRC_TORSB,    // convert crw src to rsb
   
@@ -383,9 +383,9 @@ static Stz* aEO[]
   /*    */ "EO_COL_ALT_PUSHSET"_Stz,
 
   // crw operators
+  /*    */ "EO_CRW_ALT_DEREF"_Stz,
   /*    */ "EO_CRW_SRC_BEGIN"_Stz,
-  /*    */ "EO_CRW_SRC_FETCH"_Stz,
-  /*    */ "EO_CRW_ALT_FETCH"_Stz,
+  /*    */ "EO_CRW_SRC_DEREF"_Stz,
   /*    */ "EO_CRW_SRC_NEXT"_Stz,
   /*    */ "EO_CRW_SRC_TORSB"_Stz,
   
@@ -628,9 +628,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_COL_ALT_PUSHSET
 
   // crw operators
+  { EA_NONE,    0 },  // EO_CRW_ALT_DEREF
   { EA_NONE,    0 },  // EO_CRW_SRC_BEGIN
-  { EA_NONE,    0 },  // EO_CRW_SRC_FETCH
-  { EA_NONE,    0 },  // EO_CRW_ALT_FETCH
+  { EA_NONE,    0 },  // EO_CRW_SRC_DEREF
   { EA_NONE,    0 },  // EO_CRW_SRC_NEXT
   { EA_NONE,    0 },  // EO_CRW_SRC_TORSB
   
