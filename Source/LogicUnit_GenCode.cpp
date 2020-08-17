@@ -126,9 +126,9 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_QUANTITY);
   
   // new a rsb dst row if not there
-  vAddCode(EO_RSB_DST_TEST);
-  vAddCodeLabel(EO_JMP_TRUE,"FILTER:"_Stz);
-  vAddCode(EO_RSB_DST_NEW);
+  //vAddCode(EO_RSB_DST_TEST);
+  //vAddCodeLabel(EO_JMP_TRUE,"FILTER:"_Stz);
+  //vAddCode(EO_RSB_DST_NEW);
   
   // initialze the row
   //vAddCode(EO_PUSH_0);
@@ -149,7 +149,7 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeArg(EO_PUSH_LOCALS,Q1_LOCAL_LINESTATUS);
   //vAddCode(EO_DUMP);
   vAddCode(EO_ENTWRK_APPENDELMS);
-  vAddCode(EO_ENTWRK_PRINT);
+  //vAddCode(EO_ENTWRK_PRINT);
   
   // find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);
@@ -168,7 +168,7 @@ void LogicUnit::vGenerateQuery100(void)
   vDefineLabel("NOT_FOUND"_Stz);
   vAddCodeArg(EO_ENTWRK_CREATEPAY, Q100_COLUMNS * C_BYTES_PER_WORD);
   vAddCode(EO_IXT_INS_ENT);
-  vAddCode(EO_IXT_DUMP);
+  //vAddCode(EO_IXT_DUMP);
   
   // store L_RETURNFLAG -> Q100_RETURNFLAG
   vAddCodeArg(EO_PUSH_LOCALS,Q1_LOCAL_RETURNFLAG);
@@ -194,6 +194,7 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_PUSH_0);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_CHARGE);
   //vAddCodeArg(EO_IXT_DUMP,(i8)0); ray commented 30 jul 2020
+  //vAddCode(EO_IXT_DUMP);
   
   // FOUND:
   vDefineLabel("FOUND"_Stz);
@@ -286,6 +287,7 @@ void LogicUnit::vGenerateQuery100(void)
   
   //vAddCodeArg(EO_IXT_DUMP,(i8)0); ray commented 30 jul 2020
   //vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
+  //vAddCode(EO_IXT_DUMP);
   
   vDefineLabel("PROCESSROW_DONE:"_Stz);
   vAddCode(EO_RETURN);
@@ -413,6 +415,8 @@ void LogicUnit::vGenerateQuery103(void)
   vAddCode(EO_RSB_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
   
+  //vAddCode(EO_RSB_SRC_PRINT);
+  
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
   
@@ -437,7 +441,7 @@ void LogicUnit::vGenerateQuery103(void)
   vDefineLabel("NOT_FOUND"_Stz);
   vAddCodeArg(EO_ENTWRK_CREATEPAY, Q101_COLUMNS * C_BYTES_PER_WORD);
   vAddCode(EO_IXT_INS_ENT);
-  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
+  //vAddCode(EO_IXT_DUMP);
   
   // store Q101_RETURNFLAG -> Q101_RETURNFLAG
   vAddCodeArg(EO_RSB_SRC_PUSHCOLS, (i8)Q101_RETURNFLAG);
@@ -483,7 +487,8 @@ void LogicUnit::vGenerateQuery103(void)
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)Q101_COUNT_ORDER);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q101_COUNT_ORDER);
   
-  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
+  //vAddCode(EO_IXT_DUMP);
+  
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
   // FOUND:
@@ -542,6 +547,7 @@ void LogicUnit::vGenerateQuery103(void)
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)Q101_COUNT_ORDER);
   vAddCode(EO_ADD);
   vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q101_COUNT_ORDER);
+  //vAddCode(EO_IXT_DUMP);
   
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
@@ -569,7 +575,7 @@ void LogicUnit::vGenerateQuery104(void)
   
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
-  vAddCode(EO_IXT_DUMP);
+  //vAddCode(EO_IXT_DUMP);
   vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
   
   vDefineLabel("NEXT_IXT_SRC:"_Stz);
@@ -585,9 +591,13 @@ void LogicUnit::vGenerateQuery104(void)
   vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q101_LINESTATUS);
   vAddCodeArg(EO_RSB_DST_POPCOLS,(i8)Q104_LINESTATUS);
   
+  //vAddCode(EO_RSB_DST_PRINT);
+  
   // Q101_SUM_QTY -> Q104_SUM_QTY
   vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_QTY);
   vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_SUM_QTY);
+  
+  //vAddCode(EO_RSB_DST_PRINT);
   
   // Q101_SUM_BASE_PRICE -> Q104_SUM_BASE_PRICE
   vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_BASE_PRICE);
