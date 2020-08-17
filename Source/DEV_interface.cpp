@@ -42,10 +42,26 @@ void vDev_CRW_FETCH(void* aLU, void* aIXT)
 {
   _static_
   
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   pDevIxt->m_aCrw  =
     CrwBuffer::pRefdCrw(pDevIxt->m_aEnt->rxRef());
+  
+  // can we calc it?
+  
+  i8 iBuffer = ((Ent_int*)pDevIxt->m_aEnt)->Ref.m_uBuffer;
+  i8 iItem   = ((Ent_int*)pDevIxt->m_aEnt)->Ref.m_uItem;
+  
+  Crw* aCrw  = (Crw*)
+    ( (char*)C_ADR_REGION
+             + iBuffer* C_1MB
+             + C_CRW_FIRSTHEAD
+             + iItem * pLogicUnit->m_xRluCommon.m_nSrcHeadSize );
+  
+  RASSERT(aCrw == pDevIxt->m_aCrw);
+  
+  // ... yes we can
 }
 
 /*----------------------------------------------------------------------------*/
@@ -630,9 +646,12 @@ Ent_int* aDev_IXT_TRV_NEXT(void* aLU, void* aIXT)
   pDevIXT->m_aEnt =
      EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
   
-  pLogicUnit->m_xRluCommon.m_aEntArray =
-    (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
-  
+  if (pDevIXT->m_pEntBuffer)
+    pLogicUnit->m_xRluCommon.m_aEntArray =
+      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+  else
+    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
+
   return (Ent_int*)pDevIXT->m_aEnt;
 }
 

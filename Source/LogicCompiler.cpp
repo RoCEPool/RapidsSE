@@ -689,7 +689,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  static const void* C_ADR_REGION = (void*)0x204800000000;"
   "\n  static const i8 C_DATUM_NULL = -9223372036854775807;"
   "\n  static const i8 C_CRW_HEADBYTES = 32;"
-  "\n  static const i8 C_CRW_FIRSTOFS = 0x210;"
+  "\n  static const i8 C_CRW_FIRSTHEAD = 0x210;"
   "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
   "\n"
   "\n  #define C_MAX_LVL_LEVELS 6"
