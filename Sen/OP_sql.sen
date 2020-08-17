@@ -792,6 +792,9 @@
 
     100 of
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 100=EOSMARKER" .
+      // delete the original source streamDef now
+      streamDef[].delete
+
       // AGGREGATE WITH GROUPBY
       //queryNo "QUERY %v" .printf
       //logicCompiler[].delete
