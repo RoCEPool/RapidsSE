@@ -246,9 +246,8 @@
 
   StreamDef[].delete
 
-  StreamDefOut[].duplicate to StreamDef[]
-  StreamDef[].pipeout
   false Pot[].useStreamDefOut
+  streamDefOut[].pipeout
 ;
 
 /*----------------------------------------------------------------------------*/
