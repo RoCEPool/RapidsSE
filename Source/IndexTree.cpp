@@ -671,6 +671,7 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
   m_pRootEntBuffer = new EntBuffer(m_pIndex ? m_pIndex->pIndexDef()->eKeyKind()
                                    : m_pIndexDef->eKeyKind());
   m_pRootEntBuffer->vIndex(m_pIndex);
+  m_pRootEntBuffer->vIndexDef(m_pIndexDef);
   m_pRootEntBuffer->vPartitionNo(m_iPartitionNo);
   
   return m_pRootEntBuffer;

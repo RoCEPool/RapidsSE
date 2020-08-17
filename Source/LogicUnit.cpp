@@ -993,11 +993,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
     if (iStkPct > 80)
       vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
-    
-    //vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
 #endif
-  
+    
     eEO eCode = *aeCode++;
+    
+#ifdef WITH_TRACE_LOGICUNIT
+    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
+#endif
     
     switch (eCode) { //+ExtractBegin
         
@@ -1284,21 +1286,19 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_POP);
         break;//+endCase
         
-      case EO_POP_LOCAL: ArgGet(iArg); // pop into a local reg
-        dLU1(EO_POP_LOCAL, iArg);
+      case EO_POP_LOCALI: ArgGet(iArg); // pop into a local reg
+        dLU1(EO_POP_LOCALI, iArg);
         //ASSERT(iArg < C_LOCALS);
-        //m_iLocals[iArg] = (i8)(*(aiDstk--));
         iTopA = *(aiDstk--);
         vLib_SET_LOCAL(pLU, iArg, iTopA);
         break;//+endCase
         
-//      case EO_POP_LOCALS: ArgGet(iArg); // pop into a local reg
-//        dLU1(EO_POP_LOCAL, iArg);
-//        //ASSERT(iArg < C_LOCALS);
-//        //m_iLocals[iArg] = (i8)(*(aiDstk--));
-//        iTopA = *(aiDstk--);
-//        vLib_SET_LOCAL(pLU, iArg, iTopA);
-//        break;//+endCase
+      case EO_POP_LOCALS: ArgGet(iArg); // pop into a local reg
+        dLU1(EO_POP_LOCALS, iArg);
+        if (iArg >= C_LOCALS)
+          vLib_ASSERT(pLU,0);
+        S_PopStr((char*)&m_iLocals[iArg]);
+        break;//+endCase
         
       case EO_PRINT: ArgNil(); // print top
 #ifdef WITH_TRACE_LOGICUNIT
@@ -1309,11 +1309,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
         break;//+endCase
         
-      case EO_PUSH_LOCAL: ArgGet(iArg); // push a local reg
-        dLU1(EO_PUSH_LOCAL, iArg);
+      case EO_PUSH_LOCALI: ArgGet(iArg); // push a local reg
+        dLU1(EO_PUSH_LOCALI, iArg);
         //ASSERT(iArg < C_LOCALS);
         //*(++aiDstk) = m_iLocals[iArg];
         *(++aiDstk) = iLib_GET_LOCAL(pLU, iArg);
+        break;//+endCase
+        
+      case EO_PUSH_LOCALS: ArgGet(iArg); // push a local reg
+        dLU1(EO_PUSH_LOCALS, iArg);
+        //ASSERT(iArg < C_LOCALS);
+        //*(++aiDstk) = m_iLocals[iArg];
+        //vTrace("%s\n"_Stz,(char*)&m_iLocals[iArg]);
+        //*(++aiDstk) = m_iLocals[iArg];
+        //*(++aiDstk) = strlen((char*)&m_iLocals[iArg]);
+        S_PushStr((char*)&m_iLocals[iArg]);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

@@ -15,6 +15,7 @@ namespace Indexing
 
   protected:
     Index*    m_pIndex;     // index this buffer belongs to
+    IndexDef* m_pIndexDef;  // indexDef this buffer belongs to
     SkipRoots m_xSkipRoots; // skip roots
     Ent*      m_aLazyChain; // first lazy entry
     
@@ -48,6 +49,8 @@ namespace Indexing
 
     void    vIndex(Index* pIndex);
     Index*  pIndex(void);
+    void    vIndexDef(IndexDef* pIndexDef);
+    IndexDef*  pIndexDef(void);
     void    vPrintRows(void);
 
     ////////////////////////////////////////////////////////////////////////////
