@@ -6,7 +6,9 @@
 
 #define C_LOGIC_STACK 4096
 
-struct RluCommon
+typedef struct Ent_int _Ent_int;
+
+struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
 {
   i8   m_iCmnMagic;
   
@@ -34,6 +36,13 @@ struct RluCommon
   void*  m_pDevAltRsb;
   void*  m_pDevAltIxt;
   void*  m_pDevTmpIxt;
+  
+  
+  struct Ent_int* m_aAltEnt;
+  struct Ent_int* m_aDstEnt;
+  struct Ent_int* m_aSrcEnt;
+  struct Ent_int* m_aTmpEnt;
+
 
   char m_caStrWrk[128];
 

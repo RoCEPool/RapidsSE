@@ -1836,8 +1836,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_IXT_TRV_NEXT: ArgNil(); // traverse to next entry
         dLU0(EO_IXT_TRV_NEXT);
-        iRes = iDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = iRes;
+        aRluCommon->m_aTmpEnt =
+          aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevTmpIxt);
+        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
         break;//+endCase
         
       case EO_IXT_TMP_ENTRIES: ArgNil(); // push number of entries in tmp index
@@ -1860,8 +1861,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_IXT_SRC_NEXT: ArgNil(); // move to next entry
         dLU0(EO_IXT_SRC_NEXT);
-        iRes = iDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
-        *(++aiDstk) = iRes;
+        aRluCommon->m_aSrcEnt =
+          aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
+        *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
 
       case EO_IXT_SRC_PRINT: ArgNil(); // print src ent
@@ -1888,8 +1890,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_ALT_NEXT: ArgNil();
         dLU0(EO_IXT_ALT_NEXT);
-        iRes = iDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
-        *(++aiDstk) = iRes;
+        aRluCommon->m_aAltEnt =
+          aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
+        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
         break;//+endCase
 
       case EO_IXT_ALT_PRINT: ArgNil(); // print alt ent

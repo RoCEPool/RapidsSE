@@ -66,7 +66,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "iDev_IXT_POS_UBOUND_LT"_Stz, (const void *) iDev_IXT_POS_UBOUND_LT },
   { "iDev_IXT_TMP_ENTRIES"_Stz,   (const void *) iDev_IXT_TMP_ENTRIES   },
   { "iDev_IXT_TRV_BEGIN"_Stz,     (const void *) iDev_IXT_TRV_BEGIN     },
-  { "iDev_IXT_TRV_NEXT"_Stz,      (const void *) iDev_IXT_TRV_NEXT      },
+  { "aDev_IXT_TRV_NEXT"_Stz,      (const void *) aDev_IXT_TRV_NEXT      },
       
   { "iDev_PAY_FETCH_COLI"_Stz,    (const void *) iDev_PAY_FETCH_COLI    },
   { "szDev_PAY_FETCH_COLS"_Stz,   (const void *) szDev_PAY_FETCH_COLS   },
@@ -300,7 +300,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   vSbrSource();
   vRtnSource();
   v_DynConcluding();
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_TRACE_LOGICUNIT
   vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
@@ -462,7 +462,9 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 //    sPrint.vConcat(" %llx\\n\",aiDstk);\n"_Stz);
 //
 //    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
-
+//
+    
+    
     // timer begin
     sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
     StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
@@ -792,6 +794,8 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    char* azDst;"
   "\n    char* azArg;"
   "\n"
+  "\n    printf(\"Sizeof Ent_Int   : %d\n\",sizeof(struct Ent_int));"
+  "\n    printf(\"Sizeof RluCommon : %d\n\",sizeof(struct RluCommon));"
   "\n"
   "";
   
