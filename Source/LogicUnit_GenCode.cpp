@@ -954,7 +954,7 @@ void LogicUnit::vGenerateQuery300(void)
 
   vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
   vAddCode(EO_IXT_CMP_SRCALT);
-  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_ORD:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
 
   //vAddCode(EO_IXT_ALT_PRINT);
   
@@ -1110,7 +1110,7 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeLabel(EO_JMP_FALSE,"RET_AGG_f:"_Stz);
   //vAddCode(EO_IXT_ALT_PRINT);
   vAddCode(EO_IXT_CMP_WRKALT);
-  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_AGG_f:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_AGG_f:"_Stz);
   
   vAddCode(EO_CRW_ALT_FETCH);
   
@@ -1639,7 +1639,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeLabel(EO_JMP_FALSE,"RET_ITM_f:"_Stz);
   //vAddCode(EO_IXT_ALT_PRINT);
   vAddCode(EO_IXT_CMP_SRCALT);
-  vAddCodeLabel(EO_JMP_NOTEQUAL,"RET_ITM_f:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_ITM_f:"_Stz);
   
   // test L_COMMITDATE < L_RECEIPTDATE
   vAddCode(EO_CRW_ALT_FETCH);
