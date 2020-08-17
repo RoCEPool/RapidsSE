@@ -648,6 +648,7 @@
   StreamDefOut[].pipeout
 
   LogicUnit[].DynFun
+  LogicCompiler[].delete
 
   // delete the table streamDef
   streamDef[].delete
@@ -768,6 +769,7 @@
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].dynFun
+      LogicCompiler[].delete
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
