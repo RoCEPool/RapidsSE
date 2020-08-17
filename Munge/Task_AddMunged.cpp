@@ -14901,6 +14901,7 @@ void Task::vAddMunged(Forth* pForth)
     "      logicCompiler[].new\n"
     "      LogicCompiler[].compile\n"
     "      LogicUnit[].dynFun\n"
+    "      logicCompiler[].delete\n"
     "      IndexTree[].delete\n"
     "    endof\n"
     "\n"
