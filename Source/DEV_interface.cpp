@@ -406,13 +406,11 @@ void vDev_IXT_INS_ENT(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /*  position alt ixt using src.key                                            */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_POS_ALTBYSRC(void* aLU)
+Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU)
 {
   _static_
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  i8 iRes;
   
   Key* aSrcKey = pLogicUnit->m_pDevSrcIxt->m_aEnt->aKey();
   
@@ -421,28 +419,28 @@ i8 iDev_IXT_POS_ALTBYSRC(void* aLU)
                                        &pLogicUnit->m_pDevAltIxt->m_pEntBuffer);
   
   if (pLogicUnit->m_pDevAltIxt->m_pEntBuffer) {
+    
+    pLogicUnit->m_xRluCommon.m_aEntArray =
+      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
+    
     if (pLogicUnit->m_pDevAltIxt->m_aEnt)
-      iRes = 1;
+      return (Ent_int*)pLogicUnit->m_pDevAltIxt->m_aEnt;
     else
-      iRes = 0;
+      return nullptr;
   }
   else
-    iRes = 0;
-
-  return iRes;
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /*  position alt ixt using entwrk.key                                         */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_POS_ALTBYWRK(void* aLU)
+Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU)
 {
   _static_
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
-  i8 iRes;
-  
   Key* aWrkKey = pLogicUnit->m_oEntWrk.aKey();
   
   pLogicUnit->m_pDevAltIxt->m_aEnt =
@@ -450,21 +448,23 @@ i8 iDev_IXT_POS_ALTBYWRK(void* aLU)
                                        &pLogicUnit->m_pDevAltIxt->m_pEntBuffer);
   
   if (pLogicUnit->m_pDevAltIxt->m_pEntBuffer) {
+    
+    pLogicUnit->m_xRluCommon.m_aEntArray =
+      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
+
     if (pLogicUnit->m_pDevAltIxt->m_aEnt)
-      iRes = 1;
+      return (Ent_int*)pLogicUnit->m_pDevAltIxt->m_aEnt;
     else
-      iRes = 0;
+      return nullptr;
   }
   else
-    iRes = 0;
-
-  return iRes;
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_POS_LBOUND(void* aLU, void* aIXT)
+Ent_int* aDev_IXT_POS_LBOUND(void* aLU, void* aIXT)
 {
   _static_
 
@@ -472,30 +472,33 @@ i8 iDev_IXT_POS_LBOUND(void* aLU, void* aIXT)
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
+  pDevIXT->m_aEnt = nullptr;
+  
   pDevIXT->m_pEntBuffer =
     pDevIXT->m_pIdxTree->pPositionH0Buffer(pLogicUnit->m_oEntWrk.aKey());
   
-  if (pDevIXT->m_pEntBuffer)
+  if (pDevIXT->m_pEntBuffer) {
     pDevIXT->m_aEnt =
       pDevIXT->m_pEntBuffer->aFindEntryBefore(pLogicUnit->m_oEntWrk.aKey());
+  }
   
-  i8 iRes;
-  if (pDevIXT->m_aEnt)
-    iRes = 1;
-  else
-    iRes = 0;
+  if (pDevIXT->m_aEnt) {
+    
+    pLogicUnit->m_xRluCommon.m_aEntArray =
+      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
 
-  return iRes;
+    return (Ent_int*)pDevIXT->m_aEnt;
+  }
+  else
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_POS_UBOUND(void* aLU, void* aIXT)
+Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT)
 {
   _static_
-
-  i8 iRes;
 
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
@@ -515,29 +518,30 @@ i8 iDev_IXT_POS_UBOUND(void* aLU, void* aIXT)
         EntBuffer::pMoveToGreaterThanEntry(pDevIXT->m_aUpperEnt,
                                            pLogicUnit->m_oEntWrk.aKey(),
                                            &pUpperEntBuffer);
-      if (pDevIXT->m_aUpperEnt)
-        iRes = 1;
+      if (pDevIXT->m_aUpperEnt) {
+        
+        pLogicUnit->m_xRluCommon.m_aEntArray =
+          (Ent_int*)pUpperEntBuffer;
+
+        return (Ent_int*)pDevIXT->m_aUpperEnt;
+      }
       else
-        iRes = 0;
+        return nullptr;
     }
     else
-      iRes = 0;
+      return nullptr;
   }
   else
-    iRes = 0;
-
-  return iRes;
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
+Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
 {
   _static_
-  
-  i8 iRes;
-  
+    
   DevIXT* pDevIXT = _pDevIXT(aIXT);
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
@@ -556,18 +560,21 @@ i8 iDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
       EntBuffer::pMoveToNextEntry(pDevIXT->m_aUpperEnt,
                                   &pUpperEntBuffer);
       
-      if (pDevIXT->m_aUpperEnt)
-        iRes = 1;
+      if (pDevIXT->m_aUpperEnt) {
+        
+        pLogicUnit->m_xRluCommon.m_aEntArray =
+          (Ent_int*)pUpperEntBuffer;
+        
+        return (Ent_int*)pDevIXT->m_aUpperEnt;
+      }
       else
-        iRes = 0;
+        return nullptr;
     }
     else
-      iRes = 0;
+      return nullptr;
   }
   else
-    iRes = 0;
-  
-  return iRes;
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -591,14 +598,18 @@ Ent_int* aDev_IXT_TRV_BEGIN(void* aLU, void* aIXT)
 {
   _static_
 
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIXT = _pDevIXT(aIXT);
   
   pDevIXT->m_pEntBuffer = pDevIXT->m_pIdxTree->pFirstH0Buffer();
   
   if (pDevIXT->m_pEntBuffer) {
     pDevIXT->m_aEnt = pDevIXT->m_pEntBuffer->aLeadEntry();
-    if (pDevIXT->m_aEnt)
+    if (pDevIXT->m_aEnt) {
+      pLogicUnit->m_xRluCommon.m_aEntArray =
+        (Ent_int*)pDevIXT->m_pEntBuffer;
       return (Ent_int*)pDevIXT->m_aEnt;
+    }
     else
       return nullptr;
   }
@@ -613,11 +624,15 @@ Ent_int* aDev_IXT_TRV_NEXT(void* aLU, void* aIXT)
 {
   _static_
   
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   
   pDevIXT->m_aEnt =
      EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
+  
+  pLogicUnit->m_xRluCommon.m_aEntArray =
+    (Ent_int*)pDevIXT->m_pEntBuffer;
   
   return (Ent_int*)pDevIXT->m_aEnt;
 }

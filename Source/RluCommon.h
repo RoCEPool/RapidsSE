@@ -30,13 +30,20 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   i8   m_iHash;
   i8   m_i_Ptn;
   
-  void*  m_pDevDstRsb;
-  void*  m_pDevSrcRsb;
-  void*  m_pDevSrcIxt;
-  void*  m_pDevAltRsb;
-  void*  m_pDevAltIxt;
-  void*  m_pDevTmpIxt;
+  void* m_pDevDstRsb;
+  void* m_pDevSrcRsb;
+  void* m_pDevSrcIxt;
+  void* m_pDevAltRsb;
+  void* m_pDevAltIxt;
+  void* m_pDevTmpIxt;
   
+  struct Ent_int* m_aEntArray;
+
+  struct Ent_int* m_aAltEntArray;
+  struct Ent_int* m_aDstEntArray;
+  struct Ent_int* m_aSrcEntArray;
+  struct Ent_int* m_aTmpEntArray;
+
   struct Ent_int* m_aAltEnt;
   struct Ent_int* m_aDstEnt;
   struct Ent_int* m_aSrcEnt;

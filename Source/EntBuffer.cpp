@@ -815,6 +815,19 @@ Ent* EntBuffer::aLastEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get entry array                                                           */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aEntArray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+  Ent* aEntAry = aItemArray();
+  
+  return aEntAry;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get lead entry (the entry after head entry                                 */
 /*----------------------------------------------------------------------------*/
 Ent* EntBuffer::aLeadEntry(void)
