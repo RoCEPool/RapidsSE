@@ -1870,8 +1870,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_IXT_SRC_LBOUND: ArgNil(); // pos in buffer to entry before LBOUND
         dLU0(EO_IXT_SRC_LBOUND);
-        iRes = iDev_IXT_POS_LBOUND(pLU,aRluCommon->m_pDevSrcIxt);
-        *(++aiDstk) = iRes;
+        aRluCommon->m_aSrcEnt =
+          aDev_IXT_POS_LBOUND(pLU,aRluCommon->m_pDevSrcIxt);
+        *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         
       case EO_IXT_SRC_NEXT: ArgNil(); // move to next entry
@@ -1887,14 +1888,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_SRC_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND
         dLU0(EO_IXT_SRC_UBOUND);
-        iRes = iDev_IXT_POS_UBOUND(pLU,aRluCommon->m_pDevSrcIxt);
-        *(++aiDstk) = iRes;
+        aRluCommon->m_aSrcEnt =
+          aDev_IXT_POS_UBOUND(pLU,aRluCommon->m_pDevSrcIxt);
+        *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         
       case EO_IXT_SRC_UBOUND_LT: ArgNil(); // pos in buffer to entry for UBOUND
         dLU0(EO_IXT_SRC_UBOUND);
-        iRes = iDev_IXT_POS_UBOUND_LT(pLU,aRluCommon->m_pDevSrcIxt);
-        *(++aiDstk) = iRes;
+        aRluCommon->m_aSrcEnt =
+          aDev_IXT_POS_UBOUND_LT(pLU,aRluCommon->m_pDevSrcIxt);
+        *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         
       case EO_IXT_ALT_BEGIN: ArgNil(); // begin linear traverse
@@ -1943,15 +1946,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_IXT_POS_ALTBYSRC: ArgNil(); // position alt ixt using src.key
-        iRes = iDev_IXT_POS_ALTBYSRC(pLU);
-        dLU1(EO_IXT_POS_ALTBYSRC,iRes);
-        *(++aiDstk) = iRes;
+        dLU0(EO_IXT_POS_ALTBYSRC);
+        aRluCommon->m_aAltEnt =
+          aDev_IXT_POS_ALTBYSRC(pLU);
+        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
         break;//+endCase
 
       case EO_IXT_POS_ALTBYWRK: ArgNil(); // position alt ixt using entwrk.key
-        iRes = iDev_IXT_POS_ALTBYWRK(pLU);
-        dLU1(EO_IXT_POS_ALTBYWRK,iRes);
-        *(++aiDstk) = iRes;
+        dLU0(EO_IXT_POS_ALTBYWRK);
+        aRluCommon->m_aAltEnt =
+          aDev_IXT_POS_ALTBYWRK(pLU);
+        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

@@ -61,11 +61,11 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_INS_ENT"_Stz,       (const void *) vDev_IXT_INS_ENT       },
   { "iDev_IXT_TMP_ENTRIES"_Stz,   (const void *) iDev_IXT_TMP_ENTRIES   },
 
-  { "iDev_IXT_POS_ALTBYSRC"_Stz,  (const void *) iDev_IXT_POS_ALTBYSRC  },
-  { "iDev_IXT_POS_ALTBYWRK"_Stz,  (const void *) iDev_IXT_POS_ALTBYWRK  },
-  { "iDev_IXT_POS_LBOUND"_Stz,    (const void *) iDev_IXT_POS_LBOUND    },
-  { "iDev_IXT_POS_UBOUND"_Stz,    (const void *) iDev_IXT_POS_UBOUND    },
-  { "iDev_IXT_POS_UBOUND_LT"_Stz, (const void *) iDev_IXT_POS_UBOUND_LT },
+  { "aDev_IXT_POS_ALTBYSRC"_Stz,  (const void *) aDev_IXT_POS_ALTBYSRC  },
+  { "aDev_IXT_POS_ALTBYWRK"_Stz,  (const void *) aDev_IXT_POS_ALTBYWRK  },
+  { "aDev_IXT_POS_LBOUND"_Stz,    (const void *) aDev_IXT_POS_LBOUND    },
+  { "aDev_IXT_POS_UBOUND"_Stz,    (const void *) aDev_IXT_POS_UBOUND    },
+  { "aDev_IXT_POS_UBOUND_LT"_Stz, (const void *) aDev_IXT_POS_UBOUND_LT },
   { "aDev_IXT_TRV_BEGIN"_Stz,     (const void *) aDev_IXT_TRV_BEGIN     },
   { "aDev_IXT_TRV_NEXT"_Stz,      (const void *) aDev_IXT_TRV_NEXT      },
       
