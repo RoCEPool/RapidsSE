@@ -59,13 +59,14 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_DUMP"_Stz,          (const void *) vDev_IXT_DUMP          },
   { "vDev_IXT_ENT_PRINT"_Stz,     (const void *) vDev_IXT_ENT_PRINT     },
   { "vDev_IXT_INS_ENT"_Stz,       (const void *) vDev_IXT_INS_ENT       },
+  { "iDev_IXT_TMP_ENTRIES"_Stz,   (const void *) iDev_IXT_TMP_ENTRIES   },
+
   { "iDev_IXT_POS_ALTBYSRC"_Stz,  (const void *) iDev_IXT_POS_ALTBYSRC  },
   { "iDev_IXT_POS_ALTBYWRK"_Stz,  (const void *) iDev_IXT_POS_ALTBYWRK  },
   { "iDev_IXT_POS_LBOUND"_Stz,    (const void *) iDev_IXT_POS_LBOUND    },
   { "iDev_IXT_POS_UBOUND"_Stz,    (const void *) iDev_IXT_POS_UBOUND    },
   { "iDev_IXT_POS_UBOUND_LT"_Stz, (const void *) iDev_IXT_POS_UBOUND_LT },
-  { "iDev_IXT_TMP_ENTRIES"_Stz,   (const void *) iDev_IXT_TMP_ENTRIES   },
-  { "iDev_IXT_TRV_BEGIN"_Stz,     (const void *) iDev_IXT_TRV_BEGIN     },
+  { "aDev_IXT_TRV_BEGIN"_Stz,     (const void *) aDev_IXT_TRV_BEGIN     },
   { "aDev_IXT_TRV_NEXT"_Stz,      (const void *) aDev_IXT_TRV_NEXT      },
       
   { "iDev_PAY_FETCH_COLI"_Stz,    (const void *) iDev_PAY_FETCH_COLI    },
@@ -794,8 +795,8 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    char* azDst;"
   "\n    char* azArg;"
   "\n"
-  "\n    printf(\"Sizeof Ent_Int   : %d\n\",sizeof(struct Ent_int));"
-  "\n    printf(\"Sizeof RluCommon : %d\n\",sizeof(struct RluCommon));"
+//  "\n    printf(\"Sizeof Ent_Int   : %d\n\",sizeof(struct Ent_int));"
+//  "\n    printf(\"Sizeof RluCommon : %d\n\",sizeof(struct RluCommon));"
   "\n"
   "";
   

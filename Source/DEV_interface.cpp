@@ -587,26 +587,23 @@ i8 iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* begin linear traverse                                                      */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_TRV_BEGIN(void* aLU, void* aIXT)
+Ent_int* aDev_IXT_TRV_BEGIN(void* aLU, void* aIXT)
 {
   _static_
 
   DevIXT* pDevIXT = _pDevIXT(aIXT);
-
-  i8 iRes;
   
   pDevIXT->m_pEntBuffer = pDevIXT->m_pIdxTree->pFirstH0Buffer();
+  
   if (pDevIXT->m_pEntBuffer) {
     pDevIXT->m_aEnt = pDevIXT->m_pEntBuffer->aLeadEntry();
     if (pDevIXT->m_aEnt)
-      iRes = 1;
+      return (Ent_int*)pDevIXT->m_aEnt;
     else
-      iRes = 0;
+      return nullptr;
   }
   else
-    iRes = 0;
-
-  return iRes;
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
