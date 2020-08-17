@@ -37,11 +37,11 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   void*  m_pDevAltIxt;
   void*  m_pDevTmpIxt;
   
-  
   struct Ent_int* m_aAltEnt;
   struct Ent_int* m_aDstEnt;
   struct Ent_int* m_aSrcEnt;
   struct Ent_int* m_aTmpEnt;
+  struct Ent_int* m_aWrkEnt;
 
 
   char m_caStrWrk[128];

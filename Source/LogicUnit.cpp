@@ -759,6 +759,9 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* aLU)
   m_xRluCommon.m_pDevTmpIxt = m_pDevTmpIxt;
   
   
+  m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
+
+  
   m_xRluCommon.m_i_Slot = AM::pTaskJob()->m_pOp->nPartition();
   m_xRluCommon.m_nPtns  = AM::nPartitions();
   m_xRluCommon.m_iHash  = 0;
