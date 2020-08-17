@@ -794,6 +794,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    char* azSrc;"
   "\n    char* azDst;"
   "\n    char* azArg;"
+  "\n    struct Ent_int* aEntNext_int;"
   "\n"
 //  "\n    printf(\"Sizeof Ent_Int   : %d\n\",sizeof(struct Ent_int));"
 //  "\n    printf(\"Sizeof RluCommon : %d\n\",sizeof(struct RluCommon));"
@@ -863,6 +864,7 @@ void LogicCompiler::v_SbrPreliminary(Stz* szSbrNm)
   "\n    char* azSrc;"
   "\n    char* azDst;"
   "\n    char* azArg;"
+  "\n    struct Ent_int* aEntNext_int;"
   "\n"
   "\n"
   "";

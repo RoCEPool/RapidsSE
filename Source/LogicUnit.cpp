@@ -939,7 +939,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   IndexDef* pIndexDef = nullptr;
   i8* aPayload = nullptr;
 
-  
+  Ent_int* aEntNext_int;
   
   // -- -- -- -- -- -- -- -- -- --
 
