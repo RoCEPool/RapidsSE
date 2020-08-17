@@ -898,9 +898,9 @@
     endof
 
     602 of
-      StreamDef[].duplicate to StreamDefOut[]
-      StreamDef[].pipeout
+      StreamDef[] to StreamDefOut[]
       true Pot[].useStreamDefOut
+      StreamDefOut[].pipeout
     endof
 
   endcase
