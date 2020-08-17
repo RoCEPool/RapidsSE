@@ -929,7 +929,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   char* azArg;
   i8 iBuffer;
   i8 iItem;
-  void* aCrw;
 
   Key* aSrcKey;
   Key* aAltKey;
@@ -1659,13 +1658,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iBuffer = aRluCommon->m_aSrcEnt->Ref.m_uBuffer;
         iItem   = aRluCommon->m_aSrcEnt->Ref.m_uItem;
 
-        aCrw = (void*)
+        aRluCommon->m_aSrcCrw = (void*)
           ( (char*)C_ADR_REGION
                    + iBuffer* C_1MB
                    + C_CRW_FIRSTHEAD
                    + iItem * aRluCommon->m_nSrcHeadSize );
 
-        
         break;//+endCase
         
       case EO_CRW_ALT_FETCH: ArgNil(); // fetch m_aAltCrw using m_aAltEnt.ref
@@ -1675,7 +1673,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iBuffer = aRluCommon->m_aAltEnt->Ref.m_uBuffer;
         iItem   = aRluCommon->m_aAltEnt->Ref.m_uItem;
 
-        aCrw = (void*)
+        aRluCommon->m_aAltCrw = (void*)
           ( (char*)C_ADR_REGION
                    + iBuffer* C_1MB
                    + C_CRW_FIRSTHEAD
