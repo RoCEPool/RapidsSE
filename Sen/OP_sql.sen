@@ -643,12 +643,9 @@
   //0 19 CT_INTEGER "count"
   //StreamDefOut[].addColumn
 
-  // pipeout the streamDefOut
-  StreamDefOut[].duplicate to Operand[]
-  Operand[].pipeout
-
   // set streamDefOut in the pot
   true Pot[].useStreamDefOut
+  StreamDefOut[].pipeout
 
   LogicUnit[].DynFun
   Pot[].pipeoutAllCompleted
