@@ -27,6 +27,7 @@ namespace Structures
     ITEM*  aAdjacentItem(ITEM* aItem, i8 nSizeBytes);
     byte*  ayAllotBytes(i8 nBytes);
     ITEM*  aAllotItem(eCN eClassNo, i8 nBytes);
+    ITEM*  aItemArray(void);
     i8     iDecile(void);
     void   vDecItems(void);
     void   vDumpItems(void);
@@ -37,7 +38,6 @@ namespace Structures
     void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
     void   vIncItems(void);
-    ITEM*  aItemArray(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
     i8     nMaxItems(void);

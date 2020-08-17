@@ -69,6 +69,7 @@ namespace Indexing
     ////////////////////////////////////////////////////////////////////////////
     // entry functions
   
+    Ent* aEntArray(void);
     Ent* aLeadEntry(void);
     Ent* aLastEntry(void);
     Ent* aNextEntry(Ent* aPrevEntry);

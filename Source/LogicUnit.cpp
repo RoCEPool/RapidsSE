@@ -1845,6 +1845,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_TRV_BEGIN);
         aRluCommon->m_aTmpEnt =
           aDev_IXT_TRV_BEGIN(pLU,aRluCommon->m_pDevTmpIxt);
+        aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
         break;//+endCase
         
@@ -1865,6 +1866,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_SRC_BEGIN);
         aRluCommon->m_aSrcEnt =
           aDev_IXT_TRV_BEGIN(pLU,aRluCommon->m_pDevSrcIxt);
+        aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         
@@ -1872,6 +1874,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_SRC_LBOUND);
         aRluCommon->m_aSrcEnt =
           aDev_IXT_POS_LBOUND(pLU,aRluCommon->m_pDevSrcIxt);
+        aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         
@@ -1890,6 +1893,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_SRC_UBOUND);
         aRluCommon->m_aSrcEnt =
           aDev_IXT_POS_UBOUND(pLU,aRluCommon->m_pDevSrcIxt);
+        aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         
@@ -1897,6 +1901,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_SRC_UBOUND);
         aRluCommon->m_aSrcEnt =
           aDev_IXT_POS_UBOUND_LT(pLU,aRluCommon->m_pDevSrcIxt);
+        aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         
@@ -1904,6 +1909,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_ALT_BEGIN);
         aRluCommon->m_aAltEnt =
           aDev_IXT_TRV_BEGIN(pLU,aRluCommon->m_pDevAltIxt);
+        aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
         break;//+endCase
 
@@ -1921,6 +1927,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         else
           aRluCommon->m_aAltEnt =
             aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
+        aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
 
         break;//+endCase
@@ -1949,6 +1956,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_POS_ALTBYSRC);
         aRluCommon->m_aAltEnt =
           aDev_IXT_POS_ALTBYSRC(pLU);
+        aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
         break;//+endCase
 
@@ -1956,6 +1964,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_POS_ALTBYWRK);
         aRluCommon->m_aAltEnt =
           aDev_IXT_POS_ALTBYWRK(pLU);
+        aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
         break;//+endCase
 
