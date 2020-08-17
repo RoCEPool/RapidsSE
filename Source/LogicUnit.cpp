@@ -61,6 +61,9 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_iCmnMagic  = 123456789;
   m_xRluCommon.m_iCmnFooter = 987654321;
   
+  m_xRluCommon.m_nAltHeadSize = C_CRW_HEADBYTES;
+  m_xRluCommon.m_nSrcHeadSize = C_CRW_HEADBYTES;
+
   m_oSince.vStart();
   
   // m_oEntWrk

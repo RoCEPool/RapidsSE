@@ -23,6 +23,10 @@ namespace CompactBuffers
 
 //------------------------------------------------------------------------------
 
+static const i8 C_CRW_HEADBYTES = 32;
+
+static const i8 C_CRW_FIRSTOFS  = 0x210;
+
 static const i8 C_TRAY_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HeadLine);
 
 typedef    Nub_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef> RowNub;

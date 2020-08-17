@@ -32,8 +32,8 @@ static const i8 C_TSP_LOCAL = 1;
 static const i8 C_TSP_UTC   = 0;
 
 static const i8 C_SECS_PER_MIN = 60;
-static const i8 C_MINS_PER_HR   = 60;
-static const i8 C_HRS_PER_DAY   = 24;
+static const i8 C_MINS_PER_HR  = 60;
+static const i8 C_HRS_PER_DAY  = 24;
 
 static const i8 C_SECS_PER_HR  = C_SECS_PER_MIN * C_MINS_PER_HR;
 static const i8 C_SECS_PER_DAY = C_SECS_PER_HR  * C_HRS_PER_DAY;

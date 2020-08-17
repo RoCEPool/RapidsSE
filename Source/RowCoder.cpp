@@ -314,7 +314,7 @@ i8 RowCoder::nHeadSize(StreamDef* pStreamDef)
   //i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
   
   
-  i8 nBytesHead = 32;
+  i8 nBytesHead = C_CRW_HEADBYTES;
   
   if (pStreamDef->m_nFixedSized)
     nBytesHead = pStreamDef->m_nFixedSized;
