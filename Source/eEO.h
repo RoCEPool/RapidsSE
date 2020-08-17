@@ -71,10 +71,12 @@ enum eEO : u1 // expression operators
   /*    */ EO_DEC,              // decrement top, push result
   /*    */ EO_DUP,              // duplicate top
   /*    */ EO_POP,              // pop / discard top
-  /*    */ EO_POP_LOCAL,        // pop into a local register
+  /*    */ EO_POP_LOCALI,       // pop integer into a local register
+  /*    */ EO_POP_LOCALS,       // pop string into a local register
   /*    */ EO_PRINT,            // print top
-  /*    */ EO_PUSH_LOCAL,       // push a local register
-
+  /*    */ EO_PUSH_LOCALI,      // push an integer from a local register
+  /*    */ EO_PUSH_LOCALS,      // push an string from a local register
+  
   // string operators
   /*    */ EO_STR_COMPARE,      // pop top stradr and compare str on stack
   /*    */ EO_STR_PRINTADR,     // pop top and print iArg as addr of string
@@ -308,10 +310,12 @@ static Stz* aEO[]
   /*    */ "EO_DEC"_Stz,
   /*    */ "EO_DUP"_Stz,
   /*    */ "EO_POP"_Stz,
-  /*    */ "EO_POP_LOCAL"_Stz,
+  /*    */ "EO_POP_LOCALI"_Stz,
+  /*    */ "EO_POP_LOCALS"_Stz,
   /*    */ "EO_PRINT"_Stz,
-  /*    */ "EO_PUSH_LOCAL"_Stz,
-
+  /*    */ "EO_PUSH_LOCALI"_Stz,
+  /*    */ "EO_PUSH_LOCALS"_Stz,
+  
   // string operators
   /*    */ "EO_STR_COMPARE"_Stz,
   /*    */ "EO_STR_PRINTADR"_Stz,
@@ -551,9 +555,11 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEC
   { EA_NONE,    0 },  // EO_DUP
   { EA_NONE,    0 },  // EO_POP
-  { EA_INT,     8 },  // EO_POP_LOCAL
+  { EA_INT,     8 },  // EO_POP_LOCALI
+  { EA_INT,     8 },  // EO_POP_LOCALS
   { EA_NONE,    0 },  // EO_PRINT
-  { EA_INT,     8 },  // EO_PUSH_LOCAL
+  { EA_INT,     8 },  // EO_PUSH_LOCALI
+  { EA_INT,     8 },  // EO_PUSH_LOCALS
   
   // string operators
   { EA_NONE,    0 },  // EO_STR_COMPARE
