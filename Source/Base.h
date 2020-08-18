@@ -32,6 +32,7 @@ namespace Base
 #include "DebugFlags.h"
 #include "Gid.h"
 #include "i3.hpp"
+#include "Nibbler.h"
 #include "Null.hpp"
 #include "WordAsBytes.h"
 
