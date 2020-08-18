@@ -799,13 +799,8 @@
       streamDef[].delete
 
       // AGGREGATE WITH GROUPBY
-      //queryNo "QUERY %v" .printf
-      //logicCompiler[].delete
-      //102 LogicUnit[].genCode
-      //logicCompiler[].new
-      //LogicCompiler[].compile
       LogicUnit[].dynFun
-      //logicCompiler[].delete
+      logicCompiler[].delete
       IndexTree[].delete
     endof
 
