@@ -7,7 +7,8 @@ namespace CompactBuffers
 {
   class RowCompactor : public  Object,
                        private RowCoder,
-                       private Packing_v1
+                       private Packing_v1,
+                       private Packing_v2
   {
   public:
     RowNub*    m_pCrwNub;      // nub of crw buffer
