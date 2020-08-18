@@ -6,20 +6,6 @@
 
 #include "DEV_interface.h"
 
-
-/*----------------------------------------------------------------------------*/
-/* reset column in streamPix of dst                                           */
-/*----------------------------------------------------------------------------*/
-void vDev_COL_NOT_PROJECT(void* aLU, i8 iArg)
-{
-  _static_
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  pLogicUnit->m_oStreamPix.vNotProject(iArg);
-}
-
-
 /*----------------------------------------------------------------------------*/
 /* begin rsb traverse                                                         */
 /*----------------------------------------------------------------------------*/
@@ -1103,101 +1089,54 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB)
   pDevRsb->m_pRowSlab->vZeroRsb(pDevRsb->m_aRsb);
 }
 
-/*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                           */
-/*----------------------------------------------------------------------------*/
-i8 iDev_RSB_COL_PUSH(void* aLU, i8 iArg)
-{
-  _static_
-  
-  //DevRSB* pDevRsb = _pDevRSB(aRSB); NOT RIGHT
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
-  HV_Row hRow(pLogicUnit->m_pDevSrcRsb->m_pStreamDef,C_ALL);
-  RowInflator::vInflateColumn(hRow,pLogicUnit->m_pDevSrcIxt->m_aCrw,iArg);
-  
-  i8 iRes = hRow->m_waColVal[iArg].m_iWrd;
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-  return iRes;
-}
 
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHONE(void* aLU, i8 iArg, i8** aaiDstk)
-{
-  _static_
-  
-  LogicUnit* pLogicUnit = (LogicUnit*)aLU; //_pLogicUnit(aLU);
-  
-//  *(++*aaiDstk) = -1;
-//  *(++*aaiDstk) = iArg; // col to inflate
-  
-  RowInflator::vInflateColI_stk(aaiDstk,
-                   pLogicUnit->m_pDevSrcIxt->m_aCrw,
-                   pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
-  
-//  RowInflator::vInflateColI(aamDstk,
-//                            pLogicUnit->m_pDevSrcIxt->m_aCrw,
-//                            iArg,
-//                            pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* push column value from m_aAltCrw                                 NOT RIGHT */
-/*----------------------------------------------------------------------------*/
-i8 iDev_ALT_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
-{
-  _static_
-  
-  //DevRSB* pDevRsb = _pDevRSB(aRSB); NOT RIGHT
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  HV_Row hRow(pLogicUnit->m_pDevAltRsb->m_pStreamDef,C_ALL);
-  RowInflator::vInflateColumn(hRow,pLogicUnit->m_pDevAltIxt->m_aCrw,iArg);
-  
-  i8 iRes = hRow->m_waColVal[iArg].m_iWrd;
-
-  return iRes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                 NOT RIGHT */
-/*----------------------------------------------------------------------------*/
-void vDev_ALT_COL_PUSHONE(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
+void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk)
 {
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
       
-//  *(++*aaiDstk) = -1;
-//  *(++*aaiDstk) = iArg; // col to inflate
-
   RowInflator::vInflateColI_stk(aaiDstk,
-                   pLogicUnit->m_pDevAltIxt->m_aCrw,
-                   pLogicUnit->m_pDevAltRsb->m_pStreamDef);
+                                pLogicUnit->m_pDevAltIxt->m_aCrw,
+                                pLogicUnit->m_pDevAltRsb->m_pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                 NOT RIGHT */
+/* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_SRC_COL_PUSHONE(void* aLU, i8 iArg, i8** aaiDstk)
+void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk)
+{
+  _static_
+  RASSERT(0); // check with ALka
+  
+  LogicUnit* pLogicUnit = (LogicUnit*)aLU; //_pLogicUnit(aLU);
+    
+  RowInflator::vInflateColI_stk(aaiDstk,
+                                pLogicUnit->m_pDevSrcIxt->m_aCrw,
+                                pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push column value from m_aSrcCrw                                           */
+/*----------------------------------------------------------------------------*/
+void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk)
 {
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  
-  //  *(++*aaiDstk) = -1;
-  //  *(++*aaiDstk) = iArg; // col to inflate
-  
+    
   RowInflator::vInflateColI_stk(aaiDstk,
                                 pLogicUnit->m_pDevSrcIxt->m_aCrw,
-                                *pLogicUnit->m_xpStreamDef);
+                                //*pLogicUnit->m_xpStreamDef
+                                pLogicUnit->m_pDevSrcRsb->m_pStreamDef
+                                );
 }
 
 /*----------------------------------------------------------------------------*/

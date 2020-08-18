@@ -1604,30 +1604,26 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_COL_ALT_PUSHONE: ArgGet(iArg); // push column value from m_aAltCrw
         *(++aiDstk) = -1;
         *(++aiDstk) = iArg; // col to inflate
-        vDev_ALT_COL_PUSHONE(pLU,aRluCommon->m_pDevAltRsb,iArg,&aiDstk);
+        vDev_ALT_COL_PUSHSET(pLU,&aiDstk);
         dLU1(EO_COL_ALT_PUSHONE,iArg);
         break;//+endCase
       
       case EO_COL_ALT_PUSHSET: ArgNil(); // push column subset from m_aAltCrw
-        //*(++aiDstk) = -1;
-        vDev_ALT_COL_PUSHONE(pLU,aRluCommon->m_pDevAltRsb,-1,&aiDstk);
+        vDev_ALT_COL_PUSHSET(pLU,&aiDstk);
         dLU0(EO_COL_ALT_PUSHSET);
         break;//+endCase
     
-      case EO_COL_NOT_PROJECT: ArgGet(iArg); // reset column in streamPix of dst
-        vDev_COL_NOT_PROJECT(pLU,iArg);
-        break;//+endCase
-                
+
       case EO_COL_SRC_PUSHONE: ArgGet(iArg); // push column value from m_aSrcCrw
         *(++aiDstk) = -1;
         *(++aiDstk) = iArg; // col to inflate
-        vDev_RSB_COL_PUSHONE(pLU,iArg,&aiDstk);
+//        vDev_RSB_COL_PUSHSET(pLU,&aiDstk); // Check with ALka
+        vDev_SRC_COL_PUSHSET(pLU,&aiDstk);
         dLU1(EO_COL_SRC_PUSHONE,iArg);
         break;//+endCase
         
       case EO_COL_SRC_PUSHSET: ArgNil(); // push column subset from m_aSrcCrw
-        //*(++aiDstk) = -1;
-        vDev_SRC_COL_PUSHONE(pLU,-1,&aiDstk);
+        vDev_SRC_COL_PUSHSET(pLU,&aiDstk);
         dLU0(EO_COL_SRC_PUSHSET);
         break;//+endCase
       

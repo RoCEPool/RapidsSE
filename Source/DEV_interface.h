@@ -2,8 +2,6 @@
 /* DEV_interface.h -- Interface for RLU Devices                               */
 /*============================================================================*/
 
-void vDev_COL_NOT_PROJECT(void* aLU, i8 iArg);
-
 void vDev_CRW_BEGIN(void* aLU, void* aIXT);
 void vDev_CRW_COL_PUSHONE(void* aLU, i8 iArg, i8** aaiDstk);
 void vDev_CRW_DEREF(void* aLU, void* aIXT);
@@ -74,15 +72,11 @@ i8   iDev_RSB_TESTROW(void* aLU, void* aRSB);
 void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop);
 void vDev_RSB_ZERO(void* aLU, void* aRSB);
 
-i8   iDev_RSB_COL_PUSH(void* aLU, i8 iArg);
-void vDev_RSB_COL_PUSHONE(void* aLU, i8 iArg, i8** aamDstk);
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-i8   iDev_ALT_COL_PUSH(void* aLU, void* aRSB, i8 iArg);
-void vDev_ALT_COL_PUSHONE(void* aLU, void* aRSB, i8 iArg, i8** aamDstk);
-
-void vDev_SRC_COL_PUSHONE(void* aLU, i8 iArg, i8** aamDstk);
+void vDev_ALT_COL_PUSHSET(void* aLU, i8** aamDstk);
+void vDev_RSB_COL_PUSHSET(void* aLU, i8** aamDstk);
+void vDev_SRC_COL_PUSHSET(void* aLU, i8** aamDstk);
 
 void vDev_PIX_STM_PRINT(void* aLU);
 
