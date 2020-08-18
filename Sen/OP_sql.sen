@@ -840,6 +840,11 @@
       LogicUnit[].dynFun
       logicCompiler[].delete
       IndexTree[].delete
+    endof
+
+      601 of
+        //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 601=EOSMARKER" .
+        logicCompiler[].delete
       endof
 
   endcase
