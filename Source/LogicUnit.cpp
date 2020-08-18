@@ -929,7 +929,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   char* azArg;
   i8 iBuffer;
   i8 iItem;
-
+  tET tNext;
+  
   Key* aSrcKey;
   Key* aAltKey;
   Key* aWrkKey;
@@ -1922,30 +1923,29 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //          aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
 //        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
         
+        tNext = aRluCommon->m_aAltEnt->m_taNextEntry[0];
         
-        aEnt_int = aRluCommon->m_aAltEnt;
-        if (C_ENT_END_TICKET == aEnt_int->m_taNextEntry[0]) {
+        if (C_ENT_END_TICKET == tNext) {
           aRluCommon->m_aAltEnt =
             aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
           aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
+        }
+        else {
+          
+          //printf("  m_aAltEntArray %p\n",(void*)aRluCommon->m_aAltEntArray);
+          //printf("  tNext %d\n",tNext);
+          
+          aRluCommon->m_aAltEnt =
+            (struct Ent_int*) ( (char*)aRluCommon->m_aAltEntArray + (tNext*32) ) ;
+          
+          //printf("  m_aAltEnt %p\n",(void*)aRluCommon->m_aAltEnt);
+
         }
 //        else {
-//          tET tNext = aEnt_int->m_taNextEntry[0];
-//          
-//          printf("  m_aAltEntArray %p\n",(void*)aRluCommon->m_aAltEntArray);
-//          printf("  tNext %d\n",tNext);
-//          
 //          aRluCommon->m_aAltEnt =
-//            (struct Ent_int*) ( (char*)aRluCommon->m_aAltEntArray + (tNext*32) ) ;
-//          
-//          printf("  m_aAltEnt %p\n",(void*)aRluCommon->m_aAltEnt);
-//
+//            aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
+//          aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
 //        }
-        else {
-          aRluCommon->m_aAltEnt =
-            aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
-          aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
-        }
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
 
         break;//+endCase
