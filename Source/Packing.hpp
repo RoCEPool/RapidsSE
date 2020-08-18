@@ -8,7 +8,7 @@ namespace CompactBuffers
   class Packing
   {
   public:
-    static void vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding);
+    static void vPackCrw(HeadLine* aHeadLine, Encoding_v1* pEncoding);
     static void vPackCol(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc);
   
     static void vPutMetaCode(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc);

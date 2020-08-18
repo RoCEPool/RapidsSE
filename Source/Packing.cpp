@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* pack the encoded inflated row into head[+over]{+tail}                      */
 /*----------------------------------------------------------------------------*/
-void Packing::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
+void Packing::vPackCrw(HeadLine* aHeadLine, Encoding_v1* pEncoding)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pack all the columns into the logical compact row

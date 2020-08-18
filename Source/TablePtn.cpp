@@ -453,7 +453,7 @@ void TablePtn::vInsdelBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
   
   HV_Row hvRow_upsert(pStreamDef,C_ALL);
   
-  Encoding* pEncoding_upsert = new Encoding(pStreamDef);
+  Encoding_v1* pEncoding_upsert = new Encoding_v1(pStreamDef);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -555,7 +555,7 @@ void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
   IndexDef* pIndexDef = pIndexTree->pIndex()->pIndexDef();
   
   StreamDef* pStreamDef = pIndexTree->pIndex()->pTable()->pStreamDef();
-  Encoding* pEncoding_upsert = new Encoding(pStreamDef);
+  Encoding_v1* pEncoding_upsert = new Encoding_v1(pStreamDef);
   
   RowSlab* pRowSlab = pRsbBuffer->pRowSlab();
   SP_RowPix spRowPix(pRowSlab->nCols(),pRowSlab->axaColPix());
@@ -1015,7 +1015,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
   
   HV_Row hvRow_upsert(pStreamDef,C_ALL);
   
-  Encoding* pEncoding_upsert = new Encoding(pStreamDef);
+  Encoding_v1* pEncoding_upsert = new Encoding_v1(pStreamDef);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1100,7 +1100,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
 /* WIP: insert a new row (no such row yet exists in the index)                */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
-                                 Encoding* pEncoding_upsert, t8 tPerspective)
+                                 Encoding_v1* pEncoding_upsert, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -1112,7 +1112,7 @@ void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
   TRACE_UPSERT( vTrace("NoSuch   : %s\n"_Stz,spRec.sz(hvRow_nosuch)); )
   
   SP_Encoding spEncoding;
-  TRACE_UPSERT( vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
+  TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
   
   Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
   Packing::vPackCrw(aCrw_insert,pEncoding_upsert);
@@ -1131,7 +1131,7 @@ void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
 /* WIP: insert a new row (no such row yet exists in the index)                */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
-                                 Encoding* pEncoding_upsert, t8 tPerspective)
+                                 Encoding_v1* pEncoding_upsert, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -1143,7 +1143,7 @@ void TablePtn::vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
   //TRACE_UPSERT( vTrace("NoSuch   : %s\n"_Stz,spRec.sz(hvRow_nosuch)); )
   
   //SP_Encoding spEncoding;
-  //TRACE_UPSERT( vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
+  //TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
   
   Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
   Packing::vPackCrw(aCrw_insert,pEncoding_upsert);
@@ -1164,7 +1164,7 @@ void TablePtn::vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
 /* WIP: update an existing row                                                */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
-                                 Encoding* pEncoding_upsert, t8 tPerspective)
+                                 Encoding_v1* pEncoding_upsert, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -1176,7 +1176,7 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
   TRACE_UPSERT( vTrace("Exists   : %s\n"_Stz,spRec.sz(hvRow_exists)); )
   
   SP_Encoding spEncoding;
-  TRACE_UPSERT( vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
+  TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
   
   // record prior version
   m_pReadApi->vAddCrwVersion(aEnt_found->rxRef(),aCrw_exists);

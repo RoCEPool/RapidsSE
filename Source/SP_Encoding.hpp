@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_Encoding.hpp - Row Encoding sprint helper                               */
+/* SP_Encoding.hpp - Row Encoding_v1 sprint helper                               */
 /*============================================================================*/
 #pragma once
 
@@ -18,10 +18,10 @@ namespace CompactBuffers
     SP_Encoding(void);
     ~SP_Encoding(void) noexcept(false);
 
-    void vEncoding(Encoding* pEncoding);
+    void vEncoding(Encoding_v1* pEncoding);
   
     Stz* sz(void);
-    Stz* sz(Encoding* pEncoding);
+    Stz* sz(Encoding_v1* pEncoding);
   
     Footer* aFooter(void);
   };

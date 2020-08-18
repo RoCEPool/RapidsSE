@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_Encoding.cpp - Row Encoding sprint helper                               */
+/* SP_Encoding.cpp - Row Encoding_v1 sprint helper                               */
 /*============================================================================*/
 
 #include "CompactBuffers.h"
@@ -41,7 +41,7 @@ SP_Encoding::~SP_Encoding(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-void SP_Encoding::vEncoding(Encoding* pEncoding)
+void SP_Encoding::vEncoding(Encoding_v1* pEncoding)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -206,7 +206,7 @@ Stz* SP_Encoding::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Encoding::sz(Encoding* pEncoding)
+Stz* SP_Encoding::sz(Encoding_v1* pEncoding)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 

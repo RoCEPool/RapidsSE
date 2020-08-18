@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Encoding.hpp -- Row Encoding (intermediate representation of compact row)  */
+/* Encoding_v1.hpp -- Row Encoding_v1 (intermediate representation of compact row)  */
 /*============================================================================*/
 #pragma once
 
@@ -24,7 +24,7 @@ namespace CompactBuffers
   
   //----------------------------------------------------------------------------
   
-  class Encoding : public Object,
+  class Encoding_v1 : public Object,
                    private RowCoder
   {
   public:
@@ -53,8 +53,8 @@ namespace CompactBuffers
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Encoding(StreamDef* pStreamDef);
-   ~Encoding(void) noexcept(false);
+    Encoding_v1(StreamDef* pStreamDef);
+   ~Encoding_v1(void) noexcept(false);
   
     i8   nBytesNeeded(void);
   
@@ -96,7 +96,7 @@ namespace CompactBuffers
     Footer* aFooter(void);
   };
   
-  Encoding* _pEncoding(void* aAddr);
+  Encoding_v1* _pEncoding_v1(void* aAddr);
 }
 
 /*============================================================================*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Encoding.cpp -- Row Encoding (intermediate representation of compact row)  */
+/* Encoding_v1.cpp -- Row Encoding_v1 (intermediate representation of compact row)  */
 /*============================================================================*/
 
 #include "CompactBuffers.h"
@@ -8,19 +8,19 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompactBuffers,Encoding,CN_ENCODING)
-__aNewFunction(Encoding,CN_ENCODING)
-__vDeleteFunction(Encoding,CN_ENCODING)
-__aFooterFunction(Encoding)
+__pCastFunction(CompactBuffers,Encoding_v1,CN_ENCODING_V1)
+__aNewFunction(Encoding_v1,CN_ENCODING_V1)
+__vDeleteFunction(Encoding_v1,CN_ENCODING_V1)
+__aFooterFunction(Encoding_v1)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Encoding::Encoding(StreamDef* pStreamDef)
-: Object(CN_ENCODING)
+Encoding_v1::Encoding_v1(StreamDef* pStreamDef)
+: Object(CN_ENCODING_V1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   m_pStreamDef = pStreamDef;
   m_nColumns   = pStreamDef->nColumns(C_ALL);
@@ -55,23 +55,23 @@ Encoding::Encoding(StreamDef* pStreamDef)
     xaColEnc[i_Col].m_pCol   = m_pStreamDef->pGetColumn(i_Col);
   }
   
-  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ENCODING);
+  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ENCODING_V1);
 
 #ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(CN_ENCODING);
+  m_xWsp.vZero(CN_ENCODING_V1);
 #else
   // m_xWsp
 #endif
   
-  _checkInitialised_(CN_ENCODING);
+  _checkInitialised_(CN_ENCODING_V1);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Encoding::~Encoding(void) noexcept(false)
+Encoding_v1::~Encoding_v1(void) noexcept(false)
 {
 }
 
@@ -83,9 +83,9 @@ Encoding::~Encoding(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* how many bytes need in compact form                                        */
 /*----------------------------------------------------------------------------*/
-i8 Encoding::nBytesNeeded(void)
+i8 Encoding_v1::nBytesNeeded(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   return m_nBytesNeeded;
 }
@@ -93,9 +93,9 @@ i8 Encoding::nBytesNeeded(void)
 /*----------------------------------------------------------------------------*/
 /* encode inflated row                                                        */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeIrw(Row* pIrw)
+void Encoding_v1::vEncodeIrw(Row* pIrw)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   vReset();
   
@@ -105,9 +105,9 @@ void Encoding::vEncodeIrw(Row* pIrw)
 /*----------------------------------------------------------------------------*/
 /* encode inflated row                                                        */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeRsb(Rsb* aRsb)
+void Encoding_v1::vEncodeRsb(Rsb* aRsb)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   vReset();
   
@@ -117,9 +117,9 @@ void Encoding::vEncodeRsb(Rsb* aRsb)
 /*----------------------------------------------------------------------------*/
 /* encode signle row                                                          */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeSrw(RowSingle* pSrw)
+void Encoding_v1::vEncodeSrw(RowSingle* pSrw)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   vReset();
   
@@ -129,9 +129,9 @@ void Encoding::vEncodeSrw(RowSingle* pSrw)
 /*----------------------------------------------------------------------------*/
 /* morph the given column encoding (to MC_STR_TAIL_2T)                        */
 /*----------------------------------------------------------------------------*/
-void Encoding::vMorphEncoding(_ColEnc* aColEnc)
+void Encoding_v1::vMorphEncoding(_ColEnc* aColEnc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   ASSERT(MC_STR_FIT_1L == aColEnc->m_eMetaCode);
   ASSERT(C_UNKNOWN != aColEnc->m_i_Tail);
@@ -161,9 +161,9 @@ void Encoding::vMorphEncoding(_ColEnc* aColEnc)
 /*----------------------------------------------------------------------------*/
 /* does this encoding overflow the head?                                      */
 /*----------------------------------------------------------------------------*/
-bool Encoding::bOverFlowed(void)
+bool Encoding_v1::bOverFlowed(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   if (m_nShiftOver > 0)
     return true;
@@ -174,9 +174,9 @@ bool Encoding::bOverFlowed(void)
 /*----------------------------------------------------------------------------*/
 /* calc the size of the over line                                             */
 /*----------------------------------------------------------------------------*/
-i8 Encoding::nOverSize(void)
+i8 Encoding_v1::nOverSize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   i8 nBytesNeed = this->nBytesNeeded();
   i8 nOverSize  = nBytesNeed - m_nHeadSize;
@@ -187,9 +187,9 @@ i8 Encoding::nOverSize(void)
 /*----------------------------------------------------------------------------*/
 /* split at headSize for overflow (if necessary)                              */
 /*----------------------------------------------------------------------------*/
-void Encoding::vSplitOver(void)
+void Encoding_v1::vSplitOver(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // test if encoding fits in head
   if (m_nBytesNeeded <= m_nHeadSize) {
@@ -219,9 +219,9 @@ void Encoding::vSplitOver(void)
 /*----------------------------------------------------------------------------*/
 /* encode the columns of given row and compute their initial offsets          */
 /*----------------------------------------------------------------------------*/
-void Encoding::vInitialEncodingIrw(Row* pIrw)
+void Encoding_v1::vInitialEncodingIrw(Row* pIrw)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   m_i_Offset_next = m_i_BaseOffsetData;
   
@@ -269,9 +269,9 @@ void Encoding::vInitialEncodingIrw(Row* pIrw)
 /*----------------------------------------------------------------------------*/
 /* encode the columns of given row and compute their initial offsets          */
 /*----------------------------------------------------------------------------*/
-void Encoding::vInitialEncodingRsb(Rsb* aRsb)
+void Encoding_v1::vInitialEncodingRsb(Rsb* aRsb)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
 
   Dtm wColVal;
 
@@ -323,9 +323,9 @@ void Encoding::vInitialEncodingRsb(Rsb* aRsb)
 /*----------------------------------------------------------------------------*/
 /* encode the columns of given row and compute their initial offsets          */
 /*----------------------------------------------------------------------------*/
-void Encoding::vInitialEncodingSrw(RowSingle* pSrw)
+void Encoding_v1::vInitialEncodingSrw(RowSingle* pSrw)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   m_i_Offset_next = m_i_BaseOffsetData;
 
@@ -371,9 +371,9 @@ void Encoding::vInitialEncodingSrw(RowSingle* pSrw)
 /*----------------------------------------------------------------------------*/
 /* encode a bcd column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // null case
   if (bEncodeNul(xColEnc,wColVal))
@@ -410,9 +410,9 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a bol column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeBol(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeBol(_ColEnc& xColEnc, Dtm wColVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // null case
   if (bEncodeNul(xColEnc,wColVal))
@@ -433,9 +433,9 @@ void Encoding::vEncodeBol(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a dte column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeDte(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeDte(_ColEnc& xColEnc, Dtm wColVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // null case
   if (bEncodeNul(xColEnc,wColVal))
@@ -460,9 +460,9 @@ void Encoding::vEncodeDte(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a flt column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeFlt(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeFlt(_ColEnc& xColEnc, Dtm wColVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // null case
   if (bEncodeNul(xColEnc,wColVal))
@@ -481,9 +481,9 @@ void Encoding::vEncodeFlt(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode an int column value                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // null case
   if (bEncodeNul(xColEnc,wColVal))
@@ -520,9 +520,9 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode an ivl column value                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // null case
   if (bEncodeNul(xColEnc,wColVal))
@@ -541,9 +541,9 @@ void Encoding::vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a tme column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeTme(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeTme(_ColEnc& xColEnc, Dtm wColVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // null case
   if (bEncodeNul(xColEnc,wColVal))
@@ -562,9 +562,9 @@ void Encoding::vEncodeTme(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a tsp column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // null case
   if (bEncodeNul(xColEnc,wColVal))
@@ -583,9 +583,9 @@ void Encoding::vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a vch column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // null case
   if (bEncodeNul(xColEnc,wColVal))
@@ -636,9 +636,9 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* test for null encoding                                                     */
 /*----------------------------------------------------------------------------*/
-bool Encoding::bEncodeNul(_ColEnc& xColEnc, Dtm wDtm)
+bool Encoding_v1::bEncodeNul(_ColEnc& xColEnc, Dtm wDtm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   if (! wDtm.bIsNull())
     return false;
@@ -657,9 +657,9 @@ bool Encoding::bEncodeNul(_ColEnc& xColEnc, Dtm wDtm)
 /*----------------------------------------------------------------------------*/
 /* compute initial offset and till for column encoding                        */
 /*----------------------------------------------------------------------------*/
-void Encoding::vOffsetTill(_ColEnc& xrColEnc)
+void Encoding_v1::vOffsetTill(_ColEnc& xrColEnc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // set the offset of this column
   xrColEnc.m_i_Offset = m_i_Offset_next;
@@ -690,7 +690,7 @@ void Encoding::vOffsetTill(_ColEnc& xrColEnc)
 /*----------------------------------------------------------------------------*/
 /* find first non-fitting column                                              */
 /*----------------------------------------------------------------------------*/
-Column* Encoding::pNonFitting(void)
+Column* Encoding_v1::pNonFitting(void)
 {
   i8 i_LastCol = m_nColumns - 1;
     
@@ -712,9 +712,9 @@ Column* Encoding::pNonFitting(void)
 /*----------------------------------------------------------------------------*/
 /* reset all encodings                                                        */
 /*----------------------------------------------------------------------------*/
-void Encoding::vReset(void)
+void Encoding_v1::vReset(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   m_nBytesNeeded = C_UNKNOWN;
   m_nShiftOver   = C_UNKNOWN;
@@ -738,7 +738,7 @@ void Encoding::vReset(void)
   }
   
 #ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(CN_ENCODING);
+  m_xWsp.vZero(CN_ENCODING_V1);
 #else
   m_xWsp.vInit();
 #endif
@@ -747,9 +747,9 @@ void Encoding::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* split columns at head size for overflow                                    */
 /*----------------------------------------------------------------------------*/
-void Encoding::vSplitAt(i8 i_Col)
+void Encoding_v1::vSplitAt(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
   // mark the column where split occurred
   xaColEnc[i_Col].m_bSplit = true;
@@ -769,7 +769,7 @@ void Encoding::vSplitAt(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* test if column fits within head                                            */
 /*----------------------------------------------------------------------------*/
-bool Encoding::bWithinHead(i8 i_Col)
+bool Encoding_v1::bWithinHead(i8 i_Col)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // a) last column

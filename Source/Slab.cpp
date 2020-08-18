@@ -38,7 +38,7 @@ Slab::Slab(void)
   
   m_pNextSlab = nullptr;
   
-  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ENCODING);
+  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ENCODING_V1);
   
   m_xWsp.vFill(0xEF,CN_SLAB);
   
