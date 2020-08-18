@@ -134,11 +134,11 @@ enum eEO : u1 // expression operators
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col operators
+  /*    */ EO_COL_ALT_PUSHONE,  // push column int value from m_aAltCrw
+  /*    */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
   /*    */ EO_COL_NOT_PROJECT,  // reset column in streamPix of dst
   /*    */ EO_COL_SRC_PUSHONE,  // push column int value from m_aSrcCrw
   /*    */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw
-  /*    */ EO_COL_ALT_PUSHONE,  // push column int value from m_aAltCrw
-  /*    */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
 
   // crw operators
   /*    */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref
@@ -370,11 +370,11 @@ static Stz* aEO[]
   //----------------------------------------------------------------------------
 
   // col operators
+  /*    */ "EO_COL_ALT_PUSHONE"_Stz,
+  /*    */ "EO_COL_ALT_PUSHSET"_Stz,
   /*    */ "EO_COL_NOT_PROJECT"_Stz,
   /*    */ "EO_COL_SRC_PUSHONE"_Stz,
   /*    */ "EO_COL_SRC_PUSHSET"_Stz,
-  /*    */ "EO_COL_ALT_PUSHONE"_Stz,
-  /*    */ "EO_COL_ALT_PUSHSET"_Stz,
 
   // crw operators
   /*    */ "EO_CRW_ALT_DEREF"_Stz,
@@ -612,11 +612,11 @@ static EoArg EoArgs[]
   //----------------------------------------------------------------------------
   
   // col operators
+  { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSHONE
+  { EA_NONE,    0 },  // EO_COL_ALT_PUSHSET
   { EA_SUBSCR,  8 },  // EO_COL_NOT_PROJECT
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE
   { EA_NONE,    0 },  // EO_COL_SRC_PUSHSET
-  { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSHONE
-  { EA_NONE,    0 },  // EO_COL_ALT_PUSHSET
 
   // crw operators
   { EA_NONE,    0 },  // EO_CRW_ALT_DEREF

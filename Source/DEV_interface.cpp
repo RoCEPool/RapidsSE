@@ -55,7 +55,7 @@ void vDev_CRW_DEREF(void* aLU, void* aIXT)
   
   Crw* aCrw  = (Crw*)
     ( (char*)C_ADR_REGION
-             + iBuffer* C_1MB
+             + iBuffer * C_1MB
              + C_CRW_FIRSTHEAD
              + iItem * pLogicUnit->m_xRluCommon.m_nSrcHeadSize );
   
