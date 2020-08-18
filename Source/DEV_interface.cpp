@@ -1044,9 +1044,9 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                 NOT RIGHT */
+/* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
+i8 iDev_RSB_COL_PUSH(void* aLU, i8 iArg)
 {
   _static_
   
@@ -1062,9 +1062,9 @@ i8 iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                 NOT RIGHT */
+/* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
+void vDev_RSB_COL_PUSHI(void* aLU, i8 iArg, i8** aaiDstk)
 {
   _static_
   
@@ -1084,13 +1084,13 @@ void vDev_RSB_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                 NOT RIGHT */
+/* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
+void vDev_RSB_COL_PUSHSTR(void* aLU, i8 iArg, i8** aaiDstk)
 {
   _static_
   
-  vDev_RSB_COL_PUSHI(aLU,aRSB,iArg,aaiDstk);
+  vDev_RSB_COL_PUSHI(aLU,iArg,aaiDstk);
   
   /*
   DevRSB* pDevRsb = _pDevRSB(aRSB);
