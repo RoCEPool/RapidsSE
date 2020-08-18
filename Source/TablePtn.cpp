@@ -1115,7 +1115,7 @@ void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
   TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
   
   Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
-  Packing_v1::vPackCrw(aCrw_insert,pEncoding_upsert);
+  Packing_v1::vPackCrw_v1(aCrw_insert,pEncoding_upsert);
   
   // set perspective
   aCrw_insert->vPerspective(tPerspective);
@@ -1146,7 +1146,7 @@ void TablePtn::vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
   //TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
   
   Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
-  Packing_v1::vPackCrw(aCrw_insert,pEncoding_upsert);
+  Packing_v1::vPackCrw_v1(aCrw_insert,pEncoding_upsert);
   Rsb* aRsb = pRowSlab->aRsbAdr(i_Row);
   
   
@@ -1183,7 +1183,7 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Packing_v1::vPackCrw(aCrw_exists,pEncoding_upsert);
+  Packing_v1::vPackCrw_v1(aCrw_exists,pEncoding_upsert);
   
   // set perspective
   aCrw_exists->vPerspective(tPerspective);

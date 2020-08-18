@@ -207,7 +207,7 @@ bool RowCompactor::bAddIrwAsCrw(Row* pIrw)
   }
   
   // 5) pack encoded row into a compact row
-  vPackCrw(m_aHeadLine,m_pEncoding_v1);
+  Packing_v1::vPackCrw_v1(m_aHeadLine,m_pEncoding_v1);
   
   m_aHeadLine = nullptr;
 
@@ -246,7 +246,7 @@ bool RowCompactor::bAddRsbAsCrw(Rsb* aRsb)
   }
   
   // 5) pack encoded row into a compact row
-  vPackCrw(m_aHeadLine,m_pEncoding_v1);
+  Packing_v1::vPackCrw_v1(m_aHeadLine,m_pEncoding_v1);
   
   m_aHeadLine = nullptr;
 
@@ -292,7 +292,7 @@ bool RowCompactor::bAddSrwAsCrw(RowSingle* pSrw)
   }
   
   // 5) pack encoded row into a compact row
-  vPackCrw(m_aHeadLine,m_pEncoding_v1);
+  Packing_v1::vPackCrw_v1(m_aHeadLine,m_pEncoding_v1);
   
   m_aHeadLine = nullptr;
   
