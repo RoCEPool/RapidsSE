@@ -6,7 +6,7 @@ void vDev_COL_NOT_PROJECT(void* aLU, i8 iArg);
 
 void vDev_CRW_BEGIN(void* aLU, void* aIXT);
 void vDev_CRW_COL_PUSHI(void* aLU, i8 iArg, i8** aaiDstk);
-void vDev_CRW_FETCH(void* aLU, void* aIXT);
+void vDev_CRW_DEREF(void* aLU, void* aIXT);
 i8   iDev_CRW_NEXT(void* aLU, void* aIXT);
 void vDev_CRW_TORSB(void* aLU, void* aIXT);
 

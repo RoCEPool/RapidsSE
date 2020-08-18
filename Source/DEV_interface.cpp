@@ -38,7 +38,7 @@ void vDev_CRW_BEGIN(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* fetch m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref                             */
 /*----------------------------------------------------------------------------*/
-void vDev_CRW_FETCH(void* aLU, void* aIXT)
+void vDev_CRW_DEREF(void* aLU, void* aIXT)
 {
   _static_
   

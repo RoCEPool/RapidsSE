@@ -30,7 +30,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_COL_NOT_PROJECT"_Stz,   (const void *) vDev_COL_NOT_PROJECT   },
 
   { "vDev_CRW_BEGIN"_Stz,         (const void *) vDev_CRW_BEGIN         },
-  { "vDev_CRW_FETCH"_Stz,         (const void *) vDev_CRW_FETCH         },
+  { "vDev_CRW_DEREF"_Stz,         (const void *) vDev_CRW_DEREF         },
   { "iDev_CRW_NEXT"_Stz,          (const void *) iDev_CRW_NEXT          },
   { "vDev_CRW_TORSB"_Stz,         (const void *) vDev_CRW_TORSB         },
 
