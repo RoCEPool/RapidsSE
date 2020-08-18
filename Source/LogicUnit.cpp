@@ -1631,7 +1631,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // crw operators
       case EO_CRW_ALT_DEREF: ArgNil(); // deref m_aAltCrw using m_aAltEnt.ref
         dLU0(EO_CRW_ALT_DEREF);
-        vDev_CRW_DEREF(pLU,aRluCommon->m_pDevAltIxt);
+        //vDev_CRW_DEREF(pLU,aRluCommon->m_pDevAltIxt);
 
         iBuffer = aRluCommon->m_aAltEnt->Ref.m_uBuffer;
         iItem   = aRluCommon->m_aAltEnt->Ref.m_uItem;
@@ -1651,7 +1651,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_CRW_SRC_DEREF: ArgNil(); // deref m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref
         dLU0(EO_CRW_SRC_DEREF);
-        vDev_CRW_DEREF(pLU,aRluCommon->m_pDevSrcIxt);
+        //vDev_CRW_DEREF(pLU,aRluCommon->m_pDevSrcIxt);
         
         iBuffer = aRluCommon->m_aSrcEnt->Ref.m_uBuffer;
         iItem   = aRluCommon->m_aSrcEnt->Ref.m_uItem;
