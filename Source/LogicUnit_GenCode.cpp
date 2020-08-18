@@ -78,14 +78,7 @@ void LogicUnit::vGenerateQuery100(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // call PROCESSROW subroutine to process the row
   vAddCodeLabel(EO_CALL, "SUBROUTINE_PROCESSROW:"_Stz);
-  
-  // create a new rsb
-  //vAddCode(EO_RSB_DST_NEW);
-  
-  // inflate the src CRW to RSB
-  //vAddCode(EO_CRW_SRC_TORSB);
-  //vAddCode(EO_RSB_DST_PRINT);
-  
+
   vAddCodeLabel(EO_JMP, "NEXT_CRW_SRC:"_Stz);
   
   vDefineLabel("QRY_100_DONE:"_Stz);

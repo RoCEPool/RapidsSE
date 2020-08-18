@@ -32,7 +32,6 @@ DynamicSymbol gxaDynamicSymbol[]
   { "iDev_CRW_NEXT"_Stz,          (const void *) iDev_CRW_NEXT          },
   { "vDev_CRW_NULL"_Stz,          (const void *) vDev_CRW_NULL          },
   { "iDev_CRW_TEST"_Stz,          (const void *) iDev_CRW_TEST          },
-  { "vDev_CRW_TORSB"_Stz,         (const void *) vDev_CRW_TORSB         },
 
   { "iDev_ENT_COMPARE"_Stz,       (const void *) iDev_ENT_COMPARE       },
   { "iDev_ENT_NEXT"_Stz,          (const void *) iDev_ENT_NEXT          },
