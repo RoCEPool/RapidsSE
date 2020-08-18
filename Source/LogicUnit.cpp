@@ -1614,10 +1614,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_COL_ALT_PUSHSET);
         break;//+endCase
     
-      case EO_COL_NOT_PROJECT: ArgGet(iArg); // reset column in streamPix of dst
-        vDev_COL_NOT_PROJECT(pLU,iArg);
-        break;//+endCase
-                
+
       case EO_COL_SRC_PUSHONE: ArgGet(iArg); // push column value from m_aSrcCrw
         *(++aiDstk) = -1;
         *(++aiDstk) = iArg; // col to inflate
