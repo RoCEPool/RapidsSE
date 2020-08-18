@@ -32,6 +32,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_CRW_BEGIN"_Stz,         (const void *) vDev_CRW_BEGIN         },
   { "vDev_CRW_DEREF"_Stz,         (const void *) vDev_CRW_DEREF         },
   { "iDev_CRW_NEXT"_Stz,          (const void *) iDev_CRW_NEXT          },
+  { "vDev_CRW_NULL"_Stz,          (const void *) vDev_CRW_NULL          },
+  { "iDev_CRW_TEST"_Stz,          (const void *) iDev_CRW_TEST          },
   { "vDev_CRW_TORSB"_Stz,         (const void *) vDev_CRW_TORSB         },
 
   { "iDev_ENT_COMPARE"_Stz,       (const void *) iDev_ENT_COMPARE       },
@@ -304,7 +306,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_TRACE_LOGICUNIT
-  //vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
+  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
 #endif
   
   vAcquire();
