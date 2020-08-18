@@ -61,7 +61,7 @@ void SP_Encoding::vEncoding(Encoding_v1* pEncoding)
   
     char* szCrs = &caLine[0];
     
-    _ColEnc* aColEnc = & pEncoding->xaColEnc[i_Col];
+    _ColEnc_v1* aColEnc = & pEncoding->xaColEnc[i_Col];
     
     Column* pCol = pEncoding->m_pStreamDef->pGetColumn(i_Col);
     eDM eDatum   = pCol->eDatum();

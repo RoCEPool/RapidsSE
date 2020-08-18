@@ -129,7 +129,7 @@ void Encoding_v1::vEncodeSrw(RowSingle* pSrw)
 /*----------------------------------------------------------------------------*/
 /* morph the given column encoding (to MC_STR_TAIL_2T)                        */
 /*----------------------------------------------------------------------------*/
-void Encoding_v1::vMorphEncoding(_ColEnc* aColEnc)
+void Encoding_v1::vMorphEncoding(_ColEnc_v1* aColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
@@ -227,7 +227,7 @@ void Encoding_v1::vInitialEncodingIrw(Row* pIrw)
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
-    _ColEnc& xrColEnc = xaColEnc[i_Col];
+    _ColEnc_v1& xrColEnc = xaColEnc[i_Col];
     
     Dtm wColVal = pIrw->m_waColVal[i_Col];
     
@@ -279,7 +279,7 @@ void Encoding_v1::vInitialEncodingRsb(Rsb* aRsb)
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
 
-    _ColEnc& xrColEnc = xaColEnc[i_Col];
+    _ColEnc_v1& xrColEnc = xaColEnc[i_Col];
 
     eDM eDatum = xrColEnc.m_pCol->eDatum();
         
@@ -331,7 +331,7 @@ void Encoding_v1::vInitialEncodingSrw(RowSingle* pSrw)
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
-    _ColEnc& xrColEnc = xaColEnc[i_Col];
+    _ColEnc_v1& xrColEnc = xaColEnc[i_Col];
     
     Dtm wColVal = pSrw->m_waColVal[i_Col];
     
@@ -371,7 +371,7 @@ void Encoding_v1::vInitialEncodingSrw(RowSingle* pSrw)
 /*----------------------------------------------------------------------------*/
 /* encode a bcd column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding_v1::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeBcd(_ColEnc_v1& xColEnc, Dtm wColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
@@ -410,7 +410,7 @@ void Encoding_v1::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a bol column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding_v1::vEncodeBol(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeBol(_ColEnc_v1& xColEnc, Dtm wColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
@@ -433,7 +433,7 @@ void Encoding_v1::vEncodeBol(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a dte column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding_v1::vEncodeDte(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeDte(_ColEnc_v1& xColEnc, Dtm wColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
@@ -460,7 +460,7 @@ void Encoding_v1::vEncodeDte(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a flt column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding_v1::vEncodeFlt(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeFlt(_ColEnc_v1& xColEnc, Dtm wColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
@@ -481,7 +481,7 @@ void Encoding_v1::vEncodeFlt(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode an int column value                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding_v1::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeInt(_ColEnc_v1& xColEnc, Dtm wColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
@@ -520,7 +520,7 @@ void Encoding_v1::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode an ivl column value                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding_v1::vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeIvl(_ColEnc_v1& xColEnc, Dtm wColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
@@ -541,7 +541,7 @@ void Encoding_v1::vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a tme column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding_v1::vEncodeTme(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeTme(_ColEnc_v1& xColEnc, Dtm wColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
@@ -562,7 +562,7 @@ void Encoding_v1::vEncodeTme(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a tsp column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding_v1::vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeTsp(_ColEnc_v1& xColEnc, Dtm wColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
@@ -583,7 +583,7 @@ void Encoding_v1::vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* encode a vch column value                                                  */
 /*----------------------------------------------------------------------------*/
-void Encoding_v1::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
+void Encoding_v1::vEncodeVch(_ColEnc_v1& xColEnc, Dtm wColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
@@ -636,7 +636,7 @@ void Encoding_v1::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
 /*----------------------------------------------------------------------------*/
 /* test for null encoding                                                     */
 /*----------------------------------------------------------------------------*/
-bool Encoding_v1::bEncodeNul(_ColEnc& xColEnc, Dtm wDtm)
+bool Encoding_v1::bEncodeNul(_ColEnc_v1& xColEnc, Dtm wDtm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   
@@ -657,7 +657,7 @@ bool Encoding_v1::bEncodeNul(_ColEnc& xColEnc, Dtm wDtm)
 /*----------------------------------------------------------------------------*/
 /* compute initial offset and till for column encoding                        */
 /*----------------------------------------------------------------------------*/
-void Encoding_v1::vOffsetTill(_ColEnc& xrColEnc)
+void Encoding_v1::vOffsetTill(_ColEnc_v1& xrColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V1,_FOOTER_);
   

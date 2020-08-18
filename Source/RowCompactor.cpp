@@ -492,7 +492,7 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
   i8 nCols = m_pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
+    _ColEnc_v1* aColEnc = & m_pEncoding->xaColEnc[i_Col];
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for non-null vch column of minimum length
@@ -554,7 +554,7 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
   i8 nCols = m_pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
+    _ColEnc_v1* aColEnc = & m_pEncoding->xaColEnc[i_Col];
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for non-null vch column of minimum length
@@ -615,7 +615,7 @@ void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
   i8 nCols = m_pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
+    _ColEnc_v1* aColEnc = & m_pEncoding->xaColEnc[i_Col];
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for non-null vch column of minimum length
