@@ -72,14 +72,10 @@ void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop);
 i8   iDev_RSB_TEST(void* aLU, void* aRSB);
 void vDev_RSB_ZERO(void* aLU, void* aRSB);
 
-i8   iDev_RSB_COL_PUSH(void* aLU, i8 iArg);
-void vDev_RSB_COL_PUSHONE(void* aLU, i8 iArg, i8** aamDstk);
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-i8   iDev_ALT_COL_PUSH(void* aLU, void* aRSB, i8 iArg);
 void vDev_ALT_COL_PUSHONE(void* aLU, void* aRSB, i8 iArg, i8** aamDstk);
-
+void vDev_RSB_COL_PUSHONE(void* aLU, i8 iArg, i8** aamDstk);
 void vDev_SRC_COL_PUSHONE(void* aLU, i8 iArg, i8** aamDstk);
 
 void vDev_PIX_STM_PRINT(void* aLU);

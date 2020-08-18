@@ -23,9 +23,9 @@ Stz* gszaEoFragments[EO_ENUMS];
 /*----------------------------------------------------------------------------*/
 DynamicSymbol gxaDynamicSymbol[]
 {
-  { "iDev_ALT_COL_PUSH"_Stz,      (const void *) iDev_ALT_COL_PUSH      },
-  { "vDev_ALT_COL_PUSHONE"_Stz,     (const void *) vDev_ALT_COL_PUSHONE     },
-  { "vDev_SRC_COL_PUSHONE"_Stz,     (const void *) vDev_SRC_COL_PUSHONE     },
+  { "vDev_ALT_COL_PUSHONE"_Stz,   (const void *) vDev_ALT_COL_PUSHONE   },
+  { "vDev_RSB_COL_PUSHONE"_Stz,   (const void *) vDev_RSB_COL_PUSHONE   },
+  { "vDev_SRC_COL_PUSHONE"_Stz,   (const void *) vDev_SRC_COL_PUSHONE   },
   
   { "vDev_COL_NOT_PROJECT"_Stz,   (const void *) vDev_COL_NOT_PROJECT   },
 
@@ -92,9 +92,6 @@ DynamicSymbol gxaDynamicSymbol[]
   { "iDev_RSB_TEST"_Stz,          (const void *) iDev_RSB_TEST          },
   { "vDev_RSB_ZERO"_Stz,          (const void *) vDev_RSB_ZERO          },
 
-  { "iDev_RSB_COL_PUSH"_Stz,      (const void *) iDev_RSB_COL_PUSH      },
-  { "vDev_RSB_COL_PUSHONE"_Stz,   (const void *) vDev_RSB_COL_PUSHONE   },
- 
   { "vLib_ASSERT"_Stz,            (const void *) vLib_ASSERT            },
   { "vLib_BREAKPOINT"_Stz,        (const void *) vLib_BREAKPOINT        },
   { "iLib_DTE_NOW"_Stz,           (const void *) iLib_DTE_NOW           },
