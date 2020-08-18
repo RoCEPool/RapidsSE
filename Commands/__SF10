@@ -35,8 +35,8 @@ create index idx on lineitem (l_shipdate);
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // SF1 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-// /time fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
- /time fload lineitem "/TPCH/SF10/lineitem.tbl";
+/time fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
+// /time fload lineitem "/TPCH/SF10/lineitem.tbl";
 
 compactidx lineitem idx;
 //vfyidx lineitem idx;
