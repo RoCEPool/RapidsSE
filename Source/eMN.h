@@ -5,7 +5,7 @@
 
 enum eMN : u1 // meta nibble
 {
-  /* 0 */ MN_NUMERIC = 0, // numeric data 0B .. 15B
+  /* 0 */ MN_NUMERIC = 0, // numeric data 0B .. 8B
   /* 1 */ MN_DATE_E0,     // date era 0
   /* 2 */ MN_DATE_E1,     // date era 1
   /* 3 */ MN_DATE_E2,     // date era 2

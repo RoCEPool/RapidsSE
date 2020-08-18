@@ -71,6 +71,9 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
   i8 i_WhichCol = 0;
   i_ColToRetrieve = iWhichCol[i_WhichCol];
     
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // for each column
+  
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
         
     eMetaCode = *aeMetaCode++;
@@ -83,19 +86,19 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
     
     if (i_Col != i_ColToRetrieve) {
 
-      if (uHigh <  0x8) // numeric
+      if (uHigh <=  MN_NUMERIC)  // numeric
         ayDataByte += uLow;
       else
-      if (uHigh >  0xD) // small value
+      if (uHigh >=  MN_NEGATIVE) // small value
         {;}
       else
-      if (uHigh == 0x8) // string x 2
+      if (uHigh == MN_STRING_x2) // string x 2
         ayDataByte += STRx2(uLow);
       else
-      if (uHigh == 0x9) // string x 4
+      if (uHigh == MN_STRING_x4) // string x 4
         ayDataByte += STRx4(uLow);
       else
-      if (uHigh == 0xA) // string x 8
+      if (uHigh == MN_STRING_x8) // string x 8
         ayDataByte += STRx8(uLow);
       else {
         RASSERT(0);
@@ -108,7 +111,8 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
     
     switch (uHigh) {
         
-      case 0x0:
+      case MN_NUMERIC: // numeric values 0..8B
+        
         switch (uLow) {
             
           case 0x0: // numeric 0B
@@ -241,7 +245,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
         }
         break;
         
-      case 0x1: // date era-0
+      case MN_DATE_E0: // date era-0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)ayDstByte;
         
         *ayDstByte++ = *ayDataByte++; // 0
@@ -256,7 +260,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
         vDteFromEdt(aiCellValue,C_ERA_0);
         break;
         
-      case 0x2: // date era-1
+      case MN_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)ayDstByte;
         
         *ayDstByte++ = *ayDataByte++; // 0
@@ -271,7 +275,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
         vDteFromEdt(aiCellValue,C_ERA_1);
         break;
         
-      case 0x3: // date era-2
+      case MN_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)ayDstByte;
         
         *ayDstByte++ = *ayDataByte++; // 0
@@ -286,62 +290,67 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
         vDteFromEdt(aiCellValue,C_ERA_2);
         break;
         
-      case 0x4: // short string 0..15B (no null)
+      case MN_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
         nStrLen = STRx1(uLow);
         memcpy(ayDstByte,ayDataByte,(size_t)nStrLen);
         ayDstByte += nStrLen;
         *ayDstByte++ = '\0';
         break;
         
-      case 0x5: // null
+      case MN_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         *(i8*)ayDstByte = C_DATUM_NULL;
         ayDstByte += C_BYTES_PER_WORD;
         break;
         
-      case 0x6: // spare
+      case MN_SPARE0: // spare
         RASSERT(0);
         break;
         
-      case 0x7: // overflow 2B
+      case MN_OVERFLOW: // overflow 2B
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
-      case 0x8: // string x 2
+      // end where uLow is n-bytes
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // toBytes(uLow) depends on uHigh
+        
+      case MN_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrLen = STRx2(uLow);
          memcpy(ayDstByte,ayDataByte,(size_t)nStrLen);
         ayDstByte += nStrLen;
         *ayDstByte++ = '\0';
         break;
         
-      case 0x9: // string x 4
+      case MN_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrLen = STRx4(uLow);
         memcpy(ayDstByte,ayDataByte,(size_t)nStrLen);
         ayDstByte += nStrLen;
         *ayDstByte++ = '\0';
         break;
         
-      case 0xA: // string x 8
+      case MN_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrLen = STRx8(uLow);
         memcpy(ayDstByte,ayDataByte,(size_t)nStrLen);
         ayDstByte += nStrLen;
         *ayDstByte++ = '\0';
         break;
         
-      case 0xB: // length encoded string
+      case MN_STRING_LEN: // length encoded string -- -- -- -- -- -- -- -- -- --
         RASSERT(0);
         break;
         
-      case 0xC: // blob 0
+      case MN_BLOB_0: // blob type 0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         RASSERT(0);
         break;
         
-      case 0xD: // blob 1
+      case MN_BLOB_1: // blob type 1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         RASSERT(0);
         break;
         
-      case 0xE: // -ve digit -16..-1
-        *ayDstByte++ = - (i1)uLow + 1; // 0
+      case MN_NEGATIVE: // -ve digit -16..-1 -- -- -- -- -- -- -- -- -- -- -- --
+        aiCellValue = (i8*)ayDstByte;
+        
+        *ayDstByte++ = (i1)uLow + 1; // 0
         *ayDstByte++ = 0; // 1
         *ayDstByte++ = 0; // 2
         *ayDstByte++ = 0; // 3
@@ -349,9 +358,12 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
         *ayDstByte++ = 0; // 5
         *ayDstByte++ = 0; // 6
         *ayDstByte++ = 0; // 7
+        
+        *aiCellValue = - *aiCellValue;
+
         break;
         
-      case 0xF: // +ve digit 1..16
+      case MN_POSITIVE: // +ve digit 1..16 - -- -- -- -- -- -- -- -- -- -- -- --
         *ayDstByte++ = uLow + 1; // 0
         *ayDstByte++ = 0; // 1
         *ayDstByte++ = 0; // 2
@@ -363,6 +375,9 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
         break;
     }
     
+    // end inflate column
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     aiDstk_lcl++;
     
     // move to next column to retrieve
@@ -373,6 +388,9 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
     
     i_ColToRetrieve = iWhichCol[i_WhichCol];
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // end for each column
 }
 
 /*============================================================================*/
