@@ -49,7 +49,12 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   struct Ent_int* m_aSrcEnt;
   struct Ent_int* m_aTmpEnt;
   struct Ent_int* m_aWrkEnt;
+  
+  i8 m_nAltHeadSize;
+  i8 m_nSrcHeadSize;
 
+  void* m_aAltCrw;
+  void* m_aSrcCrw;
 
   char m_caStrWrk[128];
 

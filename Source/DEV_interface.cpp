@@ -38,15 +38,30 @@ void vDev_CRW_BEGIN(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* fetch m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref                             */
 /*----------------------------------------------------------------------------*/
-void vDev_CRW_FETCH(void* aLU, void* aIXT)
+void vDev_CRW_DEREF(void* aLU, void* aIXT)
 {
   _static_
   
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   pDevIxt->m_aCrw  =
     CrwBuffer::pRefdCrw(pDevIxt->m_aEnt->rxRef());
-
+  
+  // can we calc it?
+  
+  i8 iBuffer = ((Ent_int*)pDevIxt->m_aEnt)->Ref.m_uBuffer;
+  i8 iItem   = ((Ent_int*)pDevIxt->m_aEnt)->Ref.m_uItem;
+  
+  Crw* aCrw  = (Crw*)
+    ( (char*)C_ADR_REGION
+             + iBuffer * C_1MB
+             + C_CRW_FIRSTHEAD
+             + iItem * pLogicUnit->m_xRluCommon.m_nSrcHeadSize );
+  
+  RASSERT(aCrw == pDevIxt->m_aCrw);
+  
+  // ... yes we can
 }
 
 /*----------------------------------------------------------------------------*/
@@ -551,7 +566,7 @@ Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT)
       if (pDevIXT->m_aUpperEnt) {
         
         pLogicUnit->m_xRluCommon.m_aEntArray =
-          (Ent_int*)pUpperEntBuffer;
+          (Ent_int*)pUpperEntBuffer->aEntArray();
 
         return (Ent_int*)pDevIXT->m_aUpperEnt;
       }
@@ -593,7 +608,7 @@ Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
       if (pDevIXT->m_aUpperEnt) {
         
         pLogicUnit->m_xRluCommon.m_aEntArray =
-          (Ent_int*)pUpperEntBuffer;
+          (Ent_int*)pUpperEntBuffer->aEntArray();
         
         return (Ent_int*)pDevIXT->m_aUpperEnt;
       }
@@ -637,7 +652,7 @@ Ent_int* aDev_IXT_TRV_BEGIN(void* aLU, void* aIXT)
     pDevIXT->m_aEnt = pDevIXT->m_pEntBuffer->aLeadEntry();
     if (pDevIXT->m_aEnt) {
       pLogicUnit->m_xRluCommon.m_aEntArray =
-        (Ent_int*)pDevIXT->m_pEntBuffer;
+        (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
       return (Ent_int*)pDevIXT->m_aEnt;
     }
     else
@@ -661,9 +676,12 @@ Ent_int* aDev_IXT_TRV_NEXT(void* aLU, void* aIXT)
   pDevIXT->m_aEnt =
      EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
   
-  pLogicUnit->m_xRluCommon.m_aEntArray =
-    (Ent_int*)pDevIXT->m_pEntBuffer;
-  
+  if (pDevIXT->m_pEntBuffer)
+    pLogicUnit->m_xRluCommon.m_aEntArray =
+      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+  else
+    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
+
   return (Ent_int*)pDevIXT->m_aEnt;
 }
 
@@ -1056,9 +1074,9 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                 NOT RIGHT */
+/* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
+i8 iDev_RSB_COL_PUSH(void* aLU, i8 iArg)
 {
   _static_
   
@@ -1074,9 +1092,9 @@ i8 iDev_RSB_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                 NOT RIGHT */
+/* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
+void vDev_RSB_COL_PUSHONE(void* aLU, i8 iArg, i8** aaiDstk)
 {
   _static_
   
@@ -1093,32 +1111,6 @@ void vDev_RSB_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
 //                            pLogicUnit->m_pDevSrcIxt->m_aCrw,
 //                            iArg,
 //                            pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                 NOT RIGHT */
-/*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHSTR(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
-{
-  _static_
-  
-  vDev_RSB_COL_PUSHI(aLU,aRSB,iArg,aaiDstk);
-  
-  /*
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  HV_Row hRow(pDevRsb->m_pStreamDef,C_ALL);
-  RowInflator::vInflateColumn(hRow,pLogicUnit->m_pDevSrcIxt->m_aCrw,iArg);
-  
-  Stz* szStr = (Stz*)hRow->m_waColVal[iArg].m_iWrd;
-
-  i8 nSize = StrLib::nSize((char*)szStr);
-  char* azDst = (char*)(++*aaiDstk);
-  StrLib::vCopy(azDst,(char*)szStr);
-  *aaiDstk += (nSize / 8) + 1;
-  *(++*aaiDstk) = nSize;
-  */
 }
 
 
@@ -1147,7 +1139,7 @@ i8 iDev_ALT_COL_PUSH(void* aLU, void* aRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
-void vDev_ALT_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
+void vDev_ALT_COL_PUSHONE(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
 {
   _static_
   
@@ -1164,7 +1156,7 @@ void vDev_ALT_COL_PUSHI(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                 NOT RIGHT */
 /*----------------------------------------------------------------------------*/
-void vDev_SRC_COL_PUSHI(void* aLU, i8 iArg, i8** aaiDstk)
+void vDev_SRC_COL_PUSHONE(void* aLU, i8 iArg, i8** aaiDstk)
 {
   _static_
   

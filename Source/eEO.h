@@ -134,19 +134,16 @@ enum eEO : u1 // expression operators
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col operators
-  /*    */ EO_COL_NOT_PROJECT,  // reset column in streamPix of dst
-  /*    */ EO_COL_SRC_PUSH,     // push column value from m_aSrcCrw
-  /*    */ EO_COL_SRC_PUSHI,    // push column int value from m_aSrcCrw
-  /*    */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw
-  /*    */ EO_COL_SRC_PUSHSTR,  // push column str value from m_aSrcCrw
-  /*    */ EO_COL_ALT_PUSH,     // push column value from m_aAltCrw
-  /*    */ EO_COL_ALT_PUSHI,    // push column int value from m_aAltCrw
+  /*    */ EO_COL_ALT_PUSHONE,  // push column int value from m_aAltCrw
   /*    */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
+  /*    */ EO_COL_NOT_PROJECT,  // reset column in streamPix of dst
+  /*    */ EO_COL_SRC_PUSHONE,  // push column int value from m_aSrcCrw
+  /*    */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw
 
   // crw operators
+  /*    */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref
   /*    */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
-  /*    */ EO_CRW_SRC_FETCH,    // fetch m_aSrcCrw using m_aSrcEnt.ref
-  /*    */ EO_CRW_ALT_FETCH,    // fetch m_aAltCrw using m_aAltEnt.ref
+  /*    */ EO_CRW_SRC_DEREF,    // deref m_aSrcCrw using m_aSrcEnt.ref
   /*    */ EO_CRW_SRC_NEXT,     // move to next src rsb
   /*    */ EO_CRW_SRC_NULL,     // null crw src
   /*    */ EO_CRW_SRC_TEST,     // test if there is a crw buffer
@@ -375,19 +372,16 @@ static Stz* aEO[]
   //----------------------------------------------------------------------------
 
   // col operators
-  /*    */ "EO_COL_NOT_PROJECT"_Stz,
-  /*    */ "EO_COL_SRC_PUSH"_Stz,
-  /*    */ "EO_COL_SRC_PUSHI"_Stz,
-  /*    */ "EO_COL_SRC_PUSHSET"_Stz,
-  /*    */ "EO_COL_SRC_PUSHSTR"_Stz,
-  /*    */ "EO_COL_ALT_PUSH"_Stz,
-  /*    */ "EO_COL_ALT_PUSHI"_Stz,
+  /*    */ "EO_COL_ALT_PUSHONE"_Stz,
   /*    */ "EO_COL_ALT_PUSHSET"_Stz,
+  /*    */ "EO_COL_NOT_PROJECT"_Stz,
+  /*    */ "EO_COL_SRC_PUSHONE"_Stz,
+  /*    */ "EO_COL_SRC_PUSHSET"_Stz,
 
   // crw operators
+  /*    */ "EO_CRW_ALT_DEREF"_Stz,
   /*    */ "EO_CRW_SRC_BEGIN"_Stz,
-  /*    */ "EO_CRW_SRC_FETCH"_Stz,
-  /*    */ "EO_CRW_ALT_FETCH"_Stz,
+  /*    */ "EO_CRW_SRC_DEREF"_Stz,
   /*    */ "EO_CRW_SRC_NEXT"_Stz,
   /*    */ "EO_CRW_SRC_NULL"_Stz,
   /*    */ "EO_CRW_SRC_TEST"_Stz,
@@ -622,19 +616,16 @@ static EoArg EoArgs[]
   //----------------------------------------------------------------------------
   
   // col operators
-  { EA_SUBSCR,  8 },  // EO_COL_NOT_PROJECT
-  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSH
-  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHI
-  { EA_NONE,    0 },  // EO_COL_SRC_PUSHSET
-  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHSTR
-  { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSH
-  { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSHI
+  { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSHONE
   { EA_NONE,    0 },  // EO_COL_ALT_PUSHSET
+  { EA_SUBSCR,  8 },  // EO_COL_NOT_PROJECT
+  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE
+  { EA_NONE,    0 },  // EO_COL_SRC_PUSHSET
 
   // crw operators
+  { EA_NONE,    0 },  // EO_CRW_ALT_DEREF
   { EA_NONE,    0 },  // EO_CRW_SRC_BEGIN
-  { EA_NONE,    0 },  // EO_CRW_SRC_FETCH
-  { EA_NONE,    0 },  // EO_CRW_ALT_FETCH
+  { EA_NONE,    0 },  // EO_CRW_SRC_DEREF
   { EA_NONE,    0 },  // EO_CRW_SRC_NEXT
   { EA_NONE,    0 },  // EO_CRW_SRC_NULL
   { EA_NONE,    0 },  // EO_CRW_SRC_TEST

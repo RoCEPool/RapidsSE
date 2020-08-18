@@ -772,11 +772,9 @@ void LogicUnit::vGenerateQuery300(void)
   
   vDefineLabel("PRC_CUS:"_Stz);
 
-  vAddCode(EO_CRW_SRC_FETCH);
-  //vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
-  //vAddCode(EO_STR_PRINTSTK);
+  vAddCode(EO_CRW_SRC_DEREF);
   
-  vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
+  vAddCodeArg(EO_COL_SRC_PUSHONE,C_MKTSEGMENT);
   //vAddCode(EO_DUMP);
   vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);
   vAddCode(EO_STR_COMPARE);
@@ -825,14 +823,11 @@ void LogicUnit::vGenerateQuery300(void)
 
   //vAddCode(EO_IXT_ALT_PRINT);
   
-  vAddCode(EO_CRW_ALT_FETCH);
-  vAddCodeArg(EO_COL_ALT_PUSHI,O_ORDERDATE);
+  vAddCode(EO_CRW_ALT_DEREF);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERDATE);
   vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
-
-  //vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
-  //vAddCode(EO_DTE_PRINT);
 
   vAddCodeLabel(EO_CALL,"DST_PUT:"_Stz);
 
@@ -847,7 +842,7 @@ void LogicUnit::vGenerateQuery300(void)
   
   // calc i_Ptn (should be zero for the moment)
   vAddCode(EO_PTN_RESET);
-  vAddCodeArg(EO_COL_ALT_PUSHI,O_ORDERKEY);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERKEY);
   vAddCode(EO_PTN_RUNNING);
   vAddCode(EO_PTN_CALC);
   
@@ -874,11 +869,11 @@ void LogicUnit::vGenerateQuery300(void)
   
 #else
   vAddCode(EO_RSB_DST_NEW);
-  vAddCodeArg(EO_COL_ALT_PUSHI,O_ORDERKEY);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERKEY);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERKEY);
-  vAddCodeArg(EO_COL_ALT_PUSHI,O_ORDERDATE);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERDATE);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERDATE);
-  vAddCodeArg(EO_COL_ALT_PUSHI,O_SHIPPRIORITY);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,O_SHIPPRIORITY);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
 #endif
   
@@ -979,9 +974,9 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_IXT_CMP_WRKALT);
   vAddCodeLabel(EO_JMP_FALSE,"RET_AGG_f:"_Stz);
   
-  vAddCode(EO_CRW_ALT_FETCH);
+  vAddCode(EO_CRW_ALT_DEREF);
   
-  vAddCodeArg(EO_COL_ALT_PUSHI,L_SHIPDATE);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_SHIPDATE);
   vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
   vAddCode(EO_GREATERTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_AGG:"_Stz);
@@ -990,11 +985,11 @@ void LogicUnit::vGenerateQuery301(void)
 //  vAddCode(EO_STR_PRINTADR);
   
   vAddCodeArg(EO_RSB_DST_PUSHCOLI,Q301_REVENUE);
-  vAddCodeArg(EO_COL_ALT_PUSHI,L_EXTENDEDPRICE);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_EXTENDEDPRICE);
   vAddCode(EO_ADD);
 
   vAddCodeArg(EO_INTEGER,100);
-  vAddCodeArg(EO_COL_ALT_PUSHI,L_DISCOUNT);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_DISCOUNT);
   vAddCode(EO_SUBTRACT);
   
   vAddCode(EO_MULTIPLY);
@@ -1435,8 +1430,8 @@ void LogicUnit::vGenerateQuery400(void)
   vDefineLabel("GOT_ORD:"_Stz);
 
   // test O_ORDERDATE
-  vAddCode(EO_CRW_SRC_FETCH);
-  vAddCodeArg(EO_COL_SRC_PUSHI,O_ORDERDATE);
+  vAddCode(EO_CRW_SRC_DEREF);
+  vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERDATE);
   //vAddCode(EO_DUP);
   //vAddCode(EO_DTE_PRINT);
   
@@ -1509,10 +1504,10 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeLabel(EO_JMP_FALSE,"RET_ITM_f:"_Stz);
   
   // test L_COMMITDATE < L_RECEIPTDATE
-  vAddCode(EO_CRW_ALT_FETCH);
+  vAddCode(EO_CRW_ALT_DEREF);
   
-//  vAddCodeArg(EO_COL_ALT_PUSHI,L_COMMITDATE);
-//  vAddCodeArg(EO_COL_ALT_PUSHI,L_RECEIPTDATE);
+//  vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
+//  vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
   
   vAddCode(EO_PUSH_MINUS1);
   vAddCodeArg(EO_INTEGER,L_RECEIPTDATE);
@@ -1545,7 +1540,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_ENTWRK_RESET);
   
   // add key O_ORDERPRIORITY
-  vAddCodeArg(EO_COL_SRC_PUSHSTR,O_ORDERPRIORITY);
+  vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERPRIORITY);
   vAddCode(EO_ENTWRK_APPENDELMS);
 
   // attempt to find the key in the indexTree
@@ -1818,7 +1813,7 @@ void LogicUnit::vGenerateQuery600(void)
   vDefineLabel("TRV_TILL_END:"_Stz);
   vAddCode(EO_IXT_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE, "TRV_RET:"_Stz);
-  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_CRW_SRC_DEREF);
   vAddCode(EO_RSB_DST_NEW);
   vAddCode(EO_CRW_SRC_TORSB);
   //vAddCode(EO_RSB_DST_PRINT);
@@ -1834,7 +1829,7 @@ void LogicUnit::vGenerateQuery600(void)
   vAddCode(EO_EQUAL);
   vAddCodeLabel(EO_JMP_TRUE, "TRV_RET:"_Stz);
   
-  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_CRW_SRC_DEREF);
   vAddCode(EO_RSB_DST_NEW);
   vAddCode(EO_CRW_SRC_TORSB);
   //vAddCode(EO_RSB_DST_PRINT);
@@ -1948,7 +1943,7 @@ void LogicUnit::vGenerateQuery600b(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fetch the crw
-  vAddCode(EO_CRW_SRC_FETCH);
+  vAddCode(EO_CRW_SRC_DEREF);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // inflate crw required columns

@@ -24,13 +24,13 @@ Stz* gszaEoFragments[EO_ENUMS];
 DynamicSymbol gxaDynamicSymbol[]
 {
   { "iDev_ALT_COL_PUSH"_Stz,      (const void *) iDev_ALT_COL_PUSH      },
-  { "vDev_ALT_COL_PUSHI"_Stz,     (const void *) vDev_ALT_COL_PUSHI     },
-  { "vDev_SRC_COL_PUSHI"_Stz,     (const void *) vDev_SRC_COL_PUSHI     },
+  { "vDev_ALT_COL_PUSHONE"_Stz,     (const void *) vDev_ALT_COL_PUSHONE     },
+  { "vDev_SRC_COL_PUSHONE"_Stz,     (const void *) vDev_SRC_COL_PUSHONE     },
   
   { "vDev_COL_NOT_PROJECT"_Stz,   (const void *) vDev_COL_NOT_PROJECT   },
 
   { "vDev_CRW_BEGIN"_Stz,         (const void *) vDev_CRW_BEGIN         },
-  { "vDev_CRW_FETCH"_Stz,         (const void *) vDev_CRW_FETCH         },
+  { "vDev_CRW_DEREF"_Stz,         (const void *) vDev_CRW_DEREF         },
   { "iDev_CRW_NEXT"_Stz,          (const void *) iDev_CRW_NEXT          },
   { "vDev_CRW_NULL"_Stz,          (const void *) vDev_CRW_NULL          },
   { "iDev_CRW_TEST"_Stz,          (const void *) iDev_CRW_TEST          },
@@ -93,9 +93,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_RSB_ZERO"_Stz,          (const void *) vDev_RSB_ZERO          },
 
   { "iDev_RSB_COL_PUSH"_Stz,      (const void *) iDev_RSB_COL_PUSH      },
-  { "vDev_RSB_COL_PUSHI"_Stz,     (const void *) vDev_RSB_COL_PUSHI     },
-  { "vDev_RSB_COL_PUSHSTR"_Stz,   (const void *) vDev_RSB_COL_PUSHSTR   },
-
+  { "vDev_RSB_COL_PUSHONE"_Stz,   (const void *) vDev_RSB_COL_PUSHONE   },
+ 
   { "vLib_ASSERT"_Stz,            (const void *) vLib_ASSERT            },
   { "vLib_BREAKPOINT"_Stz,        (const void *) vLib_BREAKPOINT        },
   { "iLib_DTE_NOW"_Stz,           (const void *) iLib_DTE_NOW           },
@@ -686,8 +685,14 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  typedef char Stz;"
   "\n  typedef unsigned short tET;"
   "\n"
+  "\n  static const i8 C_1MB = 1048576;"
+  "\n"
+  "\n  static const void* C_ADR_REGION = (void*)0x204800000000;"
   "\n  static const i8 C_DATUM_NULL = -9223372036854775807;"
+  "\n  static const i8 C_CRW_HEADBYTES = 32;"
+  "\n  static const i8 C_CRW_FIRSTHEAD = 0x210;"
   "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
+  "\n"
   "\n  #define C_MAX_LVL_LEVELS 6"
   "\n"
   "\n  #include \"../Source/EnumGroups.h\""
@@ -798,7 +803,9 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    char* azSrc;"
   "\n    char* azDst;"
   "\n    char* azArg;"
-  "\n    struct Ent_int* aEntNext_int;"
+  "\n    i8 iBuffer;"
+  "\n    i8 iItem;"
+  "\n    struct Ent_int* aEnt_int;"
   "\n"
 //  "\n    printf(\"Sizeof Ent_Int   : %d\n\",sizeof(struct Ent_int));"
 //  "\n    printf(\"Sizeof RluCommon : %d\n\",sizeof(struct RluCommon));"
@@ -868,7 +875,9 @@ void LogicCompiler::v_SbrPreliminary(Stz* szSbrNm)
   "\n    char* azSrc;"
   "\n    char* azDst;"
   "\n    char* azArg;"
-  "\n    struct Ent_int* aEntNext_int;"
+  "\n    i8 iBuffer;"
+  "\n    i8 iItem;"
+  "\n    struct Ent_int* aEnt_int;"
   "\n"
   "\n"
   "";
