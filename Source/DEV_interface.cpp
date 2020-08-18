@@ -57,6 +57,7 @@ i8 iDev_CRW_NEXT(void* aLU, void* aIXT)
 {
   _static_
   
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIxt = _pDevIXT(aIXT);
 
   i8 iRes;
@@ -64,6 +65,7 @@ i8 iDev_CRW_NEXT(void* aLU, void* aIXT)
   if (++pDevIxt->m_i_Row < pDevIxt->m_nRows) {
     pDevIxt->m_aCrw =
       pDevIxt->m_pCrwBuffer->aCrw(pDevIxt->m_i_Row);
+    pLogicUnit->m_xRluCommon.m_aSrcCrw = pDevIxt->m_aCrw;
     iRes = 1;
   }
   else {

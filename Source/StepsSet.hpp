@@ -1412,6 +1412,7 @@ public:
 
   // stream def
   void vStreamDefAsStr(void);
+  void vStreamDefAsSrcStreamDef(void);
   void vStreamDefColumnFetch(void);
   void vStreamDefColumnCountFetch(void);
   void vStreamDefDelete(void);

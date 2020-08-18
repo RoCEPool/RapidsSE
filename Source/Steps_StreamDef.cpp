@@ -10,6 +10,7 @@
 void Step::vAddSteps_StreamDef(void)
 {
   vAddStep("StreamDef[]"_Stz,                 &Step::vStreamDefGet);
+  vAddStep("StreamDef[].asSrcStreamDef"_Stz,  &Step::vStreamDefAsSrcStreamDef);
   vAddStep("StreamDef[].asStr"_Stz,           &Step::vStreamDefAsStr);
   vAddStep("StreamDef[].columnCount@"_Stz,    &Step::vStreamDefColumnCountFetch);
   vAddStep("StreamDef[].column@"_Stz,         &Step::vStreamDefColumnFetch);
@@ -43,6 +44,20 @@ void Step::vStreamDefAsStr(void)
   pStreamDef->vAsString(sStreamDef.pString());
   
   m_pDataStack->vPushStr(sStreamDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].asSrcStreamDef -- use this stream def as src stream def        */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefAsSrcStreamDef(void)
+{
+  ENTRY();
+  
+  StreamDef* pStreamDef = *m_pLogicUnit->m_xpStreamDef;
+  
+  m_pLogicUnit->m_pDevSrcRsb->m_pStreamDef = pStreamDef;
   
   EXIT();
 }
