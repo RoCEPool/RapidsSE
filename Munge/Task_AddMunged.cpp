@@ -21991,7 +21991,6 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  stage stageB on all partitions :\n"
     "    sql 600 $Table $Index\n"
-    "    //| sql 601\n"
     "    | stageC\n"
     "\n"
     "  stage stageC on origin :\n"

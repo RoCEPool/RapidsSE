@@ -1044,7 +1044,6 @@
 
   stage stageB on all partitions :
     sql 600 $Table $Index
-    //| sql 601
     | stageC
 
   stage stageC on origin :

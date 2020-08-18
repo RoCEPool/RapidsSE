@@ -25,7 +25,6 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     401: vGenerateQuery401();    break;
 
     case     600: vGenerateQuery600();    break;
-    case     601: vGenerateQuery601();    break;
     case     602: vGenerateQuery602();    break;
       
     case    1700: vGenerate1700();        break;
@@ -1892,109 +1891,6 @@ void LogicUnit::vGenerateQuery600(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // END SUBROUTINE: SUBROUTINE_AGGREGATE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate agg code (query6)                                                 */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery601(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  // set the query no
-  m_xRluCommon.m_iSql = 601;
-  
-  // init the code
-  m_i_Code = 0;
-  
-  vDefineLabel("QRY_601:"_Stz);
-  vAddCode(EO_INIT);
-  
-  // new a rsb dst row if not there
-  vAddCode(EO_RSB_DST_TESTROW);
-  vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
-  vAddCode(EO_RSB_DST_NEW);
-  
-  // initialze the row
-  vAddCode(EO_PUSH_0);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
-  
-  //vAddCode(EO_RSB_DST_PRINT);
-  
-  // begin RSB traversal
-  vDefineLabel("RSB_SRC_BEGIN:"_Stz);
-  vAddCode(EO_RSB_SRC_BEGIN);
-
-  vDefineLabel("NEXT_RSB_SRC:"_Stz);
-  
-  vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
-  
-  // call the filter subroutine
-  vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
-  vAddCodeLabel(EO_JMP_FALSE, "NEXT_RSB_SRC:"_Stz);
-  
-  // call the aggregate subroutine
-  vAddCodeLabel(EO_CALL, "SUBROUTINE_AGGREGATE:"_Stz);
-  vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
-  
-  vDefineLabel("END_RSB_SRC:"_Stz);
-  vAddCode(EO_RETURN);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // FILTER SUBROUTINE
-  vDefineLabel("SUBROUTINE_FILTER:"_Stz);
-
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_DISCOUNT);
-  vAddCodeArg(EO_INTEGER, 5);
-  vAddCode(EO_GREATEREQUAL);
-  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
-  
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_DISCOUNT);
-  vAddCodeArg(EO_INTEGER, 7);
-  vAddCode(EO_LESSTHAN);
-  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
-
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_QUANTITY);
-  vAddCodeArg(EO_INTEGER, 2400);
-  vAddCode(EO_LESSTHAN);
-  vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
-
-  // return true
-  vAddCode(EO_PUSH_1);
-  vAddCodeLabel(EO_JMP,"RETURN:"_Stz);
-  
-  // return false
-  vDefineLabel("RETURN_FALSE:"_Stz);
-  vAddCode(EO_PUSH_0);
-  
-  // return
-  vDefineLabel("RETURN:"_Stz);
-  vAddCode(EO_RETURN);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // AGGREGATE SUBROUTINE
-  vDefineLabel("SUBROUTINE_AGGREGATE:"_Stz);
-
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_EXTENDEDPRICE);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)L_DISCOUNT);
-  vAddCode(EO_MULTIPLY);
-  vAddCodeArg(EO_INTEGER,100);
-  vAddCode(EO_DIVIDE);
-  
-  vAddCodeArg(EO_RSB_DST_PUSHCOLI,(i8)Q600_REVENUE);
-  vAddCode(EO_ADD);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
-  
-  // TEMP !!!
-  // COUNT(*) -> Q600_COUNT
-//  vAddCodeArg(EO_RSB_DST_PUSHCOLI, (i8)Q600_COUNT);
-//  vAddCode(EO_INC);
-//  vAddCodeArg(EO_RSB_DST_POPCOLI, (i8)Q600_COUNT);
-  
-  vAddCode(EO_RETURN);
-  
-  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
