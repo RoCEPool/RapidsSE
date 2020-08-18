@@ -61,12 +61,11 @@ void LogicUnit::vGenerateQuery100(void)
   vDefineLabel("QRY_100:"_Stz);
   vAddCode(EO_INIT);
   
-  // set the query no
-  m_xRluCommon.m_iSql = 100;
-  
-  // reset
-  m_i_Code = 0;
-  
+  vAddCode(EO_CRW_SRC_TEST);
+  vAddCodeLabel(EO_JMP_TRUE,"BEGIN_CRW_SRC:"_Stz);
+  vAddCodeLabel(EO_CALL,"SUBROUTINE_IXT_TO_RSB:"_Stz);
+   
+  vDefineLabel("BEGIN_CRW_SRC:"_Stz);
   // forearch src
   vAddCode(EO_CRW_SRC_BEGIN);
   
@@ -74,6 +73,7 @@ void LogicUnit::vGenerateQuery100(void)
   vDefineLabel("NEXT_CRW_SRC:"_Stz);
   vAddCode(EO_CRW_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE,"QRY_100_DONE:"_Stz);
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // call PROCESSROW subroutine to process the row
@@ -89,6 +89,7 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeLabel(EO_JMP, "NEXT_CRW_SRC:"_Stz);
   
   vDefineLabel("QRY_100_DONE:"_Stz);
+  vAddCode(EO_CRW_SRC_NULL);
   vAddCode(EO_RETURN);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // END MAIN: QRY_600
@@ -318,6 +319,64 @@ void LogicUnit::vGenerateQuery100(void)
   // END SUBROUTINE: SUBROUTINE_FILTER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // BEGIN SUBROUTINE: SUBROUTINE_IXT_TO_RSB
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vDefineLabel("SUBROUTINE_IXT_TO_RSB:"_Stz);
+  // begin index tree traversal
+  vAddCode(EO_IXT_TRV_BEGIN);
+  vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
+  
+  vDefineLabel("NEXT_IXT_SRC:"_Stz);
+  
+  // new a dst rsb row
+  vAddCode(EO_RSB_DST_NEW);
+  
+  vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q100_RETURNFLAG);
+  vAddCodeArg(EO_RSB_DST_POPCOLS,(i8)Q101_RETURNFLAG);
+  
+  vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q100_LINESTATUS);
+  vAddCodeArg(EO_RSB_DST_POPCOLS,(i8)Q101_LINESTATUS);
+  
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_QTY);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_SUM_QTY);
+  
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_BASE_PRICE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_SUM_BASE_PRICE);
+  
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_DISC_PRICE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_SUM_DISC_PRICE);
+  
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_CHARGE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_SUM_CHARGE);
+  
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_QTY);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_COUNT_QTY);
+  
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_PRICE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_COUNT_PRICE);
+  
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_DISC);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_SUM_DISC);
+  
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_DISC);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_COUNT_DISC);
+  
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_ORDER);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_COUNT_ORDER);
+  
+  //vAddCode(EO_RSB_DST_PRINT);
+  vAddCode(EO_ENT_NEXT);
+  vAddCodeLabel(EO_JMP_TRUE,"NEXT_IXT_SRC:"_Stz);
+  
+  vDefineLabel("END_IXT_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // END SUBROUTINE: SUBROUTINE_IXT_TO_RSB
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vDumpCode();
 }
 
@@ -333,6 +392,7 @@ void LogicUnit::vGenerateQuery102(void)
   
   // reset
   m_i_Code = 0;
+
   
   vDefineLabel("QRY_102:"_Stz);
   vAddCode(EO_INIT);

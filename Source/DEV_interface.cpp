@@ -73,6 +73,36 @@ i8 iDev_CRW_NEXT(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
+/*  move to next src rsb                                                      */
+/*----------------------------------------------------------------------------*/
+void vDev_CRW_NULL(void* aLU, void* aIXT)
+{
+  _static_
+  
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  pDevIxt->m_pCrwBuffer = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*  test if there is a crw src                                                */
+/*----------------------------------------------------------------------------*/
+i8 iDev_CRW_TEST(void* aLU, void* aIXT)
+{
+  _static_
+  
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  
+  i8 iRes;
+  
+  if (pDevIxt->m_pCrwBuffer)
+    iRes = 1;
+  else
+    iRes = 0;
+  
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert crw src to rsb                                           NOT RIGHT */
 /*----------------------------------------------------------------------------*/
 void vDev_CRW_TORSB(void* aLU, void* aIXT)

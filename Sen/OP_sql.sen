@@ -344,8 +344,8 @@
       //queryNo "QUERY %v" .printf
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 100=STARTMARKER" .
       100 LogicUnit[].genCode
-      //logicCompiler[].new
-      //LogicCompiler[].compile
+      logicCompiler[].new
+      LogicCompiler[].compile
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
       indexDef[].delete
     endof
@@ -441,13 +441,6 @@
       StreamDef[].pipeout
     endof
 
-    602 of
-      //queryNo "QUERY %v" .printf
-      602 LogicUnit[].genCode
-      logicCompiler[].new
-      logicCompiler[].compile
-    endof
-
     600 of
       //queryNo "QUERY %v" .printf
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 600=STARTMARKER" .
@@ -458,6 +451,13 @@
       index[].indexTree to indexTree[]
       indexTree[].asSrc
       600 LogicUnit[].genCode
+      logicCompiler[].new
+      logicCompiler[].compile
+    endof
+
+    602 of
+      //queryNo "QUERY %v" .printf
+      602 LogicUnit[].genCode
       logicCompiler[].new
       logicCompiler[].compile
     endof
@@ -700,7 +700,7 @@
       //"---------------------------- 100=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcCrwBuffer
-      LogicUnit[].transform
+      LogicUnit[].dynfun
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
@@ -801,10 +801,10 @@
       // AGGREGATE WITH GROUPBY
       //queryNo "QUERY %v" .printf
       //logicCompiler[].delete
-      102 LogicUnit[].genCode
+      //102 LogicUnit[].genCode
       //logicCompiler[].new
       //LogicCompiler[].compile
-      LogicUnit[].transform
+      LogicUnit[].dynFun
       //logicCompiler[].delete
       IndexTree[].delete
     endof

@@ -148,6 +148,8 @@ enum eEO : u1 // expression operators
   /*    */ EO_CRW_SRC_FETCH,    // fetch m_aSrcCrw using m_aSrcEnt.ref
   /*    */ EO_CRW_ALT_FETCH,    // fetch m_aAltCrw using m_aAltEnt.ref
   /*    */ EO_CRW_SRC_NEXT,     // move to next src rsb
+  /*    */ EO_CRW_SRC_NULL,     // null crw src
+  /*    */ EO_CRW_SRC_TEST,     // test if there is a crw buffer
   /*    */ EO_CRW_SRC_TORSB,    // convert crw src to rsb
   
   // entry
@@ -387,6 +389,8 @@ static Stz* aEO[]
   /*    */ "EO_CRW_SRC_FETCH"_Stz,
   /*    */ "EO_CRW_ALT_FETCH"_Stz,
   /*    */ "EO_CRW_SRC_NEXT"_Stz,
+  /*    */ "EO_CRW_SRC_NULL"_Stz,
+  /*    */ "EO_CRW_SRC_TEST"_Stz,
   /*    */ "EO_CRW_SRC_TORSB"_Stz,
   
   // entry
@@ -632,6 +636,8 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_CRW_SRC_FETCH
   { EA_NONE,    0 },  // EO_CRW_ALT_FETCH
   { EA_NONE,    0 },  // EO_CRW_SRC_NEXT
+  { EA_NONE,    0 },  // EO_CRW_SRC_NULL
+  { EA_NONE,    0 },  // EO_CRW_SRC_TEST
   { EA_NONE,    0 },  // EO_CRW_SRC_TORSB
   
   // entry

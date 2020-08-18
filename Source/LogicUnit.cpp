@@ -1661,7 +1661,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
         *(++aiDstk) = iRes;
         break;//+endCase
-      
+        
+      case EO_CRW_SRC_NULL: ArgNil(); // null the crw src
+        dLU0(EO_CRW_SRC_NULL);
+        vDev_CRW_NULL(pLU,aRluCommon->m_pDevSrcIxt);
+        break;//+endCase
+        
+      case EO_CRW_SRC_TEST: ArgNil(); // test for src crw
+        dLU0(EO_CRW_SRC_TEST);
+        iRes = iDev_CRW_TEST(pLU,aRluCommon->m_pDevSrcIxt);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+        
       case EO_CRW_SRC_TORSB: // convert crw src to rsb
         dLU0(EO_CRW_SRC_TORSB);
         vDev_CRW_TORSB(pLU,aRluCommon->m_pDevSrcIxt);
