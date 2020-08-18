@@ -12,7 +12,8 @@ namespace CompactBuffers
   public:
     RowNub*    m_pCrwNub;      // nub of crw buffer
     StreamDef* m_pStreamDef;   // stream def
-    Encoding_v1*  m_pEncoding;    // encoding of row
+  
+    Encoding_v1* m_pEncoding_v1;  // encoding of row
 
     HeadLine*  m_aHeadLine;    // head of crw
     OverLine*  m_aOverLine;    // over of crw

@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* RowInflator_mc2.cpp -- Row Inflator (for Meta Code Version 2)              */
+/* RowInflator_v2.cpp -- Row Inflator (using Meta Nibble)                     */
 /*============================================================================*/
 
 #include "CompactBuffers.h"
 
-#define STRx1(__qty) (__qty)            //   0B ..  15B
-#define STRx2(__qty) ( 16 + 2 * __qty)  //  16B ..  47B
-#define STRx4(__qty) ( 48 + 4 * __qty)  //  48B .. 111B
-#define STRx8(__qty) (112 + 8 * __qty)  // 112B .. 239B
+#define STRx1(__uLow) (__uLow)            //   0B ..  15B
+#define STRx2(__uLow) ( 16 + 2 * __uLow)  //  16B ..  47B
+#define STRx4(__uLow) ( 48 + 4 * __uLow)  //  48B .. 111B
+#define STRx8(__uLow) (112 + 8 * __uLow)  // 112B .. 239B
 
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */
