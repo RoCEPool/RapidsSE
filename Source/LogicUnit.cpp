@@ -1681,11 +1681,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_CRW_SRC_TORSB: // convert crw src to rsb
-        dLU0(EO_CRW_SRC_TORSB);
-        vDev_CRW_TORSB(pLU,aRluCommon->m_pDevSrcIxt);
-        break;//+endCase
-       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
       case EO_ENT_NEXT: ArgNil(); // move to next m_pEnt

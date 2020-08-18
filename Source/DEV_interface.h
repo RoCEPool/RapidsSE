@@ -8,7 +8,6 @@ void vDev_CRW_DEREF(void* aLU, void* aIXT);
 i8   iDev_CRW_NEXT(void* aLU, void* aIXT);
 void vDev_CRW_NULL(void* aLU, void* aIXT);
 i8   iDev_CRW_TEST(void* aLU, void* aIXT);
-void vDev_CRW_TORSB(void* aLU, void* aIXT);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT

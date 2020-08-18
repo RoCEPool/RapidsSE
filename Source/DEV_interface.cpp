@@ -104,21 +104,6 @@ i8 iDev_CRW_TEST(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert crw src to rsb                                           NOT RIGHT */
-/*----------------------------------------------------------------------------*/
-void vDev_CRW_TORSB(void* aLU, void* aIXT)
-{
-  _static_
-  
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
-
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  RowInflator::vInflateColumns(pLogicUnit->m_pDevDstRsb->m_pRowSlab,
-                               pDevIxt->m_aCrw);
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -1104,7 +1089,8 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
       
   RowInflator::vInflateColI_stk(aaiDstk,
-                                pLogicUnit->m_pDevAltIxt->m_aCrw,
+                                //pLogicUnit->m_pDevAltIxt->m_aCrw,
+                                (Crw*)pLogicUnit->m_xRluCommon.m_aAltCrw,
                                 pLogicUnit->m_pDevAltRsb->m_pStreamDef);
 }
 
@@ -1133,8 +1119,8 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
     
   RowInflator::vInflateColI_stk(aaiDstk,
-                                pLogicUnit->m_pDevSrcIxt->m_aCrw,
-                                //*pLogicUnit->m_xpStreamDef
+//                              pLogicUnit->m_pDevSrcIxt->m_aCrw,
+                                (Crw*)pLogicUnit->m_xRluCommon.m_aSrcCrw,
                                 pLogicUnit->m_pDevSrcRsb->m_pStreamDef
                                 );
 }
