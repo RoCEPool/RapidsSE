@@ -25,7 +25,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     401: vGenerateQuery401();    break;
 
     case     600: vGenerateQuery600();    break;
-    case     602: vGenerateQuery602();    break;
+    case     601: vGenerateQuery601();    break;
       
     case    1700: vGenerate1700();        break;
     case    1701: vGenerate1701();        break;
@@ -1896,7 +1896,7 @@ void LogicUnit::vGenerateQuery600(void)
 /*----------------------------------------------------------------------------*/
 /* generate super agg (query 6)                                               */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery602(void)
+void LogicUnit::vGenerateQuery601(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   

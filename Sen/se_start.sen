@@ -1047,7 +1047,7 @@
     | stageC
 
   stage stageC on origin :
-    sql 602
+    sql 601
     | output
     //| toStatDemon
     | sink

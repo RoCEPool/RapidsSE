@@ -331,7 +331,7 @@ namespace Expressions
     void vGenerateQuery401(void);
 
     void vGenerateQuery600(void);
-    void vGenerateQuery602(void);
+    void vGenerateQuery601(void);
 
     void vGenerate1700(void);
     void vGenerate1701(void);
