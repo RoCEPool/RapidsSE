@@ -771,9 +771,6 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
 
-  //vAddCodeArg(EO_COL_ALT_PUSH,O_ORDERDATE);
-  //vAddCode(EO_DTE_PRINT);
-
   vAddCodeLabel(EO_CALL,"DST_PUT:"_Stz);
 
   vAddCodeLabel(EO_JMP,"NXT_ORD:"_Stz);
