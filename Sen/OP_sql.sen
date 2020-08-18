@@ -651,9 +651,6 @@
   LogicUnit[].DynFun
   LogicCompiler[].delete
 
-  // delete the table streamDef
-  streamDef[].delete
-
   Pot[].pipeoutAllCompleted
   Pot[].pipeoutAllDangling
 
@@ -836,13 +833,15 @@
 
     600 of
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 600=EOSMARKER" .
+      streamDef[].delete
       logicCompiler[].delete
 
-// AGGREGATE WITH GROUPBY
-LogicUnit[].dynFun
-logicCompiler[].delete
-IndexTree[].delete
-endof
+      // AGGREGATE WITH GROUPBY
+      LogicUnit[].dynFun
+      logicCompiler[].delete
+      IndexTree[].delete
+      endof
+
   endcase
 
   Pot[].pipeoutAllDangling
@@ -872,6 +871,7 @@ endof
     100 of
       //"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 100=STREAMDEF" .
       streamDefOut_100
+      streamDef[].asSrcStreamDef
     endof
 
     103 of
