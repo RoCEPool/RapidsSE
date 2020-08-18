@@ -8,6 +8,8 @@ bc;
 
 print "Cluster started" ;
 
+trackMemory;
+
 create table LineItem                      // SF * 6,000,000 rows
 (
   L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
@@ -30,35 +32,37 @@ create table LineItem                      // SF * 6,000,000 rows
   // 16 columns                                  174B  91B
 );
 
-create index idx on lineitem (l_shipdate);
+//create index idx on lineitem (l_shipdate);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 10 ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-// /time load lineitem "/DATA/TPCH/lineitem10.csv";
+// /time load lineitem "/DATA/TPCH/lineitem1.csv";
 
 //dumpidx lineitem idx;
 
-///time Query1 lineitem idx;
+// /time Query1 lineitem;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 10K ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-///time load lineitem "/DATA/TPCH/lineitem100k.csv";
-///time Query1 lineitem idx;
+/time load lineitem "/DATA/TPCH/lineitem10k.csv";
+/time Query1 lineitem;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // SF1 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 ///time load lineitem "/tpch/SF1/lineitem.csv";
-///time Query1 lineitem idx;
+///time Query1 lineitem;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // RAY
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-/time fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
-/time Query1 lineitem idx;
+///time fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
+///time Query1 lineitem;
 
+drop table lineitem;
+memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

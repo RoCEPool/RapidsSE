@@ -333,9 +333,10 @@
 
   ZK_STARTMARKER_handler
 
-  Pot[].new
-
   <queryNo> >int to queryNo
+  //queryNo .
+
+  Pot[].new
 
   queryNo "sql %v" str.format profile.name!
   queryNo case
@@ -644,6 +645,9 @@
   //0 19 CT_INTEGER "count"
   //StreamDefOut[].addColumn
 
+  // now delete the streamDef of table
+  StreamDef[].delete
+
   // set streamDefOut in the pot
   true Pot[].useStreamDefOut
   StreamDefOut[].pipeout
@@ -653,6 +657,8 @@
 
   Pot[].pipeoutAllCompleted
   Pot[].pipeoutAllDangling
+
+  Pot[].delete
 
   // pipeout an EOS MARKER
   Operand[].newEosMarker
@@ -832,7 +838,7 @@
     endof
 
     600 of
-      //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 600=EOSMARKER" .
+      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 600=EOSMARKER" .
       streamDef[].delete
       logicCompiler[].delete
 
@@ -840,10 +846,16 @@
       LogicUnit[].dynFun
       logicCompiler[].delete
       IndexTree[].delete
+    endof
+
+      601 of
+        //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 601=EOSMARKER" .
+        logicCompiler[].delete
       endof
 
   endcase
 
+  queryNo "dangling %v" .printf
   Pot[].pipeoutAllDangling
   Pot[].delete
 
