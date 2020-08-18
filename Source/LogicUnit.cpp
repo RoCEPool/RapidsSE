@@ -1612,13 +1612,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU1(EO_COL_SRC_PUSHONE,iArg);
         break;//+endCase
         
-      case EO_COL_SRC_PUSHSTR: ArgGet(iArg); // push column value from m_aSrcCrw
-        dLU1(EO_COL_SRC_PUSHSTR,iArg);
-        *(++aiDstk) = -1;
-        *(++aiDstk) = iArg; // col to inflate
-        vDev_RSB_COL_PUSHONE(pLU,iArg,&aiDstk);
-        break;//+endCase
-        
       case EO_COL_ALT_PUSHONE: ArgGet(iArg); // push column value from m_aAltCrw
         *(++aiDstk) = -1;
         *(++aiDstk) = iArg; // col to inflate

@@ -137,7 +137,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_COL_NOT_PROJECT,  // reset column in streamPix of dst
   /*    */ EO_COL_SRC_PUSHONE,  // push column int value from m_aSrcCrw
   /*    */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw
-  /*    */ EO_COL_SRC_PUSHSTR,  // push column str value from m_aSrcCrw
   /*    */ EO_COL_ALT_PUSHONE,  // push column int value from m_aAltCrw
   /*    */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
 
@@ -374,7 +373,6 @@ static Stz* aEO[]
   /*    */ "EO_COL_NOT_PROJECT"_Stz,
   /*    */ "EO_COL_SRC_PUSHONE"_Stz,
   /*    */ "EO_COL_SRC_PUSHSET"_Stz,
-  /*    */ "EO_COL_SRC_PUSHSTR"_Stz,
   /*    */ "EO_COL_ALT_PUSHONE"_Stz,
   /*    */ "EO_COL_ALT_PUSHSET"_Stz,
 
@@ -617,7 +615,6 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_COL_NOT_PROJECT
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE
   { EA_NONE,    0 },  // EO_COL_SRC_PUSHSET
-  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHSTR
   { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSHONE
   { EA_NONE,    0 },  // EO_COL_ALT_PUSHSET
 

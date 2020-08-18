@@ -713,10 +713,8 @@ void LogicUnit::vGenerateQuery300(void)
   vDefineLabel("PRC_CUS:"_Stz);
 
   vAddCode(EO_CRW_SRC_DEREF);
-  //vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
-  //vAddCode(EO_STR_PRINTSTK);
   
-  vAddCodeArg(EO_COL_SRC_PUSHSTR,C_MKTSEGMENT);
+  vAddCodeArg(EO_COL_SRC_PUSHONE,C_MKTSEGMENT);
   //vAddCode(EO_DUMP);
   vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);
   vAddCode(EO_STR_COMPARE);
@@ -1482,7 +1480,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_ENTWRK_RESET);
   
   // add key O_ORDERPRIORITY
-  vAddCodeArg(EO_COL_SRC_PUSHSTR,O_ORDERPRIORITY);
+  vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERPRIORITY);
   vAddCode(EO_ENTWRK_APPENDELMS);
 
   // attempt to find the key in the indexTree
