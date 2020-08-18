@@ -6,20 +6,6 @@
 
 #include "DEV_interface.h"
 
-
-/*----------------------------------------------------------------------------*/
-/* reset column in streamPix of dst                                           */
-/*----------------------------------------------------------------------------*/
-void vDev_COL_NOT_PROJECT(void* aLU, i8 iArg)
-{
-  _static_
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  pLogicUnit->m_oStreamPix.vNotProject(iArg);
-}
-
-
 /*----------------------------------------------------------------------------*/
 /* begin rsb traverse                                                         */
 /*----------------------------------------------------------------------------*/

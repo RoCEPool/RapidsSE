@@ -27,8 +27,6 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_RSB_COL_PUSHONE"_Stz,   (const void *) vDev_RSB_COL_PUSHONE   },
   { "vDev_SRC_COL_PUSHONE"_Stz,   (const void *) vDev_SRC_COL_PUSHONE   },
   
-  { "vDev_COL_NOT_PROJECT"_Stz,   (const void *) vDev_COL_NOT_PROJECT   },
-
   { "vDev_CRW_BEGIN"_Stz,         (const void *) vDev_CRW_BEGIN         },
   { "vDev_CRW_DEREF"_Stz,         (const void *) vDev_CRW_DEREF         },
   { "iDev_CRW_NEXT"_Stz,          (const void *) iDev_CRW_NEXT          },

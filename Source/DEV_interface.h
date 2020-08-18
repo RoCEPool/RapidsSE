@@ -2,8 +2,6 @@
 /* DEV_interface.h -- Interface for RLU Devices                               */
 /*============================================================================*/
 
-void vDev_COL_NOT_PROJECT(void* aLU, i8 iArg);
-
 void vDev_CRW_BEGIN(void* aLU, void* aIXT);
 void vDev_CRW_COL_PUSHONE(void* aLU, i8 iArg, i8** aaiDstk);
 void vDev_CRW_DEREF(void* aLU, void* aIXT);
