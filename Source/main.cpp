@@ -94,17 +94,6 @@ int main(int argc, char* argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  s256 sFlagValue;
-//
-//  if (Env::bGet("SE_DBG_ALKA"_Stz,sFlagValue))
-//    gxDebugFlags.m_iAlka = StrLib::iToI8(sFlagValue.azChar());
-//  if (Env::bGet("SE_DBG_INTKEY"_Stz,sFlagValue))
-//    gxDebugFlags.m_iIntKey = StrLib::iToI8(sFlagValue.azChar());
-//  if (Env::bGet("SE_DBG_METACODE2"_Stz,sFlagValue))
-//    gxDebugFlags.m_iMetaNibble = StrLib::iToI8(sFlagValue.azChar());
-//  if (Env::bGet("SE_DBG_RAY"_Stz,sFlagValue))
-//    gxDebugFlags.m_iRay = StrLib::iToI8(sFlagValue.azChar());
-
   Engine::vDebugFlags();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
