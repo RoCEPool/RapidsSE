@@ -23,9 +23,9 @@ Stz* gszaEoFragments[EO_ENUMS];
 /*----------------------------------------------------------------------------*/
 DynamicSymbol gxaDynamicSymbol[]
 {
-  { "vDev_ALT_COL_PUSHONE"_Stz,   (const void *) vDev_ALT_COL_PUSHONE   },
-  { "vDev_RSB_COL_PUSHONE"_Stz,   (const void *) vDev_RSB_COL_PUSHONE   },
-  { "vDev_SRC_COL_PUSHONE"_Stz,   (const void *) vDev_SRC_COL_PUSHONE   },
+  { "vDev_ALT_COL_PUSHSET"_Stz,   (const void *) vDev_ALT_COL_PUSHSET   },
+  { "vDev_RSB_COL_PUSHSET"_Stz,   (const void *) vDev_RSB_COL_PUSHSET   },
+  { "vDev_SRC_COL_PUSHSET"_Stz,   (const void *) vDev_SRC_COL_PUSHSET   },
   
   { "vDev_CRW_BEGIN"_Stz,         (const void *) vDev_CRW_BEGIN         },
   { "vDev_CRW_DEREF"_Stz,         (const void *) vDev_CRW_DEREF         },

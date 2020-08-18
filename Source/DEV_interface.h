@@ -72,9 +72,9 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-void vDev_ALT_COL_PUSHONE(void* aLU, void* aRSB, i8 iArg, i8** aamDstk);
-void vDev_RSB_COL_PUSHONE(void* aLU, i8 iArg, i8** aamDstk);
-void vDev_SRC_COL_PUSHONE(void* aLU, i8 iArg, i8** aamDstk);
+void vDev_ALT_COL_PUSHSET(void* aLU, void* aRSB, i8 iArg, i8** aamDstk);
+void vDev_RSB_COL_PUSHSET(void* aLU, i8 iArg, i8** aamDstk);
+void vDev_SRC_COL_PUSHSET(void* aLU, i8 iArg, i8** aamDstk);
 
 void vDev_PIX_STM_PRINT(void* aLU);
 
