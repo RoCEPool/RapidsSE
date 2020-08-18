@@ -1619,12 +1619,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_RSB_COL_PUSHSTR(pLU,iArg,&aiDstk);
         break;//+endCase
         
-      case EO_COL_ALT_PUSH: ArgGet(iArg); // push column value from m_aAltCrw
-        iRes = iDev_ALT_COL_PUSH(pLU,aRluCommon->m_pDevAltRsb,iArg);
-        dLU2(EO_COL_ALT_PUSH,iArg,iRes);
-        *(++aiDstk) = iRes;
-        break;//+endCase
-        
       case EO_COL_ALT_PUSHI: ArgGet(iArg); // push column value from m_aAltCrw
         *(++aiDstk) = -1;
         *(++aiDstk) = iArg; // col to inflate
