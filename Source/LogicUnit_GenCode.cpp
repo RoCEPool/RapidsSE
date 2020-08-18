@@ -115,15 +115,6 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_EXTENDEDPRICE);
   vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_QUANTITY);
   
-  // new a rsb dst row if not there
-  //vAddCode(EO_RSB_DST_TESTROW);
-  //vAddCodeLabel(EO_JMP_TRUE,"FILTER:"_Stz);
-  //vAddCode(EO_RSB_DST_NEW);
-  
-  // initialze the row
-  //vAddCode(EO_PUSH_0);
-  //vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q600_REVENUE);
-  
   // call the filter subroutine
   vDefineLabel("FILTER:"_Stz);
   vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
