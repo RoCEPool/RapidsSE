@@ -25,7 +25,7 @@ namespace CompactBuffers
   //----------------------------------------------------------------------------
   
   class Encoding_v1 : public Object,
-                   private RowCoder
+                      private RowCoder
   {
   public:
     StreamDef* m_pStreamDef;

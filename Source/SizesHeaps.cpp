@@ -67,7 +67,8 @@ SizeHeap gxaSizeHeap[]
 
   { 'E' - ('A' - 1),            HT_INVALID           }, // CN__E__
   { sizeof(EdtVal),             HT_INVALID           }, // CN_EDTVAL
-  { sizeof(Encoding_v1),           HT_TRANSIENT_LARGE   }, // CN_ENCODING_V1
+  { sizeof(Encoding_v1),        HT_TRANSIENT_LARGE   }, // CN_ENCODING_V1
+  { sizeof(Encoding_v2),        HT_TRANSIENT_LARGE   }, // CN_ENCODING_V2
   { sizeof(Ent),                HT_INVALID           }, // CN_ENT
   { sizeof(EntBuffer),          HT_TRANSIENT_LARGE   }, // CN_ENTBUFFER
   { sizeof(EntBufSorter),       HT_TRANSIENT_LARGE   }, // CN_ENTBUFSORTER
