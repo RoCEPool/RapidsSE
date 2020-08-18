@@ -14539,6 +14539,7 @@ void Task::vAddMunged(Forth* pForth)
     "      then\n"
     "      index[].indexTree to indexTree[]\n"
     "      indexTree[].asSrc\n"
+    "      Table[].asSrcStreamDef\n"
     "      600 LogicUnit[].genCode\n"
     "      logicCompiler[].new\n"
     "      logicCompiler[].compile\n"

@@ -450,6 +450,7 @@
       then
       index[].indexTree to indexTree[]
       indexTree[].asSrc
+      Table[].asSrcStreamDef
       600 LogicUnit[].genCode
       logicCompiler[].new
       logicCompiler[].compile
