@@ -1059,20 +1059,6 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB)
   pDevRsb->m_pRowSlab->vZeroRsb(pDevRsb->m_aRsb);
 }
 
-/*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                           */
-/*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHSET(void* aLU, i8 iArg, i8** aaiDstk)
-{
-  _static_
-  
-  LogicUnit* pLogicUnit = (LogicUnit*)aLU; //_pLogicUnit(aLU);
-    
-  RowInflator::vInflateColI_stk(aaiDstk,
-                   pLogicUnit->m_pDevSrcIxt->m_aCrw,
-                   pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1081,21 +1067,36 @@ void vDev_RSB_COL_PUSHSET(void* aLU, i8 iArg, i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_ALT_COL_PUSHSET(void* aLU, void* aRSB, i8 iArg, i8** aaiDstk)
+void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk)
 {
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
       
   RowInflator::vInflateColI_stk(aaiDstk,
-                   pLogicUnit->m_pDevAltIxt->m_aCrw,
-                   pLogicUnit->m_pDevAltRsb->m_pStreamDef);
+                                pLogicUnit->m_pDevAltIxt->m_aCrw,
+                                pLogicUnit->m_pDevAltRsb->m_pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_SRC_COL_PUSHSET(void* aLU, i8 iArg, i8** aaiDstk)
+void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk)
+{
+  _static_
+  RASSERT(0); // check with ALka
+  
+  LogicUnit* pLogicUnit = (LogicUnit*)aLU; //_pLogicUnit(aLU);
+    
+  RowInflator::vInflateColI_stk(aaiDstk,
+                                pLogicUnit->m_pDevSrcIxt->m_aCrw,
+                                pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push column value from m_aSrcCrw                                           */
+/*----------------------------------------------------------------------------*/
+void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk)
 {
   _static_
   
@@ -1103,7 +1104,9 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8 iArg, i8** aaiDstk)
     
   RowInflator::vInflateColI_stk(aaiDstk,
                                 pLogicUnit->m_pDevSrcIxt->m_aCrw,
-                                *pLogicUnit->m_xpStreamDef);
+                                //*pLogicUnit->m_xpStreamDef
+                                pLogicUnit->m_pDevSrcRsb->m_pStreamDef
+                                );
 }
 
 /*----------------------------------------------------------------------------*/
