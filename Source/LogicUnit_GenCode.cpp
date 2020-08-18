@@ -82,7 +82,7 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_CRW_SRC_NULL);
   vAddCode(EO_RETURN);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // END MAIN: QRY_600
+  // END MAIN: QRY_100
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   

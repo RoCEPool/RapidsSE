@@ -645,6 +645,9 @@
   //0 19 CT_INTEGER "count"
   //StreamDefOut[].addColumn
 
+  // now delete the streamDef of table
+  StreamDef[].delete
+
   // set streamDefOut in the pot
   true Pot[].useStreamDefOut
   StreamDefOut[].pipeout
