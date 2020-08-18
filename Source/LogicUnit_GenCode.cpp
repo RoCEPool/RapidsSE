@@ -24,7 +24,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
     case     400: vGenerateQuery400();    break;
     case     401: vGenerateQuery401();    break;
 
-    case     600: vGenerateQuery600b();    break;
+    case     600: vGenerateQuery600();    break;
     case     601: vGenerateQuery601();    break;
     case     602: vGenerateQuery602();    break;
       
@@ -1676,9 +1676,9 @@ void LogicUnit::vGenerateQuery401(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate iterating index on l_shipdate & project into RSB (Query 6)        */
+/* generate iterating index on l_shipdate                    (Query 6)        */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery600b(void)
+void LogicUnit::vGenerateQuery600(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
