@@ -5,7 +5,7 @@
 
 namespace CompactBuffers
 {
-  class Packing
+  class Packing_v1
   {
   public:
     static void vPackCrw(HeadLine* aHeadLine, Encoding_v1* pEncoding);

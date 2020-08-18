@@ -38,7 +38,7 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
 
 #include "Encoding_v1.hpp"
 #include "Encoding_v2.hpp"
-#include "Packing.hpp"
+#include "Packing_v1.hpp"
 
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"

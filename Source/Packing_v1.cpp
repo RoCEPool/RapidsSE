@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Packing.cpp -- Compact Row Packing                                         */
+/* Packing_v1.cpp -- Compact Row Packing_v1                                   */
 /*============================================================================*/
 
 #include "CompactBuffers.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* pack the encoded inflated row into head[+over]{+tail}                      */
 /*----------------------------------------------------------------------------*/
-void Packing::vPackCrw(HeadLine* aHeadLine, Encoding_v1* pEncoding)
+void Packing_v1::vPackCrw(HeadLine* aHeadLine, Encoding_v1* pEncoding)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pack all the columns into the logical compact row
@@ -24,7 +24,7 @@ void Packing::vPackCrw(HeadLine* aHeadLine, Encoding_v1* pEncoding)
 /*----------------------------------------------------------------------------*/
 /* pack encoded column value into compact row                                 */
 /*----------------------------------------------------------------------------*/
-void Packing::vPackCol(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xColEnc)
+void Packing_v1::vPackCol(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xColEnc)
 {
   vPutMetaCode(aHeadLine,nHeadSize,xColEnc);
   
@@ -39,7 +39,7 @@ void Packing::vPackCol(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xColEnc)
 /*----------------------------------------------------------------------------*/
 /* put meta code for column value into logical compact row                    */
 /*----------------------------------------------------------------------------*/
-void Packing::vPutMetaCode(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xColEnc)
+void Packing_v1::vPutMetaCode(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xColEnc)
 {
   if (xColEnc.m_bSplit)
     vPutMeta_split(aHeadLine,nHeadSize,xColEnc);
@@ -50,7 +50,7 @@ void Packing::vPutMetaCode(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xColEn
 /*----------------------------------------------------------------------------*/
 /* put meta code into compact row for split column                            */
 /*----------------------------------------------------------------------------*/
-void Packing::vPutMeta_split(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xColEnc)
+void Packing_v1::vPutMeta_split(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xColEnc)
 {
   /*
    -- Head-Line --                      -- Over-Line --
@@ -102,7 +102,7 @@ void Packing::vPutMeta_split(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xCol
 /*----------------------------------------------------------------------------*/
 /* put meta code into compact row for usual / non-split column                */
 /*----------------------------------------------------------------------------*/
-void Packing::vPutMeta_usual(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xColEnc)
+void Packing_v1::vPutMeta_usual(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xColEnc)
 {
   /*
    -- HeadLine --                      -- OverLine --
@@ -144,7 +144,7 @@ void Packing::vPutMeta_usual(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1& xCol
 /*----------------------------------------------------------------------------*/
 /* put data code {D} for encoded column value into crw                        */
 /*----------------------------------------------------------------------------*/
-void Packing::vPutDataCode(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
+void Packing_v1::vPutDataCode(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
 {
   // no data code {D} case
   if (! xColEnc.m_nDataSize)
@@ -173,7 +173,7 @@ void Packing::vPutDataCode(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for unary MC_xyz_1..8B (e.g. for MC_DTE_E1_2B, ...)         */
 /*----------------------------------------------------------------------------*/
-void Packing::vPutData_Bytes(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
+void Packing_v1::vPutData_Bytes(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
 {
   //      -- HeadLine / OverLine --
   // +--------------------------------+
@@ -189,7 +189,7 @@ void Packing::vPutData_Bytes(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_FIT_1L : <L><ShortN>                             */
 /*----------------------------------------------------------------------------*/
-void Packing::vPutData_STR_FIT_1L(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
+void Packing_v1::vPutData_STR_FIT_1L(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
 {
   // get <ShortN>
   char* azShortN = (char*)xColEnc.m_wDataCode.m_szVch;
@@ -225,7 +225,7 @@ void Packing::vPutData_STR_FIT_1L(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_FIT_2L : <LL><LongN>                             */
 /*----------------------------------------------------------------------------*/
-void Packing::vPutData_STR_FIT_2L(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
+void Packing_v1::vPutData_STR_FIT_2L(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
 {
   // get <LongN>
   char* azLongN = (char*)xColEnc.m_wDataCode.m_szVch;
@@ -261,7 +261,7 @@ void Packing::vPutData_STR_FIT_2L(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_TAIL_2T : [TL]                                   */
 /*----------------------------------------------------------------------------*/
-void Packing::vPutData_STR_TAIL_2T(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
+void Packing_v1::vPutData_STR_TAIL_2T(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
 {
   // calculate [TL]
   i8 i_Tail_rel = aHeadLine->iGetTailRel(xColEnc.m_aTailLine);
