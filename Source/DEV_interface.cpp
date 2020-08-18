@@ -1083,32 +1083,6 @@ void vDev_RSB_COL_PUSHONE(void* aLU, i8 iArg, i8** aaiDstk)
 //                            pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
 }
 
-/*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                           */
-/*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHSTR(void* aLU, i8 iArg, i8** aaiDstk)
-{
-  _static_
-  
-  vDev_RSB_COL_PUSHONE(aLU,iArg,aaiDstk);
-  
-  /*
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  HV_Row hRow(pDevRsb->m_pStreamDef,C_ALL);
-  RowInflator::vInflateColumn(hRow,pLogicUnit->m_pDevSrcIxt->m_aCrw,iArg);
-  
-  Stz* szStr = (Stz*)hRow->m_waColVal[iArg].m_iWrd;
-
-  i8 nSize = StrLib::nSize((char*)szStr);
-  char* azDst = (char*)(++*aaiDstk);
-  StrLib::vCopy(azDst,(char*)szStr);
-  *aaiDstk += (nSize / 8) + 1;
-  *(++*aaiDstk) = nSize;
-  */
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

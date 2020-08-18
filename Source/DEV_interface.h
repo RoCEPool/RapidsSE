@@ -72,7 +72,6 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB);
 
 i8   iDev_RSB_COL_PUSH(void* aLU, i8 iArg);
 void vDev_RSB_COL_PUSHONE(void* aLU, i8 iArg, i8** aamDstk);
-void vDev_RSB_COL_PUSHSTR(void* aLU, i8 iArg, i8** aaiDstk);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
