@@ -81,6 +81,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_RSB_BEGIN"_Stz,         (const void *) vDev_RSB_BEGIN         },
   { "iDev_RSB_NEW"_Stz,           (const void *) iDev_RSB_NEW           },
   { "iDev_RSB_NEXT"_Stz,          (const void *) iDev_RSB_NEXT          },
+  { "vDev_RSB_NULL"_Stz,          (const void *) vDev_RSB_NULL          },
   { "vDev_RSB_POPCOLI"_Stz,       (const void *) vDev_RSB_POPCOLI       },
   { "vDev_RSB_POPCOLS"_Stz,       (const void *) vDev_RSB_POPCOLS       },
   { "vDev_RSB_PRINT"_Stz,         (const void *) vDev_RSB_PRINT         },
@@ -90,6 +91,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_RSB_RESET"_Stz,         (const void *) vDev_RSB_RESET         },
   { "vDev_RSB_SETBYOFS"_Stz,      (const void *) vDev_RSB_SETBYOFS      },
   { "iDev_RSB_TEST"_Stz,          (const void *) iDev_RSB_TEST          },
+  { "iDev_RSB_TESTROW"_Stz,       (const void *) iDev_RSB_TESTROW       },
   { "vDev_RSB_ZERO"_Stz,          (const void *) vDev_RSB_ZERO          },
 
   { "iDev_RSB_COL_PUSH"_Stz,      (const void *) iDev_RSB_COL_PUSH      },

@@ -933,6 +933,17 @@ i8 iDev_RSB_NEXT(void* aLU, void* aRSB)
 }
 
 /*----------------------------------------------------------------------------*/
+/*  set rsb to null                                                           */
+/*----------------------------------------------------------------------------*/
+void vDev_RSB_NULL(void* aLU, void* aRSB)
+{
+  _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  pDevRsb->m_pRowSlab = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop and deposit top into dst column                                        */
 /*----------------------------------------------------------------------------*/
 void vDev_RSB_POPCOLI(void* aLU, void* aRSB, i8 iArg, i8 iTop)
@@ -1045,7 +1056,7 @@ void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* push offset of source rsb                                                  */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_TEST(void* aLU, void* aRSB)
+i8 iDev_RSB_TESTROW(void* aLU, void* aRSB)
 {
   _static_
     
@@ -1058,6 +1069,25 @@ i8 iDev_RSB_TEST(void* aLU, void* aRSB)
   else
     iRes = 0;
 
+  return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push offset of source rsb                                                  */
+/*----------------------------------------------------------------------------*/
+i8 iDev_RSB_TEST(void* aLU, void* aRSB)
+{
+  _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  
+  i8 iRes;
+  
+  if (pDevRsb->m_pRowSlab)
+    iRes = 1;
+  else
+    iRes = 0;
+  
   return iRes;
 }
 

@@ -2049,7 +2049,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_RSB_SRC_PRINT);
         vDev_RSB_PRINT(pLU,aRluCommon->m_pDevSrcRsb);
         break;//+endCase
-
+        
       case EO_RSB_ALT_PRINT: ArgNil(); // print alt rsb
         dLU0(EO_RSB_ALT_PRINT);
         vDev_RSB_PRINT(pLU,aRluCommon->m_pDevAltRsb);
@@ -2066,9 +2066,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_RSB_RESET(pLU,aRluCommon->m_pDevDstRsb);
         break;//+endCase
         
-      case EO_RSB_DST_TEST: ArgNil(); // test if there is a destination rsb
-        dLU0(EO_RSB_DST_TEST);
-        iRes = iDev_RSB_TEST(pLU,aRluCommon->m_pDevDstRsb);
+      case EO_RSB_DST_TESTROW: ArgNil(); // test if there is a destination rsb
+        dLU0(EO_RSB_DST_TESTROW);
+        iRes = iDev_RSB_TESTROW(pLU,aRluCommon->m_pDevDstRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
         
@@ -2087,7 +2087,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes = iDev_RSB_NEXT(pLU,aRluCommon->m_pDevSrcRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
-
+        
+      case EO_RSB_SRC_NULL: ArgNil(); // null the crw src
+        dLU0(EO_RSB_SRC_NULL);
+        vDev_RSB_NULL(pLU,aRluCommon->m_pDevSrcRsb);
+        break;//+endCase
+        
       case EO_RSB_SRC_PUSHOFS: ArgNil(); // push offset of source rsb
         dLU0(EO_RSB_SRC_PUSHOFS);
         iRes = iDev_RSB_PUSHOFS(pLU,aRluCommon->m_pDevSrcRsb);
@@ -2099,7 +2104,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iTopA = *(aiDstk--);
         vDev_RSB_SETBYOFS(pLU,aRluCommon->m_pDevSrcRsb,iTopA);
         break;//+endCase
-
+        
+      case EO_RSB_SRC_TEST: ArgNil(); // test for src crw
+        dLU0(EO_RSB_SRC_TEST);
+        iRes = iDev_RSB_TEST(pLU,aRluCommon->m_pDevSrcRsb);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+        
       case EO_RSB_ALT_BEGIN: ArgNil(); // not yet implemented
         NEVER_REACH;
         break;//+endCase
