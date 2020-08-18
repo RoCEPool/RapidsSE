@@ -14,9 +14,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
   switch (iTestNo) {
     
     case     100: vGenerateQuery100();    break;
-    case     102: vGenerateQuery102();    break;
     case     103: vGenerateQuery103();    break;
-    case     104: vGenerateQuery104();    break;
       
     case     300: vGenerateQuery300();    break;
     case     301: vGenerateQuery301();    break;
@@ -374,75 +372,6 @@ void LogicUnit::vGenerateQuery100(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate copy for agg group by (Query 1)                                   */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery102(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  // set the query no
-  m_xRluCommon.m_iSql = 102;
-  
-  // reset
-  m_i_Code = 0;
-
-  
-  vDefineLabel("QRY_102:"_Stz);
-  vAddCode(EO_INIT);
-  
-  // begin index tree traversal
-  vAddCode(EO_IXT_TRV_BEGIN);
-  vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
-  
-  vDefineLabel("NEXT_IXT_SRC:"_Stz);
-  
-  // new a dst rsb row
-  vAddCode(EO_RSB_DST_NEW);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q100_RETURNFLAG);
-  vAddCodeArg(EO_RSB_DST_POPCOLS,(i8)Q101_RETURNFLAG);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q100_LINESTATUS);
-  vAddCodeArg(EO_RSB_DST_POPCOLS,(i8)Q101_LINESTATUS);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_QTY);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_SUM_QTY);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_BASE_PRICE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_SUM_BASE_PRICE);
-
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_DISC_PRICE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_SUM_DISC_PRICE);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_CHARGE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_SUM_CHARGE);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_QTY);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_COUNT_QTY);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_PRICE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_COUNT_PRICE);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_DISC);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_SUM_DISC);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_DISC);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_COUNT_DISC);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_ORDER);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q101_COUNT_ORDER);
-  
-  //vAddCode(EO_RSB_DST_PRINT);
-  vAddCode(EO_ENT_NEXT);
-  vAddCodeLabel(EO_JMP_TRUE,"NEXT_IXT_SRC:"_Stz);
-  
-  vDefineLabel("END_IXT_SRC:"_Stz);
-  vAddCode(EO_RETURN);
-  
-  vDumpCode();
-}
-
-/*----------------------------------------------------------------------------*/
 /* generate super agg group by (Query 1)                                      */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery103(void)
@@ -693,94 +622,6 @@ void LogicUnit::vGenerateQuery103(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // END SUBROUTINE: SUBROUTINE_IXT_TO_RSB
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vDumpCode();
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate copy for super agg group by (Query 1)                             */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery104(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  // set the query no
-  m_xRluCommon.m_iSql = 104;
-  
-  // reset
-  m_i_Code = 0;
-  
-  vDefineLabel("QRY_104:"_Stz);
-  vAddCode(EO_INIT);
-  
-  // begin index tree traversal
-  vAddCode(EO_IXT_TRV_BEGIN);
-  //vAddCode(EO_IXT_DUMP);
-  vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
-  
-  vDefineLabel("NEXT_IXT_SRC:"_Stz);
-  
-  // new a dst rsb row
-  vAddCode(EO_RSB_DST_NEW);
-  
-  // Q101_RETURNFLAG -> Q104_RETURNFLAG
-  vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q101_RETURNFLAG);
-  vAddCodeArg(EO_RSB_DST_POPCOLS,(i8)Q104_RETURNFLAG);
-  
-  // Q101_LINESTATUS -> Q104_LINESTATUS
-  vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q101_LINESTATUS);
-  vAddCodeArg(EO_RSB_DST_POPCOLS,(i8)Q104_LINESTATUS);
-  
-  //vAddCode(EO_RSB_DST_PRINT);
-  
-  // Q101_SUM_QTY -> Q104_SUM_QTY
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_QTY);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_SUM_QTY);
-  
-  //vAddCode(EO_RSB_DST_PRINT);
-  
-  // Q101_SUM_BASE_PRICE -> Q104_SUM_BASE_PRICE
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_BASE_PRICE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_SUM_BASE_PRICE);
-  
-  // Q101_SUM_DISC_PRICE -> Q104_SUM_DISC_PRICE
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_DISC_PRICE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_SUM_DISC_PRICE);
-  
-  // Q101_SUM_CHARGE -> Q104_SUM_CHARGE
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_CHARGE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_SUM_CHARGE);
-  
-  // Q101_SUM_QTY/Q101_COUNT_QTY -> Q104_AVG_QTY
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_QTY);
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_COUNT_QTY);
-  vAddCode(EO_DIVIDE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_AVG_QTY);
-  
-  // Q101_SUM_BASE_PRICE/Q101_COUNT_PRICE -> Q104_AVG_PRICE
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_BASE_PRICE);
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_COUNT_PRICE);
-  vAddCode(EO_DIVIDE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_AVG_PRICE);
-  
-  // Q101_SUM_DISC/Q101_COUNT_DISC -> Q104_AVG_DISC
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_DISC);
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_COUNT_DISC);
-  vAddCode(EO_DIVIDE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_AVG_DISC);
-  
-  // Q101_COUNT_ORDER -> Q104_COUNT_ORDER
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_COUNT_ORDER);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_COUNT_ORDER);
-  
-  //vAddCode(EO_RSB_DST_PRINT);
-  
-  // NEXT_IXT_SRC:
-  vAddCode(EO_ENT_NEXT);
-  vAddCodeLabel(EO_JMP_TRUE,"NEXT_IXT_SRC:"_Stz);
-  
-  vDefineLabel("END_IXT_SRC:"_Stz);
-  vAddCode(EO_RETURN);
   
   vDumpCode();
 }
