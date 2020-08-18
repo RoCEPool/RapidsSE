@@ -32,6 +32,7 @@ extern i8     giProgressSubPoint;
 extern i8     gi_argc;
 extern s256   gi_szaArgv[];
 
+extern DebugFlags gxDebugFlags;
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
@@ -590,6 +591,25 @@ void Engine::vCreateFileNames(void)
 
     vInfo("Log region name: %s\n"_Stz,gpAttachMap->m_sLogRegion.szStz());
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* translate debug flag env variables                                         */
+/*----------------------------------------------------------------------------*/
+void Engine::vDebugFlags(void)
+{
+  _static_
+  
+  s256 sFlagValue;
+  
+  if (Env::bGet("SE_DBG_ALKA"_Stz,sFlagValue))
+    gxDebugFlags.m_iAlka = StrLib::iToI8(sFlagValue.azChar());
+  if (Env::bGet("SE_DBG_INTKEY"_Stz,sFlagValue))
+    gxDebugFlags.m_iIntKey = StrLib::iToI8(sFlagValue.azChar());
+  if (Env::bGet("SE_DBG_METANIBBLE"_Stz,sFlagValue))
+    gxDebugFlags.m_iMetaNibble = StrLib::iToI8(sFlagValue.azChar());
+  if (Env::bGet("SE_DBG_RAY"_Stz,sFlagValue))
+    gxDebugFlags.m_iRay = StrLib::iToI8(sFlagValue.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
