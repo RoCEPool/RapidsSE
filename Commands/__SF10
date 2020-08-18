@@ -35,8 +35,8 @@ create index idx on lineitem (l_shipdate);
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // SF1 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-/time fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
-// /time fload lineitem "/TPCH/SF10/lineitem.csv";
+// /time fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
+ /time fload lineitem "/TPCH/SF10/lineitem.tbl";
 
 compactidx lineitem idx;
 //vfyidx lineitem idx;
@@ -68,5 +68,16 @@ Date Query Mac Config time(ms) Results
                1N-4P   4272ms  752424863.12,#775282
                2N-4P   2489ms  752424863.12,#1909153
                3N-4P   2152ms  752424863.12,#608046
-*/
+ 
+ 18/7 : Fixed Q1 for the correct l_shipdate range.
+ Alk's Mac
+ 
+ Q1 : 1N-4P : 18787ms
+ 
+ A,F,377507003.00,566048981675.28,537743114580.79,559260020207.31,25.50,38237.17,0.05,14803631
+ N,F,9851312.00,14766983643.05,14028371195.12,14590032927.65,25.52,38257.72,0.04,385987
+ N,O,742624755.00,1113549108834.59,1057865324644.81,1100192588447.10,25.49,38233.72,0.05,29124785
+ R,F,377720699.00,566412983913.15,538093700728.41,559616847961.93,25.50,38251.23,0.04,14807706
+ 
+ Q6 : 1N-4P : 1363ms
 
