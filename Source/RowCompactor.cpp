@@ -27,6 +27,7 @@ RowCompactor::RowCompactor(void)
   m_pCrwNub       = nullptr;
   m_pStreamDef    = nullptr;
   m_pEncoding_v1  = nullptr;
+  m_pEncoding_v2  = nullptr;
 
   m_aHeadLine     = nullptr;
   m_aOverLine     = nullptr;
@@ -80,10 +81,11 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pCrwNub     = pCrwBuffer->m_oRowTray.pNub();
-  m_pStreamDef  = m_pCrwNub->pDesc();
-  m_pEncoding_v1   = new Encoding_v1(m_pStreamDef);
-  
+  m_pCrwNub      = pCrwBuffer->m_oRowTray.pNub();
+  m_pStreamDef   = m_pCrwNub->pDesc();
+  m_pEncoding_v1 = new Encoding_v1(m_pStreamDef);
+  m_pEncoding_v2 = new Encoding_v2(m_pStreamDef);
+
   m_aHeadLine   = nullptr;
   m_aOverLine   = nullptr;
 
@@ -119,9 +121,12 @@ void RowCompactor::vCompactEnd(void)
   m_aOverLine   = nullptr;
   
   delete m_pEncoding_v1;
-  m_pEncoding_v1   = nullptr;
-  m_pCrwNub     = nullptr;
-  m_pStreamDef  = nullptr;
+  m_pEncoding_v1 = nullptr;
+  delete m_pEncoding_v2;
+  m_pEncoding_v2 = nullptr;
+
+  m_pCrwNub    = nullptr;
+  m_pStreamDef = nullptr;
   
   delete m_pIrwSampleSlab;
   m_pIrwSampleSlab = nullptr;

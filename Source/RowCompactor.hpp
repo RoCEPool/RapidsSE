@@ -15,6 +15,7 @@ namespace CompactBuffers
     StreamDef* m_pStreamDef;   // stream def
   
     Encoding_v1* m_pEncoding_v1;  // encoding of row
+    Encoding_v2* m_pEncoding_v2;  // encoding of row
 
     HeadLine*  m_aHeadLine;    // head of crw
     OverLine*  m_aOverLine;    // over of crw
