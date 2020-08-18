@@ -24,8 +24,8 @@ Stz* gszaEoFragments[EO_ENUMS];
 DynamicSymbol gxaDynamicSymbol[]
 {
   { "iDev_ALT_COL_PUSH"_Stz,      (const void *) iDev_ALT_COL_PUSH      },
-  { "vDev_ALT_COL_PUSHI"_Stz,     (const void *) vDev_ALT_COL_PUSHI     },
-  { "vDev_SRC_COL_PUSHI"_Stz,     (const void *) vDev_SRC_COL_PUSHI     },
+  { "vDev_ALT_COL_PUSHONE"_Stz,     (const void *) vDev_ALT_COL_PUSHONE     },
+  { "vDev_SRC_COL_PUSHONE"_Stz,     (const void *) vDev_SRC_COL_PUSHONE     },
   
   { "vDev_COL_NOT_PROJECT"_Stz,   (const void *) vDev_COL_NOT_PROJECT   },
 
@@ -91,7 +91,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_RSB_ZERO"_Stz,          (const void *) vDev_RSB_ZERO          },
 
   { "iDev_RSB_COL_PUSH"_Stz,      (const void *) iDev_RSB_COL_PUSH      },
-  { "vDev_RSB_COL_PUSHI"_Stz,     (const void *) vDev_RSB_COL_PUSHI     },
+  { "vDev_RSB_COL_PUSHONE"_Stz,     (const void *) vDev_RSB_COL_PUSHONE     },
   { "vDev_RSB_COL_PUSHSTR"_Stz,   (const void *) vDev_RSB_COL_PUSHSTR   },
 
   { "vLib_ASSERT"_Stz,            (const void *) vLib_ASSERT            },

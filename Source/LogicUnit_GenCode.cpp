@@ -766,7 +766,7 @@ void LogicUnit::vGenerateQuery300(void)
   //vAddCode(EO_IXT_ALT_PRINT);
   
   vAddCode(EO_CRW_ALT_DEREF);
-  vAddCodeArg(EO_COL_ALT_PUSHI,O_ORDERDATE);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERDATE);
   vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
@@ -784,7 +784,7 @@ void LogicUnit::vGenerateQuery300(void)
   
   // calc i_Ptn (should be zero for the moment)
   vAddCode(EO_PTN_RESET);
-  vAddCodeArg(EO_COL_ALT_PUSHI,O_ORDERKEY);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERKEY);
   vAddCode(EO_PTN_RUNNING);
   vAddCode(EO_PTN_CALC);
   
@@ -811,11 +811,11 @@ void LogicUnit::vGenerateQuery300(void)
   
 #else
   vAddCode(EO_RSB_DST_NEW);
-  vAddCodeArg(EO_COL_ALT_PUSHI,O_ORDERKEY);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERKEY);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERKEY);
-  vAddCodeArg(EO_COL_ALT_PUSHI,O_ORDERDATE);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERDATE);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERDATE);
-  vAddCodeArg(EO_COL_ALT_PUSHI,O_SHIPPRIORITY);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,O_SHIPPRIORITY);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
 #endif
   
@@ -918,7 +918,7 @@ void LogicUnit::vGenerateQuery301(void)
   
   vAddCode(EO_CRW_ALT_DEREF);
   
-  vAddCodeArg(EO_COL_ALT_PUSHI,L_SHIPDATE);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_SHIPDATE);
   vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
   vAddCode(EO_GREATERTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_AGG:"_Stz);
@@ -927,11 +927,11 @@ void LogicUnit::vGenerateQuery301(void)
 //  vAddCode(EO_STR_PRINTADR);
   
   vAddCodeArg(EO_RSB_DST_PUSHCOLI,Q301_REVENUE);
-  vAddCodeArg(EO_COL_ALT_PUSHI,L_EXTENDEDPRICE);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_EXTENDEDPRICE);
   vAddCode(EO_ADD);
 
   vAddCodeArg(EO_INTEGER,100);
-  vAddCodeArg(EO_COL_ALT_PUSHI,L_DISCOUNT);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_DISCOUNT);
   vAddCode(EO_SUBTRACT);
   
   vAddCode(EO_MULTIPLY);
@@ -1373,7 +1373,7 @@ void LogicUnit::vGenerateQuery400(void)
 
   // test O_ORDERDATE
   vAddCode(EO_CRW_SRC_DEREF);
-  vAddCodeArg(EO_COL_SRC_PUSHI,O_ORDERDATE);
+  vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERDATE);
   //vAddCode(EO_DUP);
   //vAddCode(EO_DTE_PRINT);
   
@@ -1448,8 +1448,8 @@ void LogicUnit::vGenerateQuery400(void)
   // test L_COMMITDATE < L_RECEIPTDATE
   vAddCode(EO_CRW_ALT_DEREF);
   
-//  vAddCodeArg(EO_COL_ALT_PUSHI,L_COMMITDATE);
-//  vAddCodeArg(EO_COL_ALT_PUSHI,L_RECEIPTDATE);
+//  vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
+//  vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
   
   vAddCode(EO_PUSH_MINUS1);
   vAddCodeArg(EO_INTEGER,L_RECEIPTDATE);
