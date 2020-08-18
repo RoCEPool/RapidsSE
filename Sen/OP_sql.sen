@@ -769,7 +769,6 @@
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       LogicUnit[].dynFun
-      LogicCompiler[].delete
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
@@ -794,29 +793,21 @@
   queryNo case
 
     100 of
-      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 100=EOSMARKER" .
+      //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 100=EOSMARKER" .
       // delete the original source streamDef now
       streamDef[].delete
 
       // AGGREGATE WITH GROUPBY
-      //queryNo "QUERY %v" .printf
-      //logicCompiler[].delete
-      //102 LogicUnit[].genCode
-      //logicCompiler[].new
-      //LogicCompiler[].compile
       LogicUnit[].dynFun
-      //logicCompiler[].delete
+      logicCompiler[].delete
       IndexTree[].delete
     endof
 
     103 of
-      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 103=EOSMARKER" .
+      //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 103=EOSMARKER" .
       // AGGREGATE WITH GROUPBY (SUPER)
+
       //queryNo "QUERY %v" .printf
-      logicCompiler[].delete
-      104 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
       LogicUnit[].dynFun
       logicCompiler[].delete
       IndexTree[].delete
@@ -842,6 +833,15 @@
       false 1 LogicUnit[].dynFunArgs
     endof
 
+    600 of
+      //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 600=EOSMARKER" .
+      logicCompiler[].delete
+
+// AGGREGATE WITH GROUPBY
+LogicUnit[].dynFun
+logicCompiler[].delete
+IndexTree[].delete
+endof
   endcase
 
   Pot[].pipeoutAllDangling

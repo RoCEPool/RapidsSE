@@ -217,13 +217,15 @@ enum eEO : u1 // expression operators
   /*    */ EO_RSB_DST_PRINT,    // print dst rsb
   /*    */ EO_RSB_DST_RESET,    // reset dst rowslab
   /*    */ EO_RSB_DST_NEW,      // create new destination rsb
-  /*    */ EO_RSB_DST_TEST,     // test if destination rsb
+  /*    */ EO_RSB_DST_TESTROW,  // test if destination rsb
   /*    */ EO_RSB_DST_ZERO,     // zero destination rsb
   /*    */ EO_RSB_SRC_BEGIN,    // begin src rsb traverse
   /*    */ EO_RSB_SRC_NEXT,     // move to next src rsb
+  /*    */ EO_RSB_SRC_NULL,     // null rb src src
   /*    */ EO_RSB_SRC_PRINT,    // print src rsb
   /*    */ EO_RSB_SRC_PUSHOFS,  // push offset of source rsb
   /*    */ EO_RSB_SRC_SETBYOFS, // set src rsb by using offset on stack
+  /*    */ EO_RSB_SRC_TEST,     // test if there is a rsb src buffer
   /*    */ EO_RSB_ALT_BEGIN,    // begin linear traverse
   /*    */ EO_RSB_ALT_NEXT,     // move to next rsb
   /*    */ EO_RSB_ALT_PRINT,    // print alt rsb
@@ -453,13 +455,15 @@ static Stz* aEO[]
   /*    */ "EO_RSB_DST_PRINT"_Stz,
   /*    */ "EO_RSB_DST_RESET"_Stz,
   /*    */ "EO_RSB_DST_NEW"_Stz,
-  /*    */ "EO_RSB_DST_TEST"_Stz,
+  /*    */ "EO_RSB_DST_TESTROW"_Stz,
   /*    */ "EO_RSB_DST_ZERO"_Stz,
   /*    */ "EO_RSB_SRC_BEGIN"_Stz,
   /*    */ "EO_RSB_SRC_NEXT"_Stz,
+  /*    */ "EO_RSB_SRC_NULL"_Stz,
   /*    */ "EO_RSB_SRC_PRINT"_Stz,
   /*    */ "EO_RSB_SRC_PUSHOFS"_Stz,
   /*    */ "EO_RSB_SRC_SETBYOFS"_Stz,
+  /*    */ "EO_RSB_SRC_TEST"_Stz,
   /*    */ "EO_RSB_ALT_BEGIN"_Stz,
   /*    */ "EO_RSB_ALT_NEXT"_Stz,
   /*    */ "EO_RSB_ALT_PRINT"_Stz,
@@ -695,13 +699,15 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_RSB_DST_PRINT
   { EA_NONE,    0 },  // EO_RSB_DST_RESET
   { EA_NONE,    0 },  // EO_RSB_DST_NEW
-  { EA_NONE,    0 },  // EO_RSB_DST_TEST
+  { EA_NONE,    0 },  // EO_RSB_DST_TESTROW
   { EA_NONE,    0 },  // EO_RSB_DST_ZERO
   { EA_NONE,    0 },  // EO_RSB_SRC_BEGIN
   { EA_NONE,    0 },  // EO_RSB_SRC_NEXT
+  { EA_NONE,    0 },  // EO_RSB_SRC_NULL
   { EA_NONE,    0 },  // EO_RSB_SRC_PRINT
   { EA_NONE,    0 },  // EO_RSB_SRC_PUSHOFS
   { EA_NONE,    0 },  // EO_RSB_SRC_SETBYOFS
+  { EA_NONE,    0 },  // EO_RSB_SRC_TEST
   { EA_NONE,    0 },  // EO_RSB_ALT_BEGIN
   { EA_NONE,    0 },  // EO_RSB_ALT_NEXT
   { EA_NONE,    0 },  // EO_RSB_ALT_PRINT

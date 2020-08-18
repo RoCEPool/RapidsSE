@@ -119,7 +119,7 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_QUANTITY);
   
   // new a rsb dst row if not there
-  //vAddCode(EO_RSB_DST_TEST);
+  //vAddCode(EO_RSB_DST_TESTROW);
   //vAddCodeLabel(EO_JMP_TRUE,"FILTER:"_Stz);
   //vAddCode(EO_RSB_DST_NEW);
   
@@ -458,6 +458,11 @@ void LogicUnit::vGenerateQuery103(void)
   vDefineLabel("QRY_103:"_Stz);
   vAddCode(EO_INIT);
   
+  vAddCode(EO_RSB_SRC_TEST);
+  vAddCodeLabel(EO_JMP_TRUE,"BEGIN_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_CALL,"SUBROUTINE_IXT_TO_RSB:"_Stz);
+  
+  vDefineLabel("BEGIN_RSB_SRC:"_Stz);
   // -- -- -- -- -- -- -- -- -- -- --
   // insert each rsb
   
@@ -467,7 +472,7 @@ void LogicUnit::vGenerateQuery103(void)
   vDefineLabel("NEXT_RSB_SRC:"_Stz);
   
   vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"QRY_103_DONE:"_Stz);
   
   //vAddCode(EO_RSB_SRC_PRINT);
   
@@ -605,8 +610,89 @@ void LogicUnit::vGenerateQuery103(void)
   
   vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   
-  vDefineLabel("END_RSB_SRC:"_Stz);
+  vDefineLabel("QRY_103_DONE:"_Stz);
+  vAddCode(EO_RSB_SRC_NULL);
   vAddCode(EO_RETURN);
+  
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // BEGIN SUBROUTINE: SUBROUTINE_IXT_TO_RSB
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vDefineLabel("SUBROUTINE_IXT_TO_RSB:"_Stz);
+  
+  // begin index tree traversal
+  vAddCode(EO_IXT_TRV_BEGIN);
+  //vAddCode(EO_IXT_DUMP);
+  vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
+  
+  vDefineLabel("NEXT_IXT_SRC:"_Stz);
+  
+  // new a dst rsb row
+  vAddCode(EO_RSB_DST_NEW);
+  
+  // Q101_RETURNFLAG -> Q104_RETURNFLAG
+  vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q101_RETURNFLAG);
+  vAddCodeArg(EO_RSB_DST_POPCOLS,(i8)Q104_RETURNFLAG);
+  
+  // Q101_LINESTATUS -> Q104_LINESTATUS
+  vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q101_LINESTATUS);
+  vAddCodeArg(EO_RSB_DST_POPCOLS,(i8)Q104_LINESTATUS);
+  
+  //vAddCode(EO_RSB_DST_PRINT);
+  
+  // Q101_SUM_QTY -> Q104_SUM_QTY
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_QTY);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_SUM_QTY);
+  
+  //vAddCode(EO_RSB_DST_PRINT);
+  
+  // Q101_SUM_BASE_PRICE -> Q104_SUM_BASE_PRICE
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_BASE_PRICE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_SUM_BASE_PRICE);
+  
+  // Q101_SUM_DISC_PRICE -> Q104_SUM_DISC_PRICE
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_DISC_PRICE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_SUM_DISC_PRICE);
+  
+  // Q101_SUM_CHARGE -> Q104_SUM_CHARGE
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_CHARGE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_SUM_CHARGE);
+  
+  // Q101_SUM_QTY/Q101_COUNT_QTY -> Q104_AVG_QTY
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_QTY);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_COUNT_QTY);
+  vAddCode(EO_DIVIDE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_AVG_QTY);
+  
+  // Q101_SUM_BASE_PRICE/Q101_COUNT_PRICE -> Q104_AVG_PRICE
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_BASE_PRICE);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_COUNT_PRICE);
+  vAddCode(EO_DIVIDE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_AVG_PRICE);
+  
+  // Q101_SUM_DISC/Q101_COUNT_DISC -> Q104_AVG_DISC
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_DISC);
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_COUNT_DISC);
+  vAddCode(EO_DIVIDE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_AVG_DISC);
+  
+  // Q101_COUNT_ORDER -> Q104_COUNT_ORDER
+  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_COUNT_ORDER);
+  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q104_COUNT_ORDER);
+  
+  //vAddCode(EO_RSB_DST_PRINT);
+  
+  // NEXT_IXT_SRC:
+  vAddCode(EO_ENT_NEXT);
+  vAddCodeLabel(EO_JMP_TRUE,"NEXT_IXT_SRC:"_Stz);
+  
+  vDefineLabel("END_IXT_SRC:"_Stz);
+  vAddCode(EO_RETURN);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // END SUBROUTINE: SUBROUTINE_IXT_TO_RSB
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vDumpCode();
 }
@@ -1868,7 +1954,7 @@ void LogicUnit::vGenerateQuery600b(void)
   vAddCodeArg(EO_POP_LOCALI,Q6_LOCAL_QUANTITY);
 
   // new a rsb dst row if not there
-  vAddCode(EO_RSB_DST_TEST);
+  vAddCode(EO_RSB_DST_TESTROW);
   vAddCodeLabel(EO_JMP_TRUE,"FILTER:"_Stz);
   vAddCode(EO_RSB_DST_NEW);
   
@@ -1984,7 +2070,7 @@ void LogicUnit::vGenerateQuery601(void)
   vAddCode(EO_INIT);
   
   // new a rsb dst row if not there
-  vAddCode(EO_RSB_DST_TEST);
+  vAddCode(EO_RSB_DST_TESTROW);
   vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_DST_NEW);
   
@@ -2087,7 +2173,7 @@ void LogicUnit::vGenerateQuery602(void)
   vAddCode(EO_INIT);
   
   // new a rsb dst row if not there
-  vAddCode(EO_RSB_DST_TEST);
+  vAddCode(EO_RSB_DST_TESTROW);
   vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
   vAddCode(EO_RSB_DST_NEW);
   

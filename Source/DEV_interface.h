@@ -58,6 +58,7 @@ void vDev_ENTWRK_SETINTELM(void* aLU, void* aRSB, i8 iTop);
 void vDev_RSB_BEGIN(void* aLU, void* aRSB);
 i8   iDev_RSB_NEW(void* aLU, void* aRSB);
 i8   iDev_RSB_NEXT(void* aLU, void* aRSB);
+void vDev_RSB_NULL(void* aLU, void* aRSB);
 void vDev_RSB_POPCOLI(void* aLU, void* aRSB, i8 iArg, i8 iTop);
 void vDev_RSB_POPCOLS(void* aLU, void* aRSB, i8 iArg, Stz* szTop);
 void vDev_RSB_PRINT(void* aLU, void* aRSB);
@@ -65,8 +66,9 @@ i8   iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg);
 Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg);
 i8   iDev_RSB_PUSHOFS(void* aLU, void* aRSB);
 void vDev_RSB_RESET(void* aLU, void* aRSB);
-void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop);
 i8   iDev_RSB_TEST(void* aLU, void* aRSB);
+i8   iDev_RSB_TESTROW(void* aLU, void* aRSB);
+void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop);
 void vDev_RSB_ZERO(void* aLU, void* aRSB);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
