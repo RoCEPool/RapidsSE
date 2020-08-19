@@ -16,6 +16,8 @@ namespace Structures
   class Nub_t : public Object
   {
   private:
+    i8 m_iEncoding;   //
+  
     i8 m_nSpaceUnits; // number of space units
     i8 m_jHeadSize;   // size of head to allot
   
@@ -158,8 +160,9 @@ Nub_t<CN,HEAD,OVER,TAIL,DESC>::Nub_t(void)
   RASSERT(0 == sizeof(HEAD) % C_HEADLINE_QUANTA);
   RASSERT(0 == sizeof(TAIL) % C_SPACEUNIT_QUANTA);
 
+  m_iEncoding   = 1;
   m_nSpaceUnits = C_UNKNOWN;
-  m_jHeadSize  = C_UNKNOWN;
+  m_jHeadSize   = C_UNKNOWN;
 
   m_nHeadItems  = 0;
   m_nHeadWords  = 0;
