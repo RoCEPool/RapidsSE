@@ -13,7 +13,7 @@ extern Stz* gsBuildUserName;
 extern Stz* gsBuildBranch;
 
 extern Args gxArgs;
-extern DebugFlags gxDebugFlags;
+extern EnvFlags gxEnvFlags;
 
 extern i8   gi_argc;
 extern s256 gi_szaArgv[];
@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Engine::vDebugFlags();
+  Engine::vEnvFlags();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

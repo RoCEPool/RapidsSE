@@ -6,7 +6,7 @@
 
 bool mbCheckPriorVec = false;
 
-extern DebugFlags gxDebugFlags;;
+extern EnvFlags gxEnvFlags;;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

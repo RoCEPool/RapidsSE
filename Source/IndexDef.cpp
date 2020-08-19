@@ -6,7 +6,7 @@
 
 #include "Jobs.h"
 
-extern DebugFlags gxDebugFlags;
+extern EnvFlags gxEnvFlags;
 
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +159,7 @@ void IndexDef::vDetermineKeyKind(void)
     return;
   }
 
-  if (gxDebugFlags.m_iIntKey)
+  if (gxEnvFlags.m_iIntKey)
     m_eKeyKind = KE_INT;
   else
     m_eKeyKind = KE_GENERAL;

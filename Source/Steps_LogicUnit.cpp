@@ -4,7 +4,7 @@
 
 #include "Steps.h"
 
-extern DebugFlags gxDebugFlags;;
+extern EnvFlags gxEnvFlags;;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

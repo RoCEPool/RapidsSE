@@ -32,7 +32,7 @@ extern i8     giProgressSubPoint;
 extern i8     gi_argc;
 extern s256   gi_szaArgv[];
 
-extern DebugFlags gxDebugFlags;
+extern EnvFlags gxEnvFlags;
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
@@ -594,25 +594,6 @@ void Engine::vCreateFileNames(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* translate debug flag env variables                                         */
-/*----------------------------------------------------------------------------*/
-void Engine::vDebugFlags(void)
-{
-  _static_
-  
-  s256 sFlagValue;
-  
-  if (Env::bGet("SE_DBG_ALKA"_Stz,sFlagValue))
-    gxDebugFlags.m_iAlka = StrLib::iToI8(sFlagValue.azChar());
-  if (Env::bGet("SE_DBG_INTKEY"_Stz,sFlagValue))
-    gxDebugFlags.m_iIntKey = StrLib::iToI8(sFlagValue.azChar());
-  if (Env::bGet("SE_DBG_METACLUE"_Stz,sFlagValue))
-    gxDebugFlags.m_iMetaClue = StrLib::iToI8(sFlagValue.azChar());
-  if (Env::bGet("SE_DBG_RAY"_Stz,sFlagValue))
-    gxDebugFlags.m_iRay = StrLib::iToI8(sFlagValue.azChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* decode command line from arguments                                         */
 /*----------------------------------------------------------------------------*/
 eBO Engine::eDecodeCommandLine(void)
@@ -653,6 +634,25 @@ void Engine::vDeleteSession(Session* pSession)
 {
   //delete pSession;
   AM::pSessionArray()->vFreeSession(pSession);
+}
+
+/*----------------------------------------------------------------------------*/
+/* translate debug flag env variables                                         */
+/*----------------------------------------------------------------------------*/
+void Engine::vEnvFlags(void)
+{
+  _static_
+  
+  s256 sFlagValue;
+  
+  if (Env::bGet("SE_ENV_ALKA"_Stz,sFlagValue))
+    gxEnvFlags.m_iAlka = StrLib::iToI8(sFlagValue.azChar());
+  if (Env::bGet("SE_ENV_INTKEY"_Stz,sFlagValue))
+    gxEnvFlags.m_iIntKey = StrLib::iToI8(sFlagValue.azChar());
+  if (Env::bGet("SE_ENV_METACLUE"_Stz,sFlagValue))
+    gxEnvFlags.m_iMetaClue = StrLib::iToI8(sFlagValue.azChar());
+  if (Env::bGet("SE_ENV_RAY"_Stz,sFlagValue))
+    gxEnvFlags.m_iRay = StrLib::iToI8(sFlagValue.azChar());
 }
 
 /*----------------------------------------------------------------------------*/

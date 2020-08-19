@@ -4,7 +4,7 @@
 
 #include "CompactBuffers.h"
 
-extern DebugFlags gxDebugFlags;
+extern EnvFlags gxEnvFlags;
 
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dstk                                                      */
@@ -12,7 +12,7 @@ extern DebugFlags gxDebugFlags;
 void RowInflator::vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
                               StreamDef* pStreamDef)
 {
-  if (gxDebugFlags.m_iMetaClue)
+  if (gxEnvFlags.m_iMetaClue)
     vInflateSet_v2(aaiDstk,aHeadLine,pStreamDef);
   else
     vInflateSet_v1(aaiDstk,aHeadLine,pStreamDef);
@@ -21,9 +21,10 @@ void RowInflator::vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve)
+void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine,
+                                 i8 i_ColToRetrieve)
 {
-  if (gxDebugFlags.m_iMetaClue)
+  if (gxEnvFlags.m_iMetaClue)
     vInflateColumn_v2(pRow,aHeadLine,i_ColToRetrieve);
   else
     vInflateColumn_v1(pRow,aHeadLine,i_ColToRetrieve);
@@ -34,7 +35,7 @@ void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColT
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateRow(RowSingle* pRow, HeadLine* aHeadLine)
 {
-  if (gxDebugFlags.m_iMetaClue)
+  if (gxEnvFlags.m_iMetaClue)
     vInflateRow_v2(pRow,aHeadLine);
   else
     vInflateRow_v1(pRow,aHeadLine);
@@ -45,7 +46,7 @@ void RowInflator::vInflateRow(RowSingle* pRow, HeadLine* aHeadLine)
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateRow(RowSlab* pRowSlab, HeadLine* aHeadLine)
 {
-  if (gxDebugFlags.m_iMetaClue)
+  if (gxEnvFlags.m_iMetaClue)
     vInflateRow_v2(pRowSlab,aHeadLine);
   else
     vInflateRow_v1(pRowSlab,aHeadLine);

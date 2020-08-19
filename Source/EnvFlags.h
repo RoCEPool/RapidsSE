@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* DebugFlags.h -- Debug Flags                                                */
+/* EnvFlags.h -- Env Flags                                                    */
 /*============================================================================*/
 #pragma once
 
 namespace Base
 { 
-  struct DebugFlags {
+  struct EnvFlags {
         
     i8 m_iAlka;
     i8 m_iIntKey;
