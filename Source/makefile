@@ -36,7 +36,7 @@ INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../T
 
 #Libraries
 THIRDPARTY_LIBS = -llz4 -lbz2
-LIBS = -lrt -lpthread
+LIBS = -lrt -lpthread -ltcc -ldl
 RAPIDS_LIBS = -lRapidsSEv0.4.1
 
 #all : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
@@ -69,7 +69,7 @@ $(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO)
 	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  main.cpp -o main.o
 	cp $(MAN_PAGES) $(TARGET_PATH)
-	$(CPP) main.o $(SHOCO) -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L$(TARGET_PATH) $(LIBS) $(RAPIDS_LIBS) -o $(TARGET_EXE)
+	$(CPP) main.o $(SHOCO) -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L/usr/local/lib -L$(TARGET_PATH) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
 
 #To obtain object files
 %.o: %.cpp %.d
