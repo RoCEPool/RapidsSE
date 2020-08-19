@@ -23,7 +23,7 @@
   Counter0[] 1 + to Counter0[]
 
   // send out an infoSet of ProgressUnits every 10 buffers
-  Counter0[] 10 % 0 == if
+  Counter0[] 100 % 0 == if
 
     // create an infoSet operand
     infoSetTable[] InfoSet[].new

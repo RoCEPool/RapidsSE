@@ -561,7 +561,9 @@
 
     stage stageD on origin :
 
-    output             |
+    progress 'Load'    |
+
+    toStatDemon        |
 
     sink               |
 

@@ -855,7 +855,7 @@
 
   endcase
 
-  queryNo "dangling %v" .printf
+  //queryNo "dangling %v" .printf
   Pot[].pipeoutAllDangling
   Pot[].delete
 
