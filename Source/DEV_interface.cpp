@@ -1090,7 +1090,7 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
       
-  RowInflator::vInflateColI_stk(aaiDstk,
+  RowInflator::vInflateSet(aaiDstk,
                                 //pLogicUnit->m_pDevAltIxt->m_aCrw,
                                 (Crw*)pLogicUnit->m_xRluCommon.m_aAltCrw,
                                 pLogicUnit->m_pDevAltRsb->m_pStreamDef);
@@ -1106,7 +1106,7 @@ void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk)
   
   LogicUnit* pLogicUnit = (LogicUnit*)aLU; //_pLogicUnit(aLU);
     
-  RowInflator::vInflateColI_stk(aaiDstk,
+  RowInflator::vInflateSet(aaiDstk,
                                 pLogicUnit->m_pDevSrcIxt->m_aCrw,
                                 pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
 }
@@ -1120,7 +1120,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
     
-  RowInflator::vInflateColI_stk(aaiDstk,
+  RowInflator::vInflateSet(aaiDstk,
 //                              pLogicUnit->m_pDevSrcIxt->m_aCrw,
                                 (Crw*)pLogicUnit->m_xRluCommon.m_aSrcCrw,
                                 pLogicUnit->m_pDevSrcRsb->m_pStreamDef

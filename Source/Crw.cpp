@@ -142,7 +142,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
       szMetaCode = aMC[eMetaCode];
       i_Offset   = nHeadBytes + 2;
       ayAddr     = aHeadLine->ayAdrLogical(i_Offset);
-      nBytes     = RowCoder::nDataSize(eMetaCode);
+      nBytes     = RowCoder::nDataSizeOfCode(eMetaCode);
       //vTrace("--- --------------- --- -- ------------------- "
       //       "-- ------------ -- ---------------- -----------\n"_Stz);
       vTrace("*** *************** *** ** ******************* "
@@ -150,7 +150,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
     }
     else {
       ayAddr = aHeadLine->ayAdrLogical(i_Offset);
-      nBytes = RowCoder::nDataSize(eMetaCode);
+      nBytes = RowCoder::nDataSizeOfCode(eMetaCode);
     }
     if (MC_STR_FIT_1L == eMetaCode) {
       RASSERT(1 == nBytes);

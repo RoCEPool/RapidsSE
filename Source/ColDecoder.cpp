@@ -63,7 +63,7 @@ void ColDecoder::vDecodeBcd(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncMetaCode(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   switch (eEncoding) {
       
@@ -136,7 +136,7 @@ void ColDecoder::vDecodeDte(Datum* pDatum,
   i8 iEra = C_ERA_0;
   
   //!! needs more work
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncMetaCode(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   switch (eEncoding) {
       
@@ -173,7 +173,7 @@ void ColDecoder::vDecodeFlt(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncMetaCode(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   switch (eEncoding) {
       
@@ -200,7 +200,7 @@ void ColDecoder::vDecodeInt(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncMetaCode(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   //vTrace("Decoding %lld\n"_Stz, eEncoding);
   
   switch (eEncoding) {
@@ -241,7 +241,7 @@ void ColDecoder::vDecodeIvl(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncMetaCode(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   switch (eEncoding) {
       
@@ -268,7 +268,7 @@ void ColDecoder::vDecodeTme(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncMetaCode(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   switch (eEncoding) {
       
@@ -298,7 +298,7 @@ void ColDecoder::vDecodeTsp(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs)
 {
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncMetaCode(pCol,i_ColCrs_,i_OfsCrs,pStreamDef);
   
   switch (eEncoding) {
       
@@ -323,7 +323,7 @@ void ColDecoder::vDecodeVch(Datum* pDatum,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
   //! needs more work
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncMetaCode(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   if (MC_NULL == eEncoding) {
     (* pDatum) = C_DATUM_NULL;

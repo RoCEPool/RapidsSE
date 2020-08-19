@@ -13,6 +13,7 @@
 /*----------------------------------------------------------------------------*/
 HeadLine::HeadLine(void)
 {
+  _nonProper_
 }
 
 /*----------------------------------------------------------------------------*/
@@ -20,6 +21,7 @@ HeadLine::HeadLine(void)
 /*----------------------------------------------------------------------------*/
 HeadLine::~HeadLine(void) noexcept(false)
 {
+  _nonProper_
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,6 +33,8 @@ HeadLine::~HeadLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 byte* HeadLine::ayAdrLogical(i8 i_Offset)
 {
+  _nonProper_
+  
   // scenario 1: simple case (no overflow), getting address from head
   if (! bHasOverflow()) {
     byte* ayAdr = (byte*)this + i_Offset;
@@ -56,6 +60,8 @@ byte* HeadLine::ayAdrLogical(i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::nBytes(void)
 {
+  _nonProper_
+  
   i8 nSizeBytes = nWords() * C_BYTES_PER_WORD;
   
   return nSizeBytes;
@@ -66,6 +72,8 @@ i8 HeadLine::nBytes(void)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vDelete(void)
 {
+  _nonProper_
+  
   vW(C_HEADLINE_DELETED);
 }
 
@@ -74,6 +82,8 @@ void HeadLine::vDelete(void)
 /*----------------------------------------------------------------------------*/
 bool HeadLine::bIsDeleted(void)
 {
+  _nonProper_
+  
   i8 nSizeWords = nW();
   
   return nSizeWords == C_HEADLINE_DELETED ? true : false;
@@ -84,6 +94,8 @@ bool HeadLine::bIsDeleted(void)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vDump(void)
 {
+  _nonProper_
+  
   i8 nSizeBytes = nBytes();
   MemLib::vWordDump(this,nSizeBytes);
   
@@ -100,6 +112,8 @@ void HeadLine::vDump(void)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
 {
+  _nonProper_
+  
   //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
   
   Column* pLastCol = pStreamDef->pGetColumn(pStreamDef->nColumns(C_ALL) - 1);
@@ -109,9 +123,9 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   i8 i_ColCrs_ = 0;
   i8 i_OfsCrs_ = C_UNKNOWN;
 
-  eMC eLastEncoding = eGetEncoding(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eLastEncoding = eGetEncMetaCode(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
-  i8 nDataBytes = RowCoder::nDataSize(eLastEncoding);
+  i8 nDataBytes = RowCoder::nDataSizeOfCode(eLastEncoding);
   
   i8 nFreeBytes = nBytes() - i_OfsCrs_ - nDataBytes;
   
@@ -122,15 +136,46 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the encoding (metacode and offset) of a column datum                   */
+/* get data code from logical row : head[+over]                               */
 /*----------------------------------------------------------------------------*/
-eMC HeadLine::eGetEncoding(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
+w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
+{
+  _nonProper_
+  
+  w8 wDataCode = 0;
+  
+  // scenario 1: simple case (no overflow), getting bytes from head
+  if (! bHasOverflow()) {
+    wDataCode = wGet(i_Offset,nDataSize);
+    return wDataCode;
+  }
+  
+  // scenario 2: there is an overflow, but getting bytes from head
+  i8 nHeadBytes = nBytes();
+  if (i_Offset < nHeadBytes - 2) {
+    wDataCode = wGet(i_Offset,nDataSize);
+    return wDataCode;
+  }
+  
+  // scenario 3: there is an overflow, and getting bytes from overflow
+  OverLine* aOverLine = aGetOver();
+  i8 i_Offset_over = i_Offset - nHeadBytes;
+  wDataCode = aOverLine->wGet(i_Offset_over,nDataSize);
+  return wDataCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the encoding (metaclue and offset) of a column datum                   */
+/*----------------------------------------------------------------------------*/
+u1 HeadLine::uGetEncMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
                            StreamDef* pStreamDef)
 {
+  _nonProper_
+  
   i8 i_ForCol = pForCol->iColumnNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move cursor forward to column required
+  // move cursor forward to column required                            NOT RIGHT
   
   if (C_UNKNOWN == i_OfsCrs_ || i_ForCol < i_ColCrs_) {
     
@@ -145,10 +190,10 @@ eMC HeadLine::eGetEncoding(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
     if (MC_OVERFLOW_2T == eEncoding) {
       i_OfsCrs_ = nBytes() + C_U_1B;
       eEncoding = (eMC)wGetLogical(i_OfsCrs_++,C_1B);
-      i_OfsCrs_ += RowCoder::nDataSize(eEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
     }
     else {
-      i_OfsCrs_ += RowCoder::nDataSize(eEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
     }
     
     if (MC_STR_FIT_1L == eEncoding) {
@@ -176,30 +221,59 @@ eMC HeadLine::eGetEncoding(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get data code from logical row : head[+over]                               */
+/* get the encoding (metacode and offset) of a column datum                   */
 /*----------------------------------------------------------------------------*/
-w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
+eMC HeadLine::eGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
+                           StreamDef* pStreamDef)
 {
-  w8 wDataCode = 0;
+  _nonProper_
   
-  // scenario 1: simple case (no overflow), getting bytes from head
-  if (! bHasOverflow()) {
-    wDataCode = wGet(i_Offset,nDataSize);
-    return wDataCode;
+  i8 i_ForCol = pForCol->iColumnNo();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move cursor forward to column required
+  
+  if (C_UNKNOWN == i_OfsCrs_ || i_ForCol < i_ColCrs_) {
+    
+    i_ColCrs_ = 0;
+    i_OfsCrs_ = RowCoder::iBaseOffsetData(pStreamDef);
   }
   
-  // scenario 2: there is an overflow, but getting bytes from head
-  i8 nHeadBytes = nBytes();
-  if (i_Offset < nHeadBytes - 2) {
-    wDataCode = wGet(i_Offset,nDataSize);
-    return wDataCode;
+  for (i8 i_Col = i_ColCrs_; i_Col < i_ForCol; i_Col++) {
+    
+    eMC eEncoding = eMetaCode(i_Col);
+    
+    if (MC_OVERFLOW_2T == eEncoding) {
+      i_OfsCrs_ = nBytes() + C_U_1B;
+      eEncoding = (eMC)wGetLogical(i_OfsCrs_++,C_1B);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
+    }
+    else {
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
+    }
+    
+    if (MC_STR_FIT_1L == eEncoding) {
+      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_1B);
+    }
+    else
+    if (MC_STR_FIT_2L == eEncoding) {
+      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_2B);
+    }
   }
   
-  // scenario 3: there is an overflow, and getting bytes from overflow
-  OverLine* aOverLine = aGetOver();
-  i8 i_Offset_over = i_Offset - nHeadBytes;
-  wDataCode = aOverLine->wGet(i_Offset_over,nDataSize);
-  return wDataCode;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the encoding for the column
+  
+  eMC eEncoding = eMetaCode(i_ForCol);
+  if (MC_OVERFLOW_2T == eEncoding) {
+    i_OfsCrs_ = nBytes() + C_U_1B + C_M_1B;
+    OverLine* aOverLine = aGetOver();
+    eEncoding = (eMC)aOverLine->w8_1B(1);
+  }
+  
+  i_ColCrs_ = i_ForCol;
+  
+  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,6 +281,8 @@ w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
 /*----------------------------------------------------------------------------*/
 OverLine* HeadLine::aGetOver(void)
 {
+  _nonProper_
+  
   i8 i_Over_rel = iOverflow2B();
   OverLine* aOver = RowNub::aGetOver_rel(this,i_Over_rel);
   
@@ -218,6 +294,8 @@ OverLine* HeadLine::aGetOver(void)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::iGetTailRel(TailLine* TailLine)
 {
+  _nonProper_
+  
   i8 i_Tail_rel = RowNub::iUnitDiff(this,TailLine);
   
   return i_Tail_rel;
@@ -228,6 +306,8 @@ i8 HeadLine::iGetTailRel(TailLine* TailLine)
 /*----------------------------------------------------------------------------*/
 TailLine* HeadLine::aGetTailRel(i8 i_Tail_rel)
 {
+  _nonProper_
+  
   TailLine* aTail = RowNub::aGetTail_rel(this,i_Tail_rel);
   
   return aTail;
@@ -238,6 +318,8 @@ TailLine* HeadLine::aGetTailRel(i8 i_Tail_rel)
 /*----------------------------------------------------------------------------*/
 bool HeadLine::bHasOverflow(void)
 {
+  _nonProper_
+  
   i8 nSizeWords = nW();
   
   if (nSizeWords >= 128)
@@ -251,6 +333,8 @@ bool HeadLine::bHasOverflow(void)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vHasOverflow(void)
 {
+  _nonProper_
+  
   i8 nSizeWords = nW();
   
   if (nSizeWords < 128) {
@@ -260,10 +344,26 @@ void HeadLine::vHasOverflow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* store meta clue                                                            */
+/*----------------------------------------------------------------------------*/
+void HeadLine::vMetaClue(i8 i_Col, u1 uMetaClue)
+{
+  _nonProper_
+  
+  i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+  
+  i8 i_Offset = i_BaseOffsetMeta + i_Col;
+  
+  v1B(i_Offset,uMetaClue);
+}
+
+/*----------------------------------------------------------------------------*/
 /* store meta code                                                            */
 /*----------------------------------------------------------------------------*/
 void HeadLine::vMetaCode(i8 i_Col, eMC eMetaCode)
 {
+  _nonProper_
+  
   i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
   
   i8 i_Offset = i_BaseOffsetMeta + i_Col;
@@ -276,6 +376,8 @@ void HeadLine::vMetaCode(i8 i_Col, eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::iOverflow2B(void)
 {
+  _nonProper_
+  
   i8 nHeadBytes = nBytes();
   
   i8 iOver2B = w8_2B(nHeadBytes - C_2B);
@@ -288,6 +390,8 @@ i8 HeadLine::iOverflow2B(void)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vOverflow2B(i8 iOver2B)
 {
+  _nonProper_
+  
   i8 nHeadBytes = nBytes();
   
   v2B(nHeadBytes - C_2B,iOver2B);
@@ -296,8 +400,10 @@ void HeadLine::vOverflow2B(i8 iOver2B)
 /*----------------------------------------------------------------------------*/
 /* put data code into logical compact row : head[+over]                       */
 /*----------------------------------------------------------------------------*/
-void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
+void HeadLine::vPutDataLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
 {
+  _nonProper_
+  
   // scenario 1: simple case (no overflow), putting bytes into head
   if (! bHasOverflow()) {
     vPut(i_Offset,wDataCode,nDataSize);
@@ -326,6 +432,8 @@ void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
 /*----------------------------------------------------------------------------*/
 t8 HeadLine::tPerspective(void)
 {
+  _nonProper_
+  
   t8 tPerspective = w8_8B(C_HEADLINE_OFS_PERSPECTIVE);
 
   return tPerspective;
@@ -336,14 +444,18 @@ t8 HeadLine::tPerspective(void)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vPerspective(t8 tPerspective)
 {
+  _nonProper_
+  
   v8B(C_HEADLINE_OFS_PERSPECTIVE,tPerspective);
 }
 
 /*----------------------------------------------------------------------------*/
 /* put string into logical compact row : head[+over]                          */
 /*----------------------------------------------------------------------------*/
-void HeadLine::vPutLogical(i8 i_Offset, Stz* szString, i8 nLength)
+void HeadLine::vPutDataLogical(i8 i_Offset, Stz* szString, i8 nLength)
 {
+  _nonProper_
+  
   byte* ayAppend = ayAdrLogical(i_Offset);
   
   MemLib::vCopy(ayAppend,szString,nLength,CN_ROWCOMPACTOR);
@@ -354,6 +466,8 @@ void HeadLine::vPutLogical(i8 i_Offset, Stz* szString, i8 nLength)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vSetOver(OverLine* aOverLine)
 {
+  _nonProper_
+  
   i8 i_Over_rel = RowNub::iUnitDiff(this,(TailLine*)aOverLine);
   
   vOverflow2B(i_Over_rel);
@@ -366,6 +480,8 @@ void HeadLine::vSetOver(OverLine* aOverLine)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::nUnits(void)
 {
+  _nonProper_
+  
   i8 nSizeUnits = w8_1B(C_HEADLINE_OFS_WORDS);
     
   if (nSizeUnits >= 128)
@@ -379,6 +495,8 @@ i8 HeadLine::nUnits(void)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::nW(void)
 {
+  _nonProper_
+  
   i8 nWords = w8_1B(C_HEADLINE_OFS_WORDS);
   
   return nWords;
@@ -389,6 +507,8 @@ i8 HeadLine::nW(void)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vW(i8 nWords)
 {
+  _nonProper_
+  
   v1B(C_HEADLINE_OFS_WORDS,nWords);
 }
 
@@ -397,6 +517,8 @@ void HeadLine::vW(i8 nWords)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::nWords(void)
 {
+  _nonProper_
+  
   i8 nSizeWords = nUnits();
   
   return nSizeWords;

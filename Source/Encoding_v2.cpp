@@ -479,7 +479,7 @@ void Encoding_v2::vEncodeFlt(_ColEnc_v2& xColEnc, Dtm wColVal)
   xColEnc.m_nDataSize = nD;
 }
 
-#define META_CLUE(__high,__low) ( (u1) ( (u1)__high << 4 | (u1)__low )  )
+#define META_CLUE_FORM(__high,__low) ( (u1) ( (u1)__high << 4 | (u1)__low )  )
 
 /*----------------------------------------------------------------------------*/
 /* encode an int column value                                                 */
@@ -501,7 +501,7 @@ void Encoding_v2::vEncodeInt(_ColEnc_v2& xColEnc, Dtm wColVal)
     xColEnc.m_eMetaCode = MC_INT_M_ONE;
     xColEnc.m_nDataSize = C_0B;
     
-    xColEnc.m_uMetaClue = META_CLUE(MN_NEGATIVE,0);
+    xColEnc.m_uMetaClue = META_CLUE_FORM(MN_NEGATIVE,0);
     return;
   }
   
@@ -517,7 +517,7 @@ void Encoding_v2::vEncodeInt(_ColEnc_v2& xColEnc, Dtm wColVal)
     u1 uLow = (u1)wColVal.m_iWrd - 1;
     u1 eTest = (uHigh | uLow);
     
-    xColEnc.m_uMetaClue = META_CLUE(MN_POSITIVE,wColVal.m_iWrd - 1);
+    xColEnc.m_uMetaClue = META_CLUE_FORM(MN_POSITIVE,wColVal.m_iWrd - 1);
     return;
   }
   
@@ -528,7 +528,7 @@ void Encoding_v2::vEncodeInt(_ColEnc_v2& xColEnc, Dtm wColVal)
   xColEnc.m_eMetaCode = (eMC)(MC_INT_1B + nD - 1);
   xColEnc.m_nDataSize = nD;
   
-  xColEnc.m_uMetaClue = META_CLUE(MN_NUMERIC,nD);
+  xColEnc.m_uMetaClue = META_CLUE_FORM(MN_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -679,7 +679,7 @@ void Encoding_v2::vOffsetTill(_ColEnc_v2& xrColEnc)
   xrColEnc.m_i_Offset = m_i_Offset_next;
   
   // get the base size of the encoding
-  i8 nDataBytes = nDataSize(xrColEnc.m_eMetaCode);
+  i8 nDataBytes = nDataSizeOfCode(xrColEnc.m_eMetaCode);
   
   // if 0B case then till is same as offset
   if (! nDataBytes) {

@@ -9,7 +9,7 @@ namespace Base
         
     i8 m_iAlka;
     i8 m_iIntKey;
-    i8 m_iMetaNibble;
+    i8 m_iMetaClue;
     i8 m_iRay;
     
   };

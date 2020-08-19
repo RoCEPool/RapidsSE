@@ -24,21 +24,24 @@ namespace CompactBuffers
     bool bIsDeleted(void);
     void vDump(void);
     i8   nFreeSpace(StreamDef* pStreamDef);
-    eMC  eGetEncoding(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
-                      StreamDef* pStreamDef);
     w8   wGetLogical(i8 i_Offset, i8 nDataSize);
+    u1   uGetEncMetaClue(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
+                      StreamDef* pStreamDef);
+    eMC  eGetEncMetaCode(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
+                      StreamDef* pStreamDef);
     OverLine* aGetOver(void);
     i8   iGetTailRel(TailLine* TailLine);
     TailLine* aGetTailRel(i8 i_Tail_rel);
     bool bHasOverflow(void);
     void vHasOverflow(void);
+    void vMetaClue(i8 i_Col, u1 uMetaClue);
     void vMetaCode(i8 i_Col, eMC eMetaCode);
     i8   iOverflow2B(void);
     void vOverflow2B(i8 iOver2B);
     t8   tPerspective(void);
     void vPerspective(t8 tPerspective);
-    void vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize);
-    void vPutLogical(i8 i_Offset, Stz* szString, i8 nLength);
+    void vPutDataLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize);
+    void vPutDataLogical(i8 i_Offset, Stz* szString, i8 nLength);
     void vSetOver(OverLine* aOverLine);
     i8   nUnits(void);
     i8   nW(void);
@@ -57,6 +60,18 @@ namespace CompactBuffers
       eMC* aeCode = aAdd<eMC*>(this,i_BaseOffsetMeta);
   
       return aeCode;
+    }
+  
+    /*------------------------------------------------------------------------*/
+    /* return meta clue                                                       */
+    /*------------------------------------------------------------------------*/
+    inline u1 uMetaClue(i8 i_Col)
+    {
+      i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+    
+      u1 uClue = * aAdd<u1*>(this,i_BaseOffsetMeta + i_Col);
+  
+      return uClue;
     }
   
     /*------------------------------------------------------------------------*/
