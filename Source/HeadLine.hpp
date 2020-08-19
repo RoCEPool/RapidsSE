@@ -25,9 +25,9 @@ namespace CompactBuffers
     void vDump(void);
     i8   nFreeSpace(StreamDef* pStreamDef);
     w8   wGetLogical(i8 i_Offset, i8 nDataSize);
-    u1   uGetMetaClue(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
+    u1   uGetEncMetaClue(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
                       StreamDef* pStreamDef);
-    eMC  eGetMetaCode(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
+    eMC  eGetEncMetaCode(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
                       StreamDef* pStreamDef);
     OverLine* aGetOver(void);
     i8   iGetTailRel(TailLine* TailLine);

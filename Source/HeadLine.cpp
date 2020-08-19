@@ -109,7 +109,7 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   i8 i_ColCrs_ = 0;
   i8 i_OfsCrs_ = C_UNKNOWN;
 
-  eMC eLastEncoding = eGetMetaCode(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eLastEncoding = eGetEncMetaCode(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   i8 nDataBytes = RowCoder::nDataSizeOfCode(eLastEncoding);
   
@@ -151,7 +151,7 @@ w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
 /*----------------------------------------------------------------------------*/
 /* get the encoding (metaclue and offset) of a column datum                   */
 /*----------------------------------------------------------------------------*/
-u1 HeadLine::uGetMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
+u1 HeadLine::uGetEncMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
                            StreamDef* pStreamDef)
 {
   i8 i_ForCol = pForCol->iColumnNo();
@@ -205,7 +205,7 @@ u1 HeadLine::uGetMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
 /*----------------------------------------------------------------------------*/
 /* get the encoding (metacode and offset) of a column datum                   */
 /*----------------------------------------------------------------------------*/
-eMC HeadLine::eGetMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
+eMC HeadLine::eGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
                            StreamDef* pStreamDef)
 {
   i8 i_ForCol = pForCol->iColumnNo();
