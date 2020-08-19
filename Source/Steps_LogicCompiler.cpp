@@ -50,9 +50,9 @@ void Step::vLogicCompilerExtract(void)
 {
   ENTRY();
     
-#ifdef WITH_APPLE
+//#ifdef WITH_APPLE
   LogicCompiler::vExtract();
-#endif
+//#endif
   
   EXIT();
 }
