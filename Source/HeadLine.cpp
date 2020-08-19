@@ -109,7 +109,7 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   i8 i_ColCrs_ = 0;
   i8 i_OfsCrs_ = C_UNKNOWN;
 
-  eMC eLastEncoding = eGetEncoding(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eLastEncoding = eGetMetaCode(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   i8 nDataBytes = RowCoder::nDataSize(eLastEncoding);
   
@@ -122,9 +122,36 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get data code from logical row : head[+over]                               */
+/*----------------------------------------------------------------------------*/
+w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
+{
+  w8 wDataCode = 0;
+  
+  // scenario 1: simple case (no overflow), getting bytes from head
+  if (! bHasOverflow()) {
+    wDataCode = wGet(i_Offset,nDataSize);
+    return wDataCode;
+  }
+  
+  // scenario 2: there is an overflow, but getting bytes from head
+  i8 nHeadBytes = nBytes();
+  if (i_Offset < nHeadBytes - 2) {
+    wDataCode = wGet(i_Offset,nDataSize);
+    return wDataCode;
+  }
+  
+  // scenario 3: there is an overflow, and getting bytes from overflow
+  OverLine* aOverLine = aGetOver();
+  i8 i_Offset_over = i_Offset - nHeadBytes;
+  wDataCode = aOverLine->wGet(i_Offset_over,nDataSize);
+  return wDataCode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the encoding (metacode and offset) of a column datum                   */
 /*----------------------------------------------------------------------------*/
-eMC HeadLine::eGetEncoding(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
+eMC HeadLine::eGetMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
                            StreamDef* pStreamDef)
 {
   i8 i_ForCol = pForCol->iColumnNo();
@@ -173,33 +200,6 @@ eMC HeadLine::eGetEncoding(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
   i_ColCrs_ = i_ForCol;
   
   return eEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get data code from logical row : head[+over]                               */
-/*----------------------------------------------------------------------------*/
-w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
-{
-  w8 wDataCode = 0;
-  
-  // scenario 1: simple case (no overflow), getting bytes from head
-  if (! bHasOverflow()) {
-    wDataCode = wGet(i_Offset,nDataSize);
-    return wDataCode;
-  }
-  
-  // scenario 2: there is an overflow, but getting bytes from head
-  i8 nHeadBytes = nBytes();
-  if (i_Offset < nHeadBytes - 2) {
-    wDataCode = wGet(i_Offset,nDataSize);
-    return wDataCode;
-  }
-  
-  // scenario 3: there is an overflow, and getting bytes from overflow
-  OverLine* aOverLine = aGetOver();
-  i8 i_Offset_over = i_Offset - nHeadBytes;
-  wDataCode = aOverLine->wGet(i_Offset_over,nDataSize);
-  return wDataCode;
 }
 
 /*----------------------------------------------------------------------------*/
