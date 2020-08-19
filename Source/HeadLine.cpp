@@ -149,6 +149,60 @@ w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the encoding (metaclue and offset) of a column datum                   */
+/*----------------------------------------------------------------------------*/
+u1 HeadLine::uGetMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
+                           StreamDef* pStreamDef)
+{
+  i8 i_ForCol = pForCol->iColumnNo();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move cursor forward to column required                            NOT RIGHT
+  
+  if (C_UNKNOWN == i_OfsCrs_ || i_ForCol < i_ColCrs_) {
+    
+    i_ColCrs_ = 0;
+    i_OfsCrs_ = RowCoder::iBaseOffsetData(pStreamDef);
+  }
+  
+  for (i8 i_Col = i_ColCrs_; i_Col < i_ForCol; i_Col++) {
+    
+    eMC eEncoding = eMetaCode(i_Col);
+    
+    if (MC_OVERFLOW_2T == eEncoding) {
+      i_OfsCrs_ = nBytes() + C_U_1B;
+      eEncoding = (eMC)wGetLogical(i_OfsCrs_++,C_1B);
+      i_OfsCrs_ += RowCoder::nDataSize(eEncoding);
+    }
+    else {
+      i_OfsCrs_ += RowCoder::nDataSize(eEncoding);
+    }
+    
+    if (MC_STR_FIT_1L == eEncoding) {
+      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_1B);
+    }
+    else
+    if (MC_STR_FIT_2L == eEncoding) {
+      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_2B);
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the encoding for the column
+  
+  eMC eEncoding = eMetaCode(i_ForCol);
+  if (MC_OVERFLOW_2T == eEncoding) {
+    i_OfsCrs_ = nBytes() + C_U_1B + C_M_1B;
+    OverLine* aOverLine = aGetOver();
+    eEncoding = (eMC)aOverLine->w8_1B(1);
+  }
+  
+  i_ColCrs_ = i_ForCol;
+  
+  return eEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the encoding (metacode and offset) of a column datum                   */
 /*----------------------------------------------------------------------------*/
 eMC HeadLine::eGetMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
