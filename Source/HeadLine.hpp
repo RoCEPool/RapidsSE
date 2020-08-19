@@ -53,13 +53,13 @@ namespace CompactBuffers
     /*------------------------------------------------------------------------*/
     /* calculate address of meta area of head line                            */
     /*------------------------------------------------------------------------*/
-    inline eMC* aeMetaArea(void)
+    inline u1* auMetaArea(void)
     {
       i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
 
-      eMC* aeCode = aAdd<eMC*>(this,i_BaseOffsetMeta);
+      u1* auCode = aAdd<u1*>(this,i_BaseOffsetMeta);
   
-      return aeCode;
+      return auCode;
     }
   
     /*------------------------------------------------------------------------*/

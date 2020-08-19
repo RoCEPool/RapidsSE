@@ -20,7 +20,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
   TailLine* aTail;
     
   char* acString; // = nullptr;
-  eMC* aeMetaCode = aHeadLine->aeMetaArea();
+  eMC* aeMetaCode = (eMC*)aHeadLine->auMetaArea();
   
   i8 nCols = pStreamDef->nTotalColumns();
   
@@ -417,7 +417,7 @@ void RowInflator::vInflateColumn_v2(RowSingle* pRow, HeadLine* aHeadLine, i8 i_C
   
   i8 nCols = pRow->m_nColumns;
   
-  eMC* aeMetaCode = aHeadLine->aeMetaArea();
+  eMC* aeMetaCode = (eMC*)aHeadLine->auMetaArea();
   
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(pRow->m_pStreamDef);
   
@@ -837,7 +837,7 @@ void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
   
   i8 nCols = pRow->m_nColumns;
   
-  eMC*  aeMetaCode = aHeadLine->aeMetaArea();
+  eMC*  aeMetaCode = (eMC*)aHeadLine->auMetaArea();
   
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(pRow->m_pStreamDef);
 
@@ -1205,7 +1205,7 @@ void RowInflator::vInflateRow_v2(RowSlab* pRowSlab, HeadLine* aHeadLine)
   
   i8 nCols = pRowSlab->aStreamPix()->m_nCols - pRowSlab->aStreamPix()->m_nExtraCols;
   
-  eMC*  aeMetaCode = aHeadLine->aeMetaArea();
+  eMC*  aeMetaCode = (eMC*)aHeadLine->auMetaArea();
   
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(pRowSlab->aStreamPix());
   
