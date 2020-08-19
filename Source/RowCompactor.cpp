@@ -85,8 +85,11 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   
   m_pCrwNub      = pCrwBuffer->m_oRowTray.pNub();
   m_pStreamDef   = m_pCrwNub->pDesc();
-  m_pEncoding_v1 = new Encoding_v1(m_pStreamDef);
-  m_pEncoding_v2 = new Encoding_v2(m_pStreamDef);
+  
+  if (gxEnvFlags.m_iMetaClue)
+    m_pEncoding_v2 = new Encoding_v2(m_pStreamDef);
+  else
+    m_pEncoding_v1 = new Encoding_v1(m_pStreamDef);
 
   m_aHeadLine   = nullptr;
   m_aOverLine   = nullptr;
@@ -214,8 +217,11 @@ bool RowCompactor::bAddIrwAsCrw(Row* pIrw)
   }
   
   // 5) pack encoded row into a compact row
-  Packing_v1::vPackCrw_v1(m_aHeadLine,m_pEncoding_v1);
-  
+  if (gxEnvFlags.m_iMetaClue)
+    Packing_v2::vPackCrw_v2(m_aHeadLine,m_pEncoding_v2);
+  else
+    Packing_v1::vPackCrw_v1(m_aHeadLine,m_pEncoding_v1);
+
   m_aHeadLine = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -253,8 +259,11 @@ bool RowCompactor::bAddRsbAsCrw(Rsb* aRsb)
   }
   
   // 5) pack encoded row into a compact row
-  Packing_v1::vPackCrw_v1(m_aHeadLine,m_pEncoding_v1);
-  
+  if (gxEnvFlags.m_iMetaClue)
+    Packing_v2::vPackCrw_v2(m_aHeadLine,m_pEncoding_v2);
+  else
+    Packing_v1::vPackCrw_v1(m_aHeadLine,m_pEncoding_v1);
+
   m_aHeadLine = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -299,8 +308,11 @@ bool RowCompactor::bAddSrwAsCrw(RowSingle* pSrw)
   }
   
   // 5) pack encoded row into a compact row
-  Packing_v1::vPackCrw_v1(m_aHeadLine,m_pEncoding_v1);
-  
+  if (gxEnvFlags.m_iMetaClue)
+    Packing_v2::vPackCrw_v2(m_aHeadLine,m_pEncoding_v2);
+  else
+    Packing_v1::vPackCrw_v1(m_aHeadLine,m_pEncoding_v1);
+
   m_aHeadLine = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -339,10 +351,19 @@ bool RowCompactor::bAllotCrw(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nBytesNeeded;
-  if (m_pStreamDef->m_nFixedSized == 0)
-    nBytesNeeded = m_pEncoding_v1->nBytesNeeded();
-  else
-    nBytesNeeded = m_pStreamDef->m_nFixedSized;
+  
+  if (gxEnvFlags.m_iMetaClue) {
+    if (m_pStreamDef->m_nFixedSized == 0)
+      nBytesNeeded = m_pEncoding_v2->nBytesNeeded();
+    else
+      nBytesNeeded = m_pStreamDef->m_nFixedSized;
+  }
+  else {
+    if (m_pStreamDef->m_nFixedSized == 0)
+      nBytesNeeded = m_pEncoding_v1->nBytesNeeded();
+    else
+      nBytesNeeded = m_pStreamDef->m_nFixedSized;
+  }
   
   if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
     m_aHeadLine = nullptr;
@@ -356,15 +377,25 @@ bool RowCompactor::bAllotCrw(void)
   // +================================+
   
   // allot a head line in nub (the <W> is init'd by iAllotHead())
-  m_aHeadLine = m_pCrwNub->aAllotHead(m_pEncoding_v1->m_nHeadSize);
+  if (gxEnvFlags.m_iMetaClue)
+    m_aHeadLine = m_pCrwNub->aAllotHead(m_pEncoding_v2->m_nHeadSize);
+  else
+    m_aHeadLine = m_pCrwNub->aAllotHead(m_pEncoding_v1->m_nHeadSize);
   ASSERT(m_aHeadLine);
-  
+
   // do we allot an over line?
-  if (! m_pEncoding_v1->bOverFlowed()) {
-    m_aOverLine = nullptr;
-    return true;
+  if (gxEnvFlags.m_iMetaClue) {
+    if (! m_pEncoding_v2->bOverFlowed()) {
+      m_aOverLine = nullptr;
+      return true;
+    }
   }
-  
+  else {
+    if (! m_pEncoding_v1->bOverFlowed()) {
+      m_aOverLine = nullptr;
+      return true;
+    }
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // +================================+   +--------------------------------+
@@ -372,7 +403,12 @@ bool RowCompactor::bAllotCrw(void)
   // +================================+   +--------------------------------+
   
   // allot the over line (the <U> is init'd by iAllotOver())
-  i8 nOverSize = m_pEncoding_v1->nOverSize();
+  i8 nOverSize;
+  if (gxEnvFlags.m_iMetaClue)
+    nOverSize = m_pEncoding_v2->nOverSize();
+  else
+    nOverSize = m_pEncoding_v1->nOverSize();
+
   ASSERT(nOverSize > 0);
   m_aOverLine = m_pCrwNub->aAllotOver(nOverSize);
 
@@ -449,8 +485,11 @@ void RowCompactor::vEncodeHeadForIrw(Row* pIrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pEncoding_v1->vEncodeIrw(pIrw);
-  
+  if (gxEnvFlags.m_iMetaClue)
+    m_pEncoding_v2->vEncodeIrw(pIrw);
+  else
+    m_pEncoding_v1->vEncodeIrw(pIrw);
+
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
   vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
@@ -464,18 +503,18 @@ void RowCompactor::vEncodeHeadForRsb(Rsb* aRsb)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pEncoding_v1->vEncodeRsb(aRsb);
-
   if (gxEnvFlags.m_iMetaClue) {
     m_pEncoding_v2->vEncodeRsb(aRsb);
     SP_Encoding_v2 spEncoding_v2;
     vTrace("\nvEncode:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
   }
-  
+  else {
+    m_pEncoding_v1->vEncodeRsb(aRsb);
 #ifdef WITH_ENCODING_TRACE
-  SP_Encoding spEncoding;
-  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
+    SP_Encoding spEncoding;
+    vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
 #endif
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -487,8 +526,11 @@ void RowCompactor::vEncodeHeadForSrw(RowSingle* pSrw)
 
   ASSERT(! m_bCollecting);
 
-  m_pEncoding_v1->vEncodeSrw(pSrw);
-  
+  if (gxEnvFlags.m_iMetaClue)
+    m_pEncoding_v2->vEncodeSrw(pSrw);
+  else
+    m_pEncoding_v1->vEncodeSrw(pSrw);
+
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
   vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
@@ -505,8 +547,13 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
   i8 nCols = m_pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    _ColEnc* aColEnc = & m_pEncoding_v1->xaColEnc[i_Col];
-    
+    _ColEnc* aColEnc;
+  
+    if (gxEnvFlags.m_iMetaClue)
+      aColEnc = & m_pEncoding_v2->xaColEnc[i_Col];
+    else
+      aColEnc = & m_pEncoding_v1->xaColEnc[i_Col];
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for non-null vch column of minimum length
     
@@ -549,7 +596,10 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
     aColEnc->m_aTailLine = aTailLine;
     
     // morph the encoding
-    m_pEncoding_v1->vMorphEncoding(aColEnc);
+    if (gxEnvFlags.m_iMetaClue)
+      m_pEncoding_v2->vMorphEncoding(aColEnc);
+    else
+      m_pEncoding_v1->vMorphEncoding(aColEnc);
   }
   
 #ifdef WITH_ENCODING_TRACE
@@ -567,8 +617,13 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
   i8 nCols = m_pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    _ColEnc* aColEnc = & m_pEncoding_v1->xaColEnc[i_Col];
+    _ColEnc* aColEnc;
     
+    if (gxEnvFlags.m_iMetaClue)
+      aColEnc = & m_pEncoding_v2->xaColEnc[i_Col];
+    else
+      aColEnc = & m_pEncoding_v1->xaColEnc[i_Col];
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for non-null vch column of minimum length
     
@@ -608,7 +663,10 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     aColEnc->m_aTailLine = aTailLine;
     
     // morph the encoding
-    m_pEncoding_v1->vMorphEncoding(aColEnc);
+    if (gxEnvFlags.m_iMetaClue)
+      m_pEncoding_v2->vMorphEncoding(aColEnc);
+    else
+      m_pEncoding_v1->vMorphEncoding(aColEnc);
   }
   
 #ifdef WITH_ENCODING_TRACE
@@ -628,8 +686,13 @@ void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
   i8 nCols = m_pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    _ColEnc* aColEnc = & m_pEncoding_v1->xaColEnc[i_Col];
+    _ColEnc* aColEnc;
     
+    if (gxEnvFlags.m_iMetaClue)
+      aColEnc = & m_pEncoding_v2->xaColEnc[i_Col];
+    else
+      aColEnc = & m_pEncoding_v1->xaColEnc[i_Col];
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for non-null vch column of minimum length
     
@@ -671,7 +734,10 @@ void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
     aColEnc->m_aTailLine = aTailLine;
     
     // morph the encoding
-    m_pEncoding_v1->vMorphEncoding(aColEnc);
+    if (gxEnvFlags.m_iMetaClue)
+      m_pEncoding_v2->vMorphEncoding(aColEnc);
+    else
+      m_pEncoding_v1->vMorphEncoding(aColEnc);
   }
   
 #ifdef WITH_ENCODING_TRACE
@@ -685,9 +751,12 @@ void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
 void RowCompactor::vEncodeSplit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  m_pEncoding_v1->vSplitOver();
-  
+
+  if (gxEnvFlags.m_iMetaClue)
+    m_pEncoding_v2->vSplitOver();
+  else
+    m_pEncoding_v1->vSplitOver();
+
 #ifdef WITH_ENCODING_TRACE
   vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
 #endif
