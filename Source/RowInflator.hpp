@@ -35,8 +35,14 @@ namespace CompactBuffers
     // v2 meta clue
   
     static void vInflate_v2(i8 i_Col, u1 uHigh, u1 uLow,
-                            byte*& rayDstByte, byte* rayDataByte);
+                            byte*& rayDstByte, byte*& rayDataByte,
+                            bool bStrings, char*& racString);
   
+    static void vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte);
+
+    static void vPrepare_v2(u1*& rauMetaClue, byte*& rayDataByte,
+                            i8 nCols, HeadLine* aHeadLine);
+
     static void vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
                                StreamDef* pStreamDef);
     static void vInflateColumn_v2(RowSingle* pRow, HeadLine* aHeadLine,

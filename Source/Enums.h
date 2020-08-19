@@ -108,6 +108,7 @@ namespace Enums
 #include "eRU.h"
 
 #include "eSC.h"
+#include "eSI.h"
 #include "eSK.h"
 #include "eSL.h"
 #include "eSS.h"

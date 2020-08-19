@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowInflator_v2.cpp -- Row Inflator (using Meta Nibble)                     */
+/* RowInflator_v2.cpp -- Row Inflator (using Meta Clue)                       */
 /*============================================================================*/
 
 #include "CompactBuffers.h"
@@ -9,12 +9,13 @@
 /* general v2 inflate code                                                    */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflate_v2(i8 i_Col, u1 uHigh, u1 uLow,
-                              byte*& rayDstByte, byte* rayDataByte)
+                              byte*& rayDstByte, byte*& rayDataByte,
+                              bool bStrings, char*& racString)
 {
   _static_
   
-  i8* aiCellValue;
   i8 nStrLen;
+  i8* aiCellValue;
 
   switch (uHigh) {
       
@@ -257,7 +258,7 @@ void RowInflator::vInflate_v2(i8 i_Col, u1 uHigh, u1 uLow,
     case MN_NEGATIVE: // -ve digit -16..-1 -- -- -- -- -- -- -- -- -- -- -- --
       aiCellValue = (i8*)rayDstByte;
       
-      *rayDstByte++ = - ((i8)uLow + 1); // 0
+      *rayDstByte++ = (i8)uLow + 1; // 0
       *rayDstByte++ = 0; // 1
       *rayDstByte++ = 0; // 2
       *rayDstByte++ = 0; // 3
@@ -280,9 +281,58 @@ void RowInflator::vInflate_v2(i8 i_Col, u1 uHigh, u1 uLow,
       *rayDstByte++ = 0; // 6
       *rayDstByte++ = 0; // 7
       break;
+      
+    default:
+      NEVER_REACH;
   }
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* general v2 skip code                                                       */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte)
+{
+  _static_
+
+  if (uHigh <=  MN_NUMERIC)  // numeric
+    rayDataByte += uLow;
+  else
+  if (uHigh >=  MN_NEGATIVE) // small value
+    {;}
+  else
+  if (uHigh == MN_STRING_x2) // string x 2
+    rayDataByte += STRx2(uLow);
+  else
+  if (uHigh == MN_STRING_x4) // string x 4
+    rayDataByte += STRx4(uLow);
+  else
+  if (uHigh == MN_STRING_x8) // string x 8
+    rayDataByte += STRx8(uLow);
+  else {
+    RASSERT(0);
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* prepare                                                                    */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vPrepare_v2(u1*& rauMetaClue, byte*& rayDataByte,
+                              i8 nCols, HeadLine* aHeadLine)
+{
+  _static_
+  
+  rauMetaClue = aHeadLine->auMetaArea();
+  
+  i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
+                        + C_T_8B // (ControlDate) 8 bytes for the perspective
+                        + nCols; // metaSize
+
+  rayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -292,16 +342,15 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
                                  HeadLine* aHeadLine,
                                  StreamDef* pStreamDef)
 {
+  _static_
+
+  u1* auMetaClue;
+  byte* ayDataByte;
+  
   i8 nCols = pStreamDef->nTotalColumns();
-  
-  u1* auMetaClue = aHeadLine->auMetaArea();
-  
-  i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
-                        + C_T_8B // (ControlDate) 8 bytes for the perspective
-                        + nCols; // metaSize
 
-  byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
-
+  vPrepare_v2(auMetaClue,ayDataByte,nCols,aHeadLine);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the set of columns to be retrieved
   
@@ -326,6 +375,8 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
+  char* acString = nullptr;
+  
   i8* aiDstk_lcl = *aaiDstk;
   
   byte* ayDstByte = (byte*)aiDstk_lcl;
@@ -339,7 +390,6 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
         
     u1 uMetaClue = *auMetaClue++;
-    
     u1 uHigh = uMetaClue & 0xF0;
     u1 uLow  = uMetaClue & 0x0F;
 
@@ -347,31 +397,14 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
     // ignore column
     
     if (i_Col != i_ColToRetrieve) {
-
-      if (uHigh <=  MN_NUMERIC)  // numeric
-        ayDataByte += uLow;
-      else
-      if (uHigh >=  MN_NEGATIVE) // small value
-        {;}
-      else
-      if (uHigh == MN_STRING_x2) // string x 2
-        ayDataByte += STRx2(uLow);
-      else
-      if (uHigh == MN_STRING_x4) // string x 4
-        ayDataByte += STRx4(uLow);
-      else
-      if (uHigh == MN_STRING_x8) // string x 8
-        ayDataByte += STRx8(uLow);
-      else {
-        RASSERT(0);
-      }
+      vSkip_v2(uHigh,uLow,ayDataByte);
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inflate column
     
-    vInflate_v2(i_Col,uHigh,uLow,ayDstByte,ayDataByte);
+    vInflate_v2(i_Col,uHigh,uLow,ayDstByte,ayDataByte,false,acString);
 
     aiDstk_lcl++;
 
@@ -818,37 +851,21 @@ void RowInflator::vInflateColumn_v2(RowSingle* pRow, HeadLine* aHeadLine, i8 i_C
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
 {
-  NEVER_REACH;
+  _static_
   
-  eMC  eMetaCode;
-  SingleWord wWord;
-  
-  i8   i_Tail_rel;
-  i8   nCompressed;
-  i8   nLength;
-  i8   nBytesPartA;
-  i8   nBytesPartB;
-  char caString[C_4KB];
-  
-  TailLine* aTail;
-  
-#ifdef WITH_INFLATE_TRACE
-  static i8 nTotalRows = 0;
-  vTrace("vInflate() of row %lld\n"_Stz,nTotalRows++);
-  vDumpHead("aHeadLine"_Stz,aHeadLine,pRow->m_pColVec);
-#endif
-  
-  char* acString = (char*)pRow->m_xWsp.ayArea();
-  
-  i8 nCols = pRow->m_nColumns;
-  
-  eMC*  aeMetaCode = (eMC*)aHeadLine->auMetaArea();
-  
-  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(pRow->m_pStreamDef);
+  u1* auMetaClue;
+  byte* ayDataByte;
 
-  byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
+  i8 nCols = pRow->m_nColumns;
+
+  vPrepare_v2(auMetaClue,ayDataByte,nCols,aHeadLine);
+
   
-  i8* aiColVal = & pRow->m_waColVal[0].m_iWrd;
+  byte* ayDstByte = (byte*) & pRow->m_waColVal[0].m_iWrd;
+    
+  char* acString = (char*)pRow->m_xWsp.ayArea();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
@@ -856,55 +873,11 @@ void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
     Column* pCol = pRow->m_pColVec->pGet(i_Col);
 #endif
     
-    
+    u1 uMetaClue = *auMetaClue++;
+    u1 uHigh = uMetaClue & 0xF0;
+    u1 uLow  = uMetaClue & 0x0F;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_INFLATE_TRACE
-    if (C_DATUM_NULL == *(aiValue-1)) {
-      vTrace(" [%lld %15s] null\n"_Stz,i_Col,pCol->szColNm());
-      continue; // to next i_Col
-    }
-        
-    switch (pCol->eDatum()) {
-      case DM_BOL:
-        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
-        break;
-      case DM_BCD:
-        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
-        break;
-      case DM_DTE:
-        wWord.m_iDte = *(aiValue-1);
-        vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
-               i_Col,
-               pCol->szColNm(),
-               wWord.m_iDte,
-               (i8)wWord.xDte.m_uYearDelta + C_YEAR_BASE,
-               (i8)wWord.xDte.m_uMonth,
-               (i8)wWord.xDte.m_uDay);
-        break;
-      case DM_FLT:
-        vTrace(" [%lld %15s] %lg\n"_Stz,i_Col,pCol->szColNm(),*(d8*)(aiValue-1));
-        break;
-      case DM_INT:
-        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
-        break;
-      case DM_IVL:
-        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
-        break;
-      case DM_TME:
-        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
-        break;
-      case DM_TSP:
-        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
-        break;
-      case DM_VCH:
-        vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
-        break;
-
-      default:
-        RASSERT(0);
-    }
-#endif
+    vInflate_v2(i_Col,uHigh,uLow,ayDstByte,ayDataByte,false,acString);
     
   }
   // for each column

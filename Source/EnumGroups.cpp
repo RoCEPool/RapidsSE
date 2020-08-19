@@ -107,6 +107,7 @@ Stz* EnumGroups::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_RU: return aRU[i_Enum];
       
     case EG_SC: return aSC[i_Enum];
+    case EG_SI: return aSI[i_Enum];
     case EG_SK: return aSK[i_Enum];
     case EG_SL: return aSL[i_Enum];
     case EG_SS: return aSS[i_Enum];
