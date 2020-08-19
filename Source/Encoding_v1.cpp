@@ -41,6 +41,7 @@ Encoding_v1::Encoding_v1(StreamDef* pStreamDef)
     xaColEnc[i_Col].m_pCol       = nullptr;
     
     xaColEnc[i_Col].m_eMetaCode  = MC_NULL;
+    xaColEnc[i_Col].m_uMetaClue  = 0;
     xaColEnc[i_Col].m_wDataCode  = C_UNKNOWN;
     xaColEnc[i_Col].m_nDataSize  = C_UNKNOWN;
     xaColEnc[i_Col].m_i_Offset   = 0;

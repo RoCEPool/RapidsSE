@@ -672,7 +672,7 @@ void LogicUnit::vGenerateQuery300(void)
 
   vAddCode(EO_CTR_0_INC);
   vAddCode(EO_CTR_0_PUSH);
-  vAddCodeArg(EO_INTEGER,20000);
+  vAddCodeArg(EO_INTEGER,10000);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_TRUE,"PRC_CUS:"_Stz);
 
@@ -684,6 +684,10 @@ void LogicUnit::vGenerateQuery300(void)
 
   vAddCode(EO_CRW_SRC_DEREF);
   
+  //vAddCodeArg(EO_COL_SRC_PUSHONE,C_CUSTKEY);
+  //vAddCode(EO_PRINT);
+
+
   vAddCodeArg(EO_COL_SRC_PUSHONE,C_MKTSEGMENT);
   //vAddCode(EO_DUMP);
   vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);

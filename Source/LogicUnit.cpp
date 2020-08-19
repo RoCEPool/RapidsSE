@@ -1310,12 +1310,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_PRINT: ArgNil(); // print top
-#ifdef WITH_TRACE_LOGICUNIT
+//#ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
         dLU1(EO_PRINT,iTopA);
 
         printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
-#endif
+//#endif
         break;//+endCase
         
       case EO_PUSH_LOCALI: ArgGet(iArg); // push a local reg
@@ -1946,6 +1946,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //            aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
 //          aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
 //        }
+        //printf("  aRluCommon->m_aAltEnt %p\n",(void*)aRluCommon->m_aAltEnt);
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
 
         break;//+endCase
