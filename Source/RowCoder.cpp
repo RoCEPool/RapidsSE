@@ -70,11 +70,53 @@ i8 RowCoder::nControlSize(void)
   return nControlSize;
 }
 
+#define META_CLUE_SPLIT(__uClue,__iHigh,__iLow) \
+  __iHigh = (__uClue >> 4); \
+  __iLow  = (__uClue &  0x0F);
+
+/*----------------------------------------------------------------------------*/
+/* how many bytes does given encoding occupy in the data portion of a head?   */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::nDataSizeOfClue(u1 uMetaClue)
+{
+  i8 iHigh;
+  i8 iLow;
+  
+  META_CLUE_SPLIT(uMetaClue, iHigh, iLow);
+  
+  switch ((eMN)iHigh) {
+      
+    case MN_NUMERIC:    return iLow;
+    case MN_DATE_E0:    return 2;
+    case MN_DATE_E1:    return 2;
+    case MN_DATE_E2:    return 2;
+    case MN_STRING_x1:  return iLow;
+    case MN_NULL:       return 0;
+    case MN_SPARE0:     NEVER_REACH; return 0;
+    case MN_OVERFLOW:   return 2;
+      
+    case MN_STRING_x2:  return iLow;
+    case MN_STRING_x4:  return iLow;
+    case MN_STRING_x8:  return iLow;
+    case MN_STRING_LEN: NEVER_REACH; return 0;
+    case MN_BLOB_0:     NEVER_REACH; return 0;
+    case MN_BLOB_1:     NEVER_REACH; return 0;
+    case MN_NEGATIVE:   return 1;
+    case MN_POSITIVE:   return 1;
+
+    default:
+      NEVER_REACH;
+  }
+  
+  return 0;
+}
+
 /*----------------------------------------------------------------------------*/
 /* how many bytes does given encoding occupy in the data portion of a head?   */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nDataSizeOfCode(eMC eMetaCode)
 {
+  
   switch (eMetaCode) {
       
     case MC_NULL:        return 0;

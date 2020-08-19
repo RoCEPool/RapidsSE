@@ -21,6 +21,7 @@ namespace CompactBuffers
     static i8   iBaseOffsetData(StreamPix* pStreamPix);
     static i8   iBaseOffsetMeta(void);
     static i8   nControlSize(void);
+    static i8   nDataSizeOfClue(u1 uMetaClue);
     static i8   nDataSizeOfCode(eMC eMetaCode);
     static i8   iDteFromEdt(i8 wEdtDte, i8 iEra);
     static void vDteFromEdt(i8* awEdtDte_rpl, i8 iEra);
