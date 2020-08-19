@@ -193,7 +193,7 @@ void SrtBuffer::vGetKeys(StreamDef* pStreamDef, i8 iKeyCol, i8 iColVec)
       
       // get the key from the left buffer row
       if (aCrw) {
-        RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
+        RowInflator::vInflateColumn_v1(hRow, aCrw, iKeyCol);
         
         // set the key in the srtSet
         aSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iWrd);
@@ -324,7 +324,7 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
       
       // inflate the row
       if (aCrw) {
-        RowInflator::vInflateRow(hRow, aCrw);
+        RowInflator::vInflateRow_v1(hRow, aCrw);
       } else {
         // get no of columns
         i8 nColumns = pStreamDef->nColumns(iRowRef);
@@ -436,7 +436,7 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
 
       // inflate the row
       if (aCrw) {
-        RowInflator::vInflateRow(hRow, aCrw);
+        RowInflator::vInflateRow_v1(hRow, aCrw);
       } else {
         // get no of columns
         i8 nColumns = pStreamDef->nColumns(iRowRefs);

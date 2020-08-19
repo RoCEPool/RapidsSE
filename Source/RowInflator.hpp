@@ -13,16 +13,16 @@ namespace CompactBuffers
     //! Kept separate for performance reasons
     //! Highly performance-critical functions
   
+    static void vInflateSet_v1(i8** aaiDstk, HeadLine* aHeadLine,
+                                StreamDef* pStreamDef);
     static void vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
                                StreamDef* pStreamDef);
     
-    static void vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
-                                StreamDef* pStreamDef);
   
-    static void vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve);
+    static void vInflateColumn_v1(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve);
     
-    static void vInflateRow(RowSingle* pRow, HeadLine* aHeadLine);
-    static void vInflateRow(RowSlab* pRsbSlab, HeadLine* aHeadLine);
+    static void vInflateRow_v1(RowSingle* pRow, HeadLine* aHeadLine);
+    static void vInflateRow_v1(RowSlab* pRsbSlab, HeadLine* aHeadLine);
   };
 }
 

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* inflate a signle column onto Dstk                                          */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
+void RowInflator::vInflateSet_v1(i8** aaiDstk, HeadLine* aHeadLine,
                                    StreamDef* pStreamDef)
 {
   eMC  eMetaCode;
@@ -464,7 +464,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve)
+void RowInflator::vInflateColumn_v1(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve)
 {
   eMC  eMetaCode;
   SingleWord wWord;
@@ -882,7 +882,7 @@ void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColT
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRow(RowSingle* pRow, HeadLine* aHeadLine)
+void RowInflator::vInflateRow_v1(RowSingle* pRow, HeadLine* aHeadLine)
 {
   eMC  eMetaCode;
   SingleWord wWord;
@@ -1251,7 +1251,7 @@ void RowInflator::vInflateRow(RowSingle* pRow, HeadLine* aHeadLine)
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRow(RowSlab* pRowSlab, HeadLine* aHeadLine)
+void RowInflator::vInflateRow_v1(RowSlab* pRowSlab, HeadLine* aHeadLine)
 {
   eMC  eMetaCode;
   SingleWord wWord;

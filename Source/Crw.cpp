@@ -320,7 +320,7 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   HV_Row hRow(pStreamDef, C_ALL);
-  RowInflator::vInflateRow(hRow,aHeadLine);
+  RowInflator::vInflateRow_v1(hRow,aHeadLine);
   
   // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {

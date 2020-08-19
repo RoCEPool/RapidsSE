@@ -160,7 +160,7 @@ void Step::vTablePtnInflateCrwBuffer(void)
     Crw* aCompactRow = (Crw*)pCrwBuffer->aGetHead(i_Row);
     
     // inflate compact row into row
-    RowInflator::vInflateRow(hRow,aCompactRow);
+    RowInflator::vInflateRow_v1(hRow,aCompactRow);
 
 //#ifdef WITH_DEBUG_VERSION
 //    // append the row to the record

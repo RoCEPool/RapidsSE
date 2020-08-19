@@ -102,7 +102,7 @@ bool IndexStream::bDelete(void)
       
       Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
       
-      RowInflator::vInflateRow(hRow,aCrw);
+      RowInflator::vInflateRow_v1(hRow,aCrw);
       hvRec->vAppend(hRow);
       hvRec->vPrintRow();
       
@@ -214,7 +214,7 @@ CrwBuffer* IndexStream::pRead(RowOnce* pRowOnce)
         
         Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
         
-        RowInflator::vInflateRow(hRow,aCrw);
+        RowInflator::vInflateRow_v1(hRow,aCrw);
         
         // insert row from entry in crwBuffer
         if ( ! pCrwBuffer->bAppendSrw(hRow)) {
