@@ -8,8 +8,8 @@
 /*----------------------------------------------------------------------------*/
 /* general v2 inflate code                                                    */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflate_v2(i8 i_Col, u1 uHigh, u1 uLow,
-                              byte*& rayDstByte, byte*& rayDataByte,
+void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
+                              u1 uHigh, u1 uLow,
                               eSI eStrInflate, char*& racString)
 {
   _static_
@@ -404,7 +404,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inflate column
     
-    vInflate_v2(i_Col,uHigh,uLow,ayDstByte,ayDataByte,SI_NONE,acString);
+    vInflate_v2(ayDstByte,ayDataByte,uHigh,uLow,SI_NONE,acString);
 
     aiDstk_lcl++;
 
@@ -877,7 +877,7 @@ void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
     u1 uHigh = uMetaClue & 0xF0;
     u1 uLow  = uMetaClue & 0x0F;
 
-    vInflate_v2(i_Col,uHigh,uLow,ayDstByte,ayDataByte,SI_NONE,acString);
+    vInflate_v2(ayDstByte,ayDataByte,uHigh,uLow,SI_NONE,acString);
     
   }
   // for each column

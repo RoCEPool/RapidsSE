@@ -34,8 +34,8 @@ namespace CompactBuffers
   
     // v2 meta clue
   
-    static void vInflate_v2(i8 i_Col, u1 uHigh, u1 uLow,
-                            byte*& rayDstByte, byte*& rayDataByte,
+    static void vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
+                            u1 uHigh, u1 uLow,
                             eSI eStrInflate, char*& racString);
   
     static void vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte);
