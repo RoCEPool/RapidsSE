@@ -25,6 +25,8 @@ namespace CompactBuffers
     void vDump(void);
     i8   nFreeSpace(StreamDef* pStreamDef);
     w8   wGetLogical(i8 i_Offset, i8 nDataSize);
+    u1   uGetMetaClue(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
+                      StreamDef* pStreamDef);
     eMC  eGetMetaCode(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
                       StreamDef* pStreamDef);
     OverLine* aGetOver(void);
@@ -58,6 +60,18 @@ namespace CompactBuffers
       eMC* aeCode = aAdd<eMC*>(this,i_BaseOffsetMeta);
   
       return aeCode;
+    }
+  
+    /*------------------------------------------------------------------------*/
+    /* return meta clue                                                       */
+    /*------------------------------------------------------------------------*/
+    inline u1 uMetaClue(i8 i_Col)
+    {
+      i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+    
+      u1 uClue = * aAdd<u1*>(this,i_BaseOffsetMeta + i_Col);
+  
+      return uClue;
     }
   
     /*------------------------------------------------------------------------*/
