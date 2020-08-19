@@ -28,7 +28,7 @@ namespace CompactBuffers
     void vEncodeRsb(Rsb* aRsb);
     void vEncodeSrw(RowSingle* pSrw);
   
-    void vMorphEncoding(_ColEnc_v1* aColEnc);
+    void vMorphEncoding(_ColEnc* aColEnc);
     bool bOverFlowed(void);
     i8   nOverSize(void);
     void vSplitOver(void);

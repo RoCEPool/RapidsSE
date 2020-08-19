@@ -104,7 +104,7 @@ void Encoding::vEncodeSrw(RowSingle* pSrw)
 /*----------------------------------------------------------------------------*/
 /* morph the given column encoding (to MC_STR_TAIL_2T)                        */
 /*----------------------------------------------------------------------------*/
-void Encoding::vMorphEncoding(_ColEnc_v1* aColEnc)
+void Encoding::vMorphEncoding(_ColEnc* aColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
