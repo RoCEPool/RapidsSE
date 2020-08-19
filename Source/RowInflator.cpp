@@ -90,7 +90,7 @@ void RowInflator::vInflateColI_stk(i8** aaiDstk, HeadLine* aHeadLine,
         }
           
         default:
-          ayDataByte += nDataSize(eMetaCode);
+          ayDataByte += nDataSizeOfCode(eMetaCode);
           break;
       }
       
@@ -541,7 +541,7 @@ void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColT
         }
           
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        default: ayDataByte += nDataSize(eMetaCode); break;
+        default: ayDataByte += nDataSizeOfCode(eMetaCode); break;
       }
       
       continue;
@@ -960,7 +960,7 @@ void RowInflator::vInflateColumns_stk(i8** aaiDstk, HeadLine* aHeadLine,
         }
           
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        default: ayDataByte += nDataSize(eMetaCode); break;
+        default: ayDataByte += nDataSizeOfCode(eMetaCode); break;
       }
       
       continue;

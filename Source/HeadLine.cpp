@@ -111,7 +111,7 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
 
   eMC eLastEncoding = eGetMetaCode(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
-  i8 nDataBytes = RowCoder::nDataSize(eLastEncoding);
+  i8 nDataBytes = RowCoder::nDataSizeOfCode(eLastEncoding);
   
   i8 nFreeBytes = nBytes() - i_OfsCrs_ - nDataBytes;
   
@@ -172,10 +172,10 @@ u1 HeadLine::uGetMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
     if (MC_OVERFLOW_2T == eEncoding) {
       i_OfsCrs_ = nBytes() + C_U_1B;
       eEncoding = (eMC)wGetLogical(i_OfsCrs_++,C_1B);
-      i_OfsCrs_ += RowCoder::nDataSize(eEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
     }
     else {
-      i_OfsCrs_ += RowCoder::nDataSize(eEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
     }
     
     if (MC_STR_FIT_1L == eEncoding) {
@@ -226,10 +226,10 @@ eMC HeadLine::eGetMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
     if (MC_OVERFLOW_2T == eEncoding) {
       i_OfsCrs_ = nBytes() + C_U_1B;
       eEncoding = (eMC)wGetLogical(i_OfsCrs_++,C_1B);
-      i_OfsCrs_ += RowCoder::nDataSize(eEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
     }
     else {
-      i_OfsCrs_ += RowCoder::nDataSize(eEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
     }
     
     if (MC_STR_FIT_1L == eEncoding) {

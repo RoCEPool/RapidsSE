@@ -679,7 +679,7 @@ void Encoding_v2::vOffsetTill(_ColEnc_v2& xrColEnc)
   xrColEnc.m_i_Offset = m_i_Offset_next;
   
   // get the base size of the encoding
-  i8 nDataBytes = nDataSize(xrColEnc.m_eMetaCode);
+  i8 nDataBytes = nDataSizeOfCode(xrColEnc.m_eMetaCode);
   
   // if 0B case then till is same as offset
   if (! nDataBytes) {

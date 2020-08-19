@@ -73,7 +73,7 @@ i8 RowCoder::nControlSize(void)
 /*----------------------------------------------------------------------------*/
 /* how many bytes does given encoding occupy in the data portion of a head?   */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nDataSize(eMC eMetaCode)
+i8 RowCoder::nDataSizeOfCode(eMC eMetaCode)
 {
   switch (eMetaCode) {
       
