@@ -4,11 +4,6 @@
 
 #include "CompactBuffers.h"
 
-#define STRx1(__uLow) (__uLow)            //   0B .. |1 * 16 =  16| ..  15B
-#define STRx2(__uLow) ( 16 + 2 * __uLow)  //  16B .. |2 * 16 =  32| ..  47B
-#define STRx4(__uLow) ( 48 + 4 * __uLow)  //  48B .. |4 * 16 =  64| .. 111B
-#define STRx8(__uLow) (112 + 8 * __uLow)  // 112B .. |8 * 16 = 128| .. 239B
-
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */
 /*----------------------------------------------------------------------------*/
@@ -335,7 +330,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
         *ayDstByte++ = '\0';
         break;
         
-      case MN_STRING_LEN: // length encoded string -- -- -- -- -- -- -- -- -- --
+      case MN_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
         RASSERT(0);
         break;
         

@@ -17,7 +17,7 @@ enum eMN : u1 // meta nibble
   /* 8 */ MN_STRING_x2,   // 2 x string (see macro)
   /* 9 */ MN_STRING_x4,   // 4 x string (see macro)
   /* A */ MN_STRING_x8,   // 8 x string (see macro)
-  /* B */ MN_STRING_LEN,  // long string where length is in data
+  /* B */ MN_STRING_TAIL, // string in tail
   /* C */ MN_BLOB_0,      // blob type 0
   /* D */ MN_BLOB_1,      // blob type 1
   /* E */ MN_NEGATIVE,    // -ve digit -16 .. -1
@@ -42,7 +42,7 @@ static Stz* aMN[]
   /* 8 */ "MN_STRING_x2"_Stz,
   /* 9 */ "MN_STRING_x4"_Stz,
   /* A */ "MN_STRING_x8"_Stz,
-  /* B */ "MN_STRING_LEN"_Stz,
+  /* B */ "MN_STRING_TAIL"_Stz,
   /* C */ "MN_BLOB_0"_Stz,
   /* D */ "MN_BLOB_1"_Stz,
   /* E */ "MN_NEGATIVE"_Stz,
