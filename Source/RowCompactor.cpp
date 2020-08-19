@@ -466,7 +466,7 @@ void RowCompactor::vEncodeHeadForRsb(Rsb* aRsb)
   
   m_pEncoding_v1->vEncodeRsb(aRsb);
 
-  if (gxDebugFlags.m_iMetaNibble) {
+  if (gxDebugFlags.m_iMetaClue) {
     m_pEncoding_v2->vEncodeRsb(aRsb);
     SP_Encoding_v2 spEncoding_v2;
     vTrace("\nvEncode:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));

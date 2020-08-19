@@ -260,6 +260,18 @@ void HeadLine::vHasOverflow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* store meta clue                                                            */
+/*----------------------------------------------------------------------------*/
+void HeadLine::vMetaClue(i8 i_Col, u1 uMetaClue)
+{
+  i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+  
+  i8 i_Offset = i_BaseOffsetMeta + i_Col;
+  
+  v1B(i_Offset,uMetaClue);
+}
+
+/*----------------------------------------------------------------------------*/
 /* store meta code                                                            */
 /*----------------------------------------------------------------------------*/
 void HeadLine::vMetaCode(i8 i_Col, eMC eMetaCode)

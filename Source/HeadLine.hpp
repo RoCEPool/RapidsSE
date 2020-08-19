@@ -32,6 +32,7 @@ namespace CompactBuffers
     TailLine* aGetTailRel(i8 i_Tail_rel);
     bool bHasOverflow(void);
     void vHasOverflow(void);
+    void vMetaClue(i8 i_Col, u1 uMetaClue);
     void vMetaCode(i8 i_Col, eMC eMetaCode);
     i8   iOverflow2B(void);
     void vOverflow2B(i8 iOver2B);
