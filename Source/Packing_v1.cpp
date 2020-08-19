@@ -94,7 +94,7 @@ void Packing_v1::vPutMeta_split_v1(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc_v1
   // +--------------------------------+   +--------------------------------+
   
   // put <M> into over line
-  aHeadLine->vPutLogical(nHeadSize + C_U_1B,
+  aHeadLine->vPutDataLogical(nHeadSize + C_U_1B,
                            (i8)xColEnc.m_eMetaCode,
                            C_1B);
 }
@@ -181,7 +181,7 @@ void Packing_v1::vPutData_Bytes_v1(HeadLine* aHeadLine, _ColEnc_v1& xColEnc)
   // +--------------------------------+
   
   // put {D}
-  aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset,
                            xColEnc.m_wDataCode.m_iWrd,
                            xColEnc.m_nDataSize);
 }
@@ -207,7 +207,7 @@ void Packing_v1::vPutData_STR_FIT_1L_v1(HeadLine* aHeadLine, _ColEnc_v1& xColEnc
   // +--------------------------------+
   
   // put <L> (which includes the null term character)
-  aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset,
                            nL,
                            C_1B);
   
@@ -217,7 +217,7 @@ void Packing_v1::vPutData_STR_FIT_1L_v1(HeadLine* aHeadLine, _ColEnc_v1& xColEnc
   // +--------------------------------+
   
   // put <ShortN> (with null terminator)
-  aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
+  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset + C_L_1B,
                            (Stz*)azShortN,
                            nL);
 }
@@ -243,7 +243,7 @@ void Packing_v1::vPutData_STR_FIT_2L_v1(HeadLine* aHeadLine, _ColEnc_v1& xColEnc
   // +--------------------------------+
   
   // put <LL>
-  aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset,
                            nLL,
                            C_2B);
   
@@ -253,7 +253,7 @@ void Packing_v1::vPutData_STR_FIT_2L_v1(HeadLine* aHeadLine, _ColEnc_v1& xColEnc
   // +--------------------------------+
   
   // put <LongN> (has null terminator)
-  aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_2B,
+  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset + C_L_2B,
                            (Stz*)azLongN,
                            nLL);
 }
@@ -275,7 +275,7 @@ void Packing_v1::vPutData_STR_TAIL_2T_v1(HeadLine* aHeadLine, _ColEnc_v1& xColEn
   //
   
   // put [TL]
-  aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset,
                            i_Tail_rel,
                            C_2B);
 }

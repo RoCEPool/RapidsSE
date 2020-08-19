@@ -9,6 +9,7 @@
 #define EndDefine
 
 #define _static_ EndDefine
+#define _nonProper_ EndDefine
 
 #include "CompiledWith.h"
 #include "MachineTypes.h"

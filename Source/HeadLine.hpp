@@ -40,8 +40,8 @@ namespace CompactBuffers
     void vOverflow2B(i8 iOver2B);
     t8   tPerspective(void);
     void vPerspective(t8 tPerspective);
-    void vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize);
-    void vPutLogical(i8 i_Offset, Stz* szString, i8 nLength);
+    void vPutDataLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize);
+    void vPutDataLogical(i8 i_Offset, Stz* szString, i8 nLength);
     void vSetOver(OverLine* aOverLine);
     i8   nUnits(void);
     i8   nW(void);
