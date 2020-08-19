@@ -41,7 +41,7 @@ Encoding_v2::Encoding_v2(StreamDef* pStreamDef)
     xaColEnc[i_Col].m_pCol       = nullptr;
     
     xaColEnc[i_Col].m_eMetaCode  = MC_NULL;
-    xaColEnc[i_Col].m_eMetaNbl   = MN_NUMERIC;
+    xaColEnc[i_Col].m_uMetaClue   = 0;
     xaColEnc[i_Col].m_wDataCode  = C_UNKNOWN;
     xaColEnc[i_Col].m_nDataSize  = C_UNKNOWN;
     xaColEnc[i_Col].m_i_Offset   = 0;
@@ -479,6 +479,8 @@ void Encoding_v2::vEncodeFlt(_ColEnc_v2& xColEnc, Dtm wColVal)
   xColEnc.m_nDataSize = nD;
 }
 
+#define META_CLUE(__high,__low) ( (u1) ( (u1)__high << 4 | (u1)__low )  )
+
 /*----------------------------------------------------------------------------*/
 /* encode an int column value                                                 */
 /*----------------------------------------------------------------------------*/
@@ -498,15 +500,24 @@ void Encoding_v2::vEncodeInt(_ColEnc_v2& xColEnc, Dtm wColVal)
   if (-1 == wColVal.m_iWrd) {
     xColEnc.m_eMetaCode = MC_INT_M_ONE;
     xColEnc.m_nDataSize = C_0B;
+    
+    xColEnc.m_uMetaClue = META_CLUE(MN_NEGATIVE,0);
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 0..10 case -- encode as MC_INT_ONE..TEN + {}
-  if (wColVal.m_iWrd >= 0 && wColVal.m_iWrd <= 10) {
+  if (wColVal.m_iWrd > 0 && wColVal.m_iWrd <= 10) {
     xColEnc.m_eMetaCode = (eMC)(MC_INT_ZERO + wColVal.m_iWrd);
     xColEnc.m_nDataSize = C_0B;
+    
+    u1 uHigh = MN_POSITIVE;
+    uHigh <<= 4;
+    u1 uLow = (u1)wColVal.m_iWrd - 1;
+    u1 eTest = (uHigh | uLow);
+    
+    xColEnc.m_uMetaClue = META_CLUE(MN_POSITIVE,wColVal.m_iWrd - 1);
     return;
   }
   
@@ -516,6 +527,8 @@ void Encoding_v2::vEncodeInt(_ColEnc_v2& xColEnc, Dtm wColVal)
   i8 nD = wColVal.iByteMagn();
   xColEnc.m_eMetaCode = (eMC)(MC_INT_1B + nD - 1);
   xColEnc.m_nDataSize = nD;
+  
+  xColEnc.m_uMetaClue = META_CLUE(MN_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/

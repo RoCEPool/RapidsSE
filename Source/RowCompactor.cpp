@@ -6,6 +6,8 @@
 
 static Numbat oNumBat("partKey"_Stz);
 
+extern DebugFlags gxDebugFlags;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -463,6 +465,10 @@ void RowCompactor::vEncodeHeadForRsb(Rsb* aRsb)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   m_pEncoding_v1->vEncodeRsb(aRsb);
+
+  if (gxDebugFlags.m_iMetaNibble) {
+    m_pEncoding_v2->vEncodeRsb(aRsb);
+  }
   
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
