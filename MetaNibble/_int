@@ -1,0 +1,22 @@
+/*============================================================================*/
+/* _int -- meta nibble int test                                               */
+/*============================================================================*/
+bc;
+
+print "creating intTable..." ;
+/time create table intTable (
+  C_INT INTEGER NOT NULL
+);
+
+print "loading int.csv..." ;
+/time fload intTable "../MetaNibble/Data/int.csv" ;
+
+print "scaning int.csv..." ;
+/time tableScan intTable;
+
+print "dropping intTable..." ;
+/time drop table intTable ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
