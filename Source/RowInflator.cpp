@@ -4,8 +4,46 @@
 
 #include "CompactBuffers.h"
 
+
 /*----------------------------------------------------------------------------*/
-/* inflate a signle column onto Dstk                                          */
+/* inflate set onto Dstk                                                      */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
+                              StreamDef* pStreamDef)
+{
+  vInflateSet_v1(aaiDstk,aHeadLine,pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inflate headline into row                                                  */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve)
+{
+  vInflateColumn_v1(pRow,aHeadLine,i_ColToRetrieve);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inflate headline into row                                                  */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflateRow(RowSingle* pRow, HeadLine* aHeadLine)
+{
+  vInflateRow_v1(pRow,aHeadLine);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inflate headline into row                                                  */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflateRow(RowSlab* pRowSlab, HeadLine* aHeadLine)
+{
+  vInflateRow_v1(pRowSlab,aHeadLine);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* inflate set onto Dstk                                                      */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateSet_v1(i8** aaiDstk, HeadLine* aHeadLine,
                                    StreamDef* pStreamDef)

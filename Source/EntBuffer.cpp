@@ -1118,7 +1118,7 @@ void EntBuffer::vPrintRows(void)
     Crw* aCrw = pCrwBuffer->aCrw(aEnt->rxRef().iItem());
     
     // inflate compact row into row
-    RowInflator::vInflateRow_v1(hRow,aCrw);
+    RowInflator::vInflateRow(hRow,aCrw);
     
     hvRec->vAppend(hRow);
     hvRec->vPrintRow();

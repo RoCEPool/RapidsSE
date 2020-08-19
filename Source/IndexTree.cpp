@@ -751,7 +751,7 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
   // inflate row
   HV_Row hRow(pStreamDef,C_ALL);
   
-  RowInflator::vInflateRow_v1(hRow,aCrw);
+  RowInflator::vInflateRow(hRow,aCrw);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
