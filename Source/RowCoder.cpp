@@ -70,7 +70,7 @@ i8 RowCoder::nControlSize(void)
   return nControlSize;
 }
 
-#define META_CLUE_SPLIT(__uClue,__iHigh,__iLow) \
+#define METACLUE_SPLIT(__uClue,__iHigh,__iLow) \
   __iHigh = (__uClue >> 4); \
   __iLow  = (__uClue &  0x0F);
 
@@ -82,7 +82,7 @@ i8 RowCoder::nDataSizeOfClue(u1 uMetaClue)
   i8 iHigh;
   i8 iLow;
   
-  META_CLUE_SPLIT(uMetaClue, iHigh, iLow);
+  METACLUE_SPLIT(uMetaClue, iHigh, iLow);
   
   switch ((eMN)iHigh) {
       

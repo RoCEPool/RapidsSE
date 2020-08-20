@@ -390,7 +390,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
         
     u1 uMetaClue = *auMetaClue++;
-    u1 uHigh = uMetaClue & 0xF0;
+    u1 uHigh = uMetaClue >> 4;
     u1 uLow  = uMetaClue & 0x0F;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -874,7 +874,7 @@ void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
 #endif
     
     u1 uMetaClue = *auMetaClue++;
-    u1 uHigh = uMetaClue & 0xF0;
+    u1 uHigh = uMetaClue >> 4;
     u1 uLow  = uMetaClue & 0x0F;
 
     vInflate_v2(ayDstByte,ayDataByte,uHigh,uLow,SI_NONE,acString);

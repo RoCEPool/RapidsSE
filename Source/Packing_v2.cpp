@@ -133,7 +133,7 @@ void Packing_v2::vPutMeta_usual_v2(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& x
   i8 i_Col = xColEnc.m_pCol->iColumnNo();
   
   // set <M> for this column
-  aHeadLine->vMetaCode(i_Col,xColEnc.m_eMetaCode);
+  aHeadLine->vMetaClue(i_Col,xColEnc.m_uMetaClue);
 }
 
 
