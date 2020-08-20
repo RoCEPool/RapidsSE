@@ -1,5 +1,6 @@
 uniBcd.test
 uniBol.test
+uniChunkInt.test
 uniDte.test
 uniFlt.test
 uniInt.test

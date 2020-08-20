@@ -1,0 +1,46 @@
+/*----------------------------------------------------------------------------*/
+/* uniChunkInt.test -- INTEGER DATUM tests                                    */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
+
+// (1) create a table
+create table uniChunkInt (
+  int_col INTEGER NOT NULL
+);
+success
+
+fload uniChunkInt "../FASTLOAD/Data/chunkInt.csv" ;
+success
+
+// check no of rows
+tableScan uniChunkInt;
+rows: 87980
+
+// check data
+//tableScan uniChunkInt;
+//result file: 'tests/Inflate/uniChunkInt.result'
+
+// drop the table)
+drop table uniChunkInt;
+success
+
+// get memory leaks)
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+  // drop the table)
+  drop table uniChunkInt;
+  mute
+  
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
+
