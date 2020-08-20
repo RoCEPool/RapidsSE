@@ -48,8 +48,8 @@ rows:
   ('04:03:02.001')
 
 // drop the table)
-//drop table uniTme;
-//success
+drop table uniTme;
+success
 
 // get memory leaks)
 memoryLeaks;
@@ -57,8 +57,8 @@ rows: 0
 
 CLEANUP {
   // drop the table)
-  //drop table uniTme;
-  //mute
+  drop table uniTme;
+  mute
   
   bye;
   mute
