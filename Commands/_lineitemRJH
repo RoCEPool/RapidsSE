@@ -69,6 +69,7 @@ sztbl lineitem;
 //sizeIndex lineitem LineItem_Idx1;
 //predicateFetch lineitem limit 10;
 
+tableScan lineitem;
 
 /*============================================================================*/
 /* end                                                                        */

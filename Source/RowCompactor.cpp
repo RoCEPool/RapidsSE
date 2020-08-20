@@ -469,9 +469,9 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
  
   m_pCrwNub->vSetLastStr(i_Tail);
   
-#ifdef WITH_ENCODING_TRACE
-  vDumpTails();
-#endif
+//#ifdef WITH_ENCODING_TRACE
+  m_pCrwNub->vDumpTails();
+//#endif
   
   //vDebugPoint();
   
@@ -505,8 +505,8 @@ void RowCompactor::vEncodeHeadForRsb(Rsb* aRsb)
   
   if (gxEnvFlags.m_iMetaClue) {
     m_pEncoding_v2->vEncodeRsb(aRsb);
-    SP_Encoding_v2 spEncoding_v2;
-    vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
+    //SP_Encoding_v2 spEncoding_v2;
+    //vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
   }
   else {
     m_pEncoding_v1->vEncodeRsb(aRsb);
@@ -754,8 +754,8 @@ void RowCompactor::vEncodeSplit(void)
 
   if (gxEnvFlags.m_iMetaClue) {
     m_pEncoding_v2->vSplitOver();
-    SP_Encoding_v2 spEncoding;
-    vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v2));
+    //SP_Encoding_v2 spEncoding;
+    //vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v2));
   }
   else
     m_pEncoding_v1->vSplitOver();

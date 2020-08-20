@@ -19,6 +19,8 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
   i8* aiCellValue;
   char** aacCellValue;
   OverLine* aOverLine;
+  u2 u_Tail_rel;
+  TailLine* aTailLine;
 
   L_HighSwitch:
   
@@ -269,7 +271,17 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
       break;
       
     case MN_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
-      RASSERT(0);
+      u_Tail_rel = *(u2*)rayDataByte;
+      aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
+      
+      nStrSize = aTailLine->w8_1B(+ C_U_1B);
+      memcpy(racString,( aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
+
+      aacCellValue = (char**)rayDstByte;
+      *aacCellValue = racString;
+      rayDstByte += 8;
+      rayDataByte += 2;
+      racString += nStrSize;
       break;
       
     case MN_BLOB_0: // blob type 0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
