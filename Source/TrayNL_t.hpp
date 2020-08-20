@@ -471,8 +471,9 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDumpStrings(void)
     
     char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_1B));
     
-    vTrace("Repeating Str @%lld : <U %lld> <L %lld> %s\n"_Stz,
+    vTrace("Repeating Str @%lld %p : <U %lld> <L %lld> %s\n"_Stz,
            i_Tail,
+           aTailLine,
            aTailLine->iU(),
            aTailLine->iL(),
            azStr);

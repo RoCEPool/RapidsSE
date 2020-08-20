@@ -120,7 +120,8 @@ void TailStr::vAssign(Stz* szStz)
 void TailStr::vSet(Stz* szStz)
 {
 //  vReset();
-  
+  MemLib::vZero(m_yaByte, sizeof(m_yaByte), CN_ROWCOMPACTOR);
+
   i8 nL = StrLib::nCopy((char*)sz(),(char*)szStz) + C_1B;
   
   vL(nL);

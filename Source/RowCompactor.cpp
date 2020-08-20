@@ -641,26 +641,32 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     
     // -- non-null vch column --
     
-    Stz* azStr = aRsb->szVal(i_Col);
-    if (StrLib::nLength((char*)azStr) < 8)
+    Stz* szStr = aRsb->szVal(i_Col);
+    if (StrLib::nLength((char*)szStr) < 8)
       continue;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // attempt to find tail for non-null vch column of minimum length
     
-    TailStr xFindTail(azStr);
+    TailStr xFindTail(szStr);
     
 #ifdef WITH_ENCODING_TRACE
     m_pCrwNub->vDumpTails();
 #endif
     
     i8 i_Tail;
+    //m_pCrwNub->vDumpStrings();
+    //vTrace("Looking for: %s\n"_Stz,szStr->azChar());
     TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
-    if (! aTailLine)
+    if (! aTailLine) {
+      //vTrace("Tail not found: %s\n"_Stz,szStr->azChar());
       continue;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // found a matching tail
+    
+    vTrace("Found tail %lld: %s\n"_Stz,i_Tail,szStr->azChar());
     
     // put tial into the encoding
     aColEnc->m_i_Tail = i_Tail;
