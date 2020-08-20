@@ -157,15 +157,14 @@ void Packing_v2::vPutDataCode_v2(HeadLine* aHeadLine, _ColEnc& xColEnc)
   }
   
   // vch packing
-  if (MC_STR_FIT_1L  == xColEnc.m_eMetaCode)
-    vPutData_STR_FIT_1L_v2 (aHeadLine,xColEnc);
   
-  else if (MC_STR_FIT_2L  == xColEnc.m_eMetaCode)
-    vPutData_STR_FIT_2L_v2 (aHeadLine,xColEnc);
+  u1 uHigh;
+  u1 uLow;
   
-  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode)
-    vPutData_STR_TAIL_2T_v2(aHeadLine,xColEnc);
-  
+  METACLUE_SPLIT(xColEnc.m_uMetaClue,uHigh,uLow);
+
+  if (MN_STRING_x1  == uHigh)
+    vPutData_STRINGx1(aHeadLine,xColEnc);
   else
     NEVER_REACH;
 }
@@ -185,6 +184,33 @@ void Packing_v2::vPutData_Bytes_v2(HeadLine* aHeadLine, _ColEnc& xColEnc)
                            xColEnc.m_wDataCode.m_iWrd,
                            xColEnc.m_nDataSize);
 }
+
+/*----------------------------------------------------------------------------*/
+/* put data bytes for MC_STR_FIT_1L : <L><ShortN>                             */
+/*----------------------------------------------------------------------------*/
+void Packing_v2::vPutData_STRINGx1(HeadLine* aHeadLine, _ColEnc& xColEnc)
+{
+  // get <ShortN>
+  char* azStringZ = (char*)xColEnc.m_wDataCode.m_szVch;
+    
+  i8 nS = xColEnc.m_nDataSize;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  //      -- HeadLine / OverLine --
+  // +--------------------------------+
+  // | ...<StringZ>                   |
+  // +--------------------------------+
+  
+  // put <StringZ> (with null terminator)
+  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset,
+                             (Stz*)azStringZ,
+                             nS);
+}
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_FIT_1L : <L><ShortN>                             */
