@@ -167,10 +167,10 @@ void Packing_v2::vPutDataCode_v2(HeadLine* aHeadLine, _ColEnc& xColEnc)
   METACLUE_SPLIT(xColEnc.m_uMetaClue,uHigh,uLow);
 
   if (MN_STRING_x1  == uHigh)
-    vPutData_STRINGx1(aHeadLine,xColEnc);
+    vPutData_STRINGx1(aHeadLine,xColEnc,STRx1(uLow));
   else
   if (MN_STRING_x2  == uHigh)
-    vPutData_STRINGx1(aHeadLine,xColEnc);
+    vPutData_STRINGx1(aHeadLine,xColEnc,STRx2(uLow));
   else
     NEVER_REACH;
 }
@@ -194,7 +194,7 @@ void Packing_v2::vPutData_Bytes_v2(HeadLine* aHeadLine, _ColEnc& xColEnc)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_FIT_1L : <L><ShortN>                             */
 /*----------------------------------------------------------------------------*/
-void Packing_v2::vPutData_STRINGx1(HeadLine* aHeadLine, _ColEnc& xColEnc)
+void Packing_v2::vPutData_STRINGx1(HeadLine* aHeadLine, _ColEnc& xColEnc, i8 nBytes)
 {
   // get <ShortN>
   char* azStringZ = (char*)xColEnc.m_wDataCode.m_szVch;
@@ -211,7 +211,7 @@ void Packing_v2::vPutData_STRINGx1(HeadLine* aHeadLine, _ColEnc& xColEnc)
   // put <StringZ> (with null terminator)
   aHeadLine->vPutDataLogical(xColEnc.m_i_Offset,
                              (Stz*)azStringZ,
-                             nS);
+                             nBytes);
 }
 
 

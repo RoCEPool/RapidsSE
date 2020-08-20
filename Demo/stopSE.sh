@@ -10,8 +10,8 @@ PIDFILE="${ROOT_DIR}/se.pid"
 
 if [ "$#" -ne 1 ]
 then
-echo "Need to specify arguments"
-exit 1
+  echo "Usage: ./$0 <nodeName>"
+  exit 1
 fi
 
 NODE_NAME=$1
@@ -29,54 +29,54 @@ export LD_LIBRARY_PATH="${EXE_DIR}":$LD_LIBRARY_PATH
 
 if [ ! -f "${EXE}" ]
 then
-echo "Not stopping SE because the binary does not exist."
-exit 1
+  echo "Not stopping SE because the binary does not exist."
+  exit 1
 fi
 
 if [ -f "${PIDFILE}" ]
 then
 
-# Get the pid
-PID=$(cat "${PIDFILE}") 2>/dev/null
+  # Get the pid
+  PID=$(cat "${PIDFILE}") 2>/dev/null
 
-# This will set a flag in the SE shared memory segment to tell any servers to unlink and exit.
-echo "Stopping RapidsSE with pid ${PID}."
-${EXE} ${STOP_PARAMS}
+  # This will set a flag in the SE shared memory segment to tell any servers to unlink and exit.
+  echo "Stopping RapidsSE with pid ${PID}."
+  ${EXE} ${STOP_PARAMS}
 
-# Now wait for the process to stop. While loop exits if ps -p has a non-zero exit code.
-COUNTER=0
+  # Now wait for the process to stop. While loop exits if ps -p has a non-zero exit code.
+  COUNTER=0
 
-while ps -p "${PID}" &> /dev/null
-do
+  while ps -p "${PID}" &> /dev/null
+  do
 
-if [ "${COUNTER}" -ge "${EXIT_ITERATIONS}" ]
-then
-break;
-fi
+    if [ "${COUNTER}" -ge "${EXIT_ITERATIONS}" ]
+    then
+      break;
+    fi
 
-(( COUNTER++ ))
-sleep "${EXIT_SLEEP_TIME}"
-done
+    (( COUNTER++ ))
+    sleep "${EXIT_SLEEP_TIME}"
+  done
 
-# Check again that the process has been stopped. If it hasn't then we shall kill it.
-if ps -p "${PID}" &> /dev/null    # Exit code 0 means se is still running. The 'if' fires on a 0 exit code.
-then
-echo "Killing RapidsSE process ${PID}."
-kill -9 "${PID}" &>/dev/null
-fi
+  # Check again that the process has been stopped. If it hasn't then we shall kill it.
+  if ps -p "${PID}" &> /dev/null    # Exit code 0 means se is still running. The 'if' fires on a 0 exit code.
+  then
+    echo "Killing RapidsSE process ${PID}."
+    kill -9 "${PID}" &>/dev/null
+  fi
 
-# Remove the pid file
-rm -f "${PIDFILE}" &>/dev/null
+  # Remove the pid file
+  rm -f "${PIDFILE}" &>/dev/null
 
 else
 
-# Kill by process name, restricted to processes owned by the current user.
-# We need to set the next 2 variables to avoid "illegal byte sequence" errors.
-echo "PID file missing, so stopping RapidsSE by killing all processes by that name."
-export LC_CTYPE=C
-export LANG=C
+  # Kill by process name, restricted to processes owned by the current user.
+  # We need to set the next 2 variables to avoid "illegal byte sequence" errors.
+  echo "PID file missing, so stopping RapidsSE by killing all processes by that name."
+  export LC_CTYPE=C
+  export LANG=C
 
-pkill -u $UID -x rapidsse 2>/dev/null
+  pkill -u $UID -x rapidsse 2>/dev/null
 
 fi
 

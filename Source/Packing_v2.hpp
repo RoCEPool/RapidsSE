@@ -17,7 +17,7 @@ namespace CompactBuffers
   
     static void vPutDataCode_v2(HeadLine* aHeadLine, _ColEnc& xColEnc);
     static void vPutData_Bytes_v2(HeadLine* aHeadLine, _ColEnc& xColEnc);
-    static void vPutData_STRINGx1(HeadLine* aHeadLine, _ColEnc& xColEnc);
+    static void vPutData_STRINGx1(HeadLine* aHeadLine, _ColEnc& xColEnc, i8 nBytes);
 
   
     static void vPutData_STR_FIT_2L_v2(HeadLine* aHeadLine, _ColEnc& xColEnc);
