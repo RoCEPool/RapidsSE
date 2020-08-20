@@ -639,9 +639,9 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
   
   // copy chars + null into wsp, nS will be size  (i.e. noOf(chars)+1 )
   char* azDst = (char*)m_xWsp.ayLatter();
-  i8 nS = StrLib::nCopy(azDst,(char*)wColVal.m_szVch);
+  i8 nS = StrLib::nCopy(azDst,(char*)wColVal.m_szVch) + 1;
   
-  // we have copied nS bytes into wsp
+  // have copied nS bytes into wsp
   m_xWsp.vTake(nS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
