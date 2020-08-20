@@ -83,8 +83,11 @@ void Packing_v2::vPutMeta_split_v2(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& x
   i8 i_Col = xColEnc.m_pCol->iColumnNo();
   
   // set <MC_OVERFLOW_2T> for this column
-  aHeadLine->vMetaCode(i_Col,MC_OVERFLOW_2T);
+  //aHeadLine->vMetaCode(i_Col,MC_OVERFLOW_2T);
   
+  u1 uMetaClue = METACLUE_FORM(MN_OVERFLOW,2);
+  aHeadLine->vMetaClue(i_Col,uMetaClue);
+
   // +================================+
   // | <W><M>...     <MC_OVERFLOW_2T> |
   // +================================+
@@ -95,8 +98,8 @@ void Packing_v2::vPutMeta_split_v2(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& x
   
   // put <M> into over line
   aHeadLine->vPutDataLogical(nHeadSize + C_U_1B,
-                           (i8)xColEnc.m_eMetaCode,
-                           C_1B);
+                            (i8)xColEnc.m_uMetaClue,
+                            C_1B);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,6 +167,9 @@ void Packing_v2::vPutDataCode_v2(HeadLine* aHeadLine, _ColEnc& xColEnc)
   METACLUE_SPLIT(xColEnc.m_uMetaClue,uHigh,uLow);
 
   if (MN_STRING_x1  == uHigh)
+    vPutData_STRINGx1(aHeadLine,xColEnc);
+  else
+  if (MN_STRING_x2  == uHigh)
     vPutData_STRINGx1(aHeadLine,xColEnc);
   else
     NEVER_REACH;

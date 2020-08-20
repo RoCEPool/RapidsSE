@@ -780,7 +780,7 @@ Column* Encoding_v2::pNonFitting(void)
       return xaColEnc[ (i_Col + 1) ].m_pCol;
   }
 
-  return nullptr;
+  return xaColEnc[0].m_pCol;
 }
 
 /*----------------------------------------------------------------------------*/

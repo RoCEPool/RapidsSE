@@ -752,8 +752,11 @@ void RowCompactor::vEncodeSplit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 
-  if (gxEnvFlags.m_iMetaClue)
+  if (gxEnvFlags.m_iMetaClue) {
     m_pEncoding_v2->vSplitOver();
+    SP_Encoding_v2 spEncoding;
+    vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v2));
+  }
   else
     m_pEncoding_v1->vSplitOver();
 
