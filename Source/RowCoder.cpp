@@ -70,10 +70,6 @@ i8 RowCoder::nControlSize(void)
   return nControlSize;
 }
 
-#define METACLUE_SPLIT(__uClue,__iHigh,__iLow) \
-  __iHigh = (__uClue >> 4); \
-  __iLow  = (__uClue &  0x0F);
-
 /*----------------------------------------------------------------------------*/
 /* how many bytes does given encoding occupy in the data portion of a head?   */
 /*----------------------------------------------------------------------------*/

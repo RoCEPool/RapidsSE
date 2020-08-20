@@ -255,10 +255,10 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
       RASSERT(0);
       break;
       
-    case MN_NEGATIVE: // -ve digit -16..-1 -- -- -- -- -- -- -- -- -- -- -- --
+    case MN_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
       aiCellValue = (i8*)rayDstByte;
       
-      *rayDstByte++ = (i8)uLow + 1; // 0
+      *rayDstByte++ = (i8)uLow; // 0
       *rayDstByte++ = 0; // 1
       *rayDstByte++ = 0; // 2
       *rayDstByte++ = 0; // 3
@@ -271,8 +271,8 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
 
       break;
       
-    case MN_POSITIVE: // +ve digit 1..16 - -- -- -- -- -- -- -- -- -- -- -- --
-      *rayDstByte++ = (i8)uLow + 1; // 0
+    case MN_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
+      *rayDstByte++ = (i8)uLow; // 0
       *rayDstByte++ = 0; // 1
       *rayDstByte++ = 0; // 2
       *rayDstByte++ = 0; // 3

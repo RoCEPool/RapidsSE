@@ -41,6 +41,12 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
 #define STRx4(__uLow) ( 48 + 4 * __uLow)  //  48B .. |4 * 16 =  64| .. 111B
 #define STRx8(__uLow) (112 + 8 * __uLow)  // 112B .. |8 * 16 = 128| .. 239B
 
+#define METACLUE_FORM(__high,__low) ( (u1) ( (u1)__high << 4 | (u1)__low )  )
+
+#define METACLUE_SPLIT(__uClue,__iHigh,__iLow) \
+  __iHigh = (__uClue >> 4); \
+  __iLow  = (__uClue &  0x0F);
+
 
 #include "Encoding_v1.hpp"
 #include "Encoding_v2.hpp"

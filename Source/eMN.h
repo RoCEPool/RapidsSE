@@ -20,8 +20,8 @@ enum eMN : u1 // meta nibble
   /* B */ MN_STRING_TAIL, // string in tail
   /* C */ MN_BLOB_0,      // blob type 0
   /* D */ MN_BLOB_1,      // blob type 1
-  /* E */ MN_NEGATIVE,    // -ve digit -16 .. -1
-  /* F */ MN_POSITIVE,    // +ve digit   1 .. 16
+  /* E */ MN_NEGATIVE,    // -ve digit -15 .. -0
+  /* F */ MN_POSITIVE,    // +ve digit   0 .. 15
 
   /* 16 */ MN_ENUMS,
 };

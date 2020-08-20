@@ -388,6 +388,8 @@ void Encoding_v2::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
   if (-1 == wColVal.m_wBcd.m_iAsI8) {
     xColEnc.m_eMetaCode = MC_BCD_M_ONE;
     xColEnc.m_nDataSize = C_0B;
+    
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_NEGATIVE,0);
     return;
   }
   
@@ -397,6 +399,9 @@ void Encoding_v2::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
   if (wColVal.m_wBcd.m_iAsI8 >= 0 && wColVal.m_wBcd.m_iAsI8 <= 10) {
     xColEnc.m_eMetaCode = (eMC)(MC_BCD_ZERO + wColVal.m_wBcd.m_iAsI8);
     xColEnc.m_nDataSize = C_0B;
+    
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_POSITIVE,wColVal.m_iWrd - 1);
+
     return;
   }
   
@@ -406,6 +411,8 @@ void Encoding_v2::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
   i8 nD = wColVal.iByteMagn();
   xColEnc.m_eMetaCode = (eMC)(MC_BCD_1B + nD - 1);
   xColEnc.m_nDataSize = nD;
+  
+  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -424,11 +431,17 @@ void Encoding_v2::vEncodeBol(_ColEnc& xColEnc, Dtm wColVal)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // encode as: MC_BOL_TRUE or MC_BOL_FALSE
-  if (wColVal.m_wBol.m_iAsI8)
+  if (wColVal.m_wBol.m_iAsI8) {
     xColEnc.m_eMetaCode = MC_BOL_TRUE;
-  else
+    xColEnc.m_nDataSize = C_0B;
+    
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_POSITIVE,1);
+  }
+  else {
     xColEnc.m_eMetaCode = MC_BOL_FALSE;
-  xColEnc.m_nDataSize = C_0B;
+    xColEnc.m_nDataSize = C_0B;
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_POSITIVE,0);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -451,11 +464,22 @@ void Encoding_v2::vEncodeDte(_ColEnc& xColEnc, Dtm wColVal)
   i8 iEra = 0;
   vDteIntoEdt(wColVal.m_wDte.m_iAsI8,&xColEnc.m_wDataCode.m_wEdt.m_iAsI8,iEra);
   
-       if (C_ERA_0 == iEra) xColEnc.m_eMetaCode= MC_DTE_E0_2B;
-  else if (C_ERA_1 == iEra) xColEnc.m_eMetaCode= MC_DTE_E1_2B;
-  else                      xColEnc.m_eMetaCode= MC_DTE_E2_2B;
+  if (C_ERA_0 == iEra) {
+    xColEnc.m_eMetaCode= MC_DTE_E0_2B;
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_DATE_E0,2);
+  }
+  else
+  if (C_ERA_1 == iEra) {
+    xColEnc.m_eMetaCode= MC_DTE_E1_2B;
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_DATE_E1,2);
+  }
+  else {
+    xColEnc.m_eMetaCode= MC_DTE_E2_2B;
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_DATE_E2,2);
+  }
   
   xColEnc.m_nDataSize = C_2B;
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -477,9 +501,9 @@ void Encoding_v2::vEncodeFlt(_ColEnc& xColEnc, Dtm wColVal)
   i8 nD = wColVal.iByteMagn();
   xColEnc.m_eMetaCode = (eMC)(MC_FLT_1B + nD - 1);
   xColEnc.m_nDataSize = nD;
+  
+  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NUMERIC,nD);
 }
-
-#define METACLUE_FORM(__high,__low) ( (u1) ( (u1)__high << 4 | (u1)__low )  )
 
 /*----------------------------------------------------------------------------*/
 /* encode an int column value                                                 */
@@ -501,14 +525,14 @@ void Encoding_v2::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
     xColEnc.m_eMetaCode = MC_INT_M_ONE;
     xColEnc.m_nDataSize = C_0B;
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_NEGATIVE,0);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_NEGATIVE,1);
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 0..10 case -- encode as MC_INT_ONE..TEN + {}
-  if (wColVal.m_iWrd > 0 && wColVal.m_iWrd <= 10) {
+  if (wColVal.m_iWrd >= 0 && wColVal.m_iWrd <= 10) {
     xColEnc.m_eMetaCode = (eMC)(MC_INT_ZERO + wColVal.m_iWrd);
     xColEnc.m_nDataSize = C_0B;
     
@@ -517,7 +541,7 @@ void Encoding_v2::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
     u1 uLow = (u1)wColVal.m_iWrd - 1;
     u1 eTest = (uHigh | uLow);
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_POSITIVE,wColVal.m_iWrd - 1);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_POSITIVE,wColVal.m_iWrd);
     return;
   }
   
@@ -550,6 +574,8 @@ void Encoding_v2::vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal)
   i8 nD = wColVal.iByteMagn();
   xColEnc.m_eMetaCode = (eMC)(MC_IVL_1B + nD - 1);
   xColEnc.m_nDataSize = nD;
+  
+  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -571,6 +597,8 @@ void Encoding_v2::vEncodeTme(_ColEnc& xColEnc, Dtm wColVal)
   i8 nD = wColVal.iByteMagn();
   xColEnc.m_eMetaCode = (eMC)(MC_TME_1B + nD - 1);
   xColEnc.m_nDataSize = nD;
+  
+  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -592,6 +620,8 @@ void Encoding_v2::vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal)
   i8 nD = 8;
   xColEnc.m_eMetaCode = (eMC)(MC_TSP_8B);
   xColEnc.m_nDataSize = nD;
+  
+  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -659,6 +689,8 @@ bool Encoding_v2::bEncodeNul(_ColEnc& xColEnc, Dtm wDtm)
   
   // null case : encode as: MC_NULL + {}
   xColEnc.m_eMetaCode = MC_NULL;
+  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NULL,0);
+
   xColEnc.m_wDataCode.vSetNull();
   xColEnc.m_nDataSize = C_0B;
   
