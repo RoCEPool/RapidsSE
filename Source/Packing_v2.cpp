@@ -172,7 +172,13 @@ void Packing_v2::vPutDataCode_v2(HeadLine* aHeadLine, _ColEnc& xColEnc)
   if (MN_STRING_x2  == uHigh)
     vPutData_STRINGx1(aHeadLine,xColEnc,STRx2(uLow));
   else
-    NEVER_REACH;
+  if (MN_STRING_x4  == uHigh)
+    vPutData_STRINGx1(aHeadLine,xColEnc,STRx4(uLow));
+  else
+  if (MN_STRING_x8  == uHigh)
+    vPutData_STRINGx1(aHeadLine,xColEnc,STRx8(uLow));
+  else
+    vPutData_STR_TAIL_2T_v2(aHeadLine,xColEnc);
 }
 
 /*----------------------------------------------------------------------------*/

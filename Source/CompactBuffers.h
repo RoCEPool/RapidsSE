@@ -43,6 +43,9 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
 
 #define METACLUE_FORM(__high,__low) ( (u1) ( (u1)__high << 4 | (u1)__low )  )
 
+#define METACLUE_HIGH(__uClue) ( __uClue >> 4 )
+#define METACLUE_LOW(__uClue) ( __uClue & 0x0F )
+
 #define METACLUE_SPLIT(__uClue,__iHigh,__iLow) \
   __iHigh = (__uClue >> 4); \
   __iLow  = (__uClue &  0x0F);

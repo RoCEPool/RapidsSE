@@ -134,7 +134,10 @@ void Encoding_v2::vMorphEncoding(_ColEnc* aColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
   
-  ASSERT(MC_STR_FIT_1L == aColEnc->m_eMetaCode);
+  //ASSERT(MC_STR_FIT_1L == aColEnc->m_eMetaCode);
+  ASSERT(METACLUE_HIGH(aColEnc->m_uMetaClue) >= MN_STRING_x1 ||
+           (METACLUE_HIGH(aColEnc->m_uMetaClue) >= MN_STRING_x2 &&
+            METACLUE_HIGH(aColEnc->m_uMetaClue) <= MN_STRING_x8));
   ASSERT(C_UNKNOWN != aColEnc->m_i_Tail);
 
   // calc the adjustment required because MC_STR_FIT_1L becoming MC_STR_TAIL_2T
@@ -144,6 +147,7 @@ void Encoding_v2::vMorphEncoding(_ColEnc* aColEnc)
   
   // morph the given column into a MC_STR_TAIL_2T
   aColEnc->m_eMetaCode = MC_STR_TAIL_2T;
+  aColEnc->m_uMetaClue = METACLUE_FORM(MN_STRING_TAIL,2);
   aColEnc->m_wDataCode = aColEnc->m_i_Tail;
   aColEnc->m_nDataSize = C_2B;
   aColEnc->m_i_Till   += nOffsetAdj;
