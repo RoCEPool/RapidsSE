@@ -8,7 +8,8 @@
 /*----------------------------------------------------------------------------*/
 /* general v2 inflate code                                                    */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
+void RowInflator::vInflate_v2(byte*& rayDstByte,
+                              byte*& rayDataByte, HeadLine* aHeadLine,
                               u1 uHigh, u1 uLow,
                               eSI eStrInflate, char*& racString)
 {
@@ -17,7 +18,10 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
   i8 nStrSize;
   i8* aiCellValue;
   char** aacCellValue;
+  OverLine* aOverLine;
 
+  L_HighSwitch:
+  
   switch (uHigh) {
       
     case MN_NUMERIC: // numeric values 0..8B
@@ -218,7 +222,10 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
       break;
       
     case MN_OVERFLOW: // overflow 2B
-      RASSERT(0);
+      aOverLine = aHeadLine->aGetOver();
+      METACLUE_SPLIT( (* aAdd<eMC*>(aOverLine,C_U_1B) ), uHigh, uLow);
+      rayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
+      goto L_HighSwitch;
       break;
       
       
@@ -228,20 +235,29 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
       
     case MN_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
       nStrSize = STRx2(uLow);
-      memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
-      rayDstByte += nStrSize;
+      memcpy(racString,rayDataByte,(size_t)nStrSize);
+
+      aacCellValue = (char**)rayDstByte;
+      *aacCellValue = racString;
+      rayDstByte += 8;
       break;
       
     case MN_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
       nStrSize = STRx4(uLow);
-      memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
-      rayDstByte += nStrSize;
+      memcpy(racString,rayDataByte,(size_t)nStrSize);
+
+      aacCellValue = (char**)rayDstByte;
+      *aacCellValue = racString;
+      rayDstByte += 8;
       break;
       
     case MN_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
       nStrSize = STRx8(uLow);
-      memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
-      rayDstByte += nStrSize;
+      memcpy(racString,rayDataByte,(size_t)nStrSize);
+
+      aacCellValue = (char**)rayDstByte;
+      *aacCellValue = racString;
+      rayDstByte += 8;
       break;
       
     case MN_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
@@ -405,7 +421,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inflate column
     
-    vInflate_v2(ayDstByte,ayDataByte,uHigh,uLow,SI_NONE,acString);
+    vInflate_v2(ayDstByte,ayDataByte,aHeadLine,uHigh,uLow,SI_NONE,acString);
 
     aiDstk_lcl++;
 
@@ -878,7 +894,7 @@ void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
     u1 uHigh = uMetaClue >> 4;
     u1 uLow  = uMetaClue & 0x0F;
 
-    vInflate_v2(ayDstByte,ayDataByte,uHigh,uLow,SI_NONE,acString);
+    vInflate_v2(ayDstByte,ayDataByte,aHeadLine,uHigh,uLow,SI_NONE,acString);
     
   }
   // for each column
