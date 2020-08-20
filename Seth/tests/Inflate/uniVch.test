@@ -1,0 +1,99 @@
+/*----------------------------------------------------------------------------*/
+/* uniVch.test -- TSP DATUM tests                                             */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
+
+// (1) create a table
+create table uniVch (
+  vch_col VARCHAR(500) NOT NULL
+);
+success
+
+fload uniVch "../FASTLOAD/Data/uniVch.csv" ;
+success
+
+// check no of rows
+tableScan uniVch;
+rows: 53
+
+// check data
+tableScan uniVch;
+rows:
+  ('a')
+  ('ab')
+  ('abc')
+  ('abcd')
+  ('abcde')
+  ('abcdef')
+  ('abcdefg')
+  ('abcdefg')
+  ('abcdefgh')
+  ('abcdefghi')
+  ('abcdefghij')
+  ('abcdefghijk')
+  ('abcdefghijkl')
+  ('abcdefghijklm')
+  ('abcdefghijklmn')
+  ('abcdefghijklmno')
+  ('abcdefghijklmnop')
+  ('abcdefghijklmnopq')
+  ('abcdefghijklmnopqr')
+  ('abcdefghijklmnopqrs')
+  ('abcdefghijklmnopqrst')
+  ('abcdefghijklmnopqrstu')
+  ('abcdefghijklmnopqrstuv')
+  ('abcdefghijklmnopqrstuvw')
+  ('abcdefghijklmnopqrstuvwx')
+  ('abcdefghijklmnopqrstuvwxy')
+  ('abcdefghijklmnopqrstuvwxyz')
+  ('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+  ('ABCDEFGHIJKLMNOPQRSTUVWXY')
+  ('ABCDEFGHIJKLMNOPQRSTUVWX')
+  ('ABCDEFGHIJKLMNOPQRSTUVW')
+  ('ABCDEFGHIJKLMNOPQRSTUV')
+  ('ABCDEFGHIJKLMNOPQRSTU')
+  ('ABCDEFGHIJKLMNOPQRST')
+  ('ABCDEFGHIJKLMNOPQRS')
+  ('ABCDEFGHIJKLMNOPQR')
+  ('ABCDEFGHIJKLMNOPQ')
+  ('ABCDEFGHIJKLMNOP')
+  ('ABCDEFGHIJKLMNO')
+  ('ABCDEFGHIJKLMN')
+  ('ABCDEFGHIJKLM')
+  ('ABCDEFGHIJKL')
+  ('ABCDEFGHIJK')
+  ('ABCDEFGHIJ')
+  ('ABCDEFGHI')
+  ('ABCDEFGH')
+  ('ABCDEFG')
+  ('ABCDEF')
+  ('ABCDE')
+  ('ABCD')
+  ('ABC')
+  ('AB')
+  ('A')
+
+// drop the table)
+//drop table uniVch;
+//success
+
+// get memory leaks)
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+  // drop the table)
+  //drop table uniVch;
+  //mute
+  
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
+
