@@ -146,7 +146,11 @@ bool RowCompactor::bCompactRsb(Rsb* aRsb)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
  
+  //m_pCrwNub->vDumpTails();
+  
   bool bResult = bAddRsbAsCrw(aRsb);
+  
+  //m_pCrwNub->vDumpTails();
 
   return bResult;
 }
@@ -245,10 +249,10 @@ bool RowCompactor::bAddRsbAsCrw(Rsb* aRsb)
   
   // 1) initially encode head of inflated row into m_pEncoding_v1
   vEncodeHeadForRsb(aRsb);
-  
+
   // 2) encode tails into m_pEncoding_v1
   vEncodeTailsForRsb(aRsb);
-  
+
   // 3) split encoded head between crw head and crw overflow
   vEncodeSplit();
 
@@ -257,7 +261,7 @@ bool RowCompactor::bAddRsbAsCrw(Rsb* aRsb)
     m_nTotalBuffers++;
     return false;
   }
-  
+
   // 5) pack encoded row into a compact row
   if (gxEnvFlags.m_iMetaClue)
     Packing_v2::vPackCrw_v2(m_aHeadLine,m_pEncoding_v2);
@@ -269,9 +273,9 @@ bool RowCompactor::bAddRsbAsCrw(Rsb* aRsb)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify
     
-  #ifdef WITH_VERIFY_TAILS
-  m_pCrwNub->vVerifyTails(C_UNKNOWN);
-  #endif
+  //#ifdef WITH_VERIFY_TAILS
+  //m_pCrwNub->vVerifyTails(C_UNKNOWN);
+  //#endif
     
   return true;
 }
@@ -469,9 +473,9 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
  
   m_pCrwNub->vSetLastStr(i_Tail);
   
-//#ifdef WITH_ENCODING_TRACE
+#ifdef WITH_ENCODING_TRACE
   m_pCrwNub->vDumpTails();
-//#endif
+#endif
   
   //vDebugPoint();
   
@@ -647,7 +651,7 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     TailStr xFindTail(azStr);
     
 #ifdef WITH_ENCODING_TRACE
-    vDumpTails();
+    m_pCrwNub->vDumpTails();
 #endif
     
     i8 i_Tail;

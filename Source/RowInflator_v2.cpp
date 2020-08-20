@@ -275,7 +275,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
       aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
       
       nStrSize = aTailLine->w8_1B(+ C_U_1B);
-      memcpy(racString,( aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
+      memcpy(racString,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
 
       aacCellValue = (char**)rayDstByte;
       *aacCellValue = racString;

@@ -498,8 +498,9 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDumpTails(void)
     
     char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_1B));
     
-    vTrace("Tail %lld : <U %lld> <L %lld> %s\n"_Stz,
+    vTrace("Tail %lld %p : <U %lld> <L %lld> %s\n"_Stz,
            i_Tail,
+           aTailLine,
            aTailLine->iU(),
            aTailLine->iL(),
            azStr);

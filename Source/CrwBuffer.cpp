@@ -506,6 +506,8 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
   HV_Row hRow(pStreamDef,C_ALL);
   HV_Rec hvRec(pStreamDef,C_ALL);
   
+  //m_oRowTray.pNub()->vDumpTails();
+  
   i8 nRows = m_oRowTray.pNub()->nHeads();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
