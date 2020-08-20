@@ -14,8 +14,9 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
 {
   _static_
   
-  i8 nStrLen;
+  i8 nStrSize;
   i8* aiCellValue;
+  char** aacCellValue;
 
   switch (uHigh) {
       
@@ -23,7 +24,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
       
       switch (uLow) {
           
-        case 0x0: // numeric 0B
+        case 0x0: // MN_NUMERIC 0B
           *rayDstByte++ = 0; // 0
           *rayDstByte++ = 0; // 1
           *rayDstByte++ = 0; // 2
@@ -34,7 +35,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
           *rayDstByte++ = 0; // 7
           break;
           
-        case 0x1: // numeric 1B
+        case 0x1: // MN_NUMERIC 1B
           *rayDstByte++ = *rayDataByte++; // 0
           *rayDstByte++ = 0; // 1
           *rayDstByte++ = 0; // 2
@@ -45,7 +46,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
           *rayDstByte++ = 0; // 7
           break;
           
-        case 0x2: // numeric 2B
+        case 0x2: // MN_NUMERIC 2B
           *rayDstByte++ = *rayDataByte++; // 0
           *rayDstByte++ = *rayDataByte++; // 1
           *rayDstByte++ = 0; // 2
@@ -56,7 +57,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
           *rayDstByte++ = 0; // 7
           break;
           
-        case 0x3: // numeric 3B
+        case 0x3: // MN_NUMERIC 3B
           *rayDstByte++ = *rayDataByte++; // 0
           *rayDstByte++ = *rayDataByte++; // 1
           *rayDstByte++ = *rayDataByte++; // 2
@@ -67,7 +68,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
           *rayDstByte++ = 0; // 7
           break;
           
-        case 0x4: // numeric 4B
+        case 0x4: // MN_NUMERIC 4B
           *rayDstByte++ = *rayDataByte++; // 0
           *rayDstByte++ = *rayDataByte++; // 1
           *rayDstByte++ = *rayDataByte++; // 2
@@ -78,7 +79,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
           *rayDstByte++ = 0; // 7
           break;
           
-        case 0x5: // numeric 5B
+        case 0x5: // MN_NUMERIC 5B
           *rayDstByte++ = *rayDataByte++; // 0
           *rayDstByte++ = *rayDataByte++; // 1
           *rayDstByte++ = *rayDataByte++; // 2
@@ -89,7 +90,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
           *rayDstByte++ = 0; // 7
           break;
           
-        case 0x6: // numeric 6B
+        case 0x6: // MN_NUMERIC 6B
           *rayDstByte++ = *rayDataByte++; // 0
           *rayDstByte++ = *rayDataByte++; // 1
           *rayDstByte++ = *rayDataByte++; // 2
@@ -100,7 +101,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
           *rayDstByte++ = 0; // 7
           break;
           
-        case 0x7: // numeric 7B
+        case 0x7: // MN_NUMERIC 7B
           *rayDstByte++ = *rayDataByte++; // 0
           *rayDstByte++ = *rayDataByte++; // 1
           *rayDstByte++ = *rayDataByte++; // 2
@@ -111,7 +112,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
           *rayDstByte++ = 0; // 7
           break;
           
-        case 0x8: // numeric 8B
+        case 0x8: // MN_NUMERIC 8B
           *rayDstByte++ = *rayDataByte++; // 0
           *rayDstByte++ = *rayDataByte++; // 1
           *rayDstByte++ = *rayDataByte++; // 2
@@ -122,31 +123,31 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
           *rayDstByte++ = *rayDataByte++; // 7
         break;
           
-        case 0x9: // numeric 9B
+        case 0x9: // MN_NUMERIC 9B
           RASSERT(0);
           break;
           
-        case 0xA: // numeric 10B
+        case 0xA: // MN_NUMERIC 10B
           RASSERT(0);
           break;
           
-        case 0xB: // numeric 11B
+        case 0xB: // MN_NUMERIC 11B
           RASSERT(0);
           break;
           
-        case 0xC: // numeric 12B
+        case 0xC: // MN_NUMERIC 12B
           RASSERT(0);
           break;
           
-        case 0xD: // numeric 13B
+        case 0xD: // MN_NUMERIC 13B
           RASSERT(0);
           break;
           
-        case 0xE: // numeric 14B
+        case 0xE: // MN_NUMERIC 14B
           RASSERT(0);
           break;
           
-        case 0xF: // numeric 15B
+        case 0xF: // MN_NUMERIC 15B
           RASSERT(0);
           break;
         
@@ -199,10 +200,12 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
       break;
       
     case MN_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
-      nStrLen = STRx1(uLow);
-      memcpy(rayDstByte,rayDataByte,(size_t)nStrLen);
-      rayDstByte += nStrLen;
-      *rayDstByte++ = '\0';
+      nStrSize = STRx1(uLow);
+      memcpy(racString,rayDataByte,(size_t)nStrSize);
+      
+      aacCellValue = (char**)rayDstByte;
+      *aacCellValue = racString;
+      rayDstByte += 8;
       break;
       
     case MN_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -223,24 +226,21 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
     // toBytes(uLow) depends on uHigh
       
     case MN_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      nStrLen = STRx2(uLow);
-      memcpy(rayDstByte,rayDataByte,(size_t)nStrLen);
-      rayDstByte += nStrLen;
-      *rayDstByte++ = '\0';
+      nStrSize = STRx2(uLow);
+      memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
+      rayDstByte += nStrSize;
       break;
       
     case MN_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      nStrLen = STRx4(uLow);
-      memcpy(rayDstByte,rayDataByte,(size_t)nStrLen);
-      rayDstByte += nStrLen;
-      *rayDstByte++ = '\0';
+      nStrSize = STRx4(uLow);
+      memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
+      rayDstByte += nStrSize;
       break;
       
     case MN_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      nStrLen = STRx8(uLow);
-      memcpy(rayDstByte,rayDataByte,(size_t)nStrLen);
-      rayDstByte += nStrLen;
-      *rayDstByte++ = '\0';
+      nStrSize = STRx8(uLow);
+      memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
+      rayDstByte += nStrSize;
       break;
       
     case MN_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
