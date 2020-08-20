@@ -1,0 +1,50 @@
+/*----------------------------------------------------------------------------*/
+/* uniBol.test -- BOOLEAN DATUM tests                                         */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
+
+// (1) create a table
+create table uniBol (
+  bol_col BOOLEAN NOT NULL
+);
+success
+
+fload uniBol "../FASTLOAD/Data/uniBol.csv" ;
+success
+
+// check no of rows
+tableScan uniBol;
+rows: 4
+
+// check data
+tableScan uniBol;
+rows:
+  (true)
+  (false)
+  (false)
+  (true)
+
+// drop the table)
+drop table uniBol;
+success
+
+// get memory leaks)
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+  // drop the table)
+  drop table uniBol;
+  mute
+  
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
+
