@@ -532,13 +532,13 @@ void Encoding_v2::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 0..10 case -- encode as MC_INT_ONE..TEN + {}
-  if (wColVal.m_iWrd >= 0 && wColVal.m_iWrd <= 10) {
+  if (wColVal.m_iWrd >= 0 && wColVal.m_iWrd <= 15) {
     xColEnc.m_eMetaCode = (eMC)(MC_INT_ZERO + wColVal.m_iWrd);
     xColEnc.m_nDataSize = C_0B;
     
     u1 uHigh = MN_POSITIVE;
     uHigh <<= 4;
-    u1 uLow = (u1)wColVal.m_iWrd - 1;
+    u1 uLow = (u1)wColVal.m_iWrd;
     u1 eTest = (uHigh | uLow);
     
     xColEnc.m_uMetaClue = METACLUE_FORM(MN_POSITIVE,wColVal.m_iWrd);
