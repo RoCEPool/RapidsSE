@@ -506,13 +506,13 @@ void RowCompactor::vEncodeHeadForRsb(Rsb* aRsb)
   if (gxEnvFlags.m_iMetaClue) {
     m_pEncoding_v2->vEncodeRsb(aRsb);
     SP_Encoding_v2 spEncoding_v2;
-    vTrace("\nvEncode:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
+    vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
   }
   else {
     m_pEncoding_v1->vEncodeRsb(aRsb);
 #ifdef WITH_ENCODING_TRACE
     SP_Encoding spEncoding;
-    vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
+    vTrace("\nvEncode_v1:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
 #endif
   }
 }

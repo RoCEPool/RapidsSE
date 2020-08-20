@@ -29,6 +29,7 @@ shortcut etc3 etcTest createtable T (a integer, b varchar(32));
 shortcut fn   forget node node9 abc def;
 shortcut ln   show nodes;
 shortcut mni  "../MetaNibble/_int";
+shortcut mnv  "../MetaNibble/_vch";
 shortcut nd   _nationDelete;
 shortcut nl   "../FASTLOAD/commands/_normalLoad";
 shortcut o    olist;
