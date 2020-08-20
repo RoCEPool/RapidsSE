@@ -224,7 +224,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
       
     case MN_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
       nStrLen = STRx2(uLow);
-       memcpy(rayDstByte,rayDataByte,(size_t)nStrLen);
+      memcpy(rayDstByte,rayDataByte,(size_t)nStrLen);
       rayDstByte += nStrLen;
       *rayDstByte++ = '\0';
       break;

@@ -637,44 +637,72 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // copy chars + null into wsp, nL will be noOf(chars), not incl null
+  // copy chars + null into wsp, nS will be size  (i.e. noOf(chars)+1 )
   char* azDst = (char*)m_xWsp.ayLatter();
-  i8 nL = StrLib::nCopy(azDst,(char*)wColVal.m_szVch);
+  i8 nS = StrLib::nCopy(azDst,(char*)wColVal.m_szVch);
   
-  // we have copied (nL + 1) bytes into wsp
-  m_xWsp.vTake(nL + 1);
+  // we have copied nS bytes into wsp
+  m_xWsp.vTake(nS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // 1) empty string case -- encode as: MC_STR_EMPTY + {}
-  if (nL == 0) {
-    xColEnc.m_eMetaCode = MC_STR_EMPTY;
-    xColEnc.m_wDataCode.m_azStr = nullptr;
-    xColEnc.m_nDataSize = 0;
-    return;
-  }
-  
-  // 2) short string case -- encode as: MC_STR_FIT_1L + {<L><ShortN>}
-  if (nL <= (i8)C_1_BYTE) {
+    
+  // 1) MN_STRING_x1
+  if (nS <= 15) {
     xColEnc.m_eMetaCode = MC_STR_FIT_1L;
     xColEnc.m_wDataCode.m_azStr = azDst;
-    xColEnc.m_nDataSize = C_L_1B         // 1 byte for the length of string
-                            + nL         // L bytes of the string proper
-                            + C_NULL_1B; // 1 byte for the null term byte
+    xColEnc.m_nDataSize = nS;
+    
+    u1 nSx1 = MemLib::nQuantaRequired(nS,1);
+    
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x1,nSx1);
     return;
   }
   
-  // 3) long string case -- encode as: MC_STR_FIT_2L + {<LL><LongN>}
-  if (nL <= (i8)C_2_BYTES) {
+  // 2) MN_STRINGx2
+  if (nS <= 47) {
     xColEnc.m_eMetaCode = MC_STR_FIT_2L;
     xColEnc.m_wDataCode.m_azStr = azDst;
-    xColEnc.m_nDataSize = C_L_2B
-                            + nL
-                            + C_NULL_1B;
+    xColEnc.m_nDataSize = nS;
+    
+    u1 nSx2 = MemLib::nQuantaRequired(nS-16,2);
+    
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x2,nSx2);
+
     return;
   }
   
-  RASSERT(0);
+  // 3) MN_STRINGx4
+  if (nS <= 111) {
+    xColEnc.m_eMetaCode = MC_STR_FIT_2L;
+    xColEnc.m_wDataCode.m_azStr = azDst;
+    xColEnc.m_nDataSize = nS;
+    
+    u1 nSx4 = MemLib::nQuantaRequired(nS-48,4);
+    
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x4,nSx4);
+
+    return;
+  }
+
+  // 4) MN_STRINGx8
+  if (nS <= 239) {
+    xColEnc.m_eMetaCode = MC_STR_FIT_2L;
+    xColEnc.m_wDataCode.m_azStr = azDst;
+    xColEnc.m_nDataSize = nS;
+    
+    u1 nSx8 = MemLib::nQuantaRequired(nS-112,8);
+    
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x8,nSx8);
+
+    return;
+  }
+
+  // 5) MN_STRING_TAIL
+  xColEnc.m_eMetaCode = MC_STR_TAIL_2T;
+  xColEnc.m_wDataCode.m_azStr = azDst;
+  xColEnc.m_nDataSize = nS;
+    
+  xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_TAIL,2);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -47,7 +47,6 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
   __iHigh = (__uClue >> 4); \
   __iLow  = (__uClue &  0x0F);
 
-
 #include "Encoding_v1.hpp"
 #include "Encoding_v2.hpp"
 #include "Encoding.hpp"
