@@ -409,9 +409,6 @@ void EntBuffer::vAnalyze(i8& iBuffers, i8& iEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  iBuffers++;
-  iEntries += m_nItems;
-  
   // recursively dump the lower level buffers
   if (m_iBufferHeight != 0) {
     
@@ -429,7 +426,10 @@ void EntBuffer::vAnalyze(i8& iBuffers, i8& iEntries)
       
     }
   }
-  
+  else {
+    iBuffers++;
+    iEntries += m_nItems;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
