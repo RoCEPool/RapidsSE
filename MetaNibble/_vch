@@ -1,0 +1,22 @@
+/*============================================================================*/
+/* _vch -- meta nibble vch test                                               */
+/*============================================================================*/
+bc;
+
+print "creating vchTable..." ;
+/time create table vchTable (
+  C_VCH VARCHAR(64) NOT NULL
+);
+
+print "loading vch.csv..." ;
+/time fload vchTable "../MetaNibble/Data/vch.csv" ;
+
+print "scaning vch.csv..." ;
+/time tableScan vchTable;
+
+print "dropping vchTable..." ;
+/time drop table vchTable ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
