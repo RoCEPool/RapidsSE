@@ -648,11 +648,11 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
     
   // 1) MN_STRING_x1
   if (nS <= 15) {
+    u1 nSx1 = MemLib::nQuantaRequired(nS,1);
+    
     xColEnc.m_eMetaCode = MC_STR_FIT_1L;
     xColEnc.m_wDataCode.m_azStr = azDst;
-    xColEnc.m_nDataSize = nS;
-    
-    u1 nSx1 = MemLib::nQuantaRequired(nS,1);
+    xColEnc.m_nDataSize = STRx1(nSx1);
     
     xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x1,nSx1);
     return;
@@ -660,11 +660,11 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
   
   // 2) MN_STRINGx2
   if (nS <= 47) {
+    u1 nSx2 = MemLib::nQuantaRequired(nS-16,2);
+    
     xColEnc.m_eMetaCode = MC_STR_FIT_2L;
     xColEnc.m_wDataCode.m_azStr = azDst;
-    xColEnc.m_nDataSize = nS;
-    
-    u1 nSx2 = MemLib::nQuantaRequired(nS-16,2);
+    xColEnc.m_nDataSize = STRx2(nSx2);
     
     xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x2,nSx2);
 
@@ -673,11 +673,11 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
   
   // 3) MN_STRINGx4
   if (nS <= 111) {
+    u1 nSx4 = MemLib::nQuantaRequired(nS-48,4);
+    
     xColEnc.m_eMetaCode = MC_STR_FIT_2L;
     xColEnc.m_wDataCode.m_azStr = azDst;
-    xColEnc.m_nDataSize = nS;
-    
-    u1 nSx4 = MemLib::nQuantaRequired(nS-48,4);
+    xColEnc.m_nDataSize = STRx4(nSx4);
     
     xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x4,nSx4);
 
@@ -686,11 +686,11 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
 
   // 4) MN_STRINGx8
   if (nS <= 239) {
+    u1 nSx8 = MemLib::nQuantaRequired(nS-112,8);
+    
     xColEnc.m_eMetaCode = MC_STR_FIT_2L;
     xColEnc.m_wDataCode.m_azStr = azDst;
-    xColEnc.m_nDataSize = nS;
-    
-    u1 nSx8 = MemLib::nQuantaRequired(nS-112,8);
+    xColEnc.m_nDataSize = STRx8(nSx8);
     
     xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x8,nSx8);
 
