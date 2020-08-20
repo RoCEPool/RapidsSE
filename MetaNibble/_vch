@@ -5,7 +5,8 @@ bc;
 
 print "creating vchTable..." ;
 /time create table vchTable (
-  C_VCH VARCHAR(64) NOT NULL
+  C_VCH1 VARCHAR(64) NOT NULL,
+  C_VCH2 VARCHAR(64) NOT NULL
 );
 
 print "loading vch.csv..." ;

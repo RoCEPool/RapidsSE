@@ -210,6 +210,8 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
       aacCellValue = (char**)rayDstByte;
       *aacCellValue = racString;
       rayDstByte += 8;
+      rayDataByte += nStrSize;
+      racString += nStrSize;
       break;
       
     case MN_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -240,6 +242,8 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
       aacCellValue = (char**)rayDstByte;
       *aacCellValue = racString;
       rayDstByte += 8;
+      rayDataByte += nStrSize;
+      racString += nStrSize;
       break;
       
     case MN_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -249,6 +253,8 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
       aacCellValue = (char**)rayDstByte;
       *aacCellValue = racString;
       rayDstByte += 8;
+      rayDataByte += nStrSize;
+      racString += nStrSize;
       break;
       
     case MN_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -258,6 +264,8 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
       aacCellValue = (char**)rayDstByte;
       *aacCellValue = racString;
       rayDstByte += 8;
+      rayDataByte += nStrSize;
+      racString += nStrSize;
       break;
       
     case MN_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
