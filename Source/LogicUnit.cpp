@@ -63,7 +63,7 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_xRluCommon.m_nAltHeadSize = C_CRW_HEADBYTES;
   m_xRluCommon.m_nSrcHeadSize = C_CRW_HEADBYTES;
-
+  
   m_oSince.vStart();
   
   // m_oEntWrk
@@ -80,6 +80,20 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_pLogicTimer = nullptr;
 
+   m_xRluCommon.m_pDevDstRsb = m_pDevDstRsb;
+  
+   m_xRluCommon.m_pDevSrcRsb = m_pDevSrcRsb;
+   m_xRluCommon.m_pDevSrcIxt = m_pDevSrcIxt;
+   m_xRluCommon.m_pDevAltRsb = m_pDevAltRsb;
+   m_xRluCommon.m_pDevAltIxt = m_pDevAltIxt;
+   m_xRluCommon.m_pDevTmpIxt = m_pDevTmpIxt;
+  
+   m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
+  
+   m_xRluCommon.m_i_Slot = C_UNKNOWN;
+   m_xRluCommon.m_nPtns  = AM::nPartitions();
+   m_xRluCommon.m_iHash  = 0;
+  
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_LOGICUNIT);
 #endif
@@ -316,6 +330,16 @@ i8 LogicUnit::iFindLabel(Stz* szLabelNm)
       return i_Label;
 
   return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* init                                                                       */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vInit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_xRluCommon.m_i_Slot = AM::pTaskJob()->m_pOp->nPartition();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -753,22 +777,6 @@ void LogicUnit::vDumpCode(void)
 struct RluCommon* LogicUnit::aRlu_INIT(void* aLU)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  m_xRluCommon.m_pDevDstRsb = m_pDevDstRsb;
-  m_xRluCommon.m_pDevSrcRsb = m_pDevSrcRsb;
-  m_xRluCommon.m_pDevSrcIxt = m_pDevSrcIxt;
-  m_xRluCommon.m_pDevAltRsb = m_pDevAltRsb;
-  m_xRluCommon.m_pDevAltIxt = m_pDevAltIxt;
-  m_xRluCommon.m_pDevTmpIxt = m_pDevTmpIxt;
-  
-  
-  m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
-
-  
-  m_xRluCommon.m_i_Slot = AM::pTaskJob()->m_pOp->nPartition();
-  m_xRluCommon.m_nPtns  = AM::nPartitions();
-  m_xRluCommon.m_iHash  = 0;
-
 
   return & m_xRluCommon;
 }

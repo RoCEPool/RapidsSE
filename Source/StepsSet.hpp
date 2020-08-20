@@ -907,6 +907,7 @@ public:
   void vLogicUnitDevStore(void);
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
+  void vLogicUnitInit(void);
   void vLogicUnitTransform(void);
   void vLogicUnitTransformArgs(void);
 

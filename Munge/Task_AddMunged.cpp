@@ -14426,6 +14426,7 @@ void Task::vAddMunged(Forth* pForth)
     "  //queryNo .\n"
     "\n"
     "  Pot[].new\n"
+    "  LogicUnit[].init\n"
     "\n"
     "  queryNo \"sql %v\" str.format profile.name!\n"
     "  queryNo case\n"

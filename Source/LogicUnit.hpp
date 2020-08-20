@@ -301,6 +301,7 @@ namespace Expressions
     void vExit(void);
     i8   iFindLabel(i8 i_Code);
     i8   iFindLabel(Stz* szLabelNm);
+    void vInit(void);
     i8   iLabelCode(i8 i_Label);
     bool bLabelIsDst(i8 i_Label);
     bool bLabelIsSbr(i8 i_Label);

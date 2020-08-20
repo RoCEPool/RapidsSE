@@ -26,6 +26,8 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].handler@"_Stz,      &Step::vLogicUnitHandlerFetch);
   vAddStep("LogicUnit[].handler!"_Stz,      &Step::vLogicUnitHandlerStore);
   
+  vAddStep("LogicUnit[].init"_Stz,          &Step::vLogicUnitInit);
+  
   vAddStep("LogicUnit[].transform"_Stz,     &Step::vLogicUnitTransform);
   vAddStep("LogicUnit[].transformArgs"_Stz, &Step::vLogicUnitTransformArgs);
 }
@@ -181,6 +183,18 @@ void Step::vLogicUnitHandlerStore(void)
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
   
   m_pLogicUnit->m_xpHandler = pHandler;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].init -- init the logic unit                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitInit(void)
+{
+  ENTRY();
+  
+  m_pLogicUnit->vInit();
   
   EXIT();
 }

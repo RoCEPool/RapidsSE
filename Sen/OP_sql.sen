@@ -337,6 +337,7 @@
   //queryNo .
 
   Pot[].new
+  LogicUnit[].init
 
   queryNo "sql %v" str.format profile.name!
   queryNo case

@@ -20,9 +20,9 @@ create index Orders_Idx1 ON Orders(O_ORDERKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Loading Tables...";
-/time fload customer "/TPCH/customer.tbl";
-/time fload lineitem "/TPCH/lineitem.tbl";
-/time fload orders "/TPCH/orders.tbl";
+/time fload customer "/TPCH/SF1/customer.tbl";
+/time fload lineitem "/TPCH/SF1/lineitem.tbl";
+/time fload orders "/TPCH/SF1/orders.tbl";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Compacting Indexes...";
@@ -33,7 +33,7 @@ compactIdx Lineitem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Query 1...";
-/time Query1 lineitem lineItem_Idx2;
+/time Query1 lineitem;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Query 6...";
