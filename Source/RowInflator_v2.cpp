@@ -218,6 +218,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte, byte*& rayDataByte,
       break;
       
     case MN_OVERFLOW: // overflow 2B
+      RASSERT(0);
       break;
       
       
