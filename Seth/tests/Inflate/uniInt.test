@@ -8,7 +8,7 @@ success
 
 // (1) create a table
 create table uniInt (
-  int_col1  INTEGER NOT NULL
+  int_col  INTEGER NOT NULL
 );
 success
 
