@@ -1,0 +1,17 @@
+/*============================================================================*/
+/* TPCH queries - SF1 (AWS)                                                   */
+/*============================================================================*/
+
+print section "TPCH SF1 Compact Indexes...";
+
+// -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+compactIdx Customer Customer_Idx1;
+compactIdx Orders Orders_Idx1;
+compactIdx Lineitem lineItem_Idx1;
+compactIdx Lineitem lineItem_Idx2;
+
+print section "Done Compact Indexes";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

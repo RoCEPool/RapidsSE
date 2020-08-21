@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* TPCH queries - SF1 (AWS)                                                   */
+/*============================================================================*/
+
+print section "TPCH SF1 Dropping & Recreating Orders";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Dropping Orders Table...";
+
+drop table Orders;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "creating Orders...";
+
+_orders_by_O_CUSTKEY
+create index Orders_Idx1 ON Orders(O_ORDERKEY);
+create index Orders_Idx2 ON Orders(O_CUSTKEY);
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print section "Done Dropping & Recreating Orders";
