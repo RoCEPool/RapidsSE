@@ -359,12 +359,13 @@ namespace CompactBuffers
         }
         else
         if (SI_DEST_PST == eStrInflate) {
-          memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
+          char* azDst = (char*)rayDstByte;
+          memcpy(azDst,rayDataByte,(size_t)nStrSize);
           rayDataByte += nStrSize;
 
           //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          rayDstByte += (((nStrSize) / 8) * 8) + 16;
+          rayDstByte += (((nStrSize) / 8) * 8) + 8;
           aiCellValue = (i8*)rayDstByte;
           *aiCellValue = nStrSize - 1;
           rayDstByte += 8;
@@ -395,7 +396,7 @@ namespace CompactBuffers
 
           //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          rayDstByte += (((nStrSize) / 8) * 8) + 16;
+          rayDstByte += (((nStrSize) / 8) * 8) + 8;
           aiCellValue = (i8*)rayDstByte;
           *aiCellValue = nStrSize - 1;
           rayDstByte += 8;
@@ -425,7 +426,7 @@ namespace CompactBuffers
 
           //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          rayDstByte += (((nStrSize) / 8) * 8) + 16;
+          rayDstByte += (((nStrSize) / 8) * 8) + 8;
           aiCellValue = (i8*)rayDstByte;
           *aiCellValue = nStrSize - 1;
           rayDstByte += 8;
