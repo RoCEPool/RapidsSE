@@ -1346,8 +1346,13 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
   vDefineLabel("GOT_ORD:"_Stz);
 
-  // test O_ORDERDATE
   vAddCode(EO_CRW_SRC_DEREF);
+  
+  vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERKEY);
+  vAddCodeString(EO_PRINTF,"L_OrderKey : %i\n"_Stz);
+
+  
+  // test O_ORDERDATE
   vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERDATE);
   //vAddCode(EO_DUP);
   //vAddCode(EO_DTE_PRINT);

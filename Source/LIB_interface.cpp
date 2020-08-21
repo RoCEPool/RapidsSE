@@ -228,6 +228,88 @@ void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk)
 {
   _static_
   
+  i8* aiDstk_lcl = *aaiDstk;
+  
+  char caFormatted[C_1KB];
+  
+  char* acFmt = szFmt->azChar();
+  char* acDst = caFormatted;
+
+  while (*acFmt) {
+  
+    // test for ordinary character
+    if ('%' != *acFmt) {
+      *acDst++ = *acFmt++;
+      continue;
+    }
+        
+    // we have a '%'
+    acFmt++;
+    
+    // test for the %% case
+    if ('%' == *acFmt) {
+      *acDst++ = *acFmt++;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // we have a %[width]v field
+    
+    i8 nWidth = 0;
+
+    // record where output for this value began
+    char* acFieldBegan = acDst;
+    
+    // do we have a %v of the form: %widthV ?
+    if (StrLib::bIsDigit( * acFmt )) {
+      i8 nDigits = 0;
+      StrLib::bExtractInteger(&acFmt,&nWidth,nDigits);
+      ASSERT(nDigits);
+    }
+        
+    // should be %d or %s
+    ASSERT('i' == *acFmt || 's' == *acFmt);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // handle a StzVal, IntVal or a PtrVal
+    
+    if ('i' == *acFmt) {
+      
+      i8 iInt = *aiDstk_lcl--;
+      
+      char caValue[32];
+      StrLib::wToString(iInt,caValue);
+      
+      for (char* pv = caValue; *pv; )
+        *acDst++ = *pv++;
+      
+      acFmt++;
+    }
+        
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // handle optional field width case
+    
+    // test for field width
+    if (! nWidth)
+      continue;
+    
+    i8 nDiff = nDifference(acDst,acFieldBegan);
+    
+    if (nDiff >= nWidth)
+      continue;
+    
+    i8 nPad = nWidth - nDiff;
+    StrLib::vPad(acDst,nPad,' ');
+    acDst += nPad;
+  }
+  
+  // final termination
+  *acDst = '\0';
+  
+  vTrace("%s"_Stz,caFormatted);
+  
+  // publish
+  *aaiDstk = aiDstk_lcl;
 }
 
 /*============================================================================*/
