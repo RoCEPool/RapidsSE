@@ -108,8 +108,9 @@ wait
 echo "Data generation complete. Refer to the following directories:"
 for disk in "${DISKS[@]}"
 do
-  echo "  ${disk}/tpch/sf${SF}"
+  echo -n "  ls -lh ${disk}/tpch/sf${SF} ;"
 done
+echo 
 
 if [ "${DEBUG}" -eq 1 ]
 then

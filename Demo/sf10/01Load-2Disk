@@ -1,0 +1,21 @@
+/*============================================================================*/
+/* TPCH queries - SF10 (AWS)                                                   */
+/*============================================================================*/
+
+print section "TPCH SF10 Load (2 Disk)...";
+
+// -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+/nowait fload customer "/mnt/disk1/tpch/sf10/customer.tbl";
+/nowait fload customer "/mnt/disk2/tpch/sf10/customer.tbl";
+
+/nowait fload lineitem "/mnt/disk1/tpch/sf10/lineitem.tbl";
+/nowait fload lineitem "/mnt/disk2/tpch/sf10/lineitem.tbl";
+
+/nowait fload orders "/mnt/disk1/tpch/sf10/orders.tbl";
+/nowait fload orders "/mnt/disk2/tpch/sf10/orders.tbl";
+
+print section "Loading (2 Disk)";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

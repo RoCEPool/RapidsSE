@@ -1,0 +1,15 @@
+/*============================================================================*/
+/* TPCH queries - SF10 (AWS)                                                   */
+/*============================================================================*/
+
+print section "TPCH SF10 Reloading Orders - 2 Disk";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Loading Orders...";
+
+/nowait fload orders "/mnt/disk1/tpch/sf10/orders.tbl";
+/nowait fload orders "/mnt/disk2/tpch/sf10/orders.tbl";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print section "Done Reloading Orders - 2 Disk";

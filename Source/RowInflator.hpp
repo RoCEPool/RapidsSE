@@ -39,7 +39,8 @@ namespace CompactBuffers
                             u1 uHigh, u1 uLow,
                             eSI eStrInflate, char*& racString);
   
-    static void vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte);
+    static void vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte,
+                         HeadLine* aHeadLine);
 
     static void vPrepare_v2(u1*& rauMetaClue, byte*& rayDataByte,
                             i8 nCols, HeadLine* aHeadLine);

@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* TPCH queries - SF100 (AWS)                                                 */
+/*============================================================================*/
+
+print section "TPCH SF100 Create Tables & Indexes...";
+
+// -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+print section "creating Customer...";
+_customer
+create index Customer_Idx1 ON Customer(C_CUSTKEY);
+
+// -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+print section "creating LineItem...";
+_lineitem_dates
+create index lineItem_Idx1 ON LineItem(L_ORDERKEY);
+create index lineItem_Idx2 ON LineItem(L_SHIPDATE);
+
+// -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+print section "creating Orders...";
+_orders_dates
+create index Orders_Idx1 ON Orders(O_ORDERKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print section "Done Create Tables & Indexes";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

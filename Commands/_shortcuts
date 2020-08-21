@@ -105,6 +105,53 @@ shortcut q22  "../Benchmarks/TPC-H/tpch_q22.sql";
 
 shortcut t21  test21;
 
+// For AWS
+shortcut sf1_00Create    "../Demo/sf1/00Create";
+shortcut sf1_01Load2     "../Demo/sf1/01Load-2Disk";
+shortcut sf1_01Load4     "../Demo/sf1/01Load-4Disk";
+shortcut sf1_02Compact   "../Demo/sf1/02Compact";
+shortcut sf1_03RunQ164   "../Demo/sf1/03RunQ164";
+shortcut sf1_04Recreate  "../Demo/sf1/04RecreateOrders";
+shortcut sf1_05Reload2   "../Demo/sf1/05ReloadOrders-2Disk";
+shortcut sf1_05Reload4   "../Demo/sf1/05ReloadOrders-4Disk";
+shortcut sf1_06Recompact "../Demo/sf1/06ReCompactOrders";
+shortcut sf1_07RunQ3     "../Demo/sf1/07RunQ3";
+
+shortcut sf10_00Create    "../Demo/sf10/00Create";
+shortcut sf10_01Load2     "../Demo/sf10/01Load-2Disk";
+shortcut sf10_01Load4     "../Demo/sf10/01Load-4Disk";
+shortcut sf10_02Compact   "../Demo/sf10/02Compact";
+shortcut sf10_03RunQ164   "../Demo/sf10/03RunQ164";
+shortcut sf10_04Recreate  "../Demo/sf10/04RecreateOrders";
+shortcut sf10_05Reload2   "../Demo/sf10/05ReloadOrders-2Disk";
+shortcut sf10_05Reload4   "../Demo/sf10/05ReloadOrders-4Disk";
+shortcut sf10_06Recompact "../Demo/sf10/06ReCompactOrders";
+shortcut sf10_07RunQ3     "../Demo/sf10/07RunQ3";
+
+shortcut sf100_00Create    "../Demo/sf100/00Create";
+shortcut sf100_01Load2     "../Demo/sf100/01Load-2Disk";
+shortcut sf100_01Load4     "../Demo/sf100/01Load-4Disk";
+shortcut sf100_02Compact   "../Demo/sf100/02Compact";
+shortcut sf100_03RunQ164   "../Demo/sf100/03RunQ164";
+shortcut sf100_04Recreate  "../Demo/sf100/04RecreateOrders";
+shortcut sf100_05Reload2   "../Demo/sf100/05ReloadOrders-2Disk";
+shortcut sf100_05Reload4   "../Demo/sf100/05ReloadOrders-4Disk";
+shortcut sf100_06Recompact "../Demo/sf100/06ReCompactOrders";
+shortcut sf100_07RunQ3     "../Demo/sf100/07RunQ3";
+
+shortcut sf1000_00Create    "../Demo/sf1000/00Create";
+shortcut sf1000_01Load2     "../Demo/sf1000/01Load-2Disk";
+shortcut sf1000_01Load4     "../Demo/sf1000/01Load-4Disk";
+shortcut sf1000_02Compact   "../Demo/sf1000/02Compact";
+shortcut sf1000_03RunQ164   "../Demo/sf1000/03RunQ164";
+shortcut sf1000_04Recreate  "../Demo/sf1000/04RecreateOrders";
+shortcut sf1000_05Reload2   "../Demo/sf1000/05ReloadOrders-2Disk";
+shortcut sf1000_05Reload4   "../Demo/sf1000/05ReloadOrders-4Disk";
+shortcut sf1000_06Recompact "../Demo/sf1000/06ReCompactOrders";
+shortcut sf1000_07RunQ3     "../Demo/sf1000/07RunQ3";
+
+
+
 // shortcut;
 
 /*============================================================================*/

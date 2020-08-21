@@ -868,9 +868,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures for prequery tests                                       */
+/* define procedures for Query tests                                       */
 /*----------------------------------------------------------------------------*/
-: start::defineProc_PreQuery
+: start::defineProc_Query
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -878,7 +878,7 @@
   // q 3 prelim
   sPath
   "
-  procedure preQuery_3
+  procedure Query_3
   begin
 
   stage stageA on origin :
@@ -903,7 +903,7 @@
   // q 3b prelim
   sPath
   "
-  procedure preQuery_3b
+  procedure Query_3b
   begin
 
   stage stageA on origin :
@@ -932,7 +932,7 @@
   // q 4 prelim
   sPath
   "
-  procedure preQuery_4
+  procedure Query_4
   begin
 
   stage stageA on origin :
@@ -957,7 +957,7 @@
   // q 4b prelim
   sPath
   "
-  procedure preQuery_4b
+  procedure Query_4b
   begin
 
   stage stageA on origin :
@@ -1423,7 +1423,7 @@
   start::defineProcedures4
   start::defineProc_SteadyState
   start::defineProc_UnloadReload
-  start::defineProc_PreQuery
+  start::defineProc_Query
   start::defineProc_DynCompiler
   start::defineProc_TPCH
 
