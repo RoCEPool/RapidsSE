@@ -44,6 +44,11 @@ LogicUnit::LogicUnit(Task* pTask)
   
   for (i8 i_Local = 0; i_Local < C_LOCALS; i_Local++)
     m_iLocals[i_Local] = C_UNKNOWN;
+
+   for (i8 i_Cond = 0; i_Cond < C_LOGIC_COND; i_Cond++)
+     m_baCondInd[i_Cond] = false;
+  
+  m_iNextCond = C_UNKNOWN;
   
   m_aLowerEntry = nullptr;
   m_aUpperEntry = nullptr;
@@ -191,6 +196,19 @@ i8 LogicUnit::iTransform(i8 nArgs, i8 iArg0)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* conditional code                                                           */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vCC(i8 i_Cond)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  if (m_baCondInd[i_Cond])
+    m_iNextCond = 1;
+  else
+    m_iNextCond = 0;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get eCode at given i_Code                                                  */
@@ -408,6 +426,19 @@ i8 LogicUnit::iQueryFragment(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   return m_xRluCommon.m_iSql;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set conditional compilation state                                          */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vSetCC(i8 i_Cond, bool bState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  if (bState)
+    m_baCondInd[i_Cond] = 1;
+  else
+    m_baCondInd[i_Cond] = 0;
 }
 
 

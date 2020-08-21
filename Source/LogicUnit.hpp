@@ -7,6 +7,7 @@ namespace Expressions
 {
   static const i8 C_LOGIC_DEV   = 16;
   static const i8 C_LOGIC_CODE  = C_4KB;
+  static const i8 C_LOGIC_COND  = 8;
   static const i8 C_LOGIC_LABEL = 64;
   static const i8 C_LOCALS      = 8;
   
@@ -276,7 +277,10 @@ namespace Expressions
     i8        m_nLabels;
     JumpLabel m_xaJumpLabel[C_LOGIC_LABEL];
 
+    bool m_baCondInd[C_LOGIC_COND];
 
+    i8 m_iNextCond;
+  
     // must be last
     Footer m_xFooter;
   
@@ -292,6 +296,7 @@ namespace Expressions
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    void vCC(i8 i_Cond);
     eEO  eCode(i8 i_Code);
     i8   nCodes(void);
     eEO* aCodeArg(i8 i_Code);
@@ -308,6 +313,7 @@ namespace Expressions
     i8   nLabels(void);
     Stz* szLabelNm(i8 i_Label);
     i8   iQueryFragment(void);
+    void vSetCC(i8 i_Cond, bool bState);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -1349,7 +1349,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_CRW_SRC_DEREF);
   
   vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERKEY);
-  vAddCodeString(EO_PRINTF,"L_OrderKey %i\n"_Stz);
+  vAddCodeString(EO_PRINTF,"O_OrderKey %i\n"_Stz);
 
   
   // test O_ORDERDATE
@@ -1454,7 +1454,7 @@ void LogicUnit::vGenerateQuery400(void)
   
   vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
   vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
-  vAddCodeString(EO_PRINTF,"  matching L_CommitDate %d, L_ReceiptDate %d\n"_Stz);
+  vAddCodeString(EO_PRINTF,"  satisfies L_CommitDate %d, L_ReceiptDate %d\n"_Stz);
 
   vAddCode(EO_PUSH_1);
   vAddCode(EO_RETURN);
