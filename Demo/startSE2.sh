@@ -29,7 +29,7 @@ PORT="5541"
 
 # Generate the list of nodes in the cluster
 declare -a NODES
-for i in seq 1 "${NUM_NODES}"
+for i in $(seq -s ' ' 1 ${NUM_NODES})
 do
   NODES+=("--node NODE${i} ${HOST_PREFIX}${i}${HOST_SUFFIX} ${PORT} ")
 done
