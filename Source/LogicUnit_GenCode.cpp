@@ -1349,7 +1349,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_CRW_SRC_DEREF);
   
   vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERKEY);
-  vAddCodeString(EO_PRINTF,"L_OrderKey : %i\n"_Stz);
+  vAddCodeString(EO_PRINTF,"L_OrderKey %i\n"_Stz);
 
   
   // test O_ORDERDATE
@@ -1430,7 +1430,7 @@ void LogicUnit::vGenerateQuery400(void)
   
   vAddCodeArg(EO_COL_ALT_PUSHONE,L_LINENUMBER);
   vAddCodeArg(EO_COL_ALT_PUSHONE,L_ORDERKEY);
-  vAddCodeString(EO_PRINTF,"  joined L_OrderKey : %i L_LineNumber %i\n"_Stz);
+  vAddCodeString(EO_PRINTF,"  joined L_OrderKey %i, L_LineNumber %i\n"_Stz);
   
 //  vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
 //  vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
@@ -1446,12 +1446,20 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeLabel(EO_JMP,"RET_ITM_t:"_Stz);
 
   vAddCodeLabel(EO_JMP,"NXT_ITM:"_Stz);
+  
+  
 
   // found one matching lineitem
   vDefineLabel("RET_ITM_t:"_Stz);
+  
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
+  vAddCodeString(EO_PRINTF,"  matching L_CommitDate %d, L_ReceiptDate %d\n"_Stz);
+
   vAddCode(EO_PUSH_1);
   vAddCode(EO_RETURN);
 
+  
   // no matching lineitem
   vDefineLabel("RET_ITM_f:"_Stz);
   vAddCode(EO_PUSH_0);

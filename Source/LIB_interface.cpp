@@ -267,11 +267,10 @@ void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk)
       ASSERT(nDigits);
     }
         
-    // should be %d or %s
-    ASSERT('i' == *acFmt || 's' == *acFmt);
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // handle a StzVal, IntVal or a PtrVal
+    // should be %d or %s
+    
+    ASSERT('d' == *acFmt || 'i' == *acFmt || 's' == *acFmt);
     
     if ('i' == *acFmt) {
       
@@ -282,6 +281,18 @@ void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk)
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;
+      
+      acFmt++;
+    }
+    
+    else
+    if ('d' == *acFmt) {
+      
+      SP_Dte spDate;
+
+      i8 iDte = *aiDstk_lcl--;
+      
+      StrLib::vAppendString(&acDst,(char*)spDate.sz(iDte));
       
       acFmt++;
     }
