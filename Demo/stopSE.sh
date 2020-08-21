@@ -10,7 +10,7 @@ PIDFILE="${ROOT_DIR}/se.pid"
 
 if [ "$#" -ne 1 ]
 then
-  echo "Usage: ./$0 <nodeName>"
+  echo "Usage: $0 <nodeName>"
   exit 1
 fi
 

@@ -7,11 +7,6 @@
 # Set to 1 to enable debugging or 0 to turn off.
 DEBUG=1
 
-# Note: After creating the instances, add a secondary network interface on
-#       Demo Subnet 1. Use the below IP addresses.
-HOST_NAMES=(se1 se2 se3 se4 se5 se6)
-HOST_ADDRS=(10.20.2.111 10.20.2.112 10.20.2.113 10.20.2.114 10.20.2.115 10.20.2.116)
-
 # Name and location of the SE binary on the NAT box
 SE_TAR_FILE="se.tar.gz"
 NAT_SE_TAR_PATH="/home/ec2-user/${SE_TAR_FILE}"
@@ -57,12 +52,6 @@ yum install texinfo -y
 
 # ----------------------------------------------------------------------------------------
 # Set up /etc/hosts using the values in HOST_NAMES and HOST_ADDRS above.
-
-for index in "${!HOST_NAMES[@]}"
-do
-  echo "${HOST_ADDRS[${index}]} ${HOST_NAMES[${index}]}" >> /etc/hosts
-done
-
 echo "10.20.1.20 nat" >> /etc/hosts
 
 
@@ -198,22 +187,6 @@ cd "${SE_DIR}" || exit
 tar xvzf "${SE_TAR_FILE}"
 chown -R ec2-user:ec2-user ./*
 popd || exit
-
-
-# ----------------------------------------------------------------------------------------
-# Copy dbgen to each disk
-
-for mount_point in "${MOUNTS[@]}"
-do
-  cp -r "${SE_DIR}/dbgen" "${mount_point}"
-  mkdir -p "${mount_point}/tpch"
-  mkdir -p "${mount_point}/tpch/sf1"
-  mkdir -p "${mount_point}/tpch/sf10"
-  mkdir -p "${mount_point}/tpch/sf100"
-  mkdir -p "${mount_point}/tpch/sf1000"
-  
-  chown -R ec2-user:ec2-user "${mount_point}"
-done
 
 
 # ----------------------------------------------------------------------------------------

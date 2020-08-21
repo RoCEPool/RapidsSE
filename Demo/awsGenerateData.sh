@@ -34,7 +34,8 @@ OFFSET=1
 
 if [ $# -eq 0 ]
 then
-  echo "No arguments supplied"
+  echo "Usage:"
+  echo "${0} -s <scale_factor> -chunks <total_chunks> -offset <first_chunk>"  
   exit 1
 fi
 
@@ -80,20 +81,22 @@ for disk in "${DISKS[@]}"
 do
   # Generate the data in a background sub-shell.
   (
+    mkdir -p "${disk}/tpch/sf${SF}"
     cd "${disk}/tpch/sf${SF}" || exit
-    echo "Generating chunk #${index} for customers table..."
+    
+    echo "$(date) : Generating chunk #${index} for customers table..."
     "${DBGEN}" -b "${DISTS}" -f -q -s "${SF}" -C "${CHUNKS}" -S "${index}" -T c || exit
-    echo "Generation of chunk #${index} for customers table complete."
+    echo "$(date) : Generation of chunk #${index} for customers table complete."
     
-    echo "Generating chunk #${index} for orders table..."
+    echo "$(date) : Generating chunk #${index} for orders table..."
     "${DBGEN}" -b "${DISTS}" -f -q -s "${SF}" -C "${CHUNKS}" -S "${index}" -T O || exit
-    echo "Generation of chunk #${index} for orders table complete."
+    echo "$(date) : Generation of chunk #${index} for orders table complete."
         
-    echo "Generating chunk #${index} for lineitem table..."
+    echo "$(date) : Generating chunk #${index} for lineitem table..."
     "${DBGEN}" -b "${DISTS}" -f -q -s "${SF}" -C "${CHUNKS}" -S "${index}" -T L || exit
-    echo "Generation of chunk #${index} for lineitem table complete."
+    echo "$(date) : Generation of chunk #${index} for lineitem table complete."
     
-    echo "Generation of chunk #${index} complete for customer/orders/lineitem tables."
+    echo "$(date) : Generation of chunk #${index} complete for customer/orders/lineitem tables."
   ) &
   
   index=$((index + 1))
