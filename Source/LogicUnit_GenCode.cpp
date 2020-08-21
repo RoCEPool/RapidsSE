@@ -1346,8 +1346,8 @@ void LogicUnit::vGenerateQuery400(void)
   // test O_ORDERDATE
   vAddCode(EO_CRW_SRC_DEREF);
   vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERDATE);
-  //vAddCode(EO_DUP);
-  //vAddCode(EO_DTE_PRINT);
+  vAddCode(EO_DUP);
+  vAddCode(EO_DTE_PRINT);
   
   vAddCode(EO_DUP);
   

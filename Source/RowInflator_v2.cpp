@@ -328,24 +328,32 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
 /*----------------------------------------------------------------------------*/
 /* general v2 skip code                                                       */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte)
+void RowInflator::vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte, HeadLine* aHeadLine)
 {
   _static_
 
-  if (uHigh <=  MN_NUMERIC)  // numeric
+  if (uHigh <=  MN_STRING_x1) // numeric & date
     rayDataByte += uLow;
   else
-  if (uHigh >=  MN_NEGATIVE) // small value
+  if (uHigh >=  MN_NEGATIVE)  // small value
     {;}
   else
-  if (uHigh == MN_STRING_x2) // string x 2
+  if (uHigh == MN_STRING_x1)  // string x 1
+    rayDataByte += STRx1(uLow);
+  else
+  if (uHigh == MN_STRING_x2)  // string x 2
     rayDataByte += STRx2(uLow);
   else
-  if (uHigh == MN_STRING_x4) // string x 4
+  if (uHigh == MN_STRING_x4)  // string x 4
     rayDataByte += STRx4(uLow);
   else
-  if (uHigh == MN_STRING_x8) // string x 8
+  if (uHigh == MN_STRING_x8)  // string x 8
     rayDataByte += STRx8(uLow);
+  else
+  if (uHigh == MN_OVERFLOW) { // overflow
+    OverLine* aOverLine = aHeadLine->aGetOver();
+    rayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
+  }
   else {
     RASSERT(0);
   }
@@ -416,7 +424,6 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
   
   i8* aiDstk_lcl = *aaiDstk;
   
-  byte* ayDstByte = (byte*)aiDstk_lcl;
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each column
@@ -434,16 +441,19 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
     // ignore column
     
     if (i_Col != i_ColToRetrieve) {
-      vSkip_v2(uHigh,uLow,ayDataByte);
+      vSkip_v2(uHigh,uLow,ayDataByte,aHeadLine);
       continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inflate column
-    
-    vInflate_v2(ayDstByte,ayDataByte,aHeadLine,uHigh,uLow,SI_NONE,acString);
 
     aiDstk_lcl++;
+
+    byte* ayDstByte = (byte*)aiDstk_lcl;
+
+    vInflate_v2(ayDstByte,ayDataByte,aHeadLine,uHigh,uLow,SI_NONE,acString);
+
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next column to retrieve
