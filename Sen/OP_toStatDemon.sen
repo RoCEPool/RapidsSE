@@ -65,7 +65,7 @@
 
   op__loop
 
-  "*** toStatDOp_req EXITS" .
+  //"*** toStatDOp_req EXITS" .
   LogReqExit
   job::deleteThis
   DONE_REQ_OP

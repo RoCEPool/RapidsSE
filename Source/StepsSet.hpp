@@ -508,6 +508,7 @@ public:
   void vInfoSetAddLockStats(void);
   void vInfoSetAddNodeInfo(void);
   void vInfoSetAddProgressUnits(void);
+  void vInfoSetAddRowCount(void);
   void vInfoSetAddTotalUnits(void);
   void vInfoSetChunkFile(void);
   void vInfoSetDelete(void);
@@ -1457,6 +1458,7 @@ public:
   void vStreamSetAddPingInfo(void);
   void vStreamSetAddProgressUnits(void);
   void vStreamSetAddPwfInfo(void);
+  void vStreamSetAddRowCount(void);
   void vStreamSetAddShowCluster(void);
   void vStreamSetAddSizeIndex(void);
   void vStreamSetAddSizeTable(void);

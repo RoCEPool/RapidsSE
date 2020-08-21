@@ -5,6 +5,19 @@
 " OP_progress.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER...                                                         */
+/*----------------------------------------------------------------------------*/
+: progress_EosMarker \handler
+
+  <string> "%v Progress: 100" str.format
+  "%" str.cat .
+  "****LOAD DONE****" .
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_PROGRESSUNITS...                                                     */
 /*----------------------------------------------------------------------------*/
 : progress_ProgressUnits \handler
@@ -17,7 +30,6 @@
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
 
-
   // get first row of InfoSet[]
   Infoset[].firstRow to row[]
 
@@ -29,7 +41,7 @@
 
   // print the Load %
   iPercent 0 > if
-    iPercent 100 > if
+    iPercent 100 >= if
       <string> "%v Progress: 100" str.format
       "%" str.cat .
     else
@@ -79,8 +91,9 @@
 
   op__topology
 
+  find: Progress_EosMarker     ZK_EOSMARKER     op[].handler!
   find: Progress_ProgressUnits ZK_PROGRESSUNITS op[].handler!
-  find: Progress_TotalUnits    ZK_TOTALUNITS op[].handler!
+  find: Progress_TotalUnits    ZK_TOTALUNITS    op[].handler!
 
   op__loop
 

@@ -1,0 +1,17 @@
+/*============================================================================*/
+/* TPCH queries - SF1000 (AWS)                                                 */
+/*============================================================================*/
+
+print section "TPCH SF1000 Reloading Orders - 4 Disk";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Loading Orders...";
+
+/nowait fload orders "/mnt/disk1/tpch/sf1000/orders.tbl";
+/nowait fload orders "/mnt/disk2/tpch/sf1000/orders.tbl";
+/nowait fload orders "/mnt/disk3/tpch/sf1000/orders.tbl";
+/nowait fload orders "/mnt/disk4/tpch/sf1000/orders.tbl";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print section "Done Reloading Orders - 4 Disk";

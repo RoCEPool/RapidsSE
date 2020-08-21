@@ -1,0 +1,14 @@
+/*============================================================================*/
+/* TPCH queries - SF250 (AWS)                                                 */
+/*============================================================================*/
+
+print section "TPCH SF250 Recompacting Orders";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+compactIdx Orders Orders_Idx1;
+compactIdx Orders Orders_Idx2;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print section "Done Recompacting Orders";

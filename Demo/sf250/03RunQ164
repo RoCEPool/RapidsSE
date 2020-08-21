@@ -1,0 +1,19 @@
+/*============================================================================*/
+/* TPCH queries - SF250 (AWS)                                                 */
+/*============================================================================*/
+
+print section "TPCH SF250 Running Queries 1, 6 & 4";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Query 1...";
+/time Query1 lineitem;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Query 6...";
+/time Query6 lineitem lineItem_Idx2;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Query 4...";
+/time Query_4b ;
+
+print section "Done Running Queries 1, 6 & 4";
