@@ -4,6 +4,8 @@
 
 #include "CompactBuffers.h"
 
+extern EnvFlags gxEnvFlags;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -26,6 +28,17 @@ Crw::~Crw(void) noexcept(false)
 /* dump compact row                                                           */
 /*----------------------------------------------------------------------------*/
 void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
+{
+  if (gxEnvFlags.m_iMetaClue)
+    vDumpCrw_v2(szTitle,aHeadLine,pStreamDef);
+  else
+    vDumpCrw_v1(szTitle,aHeadLine,pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump compact row                                                           */
+/*----------------------------------------------------------------------------*/
+void Crw::vDumpCrw_v1(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
 {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -222,132 +235,11 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump head line                                                             */
+/* dump compact row                                                           */
 /*----------------------------------------------------------------------------*/
-void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
+void Crw::vDumpCrw_v2(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
 {
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // word dump of headLine (& overLine)
-  
-  i8 nHeadBytes = aHeadLine->nBytes();
-  
-  OverLine* aOverLine = nullptr;
-  i8 nOverBytes = C_UNKNOWN;
-  i8 nOverUnits = C_UNKNOWN;
-  
-  if (aHeadLine->bHasOverflow()) {
-    vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
-    
-    MemLib::vWordDump(aHeadLine,nHeadBytes);
-    
-    aOverLine  = aHeadLine->aGetOver();
-    nOverBytes = aOverLine->nBytes();
-    nOverUnits = aOverLine->nUnits();
-    
-    vTrace("\n%s OverLine %p (diff %lldB %lldU):\n"_Stz,
-           szTitle,aOverLine,
-           nDifference(aOverLine,aHeadLine),
-           nDifference(aOverLine,aHeadLine) / sizeof(SpaceUnit));
-    
-    MemLib::vWordDump(aOverLine,nOverBytes);
-  }
-  else {
-    vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
-    
-    MemLib::vWordDump(aHeadLine,nHeadBytes);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // get no of columns
-  i8 nColumns = pStreamDef->nColumns(C_ALL);
-  
-  i8 nFreeBytes = aHeadLine->nFreeSpace(pStreamDef);
-  if (nFreeBytes < 0)
-    nFreeBytes = 0;
-  
-  if (aHeadLine->bHasOverflow()) {
-    i8 i_Over_rel = aHeadLine->iOverflow2B();
-    OverLine* aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
-    eMC eOverMeta = (eMC)aOverLine->w8_1B(1);
-    i8 i_Col_over;
-    for (i_Col_over = 0; i_Col_over < nColumns; i_Col_over++)
-      if (MC_OVERFLOW_2T == aHeadLine->eMetaCode(i_Col_over))
-        break;
-    
-    
-    vTrace("HL: 0x%012llx <W>=%lld {M}=%lld [OT]=%04x @ col %lld %s FreeBytes %lld\n"
-           "OT: 0x%012llx <U>=%lld <M>=%ll02x %s\n"_Stz,
-           aHeadLine,
-           aHeadLine->nWords(),
-           nColumns,
-           aHeadLine->iOverflow2B(),
-           i_Col_over,
-           pStreamDef->pGetColumn(i_Col_over)->szColNm(),
-           nFreeBytes,
-           
-           aOverLine,
-           nOverUnits,
-           eOverMeta,
-           aMC[eOverMeta]
-           );
-  }
-  else {
-    vTrace("HL: 0x%012llx <W>=%lld FreeBytes %lld; "
-           "OT: none\n"_Stz,
-           aHeadLine,
-           aHeadLine->nWords(),
-           nFreeBytes);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  HV_Rec hvRec(pStreamDef, C_ALL);
-  Datum oDatum;
-  
-  i8 nCols = pStreamDef->nColumns(C_ALL);
-  
-  vTrace("Col ColNm         Datum MetaCode"
-         "           Offset Address      DataBytes           ColVal\n"_Stz);
-  
-  
-  eDM   eDatum;
-  Stz*  szDatum;
-  eMC   eMetaCode;
-  Stz*  szMetaCode;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  HV_Row hRow(pStreamDef, C_ALL);
-  RowInflator::vInflateRow(hRow,aHeadLine);
-  
-  // for each column
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    
-    // get the column
-    Column* pCol = pStreamDef->pGetColumn(i_Col);
-    
-    // get the encoded information
-    eDatum     = pCol->eDatum();
-    szDatum    = aDM[eDatum];
-    eMetaCode  = aHeadLine->eMetaCode(i_Col);
-    szMetaCode = aMC[eMetaCode];
-    
-    vTrace("%3lld %-15s %-3s %02x\n"_Stz,
-           i_Col,
-           pCol->szColNm(),
-           szDatum,
-           eMetaCode,
-           szMetaCode
-           );
-    
-  } // for (i_Col)
-  
-  //delete pRow;
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
