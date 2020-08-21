@@ -1349,8 +1349,8 @@ void LogicUnit::vGenerateQuery400(void)
   // test O_ORDERDATE
   vAddCode(EO_CRW_SRC_DEREF);
   vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERDATE);
-  vAddCode(EO_DUP);
-  vAddCode(EO_DTE_PRINT);
+  //vAddCode(EO_DUP);
+  //vAddCode(EO_DTE_PRINT);
   
   vAddCode(EO_DUP);
   
@@ -1458,8 +1458,8 @@ void LogicUnit::vGenerateQuery400(void)
   
   // add key O_ORDERPRIORITY
   
-  vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERPRIORITY);
-  vAddCode(EO_STR_PRINTSTK);
+  //vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERPRIORITY);
+  //vAddCode(EO_STR_PRINTSTK);
 
   vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERPRIORITY);
   vAddCode(EO_ENTWRK_APPENDELMS);
