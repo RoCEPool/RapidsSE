@@ -92,6 +92,9 @@ void LogicUnit::vGenerateQuery100(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("SUBROUTINE_PROCESSROW:"_Stz);
   
+//  vAddCodeArg(EO_COL_SRC_PUSHONE,L_ORDERKEY);
+//  vAddCode(EO_PRINT);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // inflate crw required columns
   vAddCode(EO_PUSH_MINUS1);

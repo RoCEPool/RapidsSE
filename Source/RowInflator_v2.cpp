@@ -210,18 +210,19 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
       
       if (SI_AREA_ADR == eStrInflate) {
         memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
-      
+        rayDataByte += nStrSize;
+
         aacCellValue = (char**)rayDstByte;
         *aacCellValue = racStrArea;
         rayDstByte += 8;
-        rayDataByte += nStrSize;
         racStrArea += nStrSize;
       }
       else
       if (SI_DEST_PST == eStrInflate) {
         memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
-        
-        vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+        rayDataByte += nStrSize;
+
+        //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
         
         rayDstByte += (((nStrSize) / 8) * 8) + 16;
         aiCellValue = (i8*)rayDstByte;
@@ -261,18 +262,19 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
       if (SI_AREA_ADR == eStrInflate) {
 
         memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
+        rayDataByte += nStrSize;
 
         aacCellValue = (char**)rayDstByte;
         *aacCellValue = racStrArea;
         rayDstByte += 8;
-        rayDataByte += nStrSize;
         racStrArea += nStrSize;
       }
       else
       if (SI_DEST_PST == eStrInflate) {
         memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
-        
-        vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+        rayDataByte += nStrSize;
+
+        //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
         
         rayDstByte += (((nStrSize) / 8) * 8) + 16;
         aiCellValue = (i8*)rayDstByte;
@@ -291,18 +293,19 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
       if (SI_AREA_ADR == eStrInflate) {
 
         memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
+        rayDataByte += nStrSize;
 
         aacCellValue = (char**)rayDstByte;
         *aacCellValue = racStrArea;
         rayDstByte += 8;
-        rayDataByte += nStrSize;
         racStrArea += nStrSize;
       }
       else
       if (SI_DEST_PST == eStrInflate) {
         memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
-        
-        vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+        rayDataByte += nStrSize;
+
+        //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
         
         rayDstByte += (((nStrSize) / 8) * 8) + 16;
         aiCellValue = (i8*)rayDstByte;
@@ -320,18 +323,19 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
       if (SI_AREA_ADR == eStrInflate) {
 
         memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
+        rayDataByte += nStrSize;
 
         aacCellValue = (char**)rayDstByte;
         *aacCellValue = racStrArea;
         rayDstByte += 8;
-        rayDataByte += nStrSize;
         racStrArea += nStrSize;
       }
       else
       if (SI_DEST_PST == eStrInflate) {
         memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
-        
-        vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+        rayDataByte += nStrSize;
+
+        //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
         
         rayDstByte += (((nStrSize) / 8) * 8) + 16;
         aiCellValue = (i8*)rayDstByte;
@@ -413,6 +417,8 @@ void RowInflator::vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte, HeadLine* aHea
 {
   _static_
 
+  L_Overflowed:
+  
   if (uHigh <=  MN_STRING_x1) // numeric & date
     rayDataByte += uLow;
   else
@@ -433,7 +439,10 @@ void RowInflator::vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte, HeadLine* aHea
   else
   if (uHigh == MN_OVERFLOW) { // overflow
     OverLine* aOverLine = aHeadLine->aGetOver();
+    u1 uMetaClue = *((u1*)aOverLine + C_U_1B);
+    METACLUE_SPLIT(uMetaClue,uHigh,uLow);
     rayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
+    goto L_Overflowed;
   }
   else {
     RASSERT(0);
