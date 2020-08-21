@@ -11,8 +11,8 @@ PIDFILE="${ROOT_DIR}/se.pid"
 
 if [ "$#" -ne 4 ]
 then
-  echo "Usage: ./$0 <nodeName> <#partitions> <size> <#threads>"
-  echo "E.g.: ./$0 NODE1 8 32GB 32"
+  echo "Usage: $0 <nodeName> <#partitions> <size> <#threads>"
+  echo "E.g.: $0 NODE1 8 32GB 32"
   exit 1
 fi
 
@@ -24,13 +24,14 @@ THREADS=$4
 NUM_NODES=4
 #HOST_PREFIX="boray0"
 HOST_PREFIX="se"
+HOST_SUFFIX=""
 PORT="5541"
 
 # Generate the list of nodes in the cluster
 declare -a NODES
 for i in seq 1 "${NUM_NODES}"
 do
-  NODES+=("--node NODE${i} ${HOST_PREFIX}${i} ${PORT} ")
+  NODES+=("--node NODE${i} ${HOST_PREFIX}${i}${HOST_SUFFIX} ${PORT} ")
 done
 
 EXE_PATH="${ROOT_DIR}/Linux/bin"

@@ -190,22 +190,6 @@ popd || exit
 
 
 # ----------------------------------------------------------------------------------------
-# Copy dbgen to each disk
-
-for mount_point in "${MOUNTS[@]}"
-do
-  cp -r "${SE_DIR}/dbgen" "${mount_point}"
-  mkdir -p "${mount_point}/tpch"
-  mkdir -p "${mount_point}/tpch/sf1"
-  mkdir -p "${mount_point}/tpch/sf10"
-  mkdir -p "${mount_point}/tpch/sf100"
-  mkdir -p "${mount_point}/tpch/sf1000"
-  
-  chown -R ec2-user:ec2-user "${mount_point}"
-done
-
-
-# ----------------------------------------------------------------------------------------
 # Install tcc
 
 pushd "$(pwd)" || exit

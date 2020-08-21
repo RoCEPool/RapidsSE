@@ -2,7 +2,7 @@
 
 if [ $# -ne 1 ]
 then
-  echo "Usage: ./prompt.sh <nodeName>"
+  echo "Usage: $0 <nodeName>"
   exit 1
 fi
 
