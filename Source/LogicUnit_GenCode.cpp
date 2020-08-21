@@ -848,7 +848,7 @@ void LogicUnit::vGenerateQuery301(void)
 
   vDefineLabel("END_SRC:"_Stz);
   
-  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+  vAddCodeLabel(EO_CALL,"OUT_AGG:"_Stz);
   
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
@@ -980,8 +980,8 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q301 TRV_IXT
-  vDefineLabel("TRV_IXT:"_Stz);
+  //                                                                Q301 OUT_AGG
+  vDefineLabel("OUT_AGG:"_Stz);
   
   vAddCode(EO_RSB_DST_RESET);
 
@@ -1052,7 +1052,7 @@ void LogicUnit::vGenerateQuery302(void)
 
   vDefineLabel("END_SRC:"_Stz);
   
-  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+  vAddCodeLabel(EO_CALL,"OUT_AGG:"_Stz);
   
   vDefineLabel("QRY_END:"_Stz);
   vAddCode(EO_EXIT);
@@ -1114,8 +1114,8 @@ void LogicUnit::vGenerateQuery302(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q302 TRV_IXT
-  vDefineLabel("TRV_IXT:"_Stz);
+  //                                                                Q302 OUT_AGG
+  vDefineLabel("OUT_AGG:"_Stz);
     
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
@@ -1209,7 +1209,7 @@ void LogicUnit::vGenerateQuery302b(void)
   vDefineLabel("QRY_OUT:"_Stz);
   vAddCodeString(EO_STR_LITERAL,"**QRY_302 EOS**"_Stz);
   vAddCode(EO_STR_PRINTADR);
-  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+  vAddCodeLabel(EO_CALL,"OUT_AGG:"_Stz);
   
   
   // --
@@ -1273,8 +1273,8 @@ void LogicUnit::vGenerateQuery302b(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q302 TRV_IXT
-  vDefineLabel("TRV_IXT:"_Stz);
+  //                                                                Q302 OUT_AGG
+  vDefineLabel("OUT_AGG:"_Stz);
     
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
@@ -1323,42 +1323,37 @@ void LogicUnit::vGenerateQuery400(void)
   vSetCC(0,true);
   vSetCC(1,true);
   vSetCC(2,true);
+  vSetCC(9,true);
+
+  //vAddCode(EO_TRACEON);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q400
+  // ROUTINE: QRY_400                                               Q400
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("QRY_400:"_Stz);
   vAddCode(EO_INIT);
   vAddCode(EO_ENTER);
 
-  //vAddCodeString(EO_STR_LITERAL,"**QRY_400**"_Stz);
-  //vAddCode(EO_STR_PRINTADR);
-
-  //vAddCode(EO_TRACEON);
+  vCC(9); vAddCodeString(EO_PRINTF,"**QRY_400**\n"_Stz);
 
   // iterate all ORDERS
   vAddCode(EO_IXT_SRC_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
+  
   vDefineLabel("GOT_ORD:"_Stz);
-
   vAddCode(EO_CRW_SRC_DEREF);
   
   vCC(1); vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERKEY);
-  vCC(1); vAddCodeString(EO_PRINTF,"O_OrderKey %i\n"_Stz);
+  vCC(1); vAddCodeString(EO_PRINTF,"Next O_OrderKey %i\n"_Stz);
 
-  
   // test O_ORDERDATE
   vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERDATE);
-  //vAddCode(EO_DUP);
-  //vAddCode(EO_DTE_PRINT);
-  
   vAddCode(EO_DUP);
-  
   vAddCodeArg(EO_DATE,"1993-07-01"_Stz);
   vAddCode(EO_GREATEREQUAL);
   vAddCodeLabel(EO_JMP_TRUE,"TST_2ND:"_Stz);
   vAddCode(EO_POP);
   vAddCodeLabel(EO_JMP,"NXT_ORD:"_Stz);
-  
   
   vDefineLabel("TST_2ND:"_Stz);
   vAddCodeArg(EO_DATE,"1993-10-01"_Stz);
@@ -1369,7 +1364,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeLabel(EO_CALL,"TST_ITM:"_Stz);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
     
-  
+
   // get the aggregator for o_orderpriority
   vAddCodeLabel(EO_CALL,"GET_AGR:"_Stz);
   
@@ -1377,7 +1372,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_INC);
   vCC(0); vAddCode(EO_DUP);
   vCC(0); vAddCode(EO_ENT_PUSHELMS0);
-  vCC(0); vAddCodeString(EO_PRINTF,"O_OrderPriority %s (inc %i)\n"_Stz);
+  vCC(0); vAddCodeString(EO_PRINTF,"Inc O_OrderPriority %s (%i)\n"_Stz);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
 
   // next ORDERS
@@ -1388,33 +1383,24 @@ void LogicUnit::vGenerateQuery400(void)
   // end of ORDERS
   vDefineLabel("RET_ORD:"_Stz);
     
-  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
-  
-  
-  //vAddCode(EO_TMR_AGG_NSECS);
-  //vAddCode(EO_PRINT);
-  //vAddCode(EO_CTR_0_PUSH);
-  //vAddCode(EO_PRINT);
-  //vAddCode(EO_TMR_AGG_NSECS);
-  //vAddCode(EO_CTR_0_PUSH);
-  //vAddCode(EO_DIVIDE);
-  //vAddCode(EO_PRINT);
+  vAddCodeLabel(EO_CALL,"OUT_AGG:"_Stz);
 
-
+  vCC(9); vAddCodeString(EO_PRINTF,"**QRY_400 RETURNS**\n"_Stz);
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: QRY_400                                           Q400
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q400 TST_ITM
-  // test for a matching LINEITEM
+  // SUBROUTINE: TST_ITM  -- test for matching lineitem             Q400 TST_ITM
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("TST_ITM:"_Stz);
   
   // position / iterate
-  //vAddCode(EO_TMR_START);
   vAddCode(EO_IXT_POS_ALTBYSRC);
-  //vAddCode(EO_TMR_UPDATE);
-  //vAddCode(EO_TMR_AGG_ADD);
-  //vAddCode(EO_CTR_0_INC);
 
   vAddCodeLabel(EO_JMP_FALSE,"RET_ITM_f:"_Stz);
   vDefineLabel("NXT_ITM:"_Stz);
@@ -1432,8 +1418,6 @@ void LogicUnit::vGenerateQuery400(void)
   vCC(2); vAddCodeString(EO_PRINTF,
                          "  joined L_OrderKey %i, L_LineNumber %i\n"_Stz);
   
-//  vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
-//  vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
   
   vAddCode(EO_PUSH_MINUS1);
   vAddCodeArg(EO_INTEGER,L_RECEIPTDATE);
@@ -1465,9 +1449,14 @@ void LogicUnit::vGenerateQuery400(void)
   vDefineLabel("RET_ITM_f:"_Stz);
   vAddCode(EO_PUSH_0);
   vAddCode(EO_RETURN);
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END SUBROUTINE: RET_ITM                                        Q400 RET_ITM
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q400 GET_AGR
+  // SUBROUTINE: GET_AGR                                            Q400 GET_AGR
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get aggregator for o_orderpriority
   vDefineLabel("GET_AGR:"_Stz);
 
@@ -1513,12 +1502,15 @@ void LogicUnit::vGenerateQuery400(void)
 
   vDefineLabel("END_AGR:"_Stz);
   vAddCode(EO_RETURN);
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END SUBROUTINE: GET_AGR                                        Q400 GET_AGR
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q400 TRV_IXT
-  vDefineLabel("TRV_IXT:"_Stz);
-
-  //vAddCode(EO_TRACEON);
+  // SUBROUTINE: OUT_AGG                                            Q400 OUT_AGG
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vDefineLabel("OUT_AGG:"_Stz);
 
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
@@ -1538,12 +1530,11 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
 
   vDefineLabel("TRV_RET:"_Stz);
-  //vAddCode(EO_TRACEOFF);
-  //vAddCode(EO_BREAKPOINT);
   vAddCode(EO_RETURN);
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END SUBROUTINE: OUT_AGG                                        Q400 OUT_AGG
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   vDumpCode();
 }
 
@@ -1578,7 +1569,7 @@ void LogicUnit::vGenerateQuery401(void)
   vDefineLabel("QRY_OUT:"_Stz);
   vAddCodeString(EO_STR_LITERAL,"**QRY_401 EOS**"_Stz);
   vAddCode(EO_STR_PRINTADR);
-  vAddCodeLabel(EO_CALL,"TRV_IXT:"_Stz);
+  vAddCodeLabel(EO_CALL,"OUT_AGG:"_Stz);
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
 
@@ -1662,8 +1653,8 @@ void LogicUnit::vGenerateQuery401(void)
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q401 TRV_IXT
-  vDefineLabel("TRV_IXT:"_Stz);
+  //                                                                Q401 OUT_AGG
+  vDefineLabel("OUT_AGG:"_Stz);
 
   //vAddCode(EO_TRACEON);
 
