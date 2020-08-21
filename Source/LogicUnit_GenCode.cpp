@@ -92,6 +92,9 @@ void LogicUnit::vGenerateQuery100(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("SUBROUTINE_PROCESSROW:"_Stz);
   
+//  vAddCodeArg(EO_COL_SRC_PUSHONE,L_ORDERKEY);
+//  vAddCode(EO_PRINT);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // inflate crw required columns
   vAddCode(EO_PUSH_MINUS1);
@@ -1346,8 +1349,8 @@ void LogicUnit::vGenerateQuery400(void)
   // test O_ORDERDATE
   vAddCode(EO_CRW_SRC_DEREF);
   vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERDATE);
-  //vAddCode(EO_DUP);
-  //vAddCode(EO_DTE_PRINT);
+  vAddCode(EO_DUP);
+  vAddCode(EO_DTE_PRINT);
   
   vAddCode(EO_DUP);
   
@@ -1454,6 +1457,10 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_ENTWRK_RESET);
   
   // add key O_ORDERPRIORITY
+  
+  vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERPRIORITY);
+  vAddCode(EO_STR_PRINTSTK);
+
   vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERPRIORITY);
   vAddCode(EO_ENTWRK_APPENDELMS);
 
