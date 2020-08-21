@@ -11,6 +11,7 @@ namespace CompactBuffers
                        private Packing_v2
   {
   public:
+    CrwBuffer* m_pCrwBuffer;   // crw buffer
     RowNub*    m_pCrwNub;      // nub of crw buffer
     StreamDef* m_pStreamDef;   // stream def
   

@@ -536,7 +536,7 @@ void Encoding_v2::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 0..10 case -- encode as MC_INT_ONE..TEN + {}
-  if (wColVal.m_iWrd >= 0 && wColVal.m_iWrd <= 15) {
+  if (wColVal.m_iWrd >= 0 && wColVal.m_iWrd <= 10) {
     xColEnc.m_eMetaCode = (eMC)(MC_INT_ZERO + wColVal.m_iWrd);
     xColEnc.m_nDataSize = C_0B;
     

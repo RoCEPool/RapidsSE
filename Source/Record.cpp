@@ -106,7 +106,7 @@ void Record::vAppend(RowSingle* pRow)
           StrLib::vAppendString(&m_azCursor,",");
         
         vAppendCol(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
-        //vTrace("%s\n"_Stz,pRec->szRecStr());
+        //vTrace("%s\n"_Stz,szRecStr());
         
       }
     }

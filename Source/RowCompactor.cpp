@@ -26,6 +26,7 @@ RowCompactor::RowCompactor(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+  m_pCrwBuffer    = nullptr;
   m_pCrwNub       = nullptr;
   m_pStreamDef    = nullptr;
   m_pEncoding_v1  = nullptr;
@@ -83,6 +84,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+  m_pCrwBuffer   = pCrwBuffer;
   m_pCrwNub      = pCrwBuffer->m_oRowTray.pNub();
   m_pStreamDef   = m_pCrwNub->pDesc();
   
@@ -146,9 +148,18 @@ bool RowCompactor::bCompactRsb(Rsb* aRsb)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
  
+  static i8 nRows = 0;
+  
   //m_pCrwNub->vDumpTails();
   
   bool bResult = bAddRsbAsCrw(aRsb);
+  
+//  if (nRows > 1060 && nRows < 1070) {
+//    m_pCrwBuffer->vPrintRows(m_pStreamDef);
+//    SP_Encoding_v2 spEncoding_v2;
+//    vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
+//  }
+  nRows++;
   
   //m_pCrwNub->vDumpTails();
 
@@ -262,9 +273,13 @@ bool RowCompactor::bAddRsbAsCrw(Rsb* aRsb)
     return false;
   }
 
+  //SP_Encoding_v2 spEncoding_v2;
+  //vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
+
   // 5) pack encoded row into a compact row
-  if (gxEnvFlags.m_iMetaClue)
+  if (gxEnvFlags.m_iMetaClue) {
     Packing_v2::vPackCrw_v2(m_aHeadLine,m_pEncoding_v2);
+  }
   else
     Packing_v1::vPackCrw_v1(m_aHeadLine,m_pEncoding_v1);
 
@@ -666,7 +681,7 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // found a matching tail
     
-    vTrace("Found tail %lld: %s\n"_Stz,i_Tail,szStr->azChar());
+    //vTrace("Found tail %lld: %s\n"_Stz,i_Tail,szStr->azChar());
     
     // put tial into the encoding
     aColEnc->m_i_Tail = i_Tail;

@@ -227,7 +227,7 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
       
     case MN_OVERFLOW: // overflow 2B
       aOverLine = aHeadLine->aGetOver();
-      METACLUE_SPLIT( (* aAdd<eMC*>(aOverLine,C_U_1B) ), uHigh, uLow);
+      METACLUE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
       rayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
       goto L_HighSwitch;
       break;
