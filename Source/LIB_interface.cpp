@@ -228,6 +228,10 @@ void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk)
 {
   _static_
   
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  
+  RluCommon* aRluCommon = &pLogicUnit->m_xRluCommon;
+  
   i8* aiDstk = *aaiDstk;
   
   char caFormatted[C_1KB];
@@ -330,7 +334,10 @@ void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk)
   // final termination
   *acDst = '\0';
   
-  vTrace("%s"_Stz,caFormatted);
+  vTrace("[Q%lld.%lld] %s"_Stz,
+         aRluCommon->m_iSql,
+         aRluCommon->m_i_Slot,
+         caFormatted);
   
   // publish
   *aaiDstk = aiDstk;

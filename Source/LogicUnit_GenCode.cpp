@@ -1323,7 +1323,7 @@ void LogicUnit::vGenerateQuery400(void)
 //  vSetCC(0,true);
 //  vSetCC(1,true);
 //  vSetCC(2,true);
-//  vSetCC(9,true);
+  vSetCC(7,true);
 
   //vAddCode(EO_TRACEON);
 
@@ -1334,7 +1334,7 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_INIT);
   vAddCode(EO_ENTER);
 
-  vCC(9); vAddCodeString(EO_PRINTF,"**QRY_400**\n"_Stz);
+  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_400**\n"_Stz);
 
   // iterate all ORDERS
   vAddCode(EO_IXT_SRC_BEGIN);
@@ -1385,7 +1385,7 @@ void LogicUnit::vGenerateQuery400(void)
     
   vAddCodeLabel(EO_CALL,"OUT_AGG:"_Stz);
 
-  vCC(9); vAddCodeString(EO_PRINTF,"**QRY_400 RETURNS**\n"_Stz);
+  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_400 RETURNS**\n"_Stz);
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
