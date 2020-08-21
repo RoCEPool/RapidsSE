@@ -1320,15 +1320,7 @@ void LogicUnit::vGenerateQuery400(void)
   
   m_i_Code = 0;
   
-//  vAddCodeArg(EO_DATE, "1993-07-01"_Stz);
-//  vAddCode(EO_DTE_PRINT);
-//  vAddCodeArg(EO_DATE, "1993-10-01"_Stz);
-//  vAddCode(EO_DTE_PRINT);
-//
-//  vAddCodeArg(EO_DATE, "1993-07-01"_Stz);
-//  vAddCodeArg(EO_DATE, "1993-10-01"_Stz);
-//  vAddCode(EO_LESSTHAN);
-//  vAddCode(EO_PRINT);
+  vSetCC(0,false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q400
@@ -1348,8 +1340,8 @@ void LogicUnit::vGenerateQuery400(void)
 
   vAddCode(EO_CRW_SRC_DEREF);
   
-  vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERKEY);
-  vAddCodeString(EO_PRINTF,"O_OrderKey %i\n"_Stz);
+  vCC(0); vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERKEY);
+  vCC(0); vAddCodeString(EO_PRINTF,"O_OrderKey %i\n"_Stz);
 
   
   // test O_ORDERDATE
@@ -1428,9 +1420,9 @@ void LogicUnit::vGenerateQuery400(void)
   // test L_COMMITDATE < L_RECEIPTDATE
   vAddCode(EO_CRW_ALT_DEREF);
   
-  vAddCodeArg(EO_COL_ALT_PUSHONE,L_LINENUMBER);
-  vAddCodeArg(EO_COL_ALT_PUSHONE,L_ORDERKEY);
-  vAddCodeString(EO_PRINTF,"  joined L_OrderKey %i, L_LineNumber %i\n"_Stz);
+  vCC(0); vAddCodeArg(EO_COL_ALT_PUSHONE,L_LINENUMBER);
+  vCC(0); vAddCodeArg(EO_COL_ALT_PUSHONE,L_ORDERKEY);
+  vCC(0); vAddCodeString(EO_PRINTF,"  joined L_OrderKey %i, L_LineNumber %i\n"_Stz);
   
 //  vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
 //  vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
@@ -1452,9 +1444,9 @@ void LogicUnit::vGenerateQuery400(void)
   // found one matching lineitem
   vDefineLabel("RET_ITM_t:"_Stz);
   
-  vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
-  vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
-  vAddCodeString(EO_PRINTF,"  satisfies L_CommitDate %d, L_ReceiptDate %d\n"_Stz);
+  vCC(0); vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
+  vCC(0); vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
+  vCC(0); vAddCodeString(EO_PRINTF,"  satisfies L_CommitDate %d, L_ReceiptDate %d\n"_Stz);
 
   vAddCode(EO_PUSH_1);
   vAddCode(EO_RETURN);

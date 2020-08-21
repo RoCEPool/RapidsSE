@@ -468,7 +468,14 @@ void LogicUnit::vAddCode(eEO eCode)
   
   ASSERT(0 == EoArgs[eCode].m_nArgBytes);
   
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   m_eaCode[m_i_Code++] = eCode;
+
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -480,12 +487,19 @@ void LogicUnit::vAddCodeArg(eEO eCode, i8 iArg)
   
   ASSERT(8 == EoArgs[eCode].m_nArgBytes);
   
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   m_eaCode[m_i_Code++] = eCode;
 
   i8* piArg = (i8*) & m_eaCode[m_i_Code];
   * piArg = iArg;
   
   m_i_Code += sizeof(i8);
+  
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -495,9 +509,16 @@ void LogicUnit::vAddCodeArg(eEO eCode,Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   i8 iArg = pTkn->iToI8();
   
   vAddCodeArg(eCode,iArg);
+
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -509,12 +530,19 @@ void LogicUnit::vAddCodeArg(eEO eCode, Stz* szLiteral)
   
   ASSERT(EA_DATE == EoArgs[eCode].m_eArgument);
   
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   char* acCrs = szLiteral->azChar();
   
   SN_Dte snDate;
   i8 iDate = snDate.i(&acCrs,AM::pFmt());
   
   vAddCodeArg(eCode,iDate);
+
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -523,6 +551,11 @@ void LogicUnit::vAddCodeArg(eEO eCode, Stz* szLiteral)
 void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
   
   i8 i_Label = iFindLabel(szLabelNm);
   
@@ -547,7 +580,8 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
     m_xaJumpLabel[i_Label].m_bDestination = true;
 
   //vPrintLabels();
-
+  
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -557,7 +591,14 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   vAddCodeLabel(eCode,pTkn->szChars());
+  
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -569,11 +610,18 @@ void LogicUnit::vAddCodeString(eEO eCode, Stz* szString)
   
   ASSERT(-1 == EoArgs[eCode].m_nArgBytes);
   
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   m_eaCode[m_i_Code++] = eCode;
 
   for (char* acChr = szString->azChar(); *acChr; acChr++)
     m_eaCode[m_i_Code++] = (eEO)*acChr;
   m_eaCode[m_i_Code++] = (eEO)0;
+  
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
