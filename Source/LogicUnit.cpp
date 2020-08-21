@@ -1200,7 +1200,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
             
       case EO_PRINTF: ArgNil(); // formatted print
         dLU0(EO_PRINTF);
-        break;
+        break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pushes
