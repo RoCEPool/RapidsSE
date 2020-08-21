@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* TPCH queries - SF1 (AWS)                                                   */
+/*============================================================================*/
+
+print section "TPCH SF1 Load (4 Disk)...";
+
+// -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+/nowait fload customer "/mnt/disk1/tpch/sf1/customer.tbl";
+/nowait fload customer "/mnt/disk2/tpch/sf1/customer.tbl";
+/nowait fload customer "/mnt/disk3/tpch/sf1/customer.tbl";
+/nowait fload customer "/mnt/disk4/tpch/sf1/customer.tbl";
+
+/nowait fload lineitem "/mnt/disk1/tpch/sf1/lineitem.tbl";
+/nowait fload lineitem "/mnt/disk2/tpch/sf1/lineitem.tbl";
+/nowait fload lineitem "/mnt/disk3/tpch/sf1/lineitem.tbl";
+/nowait fload lineitem "/mnt/disk4/tpch/sf1/lineitem.tbl";
+
+/nowait fload orders "/mnt/disk1/tpch/sf1/orders.tbl";
+/nowait fload orders "/mnt/disk2/tpch/sf1/orders.tbl";
+/nowait fload orders "/mnt/disk3/tpch/sf1/orders.tbl";
+/nowait fload orders "/mnt/disk4/tpch/sf1/orders.tbl";
+
+print section "Loading (4 Disk)";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
