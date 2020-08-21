@@ -4,6 +4,8 @@
 
 #include "CompactBuffers.h"
 
+extern EnvFlags gxEnvFlags;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -114,6 +116,8 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
 {
   _nonProper_
   
+  i8 nDataBytes;
+  
   //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
   
   Column* pLastCol = pStreamDef->pGetColumn(pStreamDef->nColumns(C_ALL) - 1);
@@ -123,9 +127,17 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   i8 i_ColCrs_ = 0;
   i8 i_OfsCrs_ = C_UNKNOWN;
 
-  eMC eLastEncoding = eGetEncMetaCode(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
-  i8 nDataBytes = RowCoder::nDataSizeOfCode(eLastEncoding);
+  if (gxEnvFlags.m_iMetaClue) {
+    u1 uLastEncoding = uGetEncMetaClue(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  
+    nDataBytes = RowCoder::nDataSizeOfClue(uLastEncoding);
+  }
+  else {
+    eMC eLastEncoding = eGetEncMetaCode(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  
+    nDataBytes = RowCoder::nDataSizeOfCode(eLastEncoding);
+  }
   
   i8 nFreeBytes = nBytes() - i_OfsCrs_ - nDataBytes;
   
@@ -185,39 +197,52 @@ u1 HeadLine::uGetEncMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
   
   for (i8 i_Col = i_ColCrs_; i_Col < i_ForCol; i_Col++) {
     
-    eMC eEncoding = eMetaCode(i_Col);
+    u1 uEncoding = uMetaClue(i_Col);
     
-    if (MC_OVERFLOW_2T == eEncoding) {
+    u1 uHigh = METACLUE_HIGH(uEncoding);
+    u1 uLow  = METACLUE_LOW(uEncoding);
+
+    if (MN_OVERFLOW == uHigh) {
       i_OfsCrs_ = nBytes() + C_U_1B;
-      eEncoding = (eMC)wGetLogical(i_OfsCrs_++,C_1B);
-      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
+      uEncoding = (u1)wGetLogical(i_OfsCrs_++,C_1B);
+      i_OfsCrs_ += RowCoder::nDataSizeOfClue(uEncoding);
     }
     else {
-      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfClue(uEncoding);
     }
     
-    if (MC_STR_FIT_1L == eEncoding) {
-      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_1B);
+    if (MN_STRING_x1 == uHigh) {
+      i_OfsCrs_ += STRx1(uLow);
     }
     else
-    if (MC_STR_FIT_2L == eEncoding) {
-      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_2B);
+    if (MN_STRING_x2 == uHigh) {
+      i_OfsCrs_ += STRx2(uLow);
+    }
+    else
+    if (MN_STRING_x4 == uHigh) {
+      i_OfsCrs_ += STRx4(uLow);
+    }
+    else
+    if (MN_STRING_x8 == uHigh) {
+      i_OfsCrs_ += STRx8(uLow);
     }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the encoding for the column
   
-  eMC eEncoding = eMetaCode(i_ForCol);
-  if (MC_OVERFLOW_2T == eEncoding) {
+  u1 uEncoding = uMetaClue(i_ForCol);
+  u1 uHigh = METACLUE_HIGH(uEncoding);
+  u1 uLow  = METACLUE_LOW(uEncoding);
+  if (MN_OVERFLOW == uHigh) {
     i_OfsCrs_ = nBytes() + C_U_1B + C_M_1B;
     OverLine* aOverLine = aGetOver();
-    eEncoding = (eMC)aOverLine->w8_1B(1);
+    uEncoding = (u1)aOverLine->w8_1B(1);
   }
   
   i_ColCrs_ = i_ForCol;
   
-  return eEncoding;
+  return uEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
