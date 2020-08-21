@@ -327,6 +327,27 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // count
+  sPath
+  "
+  procedure count
+    parameters $table
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    rowCount $table | stageC
+
+  stage stageC on origin :
+    totalCount | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // export
   sPath
   "
@@ -1091,6 +1112,22 @@
      buffers        INTEGER NOT NULL ,
      entries        INTEGER NOT NULL
   ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_COUNT
+  sPath
+  "
+  define table __count ( rowCount INTEGER NOT NULL ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_COUNTINFO
+  sPath
+  "
+  define table __countInfo ( rowCount INTEGER NOT NULL ) ;
   "
   api::executeRequest
 
