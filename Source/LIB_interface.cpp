@@ -228,7 +228,7 @@ void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk)
 {
   _static_
   
-  i8* aiDstk_lcl = *aaiDstk;
+  i8* aiDstk = *aaiDstk;
   
   char caFormatted[C_1KB];
   
@@ -274,7 +274,7 @@ void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk)
     
     if ('i' == *acFmt) {
       
-      i8 iInt = *aiDstk_lcl--;
+      i8 iInt = *aiDstk--;
       
       char caValue[32];
       StrLib::wToString(iInt,caValue);
@@ -290,10 +290,23 @@ void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk)
       
       SP_Dte spDate;
 
-      i8 iDte = *aiDstk_lcl--;
+      i8 iDte = *aiDstk--;
       
       StrLib::vAppendString(&acDst,(char*)spDate.sz(iDte));
       
+      acFmt++;
+    }
+    
+    else
+    if ('s' == *acFmt) {
+     
+      i8 nSize = *aiDstk--;
+      Stz* szStr = (Stz*) (aiDstk-(nSize/8 + 1));
+
+      StrLib::vAppendString(&acDst,(char*)szStr);
+
+      aiDstk -= (nSize/8) + 2;
+
       acFmt++;
     }
         
@@ -320,7 +333,7 @@ void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk)
   vTrace("%s"_Stz,caFormatted);
   
   // publish
-  *aaiDstk = aiDstk_lcl;
+  *aaiDstk = aiDstk;
 }
 
 /*============================================================================*/

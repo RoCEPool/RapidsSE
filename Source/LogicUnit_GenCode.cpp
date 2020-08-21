@@ -1321,7 +1321,8 @@ void LogicUnit::vGenerateQuery400(void)
   m_i_Code = 0;
   
   vSetCC(0,true);
-  vSetCC(1,false);
+  vSetCC(1,true);
+  vSetCC(2,true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //                                                                Q400
@@ -1341,8 +1342,8 @@ void LogicUnit::vGenerateQuery400(void)
 
   vAddCode(EO_CRW_SRC_DEREF);
   
-  vCC(0); vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERKEY);
-  vCC(0); vAddCodeString(EO_PRINTF,"O_OrderKey %i\n"_Stz);
+  vCC(1); vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERKEY);
+  vCC(1); vAddCodeString(EO_PRINTF,"O_OrderKey %i\n"_Stz);
 
   
   // test O_ORDERDATE
@@ -1368,10 +1369,15 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCodeLabel(EO_CALL,"TST_ITM:"_Stz);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_ORD:"_Stz);
     
+  
+  // get the aggregator for o_orderpriority
   vAddCodeLabel(EO_CALL,"GET_AGR:"_Stz);
-
+  
   vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
   vAddCode(EO_INC);
+  vCC(0); vAddCode(EO_DUP);
+  vCC(0); vAddCode(EO_ENT_PUSHELMS0);
+  vCC(0); vAddCodeString(EO_PRINTF,"O_OrderPriority %s (inc %i)\n"_Stz);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
 
   // next ORDERS
@@ -1421,9 +1427,9 @@ void LogicUnit::vGenerateQuery400(void)
   // test L_COMMITDATE < L_RECEIPTDATE
   vAddCode(EO_CRW_ALT_DEREF);
   
-  vCC(1); vAddCodeArg(EO_COL_ALT_PUSHONE,L_LINENUMBER);
-  vCC(1); vAddCodeArg(EO_COL_ALT_PUSHONE,L_ORDERKEY);
-  vCC(1); vAddCodeString(EO_PRINTF,
+  vCC(2); vAddCodeArg(EO_COL_ALT_PUSHONE,L_LINENUMBER);
+  vCC(2); vAddCodeArg(EO_COL_ALT_PUSHONE,L_ORDERKEY);
+  vCC(2); vAddCodeString(EO_PRINTF,
                          "  joined L_OrderKey %i, L_LineNumber %i\n"_Stz);
   
 //  vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
@@ -1446,9 +1452,9 @@ void LogicUnit::vGenerateQuery400(void)
   // found one matching lineitem
   vDefineLabel("RET_ITM_t:"_Stz);
   
-  vCC(1); vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
-  vCC(1); vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
-  vCC(1); vAddCodeString(EO_PRINTF,
+  vCC(2); vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
+  vCC(2); vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
+  vCC(2); vAddCodeString(EO_PRINTF,
                          "  satisfies L_CommitDate %d, L_ReceiptDate %d\n"_Stz);
 
   vAddCode(EO_PUSH_1);
