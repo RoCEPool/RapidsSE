@@ -106,7 +106,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vLib_SET_LOCAL"_Stz,         (const void *) vLib_SET_LOCAL         },
   { "vLib_SLEEP"_Stz,             (const void *) vLib_SLEEP             },
   { "iLib_STR_COMPARE"_Stz,       (const void *) iLib_STR_COMPARE       },
-    
+  { "vLib_PRINTF"_Stz,            (const void *) vLib_PRINTF            },
+
   { "aRlu_INIT"_Stz,              (const void *) aRlu_INIT              },
   { "vRlu_BEGINTMR"_Stz,          (const void *) vRlu_BEGINTMR          },
   { "vRlu_DUMP"_Stz,              (const void *) vRlu_DUMP              },

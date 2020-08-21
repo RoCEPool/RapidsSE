@@ -1198,8 +1198,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //#endif
         break;//+endCase
             
-      case EO_PRINTF: ArgNil(); // formatted print
+      case EO_PRINTF: GetStr(iArg); // formatted print
         dLU0(EO_PRINTF);
+        vLib_PRINTF(pLU,(Stz*)iArg,&aiDstk);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
