@@ -1320,10 +1320,10 @@ void LogicUnit::vGenerateQuery400(void)
   
   m_i_Code = 0;
   
-  vSetCC(0,true);
-  vSetCC(1,true);
-  vSetCC(2,true);
-  vSetCC(9,true);
+//  vSetCC(0,true);
+//  vSetCC(1,true);
+//  vSetCC(2,true);
+//  vSetCC(9,true);
 
   //vAddCode(EO_TRACEON);
 
