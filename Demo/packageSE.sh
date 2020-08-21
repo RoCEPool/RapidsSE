@@ -10,8 +10,7 @@ VERSION="version.txt"
 (
   cd "${SE_DIR}" || exit
   
-  which git &>/dev/null
-  if [ "$?" -eq 0 ]
+  if which git &>/dev/null
   then
     git rev-parse --short HEAD > version.txt
   fi
