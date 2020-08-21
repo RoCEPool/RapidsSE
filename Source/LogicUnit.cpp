@@ -1363,14 +1363,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_STR_PRINTSTK: ArgNil(); // pop string from top and print
-#ifdef WITH_TRACE_LOGICUNIT
         iTopA = *(aiDstk--);
-        azTopA = (char*) *(aiDstk--);
+        szTopA = (Stz*) (aiDstk-(iTopA/8 + 1));
+        printf("EO_STR_PRINTSTK : %lld %p\n",iTopA,(char*)szTopA);
         dLU1(EO_STR_PRINTSTK,iTopA);
         printf("[Q%lld,%lld] %s\n",
-               aRluCommon->m_iSql,aRluCommon->m_i_Slot,azTopA);
-        aiDstk -= (iTopA/8) + 1;
-#endif
+               aRluCommon->m_iSql,aRluCommon->m_i_Slot,(char*)szTopA);
+        aiDstk -= (iTopA/8) + 2;
         break;//+endCase
         
       case EO_STR_LITERAL: GetStr(iArg); // push address of string literal

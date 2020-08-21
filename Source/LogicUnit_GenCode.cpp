@@ -1454,6 +1454,10 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_ENTWRK_RESET);
   
   // add key O_ORDERPRIORITY
+  
+  vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERPRIORITY);
+  vAddCode(EO_STR_PRINTSTK);
+
   vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERPRIORITY);
   vAddCode(EO_ENTWRK_APPENDELMS);
 

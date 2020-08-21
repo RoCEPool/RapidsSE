@@ -217,9 +217,21 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
         rayDataByte += nStrSize;
         racStrArea += nStrSize;
       }
+      else
+      if (SI_DEST_PST == eStrInflate) {
+        memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
+        
+        vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+        
+        rayDstByte += (((nStrSize) / 8) * 8) + 16;
+        aiCellValue = (i8*)rayDstByte;
+        *aiCellValue = nStrSize - 1;
+        rayDstByte += 8;
+      }
       else {
         RASSERT(0);
       }
+      
       break;
       
     case MN_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -256,6 +268,17 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
         rayDataByte += nStrSize;
         racStrArea += nStrSize;
       }
+      else
+      if (SI_DEST_PST == eStrInflate) {
+        memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
+        
+        vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+        
+        rayDstByte += (((nStrSize) / 8) * 8) + 16;
+        aiCellValue = (i8*)rayDstByte;
+        *aiCellValue = nStrSize - 1;
+        rayDstByte += 8;
+      }
       else {
         RASSERT(0);
       }
@@ -275,6 +298,17 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
         rayDataByte += nStrSize;
         racStrArea += nStrSize;
       }
+      else
+      if (SI_DEST_PST == eStrInflate) {
+        memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
+        
+        vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+        
+        rayDstByte += (((nStrSize) / 8) * 8) + 16;
+        aiCellValue = (i8*)rayDstByte;
+        *aiCellValue = nStrSize - 1;
+        rayDstByte += 8;
+      }
       else {
         RASSERT(0);
       }
@@ -292,6 +326,17 @@ void RowInflator::vInflate_v2(byte*& rayDstByte,
         rayDstByte += 8;
         rayDataByte += nStrSize;
         racStrArea += nStrSize;
+      }
+      else
+      if (SI_DEST_PST == eStrInflate) {
+        memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
+        
+        vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+        
+        rayDstByte += (((nStrSize) / 8) * 8) + 16;
+        aiCellValue = (i8*)rayDstByte;
+        *aiCellValue = nStrSize - 1;
+        rayDstByte += 8;
       }
       else {
         RASSERT(0);
