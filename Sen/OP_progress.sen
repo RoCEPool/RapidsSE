@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : progress_EosMarker \handler
 
+  <string> "%v Progress: 100" str.format
+  "%" str.cat .
   "****LOAD DONE****" .
   PipeIn[].pipeOut
 

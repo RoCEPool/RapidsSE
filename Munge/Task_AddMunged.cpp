@@ -12015,6 +12015,8 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": progress_EosMarker \\handler\n"
     "\n"
+    "  <string> \"%v Progress: 100\" str.format\n"
+    "  \"%\" str.cat .\n"
     "  \"****LOAD DONE****\" .\n"
     "  PipeIn[].pipeOut\n"
     "\n"
