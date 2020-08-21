@@ -126,7 +126,7 @@
   begin
     Pipein[].peek
   not while
-    "receiver waiting for STARTMARKER..." .
+    "receiver waiting for STARTMARKER..." .verbose
     2 thread::sleepMsec
   repeat
 

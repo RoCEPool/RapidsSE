@@ -1428,6 +1428,10 @@ void LogicUnit::vGenerateQuery400(void)
   // test L_COMMITDATE < L_RECEIPTDATE
   vAddCode(EO_CRW_ALT_DEREF);
   
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_LINENUMBER);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_ORDERKEY);
+  vAddCodeString(EO_PRINTF,"  joined L_OrderKey : %i L_LineNumber %i\n"_Stz);
+  
 //  vAddCodeArg(EO_COL_ALT_PUSHONE,L_COMMITDATE);
 //  vAddCodeArg(EO_COL_ALT_PUSHONE,L_RECEIPTDATE);
   
