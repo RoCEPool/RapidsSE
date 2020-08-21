@@ -27,8 +27,10 @@ void Step::vApiAddProcedure(void)
   s48K sWithTagStr;
   m_pDataStack->vPopStr(sWithTagStr,__func__);
   
-  vTrace("AddProcedure: %s\n"_Stz,sRequest.szStz());
-  vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
+  if (AM::bVerbose()) {
+    vTrace("AddProcedure: %s\n"_Stz,sRequest.szStz());
+    vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -60,8 +62,10 @@ void Step::vApiExecuteRequest(void)
   s48K sWithTagStr;
   m_pDataStack->vPopStr(sWithTagStr,__func__);
 
-  vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
-  vTrace("WithTags: %s\nn"_Stz,sWithTagStr.szStz());
+  if (AM::bVerbose()) {
+    vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
+    vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -148,7 +152,7 @@ void Step::vApiSpawnDemon(void)
 
   if (AM::bVerbose()) {
     vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
-    vTrace("WithTags: %s\nn"_Stz,sTagStr.szStz());
+    vTrace("WithTags: %s\n"_Stz,sTagStr.szStz());
   }
 
   
