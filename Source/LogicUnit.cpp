@@ -1188,6 +1188,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // prints
+      case EO_PRINT: ArgNil(); // print top
+//#ifdef WITH_TRACE_LOGICUNIT
+        iTopA = *(aiDstk--);
+        dLU1(EO_PRINT,iTopA);
+
+        printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
+//#endif
+        break;//+endCase
+            
+      case EO_PRINTF: ArgNil(); // formatted print
+        dLU0(EO_PRINTF);
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pushes
       case EO_DATE: ArgGet(iArg); // push date
         dLU1(EO_DATE,iArg);
@@ -1315,15 +1330,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //if (iArg >= C_LOCALS)
         //  vLib_ASSERT(pLU,0);
         S_PopStr(sLib_GET_LOCALS(pLU, iArg));
-        break;//+endCase
-        
-      case EO_PRINT: ArgNil(); // print top
-//#ifdef WITH_TRACE_LOGICUNIT
-        iTopA = *(aiDstk--);
-        dLU1(EO_PRINT,iTopA);
-
-        printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
-//#endif
         break;//+endCase
         
       case EO_PUSH_LOCALI: ArgGet(iArg); // push a local reg

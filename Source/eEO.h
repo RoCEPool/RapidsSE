@@ -49,6 +49,10 @@ enum eEO : u1 // expression operators
   /*    */ EO_ISNULL,           // test if top is null, push result
   /*    */ EO_ISNOTNULL,        // test if top is not null, push result
   
+  // prints
+  /*    */ EO_PRINT,            // print top
+  /*    */ EO_PRINTF,           // formatted print
+
   // pushes
   /*    */ EO_DATE,             // push date
   /*    */ EO_INTEGER,          // push integer
@@ -73,7 +77,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_POP,              // pop / discard top
   /*    */ EO_POP_LOCALI,       // pop integer into a local register
   /*    */ EO_POP_LOCALS,       // pop string into a local register
-  /*    */ EO_PRINT,            // print top
   /*    */ EO_PUSH_LOCALI,      // push an integer from a local register
   /*    */ EO_PUSH_LOCALS,      // push an string from a local register
   
@@ -287,6 +290,10 @@ static Stz* aEO[]
   /*    */ "EO_ISNULL"_Stz,
   /*    */ "EO_ISNOTNULL"_Stz,
   
+  // prints
+  /*    */ "EO_PRINT"_Stz,
+  /*    */ "EO_PRINTF"_Stz,
+
   // pushes
   /*    */ "EO_DATE"_Stz,
   /*    */ "EO_INTEGER"_Stz,
@@ -311,7 +318,6 @@ static Stz* aEO[]
   /*    */ "EO_POP"_Stz,
   /*    */ "EO_POP_LOCALI"_Stz,
   /*    */ "EO_POP_LOCALS"_Stz,
-  /*    */ "EO_PRINT"_Stz,
   /*    */ "EO_PUSH_LOCALI"_Stz,
   /*    */ "EO_PUSH_LOCALS"_Stz,
   
@@ -531,6 +537,10 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ISNULL
   { EA_NONE,    0 },  // EO_ISNOTNULL
 
+  // prints
+  { EA_NONE,    0 },  // EO_PRINT
+  { EA_STRING, -1 },  // EO_PRINTF
+
   // pushes
   { EA_DATE,    8 },  // EO_DATE
   { EA_INT,     8 },  // EO_INTEGER
@@ -555,7 +565,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_POP
   { EA_INT,     8 },  // EO_POP_LOCALI
   { EA_INT,     8 },  // EO_POP_LOCALS
-  { EA_NONE,    0 },  // EO_PRINT
   { EA_INT,     8 },  // EO_PUSH_LOCALI
   { EA_INT,     8 },  // EO_PUSH_LOCALS
   
