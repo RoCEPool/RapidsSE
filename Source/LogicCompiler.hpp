@@ -43,7 +43,8 @@ namespace Expressions
 
     i8 iCall(void);
     i8 iCompile(LogicUnit* pLogicUnit, void* aDynArg);
-  
+    Stz* szSource(void);
+
   private:
   
     void vAcquire(void);

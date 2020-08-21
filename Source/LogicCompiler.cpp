@@ -307,7 +307,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_TRACE_LOGICUNIT
-  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
+  //vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
 #endif
   
   vAcquire();
@@ -322,6 +322,16 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   m_pLogicUnit->m_pLogicTimer = new LogicTimer(m_pLogicUnit->m_xRluCommon.m_iSql);
 
   return 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return source code                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* LogicCompiler::szSource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  return (Stz*)m_caSource;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -342,7 +352,7 @@ void LogicCompiler::vAcquire(void)
   
   tcc_set_output_type((TCCState*)m_aTccState,TCC_OUTPUT_MEMORY);
   
-  tcc_set_error_func((TCCState*)m_aTccState, nullptr, vTinyError);
+  tcc_set_error_func((TCCState*)m_aTccState, this, vTinyError);
 #endif
 }
 
@@ -943,6 +953,10 @@ void LogicCompiler::v_CallSbr(i8 i_Label)
 /*----------------------------------------------------------------------------*/
 void vTinyError(void *aOpaque, const char *azMsg)
 {
+  LogicCompiler* pLogicCompiler = _pLogicCompiler(aOpaque);
+  
+  vTrace("Dynamic Source Code: \n\n%s\n"_Stz,pLogicCompiler->szSource());
+
   vTrace("TinyError: %s\n"_Stz,azMsg);
   
   vDebugPoint();
