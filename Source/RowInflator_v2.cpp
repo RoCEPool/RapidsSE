@@ -27,23 +27,23 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the set of columns to be retrieved
   
-  i8 nWhichCols = 0;
-  i8 iWhichCol[C_MAX_COLUMNS];
-  
-  i8 i_ColToRetrieve;
-  for (;;) {
-    
-    i_ColToRetrieve = *((*aaiDstk)--);
-    
-    if (-1 == i_ColToRetrieve)
-      break;
-    
-    // must be in ascending order
-    ASSERT(0 == nWhichCols ||
-           i_ColToRetrieve > iWhichCol[nWhichCols-1]);
-    
-    iWhichCol[nWhichCols++] = i_ColToRetrieve;
-  }
+//  i8 nWhichCols = 0;
+//  i8 iWhichCol[C_MAX_COLUMNS];
+//
+//  i8 i_ColToRetrieve;
+//  for (;;) {
+//
+//    i_ColToRetrieve = *((*aaiDstk)--);
+//
+//    if (-1 == i_ColToRetrieve)
+//      break;
+//
+//    // must be in ascending order
+//    ASSERT(0 == nWhichCols ||
+//           i_ColToRetrieve > iWhichCol[nWhichCols-1]);
+//
+//    iWhichCol[nWhichCols++] = i_ColToRetrieve;
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
@@ -58,9 +58,9 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
   // for each column
 
   i8 i_WhichCol = 0;
-  i_ColToRetrieve = iWhichCol[i_WhichCol];
+  i8 i_ColToRetrieve = iaColSet[i_WhichCol];
 
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+  for (i8 i_Col = 0; /*none*/; i_Col++) {
         
     u1 uMetaClue = *auMetaClue++;
     u1 uHigh = uMetaClue >> 4;
@@ -77,6 +77,8 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inflate column
 
+    //vTrace("Inflate %lld\n"_Stz,i_Col);
+    
     RASSERT(SI_ADDRESS == eStrInflate || SI_DEST_PST == eStrInflate);
     vInflate_v2(ayDstByte,ayDataByte,aHeadLine,uHigh,uLow,eStrInflate,acStrArea);
 
@@ -84,10 +86,12 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next column to retrieve
     
-    if (++i_WhichCol >= nWhichCols)
-      break;
+//    if (++i_WhichCol >= nWhichCols)
+//      break;
     
-    i_ColToRetrieve = iWhichCol[i_WhichCol];
+    i_ColToRetrieve = iaColSet[++i_WhichCol];
+    if (-1 == i_ColToRetrieve)
+      break;
   }
   
   // end for each column
