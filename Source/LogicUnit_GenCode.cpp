@@ -683,11 +683,13 @@ void LogicUnit::vGenerateQuery300(void)
 
 
   vAddCodeArg(EO_COL_SRC_PUSHONE,C_MKTSEGMENT);
-  //vAddCode(EO_DUMP);
   vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);
   vAddCode(EO_STR_COMPARE);
   vAddCodeLabel(EO_JMP_NOTEQUAL,"NXT_CUS:"_Stz);
 
+  vCC(2); vAddCodeArg(EO_COL_SRC_PUSHONE,C_MKTSEGMENT);
+  vCC(2); vAddCodeString(EO_PRINTF,"  satisfies C_MktSegment %s\n"_Stz);
+  
   
   vAddCodeLabel(EO_CALL,"JOI_ORD:"_Stz);
 
@@ -711,23 +713,17 @@ void LogicUnit::vGenerateQuery300(void)
   // SUBROUTINE: JOI_ORD  -- join with orders                       Q300 JOI_ORD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("JOI_ORD:"_Stz);
-  //vAddCodeString(EO_STR_LITERAL,"Join ORDERS"_Stz);
-  //vAddCode(EO_STR_PRINTADR);
   
   vAddCode(EO_IXT_POS_ALTBYSRC);
   vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
   vDefineLabel("NXT_ORD:"_Stz);
   vAddCode(EO_IXT_ALT_NEXT);
-  
-  //vAddCode(EO_IXT_SRC_PRINT);
-  //vAddCode(EO_IXT_ALT_PRINT);
 
 
   vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
   vAddCode(EO_IXT_CMP_SRCALT);
   vAddCodeLabel(EO_JMP_FALSE,"RET_ORD:"_Stz);
 
-  //vAddCode(EO_IXT_ALT_PRINT);
   
   vAddCode(EO_CRW_ALT_DEREF);
   
@@ -758,9 +754,8 @@ void LogicUnit::vGenerateQuery300(void)
   
   vCC(2); vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERKEY);
   vCC(2); vAddCodeString(EO_PRINTF,"  partitioning O_OrderKey %i\n"_Stz);
-
   
-  // calc i_Ptn (should be zero for the moment)
+  // calc i_Ptn
   vAddCode(EO_PTN_RESET);
   vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERKEY);
   vAddCode(EO_PTN_RUNNING);
@@ -771,23 +766,13 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_INTEGER,O_SHIPPRIORITY);      // 7
   vAddCodeArg(EO_INTEGER,O_ORDERDATE);         // 4
   vAddCodeArg(EO_INTEGER,O_ORDERKEY);          // 0
-  
-  //vAddCode(EO_DUMP);
-
   vAddCode(EO_COL_ALT_PUSHSET);
-
-  //vAddCode(EO_DUMP);
 
   vAddCode(EO_RSB_DST_NEW);
   
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERDATE);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERKEY);
-
-    
-  //vAddCode(EO_RSB_DST_PRINT);
-  
-  //vAddCode(EO_CTR_0_INC);
 
 
   vAddCode(EO_RETURN);
