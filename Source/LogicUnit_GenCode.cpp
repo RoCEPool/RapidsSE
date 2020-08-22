@@ -631,20 +631,10 @@ void LogicUnit::vGenerateQuery300(void)
   
   m_i_Code = 0;
       
-//  vAddCode(EO_SLOT);
-//  vAddCodeArg(EO_INTEGER,1);
-//  vAddCode(EO_EQUAL);
-//  vAddCodeLabel(EO_JMP_FALSE,"QRY_300:"_Stz);
-//  vAddCodeString(EO_STR_LITERAL,"SLEEPING"_Stz);
-//  vAddCode(EO_STR_PRINTADR);
-//  vAddCodeArg(EO_INTEGER,5);
-//  vAddCode(EO_SLEEP);
-
-
-
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q300
+  // ROUTINE: QRY_400                                               Q300
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("QRY_300:"_Stz);
   
   vAddCode(EO_INIT);
@@ -717,10 +707,14 @@ void LogicUnit::vGenerateQuery300(void)
   vDefineLabel("END_CUS:"_Stz);
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: QRY_300                                           Q300
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q300 JOI_ORD
-  // join ORDERS
+  // SUBROUTINE: JOI_ORD  -- join with orders                       Q300 JOI_ORD
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("JOI_ORD:"_Stz);
   //vAddCodeString(EO_STR_LITERAL,"Join ORDERS"_Stz);
   //vAddCode(EO_STR_PRINTADR);
@@ -752,9 +746,14 @@ void LogicUnit::vGenerateQuery300(void)
   
   vDefineLabel("RET_ORD:"_Stz);
   vAddCode(EO_RETURN);
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END SUBROUTINE: JOI_ORD                                        Q300 JOI_ORD
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q300 DST_PUT
+  // SUBROUTINE: DST_PUT                                            Q300 DST_PUT
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("DST_PUT:"_Stz);
   
   // calc i_Ptn (should be zero for the moment)
@@ -801,7 +800,9 @@ void LogicUnit::vGenerateQuery300(void)
 
   vAddCode(EO_RETURN);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END SUBROUTINE: DST_PUT                                        Q300 DST_PUT
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   vDumpCode();
 }
@@ -830,9 +831,10 @@ void LogicUnit::vGenerateQuery301(void)
   //vAddCode(EO_PIX_STM_PRINT);
   //vAddCode(EO_TRACEON);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q301
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROUTINE: QRY_301  --                                           Q300
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vAddCode(EO_RSB_DST_NEW);
 
   vAddCode(EO_RSB_SRC_BEGIN);
@@ -852,9 +854,11 @@ void LogicUnit::vGenerateQuery301(void)
   
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q301 MOV_DST
+  // SUBROUTINE: MOV_DST  --                                        Q301 MOV_DST
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("MOV_DST:"_Stz);
   
   //vAddCode(EO_RSB_SRC_PRINT);
@@ -869,9 +873,14 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_SHIPPRIORITY);
 
   vAddCode(EO_RETURN);
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: MOV_DST                                           Q301 MOV_DST
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q301 AGG_REV
+  // SUBROUTINE: AGG_REV  --                                        Q301 AGG_REV
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("AGG_REV:"_Stz);
   
   vAddCode(EO_ENTWRK_RESET);
@@ -926,8 +935,10 @@ void LogicUnit::vGenerateQuery301(void)
   
   vAddCode(EO_RETURN);
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q301 LIM_SBR
+  // SUBROUTINE: LIM_SBR  --                                        Q301 LIM_SBR
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("LIM_SBR:"_Stz);
 
   //vAddCode(EO_IXT_TMP_ENTRIES);
@@ -978,9 +989,14 @@ void LogicUnit::vGenerateQuery301(void)
   vDefineLabel("LIM_RET:"_Stz);
   //vAddCodeArg(EO_IXT_DUMP,(i8)0);
   vAddCode(EO_RETURN);
-  
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: LIM_SBR                                           Q301 LIM_SBR
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q301 OUT_AGG
+  // SUBROUTINE: OUT_AGG  --                                        Q301 OUT_AGG
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("OUT_AGG:"_Stz);
   
   vAddCode(EO_RSB_DST_RESET);
@@ -1012,8 +1028,10 @@ void LogicUnit::vGenerateQuery301(void)
   vDefineLabel("TRV_RET:"_Stz);
   //vAddCode(EO_BREAKPOINT);
   vAddCode(EO_RETURN);
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: OUT_AGG                                           Q301 OUT_AGG
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vDumpCode();
 }
@@ -1031,7 +1049,8 @@ void LogicUnit::vGenerateQuery302(void)
   m_i_Code = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q302
+  // ROUTINE: QRY_302  --                                           Q302
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("QRY_302:"_Stz);
   vAddCode(EO_INIT);
   vAddCode(EO_ENTER);
@@ -1057,10 +1076,14 @@ void LogicUnit::vGenerateQuery302(void)
   vDefineLabel("QRY_END:"_Stz);
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: QRY_302                                           Q302
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q302 LIM_SBR
+  // SUBROUTINE: LIM_SBR  --                                        Q302 LIM_SBR
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("LIM_SBR:"_Stz);
 
   //vAddCode(EO_IXT_TMP_ENTRIES);
@@ -1114,7 +1137,8 @@ void LogicUnit::vGenerateQuery302(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q302 OUT_AGG
+  // SUBROUTINE: OUT_AGG  --                                        Q302 OUT_AGG
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("OUT_AGG:"_Stz);
     
   vAddCode(EO_IXT_TRV_BEGIN);
@@ -1142,10 +1166,14 @@ void LogicUnit::vGenerateQuery302(void)
   vDefineLabel("TRV_RET:"_Stz);
   //vAddCode(EO_BREAKPOINT);
   vAddCode(EO_RETURN);
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END SUBROUTINE: OUT_AGG                                        Q302 OUT_AGG
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q302 CPY_DST
+  // SUBROUTINE: CPY_DST  --                                        Q302 CPY_DST
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("CPY_DST:"_Stz);
   
   vAddCode(EO_RSB_DST_NEW);
@@ -1161,8 +1189,9 @@ void LogicUnit::vGenerateQuery302(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_SHIPPRIORITY);
 
   vAddCode(EO_RETURN);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END SUBROUTINE: CPY_DST                                        Q302 CPY_DST
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   vDumpCode();
 }
