@@ -1394,6 +1394,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_ADDRESS,iaColSet);
         break;//+endCase
 
+      case EO_SET_LOCALS_SRC: ArgNil(); // inflate src columns direct into locals
+        dLU0(EO_SET_LOCALS_SRC);
+        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_ADDRESS,iaColSet);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // stack operators
       case EO_INC: ArgNil(); // increment top, push result
