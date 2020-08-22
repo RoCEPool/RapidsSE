@@ -10,10 +10,11 @@ extern EnvFlags gxEnvFlags;
 /* inflate set onto Dstk                                                      */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
-                              StreamDef* pStreamDef)
+                              StreamDef* pStreamDef,
+                              eSI eStrInflate)
 {
   if (gxEnvFlags.m_iMetaClue)
-    vInflateSet_v2(aaiDstk,aHeadLine,pStreamDef);
+    vInflateSet_v2(aaiDstk,aHeadLine,pStreamDef,eStrInflate);
   else
     vInflateSet_v1(aaiDstk,aHeadLine,pStreamDef);
 }

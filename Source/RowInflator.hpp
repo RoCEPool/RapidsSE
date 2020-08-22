@@ -15,7 +15,8 @@ namespace CompactBuffers
 
   
     static void vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
-                                StreamDef* pStreamDef);
+                                StreamDef* pStreamDef,
+                                eSI eStrInflate);
     static void vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine,
                                i8 i_ColToRetrieve);
     static void vInflateRow(RowSingle* pRow, HeadLine* aHeadLine);
@@ -46,7 +47,8 @@ namespace CompactBuffers
 //                            i8 nCols, HeadLine* aHeadLine);
 
     static void vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
-                               StreamDef* pStreamDef);
+                               StreamDef* pStreamDef,
+                               eSI eStrInflate);
     static void vInflateColumn_v2(RowSingle* pRow, HeadLine* aHeadLine,
                                   i8 i_ColToRetrieve);
     static void vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine);

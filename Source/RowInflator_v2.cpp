@@ -11,7 +11,8 @@
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateSet_v2(i8** aaiDstk,
                                  HeadLine* aHeadLine,
-                                 StreamDef* pStreamDef)
+                                 StreamDef* pStreamDef,
+                                 eSI eStrInflate)
 {
   _static_
 
