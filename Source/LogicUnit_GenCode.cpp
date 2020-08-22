@@ -1026,7 +1026,8 @@ void LogicUnit::vGenerateQuery302(void)
   m_i_Code = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q302
+  // ROUTINE: QRY_302                                               Q302
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("QRY_302:"_Stz);
   vAddCode(EO_INIT);
   vAddCode(EO_ENTER);
@@ -1062,10 +1063,14 @@ void LogicUnit::vGenerateQuery302(void)
   vDefineLabel("QRY_END:"_Stz);
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: QRY_302                                           Q302 
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q302 LIM_SBR
+  // SUBROUTINE: LIM_SBR  --                                        Q302 LIM_SBR
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("LIM_SBR:"_Stz);
 
   //vAddCode(EO_IXT_TMP_ENTRIES);
@@ -1116,10 +1121,14 @@ void LogicUnit::vGenerateQuery302(void)
   vDefineLabel("LIM_RET:"_Stz);
   //vAddCodeArg(EO_IXT_DUMP,(i8)0);
   vAddCode(EO_RETURN);
-  
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END SUBROUTINE: QRY_302                                        Q302 LIM_SBR
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //                                                                Q302 OUT_AGG
+  // SUBROUTINE: OUT_AGG  --                                        Q302 OUT_AGG
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("OUT_AGG:"_Stz);
     
   vAddCode(EO_IXT_TRV_BEGIN);
@@ -1147,9 +1156,9 @@ void LogicUnit::vGenerateQuery302(void)
   vDefineLabel("TRV_RET:"_Stz);
   //vAddCode(EO_BREAKPOINT);
   vAddCode(EO_RETURN);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END SUBROUTINE: QRY_302                                        Q302 OUT_AGG
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   vDumpCode();
 }
