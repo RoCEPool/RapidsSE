@@ -1389,8 +1389,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //*(++aiDstk) = -1;
         break;//+endCase
 
-      case EO_SET_LOCALS: ArgNil(); // inflate set of columns direct into locals
-        dLU0(EO_SET_LOCALS);
+      case EO_SET_LOCALS_ALT: ArgNil(); // inflate alt columns direct into locals
+        dLU0(EO_SET_LOCALS_ALT);
+        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_ADDRESS,iaColSet);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
