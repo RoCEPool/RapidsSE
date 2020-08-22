@@ -1711,9 +1711,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_COL_SRC_PUSHONE: ArgGet(iArg); // push column value from m_aSrcCrw
         *(++aiDstk) = -1;
         *(++aiDstk) = iArg; // col to inflate
-//        vDev_RSB_COL_PUSHSET(pLU,&aiDstk); // Check with ALka
         vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST);
         dLU1(EO_COL_SRC_PUSHONE,iArg);
+        break;//+endCase
+        
+      case EO_COL_SRC_PUSHONE_p: ArgGet(iArg); // push value from m_aSrcCrw (str as ptr)
+        *(++aiDstk) = -1;
+        *(++aiDstk) = iArg; // col to inflate
+        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_POINTER);
+        dLU1(EO_COL_SRC_PUSHONE_p,iArg);
         break;//+endCase
         
       case EO_COL_SRC_PUSHSET: ArgNil(); // push column subset from m_aSrcCrw

@@ -137,9 +137,10 @@ enum eEO : u1 // expression operators
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col operators
-  /*    */ EO_COL_ALT_PUSHONE,  // push column int value from m_aAltCrw
+  /*    */ EO_COL_ALT_PUSHONE,  // push column value from m_aAltCrw
   /*    */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
-  /*    */ EO_COL_SRC_PUSHONE,  // push column int value from m_aSrcCrw
+  /*    */ EO_COL_SRC_PUSHONE,  // push column value from m_aSrcCrw
+  /*    */ EO_COL_SRC_PUSHONE_p,// push value from m_aSrcCrw (str as ptr)
   /*    */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw
 
   // crw operators
@@ -381,6 +382,7 @@ static Stz* aEO[]
   /*    */ "EO_COL_ALT_PUSHONE"_Stz,
   /*    */ "EO_COL_ALT_PUSHSET"_Stz,
   /*    */ "EO_COL_SRC_PUSHONE"_Stz,
+  /*    */ "EO_COL_SRC_PUSHONE_p"_Stz,
   /*    */ "EO_COL_SRC_PUSHSET"_Stz,
 
   // crw operators
@@ -628,6 +630,7 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSHONE
   { EA_NONE,    0 },  // EO_COL_ALT_PUSHSET
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE
+  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE_p
   { EA_NONE,    0 },  // EO_COL_SRC_PUSHSET
 
   // crw operators
