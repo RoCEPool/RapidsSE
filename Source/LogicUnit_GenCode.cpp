@@ -630,8 +630,8 @@ void LogicUnit::vGenerateQuery300(void)
   
   m_i_Code = 0;
       
-  vSetCC(1,true);
-  vSetCC(2,true);
+//  vSetCC(1,true);
+//  vSetCC(2,true);
   vSetCC(7,true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -795,8 +795,8 @@ void LogicUnit::vGenerateQuery301(void)
   
   m_i_Code = 0;
   
-  vSetCC(1,true);
-  vSetCC(2,true);
+//  vSetCC(1,true);
+//  vSetCC(2,true);
   vSetCC(7,true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
