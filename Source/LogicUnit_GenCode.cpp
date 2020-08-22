@@ -18,7 +18,7 @@ void LogicUnit::vGenCode(i8 iTestNo)
       
     case     300: vGenerateQuery300();    break;
     case     301: vGenerateQuery301();    break;
-    case     302: vGenerateQuery302b();    break;
+    case     302: vGenerateQuery302();    break;
 
     case     400: vGenerateQuery400();    break;
     case     401: vGenerateQuery401();    break;
@@ -1016,7 +1016,7 @@ void LogicUnit::vGenerateQuery301(void)
 /*----------------------------------------------------------------------------*/
 /* generate code for query 3                                                  */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery302b(void)
+void LogicUnit::vGenerateQuery302(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
