@@ -631,44 +631,45 @@ void LogicUnit::vGenerateQuery300(void)
   
   m_i_Code = 0;
       
-  
+  vSetCC(1,true);
+  vSetCC(2,true);
+  vSetCC(7,true);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ROUTINE: QRY_400                                               Q300
+  // ROUTINE: QRY_300                                               Q300
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("QRY_300:"_Stz);
   
   vAddCode(EO_INIT);
   vAddCode(EO_ENTER);
 
+  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_300**\n"_Stz);
+  //vAddCode(EO_PIX_STM_PRINT);
+
   vAddCode(EO_PUSH_0);
   vAddCode(EO_CTR_0_POP);
 
-  
+
   // test if rtn has been called again
   vAddCode(EO_CALLEDAGAIN);
   vAddCodeLabel(EO_JMP_TRUE,"PRC_CUS:"_Stz);
 
-
   vAddCode(EO_INTEGRITY);
-  //vAddCode(EO_DUMP);
 
-  //vAddCodeString(EO_STR_LITERAL,"**QRY_300**"_Stz);
-  //vAddCode(EO_STR_PRINTADR);
-  //vAddCode(EO_PIX_STM_PRINT);
-  //vAddCode(EO_TRACEON);
 
   // iterate all CUSTOMER
   vAddCode(EO_IXT_SRC_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"END_CUS:"_Stz);
-  vDefineLabel("GOT_CUS:"_Stz);
-  //vAddCode(EO_IXT_SRC_PRINT);
 
+  vDefineLabel("GOT_CUS:"_Stz);
+  
   vAddCode(EO_CTR_0_INC);
   vAddCode(EO_CTR_0_PUSH);
   vAddCodeArg(EO_INTEGER,10000);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_TRUE,"PRC_CUS:"_Stz);
 
+  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_300 TO BE CALLED AGAIN**\n"_Stz);
   vAddCode(EO_CALLAGAIN);
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
@@ -677,8 +678,8 @@ void LogicUnit::vGenerateQuery300(void)
 
   vAddCode(EO_CRW_SRC_DEREF);
   
-  //vAddCodeArg(EO_COL_SRC_PUSHONE,C_CUSTKEY);
-  //vAddCode(EO_PRINT);
+  vCC(1); vAddCodeArg(EO_COL_SRC_PUSHONE,C_CUSTKEY);
+  vCC(1); vAddCodeString(EO_PRINTF,"Next C_CustKey %i\n"_Stz);
 
 
   vAddCodeArg(EO_COL_SRC_PUSHONE,C_MKTSEGMENT);
@@ -693,18 +694,12 @@ void LogicUnit::vGenerateQuery300(void)
 
   // next CUSTOMER
   vDefineLabel("NXT_CUS:"_Stz);
- 
-//  vAddCode(EO_CTR_0_PUSH);
-//  vAddCodeArg(EO_INTEGER,10);
-//  vAddCode(EO_LESSEQUAL);
-//  vAddCodeLabel(EO_JMP_FALSE,"END_CUS:"_Stz);
-
-
   vAddCode(EO_IXT_SRC_NEXT);
   vAddCodeLabel(EO_JMP_TRUE,"GOT_CUS:"_Stz);
 
   // end of CUSTOMER
   vDefineLabel("END_CUS:"_Stz);
+  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_300 COMPLETES**\n"_Stz);
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -735,6 +730,10 @@ void LogicUnit::vGenerateQuery300(void)
   //vAddCode(EO_IXT_ALT_PRINT);
   
   vAddCode(EO_CRW_ALT_DEREF);
+  
+  vCC(2); vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERKEY);
+  vCC(2); vAddCodeString(EO_PRINTF,"  joined O_OrderKey %i\n"_Stz);
+
   vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERDATE);
   vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
   vAddCode(EO_LESSTHAN);
@@ -756,14 +755,17 @@ void LogicUnit::vGenerateQuery300(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("DST_PUT:"_Stz);
   
+  
+  vCC(2); vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERKEY);
+  vCC(2); vAddCodeString(EO_PRINTF,"  partitioning O_OrderKey %i\n"_Stz);
+
+  
   // calc i_Ptn (should be zero for the moment)
   vAddCode(EO_PTN_RESET);
   vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERKEY);
   vAddCode(EO_PTN_RUNNING);
   vAddCode(EO_PTN_CALC);
   
-  
-#if 1
   
   vAddCode(EO_PUSH_MINUS1);
   vAddCodeArg(EO_INTEGER,O_SHIPPRIORITY);      // 7
@@ -782,17 +784,7 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERDATE);
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERKEY);
 
-  
-#else
-  vAddCode(EO_RSB_DST_NEW);
-  vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERKEY);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERKEY);
-  vAddCodeArg(EO_COL_ALT_PUSHONE,O_ORDERDATE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_ORDERDATE);
-  vAddCodeArg(EO_COL_ALT_PUSHONE,O_SHIPPRIORITY);
-  vAddCodeArg(EO_RSB_DST_POPCOLI,Q300_SHIPPRIORITY);
-#endif
-  
+    
   //vAddCode(EO_RSB_DST_PRINT);
   
   //vAddCode(EO_CTR_0_INC);
@@ -1414,7 +1406,7 @@ void LogicUnit::vGenerateQuery400(void)
     
   vAddCodeLabel(EO_CALL,"OUT_AGG:"_Stz);
 
-  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_400 RETURNS**\n"_Stz);
+  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_400 COMPLETES**\n"_Stz);
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
