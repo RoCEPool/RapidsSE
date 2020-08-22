@@ -1572,7 +1572,8 @@ void LogicUnit::vGenerateQuery600(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the lower key
   vAddCodeArg(EO_DATE, "1994-01-01"_Stz);
-  vAddCode(EO_ENTWRK_APPENDELMI);
+  //vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_ENTWRK_SETINTELM);
   vAddCode(EO_IXT_SRC_LBOUND);
   vAddCodeLabel(EO_JMP_TRUE, "UPPERBOUND:"_Stz);
   
@@ -1587,7 +1588,8 @@ void LogicUnit::vGenerateQuery600(void)
   vDefineLabel("UPPERBOUND:"_Stz);
   vAddCode(EO_ENTWRK_RESET);
   vAddCodeArg(EO_DATE, "1995-01-01"_Stz);
-  vAddCode(EO_ENTWRK_APPENDELMI);
+  //vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_ENTWRK_SETINTELM);
   vAddCode(EO_IXT_SRC_UBOUND_LT);
   vAddCodeLabel(EO_JMP_TRUE, "TRV_TILL_UPPER:"_Stz);
   

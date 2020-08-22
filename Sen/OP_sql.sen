@@ -398,6 +398,19 @@
       logicCompiler[].new
       LogicCompiler[].compile
 
+      "lineitem" "lineitem_Idx1" op__table_index assert
+
+      Table[].asAltStreamDef
+
+      Index[].indexTree to IndexTree[]
+      IndexTree[].asAlt
+
+      idxDef_int indexDef[] indexTree[].new
+      indexTree[].asTmp
+
+      indexTree[] 0 LogicUnit[].dev!
+
+
       streamDefOut_301
       true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
@@ -410,6 +423,12 @@
       302 LogicUnit[].genCode
       logicCompiler[].new
       LogicCompiler[].compile
+
+      idxDef_int indexDef[] indexTree[].new
+      indexTree[].asTmp
+
+      indexTree[] 0 LogicUnit[].dev!
+
 
       streamDefOut_302
       true Pot[].useStreamDefOut
@@ -493,11 +512,16 @@
 /*----------------------------------------------------------------------------*/
 : sql_PulseMarker_300
 
-  //"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 300=PULSEMARKER" .
+  // "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 300=PULSEMARKER" .
 
-  LogicUnit[].calledAgain@ not if
+  PipeIn[].isNull not if
     PipeIn[].pipeOut // ZK_PULSEMARKER_handler
+    // "PIPEDOUT PULSE MARKER" .
   then
+
+//  LogicUnit[].calledAgain@ not if
+//    PipeIn[].pipeOut // ZK_PULSEMARKER_handler
+//  then
 
 
   //LogicUnit[].transform
@@ -523,21 +547,21 @@
 /*----------------------------------------------------------------------------*/
 : sql_PulseMarker_301
 
-  //"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 301=PULSEMARKER" .
+  // "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 301=PULSEMARKER" .
 
   ZK_PULSEMARKER_handler
 
-  "lineitem" "lineitem_Idx1" op__table_index assert
-
-  Table[].asAltStreamDef
-
-  Index[].indexTree to IndexTree[]
-  IndexTree[].asAlt
-
-  idxDef_int indexDef[] indexTree[].new
-  indexTree[].asTmp
-
-  indexTree[] 0 LogicUnit[].dev!
+//  "lineitem" "lineitem_Idx1" op__table_index assert
+//
+//  Table[].asAltStreamDef
+//
+//  Index[].indexTree to IndexTree[]
+//  IndexTree[].asAlt
+//
+//  idxDef_int indexDef[] indexTree[].new
+//  indexTree[].asTmp
+//
+//  indexTree[] 0 LogicUnit[].dev!
 
 
 //  LogicUnit[].transform
@@ -555,10 +579,10 @@
 
   ZK_PULSEMARKER_handler
 
-  idxDef_int indexDef[] indexTree[].new
-  indexTree[].asTmp
-
-  indexTree[] 0 LogicUnit[].dev!
+//  idxDef_int indexDef[] indexTree[].new
+//  indexTree[].asTmp
+//
+//  indexTree[] 0 LogicUnit[].dev!
 ;
 
 /*----------------------------------------------------------------------------*/
