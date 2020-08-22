@@ -18,7 +18,6 @@ void LogicUnit::vGenCode(i8 iTestNo)
       
     case     300: vGenerateQuery300();    break;
     case     301: vGenerateQuery301();    break;
-    //case     302: vGenerateQuery302();    break;
     case     302: vGenerateQuery302b();    break;
 
     case     400: vGenerateQuery400();    break;
@@ -796,22 +795,19 @@ void LogicUnit::vGenerateQuery301(void)
   
   m_i_Code = 0;
   
+  vSetCC(1,true);
+  vSetCC(2,true);
+  vSetCC(7,true);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROUTINE: QRY_301  --                                           Q301
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("QRY_301:"_Stz);
   vAddCode(EO_INIT);
   vAddCode(EO_ENTER);
   
-  //vAddCodeArg(EO_RANDOM,100);
-  //vAddCode(EO_PRINT);
-  //vAddCode(EO_BREAKPOINT);
-  //vAddCodeString(EO_STR_LITERAL,"**QRY_301**"_Stz);
-  //vAddCode(EO_STR_PRINTADR);
-  //vAddCode(EO_PIX_STM_PRINT);
-  //vAddCode(EO_TRACEON);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ROUTINE: QRY_301  --                                           Q300
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_301**\n"_Stz);
+  
   vAddCode(EO_RSB_DST_NEW);
 
   vAddCode(EO_RSB_SRC_BEGIN);
@@ -829,9 +825,13 @@ void LogicUnit::vGenerateQuery301(void)
   
   vAddCodeLabel(EO_CALL,"OUT_AGG:"_Stz);
   
+  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_301 COMPLETES**\n"_Stz);
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
-  
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: QRY_301                                           Q301
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SUBROUTINE: MOV_DST  --                                        Q301 MOV_DST
@@ -863,17 +863,13 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_ENTWRK_RESET);
 
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY);
-  //vAddCode(EO_DUP);
-  //vAddCode(EO_PRINT);
-  //vAddCode(EO_ENTWRK_APPENDELMI);
   vAddCode(EO_ENTWRK_SETINTELM);
-
   vAddCode(EO_IXT_POS_ALTBYWRK);
   vAddCodeLabel(EO_JMP_FALSE,"RET_AGG_f:"_Stz);
+  
   vDefineLabel("NXT_AGG:"_Stz);
   vAddCode(EO_IXT_ALT_NEXT);
   vAddCodeLabel(EO_JMP_FALSE,"RET_AGG_f:"_Stz);
-  //vAddCode(EO_IXT_ALT_PRINT);
   vAddCode(EO_IXT_CMP_WRKALT);
   vAddCodeLabel(EO_JMP_FALSE,"RET_AGG_f:"_Stz);
   
@@ -883,9 +879,6 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
   vAddCode(EO_GREATERTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_AGG:"_Stz);
-
-//  vAddCodeString(EO_STR_LITERAL,"GOT AN AGG"_Stz);
-//  vAddCode(EO_STR_PRINTADR);
   
   vAddCodeArg(EO_RSB_DST_PUSHCOLI,Q301_REVENUE);
   vAddCodeArg(EO_COL_ALT_PUSHONE,L_EXTENDEDPRICE);
@@ -899,9 +892,11 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeArg(EO_INTEGER,100);
   vAddCode(EO_DIVIDE);
 
+  vCC(2); vAddCode(EO_DUP);
+  vCC(2); vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY);
+  vCC(2); vAddCodeString(EO_PRINTF,"  totalled L_OrderKey %i revenue %i\n"_Stz);
+  
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q301_REVENUE);
-  //vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_REVENUE);
-  //vAddCode(EO_PRINT);
 
   vAddCodeLabel(EO_JMP,"NXT_AGG:"_Stz);
   
@@ -961,6 +956,11 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_SHIPPRIORITY);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)2);
 
+  vCC(2); vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_SHIPPRIORITY);
+  vCC(2); vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERDATE);
+  vCC(2); vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERKEY);
+  vCC(2); vAddCodeString(EO_PRINTF,
+            "  topping L_OrderKey %i L_OrderDate %d L_ShipPriority %i\n"_Stz);
 
   // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_RET:"_Stz);
@@ -1009,166 +1009,6 @@ void LogicUnit::vGenerateQuery301(void)
   // END ROUTINE: OUT_AGG                                           Q301 OUT_AGG
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-
-  vDumpCode();
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate code for query 3                                                  */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateQuery302(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  // set the query no
-  m_xRluCommon.m_iSql = 302;
-  
-  m_i_Code = 0;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ROUTINE: QRY_302  --                                           Q302
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vDefineLabel("QRY_302:"_Stz);
-  vAddCode(EO_INIT);
-  vAddCode(EO_ENTER);
-  
-  //vAddCode(EO_TRACEON);
-  vAddCodeLabel(EO_JMP_FALSE,"QRY_END:"_Stz);
-
-  vAddCode(EO_RSB_SRC_BEGIN);
-  
-  vDefineLabel("NXT_SRC:"_Stz);
-  vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"END_SRC:"_Stz);
-
-  //vAddCodeLabel(EO_CALL,"CPY_DST:"_Stz);
-  vAddCodeLabel(EO_CALL,"LIM_SBR:"_Stz);
-
-  vAddCodeLabel(EO_JMP,"NXT_SRC:"_Stz);
-
-  vDefineLabel("END_SRC:"_Stz);
-  
-  vAddCodeLabel(EO_CALL,"OUT_AGG:"_Stz);
-  
-  vDefineLabel("QRY_END:"_Stz);
-  vAddCode(EO_EXIT);
-  vAddCode(EO_RETURN);
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-  // END ROUTINE: QRY_302                                           Q302
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // SUBROUTINE: LIM_SBR  --                                        Q302 LIM_SBR
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vDefineLabel("LIM_SBR:"_Stz);
-
-  //vAddCode(EO_IXT_TMP_ENTRIES);
-  //vAddCode(EO_PRINT);
-
-  vAddCode(EO_IXT_TMP_ENTRIES);
-  vAddCodeArg(EO_INTEGER,10);
-  vAddCode(EO_LESSTHAN);
-  vAddCodeLabel(EO_JMP_TRUE,"LIM_INS:"_Stz);
-
-  // -- -- -- -- -- -- -- -- --
-  vDefineLabel("LIM_TST:"_Stz);
-  
-  vAddCode(EO_IXT_TRV_BEGIN);
-  vAddCodeLabel(EO_JMP_FALSE,"LIM_RET:"_Stz); // need an assert
-
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_REVENUE);
-  vAddCode(EO_ENT_PUSHELMI0);
-  vAddCode(EO_LESSEQUAL);
-  vAddCodeLabel(EO_JMP_TRUE,"LIM_RET:"_Stz);
-
-  vAddCode(EO_IXT_DEL_ENT);
-
-  
-  // -- -- -- -- -- -- -- -- --
-  vDefineLabel("LIM_INS:"_Stz);
-
-  vAddCode(EO_ENTWRK_RESET);
-
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_REVENUE);
-  //vAddCode(EO_DUP);
-  //vAddCode(EO_PRINT);
-  vAddCode(EO_ENTWRK_APPENDELMI);
-  
-  vAddCodeArg(EO_ENTWRK_CREATEPAY, 3 * C_BYTES_PER_WORD);
-
-  vAddCode(EO_IXT_INS_ENT);
-  
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_ORDERKEY);
-  vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_ORDERDATE);
-  vAddCodeArg(EO_PAY_STORE_COLI,(i8)1);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_SHIPPRIORITY);
-  vAddCodeArg(EO_PAY_STORE_COLI,(i8)2);
-
-
-  // -- -- -- -- -- -- -- -- --
-  vDefineLabel("LIM_RET:"_Stz);
-  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
-  vAddCode(EO_RETURN);
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // SUBROUTINE: OUT_AGG  --                                        Q302 OUT_AGG
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vDefineLabel("OUT_AGG:"_Stz);
-    
-  vAddCode(EO_IXT_TRV_BEGIN);
-  vAddCodeLabel(EO_JMP_FALSE,"TRV_RET:"_Stz);
-
-  vDefineLabel("TRV_ECH:"_Stz);
-  
-  vAddCode(EO_RSB_DST_NEW);
-
-  vAddCode(EO_ENT_PUSHELMI0);
-  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_REVENUE);
-
-  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
-  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_ORDERKEY);
-  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)1);
-  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_ORDERDATE);
-  vAddCodeArg(EO_PAY_FETCH_COLI,(i8)2);
-  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_SHIPPRIORITY);
-
-
-  vDefineLabel("TRV_NXT:"_Stz);
-  vAddCode(EO_IXT_TRV_NEXT);
-  vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
-
-  vDefineLabel("TRV_RET:"_Stz);
-  //vAddCode(EO_BREAKPOINT);
-  vAddCode(EO_RETURN);
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-  // END SUBROUTINE: OUT_AGG                                        Q302 OUT_AGG
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // SUBROUTINE: CPY_DST  --                                        Q302 CPY_DST
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vDefineLabel("CPY_DST:"_Stz);
-  
-  vAddCode(EO_RSB_DST_NEW);
-  vAddCode(EO_RSB_DST_ZERO);
-
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q301_ORDERKEY);
-  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_ORDERKEY);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q301_REVENUE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_REVENUE);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q301_ORDERDATE);
-  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_ORDERDATE);
-  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q301_SHIPPRIORITY);
-  vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_SHIPPRIORITY);
-
-  vAddCode(EO_RETURN);
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-  // END SUBROUTINE: CPY_DST                                        Q302 CPY_DST
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   vDumpCode();
 }
