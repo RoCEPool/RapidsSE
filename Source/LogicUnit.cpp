@@ -1428,17 +1428,24 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // string operators
       case EO_STR_COMPARE: ArgNil(); // pop top stradr and compare str on stack
         dLU0(EO_STR_COMPARE);
-        szTopA = (Stz*) *(aiDstk--);
+        szTopB = (Stz*) *(aiDstk--);
       
-        iTopB = *(aiDstk--);
-        szTopB = (Stz*) (aiDstk-(iTopB/8 + 1));
-//        iRes = StrLib::iCompare(azTopA,azTopB);
+        iTopA = *(aiDstk--);
+        szTopA = (Stz*) (aiDstk-(iTopA/8 + 1));
         iRes = iLib_STR_COMPARE(pLU,szTopA,szTopB);
-        aiDstk -= (iTopB/8) + 2;
+        aiDstk -= (iTopA/8) + 2;
         *(++aiDstk) = iRes;
-
         break;//+endCase
         
+       // string operators
+      case EO_STR_COMPARE_a: ArgNil(); // pop top two azStr and compare
+        dLU0(EO_STR_COMPARE_a);
+        azTopB = (char*) *(aiDstk--);
+        azTopA = (char*) *(aiDstk--);
+        iRes = strcmp(azTopA,azTopB);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
       case EO_STR_PRINTADR: ArgNil(); // pop top and print iArg as addr of string
 #ifdef WITH_TRACE_LOGICUNIT
         azTopA = (char*) *(aiDstk--);
@@ -1715,11 +1722,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU1(EO_COL_SRC_PUSHONE,iArg);
         break;//+endCase
         
-      case EO_COL_SRC_PUSHONE_p: ArgGet(iArg); // push value from m_aSrcCrw (str as ptr)
+      case EO_COL_SRC_PUSHONE_a: ArgGet(iArg); // push value from m_aSrcCrw (str as ptr)
         *(++aiDstk) = -1;
         *(++aiDstk) = iArg; // col to inflate
-        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_POINTER);
-        dLU1(EO_COL_SRC_PUSHONE_p,iArg);
+        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_ADDRESS);
+        dLU1(EO_COL_SRC_PUSHONE_a,iArg);
         break;//+endCase
         
       case EO_COL_SRC_PUSHSET: ArgNil(); // push column subset from m_aSrcCrw
