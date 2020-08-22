@@ -1025,12 +1025,16 @@ void LogicUnit::vGenerateQuery302(void)
   
   m_i_Code = 0;
   
+  vSetCC(7,true);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROUTINE: QRY_302                                               Q302
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("QRY_302:"_Stz);
   vAddCode(EO_INIT);
   vAddCode(EO_ENTER);
+
+  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_302**\n"_Stz);
 
   //vAddCode(EO_TRACEON);
   vAddCodeLabel(EO_JMP_FALSE,"QRY_OUT:"_Stz);
@@ -1042,29 +1046,35 @@ void LogicUnit::vGenerateQuery302(void)
   
   vDefineLabel("NXT_SRC:"_Stz);
   vAddCode(EO_RSB_SRC_NEXT);
-  vAddCodeLabel(EO_JMP_FALSE,"QRY_END:"_Stz);
+  vAddCodeLabel(EO_JMP_FALSE,"QRY_RET:"_Stz);
 
+  
   //vAddCodeLabel(EO_CALL,"CPY_DST:"_Stz);
   vAddCodeLabel(EO_CALL,"LIM_SBR:"_Stz);
 
   vAddCodeLabel(EO_JMP,"NXT_SRC:"_Stz);
-
-  vDefineLabel("END_SRC:"_Stz);
-  
-  
+    
   // --
   vDefineLabel("QRY_OUT:"_Stz);
   vAddCodeString(EO_STR_LITERAL,"**QRY_302 EOS**"_Stz);
   vAddCode(EO_STR_PRINTADR);
   vAddCodeLabel(EO_CALL,"OUT_AGG:"_Stz);
   
+  vAddCodeLabel(EO_JMP,"QRY_END:"_Stz);
+
+  // --
+  vDefineLabel("QRY_RET:"_Stz);
+  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_302 RETURNS**\n"_Stz);
+  vAddCode(EO_EXIT);
+  vAddCode(EO_RETURN);
   
   // --
   vDefineLabel("QRY_END:"_Stz);
+  vCC(7); vAddCodeString(EO_PRINTF,"**QRY_302 COMPLETES**\n"_Stz);
   vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-  // END ROUTINE: QRY_302                                           Q302 
+  // END ROUTINE: QRY_302                                           Q302
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   
