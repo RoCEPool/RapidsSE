@@ -632,11 +632,11 @@ void LogicUnit::vGenerateQuery300(void)
       
 //  vSetCC(1,true);
 //  vSetCC(2,true);
-  vSetCC(7,true);
+//  vSetCC(7,true);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   // ROUTINE: QRY_300                                               Q300
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   vDefineLabel("QRY_300:"_Stz);
   
   vAddCode(EO_INIT);
@@ -681,9 +681,9 @@ void LogicUnit::vGenerateQuery300(void)
   vCC(1); vAddCodeString(EO_PRINTF,"Next C_CustKey %i\n"_Stz);
 
 
-  vAddCodeArg(EO_COL_SRC_PUSHONE,C_MKTSEGMENT);
+  vAddCodeArg(EO_COL_SRC_PUSHONE_a,C_MKTSEGMENT);
   vAddCodeString(EO_STR_LITERAL,"BUILDING"_Stz);
-  vAddCode(EO_STR_COMPARE);
+  vAddCode(EO_STR_COMPARE_a);
   vAddCodeLabel(EO_JMP_NOTEQUAL,"NXT_CUS:"_Stz);
 
   vCC(2); vAddCodeArg(EO_COL_SRC_PUSHONE,C_MKTSEGMENT);
@@ -797,7 +797,7 @@ void LogicUnit::vGenerateQuery301(void)
   
 //  vSetCC(1,true);
 //  vSetCC(2,true);
-  vSetCC(7,true);
+//  vSetCC(7,true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROUTINE: QRY_301  --                                           Q301
@@ -1025,7 +1025,7 @@ void LogicUnit::vGenerateQuery302(void)
   
   m_i_Code = 0;
   
-  vSetCC(7,true);
+  //vSetCC(7,true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROUTINE: QRY_302                                               Q302
@@ -1188,7 +1188,7 @@ void LogicUnit::vGenerateQuery400(void)
 //  vSetCC(0,true);
 //  vSetCC(1,true);
 //  vSetCC(2,true);
-  vSetCC(7,true);
+//  vSetCC(7,true);
 
   //vAddCode(EO_TRACEON);
 

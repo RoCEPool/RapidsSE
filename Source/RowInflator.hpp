@@ -298,6 +298,14 @@ namespace CompactBuffers
       case MN_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
         nStrSize = STRx1(uLow);
         
+        if (SI_ADDRESS == eStrInflate) {
+          aacCellValue = (char**)rayDstByte;
+          *aacCellValue = (char*)rayDataByte;
+          rayDstByte += 8;
+
+          rayDataByte += nStrSize;
+        }
+        else
         if (SI_AREA_ADR == eStrInflate) {
           memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
           rayDataByte += nStrSize;
@@ -349,6 +357,14 @@ namespace CompactBuffers
       case MN_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx2(uLow);
         
+        if (SI_ADDRESS == eStrInflate) {
+          aacCellValue = (char**)rayDstByte;
+          *aacCellValue = (char*)rayDataByte;
+          rayDstByte += 8;
+
+          rayDataByte += nStrSize;
+        }
+        else
         if (SI_AREA_ADR == eStrInflate) {
 
           memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
@@ -381,6 +397,14 @@ namespace CompactBuffers
       case MN_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx4(uLow);
         
+        if (SI_ADDRESS == eStrInflate) {
+          aacCellValue = (char**)rayDataByte;
+          *aacCellValue = (char*)rayDataByte;
+          rayDstByte += 8;
+
+          rayDataByte += nStrSize;
+        }
+        else
         if (SI_AREA_ADR == eStrInflate) {
 
           memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
@@ -411,6 +435,15 @@ namespace CompactBuffers
         
       case MN_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx8(uLow);
+        
+        if (SI_ADDRESS == eStrInflate) {
+          aacCellValue = (char**)rayDstByte;
+          *aacCellValue = (char*)rayDataByte;
+          rayDstByte += 8;
+
+          rayDataByte += nStrSize;
+        }
+        else
         if (SI_AREA_ADR == eStrInflate) {
 
           memcpy(racStrArea,rayDataByte,(size_t)nStrSize);

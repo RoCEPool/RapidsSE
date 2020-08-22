@@ -480,8 +480,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     
     
     // timer begin
-    sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
-    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+//    sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
+//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
     
 
     if (EO_CALL == eCode) {
@@ -533,8 +533,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     }
     
     // timer end
-    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
-    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+//    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
+//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
 #ifdef WITH_TRACE_LOGICUNIT
     // count no of newlines in the fragment
@@ -686,6 +686,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  /*====================================================================*/"
   "\n"
   "\n  #include <tcclib.h>" // include libc header for TCC
+  "\n  int strcmp(const char *__s1, const char *__s2);"
   "\n"
   "\n  typedef char i1;"
   "\n  typedef unsigned short u2;"
@@ -760,8 +761,8 @@ void LogicCompiler::v_DynPreliminary(void)
   "      nSize = *(aiDstk--);"
   "      aiDstk -= (nSize / 8) + 2;"
   "\n"
-  "\n  #define JumpTo(__iArg,__EO) { vRlu_ENDTMR(pLU,(i8)__EO); goto L_##__iArg; }"
-  "\n  //#define JumpTo(__iArg,__EO) goto L_##__iArg;"
+  "\n  //#define JumpTo(__iArg,__EO) { vRlu_ENDTMR(pLU,(i8)__EO); goto L_##__iArg; }"
+  "\n  #define JumpTo(__iArg,__EO) goto L_##__iArg;"
   "\n"
   "";
   
@@ -812,6 +813,8 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    i8 iRes;"
   "\n    Stz* szTopA;"
   "\n    Stz* szTopB;"
+  "\n    char* azTopA;"
+  "\n    char* azTopB;"
   "\n    Stz* szRes;"
   "\n    i8 nSize;"
   "\n    char* azSrc;"
@@ -890,6 +893,8 @@ void LogicCompiler::v_SbrPreliminary(Stz* szSbrNm)
   "\n    char* azSrc;"
   "\n    char* azDst;"
   "\n    char* azArg;"
+  "\n    char* azTopA;"
+  "\n    char* azTopB;"
   "\n    i8 iBuffer;"
   "\n    i8 iItem;"
   "\n    tET tNext;"

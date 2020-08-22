@@ -76,7 +76,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inflate column
 
-    RASSERT(SI_DEST_PST == eStrInflate);
+    RASSERT(SI_ADDRESS == eStrInflate || SI_DEST_PST == eStrInflate);
     vInflate_v2(ayDstByte,ayDataByte,aHeadLine,uHigh,uLow,eStrInflate,acStrArea);
 
 
