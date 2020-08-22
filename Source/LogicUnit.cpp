@@ -43,7 +43,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_iCounter2 = 0;
   
   for (i8 i_Local = 0; i_Local < C_LOCALS; i_Local++)
-    m_iLocals[i_Local] = C_UNKNOWN;
+    m_xRluCommon.m_iLocals[i_Local] = C_UNKNOWN;
 
    for (i8 i_Cond = 0; i_Cond < C_LOGIC_COND; i_Cond++)
      m_baCondInd[i_Cond] = false;

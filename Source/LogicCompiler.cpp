@@ -707,6 +707,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
   "\n"
   "\n  #define C_MAX_LVL_LEVELS 6"
+  "\n  #define C_LOCALS 8"
   "\n"
   "\n  enum eKC { KC_BEFORE=1, KC_SAME, KC_AFTER };"
   "\n  enum eSI { SI_ADDRESS=1, SI_AREA_ADR, SI_AREA_OFS,"

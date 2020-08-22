@@ -239,8 +239,6 @@ namespace Expressions
     REG<Object>      m_xpRegister2; // general purpose reg 2[]
     REG<Object>      m_xpRegister3; // general purpose reg 3[]
   
-    i8               m_iLocals[C_LOCALS]; // locals regs []
-    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop
   
