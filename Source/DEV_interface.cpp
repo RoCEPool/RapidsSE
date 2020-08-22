@@ -1084,7 +1084,7 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate)
+void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet)
 {
   _static_
   
@@ -1094,13 +1094,13 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate)
                                 //pLogicUnit->m_pDevAltIxt->m_aCrw,
                                 (Crw*)pLogicUnit->m_xRluCommon.m_aAltCrw,
                                 pLogicUnit->m_pDevAltRsb->m_pStreamDef,
-                                (eSI)ieStrInflate);
+                                (eSI)ieStrInflate,iaColSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate)
+void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet)
 {
   _static_
   RASSERT(0); // check with ALka
@@ -1110,13 +1110,13 @@ void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate)
   RowInflator::vInflateSet(aaiDstk,
                                 pLogicUnit->m_pDevSrcIxt->m_aCrw,
                                 pLogicUnit->m_pDevSrcRsb->m_pStreamDef,
-                                (eSI)ieStrInflate);
+                                (eSI)ieStrInflate,iaColSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate)
+void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet)
 {
   _static_
   
@@ -1125,7 +1125,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate)
   RowInflator::vInflateSet(aaiDstk,
                            (Crw*)pLogicUnit->m_xRluCommon.m_aSrcCrw,
                            pLogicUnit->m_pDevSrcRsb->m_pStreamDef,
-                           (eSI)ieStrInflate);
+                           (eSI)ieStrInflate,iaColSet);
 }
 
 /*----------------------------------------------------------------------------*/

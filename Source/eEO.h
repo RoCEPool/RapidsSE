@@ -70,6 +70,10 @@ enum eEO : u1 // expression operators
   /*    */ EO_GREATEREQUAL,     // test top >= 2nd, push result
   /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
+  // column set
+  /*    */ EO_SET_COLUMN,       // add column to set
+  /*    */ EO_SET_ITEMS,        // set number of column items
+  
   // stack operators
   /*    */ EO_INC,              // increment top, push result
   /*    */ EO_DEC,              // decrement top, push result
@@ -312,6 +316,10 @@ static Stz* aEO[]
   /*    */ "EO_NOTEQUAL"_Stz,
   /*    */ "EO_GREATEREQUAL"_Stz,
   /*    */ "EO_GREATERTHAN"_Stz,
+  
+  // column set
+  /*    */ "EO_SET_COLUMN"_Stz,
+  /*    */ "EO_SET_ITEMS"_Stz,
   
   // stack operators
   /*    */ "EO_INC"_Stz,
@@ -561,6 +569,10 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_NOTEQUAL
   { EA_NONE,    0 },  // EO_GREATEREQUAL
   { EA_NONE,    0 },  // EO_GREATERTHAN
+
+  // column set
+  { EA_INT,     8 },  // EO_SET_COLUMN
+  { EA_INT,     8 },  // EO_SET_ITEMS
 
   // stack operators
   { EA_NONE,    0 },  // EO_INC

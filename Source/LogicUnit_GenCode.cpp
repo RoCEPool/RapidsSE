@@ -96,14 +96,22 @@ void LogicUnit::vGenerateQuery100(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // inflate crw required columns
-  vAddCode(EO_PUSH_MINUS1);
-  vAddCodeArg(EO_INTEGER,L_SHIPDATE);
-  vAddCodeArg(EO_INTEGER,L_LINESTATUS);
-  vAddCodeArg(EO_INTEGER,L_RETURNFLAG);
-  vAddCodeArg(EO_INTEGER,L_TAX);
-  vAddCodeArg(EO_INTEGER,L_DISCOUNT);
-  vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
-  vAddCodeArg(EO_INTEGER,L_QUANTITY);
+//  vAddCode(EO_PUSH_MINUS1);
+//  vAddCodeArg(EO_INTEGER,L_SHIPDATE);
+//  vAddCodeArg(EO_INTEGER,L_LINESTATUS);
+//  vAddCodeArg(EO_INTEGER,L_RETURNFLAG);
+//  vAddCodeArg(EO_INTEGER,L_TAX);
+//  vAddCodeArg(EO_INTEGER,L_DISCOUNT);
+//  vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
+//  vAddCodeArg(EO_INTEGER,L_QUANTITY);
+  vAddCodeArg(EO_SET_ITEMS,7);
+  vAddCodeArg(EO_SET_COLUMN,L_SHIPDATE);
+  vAddCodeArg(EO_SET_COLUMN,L_LINESTATUS);
+  vAddCodeArg(EO_SET_COLUMN,L_RETURNFLAG);
+  vAddCodeArg(EO_SET_COLUMN,L_TAX);
+  vAddCodeArg(EO_SET_COLUMN,L_DISCOUNT);
+  vAddCodeArg(EO_SET_COLUMN,L_EXTENDEDPRICE);
+  vAddCodeArg(EO_SET_COLUMN,L_QUANTITY);
   vAddCode(EO_COL_SRC_PUSHSET);
   //vAddCode(EO_DUMP);
   
@@ -761,10 +769,14 @@ void LogicUnit::vGenerateQuery300(void)
   vAddCode(EO_PTN_CALC);
   
   
-  vAddCode(EO_PUSH_MINUS1);
-  vAddCodeArg(EO_INTEGER,O_SHIPPRIORITY);      // 7
-  vAddCodeArg(EO_INTEGER,O_ORDERDATE);         // 4
-  vAddCodeArg(EO_INTEGER,O_ORDERKEY);          // 0
+//  vAddCode(EO_PUSH_MINUS1);
+//  vAddCodeArg(EO_INTEGER,O_SHIPPRIORITY);      // 7
+//  vAddCodeArg(EO_INTEGER,O_ORDERDATE);         // 4
+//  vAddCodeArg(EO_INTEGER,O_ORDERKEY);          // 0
+  vAddCodeArg(EO_SET_ITEMS,3);
+  vAddCodeArg(EO_SET_COLUMN,O_SHIPPRIORITY);  // 7
+  vAddCodeArg(EO_SET_COLUMN,O_ORDERDATE);     // 4
+  vAddCodeArg(EO_SET_COLUMN,O_ORDERKEY);      // 0
   vAddCode(EO_COL_ALT_PUSHSET);
 
   vAddCode(EO_RSB_DST_NEW);
@@ -1284,9 +1296,12 @@ void LogicUnit::vGenerateQuery400(void)
                          "  joined L_OrderKey %i, L_LineNumber %i\n"_Stz);
   
   
-  vAddCode(EO_PUSH_MINUS1);
-  vAddCodeArg(EO_INTEGER,L_RECEIPTDATE);
-  vAddCodeArg(EO_INTEGER,L_COMMITDATE);
+//  vAddCode(EO_PUSH_MINUS1);
+//  vAddCodeArg(EO_INTEGER,L_RECEIPTDATE);
+//  vAddCodeArg(EO_INTEGER,L_COMMITDATE);
+  vAddCodeArg(EO_SET_ITEMS,2);
+  vAddCodeArg(EO_SET_COLUMN,L_RECEIPTDATE);
+  vAddCodeArg(EO_SET_COLUMN,L_COMMITDATE);
   vAddCode(EO_COL_ALT_PUSHSET);
 
   
@@ -1659,10 +1674,14 @@ void LogicUnit::vGenerateQuery600(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // inflate crw required columns
-  vAddCode(EO_PUSH_MINUS1);
-  vAddCodeArg(EO_INTEGER,L_DISCOUNT);
-  vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
-  vAddCodeArg(EO_INTEGER,L_QUANTITY);
+//  vAddCode(EO_PUSH_MINUS1);
+//  vAddCodeArg(EO_INTEGER,L_DISCOUNT);
+//  vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
+//  vAddCodeArg(EO_INTEGER,L_QUANTITY);
+  vAddCodeArg(EO_SET_ITEMS,3);
+  vAddCodeArg(EO_SET_COLUMN,L_DISCOUNT);
+  vAddCodeArg(EO_SET_COLUMN,L_EXTENDEDPRICE);
+  vAddCodeArg(EO_SET_COLUMN,L_QUANTITY);
   vAddCode(EO_COL_SRC_PUSHSET);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -825,6 +825,9 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    tET tNext;"
   "\n    struct Ent_int* aEnt_int;"
   "\n"
+  "\n    i8 iaColSet[64];"
+  "\n    i8 i_ColSet = 0;"
+  "\n"
 //  "\n    printf(\"Sizeof Ent_Int   : %d\n\",sizeof(struct Ent_int));"
 //  "\n    printf(\"Sizeof RluCommon : %d\n\",sizeof(struct RluCommon));"
   "\n"
@@ -900,6 +903,8 @@ void LogicCompiler::v_SbrPreliminary(Stz* szSbrNm)
   "\n    tET tNext;"
   "\n    struct Ent_int* aEnt_int;"
   "\n"
+  "\n    i8 iaColSet[64];"
+  "\n    i8 i_ColSet = 0;"
   "\n"
   "";
   

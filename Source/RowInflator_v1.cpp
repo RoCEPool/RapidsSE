@@ -11,12 +11,12 @@ extern EnvFlags gxEnvFlags;
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
                               StreamDef* pStreamDef,
-                              eSI eStrInflate)
+                              eSI eStrInflate, i8* iaColSet)
 {
   if (gxEnvFlags.m_iMetaClue)
-    vInflateSet_v2(aaiDstk,aHeadLine,pStreamDef,eStrInflate);
+    vInflateSet_v2(aaiDstk,aHeadLine,pStreamDef,eStrInflate,iaColSet);
   else
-    vInflateSet_v1(aaiDstk,aHeadLine,pStreamDef);
+    vInflateSet_v1(aaiDstk,aHeadLine,pStreamDef,iaColSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@ void RowInflator::vInflateRow(RowSlab* pRowSlab, HeadLine* aHeadLine)
 /* inflate set onto Dstk                                                      */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateSet_v1(i8** aaiDstk, HeadLine* aHeadLine,
-                                   StreamDef* pStreamDef)
+                                   StreamDef* pStreamDef, i8* iaColSet)
 {
   eMC  eMetaCode;
   SingleWord wWord;

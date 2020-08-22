@@ -1018,6 +1018,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iItem;
   tET tNext;
   
+  i8 iaColSet[64];
+  i8 i_ColSet = 0;
+  
   Key* aSrcKey;
   Key* aAltKey;
   Key* aWrkKey;
@@ -1372,6 +1375,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // column set
+      case EO_SET_COLUMN: ArgGet(iArg); // add column to set
+        dLU1(EO_SET_COLUMN,iArg);
+        iaColSet[--i_ColSet] = iArg;
+        *(++aiDstk) = iArg;
+        break;//+endCase
+
+      case EO_SET_ITEMS: ArgGet(iArg); // set number of column items
+        dLU1(EO_SET_ITEMS,iArg);
+        i_ColSet = iArg;
+        iaColSet[i_ColSet] = -1;
+        *(++aiDstk) = -1;
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // stack operators
       case EO_INC: ArgNil(); // increment top, push result
         iTopA = *aiDstk;
@@ -1705,12 +1723,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_COL_ALT_PUSHONE: ArgGet(iArg); // push column value from m_aAltCrw
         *(++aiDstk) = -1;
         *(++aiDstk) = iArg; // col to inflate
-        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST);
+        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST,iaColSet);
         dLU1(EO_COL_ALT_PUSHONE,iArg);
         break;//+endCase
       
       case EO_COL_ALT_PUSHSET: ArgNil(); // push column subset from m_aAltCrw
-        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST);
+        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST,iaColSet);
         dLU0(EO_COL_ALT_PUSHSET);
         break;//+endCase
     
@@ -1718,19 +1736,19 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_COL_SRC_PUSHONE: ArgGet(iArg); // push column value from m_aSrcCrw
         *(++aiDstk) = -1;
         *(++aiDstk) = iArg; // col to inflate
-        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST);
+        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST,iaColSet);
         dLU1(EO_COL_SRC_PUSHONE,iArg);
         break;//+endCase
         
       case EO_COL_SRC_PUSHONE_a: ArgGet(iArg); // push value from m_aSrcCrw (str as ptr)
         *(++aiDstk) = -1;
         *(++aiDstk) = iArg; // col to inflate
-        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_ADDRESS);
+        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_ADDRESS,iaColSet);
         dLU1(EO_COL_SRC_PUSHONE_a,iArg);
         break;//+endCase
         
       case EO_COL_SRC_PUSHSET: ArgNil(); // push column subset from m_aSrcCrw
-        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST);
+        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST,iaColSet);
         dLU0(EO_COL_SRC_PUSHSET);
         break;//+endCase
       
