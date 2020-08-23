@@ -269,6 +269,16 @@ i8 LogicUnit::iDynFun(i8 nOuterArgs, i8 iOuterArg0)
 }
 
 /*----------------------------------------------------------------------------*/
+/* optimise with super fragent                                                */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vEndOptimise(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  m_bSuperFrag = false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* diarise dynamic routine entry                                              */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vEnter(void)
@@ -419,6 +429,23 @@ Stz* LogicUnit::szLabelNm(i8 i_Label)
 }
 
 /*----------------------------------------------------------------------------*/
+/* optimise with super fragent                                                */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vOptimise(eEO eOpt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  if (EO_NONE == eOpt) {
+    m_bSuperFrag = false;
+    return;
+  }
+  
+  vAddCode(eOpt);
+  
+  m_bSuperFrag = true;
+}
+
+//*----------------------------------------------------------------------------*/
 /* return query fragment number                                               */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iQueryFragment(void)
@@ -468,6 +495,9 @@ void LogicUnit::vAddCode(eEO eCode)
   
   ASSERT(0 == EoArgs[eCode].m_nArgBytes);
   
+  if (m_bSuperFrag)
+    return;
+  
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
     return;
@@ -486,6 +516,9 @@ void LogicUnit::vAddCodeArg(eEO eCode, i8 iArg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   ASSERT(8 == EoArgs[eCode].m_nArgBytes);
+  
+  if (m_bSuperFrag)
+    return;
   
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
@@ -509,6 +542,9 @@ void LogicUnit::vAddCodeArg(eEO eCode,Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  if (m_bSuperFrag)
+    return;
+  
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
     return;
@@ -529,6 +565,9 @@ void LogicUnit::vAddCodeArg(eEO eCode, Stz* szLiteral)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   ASSERT(EA_DATE == EoArgs[eCode].m_eArgument);
+  
+  if (m_bSuperFrag)
+    return;
   
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
@@ -551,6 +590,9 @@ void LogicUnit::vAddCodeArg(eEO eCode, Stz* szLiteral)
 void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  if (m_bSuperFrag)
+    return;
   
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
@@ -591,6 +633,9 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  if (m_bSuperFrag)
+    return;
+  
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
     return;
@@ -609,6 +654,9 @@ void LogicUnit::vAddCodeString(eEO eCode, Stz* szString)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   ASSERT(-1 == EoArgs[eCode].m_nArgBytes);
+  
+  if (m_bSuperFrag)
+    return;
   
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
@@ -691,6 +739,9 @@ i8 LogicUnit::iDecodeLabel(Stz* szLabelNm)
 void LogicUnit::vDefineLabel(Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  if (m_bSuperFrag)
+    return;
   
   // has this label been used yet?
   i8 i_Label = iFindLabel(szLabelNm);
@@ -2389,9 +2440,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_SUPER_Q100: ArgNil(); // not yet implemented
+      case EO_SUPER_Q100: ArgNil(); // super frag for Q100
         aiPayload[Q100_SUM_QTY] =
-          aiPayload[Q100_SUM_QTY] + aiLocals[Q1_LOCAL_QUANTITY];
+          aiLocals[Q1_LOCAL_QUANTITY] + aiPayload[Q100_SUM_QTY];
+        
+        aiPayload[Q100_SUM_BASE_PRICE] =
+          aiLocals[Q1_LOCAL_EXTENDEDPRICE] + aiPayload[Q100_SUM_BASE_PRICE];
         break;//+endCase
 
       case EO_SUPER_Z001: ArgNil(); // not yet implemented

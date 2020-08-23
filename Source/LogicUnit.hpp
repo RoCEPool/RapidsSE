@@ -172,6 +172,7 @@ namespace Expressions
     eEO* aCodeArg(i8 i_Code);
     i8   iCodeArg(i8 i_Code);
     i8   iDynFun(i8 nOuterArgs, i8 iOuterArg0);
+    void vEndOptimise(void);
     void vEnter(void);
     void vExit(void);
     i8   iFindLabel(i8 i_Code);
@@ -182,6 +183,7 @@ namespace Expressions
     bool bLabelIsSbr(i8 i_Label);
     i8   nLabels(void);
     Stz* szLabelNm(i8 i_Label);
+    void vOptimise(eEO eOpt);
     i8   iQueryFragment(void);
     void vSetCC(i8 i_Cond, bool bState);
 
