@@ -1123,7 +1123,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8* aiDstk = aRluCommon->m_iaDataStack;
   *aiDstk = 0xFFFFFFFFFFFFFFFF;
 
-  i8* aiLocals = aRluCommon->m_iaLocals - 1;
+  i8* aiLocals = aRluCommon->m_iaLocals;
   i8* aiPayload;
 
   if (nOuterArgs) {
@@ -2441,11 +2441,28 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_SUPER_Q100: ArgNil(); // super frag for Q100
+        aiLocals = aRluCommon->m_iaLocals;
         aiPayload[Q100_SUM_QTY] =
-          aiLocals[Q1_LOCAL_QUANTITY] + aiPayload[Q100_SUM_QTY];
+          aiPayload[Q100_SUM_QTY]
+            //+ iLib_GET_LOCAL(pLU, Q1_LOCAL_QUANTITY);
+            + aiLocals[Q1_LOCAL_QUANTITY];
         
         aiPayload[Q100_SUM_BASE_PRICE] =
-          aiLocals[Q1_LOCAL_EXTENDEDPRICE] + aiPayload[Q100_SUM_BASE_PRICE];
+          aiPayload[Q100_SUM_BASE_PRICE]
+            + aiLocals[Q1_LOCAL_EXTENDEDPRICE];
+
+        aiPayload[Q100_SUM_DISC_PRICE] =
+           aiPayload[Q100_SUM_DISC_PRICE]
+             + ( aiLocals[Q1_LOCAL_EXTENDEDPRICE]
+                   * (100 - aiLocals[Q1_LOCAL_DISCOUNT]) ) / 100;
+        
+        aiPayload[Q100_SUM_CHARGE] =
+           aiPayload[Q100_SUM_CHARGE]
+             + (   ( aiLocals[Q1_LOCAL_EXTENDEDPRICE]
+                       * (100 - aiLocals[Q1_LOCAL_DISCOUNT]) )
+                 * (100 + aiLocals[Q1_LOCAL_TAX]) )
+                / 10000 ;
+        
         break;//+endCase
 
       case EO_SUPER_Z001: ArgNil(); // not yet implemented

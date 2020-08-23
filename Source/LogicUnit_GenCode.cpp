@@ -209,55 +209,51 @@ void LogicUnit::vGenerateQuery100(void)
 
   vOptimise(EO_SUPER_Q100); // +++++++++++++++++++++++++++++++++++++++++++++++++
   
+    vAddCode(EO_BREAKPOINT);
+
     // sum(L_QUANTITY) -> Q100_SUM_QTY
     vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_QTY);
     vAddCodeArg(EO_PUSH_LOCALI,Q1_LOCAL_QUANTITY);
     vAddCode(EO_ADD);
     vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_QTY);
-  
+
     // SUM(L_EXTENDEDPRICE) -> Q100_SUM_BASE_PRICE
     vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_BASE_PRICE);
     vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_EXTENDEDPRICE);
     vAddCode(EO_ADD);
     vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_BASE_PRICE);
   
+    // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) -> Q100_SUM_DISC_PRICE
+    vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_EXTENDEDPRICE);
+    vAddCodeArg(EO_INTEGER,100);
+    vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_DISCOUNT);
+    vAddCode(EO_SUBTRACT);
+    vAddCode(EO_MULTIPLY);
+    vAddCodeArg(EO_INTEGER,100);
+    vAddCode(EO_DIVIDE);
+    vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_DISC_PRICE);
+    vAddCode(EO_ADD);
+    vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_DISC_PRICE);
+  
+
+    // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) -> Q100_SUM_CHARGE
+    vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_EXTENDEDPRICE);
+    vAddCodeArg(EO_INTEGER,100);
+    vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_DISCOUNT);
+    vAddCode(EO_SUBTRACT);
+    vAddCode(EO_MULTIPLY);
+    vAddCodeArg(EO_INTEGER,100);
+    vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_TAX);
+    vAddCode(EO_ADD);
+    vAddCode(EO_MULTIPLY);
+    vAddCodeArg(EO_INTEGER,10000);
+    vAddCode(EO_DIVIDE);
+    vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_CHARGE);
+    vAddCode(EO_ADD);
+    vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_CHARGE);
+  
   vEndOptimise(); // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) -> Q100_SUM_DISC_PRICE
-  vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_EXTENDEDPRICE);
-  vAddCodeArg(EO_INTEGER,100);
-  vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_DISCOUNT);
-  vAddCode(EO_SUBTRACT);
-  vAddCode(EO_MULTIPLY);
-  vAddCodeArg(EO_INTEGER,100);
-  vAddCode(EO_DIVIDE);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_DISC_PRICE);
-  vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_DISC_PRICE);
-  
-  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) -> Q100_SUM_CHARGE
-  vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_EXTENDEDPRICE);
-  
-  vAddCodeArg(EO_INTEGER,100);
-  vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_DISCOUNT);
-  vAddCode(EO_SUBTRACT);
-  
-  vAddCode(EO_MULTIPLY);
-  
-  vAddCodeArg(EO_INTEGER,100);
-  vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_TAX);
-  vAddCode(EO_ADD);
-  
-  vAddCode(EO_MULTIPLY);
-  
-  vAddCodeArg(EO_INTEGER,10000);
-  vAddCode(EO_DIVIDE);
-  
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_CHARGE);
-  vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_CHARGE);
-  
   // COUNT(L_QUANTITY) -> Q100_COUNT_QTY
   vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_QUANTITY);
   vAddCode(EO_ISNULL);
