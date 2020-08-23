@@ -163,6 +163,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_CRW_SRC_TEST,     // test if there is a crw buffer
   
   // entry
+  /*    */ EO_ENT_FINDI,        // find entry with int key
   /*    */ EO_ENT_NEXT,         // move to next m_pEnt
   /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
   /*    */ EO_ENT_PUSH,         // push entry
@@ -429,6 +430,7 @@ static Stz* aEO[]
   /*    */ "EO_CRW_SRC_TEST"_Stz,
   
   // entry
+  /*    */ "EO_ENT_FINDI"_Stz,
   /*    */ "EO_ENT_NEXT"_Stz,
   /*    */ "EO_ENT_POSPRIOR"_Stz,
   /*    */ "EO_ENT_PUSH"_Stz,
@@ -701,6 +703,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_CRW_SRC_TEST
   
   // entry
+  { EA_NONE,    0 },  // EO_ENT_FINDI
   { EA_NONE,    0 },  // EO_ENT_NEXT
   { EA_NONE,    0 },  // EO_ENT_POSPRIOR
   { EA_NONE,    0 },  // EO_ENT_PUSH
