@@ -251,7 +251,19 @@ enum eEO : u1 // expression operators
   /*    */ EO_RSB_SRC_PUSHCOLI, // push src column (integer)
   /*    */ EO_RSB_SRC_PUSHCOLS, // push src column (string)
   /*    */ EO_RSB_ALT_PUSHCOLI, // push alt column
-  
+
+  // super fragments
+  /*    */ EO_SUPER_Q100,       // super fragment Q100
+  /*    */ EO_SUPER_Z001,       // super fragment
+  /*    */ EO_SUPER_Z002,       // super fragment
+  /*    */ EO_SUPER_Z003,       // super fragment
+  /*    */ EO_SUPER_Z004,       // super fragment
+  /*    */ EO_SUPER_Z005,       // super fragment
+  /*    */ EO_SUPER_Z006,       // super fragment
+  /*    */ EO_SUPER_Z007,       // super fragment
+  /*    */ EO_SUPER_Z008,       // super fragment
+  /*    */ EO_SUPER_Z009,       // super fragment
+
   /*    */ EO_ENUMS
 };
 
@@ -501,6 +513,18 @@ static Stz* aEO[]
   /*    */ "EO_RSB_SRC_PUSHCOLI"_Stz,
   /*    */ "EO_RSB_SRC_PUSHCOLS"_Stz,
   /*    */ "EO_RSB_ALT_PUSHCOLI"_Stz,
+  
+  // super fragments
+  /*    */ "EO_SUPER_Q100"_Stz,
+  /*    */ "EO_SUPER_Z001"_Stz,
+  /*    */ "EO_SUPER_Z002"_Stz,
+  /*    */ "EO_SUPER_Z003"_Stz,
+  /*    */ "EO_SUPER_Z004"_Stz,
+  /*    */ "EO_SUPER_Z005"_Stz,
+  /*    */ "EO_SUPER_Z006"_Stz,
+  /*    */ "EO_SUPER_Z007"_Stz,
+  /*    */ "EO_SUPER_Z008"_Stz,
+  /*    */ "EO_SUPER_Z009"_Stz,
   
   /*    */ "ENUMS"_Stz
 };
@@ -757,6 +781,17 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLI
   { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLS
   { EA_SUBSCR,  8 },  // EO_RSB_ALT_PUSHCOLI
+
+  { EA_NONE,    0 },  // super fragment Q100
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
 
   // -- end --
   { EA_NONE,    0 },  // EO_ENUMS

@@ -279,6 +279,8 @@ namespace Expressions
 
     i8 m_iNextCond;
   
+    bool m_bSuperFrag;
+  
     // must be last
     Footer m_xFooter;
   

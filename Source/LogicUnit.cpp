@@ -49,7 +49,7 @@ LogicUnit::LogicUnit(Task* pTask)
      m_baCondInd[i_Cond] = false;
   
   m_iNextCond = C_UNKNOWN;
-  
+  m_bSuperFrag = false;
   m_aLowerEntry = nullptr;
   m_aUpperEntry = nullptr;
   m_pEntBufferOuter = nullptr;
@@ -2386,6 +2386,47 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes = iDev_RSB_PUSHCOLI(pLU,aRluCommon->m_pDevAltRsb,iArg);
         dLU2(EO_RSB_ALT_PUSHCOLI,iArg,iRes);
         *(++aiDstk) = iRes;
+        break;//+endCase
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_SUPER_Q100: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z001: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z002: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z003: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z004: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z005: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z006: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z007: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z008: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z009: ArgNil(); // not yet implemented
+        NEVER_REACH;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
