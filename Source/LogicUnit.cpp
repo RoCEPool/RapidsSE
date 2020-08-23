@@ -2029,7 +2029,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENTWRK_RESET: ArgNil(); // reset m_oEntWrk
         dLU0(EO_ENTWRK_RESET);
-        vDev_ENTWRK_RESET(pLU,aRluCommon->m_pDevSrcRsb);
+        //vDev_ENTWRK_RESET(pLU,aRluCommon->m_pDevSrcRsb);
+        memset(aRluCommon->m_aWrkEnt,0,sizeof(struct Ent_int));
         break;//+endCase
                               
       case EO_ENTWRK_SETINTELM: ArgNil(); // append next element value (int)
