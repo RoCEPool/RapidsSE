@@ -38,6 +38,7 @@ struct Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_TRV_BEGIN(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_TRV_NEXT(void* aLU, void* aIXT);
 
+i8*  aDev_PAY_ADDRESS(void* aLU, void* aIXT);
 i8   iDev_PAY_FETCH_COLI(void* aLU, void* aIXT, i8 iArg);
 Stz* szDev_PAY_FETCH_COLS(void* aLU, void* aIXT, i8 iArg); 
 void vDev_PAY_STORE_COLI(void* aLU, void* aIXT, i8 iArg, i8 iTop);

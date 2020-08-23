@@ -68,6 +68,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "aDev_IXT_TRV_BEGIN"_Stz,     (const void *) aDev_IXT_TRV_BEGIN     },
   { "aDev_IXT_TRV_NEXT"_Stz,      (const void *) aDev_IXT_TRV_NEXT      },
       
+  { "aDev_PAY_ADDRESS"_Stz,       (const void *) aDev_PAY_ADDRESS       },
   { "iDev_PAY_FETCH_COLI"_Stz,    (const void *) iDev_PAY_FETCH_COLI    },
   { "szDev_PAY_FETCH_COLS"_Stz,   (const void *) szDev_PAY_FETCH_COLS   },
   { "vDev_PAY_STORE_COLI"_Stz,    (const void *) vDev_PAY_STORE_COLI    },
@@ -808,6 +809,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n"
   "\n    i8* aiDstk = nullptr;"
   "\n    i8* aiLocals;"
+  "\n    i8* aiPayload;"
   "\n"
   "\n    i8 iTopA;"
   "\n    i8 iTopB;"
@@ -905,6 +907,7 @@ void LogicCompiler::v_SbrPreliminary(Stz* szSbrNm)
   "\n    tET tNext;"
   "\n    struct Ent_int* aEnt_int;"
   "\n    i8* aiLocals;"
+  "\n    i8* aiPayload;"
   "\n"
   "\n    i8 iaColSet[64];"
   "\n    i8 i_ColSet = 0;"

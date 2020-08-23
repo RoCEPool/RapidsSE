@@ -659,6 +659,20 @@ Ent_int* aDev_IXT_TRV_NEXT(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of payload                                                     */
+/*----------------------------------------------------------------------------*/
+i8* aDev_PAY_ADDRESS(void* aLU, void* aIXT)
+{
+  _static_
+  
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
+
+  i8* aPayload = pDevIXT->m_aEnt->aiPayCell(0);
+    
+  return aPayload;
+}
+
+/*----------------------------------------------------------------------------*/
 /* fetch a column from entry payload                                          */
 /*----------------------------------------------------------------------------*/
 i8 iDev_PAY_FETCH_COLI(void* aLU, void* aIXT, i8 iArg)

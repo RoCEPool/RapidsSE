@@ -1061,7 +1061,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   *aiDstk = 0xFFFFFFFFFFFFFFFF;
 
   i8* aiLocals;
-  
+  i8* aiPayload;
+
   if (nOuterArgs) {
     *(++aiDstk) = iOuterArg0;
   }
@@ -2133,8 +2134,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
+      case EO_PAY_ADDRESS: ArgNil(); // get payload address
+        dLU0(EO_PAY_ADDRESS);
+        aiPayload = aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt);
+        break;//+endCase
+
       case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from entry payload
         iRes = iDev_PAY_FETCH_COLI(pLU,aRluCommon->m_pDevTmpIxt,iArg);
+        if (iRes != aiPayload[iArg])
+          printf("EO_PAY_FETCH_COLI does not match\n");
         dLU2(EO_PAY_FETCH_COLI,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase

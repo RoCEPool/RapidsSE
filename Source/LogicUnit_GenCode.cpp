@@ -127,7 +127,7 @@ void LogicUnit::vGenerateQuery100(void)
 //  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_QUANTITY);
   
   // call the filter subroutine
-  vDefineLabel("FILTER:"_Stz);
+  // vDefineLabel("FILTER:"_Stz);
   vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
   vAddCodeLabel(EO_JMP_FALSE, "PROCESSROW_DONE:"_Stz);
   
@@ -162,6 +162,8 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_IXT_INS_ENT);
   //vAddCode(EO_IXT_DUMP);
   
+  vAddCode(EO_PAY_ADDRESS);
+  
   // store L_RETURNFLAG -> Q100_RETURNFLAG
   vAddCodeArg(EO_PUSH_LOCALS,Q1_LOCAL_RETURNFLAG);
   vAddCodeArg(EO_PAY_STORE_COLS, (i8)Q100_RETURNFLAG);
@@ -190,7 +192,9 @@ void LogicUnit::vGenerateQuery100(void)
   
   // FOUND:
   vDefineLabel("FOUND"_Stz);
-  
+ 
+  vAddCode(EO_PAY_ADDRESS);
+
   // sum(L_QUANTITY) -> Q100_SUM_QTY
   vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_QTY);
   vAddCodeArg(EO_PUSH_LOCALI,Q1_LOCAL_QUANTITY);
@@ -326,6 +330,8 @@ void LogicUnit::vGenerateQuery100(void)
   // new a dst rsb row
   vAddCode(EO_RSB_DST_NEW);
   
+  vAddCode(EO_PAY_ADDRESS);
+
   vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q100_RETURNFLAG);
   vAddCodeArg(EO_RSB_DST_POPCOLS,(i8)Q101_RETURNFLAG);
   
@@ -432,6 +438,8 @@ void LogicUnit::vGenerateQuery103(void)
   vAddCode(EO_IXT_INS_ENT);
   //vAddCode(EO_IXT_DUMP);
   
+  vAddCode(EO_PAY_ADDRESS);
+  
   // store Q101_RETURNFLAG -> Q101_RETURNFLAG
   vAddCodeArg(EO_RSB_SRC_PUSHCOLS, (i8)Q101_RETURNFLAG);
   vAddCodeArg(EO_PAY_STORE_COLS, (i8)Q101_RETURNFLAG);
@@ -483,6 +491,8 @@ void LogicUnit::vGenerateQuery103(void)
   // FOUND:
   vDefineLabel("FOUND"_Stz);
   
+  vAddCode(EO_PAY_ADDRESS);
+
   // add Q101_SUM_QTY
   vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q101_SUM_QTY);
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, (i8)Q101_SUM_QTY);
@@ -560,6 +570,8 @@ void LogicUnit::vGenerateQuery103(void)
   
   // new a dst rsb row
   vAddCode(EO_RSB_DST_NEW);
+  
+  vAddCode(EO_PAY_ADDRESS);
   
   // Q101_RETURNFLAG -> Q104_RETURNFLAG
   vAddCodeArg(EO_PAY_FETCH_COLS, (i8)Q101_RETURNFLAG);
@@ -1376,6 +1388,8 @@ void LogicUnit::vGenerateQuery400(void)
   
   vAddCode(EO_IXT_INS_ENT);
   
+  vAddCode(EO_PAY_ADDRESS);
+
   vAddCode(EO_PUSH_0);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
   
@@ -1403,6 +1417,8 @@ void LogicUnit::vGenerateQuery400(void)
   vAddCode(EO_ENT_PUSHELMS0);
   vAddCodeArg(EO_RSB_DST_POPCOLS, Q400_ORDERPRIORITY);
 
+  vAddCode(EO_PAY_ADDRESS);
+  
   vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q400_ORDERCOUNT);
 
@@ -1482,6 +1498,8 @@ void LogicUnit::vGenerateQuery401(void)
   //                                                                Q401 SUP_AGR
   vDefineLabel("SUP_AGR:"_Stz);
 
+  vAddCode(EO_PAY_ADDRESS);
+
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q400_ORDERCOUNT);
   vAddCodeArg(EO_PAY_FETCH_COLI,  (i8)0);
   vAddCode(EO_ADD);
@@ -1525,6 +1543,8 @@ void LogicUnit::vGenerateQuery401(void)
   
   vAddCode(EO_IXT_INS_ENT);
   
+  vAddCode(EO_PAY_ADDRESS);
+
   vAddCode(EO_PUSH_0);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
   
@@ -1545,6 +1565,8 @@ void LogicUnit::vGenerateQuery401(void)
   vDefineLabel("TRV_ECH:"_Stz);
 
   vAddCode(EO_RSB_DST_NEW);
+
+  vAddCode(EO_PAY_ADDRESS);
 
   vAddCode(EO_ENT_PUSHELMS0);
   vAddCodeArg(EO_RSB_DST_POPCOLS, Q401_ORDERPRIORITY);

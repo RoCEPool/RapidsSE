@@ -213,6 +213,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_IXT_POS_ALTBYWRK, // position alt ixt using entwrk.key
 
   // pay load
+  /*    */ EO_PAY_ADDRESS,      // get payload address
   /*    */ EO_PAY_FETCH_COLI,   // fetch a column from entry payload
   /*    */ EO_PAY_FETCH_COLS,   // fetch a column from entry payload
   /*    */ EO_PAY_STORE_COLI,   // store a column into entry payload
@@ -462,6 +463,7 @@ static Stz* aEO[]
   /*    */ "EO_IXT_POS_ALTBYWRK"_Stz,
   
   // pay load
+  /*    */ "EO_PAY_ADDRESS"_Stz,
   /*    */ "EO_PAY_FETCH_COLI"_Stz,
   /*    */ "EO_PAY_FETCH_COLS"_Stz,
   /*    */ "EO_PAY_STORE_COLI"_Stz,
@@ -717,6 +719,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_POS_ALTBYWRK
 
   // pay load
+  { EA_NONE,    0 },  // EO_PAY_ADDRESS
   { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLI
   { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLS
   { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLI
