@@ -60,7 +60,7 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
 
   i8 m_iaDataStack[C_LOGIC_STACK];
   
-  i8 m_iLocals[C_LOCALS]; // locals regs []
+  i8 m_iaLocals[C_LOCALS]; // locals regs []
   
 
 

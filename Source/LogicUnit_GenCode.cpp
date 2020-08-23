@@ -112,18 +112,19 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCodeArg(EO_SET_COLUMN,L_DISCOUNT);
   vAddCodeArg(EO_SET_COLUMN,L_EXTENDEDPRICE);
   vAddCodeArg(EO_SET_COLUMN,L_QUANTITY);
-  vAddCode(EO_COL_SRC_PUSHSET);
+  //vAddCode(EO_COL_SRC_PUSHSET);
+  vAddCode(EO_SET_LOCALS_SRC);
   //vAddCode(EO_DUMP);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop inflated columns into the locals register
-  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_SHIPDATE);
-  vAddCodeArg(EO_POP_LOCALS,Q1_LOCAL_LINESTATUS);
-  vAddCodeArg(EO_POP_LOCALS,Q1_LOCAL_RETURNFLAG);
-  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_TAX);
-  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_DISCOUNT);
-  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_EXTENDEDPRICE);
-  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_QUANTITY);
+//  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_SHIPDATE);
+//  vAddCodeArg(EO_POP_LOCALS,Q1_LOCAL_LINESTATUS);
+//  vAddCodeArg(EO_POP_LOCALS,Q1_LOCAL_RETURNFLAG);
+//  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_TAX);
+//  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_DISCOUNT);
+//  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_EXTENDEDPRICE);
+//  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_QUANTITY);
   
   // call the filter subroutine
   vDefineLabel("FILTER:"_Stz);

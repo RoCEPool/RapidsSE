@@ -43,7 +43,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_iCounter2 = 0;
   
   for (i8 i_Local = 0; i_Local < C_LOCALS; i_Local++)
-    m_xRluCommon.m_iLocals[i_Local] = C_UNKNOWN;
+    m_xRluCommon.m_iaLocals[i_Local] = C_UNKNOWN;
 
    for (i8 i_Cond = 0; i_Cond < C_LOGIC_COND; i_Cond++)
      m_baCondInd[i_Cond] = false;
@@ -1060,6 +1060,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8* aiDstk = aRluCommon->m_iaDataStack;
   *aiDstk = 0xFFFFFFFFFFFFFFFF;
 
+  i8* aiLocals;
+  
   if (nOuterArgs) {
     *(++aiDstk) = iOuterArg0;
   }
@@ -1391,12 +1393,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_SET_LOCALS_ALT: ArgNil(); // inflate alt columns direct into locals
         dLU0(EO_SET_LOCALS_ALT);
-        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_ADDRESS,iaColSet);
+        aiLocals = aRluCommon->m_iaLocals - 1;
+        vDev_ALT_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,iaColSet);
         break;//+endCase
 
       case EO_SET_LOCALS_SRC: ArgNil(); // inflate src columns direct into locals
         dLU0(EO_SET_LOCALS_SRC);
-        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_ADDRESS,iaColSet);
+        aiLocals = aRluCommon->m_iaLocals - 1;
+        vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,iaColSet);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

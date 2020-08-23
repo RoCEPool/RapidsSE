@@ -153,7 +153,7 @@ void vLib_SET_LOCAL(void* pLU, i8 iArg, i8 iTopA)
   
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
   struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
-  aRluCommon->m_iLocals[iArg] = iTopA;
+  aRluCommon->m_iaLocals[iArg] = iTopA;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +165,10 @@ i8 iLib_GET_LOCAL(void* pLU, i8 iArg)
   
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
   struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
-  return aRluCommon->m_iLocals[iArg];
+  
+  i8 iLcl = aRluCommon->m_iaLocals[iArg];
+  
+  return iLcl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +180,11 @@ char* sLib_GET_LOCALS(void* pLU, i8 iArg)
   
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
   struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
-  return (char*)&aRluCommon->m_iLocals[iArg];
+  //return (char*)&aRluCommon->m_iaLocals[iArg];
+  
+  char* azLcl = (char*)aRluCommon->m_iaLocals[iArg];
+  
+  return azLcl;
 }
 
 /*----------------------------------------------------------------------------*/
