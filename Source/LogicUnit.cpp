@@ -1051,6 +1051,10 @@ i8 giaVectorSet[] =
 /* 08 */ Q1_LOCAL_RETURNFLAG,
 /* 09 */ Q1_LOCAL_LINESTATUS,
 /* 10 */ C_UNKNOWN,
+  
+/* 11 */ Q101_RETURNFLAG,
+/* 12 */ Q101_LINESTATUS,
+/* 13 */ C_UNKNOWN,
 };
 
 /*----------------------------------------------------------------------------*/
@@ -1737,8 +1741,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // key
-      case EO_KEY_LCL2C_TO_I: ArgGet(iArg); // convert two varchar(1) to int
+      case EO_KEY_LCL2C_TO_I: ArgGet(iArg); // convert two lcl varchar(1) to int
         dLU1(EO_KEY_LCL2C_TO_I,iArg);
+        azTopA = (char*)aiLocals[giaVectorSet[iArg]];
+        azTopB = (char*)aiLocals[giaVectorSet[iArg+1]];
+        iRes = *azTopA * 256 + *azTopB;
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
+      case EO_KEY_RSB2C_TO_I: ArgGet(iArg); // convert two rsb varchar(1) to int
+        dLU1(EO_KEY_RSB2C_TO_I,iArg);
         azTopA = (char*)aiLocals[giaVectorSet[iArg]];
         azTopB = (char*)aiLocals[giaVectorSet[iArg+1]];
         iRes = *azTopA * 256 + *azTopB;

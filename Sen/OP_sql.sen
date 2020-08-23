@@ -348,6 +348,7 @@
       100 LogicUnit[].genCode
       logicCompiler[].new
       LogicCompiler[].compile
+      //ray100
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
       indexDef[].delete
     endof
@@ -357,6 +358,7 @@
       103 LogicUnit[].genCode
       logicCompiler[].new
       LogicCompiler[].compile
+      //ray100
       idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
       indexDef[].delete
     endof

@@ -128,7 +128,8 @@ enum eEO : u1 // expression operators
 
   // key
   /*    */ EO_KEY_LCL2C_TO_I,   // convert two local varchar(1) to int
-  
+  /*    */ EO_KEY_RSB2C_TO_I,   // convert two rsb varchar(1) to int
+
   // partitioning
   /*    */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
   /*    */ EO_PTN_PUSH,         // push i_Ptn
@@ -393,7 +394,8 @@ static Stz* aEO[]
   
   // key
   /*    */ "EO_KEY_LCL2C_TO_I"_Stz,
-  
+  /*    */ "EO_KEY_RSB2C_TO_I"_Stz,
+
   // partitioning
   /*    */ "EO_PTN_CALC"_Stz,
   /*    */ "EO_PTN_PUSH"_Stz,
@@ -664,6 +666,7 @@ static EoArg EoArgs[]
 
   // key
   { EA_INT,     8 },  // EO_KEY_LCL2C_TO_I
+  { EA_INT,     8 },  // EO_KEY_RSB2C_TO_I
 
   // partitioning
   { EA_NONE,    0 },  // EO_PTN_CALC
