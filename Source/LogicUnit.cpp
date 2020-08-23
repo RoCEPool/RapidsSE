@@ -1831,8 +1831,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // entry
       case EO_ENT_NEXT: ArgNil(); // move to next m_pEnt
         dLU0(EO_ENT_NEXT);
-        iRes = iDev_ENT_NEXT(pLU,aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = iRes;
+        aRluCommon->m_aTmpEnt = aDev_ENT_NEXT(pLU,aRluCommon->m_pDevTmpIxt);
+        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
         break;//+endCase
         
       case EO_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
@@ -2137,7 +2137,44 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // pay load
       case EO_PAY_ADDRESS: ArgNil(); // get payload address
         dLU0(EO_PAY_ADDRESS);
-        aiPayload = aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt);
+//        aiPayload = aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt);
+//      {
+//        i8* aiCheck = 0;
+//
+//        if (aRluCommon->m_aTmpEnt->Ref.m_uKind) {
+//          aiCheck = (i8*) ( (char*)aRluCommon->m_aTmpEnt
+//                                     + sizeof(struct Ent_int)
+//                                     + 8
+//                           );
+//        }
+//        else {
+//          aiCheck = (i8*) ( (char*)aRluCommon->m_aTmpEnt
+//                                     + sizeof(struct Ent_int)
+//                                     + aRluCommon->m_aTmpEnt->m_iIntElm0
+//                                     + 8
+//                           );
+//        }
+//        if (aiCheck != aiPayload) {
+//          printf("EO_PAY_ADDRESS does not match %p v %p\n",aiPayload,aiCheck);
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
+//      }
+
+        
+        if (aRluCommon->m_aTmpEnt->Ref.m_uKind) {
+          aiPayload = (i8*) ( (char*)aRluCommon->m_aTmpEnt
+                                     + sizeof(struct Ent_int)
+                                     + 8
+                           );
+        }
+        else {
+          aiPayload = (i8*) ( (char*)aRluCommon->m_aTmpEnt
+                                     + sizeof(struct Ent_int)
+                                     + aRluCommon->m_aTmpEnt->m_iIntElm0
+                                     + 8
+                           );
+        }
         break;//+endCase
 
       case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from entry payload

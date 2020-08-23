@@ -150,7 +150,7 @@ i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* move to next m_pEnt                                                        */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_NEXT(void* aLU, void* aIXT)
+Ent_int* aDev_ENT_NEXT(void* aLU, void* aIXT)
 {
   _static_
   
@@ -160,12 +160,7 @@ i8 iDev_ENT_NEXT(void* aLU, void* aIXT)
   
   pDevIxt->m_aEnt = EntBuffer::pMoveToNextEntry(pDevIxt->m_aEnt,
                                                 &pDevIxt->m_pEntBuffer);
-  if (pDevIxt->m_aEnt)
-    iRes = 1;
-  else
-    iRes = 0;
-
-  return iRes;
+  return (Ent_int*)pDevIxt->m_aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
