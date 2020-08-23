@@ -1751,8 +1751,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_KEY_RSB2C_TO_I: ArgGet(iArg); // convert two rsb varchar(1) to int
         dLU1(EO_KEY_RSB2C_TO_I,iArg);
-        azTopA = (char*)aiLocals[giaVectorSet[iArg]];
-        azTopB = (char*)aiLocals[giaVectorSet[iArg+1]];
+        azTopA = (char*)szDev_RSB_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRsb,
+                                           giaVectorSet[iArg]);
+        azTopB = (char*)szDev_RSB_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRsb,
+                                           giaVectorSet[iArg+1]);
         iRes = *azTopA * 256 + *azTopB;
         *(++aiDstk) = iRes;
         break;//+endCase
