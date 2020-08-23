@@ -986,6 +986,18 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 #define JumpTo(__iArg,__EO) \
   aeCode = & m_eaCode[__iArg];
 
+i8 giaInflateSet[] =
+{
+  L_QUANTITY,
+  L_EXTENDEDPRICE,
+  L_DISCOUNT,
+  L_TAX,
+  L_RETURNFLAG,
+  L_LINESTATUS,
+  L_SHIPDATE,
+  C_UNKNOWN,
+};
+
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
 /*----------------------------------------------------------------------------*/
@@ -1392,16 +1404,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //*(++aiDstk) = -1;
         break;//+endCase
 
-      case EO_SET_LOCALS_ALT: ArgNil(); // inflate alt columns direct into locals
+      case EO_SET_LOCALS_ALT: ArgGet(iArg); // inflate alt columns direct into locals
         dLU0(EO_SET_LOCALS_ALT);
         aiLocals = aRluCommon->m_iaLocals - 1;
-        vDev_ALT_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,iaColSet);
+        vDev_ALT_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,
+                             iArg == -1 ? iaColSet : &giaInflateSet[iArg]);
         break;//+endCase
 
-      case EO_SET_LOCALS_SRC: ArgNil(); // inflate src columns direct into locals
+      case EO_SET_LOCALS_SRC: ArgGet(iArg); // inflate src columns direct into locals
         dLU0(EO_SET_LOCALS_SRC);
         aiLocals = aRluCommon->m_iaLocals - 1;
-        vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,iaColSet);
+        vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,
+                             iArg == -1 ? iaColSet : &giaInflateSet[iArg]);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

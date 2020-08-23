@@ -579,8 +579,8 @@ static EoArg EoArgs[]
   // column set
   { EA_INT,     8 },  // EO_SET_COLUMN
   { EA_INT,     8 },  // EO_SET_ITEMS
-  { EA_NONE,    0 },  // EO_SET_LOCALS_ALT
-  { EA_NONE,    0 },  // EO_SET_LOCALS_SRC
+  { EA_INT,     8 },  // EO_SET_LOCALS_ALT
+  { EA_INT,     8 },  // EO_SET_LOCALS_SRC
 
   // stack operators
   { EA_NONE,    0 },  // EO_INC

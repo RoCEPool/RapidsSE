@@ -104,17 +104,21 @@ void LogicUnit::vGenerateQuery100(void)
 //  vAddCodeArg(EO_INTEGER,L_DISCOUNT);
 //  vAddCodeArg(EO_INTEGER,L_EXTENDEDPRICE);
 //  vAddCodeArg(EO_INTEGER,L_QUANTITY);
-  vAddCodeArg(EO_SET_ITEMS,7);
-  vAddCodeArg(EO_SET_COLUMN,L_SHIPDATE);
-  vAddCodeArg(EO_SET_COLUMN,L_LINESTATUS);
-  vAddCodeArg(EO_SET_COLUMN,L_RETURNFLAG);
-  vAddCodeArg(EO_SET_COLUMN,L_TAX);
-  vAddCodeArg(EO_SET_COLUMN,L_DISCOUNT);
-  vAddCodeArg(EO_SET_COLUMN,L_EXTENDEDPRICE);
-  vAddCodeArg(EO_SET_COLUMN,L_QUANTITY);
-  //vAddCode(EO_COL_SRC_PUSHSET);
-  vAddCode(EO_SET_LOCALS_SRC);
+  
+  
+//  vAddCodeArg(EO_SET_ITEMS,7);
+//  vAddCodeArg(EO_SET_COLUMN,L_SHIPDATE);
+//  vAddCodeArg(EO_SET_COLUMN,L_LINESTATUS);
+//  vAddCodeArg(EO_SET_COLUMN,L_RETURNFLAG);
+//  vAddCodeArg(EO_SET_COLUMN,L_TAX);
+//  vAddCodeArg(EO_SET_COLUMN,L_DISCOUNT);
+//  vAddCodeArg(EO_SET_COLUMN,L_EXTENDEDPRICE);
+//  vAddCodeArg(EO_SET_COLUMN,L_QUANTITY);
+//  //vAddCode(EO_COL_SRC_PUSHSET);
+  vAddCodeArg(EO_SET_LOCALS_SRC,(i8)0);
   //vAddCode(EO_DUMP);
+  
+  
   
   // pop inflated columns into the locals register
 //  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_SHIPDATE);
