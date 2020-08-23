@@ -1037,16 +1037,20 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 #define JumpTo(__iArg,__EO) \
   aeCode = & m_eaCode[__iArg];
 
-i8 giaInflateSet[] =
+i8 giaVectorSet[] =
 {
-  L_QUANTITY,
-  L_EXTENDEDPRICE,
-  L_DISCOUNT,
-  L_TAX,
-  L_RETURNFLAG,
-  L_LINESTATUS,
-  L_SHIPDATE,
-  C_UNKNOWN,
+/* 00 */ L_QUANTITY,
+/* 01 */ L_EXTENDEDPRICE,
+/* 02 */ L_DISCOUNT,
+/* 03 */ L_TAX,
+/* 04 */ L_RETURNFLAG,
+/* 05 */ L_LINESTATUS,
+/* 06 */ L_SHIPDATE,
+/* 07 */ C_UNKNOWN,
+  
+/* 08 */ Q1_LOCAL_RETURNFLAG,
+/* 09 */ Q1_LOCAL_LINESTATUS,
+/* 10 */ C_UNKNOWN,
 };
 
 /*----------------------------------------------------------------------------*/
@@ -1459,14 +1463,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_SET_LOCALS_ALT);
         aiLocals = aRluCommon->m_iaLocals - 1;
         vDev_ALT_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,
-                             iArg == -1 ? iaColSet : &giaInflateSet[iArg]);
+                             iArg == -1 ? iaColSet : &giaVectorSet[iArg]);
         break;//+endCase
 
       case EO_SET_LOCALS_SRC: ArgGet(iArg); // inflate src columns direct into locals
         dLU0(EO_SET_LOCALS_SRC);
         aiLocals = aRluCommon->m_iaLocals - 1;
         vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,
-                             iArg == -1 ? iaColSet : &giaInflateSet[iArg]);
+                             iArg == -1 ? iaColSet : &giaVectorSet[iArg]);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1729,6 +1733,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_HSH_RESET: ArgNil(); // reset hash
         dLU0(EO_HSH_RESET);
         aRluCommon->m_iHash = 0;
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_KEY_LCL2C_TO_I: ArgGet(iArg); // convert two varchar(1) to int
+        dLU1(EO_KEY_LCL2C_TO_I,iArg);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

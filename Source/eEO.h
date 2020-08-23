@@ -126,6 +126,9 @@ enum eEO : u1 // expression operators
   /*    */ EO_HSH_ADD_HASHI,    // add hash of top int to running hash
   /*    */ EO_HSH_RESET,        // reset hash
 
+  // key
+  /*    */ EO_KEY_LCL2C_TO_I,   // convert two local varchar(1) to int
+  
   // partitioning
   /*    */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
   /*    */ EO_PTN_PUSH,         // push i_Ptn
@@ -387,7 +390,10 @@ static Stz* aEO[]
   // hashing
   /*    */ "EO_HSH_ADD_HASHI"_Stz,
   /*    */ "EO_HSH_RESET"_Stz,
-
+  
+  // key
+  /*    */ "EO_KEY_LCL2C_TO_I"_Stz,
+  
   // partitioning
   /*    */ "EO_PTN_CALC"_Stz,
   /*    */ "EO_PTN_PUSH"_Stz,
@@ -655,6 +661,9 @@ static EoArg EoArgs[]
   // hashing
   { EA_NONE,    0 },  // EO_HSH_ADD_HASHI
   { EA_NONE,    0 },  // EO_HSH_RESET
+
+  // key
+  { EA_INT,     8 },  // EO_KEY_LCL2C_TO_I
 
   // partitioning
   { EA_NONE,    0 },  // EO_PTN_CALC

@@ -10,7 +10,7 @@
 #endif
 
 extern EoArg EoArgs[];
-extern i8 giaInflateSet[];
+extern i8 giaVectorSet[];
 
 char gcaEoFragments[C_128K];
 Stz* gszaEoFragments[EO_ENUMS];
@@ -24,7 +24,7 @@ Stz* gszaEoFragments[EO_ENUMS];
 /*----------------------------------------------------------------------------*/
 DynamicSymbol gxaDynamicSymbol[]
 {
-  { "giaInflateSet"_Stz,          (const void *) giaInflateSet          },
+  { "giaVectorSet"_Stz,          (const void *) giaVectorSet          },
   
   { "vDev_ALT_COL_PUSHSET"_Stz,   (const void *) vDev_ALT_COL_PUSHSET   },
   { "vDev_RSB_COL_PUSHSET"_Stz,   (const void *) vDev_RSB_COL_PUSHSET   },
@@ -484,8 +484,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     
     
     // timer begin
-//    sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
-//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
+    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
     
 
     if (EO_CALL == eCode) {
@@ -537,8 +537,8 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     }
     
     // timer end
-//    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
-//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
+    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
 #ifdef WITH_TRACE_LOGICUNIT
     // count no of newlines in the fragment
@@ -767,10 +767,10 @@ void LogicCompiler::v_DynPreliminary(void)
   "      nSize = *(aiDstk--);"
   "      aiDstk -= (nSize / 8) + 2;"
   "\n"
-  "\n  //#define JumpTo(__iArg,__EO) { vRlu_ENDTMR(pLU,(i8)__EO); goto L_##__iArg; }"
-  "\n  #define JumpTo(__iArg,__EO) goto L_##__iArg;"
+  "\n  #define JumpTo(__iArg,__EO) { vRlu_ENDTMR(pLU,(i8)__EO); goto L_##__iArg; }"
+  "\n  //#define JumpTo(__iArg,__EO) goto L_##__iArg;"
   "\n"
-  "\n  extern i8 giaInflateSet[];"
+  "\n  extern i8 giaVectorSet[];"
   "\n"
 
   "";
