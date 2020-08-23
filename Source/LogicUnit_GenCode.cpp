@@ -164,9 +164,9 @@ void LogicUnit::vGenerateQuery100(void)
   
   // find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);
-  vAddCode(EO_ENT_PUSH);
-  vAddCode(EO_PUSH_0);
-  vAddCode(EO_NOTEQUAL);
+//  vAddCode(EO_ENT_PUSH);
+//  vAddCode(EO_PUSH_0);
+//  vAddCode(EO_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
@@ -446,9 +446,9 @@ void LogicUnit::vGenerateQuery103(void)
   
   // find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);
-  vAddCode(EO_ENT_PUSH);
-  vAddCode(EO_PUSH_0);
-  vAddCode(EO_NOTEQUAL);
+//  vAddCode(EO_ENT_PUSH);
+//  vAddCode(EO_PUSH_0);
+//  vAddCode(EO_NOTEQUAL);
   vAddCodeLabel(EO_JMP_FALSE,"NOT_FOUND"_Stz);
   
   vAddCode(EO_ENT_NEXT);
@@ -1399,7 +1399,7 @@ void LogicUnit::vGenerateQuery400(void)
 
   // attempt to find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);
-  vAddCode(EO_ENT_PUSH);
+//  vAddCode(EO_ENT_PUSH);
   vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
 
   vAddCode(EO_ENT_NEXT);
@@ -1555,7 +1555,7 @@ void LogicUnit::vGenerateQuery401(void)
 
   // attempt to find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);
-  vAddCode(EO_ENT_PUSH);
+//  vAddCode(EO_ENT_PUSH);
   vAddCodeLabel(EO_JMP_FALSE,"NEW_AGR:"_Stz);
 
   vAddCode(EO_ENT_NEXT);

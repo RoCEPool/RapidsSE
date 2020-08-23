@@ -1938,6 +1938,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_ENT_POSPRIOR);
         aRluCommon->m_aTmpEnt = aDev_ENT_POSPRIOR(pLU,aRluCommon->m_pDevTmpIxt,
                                                   &aRluCommon->m_aTmpSkipRoots);
+        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
         break;//+endCase
         
       case EO_ENT_PUSH: ArgNil(); // push entry on the stack
