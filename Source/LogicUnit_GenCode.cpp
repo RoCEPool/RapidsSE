@@ -116,7 +116,6 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_SET_LOCALS_SRC);
   //vAddCode(EO_DUMP);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop inflated columns into the locals register
 //  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_SHIPDATE);
 //  vAddCodeArg(EO_POP_LOCALS,Q1_LOCAL_LINESTATUS);
@@ -126,10 +125,19 @@ void LogicUnit::vGenerateQuery100(void)
 //  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_EXTENDEDPRICE);
 //  vAddCodeArg(EO_POP_LOCALI,Q1_LOCAL_QUANTITY);
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // call the filter subroutine
   // vDefineLabel("FILTER:"_Stz);
-  vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
-  vAddCodeLabel(EO_JMP_FALSE, "PROCESSROW_DONE:"_Stz);
+  //vAddCodeLabel(EO_CALL, "SUBROUTINE_FILTER:"_Stz);
+  //vAddCodeLabel(EO_JMP_FALSE, "PROCESSROW_DONE:"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_SHIPDATE);
+  vAddCodeArg(EO_DATE, "1998-09-01"_Stz);
+  vAddCode(EO_GREATERTHAN);
+  vAddCodeLabel(EO_JMP_TRUE, "PROCESSROW_DONE:"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   
   // reset entwrk
   vAddCode(EO_ENTWRK_RESET);
