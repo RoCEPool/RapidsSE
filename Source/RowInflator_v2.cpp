@@ -60,7 +60,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
   i8* aiDstk_lcl = *aaiDstk;
   
   byte* ayDstByte = (byte*)++aiDstk_lcl;
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each column
 
@@ -100,7 +100,17 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
         ayDataByte += STRx8(uLow);
       else
       if (uHigh == MN_OVERFLOW) { // overflow
-        OverLine* aOverLine = aHeadLine->aGetOver();
+        
+        //OverLine* aOverLine = aHeadLine->aGetOver();
+        
+        // calculation to get overflow
+        i8 nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
+        if (nSizeUnits >= 128)
+          nSizeUnits -= 128;
+        i8 nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
+        i8 i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
+        OverLine* aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+        
         u1 uMetaClue = *((u1*)aOverLine + C_U_1B);
         METACLUE_SPLIT(uMetaClue,uHigh,uLow);
         ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
@@ -362,10 +372,22 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
         break;
         
       case MN_OVERFLOW: // overflow 2B
-        aOverLine = aHeadLine->aGetOver();
+        
+        // calculation to get overflow
+      {
+        i8 nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
+        if (nSizeUnits >= 128)
+          nSizeUnits -= 128;
+        i8 nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
+        i8 i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
+        
+        aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+        
+        //aOverLine = aHeadLine->aGetOver();
         METACLUE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
         ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
         goto L_HighSwitch;
+      }
         break;
         
         
