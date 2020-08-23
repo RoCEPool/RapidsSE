@@ -1736,8 +1736,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // key
       case EO_KEY_LCL2C_TO_I: ArgGet(iArg); // convert two varchar(1) to int
         dLU1(EO_KEY_LCL2C_TO_I,iArg);
+        azTopA = (char*)aiLocals[giaVectorSet[iArg]];
+        azTopB = (char*)aiLocals[giaVectorSet[iArg+1]];
+        iRes = *azTopA * 256 + *azTopB;
+        *(++aiDstk) = iRes;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
