@@ -1072,7 +1072,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8* aiDstk = aRluCommon->m_iaDataStack;
   *aiDstk = 0xFFFFFFFFFFFFFFFF;
 
-  i8* aiLocals;
+  i8* aiLocals = aRluCommon->m_iaLocals - 1;
   i8* aiPayload;
 
   if (nOuterArgs) {
@@ -2390,7 +2390,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_SUPER_Q100: ArgNil(); // not yet implemented
-        NEVER_REACH;
+        aiPayload[Q100_SUM_QTY] =
+          aiPayload[Q100_SUM_QTY] + aiLocals[Q1_LOCAL_QUANTITY];
         break;//+endCase
 
       case EO_SUPER_Z001: ArgNil(); // not yet implemented

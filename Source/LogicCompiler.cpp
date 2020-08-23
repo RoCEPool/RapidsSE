@@ -719,6 +719,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n"
   "\n  #include \"../Source/EnumGroups.h\""
   "\n  #include \"../Source/Ent_int.h\""
+  "\n  #include \"../Source/InflateSet.h\""
   "\n  #include \"../Source/LIB_interface.h\""
   "\n  #include \"../Source/DEV_interface.h\""
   "\n  #include \"../Source/RLU_interface.h\""
