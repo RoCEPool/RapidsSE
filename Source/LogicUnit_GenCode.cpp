@@ -273,29 +273,30 @@ void LogicUnit::vGenerateQuery100(void)
     
     vDefineLabel("L_EXTENTEDPRICE_NULL:"_Stz);
 
+
+    // SUM(L_DISCOUNT) -> Q100_SUM_BASE_PRICE
+    vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_DISC);
+    vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_DISCOUNT);
+    vAddCode(EO_ADD);
+    vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_DISC);
+
+    // COUNT(L_DISCOUNT) -> Q100_COUNT_DISC
+    vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_DISCOUNT);
+    vAddCode(EO_ISNULL);
+    vAddCodeLabel(EO_JMP_TRUE,"L_DISCOUNT_NULL:"_Stz);
+    vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_DISC);
+    vAddCode(EO_INC);
+    vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_DISC);
+  
+    vDefineLabel("L_DISCOUNT_NULL:"_Stz);
+  
+    // COUNT(*) -> Q100_COUNT_ORDER
+    vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_ORDER);
+    vAddCode(EO_INC);
+    vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_ORDER);
+  
   vEndOptimise(); // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  // SUM(L_DISCOUNT) -> Q100_SUM_BASE_PRICE
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_DISC);
-  vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_DISCOUNT);
-  vAddCode(EO_ADD);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_DISC);
-  
-  // COUNT(L_DISCOUNT) -> Q100_COUNT_DISC
-  vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_DISCOUNT);
-  vAddCode(EO_ISNULL);
-  vAddCodeLabel(EO_JMP_TRUE,"L_DISCOUNT_NULL:"_Stz);
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_DISC);
-  vAddCode(EO_INC);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_DISC);
-  
-  vDefineLabel("L_DISCOUNT_NULL:"_Stz);
-  
-  // COUNT(*) -> Q100_COUNT_ORDER
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_ORDER);
-  vAddCode(EO_INC);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_ORDER);
-  
   //vAddCodeArg(EO_IXT_DUMP,(i8)0); ray commented 30 jul 2020
   //vAddCodeLabel(EO_JMP, "NEXT_RSB_SRC:"_Stz);
   //vAddCode(EO_IXT_DUMP);

@@ -2442,9 +2442,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_SUPER_Q100: ArgNil(); // super frag for Q100
         aiLocals = aRluCommon->m_iaLocals;
+        
         aiPayload[Q100_SUM_QTY] =
           aiPayload[Q100_SUM_QTY]
-            //+ iLib_GET_LOCAL(pLU, Q1_LOCAL_QUANTITY);
             + aiLocals[Q1_LOCAL_QUANTITY];
         
         aiPayload[Q100_SUM_BASE_PRICE] =
@@ -2464,8 +2464,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
                 / 10000 ;
   
         aiPayload[Q100_COUNT_QTY]++;
+        
         aiPayload[Q100_COUNT_PRICE]++;
 
+        aiPayload[Q100_SUM_DISC] =
+          aiPayload[Q100_SUM_DISC]
+            + aiLocals[Q1_LOCAL_DISCOUNT];
+        
+        aiPayload[Q100_COUNT_DISC]++;
+        
+        aiPayload[Q100_COUNT_ORDER]++;
+        
         break;//+endCase
 
       case EO_SUPER_Z001: ArgNil(); // not yet implemented
