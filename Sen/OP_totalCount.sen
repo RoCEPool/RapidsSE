@@ -1,0 +1,105 @@
+/*============================================================================*/
+/* OP_totalCount.sen -- Operator total count                                  */
+/*============================================================================*/
+
+" OP_totalCount.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER...                                                       */
+/*----------------------------------------------------------------------------*/
+: totalCount_PulseMarker \handler
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  PipeIn[].pipeOut
+
+  // find the C_TABLEDEF_COUNT
+  C_TDEF_COUNT op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeOut
+
+  0 to Counter0[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_INFOSET...                                                           */
+/*----------------------------------------------------------------------------*/
+: totalCount_CountInfo \handler
+
+  PipeIn[] to infoset[]
+  nullptr to PipeIn[]
+
+  // get first row of InfoSet[]
+  Infoset[].firstRow to row[]
+
+  // get 0th Column (rowCount) add to Counter
+  0 row[].getIntColumn Counter0[] + to Counter0[]
+
+  // now delete the InfoSet[]
+  InfoSet[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER...                                                         */
+/*----------------------------------------------------------------------------*/
+: totalCount_EosMarker \handler
+
+  //"Operand:- ZK_EOSMARKER" .verbose
+  PipeIn[].pipeOut
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeOut
+
+  // create an infoSet operand
+  streamSetTable[] streamSet[].new
+
+  // insert row count into streamSet
+  Counter0[] streamSetTable[] StreamSet[].addRowCount assert
+
+  StreamSet[].Pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for progress req                           (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : totalCount_req \operator
+ 
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: totalCount_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: totalCount_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: totalCount_countInfo   ZK_COUNTINFO   op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: totalCount :: totalCount ;
+
+: totalCount _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
