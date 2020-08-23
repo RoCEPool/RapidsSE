@@ -148,10 +148,16 @@ void LogicUnit::vGenerateQuery100(void)
   
   // add key L_RETURNFLAG, L_LINESTATUS
   //ray100
-  vAddCodeArg(EO_PUSH_LOCALS,Q1_LOCAL_RETURNFLAG);
-  vAddCode(EO_ENTWRK_APPENDELMS);
-  vAddCodeArg(EO_PUSH_LOCALS,Q1_LOCAL_LINESTATUS);
-  vAddCode(EO_ENTWRK_APPENDELMS);
+//  vAddCodeArg(EO_PUSH_LOCALS,Q1_LOCAL_RETURNFLAG);
+//  vAddCode(EO_ENTWRK_APPENDELMS);
+//  vAddCodeArg(EO_PUSH_LOCALS,Q1_LOCAL_LINESTATUS);
+//  vAddCode(EO_ENTWRK_APPENDELMS);
+  
+  vAddCodeArg(EO_KEY_LCL2C_TO_I,8);
+  vAddCode(EO_ENTWRK_SETINTELM);
+
+  
+  
   
   // find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);
@@ -429,8 +435,11 @@ void LogicUnit::vGenerateQuery103(void)
   
   //ray100
   // add key L_RETURNFLAG, L_LINESTATUS
-  vAddCodeArg(EO_ENTWRK_APPENDELM, (i8)Q101_RETURNFLAG);
-  vAddCodeArg(EO_ENTWRK_APPENDELM, (i8)Q101_LINESTATUS);
+//  vAddCodeArg(EO_ENTWRK_APPENDELM, (i8)Q101_RETURNFLAG);
+//  vAddCodeArg(EO_ENTWRK_APPENDELM, (i8)Q101_LINESTATUS);
+  vAddCodeArg(EO_KEY_RSB2C_TO_I,11);
+  vAddCode(EO_ENTWRK_SETINTELM);
+  
   
   // find the key in the indexTree
   vAddCode(EO_ENT_POSPRIOR);

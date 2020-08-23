@@ -1743,6 +1743,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // key
       case EO_KEY_LCL2C_TO_I: ArgGet(iArg); // convert two lcl varchar(1) to int
         dLU1(EO_KEY_LCL2C_TO_I,iArg);
+        aiLocals = aRluCommon->m_iaLocals;
         azTopA = (char*)aiLocals[giaVectorSet[iArg]];
         azTopB = (char*)aiLocals[giaVectorSet[iArg+1]];
         iRes = *azTopA * 256 + *azTopB;

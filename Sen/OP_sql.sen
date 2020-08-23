@@ -349,7 +349,8 @@
       logicCompiler[].new
       LogicCompiler[].compile
       //ray100
-      idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
+      //idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
+      idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
       indexDef[].delete
     endof
 
@@ -359,7 +360,8 @@
       logicCompiler[].new
       LogicCompiler[].compile
       //ray100
-      idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
+      //idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
+      idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
       indexDef[].delete
     endof
 

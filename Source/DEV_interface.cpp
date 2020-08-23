@@ -139,7 +139,7 @@ i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
   if (iEntVal < iWrkVal)
     eCmp = KC_BEFORE;
   else
-  if (iEntVal < iWrkVal)
+  if (iEntVal == iWrkVal)
     eCmp = KC_SAME;
   else
     eCmp = KC_AFTER;
