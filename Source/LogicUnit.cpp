@@ -2462,7 +2462,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
                        * (100 - aiLocals[Q1_LOCAL_DISCOUNT]) )
                  * (100 + aiLocals[Q1_LOCAL_TAX]) )
                 / 10000 ;
-        
+  
+        aiPayload[Q100_COUNT_QTY]++;
+        aiPayload[Q100_COUNT_PRICE]++;
+
         break;//+endCase
 
       case EO_SUPER_Z001: ArgNil(); // not yet implemented

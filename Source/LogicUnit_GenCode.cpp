@@ -252,28 +252,29 @@ void LogicUnit::vGenerateQuery100(void)
     vAddCode(EO_ADD);
     vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_SUM_CHARGE);
   
+
+    // COUNT(L_QUANTITY) -> Q100_COUNT_QTY
+    vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_QUANTITY);
+    vAddCode(EO_ISNULL);
+    vAddCodeLabel(EO_JMP_TRUE,"L_QUANTITY_NULL:"_Stz);
+    vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_QTY);
+    vAddCode(EO_INC);
+    vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_QTY);
+    
+    vDefineLabel("L_QUANTITY_NULL:"_Stz);
+
+    // COUNT(L_EXTENDEDPRICE) -> Q100_COUNT_PRICE
+    vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_EXTENDEDPRICE);
+    vAddCode(EO_ISNULL);
+    vAddCodeLabel(EO_JMP_TRUE,"L_EXTENTEDPRICE_NULL:"_Stz);
+    vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_PRICE);
+    vAddCode(EO_INC);
+    vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_PRICE);
+    
+    vDefineLabel("L_EXTENTEDPRICE_NULL:"_Stz);
+
   vEndOptimise(); // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  // COUNT(L_QUANTITY) -> Q100_COUNT_QTY
-  vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_QUANTITY);
-  vAddCode(EO_ISNULL);
-  vAddCodeLabel(EO_JMP_TRUE,"L_QUANTITY_NULL:"_Stz);
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_QTY);
-  vAddCode(EO_INC);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_QTY);
-  
-  vDefineLabel("L_QUANTITY_NULL:"_Stz);
-  
-  // COUNT(L_EXTENDEDPRICE) -> Q100_COUNT_PRICE
-  vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_EXTENDEDPRICE);
-  vAddCode(EO_ISNULL);
-  vAddCodeLabel(EO_JMP_TRUE,"L_EXTENTEDPRICE_NULL:"_Stz);
-  vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_COUNT_PRICE);
-  vAddCode(EO_INC);
-  vAddCodeArg(EO_PAY_STORE_COLI, (i8)Q100_COUNT_PRICE);
-  
-  vDefineLabel("L_EXTENTEDPRICE_NULL:"_Stz);
-  
   // SUM(L_DISCOUNT) -> Q100_SUM_BASE_PRICE
   vAddCodeArg(EO_PAY_FETCH_COLI, (i8)Q100_SUM_DISC);
   vAddCodeArg(EO_PUSH_LOCALI, (i8)Q1_LOCAL_DISCOUNT);
