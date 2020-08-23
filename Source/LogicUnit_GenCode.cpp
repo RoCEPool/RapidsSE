@@ -974,6 +974,8 @@ void LogicUnit::vGenerateQuery301(void)
 
   vAddCode(EO_IXT_INS_ENT);
   
+  vAddCode(EO_PAY_ADDRESS);
+
   vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERKEY);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
   vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_ORDERDATE);
@@ -1011,7 +1013,8 @@ void LogicUnit::vGenerateQuery301(void)
   
   vAddCode(EO_RSB_DST_NEW);
 
-  
+  vAddCode(EO_PAY_ADDRESS);
+
   vAddCode(EO_ENT_PUSHELMI0);
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_REVENUE);
 
@@ -1144,6 +1147,8 @@ void LogicUnit::vGenerateQuery302(void)
 
   vAddCode(EO_IXT_INS_ENT);
   
+  vAddCode(EO_PAY_ADDRESS);
+
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_ORDERKEY);
   vAddCodeArg(EO_PAY_STORE_COLI,(i8)0);
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_ORDERDATE);
@@ -1172,6 +1177,8 @@ void LogicUnit::vGenerateQuery302(void)
   vDefineLabel("TRV_ECH:"_Stz);
   
   vAddCode(EO_RSB_DST_NEW);
+
+  vAddCode(EO_PAY_ADDRESS);
 
   vAddCode(EO_ENT_PUSHELMI0);
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q302_REVENUE);
@@ -1258,6 +1265,7 @@ void LogicUnit::vGenerateQuery400(void)
   // get the aggregator for o_orderpriority
   vAddCodeLabel(EO_CALL,"GET_AGR:"_Stz);
   
+  vAddCode(EO_PAY_ADDRESS);
   vAddCodeArg(EO_PAY_FETCH_COLI,(i8)0);
   vAddCode(EO_INC);
   vCC(0); vAddCode(EO_DUP);
