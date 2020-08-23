@@ -408,7 +408,7 @@ void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_INS_ENT(void* aLU, void* aIXT)
+Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT)
 {
   _static_
 
@@ -418,7 +418,8 @@ void vDev_IXT_INS_ENT(void* aLU, void* aIXT)
 
   pDevIXT->m_aEnt =
     pDevIXT->m_pIdxTree->aInsertEntry(pLogicUnit->m_oEntWrk.aEnt());
-
+  
+  return (Ent_int*)pDevIXT->m_aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
