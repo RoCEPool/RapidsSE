@@ -166,7 +166,7 @@ Ent_int* aDev_ENT_NEXT(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* position m_pEnt prior using m_oEntWrk.key                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_POSPRIOR(void* aLU, void* aIXT, Ent_int** aaSkipRoots)
+Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT, Ent_int** aaSkipRoots)
 {
   _static_
   
@@ -180,6 +180,8 @@ void vDev_ENT_POSPRIOR(void* aLU, void* aIXT, Ent_int** aaSkipRoots)
   
   if (pDevIxt->m_pEntBuffer)
     *aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
+  
+  return (Ent_int*)pDevIxt->m_aEnt;
 }
 
 /*----------------------------------------------------------------------------*/

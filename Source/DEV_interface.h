@@ -14,7 +14,8 @@ i8   iDev_CRW_TEST(void* aLU, void* aIXT);
 
 i8   iDev_ENT_COMPARE(void* aLU, void* aIXT);
 struct Ent_int* aDev_ENT_NEXT(void* aLU, void* aIXT);
-void vDev_ENT_POSPRIOR(void* aLU, void* aIXT, struct Ent_int** aaSkipRoots);
+struct Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT,
+                                  struct Ent_int** aaSkipRoots);
 void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT);
 void* aDev_ENT_PUSH(void* aLU, void* aIXT);
 void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT);
