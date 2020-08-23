@@ -2140,29 +2140,30 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from entry payload
-        iRes = iDev_PAY_FETCH_COLI(pLU,aRluCommon->m_pDevTmpIxt,iArg);
-        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
-          printf("aiPayload does not match\n");
-          iTopA = 0;
-          iTopA = 1 / iTopA;
-        }
-        if (iRes != aiPayload[iArg]) {
-          printf("EO_PAY_FETCH_COLI does not match\n");
-          iTopA = 0;
-          iTopA = 1 / iTopA;
-        }
+//        iRes = iDev_PAY_FETCH_COLI(pLU,aRluCommon->m_pDevTmpIxt,iArg);
+//        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
+//          printf("aiPayload does not match\n");
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
+//        if (iRes != aiPayload[iArg]) {
+//          printf("EO_PAY_FETCH_COLI does not match\n");
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
+        iRes = aiPayload[iArg];
         dLU2(EO_PAY_FETCH_COLI,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
       case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from entry payload
-        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
-          printf("aiPayload does not match\n");
-          iTopA = 0;
-          iTopA = 1 / iTopA;
-        }
-        azSrc = (char*)szDev_PAY_FETCH_COLS(pLU,aRluCommon->m_pDevTmpIxt, iArg);
-        //nSize = StrLib::nSize(azSrc);
+//        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
+//          printf("aiPayload does not match\n");
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
+        //azSrc = (char*)szDev_PAY_FETCH_COLS(pLU,aRluCommon->m_pDevTmpIxt, iArg);
+        azSrc = (char*)&aiPayload[iArg];
         nSize = strlen(azSrc) + 1;
         //ASSERT(nSize < 8);
         dLU2(EO_PAY_FETCH_COLS,iArg,(i8)azSrc);
@@ -2170,24 +2171,26 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column into entry payload
-        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
-          printf("aiPayload does not match\n");
-          iTopA = 0;
-          iTopA = 1 / iTopA;
-        }
+//        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
+//          printf("aiPayload does not match\n");
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
         iTopA = *(aiDstk--);
         dLU2(EO_PAY_STORE_COLI,iArg,iTopA);
-        vDev_PAY_STORE_COLI(pLU,aRluCommon->m_pDevTmpIxt,iArg,iTopA);
+        //vDev_PAY_STORE_COLI(pLU,aRluCommon->m_pDevTmpIxt,iArg,iTopA);
+        aiPayload[iArg] = iTopA;
         break;//+endCase
       
       case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column into entry payload
-        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
-          printf("aiPayload does not match\n");
-          iTopA = 0;
-          iTopA = 1 / iTopA;
-        }
-        dLU1(EO_PAY_STORE_COLI,iArg);
-        azDst = (char*)szDev_PAY_STORE_COLS(pLU,aRluCommon->m_pDevTmpIxt,iArg);
+//        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
+//          printf("aiPayload does not match\n");
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
+        dLU1(EO_PAY_STORE_COLS,iArg);
+        //azDst = (char*)szDev_PAY_STORE_COLS(pLU,aRluCommon->m_pDevTmpIxt,iArg);
+        azDst = (char*)&aiPayload[iArg];
         S_PopStr(azDst);
         break;//+endCase
         
