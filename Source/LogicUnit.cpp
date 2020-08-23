@@ -49,7 +49,7 @@ LogicUnit::LogicUnit(Task* pTask)
      m_baCondInd[i_Cond] = false;
   
   m_iNextCond = C_UNKNOWN;
-  
+  m_bSuperFrag = false;
   m_aLowerEntry = nullptr;
   m_aUpperEntry = nullptr;
   m_pEntBufferOuter = nullptr;
@@ -269,6 +269,16 @@ i8 LogicUnit::iDynFun(i8 nOuterArgs, i8 iOuterArg0)
 }
 
 /*----------------------------------------------------------------------------*/
+/* optimise with super fragent                                                */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vEndOptimise(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  m_bSuperFrag = false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* diarise dynamic routine entry                                              */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vEnter(void)
@@ -419,6 +429,23 @@ Stz* LogicUnit::szLabelNm(i8 i_Label)
 }
 
 /*----------------------------------------------------------------------------*/
+/* optimise with super fragent                                                */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vOptimise(eEO eOpt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  if (EO_NONE == eOpt) {
+    m_bSuperFrag = false;
+    return;
+  }
+  
+  vAddCode(eOpt);
+  
+  m_bSuperFrag = true;
+}
+
+//*----------------------------------------------------------------------------*/
 /* return query fragment number                                               */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iQueryFragment(void)
@@ -468,6 +495,9 @@ void LogicUnit::vAddCode(eEO eCode)
   
   ASSERT(0 == EoArgs[eCode].m_nArgBytes);
   
+  if (m_bSuperFrag)
+    return;
+  
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
     return;
@@ -486,6 +516,9 @@ void LogicUnit::vAddCodeArg(eEO eCode, i8 iArg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   ASSERT(8 == EoArgs[eCode].m_nArgBytes);
+  
+  if (m_bSuperFrag)
+    return;
   
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
@@ -509,6 +542,9 @@ void LogicUnit::vAddCodeArg(eEO eCode,Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  if (m_bSuperFrag)
+    return;
+  
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
     return;
@@ -529,6 +565,9 @@ void LogicUnit::vAddCodeArg(eEO eCode, Stz* szLiteral)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   ASSERT(EA_DATE == EoArgs[eCode].m_eArgument);
+  
+  if (m_bSuperFrag)
+    return;
   
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
@@ -551,6 +590,9 @@ void LogicUnit::vAddCodeArg(eEO eCode, Stz* szLiteral)
 void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  if (m_bSuperFrag)
+    return;
   
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
@@ -591,6 +633,9 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  if (m_bSuperFrag)
+    return;
+  
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
     return;
@@ -609,6 +654,9 @@ void LogicUnit::vAddCodeString(eEO eCode, Stz* szString)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   ASSERT(-1 == EoArgs[eCode].m_nArgBytes);
+  
+  if (m_bSuperFrag)
+    return;
   
   if (0 == m_iNextCond) {
     m_iNextCond = C_UNKNOWN;
@@ -691,6 +739,9 @@ i8 LogicUnit::iDecodeLabel(Stz* szLabelNm)
 void LogicUnit::vDefineLabel(Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  if (m_bSuperFrag)
+    return;
   
   // has this label been used yet?
   i8 i_Label = iFindLabel(szLabelNm);
@@ -986,6 +1037,18 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 #define JumpTo(__iArg,__EO) \
   aeCode = & m_eaCode[__iArg];
 
+i8 giaInflateSet[] =
+{
+  L_QUANTITY,
+  L_EXTENDEDPRICE,
+  L_DISCOUNT,
+  L_TAX,
+  L_RETURNFLAG,
+  L_LINESTATUS,
+  L_SHIPDATE,
+  C_UNKNOWN,
+};
+
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
 /*----------------------------------------------------------------------------*/
@@ -1060,7 +1123,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8* aiDstk = aRluCommon->m_iaDataStack;
   *aiDstk = 0xFFFFFFFFFFFFFFFF;
 
-  i8* aiLocals;
+  i8* aiLocals = aRluCommon->m_iaLocals;
   i8* aiPayload;
 
   if (nOuterArgs) {
@@ -1392,16 +1455,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //*(++aiDstk) = -1;
         break;//+endCase
 
-      case EO_SET_LOCALS_ALT: ArgNil(); // inflate alt columns direct into locals
+      case EO_SET_LOCALS_ALT: ArgGet(iArg); // inflate alt columns direct into locals
         dLU0(EO_SET_LOCALS_ALT);
         aiLocals = aRluCommon->m_iaLocals - 1;
-        vDev_ALT_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,iaColSet);
+        vDev_ALT_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,
+                             iArg == -1 ? iaColSet : &giaInflateSet[iArg]);
         break;//+endCase
 
-      case EO_SET_LOCALS_SRC: ArgNil(); // inflate src columns direct into locals
+      case EO_SET_LOCALS_SRC: ArgGet(iArg); // inflate src columns direct into locals
         dLU0(EO_SET_LOCALS_SRC);
         aiLocals = aRluCommon->m_iaLocals - 1;
-        vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,iaColSet);
+        vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,
+                             iArg == -1 ? iaColSet : &giaInflateSet[iArg]);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -2372,6 +2437,80 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes = iDev_RSB_PUSHCOLI(pLU,aRluCommon->m_pDevAltRsb,iArg);
         dLU2(EO_RSB_ALT_PUSHCOLI,iArg,iRes);
         *(++aiDstk) = iRes;
+        break;//+endCase
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_SUPER_Q100: ArgNil(); // super frag for Q100
+        aiLocals = aRluCommon->m_iaLocals;
+        
+        aiPayload[Q100_SUM_QTY] =
+          aiPayload[Q100_SUM_QTY]
+            + aiLocals[Q1_LOCAL_QUANTITY];
+        
+        aiPayload[Q100_SUM_BASE_PRICE] =
+          aiPayload[Q100_SUM_BASE_PRICE]
+            + aiLocals[Q1_LOCAL_EXTENDEDPRICE];
+
+        aiPayload[Q100_SUM_DISC_PRICE] =
+           aiPayload[Q100_SUM_DISC_PRICE]
+             + ( aiLocals[Q1_LOCAL_EXTENDEDPRICE]
+                   * (100 - aiLocals[Q1_LOCAL_DISCOUNT]) ) / 100;
+        
+        aiPayload[Q100_SUM_CHARGE] =
+           aiPayload[Q100_SUM_CHARGE]
+             + (   ( aiLocals[Q1_LOCAL_EXTENDEDPRICE]
+                       * (100 - aiLocals[Q1_LOCAL_DISCOUNT]) )
+                 * (100 + aiLocals[Q1_LOCAL_TAX]) )
+                / 10000 ;
+  
+        aiPayload[Q100_COUNT_QTY]++;
+        
+        aiPayload[Q100_COUNT_PRICE]++;
+
+        aiPayload[Q100_SUM_DISC] =
+          aiPayload[Q100_SUM_DISC]
+            + aiLocals[Q1_LOCAL_DISCOUNT];
+        
+        aiPayload[Q100_COUNT_DISC]++;
+        
+        aiPayload[Q100_COUNT_ORDER]++;
+        
+        break;//+endCase
+
+      case EO_SUPER_Z001: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z002: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z003: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z004: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z005: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z006: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z007: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z008: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z009: ArgNil(); // not yet implemented
+        NEVER_REACH;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
