@@ -22,7 +22,14 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
   
   i8 nCols = pStreamDef->nTotalColumns();
 
-  vPrepare_v2(auMetaClue,ayDataByte,nCols,aHeadLine);
+  //vPrepare_v2(auMetaClue,ayDataByte,nCols,aHeadLine);
+  auMetaClue = aHeadLine->auMetaArea();
+  
+  i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
+  + C_T_8B // (ControlDate) 8 bytes for the perspective
+  + nCols; // metaSize
+  
+  ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the set of columns to be retrieved
@@ -70,7 +77,39 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
     // ignore column
     
     if (i_Col != i_ColToRetrieve) {
-      vSkip_v2(uHigh,uLow,ayDataByte,aHeadLine);
+      //vSkip_v2(uHigh,uLow,ayDataByte,aHeadLine);
+      
+    L_Overflowed:
+      
+      if (uHigh <=  MN_STRING_x1) // numeric & date
+        ayDataByte += uLow;
+      else
+        if (uHigh >=  MN_NEGATIVE)  // small value
+        {;}
+      else
+      if (uHigh == MN_STRING_x1)  // string x 1
+        ayDataByte += STRx1(uLow);
+      else
+      if (uHigh == MN_STRING_x2)  // string x 2
+        ayDataByte += STRx2(uLow);
+      else
+      if (uHigh == MN_STRING_x4)  // string x 4
+        ayDataByte += STRx4(uLow);
+      else
+      if (uHigh == MN_STRING_x8)  // string x 8
+        ayDataByte += STRx8(uLow);
+      else
+      if (uHigh == MN_OVERFLOW) { // overflow
+        OverLine* aOverLine = aHeadLine->aGetOver();
+        u1 uMetaClue = *((u1*)aOverLine + C_U_1B);
+        METACLUE_SPLIT(uMetaClue,uHigh,uLow);
+        ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
+        goto L_Overflowed;
+      }
+      else {
+        RASSERT(0);
+      }
+      
       continue;
     }
     
