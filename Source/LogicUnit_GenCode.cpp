@@ -157,6 +157,9 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_ENTWRK_SETINTELM);
 
   
+  vAddCode(EO_ENT_FINDI);
+  vAddCodeLabel(EO_JMP_TRUE,"FOUND"_Stz);
+
   
   
   // find the key in the indexTree

@@ -1925,6 +1925,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // entry
       case EO_ENT_FINDI: ArgNil(); // find entry with int key
         dLU0(EO_ENT_FINDI);
+        *(++aiDstk) = 0;
         break;//+endCase
         
       case EO_ENT_NEXT: ArgNil(); // move to next m_pEnt
@@ -1935,7 +1936,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
         dLU0(EO_ENT_POSPRIOR);
-        vDev_ENT_POSPRIOR(pLU,aRluCommon->m_pDevTmpIxt);
+        vDev_ENT_POSPRIOR(pLU,aRluCommon->m_pDevTmpIxt,
+                              &aRluCommon->m_aTmpSkipRoots);
         break;//+endCase
         
       case EO_ENT_PUSH: ArgNil(); // push entry on the stack
