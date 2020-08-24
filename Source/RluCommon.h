@@ -61,6 +61,8 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   void* m_aAltCrw;
   void* m_aSrcCrw;
 
+  void* m_aSrcHeadCrw;
+
   char m_caStrWrk[128];
 
   i8 m_iaDataStack[C_LOGIC_STACK];

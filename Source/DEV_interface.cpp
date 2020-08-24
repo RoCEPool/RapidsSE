@@ -23,6 +23,11 @@ void vDev_CRW_BEGIN(void* aLU, void* aIXT)
   
   pLogicUnit->m_xRluCommon.m_nCrwRows = pDevIxt->m_nRows;
   pLogicUnit->m_xRluCommon.m_i_CrwRow = pDevIxt->m_i_Row;
+      
+  if (pDevIxt->m_pCrwBuffer)
+    pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = pDevIxt->m_pCrwBuffer->aGetHead(0);
+  else
+    pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
