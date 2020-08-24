@@ -1149,6 +1149,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   eEO** aeaRstk = &eaReturnStack[0];
   eEO*  aeCode  = & m_eaCode[0];
   
+  i8 iWrkA, iWrkB, iWrkC, iWrkD, iWrkE, iWrkF;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
   //                    interpretative inner loop proper                      //
@@ -2531,17 +2532,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_SUPER_Q100: ArgNil(); // super frag for Q100
         aiLocals = aRluCommon->m_iaLocals;
         
+        iWrkA = aiLocals[Q1_LOCAL_EXTENDEDPRICE];
+        iWrkB = aiLocals[Q1_LOCAL_DISCOUNT];
+
         aiPayload[Q100_SUM_QTY] += aiLocals[Q1_LOCAL_QUANTITY];
         
-        aiPayload[Q100_SUM_BASE_PRICE] += aiLocals[Q1_LOCAL_EXTENDEDPRICE];
+        aiPayload[Q100_SUM_BASE_PRICE] += iWrkA;
 
         aiPayload[Q100_SUM_DISC_PRICE] +=
-          (   aiLocals[Q1_LOCAL_EXTENDEDPRICE]
-            * (100 - aiLocals[Q1_LOCAL_DISCOUNT]) ) / 100;
+          (   iWrkA
+            * (100 - iWrkB) ) / 100;
         
         aiPayload[Q100_SUM_CHARGE] +=
-          (   (   aiLocals[Q1_LOCAL_EXTENDEDPRICE]
-                * (100 - aiLocals[Q1_LOCAL_DISCOUNT]) )
+          (   (   iWrkA
+                * (100 - iWrkB) )
             * (100 + aiLocals[Q1_LOCAL_TAX]) )
           / 10000 ;
   
@@ -2549,7 +2553,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
         aiPayload[Q100_COUNT_PRICE]++;
 
-        aiPayload[Q100_SUM_DISC] += aiLocals[Q1_LOCAL_DISCOUNT];
+        aiPayload[Q100_SUM_DISC] += iWrkB;
         
         aiPayload[Q100_COUNT_DISC]++;
         
