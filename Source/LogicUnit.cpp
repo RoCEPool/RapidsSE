@@ -2534,20 +2534,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
         iWrkA = aiLocals[Q1_LOCAL_EXTENDEDPRICE];
         iWrkB = aiLocals[Q1_LOCAL_DISCOUNT];
-
+        iWrkC = iWrkA * (100 - iWrkB);
+        
         aiPayload[Q100_SUM_QTY] += aiLocals[Q1_LOCAL_QUANTITY];
         
         aiPayload[Q100_SUM_BASE_PRICE] += iWrkA;
 
-        aiPayload[Q100_SUM_DISC_PRICE] +=
-          (   iWrkA
-            * (100 - iWrkB) ) / 100;
+        aiPayload[Q100_SUM_DISC_PRICE] += ( ( iWrkC ) / 100 );
         
         aiPayload[Q100_SUM_CHARGE] +=
-          (   (   iWrkA
-                * (100 - iWrkB) )
-            * (100 + aiLocals[Q1_LOCAL_TAX]) )
-          / 10000 ;
+          ( ( iWrkC ) * (100 + aiLocals[Q1_LOCAL_TAX]) ) / 10000;
   
         aiPayload[Q100_COUNT_QTY]++;
         
