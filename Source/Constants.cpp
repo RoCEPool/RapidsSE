@@ -489,6 +489,115 @@ void Constants::vAddConstantsCpp(void)
   /* 61 */ vAddConstant("EC_ENUMS"_Stz,              EC_ENUMS);
 
   
+  
+  vAddConstant("EG_NONE"_Stz, EG_NONE);
+
+  vAddConstant("EG_AA"_Stz,   EG_AA);
+  vAddConstant("EG_AC"_Stz,   EG_AC);
+  vAddConstant("EG_AK"_Stz,   EG_AK);
+  vAddConstant("EG_AN"_Stz,   EG_AN);
+  vAddConstant("EG_AT"_Stz,   EG_AT);
+  vAddConstant("EG_BO"_Stz,   EG_BO);
+  vAddConstant("EG_CC"_Stz,   EG_CC);
+  vAddConstant("EG_CK"_Stz,   EG_CK);
+  vAddConstant("EG_CM"_Stz,   EG_CM);
+  vAddConstant("EG_CN"_Stz,   EG_CN);
+  vAddConstant("EG_CP"_Stz,   EG_CP);
+  vAddConstant("EG_CS"_Stz,   EG_CS);
+  vAddConstant("EG_CT"_Stz,   EG_CT);
+  vAddConstant("EG_CX"_Stz,   EG_CX);
+  vAddConstant("EG_DA"_Stz,   EG_DA);
+  vAddConstant("EG_DC"_Stz,   EG_DC);
+  vAddConstant("EG_DG"_Stz,   EG_DG);
+  vAddConstant("EG_DL"_Stz,   EG_DL);
+  vAddConstant("EG_DM"_Stz,   EG_DM);
+  vAddConstant("EG_DS"_Stz,   EG_DS);
+  vAddConstant("EG_EA"_Stz,   EG_EA);
+  vAddConstant("EG_EC"_Stz,   EG_EC);
+  vAddConstant("EG_ED"_Stz,   EG_ED);
+  vAddConstant("EG_EK"_Stz,   EG_EK);
+  vAddConstant("EG_EO"_Stz,   EG_EO);
+  vAddConstant("EG_EP"_Stz,   EG_EP);
+  vAddConstant("EG_FA"_Stz,   EG_FA);
+  vAddConstant("EG_FN"_Stz,   EG_FN);
+  vAddConstant("EG_GA"_Stz,   EG_GA);
+  vAddConstant("EG_HA"_Stz,   EG_HA);
+  vAddConstant("EG_HS"_Stz,   EG_HS);
+  vAddConstant("EG_HT"_Stz,   EG_HT);
+  vAddConstant("EG_IK"_Stz,   EG_IK);
+  vAddConstant("EG_IS"_Stz,   EG_IS);
+  vAddConstant("EG_IT"_Stz,   EG_IT);
+  vAddConstant("EG_JA"_Stz,   EG_JA);
+  vAddConstant("EG_JF"_Stz,   EG_JF);
+  vAddConstant("EG_JK"_Stz,   EG_JK);
+  vAddConstant("EG_JL"_Stz,   EG_JL);
+  vAddConstant("EG_JP"_Stz,   EG_JP);
+  vAddConstant("EG_JS"_Stz,   EG_JS);
+  vAddConstant("EG_KC"_Stz,   EG_KC);
+  vAddConstant("EG_KE"_Stz,   EG_KE);
+  vAddConstant("EG_KK"_Stz,   EG_KK);
+  vAddConstant("EG_LA"_Stz,   EG_LA);
+  vAddConstant("EG_LH"_Stz,   EG_LH);
+  vAddConstant("EG_LK"_Stz,   EG_LK);
+  vAddConstant("EG_MA"_Stz,   EG_MA);
+  vAddConstant("EG_MC"_Stz,   EG_MC);
+  vAddConstant("EG_MK"_Stz,   EG_MK);
+  vAddConstant("EG_MM"_Stz,   EG_MM);
+  vAddConstant("EG_MN"_Stz,   EG_MN);
+  vAddConstant("EG_MT"_Stz,   EG_MT);
+  vAddConstant("EG_NE"_Stz,   EG_NE);
+  vAddConstant("EG_NK"_Stz,   EG_NK);
+  vAddConstant("EG_NS"_Stz,   EG_NS);
+  vAddConstant("EG_OA"_Stz,   EG_OA);
+  vAddConstant("EG_OC"_Stz,   EG_OC);
+  vAddConstant("EG_OI"_Stz,   EG_OI);
+  vAddConstant("EG_OK"_Stz,   EG_OK);
+  vAddConstant("EG_OM"_Stz,   EG_OM);
+  vAddConstant("EG_OP"_Stz,   EG_OP);
+  vAddConstant("EG_OR"_Stz,   EG_OR);
+  vAddConstant("EG_PA"_Stz,   EG_PA);
+  vAddConstant("EG_PF"_Stz,   EG_PF);
+  vAddConstant("EG_PK"_Stz,   EG_PK);
+  vAddConstant("EG_PO"_Stz,   EG_PO);
+  vAddConstant("EG_PX"_Stz,   EG_PX);
+  vAddConstant("EG_PY"_Stz,   EG_PY);
+  vAddConstant("EG_QA"_Stz,   EG_QA);
+  vAddConstant("EG_QK"_Stz,   EG_QK);
+  vAddConstant("EG_RA"_Stz,   EG_RA);
+  vAddConstant("EG_RE"_Stz,   EG_RE);
+  vAddConstant("EG_RG"_Stz,   EG_RG);
+  vAddConstant("EG_RO"_Stz,   EG_RO);
+  vAddConstant("EG_RS"_Stz,   EG_RS);
+  vAddConstant("EG_RU"_Stz,   EG_RU);
+  vAddConstant("EG_SC"_Stz,   EG_SC);
+  vAddConstant("EG_SI"_Stz,   EG_SI);
+  vAddConstant("EG_SK"_Stz,   EG_SK);
+  vAddConstant("EG_SL"_Stz,   EG_SL);
+  vAddConstant("EG_SS"_Stz,   EG_SS);
+  vAddConstant("EG_ST"_Stz,   EG_ST);
+  vAddConstant("EG_TA"_Stz,   EG_TA);
+  vAddConstant("EG_TN"_Stz,   EG_TN);
+  vAddConstant("EG_TP"_Stz,   EG_TP);
+  vAddConstant("EG_TR"_Stz,   EG_TR);
+  vAddConstant("EG_TS"_Stz,   EG_TS);
+  vAddConstant("EG_TT"_Stz,   EG_TT);
+  vAddConstant("EG_UF"_Stz,   EG_UF);
+  vAddConstant("EG_UK"_Stz,   EG_UK);
+  vAddConstant("EG_VA"_Stz,   EG_VA);
+  vAddConstant("EG_VL"_Stz,   EG_VL);
+  vAddConstant("EG_VP"_Stz,   EG_VP);
+  vAddConstant("EG_WK"_Stz,   EG_WK);
+  vAddConstant("EG_XA"_Stz,   EG_XA);
+  vAddConstant("EG_XK"_Stz,   EG_XK);
+  vAddConstant("EG_XP"_Stz,   EG_XP);
+  vAddConstant("EG_YA"_Stz,   EG_YA);
+  vAddConstant("EG_ZK"_Stz,   EG_ZK);
+
+  vAddConstant("EG_ENUMS"_Stz, EC_ENUMS);
+
+  
+  
+  
   // JK_ : job kind
   /*  0 */ vAddConstant("JK_NONE"_Stz,      JK_NONE);
   /*  1 */ vAddConstant("JK_BOOT"_Stz,      JK_BOOT);
