@@ -394,6 +394,9 @@
       streamDefOut_300
       true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
+
+      ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
+
       StreamDef[].pipeout
     endof
 

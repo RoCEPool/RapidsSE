@@ -97,6 +97,7 @@ static Stz* aEG[]
   "EG_PF"_Stz,
   "EG_PK"_Stz,
   "EG_PO"_Stz,
+  "EG_PO"_Stz,
   "EG_PX"_Stz,
   "EG_PY"_Stz,
   

@@ -559,6 +559,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_PF"_Stz,   EG_PF);
   vAddConstant("EG_PK"_Stz,   EG_PK);
   vAddConstant("EG_PO"_Stz,   EG_PO);
+  vAddConstant("EG_PP"_Stz,   EG_PP);
   vAddConstant("EG_PX"_Stz,   EG_PX);
   vAddConstant("EG_PY"_Stz,   EG_PY);
   vAddConstant("EG_QA"_Stz,   EG_QA);
@@ -641,6 +642,11 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    NS_ACTIVE);
   /*  0 */ vAddConstant("NS_INACTIVE"_Stz,  NS_INACTIVE);
 
+  // PP_ : pipe actions
+  /*  0 */ vAddConstant("PP_NONE"_Stz,      PP_NONE);
+  /*  0 */ vAddConstant("PP_PIPE_IN"_Stz,   PP_PIPE_IN);
+  /*  0 */ vAddConstant("PP_PIPE_OUT"_Stz,  PP_PIPE_OUT);
+  
   // PY_ : priority
   /*  0 */ vAddConstant("PY_NONE"_Stz,      PY_NONE);
   /*  0 */ vAddConstant("PY_LOW"_Stz,       PY_LOW);

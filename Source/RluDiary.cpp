@@ -64,7 +64,7 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_Slot,
 
   if (m_xaDiaryEnt[m_nDiaryEnt].m_iAction)
     
-    vTrace("[Q%lld.%lld] %lld,%lld,%lld,%s,%lld,%lld,%lld,%s\n"_Stz,
+    vTrace("[Q%lld.%lld] %lld,%lld,%lld,%s,%lld,%lld,%lls,%s\n"_Stz,
              
             i_Sql,
             i_Slot,
@@ -79,7 +79,7 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_Slot,
             m_xaDiaryEnt[m_nDiaryEnt].m_iItem,
             m_xaDiaryEnt[m_nDiaryEnt].m_nNanoSecs,
            
-            m_xaDiaryEnt[m_nDiaryEnt].m_iAction,
+            aPP[m_xaDiaryEnt[m_nDiaryEnt].m_iAction],
             EnumGroups::szEnumText(m_xaDiaryEnt[m_nDiaryEnt].m_i_ActEnumGroup,
                                    m_xaDiaryEnt[m_nDiaryEnt].m_i_ActEnum)
 
@@ -126,7 +126,7 @@ void RluDiary::vReport(Stz *szFilePath)
     
     if (m_xaDiaryEnt[i_Ent].m_iAction)
       
-      pFile->vPrint("%lld,%lld,%lld,%s,%lld,%lld,%lld,%s\n"_Stz,
+      pFile->vPrint("%lld,%lld,%lld,%s,%lld,%lld,%lls,%s\n"_Stz,
              
                     i_Ent,
                     m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
@@ -138,7 +138,7 @@ void RluDiary::vReport(Stz *szFilePath)
                     m_xaDiaryEnt[i_Ent].m_iItem,
                     m_xaDiaryEnt[i_Ent].m_nNanoSecs,
                     
-                    m_xaDiaryEnt[i_Ent].m_iAction,
+                    aPP[m_xaDiaryEnt[i_Ent].m_iAction],
                     EnumGroups::szEnumText(m_xaDiaryEnt[i_Ent].m_i_ActEnumGroup,
                                           m_xaDiaryEnt[i_Ent].m_i_ActEnum)
 

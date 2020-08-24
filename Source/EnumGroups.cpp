@@ -93,6 +93,7 @@ Stz* EnumGroups::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_PF: return aPF[i_Enum];
     case EG_PK: return aPK[i_Enum];
     case EG_PO: return aPO[i_Enum];
+    case EG_PP: return aPP[i_Enum];
     case EG_PX: return aPX[i_Enum];
     case EG_PY: return aPY[i_Enum];
 
