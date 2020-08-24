@@ -11,6 +11,7 @@ extern EnvFlags gxEnvFlags;;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogicUnit(void)
 {
+  vAddStep("LogicUnit[].diaryAction"_Stz,   &Step::vLogicUnitDiaryAction);
   vAddStep("LogicUnit[].diaryNote"_Stz,     &Step::vLogicUnitDiaryNote);
   
   vAddStep("LogicUnit[].dynFun"_Stz,        &Step::vLogicUnitDynFun);
@@ -35,6 +36,31 @@ void Step::vAddSteps_LogicUnit(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* LogicUnit[].diaryAction -- add a longer diary action note                  */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitDiaryAction(void)
+{
+  ENTRY();
+  
+ 
+  i8 i_EnumGroup = m_pDataStack->iPopInt(__func__);
+  i8 i_Enum      = m_pDataStack->iPopInt(__func__);
+  i8 iItem       = m_pDataStack->iPopInt(__func__);
+
+  i8 i_Action       = m_pDataStack->iPopInt(__func__);
+  i8 i_ActEnumGroup = m_pDataStack->iPopInt(__func__);
+  i8 i_ActEnum      = m_pDataStack->iPopInt(__func__);
+
+  m_pLogicUnit->m_oSince.vUpdate();
+  i8 nNanoSeconds = m_pLogicUnit->m_oSince.iNanoseconds();
+  
+  m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
+                           i_Action,i_ActEnumGroup,i_ActEnum);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* LogicUnit[].diaryNote -- add a diary note                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vLogicUnitDiaryNote(void)
@@ -48,7 +74,7 @@ void Step::vLogicUnitDiaryNote(void)
   m_pLogicUnit->m_oSince.vUpdate();
   i8 nNanoSeconds = m_pLogicUnit->m_oSince.iNanoseconds();
   
-  m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds);
+  m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,0,0,0);
   
   EXIT();
 }

@@ -259,7 +259,8 @@ i8 LogicUnit::iCodeArg(i8 i_Code)
 /*----------------------------------------------------------------------------*/
 /* add diary note                                                             */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs)
+void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
+                           i2 iAction, i2 i_ActEnumGroup, i2 i_ActEnum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
@@ -269,7 +270,7 @@ void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs)
   
   m_pRluDiary->vAddNote(m_xRluCommon.m_iSql,m_xRluCommon.m_i_Slot,                       
                         i_EnumGroup,i_Enum,iItem,nNanoSecs,
-                        0,0,0);
+                        iAction,i_ActEnumGroup,i_ActEnum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -315,7 +316,8 @@ void LogicUnit::vEnter(void)
   
   vDiaryNote(EG_ED,ED_ENTER,
               m_xRluCommon.m_nEnterCount,
-              nNanoSeconds);
+              nNanoSeconds,
+              0,0,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,7 +341,8 @@ void LogicUnit::vExit(void)
 
   vDiaryNote(EG_ED,ED_EXIT,
              m_xRluCommon.m_nEnterCount,
-             nNanoSeconds);
+             nNanoSeconds,
+             0,0,0);
 }
 
 /*----------------------------------------------------------------------------*/
