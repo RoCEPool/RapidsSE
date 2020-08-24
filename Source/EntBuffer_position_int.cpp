@@ -52,7 +52,8 @@ EntBuffer* EntBuffer::pFindLeafBuffer_int(Key* aForKey)
     
     i8 iBufferHeight;
     Ent* aEnt;
-    
+    Ent* aEntPrev;
+  
     while (true) {
       
       iBufferHeight = pEntBuffer->iBufferHeight();
@@ -65,9 +66,10 @@ EntBuffer* EntBuffer::pFindLeafBuffer_int(Key* aForKey)
       
       aEnt = pEntBuffer->aFindEntryBefore_int(aForKey);
       ASSERT(aEnt);
-      Ent* aEntPrev = aEnt;
+      aEntPrev = aEnt;
 
       aEnt = pEntBuffer->pFindEntryPrevTo_int(aEnt,aForKey);
+#ifdef WITH_DEBUG_VERSION
       if (! aEnt) {
         aForKey->vShow(m_pIndex->pIndexDef());
         vTrace("\n"_Stz);
@@ -78,7 +80,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_int(Key* aForKey)
         pEntBuffer->vDump();
       }
       ASSERT(aEnt);
-      
+#endif
       // get the index buffer of the entry
       pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
       ASSERT(pEntBuffer);
@@ -99,15 +101,15 @@ Ent* EntBuffer::pFindEntryPrevTo_int(Ent* aGivenEnt, Key* aWithKey)
     aGivenEnt = aNextEntry(aGivenEnt,0);
   
   Ent* aEntPrev = aGivenEnt;
-  
+  i8 iGivenInt;
+  i8 iWithInt;
+
+  iWithInt = *(i8*)aWithKey;
+
   while (aGivenEnt) {
     
+    iGivenInt = aGivenEnt->iIntElm0();
     
-    i8 iGivenInt = aGivenEnt->iIntElm0();
-    i8 iWithInt = *(i8*)aWithKey;
-    
-    //eKC eCompare = Key::eCompare(aGivenEnt->aKey(),aWithKey);
-
     // have we reached the key?
     if (iGivenInt == iWithInt)
       break;
@@ -510,6 +512,8 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
   i8 iGivenKey_IntElm = ELM0_OF_KEY(aGivenKey_int);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Ent_int* aNextEnt_int;
+  i8 iNextEnt_IntElm;
 
   Ent_int* aScanEnt = (Ent_int*)aSkipRoots;
   for (i4 i_Level = (i4)nLvlLevels - 1; i_Level >= 0; i_Level--) {
@@ -518,8 +522,8 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
          ! END_TICKET(tNextEnt);
          tNextEnt = NEXT_TICKET(aScanEnt,i_Level)) {
 
-      Ent_int* aNextEnt_int = GET_ENTRY(tNextEnt);
-      i8 iNextEnt_IntElm = ELM0_OF_ENTRY(aNextEnt_int);
+      aNextEnt_int = GET_ENTRY(tNextEnt);
+      iNextEnt_IntElm = ELM0_OF_ENTRY(aNextEnt_int);
       
       //vTrace("@%lld : %lld v %lld\n"_Stz,i_Level,iKey_IntElm,iNextEnt_IntElm);
             

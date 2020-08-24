@@ -2272,16 +2272,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_POS_ALTBYSRC: ArgNil(); // position alt ixt using src.key
         dLU0(EO_IXT_POS_ALTBYSRC);
-        aRluCommon->m_aAltEnt =
-          aDev_IXT_POS_ALTBYSRC(pLU);
+        aRluCommon->m_aAltEnt = aDev_IXT_POS_ALTBYSRC(pLU);
         aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
         break;//+endCase
 
       case EO_IXT_POS_ALTBYWRK: ArgNil(); // position alt ixt using entwrk.key
         dLU0(EO_IXT_POS_ALTBYWRK);
-        aRluCommon->m_aAltEnt =
-          aDev_IXT_POS_ALTBYWRK(pLU);
+        aRluCommon->m_aAltEnt = aDev_IXT_POS_ALTBYWRK(pLU);
         aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
         break;//+endCase

@@ -866,7 +866,7 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_RSB_SRC_NEXT);
   vAddCodeLabel(EO_JMP_FALSE,"END_SRC:"_Stz);
 
-  vAddCodeLabel(EO_CALL,"MOV_DST:"_Stz);
+  //vAddCodeLabel(EO_CALL,"MOV_DST:"_Stz);
   vAddCodeLabel(EO_CALL,"AGG_REV:"_Stz);
 
   vAddCodeLabel(EO_JMP,"NXT_SRC:"_Stz);
@@ -910,6 +910,15 @@ void LogicUnit::vGenerateQuery301(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("AGG_REV:"_Stz);
   
+  vAddCode(EO_RSB_DST_ZERO);
+
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_ORDERKEY);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERDATE);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_ORDERDATE);
+  vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_SHIPPRIORITY);
+  vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_SHIPPRIORITY);
+
   vAddCode(EO_ENTWRK_RESET);
 
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY);
