@@ -57,6 +57,9 @@ void RluDiary::vAddNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs)
   m_xaDiaryEnt[m_nDiaryEnt].m_nNanoSecs   = nNanoSecs;
 
   m_nDiaryEnt++;
+  
+  if (m_nDiaryEnt >= C_DIARY_ENTRIES)
+    m_nDiaryEnt = 0;
 }
 
 /*----------------------------------------------------------------------------*/

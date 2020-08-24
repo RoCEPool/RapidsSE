@@ -56,7 +56,8 @@ void LogicUnit::vGenerateQuery100(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("QRY_100:"_Stz);
   vAddCode(EO_INIT);
-  
+  vAddCode(EO_ENTER);
+
   vAddCode(EO_CRW_SRC_TEST);
   vAddCodeLabel(EO_JMP_TRUE,"BEGIN_CRW_SRC:"_Stz);
   vAddCodeLabel(EO_CALL,"SUBROUTINE_IXT_TO_RSB:"_Stz);
@@ -79,6 +80,7 @@ void LogicUnit::vGenerateQuery100(void)
   
   vDefineLabel("QRY_100_DONE:"_Stz);
   vAddCode(EO_CRW_SRC_NULL);
+  vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // END MAIN: QRY_100
@@ -414,7 +416,8 @@ void LogicUnit::vGenerateQuery103(void)
   
   vDefineLabel("QRY_103:"_Stz);
   vAddCode(EO_INIT);
-  
+  vAddCode(EO_ENTER);
+
   vAddCode(EO_RSB_SRC_TEST);
   vAddCodeLabel(EO_JMP_TRUE,"BEGIN_RSB_SRC:"_Stz);
   vAddCodeLabel(EO_CALL,"SUBROUTINE_IXT_TO_RSB:"_Stz);
@@ -577,6 +580,8 @@ void LogicUnit::vGenerateQuery103(void)
   
   vDefineLabel("QRY_103_DONE:"_Stz);
   vAddCode(EO_RSB_SRC_NULL);
+  
+  vAddCode(EO_EXIT);
   vAddCode(EO_RETURN);
   
   
