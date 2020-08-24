@@ -56,12 +56,12 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  Operand[]
-  profile.start
+  //Operand[]
+  //profile.start
 
   Operand[].crwToRsb
 
-  profile.end
+  //profile.end
 
   // test for any completed
   ToRsb[].completed to OperandB[]
@@ -85,12 +85,12 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  Operand[]
-  profile.start
+  //Operand[]
+  //profile.start
 
   Operand[].csvToRsb
 
-  profile.end
+  //profile.end
 
   // test for any completed
   ToRsb[].completed to OperandB[]
@@ -124,9 +124,9 @@
   ToRsb[].delete
 
   // get the profile from the task
-  task[] task.profile@ to Operand[]
-  nullptr task[] task.profile!
-  Operand[].pipeOut
+  //task[] task.profile@ to Operand[]
+  //nullptr task[] task.profile!
+  //Operand[].pipeOut
 
   // pipeout the (EosMarker)
   PipeIn[].pipeOut

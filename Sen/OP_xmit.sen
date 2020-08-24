@@ -12,9 +12,9 @@
   ZK_EOSMARKER_handler
 
   // get the profile from the task
-  task[] task.profile@ to Operand[]
-  nullptr task[] task.profile!
-  Operand[].pipeOut
+  //task[] task.profile@ to Operand[]
+  //nullptr task[] task.profile!
+  //Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -32,9 +32,9 @@
 : xmit_RsbBuffer \handler
 
   //"ZK_RSBBUFFER_handler" .verbose
-  Pipein[] profile.start
+  //Pipein[] profile.start
   PipeIn[].pipeOut
-  profile.end
+  //profile.end
 
   true
 ;

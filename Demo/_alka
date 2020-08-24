@@ -41,7 +41,7 @@ print section "Query 6...";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Query 4...";
-/time preQuery_4b ;
+/time Query_4b ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Dropping Orders Table...";
@@ -64,7 +64,7 @@ compactIdx Orders Orders_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Query 3...";
-/time preQuery_3b ;
+/time Query_3b ;
 
 /*============================================================================*/
 /* end                                                                        */
