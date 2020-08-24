@@ -82,6 +82,9 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
   char* azDst;
   char** aacCellValue;
   
+  Edt* aEdt;
+  Dte* aDte;
+  
   OverLine* aOverLine;
   TailLine* aTailLine;
   
@@ -314,7 +317,6 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
         break;
         
       case MN_DATE_E0: // date era-0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
-        aiCellValue = (i8*)ayDstByte;
         *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
@@ -326,11 +328,16 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
 //        *ayDstByte++ = 0; // 6
 //        *ayDstByte++ = 0; // 7
         
-        vDteFromEdt(aiCellValue,C_ERA_0);
+        //vDteFromEdt(aiCellValue,C_ERA_0);
+        aEdt = (Edt*)aiCellValue;
+        aDte = (Dte*)aiCellValue;
+        
+        aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_0;
+        aDte->m_uMonth     = aEdt->m_uMonth;
+        aDte->m_uDay       = aEdt->m_uDay;
         break;
         
       case MN_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
-        aiCellValue = (i8*)ayDstByte;
         *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
@@ -342,11 +349,16 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
 //        *ayDstByte++ = 0; // 6
 //        *ayDstByte++ = 0; // 7
         
-        vDteFromEdt(aiCellValue,C_ERA_1);
+        //vDteFromEdt(aiCellValue,C_ERA_1);
+        aEdt = (Edt*)aiCellValue;
+        aDte = (Dte*)aiCellValue;
+        
+        aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_1;
+        aDte->m_uMonth     = aEdt->m_uMonth;
+        aDte->m_uDay       = aEdt->m_uDay;
         break;
         
       case MN_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
-        aiCellValue = (i8*)ayDstByte;
         *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
@@ -358,7 +370,13 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
 //        *ayDstByte++ = 0; // 6
 //        *ayDstByte++ = 0; // 7
         
-        vDteFromEdt(aiCellValue,C_ERA_2);
+        //vDteFromEdt(aiCellValue,C_ERA_2);
+        aEdt = (Edt*)aiCellValue;
+        aDte = (Dte*)aiCellValue;
+        
+        aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_2;
+        aDte->m_uMonth     = aEdt->m_uMonth;
+        aDte->m_uDay       = aEdt->m_uDay;
         break;
         
       case MN_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
