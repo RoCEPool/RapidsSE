@@ -21,8 +21,6 @@
   // pipeout the streamDef
   streamDef[].pipeOut
 
-  0 to Counter0[]
-
   true
 ;
 
@@ -77,6 +75,8 @@
  : totalCount_req \operator
  
   LogReqEntry SEED_REQ
+
+  0 to Counter0[]
 
   op__topology
 
