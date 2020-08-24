@@ -2105,9 +2105,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
                               
       case EO_ENTWRK_SETINTELM: ArgNil(); // append next element value (int)
-        iTopA = *(aiDstk--);
-        dLU1(EO_ENTWRK_SETINTELM,iTopA);
-        vDev_ENTWRK_SETINTELM(pLU,aRluCommon->m_pDevSrcRsb,iTopA);
+        dLU0(EO_ENTWRK_SETINTELM);
+        aRluCommon->m_aWrkEnt->m_iIntElm0 = *(aiDstk--);
+        aRluCommon->m_aWrkEnt->Ref.m_uKind = 1; //KE_INT;
+//        iTopA = *(aiDstk--);
+//        vDev_ENTWRK_SETINTELM(pLU,aRluCommon->m_pDevSrcRsb,iTopA);
         break;//+endCase
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
