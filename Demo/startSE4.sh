@@ -42,6 +42,10 @@ START_PARAMS="--partitionsPerNode ${PARTITIONS} --threads ${THREADS} --size ${SI
 #set the library path for the rapidsSE library
 export LD_LIBRARY_PATH="${EXE_PATH}":$LD_LIBRARY_PATH
 
+# SE environment variables
+export SE_ENV_METACLUE=1
+export SE_ENV_INTKEY=1
+
 # how long to wait after SE has started to check that it is still running.
 SLEEP_SEC=10
 
