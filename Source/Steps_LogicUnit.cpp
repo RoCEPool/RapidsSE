@@ -11,6 +11,8 @@ extern EnvFlags gxEnvFlags;;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogicUnit(void)
 {
+  vAddStep("LogicUnit[].diaryNote"_Stz,     &Step::vLogicUnitDiaryNote);
+  
   vAddStep("LogicUnit[].dynFun"_Stz,        &Step::vLogicUnitDynFun);
   vAddStep("LogicUnit[].dynFunArgs"_Stz,    &Step::vLogicUnitDynFunArgs);
   vAddStep("LogicUnit[].genCode"_Stz,       &Step::vLogicUnitGenCode);
@@ -30,6 +32,21 @@ void Step::vAddSteps_LogicUnit(void)
   
   vAddStep("LogicUnit[].transform"_Stz,     &Step::vLogicUnitTransform);
   vAddStep("LogicUnit[].transformArgs"_Stz, &Step::vLogicUnitTransformArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].diaryNote -- add a diary note                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitDiaryNote(void)
+{
+  ENTRY();
+  
+  i8 iArg0 = m_pDataStack->iPopInt(__func__);
+  i8 iArg1 = m_pDataStack->iPopInt(__func__);
+  i8 iArg2 = m_pDataStack->iPopInt(__func__);
+  i8 iArg3 = m_pDataStack->iPopInt(__func__);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

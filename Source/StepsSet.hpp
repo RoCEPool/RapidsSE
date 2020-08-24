@@ -901,6 +901,7 @@ public:
   void vLogicUnitCallAgainStore(void);
   void vLogicUnitCalledAgainFetch(void);
   void vLogicUnitCalledAgainStore(void);
+  void vLogicUnitDiaryNote(void);
   void vLogicUnitDynFun(void);
   void vLogicUnitDynFunArgs(void);
   void vLogicUnitGenCode(void);
