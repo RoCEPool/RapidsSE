@@ -171,6 +171,7 @@ namespace Expressions
     i8   nCodes(void);
     eEO* aCodeArg(i8 i_Code);
     i8   iCodeArg(i8 i_Code);
+    void vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs);
     i8   iDynFun(i8 nOuterArgs, i8 iOuterArg0);
     void vEndOptimise(void);
     void vEnter(void);

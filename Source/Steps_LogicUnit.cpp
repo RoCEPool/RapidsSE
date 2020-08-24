@@ -41,11 +41,12 @@ void Step::vLogicUnitDiaryNote(void)
 {
   ENTRY();
   
-  i8 iArg0 = m_pDataStack->iPopInt(__func__);
-  i8 iArg1 = m_pDataStack->iPopInt(__func__);
-  i8 iArg2 = m_pDataStack->iPopInt(__func__);
-  i8 iArg3 = m_pDataStack->iPopInt(__func__);
+  i8 i_EnumGroup = m_pDataStack->iPopInt(__func__);
+  i8 i_Enum      = m_pDataStack->iPopInt(__func__);
+  i8 iItem       = m_pDataStack->iPopInt(__func__);
+  i8 nNanoSecs   = m_pDataStack->iPopInt(__func__);
   
+  m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSecs);
   EXIT();
 }
 

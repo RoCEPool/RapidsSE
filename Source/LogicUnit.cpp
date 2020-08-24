@@ -257,6 +257,19 @@ i8 LogicUnit::iCodeArg(i8 i_Code)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add diary note                                                             */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  if (!m_pRluDiary)
+    m_pRluDiary = new RluDiary;
+
+  m_pRluDiary->vAddNote(i_EnumGroup,i_Enum,iItem,nNanoSecs);
+}
+
+/*----------------------------------------------------------------------------*/
 /* call dynamic function compiled by LogicCompiler                            */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iDynFun(i8 nOuterArgs, i8 iOuterArg0)
