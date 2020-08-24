@@ -62,48 +62,47 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_Slot,
   m_xaDiaryEnt[m_nDiaryEnt].m_i_ActEnumGroup = i_ActEnumGroup;
   m_xaDiaryEnt[m_nDiaryEnt].m_i_ActEnum      = i_ActEnum;
 
-  if (m_xaDiaryEnt[m_nDiaryEnt].m_iAction)
-    
-    vTrace("[Q%lld.%lld] %lld,%lld,%lld,%s,%lld,%lld,%lls,%s\n"_Stz,
-             
-            i_Sql,
-            i_Slot,
-             
-            m_nDiaryEnt,
-            m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup,
-            m_xaDiaryEnt[m_nDiaryEnt].m_i_Enum,
-
-            EnumGroups::szEnumText(m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup,
-                                   m_xaDiaryEnt[m_nDiaryEnt].m_i_Enum),
-
-            m_xaDiaryEnt[m_nDiaryEnt].m_iItem,
-            m_xaDiaryEnt[m_nDiaryEnt].m_nNanoSecs,
-           
-            aPP[m_xaDiaryEnt[m_nDiaryEnt].m_iAction],
-            EnumGroups::szEnumText(m_xaDiaryEnt[m_nDiaryEnt].m_i_ActEnumGroup,
-                                   m_xaDiaryEnt[m_nDiaryEnt].m_i_ActEnum)
-
-            );
-
-  else
-    vTrace("[Q%lld.%lld] %lld,%lld,%lld,%s,%lld,%lld\n"_Stz,
-           
-          i_Sql,
-          i_Slot,
-           
-          m_nDiaryEnt,
-          m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup,
-          m_xaDiaryEnt[m_nDiaryEnt].m_i_Enum,
-
-          EnumGroups::szEnumText(m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup,
-                                 m_xaDiaryEnt[m_nDiaryEnt].m_i_Enum),
-
-          m_xaDiaryEnt[m_nDiaryEnt].m_iItem,
-          m_xaDiaryEnt[m_nDiaryEnt].m_nNanoSecs
-           
-          );
-
-  
+//  if (m_xaDiaryEnt[m_nDiaryEnt].m_iAction)
+//
+//    vTrace("[Q%lld.%lld] %lld,%lld,%lld,%s,%lld,%lld,%lls,%s\n"_Stz,
+//
+//            i_Sql,
+//            i_Slot,
+//
+//            m_nDiaryEnt,
+//            m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup,
+//            m_xaDiaryEnt[m_nDiaryEnt].m_i_Enum,
+//
+//            EnumGroups::szEnumText(m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup,
+//                                   m_xaDiaryEnt[m_nDiaryEnt].m_i_Enum),
+//
+//            m_xaDiaryEnt[m_nDiaryEnt].m_iItem,
+//            m_xaDiaryEnt[m_nDiaryEnt].m_nNanoSecs,
+//
+//            aPP[m_xaDiaryEnt[m_nDiaryEnt].m_iAction],
+//            EnumGroups::szEnumText(m_xaDiaryEnt[m_nDiaryEnt].m_i_ActEnumGroup,
+//                                   m_xaDiaryEnt[m_nDiaryEnt].m_i_ActEnum)
+//
+//            );
+//
+//  else {
+//    vTrace("[Q%lld.%lld] %lld,%lld,%lld,%s,%lld,%lld\n"_Stz,
+//
+//          i_Sql,
+//          i_Slot,
+//
+//          m_nDiaryEnt,
+//          m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup,
+//          m_xaDiaryEnt[m_nDiaryEnt].m_i_Enum,
+//
+//          EnumGroups::szEnumText(m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup,
+//                                 m_xaDiaryEnt[m_nDiaryEnt].m_i_Enum),
+//
+//          m_xaDiaryEnt[m_nDiaryEnt].m_iItem,
+//          m_xaDiaryEnt[m_nDiaryEnt].m_nNanoSecs
+//
+//          );
+//  }
   
   m_nDiaryEnt++;
   

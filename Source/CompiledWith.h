@@ -101,7 +101,7 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
 // event-based task model
 
 //#define WITH_PULSING EndDefine             // code for pulsing compiled in
-#define WITH_NO_XMIT_OPT EndDefine         // code for no xmit optimization
+//#define WITH_NO_XMIT_OPT EndDefine         // code for no xmit optimization
 
 // temporary
 
