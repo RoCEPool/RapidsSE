@@ -165,7 +165,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
             
           case 0x0: // MN_NUMERIC 0B
               *aiCellValue = 0;
-              ayDstByte += 8;
+              ayDstByte += C_8B;
 //            *ayDstByte++ = 0; // 0
 //            *ayDstByte++ = 0; // 1
 //            *ayDstByte++ = 0; // 2
@@ -179,7 +179,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
           case 0x1: // MN_NUMERIC 1B
             *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
-            ayDstByte += 7;
+            ayDstByte += C_7B;
 //            *ayDstByte++ = 0; // 1
 //            *ayDstByte++ = 0; // 2
 //            *ayDstByte++ = 0; // 3
@@ -190,10 +190,11 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
             break;
             
           case 0x2: // MN_NUMERIC 2B
-            *aiCellValue = 0;
-            *ayDstByte++ = *ayDataByte++; // 0
-            *ayDstByte++ = *ayDataByte++; // 1
-            ayDstByte += 6;
+            *aiCellValue = *(u2*)(ayDataByte);
+            ayDataByte += C_2B;
+            ayDstByte += C_8B;
+//            *ayDstByte++ = *ayDataByte++; // 0
+//            *ayDstByte++ = *ayDataByte++; // 1
 //            *ayDstByte++ = 0; // 2
 //            *ayDstByte++ = 0; // 3
 //            *ayDstByte++ = 0; // 4
@@ -207,7 +208,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
             *ayDstByte++ = *ayDataByte++; // 2
-            ayDstByte += 5;
+            ayDstByte += C_5B;
 //            *ayDstByte++ = 0; // 3
 //            *ayDstByte++ = 0; // 4
 //            *ayDstByte++ = 0; // 5
@@ -216,12 +217,13 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
             break;
             
           case 0x4: // MN_NUMERIC 4B
-            *aiCellValue = 0;
-            *ayDstByte++ = *ayDataByte++; // 0
-            *ayDstByte++ = *ayDataByte++; // 1
-            *ayDstByte++ = *ayDataByte++; // 2
-            *ayDstByte++ = *ayDataByte++; // 3
-            ayDstByte += 4;
+            *aiCellValue = *(u4*)(ayDataByte);
+            ayDataByte += C_4B;
+            ayDstByte += C_8B;
+//            *ayDstByte++ = *ayDataByte++; // 0
+//            *ayDstByte++ = *ayDataByte++; // 1
+//            *ayDstByte++ = *ayDataByte++; // 2
+//            *ayDstByte++ = *ayDataByte++; // 3
 //            *ayDstByte++ = 0; // 4
 //            *ayDstByte++ = 0; // 5
 //            *ayDstByte++ = 0; // 6
@@ -235,7 +237,7 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
             *ayDstByte++ = *ayDataByte++; // 2
             *ayDstByte++ = *ayDataByte++; // 3
             *ayDstByte++ = *ayDataByte++; // 4
-            ayDstByte += 3;
+            ayDstByte += C_3B;
 //            *ayDstByte++ = 0; // 5
 //            *ayDstByte++ = 0; // 6
 //            *ayDstByte++ = 0; // 7
@@ -249,13 +251,13 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
             *ayDstByte++ = *ayDataByte++; // 3
             *ayDstByte++ = *ayDataByte++; // 4
             *ayDstByte++ = *ayDataByte++; // 5
-            ayDstByte += 2;
+            ayDstByte += C_2B;
 //            *ayDstByte++ = 0; // 6
 //            *ayDstByte++ = 0; // 7
             break;
             
           case 0x7: // MN_NUMERIC 7B
-            *aiCellValue = 0;
+            //*aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
             *ayDstByte++ = *ayDataByte++; // 2
@@ -263,19 +265,21 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
             *ayDstByte++ = *ayDataByte++; // 4
             *ayDstByte++ = *ayDataByte++; // 5
             *ayDstByte++ = *ayDataByte++; // 6
-            ayDstByte ++;
-//            *ayDstByte++ = 0; // 7
+            *ayDstByte++ = 0; // 7
             break;
             
           case 0x8: // MN_NUMERIC 8B
-            *ayDstByte++ = *ayDataByte++; // 0
-            *ayDstByte++ = *ayDataByte++; // 1
-            *ayDstByte++ = *ayDataByte++; // 2
-            *ayDstByte++ = *ayDataByte++; // 3
-            *ayDstByte++ = *ayDataByte++; // 4
-            *ayDstByte++ = *ayDataByte++; // 5
-            *ayDstByte++ = *ayDataByte++; // 6
-            *ayDstByte++ = *ayDataByte++; // 7
+            *aiCellValue = *(u8*)(ayDataByte);
+//            *ayDstByte++ = *ayDataByte++; // 0
+//            *ayDstByte++ = *ayDataByte++; // 1
+//            *ayDstByte++ = *ayDataByte++; // 2
+//            *ayDstByte++ = *ayDataByte++; // 3
+//            *ayDstByte++ = *ayDataByte++; // 4
+//            *ayDstByte++ = *ayDataByte++; // 5
+//            *ayDstByte++ = *ayDataByte++; // 6
+//            *ayDstByte++ = *ayDataByte++; // 7
+            ayDstByte += C_8B;
+            ayDataByte += C_8B;
             break;
             
           case 0x9: // MN_NUMERIC 9B
