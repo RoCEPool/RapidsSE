@@ -331,6 +331,8 @@
 
   0 locals| queryNo |
 
+  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+
   ZK_STARTMARKER_handler
 
   <queryNo> >int to queryNo
@@ -699,6 +701,8 @@
 /*----------------------------------------------------------------------------*/
 : sql_PulseMarker \handler
 
+  0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryNote
+
   <queryNo> >int locals| queryNo |
 
   queryNo case
@@ -725,6 +729,8 @@
 /*----------------------------------------------------------------------------*/
 : sql_CrwBuffer \handler
 
+  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+
   <queryNo> >int locals| queryNo |
 
   queryNo case
@@ -747,6 +753,8 @@
 /* on ZK_RSBBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : sql_RsbBuffer \handler
+
+  0 ZK_RSBBUFFER EG_ZK LogicUnit[].diaryNote
 
   <queryNo> >int locals| queryNo |
 
@@ -820,6 +828,8 @@
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : sql_EosMarker \handler
+
+  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
   <queryNo> >int locals| queryNo |
 
@@ -900,6 +910,8 @@
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : sql_StreamDef \handler
+
+  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   0 0 locals| queryNo pColumn |
 
