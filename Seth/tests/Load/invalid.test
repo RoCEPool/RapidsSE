@@ -3,8 +3,8 @@
 /*----------------------------------------------------------------------------*/
 
 // track memory
-trackMemory;
-success
+//trackMemory;
+//success
 
 // incomplete load command
 load;
@@ -41,8 +41,8 @@ failure contains: 'invalid file'
 drop table T1;
 success
 
-MemoryLeaks;
-rows: 0
+//MemoryLeaks;
+//rows: 0
 
 CLEANUP {
   
