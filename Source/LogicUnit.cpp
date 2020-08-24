@@ -1521,7 +1521,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PUSH_LOCALI: ArgGet(iArg); // push a local reg
         dLU1(EO_PUSH_LOCALI, iArg);
         //ASSERT(iArg < C_LOCALS);
-        *(++aiDstk) = iLib_GET_LOCAL(pLU, iArg);
+        *(++aiDstk) = aRluCommon->m_iaLocals[iArg]; //iLib_GET_LOCAL(pLU, iArg);
         break;//+endCase
         
       case EO_PUSH_LOCALS: ArgGet(iArg); // push a local reg
@@ -1942,15 +1942,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         while (C_ENT_END_TICKET != tNext) {
           aEnt_int = (struct Ent_int*) &aRluCommon->m_aEntArray[tNext];
           //printf("Ticket %lld Ent %p\n",(i8)tNext,aEnt_int);
-          if (aEnt_int->m_iIntElm0 == aRluCommon->m_aWrkEnt->m_iIntElm0) {
+          if (aRluCommon->m_aWrkEnt->m_iIntElm0 == aEnt_int->m_iIntElm0) {
+            aRluCommon->m_aTmpEnt = aEnt_int;
             *(++aiDstk) = 1; // found matching key
             goto L_end_FINDI;
           }
-          if (aEnt_int->m_iIntElm0 > aRluCommon->m_aWrkEnt->m_iIntElm0) {
-            *(++aiDstk) = 0; // did not find matching key
-            goto L_end_FINDI;
+          if (aRluCommon->m_aWrkEnt->m_iIntElm0 < aEnt_int->m_iIntElm0) {
+            tNext = aEnt_int->m_taNextEntry[0];
+            continue;
           }
-          tNext = aEnt_int->m_taNextEntry[0];
+         *(++aiDstk) = 0; // did not find matching key
+          goto L_end_FINDI;
         }
         
         // did not find matching key
