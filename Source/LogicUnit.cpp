@@ -1441,11 +1441,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_GREATERTHAN: ArgNil(); // test top > 2nd, push result
+//        iTopB = *(aiDstk--);
+//        iTopA = *(aiDstk--);
+//        iRes  = iTopA > iTopB;
+//        dLU3(EO_GREATERTHAN,iTopA,iTopB,iRes);
+//        *(++aiDstk) = iRes;
         iTopB = *(aiDstk--);
-        iTopA = *(aiDstk--);
-        iRes  = iTopA > iTopB;
-        dLU3(EO_GREATERTHAN,iTopA,iTopB,iRes);
-        *(++aiDstk) = iRes;
+        *aiDstk = *aiDstk > iTopB;
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

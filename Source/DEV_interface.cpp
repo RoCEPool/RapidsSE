@@ -13,12 +13,16 @@ void vDev_CRW_BEGIN(void* aLU, void* aIXT)
 {
   _static_
 
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   pDevIxt->m_i_Row = -1;
   pDevIxt->m_aCrw = nullptr;
   pDevIxt->m_nRows = pDevIxt->m_pCrwBuffer ?
                    pDevIxt->m_pCrwBuffer->nRowCount() : 0;
+  
+  pLogicUnit->m_xRluCommon.m_nCrwRows = pDevIxt->m_nRows;
+  pLogicUnit->m_xRluCommon.m_i_CrwRow = pDevIxt->m_i_Row;
 }
 
 /*----------------------------------------------------------------------------*/
