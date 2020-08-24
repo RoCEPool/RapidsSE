@@ -178,8 +178,12 @@ Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT, Ent_int** aaSkipRoots)
     pDevIxt->m_pIdxTree->aPositionPriorEntry(pLogicUnit->m_oEntWrk.aKey(),
                                              &pDevIxt->m_pEntBuffer);
   
-  if (pDevIxt->m_pEntBuffer)
+  if (pDevIxt->m_pEntBuffer) {
+    pLogicUnit->m_xRluCommon.m_aEntArray =
+      (Ent_int*)pDevIxt->m_pEntBuffer->aEntArray();
+    
     *aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
+  }
   
   return (Ent_int*)pDevIxt->m_aEnt;
 }

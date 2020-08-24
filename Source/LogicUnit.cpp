@@ -1925,7 +1925,37 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // entry
       case EO_ENT_FINDI: ArgNil(); // find entry with int key
         dLU0(EO_ENT_FINDI);
+        
+        // can we do a linear search
+        if (! aRluCommon->m_aTmpSkipRoots) {
+          *(++aiDstk) = 0;
+          goto L_end_FINDI;
+        }
+        aEnt_int = aRluCommon->m_aTmpSkipRoots;
+        tNext = aEnt_int->m_taNextEntry[0];
+//        if (C_ENT_END_TICKET == tNext) {
+//          *(++aiDstk) = 0;
+//          goto L_end_FINDI;
+//        }
+
+        // search for key
+        while (C_ENT_END_TICKET != tNext) {
+          aEnt_int = (struct Ent_int*) &aRluCommon->m_aEntArray[tNext];
+          //printf("Ticket %lld Ent %p\n",(i8)tNext,aEnt_int);
+          if (aEnt_int->m_iIntElm0 == aRluCommon->m_aWrkEnt->m_iIntElm0) {
+            *(++aiDstk) = 1; // found matching key
+            goto L_end_FINDI;
+          }
+          if (aEnt_int->m_iIntElm0 > aRluCommon->m_aWrkEnt->m_iIntElm0) {
+            *(++aiDstk) = 0; // did not find matching key
+            goto L_end_FINDI;
+          }
+          tNext = aEnt_int->m_taNextEntry[0];
+        }
+        
+        // did not find matching key
         *(++aiDstk) = 0;
+        L_end_FINDI:
         break;//+endCase
         
       case EO_ENT_NEXT: ArgNil(); // move to next m_pEnt
