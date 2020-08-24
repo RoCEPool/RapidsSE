@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILES=($(find . -name "*.tbl.*" | xargs))
+FILES=($(find /mnt -name "*.tbl.*" | xargs))
 
 for f in "${FILES[@]}"
 do
