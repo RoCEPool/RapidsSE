@@ -993,8 +993,9 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeArg(EO_RSB_DST_PUSHCOLI, Q301_REVENUE);
   //vAddCode(EO_DUP);
   //vAddCode(EO_PRINT);
-  vAddCode(EO_ENTWRK_APPENDELMI);
-  
+  //vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_ENTWRK_SETINTELM);
+
   vAddCodeArg(EO_ENTWRK_CREATEPAY, 3 * C_BYTES_PER_WORD);
 
   vAddCode(EO_IXT_INS_ENT);
