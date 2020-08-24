@@ -155,6 +155,8 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
     
   L_HighSwitch:
     
+    aiCellValue = (i8*)ayDstByte;
+    
     switch (uHigh) {
         
       case MN_NUMERIC: // numeric values 0..8B
@@ -162,83 +164,98 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
         switch (uLow) {
             
           case 0x0: // MN_NUMERIC 0B
-            *ayDstByte++ = 0; // 0
-            *ayDstByte++ = 0; // 1
-            *ayDstByte++ = 0; // 2
-            *ayDstByte++ = 0; // 3
-            *ayDstByte++ = 0; // 4
-            *ayDstByte++ = 0; // 5
-            *ayDstByte++ = 0; // 6
-            *ayDstByte++ = 0; // 7
+              *aiCellValue = 0;
+              ayDstByte += 8;
+//            *ayDstByte++ = 0; // 0
+//            *ayDstByte++ = 0; // 1
+//            *ayDstByte++ = 0; // 2
+//            *ayDstByte++ = 0; // 3
+//            *ayDstByte++ = 0; // 4
+//            *ayDstByte++ = 0; // 5
+//            *ayDstByte++ = 0; // 6
+//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x1: // MN_NUMERIC 1B
+            *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
-            *ayDstByte++ = 0; // 1
-            *ayDstByte++ = 0; // 2
-            *ayDstByte++ = 0; // 3
-            *ayDstByte++ = 0; // 4
-            *ayDstByte++ = 0; // 5
-            *ayDstByte++ = 0; // 6
-            *ayDstByte++ = 0; // 7
+            ayDstByte += 7;
+//            *ayDstByte++ = 0; // 1
+//            *ayDstByte++ = 0; // 2
+//            *ayDstByte++ = 0; // 3
+//            *ayDstByte++ = 0; // 4
+//            *ayDstByte++ = 0; // 5
+//            *ayDstByte++ = 0; // 6
+//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x2: // MN_NUMERIC 2B
+            *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
-            *ayDstByte++ = 0; // 2
-            *ayDstByte++ = 0; // 3
-            *ayDstByte++ = 0; // 4
-            *ayDstByte++ = 0; // 5
-            *ayDstByte++ = 0; // 6
-            *ayDstByte++ = 0; // 7
+            ayDstByte += 6;
+//            *ayDstByte++ = 0; // 2
+//            *ayDstByte++ = 0; // 3
+//            *ayDstByte++ = 0; // 4
+//            *ayDstByte++ = 0; // 5
+//            *ayDstByte++ = 0; // 6
+//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x3: // MN_NUMERIC 3B
+            *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
             *ayDstByte++ = *ayDataByte++; // 2
-            *ayDstByte++ = 0; // 3
-            *ayDstByte++ = 0; // 4
-            *ayDstByte++ = 0; // 5
-            *ayDstByte++ = 0; // 6
-            *ayDstByte++ = 0; // 7
+            ayDstByte += 5;
+//            *ayDstByte++ = 0; // 3
+//            *ayDstByte++ = 0; // 4
+//            *ayDstByte++ = 0; // 5
+//            *ayDstByte++ = 0; // 6
+//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x4: // MN_NUMERIC 4B
+            *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
             *ayDstByte++ = *ayDataByte++; // 2
             *ayDstByte++ = *ayDataByte++; // 3
-            *ayDstByte++ = 0; // 4
-            *ayDstByte++ = 0; // 5
-            *ayDstByte++ = 0; // 6
-            *ayDstByte++ = 0; // 7
+            ayDstByte += 4;
+//            *ayDstByte++ = 0; // 4
+//            *ayDstByte++ = 0; // 5
+//            *ayDstByte++ = 0; // 6
+//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x5: // MN_NUMERIC 5B
+            *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
             *ayDstByte++ = *ayDataByte++; // 2
             *ayDstByte++ = *ayDataByte++; // 3
             *ayDstByte++ = *ayDataByte++; // 4
-            *ayDstByte++ = 0; // 5
-            *ayDstByte++ = 0; // 6
-            *ayDstByte++ = 0; // 7
+            ayDstByte += 3;
+//            *ayDstByte++ = 0; // 5
+//            *ayDstByte++ = 0; // 6
+//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x6: // MN_NUMERIC 6B
+            *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
             *ayDstByte++ = *ayDataByte++; // 2
             *ayDstByte++ = *ayDataByte++; // 3
             *ayDstByte++ = *ayDataByte++; // 4
             *ayDstByte++ = *ayDataByte++; // 5
-            *ayDstByte++ = 0; // 6
-            *ayDstByte++ = 0; // 7
+            ayDstByte += 2;
+//            *ayDstByte++ = 0; // 6
+//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x7: // MN_NUMERIC 7B
+            *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
             *ayDstByte++ = *ayDataByte++; // 2
@@ -246,7 +263,8 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
             *ayDstByte++ = *ayDataByte++; // 4
             *ayDstByte++ = *ayDataByte++; // 5
             *ayDstByte++ = *ayDataByte++; // 6
-            *ayDstByte++ = 0; // 7
+            ayDstByte ++;
+//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x8: // MN_NUMERIC 8B
@@ -293,45 +311,48 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
         
       case MN_DATE_E0: // date era-0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)ayDstByte;
-        
+        *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
-        *ayDstByte++ = 0; // 2
-        *ayDstByte++ = 0; // 3
-        *ayDstByte++ = 0; // 4
-        *ayDstByte++ = 0; // 5
-        *ayDstByte++ = 0; // 6
-        *ayDstByte++ = 0; // 7
+        ayDstByte += 6;
+//        *ayDstByte++ = 0; // 2
+//        *ayDstByte++ = 0; // 3
+//        *ayDstByte++ = 0; // 4
+//        *ayDstByte++ = 0; // 5
+//        *ayDstByte++ = 0; // 6
+//        *ayDstByte++ = 0; // 7
         
         vDteFromEdt(aiCellValue,C_ERA_0);
         break;
         
       case MN_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)ayDstByte;
-        
+        *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
-        *ayDstByte++ = 0; // 2
-        *ayDstByte++ = 0; // 3
-        *ayDstByte++ = 0; // 4
-        *ayDstByte++ = 0; // 5
-        *ayDstByte++ = 0; // 6
-        *ayDstByte++ = 0; // 7
+        ayDstByte += 6;
+//        *ayDstByte++ = 0; // 2
+//        *ayDstByte++ = 0; // 3
+//        *ayDstByte++ = 0; // 4
+//        *ayDstByte++ = 0; // 5
+//        *ayDstByte++ = 0; // 6
+//        *ayDstByte++ = 0; // 7
         
         vDteFromEdt(aiCellValue,C_ERA_1);
         break;
         
       case MN_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)ayDstByte;
-        
+        *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
-        *ayDstByte++ = 0; // 2
-        *ayDstByte++ = 0; // 3
-        *ayDstByte++ = 0; // 4
-        *ayDstByte++ = 0; // 5
-        *ayDstByte++ = 0; // 6
-        *ayDstByte++ = 0; // 7
+        ayDstByte += 6;
+//        *ayDstByte++ = 0; // 2
+//        *ayDstByte++ = 0; // 3
+//        *ayDstByte++ = 0; // 4
+//        *ayDstByte++ = 0; // 5
+//        *ayDstByte++ = 0; // 6
+//        *ayDstByte++ = 0; // 7
         
         vDteFromEdt(aiCellValue,C_ERA_2);
         break;
