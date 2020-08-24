@@ -452,6 +452,7 @@ void Step::vRegOperandKind(void)
       InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpOperandA);
       
       switch(pInfoSet->eOpInfoSet()) {
+        case OI_COUNTINFO:      eOperand = ZK_COUNTINFO;      break;
         case OI_LOCKSTATS:      eOperand = ZK_LOCKSTATS;      break;
         case OI_NODEINFO:       eOperand = ZK_NODEINFO;       break;
         case OI_PROGRESSUNITS:  eOperand = ZK_PROGRESSUNITS;  break;

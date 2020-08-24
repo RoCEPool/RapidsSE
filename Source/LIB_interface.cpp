@@ -152,7 +152,8 @@ void vLib_SET_LOCAL(void* pLU, i8 iArg, i8 iTopA)
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
-  pLogicUnit->m_iLocals[iArg] = iTopA;
+  struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
+  aRluCommon->m_iaLocals[iArg] = iTopA;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,7 +164,11 @@ i8 iLib_GET_LOCAL(void* pLU, i8 iArg)
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
-  return pLogicUnit->m_iLocals[iArg];
+  struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
+  
+  i8 iLcl = aRluCommon->m_iaLocals[iArg];
+  
+  return iLcl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,7 +179,12 @@ char* sLib_GET_LOCALS(void* pLU, i8 iArg)
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
-  return (char*)&pLogicUnit->m_iLocals[iArg];
+  struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
+  //return (char*)&aRluCommon->m_iaLocals[iArg];
+  
+  char* azLcl = (char*)aRluCommon->m_iaLocals[iArg];
+  
+  return azLcl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,12 +216,11 @@ void vLib_SLEEP(void* pLU, i8 iTopA)
   sleep((u4)iTopA);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* sleep for top seconds                                                      */
+/* compare strings                                                            */
 /*----------------------------------------------------------------------------*/
 i8 iLib_STR_COMPARE(void* pLU, Stz* szTopA, Stz* szTopB)
 {
@@ -222,6 +231,127 @@ i8 iLib_STR_COMPARE(void* pLU, Stz* szTopA, Stz* szTopB)
   return iRes;
 }
 
+/*----------------------------------------------------------------------------*/
+/* formatted print                                                            */
+/*----------------------------------------------------------------------------*/
+void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+  
+  RluCommon* aRluCommon = &pLogicUnit->m_xRluCommon;
+  
+  i8* aiDstk = *aaiDstk;
+  
+  char caFormatted[C_1KB];
+  
+  char* acFmt = szFmt->azChar();
+  char* acDst = caFormatted;
+
+  while (*acFmt) {
+  
+    // test for ordinary character
+    if ('%' != *acFmt) {
+      *acDst++ = *acFmt++;
+      continue;
+    }
+        
+    // we have a '%'
+    acFmt++;
+    
+    // test for the %% case
+    if ('%' == *acFmt) {
+      *acDst++ = *acFmt++;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // we have a %[width]v field
+    
+    i8 nWidth = 0;
+
+    // record where output for this value began
+    char* acFieldBegan = acDst;
+    
+    // do we have a %v of the form: %widthV ?
+    if (StrLib::bIsDigit( * acFmt )) {
+      i8 nDigits = 0;
+      StrLib::bExtractInteger(&acFmt,&nWidth,nDigits);
+      ASSERT(nDigits);
+    }
+        
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // should be %d or %s
+    
+    ASSERT('d' == *acFmt || 'i' == *acFmt || 's' == *acFmt);
+    
+    if ('i' == *acFmt) {
+      
+      i8 iInt = *aiDstk--;
+      
+      char caValue[32];
+      StrLib::wToString(iInt,caValue);
+      
+      for (char* pv = caValue; *pv; )
+        *acDst++ = *pv++;
+      
+      acFmt++;
+    }
+    
+    else
+    if ('d' == *acFmt) {
+      
+      SP_Dte spDate;
+
+      i8 iDte = *aiDstk--;
+      
+      StrLib::vAppendString(&acDst,(char*)spDate.sz(iDte));
+      
+      acFmt++;
+    }
+    
+    else
+    if ('s' == *acFmt) {
+     
+      i8 nSize = *aiDstk--;
+      Stz* szStr = (Stz*) (aiDstk-(nSize/8 + 1));
+
+      StrLib::vAppendString(&acDst,(char*)szStr);
+
+      aiDstk -= (nSize/8) + 2;
+
+      acFmt++;
+    }
+        
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // handle optional field width case
+    
+    // test for field width
+    if (! nWidth)
+      continue;
+    
+    i8 nDiff = nDifference(acDst,acFieldBegan);
+    
+    if (nDiff >= nWidth)
+      continue;
+    
+    i8 nPad = nWidth - nDiff;
+    StrLib::vPad(acDst,nPad,' ');
+    acDst += nPad;
+  }
+  
+  // final termination
+  *acDst = '\0';
+  
+  vTrace("[Q%lld.%lld] %s"_Stz,
+         aRluCommon->m_iSql,
+         aRluCommon->m_i_Slot,
+         caFormatted);
+  
+  // publish
+  *aaiDstk = aiDstk;
+}
 
 /*============================================================================*/
 /* end                                                                        */

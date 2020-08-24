@@ -1,0 +1,78 @@
+/*============================================================================*/
+/* OP_rowCount.sen -- Operator rowCount                                       */
+/*============================================================================*/
+
+" OP_rowCount.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_INFOSET...                                                           */
+/*----------------------------------------------------------------------------*/
+: rowCount_PulseMarker \handler
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  PipeIn[].pipeOut
+
+  // find the __countInfo table
+  C_TDEF_COUNTINFO op__tableDef_infoSet assert
+
+  // create a new streamDef
+  infoSetTable[] infoSet[].new
+
+  // create an infoSet operand
+  Table[] infoSetTable[] infoSet[].addRowCount assert
+
+  // pipeout the infoset
+  infoSet[].pipeOut
+
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER...                                                       */
+/*----------------------------------------------------------------------------*/
+: rowCount_StartMarker \handler
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  <tableNm> op__table if
+    Table[].tablePtn@ to tablePtn[]
+    PipeIn[].pipeOut
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for progress req                           (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : rowCount_req \operator
+ 
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: rowCount_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: rowCount_StartMarker ZK_STARTMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: rowCount :: rowCount <tableNm> ;
+
+: rowCount _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

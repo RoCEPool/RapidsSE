@@ -128,6 +128,21 @@ void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType)
   m_xaColumn[m_nColumns].vColumnType(eColumnType);
   m_xaColumn[m_nColumns].vDatum(Column::eDatum(eColumnType));
   m_nColumns++;
+  
+  if (m_nColumns > 1) {
+    m_eKeyKind = KE_GENERAL;
+    return;
+  }
+  
+  if (CT_FLOAT == eColumnType || CT_VARCHAR == eColumnType) {
+    m_eKeyKind = KE_GENERAL;
+    return;
+  }
+
+  if (gxEnvFlags.m_iIntKey)
+    m_eKeyKind = KE_INT;
+  else
+    m_eKeyKind = KE_GENERAL;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,7 +167,7 @@ void IndexDef::vDetermineKeyKind(void)
     return;
   }
   
-  eCT eColumnType = m_xaColumn[m_nColumns].eColumnType();
+  eCT eColumnType = m_xaColumn[0].eColumnType();
   
   if (CT_FLOAT == eColumnType || CT_VARCHAR == eColumnType) {
     m_eKeyKind = KE_GENERAL;

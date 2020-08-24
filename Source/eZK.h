@@ -9,6 +9,7 @@ enum eZK // operand kind
 
   /*    */ ZK_CANCELMARKER,
   /*    */ ZK_CANCELLEDMARKER,
+  /*    */ ZK_COUNTINFO,
   /*    */ ZK_CRWBUFFER,
   /*    */ ZK_CSVBUFFER,
   /*    */ ZK_ENTBUFFER,
@@ -41,6 +42,7 @@ static Stz* aZK[]
   
   /*    */ "ZK_CANCELMARKER"_Stz,
   /*    */ "ZK_CANCELLEDMARKER"_Stz,
+  /*    */ "ZK_COUNTINFO"_Stz,
   /*    */ "ZK_CRWBUFFER"_Stz,
   /*    */ "ZK_CSVBUFFER"_Stz,
   /*    */ "ZK_ENTBUFFER"_Stz,

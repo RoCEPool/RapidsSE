@@ -43,8 +43,13 @@ LogicUnit::LogicUnit(Task* pTask)
   m_iCounter2 = 0;
   
   for (i8 i_Local = 0; i_Local < C_LOCALS; i_Local++)
-    m_iLocals[i_Local] = C_UNKNOWN;
+    m_xRluCommon.m_iaLocals[i_Local] = C_UNKNOWN;
+
+   for (i8 i_Cond = 0; i_Cond < C_LOGIC_COND; i_Cond++)
+     m_baCondInd[i_Cond] = false;
   
+  m_iNextCond = C_UNKNOWN;
+  m_bSuperFrag = false;
   m_aLowerEntry = nullptr;
   m_aUpperEntry = nullptr;
   m_pEntBufferOuter = nullptr;
@@ -193,6 +198,19 @@ i8 LogicUnit::iTransform(i8 nArgs, i8 iArg0)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* conditional code                                                           */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vCC(i8 i_Cond)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  if (m_baCondInd[i_Cond])
+    m_iNextCond = 1;
+  else
+    m_iNextCond = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get eCode at given i_Code                                                  */
 /*----------------------------------------------------------------------------*/
 eEO LogicUnit::eCode(i8 i_Code)
@@ -248,6 +266,16 @@ i8 LogicUnit::iDynFun(i8 nOuterArgs, i8 iOuterArg0)
   i8 iRes = m_afDynFun(this,nOuterArgs,iOuterArg0);
 
   return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* optimise with super fragent                                                */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vEndOptimise(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  m_bSuperFrag = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -401,6 +429,23 @@ Stz* LogicUnit::szLabelNm(i8 i_Label)
 }
 
 /*----------------------------------------------------------------------------*/
+/* optimise with super fragent                                                */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vOptimise(eEO eOpt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  if (EO_NONE == eOpt) {
+    m_bSuperFrag = false;
+    return;
+  }
+  
+  vAddCode(eOpt);
+  
+  m_bSuperFrag = true;
+}
+
+//*----------------------------------------------------------------------------*/
 /* return query fragment number                                               */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iQueryFragment(void)
@@ -408,6 +453,19 @@ i8 LogicUnit::iQueryFragment(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   return m_xRluCommon.m_iSql;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set conditional compilation state                                          */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vSetCC(i8 i_Cond, bool bState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  if (bState)
+    m_baCondInd[i_Cond] = 1;
+  else
+    m_baCondInd[i_Cond] = 0;
 }
 
 
@@ -437,7 +495,17 @@ void LogicUnit::vAddCode(eEO eCode)
   
   ASSERT(0 == EoArgs[eCode].m_nArgBytes);
   
+  if (m_bSuperFrag)
+    return;
+  
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   m_eaCode[m_i_Code++] = eCode;
+
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -449,12 +517,22 @@ void LogicUnit::vAddCodeArg(eEO eCode, i8 iArg)
   
   ASSERT(8 == EoArgs[eCode].m_nArgBytes);
   
+  if (m_bSuperFrag)
+    return;
+  
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   m_eaCode[m_i_Code++] = eCode;
 
   i8* piArg = (i8*) & m_eaCode[m_i_Code];
   * piArg = iArg;
   
   m_i_Code += sizeof(i8);
+  
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -464,9 +542,19 @@ void LogicUnit::vAddCodeArg(eEO eCode,Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  if (m_bSuperFrag)
+    return;
+  
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   i8 iArg = pTkn->iToI8();
   
   vAddCodeArg(eCode,iArg);
+
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -478,12 +566,22 @@ void LogicUnit::vAddCodeArg(eEO eCode, Stz* szLiteral)
   
   ASSERT(EA_DATE == EoArgs[eCode].m_eArgument);
   
+  if (m_bSuperFrag)
+    return;
+  
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   char* acCrs = szLiteral->azChar();
   
   SN_Dte snDate;
   i8 iDate = snDate.i(&acCrs,AM::pFmt());
   
   vAddCodeArg(eCode,iDate);
+
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -492,6 +590,14 @@ void LogicUnit::vAddCodeArg(eEO eCode, Stz* szLiteral)
 void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  if (m_bSuperFrag)
+    return;
+  
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
   
   i8 i_Label = iFindLabel(szLabelNm);
   
@@ -516,7 +622,8 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
     m_xaJumpLabel[i_Label].m_bDestination = true;
 
   //vPrintLabels();
-
+  
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -526,7 +633,17 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  if (m_bSuperFrag)
+    return;
+  
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   vAddCodeLabel(eCode,pTkn->szChars());
+  
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -538,11 +655,21 @@ void LogicUnit::vAddCodeString(eEO eCode, Stz* szString)
   
   ASSERT(-1 == EoArgs[eCode].m_nArgBytes);
   
+  if (m_bSuperFrag)
+    return;
+  
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+  
   m_eaCode[m_i_Code++] = eCode;
 
   for (char* acChr = szString->azChar(); *acChr; acChr++)
     m_eaCode[m_i_Code++] = (eEO)*acChr;
   m_eaCode[m_i_Code++] = (eEO)0;
+  
+  m_iNextCond = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -612,6 +739,9 @@ i8 LogicUnit::iDecodeLabel(Stz* szLabelNm)
 void LogicUnit::vDefineLabel(Stz* szLabelNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  if (m_bSuperFrag)
+    return;
   
   // has this label been used yet?
   i8 i_Label = iFindLabel(szLabelNm);
@@ -907,6 +1037,26 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 #define JumpTo(__iArg,__EO) \
   aeCode = & m_eaCode[__iArg];
 
+i8 giaVectorSet[] =
+{
+/* 00 */ L_QUANTITY,
+/* 01 */ L_EXTENDEDPRICE,
+/* 02 */ L_DISCOUNT,
+/* 03 */ L_TAX,
+/* 04 */ L_RETURNFLAG,
+/* 05 */ L_LINESTATUS,
+/* 06 */ L_SHIPDATE,
+/* 07 */ C_UNKNOWN,
+  
+/* 08 */ Q1_LOCAL_RETURNFLAG,
+/* 09 */ Q1_LOCAL_LINESTATUS,
+/* 10 */ C_UNKNOWN,
+  
+/* 11 */ Q101_RETURNFLAG,
+/* 12 */ Q101_LINESTATUS,
+/* 13 */ C_UNKNOWN,
+};
+
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
 /*----------------------------------------------------------------------------*/
@@ -938,6 +1088,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iBuffer;
   i8 iItem;
   tET tNext;
+  
+  i8 iaColSet[64];
+  i8 i_ColSet = 0;
   
   Key* aSrcKey;
   Key* aAltKey;
@@ -978,6 +1131,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8* aiDstk = aRluCommon->m_iaDataStack;
   *aiDstk = 0xFFFFFFFFFFFFFFFF;
 
+  i8* aiLocals = aRluCommon->m_iaLocals;
+  i8* aiPayload;
+
   if (nOuterArgs) {
     *(++aiDstk) = iOuterArg0;
   }
@@ -993,6 +1149,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   eEO** aeaRstk = &eaReturnStack[0];
   eEO*  aeCode  = & m_eaCode[0];
   
+  i8 iWrkA, iWrkB, iWrkC, iWrkD, iWrkE, iWrkF;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
   //                    interpretative inner loop proper                      //
@@ -1188,6 +1345,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // prints
+      case EO_PRINT: ArgNil(); // print top
+//#ifdef WITH_TRACE_LOGICUNIT
+        iTopA = *(aiDstk--);
+        dLU1(EO_PRINT,iTopA);
+
+        printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
+//#endif
+        break;//+endCase
+            
+      case EO_PRINTF: GetStr(iArg); // formatted print
+        dLU0(EO_PRINTF);
+        vLib_PRINTF(pLU,(Stz*)iArg,&aiDstk);
+        break;//+endCase
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pushes
       case EO_DATE: ArgGet(iArg); // push date
         dLU1(EO_DATE,iArg);
@@ -1269,13 +1442,44 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_GREATERTHAN: ArgNil(); // test top > 2nd, push result
+//        iTopB = *(aiDstk--);
+//        iTopA = *(aiDstk--);
+//        iRes  = iTopA > iTopB;
+//        dLU3(EO_GREATERTHAN,iTopA,iTopB,iRes);
+//        *(++aiDstk) = iRes;
         iTopB = *(aiDstk--);
-        iTopA = *(aiDstk--);
-        iRes  = iTopA > iTopB;
-        dLU3(EO_GREATERTHAN,iTopA,iTopB,iRes);
-        *(++aiDstk) = iRes;
+        *aiDstk = *aiDstk > iTopB;
         break;//+endCase
         
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // column set
+      case EO_SET_COLUMN: ArgGet(iArg); // add column to set
+        dLU1(EO_SET_COLUMN,iArg);
+        iaColSet[--i_ColSet] = iArg;
+        //*(++aiDstk) = iArg;
+        break;//+endCase
+
+      case EO_SET_ITEMS: ArgGet(iArg); // set number of column items
+        dLU1(EO_SET_ITEMS,iArg);
+        i_ColSet = iArg;
+        iaColSet[i_ColSet] = -1;
+        //*(++aiDstk) = -1;
+        break;//+endCase
+
+      case EO_SET_LOCALS_ALT: ArgGet(iArg); // inflate alt columns direct into locals
+        dLU0(EO_SET_LOCALS_ALT);
+        aiLocals = aRluCommon->m_iaLocals - 1;
+        vDev_ALT_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,
+                             iArg == -1 ? iaColSet : &giaVectorSet[iArg]);
+        break;//+endCase
+
+      case EO_SET_LOCALS_SRC: ArgGet(iArg); // inflate src columns direct into locals
+        dLU0(EO_SET_LOCALS_SRC);
+        aiLocals = aRluCommon->m_iaLocals - 1;
+        vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,
+                             iArg == -1 ? iaColSet : &giaVectorSet[iArg]);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // stack operators
       case EO_INC: ArgNil(); // increment top, push result
@@ -1317,19 +1521,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         S_PopStr(sLib_GET_LOCALS(pLU, iArg));
         break;//+endCase
         
-      case EO_PRINT: ArgNil(); // print top
-//#ifdef WITH_TRACE_LOGICUNIT
-        iTopA = *(aiDstk--);
-        dLU1(EO_PRINT,iTopA);
-
-        printf("[Q%lld.%lld] %lld\n",(i8)0,(i8)0,iTopA);
-//#endif
-        break;//+endCase
-        
       case EO_PUSH_LOCALI: ArgGet(iArg); // push a local reg
         dLU1(EO_PUSH_LOCALI, iArg);
         //ASSERT(iArg < C_LOCALS);
-        *(++aiDstk) = iLib_GET_LOCAL(pLU, iArg);
+        *(++aiDstk) = aRluCommon->m_iaLocals[iArg]; //iLib_GET_LOCAL(pLU, iArg);
         break;//+endCase
         
       case EO_PUSH_LOCALS: ArgGet(iArg); // push a local reg
@@ -1342,17 +1537,24 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // string operators
       case EO_STR_COMPARE: ArgNil(); // pop top stradr and compare str on stack
         dLU0(EO_STR_COMPARE);
-        szTopA = (Stz*) *(aiDstk--);
+        szTopB = (Stz*) *(aiDstk--);
       
-        iTopB = *(aiDstk--);
-        szTopB = (Stz*) (aiDstk-(iTopB/8 + 1));
-//        iRes = StrLib::iCompare(azTopA,azTopB);
+        iTopA = *(aiDstk--);
+        szTopA = (Stz*) (aiDstk-(iTopA/8 + 1));
         iRes = iLib_STR_COMPARE(pLU,szTopA,szTopB);
-        aiDstk -= (iTopB/8) + 2;
+        aiDstk -= (iTopA/8) + 2;
         *(++aiDstk) = iRes;
-
         break;//+endCase
         
+       // string operators
+      case EO_STR_COMPARE_a: ArgNil(); // pop top two azStr and compare
+        dLU0(EO_STR_COMPARE_a);
+        azTopB = (char*) *(aiDstk--);
+        azTopA = (char*) *(aiDstk--);
+        iRes = strcmp(azTopA,azTopB);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
       case EO_STR_PRINTADR: ArgNil(); // pop top and print iArg as addr of string
 #ifdef WITH_TRACE_LOGICUNIT
         azTopA = (char*) *(aiDstk--);
@@ -1541,6 +1743,30 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // key
+      case EO_KEY_LCL2C_TO_I: ArgGet(iArg); // convert two lcl varchar(1) to int
+        dLU1(EO_KEY_LCL2C_TO_I,iArg);
+        aiLocals = aRluCommon->m_iaLocals;
+//        azTopA = (char*)aiLocals[giaVectorSet[iArg]];
+//        azTopB = (char*)aiLocals[giaVectorSet[iArg+1]];
+//        iRes = *azTopA * 256 + *azTopB;
+//        *(++aiDstk) = iRes;
+        
+        *(++aiDstk) = *(char*)aiLocals[giaVectorSet[iArg]] * 256
+                        + *(char*)aiLocals[giaVectorSet[iArg+1]];
+        break;//+endCase
+
+      case EO_KEY_RSB2C_TO_I: ArgGet(iArg); // convert two rsb varchar(1) to int
+        dLU1(EO_KEY_RSB2C_TO_I,iArg);
+        azTopA = (char*)szDev_RSB_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRsb,
+                                           giaVectorSet[iArg]);
+        azTopB = (char*)szDev_RSB_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRsb,
+                                           giaVectorSet[iArg+1]);
+        iRes = *azTopA * 256 + *azTopB;
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // partitioning
       case EO_PTN_CALC: ArgNil(); // calculate m_i_Ptn using running m_iHash
         dLU0(EO_PTN_CALC);
@@ -1610,28 +1836,40 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
       case EO_COL_ALT_PUSHONE: ArgGet(iArg); // push column value from m_aAltCrw
-        *(++aiDstk) = -1;
-        *(++aiDstk) = iArg; // col to inflate
-        vDev_ALT_COL_PUSHSET(pLU,&aiDstk);
+        //*(++aiDstk) = -1;
+        //*(++aiDstk) = iArg; // col to inflate
+        iaColSet[1] = -1;
+        iaColSet[0] = iArg;
+        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST,iaColSet);
         dLU1(EO_COL_ALT_PUSHONE,iArg);
         break;//+endCase
       
       case EO_COL_ALT_PUSHSET: ArgNil(); // push column subset from m_aAltCrw
-        vDev_ALT_COL_PUSHSET(pLU,&aiDstk);
+        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST,iaColSet);
         dLU0(EO_COL_ALT_PUSHSET);
         break;//+endCase
     
 
       case EO_COL_SRC_PUSHONE: ArgGet(iArg); // push column value from m_aSrcCrw
-        *(++aiDstk) = -1;
-        *(++aiDstk) = iArg; // col to inflate
-//        vDev_RSB_COL_PUSHSET(pLU,&aiDstk); // Check with ALka
-        vDev_SRC_COL_PUSHSET(pLU,&aiDstk);
+        //*(++aiDstk) = -1;
+        //*(++aiDstk) = iArg; // col to inflate
+        iaColSet[1] = -1;
+        iaColSet[0] = iArg;
+        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST,iaColSet);
         dLU1(EO_COL_SRC_PUSHONE,iArg);
         break;//+endCase
         
+      case EO_COL_SRC_PUSHONE_a: ArgGet(iArg); // push value from m_aSrcCrw (str as ptr)
+        //*(++aiDstk) = -1;
+        //*(++aiDstk) = iArg; // col to inflate
+        iaColSet[1] = -1;
+        iaColSet[0] = iArg;
+        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_ADDRESS,iaColSet);
+        dLU1(EO_COL_SRC_PUSHONE_a,iArg);
+        break;//+endCase
+        
       case EO_COL_SRC_PUSHSET: ArgNil(); // push column subset from m_aSrcCrw
-        vDev_SRC_COL_PUSHSET(pLU,&aiDstk);
+        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_DEST_PST,iaColSet);
         dLU0(EO_COL_SRC_PUSHSET);
         break;//+endCase
       
@@ -1674,8 +1912,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src rsb
         dLU0(EO_CRW_SRC_NEXT);
-        iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
-        *(++aiDstk) = iRes;
+        //iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
+        
+        
+        if (++aRluCommon->m_i_CrwRow < aRluCommon->m_nCrwRows) {
+          aRluCommon->m_aSrcCrw = (char*)aRluCommon->m_aSrcHeadCrw
+            + (aRluCommon->m_nSrcHeadSize * aRluCommon->m_i_CrwRow);
+          *(++aiDstk) = 1;
+        }
+        else {
+          *(++aiDstk) = 0;
+        }
         break;//+endCase
         
       case EO_CRW_SRC_NULL: ArgNil(); // null the crw src
@@ -1691,15 +1938,57 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
+      case EO_ENT_FINDI: ArgNil(); // find entry with int key
+        dLU0(EO_ENT_FINDI);
+        
+        // can we do a linear search
+        if (! aRluCommon->m_aTmpSkipRoots) {
+          *(++aiDstk) = 0;
+          goto L_end_FINDI;
+        }
+        aEnt_int = aRluCommon->m_aTmpSkipRoots;
+        tNext = aEnt_int->m_taNextEntry[0];
+//        if (C_ENT_END_TICKET == tNext) {
+//          *(++aiDstk) = 0;
+//          goto L_end_FINDI;
+//        }
+
+        iTopA = aRluCommon->m_aWrkEnt->m_iIntElm0;
+        // search for key
+        while (C_ENT_END_TICKET != tNext) {
+          aEnt_int = (struct Ent_int*) &aRluCommon->m_aEntArray[tNext];
+          iTopB = aEnt_int->m_iIntElm0;
+          //printf("Ticket %lld Ent %p\n",(i8)tNext,aEnt_int);
+          if (iTopA == iTopB) {
+            aRluCommon->m_aTmpEnt = aEnt_int;
+            *(++aiDstk) = 1; // found matching key
+            goto L_end_FINDI;
+          }
+          if (iTopA > iTopB) {
+            tNext = aEnt_int->m_taNextEntry[0];
+            continue;
+          }
+          //printf("Did not find %lld\n",aRluCommon->m_aWrkEnt->m_iIntElm0);
+          *(++aiDstk) = 0; // did not find matching key
+          goto L_end_FINDI;
+        }
+        // did not find matching key
+        *(++aiDstk) = 0;
+        
+        L_end_FINDI:
+        break;//+endCase
+        
       case EO_ENT_NEXT: ArgNil(); // move to next m_pEnt
         dLU0(EO_ENT_NEXT);
-        iRes = iDev_ENT_NEXT(pLU,aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = iRes;
+        aRluCommon->m_aTmpEnt = aDev_ENT_NEXT(pLU,aRluCommon->m_pDevTmpIxt);
+        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
         break;//+endCase
         
       case EO_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
         dLU0(EO_ENT_POSPRIOR);
-        vDev_ENT_POSPRIOR(pLU,aRluCommon->m_pDevTmpIxt);
+        aRluCommon->m_aTmpEnt = aDev_ENT_POSPRIOR(pLU,aRluCommon->m_pDevTmpIxt,
+                                                  &aRluCommon->m_aTmpSkipRoots);
+        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
         break;//+endCase
         
       case EO_ENT_PUSH: ArgNil(); // push entry on the stack
@@ -1826,13 +2115,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENTWRK_RESET: ArgNil(); // reset m_oEntWrk
         dLU0(EO_ENTWRK_RESET);
-        vDev_ENTWRK_RESET(pLU,aRluCommon->m_pDevSrcRsb);
+        //vDev_ENTWRK_RESET(pLU,aRluCommon->m_pDevSrcRsb);
+        memset(aRluCommon->m_aWrkEnt,0,sizeof(struct Ent_int));
         break;//+endCase
                               
       case EO_ENTWRK_SETINTELM: ArgNil(); // append next element value (int)
-        iTopA = *(aiDstk--);
-        dLU1(EO_ENTWRK_SETINTELM,iTopA);
-        vDev_ENTWRK_SETINTELM(pLU,aRluCommon->m_pDevSrcRsb,iTopA);
+        dLU0(EO_ENTWRK_SETINTELM);
+        aRluCommon->m_aWrkEnt->m_iIntElm0 = *(aiDstk--);
+        aRluCommon->m_aWrkEnt->Ref.m_uKind = 1; //KE_INT;
+//        iTopA = *(aiDstk--);
+//        vDev_ENTWRK_SETINTELM(pLU,aRluCommon->m_pDevSrcRsb,iTopA);
         break;//+endCase
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1848,7 +2140,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_INS_ENT: ArgNil(); // insert an entry into the indexTree
         dLU0(EO_IXT_INS_ENT);
-        vDev_IXT_INS_ENT(pLU,aRluCommon->m_pDevTmpIxt);
+        aRluCommon->m_aTmpEnt =
+          aDev_IXT_INS_ENT(pLU,aRluCommon->m_pDevTmpIxt);
         //ASSERT(m_pDevTmpIxt->m_aEnt);
         break;//+endCase
         
@@ -1996,15 +2289,73 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
+      case EO_PAY_ADDRESS: ArgNil(); // get payload address
+        dLU0(EO_PAY_ADDRESS);
+//        aiPayload = aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt);
+//      {
+//        i8* aiCheck = 0;
+//
+//        if (aRluCommon->m_aTmpEnt->Ref.m_uKind) {
+//          aiCheck = (i8*) ( (char*)aRluCommon->m_aTmpEnt
+//                                     + sizeof(struct Ent_int)
+//                                     + 8
+//                           );
+//        }
+//        else {
+//          aiCheck = (i8*) ( (char*)aRluCommon->m_aTmpEnt
+//                                     + sizeof(struct Ent_int)
+//                                     + aRluCommon->m_aTmpEnt->m_iIntElm0
+//                                     + 8
+//                           );
+//        }
+//        if (aiCheck != aiPayload) {
+//          printf("EO_PAY_ADDRESS does not match %p v %p\n",aiPayload,aiCheck);
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
+//      }
+
+        
+        if (aRluCommon->m_aTmpEnt->Ref.m_uKind) {
+          aiPayload = (i8*) ( (char*)aRluCommon->m_aTmpEnt
+                                     + sizeof(struct Ent_int)
+                                     + 8
+                           );
+        }
+        else {
+          aiPayload = (i8*) ( (char*)aRluCommon->m_aTmpEnt
+                                     + sizeof(struct Ent_int)
+                                     + aRluCommon->m_aTmpEnt->m_iIntElm0
+                                     + 8
+                           );
+        }
+        break;//+endCase
+
       case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from entry payload
-        iRes = iDev_PAY_FETCH_COLI(pLU,aRluCommon->m_pDevTmpIxt,iArg);
+//        iRes = iDev_PAY_FETCH_COLI(pLU,aRluCommon->m_pDevTmpIxt,iArg);
+//        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
+//          printf("aiPayload does not match\n");
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
+//        if (iRes != aiPayload[iArg]) {
+//          printf("EO_PAY_FETCH_COLI does not match\n");
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
+        iRes = aiPayload[iArg];
         dLU2(EO_PAY_FETCH_COLI,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
       case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from entry payload
-        azSrc = (char*)szDev_PAY_FETCH_COLS(pLU,aRluCommon->m_pDevTmpIxt, iArg);
-        //nSize = StrLib::nSize(azSrc);
+//        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
+//          printf("aiPayload does not match\n");
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
+        //azSrc = (char*)szDev_PAY_FETCH_COLS(pLU,aRluCommon->m_pDevTmpIxt, iArg);
+        azSrc = (char*)&aiPayload[iArg];
         nSize = strlen(azSrc) + 1;
         //ASSERT(nSize < 8);
         dLU2(EO_PAY_FETCH_COLS,iArg,(i8)azSrc);
@@ -2012,14 +2363,26 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column into entry payload
+//        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
+//          printf("aiPayload does not match\n");
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
         iTopA = *(aiDstk--);
         dLU2(EO_PAY_STORE_COLI,iArg,iTopA);
-        vDev_PAY_STORE_COLI(pLU,aRluCommon->m_pDevTmpIxt,iArg,iTopA);
+        //vDev_PAY_STORE_COLI(pLU,aRluCommon->m_pDevTmpIxt,iArg,iTopA);
+        aiPayload[iArg] = iTopA;
         break;//+endCase
       
       case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column into entry payload
-        dLU1(EO_PAY_STORE_COLI,iArg);
-        azDst = (char*)szDev_PAY_STORE_COLS(pLU,aRluCommon->m_pDevTmpIxt,iArg);
+//        if (aiPayload != aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt)) {
+//          printf("aiPayload does not match\n");
+//          iTopA = 0;
+//          iTopA = 1 / iTopA;
+//        }
+        dLU1(EO_PAY_STORE_COLS,iArg);
+        //azDst = (char*)szDev_PAY_STORE_COLS(pLU,aRluCommon->m_pDevTmpIxt,iArg);
+        azDst = (char*)&aiPayload[iArg];
         S_PopStr(azDst);
         break;//+endCase
         
@@ -2163,6 +2526,75 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes = iDev_RSB_PUSHCOLI(pLU,aRluCommon->m_pDevAltRsb,iArg);
         dLU2(EO_RSB_ALT_PUSHCOLI,iArg,iRes);
         *(++aiDstk) = iRes;
+        break;//+endCase
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_SUPER_Q100: ArgNil(); // super frag for Q100
+        aiLocals = aRluCommon->m_iaLocals;
+        
+        iWrkA = aiLocals[Q1_LOCAL_EXTENDEDPRICE];
+        iWrkB = aiLocals[Q1_LOCAL_DISCOUNT];
+
+        aiPayload[Q100_SUM_QTY] += aiLocals[Q1_LOCAL_QUANTITY];
+        
+        aiPayload[Q100_SUM_BASE_PRICE] += iWrkA;
+
+        aiPayload[Q100_SUM_DISC_PRICE] +=
+          (   iWrkA
+            * (100 - iWrkB) ) / 100;
+        
+        aiPayload[Q100_SUM_CHARGE] +=
+          (   (   iWrkA
+                * (100 - iWrkB) )
+            * (100 + aiLocals[Q1_LOCAL_TAX]) )
+          / 10000 ;
+  
+        aiPayload[Q100_COUNT_QTY]++;
+        
+        aiPayload[Q100_COUNT_PRICE]++;
+
+        aiPayload[Q100_SUM_DISC] += iWrkB;
+        
+        aiPayload[Q100_COUNT_DISC]++;
+        
+        aiPayload[Q100_COUNT_ORDER]++;
+        
+        break;//+endCase
+
+      case EO_SUPER_Z001: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z002: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z003: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z004: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z005: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z006: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z007: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z008: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
+      case EO_SUPER_Z009: ArgNil(); // not yet implemented
+        NEVER_REACH;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

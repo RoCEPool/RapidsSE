@@ -49,16 +49,27 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   struct Ent_int* m_aSrcEnt;
   struct Ent_int* m_aTmpEnt;
   struct Ent_int* m_aWrkEnt;
+
+  struct Ent_int* m_aTmpSkipRoots;
   
+  i8 m_nCrwRows;
+  i8 m_i_CrwRow;
+
   i8 m_nAltHeadSize;
   i8 m_nSrcHeadSize;
 
   void* m_aAltCrw;
   void* m_aSrcCrw;
 
+  void* m_aSrcHeadCrw;
+
   char m_caStrWrk[128];
 
   i8 m_iaDataStack[C_LOGIC_STACK];
+  
+  i8 m_iaLocals[C_LOCALS]; // locals regs []
+  
+
 
   i8 m_iCmnFooter;
 };

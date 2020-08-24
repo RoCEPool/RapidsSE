@@ -168,6 +168,8 @@ void Constants::vAddConstantsCpp(void)
   // table definition
   vAddConstant("C_TDEF_ANALYZEINDEX"_Stz, C_TDEF_ANALYZEINDEX);
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz, C_TDEF_ANALYZETABLE);
+  vAddConstant("C_TDEF_COUNT"_Stz,        C_TDEF_COUNT);
+  vAddConstant("C_TDEF_COUNTINFO"_Stz,    C_TDEF_COUNTINFO);
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,   C_TDEF_GRIDSANITY);
   vAddConstant("C_TDEF_LISTCOLUMNS"_Stz,  C_TDEF_LISTCOLUMNS);
   vAddConstant("C_TDEF_LISTCONTENTS"_Stz, C_TDEF_LISTCONTENTS);
@@ -609,6 +611,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_NONE"_Stz,            ZK_NONE);
   /*  0 */ vAddConstant("ZK_CANCELMARKER"_Stz,    ZK_CANCELMARKER);
   /*  0 */ vAddConstant("ZK_CANCELLEDMARKER"_Stz, ZK_CANCELLEDMARKER);
+  /*  0 */ vAddConstant("ZK_COUNTINFO"_Stz,       ZK_COUNTINFO);
   /*  0 */ vAddConstant("ZK_CRWBUFFER"_Stz,       ZK_CRWBUFFER);
   /*  0 */ vAddConstant("ZK_CSVBUFFER"_Stz,       ZK_CSVBUFFER);
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);

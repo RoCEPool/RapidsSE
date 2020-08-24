@@ -327,6 +327,27 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // count
+  sPath
+  "
+  procedure count
+    parameters $table
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    rowCount $table | stageC
+
+  stage stageC on origin :
+    totalCount | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // export
   sPath
   "
@@ -854,31 +875,6 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // q 3 prelim
-  sPath
-  "
-  procedure Query_3
-  begin
-
-  stage stageA on origin :
-    start
-    | periodicOp once
-    | stageB
-
-  stage stageB on all partitions :
-     sql 300
-    | stageC
-
-  stage stageC on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 3b prelim
   sPath
   "
@@ -905,31 +901,6 @@
     | stageA
 
   end ;  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // q 4 prelim
-  sPath
-  "
-  procedure Query_4
-  begin
-
-  stage stageA on origin :
-    start
-    | periodicOp once
-    | stageB
-
-  stage stageB on all partitions :
-    sql 400
-    | stageC
-
-  stage stageC on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1091,6 +1062,22 @@
      buffers        INTEGER NOT NULL ,
      entries        INTEGER NOT NULL
   ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_COUNT
+  sPath
+  "
+  define table __count ( rowCount INTEGER NOT NULL ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_COUNTINFO
+  sPath
+  "
+  define table __countInfo ( rowCount INTEGER NOT NULL ) ;
   "
   api::executeRequest
 

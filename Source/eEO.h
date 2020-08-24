@@ -49,6 +49,10 @@ enum eEO : u1 // expression operators
   /*    */ EO_ISNULL,           // test if top is null, push result
   /*    */ EO_ISNOTNULL,        // test if top is not null, push result
   
+  // prints
+  /*    */ EO_PRINT,            // print top
+  /*    */ EO_PRINTF,           // formatted print
+
   // pushes
   /*    */ EO_DATE,             // push date
   /*    */ EO_INTEGER,          // push integer
@@ -66,6 +70,12 @@ enum eEO : u1 // expression operators
   /*    */ EO_GREATEREQUAL,     // test top >= 2nd, push result
   /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
+  // column set
+  /*    */ EO_SET_COLUMN,       // add column to set
+  /*    */ EO_SET_ITEMS,        // set number of column items
+  /*    */ EO_SET_LOCALS_ALT,   // inflate alt columns direct into locals
+  /*    */ EO_SET_LOCALS_SRC,   // inflate src columns direct into locals
+
   // stack operators
   /*    */ EO_INC,              // increment top, push result
   /*    */ EO_DEC,              // decrement top, push result
@@ -73,12 +83,12 @@ enum eEO : u1 // expression operators
   /*    */ EO_POP,              // pop / discard top
   /*    */ EO_POP_LOCALI,       // pop integer into a local register
   /*    */ EO_POP_LOCALS,       // pop string into a local register
-  /*    */ EO_PRINT,            // print top
   /*    */ EO_PUSH_LOCALI,      // push an integer from a local register
   /*    */ EO_PUSH_LOCALS,      // push an string from a local register
   
   // string operators
   /*    */ EO_STR_COMPARE,      // pop top stradr and compare str on stack
+  /*    */ EO_STR_COMPARE_a,    // pop top two azStr and compare
   /*    */ EO_STR_PRINTADR,     // pop top and print iArg as addr of string
   /*    */ EO_STR_PRINTSTK,     // pop string from top and print
   /*    */ EO_STR_LITERAL,      // push address of string literal
@@ -116,6 +126,10 @@ enum eEO : u1 // expression operators
   /*    */ EO_HSH_ADD_HASHI,    // add hash of top int to running hash
   /*    */ EO_HSH_RESET,        // reset hash
 
+  // key
+  /*    */ EO_KEY_LCL2C_TO_I,   // convert two local varchar(1) to int
+  /*    */ EO_KEY_RSB2C_TO_I,   // convert two rsb varchar(1) to int
+
   // partitioning
   /*    */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
   /*    */ EO_PTN_PUSH,         // push i_Ptn
@@ -134,9 +148,10 @@ enum eEO : u1 // expression operators
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col operators
-  /*    */ EO_COL_ALT_PUSHONE,  // push column int value from m_aAltCrw
+  /*    */ EO_COL_ALT_PUSHONE,  // push column value from m_aAltCrw
   /*    */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
-  /*    */ EO_COL_SRC_PUSHONE,  // push column int value from m_aSrcCrw
+  /*    */ EO_COL_SRC_PUSHONE,  // push column value from m_aSrcCrw
+  /*    */ EO_COL_SRC_PUSHONE_a,// push value from m_aSrcCrw (str as ptr)
   /*    */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw
 
   // crw operators
@@ -148,6 +163,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_CRW_SRC_TEST,     // test if there is a crw buffer
   
   // entry
+  /*    */ EO_ENT_FINDI,        // find entry with int key
   /*    */ EO_ENT_NEXT,         // move to next m_pEnt
   /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
   /*    */ EO_ENT_PUSH,         // push entry
@@ -202,6 +218,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_IXT_POS_ALTBYWRK, // position alt ixt using entwrk.key
 
   // pay load
+  /*    */ EO_PAY_ADDRESS,      // get payload address
   /*    */ EO_PAY_FETCH_COLI,   // fetch a column from entry payload
   /*    */ EO_PAY_FETCH_COLS,   // fetch a column from entry payload
   /*    */ EO_PAY_STORE_COLI,   // store a column into entry payload
@@ -239,7 +256,19 @@ enum eEO : u1 // expression operators
   /*    */ EO_RSB_SRC_PUSHCOLI, // push src column (integer)
   /*    */ EO_RSB_SRC_PUSHCOLS, // push src column (string)
   /*    */ EO_RSB_ALT_PUSHCOLI, // push alt column
-  
+
+  // super fragments
+  /*    */ EO_SUPER_Q100,       // super fragment Q100
+  /*    */ EO_SUPER_Z001,       // super fragment
+  /*    */ EO_SUPER_Z002,       // super fragment
+  /*    */ EO_SUPER_Z003,       // super fragment
+  /*    */ EO_SUPER_Z004,       // super fragment
+  /*    */ EO_SUPER_Z005,       // super fragment
+  /*    */ EO_SUPER_Z006,       // super fragment
+  /*    */ EO_SUPER_Z007,       // super fragment
+  /*    */ EO_SUPER_Z008,       // super fragment
+  /*    */ EO_SUPER_Z009,       // super fragment
+
   /*    */ EO_ENUMS
 };
 
@@ -287,6 +316,10 @@ static Stz* aEO[]
   /*    */ "EO_ISNULL"_Stz,
   /*    */ "EO_ISNOTNULL"_Stz,
   
+  // prints
+  /*    */ "EO_PRINT"_Stz,
+  /*    */ "EO_PRINTF"_Stz,
+
   // pushes
   /*    */ "EO_DATE"_Stz,
   /*    */ "EO_INTEGER"_Stz,
@@ -304,6 +337,12 @@ static Stz* aEO[]
   /*    */ "EO_GREATEREQUAL"_Stz,
   /*    */ "EO_GREATERTHAN"_Stz,
   
+  // column set
+  /*    */ "EO_SET_COLUMN"_Stz,
+  /*    */ "EO_SET_ITEMS"_Stz,
+  /*    */ "EO_SET_LOCALS_ALT"_Stz,
+  /*    */ "EO_SET_LOCALS_SRC"_Stz,
+
   // stack operators
   /*    */ "EO_INC"_Stz,
   /*    */ "EO_DEC"_Stz,
@@ -311,12 +350,12 @@ static Stz* aEO[]
   /*    */ "EO_POP"_Stz,
   /*    */ "EO_POP_LOCALI"_Stz,
   /*    */ "EO_POP_LOCALS"_Stz,
-  /*    */ "EO_PRINT"_Stz,
   /*    */ "EO_PUSH_LOCALI"_Stz,
   /*    */ "EO_PUSH_LOCALS"_Stz,
   
   // string operators
   /*    */ "EO_STR_COMPARE"_Stz,
+  /*    */ "EO_STR_COMPARE_a"_Stz,
   /*    */ "EO_STR_PRINTADR"_Stz,
   /*    */ "EO_STR_PRINTSTK"_Stz,
   /*    */ "EO_STR_LITERAL"_Stz,
@@ -353,6 +392,10 @@ static Stz* aEO[]
   // hashing
   /*    */ "EO_HSH_ADD_HASHI"_Stz,
   /*    */ "EO_HSH_RESET"_Stz,
+  
+  // key
+  /*    */ "EO_KEY_LCL2C_TO_I"_Stz,
+  /*    */ "EO_KEY_RSB2C_TO_I"_Stz,
 
   // partitioning
   /*    */ "EO_PTN_CALC"_Stz,
@@ -375,6 +418,7 @@ static Stz* aEO[]
   /*    */ "EO_COL_ALT_PUSHONE"_Stz,
   /*    */ "EO_COL_ALT_PUSHSET"_Stz,
   /*    */ "EO_COL_SRC_PUSHONE"_Stz,
+  /*    */ "EO_COL_SRC_PUSHONE_a"_Stz,
   /*    */ "EO_COL_SRC_PUSHSET"_Stz,
 
   // crw operators
@@ -386,6 +430,7 @@ static Stz* aEO[]
   /*    */ "EO_CRW_SRC_TEST"_Stz,
   
   // entry
+  /*    */ "EO_ENT_FINDI"_Stz,
   /*    */ "EO_ENT_NEXT"_Stz,
   /*    */ "EO_ENT_POSPRIOR"_Stz,
   /*    */ "EO_ENT_PUSH"_Stz,
@@ -440,6 +485,7 @@ static Stz* aEO[]
   /*    */ "EO_IXT_POS_ALTBYWRK"_Stz,
   
   // pay load
+  /*    */ "EO_PAY_ADDRESS"_Stz,
   /*    */ "EO_PAY_FETCH_COLI"_Stz,
   /*    */ "EO_PAY_FETCH_COLS"_Stz,
   /*    */ "EO_PAY_STORE_COLI"_Stz,
@@ -477,6 +523,18 @@ static Stz* aEO[]
   /*    */ "EO_RSB_SRC_PUSHCOLI"_Stz,
   /*    */ "EO_RSB_SRC_PUSHCOLS"_Stz,
   /*    */ "EO_RSB_ALT_PUSHCOLI"_Stz,
+  
+  // super fragments
+  /*    */ "EO_SUPER_Q100"_Stz,
+  /*    */ "EO_SUPER_Z001"_Stz,
+  /*    */ "EO_SUPER_Z002"_Stz,
+  /*    */ "EO_SUPER_Z003"_Stz,
+  /*    */ "EO_SUPER_Z004"_Stz,
+  /*    */ "EO_SUPER_Z005"_Stz,
+  /*    */ "EO_SUPER_Z006"_Stz,
+  /*    */ "EO_SUPER_Z007"_Stz,
+  /*    */ "EO_SUPER_Z008"_Stz,
+  /*    */ "EO_SUPER_Z009"_Stz,
   
   /*    */ "ENUMS"_Stz
 };
@@ -531,6 +589,10 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ISNULL
   { EA_NONE,    0 },  // EO_ISNOTNULL
 
+  // prints
+  { EA_NONE,    0 },  // EO_PRINT
+  { EA_STRING, -1 },  // EO_PRINTF
+
   // pushes
   { EA_DATE,    8 },  // EO_DATE
   { EA_INT,     8 },  // EO_INTEGER
@@ -548,6 +610,12 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_GREATEREQUAL
   { EA_NONE,    0 },  // EO_GREATERTHAN
 
+  // column set
+  { EA_INT,     8 },  // EO_SET_COLUMN
+  { EA_INT,     8 },  // EO_SET_ITEMS
+  { EA_INT,     8 },  // EO_SET_LOCALS_ALT
+  { EA_INT,     8 },  // EO_SET_LOCALS_SRC
+
   // stack operators
   { EA_NONE,    0 },  // EO_INC
   { EA_NONE,    0 },  // EO_DEC
@@ -555,12 +623,12 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_POP
   { EA_INT,     8 },  // EO_POP_LOCALI
   { EA_INT,     8 },  // EO_POP_LOCALS
-  { EA_NONE,    0 },  // EO_PRINT
   { EA_INT,     8 },  // EO_PUSH_LOCALI
   { EA_INT,     8 },  // EO_PUSH_LOCALS
   
   // string operators
   { EA_NONE,    0 },  // EO_STR_COMPARE
+  { EA_NONE,    0 },  // EO_STR_COMPARE_a
   { EA_NONE,    0 },  // EO_STR_PRINTADR
   { EA_NONE,    0 },  // EO_STR_PRINTSTK
   { EA_STRING, -1 },  // EO_STR_LITERAL
@@ -598,6 +666,10 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_HSH_ADD_HASHI
   { EA_NONE,    0 },  // EO_HSH_RESET
 
+  // key
+  { EA_INT,     8 },  // EO_KEY_LCL2C_TO_I
+  { EA_INT,     8 },  // EO_KEY_RSB2C_TO_I
+
   // partitioning
   { EA_NONE,    0 },  // EO_PTN_CALC
   { EA_NONE,    0 },  // EO_PTN_PUSH
@@ -619,6 +691,7 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSHONE
   { EA_NONE,    0 },  // EO_COL_ALT_PUSHSET
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE
+  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE_a
   { EA_NONE,    0 },  // EO_COL_SRC_PUSHSET
 
   // crw operators
@@ -630,6 +703,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_CRW_SRC_TEST
   
   // entry
+  { EA_NONE,    0 },  // EO_ENT_FINDI
   { EA_NONE,    0 },  // EO_ENT_NEXT
   { EA_NONE,    0 },  // EO_ENT_POSPRIOR
   { EA_NONE,    0 },  // EO_ENT_PUSH
@@ -684,6 +758,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_POS_ALTBYWRK
 
   // pay load
+  { EA_NONE,    0 },  // EO_PAY_ADDRESS
   { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLI
   { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLS
   { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLI
@@ -721,6 +796,17 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLI
   { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLS
   { EA_SUBSCR,  8 },  // EO_RSB_ALT_PUSHCOLI
+
+  { EA_NONE,    0 },  // super fragment Q100
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
+  { EA_NONE,    0 },  // super fragment
 
   // -- end --
   { EA_NONE,    0 },  // EO_ENUMS

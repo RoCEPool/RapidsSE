@@ -10,6 +10,7 @@
 #endif
 
 extern EoArg EoArgs[];
+extern i8 giaVectorSet[];
 
 char gcaEoFragments[C_128K];
 Stz* gszaEoFragments[EO_ENUMS];
@@ -23,6 +24,8 @@ Stz* gszaEoFragments[EO_ENUMS];
 /*----------------------------------------------------------------------------*/
 DynamicSymbol gxaDynamicSymbol[]
 {
+  { "giaVectorSet"_Stz,          (const void *) giaVectorSet          },
+  
   { "vDev_ALT_COL_PUSHSET"_Stz,   (const void *) vDev_ALT_COL_PUSHSET   },
   { "vDev_RSB_COL_PUSHSET"_Stz,   (const void *) vDev_RSB_COL_PUSHSET   },
   { "vDev_SRC_COL_PUSHSET"_Stz,   (const void *) vDev_SRC_COL_PUSHSET   },
@@ -34,8 +37,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "iDev_CRW_TEST"_Stz,          (const void *) iDev_CRW_TEST          },
 
   { "iDev_ENT_COMPARE"_Stz,       (const void *) iDev_ENT_COMPARE       },
-  { "iDev_ENT_NEXT"_Stz,          (const void *) iDev_ENT_NEXT          },
-  { "vDev_ENT_POSPRIOR"_Stz,      (const void *) vDev_ENT_POSPRIOR      },
+  { "aDev_ENT_NEXT"_Stz,          (const void *) aDev_ENT_NEXT          },
+  { "aDev_ENT_POSPRIOR"_Stz,      (const void *) aDev_ENT_POSPRIOR      },
   { "vDev_ENT_PRINTKEYS"_Stz,     (const void *) vDev_ENT_PRINTKEYS     },
   { "aDev_ENT_PUSH"_Stz,          (const void *) aDev_ENT_PUSH          },
   { "aDev_ENT_PUSHUPPER"_Stz,     (const void *) aDev_ENT_PUSHUPPER     },
@@ -57,7 +60,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_DEL_ENT"_Stz,       (const void *) vDev_IXT_DEL_ENT       },
   { "vDev_IXT_DUMP"_Stz,          (const void *) vDev_IXT_DUMP          },
   { "vDev_IXT_ENT_PRINT"_Stz,     (const void *) vDev_IXT_ENT_PRINT     },
-  { "vDev_IXT_INS_ENT"_Stz,       (const void *) vDev_IXT_INS_ENT       },
+  { "aDev_IXT_INS_ENT"_Stz,       (const void *) aDev_IXT_INS_ENT       },
   { "iDev_IXT_TMP_ENTRIES"_Stz,   (const void *) iDev_IXT_TMP_ENTRIES   },
 
   { "aDev_IXT_POS_ALTBYSRC"_Stz,  (const void *) aDev_IXT_POS_ALTBYSRC  },
@@ -68,6 +71,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "aDev_IXT_TRV_BEGIN"_Stz,     (const void *) aDev_IXT_TRV_BEGIN     },
   { "aDev_IXT_TRV_NEXT"_Stz,      (const void *) aDev_IXT_TRV_NEXT      },
       
+  { "aDev_PAY_ADDRESS"_Stz,       (const void *) aDev_PAY_ADDRESS       },
   { "iDev_PAY_FETCH_COLI"_Stz,    (const void *) iDev_PAY_FETCH_COLI    },
   { "szDev_PAY_FETCH_COLS"_Stz,   (const void *) szDev_PAY_FETCH_COLS   },
   { "vDev_PAY_STORE_COLI"_Stz,    (const void *) vDev_PAY_STORE_COLI    },
@@ -106,7 +110,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vLib_SET_LOCAL"_Stz,         (const void *) vLib_SET_LOCAL         },
   { "vLib_SLEEP"_Stz,             (const void *) vLib_SLEEP             },
   { "iLib_STR_COMPARE"_Stz,       (const void *) iLib_STR_COMPARE       },
-    
+  { "vLib_PRINTF"_Stz,            (const void *) vLib_PRINTF            },
+
   { "aRlu_INIT"_Stz,              (const void *) aRlu_INIT              },
   { "vRlu_BEGINTMR"_Stz,          (const void *) vRlu_BEGINTMR          },
   { "vRlu_DUMP"_Stz,              (const void *) vRlu_DUMP              },
@@ -194,10 +199,12 @@ void LogicCompiler::vExtract(void)
     }
   }
   
-  vTrace("Fragments:: %s\n"_Stz,gcaEoFragments);
   
-  for (i8 i_EO = 1; i_EO < EO_ENUMS; i_EO++) {
-    vTrace("Fragment:: %s\n%s\n"_Stz,aEO[i_EO],gszaEoFragments[i_EO]);
+  if (AM::bVerbose()) {
+    vTrace("Fragments:: %s\n"_Stz,gcaEoFragments);
+    for (i8 i_EO = 1; i_EO < EO_ENUMS; i_EO++) {
+      vTrace("Fragment:: %s\n%s\n"_Stz,aEO[i_EO],gszaEoFragments[i_EO]);
+    }
   }
   
   pFile->vClose();
@@ -237,7 +244,9 @@ void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs)
   StrLib::vStrip(sTok.azChar(),':');
   
   i8 i_EO = eFindEO(sTok);
-  vTrace("Fragment %s [%lld]\n"_Stz,sTok.szStz(),i_EO);
+  
+  if (AM::bVerbose())
+    vTrace("Fragment %s [%lld]\n"_Stz,sTok.szStz(),i_EO);
 
   gszaEoFragments[i_EO] = (Stz*)*aazCrs;
   
@@ -301,9 +310,9 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   v_DynConcluding();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_TRACE_LOGICUNIT
-  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
-#endif
+//#ifdef WITH_TRACE_LOGICUNIT
+  //vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
+//#endif
   
   vAcquire();
   bool b = bCompile();
@@ -317,6 +326,16 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   m_pLogicUnit->m_pLogicTimer = new LogicTimer(m_pLogicUnit->m_xRluCommon.m_iSql);
 
   return 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return source code                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* LogicCompiler::szSource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  
+  return (Stz*)m_caSource;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -337,7 +356,7 @@ void LogicCompiler::vAcquire(void)
   
   tcc_set_output_type((TCCState*)m_aTccState,TCC_OUTPUT_MEMORY);
   
-  tcc_set_error_func((TCCState*)m_aTccState, nullptr, vTinyError);
+  tcc_set_error_func((TCCState*)m_aTccState, this, vTinyError);
 #endif
 }
 
@@ -671,14 +690,16 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  /*====================================================================*/"
   "\n"
   "\n  #include <tcclib.h>" // include libc header for TCC
+  "\n  int strcmp(const char *__s1, const char *__s2);"
   "\n"
-  "\n  typedef unsigned char eEO;"
   "\n  typedef char i1;"
   "\n  typedef unsigned short u2;"
   "\n  typedef long long i8;"
   "\n  typedef unsigned long long m8;"
   "\n  typedef unsigned long long u8;"
   "\n  typedef char Stz;"
+  "\n"
+  "\n  typedef unsigned char eEO;"
   "\n  typedef unsigned short tET;"
   "\n"
   "\n  static const i8 C_1MB = 1048576;"
@@ -690,16 +711,20 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
   "\n"
   "\n  #define C_MAX_LVL_LEVELS 6"
+  "\n  #define C_LOCALS 8"
+  "\n"
+  "\n  enum eKC { KC_BEFORE=1, KC_SAME, KC_AFTER };"
+  "\n  enum eSI { SI_ADDRESS=1, SI_AREA_ADR, SI_AREA_OFS,"
+  "\n             SI_DEST, SI_DEST_ANT, SI_DEST_PST };"
   "\n"
   "\n  #include \"../Source/EnumGroups.h\""
   "\n  #include \"../Source/Ent_int.h\""
+  "\n  #include \"../Source/InflateSet.h\""
   "\n  #include \"../Source/LIB_interface.h\""
   "\n  #include \"../Source/DEV_interface.h\""
   "\n  #include \"../Source/RLU_interface.h\""
   "\n  #include \"../Source/RluCommon.h\""
   "\n  #include \"../Source/eEO.h\""
-  "\n"
-  "\n  enum eKC { KC_BEFORE=1, KC_SAME, KC_AFTER };"
   "\n"
   "\n  #define ArgNil() "
   "\n  #define ArgGet(x) "
@@ -745,6 +770,9 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  //#define JumpTo(__iArg,__EO) { vRlu_ENDTMR(pLU,(i8)__EO); goto L_##__iArg; }"
   "\n  #define JumpTo(__iArg,__EO) goto L_##__iArg;"
   "\n"
+  "\n  extern i8 giaVectorSet[];"
+  "\n"
+
   "";
   
   s4K sReplaced;
@@ -787,6 +815,8 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    struct RluCommon* aRluCommon = nullptr;"
   "\n"
   "\n    i8* aiDstk = nullptr;"
+  "\n    i8* aiLocals;"
+  "\n    i8* aiPayload;"
   "\n"
   "\n    i8 iTopA;"
   "\n    i8 iTopB;"
@@ -794,6 +824,8 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    i8 iRes;"
   "\n    Stz* szTopA;"
   "\n    Stz* szTopB;"
+  "\n    char* azTopA;"
+  "\n    char* azTopB;"
   "\n    Stz* szRes;"
   "\n    i8 nSize;"
   "\n    char* azSrc;"
@@ -803,6 +835,10 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n    i8 iItem;"
   "\n    tET tNext;"
   "\n    struct Ent_int* aEnt_int;"
+  "\n    i8 iWrkA, iWrkB, iWrkC, iWrkD, iWrkE, iWrkF;"
+  "\n"
+  "\n    i8 iaColSet[64];"
+  "\n    i8 i_ColSet = 0;"
   "\n"
 //  "\n    printf(\"Sizeof Ent_Int   : %d\n\",sizeof(struct Ent_int));"
 //  "\n    printf(\"Sizeof RluCommon : %d\n\",sizeof(struct RluCommon));"
@@ -872,11 +908,18 @@ void LogicCompiler::v_SbrPreliminary(Stz* szSbrNm)
   "\n    char* azSrc;"
   "\n    char* azDst;"
   "\n    char* azArg;"
+  "\n    char* azTopA;"
+  "\n    char* azTopB;"
   "\n    i8 iBuffer;"
   "\n    i8 iItem;"
   "\n    tET tNext;"
   "\n    struct Ent_int* aEnt_int;"
+  "\n    i8* aiLocals;"
+  "\n    i8* aiPayload;"
+  "\n    i8 iWrkA, iWrkB, iWrkC, iWrkD, iWrkE, iWrkF;"
   "\n"
+  "\n    i8 iaColSet[64];"
+  "\n    i8 i_ColSet = 0;"
   "\n"
   "";
   
@@ -938,6 +981,10 @@ void LogicCompiler::v_CallSbr(i8 i_Label)
 /*----------------------------------------------------------------------------*/
 void vTinyError(void *aOpaque, const char *azMsg)
 {
+  LogicCompiler* pLogicCompiler = _pLogicCompiler(aOpaque);
+  
+  vTrace("Dynamic Source Code: \n\n%s\n"_Stz,pLogicCompiler->szSource());
+
   vTrace("TinyError: %s\n"_Stz,azMsg);
   
   vDebugPoint();

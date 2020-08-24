@@ -13,12 +13,21 @@ void vDev_CRW_BEGIN(void* aLU, void* aIXT)
 {
   _static_
 
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   pDevIxt->m_i_Row = -1;
   pDevIxt->m_aCrw = nullptr;
   pDevIxt->m_nRows = pDevIxt->m_pCrwBuffer ?
                    pDevIxt->m_pCrwBuffer->nRowCount() : 0;
+  
+  pLogicUnit->m_xRluCommon.m_nCrwRows = pDevIxt->m_nRows;
+  pLogicUnit->m_xRluCommon.m_i_CrwRow = pDevIxt->m_i_Row;
+      
+  if (pDevIxt->m_pCrwBuffer)
+    pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = pDevIxt->m_pCrwBuffer->aGetHead(0);
+  else
+    pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,7 +148,7 @@ i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
   if (iEntVal < iWrkVal)
     eCmp = KC_BEFORE;
   else
-  if (iEntVal < iWrkVal)
+  if (iEntVal == iWrkVal)
     eCmp = KC_SAME;
   else
     eCmp = KC_AFTER;
@@ -150,7 +159,7 @@ i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* move to next m_pEnt                                                        */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_NEXT(void* aLU, void* aIXT)
+Ent_int* aDev_ENT_NEXT(void* aLU, void* aIXT)
 {
   _static_
   
@@ -160,18 +169,13 @@ i8 iDev_ENT_NEXT(void* aLU, void* aIXT)
   
   pDevIxt->m_aEnt = EntBuffer::pMoveToNextEntry(pDevIxt->m_aEnt,
                                                 &pDevIxt->m_pEntBuffer);
-  if (pDevIxt->m_aEnt)
-    iRes = 1;
-  else
-    iRes = 0;
-
-  return iRes;
+  return (Ent_int*)pDevIxt->m_aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* position m_pEnt prior using m_oEntWrk.key                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_POSPRIOR(void* aLU, void* aIXT)
+Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT, Ent_int** aaSkipRoots)
 {
   _static_
   
@@ -182,6 +186,15 @@ void vDev_ENT_POSPRIOR(void* aLU, void* aIXT)
   pDevIxt->m_aEnt =
     pDevIxt->m_pIdxTree->aPositionPriorEntry(pLogicUnit->m_oEntWrk.aKey(),
                                              &pDevIxt->m_pEntBuffer);
+  
+  if (pDevIxt->m_pEntBuffer) {
+    pLogicUnit->m_xRluCommon.m_aEntArray =
+      (Ent_int*)pDevIxt->m_pEntBuffer->aEntArray();
+    
+    *aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
+  }
+  
+  return (Ent_int*)pDevIxt->m_aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -408,7 +421,7 @@ void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_INS_ENT(void* aLU, void* aIXT)
+Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT)
 {
   _static_
 
@@ -418,7 +431,8 @@ void vDev_IXT_INS_ENT(void* aLU, void* aIXT)
 
   pDevIXT->m_aEnt =
     pDevIXT->m_pIdxTree->aInsertEntry(pLogicUnit->m_oEntWrk.aEnt());
-
+  
+  return (Ent_int*)pDevIXT->m_aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -656,6 +670,20 @@ Ent_int* aDev_IXT_TRV_NEXT(void* aLU, void* aIXT)
     pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
 
   return (Ent_int*)pDevIXT->m_aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of payload                                                     */
+/*----------------------------------------------------------------------------*/
+i8* aDev_PAY_ADDRESS(void* aLU, void* aIXT)
+{
+  _static_
+  
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
+
+  i8* aPayload = pDevIXT->m_aEnt->aiPayCell(0);
+    
+  return aPayload;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1084,7 +1112,7 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk)
+void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet)
 {
   _static_
   
@@ -1093,13 +1121,14 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk)
   RowInflator::vInflateSet(aaiDstk,
                                 //pLogicUnit->m_pDevAltIxt->m_aCrw,
                                 (Crw*)pLogicUnit->m_xRluCommon.m_aAltCrw,
-                                pLogicUnit->m_pDevAltRsb->m_pStreamDef);
+                                pLogicUnit->m_pDevAltRsb->m_pStreamDef,
+                                (eSI)ieStrInflate,iaColSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk)
+void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet)
 {
   _static_
   RASSERT(0); // check with ALka
@@ -1108,23 +1137,23 @@ void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk)
     
   RowInflator::vInflateSet(aaiDstk,
                                 pLogicUnit->m_pDevSrcIxt->m_aCrw,
-                                pLogicUnit->m_pDevSrcRsb->m_pStreamDef);
+                                pLogicUnit->m_pDevSrcRsb->m_pStreamDef,
+                                (eSI)ieStrInflate,iaColSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk)
+void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet)
 {
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
     
   RowInflator::vInflateSet(aaiDstk,
-//                              pLogicUnit->m_pDevSrcIxt->m_aCrw,
-                                (Crw*)pLogicUnit->m_xRluCommon.m_aSrcCrw,
-                                pLogicUnit->m_pDevSrcRsb->m_pStreamDef
-                                );
+                           (Crw*)pLogicUnit->m_xRluCommon.m_aSrcCrw,
+                           pLogicUnit->m_pDevSrcRsb->m_pStreamDef,
+                           (eSI)ieStrInflate,iaColSet);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -21,6 +21,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addNodeStatus"_Stz,  &Step::vStreamSetAddNodeStatus);
   vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
   vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
+  vAddStep("StreamSet[].addRowCount"_Stz,      &Step::vStreamSetAddRowCount);
   vAddStep("StreamSet[].addShowCluster"_Stz,   &Step::vStreamSetAddShowCluster);
   vAddStep("StreamSet[].addSizeIndex"_Stz,     &Step::vStreamSetAddSizeIndex);
   vAddStep("StreamSet[].addSizeTable"_Stz,     &Step::vStreamSetAddSizeTable);
@@ -442,6 +443,35 @@ void Step::vStreamSetAddPwfInfo(void)
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     sString.azChar(),
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushInt(pRow ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addShowCluster -- add a row to streamSet with the cluster info */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddRowCount(void)
+{
+  ENTRY();
+  
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  i8 i_Count = m_pDataStack->iPopInt(__func__);
+  
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+  
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    i_Count,
                                     C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);

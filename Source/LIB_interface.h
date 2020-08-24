@@ -16,6 +16,8 @@ void vLib_ERROR(void* pLU, Stz* szErr);
 
 void vLib_HSH_ADD_HASHI(void* pLU, i8 iTopA);
 
+void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk);
+
 void vLib_PTN_CALC(void* pLU);
 void vLib_PTN_RUNNING(void* pLU, i8 iTopA);
 
