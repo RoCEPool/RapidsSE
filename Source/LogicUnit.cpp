@@ -1938,25 +1938,28 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //          goto L_end_FINDI;
 //        }
 
+        iTopA = aRluCommon->m_aWrkEnt->m_iIntElm0;
         // search for key
         while (C_ENT_END_TICKET != tNext) {
           aEnt_int = (struct Ent_int*) &aRluCommon->m_aEntArray[tNext];
+          iTopB = aEnt_int->m_iIntElm0;
           //printf("Ticket %lld Ent %p\n",(i8)tNext,aEnt_int);
-          if (aRluCommon->m_aWrkEnt->m_iIntElm0 == aEnt_int->m_iIntElm0) {
+          if (iTopA == iTopB) {
             aRluCommon->m_aTmpEnt = aEnt_int;
             *(++aiDstk) = 1; // found matching key
             goto L_end_FINDI;
           }
-          if (aRluCommon->m_aWrkEnt->m_iIntElm0 < aEnt_int->m_iIntElm0) {
+          if (iTopA > iTopB) {
             tNext = aEnt_int->m_taNextEntry[0];
             continue;
           }
-         *(++aiDstk) = 0; // did not find matching key
+          //printf("Did not find %lld\n",aRluCommon->m_aWrkEnt->m_iIntElm0);
+          *(++aiDstk) = 0; // did not find matching key
           goto L_end_FINDI;
         }
-        
         // did not find matching key
         *(++aiDstk) = 0;
+        
         L_end_FINDI:
         break;//+endCase
         
