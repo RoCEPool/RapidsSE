@@ -11,6 +11,11 @@ namespace Expressions
     i2 m_i_Enum;
     i2 m_iItem;
     i8 m_nNanoSecs;
+  
+    i2 m_iAction;
+    i2 m_i_ActEnumGroup;
+    i2 m_i_ActEnum;
+
   };
 
   static const i8 C_DIARY_ENTRIES =
@@ -35,7 +40,10 @@ namespace Expressions
    ~RluDiary(void) noexcept(false);
   
     void vAddNote(i8 i_Sql, i8 i_Slot,
-                  i8 m_i_EnumGroup, i8 i_Enum, i8 iItem, i8 i_nNanoSecs);
+                  i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 i_nNanoSecs,
+                  
+                  i8 iAction, i8 i_ActEnumGroup, i8 i_ActEnum
+                  );
 
     void vReport(Stz* szFilePath);
     

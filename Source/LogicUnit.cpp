@@ -268,7 +268,8 @@ void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs)
 
   
   m_pRluDiary->vAddNote(m_xRluCommon.m_iSql,m_xRluCommon.m_i_Slot,                       
-                        i_EnumGroup,i_Enum,iItem,nNanoSecs);
+                        i_EnumGroup,i_Enum,iItem,nNanoSecs,
+                        0,0,0);
 }
 
 /*----------------------------------------------------------------------------*/
