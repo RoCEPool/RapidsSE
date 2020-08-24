@@ -44,9 +44,12 @@ void Step::vLogicUnitDiaryNote(void)
   i8 i_EnumGroup = m_pDataStack->iPopInt(__func__);
   i8 i_Enum      = m_pDataStack->iPopInt(__func__);
   i8 iItem       = m_pDataStack->iPopInt(__func__);
-  i8 nNanoSecs   = m_pDataStack->iPopInt(__func__);
   
-  m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSecs);
+  m_pLogicUnit->m_oSince.vUpdate();
+  i8 nNanoSeconds = m_pLogicUnit->m_oSince.iNanoseconds();
+  
+  m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds);
+  
   EXIT();
 }
 
