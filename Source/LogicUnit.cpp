@@ -266,7 +266,9 @@ void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs)
   if (!m_pRluDiary)
     m_pRluDiary = new RluDiary;
 
-  m_pRluDiary->vAddNote(i_EnumGroup,i_Enum,iItem,nNanoSecs);
+  
+  m_pRluDiary->vAddNote(m_xRluCommon.m_iSql,m_xRluCommon.m_i_Slot,                       
+                        i_EnumGroup,i_Enum,iItem,nNanoSecs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,9 +300,6 @@ void LogicUnit::vEnter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  if (!m_pRluDiary)
-    m_pRluDiary = new RluDiary;
-  
   m_oSince.vUpdate();
   i8 nNanoSeconds = m_oSince.iNanoseconds();
   
@@ -313,9 +312,9 @@ void LogicUnit::vEnter(void)
 //         m_xRluCommon.m_nEnterCount,
 //         nNanoSeconds);
   
-  m_pRluDiary->vAddNote(EG_ED,ED_ENTER,
-                        m_xRluCommon.m_nEnterCount,
-                        nNanoSeconds);
+  vDiaryNote(EG_ED,ED_ENTER,
+              m_xRluCommon.m_nEnterCount,
+              nNanoSeconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -324,10 +323,7 @@ void LogicUnit::vEnter(void)
 void LogicUnit::vExit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  if (!m_pRluDiary)
-    m_pRluDiary = new RluDiary;
-  
+    
   m_oSince.vUpdate();
   i8 nNanoSeconds = m_oSince.iNanoseconds();
   
@@ -340,9 +336,9 @@ void LogicUnit::vExit(void)
 //         m_xRluCommon.m_nEnterCount,
 //         nNanoSeconds);
 
-  m_pRluDiary->vAddNote(EG_ED,ED_EXIT,
-                        m_xRluCommon.m_nEnterCount,
-                        nNanoSeconds);
+  vDiaryNote(EG_ED,ED_EXIT,
+             m_xRluCommon.m_nEnterCount,
+             nNanoSeconds);
 }
 
 /*----------------------------------------------------------------------------*/

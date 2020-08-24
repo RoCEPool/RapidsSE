@@ -522,7 +522,7 @@
 
   PipeIn[].isNull not if
     PipeIn[].pipeOut // ZK_PULSEMARKER_handler
-    // "PIPEDOUT PULSE MARKER" .
+    "PIPEDOUT PULSE MARKER" .
   then
 
 //  LogicUnit[].calledAgain@ not if

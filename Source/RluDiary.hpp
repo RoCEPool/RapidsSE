@@ -34,7 +34,8 @@ namespace Expressions
     RluDiary(void);
    ~RluDiary(void) noexcept(false);
   
-    void vAddNote(i8 m_i_EnumGroup, i8 i_Enum, i8 iItem, i8 i_nNanoSecs);
+    void vAddNote(i8 i_Sql, i8 i_Slot,
+                  i8 m_i_EnumGroup, i8 i_Enum, i8 iItem, i8 i_nNanoSecs);
 
     void vReport(Stz* szFilePath);
     
