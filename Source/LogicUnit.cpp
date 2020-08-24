@@ -1911,8 +1911,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src rsb
         dLU0(EO_CRW_SRC_NEXT);
-        iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
-        *(++aiDstk) = iRes;
+        //iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
+        
+        
+        if (++aRluCommon->m_i_CrwRow < aRluCommon->m_nCrwRows) {
+          aRluCommon->m_aSrcCrw = (char*)aRluCommon->m_aSrcHeadCrw
+            + (aRluCommon->m_nSrcHeadSize * aRluCommon->m_i_CrwRow);
+          *(++aiDstk) = 1;
+        }
+        else {
+          *(++aiDstk) = 0;
+        }
         break;//+endCase
         
       case EO_CRW_SRC_NULL: ArgNil(); // null the crw src
