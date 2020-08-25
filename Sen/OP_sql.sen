@@ -393,11 +393,11 @@
 
       streamDefOut_300
       true Pot[].useStreamDefOut
-      StreamDefOut[].duplicate to StreamDef[]
+      //StreamDefOut[].duplicate to StreamDef[]
 
       ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
 
-      StreamDef[].pipeout
+      StreamDefOut[].pipeout
     endof
 
     301 of
@@ -422,11 +422,11 @@
 
       streamDefOut_301
       true Pot[].useStreamDefOut
-      StreamDefOut[].duplicate to StreamDef[]
+      //StreamDefOut[].duplicate to StreamDef[]
 
       ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
 
-      StreamDef[].pipeout
+      StreamDefOut[].pipeout
     endof
 
     302 of
@@ -444,11 +444,11 @@
 
       streamDefOut_302
       true Pot[].useStreamDefOut
-      StreamDefOut[].duplicate to StreamDef[]
+      //StreamDefOut[].duplicate to StreamDef[]
 
       ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
 
-      StreamDef[].pipeout
+      StreamDefOut[].pipeout
     endof
 
     400 of
@@ -966,11 +966,13 @@
     301 of
       //"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 301=STREAMDEF" .
       // the stream def was  piped out in sql_StartMarker by 300
+      StreamDef[].delete
     endof
 
     302 of
       //"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 302=STREAMDEF" .
       // the stream def was  piped out in sql_StartMarker by 300
+      StreamDef[].delete
     endof
 
     400 of
