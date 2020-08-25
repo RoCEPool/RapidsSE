@@ -460,9 +460,9 @@
 
       streamDefOut_400
       true Pot[].useStreamDefOut
-      StreamDefOut[].duplicate to StreamDef[]
+      //StreamDefOut[].duplicate to StreamDef[]
       ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
-      StreamDef[].pipeout
+      StreamDefOut[].pipeout
     endof
 
     401 of
@@ -480,9 +480,9 @@
 
       streamDefOut_401
       true Pot[].useStreamDefOut
-      StreamDefOut[].duplicate to StreamDef[]
+      //StreamDefOut[].duplicate to StreamDef[]
       ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
-      StreamDef[].pipeout
+      StreamDefOut[].pipeout
     endof
 
     600 of
@@ -976,9 +976,11 @@
     endof
 
     400 of
+      StreamDef[].delete
     endof
 
     401 of
+      StreamDef[].delete
     endof
 
     601 of
