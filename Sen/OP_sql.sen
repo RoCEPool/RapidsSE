@@ -798,7 +798,7 @@
       Operand[].asSrcRowSlab
       LogicUnit[].dynFun
       Operand[].delete
-      Pot[].pipeoutAllCompleted
+      //Pot[].pipeoutAllCompleted
     endof
 
     301 of
@@ -883,6 +883,7 @@
       LogicUnit[].dynFun
       logicCompiler[].delete
       IndexTree[].delete
+      Pot[].pipeoutAllCompleted
     endof
 
     300 of
