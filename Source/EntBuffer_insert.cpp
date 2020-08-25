@@ -266,11 +266,11 @@ void EntBuffer::vCompactLeft(void)
   EntBuffer* pThisBuffer = this;
   EntBuffer* pTempBuffer = new EntBuffer(m_eEntKind);
   
-  IndexDef* pIndexDef = m_pIndex->pIndexDef();
+  //IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
   EntWrk xEntWrk;
   
-  i8 nLvlLevels = AM::nLvlLevels();
+  //i8 nLvlLevels = AM::nLvlLevels();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -419,7 +419,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //Key* aInsertEnt = _aKey(aInsertedKeyEntry->aDataArea());
-  IndexDef* pIndexDef = m_pIndex->pIndexDef();
+  //IndexDef* pIndexDef = m_pIndex->pIndexDef();
   EntWrk xEntWrkIns;
   xEntWrkIns.vSetEnt(iBufferNo(), 0, aInsertedKeyEntry);
   
