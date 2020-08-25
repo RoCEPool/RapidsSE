@@ -9,6 +9,8 @@ extern Args          gxArgs;
 extern AttachMap*    gpAttachMap;
 extern PromptCatalog gxPromptCatalog;
 
+extern Stz* gsBuildGitHash;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -724,17 +726,17 @@ void SePrompt::vPromptUser(void)
 
   bool bLowMem = gpBufferPool->bLowMemory();
   
+  Stz* szNodeNm = AM::szNodeNm();
+  i8 iPid = Process::iGetPid();
 
   if (! AM::bDeveloper()) {
-    vInfo("se> "_Stz);
+    vInfo("%s %lld se> "_Stz,gsBuildGitHash,iPid);
     fflush(stdin);
     return;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Stz* szNodeNm = AM::szNodeNm();
-  i8 iPid = Process::iGetPid();
 
   vInfo("[%s %lld] "
         "%s%s%s"

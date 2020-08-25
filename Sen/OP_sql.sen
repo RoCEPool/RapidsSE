@@ -461,11 +461,18 @@
       streamDefOut_400
       true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
+      ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
       StreamDef[].pipeout
     endof
 
     401 of
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 401=STARTMARKER" .
+
+          idxDef_vch indexDef[] indexTree[].new
+          indexTree[].asTmp
+
+          indexTree[] 0 LogicUnit[].dev!
+
       //queryNo "QUERY %v" .printf
       401 LogicUnit[].genCode
       logicCompiler[].new
@@ -474,6 +481,7 @@
       streamDefOut_401
       true Pot[].useStreamDefOut
       StreamDefOut[].duplicate to StreamDef[]
+      ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
       StreamDef[].pipeout
     endof
 
@@ -637,7 +645,6 @@
 
   indexTree[] 0 LogicUnit[].dev!
 
-
   //LogicUnit[].transform
   LogicUnit[].dynFun
 
@@ -657,10 +664,13 @@
 
   ZK_PULSEMARKER_handler
 
+/*
   idxDef_vch indexDef[] indexTree[].new
   indexTree[].asTmp
 
   indexTree[] 0 LogicUnit[].dev!
+*/
+
 ;
 
 /*----------------------------------------------------------------------------*/
