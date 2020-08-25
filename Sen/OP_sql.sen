@@ -560,6 +560,7 @@
     Pot[].pipeoutAllCompletedPtns
     true
   else
+    LogicCompiler[].delete
     Pot[].pipeoutAllDanglingPtns
     Operand[].newEosMarker
     ZK_EOSMARKER EG_ZK PP_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
@@ -647,6 +648,7 @@
 
   //LogicUnit[].transform
   LogicUnit[].dynFun
+  LogicCompiler[].delete
 
   Pot[].pipeoutAllDangling
   Pot[].delete
@@ -889,35 +891,30 @@
 
     301 of
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 301=EOSMARKER" .
+      LogicCompiler[].delete
     endof
 
     302 of
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 302=EOSMARKER" .
       //false 1 LogicUnit[].transformArgs
       false 1 LogicUnit[].dynFunArgs
+      LogicCompiler[].delete
     endof
 
     401 of
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 302=EOSMARKER" .
       //false 1 LogicUnit[].transformArgs
       false 1 LogicUnit[].dynFunArgs
+      LogicCompiler[].delete
     endof
 
     600 of
-      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 600=EOSMARKER" .
-      streamDef[].delete
-      logicCompiler[].delete
-
-      // AGGREGATE WITH GROUPBY
-      LogicUnit[].dynFun
-      logicCompiler[].delete
-      IndexTree[].delete
     endof
 
-      601 of
-        //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 601=EOSMARKER" .
-        logicCompiler[].delete
-      endof
+    601 of
+      //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 601=EOSMARKER" .
+      logicCompiler[].delete
+    endof
 
   endcase
 
