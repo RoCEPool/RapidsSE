@@ -926,6 +926,63 @@ bool Socket::bServer(Stz* sAddr, int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* send a message via a UDP socket                                            */
 /*----------------------------------------------------------------------------*/
+/*
+bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  int nSoFar = 0;
+  i8 nMore = nBytes;
+  char* pSoFar = (char*)aBytes;
+  
+  SysCall.vClear();
+  
+  if (nBytes == 0) {
+    vTrace("sendto() sending 0 bytes\n"_Stz);
+    RASSERT(nBytes == 0);
+  }
+  
+  while (nSoFar != nBytes)
+  {
+    pSoFar = (char*)aBytes + nSoFar;
+    
+    i8 nBytesSent = sendto(m_iSocketFd
+                           ,nMore
+                           ,0
+                           ,(struct sockaddr*)&m_xServAddr
+                           ,sizeof(m_xServAddr)
+                           );
+    
+    if (C_UNKNOWN == nBytesSent)
+    {
+      SysCall.vError(errno);
+      return false;
+    }
+    
+    if (0 == nBytesSent)
+    {
+      SysCall.vError(errno);
+      return false;
+    }
+    
+    if (nBytesSent < nBytes)
+    {
+      vWarn("sendto() less bytes sent; %lld v %lld\n"_Stz
+            ,nBytesSent
+            ,nBytes
+            );
+    }
+    nSoFar += nBytesSent;
+    nMore -= nBytesSent;
+  }
+  
+  SysCall.vSuccess();
+  return true;
+}
+*/
+/*----------------------------------------------------------------------------*/
+/* send a message via a UDP socket                                            */
+/*----------------------------------------------------------------------------*/
 bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
