@@ -336,6 +336,9 @@ void RowSlab::vNormaliseStrings(void)
   i8 nRows  = this->nRows();
   i8 nCols  = this->nCols();
   
+  if (nCols < 14)
+    return;
+  
 //for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
   for (i8 i_Col = 13; i_Col < 14; i_Col++) {
 
