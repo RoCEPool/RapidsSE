@@ -61,8 +61,10 @@ void LogicUnit::vGenerateQuery100(void)
   vAddCode(EO_CRW_SRC_TEST);
   vAddCodeLabel(EO_JMP_TRUE,"BEGIN_CRW_SRC:"_Stz);
   vAddCodeLabel(EO_CALL,"SUBROUTINE_IXT_TO_RSB:"_Stz);
+  vAddCodeLabel(EO_JMP,"QRY_100_DONE:"_Stz);
    
   vDefineLabel("BEGIN_CRW_SRC:"_Stz);
+  //vAddCodeString(EO_PRINTF,"**100** Got CRW BUFFER\n"_Stz);
   // forearch src
   vAddCode(EO_CRW_SRC_BEGIN);
   
@@ -344,6 +346,7 @@ void LogicUnit::vGenerateQuery100(void)
   // BEGIN SUBROUTINE: SUBROUTINE_IXT_TO_RSB
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("SUBROUTINE_IXT_TO_RSB:"_Stz);
+  vAddCodeString(EO_PRINTF,"**100** SUBROUTINE_IXT_TO_RSB\n"_Stz);
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
@@ -424,7 +427,7 @@ void LogicUnit::vGenerateQuery103(void)
   vAddCodeLabel(EO_JMP,"QRY_103_DONE:"_Stz);
   
   vDefineLabel("BEGIN_RSB_SRC:"_Stz);
-  vAddCodeString(EO_PRINTF,"**103** Got RSB BUFFER\n"_Stz);
+  //vAddCodeString(EO_PRINTF,"**103** Got RSB BUFFER\n"_Stz);
   // -- -- -- -- -- -- -- -- -- -- --
   // insert each rsb
   
