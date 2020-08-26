@@ -339,6 +339,11 @@ void RowSlab::vNormaliseStrings(void)
   if (nCols < 14)
     return;
   
+  if (nRows < 250)
+    return;
+  
+  //vTrace("NormaliseStrings %lld rows\n"_Stz,nRows);
+  
 //for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
   for (i8 i_Col = 13; i_Col < 14; i_Col++) {
 
@@ -366,6 +371,8 @@ void RowSlab::vNormaliseStrings(void)
            i_InnerRow < i_OuterRow + 99;
            i_InnerRow++) {
 
+        //vTrace("NormaliseStrings outer %lld inner %lld\n"_Stz,i_OuterRow,i_InnerRow);
+        
         Rsb* aInnerRsb = aRsbAdr(i_InnerRow);
 
         if (C_DATUM_NULL == aInnerRsb->iVal(i_Col))
