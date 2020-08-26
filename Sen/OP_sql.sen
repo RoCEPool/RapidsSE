@@ -770,7 +770,7 @@
       Operand[].asSrcCrwBuffer
       LogicUnit[].dynfun
       Operand[].delete
-      Pot[].pipeoutAllCompleted
+      //Pot[].pipeoutAllCompleted
     endof
 
   endcase
@@ -873,6 +873,7 @@
       LogicUnit[].dynFun
       logicCompiler[].delete
       IndexTree[].delete
+      Pot[].pipeoutAllCompleted
     endof
 
     103 of
