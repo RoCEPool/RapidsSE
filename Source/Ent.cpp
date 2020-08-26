@@ -77,10 +77,12 @@ void Ent::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 eCN Ent::eClass(void)
 {
+eCN eClass;
 #ifdef __ENT_HEADER
-  eCN eClass = m_xHeader.eClass();
+  eClass = m_xHeader.eClass();
 #else
-  eCN eClass = CN_ENT;
+  
+  eClass = CN_ENT;
 #endif
   
   return eClass;

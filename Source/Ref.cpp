@@ -27,6 +27,7 @@ Ref::Ref(u8 uBuffer, u8 uItem, u8 uLevels)
   
   m_uKind    = KE_GENERAL;
   m_uPayload = 0;
+  m_uFree    = 0;
   m_uSpare   = 0;
 }
 
@@ -71,6 +72,38 @@ i8 Ref::iBuffer(void)
 void Ref::vBuffer(i8 iBuffer)
 {
   m_uBuffer = iBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get free                                                                   */
+/*----------------------------------------------------------------------------*/
+bool Ref::bFree(void)
+{
+  return (bool)m_uFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set buffer                                                                 */
+/*----------------------------------------------------------------------------*/
+void Ref::vFree(bool bFree)
+{
+  m_uFree = bFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of free entry                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Ref::nFreeSize(void)
+{
+  return (i8)m_uBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set size of free entry                                                     */
+/*----------------------------------------------------------------------------*/
+void Ref::vFreeSize(i8 nFreeSize)
+{
+  m_uBuffer = nFreeSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,6 +176,7 @@ void Ref::vReset(void)
   
   m_uKind    = 0;
   m_uPayload = 0;
+  m_uFree    = 0;
   m_uSpare   = 0;
 }
 
@@ -156,6 +190,7 @@ void Ref::vSet(Ref xwRef)
   m_uLevels  = xwRef.m_uLevels;
   m_uKind    = xwRef.m_uKind;
   m_uPayload = xwRef.m_uPayload;
+  m_uFree    = xwRef.m_uFree;
   m_uSpare   = 0;
 }
 
@@ -170,6 +205,7 @@ void Ref::vSetNil(void)
   
   m_uKind    = 0;
   m_uPayload = 0;
+  m_uFree    = 0;
   m_uSpare   = 0;
 }
 

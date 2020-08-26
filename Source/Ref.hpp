@@ -15,7 +15,8 @@ namespace Rows
         u8 m_uLevels  :  3; // number of skip levels in next entry array
         u8 m_uPayload :  1; // is there is a payload? (not used yet)
         u8 m_uKind    :  4; // entry kind
-        u8 m_uSpare   :  8; // spare
+        u8 m_uFree    :  1; // free entry?
+        u8 m_uSpare   :  7; // spare
       };             // 64b
       
       i8 m_iAsI8;
@@ -31,6 +32,10 @@ namespace Rows
     i8    iAsI8(void);
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
+    bool  bFree(void);
+    void  vFree(bool bFree);
+    i8    nFreeSize(void);
+    void  vFreeSize(i8 nFreeSize);
     bool  bIsNil(void);
     i8    iItem(void);
     void  vItem(i8 iItem);
