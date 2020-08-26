@@ -123,6 +123,12 @@ void EntBuffer::vCompact(void)
   if (m_aLazyChain)
     vBuildSkipList();
 #endif
+
+  
+//  if (999 == nItems()) {
+//    vDumpItems();
+//  }
+  
   
   i8 nLvlLevels = AM::nLvlLevels();
 
@@ -150,7 +156,7 @@ void EntBuffer::vCompact(void)
     aFreeItem = nullptr;
     for (;
          aScanItem != nullptr;
-         aScanItem = aAdjacentItem(aScanItem)) {
+         aScanItem = aAdjacentEntry(aScanItem)) { // HACK by Ray Wed 26 Aug 2020
       
       eCN eClass = aScanItem->eClass();
       
@@ -168,9 +174,9 @@ void EntBuffer::vCompact(void)
     // find the next entry in buffer after the free entry
     
     aMoveEntry = nullptr;
-    for (Ent* aEnt = aAdjacentItem((Ent*)aFreeItem);
+    for (Ent* aEnt = aAdjacentEntry((Ent*)aFreeItem);
          aEnt != nullptr;
-         aEnt = aAdjacentItem(aEnt)) {
+         aEnt = aAdjacentEntry(aEnt)) {
       
       eCN eClass = aEnt->eClass();
       
@@ -221,8 +227,15 @@ void EntBuffer::vCompact(void)
     //vGiveSpace(nReclaimedBytes);
     
     // convert the moved entry to a free entry
+    
     FreeItem* aOpenedFreeEntry = aAdd<FreeItem*>(aFreeItem,nCopyBytes);
+#ifdef __ENT_HEADER
     new(aOpenedFreeEntry) FreeItem(nReclaimedBytes);
+#else
+    ((Ent_int*)aOpenedFreeEntry)->Ref.m_uFree = 1;
+    ((Ent_int*)aOpenedFreeEntry)->Ref.m_uBuffer = nReclaimedBytes;
+#endif
+    
     
     Ent* aCheckEntry = reinterpret_cast<Ent*>(aFreeItem);
     
@@ -248,6 +261,8 @@ void EntBuffer::vCompact(void)
   
   if (aScanItem)
     vSetUsed(aScanItem);
+  
+  m_nFreeItems = 0;
   
   //vShow();
 }
@@ -448,9 +463,18 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
   if (bHasSpace(nEntSizeBytes))
     pInsertIntoBuffer = this;
   else {
-    pInsertIntoBuffer =
-      pNewInsertBuffer(aEnt,nEntSizeBytes,ppRootBuffer);
-    //(*ppRootBuffer)->vShow();
+    
+    vCompact();
+    
+    if (bHasSpace(nEntSizeBytes))
+      pInsertIntoBuffer = this;
+    else {
+//      vTrace("No Space %p entries %lld\n"_Stz,this,nItems());
+      pInsertIntoBuffer =
+        pNewInsertBuffer(aEnt,nEntSizeBytes,ppRootBuffer);
+      //(*ppRootBuffer)->vShow();
+    }
+    
   }
   
   return pInsertIntoBuffer;
@@ -1059,7 +1083,11 @@ void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete the entry to be deleted from this buffer
+  
+  void* aAddress = aEntryToBeDeleted;
+  //MemLib::vDumpWords(aAddress,64);
   vDeleteEntry(&aEntryToBeDeleted);
+  //MemLib::vDumpWords(aAddress,64);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is this buffer empty ?

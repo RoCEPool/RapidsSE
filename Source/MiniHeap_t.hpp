@@ -12,10 +12,12 @@ namespace Structures
   
   protected:
     
-    i8 m_nItems;    // number of items in this mini-heap
+    i8 m_nItems;     // number of items in this mini-heap
+    i8 m_nFreeItems; // number of free items in this mini-heap
+  
     i8 m_nMaxItems; // max items allowed
   
-    SingleWord m__PadToCacheLine[6]; // padding to cache line
+    SingleWord m__PadToCacheLine[5]; // padding to cache line
 
     Wsp_t<C_WSP_MINIHEAP> m_xWsp; // workspace
   
@@ -23,6 +25,7 @@ namespace Structures
     MiniHeap_t(void);
    ~MiniHeap_t(void) noexcept(false);
   
+    ITEM*  aAdjacentEntry(ITEM* aItem);
     ITEM*  aAdjacentItem(ITEM* aItem);
     ITEM*  aAdjacentItem(ITEM* aItem, i8 nSizeBytes);
     byte*  ayAllotBytes(i8 nBytes);
@@ -84,6 +87,7 @@ MiniHeap_t<ITEM>::MiniHeap_t(void)
   
   
   m_nItems = 0;
+  m_nFreeItems = 0;
   m_nMaxItems = 0;
   
   MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_NMLSTR);
@@ -111,6 +115,36 @@ MiniHeap_t<ITEM>::~MiniHeap_t(void) noexcept(false)
 /* get item which is memory-wise the next item in the item area               */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
+ITEM* MiniHeap_t<ITEM>::aAdjacentEntry(ITEM* aItem)
+{
+  ITEM* aAdjacent = nullptr;
+  
+#ifdef __ENT_HEADER
+  i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
+                    ? ((FreeItem*)aItem)->nSizeBytes()
+                    : aItem->nSizeBytes();
+#else
+  i8 nItemBytes = (aItem->rxRef().bFree())
+                   ? aItem->rxRef().nFreeSize()
+                   : aItem->nSizeBytes();
+
+#endif
+  
+//  if (nItemBytes != 32)
+//    vTrace("AdjacentEntry %p nItemBytes %lld\n"_Stz,aItem,nItemBytes);
+  aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
+  
+  if ((char*)aAdjacent >= (char*)m_xWsp.ayLatter())
+    return nullptr;
+  
+  return aAdjacent;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get item which is memory-wise the next item in the item area               */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
 ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
 {
   ITEM* aAdjacent = nullptr;
@@ -119,6 +153,8 @@ ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
                     ? ((FreeItem*)aItem)->nSizeBytes()
                     : aItem->nSizeBytes();
   
+  if (nItemBytes != 32)
+    vTrace("AdjacentItem %p nItemBytes %lld\n"_Stz,aItem,nItemBytes);
   aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
   
   if ((char*)aAdjacent >= (char*)m_xWsp.ayLatter())
@@ -220,23 +256,29 @@ void MiniHeap_t<ITEM>::vDumpItems(void)
   
   for (;
        aItem;
-       aItem = aAdjacentItem(aItem)) {
+       aItem = aAdjacentEntry(aItem)) {
     
     i8 iOffset = iToOffset(aItem);
     eCN eClass = aItem->eClass();
     switch (eClass) {
         
       case CN_ENT: {
-        ITEM* aEntry = _aItem(aItem);
+        ITEM* aEntry = reinterpret_cast<ITEM*>(aItem); //_aItem(aItem);
         vTrace("[%04lld:%06lld] CN_ENT: %lldB\n"_Stz,
-               iItem,iOffset,aEntry->nSizeData());
+               iItem,iOffset,aEntry->nSizeBytes());
         break;
       }
         
       case CN_FREEITEM: {
+#ifdef __ENT_HEADER
         FreeItem* aFreeItem = _aFreeItem(aItem);
         vTrace("[%04lld:%06lld] CN_FREEITEM: %lldB\n"_Stz,
                iItem,iOffset,aFreeItem->nSizeBytes());
+#else
+        ITEM* aEntry = reinterpret_cast<ITEM*>(aItem); //_aItem(aItem);
+        vTrace("[%04lld:%06lld] CN_FREEITEM: %lldB\n"_Stz,
+               iItem,iOffset,aEntry->rxRef().nFreeSize());
+#endif
         break;
       }
         
@@ -295,6 +337,8 @@ void MiniHeap_t<ITEM>::vFreeItem(ITEM* aItem, i8 nBytes)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decement the number of items in buffer
   vDecItems();
+  
+  m_nFreeItems++;
 }
 
 /*----------------------------------------------------------------------------*/

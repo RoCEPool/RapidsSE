@@ -565,8 +565,22 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
   vCutEntry(aEnt,xPriorVec);
   
   i8 nEntSize = aEnt->nSizeBytes();
+  
+#ifdef __ENT_HEADER
   vFreeItem(aEnt,nEntSize);
   //vGiveSpace(nEntSize);
+  
+#else
+  if (aEnt->bPayload()) {
+    aEnt->rxRef().vFree(true);
+    aEnt->rxRef().vFreeSize(nEntSize);
+  }
+  else {
+    vFreeItem(aEnt,nEntSize);
+  }
+  vDecItems();
+
+#endif
   
   // entry no longer exists, set the pointer to be null
   *aaEnt = nullptr;

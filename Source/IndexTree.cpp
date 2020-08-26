@@ -260,7 +260,21 @@ void IndexTree::vDelete(EntBuffer* pEntryBuffer, Ent* pEnt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // purge the entry
+  
+//  vTrace("x x x x x x x x x x x x x x x x x x x x x x x x x x x x \n"_Stz,pEnt);
+//  vTrace("Delete Ent %p\n"_Stz,pEnt);
+//  vTrace("nItems %lld\n"_Stz,
+//         m_pRootEntBuffer->nItems());
+//  m_pRootEntBuffer->vDumpItems();
+  
   pEntryBuffer->vPurgeUpwards(pEnt, &m_pRootEntBuffer);
+  
+//  vTrace("z z z z z z z z z z z z z z z z z z z z z z z z z z z z  \n"_Stz,pEnt);
+//  m_pRootEntBuffer->vDumpItems();
+//  vTrace("nItems %lld\n"_Stz,
+//         m_pRootEntBuffer->nItems());
+
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

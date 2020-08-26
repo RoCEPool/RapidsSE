@@ -188,6 +188,7 @@ void Ref::vSet(Ref xwRef)
   m_uBuffer  = xwRef.m_uBuffer;
   m_uItem    = xwRef.m_uItem;
   m_uLevels  = xwRef.m_uLevels;
+  
   m_uKind    = xwRef.m_uKind;
   m_uPayload = xwRef.m_uPayload;
   m_uFree    = xwRef.m_uFree;
