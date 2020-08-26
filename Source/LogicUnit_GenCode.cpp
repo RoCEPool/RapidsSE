@@ -424,6 +424,7 @@ void LogicUnit::vGenerateQuery103(void)
   vAddCodeLabel(EO_JMP,"QRY_103_DONE:"_Stz);
   
   vDefineLabel("BEGIN_RSB_SRC:"_Stz);
+  vAddCodeString(EO_PRINTF,"**103** Got RSB BUFFER\n"_Stz);
   // -- -- -- -- -- -- -- -- -- -- --
   // insert each rsb
   
@@ -591,6 +592,8 @@ void LogicUnit::vGenerateQuery103(void)
   // BEGIN SUBROUTINE: SUBROUTINE_IXT_TO_RSB
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("SUBROUTINE_IXT_TO_RSB:"_Stz);
+  
+  vAddCodeString(EO_PRINTF,"**103** SUBROUTINE_IXT_TO_RSB\n"_Stz);
   
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
