@@ -39,7 +39,7 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt)
   
   m_uEntryNo = C_ENT_END_TICKET;
 
-#ifdef WITH_DEBUG_VERSION
+#ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_taNextEntry,sizeof(m_taNextEntry),eClassNo);
 #endif
 }
@@ -146,6 +146,14 @@ void Ent::vEntryNo(i8 iEntryNo)
   ASSERT(iEntryNo >= 0);
   
   m_uEntryNo = (u8)iEntryNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is free entry                                                          */
+/*----------------------------------------------------------------------------*/
+void Ent::vFree(bool bFree)
+{
+  m_xRef.vFree(bFree);
 }
 
 /*----------------------------------------------------------------------------*/

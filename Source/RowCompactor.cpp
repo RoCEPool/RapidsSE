@@ -855,7 +855,7 @@ void RowCompactor::vPackSamples(void)
     pSampleRow = m_pIrwSamples->aNextRow(pSampleRow, nRowSize);
   }
   
-  vDebugPoint();
+  //vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

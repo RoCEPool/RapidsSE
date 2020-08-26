@@ -46,7 +46,7 @@ RowSlab::RowSlab(void)
   
   // m_oNmlStr
 
-#ifdef WITH_DEBUG_VERSION
+#ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_ROWSLAB);
 #endif
 

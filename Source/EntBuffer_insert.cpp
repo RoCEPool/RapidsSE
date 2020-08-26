@@ -117,6 +117,10 @@ void EntBuffer::vCompact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
+  Timer oTimer;
+  
+  oTimer.vStart();
+  
 #ifdef WITH_EB_LAZY_CHAIN
   //ASSERT( ! m_aLazyChain );
   
@@ -124,6 +128,8 @@ void EntBuffer::vCompact(void)
     vBuildSkipList();
 #endif
 
+  m_aFreeSpare = nullptr;
+  m_nFreeSize  = 0;
   
 //  if (999 == nItems()) {
 //    vDumpItems();
@@ -264,6 +270,11 @@ void EntBuffer::vCompact(void)
   
   m_nFreeItems = 0;
   
+  
+  oTimer.vUpdate();
+  
+  //vTrace("Compact took %lld\n"_Stz,oTimer.iNanoseconds());
+
   //vShow();
 }
 
@@ -278,6 +289,9 @@ void EntBuffer::vCompactLeft(void)
   ASSERT(! m_aLazyChain);
 #endif
   
+  m_aFreeSpare = nullptr;
+  m_nFreeSize  = 0;
+
   EntBuffer* pThisBuffer = this;
   EntBuffer* pTempBuffer = new EntBuffer(m_eEntKind);
   
@@ -464,6 +478,8 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
     pInsertIntoBuffer = this;
   else {
     
+    //vTrace("InsertableBuffer : compacting\n"_Stz);
+    
     vCompact();
     
     if (bHasSpace(nEntSizeBytes))
@@ -514,11 +530,23 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   
   ASSERT(bHasSpace(nEntSizeBytes));
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
+
+  Ent* aInsertedEntry;
   
-  Ent* aInsertedEntry = aAllotEntry(nEntSizeBytes);
-  ASSERT(aInsertedEntry);
+  if (m_aFreeSpare && m_nFreeSize == nEntSizeBytes) {
+    aInsertedEntry = (Ent*)m_aFreeSpare;
+    aInsertedEntry->rxRef().vFree(false);
+    ASSERT(aInsertedEntry);
+    m_aFreeSpare = nullptr;
+    m_nFreeSize  = 0;
+    m_nItems++;
+  }
+  else {
+    aInsertedEntry = aAllotEntry(nEntSizeBytes);
+    ASSERT(aInsertedEntry);
+  }
+    
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
@@ -691,6 +719,8 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  //bVerifyItems();
+
   Ent* aInsertedEntry;
   
 #ifdef WITH_EB_LAZY_CHAIN
@@ -715,6 +745,8 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
   vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
 #endif
   
+  //bVerifyItems();
+
   return aInsertedEntry;
 }
 

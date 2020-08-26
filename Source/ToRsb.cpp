@@ -618,8 +618,8 @@ L_Integer:
 
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey) {
-    if (0 != m_i_Fld)
-      vDebugPoint();
+    //if (0 != m_i_Fld)
+      //vDebugPoint();
     //iHash += HshLib::iHash((byte*)&iFinalResult,sizeof(w8));
     PtnLib::vRunning(&iHash,iFinalResult);
   }

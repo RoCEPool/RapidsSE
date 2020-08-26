@@ -273,8 +273,6 @@ void IndexTree::vDelete(EntBuffer* pEntryBuffer, Ent* pEnt)
 //  m_pRootEntBuffer->vDumpItems();
 //  vTrace("nItems %lld\n"_Stz,
 //         m_pRootEntBuffer->nItems());
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

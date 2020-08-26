@@ -149,9 +149,14 @@ LogicCompiler::LogicCompiler(void)
 #ifdef WITH_DEBUG_VERSION
   MemLib::vSet(m_caSource,0xFF,C_LOGIC_SOURCE,CN_LOGICCOMPILER);
 #endif
-  
+
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caSource,sizeof(m_caSource),CN_LOGICCOMPILER);
+#endif
+
   m_caSource[0] = '\0';
   m_azSrcCrs    = m_caSource;
+
   m_aTccState   = nullptr;
   
   m_pLogicUnit  = nullptr;

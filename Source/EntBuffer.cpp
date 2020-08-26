@@ -84,6 +84,8 @@ EntBuffer::EntBuffer(eKE eEntKind)
 EntBuffer::~EntBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  //vTrace("::~EntBuffer %p %lld\n"_Stz,this,iBufferNo());
 }
 
 
@@ -173,7 +175,9 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     
     if (! pLeftH0->bHasSpace(nEntrySizeBytes)) {
       
-      // build the skip list for left L0 thats now full
+      //pLeftH0->bVerifyItems();
+      
+     // build the skip list for left L0 thats now full
       pLeftH0->vBuildSkipListSorted();
       
       //pLeftL0->vShow();
@@ -238,6 +242,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     
   } // for
   
+  //pLeftH0->bVerifyItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,6 +294,8 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   Ent* aInsertedEntry_H1 = pH1->aInsertEntAbs(xFirstH1_ent.aEnt());
   
   //pH1->vShow();
+  
+  //pH1->bVerifyItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -556,6 +563,8 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  //bVerifyItems();
+  
   Ent* aEnt = *aaEnt;
   
   Ent* xPriorVec[C_MAX_LVL_LEVELS];
@@ -571,19 +580,27 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
   //vGiveSpace(nEntSize);
   
 #else
-  if (aEnt->bPayload()) {
+  //if (aEnt->bPayload()) {
     aEnt->rxRef().vFree(true);
     aEnt->rxRef().vFreeSize(nEntSize);
-  }
-  else {
-    vFreeItem(aEnt,nEntSize);
-  }
-  vDecItems();
+    
+    if (! m_aFreeSpare) {
+      m_aFreeSpare = aEnt;
+      m_nFreeSize  = nEntSize;
+    }
+    vDecItems();
+  //}
+  //else {
+  //  vFreeItem(aEnt,nEntSize);
+  //}
 
 #endif
   
   // entry no longer exists, set the pointer to be null
   *aaEnt = nullptr;
+  
+  //bVerifyItems();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1152,6 +1169,9 @@ void EntBuffer::vReset(void)
   ASSERT(1 == m_iBufferHeight);
   
   vResetUsed();
+  
+  m_aFreeSpare = nullptr;
+  m_nFreeSize  = 0;
 
   m_xSkipRoots.vNextEntryReset();
   
@@ -1604,8 +1624,8 @@ void EntBuffer::vTruncate(void)
       // get the index buffer from the entry
       pNextBuffer = EntBuffer::pRefdEntBuffer(aEnt);
       
-      ASSERT(pNextBuffer);
-      ASSERT(pNextBuffer->eClass() == CN_ENTBUFFER);
+      RASSERT(pNextBuffer);
+      RASSERT(pNextBuffer->eClass() == CN_ENTBUFFER);
       pNextBuffer->vTruncate();
     }
   }

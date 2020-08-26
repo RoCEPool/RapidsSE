@@ -484,7 +484,7 @@ bool EntBuffer::bVerifyItems(void)
   
   for (Ent* aEnt = aFirstItem();
        aEnt != nullptr;
-       aEnt = aAdjacentItem(aEnt)) {
+       aEnt = aAdjacentEntry(aEnt)) {
     
     //vTrace("Verify item %p\n"_Stz,pItem);
     
@@ -494,7 +494,8 @@ bool EntBuffer::bVerifyItems(void)
         
       case CN_ENT: {
         if (! aEnt->bValidEnt()) {
-          vShow();
+          vTrace("Not a valid entry: %p\n"_Stz,aEnt);
+          vShow(true);
           vVerifyFault();
           return false;
         }
@@ -504,18 +505,20 @@ bool EntBuffer::bVerifyItems(void)
         
       case CN_FREEITEM: {
         FreeItem* aFreeItem = _aFreeItem(aEnt);
-        if (! aFreeItem->bValidFreeItem()) {
-          vShow();
-          vVerifyFault();
-          return false;
-        }
+//        if (! aFreeItem->bValidFreeItem()) {
+//          vTrace("Not a valid free item: %p\n"_Stz,aFreeItem);
+//          vShow(true);
+//          vVerifyFault();
+//          return false;
+//        }
         break;
       }
         
       case CN_WILDERNESS: {
         Wilderness* aWilderness = _aWilderness(aEnt);
         if (! aWilderness->bValidWilderness()) {
-          vShow();
+          vTrace("Not a valid wilderness item: %p\n"_Stz,aWilderness);
+          vShow(true);
           vVerifyFault();
           return false;
         }
@@ -523,6 +526,7 @@ bool EntBuffer::bVerifyItems(void)
       }
         
       default:
+        vTrace("Not a known item: %p\n"_Stz,aEnt);
         vVerifyFault();
         return false;
     }
@@ -530,7 +534,8 @@ bool EntBuffer::bVerifyItems(void)
   
   // check the number of entries match
   if (nEntryItems != nItems()) {
-    vShow();
+    vTrace("Number of items dont match: %lld"_Stz,nEntryItems);
+    vShow(true);
     vVerifyFault();
     return false;
   }

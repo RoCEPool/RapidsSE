@@ -23,7 +23,7 @@ NmlStr::NmlStr(void)
   
   MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_NMLSTR);
 
-  #ifdef WITH_DEBUG_VERSION
+  #ifdef WITH_CHECK_INITIALISED
     m_xWsp.vZero(CN_NMLSTR);
   #endif
 

@@ -17,7 +17,10 @@ namespace Structures
   
     i8 m_nMaxItems; // max items allowed
   
-    SingleWord m__PadToCacheLine[5]; // padding to cache line
+    void* m_aFreeSpare; // free item
+    i8    m_nFreeSize; // its size
+  
+    SingleWord m__PadToCacheLine[3]; // padding to cache line
 
     Wsp_t<C_WSP_MINIHEAP> m_xWsp; // workspace
   
@@ -37,6 +40,7 @@ namespace Structures
     ITEM*  aFirstItem(void);
     i8     nFreeBytes(void);
     void   vFreeItem(ITEM* aItem, i8 nBytes);
+    void   vFreeSpare(ITEM* aItem, i8 nBytes);
     ITEM*  aGetItem(i8 iOffset);
     void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
@@ -89,6 +93,9 @@ MiniHeap_t<ITEM>::MiniHeap_t(void)
   m_nItems = 0;
   m_nFreeItems = 0;
   m_nMaxItems = 0;
+  
+  m_aFreeSpare = nullptr;
+  m_nFreeSize = 0;
   
   MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_NMLSTR);
   
@@ -339,6 +346,19 @@ void MiniHeap_t<ITEM>::vFreeItem(ITEM* aItem, i8 nBytes)
   vDecItems();
   
   m_nFreeItems++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given entry to free chain                                              */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void MiniHeap_t<ITEM>::vFreeSpare(ITEM* aItem, i8 nBytes)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add item to head of free chain
+  
+  m_aFreeSpare = aItem;
+  m_nFreeSize  = nBytes;
 }
 
 /*----------------------------------------------------------------------------*/

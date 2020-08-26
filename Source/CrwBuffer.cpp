@@ -313,7 +313,7 @@ void CrwBuffer::vCopy(CrwBuffer* pArgCrwBuffer)
                 sizeof(RowTray),
                 CN_CRWBUFFER);
   
-  vDebugPoint();
+  //vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

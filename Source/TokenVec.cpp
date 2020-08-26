@@ -253,8 +253,8 @@ void TokenVec::vCollectEnd(Token* pToken)
   //vTrace("vCollectEnd: %s\n"_Stz,spTkn.sz(pToken));
   
   //if (pToken->szChars()->bSame("catalog"_Stz))
-  if (pToken->szChars()->bSame(""_Stz))
-    Correctness::vDebugPoint();
+  //if (pToken->szChars()->bSame(""_Stz))
+  //  Correctness::vDebugPoint();
   
   vIntegrityCheck();
 }
@@ -1271,7 +1271,7 @@ void TokenVec::_vTokenRemoveInterior(Token* pTknCut)
 
   vIntegrityCheck();
 
-  Correctness::vDebugPoint();
+  //Correctness::vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

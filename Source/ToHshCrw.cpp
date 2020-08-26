@@ -128,7 +128,7 @@ void ToHshCrw::vAddNst(RsbBuffer* pRsbBuffer)
   }
 
 
-  vDebugPoint();
+  //vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -27,7 +27,8 @@ EntWrk::EntWrk(void)
   m_xEnt.vItem(0);
   m_xEnt.vSkipLevels(0);
   m_xEnt.vPayload(false);
-  
+  m_xEnt.vFree(false);
+
   m_xEnt.vElmSeqSize(0);
   
   //vPaySize(0);  CANT SET THIS YET
