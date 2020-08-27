@@ -346,7 +346,7 @@ void LogicUnit::vGenerateQuery100(void)
   // BEGIN SUBROUTINE: SUBROUTINE_IXT_TO_RSB
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("SUBROUTINE_IXT_TO_RSB:"_Stz);
-  vAddCodeString(EO_PRINTF,"**100** SUBROUTINE_IXT_TO_RSB\n"_Stz);
+  //vAddCodeString(EO_PRINTF,"**100** SUBROUTINE_IXT_TO_RSB\n"_Stz);
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
@@ -596,7 +596,7 @@ void LogicUnit::vGenerateQuery103(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("SUBROUTINE_IXT_TO_RSB:"_Stz);
   
-  vAddCodeString(EO_PRINTF,"**103** SUBROUTINE_IXT_TO_RSB\n"_Stz);
+  //vAddCodeString(EO_PRINTF,"**103** SUBROUTINE_IXT_TO_RSB\n"_Stz);
   
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
