@@ -538,6 +538,7 @@ void EntWrk::vPayloadBytes(i8 nPayloadBytes)
   Pay* aPay = m_xEnt.aPay();
 
   aPay->vPayloadBytes(nPayloadBytes);
+  MemLib::vZero(&aPay[1],nPayloadBytes,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/
