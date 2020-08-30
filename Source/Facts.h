@@ -29,6 +29,8 @@ typedef VectorNL_t<CN_PROPERTYVEC, Facet, C_MAX_FACETS> FacetVec;
 
 #include "Kbase.hpp"
 
+#include "Question.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

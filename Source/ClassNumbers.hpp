@@ -220,10 +220,11 @@ enum eCN : u2 // Class Number
   /* */ CN_PTRVAL,
   
   /* */ CN__Q__,
+  /* */ CN_QUESTION,
   /* */ CN_QUEUE,
   /* */ CN_QUEUEBUFFER,
   /* */ CN_QUEUES,
-  
+
   /* */ CN__R__,
   /* */ CN_READAPI,
   /* */ CN_RECORD,
@@ -567,6 +568,7 @@ static Stz* aCN[]
   /* */ "PTRVAL"_Stz,              // CN_PTRVAL
   
   /* */ "_Q__"_Stz,                // CN__Q__
+  /* */ "QUESTION"_Stz,            // CN_QUESTION
   /* */ "QUEUE"_Stz,               // CN_QUEUE
   /* */ "QUEUEBUFFER"_Stz,         // CN_QUEUEBUFFER
   /* */ "QUEUES"_Stz,              // CN_QUEUES
