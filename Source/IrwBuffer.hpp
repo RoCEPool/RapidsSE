@@ -5,8 +5,6 @@
 
 namespace DataBuffers
 {
-  typedef HV<Record,StreamDef>   HV_Rec;
-  
   class IrwBuffer : public RowBuffer
   {
   protected:

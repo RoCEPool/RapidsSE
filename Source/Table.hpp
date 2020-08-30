@@ -8,9 +8,6 @@ namespace MetaData
   static const char* C_SORT_REGION_BASE  = (char*)0x409600000000;
   static const i8    C_SORT_REGION_DELTA = C_1GB * 128;
 
-  typedef VectorNL_t<CN_IDXVEC,Index,C_MAX_INDEXES> IdxVec;
-  typedef VectorNL_t<CN_TABLEPTNVEC,Partitioning::TablePtn,C_MAX_SLOTS>TablePtnVec;
-
   class Table : public Object
   {
   private:

@@ -20,6 +20,7 @@ typedef Datum_t<C_48KB> Datum;
 typedef Datum_t<32>     Datum_y32;
 
 #include "Column.hpp"
+typedef VectorNL_t<CN_PTNCOLVEC,Column,1024> PtnColVec;
 
 #include "RN_Bcd.hpp"
 #include "RN_Bol.hpp"
