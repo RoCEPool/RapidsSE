@@ -51,7 +51,8 @@ namespace Esses             { template <int BYTES> class String_t;
 namespace Expressions       { class AggregateRsb;    class Expr;
                               class ExprVec;         class FilterRsb;
                               class JoinRsb;         class ProjectRsb; 
-                              class LogicUnit;                                   }
+                              class LogicUnit;                                }
+namespace Facts             {                                                 }
 namespace Focals            { class ReqTuple;                                 }
 namespace Folders           {                                                 }
 namespace FrontEnd          { class Clause_Project;  class Clause_From;

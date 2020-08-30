@@ -29,6 +29,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Entries::vCheckAssumptions();
   Enums::vCheckAssumptions();
   Esses::vCheckAssumptions();
+  Facts::vCheckAssumptions();
   Focals::vCheckAssumptions();
   Gadgets::vCheckAssumptions();
   GoldenGate::vCheckAssumptions();
