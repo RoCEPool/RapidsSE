@@ -21,7 +21,7 @@ static const i8 C_MAX_PROPERTIES = 64;
 typedef VectorNL_t<CN_PROPERTYVEC, Property, C_MAX_PROPERTIES> PropertyVec;
 
 #include "Facet.hpp"
-typedef VectorNL_t<CN_PROPERTYVEC, Facet, C_MAX_FACETS> FacetVec;
+typedef VectorNL_t<CN_FACETVEC, Facet, C_MAX_FACETS> FacetVec;
 
 #include "Concept.hpp"
 
