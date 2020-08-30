@@ -328,6 +328,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToNstRsb),           HT_TRANSIENT_MEDIUM  }, // CN_TONSTRSB
   { sizeof(ToPtnRsb),           HT_TRANSIENT_LARGE   }, // CN_TOPTNRSB
   { sizeof(ToRsb),              HT_TRANSIENT_MEDIUM  }, // CN_TORSB
+  { sizeof(Transform),          HT_TRANSIENT_TINY    }, // CN_TRANSFORM
   { sizeof(TspVal),             HT_INVALID           }, // CN_TSPVAL
   { sizeof(Tx),                 HT_TRANSIENT_TINY    }, // CN_TX
   { sizeof(TxSet),              HT_TRANSIENT_TINY    }, // CN_TXSET

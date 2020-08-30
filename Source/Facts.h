@@ -31,6 +31,8 @@ typedef VectorNL_t<CN_PROPERTYVEC, Facet, C_MAX_FACETS> FacetVec;
 
 #include "Question.hpp"
 
+#include "Transform.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
