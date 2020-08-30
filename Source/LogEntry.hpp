@@ -59,24 +59,24 @@ namespace Logging
   
     char m_caNote[C_MAX_LOG_NOTE]; // comment
   
-    eEK  m_eKind;      // log entry kind.  one of the following
+    eLE  m_eKind;      // log entry kind.  one of the following
     union {
-      _LogEntryDdl m_xDdl;  // when m_eKind == EK_DDL
-      _LogEntryFyi m_xFyi;  // when m_eKind == EK_FYI
-      _LogEntryJob m_xJob;  // when m_eKind == EK_JOB
-      _LogEntryLck m_xLck;  // when m_eKind == EK_LCK
-      _LogEntryLog m_xLog;  // when m_eKind == EK_LOG
-      _LogEntryMgt m_xMgt;  // when m_eKind == EK_MGT
-      _LogEntryOp  m_xOpr;  // when m_eKind == EK_OPR
-      _LogEntryPrm m_xPrm;  // when m_eKind == EK_PRM
-      _LogEntryQue m_xQue;  // when m_eKind == EK_QUE
-      _LogEntryRes m_xRes;  // when m_eKind == EK_RES
-      _LogEntrySsn m_xSsn;  // when m_eKind == EK_SSN
-      _LogEntrySvc m_xSvc;  // when m_eKind == EK_SVC
-      _LogEntrySys m_xSys;  // when m_eKind == EK_SYS
-      _LogEntryTsk m_xTsk;  // when m_eKind == EK_TSK
-      _LogEntryThd m_xThd;  // when m_eKind == EK_THD
-      _LogEntryTxn m_xTxn;  // when m_eKind == EK_TXN
+      _LogEntryDdl m_xDdl;  // when m_eKind == LE_DDL
+      _LogEntryFyi m_xFyi;  // when m_eKind == LE_FYI
+      _LogEntryJob m_xJob;  // when m_eKind == LE_JOB
+      _LogEntryLck m_xLck;  // when m_eKind == LE_LCK
+      _LogEntryLog m_xLog;  // when m_eKind == LE_LOG
+      _LogEntryMgt m_xMgt;  // when m_eKind == LE_MGT
+      _LogEntryOp  m_xOpr;  // when m_eKind == LE_OPR
+      _LogEntryPrm m_xPrm;  // when m_eKind == LE_PRM
+      _LogEntryQue m_xQue;  // when m_eKind == LE_QUE
+      _LogEntryRes m_xRes;  // when m_eKind == LE_RES
+      _LogEntrySsn m_xSsn;  // when m_eKind == LE_SSN
+      _LogEntrySvc m_xSvc;  // when m_eKind == LE_SVC
+      _LogEntrySys m_xSys;  // when m_eKind == LE_SYS
+      _LogEntryTsk m_xTsk;  // when m_eKind == LE_TSK
+      _LogEntryThd m_xThd;  // when m_eKind == LE_THD
+      _LogEntryTxn m_xTxn;  // when m_eKind == LE_TXN
     };
   
   

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryPrm::vSet(LogEntry* pLogEntry, SePrompt*  pPrompt, ePA ePrmAct)
 {
-  pLogEntry->m_eKind   = EK_PRM;
+  pLogEntry->m_eKind   = LE_PRM;
   pLogEntry->m_cPrefix = 'P';
   pLogEntry->m_iAct    = pPrompt->iStepNo();
 

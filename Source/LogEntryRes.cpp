@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
 {
-  pLogEntry->m_eKind   = EK_RES;
+  pLogEntry->m_eKind   = LE_RES;
   pLogEntry->m_cPrefix = 'R';
   pLogEntry->m_iAct    = pResource->iStepNo();
   //pLogEntry->m_xReqTuple.vSet(pResource->aReqTuple());

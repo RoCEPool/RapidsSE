@@ -86,12 +86,12 @@ Stz* SP_Gid::sz(eIK eKind, i8 iGid)
 /*----------------------------------------------------------------------------*/
 /* sprint Gid and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Gid::sz(eEK eKind, i8 iGid)
+Stz* SP_Gid::sz(eLE eKind, i8 iGid)
 {
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   if (C_UNKNOWN == iGid) {
-    StrLib::vSprint(m_caResult,"%s-.---"_Stz,aEK[eKind]);
+    StrLib::vSprint(m_caResult,"%s-.---"_Stz,aLE[eKind]);
     return (Stz*) &m_caResult[0];
   }
   
@@ -104,7 +104,7 @@ Stz* SP_Gid::sz(eEK eKind, i8 iGid)
   StrLib::vSprint(m_caResult,
                   "%s%lld.%03lld"_Stz,
                   
-                  aEK[eKind],
+                  aLE[eKind],
                   wGid.m_uNodeNo,
                   wGid.m_uIdNo);
   

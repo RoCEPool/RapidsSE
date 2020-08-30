@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryLog::vSet(LogEntry* pLogEntry, Log* pLog, eGA eLogAct)
 {
-  pLogEntry->m_eKind = EK_LOG;
+  pLogEntry->m_eKind = LE_LOG;
   pLogEntry->m_cPrefix = 'G';
 
   m_iLogId  = pLog->m_iFocalId;

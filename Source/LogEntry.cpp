@@ -103,21 +103,21 @@ void LogEntry::vAsTxt(s4K& sString)
   s4K sInf;
 
   switch (m_eKind) {
-    case EK_DDL: m_xDdl.vToTxt(sInf,this); break;
-    case EK_FYI: m_xFyi.vToTxt(sInf,this); break;
-    case EK_JOB: m_xJob.vToTxt(sInf,this); break;
-    case EK_LCK: m_xLck.vToTxt(sInf,this); break;
-    case EK_LOG: m_xLog.vToTxt(sInf,this); break;
-    case EK_OPR: m_xOpr.vToTxt(sInf,this); break;
-    case EK_PRM: m_xPrm.vToTxt(sInf,this); break;
-    case EK_QUE: m_xQue.vToTxt(sInf,this); break;
-    case EK_RES: m_xRes.vToTxt(sInf,this); break;
-    case EK_SSN: m_xSsn.vToTxt(sInf,this); break;
-    case EK_SVC: m_xSvc.vToTxt(sInf,this); break;
-    case EK_SYS: m_xSys.vToTxt(sInf,this); break;
-    case EK_TSK: m_xTsk.vToTxt(sInf,this); break;
-    case EK_THD: m_xThd.vToTxt(sInf,this); break;
-    case EK_TXN: m_xTxn.vToTxt(sInf,this); break;
+    case LE_DDL: m_xDdl.vToTxt(sInf,this); break;
+    case LE_FYI: m_xFyi.vToTxt(sInf,this); break;
+    case LE_JOB: m_xJob.vToTxt(sInf,this); break;
+    case LE_LCK: m_xLck.vToTxt(sInf,this); break;
+    case LE_LOG: m_xLog.vToTxt(sInf,this); break;
+    case LE_OPR: m_xOpr.vToTxt(sInf,this); break;
+    case LE_PRM: m_xPrm.vToTxt(sInf,this); break;
+    case LE_QUE: m_xQue.vToTxt(sInf,this); break;
+    case LE_RES: m_xRes.vToTxt(sInf,this); break;
+    case LE_SSN: m_xSsn.vToTxt(sInf,this); break;
+    case LE_SVC: m_xSvc.vToTxt(sInf,this); break;
+    case LE_SYS: m_xSys.vToTxt(sInf,this); break;
+    case LE_TSK: m_xTsk.vToTxt(sInf,this); break;
+    case LE_THD: m_xThd.vToTxt(sInf,this); break;
+    case LE_TXN: m_xTxn.vToTxt(sInf,this); break;
     default:
       NEVER_REACH;
   }
@@ -222,20 +222,20 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   vSprintCsv(sString,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
-    case EK_FYI: m_xFyi.vOutline(sString); break;
-    case EK_JOB: m_xJob.vOutline(sString); break;
-    case EK_LCK: m_xLck.vOutline(sString); break;
-    case EK_LOG: m_xLog.vOutline(sString); break;
-    case EK_OPR: m_xOpr.vOutline(sString); break;
-    case EK_PRM: m_xPrm.vOutline(sString); break;
-    case EK_QUE: m_xQue.vOutline(sString); break;
-    case EK_RES: m_xRes.vOutline(sString); break;
-    case EK_SSN: m_xSsn.vOutline(sString); break;
-    case EK_SVC: m_xSvc.vOutline(sString); break;
-    case EK_SYS: m_xSys.vOutline(sString); break;
-    case EK_TSK: m_xTsk.vOutline(sString); break;
-    case EK_THD: m_xThd.vOutline(sString); break;
-    case EK_TXN: m_xTxn.vOutline(sString); break;
+    case LE_FYI: m_xFyi.vOutline(sString); break;
+    case LE_JOB: m_xJob.vOutline(sString); break;
+    case LE_LCK: m_xLck.vOutline(sString); break;
+    case LE_LOG: m_xLog.vOutline(sString); break;
+    case LE_OPR: m_xOpr.vOutline(sString); break;
+    case LE_PRM: m_xPrm.vOutline(sString); break;
+    case LE_QUE: m_xQue.vOutline(sString); break;
+    case LE_RES: m_xRes.vOutline(sString); break;
+    case LE_SSN: m_xSsn.vOutline(sString); break;
+    case LE_SVC: m_xSvc.vOutline(sString); break;
+    case LE_SYS: m_xSys.vOutline(sString); break;
+    case LE_TSK: m_xTsk.vOutline(sString); break;
+    case LE_THD: m_xThd.vOutline(sString); break;
+    case LE_TXN: m_xTxn.vOutline(sString); break;
     default:
       NEVER_REACH;
   }
@@ -261,7 +261,7 @@ void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
                     m_caNode,
                     spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
 
-                    aEK[m_eKind]
+                    aLE[m_eKind]
                   );
 }
 
@@ -284,21 +284,21 @@ void LogEntry::vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   vWriteCsvEntry(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
-    case EK_DDL: m_xDdl.vWriteCsv(pFile,this); break;
-    case EK_FYI: m_xFyi.vWriteCsv(pFile,this); break;
-    case EK_JOB: m_xJob.vWriteCsv(pFile,this); break;
-    case EK_LCK: m_xLck.vWriteCsv(pFile,this); break;
-    case EK_LOG: m_xLog.vWriteCsv(pFile,this); break;
-    case EK_OPR: m_xOpr.vWriteCsv(pFile,this); break;
-    case EK_PRM: m_xPrm.vWriteCsv(pFile,this); break;
-    case EK_QUE: m_xQue.vWriteCsv(pFile,this); break;
-    case EK_RES: m_xRes.vWriteCsv(pFile,this); break;
-    case EK_SSN: m_xSsn.vWriteCsv(pFile,this); break;
-    case EK_SVC: m_xSvc.vWriteCsv(pFile,this); break;
-    case EK_SYS: m_xSys.vWriteCsv(pFile,this); break;
-    case EK_TSK: m_xTsk.vWriteCsv(pFile,this); break;
-    case EK_THD: m_xThd.vWriteCsv(pFile,this); break;
-    case EK_TXN: m_xTxn.vWriteCsv(pFile,this); break;
+    case LE_DDL: m_xDdl.vWriteCsv(pFile,this); break;
+    case LE_FYI: m_xFyi.vWriteCsv(pFile,this); break;
+    case LE_JOB: m_xJob.vWriteCsv(pFile,this); break;
+    case LE_LCK: m_xLck.vWriteCsv(pFile,this); break;
+    case LE_LOG: m_xLog.vWriteCsv(pFile,this); break;
+    case LE_OPR: m_xOpr.vWriteCsv(pFile,this); break;
+    case LE_PRM: m_xPrm.vWriteCsv(pFile,this); break;
+    case LE_QUE: m_xQue.vWriteCsv(pFile,this); break;
+    case LE_RES: m_xRes.vWriteCsv(pFile,this); break;
+    case LE_SSN: m_xSsn.vWriteCsv(pFile,this); break;
+    case LE_SVC: m_xSvc.vWriteCsv(pFile,this); break;
+    case LE_SYS: m_xSys.vWriteCsv(pFile,this); break;
+    case LE_TSK: m_xTsk.vWriteCsv(pFile,this); break;
+    case LE_THD: m_xThd.vWriteCsv(pFile,this); break;
+    case LE_TXN: m_xTxn.vWriteCsv(pFile,this); break;
     default:
       NEVER_REACH;
   }
@@ -351,21 +351,21 @@ void LogEntry::vWriteTxt(File* pFile)
   vWriteTxtEntry(pFile);
   
   switch (m_eKind) {
-    case EK_DDL: m_xDdl.vToTxt(sInf,this); break;
-    case EK_FYI: m_xFyi.vToTxt(sInf,this); break;
-    case EK_JOB: m_xJob.vToTxt(sInf,this); break;
-    case EK_LCK: m_xLck.vToTxt(sInf,this); break;
-    case EK_LOG: m_xLog.vToTxt(sInf,this); break;
-    case EK_OPR: m_xOpr.vToTxt(sInf,this); break;
-    case EK_PRM: m_xPrm.vToTxt(sInf,this); break;
-    case EK_QUE: m_xQue.vToTxt(sInf,this); break;
-    case EK_RES: m_xRes.vToTxt(sInf,this); break;
-    case EK_SSN: m_xSsn.vToTxt(sInf,this); break;
-    case EK_SVC: m_xSvc.vToTxt(sInf,this); break;
-    case EK_SYS: m_xSys.vToTxt(sInf,this); break;
-    case EK_TSK: m_xTsk.vToTxt(sInf,this); break;
-    case EK_THD: m_xThd.vToTxt(sInf,this); break;
-    case EK_TXN: m_xTxn.vToTxt(sInf,this); break;
+    case LE_DDL: m_xDdl.vToTxt(sInf,this); break;
+    case LE_FYI: m_xFyi.vToTxt(sInf,this); break;
+    case LE_JOB: m_xJob.vToTxt(sInf,this); break;
+    case LE_LCK: m_xLck.vToTxt(sInf,this); break;
+    case LE_LOG: m_xLog.vToTxt(sInf,this); break;
+    case LE_OPR: m_xOpr.vToTxt(sInf,this); break;
+    case LE_PRM: m_xPrm.vToTxt(sInf,this); break;
+    case LE_QUE: m_xQue.vToTxt(sInf,this); break;
+    case LE_RES: m_xRes.vToTxt(sInf,this); break;
+    case LE_SSN: m_xSsn.vToTxt(sInf,this); break;
+    case LE_SVC: m_xSvc.vToTxt(sInf,this); break;
+    case LE_SYS: m_xSys.vToTxt(sInf,this); break;
+    case LE_TSK: m_xTsk.vToTxt(sInf,this); break;
+    case LE_THD: m_xThd.vToTxt(sInf,this); break;
+    case LE_TXN: m_xTxn.vToTxt(sInf,this); break;
     default:
       NEVER_REACH;
   }
@@ -428,7 +428,7 @@ void LogEntry::vZero(void)
   m_iTick      = -1;
   m_caNode[0]  = '\0';
   
-  m_eKind      = EK_FYI;
+  m_eKind      = LE_FYI;
 }
 
 

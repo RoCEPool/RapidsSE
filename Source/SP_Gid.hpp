@@ -18,7 +18,7 @@ namespace Focals
   
     Stz* sz(i8 iGid);
     Stz* sz(eIK eKind, i8 iGid);
-    Stz* sz(eEK eKind, i8 iGid);
+    Stz* sz(eLE eKind, i8 iGid);
 
     Footer* aFooter(void);
   };
