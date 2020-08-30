@@ -82,6 +82,7 @@ enum eCN : u2 // Class Number
   /* */ CN_EXEMPLAR,
 
   /* */ CN__F__,
+  /* */ CN_FACET,
   /* */ CN_FACT,
   /* */ CN_FETCHBUFFER,
   /* */ CN_FIFO,
@@ -207,6 +208,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
   /* */ CN_PROFILE,
+  /* */ CN_PROPERTY,
   /* */ CN_PSXTHD,
   /* */ CN_PTNCOLVEC,
   /* */ CN_PTNMAP,
@@ -423,6 +425,7 @@ static Stz* aCN[]
   /* */ "EXEMPLAR"_Stz,            // CN_EXEMPLAR
 
   /* */ "_F__"_Stz,                // CN__F__
+  /* */ "FACET"_Stz,               // CN_FACET
   /* */ "FACT"_Stz,                // CN_FACT
   /* */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
   /* */ "FIFO"_Stz,                // CN_FIFO
@@ -548,6 +551,7 @@ static Stz* aCN[]
   /* */ "PREDICATE"_Stz,           // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,        // CN_PREDICATEVEC
   /* */ "PROFILE"_Stz,             // CN_PROFILE
+  /* */ "PROPERTY"_Stz,            // CN_PROPERTY
   /* */ "PSXTHD"_Stz,              // CN_PSXTHD
   /* */ "PTNCOLVEC"_Stz,           // CN_PTNCOLVEC
   /* */ "PTNMAP"_Stz,              // CN_PTNMAP

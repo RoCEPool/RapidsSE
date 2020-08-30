@@ -78,6 +78,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Exemplar),           HT_TRANSIENT_TINY    }, // CN_EXEMPLAR
 
   { 'F' - ('A' - 1),            HT_INVALID           }, // CN__F__
+  { sizeof(Facet),              HT_TRANSIENT_TINY    }, // CN_FACET
   { sizeof(Fact),               HT_TRANSIENT_SMALL   }, // CN_FACT
   { sizeof(FetchBuffer),        HT_TRANSIENT_LARGE   }, // CN_FETCHBUFFER
   { sizeof(Fifo),               HT_TRANSIENT_TINY    }, // CN_FIFO
@@ -203,6 +204,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Predicate),          HT_TRANSIENT_TINY    }, // CN_PREDICATE
   { sizeof(PredicateVec),       HT_TRANSIENT_MEDIUM  }, // CN_PREDICATEVEC
   { sizeof(Profile),            HT_TRANSIENT_MEDIUM  }, // CN_PROFILE
+  { sizeof(Property),           HT_TRANSIENT_TINY    }, // CN_PROPERTY
   { sizeof(PsxThd),             HT_TRANSIENT_TINY    }, // CN_PSXTHD
   { sizeof(PtnColVec),          HT_TRANSIENT_MEDIUM  }, // CN_PTNCOLVEC
   { sizeof(PtnMap),             HT_TRANSIENT_LARGE   }, // CN_PTNMAP
