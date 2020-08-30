@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Property.hpp - Property                                                    */
+/* Property.hpp - Self-Describing Property                                    */
 /*============================================================================*/
 #pragma once
 
@@ -9,6 +9,16 @@ namespace Facts
   {
   private:
 
+    eEG m_eEg;
+    i2  m_iEn;
+
+    union {
+      i8      m_iInt;
+      Fact*   m_pFact;
+      Object* m_pObject;
+      void*   m_aVoid;
+    };
+  
     // must be last
     Footer m_xFooter;
 

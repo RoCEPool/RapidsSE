@@ -52,7 +52,7 @@ namespace Expressions       { class AggregateRsb;    class Expr;
                               class ExprVec;         class FilterRsb;
                               class JoinRsb;         class ProjectRsb; 
                               class LogicUnit;                                }
-namespace Facts             {                                                 }
+namespace Facts             { class Fact;                                     }
 namespace Focals            { class ReqTuple;                                 }
 namespace Folders           {                                                 }
 namespace FrontEnd          { class Clause_Project;  class Clause_From;

@@ -21,6 +21,11 @@ Property::Property(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROPERTY,_FOOTER_);
   
+  m_eEg = EG_NONE;
+  m_iEn = 0;
+  
+  m_aVoid = nullptr;
+  
   _checkInitialised_(CN_PROPERTY);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PROPERTY,_FOOTER_);
