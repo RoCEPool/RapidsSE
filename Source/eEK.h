@@ -1,56 +1,20 @@
 /*============================================================================*/
-/* eEK.h -- Log Entry Kind                                                    */
+/* eEK.h -- Enum Kind                                                         */
 /*============================================================================*/
 #pragma once
 
-enum eEK // entry kind
+enum eEK // Enum kind
 {
-  /* 0 */ EK_NONE=0,
-  
-  /* 1 */ EK_DDL,
-  /* 2 */ EK_FYI,
-  /* 3 */ EK_JOB,
-  /* 4 */ EK_LCK,
-  /* 5 */ EK_LOG,
-  /* 6 */ EK_OPR,
-  /* 7 */ EK_MGT,
-  /* 8 */ EK_PRM,
-  /* 9 */ EK_QUE,
-  /*10 */ EK_REQ,
-  /*11 */ EK_RES,
-  /*12 */ EK_SSN,
-  /*13 */ EK_SVC,
-  /*14 */ EK_SYS,
-  /*15 */ EK_THD,
-  /*16 */ EK_TSK,
-  /*17 */ EK_TXN,
-  
-  /*18 */ EK_ENUMS
+  /*  */ EK_NONE=0,
+
+  /*  */ EK_ENUMS
 };
 
 static Stz* aEK[]
 {
-  /* 0 */ "NONE"_Stz,
+  /*  */ "EK_NONE"_Stz,
   
-  /* 1 */ "DDL"_Stz,
-  /* 2 */ "FYI"_Stz,
-  /* 3 */ "JOB"_Stz,
-  /* 4 */ "LCK"_Stz,
-  /* 5 */ "LOG"_Stz,
-  /* 6 */ "MGT"_Stz,
-  /* 7 */ "OPR"_Stz,
-  /* 8 */ "PRM"_Stz,
-  /* 9 */ "QUE"_Stz,
-  /*10 */ "REQ"_Stz,
-  /*11 */ "RES"_Stz,
-  /*12 */ "SSN"_Stz,
-  /*13 */ "SVC"_Stz,
-  /*14 */ "SYS"_Stz,
-  /*15 */ "THD"_Stz,
-  /*16 */ "TSK"_Stz,
-  /*17 */ "TXN"_Stz,
-  
-  /*18 */ "ENUMS"_Stz
+  /*  */ "EK_ENUMS"_Stz
 };
 
 /*============================================================================*/
