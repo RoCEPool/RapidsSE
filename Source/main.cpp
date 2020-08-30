@@ -6,6 +6,9 @@
 
 #include "Version.h"
 
+#include "emmintrin.h"
+
+
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;
 extern Stz* gsBuildHostName;
