@@ -149,8 +149,9 @@ enum eCN : u2 // Class Number
   /* */ CN_JOBLIST,
 
   /* */ CN__K__,
+  /* */ CN_KBASE,
   /* */ CN_KEY,
-  
+
   /* */ CN__L__,
   /* */ CN_LARGEPERSISTENT,
   /* */ CN_LARGETRANSIENT,
@@ -495,6 +496,7 @@ static Stz* aCN[]
   /* */ "JOBLIST"_Stz,             // CN_JOBLIST
 
   /* */ "_K__"_Stz,                // CN__K__
+  /* */ "KBASE"_Stz,               // CN_KBASE
   /* */ "KEY"_Stz,                 // CN_KEY
   
   /* */ "_L__"_Stz,                // CN__L__

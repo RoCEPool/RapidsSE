@@ -145,6 +145,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(JobList),            HT_TRANSIENT_TINY    }, // CN_JOBLIST
 
   { 'K' - ('A' - 1),            HT_INVALID           }, // CN__K__
+  { sizeof(Kbase),              HT_TRANSIENT_TINY    }, // CN_KBASE
   { sizeof(Key),                HT_INVALID           }, // CN_KEY
 
   { 'L' - ('A' - 1),            HT_INVALID           }, // CN__L__
