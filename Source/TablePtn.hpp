@@ -5,10 +5,6 @@
 
 namespace Partitioning
 {
-  typedef VectorNL_t<CN_INDEXTREEVEC, IndexTree, C_MAX_INDEXES> IndexTreeVec;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   class TablePtn : public Object
   {
   private:

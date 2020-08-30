@@ -24,7 +24,9 @@ namespace Indexing
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "EntBufSorter.hpp"
+
 #include "IndexTree.hpp"
+typedef VectorNL_t<CN_INDEXTREEVEC, IndexTree, C_MAX_INDEXES> IndexTreeVec;
 
 /*============================================================================*/
 /* end                                                                        */
