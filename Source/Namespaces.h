@@ -145,6 +145,7 @@ using namespace Entries;
 using namespace Enums;
 using namespace Esses;
 using namespace Expressions;
+using namespace Facts;
 using namespace Focals;
 using namespace Folders;
 using namespace FrontEnd;
