@@ -9,6 +9,8 @@ namespace Facts
   {
   private:
 
+    Concept* m_pConcept; // about a concept
+  
     // must be last
     Footer m_xFooter;
 

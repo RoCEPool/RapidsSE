@@ -8,7 +8,8 @@ namespace Facts
   class Concept : public Object
   {
   private:
-
+    FacetVec m_pFacetVec; // ... which has facets
+  
     // must be last
     Footer m_xFooter;
 

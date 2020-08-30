@@ -84,6 +84,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__F__,
   /* */ CN_FACET,
+  /* */ CN_FACETVEC,
   /* */ CN_FACT,
   /* */ CN_FETCHBUFFER,
   /* */ CN_FIFO,
@@ -210,6 +211,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PREDICATEVEC,
   /* */ CN_PROFILE,
   /* */ CN_PROPERTY,
+  /* */ CN_PROPERTYVEC,
   /* */ CN_PSXTHD,
   /* */ CN_PTNCOLVEC,
   /* */ CN_PTNMAP,
@@ -428,6 +430,7 @@ static Stz* aCN[]
 
   /* */ "_F__"_Stz,                // CN__F__
   /* */ "FACET"_Stz,               // CN_FACET
+  /* */ "FACETVEC"_Stz,            // CN_FACETVEC
   /* */ "FACT"_Stz,                // CN_FACT
   /* */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
   /* */ "FIFO"_Stz,                // CN_FIFO
@@ -554,6 +557,7 @@ static Stz* aCN[]
   /* */ "PREDICATEVEC"_Stz,        // CN_PREDICATEVEC
   /* */ "PROFILE"_Stz,             // CN_PROFILE
   /* */ "PROPERTY"_Stz,            // CN_PROPERTY
+  /* */ "PROPERTYVEC"_Stz,         // CN_PROPERTYVEC
   /* */ "PSXTHD"_Stz,              // CN_PSXTHD
   /* */ "PTNCOLVEC"_Stz,           // CN_PTNCOLVEC
   /* */ "PTNMAP"_Stz,              // CN_PTNMAP
