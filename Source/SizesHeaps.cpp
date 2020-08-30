@@ -45,6 +45,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Clause_Where),       HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_WHERE
   { sizeof(Column),             HT_TRANSIENT_TINY    }, // CN_COLUMN
   { sizeof(Compiler),           HT_TRANSIENT_TINY    }, // CN_COMPILER
+  { sizeof(Concept),            HT_TRANSIENT_TINY    }, // CN_CONCEPT
   { sizeof(ConstDef),           HT_TRANSIENT_MEDIUM  }, // CN_CONSTDEF
   { sizeof(ConstSet),           HT_TRANSIENT_MEDIUM  }, // CN_CONSTSET
   { sizeof(CrvBuffer),          HT_TRANSIENT_LARGE   }, // CN_CRVBUFFER

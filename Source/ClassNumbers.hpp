@@ -49,6 +49,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CLAUSE_WHERE,
   /* */ CN_COLUMN,
   /* */ CN_COMPILER,
+  /* */ CN_CONCEPT,
   /* */ CN_CONSTDEF,
   /* */ CN_CONSTSET,
   /* */ CN_CRVBUFFER,
@@ -392,6 +393,7 @@ static Stz* aCN[]
   /* */ "CLAUSE_WHERE"_Stz,        // CN_CLAUSE_WHERE
   /* */ "COLUMN"_Stz,              // CN_COLUMN
   /* */ "COMPILER"_Stz,            // CN_COMPILER
+  /* */ "CONCEPT"_Stz,             // CN_CONCEPT
   /* */ "CONSTDEF"_Stz,            // CN_CONSTDEF
   /* */ "CONSTSET"_Stz,            // CN_CONSTSET
   /* */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER

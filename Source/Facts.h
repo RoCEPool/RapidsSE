@@ -16,6 +16,7 @@ namespace Facts
 
 #include "Property.hpp"
 #include "Facet.hpp"
+#include "Concept.hpp"
 #include "Fact.hpp"
 
 /*============================================================================*/
