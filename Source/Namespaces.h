@@ -116,7 +116,8 @@ namespace SqlValues         {                                                 }
 namespace Steps             { class Step;            class StepTiming;        }
 namespace StorageEngine     { class AttachMap;       class Engine;            }
 namespace Strings           {                                                 }
-namespace Structures        { class Article;         class Queue;             }
+namespace Structures        { class Article;         class Queue;
+                              class Text;                                     }
 namespace Tasks             { class Task;                                     }
 namespace Threads           { class Scheduler;       class Thread;
                               class Queues;                                   }
