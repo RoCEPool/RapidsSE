@@ -21,6 +21,8 @@ Fact::Fact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
+  m_pFacetVec = new FacetVec;
+  
   _checkInitialised_(CN_FACT);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
@@ -32,6 +34,8 @@ Fact::Fact(void)
 Fact::~Fact(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  delete m_pFacetVec;
 }
 
 /*============================================================================*/

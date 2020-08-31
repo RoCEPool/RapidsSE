@@ -9,8 +9,9 @@ namespace Facts
   {
   private:
 
-    Concept* m_pConcept; // about a concept
-  
+    //Concept* m_pConcept; // about a concept
+    FacetVec* m_pFacetVec; // ... which has facets
+
     // must be last
     Footer m_xFooter;
 

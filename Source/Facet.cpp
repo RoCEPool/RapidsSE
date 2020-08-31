@@ -21,6 +21,8 @@ Facet::Facet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACET,_FOOTER_);
   
+  m_pPropertyVec = new PropertyVec;
+  
   _checkInitialised_(CN_FACET);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FACET,_FOOTER_);
@@ -32,6 +34,8 @@ Facet::Facet(void)
 Facet::~Facet(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACET,_FOOTER_);
+  
+  delete m_pPropertyVec;
 }
 
 /*============================================================================*/

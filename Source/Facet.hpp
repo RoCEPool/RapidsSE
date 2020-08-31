@@ -9,7 +9,7 @@ namespace Facts
   {
   private:
 
-    PropertyVec m_pPropertyVec; // ... which have properties
+    PropertyVec* m_pPropertyVec; // ... which have properties
   
     // must be last
     Footer m_xFooter;
