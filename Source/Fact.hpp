@@ -14,6 +14,10 @@ namespace Facts
 
     //Concept* m_pConcept; // about a concept
     FacetVec* m_pFacetVec; // ... which has facets
+  
+    Fact*    m_pKind;
+    Property m_xProperty;
+
 
     // must be last
     Footer m_xFooter;
@@ -22,7 +26,7 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Fact(i8 iFactNo);
+    Fact(i8 iFactNo, Fact* pKind);
    ~Fact(void) noexcept(false);
   
     Stz* szFactNm(void);
@@ -30,6 +34,9 @@ namespace Facts
 
     i8   iFactNo(void);
     void vFactNo(i8 iFactNo);
+  
+    Fact* pKind(void);
+    void vKind(Fact* pKind);
 
   private:
     Footer* aFooter(void);

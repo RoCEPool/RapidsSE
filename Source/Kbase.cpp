@@ -56,12 +56,13 @@ Kbase::~Kbase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pFactNew(void)
+Fact* Kbase::pFactNew(Fact* pKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pFact = new Fact(++ m_ixFactNo);
+  Fact* pFact = new Fact(++ m_ixFactNo, pKind);
 
+  
   return pFact;
 }
 
@@ -117,6 +118,35 @@ void Kbase::vTransformReturn(Transform* pTransform)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
   delete pTransform;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* new fact                                                                   */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pNewFact(Fact* pKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pFact = pFactNew();
+  
+  return pFact;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new fact                                                                   */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pNewFact(Stz* szFactNm, Fact* pKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pFact = pFactNew(pKind);
+  
+  pFact->vFactNm(szFactNm);
+  
+  return pFact;
 }
 
 /*----------------------------------------------------------------------------*/

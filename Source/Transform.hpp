@@ -21,6 +21,16 @@ namespace Facts
     Transform(Kbase* pKbase);
    ~Transform(void) noexcept(false);
 
+    void  vAddFacet(Fact* pParent, Fact* pKind, Fact* pKid);
+  
+    Fact* pNewFacet(Fact* pParent, Fact* pKind, Stz* szFactNm = nullptr);
+ 
+    Fact* pNewFact(Fact* pKind = nullptr);
+    Fact* pNewFact(Stz* szFactNm, Fact* pKind = nullptr);
+  
+    Fact* pNewFactv(Fact* pKind, ...);
+    Fact* pNewFactv(Stz* szFactNm, Fact* pKind, ...);
+
   private:
     Footer* aFooter(void);
   };

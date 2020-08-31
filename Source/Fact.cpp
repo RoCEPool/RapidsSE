@@ -16,7 +16,7 @@ __aFooterFunction(Fact)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Fact::Fact(i8 iFactNo)
+Fact::Fact(i8 iFactNo, Fact* pKind)
 : Object(CN_FACT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
@@ -25,6 +25,10 @@ Fact::Fact(i8 iFactNo)
   m_sFactNm = C_NO_NAME;
   
   m_pFacetVec = new FacetVec;
+  
+  m_pKind = pKind;
+  
+  m_xProperty.m_pObject = nullptr;
   
   _checkInitialised_(CN_FACT);
 
@@ -83,6 +87,26 @@ void Fact::vFactNo(i8 iFactNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   m_iFactNo = iFactNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get fact kind                                                              */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  return m_pKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set fact kind                                                              */
+/*----------------------------------------------------------------------------*/
+void Fact::vKind(Fact* pKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  m_pKind = pKind;
 }
 
 /*============================================================================*/

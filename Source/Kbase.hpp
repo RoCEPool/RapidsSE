@@ -32,7 +32,7 @@ namespace Facts
     Kbase(Stz* szKbName);
    ~Kbase(void) noexcept(false);
   
-    Fact* pFactNew(void);
+    Fact* pFactNew(Fact* pKind = nullptr);
     void vFactDelete(Fact* pFact);
   
     Question* pQuestionBorrow(void);
@@ -41,15 +41,37 @@ namespace Facts
     Transform* pTransformBorrow(void);
     void vTransformReturn(Transform* pTransform);
   
-    bool bIsFact(Fact* pFact)    { return (pFact == m_pFact);   }
-    bool bIsFirst(Fact* pFact)   { return (pFact == m_pFirst);  }
-    bool bIsInt(Fact* pFact)     { return (pFact == m_pInt);    }
-    bool bIsObject(Fact* pFact)  { return (pFact == m_pObject); }
-    bool bIsName(Fact* pFact)    { return (pFact == m_pName);   }
-    bool bIsNext(Fact* pFact)    { return (pFact == m_pNext);   }
-    bool bIsPrev(Fact* pFact)    { return (pFact == m_pPrev);   }
-    bool bIsRoot(Fact* pFact)    { return (pFact == m_pRoot);   }
-    bool bIsText(Fact* pFact)    { return (pFact == m_pText);   }
+  
+    void  vAddFacet(Fact* pParent, Fact* pKind, Fact* pKid);
+
+    Fact* pNewFacet(Fact* pParent, Fact* pKind, Stz* szFactNm = nullptr);
+
+    Fact* pNewFact(Fact* pKind = nullptr);
+    Fact* pNewFact(Stz* szFactNm, Fact* pKind = nullptr);
+
+    Fact* pNewFactv(Fact* pKind, ...);
+    Fact* pNewFactv(Stz* szFactNm, Fact* pKind, ...);
+
+  
+    bool bIsFactKind(Fact* pFact)    { return (pFact == m_pFact);   }
+    bool bIsFirstKind(Fact* pFact)   { return (pFact == m_pFirst);  }
+    bool bIsIntKind(Fact* pFact)     { return (pFact == m_pInt);    }
+    bool bIsNameKind(Fact* pFact)    { return (pFact == m_pName);   }
+    bool bIsNextKind(Fact* pFact)    { return (pFact == m_pNext);   }
+    bool bIsObjectKind(Fact* pFact)  { return (pFact == m_pObject); }
+    bool bIsPrevKind(Fact* pFact)    { return (pFact == m_pPrev);   }
+    bool bIsRootKind(Fact* pFact)    { return (pFact == m_pRoot);   }
+    bool bIsTextKind(Fact* pFact)    { return (pFact == m_pText);   }
+  
+    Fact*  pFactKind(void)    { return m_pFact;   }
+    Fact*  pFirstKind(void)   { return m_pFirst;  }
+    Fact*  pIntKind(void)     { return m_pInt;    }
+    Fact*  pNameKind(void)    { return m_pName;   }
+    Fact*  pNextKind(void)    { return m_pNext;   }
+    Fact*  pObjectKind(void)  { return m_pObject; }
+    Fact*  pPrevKind(void)    { return m_pPrev;   }
+    Fact*  pRootKind(void)    { return m_pRoot;   }
+    Fact*  pTextKind(void)    { return m_pText;   }
 
   private:
     void vAprioriFacts(void);
@@ -58,6 +80,18 @@ namespace Facts
 
   Kbase* _pKbase(void* aAddr);
 }
+
+#define K_KBASE(pKBASE) Kbase* __pKbase = pKBASE;
+
+#define K_FACT   (__pKbase->pFactKind())
+#define K_FIRST  (__pKbase->pFirstKind())
+#define K_INT    (__pKbase->pIntKind())
+#define K_NAME   (__pKbase->pNameKind())
+#define K_NEXT   (__pKbase->pNextKind())
+#define K_OBJECT (__pKbase->pObjectKind())
+#define K_PREV   (__pKbase->pPrevKind())
+#define K_ROOT   (__pKbase->pRootKind())
+#define K_TEXT   (__pKbase->pTextKind())
 
 /*============================================================================*/
 /* end                                                                        */
