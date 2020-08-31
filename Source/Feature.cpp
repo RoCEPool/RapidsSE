@@ -24,7 +24,8 @@ Feature::Feature(void)
   m_eEg = EG_NONE;
   m_iEn = 0;
   
-  m_xProperty.m_aVoid = nullptr;
+  m_eProperty = PR_NONE;
+  m_xProperty.m_pObject = nullptr;
   
   _checkInitialised_(CN_FEATURE);
 
@@ -81,6 +82,26 @@ void Feature::vEn(i8 iEn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FEATURE,_FOOTER_);
   
   m_iEn = iEn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get eProperty                                                              */
+/*----------------------------------------------------------------------------*/
+ePR Feature::eProperty(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FEATURE,_FOOTER_);
+  
+  return m_eProperty;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set eProperty                                                              */
+/*----------------------------------------------------------------------------*/
+void Feature::vProperty(ePR eProperty)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FEATURE,_FOOTER_);
+  
+  m_eProperty = eProperty;
 }
 
 /*----------------------------------------------------------------------------*/

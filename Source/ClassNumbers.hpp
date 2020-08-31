@@ -285,10 +285,9 @@ enum eCN : u2 // Class Number
   /* */ CN_SPELAPSED,
   /* */ CN_SPID,
   /* */ CN_SPSTRING,
-  
   /* */ CN_SPMEDIUM,
   /* */ CN_SPSMALL,
-
+  /* */ CN_SQLGRAPH,
   /* */ CN_SRTBUFFER,
   /* */ CN_SRTSET,
   /* */ CN_STACK,
@@ -639,10 +638,9 @@ static Stz* aCN[]
   /* */ "SPELAPSED"_Stz,           // CN_SPELAPSED
   /* */ "SPID"_Stz,                // CN_SPID
   /* */ "SPSTRING"_Stz,            // CN_SPSTRING
-  
   /* */ "SPMEDIUM"_Stz,            // CN_SPMEDIUM
   /* */ "SPSMALL"_Stz,             // CN_SPSMALL
-
+  /* */ "SQLGRAPH"_Stz,            // CN_SQLGRAPH
   /* */ "SRTBUFFER"_Stz,           // CN_SRTBUFFER
   /* */ "SRTSET"_Stz,              // CN_SRTSET
   /* */ "STACK"_Stz,               // CN_STACK

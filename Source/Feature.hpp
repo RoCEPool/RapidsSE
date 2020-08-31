@@ -6,10 +6,10 @@
 namespace Facts
 {
   union Property {
-    i8      m_iInt;
     Fact*   m_pFact;
+    i8      m_iInt;
     Object* m_pObject;
-    void*   m_aVoid;
+    void*   m_aOpaque;
   };
 
   class Feature : public Object
@@ -19,6 +19,7 @@ namespace Facts
     eEG m_eEg;
     i8  m_iEn;
 
+    ePR m_eProperty;
     Property m_xProperty;
   
     // must be last
@@ -37,6 +38,8 @@ namespace Facts
     i8  iEn(void);
     void vEn(i8 iEn);
   
+    ePR eProperty(void);
+    void vProperty(ePR eProperty);
     Property& rxProperty(void);
 
   private:

@@ -1,16 +1,14 @@
 /*============================================================================*/
-/* Sql.hpp -- Sql Reformatting                                                */
+/* SqlPArsing.cpp - Sql Parsing namespace functions                           */
 /*============================================================================*/
-#pragma once
 
-namespace Verbs
+#include "SqlParsing.h"
+
+/*----------------------------------------------------------------------------*/
+/* things to check at boot time                                               */
+/*----------------------------------------------------------------------------*/
+void SqlParsing::vCheckAssumptions(void)
 {
-  class Sql
-  {
-  public:
-    static bool bReformat(TokenVec* pTknVec);
-    static bool bRestate(TokenVec* pTknVec);
-  };
 }
 
 /*============================================================================*/

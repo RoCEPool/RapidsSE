@@ -10,7 +10,8 @@ enum ePR // property
   /*    */ PR_FACT,
   /*    */ PR_INT,
   /*    */ PR_OBJECT,
-  /*    */ PR_VOID_PTR,
+  /*    */ PR_OPAQUE,
+  /*    */ PR_TEXT,
 
   /*    */ PR_ENUMS
 };
@@ -22,7 +23,8 @@ static Stz* aPR[]
   /*    */ "PR_FACT"_Stz,
   /*    */ "PR_INT"_Stz,
   /*    */ "PR_OBJECT"_Stz,
-  /*    */ "PR_VOID_PTR"_Stz,
+  /*    */ "PR_OPAQUE"_Stz,
+  /*    */ "PR_TEXT"_Stz,
 
   /*    */ "PR_ENUMS"_Stz
 };

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Sql.cpp -- Sql Reformatter                                                 */
+/* SqlFormatting.cpp -- Sql Reformat/Restate                                  */
 /*============================================================================*/
 
 #include "Verbs.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* reformat token vector for sql statement                                    */
 /*----------------------------------------------------------------------------*/
-bool Sql::bReformat(TokenVec* pTknVec)
+bool SqlFormatting::bReformat(TokenVec* pTknVec)
 {
   bool bWasReformatted = false;
   
@@ -22,7 +22,7 @@ bool Sql::bReformat(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* restate token vector for sql statement                                     */
 /*----------------------------------------------------------------------------*/
-bool Sql::bRestate(TokenVec* pTknVec)
+bool SqlFormatting::bRestate(TokenVec* pTknVec)
 {
   bool bWasRestated = false;
   

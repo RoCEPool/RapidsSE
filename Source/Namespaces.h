@@ -112,6 +112,7 @@ namespace SenVM             { class Dic;             class DicStack;
 namespace Sessions          { class Session;         class SessionState;      }
 namespace SharedMemory      {                                                 }
 namespace SortBuffers       {                                                 }
+namespace SqlParsing        {                                                 }
 namespace SqlValues         {                                                 }
 namespace Steps             { class Step;            class StepTiming;        }
 namespace StorageEngine     { class AttachMap;       class Engine;            }
@@ -186,6 +187,7 @@ using namespace SenVM;
 using namespace Sessions;
 using namespace SharedMemory;
 using namespace SortBuffers;
+using namespace SqlParsing;
 using namespace SqlValues;
 using namespace Steps;
 using namespace StorageEngine;
