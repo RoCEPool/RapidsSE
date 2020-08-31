@@ -14,11 +14,11 @@ namespace Facts
 
 //------------------------------------------------------------------------------
 
-static const i8 C_MAX_FACETS     = 64;
-static const i8 C_MAX_PROPERTIES = 64;
+static const i8 C_MAX_FACETS   = 64;
+static const i8 C_MAX_FEATURES = 64;
 
 #include "Property.hpp"
-typedef VectorNL_t<CN_PROPERTYVEC, Property, C_MAX_PROPERTIES> PropertyVec;
+typedef VectorNL_t<CN_FEATUREVEC, Property, C_MAX_FEATURES> PropertyVec;
 
 #include "Facet.hpp"
 typedef VectorNL_t<CN_FACETVEC, Facet, C_MAX_FACETS> FacetVec;
