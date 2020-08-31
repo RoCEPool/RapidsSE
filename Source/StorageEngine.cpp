@@ -61,6 +61,8 @@ void StorageEngine::vCheckAllAssumptions(void)
   Sessions::vCheckAssumptions();
   SharedMemory::vCheckAssumptions();
   SortBuffers::vCheckAssumptions();
+  SqlParsing::vCheckAssumptions();
+  SqlValues::vCheckAssumptions();
   Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
   Strings::vCheckAssumptions();
