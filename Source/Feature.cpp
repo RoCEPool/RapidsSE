@@ -24,7 +24,7 @@ Property::Property(void)
   m_eEg = EG_NONE;
   m_iEn = 0;
   
-  m_xFeature.m_aVoid = nullptr;
+  m_xProp.m_aVoid = nullptr;
   
   _checkInitialised_(CN_FEATURE);
 
@@ -84,15 +84,14 @@ void Property::vEn(i8 iEn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get Feature                                                                */
+/* get Property                                                               */
 /*----------------------------------------------------------------------------*/
-Feature& Property::rxFeature(void)
+Prop& Property::rxProp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FEATURE,_FOOTER_);
   
-  return m_xFeature;
+  return m_xProp;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

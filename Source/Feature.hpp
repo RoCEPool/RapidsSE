@@ -5,7 +5,7 @@
 
 namespace Facts
 {
-  union Feature {
+  union Prop {
     i8      m_iInt;
     Fact*   m_pFact;
     Object* m_pObject;
@@ -19,7 +19,7 @@ namespace Facts
     eEG m_eEg;
     i8  m_iEn;
 
-    Feature m_xFeature;
+    Prop m_xProp;
   
     // must be last
     Footer m_xFooter;
@@ -37,7 +37,7 @@ namespace Facts
     i8  iEn(void);
     void vEn(i8 iEn);
   
-    Feature& rxFeature(void);
+    Prop& rxProp(void);
 
   private:
     Footer* aFooter(void);
