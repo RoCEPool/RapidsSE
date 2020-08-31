@@ -8,15 +8,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Facts,Property,CN_FEATURE)
-__aNewFunction(Property,CN_FEATURE)
-__vDeleteFunction(Property,CN_FEATURE)
-__aFooterFunction(Property)
+__pCastFunction(Facts,Feature,CN_FEATURE)
+__aNewFunction(Feature,CN_FEATURE)
+__vDeleteFunction(Feature,CN_FEATURE)
+__aFooterFunction(Feature)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Property::Property(void)
+Feature::Feature(void)
 : Object(CN_FEATURE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FEATURE,_FOOTER_);
@@ -24,7 +24,7 @@ Property::Property(void)
   m_eEg = EG_NONE;
   m_iEn = 0;
   
-  m_xProp.m_aVoid = nullptr;
+  m_xProperty.m_aVoid = nullptr;
   
   _checkInitialised_(CN_FEATURE);
 
@@ -34,7 +34,7 @@ Property::Property(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Property::~Property(void) noexcept(false)
+Feature::~Feature(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FEATURE,_FOOTER_);
 }
@@ -46,7 +46,7 @@ Property::~Property(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get Eg                                                                     */
 /*----------------------------------------------------------------------------*/
-eEG Property::eEg(void)
+eEG Feature::eEg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FEATURE,_FOOTER_);
   
@@ -56,7 +56,7 @@ eEG Property::eEg(void)
 /*----------------------------------------------------------------------------*/
 /* set Eg                                                                     */
 /*----------------------------------------------------------------------------*/
-void Property::vEg(eEG eEg)
+void Feature::vEg(eEG eEg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FEATURE,_FOOTER_);
   
@@ -66,7 +66,7 @@ void Property::vEg(eEG eEg)
 /*----------------------------------------------------------------------------*/
 /* get En                                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Property::iEn(void)
+i8 Feature::iEn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FEATURE,_FOOTER_);
   
@@ -76,7 +76,7 @@ i8 Property::iEn(void)
 /*----------------------------------------------------------------------------*/
 /* set En                                                                     */
 /*----------------------------------------------------------------------------*/
-void Property::vEn(i8 iEn)
+void Feature::vEn(i8 iEn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FEATURE,_FOOTER_);
   
@@ -86,11 +86,11 @@ void Property::vEn(i8 iEn)
 /*----------------------------------------------------------------------------*/
 /* get Property                                                               */
 /*----------------------------------------------------------------------------*/
-Prop& Property::rxProp(void)
+Property& Feature::rxProperty(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FEATURE,_FOOTER_);
   
-  return m_xProp;
+  return m_xProperty;
 }
 
 /*============================================================================*/

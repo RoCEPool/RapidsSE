@@ -18,7 +18,7 @@ static const i8 C_MAX_FACETS   = 64;
 static const i8 C_MAX_FEATURES = 64;
 
 #include "Feature.hpp"
-typedef VectorNL_t<CN_FEATUREVEC, Property, C_MAX_FEATURES> PropertyVec;
+typedef VectorNL_t<CN_FEATUREVEC, Feature, C_MAX_FEATURES> FeatureVec;
 
 #include "Facet.hpp"
 typedef VectorNL_t<CN_FACETVEC, Facet, C_MAX_FACETS> FacetVec;
