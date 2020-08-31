@@ -11,10 +11,6 @@ DEBUG=1
 SE_TAR_FILE="se.tar.gz"
 NAT_SE_TAR_PATH="/home/ec2-user/${SE_TAR_FILE}"
 
-# List of disks devices to be formatted and mounted.
-#SSDS=("/dev/nvme1n1")
-#MOUNTS=("/mnt/disk1")
-
 # Will be populated with the SSD mount points
 declare -a MOUNTS
 
@@ -39,15 +35,23 @@ then
   set -x
 fi
 
+# ----------------------------------------------------------------------------------------
+# Give more memory to /dev/shm
+echo "tmpfs     /dev/shm     tmpfs     defaults,size=500g     0 0 " >> /etc/fstab
+mount -o remount /dev/shm
+
 
 # ----------------------------------------------------------------------------------------
 # Apply any package updates
+amazon-linux-extras install epel
 yum update -y
+
 
 # ----------------------------------------------------------------------------------------
 # Install any additional applications
 yum groupinstall "Development Tools" -y
 yum install texinfo -y
+yum install nload nethogs bmon iftop iperf3 -y
 
 
 # ----------------------------------------------------------------------------------------
@@ -123,6 +127,8 @@ chown -R ec2-user:ec2-user "${SSH_DIR}"
 # Setup the SSDs
 
 # Get the name of the device (sans "/dev/") that the root filesystem is mounted on.
+# e.g. /dev/nvme0n1 --> nvme0n1
+# We don't want to partition/format this disk!
 root_device=$(df -h | grep -E "^/dev/" | cut -d ' ' -f 1 | cut -c 6-)
 
 # Get the list of block devices in the system.
@@ -141,36 +147,35 @@ do
   
   device="/dev/${device}"
   
-  echo "Formatting device ${device}"
+  echo "Partitioning device ${device}"
   
+  (
+    echo "o"  # Create DOS partition table
+    echo "n"  # Create a new partition
+    echo "p"  # New partition is a primary partition
+    echo "1"  # Partition #1
+    echo ""   # Start the new partition at the first sector
+    echo ""   # Make the new partition as big as possible
+    echo "w"  # write the changes and exit
+  ) | fdisk "${device}" || exit
+  
+  # Get the partition name
+  partition=$(lsblk -l -n -p -oNAME "${device}" | tail -n 1)
+  
+  echo "Formatting partition ${partition}"  
   counter=$((counter + 1))
   mount_point="/mnt/disk${counter}"
   
-  mkfs.ext4 -E nodiscard -m0 "${device}"
+  mkfs.ext4 -E nodiscard -m0 "${partition}" || exit
   
-  echo "Mounting device ${device} to ${mount_point}"
+  echo "Mounting partition ${partition} to ${mount_point}"
   
   mkdir -p "${mount_point}"
-  mount -o discard "${device}" "${mount_point}"
+  mount -o discard "${partition}" "${mount_point}" || exit
   chown -R ec2-user:ec2-user "${mount_point}"
   
   MOUNTS+=("${mount_point}")
 done
-
-
-#chown ec2-user:ec2-user /mnt
-#
-#for index in "${!SSDS[@]}"
-#do
-#  device="${SSDS[${index}]}"
-#  mount_point="${MOUNTS[${index}]}"
-#
-#  mkfs.ext4 -E nodiscard -m0 "${device}"
-#  
-#  mkdir -p "${mount_point}"
-#  mount -o discard "${device}" "${mount_point}"
-#  chown -R ec2-user:ec2-user "${mount_point}"
-#done
 
 
 # ----------------------------------------------------------------------------------------
@@ -217,6 +222,75 @@ set background=dark
 EOF
 
 chown ec2-user:ec2-user "${vimrc}"
+
+
+# ----------------------------------------------------------------------------------------
+# Setup influxdb and telegraf
+echo "Setting up InfluxDB and Telegraf"
+cd /tmp || exit
+
+# Download & install InfluxDB
+influx_release="influxdb-1.8.2.x86_64.rpm"
+wget "https://dl.influxdata.com/influxdb/releases/${influx_release}"
+yum localinstall -y "${influx_release}"
+rm -f "${influx_release}"
+
+# Download & install Telegraf
+telegraf_release="telegraf-1.15.2-1.x86_64.rpm"
+wget "https://dl.influxdata.com/telegraf/releases/${telegraf_release}"
+yum localinstall -y "${telegraf_release}"
+rm -f "${telegraf_release}"
+
+# Install collectd (necessary)
+yum install collectd -y
+
+# Configure influxdb
+perl -0777 -i.orig -pe 's/(\[\[collectd\]\]\s*\n\s*)# enabled = false/\1enabled=true/igs' /etc/influxdb/influxdb.conf
+
+# Configure telegraf
+cp /etc/telegraf/telegraf.conf /etc/telegraf/telegraf.conf.orig
+cat << EOF > /etc/telegraf/telegraf.conf
+# Telegraf Configuration
+[global_tags]
+
+[agent]
+  interval = "5s"
+  round_interval = true
+  metric_batch_size = 1000
+  metric_buffer_limit = 10000
+  collection_jitter = "2s"
+  flush_interval = "10s"
+  flush_jitter = "2s"
+  precision = ""
+  hostname = ""
+  omit_hostname = false
+
+[[outputs.influxdb]]
+
+[[inputs.cpu]]
+  percpu = true
+  totalcpu = true
+  collect_cpu_time = false
+  report_active = false
+
+[[inputs.disk]]
+[[inputs.diskio]]
+[[inputs.kernel]]
+[[inputs.mem]]
+[[inputs.processes]]
+[[inputs.swap]]
+[[inputs.system]]
+[[inputs.interrupts]]
+[[inputs.linux_sysctl_fs]]
+[[inputs.net]]
+[[inputs.netstat]]
+EOF
+
+# Start influxdb and telegraf
+#systemctl start influxdb 
+#systemctl start telegraf
+
+cd ~ || exit
 
 # ----------------------------------------------------------------------------------------
 # Turn off debugging if required.
