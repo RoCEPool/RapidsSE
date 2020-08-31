@@ -317,11 +317,6 @@ enum eCN : u2 // Class Number
   /* */ CN_TEMPNAME,
   /* */ CN_TENANT,
   /* */ CN_TENANTS,
-  /* */ CN_TEXT,
-  /* */ CN_TEXTLARGE,
-  /* */ CN_TEXTMEDIUM,
-  /* */ CN_TEXTSMALL,
-  /* */ CN_TEXTTINY,  
   /* */ CN_THING,
   /* */ CN_THREAD,
   /* */ CN_THREADQUEUE,
@@ -670,11 +665,6 @@ static Stz* aCN[]
   /* */ "TEMPNAME"_Stz,            // CN_TEMPNAME
   /* */ "TENANT"_Stz,              // CN_TENANT
   /* */ "TENANTS"_Stz,             // CN_TENANTS
-  /* */ "TEXT"_Stz,                // CN_TEXT
-  /* */ "TEXTLARGE"_Stz,           // CN_TEXTLARGE
-  /* */ "TEXTMEDIUM"_Stz,          // CN_TEXTMEDIUM
-  /* */ "TEXTSMALL"_Stz,           // CN_TEXTSMALL
-  /* */ "TEXTTINY"_Stz,            // CN_TEXTTINY
   /* */ "THING"_Stz,               // CN_THING
   /* */ "THREAD"_Stz,              // CN_THREAD
   /* */ "THREADQUEUE"_Stz,         // CN_THREADQUEUE

@@ -38,13 +38,6 @@ namespace Structures
 #include "SkipNode.hpp"
 #include "SkipListNL.hpp"
 
-#include "TextBuffer.hpp"
-#include "TextLarge.hpp"
-#include "TextMedium.hpp"
-#include "TextSmall.hpp"
-#include "TextTiny.hpp"
-#include "Text.hpp"
-
 #include "Vector_t.hpp"
 #include "VectorNL_t.hpp"
 

@@ -312,11 +312,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TaskQueue),          HT_TRANSIENT_TINY    }, // CN_TEMPNAME
   { sizeof(TempName),           HT_TRANSIENT_TINY    }, // CN_TENANT
   { sizeof(Tenant),             HT_TRANSIENT_TINY    }, // CN_TENANTS
-  { sizeof(Text),               HT_TRANSIENT_TINY    }, // CN_TEXT
-  { sizeof(TextLarge),          HT_TRANSIENT_LARGE   }, // CN_TEXTLARGE
-  { sizeof(TextMedium),         HT_TRANSIENT_MEDIUM  }, // CN_TEXTMEDIUM
-  { sizeof(TextSmall),          HT_TRANSIENT_SMALL   }, // CN_TEXTSMALL
-  { sizeof(TextTiny),           HT_TRANSIENT_TINY    }, // CN_TEXTTINY
   { sizeof(Tenants),            HT_TRANSIENT_TINY    }, // CN_TASKQUEUE
   { sizeof(Thing),              HT_TRANSIENT_TINY    }, // CN_THING
   { sizeof(Thread),             HT_TRANSIENT_TINY    }, // CN_THREAD
