@@ -34,9 +34,11 @@ namespace MetaData
     Table(Stz* szTableNm);
    ~Table(void) noexcept(false);
     
-    static void   vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static Table* pFindTable(DicStack* pDicStack, Stz* aTableNm);
-    static void   vMonitorPortrait(s48K& sPortrait);
+    static void       vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static Table*     pFindTable(DicStack* pDicStack, Stz* aTableNm);
+    static IndexDef*  pIndexDef(DicStack* pDicStack, Stz* aTableNm, i8 iIndexNo);
+    static void       vMonitorPortrait(s48K& sPortrait);
+    static StreamDef* pStreamDef(DicStack* pDicStack, Stz* aTableNm);
     
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows);

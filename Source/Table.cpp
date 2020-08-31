@@ -123,13 +123,42 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* aTableNm)
   
   Word* pTableDicWord = pDic->pFindWord(aTableNm);
   
+  if ( !pTableDicWord )
+    return nullptr;
+  
   Dic* pTableDic = _pDic(pTableDicWord->pObject());
   
   Word* pTableWord = pTableDic->pFindWord(aTableNm);
   
+  if ( !pTableWord )
+    return nullptr;
+  
   Table* pTable = _pTable(pTableWord->pObject());
   
   return pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get indexDef of index of given table                                       */
+/*----------------------------------------------------------------------------*/
+IndexDef* Table::pIndexDef(DicStack* pDicStack, Stz* aTableNm, i8 iIndexNo)
+{
+  _static_
+  
+  Table* pTable = Table::pFindTable(pDicStack,aTableNm);
+  if ( !pTable )
+    return nullptr;
+  
+  TablePtn* pTablePtn = pTable->m_pTablePtnVec->pGet(0);
+  
+  IndexTreeVec* pIndexTreeVec = pTablePtn->pIndexTreeVec();
+  if (pIndexTreeVec->nItems() < iIndexNo)
+    return nullptr;
+  
+  IndexTree* pIndexTree = pTablePtn->pIndexTreeVec()->pGet(iIndexNo);
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+  
+  return pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -144,6 +173,18 @@ void Table::vMonitorPortrait(s48K& sPortrait)
                     pStats->Table.m_nDrops,
                     pStats->Table.m_nLoads
                     );
+}
+
+/*----------------------------------------------------------------------------*/
+/* get streamDef of given table                                               */
+/*----------------------------------------------------------------------------*/
+StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* aTableNm)
+{
+  _static_
+  
+  Table* pTable = pFindTable(pDicStack,aTableNm);
+  
+  return pTable ? pTable->m_pStreamDef : nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
