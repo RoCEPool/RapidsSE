@@ -51,6 +51,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_errno.hpp"
 #include "Prompt_executing.hpp"
 
+#include "Prompt_fact.hpp"
 #include "Prompt_file.hpp"
 #include "Prompt_fileCat.hpp"
 #include "Prompt_fileProc.hpp"

@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptFun __Prompt_select (
-  PF_SHELL,            // prompt function
+  PF_SELECT,           // prompt function
   "Prompt_select"_Stz, // name of the prompt function
   "comment"_Stz,       // comment about the function
   "select"_Stz,        // the prompt command
