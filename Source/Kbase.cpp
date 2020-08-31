@@ -16,10 +16,12 @@ __aFooterFunction(Kbase)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Kbase::Kbase(void)
+Kbase::Kbase(Stz* szKbName)
 : Object(CN_KBASE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  vAprioriFacts();
   
   _checkInitialised_(CN_KBASE);
 
@@ -32,11 +34,46 @@ Kbase::Kbase(void)
 Kbase::~Kbase(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  // more tbd ...
+  
+  delete m_pRoot;
+  
+  delete m_pFact;
+  delete m_pFirst;
+  delete m_pInt;
+  delete m_pObject;
+  delete m_pName;
+  delete m_pNext;
+  delete m_pPrev;
+  delete m_pText;
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* new fact                                                                   */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pFactNew(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pFact = new Fact(++ m_ixFactNo);
+
+  return pFact;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete a fact                                                              */
+/*----------------------------------------------------------------------------*/
+void Kbase::vFactDelete(Fact* pFact)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  delete pFact;
+}
 
 /*----------------------------------------------------------------------------*/
 /* borrow/new a question                                                      */
@@ -45,7 +82,7 @@ Question* Kbase::pQuestionBorrow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Question* pQuestion = new Question;
+  Question* pQuestion = new Question(this);
   
   return pQuestion;
 }
@@ -67,7 +104,7 @@ Transform* Kbase::pTransformBorrow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Transform* pTransform = new Transform;
+  Transform* pTransform = new Transform(this);
   
   return pTransform;
 }
@@ -80,6 +117,32 @@ void Kbase::vTransformReturn(Transform* pTransform)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
   delete pTransform;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add apriori facts                                                          */
+/*----------------------------------------------------------------------------*/
+void Kbase::vAprioriFacts(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+
+  m_pRoot   = pFactNew();
+  
+  // the primitives
+  m_pFact   = pFactNew();
+
+  m_pFirst  = pFactNew();
+  m_pPrev   = pFactNew();
+  m_pNext   = pFactNew();
+
+  m_pName   = pFactNew();
+  m_pInt    = pFactNew();
+  m_pObject = pFactNew();
+  m_pText   = pFactNew();
 }
 
 /*============================================================================*/

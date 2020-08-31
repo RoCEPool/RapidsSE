@@ -9,7 +9,7 @@ namespace Facts
   {
   private:
 
-    Fact* m_pRoot; //
+    Kbase* m_pKbase; //
   
     // must be last
     Footer m_xFooter;
@@ -18,7 +18,7 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Question(void);
+    Question(Kbase* pKbase);
    ~Question(void) noexcept(false);
 
   private:

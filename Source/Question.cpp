@@ -16,10 +16,12 @@ __aFooterFunction(Question)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Question::Question(void)
+Question::Question(Kbase* pKbase)
 : Object(CN_KBASE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  m_pKbase = pKbase;
   
   _checkInitialised_(CN_KBASE);
 

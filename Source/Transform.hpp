@@ -8,7 +8,9 @@ namespace Facts
   class Transform : public Object
   {
   private:
-  
+ 
+    Kbase* m_pKbase; //
+
     // must be last
     Footer m_xFooter;
 
@@ -16,7 +18,7 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Transform(void);
+    Transform(Kbase* pKbase);
    ~Transform(void) noexcept(false);
 
   private:
