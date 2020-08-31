@@ -49,6 +49,7 @@ namespace MetaData
     Column* pFindColumn(Stz* szColNm);
     IdxVec* pIdxVec(void);
     i8      nIndexBuffers(i8 iIndexNo);
+    IndexDef* pIndexDef(Table* pTable, i8 iIndexNo);
     bool    bIsDefinitionOnly(void);
     void    vIsDefinitionOnly(bool bIsDefinitionOnly);
     void    vIsLoading(bool bIsLoading);

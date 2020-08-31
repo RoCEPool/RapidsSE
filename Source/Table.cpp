@@ -336,6 +336,25 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get indexDef of index of given table                                       */
+/*----------------------------------------------------------------------------*/
+IndexDef* Table::pIndexDef(Table* pTable, i8 iIndexNo)
+{
+  _static_
+  
+  TablePtn* pTablePtn = m_pTablePtnVec->pGet(0);
+  
+  IndexTreeVec* pIndexTreeVec = pTablePtn->pIndexTreeVec();
+  if (pIndexTreeVec->nItems() < iIndexNo)
+    return nullptr;
+  
+  IndexTree* pIndexTree = pTablePtn->pIndexTreeVec()->pGet(iIndexNo);
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+  
+  return pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insdel row buffer into the table indexes                                   */
 /*----------------------------------------------------------------------------*/
 void Table::vInsdelBuffer(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
