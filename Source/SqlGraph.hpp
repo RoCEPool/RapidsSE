@@ -1,16 +1,29 @@
 /*============================================================================*/
-/* Sql.hpp -- Sql Reformatting                                                */
+/* SqlGraph.hpp - Sql Graph                                                   */
 /*============================================================================*/
 #pragma once
 
-namespace Verbs
+namespace Facts
 {
-  class Sql
+  class SqlGraph : public Object
   {
+  private:
+
+    // must be last
+    Footer m_xFooter;
+
   public:
-    static bool bReformat(TokenVec* pTknVec);
-    static bool bRestate(TokenVec* pTknVec);
+    void* operator new(size_t);
+    void  operator delete(void*);
+
+    SqlGraph(void);
+   ~SqlGraph(void) noexcept(false);
+
+  private:
+    Footer* aFooter(void);
   };
+
+  SqlGraph* _pSqlGraph(void* aAddr);
 }
 
 /*============================================================================*/
