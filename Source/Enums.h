@@ -46,6 +46,7 @@ namespace Enums
 
 #include "eFA.h"
 #include "eFN.h"
+#include "eFX.h"
 
 #include "eGA.h"
 
@@ -96,6 +97,7 @@ namespace Enums
 #include "ePK.h"
 #include "ePO.h"
 #include "ePP.h"
+#include "ePR.h"
 #include "ePX.h"
 #include "ePY.h"
 
