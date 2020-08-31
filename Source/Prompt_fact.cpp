@@ -27,6 +27,10 @@ bool Prompt::bPrompt_fact(SePrompt* pPrompt)
   
   vTrace("... Fact ...\n"_Stz);
   
+  Kbase* pKb = new Kbase;
+  
+  delete pKb;
+  
   return true;
 }
 

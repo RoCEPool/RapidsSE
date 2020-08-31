@@ -27,11 +27,12 @@ typedef VectorNL_t<CN_FACETVEC, Facet, C_MAX_FACETS> FacetVec;
 
 #include "Fact.hpp"
 
-#include "Kbase.hpp"
-
 #include "Question.hpp"
 
 #include "Transform.hpp"
+
+#include "Kbase.hpp"
+
 
 /*============================================================================*/
 /* end                                                                        */

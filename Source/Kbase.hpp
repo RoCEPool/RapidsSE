@@ -20,7 +20,13 @@ namespace Facts
 
     Kbase(void);
    ~Kbase(void) noexcept(false);
-
+  
+    Question* pQuestionBorrow(void);
+    void vQuestionReturn(Question* pQuestion);
+    
+    Transform* pTransformBorrow(void);
+    void vTransformReturn(Transform* pTransform);
+    
   private:
     Footer* aFooter(void);
   };
