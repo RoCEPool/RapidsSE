@@ -11,6 +11,10 @@ namespace Facts
 
     FeatureVec* m_pFeatureVec; // ... which have features
   
+  
+    Fact* m_pFacetKind;
+    Fact* m_pFact;
+
     // must be last
     Footer m_xFooter;
 
@@ -18,8 +22,11 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Facet(void);
+    Facet(Fact* pKind, Fact* pFact);
    ~Facet(void) noexcept(false);
+
+    Fact* pFacetKind(void);
+    Fact* pFact(void);
 
   private:
     Footer* aFooter(void);

@@ -43,7 +43,7 @@ Transform::~Transform(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add facet to fact                                                          */
 /*----------------------------------------------------------------------------*/
-void Transform::vAddFacet(Fact* pParent, Fact* pKind, Fact* pKid)
+void Transform::vAddFacet(Fact* pToFact, Facet* pFacet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
@@ -52,51 +52,44 @@ void Transform::vAddFacet(Fact* pParent, Fact* pKind, Fact* pKid)
 /*----------------------------------------------------------------------------*/
 /* new facet of a fact                                                        */
 /*----------------------------------------------------------------------------*/
-Fact* Transform::pNewFacet(Fact* pParent, Fact* pKind, Stz* szFactNm)
+Fact* Transform::pNewFacet(Fact* pToFact,
+                           Fact* pFacetKind, Fact* pFactKind, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  return nullptr;
-}
+  Fact* pFact = m_pKbase->pNewFact(szFactNm);
+  
+  pFact->vFactKind(pFactKind);
+  
+  Facet* pFacet = new Facet(pFacetKind,pFact);
+  
+  pToFact->vAddFacet(pFacet);
 
-/*----------------------------------------------------------------------------*/
-/* new fact                                                                   */
-/*----------------------------------------------------------------------------*/
-Fact* Transform::pNewFact(Fact* pKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
-  
-  Fact* pFact = m_pKbase->pNewFact();
-  
-  pFact->vKind(pKind);
-  
   return pFact;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Transform::pNewFact(Stz* szFactNm, Fact* pKind)
+Fact* Transform::pNewFact(Fact* pFactKind, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  Fact* pFact = m_pKbase->pNewFact(szFactNm);
-  
-  pFact->vKind(pKind);
-  
+  Fact* pFact = m_pKbase->pNewFact(pFactKind,szFactNm);
+    
   return pFact;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new fact (variable args)                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Transform::pNewFactv(Fact* pKind, ...)
+Fact* Transform::pNewFactv(Fact* pFactKind, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
   Fact* pFact = m_pKbase->pNewFact();
   
-  pFact->vKind(pKind);
+  pFact->vFactKind(pFactKind);
   
   return pFact;
 }
@@ -104,13 +97,13 @@ Fact* Transform::pNewFactv(Fact* pKind, ...)
 /*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Transform::pNewFactv(Stz* szFactNm, Fact* pKind, ...)
+Fact* Transform::pNewFactv(Stz* szFactNm, Fact* pFactKind, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
   Fact* pFact = m_pKbase->pNewFact(szFactNm);
   
-  pFact->vKind(pKind);
+  pFact->vFactKind(pFactKind);
   
   return pFact;
 }

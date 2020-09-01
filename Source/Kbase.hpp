@@ -19,6 +19,7 @@ namespace Facts
     Fact*  m_pObject;
     Fact*  m_pName;
     Fact*  m_pNext;
+    Fact*  m_pNode;
     Fact*  m_pPrev;
     Fact*  m_pText;
 
@@ -46,7 +47,7 @@ namespace Facts
 
     Fact* pNewFacet(Fact* pParent, Fact* pKind, Stz* szFactNm = nullptr);
 
-    Fact* pNewFact(Fact* pKind = nullptr);
+    Fact* pNewFact(Fact* pFactKind = nullptr, Stz* szFactNm=nullptr);
     Fact* pNewFact(Stz* szFactNm, Fact* pKind = nullptr);
 
     Fact* pNewFactv(Fact* pKind, ...);
@@ -58,6 +59,7 @@ namespace Facts
     bool bIsIntKind(Fact* pFact)     { return (pFact == m_pInt);    }
     bool bIsNameKind(Fact* pFact)    { return (pFact == m_pName);   }
     bool bIsNextKind(Fact* pFact)    { return (pFact == m_pNext);   }
+    bool bIsNodeKind(Fact* pFact)    { return (pFact == m_pNode);   }
     bool bIsObjectKind(Fact* pFact)  { return (pFact == m_pObject); }
     bool bIsPrevKind(Fact* pFact)    { return (pFact == m_pPrev);   }
     bool bIsRootKind(Fact* pFact)    { return (pFact == m_pRoot);   }
@@ -68,6 +70,7 @@ namespace Facts
     Fact*  pIntKind(void)     { return m_pInt;    }
     Fact*  pNameKind(void)    { return m_pName;   }
     Fact*  pNextKind(void)    { return m_pNext;   }
+    Fact*  pNodeKind(void)    { return m_pNode;   }
     Fact*  pObjectKind(void)  { return m_pObject; }
     Fact*  pPrevKind(void)    { return m_pPrev;   }
     Fact*  pRootKind(void)    { return m_pRoot;   }
@@ -88,6 +91,7 @@ namespace Facts
 #define K_INT    (__pKbase->pIntKind())
 #define K_NAME   (__pKbase->pNameKind())
 #define K_NEXT   (__pKbase->pNextKind())
+#define K_NODE   (__pKbase->pNodeKind())
 #define K_OBJECT (__pKbase->pObjectKind())
 #define K_PREV   (__pKbase->pPrevKind())
 #define K_ROOT   (__pKbase->pRootKind())

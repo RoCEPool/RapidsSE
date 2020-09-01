@@ -16,12 +16,15 @@ __aFooterFunction(Facet)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Facet::Facet(void)
+Facet::Facet(Fact* pFacetKind, Fact* pFact)
 : Object(CN_FACET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACET,_FOOTER_);
   
   m_pFeatureVec = new FeatureVec;
+  
+  m_pFacetKind = pFacetKind;
+  m_pFact = pFact;
   
   _checkInitialised_(CN_FACET);
 
@@ -36,6 +39,30 @@ Facet::~Facet(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACET,_FOOTER_);
   
   delete m_pFeatureVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get fact                                                                   */
+/*----------------------------------------------------------------------------*/
+Fact* Facet::pFact(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACET,_FOOTER_);
+  
+  return m_pFact;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get kind                                                                   */
+/*----------------------------------------------------------------------------*/
+Fact* Facet::pFacetKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACET,_FOOTER_);
+  
+  return m_pFacetKind;
 }
 
 /*============================================================================*/

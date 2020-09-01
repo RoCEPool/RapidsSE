@@ -126,12 +126,15 @@ void Kbase::vTransformReturn(Transform* pTransform)
 /*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pNewFact(Fact* pKind)
+Fact* Kbase::pNewFact(Fact* pFactKind, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
   Fact* pFact = pFactNew();
   
+  pFact->vFactKind(pFactKind);
+  pFact->vFactNm(szFactNm);
+
   return pFact;
 }
 
@@ -168,6 +171,7 @@ void Kbase::vAprioriFacts(void)
   m_pFirst  = pFactNew();
   m_pPrev   = pFactNew();
   m_pNext   = pFactNew();
+  m_pNode   = pFactNew();
 
   m_pName   = pFactNew();
   m_pInt    = pFactNew();
