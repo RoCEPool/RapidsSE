@@ -649,8 +649,6 @@ void Engine::vEnvFlags(void)
     gxEnvFlags.m_iAlka = StrLib::iToI8(sFlagValue.azChar());
   if (Env::bGet("SE_ENV_INTKEY"_Stz,sFlagValue))
     gxEnvFlags.m_iIntKey = StrLib::iToI8(sFlagValue.azChar());
-  if (Env::bGet("SE_ENV_METACLUE"_Stz,sFlagValue))
-    gxEnvFlags.m_iMetaClue = StrLib::iToI8(sFlagValue.azChar());
   if (Env::bGet("SE_ENV_RAY"_Stz,sFlagValue))
     gxEnvFlags.m_iRay = StrLib::iToI8(sFlagValue.azChar());
 }
