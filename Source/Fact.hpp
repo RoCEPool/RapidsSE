@@ -24,7 +24,7 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Fact(i8 iFactNo, Fact* pProperty, Stz* szFactNote=nullptr);
+    Fact(i8 iFactNo, Fact* pPropKind, Stz* szFactNote=nullptr);
    ~Fact(void) noexcept(false);
   
     Stz* szFactNote(void);
@@ -33,8 +33,8 @@ namespace Facts
     i8   iFactNo(void);
     void vFactNo(i8 iFactNo);
   
-    Fact* pFactKind(void);
-    void vFactKind(Fact* pProperty);
+    Fact* pPropKind(void);
+    void vPropKind(Fact* pPropKind);
     
     void vAddFacet(Facet* pFacet);
 
