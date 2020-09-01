@@ -90,11 +90,13 @@ Question* Kbase::pQuestionBorrow(void)
 /*----------------------------------------------------------------------------*/
 /* return/delete a question                                                   */
 /*----------------------------------------------------------------------------*/
-void Kbase::vQuestionReturn(Question* pQuestion)
+void Kbase::vQuestionReturn(Question** ppQuestion)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
-  delete pQuestion;
+  delete *ppQuestion;
+  
+  *ppQuestion = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,37 +114,13 @@ Transform* Kbase::pTransformBorrow(void)
 /*----------------------------------------------------------------------------*/
 /* return/delete a transform                                                  */
 /*----------------------------------------------------------------------------*/
-void Kbase::vTransformReturn(Transform* pTransform)
+void Kbase::vTransformReturn(Transform** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
-  delete pTransform;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add facet to fact                                                          */
-/*----------------------------------------------------------------------------*/
-void Kbase::vAddFacet(Fact* pToFact, Facet* pFacet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  delete *ppTransform;
   
-  pToFact->vAddFacet(pFacet);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* new fact                                                                   */
-/*----------------------------------------------------------------------------*/
-Fact* Kbase::pNewFact(Fact* pFactKind, Stz* szFactNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
-  Fact* pFact = pFactNew(pFactKind,szFactNm);
-  
-  return pFact;
+  *ppTransform = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

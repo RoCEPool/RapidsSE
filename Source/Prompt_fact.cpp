@@ -30,11 +30,14 @@ bool Prompt::bPrompt_fact(SePrompt* pPrompt)
   Kbase* pKb = new Kbase("Test1"_Stz);
   K_KBASE(pKb);
   
-  Transform* pTr = pKb->pTransformBorrow();
+  Transform* pTk = pKb->pTransformBorrow();
+  Question*  pQk = pKb->pQuestionBorrow();
   
-  Fact* pFirst = pTr->pNewFacet(K_ROOT,K_FIRST,K_NODE);
+  //Fact* pFirst = pTk->pNewFacet(K_ROOT,K_FIRST,K_NODE);
+  K_ROOT->vAddFacet(K_FIRST,K_NODE);
   
-  pKb->vTransformReturn(pTr);
+  pKb->vQuestionReturn(&pQk);
+  pKb->vTransformReturn(&pTk);
   
   delete pKb;
   

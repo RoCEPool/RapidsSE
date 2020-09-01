@@ -28,6 +28,7 @@ namespace Facts
    ~Fact(void) noexcept(false);
   
     void vAddFacet(Facet* pFacet);
+    void vAddFacet(Fact* pAttributeKind, Fact* pAttribute);
 
     i8   iFactNo(void);
     void vFactNo(i8 iFactNo);

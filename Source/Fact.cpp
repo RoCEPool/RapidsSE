@@ -130,6 +130,18 @@ void Fact::vAddFacet(Facet* pFacet)
   m_pFacetVec->vAdd(pFacet);
 }
  
+/*----------------------------------------------------------------------------*/
+/* add facet                                                                  */
+/*----------------------------------------------------------------------------*/
+void Fact::vAddFacet(Fact* pAttributeKind, Fact* pAttribute)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  Facet* pFacet = new Facet(pAttributeKind,pAttribute);
+  
+  m_pFacetVec->vAdd(pFacet);
+}
+ 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

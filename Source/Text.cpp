@@ -53,6 +53,7 @@ Text::~Text(void) noexcept(false)
       delete pTextSmall;
       break;
     }
+      
     case CN_TEXTTINY: {
       TextTiny* pTextTiny = _pTextTiny(m_pTextBuffer);
       delete pTextTiny;
@@ -88,6 +89,7 @@ Stz* Text::szGet(void)
       TextSmall* pTextSmall = _pTextSmall(m_pTextBuffer);
       return pTextSmall->aGetText();
     }
+      
     case CN_TEXTTINY: {
       TextTiny* pTextTiny = _pTextTiny(m_pTextBuffer);
       return pTextTiny->aGetText();

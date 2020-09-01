@@ -47,7 +47,7 @@ void Transform::vAddFacet(Fact* pToFact, Facet* pFacet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  m_pKbase->vAddFacet(pToFact,pFacet);
+  pToFact->vAddFacet(pFacet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +58,7 @@ Fact* Transform::pNewFacet(Fact* pToFact, Fact* pFacetKind,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  Fact* pFact = m_pKbase->pNewFact(pFactKind,szFactNm);
+  Fact* pFact = m_pKbase->pFactNew(pFactKind,szFactNm);
     
   Facet* pFacet = new Facet(pFacetKind,pFact);
   
@@ -74,7 +74,7 @@ Fact* Transform::pNewFact(Fact* pFactKind, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  Fact* pFact = m_pKbase->pNewFact(pFactKind,szFactNm);
+  Fact* pFact = m_pKbase->pFactNew(pFactKind,szFactNm);
     
   return pFact;
 }
