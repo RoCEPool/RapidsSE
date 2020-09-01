@@ -29,10 +29,7 @@ Crw::~Crw(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
 {
-  if (gxEnvFlags.m_iMetaClue)
-    vDumpCrw_v2(szTitle,aHeadLine,pStreamDef);
-  else
-    vDumpCrw_v1(szTitle,aHeadLine,pStreamDef);
+  vDumpCrw_v2(szTitle,aHeadLine,pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/

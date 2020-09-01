@@ -13,10 +13,7 @@ void RowInflator::vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
                               StreamDef* pStreamDef,
                               eSI eStrInflate, i8* iaColSet)
 {
-  if (gxEnvFlags.m_iMetaClue)
-    vInflateSet_v2(aaiDstk,aHeadLine,pStreamDef,eStrInflate,iaColSet);
-  else
-    vInflateSet_v1(aaiDstk,aHeadLine,pStreamDef,iaColSet);
+  vInflateSet_v2(aaiDstk,aHeadLine,pStreamDef,eStrInflate,iaColSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,10 +22,7 @@ void RowInflator::vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
 void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine,
                                  i8 i_ColToRetrieve)
 {
-  if (gxEnvFlags.m_iMetaClue)
-    vInflateColumn_v2(pRow,aHeadLine,i_ColToRetrieve);
-  else
-    vInflateColumn_v1(pRow,aHeadLine,i_ColToRetrieve);
+  vInflateColumn_v2(pRow,aHeadLine,i_ColToRetrieve);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,10 +30,7 @@ void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateRow(RowSingle* pRow, HeadLine* aHeadLine)
 {
-  if (gxEnvFlags.m_iMetaClue)
-    vInflateRow_v2(pRow,aHeadLine);
-  else
-    vInflateRow_v1(pRow,aHeadLine);
+  vInflateRow_v2(pRow,aHeadLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,10 +38,7 @@ void RowInflator::vInflateRow(RowSingle* pRow, HeadLine* aHeadLine)
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateRow(RowSlab* pRowSlab, HeadLine* aHeadLine)
 {
-  if (gxEnvFlags.m_iMetaClue)
-    vInflateRow_v2(pRowSlab,aHeadLine);
-  else
-    vInflateRow_v1(pRowSlab,aHeadLine);
+  vInflateRow_v2(pRowSlab,aHeadLine);
 }
 
 /*----------------------------------------------------------------------------*/

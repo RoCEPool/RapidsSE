@@ -128,16 +128,9 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   i8 i_OfsCrs_ = C_UNKNOWN;
 
   
-  if (gxEnvFlags.m_iMetaClue) {
-    u1 uLastEncoding = uGetEncMetaClue(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  u1 uLastEncoding = uGetEncMetaClue(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
-    nDataBytes = RowCoder::nDataSizeOfClue(uLastEncoding);
-  }
-  else {
-    eMC eLastEncoding = eGetEncMetaCode(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
-  
-    nDataBytes = RowCoder::nDataSizeOfCode(eLastEncoding);
-  }
+  nDataBytes = RowCoder::nDataSizeOfClue(uLastEncoding);
   
   i8 nFreeBytes = nBytes() - i_OfsCrs_ - nDataBytes;
   
