@@ -934,6 +934,21 @@ Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** p
 {
   EntBuffer* pEntBuffer = *ppEntBuffer;
   
+  if (KE_INT == pEntBuffer->m_eEntKind)
+    aEnt = pMoveToGreaterThanEntry_int(aEnt, aGivenKey, ppEntBuffer);
+  else
+    aEnt = pMoveToGreaterThanEntry_gen(aEnt, aGivenKey, ppEntBuffer);
+  
+  return aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move to next key entry                                                     */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::pMoveToGreaterThanEntry_gen(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
+{
+  EntBuffer* pEntBuffer = *ppEntBuffer;
+  
   if (aEnt == pEntBuffer->aSkipRoots())
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
@@ -952,7 +967,43 @@ Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** p
       *ppEntBuffer = pEntBuffer->pNextBuffer();
       
       if (*ppEntBuffer) {
-        return (*ppEntBuffer)->pMoveToGreaterThanEntry((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
+        return (*ppEntBuffer)->pMoveToGreaterThanEntry_gen((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
+      }
+      else
+        break;
+    }
+  }
+  
+  return aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move to next key entry                                                     */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::pMoveToGreaterThanEntry_int(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
+{
+  EntBuffer* pEntBuffer = *ppEntBuffer;
+  
+  if (aEnt == pEntBuffer->aSkipRoots())
+    aEnt = pEntBuffer->aNextEntry(aEnt,0);
+  
+  while (aEnt) {
+    i8 iKey = *(i8*)aEnt->aKey();
+    i8 iGivenKey = *(i8*)aGivenKey;
+    
+    // have we moved beyond ?
+    if (iKey > iGivenKey)
+      break;;
+    
+    aEnt = pEntBuffer->aNextEntry(aEnt,0);
+    
+    if ( ! aEnt) {
+      
+      // move to the next buffer
+      *ppEntBuffer = pEntBuffer->pNextBuffer();
+      
+      if (*ppEntBuffer) {
+        return (*ppEntBuffer)->pMoveToGreaterThanEntry_int((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
       }
       else
         break;
@@ -969,18 +1020,73 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** 
 {
   EntBuffer* pEntBuffer = *ppEntBuffer;
   
+  if (KE_INT == pEntBuffer->m_eEntKind)
+    aEnt = pMoveToGreaterEqualEntry_int(aEnt, aGivenKey, ppEntBuffer);
+  else
+    aEnt = pMoveToGreaterEqualEntry_gen(aEnt, aGivenKey, ppEntBuffer);
+  
+  return aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move to next key entry                                                     */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::pMoveToGreaterEqualEntry_gen(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
+{
+  EntBuffer* pEntBuffer = *ppEntBuffer;
+  
   if (aEnt == pEntBuffer->aSkipRoots())
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
   while (aEnt) {
     eKC eCompare = Key::eCompare(aEnt->aKey(),aGivenKey);
-
+    
     // have we reached the key?
     if (eCompare == KC_SAME)
       break;
     
     // have we moved beyond ?
     if (eCompare == KC_AFTER)
+      break;
+    
+    aEnt = pEntBuffer->aNextEntry(aEnt,0);
+    
+    if (!aEnt) {
+      
+      // move to the next buffer
+      *ppEntBuffer = pEntBuffer->pNextBuffer();
+      
+      if (*ppEntBuffer) {
+        return pMoveToGreaterEqualEntry((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
+      }
+    }
+    else
+      break;
+  }
+  
+  return aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move to next key entry                                                     */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::pMoveToGreaterEqualEntry_int(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
+{
+  EntBuffer* pEntBuffer = *ppEntBuffer;
+  
+  if (aEnt == pEntBuffer->aSkipRoots())
+    aEnt = pEntBuffer->aNextEntry(aEnt,0);
+  
+  while (aEnt) {
+    i8 iKey = *(i8*)aEnt->aKey();
+    i8 iGivenKey = *(i8*)aGivenKey;
+    
+    // have we reached the key?
+    if (iKey == iGivenKey)
+      break;
+    
+    // have we moved beyond ?
+    if (iKey > iGivenKey)
       break;
     
     aEnt = pEntBuffer->aNextEntry(aEnt,0);

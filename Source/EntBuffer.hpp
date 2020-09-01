@@ -92,7 +92,15 @@ namespace Indexing
     
     static Ent* pMoveToGreaterThanEntry(Ent* aEnt, Key* aGivenKey,
                                         EntBuffer** ppEntBuffer);
+    static Ent* pMoveToGreaterThanEntry_gen(Ent* aEnt, Key* aGivenKey,
+                                        EntBuffer** ppEntBuffer);
+    static Ent* pMoveToGreaterThanEntry_int(Ent* aEnt, Key* aGivenKey,
+                                        EntBuffer** ppEntBuffer);
     static Ent* pMoveToGreaterEqualEntry(Ent* aEnt, Key* aGivenKey,
+                                         EntBuffer** ppEntBuffer);
+    static Ent* pMoveToGreaterEqualEntry_gen(Ent* aEnt, Key* aGivenKey,
+                                         EntBuffer** ppEntBuffer);
+    static Ent* pMoveToGreaterEqualEntry_int(Ent* aEnt, Key* aGivenKey,
                                          EntBuffer** ppEntBuffer);
     static Ent* pMoveToNextEntry(Ent* aEnt,
                                  EntBuffer** ppEntBuffer);
