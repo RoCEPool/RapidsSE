@@ -393,7 +393,7 @@ void Encoding_v2::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
     xColEnc.m_eMetaCode = MC_BCD_M_ONE;
     xColEnc.m_nDataSize = C_0B;
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_NEGATIVE,0);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MN_NEGATIVE,1);
     return;
   }
   
