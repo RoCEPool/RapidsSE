@@ -21,7 +21,7 @@ Fact::Fact(i8 iFactNo, Fact* pPropertyKind, Stz* szFactNote)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_iFactNo   = iFactNo;
+  m_iFactNo = iFactNo;
   m_sFactNote = szFactNote ? szFactNote : C_NO_NOTE;
   m_pPropertyKind = pPropertyKind;
   m_xProperty.m_pObject = nullptr;
