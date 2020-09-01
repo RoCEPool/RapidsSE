@@ -306,6 +306,8 @@ void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz
   bool bExactQuery = false;
   bool bHaveLowerKey = false;
   bool bHaveUpperKey = false;
+  i8 iLowerInt;
+  i8 iUpperInt;
   
   Format* pFmt = AM::pFmt();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -315,7 +317,9 @@ void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz
     bHaveLowerKey = true;
     
     // form the lower key
-    KeyBuilder::vAddElement(&xEntWrkLower,pColumn0,szLowerKey,pFmt);
+    KeyBuilder::vAddElement(pIndexDef->eKeyKind(),
+                            &xEntWrkLower,pColumn0,szLowerKey,pFmt);
+    
     for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
       xEntWrkLower.vAppendMinusInfinity();
     }
@@ -328,7 +332,9 @@ void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz
     bHaveUpperKey = true;
     
     // form the upper key
-    KeyBuilder::vAddElement(&xEntWrkUpper,pColumn0,szUpperKey,pFmt);
+    KeyBuilder::vAddElement(pIndexDef->eKeyKind(),
+                            &xEntWrkUpper,pColumn0,szUpperKey,pFmt);
+    
     for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
       xEntWrkUpper.vAppendPlusInfinity();
     }
@@ -340,11 +346,20 @@ void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if upperKey > lowerKey
-    eKC eCompare = Key::eCompare(xEntWrkUpper.aKey(),
-                                 xEntWrkLower.aKey());
-    
-    if (eCompare == KC_BEFORE)
-      goto L_Exit;
+    if (pIndexDef->eKeyKind() == KE_INT) {
+      iLowerInt = xEntWrkLower.aEnt()->iIntElm0();
+      iUpperInt = xEntWrkUpper.aEnt()->iIntElm0();
+      
+      if (iUpperInt < iLowerInt)
+        goto L_Exit;
+    }
+    else {
+      eKC eCompare = Key::eCompare(xEntWrkUpper.aKey(),
+                                   xEntWrkLower.aKey());
+      
+      if (eCompare == KC_BEFORE)
+        goto L_Exit;
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
