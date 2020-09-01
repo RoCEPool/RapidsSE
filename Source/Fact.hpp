@@ -12,7 +12,7 @@ namespace Facts
     i8  m_iFactNo;
     s32 m_sFactNote;
 
-    Fact*    m_pPropKind;
+    Fact*    m_pPropertyKind;
     Property m_xProperty;
 
     FacetVec* m_pFacetVec; // ... which has facets
@@ -24,20 +24,22 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Fact(i8 iFactNo, Fact* pPropKind, Stz* szFactNote=nullptr);
+    Fact(i8 iFactNo, Fact* pPropertyKind, Stz* szFactNote=nullptr);
    ~Fact(void) noexcept(false);
   
-    Stz* szFactNote(void);
-    void vFactNote(Stz* szFactNote);
+    void vAddFacet(Facet* pFacet);
 
     i8   iFactNo(void);
     void vFactNo(i8 iFactNo);
-  
-    Fact* pPropKind(void);
-    void vPropKind(Fact* pPropKind);
     
-    void vAddFacet(Facet* pFacet);
+    Stz* szFactNote(void);
+    void vFactNote(Stz* szFactNote);
+  
+    Property& rxProperty(void);
 
+    Fact* pPropertyKind(void);
+    void vPropertyKind(Fact* pPropertyKind);
+    
   private:
     Footer* aFooter(void);
   };

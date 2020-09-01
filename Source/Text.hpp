@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Text.hpp -- text (can be of varying sizes - tiny, small, medium large      */
+/* Text.hpp -- text (can be of varying sizes - tiny, small, medium, large)    */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,7 @@ namespace Structures
   {
   private:
     i8          m_nSizeText;      // size of the text
-    TextBuffer* m_aTextBuffer;    // text buffer
+    TextBuffer* m_pTextBuffer;    // text buffer
     
     // must be last
     Footer m_xFooter;
@@ -23,8 +23,8 @@ namespace Structures
     Text(Stz* szArg);
    ~Text(void) noexcept(false);
   
-    Stz* aGet(void);
-    void vSet(Stz* aText);
+    Stz* szGet(void);
+    void vSet(Stz* szArg);
     
     Footer* aFooter(void);
   };

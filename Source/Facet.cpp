@@ -16,15 +16,13 @@ __aFooterFunction(Facet)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Facet::Facet(Fact* pFacetKind, Fact* pFact)
+Facet::Facet(Fact* pAttributeKind, Fact* pAttribute)
 : Object(CN_FACET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACET,_FOOTER_);
-  
-  m_pFeatureVec = new FeatureVec;
-  
-  m_pFacetKind = pFacetKind;
-  m_pFact = pFact;
+    
+  m_pAttributeKind = pAttributeKind;
+  m_pAttribute = pAttribute;
   
   _checkInitialised_(CN_FACET);
 
@@ -38,7 +36,6 @@ Facet::~Facet(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACET,_FOOTER_);
   
-  delete m_pFeatureVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,21 +45,21 @@ Facet::~Facet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get fact                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Facet::pFact(void)
+Fact* Facet::pAttribute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACET,_FOOTER_);
   
-  return m_pFact;
+  return m_pAttribute;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get kind                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Facet::pFacetKind(void)
+Fact* Facet::pAttributeKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACET,_FOOTER_);
   
-  return m_pFacetKind;
+  return m_pAttributeKind;
 }
 
 /*============================================================================*/

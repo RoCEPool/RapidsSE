@@ -1,40 +1,17 @@
 /*============================================================================*/
-/* String_t.cpp -- fixed-length string variable (template)                    */
+/* Text.cpp -- text (can be of varying sizes - tiny, small, medium, large)    */
 /*============================================================================*/
 
 #include "Structures.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Text* Structures::_pText(void* aAddr)
-{
-  Text* pText = reinterpret_cast<Text*>(aAddr);
-  
-  RASSERT_TYPE(pText,CN_TEXT);
-  
-  return pText;
-}
 
-/*----------------------------------------------------------------------------*/
-/* new a Text from the heap                                                   */
-/*----------------------------------------------------------------------------*/
-void* Text::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_TEXT);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
-/*----------------------------------------------------------------------------*/
-void Text::operator delete(void* pTextAddress)
-{
-  Text* pText = reinterpret_cast<Text*>(pTextAddress);
-  
-  HeapMem::vFree(pText);
-}
+__pCastFunction(Structures,Text,CN_TEXT)
+__aNewFunction(Text,CN_TEXT)
+__vDeleteFunction(Text,CN_TEXT)
+__aFooterFunction(Text)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -45,7 +22,7 @@ Text::Text(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
   
   m_nSizeText = 0;
-  m_aTextBuffer = nullptr;
+  m_pTextBuffer = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TEXT,_FOOTER_);
 }
@@ -57,34 +34,33 @@ Text::~Text(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
   
-  switch (m_aTextBuffer->eClass()) {
+  switch (m_pTextBuffer->eClass()) {
       
     case CN_TEXTLARGE: {
-      TextLarge* pTextLarge = _pTextLarge(m_aTextBuffer);
+      TextLarge* pTextLarge = _pTextLarge(m_pTextBuffer);
       delete pTextLarge;
       break;
     }
       
     case CN_TEXTMEDIUM: {
-      TextMedium* pTextMedium = _pTextMedium(m_aTextBuffer);
+      TextMedium* pTextMedium = _pTextMedium(m_pTextBuffer);
       delete pTextMedium;
       break;
     }
       
     case CN_TEXTSMALL:  {
-      TextSmall* pTextSmall = _pTextSmall(m_aTextBuffer);
+      TextSmall* pTextSmall = _pTextSmall(m_pTextBuffer);
       delete pTextSmall;
       break;
     }
     case CN_TEXTTINY: {
-      TextTiny* pTextTiny = _pTextTiny(m_aTextBuffer);
+      TextTiny* pTextTiny = _pTextTiny(m_pTextBuffer);
       delete pTextTiny;
       break;
     }
       
     default:
       RASSERT(0);
-    
   }
 
 }
@@ -92,93 +68,80 @@ Text::~Text(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* set text to given value                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* Text::aGet(void)
+Stz* Text::szGet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
   
-  switch (m_aTextBuffer->eClass()) {
+  switch (m_pTextBuffer->eClass()) {
       
     case CN_TEXTLARGE: {
-      TextLarge* pTextLarge = _pTextLarge(m_aTextBuffer);
+      TextLarge* pTextLarge = _pTextLarge(m_pTextBuffer);
       return pTextLarge->aGetText();
     }
       
     case CN_TEXTMEDIUM: {
-      TextMedium* pTextMedium = _pTextMedium(m_aTextBuffer);
+      TextMedium* pTextMedium = _pTextMedium(m_pTextBuffer);
       return pTextMedium->aGetText();;
     }
       
     case CN_TEXTSMALL:  {
-      TextSmall* pTextSmall = _pTextSmall(m_aTextBuffer);
+      TextSmall* pTextSmall = _pTextSmall(m_pTextBuffer);
       return pTextSmall->aGetText();
     }
     case CN_TEXTTINY: {
-      TextTiny* pTextTiny = _pTextTiny(m_aTextBuffer);
+      TextTiny* pTextTiny = _pTextTiny(m_pTextBuffer);
       return pTextTiny->aGetText();
     }
       
     default:
       RASSERT(0);
-      
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* set text to given value                                                    */
 /*----------------------------------------------------------------------------*/
-void Text::vSet(Stz* aString)
+void Text::vSet(Stz* szArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
   
-  i8 nStringSize = StrLib::nSize((char*)aString);
+  i8 nStringSize = StrLib::nSize((char*)szArg);
   
   // is there a buffer ?
-  if ( m_aTextBuffer ) {
+  if ( m_pTextBuffer ) {
     
     // does the string fit the currest buffer
-    if ( nStringSize > m_aTextBuffer->nBufferSize()) {
+    if ( nStringSize > m_pTextBuffer->nBufferSize()) {
     
       // delete the text buffer
-      delete m_aTextBuffer;
-      m_aTextBuffer = nullptr;
+      delete m_pTextBuffer;
+      m_pTextBuffer = nullptr;
     }
   }
   
-  if ( ! m_aTextBuffer ) {
+  if ( ! m_pTextBuffer ) {
+    
     // now allocate a new buffer
     if (nStringSize < C_SIZE_TINY_TEXT)
-      m_aTextBuffer = new TextTiny();
+      m_pTextBuffer = new TextTiny();
     
     else if (nStringSize < C_SIZE_SMALL_TEXT)
-      m_aTextBuffer = new TextSmall();
+      m_pTextBuffer = new TextSmall();
 
     else if (nStringSize < C_SIZE_MEDIUM_TEXT)
-      m_aTextBuffer = new TextMedium();
+      m_pTextBuffer = new TextMedium();
 
     else if (nStringSize < C_SIZE_LARGE_OBJECT)
-      m_aTextBuffer = new TextLarge();
+      m_pTextBuffer = new TextLarge();
     
     else
       RASSERT(0);
   }
   
   m_nSizeText = nStringSize;
-  MemLib::vCopy(aGet(),aString,nStringSize,CN_TEXT);
+  MemLib::vCopy(szGet(),szArg,nStringSize,CN_TEXT);
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Text::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
-  
-  return &m_xFooter;
-}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
