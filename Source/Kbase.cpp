@@ -56,13 +56,12 @@ Kbase::~Kbase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pFactNew(Fact* pKind)
+Fact* Kbase::pFactNew(Fact* pFactKind, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pFact = new Fact(++ m_ixFactNo, pKind);
+  Fact* pFact = new Fact(++ m_ixFactNo, pFactKind, szFactNm);
 
-  
   return pFact;
 }
 
@@ -124,30 +123,24 @@ void Kbase::vTransformReturn(Transform* pTransform)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add facet to fact                                                          */
+/*----------------------------------------------------------------------------*/
+void Kbase::vAddFacet(Fact* pToFact, Facet* pFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  pToFact->vAddFacet(pFacet);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pNewFact(Fact* pFactKind, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pFact = pFactNew();
-  
-  pFact->vFactKind(pFactKind);
-  pFact->vFactNm(szFactNm);
-
-  return pFact;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new fact                                                                   */
-/*----------------------------------------------------------------------------*/
-Fact* Kbase::pNewFact(Stz* szFactNm, Fact* pKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
-  Fact* pFact = pFactNew(pKind);
-  
-  pFact->vFactNm(szFactNm);
+  Fact* pFact = pFactNew(pFactKind,szFactNm);
   
   return pFact;
 }
@@ -163,20 +156,20 @@ void Kbase::vAprioriFacts(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
 
-  m_pRoot   = pFactNew();
+  m_pRoot   = pFactNew(nullptr,nullptr);
   
   // the primitives
-  m_pFact   = pFactNew();
+  m_pFact   = pFactNew(nullptr,nullptr);
 
-  m_pFirst  = pFactNew();
-  m_pPrev   = pFactNew();
-  m_pNext   = pFactNew();
-  m_pNode   = pFactNew();
+  m_pFirst  = pFactNew(nullptr,nullptr);
+  m_pPrev   = pFactNew(nullptr,nullptr);
+  m_pNext   = pFactNew(nullptr,nullptr);
+  m_pNode   = pFactNew(nullptr,nullptr);
 
-  m_pName   = pFactNew();
-  m_pInt    = pFactNew();
-  m_pObject = pFactNew();
-  m_pText   = pFactNew();
+  m_pName   = pFactNew(nullptr,nullptr);
+  m_pInt    = pFactNew(nullptr,nullptr);
+  m_pObject = pFactNew(nullptr,nullptr);
+  m_pText   = pFactNew(nullptr,nullptr);
 }
 
 /*============================================================================*/

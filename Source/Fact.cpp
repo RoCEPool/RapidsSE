@@ -16,19 +16,17 @@ __aFooterFunction(Fact)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Fact::Fact(i8 iFactNo, Fact* pFactKind)
+Fact::Fact(i8 iFactNo, Fact* pProperty, Stz* szFactNote)
 : Object(CN_FACT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_iFactNo = iFactNo;
-  m_sFactNm = C_NO_NAME;
-  
-  m_pFacetVec = new FacetVec;
-  
-  m_pFactKind = pFactKind;
-  
+  m_iFactNo   = iFactNo;
+  m_sFactNote = szFactNote ? szFactNote : C_NO_NOTE;
+  m_pPropKind = pProperty;
   m_xProperty.m_pObject = nullptr;
+
+  m_pFacetVec = new FacetVec;
   
   _checkInitialised_(CN_FACT);
 
@@ -52,21 +50,21 @@ Fact::~Fact(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get fact name                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Fact::szFactNm(void)
+Stz* Fact::szFactNote(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_sFactNm;
+  return m_sFactNote;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set fact name                                                              */
 /*----------------------------------------------------------------------------*/
-void Fact::vFactNm(Stz* szFactNm)
+void Fact::vFactNote(Stz* szFactNote)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_sFactNm = szFactNm;
+  m_sFactNote = szFactNote;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,17 +94,17 @@ Fact* Fact::pFactKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_pFactKind;
+  return m_pPropKind;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set fact kind                                                              */
 /*----------------------------------------------------------------------------*/
-void Fact::vFactKind(Fact* pFactKind)
+void Fact::vFactKind(Fact* pPropKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_pFactKind = pFactKind;
+  m_pPropKind = pPropKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,8 +119,7 @@ void Fact::vAddFacet(Facet* pFacet)
 
   m_pFacetVec->vAdd(pFacet);
 }
-
-
+ 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

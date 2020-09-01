@@ -33,7 +33,7 @@ namespace Facts
     Kbase(Stz* szKbName);
    ~Kbase(void) noexcept(false);
   
-    Fact* pFactNew(Fact* pKind = nullptr);
+    Fact* pFactNew(Fact* pFactKind, Stz* szFactNm=nullptr);
     void vFactDelete(Fact* pFact);
   
     Question* pQuestionBorrow(void);
@@ -43,15 +43,14 @@ namespace Facts
     void vTransformReturn(Transform* pTransform);
   
   
-    void  vAddFacet(Fact* pParent, Fact* pKind, Fact* pKid);
+    void  vAddFacet(Fact* pToFact, Facet* pFacet);
+    void  vAddFacet(Fact* pToFact, Fact* pFactKind, Fact* pFact);
 
-    Fact* pNewFacet(Fact* pParent, Fact* pKind, Stz* szFactNm = nullptr);
+    Fact* pNewFacet(Fact* pToFact, Fact* pFacetKind, Stz* szFactNm = nullptr);
 
     Fact* pNewFact(Fact* pFactKind = nullptr, Stz* szFactNm=nullptr);
-    Fact* pNewFact(Stz* szFactNm, Fact* pKind = nullptr);
-
-    Fact* pNewFactv(Fact* pKind, ...);
-    Fact* pNewFactv(Stz* szFactNm, Fact* pKind, ...);
+ 
+    //Fact* pNewFactv(Fact* pFactKind, Stz* szFactNm, ...);
 
   
     bool bIsFactKind(Fact* pFact)    { return (pFact == m_pFact);   }

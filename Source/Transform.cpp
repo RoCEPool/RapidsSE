@@ -47,20 +47,19 @@ void Transform::vAddFacet(Fact* pToFact, Facet* pFacet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
+  m_pKbase->vAddFacet(pToFact,pFacet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* new facet of a fact                                                        */
 /*----------------------------------------------------------------------------*/
-Fact* Transform::pNewFacet(Fact* pToFact,
-                           Fact* pFacetKind, Fact* pFactKind, Stz* szFactNm)
+Fact* Transform::pNewFacet(Fact* pToFact, Fact* pFacetKind,
+                           Fact* pFactKind, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  Fact* pFact = m_pKbase->pNewFact(szFactNm);
-  
-  pFact->vFactKind(pFactKind);
-  
+  Fact* pFact = m_pKbase->pNewFact(pFactKind,szFactNm);
+    
   Facet* pFacet = new Facet(pFacetKind,pFact);
   
   pToFact->vAddFacet(pFacet);
@@ -77,34 +76,6 @@ Fact* Transform::pNewFact(Fact* pFactKind, Stz* szFactNm)
   
   Fact* pFact = m_pKbase->pNewFact(pFactKind,szFactNm);
     
-  return pFact;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new fact (variable args)                                                   */
-/*----------------------------------------------------------------------------*/
-Fact* Transform::pNewFactv(Fact* pFactKind, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
-  
-  Fact* pFact = m_pKbase->pNewFact();
-  
-  pFact->vFactKind(pFactKind);
-  
-  return pFact;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new fact                                                                   */
-/*----------------------------------------------------------------------------*/
-Fact* Transform::pNewFactv(Stz* szFactNm, Fact* pFactKind, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
-  
-  Fact* pFact = m_pKbase->pNewFact(szFactNm);
-  
-  pFact->vFactKind(pFactKind);
-  
   return pFact;
 }
 

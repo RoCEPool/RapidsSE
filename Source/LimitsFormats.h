@@ -84,6 +84,7 @@ static const char D_RECORD_TERMINATOR    = '\0';
 
 static Stz* C_NO_ARG  = "-- NO_ARG --"_Stz;
 static Stz* C_NO_NAME = "-- NO_NAME --"_Stz;
+static Stz* C_NO_NOTE = "-- no note --"_Stz;
 static Stz* C_NO_WORD = "-- NO_WORD --"_Stz;
 static Stz* C_NULL    = "null"_Stz;
 

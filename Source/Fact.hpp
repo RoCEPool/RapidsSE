@@ -10,15 +10,13 @@ namespace Facts
   private:
   
     i8  m_iFactNo;
-    s32 m_sFactNm;
+    s32 m_sFactNote;
 
-    //Concept* m_pConcept; // about a concept
-    FacetVec* m_pFacetVec; // ... which has facets
-  
-    Fact*    m_pFactKind;
+    Fact*    m_pPropKind;
     Property m_xProperty;
 
-
+    FacetVec* m_pFacetVec; // ... which has facets
+  
     // must be last
     Footer m_xFooter;
 
@@ -26,17 +24,17 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Fact(i8 iFactNo, Fact* pKind);
+    Fact(i8 iFactNo, Fact* pProperty, Stz* szFactNote=nullptr);
    ~Fact(void) noexcept(false);
   
-    Stz* szFactNm(void);
-    void vFactNm(Stz* szFactNm);
+    Stz* szFactNote(void);
+    void vFactNote(Stz* szFactNote);
 
     i8   iFactNo(void);
     void vFactNo(i8 iFactNo);
   
     Fact* pFactKind(void);
-    void vFactKind(Fact* pFactKind);
+    void vFactKind(Fact* pProperty);
     
     void vAddFacet(Facet* pFacet);
 
