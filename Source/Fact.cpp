@@ -16,7 +16,7 @@ __aFooterFunction(Fact)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Fact::Fact(i8 iFactNo, Fact* pKind)
+Fact::Fact(i8 iFactNo, Fact* pFactKind)
 : Object(CN_FACT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
@@ -26,7 +26,7 @@ Fact::Fact(i8 iFactNo, Fact* pKind)
   
   m_pFacetVec = new FacetVec;
   
-  m_pKind = pKind;
+  m_pFactKind = pFactKind;
   
   m_xProperty.m_pObject = nullptr;
   
@@ -92,22 +92,36 @@ void Fact::vFactNo(i8 iFactNo)
 /*----------------------------------------------------------------------------*/
 /* get fact kind                                                              */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pKind(void)
+Fact* Fact::pFactKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_pKind;
+  return m_pFactKind;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set fact kind                                                              */
 /*----------------------------------------------------------------------------*/
-void Fact::vKind(Fact* pKind)
+void Fact::vFactKind(Fact* pFactKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_pKind = pKind;
+  m_pFactKind = pFactKind;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add facet                                                                  */
+/*----------------------------------------------------------------------------*/
+void Fact::vAddFacet(Facet* pFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  m_pFacetVec->vAdd(pFacet);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

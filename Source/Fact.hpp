@@ -15,7 +15,7 @@ namespace Facts
     //Concept* m_pConcept; // about a concept
     FacetVec* m_pFacetVec; // ... which has facets
   
-    Fact*    m_pKind;
+    Fact*    m_pFactKind;
     Property m_xProperty;
 
 
@@ -35,8 +35,10 @@ namespace Facts
     i8   iFactNo(void);
     void vFactNo(i8 iFactNo);
   
-    Fact* pKind(void);
-    void vKind(Fact* pKind);
+    Fact* pFactKind(void);
+    void vFactKind(Fact* pFactKind);
+    
+    void vAddFacet(Facet* pFacet);
 
   private:
     Footer* aFooter(void);
