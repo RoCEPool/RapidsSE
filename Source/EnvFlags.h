@@ -8,7 +8,6 @@ namespace Base
   struct EnvFlags {
         
     i8 m_iAlka;
-    i8 m_iIntKey;
     i8 m_iRay;
     
   };

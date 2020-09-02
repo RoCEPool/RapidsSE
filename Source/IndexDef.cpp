@@ -139,10 +139,7 @@ void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType)
     return;
   }
 
-  //if (gxEnvFlags.m_iIntKey)
-    m_eKeyKind = KE_INT;
-  //else
-  //  m_eKeyKind = KE_GENERAL;
+  m_eKeyKind = KE_INT;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,10 +171,7 @@ void IndexDef::vDetermineKeyKind(void)
     return;
   }
 
-  //if (gxEnvFlags.m_iIntKey)
-    m_eKeyKind = KE_INT;
-  //else
-  //  m_eKeyKind = KE_GENERAL;
+  m_eKeyKind = KE_INT;
 }
 
 /*----------------------------------------------------------------------------*/
