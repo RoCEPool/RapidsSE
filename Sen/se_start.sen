@@ -887,21 +887,51 @@
     | stageB
 
   stage stageB on all partitions :
-    sql 300
+    sql 300 1
     | stageC hashed
 
   stage stageC on all partitions :
-    sql 301
+    sql 301 1
     | stageD
 
   stage stageD on origin :
-    sql 302
+    sql 302 1
     | output
     | sink
     | stageA
 
   end ;  "
   api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // q 3b prelim
+  sPath
+  "
+  procedure Query_3b_I
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    sql 300 0
+    | stageC hashed
+
+  stage stageC on all partitions :
+    sql 301 0
+    | stageD
+
+  stage stageD on origin :
+    sql 302 0
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 4b prelim
@@ -916,11 +946,37 @@
     | stageB
 
   stage stageB on all partitions :
-    sql 400
+    sql 400 1
     | stageC
 
   stage stageC on origin :
-    sql 401
+    sql 401 1
+    | output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // q 4b prelim
+  sPath
+  "
+  procedure Query_4b_I
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    sql 400 0
+    | stageC
+
+  stage stageC on origin :
+    sql 401 0
     | output
     | sink
     | stageA
@@ -951,7 +1007,7 @@
     | stageB
 
   stage stageB on all partitions :
-    sql 100001
+    sql 100001 1
     | stageC
 
   stage stageC on origin :
@@ -987,12 +1043,42 @@
 
   stage stageB on all partitions :
     scan $Table
-    | sql 100
+    | sql 100 1
     //| sql 101
     | stageC
 
   stage stageC on origin :
-    sql 103
+    sql 103 1
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 1 - iterating index on l_shipdate
+  sPath
+  "
+  procedure Query1_I
+    parameters $Table
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    scan $Table
+    | sql 100 0
+    //| sql 101
+    | stageC
+
+  stage stageC on origin :
+    sql 103 0
     | output
     //| toStatDemon
     | sink
@@ -1016,11 +1102,11 @@
     | stageB
 
   stage stageB on all partitions :
-    sql 600 $Table $Index
+    sql 600 1 $Table $Index
     | stageC
 
   stage stageC on origin :
-    sql 601
+    sql 601 1
     | output
     //| toStatDemon
     | sink
@@ -1029,6 +1115,35 @@
   end ;
   "
   api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 6 - converting loaded CRW data into RSB
+  sPath
+  "
+  procedure Query6_I
+    parameters $Table $Index
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    sql 600 0 $Table $Index
+    | stageC
+
+  stage stageC on origin :
+    sql 601 0
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
 
 ;
 

@@ -2,6 +2,8 @@
 /* TPCH queries - SF1 (alka lab)                                              */
 /*============================================================================*/
 
+trackMemory;
+
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "creating Customer...";
 _customer
@@ -32,14 +34,23 @@ compactIdx Lineitem lineItem_Idx1;
 compactIdx Lineitem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Query 1 (Interpretive)...";
+/time Query1_I lineitem;
+
 print section "Query 1...";
 /time Query1 lineitem;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Query 6 (Interpretive)...";
+/time Query6_I lineitem lineItem_Idx2;
+
 print section "Query 6...";
 /time Query6 lineitem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
+print section "Query 4 (Interpretive)...";
+/time Query_4b_I ;
+
 print section "Query 4...";
 /time Query_4b ;
 
@@ -47,7 +58,7 @@ print section "Query 4...";
 print section "Dropping Orders Table...";
 drop table Orders;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - -   - - - - - - -
 print section "creating Orders...";
 _orders_by_O_CUSTKEY
 create index Orders_Idx1 ON Orders(O_ORDERKEY);
@@ -63,9 +74,18 @@ compactIdx Orders Orders_Idx1;
 compactIdx Orders Orders_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-print section "Query 3...";
-/time Query_3b ;
+print section "Query 3 (Interpretive)...";
+/time Query_3b_I ;
 
+print section "Query 3 ...";
+/time Query_3b ;
+/time Query_3b ;
+/time Query_3b ;
+drop table lineitem;
+drop table orders;
+drop table customer;
+
+memoryLeaks;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

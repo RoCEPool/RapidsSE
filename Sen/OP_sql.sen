@@ -348,8 +348,10 @@
       //queryNo "QUERY %v" .printf
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 100=STARTMARKER" .
       100 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
+      Counter0[] 1 == if
+        logicCompiler[].new
+        LogicCompiler[].compile
+      then
       //ray100
       //idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
       idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
@@ -359,8 +361,11 @@
     103 of
       //queryNo "QUERY %v" .printf
       103 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
+
+      Counter0[] 1 == if
+        logicCompiler[].new
+        LogicCompiler[].compile
+      then
       //ray100
       //idxDef_vchvch indexDef[] indexTree[].new indexTree[].asTmp
       idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
@@ -371,9 +376,11 @@
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 300=STARTMARKER" .
       //queryNo "QUERY %v" .printf
       300 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
 
+      Counter0[] 1 == if
+        logicCompiler[].new
+        LogicCompiler[].compile
+      then
 
       "customer" "customer_Idx1" op__table_index assert
 
@@ -404,9 +411,11 @@
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 301=STARTMARKER" .
       //queryNo "QUERY %v" .printf
       301 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
 
+      Counter0[] 1 == if
+        logicCompiler[].new
+        LogicCompiler[].compile
+      then
       "lineitem" "lineitem_Idx1" op__table_index assert
 
       Table[].asAltStreamDef
@@ -433,8 +442,11 @@
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 302=STARTMARKER" .
       //queryNo "QUERY %v" .printf
       302 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
+
+      Counter0[] 1 == if
+        logicCompiler[].new
+        LogicCompiler[].compile
+      then
 
       idxDef_int indexDef[] indexTree[].new
       indexTree[].asTmp
@@ -455,8 +467,11 @@
       //"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 400=STARTMARKER" .
       //queryNo "QUERY %v" .printf
       400 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
+
+      Counter0[] 1 == if
+        LogicCompiler[].new
+        LogicCompiler[].compile
+      then
 
       streamDefOut_400
       true Pot[].useStreamDefOut
@@ -475,8 +490,11 @@
 
       //queryNo "QUERY %v" .printf
       401 LogicUnit[].genCode
-      logicCompiler[].new
-      LogicCompiler[].compile
+
+      Counter0[] 1 == if
+        LogicCompiler[].new
+        LogicCompiler[].compile
+      then
 
       streamDefOut_401
       true Pot[].useStreamDefOut
@@ -496,35 +514,51 @@
       indexTree[].asSrc
       Table[].asSrcStreamDef
       600 LogicUnit[].genCode
-      logicCompiler[].new
-      logicCompiler[].compile
+
+    Counter0[] 1 == if
+      LogicCompiler[].new
+      LogicCompiler[].compile
+    then
+
     endof
 
     601 of
       //queryNo "QUERY %v" .printf
       601 LogicUnit[].genCode
-      logicCompiler[].new
-      logicCompiler[].compile
+      Counter0[] 1 == if
+        LogicCompiler[].new
+        LogicCompiler[].compile
+      then
     endof
 
     100000 of
       //queryNo "QUERY %v" .printf
       100000 LogicUnit[].genCode
 
-      logicCompiler[].new
-      logicCompiler[].compile
-      logicUnit[].dynFun
-      logicCompiler[].delete
+      Counter0[] 1 == if
+        LogicCompiler[].new
+        LogicCompiler[].compile
+        LogicUnit[].dynFun
+        LogicCompiler[].delete
+      else
+        LogicUnit[].transform
+      then
+
     endof
 
     100001 of
       //queryNo "QUERY %v" .printf
       100001 LogicUnit[].genCode
 
-      logicCompiler[].new
-      logicCompiler[].compile
-      logicUnit[].dynFun
-      logicCompiler[].delete
+      Counter0[] 1 == if
+        LogicCompiler[].new
+        LogicCompiler[].compile
+        LogicUnit[].dynFun
+        LogicCompiler[].delete
+      else
+        LogicUnit[].transform
+      then
+
     endof
 
   endcase
@@ -550,8 +584,12 @@
 //  then
 
 
-  //LogicUnit[].transform
+
+Counter0[] 1 == if
   LogicUnit[].dynFun
+else
+  LogicUnit[].transform
+then
 
   false LogicUnit[].calledAgain!
 
@@ -560,7 +598,9 @@
     Pot[].pipeoutAllCompletedPtns
     true
   else
-    LogicCompiler[].delete
+    Counter0[] 1 == if
+      LogicCompiler[].delete
+    then
     Pot[].pipeoutAllDanglingPtns
     Operand[].newEosMarker
     ZK_EOSMARKER EG_ZK PP_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
@@ -646,9 +686,12 @@
 
   indexTree[] 0 LogicUnit[].dev!
 
-  //LogicUnit[].transform
-  LogicUnit[].dynFun
-  LogicCompiler[].delete
+  Counter0[] 1 == if
+    LogicUnit[].dynFun
+    LogicCompiler[].delete
+  else
+    logicUnit[].transform
+  then
 
   Pot[].pipeoutAllDangling
   Pot[].delete
@@ -712,8 +755,12 @@
   true Pot[].useStreamDefOut
   StreamDefOut[].pipeout
 
-  LogicUnit[].DynFun
-  LogicCompiler[].delete
+  Counter0[] 1 == if
+    LogicUnit[].dynFun
+    LogicCompiler[].delete
+  else
+    LogicUnit[].transform
+  then
 
   Pot[].pipeoutAllCompleted
   Pot[].pipeoutAllDangling
@@ -768,7 +815,11 @@
       //"---------------------------- 100=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcCrwBuffer
-      LogicUnit[].dynfun
+      Counter0[] 1 == if
+        LogicUnit[].dynFun
+      else
+        LogicUnit[].transform
+      then
       Operand[].delete
       //Pot[].pipeoutAllCompleted
     endof
@@ -796,7 +847,11 @@
      // "---------------------------- 103=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      LogicUnit[].dynFun
+      Counter0[] 1 == if
+        LogicUnit[].dynFun
+      else
+        LogicUnit[].transform
+      then
       Operand[].delete
       //Pot[].pipeoutAllCompleted
     endof
@@ -806,8 +861,12 @@
       Operand[].pipeIn
       //Operand[] "RsbBuffer %v\n" .printf
       Operand[].asSrcRowSlab
-      //LogicUnit[].transform
-      LogicUnit[].dynFun
+
+      Counter0[] 1 == if
+        LogicUnit[].dynFun
+      else
+        LogicUnit[].transform
+      then
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
@@ -816,8 +875,13 @@
       //"---------------------------- 302=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      //true 1 LogicUnit[].transformArgs
-      true 1 LogicUnit[].dynFunArgs
+
+      Counter0[] 1 == if
+        true 1 LogicUnit[].dynFunArgs
+      else
+        true 1 LogicUnit[].transformArgs
+      then
+
       Operand[].delete
       Pot[].pipeoutAllCompleted
 
@@ -827,8 +891,12 @@
       //"---------------------------- 401=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      //true 1 LogicUnit[].transformArgs
-      true 1 LogicUnit[].dynFunArgs
+
+      Counter0[] 1 == if
+        true 1 LogicUnit[].dynFunArgs
+      else
+        true 1 LogicUnit[].transformArgs
+      then
       Operand[].delete
       Pot[].pipeoutAllCompleted
 
@@ -838,7 +906,12 @@
       //"---------------------------- 601=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-      LogicUnit[].dynFun
+
+      Counter0[] 1 == if
+        LogicUnit[].dynFun
+      else
+        LogicUnit[].transform
+      then
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
@@ -870,8 +943,13 @@
       streamDef[].delete
 
       // AGGREGATE WITH GROUPBY
-      LogicUnit[].dynFun
-      logicCompiler[].delete
+
+      Counter0[] 1 == if
+        LogicUnit[].dynFun
+        LogicCompiler[].delete
+      else
+        LogicUnit[].transform
+      then
       IndexTree[].delete
       Pot[].pipeoutAllCompleted
     endof
@@ -881,8 +959,13 @@
       // AGGREGATE WITH GROUPBY (SUPER)
 
       //queryNo "QUERY %v" .printf
-      LogicUnit[].dynFun
-      logicCompiler[].delete
+
+      Counter0[] 1 == if
+        LogicUnit[].dynFun
+        LogicCompiler[].delete
+      else
+        LogicUnit[].transform
+      then
       IndexTree[].delete
       Pot[].pipeoutAllCompleted
     endof
@@ -893,21 +976,30 @@
 
     301 of
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 301=EOSMARKER" .
+    Counter0[] 1 == if
       LogicCompiler[].delete
+    then
     endof
 
     302 of
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 302=EOSMARKER" .
-      //false 1 LogicUnit[].transformArgs
-      false 1 LogicUnit[].dynFunArgs
-      LogicCompiler[].delete
+      Counter0[] 1 == if
+        false 1 LogicUnit[].dynFunArgs
+        LogicCompiler[].delete
+      else
+        false 1 LogicUnit[].transformArgs
+      then
     endof
 
     401 of
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 302=EOSMARKER" .
-      //false 1 LogicUnit[].transformArgs
+    Counter0[] 1 == if
       false 1 LogicUnit[].dynFunArgs
       LogicCompiler[].delete
+    else
+      false 1 LogicUnit[].transformArgs
+    then
+
     endof
 
     600 of
@@ -915,7 +1007,9 @@
 
     601 of
       //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 601=EOSMARKER" .
-      logicCompiler[].delete
+      Counter0[] 1 == if
+        LogicCompiler[].delete
+      then
     endof
 
   endcase
@@ -1006,6 +1100,9 @@
 
   LogReqEntry SEED_REQ
 
+  // get whether compiled or not
+  <compiled> >int to Counter0[]
+
   op__topology
 
   find: sql_CrwBuffer   ZK_CRWBUFFER   op[].handler!
@@ -1025,8 +1122,8 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: sql :: sql <queryNo> ;
-cmdSyntax: sql :: sql <queryNo> <tableNm> <indexNm> ;
+cmdSyntax: sql :: sql <queryNo> <compiled> ;
+cmdSyntax: sql :: sql <queryNo> <compiled> <tableNm> <indexNm> ;
 
 : sql _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
