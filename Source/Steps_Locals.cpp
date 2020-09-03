@@ -295,6 +295,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("StringA[]"_Stz)) {
+    pCurrentWord->vEncodeCall("StringA[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Subset[]"_Stz)) {
     pCurrentWord->vEncodeCall("Subset[].set"_Stz);
     EXIT();

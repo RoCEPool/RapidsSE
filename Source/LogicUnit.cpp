@@ -42,6 +42,8 @@ LogicUnit::LogicUnit(Task* pTask)
   m_iCounter1 = 0;
   m_iCounter2 = 0;
   
+  m_sStringA  = ""_Stz;
+  
   for (i8 i_Local = 0; i_Local < C_LOCALS; i_Local++)
     m_xRluCommon.m_iaLocals[i_Local] = C_UNKNOWN;
 

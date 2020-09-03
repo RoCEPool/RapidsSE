@@ -99,7 +99,9 @@ namespace Expressions
     i8               m_iCounter0;   // counter
     i8               m_iCounter1;   // counter
     i8               m_iCounter2;   // counter
-      
+    
+    s256             m_sStringA;    // string
+    
     Ent*             m_aLowerEntry;
     Ent*             m_aUpperEntry;
     EntBuffer*       m_pEntBufferOuter;

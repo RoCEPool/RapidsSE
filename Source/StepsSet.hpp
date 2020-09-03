@@ -1414,6 +1414,10 @@ public:
   void vStrTailInt(void);
   void vStrToStrVec(void);
 
+  // register stringA
+  void vStringAGet(void);
+  void vStringASet(void);
+
   // stream def
   void vStreamDefAsStr(void);
   void vStreamDefAsSrcStreamDef(void);
