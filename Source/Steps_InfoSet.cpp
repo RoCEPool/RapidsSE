@@ -174,6 +174,10 @@ void Step::vInfoSetAddTotalUnits(void)
   // get the total units
   i8 iTotalUnits = m_pDataStack->iPopInt(__func__);
   
+  // get the file name
+  s256 sFileName;
+  m_pDataStack->vPopStr(sFileName, __func__);
+  
   // get the streamDef from the table
   StreamDef* pStreamDef = pTable->pStreamDef();
   
@@ -182,6 +186,7 @@ void Step::vInfoSetAddTotalUnits(void)
   
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
+                                  sFileName.azChar(),
                                   iTotalUnits,
                                   C_VARGS_END);
   //ASSERT(pRow);

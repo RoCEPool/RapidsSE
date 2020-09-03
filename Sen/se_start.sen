@@ -576,7 +576,7 @@
 
     //eatSome |
 
-    insert $table      | // (crwBuffer) inserted into table
+    insert $table | // (crwBuffer) inserted into table
 
     stageD
 
@@ -1463,6 +1463,7 @@
   sPath
   "
   define table __totalUnits (
+    FILENAME   VARCHAR NOT NULL ,
     UNITS      INTEGER NOT NULL
   ) ;
   "

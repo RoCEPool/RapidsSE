@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : progress_EosMarker \handler
 
-  <string> "%v Progress: 100" str.format
-  "%" str.cat .
-  "****LOAD DONE****" .
+  <string> StringA[]
+    "*** File: %v; %v Done ***\n" str.format .
+
   PipeIn[].pipeOut
 
   true
@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : progress_ProgressUnits \handler
 
-  0 locals| iPercent |
+  0 0 0 locals| nodeName partitionNo iPercent |
 
   //"Operand:- ZK_PROGRESSUNITS" .verbose
 
@@ -42,10 +42,12 @@
   // print the Load %
   iPercent 0 > if
     iPercent 100 >= if
-      <string> "%v Progress: 100" str.format
-      "%" str.cat .
+      <string> StringA[]
+          "File: %v; %v Progress: 100" str.format
+      "%\n" str.cat .
     else
-      iPercent <string> "%v Progress: %v" str.format
+      iPercent <string> StringA[]
+         "File: %v; %v Progress: %v" str.format
       "%" str.cat .
     then
   then
@@ -73,8 +75,11 @@
   // get first row of infoSet[]
   Infoset[].firstRow to row[]
 
-  // get 0th column (totalUnits)
-  0 row[].getIntColumn to Counter0[]
+  // get 0th Column (fileName)
+  0 row[].getVchColumn to StringA[]
+
+  // get 1st column (totalUnits)
+  1 row[].getIntColumn to Counter0[]
 
   // now delete the InfoSet[]
   InfoSet[].delete

@@ -64,7 +64,7 @@
     infoSetTable[] InfoSet[].new
 
     // add fileSize to the infoset
-    iFileSizeMb infoSetTable[] InfoSet[].addTotalUnits assert
+    <fileNm> iFileSizeMb infoSetTable[] InfoSet[].addTotalUnits assert
 
     // pipeout the infoset
     InfoSet[].pipeOut
