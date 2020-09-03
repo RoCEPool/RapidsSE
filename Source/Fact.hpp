@@ -13,18 +13,19 @@ namespace Facts
     Text*   m_pText;
   };
 
+  //----------------------------------------------------------------------------
 
   class Fact : public Object
   {
   private:
   
-    i8    m_iFactNo;
-    Fact* m_pParent;
-    s256  m_sNote;
+    i8    m_iFactNo; // unique number (synonym of this facts address)
+    Fact* m_pParent; // parent (super-fact)
+    s256  m_sNote;   // optional textual decription
 
-    Property m_xProperty;
+    Property m_xProperty;   // some property
   
-    FactVec* m_pAttributes; // ... which is a set of sub-facts
+    FactVec* m_pAttributes; // a fact may have a set of sub-facts
   
     // must be last
     Footer m_xFooter;
@@ -37,10 +38,15 @@ namespace Facts
    ~Fact(void) noexcept(false);
   
     void vAddAttribute(Fact* pAttribute);
+    FactVec* pAttributes(void);
   
     i8   iFactNo(void);
     void vFactNo(i8 iFactNo);
     
+    bool bHasSpecificAttribute(Fact* pFact);
+    Fact* pHasAttributeSubClass(Fact* pOfFact);
+    bool bIsSubClass(Fact* pOfFact);
+
     Stz* szNote(void);
     void vNote(Stz* szNote);
   

@@ -29,7 +29,6 @@ Fact::Fact(i8 iFactNo, Fact* pParent, Stz* szNote)
   
   m_pAttributes = new FactVec;
 
-
   _checkInitialised_(CN_FACT);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
@@ -50,13 +49,23 @@ Fact::~Fact(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add attribute (sub-fact)                                                   */
+/* add attribute (a sub-fact)                                                 */
 /*----------------------------------------------------------------------------*/
 void Fact::vAddAttribute(Fact* pAttribute)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
   m_pAttributes->vAdd(pAttribute);
+}
+ 
+/*----------------------------------------------------------------------------*/
+/* get attributes (the set of sub-facts)                                      */
+/*----------------------------------------------------------------------------*/
+FactVec* Fact::pAttributes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  return m_pAttributes;
 }
  
 /*----------------------------------------------------------------------------*/
@@ -80,6 +89,42 @@ void Fact::vFactNo(i8 iFactNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* has an attribute which specifically given fact                             */
+/*----------------------------------------------------------------------------*/
+bool Fact::bHasSpecificAttribute(Fact* pFact)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  return false;
+}
+ 
+/*----------------------------------------------------------------------------*/
+/* has an attribute which is a sub-class of given fact                        */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pHasAttributeSubClass(Fact* pOfFact)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this fact a sub-class of given fact                                     */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsSubClass(Fact* pOfFact)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  if (this == pOfFact)
+    return true;
+  
+  if (! m_pParent)
+    return false;
+  
+  return m_pParent->bIsSubClass(pOfFact);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get fact name                                                              */
 /*----------------------------------------------------------------------------*/
 Stz* Fact::szNote(void)
@@ -100,7 +145,7 @@ void Fact::vNote(Stz* szNote)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get parent                                                                 */
+/* get parent fact                                                            */
 /*----------------------------------------------------------------------------*/
 Fact* Fact::pParent(void)
 {
@@ -110,7 +155,7 @@ Fact* Fact::pParent(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set parent                                                                 */
+/* set parent fact                                                            */
 /*----------------------------------------------------------------------------*/
 void Fact::vParent(Fact* pParent)
 {
@@ -120,7 +165,7 @@ void Fact::vParent(Fact* pParent)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get property kind                                                          */
+/* get property                                                               */
 /*----------------------------------------------------------------------------*/
 Property& Fact::rxProperty(void)
 {
@@ -129,7 +174,6 @@ Property& Fact::rxProperty(void)
   return m_xProperty;
 }
 
- 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
