@@ -82,6 +82,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Facet),              HT_TRANSIENT_TINY    }, // CN_FACET
   { sizeof(FacetVec),           HT_TRANSIENT_TINY    }, // CN_FACETVEC
   { sizeof(Fact),               HT_TRANSIENT_SMALL   }, // CN_FACT
+  { sizeof(FactVec),            HT_TRANSIENT_TINY    }, // CN_FACTVEC
   { sizeof(Feature),            HT_TRANSIENT_TINY    }, // CN_FEATURE
   { sizeof(FeatureVec),         HT_TRANSIENT_MEDIUM  }, // CN_FEATUREVEC
   { sizeof(FetchBuffer),        HT_TRANSIENT_LARGE   }, // CN_FETCHBUFFER

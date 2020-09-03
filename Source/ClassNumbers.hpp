@@ -86,6 +86,7 @@ enum eCN : u2 // Class Number
   /* */ CN_FACET,
   /* */ CN_FACETVEC,
   /* */ CN_FACT,
+  /* */ CN_FACTVEC,
   /* */ CN_FEATURE,
   /* */ CN_FEATUREVEC,
   /* */ CN_FETCHBUFFER,
@@ -439,6 +440,7 @@ static Stz* aCN[]
   /* */ "FACET"_Stz,               // CN_FACET
   /* */ "FACETVEC"_Stz,            // CN_FACETVEC
   /* */ "FACT"_Stz,                // CN_FACT
+  /* */ "FACTVEC"_Stz,             // CN_FACTVEC
   /* */ "FEATURE"_Stz,             // CN_FEATURE
   /* */ "FEATUREYVEC"_Stz,         // CN_FEATUREVEC
   /* */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
