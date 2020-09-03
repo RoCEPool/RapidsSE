@@ -16,15 +16,20 @@ __aFooterFunction(Fact)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Fact::Fact(i8 iFactNo, Fact* pPropertyKind, Stz* szFactNote)
+Fact::Fact(i8 iFactNo, Fact* pParent, Stz* szNote)
 : Object(CN_FACT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   m_iFactNo = iFactNo;
-  m_sFactNote = szFactNote ? szFactNote : C_NO_NOTE;
-  m_pPropertyKind = pPropertyKind;
+  m_pParent = pParent;
+  m_sNote   = szNote ? szNote : C_NO_NOTE;
+  
   m_xProperty.m_pObject = nullptr;
+  
+  m_pAttributes = new FactVec;
+
+
 
   m_pFacetVec = new FacetVec;
   
@@ -40,6 +45,8 @@ Fact::~Fact(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
+  delete m_pAttributes;
+
   delete m_pFacetVec;
 }
 
@@ -47,6 +54,16 @@ Fact::~Fact(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* add attribute (sub-fact)                                                   */
+/*----------------------------------------------------------------------------*/
+void Fact::vAddAttribute(Fact* pAttribute)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  m_pAttributes->vAdd(pAttribute);
+}
+ 
 /*----------------------------------------------------------------------------*/
 /* get fact no                                                                */
 /*----------------------------------------------------------------------------*/
@@ -70,21 +87,41 @@ void Fact::vFactNo(i8 iFactNo)
 /*----------------------------------------------------------------------------*/
 /* get fact name                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Fact::szFactNote(void)
+Stz* Fact::szNote(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_sFactNote;
+  return m_sNote;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set fact name                                                              */
+/* set fact note                                                              */
 /*----------------------------------------------------------------------------*/
-void Fact::vFactNote(Stz* szFactNote)
+void Fact::vNote(Stz* szNote)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_sFactNote = szFactNote;
+  m_sNote = szNote;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get parent                                                                 */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pParent(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  return m_pParent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set parent                                                                 */
+/*----------------------------------------------------------------------------*/
+void Fact::vParent(Fact* pParent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  m_pParent = pParent;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,25 +134,6 @@ Property& Fact::rxProperty(void)
   return m_xProperty;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get property kind                                                          */
-/*----------------------------------------------------------------------------*/
-Fact* Fact::pPropertyKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  return m_pPropertyKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set property kind                                                          */
-/*----------------------------------------------------------------------------*/
-void Fact::vPropertyKind(Fact* pPropertyKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  m_pPropertyKind = pPropertyKind;
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -26,8 +26,8 @@ typedef VectorNL_t<CN_FACETVEC, Facet, C_MAX_FACETS> FacetVec;
 
 #include "Concept.hpp"
 
-#include "Fact.hpp"
 typedef VectorNL_t<CN_FACETVEC, Fact, C_MAX_FACTS> FactVec;
+#include "Fact.hpp"
 
 #include "Question.hpp"
 
