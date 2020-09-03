@@ -37,7 +37,8 @@ LogicTimer::~LogicTimer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICTIMER,_FOOTER_);
   
-  vReport();
+  if (AM::bRLUTimer())
+    vReport();
 }
 
 /*----------------------------------------------------------------------------*/

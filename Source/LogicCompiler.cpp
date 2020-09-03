@@ -487,12 +487,12 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 //    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
 
     
-    
     // timer begin
-//    sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
-//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    if (AM::bRLUTimer()) {
+      sPrint.vSprint("\n    vRlu_BEGINTMR(pLU);\n "_Stz);
+      StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    }
     
-
     if (EO_CALL == eCode) {
       
       iArg = m_pLogicUnit->iCodeArg(i_Code+1);
@@ -542,8 +542,10 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     }
     
     // timer end
-//    sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
-//    StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    if (AM::bRLUTimer()) {
+      sPrint.vSprint("    vRlu_ENDTMR(pLU,%s);\n\n "_Stz,aEO[eCode]->azChar());
+      StrLib::vAppendString(&m_azSrcCrs,sPrint.azChar());
+    }
 
 #ifdef WITH_TRACE_LOGICUNIT
     // count no of newlines in the fragment
@@ -771,20 +773,29 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #define S_StrDrp()"
   "      nSize = *(aiDstk--);"
   "      aiDstk -= (nSize / 8) + 2;"
-  "\n"
-  "\n  //#define JumpTo(__iArg,__EO) { vRlu_ENDTMR(pLU,(i8)__EO); goto L_##__iArg; }"
-  "\n  #define JumpTo(__iArg,__EO) goto L_##__iArg;"
-  "\n"
-  "\n  extern i8 giaVectorSet[];"
-  "\n"
-
-  "";
+  "\n";
   
   s4K sReplaced;
 
   sReplaced.vSprint((Stz*)azFrag,m_pLogicUnit->iQueryFragment());
   
   StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
+  if (AM::bRLUTimer())
+    StrLib::vAppendString(&m_azSrcCrs,
+                          "\n  #define JumpTo(__iArg,__EO) { vRlu_ENDTMR(pLU,(i8)__EO); goto L_##__iArg; }"
+                          "\n"
+                          "\n  extern i8 giaVectorSet[];"
+                          "\n"
+                          ""
+                          );
+  else
+    StrLib::vAppendString(&m_azSrcCrs,
+                          "\n  #define JumpTo(__iArg,__EO) goto L_##__iArg;"
+                          "\n"
+                          "\n  extern i8 giaVectorSet[];"
+                          "\n"
+                          ""
+                          );
 }
 
 /*----------------------------------------------------------------------------*/

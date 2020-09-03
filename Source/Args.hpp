@@ -23,6 +23,7 @@ namespace Arguments
     s32   m_sRegionName;   // name of shared memory region
     s32   m_sRegionPrefix; // prefix of the shared memory region name
     i8    m_iRegionSize;   // size of region in bytes
+    bool  m_bRLUTimer;     // RLU timer
     s256  m_sSenDir;       // sen dir
     i8    m_nSlotsPerNode; // partition slots per node
   
@@ -85,6 +86,7 @@ namespace Arguments
     i8   m_iPromptDebug;     // prompt debug mode
     bool m_bReload;          // relaod from checkpoint files
     bool m_bRestart;         // restart if system already started
+    bool m_nRLUTimer;        // RLU timer
     i8   m_nSubIngesters;    // number of subloaders
     i8   m_nSubLoaders;      // number of subloaders
     i8   m_nSupervisorSleep; // sleep period for supervisor job

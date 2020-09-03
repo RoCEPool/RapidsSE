@@ -33,6 +33,8 @@ Args::Args(void)
   m_sRegionName   = ""_Stz;
   m_sRegionPrefix = "/SE"_Stz;
   m_iRegionSize   = (4 * 1_GB);
+  m_bRLUTimer     = false;
+  
 #ifdef WITH_APPLE
   m_sSenDir       = "../Sen/"_Stz;
 #else
@@ -93,6 +95,7 @@ Args::Args(void)
   m_iPromptDebug     = 0;
   m_bReload          = false;
   m_bRestart         = true;
+  m_bRLUTimer        = false;
   m_nSubIngesters    = 4;
   m_nSubLoaders      = 4;
   m_nSupervisorSleep = 10;
@@ -562,6 +565,12 @@ bool Args::bParse(i8 argc, s256 argv[])
     //  m_bRestart = true;
     //  continue;
     //}
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--RLUTimer"_Stz)) {
+      m_bRLUTimer = true;
+      continue;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--script"_Stz)) {
