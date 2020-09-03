@@ -5,6 +5,15 @@
 
 namespace Facts
 {
+  union Property {
+    Fact*   m_pFact;
+    i8      m_iInt;
+    Object* m_pObject;
+    void*   m_aOpaque;
+    Text*   m_pText;
+  };
+
+
   class Fact : public Object
   {
   private:
@@ -15,7 +24,7 @@ namespace Facts
 
     Property m_xProperty;
   
-    FactVec* m_pAttributes; // ... which has facts
+    FactVec* m_pAttributes; // ... which is a set of sub-facts
   
     // must be last
     Footer m_xFooter;

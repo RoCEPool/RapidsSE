@@ -45,7 +45,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Clause_Where),       HT_TRANSIENT_MEDIUM  }, // CN_CLAUSE_WHERE
   { sizeof(Column),             HT_TRANSIENT_TINY    }, // CN_COLUMN
   { sizeof(Compiler),           HT_TRANSIENT_TINY    }, // CN_COMPILER
-  { sizeof(Concept),            HT_TRANSIENT_TINY    }, // CN_CONCEPT
   { sizeof(ConstDef),           HT_TRANSIENT_MEDIUM  }, // CN_CONSTDEF
   { sizeof(ConstSet),           HT_TRANSIENT_MEDIUM  }, // CN_CONSTSET
   { sizeof(CrvBuffer),          HT_TRANSIENT_LARGE   }, // CN_CRVBUFFER
@@ -79,12 +78,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Exemplar),           HT_TRANSIENT_TINY    }, // CN_EXEMPLAR
 
   { 'F' - ('A' - 1),            HT_INVALID           }, // CN__F__
-  { sizeof(Facet),              HT_TRANSIENT_TINY    }, // CN_FACET
-  { sizeof(FacetVec),           HT_TRANSIENT_TINY    }, // CN_FACETVEC
   { sizeof(Fact),               HT_TRANSIENT_SMALL   }, // CN_FACT
   { sizeof(FactVec),            HT_TRANSIENT_TINY    }, // CN_FACTVEC
-  { sizeof(Feature),            HT_TRANSIENT_TINY    }, // CN_FEATURE
-  { sizeof(FeatureVec),         HT_TRANSIENT_MEDIUM  }, // CN_FEATUREVEC
   { sizeof(FetchBuffer),        HT_TRANSIENT_LARGE   }, // CN_FETCHBUFFER
   { sizeof(Fifo),               HT_TRANSIENT_TINY    }, // CN_FIFO
   { sizeof(File),               HT_TRANSIENT_TINY    }, // CN_FILE

@@ -49,7 +49,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CLAUSE_WHERE,
   /* */ CN_COLUMN,
   /* */ CN_COMPILER,
-  /* */ CN_CONCEPT,
   /* */ CN_CONSTDEF,
   /* */ CN_CONSTSET,
   /* */ CN_CRVBUFFER,
@@ -83,12 +82,8 @@ enum eCN : u2 // Class Number
   /* */ CN_EXEMPLAR,
 
   /* */ CN__F__,
-  /* */ CN_FACET,
-  /* */ CN_FACETVEC,
   /* */ CN_FACT,
   /* */ CN_FACTVEC,
-  /* */ CN_FEATURE,
-  /* */ CN_FEATUREVEC,
   /* */ CN_FETCHBUFFER,
   /* */ CN_FIFO,
   /* */ CN_FILE,
@@ -403,7 +398,6 @@ static Stz* aCN[]
   /* */ "CLAUSE_WHERE"_Stz,        // CN_CLAUSE_WHERE
   /* */ "COLUMN"_Stz,              // CN_COLUMN
   /* */ "COMPILER"_Stz,            // CN_COMPILER
-  /* */ "CONCEPT"_Stz,             // CN_CONCEPT
   /* */ "CONSTDEF"_Stz,            // CN_CONSTDEF
   /* */ "CONSTSET"_Stz,            // CN_CONSTSET
   /* */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
@@ -437,12 +431,8 @@ static Stz* aCN[]
   /* */ "EXEMPLAR"_Stz,            // CN_EXEMPLAR
 
   /* */ "_F__"_Stz,                // CN__F__
-  /* */ "FACET"_Stz,               // CN_FACET
-  /* */ "FACETVEC"_Stz,            // CN_FACETVEC
   /* */ "FACT"_Stz,                // CN_FACT
   /* */ "FACTVEC"_Stz,             // CN_FACTVEC
-  /* */ "FEATURE"_Stz,             // CN_FEATURE
-  /* */ "FEATUREYVEC"_Stz,         // CN_FEATUREVEC
   /* */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
   /* */ "FIFO"_Stz,                // CN_FIFO
   /* */ "FILE"_Stz,                // CN_FILE
