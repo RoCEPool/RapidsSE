@@ -48,6 +48,7 @@ static Stz* aEG[]
 
   "EG_FA"_Stz,
   "EG_FN"_Stz,
+  "EG_FU"_Stz,
 
   "EG_GA"_Stz,
   

@@ -46,6 +46,7 @@ namespace Enums
 
 #include "eFA.h"
 #include "eFN.h"
+#include "eFU.h"
 #include "eFX.h"
 
 #include "eGA.h"

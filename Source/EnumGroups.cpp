@@ -44,6 +44,7 @@ Stz* EnumGroups::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 
     case EG_FA: return aFA[i_Enum];
     case EG_FN: return aFN[i_Enum];
+    case EG_FU: return aFU[i_Enum];
 
     case EG_GA: return aGA[i_Enum];
 
