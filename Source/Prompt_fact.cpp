@@ -32,10 +32,7 @@ bool Prompt::bPrompt_fact(SePrompt* pPrompt)
   
   Transform* pTk = pKb->pTransformBorrow();
   Question*  pQk = pKb->pQuestionBorrow();
-  
-  //Fact* pFirst = pTk->pNewFacet(K_ROOT,K_FIRST,K_NODE);
-  K_ROOT->vAddFacet(K_FIRST,K_NODE);
-  
+    
   pKb->vQuestionReturn(&pQk);
   pKb->vTransformReturn(&pTk);
   

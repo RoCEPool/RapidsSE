@@ -16,8 +16,6 @@ namespace Facts
     Property m_xProperty;
   
     FactVec* m_pAttributes; // ... which has facts
-
-    FacetVec* m_pFacetVec; // ... which has facets
   
     // must be last
     Footer m_xFooter;
@@ -31,9 +29,6 @@ namespace Facts
   
     void vAddAttribute(Fact* pAttribute);
   
-    void vAddFacet(Facet* pFacet);
-    void vAddFacet(Fact* pAttributeKind, Fact* pAttribute);
-
     i8   iFactNo(void);
     void vFactNo(i8 iFactNo);
     

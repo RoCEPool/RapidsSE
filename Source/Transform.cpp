@@ -43,28 +43,23 @@ Transform::~Transform(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add facet to fact                                                          */
 /*----------------------------------------------------------------------------*/
-void Transform::vAddFacet(Fact* pToFact, Facet* pFacet)
+void Transform::vAddAttribute(Fact* pToFact, Fact* pAttribute)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  pToFact->vAddFacet(pFacet);
+  pToFact->vAddAttribute(pAttribute);
 }
 
 /*----------------------------------------------------------------------------*/
 /* new facet of a fact                                                        */
 /*----------------------------------------------------------------------------*/
-Fact* Transform::pNewFacet(Fact* pToFact, Fact* pFacetKind,
+Fact* Transform::pNewAttribute(Fact* pToFact, Fact* pFacetKind,
                            Fact* pFactKind, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  Fact* pFact = m_pKbase->pFactNew(pFactKind,szFactNm);
-    
-  Facet* pFacet = new Facet(pFacetKind,pFact);
-  
-  pToFact->vAddFacet(pFacet);
 
-  return pFact;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

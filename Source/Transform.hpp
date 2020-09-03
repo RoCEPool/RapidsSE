@@ -21,9 +21,9 @@ namespace Facts
     Transform(Kbase* pKbase);
    ~Transform(void) noexcept(false);
 
-    void  vAddFacet(Fact* pToFact, Facet* pFacet);
+    void  vAddAttribute(Fact* pToFact, Fact* pAttribute);
   
-    Fact* pNewFacet(Fact* pToFact,
+    Fact* pNewAttribute(Fact* pToFact,
                     Fact* pFacetKind, Fact* pFactKind, Stz* szFactNm=nullptr);
  
     Fact* pNewFact(Fact* pFactKind, Stz* szFactNm=nullptr);

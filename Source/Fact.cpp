@@ -30,9 +30,6 @@ Fact::Fact(i8 iFactNo, Fact* pParent, Stz* szNote)
   m_pAttributes = new FactVec;
 
 
-
-  m_pFacetVec = new FacetVec;
-  
   _checkInitialised_(CN_FACT);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
@@ -46,8 +43,6 @@ Fact::~Fact(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   delete m_pAttributes;
-
-  delete m_pFacetVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,31 +129,6 @@ Property& Fact::rxProperty(void)
   return m_xProperty;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add facet                                                                  */
-/*----------------------------------------------------------------------------*/
-void Fact::vAddFacet(Facet* pFacet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-
-  m_pFacetVec->vAdd(pFacet);
-}
- 
-/*----------------------------------------------------------------------------*/
-/* add facet                                                                  */
-/*----------------------------------------------------------------------------*/
-void Fact::vAddFacet(Fact* pAttributeKind, Fact* pAttribute)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  Facet* pFacet = new Facet(pAttributeKind,pAttribute);
-  
-  m_pFacetVec->vAdd(pFacet);
-}
  
 /*============================================================================*/
 /* end                                                                        */
