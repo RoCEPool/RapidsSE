@@ -29,6 +29,8 @@ Fact::Fact(i8 iFactNo, Fact* pParent, Stz* szNote)
   
   m_pAttributes = new FactVec;
 
+  m_pNextElement = nullptr;
+  
   _checkInitialised_(CN_FACT);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
@@ -68,6 +70,21 @@ FactVec* Fact::pAttributes(void)
   return m_pAttributes;
 }
  
+/*----------------------------------------------------------------------------*/
+/* append given fact element                                      (recursive) */
+/*----------------------------------------------------------------------------*/
+void Fact::vAppend(Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  if (! m_pNextElement) {
+    m_pNextElement = pElement;
+    return;
+  }
+  
+  m_pNextElement->vAppend(pElement);
+}
+
 /*----------------------------------------------------------------------------*/
 /* get fact no                                                                */
 /*----------------------------------------------------------------------------*/
@@ -138,6 +155,26 @@ bool Fact::bIsSubClass(Fact* pOfFact)
     return false;
   
   return m_pParent->bIsSubClass(pOfFact);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next element                                                           */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pNextElement(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  return m_pNextElement;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next fact element                                                      */
+/*----------------------------------------------------------------------------*/
+void Fact::vNextElement(Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  m_pNextElement = pElement;
 }
 
 /*----------------------------------------------------------------------------*/

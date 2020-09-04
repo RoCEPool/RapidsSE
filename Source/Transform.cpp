@@ -74,6 +74,56 @@ Fact* Transform::pNewFact(Fact* pFactKind, Stz* szFactNm)
   return pFact;
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add element to a set                                                       */
+/*----------------------------------------------------------------------------*/
+void Transform::vAddElement(Fact* pToSet, Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
+  
+  Fact* pFirst = pToSet->pAttributeThatIsSubClass(m_pKbase->m_pFirst);
+  Fact* pLast  = pToSet->pAttributeThatIsSubClass(m_pKbase->m_pLast);
+
+  if (! pFirst) {
+    
+    ASSERT(! pLast);
+    
+    pFirst = m_pKbase->pFactNew("a-first"_Stz,m_pKbase->m_pFirst);
+    pFirst->vAddAttribute(pElement);
+    pToSet->vAddAttribute(pFirst);
+
+    pLast  = m_pKbase->pFactNew("a-last"_Stz, m_pKbase->m_pLast);
+    pLast->vAddAttribute(pElement);
+    pToSet->vAddAttribute(pLast);
+
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Fact* pPrev = pLast->pAttributeThatIsSubClass(m_pKbase->m_pPrev);
+  Fact* pNext = pLast->pAttributeThatIsSubClass(m_pKbase->m_pNext);
+
+  if (! pPrev) {
+    
+    ASSERT(! pNext);
+    
+    pPrev = m_pKbase->pFactNew("a-prev"_Stz,m_pKbase->m_pPrev);
+    pNext = m_pKbase->pFactNew("a-next"_Stz,m_pKbase->m_pNext);
+
+    
+    
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

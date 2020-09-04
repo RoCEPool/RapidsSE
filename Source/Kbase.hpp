@@ -7,6 +7,8 @@ namespace Facts
 {
   class Kbase : public Object
   {
+  friend class Question;
+  friend class Transform;
   private:
 
     Atomic m_ixFactNo;   //
@@ -23,6 +25,7 @@ namespace Facts
     Fact*  m_pSet;
     Fact*  m_pElement;
     Fact*  m_pFirst;
+    Fact*  m_pLast;
     Fact*  m_pNext;
     Fact*  m_pPrev;
 

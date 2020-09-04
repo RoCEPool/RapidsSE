@@ -144,6 +144,7 @@ void Kbase::vAprioriFacts(void)
   m_pSet         = pFactNew("set"_Stz,m_pFact);
   m_pElement     = pFactNew("element"_Stz,m_pFact);
   m_pFirst       = pFactNew("first"_Stz,m_pFact);
+  m_pLast        = pFactNew("last"_Stz,m_pFact);
   m_pNext        = pFactNew("next"_Stz,m_pFact);
   m_pPrev        = pFactNew("prev"_Stz,m_pFact);
 

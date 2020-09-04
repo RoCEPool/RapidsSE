@@ -27,6 +27,8 @@ namespace Facts
   
     FactVec* m_pAttributes; // a fact may have a set of sub-facts
   
+    Fact* m_pNextElement;   // next element in fact set
+  
     // must be last
     Footer m_xFooter;
 
@@ -40,6 +42,8 @@ namespace Facts
     void vAddAttribute(Fact* pAttribute);
     FactVec* pAttributes(void);
   
+    void vAppend(Fact* pElement);
+  
     i8   iFactNo(void);
     void vFactNo(i8 iFactNo);
     
@@ -47,6 +51,9 @@ namespace Facts
     bool bHasSpecificAttribute(Fact* pFact);
     bool bIsSubClass(Fact* pOfFact);
 
+    Fact* pNextElement(void);
+    void vNextElement(Fact* pElement);
+    
     Stz* szNote(void);
     void vNote(Stz* szNote);
   
