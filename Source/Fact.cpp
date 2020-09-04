@@ -25,15 +25,15 @@ Fact::Fact(i8 iFactNo, Fact* pSuper, Stz* szNote)
   m_sNote   = szNote ? szNote : C_NO_NOTE;
   m_xProperty.m_pObject = nullptr;
     
-  m_pSuper = pSuper;
-
-  m_pAttrs         = nullptr;
+  m_pSubclassOf    = pSuper;
   m_pAttributeOf   = nullptr;
-  m_pNextAttribute = nullptr;
+  m_pElementOf     = nullptr;
+
+  m_pAttributes    = nullptr;
+  m_pAttributeNext = nullptr;
 
   m_pElements      = nullptr;
-  m_pElementOf     = nullptr;
-  m_pNextElement   = nullptr;
+  m_pElementNext   = nullptr;
   
   _checkInitialised_(CN_FACT);
 
@@ -61,12 +61,12 @@ void Fact::vAttributeAdd(Fact* pAttribute)
 
   pAttribute->vAttributeOf(this);
   
-  if (! m_pNextAttribute) {
-    m_pNextAttribute = pAttribute;
+  if (! m_pAttributeNext) {
+    m_pAttributeNext = pAttribute;
     return;
   }
   
-  Fact* pTail = m_pNextAttribute;
+  Fact* pTail = m_pAttributeNext;
   while (pTail->pNextAttribute())
     pTail = pTail->pNextAttribute();
   
@@ -94,47 +94,37 @@ void Fact::vAttributeOf(Fact* pAttributeOf)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get attributes (the set of sub-facts)                                      */
+/* get first attribute of this fact                                           */
 /*----------------------------------------------------------------------------*/
 Fact* Fact::pAttributes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-
-  return m_pAttrs;
-}
- 
-/*----------------------------------------------------------------------------*/
-/* get attribute that is a sub-class of given fact                            */
-/*----------------------------------------------------------------------------*/
-Fact* Fact::pAttributeThatIsSubClass(Fact* pOfFact)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-
-  Fact* pTail = m_pAttrs;
-  while (pTail && ! pTail->bIsSubClass(pOfFact))
-    pTail = pTail->pNextElement();
-    
-  return pTail;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get first attribute of this fact                                           */
-/*----------------------------------------------------------------------------*/
-Fact* Fact::pAttrs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_pAttrs;
+  return m_pAttributes;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set first attribute of this fact                                           */
 /*----------------------------------------------------------------------------*/
-void Fact::vAttrs(Fact* pAttrs)
+void Fact::vAttributes(Fact* pAttributes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_pAttrs = pAttrs;
+  m_pAttributes = pAttributes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get attribute that is a sub-class of given super fact                      */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pAttributeThatIsSubClass(Fact* pOfSuperFact)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  Fact* pTail = m_pAttributes;
+  while (pTail && ! pTail->bIsSubClass(pOfSuperFact))
+    pTail = pTail->pNextAttribute();
+    
+  return pTail;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -146,12 +136,12 @@ void Fact::vElementAdd(Fact* pElement)
 
   pElement->vElementOf(this);
   
-  if (! m_pNextElement) {
-    m_pNextElement = pElement;
+  if (! m_pElementNext) {
+    m_pElementNext = pElement;
     return;
   }
   
-  Fact* pTail = m_pNextElement;
+  Fact* pTail = m_pElementNext;
   while (pTail->pNextElement())
     pTail = pTail->pNextElement();
   
@@ -199,6 +189,20 @@ void Fact::vElements(Fact* pElements)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get element that is a sub-class of given super fact                        */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pElementThatIsSubClass(Fact* pOfSuperFact)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  Fact* pTail = m_pElements;
+  while (pTail && ! pTail->bIsSubClass(pOfSuperFact))
+    pTail = pTail->pNextElement();
+    
+  return pTail;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get fact no                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Fact::iFactNo(void)
@@ -225,7 +229,7 @@ bool Fact::bHasSpecificAttribute(Fact* pFact)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  Fact* pTail = m_pAttrs;
+  Fact* pTail = m_pAttributes;
   while (pTail && pTail != pFact)
     pTail = pTail->pNextElement();
     
@@ -242,10 +246,10 @@ bool Fact::bIsSubClass(Fact* pOfFact)
   if (this == pOfFact)
     return true;
   
-  if (! m_pSuper)
+  if (! m_pSubclassOf)
     return false;
   
-  return m_pSuper->bIsSubClass(pOfFact);
+  return m_pSubclassOf->bIsSubClass(pOfFact);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -255,7 +259,7 @@ Fact* Fact::pNextAttribute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_pNextAttribute;
+  return m_pAttributeNext;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,7 +269,7 @@ void Fact::vNextAttribute(Fact* pAttribute)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_pNextAttribute = pAttribute;
+  m_pAttributeNext = pAttribute;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,7 +279,7 @@ Fact* Fact::pNextElement(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_pNextElement;
+  return m_pElementNext;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,7 +289,7 @@ void Fact::vNextElement(Fact* pElement)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_pNextElement = pElement;
+  m_pElementNext = pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -321,21 +325,21 @@ Property& Fact::rxProperty(void)
 /*----------------------------------------------------------------------------*/
 /* get super-class fact                                                       */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pSuper(void)
+Fact* Fact::pSubclassOf(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_pSuper;
+  return m_pSubclassOf;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set super-class fact                                                       */
 /*----------------------------------------------------------------------------*/
-void Fact::vSuper(Fact* pSuper)
+void Fact::vSubclassOf(Fact* pSubclassOf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_pSuper = pSuper;
+  m_pSubclassOf = pSubclassOf;
 }
 
 /*============================================================================*/

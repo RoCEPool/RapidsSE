@@ -23,15 +23,15 @@ namespace Facts
     s256     m_sNote;        // optional textual decription
     Property m_xProperty;    // some property
     
-    Fact*    m_pSuper;       // super-class fact
-
-    Fact*    m_pAttrs;       // attributes of this fact
+    Fact*    m_pSubclassOf;  // subclass of which fact
     Fact*    m_pAttributeOf; // attribute of which fact
-    Fact*    m_pNextAttribute; // next attribute of fact
+    Fact*    m_pElementOf;   // element of which fact set
+ 
+    Fact*    m_pAttributes;  // attributes of this fact
+    Fact*    m_pAttributeNext; // next attribute of fact
 
     Fact*    m_pElements;    // elements of this fact set
-    Fact*    m_pElementOf;   // element of which fact set
-    Fact*    m_pNextElement; // next element in fact set
+    Fact*    m_pElementNext; // next element in fact set
   
     // must be last
     Footer m_xFooter;
@@ -47,15 +47,15 @@ namespace Facts
     Fact* pAttributeOf(void);
     void  vAttributeOf(Fact* pAttributeOf);
     Fact* pAttributes(void);
-    Fact* pAttributeThatIsSubClass(Fact* pOfFact);
-    Fact* pAttrs(void);
-    void  vAttrs(Fact* pAttrs);
+    void  vAttributes(Fact* pAttributes);
+    Fact* pAttributeThatIsSubClass(Fact* pOfSuperFact);
 
     void  vElementAdd(Fact* pElement);
     Fact* pElementOf(void);
     void  vElementOf(Fact* pElementOf);
     Fact* pElements(void);
     void  vElements(Fact* pElems);
+    Fact* pElementThatIsSubClass(Fact* pOfSuperFact);
 
     i8    iFactNo(void);
     void  vFactNo(i8 iFactNo);
@@ -74,8 +74,8 @@ namespace Facts
   
     Property& rxProperty(void);
     
-    Fact* pSuper(void);
-    void  vSuper(Fact* pSuper);
+    Fact* pSubclassOf(void);
+    void  vSubclassOf(Fact* pSubclassOf);
     
   private:
     Footer* aFooter(void);
