@@ -67,12 +67,32 @@ void Fact::vAttributeAdd(Fact* pAttribute)
   }
   
   Fact* pTail = m_pAttributeNext;
-  while (pTail->pNextAttribute())
-    pTail = pTail->pNextAttribute();
+  while (pTail->pAttributeNext())
+    pTail = pTail->pAttributeNext();
   
-  pTail->vNextAttribute(pAttribute);
+  pTail->vAttributeNext(pAttribute);
 }
  
+/*----------------------------------------------------------------------------*/
+/* get next attribute                                                         */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pAttributeNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  return m_pAttributeNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next attribute                                                         */
+/*----------------------------------------------------------------------------*/
+void Fact::vAttributeNext(Fact* pAttribute)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  m_pAttributeNext = pAttribute;
+}
+
 /*----------------------------------------------------------------------------*/
 /* get which fact this is an attribute of                                     */
 /*----------------------------------------------------------------------------*/
@@ -120,11 +140,11 @@ Fact* Fact::pAttributeThatIsSubClass(Fact* pOfSuperFact)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  Fact* pTail = m_pAttributes;
-  while (pTail && ! pTail->bIsSubClass(pOfSuperFact))
-    pTail = pTail->pNextAttribute();
+  Fact* pScan = m_pAttributes;
+  while (pScan && ! pScan->bIsSubClass(pOfSuperFact))
+    pScan = pScan->pAttributeNext();
     
-  return pTail;
+  return pScan;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,10 +162,30 @@ void Fact::vElementAdd(Fact* pElement)
   }
   
   Fact* pTail = m_pElementNext;
-  while (pTail->pNextElement())
-    pTail = pTail->pNextElement();
+  while (pTail->pElementNext())
+    pTail = pTail->pElementNext();
   
-  pTail->vNextElement(pElement);
+  pTail->vElementNext(pElement);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next element                                                           */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pElementNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  return m_pElementNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next fact element                                                      */
+/*----------------------------------------------------------------------------*/
+void Fact::vElementNext(Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  m_pElementNext = pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,11 +235,11 @@ Fact* Fact::pElementThatIsSubClass(Fact* pOfSuperFact)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  Fact* pTail = m_pElements;
-  while (pTail && ! pTail->bIsSubClass(pOfSuperFact))
-    pTail = pTail->pNextElement();
+  Fact* pScan = m_pElements;
+  while (pScan && ! pScan->bIsSubClass(pOfSuperFact))
+    pScan = pScan->pElementNext();
     
-  return pTail;
+  return pScan;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,17 +263,31 @@ void Fact::vFactNo(i8 iFactNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* has an attribute which specifically given fact                             */
+/* has an attribute which is specifically given fact                          */
 /*----------------------------------------------------------------------------*/
 bool Fact::bHasSpecificAttribute(Fact* pFact)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  Fact* pTail = m_pAttributes;
-  while (pTail && pTail != pFact)
-    pTail = pTail->pNextElement();
+  Fact* pScan = m_pAttributes;
+  while (pScan && pScan != pFact)
+    pScan = pScan->pAttributeNext();
     
-  return pTail;
+  return pScan;
+}
+ 
+/*----------------------------------------------------------------------------*/
+/* has an element which is specifically given fact                            */
+/*----------------------------------------------------------------------------*/
+bool Fact::bHasSpecificElement(Fact* pFact)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  Fact* pScan = m_pElements;
+  while (pScan && pScan != pFact)
+    pScan = pScan->pElementNext();
+    
+  return pScan;
 }
  
 /*----------------------------------------------------------------------------*/
@@ -250,46 +304,6 @@ bool Fact::bIsSubClass(Fact* pOfFact)
     return false;
   
   return m_pSubclassOf->bIsSubClass(pOfFact);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next attribute                                                         */
-/*----------------------------------------------------------------------------*/
-Fact* Fact::pNextAttribute(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  return m_pAttributeNext;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set next attribute                                                         */
-/*----------------------------------------------------------------------------*/
-void Fact::vNextAttribute(Fact* pAttribute)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  m_pAttributeNext = pAttribute;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next element                                                           */
-/*----------------------------------------------------------------------------*/
-Fact* Fact::pNextElement(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  return m_pElementNext;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set next fact element                                                      */
-/*----------------------------------------------------------------------------*/
-void Fact::vNextElement(Fact* pElement)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  m_pElementNext = pElement;
 }
 
 /*----------------------------------------------------------------------------*/

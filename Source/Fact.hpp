@@ -23,9 +23,9 @@ namespace Facts
     s256     m_sNote;        // optional textual decription
     Property m_xProperty;    // some property
     
-    Fact*    m_pSubclassOf;  // subclass of which fact
-    Fact*    m_pAttributeOf; // attribute of which fact
-    Fact*    m_pElementOf;   // element of which fact set
+    Fact*    m_pSubclassOf;  // subclass of which fact      (super)
+    Fact*    m_pAttributeOf; // attribute of which fact     (across/column)
+    Fact*    m_pElementOf;   // element of which fact set   (down/row)
  
     Fact*    m_pAttributes;  // attributes of this fact
     Fact*    m_pAttributeNext; // next attribute of fact
@@ -44,6 +44,8 @@ namespace Facts
    ~Fact(void) noexcept(false);
   
     void  vAttributeAdd(Fact* pAttribute);
+    Fact* pAttributeNext(void);
+    void  vAttributeNext(Fact* pAttribute);
     Fact* pAttributeOf(void);
     void  vAttributeOf(Fact* pAttributeOf);
     Fact* pAttributes(void);
@@ -51,6 +53,8 @@ namespace Facts
     Fact* pAttributeThatIsSubClass(Fact* pOfSuperFact);
 
     void  vElementAdd(Fact* pElement);
+    Fact* pElementNext(void);
+    void  vElementNext(Fact* pElement);
     Fact* pElementOf(void);
     void  vElementOf(Fact* pElementOf);
     Fact* pElements(void);
@@ -61,14 +65,10 @@ namespace Facts
     void  vFactNo(i8 iFactNo);
     
     bool  bHasSpecificAttribute(Fact* pFact);
-  
+    bool  bHasSpecificElement(Fact* pFact);
+
     bool  bIsSubClass(Fact* pOfFact);
 
-    Fact* pNextAttribute(void);
-    void  vNextAttribute(Fact* pAttribute);
-    Fact* pNextElement(void);
-    void  vNextElement(Fact* pElement);
-    
     Stz*  szNote(void);
     void  vNote(Stz* szNote);
   
