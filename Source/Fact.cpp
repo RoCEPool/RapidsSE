@@ -59,7 +59,7 @@ Fact::~Fact(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add attribute (a sub-fact)                                                 */
 /*----------------------------------------------------------------------------*/
-void Fact::vAddAttribute(Fact* pAttribute)
+void Fact::vAttributeAdd(Fact* pAttribute)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
@@ -77,27 +77,6 @@ void Fact::vAddAttribute(Fact* pAttribute)
   pTail->vNextAttribute(pAttribute);
 }
  
-/*----------------------------------------------------------------------------*/
-/* append given fact element to this set                                      */
-/*----------------------------------------------------------------------------*/
-void Fact::vAppendElement(Fact* pElement)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-
-  pElement->vElementOf(this);
-  
-  if (! m_pNextElement) {
-    m_pNextElement = pElement;
-    return;
-  }
-  
-  Fact* pTail = m_pNextElement;
-  while (pTail->pNextElement())
-    pTail = pTail->pNextElement();
-  
-  pTail->vNextElement(pElement);
-}
-
 /*----------------------------------------------------------------------------*/
 /* get which fact this is an attribute of                                     */
 /*----------------------------------------------------------------------------*/
@@ -164,6 +143,27 @@ void Fact::vAttrs(Fact* pAttrs)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   m_pAttrs = pAttrs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given fact element to this set                                         */
+/*----------------------------------------------------------------------------*/
+void Fact::vElementAdd(Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  pElement->vElementOf(this);
+  
+  if (! m_pNextElement) {
+    m_pNextElement = pElement;
+    return;
+  }
+  
+  Fact* pTail = m_pNextElement;
+  while (pTail->pNextElement())
+    pTail = pTail->pNextElement();
+  
+  pTail->vNextElement(pElement);
 }
 
 /*----------------------------------------------------------------------------*/

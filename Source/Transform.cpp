@@ -47,7 +47,7 @@ void Transform::vAddAttribute(Fact* pToFact, Fact* pAttribute)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  pToFact->vAddAttribute(pAttribute);
+  pToFact->vAttributeAdd(pAttribute);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,12 +92,12 @@ void Transform::vAddElement(Fact* pToSet, Fact* pElement)
     ASSERT(! pLast);
     
     pFirst = m_pKbase->pFactNew("a-first"_Stz,m_pKbase->m_pFirst);
-    pFirst->vAddAttribute(pElement);
-    pToSet->vAddAttribute(pFirst);
+    pFirst->vAttributeAdd(pElement);
+    pToSet->vAttributeAdd(pFirst);
 
     pLast  = m_pKbase->pFactNew("a-last"_Stz, m_pKbase->m_pLast);
-    pLast->vAddAttribute(pElement);
-    pToSet->vAddAttribute(pLast);
+    pLast->vAttributeAdd(pElement);
+    pToSet->vAttributeAdd(pLast);
 
     return;
   }

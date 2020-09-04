@@ -45,8 +45,7 @@ FactVec* m_pAttributes;  // a fact may have a set of sub-facts
     Fact(i8 iFactNo, Fact* pSuper, Stz* szNote=nullptr);
    ~Fact(void) noexcept(false);
   
-    void  vAddAttribute(Fact* pAttribute);
-    void  vAppendElement(Fact* pElement);
+    void  vAttributeAdd(Fact* pAttribute);
     Fact* pAttributeOf(void);
     void  vAttributeOf(Fact* pAttributeOf);
     Fact* pAttributes(void);
@@ -54,6 +53,7 @@ FactVec* m_pAttributes;  // a fact may have a set of sub-facts
     Fact* pAttrs(void);
     void  vAttrs(Fact* pAttrs);
 
+    void  vElementAdd(Fact* pElement);
     Fact* pElementOf(void);
     void  vElementOf(Fact* pElementOf);
     Fact* pElements(void);
