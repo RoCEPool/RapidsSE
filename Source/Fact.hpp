@@ -9,7 +9,7 @@ namespace Facts
     Fact*   m_pAssociation; // association to another fact
     i8      m_iInt;         // i8 value
     Object* m_pObject;      // pointer to proper object
-    void*   m_aOpaque;      // address of opaque object
+    Opaque* m_aOpaque;      // address of opaque memory
     Text*   m_pText;        // text
     Word*   m_pWord;        // sen word
   };
