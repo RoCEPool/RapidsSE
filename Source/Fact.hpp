@@ -19,15 +19,21 @@ namespace Facts
   {
   private:
   
-    i8    m_iFactNo; // unique number (synonym of this facts address)
-    Fact* m_pParent; // parent (super-fact)
-    s256  m_sNote;   // optional textual decription
+    i8       m_iFactNo;      // unique number (synonym of this facts address)
+    s256     m_sNote;        // optional textual decription
+    Property m_xProperty;    // some property
+  
+FactVec* m_pAttributes;  // a fact may have a set of sub-facts
+  
+    Fact*    m_pSuper;       // super-class fact
 
-    Property m_xProperty;   // some property
-  
-    FactVec* m_pAttributes; // a fact may have a set of sub-facts
-  
-    Fact* m_pNextElement;   // next element in fact set
+    Fact*    m_pAttrs;       // attributes of this fact
+    Fact*    m_pAttributeOf; // attribute of which fact
+    Fact*    m_pNextAttribute; // next attribute of fact
+
+    Fact*    m_pElements;    // elements of this fact set
+    Fact*    m_pElementOf;   // element of which fact set
+    Fact*    m_pNextElement; // next element in fact set
   
     // must be last
     Footer m_xFooter;
@@ -36,31 +42,42 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Fact(i8 iFactNo, Fact* pParent, Stz* szNote=nullptr);
+    Fact(i8 iFactNo, Fact* pSuper, Stz* szNote=nullptr);
    ~Fact(void) noexcept(false);
   
-    void vAddAttribute(Fact* pAttribute);
-    FactVec* pAttributes(void);
-  
-    void vAppend(Fact* pElement);
-  
-    i8   iFactNo(void);
-    void vFactNo(i8 iFactNo);
-    
+    void  vAddAttribute(Fact* pAttribute);
+    void  vAppendElement(Fact* pElement);
+    Fact* pAttributeOf(void);
+    void  vAttributeOf(Fact* pAttributeOf);
+    Fact* pAttributes(void);
     Fact* pAttributeThatIsSubClass(Fact* pOfFact);
-    bool bHasSpecificAttribute(Fact* pFact);
-    bool bIsSubClass(Fact* pOfFact);
+    Fact* pAttrs(void);
+    void  vAttrs(Fact* pAttrs);
 
-    Fact* pNextElement(void);
-    void vNextElement(Fact* pElement);
+    Fact* pElementOf(void);
+    void  vElementOf(Fact* pElementOf);
+    Fact* pElements(void);
+    void  vElements(Fact* pElems);
+
+    i8    iFactNo(void);
+    void  vFactNo(i8 iFactNo);
     
-    Stz* szNote(void);
-    void vNote(Stz* szNote);
+    bool  bHasSpecificAttribute(Fact* pFact);
   
-    Fact* pParent(void);
-    void vParent(Fact* pParent);
+    bool  bIsSubClass(Fact* pOfFact);
+
+    Fact* pNextAttribute(void);
+    void  vNextAttribute(Fact* pAttribute);
+    Fact* pNextElement(void);
+    void  vNextElement(Fact* pElement);
+    
+    Stz*  szNote(void);
+    void  vNote(Stz* szNote);
   
     Property& rxProperty(void);
+    
+    Fact* pSuper(void);
+    void  vSuper(Fact* pSuper);
     
   private:
     Footer* aFooter(void);
