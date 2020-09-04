@@ -21,6 +21,7 @@ namespace Facts
     Fact*  m_pObject;
     Fact*  m_pOpaque;
     Fact*  m_pText;
+    Fact*  m_pWord;
 
     Fact*  m_pSet;
     Fact*  m_pElement;

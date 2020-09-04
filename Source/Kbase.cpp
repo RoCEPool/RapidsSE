@@ -140,7 +140,8 @@ void Kbase::vAprioriFacts(void)
   m_pObject      = pFactNew("object"_Stz,m_pFact);
   m_pOpaque      = pFactNew("opaque"_Stz,m_pFact);
   m_pText        = pFactNew("text"_Stz,m_pFact);
-  
+  m_pWord        = pFactNew("word"_Stz,m_pFact);
+
   m_pSet         = pFactNew("set"_Stz,m_pFact);
   m_pElement     = pFactNew("element"_Stz,m_pFact);
   m_pFirst       = pFactNew("first"_Stz,m_pFact);
