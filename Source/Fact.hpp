@@ -22,9 +22,7 @@ namespace Facts
     i8       m_iFactNo;      // unique number (synonym of this facts address)
     s256     m_sNote;        // optional textual decription
     Property m_xProperty;    // some property
-  
-FactVec* m_pAttributes;  // a fact may have a set of sub-facts
-  
+    
     Fact*    m_pSuper;       // super-class fact
 
     Fact*    m_pAttrs;       // attributes of this fact

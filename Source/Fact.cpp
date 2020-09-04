@@ -24,9 +24,7 @@ Fact::Fact(i8 iFactNo, Fact* pSuper, Stz* szNote)
   m_iFactNo = iFactNo;
   m_sNote   = szNote ? szNote : C_NO_NOTE;
   m_xProperty.m_pObject = nullptr;
-  
-m_pAttributes  = new FactVec;
-  
+    
   m_pSuper = pSuper;
 
   m_pAttrs         = nullptr;
@@ -48,8 +46,6 @@ m_pAttributes  = new FactVec;
 Fact::~Fact(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  delete m_pAttributes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,15 +110,11 @@ Fact* Fact::pAttributeThatIsSubClass(Fact* pOfFact)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  i8 nAtr = m_pAttributes->nItems();
-  
-  for (i8 i_Atr = 0; i_Atr < nAtr; i_Atr++) {
-    Fact* pAttribute = m_pAttributes->pGet(i_Atr);
-    if (pAttribute->bIsSubClass(pOfFact))
-      return pAttribute;
-  }
-  
-  return nullptr;
+  Fact* pTail = m_pAttrs;
+  while (pTail && ! pTail->bIsSubClass(pOfFact))
+    pTail = pTail->pNextElement();
+    
+  return pTail;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -233,15 +225,11 @@ bool Fact::bHasSpecificAttribute(Fact* pFact)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  i8 nAtr = m_pAttributes->nItems();
-  
-  for (i8 i_Atr = 0; i_Atr < nAtr; i_Atr++) {
-    Fact* pAttribute = m_pAttributes->pGet(i_Atr);
-    if (pAttribute == pFact)
-      return true;
-  }
-
-  return false;
+  Fact* pTail = m_pAttrs;
+  while (pTail && pTail != pFact)
+    pTail = pTail->pNextElement();
+    
+  return pTail;
 }
  
 /*----------------------------------------------------------------------------*/
