@@ -55,7 +55,6 @@ namespace Facts
     void  vAttributes(Fact* pAttributes);
     Fact* pAttributeThatIsSubClass(Fact* pOfSuperFact);
   
-
     void  vElementAdd(Fact* pElement);
     Fact* pElementNext(void);
     void  vElementNext(Fact* pElement);

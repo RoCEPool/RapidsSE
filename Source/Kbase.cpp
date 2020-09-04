@@ -156,7 +156,7 @@ void Kbase::vAprioriFacts(void)
 
   m_pName        = m_pText->pNewInstance("name"_Stz);
   
-  m_pQuality     = m_pAssociation->pNewInstance("type"_Stz);
+  m_pQuality     = m_pAssociation->pNewInstance("quality"_Stz);
   
   m_pType        = m_pFact->pNewInstance("type"_Stz);
   m_pTuple       = m_pFact->pNewInstance("tuple"_Stz);
