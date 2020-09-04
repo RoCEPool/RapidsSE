@@ -89,27 +89,43 @@ void Fact::vFactNo(i8 iFactNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get attribute that is a sub-class of given fact                            */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pAttributeThatIsSubClass(Fact* pOfFact)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  i8 nAtr = m_pAttributes->nItems();
+  
+  for (i8 i_Atr = 0; i_Atr < nAtr; i_Atr++) {
+    Fact* pAttribute = m_pAttributes->pGet(i_Atr);
+    if (pAttribute->bIsSubClass(pOfFact))
+      return pAttribute;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* has an attribute which specifically given fact                             */
 /*----------------------------------------------------------------------------*/
 bool Fact::bHasSpecificAttribute(Fact* pFact)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
+  i8 nAtr = m_pAttributes->nItems();
+  
+  for (i8 i_Atr = 0; i_Atr < nAtr; i_Atr++) {
+    Fact* pAttribute = m_pAttributes->pGet(i_Atr);
+    if (pAttribute == pFact)
+      return true;
+  }
+
   return false;
 }
  
 /*----------------------------------------------------------------------------*/
-/* has an attribute which is a sub-class of given fact                        */
-/*----------------------------------------------------------------------------*/
-Fact* Fact::pHasAttributeSubClass(Fact* pOfFact)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this fact a sub-class of given fact                                     */
+/* is this fact a sub-class of given fact                         (recursive) */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsSubClass(Fact* pOfFact)
 {

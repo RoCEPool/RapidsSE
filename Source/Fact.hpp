@@ -6,7 +6,7 @@
 namespace Facts
 {
   union Property {
-    Fact*   m_pFact;
+    Fact*   m_pAssociation;
     i8      m_iInt;
     Object* m_pObject;
     void*   m_aOpaque;
@@ -43,8 +43,8 @@ namespace Facts
     i8   iFactNo(void);
     void vFactNo(i8 iFactNo);
     
+    Fact* pAttributeThatIsSubClass(Fact* pOfFact);
     bool bHasSpecificAttribute(Fact* pFact);
-    Fact* pHasAttributeSubClass(Fact* pOfFact);
     bool bIsSubClass(Fact* pOfFact);
 
     Stz* szNote(void);
