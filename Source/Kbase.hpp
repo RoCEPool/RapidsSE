@@ -14,7 +14,6 @@ namespace Facts
     Atomic m_ixFactNo;   //
   
     Fact*  m_pFact;      //
-    Fact*  m_pContents;  //
   
     Fact*  m_pAssociation;
     Fact*  m_pInt;
@@ -23,12 +22,12 @@ namespace Facts
     Fact*  m_pText;
     Fact*  m_pWord;
 
-    Fact*  m_pSet;
-    Fact*  m_pElement;
-    Fact*  m_pFirst;
-    Fact*  m_pLast;
-    Fact*  m_pNext;
-    Fact*  m_pPrev;
+    Fact*  m_pName;
+
+    Fact*  m_pQuality; //
+    Fact*  m_pType;    //
+    Fact*  m_pTuple;   //
+    Fact*  m_pFolder;  //
 
     // must be last
     Footer m_xFooter;
@@ -44,6 +43,8 @@ namespace Facts
   
     Fact* pFactNew(Stz* szNote, Fact* pParent);
     void vFactDelete(Fact* pFact);
+  
+    i8 iNextFactNo(void);
   
     Question* pQuestionBorrow(void);
     void vQuestionReturn(Question** ppQuestion);

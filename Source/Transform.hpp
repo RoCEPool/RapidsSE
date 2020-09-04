@@ -27,10 +27,7 @@ namespace Facts
                     Fact* pFacetKind, Fact* pFactKind, Stz* szFactNm=nullptr);
  
     Fact* pNewFact(Fact* pFactKind, Stz* szFactNm=nullptr);
-  
-
-    void vAddElement(Fact* pToSet, Fact* pElement);
-
+   
   private:
     Footer* aFooter(void);
   };

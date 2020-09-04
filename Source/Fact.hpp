@@ -20,6 +20,8 @@ namespace Facts
   {
   private:
   
+    Kbase*   m_pKbase;
+  
     i8       m_iFactNo;      // unique number (synonym of this facts address)
     s256     m_sNote;        // optional textual decription
     Property m_xProperty;    // some property
@@ -42,7 +44,8 @@ namespace Facts
     void  operator delete(void*);
 
     Fact(i8 iFactNo, Fact* pSuper, Stz* szNote=nullptr);
-   ~Fact(void) noexcept(false);
+    Fact(Kbase* pKbase, Fact* pSuper, Stz* szNote=nullptr);
+    ~Fact(void) noexcept(false);
   
     void  vAttributeAdd(Fact* pAttribute);
     Fact* pAttributeNext(void);
@@ -52,6 +55,8 @@ namespace Facts
     Fact* pAttributes(void);
     void  vAttributes(Fact* pAttributes);
     Fact* pAttributeThatIsSubClass(Fact* pOfSuperFact);
+  
+    Fact* pInstanceOf(Fact* pFact);
 
     void  vElementAdd(Fact* pElement);
     Fact* pElementNext(void);
@@ -59,7 +64,7 @@ namespace Facts
     Fact* pElementOf(void);
     void  vElementOf(Fact* pElementOf);
     Fact* pElements(void);
-    void  vElements(Fact* pElems);
+    void  vElements(Fact* pElements);
     Fact* pElementThatIsSubClass(Fact* pOfSuperFact);
 
     i8    iFactNo(void);
