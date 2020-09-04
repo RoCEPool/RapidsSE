@@ -79,7 +79,6 @@ SizeHeap gxaSizeHeap[]
 
   { 'F' - ('A' - 1),            HT_INVALID           }, // CN__F__
   { sizeof(Fact),               HT_TRANSIENT_SMALL   }, // CN_FACT
-  { sizeof(FactVec),            HT_TRANSIENT_TINY    }, // CN_FACTVEC
   { sizeof(FetchBuffer),        HT_TRANSIENT_LARGE   }, // CN_FETCHBUFFER
   { sizeof(Fifo),               HT_TRANSIENT_TINY    }, // CN_FIFO
   { sizeof(File),               HT_TRANSIENT_TINY    }, // CN_FILE

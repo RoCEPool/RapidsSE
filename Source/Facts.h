@@ -14,9 +14,6 @@ namespace Facts
 
 //------------------------------------------------------------------------------
 
-static const i8 C_MAX_FACTS = 64;
-
-typedef VectorNL_t<CN_FACTVEC, Fact, C_MAX_FACTS> FactVec;
 #include "Fact.hpp"
 
 #include "Question.hpp"
