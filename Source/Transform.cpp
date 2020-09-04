@@ -69,7 +69,7 @@ Fact* Transform::pNewFact(Fact* pFactKind, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  Fact* pFact = m_pKbase->pFactNew(pFactKind,szFactNm);
+  Fact* pFact = m_pKbase->pFactNew(szFactNm,pFactKind);
     
   return pFact;
 }

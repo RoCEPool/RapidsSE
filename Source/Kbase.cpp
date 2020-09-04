@@ -22,7 +22,7 @@ Kbase::Kbase(Stz* szKbName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
   vAprioriFacts();
-  
+ 
   _checkInitialised_(CN_KBASE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
@@ -34,19 +34,6 @@ Kbase::Kbase(Stz* szKbName)
 Kbase::~Kbase(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
-  // more tbd ...
-  
-  delete m_pRoot;
-  
-  delete m_pFact;
-  delete m_pFirst;
-  delete m_pInt;
-  delete m_pObject;
-  delete m_pName;
-  delete m_pNext;
-  delete m_pPrev;
-  delete m_pText;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,13 +41,23 @@ Kbase::~Kbase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* new fact                                                                   */
+/* get root fact                                                              */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pFactNew(Fact* pFactKind, Stz* szFactNm)
+Fact* Kbase::pFact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pFact = new Fact(++ m_ixFactNo, pFactKind, szFactNm);
+  return m_pFact;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new fact                                                                   */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pFactNew(Stz* szNote, Fact* pParent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pFact = new Fact(++ m_ixFactNo, pParent, szNote);
 
   return pFact;
 }
@@ -134,20 +131,49 @@ void Kbase::vAprioriFacts(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
 
-  m_pRoot   = pFactNew(nullptr,nullptr);
+  m_pFact        = pFactNew("fact"_Stz,nullptr);
+
+  m_pContents    = pFactNew("contents"_Stz,m_pFact);
+
+  m_pAssociation = pFactNew("association"_Stz,m_pFact);
+  m_pInt         = pFactNew("int"_Stz,m_pFact);
+  m_pObject      = pFactNew("object"_Stz,m_pFact);
+  m_pOpaque      = pFactNew("opaque"_Stz,m_pFact);
+  m_pText        = pFactNew("text"_Stz,m_pFact);
   
-  // the primitives
-  m_pFact   = pFactNew(nullptr,nullptr);
+  m_pSet         = pFactNew("set"_Stz,m_pFact);
+  m_pElement     = pFactNew("element"_Stz,m_pFact);
+  m_pFirst       = pFactNew("first"_Stz,m_pFact);
+  m_pNext        = pFactNew("next"_Stz,m_pFact);
+  m_pPrev        = pFactNew("prev"_Stz,m_pFact);
 
-  m_pFirst  = pFactNew(nullptr,nullptr);
-  m_pPrev   = pFactNew(nullptr,nullptr);
-  m_pNext   = pFactNew(nullptr,nullptr);
-  m_pNode   = pFactNew(nullptr,nullptr);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pName   = pFactNew(nullptr,nullptr);
-  m_pInt    = pFactNew(nullptr,nullptr);
-  m_pObject = pFactNew(nullptr,nullptr);
-  m_pText   = pFactNew(nullptr,nullptr);
+  Fact* pName        = pFactNew("name"_Stz,m_pText);
+
+  Fact* pTables      = pFactNew("tables"_Stz,m_pSet);
+  Fact* pTable       = pFactNew("table"_Stz,m_pElement);
+  Fact* pTableNm     = pFactNew("tableNm"_Stz,pName);
+  
+  Fact* pColumns     = pFactNew("columns"_Stz,m_pSet);
+  Fact* pColumn      = pFactNew("column"_Stz,m_pElement);
+  Fact* pColumnNm    = pFactNew("columnNm"_Stz,pName);
+  Fact* pColumnType  = pFactNew("columnType"_Stz,m_pFact);
+  Fact* pWidth       = pFactNew("width"_Stz,m_pFact);
+  Fact* pScale       = pFactNew("scale"_Stz,m_pFact);
+  Fact* pNullability = pFactNew("nullability"_Stz,m_pFact);
+  Fact* pNullable    = pFactNew("nullable"_Stz,pNullability);
+  Fact* pNotNullable = pFactNew("notNullable"_Stz,pNullability);
+
+  Fact* pBOOLEAN     = pFactNew("BOOLEAN"_Stz,pColumnType);
+  Fact* pDATE        = pFactNew("DATE"_Stz,pColumnType);
+  Fact* pDECIMAL     = pFactNew("DECIMAL"_Stz,pColumnType);
+  Fact* pFLOAT       = pFactNew("FLOAT"_Stz,pColumnType);
+  Fact* pINTEGER     = pFactNew("INTEGER"_Stz,pColumnType);
+  Fact* pINTERVAL    = pFactNew("INTERVAL"_Stz,pColumnType);
+  Fact* pTIME        = pFactNew("TIME"_Stz,pColumnType);
+  Fact* pTIMESTAMP   = pFactNew("TIMESTAMP"_Stz,pColumnType);
+  Fact* pVARCAHR     = pFactNew("VARCHAR"_Stz,pColumnType);
 }
 
 /*============================================================================*/

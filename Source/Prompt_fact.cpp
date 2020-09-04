@@ -28,7 +28,6 @@ bool Prompt::bPrompt_fact(SePrompt* pPrompt)
   vTrace("... Fact ...\n"_Stz);
   
   Kbase* pKb = new Kbase("Test1"_Stz);
-  K_KBASE(pKb);
   
   Transform* pTk = pKb->pTransformBorrow();
   Question*  pQk = pKb->pQuestionBorrow();
