@@ -15,6 +15,8 @@ namespace Facts
   
     Fact*  m_pFact;      //
   
+    Fact*  m_pProperty;  //
+  
     Fact*  m_pAssociation;
     Fact*  m_pInt;
     Fact*  m_pObject;

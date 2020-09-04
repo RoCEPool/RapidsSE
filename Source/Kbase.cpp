@@ -57,9 +57,7 @@ Fact* Kbase::pFactNew(Stz* szNote, Fact* pSuper)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  i8 iFactNo = iNextFactNo();
-
-  Fact* pFact = new Fact(iFactNo, pSuper, szNote);
+  Fact* pFact = new Fact(this, pSuper, szNote);
 
   return pFact;
 }
@@ -147,51 +145,54 @@ void Kbase::vAprioriFacts(void)
 
   m_pFact        = pFactNew("fact"_Stz,nullptr);
 
-  m_pAssociation = pFactNew("association"_Stz,m_pFact);
-  m_pInt         = pFactNew("int"_Stz,m_pFact);
-  m_pObject      = pFactNew("object"_Stz,m_pFact);
-  m_pOpaque      = pFactNew("opaque"_Stz,m_pFact);
-  m_pText        = pFactNew("text"_Stz,m_pFact);
-  m_pWord        = pFactNew("word"_Stz,m_pFact);
+  m_pProperty    = m_pFact->pNewInstance("property"_Stz);
 
-  m_pName        = pFactNew("name"_Stz,m_pText);
+  m_pAssociation = m_pProperty->pNewInstance("association"_Stz);
+  m_pInt         = m_pProperty->pNewInstance("int"_Stz);
+  m_pObject      = m_pProperty->pNewInstance("object"_Stz);
+  m_pOpaque      = m_pProperty->pNewInstance("opaque"_Stz);
+  m_pText        = m_pProperty->pNewInstance("text"_Stz);
+  m_pWord        = m_pProperty->pNewInstance("word"_Stz);
+
+  m_pName        = m_pText->pNewInstance("name"_Stz);
   
-  m_pQuality     = pFactNew("type"_Stz,m_pFact);
-  m_pType        = pFactNew("type"_Stz,m_pFact);
-  m_pTuple       = pFactNew("tuple"_Stz,m_pFact);
-  m_pFolder      = pFactNew("folder"_Stz,m_pFact);
+  m_pQuality     = m_pAssociation->pNewInstance("type"_Stz);
+  
+  m_pType        = m_pFact->pNewInstance("type"_Stz);
+  m_pTuple       = m_pFact->pNewInstance("tuple"_Stz);
+  m_pFolder      = m_pFact->pNewInstance("folder"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pColumnType  = pFactNew("columnType"_Stz,m_pType);
-  Fact* pBOOLEAN     = pFactNew("BOOLEAN"_Stz,pColumnType);
-  Fact* pDATE        = pFactNew("DATE"_Stz,pColumnType);
-  Fact* pDECIMAL     = pFactNew("DECIMAL"_Stz,pColumnType);
-  Fact* pFLOAT       = pFactNew("FLOAT"_Stz,pColumnType);
-  Fact* pINTEGER     = pFactNew("INTEGER"_Stz,pColumnType);
-  Fact* pINTERVAL    = pFactNew("INTERVAL"_Stz,pColumnType);
-  Fact* pTIME        = pFactNew("TIME"_Stz,pColumnType);
-  Fact* pTIMESTAMP   = pFactNew("TIMESTAMP"_Stz,pColumnType);
-  Fact* pVARCHAR     = pFactNew("VARCHAR"_Stz,pColumnType);
+  Fact* pColumnType  = m_pType->pNewInstance("columnType"_Stz);
+  Fact* pBOOLEAN     = pColumnType->pNewInstance("BOOLEAN"_Stz);
+  Fact* pDATE        = pColumnType->pNewInstance("DATE"_Stz);
+  Fact* pDECIMAL     = pColumnType->pNewInstance("DECIMAL"_Stz);
+  Fact* pFLOAT       = pColumnType->pNewInstance("FLOAT"_Stz);
+  Fact* pINTEGER     = pColumnType->pNewInstance("INTEGER"_Stz);
+  Fact* pINTERVAL    = pColumnType->pNewInstance("INTERVAL"_Stz);
+  Fact* pTIME        = pColumnType->pNewInstance("TIME"_Stz);
+  Fact* pTIMESTAMP   = pColumnType->pNewInstance("TIMESTAMP"_Stz);
+  Fact* pVARCHAR     = pColumnType->pNewInstance("VARCHAR"_Stz);
 
-  Fact* pNullability = pFactNew("nullability"_Stz,m_pQuality);
-  Fact* pNullable    = pFactNew("nullable"_Stz,pNullability);
-  Fact* pNotNullable = pFactNew("notNullable"_Stz,pNullability);
+  Fact* pNullability = m_pQuality->pNewInstance("nullability"_Stz);
+  Fact* pNullable    = pNullability->pNewInstance("nullable"_Stz);
+  Fact* pNotNullable = pNullability->pNewInstance("notNullable"_Stz);
 
-  Fact* pTables      = pFactNew("tables"_Stz,m_pFolder);
-  Fact* pTable       = pFactNew("table"_Stz,m_pFolder);
-  Fact* pTableDef    = pFactNew("tableDef"_Stz,m_pTuple);
-  Fact* pTableNm     = pFactNew("tableNm"_Stz,m_pName);
+  Fact* pTables      = m_pFolder->pNewInstance("tables"_Stz);
+  Fact* pTable       = m_pFolder->pNewInstance("table"_Stz);
+  Fact* pTableDef    = m_pTuple->pNewInstance("tableDef"_Stz);
+  Fact* pTableNm     = m_pName->pNewInstance("tableNm"_Stz);
   
-  Fact* pColumns     = pFactNew("columns"_Stz,m_pFolder);
-  Fact* pColumn      = pFactNew("column"_Stz,m_pTuple);
-  Fact* pColumnNm    = pFactNew("columnNm"_Stz,m_pName);
-  Fact* pWidth       = pFactNew("width"_Stz,m_pInt);
-  Fact* pScale       = pFactNew("scale"_Stz,m_pInt);
+  Fact* pColumns     = m_pFolder->pNewInstance("columns"_Stz);
+  Fact* pColumn      = m_pTuple->pNewInstance("column"_Stz);
+  Fact* pColumnNm    = m_pName->pNewInstance("columnNm"_Stz);
+  Fact* pWidth       = m_pInt->pNewInstance("width"_Stz);
+  Fact* pScale       = m_pInt->pNewInstance("scale"_Stz);
 
-  Fact* pIndexes     = pFactNew("indexes"_Stz,m_pFolder);
-  Fact* pIndex       = pFactNew("index"_Stz,m_pFolder);
-  Fact* pIndexDef    = pFactNew("indexDef"_Stz,m_pTuple);
+  Fact* pIndexes     = m_pFolder->pNewInstance("indexes"_Stz);
+  Fact* pIndex       = m_pFolder->pNewInstance("index"_Stz);
+  Fact* pIndexDef    = m_pTuple->pNewInstance("indexDef"_Stz);
 }
 
 /*============================================================================*/

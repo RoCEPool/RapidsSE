@@ -16,35 +16,6 @@ __aFooterFunction(Fact)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Fact::Fact(i8 iFactNo, Fact* pSuper, Stz* szNote)
-: Object(CN_FACT)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  m_pKbase  = nullptr;
-  
-  m_iFactNo = iFactNo;
-  m_sNote   = szNote ? szNote : C_NO_NOTE;
-  m_xProperty.m_pObject = nullptr;
-    
-  m_pSubclassOf    = pSuper;
-  m_pAttributeOf   = nullptr;
-  m_pElementOf     = nullptr;
-
-  m_pAttributes    = nullptr;
-  m_pAttributeNext = nullptr;
-
-  m_pElements      = nullptr;
-  m_pElementNext   = nullptr;
-  
-  _checkInitialised_(CN_FACT);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Fact::Fact(Kbase* pKbase, Fact* pSuper, Stz* szNote)
 : Object(CN_FACT)
 {
@@ -335,6 +306,21 @@ bool Fact::bIsSubClass(Fact* pOfFact)
     return false;
   
   return m_pSubclassOf->bIsSubClass(pOfFact);
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new instance of this fact                                         */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pNewInstance(Stz* szNote)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  Fact* pFact = new Fact(m_pKbase, this, szNote);
+  
+  if (! szNote)
+    pFact->m_sNote.vSprint("isa-%s"_Stz,m_sNote.azChar());
+    
+  return pFact;
 }
 
 /*----------------------------------------------------------------------------*/

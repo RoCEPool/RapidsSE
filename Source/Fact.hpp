@@ -43,7 +43,6 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Fact(i8 iFactNo, Fact* pSuper, Stz* szNote=nullptr);
     Fact(Kbase* pKbase, Fact* pSuper, Stz* szNote=nullptr);
     ~Fact(void) noexcept(false);
   
@@ -56,7 +55,6 @@ namespace Facts
     void  vAttributes(Fact* pAttributes);
     Fact* pAttributeThatIsSubClass(Fact* pOfSuperFact);
   
-    Fact* pInstanceOf(Fact* pFact);
 
     void  vElementAdd(Fact* pElement);
     Fact* pElementNext(void);
@@ -74,6 +72,8 @@ namespace Facts
     bool  bHasSpecificElement(Fact* pFact);
 
     bool  bIsSubClass(Fact* pOfFact);
+
+    Fact* pNewInstance(Stz* szNote=nullptr);
 
     Stz*  szNote(void);
     void  vNote(Stz* szNote);
