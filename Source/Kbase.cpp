@@ -287,73 +287,74 @@ void Kbase::vAprioriFacts(void)
   
   m_pContents    = m_pFolder->pNewInstance("contents"_Stz);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Fact* pColumnType  = m_pType->pNewInstance("columnType"_Stz);
-  Fact* pBOOLEAN     = pColumnType->pNewInstance("BOOLEAN"_Stz);
-  Fact* pDATE        = pColumnType->pNewInstance("DATE"_Stz);
-  Fact* pDECIMAL     = pColumnType->pNewInstance("DECIMAL"_Stz);
-  Fact* pFLOAT       = pColumnType->pNewInstance("FLOAT"_Stz);
-  Fact* pINTEGER     = pColumnType->pNewInstance("INTEGER"_Stz);
-  Fact* pINTERVAL    = pColumnType->pNewInstance("INTERVAL"_Stz);
-  Fact* pTIME        = pColumnType->pNewInstance("TIME"_Stz);
-  Fact* pTIMESTAMP   = pColumnType->pNewInstance("TIMESTAMP"_Stz);
-  Fact* pVARCHAR     = pColumnType->pNewInstance("VARCHAR"_Stz);
-
-  Fact* pNullability = m_pQuality->pNewInstance("nullability"_Stz);
-  Fact* pNullable    = pNullability->pNewInstance("nullable"_Stz);
-  Fact* pNotNullable = pNullability->pNewInstance("notNullable"_Stz);
-
-  Fact* pPtnKey      = m_pQuality->pNewInstance("ptnKey"_Stz);
-
-  Fact* pTable       = m_pFolder->pNewInstance("table"_Stz);
   Fact* pTables      = m_pFolder->pNewInstance("tables"_Stz);
-  Fact* pTableDef    = m_pTuple->pNewInstance("tableDef"_Stz);
-  Fact* pTableNm     = m_pName->pNewInstance("tableNm"_Stz);
-  
-  Fact* pColumns     = m_pFolder->pNewInstance("columns"_Stz);
-  Fact* pColumn      = m_pTuple->pNewInstance("column"_Stz);
-  Fact* pColumnNm    = m_pName->pNewInstance("columnNm"_Stz);
-  Fact* pLength      = m_pInt->pNewInstance("length"_Stz);
-  Fact* pScale       = m_pInt->pNewInstance("scale"_Stz);
 
-  Fact* pIndexes     = m_pFolder->pNewInstance("indexes"_Stz);
-  Fact* pIndex       = m_pFolder->pNewInstance("index"_Stz);
-  Fact* pIndexDef    = m_pTuple->pNewInstance("indexDef"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Fact* pColumnType  = pConceptAdd(m_pType,"columnType"_Stz);
+  Fact* pBOOLEAN     = pConceptAdd(pColumnType,"BOOLEAN"_Stz);
+  Fact* pDATE        = pConceptAdd(pColumnType,"DATE"_Stz);
+  Fact* pDECIMAL     = pConceptAdd(pColumnType,"DECIMAL"_Stz);
+  Fact* pFLOAT       = pConceptAdd(pColumnType,"FLOAT"_Stz);
+  Fact* pINTEGER     = pConceptAdd(pColumnType,"INTEGER"_Stz);
+  Fact* pINTERVAL    = pConceptAdd(pColumnType,"INTERVAL"_Stz);
+  Fact* pTIME        = pConceptAdd(pColumnType,"TIME"_Stz);
+  Fact* pTIMESTAMP   = pConceptAdd(pColumnType,"TIMESTAMP"_Stz);
+  Fact* pVARCHAR     = pConceptAdd(pColumnType,"VARCHAR"_Stz);
+
+  Fact* pNullability = pConceptAdd(m_pQuality,"nullability"_Stz);
+  Fact* pNullable    = pConceptAdd(pNullability,"nullable"_Stz);
+  Fact* pNotNullable = pConceptAdd(pNullability,"notNullable"_Stz);
+
+  Fact* pPtnKey      = pConceptAdd(m_pQuality,"ptnKey"_Stz);
+
+  Fact* pTable       = pConceptAdd(m_pFolder,"table"_Stz);
+  Fact* pTableDef    = pConceptAdd(m_pTuple,"tableDef"_Stz);
+  Fact* pTableNm     = pConceptAdd(m_pName,"tableNm"_Stz);
+  
+  Fact* pColumns     = pConceptAdd(m_pFolder,"columns"_Stz);
+  Fact* pColumn      = pConceptAdd(m_pTuple,"column"_Stz);
+  Fact* pColumnNm    = pConceptAdd(m_pName,"columnNm"_Stz);
+  Fact* pLength      = pConceptAdd(m_pInt,"length"_Stz);
+  Fact* pScale       = pConceptAdd(m_pInt,"scale"_Stz);
+
+  Fact* pIndexes     = pConceptAdd(m_pFolder,"indexes"_Stz);
+  Fact* pIndex       = pConceptAdd(m_pFolder,"index"_Stz);
+  Fact* pIndexDef    = pConceptAdd(m_pTuple,"indexDef"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pConcepts->vElementAdd(pColumnType);
-  m_pConcepts->vElementAdd(pBOOLEAN);
-  m_pConcepts->vElementAdd(pDATE);
-  m_pConcepts->vElementAdd(pDECIMAL);
-  m_pConcepts->vElementAdd(pFLOAT);
-  m_pConcepts->vElementAdd(pINTEGER);
-  m_pConcepts->vElementAdd(pINTERVAL);
-  m_pConcepts->vElementAdd(pTIME);
-  m_pConcepts->vElementAdd(pTIMESTAMP);
-  m_pConcepts->vElementAdd(pVARCHAR);
-
-  m_pConcepts->vElementAdd(pNullability);
-  m_pConcepts->vElementAdd(pNullable);
-  m_pConcepts->vElementAdd(pNotNullable);
-  
-  m_pConcepts->vElementAdd(pPtnKey);
-
-  //m_pConcepts->vElementAdd(pTables);
-  m_pConcepts->vElementAdd(pTable);
-  m_pConcepts->vElementAdd(pTableDef);
-  m_pConcepts->vElementAdd(pTableNm);
-
-  m_pConcepts->vElementAdd(pColumns);
-  m_pConcepts->vElementAdd(pColumn);
-  m_pConcepts->vElementAdd(pColumnNm);
-  m_pConcepts->vElementAdd(pLength);
-  m_pConcepts->vElementAdd(pScale);
-
-  m_pConcepts->vElementAdd(pIndexes);
-  m_pConcepts->vElementAdd(pIndex);
-  m_pConcepts->vElementAdd(pIndexDef);
+  //m_pConcepts->vElementAdd(pColumnType);
+//  m_pConcepts->vElementAdd(pBOOLEAN);
+//  m_pConcepts->vElementAdd(pDATE);
+//  m_pConcepts->vElementAdd(pDECIMAL);
+//  m_pConcepts->vElementAdd(pFLOAT);
+//  m_pConcepts->vElementAdd(pINTEGER);
+//  m_pConcepts->vElementAdd(pINTERVAL);
+//  m_pConcepts->vElementAdd(pTIME);
+//  m_pConcepts->vElementAdd(pTIMESTAMP);
+//  m_pConcepts->vElementAdd(pVARCHAR);
+//
+//  m_pConcepts->vElementAdd(pNullability);
+//  m_pConcepts->vElementAdd(pNullable);
+//  m_pConcepts->vElementAdd(pNotNullable);
+//
+//  m_pConcepts->vElementAdd(pPtnKey);
+//
+//  //m_pConcepts->vElementAdd(pTables);
+//  m_pConcepts->vElementAdd(pTable);
+//  m_pConcepts->vElementAdd(pTableDef);
+//  m_pConcepts->vElementAdd(pTableNm);
+//
+//  m_pConcepts->vElementAdd(pColumns);
+//  m_pConcepts->vElementAdd(pColumn);
+//  m_pConcepts->vElementAdd(pColumnNm);
+//  m_pConcepts->vElementAdd(pLength);
+//  m_pConcepts->vElementAdd(pScale);
+//
+//  m_pConcepts->vElementAdd(pIndexes);
+//  m_pConcepts->vElementAdd(pIndex);
+//  m_pConcepts->vElementAdd(pIndexDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
