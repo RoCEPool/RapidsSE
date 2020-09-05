@@ -151,11 +151,17 @@ void Kbase::vTransformReturn(Transform** ppTransform)
 /*----------------------------------------------------------------------------*/
 /* import table                                                               */
 /*----------------------------------------------------------------------------*/
-void Kbase::vImport(Table* pTable)
+void Kbase::vImport(Table* pTableToImport)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
-  vTrace("Import %s ...\n"_Stz,pTable->szTableNm());
+  vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
+  
+  Fact* pTables = m_pContents->pFindElement("tables"_Stz,m_pFolder);
+  Fact* pTable  = m_pGlossary->pFindElement("table"_Stz, m_pFolder);
+
+  Fact* pIsATable = pTable->pNewInstance(pTableToImport->szTableNm());
+  pTables->vElementAdd(pIsATable);
 }
 
 
@@ -181,6 +187,7 @@ void Kbase::vAprioriFacts(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
 
   m_pFact        = pFactNew("fact"_Stz,nullptr);
+  m_pGlossary    = m_pFact->pNewInstance("glossary"_Stz);
 
   m_pProperty    = m_pFact->pNewInstance("property"_Stz);
 
@@ -218,8 +225,8 @@ void Kbase::vAprioriFacts(void)
   Fact* pNullable    = pNullability->pNewInstance("nullable"_Stz);
   Fact* pNotNullable = pNullability->pNewInstance("notNullable"_Stz);
 
-  Fact* pTables      = m_pFolder->pNewInstance("tables"_Stz);
   Fact* pTable       = m_pFolder->pNewInstance("table"_Stz);
+  Fact* pTables      = m_pFolder->pNewInstance("tables"_Stz);
   Fact* pTableDef    = m_pTuple->pNewInstance("tableDef"_Stz);
   Fact* pTableNm     = m_pName->pNewInstance("tableNm"_Stz);
   
@@ -233,6 +240,38 @@ void Kbase::vAprioriFacts(void)
   Fact* pIndex       = m_pFolder->pNewInstance("index"_Stz);
   Fact* pIndexDef    = m_pTuple->pNewInstance("indexDef"_Stz);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pGlossary->vElementAdd(pColumnType);
+  m_pGlossary->vElementAdd(pBOOLEAN);
+  m_pGlossary->vElementAdd(pDATE);
+  m_pGlossary->vElementAdd(pDECIMAL);
+  m_pGlossary->vElementAdd(pFLOAT);
+  m_pGlossary->vElementAdd(pINTEGER);
+  m_pGlossary->vElementAdd(pINTERVAL);
+  m_pGlossary->vElementAdd(pTIME);
+  m_pGlossary->vElementAdd(pTIMESTAMP);
+  m_pGlossary->vElementAdd(pVARCHAR);
+
+  m_pGlossary->vElementAdd(pNullability);
+  m_pGlossary->vElementAdd(pNullable);
+  m_pGlossary->vElementAdd(pNotNullable);
+
+  //m_pGlossary->vElementAdd(pTables);
+  m_pGlossary->vElementAdd(pTable);
+  m_pGlossary->vElementAdd(pTableDef);
+  m_pGlossary->vElementAdd(pTableNm);
+
+  m_pGlossary->vElementAdd(pColumns);
+  m_pGlossary->vElementAdd(pColumn);
+  m_pGlossary->vElementAdd(pColumnNm);
+  m_pGlossary->vElementAdd(pWidth);
+  m_pGlossary->vElementAdd(pScale);
+
+  m_pGlossary->vElementAdd(pIndexes);
+  m_pGlossary->vElementAdd(pIndex);
+  m_pGlossary->vElementAdd(pIndexDef);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pContents->vElementAdd(pTables);

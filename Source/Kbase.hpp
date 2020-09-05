@@ -15,6 +15,7 @@ namespace Facts
     Atomic m_ixFactNo;   //
   
     Fact*  m_pFact;      //
+    Fact*  m_pGlossary;  //
 
     Fact*  m_pProperty;  //
   

@@ -68,7 +68,7 @@ void Fact::vAttributeAdd(Fact* pAttribute)
     return;
   }
   
-  Fact* pTail = m_pAttributeNext;
+  Fact* pTail = m_pAttributes;
   while (pTail->pAttributeNext())
     pTail = pTail->pAttributeNext();
   
@@ -163,7 +163,7 @@ void Fact::vElementAdd(Fact* pElement)
     return;
   }
   
-  Fact* pTail = m_pElementNext;
+  Fact* pTail = m_pElements;
   while (pTail->pElementNext())
     pTail = pTail->pElementNext();
   
