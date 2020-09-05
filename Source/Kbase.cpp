@@ -67,12 +67,12 @@ Fact* Kbase::pFact(void)
 /*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pFactNew(Stz* szNote, Fact* pSuper)
+Fact* Kbase::pFactNew(Fact* pSuper, Stz* szNote)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
   Fact* pFact = new Fact(this, pSuper, szNote);
-
+  
   return pFact;
 }
 
@@ -87,7 +87,7 @@ void Kbase::vFactDelete(Fact* pFact)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find element                                                                   */
+/* find element                                                               */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pFindElement(Stz* szNote, Fact* pSuper)
 {
@@ -265,29 +265,29 @@ void Kbase::vAprioriFacts(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
 
-  m_pFact        = pFactNew("fact"_Stz,nullptr);
-  m_pConcepts    = m_pFact->pNewInstance("glossary"_Stz);
+  m_pFact        = pFactNew(nullptr,"fact"_Stz);
+  m_pConcepts    = pFactNew(m_pFact,"glossary"_Stz);
 
-  m_pProperty    = m_pFact->pNewInstance("property"_Stz);
+  m_pProperty    = pFactNew(m_pFact,"property"_Stz);
 
-  m_pAssociation = m_pProperty->pNewInstance("association"_Stz);
-  m_pInt         = m_pProperty->pNewInstance("int"_Stz);
-  m_pObject      = m_pProperty->pNewInstance("object"_Stz);
-  m_pOpaque      = m_pProperty->pNewInstance("opaque"_Stz);
-  m_pText        = m_pProperty->pNewInstance("text"_Stz);
-  m_pWord        = m_pProperty->pNewInstance("word"_Stz);
+  m_pAssociation = pFactNew(m_pProperty,"association"_Stz);
+  m_pInt         = pFactNew(m_pProperty,"int"_Stz);
+  m_pObject      = pFactNew(m_pProperty,"object"_Stz);
+  m_pOpaque      = pFactNew(m_pProperty,"opaque"_Stz);
+  m_pText        = pFactNew(m_pProperty,"text"_Stz);
+  m_pWord        = pFactNew(m_pProperty,"word"_Stz);
 
-  m_pName        = m_pText->pNewInstance("name"_Stz);
+  m_pName        = pFactNew(m_pText,"name"_Stz);
   
-  m_pQuality     = m_pFact->pNewInstance("quality"_Stz);
+  m_pQuality     = pFactNew(m_pFact,"quality"_Stz);
   
-  m_pType        = m_pFact->pNewInstance("type"_Stz);
-  m_pTuple       = m_pFact->pNewInstance("tuple"_Stz);
-  m_pFolder      = m_pFact->pNewInstance("folder"_Stz);
+  m_pType        = pFactNew(m_pFact,"type"_Stz);
+  m_pTuple       = pFactNew(m_pFact,"tuple"_Stz);
+  m_pFolder      = pFactNew(m_pFact,"folder"_Stz);
   
-  m_pContents    = m_pFolder->pNewInstance("contents"_Stz);
+  m_pContents    = pFactNew(m_pFolder,"contents"_Stz);
 
-  Fact* pTables      = m_pFolder->pNewInstance("tables"_Stz);
+  Fact* pTables  = pFactNew(m_pFolder,"tables"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -322,40 +322,6 @@ void Kbase::vAprioriFacts(void)
   Fact* pIndex       = pConceptAdd(m_pFolder,"index"_Stz);
   Fact* pIndexDef    = pConceptAdd(m_pTuple,"indexDef"_Stz);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //m_pConcepts->vElementAdd(pColumnType);
-//  m_pConcepts->vElementAdd(pBOOLEAN);
-//  m_pConcepts->vElementAdd(pDATE);
-//  m_pConcepts->vElementAdd(pDECIMAL);
-//  m_pConcepts->vElementAdd(pFLOAT);
-//  m_pConcepts->vElementAdd(pINTEGER);
-//  m_pConcepts->vElementAdd(pINTERVAL);
-//  m_pConcepts->vElementAdd(pTIME);
-//  m_pConcepts->vElementAdd(pTIMESTAMP);
-//  m_pConcepts->vElementAdd(pVARCHAR);
-//
-//  m_pConcepts->vElementAdd(pNullability);
-//  m_pConcepts->vElementAdd(pNullable);
-//  m_pConcepts->vElementAdd(pNotNullable);
-//
-//  m_pConcepts->vElementAdd(pPtnKey);
-//
-//  //m_pConcepts->vElementAdd(pTables);
-//  m_pConcepts->vElementAdd(pTable);
-//  m_pConcepts->vElementAdd(pTableDef);
-//  m_pConcepts->vElementAdd(pTableNm);
-//
-//  m_pConcepts->vElementAdd(pColumns);
-//  m_pConcepts->vElementAdd(pColumn);
-//  m_pConcepts->vElementAdd(pColumnNm);
-//  m_pConcepts->vElementAdd(pLength);
-//  m_pConcepts->vElementAdd(pScale);
-//
-//  m_pConcepts->vElementAdd(pIndexes);
-//  m_pConcepts->vElementAdd(pIndex);
-//  m_pConcepts->vElementAdd(pIndexDef);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pContents->vElementAdd(pTables);

@@ -50,7 +50,7 @@ namespace Facts
   
     Fact* pFact(void);
   
-    Fact* pFactNew(Stz* szNote, Fact* pSuper);
+    Fact* pFactNew(Fact* pSuper, Stz* szNote);
     void vFactDelete(Fact* pFact);
   
     Fact* pFindElement(Stz* szNote, Fact* pSuper);

@@ -65,11 +65,11 @@ Fact* Transform::pNewAttribute(Fact* pToFact, Fact* pFacetKind,
 /*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Transform::pNewFact(Fact* pFactKind, Stz* szFactNm)
+Fact* Transform::pNewFact(Fact* pSuper, Stz* szNote)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  Fact* pFact = m_pKbase->pFactNew(szFactNm,pFactKind);
+  Fact* pFact = m_pKbase->pFactNew(pSuper,szNote);
     
   return pFact;
 }
