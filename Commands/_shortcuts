@@ -27,6 +27,7 @@ shortcut en   semantic;
 shortcut etc  etcTest firstArg secondArg;
 shortcut etc3 etcTest createtable T (a integer, b varchar(32));
 shortcut fn   forget node node9 abc def;
+shortcut kb   _kBase;
 shortcut ln   show nodes;
 shortcut mni  "../MetaNibble/_int";
 shortcut mnv  "../MetaNibble/_vch";
