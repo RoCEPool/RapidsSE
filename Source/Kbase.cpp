@@ -157,11 +157,26 @@ void Kbase::vImport(Table* pTableToImport)
     
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
   
-  Fact* pTables = m_pContents->pFindElement("tables"_Stz,m_pFolder);
-  Fact* pTable  = m_pGlossary->pFindElement("table"_Stz, m_pFolder);
+  Fact* pTables  = m_pContents->pFindElement("tables"_Stz,m_pFolder);
+  Fact* pTable   = m_pGlossary->pFindElement("table"_Stz, m_pFolder);
+  Fact* pColumns = m_pGlossary->pFindElement("columns"_Stz,m_pFolder);
+  Fact* pColumn  = m_pGlossary->pFindElement("column"_Stz,m_pTuple);
 
   Fact* pIsATable = pTable->pNewInstance(pTableToImport->szTableNm());
   pTables->vElementAdd(pIsATable);
+
+  Fact* pIsAColumns = pColumns->pNewInstance(pColumns->szNote());
+  pIsATable->vElementAdd(pIsAColumns);
+
+  StreamDef* pStmDef = pTableToImport->pStreamDef();
+  
+  i8 nCols = pStmDef->nColumns(C_ALL);
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column* pCol = pStmDef->pGetColumn(i_Col);
+    
+    Fact* pIsAColumn = pColumn->pNewInstance(pCol->szColNm());
+    pIsAColumns->vElementAdd(pIsAColumn);
+  }
 }
 
 
