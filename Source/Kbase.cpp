@@ -158,9 +158,15 @@ void Kbase::vImport(Table* pTableToImport)
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
   
   Fact* pTables  = m_pContents->pFindElement("tables"_Stz,m_pFolder);
-  Fact* pTable   = m_pGlossary->pFindElement("table"_Stz, m_pFolder);
-  Fact* pColumns = m_pGlossary->pFindElement("columns"_Stz,m_pFolder);
-  Fact* pColumn  = m_pGlossary->pFindElement("column"_Stz,m_pTuple);
+  Fact* pTable   = m_pConcepts->pFindElement("table"_Stz, m_pFolder);
+  Fact* pColumns = m_pConcepts->pFindElement("columns"_Stz,m_pFolder);
+  Fact* pColumn  = m_pConcepts->pFindElement("column"_Stz,m_pTuple);
+  Fact* pColumnType = m_pConcepts->pFindElement("columnType"_Stz,m_pType);
+  Fact* pLength  = m_pConcepts->pFindElement("length"_Stz,m_pInt);
+  Fact* pScale   = m_pConcepts->pFindElement("scale"_Stz,m_pInt);
+  Fact* pNullable    = m_pConcepts->pFindElement("nullable"_Stz);
+  Fact* pNotNullable = m_pConcepts->pFindElement("notNullable"_Stz);
+  Fact* pPtnKey  = m_pConcepts->pFindElement("ptnKey"_Stz);
 
   Fact* pIsATable = pTable->pNewInstance(pTableToImport->szTableNm());
   pTables->vElementAdd(pIsATable);
@@ -176,6 +182,38 @@ void Kbase::vImport(Table* pTableToImport)
     
     Fact* pIsAColumn = pColumn->pNewInstance(pCol->szColNm());
     pIsAColumns->vElementAdd(pIsAColumn);
+    
+    eCT eColType = pCol->eColumnType();
+    Fact* pColType = m_pConcepts->pFindElement(aCT[eColType],pColumnType);
+    Fact* pIsAColType = pColType->pNewInstance(aCT[eColType]);
+    pIsAColumn->vAttributeAdd(pIsAColType);
+    
+    i8 iLength = pCol->iColumnLength();
+    Fact* pIsALength = pLength->pNewInstance(pLength->szNote());
+    pIsALength->rxProperty().m_iInt = iLength;
+    pIsAColumn->vAttributeAdd(pIsALength);
+
+    i8 iScale = pCol->iColumnScale();
+    Fact* pIsAScale = pLength->pNewInstance(pScale->szNote());
+    pIsAScale->rxProperty().m_iInt = iScale;
+    pIsAColumn->vAttributeAdd(pIsAScale);
+    
+    bool bIsNullable = pCol->bIsNullable();
+    if (bIsNullable) {
+      Fact* pIsANullable = pNullable->pNewInstance(pNullable->szNote());
+      pIsAColumn->vAttributeAdd(pIsANullable);
+    }
+    else {
+      Fact* pIsANotNullable = pNotNullable->pNewInstance(pNotNullable->szNote());
+      pIsAColumn->vAttributeAdd(pIsANotNullable);
+    }
+    
+    bool bIsPtnKey = pCol->bIsPtnKey();
+    if (bIsPtnKey) {
+      Fact* pIsAPtnKey = pPtnKey->pNewInstance(pPtnKey->szNote());
+      pIsAColumn->vAttributeAdd(pIsAPtnKey);
+    }
+
   }
 }
 
@@ -202,7 +240,7 @@ void Kbase::vAprioriFacts(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
 
   m_pFact        = pFactNew("fact"_Stz,nullptr);
-  m_pGlossary    = m_pFact->pNewInstance("glossary"_Stz);
+  m_pConcepts    = m_pFact->pNewInstance("glossary"_Stz);
 
   m_pProperty    = m_pFact->pNewInstance("property"_Stz);
 
@@ -215,7 +253,7 @@ void Kbase::vAprioriFacts(void)
 
   m_pName        = m_pText->pNewInstance("name"_Stz);
   
-  m_pQuality     = m_pAssociation->pNewInstance("quality"_Stz);
+  m_pQuality     = m_pFact->pNewInstance("quality"_Stz);
   
   m_pType        = m_pFact->pNewInstance("type"_Stz);
   m_pTuple       = m_pFact->pNewInstance("tuple"_Stz);
@@ -240,6 +278,8 @@ void Kbase::vAprioriFacts(void)
   Fact* pNullable    = pNullability->pNewInstance("nullable"_Stz);
   Fact* pNotNullable = pNullability->pNewInstance("notNullable"_Stz);
 
+  Fact* pPtnKey      = m_pQuality->pNewInstance("ptnKey"_Stz);
+
   Fact* pTable       = m_pFolder->pNewInstance("table"_Stz);
   Fact* pTables      = m_pFolder->pNewInstance("tables"_Stz);
   Fact* pTableDef    = m_pTuple->pNewInstance("tableDef"_Stz);
@@ -248,7 +288,7 @@ void Kbase::vAprioriFacts(void)
   Fact* pColumns     = m_pFolder->pNewInstance("columns"_Stz);
   Fact* pColumn      = m_pTuple->pNewInstance("column"_Stz);
   Fact* pColumnNm    = m_pName->pNewInstance("columnNm"_Stz);
-  Fact* pWidth       = m_pInt->pNewInstance("width"_Stz);
+  Fact* pLength      = m_pInt->pNewInstance("length"_Stz);
   Fact* pScale       = m_pInt->pNewInstance("scale"_Stz);
 
   Fact* pIndexes     = m_pFolder->pNewInstance("indexes"_Stz);
@@ -257,35 +297,37 @@ void Kbase::vAprioriFacts(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pGlossary->vElementAdd(pColumnType);
-  m_pGlossary->vElementAdd(pBOOLEAN);
-  m_pGlossary->vElementAdd(pDATE);
-  m_pGlossary->vElementAdd(pDECIMAL);
-  m_pGlossary->vElementAdd(pFLOAT);
-  m_pGlossary->vElementAdd(pINTEGER);
-  m_pGlossary->vElementAdd(pINTERVAL);
-  m_pGlossary->vElementAdd(pTIME);
-  m_pGlossary->vElementAdd(pTIMESTAMP);
-  m_pGlossary->vElementAdd(pVARCHAR);
+  m_pConcepts->vElementAdd(pColumnType);
+  m_pConcepts->vElementAdd(pBOOLEAN);
+  m_pConcepts->vElementAdd(pDATE);
+  m_pConcepts->vElementAdd(pDECIMAL);
+  m_pConcepts->vElementAdd(pFLOAT);
+  m_pConcepts->vElementAdd(pINTEGER);
+  m_pConcepts->vElementAdd(pINTERVAL);
+  m_pConcepts->vElementAdd(pTIME);
+  m_pConcepts->vElementAdd(pTIMESTAMP);
+  m_pConcepts->vElementAdd(pVARCHAR);
 
-  m_pGlossary->vElementAdd(pNullability);
-  m_pGlossary->vElementAdd(pNullable);
-  m_pGlossary->vElementAdd(pNotNullable);
+  m_pConcepts->vElementAdd(pNullability);
+  m_pConcepts->vElementAdd(pNullable);
+  m_pConcepts->vElementAdd(pNotNullable);
+  
+  m_pConcepts->vElementAdd(pPtnKey);
 
-  //m_pGlossary->vElementAdd(pTables);
-  m_pGlossary->vElementAdd(pTable);
-  m_pGlossary->vElementAdd(pTableDef);
-  m_pGlossary->vElementAdd(pTableNm);
+  //m_pConcepts->vElementAdd(pTables);
+  m_pConcepts->vElementAdd(pTable);
+  m_pConcepts->vElementAdd(pTableDef);
+  m_pConcepts->vElementAdd(pTableNm);
 
-  m_pGlossary->vElementAdd(pColumns);
-  m_pGlossary->vElementAdd(pColumn);
-  m_pGlossary->vElementAdd(pColumnNm);
-  m_pGlossary->vElementAdd(pWidth);
-  m_pGlossary->vElementAdd(pScale);
+  m_pConcepts->vElementAdd(pColumns);
+  m_pConcepts->vElementAdd(pColumn);
+  m_pConcepts->vElementAdd(pColumnNm);
+  m_pConcepts->vElementAdd(pLength);
+  m_pConcepts->vElementAdd(pScale);
 
-  m_pGlossary->vElementAdd(pIndexes);
-  m_pGlossary->vElementAdd(pIndex);
-  m_pGlossary->vElementAdd(pIndexDef);
+  m_pConcepts->vElementAdd(pIndexes);
+  m_pConcepts->vElementAdd(pIndex);
+  m_pConcepts->vElementAdd(pIndexDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

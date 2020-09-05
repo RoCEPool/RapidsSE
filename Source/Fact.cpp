@@ -271,7 +271,7 @@ Fact* Fact::pFindElement(Stz* szNote, Fact* pSuper)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  if (m_sNote.bSame(szNote) && bIsSubClass(pSuper))
+  if (m_sNote.bSame(szNote) && (! pSuper || bIsSubClass(pSuper)))
     return this;
   
   Fact* pElement = nullptr;

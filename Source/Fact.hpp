@@ -67,7 +67,7 @@ namespace Facts
     i8    iFactNo(void);
     void  vFactNo(i8 iFactNo);
     
-    Fact* pFindElement(Stz* szNote, Fact* pSuper);
+    Fact* pFindElement(Stz* szNote, Fact* pSuper=nullptr);
 
     bool  bHasSpecificAttribute(Fact* pFact);
     bool  bHasSpecificElement(Fact* pFact);
