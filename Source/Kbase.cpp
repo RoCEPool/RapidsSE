@@ -157,19 +157,26 @@ void Kbase::vImport(Table* pTableToImport)
     
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
   
-  Fact* pTables  = m_pContents->pFindElement("tables"_Stz,m_pFolder);
-  Fact* pTable   = m_pConcepts->pFindElement("table"_Stz, m_pFolder);
-  Fact* pColumns = m_pConcepts->pFindElement("columns"_Stz,m_pFolder);
-  Fact* pColumn  = m_pConcepts->pFindElement("column"_Stz,m_pTuple);
-  Fact* pColumnType = m_pConcepts->pFindElement("columnType"_Stz,m_pType);
-  Fact* pLength  = m_pConcepts->pFindElement("length"_Stz,m_pInt);
-  Fact* pScale   = m_pConcepts->pFindElement("scale"_Stz,m_pInt);
+  Fact* pTables  = m_pContents->pFindElement("tables"_Stz);
+  Fact* pTable   = m_pConcepts->pFindElement("table"_Stz);
+  Fact* pTableNm = m_pConcepts->pFindElement("tableNm"_Stz);
+  Fact* pColumns = m_pConcepts->pFindElement("columns"_Stz);
+  Fact* pColumn  = m_pConcepts->pFindElement("column"_Stz);
+  Fact* pColumnNm = m_pConcepts->pFindElement("columnNm"_Stz);
+  Fact* pColumnType = m_pConcepts->pFindElement("columnType"_Stz);
+  Fact* pLength  = m_pConcepts->pFindElement("length"_Stz);
+  Fact* pScale   = m_pConcepts->pFindElement("scale"_Stz);
   Fact* pNullable    = m_pConcepts->pFindElement("nullable"_Stz);
   Fact* pNotNullable = m_pConcepts->pFindElement("notNullable"_Stz);
   Fact* pPtnKey  = m_pConcepts->pFindElement("ptnKey"_Stz);
 
-  Fact* pIsATable = pTable->pNewInstance(pTableToImport->szTableNm());
+  Fact* pIsATable = pTable->pNewInstance(pTable->szNote());
   pTables->vElementAdd(pIsATable);
+
+  Fact* pIsATableNm = pTableNm->pNewInstance(pTableToImport->szTableNm());
+  pIsATableNm->rxProperty().m_pText = new Text;
+  pIsATableNm->rxProperty().m_pText->vSet(pTableToImport->szTableNm());
+  pIsATable->vAttributeAdd(pIsATableNm);
 
   Fact* pIsAColumns = pColumns->pNewInstance(pColumns->szNote());
   pIsATable->vElementAdd(pIsAColumns);
@@ -183,6 +190,11 @@ void Kbase::vImport(Table* pTableToImport)
     Fact* pIsAColumn = pColumn->pNewInstance(pCol->szColNm());
     pIsAColumns->vElementAdd(pIsAColumn);
     
+    Fact* pIsAColumnNm = pColumnNm->pNewInstance(pCol->szColNm());
+    pIsAColumnNm->rxProperty().m_pText = new Text;
+    pIsAColumnNm->rxProperty().m_pText->vSet(pCol->szColNm());
+    pIsAColumn->vAttributeAdd(pIsAColumnNm);
+
     eCT eColType = pCol->eColumnType();
     Fact* pColType = m_pConcepts->pFindElement(aCT[eColType],pColumnType);
     Fact* pIsAColType = pColType->pNewInstance(aCT[eColType]);
