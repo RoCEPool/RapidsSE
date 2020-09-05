@@ -41,6 +41,20 @@ Kbase::~Kbase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a concept                                                              */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szNote)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pConcept = pSuper->pNewInstance(szNote);
+  
+  m_pConcepts->vElementAdd(pConcept);
+
+  return pConcept;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get root fact                                                              */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pFact(void)

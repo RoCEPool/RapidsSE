@@ -46,6 +46,8 @@ namespace Facts
     Kbase(Stz* szKbName);
    ~Kbase(void) noexcept(false);
   
+    Fact* pConceptAdd(Fact* pSuper, Stz* szNote);
+  
     Fact* pFact(void);
   
     Fact* pFactNew(Stz* szNote, Fact* pSuper);
