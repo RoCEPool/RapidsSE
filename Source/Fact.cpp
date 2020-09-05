@@ -309,6 +309,66 @@ bool Fact::bIsSubClass(Fact* pOfFact)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this fact an assocation?                                                */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsAssociation(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  return bIsSubClass(m_pKbase->m_pAssociation);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this fact an int?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsInt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  return bIsSubClass(m_pKbase->m_pInt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this fact an object?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsObject(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  return bIsSubClass(m_pKbase->m_pObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this fact an opaque?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsOpaque(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  return bIsSubClass(m_pKbase->m_pOpaque);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this fact a text?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  return bIsSubClass(m_pKbase->m_pText);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this fact a word?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  return bIsSubClass(m_pKbase->m_pWord);
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new instance of this fact                                         */
 /*----------------------------------------------------------------------------*/
 Fact* Fact::pNewInstance(Stz* szNote)
@@ -341,6 +401,37 @@ void Fact::vNote(Stz* szNote)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   m_sNote = szNote;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print fact (recursive)                                                     */
+/*----------------------------------------------------------------------------*/
+void Fact::vPrint_r(i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  vTrace("[%lld] %s\n"_Stz,
+         m_iFactNo,
+         m_sNote.azChar()
+         );
+  
+       if (bIsAssociation()) { }
+  else if (bIsInt())         { }
+  else if (bIsObject())      { }
+  else if (bIsOpaque())      { }
+  else if (bIsText())        { }
+  else if (bIsWord())        { }
+  else { }
+
+  for (Fact* pAttribute = m_pAttributes;
+       pAttribute;
+       pAttribute = pAttribute->m_pAttributeNext)
+    pAttribute->vPrint_r(iDepth + 1);
+
+  for (Fact* pElement = m_pElements;
+       pElement;
+       pElement = pElement->m_pElementNext)
+    pElement->vPrint_r(iDepth + 1);
 }
 
 /*----------------------------------------------------------------------------*/

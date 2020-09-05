@@ -72,10 +72,19 @@ namespace Facts
 
     bool  bIsSubClass(Fact* pOfFact);
 
+    bool  bIsAssociation(void);
+    bool  bIsInt(void);
+    bool  bIsObject(void);
+    bool  bIsOpaque(void);
+    bool  bIsText(void);
+    bool  bIsWord(void);
+
     Fact* pNewInstance(Stz* szNote=nullptr);
 
     Stz*  szNote(void);
     void  vNote(Stz* szNote);
+  
+    void  vPrint_r(i8 iDepth);
   
     Property& rxProperty(void);
     

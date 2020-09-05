@@ -7,6 +7,7 @@ namespace Facts
 {
   class Kbase : public Object
   {
+  friend class Fact;
   friend class Question;
   friend class Transform;
   private:
@@ -14,7 +15,7 @@ namespace Facts
     Atomic m_ixFactNo;   //
   
     Fact*  m_pFact;      //
-  
+
     Fact*  m_pProperty;  //
   
     Fact*  m_pAssociation;
@@ -30,6 +31,9 @@ namespace Facts
     Fact*  m_pType;    //
     Fact*  m_pTuple;   //
     Fact*  m_pFolder;  //
+
+  
+    Fact*  m_pContents; //
 
     // must be last
     Footer m_xFooter;
@@ -53,6 +57,9 @@ namespace Facts
     
     Transform* pTransformBorrow(void);
     void vTransformReturn(Transform** ppTransform);
+  
+  
+    void vTest(void);
   
   private:
     void vAprioriFacts(void);

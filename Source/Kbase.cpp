@@ -133,6 +133,19 @@ void Kbase::vTransformReturn(Transform** ppTransform)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* test                                                                       */
+/*----------------------------------------------------------------------------*/
+void Kbase::vTest(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  m_pContents->vPrint_r(0);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -161,6 +174,8 @@ void Kbase::vAprioriFacts(void)
   m_pType        = m_pFact->pNewInstance("type"_Stz);
   m_pTuple       = m_pFact->pNewInstance("tuple"_Stz);
   m_pFolder      = m_pFact->pNewInstance("folder"_Stz);
+  
+  m_pContents    = m_pFolder->pNewInstance("contents"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -193,6 +208,9 @@ void Kbase::vAprioriFacts(void)
   Fact* pIndexes     = m_pFolder->pNewInstance("indexes"_Stz);
   Fact* pIndex       = m_pFolder->pNewInstance("index"_Stz);
   Fact* pIndexDef    = m_pTuple->pNewInstance("indexDef"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 }
 
 /*============================================================================*/

@@ -29,6 +29,8 @@ bool Prompt::bPrompt_fact(SePrompt* pPrompt)
   
   Kbase* pKb = new Kbase("Test1"_Stz);
   
+  pKb->vTest();
+  
   Transform* pTk = pKb->pTransformBorrow();
   Question*  pQk = pKb->pQuestionBorrow();
     
