@@ -329,6 +329,22 @@ bool Fact::bIsSubClass(Fact* pOfFact)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this fact a sub-class of given fact                         (recursive) */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsSubClass(Stz* szNote)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  if (m_sNote.bSame(szNote))
+    return true;
+  
+  if (! m_pSubclassOf)
+    return false;
+  
+  return m_pSubclassOf->bIsSubClass(szNote);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this fact an assocation?                                                */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsAssociation(void)
@@ -426,17 +442,51 @@ void Fact::vNote(Stz* szNote)
 /*----------------------------------------------------------------------------*/
 /* print fact (recursive)                                                     */
 /*----------------------------------------------------------------------------*/
-void Fact::vPrint_r(i8 iDepth)
+void Fact::vPrint_r(i8 iDepth, i8 iAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  if (m_pElementOf)
-    vTrace("%s"_Stz,Stz::szTab(iDepth));
+//  if (m_pElementOf)
+//    vTrace("%s"_Stz,Stz::szTab(iDepth));
 
-  vTrace("[%lld] %s"_Stz,
-         m_iFactNo,
-         m_sNote.azChar()
-         );
+  if (bIsSubClass("folder"_Stz))
+    vTrace("f:%s"_Stz,Stz::szTab(iDepth));
+  else
+  if (bIsSubClass("tuple"_Stz))
+    vTrace("t:%s"_Stz,Stz::szTab(iDepth));
+
+  switch (iAs) {
+    case 0:
+
+      vTrace("%lld [%lld] %s"_Stz,
+             iAs,
+         
+             m_iFactNo,
+             m_sNote.azChar()
+             );
+      break;
+      
+    case 1:
+
+      vTrace("a:%s%lld [%lld] %s"_Stz,
+             Stz::szTab(iDepth),
+             iAs,
+         
+             m_iFactNo,
+             m_sNote.azChar()
+             );
+      break;
+      
+    case 2:
+
+      vTrace("%lld [%lld] %s"_Stz,
+             iAs,
+         
+             m_iFactNo,
+             m_sNote.azChar()
+             );
+      break;
+  }
   
   if (m_pSubclassOf)
     vTrace(" Sub:%lld.%s"_Stz,m_pSubclassOf->iFactNo(),m_pSubclassOf->szNote());
@@ -459,18 +509,33 @@ void Fact::vPrint_r(i8 iDepth)
     vTrace("(Word %s)"_Stz,m_xProperty.m_pWord->szWordNm());
   else { }
 
+  switch (iAs) {
+    case 0: vTrace("\n"_Stz); break;
+    case 1: vTrace("\n"_Stz); break;
+    case 2: vTrace("\n"_Stz); break;
+  }
+
   for (Fact* pAttribute = m_pAttributes;
        pAttribute;
        pAttribute = pAttribute->m_pAttributeNext)
-    pAttribute->vPrint_r(iDepth + 1);
+    pAttribute->vPrint_r(iDepth + 1, 1);
 
-  vTrace("\n"_Stz);
+  switch (iAs) {
+    case 0: break;
+    case 1: break;
+    case 2: break;
+  }
   
   for (Fact* pElement = m_pElements;
        pElement;
        pElement = pElement->m_pElementNext)
-    pElement->vPrint_r(iDepth + 1);
+    pElement->vPrint_r(iDepth + 1, 2);
   
+  switch (iAs) {
+    case 0: break;
+    case 1: break;
+    case 2: break;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

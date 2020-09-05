@@ -73,6 +73,7 @@ namespace Facts
     bool  bHasSpecificElement(Fact* pFact);
 
     bool  bIsSubClass(Fact* pOfFact);
+    bool  bIsSubClass(Stz* szNote);
 
     bool  bIsAssociation(void);
     bool  bIsInt(void);
@@ -86,7 +87,7 @@ namespace Facts
     Stz*  szNote(void);
     void  vNote(Stz* szNote);
   
-    void  vPrint_r(i8 iDepth);
+    void  vPrint_r(i8 iDepth, i8 iAs);
   
     Property& rxProperty(void);
     
