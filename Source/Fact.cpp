@@ -63,8 +63,8 @@ void Fact::vAttributeAdd(Fact* pAttribute)
 
   pAttribute->vAttributeOf(this);
   
-  if (! m_pAttributeNext) {
-    m_pAttributeNext = pAttribute;
+  if (! m_pAttributes) {
+    m_pAttributes = pAttribute;
     return;
   }
   
@@ -158,8 +158,8 @@ void Fact::vElementAdd(Fact* pElement)
 
   pElement->vElementOf(this);
   
-  if (! m_pElementNext) {
-    m_pElementNext = pElement;
+  if (! m_pElements) {
+    m_pElements = pElement;
     return;
   }
   
@@ -410,17 +410,33 @@ void Fact::vPrint_r(i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  vTrace("[%lld] %s\n"_Stz,
+  if (m_pElementOf)
+    vTrace("%s"_Stz,Stz::szTab(iDepth));
+
+  vTrace("[%lld] %s"_Stz,
          m_iFactNo,
          m_sNote.azChar()
          );
   
-       if (bIsAssociation()) { }
-  else if (bIsInt())         { }
-  else if (bIsObject())      { }
-  else if (bIsOpaque())      { }
-  else if (bIsText())        { }
-  else if (bIsWord())        { }
+  if (m_pSubclassOf)
+    vTrace(" Sub:%lld.%s"_Stz,m_pSubclassOf->iFactNo(),m_pSubclassOf->szNote());
+  if (m_pAttributeOf)
+    vTrace(" Atr:%lld.%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
+  if (m_pElementOf)
+    vTrace(" Elm:%lld.%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
+
+  if (bIsAssociation())
+    vTrace("(Assoc %s)"_Stz,m_xProperty.m_pAssociation->szNote());
+  else if (bIsInt())
+    vTrace("(Int %lld)"_Stz,m_xProperty.m_iInt);
+  else if (bIsObject())
+    vTrace("(Object %p)"_Stz,m_xProperty.m_pObject);
+  else if (bIsOpaque())
+    vTrace("(Opaque %p)"_Stz,m_xProperty.m_aOpaque);
+  else if (bIsText())
+    vTrace("(Text %s)"_Stz,m_xProperty.m_pText->szGet());
+  else if (bIsWord())
+    vTrace("(Word %s)"_Stz,m_xProperty.m_pWord->szWordNm());
   else { }
 
   for (Fact* pAttribute = m_pAttributes;
@@ -428,10 +444,13 @@ void Fact::vPrint_r(i8 iDepth)
        pAttribute = pAttribute->m_pAttributeNext)
     pAttribute->vPrint_r(iDepth + 1);
 
+  vTrace("\n"_Stz);
+  
   for (Fact* pElement = m_pElements;
        pElement;
        pElement = pElement->m_pElementNext)
     pElement->vPrint_r(iDepth + 1);
+  
 }
 
 /*----------------------------------------------------------------------------*/
