@@ -39,9 +39,14 @@ bool Prompt::bPrompt_fact(SePrompt* pPrompt)
   
   DicStack* pDicStack = & pPrompt->pSession()->m_oDicStack;
   
-  Table* pTable = Table::pFindTable(pDicStack,"lineitem"_Stz);
-  
-  
+  Table* pTable;
+  pTable = Table::pFindTable(pDicStack,"customer"_Stz);
+  pKb->vImport(pTable);
+  pTable = Table::pFindTable(pDicStack,"orders"_Stz);
+  pKb->vImport(pTable);
+  pTable = Table::pFindTable(pDicStack,"lineitem"_Stz);
+  pKb->vImport(pTable);
+
   delete pKb;
   
   return true;

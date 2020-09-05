@@ -265,6 +265,26 @@ void Fact::vFactNo(i8 iFactNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find element fact (recursively)                                            */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pFindElement(Stz* szNote, Fact* pSuper)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  if (m_sNote.bSame(szNote) && bIsSubClass(pSuper))
+    return this;
+  
+  Fact* pElement = nullptr;
+  
+  for (Fact* pScan = m_pElements;
+       pScan && !pElement;
+       pScan = pScan->m_pElementNext)
+    pElement = pScan->pFindElement(szNote,pSuper);
+
+  return pElement;
+}
+
+/*----------------------------------------------------------------------------*/
 /* has an attribute which is specifically given fact                          */
 /*----------------------------------------------------------------------------*/
 bool Fact::bHasSpecificAttribute(Fact* pFact)

@@ -47,8 +47,10 @@ namespace Facts
   
     Fact* pFact(void);
   
-    Fact* pFactNew(Stz* szNote, Fact* pParent);
+    Fact* pFactNew(Stz* szNote, Fact* pSuper);
     void vFactDelete(Fact* pFact);
+  
+    Fact* pFindElement(Stz* szNote, Fact* pSuper);
   
     i8 iNextFactNo(void);
   
@@ -58,7 +60,10 @@ namespace Facts
     Transform* pTransformBorrow(void);
     void vTransformReturn(Transform** ppTransform);
   
-  
+    // -- -- -- -- -- -- --
+
+    void vImport(Table* pTable);
+
     void vTest(void);
   
   private:
