@@ -37,6 +37,11 @@ bool Prompt::bPrompt_fact(SePrompt* pPrompt)
   pKb->vQuestionReturn(&pQk);
   pKb->vTransformReturn(&pTk);
   
+  DicStack* pDicStack = & pPrompt->pSession()->m_oDicStack;
+  
+  Table* pTable = Table::pFindTable(pDicStack,"lineitem"_Stz);
+  
+  
   delete pKb;
   
   return true;

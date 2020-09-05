@@ -8,24 +8,24 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Facts,Question,CN_KBASE)
-__aNewFunction(Question,CN_KBASE)
-__vDeleteFunction(Question,CN_KBASE)
+__pCastFunction(Facts,Question,CN_QUESTION)
+__aNewFunction(Question,CN_QUESTION)
+__vDeleteFunction(Question,CN_QUESTION)
 __aFooterFunction(Question)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Question::Question(Kbase* pKbase)
-: Object(CN_KBASE)
+: Object(CN_QUESTION)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
   
   m_pKbase = pKbase;
   
-  _checkInitialised_(CN_KBASE);
+  _checkInitialised_(CN_QUESTION);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ Question::Question(Kbase* pKbase)
 /*----------------------------------------------------------------------------*/
 Question::~Question(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
 }
 
 /*============================================================================*/
