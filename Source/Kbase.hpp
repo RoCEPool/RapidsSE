@@ -12,26 +12,23 @@ namespace Facts
   friend class Transform;
   private:
 
-    Atomic m_ixFactNo;   //
+    Atomic m_ixFactNo;    //
   
-    Fact*  m_pFact;      //
-    Fact*  m_pConcept;  //
-
-    Fact*  m_pProperty;  //
+    Fact*  m_pFact;       //
   
-    Fact*  m_pInt;
-    Fact*  m_pObject;
-    Fact*  m_pOpaque;
-    Fact*  m_pText;
-    Fact*  m_pWord;
-    Fact*  m_pXref;
-
-    Fact*  m_pName;
-
-    Fact*  m_pQuality; //
-    Fact*  m_pType;    //
-    Fact*  m_pTuple;   //
-    Fact*  m_pFolder;  //
+    Fact*  m_p_Concept_;  //
+    Fact*  m_p_Folder_;   //
+    Fact*  m_p_Int_;
+    Fact*  m_p_Name_;
+    Fact*  m_p_Object_;
+    Fact*  m_p_Opaque_;
+    Fact*  m_p_Property_; //
+    Fact*  m_p_Quality_;  //
+    Fact*  m_p_Text_;
+    Fact*  m_p_Tuple_;    //
+    Fact*  m_p_Type_;     //
+    Fact*  m_p_Word_;
+    Fact*  m_p_Xref_;
 
   
     Fact*  m_pIsAContents; //

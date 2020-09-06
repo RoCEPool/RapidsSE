@@ -49,7 +49,7 @@ Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szNote)
   
   Fact* pConcept = pSuper->pNewInstance(szNote);
   
-  m_pConcept->vElementAdd(pConcept);
+  m_p_Concept_->vElementAdd(pConcept);
 
   return pConcept;
 }
@@ -118,7 +118,7 @@ Fact* Kbase::pProperty(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  return m_pProperty;
+  return m_p_Property_;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,17 +182,17 @@ void Kbase::vImport(Table* pTableToImport)
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
   
   Fact* pIsATables   = m_pIsAContents->pFindElement("tables"_Stz);
-  Fact* pTable       = m_pConcept->pFindElement("_table_"_Stz);
-  Fact* pTableNm     = m_pConcept->pFindElement("_tableNm_"_Stz);
-  Fact* pColumns     = m_pConcept->pFindElement("_columns_"_Stz);
-  Fact* pColumn      = m_pConcept->pFindElement("_column_"_Stz);
-  Fact* pColumnNm    = m_pConcept->pFindElement("_columnNm_"_Stz);
-  Fact* pColumnType  = m_pConcept->pFindElement("_columnType_"_Stz);
-  Fact* pLength      = m_pConcept->pFindElement("_length_"_Stz);
-  Fact* pScale       = m_pConcept->pFindElement("_scale_"_Stz);
-  Fact* pNullable    = m_pConcept->pFindElement("_nullable_"_Stz);
-  Fact* pNotNullable = m_pConcept->pFindElement("_notNullable_"_Stz);
-  Fact* pPtnKey      = m_pConcept->pFindElement("_ptnKey_"_Stz);
+  Fact* pTable       = m_p_Concept_->pFindElement("_table_"_Stz);
+  Fact* pTableNm     = m_p_Concept_->pFindElement("_tableNm_"_Stz);
+  Fact* pColumns     = m_p_Concept_->pFindElement("_columns_"_Stz);
+  Fact* pColumn      = m_p_Concept_->pFindElement("_column_"_Stz);
+  Fact* pColumnNm    = m_p_Concept_->pFindElement("_columnNm_"_Stz);
+  Fact* pColumnType  = m_p_Concept_->pFindElement("_columnType_"_Stz);
+  Fact* pLength      = m_p_Concept_->pFindElement("_length_"_Stz);
+  Fact* pScale       = m_p_Concept_->pFindElement("_scale_"_Stz);
+  Fact* pNullable    = m_p_Concept_->pFindElement("_nullable_"_Stz);
+  Fact* pNotNullable = m_p_Concept_->pFindElement("_notNullable_"_Stz);
+  Fact* pPtnKey      = m_p_Concept_->pFindElement("_ptnKey_"_Stz);
 
   Fact* pIsATable = pTable->pNewInstance();
   pIsATables->vElementAdd(pIsATable);
@@ -220,7 +220,7 @@ void Kbase::vImport(Table* pTableToImport)
     pIsAColumn->vAttributeAdd(pIsAColumnNm);
 
     eCT eColType = pCol->eColumnType();
-    Fact* pColType = m_pConcept->pFindElement(aCT[eColType],pColumnType);
+    Fact* pColType = m_p_Concept_->pFindElement(aCT[eColType],pColumnType);
     Fact* pIsAColType = pColType->pNewInstance();
     pIsAColumn->vAttributeAdd(pIsAColType);
     
@@ -263,7 +263,7 @@ void Kbase::vTest(void)
  
   m_pFact->vPrint_r(0,0);
 
-  m_pConcept->vPrint_r(0,0);
+  m_p_Concept_->vPrint_r(0,0);
 
   m_pIsAContents->vPrint_r(0,1);
 }
@@ -280,41 +280,42 @@ void Kbase::vAprioriFacts(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
 
   m_pFact        = pFactNew(nullptr,"fact"_Stz);
-  m_pConcept     = pFactNew(m_pFact,"_concept_"_Stz);
+  
+  m_p_Concept_     = pFactNew(m_pFact,"_concept_"_Stz);
 
-  m_pProperty    = pConceptAdd(m_pConcept,"_property_"_Stz);
-  m_pProperty->rxProperty().m_eUsage = FU_USAGE;
+  m_p_Property_    = pConceptAdd(m_p_Concept_,"_property_"_Stz);
+  m_p_Property_->rxProperty().m_eUsage = FU_USAGE;
 
-  m_pInt         = pConceptAdd(m_pProperty,"_int_"_Stz);
-  m_pInt->rxProperty().m_eUsage = FU_INT;
+  m_p_Int_         = pConceptAdd(m_p_Property_,"_int_"_Stz);
+  m_p_Int_->rxProperty().m_eUsage = FU_INT;
 
-  m_pObject      = pConceptAdd(m_pProperty,"_object_"_Stz);
-  m_pObject->rxProperty().m_eUsage = FU_OBJECT;
+  m_p_Object_      = pConceptAdd(m_p_Property_,"_object_"_Stz);
+  m_p_Object_->rxProperty().m_eUsage = FU_OBJECT;
 
-  m_pOpaque      = pConceptAdd(m_pProperty,"_opaque_"_Stz);
-  m_pOpaque->rxProperty().m_eUsage = FU_OPAQUE;
+  m_p_Opaque_      = pConceptAdd(m_p_Property_,"_opaque_"_Stz);
+  m_p_Opaque_->rxProperty().m_eUsage = FU_OPAQUE;
 
-  m_pText        = pConceptAdd(m_pProperty,"_text_"_Stz);
-  m_pText->rxProperty().m_eUsage = FU_TEXT;
+  m_p_Text_        = pConceptAdd(m_p_Property_,"_text_"_Stz);
+  m_p_Text_->rxProperty().m_eUsage = FU_TEXT;
 
-  m_pWord        = pConceptAdd(m_pProperty,"_word_"_Stz);
-  m_pWord->rxProperty().m_eUsage = FU_WORD;
+  m_p_Word_        = pConceptAdd(m_p_Property_,"_word_"_Stz);
+  m_p_Word_->rxProperty().m_eUsage = FU_WORD;
 
-  m_pXref        = pConceptAdd(m_pProperty,"_xref_"_Stz);
-  m_pXref->rxProperty().m_eUsage = FU_XREF;
+  m_p_Xref_        = pConceptAdd(m_p_Property_,"_xref_"_Stz);
+  m_p_Xref_->rxProperty().m_eUsage = FU_XREF;
 
   
-  m_pName        = pConceptAdd(m_pText,"_name_"_Stz);
+  m_p_Name_        = pConceptAdd(m_p_Text_,"_name_"_Stz);
   
-  m_pQuality     = pConceptAdd(m_pConcept,"_quality_"_Stz);
+  m_p_Quality_    = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
   
-  m_pType        = pConceptAdd(m_pConcept,"_type_"_Stz);
-  m_pTuple       = pConceptAdd(m_pConcept,"_tuple_"_Stz);
-  m_pFolder      = pConceptAdd(m_pConcept,"_folder_"_Stz);
+  m_p_Type_        = pConceptAdd(m_p_Concept_,"_type_"_Stz);
+  m_p_Tuple_       = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
+  m_p_Folder_      = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
 
-  Fact* pNullability = pConceptAdd(m_pQuality,"_nullability_"_Stz);
-  Fact* pColumnType  = pConceptAdd(m_pType,"_columnType_"_Stz);
-  Fact* pTables      = pConceptAdd(m_pFolder,"_tables_"_Stz);
+  Fact* pNullability = pConceptAdd(m_p_Quality_,"_nullability_"_Stz);
+  Fact* pColumnType  = pConceptAdd(m_p_Type_,"_columnType_"_Stz);
+  Fact* pTables      = pConceptAdd(m_p_Folder_,"_tables_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -331,23 +332,23 @@ void Kbase::vAprioriFacts(void)
   pConceptAdd(pNullability,"_nullable_"_Stz);
   pConceptAdd(pNullability,"_notNullable_"_Stz);
 
-  pConceptAdd(m_pQuality,"_ptnKey_"_Stz);
+  pConceptAdd(m_p_Quality_,"_ptnKey_"_Stz);
 
-  pConceptAdd(m_pFolder,"_table_"_Stz);
-  pConceptAdd(m_pName,"_tableNm_"_Stz);
+  pConceptAdd(m_p_Folder_,"_table_"_Stz);
+  pConceptAdd(m_p_Name_,"_tableNm_"_Stz);
   
-  pConceptAdd(m_pFolder,"_columns_"_Stz);
-  pConceptAdd(m_pTuple,"_column_"_Stz);
-  pConceptAdd(m_pName,"_columnNm_"_Stz);
-  pConceptAdd(m_pInt,"_length_"_Stz);
-  pConceptAdd(m_pInt,"_scale_"_Stz);
+  pConceptAdd(m_p_Folder_,"_columns_"_Stz);
+  pConceptAdd(m_p_Tuple_,"_column_"_Stz);
+  pConceptAdd(m_p_Name_,"_columnNm_"_Stz);
+  pConceptAdd(m_p_Int_,"_length_"_Stz);
+  pConceptAdd(m_p_Int_,"_scale_"_Stz);
 
-  pConceptAdd(m_pFolder,"_indexes_"_Stz);
-  pConceptAdd(m_pFolder,"_index_"_Stz);
+  pConceptAdd(m_p_Folder_,"_indexes_"_Stz);
+  pConceptAdd(m_p_Folder_,"_index_"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pContents  = pConceptAdd(m_pType,"_contents_"_Stz);
+  Fact* pContents  = pConceptAdd(m_p_Type_,"_contents_"_Stz);
   m_pIsAContents   = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
 
   Fact* pIsATables = pTables->pNewInstance();

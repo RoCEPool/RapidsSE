@@ -369,7 +369,7 @@ bool Fact::bIsInt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  return bIsSubClass(m_pKbase->m_pInt) && this != m_pKbase->m_pInt;
+  return bIsSubClass(m_pKbase->m_p_Int_) && this != m_pKbase->m_p_Int_;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -379,7 +379,7 @@ bool Fact::bIsObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  return bIsSubClass(m_pKbase->m_pObject) && this != m_pKbase->m_pObject;
+  return bIsSubClass(m_pKbase->m_p_Object_) && this != m_pKbase->m_p_Object_;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -389,7 +389,7 @@ bool Fact::bIsOpaque(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  return bIsSubClass(m_pKbase->m_pOpaque) && this != m_pKbase->m_pOpaque;
+  return bIsSubClass(m_pKbase->m_p_Opaque_) && this != m_pKbase->m_p_Opaque_;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -399,7 +399,7 @@ bool Fact::bIsText(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  return bIsSubClass(m_pKbase->m_pText) && this != m_pKbase->m_pText;
+  return bIsSubClass(m_pKbase->m_p_Text_) && this != m_pKbase->m_p_Text_;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,7 +409,7 @@ bool Fact::bIsWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  return bIsSubClass(m_pKbase->m_pWord) && this != m_pKbase->m_pWord;
+  return bIsSubClass(m_pKbase->m_p_Word_) && this != m_pKbase->m_p_Word_;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -419,7 +419,7 @@ bool Fact::bIsXref(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  return bIsSubClass(m_pKbase->m_pXref) && this != m_pKbase->m_pXref;
+  return bIsSubClass(m_pKbase->m_p_Xref_) && this != m_pKbase->m_p_Xref_;
 }
 
 /*----------------------------------------------------------------------------*/
