@@ -181,7 +181,7 @@ void Kbase::vImport(Table* pTableToImport)
     
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
   
-  Fact* pTables      = m_pContents->pFindElement("tables"_Stz);
+  Fact* pIsATables   = m_pContents->pFindElement("+ tables"_Stz);
   Fact* pTable       = m_pConcepts->pFindElement("table"_Stz);
   Fact* pTableNm     = m_pConcepts->pFindElement("tableNm"_Stz);
   Fact* pColumns     = m_pConcepts->pFindElement("columns"_Stz);
@@ -195,7 +195,7 @@ void Kbase::vImport(Table* pTableToImport)
   Fact* pPtnKey      = m_pConcepts->pFindElement("ptnKey"_Stz);
 
   Fact* pIsATable = pTable->pNewInstance();
-  pTables->vElementAdd(pIsATable);
+  pIsATables->vElementAdd(pIsATable);
 
   Fact* pIsATableNm = pTableNm->pNewInstance();
   pIsATableNm->rxProperty().m_pText = new Text;
@@ -314,7 +314,6 @@ void Kbase::vAprioriFacts(void)
   
   m_pContents    = pFactNew(m_pFolder,"contents"_Stz);
 
-  Fact* pTables  = pFactNew(m_pFolder,"tables"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -335,6 +334,7 @@ void Kbase::vAprioriFacts(void)
 
   Fact* pPtnKey      = pConceptAdd(m_pQuality,"ptnKey"_Stz);
 
+  Fact* pTables      = pConceptAdd(m_pFolder,"tables"_Stz);
   Fact* pTable       = pConceptAdd(m_pFolder,"table"_Stz);
 //  Fact* pTableDef    = pConceptAdd(m_pTuple,"tableDef"_Stz);
   Fact* pTableNm     = pConceptAdd(m_pName,"tableNm"_Stz);
@@ -351,7 +351,8 @@ void Kbase::vAprioriFacts(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pContents->vElementAdd(pTables);
+  Fact* pIsATables = pTables->pNewInstance();
+  m_pContents->vElementAdd(pIsATables);
 }
 
 /*============================================================================*/
