@@ -517,7 +517,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
              );
       break;
   }
-  
+  /*
   if (bIsInt())
     vTrace(" = Int %lld"_Stz,m_xProperty.m_iInt);
   else if (bIsObject())
@@ -537,7 +537,49 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
            m_xProperty.m_pXref ? m_xProperty.m_pXref->szNote()
                                : ""_Stz);
   else { }
-
+  */
+  
+  Fact* pSubProperty = pGetSuperChild(m_pKbase->pProperty());
+  if (pSubProperty) {
+    if (this == pSubProperty) {
+      vTrace(" = eFU %lld %s"_Stz,m_xProperty.m_eUsage,aFU[m_xProperty.m_eUsage]);
+    }
+    else {
+      switch (pSubProperty->rxProperty().m_eUsage) {
+        case FU_INT:
+          vTrace(" = Int %lld"_Stz,m_xProperty.m_iInt);
+          break;
+        case FU_OBJECT:
+          vTrace(" = Object %p"_Stz,m_xProperty.m_pObject);
+          break;
+        case FU_OPAQUE:
+          vTrace(" = Opaque %p"_Stz,m_xProperty.m_aOpaque);
+          break;
+        case FU_TEXT:
+          vTrace(" = Text \"%s\""_Stz,
+                 m_xProperty.m_pText ? m_xProperty.m_pText->szGet()
+                                     : ""_Stz);
+          break;
+        case FU_USAGE:
+          vTrace(" = Usage ???"_Stz);
+          break;
+        case FU_WORD:
+          vTrace(" = Word %s"_Stz,
+                 m_xProperty.m_pWord ? m_xProperty.m_pWord->szWordNm()
+                                    : ""_Stz);
+          break;
+        case FU_XREF:
+          vTrace(" = Xref %s"_Stz,
+                 m_xProperty.m_pXref ? m_xProperty.m_pXref->szNote()
+                                     : ""_Stz);
+          break;
+        default:
+          NEVER_REACH;
+          break;
+      }
+    }
+  }
+  
   if (m_pSubclassOf || m_pAttributeOf || m_pElementOf)
     vTrace(" //"_Stz);
   if (m_pSubclassOf)
