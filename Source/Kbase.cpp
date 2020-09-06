@@ -93,7 +93,7 @@ Fact* Kbase::pFindElement(Stz* szNote, Fact* pSuper)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pElement = m_pContents->pFindElement(szNote,pSuper);
+  Fact* pElement = m_pIsAContents->pFindElement(szNote,pSuper);
 
   return pElement;
 }
@@ -181,7 +181,7 @@ void Kbase::vImport(Table* pTableToImport)
     
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
   
-  Fact* pIsATables   = m_pContents->pFindElement("+ tables"_Stz);
+  Fact* pIsATables   = m_pIsAContents->pFindElement("+ tables"_Stz);
   Fact* pTable       = m_pConcepts->pFindElement("table"_Stz);
   Fact* pTableNm     = m_pConcepts->pFindElement("tableNm"_Stz);
   Fact* pColumns     = m_pConcepts->pFindElement("columns"_Stz);
@@ -265,7 +265,7 @@ void Kbase::vTest(void)
 
   m_pConcepts->vPrint_r(0,0);
 
-  m_pContents->vPrint_r(0,1);
+  m_pIsAContents->vPrint_r(0,1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,7 +282,7 @@ void Kbase::vAprioriFacts(void)
   m_pFact        = pFactNew(nullptr,"fact"_Stz);
   m_pConcepts    = pFactNew(m_pFact,"concepts"_Stz);
 
-  m_pProperty    = pConceptAdd(m_pFact,"property"_Stz);
+  m_pProperty    = pConceptAdd(m_pConcepts,"property"_Stz);
   m_pProperty->rxProperty().m_eUsage = FU_USAGE;
 
   m_pInt         = pConceptAdd(m_pProperty,"int"_Stz);
@@ -306,14 +306,11 @@ void Kbase::vAprioriFacts(void)
   
   m_pName        = pConceptAdd(m_pText,"name"_Stz);
   
-  m_pQuality     = pConceptAdd(m_pFact,"quality"_Stz);
+  m_pQuality     = pConceptAdd(m_pConcepts,"quality"_Stz);
   
-  m_pType        = pConceptAdd(m_pFact,"type"_Stz);
-  m_pTuple       = pConceptAdd(m_pFact,"tuple"_Stz);
-  m_pFolder      = pConceptAdd(m_pFact,"folder"_Stz);
-  
-  m_pContents    = pFactNew(m_pFolder,"contents"_Stz);
-
+  m_pType        = pConceptAdd(m_pConcepts,"type"_Stz);
+  m_pTuple       = pConceptAdd(m_pConcepts,"tuple"_Stz);
+  m_pFolder      = pConceptAdd(m_pConcepts,"folder"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -351,8 +348,11 @@ void Kbase::vAprioriFacts(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Fact* pContents  = pConceptAdd(m_pType,"contents"_Stz);
+  m_pIsAContents   = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
+
   Fact* pIsATables = pTables->pNewInstance();
-  m_pContents->vElementAdd(pIsATables);
+  m_pIsAContents->vElementAdd(pIsATables);
 }
 
 /*============================================================================*/

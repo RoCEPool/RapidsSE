@@ -34,7 +34,7 @@ namespace Facts
     Fact*  m_pFolder;  //
 
   
-    Fact*  m_pContents; //
+    Fact*  m_pIsAContents; //
 
     // must be last
     Footer m_xFooter;
