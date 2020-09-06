@@ -431,9 +431,12 @@ Fact* Fact::pNewInstance(Stz* szNote)
   
   Fact* pFact = new Fact(m_pKbase, this, szNote);
   
-  if (! szNote)
-    pFact->m_sNote.vSprint("+ %s"_Stz,m_sNote.azChar());
-    
+  if (! szNote) {
+    pFact->m_sNote.vSprint("%s"_Stz,m_sNote.azChar());
+    StrLib::vRemovePrefix(pFact->m_sNote.azChar(),'_');
+    StrLib::vRemoveSuffix(pFact->m_sNote.azChar(),'_');
+  }
+  
   return pFact;
 }
 

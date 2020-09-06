@@ -181,7 +181,7 @@ void Kbase::vImport(Table* pTableToImport)
     
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
   
-  Fact* pIsATables   = m_pIsAContents->pFindElement("+ _tables_"_Stz);
+  Fact* pIsATables   = m_pIsAContents->pFindElement("tables"_Stz);
   Fact* pTable       = m_pConcept->pFindElement("_table_"_Stz);
   Fact* pTableNm     = m_pConcept->pFindElement("_tableNm_"_Stz);
   Fact* pColumns     = m_pConcept->pFindElement("_columns_"_Stz);
