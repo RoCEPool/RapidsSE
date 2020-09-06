@@ -171,23 +171,23 @@ void Kbase::vImport(Table* pTableToImport)
     
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
   
-  Fact* pTables  = m_pContents->pFindElement("tables"_Stz);
-  Fact* pTable   = m_pConcepts->pFindElement("table"_Stz);
-  Fact* pTableNm = m_pConcepts->pFindElement("tableNm"_Stz);
-  Fact* pColumns = m_pConcepts->pFindElement("columns"_Stz);
-  Fact* pColumn  = m_pConcepts->pFindElement("column"_Stz);
-  Fact* pColumnNm = m_pConcepts->pFindElement("columnNm"_Stz);
-  Fact* pColumnType = m_pConcepts->pFindElement("columnType"_Stz);
-  Fact* pLength  = m_pConcepts->pFindElement("length"_Stz);
-  Fact* pScale   = m_pConcepts->pFindElement("scale"_Stz);
+  Fact* pTables      = m_pContents->pFindElement("tables"_Stz);
+  Fact* pTable       = m_pConcepts->pFindElement("table"_Stz);
+  Fact* pTableNm     = m_pConcepts->pFindElement("tableNm"_Stz);
+  Fact* pColumns     = m_pConcepts->pFindElement("columns"_Stz);
+  Fact* pColumn      = m_pConcepts->pFindElement("column"_Stz);
+  Fact* pColumnNm    = m_pConcepts->pFindElement("columnNm"_Stz);
+  Fact* pColumnType  = m_pConcepts->pFindElement("columnType"_Stz);
+  Fact* pLength      = m_pConcepts->pFindElement("length"_Stz);
+  Fact* pScale       = m_pConcepts->pFindElement("scale"_Stz);
   Fact* pNullable    = m_pConcepts->pFindElement("nullable"_Stz);
   Fact* pNotNullable = m_pConcepts->pFindElement("notNullable"_Stz);
-  Fact* pPtnKey  = m_pConcepts->pFindElement("ptnKey"_Stz);
+  Fact* pPtnKey      = m_pConcepts->pFindElement("ptnKey"_Stz);
 
-  Fact* pIsATable = pTable->pNewInstance(pTable->szNote());
+  Fact* pIsATable = pTable->pNewInstance();
   pTables->vElementAdd(pIsATable);
 
-  Fact* pIsATableNm = pTableNm->pNewInstance(pTableToImport->szTableNm());
+  Fact* pIsATableNm = pTableNm->pNewInstance();
   pIsATableNm->rxProperty().m_pText = new Text;
   pIsATableNm->rxProperty().m_pText->vSet(pTableToImport->szTableNm());
   pIsATable->vAttributeAdd(pIsATableNm);
@@ -201,10 +201,10 @@ void Kbase::vImport(Table* pTableToImport)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column* pCol = pStmDef->pGetColumn(i_Col);
     
-    Fact* pIsAColumn = pColumn->pNewInstance(pCol->szColNm());
+    Fact* pIsAColumn = pColumn->pNewInstance();
     pIsAColumns->vElementAdd(pIsAColumn);
     
-    Fact* pIsAColumnNm = pColumnNm->pNewInstance(pCol->szColNm());
+    Fact* pIsAColumnNm = pColumnNm->pNewInstance();
     pIsAColumnNm->rxProperty().m_pText = new Text;
     pIsAColumnNm->rxProperty().m_pText->vSet(pCol->szColNm());
     pIsAColumn->vAttributeAdd(pIsAColumnNm);
@@ -215,28 +215,28 @@ void Kbase::vImport(Table* pTableToImport)
     pIsAColumn->vAttributeAdd(pIsAColType);
     
     i8 iLength = pCol->iColumnLength();
-    Fact* pIsALength = pLength->pNewInstance(pLength->szNote());
+    Fact* pIsALength = pLength->pNewInstance();
     pIsALength->rxProperty().m_iInt = iLength;
     pIsAColumn->vAttributeAdd(pIsALength);
 
     i8 iScale = pCol->iColumnScale();
-    Fact* pIsAScale = pLength->pNewInstance(pScale->szNote());
+    Fact* pIsAScale = pScale->pNewInstance();
     pIsAScale->rxProperty().m_iInt = iScale;
     pIsAColumn->vAttributeAdd(pIsAScale);
     
     bool bIsNullable = pCol->bIsNullable();
     if (bIsNullable) {
-      Fact* pIsANullable = pNullable->pNewInstance(pNullable->szNote());
+      Fact* pIsANullable = pNullable->pNewInstance();
       pIsAColumn->vAttributeAdd(pIsANullable);
     }
     else {
-      Fact* pIsANotNullable = pNotNullable->pNewInstance(pNotNullable->szNote());
+      Fact* pIsANotNullable = pNotNullable->pNewInstance();
       pIsAColumn->vAttributeAdd(pIsANotNullable);
     }
     
     bool bIsPtnKey = pCol->bIsPtnKey();
     if (bIsPtnKey) {
-      Fact* pIsAPtnKey = pPtnKey->pNewInstance(pPtnKey->szNote());
+      Fact* pIsAPtnKey = pPtnKey->pNewInstance();
       pIsAColumn->vAttributeAdd(pIsAPtnKey);
     }
 
@@ -309,7 +309,7 @@ void Kbase::vAprioriFacts(void)
   Fact* pPtnKey      = pConceptAdd(m_pQuality,"ptnKey"_Stz);
 
   Fact* pTable       = pConceptAdd(m_pFolder,"table"_Stz);
-  Fact* pTableDef    = pConceptAdd(m_pTuple,"tableDef"_Stz);
+//  Fact* pTableDef    = pConceptAdd(m_pTuple,"tableDef"_Stz);
   Fact* pTableNm     = pConceptAdd(m_pName,"tableNm"_Stz);
   
   Fact* pColumns     = pConceptAdd(m_pFolder,"columns"_Stz);
@@ -320,7 +320,7 @@ void Kbase::vAprioriFacts(void)
 
   Fact* pIndexes     = pConceptAdd(m_pFolder,"indexes"_Stz);
   Fact* pIndex       = pConceptAdd(m_pFolder,"index"_Stz);
-  Fact* pIndexDef    = pConceptAdd(m_pTuple,"indexDef"_Stz);
+//  Fact* pIndexDef    = pConceptAdd(m_pTuple,"indexDef"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
