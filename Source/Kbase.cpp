@@ -273,14 +273,27 @@ void Kbase::vAprioriFacts(void)
   m_pConcepts    = pFactNew(m_pFact,"concepts"_Stz);
 
   m_pProperty    = pConceptAdd(m_pFact,"property"_Stz);
+  m_pProperty->rxProperty().m_eUsage = FU_USAGE;
 
   m_pInt         = pConceptAdd(m_pProperty,"int"_Stz);
-  m_pObject      = pConceptAdd(m_pProperty,"object"_Stz);
-  m_pOpaque      = pConceptAdd(m_pProperty,"opaque"_Stz);
-  m_pText        = pConceptAdd(m_pProperty,"text"_Stz);
-  m_pWord        = pConceptAdd(m_pProperty,"word"_Stz);
-  m_pXref        = pConceptAdd(m_pProperty,"xref"_Stz);
+  m_pInt->rxProperty().m_eUsage = FU_INT;
 
+  m_pObject      = pConceptAdd(m_pProperty,"object"_Stz);
+  m_pObject->rxProperty().m_eUsage = FU_OBJECT;
+
+  m_pOpaque      = pConceptAdd(m_pProperty,"opaque"_Stz);
+  m_pOpaque->rxProperty().m_eUsage = FU_OPAQUE;
+
+  m_pText        = pConceptAdd(m_pProperty,"text"_Stz);
+  m_pText->rxProperty().m_eUsage = FU_TEXT;
+
+  m_pWord        = pConceptAdd(m_pProperty,"word"_Stz);
+  m_pWord->rxProperty().m_eUsage = FU_WORD;
+
+  m_pXref        = pConceptAdd(m_pProperty,"xref"_Stz);
+  m_pXref->rxProperty().m_eUsage = FU_XREF;
+
+  
   m_pName        = pConceptAdd(m_pText,"name"_Stz);
   
   m_pQuality     = pConceptAdd(m_pFact,"quality"_Stz);
