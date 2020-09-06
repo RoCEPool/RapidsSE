@@ -414,7 +414,7 @@ Fact* Fact::pNewInstance(Stz* szNote)
   Fact* pFact = new Fact(m_pKbase, this, szNote);
   
   if (! szNote)
-    pFact->m_sNote.vSprint("isa-%s"_Stz,m_sNote.azChar());
+    pFact->m_sNote.vSprint("+ %s"_Stz,m_sNote.azChar());
     
   return pFact;
 }
@@ -488,26 +488,34 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
       break;
   }
   
-  if (m_pSubclassOf)
-    vTrace(" Sub:%lld.%s"_Stz,m_pSubclassOf->iFactNo(),m_pSubclassOf->szNote());
-  if (m_pAttributeOf)
-    vTrace(" Atr:%lld.%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
-  if (m_pElementOf)
-    vTrace(" Elm:%lld.%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
-
   if (bIsAssociation())
-    vTrace("(Assoc %s)"_Stz,m_xProperty.m_pAssociation->szNote());
+    vTrace(" = Assoc %s"_Stz,
+           m_xProperty.m_pAssociation ? m_xProperty.m_pAssociation->szNote()
+                                      : ""_Stz);
   else if (bIsInt())
-    vTrace("(Int %lld)"_Stz,m_xProperty.m_iInt);
+    vTrace(" = Int %lld"_Stz,m_xProperty.m_iInt);
   else if (bIsObject())
-    vTrace("(Object %p)"_Stz,m_xProperty.m_pObject);
+    vTrace(" = Object %p"_Stz,m_xProperty.m_pObject);
   else if (bIsOpaque())
-    vTrace("(Opaque %p)"_Stz,m_xProperty.m_aOpaque);
+    vTrace(" = Opaque %p"_Stz,m_xProperty.m_aOpaque);
   else if (bIsText())
-    vTrace("(Text %s)"_Stz,m_xProperty.m_pText->szGet());
+    vTrace(" = Text \"%s\""_Stz,
+           m_xProperty.m_pText ? m_xProperty.m_pText->szGet()
+                               : ""_Stz);
   else if (bIsWord())
-    vTrace("(Word %s)"_Stz,m_xProperty.m_pWord->szWordNm());
+    vTrace(" = Word %s"_Stz,
+           m_xProperty.m_pWord ? m_xProperty.m_pWord->szWordNm()
+                              : ""_Stz);
   else { }
+
+  if (m_pSubclassOf || m_pAttributeOf || m_pElementOf)
+    vTrace(" //"_Stz);
+  if (m_pSubclassOf)
+    vTrace(" [Sub:%lld]%s"_Stz,m_pSubclassOf->iFactNo(),m_pSubclassOf->szNote());
+  if (m_pAttributeOf)
+    vTrace(" [Atr:%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
+  if (m_pElementOf)
+    vTrace(" [Elm:%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
 
   switch (iAs) {
     case 0: vTrace("\n"_Stz); break;

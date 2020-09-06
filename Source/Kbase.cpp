@@ -192,7 +192,7 @@ void Kbase::vImport(Table* pTableToImport)
   pIsATableNm->rxProperty().m_pText->vSet(pTableToImport->szTableNm());
   pIsATable->vAttributeAdd(pIsATableNm);
 
-  Fact* pIsAColumns = pColumns->pNewInstance(pColumns->szNote());
+  Fact* pIsAColumns = pColumns->pNewInstance();
   pIsATable->vElementAdd(pIsAColumns);
 
   StreamDef* pStmDef = pTableToImport->pStreamDef();
@@ -211,7 +211,7 @@ void Kbase::vImport(Table* pTableToImport)
 
     eCT eColType = pCol->eColumnType();
     Fact* pColType = m_pConcepts->pFindElement(aCT[eColType],pColumnType);
-    Fact* pIsAColType = pColType->pNewInstance(aCT[eColType]);
+    Fact* pIsAColType = pColType->pNewInstance();
     pIsAColumn->vAttributeAdd(pIsAColType);
     
     i8 iLength = pCol->iColumnLength();
@@ -250,7 +250,9 @@ void Kbase::vImport(Table* pTableToImport)
 void Kbase::vTest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-    
+  
+  m_pConcepts->vPrint_r(0,0);
+
   m_pContents->vPrint_r(0,0);
 }
 
