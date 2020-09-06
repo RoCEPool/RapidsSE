@@ -187,7 +187,7 @@ void Kbase::vImport(Table* pTableToImport)
   Fact* pColumns     = m_p_Concept_->pFindElement("_columns_"_Stz);
   Fact* pColumn      = m_p_Concept_->pFindElement("_column_"_Stz);
   Fact* pColumnNm    = m_p_Concept_->pFindElement("_columnNm_"_Stz);
-  Fact* pColumnType  = m_p_Concept_->pFindElement("_columnType_"_Stz);
+  Fact* p_ColumnType_  = m_p_Concept_->pFindElement("_columnType_"_Stz);
   Fact* pLength      = m_p_Concept_->pFindElement("_length_"_Stz);
   Fact* pScale       = m_p_Concept_->pFindElement("_scale_"_Stz);
   Fact* pNullable    = m_p_Concept_->pFindElement("_nullable_"_Stz);
@@ -220,7 +220,7 @@ void Kbase::vImport(Table* pTableToImport)
     pIsAColumn->vAttributeAdd(pIsAColumnNm);
 
     eCT eColType = pCol->eColumnType();
-    Fact* pColType = m_p_Concept_->pFindElement(aCT[eColType],pColumnType);
+    Fact* pColType = m_p_Concept_->pFindElement(aCT[eColType],p_ColumnType_);
     Fact* pIsAColType = pColType->pNewInstance();
     pIsAColumn->vAttributeAdd(pIsAColType);
     
@@ -313,24 +313,24 @@ void Kbase::vAprioriFacts(void)
   m_p_Tuple_       = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
   m_p_Folder_      = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
 
-  Fact* pNullability = pConceptAdd(m_p_Quality_,"_nullability_"_Stz);
-  Fact* pColumnType  = pConceptAdd(m_p_Type_,"_columnType_"_Stz);
-  Fact* pTables      = pConceptAdd(m_p_Folder_,"_tables_"_Stz);
+  Fact* p_Nullability_ = pConceptAdd(m_p_Quality_,"_nullability_"_Stz);
+  Fact* p_ColumnType_  = pConceptAdd(m_p_Type_,"_columnType_"_Stz);
+  Fact* p_Tables_      = pConceptAdd(m_p_Folder_,"_tables_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pConceptAdd(pColumnType,"BOOLEAN"_Stz);
-  pConceptAdd(pColumnType,"DATE"_Stz);
-  pConceptAdd(pColumnType,"DECIMAL"_Stz);
-  pConceptAdd(pColumnType,"FLOAT"_Stz);
-  pConceptAdd(pColumnType,"INTEGER"_Stz);
-  pConceptAdd(pColumnType,"INTERVAL"_Stz);
-  pConceptAdd(pColumnType,"TIME"_Stz);
-  pConceptAdd(pColumnType,"TIMESTAMP"_Stz);
-  pConceptAdd(pColumnType,"VARCHAR"_Stz);
+  pConceptAdd(p_ColumnType_,"BOOLEAN"_Stz);
+  pConceptAdd(p_ColumnType_,"DATE"_Stz);
+  pConceptAdd(p_ColumnType_,"DECIMAL"_Stz);
+  pConceptAdd(p_ColumnType_,"FLOAT"_Stz);
+  pConceptAdd(p_ColumnType_,"INTEGER"_Stz);
+  pConceptAdd(p_ColumnType_,"INTERVAL"_Stz);
+  pConceptAdd(p_ColumnType_,"TIME"_Stz);
+  pConceptAdd(p_ColumnType_,"TIMESTAMP"_Stz);
+  pConceptAdd(p_ColumnType_,"VARCHAR"_Stz);
 
-  pConceptAdd(pNullability,"_nullable_"_Stz);
-  pConceptAdd(pNullability,"_notNullable_"_Stz);
+  pConceptAdd(p_Nullability_,"_nullable_"_Stz);
+  pConceptAdd(p_Nullability_,"_notNullable_"_Stz);
 
   pConceptAdd(m_p_Quality_,"_ptnKey_"_Stz);
 
@@ -351,7 +351,7 @@ void Kbase::vAprioriFacts(void)
   Fact* pContents  = pConceptAdd(m_p_Type_,"_contents_"_Stz);
   m_pIsAContents   = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
 
-  Fact* pIsATables = pTables->pNewInstance();
+  Fact* pIsATables = p_Tables_->pNewInstance();
   m_pIsAContents->vElementAdd(pIsATables);
 }
 
