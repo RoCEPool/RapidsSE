@@ -284,6 +284,8 @@ void Kbase::vAprioriFacts(void)
   m_p_Concept_ = pFactNew(m_pFact,"_concept_"_Stz);
 
   m_p_Chunk_ = pConceptAdd(m_p_Concept_,"_chunk_"_Stz);
+  m_p_Pattern_ = pConceptAdd(m_p_Concept_,"_pattern_"_Stz);
+  m_p_Transform_ = pConceptAdd(m_p_Concept_,"_transform_"_Stz);
 
   m_p_Property_ = pConceptAdd(m_p_Concept_,"_property_"_Stz);
   m_p_Property_->rxProperty().m_eUsage = FU_USAGE;
