@@ -583,14 +583,14 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
     }
   }
   
-  if (m_pSubclassOf || m_pAttributeOf || m_pElementOf)
+  if (m_pAttributeOf || m_pElementOf || m_pSubclassOf)
     vTrace(" //"_Stz);
-  if (m_pSubclassOf)
-    vTrace(" [Sub:%lld]%s"_Stz,m_pSubclassOf->iFactNo(),m_pSubclassOf->szNote());
   if (m_pAttributeOf)
     vTrace(" [Atr:%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
   if (m_pElementOf)
     vTrace(" [Elm:%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
+  if (m_pSubclassOf)
+    vTrace(" [Sub:%lld]%s"_Stz,m_pSubclassOf->iFactNo(),m_pSubclassOf->szNote());
 
   switch (iAs) {
     case 0: vTrace("\n"_Stz); break;
