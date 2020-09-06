@@ -16,6 +16,7 @@ namespace Facts
   
     Fact*  m_pFact;       //
   
+    Fact*  m_p_Chunk_;    //
     Fact*  m_p_Concept_;  //
     Fact*  m_p_Folder_;   //
     Fact*  m_p_Int_;
@@ -30,7 +31,7 @@ namespace Facts
     Fact*  m_p_Word_;
     Fact*  m_p_Xref_;
 
-  
+
     Fact*  m_pContents; //
 
     // must be last

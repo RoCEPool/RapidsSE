@@ -279,39 +279,41 @@ void Kbase::vAprioriFacts(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
 
-  m_pFact        = pFactNew(nullptr,"fact"_Stz);
+  m_pFact = pFactNew(nullptr,"fact"_Stz);
   
-  m_p_Concept_     = pFactNew(m_pFact,"_concept_"_Stz);
+  m_p_Concept_ = pFactNew(m_pFact,"_concept_"_Stz);
 
-  m_p_Property_    = pConceptAdd(m_p_Concept_,"_property_"_Stz);
+  m_p_Chunk_ = pConceptAdd(m_p_Concept_,"_chunk_"_Stz);
+
+  m_p_Property_ = pConceptAdd(m_p_Concept_,"_property_"_Stz);
   m_p_Property_->rxProperty().m_eUsage = FU_USAGE;
 
-  m_p_Int_         = pConceptAdd(m_p_Property_,"_int_"_Stz);
+  m_p_Int_ = pConceptAdd(m_p_Property_,"_int_"_Stz);
   m_p_Int_->rxProperty().m_eUsage = FU_INT;
 
-  m_p_Object_      = pConceptAdd(m_p_Property_,"_object_"_Stz);
+  m_p_Object_ = pConceptAdd(m_p_Property_,"_object_"_Stz);
   m_p_Object_->rxProperty().m_eUsage = FU_OBJECT;
 
-  m_p_Opaque_      = pConceptAdd(m_p_Property_,"_opaque_"_Stz);
+  m_p_Opaque_ = pConceptAdd(m_p_Property_,"_opaque_"_Stz);
   m_p_Opaque_->rxProperty().m_eUsage = FU_OPAQUE;
 
-  m_p_Text_        = pConceptAdd(m_p_Property_,"_text_"_Stz);
+  m_p_Text_ = pConceptAdd(m_p_Property_,"_text_"_Stz);
   m_p_Text_->rxProperty().m_eUsage = FU_TEXT;
 
-  m_p_Word_        = pConceptAdd(m_p_Property_,"_word_"_Stz);
+  m_p_Word_ = pConceptAdd(m_p_Property_,"_word_"_Stz);
   m_p_Word_->rxProperty().m_eUsage = FU_WORD;
 
-  m_p_Xref_        = pConceptAdd(m_p_Property_,"_xref_"_Stz);
+  m_p_Xref_ = pConceptAdd(m_p_Property_,"_xref_"_Stz);
   m_p_Xref_->rxProperty().m_eUsage = FU_XREF;
 
   
-  m_p_Name_        = pConceptAdd(m_p_Text_,"_name_"_Stz);
+  m_p_Name_ = pConceptAdd(m_p_Text_,"_name_"_Stz);
   
-  m_p_Quality_    = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
+  m_p_Quality_ = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
   
-  m_p_Type_        = pConceptAdd(m_p_Concept_,"_type_"_Stz);
-  m_p_Tuple_       = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
-  m_p_Folder_      = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
+  m_p_Type_ = pConceptAdd(m_p_Concept_,"_type_"_Stz);
+  m_p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
+  m_p_Folder_ = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
 
   Fact* p_Nullability_ = pConceptAdd(m_p_Quality_,"_nullability_"_Stz);
   Fact* p_ColumnType_  = pConceptAdd(m_p_Type_,"_columnType_"_Stz);
