@@ -21,9 +21,11 @@ Fact::Fact(Kbase* pKbase, Fact* pSuper, Stz* szNote)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
+  ASSERT(!pSuper || pKbase->pFact());
+  
   m_pKbase  = pKbase;
   
-  m_iFactNo = m_pKbase->iNextFactNo();
+  m_iFactNo = pSuper ? m_pKbase->iNextFactNo() : 0;
   m_sNote   = szNote ? szNote : C_NO_NOTE;
   m_xProperty.m_pObject = nullptr;
     
@@ -449,12 +451,14 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 //  if (m_pElementOf)
 //    vTrace("%s"_Stz,Stz::szTab(iDepth));
 
-  if (bIsSubClass("folder"_Stz))
-    vTrace("f:%s"_Stz,Stz::szTab(iDepth));
-  else
-  if (bIsSubClass("tuple"_Stz))
-    vTrace("t:%s"_Stz,Stz::szTab(iDepth));
-
+  if (iAs) {
+    if (bIsSubClass("folder"_Stz))
+      vTrace("f:%s"_Stz,Stz::szTab(iDepth));
+    else
+    if (bIsSubClass("tuple"_Stz))
+      vTrace("t:%s"_Stz,Stz::szTab(iDepth));
+  }
+  
   switch (iAs) {
     case 0:
 
@@ -468,6 +472,16 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
       
     case 1:
 
+      vTrace("%lld [%lld] %s"_Stz,
+             iAs,
+         
+             m_iFactNo,
+             m_sNote.azChar()
+             );
+      break;
+      
+    case 2:
+
       vTrace("a:%s%lld [%lld] %s"_Stz,
              Stz::szTab(iDepth),
              iAs,
@@ -477,7 +491,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
              );
       break;
       
-    case 2:
+    case 3:
 
       vTrace("%lld [%lld] %s"_Stz,
              iAs,
@@ -521,28 +535,31 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
     case 0: vTrace("\n"_Stz); break;
     case 1: vTrace("\n"_Stz); break;
     case 2: vTrace("\n"_Stz); break;
+    case 3: vTrace("\n"_Stz); break;
   }
 
   for (Fact* pAttribute = m_pAttributes;
        pAttribute;
        pAttribute = pAttribute->m_pAttributeNext)
-    pAttribute->vPrint_r(iDepth + 1, 1);
+    pAttribute->vPrint_r(iDepth + 1, iAs ? 2 : 0);
 
   switch (iAs) {
     case 0: break;
     case 1: break;
     case 2: break;
+    case 3: break;
   }
   
   for (Fact* pElement = m_pElements;
        pElement;
        pElement = pElement->m_pElementNext)
-    pElement->vPrint_r(iDepth + 1, 2);
+    pElement->vPrint_r(iDepth + 1, iAs ? 3 : 0);
   
   switch (iAs) {
     case 0: break;
     case 1: break;
     case 2: break;
+    case 3: break;
   }
 }
 

@@ -250,10 +250,12 @@ void Kbase::vImport(Table* pTableToImport)
 void Kbase::vTest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
+ 
+  m_pFact->vPrint_r(0,0);
+
   m_pConcepts->vPrint_r(0,0);
 
-  m_pContents->vPrint_r(0,0);
+  m_pContents->vPrint_r(0,1);
 }
 
 /*----------------------------------------------------------------------------*/
