@@ -272,12 +272,12 @@ void Kbase::vAprioriFacts(void)
 
   m_pProperty    = pConceptAdd(m_pFact,"property"_Stz);
 
-  m_pAssociation = pConceptAdd(m_pProperty,"association"_Stz);
   m_pInt         = pConceptAdd(m_pProperty,"int"_Stz);
   m_pObject      = pConceptAdd(m_pProperty,"object"_Stz);
   m_pOpaque      = pConceptAdd(m_pProperty,"opaque"_Stz);
   m_pText        = pConceptAdd(m_pProperty,"text"_Stz);
   m_pWord        = pConceptAdd(m_pProperty,"word"_Stz);
+  m_pXref        = pConceptAdd(m_pProperty,"xref"_Stz);
 
   m_pName        = pConceptAdd(m_pText,"name"_Stz);
   

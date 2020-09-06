@@ -19,12 +19,12 @@ namespace Facts
 
     Fact*  m_pProperty;  //
   
-    Fact*  m_pAssociation;
     Fact*  m_pInt;
     Fact*  m_pObject;
     Fact*  m_pOpaque;
     Fact*  m_pText;
     Fact*  m_pWord;
+    Fact*  m_pXref;
 
     Fact*  m_pName;
 

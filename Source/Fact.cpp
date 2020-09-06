@@ -345,16 +345,6 @@ bool Fact::bIsSubClass(Stz* szNote)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this fact an assocation?                                                */
-/*----------------------------------------------------------------------------*/
-bool Fact::bIsAssociation(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-
-  return bIsSubClass(m_pKbase->m_pAssociation);
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this fact an int?                                                       */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsInt(void)
@@ -402,6 +392,16 @@ bool Fact::bIsWord(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
   return bIsSubClass(m_pKbase->m_pWord);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this fact an cross-ref?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsXref(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  return bIsSubClass(m_pKbase->m_pXref);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -488,11 +488,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
       break;
   }
   
-  if (bIsAssociation())
-    vTrace(" = Assoc %s"_Stz,
-           m_xProperty.m_pAssociation ? m_xProperty.m_pAssociation->szNote()
-                                      : ""_Stz);
-  else if (bIsInt())
+  if (bIsInt())
     vTrace(" = Int %lld"_Stz,m_xProperty.m_iInt);
   else if (bIsObject())
     vTrace(" = Object %p"_Stz,m_xProperty.m_pObject);
@@ -506,6 +502,10 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
     vTrace(" = Word %s"_Stz,
            m_xProperty.m_pWord ? m_xProperty.m_pWord->szWordNm()
                               : ""_Stz);
+  else if (bIsXref())
+    vTrace(" = Xref %s"_Stz,
+           m_xProperty.m_pXref ? m_xProperty.m_pXref->szNote()
+                               : ""_Stz);
   else { }
 
   if (m_pSubclassOf || m_pAttributeOf || m_pElementOf)

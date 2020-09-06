@@ -6,12 +6,12 @@
 namespace Facts
 {
   union Property {
-    Fact*   m_pAssociation; // association to another fact
-    i8      m_iInt;         // i8 value
-    Object* m_pObject;      // pointer to proper object
-    Opaque* m_aOpaque;      // address of opaque memory
-    Text*   m_pText;        // text
-    Word*   m_pWord;        // sen word
+    i8      m_iInt;    // i8 value
+    Object* m_pObject; // pointer to proper object
+    Opaque* m_aOpaque; // address of opaque memory
+    Text*   m_pText;   // text
+    Word*   m_pWord;   // sen word
+    Fact*   m_pXref;   // cross-refto another fact
   };
 
   //----------------------------------------------------------------------------
@@ -75,12 +75,12 @@ namespace Facts
     bool  bIsSubClass(Fact* pOfFact);
     bool  bIsSubClass(Stz* szNote);
 
-    bool  bIsAssociation(void);
     bool  bIsInt(void);
     bool  bIsObject(void);
     bool  bIsOpaque(void);
     bool  bIsText(void);
     bool  bIsWord(void);
+    bool  bIsXref(void);
 
     Fact* pNewInstance(Stz* szNote=nullptr);
 
