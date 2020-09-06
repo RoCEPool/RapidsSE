@@ -468,10 +468,10 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 //    vTrace("%s"_Stz,Stz::szTab(iDepth));
 
   if (iAs) {
-    if (bIsSubClass("folder"_Stz))
+    if (bIsSubClass("_folder_"_Stz))
       vTrace("f:%s"_Stz,Stz::szTab(iDepth));
     else
-    if (bIsSubClass("tuple"_Stz))
+    if (bIsSubClass("_tuple_"_Stz))
       vTrace("t:%s"_Stz,Stz::szTab(iDepth));
   }
   
