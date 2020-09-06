@@ -70,6 +70,8 @@ namespace Facts
     
     Fact* pFindElement(Stz* szNote, Fact* pSuper=nullptr);
 
+    Fact* pGetSuperChild(Fact* pOfFact);
+
     bool  bHasSpecificAttribute(Fact* pFact);
     bool  bHasSpecificElement(Fact* pFact);
 

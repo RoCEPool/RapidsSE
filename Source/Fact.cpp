@@ -287,6 +287,22 @@ Fact* Fact::pFindElement(Stz* szNote, Fact* pSuper)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get fact that is immediate child of given fact (recursively)               */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pGetSuperChild(Fact* pOfFact)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  if (m_pSubclassOf == pOfFact)
+    return this;
+  
+  if (!m_pSubclassOf)
+    return nullptr;
+  
+  return m_pSubclassOf->pGetSuperChild(pOfFact);
+}
+
+/*----------------------------------------------------------------------------*/
 /* has an attribute which is specifically given fact                          */
 /*----------------------------------------------------------------------------*/
 bool Fact::bHasSpecificAttribute(Fact* pFact)
