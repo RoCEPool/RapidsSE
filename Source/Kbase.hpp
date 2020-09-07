@@ -16,9 +16,12 @@ namespace Facts
   
     Fact*  m_pFact;    //
   
+    Fact*  m_p_Action_;    //
     Fact*  m_p_Chunk_;     //
     Fact*  m_p_Concept_;   //
+    Fact*  m_p_Condition_; //
     Fact*  m_p_Folder_;    //
+    Fact*  m_p_Format_;    //
     Fact*  m_p_Function_;  //
     Fact*  m_p_Int_;       //
     Fact*  m_p_Name_;      //
@@ -28,6 +31,7 @@ namespace Facts
     Fact*  m_p_Pattern_;   //
     Fact*  m_p_Property_;  //
     Fact*  m_p_Quality_;   //
+    Fact*  m_p_Rule_;      //
     Fact*  m_p_Transform_; //
     Fact*  m_p_Text_;      //
     Fact*  m_p_Tuple_;     //

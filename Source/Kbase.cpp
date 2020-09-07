@@ -243,6 +243,11 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
   pNameSeq->rxProperty().m_pText = new Text;
   pNameSeq->rxProperty().m_pText->vSet("A"_Stz);
   pStages->vAttributeAdd(pNameSeq);
+  
+  Fact* pFormat = m_p_Format_->pNewInstance();
+  pFormat->rxProperty().m_pText = new Text;
+  pFormat->rxProperty().m_pText->vSet("stage%s"_Stz);
+  pStages->vAttributeAdd(pFormat);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -389,6 +394,7 @@ void Kbase::vAprioriFacts(void)
   
   m_p_Name_ = pConceptAdd(m_p_Text_,"_name_"_Stz);
   m_p_NameSeq_ = pConceptAdd(m_p_Text_,"_nameSeq_"_Stz);
+  m_p_Format_ = pConceptAdd(m_p_Text_,"_format_"_Stz);
 
   m_p_Quality_ = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
   
@@ -422,6 +428,10 @@ void Kbase::vAprioriFacts(void)
   pConceptAdd(p_Operator_,"_sqlOp_"_Stz);
 
   Fact* p_Cardinality_   = pConceptAdd(m_p_Quality_,"_cardinality_"_Stz);
+
+  m_p_Rule_ = pConceptAdd(m_p_Concept_,"_rule_"_Stz);
+  m_p_Condition_ = pConceptAdd(m_p_Concept_,"_condition_"_Stz);
+  m_p_Action_ = pConceptAdd(m_p_Concept_,"_action_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
