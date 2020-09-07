@@ -332,10 +332,21 @@ void Kbase::vAprioriFacts(void)
   m_p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
   m_p_Folder_ = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
 
-  Fact* p_Nullability_ = pConceptAdd(m_p_Quality_,"_nullability_"_Stz);
-  Fact* p_ColumnType_  = pConceptAdd(m_p_Type_,"_columnType_"_Stz);
-  Fact* p_Tables_      = pConceptAdd(m_p_Folder_,"_tables_"_Stz);
-  Fact* p_Statement_   = pConceptAdd(m_p_Folder_,"_statement_"_Stz);
+  Fact* p_Nullability_   = pConceptAdd(m_p_Quality_,"_nullability_"_Stz);
+  Fact* p_ColumnType_    = pConceptAdd(m_p_Type_,"_columnType_"_Stz);
+  Fact* p_Tables_        = pConceptAdd(m_p_Folder_,"_tables_"_Stz);
+  
+  Fact* p_Statement_     = pConceptAdd(m_p_Folder_,"_statement_"_Stz);
+  Fact* p_SubQry_        = pConceptAdd(m_p_Folder_,"_subQry_"_Stz);
+  Fact* p_ProjectClause_ = pConceptAdd(m_p_Folder_,"_projectClause_"_Stz);
+  Fact* p_FromClause_    = pConceptAdd(m_p_Folder_,"_fromClause_"_Stz);
+  Fact* p_WhereClause_   = pConceptAdd(m_p_Folder_,"_whereClause_"_Stz);
+  Fact* p_GroupByClause_ = pConceptAdd(m_p_Folder_,"_groupByClause_"_Stz);
+  Fact* p_OrderByClause_ = pConceptAdd(m_p_Folder_,"_orderByClause_"_Stz);
+
+  Fact* p_Expression_    = pConceptAdd(m_p_Folder_,"_expression_"_Stz);
+  Fact* p_Term_          = pConceptAdd(m_p_Folder_,"_term_"_Stz);
+  Fact* p_Atom_          = pConceptAdd(m_p_Concept_,"_atom_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
