@@ -179,7 +179,55 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
+  Fact* pStatement = m_pContents->pFindElement("statement"_Stz);
+
+  Fact* p_SubQry_  = m_p_Concept_->pFindElement("_subQry_"_Stz);
+  Fact* pSubQry = p_SubQry_->pNewInstance();
+  pStatement->vElementAdd(pSubQry);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Fact* p_ProjectClause_  = m_p_Concept_->pFindElement("_projectClause_"_Stz);
+  Fact* pProjectClause = p_ProjectClause_->pNewInstance();
+  pSubQry->vElementAdd(pProjectClause);
+  
+  Fact* p_ExprList_  = m_p_Concept_->pFindElement("_exprList_"_Stz);
+  Fact* pExprList = p_ExprList_->pNewInstance();
+  pProjectClause->vElementAdd(pExprList);
+  
+  Fact* p_Expr_  = m_p_Concept_->pFindElement("_expr_"_Stz);
+  Fact* pExpr = p_Expr_->pNewInstance();
+  pExprList->vElementAdd(pExpr);
+  
+  Fact* p_Term_  = m_p_Concept_->pFindElement("_term_"_Stz);
+  Fact* pTerm = p_Term_->pNewInstance();
+  pExpr->vElementAdd(pTerm);
+  
+  Fact* p_Atom_  = m_p_Concept_->pFindElement("_atom_"_Stz);
+  Fact* pAtom = p_Atom_->pNewInstance();
+  pTerm->vElementAdd(pAtom);
+  
+  Fact* p_Text_  = m_p_Concept_->pFindElement("_text_"_Stz);
+  Fact* pText = p_Text_->pNewInstance();
+  pText->rxProperty().m_pText = new Text;
+  pText->rxProperty().m_pText->vSet("*"_Stz);
+  pAtom->vAttributeAdd(pText);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Fact* p_FromClause_  = m_p_Concept_->pFindElement("_fromClause_"_Stz);
+  Fact* pFromClause = p_FromClause_->pNewInstance();
+  pSubQry->vElementAdd(pFromClause);
+  
+  Fact* p_FromTable_  = m_p_Concept_->pFindElement("_fromTable_"_Stz);
+  Fact* pFromTable = p_FromTable_->pNewInstance();
+  pFromClause->vElementAdd(pFromTable);
+
+  Fact* p_TableNm_  = m_p_Concept_->pFindElement("_tableNm_"_Stz);
+  Fact* pTableNm = p_TableNm_->pNewInstance();
+  pTableNm->rxProperty().m_pText = new Text;
+  pTableNm->rxProperty().m_pText->vSet("lineitem"_Stz);
+  pFromTable->vAttributeAdd(pTableNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -340,13 +388,15 @@ void Kbase::vAprioriFacts(void)
   Fact* p_SubQry_        = pConceptAdd(m_p_Folder_,"_subQry_"_Stz);
   Fact* p_ProjectClause_ = pConceptAdd(m_p_Folder_,"_projectClause_"_Stz);
   Fact* p_FromClause_    = pConceptAdd(m_p_Folder_,"_fromClause_"_Stz);
+  Fact* p_FromTable_     = pConceptAdd(m_p_Tuple_, "_fromTable_"_Stz);
   Fact* p_WhereClause_   = pConceptAdd(m_p_Folder_,"_whereClause_"_Stz);
   Fact* p_GroupByClause_ = pConceptAdd(m_p_Folder_,"_groupByClause_"_Stz);
   Fact* p_OrderByClause_ = pConceptAdd(m_p_Folder_,"_orderByClause_"_Stz);
 
-  Fact* p_Expression_    = pConceptAdd(m_p_Folder_,"_expression_"_Stz);
+  Fact* p_ExprList_      = pConceptAdd(m_p_Folder_,"_exprList_"_Stz);
+  Fact* p_Expr_          = pConceptAdd(m_p_Folder_,"_expr_"_Stz);
   Fact* p_Term_          = pConceptAdd(m_p_Folder_,"_term_"_Stz);
-  Fact* p_Atom_          = pConceptAdd(m_p_Concept_,"_atom_"_Stz);
+  Fact* p_Atom_          = pConceptAdd(m_p_Tuple_,"_atom_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

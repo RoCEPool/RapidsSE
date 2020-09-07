@@ -45,6 +45,8 @@ bool Prompt::bPrompt_fact(SePrompt* pPrompt)
   pTable = Table::pFindTable(pDicStack,"lineitem"_Stz);
   pKb->vImportTable(pTable);
 
+  pKb->vImportStatement("select * from lineitem"_Stz);
+
   pKb->vTest();
 
   delete pKb;
