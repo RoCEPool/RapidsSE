@@ -39,11 +39,11 @@ bool Prompt::bPrompt_fact(SePrompt* pPrompt)
   
   Table* pTable;
   pTable = Table::pFindTable(pDicStack,"customer"_Stz);
-  pKb->vImport(pTable);
+  pKb->vImportTable(pTable);
   pTable = Table::pFindTable(pDicStack,"orders"_Stz);
-  pKb->vImport(pTable);
+  pKb->vImportTable(pTable);
   pTable = Table::pFindTable(pDicStack,"lineitem"_Stz);
-  pKb->vImport(pTable);
+  pKb->vImportTable(pTable);
 
   pKb->vTest();
 

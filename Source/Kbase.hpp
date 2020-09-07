@@ -67,7 +67,8 @@ namespace Facts
   
     // -- -- -- -- -- -- --
 
-    void vImport(Table* pTable);
+    void vImportStatement(Stz* szStatement);
+    void vImportTable(Table* pTable);
 
     void vTest(void);
   

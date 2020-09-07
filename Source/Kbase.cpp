@@ -173,9 +173,19 @@ void Kbase::vTransformReturn(Transform** ppTransform)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* import state                                                               */
+/*----------------------------------------------------------------------------*/
+void Kbase::vImportStatement(Stz* szStmtToImport)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* import table                                                               */
 /*----------------------------------------------------------------------------*/
-void Kbase::vImport(Table* pTableToImport)
+void Kbase::vImportTable(Table* pTableToImport)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
@@ -325,6 +335,7 @@ void Kbase::vAprioriFacts(void)
   Fact* p_Nullability_ = pConceptAdd(m_p_Quality_,"_nullability_"_Stz);
   Fact* p_ColumnType_  = pConceptAdd(m_p_Type_,"_columnType_"_Stz);
   Fact* p_Tables_      = pConceptAdd(m_p_Folder_,"_tables_"_Stz);
+  Fact* p_Statement_   = pConceptAdd(m_p_Folder_,"_statement_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -362,6 +373,9 @@ void Kbase::vAprioriFacts(void)
 
   Fact* pTables = p_Tables_->pNewInstance();
   m_pContents->vElementAdd(pTables);
+
+  Fact* pStatement = p_Statement_->pNewInstance();
+  m_pContents->vElementAdd(pStatement);
 }
 
 /*============================================================================*/
