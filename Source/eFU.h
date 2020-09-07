@@ -7,6 +7,7 @@ enum eFU // fact usage
 {
   /*  0 */ FU_NONE=0,
   
+  /*    */ FU_FUNCTION,
   /*    */ FU_INT,
   /*    */ FU_OBJECT,
   /*    */ FU_OPAQUE,
@@ -22,6 +23,7 @@ static Stz* aFU[]
 {
   /*  0 */ "NONE"_Stz,
   
+  /*    */ "FU_FUNCTION"_Stz,
   /*    */ "FU_INT"_Stz,
   /*    */ "FU_OBJECT"_Stz,
   /*    */ "FU_OPAQUE"_Stz,

@@ -19,6 +19,7 @@ namespace Facts
     Fact*  m_p_Chunk_;     //
     Fact*  m_p_Concept_;   //
     Fact*  m_p_Folder_;    //
+    Fact*  m_p_Function_;  //
     Fact*  m_p_Int_;       //
     Fact*  m_p_Name_;      //
     Fact*  m_p_Object_;    //
