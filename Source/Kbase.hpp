@@ -22,6 +22,7 @@ namespace Facts
     Fact*  m_p_Function_;  //
     Fact*  m_p_Int_;       //
     Fact*  m_p_Name_;      //
+    Fact*  m_p_NameSeq_;   //
     Fact*  m_p_Object_;    //
     Fact*  m_p_Opaque_;    //
     Fact*  m_p_Pattern_;   //

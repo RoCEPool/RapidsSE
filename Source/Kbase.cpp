@@ -181,33 +181,33 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
   
   Fact* pStatement = m_pContents->pFindElement("statement"_Stz);
 
-  Fact* p_SubQry_  = m_p_Concept_->pFindElement("_subQry_"_Stz);
+  Fact* p_SubQry_ = m_p_Concept_->pFindElement("_subQry_"_Stz);
   Fact* pSubQry = p_SubQry_->pNewInstance();
   pStatement->vElementAdd(pSubQry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Fact* p_ProjectClause_  = m_p_Concept_->pFindElement("_projectClause_"_Stz);
+  Fact* p_ProjectClause_ = m_p_Concept_->pFindElement("_projectClause_"_Stz);
   Fact* pProjectClause = p_ProjectClause_->pNewInstance();
   pSubQry->vElementAdd(pProjectClause);
   
-  Fact* p_ExprList_  = m_p_Concept_->pFindElement("_exprList_"_Stz);
+  Fact* p_ExprList_ = m_p_Concept_->pFindElement("_exprList_"_Stz);
   Fact* pExprList = p_ExprList_->pNewInstance();
   pProjectClause->vElementAdd(pExprList);
   
-  Fact* p_Expr_  = m_p_Concept_->pFindElement("_expr_"_Stz);
+  Fact* p_Expr_ = m_p_Concept_->pFindElement("_expr_"_Stz);
   Fact* pExpr = p_Expr_->pNewInstance();
   pExprList->vElementAdd(pExpr);
   
-  Fact* p_Term_  = m_p_Concept_->pFindElement("_term_"_Stz);
+  Fact* p_Term_ = m_p_Concept_->pFindElement("_term_"_Stz);
   Fact* pTerm = p_Term_->pNewInstance();
   pExpr->vElementAdd(pTerm);
   
-  Fact* p_Atom_  = m_p_Concept_->pFindElement("_atom_"_Stz);
+  Fact* p_Atom_ = m_p_Concept_->pFindElement("_atom_"_Stz);
   Fact* pAtom = p_Atom_->pNewInstance();
   pTerm->vElementAdd(pAtom);
   
-  Fact* p_Text_  = m_p_Concept_->pFindElement("_text_"_Stz);
+  Fact* p_Text_ = m_p_Concept_->pFindElement("_text_"_Stz);
   Fact* pText = p_Text_->pNewInstance();
   pText->rxProperty().m_pText = new Text;
   pText->rxProperty().m_pText->vSet("*"_Stz);
@@ -215,19 +215,34 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Fact* p_FromClause_  = m_p_Concept_->pFindElement("_fromClause_"_Stz);
+  Fact* p_FromClause_ = m_p_Concept_->pFindElement("_fromClause_"_Stz);
   Fact* pFromClause = p_FromClause_->pNewInstance();
   pSubQry->vElementAdd(pFromClause);
   
-  Fact* p_FromTable_  = m_p_Concept_->pFindElement("_fromTable_"_Stz);
+  Fact* p_FromTable_ = m_p_Concept_->pFindElement("_fromTable_"_Stz);
   Fact* pFromTable = p_FromTable_->pNewInstance();
   pFromClause->vElementAdd(pFromTable);
 
-  Fact* p_TableNm_  = m_p_Concept_->pFindElement("_tableNm_"_Stz);
+  Fact* p_TableNm_ = m_p_Concept_->pFindElement("_tableNm_"_Stz);
   Fact* pTableNm = p_TableNm_->pNewInstance();
   pTableNm->rxProperty().m_pText = new Text;
   pTableNm->rxProperty().m_pText->vSet("lineitem"_Stz);
   pFromTable->vAttributeAdd(pTableNm);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Fact* p_Pipeline_ = m_p_Concept_->pFindElement("_pipeline_"_Stz);
+  Fact* pPipeline = p_Pipeline_->pNewInstance();
+  m_pContents->vElementAdd(pPipeline);
+  
+  Fact* p_Stages_ = m_p_Concept_->pFindElement("_stages_"_Stz);
+  Fact* pStages = p_Stages_->pNewInstance();
+  pPipeline->vElementAdd(pStages);
+  
+  Fact* pNameSeq = m_p_NameSeq_->pNewInstance();
+  pNameSeq->rxProperty().m_pText = new Text;
+  pNameSeq->rxProperty().m_pText->vSet("A"_Stz);
+  pStages->vAttributeAdd(pNameSeq);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -373,7 +388,8 @@ void Kbase::vAprioriFacts(void)
 
   
   m_p_Name_ = pConceptAdd(m_p_Text_,"_name_"_Stz);
-  
+  m_p_NameSeq_ = pConceptAdd(m_p_Text_,"_nameSeq_"_Stz);
+
   m_p_Quality_ = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
   
   m_p_Type_ = pConceptAdd(m_p_Concept_,"_type_"_Stz);
@@ -397,6 +413,15 @@ void Kbase::vAprioriFacts(void)
   Fact* p_Expr_          = pConceptAdd(m_p_Folder_,"_expr_"_Stz);
   Fact* p_Term_          = pConceptAdd(m_p_Folder_,"_term_"_Stz);
   Fact* p_Atom_          = pConceptAdd(m_p_Tuple_,"_atom_"_Stz);
+
+  Fact* p_Pipeline_      = pConceptAdd(m_p_Folder_,"_pipeline_"_Stz);
+  Fact* p_Stages_        = pConceptAdd(m_p_Folder_,"_stages_"_Stz);
+  Fact* p_Stage_         = pConceptAdd(m_p_Folder_,"_stage_"_Stz);
+  Fact* p_Operator_      = pConceptAdd(m_p_Tuple_,"_operator_"_Stz);
+  pConceptAdd(p_Operator_,"_op_"_Stz);
+  pConceptAdd(p_Operator_,"_sqlOp_"_Stz);
+
+  Fact* p_Cardinality_   = pConceptAdd(m_p_Quality_,"_cardinality_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -429,14 +454,22 @@ void Kbase::vAprioriFacts(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pContents  = pConceptAdd(m_p_Type_,"_contents_"_Stz);
-  m_pContents   = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
+  Fact* pContents = pConceptAdd(m_p_Type_,"_contents_"_Stz);
+  m_pContents = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
 
   Fact* pTables = p_Tables_->pNewInstance();
   m_pContents->vElementAdd(pTables);
 
   Fact* pStatement = p_Statement_->pNewInstance();
   m_pContents->vElementAdd(pStatement);
+  
+  pConceptAdd(m_p_Name_,"_stageNm_"_Stz);
+  pConceptAdd(p_Cardinality_,"all nodes"_Stz);
+  pConceptAdd(p_Cardinality_,"all partitions"_Stz);
+  pConceptAdd(p_Cardinality_,"all partitions on origin"_Stz);
+  pConceptAdd(p_Cardinality_,"origin"_Stz);
+  pConceptAdd(p_Cardinality_,"specific node"_Stz);
+  pConceptAdd(p_Cardinality_,"specific partition"_Stz);
 }
 
 /*============================================================================*/
