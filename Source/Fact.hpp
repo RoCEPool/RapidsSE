@@ -8,6 +8,7 @@ namespace Facts
   union Property {
     i8    (*m_afFun)(void* aArg);
     i8      m_iInt;    // i8 value
+    Method* m_pMethod; // pointer to kbase method
     Object* m_pObject; // pointer to proper object
     Opaque* m_aOpaque; // address of opaque memory
     Text*   m_pText;   // text

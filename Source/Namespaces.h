@@ -53,6 +53,7 @@ namespace Expressions       { class AggregateRsb;    class Expr;
                               class JoinRsb;         class ProjectRsb; 
                               class LogicUnit;                                }
 namespace Facts             { class Fact;            class Kbase;
+                              class Method;        
                               class Question;        class Transform;         }
 namespace Focals            { class ReqTuple;                                 }
 namespace Folders           {                                                 }
