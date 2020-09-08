@@ -39,6 +39,15 @@ void LogicUnit::vGenCode(i8 iTestNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate code for given text                                               */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateCode(Stz* aText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate iterating index on l_shipdate & project into RSB (Query 1)        */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery100(void)
