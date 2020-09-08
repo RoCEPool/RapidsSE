@@ -418,6 +418,10 @@ void Kbase::vAprioriFacts(void)
   m_p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
   m_p_Folder_ = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
 
+  m_p_Rule_ = pConceptAdd(m_p_Concept_,"_rule_"_Stz);
+  m_p_Condition_ = pConceptAdd(m_p_Concept_,"_condition_"_Stz);
+  m_p_Action_ = pConceptAdd(m_p_Concept_,"_action_"_Stz);
+
   Fact* p_Nullability_   = pConceptAdd(m_p_Quality_,"_nullability_"_Stz);
   Fact* p_ColumnType_    = pConceptAdd(m_p_Type_,"_columnType_"_Stz);
   Fact* p_Tables_        = pConceptAdd(m_p_Folder_,"_tables_"_Stz);
@@ -436,21 +440,22 @@ void Kbase::vAprioriFacts(void)
   Fact* p_Term_          = pConceptAdd(m_p_Folder_,"_term_"_Stz);
   Fact* p_Atom_          = pConceptAdd(m_p_Tuple_,"_atom_"_Stz);
 
-  Fact* p_Pipeline_      = pConceptAdd(m_p_Folder_,"_pipeline_"_Stz);
-  Fact* p_Stages_        = pConceptAdd(m_p_Folder_,"_stages_"_Stz);
-  Fact* p_Stage_         = pConceptAdd(m_p_Folder_,"_stage_"_Stz);
+  pConceptAdd(m_p_Folder_,"_pipeline_"_Stz);
+  pConceptAdd(m_p_Name_,"_pipelineNm_"_Stz);
+  pConceptAdd(m_p_Folder_,"_stages_"_Stz);
+  pConceptAdd(m_p_Folder_,"_stage_"_Stz);
+  pConceptAdd(m_p_Name_,"_stageNm_"_Stz);
+  Fact* p_Cardinality_ = pConceptAdd(m_p_Quality_,"_cardinality_"_Stz);
+  pConceptAdd(p_Cardinality_,"all nodes"_Stz);
+  pConceptAdd(p_Cardinality_,"all partitions"_Stz);
+  pConceptAdd(p_Cardinality_,"all partitions on origin"_Stz);
+  pConceptAdd(p_Cardinality_,"origin"_Stz);
+  pConceptAdd(p_Cardinality_,"specific node"_Stz);
+  pConceptAdd(p_Cardinality_,"specific partition"_Stz);
   Fact* p_Operator_      = pConceptAdd(m_p_Tuple_,"_operator_"_Stz);
   pConceptAdd(p_Operator_,"_op_"_Stz);
   pConceptAdd(p_Operator_,"_sqlOp_"_Stz);
-
-  Fact* p_Cardinality_   = pConceptAdd(m_p_Quality_,"_cardinality_"_Stz);
-
-  Fact* p_Routines_      = pConceptAdd(m_p_Folder_,"_routines_"_Stz);
-  Fact* p_Subroutine_    = pConceptAdd(m_p_Tuple_,"_subroutine_"_Stz);
-
-  m_p_Rule_ = pConceptAdd(m_p_Concept_,"_rule_"_Stz);
-  m_p_Condition_ = pConceptAdd(m_p_Concept_,"_condition_"_Stz);
-  m_p_Action_ = pConceptAdd(m_p_Concept_,"_action_"_Stz);
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -482,6 +487,12 @@ void Kbase::vAprioriFacts(void)
   pConceptAdd(m_p_Folder_,"_indexes_"_Stz);
   pConceptAdd(m_p_Folder_,"_index_"_Stz);
   
+  pConceptAdd(m_p_Folder_,"_routines_"_Stz);
+  pConceptAdd(m_p_Tuple_,"_subroutine_"_Stz);
+  pConceptAdd(m_p_Name_,"_subroutineNm_"_Stz);
+  pConceptAdd(m_p_Quality_,"_recallable_"_Stz);
+  pConceptAdd(m_p_Text_,"_sourceCode_"_Stz);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* pContents = pConceptAdd(m_p_Type_,"_contents_"_Stz);
@@ -492,14 +503,6 @@ void Kbase::vAprioriFacts(void)
 
   Fact* pStatement = p_Statement_->pNewInstance();
   m_pContents->vElementAdd(pStatement);
-  
-  pConceptAdd(m_p_Name_,"_stageNm_"_Stz);
-  pConceptAdd(p_Cardinality_,"all nodes"_Stz);
-  pConceptAdd(p_Cardinality_,"all partitions"_Stz);
-  pConceptAdd(p_Cardinality_,"all partitions on origin"_Stz);
-  pConceptAdd(p_Cardinality_,"origin"_Stz);
-  pConceptAdd(p_Cardinality_,"specific node"_Stz);
-  pConceptAdd(p_Cardinality_,"specific partition"_Stz);
 }
 
 /*============================================================================*/
