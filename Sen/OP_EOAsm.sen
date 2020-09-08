@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
-: sql_StartMarker \handler
+: EOAsm_StartMarker \handler
 
   0 locals| queryNo |
 
@@ -110,7 +110,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: sql_PulseMarker_600
+: EOAsm_PulseMarker_600
 
   //"++++++++++++++++++++++++++++ 600=PULSEMARKER ++++++++++++++++++++++++++++" .
 
@@ -164,7 +164,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
-: sql_PulseMarker \handler
+: EOAsm_PulseMarker \handler
 
   0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryNote
 
@@ -184,7 +184,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_RSBBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
-: sql_RsbBuffer \handler
+: EOAsm_RsbBuffer \handler
 
   0 ZK_RSBBUFFER EG_ZK LogicUnit[].diaryNote
 
@@ -222,7 +222,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
-: sql_EosMarker \handler
+: EOAsm_EosMarker \handler
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
@@ -253,7 +253,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: sql_StreamDef \handler
+: EOAsm_StreamDef \handler
 
   0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
@@ -282,7 +282,7 @@
 /*----------------------------------------------------------------------------*/
 /* filter request                                                       SPAWN */
 /*----------------------------------------------------------------------------*/
-: sql_req \operator
+: EOAsm_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -291,12 +291,11 @@
 
   op__topology
 
-  find: sql_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: sql_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: sql_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: sql_RsbBuffer   ZK_RSBBUFFER   op[].handler!
-  find: sql_StartMarker ZK_STARTMARKER op[].handler!
-  find: sql_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: EOAsm_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: EOAsm_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: EOAsm_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: EOAsm_StartMarker ZK_STARTMARKER op[].handler!
+  find: EOAsm_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
 
@@ -308,10 +307,10 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: sql :: sql <queryNo> <compiled> ;
-cmdSyntax: sql :: sql <queryNo> <compiled> <tableNm> <indexNm> ;
+cmdSyntax: EOAsm :: asmSql <queryNo> <compiled> ;
+cmdSyntax: EOAsm :: asmSql <queryNo> <compiled> <tableNm> <indexNm> ;
 
-: sql _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: EOAsm _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */
