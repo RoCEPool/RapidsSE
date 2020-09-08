@@ -177,7 +177,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(MetaInherits),       HT_TRANSIENT_TINY    }, // CN_METAINHERITS
   { sizeof(MetaMember),         HT_TRANSIENT_TINY    }, // CN_METAMEMBER
   { sizeof(MetaType),           HT_TRANSIENT_MEDIUM  }, // CN_METATYPE
-  { sizeof(Method),             HT_TRANSIENT_TINY    }, // CN_METHOD
+  { sizeof(Method),             HT_TRANSIENT_SMALL   }, // CN_METHOD
   { sizeof(MidEnd_FromVec),     HT_TRANSIENT_SMALL   }, // CN_MIDEND_FROMVEC
   { sizeof(Mutex),              HT_TRANSIENT_TINY    }, // CN_MUTEX
 
