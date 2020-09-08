@@ -103,6 +103,7 @@ namespace Enums
 #include "ePY.h"
 
 #include "eQA.h"
+#include "eQC.h"
 #include "eQK.h"
 
 #include "eRA.h"

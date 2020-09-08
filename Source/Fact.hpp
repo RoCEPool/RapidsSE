@@ -13,7 +13,7 @@ namespace Facts
     Text*   m_pText;   // text
     eFU     m_eUsage;  // how is the fact property used?
     Word*   m_pWord;   // sen word
-    Fact*   m_pXref;   // cross-refto another fact
+    Fact*   m_pXref;   // cross-ref to another fact
   };
 
   //----------------------------------------------------------------------------
