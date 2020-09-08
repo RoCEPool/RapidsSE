@@ -248,6 +248,16 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
   pFormat->rxProperty().m_pText = new Text;
   pFormat->rxProperty().m_pText->vSet("stage%s"_Stz);
   pStages->vAttributeAdd(pFormat);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Fact* p_Routines_ = m_p_Concept_->pFindElement("_routines_"_Stz);
+  Fact* pRoutines = p_Routines_->pNewInstance();
+  m_pContents->vElementAdd(pRoutines);
+  
+  Fact* p_Subroutines_ = m_p_Concept_->pFindElement("_subroutine_"_Stz);
+  Fact* pSubroutines = p_Subroutines_->pNewInstance();
+  pRoutines->vElementAdd(pSubroutines);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,6 +444,9 @@ void Kbase::vAprioriFacts(void)
   pConceptAdd(p_Operator_,"_sqlOp_"_Stz);
 
   Fact* p_Cardinality_   = pConceptAdd(m_p_Quality_,"_cardinality_"_Stz);
+
+  Fact* p_Routines_      = pConceptAdd(m_p_Folder_,"_routines_"_Stz);
+  Fact* p_Subroutine_    = pConceptAdd(m_p_Tuple_,"_subroutine_"_Stz);
 
   m_p_Rule_ = pConceptAdd(m_p_Concept_,"_rule_"_Stz);
   m_p_Condition_ = pConceptAdd(m_p_Concept_,"_condition_"_Stz);
