@@ -1997,6 +1997,7 @@ void LogicUnit::vGenerateQuery600(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // END SUBROUTINE: SUBROUTINE_AGGREGATE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2007,12 +2008,12 @@ void LogicUnit::vGenerateQuery601(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   // set the query no
-  m_xRluCommon.m_iSql = 602;
+  m_xRluCommon.m_iSql = 601;
   
   // init the code
   m_i_Code = 0;
   
-  vDefineLabel("QRY_602:"_Stz);
+  vDefineLabel("QRY_601:"_Stz);
   vAddCode(EO_INIT);
   
   // new a rsb dst row if not there
@@ -2059,9 +2060,8 @@ void LogicUnit::vGenerateQuery601(void)
   
   
   vAddCode(EO_RETURN);
-  
-  
-  vDumpCode();
+    
+  //vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
