@@ -412,8 +412,8 @@
     insert $table | stageD
 
   stage stageD on origin :
-    sink | stageA
-    //progress 'Load' | toStatDemon | sink | stageA
+    //sink | stageA
+    progress 'Load' | toStatDemon | sink | stageA
 
   end ;
   "
@@ -864,6 +864,30 @@
   api::addProcedure
 
   // /time reload LineItem "/tmp/lineitem.crw" ;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reorder table
+  sPath
+  "
+  procedure reorder
+    parameters $table1 $table2 $predicate
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | emitStreamDef $Table1 | stageB
+
+  stage stageB on all nodes :
+    createTable $table2 | stageC
+
+  stage stageC on all partitions :
+    fetch $table1 $predicate | insert $table2 | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
 
 ;
 
