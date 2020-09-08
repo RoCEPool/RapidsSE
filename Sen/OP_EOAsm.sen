@@ -307,8 +307,8 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: EOAsm :: asmSql <queryNo> <compiled> ;
-cmdSyntax: EOAsm :: asmSql <queryNo> <compiled> <tableNm> <indexNm> ;
+cmdSyntax: EOAsm :: EOAsm <queryNo> <compiled> ;
+cmdSyntax: EOAsm :: EOAsm <queryNo> <compiled> <tableNm> <indexNm> ;
 
 : EOAsm _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 

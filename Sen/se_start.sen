@@ -1169,6 +1169,62 @@
   api::addProcedure
 
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 6 - converting loaded CRW data into RSB
+  sPath
+  "
+  procedure Query6_ASM
+    parameters $Table $Index
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm 600 1 $Table $Index
+    | stageC
+
+  stage stageC on origin :
+    EOAsm 601 1
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 6 - converting loaded CRW data into RSB
+  sPath
+  "
+  procedure Query6_ASM_I
+    parameters $Table $Index
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm 600 0 $Table $Index
+    | stageC
+
+  stage stageC on origin :
+    EOAsm 601 0
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
 ;
 
 /*----------------------------------------------------------------------------*/
