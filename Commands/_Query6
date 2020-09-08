@@ -33,11 +33,12 @@ create table LineItem                      // SF * 6,000,000 rows
 );
 create index idx on lineitem (l_shipdate);
 
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 10K ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
- /time load lineitem "/DATA/TPCH/lineitem10k.csv";
- /time Query6 lineitem idx;
+///time load lineitem "/DATA/TPCH/lineitem10.csv";
+///time Query6 lineitem idx;
 
 //drop table lineitem;
 //memoryLeaks;
@@ -45,8 +46,29 @@ create index idx on lineitem (l_shipdate);
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // SF1
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-///time load lineitem "/tpch/SF1/lineitem.csv";
-///time Query6 lineitem idx;
+/time fload lineitem "/tpch/SF1/lineitem_100k.tbl";
+//tablescan lineitem;
+/time Query6 lineitem idx;
+
+/*
+ //
+ // REORDER the lineitem with order of shipdate and run query 6 again
+ //
+ 
+//predicateFetch lineitem "l_shipDate '9999-01-01' <";
+/time reorder lineitem lineitem2 "l_shipDate '9999-01-01' <";
+
+drop table lineitem;
+
+create index idx2 on lineitem2 (l_shipdate);
+//tablescan lineitem2;
+
+
+/time Query6 lineitem2 idx2;
+*/
+
+//antbl lineitem;
+//sztbl lineitem;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // RAY
