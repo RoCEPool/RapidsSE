@@ -1,5 +1,10 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN: QYRY_600
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Routine QRY_600
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // QRY_600
   EO_INIT
   
   EO_DATE "1994-01-01"
@@ -38,9 +43,7 @@ Label TRV_TILL_END
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // loop back to getting next row till end
   EO_JMP TRV_TILL_END
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // traverse the index till we reach upper bound
 Label TRV_TILL_UPPER
@@ -70,4 +73,89 @@ Label TRV_TILL_UPPER
   // query done
 Label QRY_600_DONE
   EO_RETURN
-  
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END: QYRY_600
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN: SUBROUTINE_PROCESSROW
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Label SUBROUTINE_PROCESSROW
+  EO_CRW_SRC_DEREF
+  EO_SET_ITEMS 3
+  EO_SET_COLUMN 6
+  EO_SET_COLUMN 5
+  EO_SET_COLUMN 4
+  EO_COL_SRC_PUSHSET
+  EO_POP_LOCALI 2
+  EO_POP_LOCALI 1
+  EO_POP_LOCALI 0
+  EO_RSB_DST_TESTROW
+  EO_JMP_TRUE FILTER
+  EO_RSB_DST_NEW
+  EO_PUSH_0
+  EO_RSB_DST_POPCOLI 0
+
+Label FILTER
+  EO_CALLSUBROUTINE_FILTER
+  EO_JMP_FALSE PROCESSROW_DONE
+  EO_CALL SUBROUTINE_AGGREGATE
+  EO_JMP PROCESSROW_DONE
+
+  Label PROCESSROW_DONE
+  EO_RETURN
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END SUBROUTINE: SUBROUTINE_PROCESSROW
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN SUBROUTINE: SUBROUTINE_FILTER
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Label SUBROUTINE_FILTER
+  EO_PUSH_LOCALI 2
+  EO_INTEGER 5
+  EO_GREATEREQUAL
+  EO_JMP_FALSE RETURN_FALSE
+  EO_PUSH_LOCALI 2
+  EO_INTEGER 7
+  EO_LESSTHAN
+  EO_JMP_FALSE RETURN_FALSE
+  EO_PUSH_LOCALI 0
+  EO_INTEGER 2400
+  EO_LESSTHAN
+  EO_JMP_FALSE RETURN_FALSE
+  EO_PUSH_1
+  EO_JMP RETURN
+
+  Label RETURN_FALSE
+  EO_PUSH_0
+
+  Label RETURN
+  EO_RETURN
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END SUBROUTINE: SUBROUTINE_FILTER
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN SUBROUTINE: SUBROUTINE_AGGREGATE
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Label SUBROUTINE_AGGREGATE
+  EO_PUSH_LOCALI 2
+  EO_PUSH_LOCALI 1
+  EO_MULTIPLY
+  EO_INTEGER 100
+  EO_DIVIDE
+  EO_RSB_DST_PUSHCOLI 0
+  EO_ADD
+  EO_RSB_DST_POPCOLI 0
+  EO_RETURN
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END SUBROUTINE: SUBROUTINE_AGGREGATE
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

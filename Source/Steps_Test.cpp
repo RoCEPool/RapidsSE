@@ -348,7 +348,7 @@ void Step::vTestTest22(void)
   
   //vTest22();
   
-  s4K sText;
+  s16KB sText;
   File* pFile = new File(nullptr);
   
   bool b = pFile->bOpenRead("../EO_text/QRY_600.txt"_Stz);
