@@ -265,6 +265,7 @@ void Kbase::vImportTable(Table* pTableToImport)
   Fact* p_Columns_     = m_p_Concept_->pFindElement("_columns_"_Stz);
   Fact* p_Column_      = m_p_Concept_->pFindElement("_column_"_Stz);
   Fact* p_ColumnNm_    = m_p_Concept_->pFindElement("_columnNm_"_Stz);
+  Fact* p_ColumnNo_    = m_p_Concept_->pFindElement("_columnNo_"_Stz);
   Fact* p_ColumnType_  = m_p_Concept_->pFindElement("_columnType_"_Stz);
   Fact* p_Length_      = m_p_Concept_->pFindElement("_length_"_Stz);
   Fact* p_Scale_       = m_p_Concept_->pFindElement("_scale_"_Stz);
@@ -292,6 +293,11 @@ void Kbase::vImportTable(Table* pTableToImport)
     Fact* pColumn = p_Column_->pNewInstance();
     pColumns->vElementAdd(pColumn);
     
+    i8 iColumnNo = pCol->iColumnNo();
+    Fact* pColumnNo = p_ColumnNo_->pNewInstance();
+    pColumnNo->rxProperty().m_iInt = iColumnNo;
+    pColumn->vAttributeAdd(pColumnNo);
+
     Fact* pColumnNm = p_ColumnNm_->pNewInstance();
     pColumnNm->rxProperty().m_pText = new Text;
     pColumnNm->rxProperty().m_pText->vSet(pCol->szColNm());
@@ -455,6 +461,7 @@ void Kbase::vAprioriFacts(void)
   
   pConceptAdd(m_p_Folder_,"_columns_"_Stz);
   pConceptAdd(m_p_Tuple_,"_column_"_Stz);
+  pConceptAdd(m_p_Int_,"_columnNo_"_Stz);
   pConceptAdd(m_p_Name_,"_columnNm_"_Stz);
   pConceptAdd(m_p_Int_,"_length_"_Stz);
   pConceptAdd(m_p_Int_,"_scale_"_Stz);
