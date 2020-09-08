@@ -905,6 +905,7 @@ public:
   void vLogicUnitDiaryNote(void);
   void vLogicUnitDynFun(void);
   void vLogicUnitDynFunArgs(void);
+  void vLogicUnitGenAsm(void);
   void vLogicUnitGenCode(void);
   void vLogicUnitDevFetch(void);
   void vLogicUnitDevStore(void);

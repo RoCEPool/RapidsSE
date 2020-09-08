@@ -16,6 +16,7 @@ void Step::vAddSteps_LogicUnit(void)
   
   vAddStep("LogicUnit[].dynFun"_Stz,        &Step::vLogicUnitDynFun);
   vAddStep("LogicUnit[].dynFunArgs"_Stz,    &Step::vLogicUnitDynFunArgs);
+  vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
   vAddStep("LogicUnit[].genCode"_Stz,       &Step::vLogicUnitGenCode);
     
   vAddStep("LogicUnit[].callAgain@"_Stz,    &Step::vLogicUnitCallAgainFetch);
@@ -106,6 +107,30 @@ void Step::vLogicUnitDynFunArgs(void)
   i8 iArg0 = m_pDataStack->iPopInt(__func__);
 
   i8 iRes = m_pLogicUnit->iDynFun(nArgs,iArg0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genAsm -- generate asm code ffrom given file                   */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenAsm(void)
+{
+  ENTRY();
+  
+  s256 sFileName;
+  m_pDataStack->vPopStr(sFileName, __func__);
+  
+  File* pFile = new File(nullptr);
+  
+  bool b = pFile->bOpenRead(sFileName.szStz());
+  RASSERT(b);
+  
+  s16KB sText;
+  i8 nSize = pFile->iSize();
+  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
+  
+  m_pLogicUnit->vGenerateAsm(sText);
   
   EXIT();
 }

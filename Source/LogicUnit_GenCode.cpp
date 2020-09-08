@@ -127,9 +127,9 @@ void LogicUnit::vCollectOpcode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate code for given text                                               */
+/* generate asm code for given text                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateCode(Stz* aText)
+void LogicUnit::vGenerateAsm(Stz* aText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   

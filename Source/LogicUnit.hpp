@@ -209,7 +209,7 @@ namespace Expressions
     
     void vGenCode(i8 iTestNo);
   
-    void vGenerateCode(Stz* sText);
+    void vGenerateAsm(Stz* sText);
     
     // TPCH Queries
     void vGenerateQuery100(void);
