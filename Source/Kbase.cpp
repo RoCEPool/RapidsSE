@@ -392,6 +392,9 @@ void Kbase::vAprioriFacts(void)
   m_p_Int_ = pConceptAdd(m_p_Property_,"_int_"_Stz);
   m_p_Int_->rxProperty().m_eUsage = FU_INT;
 
+  m_p_Method_ = pConceptAdd(m_p_Property_,"_method_"_Stz);
+  m_p_Method_->rxProperty().m_eUsage = FU_METHOD;
+
   m_p_Object_ = pConceptAdd(m_p_Property_,"_object_"_Stz);
   m_p_Object_->rxProperty().m_eUsage = FU_OBJECT;
 
@@ -413,7 +416,8 @@ void Kbase::vAprioriFacts(void)
   m_p_Format_ = pConceptAdd(m_p_Text_,"_format_"_Stz);
 
   m_p_Quality_ = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
-  
+  m_p_Question_ = pConceptAdd(m_p_Concept_,"_question_"_Stz);
+
   m_p_Type_ = pConceptAdd(m_p_Concept_,"_type_"_Stz);
   m_p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
   m_p_Folder_ = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
