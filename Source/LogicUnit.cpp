@@ -145,6 +145,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
     delete m_pRluDiary;
   }
   
+  delete m_pTknVec;
+  
   delete m_pDevDstRsb;
   delete m_pDevSrcRsb;
   delete m_pDevAltRsb;
