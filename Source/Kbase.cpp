@@ -493,10 +493,22 @@ void Kbase::vAprioriFacts(void)
   pConceptAdd(m_p_Quality_,"_recallable_"_Stz);
   pConceptAdd(m_p_Text_,"_sourceCode_"_Stz);
 
+  Fact* p_Nodes_ = pConceptAdd(m_p_Int_,"_nodes_"_Stz);
+  Fact* p_Partitions_ = pConceptAdd(m_p_Int_,"_partitions_"_Stz);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* pContents = pConceptAdd(m_p_Type_,"_contents_"_Stz);
   m_pContents = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
+
+  Fact* pGrid = pConceptAdd(m_p_Type_,"_grid_"_Stz);
+  m_pContents->vElementAdd(pGrid);
+  Fact* pNodes = p_Nodes_->pNewInstance();
+  pNodes->rxProperty().m_iInt = AM::nDefinedNodes();
+  pGrid->vAttributeAdd(pNodes);
+  Fact* pPartitions = p_Partitions_->pNewInstance();
+  pPartitions->rxProperty().m_iInt = AM::nPartitions();
+  pGrid->vAttributeAdd(pPartitions);
 
   Fact* pTables = p_Tables_->pNewInstance();
   m_pContents->vElementAdd(pTables);
