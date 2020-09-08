@@ -60,6 +60,10 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_afDynFun = nullptr;
   
+  m_pTknVec = new TokenVec;
+  m_pTkn    = nullptr;
+  m_i_Tkn   = C_UNKNOWN;
+  
   m_pRluDiary = nullptr;
   
   MemLib::vZero(&m_aaDev,sizeof(m_aaDev),CN_LOGICUNIT);
@@ -839,7 +843,7 @@ void LogicUnit::vDumpCode(void)
   
   //if (100001 != m_xRluCommon.m_iSql)
   //if (401 != m_xRluCommon.m_iSql)
-    return;
+  //  return;
   
   SP_Dte spDate;
 

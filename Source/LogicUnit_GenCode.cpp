@@ -39,6 +39,94 @@ void LogicUnit::vGenCode(i8 iTestNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* accept token and advance to next token                                     */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vAcceptToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  ++ m_i_Tkn;
+  
+  m_pTkn = m_pTknVec->pGet(m_i_Tkn);
+  
+#ifdef WITH_TRACE_LOGICUNIT
+  vTrace("Next %03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szChars());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set token on which parsing begins                                          */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vBeginToken(i8 i_Tkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_i_Tkn = i_Tkn;
+  m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
+  
+#ifdef WITH_TRACE_LOGICUNIT
+  vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szChars());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set token on which parsing begins                                          */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vCollectOpcode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  if (m_pTkn->bSame("Label"_Stz)) {
+    vAcceptToken();
+    vDefineLabel(m_pTkn->szChars());
+    return;
+  }
+  
+  for (i8 i_OpCode = 0; i_OpCode < EO_ENUMS; i_OpCode++) {
+        
+    if (m_pTkn->bSame(aEO[i_OpCode])) {
+      
+      switch((i8)(EoArgs[i_OpCode].m_eArgument)) {
+          
+        case EA_DATE:
+          vAcceptToken();
+          vAddCodeArg((eEO)i_OpCode, m_pTkn->szChars());
+          return;
+          
+        case EA_INT:
+          vAcceptToken();
+          vAddCodeArg((eEO)i_OpCode, m_pTkn->iToI8());
+          return;
+          
+        case EA_LABEL:
+          vAcceptToken();
+          vAddCodeLabel((eEO)i_OpCode, m_pTkn->szChars());
+          return;
+          
+        case EA_STRING:
+          vAcceptToken();
+          vAddCodeArg((eEO)i_OpCode, m_pTkn->szChars());
+          return;
+          
+        case EA_SUBSCR:
+          vAcceptToken();
+          vAddCodeArg((eEO)i_OpCode, m_pTkn->iToI8());
+
+          return;
+          
+       case EO_NONE:
+         vAddCode((eEO)i_OpCode);
+         return;
+          
+        case EO_ENUMS:
+          ASSERT(0);
+      }
+    }
+  }
+        
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate code for given text                                               */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateCode(Stz* aText)
@@ -47,22 +135,38 @@ void LogicUnit::vGenerateCode(Stz* aText)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the code text
-  TokenVec* pTknVec = new TokenVec;
-  pTknVec->vTokenise(aText);
+  m_pTknVec->vTokenise(aText);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the toekns
-  i8 nTokens = pTknVec->nTokens();
+  i8 nTokens = m_pTknVec->nTokens();
   
   for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
-    Token* pTkn = pTknVec->pGet(i_Tkn++);
+    Token* pTkn = m_pTknVec->pGet(i_Tkn++);
     
     vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szChars());
   }
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
-  pTknVec->vSetAllTokens();
-  delete pTknVec;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code
+  m_i_Code = 0;
+  
+  vBeginToken(0);
+  
+  ASSERT(m_pTkn->bSame("Routine"_Stz) );
+  vAcceptToken();
+  
+  // add label
+  vDefineLabel(m_pTkn->szChars());  
+  
+  while (m_i_Tkn <  nTokens - 1) {
+    vAcceptToken();
+    vCollectOpcode();
+  }
+  
+  m_pTknVec->vSetAllTokens();
+  vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/

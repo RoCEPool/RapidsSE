@@ -116,6 +116,10 @@ namespace Expressions
   
     i8 (*m_afDynFun)(void* aLU, i8 nOuterArgs, i8 iOuterArg0);
   
+    TokenVec*  m_pTknVec;
+    Token*     m_pTkn;
+    i8         m_i_Tkn;
+    
     RluCommon  m_xRluCommon ;
   
     RluDiary*  m_pRluDiary;
@@ -199,6 +203,10 @@ namespace Expressions
   
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
+    void vAcceptToken(void);
+    void vBeginToken(i8 i_Tkn);
+    void vCollectOpcode(void);
+    
     void vGenCode(i8 iTestNo);
   
     void vGenerateCode(Stz* sText);
