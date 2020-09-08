@@ -351,7 +351,7 @@ void Step::vTestTest22(void)
   s4K sText;
   File* pFile = new File(nullptr);
   
-  bool b = pFile->bOpenRead("../Design/EO ASM/QRY_600.txt"_Stz);
+  bool b = pFile->bOpenRead("../EO_text/QRY_600.txt"_Stz);
   RASSERT(b);
   i8 nSize = pFile->iSize();
   i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);

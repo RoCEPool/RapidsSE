@@ -60,7 +60,7 @@ void KeyBuilder::vAddElement_int(EntWrk* pEntWrk, Column* pCol, Stz* szSrc, Form
 {
   char* aSrc = (char*)szSrc;
   
-  ASSERT (DM_INT == pCol->eDatum());
+  //ASSERT (DM_INT == pCol->eDatum());
   
   Datum oDatum;
   
