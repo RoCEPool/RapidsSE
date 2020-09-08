@@ -45,6 +45,24 @@ void LogicUnit::vGenerateCode(Stz* aText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenize the code text
+  TokenVec* pTknVec = new TokenVec;
+  pTknVec->vTokenise(aText);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump the toekns
+  i8 nTokens = pTknVec->nTokens();
+  
+  for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
+    Token* pTkn = pTknVec->pGet(i_Tkn++);
+    
+    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szChars());
+  }
+  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+  
+  pTknVec->vSetAllTokens();
+  delete pTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
