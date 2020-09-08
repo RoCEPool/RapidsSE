@@ -1,0 +1,318 @@
+/*============================================================================*/
+/* OP_EOAsm.sen -- sql                                                        */
+/*============================================================================*/
+
+" OP_EOAsm.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create an (int) index def                                                  */
+/*----------------------------------------------------------------------------*/
+: idxDef_int
+
+  indexDef[].new
+
+  "idx_int" indexDef[].name!
+
+  CT_INTEGER "intA" indexDef[].addColumn
+;
+
+/*----------------------------------------------------------------------------*/
+/* create an (int,int) index def                                              */
+/*----------------------------------------------------------------------------*/
+: idxDef_intInt
+
+  indexDef[].new
+
+  "idx_intInt" indexDef[].name!
+
+  CT_INTEGER "intA" indexDef[].addColumn
+  CT_INTEGER "intB" indexDef[].addColumn
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a (vch) index def                                                   */
+/*----------------------------------------------------------------------------*/
+: idxDef_vch
+
+  indexDef[].new
+
+  "idx_vch" indexDef[].name!
+
+  CT_VARCHAR "vchA" indexDef[].addColumn
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a (vch,vch) index def                                               */
+/*----------------------------------------------------------------------------*/
+: idxDef_vchVch
+
+  indexDef[].new
+
+  "idx_vchVch" indexDef[].name!
+
+  CT_VARCHAR "vchA" indexDef[].addColumn
+  CT_VARCHAR "vchB" indexDef[].addColumn
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: sql_StartMarker \handler
+
+  0 locals| queryNo |
+
+  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+
+  ZK_STARTMARKER_handler
+
+  <queryNo> >int to queryNo
+  //queryNo .
+
+  Pot[].new
+  LogicUnit[].init
+
+  queryNo "sql %v" str.format profile.name!
+  queryNo case
+
+    600 of
+      <tableNm> <indexNm> op__table_index not if
+        false
+        exit
+      then
+      index[].indexTree to indexTree[]
+      indexTree[].asSrc
+      Table[].asSrcStreamDef
+      "../EO_text/QRY_600.txt" LogicUnit[].genAsm
+
+    Counter0[] 1 == if
+      LogicCompiler[].new
+      LogicCompiler[].compile
+    then
+
+    endof
+
+    601 of
+      //queryNo "QUERY %v" .printf
+      "../EO_text/QRY_601.txt" LogicUnit[].genAsm
+      Counter0[] 1 == if
+        LogicCompiler[].new
+        LogicCompiler[].compile
+      then
+    endof
+
+  endcase
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: sql_PulseMarker_600
+
+  //"++++++++++++++++++++++++++++ 600=PULSEMARKER ++++++++++++++++++++++++++++" .
+
+  0 locals| pColumn |
+
+  ZK_PULSEMARKER_handler
+
+  // new a streamDef from table
+  table[] StreamDef[].new
+
+  // new a streamDef to be piped out
+  StreamDefOut[].new
+
+  // add column SUM(L_EXTENDEDPRICE*L_DISCOUNT) as REVENUE
+  5 StreamDef[].column@ to pColumn
+
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "revenue"
+  StreamDefOut[].addColumn
+
+  // add column COUNT(*)
+  //0 19 CT_INTEGER "count"
+  //StreamDefOut[].addColumn
+
+  // now delete the streamDef of table
+  StreamDef[].delete
+
+  // set streamDefOut in the pot
+  true Pot[].useStreamDefOut
+  StreamDefOut[].pipeout
+
+  Counter0[] 1 == if
+    LogicUnit[].dynFun
+    LogicCompiler[].delete
+  else
+    LogicUnit[].transform
+  then
+
+  Pot[].pipeoutAllCompleted
+  Pot[].pipeoutAllDangling
+
+  Pot[].delete
+
+  // pipeout an EOS MARKER
+  Operand[].newEosMarker
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                BEGIN */
+/*----------------------------------------------------------------------------*/
+: sql_PulseMarker \handler
+
+  0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryNote
+
+  <queryNo> >int locals| queryNo |
+
+  queryNo case
+
+    600 of sql_PulseMarker_600   endof
+
+    //"++++++++++++++++++++++++++++ OTHER=PULSEMARKER ++++++++++++++++++++++++++++" .
+    ZK_PULSEMARKER_handler
+
+  endcase
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_RSBBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: sql_RsbBuffer \handler
+
+  0 ZK_RSBBUFFER EG_ZK LogicUnit[].diaryNote
+
+  <queryNo> >int locals| queryNo |
+
+  //PipeIn[]
+  //profile.start
+
+  queryNo case
+
+    601 of
+      //"---------------------------- 601=RSBBUFFER ----------------------------" .
+      Operand[].pipeIn
+      Operand[].asSrcRowSlab
+
+      Counter0[] 1 == if
+        LogicUnit[].dynFun
+      else
+        LogicUnit[].transform
+      then
+      Operand[].delete
+      Pot[].pipeoutAllCompleted
+    endof
+
+    // default
+    queryNo "ERROR : Unexpected queryno %v" .printf
+    0 assert
+  endcase
+
+  //profile.end
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: sql_EosMarker \handler
+
+  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+
+  <queryNo> >int locals| queryNo |
+
+  queryNo case
+
+    600 of
+    endof
+
+    601 of
+      //"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 601=EOSMARKER" .
+      Counter0[] 1 == if
+        LogicCompiler[].delete
+      then
+    endof
+
+  endcase
+
+  //queryNo "dangling %v" .printf
+  Pot[].pipeoutAllDangling
+  Pot[].delete
+
+  ZK_EOSMARKER EG_ZK PP_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: sql_StreamDef \handler
+
+  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  0 0 locals| queryNo pColumn |
+
+  Pipein[] to StreamDef[]
+  nullptr to Pipein[]
+
+  <queryNo> >int to queryNo
+  queryNo case
+
+    601 of
+      StreamDef[] to StreamDefOut[]
+      true Pot[].useStreamDefOut
+      StreamDefOut[].pipeout
+    endof
+
+  endcase
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* filter request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: sql_req \operator
+
+  LogReqEntry SEED_REQ
+
+  // get whether compiled or not
+  <compiled> >int to Counter0[]
+
+  op__topology
+
+  find: sql_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: sql_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: sql_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: sql_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: sql_StartMarker ZK_STARTMARKER op[].handler!
+  find: sql_StreamDef   ZK_STREAMDEF   op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: sql :: sql <queryNo> <compiled> ;
+cmdSyntax: sql :: sql <queryNo> <compiled> <tableNm> <indexNm> ;
+
+: sql _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
