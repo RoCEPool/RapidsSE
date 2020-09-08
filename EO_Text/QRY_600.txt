@@ -1,0 +1,73 @@
+Routine QRY_600
+
+  EO_INIT
+  
+  EO_DATE "1994-01-01"
+  EO_ENTWRK_SETINTELM
+  EO_IXT_SRC_LBOUND
+
+  EO_JMP_TRUE UPPERBOUND
+  
+  // no lower key start position at beginning of index
+  EO_IXT_SRC_BEGIN
+  
+  // no entry return
+  EO_JMP_FALSE QRY_600_DONE
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the upper key
+Label UPPERBOUND
+
+  EO_ENTWRK_RESET
+  EO_DATE "1995-01-01"
+  EO_ENTWRK_SETINTELM
+  EO_IXT_SRC_UBOUND_LT
+  EO_JMP_TRUE TRV_TILL_UPPER
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // no upper key traverse till end
+Label TRV_TILL_END
+  EO_IXT_SRC_NEXT
+  EO_JMP_FALSE QRY_600_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // call PROCESSROW subroutine to process the row
+  EO_CALL SUBROUTINE_PROCESSROW
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // loop back to getting next row till end
+  EO_JMP TRV_TILL_END
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // traverse the index till we reach upper bound
+Label TRV_TILL_UPPER
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fetch next entry from index
+  EO_IXT_SRC_NEXT
+  EO_JMP_FALSE QRY_600_DONE
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // have we reached the upper entry
+  EO_ENT_SRC_PUSH
+  EO_ENT_SRC_PUSHUPPER
+  EO_EQUAL
+  EO_JMP_TRUE QRY_600_DONE
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // call PROCESSROW subroutine to process the row
+  EO_CALL SUBROUTINE_PROCESSROW
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // loop back to getting next row
+  EO_JMP TRV_TILL_UPPER
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // query done
+Label QRY_600_DONE
+  EO_RETURN
+  
