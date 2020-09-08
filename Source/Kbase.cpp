@@ -495,13 +495,14 @@ void Kbase::vAprioriFacts(void)
 
   Fact* p_Nodes_ = pConceptAdd(m_p_Int_,"_nodes_"_Stz);
   Fact* p_Partitions_ = pConceptAdd(m_p_Int_,"_partitions_"_Stz);
+  Fact* p_Grid_ = pConceptAdd(m_p_Type_,"_grid_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* pContents = pConceptAdd(m_p_Type_,"_contents_"_Stz);
   m_pContents = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
 
-  Fact* pGrid = pConceptAdd(m_p_Type_,"_grid_"_Stz);
+  Fact* pGrid = p_Grid_->pNewInstance();
   m_pContents->vElementAdd(pGrid);
   Fact* pNodes = p_Nodes_->pNewInstance();
   pNodes->rxProperty().m_iInt = AM::nDefinedNodes();
