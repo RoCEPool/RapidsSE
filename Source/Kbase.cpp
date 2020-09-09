@@ -294,7 +294,7 @@ void Kbase::vImportTable(Table* pTableToImport)
     i8 iColumnNo = pCol->iColumnNo();
     Fact* pColumnNo = p_ColumnNo_->pNewInstance();
     
-    RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_property_"_Stz));
+    RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_value_"_Stz));
     
     pColumnNo->rxValue().m_iInt = iColumnNo;
     pColumn->vAttributeAdd(pColumnNo);
@@ -374,7 +374,7 @@ void Kbase::vAprioriFacts(void)
   m_p_Transform_ = pConceptAdd(m_p_Concept_,"_transform_"_Stz);
 
   
-  m_p_Value_ = pConceptAdd(m_p_Concept_,"_property_"_Stz);
+  m_p_Value_ = pConceptAdd(m_p_Concept_,"_value_"_Stz);
   m_p_Value_->rxValue().m_eUsage = FU_USAGE;
 
   m_p_Function_ = pConceptAdd(m_p_Value_,"_function_"_Stz);

@@ -696,13 +696,13 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
   if (m_pAttributeOf || m_pElementOf || m_pSubclassOf)
     vTrace(" //"_Stz);
   if (m_pAttributeOf)
-    vTrace(" Atr: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
+    vTrace(" AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
   if (m_pElementOf)
-    vTrace(" Elm: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
+    vTrace(" ElmOf: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
   if (m_pSubclassOf) {
     s2K sAncestry;
     vAncestry(sAncestry);
-    vTrace(" Sub: %s"_Stz,sAncestry.azChar());
+    vTrace(" Ancestry: %s"_Stz,sAncestry.azChar());
   }
   
   switch (iAs) {
