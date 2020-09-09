@@ -3365,6 +3365,17 @@ void StrLib::vToLower(char* s)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove prefix / suffix from arg (where suffix is introduced by given char) */
+/*----------------------------------------------------------------------------*/
+void StrLib::vTopTail(char *azArg, char cIntro)
+{
+  _static_
+  
+  vRemovePrefix(azArg,cIntro);
+  vRemoveSuffix(azArg,cIntro);
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
 char* StrLib::wToPointer(void* pArg, char* wArg)

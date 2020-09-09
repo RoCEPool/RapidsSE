@@ -194,8 +194,9 @@ namespace Strings
     static char  cToHex(i8 i);
     static i8    iToI8(const char* s);
     static void  vToLower(char* s);
+    static void  vTopTail(char* azArg, char cIntro);
     static char* wToPointer(void* pArg, char* w);
-    static void  vToString(char* psDst, i8 iArg);
+    static void  vToString(char* azArg, i8 iArg);
     static char* wToString(d8 dArg, char* w);
     static char* wToString(i8 iArg, char* w);
     

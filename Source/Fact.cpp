@@ -525,8 +525,9 @@ Fact* Fact::pNewInstance(Stz* szNote)
   
   if (! szNote) {
     pFact->m_sNote.vSprint("%s"_Stz,m_sNote.azChar());
-    StrLib::vRemovePrefix(pFact->m_sNote.azChar(),'_');
-    StrLib::vRemoveSuffix(pFact->m_sNote.azChar(),'_');
+//    StrLib::vRemovePrefix(pFact->m_sNote.azChar(),'_');
+//    StrLib::vRemoveSuffix(pFact->m_sNote.azChar(),'_');
+    StrLib::vTopTail(pFact->m_sNote.azChar(),'_');
   }
   
   return pFact;
