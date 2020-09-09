@@ -78,6 +78,29 @@ void Fact::vAttributeAdd(Fact* pAttribute)
 }
  
 /*----------------------------------------------------------------------------*/
+/* find attribute fact                                                        */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pAttributeFind(Stz* szNote, Fact* pSuper)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+    
+  Fact* pAttribute = nullptr;
+  
+  for (Fact* pScan = m_pAttributes;
+       pScan && !pAttribute;
+       pScan = pScan->m_pAttributeNext) {
+    
+    if (pScan->m_sNote.bSame(szNote)) {
+      pAttribute = pScan;
+      break;
+    }
+      
+  }
+  
+  return pAttribute;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next attribute                                                         */
 /*----------------------------------------------------------------------------*/
 Fact* Fact::pAttributeNext(void)
@@ -173,6 +196,26 @@ void Fact::vElementAdd(Fact* pElement)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find element fact (recursively)                                            */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pElementFind(Stz* szNote, Fact* pSuper)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  if (m_sNote.bSame(szNote) && (! pSuper || bIsSubClass(pSuper)))
+    return this;
+  
+  Fact* pElement = nullptr;
+  
+  for (Fact* pScan = m_pElements;
+       pScan && !pElement;
+       pScan = pScan->m_pElementNext)
+    pElement = pScan->pElementFind(szNote,pSuper);
+
+  return pElement;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next element                                                           */
 /*----------------------------------------------------------------------------*/
 Fact* Fact::pElementNext(void)
@@ -264,26 +307,6 @@ void Fact::vFactNo(i8 iFactNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   m_iFactNo = iFactNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find element fact (recursively)                                            */
-/*----------------------------------------------------------------------------*/
-Fact* Fact::pFindElement(Stz* szNote, Fact* pSuper)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  if (m_sNote.bSame(szNote) && (! pSuper || bIsSubClass(pSuper)))
-    return this;
-  
-  Fact* pElement = nullptr;
-  
-  for (Fact* pScan = m_pElements;
-       pScan && !pElement;
-       pScan = pScan->m_pElementNext)
-    pElement = pScan->pFindElement(szNote,pSuper);
-
-  return pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -652,7 +675,12 @@ bool Fact::bQuestion(Fact* pQuestion, Opaque* aArg)
            "Fact::bQuestion: %s is not a subclass of _question_\n"_Stz,
            pQuestion->m_sNote.azChar());
 
-  Method* pMethod = pQuestion->m_xProperty.m_pMethod;
+  Fact* pMethodAttr = pQuestion->pAttributeFind("method"_Stz);
+  if (! pMethodAttr)
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+           "Fact::bQuestion: failed to find method\n"_Stz);
+
+  Method* pMethod = pMethodAttr->m_xProperty.m_pMethod;
   
   eQC eCode = pMethod->eGetCode(0);
   
@@ -677,7 +705,7 @@ bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  Fact* pQuestion = m_pKbase->m_pContents->pFindElement(szQuestion);
+  Fact* pQuestion = m_pKbase->m_pContents->pElementFind(szQuestion);
   
   if (! pQuestion)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,

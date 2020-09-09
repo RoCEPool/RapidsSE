@@ -56,12 +56,12 @@ namespace Facts
   
     Fact* pConceptAdd(Fact* pSuper, Stz* szNote);
   
+    Fact* pElementFind(Stz* szNote, Fact* pSuper);
+    
     Fact* pFact(void);
   
     Fact* pFactNew(Fact* pSuper, Stz* szNote);
     void vFactDelete(Fact* pFact);
-  
-    Fact* pFindElement(Stz* szNote, Fact* pSuper);
   
     i8 iNextFactNo(void);
   

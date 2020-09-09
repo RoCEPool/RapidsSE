@@ -89,11 +89,11 @@ void Kbase::vFactDelete(Fact* pFact)
 /*----------------------------------------------------------------------------*/
 /* find element                                                               */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pFindElement(Stz* szNote, Fact* pSuper)
+Fact* Kbase::pElementFind(Stz* szNote, Fact* pSuper)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pElement = m_pContents->pFindElement(szNote,pSuper);
+  Fact* pElement = m_pContents->pElementFind(szNote,pSuper);
 
   return pElement;
 }
@@ -179,35 +179,35 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pStatement = m_pContents->pFindElement("statement"_Stz);
+  Fact* pStatement = m_pContents->pElementFind("statement"_Stz);
 
-  Fact* p_SubQry_ = m_p_Concept_->pFindElement("_subQry_"_Stz);
+  Fact* p_SubQry_ = m_p_Concept_->pElementFind("_subQry_"_Stz);
   Fact* pSubQry = p_SubQry_->pNewInstance();
   pStatement->vElementAdd(pSubQry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Fact* p_ProjectClause_ = m_p_Concept_->pFindElement("_projectClause_"_Stz);
+  Fact* p_ProjectClause_ = m_p_Concept_->pElementFind("_projectClause_"_Stz);
   Fact* pProjectClause = p_ProjectClause_->pNewInstance();
   pSubQry->vElementAdd(pProjectClause);
   
-  Fact* p_ExprList_ = m_p_Concept_->pFindElement("_exprList_"_Stz);
+  Fact* p_ExprList_ = m_p_Concept_->pElementFind("_exprList_"_Stz);
   Fact* pExprList = p_ExprList_->pNewInstance();
   pProjectClause->vElementAdd(pExprList);
   
-  Fact* p_Expr_ = m_p_Concept_->pFindElement("_expr_"_Stz);
+  Fact* p_Expr_ = m_p_Concept_->pElementFind("_expr_"_Stz);
   Fact* pExpr = p_Expr_->pNewInstance();
   pExprList->vElementAdd(pExpr);
   
-  Fact* p_Term_ = m_p_Concept_->pFindElement("_term_"_Stz);
+  Fact* p_Term_ = m_p_Concept_->pElementFind("_term_"_Stz);
   Fact* pTerm = p_Term_->pNewInstance();
   pExpr->vElementAdd(pTerm);
   
-  Fact* p_Atom_ = m_p_Concept_->pFindElement("_atom_"_Stz);
+  Fact* p_Atom_ = m_p_Concept_->pElementFind("_atom_"_Stz);
   Fact* pAtom = p_Atom_->pNewInstance();
   pTerm->vElementAdd(pAtom);
   
-  Fact* p_Text_ = m_p_Concept_->pFindElement("_text_"_Stz);
+  Fact* p_Text_ = m_p_Concept_->pElementFind("_text_"_Stz);
   Fact* pText = p_Text_->pNewInstance();
   pText->rxProperty().m_pText = new Text;
   pText->rxProperty().m_pText->vSet("*"_Stz);
@@ -215,15 +215,15 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Fact* p_FromClause_ = m_p_Concept_->pFindElement("_fromClause_"_Stz);
+  Fact* p_FromClause_ = m_p_Concept_->pElementFind("_fromClause_"_Stz);
   Fact* pFromClause = p_FromClause_->pNewInstance();
   pSubQry->vElementAdd(pFromClause);
   
-  Fact* p_FromTable_ = m_p_Concept_->pFindElement("_fromTable_"_Stz);
+  Fact* p_FromTable_ = m_p_Concept_->pElementFind("_fromTable_"_Stz);
   Fact* pFromTable = p_FromTable_->pNewInstance();
   pFromClause->vElementAdd(pFromTable);
 
-  Fact* p_TableNm_ = m_p_Concept_->pFindElement("_tableNm_"_Stz);
+  Fact* p_TableNm_ = m_p_Concept_->pElementFind("_tableNm_"_Stz);
   Fact* pTableNm = p_TableNm_->pNewInstance();
   pTableNm->rxProperty().m_pText = new Text;
   pTableNm->rxProperty().m_pText->vSet("lineitem"_Stz);
@@ -240,19 +240,19 @@ void Kbase::vImportTable(Table* pTableToImport)
     
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
   
-  Fact* pTables  = m_pContents->pFindElement("tables"_Stz);
-  Fact* p_Table_       = m_p_Concept_->pFindElement("_table_"_Stz);
-  Fact* p_TableNm_     = m_p_Concept_->pFindElement("_tableNm_"_Stz);
-  Fact* p_Columns_     = m_p_Concept_->pFindElement("_columns_"_Stz);
-  Fact* p_Column_      = m_p_Concept_->pFindElement("_column_"_Stz);
-  Fact* p_ColumnNm_    = m_p_Concept_->pFindElement("_columnNm_"_Stz);
-  Fact* p_ColumnNo_    = m_p_Concept_->pFindElement("_columnNo_"_Stz);
-  Fact* p_ColumnType_  = m_p_Concept_->pFindElement("_columnType_"_Stz);
-  Fact* p_Length_      = m_p_Concept_->pFindElement("_length_"_Stz);
-  Fact* p_Scale_       = m_p_Concept_->pFindElement("_scale_"_Stz);
-  Fact* p_Nullable_    = m_p_Concept_->pFindElement("_nullable_"_Stz);
-  Fact* p_NotNullable_ = m_p_Concept_->pFindElement("_notNullable_"_Stz);
-  Fact* p_PtnKey_      = m_p_Concept_->pFindElement("_ptnKey_"_Stz);
+  Fact* pTables  = m_pContents->pElementFind("tables"_Stz);
+  Fact* p_Table_       = m_p_Concept_->pElementFind("_table_"_Stz);
+  Fact* p_TableNm_     = m_p_Concept_->pElementFind("_tableNm_"_Stz);
+  Fact* p_Columns_     = m_p_Concept_->pElementFind("_columns_"_Stz);
+  Fact* p_Column_      = m_p_Concept_->pElementFind("_column_"_Stz);
+  Fact* p_ColumnNm_    = m_p_Concept_->pElementFind("_columnNm_"_Stz);
+  Fact* p_ColumnNo_    = m_p_Concept_->pElementFind("_columnNo_"_Stz);
+  Fact* p_ColumnType_  = m_p_Concept_->pElementFind("_columnType_"_Stz);
+  Fact* p_Length_      = m_p_Concept_->pElementFind("_length_"_Stz);
+  Fact* p_Scale_       = m_p_Concept_->pElementFind("_scale_"_Stz);
+  Fact* p_Nullable_    = m_p_Concept_->pElementFind("_nullable_"_Stz);
+  Fact* p_NotNullable_ = m_p_Concept_->pElementFind("_notNullable_"_Stz);
+  Fact* p_PtnKey_      = m_p_Concept_->pElementFind("_ptnKey_"_Stz);
 
   Fact* pTable = p_Table_->pNewInstance();
   pTables->vElementAdd(pTable);
@@ -277,7 +277,7 @@ void Kbase::vImportTable(Table* pTableToImport)
     i8 iColumnNo = pCol->iColumnNo();
     Fact* pColumnNo = p_ColumnNo_->pNewInstance();
     
-    //RASSERT(pColumnNo->bQuestion("question"_Stz,"_property_"_Stz));
+    RASSERT(pColumnNo->bQuestion("question"_Stz,"_property_"_Stz));
     
     pColumnNo->rxProperty().m_iInt = iColumnNo;
     pColumn->vAttributeAdd(pColumnNo);
@@ -288,7 +288,7 @@ void Kbase::vImportTable(Table* pTableToImport)
     pColumn->vAttributeAdd(pColumnNm);
 
     eCT eColType = pCol->eColumnType();
-    Fact* p_ColType_ = m_p_Concept_->pFindElement(aCT[eColType],p_ColumnType_);
+    Fact* p_ColType_ = m_p_Concept_->pElementFind(aCT[eColType],p_ColumnType_);
     Fact* pColType = p_ColType_->pNewInstance();
     pColumn->vAttributeAdd(pColType);
     
@@ -519,11 +519,11 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* p_Pipeline_ = m_p_Concept_->pFindElement("_pipeline_"_Stz);
+  Fact* p_Pipeline_ = m_p_Concept_->pElementFind("_pipeline_"_Stz);
   Fact* pPipeline = p_Pipeline_->pNewInstance();
   m_pContents->vElementAdd(pPipeline);
 
-  Fact* p_Stages_ = m_p_Concept_->pFindElement("_stages_"_Stz);
+  Fact* p_Stages_ = m_p_Concept_->pElementFind("_stages_"_Stz);
   Fact* pStages = p_Stages_->pNewInstance();
   pPipeline->vElementAdd(pStages);
 
@@ -539,11 +539,11 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* p_Routines_ = m_p_Concept_->pFindElement("_routines_"_Stz);
+  Fact* p_Routines_ = m_p_Concept_->pElementFind("_routines_"_Stz);
   Fact* pRoutines = p_Routines_->pNewInstance();
   m_pContents->vElementAdd(pRoutines);
 
-  Fact* p_Subroutines_ = m_p_Concept_->pFindElement("_subroutine_"_Stz);
+  Fact* p_Subroutines_ = m_p_Concept_->pElementFind("_subroutine_"_Stz);
   Fact* pSubroutines = p_Subroutines_->pNewInstance();
   pRoutines->vElementAdd(pSubroutines);
 }

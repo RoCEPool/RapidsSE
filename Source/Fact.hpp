@@ -50,6 +50,7 @@ namespace Facts
     ~Fact(void) noexcept(false);
   
     void  vAttributeAdd(Fact* pAttribute);
+    Fact* pAttributeFind(Stz* szNote, Fact* pSuper=nullptr);
     Fact* pAttributeNext(void);
     void  vAttributeNext(Fact* pAttribute);
     Fact* pAttributeOf(void);
@@ -59,6 +60,7 @@ namespace Facts
     Fact* pAttributeThatIsSubClass(Fact* pOfSuperFact);
   
     void  vElementAdd(Fact* pElement);
+    Fact* pElementFind(Stz* szNote, Fact* pSuper=nullptr);
     Fact* pElementNext(void);
     void  vElementNext(Fact* pElement);
     Fact* pElementOf(void);
@@ -70,7 +72,6 @@ namespace Facts
     i8    iFactNo(void);
     void  vFactNo(i8 iFactNo);
     
-    Fact* pFindElement(Stz* szNote, Fact* pSuper=nullptr);
 
     Fact* pGetSuperChild(Fact* pOfFact);
 
