@@ -467,8 +467,8 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-//  if (m_pElementOf)
-//    vTrace("%s"_Stz,Stz::szTab(iDepth));
+  if (m_sNote.bSame("question"_Stz))
+    vDebugPoint();
 
   if (iAs) {
     if (bIsSubClass("_folder_"_Stz))
@@ -476,6 +476,9 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
     else
     if (bIsSubClass("_tuple_"_Stz))
       vTrace("t:%s"_Stz,Stz::szTab(iDepth));
+    else
+    if (bIsSubClass("_questions_"_Stz))
+      vTrace("e:%s"_Stz,Stz::szTab(iDepth));
   }
   
   switch (iAs) {

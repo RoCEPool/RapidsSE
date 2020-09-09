@@ -33,6 +33,7 @@ namespace Facts
     Fact*  m_p_Property_;  //
     Fact*  m_p_Quality_;   //
     Fact*  m_p_Question_;  //
+    Fact*  m_p_Questions_; //
     Fact*  m_p_Rule_;      //
     Fact*  m_p_Transform_; //
     Fact*  m_p_Text_;      //

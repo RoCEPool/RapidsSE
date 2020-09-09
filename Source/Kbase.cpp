@@ -228,36 +228,7 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
   pTableNm->rxProperty().m_pText = new Text;
   pTableNm->rxProperty().m_pText->vSet("lineitem"_Stz);
   pFromTable->vAttributeAdd(pTableNm);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Fact* p_Pipeline_ = m_p_Concept_->pFindElement("_pipeline_"_Stz);
-  Fact* pPipeline = p_Pipeline_->pNewInstance();
-  m_pContents->vElementAdd(pPipeline);
-  
-  Fact* p_Stages_ = m_p_Concept_->pFindElement("_stages_"_Stz);
-  Fact* pStages = p_Stages_->pNewInstance();
-  pPipeline->vElementAdd(pStages);
-  
-  Fact* pNameSeq = m_p_NameSeq_->pNewInstance();
-  pNameSeq->rxProperty().m_pText = new Text;
-  pNameSeq->rxProperty().m_pText->vSet("A"_Stz);
-  pStages->vAttributeAdd(pNameSeq);
-  
-  Fact* pFormat = m_p_Format_->pNewInstance();
-  pFormat->rxProperty().m_pText = new Text;
-  pFormat->rxProperty().m_pText->vSet("stage%s"_Stz);
-  pStages->vAttributeAdd(pFormat);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Fact* p_Routines_ = m_p_Concept_->pFindElement("_routines_"_Stz);
-  Fact* pRoutines = p_Routines_->pNewInstance();
-  m_pContents->vElementAdd(pRoutines);
-  
-  Fact* p_Subroutines_ = m_p_Concept_->pFindElement("_subroutine_"_Stz);
-  Fact* pSubroutines = p_Subroutines_->pNewInstance();
-  pRoutines->vElementAdd(pSubroutines);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -416,7 +387,8 @@ void Kbase::vAprioriFacts(void)
   m_p_Format_ = pConceptAdd(m_p_Text_,"_format_"_Stz);
 
   m_p_Quality_ = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
-  m_p_Question_ = pConceptAdd(m_p_Concept_,"_question_"_Stz);
+  m_p_Questions_ = pConceptAdd(m_p_Concept_,"_questions_"_Stz);
+  m_p_Question_ = pConceptAdd(m_p_Questions_,"_question_"_Stz);
 
   m_p_Type_ = pConceptAdd(m_p_Concept_,"_type_"_Stz);
   m_p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
@@ -515,11 +487,51 @@ void Kbase::vAprioriFacts(void)
   pPartitions->rxProperty().m_iInt = AM::nPartitions();
   pGrid->vAttributeAdd(pPartitions);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Fact* pQuestions = m_p_Questions_->pNewInstance();
+  m_pContents->vElementAdd(pQuestions);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Fact* pTables = p_Tables_->pNewInstance();
   m_pContents->vElementAdd(pTables);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* pStatement = p_Statement_->pNewInstance();
   m_pContents->vElementAdd(pStatement);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Fact* p_Pipeline_ = m_p_Concept_->pFindElement("_pipeline_"_Stz);
+  Fact* pPipeline = p_Pipeline_->pNewInstance();
+  m_pContents->vElementAdd(pPipeline);
+
+  Fact* p_Stages_ = m_p_Concept_->pFindElement("_stages_"_Stz);
+  Fact* pStages = p_Stages_->pNewInstance();
+  pPipeline->vElementAdd(pStages);
+
+  Fact* pNameSeq = m_p_NameSeq_->pNewInstance();
+  pNameSeq->rxProperty().m_pText = new Text;
+  pNameSeq->rxProperty().m_pText->vSet("A"_Stz);
+  pStages->vAttributeAdd(pNameSeq);
+
+  Fact* pFormat = m_p_Format_->pNewInstance();
+  pFormat->rxProperty().m_pText = new Text;
+  pFormat->rxProperty().m_pText->vSet("stage%s"_Stz);
+  pStages->vAttributeAdd(pFormat);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Fact* p_Routines_ = m_p_Concept_->pFindElement("_routines_"_Stz);
+  Fact* pRoutines = p_Routines_->pNewInstance();
+  m_pContents->vElementAdd(pRoutines);
+
+  Fact* p_Subroutines_ = m_p_Concept_->pFindElement("_subroutine_"_Stz);
+  Fact* pSubroutines = p_Subroutines_->pNewInstance();
+  pRoutines->vElementAdd(pSubroutines);
+  
 }
 
 /*============================================================================*/

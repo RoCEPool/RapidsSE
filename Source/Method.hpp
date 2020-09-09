@@ -14,7 +14,7 @@ namespace Facts
   private:
   
     i8  m_i_Code;
-    eQC m_eaCode[C_QUESTION_CODE];    // { QC_code [<bytes>] }
+    eQC m_eaCode[C_QUESTION_CODE]; // { QC_code [<bytes>] }
 
     // must be last
     Footer m_xFooter;
@@ -25,6 +25,11 @@ namespace Facts
 
     Method(void);
    ~Method(void) noexcept(false);
+  
+    void vAddCode(eQC eCode);
+    void vAddCodeAdr(eQC eCode, Opaque* aOpaque);
+    void vAddCodeInt(eQC eCode, i8 iArg);
+    void vAddCodeStz(eQC eCode, Stz* szStz);
 
   private:
     Footer* aFooter(void);

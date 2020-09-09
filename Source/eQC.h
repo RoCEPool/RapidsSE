@@ -6,14 +6,14 @@
 enum eQC : u1 // query code
 {
   /*  0 */ QC_NONE=0,
-  /*  1 */ QC_A,
+  /*  1 */ QC_IS_SUBCLASS_OF,
   /*  2 */ QC_ENUMS,
 };
 
 static Stz* aQC[]
 {
   /*  0 */ "QC_NONE"_Stz,
-  /*  1 */ "QC_A"_Stz,
+  /*  1 */ "QC_IS_SUBCLASS_OF"_Stz,
   /*  2 */ "QC_ENUMS"_Stz,
 };
 
