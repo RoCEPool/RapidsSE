@@ -57,6 +57,23 @@ Fact::~Fact(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* build ancestry string (recursive)                                          */
+/*----------------------------------------------------------------------------*/
+void Fact::vAncestry(Stz* szDst)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  if (* szDst->azChar()) {
+    szDst->vConcat("."_Stz);
+  }
+  
+  szDst->vCatSprint("[%lld]%s"_Stz,m_iFactNo,m_sNote.azChar());
+    
+  if (m_pSubclassOf)
+    m_pSubclassOf->vAncestry(szDst);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add attribute (a sub-fact)                                                 */
 /*----------------------------------------------------------------------------*/
 void Fact::vAttributeAdd(Fact* pAttribute)
@@ -667,12 +684,15 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
   if (m_pAttributeOf || m_pElementOf || m_pSubclassOf)
     vTrace(" //"_Stz);
   if (m_pAttributeOf)
-    vTrace(" [Atr:%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
+    vTrace(" Atr: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
   if (m_pElementOf)
-    vTrace(" [Elm:%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
-  if (m_pSubclassOf)
-    vTrace(" [Sub:%lld]%s"_Stz,m_pSubclassOf->iFactNo(),m_pSubclassOf->szNote());
-
+    vTrace(" Elm: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
+  if (m_pSubclassOf) {
+    s2K sAncestry;
+    vAncestry(sAncestry);
+    vTrace(" Sub: %s"_Stz,sAncestry.azChar());
+  }
+  
   switch (iAs) {
     case 0: vTrace("\n"_Stz); break;
     case 1: vTrace("\n"_Stz); break;

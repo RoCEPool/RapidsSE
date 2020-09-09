@@ -49,6 +49,8 @@ namespace Facts
     Fact(Kbase* pKbase, Fact* pSuper, Stz* szNote=nullptr);
     ~Fact(void) noexcept(false);
   
+    void  vAncestry(Stz* szDst);
+  
     void  vAttributeAdd(Fact* pAttribute);
     Fact* pAttributeFind(Stz* szNote, Stz* szStz);
     Fact* pAttributeFind(Stz* szNote, Fact* pSuper=nullptr);
