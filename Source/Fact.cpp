@@ -555,6 +555,9 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
         case FU_INT:
           vTrace(" = Int %lld"_Stz,m_xProperty.m_iInt);
           break;
+        case FU_METHOD:
+          vTrace(" = Method %p"_Stz,m_xProperty.m_pMethod);
+          break;
         case FU_OBJECT:
           vTrace(" = Object %p"_Stz,m_xProperty.m_pObject);
           break;

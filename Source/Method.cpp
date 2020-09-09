@@ -20,6 +20,13 @@ Method::Method(void)
 : Object(CN_METHOD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+  
+  #ifdef WITH_CHECK_INITIALISED
+    MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_METHOD);
+  #endif
+
+  m_i_Code = 0;
+  m_eaCode[0] = QC_NONE;
     
   _checkInitialised_(CN_METHOD);
 

@@ -389,7 +389,8 @@ void Kbase::vAprioriFacts(void)
   m_p_Quality_ = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
   m_p_Questions_ = pConceptAdd(m_p_Concept_,"_questions_"_Stz);
   m_p_Question_ = pConceptAdd(m_p_Questions_,"_question_"_Stz);
-
+  Fact* p_QuestionNm_ = pConceptAdd(m_p_Name_,"_questionNm_"_Stz);
+  
   m_p_Type_ = pConceptAdd(m_p_Concept_,"_type_"_Stz);
   m_p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
   m_p_Folder_ = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
@@ -492,6 +493,17 @@ void Kbase::vAprioriFacts(void)
   Fact* pQuestions = m_p_Questions_->pNewInstance();
   m_pContents->vElementAdd(pQuestions);
 
+  Fact* pQuestion = m_p_Question_->pNewInstance();
+  pQuestions->vElementAdd(pQuestion);
+  Fact* pQuestionNm = p_QuestionNm_->pNewInstance();
+  pQuestionNm->rxProperty().m_pText = new Text;
+  pQuestionNm->rxProperty().m_pText->vSet("isSubClassOf"_Stz);
+  pQuestion->vAttributeAdd(pQuestionNm);
+  Fact* pMethod = m_p_Method_->pNewInstance();
+  pMethod->rxProperty().m_pMethod = new Method;
+  pMethod->rxProperty().m_pMethod->vAddCode(QC_IS_SUBCLASS_OF);
+  pQuestion->vAttributeAdd(pMethod);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* pTables = p_Tables_->pNewInstance();
@@ -531,7 +543,6 @@ void Kbase::vAprioriFacts(void)
   Fact* p_Subroutines_ = m_p_Concept_->pFindElement("_subroutine_"_Stz);
   Fact* pSubroutines = p_Subroutines_->pNewInstance();
   pRoutines->vElementAdd(pSubroutines);
-  
 }
 
 /*============================================================================*/
