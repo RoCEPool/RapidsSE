@@ -561,33 +561,26 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
   
   s32 sPrefix;
   
-  if (m_pElementOf)
-    sPrefix = "Elm"_Stz;
+  if (! iAs)
+    sPrefix = "Aha|"_Stz;
+  else if (m_pElementOf)
+    sPrefix = "Elm|"_Stz;
   else if (m_pAttributeOf)
-    sPrefix = "Atr"_Stz;
+    sPrefix = "Atr|"_Stz;
   else
-    sPrefix = "-+-"_Stz;
+    sPrefix = "Has|"_Stz;
 
   if (m_sNote.bSame("question"_Stz))
     vDebugPoint();
-
-  if (iAs) {
-    if (bIsSubClass("_folder_"_Stz))
-      vTrace("f:%s"_Stz,Stz::szTab(iDepth));
-    else
-    if (bIsSubClass("_tuple_"_Stz))
-      vTrace("t:%s"_Stz,Stz::szTab(iDepth));
-    else
-    if (bIsSubClass("_questions_"_Stz))
-      vTrace("e:%s"_Stz,Stz::szTab(iDepth));
-  }
   
   switch (iAs) {
     case 0:
 
-      vTrace("%lld [%lld] %s"_Stz,
+      vTrace("%lld%s%s [%lld] %s"_Stz,
              iAs,
-         
+             Stz::szTab(iDepth),
+             sPrefix.azChar(),
+
              m_iFactNo,
              m_sNote.azChar()
              );
@@ -595,10 +588,11 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
       
     case 1:
 
-      vTrace("%s %lld [%lld] %s"_Stz,
-             sPrefix.azChar(),
+      vTrace("%lld%s%s [%lld] %s"_Stz,
              iAs,
-         
+             Stz::szTab(iDepth),
+             sPrefix.azChar(),
+             
              m_iFactNo,
              m_sNote.azChar()
              );
@@ -606,11 +600,11 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
       
     case 2:
 
-      vTrace("a:%s %s %lld [%lld] %s"_Stz,
+      vTrace("%lld%s%s [%lld] %s"_Stz,
+             iAs,
              Stz::szTab(iDepth),
              sPrefix.azChar(),
-             iAs,
-         
+             
              m_iFactNo,
              m_sNote.azChar()
              );
@@ -618,36 +612,16 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
       
     case 3:
 
-      vTrace("%s %lld [%lld] %s"_Stz,
-             sPrefix.azChar(),
+      vTrace("%lld%s%s [%lld] %s"_Stz,
              iAs,
-         
+             Stz::szTab(iDepth),
+             sPrefix.azChar(),
+             
              m_iFactNo,
              m_sNote.azChar()
              );
       break;
   }
-  /*
-  if (bIsInt())
-    vTrace(" = Int %lld"_Stz,m_xValue.m_iInt);
-  else if (bIsObject())
-    vTrace(" = Object %p"_Stz,m_xValue.m_pObject);
-  else if (bIsOpaque())
-    vTrace(" = Opaque %p"_Stz,m_xValue.m_aOpaque);
-  else if (bIsText())
-    vTrace(" = Text \"%s\""_Stz,
-           m_xValue.m_pText ? m_xValue.m_pText->szGet()
-                               : ""_Stz);
-  else if (bIsWord())
-    vTrace(" = Word %s"_Stz,
-           m_xValue.m_pWord ? m_xValue.m_pWord->szWordNm()
-                              : ""_Stz);
-  else if (bIsXref())
-    vTrace(" = Xref %s"_Stz,
-           m_xValue.m_pXref ? m_xValue.m_pXref->szNote()
-                               : ""_Stz);
-  else { }
-  */
   
   Fact* pSubValue = pGetSuperChild(m_pKbase->pValue());
   if (pSubValue) {
@@ -694,11 +668,12 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
   }
   
   if (m_pAttributeOf || m_pElementOf || m_pSubclassOf)
-    vTrace(" //"_Stz);
+    vTrace(" |"_Stz);
   if (m_pAttributeOf)
     vTrace(" AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
   if (m_pElementOf)
     vTrace(" ElmOf: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
+  
   if (m_pSubclassOf) {
     s2K sAncestry;
     vAncestry(sAncestry);
@@ -727,7 +702,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
   for (Fact* pElement = m_pElements;
        pElement;
        pElement = pElement->m_pElementNext)
-    pElement->vPrint_r(iDepth + 1, iAs ? 3 : 0);
+    pElement->vPrint_r(iAs ? iDepth + 1 : 0, iAs ? 3 : 0);
   
   switch (iAs) {
     case 0: break;
@@ -736,6 +711,188 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
     case 3: break;
   }
 }
+/*----------------------------------------------------------------------------*/
+//void Fact::vPrint_r(i8 iDepth, i8 iAs)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+//
+//  s32 sPrefix;
+//
+//  if (m_pElementOf)
+//    sPrefix = "Elm"_Stz;
+//  else if (m_pAttributeOf)
+//    sPrefix = "Atr"_Stz;
+//  else
+//    sPrefix = "-+-"_Stz;
+//
+//  if (m_sNote.bSame("question"_Stz))
+//    vDebugPoint();
+//
+//  if (iAs) {
+//    if (bIsSubClass("_folder_"_Stz))
+//      vTrace("f:%s"_Stz,Stz::szTab(iDepth));
+//    else
+//    if (bIsSubClass("_tuple_"_Stz))
+//      vTrace("t:%s"_Stz,Stz::szTab(iDepth));
+//    else
+//    if (bIsSubClass("_questions_"_Stz))
+//      vTrace("e:%s"_Stz,Stz::szTab(iDepth));
+//  }
+//
+//  switch (iAs) {
+//    case 0:
+//
+//      vTrace("%lld [%lld] %s"_Stz,
+//             iAs,
+//
+//             m_iFactNo,
+//             m_sNote.azChar()
+//             );
+//      break;
+//
+//    case 1:
+//
+//      vTrace("%s %lld [%lld] %s"_Stz,
+//             sPrefix.azChar(),
+//             iAs,
+//
+//             m_iFactNo,
+//             m_sNote.azChar()
+//             );
+//      break;
+//
+//    case 2:
+//
+//      vTrace("a:%s %s %lld [%lld] %s"_Stz,
+//             Stz::szTab(iDepth),
+//             sPrefix.azChar(),
+//             iAs,
+//
+//             m_iFactNo,
+//             m_sNote.azChar()
+//             );
+//      break;
+//
+//    case 3:
+//
+//      vTrace("%s %lld [%lld] %s"_Stz,
+//             sPrefix.azChar(),
+//             iAs,
+//
+//             m_iFactNo,
+//             m_sNote.azChar()
+//             );
+//      break;
+//  }
+//  /*
+//  if (bIsInt())
+//    vTrace(" = Int %lld"_Stz,m_xValue.m_iInt);
+//  else if (bIsObject())
+//    vTrace(" = Object %p"_Stz,m_xValue.m_pObject);
+//  else if (bIsOpaque())
+//    vTrace(" = Opaque %p"_Stz,m_xValue.m_aOpaque);
+//  else if (bIsText())
+//    vTrace(" = Text \"%s\""_Stz,
+//           m_xValue.m_pText ? m_xValue.m_pText->szGet()
+//                               : ""_Stz);
+//  else if (bIsWord())
+//    vTrace(" = Word %s"_Stz,
+//           m_xValue.m_pWord ? m_xValue.m_pWord->szWordNm()
+//                              : ""_Stz);
+//  else if (bIsXref())
+//    vTrace(" = Xref %s"_Stz,
+//           m_xValue.m_pXref ? m_xValue.m_pXref->szNote()
+//                               : ""_Stz);
+//  else { }
+//  */
+//
+//  Fact* pSubValue = pGetSuperChild(m_pKbase->pValue());
+//  if (pSubValue) {
+//    if (this == pSubValue) {
+//      vTrace(" = eFU %lld %s"_Stz,m_xValue.m_eUsage,aFU[m_xValue.m_eUsage]);
+//    }
+//    else {
+//      switch (pSubValue->rxValue().m_eUsage) {
+//        case FU_INT:
+//          vTrace(" = Int %lld"_Stz,m_xValue.m_iInt);
+//          break;
+//        case FU_METHOD:
+//          vTrace(" = Method %p"_Stz,m_xValue.m_pMethod);
+//          break;
+//        case FU_OBJECT:
+//          vTrace(" = Object %p"_Stz,m_xValue.m_pObject);
+//          break;
+//        case FU_OPAQUE:
+//          vTrace(" = Opaque %p"_Stz,m_xValue.m_aOpaque);
+//          break;
+//        case FU_TEXT:
+//          vTrace(" = Text \"%s\""_Stz,
+//                 m_xValue.m_pText ? m_xValue.m_pText->szGet()
+//                                     : ""_Stz);
+//          break;
+//        case FU_USAGE:
+//          vTrace(" = Usage ???"_Stz);
+//          break;
+//        case FU_WORD:
+//          vTrace(" = Word %s"_Stz,
+//                 m_xValue.m_pWord ? m_xValue.m_pWord->szWordNm()
+//                                    : ""_Stz);
+//          break;
+//        case FU_XREF:
+//          vTrace(" = Xref %s"_Stz,
+//                 m_xValue.m_pXref ? m_xValue.m_pXref->szNote()
+//                                     : ""_Stz);
+//          break;
+//        default:
+//          NEVER_REACH;
+//          break;
+//      }
+//    }
+//  }
+//
+//  if (m_pAttributeOf || m_pElementOf || m_pSubclassOf)
+//    vTrace(" //"_Stz);
+//  if (m_pAttributeOf)
+//    vTrace(" AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
+//  if (m_pElementOf)
+//    vTrace(" ElmOf: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
+//  if (m_pSubclassOf) {
+//    s2K sAncestry;
+//    vAncestry(sAncestry);
+//    vTrace(" Ancestry: %s"_Stz,sAncestry.azChar());
+//  }
+//
+//  switch (iAs) {
+//    case 0: vTrace("\n"_Stz); break;
+//    case 1: vTrace("\n"_Stz); break;
+//    case 2: vTrace("\n"_Stz); break;
+//    case 3: vTrace("\n"_Stz); break;
+//  }
+//
+//  for (Fact* pAttribute = m_pAttributes;
+//       pAttribute;
+//       pAttribute = pAttribute->m_pAttributeNext)
+//    pAttribute->vPrint_r(iDepth + 1, iAs ? 2 : 0);
+//
+//  switch (iAs) {
+//    case 0: break;
+//    case 1: break;
+//    case 2: break;
+//    case 3: break;
+//  }
+//
+//  for (Fact* pElement = m_pElements;
+//       pElement;
+//       pElement = pElement->m_pElementNext)
+//    pElement->vPrint_r(iDepth + 1, iAs ? 3 : 0);
+//
+//  switch (iAs) {
+//    case 0: break;
+//    case 1: break;
+//    case 2: break;
+//    case 3: break;
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
