@@ -80,6 +80,36 @@ void Fact::vAttributeAdd(Fact* pAttribute)
 /*----------------------------------------------------------------------------*/
 /* find attribute fact                                                        */
 /*----------------------------------------------------------------------------*/
+Fact* Fact::pAttributeFind(Stz* szNote, Stz* szStz)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+    
+  Fact* pAttribute = nullptr;
+  
+  for (Fact* pScan = m_pAttributes;
+       pScan && !pAttribute;
+       pScan = pScan->m_pAttributeNext) {
+    
+    if (! pScan->m_sNote.bSame(szNote))
+      continue;
+
+    // has to be a text
+    if (! pScan->bIsSubClass(m_pKbase->m_p_Name_))
+      continue;
+    
+    if (! pScan->m_xProperty.m_pText->szGet()->bSame(szStz))
+      continue;
+    
+    pAttribute = pScan;
+    break;
+  }
+  
+  return pAttribute;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find attribute fact                                                        */
+/*----------------------------------------------------------------------------*/
 Fact* Fact::pAttributeFind(Stz* szNote, Fact* pSuper)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
@@ -273,6 +303,28 @@ void Fact::vElements(Fact* pElements)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   m_pElements = pElements;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find element fact (recursively)                                            */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pElementSearch(Stz* szNote)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  vTrace("pElementSearch %s\n"_Stz,m_sNote.azChar());
+  
+  if (pAttributeFind("questionNm"_Stz,szNote))
+    return this;
+
+  Fact* pElement = nullptr;
+  
+  for (Fact* pScan = m_pElements;
+       pScan && !pElement;
+       pScan = pScan->m_pElementNext)
+    pElement = pScan->pElementSearch(szNote);
+
+  return pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -705,7 +757,7 @@ bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  Fact* pQuestion = m_pKbase->m_pContents->pElementFind(szQuestion);
+  Fact* pQuestion = m_pKbase->m_pContents->pElementSearch(szQuestion);
   
   if (! pQuestion)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,

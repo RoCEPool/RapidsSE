@@ -67,6 +67,8 @@ namespace Facts
   
     Fact* pProperty(void);
   
+    Fact* pQuestionFind(Stz* szNote);
+  
     Question* pQuestionBorrow(void);
     void vQuestionReturn(Question** ppQuestion);
     
