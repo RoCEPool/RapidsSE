@@ -641,6 +641,40 @@ Property& Fact::rxProperty(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* process a question                                                         */
+/*----------------------------------------------------------------------------*/
+bool Fact::bQuestion(Fact* pQuestion, Fact* pArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  if (! pQuestion->bIsSubClass("_question_"_Stz))
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+           "Fact::bQuestion: %s is not a subclass of _question_\n"_Stz,
+           pQuestion->m_sNote.azChar());
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* process a question                                                         */
+/*----------------------------------------------------------------------------*/
+bool Fact::bQuestion(Stz* szQuestion, Fact* pArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  Fact* pQuestion = m_pKbase->m_p_Questions_->pFindElement(szQuestion);
+  
+  if (! pQuestion)
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+           "Fact::bQuestion: failed to find %s\n"_Stz,
+           szQuestion->azChar());
+  
+  bool bResult = bQuestion(pQuestion,pArg);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get super-class fact                                                       */
 /*----------------------------------------------------------------------------*/
 Fact* Fact::pSubclassOf(void)

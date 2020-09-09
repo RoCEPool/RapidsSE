@@ -96,6 +96,9 @@ namespace Facts
   
     Property& rxProperty(void);
     
+    bool  bQuestion(Fact* pQuestion, Fact* pArg=nullptr);
+    bool  bQuestion(Stz* szQuestion, Fact* pArg=nullptr);
+
     Fact* pSubclassOf(void);
     void  vSubclassOf(Fact* pSubclassOf);
     
