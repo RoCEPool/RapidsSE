@@ -574,10 +574,9 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
     vDebugPoint();
   
   switch (iAs) {
-    case 0:
+    case 0: // aha list
 
-      vTrace("%lld%s%s [%lld] %s"_Stz,
-             iAs,
+      vTrace("%s%s [%lld] %s"_Stz,
              Stz::szTab(iDepth),
              sPrefix.azChar(),
 
@@ -586,22 +585,9 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
              );
       break;
       
-    case 1:
+    case 1: // has
 
-      vTrace("%lld%s%s [%lld] %s"_Stz,
-             iAs,
-             Stz::szTab(iDepth),
-             sPrefix.azChar(),
-             
-             m_iFactNo,
-             m_sNote.azChar()
-             );
-      break;
-      
-    case 2:
-
-      vTrace("%lld%s%s [%lld] %s"_Stz,
-             iAs,
+      vTrace("%s%s [%lld] %s"_Stz,
              Stz::szTab(iDepth),
              sPrefix.azChar(),
              
@@ -610,10 +596,20 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
              );
       break;
       
-    case 3:
+    case 2: // atr
 
-      vTrace("%lld%s%s [%lld] %s"_Stz,
-             iAs,
+      vTrace("%s%s [%lld] %s"_Stz,
+             Stz::szTab(iDepth),
+             sPrefix.azChar(),
+             
+             m_iFactNo,
+             m_sNote.azChar()
+             );
+      break;
+      
+    case 3: // elm
+
+      vTrace("%s%s [%lld] %s"_Stz,
              Stz::szTab(iDepth),
              sPrefix.azChar(),
              
@@ -667,49 +663,32 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
     }
   }
   
-  if (m_pAttributeOf || m_pElementOf || m_pSubclassOf)
+  if (m_pAttributeOf || m_pElementOf)
     vTrace(" |"_Stz);
+  
   if (m_pAttributeOf)
     vTrace(" AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
+  
   if (m_pElementOf)
     vTrace(" ElmOf: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
-  
+
   if (m_pSubclassOf) {
     s2K sAncestry;
     vAncestry(sAncestry);
     vTrace(" Ancestry: %s"_Stz,sAncestry.azChar());
   }
   
-  switch (iAs) {
-    case 0: vTrace("\n"_Stz); break;
-    case 1: vTrace("\n"_Stz); break;
-    case 2: vTrace("\n"_Stz); break;
-    case 3: vTrace("\n"_Stz); break;
-  }
+  vTrace("\n"_Stz);
 
   for (Fact* pAttribute = m_pAttributes;
        pAttribute;
        pAttribute = pAttribute->m_pAttributeNext)
     pAttribute->vPrint_r(iDepth + 1, iAs ? 2 : 0);
-
-  switch (iAs) {
-    case 0: break;
-    case 1: break;
-    case 2: break;
-    case 3: break;
-  }
   
   for (Fact* pElement = m_pElements;
        pElement;
        pElement = pElement->m_pElementNext)
     pElement->vPrint_r(iAs ? iDepth + 1 : 0, iAs ? 3 : 0);
-  
-  switch (iAs) {
-    case 0: break;
-    case 1: break;
-    case 2: break;
-    case 3: break;
-  }
 }
 /*----------------------------------------------------------------------------*/
 //void Fact::vPrint_r(i8 iDepth, i8 iAs)
