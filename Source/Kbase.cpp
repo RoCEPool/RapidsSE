@@ -276,6 +276,9 @@ void Kbase::vImportTable(Table* pTableToImport)
     
     i8 iColumnNo = pCol->iColumnNo();
     Fact* pColumnNo = p_ColumnNo_->pNewInstance();
+    
+    //RASSERT(pColumnNo->bQuestion("question"_Stz,"_property_"_Stz));
+    
     pColumnNo->rxProperty().m_iInt = iColumnNo;
     pColumn->vAttributeAdd(pColumnNo);
 

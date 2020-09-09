@@ -90,13 +90,25 @@ void Method::vAddCodeInt(eQC eCode, i8 iInt)
 /*----------------------------------------------------------------------------*/
 void Method::vAddCodeStz(eQC eCode, Stz* szStz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
     
   m_eaCode[m_i_Code++] = eCode;
 
   for (char* acChr = szStz->azChar(); *acChr; acChr++)
     m_eaCode[m_i_Code++] = (eQC)*acChr;
   m_eaCode[m_i_Code++] = (eQC)0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get code                                                                   */
+/*----------------------------------------------------------------------------*/
+eQC Method::eGetCode(i8 i_Code)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+    
+  eQC eCode = m_eaCode[i_Code];
+  
+  return eCode;
 }
 
 /*============================================================================*/

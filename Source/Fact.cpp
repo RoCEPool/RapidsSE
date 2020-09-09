@@ -643,7 +643,7 @@ Property& Fact::rxProperty(void)
 /*----------------------------------------------------------------------------*/
 /* process a question                                                         */
 /*----------------------------------------------------------------------------*/
-bool Fact::bQuestion(Fact* pQuestion, Fact* pArg)
+bool Fact::bQuestion(Fact* pQuestion, Opaque* aArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
@@ -652,24 +652,39 @@ bool Fact::bQuestion(Fact* pQuestion, Fact* pArg)
            "Fact::bQuestion: %s is not a subclass of _question_\n"_Stz,
            pQuestion->m_sNote.azChar());
 
-  return false;
+  Method* pMethod = pQuestion->m_xProperty.m_pMethod;
+  
+  eQC eCode = pMethod->eGetCode(0);
+  
+  bool bResult = false;
+  
+  switch (eCode) {
+    case QC_IS_SUBCLASS_OF:
+      bResult = this->bIsSubClass((Stz*)aArg);
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+  
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
 /* process a question                                                         */
 /*----------------------------------------------------------------------------*/
-bool Fact::bQuestion(Stz* szQuestion, Fact* pArg)
+bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  Fact* pQuestion = m_pKbase->m_p_Questions_->pFindElement(szQuestion);
+  Fact* pQuestion = m_pKbase->m_pContents->pFindElement(szQuestion);
   
   if (! pQuestion)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Fact::bQuestion: failed to find %s\n"_Stz,
            szQuestion->azChar());
   
-  bool bResult = bQuestion(pQuestion,pArg);
+  bool bResult = bQuestion(pQuestion,aArg);
   
   return bResult;
 }

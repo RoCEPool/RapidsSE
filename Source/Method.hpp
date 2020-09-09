@@ -30,7 +30,9 @@ namespace Facts
     void vAddCodeAdr(eQC eCode, Opaque* aOpaque);
     void vAddCodeInt(eQC eCode, i8 iArg);
     void vAddCodeStz(eQC eCode, Stz* szStz);
-
+    
+    eQC eGetCode(i8 i_Code);
+  
   private:
     Footer* aFooter(void);
   };
