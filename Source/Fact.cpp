@@ -559,6 +559,15 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
+  s32 sPrefix;
+  
+  if (m_pElementOf)
+    sPrefix = "Elm"_Stz;
+  else if (m_pAttributeOf)
+    sPrefix = "Atr"_Stz;
+  else
+    sPrefix = "-+-"_Stz;
+
   if (m_sNote.bSame("question"_Stz))
     vDebugPoint();
 
@@ -586,7 +595,8 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
       
     case 1:
 
-      vTrace("%lld [%lld] %s"_Stz,
+      vTrace("%s %lld [%lld] %s"_Stz,
+             sPrefix.azChar(),
              iAs,
          
              m_iFactNo,
@@ -596,8 +606,9 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
       
     case 2:
 
-      vTrace("a:%s%lld [%lld] %s"_Stz,
+      vTrace("a:%s %s %lld [%lld] %s"_Stz,
              Stz::szTab(iDepth),
+             sPrefix.azChar(),
              iAs,
          
              m_iFactNo,
@@ -607,7 +618,8 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
       
     case 3:
 
-      vTrace("%lld [%lld] %s"_Stz,
+      vTrace("%s %lld [%lld] %s"_Stz,
+             sPrefix.azChar(),
              iAs,
          
              m_iFactNo,
