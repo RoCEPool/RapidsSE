@@ -5,7 +5,7 @@
 
 namespace Facts
 {
-  union Property {
+  union Value {
     i8    (*m_afFun)(void* aArg);
     i8      m_iInt;    // i8 value
     Method* m_pMethod; // pointer to kbase method
@@ -27,7 +27,7 @@ namespace Facts
   
     i8       m_iFactNo;      // unique number (synonym of this facts address)
     s256     m_sNote;        // optional textual decription
-    Property m_xProperty;    // some property
+    Value    m_xValue;       // some value
     
     Fact*    m_pSubclassOf;  // subclass of which fact      (super)
     Fact*    m_pAttributeOf; // attribute of which fact     (across/column)
@@ -99,7 +99,7 @@ namespace Facts
   
     void  vPrint_r(i8 iDepth, i8 iAs);
   
-    Property& rxProperty(void);
+    Value& rxValue(void);
     
     bool  bQuestion(Fact* pQuestion, Opaque* aArg=nullptr);
     bool  bQuestion(Stz* szQuestion, Opaque* aArg=nullptr);

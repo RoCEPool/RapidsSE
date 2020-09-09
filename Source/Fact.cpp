@@ -27,7 +27,7 @@ Fact::Fact(Kbase* pKbase, Fact* pSuper, Stz* szNote)
   
   m_iFactNo = pSuper ? m_pKbase->iNextFactNo() : 0;
   m_sNote   = szNote ? szNote : C_NO_NOTE;
-  m_xProperty.m_pObject = nullptr;
+  m_xValue.m_pObject = nullptr;
     
   m_pSubclassOf    = pSuper;
   m_pAttributeOf   = nullptr;
@@ -114,7 +114,7 @@ Fact* Fact::pAttributeFind(Stz* szNote, Stz* szStz)
     if (! pScan->bIsSubClass(m_pKbase->m_p_Name_))
       continue;
     
-    if (! pScan->m_xProperty.m_pText->szGet()->bSame(szStz))
+    if (! pScan->m_xValue.m_pText->szGet()->bSame(szStz))
       continue;
     
     pAttribute = pScan;
@@ -629,48 +629,48 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
   }
   /*
   if (bIsInt())
-    vTrace(" = Int %lld"_Stz,m_xProperty.m_iInt);
+    vTrace(" = Int %lld"_Stz,m_xValue.m_iInt);
   else if (bIsObject())
-    vTrace(" = Object %p"_Stz,m_xProperty.m_pObject);
+    vTrace(" = Object %p"_Stz,m_xValue.m_pObject);
   else if (bIsOpaque())
-    vTrace(" = Opaque %p"_Stz,m_xProperty.m_aOpaque);
+    vTrace(" = Opaque %p"_Stz,m_xValue.m_aOpaque);
   else if (bIsText())
     vTrace(" = Text \"%s\""_Stz,
-           m_xProperty.m_pText ? m_xProperty.m_pText->szGet()
+           m_xValue.m_pText ? m_xValue.m_pText->szGet()
                                : ""_Stz);
   else if (bIsWord())
     vTrace(" = Word %s"_Stz,
-           m_xProperty.m_pWord ? m_xProperty.m_pWord->szWordNm()
+           m_xValue.m_pWord ? m_xValue.m_pWord->szWordNm()
                               : ""_Stz);
   else if (bIsXref())
     vTrace(" = Xref %s"_Stz,
-           m_xProperty.m_pXref ? m_xProperty.m_pXref->szNote()
+           m_xValue.m_pXref ? m_xValue.m_pXref->szNote()
                                : ""_Stz);
   else { }
   */
   
-  Fact* pSubProperty = pGetSuperChild(m_pKbase->pProperty());
-  if (pSubProperty) {
-    if (this == pSubProperty) {
-      vTrace(" = eFU %lld %s"_Stz,m_xProperty.m_eUsage,aFU[m_xProperty.m_eUsage]);
+  Fact* pSubValue = pGetSuperChild(m_pKbase->pValue());
+  if (pSubValue) {
+    if (this == pSubValue) {
+      vTrace(" = eFU %lld %s"_Stz,m_xValue.m_eUsage,aFU[m_xValue.m_eUsage]);
     }
     else {
-      switch (pSubProperty->rxProperty().m_eUsage) {
+      switch (pSubValue->rxValue().m_eUsage) {
         case FU_INT:
-          vTrace(" = Int %lld"_Stz,m_xProperty.m_iInt);
+          vTrace(" = Int %lld"_Stz,m_xValue.m_iInt);
           break;
         case FU_METHOD:
-          vTrace(" = Method %p"_Stz,m_xProperty.m_pMethod);
+          vTrace(" = Method %p"_Stz,m_xValue.m_pMethod);
           break;
         case FU_OBJECT:
-          vTrace(" = Object %p"_Stz,m_xProperty.m_pObject);
+          vTrace(" = Object %p"_Stz,m_xValue.m_pObject);
           break;
         case FU_OPAQUE:
-          vTrace(" = Opaque %p"_Stz,m_xProperty.m_aOpaque);
+          vTrace(" = Opaque %p"_Stz,m_xValue.m_aOpaque);
           break;
         case FU_TEXT:
           vTrace(" = Text \"%s\""_Stz,
-                 m_xProperty.m_pText ? m_xProperty.m_pText->szGet()
+                 m_xValue.m_pText ? m_xValue.m_pText->szGet()
                                      : ""_Stz);
           break;
         case FU_USAGE:
@@ -678,12 +678,12 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
           break;
         case FU_WORD:
           vTrace(" = Word %s"_Stz,
-                 m_xProperty.m_pWord ? m_xProperty.m_pWord->szWordNm()
+                 m_xValue.m_pWord ? m_xValue.m_pWord->szWordNm()
                                     : ""_Stz);
           break;
         case FU_XREF:
           vTrace(" = Xref %s"_Stz,
-                 m_xProperty.m_pXref ? m_xProperty.m_pXref->szNote()
+                 m_xValue.m_pXref ? m_xValue.m_pXref->szNote()
                                      : ""_Stz);
           break;
         default:
@@ -738,13 +738,13 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get property                                                               */
+/* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-Property& Fact::rxProperty(void)
+Value& Fact::rxValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_xProperty;
+  return m_xValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -764,7 +764,7 @@ bool Fact::bQuestion(Fact* pQuestion, Opaque* aArg)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Fact::bQuestion: failed to find method\n"_Stz);
 
-  Method* pMethod = pMethodAttr->m_xProperty.m_pMethod;
+  Method* pMethod = pMethodAttr->m_xValue.m_pMethod;
   
   eQC eCode = pMethod->eGetCode(0);
   

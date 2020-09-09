@@ -30,7 +30,7 @@ namespace Facts
     Fact*  m_p_Object_;    //
     Fact*  m_p_Opaque_;    //
     Fact*  m_p_Pattern_;   //
-    Fact*  m_p_Property_;  //
+    Fact*  m_p_Value_;  //
     Fact*  m_p_Quality_;   //
     Fact*  m_p_Question_;  //
     Fact*  m_p_Questions_; //
@@ -65,7 +65,7 @@ namespace Facts
   
     i8 iNextFactNo(void);
   
-    Fact* pProperty(void);
+    Fact* pValue(void);
   
     Fact* pQuestionFind(Stz* szNote);
   
