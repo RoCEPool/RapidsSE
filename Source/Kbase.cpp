@@ -305,7 +305,9 @@ void Kbase::vImportTable(Table* pTableToImport)
     pColumn->vAttributeAdd(pColumnNm);
 
     eCT eColType = pCol->eColumnType();
-    Fact* p_ColType_ = m_p_Concept_->pElementFind(aCT[eColType],p_ColumnType_);
+    s32 s_ColType_;
+    s_ColType_.vSprint("_%s_"_Stz,aCT[eColType]);
+    Fact* p_ColType_ = m_p_Concept_->pElementFind(s_ColType_,p_ColumnType_);
     Fact* pColType = p_ColType_->pNewInstance();
     pColumn->vAttributeAdd(pColType);
     
@@ -456,15 +458,15 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pConceptAdd(p_ColumnType_,"BOOLEAN"_Stz);
-  pConceptAdd(p_ColumnType_,"DATE"_Stz);
-  pConceptAdd(p_ColumnType_,"DECIMAL"_Stz);
-  pConceptAdd(p_ColumnType_,"FLOAT"_Stz);
-  pConceptAdd(p_ColumnType_,"INTEGER"_Stz);
-  pConceptAdd(p_ColumnType_,"INTERVAL"_Stz);
-  pConceptAdd(p_ColumnType_,"TIME"_Stz);
-  pConceptAdd(p_ColumnType_,"TIMESTAMP"_Stz);
-  pConceptAdd(p_ColumnType_,"VARCHAR"_Stz);
+  pConceptAdd(p_ColumnType_,"_BOOLEAN_"_Stz);
+  pConceptAdd(p_ColumnType_,"_DATE_"_Stz);
+  pConceptAdd(p_ColumnType_,"_DECIMAL_"_Stz);
+  pConceptAdd(p_ColumnType_,"_FLOAT_"_Stz);
+  pConceptAdd(p_ColumnType_,"_INTEGER_"_Stz);
+  pConceptAdd(p_ColumnType_,"_INTERVAL_"_Stz);
+  pConceptAdd(p_ColumnType_,"_TIME_"_Stz);
+  pConceptAdd(p_ColumnType_,"_TIMESTAMP_"_Stz);
+  pConceptAdd(p_ColumnType_,"_VARCHAR_"_Stz);
 
   pConceptAdd(p_Nullability_,"_nullable_"_Stz);
   pConceptAdd(p_Nullability_,"_notNullable_"_Stz);
