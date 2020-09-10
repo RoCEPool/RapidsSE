@@ -97,7 +97,7 @@ void Fact::vAttributeAdd(Fact* pAttribute)
 /*----------------------------------------------------------------------------*/
 /* find attribute fact                                                        */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pAttributeFind(Stz* szName, Stz* szStz)
+Fact* Fact::pAttributeFind(Stz* szName, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
     
@@ -114,7 +114,7 @@ Fact* Fact::pAttributeFind(Stz* szName, Stz* szStz)
     if (! pScan->bIsSubClass(m_pKbase->m_p_Name_))
       continue;
     
-    if (! pScan->m_xValue.m_pText->szGet()->bSame(szStz))
+    if (! pScan->m_xValue.m_pText->szGet()->bSame(szValue))
       continue;
     
     pAttribute = pScan;
@@ -127,7 +127,7 @@ Fact* Fact::pAttributeFind(Stz* szName, Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* find attribute fact                                                        */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pAttributeFind(Stz* szName, Fact* pSuper)
+Fact* Fact::pAttributeFind(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
     

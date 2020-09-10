@@ -52,8 +52,8 @@ namespace Facts
     void  vAncestry(Stz* szDst);
   
     void  vAttributeAdd(Fact* pAttribute);
-    Fact* pAttributeFind(Stz* szName, Stz* szStz);
-    Fact* pAttributeFind(Stz* szName, Fact* pSuper=nullptr);
+    Fact* pAttributeFind(Stz* szName, Stz* szValue);
+    Fact* pAttributeFind(Stz* szName);
     Fact* pAttributeNext(void);
     void  vAttributeNext(Fact* pAttribute);
     Fact* pAttributeOf(void);
