@@ -222,9 +222,9 @@ Fact* Fact::pAttributeThatIsSubClass(Fact* pOfSuperFact)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add given fact element to this set                                         */
+/* append given element to end of this facts elements                         */
 /*----------------------------------------------------------------------------*/
-void Fact::vElementAdd(Fact* pElement)
+void Fact::vElementAppend(Fact* pElement)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
