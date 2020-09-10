@@ -122,23 +122,6 @@ Fact* Kbase::pValue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a specific question                                                   */
-/*----------------------------------------------------------------------------*/
-Fact* Kbase::pQuestionFind(Stz *szQuestion)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
-  Fact* pQuestions = m_pContents->pElementFind("questions"_Stz);
-  if (! pQuestions)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "Kbase::pQuestionFind: failed to find questions\n"_Stz);
-  
-  Fact* pTheQuestion = pQuestions->pElementSearch(szQuestion);
-  
-  return pTheQuestion;
-}
-
-/*----------------------------------------------------------------------------*/
 /* borrow/new a question                                                      */
 /*----------------------------------------------------------------------------*/
 Question* Kbase::pQuestionBorrow(void)

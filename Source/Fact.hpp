@@ -26,7 +26,7 @@ namespace Facts
     Kbase*   m_pKbase;
   
     i8       m_iFactNo;      // unique number (synonym of this facts address)
-    s256     m_sNote;        // optional textual decription
+    s32      m_sName;        // name of fact
     Value    m_xValue;       // some value
     
     Fact*    m_pSubclassOf;  // subclass of which fact      (super)
@@ -46,14 +46,14 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Fact(Kbase* pKbase, Fact* pSuper, Stz* szNote=nullptr);
+    Fact(Kbase* pKbase, Fact* pSuper, Stz* szName=nullptr);
     ~Fact(void) noexcept(false);
   
     void  vAncestry(Stz* szDst);
   
     void  vAttributeAdd(Fact* pAttribute);
-    Fact* pAttributeFind(Stz* szNote, Stz* szStz);
-    Fact* pAttributeFind(Stz* szNote, Fact* pSuper=nullptr);
+    Fact* pAttributeFind(Stz* szName, Stz* szStz);
+    Fact* pAttributeFind(Stz* szName, Fact* pSuper=nullptr);
     Fact* pAttributeNext(void);
     void  vAttributeNext(Fact* pAttribute);
     Fact* pAttributeOf(void);
@@ -63,14 +63,14 @@ namespace Facts
     Fact* pAttributeThatIsSubClass(Fact* pOfSuperFact);
   
     void  vElementAdd(Fact* pElement);
-    Fact* pElementFind(Stz* szNote, Fact* pSuper=nullptr);
+    Fact* pElementFind(Stz* szName, Fact* pSuper=nullptr);
     Fact* pElementNext(void);
     void  vElementNext(Fact* pElement);
     Fact* pElementOf(void);
     void  vElementOf(Fact* pElementOf);
     Fact* pElements(void);
     void  vElements(Fact* pElements);
-    Fact* pElementSearch(Stz* szNote);
+    Fact* pElementSearch(Stz* szName, Stz* szValue);
     Fact* pElementThatIsSubClass(Fact* pOfSuperFact);
 
     i8    iFactNo(void);
@@ -83,7 +83,7 @@ namespace Facts
     bool  bHasSpecificElement(Fact* pFact);
 
     bool  bIsSubClass(Fact* pOfFact);
-    bool  bIsSubClass(Stz* szNote);
+    bool  bIsSubClass(Stz* szName);
 
     bool  bIsInt(void);
     bool  bIsObject(void);
@@ -92,10 +92,10 @@ namespace Facts
     bool  bIsWord(void);
     bool  bIsXref(void);
 
-    Fact* pNewInstance(Stz* szNote=nullptr);
+    Fact* pNewInstance(Stz* szName=nullptr);
 
-    Stz*  szNote(void);
-    void  vNote(Stz* szNote);
+    Stz*  szName(void);
+    void  vName(Stz* szName);
   
     void  vPrint_r(i8 iDepth, i8 iAs);
   
