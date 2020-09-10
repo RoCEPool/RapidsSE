@@ -179,6 +179,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Task();
   Step::vAddSteps_Tenants();
   Step::vAddSteps_Test();
+  Step::vAddSteps_Text();
   Step::vAddSteps_Thread();
   Step::vAddSteps_Ticking();
   Step::vAddSteps_Timer();

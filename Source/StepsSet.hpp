@@ -1662,6 +1662,10 @@ public:
   void vTestTest63(void);
   void vTestTest64(void);
 
+  // text
+  void vTextDelete(void);
+  void vTextNew(void);
+
   // thread
   void vThreadBind(void);
   void vThreadCpu(void);

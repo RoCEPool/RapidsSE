@@ -159,6 +159,7 @@ namespace Steps
     static void vAddSteps_Task(void);
     static void vAddSteps_Tenants(void);
     static void vAddSteps_Test(void);
+    static void vAddSteps_Text(void);
     static void vAddSteps_Thread(void);
     static void vAddSteps_Ticking(void);
     static void vAddSteps_Timer(void);

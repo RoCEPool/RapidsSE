@@ -705,7 +705,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
     }
   }
   
-  if (m_pAttributeOf || m_pElementOf)
+  //if (m_pAttributeOf || m_pElementOf)
     vTrace(" }"_Stz);
   
   if (m_pAttributeOf)
