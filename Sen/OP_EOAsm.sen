@@ -9,6 +9,50 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: sql_PulseMarker_600
+
+  0 locals| pColumn |
+
+  ZK_PULSEMARKER_handler
+
+  // new a streamDef from table
+  table[] StreamDef[].new
+
+  // new a streamDef to be piped out
+  StreamDefOut[].new
+
+  // add column SUM(L_EXTENDEDPRICE*L_DISCOUNT) as REVENUE
+  5 StreamDef[].column@ to pColumn
+
+  pColumn column.scale@
+  pColumn column.length@
+  pColumn column.type@
+  "revenue"
+  StreamDefOut[].addColumn
+
+  // now delete the streamDef of table
+  StreamDef[].delete
+
+  // set streamDefOut in the pot
+  true Pot[].useStreamDefOut
+  StreamDefOut[].pipeout
+
+  Counter0[] executeAsm
+  Counter0[] cleanupAsm
+
+  Pot[].pipeoutAllCompleted
+  Pot[].pipeoutAllDangling
+
+  Pot[].delete
+
+  // pipeout an EOS MARKER
+  Operand[].newEosMarker
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : EOAsm_StartMarker \handler
@@ -171,7 +215,7 @@
 
   0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
-  0 0 locals| queryNo pColumn |
+  0 locals| queryNo |
 
   Pipein[] to StreamDef[]
   nullptr to Pipein[]

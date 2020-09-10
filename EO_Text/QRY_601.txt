@@ -29,7 +29,7 @@ Label END_RSB_SRC
 // BEGIN: SUBROUTINE_AGGREGATE
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Label SUBROUTINE_AGGREGATE
-  EO_RSB_SRC_PUSHCOLI 0]
+  EO_RSB_SRC_PUSHCOLI 0
   EO_RSB_DST_PUSHCOLI 0
   EO_ADD
   EO_RSB_DST_POPCOLI 0
