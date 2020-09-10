@@ -43,36 +43,36 @@ Transform::~Transform(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add facet to fact                                                          */
 /*----------------------------------------------------------------------------*/
-void Transform::vAddAttribute(Fact* pToFact, Fact* pAttribute)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
-  
-  pToFact->vAttributeAdd(pAttribute);
-}
+//void Transform::vAddAttribute(Fact* pToFact, Fact* pAttribute)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
+//  
+//  pToFact->vAttributeAppend(pAttribute);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* new facet of a fact                                                        */
 /*----------------------------------------------------------------------------*/
-Fact* Transform::pNewAttribute(Fact* pToFact, Fact* pFacetKind,
-                           Fact* pFactKind, Stz* szFactNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
-  
-
-  return nullptr;
-}
+//Fact* Transform::pNewAttribute(Fact* pToFact, Fact* pFacetKind,
+//                           Fact* pFactKind, Stz* szFactNm)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
+//  
+//
+//  return nullptr;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Transform::pNewFact(Fact* pSuper, Stz* szNote)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
-  
-  Fact* pFact = m_pKbase->pFactNew(pSuper,szNote);
-    
-  return pFact;
-}
+//Fact* Transform::pNewFact(Fact* pSuper, Stz* szNote)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
+//  
+//  Fact* pFact = m_pKbase->pFactNew(pSuper,szNote);
+//    
+//  return pFact;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -49,7 +49,7 @@ Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szNote)
   
   Fact* pConcept = pSuper->pNewInstance(szNote);
   
-  m_p_Concept_->vElementAdd(pConcept);
+  m_p_Concept_->vElementAppend(pConcept);
 
   return pConcept;
 }
@@ -183,51 +183,51 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
 
   Fact* p_SubQry_ = m_p_Concept_->pElementFindNm("_subQry_"_Stz);
   Fact* pSubQry = p_SubQry_->pNewInstance();
-  pStatement->vElementAdd(pSubQry);
+  pStatement->vElementAppend(pSubQry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Fact* p_ProjectClause_ = m_p_Concept_->pElementFindNm("_projectClause_"_Stz);
   Fact* pProjectClause = p_ProjectClause_->pNewInstance();
-  pSubQry->vElementAdd(pProjectClause);
+  pSubQry->vElementAppend(pProjectClause);
   
   Fact* p_ExprList_ = m_p_Concept_->pElementFindNm("_exprList_"_Stz);
   Fact* pExprList = p_ExprList_->pNewInstance();
-  pProjectClause->vElementAdd(pExprList);
+  pProjectClause->vElementAppend(pExprList);
   
   Fact* p_Expr_ = m_p_Concept_->pElementFindNm("_expr_"_Stz);
   Fact* pExpr = p_Expr_->pNewInstance();
-  pExprList->vElementAdd(pExpr);
+  pExprList->vElementAppend(pExpr);
   
   Fact* p_Term_ = m_p_Concept_->pElementFindNm("_term_"_Stz);
   Fact* pTerm = p_Term_->pNewInstance();
-  pExpr->vElementAdd(pTerm);
+  pExpr->vElementAppend(pTerm);
   
   Fact* p_Atom_ = m_p_Concept_->pElementFindNm("_atom_"_Stz);
   Fact* pAtom = p_Atom_->pNewInstance();
-  pTerm->vElementAdd(pAtom);
+  pTerm->vElementAppend(pAtom);
   
   Fact* p_Text_ = m_p_Concept_->pElementFindNm("_text_"_Stz);
   Fact* pText = p_Text_->pNewInstance();
   pText->rxValue().m_pText = new Text;
   pText->rxValue().m_pText->vSet("*"_Stz);
-  pAtom->vAttributeAdd(pText);
+  pAtom->vAttributeAppend(pText);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Fact* p_FromClause_ = m_p_Concept_->pElementFindNm("_fromClause_"_Stz);
   Fact* pFromClause = p_FromClause_->pNewInstance();
-  pSubQry->vElementAdd(pFromClause);
+  pSubQry->vElementAppend(pFromClause);
   
   Fact* p_FromTable_ = m_p_Concept_->pElementFindNm("_fromTable_"_Stz);
   Fact* pFromTable = p_FromTable_->pNewInstance();
-  pFromClause->vElementAdd(pFromTable);
+  pFromClause->vElementAppend(pFromTable);
 
   Fact* p_TableNm_ = m_p_Concept_->pElementFindNm("_tableNm_"_Stz);
   Fact* pTableNm = p_TableNm_->pNewInstance();
   pTableNm->rxValue().m_pText = new Text;
   pTableNm->rxValue().m_pText->vSet("lineitem"_Stz);
-  pFromTable->vAttributeAdd(pTableNm);
+  pFromTable->vAttributeAppend(pTableNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,15 +254,15 @@ void Kbase::vImportTable(Table* pTableToImport)
   Fact* p_PtnKey_      = m_p_Concept_->pElementFindNm("_ptnKey_"_Stz);
 
   Fact* pTable = p_Table_->pNewInstance();
-  pTables->vElementAdd(pTable);
+  pTables->vElementAppend(pTable);
 
   Fact* pTableNm = p_TableNm_->pNewInstance();
   pTableNm->rxValue().m_pText = new Text;
   pTableNm->rxValue().m_pText->vSet(pTableToImport->szTableNm());
-  pTable->vAttributeAdd(pTableNm);
+  pTable->vAttributeAppend(pTableNm);
 
   Fact* pColumns = p_Columns_->pNewInstance();
-  pTable->vElementAdd(pColumns);
+  pTable->vElementAppend(pColumns);
 
   StreamDef* pStmDef = pTableToImport->pStreamDef();
   
@@ -271,7 +271,7 @@ void Kbase::vImportTable(Table* pTableToImport)
     Column* pCol = pStmDef->pGetColumn(i_Col);
     
     Fact* pColumn = p_Column_->pNewInstance();
-    pColumns->vElementAdd(pColumn);
+    pColumns->vElementAppend(pColumn);
     
     i8 iColumnNo = pCol->iColumnNo();
     Fact* pColumnNo = p_ColumnNo_->pNewInstance();
@@ -279,44 +279,44 @@ void Kbase::vImportTable(Table* pTableToImport)
     RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_value_"_Stz));
     
     pColumnNo->rxValue().m_iInt = iColumnNo;
-    pColumn->vAttributeAdd(pColumnNo);
+    pColumn->vAttributeAppend(pColumnNo);
 
     Fact* pColumnNm = p_ColumnNm_->pNewInstance();
     pColumnNm->rxValue().m_pText = new Text;
     pColumnNm->rxValue().m_pText->vSet(pCol->szColNm());
-    pColumn->vAttributeAdd(pColumnNm);
+    pColumn->vAttributeAppend(pColumnNm);
 
     eCT eColType = pCol->eColumnType();
     s32 s_ColType_;
     s_ColType_.vSprint("_%s_"_Stz,aCT[eColType]);
     Fact* p_ColType_ = m_p_Concept_->pElementFindNm(s_ColType_);
     Fact* pColType = p_ColType_->pNewInstance();
-    pColumn->vAttributeAdd(pColType);
+    pColumn->vAttributeAppend(pColType);
     
     i8 iLength = pCol->iColumnLength();
     Fact* pLength = p_Length_->pNewInstance();
     pLength->rxValue().m_iInt = iLength;
-    pColumn->vAttributeAdd(pLength);
+    pColumn->vAttributeAppend(pLength);
 
     i8 iScale = pCol->iColumnScale();
     Fact* pScale = p_Scale_->pNewInstance();
     pScale->rxValue().m_iInt = iScale;
-    pColumn->vAttributeAdd(pScale);
+    pColumn->vAttributeAppend(pScale);
     
     bool bIsNullable = pCol->bIsNullable();
     if (bIsNullable) {
       Fact* pNullable = p_Nullable_->pNewInstance();
-      pColumn->vAttributeAdd(pNullable);
+      pColumn->vAttributeAppend(pNullable);
     }
     else {
       Fact* pNotNullable = p_NotNullable_->pNewInstance();
-      pColumn->vAttributeAdd(pNotNullable);
+      pColumn->vAttributeAppend(pNotNullable);
     }
     
     bool bIsPtnKey = pCol->bIsPtnKey();
     if (bIsPtnKey) {
       Fact* pPtnKey = p_PtnKey_->pNewInstance();
-      pColumn->vAttributeAdd(pPtnKey);
+      pColumn->vAttributeAppend(pPtnKey);
     }
 
   }
@@ -484,69 +484,69 @@ void Kbase::vAprioriFacts(void)
   m_pContents = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
 
   Fact* pGrid = p_Grid_->pNewInstance();
-  m_pContents->vElementAdd(pGrid);
+  m_pContents->vElementAppend(pGrid);
   Fact* pNodes = p_Nodes_->pNewInstance();
   pNodes->rxValue().m_iInt = AM::nDefinedNodes();
-  pGrid->vAttributeAdd(pNodes);
+  pGrid->vAttributeAppend(pNodes);
   Fact* pPartitions = p_Partitions_->pNewInstance();
   pPartitions->rxValue().m_iInt = AM::nPartitions();
-  pGrid->vAttributeAdd(pPartitions);
+  pGrid->vAttributeAppend(pPartitions);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* pQuestions = m_p_Questions_->pNewInstance();
-  m_pContents->vElementAdd(pQuestions);
+  m_pContents->vElementAppend(pQuestions);
 
   Fact* pQuestion = m_p_Question_->pNewInstance();
-  pQuestions->vElementAdd(pQuestion);
+  pQuestions->vElementAppend(pQuestion);
   Fact* pQuestionNm = p_QuestionNm_->pNewInstance();
   pQuestionNm->rxValue().m_pText = new Text;
   pQuestionNm->rxValue().m_pText->vSet("isSubClassOf"_Stz);
-  pQuestion->vAttributeAdd(pQuestionNm);
+  pQuestion->vAttributeAppend(pQuestionNm);
   Fact* pMethod = m_p_Method_->pNewInstance();
   pMethod->rxValue().m_pMethod = new Method;
   pMethod->rxValue().m_pMethod->vAddCode(QC_IS_SUBCLASS_OF);
-  pQuestion->vAttributeAdd(pMethod);
+  pQuestion->vAttributeAppend(pMethod);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* pTables = p_Tables_->pNewInstance();
-  m_pContents->vElementAdd(pTables);
+  m_pContents->vElementAppend(pTables);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* pStatement = p_Statement_->pNewInstance();
-  m_pContents->vElementAdd(pStatement);
+  m_pContents->vElementAppend(pStatement);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* p_Pipeline_ = m_p_Concept_->pElementFindNm("_pipeline_"_Stz);
   Fact* pPipeline = p_Pipeline_->pNewInstance();
-  m_pContents->vElementAdd(pPipeline);
+  m_pContents->vElementAppend(pPipeline);
 
   Fact* p_Stages_ = m_p_Concept_->pElementFindNm("_stages_"_Stz);
   Fact* pStages = p_Stages_->pNewInstance();
-  pPipeline->vElementAdd(pStages);
+  pPipeline->vElementAppend(pStages);
 
   Fact* pNameSeq = m_p_NameSeq_->pNewInstance();
   pNameSeq->rxValue().m_pText = new Text;
   pNameSeq->rxValue().m_pText->vSet("A"_Stz);
-  pStages->vAttributeAdd(pNameSeq);
+  pStages->vAttributeAppend(pNameSeq);
 
   Fact* pFormat = m_p_Format_->pNewInstance();
   pFormat->rxValue().m_pText = new Text;
   pFormat->rxValue().m_pText->vSet("stage%s"_Stz);
-  pStages->vAttributeAdd(pFormat);
+  pStages->vAttributeAppend(pFormat);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* p_Routines_ = m_p_Concept_->pElementFindNm("_routines_"_Stz);
   Fact* pRoutines = p_Routines_->pNewInstance();
-  m_pContents->vElementAdd(pRoutines);
+  m_pContents->vElementAppend(pRoutines);
 
   Fact* p_Subroutines_ = m_p_Concept_->pElementFindNm("_subroutine_"_Stz);
   Fact* pSubroutines = p_Subroutines_->pNewInstance();
-  pRoutines->vElementAdd(pSubroutines);
+  pRoutines->vElementAppend(pSubroutines);
 }
 
 /*============================================================================*/

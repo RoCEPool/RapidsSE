@@ -74,9 +74,9 @@ void Fact::vAncestry(Stz* szDst)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add attribute (a sub-fact)                                                 */
+/* append attribute to end of this facts attributes                           */
 /*----------------------------------------------------------------------------*/
-void Fact::vAttributeAdd(Fact* pAttribute)
+void Fact::vAttributeAppend(Fact* pAttribute)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
@@ -222,9 +222,9 @@ Fact* Fact::pAttributeThatIsSubClass(Fact* pOfSuperFact)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add given fact element to this set                                         */
+/* append given element to end of this facts elements                         */
 /*----------------------------------------------------------------------------*/
-void Fact::vElementAdd(Fact* pElement)
+void Fact::vElementAppend(Fact* pElement)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
@@ -240,6 +240,35 @@ void Fact::vElementAdd(Fact* pElement)
     pTail = pTail->pElementNext();
   
   pTail->vElementNext(pElement);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut given element from this fact                                           */
+/*----------------------------------------------------------------------------*/
+void Fact::vElementCut(Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  // is it the head element?
+  if (pElement == m_pElements) {
+    m_pElements = m_pElements->m_pElementNext;
+    
+    pElement->m_pElementNext = nullptr;
+    
+    return;
+  }
+  
+  // find the prior element
+  Fact* pScan;
+  for (pScan = m_pElements;
+       pScan;
+       pScan = pScan->m_pElementNext)
+    if (pScan->m_pElementNext == pElement)
+      break;
+
+  // cut the element
+  pScan->m_pElementNext = pElement->m_pElementNext;
+  pElement->m_pElementNext = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,6 +311,18 @@ Fact* Fact::pElementFindNmVal(Stz* szName, Stz* szValue)
     pElement = pScan->pElementFindNmVal(szName,szValue);
 
   return pElement;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert element as first element of this fact                               */
+/*----------------------------------------------------------------------------*/
+void Fact::vElementInsert(Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  pElement->m_pElementNext = m_pElements;
+  
+  m_pElements = pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -938,22 +979,6 @@ bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
   
   return bResult;
 }
-/*----------------------------------------------------------------------------*/
-//bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-//
-//  Fact* pQuestion = m_pKbase->m_pContents->pElementSearch(szQuestion);
-//
-//  if (! pQuestion)
-//    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-//           "Fact::bQuestion: failed to find %s\n"_Stz,
-//           szQuestion->azChar());
-//
-//  bool bResult = bQuestion(pQuestion,aArg);
-//
-//  return bResult;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get super-class fact                                                       */
