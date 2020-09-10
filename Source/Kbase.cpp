@@ -21,6 +21,8 @@ Kbase::Kbase(Stz* szKbName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
+  m_pCurrent = nullptr;
+  
   vAprioriFacts();
  
   _checkInitialised_(CN_KBASE);
@@ -52,6 +54,26 @@ Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szNote)
   m_p_Concept_->vElementAppend(pConcept);
 
   return pConcept;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current working fact                                                   */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pCurrent(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  return m_pCurrent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current working fact                                                   */
+/*----------------------------------------------------------------------------*/
+void Kbase::vCurrent(Fact* pCurrent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  m_pCurrent = pCurrent;
 }
 
 /*----------------------------------------------------------------------------*/

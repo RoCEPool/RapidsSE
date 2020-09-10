@@ -44,6 +44,8 @@ namespace Facts
 
     Fact*  m_pContents;    //
 
+    Fact*  m_pCurrent;     // current working fact
+
     // must be last
     Footer m_xFooter;
 
@@ -55,6 +57,9 @@ namespace Facts
    ~Kbase(void) noexcept(false);
   
     Fact* pConceptAdd(Fact* pSuper, Stz* szNote);
+  
+    Fact* pCurrent(void);
+    void vCurrent(Fact* pCurrent);
   
     Fact* pElementFind(Stz* szNote);
     
