@@ -70,10 +70,6 @@
   "revenue"
   StreamDefOut[].addColumn
 
-  // add column COUNT(*)
-  //0 19 CT_INTEGER "count"
-  //StreamDefOut[].addColumn
-
   // now delete the streamDef of table
   StreamDef[].delete
 
@@ -81,12 +77,8 @@
   true Pot[].useStreamDefOut
   StreamDefOut[].pipeout
 
-  Counter0[] 1 == if
-    LogicUnit[].dynFun
-    LogicCompiler[].delete
-  else
-    LogicUnit[].transform
-  then
+  Counter0[] executeAsm
+  Counter0[] cleanUpAsm
 
   Pot[].pipeoutAllCompleted
   Pot[].pipeoutAllDangling
@@ -125,20 +117,13 @@
 
   <queryNo> >int locals| queryNo |
 
-  //PipeIn[]
-  //profile.start
-
   queryNo case
 
     601 of
       Operand[].pipeIn
       Operand[].asSrcRowSlab
 
-      Counter0[] 1 == if
-        LogicUnit[].dynFun
-      else
-        LogicUnit[].transform
-      then
+      Counter0[] executeAsm
       Operand[].delete
       Pot[].pipeoutAllCompleted
     endof
@@ -147,8 +132,6 @@
     queryNo "ERROR : Unexpected queryno %v" .printf
     0 assert
   endcase
-
-  //profile.end
 
   true
 ;
@@ -168,9 +151,7 @@
     endof
 
     601 of
-      Counter0[] 1 == if
-        LogicCompiler[].delete
-      then
+      Counter0[] cleanUpAsm
     endof
 
   endcase
