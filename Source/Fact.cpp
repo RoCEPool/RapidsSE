@@ -245,11 +245,11 @@ void Fact::vElementAdd(Fact* pElement)
 /*----------------------------------------------------------------------------*/
 /* find element fact (recursively)                                            */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pElementFind(Stz* szName, Fact* pSuper)
+Fact* Fact::pElementFind(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  if (m_sName.bSame(szName) && (! pSuper || bIsSubClass(pSuper)))
+  if (m_sName.bSame(szName))
     return this;
   
   Fact* pElement = nullptr;
@@ -257,7 +257,7 @@ Fact* Fact::pElementFind(Stz* szName, Fact* pSuper)
   for (Fact* pScan = m_pElements;
        pScan && !pElement;
        pScan = pScan->m_pElementNext)
-    pElement = pScan->pElementFind(szName,pSuper);
+    pElement = pScan->pElementFind(szName);
 
   return pElement;
 }

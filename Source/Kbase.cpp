@@ -89,11 +89,11 @@ void Kbase::vFactDelete(Fact* pFact)
 /*----------------------------------------------------------------------------*/
 /* find element                                                               */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pElementFind(Stz* szNote, Fact* pSuper)
+Fact* Kbase::pElementFind(Stz* szNote)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pElement = m_pContents->pElementFind(szNote,pSuper);
+  Fact* pElement = m_pContents->pElementFind(szNote);
 
   return pElement;
 }
@@ -290,7 +290,7 @@ void Kbase::vImportTable(Table* pTableToImport)
     eCT eColType = pCol->eColumnType();
     s32 s_ColType_;
     s_ColType_.vSprint("_%s_"_Stz,aCT[eColType]);
-    Fact* p_ColType_ = m_p_Concept_->pElementFind(s_ColType_,p_ColumnType_);
+    Fact* p_ColType_ = m_p_Concept_->pElementFind(s_ColType_);
     Fact* pColType = p_ColType_->pNewInstance();
     pColumn->vAttributeAdd(pColType);
     

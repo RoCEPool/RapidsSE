@@ -63,7 +63,7 @@ namespace Facts
     Fact* pAttributeThatIsSubClass(Fact* pOfSuperFact);
   
     void  vElementAdd(Fact* pElement);
-    Fact* pElementFind(Stz* szName, Fact* pSuper=nullptr);
+    Fact* pElementFind(Stz* szName);
     Fact* pElementNext(void);
     void  vElementNext(Fact* pElement);
     Fact* pElementOf(void);
