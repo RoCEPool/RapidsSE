@@ -1733,6 +1733,10 @@ public:
   void vToRsbRegDangling(void);
   void vToRsbRegDelete(void);
 
+  // tokenVec
+  void vTokenVecDelete(void);
+  void vTokenVecNew(void);
+
   // trace
   void vTraceOff(void);
   void vTraceOn(void);

@@ -168,6 +168,7 @@ namespace Steps
     static void vAddSteps_ToNstRsb(void);
     static void vAddSteps_ToPtnRsb(void);
     static void vAddSteps_ToRsb(void);
+    static void vAddSteps_TokenVec(void);
     static void vAddSteps_Trace(void);
     static void vAddSteps_Tx(void);
     static void vAddSteps_TxSet(void);
