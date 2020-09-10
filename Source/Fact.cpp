@@ -97,7 +97,30 @@ void Fact::vAttributeAdd(Fact* pAttribute)
 /*----------------------------------------------------------------------------*/
 /* find attribute fact                                                        */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pAttributeFind(Stz* szName, Stz* szValue)
+Fact* Fact::pAttributeFindNm(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+    
+  Fact* pAttribute = nullptr;
+  
+  for (Fact* pScan = m_pAttributes;
+       pScan && !pAttribute;
+       pScan = pScan->m_pAttributeNext) {
+    
+    if (pScan->m_sName.bSame(szName)) {
+      pAttribute = pScan;
+      break;
+    }
+      
+  }
+  
+  return pAttribute;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find attribute fact                                                        */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pAttributeFindNmVal(Stz* szName, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
     
@@ -119,29 +142,6 @@ Fact* Fact::pAttributeFind(Stz* szName, Stz* szValue)
     
     pAttribute = pScan;
     break;
-  }
-  
-  return pAttribute;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find attribute fact                                                        */
-/*----------------------------------------------------------------------------*/
-Fact* Fact::pAttributeFind(Stz* szName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-    
-  Fact* pAttribute = nullptr;
-  
-  for (Fact* pScan = m_pAttributes;
-       pScan && !pAttribute;
-       pScan = pScan->m_pAttributeNext) {
-    
-    if (pScan->m_sName.bSame(szName)) {
-      pAttribute = pScan;
-      break;
-    }
-      
   }
   
   return pAttribute;
@@ -331,7 +331,7 @@ Fact* Fact::pElementSearch(Stz* szName, Stz* szValue)
   
   vTrace("pElementSearch %s\n"_Stz,m_sName.azChar());
   
-  if (pAttributeFind(szName,szValue))
+  if (pAttributeFindNmVal(szName,szValue))
     return this;
 
   Fact* pElement = nullptr;
@@ -896,7 +896,7 @@ bool Fact::bQuestion(Fact* pQuestion, Opaque* aArg)
            "Fact::bQuestion: %s is not a subclass of _question_\n"_Stz,
            pQuestion->m_sName.azChar());
 
-  Fact* pMethodAttr = pQuestion->pAttributeFind("method"_Stz);
+  Fact* pMethodAttr = pQuestion->pAttributeFindNm("method"_Stz);
   if (! pMethodAttr)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Fact::bQuestion: failed to find method of question\n"_Stz);
