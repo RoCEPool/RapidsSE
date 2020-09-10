@@ -52,8 +52,8 @@ namespace Facts
     void  vAncestry(Stz* szDst);
   
     void  vAttributeAdd(Fact* pAttribute);
-    Fact* pAttributeFind(Stz* szName, Stz* szStz);
-    Fact* pAttributeFind(Stz* szName, Fact* pSuper=nullptr);
+    Fact* pAttributeFindNm(Stz* szName);
+    Fact* pAttributeFindNmVal(Stz* szName, Stz* szValue);
     Fact* pAttributeNext(void);
     void  vAttributeNext(Fact* pAttribute);
     Fact* pAttributeOf(void);
@@ -63,14 +63,14 @@ namespace Facts
     Fact* pAttributeThatIsSubClass(Fact* pOfSuperFact);
   
     void  vElementAdd(Fact* pElement);
-    Fact* pElementFind(Stz* szName, Fact* pSuper=nullptr);
+    Fact* pElementFindNm(Stz* szName);
+    Fact* pElementFindNmVal(Stz* szName, Stz* szValue);
     Fact* pElementNext(void);
     void  vElementNext(Fact* pElement);
     Fact* pElementOf(void);
     void  vElementOf(Fact* pElementOf);
     Fact* pElements(void);
     void  vElements(Fact* pElements);
-    Fact* pElementSearch(Stz* szName, Stz* szValue);
     Fact* pElementThatIsSubClass(Fact* pOfSuperFact);
 
     i8    iFactNo(void);

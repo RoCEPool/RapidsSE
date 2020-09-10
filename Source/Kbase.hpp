@@ -56,7 +56,7 @@ namespace Facts
   
     Fact* pConceptAdd(Fact* pSuper, Stz* szNote);
   
-    Fact* pElementFind(Stz* szNote, Fact* pSuper);
+    Fact* pElementFind(Stz* szNote);
     
     Fact* pFact(void);
   
