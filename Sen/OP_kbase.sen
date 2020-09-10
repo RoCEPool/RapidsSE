@@ -11,6 +11,12 @@
 
   "Kbase Testing" .
 
+  "Kbase-Name" kbase[].new
+
+  kbase[].test
+
+  kbase[].delete
+
   true
 ;
 
