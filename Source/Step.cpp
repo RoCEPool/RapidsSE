@@ -99,6 +99,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobPipeline();
   Step::vAddSteps_JobRef();
 
+  Step::vAddSteps_Kbase();
+  
   Step::vAddSteps_Loader();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();

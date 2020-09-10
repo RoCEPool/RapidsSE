@@ -78,6 +78,8 @@ namespace Steps
     static void vAddSteps_JobPipeline(void);
     static void vAddSteps_JobRef(void);
 
+    static void vAddSteps_Kbase(void);
+  
     static void vAddSteps_Loader(void);
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);

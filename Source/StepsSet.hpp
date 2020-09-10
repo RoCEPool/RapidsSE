@@ -844,6 +844,12 @@ public:
   void vJob_WalkIndexStore(void);
   void vJob_WalkTableStore(void);
 
+  // kbase
+  void vKbaseDelete(void);
+  void vKbaseNew(void);
+  void vKbasePointer(void);
+  void vKbaseTest(void);
+
   // loader
   void vLoaderCreate(void);
   void vLoaderDelete(void);
