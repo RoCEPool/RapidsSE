@@ -604,13 +604,13 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
   s32 sPrefix;
   
   if (! iAs)
-    sPrefix = "Aha|"_Stz;
+    sPrefix = "Aha{"_Stz;
   else if (m_pElementOf)
-    sPrefix = "Elm|"_Stz;
+    sPrefix = "Elm{"_Stz;
   else if (m_pAttributeOf)
-    sPrefix = "Atr|"_Stz;
+    sPrefix = "Atr{"_Stz;
   else
-    sPrefix = "Has|"_Stz;
+    sPrefix = "Has{"_Stz;
 
   if (m_sName.bSame("question"_Stz))
     vDebugPoint();
@@ -706,7 +706,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
   }
   
   if (m_pAttributeOf || m_pElementOf)
-    vTrace(" |"_Stz);
+    vTrace(" }"_Stz);
   
   if (m_pAttributeOf)
     vTrace(" AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szName());

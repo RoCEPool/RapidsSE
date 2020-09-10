@@ -16,6 +16,7 @@ assert::stack_0
         "se_categories.sen"       include
         "se_cluster.sen"          include
         "se_tags.sen"             include
+        "se_kbase.sen"            include
         "se_log.sen"              include
         "se_path.sen"             include
         "se_folder.sen"           include
