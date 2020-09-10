@@ -1174,7 +1174,7 @@
   sPath
   "
   procedure Query1_ASM_I
-    parameters $Table
+    parameters $QueryText_all $QueryText_org $Table
   begin
 
   stage stageA on origin :
@@ -1184,12 +1184,12 @@
 
   stage stageB on all partitions :
     scan $Table
-    | EOAsm 100 0
+    | EOAsm $QueryText_all 100 0
     //| sql 101
     | stageC
 
   stage stageC on origin :
-    EOAsm 103 0
+    EOAsm $QueryText_org 103 0
     | output
     //| toStatDemon
     | sink
@@ -1199,41 +1199,13 @@
   "
   api::addProcedure
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 6 - converting loaded CRW data into RSB
-  sPath
-  "
-  procedure Query6_ASM
-    parameters $Table $Index
-  begin
-
-  stage stageA on origin :
-    start
-    | periodicOp once
-    | stageB
-
-  stage stageB on all partitions :
-    EOAsm 600 1 $Table $Index
-    | stageC
-
-  stage stageC on origin :
-    EOAsm 601 1
-    | output
-    //| toStatDemon
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - converting loaded CRW data into RSB
   sPath
   "
   procedure Query6_ASM_I
-    parameters $Table $Index
+    parameters $QueryText_all $QueryText_org $Table $Index
   begin
 
   stage stageA on origin :
@@ -1242,11 +1214,39 @@
     | stageB
 
   stage stageB on all partitions :
-    EOAsm 600 0 $Table $Index
+    EOAsm $QueryText_all 600 0 $Table $Index
     | stageC
 
   stage stageC on origin :
-    EOAsm 601 0
+    EOAsm $QueryText_org 601 0
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query -
+  sPath
+  "
+  procedure Query_ASM_I
+    parameters $QueryText_all $QueryText_org $Table $Index
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm QueryText_all 600 0 $Table $Index
+    | stageC
+
+  stage stageC on origin :
+    EOAsm  $QueryText_org 601 0
     | output
     //| toStatDemon
     | sink

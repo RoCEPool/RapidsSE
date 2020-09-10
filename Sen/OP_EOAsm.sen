@@ -29,13 +29,13 @@
   queryNo case
 
     100 of
-      Counter0[] "../EO_text/QRY_100.txt" genAsm
+      Counter0[] <queryText> genAsm
       idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
       indexDef[].delete
     endof
 
     103 of
-      Counter0[] "../EO_text/QRY_103.txt" genAsm
+      Counter0[] <queryText> genAsm
       idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
       indexDef[].delete
     endof
@@ -48,11 +48,11 @@
       index[].indexTree to indexTree[]
       indexTree[].asSrc
       Table[].asSrcStreamDef
-      Counter0[] "../EO_text/QRY_600.txt" genAsm
+      Counter0[] <queryText> genAsm
     endof
 
     601 of
-      Counter0[] "../EO_text/QRY_601.txt" genAsm
+      Counter0[] <queryText> genAsm
     endof
 
   endcase
@@ -290,8 +290,8 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: EOAsm :: EOAsm <queryNo> <compiled> ;
-cmdSyntax: EOAsm :: EOAsm <queryNo> <compiled> <tableNm> <indexNm> ;
+cmdSyntax: EOAsm :: EOAsm <queryText> <queryNo> <compiled> ;
+cmdSyntax: EOAsm :: EOAsm <queryText> <queryNo> <compiled> <tableNm> <indexNm> ;
 
 : EOAsm _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
