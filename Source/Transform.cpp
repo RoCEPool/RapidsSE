@@ -47,7 +47,7 @@ void Transform::vAddAttribute(Fact* pToFact, Fact* pAttribute)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
-  pToFact->vAttributeAdd(pAttribute);
+  pToFact->vAttributeAppend(pAttribute);
 }
 
 /*----------------------------------------------------------------------------*/

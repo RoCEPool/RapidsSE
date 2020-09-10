@@ -211,7 +211,7 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
   Fact* pText = p_Text_->pNewInstance();
   pText->rxValue().m_pText = new Text;
   pText->rxValue().m_pText->vSet("*"_Stz);
-  pAtom->vAttributeAdd(pText);
+  pAtom->vAttributeAppend(pText);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -227,7 +227,7 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
   Fact* pTableNm = p_TableNm_->pNewInstance();
   pTableNm->rxValue().m_pText = new Text;
   pTableNm->rxValue().m_pText->vSet("lineitem"_Stz);
-  pFromTable->vAttributeAdd(pTableNm);
+  pFromTable->vAttributeAppend(pTableNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,7 +259,7 @@ void Kbase::vImportTable(Table* pTableToImport)
   Fact* pTableNm = p_TableNm_->pNewInstance();
   pTableNm->rxValue().m_pText = new Text;
   pTableNm->rxValue().m_pText->vSet(pTableToImport->szTableNm());
-  pTable->vAttributeAdd(pTableNm);
+  pTable->vAttributeAppend(pTableNm);
 
   Fact* pColumns = p_Columns_->pNewInstance();
   pTable->vElementAppend(pColumns);
@@ -279,44 +279,44 @@ void Kbase::vImportTable(Table* pTableToImport)
     RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_value_"_Stz));
     
     pColumnNo->rxValue().m_iInt = iColumnNo;
-    pColumn->vAttributeAdd(pColumnNo);
+    pColumn->vAttributeAppend(pColumnNo);
 
     Fact* pColumnNm = p_ColumnNm_->pNewInstance();
     pColumnNm->rxValue().m_pText = new Text;
     pColumnNm->rxValue().m_pText->vSet(pCol->szColNm());
-    pColumn->vAttributeAdd(pColumnNm);
+    pColumn->vAttributeAppend(pColumnNm);
 
     eCT eColType = pCol->eColumnType();
     s32 s_ColType_;
     s_ColType_.vSprint("_%s_"_Stz,aCT[eColType]);
     Fact* p_ColType_ = m_p_Concept_->pElementFindNm(s_ColType_);
     Fact* pColType = p_ColType_->pNewInstance();
-    pColumn->vAttributeAdd(pColType);
+    pColumn->vAttributeAppend(pColType);
     
     i8 iLength = pCol->iColumnLength();
     Fact* pLength = p_Length_->pNewInstance();
     pLength->rxValue().m_iInt = iLength;
-    pColumn->vAttributeAdd(pLength);
+    pColumn->vAttributeAppend(pLength);
 
     i8 iScale = pCol->iColumnScale();
     Fact* pScale = p_Scale_->pNewInstance();
     pScale->rxValue().m_iInt = iScale;
-    pColumn->vAttributeAdd(pScale);
+    pColumn->vAttributeAppend(pScale);
     
     bool bIsNullable = pCol->bIsNullable();
     if (bIsNullable) {
       Fact* pNullable = p_Nullable_->pNewInstance();
-      pColumn->vAttributeAdd(pNullable);
+      pColumn->vAttributeAppend(pNullable);
     }
     else {
       Fact* pNotNullable = p_NotNullable_->pNewInstance();
-      pColumn->vAttributeAdd(pNotNullable);
+      pColumn->vAttributeAppend(pNotNullable);
     }
     
     bool bIsPtnKey = pCol->bIsPtnKey();
     if (bIsPtnKey) {
       Fact* pPtnKey = p_PtnKey_->pNewInstance();
-      pColumn->vAttributeAdd(pPtnKey);
+      pColumn->vAttributeAppend(pPtnKey);
     }
 
   }
@@ -487,10 +487,10 @@ void Kbase::vAprioriFacts(void)
   m_pContents->vElementAppend(pGrid);
   Fact* pNodes = p_Nodes_->pNewInstance();
   pNodes->rxValue().m_iInt = AM::nDefinedNodes();
-  pGrid->vAttributeAdd(pNodes);
+  pGrid->vAttributeAppend(pNodes);
   Fact* pPartitions = p_Partitions_->pNewInstance();
   pPartitions->rxValue().m_iInt = AM::nPartitions();
-  pGrid->vAttributeAdd(pPartitions);
+  pGrid->vAttributeAppend(pPartitions);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -502,11 +502,11 @@ void Kbase::vAprioriFacts(void)
   Fact* pQuestionNm = p_QuestionNm_->pNewInstance();
   pQuestionNm->rxValue().m_pText = new Text;
   pQuestionNm->rxValue().m_pText->vSet("isSubClassOf"_Stz);
-  pQuestion->vAttributeAdd(pQuestionNm);
+  pQuestion->vAttributeAppend(pQuestionNm);
   Fact* pMethod = m_p_Method_->pNewInstance();
   pMethod->rxValue().m_pMethod = new Method;
   pMethod->rxValue().m_pMethod->vAddCode(QC_IS_SUBCLASS_OF);
-  pQuestion->vAttributeAdd(pMethod);
+  pQuestion->vAttributeAppend(pMethod);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -531,12 +531,12 @@ void Kbase::vAprioriFacts(void)
   Fact* pNameSeq = m_p_NameSeq_->pNewInstance();
   pNameSeq->rxValue().m_pText = new Text;
   pNameSeq->rxValue().m_pText->vSet("A"_Stz);
-  pStages->vAttributeAdd(pNameSeq);
+  pStages->vAttributeAppend(pNameSeq);
 
   Fact* pFormat = m_p_Format_->pNewInstance();
   pFormat->rxValue().m_pText = new Text;
   pFormat->rxValue().m_pText->vSet("stage%s"_Stz);
-  pStages->vAttributeAdd(pFormat);
+  pStages->vAttributeAppend(pFormat);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

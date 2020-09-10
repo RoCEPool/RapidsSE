@@ -74,9 +74,9 @@ void Fact::vAncestry(Stz* szDst)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add attribute (a sub-fact)                                                 */
+/* append attribute to end of this facts attributes                           */
 /*----------------------------------------------------------------------------*/
-void Fact::vAttributeAdd(Fact* pAttribute)
+void Fact::vAttributeAppend(Fact* pAttribute)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
@@ -311,6 +311,18 @@ Fact* Fact::pElementFindNmVal(Stz* szName, Stz* szValue)
     pElement = pScan->pElementFindNmVal(szName,szValue);
 
   return pElement;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert element as first element of this fact                               */
+/*----------------------------------------------------------------------------*/
+void Fact::vElementInsert(Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  pElement->m_pElementNext = m_pElements;
+  
+  m_pElements = pElement;
 }
 
 /*----------------------------------------------------------------------------*/
