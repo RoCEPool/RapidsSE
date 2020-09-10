@@ -50,7 +50,7 @@ void LogicUnit::vAcceptToken(void)
   m_pTkn = m_pTknVec->pGet(m_i_Tkn);
   
 #ifdef WITH_TRACE_LOGICUNIT
-  vTrace("Next %03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szChars());
+  //vTrace("Next %03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szChars());
 #endif
 }
 
@@ -141,12 +141,12 @@ void LogicUnit::vGenerateAsm(Stz* aText)
   // dump the toekns
   i8 nTokens = m_pTknVec->nTokens();
   
-  for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
-    Token* pTkn = m_pTknVec->pGet(i_Tkn++);
-    
-    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szChars());
-  }
-  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+//  for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
+//    Token* pTkn = m_pTknVec->pGet(i_Tkn++);
+//
+//    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szChars());
+//  }
+//  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code
@@ -166,7 +166,7 @@ void LogicUnit::vGenerateAsm(Stz* aText)
   }
   
   m_pTknVec->vSetAllTokens();
-  vDumpCode();
+  //vDumpCode();
 }
 
 /*----------------------------------------------------------------------------*/
