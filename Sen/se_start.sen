@@ -1170,6 +1170,37 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 1 - iterating index on l_shipdate
+  sPath
+  "
+  procedure Query1_ASM_I
+    parameters $Table
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    scan $Table
+    | EOAsm 100 0
+    //| sql 101
+    | stageC
+
+  stage stageC on origin :
+    EOAsm 103 0
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - converting loaded CRW data into RSB
   sPath
   "

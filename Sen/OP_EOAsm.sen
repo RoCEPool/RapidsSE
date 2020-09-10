@@ -9,50 +9,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: sql_PulseMarker_600
-
-  0 locals| pColumn |
-
-  ZK_PULSEMARKER_handler
-
-  // new a streamDef from table
-  table[] StreamDef[].new
-
-  // new a streamDef to be piped out
-  StreamDefOut[].new
-
-  // add column SUM(L_EXTENDEDPRICE*L_DISCOUNT) as REVENUE
-  5 StreamDef[].column@ to pColumn
-
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "revenue"
-  StreamDefOut[].addColumn
-
-  // now delete the streamDef of table
-  StreamDef[].delete
-
-  // set streamDefOut in the pot
-  true Pot[].useStreamDefOut
-  StreamDefOut[].pipeout
-
-  Counter0[] executeAsm
-  Counter0[] cleanupAsm
-
-  Pot[].pipeoutAllCompleted
-  Pot[].pipeoutAllDangling
-
-  Pot[].delete
-
-  // pipeout an EOS MARKER
-  Operand[].newEosMarker
-  Operand[].pipeOut
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : EOAsm_StartMarker \handler
@@ -71,6 +27,18 @@
 
   queryNo "sql %v" str.format profile.name!
   queryNo case
+
+    100 of
+      Counter0[] "../EO_text/QRY_100.txt" genAsm
+      idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
+      indexDef[].delete
+    endof
+
+    103 of
+      Counter0[] "../EO_text/QRY_103.txt" genAsm
+      idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
+      indexDef[].delete
+    endof
 
     600 of
       <tableNm> <indexNm> op__table_index not if
@@ -145,11 +113,37 @@
 
   queryNo case
 
-    600 of sql_PulseMarker_600   endof
+    600 of
+      EOAsm_PulseMarker_600
+    endof
+
     ZK_PULSEMARKER_handler
 
   endcase
 
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CRWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: EOAsm_CrwBuffer \handler
+
+  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  <queryNo> >int locals| queryNo |
+
+  queryNo case
+
+    100 of
+      Operand[].pipeIn
+      Operand[].asSrcCrwBuffer
+      Counter0[] executeAsm
+      Operand[].delete
+    endof
+
+  endcase
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -163,10 +157,16 @@
 
   queryNo case
 
+    103 of
+      Operand[].pipeIn
+      Operand[].asSrcRowSlab
+      Counter0[] executeAsm
+      Operand[].delete
+    endof
+
     601 of
       Operand[].pipeIn
       Operand[].asSrcRowSlab
-
       Counter0[] executeAsm
       Operand[].delete
       Pot[].pipeoutAllCompleted
@@ -190,6 +190,21 @@
   <queryNo> >int locals| queryNo |
 
   queryNo case
+
+    100 of
+      streamDef[].delete
+      Counter0[] executeAsm
+      Counter0[] cleanUpAsm
+      IndexTree[].delete
+      Pot[].pipeoutAllCompleted
+    endof
+
+    103 of
+      Counter0[] executeAsm
+      Counter0[] cleanUpAsm
+      IndexTree[].delete
+      Pot[].pipeoutAllCompleted
+    endof
 
     600 of
     endof
@@ -223,6 +238,15 @@
   <queryNo> >int to queryNo
   queryNo case
 
+    100 of
+      streamDefOut_100
+      streamDef[].asSrcStreamDef
+    endof
+
+    103 of
+      streamDefOut_103
+    endof
+
     601 of
       StreamDef[] to StreamDefOut[]
       true Pot[].useStreamDefOut
@@ -249,6 +273,7 @@
 
   op__topology
 
+  find: EOAsm_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: EOAsm_EosMarker   ZK_EOSMARKER   op[].handler!
   find: EOAsm_PulseMarker ZK_PULSEMARKER op[].handler!
   find: EOAsm_RsbBuffer   ZK_RSBBUFFER   op[].handler!

@@ -38,8 +38,11 @@ create index idx on lineitem (l_shipdate);
 // 10K ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 /time load lineitem "/DATA/TPCH/lineitem10.csv";
+/time Query6_I lineitem idx;
 /time Query6 lineitem idx;
+/time Query6_ASM lineitem idx;
 /time Query6_ASM_I lineitem idx;
+/time Query1_ASM_I lineitem;
 
 //drop table lineitem;
 //memoryLeaks;
