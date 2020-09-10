@@ -70,7 +70,7 @@ namespace Facts
     void  vElementOf(Fact* pElementOf);
     Fact* pElements(void);
     void  vElements(Fact* pElements);
-    Fact* pElementSearch(Stz* szNote);
+    Fact* pElementSearch(Stz* szNote, Stz* szValue);
     Fact* pElementThatIsSubClass(Fact* pOfSuperFact);
 
     i8    iFactNo(void);

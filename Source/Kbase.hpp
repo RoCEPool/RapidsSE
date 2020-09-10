@@ -66,9 +66,7 @@ namespace Facts
     i8 iNextFactNo(void);
   
     Fact* pValue(void);
-  
-    Fact* pQuestionFind(Stz* szNote);
-  
+    
     Question* pQuestionBorrow(void);
     void vQuestionReturn(Question** ppQuestion);
     

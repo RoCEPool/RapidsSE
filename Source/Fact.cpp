@@ -325,13 +325,13 @@ void Fact::vElements(Fact* pElements)
 /*----------------------------------------------------------------------------*/
 /* find element fact (recursively)                                            */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pElementSearch(Stz* szNote)
+Fact* Fact::pElementSearch(Stz* szNote, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   vTrace("pElementSearch %s\n"_Stz,m_sNote.azChar());
   
-  if (pAttributeFind("questionNm"_Stz,szNote))
+  if (pAttributeFind(szNote,szValue))
     return this;
 
   Fact* pElement = nullptr;
@@ -339,7 +339,7 @@ Fact* Fact::pElementSearch(Stz* szNote)
   for (Fact* pScan = m_pElements;
        pScan && !pElement;
        pScan = pScan->m_pElementNext)
-    pElement = pScan->pElementSearch(szNote);
+    pElement = pScan->pElementSearch(szNote,szValue);
 
   return pElement;
 }
@@ -899,7 +899,7 @@ bool Fact::bQuestion(Fact* pQuestion, Opaque* aArg)
   Fact* pMethodAttr = pQuestion->pAttributeFind("method"_Stz);
   if (! pMethodAttr)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "Fact::bQuestion: failed to find method\n"_Stz);
+           "Fact::bQuestion: failed to find method of question\n"_Stz);
 
   Method* pMethod = pMethodAttr->m_xValue.m_pMethod;
   
@@ -926,7 +926,7 @@ bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  Fact* pQuestion = m_pKbase->m_pContents->pElementSearch(szQuestion);
+  Fact* pQuestion = m_pKbase->m_pContents->pElementSearch("questionNm"_Stz,szQuestion);
   
   if (! pQuestion)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -937,6 +937,22 @@ bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
   
   return bResult;
 }
+/*----------------------------------------------------------------------------*/
+//bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+//
+//  Fact* pQuestion = m_pKbase->m_pContents->pElementSearch(szQuestion);
+//
+//  if (! pQuestion)
+//    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+//           "Fact::bQuestion: failed to find %s\n"_Stz,
+//           szQuestion->azChar());
+//
+//  bool bResult = bQuestion(pQuestion,aArg);
+//
+//  return bResult;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get super-class fact                                                       */
