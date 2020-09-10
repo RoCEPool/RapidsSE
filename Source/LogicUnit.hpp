@@ -63,6 +63,7 @@ namespace Expressions
     REG<Operand>     m_xpInfoSet;
     REG<Table>       m_xpInfoSetTable;
     REG<JoinRsb>     m_xpJoinRsb;
+    REG<Kbase>       m_xpKbase;
     REG<Loader>      m_xpLoader;
     REG<LogicCompiler> m_xpLogicCompiler;
     REG<Operand>     m_xpPipein;    // Pipein
