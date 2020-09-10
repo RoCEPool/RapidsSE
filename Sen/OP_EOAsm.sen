@@ -36,22 +36,11 @@
       index[].indexTree to indexTree[]
       indexTree[].asSrc
       Table[].asSrcStreamDef
-      "../EO_text/QRY_600.txt" LogicUnit[].genAsm
-
-      Counter0[] 1 == if
-        LogicCompiler[].new
-        LogicCompiler[].compile
-      then
-
+      Counter0[] "../EO_text/QRY_600.txt" genAsm
     endof
 
     601 of
-      //queryNo "QUERY %v" .printf
-      "../EO_text/QRY_601.txt" LogicUnit[].genAsm
-      Counter0[] 1 == if
-        LogicCompiler[].new
-        LogicCompiler[].compile
-      then
+      Counter0[] "../EO_text/QRY_601.txt" genAsm
     endof
 
   endcase
