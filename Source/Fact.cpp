@@ -16,7 +16,7 @@ __aFooterFunction(Fact)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Fact::Fact(Kbase* pKbase, Fact* pSuper, Stz* szNote)
+Fact::Fact(Kbase* pKbase, Fact* pSuper, Stz* szName)
 : Object(CN_FACT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
@@ -26,7 +26,7 @@ Fact::Fact(Kbase* pKbase, Fact* pSuper, Stz* szNote)
   m_pKbase  = pKbase;
   
   m_iFactNo = pSuper ? m_pKbase->iNextFactNo() : 0;
-  m_sNote   = szNote ? szNote : C_NO_NOTE;
+  m_sName   = szName ? szName : C_NO_NOTE;
   m_xValue.m_pObject = nullptr;
     
   m_pSubclassOf    = pSuper;
@@ -67,7 +67,7 @@ void Fact::vAncestry(Stz* szDst)
     szDst->vConcat("."_Stz);
   }
   
-  szDst->vCatSprint("[%lld]%s"_Stz,m_iFactNo,m_sNote.azChar());
+  szDst->vCatSprint("[%lld]%s"_Stz,m_iFactNo,m_sName.azChar());
     
   if (m_pSubclassOf)
     m_pSubclassOf->vAncestry(szDst);
@@ -97,7 +97,7 @@ void Fact::vAttributeAdd(Fact* pAttribute)
 /*----------------------------------------------------------------------------*/
 /* find attribute fact                                                        */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pAttributeFind(Stz* szNote, Stz* szStz)
+Fact* Fact::pAttributeFind(Stz* szName, Stz* szStz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
     
@@ -107,7 +107,7 @@ Fact* Fact::pAttributeFind(Stz* szNote, Stz* szStz)
        pScan && !pAttribute;
        pScan = pScan->m_pAttributeNext) {
     
-    if (! pScan->m_sNote.bSame(szNote))
+    if (! pScan->m_sName.bSame(szName))
       continue;
 
     // has to be a text
@@ -127,7 +127,7 @@ Fact* Fact::pAttributeFind(Stz* szNote, Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* find attribute fact                                                        */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pAttributeFind(Stz* szNote, Fact* pSuper)
+Fact* Fact::pAttributeFind(Stz* szName, Fact* pSuper)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
     
@@ -137,7 +137,7 @@ Fact* Fact::pAttributeFind(Stz* szNote, Fact* pSuper)
        pScan && !pAttribute;
        pScan = pScan->m_pAttributeNext) {
     
-    if (pScan->m_sNote.bSame(szNote)) {
+    if (pScan->m_sName.bSame(szName)) {
       pAttribute = pScan;
       break;
     }
@@ -245,11 +245,11 @@ void Fact::vElementAdd(Fact* pElement)
 /*----------------------------------------------------------------------------*/
 /* find element fact (recursively)                                            */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pElementFind(Stz* szNote, Fact* pSuper)
+Fact* Fact::pElementFind(Stz* szName, Fact* pSuper)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  if (m_sNote.bSame(szNote) && (! pSuper || bIsSubClass(pSuper)))
+  if (m_sName.bSame(szName) && (! pSuper || bIsSubClass(pSuper)))
     return this;
   
   Fact* pElement = nullptr;
@@ -257,7 +257,7 @@ Fact* Fact::pElementFind(Stz* szNote, Fact* pSuper)
   for (Fact* pScan = m_pElements;
        pScan && !pElement;
        pScan = pScan->m_pElementNext)
-    pElement = pScan->pElementFind(szNote,pSuper);
+    pElement = pScan->pElementFind(szName,pSuper);
 
   return pElement;
 }
@@ -325,13 +325,13 @@ void Fact::vElements(Fact* pElements)
 /*----------------------------------------------------------------------------*/
 /* find element fact (recursively)                                            */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pElementSearch(Stz* szNote, Stz* szValue)
+Fact* Fact::pElementSearch(Stz* szName, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  vTrace("pElementSearch %s\n"_Stz,m_sNote.azChar());
+  vTrace("pElementSearch %s\n"_Stz,m_sName.azChar());
   
-  if (pAttributeFind(szNote,szValue))
+  if (pAttributeFind(szName,szValue))
     return this;
 
   Fact* pElement = nullptr;
@@ -339,7 +339,7 @@ Fact* Fact::pElementSearch(Stz* szNote, Stz* szValue)
   for (Fact* pScan = m_pElements;
        pScan && !pElement;
        pScan = pScan->m_pElementNext)
-    pElement = pScan->pElementSearch(szNote,szValue);
+    pElement = pScan->pElementSearch(szName,szValue);
 
   return pElement;
 }
@@ -441,17 +441,17 @@ bool Fact::bIsSubClass(Fact* pOfFact)
 /*----------------------------------------------------------------------------*/
 /* is this fact a sub-class of given fact                         (recursive) */
 /*----------------------------------------------------------------------------*/
-bool Fact::bIsSubClass(Stz* szNote)
+bool Fact::bIsSubClass(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  if (m_sNote.bSame(szNote))
+  if (m_sName.bSame(szName))
     return true;
   
   if (! m_pSubclassOf)
     return false;
   
-  return m_pSubclassOf->bIsSubClass(szNote);
+  return m_pSubclassOf->bIsSubClass(szName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -517,17 +517,17 @@ bool Fact::bIsXref(void)
 /*----------------------------------------------------------------------------*/
 /* create a new instance of this fact                                         */
 /*----------------------------------------------------------------------------*/
-Fact* Fact::pNewInstance(Stz* szNote)
+Fact* Fact::pNewInstance(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  Fact* pFact = new Fact(m_pKbase, this, szNote);
+  Fact* pFact = new Fact(m_pKbase, this, szName);
   
-  if (! szNote) {
-    pFact->m_sNote.vSprint("%s"_Stz,m_sNote.azChar());
-//    StrLib::vRemovePrefix(pFact->m_sNote.azChar(),'_');
-//    StrLib::vRemoveSuffix(pFact->m_sNote.azChar(),'_');
-    StrLib::vTopTail(pFact->m_sNote.azChar(),'_');
+  if (! szName) {
+    pFact->m_sName.vSprint("%s"_Stz,m_sName.azChar());
+//    StrLib::vRemovePrefix(pFact->m_sName.azChar(),'_');
+//    StrLib::vRemoveSuffix(pFact->m_sName.azChar(),'_');
+    StrLib::vTopTail(pFact->m_sName.azChar(),'_');
   }
   
   return pFact;
@@ -536,21 +536,21 @@ Fact* Fact::pNewInstance(Stz* szNote)
 /*----------------------------------------------------------------------------*/
 /* get fact name                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Fact::szNote(void)
+Stz* Fact::szName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_sNote;
+  return m_sName;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set fact note                                                              */
+/* set fact name                                                              */
 /*----------------------------------------------------------------------------*/
-void Fact::vNote(Stz* szNote)
+void Fact::vName(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_sNote = szNote;
+  m_sName = szName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -571,7 +571,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
   else
     sPrefix = "Has|"_Stz;
 
-  if (m_sNote.bSame("question"_Stz))
+  if (m_sName.bSame("question"_Stz))
     vDebugPoint();
   
   switch (iAs) {
@@ -582,7 +582,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
              sPrefix.azChar(),
 
              m_iFactNo,
-             m_sNote.azChar()
+             m_sName.azChar()
              );
       break;
       
@@ -593,7 +593,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
              sPrefix.azChar(),
              
              m_iFactNo,
-             m_sNote.azChar()
+             m_sName.azChar()
              );
       break;
       
@@ -604,7 +604,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
              sPrefix.azChar(),
              
              m_iFactNo,
-             m_sNote.azChar()
+             m_sName.azChar()
              );
       break;
       
@@ -615,7 +615,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
              sPrefix.azChar(),
              
              m_iFactNo,
-             m_sNote.azChar()
+             m_sName.azChar()
              );
       break;
   }
@@ -654,7 +654,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
           break;
         case FU_XREF:
           vTrace(" = Xref %s"_Stz,
-                 m_xValue.m_pXref ? m_xValue.m_pXref->szNote()
+                 m_xValue.m_pXref ? m_xValue.m_pXref->szName()
                                      : ""_Stz);
           break;
         default:
@@ -668,10 +668,10 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
     vTrace(" |"_Stz);
   
   if (m_pAttributeOf)
-    vTrace(" AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
+    vTrace(" AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szName());
   
   if (m_pElementOf)
-    vTrace(" ElmOf: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
+    vTrace(" ElmOf: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szName());
 
   if (m_pSubclassOf) {
     s2K sAncestry;
@@ -705,7 +705,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 //  else
 //    sPrefix = "-+-"_Stz;
 //
-//  if (m_sNote.bSame("question"_Stz))
+//  if (m_sName.bSame("question"_Stz))
 //    vDebugPoint();
 //
 //  if (iAs) {
@@ -726,7 +726,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 //             iAs,
 //
 //             m_iFactNo,
-//             m_sNote.azChar()
+//             m_sName.azChar()
 //             );
 //      break;
 //
@@ -737,7 +737,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 //             iAs,
 //
 //             m_iFactNo,
-//             m_sNote.azChar()
+//             m_sName.azChar()
 //             );
 //      break;
 //
@@ -749,7 +749,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 //             iAs,
 //
 //             m_iFactNo,
-//             m_sNote.azChar()
+//             m_sName.azChar()
 //             );
 //      break;
 //
@@ -760,7 +760,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 //             iAs,
 //
 //             m_iFactNo,
-//             m_sNote.azChar()
+//             m_sName.azChar()
 //             );
 //      break;
 //  }
@@ -781,7 +781,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 //                              : ""_Stz);
 //  else if (bIsXref())
 //    vTrace(" = Xref %s"_Stz,
-//           m_xValue.m_pXref ? m_xValue.m_pXref->szNote()
+//           m_xValue.m_pXref ? m_xValue.m_pXref->szName()
 //                               : ""_Stz);
 //  else { }
 //  */
@@ -820,7 +820,7 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 //          break;
 //        case FU_XREF:
 //          vTrace(" = Xref %s"_Stz,
-//                 m_xValue.m_pXref ? m_xValue.m_pXref->szNote()
+//                 m_xValue.m_pXref ? m_xValue.m_pXref->szName()
 //                                     : ""_Stz);
 //          break;
 //        default:
@@ -833,9 +833,9 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
 //  if (m_pAttributeOf || m_pElementOf || m_pSubclassOf)
 //    vTrace(" //"_Stz);
 //  if (m_pAttributeOf)
-//    vTrace(" AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szNote());
+//    vTrace(" AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szName());
 //  if (m_pElementOf)
-//    vTrace(" ElmOf: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szNote());
+//    vTrace(" ElmOf: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szName());
 //  if (m_pSubclassOf) {
 //    s2K sAncestry;
 //    vAncestry(sAncestry);
@@ -894,7 +894,7 @@ bool Fact::bQuestion(Fact* pQuestion, Opaque* aArg)
   if (! pQuestion->bIsSubClass("_question_"_Stz))
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Fact::bQuestion: %s is not a subclass of _question_\n"_Stz,
-           pQuestion->m_sNote.azChar());
+           pQuestion->m_sName.azChar());
 
   Fact* pMethodAttr = pQuestion->pAttributeFind("method"_Stz);
   if (! pMethodAttr)
