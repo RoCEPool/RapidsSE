@@ -437,24 +437,12 @@
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
-  <queryNo> >int locals| queryNo |
-
-  queryNo case
-
-    103 of
-      false Counter0[] executeAsmArgs
-      Counter0[] cleanUpAsm
-      IndexTree[].delete
-      Pot[].pipeoutAllCompleted
-    endof
-
-    601 of
-      Counter0[] cleanUpAsm
-    endof
-
-  endcase
-
-  //queryNo "dangling %v" .printf
+  false Counter0[] executeAsmArgs
+  Counter0[] cleanUpAsm
+  IndexTree[].isNull not if
+    IndexTree[].delete
+  then
+  Pot[].pipeoutAllCompleted
   Pot[].pipeoutAllDangling
   Pot[].delete
 

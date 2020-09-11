@@ -15,6 +15,7 @@ void Step::vAddSteps_IndexTree(void)
   vAddStep("IndexTree[].asSrc"_Stz,     &Step::vIndexTreeAsSrc);
   vAddStep("IndexTree[].asTmp"_Stz,     &Step::vIndexTreeAsTmp);
   vAddStep("IndexTree[].delete"_Stz,    &Step::vIndexTreeDelete);
+  vAddStep("IndexTree[].isNull"_Stz,    &Step::vIndexTreeIsNull);
   vAddStep("IndexTree[].new"_Stz,       &Step::vIndexTreeNew);
   vAddStep("IndexTree[].set"_Stz,       &Step::vIndexTreeSet);
   
@@ -173,6 +174,18 @@ void Step::vIndexTreeGet(void)
   ENTRY();
   
   m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIndexTree);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexTree[].isNull -- is indexTree null ?                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexTreeIsNull(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpIndexTree.bIsNull() ? 1 : 0);
   
   EXIT();
 }

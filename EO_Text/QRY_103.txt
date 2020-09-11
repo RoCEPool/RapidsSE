@@ -7,7 +7,10 @@ EO_INIT
 EO_ENTER
 
 EO_JMP_TRUE BEGIN_RSB_SRC
-EO_CALL SUBROUTINE_IXT_TO_RSB
+
+// handle EOSMarker
+EO_CALL SUBROUTINE_EOS
+
 EO_JMP QRY_103_DONE
 
 Label BEGIN_RSB_SRC
@@ -176,9 +179,9 @@ EO_RETURN
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// BEGIN SUBROUTINE: SUBROUTINE_IXT_TO_RSB
+// BEGIN SUBROUTINE: SUBROUTINE_EOS (IXT_TO_RSB)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Label SUBROUTINE_IXT_TO_RSB
+Label SUBROUTINE_EOS
 
 //vAddCodeString(EO_PRINTF **103** SUBROUTINE_IXT_TO_RSB\n
 

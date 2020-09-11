@@ -508,6 +508,7 @@ public:
   void vIndexTreeDelete(void);
   void vIndexTreeGet(void);
   void vIndexTreeInsEntBuffer(void);
+  void vIndexTreeIsNull(void);
   void vIndexTreeNew(void);
   void vIndexTreeSet(void);
 
