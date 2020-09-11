@@ -9,10 +9,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Kbase(void)
 {
-  vAddStep("Kbase[]"_Stz,        &Step::vKbasePointer);
+  vAddStep("Kbase[]"_Stz,        &Step::vKbaseSet);
   
   vAddStep("Kbase[].delete"_Stz, &Step::vKbaseDelete);
+  vAddStep("Kbase[].get"_Stz,    &Step::vKbaseGet);
   vAddStep("Kbase[].new"_Stz,    &Step::vKbaseNew);
+  vAddStep("Kbase[].print"_Stz,  &Step::vKbasePrint);
+  vAddStep("Kbase[].set"_Stz,    &Step::vKbaseSet);
   vAddStep("Kbase[].test"_Stz,   &Step::vKbaseTest);
 }
 
@@ -32,6 +35,20 @@ void Step::vKbaseDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Kbase[].get -- return pointer to kbase                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseGet(void)
+{
+  ENTRY();
+  
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+
+  m_pDataStack->vPushPtr(pKbase);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Kbase[].new -- create a new kbase                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vKbaseNew(void)
@@ -46,18 +63,43 @@ void Step::vKbaseNew(void)
   EXIT();
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* Kbase[] -- return pointer to kbase                                         */
+/* Kbase[].print -- print kbase                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vKbasePointer(void)
+void Step::vKbasePrint(void)
 {
   ENTRY();
   
+  s256 sPath;
+  m_pDataStack->vPopStr(sPath,__func__);
+    
   Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  File* pFile = new File(nullptr);
+  
+  bool bResult = pFile->bOpenWrite(sPath);
+  
+  if (bResult) {
+    
+    pFile->vClose();
+  }
+  
+  delete pFile;
 
-  m_pDataStack->vPushPtr(pKbase);
+  EXIT();
+}
 
+/*----------------------------------------------------------------------------*/
+/* Kbase[].set -- set reg Kbase                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseSet(void)
+{
+  ENTRY();
+  
+  Kbase* pKbase = _pKbase(m_pDataStack->pPopPtr(__func__));
+
+  m_pLogicUnit->m_xpKbase = pKbase;
+  
   EXIT();
 }
 

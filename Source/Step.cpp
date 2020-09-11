@@ -76,6 +76,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Error();
   Step::vAddSteps_Executable();
 
+  Step::vAddSteps_Fact();
   Step::vAddSteps_File();
   Step::vAddSteps_Flow();
   Step::vAddSteps_Forth();

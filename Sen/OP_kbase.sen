@@ -17,6 +17,27 @@
 
   kbase[].delete
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  file::new to file0[]
+
+  "/Users/Shared/kbase/kbase.txt" OPEN_READ file0[] file.open if
+
+    "FILE OPENED" .
+    
+    begin
+      file0[] file.readLine
+    while
+      .
+    repeat
+
+    file0[] file.close
+
+  then
+
+  File0[] file.delete
+  nullptr File0[].set
+
   true
 ;
 

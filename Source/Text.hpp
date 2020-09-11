@@ -20,11 +20,17 @@ namespace Structures
     void  operator delete(void* pText);
     
     Text(void);
+    Text(i8 nStringSize);
     Text(Stz* szArg);
    ~Text(void) noexcept(false);
   
     Stz* szGet(void);
     void vSet(Stz* szArg);
+    void vSizeText(void);
+
+  private:
+    void vDeleteBuffer(void);
+    void vNewBuffer(i8 nStringSize);
     
     Footer* aFooter(void);
   };

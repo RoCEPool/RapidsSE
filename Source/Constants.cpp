@@ -153,7 +153,8 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_MAX_RECORD"_Stz,        C_MAX_RECORD);
   vAddConstant("C_MAX_PATH"_Stz,          C_MAX_PATH);
   vAddConstant("C_SIZE_POOL_BUFFER"_Stz,  C_SIZE_POOL_BUFFER);
-  
+  vAddConstant("C_SIZE_LARGE_TEXT"_Stz,   C_SIZE_LARGE_TEXT);
+
   // var args
   vAddConstant("C_VARGS_BEGIN"_Stz,       C_VARGS_BEGIN);
   vAddConstant("C_VARGS_END"_Stz,         C_VARGS_END);

@@ -355,6 +355,12 @@ public:
   void vExprVecGet(void);
   void vExprVecNew(void);
 
+  // fact
+  void vFactDelete(void);
+  void vFactGet(void);
+  void vFactNew(void);
+  void vFactSet(void);
+
   // file
   void vFile0Get(void);
   void vFile0GetEofLocation(void);
@@ -370,6 +376,7 @@ public:
   void vFileReadChunk(void);
   void vFileReadCrwBlock(void);
   void vFileReadLine(void);
+  void vFileReadText(void);
   void vFileSeek(void);
   void vFileSeekRndCsv(void);
   void vFileSize(void);
@@ -846,8 +853,10 @@ public:
 
   // kbase
   void vKbaseDelete(void);
+  void vKbaseGet(void);
   void vKbaseNew(void);
-  void vKbasePointer(void);
+  void vKbasePrint(void);
+  void vKbaseSet(void);
   void vKbaseTest(void);
 
   // loader

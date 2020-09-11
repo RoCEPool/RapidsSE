@@ -597,7 +597,7 @@ void Fact::vName(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* print fact (recursive)                                                     */
 /*----------------------------------------------------------------------------*/
-void Fact::vPrint_r(i8 iDepth, i8 iAs)
+void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
@@ -725,12 +725,12 @@ void Fact::vPrint_r(i8 iDepth, i8 iAs)
   for (Fact* pAttribute = m_pAttributes;
        pAttribute;
        pAttribute = pAttribute->m_pAttributeNext)
-    pAttribute->vPrint_r(iDepth + 1, iAs ? 2 : 0);
+    pAttribute->vPrint_r(pFile, iDepth + 1, iAs ? 2 : 0);
   
   for (Fact* pElement = m_pElements;
        pElement;
        pElement = pElement->m_pElementNext)
-    pElement->vPrint_r(iAs ? iDepth + 1 : 0, iAs ? 3 : 0);
+    pElement->vPrint_r(pFile, iAs ? iDepth + 1 : 0, iAs ? 3 : 0);
 }
 /*----------------------------------------------------------------------------*/
 //void Fact::vPrint_r(i8 iDepth, i8 iAs)
@@ -968,7 +968,7 @@ bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   Fact* pQuestion =
-    m_pKbase->m_pContents->pElementFindNmVal("questionNm"_Stz,szQuestion);
+    m_pKbase->m_pReference->pElementFindNmVal("questionNm"_Stz,szQuestion);
     
   if (! pQuestion)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
