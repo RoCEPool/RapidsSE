@@ -708,6 +708,48 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
 }
 
 /*----------------------------------------------------------------------------*/
+/* write to trace file etc                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs)
+{
+  static Lock oLock(LK_TRACE,nullptr);
+  static char caFormatted[C_1MB] = {'\0'};
+  
+  bool bUseLock = (gpAttachMap ? true : false);
+  bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
+  
+  if (bUseLock)
+    oLock.vGrabWrite();
+  
+  // produce formatted line
+  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
+  
+  // print formatted line
+  fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);
+  fflush(stdout);
+  
+  if (gpTraceFile) {
+    gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
+    gpTraceFile->vFlush();
+  }
+  
+  if (pFile) {
+    pFile->vPrint("%s"_Stz,caFormatted);
+    pFile->vFlush();
+  }
+  
+  StrLib::vStrip(caFormatted,'\n');
+  
+  if (gpAttachMap)
+    AM::vLogSys(SL_INF,gpAttachMap,eSysAct,
+                "%s"_Stz, //!format-LogSys
+                caFormatted);
+  
+  if (bUseLock)
+    oLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
