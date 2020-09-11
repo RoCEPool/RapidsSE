@@ -300,10 +300,10 @@ void Step::vFileReadText(void)
 {
   ENTRY();
   
-  Text* pText = _pText(m_pDataStack->pPopPtr(__func__));
-
   File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
+  
+  Text* pText = _pText(m_pDataStack->pPopPtr(__func__));
   
   Stz* szDst = pText->szGet();
   

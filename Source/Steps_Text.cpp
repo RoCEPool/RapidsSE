@@ -34,7 +34,7 @@ void Step::vTextNew(void)
 {
   ENTRY();
 
-  Text* pText = new Text;
+  Text* pText = new Text(C_SIZE_LARGE_TEXT);
   
   m_pDataStack->vPushPtr(pText);
   

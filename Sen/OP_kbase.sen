@@ -27,6 +27,8 @@
 
     "FILE OPENED" .
     
+    pText file0[] file.readText .
+
     file0[] file.close
 
   then

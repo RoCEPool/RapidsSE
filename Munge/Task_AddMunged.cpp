@@ -13594,6 +13594,8 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "    \"FILE OPENED\" .\n"
     "    \n"
+    "    pText file0[] file.readText .\n"
+    "\n"
     "    file0[] file.close\n"
     "\n"
     "  then\n"
