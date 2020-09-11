@@ -50,7 +50,8 @@ namespace Facts
     ~Fact(void) noexcept(false);
   
     static void vDeleteRecursively(Fact* pFact);
-  
+    static void vDeleteBelowRecursively(Fact* pFact);
+
     void  vAncestry(Stz* szDst);
   
     void  vAttributeAppend(Fact* pAttribute);

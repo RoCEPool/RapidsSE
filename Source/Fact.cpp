@@ -77,6 +77,25 @@ void Fact::vDeleteRecursively(Fact* pFact)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete facts below given fact recursively                                  */
+/*----------------------------------------------------------------------------*/
+void Fact::vDeleteBelowRecursively(Fact* pFact)
+{
+  _static_
+  
+  for (Fact* pScan = pFact->m_pAttributes;
+       pScan;
+       pScan = pScan->m_pAttributeNext)
+    vDeleteRecursively(pScan);
+
+  for (Fact* pScan = pFact->m_pElements;
+       pScan;
+       pScan = pScan->m_pElementNext)
+    vDeleteRecursively(pScan);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
