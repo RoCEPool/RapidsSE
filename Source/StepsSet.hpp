@@ -853,8 +853,9 @@ public:
 
   // kbase
   void vKbaseDelete(void);
+  void vKbaseGet(void);
   void vKbaseNew(void);
-  void vKbasePointer(void);
+  void vKbaseSet(void);
   void vKbaseTest(void);
 
   // loader
