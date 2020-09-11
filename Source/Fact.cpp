@@ -650,12 +650,15 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
     sPrefix = "Bud{"_Stz;
   else if (! iAs)
     sPrefix = "Aha{"_Stz;
+  else if (bIsSubClass("_folder_"_Stz))
+    sPrefix = "Has{"_Stz;
   else if (m_pElementOf)
     sPrefix = "Elm{"_Stz;
   else if (m_pAttributeOf)
     sPrefix = "Atr{"_Stz;
   else
-    sPrefix = "Has{"_Stz;
+    ///sPrefix = "Has{"_Stz;
+    sPrefix = "???{"_Stz;
 
   if (m_sName.bSame("question"_Stz))
     vDebugPoint();
