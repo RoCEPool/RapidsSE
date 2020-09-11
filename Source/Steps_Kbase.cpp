@@ -81,6 +81,8 @@ void Step::vKbasePrint(void)
   
   if (bResult) {
     
+    pKbase->vPrint(pFile);
+    
     pFile->vClose();
   }
   
