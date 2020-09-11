@@ -49,6 +49,8 @@ namespace Facts
     Fact(Kbase* pKbase, Fact* pSuper, Stz* szName=nullptr);
     ~Fact(void) noexcept(false);
   
+    static void vDeleteRecursively(Fact* pFact);
+  
     void  vAncestry(Stz* szDst);
   
     void  vAttributeAppend(Fact* pAttribute);
