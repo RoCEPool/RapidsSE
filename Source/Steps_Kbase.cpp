@@ -14,6 +14,7 @@ void Step::vAddSteps_Kbase(void)
   vAddStep("Kbase[].delete"_Stz, &Step::vKbaseDelete);
   vAddStep("Kbase[].get"_Stz,    &Step::vKbaseGet);
   vAddStep("Kbase[].new"_Stz,    &Step::vKbaseNew);
+  vAddStep("Kbase[].print"_Stz,  &Step::vKbasePrint);
   vAddStep("Kbase[].set"_Stz,    &Step::vKbaseSet);
   vAddStep("Kbase[].test"_Stz,   &Step::vKbaseTest);
 }
@@ -59,6 +60,32 @@ void Step::vKbaseNew(void)
   
   m_pLogicUnit->m_xpKbase = new Kbase(sKbaseNm);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].print -- print kbase                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vKbasePrint(void)
+{
+  ENTRY();
+  
+  s256 sPath;
+  m_pDataStack->vPopStr(sPath,__func__);
+    
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  File* pFile = new File(nullptr);
+  
+  bool bResult = pFile->bOpenWrite(sPath);
+  
+  if (bResult) {
+    
+    pFile->vClose();
+  }
+  
+  delete pFile;
+
   EXIT();
 }
 

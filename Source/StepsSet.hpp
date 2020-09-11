@@ -855,6 +855,7 @@ public:
   void vKbaseDelete(void);
   void vKbaseGet(void);
   void vKbaseNew(void);
+  void vKbasePrint(void);
   void vKbaseSet(void);
   void vKbaseTest(void);
 
