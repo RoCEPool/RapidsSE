@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : kbase_action
 
+  text::new locals| pText |
+
   "Kbase Testing" .
 
   "Kbase-Name" kbase[].new
@@ -16,6 +18,23 @@
   kbase[].test
 
   kbase[].delete
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  file::new to file0[]
+
+  "/Users/Shared/kbase/kbase.txt" OPEN_READ file0[] file.open if
+
+    "FILE OPENED" .
+    
+    file0[] file.close
+
+  then
+
+  File0[] file.delete
+  nullptr File0[].set
+
+  pText text::delete
 
   true
 ;

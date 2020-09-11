@@ -50,36 +50,38 @@ Text::~Text(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
   
-  switch (m_pTextBuffer->eClass()) {
-      
-    case CN_TEXTLARGE: {
-      TextLarge* pTextLarge = _pTextLarge(m_pTextBuffer);
-      delete pTextLarge;
-      break;
+  if (m_pTextBuffer) {
+    switch (m_pTextBuffer->eClass()) {
+        
+      case CN_TEXTLARGE: {
+        TextLarge* pTextLarge = _pTextLarge(m_pTextBuffer);
+        delete pTextLarge;
+        break;
+      }
+        
+      case CN_TEXTMEDIUM: {
+        TextMedium* pTextMedium = _pTextMedium(m_pTextBuffer);
+        delete pTextMedium;
+        break;
+      }
+        
+      case CN_TEXTSMALL:  {
+        TextSmall* pTextSmall = _pTextSmall(m_pTextBuffer);
+        delete pTextSmall;
+        break;
+      }
+        
+      case CN_TEXTTINY: {
+        TextTiny* pTextTiny = _pTextTiny(m_pTextBuffer);
+        delete pTextTiny;
+        break;
+      }
+        
+      default:
+        RASSERT(0);
     }
-      
-    case CN_TEXTMEDIUM: {
-      TextMedium* pTextMedium = _pTextMedium(m_pTextBuffer);
-      delete pTextMedium;
-      break;
-    }
-      
-    case CN_TEXTSMALL:  {
-      TextSmall* pTextSmall = _pTextSmall(m_pTextBuffer);
-      delete pTextSmall;
-      break;
-    }
-      
-    case CN_TEXTTINY: {
-      TextTiny* pTextTiny = _pTextTiny(m_pTextBuffer);
-      delete pTextTiny;
-      break;
-    }
-      
-    default:
-      RASSERT(0);
   }
-
+  
 }
 
 /*----------------------------------------------------------------------------*/
