@@ -554,7 +554,7 @@ void LogicUnit::vGenerateQuery103(void)
   
   //vAddCode(EO_RSB_SRC_TEST);
   vAddCodeLabel(EO_JMP_TRUE,"BEGIN_RSB_SRC:"_Stz);
-  vAddCodeLabel(EO_CALL,"SUBROUTINE_IXT_TO_RSB:"_Stz);
+  vAddCodeLabel(EO_CALL,"SUBROUTINE_EOS:"_Stz);
   vAddCodeLabel(EO_JMP,"QRY_103_DONE:"_Stz);
   
   vDefineLabel("BEGIN_RSB_SRC:"_Stz);
@@ -723,9 +723,9 @@ void LogicUnit::vGenerateQuery103(void)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // BEGIN SUBROUTINE: SUBROUTINE_IXT_TO_RSB
+  // BEGIN SUBROUTINE: SUBROUTINE_EOS (IXT_TO_RSB)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vDefineLabel("SUBROUTINE_IXT_TO_RSB:"_Stz);
+  vDefineLabel("SUBROUTINE_EOS:"_Stz);
   
   //vAddCodeString(EO_PRINTF,"**103** SUBROUTINE_IXT_TO_RSB\n"_Stz);
   
@@ -2016,6 +2016,9 @@ void LogicUnit::vGenerateQuery601(void)
   vDefineLabel("QRY_601:"_Stz);
   vAddCode(EO_INIT);
   
+  // handle EOS case
+  vAddCodeLabel(EO_JMP_FALSE,"END_RSB_SRC:"_Stz);
+  
   // new a rsb dst row if not there
   vAddCode(EO_RSB_DST_TESTROW);
   vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
@@ -2057,7 +2060,6 @@ void LogicUnit::vGenerateQuery601(void)
 //  vAddCodeArg(EO_RSB_DST_PUSHCOLI,(i8)Q601_COUNT);
 //  vAddCode(EO_ADD);
 //  vAddCodeArg(EO_RSB_DST_POPCOLI,(i8)Q601_COUNT);
-  
   
   vAddCode(EO_RETURN);
     

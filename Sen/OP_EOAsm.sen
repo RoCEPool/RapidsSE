@@ -441,17 +441,11 @@
 
   queryNo case
 
-    100 of
-    endof
-
     103 of
       false Counter0[] executeAsmArgs
       Counter0[] cleanUpAsm
       IndexTree[].delete
       Pot[].pipeoutAllCompleted
-    endof
-
-    600 of
     endof
 
     601 of

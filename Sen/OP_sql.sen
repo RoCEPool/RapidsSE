@@ -908,9 +908,9 @@ then
       Operand[].asSrcRowSlab
 
       Counter0[] 1 == if
-        LogicUnit[].dynFun
+        true 1 LogicUnit[].dynFunArgs
       else
-        LogicUnit[].transform
+        true 1 LogicUnit[].transformArgs
       then
       Operand[].delete
       Pot[].pipeoutAllCompleted
