@@ -355,6 +355,12 @@ public:
   void vExprVecGet(void);
   void vExprVecNew(void);
 
+  // fact
+  void vFactDelete(void);
+  void vFactGet(void);
+  void vFactNew(void);
+  void vFactSet(void);
+
   // file
   void vFile0Get(void);
   void vFile0GetEofLocation(void);
