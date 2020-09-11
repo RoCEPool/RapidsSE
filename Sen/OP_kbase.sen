@@ -11,6 +11,8 @@
 
   "Kbase Testing" .
 
+  tokenVec::new locals| pTknVec |
+
   "Kbase-Name" kbase[].new
 
   kbase[].test
@@ -30,7 +32,9 @@
     begin
       file0[] file.readLine
     while
-      .
+      dup .
+      pTknVec tokenVec.tokenise
+      pTknVec tokenVec.dump
     repeat
 
     file0[] file.close
@@ -39,6 +43,8 @@
 
   File0[] file.delete
   nullptr File0[].set
+
+  pTknVec tokenVec::delete
 
   true
 ;

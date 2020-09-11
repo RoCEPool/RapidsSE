@@ -1745,7 +1745,9 @@ public:
 
   // tokenVec
   void vTokenVecDelete(void);
+  void vTokenVecDump(void);
   void vTokenVecNew(void);
+  void vTokenVecTokenise(void);
 
   // trace
   void vTraceOff(void);
