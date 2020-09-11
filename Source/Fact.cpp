@@ -646,7 +646,9 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
   
   s32 sPrefix;
   
-  if (! iAs)
+  if (! m_iFactNo)
+    sPrefix = "Bud{"_Stz;
+  else if (! iAs)
     sPrefix = "Aha{"_Stz;
   else if (m_pElementOf)
     sPrefix = "Elm{"_Stz;

@@ -423,15 +423,16 @@ void Kbase::vAprioriFacts(void)
   m_p_NameSeq_ = pConceptAdd(m_p_Text_,"_nameSeq_"_Stz);
   m_p_Format_ = pConceptAdd(m_p_Text_,"_format_"_Stz);
 
-  m_p_Quality_ = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
-  m_p_Questions_ = pConceptAdd(m_p_Concept_,"_questions_"_Stz);
-  m_p_Question_ = pConceptAdd(m_p_Questions_,"_question_"_Stz);
-  Fact* p_QuestionNm_ = pConceptAdd(m_p_Name_,"_questionNm_"_Stz);
-  
   m_p_Type_ = pConceptAdd(m_p_Concept_,"_type_"_Stz);
   m_p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
   m_p_Folder_ = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
 
+  m_p_Quality_ = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
+  
+  m_p_Questions_ = pConceptAdd(m_p_Folder_,"_questions_"_Stz);
+  m_p_Question_ = pConceptAdd(m_p_Questions_,"_question_"_Stz);
+  Fact* p_QuestionNm_ = pConceptAdd(m_p_Name_,"_questionNm_"_Stz);
+  
   m_p_Rule_ = pConceptAdd(m_p_Concept_,"_rule_"_Stz);
   m_p_Condition_ = pConceptAdd(m_p_Concept_,"_condition_"_Stz);
   m_p_Action_ = pConceptAdd(m_p_Concept_,"_action_"_Stz);
@@ -509,11 +510,11 @@ void Kbase::vAprioriFacts(void)
 
   Fact* p_Nodes_ = pConceptAdd(m_p_Int_,"_nodes_"_Stz);
   Fact* p_Partitions_ = pConceptAdd(m_p_Int_,"_partitions_"_Stz);
-  Fact* p_Grid_ = pConceptAdd(m_p_Type_,"_grid_"_Stz);
+  Fact* p_Grid_ = pConceptAdd(m_p_Folder_,"_grid_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pReference = pConceptAdd(m_p_Type_,"_reference_"_Stz);
+  Fact* pReference = pConceptAdd(m_p_Folder_,"_reference_"_Stz);
   m_pReference = pReference->pNewInstance();
 
   Fact* pQuestions = m_p_Questions_->pNewInstance();
@@ -532,7 +533,7 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pContents = pConceptAdd(m_p_Type_,"_contents_"_Stz);
+  Fact* pContents = pConceptAdd(m_p_Folder_,"_contents_"_Stz);
   m_pContents = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
 
   Fact* pGrid = p_Grid_->pNewInstance();
