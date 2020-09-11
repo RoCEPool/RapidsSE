@@ -99,7 +99,7 @@ namespace Facts
     Stz*  szName(void);
     void  vName(Stz* szName);
   
-    void  vPrint_r(i8 iDepth, i8 iAs);
+    void  vPrint_r(File* pFile, i8 iDepth, i8 iAs);
   
     Value& rxValue(void);
     
