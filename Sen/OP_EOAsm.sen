@@ -373,54 +373,44 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  <queryNo> >int locals| queryNo |
+  // read next buffer from ptn stream
+  ptnStream[] ptnStream.read to Operand[]
 
-  queryNo case
+  Operand[].isNotNull if
+  // read a next crw buffer
 
-    100 of
-      // read next buffer from ptn stream
-      ptnStream[] ptnStream.read to Operand[]
+    Operand[].asSrcCrwBuffer
+    Counter0[] executeAsm
+    Operand[].delete
 
-      Operand[].isNotNull if
-      // read a next crw buffer
+    Pot[].pipeoutAllCompleted
+    // call this handler again to process next buffer
+    true LogicUnit[].callAgain!
 
-        Operand[].asSrcCrwBuffer
-        Counter0[] executeAsm
-        Operand[].delete
+  else
 
-        Pot[].pipeoutAllCompleted
-        // call this handler again to process next buffer
-        true LogicUnit[].callAgain!
+  // no more crw buffers
 
-      else
+    // close and delete partition stream
+    ptnStream[] ptnStream.close
+    ptnStream[] ptnStream.delete
+    nullptr to ptnStream[]
 
-      // no more crw buffers
+    // drop partition lock
+    tablePtn[] tablePtnDropRead
 
-        // close and delete partition stream
-        ptnStream[] ptnStream.close
-        ptnStream[] ptnStream.delete
-        nullptr to ptnStream[]
+    streamDef[].delete
+    Counter0[] executeAsm
+    Counter0[] cleanUpAsm
+    IndexTree[].delete
 
-        // drop partition lock
-        tablePtn[] tablePtnDropRead
+    Pot[].pipeoutAllDangling
+    Pot[].delete
 
-        streamDef[].delete
-        Counter0[] executeAsm
-        Counter0[] cleanUpAsm
-        IndexTree[].delete
+    Operand[].newEosMarker
+    Operand[].pipeOut
 
-        Pot[].pipeoutAllDangling
-        Pot[].delete
-
-        Operand[].newEosMarker
-        Operand[].pipeOut
-
-      then
-
-
-    endof
-
-  endcase
+  then
 
   true
 ;
@@ -455,7 +445,6 @@
     endof
 
     103 of
-"103 EOS MARKER" .
       Counter0[] executeAsm
       Counter0[] cleanUpAsm
       IndexTree[].delete
