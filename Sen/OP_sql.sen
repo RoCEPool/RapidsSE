@@ -848,9 +848,9 @@ then
       Operand[].pipeIn
       Operand[].asSrcRowSlab
       Counter0[] 1 == if
-        LogicUnit[].dynFun
+        true 1 LogicUnit[].dynFunArgs
       else
-        LogicUnit[].transform
+        true 1 LogicUnit[].transformArgs
       then
       Operand[].delete
       //Pot[].pipeoutAllCompleted
@@ -908,9 +908,9 @@ then
       Operand[].asSrcRowSlab
 
       Counter0[] 1 == if
-        LogicUnit[].dynFun
+        true 1 LogicUnit[].dynFunArgs
       else
-        LogicUnit[].transform
+        true 1 LogicUnit[].transformArgs
       then
       Operand[].delete
       Pot[].pipeoutAllCompleted
@@ -961,10 +961,10 @@ then
       //queryNo "QUERY %v" .printf
 
       Counter0[] 1 == if
-        LogicUnit[].dynFun
+        false 1 LogicUnit[].dynFunArgs
         LogicCompiler[].delete
       else
-        LogicUnit[].transform
+        false 1 LogicUnit[].transformArgs
       then
       IndexTree[].delete
       Pot[].pipeoutAllCompleted
