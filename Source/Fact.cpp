@@ -709,12 +709,16 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
     vTraceF(pFile," }"_Stz);
   
   if (m_pAttributeOf)
-    vTraceF(pFile," AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szName());
+    vTraceF(pFile," AtrOf: [%lld] %s"_Stz,
+            m_pAttributeOf->iFactNo(),m_pAttributeOf->szName());
   
   if (m_pElementOf)
-    vTraceF(pFile," ElmOf: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szName());
+    vTraceF(pFile," ElmOf: [%lld] %s"_Stz,
+            m_pElementOf->iFactNo(),m_pElementOf->szName());
 
   if (m_pSubclassOf) {
+    vTraceF(pFile," SubOf: [%lld] %s"_Stz,
+            m_pSubclassOf->iFactNo(),m_pSubclassOf->szName());
     s2K sAncestry;
     vAncestry(sAncestry);
     vTraceF(pFile," Ancestry: %s"_Stz,sAncestry.azChar());
