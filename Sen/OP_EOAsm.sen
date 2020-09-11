@@ -424,7 +424,7 @@
 
   Operand[].pipeIn
   Operand[].asSrcRowSlab
-  Counter0[] executeAsm
+  true Counter0[] executeAsmArgs
   Operand[].delete
 
   true
@@ -445,7 +445,7 @@
     endof
 
     103 of
-      Counter0[] executeAsm
+      false Counter0[] executeAsmArgs
       Counter0[] cleanUpAsm
       IndexTree[].delete
       Pot[].pipeoutAllCompleted
