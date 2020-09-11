@@ -27,6 +27,7 @@ void Step::vAddSteps_File(void)
   vAddStep("file.readChunk"_Stz,         &Step::vFileReadChunk);
   vAddStep("file.readCrwBlock"_Stz,      &Step::vFileReadCrwBlock);
   vAddStep("file.readLine"_Stz,          &Step::vFileReadLine);
+  vAddStep("file.readText"_Stz,          &Step::vFileReadText);
   vAddStep("file.seek"_Stz,              &Step::vFileSeek);
   vAddStep("file.seekRndCsv"_Stz,        &Step::vFileSeekRndCsv);
   vAddStep("file.size"_Stz,              &Step::vFileSize);
@@ -288,6 +289,29 @@ void Step::vFileReadLine(void)
   else {
     m_pDataStack->vPushInt(false);
   }
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file.readText -- read multiple lines from a file                           */
+/*----------------------------------------------------------------------------*/
+void Step::vFileReadText(void)
+{
+  ENTRY();
+  
+  Text* pText = _pText(m_pDataStack->pPopPtr(__func__));
+
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  ASSERT(pFile);
+  
+  Stz* szDst = pText->szGet();
+  
+  i8 nReadBytes = pFile->nReadBytes(szDst,C_SIZE_LARGE_TEXT);
+
+  szDst->azChar()[nReadBytes] = '\0';
+  
+  m_pDataStack->vPushInt(nReadBytes);
 
   EXIT();
 }

@@ -370,6 +370,7 @@ public:
   void vFileReadChunk(void);
   void vFileReadCrwBlock(void);
   void vFileReadLine(void);
+  void vFileReadText(void);
   void vFileSeek(void);
   void vFileSeekRndCsv(void);
   void vFileSize(void);

@@ -1224,6 +1224,10 @@ void Engine::vPrintConstants(void)
   vTrace("  C_SIZE_MEDIUM_OBJECT = %lld\n"_Stz,C_SIZE_MEDIUM_OBJECT);
   vTrace("  C_SIZE_LARGE_OBJECT  = %lld\n"_Stz,C_SIZE_LARGE_OBJECT);
   vTrace("  C_SIZE_POOL_BUFFER   = %lld\n"_Stz,C_SIZE_POOL_BUFFER);
+  vTrace("  C_SIZE_TINY_TEXT     = %lld\n"_Stz,C_SIZE_TINY_TEXT);
+  vTrace("  C_SIZE_SMALL_TEXT    = %lld\n"_Stz,C_SIZE_SMALL_TEXT);
+  vTrace("  C_SIZE_MEDIUM_TEXT   = %lld\n"_Stz,C_SIZE_MEDIUM_TEXT);
+  vTrace("  C_SIZE_LARGE_TEXT    = %lld\n"_Stz,C_SIZE_LARGE_TEXT);
 }
 
 /*----------------------------------------------------------------------------*/
