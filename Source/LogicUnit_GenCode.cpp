@@ -551,8 +551,8 @@ void LogicUnit::vGenerateQuery103(void)
   vDefineLabel("QRY_103:"_Stz);
   vAddCode(EO_INIT);
   vAddCode(EO_ENTER);
-
-  vAddCode(EO_RSB_SRC_TEST);
+  
+  //vAddCode(EO_RSB_SRC_TEST);
   vAddCodeLabel(EO_JMP_TRUE,"BEGIN_RSB_SRC:"_Stz);
   vAddCodeLabel(EO_CALL,"SUBROUTINE_IXT_TO_RSB:"_Stz);
   vAddCodeLabel(EO_JMP,"QRY_103_DONE:"_Stz);
