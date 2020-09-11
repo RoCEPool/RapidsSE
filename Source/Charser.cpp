@@ -909,7 +909,7 @@ bool Charser::bLineCommentEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  if ('\n' == m_xRegOne.m_cChar)
+  if ('\n' == m_xRegOne.m_cChar || '\0' == m_xRegOne.m_cChar)
     return true;
   else
     return false;
