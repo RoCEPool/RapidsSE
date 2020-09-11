@@ -32,9 +32,10 @@
     begin
       file0[] file.readLine
     while
-      dup .
+      dup dup .
       pTknVec tokenVec.tokenise
       pTknVec tokenVec.dump
+      >interpret
     repeat
 
     file0[] file.close
