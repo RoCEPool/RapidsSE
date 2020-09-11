@@ -42,6 +42,7 @@ namespace Facts
     Fact*  m_p_Word_;      //
     Fact*  m_p_Xref_;      //
 
+    Fact*  m_pReference;   //
     Fact*  m_pContents;    //
 
     Fact*  m_pCurrent;     // current working fact

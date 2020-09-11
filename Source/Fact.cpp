@@ -968,7 +968,7 @@ bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   Fact* pQuestion =
-    m_pKbase->m_pContents->pElementFindNmVal("questionNm"_Stz,szQuestion);
+    m_pKbase->m_pReference->pElementFindNmVal("questionNm"_Stz,szQuestion);
     
   if (! pQuestion)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,

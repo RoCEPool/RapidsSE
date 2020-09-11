@@ -356,6 +356,8 @@ void Kbase::vTest(void)
 
   m_p_Concept_->vPrint_r(0,0);
 
+  m_pReference->vPrint_r(0,1);
+  
   m_pContents->vPrint_r(0,1);
 }
 
@@ -502,22 +504,11 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pContents = pConceptAdd(m_p_Type_,"_contents_"_Stz);
-  m_pContents = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
-
-  Fact* pGrid = p_Grid_->pNewInstance();
-  m_pContents->vElementAppend(pGrid);
-  Fact* pNodes = p_Nodes_->pNewInstance();
-  pNodes->rxValue().m_iInt = AM::nDefinedNodes();
-  pGrid->vAttributeAppend(pNodes);
-  Fact* pPartitions = p_Partitions_->pNewInstance();
-  pPartitions->rxValue().m_iInt = AM::nPartitions();
-  pGrid->vAttributeAppend(pPartitions);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Fact* pReference = pConceptAdd(m_p_Type_,"_reference_"_Stz);
+  m_pReference = pReference->pNewInstance();
 
   Fact* pQuestions = m_p_Questions_->pNewInstance();
-  m_pContents->vElementAppend(pQuestions);
+  m_pReference->vElementAppend(pQuestions);
 
   Fact* pQuestion = m_p_Question_->pNewInstance();
   pQuestions->vElementAppend(pQuestion);
@@ -529,6 +520,20 @@ void Kbase::vAprioriFacts(void)
   pMethod->rxValue().m_pMethod = new Method;
   pMethod->rxValue().m_pMethod->vAddCode(QC_IS_SUBCLASS_OF);
   pQuestion->vAttributeAppend(pMethod);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Fact* pContents = pConceptAdd(m_p_Type_,"_contents_"_Stz);
+  m_pContents = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
+
+  Fact* pGrid = p_Grid_->pNewInstance();
+  m_pContents->vElementAppend(pGrid);
+  Fact* pNodes = p_Nodes_->pNewInstance();
+  pNodes->rxValue().m_iInt = AM::nDefinedNodes();
+  pGrid->vAttributeAppend(pNodes);
+  Fact* pPartitions = p_Partitions_->pNewInstance();
+  pPartitions->rxValue().m_iInt = AM::nPartitions();
+  pGrid->vAttributeAppend(pPartitions);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
