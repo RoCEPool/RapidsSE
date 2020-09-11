@@ -120,7 +120,6 @@ Fact* Kbase::pElementFind(Stz* szNote)
   return pElement;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* generate next fact no                                                      */
 /*----------------------------------------------------------------------------*/
@@ -134,13 +133,13 @@ i8 Kbase::iNextFactNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get property fact                                                          */
+/* print                                                                      */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pValue(void)
+void Kbase::vPrint(File* pFile)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
-  return m_p_Value_;
+    
+  m_pContents->vPrint_r(pFile,0,1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,6 +188,16 @@ void Kbase::vTransformReturn(Transform** ppTransform)
   delete *ppTransform;
   
   *ppTransform = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get property fact                                                          */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pValue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  return m_p_Value_;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -618,7 +618,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
   switch (iAs) {
     case 0: // aha list
 
-      vTrace("%s%s [%lld] %s"_Stz,
+      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
              Stz::szTab(iDepth),
              sPrefix.azChar(),
 
@@ -629,7 +629,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
       
     case 1: // has
 
-      vTrace("%s%s [%lld] %s"_Stz,
+      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
              Stz::szTab(iDepth),
              sPrefix.azChar(),
              
@@ -640,7 +640,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
       
     case 2: // atr
 
-      vTrace("%s%s [%lld] %s"_Stz,
+      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
              Stz::szTab(iDepth),
              sPrefix.azChar(),
              
@@ -651,7 +651,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
       
     case 3: // elm
 
-      vTrace("%s%s [%lld] %s"_Stz,
+      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
              Stz::szTab(iDepth),
              sPrefix.azChar(),
              
@@ -664,37 +664,37 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
   Fact* pSubValue = pGetSuperChild(m_pKbase->pValue());
   if (pSubValue) {
     if (this == pSubValue) {
-      vTrace(" = eFU %lld %s"_Stz,m_xValue.m_eUsage,aFU[m_xValue.m_eUsage]);
+      vTraceF(pFile," = eFU %lld %s"_Stz,m_xValue.m_eUsage,aFU[m_xValue.m_eUsage]);
     }
     else {
       switch (pSubValue->rxValue().m_eUsage) {
         case FU_INT:
-          vTrace(" = Int %lld"_Stz,m_xValue.m_iInt);
+          vTraceF(pFile," = Int %lld"_Stz,m_xValue.m_iInt);
           break;
         case FU_METHOD:
-          vTrace(" = Method %p"_Stz,m_xValue.m_pMethod);
+          vTraceF(pFile," = Method %p"_Stz,m_xValue.m_pMethod);
           break;
         case FU_OBJECT:
-          vTrace(" = Object %p"_Stz,m_xValue.m_pObject);
+          vTraceF(pFile," = Object %p"_Stz,m_xValue.m_pObject);
           break;
         case FU_OPAQUE:
-          vTrace(" = Opaque %p"_Stz,m_xValue.m_aOpaque);
+          vTraceF(pFile," = Opaque %p"_Stz,m_xValue.m_aOpaque);
           break;
         case FU_TEXT:
-          vTrace(" = Text \"%s\""_Stz,
+          vTraceF(pFile," = Text \"%s\""_Stz,
                  m_xValue.m_pText ? m_xValue.m_pText->szGet()
                                      : ""_Stz);
           break;
         case FU_USAGE:
-          vTrace(" = Usage ???"_Stz);
+          vTraceF(pFile," = Usage ???"_Stz);
           break;
         case FU_WORD:
-          vTrace(" = Word %s"_Stz,
+          vTraceF(pFile," = Word %s"_Stz,
                  m_xValue.m_pWord ? m_xValue.m_pWord->szWordNm()
                                     : ""_Stz);
           break;
         case FU_XREF:
-          vTrace(" = Xref %s"_Stz,
+          vTraceF(pFile," = Xref %s"_Stz,
                  m_xValue.m_pXref ? m_xValue.m_pXref->szName()
                                      : ""_Stz);
           break;
@@ -706,21 +706,21 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
   }
   
   //if (m_pAttributeOf || m_pElementOf)
-    vTrace(" }"_Stz);
+    vTraceF(pFile," }"_Stz);
   
   if (m_pAttributeOf)
-    vTrace(" AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szName());
+    vTraceF(pFile," AtrOf: [%lld]%s"_Stz,m_pAttributeOf->iFactNo(),m_pAttributeOf->szName());
   
   if (m_pElementOf)
-    vTrace(" ElmOf: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szName());
+    vTraceF(pFile," ElmOf: [%lld]%s"_Stz,m_pElementOf->iFactNo(),m_pElementOf->szName());
 
   if (m_pSubclassOf) {
     s2K sAncestry;
     vAncestry(sAncestry);
-    vTrace(" Ancestry: %s"_Stz,sAncestry.azChar());
+    vTraceF(pFile," Ancestry: %s"_Stz,sAncestry.azChar());
   }
   
-  vTrace("\n"_Stz);
+  vTraceF(pFile,"\n"_Stz);
 
   for (Fact* pAttribute = m_pAttributes;
        pAttribute;

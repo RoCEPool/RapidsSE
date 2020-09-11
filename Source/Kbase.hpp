@@ -71,14 +71,16 @@ namespace Facts
   
     i8 iNextFactNo(void);
   
-    Fact* pValue(void);
-    
+    void vPrint(File* pFile);
+  
     Question* pQuestionBorrow(void);
     void vQuestionReturn(Question** ppQuestion);
     
     Transform* pTransformBorrow(void);
     void vTransformReturn(Transform** ppTransform);
   
+    Fact* pValue(void);
+    
     // -- -- -- -- -- -- --
 
     void vImportStatement(Stz* szStatement);
