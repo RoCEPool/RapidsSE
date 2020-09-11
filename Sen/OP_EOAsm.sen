@@ -432,30 +432,10 @@
 
   0 ZK_RSBBUFFER EG_ZK LogicUnit[].diaryNote
 
-  <queryNo> >int locals| queryNo |
-
-  queryNo case
-
-    103 of
-"EOAsm_RsbBuffer" .
-      Operand[].pipeIn
-      Operand[].asSrcRowSlab
-      Counter0[] executeAsm
-      Operand[].delete
-    endof
-
-    601 of
-      Operand[].pipeIn
-      Operand[].asSrcRowSlab
-      Counter0[] executeAsm
-      Operand[].delete
-      Pot[].pipeoutAllCompleted
-    endof
-
-    // default
-    queryNo "ERROR : Unexpected queryno %v" .printf
-    0 assert
-  endcase
+  Operand[].pipeIn
+  Operand[].asSrcRowSlab
+  Counter0[] executeAsm
+  Operand[].delete
 
   true
 ;
