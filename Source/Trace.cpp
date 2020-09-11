@@ -37,10 +37,10 @@ void Correctness::vTraceF(File* pFile, Stz* aFormat, ...)
 
   va_start(xVaArgs,aFormat);
   if (pFile) {
-    AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
+    AM::vWriteTrace_vargs(pFile,YA_SYS_TRACE,aFormat,xVaArgs);
   }
   else {
-    AM::vWriteTrace_vargs(pFile,YA_SYS_TRACE,aFormat,xVaArgs);
+    AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
   }
   va_end(xVaArgs);
 }

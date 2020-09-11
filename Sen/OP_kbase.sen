@@ -15,13 +15,15 @@
 
   kbase[].test
 
+  "/tmp/kbase_test.txt" kbase[].print
+
   kbase[].delete
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   file::new to file0[]
 
-  "/Users/Shared/kbase/kbase.txt" OPEN_READ file0[] file.open if
+  "/tmp/kbase_test.txt" OPEN_READ file0[] file.open if
 
     "FILE OPENED" .
     
