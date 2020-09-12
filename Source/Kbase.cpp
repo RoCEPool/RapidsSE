@@ -524,34 +524,15 @@ void Kbase::vAprioriFacts(void)
   m_p_Property_ = pConceptAdd(m_p_Concept_,"_property_"_Stz);
 
   m_p_Value_ = pConceptAdd("_value_"_Stz,FU_USAGE);
-  //m_p_Value_->rxValue().m_eUsage = FU_USAGE;
-
   m_p_Int_ = pConceptAdd(m_p_Value_,"_int_"_Stz,FU_INT);
-  //m_p_Int_->rxValue().m_eUsage = FU_INT;
-
   m_p_Function_ = pConceptAdd(m_p_Value_,"_function_"_Stz,FU_FUNCTION);
-  //m_p_Function_->rxValue().m_eUsage = FU_FUNCTION;
-
   m_p_Method_ = pConceptAdd(m_p_Value_,"_method_"_Stz,FU_METHOD);
-  //m_p_Method_->rxValue().m_eUsage = FU_METHOD;
-
   m_p_Object_ = pConceptAdd(m_p_Value_,"_object_"_Stz,FU_OBJECT);
-  //m_p_Object_->rxValue().m_eUsage = FU_OBJECT;
-
   m_p_Opaque_ = pConceptAdd(m_p_Value_,"_opaque_"_Stz,FU_OPAQUE);
-  //m_p_Opaque_->rxValue().m_eUsage = FU_OPAQUE;
-
   m_p_Text_ = pConceptAdd(m_p_Value_,"_text_"_Stz,FU_TEXT);
-  //m_p_Text_->rxValue().m_eUsage = FU_TEXT;
-
   m_p_Word_ = pConceptAdd(m_p_Value_,"_word_"_Stz,FU_WORD);
-  //m_p_Word_->rxValue().m_eUsage = FU_WORD;
-
   m_p_Xref_ = pConceptAdd(m_p_Value_,"_xref_"_Stz,FU_XREF);
-  //m_p_Xref_->rxValue().m_eUsage = FU_XREF;
-  
   m_p_Name_ = pConceptAdd(m_p_Text_,"_name_"_Stz);
-
   
   m_p_Folder_ = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
   m_p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
@@ -711,33 +692,40 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* p_Pipeline_ = m_p_Concept_->pElementFindNm("_pipeline_"_Stz);
-  Fact* pPipeline = p_Pipeline_->pNewInstance();
-  m_pContents->vElementAppend(pPipeline);
+  //Fact* p_Pipeline_ = m_p_Concept_->pElementFindNm("_pipeline_"_Stz);
+  //Fact* pPipeline = p_Pipeline_->pNewInstance();
+  //m_pContents->vElementAppend(pPipeline);
+  Fact* pPipeline = pElementInstance(m_pContents,"_pipeline_"_Stz);
+  
+  //Fact* p_Stages_ = m_p_Concept_->pElementFindNm("_pipeline_"_Stz);
+  //Fact* pStages = p_Stages_->pNewInstance();
+  //pPipeline->vElementAppend(pStages);
+  Fact* pStages = pElementInstance(pPipeline,"_stages_"_Stz);
 
-  Fact* p_Stages_ = m_p_Concept_->pElementFindNm("_stages_"_Stz);
-  Fact* pStages = p_Stages_->pNewInstance();
-  pPipeline->vElementAppend(pStages);
+  //Fact* pNameSeq = p_NameSeq_->pNewInstance();
+  //pStages->vAttributeAppend(pNameSeq);
+  //pNameSeq->rxValue().m_pText = new Text;
+  //pNameSeq->rxValue().m_pText->vSet("A"_Stz);
+  pAttributeInstance(pStages,"_nameSeq_"_Stz,"A"_Stz);
 
-  Fact* pNameSeq = p_NameSeq_->pNewInstance();
-  pStages->vAttributeAppend(pNameSeq);
-  pNameSeq->rxValue().m_pText = new Text;
-  pNameSeq->rxValue().m_pText->vSet("A"_Stz);
+  //Fact* pFormat = p_Format_->pNewInstance();
+  //pStages->vAttributeAppend(pFormat);
+  //pFormat->rxValue().m_pText = new Text;
+  //pFormat->rxValue().m_pText->vSet("stage%s"_Stz);
+  pAttributeInstance(pStages,"_format_"_Stz,"stage%s"_Stz);
 
-  Fact* pFormat = p_Format_->pNewInstance();
-  pStages->vAttributeAppend(pFormat);
-  pFormat->rxValue().m_pText = new Text;
-  pFormat->rxValue().m_pText->vSet("stage%s"_Stz);
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* p_Routines_ = m_p_Concept_->pElementFindNm("_routines_"_Stz);
-  Fact* pRoutines = p_Routines_->pNewInstance();
-  m_pContents->vElementAppend(pRoutines);
+  //Fact* p_Routines_ = m_p_Concept_->pElementFindNm("_routines_"_Stz);
+  //Fact* pRoutines = p_Routines_->pNewInstance();
+  //m_pContents->vElementAppend(pRoutines);
+  Fact* pRoutines = pElementInstance(m_pContents,"_routines_"_Stz);
 
-  Fact* p_Subroutine_ = m_p_Concept_->pElementFindNm("_subroutine_"_Stz);
-  Fact* pSubroutine = p_Subroutine_->pNewInstance();
-  pRoutines->vElementAppend(pSubroutine);
+  //Fact* p_Subroutine_ = m_p_Concept_->pElementFindNm("_subroutine_"_Stz);
+  //Fact* pSubroutine = p_Subroutine_->pNewInstance();
+  //pRoutines->vElementAppend(pSubroutine);
+  pElementInstance(pRoutines,"_subroutine_"_Stz);
 }
 
 /*============================================================================*/
