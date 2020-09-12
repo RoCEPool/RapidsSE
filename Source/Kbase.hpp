@@ -54,9 +54,9 @@ namespace Facts
     Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, Stz* szVal);
     void  vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, Stz* szVal);
 
-    Fact* pConceptAdd(Stz* szName);
+    Fact* pConceptAdd(Stz* szName, eFU eUsage=FU_NONE);
     void  vConceptAdd(Stz* szName);
-    Fact* pConceptAdd(Fact* pSuper, Stz* szName);
+    Fact* pConceptAdd(Fact* pSuper, Stz* szName, eFU eUsage=FU_NONE);
     void  vConceptAdd(Fact* pSuper, Stz* szName);
     void  vConceptAdd(Stz* szSuperName, Stz* szName);
     Fact* pConceptInstance(Stz* szAhaSuperNm);

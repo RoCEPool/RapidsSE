@@ -120,11 +120,14 @@ void Kbase::vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, Stz* szVal)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pConceptAdd(Stz* szName)
+Fact* Kbase::pConceptAdd(Stz* szName, eFU eUsage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
   Fact* pConcept = m_p_Concept_->pNewInstance(szName);
+  
+  if (FU_NONE != eUsage)
+    pConcept->rxValue().m_eUsage = eUsage;
   
   m_p_Concept_->vElementAppend(pConcept);
 
@@ -146,12 +149,15 @@ void Kbase::vConceptAdd(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szNME)
+Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szName, eFU eUsage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pConcept = pSuper->pNewInstance(szNME);
+  Fact* pConcept = pSuper->pNewInstance(szName);
   
+  if (FU_NONE != eUsage)
+    pConcept->rxValue().m_eUsage = eUsage;
+
   m_p_Concept_->vElementAppend(pConcept);
 
   return pConcept;
@@ -517,32 +523,32 @@ void Kbase::vAprioriFacts(void)
   
   m_p_Property_ = pConceptAdd(m_p_Concept_,"_property_"_Stz);
 
-  m_p_Value_ = pConceptAdd("_value_"_Stz);
-  m_p_Value_->rxValue().m_eUsage = FU_USAGE;
+  m_p_Value_ = pConceptAdd("_value_"_Stz,FU_USAGE);
+  //m_p_Value_->rxValue().m_eUsage = FU_USAGE;
 
-  m_p_Int_ = pConceptAdd(m_p_Value_,"_int_"_Stz);
-  m_p_Int_->rxValue().m_eUsage = FU_INT;
+  m_p_Int_ = pConceptAdd(m_p_Value_,"_int_"_Stz,FU_INT);
+  //m_p_Int_->rxValue().m_eUsage = FU_INT;
 
-  m_p_Function_ = pConceptAdd(m_p_Value_,"_function_"_Stz);
-  m_p_Function_->rxValue().m_eUsage = FU_FUNCTION;
+  m_p_Function_ = pConceptAdd(m_p_Value_,"_function_"_Stz,FU_FUNCTION);
+  //m_p_Function_->rxValue().m_eUsage = FU_FUNCTION;
 
-  m_p_Method_ = pConceptAdd(m_p_Value_,"_method_"_Stz);
-  m_p_Method_->rxValue().m_eUsage = FU_METHOD;
+  m_p_Method_ = pConceptAdd(m_p_Value_,"_method_"_Stz,FU_METHOD);
+  //m_p_Method_->rxValue().m_eUsage = FU_METHOD;
 
-  m_p_Object_ = pConceptAdd(m_p_Value_,"_object_"_Stz);
-  m_p_Object_->rxValue().m_eUsage = FU_OBJECT;
+  m_p_Object_ = pConceptAdd(m_p_Value_,"_object_"_Stz,FU_OBJECT);
+  //m_p_Object_->rxValue().m_eUsage = FU_OBJECT;
 
-  m_p_Opaque_ = pConceptAdd(m_p_Value_,"_opaque_"_Stz);
-  m_p_Opaque_->rxValue().m_eUsage = FU_OPAQUE;
+  m_p_Opaque_ = pConceptAdd(m_p_Value_,"_opaque_"_Stz,FU_OPAQUE);
+  //m_p_Opaque_->rxValue().m_eUsage = FU_OPAQUE;
 
-  m_p_Text_ = pConceptAdd(m_p_Value_,"_text_"_Stz);
-  m_p_Text_->rxValue().m_eUsage = FU_TEXT;
+  m_p_Text_ = pConceptAdd(m_p_Value_,"_text_"_Stz,FU_TEXT);
+  //m_p_Text_->rxValue().m_eUsage = FU_TEXT;
 
-  m_p_Word_ = pConceptAdd(m_p_Value_,"_word_"_Stz);
-  m_p_Word_->rxValue().m_eUsage = FU_WORD;
+  m_p_Word_ = pConceptAdd(m_p_Value_,"_word_"_Stz,FU_WORD);
+  //m_p_Word_->rxValue().m_eUsage = FU_WORD;
 
-  m_p_Xref_ = pConceptAdd(m_p_Value_,"_xref_"_Stz);
-  m_p_Xref_->rxValue().m_eUsage = FU_XREF;
+  m_p_Xref_ = pConceptAdd(m_p_Value_,"_xref_"_Stz,FU_XREF);
+  //m_p_Xref_->rxValue().m_eUsage = FU_XREF;
   
   m_p_Name_ = pConceptAdd(m_p_Text_,"_name_"_Stz);
 
