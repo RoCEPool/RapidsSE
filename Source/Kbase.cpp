@@ -682,13 +682,15 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pTables = p_Tables_->pNewInstance();
-  m_pContents->vElementAppend(pTables);
-  
+  //Fact* pTables = p_Tables_->pNewInstance();
+  //m_pContents->vElementAppend(pTables);
+  pElementInstance(m_pContents,"_tables_"_Stz);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pStatement = p_Statement_->pNewInstance();
-  m_pContents->vElementAppend(pStatement);
+  //Fact* pStatement = p_Statement_->pNewInstance();
+  //m_pContents->vElementAppend(pStatement);
+  pElementInstance(m_pContents,"_statement_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
