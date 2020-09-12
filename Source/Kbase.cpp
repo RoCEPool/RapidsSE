@@ -109,6 +109,20 @@ void Kbase::vConceptAdd(Stz* szSuperName, Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new fact instance                                                          */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pConceptInstance(Stz* szConceptSuperName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pSuper = m_p_Concept_->pElementFindNm(szConceptSuperName);
+  
+  Fact* pFact = pSuper->pNewInstance();
+  
+  return pFact;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current working fact                                                   */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pCurrent(void)
@@ -136,20 +150,6 @@ Fact* Kbase::pFact(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
   return m_pFact;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new fact instance                                                          */
-/*----------------------------------------------------------------------------*/
-Fact* Kbase::pFactInstance(Stz* szConceptSuperName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
-  Fact* pSuper = m_p_Concept_->pElementFindNm(szConceptSuperName);
-  
-  Fact* pFact = pSuper->pNewInstance();
-  
-  return pFact;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -354,33 +354,15 @@ void Kbase::vImportTable(Table* pTableToImport)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
-  
-//  Fact* pTables  = m_pContents->pElementFindNm("tables"_Stz);
-//  Fact* p_Table_       = m_p_Concept_->pElementFindNm("_table_"_Stz);
-//  Fact* p_TableNm_     = m_p_Concept_->pElementFindNm("_tableNm_"_Stz);
-//  Fact* p_Columns_     = m_p_Concept_->pElementFindNm("_columns_"_Stz);
-//  Fact* p_Column_      = m_p_Concept_->pElementFindNm("_column_"_Stz);
-//  Fact* p_ColumnNm_    = m_p_Concept_->pElementFindNm("_columnNm_"_Stz);
-//  Fact* p_ColumnNo_    = m_p_Concept_->pElementFindNm("_columnNo_"_Stz);
-//  Fact* p_ColumnType_  = m_p_Concept_->pElementFindNm("_columnType_"_Stz);
-//  Fact* p_Length_      = m_p_Concept_->pElementFindNm("_length_"_Stz);
-//  Fact* p_Scale_       = m_p_Concept_->pElementFindNm("_scale_"_Stz);
-//  Fact* p_Nullable_    = m_p_Concept_->pElementFindNm("_nullable_"_Stz);
-//  Fact* p_NotNullable_ = m_p_Concept_->pElementFindNm("_notNullable_"_Stz);
-//  Fact* p_PtnKey_      = m_p_Concept_->pElementFindNm("_ptnKey_"_Stz);
-
-//  Fact* pTable = p_Table_->pNewInstance();
-//  Fact* pTable = pFactInstance("_table_"_Stz);
-//  pTables->vElementAppend(pTable);
-  
+    
   Fact* pTable = pSetNewElementInstance("tables"_Stz,"_table_"_Stz);
 
-  Fact* pTableNm = pFactInstance("_tableNm_"_Stz); //p_TableNm_->pNewInstance();
+  Fact* pTableNm = pConceptInstance("_tableNm_"_Stz);
   pTable->vAttributeAppend(pTableNm);
   pTableNm->rxValue().m_pText = new Text;
   pTableNm->rxValue().m_pText->vSet(pTableToImport->szTableNm());
 
-  Fact* pColumns = pFactInstance("_columns_"_Stz); //p_Columns_->pNewInstance();
+  Fact* pColumns = pConceptInstance("_columns_"_Stz);
   pTable->vElementAppend(pColumns);
 
   StreamDef* pStmDef = pTableToImport->pStreamDef();
@@ -389,16 +371,16 @@ void Kbase::vImportTable(Table* pTableToImport)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column* pCol = pStmDef->pGetColumn(i_Col);
     
-    Fact* pColumn = pFactInstance("_column_"_Stz); //p_Column_->pNewInstance();
+    Fact* pColumn = pConceptInstance("_column_"_Stz);
     pColumns->vElementAppend(pColumn);
     
-    Fact* pColumnNo = pFactInstance("_columnNo_"_Stz); //p_ColumnNo_->pNewInstance();
+    Fact* pColumnNo = pConceptInstance("_columnNo_"_Stz);
     RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_value_"_Stz));
     pColumn->vAttributeAppend(pColumnNo);
     i8 iColumnNo = pCol->iColumnNo();
     pColumnNo->rxValue().m_iInt = iColumnNo;
 
-    Fact* pColumnNm = pFactInstance("_columnNm_"_Stz); //p_ColumnNm_->pNewInstance();
+    Fact* pColumnNm = pConceptInstance("_columnNm_"_Stz);
     pColumn->vAttributeAppend(pColumnNm);
     pColumnNm->rxValue().m_pText = new Text;
     pColumnNm->rxValue().m_pText->vSet(pCol->szColNm());
@@ -407,33 +389,33 @@ void Kbase::vImportTable(Table* pTableToImport)
     s32 s_ColType_;
     s_ColType_.vSprint("_%s_"_Stz,aCT[eColType]);
     
-    Fact* p_ColType_ = pFactInstance(s_ColType_); //m_p_Concept_->pElementFindNm(s_ColType_);
+    Fact* p_ColType_ = pConceptInstance(s_ColType_);
     Fact* pColType = p_ColType_->pNewInstance();
     pColumn->vAttributeAppend(pColType);
     
-    Fact* pLength = pFactInstance("_length_"_Stz); //p_Length_->pNewInstance();
+    Fact* pLength = pConceptInstance("_length_"_Stz);
     pColumn->vAttributeAppend(pLength);
     i8 iLength = pCol->iColumnLength();
     pLength->rxValue().m_iInt = iLength;
 
-    Fact* pScale = pFactInstance("_scale_"_Stz); //p_Scale_->pNewInstance();
+    Fact* pScale = pConceptInstance("_scale_"_Stz);
     pColumn->vAttributeAppend(pScale);
     i8 iScale = pCol->iColumnScale();
     pScale->rxValue().m_iInt = iScale;
     
     bool bIsNullable = pCol->bIsNullable();
     if (bIsNullable) {
-      Fact* pNullable = pFactInstance("_nullable"_Stz); //p_Nullable_->pNewInstance();
+      Fact* pNullable = pConceptInstance("_nullable"_Stz);
       pColumn->vAttributeAppend(pNullable);
     }
     else {
-      Fact* pNotNullable = pFactInstance("_notNullable_"_Stz); //p_NotNullable_->pNewInstance();
+      Fact* pNotNullable = pConceptInstance("_notNullable_"_Stz);
       pColumn->vAttributeAppend(pNotNullable);
     }
     
     bool bIsPtnKey = pCol->bIsPtnKey();
     if (bIsPtnKey) {
-      Fact* pPtnKey = pFactInstance("_ptnKey_"_Stz); //p_PtnKey_->pNewInstance();
+      Fact* pPtnKey = pConceptInstance("_ptnKey_"_Stz);
       pColumn->vAttributeAppend(pPtnKey);
     }
 

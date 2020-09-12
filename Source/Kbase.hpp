@@ -60,7 +60,7 @@ namespace Facts
     
     Fact* pFact(void);
  
-    Fact* pFactInstance(Stz* szConceptSuperName);
+    Fact* pConceptInstance(Stz* szConceptSuperName);
 
     Fact* pFactNew(Fact* pSuper, Stz* szNote);
     void vFactDelete(Fact* pFact);
