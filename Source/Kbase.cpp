@@ -175,25 +175,6 @@ void Kbase::vFactDelete(Fact* pFact)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new element instance                                                       */
-/*----------------------------------------------------------------------------*/
-Fact* Kbase::pElementInstance(Stz* szSetSuperName, Stz* szElementSuperName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
-  Fact* pConcept = m_p_Concept_->pElementFindNm(szElementSuperName);
-  
-  Fact* pElement = pConcept->pNewInstance();
-  
-
-  Fact* pSet = m_pContents->pElementFindNm(szSetSuperName);
-
-  pSet->vElementAppend(pElement);
-  
-  return pElement;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find element                                                               */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pElementFind(Stz* szNote)
@@ -249,6 +230,25 @@ void Kbase::vQuestionReturn(Question** ppQuestion)
   delete *ppQuestion;
   
   *ppQuestion = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new element instance to named set                                          */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pSetNewElementInstance(Stz* szSetName, Stz* szElementSuperName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pConcept = m_p_Concept_->pElementFindNm(szElementSuperName);
+  
+  Fact* pElement = pConcept->pNewInstance();
+  
+
+  Fact* pSet = m_pContents->pElementFindNm(szSetName);
+
+  pSet->vElementAppend(pElement);
+  
+  return pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -373,7 +373,7 @@ void Kbase::vImportTable(Table* pTableToImport)
 //  Fact* pTable = pFactInstance("_table_"_Stz);
 //  pTables->vElementAppend(pTable);
   
-  Fact* pTable = pElementInstance("tables"_Stz,"_table_"_Stz);
+  Fact* pTable = pSetNewElementInstance("tables"_Stz,"_table_"_Stz);
 
   Fact* pTableNm = p_TableNm_->pNewInstance();
   pTableNm->rxValue().m_pText = new Text;

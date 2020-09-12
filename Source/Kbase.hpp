@@ -56,7 +56,6 @@ namespace Facts
     Fact* pCurrent(void);
     void vCurrent(Fact* pCurrent);
   
-    Fact* pElementInstance(Stz* szSetSuperName, Stz* szElementSuperName);
     Fact* pElementFind(Stz* szName);
     
     Fact* pFact(void);
@@ -73,6 +72,8 @@ namespace Facts
     Question* pQuestionBorrow(void);
     void vQuestionReturn(Question** ppQuestion);
     
+    Fact* pSetNewElementInstance(Stz* szSetName, Stz* szElementSuperName);
+  
     Transform* pTransformBorrow(void);
     void vTransformReturn(Transform** ppTransform);
   
