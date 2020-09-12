@@ -158,6 +158,34 @@ void Kbase::vCurrent(Fact* pCurrent)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find element                                                               */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pElementFind(Stz* szNote)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pElement = m_pContents->pElementFindNm(szNote);
+
+  return pElement;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new element instance to named set                                          */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pElementInstance(Stz* szSetName, Stz* szElementSuperName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pElement = pConceptInstance(szElementSuperName);
+  
+  Fact* pSet = m_pContents->pElementFindNm(szSetName);
+
+  pSet->vElementAppend(pElement);
+  
+  return pElement;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get root fact                                                              */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pFact(void)
@@ -187,34 +215,6 @@ void Kbase::vFactDelete(Fact* pFact)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
   delete pFact;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find element                                                               */
-/*----------------------------------------------------------------------------*/
-Fact* Kbase::pElementFind(Stz* szNote)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
-  Fact* pElement = m_pContents->pElementFindNm(szNote);
-
-  return pElement;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new element instance to named set                                          */
-/*----------------------------------------------------------------------------*/
-Fact* Kbase::pElementInstance(Stz* szSetName, Stz* szElementSuperName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-    
-  Fact* pElement = pConceptInstance(szElementSuperName);
-  
-  Fact* pSet = m_pContents->pElementFindNm(szSetName);
-
-  pSet->vElementAppend(pElement);
-  
-  return pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -386,14 +386,16 @@ void Kbase::vImportTable(Table* pTableToImport)
     Fact* pColumn = pConceptInstance("_column_"_Stz);
     pColumns->vElementAppend(pColumn);
     
-    Fact* pColumnNo = pConceptInstance("_columnNo_"_Stz);
+    //Fact* pColumnNo = pConceptInstance("_columnNo_"_Stz);
+    //pColumn->vAttributeAppend(pColumnNo);
+    Fact* pColumnNo = pAttributeInstance(pColumn,"_columnNo_"_Stz);
     RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_value_"_Stz));
-    pColumn->vAttributeAppend(pColumnNo);
     i8 iColumnNo = pCol->iColumnNo();
     pColumnNo->rxValue().m_iInt = iColumnNo;
 
-    Fact* pColumnNm = pConceptInstance("_columnNm_"_Stz);
-    pColumn->vAttributeAppend(pColumnNm);
+    //Fact* pColumnNm = pConceptInstance("_columnNm_"_Stz);
+    //pColumn->vAttributeAppend(pColumnNm);
+    Fact* pColumnNm = pAttributeInstance(pColumn,"_columnNm_"_Stz);
     pColumnNm->rxValue().m_pText = new Text;
     pColumnNm->rxValue().m_pText->vSet(pCol->szColNm());
 
@@ -405,37 +407,23 @@ void Kbase::vImportTable(Table* pTableToImport)
     Fact* pColType = p_ColType_->pNewInstance();
     pColumn->vAttributeAppend(pColType);
     
-    //Fact* pLength = pConceptInstance("_length_"_Stz);
-    //pColumn->vAttributeAppend(pLength);
     Fact* pLength = pAttributeInstance(pColumn,"_length_"_Stz);
     i8 iLength = pCol->iColumnLength();
     pLength->rxValue().m_iInt = iLength;
 
-    //Fact* pScale = pConceptInstance("_scale_"_Stz);
-    //pColumn->vAttributeAppend(pScale);
     Fact* pScale = pAttributeInstance(pColumn,"_nullable_"_Stz);
     i8 iScale = pCol->iColumnScale();
     pScale->rxValue().m_iInt = iScale;
     
     bool bIsNullable = pCol->bIsNullable();
-    if (bIsNullable) {
-      //Fact* pNullable = pConceptInstance("_nullable"_Stz);
-      //pColumn->vAttributeAppend(pNullable);
+    if (bIsNullable)
       pAttributeInstance(pColumn,"_nullable_"_Stz);
-    }
-    else {
-      //Fact* pNotNullable = pConceptInstance("_notNullable_"_Stz);
-      //pColumn->vAttributeAppend(pNotNullable);
+    else
       pAttributeInstance(pColumn,"_notNullable_"_Stz);
-    }
     
     bool bIsPtnKey = pCol->bIsPtnKey();
-    if (bIsPtnKey) {
-      //Fact* pPtnKey = pConceptInstance("_ptnKey_"_Stz);
-      //pColumn->vAttributeAppend(pPtnKey);
+    if (bIsPtnKey)
       pAttributeInstance(pColumn,"_ptnKey_"_Stz);
-    }
-
   }
 }
 
