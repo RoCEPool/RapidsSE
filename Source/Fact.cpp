@@ -507,6 +507,32 @@ bool Fact::bHasSpecificElement(Fact* pFact)
 }
  
 /*----------------------------------------------------------------------------*/
+/* is this fact a sub-element of given fact                                   */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsElementOf(Fact* pOfFact)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  if (m_pElementOf && m_pElementOf == pOfFact)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this fact a sub-element of given fact                                   */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsElementOf(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  if (m_pElementOf && m_pElementOf->m_sName.bSame(szName))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this fact a sub-class of given fact                         (recursive) */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsSubClass(Fact* pOfFact)
@@ -536,6 +562,38 @@ bool Fact::bIsSubClass(Stz* szName)
     return false;
   
   return m_pSubclassOf->bIsSubClass(szName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this fact a sub-element of given fact                       (recursive) */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsSubElement(Fact* pOfFact)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  if (this == pOfFact)
+    return true;
+  
+  if (! m_pElementOf)
+    return false;
+  
+  return m_pElementOf->bIsSubElement(pOfFact);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this fact a sub-element of given fact                       (recursive) */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsSubElement(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  if (m_sName.bSame(szName))
+    return true;
+  
+  if (! m_pElementOf)
+    return false;
+  
+  return m_pSubclassOf->bIsSubElement(szName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -640,17 +698,28 @@ void Fact::vName(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* print fact (recursive)                                                     */
 /*----------------------------------------------------------------------------*/
-void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
+void Fact::vPrint_r(File* pFile, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
+  i8 iTab = iDepth;
+  
   s32 sPrefix;
   
-  if (! m_iFactNo)
+  if (! m_iFactNo) {
     sPrefix = "Bud{"_Stz;
-  else if (! iAs)
+    iTab = 0;
+  }
+  else if (m_sName.bSame("contents"_Stz)) {
+    sPrefix = "Has{"_Stz;
+    iTab = 0;
+    iDepth = 0;
+  }
+  else if (bIsElementOf("fact"_Stz) || bIsElementOf("_concept_"_Stz)) {
     sPrefix = "Aha{"_Stz;
-  else if (bIsSubClass("_folder_"_Stz))
+    iTab = 0;
+  }
+  else if (bIsSubElement("_folder_"_Stz))
     sPrefix = "Has{"_Stz;
   else if (m_pElementOf)
     sPrefix = "Elm{"_Stz;
@@ -663,51 +732,13 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
   if (m_sName.bSame("question"_Stz))
     vDebugPoint();
   
-  switch (iAs) {
-    case 0: // aha list
+  vTraceF(pFile,"%s%s [%lld] %s"_Stz,
+         Stz::szTab(iTab),
+         sPrefix.azChar(),
 
-      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
-             Stz::szTab(iDepth),
-             sPrefix.azChar(),
-
-             m_iFactNo,
-             m_sName.azChar()
-             );
-      break;
-      
-    case 1: // has
-
-      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
-             Stz::szTab(iDepth),
-             sPrefix.azChar(),
-             
-             m_iFactNo,
-             m_sName.azChar()
-             );
-      break;
-      
-    case 2: // atr
-
-      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
-             Stz::szTab(iDepth),
-             sPrefix.azChar(),
-             
-             m_iFactNo,
-             m_sName.azChar()
-             );
-      break;
-      
-    case 3: // elm
-
-      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
-             Stz::szTab(iDepth),
-             sPrefix.azChar(),
-             
-             m_iFactNo,
-             m_sName.azChar()
-             );
-      break;
-  }
+         m_iFactNo,
+         m_sName.azChar()
+         );
   
   Fact* pSubValue = pGetSuperChild(m_pKbase->pValue());
   if (pSubValue) {
@@ -753,8 +784,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
     }
   }
   
-  //if (m_pAttributeOf || m_pElementOf)
-    vTraceF(pFile," }"_Stz);
+  vTraceF(pFile," }"_Stz);
   
   if (m_pAttributeOf)
     vTraceF(pFile," AtrOf: [%lld] %s"_Stz,
@@ -777,13 +807,158 @@ void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
   for (Fact* pAttribute = m_pAttributes;
        pAttribute;
        pAttribute = pAttribute->m_pAttributeNext)
-    pAttribute->vPrint_r(pFile, iDepth + 1, iAs ? 2 : 0);
+    pAttribute->vPrint_r(pFile, iDepth + 1);
   
   for (Fact* pElement = m_pElements;
        pElement;
        pElement = pElement->m_pElementNext)
-    pElement->vPrint_r(pFile, iAs ? iDepth + 1 : 0, iAs ? 3 : 0);
+    pElement->vPrint_r(pFile, iDepth + 1);
 }
+/*----------------------------------------------------------------------------*/
+//void Fact::vPrint_r(File* pFile, i8 iDepth, i8 iAs)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+//
+//  s32 sPrefix;
+//
+//  if (! m_iFactNo)
+//    sPrefix = "Bud{"_Stz;
+//  else if (! iAs)
+//    sPrefix = "Aha{"_Stz;
+//  else if (bIsSubClass("_folder_"_Stz))
+//    sPrefix = "Has{"_Stz;
+//  else if (m_pElementOf)
+//    sPrefix = "Elm{"_Stz;
+//  else if (m_pAttributeOf)
+//    sPrefix = "Atr{"_Stz;
+//  else
+//    ///sPrefix = "Has{"_Stz;
+//    sPrefix = "???{"_Stz;
+//
+//  if (m_sName.bSame("question"_Stz))
+//    vDebugPoint();
+//
+//  switch (iAs) {
+//    case 0: // aha list
+//
+//      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
+//             Stz::szTab(iDepth),
+//             sPrefix.azChar(),
+//
+//             m_iFactNo,
+//             m_sName.azChar()
+//             );
+//      break;
+//
+//    case 1: // has
+//
+//      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
+//             Stz::szTab(iDepth),
+//             sPrefix.azChar(),
+//
+//             m_iFactNo,
+//             m_sName.azChar()
+//             );
+//      break;
+//
+//    case 2: // atr
+//
+//      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
+//             Stz::szTab(iDepth),
+//             sPrefix.azChar(),
+//
+//             m_iFactNo,
+//             m_sName.azChar()
+//             );
+//      break;
+//
+//    case 3: // elm
+//
+//      vTraceF(pFile,"%s%s [%lld] %s"_Stz,
+//             Stz::szTab(iDepth),
+//             sPrefix.azChar(),
+//
+//             m_iFactNo,
+//             m_sName.azChar()
+//             );
+//      break;
+//  }
+//
+//  Fact* pSubValue = pGetSuperChild(m_pKbase->pValue());
+//  if (pSubValue) {
+//    if (this == pSubValue) {
+//      vTraceF(pFile," = eFU %lld %s"_Stz,m_xValue.m_eUsage,aFU[m_xValue.m_eUsage]);
+//    }
+//    else {
+//      switch (pSubValue->rxValue().m_eUsage) {
+//        case FU_INT:
+//          vTraceF(pFile," = Int %lld"_Stz,m_xValue.m_iInt);
+//          break;
+//        case FU_METHOD:
+//          vTraceF(pFile," = Method %p"_Stz,m_xValue.m_pMethod);
+//          break;
+//        case FU_OBJECT:
+//          vTraceF(pFile," = Object %p"_Stz,m_xValue.m_pObject);
+//          break;
+//        case FU_OPAQUE:
+//          vTraceF(pFile," = Opaque %p"_Stz,m_xValue.m_aOpaque);
+//          break;
+//        case FU_TEXT:
+//          vTraceF(pFile," = Text \"%s\""_Stz,
+//                 m_xValue.m_pText ? m_xValue.m_pText->szGet()
+//                                     : ""_Stz);
+//          break;
+//        case FU_USAGE:
+//          vTraceF(pFile," = Usage ???"_Stz);
+//          break;
+//        case FU_WORD:
+//          vTraceF(pFile," = Word %s"_Stz,
+//                 m_xValue.m_pWord ? m_xValue.m_pWord->szWordNm()
+//                                    : ""_Stz);
+//          break;
+//        case FU_XREF:
+//          vTraceF(pFile," = Xref %s"_Stz,
+//                 m_xValue.m_pXref ? m_xValue.m_pXref->szName()
+//                                     : ""_Stz);
+//          break;
+//        default:
+//          NEVER_REACH;
+//          break;
+//      }
+//    }
+//  }
+//
+//  //if (m_pAttributeOf || m_pElementOf)
+//    vTraceF(pFile," }"_Stz);
+//
+//  if (m_pAttributeOf)
+//    vTraceF(pFile," AtrOf: [%lld] %s"_Stz,
+//            m_pAttributeOf->iFactNo(),m_pAttributeOf->szName());
+//
+//  if (m_pElementOf)
+//    vTraceF(pFile," ElmOf: [%lld] %s"_Stz,
+//            m_pElementOf->iFactNo(),m_pElementOf->szName());
+//
+//  if (m_pSubclassOf) {
+//    vTraceF(pFile," SubOf: [%lld] %s"_Stz,
+//            m_pSubclassOf->iFactNo(),m_pSubclassOf->szName());
+//    s2K sAncestry;
+//    vAncestry(sAncestry);
+//    vTraceF(pFile," // Ancestry: %s"_Stz,sAncestry.azChar());
+//  }
+//
+//  vTraceF(pFile,"\n"_Stz);
+//
+//  for (Fact* pAttribute = m_pAttributes;
+//       pAttribute;
+//       pAttribute = pAttribute->m_pAttributeNext)
+//    pAttribute->vPrint_r(pFile, iDepth + 1, iAs ? 2 : 0);
+//
+//  for (Fact* pElement = m_pElements;
+//       pElement;
+//       pElement = pElement->m_pElementNext)
+//    pElement->vPrint_r(pFile, iAs ? iDepth + 1 : 0, iAs ? 3 : 0);
+//}
 /*----------------------------------------------------------------------------*/
 //void Fact::vPrint_r(i8 iDepth, i8 iAs)
 //{

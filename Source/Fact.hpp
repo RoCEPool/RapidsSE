@@ -87,8 +87,14 @@ namespace Facts
     bool  bHasSpecificAttribute(Fact* pFact);
     bool  bHasSpecificElement(Fact* pFact);
 
+    bool  bIsElementOf(Fact* pOfFact);
+    bool  bIsElementOf(Stz* szName);
+  
     bool  bIsSubClass(Fact* pOfFact);
     bool  bIsSubClass(Stz* szName);
+
+    bool  bIsSubElement(Fact* pOfFact);
+    bool  bIsSubElement(Stz* szName);
 
     bool  bIsInt(void);
     bool  bIsObject(void);
@@ -102,7 +108,7 @@ namespace Facts
     Stz*  szName(void);
     void  vName(Stz* szName);
   
-    void  vPrint_r(File* pFile, i8 iDepth, i8 iAs);
+    void  vPrint_r(File* pFile, i8 iDepth);
   
     Value& rxValue(void);
     

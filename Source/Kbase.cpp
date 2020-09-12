@@ -139,7 +139,7 @@ void Kbase::vPrint(File* pFile)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
-  m_pContents->vPrint_r(pFile,0,1);
+  m_pContents->vPrint_r(pFile,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -361,7 +361,7 @@ void Kbase::vTest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
  
-  m_pFact->vPrint_r(nullptr,0,0);
+  m_pFact->vPrint_r(nullptr,0);
 
   //m_p_Concept_->vPrint_r(nullptr,0,0);
 
