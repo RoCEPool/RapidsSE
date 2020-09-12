@@ -6,15 +6,16 @@
 namespace Facts
 {
   union Value {
-    i8    (*m_afFun)(void* aArg);
-    i8      m_iInt;    // i8 value
-    Method* m_pMethod; // pointer to kbase method
-    Object* m_pObject; // pointer to proper object
-    Opaque* m_aOpaque; // address of opaque memory
-    Text*   m_pText;   // text
-    eFU     m_eUsage;  // how is the fact property used?
-    Word*   m_pWord;   // sen word
-    Fact*   m_pXref;   // cross-ref to another fact
+    i8       (*m_afFun)(void* aArg);
+    i8         m_iInt;       // i8 value
+    Method*    m_pMethod;    // pointer to kbase method
+    Object*    m_pObject;    // pointer to proper object
+    Opaque*    m_aOpaque;    // address of opaque memory
+    Text*      m_pText;      // text
+    Transform* m_pTransform; // transform
+    eFU        m_eUsage;     // how is the fact property used?
+    Word*      m_pWord;      // sen word
+    Fact*      m_pXref;      // cross-ref to another fact
   };
 
   //----------------------------------------------------------------------------
