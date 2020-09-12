@@ -141,11 +141,11 @@ Fact* Kbase::pFact(void)
 /*----------------------------------------------------------------------------*/
 /* new fact instance                                                          */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pFactInstance(Stz* szSuperName)
+Fact* Kbase::pFactInstance(Stz* szConceptSuperName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pSuper = m_p_Concept_->pElementFindNm(szSuperName);
+  Fact* pSuper = m_p_Concept_->pElementFindNm(szConceptSuperName);
   
   Fact* pFact = pSuper->pNewInstance();
   
@@ -172,6 +172,25 @@ void Kbase::vFactDelete(Fact* pFact)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
   delete pFact;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new element instance                                                       */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pElementInstance(Stz* szSetSuperName, Stz* szElementSuperName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pConcept = m_p_Concept_->pElementFindNm(szElementSuperName);
+  
+  Fact* pElement = pConcept->pNewInstance();
+  
+
+  Fact* pSet = m_pContents->pElementFindNm(szSetSuperName);
+
+  pSet->vElementAppend(pElement);
+  
+  return pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,8 +370,10 @@ void Kbase::vImportTable(Table* pTableToImport)
   Fact* p_PtnKey_      = m_p_Concept_->pElementFindNm("_ptnKey_"_Stz);
 
 //  Fact* pTable = p_Table_->pNewInstance();
-  Fact* pTable = pFactInstance("_table_"_Stz);
-  pTables->vElementAppend(pTable);
+//  Fact* pTable = pFactInstance("_table_"_Stz);
+//  pTables->vElementAppend(pTable);
+  
+  Fact* pTable = pElementInstance("tables"_Stz,"_table_"_Stz);
 
   Fact* pTableNm = p_TableNm_->pNewInstance();
   pTableNm->rxValue().m_pText = new Text;
