@@ -443,7 +443,7 @@ void Kbase::vImportTable(Table* pTableToImport)
     
   Fact* pTable = pElementInstance("tables"_Stz,"_table_"_Stz);
 
-  pAttributeInstance(pTable,"_tableNm_"_Stz,pTableToImport->szTableNm());
+  vAttributeInstance(pTable,"_tableNm_"_Stz,pTableToImport->szTableNm());
 
   Fact* pColumns = pElementInstance(pTable,"_columns_"_Stz);
 
@@ -463,24 +463,23 @@ void Kbase::vImportTable(Table* pTableToImport)
                                          pCol->iColumnNo());
     RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_value_"_Stz));
 
-    pAttributeInstance(pColumn,"_columnNm_"_Stz,pCol->szColNm());
+    vAttributeInstance(pColumn,"_columnNm_"_Stz,pCol->szColNm());
 
-    pAttributeInstance(pColumn,s_ColType_);
+    vAttributeInstance(pColumn,s_ColType_);
 
-    pAttributeInstance(pColumn,"_length_"_Stz,pCol->iColumnLength());
+    vAttributeInstance(pColumn,"_length_"_Stz,pCol->iColumnLength());
 
-    pAttributeInstance(pColumn,"_scale_"_Stz,pCol->iColumnScale());
+    vAttributeInstance(pColumn,"_scale_"_Stz,pCol->iColumnScale());
     
     if (pCol->bIsNullable())
-      pAttributeInstance(pColumn,"_nullable_"_Stz);
+      vAttributeInstance(pColumn,"_nullable_"_Stz);
     else
-      pAttributeInstance(pColumn,"_notNullable_"_Stz);
+      vAttributeInstance(pColumn,"_notNullable_"_Stz);
     
     if (pCol->bIsPtnKey())
-      pAttributeInstance(pColumn,"_ptnKey_"_Stz);
+      vAttributeInstance(pColumn,"_ptnKey_"_Stz);
   }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* test                                                                       */
