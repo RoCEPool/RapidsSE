@@ -43,6 +43,8 @@ namespace Facts
     Kbase(Stz* szKbName);
    ~Kbase(void) noexcept(false);
   
+    Fact* pConceptAdd(Stz* szName);
+    void  vConceptAdd(Stz* szName);
     Fact* pConceptAdd(Fact* pSuper, Stz* szName);
     void  vConceptAdd(Fact* pSuper, Stz* szName);
     void  vConceptAdd(Stz* szSuperName, Stz* szName);

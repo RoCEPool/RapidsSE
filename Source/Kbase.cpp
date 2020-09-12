@@ -45,6 +45,32 @@ Kbase::~Kbase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
+Fact* Kbase::pConceptAdd(Stz* szNote)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pConcept = m_p_Concept_->pNewInstance(szNote);
+  
+  m_p_Concept_->vElementAppend(pConcept);
+
+  return pConcept;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a concept                                                              */
+/*----------------------------------------------------------------------------*/
+void Kbase::vConceptAdd(Stz* szNote)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pConcept = m_p_Concept_->pNewInstance(szNote);
+  
+  m_p_Concept_->vElementAppend(pConcept);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a concept                                                              */
+/*----------------------------------------------------------------------------*/
 Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szNote)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
@@ -412,7 +438,9 @@ void Kbase::vAprioriFacts(void)
   m_p_Concept_ = pFactNew(m_pFact,"_concept_"_Stz);
   m_pFact->vElementAppend(m_p_Concept_);
   
-  m_p_Value_ = pConceptAdd(m_p_Concept_,"_value_"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_p_Value_ = pConceptAdd("_value_"_Stz);
   m_p_Value_->rxValue().m_eUsage = FU_USAGE;
 
   m_p_Int_ = pConceptAdd(m_p_Value_,"_int_"_Stz);
@@ -441,14 +469,14 @@ void Kbase::vAprioriFacts(void)
   
   m_p_Name_ = pConceptAdd(m_p_Text_,"_name_"_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pConceptAdd(m_p_Concept_,"_chunk_"_Stz);
-  pConceptAdd(m_p_Concept_,"_pattern_"_Stz);
-  pConceptAdd(m_p_Concept_,"_transform_"_Stz);
+  
+  vConceptAdd("_chunk_"_Stz);
+  vConceptAdd("_pattern_"_Stz);
+  vConceptAdd("_transform_"_Stz);
 
 
-  
-  
 
   Fact* p_NameSeq_ = pConceptAdd(m_p_Text_,"_nameSeq_"_Stz);
   Fact* p_Format_ = pConceptAdd(m_p_Text_,"_format_"_Stz);
@@ -463,9 +491,9 @@ void Kbase::vAprioriFacts(void)
   Fact* p_Question_ = pConceptAdd(p_Questions_,"_question_"_Stz);
   Fact* p_QuestionNm_ = pConceptAdd(m_p_Name_,"_questionNm_"_Stz);
   
-  pConceptAdd(m_p_Concept_,"_rule_"_Stz);
-  pConceptAdd(m_p_Concept_,"_condition_"_Stz);
-  pConceptAdd(m_p_Concept_,"_action_"_Stz);
+  vConceptAdd(m_p_Concept_,"_rule_"_Stz);
+  vConceptAdd(m_p_Concept_,"_condition_"_Stz);
+  vConceptAdd(m_p_Concept_,"_action_"_Stz);
 
   Fact* p_Nullability_   = pConceptAdd(p_Quality_,"_nullability_"_Stz);
   Fact* p_ColumnType_    = pConceptAdd(p_Type_,"_columnType_"_Stz);
@@ -485,58 +513,58 @@ void Kbase::vAprioriFacts(void)
   Fact* p_Term_          = pConceptAdd(p_Folder_,"_term_"_Stz);
   Fact* p_Atom_          = pConceptAdd(p_Tuple_,"_atom_"_Stz);
 
-  pConceptAdd(p_Folder_,"_pipeline_"_Stz);
-  pConceptAdd(m_p_Name_,"_pipelineNm_"_Stz);
-  pConceptAdd(p_Folder_,"_stages_"_Stz);
-  pConceptAdd(p_Folder_,"_stage_"_Stz);
-  pConceptAdd(m_p_Name_,"_stageNm_"_Stz);
+  vConceptAdd(p_Folder_,"_pipeline_"_Stz);
+  vConceptAdd(m_p_Name_,"_pipelineNm_"_Stz);
+  vConceptAdd(p_Folder_,"_stages_"_Stz);
+  vConceptAdd(p_Folder_,"_stage_"_Stz);
+  vConceptAdd(m_p_Name_,"_stageNm_"_Stz);
   Fact* p_Cardinality_ = pConceptAdd(p_Quality_,"_cardinality_"_Stz);
-  pConceptAdd(p_Cardinality_,"all nodes"_Stz);
-  pConceptAdd(p_Cardinality_,"all partitions"_Stz);
-  pConceptAdd(p_Cardinality_,"all partitions on origin"_Stz);
-  pConceptAdd(p_Cardinality_,"origin"_Stz);
-  pConceptAdd(p_Cardinality_,"specific node"_Stz);
-  pConceptAdd(p_Cardinality_,"specific partition"_Stz);
+  vConceptAdd(p_Cardinality_,"all nodes"_Stz);
+  vConceptAdd(p_Cardinality_,"all partitions"_Stz);
+  vConceptAdd(p_Cardinality_,"all partitions on origin"_Stz);
+  vConceptAdd(p_Cardinality_,"origin"_Stz);
+  vConceptAdd(p_Cardinality_,"specific node"_Stz);
+  vConceptAdd(p_Cardinality_,"specific partition"_Stz);
   Fact* p_Operator_      = pConceptAdd(p_Tuple_,"_operator_"_Stz);
-  pConceptAdd(p_Operator_,"_op_"_Stz);
-  pConceptAdd(p_Operator_,"_sqlOp_"_Stz);
+  vConceptAdd(p_Operator_,"_op_"_Stz);
+  vConceptAdd(p_Operator_,"_sqlOp_"_Stz);
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pConceptAdd(p_ColumnType_,"_BOOLEAN_"_Stz);
-  pConceptAdd(p_ColumnType_,"_DATE_"_Stz);
-  pConceptAdd(p_ColumnType_,"_DECIMAL_"_Stz);
-  pConceptAdd(p_ColumnType_,"_FLOAT_"_Stz);
-  pConceptAdd(p_ColumnType_,"_INTEGER_"_Stz);
-  pConceptAdd(p_ColumnType_,"_INTERVAL_"_Stz);
-  pConceptAdd(p_ColumnType_,"_TIME_"_Stz);
-  pConceptAdd(p_ColumnType_,"_TIMESTAMP_"_Stz);
-  pConceptAdd(p_ColumnType_,"_VARCHAR_"_Stz);
+  vConceptAdd(p_ColumnType_,"_BOOLEAN_"_Stz);
+  vConceptAdd(p_ColumnType_,"_DATE_"_Stz);
+  vConceptAdd(p_ColumnType_,"_DECIMAL_"_Stz);
+  vConceptAdd(p_ColumnType_,"_FLOAT_"_Stz);
+  vConceptAdd(p_ColumnType_,"_INTEGER_"_Stz);
+  vConceptAdd(p_ColumnType_,"_INTERVAL_"_Stz);
+  vConceptAdd(p_ColumnType_,"_TIME_"_Stz);
+  vConceptAdd(p_ColumnType_,"_TIMESTAMP_"_Stz);
+  vConceptAdd(p_ColumnType_,"_VARCHAR_"_Stz);
 
-  pConceptAdd(p_Nullability_,"_nullable_"_Stz);
-  pConceptAdd(p_Nullability_,"_notNullable_"_Stz);
+  vConceptAdd(p_Nullability_,"_nullable_"_Stz);
+  vConceptAdd(p_Nullability_,"_notNullable_"_Stz);
 
-  pConceptAdd(p_Quality_,"_ptnKey_"_Stz);
+  vConceptAdd(p_Quality_,"_ptnKey_"_Stz);
 
-  pConceptAdd(p_Folder_,"_table_"_Stz);
-  pConceptAdd(m_p_Name_,"_tableNm_"_Stz);
+  vConceptAdd(p_Folder_,"_table_"_Stz);
+  vConceptAdd(m_p_Name_,"_tableNm_"_Stz);
   
-  pConceptAdd(p_Folder_,"_columns_"_Stz);
-  pConceptAdd(p_Tuple_,"_column_"_Stz);
-  pConceptAdd(m_p_Int_,"_columnNo_"_Stz);
-  pConceptAdd(m_p_Name_,"_columnNm_"_Stz);
-  pConceptAdd(m_p_Int_,"_length_"_Stz);
-  pConceptAdd(m_p_Int_,"_scale_"_Stz);
+  vConceptAdd(p_Folder_,"_columns_"_Stz);
+  vConceptAdd(p_Tuple_,"_column_"_Stz);
+  vConceptAdd(m_p_Int_,"_columnNo_"_Stz);
+  vConceptAdd(m_p_Name_,"_columnNm_"_Stz);
+  vConceptAdd(m_p_Int_,"_length_"_Stz);
+  vConceptAdd(m_p_Int_,"_scale_"_Stz);
 
-  pConceptAdd(p_Folder_,"_indexes_"_Stz);
-  pConceptAdd(p_Folder_,"_index_"_Stz);
+  vConceptAdd(p_Folder_,"_indexes_"_Stz);
+  vConceptAdd(p_Folder_,"_index_"_Stz);
   
-  pConceptAdd(p_Folder_,"_routines_"_Stz);
-  pConceptAdd(p_Tuple_,"_subroutine_"_Stz);
-  pConceptAdd(m_p_Name_,"_subroutineNm_"_Stz);
-  pConceptAdd(p_Quality_,"_recallable_"_Stz);
-  pConceptAdd(m_p_Text_,"_sourceCode_"_Stz);
+  vConceptAdd(p_Folder_,"_routines_"_Stz);
+  vConceptAdd(p_Tuple_,"_subroutine_"_Stz);
+  vConceptAdd(m_p_Name_,"_subroutineNm_"_Stz);
+  vConceptAdd(p_Quality_,"_recallable_"_Stz);
+  vConceptAdd(m_p_Text_,"_sourceCode_"_Stz);
 
   Fact* p_Nodes_ = pConceptAdd(m_p_Int_,"_nodes_"_Stz);
   Fact* p_Partitions_ = pConceptAdd(m_p_Int_,"_partitions_"_Stz);
