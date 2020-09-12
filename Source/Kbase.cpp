@@ -640,32 +640,18 @@ void Kbase::vAprioriFacts(void)
   
   Fact* p_Contents_ = pConceptAdd(m_p_Folder_,"_contents_"_Stz);
   
-  //m_pContents = p_Contents_->pNewInstance();
-  //m_pFact->vElementAppend(m_pContents);
   m_pContents = pElementInstance(m_pFact,"_contents_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* p_Reference_ = pConceptAdd(m_p_Folder_,"_reference_"_Stz);
   
-  //Fact* pReference = p_Reference_->pNewInstance();
-  //m_pContents->vElementAppend(pReference);
   Fact* pReference = pElementInstance(m_pContents,"_reference_"_Stz);
-
-  //Fact* pQuestions = p_Questions_->pNewInstance();
-  //pReference->vElementAppend(pQuestions);
+  
   Fact* pQuestions = pElementInstance(pReference,"_questions_"_Stz);
   
-  //Fact* pQuestion = p_Question_->pNewInstance();
-  //pQuestions->vElementAppend(pQuestion);
   Fact* pQuestion = pElementInstance(pQuestions,"_question_"_Stz);
-
-  //Fact* pQuestionNm = p_QuestionNm_->pNewInstance();
-  //pQuestion->vAttributeAppend(pQuestionNm);
-  //pQuestionNm->rxValue().m_pText = new Text;
-  //pQuestionNm->rxValue().m_pText->vSet("isSubClassOf"_Stz);
   pAttributeInstance(pQuestion,"_questionNm_"_Stz,"isSubClassOf"_Stz);
-
   Fact* pMethod = m_p_Method_->pNewInstance();
   pQuestion->vAttributeAppend(pMethod);
   pMethod->rxValue().m_pMethod = new Method;
@@ -676,67 +662,29 @@ void Kbase::vAprioriFacts(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   
-  //Fact* pGrid = p_Grid_->pNewInstance();
-  //m_pContents->vElementAppend(pGrid);
   Fact* pGrid = pElementInstance(m_pContents,"_grid_"_Stz);
-
-  //Fact* pNodes = p_Nodes_->pNewInstance();
-  //pGrid->vAttributeAppend(pNodes);
-  //pNodes->rxValue().m_iInt = AM::nDefinedNodes();
   pAttributeInstance(pGrid,"_nodes_"_Stz,AM::nDefinedNodes());
-
-  //Fact* pPartitions = p_Partitions_->pNewInstance();
-  //pGrid->vAttributeAppend(pPartitions);
-  //pPartitions->rxValue().m_iInt = AM::nPartitions();
   pAttributeInstance(pGrid,"_partitions_"_Stz,AM::nPartitions());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //Fact* pTables = p_Tables_->pNewInstance();
-  //m_pContents->vElementAppend(pTables);
   pElementInstance(m_pContents,"_tables_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //Fact* pStatement = p_Statement_->pNewInstance();
-  //m_pContents->vElementAppend(pStatement);
   pElementInstance(m_pContents,"_statement_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //Fact* p_Pipeline_ = m_p_Concept_->pElementFindNm("_pipeline_"_Stz);
-  //Fact* pPipeline = p_Pipeline_->pNewInstance();
-  //m_pContents->vElementAppend(pPipeline);
   Fact* pPipeline = pElementInstance(m_pContents,"_pipeline_"_Stz);
-  
-  //Fact* p_Stages_ = m_p_Concept_->pElementFindNm("_pipeline_"_Stz);
-  //Fact* pStages = p_Stages_->pNewInstance();
-  //pPipeline->vElementAppend(pStages);
   Fact* pStages = pElementInstance(pPipeline,"_stages_"_Stz);
-
-  //Fact* pNameSeq = p_NameSeq_->pNewInstance();
-  //pStages->vAttributeAppend(pNameSeq);
-  //pNameSeq->rxValue().m_pText = new Text;
-  //pNameSeq->rxValue().m_pText->vSet("A"_Stz);
   pAttributeInstance(pStages,"_nameSeq_"_Stz,"A"_Stz);
-
-  //Fact* pFormat = p_Format_->pNewInstance();
-  //pStages->vAttributeAppend(pFormat);
-  //pFormat->rxValue().m_pText = new Text;
-  //pFormat->rxValue().m_pText->vSet("stage%s"_Stz);
   pAttributeInstance(pStages,"_format_"_Stz,"stage%s"_Stz);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //Fact* p_Routines_ = m_p_Concept_->pElementFindNm("_routines_"_Stz);
-  //Fact* pRoutines = p_Routines_->pNewInstance();
-  //m_pContents->vElementAppend(pRoutines);
   Fact* pRoutines = pElementInstance(m_pContents,"_routines_"_Stz);
-
-  //Fact* p_Subroutine_ = m_p_Concept_->pElementFindNm("_subroutine_"_Stz);
-  //Fact* pSubroutine = p_Subroutine_->pNewInstance();
-  //pRoutines->vElementAppend(pSubroutine);
   pElementInstance(pRoutines,"_subroutine_"_Stz);
 }
 
