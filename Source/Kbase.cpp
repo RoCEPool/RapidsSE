@@ -639,26 +639,33 @@ void Kbase::vAprioriFacts(void)
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
   Fact* p_Contents_ = pConceptAdd(m_p_Folder_,"_contents_"_Stz);
-  m_pContents = p_Contents_->pNewInstance();
-  m_pFact->vElementAppend(m_pContents);
+  
+  //m_pContents = p_Contents_->pNewInstance();
+  //m_pFact->vElementAppend(m_pContents);
+  m_pContents = pElementInstance(m_pFact,"_contents_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* p_Reference_ = pConceptAdd(m_p_Folder_,"_reference_"_Stz);
-  Fact* pReference = p_Reference_->pNewInstance();
-  m_pContents->vElementAppend(pReference);
   
-  Fact* pQuestions = p_Questions_->pNewInstance();
-  pReference->vElementAppend(pQuestions);
+  //Fact* pReference = p_Reference_->pNewInstance();
+  //m_pContents->vElementAppend(pReference);
+  Fact* pReference = pElementInstance(m_pContents,"_reference_"_Stz);
 
-  Fact* pQuestion = p_Question_->pNewInstance();
-  pQuestions->vElementAppend(pQuestion);
+  //Fact* pQuestions = p_Questions_->pNewInstance();
+  //pReference->vElementAppend(pQuestions);
+  Fact* pQuestions = pElementInstance(pReference,"_questions_"_Stz);
   
-  Fact* pQuestionNm = p_QuestionNm_->pNewInstance();
-  pQuestion->vAttributeAppend(pQuestionNm);
-  pQuestionNm->rxValue().m_pText = new Text;
-  pQuestionNm->rxValue().m_pText->vSet("isSubClassOf"_Stz);
-  
+  //Fact* pQuestion = p_Question_->pNewInstance();
+  //pQuestions->vElementAppend(pQuestion);
+  Fact* pQuestion = pElementInstance(pQuestions,"_question_"_Stz);
+
+  //Fact* pQuestionNm = p_QuestionNm_->pNewInstance();
+  //pQuestion->vAttributeAppend(pQuestionNm);
+  //pQuestionNm->rxValue().m_pText = new Text;
+  //pQuestionNm->rxValue().m_pText->vSet("isSubClassOf"_Stz);
+  pAttributeInstance(pQuestion,"_questionNm_"_Stz,"isSubClassOf"_Stz);
+
   Fact* pMethod = m_p_Method_->pNewInstance();
   pQuestion->vAttributeAppend(pMethod);
   pMethod->rxValue().m_pMethod = new Method;
@@ -669,16 +676,19 @@ void Kbase::vAprioriFacts(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   
-  Fact* pGrid = p_Grid_->pNewInstance();
-  m_pContents->vElementAppend(pGrid);
-  
-  Fact* pNodes = p_Nodes_->pNewInstance();
-  pGrid->vAttributeAppend(pNodes);
-  pNodes->rxValue().m_iInt = AM::nDefinedNodes();
-  
-  Fact* pPartitions = p_Partitions_->pNewInstance();
-  pGrid->vAttributeAppend(pPartitions);
-  pPartitions->rxValue().m_iInt = AM::nPartitions();
+  //Fact* pGrid = p_Grid_->pNewInstance();
+  //m_pContents->vElementAppend(pGrid);
+  Fact* pGrid = pElementInstance(m_pContents,"_grid_"_Stz);
+
+  //Fact* pNodes = p_Nodes_->pNewInstance();
+  //pGrid->vAttributeAppend(pNodes);
+  //pNodes->rxValue().m_iInt = AM::nDefinedNodes();
+  pAttributeInstance(pGrid,"_nodes_"_Stz,AM::nDefinedNodes());
+
+  //Fact* pPartitions = p_Partitions_->pNewInstance();
+  //pGrid->vAttributeAppend(pPartitions);
+  //pPartitions->rxValue().m_iInt = AM::nPartitions();
+  pAttributeInstance(pGrid,"_partitions_"_Stz,AM::nPartitions());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
