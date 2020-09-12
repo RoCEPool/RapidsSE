@@ -363,11 +363,11 @@ void Kbase::vTest(void)
  
   m_pFact->vPrint_r(nullptr,0,0);
 
-  m_p_Concept_->vPrint_r(nullptr,0,0);
+  //m_p_Concept_->vPrint_r(nullptr,0,0);
 
-  m_pReference->vPrint_r(nullptr,0,1);
+  //m_pReference->vPrint_r(nullptr,0,1);
   
-  m_pContents->vPrint_r(nullptr,0,1);
+  //m_pContents->vPrint_r(nullptr,0,1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -384,7 +384,7 @@ void Kbase::vAprioriFacts(void)
   m_pFact = pFactNew(nullptr,"fact"_Stz);
   
   m_p_Concept_ = pFactNew(m_pFact,"_concept_"_Stz);
-
+  m_pFact->vElementAppend(m_p_Concept_);
   
   m_p_Chunk_ = pConceptAdd(m_p_Concept_,"_chunk_"_Stz);
   m_p_Pattern_ = pConceptAdd(m_p_Concept_,"_pattern_"_Stz);
@@ -514,9 +514,16 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pReference = pConceptAdd(m_p_Folder_,"_reference_"_Stz);
-  m_pReference = pReference->pNewInstance();
+  Fact* pContents = pConceptAdd(m_p_Folder_,"_contents_"_Stz);
+  m_pContents = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
+  m_pFact->vElementAppend(m_pContents);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Fact* p_Reference_ = pConceptAdd(m_p_Folder_,"_reference_"_Stz);
+  m_pReference = p_Reference_->pNewInstance();
+  m_pContents->vElementAppend(m_pReference);
+  
   Fact* pQuestions = m_p_Questions_->pNewInstance();
   m_pReference->vElementAppend(pQuestions);
 
@@ -532,10 +539,7 @@ void Kbase::vAprioriFacts(void)
   pQuestion->vAttributeAppend(pMethod);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Fact* pContents = pConceptAdd(m_p_Folder_,"_contents_"_Stz);
-  m_pContents = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
-
+  
   Fact* pGrid = p_Grid_->pNewInstance();
   m_pContents->vElementAppend(pGrid);
   Fact* pNodes = p_Nodes_->pNewInstance();
