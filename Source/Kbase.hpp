@@ -17,6 +17,8 @@ namespace Facts
     Fact*  m_pFact;        //
     Fact*  m_p_Concept_;   //
 
+    Fact*  m_p_Property_;  //
+
     Fact*  m_p_Value_;     //
     Fact*  m_p_Int_;       //
     Fact*  m_p_Function_;  //
@@ -28,7 +30,9 @@ namespace Facts
     Fact*  m_p_Xref_;      //
 
     Fact*  m_p_Name_;      //
-  
+    Fact*  m_p_Folder_;    //
+    Fact*  m_p_Tuple_;     //
+
     Fact*  m_pContents;    //
   
     Fact*  m_pCurrent;     // current working fact
