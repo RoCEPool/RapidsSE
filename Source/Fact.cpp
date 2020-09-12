@@ -507,7 +507,7 @@ bool Fact::bHasSpecificElement(Fact* pFact)
 }
  
 /*----------------------------------------------------------------------------*/
-/* is this fact a sub-element of given fact                                   */
+/* is this fact an immediate sub-element of given fact                        */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsElementOf(Fact* pOfFact)
 {
@@ -520,7 +520,7 @@ bool Fact::bIsElementOf(Fact* pOfFact)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this fact a sub-element of given fact                                   */
+/* is this fact an immediate sub-element of given fact                        */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsElementOf(Stz* szName)
 {
@@ -533,7 +533,7 @@ bool Fact::bIsElementOf(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this fact a sub-class of given fact                         (recursive) */
+/* is this fact a transitive sub-class of given fact              (recursive) */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsSubClass(Fact* pOfFact)
 {
@@ -549,7 +549,7 @@ bool Fact::bIsSubClass(Fact* pOfFact)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this fact a sub-class of given fact                         (recursive) */
+/* is this fact a transititive sub-class of given fact            (recursive) */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsSubClass(Stz* szName)
 {
@@ -565,7 +565,7 @@ bool Fact::bIsSubClass(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this fact a sub-element of given fact                       (recursive) */
+/* is this fact a transative sub-element of given fact            (recursive) */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsSubElement(Fact* pOfFact)
 {
@@ -581,7 +581,7 @@ bool Fact::bIsSubElement(Fact* pOfFact)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this fact a sub-element of given fact                       (recursive) */
+/* is this fact a transative sub-element of given fact            (recursive) */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsSubElement(Stz* szName)
 {
@@ -711,7 +711,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
     iTab = 0;
   }
   else if (m_sName.bSame("contents"_Stz)) {
-    sPrefix = "Has{"_Stz;
+    sPrefix = "Set{"_Stz;
     iTab = 0;
     iDepth = 0;
   }
@@ -719,10 +719,10 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
     sPrefix = "Aha{"_Stz;
     iTab = 0;
   }
-  else if (bIsSubElement("_folder_"_Stz))
-    sPrefix = "Has{"_Stz;
+  else if (m_pElements) //if (bIsSubElement("_folder_"_Stz))
+    sPrefix = "Set{"_Stz;
   else if (m_pElementOf)
-    sPrefix = "Elm{"_Stz;
+    sPrefix = "Tpl{"_Stz;
   else if (m_pAttributeOf)
     sPrefix = "Atr{"_Stz;
   else
