@@ -170,6 +170,20 @@ Fact* Kbase::pElementFind(Stz* szNote)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new element instance to given set                                          */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pElementInstance(Fact* pSet, Stz* szElementSuperName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pElement = pConceptInstance(szElementSuperName);
+  
+  pSet->vElementAppend(pElement);
+  
+  return pElement;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new element instance to named set                                          */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pElementInstance(Stz* szSetName, Stz* szElementSuperName)
@@ -374,8 +388,9 @@ void Kbase::vImportTable(Table* pTableToImport)
   pTableNm->rxValue().m_pText = new Text;
   pTableNm->rxValue().m_pText->vSet(pTableToImport->szTableNm());
 
-  Fact* pColumns = pConceptInstance("_columns_"_Stz);
-  pTable->vElementAppend(pColumns);
+  //Fact* pColumns = pConceptInstance("_columns_"_Stz);
+  //pTable->vElementAppend(pColumns);
+  Fact* pColumns = pElementInstance(pTable,"_columns_"_Stz);
 
   StreamDef* pStmDef = pTableToImport->pStreamDef();
   
@@ -383,18 +398,15 @@ void Kbase::vImportTable(Table* pTableToImport)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column* pCol = pStmDef->pGetColumn(i_Col);
     
-    Fact* pColumn = pConceptInstance("_column_"_Stz);
-    pColumns->vElementAppend(pColumn);
+    //Fact* pColumn = pConceptInstance("_column_"_Stz);
+    //pColumns->vElementAppend(pColumn);
+    Fact* pColumn = pElementInstance(pColumns,"_column_"_Stz);
     
-    //Fact* pColumnNo = pConceptInstance("_columnNo_"_Stz);
-    //pColumn->vAttributeAppend(pColumnNo);
     Fact* pColumnNo = pAttributeInstance(pColumn,"_columnNo_"_Stz);
     RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_value_"_Stz));
     i8 iColumnNo = pCol->iColumnNo();
     pColumnNo->rxValue().m_iInt = iColumnNo;
 
-    //Fact* pColumnNm = pConceptInstance("_columnNm_"_Stz);
-    //pColumn->vAttributeAppend(pColumnNm);
     Fact* pColumnNm = pAttributeInstance(pColumn,"_columnNm_"_Stz);
     pColumnNm->rxValue().m_pText = new Text;
     pColumnNm->rxValue().m_pText->vSet(pCol->szColNm());
@@ -403,10 +415,11 @@ void Kbase::vImportTable(Table* pTableToImport)
     s32 s_ColType_;
     s_ColType_.vSprint("_%s_"_Stz,aCT[eColType]);
     
-    Fact* p_ColType_ = pConceptInstance(s_ColType_);
-    Fact* pColType = p_ColType_->pNewInstance();
-    pColumn->vAttributeAppend(pColType);
-    
+//    Fact* p_ColType_ = pConceptInstance(s_ColType_);
+//    Fact* pColType = p_ColType_->pNewInstance();
+//    pColumn->vAttributeAppend(pColType);
+    pAttributeInstance(pColumn,s_ColType_);
+
     Fact* pLength = pAttributeInstance(pColumn,"_length_"_Stz);
     i8 iLength = pCol->iColumnLength();
     pLength->rxValue().m_iInt = iLength;
