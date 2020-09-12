@@ -47,24 +47,25 @@ namespace Facts
     Kbase(Stz* szKbName);
    ~Kbase(void) noexcept(false);
   
+    Fact* pAttributeInstance(Fact* pFact, Stz* szAttributeSuperName);
+  
     Fact* pConceptAdd(Stz* szName);
     void  vConceptAdd(Stz* szName);
     Fact* pConceptAdd(Fact* pSuper, Stz* szName);
     void  vConceptAdd(Fact* pSuper, Stz* szName);
     void  vConceptAdd(Stz* szSuperName, Stz* szName);
-
-    Fact* pCurrent(void);
-    void vCurrent(Fact* pCurrent);
-  
-    Fact* pElementFind(Stz* szName);
-    
-    Fact* pFact(void);
- 
     Fact* pConceptInstance(Stz* szConceptSuperName);
 
-    Fact* pFactNew(Fact* pSuper, Stz* szNote);
-    void vFactDelete(Fact* pFact);
+    Fact* pCurrent(void);
+    void  vCurrent(Fact* pCurrent);
   
+    Fact* pElementFind(Stz* szName);
+    Fact* pElementInstance(Stz* szSetName, Stz* szElementSuperName);
+    
+    Fact* pFact(void);
+    void  vFactDelete(Fact* pFact);
+    Fact* pFactNew(Fact* pSuper, Stz* szNote);
+
     i8 iNextFactNo(void);
   
     void vPrint(File* pFile);
@@ -72,8 +73,6 @@ namespace Facts
     Question* pQuestionBorrow(void);
     void vQuestionReturn(Question** ppQuestion);
     
-    Fact* pSetNewElementInstance(Stz* szSetName, Stz* szElementSuperName);
-  
     Transform* pTransformBorrow(void);
     void vTransformReturn(Transform** ppTransform);
   

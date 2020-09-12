@@ -43,6 +43,21 @@ Kbase::~Kbase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* new attribute instance to named set                                        */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAttributeSuperName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pConceptInstance(szAttributeSuperName);
+  
+  pFact->vAttributeAppend(pAttribute);
+  
+  return pAttribute;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pConceptAdd(Stz* szName)
@@ -117,9 +132,9 @@ Fact* Kbase::pConceptInstance(Stz* szConceptSuperName)
   
   Fact* pSuper = m_p_Concept_->pElementFindNm(szConceptSuperName);
   
-  Fact* pFact = pSuper->pNewInstance();
+  Fact* pConcept = pSuper->pNewInstance();
   
-  return pFact;
+  return pConcept;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,6 +202,22 @@ Fact* Kbase::pElementFind(Stz* szNote)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new element instance to named set                                          */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pElementInstance(Stz* szSetName, Stz* szElementSuperName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pElement = pConceptInstance(szElementSuperName);
+  
+  Fact* pSet = m_pContents->pElementFindNm(szSetName);
+
+  pSet->vElementAppend(pElement);
+  
+  return pElement;
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate next fact no                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Kbase::iNextFactNo(void)
@@ -230,25 +261,6 @@ void Kbase::vQuestionReturn(Question** ppQuestion)
   delete *ppQuestion;
   
   *ppQuestion = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new element instance to named set                                          */
-/*----------------------------------------------------------------------------*/
-Fact* Kbase::pSetNewElementInstance(Stz* szSetName, Stz* szElementSuperName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
-  Fact* pConcept = m_p_Concept_->pElementFindNm(szElementSuperName);
-  
-  Fact* pElement = pConcept->pNewInstance();
-  
-
-  Fact* pSet = m_pContents->pElementFindNm(szSetName);
-
-  pSet->vElementAppend(pElement);
-  
-  return pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -355,7 +367,7 @@ void Kbase::vImportTable(Table* pTableToImport)
     
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
     
-  Fact* pTable = pSetNewElementInstance("tables"_Stz,"_table_"_Stz);
+  Fact* pTable = pElementInstance("tables"_Stz,"_table_"_Stz);
 
   Fact* pTableNm = pConceptInstance("_tableNm_"_Stz);
   pTable->vAttributeAppend(pTableNm);
