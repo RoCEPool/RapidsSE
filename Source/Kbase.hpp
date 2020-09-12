@@ -33,27 +33,6 @@ namespace Facts
   
     Fact*  m_pCurrent;     // current working fact
 
-  
-  
-//    Fact*  m_p_Action_;    //
-//    Fact*  m_p_Chunk_;     //
-//    Fact*  m_p_Condition_; //
-//    Fact*  m_p_Folder_;    //
-//    Fact*  m_p_Format_;    //
-//    Fact*  m_p_NameSeq_;   //
-//    Fact*  m_p_Pattern_;   //
-//    Fact*  m_p_Quality_;   //
-//    Fact*  m_p_Question_;  //
-//    Fact*  m_p_Questions_; //
-//    Fact*  m_p_Rule_;      //
-//    Fact*  m_p_Transform_; //
-//    Fact*  m_p_Tuple_;     //
-//    Fact*  m_p_Type_;      //
-//
-//    Fact*  m_pReference;   //
-
-
-
     // must be last
     Footer m_xFooter;
 
@@ -64,8 +43,10 @@ namespace Facts
     Kbase(Stz* szKbName);
    ~Kbase(void) noexcept(false);
   
-    Fact* pConceptAdd(Fact* pSuper, Stz* szNote);
-  
+    Fact* pConceptAdd(Fact* pSuper, Stz* szName);
+    void  vConceptAdd(Fact* pSuper, Stz* szName);
+    void  vConceptAdd(Stz* szSuperName, Stz* szName);
+
     Fact* pCurrent(void);
     void vCurrent(Fact* pCurrent);
   

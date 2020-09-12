@@ -57,6 +57,32 @@ Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szNote)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a concept                                                              */
+/*----------------------------------------------------------------------------*/
+void Kbase::vConceptAdd(Fact* pSuper, Stz* szNote)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pConcept = pSuper->pNewInstance(szNote);
+  
+  m_p_Concept_->vElementAppend(pConcept);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a concept                                                              */
+/*----------------------------------------------------------------------------*/
+void Kbase::vConceptAdd(Stz* szSuperName, Stz* szNote)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pSuper = m_p_Concept_->pElementFindNm(szSuperName);
+  
+  Fact* pConcept = pSuper->pNewInstance(szNote);
+  
+  m_p_Concept_->vElementAppend(pConcept);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current working fact                                                   */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pCurrent(void)
@@ -386,10 +412,6 @@ void Kbase::vAprioriFacts(void)
   m_p_Concept_ = pFactNew(m_pFact,"_concept_"_Stz);
   m_pFact->vElementAppend(m_p_Concept_);
   
-  pConceptAdd(m_p_Concept_,"_chunk_"_Stz);
-  pConceptAdd(m_p_Concept_,"_pattern_"_Stz);
-  pConceptAdd(m_p_Concept_,"_transform_"_Stz);
-
   m_p_Value_ = pConceptAdd(m_p_Concept_,"_value_"_Stz);
   m_p_Value_->rxValue().m_eUsage = FU_USAGE;
 
@@ -420,7 +442,11 @@ void Kbase::vAprioriFacts(void)
   m_p_Name_ = pConceptAdd(m_p_Text_,"_name_"_Stz);
 
   
-  
+  pConceptAdd(m_p_Concept_,"_chunk_"_Stz);
+  pConceptAdd(m_p_Concept_,"_pattern_"_Stz);
+  pConceptAdd(m_p_Concept_,"_transform_"_Stz);
+
+
   
   
 
