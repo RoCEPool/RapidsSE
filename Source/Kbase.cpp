@@ -383,13 +383,10 @@ void Kbase::vImportTable(Table* pTableToImport)
     
   Fact* pTable = pElementInstance("tables"_Stz,"_table_"_Stz);
 
-  Fact* pTableNm = pConceptInstance("_tableNm_"_Stz);
-  pTable->vAttributeAppend(pTableNm);
+  Fact* pTableNm = pAttributeInstance(pTable,"_tableNm_"_Stz);
   pTableNm->rxValue().m_pText = new Text;
   pTableNm->rxValue().m_pText->vSet(pTableToImport->szTableNm());
 
-  //Fact* pColumns = pConceptInstance("_columns_"_Stz);
-  //pTable->vElementAppend(pColumns);
   Fact* pColumns = pElementInstance(pTable,"_columns_"_Stz);
 
   StreamDef* pStmDef = pTableToImport->pStreamDef();
@@ -398,8 +395,6 @@ void Kbase::vImportTable(Table* pTableToImport)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column* pCol = pStmDef->pGetColumn(i_Col);
     
-    //Fact* pColumn = pConceptInstance("_column_"_Stz);
-    //pColumns->vElementAppend(pColumn);
     Fact* pColumn = pElementInstance(pColumns,"_column_"_Stz);
     
     Fact* pColumnNo = pAttributeInstance(pColumn,"_columnNo_"_Stz);
@@ -415,9 +410,6 @@ void Kbase::vImportTable(Table* pTableToImport)
     s32 s_ColType_;
     s_ColType_.vSprint("_%s_"_Stz,aCT[eColType]);
     
-//    Fact* p_ColType_ = pConceptInstance(s_ColType_);
-//    Fact* pColType = p_ColType_->pNewInstance();
-//    pColumn->vAttributeAppend(pColType);
     pAttributeInstance(pColumn,s_ColType_);
 
     Fact* pLength = pAttributeInstance(pColumn,"_length_"_Stz);
