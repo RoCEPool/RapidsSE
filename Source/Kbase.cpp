@@ -355,19 +355,19 @@ void Kbase::vImportTable(Table* pTableToImport)
     
   vTrace("Import %s ...\n"_Stz,pTableToImport->szTableNm());
   
-  Fact* pTables  = m_pContents->pElementFindNm("tables"_Stz);
-  Fact* p_Table_       = m_p_Concept_->pElementFindNm("_table_"_Stz);
-  Fact* p_TableNm_     = m_p_Concept_->pElementFindNm("_tableNm_"_Stz);
-  Fact* p_Columns_     = m_p_Concept_->pElementFindNm("_columns_"_Stz);
-  Fact* p_Column_      = m_p_Concept_->pElementFindNm("_column_"_Stz);
-  Fact* p_ColumnNm_    = m_p_Concept_->pElementFindNm("_columnNm_"_Stz);
-  Fact* p_ColumnNo_    = m_p_Concept_->pElementFindNm("_columnNo_"_Stz);
-  Fact* p_ColumnType_  = m_p_Concept_->pElementFindNm("_columnType_"_Stz);
-  Fact* p_Length_      = m_p_Concept_->pElementFindNm("_length_"_Stz);
-  Fact* p_Scale_       = m_p_Concept_->pElementFindNm("_scale_"_Stz);
-  Fact* p_Nullable_    = m_p_Concept_->pElementFindNm("_nullable_"_Stz);
-  Fact* p_NotNullable_ = m_p_Concept_->pElementFindNm("_notNullable_"_Stz);
-  Fact* p_PtnKey_      = m_p_Concept_->pElementFindNm("_ptnKey_"_Stz);
+//  Fact* pTables  = m_pContents->pElementFindNm("tables"_Stz);
+//  Fact* p_Table_       = m_p_Concept_->pElementFindNm("_table_"_Stz);
+//  Fact* p_TableNm_     = m_p_Concept_->pElementFindNm("_tableNm_"_Stz);
+//  Fact* p_Columns_     = m_p_Concept_->pElementFindNm("_columns_"_Stz);
+//  Fact* p_Column_      = m_p_Concept_->pElementFindNm("_column_"_Stz);
+//  Fact* p_ColumnNm_    = m_p_Concept_->pElementFindNm("_columnNm_"_Stz);
+//  Fact* p_ColumnNo_    = m_p_Concept_->pElementFindNm("_columnNo_"_Stz);
+//  Fact* p_ColumnType_  = m_p_Concept_->pElementFindNm("_columnType_"_Stz);
+//  Fact* p_Length_      = m_p_Concept_->pElementFindNm("_length_"_Stz);
+//  Fact* p_Scale_       = m_p_Concept_->pElementFindNm("_scale_"_Stz);
+//  Fact* p_Nullable_    = m_p_Concept_->pElementFindNm("_nullable_"_Stz);
+//  Fact* p_NotNullable_ = m_p_Concept_->pElementFindNm("_notNullable_"_Stz);
+//  Fact* p_PtnKey_      = m_p_Concept_->pElementFindNm("_ptnKey_"_Stz);
 
 //  Fact* pTable = p_Table_->pNewInstance();
 //  Fact* pTable = pFactInstance("_table_"_Stz);
@@ -375,12 +375,12 @@ void Kbase::vImportTable(Table* pTableToImport)
   
   Fact* pTable = pSetNewElementInstance("tables"_Stz,"_table_"_Stz);
 
-  Fact* pTableNm = p_TableNm_->pNewInstance();
+  Fact* pTableNm = pFactInstance("_tableNm_"_Stz); //p_TableNm_->pNewInstance();
   pTable->vAttributeAppend(pTableNm);
   pTableNm->rxValue().m_pText = new Text;
   pTableNm->rxValue().m_pText->vSet(pTableToImport->szTableNm());
 
-  Fact* pColumns = p_Columns_->pNewInstance();
+  Fact* pColumns = pFactInstance("_columns_"_Stz); //p_Columns_->pNewInstance();
   pTable->vElementAppend(pColumns);
 
   StreamDef* pStmDef = pTableToImport->pStreamDef();
@@ -389,16 +389,16 @@ void Kbase::vImportTable(Table* pTableToImport)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column* pCol = pStmDef->pGetColumn(i_Col);
     
-    Fact* pColumn = p_Column_->pNewInstance();
+    Fact* pColumn = pFactInstance("_column_"_Stz); //p_Column_->pNewInstance();
     pColumns->vElementAppend(pColumn);
     
-    i8 iColumnNo = pCol->iColumnNo();
-    Fact* pColumnNo = p_ColumnNo_->pNewInstance();
+    Fact* pColumnNo = pFactInstance("_columnNo_"_Stz); //p_ColumnNo_->pNewInstance();
     RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_value_"_Stz));
     pColumn->vAttributeAppend(pColumnNo);
+    i8 iColumnNo = pCol->iColumnNo();
     pColumnNo->rxValue().m_iInt = iColumnNo;
 
-    Fact* pColumnNm = p_ColumnNm_->pNewInstance();
+    Fact* pColumnNm = pFactInstance("_columnNm_"_Stz); //p_ColumnNm_->pNewInstance();
     pColumn->vAttributeAppend(pColumnNm);
     pColumnNm->rxValue().m_pText = new Text;
     pColumnNm->rxValue().m_pText->vSet(pCol->szColNm());
@@ -406,33 +406,34 @@ void Kbase::vImportTable(Table* pTableToImport)
     eCT eColType = pCol->eColumnType();
     s32 s_ColType_;
     s_ColType_.vSprint("_%s_"_Stz,aCT[eColType]);
-    Fact* p_ColType_ = m_p_Concept_->pElementFindNm(s_ColType_);
+    
+    Fact* p_ColType_ = pFactInstance(s_ColType_); //m_p_Concept_->pElementFindNm(s_ColType_);
     Fact* pColType = p_ColType_->pNewInstance();
     pColumn->vAttributeAppend(pColType);
     
-    i8 iLength = pCol->iColumnLength();
-    Fact* pLength = p_Length_->pNewInstance();
+    Fact* pLength = pFactInstance("_length_"_Stz); //p_Length_->pNewInstance();
     pColumn->vAttributeAppend(pLength);
+    i8 iLength = pCol->iColumnLength();
     pLength->rxValue().m_iInt = iLength;
 
-    i8 iScale = pCol->iColumnScale();
-    Fact* pScale = p_Scale_->pNewInstance();
+    Fact* pScale = pFactInstance("_scale_"_Stz); //p_Scale_->pNewInstance();
     pColumn->vAttributeAppend(pScale);
+    i8 iScale = pCol->iColumnScale();
     pScale->rxValue().m_iInt = iScale;
     
     bool bIsNullable = pCol->bIsNullable();
     if (bIsNullable) {
-      Fact* pNullable = p_Nullable_->pNewInstance();
+      Fact* pNullable = pFactInstance("_nullable"_Stz); //p_Nullable_->pNewInstance();
       pColumn->vAttributeAppend(pNullable);
     }
     else {
-      Fact* pNotNullable = p_NotNullable_->pNewInstance();
+      Fact* pNotNullable = pFactInstance("_notNullable_"_Stz); //p_NotNullable_->pNewInstance();
       pColumn->vAttributeAppend(pNotNullable);
     }
     
     bool bIsPtnKey = pCol->bIsPtnKey();
     if (bIsPtnKey) {
-      Fact* pPtnKey = p_PtnKey_->pNewInstance();
+      Fact* pPtnKey = pFactInstance("_ptnKey_"_Stz); //p_PtnKey_->pNewInstance();
       pColumn->vAttributeAppend(pPtnKey);
     }
 
