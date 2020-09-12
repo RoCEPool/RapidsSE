@@ -414,10 +414,7 @@ void Kbase::vImportTable(Table* pTableToImport)
     
   Fact* pTable = pElementInstance("tables"_Stz,"_table_"_Stz);
 
-  Fact* pTableNm = pAttributeInstance(pTable,"_tableNm_"_Stz,
-                                      pTableToImport->szTableNm());
-  //pTableNm->rxValue().m_pText = new Text;
-  //pTableNm->rxValue().m_pText->vSet(pTableToImport->szTableNm());
+  pAttributeInstance(pTable,"_tableNm_"_Stz,pTableToImport->szTableNm());
 
   Fact* pColumns = pElementInstance(pTable,"_columns_"_Stz);
 
@@ -425,45 +422,32 @@ void Kbase::vImportTable(Table* pTableToImport)
   
   i8 nCols = pStmDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
     Column* pCol = pStmDef->pGetColumn(i_Col);
+    eCT eColType = pCol->eColumnType();
+    s32 s_ColType_;
+    s_ColType_.vSprint("_%s_"_Stz,aCT[eColType]);
     
     Fact* pColumn = pElementInstance(pColumns,"_column_"_Stz);
     
     Fact* pColumnNo = pAttributeInstance(pColumn,"_columnNo_"_Stz,
                                          pCol->iColumnNo());
     RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_value_"_Stz));
-    //i8 iColumnNo = pCol->iColumnNo();
-    //pColumnNo->rxValue().m_iInt = iColumnNo;
 
-    Fact* pColumnNm = pAttributeInstance(pColumn,"_columnNm_"_Stz,
-                                         pCol->szColNm());
-    //pColumnNm->rxValue().m_pText = new Text;
-    //pColumnNm->rxValue().m_pText->vSet(pCol->szColNm());
+    pAttributeInstance(pColumn,"_columnNm_"_Stz,pCol->szColNm());
 
-    eCT eColType = pCol->eColumnType();
-    s32 s_ColType_;
-    s_ColType_.vSprint("_%s_"_Stz,aCT[eColType]);
-    
     pAttributeInstance(pColumn,s_ColType_);
 
-    Fact* pLength = pAttributeInstance(pColumn,"_length_"_Stz,
-                                       pCol->iColumnLength());
-    //i8 iLength = pCol->iColumnLength();
-    //pLength->rxValue().m_iInt = iLength;
+    pAttributeInstance(pColumn,"_length_"_Stz,pCol->iColumnLength());
 
-    Fact* pScale = pAttributeInstance(pColumn,"_scale_"_Stz,
-                                      pCol->iColumnScale());
-    //i8 iScale = pCol->iColumnScale();
-    //pScale->rxValue().m_iInt = iScale;
+    pAttributeInstance(pColumn,"_scale_"_Stz,pCol->iColumnScale());
     
-    bool bIsNullable = pCol->bIsNullable();
-    if (bIsNullable)
+    if (pCol->bIsNullable())
       pAttributeInstance(pColumn,"_nullable_"_Stz);
     else
       pAttributeInstance(pColumn,"_notNullable_"_Stz);
     
-    bool bIsPtnKey = pCol->bIsPtnKey();
-    if (bIsPtnKey)
+    if (pCol->bIsPtnKey())
       pAttributeInstance(pColumn,"_ptnKey_"_Stz);
   }
 }
