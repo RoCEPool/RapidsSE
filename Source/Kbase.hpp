@@ -47,21 +47,23 @@ namespace Facts
     Kbase(Stz* szKbName);
    ~Kbase(void) noexcept(false);
   
-    Fact* pAttributeInstance(Fact* pFact, Stz* szAttributeSuperName);
-  
+    Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm);
+    Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, i8 iVal);
+    Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, Stz* szVal);
+
     Fact* pConceptAdd(Stz* szName);
     void  vConceptAdd(Stz* szName);
     Fact* pConceptAdd(Fact* pSuper, Stz* szName);
     void  vConceptAdd(Fact* pSuper, Stz* szName);
     void  vConceptAdd(Stz* szSuperName, Stz* szName);
-    Fact* pConceptInstance(Stz* szConceptSuperName);
+    Fact* pConceptInstance(Stz* szAhaSuperNm);
 
     Fact* pCurrent(void);
     void  vCurrent(Fact* pCurrent);
   
     Fact* pElementFind(Stz* szName);
-    Fact* pElementInstance(Fact* pSet, Stz* szElementSuperName);
-    Fact* pElementInstance(Stz* szSetName, Stz* szElementSuperName);
+    Fact* pElementInstance(Fact* pSet, Stz* szElmSuperNm);
+    Fact* pElementInstance(Stz* szSetNm, Stz* szElmSuperNm);
     
     Fact* pFact(void);
     void  vFactDelete(Fact* pFact);

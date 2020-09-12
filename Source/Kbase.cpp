@@ -45,17 +45,50 @@ Kbase::~Kbase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* new attribute instance to named set                                        */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAttributeSuperName)
+Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
-  Fact* pAttribute = pConceptInstance(szAttributeSuperName);
+  Fact* pAttribute = pConceptInstance(szAtrSuperNm);
   
   pFact->vAttributeAppend(pAttribute);
   
   return pAttribute;
 }
 
+/*----------------------------------------------------------------------------*/
+/* new attribute instance to named set                                        */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, i8 iVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pConceptInstance(szAtrSuperNm);
+  
+  pFact->vAttributeAppend(pAttribute);
+  
+  pFact->rxValue().m_iInt = iVal;
+
+  
+  return pAttribute;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new attribute instance to named set                                        */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, Stz* szVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pConceptInstance(szAtrSuperNm);
+  
+  pFact->vAttributeAppend(pAttribute);
+  
+  pFact->rxValue().m_pText = new Text;
+  pFact->rxValue().m_pText->vSet(szVal);
+
+  return pAttribute;
+}
 
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
@@ -126,11 +159,11 @@ void Kbase::vConceptAdd(Stz* szSuperName, Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* new fact instance                                                          */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pConceptInstance(Stz* szConceptSuperName)
+Fact* Kbase::pConceptInstance(Stz* szAhaSuperNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pSuper = m_p_Concept_->pElementFindNm(szConceptSuperName);
+  Fact* pSuper = m_p_Concept_->pElementFindNm(szAhaSuperNm);
   
   Fact* pConcept = pSuper->pNewInstance();
   
@@ -172,11 +205,11 @@ Fact* Kbase::pElementFind(Stz* szNote)
 /*----------------------------------------------------------------------------*/
 /* new element instance to given set                                          */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pElementInstance(Fact* pSet, Stz* szElementSuperName)
+Fact* Kbase::pElementInstance(Fact* pSet, Stz* szElmSuperNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
-  Fact* pElement = pConceptInstance(szElementSuperName);
+  Fact* pElement = pConceptInstance(szElmSuperNm);
   
   pSet->vElementAppend(pElement);
   
@@ -186,13 +219,13 @@ Fact* Kbase::pElementInstance(Fact* pSet, Stz* szElementSuperName)
 /*----------------------------------------------------------------------------*/
 /* new element instance to named set                                          */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pElementInstance(Stz* szSetName, Stz* szElementSuperName)
+Fact* Kbase::pElementInstance(Stz* szSetNm, Stz* szElmSuperNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
-  Fact* pElement = pConceptInstance(szElementSuperName);
+  Fact* pElement = pConceptInstance(szElmSuperNm);
   
-  Fact* pSet = m_pContents->pElementFindNm(szSetName);
+  Fact* pSet = m_pContents->pElementFindNm(szSetNm);
 
   pSet->vElementAppend(pElement);
   
