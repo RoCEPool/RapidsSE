@@ -386,19 +386,18 @@ void Kbase::vAprioriFacts(void)
   m_p_Concept_ = pFactNew(m_pFact,"_concept_"_Stz);
   m_pFact->vElementAppend(m_p_Concept_);
   
-  m_p_Chunk_ = pConceptAdd(m_p_Concept_,"_chunk_"_Stz);
-  m_p_Pattern_ = pConceptAdd(m_p_Concept_,"_pattern_"_Stz);
-  m_p_Transform_ = pConceptAdd(m_p_Concept_,"_transform_"_Stz);
+  pConceptAdd(m_p_Concept_,"_chunk_"_Stz);
+  pConceptAdd(m_p_Concept_,"_pattern_"_Stz);
+  pConceptAdd(m_p_Concept_,"_transform_"_Stz);
 
-  
   m_p_Value_ = pConceptAdd(m_p_Concept_,"_value_"_Stz);
   m_p_Value_->rxValue().m_eUsage = FU_USAGE;
 
-  m_p_Function_ = pConceptAdd(m_p_Value_,"_function_"_Stz);
-  m_p_Function_->rxValue().m_eUsage = FU_FUNCTION;
-
   m_p_Int_ = pConceptAdd(m_p_Value_,"_int_"_Stz);
   m_p_Int_->rxValue().m_eUsage = FU_INT;
+
+  m_p_Function_ = pConceptAdd(m_p_Value_,"_function_"_Stz);
+  m_p_Function_->rxValue().m_eUsage = FU_FUNCTION;
 
   m_p_Method_ = pConceptAdd(m_p_Value_,"_method_"_Stz);
   m_p_Method_->rxValue().m_eUsage = FU_METHOD;
@@ -417,57 +416,62 @@ void Kbase::vAprioriFacts(void)
 
   m_p_Xref_ = pConceptAdd(m_p_Value_,"_xref_"_Stz);
   m_p_Xref_->rxValue().m_eUsage = FU_XREF;
-
   
   m_p_Name_ = pConceptAdd(m_p_Text_,"_name_"_Stz);
-  m_p_NameSeq_ = pConceptAdd(m_p_Text_,"_nameSeq_"_Stz);
-  m_p_Format_ = pConceptAdd(m_p_Text_,"_format_"_Stz);
 
-  m_p_Type_ = pConceptAdd(m_p_Concept_,"_type_"_Stz);
-  m_p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
-  m_p_Folder_ = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
-
-  m_p_Quality_ = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
   
-  m_p_Questions_ = pConceptAdd(m_p_Folder_,"_questions_"_Stz);
-  m_p_Question_ = pConceptAdd(m_p_Questions_,"_question_"_Stz);
+  
+  
+  
+
+  Fact* p_NameSeq_ = pConceptAdd(m_p_Text_,"_nameSeq_"_Stz);
+  Fact* p_Format_ = pConceptAdd(m_p_Text_,"_format_"_Stz);
+
+  Fact* p_Type_ = pConceptAdd(m_p_Concept_,"_type_"_Stz);
+  Fact* p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
+  Fact* p_Folder_ = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
+
+  Fact* p_Quality_ = pConceptAdd(m_p_Concept_,"_quality_"_Stz);
+  
+  Fact* p_Questions_ = pConceptAdd(p_Folder_,"_questions_"_Stz);
+  Fact* p_Question_ = pConceptAdd(p_Questions_,"_question_"_Stz);
   Fact* p_QuestionNm_ = pConceptAdd(m_p_Name_,"_questionNm_"_Stz);
   
-  m_p_Rule_ = pConceptAdd(m_p_Concept_,"_rule_"_Stz);
-  m_p_Condition_ = pConceptAdd(m_p_Concept_,"_condition_"_Stz);
-  m_p_Action_ = pConceptAdd(m_p_Concept_,"_action_"_Stz);
+  pConceptAdd(m_p_Concept_,"_rule_"_Stz);
+  pConceptAdd(m_p_Concept_,"_condition_"_Stz);
+  pConceptAdd(m_p_Concept_,"_action_"_Stz);
 
-  Fact* p_Nullability_   = pConceptAdd(m_p_Quality_,"_nullability_"_Stz);
-  Fact* p_ColumnType_    = pConceptAdd(m_p_Type_,"_columnType_"_Stz);
-  Fact* p_Tables_        = pConceptAdd(m_p_Folder_,"_tables_"_Stz);
+  Fact* p_Nullability_   = pConceptAdd(p_Quality_,"_nullability_"_Stz);
+  Fact* p_ColumnType_    = pConceptAdd(p_Type_,"_columnType_"_Stz);
+  Fact* p_Tables_        = pConceptAdd(p_Folder_,"_tables_"_Stz);
   
-  Fact* p_Statement_     = pConceptAdd(m_p_Folder_,"_statement_"_Stz);
-  Fact* p_SubQry_        = pConceptAdd(m_p_Folder_,"_subQry_"_Stz);
-  Fact* p_ProjectClause_ = pConceptAdd(m_p_Folder_,"_projectClause_"_Stz);
-  Fact* p_FromClause_    = pConceptAdd(m_p_Folder_,"_fromClause_"_Stz);
-  Fact* p_FromTable_     = pConceptAdd(m_p_Tuple_, "_fromTable_"_Stz);
-  Fact* p_WhereClause_   = pConceptAdd(m_p_Folder_,"_whereClause_"_Stz);
-  Fact* p_GroupByClause_ = pConceptAdd(m_p_Folder_,"_groupByClause_"_Stz);
-  Fact* p_OrderByClause_ = pConceptAdd(m_p_Folder_,"_orderByClause_"_Stz);
+  Fact* p_Statement_     = pConceptAdd(p_Folder_,"_statement_"_Stz);
+  Fact* p_SubQry_        = pConceptAdd(p_Folder_,"_subQry_"_Stz);
+  Fact* p_ProjectClause_ = pConceptAdd(p_Folder_,"_projectClause_"_Stz);
+  Fact* p_FromClause_    = pConceptAdd(p_Folder_,"_fromClause_"_Stz);
+  Fact* p_FromTable_     = pConceptAdd(p_Tuple_, "_fromTable_"_Stz);
+  Fact* p_WhereClause_   = pConceptAdd(p_Folder_,"_whereClause_"_Stz);
+  Fact* p_GroupByClause_ = pConceptAdd(p_Folder_,"_groupByClause_"_Stz);
+  Fact* p_OrderByClause_ = pConceptAdd(p_Folder_,"_orderByClause_"_Stz);
 
-  Fact* p_ExprList_      = pConceptAdd(m_p_Folder_,"_exprList_"_Stz);
-  Fact* p_Expr_          = pConceptAdd(m_p_Folder_,"_expr_"_Stz);
-  Fact* p_Term_          = pConceptAdd(m_p_Folder_,"_term_"_Stz);
-  Fact* p_Atom_          = pConceptAdd(m_p_Tuple_,"_atom_"_Stz);
+  Fact* p_ExprList_      = pConceptAdd(p_Folder_,"_exprList_"_Stz);
+  Fact* p_Expr_          = pConceptAdd(p_Folder_,"_expr_"_Stz);
+  Fact* p_Term_          = pConceptAdd(p_Folder_,"_term_"_Stz);
+  Fact* p_Atom_          = pConceptAdd(p_Tuple_,"_atom_"_Stz);
 
-  pConceptAdd(m_p_Folder_,"_pipeline_"_Stz);
+  pConceptAdd(p_Folder_,"_pipeline_"_Stz);
   pConceptAdd(m_p_Name_,"_pipelineNm_"_Stz);
-  pConceptAdd(m_p_Folder_,"_stages_"_Stz);
-  pConceptAdd(m_p_Folder_,"_stage_"_Stz);
+  pConceptAdd(p_Folder_,"_stages_"_Stz);
+  pConceptAdd(p_Folder_,"_stage_"_Stz);
   pConceptAdd(m_p_Name_,"_stageNm_"_Stz);
-  Fact* p_Cardinality_ = pConceptAdd(m_p_Quality_,"_cardinality_"_Stz);
+  Fact* p_Cardinality_ = pConceptAdd(p_Quality_,"_cardinality_"_Stz);
   pConceptAdd(p_Cardinality_,"all nodes"_Stz);
   pConceptAdd(p_Cardinality_,"all partitions"_Stz);
   pConceptAdd(p_Cardinality_,"all partitions on origin"_Stz);
   pConceptAdd(p_Cardinality_,"origin"_Stz);
   pConceptAdd(p_Cardinality_,"specific node"_Stz);
   pConceptAdd(p_Cardinality_,"specific partition"_Stz);
-  Fact* p_Operator_      = pConceptAdd(m_p_Tuple_,"_operator_"_Stz);
+  Fact* p_Operator_      = pConceptAdd(p_Tuple_,"_operator_"_Stz);
   pConceptAdd(p_Operator_,"_op_"_Stz);
   pConceptAdd(p_Operator_,"_sqlOp_"_Stz);
   
@@ -487,47 +491,47 @@ void Kbase::vAprioriFacts(void)
   pConceptAdd(p_Nullability_,"_nullable_"_Stz);
   pConceptAdd(p_Nullability_,"_notNullable_"_Stz);
 
-  pConceptAdd(m_p_Quality_,"_ptnKey_"_Stz);
+  pConceptAdd(p_Quality_,"_ptnKey_"_Stz);
 
-  pConceptAdd(m_p_Folder_,"_table_"_Stz);
+  pConceptAdd(p_Folder_,"_table_"_Stz);
   pConceptAdd(m_p_Name_,"_tableNm_"_Stz);
   
-  pConceptAdd(m_p_Folder_,"_columns_"_Stz);
-  pConceptAdd(m_p_Tuple_,"_column_"_Stz);
+  pConceptAdd(p_Folder_,"_columns_"_Stz);
+  pConceptAdd(p_Tuple_,"_column_"_Stz);
   pConceptAdd(m_p_Int_,"_columnNo_"_Stz);
   pConceptAdd(m_p_Name_,"_columnNm_"_Stz);
   pConceptAdd(m_p_Int_,"_length_"_Stz);
   pConceptAdd(m_p_Int_,"_scale_"_Stz);
 
-  pConceptAdd(m_p_Folder_,"_indexes_"_Stz);
-  pConceptAdd(m_p_Folder_,"_index_"_Stz);
+  pConceptAdd(p_Folder_,"_indexes_"_Stz);
+  pConceptAdd(p_Folder_,"_index_"_Stz);
   
-  pConceptAdd(m_p_Folder_,"_routines_"_Stz);
-  pConceptAdd(m_p_Tuple_,"_subroutine_"_Stz);
+  pConceptAdd(p_Folder_,"_routines_"_Stz);
+  pConceptAdd(p_Tuple_,"_subroutine_"_Stz);
   pConceptAdd(m_p_Name_,"_subroutineNm_"_Stz);
-  pConceptAdd(m_p_Quality_,"_recallable_"_Stz);
+  pConceptAdd(p_Quality_,"_recallable_"_Stz);
   pConceptAdd(m_p_Text_,"_sourceCode_"_Stz);
 
   Fact* p_Nodes_ = pConceptAdd(m_p_Int_,"_nodes_"_Stz);
   Fact* p_Partitions_ = pConceptAdd(m_p_Int_,"_partitions_"_Stz);
-  Fact* p_Grid_ = pConceptAdd(m_p_Folder_,"_grid_"_Stz);
+  Fact* p_Grid_ = pConceptAdd(p_Folder_,"_grid_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pContents = pConceptAdd(m_p_Folder_,"_contents_"_Stz);
+  Fact* pContents = pConceptAdd(p_Folder_,"_contents_"_Stz);
   m_pContents = pContents->pNewInstance();//pFactNew(m_pFolder,"contents"_Stz);
   m_pFact->vElementAppend(m_pContents);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* p_Reference_ = pConceptAdd(m_p_Folder_,"_reference_"_Stz);
-  m_pReference = p_Reference_->pNewInstance();
-  m_pContents->vElementAppend(m_pReference);
+  Fact* p_Reference_ = pConceptAdd(p_Folder_,"_reference_"_Stz);
+  Fact* pReference = p_Reference_->pNewInstance();
+  m_pContents->vElementAppend(pReference);
   
-  Fact* pQuestions = m_p_Questions_->pNewInstance();
-  m_pReference->vElementAppend(pQuestions);
+  Fact* pQuestions = p_Questions_->pNewInstance();
+  pReference->vElementAppend(pQuestions);
 
-  Fact* pQuestion = m_p_Question_->pNewInstance();
+  Fact* pQuestion = p_Question_->pNewInstance();
   pQuestions->vElementAppend(pQuestion);
   Fact* pQuestionNm = p_QuestionNm_->pNewInstance();
   pQuestionNm->rxValue().m_pText = new Text;
@@ -569,12 +573,12 @@ void Kbase::vAprioriFacts(void)
   Fact* pStages = p_Stages_->pNewInstance();
   pPipeline->vElementAppend(pStages);
 
-  Fact* pNameSeq = m_p_NameSeq_->pNewInstance();
+  Fact* pNameSeq = p_NameSeq_->pNewInstance();
   pNameSeq->rxValue().m_pText = new Text;
   pNameSeq->rxValue().m_pText->vSet("A"_Stz);
   pStages->vAttributeAppend(pNameSeq);
 
-  Fact* pFormat = m_p_Format_->pNewInstance();
+  Fact* pFormat = p_Format_->pNewInstance();
   pFormat->rxValue().m_pText = new Text;
   pFormat->rxValue().m_pText->vSet("stage%s"_Stz);
   pStages->vAttributeAppend(pFormat);
