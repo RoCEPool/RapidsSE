@@ -56,10 +56,12 @@ namespace Facts
     Fact* pCurrent(void);
     void vCurrent(Fact* pCurrent);
   
-    Fact* pElementFind(Stz* szNote);
+    Fact* pElementFind(Stz* szName);
     
     Fact* pFact(void);
-  
+ 
+    Fact* pFactInstance(Stz* szSuperName);
+
     Fact* pFactNew(Fact* pSuper, Stz* szNote);
     void vFactDelete(Fact* pFact);
   

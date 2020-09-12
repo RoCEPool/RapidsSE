@@ -139,13 +139,27 @@ Fact* Kbase::pFact(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new fact                                                                   */
+/* new fact instance                                                          */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pFactNew(Fact* pSuper, Stz* szNote)
+Fact* Kbase::pFactInstance(Stz* szSuperName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pFact = new Fact(this, pSuper, szNote);
+  Fact* pSuper = m_p_Concept_->pElementFindNm(szSuperName);
+  
+  Fact* pFact = pSuper->pNewInstance();
+  
+  return pFact;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new fact                                                                   */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pFactNew(Fact* pSuper, Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pFact = new Fact(this, pSuper, szName);
   
   return pFact;
 }
@@ -336,7 +350,8 @@ void Kbase::vImportTable(Table* pTableToImport)
   Fact* p_NotNullable_ = m_p_Concept_->pElementFindNm("_notNullable_"_Stz);
   Fact* p_PtnKey_      = m_p_Concept_->pElementFindNm("_ptnKey_"_Stz);
 
-  Fact* pTable = p_Table_->pNewInstance();
+//  Fact* pTable = p_Table_->pNewInstance();
+  Fact* pTable = pFactInstance("_table_"_Stz);
   pTables->vElementAppend(pTable);
 
   Fact* pTableNm = p_TableNm_->pNewInstance();
