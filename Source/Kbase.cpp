@@ -405,30 +405,35 @@ void Kbase::vImportTable(Table* pTableToImport)
     Fact* pColType = p_ColType_->pNewInstance();
     pColumn->vAttributeAppend(pColType);
     
-    Fact* pLength = pConceptInstance("_length_"_Stz);
-    pColumn->vAttributeAppend(pLength);
+    //Fact* pLength = pConceptInstance("_length_"_Stz);
+    //pColumn->vAttributeAppend(pLength);
+    Fact* pLength = pAttributeInstance(pColumn,"_length_"_Stz);
     i8 iLength = pCol->iColumnLength();
     pLength->rxValue().m_iInt = iLength;
 
-    Fact* pScale = pConceptInstance("_scale_"_Stz);
-    pColumn->vAttributeAppend(pScale);
+    //Fact* pScale = pConceptInstance("_scale_"_Stz);
+    //pColumn->vAttributeAppend(pScale);
+    Fact* pScale = pAttributeInstance(pColumn,"_nullable_"_Stz);
     i8 iScale = pCol->iColumnScale();
     pScale->rxValue().m_iInt = iScale;
     
     bool bIsNullable = pCol->bIsNullable();
     if (bIsNullable) {
-      Fact* pNullable = pConceptInstance("_nullable"_Stz);
-      pColumn->vAttributeAppend(pNullable);
+      //Fact* pNullable = pConceptInstance("_nullable"_Stz);
+      //pColumn->vAttributeAppend(pNullable);
+      pAttributeInstance(pColumn,"_nullable_"_Stz);
     }
     else {
-      Fact* pNotNullable = pConceptInstance("_notNullable_"_Stz);
-      pColumn->vAttributeAppend(pNotNullable);
+      //Fact* pNotNullable = pConceptInstance("_notNullable_"_Stz);
+      //pColumn->vAttributeAppend(pNotNullable);
+      pAttributeInstance(pColumn,"_notNullable_"_Stz);
     }
     
     bool bIsPtnKey = pCol->bIsPtnKey();
     if (bIsPtnKey) {
-      Fact* pPtnKey = pConceptInstance("_ptnKey_"_Stz);
-      pColumn->vAttributeAppend(pPtnKey);
+      //Fact* pPtnKey = pConceptInstance("_ptnKey_"_Stz);
+      //pColumn->vAttributeAppend(pPtnKey);
+      pAttributeInstance(pColumn,"_ptnKey_"_Stz);
     }
 
   }
