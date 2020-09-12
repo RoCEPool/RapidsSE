@@ -59,6 +59,16 @@ Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm)
 /*----------------------------------------------------------------------------*/
 /* new attribute instance to named set                                        */
 /*----------------------------------------------------------------------------*/
+void Kbase::vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pAttributeInstance(pFact,szAtrSuperNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* new attribute instance to named set                                        */
+/*----------------------------------------------------------------------------*/
 Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
@@ -68,8 +78,17 @@ Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, i8 iVal)
 
   pFact->vAttributeAppend(pAttribute);
   
-  
   return pAttribute;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new attribute instance to named set                                        */
+/*----------------------------------------------------------------------------*/
+void Kbase::vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, i8 iVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pAttributeInstance(pFact,szAtrSuperNm,iVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,6 +105,16 @@ Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, Stz* szVal)
   pFact->vAttributeAppend(pAttribute);
   
   return pAttribute;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new attribute instance to named set                                        */
+/*----------------------------------------------------------------------------*/
+void Kbase::vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, Stz* szVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pAttributeInstance(pFact,szAtrSuperNm,szVal);
 }
 
 /*----------------------------------------------------------------------------*/

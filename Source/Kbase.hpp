@@ -48,8 +48,11 @@ namespace Facts
    ~Kbase(void) noexcept(false);
   
     Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm);
+    void  vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm);
     Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, i8 iVal);
+    void  vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, i8 iVal);
     Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, Stz* szVal);
+    void  vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, Stz* szVal);
 
     Fact* pConceptAdd(Stz* szName);
     void  vConceptAdd(Stz* szName);
