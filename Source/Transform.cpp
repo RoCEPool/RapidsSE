@@ -16,12 +16,13 @@ __aFooterFunction(Transform)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Transform::Transform(Kbase* pKbase)
+Transform::Transform(Kbase* pKbase, Fact* pSelf)
 : Object(CN_TRANSFORM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORM,_FOOTER_);
   
   m_pKbase = pKbase;
+  m_pSelf  = pSelf;
     
   _checkInitialised_(CN_TRANSFORM);
 

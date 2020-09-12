@@ -344,30 +344,6 @@ void Kbase::vQuestionReturn(Question** ppQuestion)
 }
 
 /*----------------------------------------------------------------------------*/
-/* borrow/new a transform                                                     */
-/*----------------------------------------------------------------------------*/
-Transform* Kbase::pTransformBorrow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
-  Transform* pTransform = new Transform(this);
-  
-  return pTransform;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return/delete a transform                                                  */
-/*----------------------------------------------------------------------------*/
-void Kbase::vTransformReturn(Transform** ppTransform)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-    
-  delete *ppTransform;
-  
-  *ppTransform = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get property fact                                                          */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pValue(void)

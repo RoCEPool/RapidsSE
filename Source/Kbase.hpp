@@ -79,10 +79,7 @@ namespace Facts
   
     Question* pQuestionBorrow(void);
     void vQuestionReturn(Question** ppQuestion);
-    
-    Transform* pTransformBorrow(void);
-    void vTransformReturn(Transform** ppTransform);
-  
+      
     Fact* pValue(void);
     
     // -- -- -- -- -- -- --
