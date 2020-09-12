@@ -529,6 +529,7 @@ void Kbase::vAprioriFacts(void)
   m_p_Method_ = pConceptAdd(m_p_Value_,"_method_"_Stz,FU_METHOD);
   m_p_Object_ = pConceptAdd(m_p_Value_,"_object_"_Stz,FU_OBJECT);
   m_p_Opaque_ = pConceptAdd(m_p_Value_,"_opaque_"_Stz,FU_OPAQUE);
+  m_p_Transform_ = pConceptAdd(m_p_Value_,"_transform_"_Stz,FU_TRANSFORM);
   m_p_Text_ = pConceptAdd(m_p_Value_,"_text_"_Stz,FU_TEXT);
   m_p_Word_ = pConceptAdd(m_p_Value_,"_word_"_Stz,FU_WORD);
   m_p_Xref_ = pConceptAdd(m_p_Value_,"_xref_"_Stz,FU_XREF);
