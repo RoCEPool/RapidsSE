@@ -216,7 +216,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PTRVAL,
   
   /* */ CN__Q__,
-  /* */ CN_QUESTION,
   /* */ CN_QUEUE,
   /* */ CN_QUEUEBUFFER,
   /* */ CN_QUEUES,
@@ -332,7 +331,6 @@ enum eCN : u2 // Class Number
   /* */ CN_TONSTRSB,
   /* */ CN_TOPTNRSB,
   /* */ CN_TORSB,
-  /* */ CN_TRANSFORM,
   /* */ CN_TSPVAL,
   /* */ CN_TX,
   /* */ CN_TXSET,
@@ -565,7 +563,6 @@ static Stz* aCN[]
   /* */ "PTRVAL"_Stz,              // CN_PTRVAL
   
   /* */ "_Q__"_Stz,                // CN__Q__
-  /* */ "QUESTION"_Stz,            // CN_QUESTION
   /* */ "QUEUE"_Stz,               // CN_QUEUE
   /* */ "QUEUEBUFFER"_Stz,         // CN_QUEUEBUFFER
   /* */ "QUEUES"_Stz,              // CN_QUEUES
@@ -681,7 +678,6 @@ static Stz* aCN[]
   /* */ "TONSTRSB"_Stz,            // CN_TONSTRSB
   /* */ "TOPTNRSB"_Stz,            // CN_TOPTNRSB
   /* */ "TORSB"_Stz,               // CN_TORSB
-  /* */ "TRANSFORM"_Stz,           // CN_TRANSFORM
   /* */ "TSPVAL"_Stz,              // CN_TSPVAL
   /* */ "TX"_Stz,                  // CN_TX
   /* */ "TXSET"_Stz,               // CN_TXSET

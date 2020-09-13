@@ -28,11 +28,7 @@ bool Prompt::bPrompt_fact(SePrompt* pPrompt)
   vTrace("... Fact ...\n"_Stz);
   
   Kbase* pKb = new Kbase("Test1"_Stz);
-    
-  Question*  pQk = pKb->pQuestionBorrow();
-    
-  pKb->vQuestionReturn(&pQk);
-  
+      
   DicStack* pDicStack = & pPrompt->pSession()->m_oDicStack;
   
   Table* pTable;

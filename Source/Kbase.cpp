@@ -320,30 +320,6 @@ void Kbase::vPrint(File* pFile)
 }
 
 /*----------------------------------------------------------------------------*/
-/* borrow/new a question                                                      */
-/*----------------------------------------------------------------------------*/
-Question* Kbase::pQuestionBorrow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-  
-  Question* pQuestion = new Question(this);
-  
-  return pQuestion;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return/delete a question                                                   */
-/*----------------------------------------------------------------------------*/
-void Kbase::vQuestionReturn(Question** ppQuestion)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-    
-  delete *ppQuestion;
-  
-  *ppQuestion = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get property fact                                                          */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pValue(void)

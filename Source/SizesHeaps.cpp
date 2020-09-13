@@ -212,7 +212,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PtrVal),             HT_INVALID           }, // CN_PTRVAL
 
   { 'Q' - ('A' - 1),            HT_INVALID           }, // CN__Q__
-  { sizeof(Question),           HT_TRANSIENT_TINY    }, // CN_QUESTION
   { sizeof(Queue),              HT_TRANSIENT_TINY    }, // CN_QUEUE
   { sizeof(QueueBuffer),        HT_INVALID           }, // CN_QUEUEBUFFER
   { sizeof(Queues),             HT_TRANSIENT_TINY    }, // CN_QUEUES
@@ -328,7 +327,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToNstRsb),           HT_TRANSIENT_MEDIUM  }, // CN_TONSTRSB
   { sizeof(ToPtnRsb),           HT_TRANSIENT_LARGE   }, // CN_TOPTNRSB
   { sizeof(ToRsb),              HT_TRANSIENT_MEDIUM  }, // CN_TORSB
-  { sizeof(Transform),          HT_TRANSIENT_TINY    }, // CN_TRANSFORM
   { sizeof(TspVal),             HT_INVALID           }, // CN_TSPVAL
   { sizeof(Tx),                 HT_TRANSIENT_TINY    }, // CN_TX
   { sizeof(TxSet),              HT_TRANSIENT_TINY    }, // CN_TXSET

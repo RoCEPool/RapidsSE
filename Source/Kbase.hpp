@@ -75,10 +75,7 @@ namespace Facts
     i8 iNextFactNo(void);
   
     void vPrint(File* pFile);
-  
-    Question* pQuestionBorrow(void);
-    void vQuestionReturn(Question** ppQuestion);
-      
+        
     Fact* pValue(void);
     
     // -- -- -- -- -- -- --
