@@ -99,6 +99,7 @@ namespace Enums
 #include "ePO.h"
 #include "ePP.h"
 #include "ePR.h"
+#include "ePT.h"
 #include "ePX.h"
 #include "ePY.h"
 
@@ -121,7 +122,6 @@ namespace Enums
 
 #include "eTA.h"
 #include "eTN.h"
-#include "eTP.h"
 #include "eTQ.h"
 #include "eTR.h"
 #include "eTS.h"
