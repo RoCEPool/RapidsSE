@@ -122,6 +122,7 @@ static Stz* aEG[]
 
   "EG_TA"_Stz,
   "EG_TN"_Stz,
+  "EG_TP"_Stz,
   "EG_TQ"_Stz,
   "EG_TR"_Stz,
   "EG_TS"_Stz,
