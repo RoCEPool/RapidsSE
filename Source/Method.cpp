@@ -16,7 +16,7 @@ __aFooterFunction(Method)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Method::Method(void)
+Method::Method(Kbase* pKbase, Fact* pSelf)
 : Object(CN_METHOD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
@@ -25,33 +25,10 @@ Method::Method(void)
     MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_METHOD);
   #endif
 
-  m_pSelf = nullptr;
-  m_pSubA = nullptr;
-  m_pSubB = nullptr;
-
-  m_i_Code = 0;
-  m_eaCode[0] = QC_NONE;
-    
-  _checkInitialised_(CN_METHOD);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Method::Method(Fact* pSelf)
-: Object(CN_METHOD)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
-  
-  #ifdef WITH_CHECK_INITIALISED
-    MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_METHOD);
-  #endif
-
-  m_pSelf = pSelf;
-  m_pSubA = nullptr;
-  m_pSubB = nullptr;
+  m_pKbase = pKbase;
+  m_pSelf  = pSelf;
+  m_pSubA  = nullptr;
+  m_pSubB  = nullptr;
 
   m_i_Code = 0;
   m_eaCode[0] = QC_NONE;

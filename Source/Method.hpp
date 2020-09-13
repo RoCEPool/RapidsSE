@@ -13,6 +13,7 @@ namespace Facts
   {
   private:
   
+    Kbase* m_pKbase; //
     Fact*  m_pSelf;  //
     Fact*  m_pSubA;  //
     Fact*  m_pSubB;  //
@@ -27,8 +28,7 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Method(void);
-    Method(Fact* pSelf);
+    Method(Kbase* pKbase, Fact* pSelf);
    ~Method(void) noexcept(false);
   
     void vAddCode(eQC eCode);

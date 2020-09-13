@@ -606,7 +606,7 @@ void Kbase::vAprioriFacts(void)
   pAttributeInstance(pQuestion,"_questionNm_"_Stz,"isSubClassOf"_Stz);
   Fact* pMethod = m_p_Method_->pNewInstance();
   pQuestion->vAttributeAppend(pMethod);
-  pMethod->rxValue().m_pMethod = new Method;
+  pMethod->rxValue().m_pMethod = new Method(this,pQuestion);
   pMethod->rxValue().m_pMethod->vAddCode(QC_IS_SUBCLASS_OF);
 
   
