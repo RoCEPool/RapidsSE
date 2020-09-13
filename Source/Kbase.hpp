@@ -25,7 +25,6 @@ namespace Facts
     Fact*  m_p_Method_;    //
     Fact*  m_p_Object_;    //
     Fact*  m_p_Opaque_;    //
-    Fact*  m_p_Transform_; //
     Fact*  m_p_Text_;      //
     Fact*  m_p_Word_;      //
     Fact*  m_p_Xref_;      //
