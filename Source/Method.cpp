@@ -120,11 +120,39 @@ eTQ Method::eGetCode(i8 i_Code)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* generate tq code for given method                                          */
+/*----------------------------------------------------------------------------*/
+void Method::vGenMethod(i8 iMethodNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+  
+  switch (iMethodNo) {
+    
+    case 0: vGenMethod000(); break;
+      
+    default:
+      NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate tq code for method 0                                              */
+/*----------------------------------------------------------------------------*/
+void Method::vGenMethod000(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 #define PrmNil() \
   ASSERT(0 == TqPrms[eCode].m_nArgBytes);
 
 /*----------------------------------------------------------------------------*/
-/* execute code                                                               */
+/* execute method                                                             */
 /*----------------------------------------------------------------------------*/
 void Method::vExecute(void)
 {
@@ -139,19 +167,62 @@ void Method::vExecute(void)
 
     switch (eCode) {
 
-      case TQ_IS_SUBCLASS_OF: PrmNil();
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case TQ_FACT_NAME: PrmNil();
         break;
         
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case TQ_FIND_SUBA: PrmNil();
+        break;
+            
+      case TQ_FIND_SUBB: PrmNil();
+        break;
+              
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case TQ_IS_SUBCLASS_OF: PrmNil();
+        break;
+      
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case TQ_POP_SUBA: PrmNil();
+        break;
+        
+      case TQ_POP_SUBB: PrmNil();
+        break;
+      
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case TQ_PUSH_SELF: PrmNil();
+        break;
+        
+      case TQ_PUSH_SUBA: PrmNil();
+        break;
+        
+      case TQ_PUSH_SUBB: PrmNil();
+        break;
+      
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case TQ_CUT: PrmNil();
+        break;
+        
+      case TQ_DELETE: PrmNil();
+        break;
+        
+      case TQ_PASTE: PrmNil();
+        break;
+
+      case TQ_SWAP: PrmNil();
+        break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case TQ_RETURN: PrmNil();
         return;
         
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       default:
-        vTrace("Unknown tq opcode %lld\n"_Stz,(i8)eCode);
+        vTrace("Unknown TQ eCode %lld\n"_Stz,(i8)eCode);
         return;
-    }
+        
+    } // switch (ecode)
     
-  }
+  } // for (;;)
   
 }
 

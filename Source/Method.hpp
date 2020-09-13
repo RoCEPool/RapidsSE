@@ -44,7 +44,11 @@ namespace Facts
     
     eTQ eGetCode(i8 i_Code);
   
+    void vGenMethod(i8 iMethodNo);
+
   private:
+    void vGenMethod000(void);
+
     Footer* aFooter(void);
   };
 
