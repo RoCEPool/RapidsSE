@@ -13,6 +13,10 @@ namespace Facts
   {
   private:
   
+    Fact*  m_pSelf;  //
+    Fact*  m_pSubA;  //
+    Fact*  m_pSubB;  //
+
     i8  m_i_Code;
     eQC m_eaCode[C_QUESTION_CODE]; // { QC_code [<bytes>] }
 
@@ -24,6 +28,7 @@ namespace Facts
     void  operator delete(void*);
 
     Method(void);
+    Method(Fact* pSelf);
    ~Method(void) noexcept(false);
   
     void vAddCode(eQC eCode);
