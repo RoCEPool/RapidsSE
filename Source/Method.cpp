@@ -23,7 +23,7 @@ Method::Method(Kbase* pKbase, Fact* pSelf)
   
   #ifdef WITH_CHECK_INITIALISED
     MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_METHOD);
-    MemLib::vZero(m_iaStack,sizeof(m_iaStack),CN_METHOD);
+    MemLib::vZero(m_iaDataStack,sizeof(m_iaDataStack),CN_METHOD);
   #endif
 
   m_pKbase = pKbase;
@@ -120,13 +120,42 @@ eTQ Method::eGetCode(i8 i_Code)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+#define PrmNil() \
+  ASSERT(0 == TqPrms[eCode].m_nArgBytes);
+
 /*----------------------------------------------------------------------------*/
 /* execute code                                                               */
 /*----------------------------------------------------------------------------*/
 void Method::vExecute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+  
+  eTQ* aeCode = & m_eaCode[0];
+  i8* aiDstk = m_iaDataStack;
+
+  for (;;) {
+
+    eTQ eCode = *aeCode++;
+
+    switch (eCode) {
+
+      case TQ_IS_SUBCLASS_OF: PrmNil();
+        break;
+        
+      case TQ_RETURN: PrmNil();
+        return;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      default:
+        vTrace("Unknown tq opcode %lld\n"_Stz,(i8)eCode);
+        return;
+    }
+    
+  }
+  
 }
+
+#undef PrmNil
 
 /*============================================================================*/
 /* end                                                                        */

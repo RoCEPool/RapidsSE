@@ -25,7 +25,7 @@ static Stz* aTQ[]
 
 //----------------------------------------------------------------------------
 
-struct TpPrm
+struct TqPrm
 {
   eTQ m_eParameter;
   i8  m_nArgBytes;
@@ -33,9 +33,9 @@ struct TpPrm
 
 
 /*----------------------------------------------------------------------------*/
-/* Description of TP Prms                                                     */
+/* Description of TQ Prms                                                     */
 /*----------------------------------------------------------------------------*/
-static TpPrm TpPrms[]
+static TqPrm TqPrms[]
 {
   { TQ_NONE,    0 },  // TQ_NONE
   

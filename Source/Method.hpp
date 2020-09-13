@@ -22,7 +22,7 @@ namespace Facts
     i8  m_i_Code;
     eTQ m_eaCode[C_METHOD_CODE]; // { TQ_code [<bytes>] }
   
-    i8 m_iaStack[C_METHOD_STACK];
+    i8 m_iaDataStack[C_METHOD_STACK];
 
 
     // must be last
