@@ -86,7 +86,6 @@ namespace MetaData          { class Table;           class IdxColVec;
 namespace Metrics           {                                                 }
 namespace Oblique           { class AM;                                       }
 namespace Operands          { class Operand;                                  }
-namespace Parser            {                                                 }
 namespace Partitioning      { class BucketMap;       class PtnMap;
                               class PtnStream;       class TablePtn;          }
 namespace Persistence       { class CarryOver;                                }
@@ -95,6 +94,7 @@ namespace Pipelines         { class Xmits;           class Op;
                               class StageVec;                                 }
 namespace PipelineSpecs     { class OpSpec;          class PipelineSpec;
                               class StageSpec;                                }
+namespace Planner           {                                                 }
 namespace Plans             { class Planner;                                  }
 namespace Pool              { class BufferPool;      class HeapBuffer;
                               class HeapMem;         class PoolBuffer;        }
@@ -172,11 +172,11 @@ using namespace MetaData;
 using namespace Metrics;
 using namespace Oblique;
 using namespace Operands;
-using namespace Parser;
 using namespace Partitioning;
 using namespace Persistence;
 using namespace Pipelines;
 using namespace PipelineSpecs;
+using namespace Planner;
 using namespace Plans;
 using namespace Pool;
 using namespace Prompt;
