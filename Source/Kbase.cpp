@@ -607,7 +607,7 @@ void Kbase::vAprioriFacts(void)
   Fact* pMethod = m_p_Method_->pNewInstance();
   pQuestion->vAttributeAppend(pMethod);
   pMethod->rxValue().m_pMethod = new Method(this,pQuestion);
-  pMethod->rxValue().m_pMethod->vAddCode(QC_IS_SUBCLASS_OF);
+  pMethod->rxValue().m_pMethod->vAddCode(TQ_IS_SUBCLASS_OF);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

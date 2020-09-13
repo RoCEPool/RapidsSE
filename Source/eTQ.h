@@ -1,20 +1,26 @@
 /*============================================================================*/
-/* eQC.h -- Query Code                                                        */
+/* eTQ.h -- Transform Query Code                                              */
 /*============================================================================*/
 #pragma once
 
-enum eQC : u1 // query code
+enum eTQ : u1 // query code
 {
-  /*  0 */ QC_NONE=0,
-  /*  1 */ QC_IS_SUBCLASS_OF,
-  /*  2 */ QC_ENUMS,
+  /*  0 */ TQ_NONE=0,
+  
+  /*  1 */ TQ_IS_SUBCLASS_OF,
+  /*  2 */ TQ_RETURN,
+
+  /*  3 */ TQ_ENUMS,
 };
 
-static Stz* aQC[]
+static Stz* aTQ[]
 {
-  /*  0 */ "QC_NONE"_Stz,
-  /*  1 */ "QC_IS_SUBCLASS_OF"_Stz,
-  /*  2 */ "QC_ENUMS"_Stz,
+  /*  0 */ "TQ_NONE"_Stz,
+  
+  /*  1 */ "TQ_IS_SUBCLASS_OF"_Stz,
+  /*  2 */ "TQ_RETURN"_Stz,
+
+  /*  3 */ "TQ_ENUMS"_Stz,
 };
 
 /*============================================================================*/

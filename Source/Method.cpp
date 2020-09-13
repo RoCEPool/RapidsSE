@@ -23,6 +23,7 @@ Method::Method(Kbase* pKbase, Fact* pSelf)
   
   #ifdef WITH_CHECK_INITIALISED
     MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_METHOD);
+    MemLib::vZero(m_iaStack,sizeof(m_iaStack),CN_METHOD);
   #endif
 
   m_pKbase = pKbase;
@@ -31,7 +32,7 @@ Method::Method(Kbase* pKbase, Fact* pSelf)
   m_pSubB  = nullptr;
 
   m_i_Code = 0;
-  m_eaCode[0] = QC_NONE;
+  m_eaCode[0] = TQ_NONE;
     
   _checkInitialised_(CN_METHOD);
 
@@ -53,7 +54,7 @@ Method::~Method(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add code                                                                   */
 /*----------------------------------------------------------------------------*/
-void Method::vAddCode(eQC eCode)
+void Method::vAddCode(eTQ eCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
     
@@ -63,7 +64,7 @@ void Method::vAddCode(eQC eCode)
 /*----------------------------------------------------------------------------*/
 /* add code with address argument                                             */
 /*----------------------------------------------------------------------------*/
-void Method::vAddCodeAdr(eQC eCode, Opaque* aOpaque)
+void Method::vAddCodeAdr(eTQ eCode, Opaque* aOpaque)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
       
@@ -78,7 +79,7 @@ void Method::vAddCodeAdr(eQC eCode, Opaque* aOpaque)
 /*----------------------------------------------------------------------------*/
 /* add code with integer argument                                             */
 /*----------------------------------------------------------------------------*/
-void Method::vAddCodeInt(eQC eCode, i8 iInt)
+void Method::vAddCodeInt(eTQ eCode, i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
       
@@ -93,27 +94,38 @@ void Method::vAddCodeInt(eQC eCode, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* add code with string argument                                              */
 /*----------------------------------------------------------------------------*/
-void Method::vAddCodeStz(eQC eCode, Stz* szStz)
+void Method::vAddCodeStz(eTQ eCode, Stz* szStz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
     
   m_eaCode[m_i_Code++] = eCode;
 
   for (char* acChr = szStz->azChar(); *acChr; acChr++)
-    m_eaCode[m_i_Code++] = (eQC)*acChr;
-  m_eaCode[m_i_Code++] = (eQC)0;
+    m_eaCode[m_i_Code++] = (eTQ)*acChr;
+  m_eaCode[m_i_Code++] = (eTQ)0;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get code                                                                   */
 /*----------------------------------------------------------------------------*/
-eQC Method::eGetCode(i8 i_Code)
+eTQ Method::eGetCode(i8 i_Code)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
     
-  eQC eCode = m_eaCode[i_Code];
+  eTQ eCode = m_eaCode[i_Code];
   
   return eCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute code                                                               */
+/*----------------------------------------------------------------------------*/
+void Method::vExecute(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
 }
 
 /*============================================================================*/

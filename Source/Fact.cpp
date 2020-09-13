@@ -1171,12 +1171,12 @@ bool Fact::bQuestion(Fact* pQuestion, Opaque* aArg)
 
   Method* pMethod = pMethodAttr->m_xValue.m_pMethod;
   
-  eQC eCode = pMethod->eGetCode(0);
+  eTQ eCode = pMethod->eGetCode(0);
   
   bool bResult = false;
   
   switch (eCode) {
-    case QC_IS_SUBCLASS_OF:
+    case TQ_IS_SUBCLASS_OF:
       bResult = this->bIsSubClass((Stz*)aArg);
       break;
       

@@ -5,7 +5,8 @@
 
 namespace Facts
 {
-  static const i8 C_QUESTION_CODE = C_2KB;
+  static const i8 C_METHOD_CODE  = C_4KB;
+  static const i8 C_METHOD_STACK = C_4KB;
 
   //----------------------------------------------------------------------------
 
@@ -19,7 +20,10 @@ namespace Facts
     Fact*  m_pSubB;  //
 
     i8  m_i_Code;
-    eQC m_eaCode[C_QUESTION_CODE]; // { QC_code [<bytes>] }
+    eTQ m_eaCode[C_METHOD_CODE]; // { TQ_code [<bytes>] }
+  
+    i8 m_iaStack[C_METHOD_STACK];
+
 
     // must be last
     Footer m_xFooter;
@@ -31,12 +35,14 @@ namespace Facts
     Method(Kbase* pKbase, Fact* pSelf);
    ~Method(void) noexcept(false);
   
-    void vAddCode(eQC eCode);
-    void vAddCodeAdr(eQC eCode, Opaque* aOpaque);
-    void vAddCodeInt(eQC eCode, i8 iArg);
-    void vAddCodeStz(eQC eCode, Stz* szStz);
+    void vAddCode(eTQ eCode);
+    void vAddCodeAdr(eTQ eCode, Opaque* aOpaque);
+    void vAddCodeInt(eTQ eCode, i8 iArg);
+    void vAddCodeStz(eTQ eCode, Stz* szStz);
+  
+    void vExecute(void);
     
-    eQC eGetCode(i8 i_Code);
+    eTQ eGetCode(i8 i_Code);
   
   private:
     Footer* aFooter(void);
