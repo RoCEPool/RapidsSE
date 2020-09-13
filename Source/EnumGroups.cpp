@@ -95,6 +95,7 @@ Stz* EnumGroups::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_PK: return aPK[i_Enum];
     case EG_PO: return aPO[i_Enum];
     case EG_PP: return aPP[i_Enum];
+    case EG_PT: return aPT[i_Enum];
     case EG_PX: return aPX[i_Enum];
     case EG_PY: return aPY[i_Enum];
 
@@ -117,7 +118,6 @@ Stz* EnumGroups::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 
     case EG_TA: return aTA[i_Enum];
     case EG_TN: return aTN[i_Enum];
-    case EG_TP: return aTP[i_Enum];
     case EG_TQ: return aTQ[i_Enum];
     case EG_TR: return aTR[i_Enum];
     case EG_TS: return aTS[i_Enum];

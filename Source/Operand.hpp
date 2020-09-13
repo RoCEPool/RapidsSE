@@ -9,7 +9,7 @@ namespace Operands
                   public ListItem_t<Operand>
   {
   private:
-    eTP        m_eTailProcessing;     // pipeline tail processing
+    ePT        m_eTailProcessing;     // pipeline tail processing
   
     SingleWord m__PadToCacheLine[4];  // padding to cache line
 
@@ -22,8 +22,8 @@ namespace Operands
     bool bIsMarker(void);
     bool bIsProfile(void);
     bool bIsStreamDef(void);
-    void vTailProcessing(eTP eTailProcessing);
-    eTP  eTailProcessing(void);
+    void vTailProcessing(ePT eTailProcessing);
+    ePT  eTailProcessing(void);
   };
   
   Operand* _pOperand(void* aAddr);

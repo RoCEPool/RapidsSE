@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* eTP.h -- Pipeline Tail Processing                                          */
+/* ePT.h -- Pipeline Tail Processing                                          */
 /*============================================================================*/
 #pragma once
 
-enum eTP // tail processing
+enum ePT // tail processing
 {
-  /* 0 */ TP_NONE=0,
+  /* 0 */ PT_NONE=0,
   
-  /*   */ TP_OUTPUT,
-  /*   */ TP_REPORT,
+  /*   */ PT_OUTPUT,
+  /*   */ PT_REPORT,
 
-  /*   */ TP_ENUMS
+  /*   */ PT_ENUMS
 };
 
-static Stz* aTP[]
+static Stz* aPT[]
 {
   /* 0 */ "NONE"_Stz,
   
-  /*   */ "TP_OUTPUT"_Stz
-  /*   */ "TP_REPORT"_Stz
+  /*   */ "PT_OUTPUT"_Stz
+  /*   */ "PT_REPORT"_Stz
 
   /*   */ "ENUMS"_Stz
 };

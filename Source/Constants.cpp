@@ -562,6 +562,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_PK"_Stz,   EG_PK);
   vAddConstant("EG_PO"_Stz,   EG_PO);
   vAddConstant("EG_PP"_Stz,   EG_PP);
+  vAddConstant("EG_PT"_Stz,   EG_PT);
   vAddConstant("EG_PX"_Stz,   EG_PX);
   vAddConstant("EG_PY"_Stz,   EG_PY);
   vAddConstant("EG_QA"_Stz,   EG_QA);
@@ -580,7 +581,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_ST"_Stz,   EG_ST);
   vAddConstant("EG_TA"_Stz,   EG_TA);
   vAddConstant("EG_TN"_Stz,   EG_TN);
-  vAddConstant("EG_TP"_Stz,   EG_TP);
   vAddConstant("EG_TR"_Stz,   EG_TR);
   vAddConstant("EG_TS"_Stz,   EG_TS);
   vAddConstant("EG_TT"_Stz,   EG_TT);

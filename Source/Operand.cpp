@@ -51,7 +51,7 @@ Operand::Operand(eCN eClassNo)
   
   ASSERT(CacheLine::bMultipleCacheLines(sizeof(Operand)));
 
-  m_eTailProcessing = TP_OUTPUT;
+  m_eTailProcessing = PT_OUTPUT;
   MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),eClassNo);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
@@ -123,7 +123,7 @@ bool Operand::bIsStreamDef(void)
 /*----------------------------------------------------------------------------*/
 /* set tail processing of the operand                                         */
 /*----------------------------------------------------------------------------*/
-void Operand::vTailProcessing(eTP eTailProcessing)
+void Operand::vTailProcessing(ePT eTailProcessing)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -133,7 +133,7 @@ void Operand::vTailProcessing(eTP eTailProcessing)
 /*----------------------------------------------------------------------------*/
 /* get tail processing of the operand                                         */
 /*----------------------------------------------------------------------------*/
-eTP Operand::eTailProcessing(void)
+ePT Operand::eTailProcessing(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

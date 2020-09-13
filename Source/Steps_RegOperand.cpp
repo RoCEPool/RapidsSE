@@ -327,7 +327,7 @@ void Step::vRegOperandIsReport(void)
   ENTRY();
   
   Operand* pOperand = *m_pLogicUnit->m_xpOperandA;
-  m_pDataStack->vPushInt(pOperand->eTailProcessing() == TP_REPORT ? true : false);
+  m_pDataStack->vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
   
   EXIT();
 }
@@ -746,7 +746,7 @@ void Step::vRegOperandReport(void)
   ENTRY();
   
   Operand* pOperand = *m_pLogicUnit->m_xpOperandA;
-  pOperand->vTailProcessing(TP_REPORT);
+  pOperand->vTailProcessing(PT_REPORT);
   
   EXIT();
 }
