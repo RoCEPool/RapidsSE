@@ -6,7 +6,16 @@ Routine QRY_601
   EO_INIT
 
   // EOS MARKER
-  EO_JMP_FALSE END_RSB_SRC
+  //EO_JMP_FALSE END_RSB_SRC
+  EO_DUP
+  EO_INTEGER 7 //ZK_EOSMARKER
+  EO_EQUAL
+  EO_JMP_TRUE END_RSB_SRC
+
+  // ASSERT that its an RSBBUFFER
+  EO_INTEGER 19 //ZK_RSBBUFFER
+  EO_EQUAL
+  EO_ASSERT
 
   EO_RSB_DST_TESTROW
   EO_JMP_TRUE RSB_SRC_BEGIN
@@ -24,6 +33,7 @@ Label NEXT_RSB_SRC
   EO_JMP NEXT_RSB_SRC
 
 Label END_RSB_SRC
+  EO_POP
   EO_RETURN
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // END: QRY_601

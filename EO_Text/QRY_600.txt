@@ -6,7 +6,11 @@ Routine QRY_600
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // QRY_600
   EO_INIT
-  
+
+  EO_INTEGER 17 //ZK_PULSEMARKER
+  EO_EQUAL
+  EO_ASSERT
+
   EO_DATE "1994-01-01"
   EO_ENTWRK_SETINTELM
   EO_IXT_SRC_LBOUND

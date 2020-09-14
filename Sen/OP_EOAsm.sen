@@ -328,7 +328,7 @@
   true Pot[].useStreamDefOut
   StreamDefOut[].pipeout
 
-  Counter0[] executeAsm
+  ZK_PULSEMARKER Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
 
   Pot[].pipeoutAllCompleted
@@ -380,7 +380,7 @@
   // read a next crw buffer
 
     Operand[].asSrcCrwBuffer
-    Counter0[] executeAsm
+    ZK_CRWBUFFER Counter0[] executeAsmArgs
     Operand[].delete
 
     Pot[].pipeoutAllCompleted
@@ -400,7 +400,7 @@
     tablePtn[] tablePtnDropRead
 
     streamDef[].delete
-    Counter0[] executeAsm
+    ZK_EOSMARKER Counter0[] executeAsmArgs
     Counter0[] cleanUpAsm
     IndexTree[].delete
 
@@ -424,7 +424,7 @@
 
   Operand[].pipeIn
   Operand[].asSrcRowSlab
-  true Counter0[] executeAsmArgs
+  ZK_RSBBUFFER Counter0[] executeAsmArgs
   Operand[].delete
 
   true
@@ -437,7 +437,7 @@
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
-  false Counter0[] executeAsmArgs
+  ZK_EOSMARKER Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
   IndexTree[].isNull not if
     IndexTree[].delete
