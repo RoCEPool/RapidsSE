@@ -47,6 +47,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   MetaData::vCheckAssumptions();
   Metrics::vCheckAssumptions();
   Operands::vCheckAssumptions();
+  Parser::vCheckAssumptions();
   Partitioning::vCheckAssumptions();
   Persistence::vCheckAssumptions();
   Pipelines::vCheckAssumptions();
