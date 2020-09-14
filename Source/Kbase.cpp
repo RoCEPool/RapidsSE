@@ -613,22 +613,25 @@ void Kbase::vAprioriFacts(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  
-  Fact* pGrid = pElementInstance(m_pContents,"_grid_"_Stz);
+
+  Fact* p_Intention_ = pConceptAdd(m_p_Folder_,"_intention_"_Stz);
+  Fact* pIntention = pElementInstance(m_pContents,"_intention_"_Stz);
+
+  Fact* pGrid = pElementInstance(pIntention,"_grid_"_Stz);
   pAttributeInstance(pGrid,"_nodes_"_Stz,AM::nDefinedNodes());
   pAttributeInstance(pGrid,"_partitions_"_Stz,AM::nPartitions());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pElementInstance(m_pContents,"_tables_"_Stz);
+  pElementInstance(pIntention,"_tables_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pElementInstance(m_pContents,"_statement_"_Stz);
+  pElementInstance(pIntention,"_statement_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pPipeline = pElementInstance(m_pContents,"_pipeline_"_Stz);
+  Fact* pPipeline = pElementInstance(pIntention,"_pipeline_"_Stz);
   Fact* pStages = pElementInstance(pPipeline,"_stages_"_Stz);
   pAttributeInstance(pStages,"_nameSeq_"_Stz,"A"_Stz);
   pAttributeInstance(pStages,"_format_"_Stz,"stage%s"_Stz);
@@ -636,9 +639,30 @@ void Kbase::vAprioriFacts(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pRoutines = pElementInstance(m_pContents,"_routines_"_Stz);
+  Fact* pRoutines = pElementInstance(pIntention,"_routines_"_Stz);
   pElementInstance(pRoutines,"_subroutine_"_Stz);
 }
+
+
+/*
+ 
+ fact
+ 
+ /_concept_
+   ...
+ 
+ /contents
+
+   /reference
+     /questions
+ 
+   /intention
+     /grid
+     /tables
+     /statement
+     /pipeline
+ 
+ */
 
 /*============================================================================*/
 /* end                                                                        */
