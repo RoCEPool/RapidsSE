@@ -1,3 +1,9 @@
+# First check for gcc version 5 or later.
+GCC_VERSION_GTE5 := $(shell echo `gcc -dumpversion | cut -f1-2 -d.` \>= 5 | bc)
+ifeq ($(GCC_VERSION_GTE5), 0)
+  $(error gcc version 5 or later is required. You have v$(shell gcc -dumpversion))
+endif
+
 #Variables
 CPP = g++
 CPPFLAGS = -std=c++11 -DWITH_LINUX -DWITH_MUNGED_SEN -Wall -Wextra -O3
@@ -36,10 +42,10 @@ DEPFILES = $(SOURCES:.cpp=.d)
 INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne -I../ThirdParty/antlr/include -I../ThirdParty/antlr/generated
 
 #Libraries
-THIRDPARTY_LIBS = -llz4 -lbz2 -lantlr4-runtime
-LIBS = -lrt -lpthread -ltcc -ldl
+#THIRDPARTY_LIBS = -llz4 -lbz2 -lantlr4-runtime
+LIBS = -lrt -lpthread -ltcc -ldl -lantlr4-runtime
 RAPIDS_LIBS = -lRapidsSEv0.4.1
-LIB_DIRS = -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L/usr/local/lib -L../ThirdParty/antlr/linux/centos7  -L$(TARGET_PATH)
+LIB_DIRS = -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L/usr/local/lib -L../ThirdParty/antlr/lib/linux/centos7  -L$(TARGET_PATH)
 
 #all : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 all : post-build
@@ -64,7 +70,7 @@ $(SHOCO): ../ThirdParty/shoco/shoco.c
 #Library target
 $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES)
 	$(DIR_GUARD)
-	$(CPP) $(LIBFLAGS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
+	$(CPP) $(LIBFLAGS) $(LIB_DIRS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
 
 #Main target
 $(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO)

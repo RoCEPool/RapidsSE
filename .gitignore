@@ -5,3 +5,6 @@
 *.swp
 *.lock
 nohupSE-*.out
+nohupSE*.out
+startCluster.log
+Linux/

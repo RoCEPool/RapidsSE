@@ -21,7 +21,8 @@ SE_PATH="${SE_DIR}/rapidsse"
 SE_NOHUP_FILE="${ROOT_DIR}/nohupSE.out"
 SE_ARGS="--name ${NODE} --node ${NODE} 127.0.0.1 5541 --munged --commands ./Commands --appendTrace"  # in addition to --metadata and --script
 
-export LD_LIBRARY_PATH="${SE_DIR}:${LD_LIBRARY_PATH}"
+ANTLR_PATH="${ROOT_DIR}/ThirdParty/antlr/lib/linux/centos7"
+export LD_LIBRARY_PATH="${SE_DIR}":"${ANTLR_PATH}":$LD_LIBRARY_PATH
 
 # Additional arguments for SETH. Enable as required.
 SETH_ARGS="--logsteps --resultdir ${DIR}/results --resultformat junit -f ${TESTLIST_FILE}" 
