@@ -1,0 +1,22 @@
+How to create the antlr runtime
+
+1. Download the pre-built MacOS Antlr runtime from:
+  https://www.antlr.org/download/antlr4-cpp-runtime-4.8-macos.zip
+or look for it on here:
+  https://www.antlr.org/download.html
+
+2. Unzip the MacOS runtime zip file and move all of the header files to a include/ directory. Keep the .a and .dylib files in a lib/macos/ directory.
+
+3. Download and unzip the complete Antlr source file onto the appropriate linux box for building.
+
+4. Prepare the build enviroment on the linux box by installing/running:
+   - sudo yum install libuuid-devel cmake
+   - sudo yum install centos-release-scll
+   - sudo yum install devtoolset-7-gcc*
+   - scl enable devtoolset-7 bash
+
+5. Create the makefile by running: cmake CMakeLists.txt
+
+6. Compile Antlr by running: make
+
+7. Copy the files in the dist/ subdirectory to the Thirdparty/antlr/lib/linux/centos7 directory in the SE repository.
