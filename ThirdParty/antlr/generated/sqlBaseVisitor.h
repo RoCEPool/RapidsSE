@@ -353,10 +353,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitBetweenOp(sqlParser::BetweenOpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *ctx) override {
     return visitChildren(ctx);
   }

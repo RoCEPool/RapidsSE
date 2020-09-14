@@ -279,6 +279,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SPmedium),           HT_INVALID           }, // CN_SPMEDIUM
   { sizeof(SPsmall),            HT_INVALID           }, // CN_SPSMALL
   { sizeof(SqlGraph),           HT_TRANSIENT_TINY    }, // CN_SQLGRAPH
+  { sizeof(SqlPlanner),         HT_TRANSIENT_TINY    }, // CN_SQLPLANNER
   { sizeof(SrtBuffer),          HT_TRANSIENT_LARGE   }, // CN_SRTBUFFER
   { sizeof(SrtSet),             HT_INVALID           }, // CN_SRTSET
   { sizeof(Stack),              HT_TRANSIENT_MEDIUM  }, // CN_STACK

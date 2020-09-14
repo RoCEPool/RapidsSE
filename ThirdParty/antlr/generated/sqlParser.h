@@ -20,15 +20,15 @@ public:
     CATALOG = 28, COLLATE = 29, CORRESPONDING = 30, CREATE = 31, CROSS = 32, 
     CURRENT_CATALOG = 33, CURRENT_SCHEMA = 34, CURRENT_TIMESTAMP = 35, CURRENT_USER = 36, 
     DATA = 37, DATE = 38, DELETE = 39, DESC = 40, DETAIL = 41, DISTINCT = 42, 
-    DROP = 43, ESCAPE = 44, EXCEPT = 45, EXPLAIN = 46, FALSE = 47, FEDERATION = 48, 
+    DROP = 43, ESCAPE = 44, EXCEPT = 45, EXPLAIN = 46, SQL_FALSE = 47, FEDERATION = 48, 
     FOR = 49, FULL = 50, FROM = 51, GROUP = 52, HAVING = 53, IN = 54, INDEX = 55, 
     INNER = 56, INSERT = 57, INTERSECT = 58, INTO = 59, IS = 60, JOIN = 61, 
     KEY = 62, LEADING = 63, LEFT = 64, LIKE = 65, LIMIT = 66, MONOTONIC = 67, 
-    NO = 68, NODE = 69, NOT = 70, NOW = 71, NULL = 72, OFFSET = 73, ON = 74, 
-    OR = 75, ORDER = 76, OUTER = 77, OVER = 78, OVERLAY = 79, PARTITION = 80, 
+    NO = 68, NODE = 69, NOT = 70, NOW = 71, SQL_NULL = 72, OFFSET = 73, 
+    ON = 74, OR = 75, ORDER = 76, OUTER = 77, OVER = 78, OVERLAY = 79, PARTITION = 80, 
     PLACING = 81, PRIMARY = 82, REFERENCE = 83, RIGHT = 84, SCHEMA = 85, 
     SELECT = 86, SET = 87, STATS = 88, STATISTICS = 89, TABLE = 90, TO = 91, 
-    TOP = 92, TRAILING = 93, TRUNCATE = 94, TRUE = 95, TYPE = 96, UNION = 97, 
+    TOP = 92, TRAILING = 93, TRUNCATE = 94, SQL_TRUE = 95, TYPE = 96, UNION = 97, 
     UNIQUE = 98, UPDATE = 99, USING = 100, VALUES = 101, WHERE = 102, WITH = 103, 
     BOOLEAN = 104, INTEGER = 105, DECIMAL = 106, FLOAT = 107, TIMESTAMP = 108, 
     INTERVAL = 109, CHAR = 110, CHARACTER = 111, VARCHAR = 112, TEXT = 113, 
@@ -897,8 +897,8 @@ public:
     PropertyListContext *propertyList();
     std::vector<antlr4::tree::TerminalNode *> KEY();
     antlr4::tree::TerminalNode* KEY(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> NULL();
-    antlr4::tree::TerminalNode* NULL(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> SQL_NULL();
+    antlr4::tree::TerminalNode* SQL_NULL(size_t i);
     std::vector<antlr4::tree::TerminalNode *> PRIMARY();
     antlr4::tree::TerminalNode* PRIMARY(size_t i);
     std::vector<antlr4::tree::TerminalNode *> UNIQUE();
@@ -1517,7 +1517,7 @@ public:
 
     ExprContext *expr();
     antlr4::tree::TerminalNode *IS();
-    antlr4::tree::TerminalNode *NULL();
+    antlr4::tree::TerminalNode *SQL_NULL();
     antlr4::tree::TerminalNode *NOT();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -1601,19 +1601,6 @@ public:
     antlr4::Token *op = nullptr;
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  BetweenOpContext : public ExprContext {
-  public:
-    BetweenOpContext(ExprContext *ctx);
-
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
-    antlr4::tree::TerminalNode *BETWEEN();
-    antlr4::tree::TerminalNode *AND();
-    antlr4::tree::TerminalNode *NOT();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -2097,7 +2084,7 @@ public:
   public:
     LiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *NULL();
+    antlr4::tree::TerminalNode *SQL_NULL();
     BooleanLiteralContext *booleanLiteral();
     IntegerLiteralContext *integerLiteral();
     DecimalLiteralContext *decimalLiteral();
@@ -2118,7 +2105,7 @@ public:
   public:
     SimpleLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *NULL();
+    antlr4::tree::TerminalNode *SQL_NULL();
     BooleanLiteralContext *booleanLiteral();
     IntegerLiteralContext *integerLiteral();
     DecimalLiteralContext *decimalLiteral();
@@ -2136,8 +2123,8 @@ public:
   public:
     BooleanLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *TRUE();
-    antlr4::tree::TerminalNode *FALSE();
+    antlr4::tree::TerminalNode *SQL_TRUE();
+    antlr4::tree::TerminalNode *SQL_FALSE();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

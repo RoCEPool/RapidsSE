@@ -28,7 +28,7 @@ Header::Header(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Header::~Header(void) noexcept(false)
+Header::~Header(void)
 {
   // vAssertHeader();         //! This causes an assert failure. Ray to fix ASAP
 }

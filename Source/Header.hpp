@@ -95,7 +95,8 @@ namespace Correctness
   public:
     Header(void);
     Header(eCN eClass);
-   ~Header(void) noexcept(false);
+//   ~Header(void) noexcept(false);
+    ~Header(void);
 
     void vAssertHeader(void);
     void vSprint(Stz* szHeader);

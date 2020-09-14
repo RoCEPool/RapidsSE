@@ -20,15 +20,15 @@ public:
     CATALOG = 28, COLLATE = 29, CORRESPONDING = 30, CREATE = 31, CROSS = 32, 
     CURRENT_CATALOG = 33, CURRENT_SCHEMA = 34, CURRENT_TIMESTAMP = 35, CURRENT_USER = 36, 
     DATA = 37, DATE = 38, DELETE = 39, DESC = 40, DETAIL = 41, DISTINCT = 42, 
-    DROP = 43, ESCAPE = 44, EXCEPT = 45, EXPLAIN = 46, FALSE = 47, FEDERATION = 48, 
+    DROP = 43, ESCAPE = 44, EXCEPT = 45, EXPLAIN = 46, SQL_FALSE = 47, FEDERATION = 48, 
     FOR = 49, FULL = 50, FROM = 51, GROUP = 52, HAVING = 53, IN = 54, INDEX = 55, 
     INNER = 56, INSERT = 57, INTERSECT = 58, INTO = 59, IS = 60, JOIN = 61, 
     KEY = 62, LEADING = 63, LEFT = 64, LIKE = 65, LIMIT = 66, MONOTONIC = 67, 
-    NO = 68, NODE = 69, NOT = 70, NOW = 71, NULL = 72, OFFSET = 73, ON = 74, 
-    OR = 75, ORDER = 76, OUTER = 77, OVER = 78, OVERLAY = 79, PARTITION = 80, 
+    NO = 68, NODE = 69, NOT = 70, NOW = 71, SQL_NULL = 72, OFFSET = 73, 
+    ON = 74, OR = 75, ORDER = 76, OUTER = 77, OVER = 78, OVERLAY = 79, PARTITION = 80, 
     PLACING = 81, PRIMARY = 82, REFERENCE = 83, RIGHT = 84, SCHEMA = 85, 
     SELECT = 86, SET = 87, STATS = 88, STATISTICS = 89, TABLE = 90, TO = 91, 
-    TOP = 92, TRAILING = 93, TRUNCATE = 94, TRUE = 95, TYPE = 96, UNION = 97, 
+    TOP = 92, TRAILING = 93, TRUNCATE = 94, SQL_TRUE = 95, TYPE = 96, UNION = 97, 
     UNIQUE = 98, UPDATE = 99, USING = 100, VALUES = 101, WHERE = 102, WITH = 103, 
     BOOLEAN = 104, INTEGER = 105, DECIMAL = 106, FLOAT = 107, TIMESTAMP = 108, 
     INTERVAL = 109, CHAR = 110, CHARACTER = 111, VARCHAR = 112, TEXT = 113, 
@@ -53,7 +53,7 @@ public:
   ~sqlLexer();
 
 
-    public boolean isDublQuoteId = true;
+    public: bool isDublQuoteId = true;
 
   virtual std::string getGrammarFileName() const override;
   virtual const std::vector<std::string>& getRuleNames() const override;

@@ -14,6 +14,11 @@
 #include "shoco.h"
 #include "xxhash.hpp"
 
+//#include "sqlLexer.h"
+//#include "sqlParser.h"
+//#include "sqlBaseVisitor.h"
+//#include "sqlVisitor.h"
+
 #ifdef WITH_APPLE
 #include "libtcc_rjh.hpp"
 #endif

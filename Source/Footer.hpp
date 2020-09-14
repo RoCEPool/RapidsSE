@@ -20,7 +20,7 @@ namespace Correctness
   
   public:
     Footer(void);
-   ~Footer(void) noexcept(false);
+   ~Footer(void);
     
     void vAssertFooter(void) const;
     void vSetFooter(void);

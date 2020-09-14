@@ -3,7 +3,7 @@
 grammar sql ;
 
 @lexer::members {
-  public boolean isDublQuoteId = true;
+  public: bool isDublQuoteId = true;
 }
 
 // statement / query -----------------------------------------------------------
@@ -147,7 +147,7 @@ tablePartitioning : PARTITION BY? method=(HASH | VALUE)? ON? '(' expr (',' expr)
 columnDefinition  : name = columnName
                     type = dataType
                     (
-                        (notNullable = NOT? nullable = NULL)
+                        (notNullable = NOT? nullable = SQL_NULL)
                       | (primary = PRIMARY KEY)
                       | (unique  = UNIQUE KEY?)
                       | (unique  = UNIQUE mono = MONOTONIC KEY?)
@@ -309,7 +309,7 @@ expr
  |                      '(' expr ')'                                #parenthetic
  |                      '(' query ')'                               #subqueryExpr
 
- | expr IS NOT? NULL                                            #isNullOp
+ | expr IS NOT? SQL_NULL                                            #isNullOp
 
 // NB: optional clause messes up the precedence somehow (ANTLR4 bug?) [rm]
  | expr    NOT? LIKE expr /*(ESCAPE expr)?*/                    #likeOp
@@ -320,7 +320,7 @@ expr
 
  | expr    NOT? IN     ( '(' query ')' )                        #subqueryInOp
  | expr    NOT? IN     ( '(' (expr (',' expr)*)? ')' )          #inOp
- | expr    NOT? BETWEEN expr AND expr                           #betweenOp
+// | expr    NOT? BETWEEN expr AND expr                           #betweenOp
  |          op=NOT expr                                             #notOp
 //
 // The semantic predicate below is a hack to fix a precedence problem (ANTLR4 bug?)
@@ -328,10 +328,10 @@ expr
 // The predicate prevents AND from being recognized as an expression operator when
 // it occurs in the context of a BETWEEN operator.  [rm]
 //
- | expr {!(_ctx.parent instanceof BetweenOpContext)}? op=AND expr   #andOp
-//
-// | expr     op=AND expr                                           #andOp
-//
+// | expr {!(_ctx.parent instanceof BetweenOpContext)}? op=AND expr   #andOp
+
+ | expr     op=AND expr                                           #andOp
+
  | expr     op=OR  expr                                             #orOp
  ;
 
@@ -366,7 +366,7 @@ precision         : integerLiteral ;
 scale             : integerLiteral ;
 size              : integerLiteral ;
 
-literal           : NULL
+literal           : SQL_NULL
                   | booleanLiteral
                   | integerLiteral
                   | decimalLiteral
@@ -377,7 +377,7 @@ literal           : NULL
                   | intervalLiteral
                   ;
 
-simpleLiteral     : NULL
+simpleLiteral     : SQL_NULL
                   | booleanLiteral
                   | integerLiteral
                   | decimalLiteral
@@ -385,7 +385,7 @@ simpleLiteral     : NULL
                   | stringLiteral
                   ;
 
-booleanLiteral    : TRUE | FALSE ;
+booleanLiteral    : SQL_TRUE | SQL_FALSE ;
 integerLiteral    : INTEGER_LITERAL ;
 decimalLiteral    : DECIMAL_LITERAL ;
 floatLiteral      : FLOAT_LITERAL ;
@@ -465,7 +465,7 @@ DROP                  : D R O P;
 ESCAPE                : E S C A P E;
 EXCEPT                : E X C E P T;
 EXPLAIN               : E X P L A I N;
-FALSE                 : F A L S E;
+SQL_FALSE             : F A L S E;
 FEDERATION            : F E D E R A T I O N;
 FOR                   : F O R;
 FULL                  : F U L L;
@@ -490,7 +490,7 @@ NO                    : N O;
 NODE                  : N O D E;
 NOT                   : N O T;
 NOW                   : N O W;
-NULL                  : N U L L;
+SQL_NULL              : N U L L;
 OFFSET                : O F F S E T;
 ON                    : O N;
 OR                    : O R;
@@ -513,7 +513,7 @@ TO                    : T O;
 TOP                   : T O P;
 TRAILING              : T R A I L I N G;
 TRUNCATE              : T R U N C A T E;
-TRUE                  : T R U E;
+SQL_TRUE              : T R U E;
 TYPE                  : T Y P E;
 UNION                 : U N I O N;
 UNIQUE                : U N I Q U E;

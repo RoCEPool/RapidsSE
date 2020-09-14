@@ -188,8 +188,6 @@ public:
 
     virtual antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitBetweenOp(sqlParser::BetweenOpContext *context) = 0;
-
     virtual antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *context) = 0;
 
     virtual antlrcpp::Any visitDecodeOp(sqlParser::DecodeOpContext *context) = 0;
