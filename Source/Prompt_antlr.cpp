@@ -32,6 +32,8 @@ bool Prompt::bPrompt_antlr(SePrompt* pPrompt)
   
   vTrace("antlr: %s\n"_Stz,sAntlr.azChar());
   
+  // antlr test here
+  
   return true;
 }
 

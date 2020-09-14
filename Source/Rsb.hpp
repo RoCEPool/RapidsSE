@@ -8,7 +8,7 @@ namespace Rows
   class Rsb
   {
   private:
-  
+    i8 dummy;  // Neccessary for GCC v5
     m8 m_maCells[]; // C++ flexible member array must be last
 
   public:

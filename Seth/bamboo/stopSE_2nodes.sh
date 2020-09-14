@@ -30,7 +30,8 @@ do
 done
 
 #set the library path for the rapidsSE library
-export LD_LIBRARY_PATH="${EXE_DIR}":$LD_LIBRARY_PATH
+ANTLR_PATH="${ROOT_DIR}/ThirdParty/antlr/lib/linux/centos7"
+export LD_LIBRARY_PATH="${EXE_DIR}":"${ANTLR_PATH}":$LD_LIBRARY_PATH
 
 if [ ! -f "${EXE}" ]
 then
