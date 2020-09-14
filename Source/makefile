@@ -65,7 +65,7 @@ debug : all
 #debug: $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
 $(SHOCO): ../ThirdParty/shoco/shoco.c  
-	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -c $(INCLUDES) ../ThirdParty/shoco/shoco.c 
+	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -Wno-narrowing -c $(INCLUDES) ../ThirdParty/shoco/shoco.c 
 
 #Library target
 $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES)
