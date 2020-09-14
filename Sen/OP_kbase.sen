@@ -28,6 +28,9 @@
   "/tmp/kbase_test.txt" OPEN_READ file0[] file.open if
 
     "FILE OPENED" .
+
+    file0[] file.path@ file::modTime .
+    
     
     begin
       file0[] file.readLine

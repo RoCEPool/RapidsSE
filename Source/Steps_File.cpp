@@ -16,6 +16,7 @@ void Step::vAddSteps_File(void)
   vAddStep("file0[].size"_Stz,           &Step::vFile0Size);
   vAddStep("file0[].set"_Stz,            &Step::vFile0Set);
   
+  vAddStep("file::modTime"_Stz,          &Step::vFileModTime);
   vAddStep("file::new"_Stz,              &Step::vFileNew);
   vAddStep("file::print"_Stz,            &Step::vFilePrint);
   vAddStep("file::sizeNm"_Stz,           &Step::vFileSizeNm);
@@ -130,6 +131,28 @@ void Step::vFileDelete(void)
 
   delete pFile;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file0[].modTime -- get the modification time of file by name               */
+/*----------------------------------------------------------------------------*/
+void Step::vFileModTime(void)
+{
+  ENTRY();
+  
+  s256 sPath;
+  m_pDataStack->vPopStr(sPath,__func__);
+
+  time_t tTime;
+  
+  bool bResult = File::bModTime(sPath,tTime);
+  
+  if (bResult)
+    m_pDataStack->vPushInt(tTime);
+  else
+    m_pDataStack->vPushInt(0);
+
   EXIT();
 }
 

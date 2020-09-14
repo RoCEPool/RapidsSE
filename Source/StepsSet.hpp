@@ -369,6 +369,7 @@ public:
   void vFile0Size(void);
   void vFileClose(void);
   void vFileDelete(void);
+  void vFileModTime(void);
   void vFileNew(void);
   void vFileOpen(void);
   void vFilePathGet(void);
