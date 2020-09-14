@@ -18,6 +18,7 @@ SOURCES = $(wildcard *.cpp)
 SOURCES += $(wildcard ../Munge/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/mersenne/*.cpp)
+SOURCES += $(wildcard ../ThirdParty/antlr/generated/*.cpp)
 SOURCES := $(filter-out main.cpp, $(SOURCES))
 S_SOURCES = $(wildcard *.s)
 
@@ -32,12 +33,13 @@ OBJECTS += $(S_SOURCES:.s=.o)
 DEPFILES = $(SOURCES:.cpp=.d)
 
 #Include directories
-INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne
+INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne -I../ThirdParty/antlr/include
 
 #Libraries
-THIRDPARTY_LIBS = -llz4 -lbz2
+THIRDPARTY_LIBS = -llz4 -lbz2 -lantlr4-runtime
 LIBS = -lrt -lpthread -ltcc -ldl
 RAPIDS_LIBS = -lRapidsSEv0.4.1
+LIB_DIRS = -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L/usr/local/lib -L../ThirdParty/antlr/linux/centos7  -L$(TARGET_PATH)
 
 #all : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 all : post-build
@@ -69,7 +71,7 @@ $(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO)
 	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  main.cpp -o main.o
 	cp $(MAN_PAGES) $(TARGET_PATH)
-	$(CPP) main.o $(SHOCO) -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L/usr/local/lib -L$(TARGET_PATH) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
+	$(CPP) main.o $(SHOCO) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
 
 #To obtain object files
 %.o: %.cpp %.d
