@@ -162,7 +162,7 @@ void Step::vIndexDeleteNext(void)
     if (bBefore) {
       
       // get the crw entry from the lowerEntry
-      Ref xRef = aLowerEntry->rxRef();
+      Rrf xRef = aLowerEntry->rxRef();
         
       Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
       

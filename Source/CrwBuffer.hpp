@@ -26,10 +26,10 @@ namespace CompactBuffers
     CrwBuffer(void);
     ~CrwBuffer(void) noexcept(false);
 
-    static bool       bDeleteRefdCrw(Ref xRef);
+    static bool       bDeleteRefdCrw(Rrf xRef);
     static void       vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static Crw*       pRefdCrw(Ref xRef);
-    static CrwBuffer* pRefdCrwBuffer(Ref& xRef);
+    static Crw*       pRefdCrw(Rrf xRef);
+    static CrwBuffer* pRefdCrwBuffer(Rrf& xRef);
     static CrwBuffer* pToCrwBuffer(void* aAddr);
     static void       vToRow(RowSingle* pRow, Crw* aCrw);
 

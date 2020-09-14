@@ -360,11 +360,11 @@ EntBuffer* IndexTree::pFirstH0Buffer(void)
 /*----------------------------------------------------------------------------*/
 /* get reference given key                                                    */
 /*----------------------------------------------------------------------------*/
-Ref IndexTree::xwGetRef(Key* aFindKey)
+Rrf IndexTree::xwGetRef(Key* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  Ref xwNilRef;
+  Rrf xwNilRef;
   
   EntBuffer* pEntBuffer = pPositionH0Buffer(aFindKey);
   if (! pEntBuffer)
@@ -432,7 +432,7 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 
   //pEntBuffer->vShow();
 
-  Ref xRowRef;
+  Rrf xRowRef;
   xRowRef.vBuffer(pCrwBuffer->iBufferNo());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -474,7 +474,7 @@ bool IndexTree::bInsertEntry(Ent* aEnt)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
+bool IndexTree::bInsertEntry(Crw* aCrw, Rrf& xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
@@ -504,7 +504,7 @@ bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
+bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Rrf& xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   

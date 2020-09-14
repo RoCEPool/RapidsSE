@@ -25,19 +25,19 @@ namespace ReadConsistency
     ReadApi(void);
    ~ReadApi(void) noexcept(false);
   
-    void vAddCrwVersion(Ref xwCurrentRef, Crw* pCrw);
-    Crw* aGetCrwConsistent(Ref xwCurrentRef, t8 tPerspective);
-    Crw* aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective);
-    Crw* aGetCrwVersion(Ref xwCurrentRef, Crw* aCurrentCrw, t8 tPerspective);
+    void vAddCrwVersion(Rrf xwCurrentRef, Crw* pCrw);
+    Crw* aGetCrwConsistent(Rrf xwCurrentRef, t8 tPerspective);
+    Crw* aGetCrwVersion(Rrf xwCurrentRef, t8 tPerspective);
+    Crw* aGetCrwVersion(Rrf xwCurrentRef, Crw* aCurrentCrw, t8 tPerspective);
     void vPurgePriorVersions(t8 tPerspective);
 
     void vStreamDef(StreamDef* pStreamDef);
 
   private:
-    void vAddVersionEntry(Ref xwCurrentRef,
-                          Ref xwVersionRef, t8 tVersionPsp);
+    void vAddVersionEntry(Rrf xwCurrentRef,
+                          Rrf xwVersionRef, t8 tVersionPsp);
   
-    Ref  xwAddCrvItem(Ref xwCurrentRef, Crw* pCrw);
+    Rrf  xwAddCrvItem(Rrf xwCurrentRef, Crw* pCrw);
     void vPurgeEntBuffers(t8 tPerspective);
     void vPurgeCrvBuffers(t8 tPerspective);
     

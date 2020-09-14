@@ -19,7 +19,7 @@ struct Ent_int
     u8 m_uKind    :  4; // kind (would be KE_INT)
     u8 m_uFree    :  1; // free entry
     u8 m_uSpare   :  7; // spare
-  } Ref;         // 64b                                             // 1 word
+  } Rrf;         // 64b                                             // 1 word
 
   tET m_taNextEntry[C_MAX_LVL_LEVELS];  // tickets                  // 2 words
   union {

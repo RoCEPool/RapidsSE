@@ -256,8 +256,8 @@ void Key::vShow(IndexDef* pIndexDef)
     eDM eDatum = pCol->eDatum();
     
     if (0 == i_Col && bReadApi) {
-      Ref xwRef;
-      xwRef = * (Ref*)ayElm;
+      Rrf xwRef;
+      xwRef = * (Rrf*)ayElm;
       StrLib::vSprint(caLiteral,"%lld.%lld"_Stz,xwRef.iBuffer(),xwRef.iItem());
     }
     else

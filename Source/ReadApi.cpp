@@ -61,14 +61,14 @@ ReadApi::~ReadApi(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a row version                                                          */
 /*----------------------------------------------------------------------------*/
-void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
+void ReadApi::vAddCrwVersion(Rrf xwCurrentRef, Crw* aCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
     
   EntWrk xEntVersion;
   
   // -- -- --
-  Ref xwVersionRef = xwAddCrvItem(xwCurrentRef,aCrw);
+  Rrf xwVersionRef = xwAddCrvItem(xwCurrentRef,aCrw);
   xEntVersion.vRef(xwVersionRef);
   
   // -- -- --
@@ -97,7 +97,7 @@ void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
 /*----------------------------------------------------------------------------*/
 /* get a consistent read version of row given a reference and perspective     */
 /*----------------------------------------------------------------------------*/
-Crw* ReadApi::aGetCrwConsistent(Ref xwCurrentRef, t8 tPerspective)
+Crw* ReadApi::aGetCrwConsistent(Rrf xwCurrentRef, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
@@ -105,7 +105,7 @@ Crw* ReadApi::aGetCrwConsistent(Ref xwCurrentRef, t8 tPerspective)
   
   Crv::vFormFindKey(&xEntWrk,xwCurrentRef,tPerspective);
   
-  Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
+  Rrf xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
   
   if (xwRef.bIsNil())
     return nullptr;
@@ -123,7 +123,7 @@ Crw* ReadApi::aGetCrwConsistent(Ref xwCurrentRef, t8 tPerspective)
 /*----------------------------------------------------------------------------*/
 /* get a row version given a reference and perspective                        */
 /*----------------------------------------------------------------------------*/
-Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
+Crw* ReadApi::aGetCrwVersion(Rrf xwCurrentRef, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
@@ -131,7 +131,7 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
   
   Crv::vFormFindKey(&xEntWrk,xwCurrentRef,tPerspective);
   
-  Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
+  Rrf xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
   
   if (xwRef.bIsNil())
     return nullptr;
@@ -149,7 +149,7 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
 /*----------------------------------------------------------------------------*/
 /* get a row version given a reference and perspective                        */
 /*----------------------------------------------------------------------------*/
-Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, Crw* aCurrentCrw, t8 tPerspective)
+Crw* ReadApi::aGetCrwVersion(Rrf xwCurrentRef, Crw* aCurrentCrw, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
@@ -163,7 +163,7 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, Crw* aCurrentCrw, t8 tPerspective
   
   Crv::vFormFindKey(&xEntWrk,xwCurrentRef,tPerspective);
   
-  Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
+  Rrf xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
   
   if (xwRef.bIsNil())
     return nullptr;
@@ -219,8 +219,8 @@ void ReadApi::vStreamDef(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* add an index entry for version                                             */
 /*----------------------------------------------------------------------------*/
-void ReadApi::vAddVersionEntry(Ref xwCurrentRef,
-                               Ref xwVersionRef, t8 tVersionPsp)
+void ReadApi::vAddVersionEntry(Rrf xwCurrentRef,
+                               Rrf xwVersionRef, t8 tVersionPsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
@@ -242,11 +242,11 @@ void ReadApi::vAddVersionEntry(Ref xwCurrentRef,
 /*----------------------------------------------------------------------------*/
 /* add a row version                                                          */
 /*----------------------------------------------------------------------------*/
-Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
+Rrf ReadApi::xwAddCrvItem(Rrf xwCurrentRef, Crw* aCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
-  Ref xwVersionRef;
+  Rrf xwVersionRef;
   
   // test for current head buffer
   if (! m_pCrvBufferHead)

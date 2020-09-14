@@ -32,7 +32,7 @@ namespace ReadConsistency
     static Crv* aToCrv(i8 iBufferNo,i8 iItemNo);
     static CrvBuffer* aToCrvBuffer(i8 iBufferNo);
 
-    i8   iAddCrwVersion(Ref xwRef, Crw* pCrw);
+    i8   iAddCrwVersion(Rrf xwRef, Crw* pCrw);
     i8   nCrv(void);
     void vDumpAllCrv(void);
     Crv* aGetCrv(i8 i_Crv);

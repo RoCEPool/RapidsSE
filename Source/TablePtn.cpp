@@ -146,7 +146,7 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 /*----------------------------------------------------------------------------*/
 /* allot a row (from a table defined with a fixed row size)                   */
 /*----------------------------------------------------------------------------*/
-Crw* TablePtn::aAllotFixedSizeCrw(Ref& xRowRef)
+Crw* TablePtn::aAllotFixedSizeCrw(Rrf& xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -271,7 +271,7 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, RowSingle* pSrw)
   m_pCurrentCrwBuffer->vAppendClose();
   
   // get the row from the buffer
-  Ref xRowRef;
+  Rrf xRowRef;
   i8 iRow = m_pCurrentCrwBuffer->nRowCount() - 1;
   xRowRef.vItem(iRow);
   
@@ -639,7 +639,7 @@ void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
 /*----------------------------------------------------------------------------*/
 /* insert entries into all indexes for given row                              */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vInsertIndexEntries(Crw* aCrw, Ref& xRowRef)
+void TablePtn::vInsertIndexEntries(Crw* aCrw, Rrf& xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -914,7 +914,7 @@ CrwBuffer* TablePtn::pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective)
   for (i8 i_Crw = 0 ; i_Crw < nCrw; i_Crw++) {
     
     Crw* aCrw = pCrwBufferSrc->aCrw(i_Crw);
-    Ref xwRef;
+    Rrf xwRef;
     xwRef.vBuffer(pCrwBufferSrc->iBufferNo());
     xwRef.vItem(i_Crw);
 

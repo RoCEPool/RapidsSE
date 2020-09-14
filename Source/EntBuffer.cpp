@@ -143,7 +143,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the elements of the right key
     
-    Ref xRef = aRightH0_Entry->rxRef();
+    Rrf xRef = aRightH0_Entry->rxRef();
     eKE eEntKind = xRef.eKind();
     byte* ayElmSeq = aRightH0_Entry->ayElmSeq();
     
@@ -266,7 +266,7 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   
   Ent* aFirstL0_ent = pFirstH0->aLeadEntry();
   
-  Ref xRef = aFirstL0_ent->rxRef();
+  Rrf xRef = aFirstL0_ent->rxRef();
   eKE eEntKind = xRef.eKind();
   byte* aKeyBytes = aFirstL0_ent->ayElmSeq();
   i8 nKeyBytes = aFirstL0_ent->nElmSeqSize();
@@ -337,7 +337,7 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 {
   _static_
   
-  Ref xRef = pItem->rxRef();
+  Rrf xRef = pItem->rxRef();
   
   EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xRef);
     
@@ -347,7 +347,7 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pRefdEntBuffer(Ref& xRowRef)
+EntBuffer* EntBuffer::pRefdEntBuffer(Rrf& xRowRef)
 {
   _static_
   
@@ -1318,7 +1318,7 @@ void EntBuffer::vRestore(void)
        aEnt != nullptr;
        aEnt = aNextEntry(aEnt, 0)) {
     
-    Ref xRef(i_Buffer, aEnt->rxRef().iItem(), aEnt->nSkipLevels());
+    Rrf xRef(i_Buffer, aEnt->rxRef().iItem(), aEnt->nSkipLevels());
     aEnt->vRef(xRef);
   }
   
@@ -1373,7 +1373,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vTrace("Ref %lld.%05lld"_Stz,
+  vTrace("Rrf %lld.%05lld"_Stz,
          aEnt->rxRef().iBuffer(),
          aEnt->rxRef().iItem()
          );
@@ -1587,7 +1587,7 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
   if (! aFirstEntry)
     return;
   
-  Ref xRef;
+  Rrf xRef;
   xRef = aFirstEntry->rxRef();
   i8 i_Buffer = xRef.iBuffer();
   

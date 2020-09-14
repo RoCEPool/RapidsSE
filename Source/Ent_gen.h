@@ -20,7 +20,7 @@ struct Ent_gen
     u8 m_uKind    :  4; // kind (KE_GENERAL, KE_INT, ...)
     u8 m_uFree    :  1; // free entry
     u8 m_uSpare   :  7; // spare
-  } Ref;         // 64b
+  } Rrf;         // 64b
 
   tET m_taNextEntry[C_MAX_LVL_LEVELS]; // tickets
   union {

@@ -238,8 +238,8 @@ void EntBuffer::vCompact(void)
 #ifdef __ENT_HEADER
     new(aOpenedFreeEntry) FreeItem(nReclaimedBytes);
 #else
-    ((Ent_int*)aOpenedFreeEntry)->Ref.m_uFree = 1;
-    ((Ent_int*)aOpenedFreeEntry)->Ref.m_uBuffer = nReclaimedBytes;
+    ((Ent_int*)aOpenedFreeEntry)->Rrf.m_uFree = 1;
+    ((Ent_int*)aOpenedFreeEntry)->Rrf.m_uBuffer = nReclaimedBytes;
 #endif
     
     
@@ -309,7 +309,7 @@ void EntBuffer::vCompactLeft(void)
        aThisEntry != nullptr;
        aThisEntry = pThisBuffer->aNextEntry(aThisEntry, 0)) {
     
-    Ref xRef = aThisEntry->rxRef();
+    Rrf xRef = aThisEntry->rxRef();
     
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aThisEntry);
     pTempBuffer->aInsertEntAbsL0(xEntWrk.aEnt(),&aPriorEntry);
@@ -332,7 +332,7 @@ void EntBuffer::vCompactLeft(void)
        aTempEntry != nullptr;
        aTempEntry = pTempBuffer->aNextEntry(aTempEntry, 0)) {
     
-    Ref xRef = aTempEntry->rxRef();
+    Rrf xRef = aTempEntry->rxRef();
     
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aTempEntry);
     pThisBuffer->aInsertEntAbsL0(xEntWrk.aEnt(),&aPriorEntry);
@@ -862,7 +862,7 @@ Ent* EntBuffer::aInsertEntUpwards(Ent* aEnt, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pInsertIntoBuffer->m_iBufferHeight) {
-    Ref xRef = aInsertedEntry->rxRef();
+    Rrf xRef = aInsertedEntry->rxRef();
     i8 i_Buffer = xRef.iBuffer();
     
     HeapBuffer* pHeapBuffer =
@@ -1189,7 +1189,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
     aNextEntry = this->aNextEntry(aCopyEntry,0);
     
     // form the key
-    Ref xRef = aCopyEntry->rxRef();
+    Rrf xRef = aCopyEntry->rxRef();
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aCopyEntry);
     
     Ent* aNewEntry = pNewRightBuffer->aInsertEntAbsL0(xEntWrk.aEnt(),&aLastEntryRight);
@@ -1249,7 +1249,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
   // the child buffer of any moved entry needs to have its higher buffer
   // corrected to the new right buffer
   
-  Ref xRef;
+  Rrf xRef;
   if (m_iBufferHeight != 0)  {
     for (Ent* aMovedEntry = pNewRightBuffer->aLeadEntry();
          aMovedEntry;

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_Ref.hpp - Ref sprint helper                                             */
+/* SP_Ref.hpp - Rrf sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
@@ -16,10 +16,10 @@ namespace Rows
     SP_Ref(void);
    ~SP_Ref(void) noexcept(false);
 
-    void vRef(Ref wRef);
+    void vRef(Rrf wRef);
   
     Stz* sz(void);
-    Stz* sz(Ref wRef);
+    Stz* sz(Rrf wRef);
   
     Footer* aFooter(void);
   };

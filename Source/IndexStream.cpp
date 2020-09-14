@@ -98,7 +98,7 @@ bool IndexStream::bDelete(void)
     if (bBefore) {
       
       // get the crw entry from the lowerEntry
-      Ref xRef = m_aLowerEntry->rxRef();
+      Rrf xRef = m_aLowerEntry->rxRef();
       
       Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
       
@@ -207,7 +207,7 @@ CrwBuffer* IndexStream::pRead(RowOnce* pRowOnce)
     if (bBefore) {
       
       // get the crw entry from the lowerEntry
-      Ref xRef = m_aLowerEntry->rxRef();
+      Rrf xRef = m_aLowerEntry->rxRef();
       
       // has this row already been seen ?
       if ( ! pRowOnce || ! pRowOnce->bRowSeen(xRef) ) {

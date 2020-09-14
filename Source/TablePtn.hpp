@@ -36,7 +36,7 @@ namespace Partitioning
     ~TablePtn(void) noexcept(false);
   
     void vAddIndex(IndexTree* pIndexTree);
-    Crw* aAllotFixedSizeCrw(Ref& xRowRef);
+    Crw* aAllotFixedSizeCrw(Rrf& xRowRef);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
     void vAppendRow(RowCompactor* pRowCompactor, RowSingle* pRow);
     i8   nCrwBuffers(void);
@@ -50,7 +50,7 @@ namespace Partitioning
     IndexTreeVec* pIndexTreeVec(void);
     void vInsdelBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);
     void vInsdelBuffer(RsbBuffer* pCrwBuffer, t8 tPerspective);
-    void vInsertIndexEntries(Crw* aCrw, Ref& xRowRef);
+    void vInsertIndexEntries(Crw* aCrw, Rrf& xRowRef);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
     bool bIsLocked(void);
     CrwBuffer* pNewCurrentCrwBuffer(void);

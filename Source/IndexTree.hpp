@@ -39,13 +39,13 @@ namespace Indexing
     void       vDump(bool bSameHeight);
     i8         nEntBuffers(void);
     EntBuffer* pFirstH0Buffer(void);
-    Ref        xwGetRef(Key* aFindKey);
+    Rrf        xwGetRef(Key* aFindKey);
     Index*     pIndex(void);
     IndexDef*  pIndexDef(void);
     void       vInsertEntries(CrwBuffer* pCrwBuffer);
     bool       bInsertEntry(Ent* aEnt);
-    bool       bInsertEntry(Crw* aCrw, Ref& xRowRef);
-    bool       bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef);
+    bool       bInsertEntry(Crw* aCrw, Rrf& xRowRef);
+    bool       bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Rrf& xRowRef);
     Ent*       aInsertPayloadEntry(EntWrk& xEntWrk, i8 nPayloadBytes);
     Ent*       aInsertEntry(Ent* aEnt);
     eKE        eKeyKind(void);

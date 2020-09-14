@@ -105,7 +105,7 @@ CrvBuffer* CrvBuffer::aToCrvBuffer(i8 i_Buffer)
 /*----------------------------------------------------------------------------*/
 /* add crw version into this buffer, return crv item subscript                */
 /*----------------------------------------------------------------------------*/
-i8 CrvBuffer::iAddCrwVersion(Ref xwRef, Crw* pCrw)
+i8 CrvBuffer::iAddCrwVersion(Rrf xwRef, Crw* pCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
@@ -161,7 +161,7 @@ void CrvBuffer::vDumpAllCrv(void)
     Crw* aCrw = aCrv->aCrw();
     CrwBuffer::vToRow(hvRow,aCrw);
     
-    vTrace("Crv %lld Ref %lld.%lld Psp %lld: %s\n"_Stz,
+    vTrace("Crv %lld Rrf %lld.%lld Psp %lld: %s\n"_Stz,
            i_Crv,
            aCrv->xwRef().iBuffer(),
            aCrv->xwRef().iItem(),

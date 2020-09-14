@@ -19,7 +19,7 @@ namespace DataBuffers
     DataBuffer(eCN eClass, bool bIsPermanent);
    ~DataBuffer(void) noexcept(false);
 
-    static DataBuffer* pRefdDataBuffer(Ref& xRef);
+    static DataBuffer* pRefdDataBuffer(Rrf& xRef);
     
     i8          iAgeSec(void);
 

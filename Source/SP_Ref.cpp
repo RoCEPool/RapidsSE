@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_Ref.cpp - Ref sprint helper                                             */
+/* SP_Ref.cpp - Rrf sprint helper                                             */
 /*============================================================================*/
 
 #include "Rows.h"
@@ -34,7 +34,7 @@ SP_Ref::~SP_Ref(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-void SP_Ref::vRef(Ref wRef)
+void SP_Ref::vRef(Rrf wRef)
 {
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 
@@ -59,7 +59,7 @@ Stz* SP_Ref::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ref::sz(Ref wRef)
+Stz* SP_Ref::sz(Rrf wRef)
 {
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 

@@ -260,7 +260,7 @@ void EntWrk::vAppendPlusInfinity(void)
 /*----------------------------------------------------------------------------*/
 /* add ref element to key                                                     */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAppendRef(Ref xwArg)
+void EntWrk::vAppendRef(Rrf xwArg)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -565,7 +565,7 @@ void EntWrk::vRandomEnt(IndexDef* pIndexDef)
 /*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
-Ref& EntWrk::rxRef(void)
+Rrf& EntWrk::rxRef(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -575,7 +575,7 @@ Ref& EntWrk::rxRef(void)
 /*----------------------------------------------------------------------------*/
 /* set ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vRef(Ref& xRef)
+void EntWrk::vRef(Rrf& xRef)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -605,7 +605,7 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   i8 nLevels = pEntry->nSkipLevels();
   vOffsets(nLevels);
   
-  Ref xRef(iBufferNo,i_Item,nLevels);
+  Rrf xRef(iBufferNo,i_Item,nLevels);
   vRef(xRef);
   
   eKE eEntKind = pEntry->eKind();

@@ -24,6 +24,8 @@ namespace Facts
   {
   private:
   
+  bool m_bVal = true;
+  
     Kbase*   m_pKbase;
   
     i8       m_iFactNo;      // unique number (synonym of this facts address)

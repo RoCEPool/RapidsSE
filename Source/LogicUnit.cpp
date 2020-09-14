@@ -1899,8 +1899,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_CRW_ALT_DEREF);
         //vDev_CRW_DEREF(pLU,aRluCommon->m_pDevAltIxt);
 
-        iBuffer = aRluCommon->m_aAltEnt->Ref.m_uBuffer;
-        iItem   = aRluCommon->m_aAltEnt->Ref.m_uItem;
+        iBuffer = aRluCommon->m_aAltEnt->Rrf.m_uBuffer;
+        iItem   = aRluCommon->m_aAltEnt->Rrf.m_uItem;
 
         aRluCommon->m_aAltCrw = (void*)
           ( (char*)C_ADR_REGION
@@ -1919,8 +1919,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_CRW_SRC_DEREF);
         //vDev_CRW_DEREF(pLU,aRluCommon->m_pDevSrcIxt);
         
-        iBuffer = aRluCommon->m_aSrcEnt->Ref.m_uBuffer;
-        iItem   = aRluCommon->m_aSrcEnt->Ref.m_uItem;
+        iBuffer = aRluCommon->m_aSrcEnt->Rrf.m_uBuffer;
+        iItem   = aRluCommon->m_aSrcEnt->Rrf.m_uItem;
 
         aRluCommon->m_aSrcCrw = (void*)
           ( (char*)C_ADR_REGION
@@ -2142,7 +2142,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ENTWRK_SETINTELM: ArgNil(); // append next element value (int)
         dLU0(EO_ENTWRK_SETINTELM);
         aRluCommon->m_aWrkEnt->m_iIntElm0 = *(aiDstk--);
-        aRluCommon->m_aWrkEnt->Ref.m_uKind = 1; //KE_INT;
+        aRluCommon->m_aWrkEnt->Rrf.m_uKind = 1; //KE_INT;
 //        iTopA = *(aiDstk--);
 //        vDev_ENTWRK_SETINTELM(pLU,aRluCommon->m_pDevSrcRsb,iTopA);
         break;//+endCase
@@ -2313,7 +2313,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //      {
 //        i8* aiCheck = 0;
 //
-//        if (aRluCommon->m_aTmpEnt->Ref.m_uKind) {
+//        if (aRluCommon->m_aTmpEnt->Rrf.m_uKind) {
 //          aiCheck = (i8*) ( (char*)aRluCommon->m_aTmpEnt
 //                                     + sizeof(struct Ent_int)
 //                                     + 8
@@ -2334,7 +2334,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //      }
 
         
-        if (aRluCommon->m_aTmpEnt->Ref.m_uKind) {
+        if (aRluCommon->m_aTmpEnt->Rrf.m_uKind) {
           aiPayload = (i8*) ( (char*)aRluCommon->m_aTmpEnt
                                      + sizeof(struct Ent_int)
                                      + 8

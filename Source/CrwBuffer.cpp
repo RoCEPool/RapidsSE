@@ -57,7 +57,7 @@ CrwBuffer::~CrwBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* delete a crw                                                               */
 /*----------------------------------------------------------------------------*/
-bool CrwBuffer::bDeleteRefdCrw(Ref xRef)
+bool CrwBuffer::bDeleteRefdCrw(Rrf xRef)
 {
   // get the referenced row buffer
   CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
@@ -91,7 +91,7 @@ void CrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get crw given ref                                                          */
 /*----------------------------------------------------------------------------*/
-Crw* CrwBuffer::pRefdCrw(Ref xRef)
+Crw* CrwBuffer::pRefdCrw(Rrf xRef)
 {
   _static_
   
@@ -109,7 +109,7 @@ Crw* CrwBuffer::pRefdCrw(Ref xRef)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* CrwBuffer::pRefdCrwBuffer(Ref& xRef)
+CrwBuffer* CrwBuffer::pRefdCrwBuffer(Rrf& xRef)
 {
   _static_
   
@@ -587,7 +587,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  vTrace("Ref: %3lli.%03lli"_Stz,m_iBufferNo,i_Row);
+  vTrace("Rrf: %3lli.%03lli"_Stz,m_iBufferNo,i_Row);
   
   StreamDef* pStreamDef = pTable()->pStreamDef();
   HV_Rec hvRec(pStreamDef,C_ALL);

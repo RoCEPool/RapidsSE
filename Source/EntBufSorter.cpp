@@ -60,10 +60,10 @@ int Indexing::iEntBufSortCompare_Lvl_IntElm0(const void* aLeft, const void* aRig
   Ent_int* aEntLeft  = (Ent_int*)aLeft;
   Ent_int* aEntRight = (Ent_int*)aRight;
   
-  if (aEntLeft->Ref.m_uLevels > aEntRight->Ref.m_uLevels)
+  if (aEntLeft->Rrf.m_uLevels > aEntRight->Rrf.m_uLevels)
     return -1;
   else
-  if (aEntLeft->Ref.m_uLevels < aEntRight->Ref.m_uLevels)
+  if (aEntLeft->Rrf.m_uLevels < aEntRight->Rrf.m_uLevels)
     return 1;
 
   if (aEntLeft->m_iIntElm0 < aEntRight->m_iIntElm0)
@@ -128,7 +128,7 @@ void EntBufSorter::vSort_int(EntBuffer* pEntBuffer)
   for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
     Ent_int* aEnt_int = &aItemArray[i_Item];
 
-    i8 nLevels = aEnt_int->Ref.m_uLevels;
+    i8 nLevels = aEnt_int->Rrf.m_uLevels;
     for (i8 i_Lvl = 0; i_Lvl < nLevels; i_Lvl++) {
       tET tOriginalTicket = aEnt_int->m_taNextEntry[i_Lvl];
       if (C_ENT_END_TICKET == tOriginalTicket)

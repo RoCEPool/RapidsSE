@@ -1243,7 +1243,7 @@ void vTest20(void)
 /*----------------------------------------------------------------------------*/
 i8 nTest21_intEnts(eKE eEntKind)
 {
-  Ref xRef;
+  Rrf xRef;
   EntWrk xEntWrk;
   
   i8 nEnts = 0;
@@ -1377,7 +1377,7 @@ void vTest21_delete(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
 /*----------------------------------------------------------------------------*/
 void vTest21_insert(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalIns_)
 {
-  Ref xRef;
+  Rrf xRef;
   EntWrk xEntWrk;
 
   i8 nInts = pKeySamples->nInts();

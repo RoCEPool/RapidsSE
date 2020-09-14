@@ -41,7 +41,7 @@ i8 Crv::nCrvBytesNeed(i8 nCrwBytes)
 /*----------------------------------------------------------------------------*/
 /* form key used for finding a prior version                                  */
 /*----------------------------------------------------------------------------*/
-void Crv::vFormFindKey(EntWrk* aEntWrk, Ref xwRef, t8 tPerspective)
+void Crv::vFormFindKey(EntWrk* aEntWrk, Rrf xwRef, t8 tPerspective)
 {
   aEntWrk->vAppendRef(xwRef);
   aEntWrk->vAppendInt(tPerspective);
@@ -62,7 +62,7 @@ Crw* Crv::aCrw(void)
 /*----------------------------------------------------------------------------*/
 /* get reference of the current row                                           */
 /*----------------------------------------------------------------------------*/
-Ref Crv::xwRef(void)
+Rrf Crv::xwRef(void)
 {
   return m_xwRef;
 }
@@ -70,7 +70,7 @@ Ref Crv::xwRef(void)
 /*----------------------------------------------------------------------------*/
 /* take a consistent copy of the given compact row                            */
 /*----------------------------------------------------------------------------*/
-void Crv::vTakeVersion(Ref xwRef, Crw* aCrw, i8 nCrwBytes)
+void Crv::vTakeVersion(Rrf xwRef, Crw* aCrw, i8 nCrwBytes)
 {
   m_nCrvSize = nCrvBytesNeed(nCrwBytes);
   

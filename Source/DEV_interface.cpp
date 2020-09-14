@@ -45,8 +45,8 @@ void vDev_CRW_DEREF(void* aLU, void* aIXT)
   
   // can we calc it?
   
-  i8 iBuffer = ((Ent_int*)pDevIxt->m_aEnt)->Ref.m_uBuffer;
-  i8 iItem   = ((Ent_int*)pDevIxt->m_aEnt)->Ref.m_uItem;
+  i8 iBuffer = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uBuffer;
+  i8 iItem   = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uItem;
   
   Crw* aCrw  = (Crw*)
     ( (char*)C_ADR_REGION

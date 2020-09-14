@@ -173,7 +173,7 @@ void DataBuffer::vIsPermanent(bool bIsPermanent)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-DataBuffer* DataBuffer::pRefdDataBuffer(Ref& xRef)
+DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
 {
   i8 i_Buffer = xRef.iBuffer();
   

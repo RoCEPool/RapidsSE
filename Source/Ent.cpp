@@ -358,7 +358,7 @@ void Ent::vPaySize(i8 nPaySize)
 /*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
-Ref& Ent::rxRef(void)
+Rrf& Ent::rxRef(void)
 {
   return m_xRef;
 }
@@ -366,7 +366,7 @@ Ref& Ent::rxRef(void)
 /*----------------------------------------------------------------------------*/
 /* set reference                                                              */
 /*----------------------------------------------------------------------------*/
-void Ent::vRef(Ref xRef)
+void Ent::vRef(Rrf xRef)
 {
   m_xRef = xRef;
 }
@@ -374,7 +374,7 @@ void Ent::vRef(Ref xRef)
 /*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
-Ref Ent::wRef(void)
+Rrf Ent::wRef(void)
 {
   return m_xRef;
 }

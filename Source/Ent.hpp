@@ -23,7 +23,7 @@ namespace Entries
     _Header m_xHeader;
     #endif
   
-    Ref m_xRef; // reference which is either :
+    Rrf m_xRef; // reference which is either :
                 //   a) sub-ref to a child EntBuffer (Hn buffers), or
                 //   b) row-ref to a crw row in a crwBuffer (occurs at H0 leaf buffers)
   
@@ -85,9 +85,9 @@ namespace Entries
     i8    nPaySize(void);
     void  vPaySize(i8 nPaySize);
 
-    Ref&  rxRef(void);
-    void  vRef(Ref xRef);
-    Ref   wRef(void);
+    Rrf&  rxRef(void);
+    void  vRef(Rrf xRef);
+    Rrf   wRef(void);
     void  vReset(void);
   
     void  vSetEntry(Ent* aFromEntry);

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Ref.hpp -- Reference to another buffer item                                */
+/* Rrf.hpp -- Reference to another buffer item                                */
 /*============================================================================*/
 #pragma once
 
 namespace Rows
 {
-  class Ref : public NonProper
+  class Rrf : public NonProper
   {
   private:
     union {
@@ -23,11 +23,11 @@ namespace Rows
     };
   
   public:   
-    Ref(void);
-    Ref(u8 uBuffer, u8 uItem, u8 uLevels);
-   ~Ref(void) noexcept(false);
+    Rrf(void);
+    Rrf(u8 uBuffer, u8 uItem, u8 uLevels);
+   ~Rrf(void) noexcept(false);
     
-    void operator =(Ref xwRef); // assignment
+    void operator =(Rrf xwRef); // assignment
 
     i8    iAsI8(void);
     i8    iBuffer(void);
@@ -44,7 +44,7 @@ namespace Rows
     bool  bPayload(void);
     void  vPayload(bool bPayLoad);
     void  vReset(void);
-    void  vSet(Ref xwRef);
+    void  vSet(Rrf xwRef);
     void  vSetNil(void);
     i8    nSkipLevels(void);
     void  vSkipLevels(i8 nSkipLevels);

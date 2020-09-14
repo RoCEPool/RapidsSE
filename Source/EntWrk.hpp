@@ -43,7 +43,7 @@ namespace Entries
     void  vAppendMinusInfinity(void);
     void  vAppendNull(void);
     void  vAppendPlusInfinity(void);
-    void  vAppendRef(Ref xwArg);
+    void  vAppendRef(Rrf xwArg);
     void  vAppendStz(Stz* szArg);
 
     i8    iBuffer(void);
@@ -77,8 +77,8 @@ namespace Entries
     void  vPayloadBytes(i8 nPayloadBytes);
 
     void  vRandomEnt(IndexDef* pIndexDef);
-    Ref&  rxRef(void);
-    void  vRef(Ref& xRef);
+    Rrf&  rxRef(void);
+    void  vRef(Rrf& xRef);
     void  vReset(void);
 
     void  vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry);
