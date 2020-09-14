@@ -7,19 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: kbase_action
-
-  "Kbase Testing" .
+: kbase_import
 
   tokenVec::new locals| pTknVec |
 
-  "Kbase-Name" kbase[].new
-
-  kbase[].test
-
-  "/tmp/kbase_test.txt" kbase[].print
-
-  kbase[].delete
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -49,6 +40,85 @@
   nullptr File0[].set
 
   pTknVec tokenVec::delete
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: kbase_action
+
+//  "Kbase Testing" .
+//
+//  tokenVec::new locals| pTknVec |
+//
+//  "Kbase-Name" kbase[].new
+//
+//  kbase[].test
+//
+//  "/tmp/kbase_test.txt" kbase[].print
+//
+//  kbase[].delete
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  file::new to file0[]
+//
+//  "/tmp/kbase_test.txt" OPEN_READ file0[] file.open if
+//
+//    "FILE OPENED" .
+//
+//    file0[] file.path@ file::modTime .
+//
+//
+//    begin
+//      file0[] file.readLine
+//    while
+//      dup dup .
+//      pTknVec tokenVec.tokenise
+//      pTknVec tokenVec.dump
+//      >interpret
+//    repeat
+//
+//    file0[] file.close
+//
+//  then
+//
+//  File0[] file.delete
+//  nullptr File0[].set
+//
+//  pTknVec tokenVec::delete
+
+  0 0 locals| iModTime iPrevTime |
+
+  "Kbase Testing" .
+
+  "Kbase-Name" kbase[].new
+
+  kbase[].test
+
+  "/tmp/kbase_test.txt" kbase[].print
+
+  kbase[].delete
+
+  "/tmp/kbase_test.txt" file::modTime to iPrevTime
+  
+
+  begin
+    true
+  while
+
+    "/tmp/kbase_test.txt" file::modTime to iModTime
+
+    iModTime iPrevTime == if
+      100 thread::sleepMsec
+    else
+      iModTime to iPrevTime
+      kbase_import
+    then
+
+  repeat
+
 
   true
 ;
