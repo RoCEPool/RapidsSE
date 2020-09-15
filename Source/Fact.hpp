@@ -23,24 +23,24 @@ namespace Facts
   class Fact : public Object
   {
   private:
-  
-  bool m_bVal = true;
-  
-    Kbase*   m_pKbase;
-  
-    i8       m_iFactNo;      // unique number (synonym of this facts address)
-    s32      m_sName;        // name of fact
-    Value    m_xValue;       // some value
     
-    Fact*    m_pSubclassOf;  // subclass of which fact      (super)
-    Fact*    m_pAttributeOf; // attribute of which fact     (across/column)
-    Fact*    m_pElementOf;   // element of which fact set   (down/row)
+    Kbase* m_pKbase;
+  
+    i8     m_iFactNo; // unique number (synonym of this facts address)
+    s32    m_sName;   // name of fact
+    Value  m_xValue;  // some value
+    
+    Fact*  m_pSubclassOf;   // subclass of which fact      (super)
+    Fact*  m_pAttributeOf;  // attribute of which fact     (across/column)
+    Fact*  m_pElementOf;    // element of which fact set   (down/row)
  
-    Fact*    m_pAttributes;  // attributes of this fact
-    Fact*    m_pAttributeNext; // next attribute of fact
+    Fact*  m_pAttributes;   // attributes of this fact
+    Fact*  m_pAttributeNext; // next attribute of fact
 
-    Fact*    m_pElements;    // elements of this fact set
-    Fact*    m_pElementNext; // next element in fact set
+    Fact*  m_pElements;     // elements of this fact set
+    Fact*  m_pElementNext;  // next element in fact set
+   
+    bool   m_bDeleteMethod; // ~Fact to delete method
   
     // must be last
     Footer m_xFooter;
@@ -107,6 +107,8 @@ namespace Facts
     bool  bIsWord(void);
     bool  bIsXref(void);
 
+    void  vMethodNew(void);
+  
     Fact* pNewInstance(Stz* szName=nullptr);
 
     Stz*  szName(void);

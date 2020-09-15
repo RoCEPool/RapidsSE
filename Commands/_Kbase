@@ -8,7 +8,11 @@ _customer
 _orders
 _lineItem
 
+trackMemory;
+
 fact;
+
+memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

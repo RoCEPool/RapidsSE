@@ -39,6 +39,8 @@ Fact::Fact(Kbase* pKbase, Fact* pSuper, Stz* szName)
   m_pElements      = nullptr;
   m_pElementNext   = nullptr;
   
+  m_bDeleteMethod  = false;
+  
   _checkInitialised_(CN_FACT);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
@@ -52,6 +54,9 @@ Fact::~Fact(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   vTrace("~Fact %p ... %s\n"_Stz,this,m_sName.azChar());
+  
+  if (m_bDeleteMethod)
+    delete m_xValue.m_pMethod;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -705,6 +710,20 @@ bool Fact::bIsXref(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
   return bIsSubClass(m_pKbase->m_p_Xref_) && this != m_pKbase->m_p_Xref_;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a new method to this fact                                              */
+/*----------------------------------------------------------------------------*/
+void Fact::vMethodNew(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  ASSERT(! m_xValue.m_pMethod);
+  
+  m_xValue.m_pMethod = new Method(m_pKbase,this);
+  
+  m_bDeleteMethod = true;
 }
 
 /*----------------------------------------------------------------------------*/
