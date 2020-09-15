@@ -52,12 +52,13 @@ namespace Facts
     Fact(Kbase* pKbase, Fact* pSuper, Stz* szName=nullptr);
     ~Fact(void) noexcept(false);
   
-    static void vDeleteRecursively(Fact* pFact);
+    static void vDeleteRecursively(Fact** ppFact);
     static void vDeleteBelowRecursively(Fact* pFact);
 
     void  vAncestry(Stz* szDst);
   
     void  vAttributeAppend(Fact* pAttribute);
+    void  vAttributeCut(Fact* pAttribute);
     Fact* pAttributeFindNm(Stz* szName);
     Fact* pAttributeFindNmVal(Stz* szName, Stz* szValue);
     Fact* pAttributeNext(void);

@@ -51,7 +51,7 @@ Fact::~Fact(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  vTrace("~Fact %p ... %s"_Stz,this,m_sName.azChar());
+  vTrace("~Fact %p ... %s\n"_Stz,this,m_sName.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,19 +61,34 @@ Fact::~Fact(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* delete fact recursively                                                    */
 /*----------------------------------------------------------------------------*/
-void Fact::vDeleteRecursively(Fact* pFact)
+void Fact::vDeleteRecursively(Fact** ppFact)
 {
   _static_
   
-  for (Fact* pScan = pFact->m_pAttributes;
-       pScan;
-       pScan = pScan->m_pAttributeNext)
-    vDeleteRecursively(pScan);
+  Fact* pFact = *ppFact;
+  *ppFact = nullptr;
+  
+  if (pFact->m_pAttributeOf)
+    pFact->m_pAttributeOf->vAttributeCut(pFact);
+  
+  if (pFact->m_pElementOf)
+    pFact->m_pElementOf->vElementCut(pFact);
+  
+  Fact* pNext = nullptr;
+  for (Fact* pAttribute = pFact->m_pAttributes;
+       pAttribute;
+       pAttribute = pNext) {
+    pNext = pAttribute->m_pAttributeNext;
+    vDeleteRecursively(&pAttribute);
+  }
 
-  for (Fact* pScan = pFact->m_pElements;
-       pScan;
-       pScan = pScan->m_pElementNext)
-    vDeleteRecursively(pScan);
+  pNext = nullptr;
+  for (Fact* pElement = pFact->m_pElements;
+       pElement;
+       pElement = pNext) {
+    pNext = pElement->m_pElementNext;
+    vDeleteRecursively(&pElement);
+  }
 
   delete pFact;
 }
@@ -84,16 +99,16 @@ void Fact::vDeleteRecursively(Fact* pFact)
 void Fact::vDeleteBelowRecursively(Fact* pFact)
 {
   _static_
-  
+    
   for (Fact* pScan = pFact->m_pAttributes;
        pScan;
        pScan = pScan->m_pAttributeNext)
-    vDeleteRecursively(pScan);
+    vDeleteRecursively(&pScan);
 
   for (Fact* pScan = pFact->m_pElements;
        pScan;
        pScan = pScan->m_pElementNext)
-    vDeleteRecursively(pScan);
+    vDeleteRecursively(&pScan);
 }
 
 
@@ -139,6 +154,37 @@ void Fact::vAttributeAppend(Fact* pAttribute)
   pTail->vAttributeNext(pAttribute);
 }
  
+/*----------------------------------------------------------------------------*/
+/* cut given element from this fact                                           */
+/*----------------------------------------------------------------------------*/
+void Fact::vAttributeCut(Fact* pAttribute)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  ASSERT(pAttribute->m_pAttributeOf == this);
+  pAttribute->m_pAttributeOf = nullptr;
+
+  // is it the head attribute?
+  if (pAttribute == m_pAttributes) {
+    m_pAttributes = m_pAttributes->m_pAttributeNext;
+    
+    pAttribute->m_pAttributeNext = nullptr;
+    
+    return;
+  }
+  
+  // find the prior attribute
+  Fact* pPrior;
+  for (pPrior = m_pAttributes;
+       pPrior;
+       pPrior = pPrior->m_pAttributeNext)
+    if (pPrior->m_pAttributeNext == pAttribute)
+      break;
+
+  // cut the attribute
+  pPrior->m_pAttributeNext = pAttribute->m_pAttributeNext;
+  pAttribute->m_pAttributeNext = nullptr;
+}
 /*----------------------------------------------------------------------------*/
 /* find attribute fact                                                        */
 /*----------------------------------------------------------------------------*/
@@ -294,6 +340,9 @@ void Fact::vElementCut(Fact* pElement)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
+  ASSERT(pElement->m_pElementOf == this);
+  pElement->m_pElementOf = nullptr;
+  
   // is it the head element?
   if (pElement == m_pElements) {
     m_pElements = m_pElements->m_pElementNext;
@@ -304,15 +353,15 @@ void Fact::vElementCut(Fact* pElement)
   }
   
   // find the prior element
-  Fact* pScan;
-  for (pScan = m_pElements;
-       pScan;
-       pScan = pScan->m_pElementNext)
-    if (pScan->m_pElementNext == pElement)
+  Fact* pPrior;
+  for (pPrior = m_pElements;
+       pPrior;
+       pPrior = pPrior->m_pElementNext)
+    if (pPrior->m_pElementNext == pElement)
       break;
 
   // cut the element
-  pScan->m_pElementNext = pElement->m_pElementNext;
+  pPrior->m_pElementNext = pElement->m_pElementNext;
   pElement->m_pElementNext = nullptr;
 }
 
@@ -734,11 +783,12 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
   if (m_sName.bSame("question"_Stz))
     vDebugPoint();
   
-  vTraceF(pFile,"%s%s [%lld] %s"_Stz,
+  vTraceF(pFile,"%s%s [%lld-%p] %s"_Stz,
          Stz::szTab(iTab),
          sPrefix.azChar(),
 
          m_iFactNo,
+        this,
          m_sName.azChar()
          );
   

@@ -331,8 +331,8 @@ void Kbase::vTrim(void)
   Fact* pIntention = m_pContents->pElementFindNm("intention"_Stz);
 
   while (Fact* pElement = pIntention->pElements()) {
-    pIntention->vElementCut(pElement);
-    Fact::vDeleteRecursively(pElement);
+    //pIntention->vElementCut(pElement);
+    Fact::vDeleteRecursively(&pElement);
   }
 }
 
