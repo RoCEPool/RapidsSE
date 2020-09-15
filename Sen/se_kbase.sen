@@ -14,6 +14,7 @@
   
   input::next .
   input::next .
+  input::next .
   input::next . input::isCloseBrace assert
 
 ;
@@ -25,6 +26,7 @@
   
   input::chars .
   
+  input::next .
   input::next .
   input::next .
   input::next . input::isCloseBrace assert
@@ -53,6 +55,7 @@
   
   input::chars .
   
+  input::next .
   input::next .
   input::next .
   input::next . input::isCloseBrace assert

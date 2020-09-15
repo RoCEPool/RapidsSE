@@ -802,7 +802,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
   if (m_sName.bSame("question"_Stz))
     vDebugPoint();
   
-  vTraceF(pFile,"%s%s [%lld-%p] %s"_Stz,
+  vTraceF(pFile,"%s%s [%lld] %p %s"_Stz,
          Stz::szTab(iTab),
          sPrefix.azChar(),
 
