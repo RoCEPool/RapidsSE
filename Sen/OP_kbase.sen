@@ -99,8 +99,6 @@
 
   "/tmp/kbase_test.txt" kbase[].print
 
-  kbase[].delete
-
   "/tmp/kbase_test.txt" file::modTime to iPrevTime
   
 
@@ -114,6 +112,8 @@
       100 thread::sleepMsec
     else
       iModTime to iPrevTime
+      kbase[].trim
+
       kbase_import
     then
 

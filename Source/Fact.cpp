@@ -50,6 +50,8 @@ Fact::Fact(Kbase* pKbase, Fact* pSuper, Stz* szName)
 Fact::~Fact(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  vTrace("~Fact %p ... %s"_Stz,this,m_sName.azChar());
 }
 
 /*----------------------------------------------------------------------------*/

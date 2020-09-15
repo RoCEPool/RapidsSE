@@ -316,7 +316,24 @@ void Kbase::vPrint(File* pFile)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
-  m_pContents->vPrint_r(pFile,0);
+  Fact* pIntention = m_pContents->pElementFindNm("intention"_Stz);
+
+  pIntention->vPrint_r(pFile,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* trim                                                                       */
+/*----------------------------------------------------------------------------*/
+void Kbase::vTrim(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pIntention = m_pContents->pElementFindNm("intention"_Stz);
+
+  while (Fact* pElement = pIntention->pElements()) {
+    pIntention->vElementCut(pElement);
+    Fact::vDeleteRecursively(pElement);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

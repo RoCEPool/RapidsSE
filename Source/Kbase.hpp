@@ -76,6 +76,8 @@ namespace Facts
   
     void vPrint(File* pFile);
         
+    void vTrim(void);
+  
     Fact* pValue(void);
     
     // -- -- -- -- -- -- --

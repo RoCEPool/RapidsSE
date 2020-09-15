@@ -17,6 +17,7 @@ void Step::vAddSteps_Kbase(void)
   vAddStep("Kbase[].print"_Stz,  &Step::vKbasePrint);
   vAddStep("Kbase[].set"_Stz,    &Step::vKbaseSet);
   vAddStep("Kbase[].test"_Stz,   &Step::vKbaseTest);
+  vAddStep("Kbase[].trim"_Stz,   &Step::vKbaseTrim);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,10 +27,10 @@ void Step::vKbaseDelete(void)
 {
   ENTRY();
   
-  Kbase* m_xpKbase = * m_pLogicUnit->m_xpKbase;
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
   m_pLogicUnit->m_xpKbase = nullptr;
   
-  delete m_xpKbase;
+  delete pKbase;
       
   EXIT();
 }
@@ -115,6 +116,20 @@ void Step::vKbaseTest(void)
   Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
 
   pKbase->vTest();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].trim -- trim kbase                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseTrim(void)
+{
+  ENTRY();
+  
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  pKbase->vTrim();
 
   EXIT();
 }
