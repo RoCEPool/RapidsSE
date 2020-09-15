@@ -36,6 +36,10 @@ Kbase::Kbase(Stz* szKbName)
 Kbase::~Kbase(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  vTrace("~Kbase %p\n"_Stz,this);
+
+  Fact::vDeleteRecursively(&m_pFact);
 }
 
 /*----------------------------------------------------------------------------*/
