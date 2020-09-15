@@ -18,6 +18,7 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.escape"_Stz,       &Step::vStrEscape);
   vAddStep("str.firstCsv"_Stz,     &Step::vStrFirstCsv);
   vAddStep("str.format"_Stz,       &Step::vStrFormat);
+  vAddStep("str.gleanInt"_Stz,     &Step::vStrGleanInt);
   vAddStep("str.left"_Stz,         &Step::vStrLeft);
   vAddStep("str.length"_Stz,       &Step::vStrLength);
   vAddStep("str.prepend"_Stz,      &Step::vStrPrepend);
@@ -192,6 +193,23 @@ void Step::vStrFormat(void)
   m_pTask->vValSprint(sFormat,sString);
   
   m_pDataStack->vPushStr(sString);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.gleanInt -- glean int from string                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vStrGleanInt(void)
+{
+  ENTRY();
+  
+  s48K sArg;
+  m_pDataStack->vPopStr(sArg,__func__);
+  
+  i8 iInt = StrLib::iGleanInt(sArg.azChar());
+  
+  m_pDataStack->vPushInt(iInt);
   
   EXIT();
 }

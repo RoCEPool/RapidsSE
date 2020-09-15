@@ -26,7 +26,7 @@
   
   input::chars .
   
-  input::next .
+  input::next . input::chars str.gleanInt .
   input::next .
   input::next .
   input::next . input::isCloseBrace assert

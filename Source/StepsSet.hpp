@@ -1419,6 +1419,7 @@ public:
   void vStrEscape(void);
   void vStrFirstCsv(void);
   void vStrFormat(void);
+  void vStrGleanInt(void);
   void vStrLeft(void);
   void vStrLength(void);
   void vStrPrepend(void);
