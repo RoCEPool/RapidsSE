@@ -860,6 +860,7 @@ public:
   void vKbasePrint(void);
   void vKbaseSet(void);
   void vKbaseTest(void);
+  void vKbaseTrim(void);
 
   // loader
   void vLoaderCreate(void);
