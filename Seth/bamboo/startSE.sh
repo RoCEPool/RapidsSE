@@ -17,8 +17,7 @@ START_CLUSTER_PARAMS="--name NODE0 --munged --script --commands ${ROOT_DIR}/Comm
 START_CLUSTER_OUTPUT_FILE="${ROOT_DIR}/startCluster.log"
 
 #set the library path for the rapidsSE library
-ANTLR_PATH="${ROOT_DIR}/ThirdParty/antlr/lib/linux/centos7"
-export LD_LIBRARY_PATH="${EXE_PATH}":"${ANTLR_PATH}":$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH="${EXE_PATH}":$LD_LIBRARY_PATH
 
 # how long to wait after SE has started to check that it is still running.
 SLEEP_SEC=10
