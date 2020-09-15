@@ -130,6 +130,8 @@ namespace Strings
     static void  vFormatFraction(char* sDst, u8 uFraction, i8 iDigits);
     static void  vFree(char** ps);
     
+    static i8    iGleanInt(char* azArg);
+  
     static i8    iHexToInw(const char c);
     
     static bool  bIsAlpha(const char c);
@@ -138,7 +140,7 @@ namespace Strings
     static bool  bIsEscapable(const char cArg);
     static bool  bIsNameBodyChar(const char c);
     static bool  bIsNameStartChar(const char c);
-    static bool  bIsNumeric(char* ps);
+    static bool  bIsNumeric(char* azArg);
     static bool  bIsHex(const char c);
     static bool  bIsWhite(const char c);
    

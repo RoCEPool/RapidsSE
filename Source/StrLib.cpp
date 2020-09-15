@@ -2369,6 +2369,28 @@ void StrLib::vFree(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
+/* glean an integer from given string (skip leading non-digits)               */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iGleanInt(char* azArg)
+{
+  _static_
+  
+  i8 iVal = 0;
+  
+  char* aSrc = azArg;
+
+  // skip leading non-digits
+  while (*aSrc && ! bIsDigit(*aSrc))
+    aSrc++;
+  
+  // convert digit sequence
+  while (*aSrc && bIsDigit(*aSrc))
+    iVal = iVal * 10 + iDigitToI8(*aSrc++);
+
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* iHexToInw: convert hex character to i8 (-1 on error)                       */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::iHexToInw(const char c)
