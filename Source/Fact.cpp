@@ -36,7 +36,7 @@ Fact::Fact(Kbase* pKbase, Fact* pSuper, Stz* szName)
   m_pAttributes    = nullptr;
   m_pAttributeNext = nullptr;
 
-  m_pElements      = nullptr;
+  m_pAttributes      = nullptr;
   m_pElementNext   = nullptr;
   
   _checkInitialised_(CN_FACT);
@@ -65,12 +65,15 @@ void Fact::vDeleteRecursively(Fact* pFact)
 {
   _static_
   
+  if (pFact->m_pElementOf)
+    pFact->m_pElementOf->vElementCut(pFact);
+  
   for (Fact* pScan = pFact->m_pAttributes;
        pScan;
        pScan = pScan->m_pAttributeNext)
     vDeleteRecursively(pScan);
 
-  for (Fact* pScan = pFact->m_pElements;
+  for (Fact* pScan = pFact->m_pAttributes;
        pScan;
        pScan = pScan->m_pElementNext)
     vDeleteRecursively(pScan);
@@ -90,7 +93,7 @@ void Fact::vDeleteBelowRecursively(Fact* pFact)
        pScan = pScan->m_pAttributeNext)
     vDeleteRecursively(pScan);
 
-  for (Fact* pScan = pFact->m_pElements;
+  for (Fact* pScan = pFact->m_pAttributes;
        pScan;
        pScan = pScan->m_pElementNext)
     vDeleteRecursively(pScan);
@@ -139,6 +142,35 @@ void Fact::vAttributeAppend(Fact* pAttribute)
   pTail->vAttributeNext(pAttribute);
 }
  
+/*----------------------------------------------------------------------------*/
+/* cut given attribute from this fact                                         */
+/*----------------------------------------------------------------------------*/
+void Fact::vAttributeCut(Fact* pAttribute)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  // is it the head attribute?
+  if (pAttribute == m_pAttributes) {
+    m_pAttributes = m_pAttributes->m_pAttributeNext;
+    
+    pAttribute->m_pAttributeNext = nullptr;
+    
+    return;
+  }
+  
+  // find the prior attribute
+  Fact* pScan;
+  for (pScan = m_pAttributes;
+       pScan;
+       pScan = pScan->m_pAttributeNext)
+    if (pScan->m_pAttributeNext == pAttribute)
+      break;
+
+  // cut the attribute
+  pScan->m_pAttributeNext = pAttribute->m_pAttributeNext;
+  pAttribute->m_pAttributeNext = nullptr;
+}
+
 /*----------------------------------------------------------------------------*/
 /* find attribute fact                                                        */
 /*----------------------------------------------------------------------------*/
@@ -275,12 +307,12 @@ void Fact::vElementAppend(Fact* pElement)
 
   pElement->vElementOf(this);
   
-  if (! m_pElements) {
-    m_pElements = pElement;
+  if (! m_pAttributes) {
+    m_pAttributes = pElement;
     return;
   }
   
-  Fact* pTail = m_pElements;
+  Fact* pTail = m_pAttributes;
   while (pTail->pElementNext())
     pTail = pTail->pElementNext();
   
@@ -295,8 +327,8 @@ void Fact::vElementCut(Fact* pElement)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   // is it the head element?
-  if (pElement == m_pElements) {
-    m_pElements = m_pElements->m_pElementNext;
+  if (pElement == m_pAttributes) {
+    m_pAttributes = m_pAttributes->m_pElementNext;
     
     pElement->m_pElementNext = nullptr;
     
@@ -305,7 +337,7 @@ void Fact::vElementCut(Fact* pElement)
   
   // find the prior element
   Fact* pScan;
-  for (pScan = m_pElements;
+  for (pScan = m_pAttributes;
        pScan;
        pScan = pScan->m_pElementNext)
     if (pScan->m_pElementNext == pElement)
@@ -328,7 +360,7 @@ Fact* Fact::pElementFindNm(Stz* szName)
   
   Fact* pElement = nullptr;
   
-  for (Fact* pScan = m_pElements;
+  for (Fact* pScan = m_pAttributes;
        pScan && !pElement;
        pScan = pScan->m_pElementNext)
     pElement = pScan->pElementFindNm(szName);
@@ -350,7 +382,7 @@ Fact* Fact::pElementFindNmVal(Stz* szName, Stz* szValue)
 
   Fact* pElement = nullptr;
   
-  for (Fact* pScan = m_pElements;
+  for (Fact* pScan = m_pAttributes;
        pScan && !pElement;
        pScan = pScan->m_pElementNext)
     pElement = pScan->pElementFindNmVal(szName,szValue);
@@ -365,9 +397,9 @@ void Fact::vElementInsert(Fact* pElement)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  pElement->m_pElementNext = m_pElements;
+  pElement->m_pElementNext = m_pAttributes;
   
-  m_pElements = pElement;
+  m_pAttributes = pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -417,7 +449,7 @@ Fact* Fact::pElements(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_pElements;
+  return m_pAttributes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -427,7 +459,7 @@ void Fact::vElements(Fact* pElements)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_pElements = pElements;
+  m_pAttributes = pElements;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -437,7 +469,7 @@ Fact* Fact::pElementThatIsSubClass(Fact* pOfSuperFact)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  Fact* pScan = m_pElements;
+  Fact* pScan = m_pAttributes;
   while (pScan && ! pScan->bIsSubClass(pOfSuperFact))
     pScan = pScan->pElementNext();
     
@@ -501,7 +533,7 @@ bool Fact::bHasSpecificElement(Fact* pFact)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  Fact* pScan = m_pElements;
+  Fact* pScan = m_pAttributes;
   while (pScan && pScan != pFact)
     pScan = pScan->pElementNext();
     
@@ -721,7 +753,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
     sPrefix = "Aha{"_Stz;
     iTab = 0;
   }
-  else if (m_pElements) //if (bIsSubElement("_folder_"_Stz))
+  else if (m_pAttributes) //if (bIsSubElement("_folder_"_Stz))
     sPrefix = "Set{"_Stz;
   else if (m_pElementOf)
     sPrefix = "Tpl{"_Stz;
@@ -734,11 +766,12 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
   if (m_sName.bSame("question"_Stz))
     vDebugPoint();
   
-  vTraceF(pFile,"%s%s [%lld] %s"_Stz,
+  vTraceF(pFile,"%s%s [%lld %p] %s"_Stz,
          Stz::szTab(iTab),
          sPrefix.azChar(),
 
          m_iFactNo,
+         this,
          m_sName.azChar()
          );
   
@@ -811,7 +844,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
        pAttribute = pAttribute->m_pAttributeNext)
     pAttribute->vPrint_r(pFile, iDepth + 1);
   
-  for (Fact* pElement = m_pElements;
+  for (Fact* pElement = m_pAttributes;
        pElement;
        pElement = pElement->m_pElementNext)
     pElement->vPrint_r(pFile, iDepth + 1);
