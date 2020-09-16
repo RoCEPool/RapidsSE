@@ -16,6 +16,39 @@ __aFooterFunction(Fact)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Fact::Fact(Kbase* pKbase, i8 iFactNo, Stz* szName)
+: Object(CN_FACT)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  ASSERT(pKbase->pFact());
+  
+  m_pKbase  = pKbase;
+  
+  m_iFactNo = iFactNo;
+  m_sName   = szName ? szName : C_NO_NOTE;
+  m_xValue.m_pObject = nullptr;
+    
+  m_pSubclassOf    = nullptr;
+  m_pAttributeOf   = nullptr;
+  m_pElementOf     = nullptr;
+
+  m_pAttributes    = nullptr;
+  m_pAttributeNext = nullptr;
+
+  m_pElements      = nullptr;
+  m_pElementNext   = nullptr;
+  
+  m_bDeleteMethod  = false;
+  
+  _checkInitialised_(CN_FACT);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Fact::Fact(Kbase* pKbase, Fact* pSuper, Stz* szName)
 : Object(CN_FACT)
 {

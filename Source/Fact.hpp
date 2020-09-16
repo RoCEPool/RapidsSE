@@ -49,6 +49,7 @@ namespace Facts
     void* operator new(size_t);
     void  operator delete(void*);
 
+    Fact(Kbase* pKbase, i8 iFactNo, Stz* szName);
     Fact(Kbase* pKbase, Fact* pSuper, Stz* szName=nullptr);
     ~Fact(void) noexcept(false);
   
