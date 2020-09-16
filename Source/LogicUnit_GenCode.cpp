@@ -105,7 +105,7 @@ void LogicUnit::vCollectOpcode(void)
           
         case EA_STRING:
           vAcceptToken();
-          vAddCodeArg((eEO)i_OpCode, m_pTkn->szChars());
+          vAddCodeString((eEO)i_OpCode, m_pTkn->szChars());
           return;
           
         case EA_SUBSCR:
