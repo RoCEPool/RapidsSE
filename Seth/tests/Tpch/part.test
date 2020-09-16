@@ -33,31 +33,17 @@ rows:
   ("P_BRAND", "VARCHAR", 10, 0, false, false)
 
 // load the table
-load part "/TPCH/SF1/part.tbl" <field_delimiter> = "|";
+//load part "/TPCH/SF1/part.tbl" <field_delimiter> = "|";
+fload part "/TPCH/SF1/part.tbl";
 success
 
 tableScan part;
 rows: 200000
 
------------------------------------------------------------------------
-//predicateFetch part "l_shipdate '1992-01-02 00:00:00' <=";
-//rows: 17
-
 compactidx part part_idx1;
 success
 
------------------------------------------------------------------------
-//predicateFetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
-//rows: 17
-
-// now drop the table
-drop table part;
-success
-
 CLEANUP {
-
-  drop table part;
-  mute
 
   bye;
   mute
