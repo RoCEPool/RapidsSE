@@ -31,6 +31,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].handler!"_Stz,      &Step::vLogicUnitHandlerStore);
   
   vAddStep("LogicUnit[].init"_Stz,          &Step::vLogicUnitInit);
+  vAddStep("LogicUnit[].srcTable@"_Stz,     &Step::vLogicUnitSrcTableFetch);
   
   vAddStep("LogicUnit[].transform"_Stz,     &Step::vLogicUnitTransform);
   vAddStep("LogicUnit[].transformArgs"_Stz, &Step::vLogicUnitTransformArgs);
@@ -267,6 +268,20 @@ void Step::vLogicUnitInit(void)
   ENTRY();
   
   m_pLogicUnit->vInit();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].srcTable@ --                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitSrcTableFetch(void)
+{
+  ENTRY();
+  
+  DevRSB* pDevRsb = _pDevRSB(m_pLogicUnit->m_xRluCommon.m_pDevSrcRsb);
+  
+  m_pDataStack->vPushStr(pDevRsb->m_sTableNm);
   
   EXIT();
 }

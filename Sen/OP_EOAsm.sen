@@ -17,6 +17,7 @@
 
   0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
+  // can't be here, whatif we generate an ERRORMARKER
   ZK_STARTMARKER_handler
 
   <queryNo> >int to queryNo
@@ -29,6 +30,7 @@
   queryNo case
 
     100 of
+/*
       <tableNm> op__table not if
         false
         exit
@@ -36,8 +38,19 @@
 
       Table[].asSrcStreamDef
       Table[].tablePtn@ to tablePtn[]
-
+*/
       Counter0[] <queryText> genAsm
+      ZK_STARTMARKER Counter0[] executeAsmArgs
+
+      // get the src table
+      logicUnit[].srcTable@ op__table not if
+        false
+        exit
+      then
+
+      Table[].asSrcStreamDef
+      Table[].tablePtn@ to tablePtn[]
+
       idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
       indexDef[].delete
     endof
