@@ -10,13 +10,13 @@
 /*----------------------------------------------------------------------------*/
 : Aha{
   
-  input::chars .
+  input::chars . // Aha{
   
-  input::next .
-  input::next .
-  input::next .
-  input::next . input::isCloseBrace assert
-
+  input::next .  // [01]
+  input::next .  // (address)
+  input::next .  // (name)
+  input::next .  // }
+    input::isCloseBrace assert
 ;
   
 /*----------------------------------------------------------------------------*/
@@ -24,13 +24,17 @@
 /*----------------------------------------------------------------------------*/
 : Set{
   
-  input::chars .
+  input::chars . // Set{
   
-  input::next . input::chars str.gleanInt .
-  input::next .
-  input::next .
-  input::next . input::isCloseBrace assert
-
+  input::next .  // [01]
+    input::chars str.gleanInt .
+  
+  input::next .  // (address)
+  
+  input::next .  // (name)
+  
+  input::next .  // }
+    input::isCloseBrace assert
 ;
   
 /*----------------------------------------------------------------------------*/
@@ -38,8 +42,14 @@
 /*----------------------------------------------------------------------------*/
 : Atr{
   
-  input::chars .
+  input::chars . // Atr{
   
+  input::next .  // [01]
+  
+  input::next .  // (address)
+  
+  input::next .  // (name)
+
   begin
   
     input::next .
@@ -53,13 +63,13 @@
 /*----------------------------------------------------------------------------*/
 : Tpl{
   
-  input::chars .
+  input::chars .  // Tpl{
   
-  input::next .
-  input::next .
-  input::next .
-  input::next . input::isCloseBrace assert
-
+  input::next .   // [01]
+  input::next .   // (address)
+  input::next .   // (name
+  input::next .   // }
+    input::isCloseBrace assert
 ;
  
 /*----------------------------------------------------------------------------*/
@@ -70,9 +80,8 @@
 /*----------------------------------------------------------------------------*/
 : Ancestory:
   
-  input::next .
-  input::next .
-
+  input::next . // Ancestory:
+  input::next . // (ancestory)
 ;
   
 /*----------------------------------------------------------------------------*/
@@ -80,11 +89,10 @@
 /*----------------------------------------------------------------------------*/
 : AtrOf:
   
-  input::chars .
+  input::chars . // AtrOf:
 
-  input::next .
-  input::next .
-
+  input::next .  // [01]
+  input::next .  // (name
 ;
   
 /*----------------------------------------------------------------------------*/
@@ -92,11 +100,10 @@
 /*----------------------------------------------------------------------------*/
 : ElmOf:
   
-  input::chars .
+  input::chars . // ElmOf:
 
-  input::next .
-  input::next .
-
+  input::next .  // [01]
+  input::next .  // (name
 ;
   
 /*----------------------------------------------------------------------------*/
@@ -104,11 +111,10 @@
 /*----------------------------------------------------------------------------*/
 : SubOf:
   
-  input::chars .
+  input::chars . // SubOf:
 
-  input::next .
-  input::next .
-
+  input::next .  // [01]
+  input::next .  // (name)
 ;
   
 /*============================================================================*/

@@ -359,6 +359,9 @@ public:
   void vFactDelete(void);
   void vFactGet(void);
   void vFactNew(void);
+  void vFactNewAtr(void);
+  void vFactNewSet(void);
+  void vFactNewTpl(void);
   void vFactSet(void);
 
   // file

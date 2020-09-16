@@ -14,6 +14,9 @@ void Step::vAddSteps_Fact(void)
   vAddStep("Fact[].delete"_Stz, &Step::vFactDelete);
   vAddStep("Fact[].get"_Stz,    &Step::vFactGet);
   vAddStep("Fact[].new"_Stz,    &Step::vFactNew);
+  vAddStep("Fact[].newAtr"_Stz, &Step::vFactNewAtr);
+  vAddStep("Fact[].newSet"_Stz, &Step::vFactNewSet);
+  vAddStep("Fact[].newTpl"_Stz, &Step::vFactNewTpl);
   vAddStep("Fact[].set"_Stz,    &Step::vFactSet);
 }
 
@@ -58,6 +61,36 @@ void Step::vFactNew(void)
 //
 //  m_pLogicUnit->m_xpKbase = new Kbase(sKbaseNm);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fact[].newAtr -- create a new attribute fact                               */
+/*----------------------------------------------------------------------------*/
+void Step::vFactNewAtr(void)
+{
+  ENTRY();
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fact[].newSet -- create a new set fact                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vFactNewSet(void)
+{
+  ENTRY();
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fact[].newTpl -- create a new tuple fact                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vFactNewTpl(void)
+{
+  ENTRY();
+    
   EXIT();
 }
 
