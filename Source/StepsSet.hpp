@@ -365,6 +365,8 @@ public:
   void vFactNewSet(void);
   void vFactNewTpl(void);
   void vFactSet(void);
+  void vFactSetInt(void);
+  void vFactSetText(void);
   void vFactSubOf(void);
  
   // file
