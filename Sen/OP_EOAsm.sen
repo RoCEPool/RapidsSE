@@ -62,14 +62,27 @@
     endof
 
     600 of
+/*
       <tableNm> <indexNm> op__table_index not if
         false
         exit
       then
+
       index[].indexTree to indexTree[]
       indexTree[].asSrc
-      Table[].asSrcStreamDef
+ */
       Counter0[] <queryText> genAsm
+      ZK_STARTMARKER Counter0[] executeAsmArgs
+      logicUnit[].srcTable@ logicUnit[].srcIndex@ op__table_index not if
+        false
+        exit
+      then
+
+      Table[].asSrcStreamDef
+
+      index[].indexTree to indexTree[]
+      indexTree[].asSrc
+
     endof
 
     601 of

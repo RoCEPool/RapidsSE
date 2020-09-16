@@ -938,6 +938,7 @@ public:
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
   void vLogicUnitInit(void);
+  void vLogicUnitSrcIndexFetch(void);
   void vLogicUnitSrcTableFetch(void);
   void vLogicUnitTransform(void);
   void vLogicUnitTransformArgs(void);

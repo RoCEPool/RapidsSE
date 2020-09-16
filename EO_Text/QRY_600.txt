@@ -7,6 +7,11 @@ Routine QRY_600
   // QRY_600
   EO_INIT
 
+  EO_DUP
+  EO_INTEGER  22 // ZK_STARTMARKER
+  EO_EQUAL
+  EO_JMP_TRUE BEGIN_STARTMARKER
+
   EO_INTEGER 17 //ZK_PULSEMARKER
   EO_EQUAL
   EO_ASSERT
@@ -72,6 +77,11 @@ Label TRV_TILL_UPPER
   // loop back to getting next row
   EO_JMP TRV_TILL_UPPER
 
+
+Label BEGIN_STARTMARKER
+  EO_POP
+  EO_TABLE_SRC_SET "lineitem"
+  EO_INDEX_SRC_SET "lineitem_idx"
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // query done
