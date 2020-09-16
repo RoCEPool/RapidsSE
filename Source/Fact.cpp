@@ -552,6 +552,64 @@ void Fact::vFactNo(i8 iFactNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find fact matching given fact no                                           */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pFind(i8 iFactNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  if (iFactNo == m_iFactNo)
+    return this;
+    
+  for (Fact* pAttribute = m_pAttributes;
+       pAttribute;
+       pAttribute = pAttribute->m_pAttributeNext) {
+    Fact* pFound = pAttribute->pFind(iFactNo);
+    if (pFound)
+      return pFound;
+  }
+
+  for (Fact* pElement = m_pElements;
+       pElement;
+       pElement = pElement->m_pElementNext) {
+    Fact* pFound = pElement->pFind(iFactNo);
+    if (pFound)
+      return pFound;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find fact matching given fact name                                         */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pFind(Stz* szFactNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  if (m_sName.bSame(szFactNm))
+    return this;
+    
+  for (Fact* pAttribute = m_pAttributes;
+       pAttribute;
+       pAttribute = pAttribute->m_pAttributeNext) {
+    Fact* pFound = pAttribute->pFind(szFactNm);
+    if (pFound)
+      return pFound;
+  }
+
+  for (Fact* pElement = m_pElements;
+       pElement;
+       pElement = pElement->m_pElementNext) {
+    Fact* pFound = pElement->pFind(szFactNm);
+    if (pFound)
+      return pFound;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get fact that is immediate child of given fact (recursively)               */
 /*----------------------------------------------------------------------------*/
 Fact* Fact::pGetSuperChild(Fact* pOfFact)

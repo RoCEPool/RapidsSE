@@ -280,6 +280,30 @@ Fact* Kbase::pFact(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find fact matching given fact no                                           */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pFactFind(i8 iFactNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pFound = m_pFact->pFind(iFactNo);
+  
+  return pFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find fact matching given fact name                                         */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pFactFind(Stz* szFactNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pFound = m_pFact->pFind(szFactNm);
+
+  return pFound;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pFactNew(Fact* pSuper, Stz* szName)

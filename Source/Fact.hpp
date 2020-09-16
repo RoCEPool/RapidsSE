@@ -86,6 +86,8 @@ namespace Facts
     i8    iFactNo(void);
     void  vFactNo(i8 iFactNo);
     
+    Fact* pFind(i8 iFactNo);
+    Fact* pFind(Stz* szFactNm);
 
     Fact* pGetSuperChild(Fact* pOfFact);
 
