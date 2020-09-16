@@ -356,11 +356,17 @@ public:
   void vExprVecNew(void);
 
   // fact
+  void vFactAtrOf(void);
   void vFactDelete(void);
+  void vFactElmOf(void);
   void vFactGet(void);
   void vFactNew(void);
+  void vFactNewAtr(void);
+  void vFactNewSet(void);
+  void vFactNewTpl(void);
   void vFactSet(void);
-
+  void vFactSubOf(void);
+ 
   // file
   void vFile0Get(void);
   void vFile0GetEofLocation(void);

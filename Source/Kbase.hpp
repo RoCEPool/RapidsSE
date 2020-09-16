@@ -70,13 +70,15 @@ namespace Facts
     
     Fact* pFact(void);
     void  vFactDelete(Fact* pFact);
-    Fact* pFactNew(Fact* pSuper, Stz* szNote);
+    Fact* pFactFind(i8 iFactNo);
+    Fact* pFactFind(Stz* szFactNm);
+    Fact* pFactNew(Fact* pSuper, Stz* szFactNm);
 
-    i8 iNextFactNo(void);
+    i8    iNextFactNo(void);
   
-    void vPrint(File* pFile);
+    void  vPrint(File* pFile);
         
-    void vTrim(void);
+    void  vTrim(void);
   
     Fact* pValue(void);
     
