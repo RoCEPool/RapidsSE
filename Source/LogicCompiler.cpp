@@ -60,6 +60,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_DEL_ENT"_Stz,       (const void *) vDev_IXT_DEL_ENT       },
   { "vDev_IXT_DUMP"_Stz,          (const void *) vDev_IXT_DUMP          },
   { "vDev_IXT_ENT_PRINT"_Stz,     (const void *) vDev_IXT_ENT_PRINT     },
+  { "vDev_IXT_INDEX_SET"_Stz,     (const void *) vDev_IXT_INDEX_SET     },
   { "aDev_IXT_INS_ENT"_Stz,       (const void *) aDev_IXT_INS_ENT       },
   { "iDev_IXT_TMP_ENTRIES"_Stz,   (const void *) iDev_IXT_TMP_ENTRIES   },
 
@@ -91,6 +92,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "iDev_RSB_PUSHOFS"_Stz,       (const void *) iDev_RSB_PUSHOFS       },
   { "vDev_RSB_RESET"_Stz,         (const void *) vDev_RSB_RESET         },
   { "vDev_RSB_SETBYOFS"_Stz,      (const void *) vDev_RSB_SETBYOFS      },
+  { "vDev_RSB_TABLE_SET"_Stz,     (const void *) vDev_RSB_TABLE_SET      },
   { "iDev_RSB_TEST"_Stz,          (const void *) iDev_RSB_TEST          },
   { "iDev_RSB_TESTROW"_Stz,       (const void *) iDev_RSB_TESTROW       },
   { "vDev_RSB_ZERO"_Stz,          (const void *) vDev_RSB_ZERO          },

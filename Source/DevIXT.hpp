@@ -9,6 +9,7 @@ namespace Expressions
   {
   public:
   
+    s256       m_sIndexNm;
     IndexTree* m_pIdxTree;
   
     Ent*       m_aEnt;

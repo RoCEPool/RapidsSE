@@ -21,6 +21,7 @@ DevIXT::DevIXT(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DEVIXT,_FOOTER_);
   
+  m_sIndexNm   = ""_Stz;
   m_pIdxTree   = nullptr;
   
   m_aEnt       = nullptr;

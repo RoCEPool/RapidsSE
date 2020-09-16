@@ -28,6 +28,7 @@ i8   iDev_IXT_CMP_WRKALT(void* aLU);
 void vDev_IXT_DEL_ENT(void* aLU, void* aIXT);
 void vDev_IXT_DUMP(void* aLU, void* aIXT);
 void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT);
+void vDev_IXT_INDEX_SET(void* aLU, void* aIXT, Stz* szIndexNm);
 struct Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT);
 i8   iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT);
 
@@ -68,6 +69,7 @@ i8   iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg);
 Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg);
 i8   iDev_RSB_PUSHOFS(void* aLU, void* aRSB);
 void vDev_RSB_RESET(void* aLU, void* aRSB);
+void vDev_RSB_TABLE_SET(void* aLU, void* aRSB, Stz* szTableNm);
 i8   iDev_RSB_TEST(void* aLU, void* aRSB);
 i8   iDev_RSB_TESTROW(void* aLU, void* aRSB);
 void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop);

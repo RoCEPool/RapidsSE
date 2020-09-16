@@ -91,19 +91,19 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_pLogicTimer = nullptr;
 
-   m_xRluCommon.m_pDevDstRsb = m_pDevDstRsb;
+  m_xRluCommon.m_pDevDstRsb = m_pDevDstRsb;
   
-   m_xRluCommon.m_pDevSrcRsb = m_pDevSrcRsb;
-   m_xRluCommon.m_pDevSrcIxt = m_pDevSrcIxt;
-   m_xRluCommon.m_pDevAltRsb = m_pDevAltRsb;
-   m_xRluCommon.m_pDevAltIxt = m_pDevAltIxt;
-   m_xRluCommon.m_pDevTmpIxt = m_pDevTmpIxt;
+  m_xRluCommon.m_pDevSrcRsb = m_pDevSrcRsb;
+  m_xRluCommon.m_pDevSrcIxt = m_pDevSrcIxt;
+  m_xRluCommon.m_pDevAltRsb = m_pDevAltRsb;
+  m_xRluCommon.m_pDevAltIxt = m_pDevAltIxt;
+  m_xRluCommon.m_pDevTmpIxt = m_pDevTmpIxt;
   
-   m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
+  m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
   
-   m_xRluCommon.m_i_Slot = C_UNKNOWN;
-   m_xRluCommon.m_nPtns  = AM::nPartitions();
-   m_xRluCommon.m_iHash  = 0;
+  m_xRluCommon.m_i_Slot = C_UNKNOWN;
+  m_xRluCommon.m_nPtns  = AM::nPartitions();
+  m_xRluCommon.m_iHash  = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_LOGICUNIT);
@@ -1193,7 +1193,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     eEO eCode = *aeCode++;
     
 #ifdef WITH_TRACE_LOGICUNIT
-    //vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
+    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
 #endif
     
     switch (eCode) { //+ExtractBegin
@@ -1324,6 +1324,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           JumpTo(iArg,EO_JMP_GREATER); // aeCode = & m_eaCode[iArg];
         break;//+endCase
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // index
+      case EO_INDEX_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_INDEX_ALT_SET);
+        vDev_RSB_TABLE_SET(pLU,aRluCommon->m_pDevAltIxt, (Stz*)iArg);
+        break;//+endCase
+        
+      case EO_INDEX_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_INDEX_SRC_SET);
+        vDev_IXT_INDEX_SET(pLU,aRluCommon->m_pDevSrcIxt, (Stz*)iArg);
+        break;//+endCase
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
       case EO_LGL_AND: ArgNil(); // logical and top two int's, push result
@@ -1500,6 +1512,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_ADDRESS,&giaVectorSet[iArg]);
         break;//+endCase
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // table
+      case EO_TABLE_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_TABLE_ALT_SET);
+        vDev_RSB_TABLE_SET(pLU,aRluCommon->m_pDevAltRsb,(Stz*)iArg);
+        break;//+endCase
+        
+      case EO_TABLE_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_TABLE_SRC_SET);
+        vDev_RSB_TABLE_SET(pLU,aRluCommon->m_pDevSrcRsb,(Stz*)iArg);
+        break;//+endCase
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // stack operators
       case EO_INC: ArgNil(); // increment top, push result

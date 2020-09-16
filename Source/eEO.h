@@ -39,7 +39,11 @@ enum eEO : u1 // expression operators
   /*    */ EO_JMP_NOTEQUAL,     // pop top and jump to location if !=
   /*    */ EO_JMP_GREATEREQUAL, // pop top and jump to location if >=
   /*    */ EO_JMP_GREATER,      // pop top and jump to location if >
-                                    
+  
+  // index
+  /*    */ EO_INDEX_ALT_SET,    // set the alt index
+  /*    */ EO_INDEX_SRC_SET,    // set the src index
+  
   // logical operators
   /*    */ EO_LGL_AND,          // logical and top two int's, push result
   /*    */ EO_LGL_OR,           // logical or top two int's, push result
@@ -76,6 +80,10 @@ enum eEO : u1 // expression operators
   /*    */ EO_SET_LOCALS_ALT,   // inflate alt columns direct into locals
   /*    */ EO_SET_LOCALS_SRC,   // inflate src columns direct into locals
 
+  // table
+  /*    */ EO_TABLE_ALT_SET,    // set the alt table
+  /*    */ EO_TABLE_SRC_SET,    // set the src table
+  
   // stack operators
   /*    */ EO_INC,              // increment top, push result
   /*    */ EO_DEC,              // decrement top, push result
@@ -306,7 +314,11 @@ static Stz* aEO[]
   /*    */ "EO_JMP_NOTEQUAL"_Stz,
   /*    */ "EO_JMP_GREATEREQUAL"_Stz,
   /*    */ "EO_JMP_GREATER"_Stz,
-                                    
+  
+  // index
+  /*    */ "EO_INDEX_ALT_SET"_Stz,
+  /*    */ "EO_INDEX_SRC_SET"_Stz,
+  
   // logical operators
   /*    */ "EO_LGL_AND"_Stz,
   /*    */ "EO_LGL_OR"_Stz,
@@ -343,6 +355,10 @@ static Stz* aEO[]
   /*    */ "EO_SET_LOCALS_ALT"_Stz,
   /*    */ "EO_SET_LOCALS_SRC"_Stz,
 
+  // table
+  /*    */ "EO_TABLE_ALT_SET"_Stz,
+  /*    */ "EO_TABLE_SRC_SET"_Stz,
+  
   // stack operators
   /*    */ "EO_INC"_Stz,
   /*    */ "EO_DEC"_Stz,
@@ -580,6 +596,10 @@ static EoArg EoArgs[]
   { EA_LABEL,   8 },  // EO_JMP_GREATEREQUAL
   { EA_LABEL,   8 },  // EO_JMP_GREATEREQUAL
 
+  // index
+  { EA_STRING, -1 },  // EO_INDEX_ALT_SET
+  { EA_STRING, -1 },  // EO_INDEX_SRC_SET
+  
   // logical operators
   { EA_NONE,    0 },  // EO_LGL_AND
   { EA_NONE,    0 },  // EO_LGL_OR
@@ -616,6 +636,10 @@ static EoArg EoArgs[]
   { EA_INT,     8 },  // EO_SET_LOCALS_ALT
   { EA_INT,     8 },  // EO_SET_LOCALS_SRC
 
+  // table
+  { EA_STRING, -1 },  // EO_TABLE_ALT_SET
+  { EA_STRING, -1 },  // EO_TABLE_SRC_SET
+  
   // stack operators
   { EA_NONE,    0 },  // EO_INC
   { EA_NONE,    0 },  // EO_DEC

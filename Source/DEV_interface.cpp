@@ -293,6 +293,17 @@ i8 iDev_ENT_PUSHOFS(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set the index name                                                         */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_INDEX_SET(void* aLU, void* aIXT, Stz* szIndexNm)
+{
+  _static_
+  
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  pDevIxt->m_sIndexNm = szIndexNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compare src.key to alt.key                                                 */
 /*----------------------------------------------------------------------------*/
 i8 iDev_IXT_CMP_SRCALT(void* aLU)
@@ -1052,6 +1063,17 @@ void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
   pDevRsb->m_aRsb = pDevRsb->m_pRowSlab->aRsbByOfs(iTop);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the index name                                                         */
+/*----------------------------------------------------------------------------*/
+void vDev_RSB_TABLE_SET(void* aLU, void* aRSB, Stz* szTableNm)
+{
+  _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  pDevRsb->m_sTableNm = szTableNm;
 }
 
 /*----------------------------------------------------------------------------*/

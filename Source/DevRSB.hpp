@@ -9,6 +9,7 @@ namespace Expressions
   {
   public:
   
+    s256       m_sTableNm;
     i8         m_i_Row;
     i8         m_nRows;
     Rsb*       m_aRsb;

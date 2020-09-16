@@ -21,6 +21,7 @@ DevRSB::DevRSB(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DEVRSB,_FOOTER_);
   
+  m_sTableNm   = ""_Stz;
   m_i_Row      = C_UNKNOWN;
   m_nRows      = C_UNKNOWN;
   m_aRsb       = nullptr;
