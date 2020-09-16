@@ -90,9 +90,13 @@ i8 RowSlab::i_Cell0(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  i8 iCell0_row = (i_Row + 1) * m_oStreamPix.m_nCols;
+  //i8 iCell0_row = (i_Row + 1) * (m_oStreamPix.m_nCols);
+  //i8 i_RowCell0 = C_CELL_BOUNDARY - iCell0_row;
   
-  i8 i_RowCell0 = C_CELL_BOUNDARY - iCell0_row;
+  i8 iDummy_row = (i_Row + 1) * (m_oStreamPix.m_nCols + 1 /* dummy */ );
+  i8 i_Dummy = C_CELL_BOUNDARY - iDummy_row;
+  
+  i8 i_RowCell0 = i_Dummy++;
   
   return i_RowCell0;
 }
@@ -106,7 +110,7 @@ m8* RowSlab::amCell0(i8 i_Row)
 
   Rsb* aRsb = aRsbAdr(m_i_RowLgl);
   
-  return (m8*)aRsb;
+  return (m8*)aRsb->amCell0();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,7 +279,7 @@ bool RowSlab::bNewRow(Rsb** paRow)
 
   i8 nBytesAvail = m_xWsp.nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
   
-  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize)
+  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize + /* m_iDummy */ (i8)sizeof(i8))
     return false;
   
   m_nItems++;
@@ -289,7 +293,7 @@ bool RowSlab::bNewRow(Rsb** paRow)
 
   m_amCellCrs = amCell0(m_i_RowLgl);
   
-  i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
+  i8 nCellBytes = (m_oStreamPix.m_nCols + 1 /* dummy */ ) * C_BYTES_PER_WORD;
   m_xWsp.vTakeTail(nCellBytes);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
