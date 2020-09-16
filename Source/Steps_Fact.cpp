@@ -9,18 +9,20 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Fact(void)
 {
-  vAddStep("Fact[]"_Stz,        &Step::vFactGet);
+  vAddStep("Fact[]"_Stz,         &Step::vFactGet);
   
-  vAddStep("Fact[].atrOf"_Stz,  &Step::vFactAtrOf);
-  vAddStep("Fact[].delete"_Stz, &Step::vFactDelete);
-  vAddStep("Fact[].elmOf"_Stz,  &Step::vFactElmOf);
-  vAddStep("Fact[].get"_Stz,    &Step::vFactGet);
-  vAddStep("Fact[].new"_Stz,    &Step::vFactNew);
-  vAddStep("Fact[].newAtr"_Stz, &Step::vFactNewAtr);
-  vAddStep("Fact[].newSet"_Stz, &Step::vFactNewSet);
-  vAddStep("Fact[].newTpl"_Stz, &Step::vFactNewTpl);
-  vAddStep("Fact[].set"_Stz,    &Step::vFactSet);
-  vAddStep("Fact[].subOf"_Stz,  &Step::vFactSubOf);
+  vAddStep("Fact[].atrOf"_Stz,   &Step::vFactAtrOf);
+  vAddStep("Fact[].delete"_Stz,  &Step::vFactDelete);
+  vAddStep("Fact[].elmOf"_Stz,   &Step::vFactElmOf);
+  vAddStep("Fact[].get"_Stz,     &Step::vFactGet);
+  vAddStep("Fact[].new"_Stz,     &Step::vFactNew);
+  vAddStep("Fact[].newAtr"_Stz,  &Step::vFactNewAtr);
+  vAddStep("Fact[].newSet"_Stz,  &Step::vFactNewSet);
+  vAddStep("Fact[].newTpl"_Stz,  &Step::vFactNewTpl);
+  vAddStep("Fact[].set"_Stz,     &Step::vFactSet);
+  vAddStep("Fact[].setInt"_Stz,  &Step::vFactSetInt);
+  vAddStep("Fact[].setText"_Stz, &Step::vFactSetText);
+  vAddStep("Fact[].subOf"_Stz,   &Step::vFactSubOf);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,6 +152,34 @@ void Step::vFactNewTpl(void)
 /* fact[].set -- set reg fact                                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vFactSet(void)
+{
+  ENTRY();
+  
+  Fact* pFact = _pFact(m_pDataStack->pPopPtr(__func__));
+
+  m_pLogicUnit->m_xpFact = pFact;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* fact[].setInt -- set reg fact                                              */
+/*----------------------------------------------------------------------------*/
+void Step::vFactSetInt(void)
+{
+  ENTRY();
+  
+  Fact* pFact = _pFact(m_pDataStack->pPopPtr(__func__));
+
+  m_pLogicUnit->m_xpFact = pFact;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* fact[].setText -- set reg fact                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vFactSetText(void)
 {
   ENTRY();
   
