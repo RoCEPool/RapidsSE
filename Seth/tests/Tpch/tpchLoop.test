@@ -1,0 +1,89 @@
+--------------------------------------------------------------------------------
+-- tpch queries in a loop
+--------------------------------------------------------------------------------
+
+// Logging a message
+LOG 'Running tpchQueries test in a loop.';
+
+LOOP 1 {
+
+//------------------------------------------------------------------------------
+LOG 'Create customer ...';
+INCLUDE 'customer.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create lineitem ...';
+INCLUDE 'lineitem.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create nation ...';
+INCLUDE 'nation.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create orders ...';
+INCLUDE 'orders.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create part ...';
+INCLUDE 'part.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create partsupp ...';
+INCLUDE 'partsupp.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create region ...';
+INCLUDE 'region.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create supplier ...';
+INCLUDE 'supplier.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Running tpch queries...';
+//INCLUDE 'tpchQueries.test';
+
+//------------------------------------------------------------------------------
+LOG 'truncating tpch tables...';
+INCLUDE 'tpchTruncate.test';
+
+//------------------------------------------------------------------------------
+LOG 'selecting after truncating tpch tables...';
+INCLUDE 'tpchTruncateSelect.test';
+
+//------------------------------------------------------------------------------
+LOG 'Dropping tpch schema...';
+INCLUDE 'tpchSchemaDrop.test';
+
+} -- end of loop
+
+CLEANUP {
+
+  drop table customer;
+  mute
+
+  drop table supplier;
+  mute
+
+  drop table orders;
+  mute
+
+  drop table partsupp;
+  mute
+
+  drop table part;
+  mute
+
+  drop table region;
+  mute
+
+  drop table lineitem;
+  mute
+
+  drop table nation;
+  mute
+
+  bye;
+  mute
+}
+

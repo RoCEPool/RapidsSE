@@ -27,35 +27,17 @@ rows:
   ("N_NATIONKEY", "INTEGER", 19, 0, false, true)
 
 // load the table
-load nation "/TPCH/SF1/nation.tbl" <field_delimiter> = "|";
+//load nation "/TPCH/SF1/nation.tbl" <field_delimiter> = "|";
+fload nation "/TPCH/SF1/nation.tbl";
 success
 
 tableScan nation;
 rows: 25
 
------------------------------------------------------------------------
-//predicateFetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
-//rows: 17
-
 compactidx nation nation_idx1;
 success
 
-//predicateFetch lineitem;
-//rows: 6001215
-
------------------------------------------------------------------------
-//predicateFetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
-//rows: 17
-
-// now drop the table
-drop table nation;
-success
-
 CLEANUP {
-
-  drop table nation;
-  mute
-
   bye;
   mute
 }

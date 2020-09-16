@@ -32,31 +32,17 @@ rows:
 
 -----------------------------------------------------------------------
 // load the table
-load supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> = "|";
+//load supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> = "|";
+fload supplier "/TPCH/SF1/supplier.tbl";
 success
 
 tableScan supplier;
 rows: 10000
 
------------------------------------------------------------------------
-//predicateFetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
-//rows: 17
-
 compactidx supplier supplier_idx1;
 success
 
------------------------------------------------------------------------
-//predicateFetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
-//rows: 17
-
-// now drop the table
-drop table supplier;
-success
-
 CLEANUP {
-
-  drop table supplier;
-  mute
 
   bye;
   mute

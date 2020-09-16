@@ -1,0 +1,45 @@
+--------------------------------------------------------------------------------
+-- tpch queries in a loop
+--------------------------------------------------------------------------------
+
+// Logging a message
+LOG 'Running tpchQueries test in a loop.';
+
+LOOP 1 {
+
+//------------------------------------------------------------------------------
+LOG 'Create tpch schema...';
+INCLUDE 'tpchSchemaCreate.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create tpch schema2...';
+INCLUDE 'tpchSchemaCreate2.test';
+
+//------------------------------------------------------------------------------
+LOG 'Loading tpch data...';
+INCLUDE 'tpchLoad2.test';
+
+//------------------------------------------------------------------------------
+LOG 'Insert-select from 2...';
+INCLUDE 'tpchInsSel.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Running tpch queries...';
+//INCLUDE 'tpchQueries.test';
+
+//------------------------------------------------------------------------------
+LOG 'Dropping tpch schema...';
+INCLUDE 'tpchSchemaDrop.test';
+
+//------------------------------------------------------------------------------
+LOG 'Dropping tpch schema2...';
+INCLUDE 'tpchSchemaDrop2.test';
+
+} -- end of loop
+
+CLEANUP {
+
+  bye;
+  mute
+}
+

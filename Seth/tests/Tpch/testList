@@ -1,8 +1,2 @@
-customer.test
-lineitem.test
-nation.test
-orders.test
-part.test
-partsupp.test
-region.test
-supplier.test
+tpchLoop.test
+

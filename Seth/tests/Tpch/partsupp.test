@@ -28,31 +28,17 @@ rows:
   ("PS_SUPPKEY", "INTEGER", 19, 0, false, false)
 
 // load the table
-load partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> = "|";
+//load partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> = "|";
+fload partsupp "/TPCH/SF1/partsupp.tbl";
 success
 
 tableScan partsupp;
 rows: 800000
 
------------------------------------------------------------------------
-//predicateFetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
-//rows: 17
-
 compactidx partsupp partsupp_idx1;
 success
 
------------------------------------------------------------------------
-//predicateFetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
-//rows: 17
-
-// now drop the table
-drop table partsupp;
-success
-
 CLEANUP {
-
-  drop table partsupp;
-  mute
 
   bye;
   mute

@@ -1174,7 +1174,7 @@
   sPath
   "
   procedure Query1_ASM_I
-    parameters $QueryText_all $QueryText_org $Table
+    parameters $QueryText_all $QueryText_org
   begin
 
   stage stageA on origin :
@@ -1184,7 +1184,7 @@
 
   stage stageB on all partitions :
     //scan $Table
-    EOAsm $QueryText_all 100 0 $Table 
+    EOAsm $QueryText_all 100 0
     //| sql 101
     | stageC
 
@@ -1205,7 +1205,7 @@
   sPath
   "
   procedure Query6_ASM_I
-    parameters $QueryText_all $QueryText_org $Table $Index
+    parameters $QueryText_all $QueryText_org
   begin
 
   stage stageA on origin :
@@ -1214,7 +1214,7 @@
     | stageB
 
   stage stageB on all partitions :
-    EOAsm $QueryText_all 600 0 $Table $Index
+    EOAsm $QueryText_all 600 0
     | stageC
 
   stage stageC on origin :
@@ -1242,7 +1242,7 @@
     | stageB
 
   stage stageB on all partitions :
-    EOAsm QueryText_all 600 0 $Table $Index
+    EOAsm $QueryText_all 600 0 $Table $Index
     | stageC
 
   stage stageC on origin :
