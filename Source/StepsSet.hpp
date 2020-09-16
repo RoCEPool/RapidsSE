@@ -863,6 +863,8 @@ public:
 
   // kbase
   void vKbaseDelete(void);
+  void vKbaseFindFactNm(void);
+  void vKbaseFindFactNo(void);
   void vKbaseGet(void);
   void vKbaseNew(void);
   void vKbasePrint(void);

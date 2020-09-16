@@ -9,15 +9,18 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Kbase(void)
 {
-  vAddStep("Kbase[]"_Stz,        &Step::vKbaseSet);
+  vAddStep("Kbase[]"_Stz,            &Step::vKbaseSet);
   
-  vAddStep("Kbase[].delete"_Stz, &Step::vKbaseDelete);
-  vAddStep("Kbase[].get"_Stz,    &Step::vKbaseGet);
-  vAddStep("Kbase[].new"_Stz,    &Step::vKbaseNew);
-  vAddStep("Kbase[].print"_Stz,  &Step::vKbasePrint);
-  vAddStep("Kbase[].set"_Stz,    &Step::vKbaseSet);
-  vAddStep("Kbase[].test"_Stz,   &Step::vKbaseTest);
-  vAddStep("Kbase[].trim"_Stz,   &Step::vKbaseTrim);
+  vAddStep("Kbase[].delete"_Stz,     &Step::vKbaseDelete);
+  vAddStep("Kbase[].findFactNm"_Stz, &Step::vKbaseFindFactNm);
+  vAddStep("Kbase[].findFactNo"_Stz, &Step::vKbaseFindFactNo);
+  vAddStep("Kbase[].delete"_Stz,     &Step::vKbaseDelete);
+  vAddStep("Kbase[].get"_Stz,        &Step::vKbaseGet);
+  vAddStep("Kbase[].new"_Stz,        &Step::vKbaseNew);
+  vAddStep("Kbase[].print"_Stz,      &Step::vKbasePrint);
+  vAddStep("Kbase[].set"_Stz,        &Step::vKbaseSet);
+  vAddStep("Kbase[].test"_Stz,       &Step::vKbaseTest);
+  vAddStep("Kbase[].trim"_Stz,       &Step::vKbaseTrim);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,6 +35,43 @@ void Step::vKbaseDelete(void)
   
   delete pKbase;
       
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].findFactNm -- find fact by name                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseFindFactNm(void)
+{
+  ENTRY();
+  
+  s32 sFactNm;
+  m_pDataStack->vPopStr(sFactNm,__func__);
+
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+      
+  Fact* pFact = pKbase->pFactFind(sFactNm);
+  
+  m_pDataStack->vPushPtr(pFact);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].findFactNo -- find fact by factNo                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseFindFactNo(void)
+{
+  ENTRY();
+  
+  i8 iFactNo = m_pDataStack->iPopInt(__func__);
+
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  Fact* pFact = pKbase->pFactFind(iFactNo);
+  
+  m_pDataStack->vPushPtr(pFact);
+
   EXIT();
 }
 
