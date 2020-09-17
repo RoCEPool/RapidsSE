@@ -22,6 +22,11 @@ enum eEO : u1 // expression operators
   /*    */ EO_NEGATE,           // negate the top value
   /*    */ EO_SUBTRACT,         // subtract second int from top push result
   
+  // column pushes
+  /*    */ EO_PUSH_COLUMN_LENGTH, // push column length
+  /*    */ EO_PUSH_COLUMN_SCALE,  // push column scale
+  /*    */ EO_PUSH_COLUMN_TYPE,   // push column type
+  
   // counter
   /*    */ EO_CTR_0_DEC,        // dec counter 0
   /*    */ EO_CTR_0_INC,        // inc counter 0
@@ -74,6 +79,14 @@ enum eEO : u1 // expression operators
   /*    */ EO_GREATEREQUAL,     // test top >= 2nd, push result
   /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
+  // register operators
+  /*    */ EO_REG_INDEXDEF_ADDCOLUMN,     // add a column to indexDef[]
+  /*    */ EO_REG_INDEXDEF_DELETE,        // delete the indexDef[]
+  /*    */ EO_REG_INDEXDEF_NEW,           // new an indexDef in indexDef[]
+  /*    */ EO_REG_INDEXTREE_NEW,          // new an indexTree in indexTree[]
+  /*    */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]
+  /*    */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]
+  
   // column set
   /*    */ EO_SET_COLUMN,       // add column to set
   /*    */ EO_SET_ITEMS,        // set number of column items
@@ -297,6 +310,11 @@ static Stz* aEO[]
   /*    */ "EO_NEGATE"_Stz,
   /*    */ "EO_SUBTRACT"_Stz,
   
+  // column pushes
+  /*    */ "EO_PUSH_COLUMN_LENGTH"_Stz,
+  /*    */ "EO_PUSH_COLUMN_SCALE"_Stz,
+  /*    */ "EO_PUSH_COLUMN_TYPE"_Stz,
+  
   // counter
   /*    */ "EO_CTR_0_DEC"_Stz,
   /*    */ "EO_CTR_0_INC"_Stz,
@@ -348,6 +366,14 @@ static Stz* aEO[]
   /*    */ "EO_NOTEQUAL"_Stz,
   /*    */ "EO_GREATEREQUAL"_Stz,
   /*    */ "EO_GREATERTHAN"_Stz,
+  
+  // register operators
+  /*    */ "EO_REG_INDEXDEF_ADDCOLUMN"_Stz,
+  /*    */ "EO_REG_INDEXDEF_DELETE"_Stz,
+  /*    */ "EO_REG_INDEXDEF_NEW"_Stz,
+  /*    */ "EO_REG_INDEXTREE_NEW"_Stz,
+  /*    */ "EO_REG_STREAMDEFOUT_NEW"_Stz,
+  /*    */ "EO_REG_STREAMDEFOUT_ADDCOLUMN"_Stz,
   
   // column set
   /*    */ "EO_SET_COLUMN"_Stz,
@@ -578,6 +604,11 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_NEGATE
   { EA_NONE,    0 },  // EO_SUBTRACT
 
+  // column pushes
+  { EA_INT,     8 },  // EO_PUSH_COLUMN_LENGTH
+  { EA_INT,     8 },  // EO_PUSH_COLUMN_SCALE
+  { EA_INT,     8 },  // EO_PUSH_COLUMN_TYPE
+  
   // counter
   { EA_NONE,    0 },  // EO_CTR_0_DEC
   { EA_NONE,    0 },  // EO_CTR_0_INC
@@ -630,6 +661,14 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_GREATEREQUAL
   { EA_NONE,    0 },  // EO_GREATERTHAN
 
+  // register operators
+  { EA_NONE,    0 },  // EO_REG_INDEXDEF_ADDCOLUMN
+  { EA_NONE,    0 },  // EO_REG_INDEXDEF_DELETE
+  { EA_NONE,    0 },  // EO_REG_INDEXDEF_NEW
+  { EA_NONE,    0 },  // EO_REG_INDEXTREE_NEW
+  { EA_NONE,    0 },  // EO_REG_STREAMDEFOUT_NEW
+  { EA_STRING, -1 },  // EO_REG_STREAMDEFOUT_ADDCOLUMN
+  
   // column set
   { EA_INT,     8 },  // EO_SET_COLUMN
   { EA_INT,     8 },  // EO_SET_ITEMS
