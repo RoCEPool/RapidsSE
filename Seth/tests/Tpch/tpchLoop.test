@@ -41,18 +41,18 @@ INCLUDE 'supplier.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch queries...';
-//INCLUDE 'tpchQueries.test';
+INCLUDE 'tpchQueries.test';
 
 //------------------------------------------------------------------------------
-LOG 'truncating tpch tables...';
+// 'truncating tpch tables...';
 INCLUDE 'tpchTruncate.test';
 
 //------------------------------------------------------------------------------
-LOG 'selecting after truncating tpch tables...';
+// 'selecting after truncating tpch tables...';
 INCLUDE 'tpchTruncateSelect.test';
 
 //------------------------------------------------------------------------------
-LOG 'Dropping tpch schema...';
+//LOG 'Dropping tpch schema...';
 INCLUDE 'tpchSchemaDrop.test';
 
 } -- end of loop
