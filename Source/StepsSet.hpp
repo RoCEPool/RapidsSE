@@ -357,7 +357,9 @@ public:
 
   // fact
   void vFactAtrOf(void);
+  void vFactAttributeAppend(void);
   void vFactDelete(void);
+  void vFactElementAppend(void);
   void vFactElmOf(void);
   void vFactGet(void);
   void vFactNew(void);

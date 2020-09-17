@@ -9,20 +9,22 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Fact(void)
 {
-  vAddStep("Fact[]"_Stz,         &Step::vFactGet);
+  vAddStep("Fact[]"_Stz,                &Step::vFactGet);
   
-  vAddStep("Fact[].atrOf"_Stz,   &Step::vFactAtrOf);
-  vAddStep("Fact[].delete"_Stz,  &Step::vFactDelete);
-  vAddStep("Fact[].elmOf"_Stz,   &Step::vFactElmOf);
-  vAddStep("Fact[].get"_Stz,     &Step::vFactGet);
-  vAddStep("Fact[].new"_Stz,     &Step::vFactNew);
-  vAddStep("Fact[].newAtr"_Stz,  &Step::vFactNewAtr);
-  vAddStep("Fact[].newSet"_Stz,  &Step::vFactNewSet);
-  vAddStep("Fact[].newTpl"_Stz,  &Step::vFactNewTpl);
-  vAddStep("Fact[].set"_Stz,     &Step::vFactSet);
-  vAddStep("Fact[].setInt"_Stz,  &Step::vFactSetInt);
-  vAddStep("Fact[].setText"_Stz, &Step::vFactSetText);
-  vAddStep("Fact[].subOf"_Stz,   &Step::vFactSubOf);
+  vAddStep("Fact[].atrOf"_Stz,          &Step::vFactAtrOf);
+  vAddStep("Fact[].attributeAppend"_Stz,&Step::vFactAttributeAppend);
+  vAddStep("Fact[].delete"_Stz,         &Step::vFactDelete);
+  vAddStep("Fact[].elementAppend"_Stz,  &Step::vFactElementAppend);
+  vAddStep("Fact[].elmOf"_Stz,          &Step::vFactElmOf);
+  vAddStep("Fact[].get"_Stz,            &Step::vFactGet);
+  vAddStep("Fact[].new"_Stz,            &Step::vFactNew);
+  vAddStep("Fact[].newAtr"_Stz,         &Step::vFactNewAtr);
+  vAddStep("Fact[].newSet"_Stz,         &Step::vFactNewSet);
+  vAddStep("Fact[].newTpl"_Stz,         &Step::vFactNewTpl);
+  vAddStep("Fact[].set"_Stz,            &Step::vFactSet);
+  vAddStep("Fact[].setInt"_Stz,         &Step::vFactSetInt);
+  vAddStep("Fact[].setText"_Stz,        &Step::vFactSetText);
+  vAddStep("Fact[].subOf"_Stz,          &Step::vFactSubOf);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,6 +45,22 @@ void Step::vFactAtrOf(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Fact[].attributeAppend --                      */
+/*----------------------------------------------------------------------------*/
+void Step::vFactAttributeAppend(void)
+{
+  ENTRY();
+  
+  Fact* pAtrOf = _pFact(m_pDataStack->pPopPtr(__func__));
+
+  Fact* pFact = * m_pLogicUnit->m_xpFact;
+
+  pAtrOf->vAttributeAppend(pFact);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Fact[].delete -- delete fact                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vFactDelete(void)
@@ -54,6 +72,22 @@ void Step::vFactDelete(void)
   
   delete pFact;
       
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fact[].elementAppend --                      */
+/*----------------------------------------------------------------------------*/
+void Step::vFactElementAppend(void)
+{
+  ENTRY();
+  
+  Fact* pElmOf = _pFact(m_pDataStack->pPopPtr(__func__));
+
+  Fact* pFact = * m_pLogicUnit->m_xpFact;
+
+  pElmOf->vElementAppend(pFact);
+    
   EXIT();
 }
 
