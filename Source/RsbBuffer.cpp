@@ -65,14 +65,15 @@ void RsbBuffer::vPrintRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
   
-  SP_RowPix spRowPix(m_oRowSlab.nCols(),m_oRowSlab.axaColPix());
+  SP_RowPix spRowPix(m_oRowSlab.nCols() - m_oRowSlab.nExtraCols(),
+                     m_oRowSlab.axaColPix());
 
   i8 nRsb = m_oRowSlab.nRows();
   
   for (i8 i_Rsb = 0; i_Rsb < nRsb; i_Rsb++) {
     Rsb* aRsb = m_oRowSlab.aRsbAdr(i_Rsb);
     Stz* szRsb = spRowPix.sz(aRsb);
-    vTrace("%s\n"_Stz,szRsb);
+    vTrace("row: (%s)\n"_Stz,szRsb);
   }
 }
 

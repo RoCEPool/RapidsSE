@@ -169,7 +169,9 @@ void SP_RowPix::vAppendVch(Rsb* aRsb, i8 i_Col, ColPix xColPix)
   Stz* szVal = aRsb->szVal(i_Col);
   
   SP_Vch spVch;
+  StrLib::vAppendChar(&m_azCursor,'\'');
   StrLib::vAppendString(&m_azCursor,(char*)szVal);
+  StrLib::vAppendChar(&m_azCursor,'\'');
 }
 
 /*----------------------------------------------------------------------------*/

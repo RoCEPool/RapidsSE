@@ -74,6 +74,16 @@ i8 RowSlab::nCols(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of extra columns                                                */
+/*----------------------------------------------------------------------------*/
+i8 RowSlab::nExtraCols(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  return m_oStreamPix.m_nExtraCols;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the condensed column pix array                                         */
 /*----------------------------------------------------------------------------*/
 ColPix* RowSlab::axaColPix(void)
