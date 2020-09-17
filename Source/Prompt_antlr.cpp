@@ -33,6 +33,11 @@ bool Prompt::bPrompt_antlr(SePrompt* pPrompt)
   vTrace("antlr: %s\n"_Stz,sAntlr.azChar());
   
   // antlr test here
+  SqlPlanner* pPlanner = new SqlPlanner();
+  
+  pPlanner->plan(sAntlr.szStz());
+  
+  delete pPlanner;
   
   return true;
 }

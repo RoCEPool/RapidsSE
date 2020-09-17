@@ -20,6 +20,8 @@ namespace Parser
     void  operator delete(void*);
     
     SqlPlanner(void);
+    
+    void plan(Stz* pStr);
 
     ~SqlPlanner(void);
   
