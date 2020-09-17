@@ -16,7 +16,6 @@ namespace Structures
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Text*);
     void  operator delete(void* pText);
     
     Text(void);

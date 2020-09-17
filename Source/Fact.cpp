@@ -1370,6 +1370,26 @@ bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set int value                                                              */
+/*----------------------------------------------------------------------------*/
+void Fact::vSetInt(i8 iInt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  m_xValue.m_iInt = iInt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set int value                                                              */
+/*----------------------------------------------------------------------------*/
+void Fact::vSetText(Stz* szText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  m_xValue.m_pText = new Text(szText);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get super-class fact                                                       */
 /*----------------------------------------------------------------------------*/
 Fact* Fact::pSubclassOf(void)

@@ -124,6 +124,9 @@ namespace Facts
     bool  bQuestion(Fact* pQuestion, Opaque* aArg=nullptr);
     bool  bQuestion(Stz* szQuestion, Opaque* aArg=nullptr);
 
+    void  vSetInt(i8 iInt);
+    void  vSetText(Stz* szText);
+
     Fact* pSubclassOf(void);
     void  vSubclassOf(Fact* pSubclassOf);
     

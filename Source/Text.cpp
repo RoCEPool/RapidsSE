@@ -44,6 +44,22 @@ Text::Text(i8 nStringSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Text::Text(Stz* szArg)
+: Object(CN_TEXT)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
+  
+  m_nSizeText   = 0;
+  m_pTextBuffer = nullptr;
+  
+  vSet(szArg);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TEXT,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Text::~Text(void) noexcept(false)

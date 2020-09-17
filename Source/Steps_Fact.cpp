@@ -9,38 +9,39 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Fact(void)
 {
-  vAddStep("Fact[]"_Stz,                &Step::vFactGet);
-  
-  vAddStep("Fact[].atrOf"_Stz,          &Step::vFactAtrOf);
-  vAddStep("Fact[].attributeAppend"_Stz,&Step::vFactAttributeAppend);
-  vAddStep("Fact[].delete"_Stz,         &Step::vFactDelete);
-  vAddStep("Fact[].elementAppend"_Stz,  &Step::vFactElementAppend);
-  vAddStep("Fact[].elmOf"_Stz,          &Step::vFactElmOf);
-  vAddStep("Fact[].get"_Stz,            &Step::vFactGet);
-  vAddStep("Fact[].new"_Stz,            &Step::vFactNew);
-  vAddStep("Fact[].newAtr"_Stz,         &Step::vFactNewAtr);
-  vAddStep("Fact[].newSet"_Stz,         &Step::vFactNewSet);
-  vAddStep("Fact[].newTpl"_Stz,         &Step::vFactNewTpl);
-  vAddStep("Fact[].set"_Stz,            &Step::vFactSet);
-  vAddStep("Fact[].setInt"_Stz,         &Step::vFactSetInt);
-  vAddStep("Fact[].setText"_Stz,        &Step::vFactSetText);
-  vAddStep("Fact[].subOf"_Stz,          &Step::vFactSubOf);
+  vAddStep("Fact[]"_Stz,                 &Step::vFactGet);
+   
+  vAddStep("Fact[].atrOf"_Stz,           &Step::vFactAtrOf);
+  //vAddStep("Fact[].attributeAppend"_Stz, &Step::vFactAttributeAppend);
+  vAddStep("Fact[].delete"_Stz,          &Step::vFactDelete);
+  //vAddStep("Fact[].elementAppend"_Stz,   &Step::vFactElementAppend);
+  vAddStep("Fact[].elmOf"_Stz,           &Step::vFactElmOf);
+  vAddStep("Fact[].get"_Stz,             &Step::vFactGet);
+  vAddStep("Fact[].new"_Stz,             &Step::vFactNew);
+  //vAddStep("Fact[].newAtr"_Stz,          &Step::vFactNewAtr);
+  //vAddStep("Fact[].newSet"_Stz,          &Step::vFactNewSet);
+  //vAddStep("Fact[].newTpl"_Stz,          &Step::vFactNewTpl);
+  vAddStep("Fact[].set"_Stz,             &Step::vFactSet);
+  vAddStep("Fact[].setInt"_Stz,          &Step::vFactSetInt);
+  vAddStep("Fact[].setText"_Stz,         &Step::vFactSetText);
+  vAddStep("Fact[].subOf"_Stz,           &Step::vFactSubOf);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fact[].atrOf -- set current fact to be attribute of                        */
+/* Fact[].atrOf -- set current fact to be attribute of given fact             */
 /*----------------------------------------------------------------------------*/
 void Step::vFactAtrOf(void)
 {
   ENTRY();
     
-  s32 sFactNm;
-  m_pDataStack->vPopStr(sFactNm,__func__);
-  
-  i8 iFactNo = m_pDataStack->iPopInt(__func__);
-  
-  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  Fact* pAtrOf = _pFact(m_pDataStack->pPopPtr(__func__));
 
+  Fact* pFact = * m_pLogicUnit->m_xpFact;
+
+  pAtrOf->vAttributeAppend(pFact);
+  
+  pFact->vAttributeOf(pAtrOf);
+  
   EXIT();
 }
 
@@ -51,12 +52,14 @@ void Step::vFactAttributeAppend(void)
 {
   ENTRY();
   
-  Fact* pAtrOf = _pFact(m_pDataStack->pPopPtr(__func__));
+//  Fact* pAtrOf = _pFact(m_pDataStack->pPopPtr(__func__));
+//
+//  Fact* pFact = * m_pLogicUnit->m_xpFact;
+//
+//  pAtrOf->vAttributeAppend(pFact);
+//
+//  pFact->vAttributeOf(pAtrOf);
 
-  Fact* pFact = * m_pLogicUnit->m_xpFact;
-
-  pAtrOf->vAttributeAppend(pFact);
-  
   EXIT();
 }
 
@@ -82,28 +85,31 @@ void Step::vFactElementAppend(void)
 {
   ENTRY();
   
-  Fact* pElmOf = _pFact(m_pDataStack->pPopPtr(__func__));
-
-  Fact* pFact = * m_pLogicUnit->m_xpFact;
-
-  pElmOf->vElementAppend(pFact);
+//  Fact* pElmOf = _pFact(m_pDataStack->pPopPtr(__func__));
+//
+//  Fact* pFact = * m_pLogicUnit->m_xpFact;
+//
+//  pElmOf->vElementAppend(pFact);
+//
+//  pFact->vElementOf(pElmOf);
     
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fact[].elmOf -- set current fact to be element of                          */
+/* Fact[].elmOf -- set current fact to be element of given fact               */
 /*----------------------------------------------------------------------------*/
 void Step::vFactElmOf(void)
 {
   ENTRY();
     
-  s32 sFactNm;
-  m_pDataStack->vPopStr(sFactNm,__func__);
+  Fact* pElmOf = _pFact(m_pDataStack->pPopPtr(__func__));
+
+  Fact* pFact = * m_pLogicUnit->m_xpFact;
+
+  pElmOf->vElementAppend(pFact);
   
-  i8 iFactNo = m_pDataStack->iPopInt(__func__);
-  
-  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  pFact->vElementOf(pElmOf);
 
   EXIT();
 }
@@ -129,11 +135,15 @@ void Step::vFactNew(void)
 {
   ENTRY();
   
-//  s32 sKbaseNm;
-//  m_pDataStack->vPopStr(sKbaseNm,__func__);
-//
-//  m_pLogicUnit->m_xpKbase = new Kbase(sKbaseNm);
-  
+  s32 sFactNm;
+  m_pDataStack->vPopStr(sFactNm,__func__);
+
+  i8 iFactNo = m_pDataStack->iPopInt(__func__);
+
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+
+  m_pLogicUnit->m_xpFact = new Fact(pKbase,iFactNo,sFactNm);
+
   EXIT();
 }
 
@@ -144,8 +154,8 @@ void Step::vFactNewAtr(void)
 {
   ENTRY();
     
-  s32 sFactNm;
-  m_pDataStack->vPopStr(sFactNm,__func__);
+//  s32 sFactNm;
+//  m_pDataStack->vPopStr(sFactNm,__func__);
   
   //
   //  m_pLogicUnit->m_xpKbase = new Kbase(sKbaseNm);
@@ -160,14 +170,14 @@ void Step::vFactNewSet(void)
 {
   ENTRY();
 
-  s32 sFactNm;
-  m_pDataStack->vPopStr(sFactNm,__func__);
-  
-  i8 iFactNo = m_pDataStack->iPopInt(__func__);
-  
-  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
-  
-  m_pLogicUnit->m_xpFact = new Fact(pKbase,iFactNo,sFactNm);
+//  s32 sFactNm;
+//  m_pDataStack->vPopStr(sFactNm,__func__);
+//
+//  i8 iFactNo = m_pDataStack->iPopInt(__func__);
+//
+//  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+//
+//  m_pLogicUnit->m_xpFact = new Fact(pKbase,iFactNo,sFactNm);
 
   EXIT();
 }
@@ -202,10 +212,12 @@ void Step::vFactSet(void)
 void Step::vFactSetInt(void)
 {
   ENTRY();
-  
-  Fact* pFact = _pFact(m_pDataStack->pPopPtr(__func__));
+    
+  i8 iInt = m_pDataStack->iPopInt(__func__);
 
-  m_pLogicUnit->m_xpFact = pFact;
+  Fact* pFact = * m_pLogicUnit->m_xpFact;
+
+  pFact->vSetInt(iInt);
   
   EXIT();
 }
@@ -217,28 +229,29 @@ void Step::vFactSetText(void)
 {
   ENTRY();
   
-  Fact* pFact = _pFact(m_pDataStack->pPopPtr(__func__));
+  s48K sText;
+  m_pDataStack->vPopStr(sText,__func__);
 
-  m_pLogicUnit->m_xpFact = pFact;
+  Fact* pFact = * m_pLogicUnit->m_xpFact;
+
+  pFact->vSetText(sText);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fact[].subOf -- set current fact to be subclass of                         */
+/* Fact[].subOf -- set current fact to be subclass of given fact              */
 /*----------------------------------------------------------------------------*/
 void Step::vFactSubOf(void)
 {
   ENTRY();
   
-  s32 sFactNm;
-  m_pDataStack->vPopStr(sFactNm,__func__);
-  
-  i8 iFactNo = m_pDataStack->iPopInt(__func__);
-  
-  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  Fact* pSubOf = _pFact(m_pDataStack->pPopPtr(__func__));
 
-    
+  Fact* pFact = * m_pLogicUnit->m_xpFact;
+  
+  pFact->vSubclassOf(pSubOf);
+
   EXIT();
 }
 
