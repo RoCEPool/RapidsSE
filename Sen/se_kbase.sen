@@ -4,7 +4,6 @@
 
 " se_kbase.sen" .verbose
 
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -24,17 +23,22 @@
 /*----------------------------------------------------------------------------*/
 : Set{
   
+  0 0 locals| iFactNo sFactNm |
+  
   input::chars . // Set{
   
   input::next .  // [01]
-    input::chars str.gleanInt .
+    input::chars str.gleanInt to iFactNo
   
   input::next .  // (address)
   
   input::next .  // (name)
+    input::chars to sFactNm
   
   input::next .  // }
     input::isCloseBrace assert
+  
+  sFactNm iFactNo "-- Set{ %v %v }" .printf
 ;
   
 /*----------------------------------------------------------------------------*/
@@ -42,13 +46,17 @@
 /*----------------------------------------------------------------------------*/
 : Atr{
   
+  0 0 locals| iFactNo sFactNm |
+
   input::chars . // Atr{
   
   input::next .  // [01]
-  
+    input::chars str.gleanInt to iFactNo
+
   input::next .  // (address)
   
   input::next .  // (name)
+    input::chars to sFactNm
 
   begin
   
@@ -56,6 +64,8 @@
   
     input::isCloseBrace not
   while repeat
+    
+  sFactNm iFactNo "-- Atr{ %v %v }" .printf
 ;
     
 /*----------------------------------------------------------------------------*/
@@ -63,13 +73,22 @@
 /*----------------------------------------------------------------------------*/
 : Tpl{
   
+  0 0 locals| iFactNo sFactNm |
+
   input::chars .  // Tpl{
   
   input::next .   // [01]
+    input::chars str.gleanInt to iFactNo
+
   input::next .   // (address)
-  input::next .   // (name
+  
+  input::next .   // (name)
+    input::chars to sFactNm
+
   input::next .   // }
     input::isCloseBrace assert
+  
+  sFactNm iFactNo "-- Tpl{ %v %v }" .printf
 ;
  
 /*----------------------------------------------------------------------------*/
@@ -89,10 +108,17 @@
 /*----------------------------------------------------------------------------*/
 : AtrOf:
   
+  0 0 locals| iFactNo sFactNm |
+
   input::chars . // AtrOf:
 
   input::next .  // [01]
-  input::next .  // (name
+    input::chars str.gleanInt to iFactNo
+
+  input::next .  // (name)
+    input::chars to sFactNm
+
+    sFactNm iFactNo "++ AtrOf: %v %v" .printf
 ;
   
 /*----------------------------------------------------------------------------*/
@@ -100,10 +126,17 @@
 /*----------------------------------------------------------------------------*/
 : ElmOf:
   
+  0 0 locals| iFactNo sFactNm |
+
   input::chars . // ElmOf:
 
   input::next .  // [01]
-  input::next .  // (name
+    input::chars str.gleanInt to iFactNo
+  
+  input::next .  // (name)
+    input::chars to sFactNm
+
+  sFactNm iFactNo "++ ElmOf: %v %v" .printf
 ;
   
 /*----------------------------------------------------------------------------*/
@@ -111,10 +144,17 @@
 /*----------------------------------------------------------------------------*/
 : SubOf:
   
+  0 0 locals| iFactNo sFactNm |
+  
   input::chars . // SubOf:
 
   input::next .  // [01]
+    input::chars str.gleanInt to iFactNo
+
   input::next .  // (name)
+    input::chars to sFactNm
+
+  sFactNm iFactNo "++ SubOf: %v %v" .printf
 ;
   
 /*============================================================================*/
