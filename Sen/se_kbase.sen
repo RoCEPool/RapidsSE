@@ -38,7 +38,13 @@
   input::next .  // }
     input::isCloseBrace assert
   
+  // --
+  
   sFactNm iFactNo "-- Set{ %v %v }" .printf
+  
+  nullptr fact[].set
+
+  sFactNm iFactNo fact[].new
 ;
   
 /*----------------------------------------------------------------------------*/
@@ -46,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : Atr{
   
-  0 0 locals| iFactNo sFactNm |
+  0 0 0 0 0 locals| iFactNo sFactNm bIsText iValue sValue |
 
   input::chars . // Atr{
   
@@ -58,14 +64,50 @@
   input::next .  // (name)
     input::chars to sFactNm
 
-  begin
+//  begin
+//
+//    input::next .
+//
+//    input::isCloseBrace not
+//  while repeat
   
-    input::next .
-  
-    input::isCloseBrace not
-  while repeat
+  input::next .  // =
+  input::next .  // Int/Text
+  input::chars "Int" str.same if
+    input::next .  // <value>
+    input::chars >int to iValue
+    0 to bIsText
+  else
+    input::chars "Text" str.same if
+      input::next .  // <value>
+      input::chars to sValue
+      1 to bIsText
+  else
+    "Unknown = type" .
+  then then
+
+  input::next .  // }
+    input::isCloseBrace assert
     
-  sFactNm iFactNo "-- Atr{ %v %v }" .printf
+  // --
+
+  bIsText if
+    sValue sFactNm iFactNo "-- Atr{ %v %v = Text %v }" .printf
+    
+    nullptr fact[].set
+    
+    sFactNm iFactNo fact[].new
+    
+    sValue Fact[].setText
+  else
+    iValue sFactNm iFactNo "-- Atr{ %v %v = Int %v }" .printf
+    
+    nullptr fact[].set
+    
+    sFactNm iFactNo fact[].new
+    
+    iValue Fact[].setInt
+  then
 ;
     
 /*----------------------------------------------------------------------------*/
@@ -88,7 +130,13 @@
   input::next .   // }
     input::isCloseBrace assert
   
+  // --
+  
   sFactNm iFactNo "-- Tpl{ %v %v }" .printf
+  
+  nullptr fact[].set
+  
+  sFactNm iFactNo fact[].new
 ;
  
 /*----------------------------------------------------------------------------*/
@@ -108,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 : AtrOf:
   
-  0 0 locals| iFactNo sFactNm |
+  0 0 0 locals| iFactNo sFactNm pAtrOf |
 
   input::chars . // AtrOf:
 
@@ -118,7 +166,13 @@
   input::next .  // (name)
     input::chars to sFactNm
 
-    sFactNm iFactNo "++ AtrOf: %v %v" .printf
+  // --
+
+  sFactNm iFactNo "++ AtrOf: %v %v" .printf
+  
+  iFactNo kbase[].findFactNo to pAtrOf
+  
+  pAtrOf Fact[].atrOf
 ;
   
 /*----------------------------------------------------------------------------*/
@@ -126,7 +180,7 @@
 /*----------------------------------------------------------------------------*/
 : ElmOf:
   
-  0 0 locals| iFactNo sFactNm |
+  0 0 0 locals| iFactNo sFactNm pElmOf |
 
   input::chars . // ElmOf:
 
@@ -136,7 +190,13 @@
   input::next .  // (name)
     input::chars to sFactNm
 
+  // --
+
   sFactNm iFactNo "++ ElmOf: %v %v" .printf
+  
+  iFactNo kbase[].findFactNo to pElmOf
+  
+  pElmOf Fact[].elmOf
 ;
   
 /*----------------------------------------------------------------------------*/
@@ -144,7 +204,7 @@
 /*----------------------------------------------------------------------------*/
 : SubOf:
   
-  0 0 locals| iFactNo sFactNm |
+  0 0 0 locals| iFactNo sFactNm pSubOf |
   
   input::chars . // SubOf:
 
@@ -153,8 +213,14 @@
 
   input::next .  // (name)
     input::chars to sFactNm
+  
+  // --
 
   sFactNm iFactNo "++ SubOf: %v %v" .printf
+  
+  iFactNo kbase[].findFactNo to pSubOf
+  
+  pSubOf Fact[].subOf
 ;
   
 /*============================================================================*/

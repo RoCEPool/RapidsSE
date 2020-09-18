@@ -135,10 +135,10 @@ void Step::vFactNew(void)
 {
   ENTRY();
   
+  i8 iFactNo = m_pDataStack->iPopInt(__func__);
+  
   s32 sFactNm;
   m_pDataStack->vPopStr(sFactNm,__func__);
-
-  i8 iFactNo = m_pDataStack->iPopInt(__func__);
 
   Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
 
