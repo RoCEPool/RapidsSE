@@ -13,85 +13,42 @@
 /*----------------------------------------------------------------------------*/
 : EOAsm_StartMarker \handler
 
-  0 locals| queryNo |
-
   0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
   // can't be here, whatif we generate an ERRORMARKER
   ZK_STARTMARKER_handler
 
-  <queryNo> >int to queryNo
-  //queryNo .
-
   Pot[].new
   LogicUnit[].init
 
-  queryNo "sql %v" str.format profile.name!
-  queryNo case
+  Counter0[] <queryText> genAsm
+  ZK_STARTMARKER Counter0[] executeAsmArgs
 
-    100 of
-/*
-      <tableNm> op__table not if
-        false
-        exit
-      then
+  logicUnit[].srcTable@ "" str.equal not if
 
-      Table[].asSrcStreamDef
-      Table[].tablePtn@ to tablePtn[]
-*/
-      Counter0[] <queryText> genAsm
-      ZK_STARTMARKER Counter0[] executeAsmArgs
+    logicUnit[].srcIndex@ "" str.equal not if
 
-      // get the src table
-      logicUnit[].srcTable@ op__table not if
-        false
-        exit
-      then
-
-      Table[].asSrcStreamDef
-      Table[].tablePtn@ to tablePtn[]
-
-      //idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
-      //indexDef[].delete
-    endof
-
-    103 of
-      Counter0[] <queryText> genAsm
-      ZK_STARTMARKER Counter0[] executeAsmArgs
-      //idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
-      //indexDef[].delete
-    endof
-
-    600 of
-/*
-      <tableNm> <indexNm> op__table_index not if
-        false
-        exit
-      then
-
-      index[].indexTree to indexTree[]
-      indexTree[].asSrc
- */
-      Counter0[] <queryText> genAsm
-      ZK_STARTMARKER Counter0[] executeAsmArgs
+      // find the src table and src index
       logicUnit[].srcTable@ logicUnit[].srcIndex@ op__table_index not if
         false
         exit
       then
 
-      Table[].asSrcStreamDef
-
       index[].indexTree to indexTree[]
       indexTree[].asSrc
 
-    endof
+    else
+      // find the src table
+      logicUnit[].srcTable@ op__table not if
+        false
+        exit
+      then
+    then
 
-    601 of
-      Counter0[] <queryText> genAsm
-       ZK_STARTMARKER Counter0[] executeAsmArgs
-    endof
+    Table[].asSrcStreamDef
+    Table[].tablePtn@ to tablePtn[]
 
-  endcase
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
