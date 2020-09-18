@@ -9603,6 +9603,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "    601 of\n"
     "      Counter0[] <queryText> genAsm\n"
+    "       ZK_STARTMARKER Counter0[] executeAsmArgs\n"
     "    endof\n"
     "\n"
     "  endcase\n"
