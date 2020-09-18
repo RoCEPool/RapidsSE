@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 : Atr{
   
-  0 0 locals| iFactNo sFactNm |
+  0 0 0 0 0 locals| iFactNo sFactNm bIsText iValue sValue |
 
   input::chars . // Atr{
   
@@ -58,14 +58,36 @@
   input::next .  // (name)
     input::chars to sFactNm
 
-  begin
+//  begin
+//
+//    input::next .
+//
+//    input::isCloseBrace not
+//  while repeat
   
-    input::next .
-  
-    input::isCloseBrace not
-  while repeat
-    
-  sFactNm iFactNo "-- Atr{ %v %v }" .printf
+  input::next .  // =
+  input::next .  // Int/Text
+  input::chars "Int" str.same if
+    input::next .  // <value>
+    input::chars >int to iValue
+    0 to bIsText
+  else
+    input::chars "Text" str.same if
+      input::next .  // <value>
+      input::chars to sValue
+      1 to bIsText
+  else
+    "Unknown = type" .
+  then then
+
+  input::next .  // }
+    input::isCloseBrace assert
+
+  bIsText if
+    sValue sFactNm iFactNo "-- Atr{ %v %v = Text %v }" .printf
+  else
+    iValue sFactNm iFactNo "-- Atr{ %v %v = Int %v }" .printf
+  then
 ;
     
 /*----------------------------------------------------------------------------*/
