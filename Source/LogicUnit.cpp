@@ -1531,9 +1531,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_INDEXDEF_DELETE(pLU);
         break;//+endCase
         
-      case EO_REG_INDEXDEF_NEW: ArgNil(); // new an indexDef in indexDef[]
+      case EO_REG_INDEXDEF_NEW: GetStr(iArg); // new an indexDef in indexDef[]
         dLU0(EO_REG_INDEXDEF_NEW);
-        vDev_REG_INDEXDEF_NEW(pLU);
+        vDev_REG_INDEXDEF_NEW(pLU, (Stz*)iArg);
         break;//+endCase
         
       case EO_REG_INDEXTREE_NEW: ArgNil(); // new an indexTree in indexTree[]
@@ -2708,6 +2708,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       default:
         vTrace("Unknown eo opcode %lld\n"_Stz,(i8)eCode);
+        RASSERT(0);
         return C_DATUM_NULL;
     } //+ExtractEnd
     

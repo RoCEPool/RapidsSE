@@ -51,8 +51,8 @@
       Table[].asSrcStreamDef
       Table[].tablePtn@ to tablePtn[]
 
-      idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
-      indexDef[].delete
+      //idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
+      //indexDef[].delete
     endof
 
     103 of

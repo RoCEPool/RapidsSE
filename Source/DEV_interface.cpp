@@ -1858,23 +1858,24 @@ void vDev_REG_INDEXDEF_DELETE(void* aLU)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
-  IndexTree* pIndexTree = * pLogicUnit->m_xpIndexTree;
+  IndexDef* pIndexDef = * pLogicUnit->m_xpIndexDef;
   
-  pLogicUnit->m_xpIndexTree = nullptr;
+  pLogicUnit->m_xpIndexDef = nullptr;
   
-  delete pIndexTree;
+  delete pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new indexDef[]                                                             */
 /*----------------------------------------------------------------------------*/
-void vDev_REG_INDEXDEF_NEW(void* aLU)
+void vDev_REG_INDEXDEF_NEW(void* aLU, Stz* sName)
 {
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
   pLogicUnit->m_xpIndexDef = new IndexDef;
+  pLogicUnit->m_xpIndexDef->vIndexNm(sName);
 }
 
 /*----------------------------------------------------------------------------*/

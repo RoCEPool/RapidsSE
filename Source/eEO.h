@@ -677,9 +677,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_GREATERTHAN
 
   // register operators
-  { EA_NONE,    0 },  // EO_REG_INDEXDEF_ADDCOLUMN
+  { EA_STRING, -1 },  // EO_REG_INDEXDEF_ADDCOLUMN
   { EA_NONE,    0 },  // EO_REG_INDEXDEF_DELETE
-  { EA_NONE,    0 },  // EO_REG_INDEXDEF_NEW
+  { EA_STRING, -1 },  // EO_REG_INDEXDEF_NEW
   { EA_NONE,    0 },  // EO_REG_INDEXTREE_NEW
   { EA_NONE,    0 },  // EO_REG_STREAMDEFOUT_NEW
   { EA_STRING, -1 },  // EO_REG_STREAMDEFOUT_ADDCOLUMN

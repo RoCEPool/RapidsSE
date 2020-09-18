@@ -122,8 +122,12 @@ void LogicUnit::vCollectOpcode(void)
           ASSERT(0);
       }
     }
+    
   }
-        
+  
+  vTrace("\n*** Invalid opCode %s ***\n"_Stz, m_pTkn->szChars());
+  
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
