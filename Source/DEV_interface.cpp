@@ -1821,6 +1821,90 @@ void vDev_PIX_STM_PRINT(void* aLU)
   pLogicUnit->m_oStreamPix.vPrint();
 }
 
+/*----------------------------------------------------------------------------*/
+/* add a column to indexDef[]                                                 */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_INDEXDEF_ADDCOLUMN(void* aLU, Stz* sColumnNm, i8 iColumnType)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  eCT eColType = (eCT)iColumnType;
+  
+  IndexDef* pIndexDef = * pLogicUnit->m_xpIndexDef;
+  
+  pIndexDef->vAddColumn(sColumnNm,eColType);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete indexDef[]                                                          */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_INDEXDEF_DELETE(void* aLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  IndexTree* pIndexTree = * pLogicUnit->m_xpIndexTree;
+  
+  pLogicUnit->m_xpIndexTree = nullptr;
+  
+  delete pIndexTree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new indexDef[]                                                             */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_INDEXDEF_NEW(void* aLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  pLogicUnit->m_xpIndexDef = new IndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new indexTree[]                                                            */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_INDEXTREE_NEW(void* aLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  pLogicUnit->m_xpIndexTree = new IndexTree(nullptr, *pLogicUnit->m_xpIndexDef, C_UNKNOWN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a streamDefout[]                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_STREAMDEFOUT_NEW(void* aLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  pLogicUnit->m_xpStreamDefOut = new StreamDef;
+  (* pLogicUnit->m_xpStreamDefOut)->vAddDefSet();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a column to streamDefOut[]                                             */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_STREAMDEFOUT_ADDCOLUMN(void* aLU, Stz* sColumnNm, i8 iColumnType,
+                                     i8 iColumnLength, i8 iColumnScale)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  StreamDef* pStreamDefOut = * pLogicUnit->m_xpStreamDefOut;
+  
+  pStreamDefOut->vAddColumn(sColumnNm,(eCT)iColumnType,iColumnLength,iColumnScale);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

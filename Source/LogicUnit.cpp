@@ -1093,6 +1093,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iArg;
   i8 iTopA;
   i8 iTopB;
+  i8 iTopC;
   char* azTopA;
   char* azTopB;
   Stz* szTopA;
@@ -1245,6 +1246,23 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes  = iTopA - iTopB;
         dLU3(EO_SUBTRACT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        break;//+endCase
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // column pushes
+      case EO_PUSH_COLUMN_LENGTH: ArgGet(iArg); // push columnn length
+        dLU1(EO_PUSH_COLUMN_LENGTH,iArg);
+        *(++aiDstk) = iArg;
+        break;//+endCase
+        
+      case EO_PUSH_COLUMN_SCALE:  ArgGet(iArg); // push columnn scale
+        dLU1(EO_PUSH_COLUMN_SCALE,iArg);
+        *(++aiDstk) = iArg;
+        break;//+endCase
+        
+      case EO_PUSH_COLUMN_TYPE: ArgGet(iArg); // push columnn type
+        dLU1(EO_PUSH_COLUMN_TYPE,iArg);
+        *(++aiDstk) = iArg;
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1484,6 +1502,41 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *aiDstk = *aiDstk > iTopB;
         break;//+endCase
         
+      // register operators
+      case EO_REG_INDEXDEF_ADDCOLUMN: GetStr(iArg); // add a column to indexDef[]
+        dLU0(EO_REG_INDEXDEF_ADDCOLUMN);
+        iTopA = *(aiDstk--);
+        vDev_REG_INDEXDEF_ADDCOLUMN(pLU, (Stz*)iArg, iTopA);
+        break;//+endCase
+        
+      case EO_REG_INDEXDEF_DELETE: ArgNil(); // delete the indexDef[]
+        dLU0(EO_REG_INDEXDEF_DELETE);
+        vDev_REG_INDEXDEF_DELETE(pLU);
+        break;//+endCase
+        
+      case EO_REG_INDEXDEF_NEW: ArgNil(); // new an indexDef in indexDef[]
+        dLU0(EO_REG_INDEXDEF_NEW);
+        vDev_REG_INDEXDEF_NEW(pLU);
+        break;//+endCase
+        
+      case EO_REG_INDEXTREE_NEW: ArgNil(); // new an indexTree in indexTree[]
+        dLU0(EO_REG_INDEXTREE_NEW);
+        vDev_REG_INDEXTREE_NEW(pLU);
+        break;//+endCase
+        
+      case EO_REG_STREAMDEFOUT_NEW: ArgNil(); // new an streamDef in streamDefOut[]
+        dLU0(EO_REG_STREAMDEFOUT_NEW);
+        vDev_REG_STREAMDEFOUT_NEW(pLU);
+        break;//+endCase
+        
+      case EO_REG_STREAMDEFOUT_ADDCOLUMN: GetStr(iArg); // add a column to streamDefOut[]
+        dLU0(EO_REG_STREAMDEFOUT_ADDCOLUMN);
+        iTopA = *(aiDstk--); // column length
+        iTopB = *(aiDstk--); // column type
+        iTopC = *(aiDstk--); // column scale
+        vDev_REG_STREAMDEFOUT_ADDCOLUMN(pLU, (Stz*)iArg, iTopA, iTopB, iTopC);
+        break;//+endCase
+      
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // column set
       case EO_SET_COLUMN: ArgGet(iArg); // add column to set

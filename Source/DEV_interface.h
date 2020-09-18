@@ -83,6 +83,14 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
 
 void vDev_PIX_STM_PRINT(void* aLU);
 
+void vDev_REG_INDEXDEF_ADDCOLUMN(void* aLU, Stz* sColumnNm, i8 iColumnType);
+void vDev_REG_INDEXDEF_DELETE(void* aLU);
+void vDev_REG_INDEXDEF_NEW(void* aLU);
+void vDev_REG_INDEXTREE_NEW(void* aLU);
+void vDev_REG_STREAMDEFOUT_NEW(void* aLU);
+void vDev_REG_STREAMDEFOUT_ADDCOLUMN(void* aLU,
+        Stz* sColumnNm, i8 iColumnType, i8 iColumnLength, i8 iColumnScale);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
