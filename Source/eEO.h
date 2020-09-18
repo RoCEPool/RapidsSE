@@ -49,6 +49,11 @@ enum eEO : u1 // expression operators
   /*    */ EO_INDEX_ALT_SET,    // set the alt index
   /*    */ EO_INDEX_SRC_SET,    // set the src index
   
+  // indexTree
+  /*    */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree
+  /*    */ EO_INDEXTREE_SRC_SET,    // set the src indexTree
+  /*    */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree
+  
   // logical operators
   /*    */ EO_LGL_AND,          // logical and top two int's, push result
   /*    */ EO_LGL_OR,           // logical or top two int's, push result
@@ -336,6 +341,11 @@ static Stz* aEO[]
   // index
   /*    */ "EO_INDEX_ALT_SET"_Stz,
   /*    */ "EO_INDEX_SRC_SET"_Stz,
+  
+  // indexTree
+  /*    */ "EO_INDEXTREE_ALT_SET"_Stz,
+  /*    */ "EO_INDEXTREE_SRC_SET"_Stz,
+  /*    */ "EO_INDEXTREE_TMP_SET"_Stz,
   
   // logical operators
   /*    */ "EO_LGL_AND"_Stz,
@@ -630,6 +640,11 @@ static EoArg EoArgs[]
   // index
   { EA_STRING, -1 },  // EO_INDEX_ALT_SET
   { EA_STRING, -1 },  // EO_INDEX_SRC_SET
+  
+  // indexTree
+  { EA_NONE,    0 },  // EO_INDEXTREE_ALT_SET
+  { EA_NONE,    0 },  // EO_INDEXTREE_SRC_SET
+  { EA_NONE,    0 },  // EO_INDEXTREE_TMP_SET
   
   // logical operators
   { EA_NONE,    0 },  // EO_LGL_AND

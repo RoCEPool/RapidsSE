@@ -447,6 +447,18 @@ Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the indexTree[] in the dev                                             */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_INDEXTREE_SET(void* aLU, void* aIXT)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  pDevIxt->m_pIdxTree = * pLogicUnit->m_xpIndexTree;;
+}
+
+/*----------------------------------------------------------------------------*/
 /*  position alt ixt using src.key                                            */
 /*----------------------------------------------------------------------------*/
 Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU)

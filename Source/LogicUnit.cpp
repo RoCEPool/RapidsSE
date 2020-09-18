@@ -1353,6 +1353,23 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_INDEX_SRC_SET);
         vDev_IXT_INDEX_SET(pLU,aRluCommon->m_pDevSrcIxt, (Stz*)iArg);
         break;//+endCase
+      
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // index
+      case EO_INDEXTREE_ALT_SET: ArgNil(); // set indexTree alt from indexTree[]
+        dLU0(EO_INDEXTREE_ALT_SET);
+        vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevAltIxt);
+        break;//+endCase
+        
+      case EO_INDEXTREE_SRC_SET: ArgNil(); // set indexTree src from indexTree[]
+        dLU0(EO_INDEXTREE_SRC_SET);
+        vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevSrcIxt);
+        break;//+endCase
+      
+      case EO_INDEXTREE_TMP_SET: ArgNil(); // set indexTree tmp from indexTree[]
+        dLU0(EO_INDEXTREE_TMP_SET);
+        vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevTmpIxt);
+        break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
