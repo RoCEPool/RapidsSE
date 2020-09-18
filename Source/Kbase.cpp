@@ -490,6 +490,30 @@ void Kbase::vImportTable(Table* pTableToImport)
 void Kbase::vTest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  
+  Fact* p_Shape_ = pConceptAdd(m_p_Folder_,"_shape_"_Stz);
+  Fact* pShape = pElementInstance("intention"_Stz,"_shape_"_Stz);
+  
+  Fact* p_Bag_ = pConceptAdd(m_p_Folder_,"_bag_"_Stz);
+  Fact* p_Die_ = pConceptAdd(m_p_Folder_,"_die_"_Stz);
+
+  for (i8 i_Bag = 0; i_Bag < 5; i_Bag++) {
+
+    Fact* pBag = pElementInstance(pShape,"_bag_"_Stz);
+    s32 sBagNm;
+    sBagNm.vSprint("Bag%c"_Stz,'A'+i_Bag);
+    vAttributeInstance(pBag,"_name_"_Stz,sBagNm);
+
+    for (i8 i_Die = 0; i_Die < 4; i_Die++) {
+      
+      Fact* pDie = pElementInstance(pBag,"_die_"_Stz);
+      s32 sDieNm;
+      sDieNm.vSprint("Die%lld"_Stz,i_Die);
+      vAttributeInstance(pDie,"_name_"_Stz,sDieNm);
+    }
+    
+  }
  
   m_pFact->vPrint_r(nullptr,0);
 
@@ -640,6 +664,7 @@ void Kbase::vAprioriFacts(void)
   m_pContents = pElementInstance(m_pFact,"_contents_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* p_Reference_ = pConceptAdd(m_p_Folder_,"_reference_"_Stz);
   
@@ -706,7 +731,9 @@ void Kbase::vAprioriFacts(void)
      /tables
      /statement
      /pipeline
- 
+     /routine
+       /subroutine
+
  */
 
 /*============================================================================*/
