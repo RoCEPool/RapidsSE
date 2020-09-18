@@ -295,7 +295,7 @@ i8 iDev_ENT_PUSHOFS(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* set the index name                                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_INDEX_SET(void* aLU, void* aIXT, Stz* szIndexNm)
+void vDev_IXT_INDEXNM_SET(void* aLU, void* aIXT, Stz* szIndexNm)
 {
   _static_
   
@@ -1080,7 +1080,7 @@ void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* set the index name                                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_TABLE_SET(void* aLU, void* aRSB, Stz* szTableNm)
+void vDev_RSB_TABLENM_SET(void* aLU, void* aRSB, Stz* szTableNm)
 {
   _static_
   

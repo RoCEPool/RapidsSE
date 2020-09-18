@@ -46,8 +46,8 @@ enum eEO : u1 // expression operators
   /*    */ EO_JMP_GREATER,      // pop top and jump to location if >
   
   // index
-  /*    */ EO_INDEX_ALT_SET,    // set the alt index
-  /*    */ EO_INDEX_SRC_SET,    // set the src index
+  /*    */ EO_INDEXNM_ALT_SET,    // set the alt index name
+  /*    */ EO_INDEXNM_SRC_SET,    // set the src index name
   
   // indexTree
   /*    */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree
@@ -99,8 +99,8 @@ enum eEO : u1 // expression operators
   /*    */ EO_SET_LOCALS_SRC,   // inflate src columns direct into locals
 
   // table
-  /*    */ EO_TABLE_ALT_SET,    // set the alt table
-  /*    */ EO_TABLE_SRC_SET,    // set the src table
+  /*    */ EO_TABLENM_ALT_SET,    // set the alt table name
+  /*    */ EO_TABLENM_SRC_SET,    // set the src table name
   
   // stack operators
   /*    */ EO_INC,              // increment top, push result
@@ -339,8 +339,8 @@ static Stz* aEO[]
   /*    */ "EO_JMP_GREATER"_Stz,
   
   // index
-  /*    */ "EO_INDEX_ALT_SET"_Stz,
-  /*    */ "EO_INDEX_SRC_SET"_Stz,
+  /*    */ "EO_INDEXNM_ALT_SET"_Stz,
+  /*    */ "EO_INDEXNM_SRC_SET"_Stz,
   
   // indexTree
   /*    */ "EO_INDEXTREE_ALT_SET"_Stz,
@@ -392,8 +392,8 @@ static Stz* aEO[]
   /*    */ "EO_SET_LOCALS_SRC"_Stz,
 
   // table
-  /*    */ "EO_TABLE_ALT_SET"_Stz,
-  /*    */ "EO_TABLE_SRC_SET"_Stz,
+  /*    */ "EO_TABLENM_ALT_SET"_Stz,
+  /*    */ "EO_TABLENM_SRC_SET"_Stz,
   
   // stack operators
   /*    */ "EO_INC"_Stz,
@@ -638,8 +638,8 @@ static EoArg EoArgs[]
   { EA_LABEL,   8 },  // EO_JMP_GREATEREQUAL
 
   // index
-  { EA_STRING, -1 },  // EO_INDEX_ALT_SET
-  { EA_STRING, -1 },  // EO_INDEX_SRC_SET
+  { EA_STRING, -1 },  // EO_INDEXNM_ALT_SET
+  { EA_STRING, -1 },  // EO_INDEXNM_SRC_SET
   
   // indexTree
   { EA_NONE,    0 },  // EO_INDEXTREE_ALT_SET
@@ -691,8 +691,8 @@ static EoArg EoArgs[]
   { EA_INT,     8 },  // EO_SET_LOCALS_SRC
 
   // table
-  { EA_STRING, -1 },  // EO_TABLE_ALT_SET
-  { EA_STRING, -1 },  // EO_TABLE_SRC_SET
+  { EA_STRING, -1 },  // EO_TABLENM_ALT_SET
+  { EA_STRING, -1 },  // EO_TABLENM_SRC_SET
   
   // stack operators
   { EA_NONE,    0 },  // EO_INC

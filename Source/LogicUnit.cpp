@@ -1344,14 +1344,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index
-      case EO_INDEX_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_INDEX_ALT_SET);
-        vDev_RSB_TABLE_SET(pLU,aRluCommon->m_pDevAltIxt, (Stz*)iArg);
+      case EO_INDEXNM_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_INDEXNM_ALT_SET);
+        vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevAltIxt, (Stz*)iArg);
         break;//+endCase
         
-      case EO_INDEX_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_INDEX_SRC_SET);
-        vDev_IXT_INDEX_SET(pLU,aRluCommon->m_pDevSrcIxt, (Stz*)iArg);
+      case EO_INDEXNM_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_INDEXNM_SRC_SET);
+        vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevSrcIxt, (Stz*)iArg);
         break;//+endCase
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1584,14 +1584,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // table
-      case EO_TABLE_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_TABLE_ALT_SET);
-        vDev_RSB_TABLE_SET(pLU,aRluCommon->m_pDevAltRsb,(Stz*)iArg);
+      case EO_TABLENM_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_TABLENM_ALT_SET);
+        vDev_RSB_TABLENM_SET(pLU,aRluCommon->m_pDevAltRsb,(Stz*)iArg);
         break;//+endCase
         
-      case EO_TABLE_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_TABLE_SRC_SET);
-        vDev_RSB_TABLE_SET(pLU,aRluCommon->m_pDevSrcRsb,(Stz*)iArg);
+      case EO_TABLENM_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_TABLENM_SRC_SET);
+        vDev_RSB_TABLENM_SET(pLU,aRluCommon->m_pDevSrcRsb,(Stz*)iArg);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
