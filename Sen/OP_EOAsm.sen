@@ -57,8 +57,9 @@
 
     103 of
       Counter0[] <queryText> genAsm
-      idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
-      indexDef[].delete
+      ZK_STARTMARKER Counter0[] executeAsmArgs
+      //idxDef_int indexDef[] indexTree[].new indexTree[].asTmp
+      //indexDef[].delete
     endof
 
     600 of
