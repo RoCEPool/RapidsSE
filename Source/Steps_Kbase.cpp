@@ -16,10 +16,14 @@ void Step::vAddSteps_Kbase(void)
   vAddStep("Kbase[].findFactNo"_Stz, &Step::vKbaseFindFactNo);
   vAddStep("Kbase[].delete"_Stz,     &Step::vKbaseDelete);
   vAddStep("Kbase[].get"_Stz,        &Step::vKbaseGet);
+  vAddStep("Kbase[].marker@"_Stz,    &Step::vKbaseMarkerFetch);
+  vAddStep("Kbase[].marker!"_Stz,    &Step::vKbaseMarkerStore);
   vAddStep("Kbase[].new"_Stz,        &Step::vKbaseNew);
   vAddStep("Kbase[].print"_Stz,      &Step::vKbasePrint);
   vAddStep("Kbase[].set"_Stz,        &Step::vKbaseSet);
   vAddStep("Kbase[].test"_Stz,       &Step::vKbaseTest);
+  vAddStep("Kbase[].transform@"_Stz, &Step::vKbaseTransformFetch);
+  vAddStep("Kbase[].transform!"_Stz, &Step::vKbaseTransformStore);
   vAddStep("Kbase[].trim"_Stz,       &Step::vKbaseTrim);
 }
 
@@ -86,6 +90,38 @@ void Step::vKbaseGet(void)
 
   m_pDataStack->vPushPtr(pKbase);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].marker@ -- fetch marker                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseMarkerFetch(void)
+{
+  ENTRY();
+  
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  Fact* pMarker = pKbase->pMarker();
+  
+  m_pDataStack->vPushPtr(pMarker);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].marker! -- store marker                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseMarkerStore(void)
+{
+  ENTRY();
+  
+  Fact* pMarker  = _pFact(m_pDataStack->pPopPtr(__func__));
+
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+
+  pKbase->vMarker(pMarker);
+  
   EXIT();
 }
 
@@ -157,6 +193,38 @@ void Step::vKbaseTest(void)
 
   pKbase->vTest();
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].transform@ -- fetch transform                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseTransformFetch(void)
+{
+  ENTRY();
+  
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  Fact* pTransform = pKbase->pTransform();
+  
+  m_pDataStack->vPushPtr(pTransform);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].transform! -- store transform                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseTransformStore(void)
+{
+  ENTRY();
+  
+  Fact* pTransform  = _pFact(m_pDataStack->pPopPtr(__func__));
+
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+
+  pKbase->vTransform(pTransform);
+  
   EXIT();
 }
 

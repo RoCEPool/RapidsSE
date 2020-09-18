@@ -37,6 +37,9 @@ namespace Facts
   
     Fact*  m_pCurrent;     // current working fact
 
+    Fact*  m_pMarker;      // wip marker
+    Fact*  m_pTransform;   // wip transform
+
     // must be last
     Footer m_xFooter;
 
@@ -74,10 +77,15 @@ namespace Facts
     Fact* pFactFind(Stz* szFactNm);
     Fact* pFactNew(Fact* pSuper, Stz* szFactNm);
 
+    Fact* pMarker(void);
+    void  vMarker(Fact* pMarker);
+  
     i8    iNextFactNo(void);
   
     void  vPrint(File* pFile);
         
+    Fact* pTransform(void);
+    void  vTransform(Fact* pTransform);
     void  vTrim(void);
   
     Fact* pValue(void);

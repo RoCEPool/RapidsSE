@@ -868,10 +868,14 @@ public:
   void vKbaseFindFactNm(void);
   void vKbaseFindFactNo(void);
   void vKbaseGet(void);
+  void vKbaseMarkerFetch(void);
+  void vKbaseMarkerStore(void);
   void vKbaseNew(void);
   void vKbasePrint(void);
   void vKbaseSet(void);
   void vKbaseTest(void);
+  void vKbaseTransformFetch(void);
+  void vKbaseTransformStore(void);
   void vKbaseTrim(void);
 
   // loader

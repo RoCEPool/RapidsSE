@@ -22,7 +22,9 @@ Kbase::Kbase(Stz* szKbName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
   m_pCurrent = nullptr;
-  
+  m_pMarker  = nullptr;
+  m_pTransform = nullptr;
+
   vAprioriFacts();
  
   _checkInitialised_(CN_KBASE);
@@ -326,6 +328,26 @@ void Kbase::vFactDelete(Fact* pFact)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current working marker                                                 */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pMarker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  return m_pMarker;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current working marker                                                 */
+/*----------------------------------------------------------------------------*/
+void Kbase::vMarker(Fact* pMarker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  m_pMarker = pMarker;
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate next fact no                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Kbase::iNextFactNo(void)
@@ -347,6 +369,26 @@ void Kbase::vPrint(File* pFile)
   Fact* pIntention = m_pContents->pElementFindNm("intention"_Stz);
 
   pIntention->vPrint_r(pFile,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current working transform                                              */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pTransform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  return m_pTransform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current working transform                                              */
+/*----------------------------------------------------------------------------*/
+void Kbase::vTransform(Fact* pTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  m_pTransform = pTransform;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -561,6 +603,7 @@ void Kbase::vAprioriFacts(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vConceptAdd("_chunk_"_Stz);
+  vConceptAdd("_marker_"_Stz);
   vConceptAdd("_pattern_"_Stz);
   vConceptAdd("_transform_"_Stz);
 
