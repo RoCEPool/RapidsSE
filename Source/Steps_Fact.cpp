@@ -16,6 +16,7 @@ void Step::vAddSteps_Fact(void)
   vAddStep("Fact[].delete"_Stz,          &Step::vFactDelete);
   //vAddStep("Fact[].elementAppend"_Stz,   &Step::vFactElementAppend);
   vAddStep("Fact[].elmOf"_Stz,           &Step::vFactElmOf);
+  vAddStep("fact.elmOf"_Stz,             &Step::vFactElmOfSet);
   vAddStep("Fact[].get"_Stz,             &Step::vFactGet);
   vAddStep("Fact[].new"_Stz,             &Step::vFactNew);
   //vAddStep("Fact[].newAtr"_Stz,          &Step::vFactNewAtr);
@@ -106,6 +107,24 @@ void Step::vFactElmOf(void)
   Fact* pElmOf = _pFact(m_pDataStack->pPopPtr(__func__));
 
   Fact* pFact = * m_pLogicUnit->m_xpFact;
+
+  pElmOf->vElementAppend(pFact);
+  
+  pFact->vElementOf(pElmOf);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* fact.elmOfSet -- set fact to be element of given fact                      */
+/*----------------------------------------------------------------------------*/
+void Step::vFactElmOfSet(void)
+{
+  ENTRY();
+    
+  Fact* pFact  = _pFact(m_pDataStack->pPopPtr(__func__));
+  
+  Fact* pElmOf = _pFact(m_pDataStack->pPopPtr(__func__));
 
   pElmOf->vElementAppend(pFact);
   

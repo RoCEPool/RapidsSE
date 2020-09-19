@@ -18,6 +18,7 @@ void Step::vAddSteps_Kbase(void)
   vAddStep("Kbase[].get"_Stz,        &Step::vKbaseGet);
   vAddStep("Kbase[].marker@"_Stz,    &Step::vKbaseMarkerFetch);
   vAddStep("Kbase[].marker!"_Stz,    &Step::vKbaseMarkerStore);
+  vAddStep("Kbase[].markerNew"_Stz,  &Step::vKbaseMarkerNew);
   vAddStep("Kbase[].new"_Stz,        &Step::vKbaseNew);
   vAddStep("Kbase[].print"_Stz,      &Step::vKbasePrint);
   vAddStep("Kbase[].set"_Stz,        &Step::vKbaseSet);
@@ -106,6 +107,34 @@ void Step::vKbaseMarkerFetch(void)
   
   m_pDataStack->vPushPtr(pMarker);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].markerNew -- new marker                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseMarkerNew(void)
+{
+  ENTRY();
+    
+  s32 sFactNm;
+  m_pDataStack->vPopStr(sFactNm,__func__);
+
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  
+  Fact* p_Marker_ = pKbase->pFactFind("_marker_"_Stz);
+  Fact* pMarker = new Fact(pKbase,p_Marker_,"marker"_Stz);
+  
+  
+  Fact* p_Name_ = pKbase->pFactFind("_name_"_Stz);
+  Fact* pName = new Fact(pKbase,p_Name_,"name"_Stz);
+  pName->vSetText(sFactNm);
+  
+  pMarker->vAttributeAppend(pName);
+  
+  m_pDataStack->vPushPtr(pMarker);
+  
   EXIT();
 }
 

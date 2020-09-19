@@ -25,7 +25,7 @@ Fact::Fact(Kbase* pKbase, i8 iFactNo, Stz* szName)
   
   m_pKbase  = pKbase;
   
-  m_iFactNo = iFactNo;
+  m_iFactNo = C_UNKNOWN == iFactNo ? m_pKbase->iNextFactNo() : iFactNo;
   m_sName   = szName ? szName : C_NO_NOTE;
   m_xValue.m_pObject = nullptr;
     

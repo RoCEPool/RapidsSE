@@ -361,6 +361,7 @@ public:
   void vFactDelete(void);
   void vFactElementAppend(void);
   void vFactElmOf(void);
+  void vFactElmOfSet(void);
   void vFactGet(void);
   void vFactNew(void);
   void vFactNewAtr(void);
@@ -869,6 +870,7 @@ public:
   void vKbaseFindFactNo(void);
   void vKbaseGet(void);
   void vKbaseMarkerFetch(void);
+  void vKbaseMarkerNew(void);
   void vKbaseMarkerStore(void);
   void vKbaseNew(void);
   void vKbasePrint(void);

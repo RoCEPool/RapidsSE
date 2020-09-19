@@ -191,10 +191,20 @@
     input::chars to sFactNm
 
   // --
-
-  sFactNm iFactNo "++ ElmOf: %v %v" .printf
   
   iFactNo kbase[].findFactNo to pElmOf
+  
+  kbase[].marker@ if
+    
+    pElmOf kbase[].marker@ fact.elmOf
+    
+    nullptr kbase[].marker!
+    
+  then
+  
+  // --
+
+  sFactNm iFactNo "++ ElmOf: %v %v" .printf
   
   pElmOf Fact[].elmOf
 ;
@@ -228,9 +238,16 @@
 /*----------------------------------------------------------------------------*/
 : !Mrk
   
+  0 locals| sFactNm |
+  
   input::chars . // !Mrk
   
   input::next .  // (name)
+    input::chars to sFactNm
+
+  nullptr fact[].set
+  
+  sFactNm kbase[].markerNew kbase[].marker!
 ;
 
 /*----------------------------------------------------------------------------*/
