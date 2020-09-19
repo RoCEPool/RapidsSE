@@ -267,11 +267,20 @@ void Step::vKbaseTransformNew(void)
   pTransform->vAttributeAppend(pName);
   
   
+  Fact* p_Arg_ = pKbase->pFactFind("_arg_"_Stz);
+
   s32 sArg;
   
-  do {
+  for (;;) {
     m_pDataStack->vPopStr(sArg,__func__);
-  } while (! sArg.bSame("!"_Stz));
+    if (sArg.bSame("!"_Stz))
+      break;
+  
+    Fact* pArg = new Fact(pKbase,p_Arg_,"arg"_Stz);
+    pArg->vSetText(sArg);
+
+    pTransform->vAttributeAppend(pArg);
+  }
 
   m_pDataStack->vPushPtr(pTransform);
 

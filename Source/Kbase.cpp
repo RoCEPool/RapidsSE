@@ -602,6 +602,7 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  vConceptAdd(m_p_Text_,"_arg_"_Stz);
   vConceptAdd("_chunk_"_Stz);
   vConceptAdd("_marker_"_Stz);
   vConceptAdd("_pattern_"_Stz);
