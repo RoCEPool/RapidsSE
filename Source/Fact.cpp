@@ -277,6 +277,24 @@ Fact* Fact::pAttributeFindNmVal(Stz* szName, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert attribute at head of this facts attributes                          */
+/*----------------------------------------------------------------------------*/
+void Fact::vAttributeInsert(Fact* pAttribute)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+
+  pAttribute->vAttributeOf(this);
+  
+  if (! m_pAttributes) {
+    m_pAttributes = pAttribute;
+    return;
+  }
+
+  pAttribute->m_pAttributeNext = m_pAttributes;
+  m_pAttributes = pAttribute;
+}
+ 
+/*----------------------------------------------------------------------------*/
 /* get next attribute                                                         */
 /*----------------------------------------------------------------------------*/
 Fact* Fact::pAttributeNext(void)

@@ -62,6 +62,7 @@ namespace Facts
     void  vAttributeCut(Fact* pAttribute);
     Fact* pAttributeFindNm(Stz* szName);
     Fact* pAttributeFindNmVal(Stz* szName, Stz* szValue);
+    void  vAttributeInsert(Fact* pAttribute);
     Fact* pAttributeNext(void);
     void  vAttributeNext(Fact* pAttribute);
     Fact* pAttributeOf(void);

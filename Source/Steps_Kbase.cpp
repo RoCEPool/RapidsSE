@@ -264,8 +264,6 @@ void Step::vKbaseTransformNew(void)
   Fact* pName = new Fact(pKbase,p_Name_,"name"_Stz);
   pName->vSetText(sFactNm);
   
-  pTransform->vAttributeAppend(pName);
-  
   
   Fact* p_Arg_ = pKbase->pFactFind("_arg_"_Stz);
 
@@ -279,9 +277,11 @@ void Step::vKbaseTransformNew(void)
     Fact* pArg = new Fact(pKbase,p_Arg_,"arg"_Stz);
     pArg->vSetText(sArg);
 
-    pTransform->vAttributeAppend(pArg);
+    pTransform->vAttributeInsert(pArg);
   }
 
+  pTransform->vAttributeInsert(pName);
+  
   m_pDataStack->vPushPtr(pTransform);
 
   
