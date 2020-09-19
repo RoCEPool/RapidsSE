@@ -627,7 +627,9 @@ void Kbase::vAprioriFacts(void)
   vConceptAdd("_chunk_"_Stz);
   vConceptAdd("_marker_"_Stz);
   vConceptAdd("_pattern_"_Stz);
+  vConceptAdd("_transforms_"_Stz);
   vConceptAdd("_transform_"_Stz);
+  vConceptAdd(m_p_Name_,"_transformNm_"_Stz);
 
   vConceptAdd(m_p_Concept_,"_rule_"_Stz);
   vConceptAdd(m_p_Concept_,"_condition_"_Stz);
@@ -745,6 +747,16 @@ void Kbase::vAprioriFacts(void)
   pMethod->rxValue().m_pMethod->vAddCode(TQ_IS_SUBCLASS_OF);
 
   
+  Fact* pTransforms = pElementInstance(pReference,"_transforms_"_Stz);
+
+  Fact* pTransform = pElementInstance(pTransforms,"_transform_"_Stz);
+  pAttributeInstance(pTransform,"_transformNm_"_Stz,"cut"_Stz);
+  pMethod = m_p_Method_->pNewInstance();
+  pTransform->vAttributeAppend(pMethod);
+  pMethod->rxValue().m_pMethod = new Method(this,pTransform);
+  pMethod->rxValue().m_pMethod->vAddCode(TQ_CUT);
+  pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -790,7 +802,8 @@ void Kbase::vAprioriFacts(void)
 
    /reference
      /questions
- 
+     /transforms
+
    /intention
      /grid
      /tables
