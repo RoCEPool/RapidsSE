@@ -256,8 +256,8 @@ void Step::vKbaseTransformNew(void)
   Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
   
   
-  Fact* p_Transform_ = pKbase->pFactFind("_transform_"_Stz);
-  Fact* pTransform = new Fact(pKbase,p_Transform_,"transform"_Stz);
+  Fact* p_Call_ = pKbase->pFactFind("_call_"_Stz);
+  Fact* pCall = new Fact(pKbase,p_Call_,"call"_Stz);
   
   
   Fact* p_Name_ = pKbase->pFactFind("_name_"_Stz);
@@ -266,27 +266,84 @@ void Step::vKbaseTransformNew(void)
   
   
   Fact* p_Arg_ = pKbase->pFactFind("_arg_"_Stz);
+  Fact* p_nArgs_ = pKbase->pFactFind("_nArgs_"_Stz);
 
-  s32 sArg;
+  s32 sArg[8];
   
-  for (;;) {
-    m_pDataStack->vPopStr(sArg,__func__);
-    if (sArg.bSame("!"_Stz))
+  i8 nArgs = 0;
+  for (i8 i_Arg = 0; i_Arg < 8; i_Arg++) {
+    nArgs = i_Arg;
+    m_pDataStack->vPopStr(sArg[i_Arg],__func__);
+    if (sArg[i_Arg].bSame("!"_Stz))
       break;
+  }
   
-    Fact* pArg = new Fact(pKbase,p_Arg_,"arg"_Stz);
-    pArg->vSetText(sArg);
+  //for (i8 i_Arg = nArgs - 1; i_Arg >= 0; i_Arg--) {
+  for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
 
-    pTransform->vAttributeInsert(pArg);
+    s32 sArgId;
+    sArgId.vSprint("arg%lld"_Stz,nArgs - i_Arg - 1);
+    Fact* pArg = new Fact(pKbase,p_Arg_,sArgId);
+    pArg->vSetText(sArg[i_Arg]);
+
+    pCall->vAttributeInsert(pArg);
   }
 
-  pTransform->vAttributeInsert(pName);
-  
-  m_pDataStack->vPushPtr(pTransform);
+  Fact* pnArgs = new Fact(pKbase,p_nArgs_,"nArgs"_Stz);
+  pnArgs->vSetInt(nArgs);
+  pCall->vAttributeInsert(pnArgs);
 
+  pCall->vAttributeInsert(pName);
   
+  m_pDataStack->vPushPtr(pCall);
+
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+//void Step::vKbaseTransformNew(void)
+//{
+//  ENTRY();
+//
+//
+//  s32 sFactNm;
+//  m_pDataStack->vPopStr(sFactNm,__func__);
+//
+//  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+//
+//
+//  Fact* p_Call_ = pKbase->pFactFind("_call_"_Stz);
+//  Fact* pCall = new Fact(pKbase,p_Call_,"call"_Stz);
+//
+//
+//  Fact* p_Name_ = pKbase->pFactFind("_name_"_Stz);
+//  Fact* pName = new Fact(pKbase,p_Name_,"name"_Stz);
+//  pName->vSetText(sFactNm);
+//
+//
+//  Fact* p_Arg_ = pKbase->pFactFind("_arg_"_Stz);
+//
+//  s32 sArg;
+//
+//  for (i8 i_Arg = 0; ; i_Arg++) {
+//    m_pDataStack->vPopStr(sArg,__func__);
+//    if (sArg.bSame("!"_Stz))
+//      break;
+//
+//    s32 sArgId;
+//    sArgId.vSprint("arg%lld"_Stz,i_Arg);
+//    Fact* pArg = new Fact(pKbase,p_Arg_,sArgId);
+//    pArg->vSetText(sArg);
+//
+//    pCall->vAttributeInsert(pArg);
+//  }
+//
+//  pCall->vAttributeInsert(pName);
+//
+//  m_pDataStack->vPushPtr(pCall);
+//
+//
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* Kbase[].transform! -- store transform                                      */

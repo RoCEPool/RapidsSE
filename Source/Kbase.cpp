@@ -630,6 +630,8 @@ void Kbase::vAprioriFacts(void)
   vConceptAdd("_transforms_"_Stz);
   vConceptAdd("_transform_"_Stz);
   vConceptAdd(m_p_Name_,"_transformNm_"_Stz);
+  vConceptAdd("_call_"_Stz);
+  vConceptAdd(m_p_Int_,"_nArgs_"_Stz);
 
   vConceptAdd(m_p_Concept_,"_rule_"_Stz);
   vConceptAdd(m_p_Concept_,"_condition_"_Stz);
