@@ -39,6 +39,7 @@ namespace Facts
 
     Fact*  m_pMarker;      // wip marker
     Fact*  m_pTransform;   // wip transform
+    Fact*  m_pPaste;       // paste buffer
 
     // must be last
     Footer m_xFooter;
@@ -81,6 +82,9 @@ namespace Facts
     void  vMarker(Fact* pMarker);
   
     i8    iNextFactNo(void);
+  
+    Fact* pPaste(void);
+    void  vPaste(Fact* pPaste);
   
     void  vPrint(File* pFile);
         

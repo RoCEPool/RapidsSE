@@ -21,9 +21,10 @@ Kbase::Kbase(Stz* szKbName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  m_pCurrent = nullptr;
-  m_pMarker  = nullptr;
+  m_pCurrent   = nullptr;
+  m_pMarker    = nullptr;
   m_pTransform = nullptr;
+  m_pPaste     = nullptr;
 
   vAprioriFacts();
  
@@ -357,6 +358,26 @@ i8 Kbase::iNextFactNo(void)
   i8 iFactNo = ++ m_ixFactNo;
   
   return iFactNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pasted fact                                                            */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pPaste(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  return m_pPaste;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pasted fact                                                            */
+/*----------------------------------------------------------------------------*/
+void Kbase::vPaste(Fact* pPaste)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  m_pPaste = pPaste;
 }
 
 /*----------------------------------------------------------------------------*/
