@@ -877,6 +877,7 @@ public:
   void vKbaseSet(void);
   void vKbaseTest(void);
   void vKbaseTransformFetch(void);
+  void vKbaseTransformNew(void);
   void vKbaseTransformStore(void);
   void vKbaseTrim(void);
 

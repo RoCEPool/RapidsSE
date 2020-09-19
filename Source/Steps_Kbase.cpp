@@ -9,23 +9,24 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Kbase(void)
 {
-  vAddStep("Kbase[]"_Stz,            &Step::vKbaseSet);
-  
-  vAddStep("Kbase[].delete"_Stz,     &Step::vKbaseDelete);
-  vAddStep("Kbase[].findFactNm"_Stz, &Step::vKbaseFindFactNm);
-  vAddStep("Kbase[].findFactNo"_Stz, &Step::vKbaseFindFactNo);
-  vAddStep("Kbase[].delete"_Stz,     &Step::vKbaseDelete);
-  vAddStep("Kbase[].get"_Stz,        &Step::vKbaseGet);
-  vAddStep("Kbase[].marker@"_Stz,    &Step::vKbaseMarkerFetch);
-  vAddStep("Kbase[].marker!"_Stz,    &Step::vKbaseMarkerStore);
-  vAddStep("Kbase[].markerNew"_Stz,  &Step::vKbaseMarkerNew);
-  vAddStep("Kbase[].new"_Stz,        &Step::vKbaseNew);
-  vAddStep("Kbase[].print"_Stz,      &Step::vKbasePrint);
-  vAddStep("Kbase[].set"_Stz,        &Step::vKbaseSet);
-  vAddStep("Kbase[].test"_Stz,       &Step::vKbaseTest);
-  vAddStep("Kbase[].transform@"_Stz, &Step::vKbaseTransformFetch);
-  vAddStep("Kbase[].transform!"_Stz, &Step::vKbaseTransformStore);
-  vAddStep("Kbase[].trim"_Stz,       &Step::vKbaseTrim);
+  vAddStep("Kbase[]"_Stz,              &Step::vKbaseSet);
+    
+  vAddStep("Kbase[].delete"_Stz,       &Step::vKbaseDelete);
+  vAddStep("Kbase[].findFactNm"_Stz,   &Step::vKbaseFindFactNm);
+  vAddStep("Kbase[].findFactNo"_Stz,   &Step::vKbaseFindFactNo);
+  vAddStep("Kbase[].delete"_Stz,       &Step::vKbaseDelete);
+  vAddStep("Kbase[].get"_Stz,          &Step::vKbaseGet);
+  vAddStep("Kbase[].marker@"_Stz,      &Step::vKbaseMarkerFetch);
+  vAddStep("Kbase[].marker!"_Stz,      &Step::vKbaseMarkerStore);
+  vAddStep("Kbase[].markerNew"_Stz,    &Step::vKbaseMarkerNew);
+  vAddStep("Kbase[].new"_Stz,          &Step::vKbaseNew);
+  vAddStep("Kbase[].print"_Stz,        &Step::vKbasePrint);
+  vAddStep("Kbase[].set"_Stz,          &Step::vKbaseSet);
+  vAddStep("Kbase[].test"_Stz,         &Step::vKbaseTest);
+  vAddStep("Kbase[].transform@"_Stz,   &Step::vKbaseTransformFetch);
+  vAddStep("Kbase[].transform!"_Stz,   &Step::vKbaseTransformStore);
+  vAddStep("Kbase[].transformNew"_Stz, &Step::vKbaseTransformNew);
+  vAddStep("Kbase[].trim"_Stz,         &Step::vKbaseTrim);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,6 +239,43 @@ void Step::vKbaseTransformFetch(void)
   
   m_pDataStack->vPushPtr(pTransform);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].transformNew -- new transform                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseTransformNew(void)
+{
+  ENTRY();
+    
+  
+  s32 sFactNm;
+  m_pDataStack->vPopStr(sFactNm,__func__);
+
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  
+  Fact* p_Transform_ = pKbase->pFactFind("_transform_"_Stz);
+  Fact* pTransform = new Fact(pKbase,p_Transform_,"transform"_Stz);
+  
+  
+  Fact* p_Name_ = pKbase->pFactFind("_name_"_Stz);
+  Fact* pName = new Fact(pKbase,p_Name_,"name"_Stz);
+  pName->vSetText(sFactNm);
+  
+  pTransform->vAttributeAppend(pName);
+  
+  
+  s32 sArg;
+  
+  do {
+    m_pDataStack->vPopStr(sArg,__func__);
+  } while (! sArg.bSame("!"_Stz));
+
+  m_pDataStack->vPushPtr(pTransform);
+
+  
   EXIT();
 }
 

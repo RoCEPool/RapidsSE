@@ -201,6 +201,15 @@
     nullptr kbase[].marker!
     
   then
+    
+  kbase[].transform@ if
+    
+    pElmOf kbase[].transform@ fact.elmOf
+    
+    nullptr kbase[].transform!
+    
+  then
+
   
   // --
 
@@ -255,9 +264,26 @@
 /*----------------------------------------------------------------------------*/
 : !Trf
   
+  0 locals| sFactNm |
+
   input::chars . // !Trf
   
   input::next .  // (name)
+    input::chars to sFactNm
+  
+  
+  "!"
+  
+  begin
+
+    input::next .
+
+    input::isExclamation not
+  while
+    input::chars
+  repeat
+
+  sFactNm kbase[].transformNew kbase[].transform!
 ;
 
 /*============================================================================*/
