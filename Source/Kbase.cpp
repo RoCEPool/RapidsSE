@@ -243,6 +243,18 @@ Fact* Kbase::pElementFind(Stz* szNote)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find element                                                               */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pElementFindAttr(Stz* szAttr, Stz* szText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pElement = m_pContents->pElementFindNmVal(szAttr,szText);
+
+  return pElement;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new element instance to given set                                          */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pElementInstance(Fact* pSet, Stz* szElmSuperNm)
@@ -434,6 +446,21 @@ void Kbase::vTroll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
+  Fact* pCall = pFactFind("call"_Stz);
+  
+  if (! pCall)
+    return;
+  
+  Fact* pCallName = pCall->pAttributeFindNm("name"_Stz);
+  
+  if (! pCallName)
+    return;
+  
+  s32 sName;
+  sName = pCallName->rxValue().m_pText->szGet();
+  Fact* pCalled = pElementFindAttr("transformNm"_Stz,sName);
+  
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
