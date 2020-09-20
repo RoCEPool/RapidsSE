@@ -460,6 +460,10 @@ void Kbase::vTroll(void)
   sName = pCallName->rxValue().m_pText->szGet();
   Fact* pCalled = pElementFindAttr("transformNm"_Stz,sName);
   
+  Fact* pMethodFact = pCalled->pAttributeFindNm("method"_Stz);
+  
+  Method* pMethod = pMethodFact->rxValue().m_pMethod;
+
   vDebugPoint();
 }
 
