@@ -10,7 +10,7 @@
 : kbase_troll
 
   "Trolling..." .
-  kbase[].troll
+  kbase[].troll discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -110,6 +110,7 @@
 
   "/tmp/kbase_test.txt" file::modTime to iPrevTime
   
+kbase_troll
 
   begin
     true

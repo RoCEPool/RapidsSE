@@ -387,7 +387,7 @@ void Step::vKbaseTroll(void)
   
   bool bAgain = pKbase->bTroll();
   
-//  m_pDataStack->vPushInt(bAgain);
+  m_pDataStack->vPushInt(bAgain);
 
   EXIT();
 }
