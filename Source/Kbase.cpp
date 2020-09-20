@@ -486,21 +486,21 @@ void Kbase::vTrim(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* troll                                                                      */
+/* troll the kbase for calls to transforms and execute first one found        */
 /*----------------------------------------------------------------------------*/
-void Kbase::vTroll(void)
+bool Kbase::bTroll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
   Fact* pCall = pFactFind("call"_Stz);
   
   if (! pCall)
-    return;
+    return false; // don't call again
   
   Fact* pCallName = pCall->pAttributeFindNm("name"_Stz);
   
   if (! pCallName)
-    return;
+    return false; // don't call again
   
   s32 sName;
   sName = pCallName->rxValue().m_pText->szGet();
@@ -511,8 +511,8 @@ void Kbase::vTroll(void)
   Method* pMethod = pMethodFact->rxValue().m_pMethod;
   
   pMethod->vExecute();
-
-  vDebugPoint();
+  
+  return true; // call again
 }
 
 /*----------------------------------------------------------------------------*/

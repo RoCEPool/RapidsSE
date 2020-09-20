@@ -93,7 +93,7 @@ namespace Facts
     void  vTransform(Fact* pTransform);
     Fact* pTransformCall(Stz* szFactNm);
     void  vTrim(void);
-    void  vTroll(void);
+    bool  bTroll(void);
 
     Fact* pValue(void);
     
