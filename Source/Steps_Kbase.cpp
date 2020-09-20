@@ -27,6 +27,7 @@ void Step::vAddSteps_Kbase(void)
   vAddStep("Kbase[].transform!"_Stz,   &Step::vKbaseTransformStore);
   vAddStep("Kbase[].transformNew"_Stz, &Step::vKbaseTransformNew);
   vAddStep("Kbase[].trim"_Stz,         &Step::vKbaseTrim);
+  vAddStep("Kbase[].troll"_Stz,        &Step::vKbaseTroll);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -371,6 +372,20 @@ void Step::vKbaseTrim(void)
   Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
   
   pKbase->vTrim();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].troll -- troll the kbase                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseTroll(void)
+{
+  ENTRY();
+  
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  pKbase->vTroll();
 
   EXIT();
 }

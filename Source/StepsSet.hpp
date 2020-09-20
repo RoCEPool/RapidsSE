@@ -880,6 +880,7 @@ public:
   void vKbaseTransformNew(void);
   void vKbaseTransformStore(void);
   void vKbaseTrim(void);
+  void vKbaseTroll(void);
 
   // loader
   void vLoaderCreate(void);
