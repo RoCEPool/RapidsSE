@@ -448,7 +448,7 @@ Fact* Kbase::pTransformCall(Stz* szFactNm)
   for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
 
     s32 sArgId;
-    sArgId.vSprint("arg%lld"_Stz,nArgs - i_Arg - 1);
+    sArgId.vSprint("arg%lld"_Stz,i_Arg);
     Fact* pArg = new Fact(this,p_Arg_,sArgId);
     
     s32 sArgNm;
@@ -456,10 +456,9 @@ Fact* Kbase::pTransformCall(Stz* szFactNm)
 
     pArg->vSetText(sArgNm);
 
-    pCall->vAttributeInsert(pArg);
+    pCall->vAttributeAppend(pArg);
   }
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* pnArgs = new Fact(this,p_nArgs_,"nArgs"_Stz);
@@ -655,6 +654,9 @@ void Kbase::vTest(void)
     
     if (1 == i_Bag) {
       
+      Fact* pCall = pTransformCall("cut"_Stz);
+      
+      pShape->vElementAppend(pCall);
     }
 
     Fact* pBag = pElementInstance(pShape,"_bag_"_Stz);
