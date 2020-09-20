@@ -463,6 +463,8 @@ void Kbase::vTroll(void)
   Fact* pMethodFact = pCalled->pAttributeFindNm("method"_Stz);
   
   Method* pMethod = pMethodFact->rxValue().m_pMethod;
+  
+  pMethod->vExecute();
 
   vDebugPoint();
 }
