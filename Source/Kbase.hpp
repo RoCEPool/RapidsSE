@@ -91,6 +91,7 @@ namespace Facts
         
     Fact* pTransform(void);
     void  vTransform(Fact* pTransform);
+    Fact* pTransformCall(Stz* szFactNm);
     void  vTrim(void);
     void  vTroll(void);
 

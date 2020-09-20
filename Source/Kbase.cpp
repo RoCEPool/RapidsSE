@@ -425,6 +425,53 @@ void Kbase::vTransform(Fact* pTransform)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new a call to a transform for testing purposes                             */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pTransformCall(Stz* szFactNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* p_Call_ = pFactFind("_call_"_Stz);
+  Fact* pCall = new Fact(this,p_Call_,"call"_Stz);
+  
+  Fact* p_Name_ = pFactFind("_name_"_Stz);
+  Fact* pName = new Fact(this,p_Name_,"name"_Stz);
+  pName->vSetText(szFactNm);
+
+  Fact* p_Arg_ = pFactFind("_arg_"_Stz);
+  Fact* p_nArgs_ = pFactFind("_nArgs_"_Stz);
+
+  i8 nArgs = 2;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
+
+    s32 sArgId;
+    sArgId.vSprint("arg%lld"_Stz,nArgs - i_Arg - 1);
+    Fact* pArg = new Fact(this,p_Arg_,sArgId);
+    
+    s32 sArgNm;
+    sArgNm.vSprint("%c"_Stz,'A' + i_Arg);
+
+    pArg->vSetText(sArgNm);
+
+    pCall->vAttributeInsert(pArg);
+  }
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Fact* pnArgs = new Fact(this,p_nArgs_,"nArgs"_Stz);
+  pnArgs->vSetInt(nArgs);
+  pCall->vAttributeInsert(pnArgs);
+
+  pCall->vAttributeInsert(pName);
+
+  return pCall;
+}
+
+/*----------------------------------------------------------------------------*/
 /* trim                                                                       */
 /*----------------------------------------------------------------------------*/
 void Kbase::vTrim(void)
@@ -604,6 +651,11 @@ void Kbase::vTest(void)
   Fact* p_Die_ = pConceptAdd(m_p_Folder_,"_die_"_Stz);
 
   for (i8 i_Bag = 0; i_Bag < 5; i_Bag++) {
+    
+    
+    if (1 == i_Bag) {
+      
+    }
 
     Fact* pBag = pElementInstance(pShape,"_bag_"_Stz);
     s32 sBagNm;
