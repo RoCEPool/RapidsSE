@@ -276,8 +276,10 @@
 */
   ZK_PULSEMARKER Counter0[] executeAsmArgs
 
-  StreamDefOut[].pipeout
-
+  StreamDefOut[].isNull not if
+    StreamDefOut[].pipeout
+  then
+/*
   Counter0[] cleanUpAsm
 
   Pot[].pipeoutAllCompleted
@@ -288,6 +290,11 @@
   // pipeout an EOS MARKER
   Operand[].newEosMarker
   Operand[].pipeOut
+*/
+  // force op loop to call EOAsm_EosMarker to end
+  "EOAsm_EosMarker" word::find LogicUnit[].handler!
+  true LogicUnit[].callAgain!
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -351,6 +358,19 @@
 : EOAsm_EosMarker \handler
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+ "EOSMARKER" .
+
+  Operand[].isNull not if
+    "Operand is not null" .
+    Pipein[].isNull assert
+    Operand[] to Pipein[]
+  then
+
+  Pipein[].isNull if
+    "PIPEIN is null" .
+    true
+    exit
+  then
 
   ZK_EOSMARKER Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm

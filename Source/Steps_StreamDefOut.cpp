@@ -14,6 +14,7 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].addColumns"_Stz, &Step::vStreamDefOutAddColumns);
   vAddStep("StreamDefOut[].delete"_Stz,     &Step::vStreamDefOutDelete);
   vAddStep("StreamDefOut[].duplicate"_Stz,  &Step::vStreamDefOutDuplicate);
+  vAddStep("StreamDefOut[].isNull"_Stz,     &Step::vStreamDefOutIsNull);
   vAddStep("StreamDefOut[].name@"_Stz,      &Step::vStreamDefOutNameFetch);
   vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
@@ -100,6 +101,18 @@ void Step::vStreamDefOutGet(void)
     
   m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpStreamDefOut);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].isNull -- is streamDef null ?                               */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutIsNull(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpStreamDefOut.bIsNull() ? 1 : 0);
+  
   EXIT();
 }
 

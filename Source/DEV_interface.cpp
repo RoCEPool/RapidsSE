@@ -1846,6 +1846,7 @@ void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHsh)
                                                (bool)iAddPtnHsh);
   
   pLogicUnit->m_xpPot->vStreamPix(&pLogicUnit->m_oStreamPix);
+  pLogicUnit->m_xpOperandA = new Marker(OM_EOSMARKER);
 }
 
 /*----------------------------------------------------------------------------*/
