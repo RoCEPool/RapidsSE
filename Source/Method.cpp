@@ -163,6 +163,7 @@ void Method::vExecute(Fact* pAnchor)
 
   Fact* pElmOf = nullptr;
   Fact* pElmNext = nullptr;
+  Fact* pPaste = nullptr;
 
   for (;;) {
 
@@ -228,6 +229,15 @@ void Method::vExecute(Fact* pAnchor)
         break;
         
       case TQ_PASTE: PrmNil();
+        
+        pElmOf = pAnchor->pElementOf();
+
+        pPaste = m_pKbase->pPaste();
+        m_pKbase->vPaste(nullptr);
+        
+        pElmOf->vElementAppend(pPaste);
+        pPaste = nullptr;
+
         break;
 
       case TQ_SWAP: PrmNil();
