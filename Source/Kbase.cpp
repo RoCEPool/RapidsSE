@@ -738,73 +738,78 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vConceptAdd(m_p_Text_,"_arg_"_Stz);
-  vConceptAdd("_chunk_"_Stz);
-  vConceptAdd("_marker_"_Stz);
-  vConceptAdd("_pattern_"_Stz);
-  vConceptAdd("_transforms_"_Stz);
-  vConceptAdd("_transform_"_Stz);
-  vConceptAdd(m_p_Name_,"_transformNm_"_Stz);
-  vConceptAdd("_call_"_Stz);
-  vConceptAdd(m_p_Int_,"_nArgs_"_Stz);
+  
+  pAha("_action_"_Stz,     m_p_Concept_);
+  pAha("_call_"_Stz,       m_p_Concept_);
+  pAha("_chunk_"_Stz,      m_p_Concept_);
+  pAha("_condition_"_Stz,  m_p_Concept_);
+  pAha("_marker_"_Stz,     m_p_Concept_);
+  pAha("_pattern_"_Stz,    m_p_Concept_);
+  pAha("_rule_"_Stz,       m_p_Concept_);
+  pAha("_transforms_"_Stz, m_p_Concept_);
+  pAha("_transform_"_Stz,  m_p_Concept_);
+  
+  pAha("_arg_"_Stz,        m_p_Text_);
+  pAha("_transformNm_"_Stz,m_p_Name_);
+  pAha("_nArgs_"_Stz,      m_p_Int_);
 
-  vConceptAdd(m_p_Concept_,"_rule_"_Stz);
-  vConceptAdd(m_p_Concept_,"_condition_"_Stz);
-  vConceptAdd(m_p_Concept_,"_action_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  Fact* p_NameSeq_ = pConceptAdd(m_p_Text_,"_nameSeq_"_Stz);
-  Fact* p_Format_ = pConceptAdd(m_p_Text_,"_format_"_Stz);
+  Fact* p_NameSeq_    = pAha("_nameSeq_"_Stz,   m_p_Text_);
+  Fact* p_Format_     = pAha("_format_"_Stz,    m_p_Text_);
 
-  Fact* p_Questions_ = pConceptAdd(m_p_Folder_,"_questions_"_Stz);
-  Fact* p_Question_ = pConceptAdd(p_Questions_,"_question_"_Stz);
-  Fact* p_QuestionNm_ = pConceptAdd(m_p_Name_,"_questionNm_"_Stz);
+  Fact* p_Questions_  = pAha("_questions_"_Stz, m_p_Folder_);
+  Fact* p_Question_   = pAha("_question_"_Stz,  p_Questions_);
+  Fact* p_QuestionNm_ = pAha("_questionNm_"_Stz,m_p_Name_);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Fact* p_Type_ = pConceptAdd(m_p_Concept_,"_type_"_Stz);
-  Fact* p_ColumnType_ = pConceptAdd(p_Type_,"_columnType_"_Stz);
-  vConceptAdd(p_ColumnType_,"_BOOLEAN_"_Stz);
-  vConceptAdd(p_ColumnType_,"_DATE_"_Stz);
-  vConceptAdd(p_ColumnType_,"_DECIMAL_"_Stz);
-  vConceptAdd(p_ColumnType_,"_FLOAT_"_Stz);
-  vConceptAdd(p_ColumnType_,"_INTEGER_"_Stz);
-  vConceptAdd(p_ColumnType_,"_INTERVAL_"_Stz);
-  vConceptAdd(p_ColumnType_,"_TIME_"_Stz);
-  vConceptAdd(p_ColumnType_,"_TIMESTAMP_"_Stz);
-  vConceptAdd(p_ColumnType_,"_VARCHAR_"_Stz);
+  Fact* p_Type_       =  pAha("_type_"_Stz,        m_p_Concept_);
+  Fact* p_ColumnType_ =  pAha("_columnType_"_Stz,  p_Type_);
+                         pAha("_BOOLEAN_"_Stz,     p_ColumnType_);
+                         pAha("_DATE_"_Stz,        p_ColumnType_);
+                         pAha("_DECIMAL_"_Stz,     p_ColumnType_);
+                         pAha("_FLOAT_"_Stz,       p_ColumnType_);
+                         pAha("_INTEGER_"_Stz,     p_ColumnType_);
+                         pAha("_INTERVAL_"_Stz,    p_ColumnType_);
+                         pAha("_TIME_"_Stz,        p_ColumnType_);
+                         pAha("_TIMESTAMP_"_Stz,   p_ColumnType_);
+                         pAha("_VARCHAR_"_Stz,     p_ColumnType_);
+ 
+  Fact* p_Nullability_ = pAha("_nullability_"_Stz, m_p_Property_);
+                         pAha("_nullable_"_Stz,    p_Nullability_);
+                         pAha("_notNullable_"_Stz, p_Nullability_);
 
-  Fact* p_Nullability_ = pConceptAdd(m_p_Property_,"_nullability_"_Stz);
-  vConceptAdd(p_Nullability_,"_nullable_"_Stz);
-  vConceptAdd(p_Nullability_,"_notNullable_"_Stz);
+                         pAha("_ptnKey_"_Stz,      m_p_Property_);
 
-  vConceptAdd(m_p_Property_,"_ptnKey_"_Stz);
+  Fact* p_Cardinality_ = pAha("_cardinality_"_Stz,           m_p_Property_);
+                         pAha("all nodes"_Stz,               p_Cardinality_);
+                         pAha("all partitions"_Stz,          p_Cardinality_);
+                         pAha("all partitions on origin"_Stz,p_Cardinality_);
+                         pAha("origin"_Stz,                  p_Cardinality_);
+                         pAha("specific node"_Stz,           p_Cardinality_);
+                         pAha("specific partition"_Stz,      p_Cardinality_);
 
-  Fact* p_Cardinality_ = pConceptAdd(m_p_Property_,"_cardinality_"_Stz);
-  vConceptAdd(p_Cardinality_,"all nodes"_Stz);
-  vConceptAdd(p_Cardinality_,"all partitions"_Stz);
-  vConceptAdd(p_Cardinality_,"all partitions on origin"_Stz);
-  vConceptAdd(p_Cardinality_,"origin"_Stz);
-  vConceptAdd(p_Cardinality_,"specific node"_Stz);
-  vConceptAdd(p_Cardinality_,"specific partition"_Stz);
-
-  vConceptAdd(m_p_Folder_,"_columns_"_Stz);
-  vConceptAdd(m_p_Tuple_,"_column_"_Stz);
-  vConceptAdd(m_p_Int_,"_columnNo_"_Stz);
-  vConceptAdd(m_p_Name_,"_columnNm_"_Stz);
-  vConceptAdd(m_p_Int_,"_length_"_Stz);
-  vConceptAdd(m_p_Int_,"_scale_"_Stz);
-
-  vConceptAdd(m_p_Folder_,"_indexes_"_Stz);
-  vConceptAdd(m_p_Folder_,"_index_"_Stz);
+                         pAha("_columns_"_Stz, m_p_Folder_);
+                         pAha("_column_"_Stz,  m_p_Tuple_);
+                         pAha("_columnNo_"_Stz,m_p_Int_);
+                         pAha("_columnNm_"_Stz,m_p_Name_);
+                         pAha("_length_"_Stz,  m_p_Int_);
+                         pAha("_scale_"_Stz,   m_p_Int_);
+ 
+                         pAha("_indexes_"_Stz, m_p_Folder_);
+                         pAha("_index_"_Stz,   m_p_Folder_);
   
-  Fact* p_Tables_ = pConceptAdd(m_p_Folder_,"_tables_"_Stz);
-  vConceptAdd(m_p_Folder_,"_table_"_Stz);
-  vConceptAdd(m_p_Name_,"_tableNm_"_Stz);
+  Fact* p_Tables_ =      pAha("_tables_"_Stz,  m_p_Folder_);
+                         pAha("_table_"_Stz,   m_p_Folder_);
+                         pAha("_tableNm_"_Stz, m_p_Name_);
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   
   Fact* p_Statement_ = pConceptAdd(m_p_Folder_,"_statement_"_Stz);
   vConceptAdd(m_p_Folder_,"_subQry_"_Stz);
