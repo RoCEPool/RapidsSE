@@ -253,30 +253,17 @@
 
   0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryNote
 
-  <queryNo> >int locals| queryNo |
-
   ZK_PULSEMARKER_handler
 
-  queryNo case
+  ZK_PULSEMARKER Counter0[] executeAsmArgs
 
-    100 of
-      //EOAsm_PulseMarker_100
-    endof
-
-    600 of
-      ZK_PULSEMARKER Counter0[] executeAsmArgs
-
-      StreamDefOut[].isNull not if
-      StreamDefOut[].pipeout
-      then
-    endof
-
-  endcase
+  StreamDefOut[].isNull not if
+    StreamDefOut[].pipeout
+  then
 
   // force op loop to call EOAsm_EosMarker to end
   "EOAsm_EosMarker" word::find LogicUnit[].handler!
   true LogicUnit[].callAgain!
-
 ;
 
 /*----------------------------------------------------------------------------*/

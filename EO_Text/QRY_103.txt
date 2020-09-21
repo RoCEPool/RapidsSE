@@ -3,12 +3,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Routine QRY_103
 
-EO_INIT
-EO_ENTER
+  EO_INIT
+  EO_ENTER
 
   // check for PULSEMARKER
   EO_DUP
-  EO_INTEGER  PULSEMARKER
+  EO_INTEGER  ZK_PULSEMARKER
   EO_EQUAL
   EO_JMP_TRUE PULSEMARKER_HANDLER
 
