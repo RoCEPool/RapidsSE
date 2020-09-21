@@ -4,18 +4,25 @@
 Routine QRY_601
 
   EO_INIT
+  EO_ENTER
 
+  // check for PULSEMARKER
+  EO_DUP
+  EO_INTEGER  PULSEMARKER
+  EO_EQUAL
+  EO_JMP_TRUE PULSEMARKER_HANDLER
+
+  // check for ZK_STARTMARKER
   EO_DUP
   EO_INTEGER  ZK_STARTMARKER
   EO_EQUAL
-  EO_JMP_TRUE BEGIN_STARTMARKER
+  EO_JMP_TRUE STARTMARKER_HANDLER
 
-  // EOS MARKER
-  //EO_JMP_FALSE END_RSB_SRC
+  // check for ZK_EOSMARKER
   EO_DUP
   EO_INTEGER ZK_EOSMARKER
   EO_EQUAL
-  EO_JMP_TRUE END_RSB_SRC
+  EO_JMP_TRUE EOSMARKER_HANDLER
 
   // ASSERT that its an RSBBUFFER
   EO_INTEGER ZK_RSBBUFFER
@@ -33,16 +40,30 @@ Label RSB_SRC_BEGIN
 
 Label NEXT_RSB_SRC
   EO_RSB_SRC_NEXT
-  EO_JMP_FALSE END_RSB_SRC
+  EO_JMP_FALSE QRY_601_DONE
   EO_CALL SUBROUTINE_AGGREGATE
   EO_JMP NEXT_RSB_SRC
 
-Label BEGIN_STARTMARKER
-EO_POP
-
-Label END_RSB_SRC
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// ZK_STARTMARKER handler
+Label STARTMARKER_HANDLER
   EO_POP
+  EO_JMP QRY_601_DONE
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// ZK_EOSMARKER handler
+Label EOSMARKER_HANDLER
+  EO_POP
+  EO_JMP QRY_601_DONE
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// ZK_PULSEMARKER handler
+Label PULSEMARKER_HANDLER
+  EO_POP
+
+Label QRY_601_DONE
   EO_RETURN
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // END: QRY_601
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
