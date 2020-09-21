@@ -273,9 +273,11 @@
 
   // set streamDefOut in the pot
   true Pot[].useStreamDefOut
-  StreamDefOut[].pipeout
 
   ZK_PULSEMARKER Counter0[] executeAsmArgs
+
+  StreamDefOut[].pipeout
+
   Counter0[] cleanUpAsm
 
   Pot[].pipeoutAllCompleted
