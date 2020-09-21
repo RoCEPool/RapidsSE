@@ -249,44 +249,6 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: EOAsm_PulseMarker_100 \handler
-
-  EOAsm_streamDefOut_100
-  streamDef[].asSrcStreamDef
-
-  // grab table ptn read lock
-  tablePtn[] tablePtnGrabRead
-
-  // new a partition stream for access crw buffer
-  tablePtn[] ptnStream::new to ptnStream[]
-
-  // open partition stream to access the crw buffers
-  ptnStream[] ptnStream.open if
-
-    // force op loop to call scan_CrwBuffer to start processing buffers
-    "EOAsm_CrwBuffer" word::find LogicUnit[].handler!
-    true LogicUnit[].callAgain!
-
-  else
-    // unable to open partition stream (this would be unusual)
-
-    // delete partition stream
-    ptnStream[] ptnStream.delete
-    nullptr to ptnStream[]
-
-    // drop table ptn lock
-    tablePtn[] tablePtnDropRead
-
-    // send an eos marker (there was no data)
-    Operand[].newEosMarker
-    Operand[].pipeOut
-
-  then
-  ;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 : EOAsm_PulseMarker_600
 
   0 locals| pColumn |
@@ -311,9 +273,11 @@
 
   // set streamDefOut in the pot
   true Pot[].useStreamDefOut
-  StreamDefOut[].pipeout
 
   ZK_PULSEMARKER Counter0[] executeAsmArgs
+
+  StreamDefOut[].pipeout
+
   Counter0[] cleanUpAsm
 
   Pot[].pipeoutAllCompleted
@@ -340,7 +304,7 @@
   queryNo case
 
     100 of
-      EOAsm_PulseMarker_100
+      //EOAsm_PulseMarker_100
     endof
 
     600 of
@@ -358,44 +322,10 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  // read next buffer from ptn stream
-  ptnStream[] ptnStream.read to Operand[]
-
-  Operand[].isNotNull if
-  // read a next crw buffer
-
-    Operand[].asSrcCrwBuffer
-    ZK_CRWBUFFER Counter0[] executeAsmArgs
-    Operand[].delete
-
-    Pot[].pipeoutAllCompleted
-    // call this handler again to process next buffer
-    true LogicUnit[].callAgain!
-
-  else
-
-  // no more crw buffers
-
-    // close and delete partition stream
-    ptnStream[] ptnStream.close
-    ptnStream[] ptnStream.delete
-    nullptr to ptnStream[]
-
-    // drop partition lock
-    tablePtn[] tablePtnDropRead
-
-    streamDef[].delete
-    ZK_EOSMARKER Counter0[] executeAsmArgs
-    Counter0[] cleanUpAsm
-    IndexTree[].delete
-
-    Pot[].pipeoutAllDangling
-    Pot[].delete
-
-    Operand[].newEosMarker
-    Operand[].pipeOut
-
-  then
+  Operand[].pipeIn
+  Operand[].asSrcCrwBuffer
+  ZK_CRWBUFFER Counter0[] executeAsmArgs
+  Operand[].delete
 
   true
 ;
@@ -449,6 +379,11 @@
 
   <queryNo> >int to queryNo
   queryNo case
+
+    100 of
+     streamDefOut_100
+     streamDef[].asSrcStreamDef
+    endof
 
     103 of
       EOAsm_streamDefOut_103

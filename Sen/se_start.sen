@@ -1174,7 +1174,7 @@
   sPath
   "
   procedure Query1_ASM_I
-    parameters $QueryText_all $QueryText_org
+    parameters $Table $QueryText_all $QueryText_org 
   begin
 
   stage stageA on origin :
@@ -1183,8 +1183,8 @@
     | stageB
 
   stage stageB on all partitions :
-    //scan $Table
-    EOAsm $QueryText_all 100 0
+    scan $Table
+    | EOAsm $QueryText_all 100 0
     //| sql 101
     | stageC
 
