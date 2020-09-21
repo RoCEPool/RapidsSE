@@ -161,6 +161,10 @@ void Method::vExecute(Fact* pAnchor)
   eTQ* aeCode = & m_eaCode[0];
   i8* aiDstk = m_iaDataStack;
 
+  Fact* pElmOf = nullptr;
+  Fact* pElmNext = nullptr;
+  Fact* pPaste = nullptr;
+
   for (;;) {
 
     eTQ eCode = *aeCode++;
@@ -201,12 +205,52 @@ void Method::vExecute(Fact* pAnchor)
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case TQ_CUT: PrmNil();
+        
+        pPaste = m_pKbase->pPaste();
+        if (pPaste) {
+          m_pKbase->vPaste(nullptr);
+          Fact::vDeleteRecursively(&pAnchor);
+        }
+
+        pElmOf = pAnchor->pElementOf();
+        pElmNext = pAnchor->pElementNext();
+        vTrace("Anchor %p ElmOf %p, ElmNext %p\n"_Stz,pAnchor,pElmOf,pElmNext);
+        
+        pElmOf->vElementCut(pElmNext);
+        pElmOf->vElementCut(pAnchor);
+        
+        if (m_pKbase->pPaste()) {
+          Fact* pPaste = m_pKbase->pPaste();
+          m_pKbase->vPaste(nullptr);
+          
+          Fact::vDeleteRecursively(&pPaste);
+        }
+
+        m_pKbase->vPaste(pElmNext);
+        
+        Fact::vDeleteRecursively(&pAnchor);
+
         break;
         
       case TQ_DELETE: PrmNil();
         break;
         
       case TQ_PASTE: PrmNil();
+        
+        pPaste = m_pKbase->pPaste();
+        if (!pPaste)
+          break;
+        
+        m_pKbase->vPaste(nullptr);
+
+        pElmOf = pAnchor->pElementOf();
+        
+        pElmOf->vElementAppend(pPaste);
+        pPaste = nullptr;
+
+        pElmOf->vElementCut(pAnchor);
+        Fact::vDeleteRecursively(&pAnchor);
+
         break;
 
       case TQ_SWAP: PrmNil();

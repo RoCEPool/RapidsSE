@@ -855,6 +855,14 @@ void Kbase::vAprioriFacts(void)
   pMethod->rxValue().m_pMethod->vAddCode(TQ_CUT);
   pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
 
+  pTransform = pElementInstance(pTransforms,"_transform_"_Stz);
+  pAttributeInstance(pTransform,"_transformNm_"_Stz,"paste"_Stz);
+  pMethod = m_p_Method_->pNewInstance();
+  pTransform->vAttributeAppend(pMethod);
+  pMethod->rxValue().m_pMethod = new Method(this,pTransform);
+  pMethod->rxValue().m_pMethod->vAddCode(TQ_PASTE);
+  pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
