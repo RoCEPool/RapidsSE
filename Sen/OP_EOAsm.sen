@@ -358,25 +358,29 @@
 : EOAsm_EosMarker \handler
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
- "EOSMARKER" .
 
+  // Invoked from PULSEMARKER call again?
   Operand[].isNull not if
-    "Operand is not null" .
+    // PULSEMARKER created an EOSMARKER
+    // there should be no Pipein EOSMARKER
     Pipein[].isNull assert
     Operand[] to Pipein[]
   then
 
+  // Invoked from PULSEMARKER call again?
+  // but PULSEMARKER did not create an EOS MARKER
   Pipein[].isNull if
-    "PIPEIN is null" .
     true
     exit
   then
 
+  // handle EOSMARKER
   ZK_EOSMARKER Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
   IndexTree[].isNull not if
     IndexTree[].delete
   then
+
   Pot[].pipeoutAllCompleted
   Pot[].pipeoutAllDangling
   Pot[].delete
