@@ -40,7 +40,7 @@ namespace Facts
     void vAddCodeInt(eTQ eCode, i8 iArg);
     void vAddCodeStz(eTQ eCode, Stz* szStz);
   
-    void vExecute(void);
+    void vExecute(Fact* pAnchor);
     
     eTQ eGetCode(i8 i_Code);
   

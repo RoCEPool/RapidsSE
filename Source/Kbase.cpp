@@ -510,7 +510,7 @@ bool Kbase::bTroll(void)
   
   Method* pMethod = pMethodFact->rxValue().m_pMethod;
   
-  pMethod->vExecute();
+  pMethod->vExecute(pCall);
   
   return true; // call again
 }

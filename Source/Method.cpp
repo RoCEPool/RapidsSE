@@ -154,7 +154,7 @@ void Method::vGenMethod000(void)
 /*----------------------------------------------------------------------------*/
 /* execute method                                                             */
 /*----------------------------------------------------------------------------*/
-void Method::vExecute(void)
+void Method::vExecute(Fact* pAnchor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
   
