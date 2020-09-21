@@ -50,6 +50,24 @@ Kbase::~Kbase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a concept                                                              */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pAha(Stz* szFactNm, Fact* pSuper, eFU eUsage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pConcept = pSuper->pNewInstance(szFactNm);
+  
+  if (FU_NONE != eUsage)
+    pConcept->rxValue().m_eUsage = eUsage;
+
+  m_p_Concept_->vElementAppend(pConcept);
+
+  return pConcept;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* new attribute instance to named set                                        */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm)
@@ -127,11 +145,11 @@ void Kbase::vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, Stz* szVal)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pConceptAdd(Stz* szName, eFU eUsage)
+Fact* Kbase::pConceptAdd(Stz* szFactNm, eFU eUsage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pConcept = m_p_Concept_->pNewInstance(szName);
+  Fact* pConcept = m_p_Concept_->pNewInstance(szFactNm);
   
   if (FU_NONE != eUsage)
     pConcept->rxValue().m_eUsage = eUsage;
@@ -144,11 +162,11 @@ Fact* Kbase::pConceptAdd(Stz* szName, eFU eUsage)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-void Kbase::vConceptAdd(Stz* szName)
+void Kbase::vConceptAdd(Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pConcept = m_p_Concept_->pNewInstance(szName);
+  Fact* pConcept = m_p_Concept_->pNewInstance(szFactNm);
   
   m_p_Concept_->vElementAppend(pConcept);
 }
@@ -156,11 +174,11 @@ void Kbase::vConceptAdd(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szName, eFU eUsage)
+Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szFactNm, eFU eUsage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pConcept = pSuper->pNewInstance(szName);
+  Fact* pConcept = pSuper->pNewInstance(szFactNm);
   
   if (FU_NONE != eUsage)
     pConcept->rxValue().m_eUsage = eUsage;
@@ -173,11 +191,11 @@ Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szName, eFU eUsage)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-void Kbase::vConceptAdd(Fact* pSuper, Stz* szName)
+void Kbase::vConceptAdd(Fact* pSuper, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pConcept = pSuper->pNewInstance(szName);
+  Fact* pConcept = pSuper->pNewInstance(szFactNm);
   
   m_p_Concept_->vElementAppend(pConcept);
 }
@@ -185,13 +203,13 @@ void Kbase::vConceptAdd(Fact* pSuper, Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-void Kbase::vConceptAdd(Stz* szSuperName, Stz* szName)
+void Kbase::vConceptAdd(Stz* szSuperName, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
   Fact* pSuper = m_p_Concept_->pElementFindNm(szSuperName);
   
-  Fact* pConcept = pSuper->pNewInstance(szName);
+  Fact* pConcept = pSuper->pNewInstance(szFactNm);
   
   m_p_Concept_->vElementAppend(pConcept);
 }
@@ -321,11 +339,11 @@ Fact* Kbase::pFactFind(Stz* szFactNm)
 /*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pFactNew(Fact* pSuper, Stz* szName)
+Fact* Kbase::pFactNew(Fact* pSuper, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pFact = new Fact(this, pSuper, szName);
+  Fact* pFact = new Fact(this, pSuper, szFactNm);
   
   return pFact;
 }

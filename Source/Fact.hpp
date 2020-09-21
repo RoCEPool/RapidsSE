@@ -27,7 +27,7 @@ namespace Facts
     Kbase* m_pKbase;
   
     i8     m_iFactNo; // unique number (synonym of this facts address)
-    s32    m_sName;   // name of fact
+    s32    m_sFactNm; // name of fact
     Value  m_xValue;  // some value
     
     Fact*  m_pSubclassOf;   // subclass of which fact      (super)
