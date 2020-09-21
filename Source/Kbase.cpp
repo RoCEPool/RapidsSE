@@ -719,21 +719,22 @@ void Kbase::vAprioriFacts(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_p_Property_ = pConceptAdd(m_p_Concept_,"_property_"_Stz);
+  //m_p_Property_ = pConceptAdd(m_p_Concept_,"_property_"_Stz);
+  m_p_Property_ = pAha("_property_"_Stz,m_p_Concept_);
 
-  m_p_Value_ = pConceptAdd("_value_"_Stz,FU_USAGE);
-  m_p_Int_ = pConceptAdd(m_p_Value_,"_int_"_Stz,FU_INT);
-  m_p_Function_ = pConceptAdd(m_p_Value_,"_function_"_Stz,FU_FUNCTION);
-  m_p_Method_ = pConceptAdd(m_p_Value_,"_method_"_Stz,FU_METHOD);
-  m_p_Object_ = pConceptAdd(m_p_Value_,"_object_"_Stz,FU_OBJECT);
-  m_p_Opaque_ = pConceptAdd(m_p_Value_,"_opaque_"_Stz,FU_OPAQUE);
-  m_p_Text_ = pConceptAdd(m_p_Value_,"_text_"_Stz,FU_TEXT);
-  m_p_Word_ = pConceptAdd(m_p_Value_,"_word_"_Stz,FU_WORD);
-  m_p_Xref_ = pConceptAdd(m_p_Value_,"_xref_"_Stz,FU_XREF);
-  m_p_Name_ = pConceptAdd(m_p_Text_,"_name_"_Stz);
+  m_p_Value_    = pAha("_value_"_Stz,   m_p_Concept_, FU_USAGE);
+  m_p_Int_      = pAha("_int_"_Stz,     m_p_Value_,   FU_INT);
+  m_p_Function_ = pAha("_function_"_Stz,m_p_Value_,   FU_FUNCTION);
+  m_p_Method_   = pAha("_method_"_Stz,  m_p_Value_,   FU_METHOD);
+  m_p_Object_   = pAha("_object_"_Stz,  m_p_Value_,   FU_OBJECT);
+  m_p_Opaque_   = pAha("_opaque_"_Stz,  m_p_Value_,   FU_OPAQUE);
+  m_p_Text_     = pAha("_text_"_Stz,    m_p_Value_,   FU_TEXT);
+  m_p_Word_     = pAha("_word_"_Stz,    m_p_Value_,   FU_WORD);
+  m_p_Xref_     = pAha("_xref_"_Stz,    m_p_Value_,   FU_XREF);
+  m_p_Name_     = pAha("_name_"_Stz,    m_p_Text_);
   
-  m_p_Folder_ = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
-  m_p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
+  m_p_Folder_   = pAha("_folder_"_Stz,  m_p_Concept_);
+  m_p_Tuple_    = pAha("_tuple_"_Stz,   m_p_Concept_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
