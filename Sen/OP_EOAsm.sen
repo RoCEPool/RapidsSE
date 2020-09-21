@@ -250,7 +250,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : EOAsm_PulseMarker_600
-
+/*
   0 locals| pColumn |
 
   // new a streamDef from table
@@ -273,7 +273,7 @@
 
   // set streamDefOut in the pot
   true Pot[].useStreamDefOut
-
+*/
   ZK_PULSEMARKER Counter0[] executeAsmArgs
 
   StreamDefOut[].pipeout
