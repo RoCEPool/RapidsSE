@@ -205,6 +205,13 @@ void Method::vExecute(Fact* pAnchor)
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case TQ_CUT: PrmNil();
+        
+        pPaste = m_pKbase->pPaste();
+        if (pPaste) {
+          m_pKbase->vPaste(nullptr);
+          Fact::vDeleteRecursively(&pAnchor);
+        }
+
         pElmOf = pAnchor->pElementOf();
         pElmNext = pAnchor->pElementNext();
         vTrace("Anchor %p ElmOf %p, ElmNext %p\n"_Stz,pAnchor,pElmOf,pElmNext);
@@ -230,10 +237,13 @@ void Method::vExecute(Fact* pAnchor)
         
       case TQ_PASTE: PrmNil();
         
-        pElmOf = pAnchor->pElementOf();
-
         pPaste = m_pKbase->pPaste();
+        if (!pPaste)
+          break;
+        
         m_pKbase->vPaste(nullptr);
+
+        pElmOf = pAnchor->pElementOf();
         
         pElmOf->vElementAppend(pPaste);
         pPaste = nullptr;
