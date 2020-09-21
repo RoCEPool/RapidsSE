@@ -811,41 +811,46 @@ void Kbase::vAprioriFacts(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   
-  Fact* p_Statement_ = pConceptAdd(m_p_Folder_,"_statement_"_Stz);
-  vConceptAdd(m_p_Folder_,"_subQry_"_Stz);
-  vConceptAdd(m_p_Folder_,"_projectClause_"_Stz);
-  vConceptAdd(m_p_Folder_,"_fromClause_"_Stz);
-  vConceptAdd(m_p_Tuple_, "_fromTable_"_Stz);
-  vConceptAdd(m_p_Folder_,"_whereClause_"_Stz);
-  vConceptAdd(m_p_Folder_,"_groupByClause_"_Stz);
-  vConceptAdd(m_p_Folder_,"_orderByClause_"_Stz);
+  Fact* p_Statement_ = pAha("_statement_"_Stz,     m_p_Folder_);
+                       pAha("_subQry_"_Stz,        m_p_Folder_);
+                       pAha("_projectClause_"_Stz, m_p_Folder_);
+                       pAha("_fromClause_"_Stz,    m_p_Folder_);
+                       pAha("_fromTable_"_Stz,     m_p_Tuple_);
+                       pAha("_whereClause_"_Stz,   m_p_Folder_);
+                       pAha("_groupByClause_"_Stz, m_p_Folder_);
+                       pAha("_orderByClause_"_Stz, m_p_Folder_);
 
-  vConceptAdd(m_p_Folder_,"_exprList_"_Stz);
-  vConceptAdd(m_p_Folder_,"_expr_"_Stz);
-  vConceptAdd(m_p_Folder_,"_term_"_Stz);
-  vConceptAdd(m_p_Tuple_,"_atom_"_Stz);
+                       pAha("_exprList_"_Stz,      m_p_Folder_);
+                       pAha("_expr_"_Stz,          m_p_Folder_);
+                       pAha("_term_"_Stz,          m_p_Folder_);
+                       pAha("_atom_"_Stz,          m_p_Tuple_);
 
-  vConceptAdd(m_p_Folder_,"_pipeline_"_Stz);
-  vConceptAdd(m_p_Name_,"_pipelineNm_"_Stz);
-  vConceptAdd(m_p_Folder_,"_stages_"_Stz);
-  vConceptAdd(m_p_Folder_,"_stage_"_Stz);
-  vConceptAdd(m_p_Name_,"_stageNm_"_Stz);
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+                       pAha("_pipeline_"_Stz,      m_p_Folder_);
+                       pAha("_pipelineNm_"_Stz,    m_p_Name_);
+                       pAha("_stages_"_Stz,        m_p_Folder_);
+                       pAha("_stage_"_Stz,         m_p_Folder_);
+                       pAha("_stageNm_"_Stz,       m_p_Name_);
   
-  Fact* p_Operator_ = pConceptAdd(m_p_Tuple_,"_operator_"_Stz);
-  vConceptAdd(p_Operator_,"_op_"_Stz);
-  vConceptAdd(p_Operator_,"_sqlOp_"_Stz);
-  
-  vConceptAdd(m_p_Folder_,"_routines_"_Stz);
-  vConceptAdd(m_p_Tuple_,"_subroutine_"_Stz);
-  vConceptAdd(m_p_Name_,"_subroutineNm_"_Stz);
-  vConceptAdd(m_p_Property_,"_recallable_"_Stz);
-  vConceptAdd(m_p_Text_,"_sourceCode_"_Stz);
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  Fact* p_Nodes_ = pConceptAdd(m_p_Int_,"_nodes_"_Stz);
-  Fact* p_Partitions_ = pConceptAdd(m_p_Int_,"_partitions_"_Stz);
-  Fact* p_Grid_ = pConceptAdd(m_p_Folder_,"_grid_"_Stz);
-
+  Fact* p_Operator_ =  pAha("_operator_"_Stz,      m_p_Tuple_);
+                       pAha("_op_"_Stz,            p_Operator_);
+                       pAha("_sqlOp_"_Stz,         p_Operator_);
   
+                       pAha("_routines_"_Stz,      m_p_Folder_);
+                       pAha("_subroutine_"_Stz,    m_p_Tuple_);
+                       pAha("_subroutineNm_"_Stz,  m_p_Name_);
+                       pAha("_recallable_"_Stz,    m_p_Property_);
+                       pAha("_sourceCode_"_Stz,    m_p_Text_);
+            
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  Fact* p_Nodes_      = pAha("_nodes_"_Stz,        m_p_Int_);
+  Fact* p_Partitions_ = pAha("_partitions_"_Stz,   m_p_Int_);
+  Fact* p_Grid_       = pAha("_grid_"_Stz,         m_p_Folder_);
+
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
   Fact* p_Contents_ = pConceptAdd(m_p_Folder_,"_contents_"_Stz);
