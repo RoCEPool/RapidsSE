@@ -86,7 +86,7 @@ void Step::vColumnNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* column.scale@ -- fetch column scale                                          */
+/* column.scale@ -- fetch column scale                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vColumnScaleFetch(void)
 {

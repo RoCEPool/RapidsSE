@@ -80,6 +80,8 @@ DynamicSymbol gxaDynamicSymbol[]
       
   { "vDev_PIX_STM_PRINT"_Stz,     (const void *) vDev_PIX_STM_PRINT     },
   
+  { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT },
+  
   { "vDev_RSB_BEGIN"_Stz,         (const void *) vDev_RSB_BEGIN         },
   { "iDev_RSB_NEW"_Stz,           (const void *) iDev_RSB_NEW           },
   { "iDev_RSB_NEXT"_Stz,          (const void *) iDev_RSB_NEXT          },

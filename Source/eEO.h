@@ -63,6 +63,9 @@ enum eEO : u1 // expression operators
   /*    */ EO_ISNULL,           // test if top is null, push result
   /*    */ EO_ISNOTNULL,        // test if top is not null, push result
   
+  // pot
+  /*    */ EO_POT_USE_STREAMDEFOUT, // use streamDefOut in the pot
+  
   // prints
   /*    */ EO_PRINT,            // print top
   /*    */ EO_PRINTF,           // formatted print
@@ -355,6 +358,9 @@ static Stz* aEO[]
   // null test operators
   /*    */ "EO_ISNULL"_Stz,
   /*    */ "EO_ISNOTNULL"_Stz,
+  
+  // pot
+  /*    */ "EO_POT_USE_STREAMDEFOUT"_Stz,
   
   // prints
   /*    */ "EO_PRINT"_Stz,
@@ -655,6 +661,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ISNULL
   { EA_NONE,    0 },  // EO_ISNOTNULL
 
+  // pot
+  { EA_INT,     8 },  // EO_POT_USE_STREAMDEFOUT
+  
   // prints
   { EA_NONE,    0 },  // EO_PRINT
   { EA_STRING, -1 },  // EO_PRINTF

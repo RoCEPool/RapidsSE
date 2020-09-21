@@ -1411,6 +1411,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU2(EO_ISNOTNULL,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
+       
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // pot
+      case EO_POT_USE_STREAMDEFOUT: ArgGet(iArg); // use streamDefOut in the pot locals
+        dLU0(EO_POT_USE_STREAMDEFOUT);
+        iTopA = *(aiDstk--);
+        vDev_POT_USE_STREAMDEFOUT(pLU,iArg);
+        break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // prints
@@ -1548,8 +1556,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_REG_STREAMDEFOUT_ADDCOLUMN: GetStr(iArg); // add a column to streamDefOut[]
         dLU0(EO_REG_STREAMDEFOUT_ADDCOLUMN);
-        iTopA = *(aiDstk--); // column length
-        iTopB = *(aiDstk--); // column type
+        iTopA = *(aiDstk--); // column type
+        iTopB = *(aiDstk--); // column length
         iTopC = *(aiDstk--); // column scale
         vDev_REG_STREAMDEFOUT_ADDCOLUMN(pLU, (Stz*)iArg, iTopA, iTopB, iTopC);
         break;//+endCase

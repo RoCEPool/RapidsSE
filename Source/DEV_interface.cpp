@@ -1834,6 +1834,21 @@ void vDev_PIX_STM_PRINT(void* aLU)
 }
 
 /*----------------------------------------------------------------------------*/
+/* use stream def out for this pot                                            */
+/*----------------------------------------------------------------------------*/
+void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHsh)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  pLogicUnit->m_xpStreamDefOut->vToStreamPix(&pLogicUnit->m_oStreamPix,
+                                               (bool)iAddPtnHsh);
+  
+  pLogicUnit->m_xpPot->vStreamPix(&pLogicUnit->m_oStreamPix);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a column to indexDef[]                                                 */
 /*----------------------------------------------------------------------------*/
 void vDev_REG_INDEXDEF_ADDCOLUMN(void* aLU, Stz* sColumnNm, i8 iColumnType)
