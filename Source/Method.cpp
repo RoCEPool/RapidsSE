@@ -238,6 +238,9 @@ void Method::vExecute(Fact* pAnchor)
         pElmOf->vElementAppend(pPaste);
         pPaste = nullptr;
 
+        pElmOf->vElementCut(pAnchor);
+        Fact::vDeleteRecursively(&pAnchor);
+
         break;
 
       case TQ_SWAP: PrmNil();
