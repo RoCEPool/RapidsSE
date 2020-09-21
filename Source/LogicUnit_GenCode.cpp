@@ -93,10 +93,34 @@ void LogicUnit::vCollectOpcode(void)
           vAddCodeArg((eEO)i_OpCode, m_pTkn->szChars());
           return;
           
-        case EA_INT:
+        case EA_INT: {
+          i8 iArg = C_UNKNOWN;
+      
           vAcceptToken();
-          vAddCodeArg((eEO)i_OpCode, m_pTkn->iToI8());
+          if ( m_pTkn->bIsInteger() ) {
+            iArg = m_pTkn->iToI8();
+          }
+          else {
+            if (0 == StrLib::iCompare(m_pTkn->azChars(),"CT_", 2,  C_CASE)) {
+              for(iArg = 0; iArg < CT_ENUMS; iArg++) {
+                if (StrLib::bEqualTo(m_pTkn->azChars()+3,(char*)aCT[iArg]))
+                  break;
+              }
+            }
+            else if (0 == StrLib::iCompare(m_pTkn->azChars(),"ZK_", 2,  C_CASE)) {
+              for(iArg = 0; iArg < ZK_ENUMS; iArg++) {
+                if (StrLib::bEqualTo(m_pTkn->azChars(),(char*)aZK[iArg]))
+                  break;
+              }
+            }
+            else {
+              vTrace("\n*** Invalid integer argument to opCode %s ***\n"_Stz, m_pTkn->szChars());
+            }
+          }
+          ASSERT(iArg != C_UNKNOWN);
+          vAddCodeArg((eEO)i_OpCode, iArg);
           return;
+        }
           
         case EA_LABEL:
           vAcceptToken();
