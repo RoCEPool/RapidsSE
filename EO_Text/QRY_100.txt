@@ -6,26 +6,34 @@ Routine QRY_100
 EO_INIT
 EO_ENTER
 
+// check for STARTMARKER
 EO_DUP
 EO_INTEGER  ZK_STARTMARKER
 EO_EQUAL
 EO_JMP_TRUE BEGIN_STARTMARKER
 
+// check for PULSEMARKER
+EO_DUP
+EO_INTEGER ZK_PULSEMARKER
+EO_EQUAL
+EO_JMP_TRUE BEGIN_PULSEMARKER
+
+// check for CRWBUFFER
 EO_DUP
 EO_INTEGER ZK_CRWBUFFER
 EO_EQUAL
-EO_JMP_TRUE BEGIN_CRW_SRC
+EO_JMP_TRUE BEGIN_CRWBUFFER
 
-// ASSERT that its an ZK_EOSMARKER
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// ZK_EOSMARKER handler
 EO_INTEGER ZK_EOSMARKER
 EO_EQUAL
 EO_ASSERT
-
-//EO_CRW_SRC_TEST
-//EO_JMP_TRUE BEGIN_CRW_SRC
 EO_CALL SUBROUTINE_IXT_TO_RSB
 EO_JMP QRY_100_DONE
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// ZK_STARTMARKER handler
 Label BEGIN_STARTMARKER
 EO_POP
 EO_TABLENM_SRC_SET "lineitem"
@@ -37,7 +45,16 @@ EO_REG_INDEXDEF_DELETE
 EO_INDEXTREE_TMP_SET
 EO_JMP QRY_100_DONE
 
-Label BEGIN_CRW_SRC
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// ZK_PULSEMARKER handler
+Label BEGIN_PULSEMARKER
+EO_POP
+
+EO_JMP QRY_100_DONE
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// ZK_CRWBUFFER handler
+Label BEGIN_CRWBUFFER
 EO_POP
 EO_CRW_SRC_BEGIN
 
@@ -46,8 +63,6 @@ Label NEXT_CRW_SRC
 EO_CRW_SRC_NEXT
 EO_JMP_FALSE QRY_100_DONE
 
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // call PROCESSROW subroutine to process the row
 EO_CALL SUBROUTINE_PROCESSROW
 
@@ -57,6 +72,7 @@ Label QRY_100_DONE
 EO_CRW_SRC_NULL
 EO_EXIT
 EO_RETURN
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // END MAIN: QRY_100
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
