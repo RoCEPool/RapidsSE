@@ -161,6 +161,9 @@ void Method::vExecute(Fact* pAnchor)
   eTQ* aeCode = & m_eaCode[0];
   i8* aiDstk = m_iaDataStack;
 
+  Fact* pElmOf = nullptr;
+  Fact* pElmNext = nullptr;
+
   for (;;) {
 
     eTQ eCode = *aeCode++;
@@ -201,6 +204,24 @@ void Method::vExecute(Fact* pAnchor)
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case TQ_CUT: PrmNil();
+        pElmOf = pAnchor->pElementOf();
+        pElmNext = pAnchor->pElementNext();
+        vTrace("Anchor %p ElmOf %p, ElmNext %p\n"_Stz,pAnchor,pElmOf,pElmNext);
+        
+        pElmOf->vElementCut(pElmNext);
+        pElmOf->vElementCut(pAnchor);
+        
+        if (m_pKbase->pPaste()) {
+          Fact* pPaste = m_pKbase->pPaste();
+          m_pKbase->vPaste(nullptr);
+          
+          Fact::vDeleteRecursively(&pPaste);
+        }
+
+        m_pKbase->vPaste(pElmNext);
+        
+        Fact::vDeleteRecursively(&pAnchor);
+
         break;
         
       case TQ_DELETE: PrmNil();
