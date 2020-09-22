@@ -60,7 +60,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_DEL_ENT"_Stz,       (const void *) vDev_IXT_DEL_ENT       },
   { "vDev_IXT_DUMP"_Stz,          (const void *) vDev_IXT_DUMP          },
   { "vDev_IXT_ENT_PRINT"_Stz,     (const void *) vDev_IXT_ENT_PRINT     },
-  { "vDev_IXT_INDEXNM_SET"_Stz,   (const void *) vDev_IXT_INDEXNM_SET     },
+  { "vDev_IXT_INDEXNM_SET"_Stz,   (const void *) vDev_IXT_INDEXNM_SET   },
+  { "vDev_IXT_INDEXTREE_SET"_Stz, (const void *) vDev_IXT_INDEXTREE_SET },
   { "aDev_IXT_INS_ENT"_Stz,       (const void *) aDev_IXT_INS_ENT       },
   { "iDev_IXT_TMP_ENTRIES"_Stz,   (const void *) iDev_IXT_TMP_ENTRIES   },
 
@@ -856,6 +857,7 @@ void LogicCompiler::v_RtnPreliminary(void)
   "\n"
   "\n    i8 iTopA;"
   "\n    i8 iTopB;"
+  "\n    i8 iTopC;"
   "\n    i8 iCmp;"
   "\n    i8 iRes;"
   "\n    Stz* szTopA;"
