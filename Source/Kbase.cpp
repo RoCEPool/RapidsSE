@@ -914,7 +914,7 @@ void Kbase::vAprioriFacts(void)
   Fact* pQuestions    = pElm("_questions_"_Stz,    pReference);
   
   Fact* pQuestion     = pElm("_question_"_Stz,     pQuestions);
-  pAttributeInstance(pQuestion,"_questionNm_"_Stz,"isSubClassOf"_Stz);
+                          vAtr("_questionNm_"_Stz,"isSubClassOf"_Stz,pQuestion);
   Fact* pMethod = m_p_Method_->pNewInstance();
   pQuestion->vAttributeAppend(pMethod);
   pMethod->rxValue().m_pMethod = new Method(this,pQuestion);
@@ -929,7 +929,7 @@ void Kbase::vAprioriFacts(void)
   // /contents/reference/transforms/transform cut = Method{ cut }
   
   Fact* pTransform    = pElm("_transform_"_Stz,    pTransforms);
-  pAttributeInstance(pTransform,"_transformNm_"_Stz,"cut"_Stz);
+                          vAtr("_transformNm_"_Stz,"cut"_Stz,pTransform);
   pMethod = m_p_Method_->pNewInstance();
   pTransform->vAttributeAppend(pMethod);
   pMethod->rxValue().m_pMethod = new Method(this,pTransform);
@@ -939,7 +939,7 @@ void Kbase::vAprioriFacts(void)
   // /contents/reference/transforms/transform paste = Method{ paste }
   
   pTransform          = pElm("_transform_"_Stz,    pTransforms);
-  pAttributeInstance(pTransform,"_transformNm_"_Stz,"paste"_Stz);
+                          vAtr("_transformNm_"_Stz,"paste"_Stz,pTransform);
   pMethod = m_p_Method_->pNewInstance();
   pTransform->vAttributeAppend(pMethod);
   pMethod->rxValue().m_pMethod = new Method(this,pTransform);
@@ -955,8 +955,8 @@ void Kbase::vAprioriFacts(void)
   // /contents/intention/grid atr{ nodes = Int i partitions = Int i }
   
   Fact* pGrid         = pElm("_grid_"_Stz,         pIntention);
-  pAttributeInstance(pGrid,"_nodes_"_Stz,AM::nDefinedNodes());
-  pAttributeInstance(pGrid,"_partitions_"_Stz,AM::nPartitions());
+                          vAtr("_nodes_"_Stz,AM::nDefinedNodes(), pGrid);
+                          vAtr("_partitions_"_Stz,AM::nPartitions(),pGrid);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -979,8 +979,8 @@ void Kbase::vAprioriFacts(void)
   // /contents/intention/pipeline/stages atr{ nameseq = Text , format = Text }
 
   Fact* pStages = pElm("_stages_"_Stz,pPipeline);
-  pAttributeInstance(pStages,"_nameSeq_"_Stz,"A"_Stz);
-  pAttributeInstance(pStages,"_format_"_Stz,"stage%s"_Stz);
+                    vAtr("_nameSeq_"_Stz,"A"_Stz,pStages);
+                    vAtr("_format_"_Stz,"stage%s"_Stz,pStages);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
