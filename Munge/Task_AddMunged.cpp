@@ -9713,7 +9713,6 @@ void Task::vAddMunged(Forth* pForth)
     "/*                                                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
     "cmdSyntax: EOAsm :: EOAsm <queryText> <compiled> ;\n"
-    "cmdSyntax: EOAsm :: EOAsm <queryText> <compiled> <tableNm> <indexNm> ;\n"
     "\n"
     ": EOAsm _cmdTags tagCopy: op_tags tags{ <cmdDesc> = \"--desc for op--\" } ;\n"
     "\n"
