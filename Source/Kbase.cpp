@@ -865,29 +865,29 @@ void Kbase::vAprioriFacts(void)
   
   Fact* p_Contents_   = pAha("_contents_"_Stz,     m_p_Folder_);
   Fact* p_Reference_  = pAha("_reference_"_Stz,    m_p_Folder_);
-  Fact* p_Intention_  = pAha("_intention_"_Stz,m_p_Folder_);
+  Fact* p_Intention_  = pAha("_intention_"_Stz,    m_p_Folder_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // /contents
   
-  m_pContents = pElementInstance(m_pFact,"_contents_"_Stz);
+  m_pContents         = pElm("_contents_"_Stz,     m_pFact);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // /contents/reference
   
-  Fact* pReference = pElementInstance(m_pContents,"_reference_"_Stz);
+  Fact* pReference    = pElm("_reference_"_Stz,    m_pContents);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // /contents/reference/questions
   
-  Fact* pQuestions = pElementInstance(pReference,"_questions_"_Stz);
+  Fact* pQuestions    = pElm("_questions_"_Stz,    pReference);
   
-  Fact* pQuestion = pElementInstance(pQuestions,"_question_"_Stz);
+  Fact* pQuestion     = pElm("_question_"_Stz,     pQuestions);
   pAttributeInstance(pQuestion,"_questionNm_"_Stz,"isSubClassOf"_Stz);
   Fact* pMethod = m_p_Method_->pNewInstance();
   pQuestion->vAttributeAppend(pMethod);
@@ -898,11 +898,11 @@ void Kbase::vAprioriFacts(void)
   
   // /contents/reference/transforms
   
-  Fact* pTransforms = pElementInstance(pReference,"_transforms_"_Stz);
+  Fact* pTransforms   = pElm("_transforms_"_Stz,   pReference);
 
   // /contents/reference/transforms/transform cut = Method{ cut }
   
-  Fact* pTransform = pElementInstance(pTransforms,"_transform_"_Stz);
+  Fact* pTransform    = pElm("_transform_"_Stz,    pTransforms);
   pAttributeInstance(pTransform,"_transformNm_"_Stz,"cut"_Stz);
   pMethod = m_p_Method_->pNewInstance();
   pTransform->vAttributeAppend(pMethod);
@@ -912,7 +912,7 @@ void Kbase::vAprioriFacts(void)
 
   // /contents/reference/transforms/transform paste = Method{ paste }
   
-  pTransform = pElementInstance(pTransforms,"_transform_"_Stz);
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
   pAttributeInstance(pTransform,"_transformNm_"_Stz,"paste"_Stz);
   pMethod = m_p_Method_->pNewInstance();
   pTransform->vAttributeAppend(pMethod);
@@ -924,11 +924,11 @@ void Kbase::vAprioriFacts(void)
 
   // /contents/intention
   
-  Fact* pIntention = pElementInstance(m_pContents,"_intention_"_Stz);
+  Fact* pIntention    = pElm("_intention_"_Stz,    m_pContents);
 
   // /contents/intention/grid atr{ nodes = Int i partitions = Int i }
   
-  Fact* pGrid = pElementInstance(pIntention,"_grid_"_Stz);
+  Fact* pGrid         = pElm("_grid_"_Stz,         pIntention);
   pAttributeInstance(pGrid,"_nodes_"_Stz,AM::nDefinedNodes());
   pAttributeInstance(pGrid,"_partitions_"_Stz,AM::nPartitions());
 
@@ -936,23 +936,23 @@ void Kbase::vAprioriFacts(void)
 
   // /contents/intention/tables
   
-  pElementInstance(pIntention,"_tables_"_Stz);
+  pElm("_tables_"_Stz,pIntention);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // /contents/intention/statement
   
-  pElementInstance(pIntention,"_statement_"_Stz);
+  pElm("_statement_"_Stz,pIntention);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // /contents/intention/pipeline
 
-  Fact* pPipeline = pElementInstance(pIntention,"_pipeline_"_Stz);
+  Fact* pPipeline = pElm("_pipeline_"_Stz,pIntention);
   
   // /contents/intention/pipeline/stages atr{ nameseq = Text , format = Text }
 
-  Fact* pStages = pElementInstance(pPipeline,"_stages_"_Stz);
+  Fact* pStages = pElm("_stages_"_Stz,pPipeline);
   pAttributeInstance(pStages,"_nameSeq_"_Stz,"A"_Stz);
   pAttributeInstance(pStages,"_format_"_Stz,"stage%s"_Stz);
 
@@ -960,11 +960,11 @@ void Kbase::vAprioriFacts(void)
 
   // /contents/intention/routines
   
-  Fact* pRoutines = pElementInstance(pIntention,"_routines_"_Stz);
+  Fact* pRoutines = pElm("_routines_"_Stz,pIntention);
   
   // /contents/intention/subroutine
   
-  pElementInstance(pRoutines,"_subroutine_"_Stz);
+  pElm("_subroutine_"_Stz,pRoutines);
 }
 
 
