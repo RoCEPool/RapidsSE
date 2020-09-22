@@ -5,12 +5,19 @@ Routine QRY_600
 
   EO_INIT
   EO_ENTER
+  EO_SQL 600
 
   // check for PULSEMARKER
   EO_DUP
   EO_INTEGER ZK_PULSEMARKER
   EO_EQUAL
   EO_JMP_TRUE PULSEMARKER_HANDLER
+
+  // check for ZK_STREAMDEF
+  EO_DUP
+  EO_INTEGER  ZK_STREAMDEF
+  EO_EQUAL
+  EO_JMP_TRUE STREAMDEF_HANDLER
 
   // check for EOSMARKER
   EO_DUP
@@ -21,6 +28,7 @@ Routine QRY_600
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
+  EO_PRINTF "**STARTMARKER_HANDLER**\n"
   EO_INTEGER ZK_STARTMARKER
   EO_EQUAL
   EO_ASSERT
@@ -29,14 +37,23 @@ Label STARTMARKER_HANDLER
   EO_JMP QRY_600_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STREAMDEF handler
+Label STREAMDEF_HANDLER
+  EO_PRINTF "**STREAMDEF_HANDLER**\n"
+  EO_POP
+  EO_JMP QRY_600_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_EOSMARKER handler
 Label EOSMARKER_HANDLER
+  EO_PRINTF "**EOSMARKER_HANDLER**\n"
   EO_POP
   EO_JMP QRY_600_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_PULSEMARKER handler
 Label PULSEMARKER_HANDLER
+  EO_PRINTF "**PULSEMARKER_HANDLER**\n"
   EO_POP
 
   // create  the streamDefOut
@@ -48,6 +65,7 @@ Label PULSEMARKER_HANDLER
   EO_REG_STREAMDEFOUT_ADDCOLUMN "revenue"
 
   EO_POT_USE_STREAMDEFOUT 1
+  EO_REG_EOSMARKER_NEW
 
   EO_DATE "1994-01-01"
   EO_ENTWRK_SETINTELM

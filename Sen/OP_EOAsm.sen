@@ -103,7 +103,7 @@
   "sum_disc_price"
   StreamDefOut[].addColumn
 
-  // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) as SUM_CHARGESUM_QTY
+  // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) as SUM_CHARGE
   5 StreamDef[].column@ to pColumn
   pColumn column.scale@
   pColumn column.length@
@@ -184,7 +184,7 @@
   pColumn column.name@
   StreamDefOut[].addColumn
 
-  // add column Q101_SUM_BASE_PRICE as SUM_BASE_PRICESUM_QTY
+  // add column Q101_SUM_BASE_PRICE as SUM_BASE_PRICE
   3 StreamDef[].column@ to pColumn
   pColumn column.scale@
   pColumn column.length@
@@ -321,9 +321,9 @@
   // handle EOSMARKER
   ZK_EOSMARKER Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
-  IndexTree[].isNull not if
-    IndexTree[].delete
-  then
+  //IndexTree[].isNull not if
+  //  IndexTree[].delete
+  //then
 
   Pot[].pipeoutAllCompleted
   Pot[].pipeoutAllDangling
@@ -344,7 +344,7 @@
 
   Pipein[] to StreamDef[]
   nullptr to Pipein[]
-
+/*
   <queryNo> >int to queryNo
   queryNo case
 
@@ -364,6 +364,14 @@
     endof
 
   endcase
+*/
+
+  // handle STREAMDEF
+  ZK_STREAMDEF Counter0[] executeAsmArgs
+  //StreamDef[].delete
+  StreamDefOut[].isNull not if
+    StreamDefOut[].pipeout
+  then
 
   true
 ;
