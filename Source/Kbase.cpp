@@ -52,11 +52,11 @@ Kbase::~Kbase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pAha(Stz* szFactNm, Fact* pSuper, eFU eUsage)
+Fact* Kbase::pAha(Stz* szConceptNm, Fact* pSuperConcept, eFU eUsage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pConcept = pSuper->pNewInstance(szFactNm);
+  Fact* pConcept = pSuperConcept->pNewInstance(szConceptNm);
   
   if (FU_NONE != eUsage)
     pConcept->rxValue().m_eUsage = eUsage;
@@ -246,6 +246,20 @@ void Kbase::vCurrent(Fact* pCurrent)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
   m_pCurrent = pCurrent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add an instance of a concept as an element to given set                    */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pElm(Stz* szConceptNm, Fact* pSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pElement = pConceptInstance(szConceptNm);
+  
+  pSet->vElementAppend(pElement);
+  
+  return pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -718,6 +732,7 @@ void Kbase::vAprioriFacts(void)
   m_pFact->vElementAppend(m_p_Concept_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //m_p_Property_ = pConceptAdd(m_p_Concept_,"_property_"_Stz);
   m_p_Property_ = pAha("_property_"_Stz,m_p_Concept_);
@@ -804,10 +819,8 @@ void Kbase::vAprioriFacts(void)
                          pAha("_table_"_Stz,   m_p_Folder_);
                          pAha("_tableNm_"_Stz, m_p_Name_);
   
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  
   Fact* p_Statement_ = pAha("_statement_"_Stz,     m_p_Folder_);
                        pAha("_subQry_"_Stz,        m_p_Folder_);
                        pAha("_projectClause_"_Stz, m_p_Folder_);

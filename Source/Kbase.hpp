@@ -51,7 +51,7 @@ namespace Facts
     Kbase(Stz* szKbName);
    ~Kbase(void) noexcept(false);
   
-    Fact* pAha(Stz* szFactNm, Fact* pSuper, eFU eUsage=FU_NONE);
+    Fact* pAha(Stz* szConceptNm, Fact* pSuperConcept, eFU eUsage=FU_NONE);
 
     Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm);
     void  vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm);
@@ -69,6 +69,8 @@ namespace Facts
 
     Fact* pCurrent(void);
     void  vCurrent(Fact* pCurrent);
+  
+    Fact* pElm(Stz* szConceptNm, Fact* pSet);
   
     Fact* pElementFind(Stz* szFactNm);
     Fact* pElementFindAttr(Stz* szAttr, Stz* szText);
