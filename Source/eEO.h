@@ -88,12 +88,15 @@ enum eEO : u1 // expression operators
   /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
 
   // register operators
+  /*    */ EO_REG_EOSMARKER_NEW,          // new an eosMarker in Operand[]
   /*    */ EO_REG_INDEXDEF_ADDCOLUMN,     // add a column to indexDef[]
   /*    */ EO_REG_INDEXDEF_DELETE,        // delete the indexDef[]
   /*    */ EO_REG_INDEXDEF_NEW,           // new an indexDef in indexDef[]
+  /*    */ EO_REG_INDEXTREE_DELETE,       // delete indexTree[]
   /*    */ EO_REG_INDEXTREE_NEW,          // new an indexTree in indexTree[]
   /*    */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]
   /*    */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]
+  /*    */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]
   
   // column set
   /*    */ EO_SET_COLUMN,       // add column to set
@@ -139,6 +142,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_SANITY,           // sanity check
   /*    */ EO_SLEEP,            // sleep for top seconds
   /*    */ EO_SLOT,             // push i_Slot
+  /*    */ EO_SQL,              // set sql no
   /*    */ EO_TRACEOFF,         // set trace off
   /*    */ EO_TRACEON,          // set trace on
   /*    */ EO_NOOP,             // no op
@@ -384,12 +388,15 @@ static Stz* aEO[]
   /*    */ "EO_GREATERTHAN"_Stz,
   
   // register operators
+  /*    */ "EO_REG_EOSMARKER_NEW"_Stz,
   /*    */ "EO_REG_INDEXDEF_ADDCOLUMN"_Stz,
   /*    */ "EO_REG_INDEXDEF_DELETE"_Stz,
   /*    */ "EO_REG_INDEXDEF_NEW"_Stz,
+  /*    */ "EO_REG_INDEXTREE_DELETE"_Stz,
   /*    */ "EO_REG_INDEXTREE_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_ADDCOLUMN"_Stz,
+  /*    */ "EO_REG_STREAMDEF_STREAMDEFOUT"_Stz,
   
   // column set
   /*    */ "EO_SET_COLUMN"_Stz,
@@ -435,6 +442,7 @@ static Stz* aEO[]
   /*    */ "EO_SANITY"_Stz,
   /*    */ "EO_SLEEP"_Stz,
   /*    */ "EO_SLOT"_Stz,
+  /*    */ "EO_SQL"_Stz,
   /*    */ "EO_TRACEOFF"_Stz,
   /*    */ "EO_TRACEON"_Stz,
   /*    */ "EO_NOOP"_Stz,
@@ -686,12 +694,15 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_GREATERTHAN
 
   // register operators
+  { EA_NONE,    0 },  // EO_REG_EOSMARKER_NEW
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_ADDCOLUMN
   { EA_NONE,    0 },  // EO_REG_INDEXDEF_DELETE
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_NEW
+  { EA_NONE,    0 },  // EO_REG_INDEXTREE_DELETE
   { EA_NONE,    0 },  // EO_REG_INDEXTREE_NEW
   { EA_NONE,    0 },  // EO_REG_STREAMDEFOUT_NEW
   { EA_STRING, -1 },  // EO_REG_STREAMDEFOUT_ADDCOLUMN
+  { EA_NONE,    0 },  // EO_REG_STREAMDEF_STREAMDEFOUT_ADDCOLUMN
   
   // column set
   { EA_INT,     8 },  // EO_SET_COLUMN
@@ -737,6 +748,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_SANITY
   { EA_NONE,    0 },  // EO_SLEEP
   { EA_NONE,    0 },  // EO_SLOT
+  { EA_INT,     8 },  // EO_SQL
   { EA_NONE,    0 },  // EO_TRACEOFF
   { EA_NONE,    0 },  // EO_TRACEON
   { EA_NONE,    0 },  // EO_NOOP

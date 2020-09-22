@@ -1846,6 +1846,30 @@ void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHsh)
                                                (bool)iAddPtnHsh);
   
   pLogicUnit->m_xpPot->vStreamPix(&pLogicUnit->m_oStreamPix);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* move StreamDef[] to  streamDefout[]                                        */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_STREAMDEF_STREAMDEFOUT(void* aLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  pLogicUnit->m_xpStreamDefOut = pLogicUnit->m_xpStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new an EOSMARKER in OperandA                                               */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_EOSMARKER_NEW(void* aLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
   pLogicUnit->m_xpOperandA = new Marker(OM_EOSMARKER);
 }
 
@@ -1892,6 +1916,22 @@ void vDev_REG_INDEXDEF_NEW(void* aLU, Stz* sName)
   
   pLogicUnit->m_xpIndexDef = new IndexDef;
   pLogicUnit->m_xpIndexDef->vIndexNm(sName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete indexTree[]                                                         */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_INDEXTREE_DELETE(void* aLU)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  IndexTree* pIndexTree = * pLogicUnit->m_xpIndexTree;
+  
+  pLogicUnit->m_xpIndexTree = nullptr;
+  
+  delete pIndexTree;
 }
 
 /*----------------------------------------------------------------------------*/

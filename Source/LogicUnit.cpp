@@ -1194,7 +1194,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     eEO eCode = *aeCode++;
     
 #ifdef WITH_TRACE_LOGICUNIT
-    //vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
+    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
 #endif
     
     switch (eCode) { //+ExtractBegin
@@ -1527,7 +1527,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *aiDstk = *aiDstk > iTopB;
         break;//+endCase
         
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // register operators
+      case EO_REG_EOSMARKER_NEW: ArgNil(); // new an EosMarker in OperandA[]
+        dLU0(EO_REG_EOSMARKER_NEW);
+        vDev_REG_EOSMARKER_NEW(pLU);
+        break;//+endCase
+        
       case EO_REG_INDEXDEF_ADDCOLUMN: GetStr(iArg); // add a column to indexDef[]
         dLU0(EO_REG_INDEXDEF_ADDCOLUMN);
         iTopA = *(aiDstk--);
@@ -1544,12 +1550,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_INDEXDEF_NEW(pLU, (Stz*)iArg);
         break;//+endCase
         
+      case EO_REG_INDEXTREE_DELETE: ArgNil(); // delete indexTree[]
+        dLU0(EO_REG_INDEXTREE_DELETE);
+        vDev_REG_INDEXTREE_DELETE(pLU);
+        break;//+endCase
+        
       case EO_REG_INDEXTREE_NEW: ArgNil(); // new an indexTree in indexTree[]
         dLU0(EO_REG_INDEXTREE_NEW);
         vDev_REG_INDEXTREE_NEW(pLU);
         break;//+endCase
+      
+      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // move streamDef to streamDefOut[]
+        dLU0(EO_REG_STREAMDEF_STREAMDEFOUT);
+        vDev_REG_STREAMDEF_STREAMDEFOUT(pLU);
+        break;//+endCase
         
-      case EO_REG_STREAMDEFOUT_NEW: ArgNil(); // new an streamDef in streamDefOut[]
+      case EO_REG_STREAMDEFOUT_NEW: ArgNil(); // new a streamDef in streamDefOut[]
         dLU0(EO_REG_STREAMDEFOUT_NEW);
         vDev_REG_STREAMDEFOUT_NEW(pLU);
         break;//+endCase
@@ -1807,7 +1823,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU1(EO_SLOT,aRluCommon->m_i_Slot);
         *(++aiDstk) = aRluCommon->m_i_Slot;
         break;//+endCase
-              
+        
+      case EO_SQL: ArgGet(iArg); //  set sql no
+        dLU0(EO_SQL);
+        aRluCommon->m_iSql = iArg;
+        break;//+endCase
+        
       case EO_TRACEOFF: ArgNil(); // set trace off
         aRluCommon->m_bTrace = 0;
         break;//+endCase
