@@ -1184,12 +1184,12 @@
 
   stage stageB on all partitions :
     scan $Table
-    | EOAsm $QueryText_all 100 0
+    | EOAsm $QueryText_all 0
     //| sql 101
     | stageC
 
   stage stageC on origin :
-    EOAsm $QueryText_org 103 0
+    EOAsm $QueryText_org 0
     | output
     //| toStatDemon
     | sink
@@ -1214,11 +1214,11 @@
     | stageB
 
   stage stageB on all partitions :
-    EOAsm $QueryText_all 600 0
+    EOAsm $QueryText_all 0
     | stageC
 
   stage stageC on origin :
-    EOAsm $QueryText_org 601 0
+    EOAsm $QueryText_org 0
     | output
     //| toStatDemon
     | sink
@@ -1227,35 +1227,6 @@
   end ;
   "
   api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query -
-  sPath
-  "
-  procedure Query_ASM_I
-    parameters $QueryText_all $QueryText_org $Table $Index
-  begin
-
-  stage stageA on origin :
-    start
-    | periodicOp once
-    | stageB
-
-  stage stageB on all partitions :
-    EOAsm $QueryText_all 600 0 $Table $Index
-    | stageC
-
-  stage stageC on origin :
-    EOAsm  $QueryText_org 601 0
-    | output
-    //| toStatDemon
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
 ;
 
 /*----------------------------------------------------------------------------*/
