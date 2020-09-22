@@ -738,7 +738,6 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  
   pAha("_action_"_Stz,     m_p_Concept_);
   pAha("_call_"_Stz,       m_p_Concept_);
   pAha("_chunk_"_Stz,      m_p_Concept_);
@@ -753,9 +752,7 @@ void Kbase::vAprioriFacts(void)
   pAha("_transformNm_"_Stz,m_p_Name_);
   pAha("_nArgs_"_Stz,      m_p_Int_);
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
   Fact* p_NameSeq_    = pAha("_nameSeq_"_Stz,   m_p_Text_);
   Fact* p_Format_     = pAha("_format_"_Stz,    m_p_Text_);
@@ -853,16 +850,27 @@ void Kbase::vAprioriFacts(void)
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
-  Fact* p_Contents_ = pConceptAdd(m_p_Folder_,"_contents_"_Stz);
+  Fact* p_Contents_   = pAha("_contents_"_Stz,     m_p_Folder_);
+  Fact* p_Reference_  = pAha("_reference_"_Stz,    m_p_Folder_);
+  Fact* p_Intention_  = pAha("_intention_"_Stz,m_p_Folder_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // /contents
   
   m_pContents = pElementInstance(m_pFact,"_contents_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* p_Reference_ = pConceptAdd(m_p_Folder_,"_reference_"_Stz);
+  // /contents/reference
   
   Fact* pReference = pElementInstance(m_pContents,"_reference_"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // /contents/reference/questions
   
   Fact* pQuestions = pElementInstance(pReference,"_questions_"_Stz);
   
@@ -873,9 +881,14 @@ void Kbase::vAprioriFacts(void)
   pMethod->rxValue().m_pMethod = new Method(this,pQuestion);
   pMethod->rxValue().m_pMethod->vAddCode(TQ_IS_SUBCLASS_OF);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // /contents/reference/transforms
   
   Fact* pTransforms = pElementInstance(pReference,"_transforms_"_Stz);
 
+  // /contents/reference/transforms/transform cut = Method{ cut }
+  
   Fact* pTransform = pElementInstance(pTransforms,"_transform_"_Stz);
   pAttributeInstance(pTransform,"_transformNm_"_Stz,"cut"_Stz);
   pMethod = m_p_Method_->pNewInstance();
@@ -884,6 +897,8 @@ void Kbase::vAprioriFacts(void)
   pMethod->rxValue().m_pMethod->vAddCode(TQ_CUT);
   pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
 
+  // /contents/reference/transforms/transform paste = Method{ paste }
+  
   pTransform = pElementInstance(pTransforms,"_transform_"_Stz);
   pAttributeInstance(pTransform,"_transformNm_"_Stz,"paste"_Stz);
   pMethod = m_p_Method_->pNewInstance();
@@ -893,35 +908,49 @@ void Kbase::vAprioriFacts(void)
   pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
-  Fact* p_Intention_ = pConceptAdd(m_p_Folder_,"_intention_"_Stz);
+  // /contents/intention
+  
   Fact* pIntention = pElementInstance(m_pContents,"_intention_"_Stz);
 
+  // /contents/intention/grid atr{ nodes = Int i partitions = Int i }
+  
   Fact* pGrid = pElementInstance(pIntention,"_grid_"_Stz);
   pAttributeInstance(pGrid,"_nodes_"_Stz,AM::nDefinedNodes());
   pAttributeInstance(pGrid,"_partitions_"_Stz,AM::nPartitions());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // /contents/intention/tables
+  
   pElementInstance(pIntention,"_tables_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // /contents/intention/statement
+  
   pElementInstance(pIntention,"_statement_"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // /contents/intention/pipeline
+
   Fact* pPipeline = pElementInstance(pIntention,"_pipeline_"_Stz);
+  
+  // /contents/intention/pipeline/stages atr{ nameseq = Text , format = Text }
+
   Fact* pStages = pElementInstance(pPipeline,"_stages_"_Stz);
   pAttributeInstance(pStages,"_nameSeq_"_Stz,"A"_Stz);
   pAttributeInstance(pStages,"_format_"_Stz,"stage%s"_Stz);
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // /contents/intention/routines
+  
   Fact* pRoutines = pElementInstance(pIntention,"_routines_"_Stz);
+  
+  // /contents/intention/subroutine
+  
   pElementInstance(pRoutines,"_subroutine_"_Stz);
 }
 
