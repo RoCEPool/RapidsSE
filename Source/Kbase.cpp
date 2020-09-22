@@ -66,6 +66,32 @@ Fact* Kbase::pAha(Stz* szConceptNm, Fact* pSuperConcept, eFU eUsage)
   return pConcept;
 }
 
+/*----------------------------------------------------------------------------*/
+/* add a new int attribute to given element                                   */
+/*----------------------------------------------------------------------------*/
+void Kbase::vAtr(Stz* szConceptNm, i8 iVal, Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pConceptInstance(szConceptNm);
+  pAttribute->rxValue().m_iInt = iVal;
+
+  pElement->vAttributeAppend(pAttribute);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a new text attribute to given element                                  */
+/*----------------------------------------------------------------------------*/
+void Kbase::vAtr(Stz* szConceptNm, Stz* szVal, Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pConceptInstance(szConceptNm);
+  pAttribute->rxValue().m_pText = new Text;
+  pAttribute->rxValue().m_pText->vSet(szVal);
+  
+  pElement->vAttributeAppend(pAttribute);
+}
 
 /*----------------------------------------------------------------------------*/
 /* new attribute instance to named set                                        */
