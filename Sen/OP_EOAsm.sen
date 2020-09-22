@@ -18,10 +18,16 @@
   // can't be here, whatif we generate an ERRORMARKER
   ZK_STARTMARKER_handler
 
+  // new the pot[]
   Pot[].new
+
+  // init the logicUnit[]
   LogicUnit[].init
 
+  // generate asm from query text
   Counter0[] <queryText> genAsm
+
+  // execute plan generated STARTMARKER_handler
   ZK_STARTMARKER Counter0[] executeAsmArgs
 
   logicUnit[].srcTable@ "" str.equal not if
@@ -52,201 +58,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* outbound stream def for 100                                      STREAMDEF */
-/*----------------------------------------------------------------------------*/
-: EOAsm_streamDefOut_100
-
-  0 locals| pColumn |
-
-  // new a streamDef from table
-  table[] StreamDef[].new
-
-  StreamDefOut[].new
-
-  // add column L_RETURNFLAG
-  8 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column L_LINESTATUS
-  9 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column SUM(L_QUANTITY) as SUM_QTY
-  4 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "sum_qty"
-  StreamDefOut[].addColumn
-
-  // add column SUM(L_EXTENDEDPRICE) as SUM_BASE_PRICESUM_QTY
-  5 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "sum_base_price"
-  StreamDefOut[].addColumn
-
-  // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) as SUM_DISC_PRICE
-  5 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "sum_disc_price"
-  StreamDefOut[].addColumn
-
-  // add column SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) as SUM_CHARGE
-  5 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "sum_charge"
-  StreamDefOut[].addColumn
-
-  // add column COUNT(L_QUANTITY) as COUNT_QTY
-  0
-  19
-  CT_INTEGER
-  "count_qty"
-  StreamDefOut[].addColumn
-
-  // add column COUNT(L_EXTENDEDPRICE)
-  0
-  19
-  CT_INTEGER
-  "count_price"
-  StreamDefOut[].addColumn
-
-  // add column SUM(L_DISCOUNT)) as SUM_DISCOUNT
-  6 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "sum_discount"
-  StreamDefOut[].addColumn
-
-  // add column COUNT(L_DISCOUNT)
-  0
-  19
-  CT_INTEGER
-  "count_discount"
-  StreamDefOut[].addColumn
-
-  // add column COUNT(*) as COUNT_ORDER
-  0
-  19
-  CT_INTEGER
-  "count_order"
-  StreamDefOut[].addColumn
-
-  false Pot[].useStreamDefOut
-  streamDefOut[].pipeout
-;
-
-/*----------------------------------------------------------------------------*/
-/* outbound stream def for 103                                      STREAMDEF */
-/*----------------------------------------------------------------------------*/
-: EOAsm_streamDefOut_103
-
-  0 locals| pColumn |
-
-  StreamDefOut[].new
-
-  // add column Q101_RETURNFLAG
-  0 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_LINESTATUS
-  1 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_QTY as sum_qty
-  2 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_BASE_PRICE as SUM_BASE_PRICE
-  3 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_DISC_PRICE as SUM_DISC_PRICE
-  4 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_CHARGE as SUM_CHARGE
-  5 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  pColumn column.name@
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_QTY/Q101_COUNT_QTY as AVG_QTY
-  2 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "avg_qty"
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_BASE_PRICE/Q101_COUNT_PRICE as AVG_PRICE
-  3 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "avg_price"
-  StreamDefOut[].addColumn
-
-  // add column Q101_SUM_DISC/Q101_COUNT_DISC as AVG_DISC
-  8 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "avg_disc"
-  StreamDefOut[].addColumn
-
-  // add column Q101_COUNT_ORDER as COUNT_ORDER
-  10 StreamDef[].column@ to pColumn
-  pColumn column.scale@
-  pColumn column.length@
-  pColumn column.type@
-  "count_order"
-  StreamDefOut[].addColumn
-
-  StreamDef[].delete
-
-  false Pot[].useStreamDefOut
-  streamDefOut[].pipeout
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
 : EOAsm_PulseMarker \handler
@@ -255,8 +66,10 @@
 
   ZK_PULSEMARKER_handler
 
+  // execute plan PULSEMARKER_HANDLER
   ZK_PULSEMARKER Counter0[] executeAsmArgs
 
+  // stream out streamDef if any
   StreamDefOut[].isNull not if
     StreamDefOut[].pipeout
   then
@@ -321,10 +134,8 @@
   // handle EOSMARKER
   ZK_EOSMARKER Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
-  //IndexTree[].isNull not if
-  //  IndexTree[].delete
-  //then
 
+  // pipe out all pot[]
   Pot[].pipeoutAllCompleted
   Pot[].pipeoutAllDangling
   Pot[].delete
@@ -340,35 +151,13 @@
 
   0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
-  0 locals| queryNo |
-
   Pipein[] to StreamDef[]
   nullptr to Pipein[]
-/*
-  <queryNo> >int to queryNo
-  queryNo case
 
-    100 of
-     streamDefOut_100
-     streamDef[].asSrcStreamDef
-    endof
-
-    103 of
-      EOAsm_streamDefOut_103
-    endof
-
-    601 of
-      StreamDef[] to StreamDefOut[]
-      true Pot[].useStreamDefOut
-      StreamDefOut[].pipeout
-    endof
-
-  endcase
-*/
-
-  // handle STREAMDEF
+  // execute plan STREAMDEF_handler
   ZK_STREAMDEF Counter0[] executeAsmArgs
-  //StreamDef[].delete
+
+  // streamOut def if any
   StreamDefOut[].isNull not if
     StreamDefOut[].pipeout
   then
