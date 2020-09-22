@@ -7,6 +7,12 @@ Routine QRY_600
   EO_ENTER
   EO_SQL 600
 
+  // check for STARTMARKER
+  EO_DUP
+  EO_INTEGER ZK_STARTMARKER
+  EO_EQUAL
+  EO_JMP_TRUE STARTMARKER_HANDLER
+
   // check for PULSEMARKER
   EO_DUP
   EO_INTEGER ZK_PULSEMARKER
@@ -25,13 +31,14 @@ Routine QRY_600
   EO_EQUAL
   EO_JMP_TRUE EOSMARKER_HANDLER
 
+  // never reach
+  EO_ASSERT
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
   EO_PRINTF "**STARTMARKER_HANDLER**\n"
-  EO_INTEGER ZK_STARTMARKER
-  EO_EQUAL
-  EO_ASSERT
+  EO_POP
   EO_TABLENM_SRC_SET "lineitem"
   EO_INDEXNM_SRC_SET "lineitem_idx"
   EO_JMP QRY_600_DONE

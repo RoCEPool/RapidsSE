@@ -3,10 +3,18 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Routine QRY_100
 
+  // initialization
   EO_INIT
   EO_ENTER
 
+  // set sql query no (debug)
   EO_SQL 100
+
+  // check for ZK_STARTMARKER
+  EO_DUP
+  EO_INTEGER ZK_STARTMARKER
+  EO_EQUAL
+  EO_JMP_TRUE STARTMARKER_HANDLER
 
   // check for ZK_PULSEMARKER
   EO_DUP
@@ -32,12 +40,13 @@ Routine QRY_100
   EO_EQUAL
   EO_JMP_TRUE EOSMARKER_HANDLER
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ZK_STARTMARKER handler
-Label STARTMARKER_HANDLER
-  EO_INTEGER ZK_STARTMARKER
-  EO_EQUAL
+  // Never reach
   EO_ASSERT
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STARTMARKER handler
+Label STARTMARKER_HANDLER
+  EO_POP
   EO_TABLENM_SRC_SET "lineitem"
   EO_REG_INDEXDEF_NEW "idx_int"
   EO_PUSH_COLUMN_TYPE CT_INTEGER
@@ -140,7 +149,7 @@ Label EOSMARKER_HANDLER
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_CRWBUFFER handler
-  Label CRWBUFFER_HANDLER
+Label CRWBUFFER_HANDLER
   EO_POP
   EO_CRW_SRC_BEGIN
 

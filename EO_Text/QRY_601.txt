@@ -31,12 +31,46 @@ Routine QRY_601
   EO_EQUAL
   EO_JMP_TRUE EOSMARKER_HANDLER
 
-  // ASSERT that its an RSBBUFFER
+  // check for ZK_RSBBUFFER
+  EO_DUP
   EO_INTEGER ZK_RSBBUFFER
   EO_EQUAL
-  EO_ASSERT
+  EO_JMP_TRUE RSBBUFFER_HANDLER
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STARTMARKER handler
+Label STARTMARKER_HANDLER
+  EO_PRINTF "**STARTMARKER_HANDLER**\n"
+  EO_POP
+  EO_JMP QRY_601_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_PULSEMARKER handler
+Label PULSEMARKER_HANDLER
+  EO_PRINTF "**PULSEMARKER_HANDLER**\n"
+  EO_POP
+  EO_JMP QRY_601_DONE
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STREAMDEF handler
+Label STREAMDEF_HANDLER
+  EO_PRINTF "**STREAMDEF_HANDLER**\n"
+  EO_POP
+  EO_REG_STREAMDEF_STREAMDEFOUT
+  EO_POT_USE_STREAMDEFOUT 1
+  EO_JMP QRY_601_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_EOSMARKER handler
+Label EOSMARKER_HANDLER
+  EO_PRINTF "**EOSMARKER_HANDLER**\n"
+  EO_POP
+  EO_JMP QRY_601_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_RSBBUFFER handler
+Label RSBBUFFER_HANDLER
   EO_PRINTF "**RSBBUFFER_HANDLER**\n"
+  EO_POP
   EO_RSB_DST_TESTROW
   EO_JMP_TRUE RSB_SRC_BEGIN
   EO_RSB_DST_NEW
@@ -51,36 +85,6 @@ Label NEXT_RSB_SRC
   EO_JMP_FALSE QRY_601_DONE
   EO_CALL SUBROUTINE_AGGREGATE
   EO_JMP NEXT_RSB_SRC
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ZK_STARTMARKER handler
-Label STARTMARKER_HANDLER
-  EO_PRINTF "**STARTMARKER_HANDLER**\n"
-  EO_POP
-  EO_JMP QRY_601_DONE
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ZK_STREAMDEF handler
-Label STREAMDEF_HANDLER
-  EO_PRINTF "**STREAMDEF_HANDLER**\n"
-  EO_POP
-  EO_REG_STREAMDEF_STREAMDEFOUT
-  EO_POT_USE_STREAMDEFOUT 1
-
-  EO_JMP QRY_601_DONE
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ZK_EOSMARKER handler
-Label EOSMARKER_HANDLER
-  EO_PRINTF "**EOSMARKER_HANDLER**\n"
-  EO_POP
-  EO_JMP QRY_601_DONE
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ZK_PULSEMARKER handler
-Label PULSEMARKER_HANDLER
-  EO_PRINTF "**PULSEMARKER_HANDLER**\n"
-  EO_POP
 
 Label QRY_601_DONE
   EO_RETURN

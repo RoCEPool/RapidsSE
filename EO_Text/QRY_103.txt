@@ -31,22 +31,23 @@ Routine QRY_103
   EO_EQUAL
   EO_JMP_TRUE RSBBUFFER_HANDLER
 
-  // ASSERT that its an ZK_EOSMARKER
+  // check for ZK_EOSMARKER
+  EO_DUP
   EO_INTEGER ZK_EOSMARKER
   EO_EQUAL
-  EO_ASSERT
-  EO_CALL SUBROUTINE_EOS
-  EO_REG_INDEXTREE_DELETE
-  EO_JMP QRY_103_DONE
+  EO_JMP_TRUE EOSMARKER_HANDLER
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ZK_PULSEMARKER handler
+  // Never reach
+  EO_ASSERT
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_PULSEMARKER handler
 Label PULSEMARKER_HANDLER
   EO_POP
   EO_JMP QRY_103_DONE
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ZK_STREAMDEF handler
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STREAMDEF handler
 Label STREAMDEF_HANDLER
   EO_POP
 
@@ -128,6 +129,15 @@ Label STARTMARKER_HANDLER
   EO_INDEXTREE_TMP_SET
   EO_JMP QRY_103_DONE
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_EOSMARKER handler
+Label EOSMARKER_HANDLER
+  EO_CALL SUBROUTINE_EOS
+  EO_REG_INDEXTREE_DELETE
+  EO_JMP QRY_103_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_RSBBUFFER handler
 Label RSBBUFFER_HANDLER
   EO_POP
   //vAddCodeString(EO_PRINTF **103** Got RSB BUFFER\n
@@ -286,12 +296,11 @@ Label RSBBUFFER_HANDLER
 
   EO_JMP NEXT_RSB_SRC
 
-  Label QRY_103_DONE
+Label QRY_103_DONE
   EO_RSB_SRC_NULL
 
   EO_EXIT
   EO_RETURN
-
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

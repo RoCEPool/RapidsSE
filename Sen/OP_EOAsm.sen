@@ -69,7 +69,7 @@
   // execute plan PULSEMARKER_HANDLER
   ZK_PULSEMARKER Counter0[] executeAsmArgs
 
-  // stream out streamDef if any
+  // pipeout streamDefout if any
   StreamDefOut[].isNull not if
     StreamDefOut[].pipeout
   then
@@ -157,7 +157,7 @@
   // execute plan STREAMDEF_handler
   ZK_STREAMDEF Counter0[] executeAsmArgs
 
-  // streamOut def if any
+  // pipeout streamDefout if any
   StreamDefOut[].isNull not if
     StreamDefOut[].pipeout
   then
