@@ -26,7 +26,7 @@ Fact::Fact(Kbase* pKbase, i8 iFactNo, Stz* szName)
   m_pKbase  = pKbase;
   
   m_iFactNo = C_UNKNOWN == iFactNo ? m_pKbase->iNextFactNo() : iFactNo;
-  m_sName   = szName ? szName : C_NO_NOTE;
+  m_sFactNm   = szName ? szName : C_NO_NOTE;
   m_xValue.m_pObject = nullptr;
     
   m_pSubclassOf    = nullptr;
@@ -59,7 +59,7 @@ Fact::Fact(Kbase* pKbase, Fact* pSuper, Stz* szName)
   m_pKbase  = pKbase;
   
   m_iFactNo = pSuper ? m_pKbase->iNextFactNo() : 0;
-  m_sName   = szName ? szName : C_NO_NOTE;
+  m_sFactNm   = szName ? szName : C_NO_NOTE;
   m_xValue.m_pObject = nullptr;
     
   m_pSubclassOf    = pSuper;
@@ -86,7 +86,7 @@ Fact::~Fact(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  vTrace("~Fact %p ... %s\n"_Stz,this,m_sName.azChar());
+  vTrace("~Fact %p ... %s\n"_Stz,this,m_sFactNm.azChar());
   
   if (m_bDeleteMethod)
     delete m_xValue.m_pMethod;
@@ -165,7 +165,7 @@ void Fact::vAncestry(Stz* szDst)
     szDst->vConcat("."_Stz);
   }
   
-  szDst->vCatSprint("[%lld]%s"_Stz,m_iFactNo,m_sName.azChar());
+  szDst->vCatSprint("[%lld]%s"_Stz,m_iFactNo,m_sFactNm.azChar());
     
   if (m_pSubclassOf)
     m_pSubclassOf->vAncestry(szDst);
@@ -236,7 +236,7 @@ Fact* Fact::pAttributeFindNm(Stz* szName)
        pScan && !pAttribute;
        pScan = pScan->m_pAttributeNext) {
     
-    if (pScan->m_sName.bSame(szName)) {
+    if (pScan->m_sFactNm.bSame(szName)) {
       pAttribute = pScan;
       break;
     }
@@ -259,7 +259,7 @@ Fact* Fact::pAttributeFindNmVal(Stz* szName, Stz* szValue)
        pScan && !pAttribute;
        pScan = pScan->m_pAttributeNext) {
     
-    if (! pScan->m_sName.bSame(szName))
+    if (! pScan->m_sFactNm.bSame(szName))
       continue;
 
     // has to be a text
@@ -428,7 +428,7 @@ Fact* Fact::pElementFindNm(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  if (m_sName.bSame(szName))
+  if (m_sFactNm.bSame(szName))
     return this;
   
   Fact* pElement = nullptr;
@@ -448,7 +448,7 @@ Fact* Fact::pElementFindNmVal(Stz* szName, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  vTrace("pElementSearch %s\n"_Stz,m_sName.azChar());
+  vTrace("pElementSearch %s\n"_Stz,m_sFactNm.azChar());
   
   if (pAttributeFindNmVal(szName,szValue))
     return this;
@@ -605,7 +605,7 @@ Fact* Fact::pFind(Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  if (m_sName.bSame(szFactNm))
+  if (m_sFactNm.bSame(szFactNm))
     return this;
     
   for (Fact* pAttribute = m_pAttributes;
@@ -691,7 +691,7 @@ bool Fact::bIsElementOf(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  if (m_pElementOf && m_pElementOf->m_sName.bSame(szName))
+  if (m_pElementOf && m_pElementOf->m_sFactNm.bSame(szName))
     return true;
   else
     return false;
@@ -720,7 +720,7 @@ bool Fact::bIsSubClass(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  if (m_sName.bSame(szName))
+  if (m_sFactNm.bSame(szName))
     return true;
   
   if (! m_pSubclassOf)
@@ -752,7 +752,7 @@ bool Fact::bIsSubElement(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
 
-  if (m_sName.bSame(szName))
+  if (m_sFactNm.bSame(szName))
     return true;
   
   if (! m_pElementOf)
@@ -845,10 +845,10 @@ Fact* Fact::pNewInstance(Stz* szName)
   Fact* pFact = new Fact(m_pKbase, this, szName);
   
   if (! szName) {
-    pFact->m_sName.vSprint("%s"_Stz,m_sName.azChar());
-//    StrLib::vRemovePrefix(pFact->m_sName.azChar(),'_');
-//    StrLib::vRemoveSuffix(pFact->m_sName.azChar(),'_');
-    StrLib::vTopTail(pFact->m_sName.azChar(),'_');
+    pFact->m_sFactNm.vSprint("%s"_Stz,m_sFactNm.azChar());
+//    StrLib::vRemovePrefix(pFact->m_sFactNm.azChar(),'_');
+//    StrLib::vRemoveSuffix(pFact->m_sFactNm.azChar(),'_');
+    StrLib::vTopTail(pFact->m_sFactNm.azChar(),'_');
   }
   
   return pFact;
@@ -861,7 +861,7 @@ Stz* Fact::szName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  return m_sName;
+  return m_sFactNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -871,7 +871,7 @@ void Fact::vName(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  m_sName = szName;
+  m_sFactNm = szName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -889,7 +889,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
     sPrefix = "Bud{"_Stz;
     iTab = 0;
   }
-  else if (m_sName.bSame("contents"_Stz)) {
+  else if (m_sFactNm.bSame("contents"_Stz)) {
     sPrefix = "Set{"_Stz;
     iTab = 0;
     iDepth = 0;
@@ -908,7 +908,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
     ///sPrefix = "Has{"_Stz;
     sPrefix = "???{"_Stz;
 
-  if (m_sName.bSame("question"_Stz))
+  if (m_sFactNm.bSame("question"_Stz))
     vDebugPoint();
   
   vTraceF(pFile,"%s%s [%lld] %p %s"_Stz,
@@ -917,7 +917,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 
          m_iFactNo,
         this,
-         m_sName.azChar()
+         m_sFactNm.azChar()
          );
   
   Fact* pSubValue = pGetSuperChild(m_pKbase->pValue());
@@ -1015,7 +1015,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //    ///sPrefix = "Has{"_Stz;
 //    sPrefix = "???{"_Stz;
 //
-//  if (m_sName.bSame("question"_Stz))
+//  if (m_sFactNm.bSame("question"_Stz))
 //    vDebugPoint();
 //
 //  switch (iAs) {
@@ -1026,7 +1026,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //             sPrefix.azChar(),
 //
 //             m_iFactNo,
-//             m_sName.azChar()
+//             m_sFactNm.azChar()
 //             );
 //      break;
 //
@@ -1037,7 +1037,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //             sPrefix.azChar(),
 //
 //             m_iFactNo,
-//             m_sName.azChar()
+//             m_sFactNm.azChar()
 //             );
 //      break;
 //
@@ -1048,7 +1048,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //             sPrefix.azChar(),
 //
 //             m_iFactNo,
-//             m_sName.azChar()
+//             m_sFactNm.azChar()
 //             );
 //      break;
 //
@@ -1059,7 +1059,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //             sPrefix.azChar(),
 //
 //             m_iFactNo,
-//             m_sName.azChar()
+//             m_sFactNm.azChar()
 //             );
 //      break;
 //  }
@@ -1153,7 +1153,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //  else
 //    sPrefix = "-+-"_Stz;
 //
-//  if (m_sName.bSame("question"_Stz))
+//  if (m_sFactNm.bSame("question"_Stz))
 //    vDebugPoint();
 //
 //  if (iAs) {
@@ -1174,7 +1174,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //             iAs,
 //
 //             m_iFactNo,
-//             m_sName.azChar()
+//             m_sFactNm.azChar()
 //             );
 //      break;
 //
@@ -1185,7 +1185,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //             iAs,
 //
 //             m_iFactNo,
-//             m_sName.azChar()
+//             m_sFactNm.azChar()
 //             );
 //      break;
 //
@@ -1197,7 +1197,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //             iAs,
 //
 //             m_iFactNo,
-//             m_sName.azChar()
+//             m_sFactNm.azChar()
 //             );
 //      break;
 //
@@ -1208,7 +1208,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //             iAs,
 //
 //             m_iFactNo,
-//             m_sName.azChar()
+//             m_sFactNm.azChar()
 //             );
 //      break;
 //  }
@@ -1342,7 +1342,7 @@ bool Fact::bQuestion(Fact* pQuestion, Opaque* aArg)
   if (! pQuestion->bIsSubClass("_question_"_Stz))
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Fact::bQuestion: %s is not a subclass of _question_\n"_Stz,
-           pQuestion->m_sName.azChar());
+           pQuestion->m_sFactNm.azChar());
 
   Fact* pMethodAttr = pQuestion->pAttributeFindNm("method"_Stz);
   if (! pMethodAttr)

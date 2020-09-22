@@ -50,6 +50,50 @@ Kbase::~Kbase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a concept                                                              */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pAha(Stz* szConceptNm, Fact* pSuperConcept, eFU eUsage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pConcept = pSuperConcept->pNewInstance(szConceptNm);
+  
+  if (FU_NONE != eUsage)
+    pConcept->rxValue().m_eUsage = eUsage;
+
+  m_p_Concept_->vElementAppend(pConcept);
+
+  return pConcept;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a new int attribute to given element                                   */
+/*----------------------------------------------------------------------------*/
+void Kbase::vAtr(Stz* szConceptNm, i8 iVal, Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pConceptInstance(szConceptNm);
+  pAttribute->rxValue().m_iInt = iVal;
+
+  pElement->vAttributeAppend(pAttribute);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a new text attribute to given element                                  */
+/*----------------------------------------------------------------------------*/
+void Kbase::vAtr(Stz* szConceptNm, Stz* szVal, Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pConceptInstance(szConceptNm);
+  pAttribute->rxValue().m_pText = new Text;
+  pAttribute->rxValue().m_pText->vSet(szVal);
+  
+  pElement->vAttributeAppend(pAttribute);
+}
+
+/*----------------------------------------------------------------------------*/
 /* new attribute instance to named set                                        */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm)
@@ -127,11 +171,11 @@ void Kbase::vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, Stz* szVal)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pConceptAdd(Stz* szName, eFU eUsage)
+Fact* Kbase::pConceptAdd(Stz* szFactNm, eFU eUsage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pConcept = m_p_Concept_->pNewInstance(szName);
+  Fact* pConcept = m_p_Concept_->pNewInstance(szFactNm);
   
   if (FU_NONE != eUsage)
     pConcept->rxValue().m_eUsage = eUsage;
@@ -144,11 +188,11 @@ Fact* Kbase::pConceptAdd(Stz* szName, eFU eUsage)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-void Kbase::vConceptAdd(Stz* szName)
+void Kbase::vConceptAdd(Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pConcept = m_p_Concept_->pNewInstance(szName);
+  Fact* pConcept = m_p_Concept_->pNewInstance(szFactNm);
   
   m_p_Concept_->vElementAppend(pConcept);
 }
@@ -156,11 +200,11 @@ void Kbase::vConceptAdd(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szName, eFU eUsage)
+Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szFactNm, eFU eUsage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pConcept = pSuper->pNewInstance(szName);
+  Fact* pConcept = pSuper->pNewInstance(szFactNm);
   
   if (FU_NONE != eUsage)
     pConcept->rxValue().m_eUsage = eUsage;
@@ -173,11 +217,11 @@ Fact* Kbase::pConceptAdd(Fact* pSuper, Stz* szName, eFU eUsage)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-void Kbase::vConceptAdd(Fact* pSuper, Stz* szName)
+void Kbase::vConceptAdd(Fact* pSuper, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pConcept = pSuper->pNewInstance(szName);
+  Fact* pConcept = pSuper->pNewInstance(szFactNm);
   
   m_p_Concept_->vElementAppend(pConcept);
 }
@@ -185,13 +229,13 @@ void Kbase::vConceptAdd(Fact* pSuper, Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* add a concept                                                              */
 /*----------------------------------------------------------------------------*/
-void Kbase::vConceptAdd(Stz* szSuperName, Stz* szName)
+void Kbase::vConceptAdd(Stz* szSuperName, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
   Fact* pSuper = m_p_Concept_->pElementFindNm(szSuperName);
   
-  Fact* pConcept = pSuper->pNewInstance(szName);
+  Fact* pConcept = pSuper->pNewInstance(szFactNm);
   
   m_p_Concept_->vElementAppend(pConcept);
 }
@@ -228,6 +272,20 @@ void Kbase::vCurrent(Fact* pCurrent)
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
   m_pCurrent = pCurrent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add an instance of a concept as an element to given set                    */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pElm(Stz* szConceptNm, Fact* pSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pElement = pConceptInstance(szConceptNm);
+  
+  pSet->vElementAppend(pElement);
+  
+  return pElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -321,11 +379,11 @@ Fact* Kbase::pFactFind(Stz* szFactNm)
 /*----------------------------------------------------------------------------*/
 /* new fact                                                                   */
 /*----------------------------------------------------------------------------*/
-Fact* Kbase::pFactNew(Fact* pSuper, Stz* szName)
+Fact* Kbase::pFactNew(Fact* pSuper, Stz* szFactNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
   
-  Fact* pFact = new Fact(this, pSuper, szName);
+  Fact* pFact = new Fact(this, pSuper, szFactNm);
   
   return pFact;
 }
@@ -700,154 +758,177 @@ void Kbase::vAprioriFacts(void)
   m_pFact->vElementAppend(m_p_Concept_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_p_Property_ = pConceptAdd(m_p_Concept_,"_property_"_Stz);
+  //m_p_Property_ = pConceptAdd(m_p_Concept_,"_property_"_Stz);
+  m_p_Property_ = pAha("_property_"_Stz,m_p_Concept_);
 
-  m_p_Value_ = pConceptAdd("_value_"_Stz,FU_USAGE);
-  m_p_Int_ = pConceptAdd(m_p_Value_,"_int_"_Stz,FU_INT);
-  m_p_Function_ = pConceptAdd(m_p_Value_,"_function_"_Stz,FU_FUNCTION);
-  m_p_Method_ = pConceptAdd(m_p_Value_,"_method_"_Stz,FU_METHOD);
-  m_p_Object_ = pConceptAdd(m_p_Value_,"_object_"_Stz,FU_OBJECT);
-  m_p_Opaque_ = pConceptAdd(m_p_Value_,"_opaque_"_Stz,FU_OPAQUE);
-  m_p_Text_ = pConceptAdd(m_p_Value_,"_text_"_Stz,FU_TEXT);
-  m_p_Word_ = pConceptAdd(m_p_Value_,"_word_"_Stz,FU_WORD);
-  m_p_Xref_ = pConceptAdd(m_p_Value_,"_xref_"_Stz,FU_XREF);
-  m_p_Name_ = pConceptAdd(m_p_Text_,"_name_"_Stz);
+  m_p_Value_    = pAha("_value_"_Stz,   m_p_Concept_, FU_USAGE);
+  m_p_Int_      = pAha("_int_"_Stz,     m_p_Value_,   FU_INT);
+  m_p_Function_ = pAha("_function_"_Stz,m_p_Value_,   FU_FUNCTION);
+  m_p_Method_   = pAha("_method_"_Stz,  m_p_Value_,   FU_METHOD);
+  m_p_Object_   = pAha("_object_"_Stz,  m_p_Value_,   FU_OBJECT);
+  m_p_Opaque_   = pAha("_opaque_"_Stz,  m_p_Value_,   FU_OPAQUE);
+  m_p_Text_     = pAha("_text_"_Stz,    m_p_Value_,   FU_TEXT);
+  m_p_Word_     = pAha("_word_"_Stz,    m_p_Value_,   FU_WORD);
+  m_p_Xref_     = pAha("_xref_"_Stz,    m_p_Value_,   FU_XREF);
+  m_p_Name_     = pAha("_name_"_Stz,    m_p_Text_);
   
-  m_p_Folder_ = pConceptAdd(m_p_Concept_,"_folder_"_Stz);
-  m_p_Tuple_ = pConceptAdd(m_p_Concept_,"_tuple_"_Stz);
+  m_p_Folder_   = pAha("_folder_"_Stz,  m_p_Concept_);
+  m_p_Tuple_    = pAha("_tuple_"_Stz,   m_p_Concept_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vConceptAdd(m_p_Text_,"_arg_"_Stz);
-  vConceptAdd("_chunk_"_Stz);
-  vConceptAdd("_marker_"_Stz);
-  vConceptAdd("_pattern_"_Stz);
-  vConceptAdd("_transforms_"_Stz);
-  vConceptAdd("_transform_"_Stz);
-  vConceptAdd(m_p_Name_,"_transformNm_"_Stz);
-  vConceptAdd("_call_"_Stz);
-  vConceptAdd(m_p_Int_,"_nArgs_"_Stz);
-
-  vConceptAdd(m_p_Concept_,"_rule_"_Stz);
-  vConceptAdd(m_p_Concept_,"_condition_"_Stz);
-  vConceptAdd(m_p_Concept_,"_action_"_Stz);
+  pAha("_action_"_Stz,     m_p_Concept_);
+  pAha("_call_"_Stz,       m_p_Concept_);
+  pAha("_chunk_"_Stz,      m_p_Concept_);
+  pAha("_condition_"_Stz,  m_p_Concept_);
+  pAha("_marker_"_Stz,     m_p_Concept_);
+  pAha("_pattern_"_Stz,    m_p_Concept_);
+  pAha("_rule_"_Stz,       m_p_Concept_);
+  pAha("_transforms_"_Stz, m_p_Concept_);
+  pAha("_transform_"_Stz,  m_p_Concept_);
+  
+  pAha("_arg_"_Stz,        m_p_Text_);
+  pAha("_transformNm_"_Stz,m_p_Name_);
+  pAha("_nArgs_"_Stz,      m_p_Int_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Fact* p_NameSeq_    = pAha("_nameSeq_"_Stz,   m_p_Text_);
+  Fact* p_Format_     = pAha("_format_"_Stz,    m_p_Text_);
 
-  Fact* p_NameSeq_ = pConceptAdd(m_p_Text_,"_nameSeq_"_Stz);
-  Fact* p_Format_ = pConceptAdd(m_p_Text_,"_format_"_Stz);
-
-  Fact* p_Questions_ = pConceptAdd(m_p_Folder_,"_questions_"_Stz);
-  Fact* p_Question_ = pConceptAdd(p_Questions_,"_question_"_Stz);
-  Fact* p_QuestionNm_ = pConceptAdd(m_p_Name_,"_questionNm_"_Stz);
+  Fact* p_Questions_  = pAha("_questions_"_Stz, m_p_Folder_);
+  Fact* p_Question_   = pAha("_question_"_Stz,  p_Questions_);
+  Fact* p_QuestionNm_ = pAha("_questionNm_"_Stz,m_p_Name_);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Fact* p_Type_ = pConceptAdd(m_p_Concept_,"_type_"_Stz);
-  Fact* p_ColumnType_ = pConceptAdd(p_Type_,"_columnType_"_Stz);
-  vConceptAdd(p_ColumnType_,"_BOOLEAN_"_Stz);
-  vConceptAdd(p_ColumnType_,"_DATE_"_Stz);
-  vConceptAdd(p_ColumnType_,"_DECIMAL_"_Stz);
-  vConceptAdd(p_ColumnType_,"_FLOAT_"_Stz);
-  vConceptAdd(p_ColumnType_,"_INTEGER_"_Stz);
-  vConceptAdd(p_ColumnType_,"_INTERVAL_"_Stz);
-  vConceptAdd(p_ColumnType_,"_TIME_"_Stz);
-  vConceptAdd(p_ColumnType_,"_TIMESTAMP_"_Stz);
-  vConceptAdd(p_ColumnType_,"_VARCHAR_"_Stz);
+  Fact* p_Type_       =  pAha("_type_"_Stz,        m_p_Concept_);
+  Fact* p_ColumnType_ =  pAha("_columnType_"_Stz,  p_Type_);
+                         pAha("_BOOLEAN_"_Stz,     p_ColumnType_);
+                         pAha("_DATE_"_Stz,        p_ColumnType_);
+                         pAha("_DECIMAL_"_Stz,     p_ColumnType_);
+                         pAha("_FLOAT_"_Stz,       p_ColumnType_);
+                         pAha("_INTEGER_"_Stz,     p_ColumnType_);
+                         pAha("_INTERVAL_"_Stz,    p_ColumnType_);
+                         pAha("_TIME_"_Stz,        p_ColumnType_);
+                         pAha("_TIMESTAMP_"_Stz,   p_ColumnType_);
+                         pAha("_VARCHAR_"_Stz,     p_ColumnType_);
+ 
+  Fact* p_Nullability_ = pAha("_nullability_"_Stz, m_p_Property_);
+                         pAha("_nullable_"_Stz,    p_Nullability_);
+                         pAha("_notNullable_"_Stz, p_Nullability_);
 
-  Fact* p_Nullability_ = pConceptAdd(m_p_Property_,"_nullability_"_Stz);
-  vConceptAdd(p_Nullability_,"_nullable_"_Stz);
-  vConceptAdd(p_Nullability_,"_notNullable_"_Stz);
+                         pAha("_ptnKey_"_Stz,      m_p_Property_);
 
-  vConceptAdd(m_p_Property_,"_ptnKey_"_Stz);
+  Fact* p_Cardinality_ = pAha("_cardinality_"_Stz,           m_p_Property_);
+                         pAha("all nodes"_Stz,               p_Cardinality_);
+                         pAha("all partitions"_Stz,          p_Cardinality_);
+                         pAha("all partitions on origin"_Stz,p_Cardinality_);
+                         pAha("origin"_Stz,                  p_Cardinality_);
+                         pAha("specific node"_Stz,           p_Cardinality_);
+                         pAha("specific partition"_Stz,      p_Cardinality_);
 
-  Fact* p_Cardinality_ = pConceptAdd(m_p_Property_,"_cardinality_"_Stz);
-  vConceptAdd(p_Cardinality_,"all nodes"_Stz);
-  vConceptAdd(p_Cardinality_,"all partitions"_Stz);
-  vConceptAdd(p_Cardinality_,"all partitions on origin"_Stz);
-  vConceptAdd(p_Cardinality_,"origin"_Stz);
-  vConceptAdd(p_Cardinality_,"specific node"_Stz);
-  vConceptAdd(p_Cardinality_,"specific partition"_Stz);
-
-  vConceptAdd(m_p_Folder_,"_columns_"_Stz);
-  vConceptAdd(m_p_Tuple_,"_column_"_Stz);
-  vConceptAdd(m_p_Int_,"_columnNo_"_Stz);
-  vConceptAdd(m_p_Name_,"_columnNm_"_Stz);
-  vConceptAdd(m_p_Int_,"_length_"_Stz);
-  vConceptAdd(m_p_Int_,"_scale_"_Stz);
-
-  vConceptAdd(m_p_Folder_,"_indexes_"_Stz);
-  vConceptAdd(m_p_Folder_,"_index_"_Stz);
+                         pAha("_columns_"_Stz, m_p_Folder_);
+                         pAha("_column_"_Stz,  m_p_Tuple_);
+                         pAha("_columnNo_"_Stz,m_p_Int_);
+                         pAha("_columnNm_"_Stz,m_p_Name_);
+                         pAha("_length_"_Stz,  m_p_Int_);
+                         pAha("_scale_"_Stz,   m_p_Int_);
+ 
+                         pAha("_indexes_"_Stz, m_p_Folder_);
+                         pAha("_index_"_Stz,   m_p_Folder_);
   
-  Fact* p_Tables_ = pConceptAdd(m_p_Folder_,"_tables_"_Stz);
-  vConceptAdd(m_p_Folder_,"_table_"_Stz);
-  vConceptAdd(m_p_Name_,"_tableNm_"_Stz);
+  Fact* p_Tables_ =      pAha("_tables_"_Stz,  m_p_Folder_);
+                         pAha("_table_"_Stz,   m_p_Folder_);
+                         pAha("_tableNm_"_Stz, m_p_Name_);
   
-  
-  Fact* p_Statement_ = pConceptAdd(m_p_Folder_,"_statement_"_Stz);
-  vConceptAdd(m_p_Folder_,"_subQry_"_Stz);
-  vConceptAdd(m_p_Folder_,"_projectClause_"_Stz);
-  vConceptAdd(m_p_Folder_,"_fromClause_"_Stz);
-  vConceptAdd(m_p_Tuple_, "_fromTable_"_Stz);
-  vConceptAdd(m_p_Folder_,"_whereClause_"_Stz);
-  vConceptAdd(m_p_Folder_,"_groupByClause_"_Stz);
-  vConceptAdd(m_p_Folder_,"_orderByClause_"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vConceptAdd(m_p_Folder_,"_exprList_"_Stz);
-  vConceptAdd(m_p_Folder_,"_expr_"_Stz);
-  vConceptAdd(m_p_Folder_,"_term_"_Stz);
-  vConceptAdd(m_p_Tuple_,"_atom_"_Stz);
+  Fact* p_Statement_ = pAha("_statement_"_Stz,     m_p_Folder_);
+                       pAha("_subQry_"_Stz,        m_p_Folder_);
+                       pAha("_projectClause_"_Stz, m_p_Folder_);
+                       pAha("_fromClause_"_Stz,    m_p_Folder_);
+                       pAha("_fromTable_"_Stz,     m_p_Tuple_);
+                       pAha("_whereClause_"_Stz,   m_p_Folder_);
+                       pAha("_groupByClause_"_Stz, m_p_Folder_);
+                       pAha("_orderByClause_"_Stz, m_p_Folder_);
 
-  vConceptAdd(m_p_Folder_,"_pipeline_"_Stz);
-  vConceptAdd(m_p_Name_,"_pipelineNm_"_Stz);
-  vConceptAdd(m_p_Folder_,"_stages_"_Stz);
-  vConceptAdd(m_p_Folder_,"_stage_"_Stz);
-  vConceptAdd(m_p_Name_,"_stageNm_"_Stz);
-  
-  Fact* p_Operator_ = pConceptAdd(m_p_Tuple_,"_operator_"_Stz);
-  vConceptAdd(p_Operator_,"_op_"_Stz);
-  vConceptAdd(p_Operator_,"_sqlOp_"_Stz);
-  
-  vConceptAdd(m_p_Folder_,"_routines_"_Stz);
-  vConceptAdd(m_p_Tuple_,"_subroutine_"_Stz);
-  vConceptAdd(m_p_Name_,"_subroutineNm_"_Stz);
-  vConceptAdd(m_p_Property_,"_recallable_"_Stz);
-  vConceptAdd(m_p_Text_,"_sourceCode_"_Stz);
+                       pAha("_exprList_"_Stz,      m_p_Folder_);
+                       pAha("_expr_"_Stz,          m_p_Folder_);
+                       pAha("_term_"_Stz,          m_p_Folder_);
+                       pAha("_atom_"_Stz,          m_p_Tuple_);
 
-  Fact* p_Nodes_ = pConceptAdd(m_p_Int_,"_nodes_"_Stz);
-  Fact* p_Partitions_ = pConceptAdd(m_p_Int_,"_partitions_"_Stz);
-  Fact* p_Grid_ = pConceptAdd(m_p_Folder_,"_grid_"_Stz);
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
+                       pAha("_pipeline_"_Stz,      m_p_Folder_);
+                       pAha("_pipelineNm_"_Stz,    m_p_Name_);
+                       pAha("_stages_"_Stz,        m_p_Folder_);
+                       pAha("_stage_"_Stz,         m_p_Folder_);
+                       pAha("_stageNm_"_Stz,       m_p_Name_);
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  Fact* p_Operator_ =  pAha("_operator_"_Stz,      m_p_Tuple_);
+                       pAha("_op_"_Stz,            p_Operator_);
+                       pAha("_sqlOp_"_Stz,         p_Operator_);
   
-  Fact* p_Contents_ = pConceptAdd(m_p_Folder_,"_contents_"_Stz);
+                       pAha("_routines_"_Stz,      m_p_Folder_);
+                       pAha("_subroutine_"_Stz,    m_p_Tuple_);
+                       pAha("_subroutineNm_"_Stz,  m_p_Name_);
+                       pAha("_recallable_"_Stz,    m_p_Property_);
+                       pAha("_sourceCode_"_Stz,    m_p_Text_);
+            
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  Fact* p_Nodes_      = pAha("_nodes_"_Stz,        m_p_Int_);
+  Fact* p_Partitions_ = pAha("_partitions_"_Stz,   m_p_Int_);
+  Fact* p_Grid_       = pAha("_grid_"_Stz,         m_p_Folder_);
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
-  m_pContents = pElementInstance(m_pFact,"_contents_"_Stz);
+  Fact* p_Contents_   = pAha("_contents_"_Stz,     m_p_Folder_);
+  Fact* p_Reference_  = pAha("_reference_"_Stz,    m_p_Folder_);
+  Fact* p_Intention_  = pAha("_intention_"_Stz,    m_p_Folder_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // /contents
+  
+  m_pContents         = pElm("_contents_"_Stz,     m_pFact);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* p_Reference_ = pConceptAdd(m_p_Folder_,"_reference_"_Stz);
+  // /contents/reference
   
-  Fact* pReference = pElementInstance(m_pContents,"_reference_"_Stz);
+  Fact* pReference    = pElm("_reference_"_Stz,    m_pContents);
   
-  Fact* pQuestions = pElementInstance(pReference,"_questions_"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Fact* pQuestion = pElementInstance(pQuestions,"_question_"_Stz);
+  // /contents/reference/questions
+  
+  Fact* pQuestions    = pElm("_questions_"_Stz,    pReference);
+  
+  Fact* pQuestion     = pElm("_question_"_Stz,     pQuestions);
   pAttributeInstance(pQuestion,"_questionNm_"_Stz,"isSubClassOf"_Stz);
   Fact* pMethod = m_p_Method_->pNewInstance();
   pQuestion->vAttributeAppend(pMethod);
   pMethod->rxValue().m_pMethod = new Method(this,pQuestion);
   pMethod->rxValue().m_pMethod->vAddCode(TQ_IS_SUBCLASS_OF);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Fact* pTransforms = pElementInstance(pReference,"_transforms_"_Stz);
+  // /contents/reference/transforms
+  
+  Fact* pTransforms   = pElm("_transforms_"_Stz,   pReference);
 
-  Fact* pTransform = pElementInstance(pTransforms,"_transform_"_Stz);
+  // /contents/reference/transforms/transform cut = Method{ cut }
+  
+  Fact* pTransform    = pElm("_transform_"_Stz,    pTransforms);
   pAttributeInstance(pTransform,"_transformNm_"_Stz,"cut"_Stz);
   pMethod = m_p_Method_->pNewInstance();
   pTransform->vAttributeAppend(pMethod);
@@ -855,7 +936,9 @@ void Kbase::vAprioriFacts(void)
   pMethod->rxValue().m_pMethod->vAddCode(TQ_CUT);
   pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
 
-  pTransform = pElementInstance(pTransforms,"_transform_"_Stz);
+  // /contents/reference/transforms/transform paste = Method{ paste }
+  
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
   pAttributeInstance(pTransform,"_transformNm_"_Stz,"paste"_Stz);
   pMethod = m_p_Method_->pNewInstance();
   pTransform->vAttributeAppend(pMethod);
@@ -864,36 +947,50 @@ void Kbase::vAprioriFacts(void)
   pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // /contents/intention
+  
+  Fact* pIntention    = pElm("_intention_"_Stz,    m_pContents);
 
-  Fact* p_Intention_ = pConceptAdd(m_p_Folder_,"_intention_"_Stz);
-  Fact* pIntention = pElementInstance(m_pContents,"_intention_"_Stz);
-
-  Fact* pGrid = pElementInstance(pIntention,"_grid_"_Stz);
+  // /contents/intention/grid atr{ nodes = Int i partitions = Int i }
+  
+  Fact* pGrid         = pElm("_grid_"_Stz,         pIntention);
   pAttributeInstance(pGrid,"_nodes_"_Stz,AM::nDefinedNodes());
   pAttributeInstance(pGrid,"_partitions_"_Stz,AM::nPartitions());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pElementInstance(pIntention,"_tables_"_Stz);
+  // /contents/intention/tables
+  
+  pElm("_tables_"_Stz,pIntention);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pElementInstance(pIntention,"_statement_"_Stz);
+  // /contents/intention/statement
+  
+  pElm("_statement_"_Stz,pIntention);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pPipeline = pElementInstance(pIntention,"_pipeline_"_Stz);
-  Fact* pStages = pElementInstance(pPipeline,"_stages_"_Stz);
+  // /contents/intention/pipeline
+
+  Fact* pPipeline = pElm("_pipeline_"_Stz,pIntention);
+  
+  // /contents/intention/pipeline/stages atr{ nameseq = Text , format = Text }
+
+  Fact* pStages = pElm("_stages_"_Stz,pPipeline);
   pAttributeInstance(pStages,"_nameSeq_"_Stz,"A"_Stz);
   pAttributeInstance(pStages,"_format_"_Stz,"stage%s"_Stz);
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Fact* pRoutines = pElementInstance(pIntention,"_routines_"_Stz);
-  pElementInstance(pRoutines,"_subroutine_"_Stz);
+  // /contents/intention/routines
+  
+  Fact* pRoutines = pElm("_routines_"_Stz,pIntention);
+  
+  // /contents/intention/subroutine
+  
+  pElm("_subroutine_"_Stz,pRoutines);
 }
 
 
