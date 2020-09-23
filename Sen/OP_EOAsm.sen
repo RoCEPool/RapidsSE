@@ -58,6 +58,38 @@
     Table[].tablePtn@ to tablePtn[]
 
   then
+
+  // do we have an alternate table ?
+  logicUnit[].altTable@ "" str.equal not if
+
+    // do we have an alternative index ?
+    logicUnit[].altIndex@ "" str.equal not if
+
+      // find the alt table and alt index
+      logicUnit[].altTable@ logicUnit[].altIndex@ op__table_index not if
+        false
+        exit
+      then
+
+      index[].indexTree to indexTree[]
+      indexTree[].asAlt
+
+    else
+
+      // find the src table
+      logicUnit[].srcTable@ op__table not if
+        false
+        exit
+      then
+
+    then
+
+    // set table streamDef as src streamDef
+    Table[].asAltStreamDef
+    Table[].tablePtn@ to tablePtn[]
+
+  then
+
 ;
 
 /*----------------------------------------------------------------------------*/

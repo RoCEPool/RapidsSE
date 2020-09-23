@@ -11,6 +11,9 @@ extern EnvFlags gxEnvFlags;;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogicUnit(void)
 {
+  vAddStep("LogicUnit[].altIndex@"_Stz,     &Step::vLogicUnitAltIndexFetch);
+  vAddStep("LogicUnit[].altTable@"_Stz,     &Step::vLogicUnitAltTableFetch);
+  
   vAddStep("LogicUnit[].diaryAction"_Stz,   &Step::vLogicUnitDiaryAction);
   vAddStep("LogicUnit[].diaryNote"_Stz,     &Step::vLogicUnitDiaryNote);
   
@@ -37,6 +40,34 @@ void Step::vAddSteps_LogicUnit(void)
   
   vAddStep("LogicUnit[].transform"_Stz,     &Step::vLogicUnitTransform);
   vAddStep("LogicUnit[].transformArgs"_Stz, &Step::vLogicUnitTransformArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].altIndex@ --                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitAltIndexFetch(void)
+{
+  ENTRY();
+  
+  DevIXT* pDevIxt = _pDevIXT(m_pLogicUnit->m_xRluCommon.m_pDevAltIxt);
+  
+  m_pDataStack->vPushStr(pDevIxt->m_sIndexNm);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].altTable@ --                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitAltTableFetch(void)
+{
+  ENTRY();
+  
+  DevRSB* pDevRsb = _pDevRSB(m_pLogicUnit->m_xRluCommon.m_pDevAltRsb);
+  
+  m_pDataStack->vPushStr(pDevRsb->m_sTableNm);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

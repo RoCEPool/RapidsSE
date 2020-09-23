@@ -935,6 +935,8 @@ public:
   void vLogicCompilerNew(void);
 
   // logic unit
+  void vLogicUnitAltIndexFetch(void);
+  void vLogicUnitAltTableFetch(void);
   void vLogicUnitCallAgainFetch(void);
   void vLogicUnitCallAgainStore(void);
   void vLogicUnitCalledAgainFetch(void);
