@@ -30,8 +30,10 @@
   // execute plan generated STARTMARKER_handler
   ZK_STARTMARKER Counter0[] executeAsmArgs
 
+  // do we have a table ?
   logicUnit[].srcTable@ "" str.equal not if
 
+    // do we have an index ?
     logicUnit[].srcIndex@ "" str.equal not if
 
       // find the src table and src index
@@ -51,6 +53,7 @@
       then
     then
 
+    // set table streamDef as src streamDef
     Table[].asSrcStreamDef
     Table[].tablePtn@ to tablePtn[]
 
