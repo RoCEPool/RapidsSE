@@ -930,10 +930,12 @@ void Kbase::vAprioriFacts(void)
   
   Fact* pQuestion     = pElm("_question_"_Stz,     pQuestions);
                           vAtr("_questionNm_"_Stz,"isSubClassOf"_Stz,pQuestion);
-  Fact* pMethod = m_p_Method_->pNewInstance();
-  pQuestion->vAttributeAppend(pMethod);
-  pMethod->rxValue().m_pMethod = new Method(this,pQuestion);
-  pMethod->rxValue().m_pMethod->vAddCode(TQ_IS_SUBCLASS_OF);
+//  Fact* pMethod = m_p_Method_->pNewInstance();
+//  pQuestion->vAttributeAppend(pMethod);
+//  pMethod->rxValue().m_pMethod = new Method(this,pQuestion);
+//  pMethod->rxValue().m_pMethod->vAddCode(TQ_IS_SUBCLASS_OF);
+  Method* pMethod =       pMth(pQuestion);
+                            pMethod->vAddCode(TQ_IS_SUBCLASS_OF);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -945,21 +947,27 @@ void Kbase::vAprioriFacts(void)
   
   Fact* pTransform    = pElm("_transform_"_Stz,    pTransforms);
                           vAtr("_transformNm_"_Stz,"cut"_Stz,pTransform);
-  pMethod = m_p_Method_->pNewInstance();
-  pTransform->vAttributeAppend(pMethod);
-  pMethod->rxValue().m_pMethod = new Method(this,pTransform);
-  pMethod->rxValue().m_pMethod->vAddCode(TQ_CUT);
-  pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
+//  pMethod = m_p_Method_->pNewInstance();
+//  pTransform->vAttributeAppend(pMethod);
+//  pMethod->rxValue().m_pMethod = new Method(this,pTransform);
+//  pMethod->rxValue().m_pMethod->vAddCode(TQ_CUT);
+//  pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
+  pMethod =               pMth(pTransform);
+                            pMethod->vAddCode(TQ_CUT);
+                            pMethod->vAddCode(TQ_RETURN);
 
   // /contents/reference/transforms/transform paste = Method{ paste }
   
   pTransform          = pElm("_transform_"_Stz,    pTransforms);
                           vAtr("_transformNm_"_Stz,"paste"_Stz,pTransform);
-  pMethod = m_p_Method_->pNewInstance();
-  pTransform->vAttributeAppend(pMethod);
-  pMethod->rxValue().m_pMethod = new Method(this,pTransform);
-  pMethod->rxValue().m_pMethod->vAddCode(TQ_PASTE);
-  pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
+//  pMethod = m_p_Method_->pNewInstance();
+//  pTransform->vAttributeAppend(pMethod);
+//  pMethod->rxValue().m_pMethod = new Method(this,pTransform);
+//  pMethod->rxValue().m_pMethod->vAddCode(TQ_PASTE);
+//  pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
+  pMethod =               pMth(pTransform);
+                            pMethod->vAddCode(TQ_PASTE);
+                            pMethod->vAddCode(TQ_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
