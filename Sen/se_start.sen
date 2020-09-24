@@ -1260,6 +1260,40 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* define procedures (Planner experiments)                                    */
+/*----------------------------------------------------------------------------*/
+: start::defineProc_Planner
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Smt 1 - select l_extendedprice from lineitem;
+  sPath
+  "
+  procedure Smt1
+    parameters $Table $QueryText_stageB
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    scan $Table
+    | sql QueryText_stageB 0
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+/*----------------------------------------------------------------------------*/
 /* define apriori tables                                                      */
 /*----------------------------------------------------------------------------*/
 : start::defineTables
@@ -1604,6 +1638,7 @@
   start::defineProc_Query
   start::defineProc_DynCompiler
   start::defineProc_TPCH
+  start::defineProc_Planner
 
   // define the apriori system tables
   start::defineTables
