@@ -51,6 +51,7 @@ enum eEO : u1 // expression operators
   
   // indexTree
   /*    */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree
+  /*    */ EO_INDEXTREE_DEV_SET,    // set the dev to indexTree
   /*    */ EO_INDEXTREE_SRC_SET,    // set the src indexTree
   /*    */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree
   
@@ -351,6 +352,7 @@ static Stz* aEO[]
   
   // indexTree
   /*    */ "EO_INDEXTREE_ALT_SET"_Stz,
+  /*    */ "EO_INDEXTREE_DEV_SET"_Stz,
   /*    */ "EO_INDEXTREE_SRC_SET"_Stz,
   /*    */ "EO_INDEXTREE_TMP_SET"_Stz,
   
@@ -657,6 +659,7 @@ static EoArg EoArgs[]
   
   // indexTree
   { EA_NONE,    0 },  // EO_INDEXTREE_ALT_SET
+  { EA_INT,     8 },  // EO_INDEXTREE_DEV_SET
   { EA_NONE,    0 },  // EO_INDEXTREE_SRC_SET
   { EA_NONE,    0 },  // EO_INDEXTREE_TMP_SET
   

@@ -82,6 +82,8 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
 void vDev_RSB_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
 void vDev_SRC_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
 
+void vDev_INDEXTREE_DEV_SET(void* aLU, i8 iDev);
+
 void vDev_PIX_STM_PRINT(void* aLU);
 
 void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHash);

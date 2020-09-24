@@ -455,7 +455,7 @@ void vDev_IXT_INDEXTREE_SET(void* aLU, void* aIXT)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIxt = _pDevIXT(aIXT);
-  pDevIxt->m_pIdxTree = * pLogicUnit->m_xpIndexTree;;
+  pDevIxt->m_pIdxTree = * pLogicUnit->m_xpIndexTree;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1819,6 +1819,17 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
   aiDstk_lcl = (i8*)ayDstByte;
   
   *aaiDstk = --aiDstk_lcl;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the indexTree[] in the dev                                             */
+/*----------------------------------------------------------------------------*/
+void vDev_INDEXTREE_DEV_SET(void* aLU, i8 i_Dev)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  pLogicUnit->m_aaDev[i_Dev] = (void*)(* pLogicUnit->m_xpIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1370,6 +1370,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_INDEXTREE_TMP_SET);
         vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevTmpIxt);
         break;//+endCase
+       
+      case EO_INDEXTREE_DEV_SET: ArgGet(iArg); // set m_aaDev to indexTree[]
+        dLU0(EO_INDEXTREE_DEV_SET);
+        vDev_INDEXTREE_DEV_SET(pLU,iArg);
+        break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators

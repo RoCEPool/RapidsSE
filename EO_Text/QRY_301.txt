@@ -1,14 +1,14 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// BEGIN : QRY_100
+// BEGIN : QRY_301
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Routine QRY_100
+Routine QRY_301
 
   // initialization
   EO_INIT
   EO_ENTER
 
   // set sql query no (debug)
-  EO_SQL 100
+  EO_SQL 301
 
   // check for ZK_STARTMARKER
   EO_DUP
@@ -47,20 +47,23 @@ Routine QRY_100
   // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
   EO_POP
+
   EO_TABLENM_SRC_SET "lineitem"
+  EO_INDEXNM_SRC_SET "lineitem_Idx1"
   EO_REG_INDEXDEF_NEW "idx_int"
   EO_PUSH_COLUMN_TYPE CT_INTEGER
   EO_REG_INDEXDEF_ADDCOLUMN "intA"
   EO_REG_INDEXTREE_NEW
   EO_REG_INDEXDEF_DELETE
   EO_INDEXTREE_TMP_SET
-  EO_JMP QRY_100_DONE
+  EO_INDEXTREE_DEV_SET 0
+  EO_JMP QRY_301_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_PULSEMARKER handler
 Label PULSEMARKER_HANDLER
   EO_POP
-  EO_JMP QRY_100_DONE
+  EO_JMP QRY_301_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STREAMDEF handler
@@ -137,7 +140,7 @@ Label STREAMDEF_HANDLER
 
   EO_POT_USE_STREAMDEFOUT 0
 
-  EO_JMP QRY_100_DONE
+  EO_JMP QRY_301_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_EOSMARKER handler
@@ -145,343 +148,221 @@ Label EOSMARKER_HANDLER
   EO_POP
   EO_CALL SUBROUTINE_IXT_TO_RSB
   EO_REG_INDEXTREE_DELETE
-  EO_JMP QRY_100_DONE
+  EO_JMP QRY_301_DONE
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_CRWBUFFER handler
-Label CRWBUFFER_HANDLER
-  EO_POP
-  EO_CRW_SRC_BEGIN
+Label RSBBUFFER_HANDLER
 
-  // NEXT_CRW_SRC:
-  Label NEXT_CRW_SRC
-  EO_CRW_SRC_NEXT
-  EO_JMP_FALSE QRY_100_DONE
+  EO_RSB_DST_NEW
 
-  // call PROCESSROW subroutine to process the row
-  EO_CALL SUBROUTINE_PROCESSROW
+  EO_RSB_SRC_BEGIN
 
-  EO_JMP NEXT_CRW_SRC
+Label NXT_SRC
+  EO_RSB_SRC_NEXT
+  EO_JMP_FALSE,"END_SRC
 
-  Label QRY_100_DONE
-  EO_CRW_SRC_NULL
+  //EO_CALL,"MOV_DST
+  EO_CALL,"AGG_REV
+
+  EO_JMP,"NXT_SRC
+
+Label END_SRC
+
+  EO_CALL,"OUT_AGG
+                       
+Label QRY_301_DONE
   EO_EXIT
   EO_RETURN
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // END MAIN: QRY_100
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // BEGIN SUBROUTINE: SUBROUTINE_PROCESSROW
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Label SUBROUTINE_PROCESSROW
-
-  //  EO_COL_SRC_PUSHONE,L_ORDERKEY
-  //  EO_PRINT
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // inflate crw required columns
-  //  EO_PUSH_MINUS1
-  //  EO_INTEGER,L_SHIPDATE
-  //  EO_INTEGER,L_LINESTATUS
-  //  EO_INTEGER,L_RETURNFLAG
-  //  EO_INTEGER,L_TAX
-  //  EO_INTEGER,L_DISCOUNT
-  //  EO_INTEGER,L_EXTENDEDPRICE
-  //  EO_INTEGER,L_QUANTITY
-
-
-  //  EO_SET_ITEMS,7
-  //  EO_SET_COLUMN,L_SHIPDATE
-  //  EO_SET_COLUMN,L_LINESTATUS
-  //  EO_SET_COLUMN,L_RETURNFLAG
-  //  EO_SET_COLUMN,L_TAX
-  //  EO_SET_COLUMN,L_DISCOUNT
-  //  EO_SET_COLUMN,L_EXTENDEDPRICE
-  //  EO_SET_COLUMN,L_QUANTITY
-  //  //EO_COL_SRC_PUSHSET
-  EO_SET_LOCALS_SRC 0
-  //EO_DUMP
-
-
-
-  // pop inflated columns into the locals register
-  //  EO_POP_LOCALI,Q1_LOCAL_SHIPDATE
-  //  EO_POP_LOCALS,Q1_LOCAL_LINESTATUS
-  //  EO_POP_LOCALS,Q1_LOCAL_RETURNFLAG
-  //  EO_POP_LOCALI,Q1_LOCAL_TAX
-  //  EO_POP_LOCALI,Q1_LOCAL_DISCOUNT
-  //  EO_POP_LOCALI,Q1_LOCAL_EXTENDEDPRICE
-  //  EO_POP_LOCALI,Q1_LOCAL_QUANTITY
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: QRY_301                                           Q301
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // call the filter subroutine
-  // Label FILTER
-  //EO_CALL SUBROUTINE_FILTER
-  //EO_JMP_FALSE PROCESSROW_DONE
+  // SUBROUTINE: MOV_DST  --                                        Q301 MOV_DST
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  EO_PUSH_LOCALI 6
-  EO_DATE "1998-09-01"
-  EO_GREATERTHAN
-  EO_JMP_TRUE PROCESSROW_DONE
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Label MOV_DST
+
+  //EO_RSB_SRC_PRINT
+
+  EO_RSB_DST_ZERO
+
+  EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY
+  EO_RSB_DST_POPCOLI, Q301_ORDERKEY
+  EO_RSB_SRC_PUSHCOLI,Q300_ORDERDATE
+  EO_RSB_DST_POPCOLI, Q301_ORDERDATE
+  EO_RSB_SRC_PUSHCOLI,Q300_SHIPPRIORITY
+  EO_RSB_DST_POPCOLI, Q301_SHIPPRIORITY
+
+  EO_RETURN
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: MOV_DST                                           Q301 MOV_DST
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 
-  // reset entwrk
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // SUBROUTINE: AGG_REV  --                                        Q301 AGG_REV
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Label AGG_REV
+
+  EO_RSB_DST_ZERO
+
+  EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY
+  EO_RSB_DST_POPCOLI, Q301_ORDERKEY
+  EO_RSB_SRC_PUSHCOLI,Q300_ORDERDATE
+  EO_RSB_DST_POPCOLI, Q301_ORDERDATE
+  EO_RSB_SRC_PUSHCOLI,Q300_SHIPPRIORITY
+  EO_RSB_DST_POPCOLI, Q301_SHIPPRIORITY
+
   EO_ENTWRK_RESET
 
-  // add key L_RETURNFLAG, L_LINESTATUS
-  //ray100
-  //  EO_PUSH_LOCALS,Q1_LOCAL_RETURNFLAG
-  //  EO_ENTWRK_APPENDELMS
-  //  EO_PUSH_LOCALS,Q1_LOCAL_LINESTATUS
-  //  EO_ENTWRK_APPENDELMS
+  EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY
+  EO_ENTWRK_SETINTELM
+  EO_IXT_POS_ALTBYWRK
+  EO_JMP_FALSE,"RET_AGG_f
 
-  EO_KEY_LCL2C_TO_I 8
+  Label NXT_AGG
+  EO_IXT_ALT_NEXT
+  EO_JMP_FALSE,"RET_AGG_f
+  EO_IXT_CMP_WRKALT
+  EO_JMP_FALSE,"RET_AGG_f
+
+  EO_CRW_ALT_DEREF
+
+  EO_COL_ALT_PUSHONE,L_SHIPDATE
+  EO_DATE, "1995-03-15"_Stz
+  EO_GREATERTHAN
+  EO_JMP_FALSE,"NXT_AGG
+
+  EO_RSB_DST_PUSHCOLI,Q301_REVENUE
+  EO_COL_ALT_PUSHONE,L_EXTENDEDPRICE
+  EO_ADD
+
+  EO_INTEGER,100
+  EO_COL_ALT_PUSHONE,L_DISCOUNT
+  EO_SUBTRACT
+
+  EO_MULTIPLY
+  EO_INTEGER,100
+  EO_DIVIDE
+
+  vCC(2 EO_DUP
+  vCC(2 EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY
+  vCC(2 vAddCodeString(EO_PRINTF,"  totalled L_OrderKey %i revenue %i\n"_Stz
+
+  EO_RSB_DST_POPCOLI,Q301_REVENUE
+
+  EO_JMP,"NXT_AGG
+
+  Label RET_AGG_f
+
+  // not quite right...
+  EO_CALL,"LIM_SBR
+
+  EO_RETURN
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // SUBROUTINE: LIM_SBR  --                                        Q301 LIM_SBR
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Label LIM_SBR
+
+  //EO_IXT_TMP_ENTRIES
+  //EO_PRINT
+
+  EO_IXT_TMP_ENTRIES
+  EO_INTEGER,10
+  EO_LESSTHAN
+  EO_JMP_TRUE,"LIM_INS
+
+  // -- -- -- -- -- -- -- -- --
+  Label LIM_TST
+
+  EO_IXT_TRV_BEGIN
+  EO_JMP_FALSE,"LIM_RET // need an assert
+
+  EO_RSB_DST_PUSHCOLI, Q301_REVENUE
+  EO_ENT_PUSHELMI0
+  EO_LESSEQUAL
+  EO_JMP_TRUE,"LIM_RET
+
+  EO_IXT_DEL_ENT
+
+
+  // -- -- -- -- -- -- -- -- --
+  Label LIM_INS
+
+  EO_ENTWRK_RESET
+
+  EO_RSB_DST_PUSHCOLI, Q301_REVENUE
+  //EO_DUP
+  //EO_PRINT
+  //EO_ENTWRK_APPENDELMI
   EO_ENTWRK_SETINTELM
 
+  EO_ENTWRK_CREATEPAY, 3 * C_BYTES_PER_WORD
 
-  EO_ENT_FINDI
-  EO_JMP_TRUE FOUND
-
-
-
-  // find the key in the indexTree
-  EO_ENT_POSPRIOR
-  //  EO_ENT_PUSH
-  //  EO_PUSH_0
-  //  EO_NOTEQUAL
-  EO_JMP_FALSE NOT_FOUND
-
-  EO_ENT_NEXT
-  EO_JMP_FALSE NOT_FOUND
-
-  EO_ENT_EQUAL
-  EO_JMP_TRUE FOUND
-
-  // NOT_FOUND:
-  Label NOT_FOUND
-  EO_ENTWRK_CREATEPAY 88
   EO_IXT_INS_ENT
-  //EO_IXT_DUMP
 
   EO_PAY_ADDRESS
 
-  // store L_RETURNFLAG -> Q100_RETURNFLAG
-  EO_PUSH_LOCALS 4
-  EO_PAY_STORE_COLS 0
+  EO_RSB_DST_PUSHCOLI, Q301_ORDERKEY
+  EO_PAY_STORE_COLI,(i8)0
+  EO_RSB_DST_PUSHCOLI, Q301_ORDERDATE
+  EO_PAY_STORE_COLI,(i8)1
+  EO_RSB_DST_PUSHCOLI, Q301_SHIPPRIORITY
+  EO_PAY_STORE_COLI,(i8)2
 
-  // store Q1_LINESTATUS -> Q100_LINESTATUS
-  EO_PUSH_LOCALS 5
-  EO_PAY_STORE_COLS 1
+  vCC(2 EO_RSB_DST_PUSHCOLI, Q301_SHIPPRIORITY
+  vCC(2 EO_RSB_DST_PUSHCOLI, Q301_ORDERDATE
+  vCC(2 EO_RSB_DST_PUSHCOLI, Q301_ORDERKEY
+  vCC(2 vAddCodeString(EO_PRINTF,
+                         "  topping L_OrderKey %i L_OrderDate %d L_ShipPriority %i\n"_Stz
 
-  // set sum(L_QUANTITY) -> Q100_SUM_QTY
-  EO_PUSH_0
-  EO_PAY_STORE_COLI 2
-
-  // set sum(L_QUANTITY) -> Q100_SUM_BASE_PRICE
-  EO_PUSH_0
-  EO_PAY_STORE_COLI 3
-
-  // set sum(L_QUANTITY) -> Q1_SUM_DISC_PRICE
-  EO_PUSH_0
-  EO_PAY_STORE_COLI 4
-
-  // set sum(L_QUANTITY) -> Q100_SUM_CHARGE
-  EO_PUSH_0
-  EO_PAY_STORE_COLI 5
-  //EO_IXT_DUMP,(i8)0 ray commented 30 jul 2020
-  //EO_IXT_DUMP
-
-  // FOUND:
-  Label FOUND
-
-  EO_PAY_ADDRESS
-
-  EO_SUPER_Q100
-  /*
-   vOptimize()
-  // sum(L_QUANTITY) -> Q100_SUM_QTY
-  EO_PAY_FETCH_COLI 2
-  EO_PUSH_LOCALI 0
-  EO_ADD
-  EO_PAY_STORE_COLI 2
-
-  // SUM(L_EXTENDEDPRICE) -> Q100_SUM_BASE_PRICE
-  EO_PAY_FETCH_COLI 3
-  EO_PUSH_LOCALI 1
-  EO_ADD
-  EO_PAY_STORE_COLI 3
-
-  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)) -> Q100_SUM_DISC_PRICE
-  EO_PUSH_LOCALI 1
-  EO_INTEGER,100
-  EO_PUSH_LOCALI 2
-  EO_SUBTRACT
-  EO_MULTIPLY
-  EO_INTEGER 100
-  EO_DIVIDE
-  EO_PAY_FETCH_COLI 4
-  EO_ADD
-  EO_PAY_STORE_COLI 4
-
-
-  // SUM(L_EXTENDEDPRICE*(1-L_DISCOUNT)*(1+L_TAX)) -> Q100_SUM_CHARGE
-  EO_PUSH_LOCALI 1
-  EO_INTEGER 100
-  EO_PUSH_LOCALI 2
-  EO_SUBTRACT
-  EO_MULTIPLY
-  EO_INTEGER 100
-  EO_PUSH_LOCALI 3
-  EO_ADD
-  EO_MULTIPLY
-  EO_INTEGER 10000
-  EO_DIVIDE
-  EO_PAY_FETCH_COLI 5
-  EO_ADD
-  EO_PAY_STORE_COLI 5
-
-
-  // COUNT(L_QUANTITY) -> Q100_COUNT_QTY
-  EO_PUSH_LOCALI 0
-  EO_ISNULL
-  EO_JMP_TRUE L_QUANTITY_NULL
-  EO_PAY_FETCH_COLI 6
-  EO_INC
-  EO_PAY_STORE_COLI 6
-
-  Label L_QUANTITY_NULL
-
-  // COUNT(L_EXTENDEDPRICE) -> Q100_COUNT_PRICE
-  EO_PUSH_LOCALI 1
-  EO_ISNULL
-  EO_JMP_TRUE L_EXTENTEDPRICE_NULL
-  EO_PAY_FETCH_COLI 7
-  EO_INC
-  EO_PAY_STORE_COLI 7
-
-  Label L_EXTENTEDPRICE_NULL
-
-
-  // SUM(L_DISCOUNT) -> Q100_SUM_BASE_PRICE
-  EO_PAY_FETCH_COLI 8
-  EO_PUSH_LOCALI 2
-  EO_ADD
-  EO_PAY_STORE_COLI 8
-
-  // COUNT(L_DISCOUNT) -> Q100_COUNT_DISC
-  EO_PUSH_LOCALI 2
-  EO_ISNULL
-  EO_JMP_TRUE L_DISCOUNT_NULL
-  EO_PAY_FETCH_COLI 9
-  EO_INC
-  EO_PAY_STORE_COLI 9
-
-  Label L_DISCOUNT_NULL
-
-  // COUNT(*) -> Q100_COUNT_ORDER
-  EO_PAY_FETCH_COLI 10
-  EO_INC
-  EO_PAY_STORE_COLI 10
-
-  vEndOptimise( // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  */
-
-  //EO_IXT_DUMP,(i8)0 ray commented 30 jul 2020
-  //EO_JMP NEXT_RSB_SRC
-  //EO_IXT_DUMP
-
-  Label PROCESSROW_DONE
+  // -- -- -- -- -- -- -- -- --
+  Label LIM_RET
+  //EO_IXT_DUMP,(i8)0
   EO_RETURN
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // BEGIN SUBROUTINE: SUBROUTINE_FILTER
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Label SUBROUTINE_FILTER
-
-  EO_PUSH_LOCALI 6
-  EO_DATE "1998-09-01"
-  EO_GREATERTHAN
-  EO_JMP_TRUE RETURN_FALSE
-
-  // return true
-  EO_PUSH_1
-  EO_JMP RETURN
-
-  // return false
-  Label RETURN_FALSE
-  EO_PUSH_0
-
-  // return
-  Label RETURN
-  EO_RETURN
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // END SUBROUTINE: SUBROUTINE_FILTER
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: LIM_SBR                                           Q301 LIM_SBR
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // BEGIN SUBROUTINE: SUBROUTINE_IXT_TO_RSB
+  // SUBROUTINE: OUT_AGG  --                                        Q301 OUT_AGG
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Label SUBROUTINE_IXT_TO_RSB
-  //vAddCodeString(EO_PRINTF **100** SUBROUTINE_IXT_TO_RSB\n
-  // begin index tree traversal
+  Label OUT_AGG
+
+  EO_RSB_DST_RESET
+
+
   EO_IXT_TRV_BEGIN
-  EO_JMP_FALSE END_IXT_SRC
+  EO_JMP_FALSE TRV_RET
 
-  Label NEXT_IXT_SRC
+  Label TRV_ECH
 
-  // new a dst rsb row
   EO_RSB_DST_NEW
 
   EO_PAY_ADDRESS
 
-  EO_PAY_FETCH_COLS 0
-  EO_RSB_DST_POPCOLS 0
+  EO_ENT_PUSHELMI0
+  EO_RSB_DST_POPCOLI, Q301_REVENUE
 
-  EO_PAY_FETCH_COLS 1
-  EO_RSB_DST_POPCOLS 1
+  EO_PAY_FETCH_COLI,(i8)0
+  EO_RSB_DST_POPCOLI, Q301_ORDERKEY
+  EO_PAY_FETCH_COLI,(i8)1
+  EO_RSB_DST_POPCOLI, Q301_ORDERDATE
+  EO_PAY_FETCH_COLI,(i8)2
+  EO_RSB_DST_POPCOLI, Q301_SHIPPRIORITY
 
-  EO_PAY_FETCH_COLI 2
-  EO_RSB_DST_POPCOLI 2
 
-  EO_PAY_FETCH_COLI 3
-  EO_RSB_DST_POPCOLI 3
+  Label TRV_NXT
+  EO_IXT_TRV_NEXT
+  EO_JMP_TRUE TRV_ECH
 
-  EO_PAY_FETCH_COLI 4
-  EO_RSB_DST_POPCOLI 4
-
-  EO_PAY_FETCH_COLI 5
-  EO_RSB_DST_POPCOLI 5
-
-  EO_PAY_FETCH_COLI 6
-  EO_RSB_DST_POPCOLI 6
-
-  EO_PAY_FETCH_COLI 7
-  EO_RSB_DST_POPCOLI 7
-
-  EO_PAY_FETCH_COLI 8
-  EO_RSB_DST_POPCOLI 8
-
-  EO_PAY_FETCH_COLI 9
-  EO_RSB_DST_POPCOLI 9
-
-  EO_PAY_FETCH_COLI 10
-  EO_RSB_DST_POPCOLI 10
-
-  EO_RSB_DST_PRINT
-  EO_ENT_NEXT
-  EO_JMP_TRUE NEXT_IXT_SRC
-
-  Label END_IXT_SRC
+  Label TRV_RET
+  //EO_BREAKPOINT
   EO_RETURN
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// END SUBROUTINE: SUBROUTINE_IXT_TO_RSB
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // END ROUTINE: OUT_AGG                                           Q301 OUT_AGG
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
