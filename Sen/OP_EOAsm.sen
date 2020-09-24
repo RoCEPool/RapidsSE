@@ -151,6 +151,7 @@
   Operand[].asSrcRowSlab
   ZK_RSBBUFFER Counter0[] executeAsmArgs
   Operand[].delete
+  Pot[].pipeoutAllCompleted
 
   true
 ;
