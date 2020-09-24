@@ -419,6 +419,21 @@ void Kbase::vMarker(Fact* pMarker)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a new method as an attribute to given element                          */
+/*----------------------------------------------------------------------------*/
+Method* Kbase::pMth(Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pMethod = m_p_Method_->pNewInstance();
+  pElement->vAttributeAppend(pMethod);
+  
+  pMethod->rxValue().m_pMethod = new Method(this,pElement);
+
+  return pMethod->rxValue().m_pMethod;
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate next fact no                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Kbase::iNextFactNo(void)

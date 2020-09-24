@@ -87,7 +87,8 @@ namespace Facts
 
     Fact* pMarker(void);
     void  vMarker(Fact* pMarker);
-  
+    Method* pMth(Fact* pElement);
+
     i8    iNextFactNo(void);
   
     Fact* pPaste(void);
