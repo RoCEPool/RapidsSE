@@ -90,6 +90,11 @@
 
   then
 
+  // pipeout streamDefout if any (q3)
+  StreamDefOut[].isNull not if
+    StreamDefOut[].pipeout
+  then
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -109,9 +114,15 @@
     StreamDefOut[].pipeout
   then
 
-  // force op loop to call EOAsm_EosMarker to end
-  "EOAsm_EosMarker" word::find LogicUnit[].handler!
-  true LogicUnit[].callAgain!
+  LogicUnit[].callAgain@ if
+    //"Completed test" .
+    Pot[].pipeoutAllCompletedPtns
+    true
+  else
+    // force op loop to call EOAsm_EosMarker to end
+    "EOAsm_EosMarker" word::find LogicUnit[].handler!
+    true LogicUnit[].callAgain!
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
