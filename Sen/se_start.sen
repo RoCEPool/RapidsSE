@@ -1205,27 +1205,27 @@
   sPath
   "
   procedure Query3_ASM_I
-    parameters $QueryText_stageB $QueryText_stageC QueryText_stageD
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
   begin
 
   stage stageA on origin :
-  start
-  | periodicOp once
-  | stageB
+    start
+    | periodicOp once
+    | stageB
 
   stage stageB on all partitions :
-  sql QueryText_stageB 0
-  | stageC hashed
+    EOAsm $QueryText_stageB 0
+    | stageC hashed
 
   stage stageC on all partitions :
-  sql QueryText_stageC 0
-  | stageD
+    EOAsm $QueryText_stageC 0
+    | stageD
 
   stage stageD on origin :
-  sql QueryText_stageD 0
-  | output
-  | sink
-  | stageA
+    EOAsm $QueryText_stageD 0
+    | output
+    | sink
+    | stageA
 
   end ;  "
   api::addProcedure

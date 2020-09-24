@@ -9666,6 +9666,7 @@ void Task::vAddMunged(Forth* pForth)
     "  Operand[].asSrcRowSlab\n"
     "  ZK_RSBBUFFER Counter0[] executeAsmArgs\n"
     "  Operand[].delete\n"
+    "  Pot[].pipeoutAllCompleted\n"
     "\n"
     "  true\n"
     " ;\n"
