@@ -47,7 +47,6 @@ Routine QRY_Smt1
   // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
   EO_POP
-  EO_TABLENM_SRC_SET "lineitem"
   EO_JMP QRY_SMT1_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -85,7 +84,7 @@ Label CRWBUFFER_HANDLER
   EO_CRW_SRC_BEGIN
 
   // NEXT_CRW_SRC:
-  Label NEXT_CRW_SRC
+Label NEXT_CRW_SRC
   EO_CRW_SRC_NEXT
   EO_JMP_FALSE QRY_SMT1_DONE
 

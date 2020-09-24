@@ -203,6 +203,8 @@
   // execute plan STREAMDEF_handler
   ZK_STREAMDEF Counter0[] executeAsmArgs
 
+  streamDef[].asSrcStreamDef
+
   // pipeout streamDefout if any
   StreamDefOut[].isNull not if
     StreamDefOut[].pipeout

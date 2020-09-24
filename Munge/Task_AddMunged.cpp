@@ -9718,6 +9718,8 @@ void Task::vAddMunged(Forth* pForth)
     "  // execute plan STREAMDEF_handler\n"
     "  ZK_STREAMDEF Counter0[] executeAsmArgs\n"
     "\n"
+    "  streamDef[].asSrcStreamDef\n"
+    "\n"
     "  // pipeout streamDefout if any\n"
     "  StreamDefOut[].isNull not if\n"
     "    StreamDefOut[].pipeout\n"
