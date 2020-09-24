@@ -11,10 +11,11 @@
 
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  PipeIn[].pipeOut
 
   // truncate the buffers of the tablePtn
   tablePtn[].truncate
+
+  PipeIn[].pipeOut
 
   Operand[].newEosMarker
   Operand[].pipeOut
