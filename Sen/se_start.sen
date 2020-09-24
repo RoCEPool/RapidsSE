@@ -1281,7 +1281,7 @@
 
   stage stageB on all partitions :
     scan $Table
-    | sql QueryText_stageB 0
+    | EOAsm $QueryText_stageB 0
     | stageC
 
   stage stageC on origin :
