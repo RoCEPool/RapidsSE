@@ -1,0 +1,333 @@
+/*****************************************************************************/
+/* Q0_Transform.txt                                                          */
+/*****************************************************************************/
+
+// initial statement
+
+../statement
+
+  select l_extendedPrice
+  from   lineItem
+  
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// add plan `0
+
+../plan `0 /* + */
+
+  ../from
+    lineItem
+
+  ../project
+    l_extendedPrice
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// import the from tables
+
+../tables /* + */
+
+  ../table
+  
+    ../lineItem
+    
+	  L_ORDERKEY      INTEGER NOT NULL         //  0)  8B   3B
+	  L_PARTKEY       INTEGER NOT NULL         //  1)  8B   3B
+	  L_SUPPKEY       INTEGER NOT NULL         //  2)  8B   3B
+	  L_LINENUMBER    INTEGER NOT NULL         //  3)  8B   3B
+	  L_QUANTITY      DECIMAL(15,2) NOT NULL   //  4)  8B   3B
+	  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL   //  5)  8B   3B
+	  L_DISCOUNT      DECIMAL(15,2) NOT NULL   //  6)  8B   3B
+	  L_TAX           DECIMAL(15,2) NOT NULL   //  7)  8B   3B
+	  L_RETURNFLAG    CHAR(1) NOT NULL         //  8)  2B   2B
+	  L_LINESTATUS    CHAR(1) NOT NULL         //  9)  2B   2B
+	  L_SHIPDATE      TIMESTAMP NOT NULL       // 10)  8B   8B
+	  L_COMMITDATE    TIMESTAMP NOT NULL       // 11)  8B   8B
+	  L_RECEIPTDATE   TIMESTAMP NOT NULL       // 12)  8B   8B
+	  L_SHIPINSTRUCT  CHAR(25) NOT NULL        // 13) 26B  13B
+	  L_SHIPMODE      CHAR(10) NOT NULL        // 14) 11B   5B
+	  L_COMMENT       VARCHAR(44) NOT NULL     // 15) 45B  23B
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// xref the from tables
+
+../plan `1
+
+  ../from
+    lineItem ../tables/table/lineItem /* + */
+    
+  ../project
+    l_extendedPrice
+    
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// xref the project columns
+
+../plan `2
+
+  ../from
+    lineItem ../tables/table/lineItem
+    
+  ../project
+    l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5) /* + */
+    
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// add streamDefOut (derived from the project)
+
+../plan `3
+
+  ../from
+    lineItem ../tables/table/lineItem
+    
+  ../project
+   l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
+   
+  ../streamDefOut /* + */
+    l_extendedPrice DECIMAL(15,2) NOT NULL
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// determine the from access method
+
+../plan `4
+
+  ../from 
+    lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN /* + */
+    
+  ../project
+   l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
+   
+  ../streamDefOut
+    l_extendedPrice DECIMAL(15,2) NOT NULL
+
+
+//=============================================================================
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// add pipeline 
+
+../plan `5
+
+  ../pipeline /* + */
+    pipeline QUERY_0
+    
+	  ../from 
+		lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
+    
+	  ../project
+	   l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
+   
+	  ../streamDefOut
+		l_extendedPrice DECIMAL(15,2) NOT NULL
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// add stage STAGE_A START
+
+../plan `6
+
+  ../pipeline
+    QUERY_0
+    
+	../stage /* + */
+      STAGE_A START
+      
+	   ../from 
+		lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
+    
+	   ../project
+	   l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
+
+       ../streamDefOut
+		l_extendedPrice DECIMAL(15,2) NOT NULL
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// add stage STAGE_B
+
+../plan `7 
+
+  ../pipeline
+    QUERY_0
+    
+	../stage
+      STAGE_A START
+      
+	../stage /* + */
+      STAGE_B
+      
+	   ../from 
+		lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
+    
+	   ../project
+	   l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
+
+       ../streamDefOut
+		l_extendedPrice DECIMAL(15,2) NOT NULL
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// add operator STAGE_B OP_0 SCAN
+
+../plan `8
+
+  ../pipeline
+    QUERY_0
+    
+	../stage
+      STAGE_A START
+      
+	../stage
+      STAGE_B
+      
+      ../operator /* + */
+        OP_0 SCAN
+         
+	     ../from 
+		  lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
+    
+	     ../project
+	     l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
+      
+         ../streamDefOut
+		 l_extendedPrice DECIMAL(15,2) NOT NULL
+      
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// add stage STAGE_B OP_1 EOAsm                                                    HOW/WHY?
+
+../plan `9
+
+  ../pipeline
+    QUERY_0
+    
+	../stage
+      STAGE_A START
+      
+	../stage
+      STAGE_B
+      
+      ../operator
+        OP_0 SCAN       
+	     ../from 
+		  lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
+    
+      ../operator /* + */
+        OP_1 EOAsm 
+        
+	     ../project
+	     l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
+      
+         ../streamDefOut
+		 l_extendedPrice DECIMAL(15,2) NOT NULL
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// add stage STAGE_C OUTPUT
+
+../plan `10
+
+  ../pipeline
+    QUERY_0
+    
+	../stage
+      STAGE_A START
+      
+	../stage
+      STAGE_B
+      
+      ../operator
+        OP_0 SCAN       
+	     ../from 
+		  lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
+    
+      ../operator
+        OP_1 EOAsm 
+        
+	     ../project
+	     l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
+      
+         ../streamDefOut
+		 l_extendedPrice DECIMAL(15,2) NOT NULL
+
+	../stage /* + */
+      STAGE_C OUTPUT
+
+
+//=============================================================================
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// add handlers into OP_1
+
+../plan `11
+
+  ../pipeline
+    QUERY_0
+    
+	../stage
+      STAGE_A START
+      
+	../stage
+      STAGE_B
+      
+      ../operator
+        OP_0 SCAN       
+	     ../from 
+		  lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
+    
+      ../operator
+        OP_1 EOAsm 
+
+	     ../handlers /* + */
+	       ZK_STREAMDEF NEW_STREAMDEFOUT 
+	       ZK_CRWBUFFER FETCH_ROW
+        
+	     ../project
+	     l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
+      
+         ../streamDefOut
+		 l_extendedPrice DECIMAL(15,2) NOT NULL
+
+	../stage
+      STAGE_C  OUTPUT
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// add subroutines into OP_1
+
+../plan `12
+
+  ../pipeline
+    QUERY_0
+    
+	../stage
+      STAGE_A START
+      
+	../stage
+      STAGE_B
+      
+      ../operator
+        OP_0 SCAN       
+	     ../from 
+		  lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
+    
+      ../operator
+        OP_1 EOAsm 
+
+	     ../handlers
+	       ZK_STREAMDEF NEW_STREAMDEFOUT 
+	       ZK_CRWBUFFER FETCH_ROW
+        
+	     ../subroutines /* + */
+	       PROCESS_ROW PROJECT
+	       
+	     ../project
+	     l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
+      
+         ../streamDefOut
+		 l_extendedPrice DECIMAL(15,2) NOT NULL
+
+	../stage
+      STAGE_C OUTPUT
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+../execution
+
+  ../asm text
+  
+/*****************************************************************************/
+/* end                                                                       */
+/*****************************************************************************/
