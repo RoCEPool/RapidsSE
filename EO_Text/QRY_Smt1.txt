@@ -89,7 +89,7 @@ Label NEXT_CRW_SRC
   EO_JMP_FALSE QRY_SMT1_DONE
 
   // call PROCESSROW subroutine to process the row
-  EO_CALL SUBROUTINE_PROCESSROW
+  EO_CALL SUBROUTINE_PROCESS_CRWROW
 
   EO_JMP NEXT_CRW_SRC
 
@@ -106,7 +106,7 @@ Label NEXT_CRW_SRC
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // BEGIN SUBROUTINE: SUBROUTINE_PROCESSROW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Label SUBROUTINE_PROCESSROW
+Label SUBROUTINE_PROCESS_CRWROW
   EO_SET_ITEMS 1
   EO_SET_COLUMN 5
   EO_COL_SRC_PUSHSET

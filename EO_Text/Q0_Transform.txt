@@ -10,7 +10,7 @@
   from   lineItem
   
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// add plan `0
+// add plan `0                                                    INITIAL_PLAN
 
 ../plan `0 /* + */
 
@@ -20,8 +20,14 @@
   ../project
     l_extendedPrice
 
+
+//=============================================================================
+// Metadata Resolution 
+//=============================================================================
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// import the from tables
+// import the from tables                                        IMPORT_TABLES
 
 ../tables /* + */
 
@@ -29,25 +35,27 @@
   
     ../lineItem
     
-	  L_ORDERKEY      INTEGER NOT NULL         //  0)  8B   3B
-	  L_PARTKEY       INTEGER NOT NULL         //  1)  8B   3B
-	  L_SUPPKEY       INTEGER NOT NULL         //  2)  8B   3B
-	  L_LINENUMBER    INTEGER NOT NULL         //  3)  8B   3B
-	  L_QUANTITY      DECIMAL(15,2) NOT NULL   //  4)  8B   3B
-	  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL   //  5)  8B   3B
-	  L_DISCOUNT      DECIMAL(15,2) NOT NULL   //  6)  8B   3B
-	  L_TAX           DECIMAL(15,2) NOT NULL   //  7)  8B   3B
-	  L_RETURNFLAG    CHAR(1) NOT NULL         //  8)  2B   2B
-	  L_LINESTATUS    CHAR(1) NOT NULL         //  9)  2B   2B
-	  L_SHIPDATE      TIMESTAMP NOT NULL       // 10)  8B   8B
-	  L_COMMITDATE    TIMESTAMP NOT NULL       // 11)  8B   8B
-	  L_RECEIPTDATE   TIMESTAMP NOT NULL       // 12)  8B   8B
-	  L_SHIPINSTRUCT  CHAR(25) NOT NULL        // 13) 26B  13B
-	  L_SHIPMODE      CHAR(10) NOT NULL        // 14) 11B   5B
-	  L_COMMENT       VARCHAR(44) NOT NULL     // 15) 45B  23B
+      ../columns
+    
+		  L_ORDERKEY      INTEGER NOT NULL         //  0)  8B   3B
+		  L_PARTKEY       INTEGER NOT NULL         //  1)  8B   3B
+		  L_SUPPKEY       INTEGER NOT NULL         //  2)  8B   3B
+		  L_LINENUMBER    INTEGER NOT NULL         //  3)  8B   3B
+		  L_QUANTITY      DECIMAL(15,2) NOT NULL   //  4)  8B   3B
+		  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL   //  5)  8B   3B
+		  L_DISCOUNT      DECIMAL(15,2) NOT NULL   //  6)  8B   3B
+		  L_TAX           DECIMAL(15,2) NOT NULL   //  7)  8B   3B
+		  L_RETURNFLAG    CHAR(1) NOT NULL         //  8)  2B   2B
+		  L_LINESTATUS    CHAR(1) NOT NULL         //  9)  2B   2B
+		  L_SHIPDATE      TIMESTAMP NOT NULL       // 10)  8B   8B
+		  L_COMMITDATE    TIMESTAMP NOT NULL       // 11)  8B   8B
+		  L_RECEIPTDATE   TIMESTAMP NOT NULL       // 12)  8B   8B
+		  L_SHIPINSTRUCT  CHAR(25) NOT NULL        // 13) 26B  13B
+		  L_SHIPMODE      CHAR(10) NOT NULL        // 14) 11B   5B
+		  L_COMMENT       VARCHAR(44) NOT NULL     // 15) 45B  23B
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// xref the from tables
+// xref the from tables                                        FROM_RESOLUTION
 
 ../plan `1
 
@@ -58,7 +66,7 @@
     l_extendedPrice
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// xref the project columns
+// xref the project columns                                 PROJECT_RESOLUTION
 
 ../plan `2
 
@@ -69,8 +77,7 @@
     l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5) /* + */
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// add streamDefOut (derived from the project)
-
+// add streamDefOut (derived from the project)                OUTPUT_STREAMDEF
 ../plan `3
 
   ../from
@@ -83,7 +90,7 @@
     l_extendedPrice DECIMAL(15,2) NOT NULL
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// determine the from access method
+// determine the from access method                             ACCESS_METHODS
 
 ../plan `4
 
@@ -98,10 +105,11 @@
 
 
 //=============================================================================
-
+// Pipeline Generation
+//=============================================================================
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// add pipeline 
+// add pipeline                                                   ADD_PIPELINE
 
 ../plan `5
 
@@ -118,7 +126,7 @@
 		l_extendedPrice DECIMAL(15,2) NOT NULL
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// add stage STAGE_A START
+// add stage STAGE_A START on origin                           ADD_START_STAGE
 
 ../plan `6
 
@@ -126,7 +134,7 @@
     QUERY_0
     
 	../stage /* + */
-      STAGE_A START
+      STAGE_A START on origin
       
 	   ../from 
 		lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
@@ -138,7 +146,7 @@
 		l_extendedPrice DECIMAL(15,2) NOT NULL
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// add stage STAGE_B
+// add stage STAGE_B on all partitions                      ADD_MIDDLE_STAGE_B
 
 ../plan `7 
 
@@ -146,10 +154,10 @@
     QUERY_0
     
 	../stage
-      STAGE_A START
+      STAGE_A START on origin
       
 	../stage /* + */
-      STAGE_B
+      STAGE_B on all partitions
       
 	   ../from 
 		lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
@@ -161,7 +169,7 @@
 		l_extendedPrice DECIMAL(15,2) NOT NULL
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// add operator STAGE_B OP_0 SCAN
+// add operator STAGE_B on all partitions OP_0 SCAN               ADD_OPERATOR
 
 ../plan `8
 
@@ -169,15 +177,15 @@
     QUERY_0
     
 	../stage
-      STAGE_A START
+      STAGE_A START on origin
       
 	../stage
-      STAGE_B
+      STAGE_B on all partitions
       
       ../operator /* + */
-        OP_0 SCAN
+        OP_0 SCAN -> CRWBUFFER
          
-	     ../from 
+	    ../from 
 		  lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
     
 	     ../project
@@ -187,7 +195,7 @@
 		 l_extendedPrice DECIMAL(15,2) NOT NULL
       
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// add stage STAGE_B OP_1 EOAsm                                                    HOW/WHY?
+// add stage STAGE_B on all partitions OP_1 EOAsm                 ADD_OPERATOR
 
 ../plan `9
 
@@ -195,18 +203,18 @@
     QUERY_0
     
 	../stage
-      STAGE_A START
+      STAGE_A START on origin
       
 	../stage
-      STAGE_B
+      STAGE_B on all partitions
       
       ../operator
-        OP_0 SCAN       
+        OP_0 SCAN -> CRWBUFFER
 	     ../from 
 		  lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
     
       ../operator /* + */
-        OP_1 EOAsm 
+        OP_1 EOAsm -> STREAMDEFOUT
         
 	     ../project
 	     l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
@@ -215,7 +223,7 @@
 		 l_extendedPrice DECIMAL(15,2) NOT NULL
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// add stage STAGE_C OUTPUT
+// add stage STAGE_C OUTPUT on origin                         ADD_OUTPUT_STAGE
 
 ../plan `10
 
@@ -223,18 +231,18 @@
     QUERY_0
     
 	../stage
-      STAGE_A START
+      STAGE_A START on origin
       
 	../stage
-      STAGE_B
+      STAGE_B on all partitions
       
       ../operator
-        OP_0 SCAN       
+        OP_0 SCAN -> CRWBUFFER       
 	     ../from 
 		  lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
     
       ../operator
-        OP_1 EOAsm 
+        OP_1 EOAsm -> STREAMDEFOUT -> RSBBUFFER
         
 	     ../project
 	     l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
@@ -243,14 +251,16 @@
 		 l_extendedPrice DECIMAL(15,2) NOT NULL
 
 	../stage /* + */
-      STAGE_C OUTPUT
+      STAGE_C OUTPUT on origin
 
 
+//=============================================================================
+// EO Asm Generation
 //=============================================================================
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// add handlers into OP_1
+// add handlers into OP_1                                     ADD_ASM_HANDLERS
 
 ../plan `11
 
@@ -258,23 +268,23 @@
     QUERY_0
     
 	../stage
-      STAGE_A START
+      STAGE_A START on origin
       
 	../stage
-      STAGE_B
+      STAGE_B on all partitions
       
       ../operator
-        OP_0 SCAN       
+        OP_0 SCAN -> CRWBUFFER       
 	     ../from 
 		  lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
     
       ../operator
-        OP_1 EOAsm 
+        OP_1 EOAsm -> STREAMDEFOUT -> RSBBUFFER
 
 	     ../handlers /* + */
-	       ZK_STREAMDEF NEW_STREAMDEFOUT 
 	       ZK_CRWBUFFER FETCH_ROW
-        
+ 	       ZK_STREAMDEF NEW_STREAMDEFOUT ../streamDefOut, POT_USE
+       
 	     ../project
 	     l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
       
@@ -282,51 +292,58 @@
 		 l_extendedPrice DECIMAL(15,2) NOT NULL
 
 	../stage
-      STAGE_C  OUTPUT
+      STAGE_C OUTPUT on origin
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// add subroutines into OP_1
+// add subroutines into OP_1                               ADD_ASM_SUBROUTINES
 
-../plan `12
+../plan `12 (final)
 
   ../pipeline
     QUERY_0
     
 	../stage
-      STAGE_A START
+      STAGE_A START on origin
       
 	../stage
-      STAGE_B
+      STAGE_B on all partitions
       
       ../operator
-        OP_0 SCAN       
+        OP_0 SCAN -> CRWBUFFER       
 	     ../from 
 		  lineItem ../tables/table/lineItem CRWBUFFER BY_SCAN
     
       ../operator
-        OP_1 EOAsm 
+        OP_1 EOAsm -> STREAMDEFOUT -> RSBBUFFER
 
 	     ../handlers
-	       ZK_STREAMDEF NEW_STREAMDEFOUT 
-	       ZK_CRWBUFFER FETCH_ROW
+	       ZK_STREAMDEF NEW_STREAMDEFOUT ../streamDefOut , POT_USE
+	       ZK_CRWBUFFER template FETCH_ROW <call>=SUBROUTINE_PROCESS_CRWROW
         
 	     ../subroutines /* + */
-	       PROCESS_ROW PROJECT
+	       SUBROUTINE_PROCESS_CRWROW ../project 
 	       
 	     ../project
 	     l_extendedPrice ../tables/table/lineItem . L_EXTENDEDPRICE 5)
       
          ../streamDefOut
 		 l_extendedPrice DECIMAL(15,2) NOT NULL
-
+		 
 	../stage
-      STAGE_C OUTPUT
+      STAGE_C OUTPUT on origin
+
+
+//=============================================================================
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 ../execution
 
-  ../asm text
+  ../pipeline_text
+
+
+  ../eoasm_text
   
 /*****************************************************************************/
 /* end                                                                       */
