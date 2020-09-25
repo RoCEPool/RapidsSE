@@ -216,6 +216,10 @@ void Method::vExecute(Fact* pAnchor)
         break;
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case TQ_SCHEDULE: PrmNil();
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case TQ_CUT: PrmNil();
         
         pPaste = m_pKbase->pPaste();

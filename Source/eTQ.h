@@ -21,6 +21,8 @@ enum eTQ : u1 // query code
   /* */ TQ_PUSH_SUBA, // push m_pSubA onto dstk
   /* */ TQ_PUSH_SUBB, // push m_pSubB onto dstk
 
+  /* */ TQ_SCHEDULE,  // schedule
+
   /* */ TQ_CUT,       // cut fact
   /* */ TQ_DELETE,    // delete
   /* */ TQ_PASTE,     // paste
@@ -66,6 +68,8 @@ static Stz* aTQ[]
   /* */ "TQ_PUSH_SELF"_Stz,
   /* */ "TQ_PUSH_SUBA"_Stz,
   /* */ "TQ_PUSH_SUBB"_Stz,
+  
+  /* */ "TQ_SCHEDULE"_Stz,
 
   /* */ "TQ_CUT"_Stz,
   /* */ "TQ_DELETE"_Stz,
@@ -121,6 +125,8 @@ static TqPrm TqPrms[]
   { TQ_NONE,    0 },  // TQ_PUSH_SELF
   { TQ_NONE,    0 },  // TQ_PUSH_SUBA
   { TQ_NONE,    0 },  // TQ_PUSH_SUBB
+  
+  { TQ_NONE,    0 },  // TQ_SCHEDULE
 
   { TQ_NONE,    0 },  // TQ_CUT
   { TQ_NONE,    0 },  // TQ_DELETE
