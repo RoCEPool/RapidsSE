@@ -53,6 +53,7 @@ namespace Facts
   
     Fact* pAha(Stz* szConceptNm, Fact* pSuperConcept, eFU eUsage=FU_NONE);
 
+    void  vAtr(Stz* szConceptNm, Fact* pElement);
     void  vAtr(Stz* szConceptNm, i8 iVal, Fact* pElement);
     void  vAtr(Stz* szConceptNm, Stz* szVal, Fact* pElement);
     Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm);

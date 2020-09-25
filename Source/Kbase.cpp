@@ -67,6 +67,18 @@ Fact* Kbase::pAha(Stz* szConceptNm, Fact* pSuperConcept, eFU eUsage)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a new quality attribute to given element                               */
+/*----------------------------------------------------------------------------*/
+void Kbase::vAtr(Stz* szConceptNm, Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pConceptInstance(szConceptNm);
+
+  pElement->vAttributeAppend(pAttribute);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a new int attribute to given element                                   */
 /*----------------------------------------------------------------------------*/
 void Kbase::vAtr(Stz* szConceptNm, i8 iVal, Fact* pElement)
