@@ -26,6 +26,24 @@ enum eTQ : u1 // query code
   /* */ TQ_PASTE,     // paste
   /* */ TQ_SWAP,      // swap
 
+  
+  /* */ TQ_ACCESS_METHODS,      //
+  /* */ TQ_ADD_ASM_HANDLERS,    //
+  /* */ TQ_ADD_ASM_SUBROUTINES, //
+  /* */ TQ_ADD_OPERATOR,        //
+  /* */ TQ_ADD_OUTPUT_STAGE,    //
+  /* */ TQ_ADD_PIPELINE,        //
+  /* */ TQ_ADD_START_STAGE,     //
+  /* */ TQ_FROM_RESOLUTION,     //
+  /* */ TQ_IMPORT_TABLES,       //
+  /* */ TQ_INITIAL_PLAN,        //
+  /* */ TQ_OUTPUT_STREAMDEF,    //
+  /* */ TQ_PROJECT_RESOLUTION,  //
+  /* */ TQ_WRITE_EOASM,         //
+  /* */ TQ_WRITE_PIPELINE,      //
+
+  
+
   /* */ TQ_RETURN,
   
   /* */ TQ_ENUMS,
@@ -53,6 +71,22 @@ static Stz* aTQ[]
   /* */ "TQ_DELETE"_Stz,
   /* */ "TQ_PASTE"_Stz,
   /* */ "TQ_SWAP"_Stz,
+
+  
+  /* */ "TQ_ACCESS_METHODS"_Stz,      //
+  /* */ "TQ_ADD_ASM_HANDLERS"_Stz,    //
+  /* */ "TQ_ADD_ASM_SUBROUTINES"_Stz, //
+  /* */ "TQ_ADD_OPERATOR"_Stz,        //
+  /* */ "TQ_ADD_OUTPUT_STAGE"_Stz,    //
+  /* */ "TQ_ADD_PIPELINE"_Stz,        //
+  /* */ "TQ_ADD_START_STAGE"_Stz,     //
+  /* */ "TQ_FROM_RESOLUTION"_Stz,     //
+  /* */ "TQ_IMPORT_TABLES"_Stz,       //
+  /* */ "TQ_INITIAL_PLAN"_Stz,        //
+  /* */ "TQ_OUTPUT_STREAMDEF"_Stz,    //
+  /* */ "TQ_PROJECT_RESOLUTION"_Stz,  //
+  /* */ "TQ_WRITE_EOASM"_Stz,         //
+  /* */ "TQ_WRITE_PIPELINE"_Stz,      //
 
   /* */ "TQ_RETURN"_Stz,
   
@@ -92,6 +126,23 @@ static TqPrm TqPrms[]
   { TQ_NONE,    0 },  // TQ_DELETE
   { TQ_NONE,    0 },  // TQ_PASTE
   { TQ_NONE,    0 },  // TQ_SWAP
+
+  
+  { TQ_NONE,    0 },  // TQ_ACCESS_METHODS
+  { TQ_NONE,    0 },  // TQ_ADD_ASM_HANDLERS
+  { TQ_NONE,    0 },  // TQ_ADD_ASM_SUBROUTINES
+  { TQ_NONE,    0 },  // TQ_ADD_OPERATOR
+  { TQ_NONE,    0 },  // TQ_ADD_OUTPUT_STAGE
+  { TQ_NONE,    0 },  // TQ_ADD_PIPELINE
+  { TQ_NONE,    0 },  // TQ_ADD_START_STAGE
+  { TQ_NONE,    0 },  // TQ_FROM_RESOLUTION
+  { TQ_NONE,    0 },  // TQ_IMPORT_TABLES
+  { TQ_NONE,    0 },  // TQ_INITIAL_PLAN
+  { TQ_NONE,    0 },  // TQ_OUTPUT_STREAMDEF
+  { TQ_NONE,    0 },  // TQ_PROJECT_RESOLUTION
+  { TQ_NONE,    0 },  // TQ_WRITE_EOASM
+  { TQ_NONE,    0 },  // TQ_WRITE_PIPELINE
+  
 
   { TQ_NONE,    0 },  // TQ_RETURN
 

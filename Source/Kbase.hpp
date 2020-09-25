@@ -30,6 +30,7 @@ namespace Facts
     Fact*  m_p_Xref_;      //
 
     Fact*  m_p_Name_;      //
+    Fact*  m_p_No_;        //
     Fact*  m_p_Folder_;    //
     Fact*  m_p_Tuple_;     //
 
@@ -53,8 +54,10 @@ namespace Facts
   
     Fact* pAha(Stz* szConceptNm, Fact* pSuperConcept, eFU eUsage=FU_NONE);
 
+    void  vAtr(Stz* szConceptNm, Fact* pElement);
     void  vAtr(Stz* szConceptNm, i8 iVal, Fact* pElement);
     void  vAtr(Stz* szConceptNm, Stz* szVal, Fact* pElement);
+    void  vAtr(Stz* szConceptNm, Fact* pXref, Fact* pElement);
     Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm);
     void  vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm);
     Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, i8 iVal);
@@ -73,7 +76,8 @@ namespace Facts
     void  vCurrent(Fact* pCurrent);
   
     Fact* pElm(Stz* szConceptNm, Fact* pSet);
-  
+    Fact* pElm(Stz* szConceptNm, Stz* szSetNm);
+
     Fact* pElementFind(Stz* szFactNm);
     Fact* pElementFindAttr(Stz* szAttr, Stz* szText);
     Fact* pElementInstance(Fact* pSet, Stz* szElmSuperNm);

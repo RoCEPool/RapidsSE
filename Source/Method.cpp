@@ -161,9 +161,21 @@ void Method::vExecute(Fact* pAnchor)
   eTQ* aeCode = & m_eaCode[0];
   i8* aiDstk = m_iaDataStack;
 
-  Fact* pElmOf = nullptr;
+  Fact* pElmOf   = nullptr;
   Fact* pElmNext = nullptr;
-  Fact* pPaste = nullptr;
+  Fact* pPaste   = nullptr;
+
+  Fact* pHandler      = nullptr;
+  Fact* pOperator     = nullptr;
+  Fact* pPipeLine     = nullptr;
+  Fact* pPlan         = nullptr;
+  Fact* pProject      = nullptr;
+  Fact* pStage        = nullptr;
+  Fact* pStreamDefOut = nullptr;
+  Fact* pSubroutine   = nullptr;
+
+  Fact* pPipeLine_Text = nullptr;
+  Fact* pEoAsm_Text    = nullptr;
 
   for (;;) {
 
@@ -255,6 +267,50 @@ void Method::vExecute(Fact* pAnchor)
 
       case TQ_SWAP: PrmNil();
         break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case TQ_ACCESS_METHODS: PrmNil();
+        break;
+
+      case TQ_ADD_ASM_HANDLERS: PrmNil();
+        break;
+
+      case TQ_ADD_ASM_SUBROUTINES: PrmNil();
+        break;
+
+      case TQ_ADD_OPERATOR: PrmNil();
+        break;
+
+      case TQ_ADD_OUTPUT_STAGE: PrmNil();
+        break;
+
+      case TQ_ADD_PIPELINE: PrmNil();
+        break;
+
+      case TQ_ADD_START_STAGE: PrmNil();
+        break;
+
+      case TQ_FROM_RESOLUTION: PrmNil();
+        break;
+
+      case TQ_IMPORT_TABLES: PrmNil();
+        break;
+
+      case TQ_INITIAL_PLAN: PrmNil();
+        break;
+
+      case TQ_OUTPUT_STREAMDEF: PrmNil();
+        break;
+
+      case TQ_PROJECT_RESOLUTION: PrmNil();
+        break;
+
+      case TQ_WRITE_EOASM: PrmNil();
+        break;
+
+      case TQ_WRITE_PIPELINE: PrmNil();
+        break;
+
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case TQ_RETURN: PrmNil();
