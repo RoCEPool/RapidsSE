@@ -102,12 +102,15 @@
 /*----------------------------------------------------------------------------*/
 : EOAsm_PulseMarker \handler
 
-  0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryNote
-
-  ZK_PULSEMARKER_handler
+  PipeIn[].isNull not if
+    ZK_PULSEMARKER EG_ZK PP_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+    PipeIn[].pipeOut // ZK_PULSEMARKER_handler
+  then
 
   // execute plan PULSEMARKER_HANDLER
   ZK_PULSEMARKER Counter0[] executeAsmArgs
+
+  false LogicUnit[].calledAgain!
 
   // pipeout streamDefout if any
   StreamDefOut[].isNull not if
@@ -115,14 +118,18 @@
   then
 
   LogicUnit[].callAgain@ if
-    //"Completed test" .
+    "Completed test" .
     Pot[].pipeoutAllCompletedPtns
-    true
   else
+    "not called again" .
+    Pot[].pipeoutAllDanglingPtns
+    Pot[].pipeoutAllCompletedPtns
     // force op loop to call EOAsm_EosMarker to end
     "EOAsm_EosMarker" word::find LogicUnit[].handler!
     true LogicUnit[].callAgain!
   then
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +172,7 @@
 
   // Invoked from PULSEMARKER call again?
   Operand[].isNull not if
-    // PULSEMARKER created an EOSMARKER
+    "PULSEMARKER created an EOSMARKER" .
     // there should be no Pipein EOSMARKER
     Pipein[].isNull assert
     Operand[] to Pipein[]
@@ -174,10 +181,12 @@
   // Invoked from PULSEMARKER call again?
   // but PULSEMARKER did not create an EOS MARKER
   Pipein[].isNull if
+    "PULSEMARKER is null" .
     true
     exit
   then
 
+  "handle EOSMARKER" .
   // handle EOSMARKER
   ZK_EOSMARKER Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
@@ -185,10 +194,13 @@
   // pipe out all pot[]
   Pot[].pipeoutAllCompleted
   Pot[].pipeoutAllDangling
+
+  Pot[].pipeoutAllDanglingPtns
   Pot[].delete
 
   ZK_EOSMARKER EG_ZK PP_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
   ZK_EOSMARKER_handler
+
 ;
 
 /*----------------------------------------------------------------------------*/

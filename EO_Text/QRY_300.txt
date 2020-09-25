@@ -36,7 +36,7 @@ Routine QRY_300
 
   // check for ZK_EOSMARKER
   EO_DUP
-  EO_INTEGER  ZK_EOSMARKER
+  EO_INTEGER ZK_EOSMARKER
   EO_EQUAL
   EO_JMP_TRUE EOSMARKER_HANDLER
 
@@ -83,14 +83,14 @@ Label STREAMDEF_HANDLER
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // ZK_EOSMARKER handler
 Label EOSMARKER_HANDLER
+  EO_PRINTF "**EOSMARKER_HANDLER : 300**\n"
   EO_POP
-  EO_CALL SUBROUTINE_IXT_TO_RSB
-  EO_REG_INDEXTREE_DELETE
   EO_JMP QRY_300_DONE
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // ZK_PULSEMARKER handler
 Label PULSEMARKER_HANDLER
+  EO_PRINTF "**PULSEMARKER_HANDLER : 300**\n"
   EO_POP
 
   EO_PUSH_0
@@ -105,10 +105,12 @@ Label PULSEMARKER_HANDLER
 
   // iterate all CUSTOMER
   EO_IXT_SRC_BEGIN
-  EO_JMP_FALSE QRY_300_DONE
+  EO_JMP_TRUE GOT_CUS
+
+  EO_JMP QRY_300_DONE
 
 Label GOT_CUS
-
+  //EO_PRINTF "**QRY_300 GOT_CUS**\n"
   EO_CTR_0_INC
   EO_CTR_0_PUSH
   EO_INTEGER 10000
@@ -135,6 +137,8 @@ Label PRC_CUS
 Label NXT_CUSTOMER
   EO_IXT_SRC_NEXT
   EO_JMP_TRUE GOT_CUS
+
+  EO_REG_EOSMARKER_NEW
 
 // end of CUSTOMER
 Label QRY_300_DONE

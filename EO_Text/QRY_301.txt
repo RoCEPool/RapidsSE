@@ -28,11 +28,11 @@ Routine QRY_301
   EO_EQUAL
   EO_JMP_TRUE STREAMDEF_HANDLER
 
-  // check for ZK_CRWBUFFER
+  // check for ZK_RSBBUFFER
   EO_DUP
-  EO_INTEGER ZK_CRWBUFFER
+  EO_INTEGER ZK_RSBBUFFER
   EO_EQUAL
-  EO_JMP_TRUE CRWBUFFER_HANDLER
+  EO_JMP_TRUE RSBBUFFER_HANDLER
 
   // check for ZK_EOSMARKER
   EO_DUP
@@ -40,16 +40,20 @@ Routine QRY_301
   EO_EQUAL
   EO_JMP_TRUE EOSMARKER_HANDLER
 
+  EO_PRINTF "**NO_HANDLER**\n"
+
   // Never reach
+  EO_PUSH_0
   EO_ASSERT
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
+  EO_PRINTF "**STARTMARKER_HANDLER**\n"
   EO_POP
 
-  EO_TABLENM_SRC_SET "lineitem"
-  EO_INDEXNM_SRC_SET "lineitem_Idx1"
+  EO_TABLENM_ALT_SET "lineitem"
+  EO_INDEXNM_ALT_SET "lineitem_Idx1"
 
   EO_REG_INDEXDEF_NEW "idx_int"
   EO_PUSH_COLUMN_TYPE CT_INTEGER
@@ -63,12 +67,14 @@ Label STARTMARKER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_PULSEMARKER handler
 Label PULSEMARKER_HANDLER
+  EO_PRINTF "**PULSEMARKER_HANDLER**\n"
   EO_POP
   EO_JMP QRY_301_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STREAMDEF handler
 Label STREAMDEF_HANDLER
+  EO_PRINTF "**STREAMDEF_HANDLER**\n"
   EO_POP
 
   EO_REG_STREAMDEFOUT_NEW
@@ -104,13 +110,12 @@ Label STREAMDEF_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_EOSMARKER handler
 Label EOSMARKER_HANDLER
+  EO_PRINTF "**EOSMARKER_HANDLER**\n"
   EO_POP
-  EO_CALL SUBROUTINE_IXT_TO_RSB
-  EO_REG_INDEXTREE_DELETE
   EO_JMP QRY_301_DONE
 
 Label RSBBUFFER_HANDLER
-
+  EO_PRINTF "**RSBBUFFER_HANDLER**\n"
   EO_RSB_DST_NEW
 
   EO_RSB_SRC_BEGIN
@@ -142,7 +147,7 @@ Label QRY_301_DONE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Label MOV_DST
 
-  //EO_RSB_SRC_PRINT
+  EO_RSB_SRC_PRINT
 
   EO_RSB_DST_ZERO
 
@@ -163,7 +168,7 @@ Label QRY_301_DONE
   // SUBROUTINE: AGG_REV  --                                        Q301 AGG_REV
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Label AGG_REV
-
+  //EO_PRINTF "AGG_REV\n"
   EO_RSB_DST_ZERO
 
   EO_RSB_SRC_PUSHCOLI 0 //Q300_ORDERKEY
@@ -221,7 +226,7 @@ Label RET_AGG_f
   // SUBROUTINE: LIM_SBR  --                                        Q301 LIM_SBR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Label LIM_SBR
-
+  //EO_PRINTF "LIM_SBR\n"
   //EO_IXT_TMP_ENTRIES
   //EO_PRINT
 
