@@ -30,6 +30,7 @@ namespace Facts
     Fact*  m_p_Xref_;      //
 
     Fact*  m_p_Name_;      //
+    Fact*  m_p_No_;        //
     Fact*  m_p_Folder_;    //
     Fact*  m_p_Tuple_;     //
 

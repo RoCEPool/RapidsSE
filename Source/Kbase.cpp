@@ -685,13 +685,13 @@ void Kbase::vImportStatement(Stz* szStmtToImport)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Fact* p_FromClause_ = m_p_Concept_->pElementFindNm("_fromClause_"_Stz);
-  Fact* pFromClause = p_FromClause_->pNewInstance();
-  pSubQry->vElementAppend(pFromClause);
+  Fact* p_FromList_ = m_p_Concept_->pElementFindNm("_fromList_"_Stz);
+  Fact* pFromList = p_FromList_->pNewInstance();
+  pSubQry->vElementAppend(pFromList);
   
   Fact* p_FromTable_ = m_p_Concept_->pElementFindNm("_fromTable_"_Stz);
   Fact* pFromTable = p_FromTable_->pNewInstance();
-  pFromClause->vElementAppend(pFromTable);
+  pFromList->vElementAppend(pFromTable);
 
   Fact* p_TableNm_ = m_p_Concept_->pElementFindNm("_tableNm_"_Stz);
   Fact* pTableNm = p_TableNm_->pNewInstance();
@@ -829,7 +829,8 @@ void Kbase::vAprioriFacts(void)
   m_p_Word_     = pAha("_word_"_Stz,    m_p_Value_,   FU_WORD);
   m_p_Xref_     = pAha("_xref_"_Stz,    m_p_Value_,   FU_XREF);
   m_p_Name_     = pAha("_name_"_Stz,    m_p_Text_);
-  
+  m_p_No_       = pAha("_no_"_Stz,      m_p_Int_);
+
   m_p_Folder_   = pAha("_folder_"_Stz,  m_p_Concept_);
   m_p_Tuple_    = pAha("_tuple_"_Stz,   m_p_Concept_);
 
@@ -851,6 +852,7 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Fact* p_NoSeq_      = pAha("_noSeq_"_Stz,     m_p_Int_);
   Fact* p_NameSeq_    = pAha("_nameSeq_"_Stz,   m_p_Text_);
   Fact* p_Format_     = pAha("_format_"_Stz,    m_p_Text_);
 
@@ -879,18 +881,10 @@ void Kbase::vAprioriFacts(void)
 
                          pAha("_ptnKey_"_Stz,      m_p_Property_);
 
-  Fact* p_Cardinality_ = pAha("_cardinality_"_Stz,           m_p_Property_);
-                         pAha("all nodes"_Stz,               p_Cardinality_);
-                         pAha("all partitions"_Stz,          p_Cardinality_);
-                         pAha("all partitions on origin"_Stz,p_Cardinality_);
-                         pAha("origin"_Stz,                  p_Cardinality_);
-                         pAha("specific node"_Stz,           p_Cardinality_);
-                         pAha("specific partition"_Stz,      p_Cardinality_);
-
                          pAha("_columns_"_Stz, m_p_Folder_);
                          pAha("_column_"_Stz,  m_p_Tuple_);
-                         pAha("_columnNo_"_Stz,m_p_Int_);
                          pAha("_columnNm_"_Stz,m_p_Name_);
+                         pAha("_columnNo_"_Stz,m_p_Int_);
                          pAha("_length_"_Stz,  m_p_Int_);
                          pAha("_scale_"_Stz,   m_p_Int_);
  
@@ -901,13 +895,36 @@ void Kbase::vAprioriFacts(void)
                          pAha("_table_"_Stz,   m_p_Folder_);
                          pAha("_tableNm_"_Stz, m_p_Name_);
   
+  Fact* p_TableRef_ =    pAha("_tableRes_"_Stz,  m_p_Xref_);
+  Fact* p_ColumnRef_ =   pAha("_ColumnRes_"_Stz, m_p_Xref_);
+
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Fact* p_Statement_ = pAha("_statement_"_Stz,     m_p_Folder_);
                        pAha("_subQry_"_Stz,        m_p_Folder_);
-                       pAha("_projectClause_"_Stz, m_p_Folder_);
-                       pAha("_fromClause_"_Stz,    m_p_Folder_);
-                       pAha("_fromTable_"_Stz,     m_p_Tuple_);
+  
+                       pAha("_fromList_"_Stz,      m_p_Folder_);
+                       pAha("_fromSeq_"_Stz,       p_NoSeq_);
+                       pAha("_from_"_Stz,          m_p_Folder_);
+                       pAha("_fromNm_"_Stz,        m_p_Name_);
+                       pAha("_fromNo_"_Stz,        m_p_No_);
+                       pAha("_fromTable_"_Stz,     p_TableRef_);
+  
+                       pAha("_projectList_"_Stz,   m_p_Folder_);
+                       pAha("_projectSeq_"_Stz,    p_NoSeq_);
+                       pAha("_project_"_Stz,       m_p_Folder_);
+                       pAha("_projectNo_"_Stz,     m_p_Int_);
+                       pAha("_projectNm_"_Stz,     m_p_Name_);
+                       pAha("_projectColumn_"_Stz, p_TableRef_);
+  
+  Fact* p_AccessBy_  = pAha("_accessBy_"_Stz,      m_p_Property_);
+                       pAha("_byScan"_Stz,         p_AccessBy_);
+  Fact* p_BufferType_ = pAha("_bufferType_"_Stz,   m_p_Property_);
+                       pAha("_crwBuffer"_Stz,      p_BufferType_);
+
+                       pAha("_streamDefOut_"_Stz,  p_ColumnRef_);
+  
                        pAha("_whereClause_"_Stz,   m_p_Folder_);
                        pAha("_groupByClause_"_Stz, m_p_Folder_);
                        pAha("_orderByClause_"_Stz, m_p_Folder_);
@@ -919,15 +936,46 @@ void Kbase::vAprioriFacts(void)
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
+                       pAha("_plan_"_Stz,          m_p_Folder_);
+                       pAha("_planPrime_"_Stz,     m_p_Int_);
+  
                        pAha("_pipeline_"_Stz,      m_p_Folder_);
                        pAha("_pipelineNm_"_Stz,    m_p_Name_);
-                       pAha("_stages_"_Stz,        m_p_Folder_);
+  
+                       pAha("_stageList_"_Stz,     m_p_Folder_);
+                       pAha("_stageSeq_"_Stz,      p_NoSeq_);
                        pAha("_stage_"_Stz,         m_p_Folder_);
                        pAha("_stageNm_"_Stz,       m_p_Name_);
+                       pAha("_stageNo_"_Stz,       m_p_No_);
+  
+  Fact* p_Cardinality_ = pAha("_cardinality_"_Stz,           m_p_Property_);
+                         pAha("all nodes"_Stz,               p_Cardinality_);
+                         pAha("all partitions"_Stz,          p_Cardinality_);
+                         pAha("all partitions on origin"_Stz,p_Cardinality_);
+                         pAha("origin"_Stz,                  p_Cardinality_);
+                         pAha("specific node"_Stz,           p_Cardinality_);
+                         pAha("specific partition"_Stz,      p_Cardinality_);
+
+                       pAha("_operatorList_"_Stz,  m_p_Folder_);
+                       pAha("_operatorSeq_"_Stz,   p_NoSeq_);
                        pAha("_operator_"_Stz,      m_p_Folder_);
+                       pAha("_operatorNo_"_Stz,    m_p_No_);
+                       pAha("_operatorNm_"_Stz,    m_p_Name_);
+  
+                       pAha("_routine_"_Stz,       m_p_Folder_);
+                       pAha("_routineNm_"_Stz,     m_p_Name_);
+
+                       pAha("_handlerList_"_Stz,   m_p_Folder_);
+                       pAha("_handlerSeq_"_Stz,    p_NoSeq_);
                        pAha("_handler_"_Stz,       m_p_Folder_);
-                       pAha("_project_"_Stz,       m_p_Folder_);
-                       pAha("_streamDefOut_"_Stz,  m_p_Folder_);
+                       pAha("_handlerNm_"_Stz,     m_p_Name_);
+                       pAha("_handlerNo_"_Stz,     m_p_No_);
+
+                       pAha("_subroutineList_"_Stz,m_p_Folder_);
+                       pAha("_subroutineSeq_"_Stz, p_NoSeq_);
+                       pAha("_subroutine_"_Stz,    m_p_Tuple_);
+                       pAha("_subroutineNo_"_Stz,  m_p_No_);
+                       pAha("_subroutineNm_"_Stz,  m_p_Name_);
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -935,10 +983,6 @@ void Kbase::vAprioriFacts(void)
                        pAha("_op_"_Stz,            p_Operator_);
                        pAha("_sqlOp_"_Stz,         p_Operator_);
   
-                       pAha("_routines_"_Stz,      m_p_Folder_);
-                       pAha("_subroutine_"_Stz,    m_p_Tuple_);
-                       pAha("_subroutineNm_"_Stz,  m_p_Name_);
-                       pAha("_recallable_"_Stz,    m_p_Property_);
                        pAha("_sourceCode_"_Stz,    m_p_Text_);
             
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1046,7 +1090,7 @@ void Kbase::vAprioriFacts(void)
   
   // /contents/intention/pipeline/stages atr{ nameseq = Text , format = Text }
 
-  Fact* pStages = pElm("_stages_"_Stz,pPipeline);
+  Fact* pStages = pElm("_stageList_"_Stz,pPipeline);
                     vAtr("_nameSeq_"_Stz,"A"_Stz,pStages);
                     vAtr("_format_"_Stz,"stage%s"_Stz,pStages);
 
@@ -1054,7 +1098,7 @@ void Kbase::vAprioriFacts(void)
 
   // /contents/intention/routines
   
-  Fact* pRoutines = pElm("_routines_"_Stz,pIntention);
+  Fact* pRoutines = pElm("_routine_"_Stz,pIntention);
   
   // /contents/intention/subroutine
   
