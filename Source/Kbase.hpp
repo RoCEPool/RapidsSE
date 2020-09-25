@@ -56,6 +56,7 @@ namespace Facts
     void  vAtr(Stz* szConceptNm, Fact* pElement);
     void  vAtr(Stz* szConceptNm, i8 iVal, Fact* pElement);
     void  vAtr(Stz* szConceptNm, Stz* szVal, Fact* pElement);
+    void  vAtr(Stz* szConceptNm, Fact* pXref, Fact* pElement);
     Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm);
     void  vAttributeInstance(Fact* pFact, Stz* szAtrSuperNm);
     Fact* pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm, i8 iVal);

@@ -161,9 +161,21 @@ void Method::vExecute(Fact* pAnchor)
   eTQ* aeCode = & m_eaCode[0];
   i8* aiDstk = m_iaDataStack;
 
-  Fact* pElmOf = nullptr;
+  Fact* pElmOf   = nullptr;
   Fact* pElmNext = nullptr;
-  Fact* pPaste = nullptr;
+  Fact* pPaste   = nullptr;
+
+  Fact* pHandler      = nullptr;
+  Fact* pOperator     = nullptr;
+  Fact* pPipeLine     = nullptr;
+  Fact* pPlan         = nullptr;
+  Fact* pProject      = nullptr;
+  Fact* pStage        = nullptr;
+  Fact* pStreamDefOut = nullptr;
+  Fact* pSubroutine   = nullptr;
+
+  Fact* pPipeLine_Text = nullptr;
+  Fact* pEoAsm_Text    = nullptr;
 
   for (;;) {
 

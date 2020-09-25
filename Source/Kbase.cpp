@@ -106,6 +106,19 @@ void Kbase::vAtr(Stz* szConceptNm, Stz* szVal, Fact* pElement)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a new xref attribute to given element                                  */
+/*----------------------------------------------------------------------------*/
+void Kbase::vAtr(Stz* szConceptNm, Fact* pXref, Fact* pElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  Fact* pAttribute = pConceptInstance(szConceptNm);
+  pAttribute->rxValue().m_pXref = pXref;
+
+  pElement->vAttributeAppend(pAttribute);
+}
+
+/*----------------------------------------------------------------------------*/
 /* new attribute instance to named set                                        */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pAttributeInstance(Fact* pFact, Stz* szAtrSuperNm)
