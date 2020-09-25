@@ -513,9 +513,11 @@ void Kbase::vPrint(File* pFile)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
     
-  Fact* pIntention = m_pContents->pElementFindNm("intention"_Stz);
+//  Fact* pIntention = m_pContents->pElementFindNm("intention"_Stz);
+//
+//  pIntention->vPrint_r(pFile,0);
 
-  pIntention->vPrint_r(pFile,0);
+  m_pFact->vPrint_r(pFile,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -836,6 +838,340 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  pAha("_transforms_"_Stz, m_p_Concept_);
+  pAha("_transform_"_Stz,  m_p_Concept_);
+  pAha("_transformNm_"_Stz,m_p_Name_);
+
+  pAha("_arg_"_Stz,        m_p_Text_);
+  pAha("_nArgs_"_Stz,      m_p_Int_);
+
+//  pAha("_action_"_Stz,     m_p_Concept_);
+//  pAha("_call_"_Stz,       m_p_Concept_);
+//  pAha("_chunk_"_Stz,      m_p_Concept_);
+//  pAha("_condition_"_Stz,  m_p_Concept_);
+//  pAha("_marker_"_Stz,     m_p_Concept_);
+//  pAha("_pattern_"_Stz,    m_p_Concept_);
+//  pAha("_rule_"_Stz,       m_p_Concept_);
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Fact* p_NoSeq_      = pAha("_noSeq_"_Stz,     m_p_Int_);
+  Fact* p_NameSeq_    = pAha("_nameSeq_"_Stz,   m_p_Text_);
+  Fact* p_Format_     = pAha("_format_"_Stz,    m_p_Text_);
+
+//  Fact* p_Questions_  = pAha("_questions_"_Stz, m_p_Folder_);
+//  Fact* p_Question_   = pAha("_question_"_Stz,  p_Questions_);
+//  Fact* p_QuestionNm_ = pAha("_questionNm_"_Stz,m_p_Name_);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Fact* p_Type_       =  pAha("_type_"_Stz,        m_p_Concept_);
+  Fact* p_ColumnType_ =  pAha("_columnType_"_Stz,  p_Type_);
+                         pAha("_BOOLEAN_"_Stz,     p_ColumnType_);
+                         pAha("_DATE_"_Stz,        p_ColumnType_);
+                         pAha("_DECIMAL_"_Stz,     p_ColumnType_);
+                         pAha("_FLOAT_"_Stz,       p_ColumnType_);
+                         pAha("_INTEGER_"_Stz,     p_ColumnType_);
+                         pAha("_INTERVAL_"_Stz,    p_ColumnType_);
+                         pAha("_TIME_"_Stz,        p_ColumnType_);
+                         pAha("_TIMESTAMP_"_Stz,   p_ColumnType_);
+                         pAha("_VARCHAR_"_Stz,     p_ColumnType_);
+ 
+  Fact* p_Nullability_ = pAha("_nullability_"_Stz, m_p_Property_);
+                         pAha("_nullable_"_Stz,    p_Nullability_);
+                         pAha("_notNullable_"_Stz, p_Nullability_);
+
+                         pAha("_ptnKey_"_Stz,      m_p_Property_);
+
+                         pAha("_columns_"_Stz, m_p_Folder_);
+                         pAha("_column_"_Stz,  m_p_Tuple_);
+                         pAha("_columnNm_"_Stz,m_p_Name_);
+                         pAha("_columnNo_"_Stz,m_p_Int_);
+                         pAha("_length_"_Stz,  m_p_Int_);
+                         pAha("_scale_"_Stz,   m_p_Int_);
+ 
+                         pAha("_indexes_"_Stz, m_p_Folder_);
+                         pAha("_index_"_Stz,   m_p_Folder_);
+  
+  Fact* p_Tables_ =      pAha("_tables_"_Stz,  m_p_Folder_);
+                         pAha("_table_"_Stz,   m_p_Folder_);
+                         pAha("_tableNm_"_Stz, m_p_Name_);
+  
+  Fact* p_TableRef_ =    pAha("_tableRes_"_Stz,  m_p_Xref_);
+  Fact* p_ColumnRef_ =   pAha("_ColumnRes_"_Stz, m_p_Xref_);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Fact* p_Statement_ = pAha("_statement_"_Stz,     m_p_Folder_);
+                       pAha("_subQry_"_Stz,        m_p_Folder_);
+  
+                       pAha("_fromList_"_Stz,      m_p_Folder_);
+                       pAha("_fromSeq_"_Stz,       p_NoSeq_);
+                       pAha("_from_"_Stz,          m_p_Folder_);
+                       pAha("_fromNm_"_Stz,        m_p_Name_);
+                       pAha("_fromNo_"_Stz,        m_p_No_);
+                       pAha("_fromTable_"_Stz,     p_TableRef_);
+  
+                       pAha("_projectList_"_Stz,   m_p_Folder_);
+                       pAha("_projectSeq_"_Stz,    p_NoSeq_);
+                       pAha("_project_"_Stz,       m_p_Folder_);
+                       pAha("_projectNo_"_Stz,     m_p_Int_);
+                       pAha("_projectNm_"_Stz,     m_p_Name_);
+                       pAha("_projectColumn_"_Stz, p_TableRef_);
+  
+  Fact* p_AccessBy_  = pAha("_accessBy_"_Stz,      m_p_Property_);
+                       pAha("_byScan"_Stz,         p_AccessBy_);
+  Fact* p_BufferType_ = pAha("_bufferType_"_Stz,   m_p_Property_);
+                       pAha("_crwBuffer"_Stz,      p_BufferType_);
+
+                       pAha("_streamDefOut_"_Stz,  p_ColumnRef_);
+  
+                       pAha("_whereClause_"_Stz,   m_p_Folder_);
+                       pAha("_groupByClause_"_Stz, m_p_Folder_);
+                       pAha("_orderByClause_"_Stz, m_p_Folder_);
+
+                       pAha("_exprList_"_Stz,      m_p_Folder_);
+                       pAha("_expr_"_Stz,          m_p_Folder_);
+                       pAha("_term_"_Stz,          m_p_Folder_);
+                       pAha("_atom_"_Stz,          m_p_Tuple_);
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+                       pAha("_plan_"_Stz,          m_p_Folder_);
+                       pAha("_planPrime_"_Stz,     m_p_Int_);
+  
+                       pAha("_pipeline_"_Stz,      m_p_Folder_);
+                       pAha("_pipelineNm_"_Stz,    m_p_Name_);
+  
+                       pAha("_stageList_"_Stz,     m_p_Folder_);
+                       pAha("_stageSeq_"_Stz,      p_NoSeq_);
+                       pAha("_stage_"_Stz,         m_p_Folder_);
+                       pAha("_stageNm_"_Stz,       m_p_Name_);
+                       pAha("_stageNo_"_Stz,       m_p_No_);
+  
+  Fact* p_Cardinality_ = pAha("_cardinality_"_Stz,           m_p_Property_);
+                         pAha("all nodes"_Stz,               p_Cardinality_);
+                         pAha("all partitions"_Stz,          p_Cardinality_);
+                         pAha("all partitions on origin"_Stz,p_Cardinality_);
+                         pAha("origin"_Stz,                  p_Cardinality_);
+                         pAha("specific node"_Stz,           p_Cardinality_);
+                         pAha("specific partition"_Stz,      p_Cardinality_);
+
+                       pAha("_operatorList_"_Stz,  m_p_Folder_);
+                       pAha("_operatorSeq_"_Stz,   p_NoSeq_);
+                       pAha("_operator_"_Stz,      m_p_Folder_);
+                       pAha("_operatorNo_"_Stz,    m_p_No_);
+                       pAha("_operatorNm_"_Stz,    m_p_Name_);
+  
+                       pAha("_routine_"_Stz,       m_p_Folder_);
+                       pAha("_routineNm_"_Stz,     m_p_Name_);
+
+                       pAha("_handlerList_"_Stz,   m_p_Folder_);
+                       pAha("_handlerSeq_"_Stz,    p_NoSeq_);
+                       pAha("_handler_"_Stz,       m_p_Folder_);
+                       pAha("_handlerNm_"_Stz,     m_p_Name_);
+                       pAha("_handlerNo_"_Stz,     m_p_No_);
+
+                       pAha("_subroutineList_"_Stz,m_p_Folder_);
+                       pAha("_subroutineSeq_"_Stz, p_NoSeq_);
+                       pAha("_subroutine_"_Stz,    m_p_Tuple_);
+                       pAha("_subroutineNo_"_Stz,  m_p_No_);
+                       pAha("_subroutineNm_"_Stz,  m_p_Name_);
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  Fact* p_Operator_ =  pAha("_operator_"_Stz,      m_p_Tuple_);
+                       pAha("_op_"_Stz,            p_Operator_);
+                       pAha("_sqlOp_"_Stz,         p_Operator_);
+  
+                       pAha("_sourceCode_"_Stz,    m_p_Text_);
+            
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  Fact* p_Nodes_      = pAha("_nodes_"_Stz,        m_p_Int_);
+  Fact* p_Partitions_ = pAha("_partitions_"_Stz,   m_p_Int_);
+  Fact* p_Grid_       = pAha("_grid_"_Stz,         m_p_Folder_);
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  
+  Fact* p_Contents_   = pAha("_contents_"_Stz,     m_p_Folder_);
+  Fact* p_Reference_  = pAha("_reference_"_Stz,    m_p_Folder_);
+  Fact* p_Intention_  = pAha("_intention_"_Stz,    m_p_Folder_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // /contents
+  
+  m_pContents         = pElm("_contents_"_Stz,     m_pFact);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  
+  // /contents/reference/questions
+  
+//  Fact* pQuestions    = pElm("_questions_"_Stz,    pReference);
+//
+//  Fact* pQuestion     = pElm("_question_"_Stz,     pQuestions);
+//                          vAtr("_questionNm_"_Stz,"isSubClassOf"_Stz,pQuestion);
+//  Method* pMethod =       pMth(pQuestion);
+//                            pMethod->vAddCode(TQ_IS_SUBCLASS_OF);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // /contents/reference/transforms
+  
+  Fact* pTransforms   = pElm("_transforms_"_Stz,   m_pContents);
+
+  // /contents/reference/transforms/transform cut = Method{ cut }
+  
+  Fact* pTransform    = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"cut"_Stz,pTransform);
+//  pMethod = m_p_Method_->pNewInstance();
+//  pTransform->vAttributeAppend(pMethod);
+//  pMethod->rxValue().m_pMethod = new Method(this,pTransform);
+//  pMethod->rxValue().m_pMethod->vAddCode(TQ_CUT);
+//  pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
+  Method* pMethod =               pMth(pTransform);
+                            pMethod->vAddCode(TQ_CUT);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  // /contents/reference/transforms/transform paste = Method{ paste }
+  
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"paste"_Stz,pTransform);
+//  pMethod = m_p_Method_->pNewInstance();
+//  pTransform->vAttributeAppend(pMethod);
+//  pMethod->rxValue().m_pMethod = new Method(this,pTransform);
+//  pMethod->rxValue().m_pMethod->vAddCode(TQ_PASTE);
+//  pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
+  pMethod =               pMth(pTransform);
+                            pMethod->vAddCode(TQ_PASTE);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // /contents/reference
+  
+  Fact* pReference    = pElm("_reference_"_Stz,    m_pContents);
+  
+  // /contents/reference/grid atr{ nodes = Int i partitions = Int i }
+  
+  Fact* pGrid         = pElm("_grid_"_Stz,         pReference);
+                          vAtr("_nodes_"_Stz,AM::nDefinedNodes(), pGrid);
+                          vAtr("_partitions_"_Stz,AM::nPartitions(),pGrid);
+
+  
+  // /contents/reference/tables
+  
+  pElm("_tables_"_Stz,pReference);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // /contents/intention
+  
+  //Fact* pIntention    = pElm("_intention_"_Stz,    m_pContents);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // /contents/intention/statement
+  
+  pElm("_statement_"_Stz,m_pContents);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // /contents/intention/pipeline
+
+//  Fact* pPipeline = pElm("_pipeline_"_Stz,pIntention);
+//
+//  // /contents/intention/pipeline/stages atr{ nameseq = Text , format = Text }
+//
+//  Fact* pStages = pElm("_stageList_"_Stz,pPipeline);
+//                    vAtr("_nameSeq_"_Stz,"A"_Stz,pStages);
+//                    vAtr("_format_"_Stz,"stage%s"_Stz,pStages);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // /contents/intention/routines
+  
+//  Fact* pRoutines = pElm("_routine_"_Stz,pIntention);
+//
+//  // /contents/intention/subroutine
+//
+//  pElm("_subroutine_"_Stz,pRoutines);
+}
+
+
+/*
+ 
+ fact
+ 
+ /_concept_
+   ...
+ 
+ /contents
+
+   /reference
+     /questions
+     /transforms
+
+   /intention
+     /grid
+     /tables
+     /statement
+     /pipeline
+     /routine
+       /subroutine
+
+ */
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
+
+
+/*----------------------------------------------------------------------------*/
+/* add apriori facts                                                          */
+/*----------------------------------------------------------------------------*/
+/*
+void Kbase::vAprioriFacts(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+
+  m_pFact = pFactNew(nullptr,"fact"_Stz);
+  
+  m_p_Concept_ = pFactNew(m_pFact,"_concept_"_Stz);
+  m_pFact->vElementAppend(m_p_Concept_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //m_p_Property_ = pConceptAdd(m_p_Concept_,"_property_"_Stz);
+  m_p_Property_ = pAha("_property_"_Stz,m_p_Concept_);
+
+  m_p_Value_    = pAha("_value_"_Stz,   m_p_Concept_, FU_USAGE);
+  m_p_Int_      = pAha("_int_"_Stz,     m_p_Value_,   FU_INT);
+  m_p_Function_ = pAha("_function_"_Stz,m_p_Value_,   FU_FUNCTION);
+  m_p_Method_   = pAha("_method_"_Stz,  m_p_Value_,   FU_METHOD);
+  m_p_Object_   = pAha("_object_"_Stz,  m_p_Value_,   FU_OBJECT);
+  m_p_Opaque_   = pAha("_opaque_"_Stz,  m_p_Value_,   FU_OPAQUE);
+  m_p_Text_     = pAha("_text_"_Stz,    m_p_Value_,   FU_TEXT);
+  m_p_Word_     = pAha("_word_"_Stz,    m_p_Value_,   FU_WORD);
+  m_p_Xref_     = pAha("_xref_"_Stz,    m_p_Value_,   FU_XREF);
+  m_p_Name_     = pAha("_name_"_Stz,    m_p_Text_);
+  m_p_No_       = pAha("_no_"_Stz,      m_p_Int_);
+
+  m_p_Folder_   = pAha("_folder_"_Stz,  m_p_Concept_);
+  m_p_Tuple_    = pAha("_tuple_"_Stz,   m_p_Concept_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pAha("_action_"_Stz,     m_p_Concept_);
   pAha("_call_"_Stz,       m_p_Concept_);
   pAha("_chunk_"_Stz,      m_p_Concept_);
@@ -1105,30 +1441,4 @@ void Kbase::vAprioriFacts(void)
   pElm("_subroutine_"_Stz,pRoutines);
 }
 
-
-/*
- 
- fact
- 
- /_concept_
-   ...
- 
- /contents
-
-   /reference
-     /questions
-     /transforms
-
-   /intention
-     /grid
-     /tables
-     /statement
-     /pipeline
-     /routine
-       /subroutine
-
- */
-
-/*============================================================================*/
-/* end                                                                        */
-/*============================================================================*/
+*/

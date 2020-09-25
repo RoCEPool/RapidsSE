@@ -86,7 +86,7 @@ Fact::~Fact(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  vTrace("~Fact %p ... %s\n"_Stz,this,m_sFactNm.azChar());
+  //vTrace("~Fact %p ... %s\n"_Stz,this,m_sFactNm.azChar());
   
   if (m_bDeleteMethod)
     delete m_xValue.m_pMethod;
