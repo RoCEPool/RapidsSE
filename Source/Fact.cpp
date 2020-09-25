@@ -979,7 +979,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
             m_pSubclassOf->iFactNo(),m_pSubclassOf->szName());
     s2K sAncestry;
     vAncestry(sAncestry);
-    vTraceF(pFile," // Ancestry: %s"_Stz,sAncestry.azChar());
+    //vTraceF(pFile," // Ancestry: %s"_Stz,sAncestry.azChar());
   }
   
   vTraceF(pFile,"\n"_Stz);

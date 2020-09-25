@@ -208,6 +208,24 @@ void Step::vKbaseSeed(void)
   ENTRY();
   
   Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  Fact* pPlan = pKbase->pElm("_plan_"_Stz,"contents"_Stz);
+              
+                  pKbase->vAtr("_planPrime_"_Stz,(i8)0,pPlan);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Fact* pFromList = pKbase->pElm("_fromList_"_Stz, pPlan);
+  Fact* pFrom     = pKbase->pElm("_from_"_Stz,     pFromList);
+                      pKbase->vAtr("_fromNo_"_Stz,(i8)0,          pFrom);
+                      pKbase->vAtr("_fromNm_"_Stz,"LineItem"_Stz, pFrom);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Fact* pProjectList = pKbase->pElm("_projectList_"_Stz,          pPlan);
+  Fact* pProject     = pKbase->pElm("_project_"_Stz,       pProjectList);
+                        pKbase->vAtr("_projectNo_"_Stz,(i8)0,  pProject);
+                        pKbase->vAtr("_projectNm_"_Stz,"l_extendedPrice"_Stz, pProject);
 
   EXIT();
 }

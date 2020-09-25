@@ -25,6 +25,8 @@
 
   "Kbase-Name" kbase[].new
 
+  kbase[].seed
+
   "/tmp/kbase_test.txt" kbase[].print
 
   kbase[].delete
