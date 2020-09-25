@@ -81,6 +81,7 @@ Label EOSMARKER_HANDLER
   // ZK_CRWBUFFER handler
 Label CRWBUFFER_HANDLER
   EO_POP
+
   EO_CRW_SRC_BEGIN
 
   // NEXT_CRW_SRC:
@@ -88,34 +89,54 @@ Label NEXT_CRW_SRC
   EO_CRW_SRC_NEXT
   EO_JMP_FALSE QRY_SMT1_DONE
 
-  // call PROCESSROW subroutine to process the row
+  // call PROCESS_CRWROW subroutine
   EO_CALL SUBROUTINE_PROCESS_CRWROW
 
   EO_JMP NEXT_CRW_SRC
+  EO_JMP QRY_SMT1_DONE
 
-  Label QRY_SMT1_DONE
 
+Label QRY_SMT1_DONE
   EO_EXIT
   EO_RETURN
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // END MAIN: QRY_SMT1
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END MAIN: QRY_SMT1
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // BEGIN SUBROUTINE: SUBROUTINE_PROCESSROW
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN SUBROUTINE: SUBROUTINE_PROCESS_CRWROW
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Label SUBROUTINE_PROCESS_CRWROW
+  EO_CALL SUBROUTINE_PROJECT_COLUMNS
+  EO_RETURN
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END SUBROUTINE: SUBROUTINE_PROCESS_CRWROW
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN SUBROUTINE: SUBROUTINE_PROJECT_COLUMNS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Label SUBROUTINE_PROJECT_COLUMNS
+
   EO_SET_ITEMS 1
   EO_SET_COLUMN 5
   EO_COL_SRC_PUSHSET
   EO_RSB_DST_NEW
   EO_RSB_DST_POPCOLI 0
+
   EO_RETURN
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// END SUBROUTINE: SUBROUTINE_PROCESSROW
+// END SUBROUTINE: SUBROUTINE_PROJECT_COLUMNS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 
