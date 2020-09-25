@@ -289,6 +289,22 @@ Fact* Kbase::pElm(Stz* szConceptNm, Fact* pSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add an instance of a concept as an element to named set                    */
+/*----------------------------------------------------------------------------*/
+Fact* Kbase::pElm(Stz* szConceptNm, Stz* szSetNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+  
+  Fact* pElement = pConceptInstance(szConceptNm);
+  
+  Fact* pSet = pFactFind(szSetNm);
+  
+  pSet->vElementAppend(pElement);
+  
+  return pElement;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find element                                                               */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pElementFind(Stz* szNote)

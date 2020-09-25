@@ -73,7 +73,8 @@ namespace Facts
     void  vCurrent(Fact* pCurrent);
   
     Fact* pElm(Stz* szConceptNm, Fact* pSet);
-  
+    Fact* pElm(Stz* szConceptNm, Stz* szSetNm);
+
     Fact* pElementFind(Stz* szFactNm);
     Fact* pElementFindAttr(Stz* szAttr, Stz* szText);
     Fact* pElementInstance(Fact* pSet, Stz* szElmSuperNm);
