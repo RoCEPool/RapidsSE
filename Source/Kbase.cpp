@@ -924,7 +924,11 @@ void Kbase::vAprioriFacts(void)
                        pAha("_stages_"_Stz,        m_p_Folder_);
                        pAha("_stage_"_Stz,         m_p_Folder_);
                        pAha("_stageNm_"_Stz,       m_p_Name_);
-  
+                       pAha("_operator_"_Stz,      m_p_Folder_);
+                       pAha("_handler_"_Stz,       m_p_Folder_);
+                       pAha("_project_"_Stz,       m_p_Folder_);
+                       pAha("_streamDefOut_"_Stz,  m_p_Folder_);
+
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   Fact* p_Operator_ =  pAha("_operator_"_Stz,      m_p_Tuple_);
