@@ -257,6 +257,50 @@ void Method::vExecute(Fact* pAnchor)
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case TQ_ACCESS_METHODS: PrmNil();
+        break;
+
+      case TQ_ADD_ASM_HANDLERS: PrmNil();
+        break;
+
+      case TQ_ADD_ASM_SUBROUTINES: PrmNil();
+        break;
+
+      case TQ_ADD_OPERATOR: PrmNil();
+        break;
+
+      case TQ_ADD_OUTPUT_STAGE: PrmNil();
+        break;
+
+      case TQ_ADD_PIPELINE: PrmNil();
+        break;
+
+      case TQ_ADD_START_STAGE: PrmNil();
+        break;
+
+      case TQ_FROM_RESOLUTION: PrmNil();
+        break;
+
+      case TQ_IMPORT_TABLES: PrmNil();
+        break;
+
+      case TQ_INITIAL_PLAN: PrmNil();
+        break;
+
+      case TQ_OUTPUT_STREAMDEF: PrmNil();
+        break;
+
+      case TQ_PROJECT_RESOLUTION: PrmNil();
+        break;
+
+      case TQ_WRITE_EOASM: PrmNil();
+        break;
+
+      case TQ_WRITE_PIPELINE: PrmNil();
+        break;
+
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case TQ_RETURN: PrmNil();
         return;
         
