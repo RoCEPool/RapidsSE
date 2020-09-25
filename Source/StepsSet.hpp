@@ -874,6 +874,7 @@ public:
   void vKbaseMarkerStore(void);
   void vKbaseNew(void);
   void vKbasePrint(void);
+  void vKbaseSeed(void);
   void vKbaseSet(void);
   void vKbaseTest(void);
   void vKbaseTransformFetch(void);

@@ -841,6 +841,7 @@ void Kbase::vAprioriFacts(void)
   pAha("_transforms_"_Stz, m_p_Concept_);
   pAha("_transform_"_Stz,  m_p_Concept_);
   pAha("_transformNm_"_Stz,m_p_Name_);
+  pAha("_priority_"_Stz,   m_p_Int_);
 
   pAha("_arg_"_Stz,        m_p_Text_);
   pAha("_nArgs_"_Stz,      m_p_Int_);
@@ -856,9 +857,9 @@ void Kbase::vAprioriFacts(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Fact* p_Format_     = pAha("_format_"_Stz,    m_p_Text_);
   Fact* p_NoSeq_      = pAha("_noSeq_"_Stz,     m_p_Int_);
   Fact* p_NameSeq_    = pAha("_nameSeq_"_Stz,   m_p_Text_);
-  Fact* p_Format_     = pAha("_format_"_Stz,    m_p_Text_);
 
 //  Fact* p_Questions_  = pAha("_questions_"_Stz, m_p_Folder_);
 //  Fact* p_Question_   = pAha("_question_"_Stz,  p_Questions_);

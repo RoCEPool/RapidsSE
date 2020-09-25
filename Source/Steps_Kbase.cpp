@@ -21,6 +21,7 @@ void Step::vAddSteps_Kbase(void)
   vAddStep("Kbase[].markerNew"_Stz,    &Step::vKbaseMarkerNew);
   vAddStep("Kbase[].new"_Stz,          &Step::vKbaseNew);
   vAddStep("Kbase[].print"_Stz,        &Step::vKbasePrint);
+  vAddStep("Kbase[].seed"_Stz,         &Step::vKbaseSeed);
   vAddStep("Kbase[].set"_Stz,          &Step::vKbaseSet);
   vAddStep("Kbase[].test"_Stz,         &Step::vKbaseTest);
   vAddStep("Kbase[].transform@"_Stz,   &Step::vKbaseTransformFetch);
@@ -198,6 +199,19 @@ void Step::vKbasePrint(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].seed -- seed the Kbase (for q0)                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseSeed(void)
+{
+  ENTRY();
+  
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Kbase[].set -- set reg Kbase                                               */
