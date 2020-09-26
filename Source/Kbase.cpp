@@ -1090,7 +1090,90 @@ void Kbase::vAprioriFacts(void)
   Method* pMethod =         pMth(pTransform);
                             pMethod->vAddCode(TQ_SCHEDULE);
                             pMethod->vAddCode(TQ_RETURN);
-                          //.vAtr("_priority_"_Stz,(i8)0,pTransform);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_ACCESS_METHODS"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_ACCESS_METHODS);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_ADD_ASM_HANDLERS"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_ADD_ASM_HANDLERS);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_ADD_ASM_SUBROUTINES"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_ADD_ASM_SUBROUTINES);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_ADD_OPERATOR"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_ADD_OPERATOR);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_ADD_OUTPUT_STAGE"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_ADD_OUTPUT_STAGE);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_ADD_PIPELINE"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_ADD_PIPELINE);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_ADD_START_STAGE"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_ADD_START_STAGE);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_FROM_RESOLUTION"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_FROM_RESOLUTION);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_IMPORT_TABLES"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_IMPORT_TABLES);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_INITIAL_PLAN"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_INITIAL_PLAN);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_OUTPUT_STREAMDEF"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_OUTPUT_STREAMDEF);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_PROJECT_RESOLUTION"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_PROJECT_RESOLUTION);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_WRITE_EOASM"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_WRITE_EOASM);
+                            pMethod->vAddCode(TQ_RETURN);
+
+  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"TQ_WRITE_PIPELINE"_Stz,pTransform);
+  pMethod =                 pMth(pTransform);
+                            pMethod->vAddCode(TQ_WRITE_PIPELINE);
+                            pMethod->vAddCode(TQ_RETURN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
