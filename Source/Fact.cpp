@@ -1357,16 +1357,6 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //}
 
 /*----------------------------------------------------------------------------*/
-/* get value                                                                  */
-/*----------------------------------------------------------------------------*/
-Value& Fact::rxValue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  return m_xValue;
-}
-
-/*----------------------------------------------------------------------------*/
 /* process a question                                                         */
 /*----------------------------------------------------------------------------*/
 bool Fact::bQuestion(Fact* pQuestion, Opaque* aArg)
@@ -1459,6 +1449,36 @@ void Fact::vSubclassOf(Fact* pSubclassOf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   m_pSubclassOf = pSubclassOf;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get int value                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Fact::iValue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  return m_xValue.m_iInt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set int value                                                              */
+/*----------------------------------------------------------------------------*/
+void Fact::vValue(i8 iValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  m_xValue.m_iInt = iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
+Value& Fact::rxValue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  return m_xValue;
 }
 
 /*============================================================================*/

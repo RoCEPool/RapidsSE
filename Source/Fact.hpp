@@ -122,8 +122,6 @@ namespace Facts
   
     void  vPrint_r(File* pFile, i8 iDepth);
   
-    Value& rxValue(void);
-    
     bool  bQuestion(Fact* pQuestion, Opaque* aArg=nullptr);
     bool  bQuestion(Stz* szQuestion, Opaque* aArg=nullptr);
 
@@ -132,6 +130,11 @@ namespace Facts
 
     Fact* pSubclassOf(void);
     void  vSubclassOf(Fact* pSubclassOf);
+  
+    i8    iValue(void);
+    void  vValue(i8 iValue);
+
+    Value& rxValue(void);
     
   private:
     Footer* aFooter(void);
