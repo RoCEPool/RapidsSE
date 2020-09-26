@@ -152,6 +152,23 @@ void Method::vSchedule(Fact** ppAnchor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
   
+  Fact* pPlan = m_pKbase->pElementFind("plan"_Stz);
+  
+  Fact* pPlanPrime = pPlan->pAttributeFindNm("planPrime"_Stz);
+  
+  i8 iPlanPrime = pPlanPrime->iValue();
+  
+  vTrace("PlanPrime %lld\n"_Stz,iPlanPrime);
+  
+  iPlanPrime++;
+  
+  if (iPlanPrime < 12) {
+    pPlanPrime->vValue(iPlanPrime);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Fact* pElmOf = nullptr;
 
   pElmOf = (*ppAnchor)->pElementOf();
