@@ -160,6 +160,33 @@ void Method::vSchedule(Fact** ppAnchor)
   Fact::vDeleteRecursively(ppAnchor);
 }
 
+/*----------------------------------------------------------------------------*/
+/* add call to next transform                                                 */
+/*----------------------------------------------------------------------------*/
+void Method::vTransformAdd(Stz* szTransformNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  Fact* pCall = m_pKbase->pElm("_call_"_Stz,"contents"_Stz);
+                  m_pKbase->vAtr("_name_"_Stz,szTransformNm,pCall);
+                  m_pKbase->vAtr("_priority_"_Stz,(i8)1,pCall);
+                  m_pKbase->vAtr("_nArgs_"_Stz,(i8)0,pCall);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut and recursively delete call to transform                               */
+/*----------------------------------------------------------------------------*/
+void Method::vTransformDelete(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+  
+  Fact* pElmOf = nullptr;
+
+  pElmOf = (*ppTransform)->pElementOf();
+  pElmOf->vElementCut(*ppTransform);
+  
+  Fact::vDeleteRecursively(ppTransform);
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

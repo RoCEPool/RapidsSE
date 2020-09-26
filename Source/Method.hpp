@@ -48,6 +48,9 @@ namespace Facts
   
     void vSchedule(Fact** ppAnchor);
   
+    void vTransformAdd(Stz* szTransformNm);
+    void vTransformDelete(Fact** ppTransform);
+
   private:
     void vGenMethod000(void);
 
