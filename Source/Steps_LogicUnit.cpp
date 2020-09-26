@@ -164,6 +164,8 @@ void Step::vLogicUnitGenAsm(void)
   i8 nSize = pFile->iSize();
   i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
   
+  //vTrace("FILE %s\n"_Stz, sFileName.azChar());
+  
   m_pLogicUnit->vGenerateAsm(sText);
   
   EXIT();

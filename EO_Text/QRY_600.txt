@@ -32,7 +32,7 @@ Routine QRY_600
   EO_JMP_TRUE EOSMARKER_HANDLER
 
   // never reach
-  EO_ASSERT
+  EO_NEVERREACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler

@@ -41,7 +41,7 @@ Routine QRY_100
   EO_JMP_TRUE EOSMARKER_HANDLER
 
   // Never reach
-  EO_ASSERT
+  EO_NEVERREACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler
@@ -479,7 +479,7 @@ Label CRWBUFFER_HANDLER
   EO_ENT_NEXT
   EO_JMP_TRUE NEXT_IXT_SRC
 
-  Label END_IXT_SRC
+Label END_IXT_SRC
   EO_RETURN
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // END SUBROUTINE: SUBROUTINE_IXT_TO_RSB
