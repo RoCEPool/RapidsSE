@@ -11,6 +11,7 @@ void Step::vAddSteps_Kbase(void)
 {
   vAddStep("Kbase[]"_Stz,              &Step::vKbaseSet);
     
+  vAddStep("Kbase[].callSchedule"_Stz, &Step::vKbaseCallSchedule);
   vAddStep("Kbase[].delete"_Stz,       &Step::vKbaseDelete);
   vAddStep("Kbase[].findFactNm"_Stz,   &Step::vKbaseFindFactNm);
   vAddStep("Kbase[].findFactNo"_Stz,   &Step::vKbaseFindFactNo);
@@ -29,6 +30,18 @@ void Step::vAddSteps_Kbase(void)
   vAddStep("Kbase[].transformNew"_Stz, &Step::vKbaseTransformNew);
   vAddStep("Kbase[].trim"_Stz,         &Step::vKbaseTrim);
   vAddStep("Kbase[].troll"_Stz,        &Step::vKbaseTroll);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].callSchedule -- add call to schedule                               */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseCallSchedule(void)
+{
+  ENTRY();
+  
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+      
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

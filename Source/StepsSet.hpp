@@ -865,6 +865,7 @@ public:
   void vJob_WalkTableStore(void);
 
   // kbase
+  void vKbaseCallSchedule(void);
   void vKbaseDelete(void);
   void vKbaseFindFactNm(void);
   void vKbaseFindFactNo(void);
