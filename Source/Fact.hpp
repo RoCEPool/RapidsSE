@@ -94,6 +94,8 @@ namespace Facts
 
     bool  bHasSpecificAttribute(Fact* pFact);
     bool  bHasSpecificElement(Fact* pFact);
+  
+    bool  bHighestCall(Fact*& rpCall);
 
     bool  bIsElementOf(Fact* pOfFact);
     bool  bIsElementOf(Stz* szName);

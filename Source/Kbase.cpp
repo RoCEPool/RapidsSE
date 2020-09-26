@@ -440,6 +440,18 @@ void Kbase::vFactDelete(Fact* pFact)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find call with highest priority                                            */
+/*----------------------------------------------------------------------------*/
+bool Kbase::bHighestCall(Fact*& rpCall)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+    
+  bool bCall = m_pContents->bHighestCall(rpCall);
+  
+  return bCall;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current working marker                                                 */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pMarker(void)

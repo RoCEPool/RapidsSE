@@ -672,6 +672,40 @@ bool Fact::bHasSpecificElement(Fact* pFact)
 }
  
 /*----------------------------------------------------------------------------*/
+/* find call with highest priority                                            */
+/*----------------------------------------------------------------------------*/
+bool Fact::bHighestCall(Fact*& rpCall)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  if (m_sFactNm.bSame("call"_Stz)) {
+    if (rpCall) {
+      
+    }
+    else {
+      rpCall = this;
+    }
+    return true;
+  }
+  
+  for (Fact* pAttribute = m_pAttributes;
+       pAttribute;
+       pAttribute = pAttribute->m_pAttributeNext) {
+    if (pAttribute->bHighestCall(rpCall))
+      return true;
+  }
+
+  for (Fact* pElement = m_pElements;
+       pElement;
+       pElement = pElement->m_pElementNext) {
+    if (pElement->bHighestCall(rpCall))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this fact an immediate sub-element of given fact                        */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsElementOf(Fact* pOfFact)
