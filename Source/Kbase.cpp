@@ -847,7 +847,7 @@ void Kbase::vAprioriFacts(void)
   pAha("_nArgs_"_Stz,      m_p_Int_);
 
 //  pAha("_action_"_Stz,     m_p_Concept_);
-//  pAha("_call_"_Stz,       m_p_Concept_);
+  pAha("_call_"_Stz,       m_p_Concept_);
 //  pAha("_chunk_"_Stz,      m_p_Concept_);
 //  pAha("_condition_"_Stz,  m_p_Concept_);
 //  pAha("_marker_"_Stz,     m_p_Concept_);

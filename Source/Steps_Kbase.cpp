@@ -40,7 +40,12 @@ void Step::vKbaseCallSchedule(void)
   ENTRY();
   
   Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
-      
+  
+  Fact* pCall = pKbase->pElm("_call_"_Stz,"contents"_Stz);
+                  pKbase->vAtr("_name_"_Stz,"schedule"_Stz,pCall);
+                  pKbase->vAtr("_priority_"_Stz,(i8)0,pCall);
+                  pKbase->vAtr("_nArgs_"_Stz,(i8)0,pCall);
+
   EXIT();
 }
 
