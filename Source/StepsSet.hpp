@@ -865,6 +865,7 @@ public:
   void vJob_WalkTableStore(void);
 
   // kbase
+  void vKbaseCallSchedule(void);
   void vKbaseDelete(void);
   void vKbaseFindFactNm(void);
   void vKbaseFindFactNo(void);
@@ -874,6 +875,7 @@ public:
   void vKbaseMarkerStore(void);
   void vKbaseNew(void);
   void vKbasePrint(void);
+  void vKbaseSeed(void);
   void vKbaseSet(void);
   void vKbaseTest(void);
   void vKbaseTransformFetch(void);

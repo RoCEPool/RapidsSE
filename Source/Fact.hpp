@@ -70,7 +70,8 @@ namespace Facts
     Fact* pAttributes(void);
     void  vAttributes(Fact* pAttributes);
     Fact* pAttributeThatIsSubClass(Fact* pOfSuperFact);
-  
+    i8    iAttributeValNm(Stz* szName);
+
     void  vElementAppend(Fact* pElement);
     void  vElementCut(Fact* pElement);
     Fact* pElementFindNm(Stz* szName);
@@ -94,6 +95,8 @@ namespace Facts
 
     bool  bHasSpecificAttribute(Fact* pFact);
     bool  bHasSpecificElement(Fact* pFact);
+  
+    bool  bHighestCall(Fact*& rpCall);
 
     bool  bIsElementOf(Fact* pOfFact);
     bool  bIsElementOf(Stz* szName);
@@ -120,8 +123,6 @@ namespace Facts
   
     void  vPrint_r(File* pFile, i8 iDepth);
   
-    Value& rxValue(void);
-    
     bool  bQuestion(Fact* pQuestion, Opaque* aArg=nullptr);
     bool  bQuestion(Stz* szQuestion, Opaque* aArg=nullptr);
 
@@ -130,6 +131,11 @@ namespace Facts
 
     Fact* pSubclassOf(void);
     void  vSubclassOf(Fact* pSubclassOf);
+  
+    i8    iValue(void);
+    void  vValue(i8 iValue);
+
+    Value& rxValue(void);
     
   private:
     Footer* aFooter(void);

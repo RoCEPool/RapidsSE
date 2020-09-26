@@ -146,6 +146,66 @@ void Method::vGenMethod000(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule next transform                                                    */
+/*----------------------------------------------------------------------------*/
+void Method::vSchedule(Fact** ppAnchor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+  
+  Fact* pPlan = m_pKbase->pElementFind("plan"_Stz);
+  
+  Fact* pPlanPrime = pPlan->pAttributeFindNm("planPrime"_Stz);
+  
+  i8 iPlanPrime = pPlanPrime->iValue();
+  
+  vTrace("PlanPrime %lld\n"_Stz,iPlanPrime);
+  
+  iPlanPrime++;
+  
+  if (iPlanPrime < 12) {
+    pPlanPrime->vValue(iPlanPrime);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Fact* pElmOf = nullptr;
+
+  pElmOf = (*ppAnchor)->pElementOf();
+  pElmOf->vElementCut(*ppAnchor);
+  
+  Fact::vDeleteRecursively(ppAnchor);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add call to next transform                                                 */
+/*----------------------------------------------------------------------------*/
+void Method::vTransformAdd(Stz* szTransformNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  Fact* pCall = m_pKbase->pElm("_call_"_Stz,"contents"_Stz);
+                  m_pKbase->vAtr("_name_"_Stz,szTransformNm,pCall);
+                  m_pKbase->vAtr("_priority_"_Stz,(i8)1,pCall);
+                  m_pKbase->vAtr("_nArgs_"_Stz,(i8)0,pCall);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut and recursively delete call to transform                               */
+/*----------------------------------------------------------------------------*/
+void Method::vTransformDelete(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+  
+  Fact* pElmOf = nullptr;
+
+  pElmOf = (*ppTransform)->pElementOf();
+  pElmOf->vElementCut(*ppTransform);
+  
+  Fact::vDeleteRecursively(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 #define PrmNil() \
@@ -215,6 +275,12 @@ void Method::vExecute(Fact* pAnchor)
       case TQ_PUSH_SUBB: PrmNil();
         break;
       
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case TQ_SCHEDULE: PrmNil();
+        vTrace("TQ_SCHEDULE \n"_Stz);
+        vSchedule(&pAnchor);
+        break;
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case TQ_CUT: PrmNil();
         

@@ -86,7 +86,7 @@ Fact::~Fact(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
-  vTrace("~Fact %p ... %s\n"_Stz,this,m_sFactNm.azChar());
+  //vTrace("~Fact %p ... %s\n"_Stz,this,m_sFactNm.azChar());
   
   if (m_bDeleteMethod)
     delete m_xValue.m_pMethod;
@@ -223,6 +223,7 @@ void Fact::vAttributeCut(Fact* pAttribute)
   pPrior->m_pAttributeNext = pAttribute->m_pAttributeNext;
   pAttribute->m_pAttributeNext = nullptr;
 }
+
 /*----------------------------------------------------------------------------*/
 /* find attribute fact                                                        */
 /*----------------------------------------------------------------------------*/
@@ -366,6 +367,23 @@ Fact* Fact::pAttributeThatIsSubClass(Fact* pOfSuperFact)
     pScan = pScan->pAttributeNext();
     
   return pScan;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get int value of named attribute                                           */
+/*----------------------------------------------------------------------------*/
+i8 Fact::iAttributeValNm(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+    
+  Fact* pAttribute = pAttributeFindNm(szName);
+  
+  if (! pAttribute)
+    return C_UNKNOWN;
+  
+  i8 iVal = pAttribute->iValue();
+  
+  return iVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -671,6 +689,37 @@ bool Fact::bHasSpecificElement(Fact* pFact)
   return pScan;
 }
  
+/*----------------------------------------------------------------------------*/
+/* find call with highest priority                                            */
+/*----------------------------------------------------------------------------*/
+bool Fact::bHighestCall(Fact*& rpCall)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  if (m_sFactNm.bSame("call"_Stz)) {
+    if (rpCall) {
+      i8 iThisPriority = iAttributeValNm("priority"_Stz);
+      i8 iCurrPriority = rpCall->iAttributeValNm("priority"_Stz);
+
+      if (iThisPriority > iCurrPriority)
+        rpCall = this;
+    }
+    else {
+      rpCall = this;
+    }
+    return true;
+  }
+  
+  for (Fact* pElement = m_pElements;
+       pElement;
+       pElement = pElement->m_pElementNext) {
+    if (pElement->bHighestCall(rpCall))
+      return true;
+  }
+
+  return false;
+}
+
 /*----------------------------------------------------------------------------*/
 /* is this fact an immediate sub-element of given fact                        */
 /*----------------------------------------------------------------------------*/
@@ -979,7 +1028,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
             m_pSubclassOf->iFactNo(),m_pSubclassOf->szName());
     s2K sAncestry;
     vAncestry(sAncestry);
-    vTraceF(pFile," // Ancestry: %s"_Stz,sAncestry.azChar());
+    //vTraceF(pFile," // Ancestry: %s"_Stz,sAncestry.azChar());
   }
   
   vTraceF(pFile,"\n"_Stz);
@@ -1323,16 +1372,6 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //}
 
 /*----------------------------------------------------------------------------*/
-/* get value                                                                  */
-/*----------------------------------------------------------------------------*/
-Value& Fact::rxValue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-  
-  return m_xValue;
-}
-
-/*----------------------------------------------------------------------------*/
 /* process a question                                                         */
 /*----------------------------------------------------------------------------*/
 bool Fact::bQuestion(Fact* pQuestion, Opaque* aArg)
@@ -1425,6 +1464,36 @@ void Fact::vSubclassOf(Fact* pSubclassOf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
   
   m_pSubclassOf = pSubclassOf;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get int value                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Fact::iValue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  return m_xValue.m_iInt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set int value                                                              */
+/*----------------------------------------------------------------------------*/
+void Fact::vValue(i8 iValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  m_xValue.m_iInt = iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
+Value& Fact::rxValue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  return m_xValue;
 }
 
 /*============================================================================*/

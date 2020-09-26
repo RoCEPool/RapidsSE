@@ -89,6 +89,8 @@ namespace Facts
     Fact* pFactFind(Stz* szFactNm);
     Fact* pFactNew(Fact* pSuper, Stz* szFactNm);
 
+    bool  bHighestCall(Fact*& rpCall);
+  
     Fact* pMarker(void);
     void  vMarker(Fact* pMarker);
     Method* pMth(Fact* pElement);

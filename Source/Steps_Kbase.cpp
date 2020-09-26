@@ -11,6 +11,7 @@ void Step::vAddSteps_Kbase(void)
 {
   vAddStep("Kbase[]"_Stz,              &Step::vKbaseSet);
     
+  vAddStep("Kbase[].callSchedule"_Stz, &Step::vKbaseCallSchedule);
   vAddStep("Kbase[].delete"_Stz,       &Step::vKbaseDelete);
   vAddStep("Kbase[].findFactNm"_Stz,   &Step::vKbaseFindFactNm);
   vAddStep("Kbase[].findFactNo"_Stz,   &Step::vKbaseFindFactNo);
@@ -21,6 +22,7 @@ void Step::vAddSteps_Kbase(void)
   vAddStep("Kbase[].markerNew"_Stz,    &Step::vKbaseMarkerNew);
   vAddStep("Kbase[].new"_Stz,          &Step::vKbaseNew);
   vAddStep("Kbase[].print"_Stz,        &Step::vKbasePrint);
+  vAddStep("Kbase[].seed"_Stz,         &Step::vKbaseSeed);
   vAddStep("Kbase[].set"_Stz,          &Step::vKbaseSet);
   vAddStep("Kbase[].test"_Stz,         &Step::vKbaseTest);
   vAddStep("Kbase[].transform@"_Stz,   &Step::vKbaseTransformFetch);
@@ -28,6 +30,23 @@ void Step::vAddSteps_Kbase(void)
   vAddStep("Kbase[].transformNew"_Stz, &Step::vKbaseTransformNew);
   vAddStep("Kbase[].trim"_Stz,         &Step::vKbaseTrim);
   vAddStep("Kbase[].troll"_Stz,        &Step::vKbaseTroll);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].callSchedule -- add call to schedule                               */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseCallSchedule(void)
+{
+  ENTRY();
+  
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  Fact* pCall = pKbase->pElm("_call_"_Stz,"contents"_Stz);
+                  pKbase->vAtr("_name_"_Stz,"schedule"_Stz,pCall);
+                  pKbase->vAtr("_priority_"_Stz,(i8)0,pCall);
+                  pKbase->vAtr("_nArgs_"_Stz,(i8)0,pCall);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,6 +217,37 @@ void Step::vKbasePrint(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Kbase[].seed -- seed the Kbase (for q0)                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vKbaseSeed(void)
+{
+  ENTRY();
+  
+  Kbase* pKbase = * m_pLogicUnit->m_xpKbase;
+  
+  Fact* pPlan = pKbase->pElm("_plan_"_Stz,"contents"_Stz);
+              
+                  pKbase->vAtr("_planPrime_"_Stz,(i8)0,pPlan);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Fact* pFromList = pKbase->pElm("_fromList_"_Stz, pPlan);
+  Fact* pFrom     = pKbase->pElm("_from_"_Stz,     pFromList);
+                      pKbase->vAtr("_fromNo_"_Stz,(i8)0,          pFrom);
+                      pKbase->vAtr("_fromNm_"_Stz,"LineItem"_Stz, pFrom);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Fact* pProjectList = pKbase->pElm("_projectList_"_Stz,          pPlan);
+  Fact* pProject     = pKbase->pElm("_project_"_Stz,       pProjectList);
+                        pKbase->vAtr("_projectNo_"_Stz,(i8)0,  pProject);
+                        pKbase->vAtr("_projectNm_"_Stz,"l_extendedPrice"_Stz, pProject);
+
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Kbase[].set -- set reg Kbase                                               */
