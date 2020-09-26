@@ -698,7 +698,11 @@ bool Fact::bHighestCall(Fact*& rpCall)
   
   if (m_sFactNm.bSame("call"_Stz)) {
     if (rpCall) {
-      
+      i8 iThisPriority = iAttributeValNm("priority"_Stz);
+      i8 iCurrPriority = rpCall->iAttributeValNm("priority"_Stz);
+
+      if (iThisPriority > iCurrPriority)
+        rpCall = this;
     }
     else {
       rpCall = this;
@@ -706,13 +710,6 @@ bool Fact::bHighestCall(Fact*& rpCall)
     return true;
   }
   
-  for (Fact* pAttribute = m_pAttributes;
-       pAttribute;
-       pAttribute = pAttribute->m_pAttributeNext) {
-    if (pAttribute->bHighestCall(rpCall))
-      return true;
-  }
-
   for (Fact* pElement = m_pElements;
        pElement;
        pElement = pElement->m_pElementNext) {
