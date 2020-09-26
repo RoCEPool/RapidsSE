@@ -442,18 +442,6 @@ void Kbase::vFactDelete(Fact* pFact)
 /*----------------------------------------------------------------------------*/
 /* find call with highest priority                                            */
 /*----------------------------------------------------------------------------*/
-bool Kbase::bHighestCall(Fact*& rpCall)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
-    
-  bool bCall = m_pContents->bHighestCall(rpCall);
-  
-  return bCall;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find call with highest priority                                            */
-/*----------------------------------------------------------------------------*/
 void Kbase::vHighestCall(Fact*& rpCall)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
@@ -634,9 +622,6 @@ bool Kbase::bTroll(void)
   
   Fact* pCall = nullptr;
   
-//  if (! bHighestCall(pCall))
-//    return false; // don't call again
-
   vHighestCall(pCall);
   if (! pCall)
     return false; // don't call again
