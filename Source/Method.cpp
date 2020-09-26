@@ -217,6 +217,7 @@ void Method::vExecute(Fact* pAnchor)
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case TQ_SCHEDULE: PrmNil();
+        vTrace("TQ_SCHEDULE \n"_Stz);
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

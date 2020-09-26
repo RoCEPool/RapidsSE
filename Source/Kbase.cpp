@@ -1030,29 +1030,28 @@ void Kbase::vAprioriFacts(void)
 
   // /contents/reference/transforms/transform cut = Method{ cut }
   
-  Fact* pTransform    = pElm("_transform_"_Stz,    pTransforms);
-                          vAtr("_transformNm_"_Stz,"cut"_Stz,pTransform);
-//  pMethod = m_p_Method_->pNewInstance();
-//  pTransform->vAttributeAppend(pMethod);
-//  pMethod->rxValue().m_pMethod = new Method(this,pTransform);
-//  pMethod->rxValue().m_pMethod->vAddCode(TQ_CUT);
-//  pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
-  Method* pMethod =               pMth(pTransform);
-                            pMethod->vAddCode(TQ_CUT);
-                            pMethod->vAddCode(TQ_RETURN);
+//  Fact* pTransform    = pElm("_transform_"_Stz,    pTransforms);
+//                          vAtr("_transformNm_"_Stz,"cut"_Stz,pTransform);
+//  Method* pMethod =         pMth(pTransform);
+//                            pMethod->vAddCode(TQ_CUT);
+//                            pMethod->vAddCode(TQ_RETURN);
 
   // /contents/reference/transforms/transform paste = Method{ paste }
   
-  pTransform          = pElm("_transform_"_Stz,    pTransforms);
-                          vAtr("_transformNm_"_Stz,"paste"_Stz,pTransform);
-//  pMethod = m_p_Method_->pNewInstance();
-//  pTransform->vAttributeAppend(pMethod);
-//  pMethod->rxValue().m_pMethod = new Method(this,pTransform);
-//  pMethod->rxValue().m_pMethod->vAddCode(TQ_PASTE);
-//  pMethod->rxValue().m_pMethod->vAddCode(TQ_RETURN);
-  pMethod =               pMth(pTransform);
-                            pMethod->vAddCode(TQ_PASTE);
+//  pTransform          = pElm("_transform_"_Stz,    pTransforms);
+//                          vAtr("_transformNm_"_Stz,"paste"_Stz,pTransform);
+//  pMethod =                 pMth(pTransform);
+//                            pMethod->vAddCode(TQ_PASTE);
+//                            pMethod->vAddCode(TQ_RETURN);
+
+  // /contents/reference/transforms/transform schedule = Method{ schedule }
+  
+  Fact* pTransform    = pElm("_transform_"_Stz,    pTransforms);
+                          vAtr("_transformNm_"_Stz,"schedule"_Stz,pTransform);
+  Method* pMethod =         pMth(pTransform);
+                            pMethod->vAddCode(TQ_SCHEDULE);
                             pMethod->vAddCode(TQ_RETURN);
+                          //.vAtr("_priority_"_Stz,(i8)0,pTransform);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
