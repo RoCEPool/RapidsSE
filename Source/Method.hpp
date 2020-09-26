@@ -42,10 +42,12 @@ namespace Facts
   
     void vExecute(Fact* pAnchor);
     
-    eTQ eGetCode(i8 i_Code);
+    eTQ  eGetCode(i8 i_Code);
   
     void vGenMethod(i8 iMethodNo);
-
+  
+    void vSchedule(Fact** ppAnchor);
+  
   private:
     void vGenMethod000(void);
 

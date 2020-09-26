@@ -146,6 +146,22 @@ void Method::vGenMethod000(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule next transform                                                    */
+/*----------------------------------------------------------------------------*/
+void Method::vSchedule(Fact** ppAnchor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+  
+  Fact* pElmOf = nullptr;
+
+  pElmOf = (*ppAnchor)->pElementOf();
+  pElmOf->vElementCut(*ppAnchor);
+  
+  Fact::vDeleteRecursively(ppAnchor);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 #define PrmNil() \
@@ -218,12 +234,7 @@ void Method::vExecute(Fact* pAnchor)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case TQ_SCHEDULE: PrmNil();
         vTrace("TQ_SCHEDULE \n"_Stz);
-        
-        pElmOf = pAnchor->pElementOf();
-        pElmOf->vElementCut(pAnchor);
-        
-        Fact::vDeleteRecursively(&pAnchor);
-
+        vSchedule(&pAnchor);
         break;
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
