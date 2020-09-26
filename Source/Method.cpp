@@ -159,12 +159,25 @@ void Method::vSchedule(Fact** ppAnchor)
   i8 iPlanPrime = pPlanPrime->iValue();
   
   vTrace("PlanPrime %lld\n"_Stz,iPlanPrime);
-  
-  iPlanPrime++;
-  
-  if (iPlanPrime < 12) {
-    pPlanPrime->vValue(iPlanPrime);
-    return;
+    
+  switch (iPlanPrime) {
+      
+    case  0: pPlanPrime->vValue(1);  /*vTransformAdd(""_Stz);*/ return;
+    case  1: pPlanPrime->vValue(2);  /*vTransformAdd(""_Stz);*/ return;
+    case  2: pPlanPrime->vValue(3);  /*vTransformAdd(""_Stz);*/ return;
+    case  3: pPlanPrime->vValue(4);  /*vTransformAdd(""_Stz);*/ return;
+    case  4: pPlanPrime->vValue(5);  /*vTransformAdd(""_Stz);*/ return;
+    case  5: pPlanPrime->vValue(6);  /*vTransformAdd(""_Stz);*/ return;
+    case  6: pPlanPrime->vValue(7);  /*vTransformAdd(""_Stz);*/ return;
+    case  7: pPlanPrime->vValue(8);  /*vTransformAdd(""_Stz);*/ return;
+    case  8: pPlanPrime->vValue(9);  /*vTransformAdd(""_Stz);*/ return;
+    case  9: pPlanPrime->vValue(10); /*vTransformAdd(""_Stz);*/ return;
+    case 10: pPlanPrime->vValue(11); /*vTransformAdd(""_Stz);*/ return;
+    case 11: pPlanPrime->vValue(12); /*vTransformAdd(""_Stz);*/ return;
+    case 12: pPlanPrime->vValue(13); /*vTransformAdd(""_Stz);*/ return;
+
+    default:
+      break;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
