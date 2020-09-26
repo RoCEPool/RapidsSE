@@ -452,6 +452,18 @@ bool Kbase::bHighestCall(Fact*& rpCall)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find call with highest priority                                            */
+/*----------------------------------------------------------------------------*/
+void Kbase::vHighestCall(Fact*& rpCall)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KBASE,_FOOTER_);
+
+  rpCall = nullptr;
+  
+  m_pContents->vHighestCall(rpCall);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current working marker                                                 */
 /*----------------------------------------------------------------------------*/
 Fact* Kbase::pMarker(void)
@@ -622,9 +634,13 @@ bool Kbase::bTroll(void)
   
   Fact* pCall = nullptr;
   
-  if (! bHighestCall(pCall))
+//  if (! bHighestCall(pCall))
+//    return false; // don't call again
+
+  vHighestCall(pCall);
+  if (! pCall)
     return false; // don't call again
-  
+
   Fact* pCallName = pCall->pAttributeFindNm("name"_Stz);
   
   if (! pCallName)

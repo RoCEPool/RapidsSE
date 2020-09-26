@@ -162,7 +162,7 @@ void Method::vSchedule(Fact** ppAnchor)
     
   switch (iPlanPrime) {
       
-    case  0: vTransformAdd("vTQ_IMPORT_TABLES"_Stz); pPlanPrime->vValue(1);  return;
+    case  0: vTransformAdd("TQ_IMPORT_TABLES"_Stz); pPlanPrime->vValue(1);  return;
     case  1: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(2);  return;
     case  2: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(3);  return;
     case  3: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(4);  return;

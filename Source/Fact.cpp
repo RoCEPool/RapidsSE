@@ -721,6 +721,32 @@ bool Fact::bHighestCall(Fact*& rpCall)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find call with highest priority                                            */
+/*----------------------------------------------------------------------------*/
+void Fact::vHighestCall(Fact*& rpCall)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  if (m_sFactNm.bSame("call"_Stz)) {
+    if (rpCall) {
+      i8 iThisPriority = iAttributeValNm("priority"_Stz);
+      i8 iCurrPriority = rpCall->iAttributeValNm("priority"_Stz);
+
+      if (iThisPriority > iCurrPriority)
+        rpCall = this;
+    }
+    else {
+      rpCall = this;
+    }
+  }
+  
+  for (Fact* pElement = m_pElements;
+       pElement;
+       pElement = pElement->m_pElementNext)
+    pElement->vHighestCall(rpCall);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this fact an immediate sub-element of given fact                        */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsElementOf(Fact* pOfFact)

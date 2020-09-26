@@ -90,7 +90,8 @@ namespace Facts
     Fact* pFactNew(Fact* pSuper, Stz* szFactNm);
 
     bool  bHighestCall(Fact*& rpCall);
-  
+    void  vHighestCall(Fact*& rpCall);
+
     Fact* pMarker(void);
     void  vMarker(Fact* pMarker);
     Method* pMth(Fact* pElement);
