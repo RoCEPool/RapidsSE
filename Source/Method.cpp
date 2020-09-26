@@ -227,6 +227,8 @@ void Method::vTransformDelete(Fact** ppTransform)
 void Method::vTQ_ACCESS_METHODS(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+  
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -235,6 +237,8 @@ void Method::vTQ_ACCESS_METHODS(Fact** ppTransform)
 void Method::vTQ_ADD_ASM_HANDLERS(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,6 +247,8 @@ void Method::vTQ_ADD_ASM_HANDLERS(Fact** ppTransform)
 void Method::vTQ_ADD_ASM_SUBROUTINES(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -251,6 +257,8 @@ void Method::vTQ_ADD_ASM_SUBROUTINES(Fact** ppTransform)
 void Method::vTQ_ADD_OPERATOR(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,6 +267,8 @@ void Method::vTQ_ADD_OPERATOR(Fact** ppTransform)
 void Method::vTQ_ADD_OUTPUT_STAGE(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,6 +277,8 @@ void Method::vTQ_ADD_OUTPUT_STAGE(Fact** ppTransform)
 void Method::vTQ_ADD_PIPELINE(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+ 
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,6 +287,8 @@ void Method::vTQ_ADD_PIPELINE(Fact** ppTransform)
 void Method::vTQ_ADD_START_STAGE(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -283,6 +297,8 @@ void Method::vTQ_ADD_START_STAGE(Fact** ppTransform)
 void Method::vTQ_FROM_RESOLUTION(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,6 +307,8 @@ void Method::vTQ_FROM_RESOLUTION(Fact** ppTransform)
 void Method::vTQ_IMPORT_TABLES(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -299,6 +317,8 @@ void Method::vTQ_IMPORT_TABLES(Fact** ppTransform)
 void Method::vTQ_INITIAL_PLAN(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,6 +327,8 @@ void Method::vTQ_INITIAL_PLAN(Fact** ppTransform)
 void Method::vTQ_OUTPUT_STREAMDEF(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -315,6 +337,8 @@ void Method::vTQ_OUTPUT_STREAMDEF(Fact** ppTransform)
 void Method::vTQ_PROJECT_RESOLUTION(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -323,6 +347,8 @@ void Method::vTQ_PROJECT_RESOLUTION(Fact** ppTransform)
 void Method::vTQ_WRITE_EOASM(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -331,6 +357,8 @@ void Method::vTQ_WRITE_EOASM(Fact** ppTransform)
 void Method::vTQ_WRITE_PIPELINE(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
