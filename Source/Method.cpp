@@ -159,12 +159,25 @@ void Method::vSchedule(Fact** ppAnchor)
   i8 iPlanPrime = pPlanPrime->iValue();
   
   vTrace("PlanPrime %lld\n"_Stz,iPlanPrime);
-  
-  iPlanPrime++;
-  
-  if (iPlanPrime < 12) {
-    pPlanPrime->vValue(iPlanPrime);
-    return;
+    
+  switch (iPlanPrime) {
+      
+    case  0: pPlanPrime->vValue(1);  /*vTransformAdd(""_Stz);*/ return;
+    case  1: pPlanPrime->vValue(2);  /*vTransformAdd(""_Stz);*/ return;
+    case  2: pPlanPrime->vValue(3);  /*vTransformAdd(""_Stz);*/ return;
+    case  3: pPlanPrime->vValue(4);  /*vTransformAdd(""_Stz);*/ return;
+    case  4: pPlanPrime->vValue(5);  /*vTransformAdd(""_Stz);*/ return;
+    case  5: pPlanPrime->vValue(6);  /*vTransformAdd(""_Stz);*/ return;
+    case  6: pPlanPrime->vValue(7);  /*vTransformAdd(""_Stz);*/ return;
+    case  7: pPlanPrime->vValue(8);  /*vTransformAdd(""_Stz);*/ return;
+    case  8: pPlanPrime->vValue(9);  /*vTransformAdd(""_Stz);*/ return;
+    case  9: pPlanPrime->vValue(10); /*vTransformAdd(""_Stz);*/ return;
+    case 10: pPlanPrime->vValue(11); /*vTransformAdd(""_Stz);*/ return;
+    case 11: pPlanPrime->vValue(12); /*vTransformAdd(""_Stz);*/ return;
+    case 12: pPlanPrime->vValue(13); /*vTransformAdd(""_Stz);*/ return;
+
+    default:
+      break;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -203,6 +216,149 @@ void Method::vTransformDelete(Fact** ppTransform)
   pElmOf->vElementCut(*ppTransform);
   
   Fact::vDeleteRecursively(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_ACCESS_METHODS(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+  
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_ADD_ASM_HANDLERS(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_ADD_ASM_SUBROUTINES(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_ADD_OPERATOR(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_ADD_OUTPUT_STAGE(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_ADD_PIPELINE(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+ 
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_ADD_START_STAGE(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_FROM_RESOLUTION(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_IMPORT_TABLES(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_INITIAL_PLAN(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_OUTPUT_STREAMDEF(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_PROJECT_RESOLUTION(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_WRITE_EOASM(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                */
+/*----------------------------------------------------------------------------*/
+void Method::vTQ_WRITE_PIPELINE(Fact** ppTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+
+  vTransformDelete(ppTransform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -336,45 +492,59 @@ void Method::vExecute(Fact* pAnchor)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case TQ_ACCESS_METHODS: PrmNil();
+        vTQ_ACCESS_METHODS(&pAnchor);
         break;
 
       case TQ_ADD_ASM_HANDLERS: PrmNil();
+        vTQ_ADD_ASM_HANDLERS(&pAnchor);
         break;
 
       case TQ_ADD_ASM_SUBROUTINES: PrmNil();
+        vTQ_ADD_ASM_SUBROUTINES(&pAnchor);
         break;
 
       case TQ_ADD_OPERATOR: PrmNil();
+        vTQ_ADD_OPERATOR(&pAnchor);
         break;
 
       case TQ_ADD_OUTPUT_STAGE: PrmNil();
+        vTQ_ADD_OUTPUT_STAGE(&pAnchor);
         break;
 
       case TQ_ADD_PIPELINE: PrmNil();
+        vTQ_ADD_PIPELINE(&pAnchor);
         break;
 
       case TQ_ADD_START_STAGE: PrmNil();
+        vTQ_ADD_START_STAGE(&pAnchor);
         break;
 
       case TQ_FROM_RESOLUTION: PrmNil();
+        vTQ_FROM_RESOLUTION(&pAnchor);
         break;
 
       case TQ_IMPORT_TABLES: PrmNil();
+        vTQ_IMPORT_TABLES(&pAnchor);
         break;
 
       case TQ_INITIAL_PLAN: PrmNil();
+        vTQ_INITIAL_PLAN(&pAnchor);
         break;
 
       case TQ_OUTPUT_STREAMDEF: PrmNil();
+        vTQ_OUTPUT_STREAMDEF(&pAnchor);
         break;
 
       case TQ_PROJECT_RESOLUTION: PrmNil();
+        vTQ_PROJECT_RESOLUTION(&pAnchor);
         break;
 
       case TQ_WRITE_EOASM: PrmNil();
+        vTQ_WRITE_EOASM(&pAnchor);
         break;
 
       case TQ_WRITE_PIPELINE: PrmNil();
+        vTQ_WRITE_PIPELINE(&pAnchor);
         break;
 
 
