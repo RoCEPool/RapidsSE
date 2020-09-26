@@ -1192,7 +1192,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
     
     eEO eCode = *aeCode++;
-    
 #ifdef WITH_TRACE_LOGICUNIT
     //vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
 #endif
@@ -1813,7 +1812,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           vLib_ASSERT(pLU,(void*)0);
         }
         break;//+endCase
-              
+        
+      case EO_NEVERREACH: ArgNil(); // always assert
+        dLU0(EO_NEVERREACH);
+        vLib_ASSERT(pLU,0);
+        break;//+endCase
+        
       case EO_SANITY: ArgNil(); // sanity check
         dLU0(EO_SANITY);
         break;//+endCase

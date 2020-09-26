@@ -38,7 +38,7 @@ Routine QRY_103
   EO_JMP_TRUE EOSMARKER_HANDLER
 
   // Never reach
-  EO_ASSERT
+  EO_NEVERREACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_PULSEMARKER handler

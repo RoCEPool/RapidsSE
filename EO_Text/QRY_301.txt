@@ -43,8 +43,7 @@ Routine QRY_301
   EO_PRINTF "**NO_HANDLER**\n"
 
   // Never reach
-  EO_PUSH_0
-  EO_ASSERT
+  EO_NEVERREACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler

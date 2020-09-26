@@ -140,6 +140,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_EXIT,             // diarise routine exit
   /*    */ EO_INIT,             // initialise the rlu common
   /*    */ EO_INTEGRITY,        // integrity check
+  /*    */ EO_NEVERREACH,       // assert (never reach code)
   /*    */ EO_SANITY,           // sanity check
   /*    */ EO_SLEEP,            // sleep for top seconds
   /*    */ EO_SLOT,             // push i_Slot
@@ -441,6 +442,7 @@ static Stz* aEO[]
   /*    */ "EO_EXIT"_Stz,
   /*    */ "EO_INIT"_Stz,
   /*    */ "EO_INTEGRITY"_Stz,
+  /*    */ "EO_NEVERREACH"_Stz,
   /*    */ "EO_SANITY"_Stz,
   /*    */ "EO_SLEEP"_Stz,
   /*    */ "EO_SLOT"_Stz,
@@ -748,6 +750,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_EXIT
   { EA_NONE,    0 },  // EO_INIT
   { EA_NONE,    0 },  // EO_INTEGRITY
+  { EA_NONE,    0 },  // EO_NEVERREACH
   { EA_NONE,    0 },  // EO_SANITY
   { EA_NONE,    0 },  // EO_SLEEP
   { EA_NONE,    0 },  // EO_SLOT
