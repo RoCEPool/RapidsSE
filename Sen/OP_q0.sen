@@ -12,6 +12,9 @@
   "Trolling..." .
 
   begin
+  
+    "/tmp/kbase_test.txt" kbase[].print
+
     kbase[].troll
   while repeat
 ;
@@ -29,7 +32,9 @@
 
   kbase[].callSchedule
 
-  "/tmp/kbase_test.txt" kbase[].print
+  //"/tmp/kbase_test.txt" kbase[].print
+
+  q0_troll
 
   kbase[].delete
 
