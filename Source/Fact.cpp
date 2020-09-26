@@ -707,7 +707,7 @@ bool Fact::bHighestCall(Fact*& rpCall)
     else {
       rpCall = this;
     }
-    return true;
+    //return true;
   }
   
   for (Fact* pElement = m_pElements;

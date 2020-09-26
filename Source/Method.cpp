@@ -162,19 +162,19 @@ void Method::vSchedule(Fact** ppAnchor)
     
   switch (iPlanPrime) {
       
-    case  0: pPlanPrime->vValue(1);  /*vTransformAdd(""_Stz);*/ return;
-    case  1: pPlanPrime->vValue(2);  /*vTransformAdd(""_Stz);*/ return;
-    case  2: pPlanPrime->vValue(3);  /*vTransformAdd(""_Stz);*/ return;
-    case  3: pPlanPrime->vValue(4);  /*vTransformAdd(""_Stz);*/ return;
-    case  4: pPlanPrime->vValue(5);  /*vTransformAdd(""_Stz);*/ return;
-    case  5: pPlanPrime->vValue(6);  /*vTransformAdd(""_Stz);*/ return;
-    case  6: pPlanPrime->vValue(7);  /*vTransformAdd(""_Stz);*/ return;
-    case  7: pPlanPrime->vValue(8);  /*vTransformAdd(""_Stz);*/ return;
-    case  8: pPlanPrime->vValue(9);  /*vTransformAdd(""_Stz);*/ return;
-    case  9: pPlanPrime->vValue(10); /*vTransformAdd(""_Stz);*/ return;
-    case 10: pPlanPrime->vValue(11); /*vTransformAdd(""_Stz);*/ return;
-    case 11: pPlanPrime->vValue(12); /*vTransformAdd(""_Stz);*/ return;
-    case 12: pPlanPrime->vValue(13); /*vTransformAdd(""_Stz);*/ return;
+    case  0: vTransformAdd("vTQ_IMPORT_TABLES"_Stz); pPlanPrime->vValue(1);  return;
+    case  1: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(2);  return;
+    case  2: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(3);  return;
+    case  3: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(4);  return;
+    case  4: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(5);  return;
+    case  5: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(6);  return;
+    case  6: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(7);  return;
+    case  7: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(8);  return;
+    case  8: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(9);  return;
+    case  9: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(10); return;
+    case 10: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(11); return;
+    case 11: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(12); return;
+    case 12: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(13); return;
 
     default:
       break;
@@ -308,6 +308,8 @@ void Method::vTQ_IMPORT_TABLES(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
 
+  vTrace("vTQ_IMPORT_TABLES\n"_Stz);
+  
   vTransformDelete(ppTransform);
 }
 
