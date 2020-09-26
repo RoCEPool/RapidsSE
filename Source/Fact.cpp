@@ -223,6 +223,7 @@ void Fact::vAttributeCut(Fact* pAttribute)
   pPrior->m_pAttributeNext = pAttribute->m_pAttributeNext;
   pAttribute->m_pAttributeNext = nullptr;
 }
+
 /*----------------------------------------------------------------------------*/
 /* find attribute fact                                                        */
 /*----------------------------------------------------------------------------*/
@@ -366,6 +367,23 @@ Fact* Fact::pAttributeThatIsSubClass(Fact* pOfSuperFact)
     pScan = pScan->pAttributeNext();
     
   return pScan;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get int value of named attribute                                           */
+/*----------------------------------------------------------------------------*/
+i8 Fact::iAttributeValNm(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+    
+  Fact* pAttribute = pAttributeFindNm(szName);
+  
+  if (! pAttribute)
+    return C_UNKNOWN;
+  
+  i8 iVal = pAttribute->iValue();
+  
+  return iVal;
 }
 
 /*----------------------------------------------------------------------------*/
