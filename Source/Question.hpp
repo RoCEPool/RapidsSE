@@ -44,6 +44,7 @@ namespace Facts
   private:
     bool  bFirst(void);
     bool  bNext(void);
+    Fact* pSearch(Fact* pPrev, Fact** ppAttribute);
 
     Footer* aFooter(void);
   };

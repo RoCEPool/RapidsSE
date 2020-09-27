@@ -144,7 +144,9 @@ bool Question::bFirst(void)
   
   m_pStart = m_pKbase->pFactFind(m_sSetNm);
   
-  return false;
+  m_pElement = pSearch(m_pStart,&m_pAttribute);
+  
+  return m_pElement ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +156,61 @@ bool Question::bNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
   
-  return false;
+  m_pElement = pSearch(m_pElement,&m_pAttribute);
+  
+  return m_pElement ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* search                                                                     */
+/*----------------------------------------------------------------------------*/
+Fact* Question::pSearch(Fact* pPrev, Fact** ppAttribute)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  Fact* pElement = pPrev;
+  
+  while (pElement) {
+    
+    if (pElement->pElements()) {
+      
+      pElement = pElement->pElements();
+      
+      Fact* pAttribute = pElement->pAttributeFindNm(m_sAtrNm);
+
+      if (pAttribute) {
+        *ppAttribute = pAttribute;
+        return pElement;
+      }
+    
+      continue;
+    }
+
+    if (pElement->pElementNext()) {
+        
+      pElement = pElement->pElementNext();
+
+      Fact* pAttribute = pElement->pAttributeFindNm(m_sAtrNm);
+
+      if (pAttribute) {
+        *ppAttribute = pAttribute;
+        return pElement;
+      }
+      
+      continue;
+    }
+    
+    if (pElement == m_pStart)
+      break;
+    
+    pElement = pElement->pElementOf();
+    
+    if (pElement == m_pStart)
+      break;
+  }
+    
+  *ppAttribute = nullptr;
+  return nullptr;
 }
 
 /*============================================================================*/
