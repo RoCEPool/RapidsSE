@@ -212,6 +212,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PtrVal),             HT_INVALID           }, // CN_PTRVAL
 
   { 'Q' - ('A' - 1),            HT_INVALID           }, // CN__Q__
+  { sizeof(Question),           HT_TRANSIENT_TINY    }, // CN_QUESTION
   { sizeof(Queue),              HT_TRANSIENT_TINY    }, // CN_QUEUE
   { sizeof(QueueBuffer),        HT_INVALID           }, // CN_QUEUEBUFFER
   { sizeof(Queues),             HT_TRANSIENT_TINY    }, // CN_QUEUES

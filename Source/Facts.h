@@ -17,6 +17,7 @@ namespace Facts
 #include "Fact.hpp"
 
 #include "Method.hpp"
+#include "Question.hpp"
 
 #include "Kbase.hpp"
 

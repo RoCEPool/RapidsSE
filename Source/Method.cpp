@@ -310,6 +310,8 @@ void Method::vTQ_IMPORT_TABLES(Fact** ppTransform)
 
   vTrace("vTQ_IMPORT_TABLES\n"_Stz);
   
+  Question* pAsk = new Question(m_pKbase);
+  
   Fact* pFromList = m_pKbase->pFactFind("fromList"_Stz);
   
   for (Fact* pElement = pFromList->pElements();
@@ -320,6 +322,8 @@ void Method::vTQ_IMPORT_TABLES(Fact** ppTransform)
     
     vTrace("Import: %s\n"_Stz,pFromNm->rxValue().m_pText->szGet());
   }
+  
+  delete pAsk;
   
   vTransformDelete(ppTransform);
 }
