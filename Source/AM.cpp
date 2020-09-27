@@ -383,6 +383,18 @@ i8 AM::nRndSkipLevel(void) {
   return nLevels;
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+Table* AM::pTableFind(Stz* szTableNm) {
+  
+  DicStack* pDicStack = pTaskDicStack();
+  
+  Table* pTable = Table::pFindTable(pDicStack,szTableNm);
+  
+  return pTable;
+}
+
 i8 AM::iTaskAcksRmg_assert_only_(Task* pTask) { return pTask->iAcksRmg_assert_only_(); }
 void AM::vTaskBeginOp(Task* pTask)     { pTask->vBeginOp();     }
 void AM::vTaskDump(void) {

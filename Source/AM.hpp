@@ -291,6 +291,9 @@ namespace Oblique
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    static Table* pTableFind(Stz* szTableNm);
+
     static i8   iTaskAcksRmg_assert_only_(Task* pTask);
     static void vTaskBeginOp(Task* pTask);
     static DicStack* pTaskDicStack(void);
@@ -314,9 +317,9 @@ namespace Oblique
     static void vWordSee(Word* pWord, DicStack* pDicStack);
     static void vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aFip, DicStack* pDicStack);
     static void vWriteLog(void);
-    static void vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs);
+    static void vWriteTrace_vargs(eYA eSysAct, Stz* szFormat, va_list xArgs);
     static void vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs);
-    static void vWriteTrace(eYA eSysAct, Stz* aFormat, ...);
+    static void vWriteTrace(eYA eSysAct, Stz* szFormat, ...);
 
   };
 }
