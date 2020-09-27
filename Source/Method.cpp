@@ -310,23 +310,45 @@ void Method::vTQ_IMPORT_TABLES(Fact** ppTransform)
 
   vTrace("vTQ_IMPORT_TABLES\n"_Stz);
   
-  Question* pAsk = new Question(m_pKbase);
+  Question* pQuestion = new Question(m_pKbase);
+
+  pQuestion->vAsk("fromList"_Stz,"fromNm"_Stz);
   
-  Fact* pFromList = m_pKbase->pFactFind("fromList"_Stz);
-  
-  for (Fact* pElement = pFromList->pElements();
-       pElement;
-       pElement = pElement->pElementNext()) {
+  while (pQuestion->bEach()) {
     
-    Fact* pFromNm = pElement->pAttributeFindNm("fromNm"_Stz);
-    
+    Fact* pFromNm = pQuestion->pAttribute();
+
     vTrace("Import: %s\n"_Stz,pFromNm->rxValue().m_pText->szGet());
   }
   
-  delete pAsk;
+  delete pQuestion;
   
   vTransformDelete(ppTransform);
 }
+/*----------------------------------------------------------------------------*/
+//void Method::vTQ_IMPORT_TABLES(Fact** ppTransform)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+//
+//  vTrace("vTQ_IMPORT_TABLES\n"_Stz);
+//
+//  Question* pAsk = new Question(m_pKbase);
+//
+//  Fact* pFromList = m_pKbase->pFactFind("fromList"_Stz);
+//
+//  for (Fact* pElement = pFromList->pElements();
+//       pElement;
+//       pElement = pElement->pElementNext()) {
+//
+//    Fact* pFromNm = pElement->pAttributeFindNm("fromNm"_Stz);
+//
+//    vTrace("Import: %s\n"_Stz,pFromNm->rxValue().m_pText->szGet());
+//  }
+//
+//  delete pAsk;
+//
+//  vTransformDelete(ppTransform);
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                */

@@ -52,12 +52,12 @@ Question::~Question(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* pose a question                                                            */
 /*----------------------------------------------------------------------------*/
-void Question::vAsk(Stz* szSetNm, Stz* m_sAtrNm)
+void Question::vAsk(Stz* szSetNm, Stz* szAtrNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
   
   m_sSetNm = szSetNm;
-  m_sAtrNm = m_sAtrNm;
+  m_sAtrNm = szAtrNm;
   
   m_bInited = false;
 }
