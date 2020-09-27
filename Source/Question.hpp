@@ -42,6 +42,9 @@ namespace Facts
     Stz*  szValue(void);
   
   private:
+    bool  bFirst(void);
+    bool  bNext(void);
+
     Footer* aFooter(void);
   };
 

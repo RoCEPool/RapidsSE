@@ -73,13 +73,20 @@ Fact* Question::pAttribute(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pose a question                                                            */
+/* get next answer                                                            */
 /*----------------------------------------------------------------------------*/
 bool Question::bEach(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
   
-  return false;
+  bool bResult;
+  
+  if (! m_bInited)
+    bResult = bFirst();
+  else
+    bResult = bNext();
+  
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,6 +127,34 @@ Stz* Question::szValue(void)
   Stz*  szVal = m_pAttribute->rxValue().m_pText->szGet();
   
   return szVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get first answer                                                           */
+/*----------------------------------------------------------------------------*/
+bool Question::bFirst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  m_bInited = true;
+  
+  m_pStart = m_pKbase->pFactFind(m_sSetNm);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next answer                                                            */
+/*----------------------------------------------------------------------------*/
+bool Question::bNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  return false;
 }
 
 /*============================================================================*/
