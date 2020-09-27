@@ -310,6 +310,17 @@ void Method::vTQ_IMPORT_TABLES(Fact** ppTransform)
 
   vTrace("vTQ_IMPORT_TABLES\n"_Stz);
   
+  Fact* pFromList = m_pKbase->pFactFind("fromList"_Stz);
+  
+  for (Fact* pElement = pFromList->pElements();
+       pElement;
+       pElement = pElement->pElementNext()) {
+    
+    Fact* pFromNm = pElement->pAttributeFindNm("fromNm"_Stz);
+    
+    vTrace("Import: %s\n"_Stz,pFromNm->rxValue().m_pText->szGet());
+  }
+  
   vTransformDelete(ppTransform);
 }
 
