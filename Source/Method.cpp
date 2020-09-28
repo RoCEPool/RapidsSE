@@ -162,8 +162,8 @@ void Method::vSchedule(Fact** ppAnchor)
     
   switch (iPlanPrime) {
       
-    case  0: vTransformAdd("TQ_IMPORT_TABLES"_Stz); pPlanPrime->vValue(1);  return;
-    case  1: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(2);  return;
+    case  0: vTransformAdd("TQ_IMPORT_TABLES"_Stz);   pPlanPrime->vValue(1);  return;
+    case  1: vTransformAdd("TQ_FROM_RESOLUTION"_Stz); pPlanPrime->vValue(2);  return;
     case  2: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(3);  return;
     case  3: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(4);  return;
     case  4: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(5);  return;
@@ -298,6 +298,16 @@ void Method::vTQ_FROM_RESOLUTION(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
 
+  vTrace("vTQ_FROM_RESOLUTION\n"_Stz);
+  
+  Question* pQuestion = new Question(m_pKbase,"fromList"_Stz,"fromNm"_Stz);
+
+  while (pQuestion->bEach()) {
+
+  }
+  
+  delete pQuestion;
+
   vTransformDelete(ppTransform);
 }
 
@@ -317,8 +327,15 @@ void Method::vTQ_IMPORT_TABLES(Fact** ppTransform)
   while (pQuestion->bEach()) {
     
     Fact* pFromNm = pQuestion->pAttribute();
+    
+    Stz* szTableNm = pFromNm->rxValue().m_pText->szGet();
 
     vTrace("Import: %s\n"_Stz,pFromNm->rxValue().m_pText->szGet());
+    
+    Table* pTable = AM::pTableFind(szTableNm);
+    
+    if (pTable)
+      m_pKbase->vImportTable(pTable);
   }
   
   delete pQuestion;

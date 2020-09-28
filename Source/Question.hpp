@@ -28,7 +28,11 @@ namespace Facts
     void  operator delete(void*);
 
     Question(Kbase* pKbase);
+    Question(Kbase* pKbase, Stz* szSetNm, Stz* szAtrNm);
    ~Question(void) noexcept(false);
+
+    static Fact* pFindElm(Kbase* pKbase, Stz* szSetNm, Stz* szElmNm);
+    static Fact* pFindElm(Kbase* pKbase, Fact* pSet, Stz* szElmNm);
 
     void  vAsk(Stz* szSetNm, Stz* szAtrNm);
   

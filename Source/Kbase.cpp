@@ -771,7 +771,7 @@ void Kbase::vImportTable(Table* pTableToImport)
     
     Fact* pColumnNo = pAttributeInstance(pColumn,"_columnNo_"_Stz,
                                          pCol->iColumnNo());
-    RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_value_"_Stz));
+    //RASSERT(pColumnNo->bQuestion("isSubClassOf"_Stz,"_value_"_Stz));
 
     vAttributeInstance(pColumn,"_columnNm_"_Stz,pCol->szColNm());
 
@@ -940,8 +940,8 @@ void Kbase::vAprioriFacts(void)
                          pAha("_table_"_Stz,   m_p_Folder_);
                          pAha("_tableNm_"_Stz, m_p_Name_);
   
-  Fact* p_TableRef_ =    pAha("_tableRes_"_Stz,  m_p_Xref_);
-  Fact* p_ColumnRef_ =   pAha("_ColumnRes_"_Stz, m_p_Xref_);
+  Fact* p_TableRef_ =    pAha("_tableRef_"_Stz,  m_p_Xref_);
+  Fact* p_ColumnRef_ =   pAha("_ColumnRef_"_Stz, m_p_Xref_);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

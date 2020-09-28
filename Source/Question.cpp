@@ -38,11 +38,69 @@ Question::Question(Kbase* pKbase)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Question::Question(Kbase* pKbase, Stz* szSetNm, Stz* szAtrNm)
+: Object(CN_QUESTION)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  m_pKbase = pKbase;
+  
+  m_sSetNm = szSetNm;
+  m_sAtrNm = szAtrNm;
+
+  m_bInited = false;
+  
+  m_pStart = nullptr;
+  m_pElement = nullptr;
+  m_pAttribute = nullptr;
+
+  _checkInitialised_(CN_QUESTION);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Question::~Question(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* find named element within named set                                        */
+/*----------------------------------------------------------------------------*/
+Fact* Question::pFindElm(Kbase* pKbase, Stz* szSetNm, Stz* szElmNm)
+{
+  _static_
+  
+  Fact* pSet = pKbase->pElementFind(szSetNm);
+  
+  if (!pSet)
+    return nullptr;
+  
+  Fact* pElm = pFindElm(pKbase,pSet,szSetNm);
+  
+  return pElm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find named element within named set                                        */
+/*----------------------------------------------------------------------------*/
+Fact* Question::pFindElm(Kbase* pKbase, Fact* pSet, Stz* szElmNm)
+{
+  _static_
+  
+  
+  
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
