@@ -271,6 +271,53 @@ Fact* Question::pSearch(Fact* pPrev, Fact** ppAttribute)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* advance thru each element by fact name                                     */
+/*----------------------------------------------------------------------------*/
+bool Question::bEachElmByFactNm(Fact* pOrigin, Stz* szFactNm, Fact** ppPrev)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  Fact* pEach = *ppPrev;
+  
+  while (pEach) {
+    
+    // does the element have a matching fact name?
+    if (pEach->szName()->bSame(szFactNm)) {
+      *ppPrev = pEach;
+      return true;
+    }
+    
+    // does the element have sub-elements?
+    if (pEach->pElements()) {
+      pEach = pEach->pElements();
+      continue;
+    }
+    
+    // are there more elements in the set the element is in?
+    if (pEach->pElementNext()) {
+      pEach = pEach->pElementNext();
+      continue;
+    }
+
+    // steps up/left/outwards till we can go to next element of a set
+    while (pEach != pOrigin) {
+      pEach = pEach->pElementOf();
+      if (pEach->pElementNext()) {
+        pEach = pEach->pElementNext();
+        break;
+      }
+    }
+    
+    // have we exhausted the search?
+    if (pEach == pOrigin)
+      break;
+  }
+ 
+  *ppPrev = nullptr;
+  return false;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

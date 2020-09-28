@@ -49,6 +49,9 @@ namespace Facts
     bool  bFirst(void);
     bool  bNext(void);
     Fact* pSearch(Fact* pPrev, Fact** ppAttribute);
+  
+    bool  bEachElmByFactNm(Fact* pOrigin, Stz* szFactNm, Fact** ppPrev);
+
 
     Footer* aFooter(void);
   };
