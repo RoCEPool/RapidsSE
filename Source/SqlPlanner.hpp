@@ -26,6 +26,13 @@ namespace Parser
     ~SqlPlanner(void);
   
     Footer* aFooter(void);
+    
+    virtual antlrcpp::Any visitStatement(sqlParser::StatementContext *ctx)      override;
+    virtual antlrcpp::Any visitQuery(sqlParser::QueryContext *ctx)              override;
+    virtual antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *ctx)  override;
+    virtual antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *ctx)    override;
+    virtual antlrcpp::Any visitFetch(sqlParser::FetchContext *ctx)              override;
+    virtual antlrcpp::Any visitSelectList(sqlParser::SelectListContext *ctx)    override;
   };
   
   SqlPlanner* _pSqlPlanner(void* aAddr);
