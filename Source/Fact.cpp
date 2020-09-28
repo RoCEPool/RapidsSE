@@ -662,6 +662,24 @@ Fact* Fact::pGetSuperChild(Fact* pOfFact)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this element have a attribute with given name?                        */
+/*----------------------------------------------------------------------------*/
+bool Fact::bHasAtrNm(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+    
+  for (Fact* pAtr = m_pAttributes;
+       pAtr;
+       pAtr = pAtr->m_pAttributeNext) {
+    
+    if (pAtr->bSameName(szName))
+      return true;
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* has an attribute which is specifically given fact                          */
 /*----------------------------------------------------------------------------*/
 bool Fact::bHasSpecificAttribute(Fact* pFact)
