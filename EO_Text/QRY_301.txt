@@ -40,15 +40,14 @@ Routine QRY_301
   EO_EQUAL
   EO_JMP_TRUE EOSMARKER_HANDLER
 
-  EO_PRINTF "**NO_HANDLER**\n"
-
   // Never reach
+  EO_PRINTF "**NO_HANDLER : 301**\n"
   EO_NEVERREACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
-  EO_PRINTF "**STARTMARKER_HANDLER**\n"
+EO_PRINTF "**STARTMARKER_HANDLER : 301**\n"
   EO_POP
 
   EO_TABLENM_ALT_SET "lineitem"
@@ -66,14 +65,14 @@ Label STARTMARKER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_PULSEMARKER handler
 Label PULSEMARKER_HANDLER
-  EO_PRINTF "**PULSEMARKER_HANDLER**\n"
+  EO_PRINTF "**PULSEMARKER_HANDLER : 301**\n"
   EO_POP
   EO_JMP QRY_301_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STREAMDEF handler
 Label STREAMDEF_HANDLER
-  EO_PRINTF "**STREAMDEF_HANDLER**\n"
+  EO_PRINTF "**STREAMDEF_HANDLER : 301**\n"
   EO_POP
 
   EO_REG_STREAMDEFOUT_NEW
@@ -109,12 +108,12 @@ Label STREAMDEF_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_EOSMARKER handler
 Label EOSMARKER_HANDLER
-  EO_PRINTF "**EOSMARKER_HANDLER**\n"
+  EO_PRINTF "**EOSMARKER_HANDLER : 301**\n"
   EO_POP
   EO_JMP QRY_301_DONE
 
 Label RSBBUFFER_HANDLER
-  EO_PRINTF "**RSBBUFFER_HANDLER**\n"
+  EO_PRINTF "**RSBBUFFER_HANDLER : 301**\n"
   EO_RSB_DST_NEW
 
   EO_RSB_SRC_BEGIN

@@ -41,12 +41,13 @@ Routine QRY_302
   EO_JMP_TRUE EOSMARKER_HANDLER
 
   // Never reach
+  EO_PRINTF "**NO_HANDLER : 302**\n"
   EO_NEVERREACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
-  EO_PRINTF "**STARTMARKER_HANDLER**\n"
+  EO_PRINTF "**STARTMARKER_HANDLER : 302**\n"
   EO_POP
   EO_REG_INDEXDEF_NEW "idx_int"
   EO_PUSH_COLUMN_TYPE CT_INTEGER
@@ -60,14 +61,14 @@ Label STARTMARKER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_PULSEMARKER handler
 Label PULSEMARKER_HANDLER
-  EO_PRINTF "**PULSEMARKER_HANDLER**\n"
+  EO_PRINTF "**PULSEMARKER_HANDLER : 302**\n"
   EO_POP
   EO_JMP QRY_302_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STREAMDEF handler
 Label STREAMDEF_HANDLER
-  EO_PRINTF "**STREAMDEF_HANDLER**\n"
+  EO_PRINTF "**STREAMDEF_HANDLER : 302**\n"
   EO_POP
 
   EO_REG_STREAMDEFOUT_NEW
@@ -104,7 +105,7 @@ Label STREAMDEF_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_EOSMARKER handler
 Label EOSMARKER_HANDLER
-  EO_PRINTF "**EOSMARKER_HANDLER**\n"
+  EO_PRINTF "**EOSMARKER_HANDLER : 302**\n"
   EO_POP
   EO_CALL OUT_AGG
   EO_JMP QRY_END
@@ -113,7 +114,7 @@ Label EOSMARKER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_RSBBUFFER handler
 Label RSBBUFFER_HANDLER
-  EO_PRINTF "**RSBBUFFER_HANDLER**\n"
+  EO_PRINTF "**RSBBUFFER_HANDLER : 302**\n"
 
   // --
   EO_RSB_SRC_BEGIN

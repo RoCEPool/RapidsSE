@@ -5,6 +5,7 @@ Routine QRY_601
 
   EO_INIT
   EO_ENTER
+
   EO_SQL 601
 
   // check for ZK_STARTMARKER
@@ -37,23 +38,26 @@ Routine QRY_601
   EO_EQUAL
   EO_JMP_TRUE RSBBUFFER_HANDLER
 
+  EO_PRINTF "**NO_HANDLER : 601**\n"
+  EO_NEVERREACH
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
-  EO_PRINTF "**STARTMARKER_HANDLER**\n"
+  EO_PRINTF "**STARTMARKER_HANDLER : 601**\n"
   EO_POP
   EO_JMP QRY_601_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_PULSEMARKER handler
 Label PULSEMARKER_HANDLER
-  EO_PRINTF "**PULSEMARKER_HANDLER**\n"
+  EO_PRINTF "**PULSEMARKER_HANDLER : 601**\n"
   EO_POP
   EO_JMP QRY_601_DONE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STREAMDEF handler
 Label STREAMDEF_HANDLER
-  EO_PRINTF "**STREAMDEF_HANDLER**\n"
+  EO_PRINTF "**STREAMDEF_HANDLER : 601**\n"
   EO_POP
   EO_REG_STREAMDEF_STREAMDEFOUT
   EO_POT_USE_STREAMDEFOUT 1
@@ -62,14 +66,14 @@ Label STREAMDEF_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_EOSMARKER handler
 Label EOSMARKER_HANDLER
-  EO_PRINTF "**EOSMARKER_HANDLER**\n"
+  EO_PRINTF "**EOSMARKER_HANDLER : 601**\n"
   EO_POP
   EO_JMP QRY_601_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_RSBBUFFER handler
 Label RSBBUFFER_HANDLER
-  EO_PRINTF "**RSBBUFFER_HANDLER**\n"
+  EO_PRINTF "**RSBBUFFER_HANDLER : 601**\n"
   EO_POP
   EO_RSB_DST_TESTROW
   EO_JMP_TRUE RSB_SRC_BEGIN

@@ -1267,10 +1267,10 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt 1 - select l_extendedprice from lineitem;
+  // Smt 0 - select l_extendedprice from lineitem;
   sPath
   "
-  procedure Smt1
+  procedure Smt0
     parameters $Table $QueryText_stageB
   begin
 

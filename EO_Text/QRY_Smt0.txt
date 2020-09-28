@@ -1,7 +1,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BEGIN : QRY_Smt1 (select l_extendedprice from lineitem)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Routine QRY_Smt1
+Routine QRY_Smt0
 
   // initialization
   EO_INIT
@@ -41,17 +41,20 @@ Routine QRY_Smt1
   EO_JMP_TRUE EOSMARKER_HANDLER
 
   // Never reach
+  EO_PRINTF "**NO_HANDLER : 0**\n"
   EO_NEVERREACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
+  EO_PRINTF "**STARTMARKER_HANDLER : 0**\n"
   EO_POP
   EO_JMP QRY_SMT1_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_PULSEMARKER handler
 Label PULSEMARKER_HANDLER
+  EO_PRINTF "**PULSEMARKER_HANDLER : 0**\n"
   EO_POP
   EO_JMP QRY_SMT1_DONE
 
@@ -62,7 +65,7 @@ Label STREAMDEF_HANDLER
 
   EO_REG_STREAMDEFOUT_NEW
 
-  // add column L_RETURNFLAG
+  // add column l_extendedprice
   EO_PUSH_COLUMN_SCALE 2
   EO_PUSH_COLUMN_LENGTH 15
   EO_PUSH_COLUMN_TYPE CT_DECIMAL
@@ -74,12 +77,14 @@ Label STREAMDEF_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_EOSMARKER handler
 Label EOSMARKER_HANDLER
+  EO_PRINTF "**EOSMARKER_HANDLER : 0**\n"
   EO_POP
   EO_JMP QRY_SMT1_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_CRWBUFFER handler
 Label CRWBUFFER_HANDLER
+  EO_PRINTF "**CRWBUFFER_HANDLER : 0**\n"
   EO_POP
 
   EO_CRW_SRC_BEGIN

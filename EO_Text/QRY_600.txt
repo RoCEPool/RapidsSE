@@ -32,12 +32,13 @@ Routine QRY_600
   EO_JMP_TRUE EOSMARKER_HANDLER
 
   // never reach
+  EO_PRINTF "**NO_HANDLER : 600**\n"
   EO_NEVERREACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
-  EO_PRINTF "**STARTMARKER_HANDLER**\n"
+  EO_PRINTF "**STARTMARKER_HANDLER : 600**\n"
   EO_POP
   EO_TABLENM_SRC_SET "lineitem"
   EO_INDEXNM_SRC_SET "lineitem_idx"
@@ -46,21 +47,21 @@ Label STARTMARKER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STREAMDEF handler
 Label STREAMDEF_HANDLER
-  EO_PRINTF "**STREAMDEF_HANDLER**\n"
+  EO_PRINTF "**STREAMDEF_HANDLER : 600**\n"
   EO_POP
   EO_JMP QRY_600_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_EOSMARKER handler
 Label EOSMARKER_HANDLER
-  EO_PRINTF "**EOSMARKER_HANDLER**\n"
+  EO_PRINTF "**EOSMARKER_HANDLER : 600**\n"
   EO_POP
   EO_JMP QRY_600_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_PULSEMARKER handler
 Label PULSEMARKER_HANDLER
-  EO_PRINTF "**PULSEMARKER_HANDLER**\n"
+  EO_PRINTF "**PULSEMARKER_HANDLER : 600**\n"
   EO_POP
 
   // create  the streamDefOut

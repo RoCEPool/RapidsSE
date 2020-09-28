@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _Smt1 - Select l_extendedprice from lineitem                               */
+/* _Smt0 - Select l_extendedprice from lineitem                               */
 /*============================================================================*/
 
 print "Starting cluster..." ;
@@ -36,7 +36,7 @@ create table LineItem                      // SF * 6,000,000 rows
 // 10K ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 /time fload lineitem "/DATA/TPCH/lineitem10.csv";
-/time Smt1 lineitem "../EO_text/QRY_Smt1.txt";
+/time Smt0 lineitem "../EO_text/QRY_Smt0.txt";
 
 //drop table lineitem;
 //memoryLeaks;

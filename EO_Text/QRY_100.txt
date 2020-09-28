@@ -41,11 +41,13 @@ Routine QRY_100
   EO_JMP_TRUE EOSMARKER_HANDLER
 
   // Never reach
+  EO_PRINTF "**NO_HANDLER : 100**\n"
   EO_NEVERREACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
+  EO_PRINTF "**STARTMARKER_HANDLER : 300**\n"
   EO_POP
   EO_TABLENM_SRC_SET "lineitem"
   EO_REG_INDEXDEF_NEW "idx_int"
@@ -59,12 +61,14 @@ Label STARTMARKER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_PULSEMARKER handler
 Label PULSEMARKER_HANDLER
+  EO_PRINTF "**PULSEMARKER_HANDLER : 100**\n"
   EO_POP
   EO_JMP QRY_100_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STREAMDEF handler
 Label STREAMDEF_HANDLER
+  EO_PRINTF "**STREAMDEF_HANDLER : 100**\n"
   EO_POP
 
   EO_REG_STREAMDEFOUT_NEW
@@ -142,6 +146,7 @@ Label STREAMDEF_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_EOSMARKER handler
 Label EOSMARKER_HANDLER
+  EO_PRINTF "**EOSMARKER_HANDLER : 100**\n"
   EO_POP
   EO_CALL SUBROUTINE_IXT_TO_RSB
   EO_REG_INDEXTREE_DELETE
@@ -150,6 +155,7 @@ Label EOSMARKER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_CRWBUFFER handler
 Label CRWBUFFER_HANDLER
+  EO_PRINTF "**CRWBUFFER_HANDLER : 100**\n"
   EO_POP
   EO_CRW_SRC_BEGIN
 

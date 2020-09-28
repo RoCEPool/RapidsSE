@@ -41,11 +41,13 @@ Routine QRY_300
   EO_JMP_TRUE EOSMARKER_HANDLER
 
   // Never reach
+  EO_PRINTF "**NO_HANDLER : 300**\n"
   EO_NEVERREACH
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // ZK_STARTMARKER handler
 Label STARTMARKER_HANDLER
+  EO_PRINTF "**STARTMARKER_HANDLER : 300**\n"
   EO_POP
   EO_TABLENM_SRC_SET "customer"
   EO_INDEXNM_SRC_SET "customer_Idx1"
@@ -54,29 +56,31 @@ Label STARTMARKER_HANDLER
 
   EO_REG_STREAMDEFOUT_NEW
 
-  // add column L_RETURNFLAG
+  // add column o_orderkey
   EO_PUSH_COLUMN_SCALE 0
   EO_PUSH_COLUMN_LENGTH 19
   EO_PUSH_COLUMN_TYPE CT_INTEGER
   EO_REG_STREAMDEFOUT_ADDCOLUMN "o_orderkey"
 
+  // add column o_orderdate
   EO_PUSH_COLUMN_SCALE 0
   EO_PUSH_COLUMN_LENGTH 0
   EO_PUSH_COLUMN_TYPE CT_DATE
   EO_REG_STREAMDEFOUT_ADDCOLUMN "o_orderdate"
 
+  // add column o_shippriority
   EO_PUSH_COLUMN_SCALE 0
   EO_PUSH_COLUMN_LENGTH 19
   EO_PUSH_COLUMN_TYPE CT_INTEGER
   EO_REG_STREAMDEFOUT_ADDCOLUMN "o_shippriority"
 
   EO_POT_USE_STREAMDEFOUT 0
-
   EO_JMP QRY_300_DONE
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // ZK_STREAMDEF handler
 Label STREAMDEF_HANDLER
+  EO_PRINTF "**STREAMDEF_HANDLER : 300**\n"
   EO_POP
   EO_JMP QRY_300_DONE
 
