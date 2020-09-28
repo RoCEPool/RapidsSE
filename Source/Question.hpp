@@ -19,7 +19,13 @@ namespace Facts
     Fact*  m_pStart;
     Fact*  m_pElement;
     Fact*  m_pAttribute;
-
+  
+  
+    Fact*  m_pOrigin;
+    Fact*  m_pPrev;
+  
+    bool (*m_afbMatch)(Fact* pElm);
+  
     // must be last
     Footer m_xFooter;
 
@@ -50,8 +56,12 @@ namespace Facts
     bool  bNext(void);
     Fact* pSearch(Fact* pPrev, Fact** ppAttribute);
   
-    bool  bEachElmByFactNm(Fact* pOrigin, Stz* szFactNm, Fact** ppPrev);
+    Fact* pEachElmByAtrNm(Fact** ppPrev, Fact* pOrigin, Stz* szAtrNm);
+    Fact* pEachElmByElmNm(Fact* pOrigin, Stz* szFactNm, Fact** ppPrev);
 
+    bool  bMatchAtrNm(Fact* pElm);
+    bool  bMatchElmNm(Fact* pElm);
+    Fact* pNextMatchingElm(void);
 
     Footer* aFooter(void);
   };

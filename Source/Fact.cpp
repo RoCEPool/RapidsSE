@@ -1422,6 +1422,18 @@ bool Fact::bQuestion(Stz* szQuestion, Opaque* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if fact has same name as given argument                               */
+/*----------------------------------------------------------------------------*/
+bool Fact::bSameName(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  bool bSame = m_sFactNm.bSame(szName);
+  
+  return bSame;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set int value                                                              */
 /*----------------------------------------------------------------------------*/
 void Fact::vSetInt(i8 iInt)

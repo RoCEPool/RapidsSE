@@ -31,6 +31,9 @@ Question::Question(Kbase* pKbase)
   m_pStart = nullptr;
   m_pElement = nullptr;
   m_pAttribute = nullptr;
+  
+  m_pOrigin = nullptr;
+  m_pPrev = nullptr;
 
   _checkInitialised_(CN_QUESTION);
 
@@ -55,6 +58,9 @@ Question::Question(Kbase* pKbase, Stz* szSetNm, Stz* szAtrNm)
   m_pStart = nullptr;
   m_pElement = nullptr;
   m_pAttribute = nullptr;
+
+  m_pOrigin = nullptr;
+  m_pPrev = nullptr;
 
   _checkInitialised_(CN_QUESTION);
 
@@ -220,7 +226,7 @@ bool Question::bNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* search                                                                     */
+/* advance thru each element which has an attribute with given name           */
 /*----------------------------------------------------------------------------*/
 Fact* Question::pSearch(Fact* pPrev, Fact** ppAttribute)
 {
@@ -272,51 +278,126 @@ Fact* Question::pSearch(Fact* pPrev, Fact** ppAttribute)
 }
 
 /*----------------------------------------------------------------------------*/
-/* advance thru each element by fact name                                     */
+/* advance to next element which has an attribute with given attribute name   */
 /*----------------------------------------------------------------------------*/
-bool Question::bEachElmByFactNm(Fact* pOrigin, Stz* szFactNm, Fact** ppPrev)
+Fact* Question::pEachElmByAtrNm(Fact** ppPrev, Fact* pOrigin, Stz* szAtrNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
   
-  Fact* pEach = *ppPrev;
+  *ppPrev = nullptr;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* advance to next element which has given element name                       */
+/*----------------------------------------------------------------------------*/
+Fact* Question::pEachElmByElmNm(Fact* pOrigin, Stz* szElmNm, Fact** ppPrev)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
   
-  while (pEach) {
+  Fact* pElm = *ppPrev;
+  
+  while (pElm) {
     
-    // does the element have a matching fact name?
-    if (pEach->szName()->bSame(szFactNm)) {
-      *ppPrev = pEach;
-      return true;
+    // does the element have a matching name?
+    if (pElm->bSameName(szElmNm)) {
+      *ppPrev = pElm;
+      return pElm;
     }
     
     // does the element have sub-elements?
-    if (pEach->pElements()) {
-      pEach = pEach->pElements();
+    if (pElm->pElements()) {
+      pElm = pElm->pElements();
       continue;
     }
     
     // are there more elements in the set the element is in?
-    if (pEach->pElementNext()) {
-      pEach = pEach->pElementNext();
+    if (pElm->pElementNext()) {
+      pElm = pElm->pElementNext();
       continue;
     }
 
-    // steps up/left/outwards till we can go to next element of a set
-    while (pEach != pOrigin) {
-      pEach = pEach->pElementOf();
-      if (pEach->pElementNext()) {
-        pEach = pEach->pElementNext();
+    // step up/left/outwards till we can go to next element of a set
+    while (pElm != pOrigin) {
+      pElm = pElm->pElementOf();
+      if (pElm->pElementNext()) {
+        pElm = pElm->pElementNext();
         break;
       }
     }
     
     // have we exhausted the search?
-    if (pEach == pOrigin)
+    if (pElm == pOrigin)
       break;
   }
  
   *ppPrev = nullptr;
-  return false;
+  return nullptr;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* does the given element match required element name                         */
+/*----------------------------------------------------------------------------*/
+bool Question::bMatchElmNm(Fact* pElm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  if (pElm->bSameName(m_sSetNm))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* advance to next element which satisfies the call back match function       */
+/*----------------------------------------------------------------------------*/
+Fact* Question::pNextMatchingElm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  Fact* pElm = m_pPrev;
+  
+  while (pElm) {
+    
+    // does the element have a matching name?
+    if (m_afbMatch(pElm)) {
+      m_pPrev = pElm;
+      return pElm;
+    }
+    
+    // does the element have sub-elements?
+    if (pElm->pElements()) {
+      pElm = pElm->pElements();
+      continue;
+    }
+    
+    // are there more elements in the set the element is in?
+    if (pElm->pElementNext()) {
+      pElm = pElm->pElementNext();
+      continue;
+    }
+
+    // step up/left/outwards till we can go to next element of a set
+    while (pElm != m_pOrigin) {
+      pElm = pElm->pElementOf();
+      if (pElm->pElementNext()) {
+        pElm = pElm->pElementNext();
+        break;
+      }
+    }
+    
+    // have we exhausted the search?
+    if (pElm == m_pOrigin)
+      break;
+  }
+ 
+  m_pPrev = nullptr;
+  return nullptr;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

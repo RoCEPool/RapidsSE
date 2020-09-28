@@ -93,6 +93,8 @@ namespace Facts
 
     Fact* pGetSuperChild(Fact* pOfFact);
 
+    Fact* pHasAtrNm(Stz* szName);
+  
     bool  bHasSpecificAttribute(Fact* pFact);
     bool  bHasSpecificElement(Fact* pFact);
   
@@ -126,6 +128,8 @@ namespace Facts
     bool  bQuestion(Fact* pQuestion, Opaque* aArg=nullptr);
     bool  bQuestion(Stz* szQuestion, Opaque* aArg=nullptr);
 
+    bool  bSameName(Stz* szName);
+  
     void  vSetInt(i8 iInt);
     void  vSetText(Stz* szText);
 
