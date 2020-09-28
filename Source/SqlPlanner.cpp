@@ -59,8 +59,7 @@ void SqlPlanner::plan(Stz* pStr)
   // Create a parser from the stream of tokens.
   sqlParser parser(&tokens);
   
-//  antlr4::ANTLRErrorStrategy errorHandler;
-//  parser.setErrorHandler(errorHandler);
+  // Add our own error listener so that we can be notified if there is a parsing error.
   parser.removeErrorListeners();
   parser.addErrorListener(&errorListener);
   
@@ -79,6 +78,62 @@ void SqlPlanner::plan(Stz* pStr)
   vTrace("Finished visiting the parse tree.\n"_Stz);  
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Visit functions for parse tree nodes                                       */
+/*----------------------------------------------------------------------------*/
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Statement node (top-most level of the parse tree)                          */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitStatement(sqlParser::StatementContext *ctx)
+{
+  return visitChildren(ctx);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Query node (Called for the main query and each subquery)                   */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *ctx)
+{
+   return visitChildren(ctx);
+ }
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Select node (for each select of each query/subquery)                       */
+/* Contains WITH / ORDER BY / LIMIT                                           */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *ctx)
+{
+  return visitChildren(ctx);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Select Expression node (for each select of each query/subquery)            */
+/* Contains select list / FROM / WHERE / GROUP BY / HAVING                    */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext *ctx)
+{
+  return visitChildren(ctx);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* (Table) Fetch node                                                         */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitFetch(sqlParser::FetchContext *ctx)
+{
+  visitChildren(ctx);
+  
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Select List node                                                           */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *ctx)
+{
+  return visitChildren(ctx);
+}
 
 /*============================================================================*/
 /* end                                                                        */
