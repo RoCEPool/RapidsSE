@@ -94,7 +94,8 @@ namespace Facts
     Fact* pGetSuperChild(Fact* pOfFact);
 
     bool  bHasAtrNm(Stz* szName);
-  
+    bool  bHasAtrNmVal(Stz* szName, Stz* szValue);
+
     bool  bHasSpecificAttribute(Fact* pFact);
     bool  bHasSpecificElement(Fact* pFact);
   

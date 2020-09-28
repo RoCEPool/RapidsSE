@@ -662,7 +662,7 @@ Fact* Fact::pGetSuperChild(Fact* pOfFact)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this element have a attribute with given name?                        */
+/* does this element have an attribute with given name?                       */
 /*----------------------------------------------------------------------------*/
 bool Fact::bHasAtrNm(Stz* szName)
 {
@@ -674,6 +674,33 @@ bool Fact::bHasAtrNm(Stz* szName)
     
     if (pAtr->bSameName(szName))
       return true;
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this element have an attribute with given name and text value?        */
+/*----------------------------------------------------------------------------*/
+bool Fact::bHasAtrNmVal(Stz* szName, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+    
+  for (Fact* pAtr = m_pAttributes;
+       pAtr;
+       pAtr = pAtr->m_pAttributeNext) {
+    
+    if (! pAtr->bSameName(szName))
+      continue;
+
+    // has to be a text
+    if (! pAtr->bIsSubClass(m_pKbase->m_p_Text_))
+      continue;
+    
+    if (! pAtr->m_xValue.m_pText->szGet()->bSame(szValue))
+      continue;
+
+    return true;
   }
   
   return false;
