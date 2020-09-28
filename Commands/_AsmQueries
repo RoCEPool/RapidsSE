@@ -1,0 +1,76 @@
+/*============================================================================*/
+/* _AsmQueries - TPCH queries 1,3,6 (ASM)                                     */
+/*============================================================================*/
+
+print "Starting cluster..." ;
+
+bc;
+
+print "Cluster started" ;
+
+//trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "creating Customer...";
+
+_customer
+create index Customer_Idx1 ON Customer(C_CUSTKEY);
+
+print "load of Customer...";
+/time fload Customer "/DATA/TPCH/customer_10k.csv";
+compactIdx Customer Customer_Idx1;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+print "creating Orders...";
+
+_orders_by_O_CUSTKEY
+create index Orders_Idx1 ON Orders(O_CUSTKEY);
+
+print "load of Orders...";
+/time fload Orders "/DATA/TPCH/orders_10k.csv";
+compactIdx Orders Orders_Idx1;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table LineItem                      // SF * 6,000,000 rows
+(
+  L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
+  L_PARTKEY       INTEGER       NOT NULL,  //  1)  8B   3B  rnd(1..(SF*200000))
+  L_SUPPKEY       INTEGER       NOT NULL,  //  2)  8B   3B  f(L_PARTKEY)
+  L_LINENUMBER    INTEGER       NOT NULL,  //  3)  8B   3B  1..7
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,  //  4)  8B   3B  rnd[1..50]
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,  //  5)  8B   3B  L_QUANTITY*P_RETAILPRICE
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,  //  6)  8B   3B  rnd(0.00..0.10)
+  L_TAX           DECIMAL(15,2) NOT NULL,  //  7)  8B   3B  rnd(0.00..0.08)
+  L_RETURNFLAG    CHAR(1)       NOT NULL,  //  8)  2B   2B  'R','A','N'
+  L_LINESTATUS    CHAR(1)       NOT NULL,  //  9)  2B   2B  'O','F'
+  L_SHIPDATE      DATE NOT      NULL,      // 10)  8B   8B  L_ORDERDATE+rnd(1..121)
+  L_COMMITDATE    DATE NOT      NULL,      // 11)  8B   8B  L_ORDERDATE+rnd(30..90)
+  L_RECEIPTDATE   DATE NOT      NULL,      // 12)  8B   8B  L_SHIPDATE +rnd(1..30)
+  L_SHIPINSTRUCT  CHAR(25)      NOT NULL,  // 13) 26B  13B  rnd[Instructions]
+  L_SHIPMODE      CHAR(10)      NOT NULL,  // 14) 11B   5B  rnd[Modes]
+  L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
+  //                                             ----  ---
+  // 16 columns                                  174B  91B
+);
+create index lineitem_idx1 on lineitem (l_shipdate);
+/time load lineitem "/DATA/TPCH/lineitem_100k.csv";
+compactIdx LineItem lineItem_Idx1;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+///print "*****************************************************************";
+///time Query1_ASM_I lineitem "../EO_text/QRY_100.txt" "../EO_text/QRY_103.txt" ;
+
+print "*****************************************************************";
+/time Query3_ASM_I "../EO_text/QRY_300.txt" "../EO_text/QRY_301.txt" "../EO_text/QRY_302.txt";
+
+//print "*****************************************************************";
+///time Query6_ASM_I "../EO_text/QRY_600.txt" "../EO_text/QRY_601.txt" ;
+
+
+// drop table customer;
+// drop table orders;
+// drop table lineitem;
+// memoryLeaks;

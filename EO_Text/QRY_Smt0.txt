@@ -61,6 +61,7 @@ Label PULSEMARKER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ZK_STREAMDEF handler
 Label STREAMDEF_HANDLER
+  EO_PRINTF "**STREAMDEF_HANDLER : 0**\n"
   EO_POP
 
   EO_REG_STREAMDEFOUT_NEW

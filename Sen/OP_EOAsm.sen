@@ -15,9 +15,6 @@
 
   0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
-  // can't be here, whatif we generate an ERRORMARKER
-  ZK_STARTMARKER_handler
-
   // new the pot[]
   Pot[].new
 
@@ -38,7 +35,7 @@
 
       // find the src table and src index
       logicUnit[].srcTable@ logicUnit[].srcIndex@ op__table_index not if
-        false
+        true
         exit
       then
 
@@ -48,7 +45,7 @@
     else
       // find the src table
       logicUnit[].srcTable@ op__table not if
-        false
+        true
         exit
       then
     then
@@ -67,7 +64,7 @@
 
       // find the alt table and alt index
       logicUnit[].altTable@ logicUnit[].altIndex@ op__table_index not if
-        false
+        true
         exit
       then
 
@@ -78,7 +75,7 @@
 
       // find the src table
       logicUnit[].srcTable@ op__table not if
-        false
+        true
         exit
       then
 
@@ -89,6 +86,8 @@
     Table[].tablePtn@ to tablePtn[]
 
   then
+
+  ZK_STARTMARKER_handler
 
   // pipeout streamDefout if any (q3)
   StreamDefOut[].isNull not if
