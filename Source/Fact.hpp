@@ -104,6 +104,8 @@ namespace Facts
     bool  bIsElementOf(Fact* pOfFact);
     bool  bIsElementOf(Stz* szName);
   
+    bool  bIsNmVal(Stz* szName, Stz* szValue);
+
     bool  bIsSubClass(Fact* pOfFact);
     bool  bIsSubClass(Stz* szName);
 

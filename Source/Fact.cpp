@@ -787,6 +787,26 @@ bool Fact::bIsElementOf(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this fact/attribute have given name and text value ?                  */
+/*----------------------------------------------------------------------------*/
+bool Fact::bIsNmVal(Stz* szName, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+    
+  if (! bSameName(szName))
+    return false;
+
+  // has to be a text
+  if (! bIsSubClass(m_pKbase->m_p_Text_))
+    return false;
+
+  if (! m_xValue.m_pText->szGet()->bSame(szValue))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this fact a transitive sub-class of given fact              (recursive) */
 /*----------------------------------------------------------------------------*/
 bool Fact::bIsSubClass(Fact* pOfFact)
