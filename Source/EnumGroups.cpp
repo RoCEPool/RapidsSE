@@ -101,6 +101,7 @@ Stz* EnumGroups::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 
     case EG_QA: return aQA[i_Enum];
     case EG_QK: return aQK[i_Enum];
+    case EG_QN: return aQN[i_Enum];
 
     case EG_RA: return aRA[i_Enum];
     case EG_RE: return aRE[i_Enum];

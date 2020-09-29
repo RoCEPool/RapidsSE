@@ -99,7 +99,8 @@ enum eEG // enum groups
 
   EG_QA,
   EG_QK,
-  
+  EG_QN,
+
   EG_RA,
   EG_RE,
   EG_RG,

@@ -105,6 +105,7 @@ namespace Enums
 
 #include "eQA.h"
 #include "eQK.h"
+#include "eQN.h"
 
 #include "eRA.h"
 #include "eRE.h"

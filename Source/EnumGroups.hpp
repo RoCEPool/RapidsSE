@@ -105,7 +105,8 @@ static Stz* aEG[]
   
   "EG_QA"_Stz,
   "EG_QK"_Stz,
-  
+  "EG_QN"_Stz,
+
   "EG_RA"_Stz,
   "EG_RE"_Stz,
   "EG_RG"_Stz,
