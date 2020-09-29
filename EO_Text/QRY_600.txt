@@ -41,7 +41,7 @@ Label STARTMARKER_HANDLER
   EO_PRINTF "**STARTMARKER_HANDLER : 600**\n"
   EO_POP
   EO_TABLENM_SRC_SET "lineitem"
-  EO_INDEXNM_SRC_SET "lineitem_idx"
+  EO_INDEXNM_SRC_SET "lineitem_idx1"
   EO_JMP QRY_600_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

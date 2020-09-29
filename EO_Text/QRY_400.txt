@@ -1,0 +1,160 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN : QRY_400
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Routine QRY_400
+
+  // initialization
+  EO_INIT
+  EO_ENTER
+
+  // set sql query no (debug)
+  EO_SQL 400
+
+  // check for ZK_STARTMARKER
+  EO_DUP
+  EO_INTEGER ZK_STARTMARKER
+  EO_EQUAL
+  EO_JMP_TRUE STARTMARKER_HANDLER
+
+  // check for ZK_PULSEMARKER
+  EO_DUP
+  EO_INTEGER ZK_PULSEMARKER
+  EO_EQUAL
+  EO_JMP_TRUE PULSEMARKER_HANDLER
+
+  // check for ZK_STREAMDEF
+  EO_DUP
+  EO_INTEGER  ZK_STREAMDEF
+  EO_EQUAL
+  EO_JMP_TRUE STREAMDEF_HANDLER
+
+  // check for ZK_CRWBUFFER
+  EO_DUP
+  EO_INTEGER ZK_CRWBUFFER
+  EO_EQUAL
+  EO_JMP_TRUE CRWBUFFER_HANDLER
+
+  // check for ZK_EOSMARKER
+  EO_DUP
+  EO_INTEGER  ZK_EOSMARKER
+  EO_EQUAL
+  EO_JMP_TRUE EOSMARKER_HANDLER
+
+  // Never reach
+  EO_PRINTF "**NO_HANDLER : 400**\n"
+  EO_NEVERREACH
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STARTMARKER handler
+Label STARTMARKER_HANDLER
+  EO_PRINTF "**STARTMARKER_HANDLER : 400**\n"
+  EO_POP
+  EO_TABLENM_SRC_SET "orders"
+  EO_INDEXNM_SRC_SET "orders_Idx2"
+  EO_JMP QRY_400_DONE
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// ZK_EOSMARKER handler
+Label EOSMARKER_HANDLER
+  EO_PRINTF "**EOSMARKER_HANDLER : 100**\n"
+  EO_POP
+  EO_CALL SUBROUTINE_IXT_TO_RSB
+  EO_REG_INDEXTREE_DELETE
+  EO_JMP QRY_400_DONE
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// ZK_STREAMDEF handler
+Label STREAMDEF_HANDLER
+  EO_PRINTF "**STREAMDEF_HANDLER : 400**\n"
+  EO_POP
+
+  EO_JMP QRY_400_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_PULSEMARKER handler
+Label PULSEMARKER_HANDLER
+  EO_PRINTF "**PULSEMARKER_HANDLER : 400**\n"
+  EO_POP
+
+  EO_REG_STREAMDEFOUT_NEW
+
+  // add column o_orderkey
+  EO_PUSH_COLUMN_SCALE 0
+  EO_PUSH_COLUMN_LENGTH 19
+  EO_PUSH_COLUMN_TYPE CT_INTEGER
+  EO_REG_STREAMDEFOUT_ADDCOLUMN "o_orderkey"
+
+  // add column o_orderpriorty
+  EO_PUSH_COLUMN_SCALE -1
+  EO_PUSH_COLUMN_LENGTH 15
+  EO_PUSH_COLUMN_TYPE CT_VARCHAR
+  EO_REG_STREAMDEFOUT_ADDCOLUMN "o_orderpriorty"
+
+  EO_POT_USE_STREAMDEFOUT 1
+
+  // iterate all ORDERS
+  EO_IXT_SRC_BEGIN
+  EO_JMP_FALSE QRY_400_DONE
+
+Label GOT_ORD
+  EO_CRW_SRC_DEREF
+
+  //vCC(1); vAddCodeArg(EO_COL_SRC_PUSHONE,O_ORDERKEY);
+  //vCC(1); vAddCodeString(EO_PRINTF,"Next O_OrderKey %i\n"_Stz);
+
+  // test O_ORDERDATE
+  EO_COL_SRC_PUSHONE 4
+  EO_DUP
+  EO_DATE "1993-07-01"
+  EO_GREATEREQUAL
+  EO_JMP_TRUE TST_2ND
+  EO_POP
+  EO_JMP NXT_ORD
+
+Label TST_2ND
+  EO_DATE "1993-10-01"
+  EO_LESSTHAN
+  EO_JMP_FALSE NXT_ORD
+
+  EO_CALL DST_PUT
+
+Label NXT_ORD
+  EO_IXT_SRC_NEXT
+  EO_JMP_TRUE GOT_ORD
+
+Label QRY_400_DONE
+  EO_RETURN
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END MAIN: QRY_400
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// SUBROUTINE: DST_PUT                                            Q300 DST_PUT
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Label DST_PUT
+  //EO_PRINTF "DST_PUT\n"
+
+  // calc i_Ptn
+  EO_PTN_RESET
+  EO_COL_SRC_PUSHONE 0 //O_ORDERKEY
+  EO_PTN_RUNNING
+  EO_PTN_CALC
+
+  EO_SET_ITEMS 2
+  EO_SET_COLUMN 5 //O_ORDERPRIORITY
+  EO_SET_COLUMN 0 //O_ORDERKEY      
+  EO_COL_SRC_PUSHSET
+
+  EO_RSB_DST_NEW
+
+  EO_RSB_DST_POPCOLS 1 //O_ORDERPRIORITY
+  EO_RSB_DST_POPCOLI 0 //Q300_ORDERKEY
+
+  //EO_RSB_DST_PRINT
+  EO_RETURN
+
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+// END SUBROUTINE: DST_PUT                                        Q300 DST_PUT
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+

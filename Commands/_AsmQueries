@@ -19,6 +19,7 @@ create index Customer_Idx1 ON Customer(C_CUSTKEY);
 
 print "load of Customer...";
 /time fload Customer "/DATA/TPCH/customer_10k.csv";
+///time fload Customer "/TPCH/SF1/customer.tbl";
 compactIdx Customer Customer_Idx1;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -26,9 +27,11 @@ print "creating Orders...";
 
 _orders_by_O_CUSTKEY
 create index Orders_Idx1 ON Orders(O_CUSTKEY);
+create index Orders_Idx2 ON Orders(O_ORDERKEY);
 
 print "load of Orders...";
 /time fload Orders "/DATA/TPCH/orders_10k.csv";
+///time fload Orders "/TPCH/SF1/orders.tbl";
 compactIdx Orders Orders_Idx1;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -55,7 +58,8 @@ create table LineItem                      // SF * 6,000,000 rows
   // 16 columns                                  174B  91B
 );
 create index lineitem_idx1 on lineitem (l_shipdate);
-/time load lineitem "/DATA/TPCH/lineitem_100k.csv";
+/time fload lineitem "/DATA/TPCH/lineitem_100k.csv";
+///time fload lineitem "/TPCH/SF1/lineitem.tbl";
 compactIdx LineItem lineItem_Idx1;
 
 
@@ -63,12 +67,14 @@ compactIdx LineItem lineItem_Idx1;
 ///print "*****************************************************************";
 ///time Query1_ASM_I lineitem "../EO_text/QRY_100.txt" "../EO_text/QRY_103.txt" ;
 
-print "*****************************************************************";
-/time Query3_ASM_I "../EO_text/QRY_300.txt" "../EO_text/QRY_301.txt" "../EO_text/QRY_302.txt";
+//print "*****************************************************************";
+///time Query3_ASM_I "../EO_text/QRY_300.txt" "../EO_text/QRY_301.txt" "../EO_text/QRY_302.txt";
 
 //print "*****************************************************************";
 ///time Query6_ASM_I "../EO_text/QRY_600.txt" "../EO_text/QRY_601.txt" ;
 
+print "*****************************************************************";
+/time Query4_ASM_I "../EO_text/QRY_400.txt" ;
 
 // drop table customer;
 // drop table orders;
