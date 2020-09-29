@@ -300,9 +300,17 @@ void Method::vTQ_FROM_RESOLUTION(Fact** ppTransform)
 
   vTrace("vTQ_FROM_RESOLUTION\n"_Stz);
   
-  Question* pQuestion = new Question(m_pKbase,"fromList"_Stz,"fromNm"_Stz);
+  //Question* pQuestion = new Question(m_pKbase,"fromList"_Stz,"fromNm"_Stz);
+  Question* pQuestion =
+    new Question(QN_ELEMENTS_BY_ATR_NAME,m_pKbase,nullptr,
+                 "fromList"_Stz,"fromNm"_Stz);
 
-  while (pQuestion->bEach()) {
+  while (pQuestion->bEachMatch()) {
+
+    Fact* pElm = pQuestion->pElement();
+    Fact* pAtr = pQuestion->pAttribute();
+    
+    vTrace("FromNm: %s\n"_Stz,pAtr->rxValue().m_pText->szGet());
 
   }
   

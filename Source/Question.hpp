@@ -79,6 +79,7 @@ namespace Facts
     bool  bMatchAtrNm(Fact* pElm);
     bool  bMatchAtrNmVal(Fact* pElm);
     bool  bMatchElmNm(Fact* pElm);
+    Fact* pFirstMatchingElm(void);
     Fact* pNextMatchingElm(void);
 
     Footer* aFooter(void);
