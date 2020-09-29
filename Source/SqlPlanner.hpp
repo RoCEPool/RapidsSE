@@ -10,7 +10,6 @@ namespace Parser
   class SqlPlanner : public Object, public sqlBaseVisitor
   {
   private:
-
   
     Footer m_xFooter;
     
@@ -32,7 +31,11 @@ namespace Parser
     virtual antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *ctx)  override;
     virtual antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *ctx)    override;
     virtual antlrcpp::Any visitFetch(sqlParser::FetchContext *ctx)              override;
+    virtual antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *ctx) override;
     virtual antlrcpp::Any visitSelectList(sqlParser::SelectListContext *ctx)    override;
+    
+  private:
+    Text* cleanId(sqlParser::IdentifierContext *ctx);
   };
   
   SqlPlanner* _pSqlPlanner(void* aAddr);

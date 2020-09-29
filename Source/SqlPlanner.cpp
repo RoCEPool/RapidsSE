@@ -43,8 +43,12 @@ SqlPlanner::~SqlPlanner(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Parse and create an initial plan for a SQL statement                       */
+/*----------------------------------------------------------------------------*/
 void SqlPlanner::plan(Stz* pStr)
-{
+{  
   // We need to give the Lexer a CharStream, but that requires an STL-string...
   std::string sqlStr(pStr->azChar());
   antlr4::ANTLRInputStream stream(sqlStr);
@@ -68,14 +72,13 @@ void SqlPlanner::plan(Stz* pStr)
   
   // Check for any syntax errors
   if (errorListener.bGotError()) {
-    vTrace("%s\n"_Stz, errorListener.szErrorMsg());
+    vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
     return;
   }
   
   // Visit the parse tree that resulted from the above parsing.
-  vTrace("Statement parsed successfully. About to visit the parse tree.\n"_Stz);
   this->visitStatement(pStatementCtx);
-  vTrace("Finished visiting the parse tree.\n"_Stz);  
+  //vTrace("Finished visiting the parse tree.\n"_Stz);  
 }
 
 
@@ -128,11 +131,72 @@ antlrcpp::Any SqlPlanner::visitFetch(sqlParser::FetchContext *ctx)
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Table Reference node                                                       */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *ctx)
+{
+  visitChildren(ctx);
+  Text* pCatalogName = nullptr;
+  Text* pSchemaName = nullptr;
+  Text* pTableName = nullptr;
+  
+  if (ctx->catalogName() != nullptr) {
+    pCatalogName = cleanId(ctx->catalogName()->id);
+  }
+  
+  if (ctx->schemaName() != nullptr) {
+    pSchemaName = cleanId(ctx->schemaName()->id);
+  }
+  
+  ASSERT(ctx->tableName() != nullptr);
+  pTableName = cleanId(ctx->tableName()->id);
+
+  TableRef* pTableRef = new TableRef(pCatalogName, pSchemaName, pTableName);
+  pTableRef->vPrint();
+  delete pTableRef;
+  
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Select List node                                                           */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *ctx)
 {
   return visitChildren(ctx);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Clean up a name of an object. Returned string is dynamically allocated.    */
+/*----------------------------------------------------------------------------*/
+Text* SqlPlanner::cleanId(sqlParser::IdentifierContext *ctx)
+{
+  std::string idStr = ctx->getText();
+  
+  i8 idLen = idStr.length();
+  
+  if (idLen == 0) {
+    return new Text(""_Stz);
+  }
+      
+  // Remove double quotes
+  if (idStr.at(0) == '"' && idStr.at(idLen - 1) == '"') {
+    // Not great, substr() makes a another copy of the string.
+    return new Text((Stz*) idStr.substr(1, idLen - 2).c_str());
+  }
+  
+  // Remove backticks
+  if (idStr.at(0) == '`' && idStr.at(idLen - 1) == '`') {
+    // Not great, substr() makes a another copy of the string.
+    return new Text((Stz*) idStr.substr(1, idLen - 2).c_str());
+  }
+  
+  return new Text((Stz*) idStr.c_str());
 }
 
 /*============================================================================*/

@@ -303,6 +303,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Table),              HT_TRANSIENT_MEDIUM  }, // CN_TABLEDEF
   { sizeof(TablePtn),           HT_TRANSIENT_TINY    }, // CN_TABLEPTN
   { sizeof(TablePtnVec),        HT_TRANSIENT_SMALL   }, // CN_TABLEPTNVEC
+  { sizeof(TableRef),           HT_TRANSIENT_SMALL   }, // CN_TABLEREF
   { sizeof(TagSet),             HT_TRANSIENT_MEDIUM  }, // CN_TAGSET
   { sizeof(Task),               HT_TRANSIENT_TINY    }, // CN_TASK
   { sizeof(TaskList),           HT_TRANSIENT_TINY    }, // CN_TASKLIST

@@ -307,6 +307,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TABLEDEF,
   /* */ CN_TABLEPTN,
   /* */ CN_TABLEPTNVEC,
+  /* */ CN_TABLEREF,
   /* */ CN_TAGSET,
   /* */ CN_TASK,
   /* */ CN_TASKLIST,
@@ -656,6 +657,7 @@ static Stz* aCN[]
   /* */ "TABLEDEF"_Stz,            // CN_TABLEDEF
   /* */ "TABLEPTN"_Stz,            // CN_TABLEPTN
   /* */ "TABLEPTNVEC"_Stz,         // CN_TABLEPTNVEC
+  /* */ "TABLEREF"_Stz,            // CN_TABLEREF
   /* */ "TAGSET"_Stz,              // CN_TAGSET
   /* */ "TASK"_Stz,                // CN_TASK
   /* */ "TASKLIST"_Stz,            // CN_TASKLIST
