@@ -34,6 +34,10 @@ Question::Question(Kbase* pKbase)
   
   m_pOrigin = nullptr;
   m_pPrev = nullptr;
+  
+  m_eQuestion = QN_NONE;
+  
+  m_afbMatch = nullptr;
 
   _checkInitialised_(CN_QUESTION);
 
@@ -61,6 +65,71 @@ Question::Question(Kbase* pKbase, Stz* szSetNm, Stz* szAtrNm)
 
   m_pOrigin = nullptr;
   m_pPrev = nullptr;
+
+  m_eQuestion = QN_NONE;
+  
+  m_afbMatch = nullptr;
+
+  _checkInitialised_(CN_QUESTION);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Question::Question(eQN eQuestion, Kbase* pKbase, Fact* pOrigin, ...)
+: Object(CN_QUESTION)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  va_list xArgs;
+  
+  m_pKbase = pKbase;
+  m_pOrigin = pOrigin ? pOrigin : pKbase->m_pContents;
+  
+  m_eQuestion = eQuestion;
+
+  switch (m_eQuestion) {
+    case QN_ELEMENTS_BY_ATR_NAME:
+      va_start(xArgs,pOrigin);
+      m_sOriNm = va_arg(xArgs,Stz*);
+      m_sAtrNm = va_arg(xArgs,Stz*);
+      va_end(xArgs);
+      m_afbMatch = &Question::bMatchAtrNm;
+      break;
+      
+    case QN_ELEMENTS_BY_ATR_NAME_VALUE:
+      va_start(xArgs,pOrigin);
+      m_sOriNm = va_arg(xArgs,Stz*);
+      m_sAtrNm  = va_arg(xArgs,Stz*);
+      m_sAtrVal = va_arg(xArgs,Stz*);
+      va_end(xArgs);
+      m_afbMatch = &Question::bMatchAtrNmVal;
+      break;
+      
+    case QN_ELEMENTS_BY_ELM_NAME:
+      va_start(xArgs,pOrigin);
+      m_sOriNm = va_arg(xArgs,Stz*);
+      m_sElmNm = va_arg(xArgs,Stz*);
+      va_end(xArgs);
+      m_afbMatch = &Question::bMatchElmNm;
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_bInited = false;
+  
+  m_pStart = nullptr;
+  m_pElement = nullptr;
+  m_pAttribute = nullptr;
+
+  m_pPrev = nullptr;
+  
 
   _checkInitialised_(CN_QUESTION);
 
@@ -149,6 +218,23 @@ bool Question::bEach(void)
     bResult = bFirst();
   else
     bResult = bNext();
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next answer                                                            */
+/*----------------------------------------------------------------------------*/
+bool Question::bEachMatch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  bool bResult;
+  
+  if (! m_bInited)
+    bResult = bFirstMatch();
+  else
+    bResult = bNextMatch();
   
   return bResult;
 }
@@ -339,13 +425,69 @@ Fact* Question::pEachElmByElmNm(Fact* pOrigin, Stz* szElmNm, Fact** ppPrev)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get first answer                                                           */
+/*----------------------------------------------------------------------------*/
+bool Question::bFirstMatch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  m_bInited = true;
+  
+  m_pStart = m_pKbase->pFactFind(m_sOriNm);
+  
+  m_pPrev = m_pStart;
+  
+  Fact* pFound = Question::pNextMatchingElm();
+  
+  return pFound ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next matching answer                                                   */
+/*----------------------------------------------------------------------------*/
+bool Question::bNextMatch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  Fact* pFound = Question::pNextMatchingElm();
+
+  return m_pElement ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does given element have an attribute which matchs required name ?          */
+/*----------------------------------------------------------------------------*/
+bool Question::bMatchAtrNm(Fact* pElm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  if (pElm->bHasAtrNm(m_sAtrNm))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does given element have an attribute which matchs required name & value ?  */
+/*----------------------------------------------------------------------------*/
+bool Question::bMatchAtrNmVal(Fact* pElm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+  
+  if (pElm->bHasAtrNmVal(m_sAtrNm,m_sAtrVal))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does the given element match required element name                         */
 /*----------------------------------------------------------------------------*/
 bool Question::bMatchElmNm(Fact* pElm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
   
-  if (pElm->bSameName(m_sSetNm))
+  if (pElm->bSameName(m_sElmNm))
     return true;
   else
     return false;
@@ -361,12 +503,6 @@ Fact* Question::pNextMatchingElm(void)
   Fact* pElm = m_pPrev;
   
   while (pElm) {
-    
-    // does the element have a matching name?
-    if (m_afbMatch(pElm)) {
-      m_pPrev = pElm;
-      return pElm;
-    }
     
     // does the element have sub-elements?
     if (pElm->pElements()) {
@@ -392,11 +528,63 @@ Fact* Question::pNextMatchingElm(void)
     // have we exhausted the search?
     if (pElm == m_pOrigin)
       break;
+    
+    // does this element match?
+    
+    if ((this->*m_afbMatch)(pElm)) {
+      m_pPrev = pElm;
+      return pElm;
+    }
+    
   }
  
   m_pPrev = nullptr;
   return nullptr;
 }
+/*----------------------------------------------------------------------------*/
+//Fact* Question::pNextMatchingElm(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
+//
+//  Fact* pElm = m_pPrev;
+//
+//  while (pElm) {
+//
+//    // does this element match?
+//    if (m_afbMatch(pElm)) {
+//      m_pPrev = pElm;
+//      return pElm;
+//    }
+//
+//    // does the element have sub-elements?
+//    if (pElm->pElements()) {
+//      pElm = pElm->pElements();
+//      continue;
+//    }
+//
+//    // are there more elements in the set the element is in?
+//    if (pElm->pElementNext()) {
+//      pElm = pElm->pElementNext();
+//      continue;
+//    }
+//
+//    // step up/left/outwards till we can go to next element of a set
+//    while (pElm != m_pOrigin) {
+//      pElm = pElm->pElementOf();
+//      if (pElm->pElementNext()) {
+//        pElm = pElm->pElementNext();
+//        break;
+//      }
+//    }
+//
+//    // have we exhausted the search?
+//    if (pElm == m_pOrigin)
+//      break;
+//  }
+//
+//  m_pPrev = nullptr;
+//  return nullptr;
+//}
 
 
 /*============================================================================*/

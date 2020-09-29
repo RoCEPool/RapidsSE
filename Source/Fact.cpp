@@ -230,21 +230,16 @@ void Fact::vAttributeCut(Fact* pAttribute)
 Fact* Fact::pAttributeFindNm(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-    
-  Fact* pAttribute = nullptr;
-  
-  for (Fact* pScan = m_pAttributes;
-       pScan && !pAttribute;
-       pScan = pScan->m_pAttributeNext) {
-    
-    if (pScan->m_sFactNm.bSame(szName)) {
-      pAttribute = pScan;
-      break;
-    }
       
+  for (Fact* pAtr = m_pAttributes;
+       pAtr;
+       pAtr = pAtr->m_pAttributeNext) {
+    
+    if (pAtr->bSameName(szName))
+      return pAtr;
   }
-  
-  return pAttribute;
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,27 +249,24 @@ Fact* Fact::pAttributeFindNmVal(Stz* szName, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
     
-  Fact* pAttribute = nullptr;
-  
-  for (Fact* pScan = m_pAttributes;
-       pScan && !pAttribute;
-       pScan = pScan->m_pAttributeNext) {
+  for (Fact* pAtr = m_pAttributes;
+       pAtr;
+       pAtr = pAtr->m_pAttributeNext) {
     
-    if (! pScan->m_sFactNm.bSame(szName))
+    if (! pAtr->bSameName(szName))
       continue;
 
     // has to be a text
-    if (! pScan->bIsSubClass(m_pKbase->m_p_Name_))
+    if (! pAtr->bIsSubClass(m_pKbase->m_p_Text_))
       continue;
     
-    if (! pScan->m_xValue.m_pText->szGet()->bSame(szValue))
+    if (! pAtr->m_xValue.m_pText->szGet()->bSame(szValue))
       continue;
-    
-    pAttribute = pScan;
-    break;
+
+    return pAtr;
   }
   
-  return pAttribute;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -668,15 +660,20 @@ bool Fact::bHasAtrNm(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
     
-  for (Fact* pAtr = m_pAttributes;
-       pAtr;
-       pAtr = pAtr->m_pAttributeNext) {
-    
-    if (pAtr->bSameName(szName))
-      return true;
-  }
+//  for (Fact* pAtr = m_pAttributes;
+//       pAtr;
+//       pAtr = pAtr->m_pAttributeNext) {
+//
+//    if (pAtr->bSameName(szName))
+//      return true;
+//  }
+//
+//  return false;
   
-  return false;
+  if (pAttributeFindNm(szName))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -685,25 +682,11 @@ bool Fact::bHasAtrNm(Stz* szName)
 bool Fact::bHasAtrNmVal(Stz* szName, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
-    
-  for (Fact* pAtr = m_pAttributes;
-       pAtr;
-       pAtr = pAtr->m_pAttributeNext) {
-    
-    if (! pAtr->bSameName(szName))
-      continue;
 
-    // has to be a text
-    if (! pAtr->bIsSubClass(m_pKbase->m_p_Text_))
-      continue;
-    
-    if (! pAtr->m_xValue.m_pText->szGet()->bSame(szValue))
-      continue;
-
+  if (pAttributeFindNmVal(szName,szValue))
     return true;
-  }
-  
-  return false;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -5,6 +5,9 @@
 
 namespace Facts
 {
+  // typedef to support pointer to member function
+  typedef  bool (Question::*QuestionMemFn)(Fact* pElm);
+
   class Question : public Object
   {
   private:
@@ -12,8 +15,7 @@ namespace Facts
     Kbase* m_pKbase; //
  
     s32    m_sSetNm;
-    s32    m_sAtrNm;
-  
+   
     bool   m_bInited;
 
     Fact*  m_pStart;
@@ -24,7 +26,13 @@ namespace Facts
     Fact*  m_pOrigin;
     Fact*  m_pPrev;
   
-    bool (*m_afbMatch)(Fact* pElm);
+    eQN    m_eQuestion;
+    s32    m_sOriNm;
+    s32    m_sElmNm;
+    s32    m_sAtrNm;
+    s32    m_sAtrVal;
+  
+    QuestionMemFn m_afbMatch;
   
     // must be last
     Footer m_xFooter;
@@ -35,6 +43,9 @@ namespace Facts
 
     Question(Kbase* pKbase);
     Question(Kbase* pKbase, Stz* szSetNm, Stz* szAtrNm);
+  
+    Question(eQN eQuestion, Kbase* pKbase, Fact* pOrigin, ...);
+
    ~Question(void) noexcept(false);
 
     static Fact* pFindElm(Kbase* pKbase, Stz* szSetNm, Stz* szElmNm);
@@ -45,6 +56,8 @@ namespace Facts
     Fact* pAttribute(void);
   
     bool  bEach(void);
+  
+    bool  bEachMatch(void);
 
     Fact* pElement(void);
   
@@ -59,7 +72,12 @@ namespace Facts
     Fact* pEachElmByAtrNm(Fact** ppPrev, Fact* pOrigin, Stz* szAtrNm);
     Fact* pEachElmByElmNm(Fact* pOrigin, Stz* szFactNm, Fact** ppPrev);
 
+  
+    bool  bFirstMatch(void);
+    bool  bNextMatch(void);
+
     bool  bMatchAtrNm(Fact* pElm);
+    bool  bMatchAtrNmVal(Fact* pElm);
     bool  bMatchElmNm(Fact* pElm);
     Fact* pNextMatchingElm(void);
 
@@ -67,6 +85,7 @@ namespace Facts
   };
 
   Question* _pQuestion(void* aAddr);
+
 }
 
 /*============================================================================*/
