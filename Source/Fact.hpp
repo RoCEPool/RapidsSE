@@ -139,6 +139,8 @@ namespace Facts
     Fact* pSubclassOf(void);
     void  vSubclassOf(Fact* pSubclassOf);
   
+    Stz*  szText(void);
+
     i8    iValue(void);
     void  vValue(i8 iValue);
 

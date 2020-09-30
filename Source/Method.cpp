@@ -310,8 +310,7 @@ void Method::vTQ_FROM_RESOLUTION(Fact** ppTransform)
     Fact* pElm = pQuestion->pElement();
     Fact* pAtr = pQuestion->pAttribute();
     
-    vTrace("FromNm: %s\n"_Stz,pAtr->rxValue().m_pText->szGet());
-
+    vTrace("FromNm: %s\n"_Stz,pAtr->szText());
   }
   
   delete pQuestion;
