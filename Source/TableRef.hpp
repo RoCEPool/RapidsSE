@@ -22,7 +22,7 @@ namespace Parser
     TableRef(Text* pCatalogName, Text* pSchemaName, Text* pTableName);
     ~TableRef(void);
     
-    void vPrint();
+    void vPrintInto(s256& buf);
   
     Footer* aFooter(void);
   };

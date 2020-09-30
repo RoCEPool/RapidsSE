@@ -11,6 +11,7 @@ namespace Parser
   {
   private:
   
+    Stack* m_pTableRefStack;
     Footer m_xFooter;
     
    public:
@@ -22,7 +23,7 @@ namespace Parser
     
     void plan(Stz* pStr);
 
-    ~SqlPlanner(void);
+    ~SqlPlanner(void) noexcept;
   
     Footer* aFooter(void);
     

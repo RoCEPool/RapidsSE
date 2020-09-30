@@ -23,7 +23,8 @@ __aFooterFunction(SqlPlanner)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SqlPlanner::SqlPlanner(void)
-: Object(CN_SQLPLANNER)
+: Object(CN_SQLPLANNER),
+  m_pTableRefStack(new Stack(KK_PARSER_STACK))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
   
@@ -35,9 +36,16 @@ SqlPlanner::SqlPlanner(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SqlPlanner::~SqlPlanner(void)
+SqlPlanner::~SqlPlanner(void) noexcept
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
+   
+  // Clean up the stack of TableRefs
+  while (m_pTableRefStack->nValues() > 0) {
+    TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPopPtr(__func__));
+    delete pTableRef;
+  }
+  delete m_pTableRefStack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,7 +116,20 @@ antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *ctx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *ctx)
 {
-  return visitChildren(ctx);
+  antlrcpp::Any any = visitChildren(ctx);
+  
+  if (m_pTableRefStack->nValues() > 0) {
+    vTrace("  /from\n"_Stz);
+    
+    s256 ref;
+    TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPopPtr(__func__));
+    pTableRef->vPrintInto(ref);
+    
+    vTrace("    /%s\n"_Stz, ref.szStz());
+    delete pTableRef;
+  }
+  
+  return nullptr;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -152,8 +173,7 @@ antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *
   pTableName = cleanId(ctx->tableName()->id);
 
   TableRef* pTableRef = new TableRef(pCatalogName, pSchemaName, pTableName);
-  pTableRef->vPrint();
-  delete pTableRef;
+  m_pTableRefStack->vPushPtr(pTableRef);
   
   return nullptr;
 }
