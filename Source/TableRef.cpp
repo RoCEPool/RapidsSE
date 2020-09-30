@@ -53,23 +53,28 @@ TableRef::~TableRef(void)
 /*----------------------------------------------------------------------------*/
 /* Print the name of the table reference to stdout                            */
 /*----------------------------------------------------------------------------*/
-void TableRef::vPrint()
-{
-  s2K fullname = ""_Stz;
-  
+void TableRef::vPrintInto(s256& buf)
+{  
   if (m_pCatalogName != nullptr) {
-    fullname.vConcat(m_pCatalogName->szGet());
-    fullname.vConcat("."_Stz);
+    ASSERT(m_pSchemaName != nullptr);
+    ASSERT(m_pTableName  != nullptr);
+    
+    buf.vSprint("%s.%s.%s"_Stz,
+                m_pCatalogName->szGet(),
+                m_pSchemaName->szGet(),
+                m_pTableName->szGet() );
+    
+  } else if (m_pSchemaName != nullptr) {
+    ASSERT(m_pTableName  != nullptr);
+    
+    buf.vSprint("%s.%s"_Stz,
+                m_pSchemaName->szGet(),
+                m_pTableName->szGet() );
+    
+  } else {
+    ASSERT(m_pTableName  != nullptr);
+    buf.vCopy(m_pTableName->szGet());
   }
-  
-  if (m_pSchemaName != nullptr) {
-    fullname.vConcat(m_pSchemaName->szGet());
-    fullname.vConcat("."_Stz);
-  }
-  
-  fullname.vConcat(m_pTableName->szGet());
-  
-  vTrace("Got table reference: %s\n"_Stz, fullname.azChar());
 }
 
 /*============================================================================*/

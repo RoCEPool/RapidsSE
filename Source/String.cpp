@@ -112,7 +112,7 @@ void String::vSprint(Stz* szFormat, ...)
   va_list args;
   va_start(args,szFormat);
   
-  vsprintf(m_caStr,szFormat->azChar(),args);
+  vsnprintf(m_caStr, m_nSize, szFormat->azChar(),args);
   
   va_end(args);
 }
