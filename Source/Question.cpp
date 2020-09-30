@@ -232,6 +232,9 @@ bool Question::bEachMatch(void)
   
   bool bResult;
   
+  m_pElement   = nullptr;
+  m_pAttribute = nullptr;
+
   if (! m_bInited)
     bResult = bFirstMatch();
   else
@@ -454,7 +457,7 @@ bool Question::bNextMatch(void)
   
   Fact* pFound = Question::pNextMatchingElm();
 
-  return m_pElement ? true : false;
+  return pFound ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -465,8 +468,11 @@ bool Question::bMatchAtrNm(Fact* pElm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUESTION,_FOOTER_);
   
   vTrace("bMatchAtrNm: %s ?hasAtrNm(%s)\n"_Stz,pElm->szName(),m_sAtrNm.azChar());
-  if (pElm->bHasAtrNm(m_sAtrNm))
+  
+  if ( (m_pAttribute = pElm->pAttributeFindNm(m_sAtrNm)) ) {
+    m_pElement = pElm;
     return true;
+  }
   else
     return false;
 }
@@ -481,8 +487,10 @@ bool Question::bMatchAtrNmVal(Fact* pElm)
   vTrace("bMatchAtrNm: %s ?hasAtrNmVal(%s.%s)\n"_Stz,
          pElm->szName(),m_sAtrNm.azChar(),m_sAtrVal.azChar());
   
-  if (pElm->bHasAtrNmVal(m_sAtrNm,m_sAtrVal))
+  if ( (m_pAttribute = pElm->pAttributeFindNmVal(m_sAtrNm,m_sAtrVal)) ) {
+    m_pElement = pElm;
     return true;
+  }
   else
     return false;
 }
@@ -496,8 +504,10 @@ bool Question::bMatchElmNm(Fact* pElm)
   
   vTrace("bMatchElmNm: %s ?same(%s)\n"_Stz,pElm->szName(),m_sElmNm.azChar());
 
-  if (pElm->bSameName(m_sElmNm))
+  if (pElm->bSameName(m_sElmNm)) {
+    m_pElement = pElm;
     return true;
+  }
   else
     return false;
 }
@@ -580,7 +590,11 @@ Fact* Question::pNextMatchingElm(void)
 
     // step up/left/outwards till we can go to next element of a set
     while (pElm != m_pOrigin) {
+      
       pElm = pElm->pElementOf();
+      if (pElm == m_pOrigin)
+        break;
+      
       if (pElm->pElementNext()) {
         pElm = pElm->pElementNext();
         break;
