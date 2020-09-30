@@ -473,8 +473,8 @@ bool Question::bMatchAtrNm(Fact* pElm)
     m_pElement = pElm;
     return true;
   }
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -491,8 +491,8 @@ bool Question::bMatchAtrNmVal(Fact* pElm)
     m_pElement = pElm;
     return true;
   }
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,8 +508,8 @@ bool Question::bMatchElmNm(Fact* pElm)
     m_pElement = pElm;
     return true;
   }
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

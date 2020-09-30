@@ -301,19 +301,33 @@ void Method::vTQ_FROM_RESOLUTION(Fact** ppTransform)
   vTrace("vTQ_FROM_RESOLUTION\n"_Stz);
   
   //Question* pQuestion = new Question(m_pKbase,"fromList"_Stz,"fromNm"_Stz);
-  Question* pQuestion =
+  Question* pQouter =
     new Question(QN_ELEMENTS_BY_ATR_NAME,m_pKbase,nullptr,
                  "fromList"_Stz,"fromNm"_Stz);
 
-  while (pQuestion->bEachMatch()) {
+  while (pQouter->bEachMatch()) {
 
-    Fact* pElm = pQuestion->pElement();
-    Fact* pAtr = pQuestion->pAttribute();
+    Fact* pElm = pQouter->pElement();
+    Fact* pAtr = pQouter->pAttribute();
     
     vTrace("FromNm: %s\n"_Stz,pAtr->szText());
+    
+    Question* pQinner =
+      new Question(QN_ELEMENTS_BY_ATR_NAME_VALUE,m_pKbase,nullptr,
+                   "tables"_Stz,"tableNm"_Stz,pAtr->szText());
+
+    while (pQinner->bEachMatch()) {
+
+      Fact* pElm = pQinner->pElement();
+      Fact* pAtr = pQinner->pAttribute();
+      vTrace("tableNm: %s\n"_Stz,pAtr->szText());
+
+      break;
+    }
+    
   }
   
-  delete pQuestion;
+  delete pQouter;
 
   vTransformDelete(ppTransform);
 }
