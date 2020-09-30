@@ -172,6 +172,19 @@ void Fact::vAncestry(Stz* szDst)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add new xref attribute to this fact                                        */
+/*----------------------------------------------------------------------------*/
+void Fact::vAttributeAdd(Stz* szAtrSuperNm, Fact* pXref)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  Fact* pAttribute = m_pKbase->pConceptInstance(szAtrSuperNm);
+  pAttribute->rxValue().m_pXref = pXref;
+
+  vAttributeAppend(pAttribute);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append attribute to end of this facts attributes                           */
 /*----------------------------------------------------------------------------*/
 void Fact::vAttributeAppend(Fact* pAttribute)
