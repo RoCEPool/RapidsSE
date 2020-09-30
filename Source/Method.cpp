@@ -162,9 +162,9 @@ void Method::vSchedule(Fact** ppAnchor)
     
   switch (iPlanPrime) {
       
-    case  0: vTransformAdd("TQ_IMPORT_TABLES"_Stz);   pPlanPrime->vValue(1);  return;
-    case  1: vTransformAdd("TQ_FROM_RESOLUTION"_Stz); pPlanPrime->vValue(2);  return;
-    case  2: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(3);  return;
+    case  0: vTransformAdd("TQ_IMPORT_TABLES"_Stz);      pPlanPrime->vValue(1);  return;
+    case  1: vTransformAdd("TQ_FROM_RESOLUTION"_Stz);    pPlanPrime->vValue(2);  return;
+    case  2: vTransformAdd("TQ_PROJECT_RESOLUTION"_Stz); pPlanPrime->vValue(3);  return;
     case  3: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(4);  return;
     case  4: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(5);  return;
     case  5: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(6);  return;
@@ -327,6 +327,7 @@ void Method::vTQ_FROM_RESOLUTION(Fact** ppTransform)
       break;
     }
     
+    delete pQinner;
   }
   
   delete pQouter;
@@ -416,6 +417,37 @@ void Method::vTQ_OUTPUT_STREAMDEF(Fact** ppTransform)
 void Method::vTQ_PROJECT_RESOLUTION(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+  
+  Question* pQouter =
+    new Question(QN_ELEMENTS_BY_ATR_NAME,m_pKbase,nullptr,
+                 "projectList"_Stz,"projectNm"_Stz);
+
+  while (pQouter->bEachMatch()) {
+
+    Fact* pProjectElm = pQouter->pElement();
+    Fact* pProjectAtr = pQouter->pAttribute();
+    
+    vTrace("projectNm: %s\n"_Stz,pProjectAtr->szText());
+    
+    Question* pQinner =
+      new Question(QN_ELEMENTS_BY_ATR_NAME_VALUE,m_pKbase,nullptr,
+                   "tables"_Stz,"columnNm"_Stz,pProjectAtr->szText());
+
+    while (pQinner->bEachMatch()) {
+
+      Fact* pToElm = pQinner->pElement();
+      Fact* pToAtr = pQinner->pAttribute();
+      vTrace("columnNm: %s\n"_Stz,pToAtr->szText());
+      
+      pProjectElm->vAttributeAdd("_columnRef_"_Stz,pToElm);
+
+      break;
+    }
+    
+    delete pQinner;
+  }
+  
+  delete pQouter;
 
   vTransformDelete(ppTransform);
 }

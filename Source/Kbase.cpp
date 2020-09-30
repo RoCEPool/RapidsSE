@@ -941,7 +941,7 @@ void Kbase::vAprioriFacts(void)
                          pAha("_tableNm_"_Stz, m_p_Name_);
   
   Fact* p_TableRef_ =    pAha("_tableRef_"_Stz,  m_p_Xref_);
-  Fact* p_ColumnRef_ =   pAha("_ColumnRef_"_Stz, m_p_Xref_);
+  Fact* p_ColumnRef_ =   pAha("_columnRef_"_Stz, m_p_Xref_);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
