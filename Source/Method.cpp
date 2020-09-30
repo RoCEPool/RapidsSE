@@ -307,20 +307,22 @@ void Method::vTQ_FROM_RESOLUTION(Fact** ppTransform)
 
   while (pQouter->bEachMatch()) {
 
-    Fact* pElm = pQouter->pElement();
-    Fact* pAtr = pQouter->pAttribute();
+    Fact* pFromElm = pQouter->pElement();
+    Fact* pFromAtr = pQouter->pAttribute();
     
-    vTrace("FromNm: %s\n"_Stz,pAtr->szText());
+    vTrace("FromNm: %s\n"_Stz,pFromAtr->szText());
     
     Question* pQinner =
       new Question(QN_ELEMENTS_BY_ATR_NAME_VALUE,m_pKbase,nullptr,
-                   "tables"_Stz,"tableNm"_Stz,pAtr->szText());
+                   "tables"_Stz,"tableNm"_Stz,pFromAtr->szText());
 
     while (pQinner->bEachMatch()) {
 
-      Fact* pElm = pQinner->pElement();
-      Fact* pAtr = pQinner->pAttribute();
-      vTrace("tableNm: %s\n"_Stz,pAtr->szText());
+      Fact* pToElm = pQinner->pElement();
+      Fact* pToAtr = pQinner->pAttribute();
+      vTrace("tableNm: %s\n"_Stz,pToAtr->szText());
+      
+      pFromElm->vAttributeAdd("_tableRef_"_Stz,pToElm);
 
       break;
     }
