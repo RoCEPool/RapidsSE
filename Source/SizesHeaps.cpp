@@ -76,6 +76,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntWrk),             HT_INVALID           }, // CN_ENTWRK
   { sizeof(EnumFlags),          HT_TRANSIENT_TINY    }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_TRANSIENT_TINY    }, // CN_EXEMPLAR
+  { sizeof(ExprAtom),           HT_TRANSIENT_TINY    }, // CN_EXPRATOM
+  { sizeof(ExprColumnRef),      HT_TRANSIENT_TINY    }, // CN_EXPRCOLUMNREF
+  { sizeof(ExprList),           HT_TRANSIENT_TINY    }, // CN_EXPRLIST
 
   { 'F' - ('A' - 1),            HT_INVALID           }, // CN__F__
   { sizeof(Fact),               HT_TRANSIENT_SMALL   }, // CN_FACT

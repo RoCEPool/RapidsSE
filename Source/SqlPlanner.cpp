@@ -24,7 +24,9 @@ __aFooterFunction(SqlPlanner)
 /*----------------------------------------------------------------------------*/
 SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
-  m_pTableRefStack(new Stack(KK_PARSER_STACK))
+  m_pTableRefStack(new Stack(KK_PARSER_STACK)),
+  m_pExprStack(nullptr),
+  m_pSelectList(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
   
@@ -41,11 +43,37 @@ SqlPlanner::~SqlPlanner(void) noexcept
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
    
   // Clean up the stack of TableRefs
-  while (m_pTableRefStack->nValues() > 0) {
-    TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPopPtr(__func__));
-    delete pTableRef;
+  if (m_pTableRefStack) {
+    while (m_pTableRefStack->nValues() > 0) {
+      TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPopPtr(__func__));
+      delete pTableRef;
+    }
+    
+    delete m_pTableRefStack;
+    m_pTableRefStack = nullptr;
   }
-  delete m_pTableRefStack;
+  
+  // Clean up the expression stack
+  if (m_pExprStack) {
+    while (m_pExprStack->nValues() > 0) {
+      ExprAtom* pAtom = (ExprAtom*) m_pExprStack->pPopPtr(__func__);
+      delete pAtom;
+    }
+    
+    delete m_pExprStack;
+    m_pExprStack = nullptr;
+  }
+  
+  // Clean up the select list
+  if (m_pSelectList) {
+    while (m_pSelectList->nItems() > 0) {
+      ExprAtom* pAtom = m_pSelectList->pPop();
+      delete pAtom;
+    }
+    
+    delete m_pSelectList;
+    m_pSelectList = nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,27 +146,7 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *ctx)
 {
   antlrcpp::Any any = visitChildren(ctx);
   
-  if (m_pTableRefStack->nValues() > 0) {
-    vTrace("  /from\n"_Stz);
-    
-    s256 ref;
-    TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPopPtr(__func__));
-    pTableRef->vPrintInto(ref);
-    
-    vTrace("    /%s\n"_Stz, ref.szStz());
-    delete pTableRef;
-  }
-  
   return nullptr;
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Select Expression node (for each select of each query/subquery)            */
-/* Contains select list / FROM / WHERE / GROUP BY / HAVING                    */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext *ctx)
-{
-  return visitChildren(ctx);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -179,13 +187,121 @@ antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Select Expression node (for each select of each query/subquery)            */
+/* Contains select list / FROM / WHERE / GROUP BY / HAVING                    */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* ctx)
+{
+  // TODO: Parse out ALL and DISTINCT here.
+  
+  ASSERT(!m_pSelectList);
+  m_pSelectList = new ExprList();
+  
+  antlrcpp::Any any = visitChildren(ctx);
+  
+  if (m_pTableRefStack->nValues() > 0) {
+    vTrace("  /from\n"_Stz);
+    
+    s256 ref;
+    TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPopPtr(__func__));
+    pTableRef->vPrintInto(ref);
+    
+    vTrace("    /%s\n"_Stz, ref.szStz());
+    delete pTableRef;
+  }
+  
+  ASSERT(m_pSelectList->nItems() > 0);
+  vTrace("  /project\n"_Stz);
+  
+  while (m_pSelectList->nItems() > 0) {
+    ExprAtom* atom = m_pSelectList->pPop();
+    s2K buf;
+    
+    buf.vCopy("    /"_Stz);
+    atom->vDescribe(buf);
+   
+    buf.vConcat("\n"_Stz);
+    vTrace(buf.szStz());
+  }
+  
+  
+  delete m_pSelectList;
+  m_pSelectList = nullptr;
+  
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Select List node                                                           */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *ctx)
 {
-  return visitChildren(ctx);
+  ASSERT(m_pSelectList);
+  
+  ASSERT(!m_pExprStack);
+  m_pExprStack = new Stack(KK_PARSER_STACK);
+  
+  visitChildren(ctx);
+  
+  ASSERT(m_pExprStack->nValues() == 0);
+  delete m_pExprStack;
+  m_pExprStack = nullptr;
+  
+  ASSERT(m_pSelectList->nItems() > 0);
+  
+  return nullptr;
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Select List Item node                                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* ctx)
+{
+  visitChildren(ctx);
+  
+  // pop the expr stack and add it to the select list.
+  ASSERT(m_pExprStack->nValues() == 1);
+  
+  ExprAtom* pAtom = (ExprAtom*) (m_pExprStack->pPopPtr(__func__));
+  m_pSelectList->vAppend(pAtom);
+  
+  // Expr is a base class. Example subclasses:
+  //    columnRef
+  //    columnWildcard
+  //    literal
+  //    variable  (e.g. CURRENT_TIMESTAMP)
+  //    function (some simply have children, some have children and parameters)
+  //      Add
+  //      Divide
+  //      AND
+  //      IF
+  //      SUBSTRING, etc
+  //
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Column Reference node                                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* ctx)
+{
+  visitChildren(ctx);
+  
+  Text* pCatalogName = ctx->catalogName() == nullptr ? nullptr : cleanId(ctx->catalogName()->id);
+  
+  Text* pSchemaName = ctx->schemaName() == nullptr ? nullptr : cleanId(ctx->schemaName()->id);
+  
+  Text* pTableName = ctx->tableName() == nullptr ? nullptr : cleanId(ctx->tableName()->id);
+  
+  Text* pColumnName = cleanId(ctx->columnName()->id);
+  
+  ExprColumnRef* columnRef = new ExprColumnRef(pCatalogName, pSchemaName,
+                                               pTableName, pColumnName);
+  
+  m_pExprStack->vPushPtr(columnRef);
+  
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
