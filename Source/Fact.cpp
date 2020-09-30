@@ -1046,7 +1046,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
           break;
         case FU_TEXT:
           vTraceF(pFile," = Text \"%s\""_Stz,
-                 m_xValue.m_pText ? m_xValue.m_pText->szGet()
+                  m_xValue.m_pText ? m_xValue.m_pText->szGet()
                                      : ""_Stz);
           break;
         case FU_USAGE:
@@ -1054,13 +1054,14 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
           break;
         case FU_WORD:
           vTraceF(pFile," = Word %s"_Stz,
-                 m_xValue.m_pWord ? m_xValue.m_pWord->szWordNm()
+                  m_xValue.m_pWord ? m_xValue.m_pWord->szWordNm()
                                     : ""_Stz);
           break;
         case FU_XREF:
-          vTraceF(pFile," = Xref %s"_Stz,
-                 m_xValue.m_pXref ? m_xValue.m_pXref->szName()
-                                     : ""_Stz);
+          vTraceF(pFile," = Xref %s %p"_Stz,
+                  m_xValue.m_pXref ? m_xValue.m_pXref->szName()
+                                   : ""_Stz,
+                  m_xValue.m_pXref);
           break;
         default:
           NEVER_REACH;
