@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SqlPlanner.hpp -                                                           */
+/* SqlPlanner.hpp - Parses SQL statements & produces an initial knowledgebase */
 /*============================================================================*/
 #pragma once
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SqlErrorListener.hpp - Listens for errors when a grammar is parsed.        */
+/* SqlErrorListener.cpp - Listens for errors when a grammar is parsed.        */
 /*============================================================================*/
 
 #include "SqlErrorListener.hpp"
