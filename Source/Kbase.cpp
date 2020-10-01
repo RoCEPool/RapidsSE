@@ -968,7 +968,7 @@ void Kbase::vAprioriFacts(void)
   Fact* p_BufferType_ = pAha("_bufferType_"_Stz,   m_p_Property_);
                        pAha("_crwBuffer"_Stz,      p_BufferType_);
 
-                       pAha("_streamDefOut_"_Stz,  p_ColumnRef_);
+                       pAha("_streamDefOut_"_Stz,  m_p_Folder_);
   
                        pAha("_whereClause_"_Stz,   m_p_Folder_);
                        pAha("_groupByClause_"_Stz, m_p_Folder_);

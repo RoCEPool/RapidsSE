@@ -165,7 +165,7 @@ void Method::vSchedule(Fact** ppAnchor)
     case  0: vTransformAdd("TQ_IMPORT_TABLES"_Stz);      pPlanPrime->vValue(1);  return;
     case  1: vTransformAdd("TQ_FROM_RESOLUTION"_Stz);    pPlanPrime->vValue(2);  return;
     case  2: vTransformAdd("TQ_PROJECT_RESOLUTION"_Stz); pPlanPrime->vValue(3);  return;
-    case  3: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(4);  return;
+    case  3: vTransformAdd("TQ_OUTPUT_STREAMDEF"_Stz);   pPlanPrime->vValue(4);  return;
     case  4: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(5);  return;
     case  5: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(6);  return;
     case  6: /*vTransformAdd(""_Stz);*/ pPlanPrime->vValue(7);  return;
@@ -407,6 +407,22 @@ void Method::vTQ_INITIAL_PLAN(Fact** ppTransform)
 void Method::vTQ_OUTPUT_STREAMDEF(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
+  
+  m_pKbase->pElementInstance("plan"_Stz,"_streamDefOut_"_Stz);
+
+  //Question* pQuestion = new Question(m_pKbase,"fromList"_Stz,"fromNm"_Stz);
+  Question* pQouter =
+    new Question(QN_ELEMENTS_BY_ELM_NAME,m_pKbase,nullptr,
+                 "projectList"_Stz,"project"_Stz);
+
+  while (pQouter->bEachMatch()) {
+
+    Fact* pProject = pQouter->pElement();
+    vTrace("project: %s %p\n"_Stz,pProject->szName(),pProject);
+
+  }
+  
+  delete pQouter;
 
   vTransformDelete(ppTransform);
 }
