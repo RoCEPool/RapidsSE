@@ -12,6 +12,8 @@ namespace Parser
   private:
   
     Stack* m_pTableRefStack;
+    Stack* m_pExprStack;
+    ExprList* m_pSelectList;
     Footer m_xFooter;
     
    public:
@@ -34,6 +36,9 @@ namespace Parser
     virtual antlrcpp::Any visitFetch(sqlParser::FetchContext *ctx)              override;
     virtual antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *ctx) override;
     virtual antlrcpp::Any visitSelectList(sqlParser::SelectListContext *ctx)    override;
+    virtual antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* ctx) override;
+    virtual antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* ctx) override;
+    
     
   private:
     Text* cleanId(sqlParser::IdentifierContext *ctx);

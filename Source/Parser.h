@@ -14,6 +14,9 @@ namespace Parser
 
 //------------------------------------------------------------------------------
 
+#include "ExprAtom.hpp"
+#include "ExprColumnRef.hpp"
+#include "ExprList.hpp"
 #include "SqlPlanner.hpp"
 #include "TableRef.hpp"
 
