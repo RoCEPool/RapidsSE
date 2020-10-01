@@ -172,6 +172,29 @@ void Fact::vAncestry(Stz* szDst)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the super usage of this attribute                                      */
+/*----------------------------------------------------------------------------*/
+eFU Fact::eAttribute(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  ASSERT(m_pAttributeOf);
+  
+  for (Fact* pClass = m_pSubclassOf;
+       pClass && pClass->pSubclassOf();
+       pClass = pClass->pSubclassOf()) {
+    
+    Fact* pSuperClass = pClass->pSubclassOf();
+    
+    if (pSubclassOf() == m_pKbase->m_p_Value_) {
+      return pClass->eUsage();
+    }
+  }
+  
+  return FU_NONE;
+}
+       
+/*----------------------------------------------------------------------------*/
 /* add new xref attribute to this fact                                        */
 /*----------------------------------------------------------------------------*/
 void Fact::vAttributeAdd(Stz* szAtrSuperNm, Fact* pXref)
@@ -1546,6 +1569,16 @@ Stz* Fact::szText(void)
   return szText;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the usage of this attribute                                            */
+/*----------------------------------------------------------------------------*/
+eFU Fact::eUsage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  return m_xValue.m_eUsage;
+}
+    
 /*----------------------------------------------------------------------------*/
 /* get int value                                                              */
 /*----------------------------------------------------------------------------*/

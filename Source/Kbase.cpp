@@ -870,6 +870,7 @@ void Kbase::vAprioriFacts(void)
   m_p_Text_     = pAha("_text_"_Stz,    m_p_Value_,   FU_TEXT);
   m_p_Word_     = pAha("_word_"_Stz,    m_p_Value_,   FU_WORD);
   m_p_Xref_     = pAha("_xref_"_Stz,    m_p_Value_,   FU_XREF);
+  
   m_p_Name_     = pAha("_name_"_Stz,    m_p_Text_);
   m_p_No_       = pAha("_no_"_Stz,      m_p_Int_);
 

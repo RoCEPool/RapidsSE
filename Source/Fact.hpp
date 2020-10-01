@@ -58,6 +58,8 @@ namespace Facts
 
     void  vAncestry(Stz* szDst);
   
+    eFU   eAttribute(void);
+    
     void  vAttributeAdd(Stz* szAtrSuperNm, Fact* pXref);
     void  vAttributeAppend(Fact* pAttribute);
     void  vAttributeCut(Fact* pAttribute);
@@ -141,6 +143,8 @@ namespace Facts
     void  vSubclassOf(Fact* pSubclassOf);
   
     Stz*  szText(void);
+
+    eFU   eUsage(void);
 
     i8    iValue(void);
     void  vValue(i8 iValue);
