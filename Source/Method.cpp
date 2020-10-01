@@ -408,7 +408,7 @@ void Method::vTQ_OUTPUT_STREAMDEF(Fact** ppTransform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METHOD,_FOOTER_);
   
-  m_pKbase->pElementInstance("plan"_Stz,"_streamDefOut_"_Stz);
+  Fact* pStreamDefOut = m_pKbase->pElementInstance("plan"_Stz,"_streamDefOut_"_Stz);
 
   //Question* pQuestion = new Question(m_pKbase,"fromList"_Stz,"fromNm"_Stz);
   Question* pQouter =
