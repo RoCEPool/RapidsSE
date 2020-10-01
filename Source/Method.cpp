@@ -419,6 +419,12 @@ void Method::vTQ_OUTPUT_STREAMDEF(Fact** ppTransform)
 
     Fact* pProject = pQouter->pElement();
     vTrace("project: %s %p\n"_Stz,pProject->szName(),pProject);
+    
+    vDebugPoint();
+    
+    Fact* pClonedProject = pProject->pClone();
+
+    pStreamDefOut->vElementAppend(pClonedProject);
 
   }
   

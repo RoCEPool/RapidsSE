@@ -186,7 +186,7 @@ eFU Fact::eAttribute(void)
     
     Fact* pSuperClass = pClass->pSubclassOf();
     
-    if (pSubclassOf() == m_pKbase->m_p_Value_) {
+    if (pClass->pSubclassOf() == m_pKbase->m_p_Value_) {
       return pClass->eUsage();
     }
   }
