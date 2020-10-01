@@ -1,0 +1,224 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN : QRY_402
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Routine QRY_402
+
+  // initialization
+  EO_INIT
+  EO_ENTER
+
+  // set sql query no (debug)
+  EO_SQL 402
+
+  // check for ZK_STARTMARKER
+  EO_DUP
+  EO_INTEGER ZK_STARTMARKER
+  EO_EQUAL
+  EO_JMP_TRUE STARTMARKER_HANDLER
+
+  // check for ZK_PULSEMARKER
+  EO_DUP
+  EO_INTEGER ZK_PULSEMARKER
+  EO_EQUAL
+  EO_JMP_TRUE PULSEMARKER_HANDLER
+
+  // check for ZK_STREAMDEF
+  EO_DUP
+  EO_INTEGER  ZK_STREAMDEF
+  EO_EQUAL
+  EO_JMP_TRUE STREAMDEF_HANDLER
+
+  // check for ZK_RSBBUFFER
+  EO_DUP
+  EO_INTEGER ZK_RSBBUFFER
+  EO_EQUAL
+  EO_JMP_TRUE RSBBUFFER_HANDLER
+
+  // check for ZK_EOSMARKER
+  EO_DUP
+  EO_INTEGER  ZK_EOSMARKER
+  EO_EQUAL
+  EO_JMP_TRUE EOSMARKER_HANDLER
+
+  // Never reach
+  EO_PRINTF "**NO_HANDLER : 402**\n"
+  EO_NEVERREACH
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STARTMARKER handler
+Label STARTMARKER_HANDLER
+  //EO_PRINTF "**STARTMARKER_HANDLER : 402**\n"
+  EO_POP
+  EO_REG_INDEXDEF_NEW "idx_vch"
+  EO_PUSH_COLUMN_TYPE CT_VARCHAR
+  EO_REG_INDEXDEF_ADDCOLUMN "vchA"
+  EO_REG_INDEXTREE_NEW
+  EO_REG_INDEXDEF_DELETE
+  EO_INDEXTREE_TMP_SET
+
+  EO_INDEXTREE_DEV_SET 0
+
+  EO_JMP QRY_402_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_PULSEMARKER handler
+Label PULSEMARKER_HANDLER
+  //EO_PRINTF "**PULSEMARKER_HANDLER : 402**\n"
+  EO_POP
+  EO_JMP QRY_402_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STREAMDEF handler
+Label STREAMDEF_HANDLER
+  //EO_PRINTF "**STREAMDEF_HANDLER : 402**\n"
+  EO_POP
+
+  EO_REG_STREAMDEFOUT_NEW
+
+  // add column o_orderpriorty
+  EO_PUSH_COLUMN_SCALE -1
+  EO_PUSH_COLUMN_LENGTH 15
+  EO_PUSH_COLUMN_TYPE CT_VARCHAR
+  EO_REG_STREAMDEFOUT_ADDCOLUMN "o_orderpriorty"
+
+  // add column order_count
+  EO_PUSH_COLUMN_SCALE 0
+  EO_PUSH_COLUMN_LENGTH 19
+  EO_PUSH_COLUMN_TYPE CT_INTEGER
+  EO_REG_STREAMDEFOUT_ADDCOLUMN "order_count"
+
+  EO_POT_USE_STREAMDEFOUT 1
+
+  EO_JMP QRY_402_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_EOSMARKER handler
+Label EOSMARKER_HANDLER
+  //EO_PRINTF "**EOSMARKER_HANDLER : 402**\n"
+  EO_POP
+
+  EO_CALL OUT_AGG
+
+  EO_REG_INDEXTREE_DELETE
+  EO_JMP QRY_402_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_RSBBUFFER handler
+Label RSBBUFFER_HANDLER
+  //EO_PRINTF "**RSBBUFFER_HANDLER : 402**\n"
+  EO_POP
+
+  EO_CALL ITR_SRC
+  EO_JMP QRY_402_DONE
+
+Label QRY_402_DONE
+  EO_EXIT
+  EO_RETURN
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//                                                                Q401 ITR_SRC
+Label ITR_SRC
+
+  EO_RSB_SRC_BEGIN
+
+Label NXT_SRC
+  EO_RSB_SRC_NEXT
+  EO_JMP_FALSE ITR_END
+
+  //EO_RSB_SRC_PRINT
+
+  EO_CALL GET_AGR
+
+  EO_CALL SUP_AGR
+
+  EO_JMP NXT_SRC
+
+// --
+Label ITR_END
+  EO_RETURN
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//                                                                Q401 SUP_AGR
+Label SUP_AGR
+
+  EO_PAY_ADDRESS
+
+  EO_RSB_SRC_PUSHCOLI 1 //Q400_ORDERCOUNT
+  EO_PAY_FETCH_COLI 0
+  EO_ADD
+  EO_PAY_STORE_COLI 0
+
+Label SUP_END
+  EO_RETURN
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//                                                                Q401 GET_AGR
+// get aggregator for o_orderpriority
+Label GET_AGR
+
+// reset entwrk
+  EO_ENTWRK_RESET
+
+// add key O_ORDERPRIORITY
+  EO_RSB_SRC_PUSHCOLS 0 //Q400_ORDERPRIORITY
+  EO_ENTWRK_APPENDELMS
+
+  // attempt to find the key in the indexTree
+  EO_ENT_POSPRIOR
+  EO_JMP_FALSE NEW_AGR
+
+  EO_ENT_NEXT
+  EO_JMP_FALSE NEW_AGR
+
+  EO_ENT_EQUAL
+  EO_JMP_FALSE NEW_AGR
+
+//EO_IXT_DUMP,(i8)0
+
+// found the agg
+  EO_JMP END_AGR
+
+// did not find agg, new one
+Label NEW_AGR
+
+  EO_ENTWRK_CREATEPAY 8 //1 * C_BYTES_PER_WORD
+
+  EO_IXT_INS_ENT
+
+  EO_PAY_ADDRESS
+
+  EO_PUSH_0
+  EO_PAY_STORE_COLI 0
+
+//EO_IXT_DUMP,(i8)0
+
+Label END_AGR
+  EO_RETURN
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+Label OUT_AGG
+  EO_IXT_TRV_BEGIN
+  EO_JMP_FALSE TRV_RET
+
+Label TRV_ECH
+
+  EO_RSB_DST_NEW
+  EO_PAY_ADDRESS
+
+  EO_ENT_PUSHELMS0
+  EO_RSB_DST_POPCOLS 0 //Q401_ORDERPRIORITY
+
+  EO_PAY_FETCH_COLI 0
+  EO_RSB_DST_POPCOLI 1 //Q401_ORDERCOUNT
+  //EO_RSB_DST_PRINT
+
+Label TRV_NXT
+  EO_IXT_TRV_NEXT
+  EO_JMP_TRUE TRV_ECH
+
+Label TRV_RET
+  EO_RETURN
+

@@ -1,0 +1,277 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN : QRY_401
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Routine QRY_401
+
+  // initialization
+  EO_INIT
+  EO_ENTER
+
+  // set sql query no (debug)
+  EO_SQL 401
+
+  // check for ZK_STARTMARKER
+  EO_DUP
+  EO_INTEGER ZK_STARTMARKER
+  EO_EQUAL
+  EO_JMP_TRUE STARTMARKER_HANDLER
+
+  // check for ZK_PULSEMARKER
+  EO_DUP
+  EO_INTEGER ZK_PULSEMARKER
+  EO_EQUAL
+  EO_JMP_TRUE PULSEMARKER_HANDLER
+
+  // check for ZK_STREAMDEF
+  EO_DUP
+  EO_INTEGER  ZK_STREAMDEF
+  EO_EQUAL
+  EO_JMP_TRUE STREAMDEF_HANDLER
+
+  // check for ZK_CRWBUFFER
+  EO_DUP
+  EO_INTEGER ZK_RSBBUFFER
+  EO_EQUAL
+  EO_JMP_TRUE RSBBUFFER_HANDLER
+
+  // check for ZK_EOSMARKER
+  EO_DUP
+  EO_INTEGER  ZK_EOSMARKER
+  EO_EQUAL
+  EO_JMP_TRUE EOSMARKER_HANDLER
+
+  // Never reach
+  EO_PRINTF "**NO_HANDLER : 401**\n"
+  EO_NEVERREACH
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STARTMARKER handler
+Label STARTMARKER_HANDLER
+  //EO_PRINTF "**STARTMARKER_HANDLER : 401**\n"
+  EO_POP
+  EO_TABLENM_ALT_SET "lineitem"
+  EO_INDEXNM_ALT_SET "lineitem_Idx2"
+
+  EO_REG_INDEXDEF_NEW "idx_vch"
+  EO_PUSH_COLUMN_TYPE CT_VARCHAR
+  EO_REG_INDEXDEF_ADDCOLUMN "intA"
+  EO_REG_INDEXTREE_NEW
+  EO_REG_INDEXDEF_DELETE
+  EO_INDEXTREE_TMP_SET
+  EO_INDEXTREE_DEV_SET 0
+  EO_JMP QRY_401_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_PULSEMARKER handler
+Label PULSEMARKER_HANDLER
+  //EO_PRINTF "**PULSEMARKER_HANDLER : 401**\n"
+  EO_POP
+  EO_JMP QRY_401_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STREAMDEF handler
+Label STREAMDEF_HANDLER
+  //EO_PRINTF "**STREAMDEF_HANDLER : 401**\n"
+  EO_POP
+
+  EO_REG_STREAMDEFOUT_NEW
+
+  // add column o_orderpriorty
+  EO_PUSH_COLUMN_SCALE -1
+  EO_PUSH_COLUMN_LENGTH 15
+  EO_PUSH_COLUMN_TYPE CT_VARCHAR
+  EO_REG_STREAMDEFOUT_ADDCOLUMN "o_orderpriorty"
+
+  // add column order_count
+  EO_PUSH_COLUMN_SCALE 0
+  EO_PUSH_COLUMN_LENGTH 19
+  EO_PUSH_COLUMN_TYPE CT_INTEGER
+  EO_REG_STREAMDEFOUT_ADDCOLUMN "order_count"
+
+  EO_POT_USE_STREAMDEFOUT 1
+
+  EO_JMP QRY_401_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_EOSMARKER handler
+Label EOSMARKER_HANDLER
+  //EO_PRINTF "**EOSMARKER_HANDLER : 401**\n"
+  EO_POP
+  EO_CALL OUT_AGG
+  EO_REG_INDEXTREE_DELETE
+  EO_JMP QRY_401_DONE
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// ZK_RSBBUFFER handler
+Label RSBBUFFER_HANDLER
+  //EO_PRINTF "**RSBBUFFER_HANDLER : 401**\n"
+  EO_POP
+
+  // forearch src rsb
+  EO_RSB_SRC_BEGIN
+
+Label NEXT_RSB_SRC
+
+  EO_RSB_SRC_NEXT
+  EO_JMP_FALSE QRY_401_DONE
+
+  // test for a matching LINEITEM
+  EO_CALL TST_LINEITEM
+  EO_JMP_FALSE NEXT_RSB_SRC
+
+  // get the aggregator for o_orderpriority
+  EO_CALL GET_AGR
+
+  EO_PAY_ADDRESS
+  EO_PAY_FETCH_COLI 0
+  EO_INC
+  EO_PAY_STORE_COLI 0
+  EO_JMP NEXT_RSB_SRC
+
+
+Label QRY_401_DONE
+  EO_EXIT
+  EO_RETURN
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END MAIN: QRY_401
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// SUBROUTINE: TST_LINEITEM -- test for matching lineitem
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Label TST_LINEITEM
+
+  //EO_RSB_SRC_PRINT
+  EO_ENTWRK_RESET
+
+  EO_RSB_SRC_PUSHCOLI 0 // O_ORDERKEY
+  EO_ENTWRK_SETINTELM
+
+  // position / iterate
+  EO_IXT_POS_ALTBYWRK
+
+  EO_JMP_FALSE RET_LINEITEM_f
+
+Label NXT_ITM
+  EO_IXT_ALT_NEXT
+  EO_JMP_FALSE RET_LINEITEM_f
+  //EO_IXT_ALT_PRINT
+  EO_IXT_CMP_WRKALT
+  EO_JMP_FALSE RET_LINEITEM_f
+
+  // test L_COMMITDATE < L_RECEIPTDATE
+  EO_CRW_ALT_DEREF
+
+  //EO_COL_ALT_PUSHONE L_LINENUMBER
+  //EO_COL_ALT_PUSHONE L_ORDERKEY
+  //EO_PRINTF "  joined L_OrderKey %i, L_LineNumber %i\n"_Stz
+
+  EO_SET_ITEMS 2
+  EO_SET_COLUMN 12 // L_RECIPTDATE
+  EO_SET_COLUMN 11 // L_COMMITDATE
+  EO_COL_ALT_PUSHSET
+
+
+  EO_LESSTHAN
+  EO_JMP_FALSE NXT_ITM
+  EO_JMP RET_LINEITEM_t
+
+  EO_JMP NXT_ITM
+
+  // found one matching lineitem
+Label RET_LINEITEM_t
+  EO_PUSH_1
+  EO_RETURN
+
+  // no matching lineitem
+Label RET_LINEITEM_f
+  EO_PUSH_0
+  EO_RETURN
+
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+// END SUBROUTINE: RET_ITM
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// SUBROUTINE: GET_AGR
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// get aggregator for o_orderpriority
+Label GET_AGR
+
+  // reset entwrk
+  EO_ENTWRK_RESET
+
+  //EO_RSB_SRC_PRINT
+  EO_RSB_SRC_PUSHCOLS 1 //O_ORDERPRIORITY
+  EO_ENTWRK_APPENDELMS
+
+  // attempt to find the key in the indexTree
+  EO_ENT_POSPRIOR
+  EO_JMP_FALSE NEW_AGR
+
+  EO_ENT_NEXT
+  EO_JMP_FALSE NEW_AGR
+
+  //EO_ENT_PRINTKEYS
+  EO_ENT_EQUAL
+  EO_JMP_FALSE NEW_AGR
+
+  //EO_IXT_DUMP,(i8)0
+
+  // found the agg
+  EO_JMP END_AGR
+
+  // did not find agg, new one
+  Label NEW_AGR
+  EO_ENTWRK_CREATEPAY 8 //1 * C_BYTES_PER_WORD
+
+  EO_IXT_INS_ENT
+
+  EO_PAY_ADDRESS
+
+  EO_PUSH_0
+  EO_PAY_STORE_COLI 0
+
+  //EO_IXT_DUMP,(i8)0
+
+Label END_AGR
+  EO_RETURN
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+// END SUBROUTINE: GET_AGR                                        Q400 GET_AGR
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// SUBROUTINE: OUT_AGG                                            Q400 OUT_AGG
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Label OUT_AGG
+
+  EO_IXT_TRV_BEGIN
+  EO_JMP_FALSE TRV_RET
+
+  Label TRV_ECH
+
+  EO_RSB_DST_NEW
+
+  EO_ENT_PUSHELMS0
+  EO_RSB_DST_POPCOLS 0 // Q400_ORDERPRIORITY
+
+  EO_PAY_ADDRESS
+
+  EO_PAY_FETCH_COLI 0
+  EO_RSB_DST_POPCOLI 1 // Q400_ORDERCOUNT
+
+  //EO_RSB_DST_PRINT
+
+  Label TRV_NXT
+  EO_IXT_TRV_NEXT
+  EO_JMP_TRUE TRV_ECH
+
+  Label TRV_RET
+  EO_RETURN
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+// END SUBROUTINE: OUT_AGG                                        Q400 OUT_AGG
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+

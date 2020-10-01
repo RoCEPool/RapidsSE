@@ -117,10 +117,10 @@
   then
 
   LogicUnit[].callAgain@ if
-    "Completed test" .
+    //"Completed test" .
     Pot[].pipeoutAllCompletedPtns
   else
-    "not called again" .
+    //"not called again" .
     Pot[].pipeoutAllDanglingPtns
     // force op loop to call EOAsm_EosMarker to end
     "EOAsm_EosMarker" word::find LogicUnit[].handler!
@@ -153,6 +153,7 @@
 
   0 ZK_RSBBUFFER EG_ZK LogicUnit[].diaryNote
 
+  //Pipein[] "GOT RSBBUFFER %v" .printf
   Operand[].pipeIn
   Operand[].asSrcRowSlab
   ZK_RSBBUFFER Counter0[] executeAsmArgs
@@ -171,7 +172,7 @@
 
   // Invoked from PULSEMARKER call again?
   Operand[].isNull not if
-    "PULSEMARKER created an EOSMARKER" .
+    //"PULSEMARKER created an EOSMARKER" .
     // there should be no Pipein EOSMARKER
     Pipein[].isNull assert
     Operand[] to Pipein[]
@@ -180,12 +181,12 @@
   // Invoked from PULSEMARKER call again?
   // but PULSEMARKER did not create an EOS MARKER
   Pipein[].isNull if
-    "PULSEMARKER is null" .
+    //"PULSEMARKER is null" .
     true
     exit
   then
 
-  "handle EOSMARKER" .
+  //"handle EOSMARKER" .
   // handle EOSMARKER
   ZK_EOSMARKER Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
