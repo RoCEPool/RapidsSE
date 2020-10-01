@@ -415,6 +415,62 @@ i8 Fact::iAttributeValNm(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* deep clone this fact                                                       */
+/*----------------------------------------------------------------------------*/
+Fact* Fact::pClone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
+  
+  Fact* pClone = new Fact(m_pKbase,m_pSubclassOf,m_sFactNm);
+  
+  if (m_pAttributeOf) {
+    
+    // this fact is an attribute of its parent
+    
+    eFU eAttribute = this->eAttribute();
+    
+    switch (eAttribute) {
+      
+      case FU_FUNCTION:  pClone->m_xValue.m_afFun    = m_xValue.m_afFun;    break;
+      case FU_INT:       pClone->m_xValue.m_iInt     = m_xValue.m_iInt;     break;
+      //case FU_METHOD:    break;
+      case FU_OBJECT:    pClone->m_xValue.m_pObject  = m_xValue.m_pObject;  break;
+      case FU_OPAQUE:    pClone->m_xValue.m_aOpaque  = m_xValue.m_aOpaque;  break;
+      case FU_TEXT:      pClone->vSetText(szText());                        break;
+      //case FU_TRANSFORM: break;
+      //case FU_USAGE:     pClone->m_xValue.m_eUsage = m_xValue.m_eUsage; break;
+      case FU_WORD:      pClone->m_xValue.m_pWord    = m_xValue.m_pWord;    break;
+      case FU_XREF:      pClone->m_xValue.m_pXref    = m_xValue.m_pXref;    break;
+
+      default:
+        NEVER_REACH;
+    }
+  }
+  else if (m_pElementOf) {
+    
+    // this fact is an element of its parent
+    
+    for (Fact* pAtr = m_pAttributes; pAtr; pAtr = pAtr->m_pAttributeNext) {
+      
+      Fact* pClonedAtr = pAtr->pClone();
+      pClone->vAttributeAppend(pClonedAtr);
+    }
+    
+    for (Fact* pElm = m_pElements; pElm; pElm = pElm->m_pElementNext) {
+      
+      Fact* pClonedElm = pElm->pClone();
+      pClone->vElementAppend(pClonedElm);
+    }
+    
+  }
+  else {
+    NEVER_REACH;
+  }
+  
+  return pClone;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append given element to end of this facts elements                         */
 /*----------------------------------------------------------------------------*/
 void Fact::vElementAppend(Fact* pElement)

@@ -75,6 +75,8 @@ namespace Facts
     Fact* pAttributeThatIsSubClass(Fact* pOfSuperFact);
     i8    iAttributeValNm(Stz* szName);
 
+    Fact* pClone(void);
+
     void  vElementAppend(Fact* pElement);
     void  vElementCut(Fact* pElement);
     Fact* pElementFindNm(Stz* szName);
