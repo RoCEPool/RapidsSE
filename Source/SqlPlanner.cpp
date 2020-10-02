@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SqlPlanner.cpp -                                                            */
+/* SqlPlanner.cpp - Parses SQL statements & produces an initial knowledgebase */
 /*============================================================================*/
 
 #include "Parser.h"

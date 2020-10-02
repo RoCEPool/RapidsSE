@@ -1,3 +1,4 @@
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BEGIN : QRY_400
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -28,12 +29,6 @@ Routine QRY_400
   EO_EQUAL
   EO_JMP_TRUE STREAMDEF_HANDLER
 
-  // check for ZK_CRWBUFFER
-  EO_DUP
-  EO_INTEGER ZK_CRWBUFFER
-  EO_EQUAL
-  EO_JMP_TRUE CRWBUFFER_HANDLER
-
   // check for ZK_EOSMARKER
   EO_DUP
   EO_INTEGER  ZK_EOSMARKER
@@ -58,7 +53,6 @@ Label STARTMARKER_HANDLER
 Label EOSMARKER_HANDLER
   //EO_PRINTF "**EOSMARKER_HANDLER : 400**\n"
   EO_POP
-  EO_REG_INDEXTREE_DELETE
   EO_JMP QRY_400_DONE
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1260,6 +1260,35 @@
   end ;  "
   api::addProcedure
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 4
+  sPath
+  "
+  procedure Query4_ASM
+  parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+  start
+  | periodicOp once
+  | stageB
+
+  stage stageB on all partitions :
+  EOAsm $QueryText_stageB 1
+  | stageC hashed
+
+  stage stageC on all partitions :
+  EOAsm $QueryText_stageC 1
+  | stageD
+
+  stage stageD on origin :
+  EOAsm $QueryText_stageD 1
+  | output
+  | sink
+  | stageA
+
+  end ;  "
+  api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - converting loaded CRW data into RSB

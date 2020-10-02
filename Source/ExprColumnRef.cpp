@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ExprColumnRef.hpp - a reference to a column                                */
+/* ExprColumnRef.cpp - a reference to a column                                */
 /*============================================================================*/
 
 #include "Parser.h"

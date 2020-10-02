@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ExprAtom.hpp - an abstract expression atom used in parsing.                */
+/* ExprAtom.cpp - an abstract expression atom used in parsing.                */
 /*============================================================================*/
 
 #include "Parser.h"
