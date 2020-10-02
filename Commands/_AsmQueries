@@ -14,13 +14,13 @@ print "Cluster started" ;
 
 print "creating Customer...";
 
-_customer
-create index Customer_Idx1 ON Customer(C_CUSTKEY);
+//_customer
+//create index Customer_Idx1 ON Customer(C_CUSTKEY);
 
-print "load of Customer...";
-/time fload Customer "/DATA/TPCH/customer_10k.csv";
+//print "load of Customer...";
+///time fload Customer "/DATA/TPCH/customer_10k.csv";
 ///time fload Customer "/TPCH/SF1/customer.tbl";
-compactIdx Customer Customer_Idx1;
+//compactIdx Customer Customer_Idx1;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print "creating Orders...";
@@ -30,9 +30,10 @@ create index Orders_Idx1 ON Orders(O_CUSTKEY);
 create index Orders_Idx2 ON Orders(O_ORDERKEY);
 
 print "load of Orders...";
-/time fload Orders "/DATA/TPCH/orders_10k.csv";
-///time fload Orders "/TPCH/SF1/orders.tbl";
+/time load Orders "/DATA/TPCH/orders10.csv";
+///time fload Orders "/TPCH/SF10/orders.tbl";
 compactIdx Orders Orders_Idx1;
+//tableScan Orders;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -58,10 +59,11 @@ create table LineItem                      // SF * 6,000,000 rows
   // 16 columns                                  174B  91B
 );
 create index lineitem_idx1 on lineitem (l_shipdate);
-/time fload lineitem "/DATA/TPCH/lineitem_100k.csv";
-///time fload lineitem "/TPCH/SF1/lineitem.tbl";
+create index lineitem_idx2 on lineitem (l_orderkey);
+/time fload lineitem "/DATA/TPCH/lineitem10.csv";
+///time fload lineitem "/TPCH/SF10/lineitem.tbl";
 compactIdx LineItem lineItem_Idx1;
-
+compactIdx LineItem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ///print "*****************************************************************";
@@ -74,9 +76,110 @@ compactIdx LineItem lineItem_Idx1;
 ///time Query6_ASM_I "../EO_text/QRY_600.txt" "../EO_text/QRY_601.txt" ;
 
 print "*****************************************************************";
-/time Query4_ASM_I "../EO_text/QRY_400.txt" ;
-
+///time Query4_ASM_I "../EO_text/QRY_400.txt" "../EO_text/QRY_401.txt" "../EO_text/QRY_402.txt";
+/time Query4_ASM "../EO_text/QRY_400.txt" "../EO_text/QRY_401.txt" "../EO_text/QRY_402.txt";
+/*
+ [-1] '1-URGENT',65,#0
+ [-1] '2-HIGH',59,#0
+ [-1] '3-MEDIUM',77,#0
+ [-1] '4-NOT SPECIFIED',67,#0
+ [-1] '5-LOW',87,#0
+ */
 // drop table customer;
 // drop table orders;
 // drop table lineitem;
 // memoryLeaks;
+/*
+ 
+ Begin 000: Routine
+ 
+ Logic Unit :: sql 0
+ 
+ [Q400.0] **STARTMARKER_HANDLER : 400**
+ 
+ End Logic Unit :: sql 400
+ 
+ Begin 000: Routine
+ 
+ Logic Unit :: sql 0
+ 
+ [Q401.0] **STARTMARKER_HANDLER : 401**
+ [Q401.0] RETURNING FROM 401
+ 
+ End Logic Unit :: sql 401
+ 
+ 
+ Logic Unit :: sql 400
+ 
+ [Q400.0] **PULSEMARKER_HANDLER : 400**
+ O3
+ hashed to 0
+ [-1] 3,'5-LOW',#0
+ O3
+ hashed to 0
+ [-1] 3,'5-LOW',#0
+ O3
+ hashed to 0
+ 
+ Logic Unit :: sql 401
+ 
+ [-1] 3,'5-LOW',#0
+ [Q401.0] **PULSEMARKER_HANDLER : 401**
+ 
+ End Logic Unit :: sql 400
+ 
+ [Q401.0] RETURNING FROM 401
+ 
+ End Logic Unit :: sql 401
+ 
+ [NODE0 origin EOAsm 362.394ms] not called again
+ [NODE0 origin EOAsm 362.537ms] pipeoutAllDanglingPtns: PIPING OUT 0x204814200040
+ [NODE0 origin EOAsm 264.095ms] not called again
+ [NODE0 origin EOAsm 362.893ms] PULSEMARKER created an EOSMARKER
+ [NODE0 origin EOAsm 362.953ms] handle EOSMARKER
+ [NODE0 origin EOAsm 264.332ms] PULSEMARKER is null
+ 
+ Logic Unit :: sql 400
+ 
+ [Q400.0] **EOSMARKER_HANDLER : 400**
+ 
+ End Logic Unit :: sql 400
+ 
+ 
+ Logic Unit :: sql 401
+ 
+ [Q401.0] **STREAMDEF_HANDLER : 401**
+ [Q401.0] RETURNING FROM 401
+ 
+ End Logic Unit :: sql 401
+ 
+ [NODE0 origin EOAsm 270.640ms] GOT RSBBUFFER 0x204813b00040
+ 
+ Logic Unit :: sql 401
+ 
+ [Q401.0] **RSBBUFFER_HANDLER : 401**
+ SQL: 401 RSBBUFFER : 0x204813b00200
+ [-1] '5-LOW',3,#0
+ [Q401.0] RETURNING FROM 401
+ 
+ End Logic Unit :: sql 401
+ 
+ [NODE0 origin EOAsm 276.056ms] handle EOSMARKER
+ 
+ Logic Unit :: sql 401
+ 
+ [Q401.0] **EOSMARKER_HANDLER : 401**
+ [Q401.0] RETURNING FROM 401
+ 
+ End Logic Unit :: sql 401
+ 
+ [NODE0 origin EOAsm 278.768ms] pipeoutAllDangling: PIPING OUT 0x204813200040
+ metadata: (o_orderpriorty VARCHAR,order_count INTEGER)
+ row: ('5-LOW',3)
+ success: 1 rows fetched
+ time 682ms
+ [BufferPool  : size 20GB free 98%]
+ [Object Delta: 408 objects]
+ [Trace File  : 17KB]
+ [NODE0 5330] se 3.0.4 alpha debug booted>
+ */

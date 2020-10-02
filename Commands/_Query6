@@ -40,10 +40,13 @@ create index lineitem_idx on lineitem (l_shipdate);
 /time load lineitem "/DATA/TPCH/lineitem10.csv";
 ///time Query6_I lineitem lineitem_idx;
 ///time Query6 lineitem lineitem_idx;
-/time Query6_ASM_I "../EO_text/QRY_600.txt" "../EO_text/QRY_601.txt" lineitem lineitem_idx;
-/time Query1_ASM_I "../EO_text/QRY_100.txt" "../EO_text/QRY_103.txt" lineitem;
-///time Query1_I lineitem;
+/time Query1_ASM_I lineitem "../EO_text/QRY_100.txt" "../EO_text/QRY_103.txt" ;
+print "*****************************************************************";
 
+/time Query6_ASM_I "../EO_text/QRY_600.txt" "../EO_text/QRY_601.txt" ;
+
+///time Query1_I lineitem;
+//Query6 lineitem lineitem_idx;
 //drop table lineitem;
 //memoryLeaks;
 
