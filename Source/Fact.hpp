@@ -28,9 +28,9 @@ namespace Facts
   
     i8     m_iFactNo; // unique number (synonym of this facts address)
     s32    m_sFactNm; // name of fact
+    Fact*  m_pSubclassOf; // subclass of which fact      (super)
     Value  m_xValue;  // some value
-    
-    Fact*  m_pSubclassOf;   // subclass of which fact      (super)
+  
     Fact*  m_pAttributeOf;  // attribute of which fact     (across/column)
     Fact*  m_pElementOf;    // element of which fact set   (down/row)
  

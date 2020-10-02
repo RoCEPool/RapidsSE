@@ -422,10 +422,15 @@ void Method::vTQ_OUTPUT_STREAMDEF(Fact** ppTransform)
     
     vDebugPoint();
     
-    Fact* pClonedProject = pProject->pClone();
+    //Fact* pClonedProject = pProject->pClone();
+    //pStreamDefOut->vElementAppend(pClonedProject);
 
-    pStreamDefOut->vElementAppend(pClonedProject);
-
+    Fact* pColumn = m_pKbase->pElementInstance(pStreamDefOut,"_column_"_Stz);
+    
+    Fact* pProjectNm = pProject->pAttributeFindNm("projectNm"_Stz);
+    
+    m_pKbase->vAttributeInstance(pColumn,"_columnNm_"_Stz,
+                                 pProjectNm->szText());
   }
   
   delete pQouter;
