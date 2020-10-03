@@ -47,6 +47,9 @@ namespace Prompt
     // some debugging aids
     i8  d_iDebugMode; // debug mode?
   
+    // temp for demo
+    TokenVec* m_pLitTknVec;  // literal token vector for demo
+    
     // must be last
     Footer m_xFooter;
   

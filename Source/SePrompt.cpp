@@ -99,6 +99,8 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   d_iDebugMode = gxArgs.m_iPromptDebug;
   m_pInput->vDebugMode(d_iDebugMode);
   
+  m_pLitTknVec = new TokenVec;
+  
   _checkInitialised_(CN_SEPROMPT);
   
   vInitialSettings();
@@ -117,6 +119,9 @@ SePrompt::~SePrompt(void) noexcept(false)
   delete m_pBPA;
   delete m_pObjectsInPool;
   delete m_pSnapshotObjects;
+  
+  m_pLitTknVec->vSoftReset();
+  delete m_pLitTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -415,18 +420,51 @@ void SePrompt::vDemo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   Token* pTkn = m_pInpTknVec->pGet(0);
+  m_pLitTknVec->vSoftReset();
   
   // extract literals from the token vec
   if (pTkn->bSame("demo"_Stz)) {
     
+    i8 iHash = 0;
+    i8 nSize;
+    
     // calculate hash of statement and extract literals
+    for (i8 i_Tkn = 1; i_Tkn < m_pInpTknVec->nTokens(); i_Tkn++) {
+      
+      pTkn = m_pInpTknVec->pGet(i_Tkn);
+      
+      if ( pTkn->bIsNumeric()) {
+        m_pLitTknVec->vAppendToken(pTkn);
+        continue;
+      }
+   
+      if ( pTkn->bIsString()) {
+        m_pLitTknVec->vAppendToken(pTkn);
+        continue;
+      }
     
-    // extract the literals from the statemt
+      nSize = StrLib::nLength(pTkn->azChars());
+      StrLib::vToLower(pTkn->azChars());
+      iHash += HshLib::iHash((byte*)pTkn->azChars(),nSize);
+    }
+    vTrace("Tokenising Query4\n"_Stz);
+    m_pLitTknVec->vDumpVec(0);
     
-    // tokenise the query
     m_pInpTknVec->vSoftReset();
-    m_pInpTknVec->vTokeniseC(C_Query4);
-    m_pInpTknVec->vIntegrityCheck();
+    
+    switch (iHash) {
+        
+      case 94327648447:
+        // tokenise query4
+        m_pInpTknVec->vTokeniseC(C_Query4);
+        m_pInpTknVec->vIntegrityCheck();
+        break;
+        
+      default:
+        RASSERT(0);
+    }
+    
+    
   }
   
 }

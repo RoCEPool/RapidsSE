@@ -2,6 +2,43 @@
 /* _AsmQueries - TPCH queries 1,3,6 (ASM)                                     */
 /*============================================================================*/
 
+/*
+demo select
+  o_orderpriority,
+  count(*) as order_count from
+  orders where
+  o_orderdate > "1993-07-01"
+  and o_orderdate < "1993-10-01" and exists (
+    select
+      *
+    from
+     lineitem
+    where
+     l_orderkey = o_orderkey
+    and l_commitdate < l_receiptdate
+  ) group by
+  o_orderpriority order by
+  o_orderpriority;
+
+demo select
+  o_orderpriority,
+  count(*) as order_count from
+  orders where
+  o_orderdate > "1993-07-01"
+  and o_orderdate < "1993-10-01" and exists (
+    select
+      *
+    from
+      lineitem
+    where
+      l_orderkey = o_orderkey
+    and l_commitdate < l_receiptdate
+  ) group by
+  o_orderpriority order by
+  O_ORDERPRIORITY;
+
+*/
+
 print "Starting cluster..." ;
 
 bc;
@@ -30,7 +67,7 @@ create index Orders_Idx1 ON Orders(O_CUSTKEY);
 create index Orders_Idx2 ON Orders(O_ORDERKEY);
 
 print "load of Orders...";
-/time load Orders "/DATA/TPCH/orders10.csv";
+/time fload Orders "/DATA/TPCH/orders_10k.csv";
 ///time fload Orders "/TPCH/SF10/orders.tbl";
 compactIdx Orders Orders_Idx1;
 //tableScan Orders;
@@ -60,7 +97,7 @@ create table LineItem                      // SF * 6,000,000 rows
 );
 create index lineitem_idx1 on lineitem (l_shipdate);
 create index lineitem_idx2 on lineitem (l_orderkey);
-/time fload lineitem "/DATA/TPCH/lineitem10.csv";
+/time fload lineitem "/DATA/TPCH/lineitem_100k.csv";
 ///time fload lineitem "/TPCH/SF10/lineitem.tbl";
 compactIdx LineItem lineItem_Idx1;
 compactIdx LineItem lineItem_Idx2;
@@ -77,7 +114,7 @@ compactIdx LineItem lineItem_Idx2;
 
 print "*****************************************************************";
 ///time Query4_ASM_I "../EO_text/QRY_400.txt" "../EO_text/QRY_401.txt" "../EO_text/QRY_402.txt";
-/time Query4_ASM "../EO_text/QRY_400.txt" "../EO_text/QRY_401.txt" "../EO_text/QRY_402.txt";
+///time Query4_ASM "../EO_text/QRY_400.txt" "../EO_text/QRY_401.txt" "../EO_text/QRY_402.txt";
 /*
  [-1] '1-URGENT',65,#0
  [-1] '2-HIGH',59,#0
