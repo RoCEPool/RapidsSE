@@ -13,6 +13,8 @@ namespace Prompt
   static Stz* C_PMT_TKNDUMP  = "<dumpTokens>"_Stz;
   static Stz* C_PMT_TRCFILE  = "<traceFile>"_Stz;
 
+  static Stz* C_Query4 = "/time Query4_ASM \"../EO_text/QRY_400.txt\" \"../EO_text/QRY_401.txt\" \"../EO_text/QRY_402.txt\""_Stz;
+  
   class SePrompt : public Focal
   {
   private:
@@ -63,6 +65,7 @@ namespace Prompt
     bool bBlankLine(void);
     BPA* pBPA(void);
     void vDebugMode(i8 iDebugMode);
+    void vDemo(void);
     void vDivision(Stz* szDivision);
     i8   iDivisionNo(void);
     bool bContinue(void);

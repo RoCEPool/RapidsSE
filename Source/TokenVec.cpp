@@ -910,6 +910,33 @@ void TokenVec::vTokenise(Stz* szTokenStr)
   delete pInput;
 }
 
+/*----------------------------------------------------------------------------*/
+/* tokenise given string into this token vector                               */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vTokeniseC(Stz* szTokenStr)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  vSoftReset();
+  vIntegrityCheck();
+  
+  Input* pInput = new Input;
+  pInput->vUseString(szTokenStr);
+  pInput->vFormCppTokens();
+  pInput->vUseBegin();
+  
+  for (i8 i_Token = 0; ; i_Token++) {
+    
+    pInput->vReadToken();
+    if (TN_NULL == pInput->eToken())
+      break;
+    
+    vAppendToken(pInput->szChars(),pInput->eToken());
+  }
+  
+  pInput->vUseEnd();
+  delete pInput;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get number of tokens                                                       */

@@ -199,6 +199,9 @@ void SePrompt::vPromptLoop(void)
     if (bShortCut())
       continue;
     
+    // handle demo statement
+    vDemo();
+    
     while (bSubSsnTags())
       {;}
 
@@ -402,6 +405,30 @@ void SePrompt::vDebugMode(i8 iDebugMode)
     m_pInput->vDebugMode(d_iDebugMode);
   else
     m_pInput->vDebugMode(0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* demo?                                                                      */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDemo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Token* pTkn = m_pInpTknVec->pGet(0);
+  
+  // extract literals from the token vec
+  if (pTkn->bSame("demo"_Stz)) {
+    
+    // calculate hash of statement and extract literals
+    
+    // extract the literals from the statemt
+    
+    // tokenise the query
+    m_pInpTknVec->vSoftReset();
+    m_pInpTknVec->vTokeniseC(C_Query4);
+    m_pInpTknVec->vIntegrityCheck();
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
