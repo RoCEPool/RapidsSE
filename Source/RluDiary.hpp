@@ -45,7 +45,7 @@ namespace Expressions
                   i8 iAction, i8 i_ActEnumGroup, i8 i_ActEnum
                   );
 
-    void vReport(Stz* szFilePath);
+    void vReportDiary(Stz* szFilePath);
     
   private:
     Footer* aFooter(void);

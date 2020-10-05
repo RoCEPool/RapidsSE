@@ -789,7 +789,7 @@ void LogicUnit::vDiaryReport(void)
                      m_xRluCommon.m_i_Slot
                      );
   
-  m_pRluDiary->vReport(sDiaryPath);
+  m_pRluDiary->vReportDiary(sDiaryPath);
   
 }
 

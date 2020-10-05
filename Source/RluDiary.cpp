@@ -115,7 +115,7 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_Slot,
 /*----------------------------------------------------------------------------*/
 /* write out                                                                  */
 /*----------------------------------------------------------------------------*/
-void RluDiary::vReport(Stz *szFilePath)
+void RluDiary::vReportDiary(Stz *szFilePath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
 
