@@ -18,16 +18,6 @@
     // pipeout the (StartMarker)
     PipeIn[].pipeOut
 
-  else
-    
-    // delete the (StartMarker)
-    PipeIn[].delete
-
-    // pipeout (ErrorMarker)
-    EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
-    Operand[].newErrorMarker
-    Operand[].pipeOut
-
   then
 
   true
