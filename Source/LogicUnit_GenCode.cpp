@@ -112,13 +112,13 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
             iArg = m_pTkn->iToI8();
           }
           else {
-            if (0 == StrLib::iCompare(m_pTkn->azChars(),"CT_", 2,  C_CASE)) {
+            if (0 == StrLib::iCompare(m_pTkn->azChars(),"CT_", 3,  C_CASE)) {
               for(iArg = 0; iArg < CT_ENUMS; iArg++) {
                 if (StrLib::bEqualTo(m_pTkn->azChars()+3,(char*)aCT[iArg]))
                   break;
               }
             }
-            else if (0 == StrLib::iCompare(m_pTkn->azChars(),"ZK_", 2,  C_CASE)) {
+            else if (0 == StrLib::iCompare(m_pTkn->azChars(),"ZK_", 3,  C_CASE)) {
               for(iArg = 0; iArg < ZK_ENUMS; iArg++) {
                 if (StrLib::bEqualTo(m_pTkn->azChars(),(char*)aZK[iArg]))
                   break;
