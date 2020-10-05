@@ -1071,11 +1071,12 @@ void SePrompt::vReportTime(void)
     Stz* szNote = m_pJob->pJobTags()->szValue(C_TAG_NOTE);
     
     Now spNow;
-    vTrace("[%s %lldN%lldP%lldT %s] "_Stz,
+    vTrace("[%s %lldN%lldP%lldT %s %s] "_Stz,
            szNote,
            AM::nDefinedNodes(),
            AM::nSlotsPerNode(),
            AM::nThreads(),
+           AM::szBuild(),
            spNow.sz()
            );
   }
