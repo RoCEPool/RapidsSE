@@ -45,6 +45,7 @@ static Stz* C_TAG_LIFE      = "<life>"_Stz;
 static Stz* C_TAG_NEXTOP    = "<nextOp>"_Stz;
 static Stz* C_TAG_NEXTSTAGE = "<nextStage>"_Stz;
 static Stz* C_TAG_NODE      = "<node>"_Stz;
+static Stz* C_TAG_NOTE      = "<note>"_Stz;
 static Stz* C_TAG_ORIGIN    = "<origin>"_Stz;
 static Stz* C_TAG_PATH      = "<path>"_Stz;
 static Stz* C_TAG_REQUEST   = "<request>"_Stz;

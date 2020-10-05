@@ -16,7 +16,7 @@ print section "Load LineItem";
 
 // /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv"    <max_errors> =  100;
 // /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv"   <max_errors> =  100;
-/time /summary fload lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv" <max_errors> =  100;
+/time /summary fload lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv" <note> = "10k" <max_errors> =  100;
 // /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <max_errors> =  100;
 // /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1m.csv" <max_errors> =  100;
 // /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv"      <max_errors> =  100;
@@ -37,4 +37,5 @@ intial timing of fload : 6 Oct 2020 for SF10 1N8P on Ray's machine
  
 time 20208ms
 
+[10k 1N8P48T 2020-10-06 08:04:09] time 7129ms
 */
