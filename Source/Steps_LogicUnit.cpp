@@ -16,7 +16,8 @@ void Step::vAddSteps_LogicUnit(void)
   
   vAddStep("LogicUnit[].diaryAction"_Stz,   &Step::vLogicUnitDiaryAction);
   vAddStep("LogicUnit[].diaryNote"_Stz,     &Step::vLogicUnitDiaryNote);
-  
+  vAddStep("LogicUnit[].diaryTitle"_Stz,    &Step::vLogicUnitDiaryTitle);
+
   vAddStep("LogicUnit[].dynFun"_Stz,        &Step::vLogicUnitDynFun);
   vAddStep("LogicUnit[].dynFunArgs"_Stz,    &Step::vLogicUnitDynFunArgs);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
@@ -111,6 +112,21 @@ void Step::vLogicUnitDiaryNote(void)
   
   m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,0,0,0);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].diaryTitle -- set diary title                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitDiaryTitle(void)
+{
+  ENTRY();
+  
+  s256 sTitle;
+  m_pDataStack->vPopStr(sTitle, __func__);
+
+  m_pLogicUnit->vDiaryTitle(sTitle);
+
   EXIT();
 }
 

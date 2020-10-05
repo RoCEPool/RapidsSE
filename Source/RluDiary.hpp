@@ -27,6 +27,8 @@ namespace Expressions
   
     i8 m_nDiaryEnt;
   
+    s256 m_sTitle;
+  
     RluDiaryEnt m_xaDiaryEnt[C_DIARY_ENTRIES];
   
     // must be last
@@ -46,6 +48,9 @@ namespace Expressions
                   );
 
     void vReportDiary(Stz* szFilePath);
+  
+    Stz* szTitle(void);
+    void vTitle(Stz* szTitle);
     
   private:
     Footer* aFooter(void);

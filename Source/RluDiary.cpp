@@ -23,6 +23,8 @@ RluDiary::RluDiary(void)
   
   m_nDiaryEnt = 0;
   
+  m_sTitle = "Diary Report"_Stz;
+  
   MemLib::vZero(&m_xaDiaryEnt,sizeof(m_xaDiaryEnt),CN_RLUDIARY);
 
   _checkInitialised_(CN_RLUDIARY);
@@ -123,6 +125,8 @@ void RluDiary::vReportDiary(Stz *szFilePath)
   
   pFile->bOpenMode(szFilePath,C_OPEN_WRITE);
   
+  pFile->vPrint("%s\n"_Stz,m_sTitle.azChar());
+  
   for (i8 i_Ent = 0; i_Ent < m_nDiaryEnt; i_Ent++) {
     
     if (m_xaDiaryEnt[i_Ent].m_iAction)
@@ -162,6 +166,26 @@ void RluDiary::vReportDiary(Stz *szFilePath)
 
   pFile->vClose();
   delete pFile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* title                                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* RluDiary::szTitle(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
+  
+  return m_sTitle;
+}
+
+/*----------------------------------------------------------------------------*/
+/* title                                                                      */
+/*----------------------------------------------------------------------------*/
+void RluDiary::vTitle(Stz* szTitle)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
+  
+  m_sTitle = szTitle;
 }
 
 /*============================================================================*/

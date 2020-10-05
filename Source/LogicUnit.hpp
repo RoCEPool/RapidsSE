@@ -181,6 +181,7 @@ namespace Expressions
     i8   iCodeArg(i8 i_Code);
     void vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
                     i2 iAction, i2 i_ActEnumGroup, i2 i_ActEnum);
+    void vDiaryTitle(Stz* szTitle);
     i8   iDynFun(i8 nOuterArgs, i8 iOuterArg0);
     void vEndOptimise(void);
     void vEnter(void);

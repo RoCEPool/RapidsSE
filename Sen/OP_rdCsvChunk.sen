@@ -77,6 +77,8 @@
 
   LogReqEntry SEED_REQ
 
+  "rdCsvChunk" LogicUnit[].diaryTitle
+
   op__topology
 
   find: rdCsvChunk_ExitMarker    ZK_EXITMARKER    op[].handler!
