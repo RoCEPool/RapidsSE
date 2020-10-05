@@ -29,6 +29,7 @@ void vDev_IXT_DEL_ENT(void* aLU, void* aIXT);
 void vDev_IXT_DUMP(void* aLU, void* aIXT);
 void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT);
 void vDev_IXT_INDEXNM_SET(void* aLU, void* aIXT, Stz* szIndexNm);
+void vDev_IXT_INDEXTREE_DELETE(void* aLU, void* aIXT);
 void vDev_IXT_INDEXTREE_SET(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT);
 i8   iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT);

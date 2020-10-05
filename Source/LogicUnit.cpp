@@ -1364,7 +1364,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_INDEXTREE_SRC_SET);
         vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevSrcIxt);
         break;//+endCase
-      
+        
+      case EO_INDEXTREE_TMP_DELETE: ArgNil(); // delete indexTree from tmp
+        dLU0(EO_INDEXTREE_TMP_DELETE);
+        vDev_IXT_INDEXTREE_DELETE(pLU,aRluCommon->m_pDevTmpIxt);
+        break;//+endCase
+        
       case EO_INDEXTREE_TMP_SET: ArgNil(); // set indexTree tmp from indexTree[]
         dLU0(EO_INDEXTREE_TMP_SET);
         vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevTmpIxt);

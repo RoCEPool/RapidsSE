@@ -447,6 +447,20 @@ Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete the indexTree from the dev                                          */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_INDEXTREE_DELETE(void* aLU, void* aIXT)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  IndexTree* pIndexTree = pDevIxt->m_pIdxTree;
+  pDevIxt->m_pIdxTree = nullptr;
+  delete pIndexTree;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the indexTree[] in the dev                                             */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_INDEXTREE_SET(void* aLU, void* aIXT)
@@ -456,6 +470,7 @@ void vDev_IXT_INDEXTREE_SET(void* aLU, void* aIXT)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   pDevIxt->m_pIdxTree = * pLogicUnit->m_xpIndexTree;
+  pLogicUnit->m_xpIndexTree = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
