@@ -455,12 +455,17 @@ void SePrompt::vDemo(void)
     
     switch (iHash) {
         
+      // Query 1
+      case 203768880708:
+        m_pInpTknVec->vTokeniseC(C_Query1);
+        m_pInpTknVec->vIntegrityCheck();
+        break;
+       
+      // Query 4
       case 94327648447:
-        // tokenise query4
         m_pInpTknVec->vTokeniseC(C_Query4);
         m_pInpTknVec->vIntegrityCheck();
         break;
-        
       default:
         RASSERT(0);
     }

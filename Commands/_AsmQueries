@@ -20,23 +20,22 @@
   o_orderpriority order by
   o_orderpriority;
 
-demo select
-  o_orderpriority,
-  count(*) as order_count from
-    orders where
-  o_orderdate > "1993-07-01"
-  and o_orderdate < "1993-10-01" and exists (
-    select
-      *
-    from
-      lineitem
-    where
-      l_orderkey = o_orderkey
-    and l_commitdate < l_receiptdate
-  ) group by
-  o_orderpriority order by
-  O_ORDERPRIORITY;
-
+ demo select
+ l_returnflag,
+ l_linestatus,
+ sum(l_quantity) as sum_qty,
+ sum(l_extendedprice) as sum_base_price, sum(l_extendedprice*(1-l_discount)) as sum_disc_price, sum(l_extendedprice*(1-l_discount)*(1+l_tax)) as sum_charge, avg(l_quantity) as avg_qty,
+ avg(l_extendedprice) as avg_price,
+ avg(l_discount) as avg_disc,
+ count(*) as count_order
+ from
+ lineitem
+ where
+ l_shipdate <= date "1998-09-01"
+ group by l_returnflag,
+ l_linestatus order by
+ l_returnflag, l_linestatus;
+ 
 */
 
 print "Starting cluster..." ;
@@ -51,12 +50,12 @@ print "Cluster started" ;
 
 print "creating Customer...";
 
-//_customer
-//create index Customer_Idx1 ON Customer(C_CUSTKEY);
+_customer
+create index Customer_Idx1 ON Customer(C_CUSTKEY);
 
 //print "load of Customer...";
 ///time fload Customer "/DATA/TPCH/customer_10k.csv";
-///time fload Customer "/TPCH/SF1/customer.tbl";
+/time fload Customer "/TPCH/SF1/customer.tbl";
 //compactIdx Customer Customer_Idx1;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -104,13 +103,30 @@ compactIdx LineItem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ///print "*****************************************************************";
-///time Query1_ASM_I lineitem "../EO_text/QRY_100.txt" "../EO_text/QRY_103.txt" ;
+///time Query1_ASM_I lineitem "../EO_text/QRY_100.txt" "../EO_text/QRY_102.txt" ;
+
+demo select
+    l_returnflag,
+    l_linestatus,
+    sum(l_quantity) as sum_qty,
+    sum(l_extendedprice) as sum_base_price, sum(l_extendedprice*l_discount) as sum_disc_price, sum(l_extendedprice*l_discount*l_tax) as sum_charge, avg(l_quantity) as avg_qty,
+    avg(l_extendedprice) as avg_price,
+    avg(l_discount) as avg_disc,
+    count(*) as count_order
+  from
+   lineitem
+  where
+    l_shipdate < date "1998-09-01"
+    group by l_returnflag,
+    l_linestatus order by
+    l_returnflag, l_linestatus;
+
 
 //print "*****************************************************************";
-///time Query3_ASM_I "../EO_text/QRY_300.txt" "../EO_text/QRY_301.txt" "../EO_text/QRY_302.txt";
+/time Query3_ASM_I "../EO_text/QRY_300.txt" "../EO_text/QRY_301.txt" "../EO_text/QRY_302.txt";
 
 //print "*****************************************************************";
-///time Query6_ASM_I "../EO_text/QRY_600.txt" "../EO_text/QRY_601.txt" ;
+/time Query6_ASM_I "../EO_text/QRY_600.txt" "../EO_text/QRY_601.txt" ;
 
 print "*****************************************************************";
 ///time Query4_ASM_I "../EO_text/QRY_400.txt" "../EO_text/QRY_401.txt" "../EO_text/QRY_402.txt";

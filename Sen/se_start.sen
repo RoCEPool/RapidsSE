@@ -1167,13 +1167,20 @@
   end ;
   "
   api::addProcedure
+;
 
+/*----------------------------------------------------------------------------*/
+/* define procedures (TPCH ASM Compiled)                                      */
+/*----------------------------------------------------------------------------*/
+: start::defineProc_TPCH_ASM
+
+"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 1 - iterating index on l_shipdate
+  // Query 1 - compiled
   sPath
   "
-  procedure Query1_ASM_I
+  procedure Query1_ASM
     parameters $Table $QueryText_stageB $QueryText_stageC
   begin
 
@@ -1184,12 +1191,11 @@
 
   stage stageB on all partitions :
     scan $Table
-    | EOAsm $QueryText_stageB 0
-    //| sql 101
+    | EOAsm $QueryText_stageB 1
     | stageC
 
   stage stageC on origin :
-    EOAsm $QueryText_stageC 0
+    EOAsm $QueryText_stageC 1
     | output
     //| toStatDemon
     | sink
@@ -1199,9 +1205,163 @@
   "
   api::addProcedure
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 3 -- compiled
+  sPath
+  "
+  procedure Query3_ASM
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 1
+    | stageC hashed
+
+  stage stageC on all partitions :
+    EOAsm $QueryText_stageC 1
+    | stageD
+
+  stage stageD on origin :
+    EOAsm $QueryText_stageD 1
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 3
+  // Query 4 -- compiled
+  sPath
+  "
+  procedure Query4_ASM
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 1
+    | stageC hashed
+
+  stage stageC on all partitions :
+    EOAsm $QueryText_stageC 1
+    | stageD
+
+  stage stageD on origin :
+    EOAsm $QueryText_stageD 1
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 4 -- compiled
+  sPath
+  "
+  procedure Query4_ASM
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 1
+    | stageC hashed
+
+  stage stageC on all partitions :
+    EOAsm $QueryText_stageC 1
+    | stageD
+
+  stage stageD on origin :
+    EOAsm $QueryText_stageD 1
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 6 - compiled
+  sPath
+  "
+  procedure Query6_ASM
+    parameters $QueryText_stageB $QueryText_stageC
+  begin
+
+  stage stageA on origin :
+    start
+    | periodicOp once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 1
+    | stageC
+
+  stage stageC on origin :
+    EOAsm $QueryText_stageC 1
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures (TPCH ASM Interpretive)                                  */
+/*----------------------------------------------------------------------------*/
+: start::defineProc_TPCH_ASM_I
+
+"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 1 - interpretive
+  sPath
+  "
+  procedure Query1_ASM_I
+  parameters $Table $QueryText_stageB $QueryText_stageC
+  begin
+
+  stage stageA on origin :
+  start
+  | periodicOp once
+  | stageB
+
+  stage stageB on all partitions :
+  scan $Table
+  | EOAsm $QueryText_stageB 0
+  | stageC
+
+  stage stageC on origin :
+  EOAsm $QueryText_stageC 0
+  | output
+  //| toStatDemon
+  | sink
+  | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 3 -- interpretive
   sPath
   "
   procedure Query3_ASM_I
@@ -1231,7 +1391,7 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 4
+  // Query 4 -- interpretive
   sPath
   "
   procedure Query4_ASM_I
@@ -1248,8 +1408,8 @@
     | stageC hashed
 
   stage stageC on all partitions :
-   EOAsm $QueryText_stageC 0
-   | stageD
+    EOAsm $QueryText_stageC 0
+    | stageD
 
   stage stageD on origin :
     EOAsm $QueryText_stageD 0
@@ -1261,37 +1421,37 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 4
+  // Query 4 -- interpretive
   sPath
   "
   procedure Query4_ASM
-  parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
   begin
 
   stage stageA on origin :
-  start
-  | periodicOp once
-  | stageB
+    start
+    | periodicOp once
+    | stageB
 
   stage stageB on all partitions :
-  EOAsm $QueryText_stageB 1
-  | stageC hashed
+    EOAsm $QueryText_stageB 0
+    | stageC hashed
 
   stage stageC on all partitions :
-  EOAsm $QueryText_stageC 1
-  | stageD
+    EOAsm $QueryText_stageC 0
+    | stageD
 
   stage stageD on origin :
-  EOAsm $QueryText_stageD 1
-  | output
-  | sink
-  | stageA
+    EOAsm $QueryText_stageD 0
+    | output
+    | sink
+    | stageA
 
   end ;  "
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 6 - converting loaded CRW data into RSB
+  // Query 6 - interpretive
   sPath
   "
   procedure Query6_ASM_I
@@ -1317,6 +1477,7 @@
   end ;
   "
   api::addProcedure
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -1698,6 +1859,8 @@
   start::defineProc_Query
   start::defineProc_DynCompiler
   start::defineProc_TPCH
+  start::defineProc_TPCH_ASM
+  start::defineProc_TPCH_ASM_I
   start::defineProc_Planner
 
   // define the apriori system tables
