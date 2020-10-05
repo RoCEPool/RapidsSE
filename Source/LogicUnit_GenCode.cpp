@@ -72,7 +72,7 @@ void LogicUnit::vBeginToken(i8 i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* set token on which parsing begins                                          */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vCollectOpcode(void)
+void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -90,6 +90,14 @@ void LogicUnit::vCollectOpcode(void)
           
         case EA_DATE:
           vAcceptToken();
+          if (0 == StrLib::iCompare(m_pTkn->azChars(),"PARAM", 5,  C_CASE)) {
+            // extract the param no
+            i8 iParam;
+            i8 nDigits;
+            char* pParam = m_pTkn->azChars()+5;
+            StrLib::bExtractInteger(&pParam, &iParam, nDigits);
+            vTrace("Got Param %lld\n"_Stz, iParam);
+          }
           vAddCodeArg((eEO)i_OpCode, m_pTkn->szChars());
           return;
           
@@ -113,6 +121,14 @@ void LogicUnit::vCollectOpcode(void)
                   break;
               }
             }
+            else if (0 == StrLib::iCompare(m_pTkn->azChars(),"PARAM", 5,  C_CASE)) {
+              // extract the param no
+              i8 iParam;
+              i8 nDigits;
+              char* pParam = m_pTkn->azChars()+5;
+              StrLib::bExtractInteger(&pParam, &iParam, nDigits);
+              vTrace("Got Param %lld\n"_Stz, iParam);
+            }
             else {
               vTrace("\n*** Invalid integer argument to opCode %s ***\n"_Stz, m_pTkn->szChars());
             }
@@ -129,6 +145,14 @@ void LogicUnit::vCollectOpcode(void)
           
         case EA_STRING:
           vAcceptToken();
+          if (0 == StrLib::iCompare(m_pTkn->azChars(),"PARAM", 5,  C_CASE)) {
+            // extract the param no
+            i8 iParam;
+            i8 nDigits;
+            char* pParam = m_pTkn->azChars()+5;
+            StrLib::bExtractInteger(&pParam, &iParam, nDigits);
+            vTrace("Got Param %lld\n"_Stz, iParam);
+          }
           vAddCodeString((eEO)i_OpCode, m_pTkn->szChars());
           return;
           
@@ -157,7 +181,7 @@ void LogicUnit::vCollectOpcode(void)
 /*----------------------------------------------------------------------------*/
 /* generate asm code for given text                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAsm(Stz* aText)
+void LogicUnit::vGenerateAsm(Stz* aText, TokenVec* pLitTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -190,7 +214,7 @@ void LogicUnit::vGenerateAsm(Stz* aText)
   
   while (m_i_Tkn <  nTokens - 1) {
     vAcceptToken();
-    vCollectOpcode();
+    vCollectOpcode(pLitTknVec);
   }
   
   m_pTknVec->vSetAllTokens();

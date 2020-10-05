@@ -165,8 +165,9 @@ void Step::vLogicUnitGenAsm(void)
   i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
   
   //vTrace("FILE %s\n"_Stz, sFileName.azChar());
-  
-  m_pLogicUnit->vGenerateAsm(sText);
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Job* pPipelineJob = pOp->pPipeline()->pJob();
+  m_pLogicUnit->vGenerateAsm(sText, pPipelineJob->m_pLitTknVec);
   
   EXIT();
 }
