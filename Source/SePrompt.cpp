@@ -275,6 +275,7 @@ void SePrompt::vPromptLoop(void)
     
     eEC eError = Api::eJob_1_PreJob(&m_pJob,
                                     m_pInpTknVec,
+                                    m_pLitTknVec,
                                    &m_oExtTagSet,
                                    &m_xReqTuple);
     

@@ -125,6 +125,8 @@ Job::Job(eCN eClassNo)
   //m_xResult
   // -- -- -- -- -- --
   
+  m_pLitTknVec = nullptr;
+  
   SP_Gid spId;
   
   vIncStepNo(); ++ gixJob;
@@ -138,7 +140,7 @@ Job::Job(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(ReqTuple* aReqTuple)
+Job::Job(ReqTuple* aReqTuple, TokenVec* pLitTknVec)
 : Focal(CN_JOB,AM::iNextJobId(),aReqTuple->m_iForId)
 , m_xReqTuple(aReqTuple)
 , CRM<Job>(this)
@@ -174,6 +176,8 @@ Job::Job(ReqTuple* aReqTuple)
     
   //m_xResult
   // -- -- -- -- -- --
+  
+  m_pLitTknVec = pLitTknVec;
   
   SP_Gid spId;
   

@@ -57,6 +57,7 @@ void Api::vFreeSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 eEC Api::eJob_1_PreJob(Job**     ppJob,
                        TokenVec* pCmdTknVec,
+                       TokenVec* pLitTknVec,
                        TagSet*   pTagSet,
                        ReqTuple* axReqTuple)
 {
@@ -92,8 +93,12 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   if (! Api::bPassesLowMem())
     return EC_LOW_MEMORY;
   
-
-  Job* pJob = new Job(axReqTuple);
+  Job* pJob;
+  if (pLitTknVec)
+    pJob = new Job(axReqTuple, pLitTknVec);
+  else
+    pJob = new Job(axReqTuple);
+  
   pJob->ePopulateJob(pTagSet);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

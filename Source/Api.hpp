@@ -16,6 +16,7 @@ namespace Interface
 
   static eEC  eJob_1_PreJob(Job**     ppJob,
                             TokenVec* pCmdTknVec,
+                            TokenVec* pLitTknVec,
                             TagSet*   pTagSet,
                             ReqTuple* axReqTuple);
   static void vJob_2_SpawnJob_prompt(Job* pJob, bool bMustBeLocked=true);
