@@ -121,12 +121,14 @@ void RluDiary::vReportDiary(Stz *szFilePath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
 
-   File* pFile = new File(nullptr);
+  File* pFile = new File(nullptr);
   
   pFile->bOpenMode(szFilePath,C_OPEN_WRITE);
   
-  pFile->vPrint("%s\n"_Stz,m_sTitle.azChar());
+  s256 sSummary;
   
+  pFile->vPrint("%s [%s]\n"_Stz,m_sTitle.azChar(),AM::szSummary(sSummary));
+
   for (i8 i_Ent = 0; i_Ent < m_nDiaryEnt; i_Ent++) {
     
     if (m_xaDiaryEnt[i_Ent].m_iAction)

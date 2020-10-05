@@ -670,6 +670,24 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
 }
 
 /*----------------------------------------------------------------------------*/
+/* quick config summary                                                       */
+/*----------------------------------------------------------------------------*/
+Stz* AM::szSummary(s256& sSummary)
+{
+  Now spNow;
+  
+  sSummary.vSprint("%lldN%lldP%lldT %s %s"_Stz,
+                   AM::nDefinedNodes(),
+                   AM::nSlotsPerNode(),
+                   AM::nThreads(),
+                   AM::szBuild(),
+                   spNow.sz()
+                   );
+  
+  return sSummary.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)

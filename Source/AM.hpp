@@ -289,7 +289,8 @@ namespace Oblique
     static void vSpawnJob_received(Job* pJob);
     static void vSpawnJob_service(Job* pJob);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
-  
+    static Stz* szSummary(s256& sSummary);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static Table* pTableFind(Stz* szTableNm);
