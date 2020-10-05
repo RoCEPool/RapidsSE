@@ -610,7 +610,7 @@ bool SePrompt::bExecuteFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract leading job control tags (such as time or /nowait)                 */
+/* extract leading job control tags (such as /time or /nowait)                */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vExtractCtlTags(void)
 {
@@ -1065,6 +1065,16 @@ void SePrompt::vReportTime(void)
   
   if (! m_pJob->bTimeTag())
     return;
+  
+  if (m_pJob->bSummaryTag()) {
+    Now spNow;
+    vTrace("[ %lldN%lldP%lldT %s] "_Stz,
+           AM::nDefinedNodes(),
+           AM::nSlotsPerNode(),
+           AM::nThreads(),
+           spNow.sz()
+           );
+  }
   
   vTrace("time %lldms\n"_Stz,m_oTimer.iMilliseconds());
 }

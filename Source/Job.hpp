@@ -140,6 +140,7 @@ namespace Jobs
     void vShow(void);
     i8   i_Slot(void);
     void vSlot(i8 i_Slot);
+    bool bSummaryTag(void);
     Task* pTask(void);
     void vTask(Task* pTask);
     void vTimerStart(void);
