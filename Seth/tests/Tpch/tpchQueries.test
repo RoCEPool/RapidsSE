@@ -11,18 +11,18 @@ rows:
  ('R','F',37719753.00,56568041380.90,53741286634.36,55889611947.82,25.50,38250.85,0.05,1478870)
  
 // Query 6
-Query6 lineitem lineitem_idx1;
+Query6 lineitem lineitem_idx2;
 unordered rows:
 ( 75207429.08 )
 
 // Query 4
 Query_4b;
 ordered rows:
-  ('1-URGENT',5)
-  ('2-HIGH',4)
-  ('3-MEDIUM',3)
-  ('4-NOT SPECIFIED',4)
-  ('5-LOW',4)
+  ('1-URGENT',10594)
+  ('2-HIGH',10476)
+  ('3-MEDIUM',10410)
+  ('4-NOT SPECIFIED',10556)
+  ('5-LOW',10487)
 
 // drop the orders table
 drop table Orders;
