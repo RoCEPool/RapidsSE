@@ -461,11 +461,18 @@ void SePrompt::vDemo(void)
         m_pInpTknVec->vIntegrityCheck();
         break;
        
+      // Query 3
+      case 126509825900:
+        m_pInpTknVec->vTokeniseC(C_Query3);
+        m_pInpTknVec->vIntegrityCheck();
+        break;
+        
       // Query 4
       case 94327648447:
         m_pInpTknVec->vTokeniseC(C_Query4);
         m_pInpTknVec->vIntegrityCheck();
         break;
+        
       default:
         RASSERT(0);
     }

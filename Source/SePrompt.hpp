@@ -15,6 +15,8 @@ namespace Prompt
 
   static Stz* C_Query1 = "/time Query1_ASM lineitem \"../EO_text/QRY_100.txt\" \"../EO_text/QRY_102.txt\""_Stz;
   
+  static Stz* C_Query3 = "/time Query3_ASM \"../EO_text/QRY_300.txt\" \"../EO_text/QRY_301.txt\" \"../EO_text/QRY_302.txt\""_Stz;
+  
   static Stz* C_Query4 = "/time Query4_ASM \"../EO_text/QRY_400.txt\" \"../EO_text/QRY_401.txt\" \"../EO_text/QRY_402.txt\""_Stz;
   
   class SePrompt : public Focal
