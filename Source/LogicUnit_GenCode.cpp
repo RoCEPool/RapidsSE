@@ -97,8 +97,11 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
             char* pParam = m_pTkn->azChars()+5;
             StrLib::bExtractInteger(&pParam, &iParam, nDigits);
             vTrace("Got Param %lld\n"_Stz, iParam);
+            Token* pTkn = pLitTknVec->pGet(iParam);
+            vAddCodeArg((eEO)i_OpCode, pTkn->szChars());
           }
-          vAddCodeArg((eEO)i_OpCode, m_pTkn->szChars());
+          else
+            vAddCodeArg((eEO)i_OpCode, m_pTkn->szChars());
           return;
           
         case EA_INT: {
@@ -128,6 +131,8 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
               char* pParam = m_pTkn->azChars()+5;
               StrLib::bExtractInteger(&pParam, &iParam, nDigits);
               vTrace("Got Param %lld\n"_Stz, iParam);
+              Token* pTkn = pLitTknVec->pGet(iParam);
+              iArg = pTkn->iToI8();
             }
             else {
               vTrace("\n*** Invalid integer argument to opCode %s ***\n"_Stz, m_pTkn->szChars());
@@ -152,8 +157,11 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
             char* pParam = m_pTkn->azChars()+5;
             StrLib::bExtractInteger(&pParam, &iParam, nDigits);
             vTrace("Got Param %lld\n"_Stz, iParam);
+            Token* pTkn = pLitTknVec->pGet(iParam);
+            vAddCodeString((eEO)i_OpCode, pTkn->szChars());
           }
-          vAddCodeString((eEO)i_OpCode, m_pTkn->szChars());
+          else
+            vAddCodeString((eEO)i_OpCode, m_pTkn->szChars());
           return;
           
         case EA_SUBSCR:
