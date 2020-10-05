@@ -1844,7 +1844,7 @@ void vDev_INDEXTREE_DEV_SET(void* aLU, i8 i_Dev)
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  pLogicUnit->m_aaDev[i_Dev] = (void*)(* pLogicUnit->m_xpIndexTree);
+  //pLogicUnit->m_aaDev[i_Dev] = (void*)(* pLogicUnit->m_xpIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1942,22 +1942,6 @@ void vDev_REG_INDEXDEF_NEW(void* aLU, Stz* sName)
   
   pLogicUnit->m_xpIndexDef = new IndexDef;
   pLogicUnit->m_xpIndexDef->vIndexNm(sName);
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete indexTree[]                                                         */
-/*----------------------------------------------------------------------------*/
-void vDev_REG_INDEXTREE_DELETE(void* aLU)
-{
-  _static_
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  
-  IndexTree* pIndexTree = * pLogicUnit->m_xpIndexTree;
-  
-  pLogicUnit->m_xpIndexTree = nullptr;
-  
-  delete pIndexTree;
 }
 
 /*----------------------------------------------------------------------------*/

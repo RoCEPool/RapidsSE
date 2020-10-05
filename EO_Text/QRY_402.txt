@@ -99,7 +99,7 @@ Label EOSMARKER_HANDLER
 
   EO_CALL OUT_AGG
 
-  EO_REG_INDEXTREE_DELETE
+  EO_INDEXTREE_TMP_DELETE
   EO_JMP QRY_402_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

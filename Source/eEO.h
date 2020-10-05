@@ -94,7 +94,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_REG_INDEXDEF_ADDCOLUMN,     // add a column to indexDef[]
   /*    */ EO_REG_INDEXDEF_DELETE,        // delete the indexDef[]
   /*    */ EO_REG_INDEXDEF_NEW,           // new an indexDef in indexDef[]
-  /*    */ EO_REG_INDEXTREE_DELETE,       // delete indexTree[]
   /*    */ EO_REG_INDEXTREE_NEW,          // new an indexTree in indexTree[]
   /*    */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]
   /*    */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]
@@ -397,7 +396,6 @@ static Stz* aEO[]
   /*    */ "EO_REG_INDEXDEF_ADDCOLUMN"_Stz,
   /*    */ "EO_REG_INDEXDEF_DELETE"_Stz,
   /*    */ "EO_REG_INDEXDEF_NEW"_Stz,
-  /*    */ "EO_REG_INDEXTREE_DELETE"_Stz,
   /*    */ "EO_REG_INDEXTREE_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_ADDCOLUMN"_Stz,
@@ -706,7 +704,6 @@ static EoArg EoArgs[]
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_ADDCOLUMN
   { EA_NONE,    0 },  // EO_REG_INDEXDEF_DELETE
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_NEW
-  { EA_NONE,    0 },  // EO_REG_INDEXTREE_DELETE
   { EA_NONE,    0 },  // EO_REG_INDEXTREE_NEW
   { EA_NONE,    0 },  // EO_REG_STREAMDEFOUT_NEW
   { EA_STRING, -1 },  // EO_REG_STREAMDEFOUT_ADDCOLUMN

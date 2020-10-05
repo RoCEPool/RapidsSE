@@ -98,7 +98,7 @@ Label EOSMARKER_HANDLER
   //EO_PRINTF "**EOSMARKER_HANDLER : 401**\n"
   EO_POP
   EO_CALL OUT_AGG
-  EO_REG_INDEXTREE_DELETE
+  EO_INDEXTREE_TMP_DELETE
   EO_JMP QRY_401_DONE
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

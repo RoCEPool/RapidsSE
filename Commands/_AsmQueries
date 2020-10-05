@@ -116,7 +116,24 @@ print "*****************************************************************";
 ///time Query4_ASM_I "../EO_text/QRY_400.txt" "../EO_text/QRY_401.txt" "../EO_text/QRY_402.txt";
 ///time Query4_ASM "../EO_text/QRY_400.txt" "../EO_text/QRY_401.txt" "../EO_text/QRY_402.txt";
 
+demo select
+o_orderpriority,
+count(*) as order_count from
+orders where
+o_orderdate > "1993-07-01"
+and o_orderdate < "1993-10-01" and exists (
+                                           select
+                                           *
+                                           from
+                                           lineitem
+                                           where
+                                           l_orderkey = o_orderkey
+                                           and l_commitdate < l_receiptdate
+                                           ) group by
+o_orderpriority order by
+o_orderpriority;
 
+/*
 demo select
   o_orderpriority,
   count(*) as order_count from
@@ -135,7 +152,7 @@ demo select
   o_orderpriority;
 
 
-/*
+
  [-1] '1-URGENT',65,#0
  [-1] '2-HIGH',59,#0
  [-1] '3-MEDIUM',77,#0

@@ -113,7 +113,6 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_REG_INDEXDEF_ADDCOLUMN"_Stz,     (const void *) vDev_REG_INDEXDEF_ADDCOLUMN },
   { "vDev_REG_INDEXDEF_DELETE"_Stz,        (const void *) vDev_REG_INDEXDEF_DELETE },
   { "vDev_REG_INDEXDEF_NEW"_Stz,           (const void *) vDev_REG_INDEXDEF_NEW },
-  { "vDev_REG_INDEXTREE_DELETE"_Stz,       (const void *) vDev_REG_INDEXTREE_DELETE },
   { "vDev_REG_INDEXTREE_NEW"_Stz,          (const void *) vDev_REG_INDEXTREE_NEW },
   { "vDev_REG_STREAMDEFOUT_NEW"_Stz,       (const void *) vDev_REG_STREAMDEFOUT_NEW },
   { "vDev_REG_STREAMDEFOUT_ADDCOLUMN"_Stz, (const void *) vDev_REG_STREAMDEFOUT_ADDCOLUMN },

@@ -1559,11 +1559,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_INDEXDEF_NEW(pLU, (Stz*)iArg);
         break;//+endCase
         
-      case EO_REG_INDEXTREE_DELETE: ArgNil(); // delete indexTree[]
-        dLU0(EO_REG_INDEXTREE_DELETE);
-        vDev_REG_INDEXTREE_DELETE(pLU);
-        break;//+endCase
-        
       case EO_REG_INDEXTREE_NEW: ArgNil(); // new an indexTree in indexTree[]
         dLU0(EO_REG_INDEXTREE_NEW);
         vDev_REG_INDEXTREE_NEW(pLU);

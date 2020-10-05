@@ -138,7 +138,7 @@ Label STARTMARKER_HANDLER
 Label EOSMARKER_HANDLER
   EO_PRINTF "**EOSMARKER_HANDLER : 103**\n"
   EO_CALL SUBROUTINE_EOS
-  EO_REG_INDEXTREE_DELETE
+  EO_INDEXTREE_TMP_DELETE
   EO_JMP QRY_103_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
