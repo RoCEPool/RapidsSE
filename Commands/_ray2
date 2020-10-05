@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray2                                                                      */
+/* _ray2 : timing fload of lineitem 6 Oct 2020                                */
 /*============================================================================*/
 
 bc;
@@ -8,19 +8,24 @@ bc;
 print section "Create LineItem";
 
 _lineitem
-_lineitem2
 
-// /time fload lineitem "/Users/Shared/tpch/SF0/lineItem_1k.csv" ;
-// /time fload lineitem "/Users/Shared/tpch/SF1/lineItem.csv" ;
-// /time fload lineitem "/Users/Shared/tpch/SF10/lineItem.csv" ;
+//_lineitemIndex
 
-/time cpTable lineitem lineitem2 ;
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "Load LineItem";
 
-tableSizes;
+// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv"    <max_errors> =  100;
+// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv"   <max_errors> =  100;
+/time fload lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv" <max_errors> =  100;
+// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <max_errors> =  100;
+// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1m.csv" <max_errors> =  100;
+// /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv"      <max_errors> =  100;
+// /time fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100;
 
-drop table lineitem;
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "Load LineItem";
 
-drop table lineitem2;
+compactidx lineitem lineitem_idx1;
 
 /*============================================================================*/
 /* end                                                                        */

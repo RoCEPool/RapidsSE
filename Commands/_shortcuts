@@ -42,6 +42,7 @@ shortcut q6   _Query6;
 shortcut r    _lineitemrjh;
 shortcut r2   _ray2;
 shortcut r3   _ray3;
+shortcut r4   _ray4;
 shortcut rs   "../FASTLOAD/commands/_rowSlabTest";
 shortcut s    _select;
 shortcut s0   _Smt0;
