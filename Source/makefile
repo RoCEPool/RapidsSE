@@ -1,7 +1,18 @@
 # First check for gcc version 5 or later.
 GCC_VERSION_GTE5 := $(shell echo `gcc -dumpversion | cut -f1-2 -d.` \>= 5 | bc)
 ifeq ($(GCC_VERSION_GTE5), 0)
-  $(error gcc version 5 or later is required. You have v$(shell gcc -dumpversion))
+  define ERR
+gcc version 5 or later is required. You have v$(shell gcc -dumpversion).
+
+To install gcc 5 on Centos7 run the following commands:
+  sudo yum install libuuid-devel centos-release-scl devtoolset-7-gcc*
+
+Then from the Source directory run the following command to build rapidsse:
+  scl enable devtoolset-7 'make -j 8'
+
+
+  endef
+  $(error $(ERR))
 endif
 
 #Variables
@@ -39,13 +50,13 @@ OBJECTS += $(S_SOURCES:.s=.o)
 DEPFILES = $(SOURCES:.cpp=.d)
 
 #Include directories
-INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne -I../ThirdParty/antlr/include -I../ThirdParty/antlr/generated
+INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne -I../ThirdParty/antlr/include -I../ThirdParty/antlr/generated -I ../ThirdParty/tcc/include
 
 #Libraries
 #THIRDPARTY_LIBS = -llz4 -lbz2 -lantlr4-runtime
 LIBS = -lrt -lpthread -ltcc -ldl -lantlr4-runtime
 RAPIDS_LIBS = -lRapidsSEv0.4.1
-LIB_DIRS = -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L/usr/local/lib -L../ThirdParty/antlr/lib/linux/centos7  -L$(TARGET_PATH)
+LIB_DIRS = -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L../ThirdParty/tcc/lib/linux/centos7 -L../ThirdParty/antlr/lib/linux/centos7  -L$(TARGET_PATH)
 
 #all : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 all : post-build
