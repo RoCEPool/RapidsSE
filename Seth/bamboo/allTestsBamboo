@@ -17,3 +17,4 @@
 ../tests/Table/testList
 ../tests/Index/testList
 ../tests/Tpch/testList
+../tests/Demo/testList
