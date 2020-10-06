@@ -57,6 +57,8 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_Slot,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
   
+  m_xaDiaryEnt[m_nDiaryEnt].m_iThreadNo   = AM::iThisTLSThreadNo();
+
   m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup = i_EnumGroup;
   m_xaDiaryEnt[m_nDiaryEnt].m_i_Enum      = i_Enum;
   m_xaDiaryEnt[m_nDiaryEnt].m_iItem       = iItem;
@@ -159,12 +161,13 @@ void RluDiary::vReportDiary(Stz *szFilePath)
     
     if (m_xaDiaryEnt[i_Ent].m_iAction)
       
-      pFile->vPrint("%lld,%lld,%lld,%s,%lld,%lld,%lls,%s\n"_Stz,
+      pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%lld,%lls,%s\n"_Stz,
              
                     i_Ent,
+                    (i8)m_xaDiaryEnt[i_Ent].m_iThreadNo,
+                    
                     (i8)m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
                     (i8)m_xaDiaryEnt[i_Ent].m_i_Enum,
-                    
                     EnumGroups::szEnumText(m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
                                           m_xaDiaryEnt[i_Ent].m_i_Enum),
                     
@@ -178,12 +181,13 @@ void RluDiary::vReportDiary(Stz *szFilePath)
                     );
 
     else
-      pFile->vPrint("%lld,%lld,%lld,%s,%lld,%lld,0,n/a\n"_Stz,
+      pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%lld,0,n/a\n"_Stz,
              
                     i_Ent,
+                    (i8)m_xaDiaryEnt[i_Ent].m_iThreadNo,
+                    
                     (i8)m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
                     (i8)m_xaDiaryEnt[i_Ent].m_i_Enum,
-                    
                     EnumGroups::szEnumText(m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
                                           m_xaDiaryEnt[i_Ent].m_i_Enum),
                     

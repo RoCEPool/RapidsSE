@@ -7,6 +7,8 @@ namespace Expressions
 {
   struct RluDiaryEnt
   {
+    i8 m_iThreadNo;
+  
     i2 m_i_EnumGroup;
     i2 m_i_Enum;
     i2 m_iItem;
