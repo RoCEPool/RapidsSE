@@ -13,13 +13,13 @@ namespace Prompt
   static Stz* C_PMT_TKNDUMP  = "<dumpTokens>"_Stz;
   static Stz* C_PMT_TRCFILE  = "<traceFile>"_Stz;
 
-  static Stz* C_Query1 = "/time Query1_ASM lineitem \"../EO_text/QRY_100.txt\" \"../EO_text/QRY_102.txt\""_Stz;
+  static Stz* C_Query1 = "/time Query1_ASM lineitem \"../EO_Text/QRY_100.txt\" \"../EO_Text/QRY_102.txt\""_Stz;
   
-  static Stz* C_Query3 = "/time Query3_ASM \"../EO_text/QRY_300.txt\" \"../EO_text/QRY_301.txt\" \"../EO_text/QRY_302.txt\""_Stz;
+  static Stz* C_Query3 = "/time Query3_ASM \"../EO_Text/QRY_300.txt\" \"../EO_Text/QRY_301.txt\" \"../EO_Text/QRY_302.txt\""_Stz;
   
-  static Stz* C_Query4 = "/time Query4_ASM \"../EO_text/QRY_400.txt\" \"../EO_text/QRY_401.txt\" \"../EO_text/QRY_402.txt\""_Stz;
+  static Stz* C_Query4 = "/time Query4_ASM \"../EO_Text/QRY_400.txt\" \"../EO_Text/QRY_401.txt\" \"../EO_Text/QRY_402.txt\""_Stz;
   
-  static Stz* C_Query6 = "/time Query6_ASM_I \"../EO_text/QRY_600.txt\" \"../EO_text/QRY_601.txt\""_Stz ;
+  static Stz* C_Query6 = "/time Query6_ASM_I \"../EO_Text/QRY_600.txt\" \"../EO_Text/QRY_601.txt\""_Stz ;
   
   class SePrompt : public Focal
   {
