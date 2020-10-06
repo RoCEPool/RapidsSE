@@ -289,9 +289,8 @@ void SePrompt::vPromptLoop(void)
     
     m_pJob->pJobTags()->vCopy(m_pSsnTagSet);
     
-    if (AM::bVerbose())
+    if (m_pJob->bHasTag(C_TAG_TAGS))
       m_pJob->pJobTags()->vDumpSet();
-
     
     m_oTimer.vStart();
     
