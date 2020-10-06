@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : rdCsvChunk_SeekOffsets \handler
 
-  0 ZK_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  // 0 ZK_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
@@ -25,7 +25,7 @@
 
   InfoSet[].delete
 
-  1 ZK_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  // 1 ZK_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   true
 ;
@@ -37,14 +37,14 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
-  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  // 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
   // open the file for reading
   <fileNm> OPEN_READ op__file if
     PipeIn[].pipeOut
   then
 
-  1 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  // 1 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
   true
 ;
@@ -56,7 +56,7 @@
 
   //"Operand:- ZK_EXITMARKER" .verbose
 
-  0 ZK_EXITMARKER EG_ZK LogicUnit[].diaryNote
+  // 0 ZK_EXITMARKER EG_ZK LogicUnit[].diaryNote
 
   File0[].isNull not if
     File0[].get file.close
@@ -65,7 +65,7 @@
   PipeIn[].pipeOut
   Op.ackPipelineJob
 
-  1 ZK_EXITMARKER EG_ZK LogicUnit[].diaryNote
+  // 1 ZK_EXITMARKER EG_ZK LogicUnit[].diaryNote
 
   false
 ;

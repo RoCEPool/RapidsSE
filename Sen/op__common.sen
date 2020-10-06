@@ -304,9 +304,29 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* call handler for operand                                                   */
+/*----------------------------------------------------------------------------*/
+: op__handle params| pHandler iOperandKind |
+
+  LogicUnit[].diary@ if
+
+    0 iOperandKind EG_ZK LogicUnit[].diaryNote
+    pHandler execute
+    1 iOperandKind EG_ZK LogicUnit[].diaryNote
+
+  else
+
+    pHandler execute
+
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* default operator loop                                                      */
 /*----------------------------------------------------------------------------*/
 : op__loop
+
+  0 locals| iOperandKind |
  
   op__pipelineJobWait
 
@@ -319,7 +339,9 @@
       nullptr to OperandOoO[]
 
       debug::flag@ if "(Revised) Calling handler for OoO operand" . then
-      PipeIn[].kind op[].handler@ execute
+      PipeIn[].kind to iOperandKind
+
+      iOperandKind dup op[].handler@ op__handle
 
       PipeIn[].isNull assert
 
@@ -333,7 +355,7 @@
         false LogicUnit[].callAgain!
         true LogicUnit[].calledAgain!
 
-        LogicUnit[].handler@ execute
+        iOperandKind LogicUnit[].handler@ op__handle
 
       else
  
@@ -345,9 +367,11 @@
 
         // execute the operator's handler for the operand
         debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
-        PipeIn[].kind op[].handler@
-          dup LogicUnit[].handler!
-            execute
+        PipeIn[].kind to iOperandKind
+
+          iOperandKind dup op[].handler@
+              dup LogicUnit[].handler!
+            op__handle
 
         // assert Operand is null
         PipeIn[].isNull assert
