@@ -1,0 +1,28 @@
+--------------------------------------------------------------------------------
+-- tpch schema drop
+--------------------------------------------------------------------------------
+
+drop table customer;
+success
+
+drop table orders;
+success
+
+drop table lineitem;
+success
+
+CLEANUP {
+
+  drop table customer;
+  mute
+  
+  drop table orders;
+  mute
+  
+  drop table lineitem;
+  mute
+  
+  bye;
+  mute
+}
+

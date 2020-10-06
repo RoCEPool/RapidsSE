@@ -1,0 +1,41 @@
+--------------------------------------------------------------------------------
+-- tpch queries in a loop
+--------------------------------------------------------------------------------
+
+// Logging a message
+LOG 'Running tpchQueries test in a loop.';
+
+//------------------------------------------------------------------------------
+LOG 'Creating schema ...';
+INCLUDE 'tpchSchemaCreate.test';
+
+//------------------------------------------------------------------------------
+LOG 'Loading data ...';
+INCLUDE 'tpchLoad.test';
+
+LOG 'Running tpch queries...';
+
+//------------------------------------------------------------------------------
+LOOP 10 {
+INCLUDE 'tpchQueries.test';
+} -- end of loop
+
+//------------------------------------------------------------------------------
+//LOG 'Dropping tpch schema...';
+INCLUDE 'tpchSchemaDrop.test';
+
+CLEANUP {
+
+  drop table customer;
+  mute
+
+  drop table orders;
+  mute
+
+  drop table lineitem;
+  mute
+    
+  bye;
+  mute
+}
+

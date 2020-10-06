@@ -1,0 +1,136 @@
+--------------------------------------------------------------------------------
+-- tpch queries tests (SF1)
+--------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Query 1
+demo select
+  l_returnflag,
+  l_linestatus,
+  sum(l_QUANTITY) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice*l_discount) as sum_disc_price,
+  sum(l_extendedprice*l_discount*l_tax) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  lineitem
+where
+  l_shipdate <= date "1998-09-01"
+group by
+  l_returnflag,
+  l_linestatus
+order by
+  l_returnflag,
+  l_linestatus;
+
+rows:
+ ('A','F',37734107.00,56586554400.73,53758251078.47,55909058047.73,25.52,38273.12,0.04,1478493)
+ ('N','F',991417.00,1487504710.38,1413082009.14,1469649033.57,25.51,38284.46,0.05,38854)
+ ('N','O', 74429437.00,111631834353.84,106051834626.06,110297922287.71,25.50,38249.32,0.04,2918531)
+ ('R','F',37719753.00,56568041380.90,53741286634.36,55889611947.82,25.50,38250.85,0.05,1478870)
+
+//------------------------------------------------------------------------------
+// Query 3
+demo select
+  l_orderkey,
+  sum(l_extendedprice*l_discount) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where
+  c_mktsegment = "BUILDING"
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < "1995-03-15"
+  and l_shipdate > "1995-03-15"
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+order by
+  revenue desc, o_orderdate
+limit 10;
+
+rows: 10
+/*
+ (4878020,0.24,DATE '1995-03-12',0)
+ (2456423,0.24,DATE '1995-03-05',0)
+ (2300070,0.24,DATE '1995-03-13',0)
+ (2020610,0.24,DATE '1995-02-05',0)
+ (2864672,0.24,DATE '1995-03-13',0)
+ (2060449,0.24,DATE '1995-03-08',0)
+ (817603,0.24,DATE '1995-03-11',0)
+ (5521732,0.24,DATE '1995-03-13',0)
+ (4129095,0.24,DATE '1995-02-17',0)
+ (612198,0.24,DATE '1995-02-07',0)
+ */
+
+//------------------------------------------------------------------------------
+// Query 4
+demo select
+  o_orderpriority,
+  count(*) as order_count
+from
+  orders
+where
+  o_orderdate >= "1993-07-01"
+  and o_orderdate < "1993-10-01" and exists
+(
+ select
+  *
+ from
+  lineitem
+ where
+  l_orderkey = o_orderkey
+  and l_commitdate < l_receiptdate
+ )
+group by
+  o_orderpriority
+order by
+  o_orderpriority;
+
+ordered rows:
+('1-URGENT',10594)
+('2-HIGH',10476)
+('3-MEDIUM',10410)
+('4-NOT SPECIFIED',10556)
+('5-LOW',10487)
+
+//------------------------------------------------------------------------------
+// Query 6
+demo select
+  sum(l_extendedprice*l_discount) as revenue
+from
+  lineitem
+where
+  l_shipdate >= "1994-01-01"
+  and l_shipdate < "1995-01-01"
+  and l_discount > 0.05
+  and l_discount < 0.07
+  and l_quantity < 24;
+
+unordered rows:
+( 75207429.08 )
+
+CLEANUP {
+  
+  drop table customer;
+  mute
+  
+  drop table orders;
+  mute
+  
+  drop table lineitem;
+  mute
+  
+  bye;
+  mute
+}
+
+
