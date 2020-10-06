@@ -23,7 +23,8 @@ RluDiary::RluDiary(void)
   
   m_nDiaryEnt = 0;
   
-  m_sTitle = "Diary Report"_Stz;
+  m_sDiaryNm = "DiaryNm"_Stz;
+  m_sTitle   = "Diary Report"_Stz;
   
   m_sJobNote = "--"_Stz;
   
@@ -116,6 +117,26 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_Slot,
   
   if (m_nDiaryEnt >= C_DIARY_ENTRIES)
     m_nDiaryEnt = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* diary name                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* RluDiary::szDiaryNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
+  
+  return m_sDiaryNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* diary name                                                                 */
+/*----------------------------------------------------------------------------*/
+void RluDiary::vDiaryNm(Stz* szDiaryNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
+  
+  m_sDiaryNm = szDiaryNm;
 }
 
 /*----------------------------------------------------------------------------*/
