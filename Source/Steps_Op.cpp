@@ -14,6 +14,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
   vAddStep("Op.nextOp!"_Stz,          &Step::vOpNextOpStore);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
+  vAddStep("Op.opName@"_Stz,          &Step::vOpOpNameFetch);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
@@ -52,6 +53,21 @@ void Step::vOpNextStageStore(void)
   ENTRY();
   
   m_pTask->m_pJob->m_pOp->vNextStage(m_pDataStack->iPopInt(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.opName@ -- fetch operator name                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vOpOpNameFetch(void)
+{
+  ENTRY();
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  s256 sOpName = pOp->szOpNm();
+  
+  m_pDataStack->vPushStr(sOpName);
   
   EXIT();
 }

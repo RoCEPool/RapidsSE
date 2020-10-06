@@ -16,6 +16,7 @@ void Step::vAddSteps_LogicUnit(void)
   
   vAddStep("LogicUnit[].diaryAction"_Stz,   &Step::vLogicUnitDiaryAction);
   vAddStep("LogicUnit[].diaryJobNote"_Stz,  &Step::vLogicUnitDiaryJobNote);
+  vAddStep("LogicUnit[].diaryName"_Stz,     &Step::vLogicUnitDiaryName);
   vAddStep("LogicUnit[].diaryNote"_Stz,     &Step::vLogicUnitDiaryNote);
   vAddStep("LogicUnit[].diaryTitle"_Stz,    &Step::vLogicUnitDiaryTitle);
 
@@ -108,6 +109,21 @@ void Step::vLogicUnitDiaryJobNote(void)
   m_pDataStack->vPopStr(sJobNote, __func__);
 
   m_pLogicUnit->vDiaryJobNote(sJobNote);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].diaryTitle -- set diary title                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitDiaryName(void)
+{
+  ENTRY();
+  
+  s32 sName;
+  m_pDataStack->vPopStr(sName, __func__);
+
+  m_pLogicUnit->vDiaryName(sName);
 
   EXIT();
 }

@@ -82,6 +82,7 @@
   then
 
   "rdCsvChunk" LogicUnit[].diaryTitle
+  "rdCsvChunk" LogicUnit[].diaryName
 
   op__topology
 

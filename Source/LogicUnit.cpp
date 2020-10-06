@@ -265,6 +265,20 @@ i8 LogicUnit::iCodeArg(i8 i_Code)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set diary name                                                             */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vDiaryName(Stz *szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  if (!m_pRluDiary)
+    m_pRluDiary = new RluDiary;
+
+  
+  m_pRluDiary->vDiaryNm(szName);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set diary job note                                                         */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vDiaryJobNote(Stz *szJobNote)
