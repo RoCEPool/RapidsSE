@@ -84,8 +84,6 @@
 //  op.opName@ LogicUnit[].diaryTitle
 //  op.opName@ LogicUnit[].diaryName
 
-  rluDiary_init
-
   op__topology
 
   find: rdCsvChunk_ExitMarker    ZK_EXITMARKER    op[].handler!
