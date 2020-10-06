@@ -81,8 +81,8 @@
     <note> LogicUnit[].diaryJobNote
   then
 
-  "rdCsvChunk" LogicUnit[].diaryTitle
-  "rdCsvChunk" LogicUnit[].diaryName
+  op.opName@ LogicUnit[].diaryTitle
+  op.opName@ LogicUnit[].diaryName
 
   op__topology
 
