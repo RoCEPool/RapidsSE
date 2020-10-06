@@ -238,6 +238,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* init rlu diary                                                             */
+/*----------------------------------------------------------------------------*/
+: rluDiary_init
+
+  "<note>"  job[] job.tagSet@ tagSet.hasName if
+    <note> LogicUnit[].diaryJobNote
+  then
+
+  op.opName@ LogicUnit[].diaryTitle
+  op.opName@ LogicUnit[].diaryName
+;
+
+/*----------------------------------------------------------------------------*/
 /* set operator topology, next stage and op                                   */
 /*----------------------------------------------------------------------------*/
 : op__topology
@@ -253,6 +266,9 @@
   // set nextOp in op
   <nextOp> op.nextOp!
 
+  "<diary>" job[] job.tagSet@ tagSet.hasName if
+    rluDiary_init
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
