@@ -459,6 +459,13 @@ Thread* AM::pThisTLSThread(void) {
   Thread* pThread = Thread::pThisTLSThread();
   return pThread;
 }
+
+i8 AM::iThisTLSThreadNo(void) {
+  Thread* pThread = Thread::pThisTLSThread();
+  i8 iThreadNo = pThread->iThreadNo();
+  return iThreadNo;
+}
+
 Tx* AM::pThisTLSTx(void) {
 
   Task* pTask = pThisTLSTask();

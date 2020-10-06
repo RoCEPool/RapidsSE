@@ -164,6 +164,7 @@ namespace Oblique
     static LogicUnit* pThisTLSLogicUnit(void);
     static Task* pThisTLSTask(void);
     static Thread* pThisTLSThread(void);
+    static i8    iThisTLSThreadNo(void);
     static Tx* pThisTLSTx(void);
     static PsxThd* pThisTLSPsxThd(void);
 
