@@ -1,0 +1,10 @@
+
+On Linux, from the src directory:
+  ./configure --prefix=./.. --libdir=./../lib/linux/centos7 --bindir=./../bin/linux/centos7
+
+On MacOS, from the src directory:
+  ./configure --prefix=./.. --libdir=./../lib/macos --bindir=./../bin/macos
+
+Then run from the src directory:
+  make
+  make install

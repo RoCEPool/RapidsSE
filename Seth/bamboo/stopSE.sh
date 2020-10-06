@@ -17,7 +17,7 @@ EXIT_GIVE_UP_TIME=5   # After this time (in seconds) just kill the pid.
 EXIT_ITERATIONS=$(bc <<< "${EXIT_GIVE_UP_TIME} / ${EXIT_SLEEP_TIME}")
 
 #set the library path for the rapidsSE library
-export LD_LIBRARY_PATH="${EXE_PATH}":$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH="${EXE_DIR}":$LD_LIBRARY_PATH
 
 if [ ! -f "${EXE}" ]
 then

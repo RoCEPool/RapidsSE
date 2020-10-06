@@ -1,0 +1,5 @@
+src/config.h
+src/config.mak
+src/libtcc.a
+src/libtcc1.a
+src/tcc
