@@ -77,11 +77,14 @@
 
   LogReqEntry SEED_REQ
 
-  "<note>"  job[] job.tagSet@ tagSet.hasName if
-    <note> LogicUnit[].diaryJobNote
-  then
+//  "<note>"  job[] job.tagSet@ tagSet.hasName if
+//    <note> LogicUnit[].diaryJobNote
+//  then
+//
+//  op.opName@ LogicUnit[].diaryTitle
+//  op.opName@ LogicUnit[].diaryName
 
-  "rdCsvChunk" LogicUnit[].diaryTitle
+  rluDiary_init
 
   op__topology
 

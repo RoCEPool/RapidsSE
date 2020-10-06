@@ -945,6 +945,7 @@ public:
   void vLogicUnitCalledAgainStore(void);
   void vLogicUnitDiaryAction(void);
   void vLogicUnitDiaryJobNote(void);
+  void vLogicUnitDiaryName(void);
   void vLogicUnitDiaryNote(void);
   void vLogicUnitDiaryTitle(void);
   void vLogicUnitDynFun(void);
@@ -1018,6 +1019,7 @@ public:
   void vOpAckPipelineJob(void);
   void vOpNextOpStore(void);
   void vOpNextStageStore(void);
+  void vOpOpNameFetch(void);
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
   void vOpPipeOut(void);
