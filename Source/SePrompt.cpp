@@ -461,7 +461,7 @@ void SePrompt::vDemo(void)
         break;
        
       // Query 3
-      case 126509825900:
+      case 127443435585:
         m_pInpTknVec->vTokeniseC(C_Query3);
         m_pInpTknVec->vIntegrityCheck();
         break;
