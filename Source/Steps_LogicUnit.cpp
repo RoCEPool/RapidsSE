@@ -93,8 +93,10 @@ void Step::vLogicUnitDiaryAction(void)
   m_pLogicUnit->m_oSince.vUpdate();
   i8 nNanoSeconds = m_pLogicUnit->m_oSince.iNanoseconds();
   
+  i8 nQueueLength = m_pLogicUnit->m_xpOp->nQueueLength();
+
   m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
-                           i_Action,i_ActEnumGroup,i_ActEnum);
+                           i_Action,i_ActEnumGroup,i_ActEnum,nQueueLength);
   
   EXIT();
 }
@@ -155,7 +157,11 @@ void Step::vLogicUnitDiaryNote(void)
   m_pLogicUnit->m_oSince.vUpdate();
   i8 nNanoSeconds = m_pLogicUnit->m_oSince.iNanoseconds();
   
-  m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,0,0,0);
+  
+  i8 nQueueLength = m_pLogicUnit->m_xpOp->nQueueLength();
+  
+  m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
+                           0,0,0,nQueueLength);
   
   EXIT();
 }

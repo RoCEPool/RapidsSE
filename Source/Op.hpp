@@ -93,6 +93,7 @@ namespace Pipelines
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
     OperandQueue* pQueueLeft(void);
+    i8   nQueueLength(void);
     OperandQueue* pQueueRight(void);
     void vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet);
     void vSpawnOperatorJob(i8 iSessionId);

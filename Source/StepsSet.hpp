@@ -1024,6 +1024,7 @@ public:
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
   void vOpPipeOut(void);
+  void vOpQueueLength(void);
   void vOpStageNameFetch(void);
   void vOpTopologyStore(void);
   void vOpXmitKindStore(void);

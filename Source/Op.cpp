@@ -865,6 +865,17 @@ OperandQueue* Op::pQueueLeft(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get operand queue length                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Op::nQueueLength(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  i8 nOperands = m_pQueueLeft->nQueuedOperands();
+  return nOperands;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get right operand queue                                                    */
 /*----------------------------------------------------------------------------*/
 OperandQueue* Op::pQueueRight(void)

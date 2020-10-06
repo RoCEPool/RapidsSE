@@ -17,6 +17,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.opName@"_Stz,          &Step::vOpOpNameFetch);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
+  vAddStep("Op.queueLength@"_Stz,     &Step::vOpQueueLength);
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
   vAddStep("Op.xmitKind!"_Stz,        &Step::vOpXmitKindStore);
@@ -110,6 +111,22 @@ void Step::vOpPipeOut(void)
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
   pOp->vPipeOut_nextOp(pOperand,m_pTask);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.queueLength@ -- get queue length                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vOpQueueLength(void)
+{
+  ENTRY();
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  
+  i8 nLength = pOp->nQueueLength();
+
+  m_pDataStack->vPushInt(nLength);
 
   EXIT();
 }
