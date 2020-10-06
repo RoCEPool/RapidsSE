@@ -124,11 +124,12 @@ Task::~Task(void) noexcept(false)
 
   delete m_pForth;
   
+  delete m_pLogicUnit;
+  
   if (m_pJob) {
     Job* pJob = _pJob(m_pJob);
     delete pJob;
   }
-  delete m_pLogicUnit;
     
   delete m_pProfile;
   m_pProfile = nullptr;

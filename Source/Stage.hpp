@@ -30,6 +30,7 @@ namespace Pipelines
     i8      nOpsOnNode(i8 iNode);
     Op*     pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp);
     Stz*    szStageNm(void);
+    StageSpec* pStageSpec(void);
     void    vStartPipeline(Task* pTriggeringTask);
   
   private:

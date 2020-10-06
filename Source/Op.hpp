@@ -96,6 +96,7 @@ namespace Pipelines
     OperandQueue* pQueueRight(void);
     void vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet);
     void vSpawnOperatorJob(i8 iSessionId);
+    Stage* pStage(void);
     Stz* szStageName(void);
     Task* pTask(void);
     void vToCmdStr(Stz* szCmdStr);

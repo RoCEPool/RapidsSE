@@ -836,12 +836,17 @@ void LogicUnit::vDiaryReport(void)
   
   s256 sDiaryPath;
   
-  sDiaryPath.vSprint("/tmp/RluDiary_%s_%lld_%lld.csv"_Stz,
-                     m_pRluDiary->szDiaryNm(),
-                     m_xRluCommon.m_iSql,
-                     m_xRluCommon.m_i_Slot
-                     );
-  
+  if (0 != m_xRluCommon.m_iSql)
+    sDiaryPath.vSprint("/tmp/RluDiary_%s_%lld_%lld.csv"_Stz,
+                       m_pRluDiary->szDiaryNm(),
+                       m_xRluCommon.m_iSql,
+                       m_xRluCommon.m_i_Slot
+                       );
+  else
+    sDiaryPath.vSprint("/tmp/RluDiary_%s.csv"_Stz,
+                       m_pRluDiary->szDiaryNm()
+                       );
+
   m_pRluDiary->vReportDiary(sDiaryPath);
   
 }

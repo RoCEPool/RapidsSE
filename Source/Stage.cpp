@@ -234,6 +234,16 @@ Stz* Stage::szStageNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get stage spec                                                             */
+/*----------------------------------------------------------------------------*/
+StageSpec* Stage::pStageSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  return m_pStageSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* send startMarker to start op of the stage                                  */
 /*----------------------------------------------------------------------------*/
 void Stage::vStartPipeline(Task* pTriggeringTask)
