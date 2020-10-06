@@ -1236,7 +1236,7 @@ void Input::vCollectCppOther(void)
       *z++ = '>';
       *z++ = '=';
       *z = '\0';
-      m_pCurrTkn->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_OTHER);
       return;
     }
     else {
@@ -1256,7 +1256,7 @@ void Input::vCollectCppOther(void)
       *z++ = '<';
       *z++ = '=';
       *z = '\0';
-      m_pCurrTkn->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_OTHER);
       return;
     }
     else {
