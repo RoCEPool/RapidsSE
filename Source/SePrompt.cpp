@@ -447,15 +447,15 @@ void SePrompt::vDemo(void)
       StrLib::vToLower(pTkn->azChars());
       iHash += HshLib::iHash((byte*)pTkn->azChars(),nSize);
     }
-    vTrace("Tokenising Query4\n"_Stz);
     m_pLitTknVec->vDumpVec(0);
-    
+
+    // reset the input token vector
     m_pInpTknVec->vSoftReset();
     
     switch (iHash) {
         
       // Query 1
-      case 203768880708:
+      case 204757332167:
         m_pInpTknVec->vTokeniseC(C_Query1);
         m_pInpTknVec->vIntegrityCheck();
         break;
@@ -467,13 +467,13 @@ void SePrompt::vDemo(void)
         break;
         
       // Query 4
-      case 94327648447:
+      case 97354348505:
         m_pInpTknVec->vTokeniseC(C_Query4);
         m_pInpTknVec->vIntegrityCheck();
         break;
         
       // Query 6
-      case 62263690498: {
+      case 65290390556: {
         m_pInpTknVec->vTokeniseC(C_Query6);
         m_pInpTknVec->vIntegrityCheck();
         
