@@ -410,8 +410,25 @@ bool LogicCompiler::bCompile(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
 #ifdef __TINYC
+  #ifdef WITH_APPLE
+  
+    tcc_add_include_path((TCCState*)m_aTccState, "../ThirdParty/tcc/lib/macos/tcc/include");
+    tcc_add_library_path((TCCState*)m_aTccState,"../ThirdParty/tcc/lib/macos/tcc");
+    tcc_set_lib_path((TCCState*)m_aTccState,"../ThirdParty/tcc/lib/macos/tcc");
+  
+  #elif defined(WITH_LINUX)
+  
+    tcc_add_include_path((TCCState*)m_aTccState, "../ThirdParty/tcc/lib/linux/centos7/tcc/include");
+    tcc_add_library_path((TCCState*)m_aTccState,"../ThirdParty/tcc/lib/linux/centos7/tcc");
+    tcc_set_lib_path((TCCState*)m_aTccState,"../ThirdParty/tcc/lib/linux/centos7/tcc");
+  
+  #else
+    #error "Unknown Operating Library"
+  #endif
+  
   if (-1 == tcc_compile_string((TCCState*)m_aTccState,m_caSource))
     return false;
+  
 #endif
   
   return true;
@@ -719,7 +736,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  /* Code for Qf%4lld                                                    */"
   "\n  /*====================================================================*/"
   "\n"
-  "\n  #include <tcclib.h>" // include libc header for TCC
+  "\n  #include \"tcclib.h\" // include libc header for TCC"
   "\n  int strcmp(const char *__s1, const char *__s2);"
   "\n"
   "\n  typedef char i1;"
