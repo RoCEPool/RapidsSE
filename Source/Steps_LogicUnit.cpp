@@ -15,6 +15,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].altTable@"_Stz,     &Step::vLogicUnitAltTableFetch);
   
   vAddStep("LogicUnit[].diaryAction"_Stz,   &Step::vLogicUnitDiaryAction);
+  vAddStep("LogicUnit[].diaryJobNote"_Stz,  &Step::vLogicUnitDiaryJobNote);
   vAddStep("LogicUnit[].diaryNote"_Stz,     &Step::vLogicUnitDiaryNote);
   vAddStep("LogicUnit[].diaryTitle"_Stz,    &Step::vLogicUnitDiaryTitle);
 
@@ -93,6 +94,21 @@ void Step::vLogicUnitDiaryAction(void)
   m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
                            i_Action,i_ActEnumGroup,i_ActEnum);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].diaryJobNote -- set diary job note                             */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitDiaryJobNote(void)
+{
+  ENTRY();
+  
+  s256 sJobNote;
+  m_pDataStack->vPopStr(sJobNote, __func__);
+
+  m_pLogicUnit->vDiaryJobNote(sJobNote);
+
   EXIT();
 }
 

@@ -25,6 +25,8 @@ RluDiary::RluDiary(void)
   
   m_sTitle = "Diary Report"_Stz;
   
+  m_sJobNote = "--"_Stz;
+  
   MemLib::vZero(&m_xaDiaryEnt,sizeof(m_xaDiaryEnt),CN_RLUDIARY);
 
   _checkInitialised_(CN_RLUDIARY);
@@ -115,6 +117,26 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_Slot,
 }
 
 /*----------------------------------------------------------------------------*/
+/* job note                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* RluDiary::szJobNote(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
+  
+  return m_sJobNote;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job note                                                                   */
+/*----------------------------------------------------------------------------*/
+void RluDiary::vJobNote(Stz* szJobNote)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
+  
+  m_sJobNote = szJobNote;
+}
+
+/*----------------------------------------------------------------------------*/
 /* write out                                                                  */
 /*----------------------------------------------------------------------------*/
 void RluDiary::vReportDiary(Stz *szFilePath)
@@ -127,7 +149,11 @@ void RluDiary::vReportDiary(Stz *szFilePath)
   
   s256 sSummary;
   
-  pFile->vPrint("%s [%s]\n"_Stz,m_sTitle.azChar(),AM::szSummary(sSummary));
+  pFile->vPrint("%s [%s %s]\n"_Stz,
+                m_sTitle.azChar(),
+                AM::szSummary(sSummary),
+                m_sJobNote.azChar()
+                );
 
   for (i8 i_Ent = 0; i_Ent < m_nDiaryEnt; i_Ent++) {
     

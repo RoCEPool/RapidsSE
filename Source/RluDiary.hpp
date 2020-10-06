@@ -28,7 +28,8 @@ namespace Expressions
     i8 m_nDiaryEnt;
   
     s256 m_sTitle;
-  
+    s256 m_sJobNote;
+
     RluDiaryEnt m_xaDiaryEnt[C_DIARY_ENTRIES];
   
     // must be last
@@ -49,6 +50,9 @@ namespace Expressions
 
     void vReportDiary(Stz* szFilePath);
   
+    Stz* szJobNote(void);
+    void vJobNote(Stz* szJobNote);
+
     Stz* szTitle(void);
     void vTitle(Stz* szTitle);
     

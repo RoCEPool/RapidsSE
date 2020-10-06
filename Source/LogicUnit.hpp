@@ -179,6 +179,7 @@ namespace Expressions
     i8   nCodes(void);
     eEO* aCodeArg(i8 i_Code);
     i8   iCodeArg(i8 i_Code);
+    void vDiaryJobNote(Stz* szJobNote);
     void vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
                     i2 iAction, i2 i_ActEnumGroup, i2 i_ActEnum);
     void vDiaryTitle(Stz* szTitle);

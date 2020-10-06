@@ -265,6 +265,20 @@ i8 LogicUnit::iCodeArg(i8 i_Code)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set diary job note                                                         */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vDiaryJobNote(Stz *szJobNote)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  if (!m_pRluDiary)
+    m_pRluDiary = new RluDiary;
+
+  
+  m_pRluDiary->vJobNote(szJobNote);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add diary note                                                             */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
