@@ -308,7 +308,17 @@
 /*----------------------------------------------------------------------------*/
 : op__handle params| pHandler iOperandKind |
 
-  pHandler execute
+  LogicUnit[].diary@ if
+
+    0 iOperandKind EG_ZK LogicUnit[].diaryNote
+    pHandler execute
+    1 iOperandKind EG_ZK LogicUnit[].diaryNote
+
+  else
+
+    pHandler execute
+
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
