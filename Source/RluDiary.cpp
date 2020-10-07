@@ -24,6 +24,8 @@ RluDiary::RluDiary(void)
   m_nDiaryEnt = 0;
   
   m_sDiaryNm = "DiaryNm"_Stz;
+  m_sDiaryDir = "/tmp"_Stz;
+  
   m_sTitle   = "Diary Report"_Stz;
   
   m_sJobNote = "--"_Stz;
@@ -138,6 +140,26 @@ void RluDiary::vDiaryNm(Stz* szDiaryNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
   
   m_sDiaryNm = szDiaryNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* diary path                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* RluDiary::szDiaryDir(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
+  
+  return m_sDiaryDir;
+}
+
+/*----------------------------------------------------------------------------*/
+/* diary path                                                                 */
+/*----------------------------------------------------------------------------*/
+void RluDiary::vDiaryDir(Stz* szDiaryDir)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
+  
+  m_sDiaryDir = szDiaryDir;
 }
 
 /*----------------------------------------------------------------------------*/

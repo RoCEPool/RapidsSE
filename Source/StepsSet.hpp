@@ -944,6 +944,7 @@ public:
   void vLogicUnitCalledAgainFetch(void);
   void vLogicUnitCalledAgainStore(void);
   void vLogicUnitDiaryAction(void);
+  void vLogicUnitDiaryDir(void);
   void vLogicUnitDiaryFetch(void);
   void vLogicUnitDiaryJobNote(void);
   void vLogicUnitDiaryName(void);

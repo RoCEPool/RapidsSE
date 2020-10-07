@@ -303,6 +303,20 @@ void LogicUnit::vDiaryJobNote(Stz *szJobNote)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set diary dir                                                              */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vDiaryDir(Stz *szDir)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  if (!m_pRluDiary)
+    m_pRluDiary = new RluDiary;
+
+  
+  m_pRluDiary->vDiaryDir(szDir);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add diary note                                                             */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
@@ -840,13 +854,15 @@ void LogicUnit::vDiaryReport(void)
   s256 sDiaryPath;
   
   if (0 != m_xRluCommon.m_iSql)
-    sDiaryPath.vSprint("/tmp/RluDiary_%s_%lld_%lld.csv"_Stz,
+    sDiaryPath.vSprint("%s/RluDiary_%s_%lld_%lld.csv"_Stz,
+                       m_pRluDiary->szDiaryDir(),
                        m_pRluDiary->szDiaryNm(),
                        m_xRluCommon.m_iSql,
                        m_xRluCommon.m_i_Slot
                        );
   else
-    sDiaryPath.vSprint("/tmp/RluDiary_%s.csv"_Stz,
+    sDiaryPath.vSprint("%s/RluDiary_%s.csv"_Stz,
+                       m_pRluDiary->szDiaryDir(),
                        m_pRluDiary->szDiaryNm()
                        );
 

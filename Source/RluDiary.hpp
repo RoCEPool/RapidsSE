@@ -31,6 +31,7 @@ namespace Expressions
     i8 m_nDiaryEnt;
   
     s32  m_sDiaryNm;
+    s256 m_sDiaryDir;
     s256 m_sTitle;
     s256 m_sJobNote;
 
@@ -52,6 +53,9 @@ namespace Expressions
                   i8 iAction, i8 i_ActEnumGroup, i8 i_ActEnum
                   );
 
+    Stz* szDiaryDir(void);
+    void vDiaryDir(Stz* szDiaryDir);
+    
     Stz* szDiaryNm(void);
     void vDiaryNm(Stz* szDiaryNm);
   

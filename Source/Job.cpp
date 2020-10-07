@@ -481,6 +481,18 @@ void Job::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if this job has a /diary ename tag                                    */
+/*----------------------------------------------------------------------------*/
+bool Job::bDiaryTag(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool bDiary = bHasTag(C_TAG_DIARY);
+  
+  return bDiary;
+}
+
+/*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/
 void Job::vFocalOutline(s4K& sOutline)

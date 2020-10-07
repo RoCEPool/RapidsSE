@@ -248,6 +248,8 @@
 
   op.opName@ LogicUnit[].diaryTitle
   op.opName@ Op.partition@ >str str.cat LogicUnit[].diaryName
+
+  <diaryDir> LogicUnit[].diaryDir
 ;
 
 /*----------------------------------------------------------------------------*/
