@@ -9,7 +9,7 @@ print section "Create LineItem";
 
 _lineitem
 
-//_lineitemIndex
+_lineitemIndex
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Load LineItem";
@@ -25,7 +25,6 @@ print section "Load LineItem";
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Indexes LineItem";
 
-_lineitemIndex
 
 ///time compactidx lineitem lineitem_idx1;
 

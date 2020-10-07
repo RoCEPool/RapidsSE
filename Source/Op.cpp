@@ -71,7 +71,7 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
 
-  m_nNode            = C_UNKNOWN;
+  m_iNode            = C_UNKNOWN;
   m_iPartition       = C_UNKNOWN;
   
   m_eTopologyX = PX_NONE;
@@ -150,7 +150,7 @@ void Op::vDump(i8 i_Op)
   
   vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { Markers(L%lld R0) :%-10s %s %s }\n"_Stz,
          i_Op,
-         this->nNode(),
+         this->iNode(),
          this->iPartition(),
          this->szOpNm(),
          sArgs.szStz(),
@@ -177,7 +177,7 @@ void Op::vAckJob(void)
     vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
            AM::szJobName(m_pOpJob),
            m_pStage->szStageNm(),
-           m_nNode,
+           m_iNode,
            m_iPartition);
   
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pOpJob));
@@ -283,6 +283,20 @@ void Op::vDropTaskLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   AM::vDropTaskLock(AM::pExecutingTask(m_pOpJob));
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  vTrace("Op\n"_Stz);
+  vTrace("--\n"_Stz);
+  vTrace("%p:\n"_Stz,this);
+  vTrace("m_iNode=%lld\n"_Stz,m_iNode);
+  vTrace("m_iPartition=%lld\n"_Stz,m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,21 +424,21 @@ void Op::vNextStage(i8 iNextStage)
 /*----------------------------------------------------------------------------*/
 /* get node                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Op::nNode(void)
+i8 Op::iNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_nNode;
+  return m_iNode;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set node                                                                   */
 /*----------------------------------------------------------------------------*/
-void Op::vNode(i8 nNode)
+void Op::vNode(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_nNode = nNode;
+  m_iNode = iNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -482,14 +496,16 @@ TagSet* Op::pOpTagSet(void)
 /*----------------------------------------------------------------------------*/
 /* set partition in op                                                        */
 /*----------------------------------------------------------------------------*/
-void Op::vPartition(i8 nPartition)
+void Op::vPartition(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_iPartition = nPartition;
-  
+  // TEMP TESTING HACK BY RAY 8 OCT 2020
+  // m_iPartition = 0;
+  m_iPartition = iPartition;
+
   // set the node tis partition belongs to 
-  m_nNode = TablePtn::iPartitionToNode(m_iPartition);
+  m_iNode = TablePtn::iPartitionToNode(m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -499,6 +515,8 @@ i8 Op::iPartition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  // TEMP TESTING HACK BY RAY 8 OCT 2020
+  // return 0;
   return m_iPartition;
 }
 
@@ -575,7 +593,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
-           m_nNode,
+           m_iNode,
            m_iPartition,
            m_pPipelineJob,
            "vPipeOut :"_Stz,
@@ -592,7 +610,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   
     // get the op to forward to depending on the cross topology
     Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
-                                 m_nNode,
+                                 m_iNode,
                                  m_iPartition,
                                  m_iNextOp);
     if (m_bAppendRight)
@@ -621,7 +639,7 @@ void Op::vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
-           m_nNode,
+           m_iNode,
            m_iPartition,
            m_pPipelineJob,
            "vPipeOut :"_Stz,
@@ -655,7 +673,7 @@ void Op::vPipeToJob(Operand* pOperand)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
-           m_nNode,
+           m_iNode,
            m_iPartition,
            m_pPipelineJob,
            "vPipeToJob :"_Stz,
@@ -702,7 +720,7 @@ Operand* Op::pPopQueue(void)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
-           m_nNode,
+           m_iNode,
            m_iPartition,
            m_pPipelineJob,
            "pPopQueue :"_Stz,
@@ -743,7 +761,7 @@ Operand* Op::pPopQueueOoO(void)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
-           m_nNode,
+           m_iNode,
            m_iPartition,
            m_pPipelineJob,
            "pPopQueue :"_Stz,

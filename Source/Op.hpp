@@ -27,7 +27,7 @@ namespace Pipelines
     OperandQueue*  m_pQueueLeft;     // the input queue being processed
     OperandQueue*  m_pQueueRight;    // the input queue being processed
     
-    i8             m_nNode;          // node no
+    i8             m_iNode;          // node no
     i8             m_iPartition;     // partition no
     
     ePX            m_eTopologyX;     // cross topology
@@ -60,6 +60,7 @@ namespace Pipelines
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
     void vDropTaskLock(void);
+    void vDump(void);
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     void vIncWorkDone(void);
@@ -70,8 +71,8 @@ namespace Pipelines
     void vNextOp(i8 iNextOp);
     i8   iNextStage(void);
     void vNextStage(i8 iNextStage);
-    i8   nNode(void);
-    void vNode(i8 nNode);
+    i8   iNode(void);
+    void vNode(i8 iNode);
     Word* pOperandHandler(i8 i_OperandKind);
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
     Job* pOpJob(void);
