@@ -179,11 +179,13 @@ void RluDiary::vReportDiary(Stz *szFilePath)
                 m_sJobNote.azChar()
                 );
 
+  i8 nPrevNanoSecs = 0;
+  
   for (i8 i_Ent = 0; i_Ent < m_nDiaryEnt; i_Ent++) {
     
     if (m_xaDiaryEnt[i_Ent].m_iAction)
       
-      pFile->vPrint("%lld,%lld,%lld,%lld,%lld,%s,%lld,%lld,%lls,%s\n"_Stz,
+      pFile->vPrint("%lld,%lld,%lld,%lld,%lld,%s,%lld,%lld,%lld,%lls,%s\n"_Stz,
              
                     i_Ent,
                     (i8)m_xaDiaryEnt[i_Ent].m_iThreadNo,
@@ -196,7 +198,8 @@ void RluDiary::vReportDiary(Stz *szFilePath)
                     
                     (i8)m_xaDiaryEnt[i_Ent].m_iItem,
                     (i8)m_xaDiaryEnt[i_Ent].m_nNanoSecs,
-                    
+                    (i8)m_xaDiaryEnt[i_Ent].m_nNanoSecs - nPrevNanoSecs,
+
                     aPP[m_xaDiaryEnt[i_Ent].m_iAction],
                     EnumGroups::szEnumText(m_xaDiaryEnt[i_Ent].m_i_ActEnumGroup,
                                           m_xaDiaryEnt[i_Ent].m_i_ActEnum)
@@ -204,7 +207,7 @@ void RluDiary::vReportDiary(Stz *szFilePath)
                     );
 
     else
-      pFile->vPrint("%lld,%lld,%lld,%lld,%lld,%s,%lld,%lld,0,n/a\n"_Stz,
+      pFile->vPrint("%lld,%lld,%lld,%lld,%lld,%s,%lld,%lld,%lld,0,n/a\n"_Stz,
              
                     i_Ent,
                     (i8)m_xaDiaryEnt[i_Ent].m_iThreadNo,
@@ -216,8 +219,11 @@ void RluDiary::vReportDiary(Stz *szFilePath)
                                           m_xaDiaryEnt[i_Ent].m_i_Enum),
                     
                     (i8)m_xaDiaryEnt[i_Ent].m_iItem,
-                    (i8)m_xaDiaryEnt[i_Ent].m_nNanoSecs
+                    (i8)m_xaDiaryEnt[i_Ent].m_nNanoSecs,
+                    (i8)m_xaDiaryEnt[i_Ent].m_nNanoSecs - nPrevNanoSecs
                     );
+    
+    nPrevNanoSecs = m_xaDiaryEnt[i_Ent].m_nNanoSecs;
   }
 
   pFile->vClose();
