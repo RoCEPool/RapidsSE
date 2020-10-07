@@ -40,7 +40,7 @@ GIT_BRANCH_CMD="git rev-parse --abbrev-ref HEAD"
 VERSION_FILE="${LAYOUT_DIR}/version.txt"
 CREATE_LAYOUT_FILE="${DIR}/createlayout.sh"
 
-SETUP_SCRIPT="${ROOT_DIR}/Bootstrap/setup.sh"
+SETUP_SCRIPT="./setup.sh"  # relative to the directory of extracted files
 MAKESELF_ARGS=""
 
 ###############################################################################
@@ -88,7 +88,7 @@ extractVersions() {
 }
 
 
-##############################################################################r
+###############################################################################
 ### Script                                                                  ###
 ###############################################################################
 
@@ -144,8 +144,8 @@ fi
 ### Remove & recreate the layout and output directories to have a clean slate ###
 if [ -n "${DEBUG}" ] ; then echo "Cleaning & setting up the layout directory"; fi;
 
-rm -rf "${LAYOUT_DIR}" &>/dev/null || true
-rm -rf "${OUTPUT_DIR}" &>/dev/null || true
+rm -rf "${LAYOUT_DIR}/"* &>/dev/null || true
+rm -rf "${OUTPUT_DIR}/"* &>/dev/null || true
 mkdir -p "${LAYOUT_DIR}"
 mkdir -p "${OUTPUT_DIR}"
 
@@ -214,5 +214,5 @@ if [ -n "${DEBUG}" ] ; then echo "Generating the run file"; fi;
 
 OUTPUT_FILE="${OUTPUT_DIR}/rapidsse-${SE_VERSION_STR},run"
 
-"${MAKESELF_DIR}/makeself.sh" ${MAKESELF_ARGS} "${LAYOUT_DIR}" "${OUTPUT_FILE}" "Extracting RapidsSE files..." "${SETUP_SCRIPT}"
+"${MAKESELF_DIR}/makeself.sh" ${MAKESELF_ARGS} "${LAYOUT_DIR}" "${OUTPUT_FILE}" "RapidsSE files..." "${SETUP_SCRIPT}"
 

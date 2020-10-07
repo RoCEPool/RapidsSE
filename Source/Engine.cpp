@@ -409,6 +409,15 @@ void Engine::vChangeDirectory(void)
     vInfo("Original working directory: %s\n"_Stz,sOriginal.szStz());
   
   // change working directory to commands dir
+  //
+  // **************************************************
+  // ** WARNING! WARNING! WARNING! WARNING! WARNING! **
+  // **************************************************
+  // The TinyC implementation currently relies on the current working
+  // directory being the Commands directory as it uses relative paths
+  // from the cwd to set the header and library search paths when 
+  // compiling dynamic code. If you change this value you may need to
+  // change these paths in LogicCompiler::bCompile().
   bool bResult = Dir::bChangeCurrent(gxArgs.m_sCommandsDir);
   
   if (! bResult)

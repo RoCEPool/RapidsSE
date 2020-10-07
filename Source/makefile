@@ -27,7 +27,7 @@ DIR_GUARD=@mkdir -p $(@D)
 CURRENT=${PWD}
 TARGET_PATH = $(CURRENT)/../Linux/bin
 TARGET_EXE = $(TARGET_PATH)/rapidsse
-TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSEv0.4.1.so
+TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSE.so
 SHOCO = shoco.o
 
 #Source Files
