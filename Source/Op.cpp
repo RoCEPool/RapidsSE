@@ -72,7 +72,7 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_pQueueRight   = new OperandQueue;
 
   m_nNode            = C_UNKNOWN;
-  m_nPartition       = C_UNKNOWN;
+  m_iPartition       = C_UNKNOWN;
   
   m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
@@ -151,7 +151,7 @@ void Op::vDump(i8 i_Op)
   vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { Markers(L%lld R0) :%-10s %s %s }\n"_Stz,
          i_Op,
          this->nNode(),
-         this->nPartition(),
+         this->iPartition(),
          this->szOpNm(),
          sArgs.szStz(),
          iLeftMarkers,
@@ -178,7 +178,7 @@ void Op::vAckJob(void)
            AM::szJobName(m_pOpJob),
            m_pStage->szStageNm(),
            m_nNode,
-           m_nPartition);
+           m_iPartition);
   
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pOpJob));
 }
@@ -486,20 +486,20 @@ void Op::vPartition(i8 nPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_nPartition = nPartition;
+  m_iPartition = nPartition;
   
   // set the node tis partition belongs to 
-  m_nNode = TablePtn::iPartitionToNode(m_nPartition);
+  m_nNode = TablePtn::iPartitionToNode(m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get partition from op                                                      */
 /*----------------------------------------------------------------------------*/
-i8 Op::nPartition(void)
+i8 Op::iPartition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_nPartition;
+  return m_iPartition;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -576,7 +576,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
            m_nNode,
-           m_nPartition,
+           m_iPartition,
            m_pPipelineJob,
            "vPipeOut :"_Stz,
            AM::pOperandName(pOperand),
@@ -593,7 +593,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     // get the op to forward to depending on the cross topology
     Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
                                  m_nNode,
-                                 m_nPartition,
+                                 m_iPartition,
                                  m_iNextOp);
     if (m_bAppendRight)
       pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
@@ -622,7 +622,7 @@ void Op::vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
            m_nNode,
-           m_nPartition,
+           m_iPartition,
            m_pPipelineJob,
            "vPipeOut :"_Stz,
            AM::pOperandName(pOperand),
@@ -656,7 +656,7 @@ void Op::vPipeToJob(Operand* pOperand)
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
            m_nNode,
-           m_nPartition,
+           m_iPartition,
            m_pPipelineJob,
            "vPipeToJob :"_Stz,
            AM::pOperandName(pOperand),
@@ -703,7 +703,7 @@ Operand* Op::pPopQueue(void)
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
            m_nNode,
-           m_nPartition,
+           m_iPartition,
            m_pPipelineJob,
            "pPopQueue :"_Stz,
            AM::pOperandName(pOperand),
@@ -744,7 +744,7 @@ Operand* Op::pPopQueueOoO(void)
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
            m_nNode,
-           m_nPartition,
+           m_iPartition,
            m_pPipelineJob,
            "pPopQueue :"_Stz,
            AM::pOperandName(pOperand),
@@ -942,7 +942,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      Strand* pStrand = pNextStage->pGetPartitionStrand(m_nPartition);
+      Strand* pStrand = pNextStage->pGetPartitionStrand(m_iPartition);
       i8 i_Ptn = pStrand->i_Ptn();
       vSendToPartition(pOperand, pTriggeringTask,bSet, eXmitKind, i_Ptn);
       break;
@@ -950,7 +950,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      i8 i_Nde = TablePtn::iPartitionToNode(m_nPartition);
+      i8 i_Nde = TablePtn::iPartitionToNode(m_iPartition);
       vSendToNode(pOperand, pTriggeringTask, bSet, eXmitKind,i_Nde);
       break;
     }
@@ -958,7 +958,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
       if (pOperand->bIsBuffer()) {
-        vSendToPartition(pOperand, pTriggeringTask, bSet, eXmitKind, m_nPartition);
+        vSendToPartition(pOperand, pTriggeringTask, bSet, eXmitKind, m_iPartition);
       }
       else {
         vSendToAllPartitions(pOperand, pTriggeringTask, bSet, eXmitKind);

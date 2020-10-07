@@ -28,7 +28,7 @@ namespace Pipelines
     OperandQueue*  m_pQueueRight;    // the input queue being processed
     
     i8             m_nNode;          // node no
-    i8             m_nPartition;     // partition no
+    i8             m_iPartition;     // partition no
     
     ePX            m_eTopologyX;     // cross topology
     i8             m_iNextStage;     // next stage in the cross topology
@@ -78,7 +78,7 @@ namespace Pipelines
     Stz* szOpNm(void);
     TagSet* pOpTagSet(void);
     void vPartition(i8 iPartition);
-    i8   nPartition(void);
+    i8   iPartition(void);
     bool bPause(void);
     bool bPeekQueue(void);
     bool bPeekQueueOoO(void);
