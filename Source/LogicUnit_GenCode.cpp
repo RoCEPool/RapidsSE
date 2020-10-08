@@ -1229,7 +1229,7 @@ void LogicUnit::vGenerateQuery301(void)
 
   // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_RET:"_Stz);
-  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
+  //vAddCode(EO_IXT_DUMP);
   vAddCode(EO_RETURN);
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   // END ROUTINE: LIM_SBR                                           Q301 LIM_SBR
@@ -1240,6 +1240,8 @@ void LogicUnit::vGenerateQuery301(void)
   // SUBROUTINE: OUT_AGG  --                                        Q301 OUT_AGG
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("OUT_AGG:"_Stz);
+  
+  //vAddCode(EO_IXT_DUMP);
   
   vAddCode(EO_RSB_DST_RESET);
 
@@ -1262,8 +1264,7 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_ORDERDATE);
   vAddCodeArg(EO_PAY_FETCH_COLI,(i8)2);
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_SHIPPRIORITY);
-
-
+  
   vDefineLabel("TRV_NXT:"_Stz);
   vAddCode(EO_IXT_TRV_NEXT);
   vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
@@ -1379,7 +1380,8 @@ void LogicUnit::vGenerateQuery302(void)
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_REVENUE);
   //vAddCode(EO_DUP);
   //vAddCode(EO_PRINT);
-  vAddCode(EO_ENTWRK_APPENDELMI);
+  //vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_ENTWRK_SETINTELM);
   
   vAddCodeArg(EO_ENTWRK_CREATEPAY, 3 * C_BYTES_PER_WORD);
 

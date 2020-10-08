@@ -251,8 +251,8 @@ i8 iDev_ENT_PUSHELMI0(void* aLU, void* aIXT)
   
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
-  i8 iRes = pDevIxt->m_aEnt->aKey()->iGetIntElm();
-  
+  i8 iRes = pDevIxt->m_aEnt->iIntElm0();
+
   return iRes;
 }
 
@@ -645,6 +645,19 @@ Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
   }
   else
     return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set m_aEnt                                                                 */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt)
+{
+  _static_
+  
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  DevIXT* pDevIXT = _pDevIXT(aIXT);
+  
+  pDevIXT->m_aEnt = (Ent*)aEnt;
 }
 
 /*----------------------------------------------------------------------------*/

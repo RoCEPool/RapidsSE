@@ -1246,7 +1246,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     
     eEO eCode = *aeCode++;
 #ifdef WITH_TRACE_LOGICUNIT
-    //vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
+    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
 #endif
     
     switch (eCode) { //+ExtractBegin
@@ -2114,7 +2114,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
                    + iBuffer * C_1MB
                    + C_CRW_FIRSTHEAD
                    + iItem * aRluCommon->m_nSrcHeadSize );
-
+        
         break;//+endCase
         
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src rsb
@@ -2441,9 +2441,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           
           //printf("  m_aAltEntArray %p\n",(void*)aRluCommon->m_aAltEntArray);
           //printf("  tNext %d\n",tNext);
-          
           aRluCommon->m_aAltEnt =
             (struct Ent_int*) ( (char*)aRluCommon->m_aAltEntArray + (tNext*32) ) ;
+          
+          //
+          // This is to fix the problem where the last entry in the index
+          // was being returned twice !!!
+          //
+          // we need to set the m_aEnt back in the m_pDevAltIxt so that when we come in
+          // and hit C_ENT_TICKET pMoveToNextEntry moves to the end rather than return
+          // the last entry again !!!
+          vDev_IXT_SET_ENT(pLU,aRluCommon->m_pDevAltIxt,aRluCommon->m_aAltEnt);
           
           //printf("  m_aAltEnt %p\n",(void*)aRluCommon->m_aAltEnt);
 

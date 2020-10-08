@@ -64,6 +64,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_INDEXTREE_DELETE"_Stz,(const void *) vDev_IXT_INDEXTREE_DELETE },
   { "vDev_IXT_INDEXTREE_SET"_Stz, (const void *) vDev_IXT_INDEXTREE_SET },
   { "aDev_IXT_INS_ENT"_Stz,       (const void *) aDev_IXT_INS_ENT       },
+  { "vDev_IXT_SET_ENT"_Stz,       (const void *) vDev_IXT_SET_ENT       },
   { "iDev_IXT_TMP_ENTRIES"_Stz,   (const void *) iDev_IXT_TMP_ENTRIES   },
 
   { "aDev_IXT_POS_ALTBYSRC"_Stz,  (const void *) aDev_IXT_POS_ALTBYSRC  },
@@ -80,7 +81,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_PAY_STORE_COLI"_Stz,    (const void *) vDev_PAY_STORE_COLI    },
   { "szDev_PAY_STORE_COLS"_Stz,   (const void *) szDev_PAY_STORE_COLS   },
   
-  { "vDev_INDEXTREE_DEV_SET"_Stz, (const void *) vDev_INDEXTREE_DEV_SET     },
+  { "vDev_INDEXTREE_DEV_SET"_Stz, (const void *) vDev_INDEXTREE_DEV_SET },
   
   { "vDev_PIX_STM_PRINT"_Stz,     (const void *) vDev_PIX_STM_PRINT     },
   
