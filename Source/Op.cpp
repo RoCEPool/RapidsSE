@@ -295,6 +295,7 @@ void Op::vDump(void)
   vTrace("Op\n"_Stz);
   vTrace("--\n"_Stz);
   vTrace("%p:\n"_Stz,this);
+  vTrace("m_sOpNm=%s\n"_Stz,m_sOpNm.azChar());
   vTrace("m_iNode=%lld\n"_Stz,m_iNode);
   vTrace("m_iPartition=%lld\n"_Stz,m_iPartition);
 }
@@ -500,8 +501,6 @@ void Op::vPartition(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  // TEMP TESTING HACK BY RAY 8 OCT 2020
-  // m_iPartition = 0;
   m_iPartition = iPartition;
 
   // set the node tis partition belongs to 
@@ -515,8 +514,6 @@ i8 Op::iPartition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  // TEMP TESTING HACK BY RAY 8 OCT 2020
-  // return 0;
   return m_iPartition;
 }
 

@@ -1580,6 +1580,7 @@ public:
   void vTableStreamDefFetch(void);
   void vTableStreamDefStore(void);
   void vTableTablePtnFetch(void);
+  void vTableTablePtnZero(void);
   void vTableVerify(void);
   void vTableVisualize(void);
 
