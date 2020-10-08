@@ -25,35 +25,36 @@ set -Eeo pipefail
 ### Constants                                                               ###
 ###############################################################################
 
-ROOT_DIR="${DIR}/../.."
-LAYOUT_DIR="${DIR}/../layout"
-OUTPUT_DIR="${DIR}/../output"
-SOURCE_DIR="${ROOT_DIR}/Source"
+readonly ROOT_DIR="${DIR}/../.."
+readonly LAYOUT_DIR="${DIR}/../layout"
+readonly OUTPUT_DIR="${DIR}/../output"
+readonly SOURCE_DIR="${ROOT_DIR}/Source"
 
-MAKESELF_DIR=$(find "${ROOT_DIR}/ThirdParty/" -type d -name "makeself*")
+readonly MAKESELF_DIR=$(find "${ROOT_DIR}/ThirdParty/" -type d -name "makeself*")
 
-GIT_CHECK_MODIFIED_FILES_CMD="git status -uno --porcelain"
-#GIT_HASH_CMD="git rev-parse --short HEAD"
-GIT_DESCRIBE_CMD="git describe --long"
-GIT_BRANCH_CMD="git rev-parse --abbrev-ref HEAD"
+readonly GIT_CHECK_MODIFIED_FILES_CMD="git status -uno --porcelain"
+readonly GIT_DESCRIBE_CMD="git describe --long"
+readonly GIT_BRANCH_CMD="git rev-parse --abbrev-ref HEAD"
 
-VERSION_FILE="${LAYOUT_DIR}/version"
-CREATE_LAYOUT_FILE="${DIR}/createlayout.sh"
+readonly VERSION_FILE="${LAYOUT_DIR}/version"
+readonly CREATE_LAYOUT_FILE="${DIR}/createlayout.sh"
 
-SETUP_SCRIPT="./setup.sh"  # relative to the directory of extracted files
-MAKESELF_ARGS=""
+readonly SETUP_SCRIPT="./setup.sh"  # relative to the directory of extracted files
+readonly MAKESELF_ARGS=""
 
 ###############################################################################
 ### Functions                                                               ###
 ###############################################################################
 
 # Print an error message to stderr and exit
-errorexit() {
+# Params: 
+#   $1 : Error message
+function errorExit() {
   >&2 echo -e "$1"
   exit 1
 }
 
-extractVersions() {
+function extractVersions() {
   # SE_VERSION_STR will contain a value that looks something like this:
   #  v0.5.0-SNAPSHOT-0-ga7c5a26
   # First validate that we've got a value that can be parsed.
@@ -74,7 +75,7 @@ extractVersions() {
     SE_COMMIT_HASH="${BASH_REMATCH[6]}"
 
   else
-    errorexit "Could not parse the SE version string: ${SE_VERSION_STR}"
+    errorExit "Could not parse the SE version string: ${SE_VERSION_STR}"
   fi
 
   # Form a string of the form x.y.z-label
@@ -97,7 +98,7 @@ if [ -n "${DEBUG}" ] ; then echo "Checking the version of bash: ${BASH_VERSION}"
 
 if [ "${BASH_VERSINFO:-0}" -lt 4 ]
 then
-  errorexit "Bash version 4 or later must be used. You have ${BASH_VERSION}"
+  errorExit "Bash version 4 or later must be used. You have ${BASH_VERSION}"
 fi
 
 
@@ -109,11 +110,11 @@ case "${OSTYPE}" in
     ;;
 
   darwin*)
-    errorexit "Packaging for MacOS not yet supported."
+    errorExit "Packaging for MacOS not yet supported."
     ;;
  
   *)
-    errorexit "Unable to determine the OS type: ${OSTYPE}"
+    errorExit "Unable to determine the OS type: ${OSTYPE}"
     ;;
 esac 
 
@@ -130,22 +131,22 @@ then
     echo "Cannot package SE while there are modified files that haven't been committed to git:"
     printf '%s\n' "${MODIFIED_FILES[@]}"
   )
-  errorexit "${MSG}"
+  errorExit "${MSG}"
 fi
 
 
 ### Check for the existence of Makeself ###
 if [ ! -d "${MAKESELF_DIR}" ]
 then
-  errorexit "Couldn't find the directory for the makeself installer: ${MAKESELF_DIR}"
+  errorExit "Couldn't find the directory for the makeself installer: ${MAKESELF_DIR}"
 fi
 
 
 ### Remove & recreate the layout and output directories to have a clean slate ###
 if [ -n "${DEBUG}" ] ; then echo "Cleaning & setting up the layout directory"; fi;
 
-rm -rf "${LAYOUT_DIR}/"* &>/dev/null || true
-rm -rf "${OUTPUT_DIR}/"* &>/dev/null || true
+rm -rf "${LAYOUT_DIR:?}/"* &>/dev/null || true
+rm -rf "${OUTPUT_DIR:?}/"* &>/dev/null || true
 mkdir -p "${LAYOUT_DIR}"
 mkdir -p "${OUTPUT_DIR}"
 

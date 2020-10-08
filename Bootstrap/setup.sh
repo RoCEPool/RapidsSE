@@ -3,6 +3,59 @@
 # This file is executed after the installation run file is unpacked.
 # It is used to install RapidsSE on a cluster, including each single node installation.
 
+###############################################################################
+### Environment Variables                                                   ###
+###############################################################################
+
+
+###############################################################################
+### Constants                                                               ###
+###############################################################################
+
+# For safety:
+#  -e          : exit immediately when a command fails.
+#  -E          : don't ignore ERR traps in shell functions and subshells.
+#  -o pipefail : exits if any process in a pipeline fails (normally it is just
+#                the last one).
+#  -u          : treat unset variables as an error and exit immediately.
+#  -x          : print each command before executing it (for debugging).
+set -Eeo pipefail
+
+readonly DIR=$(dirname "$0")
+
+
+readonly SETUP_FN_FILE="setup.fn"
+
+
+###############################################################################
+### Significant Global Variables                                            ###
+###############################################################################
+
+CLUSTER_INSTALL=1
+INTERACTIVE_INSTALL=1
+ADV_WIZARD=0
+DEBUG=0
+
+CONFIG_FILE_PATH=""
+
+###############################################################################
+### Functions                                                               ###
+###############################################################################
+
+# Include a file that contains all of the functions used within.
+source "${SETUP_FN_FILE}"
+
+
+###############################################################################
+### Script                                                                  ###
+###############################################################################
+
+# The main script starts here.
+
+# First process the arguments given to the script.
+processArgs "$@"
+
+
 echo "Starting the RapidsSE installation wizard"
 
 

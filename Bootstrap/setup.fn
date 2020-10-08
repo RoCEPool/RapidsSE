@@ -1,0 +1,190 @@
+#!/bin/bash
+# This file contains function definitions that are imported and used by setup.sh.
+
+# Guard against this file being executed directly.
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]
+then
+  >&2 echo "This file should be sourced, not executed: $0"
+  exit 1
+fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Print an error message to stderr and exit,
+## Params: 
+##   $1 : Error message
+##   $2..$n : (optional) other arguments to print.
+
+function errorExit() {
+  >&2 echo -e "$@"
+  exit 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints the acceptable arguments to the script and then exits.
+## Params: None
+
+function printUsageAndExit() {
+  echo "Usage: ./install_file.run [--node | --cluster]"
+  echo "                          [--interactive | --script]"
+  echo "                          --config <file>"
+  echo "                          [--basic | --adv/--advanced]"
+  echo "                          [--debug]"
+  echo "  Details:"
+  echo "    --cluster       [Default] Installs RapidsSE on a cluster."
+  echo "    --node          Installs RapidsSE on the current node using a supplied"
+  echo "                    configuration file. The --config option must be specified."
+  echo ""
+  echo "    --interactive   Uses a wizard to ask questions and prompt for answers"
+  echo "                    in order to build a cluster configuration."
+  echo "    --script        Does not prompt the user for input and uses the supplied"
+  echo "                    configuration. The --config option must be specified."
+  echo ""
+  echo "    --config <file> Specifies the path to an existing configuration"
+  echo "                    file that contains the cluster settings."
+  echo ""
+  echo "    --basic         [Default] Hides advanced questions during the cluster"
+  echo "                    installation wizard (if being used)."
+  echo "    --adv"
+  echo "    --advanced      Asks additional questions during the cluster"
+  echo "                    installation wizard."
+  echo ""
+  echo "    --debug         Displays more messages during execution."
+  exit 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Inspect all of the arguments, checking for incompatibilities, and set
+## the appropriate global variables
+## Params: the arguments to the script
+
+function processArgs() {
+
+  # Local variables that have value 1 if that argument has been specified.
+  local argCluster=0
+  local argNode=0
+  local argInteractive=0
+  local argScript=0
+  local argConfig=0
+  local argBasic=0
+  local argAdvanced=0
+
+  while [[ $# -gt 0 ]]
+  do
+    key="$1"
+    case "${key}" in
+  
+      --cluster)
+        CLUSTER_INSTALL=1
+        argCluster=1
+        shift # past argument
+        ;;
+  
+      --node)
+        CLUSTER_INSTALL=0
+        argNode=1
+        shift # past argument
+        ;;
+  
+      --interactive)
+        INTERACTIVE_INSTALL=1
+        argInteractive=1
+        shift # past argument
+        ;;
+  
+      --script)
+        INTERACTIVE_INSTALL=0
+        argScript=1
+        shift # past argument
+        ;;
+  
+      --config)
+        argConfig=1
+        CONFIG_FILE_PATH="$2"
+        shift # past argument
+        shift # past value
+        ;;
+  
+      --config=*)
+        argConfig=1
+        CONFIG_FILE_PATH="${key#*=}"
+        shift # past argument=value
+        ;;
+  
+      --basic)
+        ADV_WIZARD=0
+        argBasic=1
+        shift # past argument
+        ;;
+  
+      --adv|--advanced)
+        ADV_WIZARD=1
+        argAdvanced=1
+        shift # past argument
+        ;;
+  
+      --debug)
+        DEBUG=1
+        shift # past argument
+        ;;
+
+      --help|-h)
+        shift
+        printUsageAndExit
+        ;;
+
+      *)
+        shift
+        printUsageAndExit
+        ;;
+    esac
+  done
+
+  # Now we can check for invalid combinations of arguments.
+    # --cluster and --node
+    # --node    and --interactive
+    # --config  and no file specified
+    # --config  and file not found
+    # --basic   and --script
+    # --adv     and --script
+    # --basic   and --node
+    # --adv     and --node
+
+  local errmsg="Invalid combination of arguments specified: "
+
+  if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]];        then errorExit "${errmsg}" "--cluster" "--node"; fi;
+  if [[ ${argNode} -eq 1     && ${argInteractive} -eq 1 ]]; then errorExit "${errmsg}" "--node" "--interactive"; fi;
+  if [[ ${argBasic} -eq 1    && ${argScript} -eq 1 ]];      then errorExit "${errmsg}" "--basic" "--script"; fi;
+  if [[ ${argAdvanced} -eq 1 && ${argScript} -eq 1 ]];      then errorExit "${errmsg}" "--advanced" "--script"; fi;
+  if [[ ${argBasic} -eq 1    && ${argNode} -eq 1 ]];        then errorExit "${errmsg}" "--basic" "--node"; fi;
+  if [[ ${argAdvanced} -eq 1 && ${argNode} -eq 1 ]];        then errorExit "${errmsg}" "--advanced" "--node"; fi;
+
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE_PATH}" ]];  then errorExit "${errmsg}" "No config file specified"; fi;
+  if [[ ${argConfig} -eq 1 && -f "${CONFIG_FILE_PATH}" ]]; then errorExit "Config file does not exist: ${CONFIG_FILE_PATH}"; fi;
+
+
+  # Check for dependencies between combinations of arguments.
+    # --node   must have --config
+    # --script must have --config
+
+  if [[ ${argNode} -eq 1 && ${argConfig} -eq 0  ]] 
+  then 
+    errExit "Missing argument dependency: argument --node must also specify argument --config"
+  fi;
+
+  if [[ ${argScript} -eq 1 && ${argConfig} -eq 0  ]] 
+  then 
+    errExit "Missing argument dependency: argument --script must also specify argument --config"
+  fi;
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+

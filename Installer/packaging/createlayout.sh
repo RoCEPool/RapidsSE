@@ -44,4 +44,5 @@ cp "${ROOT_DIR}/Source/eEO.h"           "${LAYOUT_DIR}/Source"
 
 # Bootstrap
 cp "${ROOT_DIR}/Bootstrap/setup.sh"     "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/Bootstrap/setup.fn"     "${LAYOUT_DIR}"
 
