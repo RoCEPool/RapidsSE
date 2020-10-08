@@ -27,8 +27,8 @@ namespace Pipelines
     OperandQueue*  m_pQueueLeft;     // the input queue being processed
     OperandQueue*  m_pQueueRight;    // the input queue being processed
     
-    i8             m_nNode;          // node no
-    i8             m_nPartition;     // partition no
+    i8             m_iNode;          // node no
+    i8             m_iPartition;     // partition no
     
     ePX            m_eTopologyX;     // cross topology
     i8             m_iNextStage;     // next stage in the cross topology
@@ -60,6 +60,7 @@ namespace Pipelines
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
     void vDropTaskLock(void);
+    void vDump(void);
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     void vIncWorkDone(void);
@@ -70,15 +71,15 @@ namespace Pipelines
     void vNextOp(i8 iNextOp);
     i8   iNextStage(void);
     void vNextStage(i8 iNextStage);
-    i8   nNode(void);
-    void vNode(i8 nNode);
+    i8   iNode(void);
+    void vNode(i8 iNode);
     Word* pOperandHandler(i8 i_OperandKind);
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
     Job* pOpJob(void);
     Stz* szOpNm(void);
     TagSet* pOpTagSet(void);
     void vPartition(i8 iPartition);
-    i8   nPartition(void);
+    i8   iPartition(void);
     bool bPause(void);
     bool bPeekQueue(void);
     bool bPeekQueueOoO(void);
@@ -93,9 +94,11 @@ namespace Pipelines
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
     OperandQueue* pQueueLeft(void);
+    i8   nQueueLength(void);
     OperandQueue* pQueueRight(void);
     void vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet);
     void vSpawnOperatorJob(i8 iSessionId);
+    Stage* pStage(void);
     Stz* szStageName(void);
     Task* pTask(void);
     void vToCmdStr(Stz* szCmdStr);

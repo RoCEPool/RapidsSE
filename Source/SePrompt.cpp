@@ -292,6 +292,8 @@ void SePrompt::vPromptLoop(void)
     if (m_pJob->bHasTag(C_TAG_TAGS))
       m_pJob->pJobTags()->vDumpSet();
     
+    vMakeDiaryDir();
+    
     m_oTimer.vStart();
     
     Api::vMutexLock(m_pSession,m_pJob);
@@ -781,6 +783,36 @@ void SePrompt::vLogFreeSpace(void)
               "%s on node %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.szStz(),
               AM::szNodeNm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* make diary dir                                                             */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vMakeDiaryDir(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  if (! m_pJob->bDiaryTag())
+    return;
+  
+  TagSet* pJobTagSet = m_pJob->pJobTags();
+  
+  Stz* szNote = pJobTagSet->szValue(C_TAG_NOTE);
+  
+  s256 sSummary;
+  
+  s256 sDiaryPath;
+  
+  sDiaryPath.vSprint("/tmp/Diary_%s"_Stz,AM::szSummaryDir(sSummary,szNote));
+  
+  vTrace("vMakeDiaryDir: %s\n"_Stz,sDiaryPath.szStz());
+  
+  if (! Dir::bExists(sDiaryPath)) {
+    bool b = Dir::bMake(sDiaryPath);
+    ASSERT(b);
+  }
+  
+  pJobTagSet->vInsert(C_TAG_DIARYDIR,sDiaryPath);
 }
 
 /*----------------------------------------------------------------------------*/

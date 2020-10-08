@@ -8,7 +8,8 @@ namespace Expressions
   struct RluDiaryEnt
   {
     i8 m_iThreadNo;
-  
+    i8 m_nQueueLength;
+
     i2 m_i_EnumGroup;
     i2 m_i_Enum;
     i2 m_iItem;
@@ -30,6 +31,7 @@ namespace Expressions
     i8 m_nDiaryEnt;
   
     s32  m_sDiaryNm;
+    s256 m_sDiaryDir;
     s256 m_sTitle;
     s256 m_sJobNote;
 
@@ -45,12 +47,15 @@ namespace Expressions
     RluDiary(void);
    ~RluDiary(void) noexcept(false);
   
-    void vAddNote(i8 i_Sql, i8 i_Slot,
+    void vAddNote(i8 i_Sql, i8 i_Slot, i8 nQueueLength,
                   i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 i_nNanoSecs,
                   
                   i8 iAction, i8 i_ActEnumGroup, i8 i_ActEnum
                   );
 
+    Stz* szDiaryDir(void);
+    void vDiaryDir(Stz* szDiaryDir);
+    
     Stz* szDiaryNm(void);
     void vDiaryNm(Stz* szDiaryNm);
   

@@ -695,6 +695,23 @@ Stz* AM::szSummary(s256& sSummary)
 }
 
 /*----------------------------------------------------------------------------*/
+/* quick config summary usefule for dir name                                  */
+/*----------------------------------------------------------------------------*/
+Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
+{
+  Now spNow;
+  
+  sSummary.vSprint("%s_%lldN%lldP%lldT"_Stz,
+                   szNote,
+                   AM::nDefinedNodes(),
+                   AM::nSlotsPerNode(),
+                   AM::nThreads()
+                   );
+  
+  return sSummary.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)

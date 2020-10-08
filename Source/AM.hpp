@@ -291,6 +291,7 @@ namespace Oblique
     static void vSpawnJob_service(Job* pJob);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
     static Stz* szSummary(s256& sSummary);
+    static Stz* szSummaryDir(s256& sSummary, Stz* szNote);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

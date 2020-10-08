@@ -137,7 +137,7 @@ void Step::vInfoSetAddRowCount(void)
   
   // get the slot
   Job* pJob = m_pTask->m_pJob;
-  i8 iPtn = pJob->m_pOp->nPartition();
+  i8 iPtn = pJob->m_pOp->iPartition();
   
   i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
   

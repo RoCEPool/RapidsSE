@@ -93,6 +93,7 @@ namespace Prompt
     bool bIsPromptWord(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
+    void vMakeDiaryDir(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     ObjectsInPool*  pObjectsInPool(void);

@@ -944,6 +944,7 @@ public:
   void vLogicUnitCalledAgainFetch(void);
   void vLogicUnitCalledAgainStore(void);
   void vLogicUnitDiaryAction(void);
+  void vLogicUnitDiaryDir(void);
   void vLogicUnitDiaryFetch(void);
   void vLogicUnitDiaryJobNote(void);
   void vLogicUnitDiaryName(void);
@@ -1024,6 +1025,7 @@ public:
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
   void vOpPipeOut(void);
+  void vOpQueueLength(void);
   void vOpStageNameFetch(void);
   void vOpTopologyStore(void);
   void vOpXmitKindStore(void);
@@ -1578,6 +1580,7 @@ public:
   void vTableStreamDefFetch(void);
   void vTableStreamDefStore(void);
   void vTableTablePtnFetch(void);
+  void vTableTablePtnZero(void);
   void vTableVerify(void);
   void vTableVisualize(void);
 

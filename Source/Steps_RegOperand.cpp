@@ -271,7 +271,7 @@ void Step::vRegOperandInsdelIntoTable(void)
   ASSERT(*m_pLogicUnit->m_xpOperandA);
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
-  i8 iPartition = pOp->nPartition();
+  i8 iPartition = pOp->iPartition();
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
 
   if (CN_CRWBUFFER == (*m_pLogicUnit->m_xpOperandA)->eClass()) {
@@ -791,7 +791,7 @@ void Step::vRegOperandUpsertIntoTable(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
-  i8 iPartition = pOp->nPartition();
+  i8 iPartition = pOp->iPartition();
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
   
   m_pLogicUnit->m_xpTable->vUpsertBuffer(C_UNKNOWN, iSlot, pCrwBuffer);

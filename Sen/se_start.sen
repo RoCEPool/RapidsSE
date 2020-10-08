@@ -580,7 +580,7 @@
 
     stageD
 
-    stage stageD on origin :
+  stage stageD on origin :
 
     progress 'Load'    |
 

@@ -303,10 +303,9 @@ void LogicUnit::vDiaryJobNote(Stz *szJobNote)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add diary note                                                             */
+/* set diary dir                                                              */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
-                           i2 iAction, i2 i_ActEnumGroup, i2 i_ActEnum)
+void LogicUnit::vDiaryDir(Stz *szDir)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
@@ -314,7 +313,25 @@ void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
     m_pRluDiary = new RluDiary;
 
   
-  m_pRluDiary->vAddNote(m_xRluCommon.m_iSql,m_xRluCommon.m_i_Slot,                       
+  m_pRluDiary->vDiaryDir(szDir);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add diary note                                                             */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
+                           i2 iAction, i2 i_ActEnumGroup, i2 i_ActEnum,
+                           i8 nQueueLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  if (!m_pRluDiary)
+    m_pRluDiary = new RluDiary;
+
+  
+  m_pRluDiary->vAddNote(m_xRluCommon.m_iSql,m_xRluCommon.m_i_Slot,
+                        nQueueLength,
+                        
                         i_EnumGroup,i_Enum,iItem,nNanoSecs,
                         iAction,i_ActEnumGroup,i_ActEnum);
 }
@@ -377,7 +394,7 @@ void LogicUnit::vEnter(void)
   vDiaryNote(EG_ED,ED_ENTER,
               m_xRluCommon.m_nEnterCount,
               nNanoSeconds,
-              0,0,0);
+              0,0,0,-1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -402,7 +419,7 @@ void LogicUnit::vExit(void)
   vDiaryNote(EG_ED,ED_EXIT,
              m_xRluCommon.m_nEnterCount,
              nNanoSeconds,
-             0,0,0);
+             0,0,0,-1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -440,7 +457,7 @@ void LogicUnit::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_xRluCommon.m_i_Slot = AM::pTaskJob()->m_pOp->nPartition();
+  m_xRluCommon.m_i_Slot = AM::pTaskJob()->m_pOp->iPartition();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -836,12 +853,19 @@ void LogicUnit::vDiaryReport(void)
   
   s256 sDiaryPath;
   
-  sDiaryPath.vSprint("/tmp/RluDiary_%s_%lld_%lld.csv"_Stz,
-                     m_pRluDiary->szDiaryNm(),
-                     m_xRluCommon.m_iSql,
-                     m_xRluCommon.m_i_Slot
-                     );
-  
+  if (0 != m_xRluCommon.m_iSql)
+    sDiaryPath.vSprint("%s/RluDiary_%s_%lld_%lld.csv"_Stz,
+                       m_pRluDiary->szDiaryDir(),
+                       m_pRluDiary->szDiaryNm(),
+                       m_xRluCommon.m_iSql,
+                       m_xRluCommon.m_i_Slot
+                       );
+  else
+    sDiaryPath.vSprint("%s/RluDiary_%s.csv"_Stz,
+                       m_pRluDiary->szDiaryDir(),
+                       m_pRluDiary->szDiaryNm()
+                       );
+
   m_pRluDiary->vReportDiary(sDiaryPath);
   
 }
@@ -1213,7 +1237,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     *(++aiDstk) = iOuterArg0;
   }
   
-  aRluCommon->m_i_Slot = AM::pTaskJob()->m_pOp->nPartition();
+  aRluCommon->m_i_Slot = AM::pTaskJob()->m_pOp->iPartition();
   aRluCommon->m_nPtns  = AM::nPartitions();
   aRluCommon->m_iHash  = 0;
 

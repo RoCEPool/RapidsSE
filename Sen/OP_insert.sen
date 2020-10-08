@@ -97,6 +97,7 @@
   // get Table[] to be inserted into
   <tableNm> op__table if
     Table[].tablePtn@ to tablePtn[]
+    //Table[].tablePtnZero to tablePtn[] // hack by ray to simulate insert lock collision
     PipeIn[].pipeOut
   then
 
