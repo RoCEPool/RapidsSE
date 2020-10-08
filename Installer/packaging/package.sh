@@ -37,7 +37,7 @@ GIT_CHECK_MODIFIED_FILES_CMD="git status -uno --porcelain"
 GIT_DESCRIBE_CMD="git describe --long"
 GIT_BRANCH_CMD="git rev-parse --abbrev-ref HEAD"
 
-VERSION_FILE="${LAYOUT_DIR}/version.txt"
+VERSION_FILE="${LAYOUT_DIR}/version"
 CREATE_LAYOUT_FILE="${DIR}/createlayout.sh"
 
 SETUP_SCRIPT="./setup.sh"  # relative to the directory of extracted files
@@ -177,16 +177,24 @@ then
 fi
 
 
-### Generate version.txt file ###
-if [ -n "${DEBUG}" ] ; then echo "Generating the version.txt file"; fi;
+### Generate version file ###
+if [ -n "${DEBUG}" ] ; then echo "Generating the version file"; fi;
 (
-  echo "RapidsSE build information:"
-  echo "  version     ${SE_VERSION_STR}"
-  echo "  from branch ${SE_BRANCH}"
-  echo "  by          ${USER}"
-  echo "  on          ${HOSTNAME}"
-  echo "  at          $(date)"
+  echo "# RapidsSE build information:"
+  echo "#   version     ${SE_VERSION_STR}"
+  echo "#   from branch ${SE_BRANCH}"
+  echo "#   by          ${USER}"
+  echo "#   on          ${HOSTNAME}"
+  echo "#   at          $(date)"
   echo ""
+  echo "SE_VERSION_STR=\"${SE_VERSION_STR}\""
+  echo "SE_MAJOR_VER=\"${SE_MAJOR_VER}\""
+  echo "SE_MINOR_VER=\"${SE_MINOR_VER}\""
+  echo "SE_PATCH_VER=\"${SE_PATCH_VER}\""
+  echo "SE_VER_LABEL=\"${SE_VER_LABEL}\""
+  echo "SE_BUILD_NUM=\"${SE_BUILD_NUM}\""
+  echo "SE_COMMIT_HASH=\"${SE_COMMIT_HASH}\""
+  echo "SE_BRANCH=\"${SE_BRANCH}\""
 )> "${VERSION_FILE}"
 
 
