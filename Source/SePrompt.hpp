@@ -74,7 +74,7 @@ namespace Prompt
     bool bBlankLine(void);
     BPA* pBPA(void);
     void vDebugMode(i8 iDebugMode);
-    void vDemo(void);
+    bool bDemo(void);
     void vDivision(Stz* szDivision);
     i8   iDivisionNo(void);
     bool bContinue(void);
@@ -88,6 +88,7 @@ namespace Prompt
     void vExtractCtlTags(void);
     bool bExtractSupTags(void);
     void vFocalOutline(s4K& sOutline);
+    bool bHandleDemo(void);
     void vInitialSettings(void);
     TokenVec* pInpTknVec(void);
     bool bIsPromptWord(void);
