@@ -98,6 +98,8 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
             StrLib::bExtractInteger(&pParam, &iParam, nDigits);
             //vTrace("Got Param %lld\n"_Stz, iParam);
             Token* pTkn = pLitTknVec->pGet(iParam);
+            if (pTkn->eToken() != TN_STRING)
+              THROW_USER("vCollectOpcode"_Stz);
             vAddCodeArg((eEO)i_OpCode, pTkn->szChars());
           }
           else
@@ -132,6 +134,8 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
               StrLib::bExtractInteger(&pParam, &iParam, nDigits);
               //vTrace("Got Param %lld\n"_Stz, iParam);
               Token* pTkn = pLitTknVec->pGet(iParam);
+              if (pTkn->eToken() != TN_INTEGER)
+                THROW_USER("vCollectOpcode"_Stz);
               iArg = pTkn->iToI8();
             }
             else {
@@ -158,6 +162,8 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
             StrLib::bExtractInteger(&pParam, &iParam, nDigits);
             //vTrace("Got Param %lld\n"_Stz, iParam);
             Token* pTkn = pLitTknVec->pGet(iParam);
+            if (pTkn->eToken() != TN_STRING)
+              THROW_USER("vCollectOpcode"_Stz);
             vAddCodeString((eEO)i_OpCode, pTkn->szChars());
           }
           else
