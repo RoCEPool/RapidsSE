@@ -219,7 +219,7 @@
       start | periodicOp once | stageB
 
     stage stageB on all partitions :
-      compactIdxPtn $tableNm $indexNm | stageC
+      compactIndexPtn $tableNm $indexNm | stageC
 
     stage stageC on origin :
       output | sink | stageA

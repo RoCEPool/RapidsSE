@@ -5,30 +5,68 @@
 " OP_compactIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* action                                                                     */
+/* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: compactIdx_action
+: CompactIndexPtn_PulseMarker \handler
 
-  <tableNm> <indexNm> op__table_index if
-    index[].compact
-    true
-  else
-    false
-  then
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  PipeIn[].pipeOut
+
+  // compact the index
+  index[].compactPtn
+
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
 ;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: CompactIndexPtn_StartMarker \handler
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  // check if we can scan the table
+  <tableNm> <indexNm> op__table_index if
+    PipeIn[].pipeOut
+  then
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* execute for compactIndex req                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : CompactIndexPtn_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: CompactIndexPtn_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: CompactIndexPtn_StartMarker ZK_STARTMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: compactIdx :: compactIdx   <tableNm> <indexNm> ;
+cmdSyntax: compactIndexPtn :: compactIndexPtn <tableNm> <indexNm> ;
 
-: compactIdx _cmdTags tagCopy: liteOp_tags
-  tags{
-    <cmdDesc>   = "--desc for op--"
-    <params>    = 2
-  }
+: compactIndexPtn _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc>  = "--desc for op--" }
 ;
-    
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

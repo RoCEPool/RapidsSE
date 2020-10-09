@@ -15,6 +15,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index[].columnCount@"_Stz,  &Step::vIndexColumnCountFetch);
   vAddStep("index[].column@"_Stz,       &Step::vIndexColumnFetch);
   vAddStep("index[].compact"_Stz,       &Step::vIndexCompact);
+  vAddStep("index[].compactPtn"_Stz,    &Step::vIndexCompactPtn);
   vAddStep("index[].deleteNext"_Stz,    &Step::vIndexDeleteNext);
   vAddStep("index[].dump"_Stz,          &Step::vIndexDump);
   vAddStep("index[].genEntBuffer"_Stz,  &Step::vIndexGenEntBuffer);

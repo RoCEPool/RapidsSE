@@ -92,6 +92,7 @@ assert::stack_0
         "OP_catFile.sen"              include
         "OP_changeFolder.sen"         include
         "OP_chunk.sen"                include
+        "OP_compactIdx.sen"           include
         "OP_compactIndex.sen"         include
         "OP_connector.sen"            include
         "OP_consume.sen"              include
