@@ -51,7 +51,7 @@ EO_PRINTF "**STARTMARKER_HANDLER : 301**\n"
   EO_POP
 
   EO_TABLENM_ALT_SET "lineitem"
-  EO_INDEXNM_ALT_SET "lineitem_Idx1"
+  EO_INDEXNM_ALT_SET "lineitem_Idx2"
 
   EO_REG_INDEXDEF_NEW "idx_int"
   EO_PUSH_COLUMN_TYPE CT_INTEGER
@@ -165,7 +165,7 @@ Label QRY_301_DONE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SUBROUTINE: AGG_REV  --                                        Q301 AGG_REV
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Label AGG_REV
+Label AGG_REV
   //EO_PRINTF "AGG_REV\n"
   EO_RSB_DST_ZERO
 
@@ -178,12 +178,13 @@ Label QRY_301_DONE
 
   EO_ENTWRK_RESET
 
+  EO_RSB_SRC_PRINT
   EO_RSB_SRC_PUSHCOLI 0 //Q300_ORDERKEY
   EO_ENTWRK_SETINTELM
   EO_IXT_POS_ALTBYWRK
   EO_JMP_FALSE RET_AGG_f
 
-  Label NXT_AGG
+Label NXT_AGG
   EO_IXT_ALT_NEXT
   EO_JMP_FALSE RET_AGG_f
   EO_IXT_CMP_WRKALT
@@ -192,7 +193,7 @@ Label QRY_301_DONE
   EO_CRW_ALT_DEREF
 
   EO_COL_ALT_PUSHONE 10 //L_SHIPDATE
-  EO_DATE "1995-03-15"
+  EO_DATE PARAM2
   EO_GREATERTHAN
   EO_JMP_FALSE NXT_AGG
 
@@ -209,7 +210,7 @@ Label QRY_301_DONE
   EO_DIVIDE
 
   EO_RSB_DST_POPCOLI 1 //Q301_REVENUE
-
+  //EO_RSB_DST_PRINT
   EO_JMP NXT_AGG
 
 Label RET_AGG_f
@@ -223,15 +224,16 @@ Label RET_AGG_f
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SUBROUTINE: LIM_SBR  --                                        Q301 LIM_SBR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Label LIM_SBR
-  //EO_PRINTF "LIM_SBR\n"
+Label LIM_SBR
+  //EO_PRINTF "LIM_SBR : 301**\n"
   //EO_IXT_TMP_ENTRIES
   //EO_PRINT
 
   EO_IXT_TMP_ENTRIES
-  EO_INTEGER 10
+  EO_INTEGER PARAM3
   EO_LESSTHAN
   EO_JMP_TRUE LIM_INS
+  //EO_JMP LIM_INS
 
   // -- -- -- -- -- -- -- -- --
   Label LIM_TST
@@ -270,11 +272,11 @@ Label RET_AGG_f
   EO_PAY_STORE_COLI 1
   EO_RSB_DST_PUSHCOLI 3 //Q301_SHIPPRIORITY
   EO_PAY_STORE_COLI 2
-
+  //EO_RSB_DST_PRINT
 
   // -- -- -- -- -- -- -- -- --
   Label LIM_RET
-  //EO_IXT_DUMP,(i8)0
+  //EO_IXT_DUMP
   EO_RETURN
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   // END ROUTINE: LIM_SBR                                           Q301 LIM_SBR
@@ -284,7 +286,8 @@ Label RET_AGG_f
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SUBROUTINE: OUT_AGG  --                                        Q301 OUT_AGG
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Label OUT_AGG
+Label OUT_AGG
+  //EO_PRINTF "OUT_AGG : 301**\n"
 
   EO_RSB_DST_RESET
 
@@ -308,6 +311,7 @@ Label RET_AGG_f
   EO_PAY_FETCH_COLI 2
   EO_RSB_DST_POPCOLI 3 // Q301_SHIPPRIORITY
 
+  //EO_RSB_DST_PRINT
 
   Label TRV_NXT
   EO_IXT_TRV_NEXT
