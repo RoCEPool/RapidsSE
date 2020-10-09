@@ -29,7 +29,7 @@
   // check if start has already been errored
   Job_Pipeline::isErrored not if
 
-    grid::thisNodeName@ "(%v) sinkOP got error marker" .printf
+    //grid::thisNodeName@ "(%v) sinkOP got error marker" .printf
 
     // mark pipeline as being errored
     true Job_Pipeline::errored

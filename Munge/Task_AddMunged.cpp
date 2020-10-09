@@ -14529,7 +14529,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // check if start has already been errored\n"
     "  Job_Pipeline::isErrored not if\n"
     "\n"
-    "    grid::thisNodeName@ \"(%v) sinkOP got error marker\" .printf\n"
+    "    //grid::thisNodeName@ \"(%v) sinkOP got error marker\" .printf\n"
     "\n"
     "    // mark pipeline as being errored\n"
     "    true Job_Pipeline::errored\n"

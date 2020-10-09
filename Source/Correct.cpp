@@ -118,24 +118,26 @@ void Correctness::vThreadCallStackDump(void)
                                         i8    iLineNo,
                                         Stz*  szFormat,...)
 {
-  fprintf(stderr,
-          "Correctness::vThrow:\n"
-          "eKind = %lld\n"
-          "eSeverity = %lld\n"
-          "azFunc = %s\n"
-          "azFilePath = %s\n"
-          "iLineNo = %lld\n"
-          "szFormat = %s\n",
-          (i8)eKind,
-          (i8)eSeverity,
-          azFunc,
-          azFilePath,
-          (i8)iLineNo,
-          szFormat->azChar()
-          );
-  
-  // put a breakpoint here to trap throws
-  sleep(0);
+  if (AM::bDeveloper()) {
+    fprintf(stderr,
+            "Correctness::vThrow:\n"
+            "eKind = %lld\n"
+            "eSeverity = %lld\n"
+            "azFunc = %s\n"
+            "azFilePath = %s\n"
+            "iLineNo = %lld\n"
+            "szFormat = %s\n",
+            (i8)eKind,
+            (i8)eSeverity,
+            azFunc,
+            azFilePath,
+            (i8)iLineNo,
+            szFormat->azChar()
+            );
+    
+    // put a breakpoint here to trap throws
+    sleep(0);
+  }
   
   char zFileNm[256];
   StrLib::vSubPath(zFileNm,(char*)azFilePath);
@@ -145,7 +147,7 @@ void Correctness::vThreadCallStackDump(void)
   char zCondition[256];
   StrLib::vSprint(zCondition,xArgs,(char*)szFormat);
   va_end(xArgs);
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Exception xException(eKind,eSeverity,azFunc,zCondition,zFileNm,iLineNo);
