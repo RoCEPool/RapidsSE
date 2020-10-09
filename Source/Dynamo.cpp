@@ -584,7 +584,7 @@ void Dynamo::vBeginToken(i8 i_Tkn)
   m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
   
 #ifdef WITH_TRACE_DYNAMO
-  vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szChars());
+  //vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szChars());
 #endif
 }
 
