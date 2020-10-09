@@ -25,7 +25,7 @@ readonly DIR=$(dirname "$0")
 
 
 readonly SETUP_FN_FILE="setup.fn"
-
+readonly VERSION_FILE="version"
 
 ###############################################################################
 ### Significant Global Variables                                            ###
@@ -47,6 +47,12 @@ CONFIG_FILE=""
 # The array of node names.
 declare -a NODE_LIST
 
+# The prefix given to each node name before its sequence number.
+NODE_NAME_PREFIX="NODE"
+
+# The unique number used with the above NODE_NAME_PREFIX to form the node name.
+NODE_SEQ_NUM=0
+
 ###############################################################################
 ### Functions                                                               ###
 ###############################################################################
@@ -61,11 +67,12 @@ source "${SETUP_FN_FILE}"
 
 # The main script starts here.
 
-findInstallFile
-
-
 # Process the arguments given to the script.
 processArgs "$@"
+
+if [ -z "${INSTALL_FILE}" ]; then
+  findInstallFile
+fi
 
 if [ ${DEBUG} -eq 1 ]; then
   # Print out current settings from the arguments
@@ -138,6 +145,8 @@ fi
 #  If an installation already exists on any node, confirm that the user wishes to overwrite it.
 #  Check that node names don't contain spaces or special characters.
 #  Check that node names are unique.
+#  Check that there is at least one hostname.
+#  Check that each hostname is resolvable.
 
 # If there are no problems with the sanity checks then continue.
 # Otherwise prompt the user and ask if they wish to edit the information entered.

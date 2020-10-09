@@ -30,6 +30,35 @@ function errorExit() {
   exit 1
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints the members of an array (one per line) with an indentation.
+## Params:
+##  $1 : The number of indent spaces on each line.
+##  $@ : The array to print.
+
+function printIndentArray() {
+
+  local indents=$1
+  shift
+  local array=($@)
+
+  if [ -z "${indents}" ]; then
+   indents=2
+  fi
+
+  local var
+
+  for var in ${array[*]}
+  do
+    # Intentional to preserve meaning of seq operator.
+    # shellcheck disable=SC2046 
+    printf "%0.s " $(seq 1 ${indents})
+    printf '%s\n' "${var}"
+  done
+}
+
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Prints the acceptable arguments to the script and then exits.
 ## Params: None
@@ -295,6 +324,8 @@ function doClusterInstall() {
   # whether an existing config file is being used.
 
   if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
+    displayWelcome
+
     if [ -n "${CONFIG_FILE}" ]; then
       # We have been given a config file.
       true
@@ -307,8 +338,9 @@ function doClusterInstall() {
 
     else
       # No config file given. We need to prompt the user to configure the cluster.
-      true
-      # Build configuration
+      echo "Let's build a cluster configuration."
+
+      createConfiguration
       # Present summary
       # Edit ?
       # Validate config/environment
@@ -331,17 +363,271 @@ function doClusterInstall() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Create a cluster configuration interactively by prompting the user.
+## Params: None
+
+function createConfiguration() {
+  
+  # (advanced) node name prefix
+  askNamePrefix
+
+  # hostnames
+  askHostnames
+
+  # (advanced) port
+  askPort
+
+  # installation directory
+  askInstallDir
+
+  # shared memory size
+  askShmSize
+
+  # (advanced) partitions
+  askPartitions
+
+  # (advanced) threads
+  askThreads
+
+  # (advanced) additional parameters
+  askParams
+
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Welcomes the user to the interactive install wizard.
+## Params: None
+
+function displayWelcome() {
+  clear
+  source "${VERSION_FILE}"
+
+  echo "Welcome to the RapidsSE installation wizard for RapidsSE version ${SE_VERSION_STR}."
+  echo ""
+  echo "This will guide you through the process of installing and setting up RapidsSE"
+  echo "on a cluster."
+  echo ""
+}
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a prefix to be used for each node name.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askNamePrefix() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+
+  local line
+
+  echo ""
+  echo "Node Name Prefix"
+  echo "----------------"
+  echo ""
+  echo "Please enter a prefix for naming each node. A sequence number will be applied"
+  echo "after this prefix. e.g a prefix of 'NODE' will result in NODE1, NODE2, etc."
+  echo "The node name prefix must not contain spaces."
+  echo "Press return with a blank input to accept the default value."
+
+  while true
+  do
+    echo ""
+    echo -n "Enter a node name prefix [default: ${NODE_NAME_PREFIX}] : "
+    IFS=$'\n' read -r line
+
+    # check for whitespace
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: node name prefix cannot contain whitespace."
+      continue
+    fi
+
+    # Check if using the default value
+    if [ -z "${line}" ]; then 
+      break
+    fi
+
+    # Save the value
+    NODE_NAME_PREFIX="${line}"
+    break
+  done
+
+}
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter all of the hostnames/IPs where RapidsSE is to run.
+## Params: None
+
+function askHostnames() {
+
+  declare -a hostnames
+  local line
+
+  echo ""
+  echo "Hostnames"
+  echo "---------"
+  echo ""
+  echo "Let's collect the hostnames/IP addresses of all the machines that RapidsSE"
+  echo "is to be installed on (including the current machine, if applicable)."
+  echo ""
+  
+  # Get the first host
+  while true
+  do
+    echo ""
+    echo -n "Enter a hostname/IP and press return : "
+    IFS=$'\n' read -r line
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: hostname/IP cannot contain whitespace."
+      continue
+    fi
+
+    if [ -z "${line}" ]; then 
+      echo "Invalid input: must have at least one hostname."
+      continue 
+    fi
+
+    hostnames+=(${line})
+    break
+  done
+
+  # Get any subsequent hosts
+  while true
+  do
+    echo ""
+    echo -n "Enter another hostname/IP, or an empty line to finish : "
+    IFS=$'\n' read -r line
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: hostname/IP cannot contain whitespace."
+      continue
+    fi
+
+    if [ -z "${line}" ]; then 
+      break
+    fi
+
+    hostnames+=(${line})
+  done
+
+  echo ""
+  echo "Got the following hostnames / IP addresses:"
+  printIndentArray 2 "${hostnames[@]}"
+
+  # Build the node list
+  buildNodeList ${#hostnames}
+
+  # Build the node_cfg associative arrays
+  createNodeConfigs "${NODE_LIST[@]}"
+
+  # set the hostname field in each node_cfg associative array
+}
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Populates the NODE_LIST array with node names based on a given count.
+## Params:
+##  $1 : count of nodes
+
+function buildNodeList() {
+
+  local count=$1
+  local i=1
+
+  for i in $(seq 1 ${count})
+  do
+    NODE_SEQ_NUM=$((NODE_SEQ_NUM+1))
+    NODE_LIST+=("${NODE_NAME_PREFIX}${NODE_SEQ_NUM}")
+  done
+}
+
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default port number that each SE instance will listen on.
+## This only runs when ADV_WIZARD=1.
+## Params: None
 
+function askPort() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default installation directory for each SE instance
+## on each node.
+## Params: None
+
+function askInstallDir() {
+  true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default size (in GB) for the shared memory segment
+## for all nodes.
+## Params: None
+
+function askShmSize() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+  
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default number of partitions for each SE instance.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askPartitions() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default number of threads for each SE instance.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askThreads() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter any other command line parameters to be applied to all
+## SE instances when they are started or stopped.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askParams() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function doNodeInstall() {
   true

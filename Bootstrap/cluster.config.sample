@@ -28,14 +28,16 @@ NODE_CFG_NODE1["dir"]="/opt/rapidsse"
 NODE_CFG_NODE1["shmGB"]="32"
 NODE_CFG_NODE1["partitions"]="8"
 NODE_CFG_NODE1["threads"]="16"
+NODE_CFG_NODE1["params"]=""
 
 # Definition of node NODE2
 declare -A NODE_CFG_NODE2
-NODE_CFG_NODE1["name"]="NODE2"
-NODE_CFG_NODE1["host"]="myhost2.corp"
-NODE_CFG_NODE1["port"]="5541"
-NODE_CFG_NODE1["dir"]="/opt/rapidsse"
-NODE_CFG_NODE1["shmGB"]="32"
-NODE_CFG_NODE1["partitions"]="8"
-NODE_CFG_NODE1["threads"]="16"
+NODE_CFG_NODE2["name"]="NODE2"
+NODE_CFG_NODE2["host"]="myhost2.corp"
+NODE_CFG_NODE2["port"]="5541"
+NODE_CFG_NODE2["dir"]="/opt/rapidsse"
+NODE_CFG_NODE2["shmGB"]="32"
+NODE_CFG_NODE2["partitions"]="8"
+NODE_CFG_NODE2["threads"]="16"
+NODE_CFG_NODE2["params"]=""
 
