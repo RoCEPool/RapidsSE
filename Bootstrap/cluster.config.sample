@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# A sample cluster config file.
+# A cluster.config file can be created by hand (see note), or automatically
+# via the installation wizard.
+#
+# Note: This file is a bash script expected to be sourced by other scripts.
+#       As such it must be a syntactically valid bash script.
+
+
+# Guard against direct execution
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]
+then
+  >&2 echo "This file should be sourced, not executed: $0"
+  exit 1
+fi
+
+# This variable identifies the unique node names of each node in the cluster.
+# These node names are used as suffixes in variables below to configure each of them.
+NODE_LIST=("NODE1" "NODE2")
+
+# Definition of node NODE1
+declare -A NODE_CFG_NODE1
+NODE_CFG_NODE1["name"]="NODE1"
+NODE_CFG_NODE1["host"]="myhost1.corp"
+NODE_CFG_NODE1["port"]="5541"
+NODE_CFG_NODE1["dir"]="/opt/rapidsse"
+NODE_CFG_NODE1["shmGB"]="32"
+NODE_CFG_NODE1["partitions"]="8"
+NODE_CFG_NODE1["threads"]="16"
+
+# Definition of node NODE2
+declare -A NODE_CFG_NODE2
+NODE_CFG_NODE1["name"]="NODE2"
+NODE_CFG_NODE1["host"]="myhost2.corp"
+NODE_CFG_NODE1["port"]="5541"
+NODE_CFG_NODE1["dir"]="/opt/rapidsse"
+NODE_CFG_NODE1["shmGB"]="32"
+NODE_CFG_NODE1["partitions"]="8"
+NODE_CFG_NODE1["threads"]="16"
+

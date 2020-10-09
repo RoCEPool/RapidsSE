@@ -9,13 +9,24 @@ then
 fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Print an error message to stderr,
+## Params: 
+##   $1 : Error message
+##   $2..$n : (optional) other arguments to print.
+
+function printError() {
+  >&2 echo -e "ERROR: $*"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Print an error message to stderr and exit,
 ## Params: 
 ##   $1 : Error message
 ##   $2..$n : (optional) other arguments to print.
 
 function errorExit() {
-  >&2 echo -e "$@"
+  >&2 echo -e "ERROR: $*"
   exit 1
 }
 
@@ -24,11 +35,12 @@ function errorExit() {
 ## Params: None
 
 function printUsageAndExit() {
-  echo "Usage: ./install_file.run [--node | --cluster]"
-  echo "                          [--interactive | --script]"
-  echo "                          --config <file>"
-  echo "                          [--basic | --adv/--advanced]"
-  echo "                          [--debug]"
+  echo ""
+  echo "Usage: ./<install_file>.run [--node | --cluster]"
+  echo "                            [--interactive | --script]"
+  echo "                            --config <file>"
+  echo "                            [--basic | --adv/--advanced]"
+  echo "                            [--debug]"
   echo "  Details:"
   echo "    --cluster       [Default] Installs RapidsSE on a cluster."
   echo "    --node          Installs RapidsSE on the current node using a supplied"
@@ -151,15 +163,45 @@ function processArgs() {
 
   local errmsg="Invalid combination of arguments specified: "
 
-  if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]];        then errorExit "${errmsg}" "--cluster" "--node"; fi;
-  if [[ ${argNode} -eq 1     && ${argInteractive} -eq 1 ]]; then errorExit "${errmsg}" "--node" "--interactive"; fi;
-  if [[ ${argBasic} -eq 1    && ${argScript} -eq 1 ]];      then errorExit "${errmsg}" "--basic" "--script"; fi;
-  if [[ ${argAdvanced} -eq 1 && ${argScript} -eq 1 ]];      then errorExit "${errmsg}" "--advanced" "--script"; fi;
-  if [[ ${argBasic} -eq 1    && ${argNode} -eq 1 ]];        then errorExit "${errmsg}" "--basic" "--node"; fi;
-  if [[ ${argAdvanced} -eq 1 && ${argNode} -eq 1 ]];        then errorExit "${errmsg}" "--advanced" "--node"; fi;
+  if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]];        then 
+    printError "${errmsg}" "--cluster" "--node"
+    printUsageAndExit
+  fi
 
-  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE_PATH}" ]];  then errorExit "${errmsg}" "No config file specified"; fi;
-  if [[ ${argConfig} -eq 1 && -f "${CONFIG_FILE_PATH}" ]]; then errorExit "Config file does not exist: ${CONFIG_FILE_PATH}"; fi;
+  if [[ ${argNode} -eq 1     && ${argInteractive} -eq 1 ]]; then 
+    printError "${errmsg}" "--node" "--interactive"
+    printUsageAndExit
+  fi
+
+  if [[ ${argBasic} -eq 1    && ${argScript} -eq 1 ]];      then 
+    printError "${errmsg}" "--basic" "--script" 
+    printUsageAndExit
+  fi
+
+  if [[ ${argAdvanced} -eq 1 && ${argScript} -eq 1 ]];      then 
+    printError "${errmsg}" "--advanced" "--script"
+    printUsageAndExit
+  fi
+
+  if [[ ${argBasic} -eq 1    && ${argNode} -eq 1 ]];        then 
+    printError "${errmsg}" "--basic" "--node"
+    printUsageAndExit
+  fi
+
+  if [[ ${argAdvanced} -eq 1 && ${argNode} -eq 1 ]];        then 
+    printError "${errmsg}" "--advanced" "--node" 
+    printUsageAndExit
+  fi
+
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE_PATH}" ]];  then 
+    printError "${errmsg}" "No config file specified" 
+    printUsageAndExit
+  fi
+
+  if [[ ${argConfig} -eq 1 && -f "${CONFIG_FILE_PATH}" ]]; then 
+    printError "Config file does not exist: ${CONFIG_FILE_PATH}"
+    printUsageAndExit 
+  fi
 
 
   # Check for dependencies between combinations of arguments.
@@ -168,16 +210,87 @@ function processArgs() {
 
   if [[ ${argNode} -eq 1 && ${argConfig} -eq 0  ]] 
   then 
-    errExit "Missing argument dependency: argument --node must also specify argument --config"
-  fi;
+    printError "Missing argument dependency: argument --node must also specify argument --config"
+    printUsageAndExit
+  fi
 
   if [[ ${argScript} -eq 1 && ${argConfig} -eq 0  ]] 
   then 
-    errExit "Missing argument dependency: argument --script must also specify argument --config"
-  fi;
+    printError "Missing argument dependency: argument --script must also specify argument --config"
+    printUsageAndExit
+  fi
 
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Install the product across the cluster.
+## Params: None
+
+function doClusterInstall() {
+  # Need to consider if this installation is interactive or scripted, or
+  # whether an existing config file is being used.
+
+  if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
+    if [ -n "${CONFIG_FILE_PATH}" ]; then
+      # We have been given a config file
+      true
+      # Load and validate config
+      # Present summary
+      # Edit ?
+      # Validate config/environment
+      # Write config file?
+      # Install all nodes
+
+    else
+      # No config file given. We need to prompt the user to configure the cluster.
+      true
+      # Build configuration
+      # Present summary
+      # Edit ?
+      # Validate config/environment
+      # Write config file?
+      # Install all nodes
+    fi
+
+  else 
+    # Scripted installation
+    
+    # Assert that we have a config file
+    [ -f "${CONFIG_FILE_PATH}" ] || errorExit "Config file does not exist: ${CONFIG_FILE_PATH}"
+
+    # Load and validate config
+    # Validate config/environment
+    # Write config file?
+    # Install all nodes
+    
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function doNodeInstall() {
+  true
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

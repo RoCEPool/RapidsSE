@@ -22,13 +22,13 @@ cp -r "${ROOT_DIR}/Commands" "${LAYOUT_DIR}"
 TCC_DIR="ThirdParty/tcc/lib/linux/centos7/tcc"
 mkdir -p "${LAYOUT_DIR}/${TCC_DIR}"
 mkdir -p "${LAYOUT_DIR}/${TCC_DIR}/include"
-cp "${ROOT_DIR}/${TCC_DIR}/libtcc1.a" "${LAYOUT_DIR}/${TCC_DIR}"
-cp "${ROOT_DIR}/${TCC_DIR}/include/"* "${LAYOUT_DIR}/${TCC_DIR}/include"
+cp "${ROOT_DIR}/${TCC_DIR}/libtcc1.a"   "${LAYOUT_DIR}/${TCC_DIR}"
+cp "${ROOT_DIR}/${TCC_DIR}/include/"*   "${LAYOUT_DIR}/${TCC_DIR}/include"
 
 # dbgen
 mkdir -p "${LAYOUT_DIR}/dbgen"
-cp "${ROOT_DIR}/dbgen/dbgen"     "${LAYOUT_DIR}/dbgen"
-cp "${ROOT_DIR}/dbgen/dists.dss" "${LAYOUT_DIR}/dbgen"
+cp "${ROOT_DIR}/dbgen/dbgen"            "${LAYOUT_DIR}/dbgen"
+cp "${ROOT_DIR}/dbgen/dists.dss"        "${LAYOUT_DIR}/dbgen"
 
 # Source
 mkdir -p "${LAYOUT_DIR}/Source"
@@ -43,6 +43,7 @@ cp "${ROOT_DIR}/Source/RluCommon.h"     "${LAYOUT_DIR}/Source"
 cp "${ROOT_DIR}/Source/eEO.h"           "${LAYOUT_DIR}/Source"
 
 # Bootstrap
-cp "${ROOT_DIR}/Bootstrap/setup.sh"     "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/Bootstrap/setup.fn"     "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/Bootstrap/setup.sh"              "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/Bootstrap/setup.fn"              "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/Bootstrap/cluster.config.sample" "${LAYOUT_DIR}"
 

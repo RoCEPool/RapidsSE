@@ -19,7 +19,7 @@
 #                the last one).
 #  -u          : treat unset variables as an error and exit immediately.
 #  -x          : print each command before executing it (for debugging).
-set -Eeo pipefail
+set -Eeou pipefail
 
 readonly DIR=$(dirname "$0")
 
@@ -55,8 +55,26 @@ source "${SETUP_FN_FILE}"
 # First process the arguments given to the script.
 processArgs "$@"
 
+if [ ${DEBUG} -eq 1 ]; then
+  # Print out current settings from the arguments
+  echo "pwd = $(pwd)"
+  echo "USER_PWD = ${USER_PWD}"
+  echo "CLUSTER_INSTALL = ${CLUSTER_INSTALL}"
+  echo "INTERACTIVE_WIZARD = ${INTERACTIVE_WIZARD}"
+  echo "ADV_WIZARD = ${ADV_WIZARD}"
+  echo "DEBUG = ${DEBUG}"
+  echo "CONFIG_FILE_PATH = ${CONFIG_FILE_PATH}"
+fi
 
-echo "Starting the RapidsSE installation wizard"
+
+if [ ${CLUSTER_INSTALL} -eq 1 ]; then
+  # cluster installation
+  doClusterInstall
+
+else
+  # node installation
+  doNodeInstall
+fi
 
 
 
@@ -102,6 +120,8 @@ echo "Starting the RapidsSE installation wizard"
 #  Check that the installation dir can be created (if not already) on each node,
 #  Check that the installation dir on each node is writable.
 #  If an installation already exists on any node, confirm that the user wishes to overwrite it.
+#  Check that node names don't contain spaces or special characters.
+#  Check that node names are unique.
 
 # If there are no problems with the sanity checks then continue.
 # Otherwise prompt the user and ask if they wish to edit the information entered.
