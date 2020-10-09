@@ -250,7 +250,10 @@ void Step::vLogicUnitGenAsm(void)
   //vTrace("FILE %s\n"_Stz, sFileName.azChar());
   Op* pOp = m_pTask->m_pJob->m_pOp;
   Job* pPipelineJob = pOp->pPipeline()->pJob();
-  m_pLogicUnit->vGenerateAsm(sText, pPipelineJob->m_pLitTknVec);
+  
+  bool bResult = m_pLogicUnit->bGenerateAsm(sText, pPipelineJob->m_pLitTknVec);
+  
+  m_pDataStack->vPushInt(bResult);
   
   EXIT();
 }

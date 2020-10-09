@@ -673,7 +673,7 @@ bool SePrompt::bHandleDemo(void)
     StrLib::vToLower(pTkn->azChars());
     iHash += HshLib::iHash((byte*)pTkn->azChars(),nSize);
   }
-  m_pLitTknVec->vDumpVec(0);
+  //m_pLitTknVec->vDumpVec(0);
   
   // reset the input token vector
   m_pInpTknVec->vSoftReset();
@@ -717,8 +717,8 @@ bool SePrompt::bHandleDemo(void)
       
       m_pLitTknVec->vRemoveToken(3);
       m_pLitTknVec->vRemoveToken(4);
-      vTrace("Collapsed decimals\n"_Stz);
-      m_pLitTknVec->vDumpVec(0);
+      //vTrace("Collapsed decimals\n"_Stz);
+      //m_pLitTknVec->vDumpVec(0);
     }
       break;
       

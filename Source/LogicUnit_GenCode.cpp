@@ -189,7 +189,7 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
 /*----------------------------------------------------------------------------*/
 /* generate asm code for given text                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAsm(Stz* aText, TokenVec* pLitTknVec)
+bool LogicUnit::bGenerateAsm(Stz* aText, TokenVec* pLitTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -222,11 +222,19 @@ void LogicUnit::vGenerateAsm(Stz* aText, TokenVec* pLitTknVec)
   
   while (m_i_Tkn <  nTokens - 1) {
     vAcceptToken();
-    vCollectOpcode(pLitTknVec);
+    try {
+      vCollectOpcode(pLitTknVec);
+    }
+    catch (Exception xException) {
+      m_pTknVec->vSetAllTokens();
+      return false;
+    }
   }
   
   m_pTknVec->vSetAllTokens();
   //vDumpCode();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

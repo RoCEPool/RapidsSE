@@ -216,7 +216,7 @@ namespace Expressions
     
     void vGenCode(i8 iTestNo);
   
-    void vGenerateAsm(Stz* sText, TokenVec* pLitTknVec);
+    bool bGenerateAsm(Stz* sText, TokenVec* pLitTknVec);
     
     // TPCH Queries
     void vGenerateQuery100(void);

@@ -145,7 +145,7 @@ Label QRY_301_DONE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Label MOV_DST
 
-  EO_RSB_SRC_PRINT
+  //EO_RSB_SRC_PRINT
 
   EO_RSB_DST_ZERO
 
@@ -178,7 +178,7 @@ Label AGG_REV
 
   EO_ENTWRK_RESET
 
-  EO_RSB_SRC_PRINT
+  //EO_RSB_SRC_PRINT
   EO_RSB_SRC_PUSHCOLI 0 //Q300_ORDERKEY
   EO_ENTWRK_SETINTELM
   EO_IXT_POS_ALTBYWRK
