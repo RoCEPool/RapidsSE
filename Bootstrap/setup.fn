@@ -60,9 +60,12 @@ function printUsageAndExit() {
   echo "    --advanced      Asks additional questions during the cluster"
   echo "                    installation wizard."
   echo ""
+  echo "   --installer     Path to the installation *.run file."
+  echo ""
   echo "    --debug         Displays more messages during execution."
   exit 1
 }
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Inspect all of the arguments, checking for incompatibilities, and set
@@ -79,6 +82,7 @@ function processArgs() {
   local argConfig=0
   local argBasic=0
   local argAdvanced=0
+  local argInstaller=0
 
   while [[ $# -gt 0 ]]
   do
@@ -111,14 +115,14 @@ function processArgs() {
   
       --config)
         argConfig=1
-        CONFIG_FILE_PATH="$2"
+        CONFIG_FILE="$2"
         shift # past argument
         shift # past value
         ;;
   
       --config=*)
         argConfig=1
-        CONFIG_FILE_PATH="${key#*=}"
+        CONFIG_FILE="${key#*=}"
         shift # past argument=value
         ;;
   
@@ -132,6 +136,19 @@ function processArgs() {
         ADV_WIZARD=1
         argAdvanced=1
         shift # past argument
+        ;;
+
+      --installer)
+        argInstaller=1
+        INSTALL_FILE="$2"
+        shift # past argument
+        shift # past value
+        ;;
+  
+      --installer=*)
+        argInstaller=1
+        INSTALL_FILE="${key#*=}"
+        shift # past argument=value
         ;;
   
       --debug)
@@ -152,14 +169,16 @@ function processArgs() {
   done
 
   # Now we can check for invalid combinations of arguments.
-    # --cluster and --node
-    # --node    and --interactive
-    # --config  and no file specified
-    # --config  and file not found
-    # --basic   and --script
-    # --adv     and --script
-    # --basic   and --node
-    # --adv     and --node
+    # --cluster   and --node
+    # --node      and --interactive
+    # --config    and no file specified
+    # --config    and file not found
+    # --basic     and --script
+    # --adv       and --script
+    # --basic     and --node
+    # --adv       and --node
+    # --installer and no file specified
+    # --installer and file not found
 
   local errmsg="Invalid combination of arguments specified: "
 
@@ -193,13 +212,23 @@ function processArgs() {
     printUsageAndExit
   fi
 
-  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE_PATH}" ]];  then 
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]];  then 
     printError "${errmsg}" "No config file specified" 
     printUsageAndExit
   fi
 
-  if [[ ${argConfig} -eq 1 && -f "${CONFIG_FILE_PATH}" ]]; then 
-    printError "Config file does not exist: ${CONFIG_FILE_PATH}"
+  if [[ ${argConfig} -eq 1 && -f "${CONFIG_FILE}" ]]; then 
+    printError "Config file does not exist: ${CONFIG_FILE}"
+    printUsageAndExit 
+  fi
+
+  if [[ ${argInstaller} -eq 1 && -z "${INSTALL_FILE}" ]];  then 
+    printError "${errmsg}" "No installation *.run file specified" 
+    printUsageAndExit
+  fi
+
+  if [[ ${argInstaller} -eq 1 && -f "${INSTALL_FILE}" ]]; then 
+    printError "Installation *.run file does not exist: ${INSTALL_FILE}"
     printUsageAndExit 
   fi
 
@@ -224,6 +253,40 @@ function processArgs() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Find the path of the installation file that kicked off this script.
+## Params: None
+
+function findInstallFile() {
+
+  # First try to get it from the parent process's command line
+  if [ "${DEBUG}" -eq 1 ]; then echo "Looking for install file from PPID."; fi;
+
+  local parentScript
+  parentScript="$(cut -f 2 -d '' < /proc/${PPID}/cmdline)"
+
+  if [[ -n "${parentScript}" && "${parentScript:(-4):4}" == ".run" && -f "${USER_PWD}/${parentScript}" ]]
+  then
+    INSTALL_FILE="${USER_PWD}/${parentScript}"
+    return
+  fi
+
+  # Otherwise if there is only one .run file in the $USER_PWD then this would be it.
+  if [ "${DEBUG}" -eq 1 ]; then echo "Looking for install file in directory: ${USER_PWD}"; fi;
+
+  local runfiles
+  mapfile -t runfiles < <( ls -1 "${USER_PWD}"/*.run || true )
+  
+  if [[ ${#runfiles[@]} -eq 1 && -f "${runfiles[0]}" ]]
+  then
+    INSTALL_FILE="${runfiles[0]}"
+    return
+  fi
+
+  errorExit "Could not find the installation *.run file. Trying specifying it with the --installer argument."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Install the product across the cluster.
 ## Params: None
 
@@ -232,8 +295,8 @@ function doClusterInstall() {
   # whether an existing config file is being used.
 
   if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
-    if [ -n "${CONFIG_FILE_PATH}" ]; then
-      # We have been given a config file
+    if [ -n "${CONFIG_FILE}" ]; then
+      # We have been given a config file.
       true
       # Load and validate config
       # Present summary
@@ -257,7 +320,7 @@ function doClusterInstall() {
     # Scripted installation
     
     # Assert that we have a config file
-    [ -f "${CONFIG_FILE_PATH}" ] || errorExit "Config file does not exist: ${CONFIG_FILE_PATH}"
+    [ -f "${CONFIG_FILE}" ] || errorExit "Config file does not exist: ${CONFIG_FILE}"
 
     # Load and validate config
     # Validate config/environment

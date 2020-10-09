@@ -221,7 +221,6 @@ source "${CREATE_LAYOUT_FILE}"
 ### Build the installer's run file ###
 if [ -n "${DEBUG}" ] ; then echo "Generating the run file"; fi;
 
-OUTPUT_FILE="${OUTPUT_DIR}/rapidsse-${SE_VERSION_STR},run"
+OUTPUT_FILE="rapidsse-${SE_VERSION_STR}.run"
 
-"${MAKESELF_DIR}/makeself.sh" ${MAKESELF_ARGS} "${LAYOUT_DIR}" "${OUTPUT_FILE}" "RapidsSE files..." "${SETUP_SCRIPT}"
-
+"${MAKESELF_DIR}/makeself.sh" ${MAKESELF_ARGS} "${LAYOUT_DIR}" "${OUTPUT_DIR}/${OUTPUT_FILE}" "RapidsSE files..." "${SETUP_SCRIPT}" 

@@ -31,12 +31,21 @@ readonly SETUP_FN_FILE="setup.fn"
 ### Significant Global Variables                                            ###
 ###############################################################################
 
+# Modes of operation, as dictated by arguments given to the script.
+# Values are either 1 or 0.
 CLUSTER_INSTALL=1
 INTERACTIVE_INSTALL=1
 ADV_WIZARD=0
 DEBUG=0
 
-CONFIG_FILE_PATH=""
+# Path to the installation (run) file used.
+INSTALL_FILE=""
+
+# Path to the config file used, if any.
+CONFIG_FILE=""
+
+# The array of node names.
+declare -a NODE_LIST
 
 ###############################################################################
 ### Functions                                                               ###
@@ -52,18 +61,25 @@ source "${SETUP_FN_FILE}"
 
 # The main script starts here.
 
-# First process the arguments given to the script.
+findInstallFile
+
+
+# Process the arguments given to the script.
 processArgs "$@"
 
 if [ ${DEBUG} -eq 1 ]; then
   # Print out current settings from the arguments
+  echo ""
   echo "pwd = $(pwd)"
   echo "USER_PWD = ${USER_PWD}"
   echo "CLUSTER_INSTALL = ${CLUSTER_INSTALL}"
-  echo "INTERACTIVE_WIZARD = ${INTERACTIVE_WIZARD}"
+  echo "INTERACTIVE_INSTALL = ${INTERACTIVE_INSTALL}"
   echo "ADV_WIZARD = ${ADV_WIZARD}"
   echo "DEBUG = ${DEBUG}"
-  echo "CONFIG_FILE_PATH = ${CONFIG_FILE_PATH}"
+  echo "INSTALL_FILE = ${INSTALL_FILE}"
+  echo "CONFIG_FILE = ${CONFIG_FILE}"
+  echo
+  #echo "$(env)"
 fi
 
 
