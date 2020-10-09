@@ -71,7 +71,7 @@ void Step::vIndexColumnCountFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.compact -- index compaction                                          */
+/* index[].compact -- index compaction                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexCompact(void)
 {
@@ -82,6 +82,31 @@ void Step::vIndexCompact(void)
   
   pIndex->pTable()->vCompactIndex(pIndex);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index[].compactPtn -- compact index partition                              */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexCompactPtn(void)
+{
+  ENTRY();
+  
+  Index* pIndex = *m_pLogicUnit->m_xpIndex;
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iIdxNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  
+  Job* pJob = m_pTask->m_pJob;
+  i8 i_Ptn  = pJob->m_pOp->iPartition();
+  i8 i_Slot = TablePtn::iPartitionToSlot(i_Ptn);
+
+  
+  IndexTree *pIndexTree = pTable->pPartition(i_Slot)->pIndexTree(iIdxNo);
+  
+  pIndexTree->vCompact();
+
   EXIT();
 }
 
