@@ -519,32 +519,151 @@ function askHostnames() {
   printIndentArray 2 "${hostnames[@]}"
 
   # Build the node list
-  buildNodeList ${#hostnames}
+  createNodeNames ${#hostnames[@]}
 
   # Build the node_cfg associative arrays
   createNodeConfigs "${NODE_LIST[@]}"
 
   # set the hostname field in each node_cfg associative array
+  local i=0
+  while [ $i -lt ${#hostnames[@]}  ] 
+  do
+    nodeCfgSetValue "${NODE_LIST[$i]}" "${NODE_CFG_HOST_KEY}" "${hostnames[$i]}"
+    nodeCfgPrint "${NODE_LIST[$i]}"
+    i=$((i+1))
+  done
+
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Populates the NODE_LIST array with node names based on a given count.
+## Populates the NODE_LIST array with node names based on a given count passed
+## in as a parameter.
 ## Params:
-##  $1 : count of nodes
+##  $1 : A count of node names to be created.
 
-function buildNodeList() {
-
+function createNodeNames() {
   local count=$1
-  local i=1
+  local i=0
 
-  for i in $(seq 1 ${count})
+  while [ $i -lt ${count}  ]
   do
     NODE_SEQ_NUM=$((NODE_SEQ_NUM+1))
     NODE_LIST+=("${NODE_NAME_PREFIX}${NODE_SEQ_NUM}")
+    i=$((i+1))
   done
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Creates associative arrays for each node name that is passed in.
+## Params:
+##  $@ : An array of node names.
+
+function createNodeConfigs() {
+  local nodeNames
+  nodeNames=($@)
+
+  local nodeName
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    # Dynamically create the associative array
+    local nodeCfg="${NODE_CFG_PREFIX}${nodeName}"
+    declare -gA "${nodeCfg}"
+
+    # Populate the "name" field.
+    nodeCfgSetValue "${nodeName}" "${NODE_CFG_NAME_KEY}" "${nodeName}"
+  done 
+}
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Sets a value for a key in a dynamically created associative array.
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+##
+## Params:
+##  $1 : The name of the SE node. 
+##  $2 : The name of the key in this node's associate array.
+##  $3 : The value to set against this key in the node's associate array.
+
+function nodeCfgSetValue() {
+  local nodeName=$1
+  local key=$2
+  local value=$3
+
+  #declare "${NODE_CFG_PREFIX}${nodeName}[${key}]=${value}"
+  eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="${value}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a value for a key in a dynamically created associative array.
+## This function should be called by:
+##   result=$(nodeCfgGetValue ${nodeName} ${key})
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+##
+## Params:
+##  $1 : The name of the SE node.
+##  $2 : The name of the key in this node's associate array whose value to return.
+
+function nodeCfgGetValue() {
+  local nodeName=$1
+  local key=$2
+
+  local ref="${NODE_CFG_PREFIX}${nodeName}[${key}]"
+  echo "${!ref}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns an array of keys in a dynamically created associative array.
+## This function should be called by:
+##   result=($(nodeCfgGetKeys ${nodeName}))
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+##
+## Params:
+##  $1 : The name of the SE node.
+
+function nodeCfgGetKeys() {
+  local nodeName=$1
+
+  eval echo '${!'"${NODE_CFG_PREFIX}${nodeName}"'[@]}'
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints the name of the node's associative array, it's keys and values.
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+##
+## Params:
+##  $1 : The name of the SE node.
+
+function nodeCfgPrint() {
+  local nodeName=$1
+  local keys=($(nodeCfgGetKeys "${nodeName}"))
+  
+  local arrayName="${NODE_CFG_PREFIX}${nodeName}"
+
+  echo "${arrayName}"
+
+  for key in "${keys[@]}"
+  do
+    local value
+    value=$(nodeCfgGetValue "${nodeName}" "${key}")
+
+    echo "  [${key}] = ${value}"
+  done
+}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

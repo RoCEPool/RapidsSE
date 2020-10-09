@@ -27,6 +27,13 @@ readonly DIR=$(dirname "$0")
 readonly SETUP_FN_FILE="setup.fn"
 readonly VERSION_FILE="version"
 
+# Prefix of the name of the associative arrays for each node in the cluster.config
+readonly NODE_CFG_PREFIX="NODE_CFG_"
+
+# Names of fields within each node's associative array.
+readonly NODE_CFG_NAME_KEY="name"
+readonly NODE_CFG_HOST_KEY="host"
+
 ###############################################################################
 ### Significant Global Variables                                            ###
 ###############################################################################
@@ -147,6 +154,7 @@ fi
 #  Check that node names are unique.
 #  Check that there is at least one hostname.
 #  Check that each hostname is resolvable.
+#  Check that NODE_SEQ_NUM is always non-zero if we read in an existing config
 
 # If there are no problems with the sanity checks then continue.
 # Otherwise prompt the user and ask if they wish to edit the information entered.
