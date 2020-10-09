@@ -1,0 +1,166 @@
+--------------------------------------------------------------------------------
+-- tpch query 1 tests (SF1)
+--------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// no such table
+demo select
+  l_returnflag,
+  l_linestatus,
+  sum(l_QUANTITY) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice*l_discount) as sum_disc_price,
+  sum(l_extendedprice*l_discount*l_tax) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  lineitem
+where
+  l_shipdate <= date "1998-09-01"
+group by
+  l_returnflag,
+  l_linestatus
+order by
+  l_returnflag,
+  l_linestatus;
+failure contains: "no such table"
+
+//------------------------------------------------------------------------------
+// create table lineitem
+create table LineItem
+(
+ L_ORDERKEY      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ L_LINENUMBER    INTEGER       NOT NULL,
+ L_QUANTITY      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ L_RETURNFLAG    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      DATE NOT      NULL,
+ L_COMMITDATE    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ L_COMMENT       VARCHAR(44)   NOT NULL
+ );
+success
+
+//------------------------------------------------------------------------------
+// 0 rows
+demo select
+  l_returnflag,
+  l_linestatus,
+  sum(l_QUANTITY) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice*l_discount) as sum_disc_price,
+  sum(l_extendedprice*l_discount*l_tax) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  lineitem
+where
+  l_shipdate <= date "1998-09-01"
+group by
+  l_returnflag,
+  l_linestatus
+order by
+  l_returnflag,
+  l_linestatus;
+rows: 0
+
+//------------------------------------------------------------------------------
+// Invalid Query 1 (date missing)
+demo select
+  l_returnflag,
+  l_linestatus,
+  sum(l_QUANTITY) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice*l_discount) as sum_disc_price,
+  sum(l_extendedprice*l_discount*l_tax) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  lineitem
+where
+  l_shipdate <= 4
+group by
+  l_returnflag,
+  l_linestatus
+order by
+  l_returnflag,
+  l_linestatus;
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+// Invalid Query 1 (not selecting l_linestatus)
+demo select
+  l_returnflag,
+  sum(l_QUANTITY) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice*l_discount) as sum_disc_price,
+  sum(l_extendedprice*l_discount*l_tax) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  lineitem
+where
+  l_shipdate <= date "1998-09-01"
+group by
+  l_returnflag,
+  l_linestatus
+order by
+  l_returnflag,
+  l_linestatus;
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+// Invalid Query 1 (invalid date)
+demo select
+  l_returnflag,
+  l_linestatus,
+  sum(l_QUANTITY) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice*l_discount) as sum_disc_price,
+  sum(l_extendedprice*l_discount*l_tax) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  lineitem
+where
+  l_shipdate <= date "x"
+group by
+  l_returnflag,
+  l_linestatus
+order by
+  l_returnflag,
+  l_linestatus;
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table lineitem;
+success;
+
+CLEANUP {
+  
+  drop table lineitem;
+  mute
+  
+  bye;
+  mute
+}
+
+
