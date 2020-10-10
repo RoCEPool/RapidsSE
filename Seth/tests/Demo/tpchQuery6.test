@@ -41,7 +41,7 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-// no such table
+// no such index
 demo select
   sum(l_extendedprice*l_discount) as revenue
 from
