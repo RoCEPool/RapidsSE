@@ -348,6 +348,18 @@ bool AM::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
   return CmdHelper::bParseCmd(pTagSet,pTknVec);
 }
 
+
+Job* AM::pPipelineJob(void)
+{
+  
+  Job* pOpJob = AM::pTaskJob();
+  
+  Job* pPipelineJob = pOpJob->m_pOp->pPipeline()->pJob();
+  return pPipelineJob;
+}
+
+
+
 void AM::vPoolAnalyze(void)   { return PoolHelper::vPoolAnalyze(); }
 
 eEC AM::ePopulateJob(Job* pJob, TagSet* pTagSet)

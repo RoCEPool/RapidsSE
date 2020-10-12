@@ -210,7 +210,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a chunk                                          */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertCsv(char* azCsvInput)
+bool ToRsb::bConvertCsv(char* azCsvChunk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
@@ -240,13 +240,16 @@ bool ToRsb::bConvertCsv(char* azCsvInput)
   char *aStart;
   bool bSawEnclosedLeading;
   bool bSawEnclosedTrailing;
-
   
+  Stz* szErrorText;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) begin
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  char* acCsvSrc = azCsvInput;
+  Job* pPipelineJob = AM::pPipelineJob();
+
+  char* acCsvSrc = azCsvChunk;
   char cSrc = *acCsvSrc;
 
   RowSlab* pRowSlab = m_pRowSlab;
@@ -290,7 +293,7 @@ L_TestMoreCsv:
   
   // test for more csv to be parsed
   if (! bMORE_DATA())   // ? macro ?
-    goto L_EndOfCsv;
+    goto L_EndOfCsvChunk;
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -317,16 +320,16 @@ L_TestMoreFields:
   if (! bMORE_FIELDS())   // ? macro ?
     goto L_EndOfFields;
 
-  
+  m_bSawFldSep = false;
+    
+
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // 4) decode and convert field
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  xColPix = aColPix[m_i_Fld];
   
+  xColPix   = aColPix[m_i_Fld];
   ePixDatum = (eDM) xColPix.m_uDatum;
 
-  m_bSawFldSep = false;
-    
   switch (ePixDatum) {
     case DM_BOL : goto L_Boolean;
     case DM_DTE : goto L_Date;
@@ -373,19 +376,24 @@ L_Date:
     iYear = (iYear * 10) + (cSrc - '0');
     nDigits++;
     
-    if (iYear > (u8)C_I8_MAX)
-      THROW_USER("vConvertDate"_Stz);
+    if (iYear > (u8)C_I8_MAX) {
+      //THROW_USER("vConvertDate"_Stz);
+      goto L_FieldError;
+    }
   }
       
-  if (!bOnce)
-    THROW_USER("vConvertDate"_Stz);
+  if (! bOnce) {
+    //THROW_USER("vConvertDate"_Stz);
+    goto L_FieldError;
+  }
   
   if (2 == nDigits) {
     iYear += 2000;
   }
   else
   if (4 != nDigits) {
-    THROW_USER("vConvertDate"_Stz);
+    //THROW_USER("vConvertDate"_Stz);
+    goto L_FieldError;
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -394,10 +402,14 @@ L_Date:
   bOnce = false;
   nDigits = 2;
 
-  if ( ! cSrc )
-    THROW_USER("vConvertDate"_Stz);
-  if ('-' != cSrc)
-    THROW_USER("vConvertDate"_Stz);
+  if (! cSrc) {
+    //THROW_USER("vConvertDate"_Stz);
+    goto L_FieldError;
+  }
+  if ('-' != cSrc) {
+    //THROW_USER("vConvertDate"_Stz);
+    goto L_FieldError;
+  }
           
   vADV_SRC();
   
@@ -415,11 +427,15 @@ L_Date:
     iMonth = (iMonth * 10) + cSrc - '0';
   }
     
-  if (!bOnce)
-    THROW_USER("vConvertDate"_Stz);
+  if (! bOnce) {
+    //THROW_USER("vConvertDate"_Stz);
+    goto L_FieldError;
+  }
   
-  if (iMonth < 1 || iMonth > 12)
-    THROW_USER("vConvertDate"_Stz);
+  if (iMonth < 1 || iMonth > 12) {
+    //THROW_USER("vConvertDate"_Stz);
+    goto L_FieldError;
+  }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day
@@ -427,11 +443,15 @@ L_Date:
   bOnce = false;
   nDigits = 2;
 
-  if (! cSrc)
-    THROW_USER("vConvertDate"_Stz);
-  if ('-' != cSrc)
-    THROW_USER("vConvertDate"_Stz);
-
+  if (! cSrc) {
+    //THROW_USER("vConvertDate"_Stz);
+    goto L_FieldError;
+  }
+  if ('-' != cSrc) {
+    //THROW_USER("vConvertDate"_Stz);
+    goto L_FieldError;
+  }
+  
   vADV_SRC();
 
   if (cSrc && (cSrc >= '0' && cSrc <= '9') )
@@ -448,11 +468,13 @@ L_Date:
     iDay = (iDay * 10) + cSrc - '0';
   }
      
-  if (!bOnce)
-    THROW_USER("vConvertDate"_Stz);
-        
+  if (! bOnce) {
+    // THROW_USER("vConvertDate"_Stz);
+    goto L_FieldError;
+  }
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // validate
+  // validate date
   
   // assume a leap year
   bLeapYear = true;
@@ -464,12 +486,16 @@ L_Date:
   }
 
   if (bLeapYear) {
-    if (iDay > (u8)iDaysPerMonthLeap[iMonth-1])
-      THROW_USER("vConvertDate"_Stz);
+    if (iDay > (u8)iDaysPerMonthLeap[iMonth-1]) {
+      //THROW_USER("vConvertDate"_Stz);
+      goto L_FieldError;
+    }
   }
   else {
-    if (iDay > (u8)iDaysPerMonth[iMonth-1])
-      THROW_USER("vConvertDate"_Stz);
+    if (iDay > (u8)iDaysPerMonth[iMonth-1]) {
+      //THROW_USER("vConvertDate"_Stz);
+      goto L_FieldError;
+    }
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -529,9 +555,11 @@ L_Decimal:
     nPixPrecision--;
   }
   
-  // have we exceeded maximum precision digits?
-  if (nPixPrecision < 0)
-    THROW_USER("vConvertDecimal"_Stz);
+  // have we exceeded maximum precision digits?      IS THIS AN ERROR?
+  if (nPixPrecision < 0) {
+    //THROW_USER("vConvertDecimal"_Stz);
+    goto L_FieldError;
+  }
   
   if ('.' == cSrc) {
     
@@ -548,8 +576,10 @@ L_Decimal:
     uPartialResult = uPartialResult * 10 + 0;
   
   // have we exceeded the max ?
-  if (uPartialResult > (u8)C_I8_MAX)
-    THROW_USER("vConvertDecimal"_Stz);
+  if (uPartialResult > (u8)C_I8_MAX) {
+    //THROW_USER("vConvertDecimal"_Stz);
+    goto L_FieldError;
+  }
   
   // round up if there any more digits after decimal
   if (cSrc >= '0' && cSrc <= '9') {
@@ -563,11 +593,15 @@ L_Decimal:
   iFinalResult = bNegative ? - uPartialResult : uPartialResult;
   
   // have we gone beyond the min ?
-  if (iFinalResult != 0 && bNegative && (iFinalResult < C_I8_MIN))
-    THROW_USER("vConvertDecimal"_Stz);
-
-  if ( ! bOnce )
-    THROW_USER("vConvertDecimal"_Stz);
+  if (iFinalResult != 0 && bNegative && (iFinalResult < C_I8_MIN)) {
+    //THROW_USER("vConvertDecimal"_Stz);
+    goto L_FieldError;
+  }
+  
+  if (! bOnce) {
+    //THROW_USER("vConvertDecimal"_Stz);
+    goto L_FieldError;
+  }
   
   pRowSlab->vDeposit(iFinalResult);
 
@@ -609,13 +643,16 @@ L_Integer:
     
     uPartialResult = (uPartialResult * 10) + (cSrc - '0');
     
-    if (uPartialResult > (u8)C_I8_MAX)
-      THROW_USER("vConvertInteger"_Stz);
+    if (uPartialResult > (u8)C_I8_MAX) {
+      //THROW_USER("vConvertInteger"_Stz);
+      goto L_FieldError;
+    }
   }
   
   if (! bOnce) {
-    vTrace("%s\n"_Stz,azCsvInput);
-    THROW_USER("vConvertInteger"_Stz);
+    vTrace("%s\n"_Stz,azCsvChunk);
+    //THROW_USER("vConvertInteger"_Stz);
+    goto L_FieldError;
   }
   
   iFinalResult = bNegative ? - uPartialResult : uPartialResult;
@@ -628,6 +665,8 @@ L_Integer:
     //iHash += HshLib::iHash((byte*)&iFinalResult,sizeof(w8));
     PtnLib::vRunning(&iHash,iFinalResult);
   }
+  
+  //AM::vIncRowsInvalid(pPipelineJob);
   
   goto L_PostField;                                            // end of integer
 
@@ -683,10 +722,11 @@ L_Varchar:
 
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
-  if (bSawEnclosedLeading)
-    if ( ! bSawEnclosedTrailing )
-      THROW_USER("vConvertVarchar"_Stz);
-
+  if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
+    //THROW_USER("vConvertVarchar"_Stz);
+    goto L_FieldError;
+  }
+  
   // deposit the string
   pRowSlab->vDepositString_end(nChars+1);
 
@@ -797,7 +837,7 @@ L_Timestamp:
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 5) end of all fields for row
+  // 5) processing end of any field
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
   
@@ -810,9 +850,8 @@ L_PostField:
   while (*acCsvSrc && m_cFldSep != *acCsvSrc && m_cRecEnd != *acCsvSrc)
     acCsvSrc++;
 
-  if (m_cFldSep == *acCsvSrc) {
+  if (m_cFldSep == *acCsvSrc)
     acCsvSrc++;
-  }
 
   m_i_Fld++;
 
@@ -849,6 +888,8 @@ L_EndOfFields:
   // 7) increment records processed; reset for next record
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  AM::vIncRowsProcessed(pPipelineJob);
+
   m_i_Rec++;
   m_i_Fld = 0;
   if (*acCsvSrc)
@@ -859,10 +900,24 @@ L_EndOfFields:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 8) end of azCsvSrc buffer
+  // 8) encountered a field error
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-L_EndOfCsv:
+L_FieldError:
+
+  //THROW_USER("vConvertDate"_Stz);
+  
+  AM::vIncRowsInvalid(pPipelineJob);
+
+  // ... add code for skipping to end of record
+  
+  goto L_TestMoreCsv;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 9) reached end of azCsvChunk
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+L_EndOfCsvChunk:
     
 #ifdef WITH_DEBUG_VERSION
   //pRowSlab->vDumpAllRows();
