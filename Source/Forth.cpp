@@ -257,7 +257,7 @@ DicStack* Forth::pSaveDicStack(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seet forth execution context                                               */
+/* seed forth execution context                                               */
 /*----------------------------------------------------------------------------*/
 void Forth::vSeedForth(Word* pSeedWord)
 {
