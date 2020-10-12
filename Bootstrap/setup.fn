@@ -41,7 +41,7 @@ function printIndentArray() {
 
   local indents=$1
   shift
-  local array=($@)
+  local array=("$@")
 
   if [ -z "${indents}" ]; then
    indents=2
@@ -341,6 +341,12 @@ function doClusterInstall() {
       echo "Let's build a cluster configuration."
 
       createConfiguration
+
+      if [ ${DEBUG} -eq 1 ]; then
+        echo "Node configuration after creating configuration:"
+        allNodeCfgsPrint
+      fi
+
       # Present summary
       # Edit ?
       # Validate config/environment
@@ -381,7 +387,7 @@ function createConfiguration() {
   askInstallDir
 
   # shared memory size
-  askShmSize
+  askMemSize
 
   # (advanced) partitions
   askPartitions
@@ -400,6 +406,7 @@ function createConfiguration() {
 
 function displayWelcome() {
   clear
+  #shellcheck disable=1090
   source "${VERSION_FILE}"
 
   echo "Welcome to the RapidsSE installation wizard for RapidsSE version ${SE_VERSION_STR}."
@@ -472,7 +479,6 @@ function askHostnames() {
   echo ""
   echo "Let's collect the hostnames/IP addresses of all the machines that RapidsSE"
   echo "is to be installed on (including the current machine, if applicable)."
-  echo ""
   
   # Get the first host
   while true
@@ -491,7 +497,7 @@ function askHostnames() {
       continue 
     fi
 
-    hostnames+=(${line})
+    hostnames+=("${line}")
     break
   done
 
@@ -511,17 +517,18 @@ function askHostnames() {
       break
     fi
 
-    hostnames+=(${line})
+    hostnames+=("${line}")
   done
 
   echo ""
   echo "Got the following hostnames / IP addresses:"
   printIndentArray 2 "${hostnames[@]}"
 
-  # Build the node list
+  # Build the node list, now that we have the initial list & count of hosts.
   createNodeNames ${#hostnames[@]}
 
-  # Build the node_cfg associative arrays
+  # With the node count and the node names we can now build the 
+  # node_cfg associative arrays to hold the configuration of each node.
   createNodeConfigs "${NODE_LIST[@]}"
 
   # set the hostname field in each node_cfg associative array
@@ -529,7 +536,6 @@ function askHostnames() {
   while [ $i -lt ${#hostnames[@]}  ] 
   do
     nodeCfgSetValue "${NODE_LIST[$i]}" "${NODE_CFG_HOST_KEY}" "${hostnames[$i]}"
-    nodeCfgPrint "${NODE_LIST[$i]}"
     i=$((i+1))
   done
 
@@ -537,6 +543,348 @@ function askHostnames() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default port number that each SE instance will listen on.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askPort() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+
+  echo ""
+  echo "Internal Port Number"
+  echo "--------------------"
+  echo ""
+  echo "The internal port number is the TCP/IP port that RapidsSE uses to communicate"
+  echo "with other nodes in the cluster."
+
+  local line
+  local re="^-?[0-9]+$"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter a port number for node communication [default: ${NODE_CFG_DEFAULT_PORT}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_PORT}"
+      break
+    fi
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: port number cannot contain whitespace."
+      continue
+    fi
+
+    if ! [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: port number must be an integer."
+      continue
+    fi
+
+    if [[ ${line} -lt 1 || ${line} -gt 65535 ]]; then
+      echo "Invalid input: port number out of range [1024, 65535]."
+      continue
+    fi
+
+    if [[ ${line} -lt 1024 && ${EUID} -ne 0 ]]; then
+      echo "Invalid input: Cannot use a port number less than 1024 as a non-root user."
+      continue
+    fi
+
+    break
+  done
+
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default installation directory for each SE instance
+## on each node.
+## Params: None
+
+function askInstallDir() {
+
+  echo ""
+  echo "Installation Path"
+  echo "-----------------"
+  echo ""
+  echo "This is the path that RapidsSE will be installed on each node."
+
+  local line
+  local re="^( |[[:space:]])+"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter a path where RapidsSE will be installed [default: ${NODE_CFG_DEFAULT_DIR}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_DIR}"
+      break
+    fi
+
+    if [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: Path cannot start with whitespace."
+      continue
+    fi
+
+    if [[ "${line:0:1}" != "/" ]]; then
+      echo "Invalid input: Path cannot be a relative path."
+      continue
+    fi
+
+    break
+  done
+
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_DIR_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default size (in GB) for the shared memory segment
+## for all nodes.
+## Params: None
+
+function askMemSize() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+  
+  echo ""
+  echo "Reserved Memory Size"
+  echo "--------------------"
+  echo ""
+  echo "RapidsSE reserves memory when it starts up. This is the maximum amount of space"
+  echo "that RapidsSE will use for managing data, tables, indexes, etc."
+
+  local line
+  local re="^-?[0-9]+$"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter the desired memory segment size in GB for each node [default: ${NODE_CFG_DEFAULT_MEM}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_MEM}"
+      break
+    fi
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: memory segment size cannot contain whitespace."
+      continue
+    fi
+
+    if ! [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: memory segment size must be an integer."
+      continue
+    fi
+
+    if [[ ${line} -lt "${MINIMUM_MEM_SIZE}" ]]; then
+      echo "Invalid input: memory segment size must be at least 4GB."
+      continue
+    fi
+
+    break
+  done
+
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_MEM_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default number of partitions for each SE instance.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askPartitions() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+
+  echo ""
+  echo "Partitions"
+  echo "----------"
+  echo ""
+  echo "RapidsSE uses partitions to segment the data and parallelise operations."
+  echo "We need to configure how many partitions RapidsDB uses on each node."
+
+  local line
+  local re="^-?[0-9]+$"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter the desired number of partitions for each node [default: ${NODE_CFG_DEFAULT_PARTITIONS}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_PARTITIONS}"
+      break
+    fi
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: partition count cannot contain whitespace."
+      continue
+    fi
+
+    if ! [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: partition count must be an integer."
+      continue
+    fi
+
+    if [[ ${line} -lt 1 ]]; then
+      echo "Invalid input: partition count must be at least 1."
+      continue
+    fi
+
+    break
+  done
+
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default number of threads for each SE instance.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askThreads() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+
+  echo ""
+  echo "Threads"
+  echo "-------"
+  echo ""
+  echo "RapidsSE uses threads to run tasks in parallel."
+  echo "We need to configure how many threads RapidsDB uses on each node."
+  echo "This value should be similar to the number of CPU cores on a node."
+  
+  local line
+  local re="^-?[0-9]+$"
+  
+  while true
+  do
+    
+    echo ""
+    echo -n "Enter the desired number of threads for each node [default: ${NODE_CFG_DEFAULT_THREADS}] : "
+    IFS=$'\n' read -r line
+    
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_THREADS}"
+      break
+    fi
+    
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: thread count cannot contain whitespace."
+      continue
+    fi
+    
+    if ! [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: thread count must be an integer."
+      continue
+    fi
+    
+    if [[ ${line} -lt 1 ]]; then
+      echo "Invalid input: thread count must be at least 1."
+      continue
+    fi
+    
+    break
+  done
+  
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter any other command line parameters to be applied to all
+## SE instances when they are started or stopped.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askParams() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+
+  echo ""
+  echo "Startup Parameters"
+  echo "------------------"
+  echo ""
+  echo "Other advanced parameters to be given to RapidsSE when it starts up"
+  echo "can be specified here."
+  
+  local line
+  local re="^[[:space:]]+$"
+  
+  while true
+  do
+    
+    echo ""
+    echo -n "Enter any additional startup parameters [default: ${NODE_CFG_DEFAULT_PARAMS}] : "
+    IFS=$'\n' read -r line
+    
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_PARAMS}"
+      break
+    fi
+    
+    if [[ "${line}" =~ ${re} ]]; then
+      echo "Invalid input: parameters cannot consist only of whitespace."
+      continue
+    fi
+    
+    break
+  done
+  
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function doNodeInstall() {
+  true
+}
+
+
+
+
+# =========================================================================== #
+# Node Configuration Manipulation                                             #
+#   Below are functions that create and manipulate the associative arrays     #
+#   used to store the configuration for each node.                            #
+# =========================================================================== #
+
 ## Populates the NODE_LIST array with node names based on a given count passed
 ## in as a parameter.
 ## Params:
@@ -546,7 +894,7 @@ function createNodeNames() {
   local count=$1
   local i=0
 
-  while [ $i -lt ${count}  ]
+  while [ $i -lt "${count}"  ]
   do
     NODE_SEQ_NUM=$((NODE_SEQ_NUM+1))
     NODE_LIST+=("${NODE_NAME_PREFIX}${NODE_SEQ_NUM}")
@@ -562,7 +910,7 @@ function createNodeNames() {
 
 function createNodeConfigs() {
   local nodeNames
-  nodeNames=($@)
+  nodeNames=("$@")
 
   local nodeName
 
@@ -577,6 +925,28 @@ function createNodeConfigs() {
   done 
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Sets a value for a key in the dynamically created associative arrays for 
+## all nodes.
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+## 
+## Params:
+##  $1 : The name of the key to be set.
+##  $2 : The value to set in this key.
+
+function allNodeCfgsSetValue() {
+
+  local key="$1"
+  local value="$2"
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    nodeCfgSetValue "${nodeName}" "${key}" "${value}"
+  done
+}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -595,7 +965,8 @@ function nodeCfgSetValue() {
   local key=$2
   local value=$3
 
-  #declare "${NODE_CFG_PREFIX}${nodeName}[${key}]=${value}"
+  # Here be dragons
+  #shellcheck disable=2140
   eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="${value}"
 }
 
@@ -640,6 +1011,18 @@ function nodeCfgGetKeys() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints the configuration of all nodes.
+## Params: None
+ 
+function allNodeCfgsPrint() {
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    nodeCfgPrint "${nodeName}"
+    echo ""
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Prints the name of the node's associative array, it's keys and values.
 ##
 ## NB: Not relying on bash v4.3 which introduces reference variables that would
@@ -650,6 +1033,8 @@ function nodeCfgGetKeys() {
 
 function nodeCfgPrint() {
   local nodeName=$1
+
+  #shellcheck disable=2207
   local keys=($(nodeCfgGetKeys "${nodeName}"))
   
   local arrayName="${NODE_CFG_PREFIX}${nodeName}"
@@ -665,92 +1050,8 @@ function nodeCfgPrint() {
   done
 }
 
+# =========================================================================== #
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Ask the user to enter a default port number that each SE instance will listen on.
-## This only runs when ADV_WIZARD=1.
-## Params: None
-
-function askPort() {
-
-  if [ ${ADV_WIZARD} -ne 1 ]; then
-    return
-  fi
-
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Ask the user to enter a default installation directory for each SE instance
-## on each node.
-## Params: None
-
-function askInstallDir() {
-  true
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Ask the user to enter a default size (in GB) for the shared memory segment
-## for all nodes.
-## Params: None
-
-function askShmSize() {
-
-  if [ ${ADV_WIZARD} -ne 1 ]; then
-    return
-  fi
-  
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Ask the user to enter a default number of partitions for each SE instance.
-## This only runs when ADV_WIZARD=1.
-## Params: None
-
-function askPartitions() {
-
-  if [ ${ADV_WIZARD} -ne 1 ]; then
-    return
-  fi
-
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Ask the user to enter a default number of threads for each SE instance.
-## This only runs when ADV_WIZARD=1.
-## Params: None
-
-function askThreads() {
-
-  if [ ${ADV_WIZARD} -ne 1 ]; then
-    return
-  fi
-
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Ask the user to enter any other command line parameters to be applied to all
-## SE instances when they are started or stopped.
-## This only runs when ADV_WIZARD=1.
-## Params: None
-
-function askParams() {
-
-  if [ ${ADV_WIZARD} -ne 1 ]; then
-    return
-  fi
-
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-function doNodeInstall() {
-  true
-}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

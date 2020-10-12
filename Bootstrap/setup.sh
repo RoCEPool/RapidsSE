@@ -33,6 +33,24 @@ readonly NODE_CFG_PREFIX="NODE_CFG_"
 # Names of fields within each node's associative array.
 readonly NODE_CFG_NAME_KEY="name"
 readonly NODE_CFG_HOST_KEY="host"
+readonly NODE_CFG_PORT_KEY="port"
+readonly NODE_CFG_DIR_KEY="dir"
+readonly NODE_CFG_PARTITIONS_KEY="partitions"
+readonly NODE_CFG_THREADS_KEY="threads"
+readonly NODE_CFG_MEM_KEY="mem"
+readonly NODE_CFG_PARAMS_KEY="params"
+
+# Default values
+readonly NODE_CFG_DEFAULT_PORT="5541"
+readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
+readonly NODE_CFG_DEFAULT_PARTITIONS="8"  # per node
+readonly NODE_CFG_DEFAULT_THREADS="16"    # per node
+readonly NODE_CFG_DEFAULT_MEM="32"        # in GB, per node
+readonly NODE_CFG_DEFAULT_PARAMS=""
+
+
+readonly MINIMUM_MEM_SIZE="4"
+
 
 ###############################################################################
 ### Significant Global Variables                                            ###
@@ -51,7 +69,9 @@ INSTALL_FILE=""
 # Path to the config file used, if any.
 CONFIG_FILE=""
 
-# The array of node names.
+# The array of unique node names. The values here are used to help form the
+# name of the dynamic associative arrays used to hold the configuration of
+# an individual node.
 declare -a NODE_LIST
 
 # The prefix given to each node name before its sequence number.
