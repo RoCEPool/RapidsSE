@@ -30,22 +30,20 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   m_pRsbBuffer = nullptr;
 
   m_bOrdCsv    = pFmt->bIsOrdCsv();
-  
+
+  m_cRecEnd    = '\n';
+  m_cFldSep    = ',';
+
   // --
   
   m_azSrc   = nullptr;
   m_acChr   = nullptr;
 
-  m_cRecEnd = '\n';
-  m_cFldSep = ',';
 
   m_iLine   = 1;
   m_iCol    = 1;
   m_i_Fld   = 0;
   m_i_Rec   = 0;
-  
-  m_pCol    = nullptr;
-
   
   m_bTrace  = false;
   
@@ -330,6 +328,8 @@ L_TestMoreFields:
   
   xColPix   = aColPix[m_i_Fld];
   ePixDatum = (eDM) xColPix.m_uDatum;
+  
+  //Column* pCol = m_pStreamDef->pGetColumn(m_i_Fld);
 
   switch (ePixDatum) {
     case DM_BOL : goto L_Boolean;
@@ -745,7 +745,6 @@ L_Boolean:
     // temp
     cSrc = *acCsvSrc;
     
-    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE_ADV(); ;
   
     Bol xBol;
@@ -765,7 +764,6 @@ L_Float:
     // temp
     cSrc = *acCsvSrc;
     
-    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE_ADV();
   
     Flt xFlt;
@@ -785,7 +783,6 @@ L_Interval:
     // temp
     cSrc = *acCsvSrc;
     
-    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE_ADV();
   
     Ivl xIvl;
@@ -805,7 +802,6 @@ L_Time:
     // temp
     cSrc = *acCsvSrc;
     
-    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE_ADV();
   
     Tme xTme;
@@ -825,7 +821,6 @@ L_Timestamp:
     // temp
     cSrc = *acCsvSrc;
     
-    m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
     vSKIP_WHITE_SPACE_ADV();
   
     Tsp xTsp;

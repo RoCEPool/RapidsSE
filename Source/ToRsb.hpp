@@ -20,27 +20,24 @@ namespace Load
 
     bool       m_bOrdCsv;
 
+    char       m_cRecEnd;
+    char       m_cFldSep;
+
+    bool       m_bFirst;
+
     // --
   
     char*      m_azSrc;
     char*      m_acChr;
-
-    char       m_cRecEnd;
-    char       m_cFldSep;
   
     i8         m_iLine;
     i8         m_iCol;
     i8         m_i_Fld;
     i8         m_i_Rec;
-      
-    Column*    m_pCol;
-  
+        
     bool       m_bTrace;
   
-    Datum      m_oDatum;
   
-    bool       m_bFirst;
-
     // must be last
     Footer m_xFooter;
 
