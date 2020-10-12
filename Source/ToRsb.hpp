@@ -13,8 +13,15 @@ namespace Load
   private:
     StreamDef* m_pStreamDef;
     Format*    m_pFmt;
+    bool       m_bPtnHash;
+
+    RowSlab*   m_pRowSlab;
+    RsbBuffer* m_pRsbBuffer;
+
     bool       m_bOrdCsv;
 
+    // --
+  
     char*      m_azSrc;
     char*      m_acChr;
 
@@ -27,17 +34,10 @@ namespace Load
     i8         m_i_Rec;
       
     Column*    m_pCol;
-    bool       m_bPtnHash;
   
     bool       m_bTrace;
-    d8         m_dCalc;
-    i8         m_nChars;
-    bool       m_bSawFldSep;
   
     Datum      m_oDatum;
-  
-    RowSlab*   m_pRowSlab;
-    RsbBuffer* m_pRsbBuffer;
   
     bool       m_bFirst;
 

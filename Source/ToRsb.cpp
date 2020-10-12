@@ -24,8 +24,14 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
  
   m_pStreamDef = pStreamDef;
   m_pFmt       = pFmt;
+  m_bPtnHash   = bPtnHash;
+  
+  m_pRowSlab   = nullptr;
+  m_pRsbBuffer = nullptr;
+
   m_bOrdCsv    = pFmt->bIsOrdCsv();
-  //vTrace("ordCsv : %lld\n"_Stz,(i8)m_bOrdCsv);
+  
+  // --
   
   m_azSrc   = nullptr;
   m_acChr   = nullptr;
@@ -40,19 +46,14 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   
   m_pCol    = nullptr;
 
-  m_bPtnHash = bPtnHash;
   
   m_bTrace  = false;
-  m_dCalc   = 0.0;
-  m_nChars  = 0;
   
-  m_pRsbBuffer = nullptr;
   
   m_bFirst = true;
   
 //  m_pRowSlab = m_pRsbBuffer->pRowSlab();
 //  m_pRowSlab->vInitPix(m_pStreamDef);
-  m_pRowSlab = nullptr;
   
   //m_pFmt->vShow();
 
@@ -72,8 +73,6 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
 ToRsb::~ToRsb(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
-
-  //vTrace("Converted %lld chars\n"_Stz,m_nChars);
   
   delete m_pRsbBuffer;
 }
@@ -242,6 +241,8 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   bool bSawEnclosedTrailing;
   
   Stz* szErrorText;
+  bool bSawFldSep;
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) begin
@@ -320,7 +321,7 @@ L_TestMoreFields:
   if (! bMORE_FIELDS())   // ? macro ?
     goto L_EndOfFields;
 
-  m_bSawFldSep = false;
+  bSawFldSep = false;
     
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -845,7 +846,7 @@ L_PostField:
   cSrc = *acCsvSrc;
   
   if (m_cFldSep == *acCsvSrc)
-    m_bSawFldSep = true;
+    bSawFldSep = true;
 
   while (*acCsvSrc && m_cFldSep != *acCsvSrc && m_cRecEnd != *acCsvSrc)
     acCsvSrc++;
@@ -868,7 +869,7 @@ L_EndOfFields:
 
 #ifdef WITH_DEBUG_VERSION
   if (m_bTrace) {
-    if (! m_bSawFldSep)
+    if (! bSawFldSep)
       vTrace("\n"_Stz);
     vTrace("-- recSep -- \n"_Stz);
   }
