@@ -327,17 +327,18 @@ function doClusterInstall() {
     displayWelcome
 
     if [ -n "${CONFIG_FILE}" ]; then
-      # We have been given a config file.
+      # Interactive install but we have been given a config file.
       true
-      # Load and validate config
-      # Present summary
-      # Edit ?
-      # Validate config/environment
-      # Write config file?
-      # Install all nodes
+      # TODO: Load and validate config
+      # TODO: Present summary
+      # TODO: Edit ?
+      # TODO: Validate config/environment
+      # TODO: Write config file?
+      # TODO: Install all nodes
 
     else
-      # No config file given. We need to prompt the user to configure the cluster.
+      # Interactive install but no config file given. 
+      # We need to prompt the user to configure the cluster.
       echo "Let's build a cluster configuration."
 
       createConfiguration
@@ -347,11 +348,13 @@ function doClusterInstall() {
         allNodeCfgsPrint
       fi
 
-      # Present summary
-      # Edit ?
-      # Validate config/environment
+      # TODO: Present summary
+      # TODO: Edit ?
+      # TODO: Validate config/environment
       # Write config file?
-      # Install all nodes
+      writeClusterConfig ""
+
+      # TODO: Install all nodes
     fi
 
   else 
@@ -360,10 +363,10 @@ function doClusterInstall() {
     # Assert that we have a config file
     [ -f "${CONFIG_FILE}" ] || errorExit "Config file does not exist: ${CONFIG_FILE}"
 
-    # Load and validate config
-    # Validate config/environment
-    # Write config file?
-    # Install all nodes
+    # TODO: Load and validate config
+    # TODO: Validate config/environment
+    # TODO: Write config file?
+    # TODO: Install all nodes
     
   fi
 }
@@ -397,7 +400,6 @@ function createConfiguration() {
 
   # (advanced) additional parameters
   askParams
-
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -442,7 +444,7 @@ function askNamePrefix() {
   while true
   do
     echo ""
-    echo -n "Enter a node name prefix [default: ${NODE_NAME_PREFIX}] : "
+    echo -n "Enter a node name prefix [default: ${NODE_CFG_DEFAULT_NAME_PREFIX}] : "
     IFS=$'\n' read -r line
 
     # check for whitespace
@@ -453,6 +455,7 @@ function askNamePrefix() {
 
     # Check if using the default value
     if [ -z "${line}" ]; then 
+      line="${NODE_CFG_DEFAULT_NAME_PREFIX}"
       break
     fi
 
@@ -872,6 +875,103 @@ function askParams() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Params:
+##  $1 : (optional) the path to the output file
+function writeClusterConfig() {
+ 
+  # First some sanity checks
+  if [[ -z "${NODE_LIST[*]}" || "${#NODE_LIST[@]}" -eq 0  ]]; then
+    errorExit "Cluster configuration incomplete: missing the list of nodes (\$NODE_LIST)."
+  fi
+
+  local outputFile="$1"
+
+  # Check if a config file path has been 
+  if [ -z "${outputFile}" ]; then
+    outputFile="${DEFAULT_CONFIG_PATH}"
+  fi
+
+
+  # Write the file header 
+  #  (no parameter/command substitution because "EOT" below is quoted)
+  cat <<'EOT' > "${outputFile}" 
+#!/bin/bash
+
+# Cluster config file.
+# A cluster.config file can be created by hand (see note), or automatically
+# via the installation wizard.
+#
+# Note: This file is a bash script expected to be sourced by other scripts.
+#       As such it must be a syntactically valid bash script.
+
+# Guard against direct execution
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]; then
+  >&2 echo "This file should be sourced, not executed: $0"
+  exit 1
+fi
+
+EOT
+
+
+  # Now add in the file's creation information
+  (
+    echo "CONFIG_VERSION=\"${CONFIG_DEFAULT_VERSION}\""
+    echo "CONFIG_CREATED=\"$(date +%FT%T)\""
+    echo ""
+  ) >> "${outputFile}"
+
+  local keys
+  local key
+  local value
+  local nodeName
+
+  # Write out the definition of the node list.
+  (
+    echo -n  "declare -a NODE_LIST=( "
+
+    for nodeName in "${NODE_LIST[@]}"
+    do
+      echo -n "\"${nodeName}\" "
+    done
+
+    echo ")"
+  ) >> "${outputFile}"
+
+  # Now add in each node's configuration.
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    # Start by declaring the associative map.
+    (
+      echo ""
+      echo "declare -A ${NODE_CFG_PREFIX}${nodeName}"
+    ) >> "${outputFile}"
+
+    # Get all of the keys for this node.
+    IFS=" " read -r -a keys <<< "$(nodeCfgGetKeys "${nodeName}")"
+    
+    for key in "${keys[@]}"
+    do
+      value=$(nodeCfgGetValue "${nodeName}" "${key}")
+      echo "${NODE_CFG_PREFIX}${nodeName}[\"${key}\"]=\"${value}\"" >> "${outputFile}"
+    done # keys
+  done # nodes
+
+  if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
+    echo "Wrote cluster configuration out to the file: ${outputFile}"
+  fi
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo ""
+    echo "Contents of the cluster configuration file: ${outputFile}"
+    echo ""
+    cat "${outputFile}"
+    echo ""
+  fi
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function doNodeInstall() {
   true
 }
@@ -981,7 +1081,7 @@ function nodeCfgSetValue() {
 ##
 ## Params:
 ##  $1 : The name of the SE node.
-##  $2 : The name of the key in this node's associate array whose value to return.
+##  $2 : The name of the key in this nodes associate array whose value to return.
 
 function nodeCfgGetValue() {
   local nodeName=$1
@@ -1034,8 +1134,9 @@ function allNodeCfgsPrint() {
 function nodeCfgPrint() {
   local nodeName=$1
 
-  #shellcheck disable=2207
-  local keys=($(nodeCfgGetKeys "${nodeName}"))
+  #local keys=($(nodeCfgGetKeys "${nodeName}"))
+  local keys
+  IFS=" " read -r -a keys <<< "$(nodeCfgGetKeys "${nodeName}")"
   
   local arrayName="${NODE_CFG_PREFIX}${nodeName}"
 

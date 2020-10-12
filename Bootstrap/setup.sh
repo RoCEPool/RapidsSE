@@ -26,6 +26,9 @@ readonly DIR=$(dirname "$0")
 
 readonly SETUP_FN_FILE="setup.fn"
 readonly VERSION_FILE="version"
+readonly DEFAULT_CONFIG_PATH="cluster.config"
+
+readonly CONFIG_DEFAULT_VERSION="1"
 
 # Prefix of the name of the associative arrays for each node in the cluster.config
 readonly NODE_CFG_PREFIX="NODE_CFG_"
@@ -41,6 +44,7 @@ readonly NODE_CFG_MEM_KEY="mem"
 readonly NODE_CFG_PARAMS_KEY="params"
 
 # Default values
+readonly NODE_CFG_DEFAULT_NAME_PREFIX="NODE"
 readonly NODE_CFG_DEFAULT_PORT="5541"
 readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
 readonly NODE_CFG_DEFAULT_PARTITIONS="8"  # per node
@@ -75,7 +79,7 @@ CONFIG_FILE=""
 declare -a NODE_LIST
 
 # The prefix given to each node name before its sequence number.
-NODE_NAME_PREFIX="NODE"
+NODE_NAME_PREFIX="${NODE_CFG_DEFAULT_NAME_PREFIX}"
 
 # The unique number used with the above NODE_NAME_PREFIX to form the node name.
 NODE_SEQ_NUM=0
@@ -85,6 +89,7 @@ NODE_SEQ_NUM=0
 ###############################################################################
 
 # Include a file that contains all of the functions used within.
+#shellcheck source=setup.fn
 source "${SETUP_FN_FILE}"
 
 
