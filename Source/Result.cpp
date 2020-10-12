@@ -363,7 +363,7 @@ void Result::vProcessBufferQueue(void)
         
       case CN_RSBBUFFER: {
         RsbBuffer* pRsbBuffer = _pRsbBuffer(pOperand);
-        if (AM::bDeveloper())
+//        if (AM::bDeveloper())
 //          vTrace("[[RsbBuffer %s ; Rsbs=%lld]]\n"_Stz,
 //                 spDataBuffer.sz(pRsbBuffer),
 //                 pRsbBuffer->nRsb());

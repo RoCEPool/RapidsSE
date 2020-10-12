@@ -157,7 +157,7 @@ Label QRY_300_DONE
 // SUBROUTINE: JOI_ORD  -- join with orders                       Q300 JOI_ORD
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Label JOI_ORD
-  EO_PRINTF "*** JOI_ORD ***\n"
+  //EO_PRINTF "*** JOI_ORD ***\n"
   EO_IXT_POS_ALTBYSRC
   EO_JMP_FALSE RET_ORD
 

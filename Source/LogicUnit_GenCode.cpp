@@ -1155,6 +1155,21 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
   vAddCode(EO_GREATERTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_AGG:"_Stz);
+  vAddCodeLabel(EO_JMP,"CHECK_DATE:"_Stz);
+  
+  vDefineLabel("NXT_AGG2:"_Stz);
+  vAddCode(EO_IXT_ALT_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_AGG:"_Stz);
+  vAddCode(EO_IXT_CMP_WRKALT);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_AGG:"_Stz);
+  
+  vAddCode(EO_CRW_ALT_DEREF);
+  
+  vDefineLabel("CHECK_DATE:"_Stz);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_SHIPDATE);
+  vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
+  vAddCode(EO_GREATERTHAN);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_AGG2:"_Stz);
   
   vAddCodeArg(EO_RSB_DST_PUSHCOLI,Q301_REVENUE);
   vAddCodeArg(EO_COL_ALT_PUSHONE,L_EXTENDEDPRICE);
@@ -1175,13 +1190,14 @@ void LogicUnit::vGenerateQuery301(void)
   
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q301_REVENUE);
 
-  vAddCodeLabel(EO_JMP,"NXT_AGG:"_Stz);
+  vAddCodeLabel(EO_JMP,"NXT_AGG2:"_Stz);
   
-  vDefineLabel("RET_AGG_f:"_Stz);
+  vDefineLabel("RET_AGG:"_Stz);
   
   // not quite right...
   vAddCodeLabel(EO_CALL,"LIM_SBR:"_Stz);
   
+  vDefineLabel("RET_AGG_f:"_Stz);
   vAddCode(EO_RETURN);
 
 
@@ -1372,7 +1388,7 @@ void LogicUnit::vGenerateQuery302(void)
   vAddCodeArg(EO_INTEGER,10);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_TRUE,"LIM_INS:"_Stz);
-
+  
   // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_TST:"_Stz);
   
