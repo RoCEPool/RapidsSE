@@ -1158,8 +1158,7 @@ void LogicUnit::vGenerateQuery301(void)
   
   vAddCodeArg(EO_RSB_DST_PUSHCOLI,Q301_REVENUE);
   vAddCodeArg(EO_COL_ALT_PUSHONE,L_EXTENDEDPRICE);
-  vAddCode(EO_ADD);
-
+  
   vAddCodeArg(EO_INTEGER,100);
   vAddCodeArg(EO_COL_ALT_PUSHONE,L_DISCOUNT);
   vAddCode(EO_SUBTRACT);
@@ -1167,7 +1166,9 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_MULTIPLY);
   vAddCodeArg(EO_INTEGER,100);
   vAddCode(EO_DIVIDE);
-
+  
+  vAddCode(EO_ADD);
+  
   vCC(2); vAddCode(EO_DUP);
   vCC(2); vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY);
   vCC(2); vAddCodeString(EO_PRINTF,"  totalled L_OrderKey %i revenue %i\n"_Stz);
