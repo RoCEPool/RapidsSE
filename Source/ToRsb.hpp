@@ -24,19 +24,9 @@ namespace Load
     char       m_cFldSep;
 
     bool       m_bFirst;
-
-    // --
-  
-    char*      m_azSrc;
-    char*      m_acChr;
-  
-    i8         m_iLine;
-    i8         m_iCol;
-    i8         m_i_Fld;
-    i8         m_i_Rec;
-        
     bool       m_bTrace;
-  
+
+    i8         m_nRecords;
   
     // must be last
     Footer m_xFooter;

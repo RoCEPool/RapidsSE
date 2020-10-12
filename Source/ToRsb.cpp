@@ -34,21 +34,17 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   m_cRecEnd    = '\n';
   m_cFldSep    = ',';
 
+  m_bFirst     = true;
+  m_bTrace     = false;
+
+  m_nRecords   = 0;
+  
   // --
   
-  m_azSrc   = nullptr;
-  m_acChr   = nullptr;
 
-
-  m_iLine   = 1;
-  m_iCol    = 1;
-  m_i_Fld   = 0;
-  m_i_Rec   = 0;
-  
-  m_bTrace  = false;
   
   
-  m_bFirst = true;
+  
   
 //  m_pRowSlab = m_pRsbBuffer->pRowSlab();
 //  m_pRowSlab->vInitPix(m_pStreamDef);
@@ -239,7 +235,6 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   bool bSawEnclosedTrailing;
   
   Stz* szErrorText;
-  bool bSawFldSep;
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -258,6 +253,9 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   i8 nPtns = AM::nPartitions();
   i8 iHash = 0;
   i8 i_Ptn = 0;
+  
+  i8 i_Fld = 0;
+  bool bSawFldSep = false;
 
   // hack
   if (m_bFirst) {
@@ -326,7 +324,7 @@ L_TestMoreFields:
   // 4) decode and convert field
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
-  xColPix   = aColPix[m_i_Fld];
+  xColPix   = aColPix[i_Fld];
   ePixDatum = (eDM) xColPix.m_uDatum;
   
   //Column* pCol = m_pStreamDef->pGetColumn(m_i_Fld);
@@ -849,7 +847,7 @@ L_PostField:
   if (m_cFldSep == *acCsvSrc)
     acCsvSrc++;
 
-  m_i_Fld++;
+  i_Fld++;
 
   goto L_TestMoreFields;
   
@@ -886,11 +884,10 @@ L_EndOfFields:
   
   AM::vIncRowsProcessed(pPipelineJob);
 
-  m_i_Rec++;
-  m_i_Fld = 0;
+  m_nRecords++;
+  i_Fld = 0;
   if (*acCsvSrc)
     acCsvSrc++;
-  m_iLine++;
   
   goto L_TestMoreCsv;
   
@@ -926,3 +923,62 @@ L_EndOfCsvChunk:
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+/*
+
+dbgen -T L
+ 
+hexdump -C lineitem.tbl | more
+
+  we can observe:
+ //  1) fields are terminated/separated by pipe '|'
+ //  2) the last field has a terminating pipe '|'
+ //  3) records are terminated by LF 0x0a
+ 
+00000000  31 7c 31 35 35 31 39 30  7c 37 37 30 36 7c 31 7c  |1|155190|7706|1||
+00000010  31 37 7c 32 31 31 36 38  2e 32 33 7c 30 2e 30 34  |17|21168.23|0.04|
+00000020  7c 30 2e 30 32 7c 4e 7c  4f 7c 31 39 39 36 2d 30  ||0.02|N|O|1996-0|
+00000030  33 2d 31 33 7c 31 39 39  36 2d 30 32 2d 31 32 7c  |3-13|1996-02-12||
+00000040  31 39 39 36 2d 30 33 2d  32 32 7c 44 45 4c 49 56  |1996-03-22|DELIV|
+00000050  45 52 20 49 4e 20 50 45  52 53 4f 4e 7c 54 52 55  |ER IN PERSON|TRU|
+00000060  43 4b 7c 65 67 75 6c 61  72 20 63 6f 75 72 74 73  |CK|egular courts|
+00000070  20 61 62 6f 76 65 20 74  68 65 7c 0a 31 7c 36 37  | above the|.1|67|
+00000080  33 31 30 7c 37 33 31 31  7c 32 7c 33 36 7c 34 35  |310|7311|2|36|45|
+00000090  39 38 33 2e 31 36 7c 30  2e 30 39 7c 30 2e 30 36  |983.16|0.09|0.06|
+000000a0  7c 4e 7c 4f 7c 31 39 39  36 2d 30 34 2d 31 32 7c  ||N|O|1996-04-12||
+000000b0  31 39 39 36 2d 30 32 2d  32 38 7c 31 39 39 36 2d  |1996-02-28|1996-|
+000000c0  30 34 2d 32 30 7c 54 41  4b 45 20 42 41 43 4b 20  |04-20|TAKE BACK |
+000000d0  52 45 54 55 52 4e 7c 4d  41 49 4c 7c 6c 79 20 66  |RETURN|MAIL|ly f|
+000000e0  69 6e 61 6c 20 64 65 70  65 6e 64 65 6e 63 69 65  |inal dependencie|
+000000f0  73 3a 20 73 6c 79 6c 79  20 62 6f 6c 64 20 7c 0a  |s: slyly bold |.|
+00000100  31 7c 36 33 37 30 30 7c  33 37 30 31 7c 33 7c 38  |1|63700|3701|3|8|
+00000110  7c 31 33 33 30 39 2e 36  30 7c 30 2e 31 30 7c 30  ||13309.60|0.10|0|
+00000120  2e 30 32 7c 4e 7c 4f 7c  31 39 39 36 2d 30 31 2d  |.02|N|O|1996-01-|
+00000130  32 39 7c 31 39 39 36 2d  30 33 2d 30 35 7c 31 39  |29|1996-03-05|19|
+00000140  39 36 2d 30 31 2d 33 31  7c 54 41 4b 45 20 42 41  |96-01-31|TAKE BA|
+00000150  43 4b 20 52 45 54 55 52  4e 7c 52 45 47 20 41 49  |CK RETURN|REG AI|
+00000160  52 7c 72 69 6f 75 73 6c  79 2e 20 72 65 67 75 6c  |R|riously. regul|
+00000170  61 72 2c 20 65 78 70 72  65 73 73 20 64 65 70 7c  |ar, express dep||
+00000180  0a 31 7c 32 31 33 32 7c  34 36 33 33 7c 34 7c 32  |.1|2132|4633|4|2|
+00000190  38 7c 32 38 39 35 35 2e  36 34 7c 30 2e 30 39 7c  |8|28955.64|0.09||
+000001a0  30 2e 30 36 7c 4e 7c 4f  7c 31 39 39 36 2d 30 34  |0.06|N|O|1996-04|
+000001b0  2d 32 31 7c 31 39 39 36  2d 30 33 2d 33 30 7c 31  |-21|1996-03-30|1|
+000001c0  39 39 36 2d 30 35 2d 31  36 7c 4e 4f 4e 45 7c 41  |996-05-16|NONE|A|
+000001d0  49 52 7c 6c 69 74 65 73  2e 20 66 6c 75 66 66 69  |IR|lites. fluffi|
+000001e0  6c 79 20 65 76 65 6e 20  64 65 7c 0a 31 7c 32 34  |ly even de|.1|24|
+000001f0  30 32 37 7c 31 35 33 34  7c 35 7c 32 34 7c 32 32  |027|1534|5|24|22|
+00000200  38 32 34 2e 34 38 7c 30  2e 31 30 7c 30 2e 30 34  |824.48|0.10|0.04|
+00000210  7c 4e 7c 4f 7c 31 39 39  36 2d 30 33 2d 33 30 7c  ||N|O|1996-03-30||
+00000220  31 39 39 36 2d 30 33 2d  31 34 7c 31 39 39 36 2d  |1996-03-14|1996-|
+00000230  30 34 2d 30 31 7c 4e 4f  4e 45 7c 46 4f 42 7c 20  |04-01|NONE|FOB| |
+00000240  70 65 6e 64 69 6e 67 20  66 6f 78 65 73 2e 20 73  |pending foxes. s|
+00000250  6c 79 6c 79 20 72 65 7c  0a 31 7c 31 35 36 33 35  |lyly re|.1|15635|
+00000260  7c 36 33 38 7c 36 7c 33  32 7c 34 39 36 32 30 2e  ||638|6|32|49620.|
+00000270  31 36 7c 30 2e 30 37 7c  30 2e 30 32 7c 4e 7c 4f  |16|0.07|0.02|N|O|
+00000280  7c 31 39 39 36 2d 30 31  2d 33 30 7c 31 39 39 36  ||1996-01-30|1996|
+00000290  2d 30 32 2d 30 37 7c 31  39 39 36 2d 30 32 2d 30  |-02-07|1996-02-0|
+000002a0  33 7c 44 45 4c 49 56 45  52 20 49 4e 20 50 45 52  |3|DELIVER IN PER|
+000002b0  53 4f 4e 7c 4d 41 49 4c  7c 61 72 65 66 75 6c 6c  |SON|MAIL|arefull|
+000002c0  79 20 73 6c 79 6c 79 20  65 78 7c 0a 32 7c 31 30  |y slyly ex|.2|10|
+ 
+*/
