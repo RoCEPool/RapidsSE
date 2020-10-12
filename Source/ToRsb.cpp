@@ -21,7 +21,6 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
- 
   m_pStreamDef = pStreamDef;
   m_pFmt       = pFmt;
   m_bPtnHash   = bPtnHash;
@@ -39,22 +38,11 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
 
   m_nRecords   = 0;
   
-  // --
-  
-
-  
-  
-  
-  
-//  m_pRowSlab = m_pRsbBuffer->pRowSlab();
-//  m_pRowSlab->vInitPix(m_pStreamDef);
-  
   //m_pFmt->vShow();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
   vNewRsbBuffer();
-
   
   //s48K sDef;
   //m_pStreamDef->vAsString(sDef);
@@ -236,6 +224,8 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   
   Stz* szErrorText;
 
+  Column* pCol = nullptr;
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) begin
@@ -327,7 +317,7 @@ L_TestMoreFields:
   xColPix   = aColPix[i_Fld];
   ePixDatum = (eDM) xColPix.m_uDatum;
   
-  //Column* pCol = m_pStreamDef->pGetColumn(m_i_Fld);
+  //pCol = m_pStreamDef->pGetColumn(m_i_Fld);
 
   switch (ePixDatum) {
     case DM_BOL : goto L_Boolean;
@@ -349,7 +339,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
 
-  // temp
+  // debug
   cSrc = *acCsvSrc;
   
   vSKIP_WHITE_SPACE_ADV();
@@ -376,13 +366,11 @@ L_Date:
     nDigits++;
     
     if (iYear > (u8)C_I8_MAX) {
-      //THROW_USER("vConvertDate"_Stz);
       goto L_FieldError;
     }
   }
       
   if (! bOnce) {
-    //THROW_USER("vConvertDate"_Stz);
     goto L_FieldError;
   }
   
@@ -391,7 +379,6 @@ L_Date:
   }
   else
   if (4 != nDigits) {
-    //THROW_USER("vConvertDate"_Stz);
     goto L_FieldError;
   }
 
@@ -402,11 +389,9 @@ L_Date:
   nDigits = 2;
 
   if (! cSrc) {
-    //THROW_USER("vConvertDate"_Stz);
     goto L_FieldError;
   }
   if ('-' != cSrc) {
-    //THROW_USER("vConvertDate"_Stz);
     goto L_FieldError;
   }
           
@@ -427,12 +412,10 @@ L_Date:
   }
     
   if (! bOnce) {
-    //THROW_USER("vConvertDate"_Stz);
     goto L_FieldError;
   }
   
   if (iMonth < 1 || iMonth > 12) {
-    //THROW_USER("vConvertDate"_Stz);
     goto L_FieldError;
   }
   
@@ -443,11 +426,9 @@ L_Date:
   nDigits = 2;
 
   if (! cSrc) {
-    //THROW_USER("vConvertDate"_Stz);
     goto L_FieldError;
   }
   if ('-' != cSrc) {
-    //THROW_USER("vConvertDate"_Stz);
     goto L_FieldError;
   }
   
@@ -468,7 +449,6 @@ L_Date:
   }
      
   if (! bOnce) {
-    // THROW_USER("vConvertDate"_Stz);
     goto L_FieldError;
   }
   
@@ -486,13 +466,11 @@ L_Date:
 
   if (bLeapYear) {
     if (iDay > (u8)iDaysPerMonthLeap[iMonth-1]) {
-      //THROW_USER("vConvertDate"_Stz);
       goto L_FieldError;
     }
   }
   else {
     if (iDay > (u8)iDaysPerMonth[iMonth-1]) {
-      //THROW_USER("vConvertDate"_Stz);
       goto L_FieldError;
     }
   }
@@ -515,7 +493,7 @@ L_Date:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
 
-  // temp
+  // debug
   cSrc = *acCsvSrc;
   
   vSKIP_WHITE_SPACE_ADV();
@@ -556,7 +534,6 @@ L_Decimal:
   
   // have we exceeded maximum precision digits?      IS THIS AN ERROR?
   if (nPixPrecision < 0) {
-    //THROW_USER("vConvertDecimal"_Stz);
     goto L_FieldError;
   }
   
@@ -593,12 +570,10 @@ L_Decimal:
   
   // have we gone beyond the min ?
   if (iFinalResult != 0 && bNegative && (iFinalResult < C_I8_MIN)) {
-    //THROW_USER("vConvertDecimal"_Stz);
     goto L_FieldError;
   }
   
   if (! bOnce) {
-    //THROW_USER("vConvertDecimal"_Stz);
     goto L_FieldError;
   }
   
@@ -612,7 +587,7 @@ L_Decimal:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
 
-  // temp
+  // debug
   cSrc = *acCsvSrc;
   
   vSKIP_WHITE_SPACE_ADV();
@@ -650,7 +625,6 @@ L_Integer:
   
   if (! bOnce) {
     vTrace("%s\n"_Stz,azCsvChunk);
-    //THROW_USER("vConvertInteger"_Stz);
     goto L_FieldError;
   }
   
@@ -659,14 +633,9 @@ L_Integer:
 
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey) {
-    //if (0 != m_i_Fld)
-      //vDebugPoint();
-    //iHash += HshLib::iHash((byte*)&iFinalResult,sizeof(w8));
     PtnLib::vRunning(&iHash,iFinalResult);
   }
-  
-  //AM::vIncRowsInvalid(pPipelineJob);
-  
+    
   goto L_PostField;                                            // end of integer
 
   
@@ -675,7 +644,7 @@ L_Integer:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Varchar:
 
-  // temp
+  // debug
   cSrc = *acCsvSrc;
   
   // don't skip white space
@@ -722,7 +691,6 @@ L_Varchar:
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
   if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
-    //THROW_USER("vConvertVarchar"_Stz);
     goto L_FieldError;
   }
   
@@ -740,7 +708,7 @@ L_Varchar:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Boolean:
   {
-    // temp
+    // debug
     cSrc = *acCsvSrc;
     
     vSKIP_WHITE_SPACE_ADV(); ;
@@ -759,7 +727,7 @@ L_Boolean:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
   {
-    // temp
+    // debug
     cSrc = *acCsvSrc;
     
     vSKIP_WHITE_SPACE_ADV();
@@ -778,7 +746,7 @@ L_Float:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
   {
-    // temp
+    // debug
     cSrc = *acCsvSrc;
     
     vSKIP_WHITE_SPACE_ADV();
@@ -797,7 +765,7 @@ L_Interval:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   {
-    // temp
+    // debug
     cSrc = *acCsvSrc;
     
     vSKIP_WHITE_SPACE_ADV();
@@ -816,7 +784,7 @@ L_Time:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Timestamp:
   {
-    // temp
+    // debug
     cSrc = *acCsvSrc;
     
     vSKIP_WHITE_SPACE_ADV();
@@ -835,7 +803,7 @@ L_Timestamp:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
   
-  // temp
+  // debug
   cSrc = *acCsvSrc;
   
   if (m_cFldSep == *acCsvSrc)
@@ -857,7 +825,7 @@ L_PostField:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfFields:
   
-  // temp
+  // debug
   cSrc = *acCsvSrc;
 
 #ifdef WITH_DEBUG_VERSION
@@ -870,7 +838,6 @@ L_EndOfFields:
 
   // set partition hash
   if (m_bPtnHash) {
-    //i_Ptn = iHash % nPtns;
     i_Ptn = PtnLib::iPartition(iHash,nPtns);
     //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
     pRowSlab->vDeposit((i8)i_Ptn);
@@ -885,6 +852,7 @@ L_EndOfFields:
   AM::vIncRowsProcessed(pPipelineJob);
 
   m_nRecords++;
+  
   i_Fld = 0;
   if (*acCsvSrc)
     acCsvSrc++;
@@ -912,11 +880,6 @@ L_FieldError:
 
 L_EndOfCsvChunk:
     
-#ifdef WITH_DEBUG_VERSION
-  //pRowSlab->vDumpAllRows();
-  //pRowSlab->vSlabReport();
-#endif
-  
   return true;
 }
 
@@ -930,7 +893,7 @@ dbgen -T L
  
 hexdump -C lineitem.tbl | more
 
-  we can observe:
+ // we can observe:
  //  1) fields are terminated/separated by pipe '|'
  //  2) the last field has a terminating pipe '|'
  //  3) records are terminated by LF 0x0a
