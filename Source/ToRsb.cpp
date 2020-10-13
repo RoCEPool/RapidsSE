@@ -243,7 +243,9 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   i8 i_Fld = 0;
   bool bSawFldSep = false;
 
-  // hack
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // determine field seperator
+
   if (m_bFirst) {
     m_bFirst = false;
     
@@ -258,7 +260,6 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
       }
     }
   }
-  // end-hack
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -296,7 +297,7 @@ L_TestMoreCsv:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_TestMoreFields:
   
-  // temp
+  // debug
   cSrc = *acCsvSrc;
   
   if (! bMORE_FIELDS())   // ? macro ?
@@ -312,6 +313,7 @@ L_TestMoreFields:
   xColPix   = aColPix[i_Fld];
   ePixDatum = (eDM) xColPix.m_uDatum;
   
+  // debug
   //pCol = m_pStreamDef->pGetColumn(m_i_Fld);
 
   switch (ePixDatum) {
@@ -801,13 +803,13 @@ L_PostField:
   // debug
   cSrc = *acCsvSrc;
   
-  if (m_cFldSep == *acCsvSrc)
+  if (*acCsvSrc == m_cFldSep)
     bSawFldSep = true;
 
   while (*acCsvSrc && m_cFldSep != *acCsvSrc && m_cRecEnd != *acCsvSrc)
     acCsvSrc++;
 
-  if (m_cFldSep == *acCsvSrc)
+  if (*acCsvSrc == m_cFldSep)
     acCsvSrc++;
 
   i_Fld++;
