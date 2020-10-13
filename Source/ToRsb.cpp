@@ -215,12 +215,11 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   char xBuffer[256];
   char* aChar;
 
+  Dte xDte;
   u8 iYear;
   u8 iMonth;
   u8 iDay;
   bool bLeapYear;
-
-  Dte xDte;
 
   char* azVchSlab;
   char* acVchDst;
@@ -232,6 +231,13 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   
   Ivl xIvl;
   i8 nShift;
+
+  Tme xTme;
+  u8 iHour;
+  u8 iMinute;
+  u8 iSecond;
+  u8 iMicrosecond;
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) begin
@@ -341,9 +347,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
   
-  iYear  = 0;
-  iMonth = 0;
-  iDay   = 0;
+  iYear = iMonth = iDay = 0;
 
   vSKIP_WHITE_SPACE_ADV();
   
@@ -856,16 +860,98 @@ L_Interval:
   // 4.h) time field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
-  {
-    Tme xTme;
-    SN_Tme snTme;
+//  {
+//    Tme xTme;
+//    SN_Tme snTme;
+//
+//    vSKIP_WHITE_SPACE_ADV();
+//
+//    xTme = snTme.i(&azCsvSrc,m_pFmt);
+//    cSrcChr = *azCsvSrc;
+//    m_pRowSlab->vDeposit(xTme);
+//  }
+  
+  iHour = iMinute = iSecond = iMicrosecond = 0;
 
-    vSKIP_WHITE_SPACE_ADV();
-    
-    xTme = snTme.i(&azCsvSrc,m_pFmt);
-    cSrcChr = *azCsvSrc;
-    m_pRowSlab->vDeposit(xTme);
+  vSKIP_WHITE_SPACE_ADV();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // hour
+
+  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+    bOnce = true;
+    iHour = (iHour * 10) + (cSrcChr - '0');
+    if (iHour > 23)
+      goto L_FieldError;
   }
+  
+  if (! bOnce)
+    goto L_FieldError;
+
+  if (':' != cSrcChr)
+    goto L_FieldError;
+
+  vADV_SRC();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // minute
+
+  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+    bOnce = true;
+    iMinute = (iMinute * 10) + (cSrcChr - '0');
+    if (iMinute > 59)
+      goto L_FieldError;
+  }
+  
+  if (! bOnce)
+    goto L_FieldError;
+
+  if (':' != cSrcChr)
+    goto L_FieldError;
+
+  vADV_SRC();
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // second
+
+  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+    bOnce = true;
+    iSecond = (iSecond * 10) + (cSrcChr - '0');
+    if (iSecond > 59)
+      goto L_FieldError;
+  }
+  
+  if (! bOnce)
+    goto L_FieldError;
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // microsecond (optional)
+  
+  if ('.' == cSrcChr) {
+    
+    nShift = 1000000;
+    vADV_SRC();
+
+    while (nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9') {
+      iMicrosecond = (iMicrosecond * 10) + (cSrcChr - '0');
+      nShift /= 10;
+      vADV_SRC();
+    }
+
+    iMicrosecond = iMicrosecond * nShift;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit the time
+
+  xTme.m_uHour   = iHour;
+  xTme.m_uMinute = iMinute;
+  xTme.m_uSecond = iSecond;
+  xTme.m_uMicro  = iMicrosecond;
+  xTme.m_uSpare  = 0;
+
+  m_pRowSlab->vDeposit(xTme);
+
   goto L_PostField;
 
   
