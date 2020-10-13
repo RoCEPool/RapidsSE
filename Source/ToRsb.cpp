@@ -358,17 +358,15 @@ L_Date:
     }
   }
       
-  if (! bOnce) {
+  if (! bOnce)
     goto L_FieldError;
-  }
+
   
-  if (iYear <= 99) {
+  if (iYear <= 99)
     iYear += 2000;
-  }
   else
-  if (iYear <= 1900) {
+  if (iYear <= 1900)
     goto L_FieldError;
-  }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month
@@ -395,25 +393,22 @@ L_Date:
     iMonth = (iMonth * 10) + (cSrcChr - '0');
   }
     
-  if (! bOnce) {
+  if (! bOnce)
     goto L_FieldError;
-  }
   
-  if (iMonth < 1 || iMonth > 12) {
+  if (iMonth < 1 || iMonth > 12)
     goto L_FieldError;
-  }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day
         
   bOnce = false;
 
-  if (! cSrcChr) {
+  if (! cSrcChr)
     goto L_FieldError;
-  }
-  if ('-' != cSrcChr) {
+  
+  if ('-' != cSrcChr)
     goto L_FieldError;
-  }
   
   vADV_SRC();
 
@@ -428,9 +423,8 @@ L_Date:
     iDay = (iDay * 10) + (cSrcChr - '0');
   }
      
-  if (! bOnce) {
+  if (! bOnce)
     goto L_FieldError;
-  }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // validate date
