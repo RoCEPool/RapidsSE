@@ -1131,6 +1131,9 @@ function doNodeInstall() {
     errorExit "Current node name was not specified."
   fi
 
+  # Install an exit hook to clean up the installation file and config files on exit
+  trap cleanupNodeInstall EXIT
+
   # Source the config file to include its configuration variables here
   #shellcheck disable=1090
   source "${CONFIG_FILE}"
@@ -1212,18 +1215,26 @@ function doNodeInstall() {
   # Create a node name file in the installation directory.
   echo "CURRENT_NODE_NAME=\"${CURRENT_NODE_NAME}\"" > "${installDir}/${NODE_NAME_FILE}" || errorExit "Could not create the node name file in the installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
 
-  # Remove the installation file and cluster.config if they reside in /tmp
-  if [ "$(dirname "${INSTALL_FILE}")" == "/tmp" ]; then
-    rm -f "${INSTALL_FILE}" > /dev/null || true
-  fi
-
-  if [ "$(dirname "${CONFIG_FILE}")" == "/tmp" ]; then
-    rm -f "${CONFIG_FILE}" > /dev/null || true
-  fi
-
 }
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Cleans up the node installation by removing the installation file and 
+## cluster config file that was copied to /tmp prior to it being executed.
+## This is typically called by an EXIT trap in doNodeInstall().
+## Params: None
+
+function cleanupNodeInstall() {
+
+  # Remove the installation file and cluster.config if they reside in /tmp
+  if [[ -n "${INSTALL_FILE}" && "$(dirname "${INSTALL_FILE}")" == "/tmp" ]]; then
+    rm -f "${INSTALL_FILE}" > /dev/null || true
+  fi
+
+  if [[ -n "${CONFIG_FILE}" && "$(dirname "${CONFIG_FILE}")" == "/tmp" ]]; then
+    rm -f "${CONFIG_FILE}" > /dev/null || true
+  fi
+}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
