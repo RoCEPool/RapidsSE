@@ -205,11 +205,16 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   i8 nPixScale;
   i8 nPixPrecision;
 
+  u8 uUnsignedResult;
   i8 iFinalResult;
-  u8 uPartialResult;
   bool bNegative;
   bool bOnce;
-    
+
+  d8 dUnsignedResult;
+  d8 dFinalResult;
+  char xBuffer[256];
+  char* aChar;
+
   u8 iYear;
   u8 iMonth;
   u8 iDay;
@@ -468,7 +473,7 @@ L_Date:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
   
-  uPartialResult = 0;
+  uUnsignedResult = 0;
   bNegative = false;
   bOnce = false;
 
@@ -497,7 +502,7 @@ L_Decimal:
   
   // collect leading digits (till '.')
   while (cSrcChr >= '0' && cSrcChr <= '9') {
-    uPartialResult = uPartialResult * 10 + cSrcChr - '0';
+    uUnsignedResult = uUnsignedResult * 10 + cSrcChr - '0';
     vADV_SRC();
     nPixPrecision--;
   }
@@ -512,17 +517,17 @@ L_Decimal:
     vADV_SRC(); // skip '.'
     
     while ((cSrcChr >= '0' && cSrcChr <= '9') && nPixScale) {
-      uPartialResult = uPartialResult * 10 + cSrcChr - '0';
+      uUnsignedResult = uUnsignedResult * 10 + cSrcChr - '0';
       vADV_SRC();
       nPixScale--;
     }
   }
   
   while (nPixScale--)
-    uPartialResult = uPartialResult * 10 + 0;
+    uUnsignedResult = uUnsignedResult * 10 + 0;
   
   // have we exceeded the max ?
-  if (uPartialResult > (u8)C_I8_MAX) {
+  if (uUnsignedResult > (u8)C_I8_MAX) {
     //THROW_USER("vConvertDecimal"_Stz);
     goto L_FieldError;
   }
@@ -530,13 +535,13 @@ L_Decimal:
   // round up if there any more digits after decimal
   if (cSrcChr >= '0' && cSrcChr <= '9') {
     if (cSrcChr - '0' >= 5)
-      uPartialResult += 1;
+      uUnsignedResult += 1;
     while (cSrcChr >= '0' && cSrcChr <= '9')
       vADV_SRC();
   }
   
   // compute final result
-  iFinalResult = bNegative ? - uPartialResult : uPartialResult;
+  iFinalResult = bNegative ? - uUnsignedResult : uUnsignedResult;
   
   // have we gone beyond the min ?
   if (iFinalResult != 0 && bNegative && (iFinalResult < C_I8_MIN)) {
@@ -557,7 +562,7 @@ L_Decimal:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
   
-  uPartialResult = 0;
+  uUnsignedResult = 0;
   bNegative = false;
   bOnce = false;
 
@@ -581,12 +586,12 @@ L_Integer:
   
   for ( ; cSrcChr; vADV_SRC()) {
         
-    if ( cSrcChr < '0' || cSrcChr > '9' )
+    if (cSrcChr < '0' || cSrcChr > '9')
       break;
     
-    uPartialResult = (uPartialResult * 10) + (cSrcChr - '0');
+    uUnsignedResult = (uUnsignedResult * 10) + (cSrcChr - '0');
     
-    if (uPartialResult > (u8)C_I8_MAX) {
+    if (uUnsignedResult > (u8)C_I8_MAX) {
       //THROW_USER("vConvertInteger"_Stz);
       goto L_FieldError;
     }
@@ -597,7 +602,7 @@ L_Integer:
     goto L_FieldError;
   }
   
-  iFinalResult = bNegative ? - uPartialResult : uPartialResult;
+  iFinalResult = bNegative ? - uUnsignedResult : uUnsignedResult;
   m_pRowSlab->vDeposit(iFinalResult);
 
   // compute running hash of partitioning column
@@ -688,12 +693,12 @@ L_Boolean:
   // ---- ---- ---- ---- ---- ---- ---- ----
 
   if ( cSrcChr < '0' || cSrcChr > '9' ) {
-    uPartialResult = 0;
+    uUnsignedResult = 0;
     while (cSrcChr >= '0' && cSrcChr <= '9') {
-      uPartialResult = uPartialResult * 10 + cSrcChr - '0';
+      uUnsignedResult = uUnsignedResult * 10 + cSrcChr - '0';
       vADV_SRC();
     }
-    if (uPartialResult > 0)
+    if (uUnsignedResult > 0)
       iBoolean = true;
     else
       iBoolean = false;
@@ -721,16 +726,82 @@ L_Boolean:
   // 4.f) float field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
-  {
-    Flt xFlt;
-    SN_Flt snFlt;
+//  {
+//    Flt xFlt;
+//    SN_Flt snFlt;
+//
+//    vSKIP_WHITE_SPACE_ADV();
+//
+//    xFlt = snFlt.d(&azCsvSrc,m_pFmt);
+//    cSrcChr = *azCsvSrc;
+//    m_pRowSlab->vDeposit(xFlt.m_dFlt);
+//  }
+  
+  
+  dUnsignedResult = 0.0;
+  aChar = xBuffer;
 
-    vSKIP_WHITE_SPACE_ADV();
-    
-    xFlt = snFlt.d(&azCsvSrc,m_pFmt);
-    cSrcChr = *azCsvSrc;
-    m_pRowSlab->vDeposit(xFlt.m_dFlt);
+  // test for negative or positive sign
+  if ('-' == cSrcChr) {
+    bNegative = true;
+    vADV_SRC();
   }
+  else
+  if ('+' == cSrcChr ) {
+    bNegative = false;
+    vADV_SRC();
+  }
+  else {
+    bNegative = false;
+  }
+  
+  bOnce = false;
+
+  // collect leading integer portion (till '.')
+  while (cSrcChr < '0' || cSrcChr > '9') {
+    bOnce = true;
+    *aChar++ = cSrcChr;
+    vADV_SRC();
+  }
+  
+  // collect trailing fraction portion (after '.')
+  if ('.' == cSrcChr) {
+    *aChar++ = cSrcChr;
+    vADV_SRC();
+    while (cSrcChr < '0' || cSrcChr > '9') {
+      *aChar++ = cSrcChr;
+      vADV_SRC();
+    }
+  }
+
+  // test for exponent
+  if ('e' == cSrcChr || 'E' == cSrcChr) {
+    
+    *aChar++ = cSrcChr;
+    vADV_SRC();
+
+    // test for +/-
+    if ('+' == cSrcChr || '-' == cSrcChr) {
+      *aChar++ = cSrcChr;
+      vADV_SRC();
+    }
+        
+    // collect exponent digits
+    while (cSrcChr < '0' || cSrcChr > '9') {
+      *aChar++ = cSrcChr;
+      vADV_SRC();
+    }
+  }
+
+  // terminate
+  *aChar++ = '\0';
+  
+  // compute final result
+  dUnsignedResult = atof(xBuffer);
+  dFinalResult = bNegative ? - dUnsignedResult : dUnsignedResult;
+  
+  m_pRowSlab->vDeposit(dFinalResult);
+
   goto L_PostField;
 
   
