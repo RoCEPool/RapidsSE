@@ -354,93 +354,142 @@ L_Date:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year
   
-  bOnce = false;
-
-  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
-    bOnce = true;
+//  bOnce = false;
+//
+//  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
+//    bOnce = true;
+//
+//  for ( ; cSrcChr; vADV_SRC()) {
+//
+//     if (cSrcChr < '0' || cSrcChr > '9' )
+//      break;
+//
+//    iYear = (iYear * 10) + (cSrcChr - '0');
+//
+//    if (iYear > (u8)C_I8_MAX) {
+//      goto L_FieldError;
+//    }
+//  }
+//
+//  if (! bOnce)
+//    goto L_FieldError;
+//
+//
+//  if (iYear <= 99)
+//    iYear += 2000;
+//  else
+//  if (iYear <= 1900)
+//    goto L_FieldError;
   
-  for ( ; cSrcChr; vADV_SRC()) {
-    
-     if (cSrcChr < '0' || cSrcChr > '9' )
-      break;
-    
+  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+    bOnce = true;
     iYear = (iYear * 10) + (cSrcChr - '0');
-    
-    if (iYear > (u8)C_I8_MAX) {
+    if (iYear > 9999)
       goto L_FieldError;
-    }
   }
-      
+
   if (! bOnce)
     goto L_FieldError;
 
-  
   if (iYear <= 99)
     iYear += 2000;
   else
-  if (iYear <= 1900)
+  if (iYear < C_YEAR_BASE)
     goto L_FieldError;
 
+  if ('-' != cSrcChr)
+    goto L_FieldError;
+
+  vADV_SRC();
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month
   
-  bOnce = false;
-
-  if (! cSrcChr) {
-    goto L_FieldError;
-  }
-  if ('-' != cSrcChr) {
-    goto L_FieldError;
-  }
-          
-  vADV_SRC();
+//  bOnce = false;
+//
+//  if (! cSrcChr) {
+//    goto L_FieldError;
+//  }
+//  if ('-' != cSrcChr) {
+//    goto L_FieldError;
+//  }
+//
+//  vADV_SRC();
+//
+//  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
+//    bOnce = true;
+//
+//  for ( ; cSrcChr; vADV_SRC()) {
+//
+//    if (cSrcChr < '0' || cSrcChr > '9' )
+//      break;
+//
+//    iMonth = (iMonth * 10) + (cSrcChr - '0');
+//  }
+//
+//  if (! bOnce)
+//    goto L_FieldError;
+//
+//  if (iMonth < 1 || iMonth > 12)
+//    goto L_FieldError;
   
-  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
+  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
-  
-  for ( ; cSrcChr; vADV_SRC()) {
-        
-    if (cSrcChr < '0' || cSrcChr > '9' )
-      break;
-    
     iMonth = (iMonth * 10) + (cSrcChr - '0');
+    if (iMonth > 12)
+      goto L_FieldError;
   }
-    
+
   if (! bOnce)
     goto L_FieldError;
   
   if (iMonth < 1 || iMonth > 12)
     goto L_FieldError;
+
+  if ('-' != cSrcChr)
+    goto L_FieldError;
+
+  vADV_SRC();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day
         
-  bOnce = false;
-
-  if (! cSrcChr)
-    goto L_FieldError;
+//  bOnce = false;
+//
+//  if (! cSrcChr)
+//    goto L_FieldError;
+//
+//  if ('-' != cSrcChr)
+//    goto L_FieldError;
+//
+//  vADV_SRC();
+//
+//  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
+//    bOnce = true;
+//
+//  for ( ; cSrcChr; vADV_SRC())  {
+//
+//    if ( cSrcChr < '0' || cSrcChr > '9' )
+//      break;
+//
+//    iDay = (iDay * 10) + (cSrcChr - '0');
+//  }
+//
+//  if (! bOnce)
+//    goto L_FieldError;
   
-  if ('-' != cSrcChr)
-    goto L_FieldError;
-  
-  vADV_SRC();
-
-  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
+  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
-  
-  for ( ; cSrcChr; vADV_SRC())  {
-        
-    if ( cSrcChr < '0' || cSrcChr > '9' )
-      break;
-    
     iDay = (iDay * 10) + (cSrcChr - '0');
+    if (iDay > 31)
+      goto L_FieldError;
   }
-     
+
   if (! bOnce)
     goto L_FieldError;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // validate date
+  // validate date wrt possible leap year
   
   // assume a leap year
   bLeapYear = true;
@@ -969,6 +1018,7 @@ L_Timestamp:
     cSrcChr = *azCsvSrc;
     m_pRowSlab->vDeposit(xTsp);
   }
+  
   goto L_PostField;
 
   
