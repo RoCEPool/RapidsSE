@@ -223,7 +223,8 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   bool bSawEnclosedLeading;
   bool bSawEnclosedTrailing;
   
-
+  i8 iBoolean;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) begin
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -674,13 +675,43 @@ L_Boolean:
   {
     Bol xBol;
     SN_Bol snBol;
-    
+
     vSKIP_WHITE_SPACE_ADV(); ;
-  
+
     xBol = snBol.i(&azCsvSrc,m_pFmt);
     cSrcChr = *azCsvSrc;
     m_pRowSlab->vDeposit(xBol);
   }
+  
+//  vSKIP_WHITE_SPACE_ADV();
+//
+//  // ---- ---- ---- ---- ---- ---- ---- ----
+//
+//  if ( cSrcChr < '0' || cSrcChr > '9' ) {
+//    uPartialResult = 0;
+//    while (cSrcChr >= '0' && cSrcChr <= '9') {
+//      uPartialResult = uPartialResult * 10 + cSrcChr - '0';
+//      vADV_SRC();
+//    }
+//    if (uPartialResult > 0)
+//      iBoolean = true;
+//    else
+//      iBoolean = false;
+//  }
+//  else
+//  if ('t' == cSrcChr || 'T' == cSrcChr) {
+//    iBoolean = true;
+//  }
+//  else
+//  if ('f' == cSrcChr || 'F' == cSrcChr) {
+//    iBoolean = false;
+//  }
+//  else {
+//    goto L_FieldError;
+//  }
+//
+//  m_pRowSlab->vDeposit(iBoolean);
+
   goto L_PostField;
   
   
@@ -757,17 +788,31 @@ L_Timestamp:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
   
-  if (cSrcChr == m_cFldSep)
-    bSawFldSep = true;
+//  if (cSrcChr == m_cFldSep)
+//    bSawFldSep = true;
+//
+//  while (cSrcChr && m_cFldSep != cSrcChr && m_cRecEnd != cSrcChr)
+//    vADV_SRC();
+//
+//  if (cSrcChr == m_cFldSep)
+//    vADV_SRC();
+  
+  // advance over any trailing chars till field separator or record terminator
+  while (cSrcChr) {
+    
+    if (cSrcChr == m_cFldSep)
+      bSawFldSep = true;
 
-  while (cSrcChr && m_cFldSep != cSrcChr && m_cRecEnd != cSrcChr)
+    if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+      vADV_SRC();
+      break;
+    }
+    
     vADV_SRC();
+  }
 
-  if (cSrcChr == m_cFldSep)
-    vADV_SRC();
-
+  // move to next field
   i_Fld++;
-
   goto L_TestMoreFields;
   
   
