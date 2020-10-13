@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _fload : test of fload                                                    */
+/*============================================================================*/
+
+bc;
+
+trackMemory;
+
+// (1) create a table
+create table allTyp (
+  int_col1   INTEGER       NOT NULL,
+  dec_col2   DECIMAL(10,2) NOT NULL,
+  bol_col3   BOOLEAN       NOT NULL,
+  dte_col4   DATE          NOT NULL,
+  flt_col5   FLOAT         NOT NULL,
+  dec_col6   DECIMAL(10,2) NOT NULL,
+  tme_col7   TIME          NOT NULL,
+  tsp_col8   TIMESTAMP     NOT NULL,
+  vch_col9   VARCHAR(32)   NOT NULL
+);
+
+fload allTyp "../FASTLOAD/Data/allTyp.csv" ;
+
+tableScan allTyp;
+
+drop table allTyp;
+
+memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
