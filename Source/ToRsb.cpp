@@ -21,6 +21,8 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
+  m_pPipelineJob = AM::pPipelineJob();
+
   m_pStreamDef = pStreamDef;
   m_pFmt       = pFmt;
   m_bPtnHash   = bPtnHash;
@@ -29,14 +31,12 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   m_pRsbBuffer = nullptr;
 
   m_bOrdCsv    = pFmt->bIsOrdCsv();
-
-  m_cRecEnd    = '\n';
+  m_cRecEnd    = '\n'; // 0x0a
   m_cFldSep    = ',';
 
+  m_nRecords   = 0;
   m_bFirst     = true;
   m_bTrace     = false;
-
-  m_nRecords   = 0;
   
   //m_pFmt->vShow();
 
@@ -231,14 +231,10 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   // 0) begin
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Job* pPipelineJob = AM::pPipelineJob();
-
   char* acCsvSrc = azCsvChunk;
   char cSrc = *acCsvSrc;
 
-  RowSlab* pRowSlab = m_pRowSlab;
-
-  ColPix* aColPix = pRowSlab->axaColPix();
+  ColPix* aColPix = m_pRowSlab->axaColPix();
 
   i8 nPtns = AM::nPartitions();
   i8 iHash = 0;
@@ -288,10 +284,9 @@ L_TestMoreCsv:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // alloc a new rsb, new another rsbBufer if necessary
-  if (! pRowSlab->bNewRow()) {    // ? inline ?
+  if (! m_pRowSlab->bNewRow()) {    // ? inline ?
     vNewRsbBuffer();
-    pRowSlab = m_pRowSlab;
-    bool b = pRowSlab->bNewRow();
+    bool b = m_pRowSlab->bNewRow();
     ASSERT(b);
   }
   
@@ -483,7 +478,7 @@ L_Date:
   xDte.m_uDay       = iDay;
   xDte.m_uSpare     = 0;
   
-  pRowSlab->vDeposit(xDte);
+  m_pRowSlab->vDeposit(xDte);
 
   goto L_PostField;                                               // end of date
 
@@ -577,7 +572,7 @@ L_Decimal:
     goto L_FieldError;
   }
   
-  pRowSlab->vDeposit(iFinalResult);
+  m_pRowSlab->vDeposit(iFinalResult);
 
   goto L_PostField;                                            // end of decimal
 
@@ -629,7 +624,7 @@ L_Integer:
   }
   
   iFinalResult = bNegative ? - uPartialResult : uPartialResult;
-  pRowSlab->vDeposit(iFinalResult);
+  m_pRowSlab->vDeposit(iFinalResult);
 
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey) {
@@ -657,7 +652,7 @@ L_Varchar:
   bSawEnclosedLeading  = false;
 
   // allocate string space in slab
-  azVchSlab = pRowSlab->azDepositString_begin();
+  azVchSlab = m_pRowSlab->azDepositString_begin();
   acVchDst = (char*)azVchSlab;
   
   if (! m_pFmt->m_cEnclosedBy_Leading)
@@ -695,7 +690,7 @@ L_Varchar:
   }
   
   // deposit the string
-  pRowSlab->vDepositString_end(nChars+1);
+  m_pRowSlab->vDepositString_end(nChars+1);
 
   goto L_PostField;                                            // end of varchar
 
@@ -717,7 +712,7 @@ L_Boolean:
     SN_Bol snBol;
   
     xBol = snBol.i(&acCsvSrc,m_pFmt);
-    pRowSlab->vDeposit(xBol);
+    m_pRowSlab->vDeposit(xBol);
   }
   goto L_PostField;
   
@@ -736,7 +731,7 @@ L_Float:
     SN_Flt snFlt;
 
     xFlt = snFlt.d(&acCsvSrc,m_pFmt);
-    pRowSlab->vDeposit(xFlt.m_dFlt);
+    m_pRowSlab->vDeposit(xFlt.m_dFlt);
   }
   goto L_PostField;
 
@@ -755,7 +750,7 @@ L_Interval:
     SN_Ivl snIvl;
 
     xIvl = snIvl.i(&acCsvSrc,m_pFmt);
-    pRowSlab->vDeposit(xIvl);
+    m_pRowSlab->vDeposit(xIvl);
   }
   goto L_PostField;
 
@@ -774,7 +769,7 @@ L_Time:
     SN_Tme snTme;
 
     xTme = snTme.i(&acCsvSrc,m_pFmt);
-    pRowSlab->vDeposit(xTme);
+    m_pRowSlab->vDeposit(xTme);
   }
   goto L_PostField;
 
@@ -793,7 +788,7 @@ L_Timestamp:
     SN_Tsp snTsp;
 
     xTsp = snTsp.i(&acCsvSrc,m_pFmt);
-    pRowSlab->vDeposit(xTsp);
+    m_pRowSlab->vDeposit(xTsp);
   }
   goto L_PostField;
 
@@ -840,7 +835,7 @@ L_EndOfFields:
   if (m_bPtnHash) {
     i_Ptn = PtnLib::iPartition(iHash,nPtns);
     //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
-    pRowSlab->vDeposit((i8)i_Ptn);
+    m_pRowSlab->vDeposit((i8)i_Ptn);
     iHash = 0;
   }
   
@@ -849,7 +844,7 @@ L_EndOfFields:
   // 7) increment records processed; reset for next record
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  AM::vIncRowsProcessed(pPipelineJob);
+  AM::vIncRowsProcessed(m_pPipelineJob);
 
   m_nRecords++;
   
@@ -868,7 +863,7 @@ L_FieldError:
 
   //THROW_USER("vConvertDate"_Stz);
   
-  AM::vIncRowsInvalid(pPipelineJob);
+  AM::vIncRowsInvalid(m_pPipelineJob);
 
   // ... add code for skipping to end of record
   

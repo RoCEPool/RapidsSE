@@ -11,6 +11,9 @@ namespace Load
   class ToRsb : public Object
   {
   private:
+  
+    Job*       m_pPipelineJob;
+
     StreamDef* m_pStreamDef;
     Format*    m_pFmt;
     bool       m_bPtnHash;
@@ -19,14 +22,12 @@ namespace Load
     RsbBuffer* m_pRsbBuffer;
 
     bool       m_bOrdCsv;
-
     char       m_cRecEnd;
     char       m_cFldSep;
 
+    i8         m_nRecords;
     bool       m_bFirst;
     bool       m_bTrace;
-
-    i8         m_nRecords;
   
     // must be last
     Footer m_xFooter;
