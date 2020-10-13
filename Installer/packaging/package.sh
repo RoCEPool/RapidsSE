@@ -40,7 +40,8 @@ readonly VERSION_FILE="${LAYOUT_DIR}/version"
 readonly CREATE_LAYOUT_FILE="${DIR}/createlayout.sh"
 
 readonly SETUP_SCRIPT="./setup.sh"  # relative to the directory of extracted files
-readonly MAKESELF_ARGS=""
+#readonly MAKESELF_ARGS=() 
+readonly MAKESELF_ARGS=( "--bzip2" "--threads" "8")
 
 ###############################################################################
 ### Functions                                                               ###
@@ -223,4 +224,7 @@ if [ -n "${DEBUG}" ] ; then echo "Generating the run file"; fi;
 
 OUTPUT_FILE="rapidsse-${SE_VERSION_STR}.run"
 
-"${MAKESELF_DIR}/makeself.sh" ${MAKESELF_ARGS} "${LAYOUT_DIR}" "${OUTPUT_DIR}/${OUTPUT_FILE}" "RapidsSE files..." "${SETUP_SCRIPT}" 
+"${MAKESELF_DIR}/makeself.sh" "${MAKESELF_ARGS[@]}" "${LAYOUT_DIR}" "${OUTPUT_DIR}/${OUTPUT_FILE}" "RapidsSE files..." "${SETUP_SCRIPT}" 
+
+FILESIZE="$(du -k "${OUTPUT_DIR}/${OUTPUT_FILE}" | cut -f1)"
+printf "Size of installer: %'d kB\n" "${FILESIZE}"

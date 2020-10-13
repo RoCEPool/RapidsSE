@@ -67,13 +67,14 @@ function printUsageAndExit() {
   echo ""
   echo "Usage: ./<install_file>.run [--node | --cluster]"
   echo "                            [--interactive | --script]"
-  echo "                            --config <file>"
+  echo "                            [ --config <file> ]"
   echo "                            [--basic | --adv/--advanced]"
   echo "                            [--debug]"
   echo "  Details:"
   echo "    --cluster       [Default] Installs RapidsSE on a cluster."
   echo "    --node          Installs RapidsSE on the current node using a supplied"
-  echo "                    configuration file. The --config option must be specified."
+  echo "                    configuration file. The --config and --name options must"
+  echo "                    also be specified."
   echo ""
   echo "    --interactive   Uses a wizard to ask questions and prompt for answers"
   echo "                    in order to build a cluster configuration."
@@ -89,9 +90,12 @@ function printUsageAndExit() {
   echo "    --advanced      Asks additional questions during the cluster"
   echo "                    installation wizard."
   echo ""
-  echo "   --installer     Path to the installation *.run file."
+  echo "    --installer      Path to the installation *.run file."
   echo ""
-  echo "    --debug         Displays more messages during execution."
+  echo "    --name           The name of this node in the cluster configuration."
+  echo "                    Valid when specified with the --node option."
+  echo ""
+  echo "    --debug          Displays more messages during execution."
   exit 1
 }
 
@@ -112,6 +116,7 @@ function processArgs() {
   local argBasic=0
   local argAdvanced=0
   local argInstaller=0
+  local argName=0
 
   while [[ $# -gt 0 ]]
   do
@@ -126,6 +131,7 @@ function processArgs() {
   
       --node)
         CLUSTER_INSTALL=0
+        INTERACTIVE_INSTALL=0
         argNode=1
         shift # past argument
         ;;
@@ -180,6 +186,19 @@ function processArgs() {
         shift # past argument=value
         ;;
   
+      --name)
+        argName=1
+        CURRENT_NODE_NAME="$2"
+        shift # past argument
+        shift # past value
+        ;;
+
+      --name=*)
+        argName=1
+        CURRENT_NODE_NAME="${key#*=}"
+        shift # past argument=value
+        ;;
+
       --debug)
         DEBUG=1
         shift # past argument
@@ -198,82 +217,98 @@ function processArgs() {
   done
 
   # Now we can check for invalid combinations of arguments.
-    # --cluster   and --node
-    # --node      and --interactive
-    # --config    and no file specified
-    # --config    and file not found
-    # --basic     and --script
-    # --adv       and --script
-    # --basic     and --node
-    # --adv       and --node
-    # --installer and no file specified
-    # --installer and file not found
+    # --cluster     and --node
+    # --node        and --interactive
+    # --interactive and --script
+    # --basic       and --script
+    # --adv         and --script
+    # --basic       and --node
+    # --adv         and --node
+    # --config      and no file specified
+    # --config      and file not found
+    # --installer   and no file specified
+    # --installer   and file not found
 
   local errmsg="Invalid combination of arguments specified: "
 
-  if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]];        then 
+  if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]]; then 
     printError "${errmsg}" "--cluster" "--node"
     printUsageAndExit
   fi
 
-  if [[ ${argNode} -eq 1     && ${argInteractive} -eq 1 ]]; then 
+  if [[ ${argNode} -eq 1     && ${INTERACTIVE_INSTALL} -eq 1 ]]; then 
     printError "${errmsg}" "--node" "--interactive"
     printUsageAndExit
   fi
 
-  if [[ ${argBasic} -eq 1    && ${argScript} -eq 1 ]];      then 
+  if [[ ${argInteractive} -eq 1 && ${argScript} -eq 1 ]]; then 
+    printError "${errmsg}" "--interactive" "--script"
+    printUsageAndExit
+  fi
+
+  if [[ ${argBasic} -eq 1    && ${INTERACTIVE_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--basic" "--script" 
     printUsageAndExit
   fi
 
-  if [[ ${argAdvanced} -eq 1 && ${argScript} -eq 1 ]];      then 
+  if [[ ${argAdvanced} -eq 1 && ${INTERACTIVE_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--advanced" "--script"
     printUsageAndExit
   fi
 
-  if [[ ${argBasic} -eq 1    && ${argNode} -eq 1 ]];        then 
+  if [[ ${argBasic} -eq 1    && ${CLUSTER_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--basic" "--node"
     printUsageAndExit
   fi
 
-  if [[ ${argAdvanced} -eq 1 && ${argNode} -eq 1 ]];        then 
+  if [[ ${argAdvanced} -eq 1 && ${CLUSTER_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--advanced" "--node" 
     printUsageAndExit
   fi
 
-  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]];  then 
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then 
     printError "${errmsg}" "No config file specified" 
     printUsageAndExit
   fi
 
-  if [[ ${argConfig} -eq 1 && -f "${CONFIG_FILE}" ]]; then 
+  if [[ ${argConfig} -eq 1 && ! -f "${CONFIG_FILE}" ]]; then 
     printError "Config file does not exist: ${CONFIG_FILE}"
     printUsageAndExit 
   fi
 
-  if [[ ${argInstaller} -eq 1 && -z "${INSTALL_FILE}" ]];  then 
+  if [[ ${argInstaller} -eq 1 && -z "${INSTALL_FILE}" ]]; then 
     printError "${errmsg}" "No installation *.run file specified" 
     printUsageAndExit
   fi
 
-  if [[ ${argInstaller} -eq 1 && -f "${INSTALL_FILE}" ]]; then 
+  if [[ ${argInstaller} -eq 1 && ! -f "${INSTALL_FILE}" ]]; then 
     printError "Installation *.run file does not exist: ${INSTALL_FILE}"
     printUsageAndExit 
   fi
 
+  if [[ ${argName} -eq 1 && ${CLUSTER_INSTALL} -eq 1 ]]; then 
+    printError "${errmsg}" "--name" "--cluster" 
+    printUsageAndExit
+  fi
+
+
 
   # Check for dependencies between combinations of arguments.
     # --node   must have --config
+    # --node   must have --name
     # --script must have --config
 
-  if [[ ${argNode} -eq 1 && ${argConfig} -eq 0  ]] 
-  then 
+  if [[ ${argNode} -eq 1 && ${argConfig} -eq 0  ]]; then 
     printError "Missing argument dependency: argument --node must also specify argument --config"
     printUsageAndExit
   fi
 
-  if [[ ${argScript} -eq 1 && ${argConfig} -eq 0  ]] 
-  then 
+  if [[ ${argNode} -eq 1 && ${argName} -eq 0 ]]; then
+    printError "Missing argument dependency: argument --node must also specify argument --name"
+    printUsageAndExit 
+  fi
+
+  if [[ ${argScript} -eq 1 && ${argConfig} -eq 0  ]]; then 
     printError "Missing argument dependency: argument --script must also specify argument --config"
     printUsageAndExit
   fi
@@ -352,10 +387,15 @@ function doClusterInstall() {
       # TODO: Edit ?
       # TODO: Validate config/environment
       # Write config file?
-      writeClusterConfig ""
+      local outputConfig="${USER_PWD}/${DEFAULT_CONFIG_PATH}"
+      writeClusterConfig "${outputConfig}"
 
-      # TODO: Install all nodes
+      # Distribute the software and install all nodes
+      distributeSoftware "${outputConfig}"
     fi
+
+    echo ""
+    echo "Installation of RapidsSE is complete!"
 
   else 
     # Scripted installation
@@ -411,7 +451,7 @@ function displayWelcome() {
   #shellcheck disable=1090
   source "${VERSION_FILE}"
 
-  echo "Welcome to the RapidsSE installation wizard for RapidsSE version ${SE_VERSION_STR}."
+  echo "Welcome to the installation wizard for RapidsSE version ${SE_VERSION_STR}."
   echo ""
   echo "This will guide you through the process of installing and setting up RapidsSE"
   echo "on a cluster."
@@ -523,9 +563,11 @@ function askHostnames() {
     hostnames+=("${line}")
   done
 
-  echo ""
-  echo "Got the following hostnames / IP addresses:"
-  printIndentArray 2 "${hostnames[@]}"
+  if [ ${DEBUG} -eq 1 ]; then
+    echo ""
+    echo "Got the following hostnames / IP addresses:"
+    printIndentArray 2 "${hostnames[@]}"
+  fi
 
   # Build the node list, now that we have the initial list & count of hosts.
   createNodeNames ${#hostnames[@]}
@@ -875,8 +917,9 @@ function askParams() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Writes the current configuration out to a file.
 ## Params:
-##  $1 : (optional) the path to the output file
+##  $1 : (optional) the path to the output file. Set to "" to use the default path.
 function writeClusterConfig() {
  
   # First some sanity checks
@@ -886,7 +929,7 @@ function writeClusterConfig() {
 
   local outputFile="$1"
 
-  # Check if a config file path has been 
+  # Check if a config file path has been specified
   if [ -z "${outputFile}" ]; then
     outputFile="${DEFAULT_CONFIG_PATH}"
   fi
@@ -957,7 +1000,9 @@ EOT
   done # nodes
 
   if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
-    echo "Wrote cluster configuration out to the file: ${outputFile}"
+    echo ""
+    echo "The cluster configuration has been written out to the file:"
+    echo "    ${outputFile}"
   fi
 
   if [ ${DEBUG} -eq 1 ]; then
@@ -972,8 +1017,112 @@ EOT
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies the installer and cluster.config to each node and invokes the 
+## installer to do a single node installation.
+## Params: 
+##  $1 : cluster.config path
+
+function distributeSoftware() {
+  local configFile="$1"
+
+  # Assert that we have a valid configuration
+  if [[ -z "${NODE_LIST}" || ${#NODE_LIST[@]} -eq 0 ]]; then
+    errorExit "No nodes have been defined to install RapidsSE onto."
+  fi
+
+  # Check that we have an installation file
+  if ! [ -f "${INSTALL_FILE}" ]; then
+    errorExit "Could not distribute RapidsSE to other nodes because the installation file could not be found at path: ${INSTALL_FILE}"
+  fi
+
+  # Check that we have a cluster.config file
+  if ! [ -f "${configFile}" ]; then
+    errorExit "Could not distribute RapidsSE to other nodes because the cluster.config file could not be found at path: ${configFile}"
+  fi
+
+  echo ""
+  echo "Installing RapidsSE to all nodes in the cluster."
+
+  local nodeName
+  local hostname
+
+  # For each node
+  for nodeName in "${NODE_LIST[@]}"
+  do 
+    # Extract the hostname
+    hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    if [ -z "${hostname}" ]; then
+      errorExit "Cannot distribute RapidsSE to node ${nodeName} because its hostname has not been specified."
+    fi
+
+    # Copy the installer & cluster.config to /tmp
+    # Buid the command
+    local cmd=( "scp" "-q" "${INSTALL_FILE}" "${configFile}" "${hostname}:/tmp"  )
+
+    if [ ${DEBUG} -eq 1 ]; then 
+      echo "Copying installer to node ${nodeName} / host ${hostname}."
+      echo "Command: ${cmd[*]}"
+    fi
+
+    # Execute the command
+    "${cmd[@]}" || errorExit "Error copying the installation file to node ${nodeName} / host ${hostname}."
+
+
+    # Invoke the installer, passing the path to the cluster.config, the name of
+    #   the current node, and an argument to invoke single node installation
+
+    local remoteInstaller
+    local remoteConfig
+
+    remoteInstaller="/tmp/$(basename "${INSTALL_FILE}")"
+    remoteConfig="/tmp/$(basename "${configFile}")"
+
+    # Build the command to execute
+    local cmd=( "ssh" "-q" "${hostname}" "${remoteInstaller}" "--" "--node" "--config" "${remoteConfig}" "--name" "${nodeName}" "--installer" "${remoteInstaller}" )
+
+    if [ ${DEBUG} -eq 1 ]; then 
+      cmd+=("--debug")
+      echo "Invoking single node installation on node ${nodeName} / host ${hostname}."
+      echo "Command: ${cmd[*]}"
+    else 
+      echo ""
+      echo "Installing to node ${nodeName} / host ${hostname}."
+    fi
+
+    # Execute the command
+    "${cmd[@]}" || errorExit "Error executing the installer to install RapidsSE on the remote node ${nodeName} / host ${hostname}." 
+
+    # N.B.: The single node install option will delete itself and the cluster.config if
+    # they are executed from the /tmp directory. So no need to clean up.
+    
+  done
+  echo ""
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Called to install RapidsSE on the current node only.
+## This is typically called after the installer is copied to a remote node
+## and executed.
+## Params: None
+
 function doNodeInstall() {
-  true
+
+  # Needs the installer file, config file and name of the current node.
+  # Create installation directory.
+  # Copy all files to this dir.
+  # Copy the cluster.config and node.name files.
+
+  # Remove the installation file and cluster.config if they reside in /tmp
+  if [ "$(dirname "${INSTALL_FILE}")" == "/tmp" ]; then
+    rm -f "${INSTALL_FILE}" > /dev/null || true
+  fi
+
+  if [ "$(dirname "${CONFIG_FILE}")" == "/tmp" ]; then
+    rm -f "${CONFIG_FILE}" > /dev/null || true
+  fi
+
 }
 
 

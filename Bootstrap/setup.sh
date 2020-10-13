@@ -84,6 +84,9 @@ NODE_NAME_PREFIX="${NODE_CFG_DEFAULT_NAME_PREFIX}"
 # The unique number used with the above NODE_NAME_PREFIX to form the node name.
 NODE_SEQ_NUM=0
 
+# The name of the current node, given in the --name argument to the script.
+CURRENT_NODE_NAME=""
+
 ###############################################################################
 ### Functions                                                               ###
 ###############################################################################
