@@ -1,0 +1,592 @@
+--------------------------------------------------------------------------------
+-- tpch query3 tests (SF1)
+--------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// no such table
+demo select
+  l_orderkey,
+  sum(l_extendedprice*l_discount) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where
+  c_mktsegment = "BUILDING"
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < "1995-03-15"
+  and l_shipdate > "1995-03-15"
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+order by
+  revenue desc,
+  o_orderdate
+limit 10;
+
+failure contains: "no such table"
+
+//------------------------------------------------------------------------------
+// create table lineitem
+create table LineItem
+(
+ L_ORDERKEY      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ L_LINENUMBER    INTEGER       NOT NULL,
+ L_QUANTITY      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ L_RETURNFLAG    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      DATE NOT      NULL,
+ L_COMMITDATE    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ L_COMMENT       VARCHAR(44)   NOT NULL
+ );
+success
+
+//------------------------------------------------------------------------------
+// no such index
+demo select
+  l_orderkey,
+  sum(l_extendedprice*l_discount) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where
+  c_mktsegment = "BUILDING"
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < "1995-03-15"
+  and l_shipdate > "1995-03-15"
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+order by
+  revenue desc,
+  o_orderdate
+limit 10;
+
+failure contains: "no such"
+
+//------------------------------------------------------------------------------
+// create index on orderkey
+create index lineitem_idx2 on lineitem (l_orderkey);
+success
+
+//------------------------------------------------------------------------------
+// no such table
+demo select
+  l_orderkey,
+  sum(l_extendedprice*l_discount) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where
+  c_mktsegment = "BUILDING"
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < "1995-03-15"
+  and l_shipdate > "1995-03-15"
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+order by
+  revenue desc,
+  o_orderdate
+limit 10;
+
+failure contains: "no such"
+
+//------------------------------------------------------------------------------
+// create orders table (partitioned on custkey)
+create table orders (
+   O_ORDERKEY        INTEGER       NOT NULL,
+   O_CUSTKEY         INTEGER       NOT NULL,
+   O_ORDERSTATUS     CHAR(1)       NOT NULL,
+   O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+   O_ORDERDATE       DATE          NOT NULL,
+   O_ORDERPRIORITY   CHAR(15)      NOT NULL,
+   O_CLERK           CHAR(15)      NOT NULL,
+   O_SHIPPRIORITY    INTEGER       NOT NULL,
+   O_COMMENT         VARCHAR(79)   NOT NULL
+   ) partition by (O_CUSTKEY) ;
+success
+
+//------------------------------------------------------------------------------
+// no such index
+demo select
+  l_orderkey,
+  sum(l_extendedprice*l_discount) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where
+  c_mktsegment = "BUILDING"
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < "1995-03-15"
+  and l_shipdate > "1995-03-15"
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+order by
+  revenue desc,
+  o_orderdate
+limit 10;
+
+failure contains: "no such"
+
+//------------------------------------------------------------------------------
+// create an index on orderkey
+create index orders_idx2 on orders(O_ORDERKEY);
+affected: 0
+
+//------------------------------------------------------------------------------
+// no such table
+demo select
+  l_orderkey,
+  sum(l_extendedprice*l_discount) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where
+  c_mktsegment = "BUILDING"
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < "1995-03-15"
+  and l_shipdate > "1995-03-15"
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+order by
+  revenue desc,
+  o_orderdate
+limit 10;
+
+failure contains: "no such"
+
+//------------------------------------------------------------------------------
+// create customer table
+create table customer (
+   C_CUSTKEY       INTEGER       NOT NULL,
+   C_NAME          VARCHAR(25)   NOT NULL,
+   C_ADDRESS       VARCHAR(40)   NOT NULL,
+   C_NATIONKEY     INTEGER       NOT NULL,
+   C_PHONE         CHAR(15)      NOT NULL,
+   C_ACCTBAL       DECIMAL(15,2) NOT NULL,
+   C_MKTSEGMENT    CHAR(10)      NOT NULL,
+   C_COMMENT       VARCHAR(117)  NOT NULL
+   );
+success
+
+//------------------------------------------------------------------------------
+// no such table
+demo select
+  l_orderkey,
+  sum(l_extendedprice*l_discount) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where
+  c_mktsegment = "BUILDING"
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < "1995-03-15"
+  and l_shipdate > "1995-03-15"
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+order by
+  revenue desc,
+  o_orderdate
+limit 10;
+
+failure contains: "no such"
+
+//------------------------------------------------------------------------------
+// create an index on custkey
+create index customer_idx1 on customer(C_CUSTKEY);
+affected: 0
+
+//------------------------------------------------------------------------------
+// invalid PARAM0
+demo select
+  l_orderkey,
+  sum(l_extendedprice*l_discount) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where
+  c_mktsegment = 1
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < "1995-03-15"
+  and l_shipdate > "1995-03-15"
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+  order by
+revenue desc, o_orderdate
+  limit 10;
+
+
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+// invalid PARAM1
+demo select
+l_orderkey,
+sum(l_extendedprice*l_discount) as revenue,
+o_orderdate,
+o_shippriority
+from
+customer,
+orders,
+lineitem
+where
+c_mktsegment = "BUILDING"
+and c_custkey = o_custkey
+and l_orderkey = o_orderkey
+and o_orderdate < "x"
+and l_shipdate > "1995-03-15"
+group by
+l_orderkey,
+o_orderdate,
+o_shippriority
+order by
+revenue desc, o_orderdate
+limit 10;
+
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+// invalid PARAM2
+demo select
+l_orderkey,
+sum(l_extendedprice*l_discount) as revenue,
+o_orderdate,
+o_shippriority
+from
+customer,
+orders,
+lineitem
+where
+c_mktsegment = "BUILDING"
+and c_custkey = o_custkey
+and l_orderkey = o_orderkey
+and o_orderdate < "1995-03-15"
+and l_shipdate > 1
+group by
+l_orderkey,
+o_orderdate,
+o_shippriority
+order by
+revenue desc, o_orderdate
+limit 10;
+
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+// invalid PARAM3
+demo select
+l_orderkey,
+sum(l_extendedprice*l_discount) as revenue,
+o_orderdate,
+o_shippriority
+from
+customer,
+orders,
+lineitem
+where
+c_mktsegment = 1
+and c_custkey = o_custkey
+and l_orderkey = o_orderkey
+and o_orderdate < "1995-03-15"
+and l_shipdate > "1995-03-15"
+group by
+l_orderkey,
+o_orderdate,
+o_shippriority
+order by
+revenue desc, o_orderdate
+limit "x";
+
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+// 0 rows in lineitem, orders and customer
+demo select
+l_orderkey,
+sum(l_extendedprice*l_discount) as revenue,
+o_orderdate,
+o_shippriority
+from
+customer,
+orders,
+lineitem
+where
+c_mktsegment = "BUILDING"
+and c_custkey = o_custkey
+and l_orderkey = o_orderkey
+and o_orderdate < "1995-03-15"
+and l_shipdate > "1995-03-15"
+group by
+l_orderkey,
+o_orderdate,
+o_shippriority
+order by
+revenue desc, o_orderdate
+limit 10;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// load lineitem
+fload lineitem "/TPCH/SF1/lineitem.tbl";
+success
+
+compactIdx LineItem lineItem_Idx2;
+success
+
+//------------------------------------------------------------------------------
+// 0 rows in orders and customer
+demo select
+  l_orderkey,
+  sum(l_extendedprice*l_discount) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where
+  c_mktsegment = "BUILDING"
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < "1995-03-15"
+  and l_shipdate > "1995-03-15"
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+order by
+  revenue desc,
+  o_orderdate
+limit 10;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// load orders
+fload orders "/TPCH/SF1/orders.tbl";
+success
+
+compactIdx Orders Orders_Idx1;
+success
+
+//------------------------------------------------------------------------------
+// 0 rows in customer
+demo select
+l_orderkey,
+sum(l_extendedprice*l_discount) as revenue,
+o_orderdate,
+o_shippriority
+from
+customer,
+orders,
+lineitem
+where
+c_mktsegment = "BUILDING"
+and c_custkey = o_custkey
+and l_orderkey = o_orderkey
+and o_orderdate < "1995-03-15"
+and l_shipdate > "1995-03-15"
+group by
+l_orderkey,
+o_orderdate,
+o_shippriority
+order by
+revenue desc,
+o_orderdate
+limit 10;
+
+rows: 0
+
+//------------------------------------------------------------------------------
+// load customer
+fload customer "/TPCH/SF1/customer.tbl";
+
+compactidx customer customer_idx1;
+success
+
+//------------------------------------------------------------------------------
+// 10 rows
+demo select
+l_orderkey,
+sum(l_extendedprice*l_discount) as revenue,
+o_orderdate,
+o_shippriority
+from
+customer,
+orders,
+lineitem
+where
+c_mktsegment = "BUILDING"
+and c_custkey = o_custkey
+and l_orderkey = o_orderkey
+and o_orderdate < "1995-03-15"
+and l_shipdate > "1995-03-15"
+group by
+l_orderkey,
+o_orderdate,
+o_shippriority
+order by
+revenue desc, o_orderdate
+limit 10;
+
+ordered rows:
+row: (2300070,367371.13,1995-03-13,0)
+row: (993600,371407.44,1995-03-05,0)
+row: (2628192,373133.28,1995-02-22,0)
+row: (5521732,375153.89,1995-03-13,0)
+row: (4878020,378376.77,1995-03-12,0)
+row: (2435712,378673.02,1995-02-26,0)
+row: (1188320,384537.91,1995-03-09,0)
+row: (492164,390324.03,1995-02-19,0)
+row: (3459808,405838.68,1995-03-04,0)
+row: (2456423,406180.98,1995-03-05,0)
+
+//------------------------------------------------------------------------------
+// truncate orders
+truncate orders
+success
+
+//------------------------------------------------------------------------------
+// scan orders
+tableScan orders;
+rows: 0
+
+//------------------------------------------------------------------------------
+// 0 rows in orders
+demo select
+l_orderkey,
+sum(l_extendedprice*l_discount) as revenue,
+o_orderdate,
+o_shippriority
+from
+customer,
+orders,
+lineitem
+where
+c_mktsegment = "BUILDING"
+and c_custkey = o_custkey
+and l_orderkey = o_orderkey
+and o_orderdate < "1995-03-15"
+and l_shipdate > "1995-03-15"
+group by
+l_orderkey,
+o_orderdate,
+o_shippriority
+order by
+revenue desc, o_orderdate
+limit 10;
+
+ordered rows: 0
+
+//------------------------------------------------------------------------------
+// load orders
+fload orders "/TPCH/SF1/orders.tbl";
+success
+
+compactIdx Orders Orders_Idx2;
+success
+
+//------------------------------------------------------------------------------
+// truncate customer
+truncate customer
+success
+
+//------------------------------------------------------------------------------
+// scan customer
+tableScan customer;
+rows: 0
+
+//------------------------------------------------------------------------------
+// 0 rows in customer
+demo select
+l_orderkey,
+sum(l_extendedprice*l_discount) as revenue,
+o_orderdate,
+o_shippriority
+from
+customer,
+orders,
+lineitem
+where
+c_mktsegment = "BUILDING"
+and c_custkey = o_custkey
+and l_orderkey = o_orderkey
+and o_orderdate < "1995-03-15"
+and l_shipdate > "1995-03-15"
+group by
+l_orderkey,
+o_orderdate,
+o_shippriority
+order by
+revenue desc, o_orderdate
+limit 10;
+
+ordered rows: 0
+
+drop table lineitem;
+success
+
+drop table orders;
+succes
+
+CLEANUP {
+  
+  drop table lineitem;
+  mute
+  
+  drop table orders;
+  mute
+  
+  bye;
+  mute
+}
+
+
