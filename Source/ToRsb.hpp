@@ -13,6 +13,7 @@ namespace Load
   private:
   
     Job*       m_pPipelineJob;
+    i8         m_nPtns;
 
     StreamDef* m_pStreamDef;
     Format*    m_pFmt;
