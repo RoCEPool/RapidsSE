@@ -195,6 +195,9 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
+  char *aRecordStart;
+  char *aFieldStart;
+  
   ColPix xColPix;
   eDM ePixDatum;
   i8  nPixLength;
@@ -218,7 +221,6 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   char* acVchDst;
 
   i8 nChars;
-  char *aStart;
   bool bSawEnclosedLeading;
   bool bSawEnclosedTrailing;
   
@@ -265,7 +267,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) while more csv data in chunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_TestMoreCsv:
+L_TestMoreRecords:
     
   // skip leading whitespace
   while (bWHITE_SPACE(cSrc)) {
@@ -276,6 +278,7 @@ L_TestMoreCsv:
   if (! bMORE_DATA())
     goto L_EndOfCsvChunk;
   
+  aRecordStart = acCsvSrc;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) new rsb
@@ -297,16 +300,20 @@ L_TestMoreFields:
   if (! bMORE_FIELDS())
     goto L_EndOfFields;
 
-  
+  aFieldStart = acCsvSrc;
+
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // 4) decode and convert field
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
+  xColPix       = aColPix[i_Fld];
+  ePixDatum     = (eDM) xColPix.m_uDatum;
+  nPixLength    = xColPix.m_uLength;
+  nPixScale     = xColPix.m_uScale;
+  nPixPrecision = nPixLength - nPixScale;
+
   bSawFldSep = false;
-    
-  xColPix   = aColPix[i_Fld];
-  ePixDatum = (eDM) xColPix.m_uDatum;
-  
+
   // debug
   //pCol = m_pStreamDef->pGetColumn(m_i_Fld);
 
@@ -330,11 +337,11 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
   
-  vSKIP_WHITE_SPACE_ADV();
-  
   iYear  = 0;
   iMonth = 0;
   iDay   = 0;
+
+  vSKIP_WHITE_SPACE_ADV();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year
@@ -481,16 +488,14 @@ L_Date:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
   
-  vSKIP_WHITE_SPACE_ADV();
-  
-  nPixLength    = xColPix.m_uLength;
-  nPixScale     = xColPix.m_uScale;
-  nPixPrecision = nPixLength - nPixScale;
-
   uPartialResult = 0;
   bNegative = false;
   bOnce = false;
 
+  vSKIP_WHITE_SPACE_ADV();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  
   // test for negative or positive sign
   if ('-' == cSrc) {
     bNegative = true;
@@ -572,11 +577,13 @@ L_Decimal:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
   
-  vSKIP_WHITE_SPACE_ADV();
- 
   uPartialResult = 0;
   bNegative = false;
   bOnce = false;
+
+  vSKIP_WHITE_SPACE_ADV();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
 
   // leading sign
   if ('-' == cSrc) {
@@ -628,16 +635,15 @@ L_Varchar:
   
   // ** do not skip white space **
 
-  nPixLength = xColPix.m_uLength;
-
   nChars = 0;
-  aStart = acCsvSrc;
   bSawEnclosedTrailing = false;
   bSawEnclosedLeading  = false;
 
+  // ---- ---- ---- ---- ---- ---- ---- ----
+
   // allocate string space in slab
   azVchSlab = m_pRowSlab->azDepositString_begin();
-  acVchDst = (char*)azVchSlab;
+  acVchDst  = azVchSlab;
   
   if (! m_pFmt->m_cEnclosedBy_Leading)
     bSawEnclosedLeading = false;
@@ -646,7 +652,7 @@ L_Varchar:
   while (' ' == cSrc)
     vADV_SRC();
 
-  acCsvSrc = aStart;
+  acCsvSrc = aFieldStart;
 
   while (cSrc) {
         
@@ -687,10 +693,10 @@ L_Varchar:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Boolean:
   {
-    vSKIP_WHITE_SPACE_ADV(); ;
-  
     Bol xBol;
     SN_Bol snBol;
+    
+    vSKIP_WHITE_SPACE_ADV(); ;
   
     xBol = snBol.i(&acCsvSrc,m_pFmt);
     cSrc = *acCsvSrc;
@@ -704,11 +710,11 @@ L_Boolean:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
   {
-    vSKIP_WHITE_SPACE_ADV();
-  
     Flt xFlt;
     SN_Flt snFlt;
 
+    vSKIP_WHITE_SPACE_ADV();
+    
     xFlt = snFlt.d(&acCsvSrc,m_pFmt);
     cSrc = *acCsvSrc;
     m_pRowSlab->vDeposit(xFlt.m_dFlt);
@@ -721,11 +727,11 @@ L_Float:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
   {
-    vSKIP_WHITE_SPACE_ADV();
-  
     Ivl xIvl;
     SN_Ivl snIvl;
 
+    vSKIP_WHITE_SPACE_ADV();
+    
     xIvl = snIvl.i(&acCsvSrc,m_pFmt);
     cSrc = *acCsvSrc;
     m_pRowSlab->vDeposit(xIvl);
@@ -738,11 +744,11 @@ L_Interval:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   {
-    vSKIP_WHITE_SPACE_ADV();
-  
     Tme xTme;
     SN_Tme snTme;
 
+    vSKIP_WHITE_SPACE_ADV();
+    
     xTme = snTme.i(&acCsvSrc,m_pFmt);
     cSrc = *acCsvSrc;
     m_pRowSlab->vDeposit(xTme);
@@ -755,11 +761,11 @@ L_Time:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Timestamp:
   {
-    vSKIP_WHITE_SPACE_ADV();
-  
     Tsp xTsp;
     SN_Tsp snTsp;
 
+    vSKIP_WHITE_SPACE_ADV();
+    
     xTsp = snTsp.i(&acCsvSrc,m_pFmt);
     cSrc = *acCsvSrc;
     m_pRowSlab->vDeposit(xTsp);
@@ -803,7 +809,7 @@ L_EndOfFields:
   if (m_bPtnHash) {
     i_Ptn = PtnLib::iPartition(iHash,nPtns);
     //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
-    m_pRowSlab->vDeposit((i8)i_Ptn);
+    m_pRowSlab->vDeposit(i_Ptn);
     iHash = 0;
   }
   
@@ -820,7 +826,7 @@ L_EndOfFields:
   if (cSrc)
     vADV_SRC();
 
-  goto L_TestMoreCsv;
+  goto L_TestMoreRecords;
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -834,7 +840,7 @@ L_FieldError:
 
   // ... add code for skipping to end of record
   
-  goto L_TestMoreCsv;
+  goto L_TestMoreRecords;
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
