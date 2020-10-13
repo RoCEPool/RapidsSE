@@ -266,17 +266,14 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   // 1) while more csv data in chunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreCsv:
-  
-  // temp
-  cSrc = *acCsvSrc;
-  
+    
   // skip leading whitespace
   while (bWHITE_SPACE(cSrc)) {
     vADV_SRC();
   }
   
   // test for more csv to be parsed
-  if (! bMORE_DATA())   // ? macro ?
+  if (! bMORE_DATA())
     goto L_EndOfCsvChunk;
   
   
@@ -296,20 +293,17 @@ L_TestMoreCsv:
   // 3) while more fields of current row
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_TestMoreFields:
-  
-  // debug
-  cSrc = *acCsvSrc;
-  
-  if (! bMORE_FIELDS())   // ? macro ?
+    
+  if (! bMORE_FIELDS())
     goto L_EndOfFields;
 
-  bSawFldSep = false;
-    
-
+  
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // 4) decode and convert field
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
+  bSawFldSep = false;
+    
   xColPix   = aColPix[i_Fld];
   ePixDatum = (eDM) xColPix.m_uDatum;
   
@@ -335,9 +329,6 @@ L_TestMoreFields:
   // 4.a) date field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
-
-  // debug
-  cSrc = *acCsvSrc;
   
   vSKIP_WHITE_SPACE_ADV();
   
@@ -489,9 +480,6 @@ L_Date:
   // 4.b) decimal field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
-
-  // debug
-  cSrc = *acCsvSrc;
   
   vSKIP_WHITE_SPACE_ADV();
   
@@ -583,9 +571,6 @@ L_Decimal:
   // 4.c) integer
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
-
-  // debug
-  cSrc = *acCsvSrc;
   
   vSKIP_WHITE_SPACE_ADV();
  
@@ -640,11 +625,8 @@ L_Integer:
   // 4.d) varchar field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Varchar:
-
-  // debug
-  cSrc = *acCsvSrc;
   
-  // don't skip white space
+  // ** do not skip white space **
 
   nPixLength = xColPix.m_uLength;
 
@@ -669,7 +651,7 @@ L_Varchar:
   while (cSrc) {
         
     // test for field separator (because its not enclosed)
-    if (m_cFldSep == cSrc)
+    if (cSrc == m_cFldSep)
       break;
     
     if (nChars++ < nPixLength)
@@ -705,15 +687,13 @@ L_Varchar:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Boolean:
   {
-    // debug
-    cSrc = *acCsvSrc;
-    
     vSKIP_WHITE_SPACE_ADV(); ;
   
     Bol xBol;
     SN_Bol snBol;
   
     xBol = snBol.i(&acCsvSrc,m_pFmt);
+    cSrc = *acCsvSrc;
     m_pRowSlab->vDeposit(xBol);
   }
   goto L_PostField;
@@ -724,15 +704,13 @@ L_Boolean:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
   {
-    // debug
-    cSrc = *acCsvSrc;
-    
     vSKIP_WHITE_SPACE_ADV();
   
     Flt xFlt;
     SN_Flt snFlt;
 
     xFlt = snFlt.d(&acCsvSrc,m_pFmt);
+    cSrc = *acCsvSrc;
     m_pRowSlab->vDeposit(xFlt.m_dFlt);
   }
   goto L_PostField;
@@ -743,15 +721,13 @@ L_Float:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
   {
-    // debug
-    cSrc = *acCsvSrc;
-    
     vSKIP_WHITE_SPACE_ADV();
   
     Ivl xIvl;
     SN_Ivl snIvl;
 
     xIvl = snIvl.i(&acCsvSrc,m_pFmt);
+    cSrc = *acCsvSrc;
     m_pRowSlab->vDeposit(xIvl);
   }
   goto L_PostField;
@@ -762,15 +738,13 @@ L_Interval:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   {
-    // debug
-    cSrc = *acCsvSrc;
-    
     vSKIP_WHITE_SPACE_ADV();
   
     Tme xTme;
     SN_Tme snTme;
 
     xTme = snTme.i(&acCsvSrc,m_pFmt);
+    cSrc = *acCsvSrc;
     m_pRowSlab->vDeposit(xTme);
   }
   goto L_PostField;
@@ -781,36 +755,31 @@ L_Time:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Timestamp:
   {
-    // debug
-    cSrc = *acCsvSrc;
-    
     vSKIP_WHITE_SPACE_ADV();
   
     Tsp xTsp;
     SN_Tsp snTsp;
 
     xTsp = snTsp.i(&acCsvSrc,m_pFmt);
+    cSrc = *acCsvSrc;
     m_pRowSlab->vDeposit(xTsp);
   }
   goto L_PostField;
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 5) processing end of any field
+  // 5) processing at end of field
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
   
-  // debug
-  cSrc = *acCsvSrc;
-  
-  if (*acCsvSrc == m_cFldSep)
+  if (cSrc == m_cFldSep)
     bSawFldSep = true;
 
-  while (*acCsvSrc && m_cFldSep != *acCsvSrc && m_cRecEnd != *acCsvSrc)
-    acCsvSrc++;
+  while (cSrc && m_cFldSep != cSrc && m_cRecEnd != cSrc)
+    vADV_SRC();
 
-  if (*acCsvSrc == m_cFldSep)
-    acCsvSrc++;
+  if (cSrc == m_cFldSep)
+    vADV_SRC();
 
   i_Fld++;
 
@@ -822,9 +791,6 @@ L_PostField:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfFields:
   
-  // debug
-  cSrc = *acCsvSrc;
-
 #ifdef WITH_DEBUG_VERSION
   if (m_bTrace) {
     if (! bSawFldSep)
@@ -851,16 +817,15 @@ L_EndOfFields:
   m_nRecords++;
   
   i_Fld = 0;
-  if (*acCsvSrc)
-    acCsvSrc++;
-  
+  if (cSrc)
+    vADV_SRC();
+
   goto L_TestMoreCsv;
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 8) encountered a field error
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 L_FieldError:
 
   //THROW_USER("vConvertDate"_Stz);
@@ -871,10 +836,10 @@ L_FieldError:
   
   goto L_TestMoreCsv;
 
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 9) reached end of azCsvChunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 L_EndOfCsvChunk:
     
   return true;
