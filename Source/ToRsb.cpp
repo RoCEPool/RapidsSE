@@ -22,6 +22,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
   m_pPipelineJob = AM::pPipelineJob();
+  m_nPtns        = AM::nPartitions();
 
   m_pStreamDef = pStreamDef;
   m_pFmt       = pFmt;
@@ -174,7 +175,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*                             -- FAST INLINE --                              */
 /*----------------------------------------------------------------------------*/
 
-#define vADV_SRC()       (cSrc = *++acCsvSrc)
+#define vADV_SRC()       (cSrc = *++azCsvSrc)
 
 #define bMORE_DATA()     (bool)(cSrc)
 
@@ -200,12 +201,12 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   
   ColPix xColPix;
   eDM ePixDatum;
-  i8  nPixLength;
-  i8  nPixScale;
-  i8  nPixPrecision;
+  i8 nPixLength;
+  i8 nPixScale;
+  i8 nPixPrecision;
 
-  i8   iFinalResult;
-  u8   uPartialResult;
+  i8 iFinalResult;
+  u8 uPartialResult;
   bool bNegative;
   bool bOnce;
     
@@ -219,26 +220,22 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
 
   char* azVchSlab;
   char* acVchDst;
-
   i8 nChars;
   bool bSawEnclosedLeading;
   bool bSawEnclosedTrailing;
   
-  Stz* szErrorText;
-
-  Column* pCol = nullptr;
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) begin
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  char* acCsvSrc = azCsvChunk;
-  char cSrc = *acCsvSrc;
+  char* azCsvSrc = azCsvChunk;
+  char cSrc = *azCsvSrc;
 
   ColPix* aColPix = m_pRowSlab->axaColPix();
+  
+  Column* pCol = nullptr;
 
-  i8 nPtns = AM::nPartitions();
   i8 iHash = 0;
   i8 i_Ptn = 0;
   
@@ -251,7 +248,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   if (m_bFirst) {
     m_bFirst = false;
     
-    for (char* acTest = acCsvSrc; *acTest; acTest++) {
+    for (char* acTest = azCsvSrc; *acTest; acTest++) {
       if (',' == *acTest) {
         m_cFldSep = ',';
         break;
@@ -270,15 +267,14 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
 L_TestMoreRecords:
     
   // skip leading whitespace
-  while (bWHITE_SPACE(cSrc)) {
+  while (bWHITE_SPACE(cSrc))
     vADV_SRC();
-  }
   
   // test for more csv to be parsed
   if (! bMORE_DATA())
     goto L_EndOfCsvChunk;
   
-  aRecordStart = acCsvSrc;
+  aRecordStart = azCsvSrc;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) new rsb
@@ -298,9 +294,9 @@ L_TestMoreRecords:
 L_TestMoreFields:
     
   if (! bMORE_FIELDS())
-    goto L_EndOfFields;
+    goto L_EndOfRecord;
 
-  aFieldStart = acCsvSrc;
+  aFieldStart = azCsvSrc;
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // 4) decode and convert field
@@ -652,7 +648,7 @@ L_Varchar:
   while (' ' == cSrc)
     vADV_SRC();
 
-  acCsvSrc = aFieldStart;
+  azCsvSrc = aFieldStart;
 
   while (cSrc) {
         
@@ -698,8 +694,8 @@ L_Boolean:
     
     vSKIP_WHITE_SPACE_ADV(); ;
   
-    xBol = snBol.i(&acCsvSrc,m_pFmt);
-    cSrc = *acCsvSrc;
+    xBol = snBol.i(&azCsvSrc,m_pFmt);
+    cSrc = *azCsvSrc;
     m_pRowSlab->vDeposit(xBol);
   }
   goto L_PostField;
@@ -715,8 +711,8 @@ L_Float:
 
     vSKIP_WHITE_SPACE_ADV();
     
-    xFlt = snFlt.d(&acCsvSrc,m_pFmt);
-    cSrc = *acCsvSrc;
+    xFlt = snFlt.d(&azCsvSrc,m_pFmt);
+    cSrc = *azCsvSrc;
     m_pRowSlab->vDeposit(xFlt.m_dFlt);
   }
   goto L_PostField;
@@ -732,8 +728,8 @@ L_Interval:
 
     vSKIP_WHITE_SPACE_ADV();
     
-    xIvl = snIvl.i(&acCsvSrc,m_pFmt);
-    cSrc = *acCsvSrc;
+    xIvl = snIvl.i(&azCsvSrc,m_pFmt);
+    cSrc = *azCsvSrc;
     m_pRowSlab->vDeposit(xIvl);
   }
   goto L_PostField;
@@ -749,8 +745,8 @@ L_Time:
 
     vSKIP_WHITE_SPACE_ADV();
     
-    xTme = snTme.i(&acCsvSrc,m_pFmt);
-    cSrc = *acCsvSrc;
+    xTme = snTme.i(&azCsvSrc,m_pFmt);
+    cSrc = *azCsvSrc;
     m_pRowSlab->vDeposit(xTme);
   }
   goto L_PostField;
@@ -766,8 +762,8 @@ L_Timestamp:
 
     vSKIP_WHITE_SPACE_ADV();
     
-    xTsp = snTsp.i(&acCsvSrc,m_pFmt);
-    cSrc = *acCsvSrc;
+    xTsp = snTsp.i(&azCsvSrc,m_pFmt);
+    cSrc = *azCsvSrc;
     m_pRowSlab->vDeposit(xTsp);
   }
   goto L_PostField;
@@ -793,9 +789,9 @@ L_PostField:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 6) calculate the partition
+  // 6) end of record
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_EndOfFields:
+L_EndOfRecord:
   
 #ifdef WITH_DEBUG_VERSION
   if (m_bTrace) {
@@ -807,17 +803,13 @@ L_EndOfFields:
 
   // set partition hash
   if (m_bPtnHash) {
-    i_Ptn = PtnLib::iPartition(iHash,nPtns);
+    i_Ptn = PtnLib::iPartition(iHash,m_nPtns);
     //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
     m_pRowSlab->vDeposit(i_Ptn);
     iHash = 0;
   }
   
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 7) increment records processed; reset for next record
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  // increment records processed; reset for next record
   AM::vIncRowsProcessed(m_pPipelineJob);
 
   m_nRecords++;
@@ -830,7 +822,7 @@ L_EndOfFields:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 8) encountered a field error
+  // 7) encountered a field error
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_FieldError:
 
@@ -844,7 +836,7 @@ L_FieldError:
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 9) reached end of azCsvChunk
+  // 8) reached end of azCsvChunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfCsvChunk:
     
@@ -912,4 +904,24 @@ hexdump -C lineitem.tbl | more
 000002b0  53 4f 4e 7c 4d 41 49 4c  7c 61 72 65 66 75 6c 6c  |SON|MAIL|arefull|
 000002c0  79 20 73 6c 79 6c 79 20  65 78 7c 0a 32 7c 31 30  |y slyly ex|.2|10|
  
+
+Ascii Table
+-----------
+| 00 NUL | 01 SOH | 02 STX | 03 ETX | 04 EOT | 05 ENQ | 06 ACK | 07 BEL |
+| 08 BS  | 09 HT  | 0a LF  | 0b VT  | 0c FF  | 0d CR  | 0e SO  | 0f SI  |
+| 10 DLE | 11 DC1 | 12 DC2 | 13 DC3 | 14 DC4 | 15 NAK | 16 SYN | 17 ETB |
+| 18 CAN | 19 EM  | 1a SUB | 1b ESC | 1c FS  | 1d GS  | 1e RS  | 1f US  |
+| 20     | 21 !   | 22 "   | 23 #   | 24 $   | 25 %   | 26 &   | 27 '   |
+| 28 (   | 29 )   | 2a *   | 2b +   | 2c ,   | 2d -   | 2e .   | 2f /   |
+| 30 0   | 31 1   | 32 2   | 33 3   | 34 4   | 35 5   | 36 6   | 37 7   |
+| 38 8   | 39 9   | 3a :   | 3b ;   | 3c <   | 3d =   | 3e >   | 3f ?   |
+| 40 @   | 41 A   | 42 B   | 43 C   | 44 D   | 45 E   | 46 F   | 47 G   |
+| 48 H   | 49 I   | 4a J   | 4b K   | 4c L   | 4d M   | 4e N   | 4f O   |
+| 50 P   | 51 Q   | 52 R   | 53 S   | 54 T   | 55 U   | 56 V   | 57 W   |
+| 58 X   | 59 Y   | 5a Z   | 5b [   | 5c \   | 5d ]   | 5e ^   | 5f _   |
+| 60 `   | 61 a   | 62 b   | 63 c   | 64 d   | 65 e   | 66 f   | 67 g   |
+| 68 h   | 69 i   | 6a j   | 6b k   | 6c l   | 6d m   | 6e n   | 6f o   |
+| 70 p   | 71 q   | 72 r   | 73 s   | 74 t   | 75 u   | 76 v   | 77 w   |
+| 78 x   | 79 y   | 7a z   | 7b {   | 7c |   | 7d }   | 7e ~   | 7f DEL |
+
 */
