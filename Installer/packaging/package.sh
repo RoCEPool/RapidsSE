@@ -43,6 +43,8 @@ readonly SETUP_SCRIPT="./setup.sh"  # relative to the directory of extracted fil
 #readonly MAKESELF_ARGS=() 
 readonly MAKESELF_ARGS=( "--bzip2" "--threads" "8")
 
+readonly SHELLCHECK_CMD="${DIR}/shellcheck.sh"
+
 ###############################################################################
 ### Functions                                                               ###
 ###############################################################################
@@ -140,6 +142,16 @@ fi
 if [ ! -d "${MAKESELF_DIR}" ]
 then
   errorExit "Couldn't find the directory for the makeself installer: ${MAKESELF_DIR}"
+fi
+
+
+### Run shellcheck against the setup files
+if [ -z "${NO_SHELLCHECK}" ] && (which shellcheck &>/dev/null); then
+  echo "Running ShellCheck..."
+  if ! ${SHELLCHECK_CMD}; then
+    errorExit "Packaging failed due to shellcheck issues with the setup scripts. Please fix these first."
+  fi
+  echo "ShellCheck passed successfully!"
 fi
 
 

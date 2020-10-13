@@ -335,15 +335,18 @@ function findInstallFile() {
   fi
 
   # Otherwise if there is only one .run file in the $USER_PWD then this would be it.
-  if [ "${DEBUG}" -eq 1 ]; then echo "Looking for install file in directory: ${USER_PWD}"; fi;
+  if [ -n "${USER_PWD}" ]; then
 
-  local runfiles
-  mapfile -t runfiles < <( ls -1 "${USER_PWD}"/*.run || true )
+    if [ "${DEBUG}" -eq 1 ]; then echo "Looking for install file in directory: ${USER_PWD}"; fi;
+
+    local runfiles
+    mapfile -t runfiles < <( ls -1 "${USER_PWD}"/*.run || true )
   
-  if [[ ${#runfiles[@]} -eq 1 && -f "${runfiles[0]}" ]]
-  then
-    INSTALL_FILE="${runfiles[0]}"
-    return
+    if [[ ${#runfiles[@]} -eq 1 && -f "${runfiles[0]}" ]]
+    then
+      INSTALL_FILE="${runfiles[0]}"
+      return
+    fi
   fi
 
   errorExit "Could not find the installation *.run file. Trying specifying it with the --installer argument."
@@ -595,6 +598,7 @@ function askHostnames() {
 function askPort() {
 
   if [ ${ADV_WIZARD} -ne 1 ]; then
+    allNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${NODE_CFG_DEFAULT_PORT}"   
     return
   fi
 
@@ -704,6 +708,7 @@ function askInstallDir() {
 function askMemSize() {
 
   if [ ${ADV_WIZARD} -ne 1 ]; then
+    allNodeCfgsSetValue "${NODE_CFG_MEM_KEY}" "${NODE_CFG_DEFAULT_MEM}"
     return
   fi
   
@@ -761,6 +766,7 @@ function askMemSize() {
 function askPartitions() {
 
   if [ ${ADV_WIZARD} -ne 1 ]; then
+    allNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${NODE_CFG_DEFAULT_PARTITIONS}"
     return
   fi
 
@@ -818,6 +824,7 @@ function askPartitions() {
 function askThreads() {
 
   if [ ${ADV_WIZARD} -ne 1 ]; then
+    allNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${NODE_CFG_DEFAULT_THREADS}"
     return
   fi
 
@@ -877,6 +884,7 @@ function askThreads() {
 function askParams() {
 
   if [ ${ADV_WIZARD} -ne 1 ]; then
+    allNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${NODE_CFG_DEFAULT_PARAMS}"
     return
   fi
 
@@ -1061,12 +1069,12 @@ function distributeSoftware() {
     local cmd=( "scp" "-q" "${INSTALL_FILE}" "${configFile}" "${hostname}:/tmp"  )
 
     if [ ${DEBUG} -eq 1 ]; then 
-      echo "Copying installer to node ${nodeName} / host ${hostname}."
+      echo "Copying installer to node: ${nodeName} / host: ${hostname}."
       echo "Command: ${cmd[*]}"
     fi
 
     # Execute the command
-    "${cmd[@]}" || errorExit "Error copying the installation file to node ${nodeName} / host ${hostname}."
+    "${cmd[@]}" || errorExit "Error copying the installation file to node: ${nodeName} / host: ${hostname}."
 
 
     # Invoke the installer, passing the path to the cluster.config, the name of
@@ -1083,15 +1091,15 @@ function distributeSoftware() {
 
     if [ ${DEBUG} -eq 1 ]; then 
       cmd+=("--debug")
-      echo "Invoking single node installation on node ${nodeName} / host ${hostname}."
+      echo "Invoking single node installation on node: ${nodeName} / host: ${hostname}."
       echo "Command: ${cmd[*]}"
     else 
       echo ""
-      echo "Installing to node ${nodeName} / host ${hostname}."
+      echo "Installing to node: ${nodeName} / host: ${hostname}."
     fi
 
     # Execute the command
-    "${cmd[@]}" || errorExit "Error executing the installer to install RapidsSE on the remote node ${nodeName} / host ${hostname}." 
+    "${cmd[@]}" || errorExit "Error executing the installer to install RapidsSE on the remote node: ${nodeName} / host: ${hostname}." 
 
     # N.B.: The single node install option will delete itself and the cluster.config if
     # they are executed from the /tmp directory. So no need to clean up.
@@ -1110,9 +1118,99 @@ function distributeSoftware() {
 function doNodeInstall() {
 
   # Needs the installer file, config file and name of the current node.
+  # Let's assert all this.
+  if [ ! -f "${INSTALL_FILE}" ]; then
+    errorExit "Couldn't find the installation file at path: ${INSTALL_FILE}"
+  fi  
+
+  if [ ! -f "${CONFIG_FILE}" ]; then
+    errorExit "Couldn't find the cluster configuration file at path: ${CONFIG_FILE}"
+  fi
+
+  if [ -z "${CURRENT_NODE_NAME}" ]; then
+    errorExit "Current node name was not specified."
+  fi
+
+  # Source the config file to include its configuration variables here
+  #shellcheck disable=1090
+  source "${CONFIG_FILE}"
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "Loaded cluster configuration file ${CONFIG_FILE}. Contents of file:"
+    echo ""
+    cat "${CONFIG_FILE}"
+  fi
+
+
+  # Check that a configuration exists for the given node name.
+  if ! nodeCfgExists "${CURRENT_NODE_NAME}"; then
+   errorExit "There is no configuration for the node named: ${CURRENT_NODE_NAME}"
+  fi
+
+
+  # Get the installation dir and hostname for this node. Validate that they
+  # have been set.
+  local installDir
+  local hostname
+  local cmd
+
+  installDir="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DIR_KEY}")"
+  hostname="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
+
+  if [ -z "${installDir}" ]; then
+    errorExit "The installation directory for node ${CURRENT_NODE_NAME} has not been set."
+  fi
+
+  if [ -z "${hostname}" ]; then
+    errorExit "The hostname for node ${CURRENT_NODE_NAME} has not been set."
+  fi
+  
+
+  # Test if the parent path of the install directory is writable
+  if [ ! -w "$(dirname "${installDir}")" ]; then
+    errorExit "Parent path of the installation directory (${installDir}) is not writable by the current user (${USER})."
+  fi
+
+
+  # If the installation directory already exists then remove it
+  if [ -d "${installDir}" ]; then
+
+    if [ ${DEBUG} -eq 1 ]; then
+      echo "Removing existing installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
+    fi
+
+    rm -rf "${installDir}" || errorExit "Could not remove the existing installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
+  fi
+
+
   # Create installation directory.
-  # Copy all files to this dir.
-  # Copy the cluster.config and node.name files.
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "About to create the installation directory: ${hostname}:${installDir}"
+  fi
+
+  mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
+
+
+  # Copy all files that were unpacked from the installer to the installation dir.
+  cmd=("cp" "-r" ./* "${installDir}/")
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "About to copy all files to the installation directory with this command: ${cmd[*]}"
+  fi
+
+  "${cmd[@]}" || errorExit "Could not copy files to the installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
+
+
+  # Copy the cluster.config to the installation directory
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "About to copy the cluster.config file to the installation directory."
+  fi
+
+  cp "${CONFIG_FILE}" "${installDir}/" || errorExit "Could not copy the cluster configuration file to the installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
+
+
+  # Create a node name file in the installation directory.
+  echo "CURRENT_NODE_NAME=\"${CURRENT_NODE_NAME}\"" > "${installDir}/${NODE_NAME_FILE}" || errorExit "Could not create the node name file in the installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
 
   # Remove the installation file and cluster.config if they reside in /tmp
   if [ "$(dirname "${INSTALL_FILE}")" == "/tmp" ]; then
@@ -1128,12 +1226,15 @@ function doNodeInstall() {
 
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 # =========================================================================== #
 # Node Configuration Manipulation                                             #
 #   Below are functions that create and manipulate the associative arrays     #
 #   used to store the configuration for each node.                            #
 # =========================================================================== #
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Populates the NODE_LIST array with node names based on a given count passed
 ## in as a parameter.
 ## Params:
@@ -1223,7 +1324,7 @@ function nodeCfgSetValue() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Returns a value for a key in a dynamically created associative array.
 ## This function should be called by:
-##   result=$(nodeCfgGetValue ${nodeName} ${key})
+##   result="$(nodeCfgGetValue "${nodeName}" "${key}")"
 ##
 ## NB: Not relying on bash v4.3 which introduces reference variables that would
 ##     make this a lot easier.
@@ -1244,7 +1345,8 @@ function nodeCfgGetValue() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Returns an array of keys in a dynamically created associative array.
 ## This function should be called by:
-##   result=($(nodeCfgGetKeys ${nodeName}))
+##   local keys
+##   IFS=" " read -r -a keys <<< "$(nodeCfgGetKeys "${nodeName}")"
 ##
 ## NB: Not relying on bash v4.3 which introduces reference variables that would
 ##     make this a lot easier.
@@ -1283,7 +1385,6 @@ function allNodeCfgsPrint() {
 function nodeCfgPrint() {
   local nodeName=$1
 
-  #local keys=($(nodeCfgGetKeys "${nodeName}"))
   local keys
   IFS=" " read -r -a keys <<< "$(nodeCfgGetKeys "${nodeName}")"
   
@@ -1298,6 +1399,43 @@ function nodeCfgPrint() {
 
     echo "  [${key}] = ${value}"
   done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a 0 exit status if the configuration fo a node with a given name 
+## exists. Otherwise it returns a non-0 exit status.
+## Params:
+##  $1 : The name of the node to check.
+
+function nodeCfgExists() {
+  local nodeName="$1"
+
+  # Check that it exists in the NODE_LIST
+  local foundNode=0
+
+  for node in "${NODE_LIST[@]}"
+  do
+    if [ "${node}" == "${nodeName}" ]; then
+      foundNode=1
+      break;
+    fi
+  done 
+
+  if [ ${foundNode} -eq 0 ]; then
+    false
+    return
+  fi
+
+  local val
+  val="$(eval echo "${NODE_CFG_PREFIX}${nodeName}[@]")"
+
+  if [ -z "${val}" ]; then
+    false
+    return
+  fi
+
+  true
 }
 
 # =========================================================================== #

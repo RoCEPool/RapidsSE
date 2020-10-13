@@ -21,12 +21,14 @@
 #  -x          : print each command before executing it (for debugging).
 set -Eeou pipefail
 
+#shellcheck disable=2034
 readonly DIR=$(dirname "$0")
 
 
 readonly SETUP_FN_FILE="setup.fn"
 readonly VERSION_FILE="version"
 readonly DEFAULT_CONFIG_PATH="cluster.config"
+readonly NODE_NAME_FILE="node.name"
 
 readonly CONFIG_DEFAULT_VERSION="1"
 
@@ -101,6 +103,7 @@ source "${SETUP_FN_FILE}"
 ###############################################################################
 
 # The main script starts here.
+
 
 # Process the arguments given to the script.
 processArgs "$@"
