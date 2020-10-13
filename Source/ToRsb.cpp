@@ -175,17 +175,17 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*                             -- FAST INLINE --                              */
 /*----------------------------------------------------------------------------*/
 
-#define vADV_SRC()       (cSrc = *++azCsvSrc)
+#define vADV_SRC()       (cSrcChr = *++azCsvSrc)
 
-#define bMORE_DATA()     (bool)(cSrc)
+#define bMORE_DATA()     (bool)(cSrcChr)
 
-#define bMORE_FIELDS()   (bool)(cSrc && '\n' != cSrc)
+#define bMORE_FIELDS()   (bool)(cSrcChr && '\n' != cSrcChr)
 
 #define bWHITE_SPACE(c)  \
   (c == ' ') || (c == '\n') || (c == '\r') || (c == '\f') || (c == '\t')
 
 #define vSKIP_WHITE_SPACE_ADV() \
-  while (cSrc && StrLib::bIsWhite(cSrc)) { \
+  while (cSrcChr && StrLib::bIsWhite(cSrcChr)) { \
     vADV_SRC(); \
   }
 
@@ -213,7 +213,6 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   u8 iYear;
   u8 iMonth;
   u8 iDay;
-  i8 nDigits;
   bool bLeapYear;
 
   Dte xDte;
@@ -230,7 +229,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   char* azCsvSrc = azCsvChunk;
-  char cSrc = *azCsvSrc;
+  char cSrcChr = *azCsvSrc;
 
   ColPix* aColPix = m_pRowSlab->axaColPix();
   
@@ -267,7 +266,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
 L_TestMoreRecords:
     
   // skip leading whitespace
-  while (bWHITE_SPACE(cSrc))
+  while (bWHITE_SPACE(cSrcChr))
     vADV_SRC();
   
   // test for more csv to be parsed
@@ -343,18 +342,16 @@ L_Date:
   // year
   
   bOnce = false;
-  nDigits = 0;
 
-  if (cSrc && (cSrc >= '0' && cSrc <= '9') )
+  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
     bOnce = true;
   
-  for ( ; cSrc; vADV_SRC()) {
+  for ( ; cSrcChr; vADV_SRC()) {
     
-     if (cSrc < '0' || cSrc > '9' )
+     if (cSrcChr < '0' || cSrcChr > '9' )
       break;
     
-    iYear = (iYear * 10) + (cSrc - '0');
-    nDigits++;
+    iYear = (iYear * 10) + (cSrcChr - '0');
     
     if (iYear > (u8)C_I8_MAX) {
       goto L_FieldError;
@@ -365,11 +362,11 @@ L_Date:
     goto L_FieldError;
   }
   
-  if (2 == nDigits) {
+  if (iYear <= 99) {
     iYear += 2000;
   }
   else
-  if (4 != nDigits) {
+  if (iYear <= 1900) {
     goto L_FieldError;
   }
 
@@ -377,29 +374,25 @@ L_Date:
   // month
   
   bOnce = false;
-  nDigits = 2;
 
-  if (! cSrc) {
+  if (! cSrcChr) {
     goto L_FieldError;
   }
-  if ('-' != cSrc) {
+  if ('-' != cSrcChr) {
     goto L_FieldError;
   }
           
   vADV_SRC();
   
-  if (cSrc && (cSrc >= '0' && cSrc <= '9') )
+  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
     bOnce = true;
   
-  for ( ; cSrc && nDigits > 0; vADV_SRC()) {
-    
-    // decrement no of digits extracted
-    nDigits--;
-    
-    if (cSrc < '0' || cSrc > '9' )
+  for ( ; cSrcChr; vADV_SRC()) {
+        
+    if (cSrcChr < '0' || cSrcChr > '9' )
       break;
     
-    iMonth = (iMonth * 10) + cSrc - '0';
+    iMonth = (iMonth * 10) + (cSrcChr - '0');
   }
     
   if (! bOnce) {
@@ -414,29 +407,25 @@ L_Date:
   // day
         
   bOnce = false;
-  nDigits = 2;
 
-  if (! cSrc) {
+  if (! cSrcChr) {
     goto L_FieldError;
   }
-  if ('-' != cSrc) {
+  if ('-' != cSrcChr) {
     goto L_FieldError;
   }
   
   vADV_SRC();
 
-  if (cSrc && (cSrc >= '0' && cSrc <= '9') )
+  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
     bOnce = true;
   
-  for ( ; cSrc && nDigits > 0; vADV_SRC())  {
-    
-    // decrement no of digits extracted
-    nDigits--;
-    
-    if ( cSrc < '0' || cSrc > '9' )
+  for ( ; cSrcChr; vADV_SRC())  {
+        
+    if ( cSrcChr < '0' || cSrcChr > '9' )
       break;
     
-    iDay = (iDay * 10) + cSrc - '0';
+    iDay = (iDay * 10) + (cSrcChr - '0');
   }
      
   if (! bOnce) {
@@ -493,27 +482,27 @@ L_Decimal:
   // ---- ---- ---- ---- ---- ---- ---- ----
   
   // test for negative or positive sign
-  if ('-' == cSrc) {
+  if ('-' == cSrcChr) {
     bNegative = true;
     vADV_SRC();
   }
   else
-  if ('+' == cSrc) {
+  if ('+' == cSrcChr) {
     vADV_SRC();
   }
   
   // at least one digit
-  if (cSrc && ( (cSrc >= '0' && cSrc <= '9') || '.' == cSrc))
+  if (cSrcChr && ( (cSrcChr >= '0' && cSrcChr <= '9') || '.' == cSrcChr))
     bOnce = true;
   
   // ignore leading 0's
-  while (cSrc == '0') {
+  while (cSrcChr == '0') {
     vADV_SRC();
   }
   
   // collect leading digits (till '.')
-  while (cSrc >= '0' && cSrc <= '9') {
-    uPartialResult = uPartialResult * 10 + cSrc - '0';
+  while (cSrcChr >= '0' && cSrcChr <= '9') {
+    uPartialResult = uPartialResult * 10 + cSrcChr - '0';
     vADV_SRC();
     nPixPrecision--;
   }
@@ -523,12 +512,12 @@ L_Decimal:
     goto L_FieldError;
   }
   
-  if ('.' == cSrc) {
+  if ('.' == cSrcChr) {
     
     vADV_SRC(); // skip '.'
     
-    while ((cSrc >= '0' && cSrc <= '9') && nPixScale) {
-      uPartialResult = uPartialResult * 10 + cSrc - '0';
+    while ((cSrcChr >= '0' && cSrcChr <= '9') && nPixScale) {
+      uPartialResult = uPartialResult * 10 + cSrcChr - '0';
       vADV_SRC();
       nPixScale--;
     }
@@ -544,10 +533,10 @@ L_Decimal:
   }
   
   // round up if there any more digits after decimal
-  if (cSrc >= '0' && cSrc <= '9') {
-    if (cSrc - '0' >= 5)
+  if (cSrcChr >= '0' && cSrcChr <= '9') {
+    if (cSrcChr - '0' >= 5)
       uPartialResult += 1;
-    while (cSrc >= '0' && cSrc <= '9')
+    while (cSrcChr >= '0' && cSrcChr <= '9')
       vADV_SRC();
   }
   
@@ -582,25 +571,25 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
 
   // leading sign
-  if ('-' == cSrc) {
+  if ('-' == cSrcChr) {
     bNegative = true;
     vADV_SRC();
   }
   else
-  if ('+' == cSrc) {
+  if ('+' == cSrcChr) {
     vADV_SRC();
   }
   
   // at least 1 digit
-  if (cSrc && (cSrc >= '0' && cSrc <= '9'))
+  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9'))
     bOnce = true;
   
-  for ( ; cSrc; vADV_SRC()) {
+  for ( ; cSrcChr; vADV_SRC()) {
         
-    if ( cSrc < '0' || cSrc > '9' )
+    if ( cSrcChr < '0' || cSrcChr > '9' )
       break;
     
-    uPartialResult = (uPartialResult * 10) + (cSrc - '0');
+    uPartialResult = (uPartialResult * 10) + (cSrcChr - '0');
     
     if (uPartialResult > (u8)C_I8_MAX) {
       //THROW_USER("vConvertInteger"_Stz);
@@ -645,19 +634,19 @@ L_Varchar:
     bSawEnclosedLeading = false;
 
   // find first non-space character
-  while (' ' == cSrc)
+  while (' ' == cSrcChr)
     vADV_SRC();
 
   azCsvSrc = aFieldStart;
 
-  while (cSrc) {
+  while (cSrcChr) {
         
     // test for field separator (because its not enclosed)
-    if (cSrc == m_cFldSep)
+    if (cSrcChr == m_cFldSep)
       break;
     
     if (nChars++ < nPixLength)
-      *acVchDst++ = cSrc;
+      *acVchDst++ = cSrcChr;
     
     vADV_SRC();
   }
@@ -695,7 +684,7 @@ L_Boolean:
     vSKIP_WHITE_SPACE_ADV(); ;
   
     xBol = snBol.i(&azCsvSrc,m_pFmt);
-    cSrc = *azCsvSrc;
+    cSrcChr = *azCsvSrc;
     m_pRowSlab->vDeposit(xBol);
   }
   goto L_PostField;
@@ -712,7 +701,7 @@ L_Float:
     vSKIP_WHITE_SPACE_ADV();
     
     xFlt = snFlt.d(&azCsvSrc,m_pFmt);
-    cSrc = *azCsvSrc;
+    cSrcChr = *azCsvSrc;
     m_pRowSlab->vDeposit(xFlt.m_dFlt);
   }
   goto L_PostField;
@@ -729,7 +718,7 @@ L_Interval:
     vSKIP_WHITE_SPACE_ADV();
     
     xIvl = snIvl.i(&azCsvSrc,m_pFmt);
-    cSrc = *azCsvSrc;
+    cSrcChr = *azCsvSrc;
     m_pRowSlab->vDeposit(xIvl);
   }
   goto L_PostField;
@@ -746,7 +735,7 @@ L_Time:
     vSKIP_WHITE_SPACE_ADV();
     
     xTme = snTme.i(&azCsvSrc,m_pFmt);
-    cSrc = *azCsvSrc;
+    cSrcChr = *azCsvSrc;
     m_pRowSlab->vDeposit(xTme);
   }
   goto L_PostField;
@@ -763,7 +752,7 @@ L_Timestamp:
     vSKIP_WHITE_SPACE_ADV();
     
     xTsp = snTsp.i(&azCsvSrc,m_pFmt);
-    cSrc = *azCsvSrc;
+    cSrcChr = *azCsvSrc;
     m_pRowSlab->vDeposit(xTsp);
   }
   goto L_PostField;
@@ -774,13 +763,13 @@ L_Timestamp:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
   
-  if (cSrc == m_cFldSep)
+  if (cSrcChr == m_cFldSep)
     bSawFldSep = true;
 
-  while (cSrc && m_cFldSep != cSrc && m_cRecEnd != cSrc)
+  while (cSrcChr && m_cFldSep != cSrcChr && m_cRecEnd != cSrcChr)
     vADV_SRC();
 
-  if (cSrc == m_cFldSep)
+  if (cSrcChr == m_cFldSep)
     vADV_SRC();
 
   i_Fld++;
@@ -792,6 +781,8 @@ L_PostField:
   // 6) end of record
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfRecord:
+  
+  ASSERT(! bMORE_FIELDS());
   
 #ifdef WITH_DEBUG_VERSION
   if (m_bTrace) {
@@ -811,11 +802,10 @@ L_EndOfRecord:
   
   // increment records processed; reset for next record
   AM::vIncRowsProcessed(m_pPipelineJob);
-
   m_nRecords++;
-  
   i_Fld = 0;
-  if (cSrc)
+  
+  if (cSrcChr)
     vADV_SRC();
 
   goto L_TestMoreRecords;
