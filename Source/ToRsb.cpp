@@ -230,6 +230,9 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   
   i8 iBoolean;
   
+  Ivl xIvl;
+  i8 nShift;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) begin
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -758,7 +761,7 @@ L_Float:
   bOnce = false;
 
   // collect leading integer portion (till '.')
-  while (cSrcChr < '0' || cSrcChr > '9') {
+  while (cSrcChr >= '0' && cSrcChr <= '9') {
     bOnce = true;
     *aChar++ = cSrcChr;
     vADV_SRC();
@@ -768,7 +771,7 @@ L_Float:
   if ('.' == cSrcChr) {
     *aChar++ = cSrcChr;
     vADV_SRC();
-    while (cSrcChr < '0' || cSrcChr > '9') {
+    while (cSrcChr >= '0' && cSrcChr <= '9') {
       *aChar++ = cSrcChr;
       vADV_SRC();
     }
@@ -787,7 +790,7 @@ L_Float:
     }
         
     // collect exponent digits
-    while (cSrcChr < '0' || cSrcChr > '9') {
+    while (cSrcChr >= '0' && cSrcChr <= '9') {
       *aChar++ = cSrcChr;
       vADV_SRC();
     }
@@ -809,16 +812,43 @@ L_Float:
   // 4.g) interval field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
-  {
-    Ivl xIvl;
-    SN_Ivl snIvl;
-
-    vSKIP_WHITE_SPACE_ADV();
-    
-    xIvl = snIvl.i(&azCsvSrc,m_pFmt);
-    cSrcChr = *azCsvSrc;
-    m_pRowSlab->vDeposit(xIvl);
+//  {
+//    Ivl xIvl;
+//    SN_Ivl snIvl;
+//
+//    vSKIP_WHITE_SPACE_ADV();
+//
+//    xIvl = snIvl.i(&azCsvSrc,m_pFmt);
+//    cSrcChr = *azCsvSrc;
+//    m_pRowSlab->vDeposit(xIvl);
+//  }
+  
+  // collect leading seconds portion (till '.')
+  uUnsignedResult = 0;
+  while (cSrcChr >= '0' && cSrcChr <= '9') {
+    uUnsignedResult = uUnsignedResult * 10 + cSrcChr - '0';
+    vADV_SRC();
   }
+  
+  xIvl.m_uSecond = uUnsignedResult;
+  
+
+  // collect trailing fraction portion
+  uUnsignedResult = 0;
+  nShift = 1000000;
+  if ('.' == cSrcChr) {
+    vADV_SRC();
+    while (nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9') {
+      uUnsignedResult = uUnsignedResult * 10 + cSrcChr - '0';
+      nShift /= 10;
+      vADV_SRC();
+    }
+  }
+
+  xIvl.m_uMicro = uUnsignedResult * nShift;
+
+  m_pRowSlab->vDeposit(xIvl);
+
   goto L_PostField;
 
   

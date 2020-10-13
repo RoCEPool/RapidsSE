@@ -8,15 +8,15 @@ trackMemory;
 
 // (1) create a table
 create table allTyp (
-  int_col1   INTEGER       NOT NULL,
-  dec_col2   DECIMAL(10,2) NOT NULL,
-  bol_col3   BOOLEAN       NOT NULL,
-  dte_col4   DATE          NOT NULL,
-  flt_col5   FLOAT         NOT NULL,
-  dec_col6   DECIMAL(10,2) NOT NULL,
-  tme_col7   TIME          NOT NULL,
-  tsp_col8   TIMESTAMP     NOT NULL,
-  vch_col9   VARCHAR(32)   NOT NULL
+  int_col0   INTEGER       NOT NULL,
+  dec_col1   DECIMAL(10,2) NOT NULL,
+  bol_col2   BOOLEAN       NOT NULL,
+  dte_col3   DATE          NOT NULL,
+  flt_col4   FLOAT         NOT NULL,
+  ivl_col5   INTERVAL      NOT NULL,
+  tme_col6   TIME          NOT NULL,
+  tsp_col7   TIMESTAMP     NOT NULL,
+  vch_col8   VARCHAR(32)   NOT NULL
 );
 
 fload allTyp "../FASTLOAD/Data/allTyp.csv" ;
