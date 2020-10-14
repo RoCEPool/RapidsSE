@@ -408,25 +408,25 @@ function printClusterStatus() {
   local nodeName
   local host
   local pid
-  local status
+  local statusStr
   local errorCount=0
 
   echo "Cluster status:"
-
+  
   for nodeName in "${NODE_LIST[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
     pid="$(getRunningPid "${nodeName}")"
 
-    if [[ -n "${pid}" && "${pid}" -gt 0 ]]; then
-      status="running (pid ${pid})"
+    if [ -n "${pid}" ]  && [ "${pid}" -gt 0 ]; then
+      statusStr="running (pid ${pid})"
     else
-      status="NOT RUNNING"
+      statusStr="NOT RUNNING"
       errorCount=$((errorCount+1))
     fi
 
-    printf "  %-30s  %s\n" "${nodeName} (host ${host}) :" "${status}"
+    printf "  %-30s  %s\n" "${nodeName} (host ${host}) :" "${statusStr}"
   done
 
   if [ "${errorCount}" -gt 0 ]; then
@@ -486,24 +486,22 @@ function getRunningPid() {
 
   local host
   local dir
-  local remoteCmd
   local pid
+  local remoteCmd
 
   host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
   remoteCmd="'if [ ! -f \"${dir}/${REMOTE_PID_FILENAME}\" ]; then exit 1; fi; cat \"${dir}/${REMOTE_PID_FILENAME}\" | xargs ps -o pid -h -p '"
-
+  
   pid="$(ssh "${host}" bash -c "${remoteCmd}")"
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "Output of pid for node ${nodeName} = ${pid}"
-  fi
-
-  local re="[0-9]+"
+  local re="^[[:space:]]*([0-9]+)[[:space:]]*$"
 
   if [[ "${pid}" =~ $re ]]; then
-    pid=""
+    pid="${BASH_REMATCH[1]}"
+  else
+   pid=""
   fi
 
   echo "${pid}"
