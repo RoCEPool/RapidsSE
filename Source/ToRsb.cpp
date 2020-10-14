@@ -205,21 +205,26 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   i8 nPixScale;
   i8 nPixPrecision;
 
-  u8 uUnsignedResult;
-  i8 iFinalResult;
-  bool bNegative;
-  bool bOnce;
-
-  d8 dUnsignedResult;
-  d8 dFinalResult;
-  char xBuffer[256];
-  char* aChar;
-
-  Dte xDte;
+  i8 iBoolean;
+  
+  Dte xDate;
   u8 iYear;
   u8 iMonth;
   u8 iDay;
   bool bLeapYear;
+
+  i8 iInteger;
+  u8 uUnsignedPartial;
+  bool bNegative;
+  bool bOnce;
+
+  d8 dFloat;
+  d8 dUnsignedPartial;
+  char xBuffer[256];
+  char* aChar;
+
+  Ivl xInterval;
+  i8 nShift;
 
   char* azVchSlab;
   char* acVchDst;
@@ -227,17 +232,13 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   bool bSawEnclosedLeading;
   bool bSawEnclosedTrailing;
   
-  i8 iBoolean;
-  
-  Ivl xIvl;
-  i8 nShift;
-
-  Tme xTme;
+  Tme xTime;
   u8 iHour;
   u8 iMinute;
   u8 iSecond;
   u8 iMicrosecond;
   
+  Tsp xTimestamp;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) begin
@@ -354,33 +355,6 @@ L_Date:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year
   
-//  bOnce = false;
-//
-//  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
-//    bOnce = true;
-//
-//  for ( ; cSrcChr; vADV_SRC()) {
-//
-//     if (cSrcChr < '0' || cSrcChr > '9' )
-//      break;
-//
-//    iYear = (iYear * 10) + (cSrcChr - '0');
-//
-//    if (iYear > (u8)C_I8_MAX) {
-//      goto L_FieldError;
-//    }
-//  }
-//
-//  if (! bOnce)
-//    goto L_FieldError;
-//
-//
-//  if (iYear <= 99)
-//    iYear += 2000;
-//  else
-//  if (iYear <= 1900)
-//    goto L_FieldError;
-  
   // collect the year
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
@@ -406,35 +380,7 @@ L_Date:
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month
-  
-//  bOnce = false;
-//
-//  if (! cSrcChr) {
-//    goto L_FieldError;
-//  }
-//  if ('-' != cSrcChr) {
-//    goto L_FieldError;
-//  }
-//
-//  vADV_SRC();
-//
-//  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
-//    bOnce = true;
-//
-//  for ( ; cSrcChr; vADV_SRC()) {
-//
-//    if (cSrcChr < '0' || cSrcChr > '9' )
-//      break;
-//
-//    iMonth = (iMonth * 10) + (cSrcChr - '0');
-//  }
-//
-//  if (! bOnce)
-//    goto L_FieldError;
-//
-//  if (iMonth < 1 || iMonth > 12)
-//    goto L_FieldError;
-  
+    
   // collect the month
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
@@ -457,31 +403,7 @@ L_Date:
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day
-        
-//  bOnce = false;
-//
-//  if (! cSrcChr)
-//    goto L_FieldError;
-//
-//  if ('-' != cSrcChr)
-//    goto L_FieldError;
-//
-//  vADV_SRC();
-//
-//  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9') )
-//    bOnce = true;
-//
-//  for ( ; cSrcChr; vADV_SRC())  {
-//
-//    if ( cSrcChr < '0' || cSrcChr > '9' )
-//      break;
-//
-//    iDay = (iDay * 10) + (cSrcChr - '0');
-//  }
-//
-//  if (! bOnce)
-//    goto L_FieldError;
-  
+          
   // collect the day
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
@@ -516,15 +438,15 @@ L_Date:
     }
   }
 
-  // ---- ---- ---- ---- ---- ---- ---- ----
+  // ==== ==== ==== ==== ==== ==== ==== ====
   // deposit the date
   
-  xDte.m_uYearDelta = iYear - C_YEAR_BASE;
-  xDte.m_uMonth     = iMonth;
-  xDte.m_uDay       = iDay;
-  xDte.m_uSpare     = 0;
+  xDate.m_uYearDelta = iYear - C_YEAR_BASE;
+  xDate.m_uMonth     = iMonth;
+  xDate.m_uDay       = iDay;
+  xDate.m_uSpare     = 0;
   
-  m_pRowSlab->vDeposit(xDte);
+  m_pRowSlab->vDeposit(xDate);
 
   goto L_PostField;                                               // end of date
 
@@ -534,7 +456,7 @@ L_Date:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
   
-  uUnsignedResult = 0;
+  uUnsignedPartial = 0;
   bNegative = false;
   bOnce = false;
 
@@ -563,7 +485,7 @@ L_Decimal:
   
   // collect leading digits (till '.')
   while (cSrcChr >= '0' && cSrcChr <= '9') {
-    uUnsignedResult = uUnsignedResult * 10 + cSrcChr - '0';
+    uUnsignedPartial = uUnsignedPartial * 10 + cSrcChr - '0';
     vADV_SRC();
     nPixPrecision--;
   }
@@ -578,17 +500,17 @@ L_Decimal:
     vADV_SRC(); // skip '.'
     
     while ((cSrcChr >= '0' && cSrcChr <= '9') && nPixScale) {
-      uUnsignedResult = uUnsignedResult * 10 + cSrcChr - '0';
+      uUnsignedPartial = uUnsignedPartial * 10 + cSrcChr - '0';
       vADV_SRC();
       nPixScale--;
     }
   }
   
   while (nPixScale--)
-    uUnsignedResult = uUnsignedResult * 10 + 0;
+    uUnsignedPartial = uUnsignedPartial * 10 + 0;
   
   // have we exceeded the max ?
-  if (uUnsignedResult > (u8)C_I8_MAX) {
+  if (uUnsignedPartial > (u8)C_I8_MAX) {
     //THROW_USER("vConvertDecimal"_Stz);
     goto L_FieldError;
   }
@@ -596,16 +518,16 @@ L_Decimal:
   // round up if there any more digits after decimal
   if (cSrcChr >= '0' && cSrcChr <= '9') {
     if (cSrcChr - '0' >= 5)
-      uUnsignedResult += 1;
+      uUnsignedPartial += 1;
     while (cSrcChr >= '0' && cSrcChr <= '9')
       vADV_SRC();
   }
   
   // compute final result
-  iFinalResult = bNegative ? - uUnsignedResult : uUnsignedResult;
+  iInteger = bNegative ? - uUnsignedPartial : uUnsignedPartial;
   
   // have we gone beyond the min ?
-  if (iFinalResult != 0 && bNegative && (iFinalResult < C_I8_MIN)) {
+  if (iInteger != 0 && bNegative && (iInteger < C_I8_MIN)) {
     goto L_FieldError;
   }
   
@@ -613,7 +535,10 @@ L_Decimal:
     goto L_FieldError;
   }
   
-  m_pRowSlab->vDeposit(iFinalResult);
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // deposit the decimal
+
+  m_pRowSlab->vDeposit(iInteger);
 
   goto L_PostField;                                            // end of decimal
 
@@ -623,7 +548,7 @@ L_Decimal:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
   
-  uUnsignedResult = 0;
+  uUnsignedPartial = 0;
   bNegative = false;
   bOnce = false;
 
@@ -650,9 +575,9 @@ L_Integer:
     if (cSrcChr < '0' || cSrcChr > '9')
       break;
     
-    uUnsignedResult = (uUnsignedResult * 10) + (cSrcChr - '0');
+    uUnsignedPartial = (uUnsignedPartial * 10) + (cSrcChr - '0');
     
-    if (uUnsignedResult > (u8)C_I8_MAX) {
+    if (uUnsignedPartial > (u8)C_I8_MAX) {
       //THROW_USER("vConvertInteger"_Stz);
       goto L_FieldError;
     }
@@ -663,13 +588,17 @@ L_Integer:
     goto L_FieldError;
   }
   
-  iFinalResult = bNegative ? - uUnsignedResult : uUnsignedResult;
-  m_pRowSlab->vDeposit(iFinalResult);
-
+  iInteger = bNegative ? - uUnsignedPartial : uUnsignedPartial;
+  
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey) {
-    PtnLib::vRunning(&iHash,iFinalResult);
+    PtnLib::vRunning(&iHash,iInteger);
   }
+  
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // deposit the integer
+  
+  m_pRowSlab->vDeposit(iInteger);
     
   goto L_PostField;                                            // end of integer
 
@@ -725,7 +654,9 @@ L_Varchar:
     goto L_FieldError;
   }
   
-  // deposit the string
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // deposit the varchar
+  
   m_pRowSlab->vDepositString_end(nChars+1);
 
   goto L_PostField;                                            // end of varchar
@@ -738,28 +669,18 @@ L_Varchar:
   // 4.e) boolean field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Boolean:
-//  {
-//    Bol xBol;
-//    SN_Bol snBol;
-//
-//    vSKIP_WHITE_SPACE_ADV(); ;
-//
-//    xBol = snBol.i(&azCsvSrc,m_pFmt);
-//    cSrcChr = *azCsvSrc;
-//    m_pRowSlab->vDeposit(xBol);
-//  }
   
   vSKIP_WHITE_SPACE_ADV();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
 
   if ( cSrcChr < '0' || cSrcChr > '9' ) {
-    uUnsignedResult = 0;
+    uUnsignedPartial = 0;
     while (cSrcChr >= '0' && cSrcChr <= '9') {
-      uUnsignedResult = uUnsignedResult * 10 + cSrcChr - '0';
+      uUnsignedPartial = uUnsignedPartial * 10 + cSrcChr - '0';
       vADV_SRC();
     }
-    if (uUnsignedResult > 0)
+    if (uUnsignedPartial > 0)
       iBoolean = true;
     else
       iBoolean = false;
@@ -778,31 +699,27 @@ L_Boolean:
     goto L_FieldError;
   }
 
-  m_pRowSlab->vDeposit(iBoolean);
+  // ==== ==== ==== ==== ==== ==== ==== ====
+   // deposit the boolean
+  
+    m_pRowSlab->vDeposit(iBoolean);
 
-  goto L_PostField;
+  goto L_PostField;                                            // end of boolean
   
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.f) float field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
-//  {
-//    Flt xFlt;
-//    SN_Flt snFlt;
-//
-//    vSKIP_WHITE_SPACE_ADV();
-//
-//    xFlt = snFlt.d(&azCsvSrc,m_pFmt);
-//    cSrcChr = *azCsvSrc;
-//    m_pRowSlab->vDeposit(xFlt.m_dFlt);
-//  }
-  
-  
-  dUnsignedResult = 0.0;
+    
+  dUnsignedPartial = 0.0;
   aChar = xBuffer;
 
+  vSKIP_WHITE_SPACE_ADV();
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // test for negative or positive sign
+  
   if ('-' == cSrcChr) {
     bNegative = true;
     vADV_SRC();
@@ -858,72 +775,66 @@ L_Float:
   *aChar++ = '\0';
   
   // compute final result
-  dUnsignedResult = atof(xBuffer);
-  dFinalResult = bNegative ? - dUnsignedResult : dUnsignedResult;
+  dUnsignedPartial = atof(xBuffer);
+  dFloat = bNegative ? - dUnsignedPartial : dUnsignedPartial;
   
-  m_pRowSlab->vDeposit(dFinalResult);
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // deposit the float
+  
+  m_pRowSlab->vDeposit(dFloat);
 
-  goto L_PostField;
+  goto L_PostField;                                              // end of float
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.g) interval field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
-//  {
-//    Ivl xIvl;
-//    SN_Ivl snIvl;
-//
-//    vSKIP_WHITE_SPACE_ADV();
-//
-//    xIvl = snIvl.i(&azCsvSrc,m_pFmt);
-//    cSrcChr = *azCsvSrc;
-//    m_pRowSlab->vDeposit(xIvl);
-//  }
+  
+  vSKIP_WHITE_SPACE_ADV();
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // seconds
   
   // collect leading seconds portion (till '.')
-  uUnsignedResult = 0;
+  uUnsignedPartial = 0;
   while (cSrcChr >= '0' && cSrcChr <= '9') {
-    uUnsignedResult = uUnsignedResult * 10 + cSrcChr - '0';
+    uUnsignedPartial = uUnsignedPartial * 10 + cSrcChr - '0';
     vADV_SRC();
   }
   
-  xIvl.m_uSecond = uUnsignedResult;
+  xInterval.m_uSecond = uUnsignedPartial;
   
 
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // microseconds (optional)
+  
   // collect trailing fraction portion
-  uUnsignedResult = 0;
+  uUnsignedPartial = 0;
   nShift = 1000000;
   if ('.' == cSrcChr) {
     vADV_SRC();
     while (nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9') {
-      uUnsignedResult = uUnsignedResult * 10 + cSrcChr - '0';
+      uUnsignedPartial = uUnsignedPartial * 10 + cSrcChr - '0';
       nShift /= 10;
       vADV_SRC();
     }
   }
 
-  xIvl.m_uMicro = uUnsignedResult * nShift;
+  xInterval.m_uMicro = uUnsignedPartial * nShift;
 
-  m_pRowSlab->vDeposit(xIvl);
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // deposit the interval
+  
+  m_pRowSlab->vDeposit(xInterval);
 
-  goto L_PostField;
+  goto L_PostField;                                           // end of interval
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.h) time field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
-//  {
-//    Tme xTme;
-//    SN_Tme snTme;
-//
-//    vSKIP_WHITE_SPACE_ADV();
-//
-//    xTme = snTme.i(&azCsvSrc,m_pFmt);
-//    cSrcChr = *azCsvSrc;
-//    m_pRowSlab->vDeposit(xTme);
-//  }
   
   iHour = iMinute = iSecond = iMicrosecond = 0;
 
@@ -944,7 +855,6 @@ L_Time:
 
   if (':' != cSrcChr)
     goto L_FieldError;
-
   vADV_SRC();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -962,7 +872,6 @@ L_Time:
 
   if (':' != cSrcChr)
     goto L_FieldError;
-
   vADV_SRC();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -998,15 +907,18 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // deposit the time
 
-  xTme.m_uHour   = iHour;
-  xTme.m_uMinute = iMinute;
-  xTme.m_uSecond = iSecond;
-  xTme.m_uMicro  = iMicrosecond;
-  xTme.m_uSpare  = 0;
+  xTime.m_uHour   = iHour;
+  xTime.m_uMinute = iMinute;
+  xTime.m_uSecond = iSecond;
+  xTime.m_uMicro  = iMicrosecond;
+  xTime.m_uSpare  = 0;
 
-  m_pRowSlab->vDeposit(xTme);
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // deposit the time
+  
+  m_pRowSlab->vDeposit(xTime);
 
-  goto L_PostField;
+  goto L_PostField;                                               // end of time
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
