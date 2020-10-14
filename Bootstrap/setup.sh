@@ -24,26 +24,10 @@ set -Eeou pipefail
 #shellcheck disable=2034
 readonly DIR=$(dirname "$0")
 
-
-readonly SETUP_FN_FILE="setup.fn"
+readonly SETUP_FN="setup.fn"
 readonly VERSION_FILE="version"
 readonly DEFAULT_CONFIG_PATH="cluster.config"
 readonly NODE_NAME_FILE="node.name"
-
-readonly CONFIG_DEFAULT_VERSION="1"
-
-# Prefix of the name of the associative arrays for each node in the cluster.config
-readonly NODE_CFG_PREFIX="NODE_CFG_"
-
-# Names of fields within each node's associative array.
-readonly NODE_CFG_NAME_KEY="name"
-readonly NODE_CFG_HOST_KEY="host"
-readonly NODE_CFG_PORT_KEY="port"
-readonly NODE_CFG_DIR_KEY="dir"
-readonly NODE_CFG_PARTITIONS_KEY="partitions"
-readonly NODE_CFG_THREADS_KEY="threads"
-readonly NODE_CFG_MEM_KEY="mem"
-readonly NODE_CFG_PARAMS_KEY="params"
 
 # Default values
 readonly NODE_CFG_DEFAULT_NAME_PREFIX="NODE"
@@ -53,7 +37,6 @@ readonly NODE_CFG_DEFAULT_PARTITIONS="8"  # per node
 readonly NODE_CFG_DEFAULT_THREADS="16"    # per node
 readonly NODE_CFG_DEFAULT_MEM="32"        # in GB, per node
 readonly NODE_CFG_DEFAULT_PARAMS=""
-
 
 readonly MINIMUM_MEM_SIZE="4"
 
@@ -95,7 +78,7 @@ CURRENT_NODE_NAME=""
 
 # Include a file that contains all of the functions used within.
 #shellcheck source=setup.fn
-source "${SETUP_FN_FILE}"
+source "${SETUP_FN}" || { >&2 echo "Could not load ${SETUP_FN}"; exit 1; }
 
 
 ###############################################################################

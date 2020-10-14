@@ -5,4 +5,13 @@ if ! which shellcheck &>/dev/null; then
   exit 1
 fi
 
-shellcheck -P ../../Bootstrap ../../Bootstrap/setup.sh ../../Bootstrap/setup.fn
+# Files to be checked
+declare -a FILES
+FILES+=("../../Bootstrap/setup.sh")
+FILES+=("../../Bootstrap/setup.fn")
+FILES+=("../../Bootstrap/common.fn")
+FILES+=("../../Bootstrap/boot.fn")
+FILES+=("../../Bootstrap/startSE.sh")
+#FILES+=("../../Bootstrap/stopSE.sh")
+
+shellcheck -s bash -P ../../Bootstrap "${FILES[@]}"

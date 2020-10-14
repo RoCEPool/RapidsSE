@@ -1,0 +1,319 @@
+#!/bin/bash
+# This file contains function definitions that are imported and used by 
+# other RapidsSE scripts.
+
+# Guard against this file being executed directly.
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]
+then
+  >&2 echo "This file should be sourced, not executed: $0"
+  exit 1
+fi
+
+
+###############################################################################
+### Constants                                                               ###
+###############################################################################
+
+readonly CONFIG_DEFAULT_VERSION="1"
+
+# Prefix of the name of the associative arrays for each node in the cluster.config
+readonly NODE_CFG_PREFIX="NODE_CFG_"
+
+# Names of fields within each node's associative array.
+readonly NODE_CFG_NAME_KEY="name"
+readonly NODE_CFG_HOST_KEY="host"
+readonly NODE_CFG_PORT_KEY="port"
+readonly NODE_CFG_DIR_KEY="dir"
+readonly NODE_CFG_PARTITIONS_KEY="partitions"
+readonly NODE_CFG_THREADS_KEY="threads"
+readonly NODE_CFG_MEM_KEY="mem"
+readonly NODE_CFG_PARAMS_KEY="params"
+
+# An array of all mandatory node configuration settings.
+# Note that "params" is not mandatory.
+declare -ra NODE_CFG_ALL_KEYS=( \
+  "${NODE_CFG_NAME_KEY}" \
+  "${NODE_CFG_HOST_KEY}" \
+  "${NODE_CFG_PORT_KEY}" \
+  "${NODE_CFG_DIR_KEY}" \
+  "${NODE_CFG_PARTITIONS_KEY}" \
+  "${NODE_CFG_THREADS_KEY}" \
+  "${NODE_CFG_MEM_KEY}" \
+)
+
+
+###############################################################################
+### Functions                                                               ###
+###############################################################################
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Print an error message to stderr,
+## Params: 
+##   $1 : Error message
+##   $2..$n : (optional) other arguments to print.
+
+function printError() {
+  >&2 echo -e "ERROR: $*"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Print an error message to stderr and exit,
+## Params: 
+##   $1 : Error message
+##   $2..$n : (optional) other arguments to print.
+
+function errorExit() {
+  >&2 echo -e "ERROR: $*"
+  exit 1
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints the members of an array (one per line) with an indentation.
+## Params:
+##  $1 : The number of indent spaces on each line.
+##  $@ : The array to print.
+
+function printIndentArray() {
+
+  local indents=$1
+  shift
+  local array=("$@")
+
+  if [ -z "${indents}" ]; then
+   indents=2
+  fi
+
+  local var
+
+  for var in ${array[*]}
+  do
+    # Intentional to preserve meaning of seq operator.
+    # shellcheck disable=SC2046 
+    printf "%0.s " $(seq 1 ${indents})
+    printf '%s\n' "${var}"
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# =========================================================================== #
+# Node Configuration Manipulation                                             #
+#   Below are functions that create and manipulate the associative arrays     #
+#   used to store the configuration for each node.                            #
+# =========================================================================== #
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Populates the NODE_LIST array with node names based on a given count passed
+## in as a parameter.
+## Params:
+##  $1 : A count of node names to be created.
+
+function createNodeNames() {
+  local count=$1
+  local i=0
+
+  while [ $i -lt "${count}"  ]
+  do
+    NODE_SEQ_NUM=$((NODE_SEQ_NUM+1))
+    NODE_LIST+=("${NODE_NAME_PREFIX}${NODE_SEQ_NUM}")
+    i=$((i+1))
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Creates associative arrays for each node name that is passed in.
+## Params:
+##  $@ : An array of node names.
+
+function createNodeConfigs() {
+  local nodeNames
+  nodeNames=("$@")
+
+  local nodeName
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    # Dynamically create the associative array
+    local nodeCfg="${NODE_CFG_PREFIX}${nodeName}"
+    declare -gA "${nodeCfg}"
+
+    # Populate the "name" field.
+    nodeCfgSetValue "${nodeName}" "${NODE_CFG_NAME_KEY}" "${nodeName}"
+  done 
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Sets a value for a key in the dynamically created associative arrays for 
+## all nodes.
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+## 
+## Params:
+##  $1 : The name of the key to be set.
+##  $2 : The value to set in this key.
+
+function allNodeCfgsSetValue() {
+
+  local key="$1"
+  local value="$2"
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    nodeCfgSetValue "${nodeName}" "${key}" "${value}"
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Sets a value for a key in a dynamically created associative array.
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+##
+## Params:
+##  $1 : The name of the SE node. 
+##  $2 : The name of the key in this node's associate array.
+##  $3 : The value to set against this key in the node's associate array.
+
+function nodeCfgSetValue() {
+  local nodeName=$1
+  local key=$2
+  local value=$3
+
+  # Here be dragons
+  #shellcheck disable=2140
+  eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="${value}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a value for a key in a dynamically created associative array.
+## This function should be called by:
+##   result="$(nodeCfgGetValue "${nodeName}" "${key}")"
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+##
+## Params:
+##  $1 : The name of the SE node.
+##  $2 : The name of the key in this nodes associate array whose value to return.
+
+function nodeCfgGetValue() {
+  local nodeName=$1
+  local key=$2
+
+  local ref="${NODE_CFG_PREFIX}${nodeName}[${key}]"
+  echo "${!ref}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns an array of keys in a dynamically created associative array.
+## This function should be called by:
+##   local keys
+##   IFS=" " read -r -a keys <<< "$(nodeCfgGetKeys "${nodeName}")"
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+##
+## Params:
+##  $1 : The name of the SE node.
+
+function nodeCfgGetKeys() {
+  local nodeName=$1
+
+  eval echo '${!'"${NODE_CFG_PREFIX}${nodeName}"'[@]}'
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints the configuration of all nodes.
+## Params: None
+ 
+function allNodeCfgsPrint() {
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    nodeCfgPrint "${nodeName}"
+    echo ""
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints the name of the node's associative array, it's keys and values.
+##
+## NB: Not relying on bash v4.3 which introduces reference variables that would
+##     make this a lot easier.
+##
+## Params:
+##  $1 : The name of the SE node.
+
+function nodeCfgPrint() {
+  local nodeName=$1
+
+  local keys
+  IFS=" " read -r -a keys <<< "$(nodeCfgGetKeys "${nodeName}")"
+  
+  local arrayName="${NODE_CFG_PREFIX}${nodeName}"
+
+  echo "${arrayName}"
+
+  for key in "${keys[@]}"
+  do
+    local value
+    value=$(nodeCfgGetValue "${nodeName}" "${key}")
+
+    echo "  [${key}] = ${value}"
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a 0 exit status if the configuration fo a node with a given name 
+## exists. Otherwise it returns a non-0 exit status.
+## This can be used as follows:
+##    if ! nodeCfgExists "${CURRENT_NODE_NAME}"; then ...; fi;
+## Params:
+##  $1 : The name of the node to check.
+
+function nodeCfgExists() {
+  local nodeName="$1"
+
+  # Check that it exists in the NODE_LIST
+  local foundNode=0
+
+  for node in "${NODE_LIST[@]}"
+  do
+    if [ "${node}" == "${nodeName}" ]; then
+      foundNode=1
+      break;
+    fi
+  done 
+
+  if [ ${foundNode} -eq 0 ]; then
+    false
+    return
+  fi
+
+  local val
+  val="$(eval echo "${NODE_CFG_PREFIX}${nodeName}[@]")"
+
+  if [ -z "${val}" ]; then
+    false
+    return
+  fi
+
+  true
+}
+
+# =========================================================================== #
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+

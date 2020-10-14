@@ -152,6 +152,9 @@ if [ -z "${NO_SHELLCHECK}" ] && (which shellcheck &>/dev/null); then
     errorExit "Packaging failed due to shellcheck issues with the setup scripts. Please fix these first."
   fi
   echo "ShellCheck passed successfully!"
+
+else
+  echo "Skipping ShellCheck"
 fi
 
 

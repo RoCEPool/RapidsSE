@@ -45,5 +45,9 @@ cp "${ROOT_DIR}/Source/eEO.h"           "${LAYOUT_DIR}/Source"
 # Bootstrap
 cp "${ROOT_DIR}/Bootstrap/setup.sh"              "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/Bootstrap/setup.fn"              "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/Bootstrap/common.fn"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/Bootstrap/cluster.config.sample" "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/Bootstrap/startSE.sh"            "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/Bootstrap/stopSE.sh"             "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/Bootstrap/boot.fn"               "${LAYOUT_DIR}"
 

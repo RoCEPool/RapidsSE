@@ -1,0 +1,387 @@
+#!/bin/bash
+# This file contains function definitions that are imported and used by the
+# cluster start and stop scripts.
+
+# Guard against this file being executed directly.
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]
+then
+  >&2 echo "This file should be sourced, not executed: $0"
+  exit 1
+fi
+
+# Load other common functions
+COMMON_FN="common.fn"
+
+if [ -n "${DIR}" ]; then
+  COMMON_FN="${DIR}/${COMMON_FN}"
+fi
+
+#shellcheck source=common.fn
+source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+
+###############################################################################
+### Constants                                                               ###
+###############################################################################
+
+readonly EXE_DIR="${ROOT_DIR}/Linux/bin"
+readonly EXE="${EXE_DIR}/rapidsse"
+
+readonly NOHUP_FILE="${ROOT_DIR}/nohupSE.out"
+readonly PIDFILE="${ROOT_DIR}/se.pid"
+
+###############################################################################
+### Functions                                                               ###
+###############################################################################
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints out the valid arguments to this script and exits.
+## Params: None
+## Note: The variable ${SCRIPT_NAME} must be defined as the name of the start
+##       or stop script filename.
+
+function printUsageAndExit() {
+
+  echo ""
+  echo "Usage: ./${SCRIPT_NAME} [--cluster | --node]"
+  echo "                    [--config <file>]"
+  echo "                    [--debug]"
+  echo "Details:"
+  echo "  --cluster         [Default] Starts all nodes in the cluster."
+  echo "  --node            Starts the current node only."
+  echo ""
+  echo "  --config <file>   Uses a given cluster configuration file."
+  echo "                    Default is: ${CONFIG_FILE}"
+  echo ""
+  echo "  --debug           Displays additional debugging messages during execution."
+  echo ""
+  echo "  --help            Displays this message."
+  exit 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Process the arguments for the start and stop scripts.
+## Params: None
+
+function processArgs() {
+
+  while [[ $# -gt 0 ]]
+  do
+    key="$1"
+    case "${key}" in
+
+      --cluster)
+        CLUSTER_OP=1
+        argCluster=1
+        shift # past argument
+        ;;
+
+      --node)
+        CLUSTER_OP=0
+        argNode=1
+        shift # past argument
+        ;;
+
+      --config)
+        argConfig=1
+        CONFIG_FILE="$2"
+        shift # past argument
+        shift # past value
+        ;;
+
+      --config=*)
+        argConfig=1
+        CONFIG_FILE="${key#*=}"
+        shift # past argument=value
+        ;;
+
+      --debug)
+        DEBUG=1
+        shift # past argument
+        ;;
+
+      --help|-h)
+        shift
+        printUsageAndExit
+        ;;
+
+      *)
+        shift
+        printUsageAndExit
+        ;;
+    esac
+  done
+
+  # Now we can check for invalid combinations of arguments.
+    # --cluster     and --node
+    # --config      and no file specified
+
+  local errmsg="Invalid combination of arguments specified: "
+
+  if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]]; then
+    printError "${errmsg}" "--cluster" "--node"
+    printUsageAndExit
+  fi
+
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then
+    printError "${errmsg}" "No config file specified"
+    printUsageAndExit
+  fi
+
+  # Check that the config file exists
+  if [[ ! -f "${CONFIG_FILE}" ]]; then
+    printError "Config file does not exist: ${CONFIG_FILE}"
+    printUsageAndExit
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Loads the cluster configuration.
+## Params: None
+
+function loadClusterConfig() {
+  if [ -z "${CONFIG_FILE}" ]; then
+    errorExit "Cluster configuration file not specified."
+  fi
+
+  if [ ! -f "${CONFIG_FILE}" ]; then
+    errorExit "Cluster configuration file not found: ${CONFIG_FILE}"
+  fi
+
+  #shellcheck disable=1090
+  source "${CONFIG_FILE}" || errorExit "Error sourcing cluster config file: ${CONFIG_FILE}"
+
+  # Now check that the configuration is valid.
+  
+  local errMsg="Invalid cluster configuration at ${CONFIG_FILE} :"
+
+  if [ -z "${NODE_LIST[*]}" ]; then 
+    errorExit "${errMsg}" "NODE_LIST array is not defined."
+  fi
+
+  if [ "${#NODE_LIST[@]}" -eq 0 ]; then
+    errorExit "${errMsg}" "NODE_LIST array is empty."
+  fi
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    if ! nodeCfgExists "${nodeName}"; then
+      errorExit "${errMsg}" "No node configuration exists for the node named \"${nodeName}\"."
+    fi
+
+    # Must have name, dir, host, port, mem, threads, partitions all set.
+    # Get the value of each of these and check that they are not null.
+    local key
+    local val
+  
+    for key in "${NODE_CFG_ALL_KEYS[@]}"
+    do
+      val="$(nodeCfgGetValue "${nodeName}" "${key}")"
+
+      if [ -z "${val}" ]; then 
+        errorExit "${errMsg}" "Null/unset value for key ${key} of node ${nodeName}."
+      fi
+    done
+  done
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "Loaded and validated the cluster configuration at: ${CONFIG_FILE}"
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Loads from file the name of the current node.
+## Params: None
+
+function loadNodeName() {
+  if [ -z "${NAME_FILE}" ]; then
+    errorExit "Node name file not specified."
+  fi
+
+  if [ ! -f "${NAME_FILE}" ]; then
+    errorExit "Node name file not found: ${NAME_FILE}"
+  fi
+
+  #shellcheck disable=1090
+  source "${NAME_FILE}" || errorExit "Error sourcing node name file: ${NAME_FILE}"
+
+  if [ -z "${CURRENT_NODE_NAME}" ]; then
+    errorExit "\$CURRENT_NODE_NAME has not been set in node name file: ${NAME_FILE}"
+  fi
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "Loaded and validated the node name configuration at: ${NAME_FILE}"
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Starts RapidsSE on all nodes in the cluster.
+## Params: None
+
+function startCluster() {
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    startNode "${nodeName}"
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Starts RapidsSE on a node given by the nodeName parameter.
+## Params: 
+##  $1 : The name of the node to be started.
+
+function startNode() {
+
+  local nodeName="$1"
+
+  local host
+  local dir
+  local remoteCmd
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+  dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+  remoteCmd="cd ${dir} && ./${SCRIPT_NAME} --node"
+
+  if [ ${DEBUG} -eq 1 ]; then
+    remoteCmd="${remoteCmd} --debug"
+  fi
+
+  sshCmd=( "ssh" "${host}" "${remoteCmd}" )
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "About to start node ${nodeName} with the command: ${sshCmd[*]}"
+  fi
+
+  "${sshCmd[@]}" || errorExit "Could not start RapidsSE on node ${nodeName}."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Starts RapidsSE on the current node only.
+## Params: None
+
+function startCurrentNode() {
+ 
+  # TODO: Check if SE is running on the current node
+
+
+  # Remove the nohup.out file if it exists
+  rm "${NOHUP_FILE}" &>/dev/null
+
+ 
+  # Get all of the settings for the current node
+  local host
+  local port
+  local dir
+  local partitions
+  local threads
+  local mem
+  local params
+
+  host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
+  port="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PORT_KEY}")"
+  dir="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DIR_KEY}")"
+  partitions="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PARTITIONS_KEY}")"
+  threads="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_THREADS_KEY}")"
+  mem="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_MEM_KEY}")"
+  params="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PARAMS_KEY}")"
+
+  # params above is a string. Let's turn it into an array based on spaces.
+  declare -a paramsArray
+  IFS=' ' read -r -a paramsArray <<< "${params}"
+
+  # Get the node name/host/port arguments
+  declare -a nodeArgs
+  IFS=" " read -r -a nodeArgs <<< "$(buildNodeArguments)"
+
+  declare -a startCmd
+  startCmd+=("nohup")
+  startCmd+=("${EXE}")
+  startCmd+=("--partitionsPerNode")
+  startCmd+=("${partitions}")
+  startCmd+=("--threads")
+  startCmd+=("${threads}")
+  startCmd+=("--size")
+  startCmd+=("${mem}GB")
+  startCmd+=("--name")
+  startCmd+=("${CURRENT_NODE_NAME}")
+  startCmd+=("${nodeArgs[@]}")
+  startCmd+=("--start")
+  startCmd+=("--munged")
+  startCmd+=("--script")
+  startCmd+=("--metadata")
+  startCmd+=("--Commands")
+  startCmd+=("${ROOT_DIR}/Commands")
+  startCmd+=("${paramsArray[@]}")
+
+
+  #set the library path for the rapidsSE library
+  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
+
+  # SE environment variables
+  export SE_ENV_METACLUE=1
+  export SE_ENV_INTKEY=1
+
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "Starting RapidsSE on node ${CURRENT_NODE_NAME} / host ${host} with the command:"
+    echo "  ${startCmd[*]}"
+
+  else 
+    echo "Starting RapidsSE on node ${CURRENT_NODE_NAME} / host ${host}..."
+  fi
+
+  echo "Starting SE at $(date +%FT%T)" >> "${NOHUP_FILE}"
+
+  "${startCmd[@]}" >> "${NOHUP_FILE}" 2>&1 & 
+
+  # get the last pid and save it to a file
+  PID=$!
+  echo "${PID}" > "${PIDFILE}"
+
+  # errorExit "Could not start RapidsSE on node ${CURRENT_NODE_NAME} / host ${host}."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns an array of strings representing the node name/host/port arguments 
+## for the cluster. This can be called by executing:
+##   declare -a nodeArgs
+##   IFS=" " read -r -a nodeArgs <<< "$(buildNodeArguments)"
+## Params: None
+
+function buildNodeArguments() {
+
+  declare -a nodeArgs=()
+  local host
+  local port
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+
+    nodeArgs+=("--node" "${nodeName}" "${host}" "${port}")
+  done
+ 
+  echo "${nodeArgs[@]}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## 
+function checkSEIsRunning() {
+
+  ## TODO: Need a way of checking single/all SE instances to see if they are running.
+  ## TODO: If it's running then the script should return its PID.
+  ## TODO: e.g. getSEPid(). If null then it's not running.
+
+  true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

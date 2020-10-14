@@ -17,10 +17,11 @@ fi
 
 # This variable identifies the unique node names of each node in the cluster.
 # These node names are used as suffixes in variables below to configure each of them.
+declare -ga NODE_LIST
 NODE_LIST=("NODE1" "NODE2")
 
 # Definition of node NODE1
-declare -A NODE_CFG_NODE1
+declare -gA NODE_CFG_NODE1
 NODE_CFG_NODE1["name"]="NODE1"
 NODE_CFG_NODE1["host"]="myhost1.corp"
 NODE_CFG_NODE1["port"]="5541"
@@ -31,7 +32,7 @@ NODE_CFG_NODE1["threads"]="16"
 NODE_CFG_NODE1["params"]=""
 
 # Definition of node NODE2
-declare -A NODE_CFG_NODE2
+declare -gA NODE_CFG_NODE2
 NODE_CFG_NODE2["name"]="NODE2"
 NODE_CFG_NODE2["host"]="myhost2.corp"
 NODE_CFG_NODE2["port"]="5541"
