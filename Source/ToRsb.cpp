@@ -353,10 +353,10 @@ L_Boolean:
   vSKIP_WHITE_SPACE_ADV();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-
+  // boolean portion
+  
   if (cSrcChr < '0' || cSrcChr > '9') {
-    uUnsignedPart = 0;
-    for ( ; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC())
+    for (uUnsignedPart = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC())
       uUnsignedPart = (uUnsignedPart) * 10 + (cSrcChr - '0');
     if (uUnsignedPart > 0)
       iBoolean = true;
@@ -396,8 +396,8 @@ L_Date:
   // year portion
   
   // collect the year
-  iYear = 0;
-  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  bOnce = false;
+  for (iYear = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iYear = (iYear * 10) + (cSrcChr - '0');
     if (iYear > 9999)
@@ -423,8 +423,8 @@ L_Date:
   // month portion
     
   // collect the month
-  iMonth = 0;
-  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  bOnce = false;
+  for (iMonth = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iMonth = (iMonth * 10) + (cSrcChr - '0');
     if (iMonth > 12)
@@ -447,8 +447,8 @@ L_Date:
   // day portion
           
   // collect the day
-  iDay = 0;
-  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  bOnce = false;
+  for (iDay = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iDay = (iDay * 10) + (cSrcChr - '0');
     if (iDay > 31)
@@ -528,8 +528,8 @@ L_Decimal:
     vADV_SRC();
     
   // collect unsigned number
-  uUnsignedPart = 0;
-  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  bOnce = false;
+  for (uUnsignedPart = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     uUnsignedPart = (uUnsignedPart * 10) + (cSrcChr - '0');
     nPixPrecision--;
@@ -592,6 +592,7 @@ L_Float:
     
   dUnsignedPart = 0.0;
   aChar = xBuffer;
+  bOnce = false;
 
   vSKIP_WHITE_SPACE_ADV();
 
@@ -611,25 +612,22 @@ L_Float:
     bNegative = false;
   }
   
-  bOnce = false;
-
   // ---- ---- ---- ---- ---- ---- ---- ----
   // collect leading integer portion
-  
+
   // collect leading integer portion (till '.')
-  while (cSrcChr >= '0' && cSrcChr <= '9') {
+  for ( ; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     *aChar++ = cSrcChr;
-    vADV_SRC();
   }
   
   // collect trailing fraction portion (after '.')
   if ('.' == cSrcChr) {
     *aChar++ = cSrcChr;
-    vADV_SRC();
-    while (cSrcChr >= '0' && cSrcChr <= '9') {
+    vADV_SRC(); // skip '.'
+    for ( ; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+      bOnce = true;
       *aChar++ = cSrcChr;
-      vADV_SRC();
     }
   }
 
@@ -639,18 +637,18 @@ L_Float:
   if ('e' == cSrcChr || 'E' == cSrcChr) {
     
     *aChar++ = cSrcChr;
-    vADV_SRC();
+    vADV_SRC(); // skip 'e'
 
     // test for +/-
     if ('+' == cSrcChr || '-' == cSrcChr) {
       *aChar++ = cSrcChr;
-      vADV_SRC();
+      vADV_SRC(); // skip +/-
     }
         
     // collect exponent digits
-    while (cSrcChr >= '0' && cSrcChr <= '9') {
+    for  ( ; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+      bOnce = true;
       *aChar++ = cSrcChr;
-      vADV_SRC();
     }
   }
 
@@ -697,8 +695,8 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned integer portion
   
-  uUnsignedPart = 0;
-  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  bOnce = false;
+  for (uUnsignedPart = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     uUnsignedPart = (uUnsignedPart * 10) + (cSrcChr - '0');
     if (uUnsignedPart > (u8)C_I8_MAX)
@@ -779,8 +777,8 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour portion
 
-  iHour = 0;
-  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  bOnce = false;
+  for (iHour = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iHour = (iHour * 10) + (cSrcChr - '0');
     if (iHour > 23)
@@ -797,8 +795,8 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute portion
 
-  iMinute = 0;
-  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  bOnce = false;
+  for (iMinute = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iMinute = (iMinute * 10) + (cSrcChr - '0');
     if (iMinute > 59)
@@ -815,8 +813,8 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second portion
 
-  iSecond = 0;
-  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  bOnce = false;
+  for (iSecond = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iSecond = (iSecond * 10) + (cSrcChr - '0');
     if (iSecond > 59)
