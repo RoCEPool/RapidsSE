@@ -346,7 +346,7 @@ L_TestMoreFields:
   
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.a) boolean field
+  // 4.a) boolean field : true | false | uNumber
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Boolean:
   
@@ -355,7 +355,17 @@ L_Boolean:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // boolean portion
   
-  if (cSrcChr < '0' || cSrcChr > '9') {
+  if ('t' == cSrcChr || 'T' == cSrcChr) {
+    iBoolean = true;
+    vADV_SRC(); // skip 't'
+  }
+  else
+  if ('f' == cSrcChr || 'F' == cSrcChr) {
+    iBoolean = false;
+    vADV_SRC(); // skip 'f'
+  }
+  else
+  if (cSrcChr >= '0' || cSrcChr <= '9') {
     for (uUnsignedPart = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC())
       uUnsignedPart = (uUnsignedPart) * 10 + (cSrcChr - '0');
     if (uUnsignedPart > 0)
@@ -363,22 +373,12 @@ L_Boolean:
     else
       iBoolean = false;
   }
-  else
-  if ('t' == cSrcChr || 'T' == cSrcChr) {
-    iBoolean = true;
-    vADV_SRC();// skip 't'
-  }
-  else
-  if ('f' == cSrcChr || 'F' == cSrcChr) {
-    iBoolean = false;// skip 'f'
-    vADV_SRC();
-  }
   else {
     goto L_FieldError;
   }
 
   // ==== ==== ==== ==== ==== ==== ==== ====
-  // entire boolean
+  // all boolean portions collected
   
   m_pRowSlab->vDeposit(iBoolean);
 
@@ -386,7 +386,7 @@ L_Boolean:
     
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.b) date field
+  // 4.b) date field : year - month - day // year range is ????
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
   
@@ -459,7 +459,7 @@ L_Date:
     goto L_FieldError;
   
   // ==== ==== ==== ==== ==== ==== ==== ====
-  // entire date
+  // all date portions collected
 
   // validate date wrt possible leap year
   
@@ -497,7 +497,7 @@ L_Date:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.c) decimal field
+  // 4.c) decimal field : [+|-] uNumber [ . uFraction ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
   
@@ -506,7 +506,6 @@ L_Decimal:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
-  // test for negative or positive sign
   if ('-' == cSrcChr) {
     bNegative = true;
     vADV_SRC(); // skip '-'
@@ -521,7 +520,7 @@ L_Decimal:
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // unsigned integer portion
+  // unsigned number portion
 
   // ignore leading 0's
   while ('0' == cSrcChr)
@@ -538,7 +537,7 @@ L_Decimal:
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // fraction part (optional)
+  // optional fraction portion
   
   if ('.' == cSrcChr) {
     
@@ -555,7 +554,7 @@ L_Decimal:
     goto L_FieldError;
 
   // ==== ==== ==== ==== ==== ==== ==== ====
-  // entire decimal
+  // all decimal portions collected
   
   while (nPixScale--)
     uUnsignedPart *= 10;
@@ -586,18 +585,14 @@ L_Decimal:
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.d) float field
+  // 4.d) float field : [+|-] uNumber [ . uFraction] [ e|E [+|-] uExponent ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
     
-  dUnsignedPart = 0.0;
-  aChar = xBuffer;
-  bOnce = false;
-
   vSKIP_WHITE_SPACE_ADV();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // leading sign
+  // optional leading sign
 
   if ('-' == cSrcChr) {
     bNegative = true;
@@ -613,15 +608,17 @@ L_Float:
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // collect leading integer portion
+  // unsigned number portion
 
-  // collect leading integer portion (till '.')
-  for ( ; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  bOnce = false;
+  for (aChar = xBuffer; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     *aChar++ = cSrcChr;
   }
   
-  // collect trailing fraction portion (after '.')
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // optional fraction portion
+  
   if ('.' == cSrcChr) {
     *aChar++ = cSrcChr;
     vADV_SRC(); // skip '.'
@@ -632,7 +629,7 @@ L_Float:
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // collect exponent portion
+  // optional exponent portion
   
   if ('e' == cSrcChr || 'E' == cSrcChr) {
     
@@ -656,7 +653,7 @@ L_Float:
   *aChar++ = '\0';
   
   // ==== ==== ==== ==== ==== ==== ==== ====
-  // entire float
+  // all float portions collected
   
   // compute final result
   dUnsignedPart = atof(xBuffer);
@@ -670,7 +667,7 @@ L_Float:
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.e) integer
+  // 4.e) integer : [+|-] uNumber
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
   
@@ -693,7 +690,7 @@ L_Integer:
   }
     
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // unsigned integer portion
+  // unsigned number portion
   
   bOnce = false;
   for (uUnsignedPart = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
@@ -707,7 +704,7 @@ L_Integer:
     goto L_FieldError;
 
   // ==== ==== ==== ==== ==== ==== ==== ====
-  // entire integer
+  // all integer portions collected
 
   // compute final field value
   iInteger = bNegative ? - uUnsignedPart : uUnsignedPart;
@@ -723,7 +720,7 @@ L_Integer:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.f) interval field
+  // 4.f) interval field : seconds [ . microseconds ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
   
@@ -732,20 +729,16 @@ L_Interval:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned seconds portion
   
-  // collect leading seconds portion (till '.')
-
   for  (iSecond = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC())
     iSecond = (iSecond * 10) + (cSrcChr - '0');
 
-  
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // microseconds part (optional)
+  // optional microseconds portion
   
-  // collect trailing microseconds portion
   iMicrosecond = 0;
   nShift = 1000000;
   if ('.' == cSrcChr) {
-    vADV_SRC();
+    vADV_SRC(); // skip '.'
     for ( ; nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
       iMicrosecond = iMicrosecond * 10 + cSrcChr - '0';
       nShift /= 10;
@@ -755,7 +748,7 @@ L_Interval:
   iMicrosecond *= nShift;
 
   // ==== ==== ==== ==== ==== ==== ==== ====
-  // entire interval
+  // all interval portions collected
 
   // compute final field value
   xInterval.m_uSecond = iSecond;
@@ -768,7 +761,7 @@ L_Interval:
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.g) time field
+  // 4.g) time field : hour ':' minute ':' second [ . microseconds ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   
@@ -825,7 +818,7 @@ L_Time:
     goto L_FieldError;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // microsecond portion (optional)
+  // optional microsecond portion
   
   iMicrosecond = 0;
   if ('.' == cSrcChr) {
@@ -843,7 +836,7 @@ L_Time:
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
-  // entire time
+  // all time portions collected
 
   // compute final field value
   xTime.m_uHour   = iHour;
@@ -859,7 +852,8 @@ L_Time:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.h) timestamp field
+  // 4.h) timestamp field :
+  //        year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Timestamp:
   {
@@ -877,7 +871,7 @@ L_Timestamp:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.i) varchar field
+  // 4.i) varchar field : 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Varchar:
   
@@ -928,7 +922,7 @@ L_Varchar:
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
-  // deposit the varchar
+  // all varchar portions collected
   
   m_pRowSlab->vDepositString_end(nChars+1);
 
