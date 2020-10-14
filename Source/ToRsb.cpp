@@ -346,7 +346,48 @@ L_TestMoreFields:
   
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.a) date field
+  // 4.a) boolean field
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Boolean:
+  
+  vSKIP_WHITE_SPACE_ADV();
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+
+  if (cSrcChr < '0' || cSrcChr > '9') {
+    uUnsignedPart = 0;
+    for ( ; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+      uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
+    }
+    if (uUnsignedPart > 0)
+      iBoolean = true;
+    else
+      iBoolean = false;
+  }
+  else
+  if ('t' == cSrcChr || 'T' == cSrcChr) {
+    iBoolean = true;
+    vADV_SRC();
+  }
+  else
+  if ('f' == cSrcChr || 'F' == cSrcChr) {
+    iBoolean = false;
+    vADV_SRC();
+  }
+  else {
+    goto L_FieldError;
+  }
+
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // entire boolean
+  
+  m_pRowSlab->vDeposit(iBoolean);
+
+  goto L_PostField;                                            // end of boolean
+    
+    
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.b) date field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
   
@@ -419,7 +460,8 @@ L_Date:
     goto L_FieldError;
   
   // ==== ==== ==== ==== ==== ==== ==== ====
-  
+  // entire date
+
   // validate date wrt possible leap year
   
   // detect a leap year
@@ -443,20 +485,20 @@ L_Date:
     }
   }
 
-  // deposit the date
-  
+  // compute final field value
   xDate.m_uYearDelta = iYear - C_YEAR_BASE;
   xDate.m_uMonth     = iMonth;
   xDate.m_uDay       = iDay;
   xDate.m_uSpare     = 0;
   
+  // deposit the date
   m_pRowSlab->vDeposit(xDate);
 
   goto L_PostField;                                               // end of date
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.b) decimal field
+  // 4.c) decimal field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
   
@@ -531,7 +573,7 @@ L_Decimal:
       vADV_SRC(); // skip digit after decimal
   }
   
-  // compute final result
+  // compute final field value
   iDecimal = bNegative ? - uUnsignedPart : uUnsignedPart;
   
   // have we gone below the negative min ?
@@ -543,164 +585,9 @@ L_Decimal:
 
   goto L_PostField;                                            // end of decimal
 
-  
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.c) integer
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Integer:
-  
-  vSKIP_WHITE_SPACE_ADV();
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // leading sign
-  
-  if ('-' == cSrcChr) {
-    bNegative = true;
-    vADV_SRC(); // skip '-'
-  }
-  else
-  if ('+' == cSrcChr) {
-    bNegative = false;
-    vADV_SRC(); // skip '+'
-  }
-  else {
-    bNegative = false;
-  }
     
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // collect unsigned integer portion
-  
-  uUnsignedPart = 0;
-  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-    bOnce = true;
-    uUnsignedPart = (uUnsignedPart * 10) + (cSrcChr - '0');
-    if (uUnsignedPart > (u8)C_I8_MAX)
-      goto L_FieldError;
-  }
-  
-  if (! bOnce)
-    goto L_FieldError;
-
-  // ==== ==== ==== ==== ==== ==== ==== ====
-
-  iInteger = bNegative ? - uUnsignedPart : uUnsignedPart;
-  
-  // compute running hash of partitioning column
-  if (xColPix.m_bPtnKey)
-    PtnLib::vRunning(&iHash,iInteger);
-  
-  // deposit the integer
-  m_pRowSlab->vDeposit(iInteger);
-    
-  goto L_PostField;                                            // end of integer
-
-  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.d) varchar field
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Varchar:
-  
-  // ** do not skip white space **
-
-  nChars = 0;
-  bSawEnclosedTrailing = false;
-  bSawEnclosedLeading  = false;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-
-  // allocate string space in slab
-  azVchSlab = m_pRowSlab->azDepositString_begin();
-  acVchDst  = azVchSlab;
-  
-  if (! m_pFmt->m_cEnclosedBy_Leading)
-    bSawEnclosedLeading = false;
-
-  // find first non-space character
-  while (' ' == cSrcChr)
-    vADV_SRC();
-
-  azCsvSrc = aFieldStart;
-
-  while (cSrcChr) {
-        
-    // test for field separator (because its not enclosed)
-    if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
-      break;
-    
-    if (nChars++ < nPixLength)
-      *acVchDst++ = cSrcChr;
-    
-    vADV_SRC();
-  }
-
-  // terminate
-  *acVchDst++ = '\0';
-
-  // its not an enclosed varchar so we consider it to be valid
-  if (nChars >= nPixLength)
-    nChars = nPixLength;
-
-  // if this an enclosed varchar we should have expected to
-  // see the trailing enclosedBy
-  if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
-    goto L_FieldError;
-  }
-  
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // deposit the varchar
-  
-  m_pRowSlab->vDepositString_end(nChars+1);
-
-  goto L_PostField;                                            // end of varchar
-
-  
-  // ===     ===     ===     ===     ===     ===     ===     ===     ===     ===
-  
-  
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.e) boolean field
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Boolean:
-  
-  vSKIP_WHITE_SPACE_ADV();
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-
-  if ( cSrcChr < '0' || cSrcChr > '9' ) {
-    uUnsignedPart = 0;
-    while (cSrcChr >= '0' && cSrcChr <= '9') {
-      uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
-      vADV_SRC();
-    }
-    if (uUnsignedPart > 0)
-      iBoolean = true;
-    else
-      iBoolean = false;
-  }
-  else
-  if ('t' == cSrcChr || 'T' == cSrcChr) {
-    iBoolean = true;
-    vADV_SRC();
-  }
-  else
-  if ('f' == cSrcChr || 'F' == cSrcChr) {
-    iBoolean = false;
-    vADV_SRC();
-  }
-  else {
-    goto L_FieldError;
-  }
-
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // deposit the boolean
-  
-  m_pRowSlab->vDeposit(iBoolean);
-
-  goto L_PostField;                                            // end of boolean
-  
-  
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.f) float field
+  // 4.d) float field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
     
@@ -784,9 +671,62 @@ L_Float:
 
   goto L_PostField;                                              // end of float
 
+    
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.e) integer
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Integer:
+  
+  vSKIP_WHITE_SPACE_ADV();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // leading sign
+  
+  if ('-' == cSrcChr) {
+    bNegative = true;
+    vADV_SRC(); // skip '-'
+  }
+  else
+  if ('+' == cSrcChr) {
+    bNegative = false;
+    vADV_SRC(); // skip '+'
+  }
+  else {
+    bNegative = false;
+  }
+    
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // collect unsigned integer portion
+  
+  uUnsignedPart = 0;
+  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+    bOnce = true;
+    uUnsignedPart = (uUnsignedPart * 10) + (cSrcChr - '0');
+    if (uUnsignedPart > (u8)C_I8_MAX)
+      goto L_FieldError;
+  }
+  
+  if (! bOnce)
+    goto L_FieldError;
+
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // entire integer
+
+  // compute final field value
+  iInteger = bNegative ? - uUnsignedPart : uUnsignedPart;
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnLib::vRunning(&iHash,iInteger);
+  
+  // deposit the integer
+  m_pRowSlab->vDeposit(iInteger);
+    
+  goto L_PostField;                                            // end of integer
+
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.g) interval field
+  // 4.f) interval field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
   
@@ -822,6 +762,7 @@ L_Interval:
   // ==== ==== ==== ==== ==== ==== ==== ====
   // entire interval
 
+  // compute final field value
   xInterval.m_uSecond = iSecond;
   xInterval.m_uMicro  = iMicrosecond;
   
@@ -830,9 +771,9 @@ L_Interval:
 
   goto L_PostField;                                           // end of interval
 
-  
+    
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.h) time field
+  // 4.g) time field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   
@@ -909,6 +850,7 @@ L_Time:
   // ==== ==== ==== ==== ==== ==== ==== ====
   // entire time
 
+  // compute final field value
   xTime.m_uHour   = iHour;
   xTime.m_uMinute = iMinute;
   xTime.m_uSecond = iSecond;
@@ -922,7 +864,7 @@ L_Time:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.i) timestamp field
+  // 4.h) timestamp field
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Timestamp:
   {
@@ -937,6 +879,65 @@ L_Timestamp:
   }
   
   goto L_PostField;
+
+  
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.i) varchar field
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Varchar:
+  
+  // ** do not skip white space **
+
+  nChars = 0;
+  bSawEnclosedTrailing = false;
+  bSawEnclosedLeading  = false;
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+
+  // allocate string space in slab
+  azVchSlab = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchSlab;
+  
+  if (! m_pFmt->m_cEnclosedBy_Leading)
+    bSawEnclosedLeading = false;
+
+  // find first non-space character
+  while (' ' == cSrcChr)
+    vADV_SRC();
+
+  azCsvSrc = aFieldStart;
+
+  while (cSrcChr) {
+        
+    // test for field separator (because its not enclosed)
+    if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+      break;
+    
+    if (nChars++ < nPixLength)
+      *acVchDst++ = cSrcChr;
+    
+    vADV_SRC();
+  }
+
+  // terminate
+  *acVchDst++ = '\0';
+
+  // its not an enclosed varchar so we consider it to be valid
+  if (nChars >= nPixLength)
+    nChars = nPixLength;
+
+  // if this an enclosed varchar we should have expected to
+  // see the trailing enclosedBy
+  if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
+    goto L_FieldError;
+  }
+  
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // deposit the varchar
+  
+  m_pRowSlab->vDepositString_end(nChars+1);
+
+  goto L_PostField;                                            // end of varchar
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
