@@ -214,12 +214,12 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   bool bLeapYear;
 
   i8 iInteger;
-  u8 uUnsignedPartial;
+  u8 uUnsignedPart;
   bool bNegative;
   bool bOnce;
 
   d8 dFloat;
-  d8 dUnsignedPartial;
+  d8 dUnsignedPart;
   char xBuffer[256];
   char* aChar;
 
@@ -456,7 +456,7 @@ L_Date:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
   
-  uUnsignedPartial = 0;
+  uUnsignedPart = 0;
   bNegative = false;
   bOnce = false;
 
@@ -485,7 +485,7 @@ L_Decimal:
   
   // collect leading digits (till '.')
   while (cSrcChr >= '0' && cSrcChr <= '9') {
-    uUnsignedPartial = uUnsignedPartial * 10 + cSrcChr - '0';
+    uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
     vADV_SRC();
     nPixPrecision--;
   }
@@ -500,17 +500,17 @@ L_Decimal:
     vADV_SRC(); // skip '.'
     
     while ((cSrcChr >= '0' && cSrcChr <= '9') && nPixScale) {
-      uUnsignedPartial = uUnsignedPartial * 10 + cSrcChr - '0';
+      uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
       vADV_SRC();
       nPixScale--;
     }
   }
   
   while (nPixScale--)
-    uUnsignedPartial = uUnsignedPartial * 10 + 0;
+    uUnsignedPart = uUnsignedPart * 10 + 0;
   
   // have we exceeded the max ?
-  if (uUnsignedPartial > (u8)C_I8_MAX) {
+  if (uUnsignedPart > (u8)C_I8_MAX) {
     //THROW_USER("vConvertDecimal"_Stz);
     goto L_FieldError;
   }
@@ -518,13 +518,13 @@ L_Decimal:
   // round up if there any more digits after decimal
   if (cSrcChr >= '0' && cSrcChr <= '9') {
     if (cSrcChr - '0' >= 5)
-      uUnsignedPartial += 1;
+      uUnsignedPart += 1;
     while (cSrcChr >= '0' && cSrcChr <= '9')
       vADV_SRC();
   }
   
   // compute final result
-  iInteger = bNegative ? - uUnsignedPartial : uUnsignedPartial;
+  iInteger = bNegative ? - uUnsignedPart : uUnsignedPart;
   
   // have we gone beyond the min ?
   if (iInteger != 0 && bNegative && (iInteger < C_I8_MIN)) {
@@ -548,10 +548,6 @@ L_Decimal:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
   
-  uUnsignedPartial = 0;
-  bNegative = false;
-  bOnce = false;
-
   vSKIP_WHITE_SPACE_ADV();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -563,37 +559,53 @@ L_Integer:
   }
   else
   if ('+' == cSrcChr) {
+    bNegative = false;
     vADV_SRC();
   }
+  else {
+    bNegative = false;
+  }
   
-  // at least 1 digit
-  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9'))
+//  // at least 1 digit
+//  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9'))
+//    bOnce = true;
+//
+//  for ( ; cSrcChr; vADV_SRC()) {
+//
+//    if (cSrcChr < '0' || cSrcChr > '9')
+//      break;
+//
+//    uUnsignedPartial = (uUnsignedPartial * 10) + (cSrcChr - '0');
+//
+//    if (uUnsignedPartial > (u8)C_I8_MAX) {
+//      //THROW_USER("vConvertInteger"_Stz);
+//      goto L_FieldError;
+//    }
+//  }
+//
+//  if (! bOnce) {
+//    vTrace("%s\n"_Stz,azCsvChunk);
+//    goto L_FieldError;
+//  }
+  
+  uUnsignedPart = 0;
+  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
-  
-  for ( ; cSrcChr; vADV_SRC()) {
-        
-    if (cSrcChr < '0' || cSrcChr > '9')
-      break;
-    
-    uUnsignedPartial = (uUnsignedPartial * 10) + (cSrcChr - '0');
-    
-    if (uUnsignedPartial > (u8)C_I8_MAX) {
-      //THROW_USER("vConvertInteger"_Stz);
+    uUnsignedPart = (uUnsignedPart * 10) + (cSrcChr - '0');
+    if (uUnsignedPart > (u8)C_I8_MAX)
       goto L_FieldError;
-    }
   }
   
-  if (! bOnce) {
-    vTrace("%s\n"_Stz,azCsvChunk);
+  if (! bOnce)
     goto L_FieldError;
-  }
+
+  iInteger = bNegative ? - uUnsignedPart : uUnsignedPart;
   
-  iInteger = bNegative ? - uUnsignedPartial : uUnsignedPartial;
+  // ---- ---- ---- ---- ---- ---- ---- ----
   
   // compute running hash of partitioning column
-  if (xColPix.m_bPtnKey) {
+  if (xColPix.m_bPtnKey)
     PtnLib::vRunning(&iHash,iInteger);
-  }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
   // deposit the integer
@@ -675,12 +687,12 @@ L_Boolean:
   // ---- ---- ---- ---- ---- ---- ---- ----
 
   if ( cSrcChr < '0' || cSrcChr > '9' ) {
-    uUnsignedPartial = 0;
+    uUnsignedPart = 0;
     while (cSrcChr >= '0' && cSrcChr <= '9') {
-      uUnsignedPartial = uUnsignedPartial * 10 + cSrcChr - '0';
+      uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
       vADV_SRC();
     }
-    if (uUnsignedPartial > 0)
+    if (uUnsignedPart > 0)
       iBoolean = true;
     else
       iBoolean = false;
@@ -712,7 +724,7 @@ L_Boolean:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
     
-  dUnsignedPartial = 0.0;
+  dUnsignedPart = 0.0;
   aChar = xBuffer;
 
   vSKIP_WHITE_SPACE_ADV();
@@ -775,8 +787,8 @@ L_Float:
   *aChar++ = '\0';
   
   // compute final result
-  dUnsignedPartial = atof(xBuffer);
-  dFloat = bNegative ? - dUnsignedPartial : dUnsignedPartial;
+  dUnsignedPart = atof(xBuffer);
+  dFloat = bNegative ? - dUnsignedPart : dUnsignedPart;
   
   // ==== ==== ==== ==== ==== ==== ==== ====
   // deposit the float
@@ -797,31 +809,31 @@ L_Interval:
   // seconds
   
   // collect leading seconds portion (till '.')
-  uUnsignedPartial = 0;
+  uUnsignedPart = 0;
   while (cSrcChr >= '0' && cSrcChr <= '9') {
-    uUnsignedPartial = uUnsignedPartial * 10 + cSrcChr - '0';
+    uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
     vADV_SRC();
   }
   
-  xInterval.m_uSecond = uUnsignedPartial;
+  xInterval.m_uSecond = uUnsignedPart;
   
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // microseconds (optional)
   
   // collect trailing fraction portion
-  uUnsignedPartial = 0;
+  uUnsignedPart = 0;
   nShift = 1000000;
   if ('.' == cSrcChr) {
     vADV_SRC();
     while (nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9') {
-      uUnsignedPartial = uUnsignedPartial * 10 + cSrcChr - '0';
+      uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
       nShift /= 10;
       vADV_SRC();
     }
   }
 
-  xInterval.m_uMicro = uUnsignedPartial * nShift;
+  xInterval.m_uMicro = uUnsignedPart * nShift;
 
   // ==== ==== ==== ==== ==== ==== ==== ====
   // deposit the interval
