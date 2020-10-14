@@ -356,9 +356,8 @@ L_Boolean:
 
   if (cSrcChr < '0' || cSrcChr > '9') {
     uUnsignedPart = 0;
-    for ( ; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-      uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
-    }
+    for ( ; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC())
+      uUnsignedPart = (uUnsignedPart) * 10 + (cSrcChr - '0');
     if (uUnsignedPart > 0)
       iBoolean = true;
     else
@@ -367,11 +366,11 @@ L_Boolean:
   else
   if ('t' == cSrcChr || 'T' == cSrcChr) {
     iBoolean = true;
-    vADV_SRC();
+    vADV_SRC();// skip 't'
   }
   else
   if ('f' == cSrcChr || 'F' == cSrcChr) {
-    iBoolean = false;
+    iBoolean = false;// skip 'f'
     vADV_SRC();
   }
   else {
@@ -394,7 +393,7 @@ L_Date:
   vSKIP_WHITE_SPACE_ADV();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // year
+  // year portion
   
   // collect the year
   iYear = 0;
@@ -421,7 +420,7 @@ L_Date:
   vADV_SRC(); // skip '-'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // month
+  // month portion
     
   // collect the month
   iMonth = 0;
@@ -445,7 +444,7 @@ L_Date:
   vADV_SRC(); // skip '-'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // day
+  // day portion
           
   // collect the day
   iDay = 0;
@@ -505,7 +504,7 @@ L_Decimal:
   vSKIP_WHITE_SPACE_ADV();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // leading sign
+  // optional leading sign
 
   // test for negative or positive sign
   if ('-' == cSrcChr) {
@@ -522,8 +521,8 @@ L_Decimal:
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // unsigned part
-    
+  // unsigned integer portion
+
   // ignore leading 0's
   while ('0' == cSrcChr)
     vADV_SRC();
@@ -680,7 +679,7 @@ L_Integer:
   vSKIP_WHITE_SPACE_ADV();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // leading sign
+  // optional leading sign
   
   if ('-' == cSrcChr) {
     bNegative = true;
@@ -696,7 +695,7 @@ L_Integer:
   }
     
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // collect unsigned integer portion
+  // unsigned integer portion
   
   uUnsignedPart = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
@@ -733,27 +732,25 @@ L_Interval:
   vSKIP_WHITE_SPACE_ADV();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // seconds
+  // unsigned seconds portion
   
   // collect leading seconds portion (till '.')
-  iSecond = 0;
-  while (cSrcChr >= '0' && cSrcChr <= '9') {
-    iSecond = iSecond * 10 + cSrcChr - '0';
-    vADV_SRC();
-  }
+
+  for  (iSecond = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC())
+    iSecond = (iSecond * 10) + (cSrcChr - '0');
+
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // microseconds (optional)
+  // microseconds part (optional)
   
   // collect trailing microseconds portion
   iMicrosecond = 0;
   nShift = 1000000;
   if ('.' == cSrcChr) {
     vADV_SRC();
-    while (nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9') {
+    for ( ; nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
       iMicrosecond = iMicrosecond * 10 + cSrcChr - '0';
       nShift /= 10;
-      vADV_SRC();
     }
   }
   
@@ -780,7 +777,7 @@ L_Time:
   vSKIP_WHITE_SPACE_ADV();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // hour
+  // hour portion
 
   iHour = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
@@ -798,7 +795,7 @@ L_Time:
   vADV_SRC();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // minute
+  // minute portion
 
   iMinute = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
@@ -816,7 +813,7 @@ L_Time:
   vADV_SRC();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // second
+  // second portion
 
   iSecond = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
@@ -830,7 +827,7 @@ L_Time:
     goto L_FieldError;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // microsecond (optional)
+  // microsecond portion (optional)
   
   iMicrosecond = 0;
   if ('.' == cSrcChr) {
