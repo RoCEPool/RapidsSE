@@ -213,6 +213,8 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   u8 iDay;
   bool bLeapYear;
 
+  i8 iDecimal;
+  
   i8 iInteger;
   u8 uUnsignedPart;
   bool bNegative;
@@ -459,46 +461,65 @@ L_Date:
 L_Decimal:
   
   uUnsignedPart = 0;
-  bNegative = false;
   bOnce = false;
 
   vSKIP_WHITE_SPACE_ADV();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  
+  // leading sign
+
   // test for negative or positive sign
   if ('-' == cSrcChr) {
     bNegative = true;
-    vADV_SRC();
+    vADV_SRC(); // skip '-'
   }
   else
   if ('+' == cSrcChr) {
-    vADV_SRC();
+    bNegative = false;
+    vADV_SRC(); // skip '+'
   }
+  else {
+    bNegative = false;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // unsigned part
   
   // at least one digit
-  if (cSrcChr && ( (cSrcChr >= '0' && cSrcChr <= '9') || '.' == cSrcChr))
-    bOnce = true;
+//  if (cSrcChr && ( (cSrcChr >= '0' && cSrcChr <= '9') || '.' == cSrcChr))
+//    bOnce = true;
   
   // ignore leading 0's
-  while (cSrcChr == '0') {
+  while ('0' == cSrcChr)
     vADV_SRC();
-  }
   
-  // collect leading digits (till '.')
-  while (cSrcChr >= '0' && cSrcChr <= '9') {
-    uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
-    vADV_SRC();
+//  // collect leading digits (till '.')
+//  while (cSrcChr >= '0' && cSrcChr <= '9') {
+//    uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
+//    vADV_SRC();
+//    nPixPrecision--;
+//  }
+//
+//  // have we exceeded maximum precision digits?      IS THIS AN ERROR?
+//  if (nPixPrecision < 0) {
+//    goto L_FieldError;
+//  }
+  
+  uUnsignedPart = 0;
+  for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+    bOnce = true;
+    uUnsignedPart = (uUnsignedPart * 10) + (cSrcChr - '0');
     nPixPrecision--;
+    if (nPixPrecision < 0)
+      goto L_FieldError;
   }
-  
-  // have we exceeded maximum precision digits?      IS THIS AN ERROR?
-  if (nPixPrecision < 0) {
-    goto L_FieldError;
-  }
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // fraction part
   
   if ('.' == cSrcChr) {
     
+    bOnce = true;
     vADV_SRC(); // skip '.'
     
     while ((cSrcChr >= '0' && cSrcChr <= '9') && nPixScale) {
@@ -526,12 +547,13 @@ L_Decimal:
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
-  
+  // entire decimal
+
   // compute final result
-  iInteger = bNegative ? - uUnsignedPart : uUnsignedPart;
+  iDecimal = bNegative ? - uUnsignedPart : uUnsignedPart;
   
   // have we gone beyond the min ?
-  if (iInteger != 0 && bNegative && (iInteger < C_I8_MIN)) {
+  if (iDecimal != 0 && bNegative && (iDecimal < C_I8_MIN)) {
     goto L_FieldError;
   }
   
@@ -540,7 +562,7 @@ L_Decimal:
   }
   
   // deposit the decimal
-  m_pRowSlab->vDeposit(iInteger);
+  m_pRowSlab->vDeposit(iDecimal);
 
   goto L_PostField;                                            // end of decimal
 
