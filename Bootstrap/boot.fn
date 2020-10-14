@@ -28,13 +28,18 @@ readonly EXE="${EXE_DIR}/rapidsse"
 
 readonly NOHUP_FILE="${ROOT_DIR}/nohupSE.out"
 readonly PIDFILE="${ROOT_DIR}/se.pid"
+readonly REMOTE_PID_FILENAME="se.pid"
+
+readonly START_SCRIPT="startSE.sh"
+readonly STOP_SCRIPT="stopSE.sh"
+readonly STATUS_SCRIPT="status.sh"
 
 ###############################################################################
 ### Functions                                                               ###
 ###############################################################################
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Prints out the valid arguments to this script and exits.
+## Prints out the valid arguments to the start & stop scripts and exits.
 ## Params: None
 ## Note: The variable ${SCRIPT_NAME} must be defined as the name of the start
 ##       or stop script filename.
@@ -221,10 +226,33 @@ function loadNodeName() {
 ## Params: None
 
 function startCluster() {
-  for nodeName in "${NODE_LIST[@]}"
-  do
-    startNode "${nodeName}"
-  done
+
+  local nodeName
+
+  if [ -n "${SEQ_START}" ]; then
+    # Start the nodes sequentially
+    for nodeName in "${NODE_LIST[@]}"
+    do
+      startNode "${nodeName}"
+    done
+
+  else
+    # Start the nodes in parallel. Ignore all output.
+    for nodeName in "${NODE_LIST[@]}"
+    do
+      startNode "${nodeName}" &>/dev/null &
+    done
+
+    # Wait for all parallel jobs to finish.
+    wait
+  fi
+
+  echo -n "Started all nodes in the cluster. Waiting for them to boot"
+
+  # Sleep for 5 seconds and print a "." every second
+  sleepPrint 5
+
+  printClusterStatus
 }
 
 
@@ -244,7 +272,7 @@ function startNode() {
   host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
-  remoteCmd="cd ${dir} && ./${SCRIPT_NAME} --node"
+  remoteCmd="cd ${dir} && ./${START_SCRIPT} --node"
 
   if [ ${DEBUG} -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"
@@ -371,6 +399,115 @@ function buildNodeArguments() {
   echo "${nodeArgs[@]}"
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints whether each node in the cluster is running or not.
+## Params: None
+
+function printClusterStatus() {
+  local nodeName
+  local host
+  local pid
+  local status
+  local errorCount=0
+
+  echo "Cluster status:"
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    pid="$(getRunningPid "${nodeName}")"
+
+    if [[ -n "${pid}" && "${pid}" -gt 0 ]]; then
+      status="running (pid ${pid})"
+    else
+      status="NOT RUNNING"
+      errorCount=$((errorCount+1))
+    fi
+
+    printf "  %-30s  %s\n" "${nodeName} (host ${host}) :" "${status}"
+  done
+
+  if [ "${errorCount}" -gt 0 ]; then
+    local runningCount=$(( ${#NODE_LIST[@]} - errorCount ))
+
+    # grammar nazi
+    if [ "${runningCount}" -eq 1 ]; then 
+      echo -n "${runningCount} node out of ${#NODE_LIST[@]} is running. "
+    else
+      echo -n "${runningCount} nodes out of ${#NODE_LIST[@]} are running. "
+    fi
+
+    if [ "${errorCount}" -eq 1 ]; then
+      echo "${errorCount} node is stopped."
+    else
+      echo "${errorCount} nodes are stopped."
+    fi
+
+  else
+    echo "All nodes are running."
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints a message whether the current node is running or not.
+## Params: None
+
+function printNodeStatus() {
+  if [ ! -f "${PIDFILE}" ]; then
+    echo "${CURRENT_NODE_NAME} is not running."
+  fi
+
+  local pid
+  pid="$(xargs ps -o pid -h -p < "${PIDFILE}")"
+ 
+  local re="[0-9]+"
+
+  if [[ "${pid}" =~ $re ]]; then
+    echo "${CURRENT_NODE_NAME} is running."
+  else
+    echo "${CURRENT_NODE_NAME} is not running."
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns the PID of the SE process running on a given node name, or an
+## empty string if the process is not running.
+##
+## Params:
+##  $1 : The name of the node to enquire on.
+
+function getRunningPid() {
+
+  local nodeName="$1"
+
+  local host
+  local dir
+  local remoteCmd
+  local pid
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+  dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+  remoteCmd="'if [ ! -f \"${dir}/${REMOTE_PID_FILENAME}\" ]; then exit 1; fi; cat \"${dir}/${REMOTE_PID_FILENAME}\" | xargs ps -o pid -h -p '"
+
+  pid="$(ssh "${host}" bash -c "${remoteCmd}")"
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "Output of pid for node ${nodeName} = ${pid}"
+  fi
+
+  local re="[0-9]+"
+
+  if [[ "${pid}" =~ $re ]]; then
+    pid=""
+  fi
+
+  echo "${pid}"
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## 

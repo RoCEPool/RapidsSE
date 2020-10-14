@@ -98,6 +98,25 @@ function printIndentArray() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Sleeps for a given number of seconds and prints a "." for each second.
+## Params:
+##  $1 : the number of seconds to sleep.
+
+function sleepPrint() {
+  local delay="$1"
+  local count=0
+
+  while [ "${count}" -lt "${delay}" ]
+  do
+    count=$((count+1))
+    sleep 1
+    echo -n " ."
+  done
+ 
+  echo ""
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # =========================================================================== #
 # Node Configuration Manipulation                                             #

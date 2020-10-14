@@ -50,4 +50,5 @@ cp "${ROOT_DIR}/Bootstrap/cluster.config.sample" "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/Bootstrap/startSE.sh"            "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/Bootstrap/stopSE.sh"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/Bootstrap/boot.fn"               "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/Bootstrap/status.sh"             "${LAYOUT_DIR}"
 
