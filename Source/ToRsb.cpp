@@ -460,9 +460,6 @@ L_Date:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
   
-  uUnsignedPart = 0;
-  bOnce = false;
-
   vSKIP_WHITE_SPACE_ADV();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -484,27 +481,12 @@ L_Decimal:
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned part
-  
-  // at least one digit
-//  if (cSrcChr && ( (cSrcChr >= '0' && cSrcChr <= '9') || '.' == cSrcChr))
-//    bOnce = true;
-  
+    
   // ignore leading 0's
   while ('0' == cSrcChr)
     vADV_SRC();
-  
-//  // collect leading digits (till '.')
-//  while (cSrcChr >= '0' && cSrcChr <= '9') {
-//    uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
-//    vADV_SRC();
-//    nPixPrecision--;
-//  }
-//
-//  // have we exceeded maximum precision digits?      IS THIS AN ERROR?
-//  if (nPixPrecision < 0) {
-//    goto L_FieldError;
-//  }
-  
+    
+  // collect unsigned number
   uUnsignedPart = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
@@ -515,51 +497,46 @@ L_Decimal:
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // fraction part
+  // fraction part (optional)
   
   if ('.' == cSrcChr) {
     
-    bOnce = true;
     vADV_SRC(); // skip '.'
     
-    while ((cSrcChr >= '0' && cSrcChr <= '9') && nPixScale) {
+    for ( ; nPixScale && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+      bOnce = true;
       uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
-      vADV_SRC();
       nPixScale--;
     }
   }
   
+  if (! bOnce)
+    goto L_FieldError;
+
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // entire decimal
+  
   while (nPixScale--)
-    uUnsignedPart = uUnsignedPart * 10 + 0;
+    uUnsignedPart *= 10;
   
   // have we exceeded the max ?
-  if (uUnsignedPart > (u8)C_I8_MAX) {
-    //THROW_USER("vConvertDecimal"_Stz);
+  if (uUnsignedPart > (u8)C_I8_MAX)
     goto L_FieldError;
-  }
   
   // round up if there any more digits after decimal
   if (cSrcChr >= '0' && cSrcChr <= '9') {
     if (cSrcChr - '0' >= 5)
       uUnsignedPart += 1;
     while (cSrcChr >= '0' && cSrcChr <= '9')
-      vADV_SRC();
+      vADV_SRC(); // skip digit after decimal
   }
   
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // entire decimal
-
   // compute final result
   iDecimal = bNegative ? - uUnsignedPart : uUnsignedPart;
   
-  // have we gone beyond the min ?
-  if (iDecimal != 0 && bNegative && (iDecimal < C_I8_MIN)) {
+  // have we gone below the negative min ?
+  if (iDecimal < C_I8_MIN)
     goto L_FieldError;
-  }
-  
-  if (! bOnce) {
-    goto L_FieldError;
-  }
   
   // deposit the decimal
   m_pRowSlab->vDeposit(iDecimal);
@@ -591,7 +568,7 @@ L_Integer:
   }
     
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // unsigned part
+  // collect unsigned integer portion
   
   uUnsignedPart = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
@@ -751,7 +728,7 @@ L_Float:
   bOnce = false;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // unsigned part
+  // collect leading integer portion
   
   // collect leading integer portion (till '.')
   while (cSrcChr >= '0' && cSrcChr <= '9') {
@@ -771,7 +748,7 @@ L_Float:
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // exponent
+  // collect exponent portion
   
   if ('e' == cSrcChr || 'E' == cSrcChr) {
     
@@ -828,7 +805,7 @@ L_Interval:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // microseconds (optional)
   
-  // collect trailing fraction portion
+  // collect trailing microseconds portion
   iMicrosecond = 0;
   nShift = 1000000;
   if ('.' == cSrcChr) {
@@ -839,12 +816,14 @@ L_Interval:
       vADV_SRC();
     }
   }
+  
+  iMicrosecond *= nShift;
 
   // ==== ==== ==== ==== ==== ==== ==== ====
   // entire interval
 
   xInterval.m_uSecond = iSecond;
-  xInterval.m_uMicro  = iMicrosecond * nShift;
+  xInterval.m_uMicro  = iMicrosecond;
   
   // deposit the interval
   m_pRowSlab->vDeposit(xInterval);
