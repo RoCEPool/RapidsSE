@@ -348,14 +348,13 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
   
-  iYear = iMonth = iDay = 0;
-
   vSKIP_WHITE_SPACE_ADV();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year
   
   // collect the year
+  iYear = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iYear = (iYear * 10) + (cSrcChr - '0');
@@ -376,12 +375,13 @@ L_Date:
   // skip over separator
   if ('-' != cSrcChr)
     goto L_FieldError;
-  vADV_SRC();
+  vADV_SRC(); // skip '-'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month
     
   // collect the month
+  iMonth = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iMonth = (iMonth * 10) + (cSrcChr - '0');
@@ -399,12 +399,13 @@ L_Date:
   // skip over separator
   if ('-' != cSrcChr)
     goto L_FieldError;
-  vADV_SRC();
+  vADV_SRC(); // skip '-'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day
           
   // collect the day
+  iDay = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iDay = (iDay * 10) + (cSrcChr - '0');
@@ -415,10 +416,11 @@ L_Date:
   if (! bOnce)
     goto L_FieldError;
   
-  // ---- ---- ---- ---- ---- ---- ---- ----
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  
   // validate date wrt possible leap year
   
-  // assume a leap year
+  // detect a leap year
   bLeapYear = true;
   if (iYear % 4 == 0) {
     if ((iYear % 100) == 0 && (iYear % 400) != 0) {
@@ -427,6 +429,7 @@ L_Date:
     }
   }
 
+  // test days per month
   if (bLeapYear) {
     if (iDay > (u8)iDaysPerMonthLeap[iMonth-1]) {
       goto L_FieldError;
@@ -438,7 +441,6 @@ L_Date:
     }
   }
 
-  // ==== ==== ==== ==== ==== ==== ==== ====
   // deposit the date
   
   xDate.m_uYearDelta = iYear - C_YEAR_BASE;
@@ -523,6 +525,8 @@ L_Decimal:
       vADV_SRC();
   }
   
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  
   // compute final result
   iInteger = bNegative ? - uUnsignedPart : uUnsignedPart;
   
@@ -535,9 +539,7 @@ L_Decimal:
     goto L_FieldError;
   }
   
-  // ==== ==== ==== ==== ==== ==== ==== ====
   // deposit the decimal
-
   m_pRowSlab->vDeposit(iInteger);
 
   goto L_PostField;                                            // end of decimal
@@ -551,42 +553,23 @@ L_Integer:
   vSKIP_WHITE_SPACE_ADV();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-
   // leading sign
+  
   if ('-' == cSrcChr) {
     bNegative = true;
-    vADV_SRC();
+    vADV_SRC(); // skip '-'
   }
   else
   if ('+' == cSrcChr) {
     bNegative = false;
-    vADV_SRC();
+    vADV_SRC(); // skip '+'
   }
   else {
     bNegative = false;
   }
-  
-//  // at least 1 digit
-//  if (cSrcChr && (cSrcChr >= '0' && cSrcChr <= '9'))
-//    bOnce = true;
-//
-//  for ( ; cSrcChr; vADV_SRC()) {
-//
-//    if (cSrcChr < '0' || cSrcChr > '9')
-//      break;
-//
-//    uUnsignedPartial = (uUnsignedPartial * 10) + (cSrcChr - '0');
-//
-//    if (uUnsignedPartial > (u8)C_I8_MAX) {
-//      //THROW_USER("vConvertInteger"_Stz);
-//      goto L_FieldError;
-//    }
-//  }
-//
-//  if (! bOnce) {
-//    vTrace("%s\n"_Stz,azCsvChunk);
-//    goto L_FieldError;
-//  }
+    
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // unsigned part
   
   uUnsignedPart = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
@@ -599,17 +582,15 @@ L_Integer:
   if (! bOnce)
     goto L_FieldError;
 
+  // ==== ==== ==== ==== ==== ==== ==== ====
+
   iInteger = bNegative ? - uUnsignedPart : uUnsignedPart;
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
     PtnLib::vRunning(&iHash,iInteger);
   
-  // ==== ==== ==== ==== ==== ==== ==== ====
   // deposit the integer
-  
   m_pRowSlab->vDeposit(iInteger);
     
   goto L_PostField;                                            // end of integer
@@ -712,9 +693,9 @@ L_Boolean:
   }
 
   // ==== ==== ==== ==== ==== ==== ==== ====
-   // deposit the boolean
+  // deposit the boolean
   
-    m_pRowSlab->vDeposit(iBoolean);
+  m_pRowSlab->vDeposit(iBoolean);
 
   goto L_PostField;                                            // end of boolean
   
@@ -730,16 +711,16 @@ L_Float:
   vSKIP_WHITE_SPACE_ADV();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // test for negative or positive sign
-  
+  // leading sign
+
   if ('-' == cSrcChr) {
     bNegative = true;
-    vADV_SRC();
+    vADV_SRC(); // skip '-'
   }
   else
   if ('+' == cSrcChr ) {
     bNegative = false;
-    vADV_SRC();
+    vADV_SRC(); // skip '+'
   }
   else {
     bNegative = false;
@@ -747,6 +728,9 @@ L_Float:
   
   bOnce = false;
 
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // unsigned part
+  
   // collect leading integer portion (till '.')
   while (cSrcChr >= '0' && cSrcChr <= '9') {
     bOnce = true;
@@ -764,7 +748,9 @@ L_Float:
     }
   }
 
-  // test for exponent
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // exponent
+  
   if ('e' == cSrcChr || 'E' == cSrcChr) {
     
     *aChar++ = cSrcChr;
@@ -786,11 +772,13 @@ L_Float:
   // terminate
   *aChar++ = '\0';
   
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // entire float
+  
   // compute final result
   dUnsignedPart = atof(xBuffer);
   dFloat = bNegative ? - dUnsignedPart : dUnsignedPart;
   
-  // ==== ==== ==== ==== ==== ==== ==== ====
   // deposit the float
   
   m_pRowSlab->vDeposit(dFloat);
@@ -809,35 +797,34 @@ L_Interval:
   // seconds
   
   // collect leading seconds portion (till '.')
-  uUnsignedPart = 0;
+  iSecond = 0;
   while (cSrcChr >= '0' && cSrcChr <= '9') {
-    uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
+    iSecond = iSecond * 10 + cSrcChr - '0';
     vADV_SRC();
   }
   
-  xInterval.m_uSecond = uUnsignedPart;
-  
-
   // ---- ---- ---- ---- ---- ---- ---- ----
   // microseconds (optional)
   
   // collect trailing fraction portion
-  uUnsignedPart = 0;
+  iMicrosecond = 0;
   nShift = 1000000;
   if ('.' == cSrcChr) {
     vADV_SRC();
     while (nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9') {
-      uUnsignedPart = uUnsignedPart * 10 + cSrcChr - '0';
+      iMicrosecond = iMicrosecond * 10 + cSrcChr - '0';
       nShift /= 10;
       vADV_SRC();
     }
   }
 
-  xInterval.m_uMicro = uUnsignedPart * nShift;
-
   // ==== ==== ==== ==== ==== ==== ==== ====
-  // deposit the interval
+  // entire interval
+
+  xInterval.m_uSecond = iSecond;
+  xInterval.m_uMicro  = iMicrosecond * nShift;
   
+  // deposit the interval
   m_pRowSlab->vDeposit(xInterval);
 
   goto L_PostField;                                           // end of interval
@@ -848,13 +835,12 @@ L_Interval:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   
-  iHour = iMinute = iSecond = iMicrosecond = 0;
-
   vSKIP_WHITE_SPACE_ADV();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour
 
+  iHour = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iHour = (iHour * 10) + (cSrcChr - '0');
@@ -872,6 +858,7 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute
 
+  iMinute = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iMinute = (iMinute * 10) + (cSrcChr - '0');
@@ -889,6 +876,7 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second
 
+  iSecond = 0;
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iSecond = (iSecond * 10) + (cSrcChr - '0');
@@ -902,22 +890,23 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // microsecond (optional)
   
+  iMicrosecond = 0;
   if ('.' == cSrcChr) {
     
-    nShift = 1000000;
-    vADV_SRC();
+    vADV_SRC(); // skip '.'
 
-    while (nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9') {
-      iMicrosecond = (iMicrosecond * 10) + (cSrcChr - '0');
+    for (nShift = 1000000;
+         nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9';
+         vADV_SRC()) {
       nShift /= 10;
-      vADV_SRC();
+      iMicrosecond = (iMicrosecond * 10) + (cSrcChr - '0');
     }
 
     iMicrosecond = iMicrosecond * nShift;
   }
   
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // deposit the time
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // entire time
 
   xTime.m_uHour   = iHour;
   xTime.m_uMinute = iMinute;
@@ -925,9 +914,7 @@ L_Time:
   xTime.m_uMicro  = iMicrosecond;
   xTime.m_uSpare  = 0;
 
-  // ==== ==== ==== ==== ==== ==== ==== ====
   // deposit the time
-  
   m_pRowSlab->vDeposit(xTime);
 
   goto L_PostField;                                               // end of time
