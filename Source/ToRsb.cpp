@@ -381,25 +381,27 @@ L_Date:
 //  if (iYear <= 1900)
 //    goto L_FieldError;
   
+  // collect the year
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iYear = (iYear * 10) + (cSrcChr - '0');
     if (iYear > 9999)
       goto L_FieldError;
   }
-
+  
   if (! bOnce)
     goto L_FieldError;
 
+  // adjust and validate the year
   if (iYear <= 99)
     iYear += 2000;
   else
   if (iYear < C_YEAR_BASE)
     goto L_FieldError;
 
+  // skip over separator
   if ('-' != cSrcChr)
     goto L_FieldError;
-
   vADV_SRC();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -433,6 +435,7 @@ L_Date:
 //  if (iMonth < 1 || iMonth > 12)
 //    goto L_FieldError;
   
+  // collect the month
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iMonth = (iMonth * 10) + (cSrcChr - '0');
@@ -443,12 +446,13 @@ L_Date:
   if (! bOnce)
     goto L_FieldError;
   
+  // validate the month
   if (iMonth < 1 || iMonth > 12)
     goto L_FieldError;
 
+  // skip over separator
   if ('-' != cSrcChr)
     goto L_FieldError;
-
   vADV_SRC();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -478,6 +482,7 @@ L_Date:
 //  if (! bOnce)
 //    goto L_FieldError;
   
+  // collect the day
   for (bOnce = false; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bOnce = true;
     iDay = (iDay * 10) + (cSrcChr - '0');
