@@ -114,7 +114,9 @@ function sleepProgressPrint() {
     echo -n " ."
   done
  
-  echo ""
+  if [ "${delay}" -ne 1 ]; then
+    echo ""
+  fi
 }
 
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+# This file starts RapidsSE for the entire cluster, or just a single node. 
 
 ###############################################################################
 ### Constants                                                               ###

@@ -12,6 +12,6 @@ FILES+=("../../Bootstrap/setup.fn")
 FILES+=("../../Bootstrap/common.fn")
 FILES+=("../../Bootstrap/boot.fn")
 FILES+=("../../Bootstrap/startSE.sh")
-#FILES+=("../../Bootstrap/stopSE.sh")
+FILES+=("../../Bootstrap/stopSE.sh")
 
 shellcheck -s bash -P ../../Bootstrap "${FILES[@]}"

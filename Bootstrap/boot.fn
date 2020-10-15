@@ -146,7 +146,7 @@ function processArgs() {
 
 function startCluster() {
 
-  echo "Checking node versions..."
+  echo -n "Checking node versions..."
 
   # Check that all nodes are the same version.
   local verStr
@@ -157,7 +157,7 @@ function startCluster() {
   echo "All nodes are running the same version: ${verStr}"
 
   # Check if any nodes are already running
-  assertNoNodesRunning || errorExit "Could not start the RapidsSE cluster."
+  assertNoNodesRunning "" || errorExit "Could not start the RapidsSE cluster."
 
   echo "Starting the RapidsSE cluster."
   local nodeName
@@ -167,14 +167,14 @@ function startCluster() {
     for nodeName in "${NODE_LIST[@]}"
     do
       if [ ${DEBUG} -eq 1 ]; then echo "Starting ${nodeName}"; fi;
-      startNode "${nodeName}"
+      startRemoteNode "${nodeName}" || errorExit "Could not start all nodes in the cluster."
     done
 
   else
     # Start the nodes in parallel. Ignore all output.
     for nodeName in "${NODE_LIST[@]}"
     do
-      startNode "${nodeName}" &>/dev/null &
+      startRemoteNode "${nodeName}" &>/dev/null &
     done
 
     # Wait for all parallel jobs to finish.
@@ -191,11 +191,11 @@ function startCluster() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Starts RapidsSE on a node given by the nodeName parameter.
+## Remotely starts RapidsSE on a node given by the nodeName parameter.
 ## Params: 
 ##  $1 : The name of the node to be started.
 
-function startNode() {
+function startRemoteNode() {
 
   local nodeName="$1"
 
@@ -388,6 +388,7 @@ function printClusterStatus() {
 function printNodeStatus() {
   if [ ! -f "${PIDFILE}" ]; then
     echo "${CURRENT_NODE_NAME} is not running."
+    return
   fi
 
   local pid
@@ -442,7 +443,9 @@ function getRunningPid() {
 ## Checks that none of the nodes are currently running. If one or more nodes
 ## are actually running then errors are printed to stderr and a non-zero
 ## exit code is returned.
-## Params: None
+## Params: 
+##  $1 : (optional) if set to "stop" then it formats the error message for
+##       asserting that there are no more nodes running after a stop operation.
 
 function assertNoNodesRunning() {
   
@@ -451,6 +454,10 @@ function assertNoNodesRunning() {
   local gotError=0
 
   local errMsg="The following node are already running:"
+
+  if [ "$1" == "stop" ]; then
+    errMsg="The following node are still running:"
+  fi
 
   for nodeName in "${NODE_LIST[@]}"
   do
@@ -525,19 +532,187 @@ function checkNodeVersionsAreEqual() {
   done
 
   # Otherwise we're all good
+  echo "${expectedVerStr}"
   true
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## 
-function checkSEIsRunning() {
+## Stops RapidsSE on all nodes in the cluster.
+## Params: None
 
-  ## TODO: Need a way of checking single/all SE instances to see if they are running.
-  ## TODO: If it's running then the script should return its PID.
-  ## TODO: e.g. getSEPid(). If null then it's not running.
+function stopCluster() {
+  
+  echo "Stopping the RapidsSE cluster."
 
-  true
+  if [ -n "${SEQ_START}" ]; then
+    # Stop the nodes sequentially
+    for nodeName in "${NODE_LIST[@]}"
+    do
+      if [ ${DEBUG} -eq 1 ]; then echo "Stopping ${nodeName}"; fi;
+      stopRemoteNode "${nodeName}" || errorExit "Could not stop all nodes in the cluster."
+    done
+
+  else
+    # Stop the nodes in parallel. Ignore all output.
+    for nodeName in "${NODE_LIST[@]}"
+    do
+      stopRemoteNode "${nodeName}" &>/dev/null &
+    done
+
+    # Wait for all parallel jobs to finish.
+    wait
+  fi
+
+  echo -n "Stopping all ${#NODE_LIST[@]} nodes in the cluster. Waiting for them to shutdown."
+
+  # Check every second to see if there are any nodes still running, up to 10 secs.
+  local counter=0
+  while [ "${counter}" -lt 10 ]
+  do
+    if assertNoNodesRunning "stop" &>/dev/null; then
+      break
+    fi
+
+    sleepProgressPrint 1
+    ((counter++))
+  done
+
+  echo ""
+
+  # Final check (as we may have timed out above).
+  if ! assertNoNodesRunning "stop"; then
+    echo "Could not stop all nodes in the cluster."
+  else
+    echo "Stopped all nodes in the cluster."
+  fi
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Remotely stopss RapidsSE on a node given by the nodeName parameter.
+## Params: 
+##  $1 : The name of the node to be stopped.
+
+function stopRemoteNode() {
+
+  local nodeName="$1"
+
+  local host
+  local dir
+  local remoteCmd
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+  dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+  remoteCmd="cd ${dir} && ./${STOP_SCRIPT} --node"
+
+  if [ ${DEBUG} -eq 1 ]; then
+    remoteCmd="${remoteCmd} --debug"
+  fi
+
+  sshCmd=( "ssh" "${host}" "${remoteCmd}" )
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "About to stop node ${nodeName} with the command: ${sshCmd[*]}"
+  fi
+
+  "${sshCmd[@]}" || errorExit "Could not stop RapidsSE on node ${nodeName}."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Stops RapidsSE on the current node only.
+## Params: None
+
+function stopCurrentNode() {
+
+  # Get all of the settings for the current node
+  local host
+  host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
+
+
+  if [ ! -f "${EXE}" ]; then
+    errorExit "Cannot stop RapidsSE on node ${CURRENT_NODE_NAME} [host ${host}] because the executable cannot be found at: ${EXE}"
+  fi
+
+
+  if [ -f "${PIDFILE}" ]; then
+    # Stop SE gracefully and then wait until the pid is no longer active.
+  
+    local pid
+    pid="$(cat "${PIDFILE}")" 2>/dev/null
+
+    declare -a stopCmd
+    stopCmd+=("${EXE}")
+    stopCmd+=("--name")
+    stopCmd+=("${CURRENT_NODE_NAME}")
+    stopCmd+=("--stop")
+    stopCmd+=("--Commands")
+    stopCmd+=("${ROOT_DIR}/Commands")
+    stopCmd+=("--appendTrace")
+
+
+    #set the library path for the rapidsSE library
+    export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
+
+
+    if [ ${DEBUG} -eq 1 ]; then
+      echo "Stopping RapidsSE on node ${CURRENT_NODE_NAME} [host ${host}] with the command:"
+      echo "  ${stopCmd[*]}"
+
+    else
+      echo "Stopping RapidsSE on node ${CURRENT_NODE_NAME} [host ${host}]..."
+    fi
+
+    echo "Stopping SE at $(date +%FT%T)" >> "${NOHUP_FILE}"
+
+    "${stopCmd[@]}" >> "${NOHUP_FILE}" 2>&1 &
+
+    
+    # Now we wait for the process to stop, periodically checking if the 
+    # pid has vanished.
+
+    local counter=0
+    local exitSleepTime
+    local exitGiveUpTime
+    local exitIterations
+
+    exitSleepTime="0.2"   # How long to sleep (in seconds) between checking if the pid has exited.
+    exitGiveUpTime="5"    # After this time (in seconds) just kill the pid.
+    exitIterations="$(bc <<< "${exitGiveUpTime}" / "${exitSleepTime}")"
+
+    while ps -p "${pid}" &> /dev/null
+    do
+      if [ "${counter}" -ge "${exitIterations}" ]; then
+        break;
+      fi
+
+      (( counter++ ))
+      sleep "${exitSleepTime}"
+    done   
+
+    # Check again that the process has been stopped. If it hasn't then we shall kill it.
+    if ps -p "${pid}" &> /dev/null; then    # Exit code 0 means se is still running. 
+
+      echo "Killing RapidsSE process ${pid} on node ${CURRENT_NODE_NAME}."
+      kill -9 "${pid}" &>/dev/null
+    fi
+
+    # Remove the pid file
+    rm -f "${PIDFILE}" &>/dev/null
+
+  else 
+    # The pidfile does not exist.
+    # Kill by process name, restricted to processes owned by the current user.
+    # We need to set the next 2 variables to avoid "illegal byte sequence" errors.
+    echo "PID file missing on node ${CURRENT_NODE_NAME} [host ${host}], so stopping RapidsSE by killing all processes by that name."
+    export LC_CTYPE=C
+    export LANG=C
+
+    pkill -u $UID -x "$(basename "${EXE}")" 2>/dev/null
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
