@@ -212,6 +212,21 @@ i8 RowSlab::iColumn(Rsb* aRsb, i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
+/* discard current/invalid row                                                */
+/*----------------------------------------------------------------------------*/
+void RowSlab::vDiscardInvalidRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  m_nItems--;
+
+  m_i_RowLgl--;
+  
+  i8 nCellBytes = (m_oStreamPix.m_nCols + 1 /* dummy */ ) * C_BYTES_PER_WORD;
+  m_xWsp.vGiveTail(nCellBytes);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump given row                                                             */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vDumpAllRows(void)

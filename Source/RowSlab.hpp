@@ -54,14 +54,15 @@ namespace Rows
     i8    i_Cell0(i8 i_Row);
     m8*   amCell0(i8 i_Row);
     i8    nCols(void);
-    i8    nExtraCols(void);
     i8    iColumn(Rsb* aRsb, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
     void  vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
+    void  vDiscardInvalidRow(void);
     void  vDumpAllRows(void);
     void  vDumpNst(void);
     void  vDumpRow(i8 i_Row);
     void  vDumpRow(i8 i_Row, Rsb* aRsb);
+    i8    nExtraCols(void);
     i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
     bool  bNewRow(Rsb** paRsb);

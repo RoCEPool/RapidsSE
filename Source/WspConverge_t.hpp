@@ -157,6 +157,28 @@ i8 WspConverge_t<LENGTH>::nFree(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* give chunk back to byte area at head                                       */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+void WspConverge_t<LENGTH>::vGiveHead(i8 nBytes)
+{
+  ASSERT(m_nUsedHead  + m_nUsedTail <= LENGTH);
+
+  m_nUsedHead -= nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* give chunk back to byte area at tail                                       */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+void WspConverge_t<LENGTH>::vGiveTail(i8 nBytes)
+{
+  ASSERT(m_nUsedHead  + m_nUsedTail <= LENGTH);
+  
+  m_nUsedTail -= nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of next available chunk in byte areafrom head                  */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
@@ -254,28 +276,6 @@ void WspConverge_t<LENGTH>::vTakeTail(i8 nBytes)
     vDebugPoint();
   }
   ASSERT(m_nUsedHead + m_nUsedTail <= LENGTH);
-}
-
-/*----------------------------------------------------------------------------*/
-/* give chunk back to byte area at head                                       */
-/*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vGiveHead(i8 nBytes)
-{
-  ASSERT(m_nUsedHead  + m_nUsedTail <= LENGTH);
-
-  m_nUsedHead -= nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* give chunk back to byte area at tail                                       */
-/*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vGiveTail(i8 nBytes)
-{
-  ASSERT(m_nUsedHead  + m_nUsedTail <= LENGTH);
-  
-  m_nUsedTail -= nBytes;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1128,9 +1128,8 @@ L_PostField:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_FieldError:
 
-  // ... need to handle partial row in row slab
-
-
+  // discard partial row in row slab
+  m_pRowSlab->vDiscardInvalidRow();
 
   // skip to end of record
   while (cSrcChr) {
