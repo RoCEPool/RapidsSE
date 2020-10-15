@@ -8,3 +8,4 @@ nohupSE-*.out
 nohupSE*.out
 startCluster.log
 Linux/
+tmp

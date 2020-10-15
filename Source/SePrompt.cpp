@@ -829,7 +829,7 @@ void SePrompt::vMakeDiaryDir(void)
   
   s256 sDiaryPath;
   
-  sDiaryPath.vSprint("/tmp/Diary_%s"_Stz,AM::szSummaryDir(sSummary,szNote));
+  sDiaryPath.vSprint("../tmp/Diary_%s"_Stz,AM::szSummaryDir(sSummary,szNote));
   
   vTrace("vMakeDiaryDir: %s\n"_Stz,sDiaryPath.szStz());
   

@@ -16,12 +16,12 @@ void EnvCheck::vCheckManifest(void)
   if (AM::bVerboseProgress())
     vInfo("\n*\n* %lld) Checking Resource Manifest\n*\n"_Stz,giProgressPoint++);
   
-  vCheckDir("."_Stz,          C_EXIST_EXISTS,C_ACCESS_READ);
-  vCheckDir("../Commands"_Stz,C_EXIST_EXISTS,C_ACCESS_READ);
-  vCheckDir("/tmp"_Stz,       C_EXIST_EXISTS,C_ACCESS_READWRITE);
+  vCheckDir("."_Stz,            C_EXIST_EXISTS,C_ACCESS_READ);
+  vCheckDir("../Commands"_Stz,  C_EXIST_EXISTS,C_ACCESS_READ);
+  vCheckDir("../tmp"_Stz,       C_EXIST_EXISTS,C_ACCESS_READWRITE);
 
-  vCheckFile("_bootCluster"_Stz,     C_EXIST_EXISTS,C_ACCESS_READ);
-  vCheckFile("_procedures"_Stz,      C_EXIST_EXISTS,C_ACCESS_READ);
+  vCheckFile("_bootCluster"_Stz,C_EXIST_EXISTS,C_ACCESS_READ);
+  vCheckFile("_procedures"_Stz, C_EXIST_EXISTS,C_ACCESS_READ);
 }
 
 /*----------------------------------------------------------------------------*/
