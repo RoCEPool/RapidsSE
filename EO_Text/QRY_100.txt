@@ -231,7 +231,7 @@ Label CRWBUFFER_HANDLER
   //EO_JMP_FALSE PROCESSROW_DONE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   EO_PUSH_LOCALI 6
-  EO_DATE PARAM0 //"1998-09-01"
+  EO_DATE <param0> //"1998-09-01"
   EO_GREATERTHAN
   EO_JMP_TRUE PROCESSROW_DONE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

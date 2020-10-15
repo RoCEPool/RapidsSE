@@ -90,11 +90,11 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
           
         case EA_DATE:
           vAcceptToken();
-          if (0 == StrLib::iCompare(m_pTkn->azChars(),"PARAM", 5,  C_CASE)) {
+          if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
             // extract the param no
             i8 iParam;
             i8 nDigits;
-            char* pParam = m_pTkn->azChars()+5;
+            char* pParam = m_pTkn->azChars()+6;
             StrLib::bExtractInteger(&pParam, &iParam, nDigits);
             //vTrace("Got Param %lld\n"_Stz, iParam);
             Token* pTkn = pLitTknVec->pGet(iParam);
@@ -126,11 +126,11 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
                   break;
               }
             }
-            else if (0 == StrLib::iCompare(m_pTkn->azChars(),"PARAM", 5,  C_CASE)) {
+            else if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
               // extract the param no
               i8 iParam;
               i8 nDigits;
-              char* pParam = m_pTkn->azChars()+5;
+              char* pParam = m_pTkn->azChars()+6;
               StrLib::bExtractInteger(&pParam, &iParam, nDigits);
               //vTrace("Got Param %lld\n"_Stz, iParam);
               Token* pTkn = pLitTknVec->pGet(iParam);
@@ -154,11 +154,11 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
           
         case EA_STRING:
           vAcceptToken();
-          if (0 == StrLib::iCompare(m_pTkn->azChars(),"PARAM", 5,  C_CASE)) {
+          if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
             // extract the param no
             i8 iParam;
             i8 nDigits;
-            char* pParam = m_pTkn->azChars()+5;
+            char* pParam = m_pTkn->azChars()+6;
             StrLib::bExtractInteger(&pParam, &iParam, nDigits);
             //vTrace("Got Param %lld\n"_Stz, iParam);
             Token* pTkn = pLitTknVec->pGet(iParam);
