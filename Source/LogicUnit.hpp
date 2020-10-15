@@ -212,11 +212,11 @@ namespace Expressions
 
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
-    void vCollectOpcode(TokenVec* pLitTknVec);
+    void vCollectOpcode(void);
     
     void vGenCode(i8 iTestNo);
   
-    bool bGenerateAsm(Stz* sText, TokenVec* pLitTknVec);
+    bool bGenerateAsm(Stz* sText);
     
     // TPCH Queries
     void vGenerateQuery100(void);

@@ -248,10 +248,8 @@ void Step::vLogicUnitGenAsm(void)
   i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
   
   //vTrace("FILE %s\n"_Stz, sFileName.azChar());
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  Job* pPipelineJob = pOp->pPipeline()->pJob();
   
-  bool bResult = m_pLogicUnit->bGenerateAsm(sText, pPipelineJob->m_pLitTknVec);
+  bool bResult = m_pLogicUnit->bGenerateAsm(sText);
   
   m_pDataStack->vPushInt(bResult);
   

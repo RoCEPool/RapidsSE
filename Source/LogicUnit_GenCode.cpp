@@ -72,7 +72,7 @@ void LogicUnit::vBeginToken(i8 i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* set token on which parsing begins                                          */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
+void LogicUnit::vCollectOpcode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -184,7 +184,7 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
 /*----------------------------------------------------------------------------*/
 /* generate asm code for given text                                           */
 /*----------------------------------------------------------------------------*/
-bool LogicUnit::bGenerateAsm(Stz* aText, TokenVec* pLitTknVec)
+bool LogicUnit::bGenerateAsm(Stz* aText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -218,7 +218,7 @@ bool LogicUnit::bGenerateAsm(Stz* aText, TokenVec* pLitTknVec)
   while (m_i_Tkn <  nTokens - 1) {
     vAcceptToken();
     try {
-      vCollectOpcode(pLitTknVec);
+      vCollectOpcode();
     }
     catch (Exception xException) {
       m_pTknVec->vSetAllTokens();
