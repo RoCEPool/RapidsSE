@@ -117,6 +117,88 @@ function sleepProgressPrint() {
   echo ""
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Loads the cluster configuration.
+## Params: None
+
+function loadClusterConfig() {
+  if [ -z "${CONFIG_FILE}" ]; then
+    errorExit "Cluster configuration file not specified."
+  fi
+
+  if [ ! -f "${CONFIG_FILE}" ]; then
+    errorExit "Cluster configuration file not found: ${CONFIG_FILE}"
+  fi
+
+  #shellcheck disable=1090
+  source "${CONFIG_FILE}" || errorExit "Error sourcing cluster config file: ${CONFIG_FILE}"
+
+  # Now check that the configuration is valid.
+
+  local errMsg="Invalid cluster configuration at ${CONFIG_FILE} :"
+
+  if [ -z "${NODE_LIST[*]}" ]; then
+    errorExit "${errMsg}" "NODE_LIST array is not defined."
+  fi
+
+  if [ "${#NODE_LIST[@]}" -eq 0 ]; then
+    errorExit "${errMsg}" "NODE_LIST array is empty."
+  fi
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    if ! nodeCfgExists "${nodeName}"; then
+      errorExit "${errMsg}" "No node configuration exists for the node named \"${nodeName}\"."
+    fi
+
+    # Must have name, dir, host, port, mem, threads, partitions all set.
+    # Get the value of each of these and check that they are not null.
+    local key
+    local val
+
+    for key in "${NODE_CFG_ALL_KEYS[@]}"
+    do
+      val="$(nodeCfgGetValue "${nodeName}" "${key}")"
+
+      if [ -z "${val}" ]; then
+        errorExit "${errMsg}" "Null/unset value for key ${key} of node ${nodeName}."
+      fi
+    done
+  done
+
+  if [ "${DEBUG}" -eq 1 ]; then
+    echo "Loaded and validated the cluster configuration at: ${CONFIG_FILE}"
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Loads from file the name of the current node.
+## Params: None
+
+function loadNodeName() {
+  if [ -z "${NAME_FILE}" ]; then
+    errorExit "Node name file not specified."
+  fi
+
+  if [ ! -f "${NAME_FILE}" ]; then
+    errorExit "Node name file not found: ${NAME_FILE}"
+  fi
+
+  #shellcheck disable=1090
+  source "${NAME_FILE}" || errorExit "Error sourcing node name file: ${NAME_FILE}"
+
+  if [ -z "${CURRENT_NODE_NAME}" ]; then
+    errorExit "\$CURRENT_NODE_NAME has not been set in node name file: ${NAME_FILE}"
+  fi
+
+  if [ "${DEBUG}" -eq 1 ]; then
+    echo "Loaded and validated the node name configuration at: ${NAME_FILE}"
+  fi
+}
+
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # =========================================================================== #

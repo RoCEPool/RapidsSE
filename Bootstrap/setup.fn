@@ -186,6 +186,12 @@ function processArgs() {
     esac
   done
 
+  if [[ "${argConfig}" -eq 1 && -n "${CONFIG_FILE}" &&  "${CONFIG_FILE:0:1}" != "/" && -n "${USER_PWD}" ]]; then
+    # We've been invoked from the installer and have a relative path to 
+    # the config file. The config file is relative to this directory.
+    CONFIG_FILE="${USER_PWD}/${CONFIG_FILE}"
+  fi
+
   # Now we can check for invalid combinations of arguments.
     # --cluster     and --node
     # --node        and --interactive
@@ -336,13 +342,21 @@ function doClusterInstall() {
 
     if [ -n "${CONFIG_FILE}" ]; then
       # Interactive install but we have been given a config file.
-      true
-      # TODO: Load and validate config
+      echo "Using the existing cluster configuration file found at:"
+      echo "  ${CONFIG_FILE}"
+
+      # Load and validate config
+      loadClusterConfig
+      echo ""
+      echo "There are ${#NODE_LIST[@]} nodes defined in this cluster configuration."
+
       # TODO: Present summary
       # TODO: Edit ?
       # TODO: Validate config/environment
       # TODO: Write config file?
-      # TODO: Install all nodes
+
+      # Install all nodes
+      distributeSoftware "${CONFIG_FILE}"
 
     else
       # Interactive install but no config file given. 
@@ -1035,12 +1049,12 @@ function distributeSoftware() {
     local cmd=( "scp" "-q" "${INSTALL_FILE}" "${configFile}" "${hostname}:/tmp"  )
 
     if [ ${DEBUG} -eq 1 ]; then 
-      echo "Copying installer to node: ${nodeName} / host: ${hostname}."
+      echo "Copying installer to node ${nodeName} [host: ${hostname}]."
       echo "Command: ${cmd[*]}"
     fi
 
     # Execute the command
-    "${cmd[@]}" || errorExit "Error copying the installation file to node: ${nodeName} / host: ${hostname}."
+    "${cmd[@]}" || errorExit "Error copying the installation file to node ${nodeName} [host: ${hostname}]."
 
 
     # Invoke the installer, passing the path to the cluster.config, the name of
@@ -1057,15 +1071,15 @@ function distributeSoftware() {
 
     if [ ${DEBUG} -eq 1 ]; then 
       cmd+=("--debug")
-      echo "Invoking single node installation on node: ${nodeName} / host: ${hostname}."
+      echo "Invoking single node installation on node ${nodeName} [host: ${hostname}]."
       echo "Command: ${cmd[*]}"
     else 
       echo ""
-      echo "Installing to node: ${nodeName} / host: ${hostname}."
+      echo "Installing to node ${nodeName} [host: ${hostname}]."
     fi
 
     # Execute the command
-    "${cmd[@]}" || errorExit "Error executing the installer to install RapidsSE on the remote node: ${nodeName} / host: ${hostname}." 
+    "${cmd[@]}" || errorExit "Error executing the installer to install RapidsSE on the remote node ${nodeName} [host: ${hostname}]." 
 
     # N.B.: The single node install option will delete itself and the cluster.config if
     # they are executed from the /tmp directory. So no need to clean up.
@@ -1145,10 +1159,10 @@ function doNodeInstall() {
   if [ -d "${installDir}" ]; then
 
     if [ ${DEBUG} -eq 1 ]; then
-      echo "Removing existing installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
+      echo "Removing existing installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
     fi
 
-    rm -rf "${installDir}" || errorExit "Could not remove the existing installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
+    rm -rf "${installDir}" || errorExit "Could not remove the existing installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
   fi
 
 
@@ -1157,7 +1171,7 @@ function doNodeInstall() {
     echo "About to create the installation directory: ${hostname}:${installDir}"
   fi
 
-  mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
+  mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
 
   # Copy all files that were unpacked from the installer to the installation dir.
@@ -1167,7 +1181,7 @@ function doNodeInstall() {
     echo "About to copy all files to the installation directory with this command: ${cmd[*]}"
   fi
 
-  "${cmd[@]}" || errorExit "Could not copy files to the installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
+  "${cmd[@]}" || errorExit "Could not copy files to the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
 
   # Copy the cluster.config to the installation directory
@@ -1175,11 +1189,11 @@ function doNodeInstall() {
     echo "About to copy the cluster.config file to the installation directory."
   fi
 
-  cp "${CONFIG_FILE}" "${installDir}/" || errorExit "Could not copy the cluster configuration file to the installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
+  cp "${CONFIG_FILE}" "${installDir}/" || errorExit "Could not copy the cluster configuration file to the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
 
   # Create a node name file in the installation directory.
-  echo "CURRENT_NODE_NAME=\"${CURRENT_NODE_NAME}\"" > "${installDir}/${NODE_NAME_FILE}" || errorExit "Could not create the node name file in the installation directory on node: ${CURRENT_NODE_NAME} / host: ${hostname}: ${installDir}"
+  echo "CURRENT_NODE_NAME=\"${CURRENT_NODE_NAME}\"" > "${installDir}/${NODE_NAME_FILE}" || errorExit "Could not create the node name file in the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
 }
 
