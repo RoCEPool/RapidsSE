@@ -177,6 +177,8 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define vADV_SRC()       (cSrcChr = *++azCsvSrc)
 
+#define bIS_DIGIT()      (cSrcChr >= '0' && cSrcChr <= '9')
+
 #define bMORE_DATA()     (bool)(cSrcChr)
 
 #define bMORE_FIELDS()   (bool)(cSrcChr && '\n' != cSrcChr)
@@ -218,7 +220,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   i8 iInteger;
   u8 uNumber;
   bool bNegative;
-  bool bDigits;
+  i8 nDigits;
 
   Ivl xInterval;
   i8 nShift;
@@ -227,6 +229,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   d8 dUnsigned;
   char xBuffer[256];
   char* acBufDst;
+  i8 nExpDigits;
 
   Tme xTime;
   u8 uHour;
@@ -368,16 +371,23 @@ L_Boolean:
     vADV_SRC(); // skip 'f'
   }
   else
-  if (cSrcChr >= '0' || cSrcChr <= '9') {
+  if (bIS_DIGIT()) {
     // numeric case
-    for (uNumber = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC())
-      uNumber = (uNumber) * 10 + (cSrcChr - '0');
+    uNumber = 0;
+    for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
+      uNumber = (uNumber * 10) + (cSrcChr - '0');
+      nDigits++;
+    }
+    if (nDigits > 19)
+      goto L_FieldError;
+
     if (uNumber > 0)
       iBoolean = true;
     else
       iBoolean = false;
   }
   else {
+    // unrecognisable boolean
     goto L_FieldError;
   }
 
@@ -400,24 +410,19 @@ L_Date:
   // year portion
   
   // collect digits for year
-  bDigits = false;
-  for (uYear = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-    bDigits = true;
+  uYear = 0;
+  for (nDigits = 0; nDigits < 4 && bIS_DIGIT(); vADV_SRC()) {
     uYear = (uYear * 10) + (cSrcChr - '0');
-    if (uYear > 9999)
-      goto L_FieldError;
+    nDigits++;
   }
   
   // should have seen some digits
-  if (! bDigits)
+  if (! nDigits || nDigits > 4)
     goto L_FieldError;
 
-  // adjust and validate the year
+  // adjust a 2-digit year
   if (uYear <= 99)
     uYear += 2000;
-  else
-  if (uYear < C_YEAR_BASE)
-    goto L_FieldError;
 
   // skip over separator
   if ('-' != cSrcChr)
@@ -428,22 +433,16 @@ L_Date:
   // month portion
     
   // collect digits for month
-  bDigits = false;
-  for (uMonth = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-    bDigits = true;
+  uMonth = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
     uMonth = (uMonth * 10) + (cSrcChr - '0');
-    if (uMonth > 12)
-      goto L_FieldError;
+    nDigits++;
   }
 
   // should have seen some digits
-  if (! bDigits)
+  if (! nDigits || nDigits > 2)
     goto L_FieldError;
   
-  // validate the month
-  if (uMonth < 1 || uMonth > 12)
-    goto L_FieldError;
-
   // skip over separator
   if ('-' != cSrcChr)
     goto L_FieldError;
@@ -453,24 +452,30 @@ L_Date:
   // day portion
           
   // collect digits for day
-  bDigits = false;
-  for (uDay = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-    bDigits = true;
+  uDay = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
     uDay = (uDay * 10) + (cSrcChr - '0');
-    if (uDay > 31)
-      goto L_FieldError;
+    nDigits++;
   }
 
   // should have seen some digits
-  if (! bDigits)
+  if (! nDigits || nDigits > 2)
     goto L_FieldError;
   
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all date portions collected
 
-  // validate date wrt possible leap year
+  // validate the year
+  if (uYear < C_YEAR_BASE)
+    goto L_FieldError;
+
+  // validate the month
+  if (uMonth < 1 || uMonth > 12)
+    goto L_FieldError;
+
+  // validate day wrt possible leap year
   
-  // detect a leap year
+  // determine if a leap year
   if (uYear % 4 == 0) {
     if ((uYear % 100 == 0) && (uYear % 400 != 0))
       bLeapYear = false;
@@ -481,14 +486,18 @@ L_Date:
     bLeapYear = false;
   }
 
-  // test days per month
+  // validate days per month
+  
+  if (uDay < 1)
+    goto L_FieldError;
+
   if (bLeapYear) {
-    if (uDay > (u8)iDaysPerMonthLeap[uMonth-1]) {
+    if (uDay > (u8)iDaysPerMonthLeap[uMonth]) {
       goto L_FieldError;
     }
   }
   else {
-    if (uDay > (u8)iDaysPerMonth[uMonth-1]) {
+    if (uDay > (u8)iDaysPerMonth[uMonth]) {
       goto L_FieldError;
     }
   }
@@ -541,10 +550,10 @@ L_Decimal:
     vADV_SRC();
     
   // collect digits for leading number
-  bDigits = false;
-  for (uNumber = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-    bDigits = true;
+  uNumber = 0;
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
     uNumber = (uNumber * 10) + (cSrcChr - '0');
+    nDigits++;
     nPixPrecision--;
     if (nPixPrecision < 0)
       goto L_FieldError;
@@ -558,27 +567,29 @@ L_Decimal:
     
     vADV_SRC(); // skip '.'
     
-    for ( ; nPixScale && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-      bDigits = true;
+    for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
       uNumber = uNumber * 10 + cSrcChr - '0';
+      nDigits++;
       nPixScale--;
+      if (! nPixScale)
+        break;
     }
   }
   
   // should have seen some digits
-  if (! bDigits)
+  if (! nDigits || nDigits > 19)
     goto L_FieldError;
 
-  // correct for scale
+  // correct for scale by x 10 till correctly scaled
   while (nPixScale--)
     uNumber *= 10;
   
-  // round up if there any more digits after decimal
-  if (cSrcChr >= '0' && cSrcChr <= '9') {
+  // round up if there any more digits
+  if (bIS_DIGIT()) {
     if (cSrcChr - '0' >= 5)
       uNumber += 1;
-    while (cSrcChr >= '0' && cSrcChr <= '9')
-      vADV_SRC(); // skip digit after decimal
+    while (bIS_DIGIT())
+      vADV_SRC(); // skip remaining digits
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -634,10 +645,10 @@ L_Float:
   // unsigned number portion
 
   // collect digits for leading number
-  bDigits = false;
-  for (acBufDst = xBuffer; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-    bDigits = true;
+  acBufDst = xBuffer;
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
     *acBufDst++ = cSrcChr;
+    nDigits++;
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -647,9 +658,9 @@ L_Float:
   if ('.' == cSrcChr) {
     *acBufDst++ = cSrcChr;
     vADV_SRC(); // skip '.'
-    for ( ; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-      bDigits = true;
+    for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
       *acBufDst++ = cSrcChr;
+      nDigits++;
     }
   }
 
@@ -669,17 +680,20 @@ L_Float:
     }
         
     // collect exponent digits
-    for  ( ; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-      bDigits = true;
+    for  (nExpDigits = 0; nExpDigits < 3 && bIS_DIGIT(); vADV_SRC()) {
       *acBufDst++ = cSrcChr;
+      nExpDigits++;
     }
+    // should have seen some exponent digits
+    if (! nExpDigits)
+      goto L_FieldError;
   }
 
   // terminate
   *acBufDst++ = '\0';
   
   // should have seen some digits
-  if (! bDigits)
+  if (! nDigits)
     goto L_FieldError;
 
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -724,31 +738,32 @@ L_Integer:
   // unsigned number portion
   
   // collect digits for number
-  bDigits = false;
-  for (uNumber = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-    bDigits = true;
+  uNumber = 0;
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
     uNumber = (uNumber * 10) + (cSrcChr - '0');
-    if (uNumber > (u8)C_I8_MAX)
-      goto L_FieldError;
+    nDigits++;
   }
   
   // should have seen some digits
-  if (! bDigits)
+  if (! nDigits || nDigits > 19)
     goto L_FieldError;
 
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all integer portions collected
 
+  if (uNumber > (u8)C_I8_MAX)
+    goto L_FieldError;
+
   // compute final field value
   iInteger = bNegative ? - uNumber : uNumber;
-  
-  // compute running hash of partitioning column
-  if (xColPix.m_bPtnKey)
-    PtnLib::vRunning(&iHash,iInteger);
   
   // deposit the integer
   m_pRowSlab->vDeposit(iInteger);
     
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnLib::vRunning(&iHash,iInteger);
+  
   goto L_PostField;                                            // end of integer
 
   
@@ -763,10 +778,10 @@ L_Interval:
   // unsigned seconds portion
   
   // collect digits for leading seconds
-  bDigits = false;
-  for  (uSecond = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-    bDigits = true;
+  uSecond = 0;
+  for  (nDigits = 0; nDigits < 9 && bIS_DIGIT(); vADV_SRC()) {
     uSecond = (uSecond * 10) + (cSrcChr - '0');
+    nDigits++;
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -777,8 +792,8 @@ L_Interval:
   nShift = 1000000;
   if ('.' == cSrcChr) {
     vADV_SRC(); // skip '.'
-    for ( ; nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-      bDigits = true;
+    for ( ; nShift > 1 && bIS_DIGIT(); vADV_SRC()) {
+      nDigits++;
       uMicrosecond = uMicrosecond * 10 + cSrcChr - '0';
       nShift /= 10;
     }
@@ -788,11 +803,19 @@ L_Interval:
   uMicrosecond *= nShift;
 
   // should have seen some digits
-  if (! bDigits)
+  if (! nDigits)
     goto L_FieldError;
 
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all interval portions collected
+
+  // have we exceeded the max for second?
+  if (uSecond > (u8)999999999)
+    goto L_FieldError;
+
+  // have we exceeded the max for microsecond?
+  if (uMicrosecond > (u8)999999)
+    goto L_FieldError;
 
   // compute final field value
   xInterval.m_uSecond = uSecond;
@@ -815,16 +838,14 @@ L_Time:
   // hour portion
 
   // collect digits for hour
-  bDigits = false;
-  for (uHour = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-    bDigits = true;
+  uHour = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
     uHour = (uHour * 10) + (cSrcChr - '0');
-    if (uHour > 23)
-      goto L_FieldError;
+    nDigits++;
   }
   
   // should have seen some digits
-  if (! bDigits)
+  if (! nDigits || nDigits > 2)
     goto L_FieldError;
 
   // skip over separator
@@ -836,16 +857,14 @@ L_Time:
   // minute portion
 
   // collect digits for minute
-  bDigits = false;
-  for (uMinute = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-    bDigits = true;
+  uMinute = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
     uMinute = (uMinute * 10) + (cSrcChr - '0');
-    if (uMinute > 59)
-      goto L_FieldError;
+    nDigits++;
   }
   
   // should have seen some digits
-  if (! bDigits)
+  if (! nDigits || nDigits > 2)
     goto L_FieldError;
 
   // skip over separator
@@ -857,16 +876,14 @@ L_Time:
   // second portion
 
   // collect digits for second
-  bDigits = false;
-  for (uSecond = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-    bDigits = true;
+  uSecond = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
     uSecond = (uSecond * 10) + (cSrcChr - '0');
-    if (uSecond > 59)
-      goto L_FieldError;
+    nDigits++;
   }
   
   // should have seen some digits
-  if (! bDigits)
+  if (! nDigits || nDigits > 2)
     goto L_FieldError;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -878,11 +895,9 @@ L_Time:
     
     vADV_SRC(); // skip '.'
 
-    for (nShift = 1000000;
-         nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9';
-         vADV_SRC()) {
-      nShift /= 10;
+    for (nShift = 1000000; nShift > 1 && bIS_DIGIT(); vADV_SRC()) {
       uMicrosecond = (uMicrosecond * 10) + (cSrcChr - '0');
+      nShift /= 10;
     }
 
     uMicrosecond = uMicrosecond * nShift;
@@ -890,6 +905,15 @@ L_Time:
   
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all time portions collected
+
+  if (uHour > 23)
+    goto L_FieldError;
+
+  if (uMinute > 59)
+    goto L_FieldError;
+
+  if (uSecond > 59)
+    goto L_FieldError;
 
   // compute final field value
   xTime.m_uHour   = uHour;

@@ -617,7 +617,7 @@ bool File::bOpenAppend(Stz* szFilePath)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-bool File::bOpenMode(Stz* szFilePath, Stz* aOpenMode)
+bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
@@ -645,7 +645,9 @@ bool File::bOpenMode(Stz* szFilePath, Stz* aOpenMode)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_sFilePath   = szFilePath;
-  m_sOpenMode   = aOpenMode;
+  m_sOpenMode   = szOpenMode;
+  
+  //printf("File Open : %s : %s\n",m_sFilePath.azChar(),szOpenMode->azChar());
 
   m_aFile = fopen(m_sFilePath.azChar(),m_sOpenMode.azChar());
   
@@ -663,7 +665,7 @@ bool File::bOpenMode(Stz* szFilePath, Stz* aOpenMode)
   
   AM::vLogRes(SL_INF,this,RA_FIL_OPENED,
               "File opened: path=%s; mode=%s"_Stz, //!format-LogRes
-              szFilePath,aOpenMode);
+              szFilePath,szOpenMode);
 
   return true;
 }
@@ -695,7 +697,7 @@ bool File::bOpenWrite(Stz* szFilePath)
 /*----------------------------------------------------------------------------*/
 /* formatted print                                                            */
 /*----------------------------------------------------------------------------*/
-void File::vPrint(Stz* aFormat, ...)
+void File::vPrint(Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -703,13 +705,13 @@ void File::vPrint(Stz* aFormat, ...)
   
   va_list args;
 
-  va_start(args,aFormat);
+  va_start(args,szFormat);
   
 #ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrints++;
 #endif
   
-  i8 nPrinted = vfprintf(m_aFile,aFormat->azChar(),args);
+  i8 nPrinted = vfprintf(m_aFile,szFormat->azChar(),args);
   
 #ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrintBytes += nPrinted;
@@ -729,7 +731,7 @@ void File::vPrint(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* formatted print                                                            */
 /*----------------------------------------------------------------------------*/
-void File::vPrint(va_list args, Stz* aFormat)
+void File::vPrint(va_list args, Stz* szFormat)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -737,7 +739,7 @@ void File::vPrint(va_list args, Stz* aFormat)
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrints++;
 #endif
   
-  i8 nPrinted = vfprintf(m_aFile,aFormat->azChar(),args);
+  i8 nPrinted = vfprintf(m_aFile,szFormat->azChar(),args);
   
 #ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrintBytes += nPrinted;
@@ -779,14 +781,14 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* read next line (terminated by \n or EOF)                                   */
 /*----------------------------------------------------------------------------*/
-bool File::bReadLine(Stz* aDst)
+bool File::bReadLine(Stz* szDst)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   m_oSysCall.vClear();
   
   // collect by y
-  char *y = aDst->azChar();
+  char *y = szDst->azChar();
   
   // collect chars till \n or EOF
   for (;;) {
@@ -814,7 +816,7 @@ bool File::bReadLine(Stz* aDst)
       *y = '\0';
       
       // did we collect any chars?
-      if (*aDst->azChar()) {
+      if (*szDst->azChar()) {
         m_oSysCall.vSuccess();
         return true;
       }

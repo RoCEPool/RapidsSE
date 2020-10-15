@@ -81,7 +81,7 @@ void Step::vBpReadBufferPool(void)
 {
   ENTRY();
   
-  PoolHelper::vReadBuffers("/tmp/buffers.dmp"_Stz);
+  PoolHelper::vReadBuffers("../tmp/buffers.dmp"_Stz);
   
   EXIT();
 }
@@ -93,7 +93,7 @@ void Step::vBpWriteBufferPool(void)
 {
   ENTRY();
   
-  PoolHelper::vWritePersistentHeapMem("/tmp/persistentHeapMem.dmp"_Stz);
+  PoolHelper::vWritePersistentHeapMem("../tmp/persistentHeapMem.dmp"_Stz);
   
   EXIT();
 }

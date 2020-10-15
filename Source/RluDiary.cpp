@@ -24,7 +24,7 @@ RluDiary::RluDiary(void)
   m_nDiaryEnt = 0;
   
   m_sDiaryNm = "DiaryNm"_Stz;
-  m_sDiaryDir = "/tmp"_Stz;
+  m_sDiaryDir = "../tmp"_Stz;
   
   m_sTitle   = "Diary Report"_Stz;
   
