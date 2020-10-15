@@ -82,6 +82,8 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
     return;
   }
   
+  TagSet* pJobTags = AM::pPipelineJob()->pJobTags();
+  
   for (i8 i_OpCode = 0; i_OpCode < EO_ENUMS; i_OpCode++) {
         
     if (m_pTkn->bSame(aEO[i_OpCode])) {
@@ -91,16 +93,12 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
         case EA_DATE:
           vAcceptToken();
           if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
-            // extract the param no
-            i8 iParam;
-            i8 nDigits;
-            char* pParam = m_pTkn->azChars()+6;
-            StrLib::bExtractInteger(&pParam, &iParam, nDigits);
-            //vTrace("Got Param %lld\n"_Stz, iParam);
-            Token* pTkn = pLitTknVec->pGet(iParam);
-            if (pTkn->eToken() != TN_STRING)
+            i8 i_Ename = pJobTags->i_Find(m_pTkn->szChars());
+            ASSERT(i_Ename != C_UNKNOWN);
+            if (pJobTags->eToken(i_Ename) != TN_STRING)
               THROW_USER("vCollectOpcode"_Stz);
-            vAddCodeArg((eEO)i_OpCode, pTkn->szChars());
+            Stz* szParam = pJobTags->szValue(i_Ename);
+            vAddCodeArg((eEO)i_OpCode, szParam);
           }
           else
             vAddCodeArg((eEO)i_OpCode, m_pTkn->szChars());
@@ -127,16 +125,11 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
               }
             }
             else if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
-              // extract the param no
-              i8 iParam;
-              i8 nDigits;
-              char* pParam = m_pTkn->azChars()+6;
-              StrLib::bExtractInteger(&pParam, &iParam, nDigits);
-              //vTrace("Got Param %lld\n"_Stz, iParam);
-              Token* pTkn = pLitTknVec->pGet(iParam);
-              if (pTkn->eToken() != TN_INTEGER)
+              i8 i_Ename = pJobTags->i_Find(m_pTkn->szChars());
+              ASSERT(i_Ename != C_UNKNOWN);
+              if (pJobTags->eToken(i_Ename) != TN_INTEGER)
                 THROW_USER("vCollectOpcode"_Stz);
-              iArg = pTkn->iToI8();
+              iArg = pJobTags->iValue(i_Ename);
             }
             else {
               vTrace("\n*** Invalid integer argument to opCode %s ***\n"_Stz, m_pTkn->szChars());
@@ -155,16 +148,12 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
         case EA_STRING:
           vAcceptToken();
           if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
-            // extract the param no
-            i8 iParam;
-            i8 nDigits;
-            char* pParam = m_pTkn->azChars()+6;
-            StrLib::bExtractInteger(&pParam, &iParam, nDigits);
-            //vTrace("Got Param %lld\n"_Stz, iParam);
-            Token* pTkn = pLitTknVec->pGet(iParam);
-            if (pTkn->eToken() != TN_STRING)
+            i8 i_Ename = pJobTags->i_Find(m_pTkn->szChars());
+            ASSERT(i_Ename != C_UNKNOWN);
+            if (pJobTags->eToken(i_Ename) != TN_STRING)
               THROW_USER("vCollectOpcode"_Stz);
-            vAddCodeString((eEO)i_OpCode, pTkn->szChars());
+            Stz* szParam = pJobTags->szValue(i_Ename);
+            vAddCodeString((eEO)i_OpCode, szParam);
           }
           else
             vAddCodeString((eEO)i_OpCode, m_pTkn->szChars());
