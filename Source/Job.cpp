@@ -125,8 +125,6 @@ Job::Job(eCN eClassNo)
   //m_xResult
   // -- -- -- -- -- --
   
-  m_pLitTknVec = nullptr;
-  
   SP_Gid spId;
   
   vIncStepNo(); ++ gixJob;
@@ -176,8 +174,6 @@ Job::Job(ReqTuple* aReqTuple, TokenVec* pLitTknVec)
     
   //m_xResult
   // -- -- -- -- -- --
-  
-  m_pLitTknVec = pLitTknVec;
   
   SP_Gid spId;
   
@@ -478,6 +474,18 @@ void Job::vContentDump(void)
   }
   
   m_oJobTags.vContentDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if this job has a /diary ename tag                                    */
+/*----------------------------------------------------------------------------*/
+bool Job::bDiaryTag(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool bDiary = bHasTag(C_TAG_DIARY);
+  
+  return bDiary;
 }
 
 /*----------------------------------------------------------------------------*/

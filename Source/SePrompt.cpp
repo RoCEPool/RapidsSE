@@ -204,8 +204,18 @@ void SePrompt::vPromptLoop(void)
     if (bShortCut())
       continue;
     
-    // handle demo statement
-    vDemo();
+    // is it a demo statement ?
+    if (bDemo()) {
+      
+      // handle demo statement
+      if ( ! bHandleDemo() ) {
+        RASSERT(! m_pJob);
+        vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
+        if (AM::bDeveloper())
+          vDumpInpTknVec(true);
+        continue;
+      }
+    }
     
     while (bSubSsnTags())
       {;}
@@ -291,6 +301,8 @@ void SePrompt::vPromptLoop(void)
     
     if (m_pJob->bHasTag(C_TAG_TAGS))
       m_pJob->pJobTags()->vDumpSet();
+    
+    vMakeDiaryDir();
     
     m_oTimer.vStart();
     
@@ -415,7 +427,7 @@ void SePrompt::vDebugMode(i8 iDebugMode)
 /*----------------------------------------------------------------------------*/
 /* demo?                                                                      */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vDemo(void)
+bool SePrompt::bDemo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -424,85 +436,10 @@ void SePrompt::vDemo(void)
   
   // extract literals from the token vec
   if (pTkn->bSame("demo"_Stz)) {
-    
-    i8 iHash = 0;
-    i8 nSize;
-    
-    // calculate hash of statement and extract literals
-    for (i8 i_Tkn = 1; i_Tkn < m_pInpTknVec->nTokens(); i_Tkn++) {
-      
-      pTkn = m_pInpTknVec->pGet(i_Tkn);
-      
-      if ( pTkn->bIsNumeric()) {
-        m_pLitTknVec->vAppendToken(pTkn);
-        continue;
-      }
-   
-      if ( pTkn->bIsString()) {
-        m_pLitTknVec->vAppendToken(pTkn);
-        continue;
-      }
-    
-      nSize = StrLib::nLength(pTkn->azChars());
-      StrLib::vToLower(pTkn->azChars());
-      iHash += HshLib::iHash((byte*)pTkn->azChars(),nSize);
-    }
-    m_pLitTknVec->vDumpVec(0);
-
-    // reset the input token vector
-    m_pInpTknVec->vSoftReset();
-    
-    switch (iHash) {
-        
-      // Query 1
-      case 204757332167:
-        m_pInpTknVec->vTokeniseC(C_Query1);
-        m_pInpTknVec->vIntegrityCheck();
-        break;
-       
-      // Query 3
-      case 127443435585:
-        m_pInpTknVec->vTokeniseC(C_Query3);
-        m_pInpTknVec->vIntegrityCheck();
-        break;
-        
-      // Query 4
-      case 97354348505:
-        m_pInpTknVec->vTokeniseC(C_Query4);
-        m_pInpTknVec->vIntegrityCheck();
-        break;
-        
-      // Query 6
-      case 65290390556: {
-        m_pInpTknVec->vTokeniseC(C_Query6);
-        m_pInpTknVec->vIntegrityCheck();
-        
-        // collapse the decimal tokens to single integer
-        Token* pIntegralTkn = m_pLitTknVec->pGet(2);
-        Token* pFractionalTkn = m_pLitTknVec->pGet(3);
-        i8 iInteger = pIntegralTkn->iToI8() * 100 + pFractionalTkn->iToI8();
-        StrLib::vSprint(pIntegralTkn->azChars(), "%lld"_Stz, iInteger);
-        
-        // collapse the decimal tokens to single integer
-        pIntegralTkn = m_pLitTknVec->pGet(4);
-        pFractionalTkn = m_pLitTknVec->pGet(5);
-        iInteger = pIntegralTkn->iToI8() * 100 + pFractionalTkn->iToI8();
-        StrLib::vSprint(pIntegralTkn->azChars(), "%lld"_Stz, iInteger);
-        
-        m_pLitTknVec->vRemoveToken(3);
-        m_pLitTknVec->vRemoveToken(4);
-        vTrace("Collapsed decimals\n"_Stz);
-        m_pLitTknVec->vDumpVec(0);
-      }
-        break;
-        
-      default:
-        RASSERT(0);
-    }
-    
-    
+    return true;
   }
   
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -702,6 +639,97 @@ void SePrompt::vFocalOutline(s4K& sOutline)
 }
 
 /*----------------------------------------------------------------------------*/
+/* demo?                                                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bHandleDemo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Token* pTkn = m_pInpTknVec->pGet(0);
+  m_pLitTknVec->vSoftReset();
+  
+  // extract literals from the token vec
+  ASSERT(pTkn->bSame("demo"_Stz));
+    
+  i8 iHash = 0;
+  i8 nSize;
+  
+  // calculate hash of statement and extract literals
+  for (i8 i_Tkn = 1; i_Tkn < m_pInpTknVec->nTokens(); i_Tkn++) {
+    
+    pTkn = m_pInpTknVec->pGet(i_Tkn);
+    
+    if ( pTkn->bIsNumeric()) {
+      m_pLitTknVec->vAppendToken(pTkn);
+      continue;
+    }
+    
+    if ( pTkn->bIsString()) {
+      m_pLitTknVec->vAppendToken(pTkn);
+      continue;
+    }
+    
+    nSize = StrLib::nLength(pTkn->azChars());
+    StrLib::vToLower(pTkn->azChars());
+    iHash += HshLib::iHash((byte*)pTkn->azChars(),nSize);
+  }
+  //m_pLitTknVec->vDumpVec(0);
+  
+  // reset the input token vector
+  m_pInpTknVec->vSoftReset();
+  
+  switch (iHash) {
+      
+      // Query 1
+    case 204757332167:
+      m_pInpTknVec->vTokeniseC(C_Query1);
+      m_pInpTknVec->vIntegrityCheck();
+      break;
+      
+      // Query 3
+    case 127443435585:
+      m_pInpTknVec->vTokeniseC(C_Query3);
+      m_pInpTknVec->vIntegrityCheck();
+      break;
+      
+      // Query 4
+    case 97354348505:
+      m_pInpTknVec->vTokeniseC(C_Query4);
+      m_pInpTknVec->vIntegrityCheck();
+      break;
+      
+      // Query 6
+    case 65290390556: {
+      m_pInpTknVec->vTokeniseC(C_Query6);
+      m_pInpTknVec->vIntegrityCheck();
+      
+      // collapse the decimal tokens to single integer
+      Token* pIntegralTkn = m_pLitTknVec->pGet(2);
+      Token* pFractionalTkn = m_pLitTknVec->pGet(3);
+      i8 iInteger = pIntegralTkn->iToI8() * 100 + pFractionalTkn->iToI8();
+      StrLib::vSprint(pIntegralTkn->azChars(), "%lld"_Stz, iInteger);
+      
+      // collapse the decimal tokens to single integer
+      pIntegralTkn = m_pLitTknVec->pGet(4);
+      pFractionalTkn = m_pLitTknVec->pGet(5);
+      iInteger = pIntegralTkn->iToI8() * 100 + pFractionalTkn->iToI8();
+      StrLib::vSprint(pIntegralTkn->azChars(), "%lld"_Stz, iInteger);
+      
+      m_pLitTknVec->vRemoveToken(3);
+      m_pLitTknVec->vRemoveToken(4);
+      //vTrace("Collapsed decimals\n"_Stz);
+      //m_pLitTknVec->vDumpVec(0);
+    }
+      break;
+      
+    default:
+      return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* initise prompt settings tags                                               */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vInitialSettings(void)
@@ -781,6 +809,36 @@ void SePrompt::vLogFreeSpace(void)
               "%s on node %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.szStz(),
               AM::szNodeNm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* make diary dir                                                             */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vMakeDiaryDir(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  if (! m_pJob->bDiaryTag())
+    return;
+  
+  TagSet* pJobTagSet = m_pJob->pJobTags();
+  
+  Stz* szNote = pJobTagSet->szValue(C_TAG_NOTE);
+  
+  s256 sSummary;
+  
+  s256 sDiaryPath;
+  
+  sDiaryPath.vSprint("../tmp/Diary_%s"_Stz,AM::szSummaryDir(sSummary,szNote));
+  
+  vTrace("vMakeDiaryDir: %s\n"_Stz,sDiaryPath.szStz());
+  
+  if (! Dir::bExists(sDiaryPath)) {
+    bool b = Dir::bMake(sDiaryPath);
+    ASSERT(b);
+  }
+  
+  pJobTagSet->vInsert(C_TAG_DIARYDIR,sDiaryPath);
 }
 
 /*----------------------------------------------------------------------------*/

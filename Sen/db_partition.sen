@@ -80,6 +80,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* grab write lock on given table ptn (with 1ms sleep loop till grabbed)      */
+/*----------------------------------------------------------------------------*/
+: tablePtnGrabWrite_msec params| pTablePtn |
+
+  begin
+    pTablePtn tablePtn.attemptGrabWrite
+  not while
+    1 task::sleepMsec
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
 /* grab read lock on a partition of given table                               */
 /*----------------------------------------------------------------------------*/
 : tablePtnGrabRead ( pTablePtn -- )

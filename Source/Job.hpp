@@ -37,9 +37,6 @@ namespace Jobs
     Task*     m_pOriginatingTask; // originating task of the request
     i8        m_iOriginatingId;   // job id of originating job
     
-    // temp for demo : to go
-    TokenVec* m_pLitTknVec;
-    
   private:
     Decider m_oAcksRmg_2pc;   // acks remaining for coordinating 2pc job
     eSS     m_eSeed;          // seed to spawn
@@ -81,6 +78,7 @@ namespace Jobs
     void vBufferQueue(Queue* pBufferQueue);
     Queue* pBufferQueue(void);
     void vContentDump(void);
+    bool bDiaryTag(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasTag(Stz* szEnameTag);
     void vIncRowsProcessed(void);

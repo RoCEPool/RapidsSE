@@ -123,6 +123,7 @@ Label NXT_SRC
   EO_RSB_SRC_NEXT
   EO_JMP_FALSE QRY_302_DONE
 
+  //EO_RSB_SRC_PRINT
   //EO_CALL,"CPY_DST
   EO_CALL LIM_SBR
 
@@ -148,12 +149,12 @@ EO_RETURN
 // SUBROUTINE: LIM_SBR  --                                        Q302 LIM_SBR
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Label LIM_SBR
-  EO_PRINTF "**LIM_SBR**\n"
+  //EO_PRINTF "**LIM_SBR**\n"
   //EO_IXT_TMP_ENTRIES
   //EO_PRINT
 
   EO_IXT_TMP_ENTRIES
-  EO_INTEGER 10
+  EO_INTEGER <param3>
   EO_LESSTHAN
   EO_JMP_TRUE LIM_INS
 
@@ -173,14 +174,15 @@ Label LIM_TST
 
   // -- -- -- -- -- -- -- -- --
 Label LIM_INS
-  EO_PRINTF "LIM_INS\n"
+  //EO_PRINTF "LIM_INS\n"
 
   EO_ENTWRK_RESET
 
   EO_RSB_SRC_PUSHCOLI 1 // Q301_REVENUE
   //EO_DUP
   //EO_PRINT
-  EO_ENTWRK_APPENDELMI
+  //EO_ENTWRK_APPENDELMI
+  EO_ENTWRK_SETINTELM
 
   EO_ENTWRK_CREATEPAY 24 //3 * C_BYTES_PER_WORD
 
@@ -215,7 +217,7 @@ Label OUT_AGG
   EO_JMP_FALSE TRV_RET
 
   Label TRV_ECH
-  EO_PRINTF "TRV_ECH\n"
+  //EO_PRINTF "TRV_ECH\n"
 
   EO_RSB_DST_NEW
 
@@ -231,7 +233,7 @@ Label OUT_AGG
   EO_PAY_FETCH_COLI 2
   EO_RSB_DST_POPCOLI 3 // Q302_SHIPPRIORITY
 
-  EO_RSB_DST_PRINT
+  //EO_RSB_DST_PRINT
 
 Label TRV_NXT
   EO_IXT_TRV_NEXT

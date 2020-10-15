@@ -54,6 +54,10 @@ void Engine::vPreliminary(void)
   //OpSys::vGetInfo();
   //OpSys::vTraceInfo();
   
+  vChangeDirectory(); //! what happens if this fails?
+  
+  vCreateTmpDir();
+  
   vOpenTrace();
 
   vPrintWelcome();
@@ -107,8 +111,6 @@ void Engine::vPreliminary(void)
   vSanityCheck();
   
   //vWriteRegionName();
-  
-  vChangeDirectory(); //! what happens if this fails?
   
   EnvCheck::vCheckManifest(); //! what happens if this fails
  
@@ -580,17 +582,17 @@ void Engine::vCreateFileNames(void)
   
   // "SEgrid" to be gxArgs.m_sGridName.szStz()
 #ifdef WITH_DEBUG_VERSION
-  gpAttachMap->m_sTraceFile.vSprint("/tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
+  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
                                     "SEgrid"_Stz, gxArgs.m_sNodeName.szStz());
   gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s_Debug"_Stz,"SEgrid"_Stz);
-  gpAttachMap->m_sLogCsvFile.vSprint("/tmp/SE_Log_%s_Debug.csv"_Stz,"SEgrid"_Stz);
-  gpAttachMap->m_sLogTxtFile.vSprint("/tmp/SE_Log_%s_Debug.txt"_Stz,"SEgrid"_Stz);
+  gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s_Debug.csv"_Stz,"SEgrid"_Stz);
+  gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s_Debug.txt"_Stz,"SEgrid"_Stz);
 #else
-  gpAttachMap->m_sTraceFile.vSprint("/tmp/SE_Trace_%s_%s.txt"_Stz,
+  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
                                     "SEgrid"_Stz, gxArgs.m_sNodeName.szStz());
   gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s"_Stz, "SEgrid"_Stz);
-  gpAttachMap->m_sLogCsvFile.vSprint("/tmp/SE_Log_%s.csv"_Stz, "SEgrid"_Stz);
-  gpAttachMap->m_sLogTxtFile.vSprint("/tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
+  gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s.csv"_Stz, "SEgrid"_Stz);
+  gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
 #endif
   
   if (AM::bVerboseProgress()) {
@@ -599,6 +601,24 @@ void Engine::vCreateFileNames(void)
     vInfo("Log file path (text): %s\n"_Stz,gpAttachMap->m_sLogTxtFile.szStz());
 
     vInfo("Log region name: %s\n"_Stz,gpAttachMap->m_sLogRegion.szStz());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* create temp dir                                                            */
+/*----------------------------------------------------------------------------*/
+void Engine::vCreateTmpDir(void)
+{
+  _static_
+  
+  if (! Dir::bExists("../tmp"_Stz)) {
+    
+    bool bMade = Dir::bMake("../tmp"_Stz);
+    
+    if (! bMade && !Dir::bExists("../tmp"_Stz)) {
+      fprintf(stderr,"Unable to make ../tmp directory\n");
+      Process::vExitFailure();
+    }
   }
 }
 
@@ -1115,11 +1135,11 @@ void Engine::vOpenTrace(void)
   s256 sTracePath;
   
   #ifdef WITH_DEBUG_VERSION
-    sTracePath.vSprint("/tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
+    sTracePath.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
                        "SEgrid"_Stz,
                        gxArgs.m_sNodeName.szStz());
   #else
-    sTracePath.vSprint("/tmp/SE_Trace_%s_%s.txt"_Stz,
+    sTracePath.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
                        "SEgrid"_Stz,
                        gxArgs.m_sNodeName.szStz());
   #endif

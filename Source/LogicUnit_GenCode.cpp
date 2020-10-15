@@ -65,14 +65,14 @@ void LogicUnit::vBeginToken(i8 i_Tkn)
   m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
   
 #ifdef WITH_TRACE_LOGICUNIT
-  vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szChars());
+  //vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szChars());
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
 /* set token on which parsing begins                                          */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
+void LogicUnit::vCollectOpcode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -82,6 +82,8 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
     return;
   }
   
+  TagSet* pJobTags = AM::pPipelineJob()->pJobTags();
+  
   for (i8 i_OpCode = 0; i_OpCode < EO_ENUMS; i_OpCode++) {
         
     if (m_pTkn->bSame(aEO[i_OpCode])) {
@@ -90,15 +92,13 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
           
         case EA_DATE:
           vAcceptToken();
-          if (0 == StrLib::iCompare(m_pTkn->azChars(),"PARAM", 5,  C_CASE)) {
-            // extract the param no
-            i8 iParam;
-            i8 nDigits;
-            char* pParam = m_pTkn->azChars()+5;
-            StrLib::bExtractInteger(&pParam, &iParam, nDigits);
-            //vTrace("Got Param %lld\n"_Stz, iParam);
-            Token* pTkn = pLitTknVec->pGet(iParam);
-            vAddCodeArg((eEO)i_OpCode, pTkn->szChars());
+          if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
+            i8 i_Ename = pJobTags->i_Find(m_pTkn->szChars());
+            ASSERT(i_Ename != C_UNKNOWN);
+            if (pJobTags->eToken(i_Ename) != TN_STRING)
+              THROW_USER("vCollectOpcode"_Stz);
+            Stz* szParam = pJobTags->szValue(i_Ename);
+            vAddCodeArg((eEO)i_OpCode, szParam);
           }
           else
             vAddCodeArg((eEO)i_OpCode, m_pTkn->szChars());
@@ -124,15 +124,12 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
                   break;
               }
             }
-            else if (0 == StrLib::iCompare(m_pTkn->azChars(),"PARAM", 5,  C_CASE)) {
-              // extract the param no
-              i8 iParam;
-              i8 nDigits;
-              char* pParam = m_pTkn->azChars()+5;
-              StrLib::bExtractInteger(&pParam, &iParam, nDigits);
-              //vTrace("Got Param %lld\n"_Stz, iParam);
-              Token* pTkn = pLitTknVec->pGet(iParam);
-              iArg = pTkn->iToI8();
+            else if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
+              i8 i_Ename = pJobTags->i_Find(m_pTkn->szChars());
+              ASSERT(i_Ename != C_UNKNOWN);
+              if (pJobTags->eToken(i_Ename) != TN_INTEGER)
+                THROW_USER("vCollectOpcode"_Stz);
+              iArg = pJobTags->iValue(i_Ename);
             }
             else {
               vTrace("\n*** Invalid integer argument to opCode %s ***\n"_Stz, m_pTkn->szChars());
@@ -150,15 +147,13 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
           
         case EA_STRING:
           vAcceptToken();
-          if (0 == StrLib::iCompare(m_pTkn->azChars(),"PARAM", 5,  C_CASE)) {
-            // extract the param no
-            i8 iParam;
-            i8 nDigits;
-            char* pParam = m_pTkn->azChars()+5;
-            StrLib::bExtractInteger(&pParam, &iParam, nDigits);
-            //vTrace("Got Param %lld\n"_Stz, iParam);
-            Token* pTkn = pLitTknVec->pGet(iParam);
-            vAddCodeString((eEO)i_OpCode, pTkn->szChars());
+          if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
+            i8 i_Ename = pJobTags->i_Find(m_pTkn->szChars());
+            ASSERT(i_Ename != C_UNKNOWN);
+            if (pJobTags->eToken(i_Ename) != TN_STRING)
+              THROW_USER("vCollectOpcode"_Stz);
+            Stz* szParam = pJobTags->szValue(i_Ename);
+            vAddCodeString((eEO)i_OpCode, szParam);
           }
           else
             vAddCodeString((eEO)i_OpCode, m_pTkn->szChars());
@@ -189,7 +184,7 @@ void LogicUnit::vCollectOpcode(TokenVec* pLitTknVec)
 /*----------------------------------------------------------------------------*/
 /* generate asm code for given text                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAsm(Stz* aText, TokenVec* pLitTknVec)
+bool LogicUnit::bGenerateAsm(Stz* aText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -222,11 +217,19 @@ void LogicUnit::vGenerateAsm(Stz* aText, TokenVec* pLitTknVec)
   
   while (m_i_Tkn <  nTokens - 1) {
     vAcceptToken();
-    vCollectOpcode(pLitTknVec);
+    try {
+      vCollectOpcode();
+    }
+    catch (Exception xException) {
+      m_pTknVec->vSetAllTokens();
+      return false;
+    }
   }
   
   m_pTknVec->vSetAllTokens();
   //vDumpCode();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1141,11 +1144,25 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
   vAddCode(EO_GREATERTHAN);
   vAddCodeLabel(EO_JMP_FALSE,"NXT_AGG:"_Stz);
+  vAddCodeLabel(EO_JMP,"CHECK_DATE:"_Stz);
+  
+  vDefineLabel("NXT_AGG2:"_Stz);
+  vAddCode(EO_IXT_ALT_NEXT);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_AGG:"_Stz);
+  vAddCode(EO_IXT_CMP_WRKALT);
+  vAddCodeLabel(EO_JMP_FALSE,"RET_AGG:"_Stz);
+  
+  vAddCode(EO_CRW_ALT_DEREF);
+  
+  vDefineLabel("CHECK_DATE:"_Stz);
+  vAddCodeArg(EO_COL_ALT_PUSHONE,L_SHIPDATE);
+  vAddCodeArg(EO_DATE, "1995-03-15"_Stz);
+  vAddCode(EO_GREATERTHAN);
+  vAddCodeLabel(EO_JMP_FALSE,"NXT_AGG2:"_Stz);
   
   vAddCodeArg(EO_RSB_DST_PUSHCOLI,Q301_REVENUE);
   vAddCodeArg(EO_COL_ALT_PUSHONE,L_EXTENDEDPRICE);
-  vAddCode(EO_ADD);
-
+  
   vAddCodeArg(EO_INTEGER,100);
   vAddCodeArg(EO_COL_ALT_PUSHONE,L_DISCOUNT);
   vAddCode(EO_SUBTRACT);
@@ -1153,20 +1170,23 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCode(EO_MULTIPLY);
   vAddCodeArg(EO_INTEGER,100);
   vAddCode(EO_DIVIDE);
-
+  
+  vAddCode(EO_ADD);
+  
   vCC(2); vAddCode(EO_DUP);
   vCC(2); vAddCodeArg(EO_RSB_SRC_PUSHCOLI,Q300_ORDERKEY);
   vCC(2); vAddCodeString(EO_PRINTF,"  totalled L_OrderKey %i revenue %i\n"_Stz);
   
   vAddCodeArg(EO_RSB_DST_POPCOLI,Q301_REVENUE);
 
-  vAddCodeLabel(EO_JMP,"NXT_AGG:"_Stz);
+  vAddCodeLabel(EO_JMP,"NXT_AGG2:"_Stz);
   
-  vDefineLabel("RET_AGG_f:"_Stz);
+  vDefineLabel("RET_AGG:"_Stz);
   
   // not quite right...
   vAddCodeLabel(EO_CALL,"LIM_SBR:"_Stz);
   
+  vDefineLabel("RET_AGG_f:"_Stz);
   vAddCode(EO_RETURN);
 
 
@@ -1229,7 +1249,7 @@ void LogicUnit::vGenerateQuery301(void)
 
   // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_RET:"_Stz);
-  //vAddCodeArg(EO_IXT_DUMP,(i8)0);
+  //vAddCode(EO_IXT_DUMP);
   vAddCode(EO_RETURN);
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   // END ROUTINE: LIM_SBR                                           Q301 LIM_SBR
@@ -1240,6 +1260,8 @@ void LogicUnit::vGenerateQuery301(void)
   // SUBROUTINE: OUT_AGG  --                                        Q301 OUT_AGG
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("OUT_AGG:"_Stz);
+  
+  //vAddCode(EO_IXT_DUMP);
   
   vAddCode(EO_RSB_DST_RESET);
 
@@ -1262,8 +1284,7 @@ void LogicUnit::vGenerateQuery301(void)
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_ORDERDATE);
   vAddCodeArg(EO_PAY_FETCH_COLI,(i8)2);
   vAddCodeArg(EO_RSB_DST_POPCOLI, Q301_SHIPPRIORITY);
-
-
+  
   vDefineLabel("TRV_NXT:"_Stz);
   vAddCode(EO_IXT_TRV_NEXT);
   vAddCodeLabel(EO_JMP_TRUE,"TRV_ECH:"_Stz);
@@ -1356,7 +1377,7 @@ void LogicUnit::vGenerateQuery302(void)
   vAddCodeArg(EO_INTEGER,10);
   vAddCode(EO_LESSTHAN);
   vAddCodeLabel(EO_JMP_TRUE,"LIM_INS:"_Stz);
-
+  
   // -- -- -- -- -- -- -- -- --
   vDefineLabel("LIM_TST:"_Stz);
   
@@ -1379,7 +1400,8 @@ void LogicUnit::vGenerateQuery302(void)
   vAddCodeArg(EO_RSB_SRC_PUSHCOLI, Q301_REVENUE);
   //vAddCode(EO_DUP);
   //vAddCode(EO_PRINT);
-  vAddCode(EO_ENTWRK_APPENDELMI);
+  //vAddCode(EO_ENTWRK_APPENDELMI);
+  vAddCode(EO_ENTWRK_SETINTELM);
   
   vAddCodeArg(EO_ENTWRK_CREATEPAY, 3 * C_BYTES_PER_WORD);
 

@@ -348,6 +348,18 @@ bool AM::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
   return CmdHelper::bParseCmd(pTagSet,pTknVec);
 }
 
+
+Job* AM::pPipelineJob(void)
+{
+  
+  Job* pOpJob = AM::pTaskJob();
+  
+  Job* pPipelineJob = pOpJob->m_pOp->pPipeline()->pJob();
+  return pPipelineJob;
+}
+
+
+
 void AM::vPoolAnalyze(void)   { return PoolHelper::vPoolAnalyze(); }
 
 eEC AM::ePopulateJob(Job* pJob, TagSet* pTagSet)
@@ -689,6 +701,23 @@ Stz* AM::szSummary(s256& sSummary)
                    AM::nThreads(),
                    AM::szBuild(),
                    spNow.sz()
+                   );
+  
+  return sSummary.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* quick config summary usefule for dir name                                  */
+/*----------------------------------------------------------------------------*/
+Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
+{
+  Now spNow;
+  
+  sSummary.vSprint("%s_%lldN%lldP%lldT"_Stz,
+                   szNote,
+                   AM::nDefinedNodes(),
+                   AM::nSlotsPerNode(),
+                   AM::nThreads()
                    );
   
   return sSummary.szStz();

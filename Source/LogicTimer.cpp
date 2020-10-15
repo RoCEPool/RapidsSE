@@ -76,7 +76,7 @@ void LogicTimer::vReport(void)
 
   s256 sFileNm;
   
-  sFileNm.vSprint("/tmp/Sql%lld.csv"_Stz,m_iQueryFrag);
+  sFileNm.vSprint("../tmp/Sql%lld.csv"_Stz,m_iQueryFrag);
   
   
   File* pFile = new File(nullptr);

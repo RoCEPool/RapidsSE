@@ -74,12 +74,15 @@ void Step::vToRsbRegDangling(void)
 {
   ENTRY();
   
-  ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
+  if (m_pLogicUnit->m_xpToRsb.bIsNull()) {
+    m_pDataStack->vPushPtr(nullptr);
+  }
+  else {
+    ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
+    RsbBuffer* pRsbBuffer = pToRsb->pDanglingRsbBuffer();
+    m_pDataStack->vPushPtr(pRsbBuffer);
+  }
   
-  RsbBuffer* pRsbBuffer = pToRsb->pDanglingRsbBuffer();
-  
-  m_pDataStack->vPushPtr(pRsbBuffer);
-
   EXIT();
 }
 

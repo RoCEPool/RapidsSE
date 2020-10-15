@@ -85,11 +85,15 @@
 /*----------------------------------------------------------------------------*/
 : genAsm params| fileName bCompile |
 
-  fileName LogicUnit[].genAsm
-  bCompile 1 == if
-    LogicCompiler[].new
-    LogicCompiler[].compile
-  then
+  fileName LogicUnit[].genAsm if
+    bCompile 1 == if
+      LogicCompiler[].new
+      LogicCompiler[].compile
+    then
+    true
+  else
+    false
+ then
 ;
 
 /*============================================================================*/

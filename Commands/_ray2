@@ -9,23 +9,30 @@ print section "Create LineItem";
 
 _lineitem
 
-//_lineitemIndex
+_lineitemIndex
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Load LineItem";
+
+//print "Sleeping ...";
+//sleep 5;
 
 // /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv"    <max_errors> =  100;
 // /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv"   <max_errors> =  100;
-// /time /summary fload lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv" <note> = "10k" <max_errors> =  100;
-/time /summary /diary fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <note> = "100k" <max_errors> =  100;
+/time /summary fload lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv" <note> = "10k" <max_errors> =  100;
+// /time /summary /diary fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <note> = "100k" <max_errors> =  100;
 // /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1m.csv" <max_errors> =  100;
-// /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv"      <max_errors> =  100;
-// /time /summary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100;
+// /tags /time /summary /diary fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv"      <max_errors> =  100 <note> = "SF1";
+// /time /summary /diary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10";
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Load LineItem";
+print section "Indexes LineItem";
 
-compactidx lineitem lineitem_idx1;
+
+// /time compactidx lineitem lineitem_idx1;
+szidx lineitem lineitem_idx1;
+/time compact index lineitem lineitem_idx1;
+szidx lineitem lineitem_idx1;
 
 /*============================================================================*/
 /* end                                                                        */
@@ -33,9 +40,16 @@ compactidx lineitem lineitem_idx1;
 
 /*
  
-intial timing of fload : 6 Oct 2020 for SF10 1N8P on Ray's machine
+Without index
  
-time 20208ms
-
-[10k 1N8P48T 2020-10-06 08:04:09] time 7129ms
+[SF10 1N1P48T release 2020-10-07 11:36:18] time 113390ms
+[SF10 1N2P48T release 2020-10-07 11:41:35] time 60656ms
+[SF10 1N4P48T release 2020-10-07 11:42:50] time 32064ms
+[SF10 1N6P48T release 2020-10-07 11:44:04] time 24265ms
+[SF10 1N8P48T release 2020-10-07 11:45:10] time 20545ms
+[SF10 1N10P48T release 2020-10-07 11:46:18] time 18580ms
+[SF10 1N12P48T release 2020-10-07 11:49:02] time 17967ms
+[SF10 1N14P48T release 2020-10-07 11:50:18] time 18094ms
+[SF10 1N16P48T release 2020-10-07 11:51:41] time 18330ms
+ 
 */

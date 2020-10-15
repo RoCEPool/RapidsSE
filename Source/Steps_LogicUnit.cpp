@@ -15,6 +15,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].altTable@"_Stz,     &Step::vLogicUnitAltTableFetch);
   
   vAddStep("LogicUnit[].diaryAction"_Stz,   &Step::vLogicUnitDiaryAction);
+  vAddStep("LogicUnit[].diaryDir"_Stz,      &Step::vLogicUnitDiaryDir);
   vAddStep("LogicUnit[].diary@"_Stz,        &Step::vLogicUnitDiaryFetch);
   vAddStep("LogicUnit[].diaryJobNote"_Stz,  &Step::vLogicUnitDiaryJobNote);
   vAddStep("LogicUnit[].diaryName"_Stz,     &Step::vLogicUnitDiaryName);
@@ -167,6 +168,21 @@ void Step::vLogicUnitDiaryNote(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* LogicUnit[].diaryDir -- set diary dir                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitDiaryDir(void)
+{
+  ENTRY();
+  
+  s256 sDir;
+  m_pDataStack->vPopStr(sDir, __func__);
+
+  m_pLogicUnit->vDiaryDir(sDir);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* LogicUnit[].diaryTitle -- set diary title                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vLogicUnitDiaryTitle(void)
@@ -232,9 +248,10 @@ void Step::vLogicUnitGenAsm(void)
   i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
   
   //vTrace("FILE %s\n"_Stz, sFileName.azChar());
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  Job* pPipelineJob = pOp->pPipeline()->pJob();
-  m_pLogicUnit->vGenerateAsm(sText, pPipelineJob->m_pLitTknVec);
+  
+  bool bResult = m_pLogicUnit->bGenerateAsm(sText);
+  
+  m_pDataStack->vPushInt(bResult);
   
   EXIT();
 }

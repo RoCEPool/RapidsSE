@@ -258,6 +258,7 @@ namespace Oblique
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bParseCmd(TagSet* pTagSet, TokenVec* pTknVec);
+    static Job* pPipelineJob(void);
     static void vPoolAnalyze(void);
     static eEC ePopulateJob(Job* pJob, TagSet* pTagSet);
     static void vPrintGlobals(void);
@@ -291,6 +292,7 @@ namespace Oblique
     static void vSpawnJob_service(Job* pJob);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
     static Stz* szSummary(s256& sSummary);
+    static Stz* szSummaryDir(s256& sSummary, Stz* szNote);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

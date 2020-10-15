@@ -184,6 +184,7 @@ namespace Expressions
     void vDiaryName(Stz* szName);
     void vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
                     i2 iAction, i2 i_ActEnumGroup, i2 i_ActEnum, i8 nQueueLength);
+    void vDiaryDir(Stz* szDir);
     void vDiaryTitle(Stz* szTitle);
     i8   iDynFun(i8 nOuterArgs, i8 iOuterArg0);
     void vEndOptimise(void);
@@ -211,11 +212,11 @@ namespace Expressions
 
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
-    void vCollectOpcode(TokenVec* pLitTknVec);
+    void vCollectOpcode(void);
     
     void vGenCode(i8 iTestNo);
   
-    void vGenerateAsm(Stz* sText, TokenVec* pLitTknVec);
+    bool bGenerateAsm(Stz* sText);
     
     // TPCH Queries
     void vGenerateQuery100(void);

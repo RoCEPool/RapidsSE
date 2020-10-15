@@ -99,6 +99,43 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   else
     pJob = new Job(axReqTuple);
   
+  // To GO : For DEMO
+  // create tags in the job for the params from the literal token vector
+  if (pLitTknVec && pLitTknVec->nItems()) {
+    
+    TagSet* pJobTags = pJob->pJobTags();
+    
+    for (i8 i_Tkn = 0; i_Tkn < pLitTknVec->nItems(); i_Tkn++) {
+      
+      Token* pTkn = pLitTknVec->pGet(i_Tkn);
+      
+      Stz* szTag;
+      switch(i_Tkn) {
+        case 0: szTag = C_TAG_PARAM0; break;
+        case 1: szTag = C_TAG_PARAM1; break;
+        case 2: szTag = C_TAG_PARAM2; break;
+        case 3: szTag = C_TAG_PARAM3; break;
+        case 4: szTag = C_TAG_PARAM4; break;
+        default:
+          RASSERT(0);
+      }
+      
+      switch(pTkn->eToken()) {
+      case TN_STRING:
+        pJobTags->vInsert(szTag,pLitTknVec->pGet(i_Tkn)->szChars());
+        break;
+      case TN_INTEGER:
+        pJobTags->vInsert(szTag,pLitTknVec->pGet(i_Tkn)->iToI8());
+        break;
+      default:
+        RASSERT(0);
+      }
+
+    }
+    
+    pJobTags->vContentDump();
+  }
+  
   pJob->ePopulateJob(pTagSet);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

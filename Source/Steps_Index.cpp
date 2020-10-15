@@ -15,6 +15,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index[].columnCount@"_Stz,  &Step::vIndexColumnCountFetch);
   vAddStep("index[].column@"_Stz,       &Step::vIndexColumnFetch);
   vAddStep("index[].compact"_Stz,       &Step::vIndexCompact);
+  vAddStep("index[].compactPtn"_Stz,    &Step::vIndexCompactPtn);
   vAddStep("index[].deleteNext"_Stz,    &Step::vIndexDeleteNext);
   vAddStep("index[].dump"_Stz,          &Step::vIndexDump);
   vAddStep("index[].genEntBuffer"_Stz,  &Step::vIndexGenEntBuffer);
@@ -71,7 +72,7 @@ void Step::vIndexColumnCountFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.compact -- index compaction                                          */
+/* index[].compact -- index compaction                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexCompact(void)
 {
@@ -82,6 +83,31 @@ void Step::vIndexCompact(void)
   
   pIndex->pTable()->vCompactIndex(pIndex);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index[].compactPtn -- compact index partition                              */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexCompactPtn(void)
+{
+  ENTRY();
+  
+  Index* pIndex = *m_pLogicUnit->m_xpIndex;
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iIdxNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  
+  Job* pJob = m_pTask->m_pJob;
+  i8 i_Ptn  = pJob->m_pOp->iPartition();
+  i8 i_Slot = TablePtn::iPartitionToSlot(i_Ptn);
+
+  
+  IndexTree *pIndexTree = pTable->pPartition(i_Slot)->pIndexTree(iIdxNo);
+  
+  pIndexTree->vCompact();
+
   EXIT();
 }
 
@@ -436,7 +462,7 @@ void Step::vIndexIndexTree(void)
   
   Job* pJob = m_pTask->m_pJob;
   
-  i8 iPtn = pJob->m_pOp->nPartition();
+  i8 iPtn = pJob->m_pOp->iPartition();
 
   i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
 

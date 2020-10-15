@@ -38,6 +38,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
   vAddStep("table.streamDef!"_Stz,         &Step::vTableStreamDefStore);
   vAddStep("table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
+  vAddStep("table[].tablePtnZero"_Stz,     &Step::vTableTablePtnZero);
   vAddStep("table[].verify"_Stz,           &Step::vTableVerify);
   vAddStep("table[].visualize"_Stz,        &Step::vTableVisualize);
 }
@@ -298,7 +299,27 @@ void Step::vTableTablePtnFetch(void)
   
   Job* pJob = m_pTask->m_pJob;
   
-  i8 iPtn = pJob->m_pOp->nPartition();
+  i8 iPtn = pJob->m_pOp->iPartition();
+  i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
+  TablePtn* pTablePtn = pTable->pPartition(iSlot);
+  
+  m_pDataStack->vPushPtr(pTablePtn);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Table[].tablePtnZer0 -- fetch table partition[0]                           */
+/*----------------------------------------------------------------------------*/
+void Step::vTableTablePtnZero(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+  
+  Job* pJob = m_pTask->m_pJob;
+  
+  i8 iPtn = 0; // pJob->m_pOp->iPartition();
   
   i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
   TablePtn* pTablePtn = pTable->pPartition(iSlot);

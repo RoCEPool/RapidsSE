@@ -449,6 +449,9 @@ void Task::vDump(void)
   
   AM::vJobContentDump(m_pJob);
   
+  if (m_pLogicUnit->m_xpOp.bIsNotNull())
+    m_pLogicUnit->m_xpOp->vDump();
+  
   m_pLogicUnit->vContentDump();
   
   m_pForth->vContentDump();

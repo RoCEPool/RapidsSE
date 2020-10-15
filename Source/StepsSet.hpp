@@ -455,6 +455,7 @@ public:
   void vIndexColumnFetch(void);
   void vIndexColumnCountFetch(void);
   void vIndexCompact(void);
+  void vIndexCompactPtn(void);
   void vIndexDump(void);
   void vIndexGenEntBuffer(void);
   void vIndexGenEntBuffers(void);
@@ -944,6 +945,7 @@ public:
   void vLogicUnitCalledAgainFetch(void);
   void vLogicUnitCalledAgainStore(void);
   void vLogicUnitDiaryAction(void);
+  void vLogicUnitDiaryDir(void);
   void vLogicUnitDiaryFetch(void);
   void vLogicUnitDiaryJobNote(void);
   void vLogicUnitDiaryName(void);
@@ -1579,6 +1581,7 @@ public:
   void vTableStreamDefFetch(void);
   void vTableStreamDefStore(void);
   void vTableTablePtnFetch(void);
+  void vTableTablePtnZero(void);
   void vTableVerify(void);
   void vTableVisualize(void);
 

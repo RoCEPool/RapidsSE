@@ -208,6 +208,27 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete
+  sPath
+  "
+  procedure compact index
+    parameters $tableNm $indexNm
+  begin
+
+    stage stageA on origin :
+      start | periodicOp once | stageB
+
+    stage stageB on all partitions :
+      compactIndexPtn $tableNm $indexNm | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop catalog
   sPath
   "

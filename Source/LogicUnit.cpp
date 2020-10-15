@@ -303,6 +303,20 @@ void LogicUnit::vDiaryJobNote(Stz *szJobNote)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set diary dir                                                              */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vDiaryDir(Stz *szDir)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  if (!m_pRluDiary)
+    m_pRluDiary = new RluDiary;
+
+  
+  m_pRluDiary->vDiaryDir(szDir);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add diary note                                                             */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
@@ -443,7 +457,7 @@ void LogicUnit::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_xRluCommon.m_i_Slot = AM::pTaskJob()->m_pOp->nPartition();
+  m_xRluCommon.m_i_Slot = AM::pTaskJob()->m_pOp->iPartition();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -840,13 +854,15 @@ void LogicUnit::vDiaryReport(void)
   s256 sDiaryPath;
   
   if (0 != m_xRluCommon.m_iSql)
-    sDiaryPath.vSprint("/tmp/RluDiary_%s_%lld_%lld.csv"_Stz,
+    sDiaryPath.vSprint("%s/RluDiary_%s_%lld_%lld.csv"_Stz,
+                       m_pRluDiary->szDiaryDir(),
                        m_pRluDiary->szDiaryNm(),
                        m_xRluCommon.m_iSql,
                        m_xRluCommon.m_i_Slot
                        );
   else
-    sDiaryPath.vSprint("/tmp/RluDiary_%s.csv"_Stz,
+    sDiaryPath.vSprint("%s/RluDiary_%s.csv"_Stz,
+                       m_pRluDiary->szDiaryDir(),
                        m_pRluDiary->szDiaryNm()
                        );
 
@@ -1221,7 +1237,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     *(++aiDstk) = iOuterArg0;
   }
   
-  aRluCommon->m_i_Slot = AM::pTaskJob()->m_pOp->nPartition();
+  aRluCommon->m_i_Slot = AM::pTaskJob()->m_pOp->iPartition();
   aRluCommon->m_nPtns  = AM::nPartitions();
   aRluCommon->m_iHash  = 0;
 
@@ -2122,7 +2138,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
                    + iBuffer * C_1MB
                    + C_CRW_FIRSTHEAD
                    + iItem * aRluCommon->m_nSrcHeadSize );
-
+        
         break;//+endCase
         
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src rsb
@@ -2449,9 +2465,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           
           //printf("  m_aAltEntArray %p\n",(void*)aRluCommon->m_aAltEntArray);
           //printf("  tNext %d\n",tNext);
-          
           aRluCommon->m_aAltEnt =
             (struct Ent_int*) ( (char*)aRluCommon->m_aAltEntArray + (tNext*32) ) ;
+          
+          //
+          // This is to fix the problem where the last entry in the index
+          // was being returned twice !!!
+          //
+          // we need to set the m_aEnt back in the m_pDevAltIxt so that when we come in
+          // and hit C_ENT_TICKET pMoveToNextEntry moves to the end rather than return
+          // the last entry again !!!
+          vDev_IXT_SET_ENT(pLU,aRluCommon->m_pDevAltIxt,aRluCommon->m_aAltEnt);
           
           //printf("  m_aAltEnt %p\n",(void*)aRluCommon->m_aAltEnt);
 

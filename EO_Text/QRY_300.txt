@@ -124,9 +124,14 @@ Label PRC_CUS
   EO_CRW_SRC_DEREF
 
   EO_COL_SRC_PUSHONE_a 6 //C_MKTSEGMENT
-  EO_STR_LITERAL "BUILDING"
+  EO_STR_LITERAL <param0>
   EO_STR_COMPARE_a
   EO_JMP_NOTEQUAL NXT_CUSTOMER
+
+////
+//EO_COL_SRC_PUSHONE 0
+//EO_PRINTF "Next C_CustKey %i\n"
+////
 
   EO_CALL JOI_ORD
 
@@ -152,6 +157,7 @@ Label QRY_300_DONE
 // SUBROUTINE: JOI_ORD  -- join with orders                       Q300 JOI_ORD
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Label JOI_ORD
+  //EO_PRINTF "*** JOI_ORD ***\n"
   EO_IXT_POS_ALTBYSRC
   EO_JMP_FALSE RET_ORD
 
@@ -165,9 +171,14 @@ Label NXT_ORD
   EO_CRW_ALT_DEREF
 
   EO_COL_ALT_PUSHONE 4 //O_ORDERDATE
-  EO_DATE  "1995-03-15"
+  EO_DATE  <param1>
   EO_LESSTHAN
   EO_JMP_FALSE NXT_ORD
+
+////
+//EO_COL_ALT_PUSHONE 0
+//EO_PRINTF "joined O_OrderKey %i\n"
+////
 
   EO_CALL DST_PUT
 

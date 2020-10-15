@@ -19,7 +19,7 @@ namespace Prompt
   
   static Stz* C_Query4 = "/time Query4_ASM \"../EO_Text/QRY_400.txt\" \"../EO_Text/QRY_401.txt\" \"../EO_Text/QRY_402.txt\""_Stz;
   
-  static Stz* C_Query6 = "/time Query6_ASM_I \"../EO_Text/QRY_600.txt\" \"../EO_Text/QRY_601.txt\""_Stz ;
+  static Stz* C_Query6 = "/time Query6_ASM \"../EO_Text/QRY_600.txt\" \"../EO_Text/QRY_601.txt\""_Stz ;
   
   class SePrompt : public Focal
   {
@@ -74,7 +74,7 @@ namespace Prompt
     bool bBlankLine(void);
     BPA* pBPA(void);
     void vDebugMode(i8 iDebugMode);
-    void vDemo(void);
+    bool bDemo(void);
     void vDivision(Stz* szDivision);
     i8   iDivisionNo(void);
     bool bContinue(void);
@@ -88,11 +88,13 @@ namespace Prompt
     void vExtractCtlTags(void);
     bool bExtractSupTags(void);
     void vFocalOutline(s4K& sOutline);
+    bool bHandleDemo(void);
     void vInitialSettings(void);
     TokenVec* pInpTknVec(void);
     bool bIsPromptWord(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
+    void vMakeDiaryDir(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     ObjectsInPool*  pObjectsInPool(void);
