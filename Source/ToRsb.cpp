@@ -404,8 +404,6 @@ L_Date:
   for (uYear = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bDigits = true;
     uYear = (uYear * 10) + (cSrcChr - '0');
-    if (uYear > 9999)
-      goto L_FieldError;
   }
   
   // should have seen some digits
@@ -415,9 +413,6 @@ L_Date:
   // adjust and validate the year
   if (uYear <= 99)
     uYear += 2000;
-  else
-  if (uYear < C_YEAR_BASE)
-    goto L_FieldError;
 
   // skip over separator
   if ('-' != cSrcChr)
@@ -432,18 +427,12 @@ L_Date:
   for (uMonth = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bDigits = true;
     uMonth = (uMonth * 10) + (cSrcChr - '0');
-    if (uMonth > 12)
-      goto L_FieldError;
   }
 
   // should have seen some digits
   if (! bDigits)
     goto L_FieldError;
   
-  // validate the month
-  if (uMonth < 1 || uMonth > 12)
-    goto L_FieldError;
-
   // skip over separator
   if ('-' != cSrcChr)
     goto L_FieldError;
@@ -457,8 +446,6 @@ L_Date:
   for (uDay = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bDigits = true;
     uDay = (uDay * 10) + (cSrcChr - '0');
-    if (uDay > 31)
-      goto L_FieldError;
   }
 
   // should have seen some digits
@@ -468,7 +455,15 @@ L_Date:
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all date portions collected
 
-  // validate date wrt possible leap year
+  // validate the year
+  if (uYear < C_YEAR_BASE)
+    goto L_FieldError;
+
+  // validate the month
+  if (uMonth < 1 || uMonth > 12)
+    goto L_FieldError;
+
+  // validate day wrt possible leap year
   
   // detect a leap year
   if (uYear % 4 == 0) {
@@ -481,7 +476,11 @@ L_Date:
     bLeapYear = false;
   }
 
-  // test days per month
+  // validate days per month
+  
+  if (uDay < 1)
+    goto L_FieldError;
+
   if (bLeapYear) {
     if (uDay > (u8)iDaysPerMonthLeap[uMonth-1]) {
       goto L_FieldError;
@@ -558,10 +557,12 @@ L_Decimal:
     
     vADV_SRC(); // skip '.'
     
-    for ( ; nPixScale && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+    for ( ; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
       bDigits = true;
       uNumber = uNumber * 10 + cSrcChr - '0';
       nPixScale--;
+      if (! nPixScale)
+        break;
     }
   }
   
@@ -569,16 +570,16 @@ L_Decimal:
   if (! bDigits)
     goto L_FieldError;
 
-  // correct for scale
+  // correct for scale by x 10 till correctly scaled
   while (nPixScale--)
     uNumber *= 10;
   
-  // round up if there any more digits after decimal
+  // round up if there any more digits
   if (cSrcChr >= '0' && cSrcChr <= '9') {
     if (cSrcChr - '0' >= 5)
       uNumber += 1;
     while (cSrcChr >= '0' && cSrcChr <= '9')
-      vADV_SRC(); // skip digit after decimal
+      vADV_SRC(); // skip remaining digits
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -742,13 +743,13 @@ L_Integer:
   // compute final field value
   iInteger = bNegative ? - uNumber : uNumber;
   
+  // deposit the integer
+  m_pRowSlab->vDeposit(iInteger);
+    
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
     PtnLib::vRunning(&iHash,iInteger);
   
-  // deposit the integer
-  m_pRowSlab->vDeposit(iInteger);
-    
   goto L_PostField;                                            // end of integer
 
   
@@ -794,6 +795,10 @@ L_Interval:
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all interval portions collected
 
+  // have we exceeded the max for microsecond?
+  if (uMicrosecond > (u8)999999)
+    goto L_FieldError;
+
   // compute final field value
   xInterval.m_uSecond = uSecond;
   xInterval.m_uMicro  = uMicrosecond;
@@ -819,8 +824,6 @@ L_Time:
   for (uHour = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bDigits = true;
     uHour = (uHour * 10) + (cSrcChr - '0');
-    if (uHour > 23)
-      goto L_FieldError;
   }
   
   // should have seen some digits
@@ -840,8 +843,6 @@ L_Time:
   for (uMinute = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bDigits = true;
     uMinute = (uMinute * 10) + (cSrcChr - '0');
-    if (uMinute > 59)
-      goto L_FieldError;
   }
   
   // should have seen some digits
@@ -861,8 +862,6 @@ L_Time:
   for (uSecond = 0; cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
     bDigits = true;
     uSecond = (uSecond * 10) + (cSrcChr - '0');
-    if (uSecond > 59)
-      goto L_FieldError;
   }
   
   // should have seen some digits
@@ -890,6 +889,15 @@ L_Time:
   
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all time portions collected
+
+  if (uHour > 23)
+    goto L_FieldError;
+
+  if (uMinute > 59)
+    goto L_FieldError;
+
+  if (uSecond > 59)
+    goto L_FieldError;
 
   // compute final field value
   xTime.m_uHour   = uHour;
