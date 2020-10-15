@@ -177,6 +177,8 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define vADV_SRC()       (cSrcChr = *++azCsvSrc)
 
+#define bIS_DIGIT()      (cSrcChr >= '0' && cSrcChr <= '9')
+
 #define bMORE_DATA()     (bool)(cSrcChr)
 
 #define bMORE_FIELDS()   (bool)(cSrcChr && '\n' != cSrcChr)
@@ -369,11 +371,11 @@ L_Boolean:
     vADV_SRC(); // skip 'f'
   }
   else
-  if (cSrcChr >= '0' || cSrcChr <= '9') {
+  if (bIS_DIGIT()) {
     // numeric case
-    nDigits = 0;
-    for (uNumber = 0; nDigits < 19 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
-      uNumber = (uNumber) * 10 + (cSrcChr - '0');
+    uNumber = 0;
+    for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
+      uNumber = (uNumber * 10) + (cSrcChr - '0');
       nDigits++;
     }
     if (nDigits > 19)
@@ -408,8 +410,8 @@ L_Date:
   // year portion
   
   // collect digits for year
-  nDigits = 0;
-  for (uYear = 0; nDigits < 4 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  uYear = 0;
+  for (nDigits = 0; nDigits < 4 && bIS_DIGIT(); vADV_SRC()) {
     uYear = (uYear * 10) + (cSrcChr - '0');
     nDigits++;
   }
@@ -431,8 +433,8 @@ L_Date:
   // month portion
     
   // collect digits for month
-  nDigits = 0;
-  for (uMonth = 0; nDigits < 2 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  uMonth = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
     uMonth = (uMonth * 10) + (cSrcChr - '0');
     nDigits++;
   }
@@ -450,8 +452,8 @@ L_Date:
   // day portion
           
   // collect digits for day
-  nDigits = 0;
-  for (uDay = 0; nDigits < 2 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  uDay = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
     uDay = (uDay * 10) + (cSrcChr - '0');
     nDigits++;
   }
@@ -548,8 +550,8 @@ L_Decimal:
     vADV_SRC();
     
   // collect digits for leading number
-  nDigits = 0;
-  for (uNumber = 0; nDigits < 19 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  uNumber = 0;
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
     uNumber = (uNumber * 10) + (cSrcChr - '0');
     nDigits++;
     nPixPrecision--;
@@ -565,7 +567,7 @@ L_Decimal:
     
     vADV_SRC(); // skip '.'
     
-    for ( ; nDigits < 19 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+    for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
       uNumber = uNumber * 10 + cSrcChr - '0';
       nDigits++;
       nPixScale--;
@@ -575,7 +577,7 @@ L_Decimal:
   }
   
   // should have seen some digits
-  if (! nDigits)
+  if (! nDigits || nDigits > 19)
     goto L_FieldError;
 
   // correct for scale by x 10 till correctly scaled
@@ -583,10 +585,10 @@ L_Decimal:
     uNumber *= 10;
   
   // round up if there any more digits
-  if (cSrcChr >= '0' && cSrcChr <= '9') {
+  if (bIS_DIGIT()) {
     if (cSrcChr - '0' >= 5)
       uNumber += 1;
-    while (cSrcChr >= '0' && cSrcChr <= '9')
+    while (bIS_DIGIT())
       vADV_SRC(); // skip remaining digits
   }
   
@@ -643,8 +645,8 @@ L_Float:
   // unsigned number portion
 
   // collect digits for leading number
-  nDigits = 0;
-  for (acBufDst = xBuffer; nDigits < 19 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  acBufDst = xBuffer;
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
     *acBufDst++ = cSrcChr;
     nDigits++;
   }
@@ -656,7 +658,7 @@ L_Float:
   if ('.' == cSrcChr) {
     *acBufDst++ = cSrcChr;
     vADV_SRC(); // skip '.'
-    for ( ; nDigits < 19 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+    for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
       *acBufDst++ = cSrcChr;
       nDigits++;
     }
@@ -678,8 +680,7 @@ L_Float:
     }
         
     // collect exponent digits
-    nExpDigits = 0;
-    for  ( ; nExpDigits < 3 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+    for  (nExpDigits = 0; nExpDigits < 3 && bIS_DIGIT(); vADV_SRC()) {
       *acBufDst++ = cSrcChr;
       nExpDigits++;
     }
@@ -737,14 +738,14 @@ L_Integer:
   // unsigned number portion
   
   // collect digits for number
-  nDigits = 0;
-  for (uNumber = 0; nDigits < 19 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  uNumber = 0;
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
     uNumber = (uNumber * 10) + (cSrcChr - '0');
     nDigits++;
   }
   
   // should have seen some digits
-  if (! nDigits)
+  if (! nDigits || nDigits > 19)
     goto L_FieldError;
 
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -777,8 +778,8 @@ L_Interval:
   // unsigned seconds portion
   
   // collect digits for leading seconds
-  nDigits = 0;
-  for  (uSecond = 0; nDigits < 9 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  uSecond = 0;
+  for  (nDigits = 0; nDigits < 9 && bIS_DIGIT(); vADV_SRC()) {
     uSecond = (uSecond * 10) + (cSrcChr - '0');
     nDigits++;
   }
@@ -791,7 +792,7 @@ L_Interval:
   nShift = 1000000;
   if ('.' == cSrcChr) {
     vADV_SRC(); // skip '.'
-    for ( ; nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+    for ( ; nShift > 1 && bIS_DIGIT(); vADV_SRC()) {
       nDigits++;
       uMicrosecond = uMicrosecond * 10 + cSrcChr - '0';
       nShift /= 10;
@@ -837,8 +838,8 @@ L_Time:
   // hour portion
 
   // collect digits for hour
-  nDigits = 0;
-  for (uHour = 0; nDigits < 2 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  uHour = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
     uHour = (uHour * 10) + (cSrcChr - '0');
     nDigits++;
   }
@@ -856,8 +857,8 @@ L_Time:
   // minute portion
 
   // collect digits for minute
-  nDigits = 0;
-  for (uMinute = 0; nDigits < 2 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  uMinute = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
     uMinute = (uMinute * 10) + (cSrcChr - '0');
     nDigits++;
   }
@@ -875,8 +876,8 @@ L_Time:
   // second portion
 
   // collect digits for second
-  nDigits = 0;
-  for (uSecond = 0; nDigits < 2 && cSrcChr >= '0' && cSrcChr <= '9'; vADV_SRC()) {
+  uSecond = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
     uSecond = (uSecond * 10) + (cSrcChr - '0');
     nDigits++;
   }
@@ -894,9 +895,7 @@ L_Time:
     
     vADV_SRC(); // skip '.'
 
-    for (nShift = 1000000;
-         nShift > 1 && cSrcChr >= '0' && cSrcChr <= '9';
-         vADV_SRC()) {
+    for (nShift = 1000000; nShift > 1 && bIS_DIGIT(); vADV_SRC()) {
       uMicrosecond = (uMicrosecond * 10) + (cSrcChr - '0');
       nShift /= 10;
     }
