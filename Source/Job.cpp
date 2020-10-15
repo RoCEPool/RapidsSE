@@ -125,8 +125,6 @@ Job::Job(eCN eClassNo)
   //m_xResult
   // -- -- -- -- -- --
   
-  m_pLitTknVec = nullptr;
-  
   SP_Gid spId;
   
   vIncStepNo(); ++ gixJob;
@@ -176,8 +174,6 @@ Job::Job(ReqTuple* aReqTuple, TokenVec* pLitTknVec)
     
   //m_xResult
   // -- -- -- -- -- --
-  
-  m_pLitTknVec = pLitTknVec;
   
   SP_Gid spId;
   
