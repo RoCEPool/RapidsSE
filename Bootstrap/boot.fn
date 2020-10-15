@@ -237,6 +237,9 @@ function startCluster() {
 
   echo "All nodes are running the same version: ${verStr}"
 
+  # Check if any nodes are already running
+  assertNoNodesRunning || errorExit "Could not start the RapidsSE cluster."
+
   echo "Starting the RapidsSE cluster."
   local nodeName
 
@@ -515,6 +518,40 @@ function getRunningPid() {
   fi
 
   echo "${pid}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks that none of the nodes are currently running. If one or more nodes
+## are actually running then errors are printed to stderr and a non-zero
+## exit code is returned.
+## Params: None
+
+function assertNoNodesRunning() {
+  
+  local nodeName
+  local pid
+  local gotError=0
+
+  local errMsg="The following node are already running:"
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    pid="$(getRunningPid "${nodeName}")"
+
+    if [ -n "${pid}" ]; then
+      gotError=1
+      errMsg="${errMsg}\n  ${nodeName}  (pid: ${pid})"
+    fi
+  done
+
+  if [ ${gotError} -eq 1 ]; then
+    printError "${errMsg}"
+    false
+    return
+  fi
+
+  true
 }
 
 

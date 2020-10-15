@@ -25,7 +25,6 @@ set -Eeou pipefail
 readonly DIR=$(dirname "$0")
 
 readonly SETUP_FN="setup.fn"
-readonly VERSION_FILE="version"
 readonly DEFAULT_CONFIG_PATH="cluster.config"
 readonly NODE_NAME_FILE="node.name"
 
