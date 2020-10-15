@@ -162,7 +162,7 @@ fi
 if [ -n "${DEBUG}" ] ; then echo "Cleaning & setting up the layout directory"; fi;
 
 rm -rf "${LAYOUT_DIR:?}/"* &>/dev/null || true
-rm -rf "${OUTPUT_DIR:?}/"* &>/dev/null || true
+rm -f  "${OUTPUT_DIR:?}/"*.run &>/dev/null || true
 mkdir -p "${LAYOUT_DIR}"
 mkdir -p "${OUTPUT_DIR}"
 

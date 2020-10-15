@@ -14,6 +14,7 @@ fi
 ### Constants                                                               ###
 ###############################################################################
 
+readonly VERSION_FILE="version"
 readonly CONFIG_DEFAULT_VERSION="1"
 
 # Prefix of the name of the associative arrays for each node in the cluster.config
@@ -98,11 +99,11 @@ function printIndentArray() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Sleeps for a given number of seconds and prints a "." for each second.
+## Sleeps for a given number of seconds and prints a "." for each second slept.
 ## Params:
 ##  $1 : the number of seconds to sleep.
 
-function sleepPrint() {
+function sleepProgressPrint() {
   local delay="$1"
   local count=0
 

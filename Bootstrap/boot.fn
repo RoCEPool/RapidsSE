@@ -227,12 +227,24 @@ function loadNodeName() {
 
 function startCluster() {
 
+  echo "Checking node versions..."
+
+  # Check that all nodes are the same version.
+  local verStr
+  if ! verStr="$(checkNodeVersionsAreEqual)"; then
+    errorExit "Could not start the RapidsSE cluster."
+  fi
+
+  echo "All nodes are running the same version: ${verStr}"
+
+  echo "Starting the RapidsSE cluster."
   local nodeName
 
   if [ -n "${SEQ_START}" ]; then
     # Start the nodes sequentially
     for nodeName in "${NODE_LIST[@]}"
     do
+      if [ ${DEBUG} -eq 1 ]; then echo "Starting ${nodeName}"; fi;
       startNode "${nodeName}"
     done
 
@@ -247,10 +259,10 @@ function startCluster() {
     wait
   fi
 
-  echo -n "Started all nodes in the cluster. Waiting for them to boot"
+  echo -n "Started all ${#NODE_LIST[@]} nodes in the cluster. Waiting for them to boot"
 
-  # Sleep for 5 seconds and print a "." every second
-  sleepPrint 5
+  # Sleep for 10 seconds and print a "." every second
+  sleepProgressPrint 10 
 
   printClusterStatus
 }
@@ -356,11 +368,11 @@ function startCurrentNode() {
 
 
   if [ ${DEBUG} -eq 1 ]; then
-    echo "Starting RapidsSE on node ${CURRENT_NODE_NAME} / host ${host} with the command:"
+    echo "Starting RapidsSE on node ${CURRENT_NODE_NAME} [host ${host}] with the command:"
     echo "  ${startCmd[*]}"
 
   else 
-    echo "Starting RapidsSE on node ${CURRENT_NODE_NAME} / host ${host}..."
+    echo "Starting RapidsSE on node ${CURRENT_NODE_NAME} [host ${host}]..."
   fi
 
   echo "Starting SE at $(date +%FT%T)" >> "${NOHUP_FILE}"
@@ -370,8 +382,6 @@ function startCurrentNode() {
   # get the last pid and save it to a file
   PID=$!
   echo "${PID}" > "${PIDFILE}"
-
-  # errorExit "Could not start RapidsSE on node ${CURRENT_NODE_NAME} / host ${host}."
 }
 
 
@@ -505,6 +515,63 @@ function getRunningPid() {
   fi
 
   echo "${pid}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that all nodes have the same version string. If not, write to stderr
+## and return a non-zero exit code. If true then write the valid version string
+## to stdout and exit with a zero exit code.
+## Params: None
+
+function checkNodeVersionsAreEqual() {
+
+  local nodeName
+  local host
+  local dir
+  local remoteCmd
+  local actualVerStr
+  local expectedVerStr
+  local firstNode
+  local re="^[0-9]+.[0-9]+.[0-9]+.*$"
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    remoteCmd="'cd \"${dir}\" && source \"${VERSION_FILE}\" && echo \"\${SE_VERSION_STR}-\${SE_COMMIT_HASH}\"'"
+    actualVerStr="$(ssh "${host}" bash -c "${remoteCmd}")"
+
+    if [ -z "${actualVerStr}" ]; then
+      printError "Got an empty version string for ${nodeName}."
+      false
+      return
+    fi
+
+    if [[ ! "${actualVerStr}" =~ $re ]]; then
+      printError "Got an unrecognised version string for ${nodeName}."
+      false
+      return
+    fi
+
+    # if the expected version string is not set, then set it.
+    if [ -z "${expectedVerStr}" ]; then
+      expectedVerStr="${actualVerStr}"
+      firstNode="${nodeName}"
+      continue
+    fi
+
+    # Otherwise compare actual to expected
+    if [ "${actualVerStr}" != "${expectedVerStr}" ]; then
+      printError "SE version on node ${nodeName} (${actualVerStr}) does not match the version on node ${firstNode} (${expectedVerStr})."
+      false
+      return
+    fi
+  done
+
+  # Otherwise we're all good
+  true
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
