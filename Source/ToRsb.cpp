@@ -388,6 +388,7 @@ L_Boolean:
   }
   else {
     // unrecognisable boolean
+    // eError = EC_CSV_NOT_A_BOOLEAN;
     goto L_FieldError;
   }
 
@@ -417,16 +418,20 @@ L_Date:
   }
   
   // should have seen some digits
-  if (! nDigits || nDigits > 4)
+  if (! nDigits || nDigits > 4) {
+    // eError = EC_CSV_NOT_A_YEAR;
     goto L_FieldError;
-
+  }
+  
   // adjust a 2-digit year
   if (uYear <= 99)
     uYear += 2000;
 
   // skip over separator
-  if ('-' != cSrcChr)
+  if ('-' != cSrcChr) {
+    // eError = EC_CSV_MISSING_DATE_SEP;
     goto L_FieldError;
+  }
   vADV_SRC(); // skip '-'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -440,12 +445,16 @@ L_Date:
   }
 
   // should have seen some digits
-  if (! nDigits || nDigits > 2)
+  if (! nDigits || nDigits > 2) {
+    // eError = EC_CSV_NOT_A_MONTH;
     goto L_FieldError;
+  }
   
   // skip over separator
-  if ('-' != cSrcChr)
+  if ('-' != cSrcChr) {
+    // eError = EC_CSV_MISSING_DATE_SEP;
     goto L_FieldError;
+  }
   vADV_SRC(); // skip '-'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -459,20 +468,26 @@ L_Date:
   }
 
   // should have seen some digits
-  if (! nDigits || nDigits > 2)
+  if (! nDigits || nDigits > 2) {
+    // eError = EC_CSV_NOT_A_DAY;
     goto L_FieldError;
+  }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all date portions collected
 
   // validate the year
-  if (uYear < C_YEAR_BASE)
+  if (uYear < C_YEAR_BASE) {
+    // eError = EC_CSV_NOT_A_YEAR;
     goto L_FieldError;
-
+  }
+  
   // validate the month
-  if (uMonth < 1 || uMonth > 12)
+  if (uMonth < 1 || uMonth > 12) {
+    // eError = EC_CSV_NOT_A_MONTH;
     goto L_FieldError;
-
+  }
+  
   // validate day wrt possible leap year
   
   // determine if a leap year
@@ -487,17 +502,20 @@ L_Date:
   }
 
   // validate days per month
-  
-  if (uDay < 1)
+  if (uDay < 1) {
+    // eError = EC_CSV_NOT_A_DAY;
     goto L_FieldError;
-
+  }
+  
   if (bLeapYear) {
     if (uDay > (u8)iDaysPerMonthLeap[uMonth]) {
+      // eError = EC_CSV_NOT_A_LEAPDAY;
       goto L_FieldError;
     }
   }
   else {
     if (uDay > (u8)iDaysPerMonth[uMonth]) {
+      // eError = EC_CSV_NOT_A_DAY;
       goto L_FieldError;
     }
   }
@@ -568,7 +586,7 @@ L_Decimal:
     vADV_SRC(); // skip '.'
     
     for ( ; nPixScale && nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
-      uNumber = uNumber * 10 + cSrcChr - '0';
+      uNumber = (uNumber * 10) + (cSrcChr - '0');
       nDigits++;
       nPixScale--;
       //if (! nPixScale)
@@ -577,9 +595,11 @@ L_Decimal:
   }
   
   // should have seen some digits
-  if (! nDigits || nDigits > 19)
+  if (! nDigits || nDigits > 19) {
+    // eError = EC_CSV_NOT_A_DECIMAL;
     goto L_FieldError;
-
+  }
+  
   // correct for scale by x 10 till correctly scaled
   while (nPixScale--)
     uNumber *= 10;
@@ -596,15 +616,19 @@ L_Decimal:
   // all decimal portions collected
   
   // have we exceeded the max ?
-  if (uNumber > (u8)C_I8_MAX)
+  if (uNumber > (u8)C_I8_MAX) {
+    // eError = EC_CSV_DECIMAL_TOO_LARGE;
     goto L_FieldError;
+  }
   
   // compute final field value
   iDecimal = bNegative ? - uNumber : uNumber;
   
   // have we gone below the negative min ?
-  if (iDecimal < C_I8_MIN)
+  if (iDecimal < C_I8_MIN) {
+    // eError = EC_CSV_DECIMAL_TOO_SMALL;
     goto L_FieldError;
+  }
   
   // deposit the decimal
   m_pRowSlab->vDeposit(iDecimal);
@@ -684,23 +708,28 @@ L_Float:
       *acBufDst++ = cSrcChr;
       nExpDigits++;
     }
+    
     // should have seen some exponent digits
-    if (! nExpDigits)
+    if (! nExpDigits) {
+      // eError = EC_CSV_MISSING_EXPONENT;
       goto L_FieldError;
+    }
   }
 
   // terminate
   *acBufDst++ = '\0';
   
   // should have seen some digits
-  if (! nDigits)
+  if (! nDigits) {
+    // eError = EC_CSV_NOT_A_FLOAT;
     goto L_FieldError;
-
+  }
+  
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all float portions collected
   
   // compute final result
-  dUnsigned = atof(xBuffer);
+  dUnsigned = atof(xBuffer); // SHOULD BE USING strtod() AND TESTING FOR ERROR
   dFloat = bNegative ? - dUnsigned : dUnsigned;
   
   // deposit the float
@@ -745,15 +774,19 @@ L_Integer:
   }
   
   // should have seen some digits
-  if (! nDigits || nDigits > 19)
+  if (! nDigits || nDigits > 19) {
+    // eError = EC_CSV_NOT_A_INTEGER;
     goto L_FieldError;
-
+  }
+  
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all integer portions collected
 
-  if (uNumber > (u8)C_I8_MAX)
+  if (uNumber > (u8)C_I8_MAX) {
+    // eError = EC_CSV_INTEGER_TOO_LARGE;
     goto L_FieldError;
-
+  }
+  
   // compute final field value
   iInteger = bNegative ? - uNumber : uNumber;
   
@@ -803,20 +836,26 @@ L_Interval:
   uMicrosecond *= nShift;
 
   // should have seen some digits
-  if (! nDigits)
+  if (! nDigits) {
+    // eError = EC_CSV_NOT_A_INTERVAL;
     goto L_FieldError;
-
+  }
+  
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all interval portions collected
 
   // have we exceeded the max for second?
-  if (uSecond > (u8)999999999)
+  if (uSecond > (u8)999999999) {
+    // eError = EC_CSV_INTERVAL_SECS_TOO_LARGE;
     goto L_FieldError;
-
+  }
+  
   // have we exceeded the max for microsecond?
-  if (uMicrosecond > (u8)999999)
+  if (uMicrosecond > (u8)999999) {
+    // eError = EC_CSV_INTERVAL_USECS_TOO_LARGE;
     goto L_FieldError;
-
+  }
+  
   // compute final field value
   xInterval.m_uSecond = uSecond;
   xInterval.m_uMicro  = uMicrosecond;
@@ -845,12 +884,16 @@ L_Time:
   }
   
   // should have seen some digits
-  if (! nDigits || nDigits > 2)
+  if (! nDigits || nDigits > 2) {
+    // eError = EC_CSV_NOT_A_HOUR;
     goto L_FieldError;
-
+  }
+  
   // skip over separator
-  if (':' != cSrcChr)
+  if (':' != cSrcChr) {
+    // eError = EC_CSV_MISSING_TIME_SEP;
     goto L_FieldError;
+  }
   vADV_SRC();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -864,12 +907,16 @@ L_Time:
   }
   
   // should have seen some digits
-  if (! nDigits || nDigits > 2)
+  if (! nDigits || nDigits > 2) {
+    // eError = EC_CSV_NOT_A_MINUTE;
     goto L_FieldError;
-
+  }
+  
   // skip over separator
-  if (':' != cSrcChr)
+  if (':' != cSrcChr) {
+    // eError = EC_CSV_MISSING_TIME_SEP;
     goto L_FieldError;
+  }
   vADV_SRC();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -883,9 +930,11 @@ L_Time:
   }
   
   // should have seen some digits
-  if (! nDigits || nDigits > 2)
+  if (! nDigits || nDigits > 2) {
+    // eError = EC_CSV_NOT_A_SECOND;
     goto L_FieldError;
-
+  }
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond portion
   
@@ -906,15 +955,21 @@ L_Time:
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all time portions collected
 
-  if (uHour > 23)
+  if (uHour > 23) {
+    // eError = EC_CSV_NOT_A_HOUR;
     goto L_FieldError;
-
-  if (uMinute > 59)
+  }
+  
+  if (uMinute > 59) {
+    // eError = EC_CSV_NOT_A_MINUTE;
     goto L_FieldError;
-
-  if (uSecond > 59)
+  }
+  
+  if (uSecond > 59) {
+    // eError = EC_CSV_NOT_A_SECOND;
     goto L_FieldError;
-
+  }
+  
   // compute final field value
   xTime.m_uHour   = uHour;
   xTime.m_uMinute = uMinute;
@@ -995,6 +1050,7 @@ L_Varchar:
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
   if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
+    // eError = EC_CSV_NOT_A_VARCHAR;
     goto L_FieldError;
   }
   
@@ -1032,7 +1088,21 @@ L_PostField:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 6) end of record
+  // 6) encountered a field error
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_FieldError:
+
+  //THROW_USER("vConvertDate"_Stz);
+  
+  AM::vIncRowsInvalid(m_pPipelineJob);
+
+  // ... add code for skipping to end of record
+  
+  goto L_TestMoreRecords;
+
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 7) end of record
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfRecord:
   
@@ -1064,20 +1134,6 @@ L_EndOfRecord:
 
   goto L_TestMoreRecords;
   
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 7) encountered a field error
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_FieldError:
-
-  //THROW_USER("vConvertDate"_Stz);
-  
-  AM::vIncRowsInvalid(m_pPipelineJob);
-
-  // ... add code for skipping to end of record
-  
-  goto L_TestMoreRecords;
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 8) reached end of azCsvChunk
