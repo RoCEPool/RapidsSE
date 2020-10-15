@@ -567,12 +567,12 @@ L_Decimal:
     
     vADV_SRC(); // skip '.'
     
-    for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
+    for ( ; nPixScale && nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
       uNumber = uNumber * 10 + cSrcChr - '0';
       nDigits++;
       nPixScale--;
-      if (! nPixScale)
-        break;
+      //if (! nPixScale)
+      //  break;
     }
   }
   
