@@ -73,6 +73,7 @@ namespace Rows
     void  vPositionOnCell(i8 i_Col);
     bool  bPtnHash(void);
     void  vReset(void);
+    i8    nRowProperBytes(void);
     Rsb*  aRsbAdr(i8 i_Row);
     Rsb*  aRsbByOfs(i8 iOfs);
     i8    iOfsOfRsb(Rsb* aRsb);

@@ -222,7 +222,7 @@ void RowSlab::vDiscardInvalidRow(void)
 
   m_i_RowLgl--;
   
-  i8 nCellBytes = (m_oStreamPix.m_nCols + 1 /* dummy */ ) * C_BYTES_PER_WORD;
+  i8 nCellBytes = nRowProperBytes();
   m_xWsp.vGiveTail(nCellBytes);
 }
 
@@ -318,7 +318,7 @@ bool RowSlab::bNewRow(Rsb** paRow)
 
   m_amCellCrs = amCell0(m_i_RowLgl);
   
-  i8 nCellBytes = (m_oStreamPix.m_nCols + 1 /* dummy */ ) * C_BYTES_PER_WORD;
+  i8 nCellBytes = nRowProperBytes();
   m_xWsp.vTakeTail(nCellBytes);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -491,6 +491,16 @@ void RowSlab::vReset(void)
   m_amCellCrs = nullptr;
 
   m_xWsp.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bytes needed to hold row cells proper (i.e. without strings)           */
+/*----------------------------------------------------------------------------*/
+i8 RowSlab::nRowProperBytes(void)
+{
+  i8 nBytes = (m_oStreamPix.m_nCols + 1 /* dummy */ ) * C_BYTES_PER_WORD;
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
