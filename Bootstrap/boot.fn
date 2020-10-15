@@ -69,6 +69,11 @@ function printUsageAndExit() {
 
 function processArgs() {
 
+  # Indicates if a given argument was specified.
+  local argCluster=0
+  local argNode=0
+  local argConfig=0
+
   while [[ $# -gt 0 ]]
   do
     key="$1"
@@ -277,7 +282,7 @@ function startCurrentNode() {
   startCmd+=("${paramsArray[@]}")
 
 
-  #set the library path for the rapidsSE library
+  # Set the library path so the RapidsSE library can be found and loaded
   export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
 
   # SE environment variables
@@ -347,7 +352,7 @@ function printClusterStatus() {
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
-    pid="$(getRunningPid "${nodeName}")"
+    pid="$(getRemoteRunningPid "${nodeName}")"
 
     if [ -n "${pid}" ]  && [ "${pid}" -gt 0 ]; then
       statusStr="running (pid ${pid})"
@@ -411,7 +416,7 @@ function printNodeStatus() {
 ## Params:
 ##  $1 : The name of the node to enquire on.
 
-function getRunningPid() {
+function getRemoteRunningPid() {
 
   local nodeName="$1"
 
@@ -440,6 +445,57 @@ function getRunningPid() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns the PID of the SE process running on the current node, or an
+## empty string if the process is not running. It's not enough to just read
+## the pidfile, we actually need to check if the pid is active in the system.
+## To be called with:  pid="$(getLocalRunningPid)"
+##
+## Params: None
+
+function getLocalRunningPid() {
+
+  local pid
+
+  # Does the pid file exist
+  if [ ! -f "${PIDFILE}" ]; then
+    return
+  fi
+
+  pid="$(xargs ps -o pid -h -p  < "${PIDFILE}" )"
+
+  local re="^[[:space:]]*([0-9]+)[[:space:]]*$"
+
+  if [[ "${pid}" =~ $re ]]; then
+    pid="${BASH_REMATCH[1]}"
+  else
+   pid=""
+  fi
+
+  echo "${pid}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a zero exit status if the local SE node is running, otherwise it 
+## returns a non-zero exit status if it is not running
+## Params: None
+
+function isLocalSeRunning() {
+  local pid
+
+  pid="$(getLocalRunningPid)"
+
+  if [ -n "${pid}" ]; then
+    true
+    return
+
+  else
+    false
+    return
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Checks that none of the nodes are currently running. If one or more nodes
 ## are actually running then errors are printed to stderr and a non-zero
 ## exit code is returned.
@@ -461,7 +517,7 @@ function assertNoNodesRunning() {
 
   for nodeName in "${NODE_LIST[@]}"
   do
-    pid="$(getRunningPid "${nodeName}")"
+    pid="$(getRemoteRunningPid "${nodeName}")"
 
     if [ -n "${pid}" ]; then
       gotError=1
@@ -652,7 +708,7 @@ function stopCurrentNode() {
     stopCmd+=("--appendTrace")
 
 
-    #set the library path for the rapidsSE library
+    # Set the library path so the RapidsSE library can be found and loaded
     export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
 
 
