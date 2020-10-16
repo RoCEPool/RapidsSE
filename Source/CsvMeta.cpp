@@ -21,6 +21,8 @@ CsvMeta::CsvMeta(void)
 : Object(CN_CSVMETA)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVMETA,_FOOTER_);
+  
+  m_iOffset = C_UNKNOWN;
       
   _checkInitialised_(CN_CSVMETA);
   
@@ -40,6 +42,65 @@ CsvMeta::~CsvMeta(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* get file path                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* CsvMeta::szFilePath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVMETA,_FOOTER_);
+    
+  return m_sFilePath;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set file path                                                              */
+/*----------------------------------------------------------------------------*/
+void CsvMeta::vFilePath(Stz* szFilePath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVMETA,_FOOTER_);
+    
+  m_sFilePath = szFilePath;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get offset                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 CsvMeta::iOffset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVMETA,_FOOTER_);
+    
+  return m_iOffset;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set offset                                                                 */
+/*----------------------------------------------------------------------------*/
+void CsvMeta::vOffset(i8 iOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVMETA,_FOOTER_);
+    
+  m_iOffset = iOffset;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get origin name                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* CsvMeta::szOriginNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVMETA,_FOOTER_);
+    
+  return m_sOriginNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set origin name                                                            */
+/*----------------------------------------------------------------------------*/
+void CsvMeta::vOriginNm(Stz* szOriginNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVMETA,_FOOTER_);
+    
+  m_sOriginNm = szOriginNm;
+}
 
 /*============================================================================*/
 /* end                                                                        */
