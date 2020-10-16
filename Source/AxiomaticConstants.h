@@ -28,6 +28,9 @@ static const u8 C_YEAR_RANGE = 255;
 static const u8 C_YEAR_MAX   = C_YEAR_BASE + C_YEAR_RANGE;
 static const u8 C_YEAR_MIN   = C_YEAR_BASE;
 
+static const u8 C_IVL_SEC_MAX  = 999999999;
+static const u8 C_IVL_USEC_MAX = 999999;
+
 static const bool B_CALL_AGAIN      = true;
 static const bool B_DONT_CALL_AGAIN = false;
 
