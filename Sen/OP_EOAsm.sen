@@ -97,9 +97,9 @@
   ZK_STARTMARKER_handler
 
   // pipeout streamDefout if any (q3)
-  //StreamDefOut[].isNull not if
-  //  StreamDefOut[].pipeout
-  //then
+  StreamDefOut[].isNull not if
+    StreamDefOut[].pipeout
+  then
 
 ;
 
@@ -126,9 +126,9 @@
   // can't handle stream marker (from inside ASM code (no ASM)
 
   // pipeout streamDefout if any (q3)
-  StreamDefOut[].isNull not if
-    StreamDefOut[].pipeout
-  then
+  //StreamDefOut[].isNull not if
+  //  StreamDefOut[].pipeout
+  //then
 
   // END HACK
   //
