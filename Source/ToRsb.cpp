@@ -294,7 +294,7 @@ L_TestMoreRecords:
   // skip leading whitespace
 //  while (bWHITE_SPACE())
 //    vADV_SRCCHR();
-//  
+//
   // test for more csv to be parsed
   if (! bMORE_DATA())
     goto L_EndOfCsvChunk;
@@ -1135,6 +1135,28 @@ L_PostField:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_FieldError:
 
+  /*
+     know:
+   
+           i_Fld
+           eError
+           azCsvSrc
+           azRecordStart;
+           azFieldStart;
+           m_pStreamDef
+           azCsvChunk
+   
+             this node
+             time
+   
+     don't know:
+   
+           origin
+           file
+           offset
+   
+   */
+  
   // discard partial row in row slab
   m_pRowSlab->vDiscardInvalidRow();
 
