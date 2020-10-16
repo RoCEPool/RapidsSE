@@ -73,7 +73,7 @@ else
   loadNodeName
 
   if [ "${CLUSTER_INIT}" -eq 1 ]; then
-    remoteClusterInit
+    localClusterInit
     exit
   fi
 

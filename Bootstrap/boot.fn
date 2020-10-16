@@ -200,7 +200,8 @@ function startCluster() {
   sleepProgressPrint 10 
 
   if printClusterStatus; then
-    #  Initialise the cluster
+
+    # Initialise the cluster
     remoteClusterInit
 
     echo "Cluster startup complete."
@@ -208,9 +209,6 @@ function startCluster() {
   else
     echo "Cluster startup failed. Please stop the cluster before restarting it."
   fi
-
-  # TODO: Check if all nodes are running
-  #######assertAllNodesRunning
 }
 
 
@@ -236,7 +234,7 @@ function startRemoteNode() {
     remoteCmd="${remoteCmd} --debug"
   fi
 
-  sshCmd=( "ssh" "${host}" "${remoteCmd}" )
+  sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
   if [ ${DEBUG} -eq 1 ]; then
     echo "About to start node ${nodeName} with the command: ${sshCmd[*]}"
@@ -378,7 +376,7 @@ function remoteClusterInit() {
     remoteCmd="${remoteCmd} --debug"
   fi
 
-  sshCmd=( "ssh" "${host}" "${remoteCmd}" )
+  sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
   if [ ${DEBUG} -eq 1 ]; then
     echo "About to initialise the cluster on node ${nodeName} with the command: ${sshCmd[*]}"
@@ -404,8 +402,7 @@ function localClusterInit() {
   local host
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
 
-  declare -r connectCmd
-  connectCmd="_connectCluster"
+  local connectCmd="_connectCluster"
 
   declare -a cmd
   cmd+=("${EXE}")
@@ -418,6 +415,14 @@ function localClusterInit() {
   cmd+=("--command")
   cmd+=("${connectCmd}")
   cmd+=("--appendTrace")
+
+  if [ "${DEBUG}" -eq 1 ]; then
+    echo ""
+    echo "About to execute the cluster initialisation command: ${cmd[*]}"
+  fi
+
+  # Set the library path so the RapidsSE library can be found and loaded
+  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
 
   local startClusterOutputFile="${ROOT_DIR}/startCluster.log"
   local startClusterExitStatus
@@ -433,22 +438,30 @@ function localClusterInit() {
 
   if [ "${startClusterExitStatus}" -eq 124 ]
   then
-    printError "The cluster initialisation command timed out on RapidsSE. RapidsSE may have crashed. Here is the output of the ${connectCmd} command on node ${CURRENT_NODE_NAME} [host ${host}] :\n" "${startClusterOutput}"
+    printError "The cluster initialisation command timed out on RapidsSE. RapidsSE may have crashed. Here is the output of the ${connectCmd} command on node ${CURRENT_NODE_NAME} [host ${host}] :\n\n" "${startClusterOutput}"
 
-    printError "And here is the output of RapidsSE's nohup file (${NOHUP_FILE}) on node ${CURRENT_NODE_NAME} [host ${host}] :" "$(cat "${NOHUP_FILE}")"
+    echo ""
+    echo ""
 
-    errorExit "Unable to initialise the RapidsSE cluster."
+    printError "And here is the output of RapidsSE's nohup file (${NOHUP_FILE}) on node ${CURRENT_NODE_NAME} [host ${host}] \n\n:" "$(cat "${NOHUP_FILE}")"
+    echo ""
+    exit 1
 
   elif [ "${startClusterExitStatus}" -ne 0 ]
   then
-    printError "Could not initialise the RapidsSE cluster. Here is the output of the ${connectCmd} command on node ${CURRENT_NODE_NAME} [host ${host}] :\n" "${startClusterOutput}"
+    printError "Could not initialise the RapidsSE cluster. Here is the output of the ${connectCmd} command on node ${CURRENT_NODE_NAME} [host ${host}] :\n\n" "${startClusterOutput}"
 
-    printError "And here is the output of RapidsSE's nohup file (${NOHUP_FILE}) on node ${CURRENT_NODE_NAME} [host ${host}] :" "$(cat "${NOHUP_FILE}")"
+    echo ""
+    echo ""
 
-    errorExit "Unable to initialise the RapidsSE cluster."
+    printError "And here is the output of RapidsSE's nohup file (${NOHUP_FILE}) on node ${CURRENT_NODE_NAME} [host ${host}] :\n\n" "$(cat "${NOHUP_FILE}")"
+    echo ""
+
+    exit 1
   fi  
 
   # Success
+  rm -f "${startClusterOutputFile}" 2>/dev/null
   echo "Done"
 }
 
@@ -553,9 +566,9 @@ function getRemoteRunningPid() {
   host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
-  remoteCmd="'if [ ! -f \"${dir}/${REMOTE_PID_FILENAME}\" ]; then exit 1; fi; cat \"${dir}/${REMOTE_PID_FILENAME}\" | xargs ps -o pid -h -p '"
+  remoteCmd="if [ ! -f \"${dir}/${REMOTE_PID_FILENAME}\" ]; then exit 1; fi; cat \"${dir}/${REMOTE_PID_FILENAME}\" | xargs ps -o pid -h -p "
   
-  pid="$(ssh "${host}" bash -c "${remoteCmd}")"
+  pid="$(ssh "${host}" "bash" "-c" "'${remoteCmd}'")"
 
   local re="^[[:space:]]*([0-9]+)[[:space:]]*$"
 
@@ -661,17 +674,6 @@ function assertNoNodesRunning() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Checks that all of the nodes are currently running. If one or more nodes
-## are not running then errors are printed to stderr and a non-zero exit code
-## is returned.
-## Params: None
-
-function assertAllNodesRunning() {
-  true
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Check that all nodes have the same version string. If not, write to stderr
 ## and return a non-zero exit code. If true then write the valid version string
 ## to stdout and exit with a zero exit code.
@@ -693,8 +695,8 @@ function checkNodeVersionsAreEqual() {
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
-    remoteCmd="'cd \"${dir}\" && source \"${VERSION_FILE}\" && echo \"\${SE_VERSION_STR}-\${SE_COMMIT_HASH}\"'"
-    actualVerStr="$(ssh "${host}" bash -c "${remoteCmd}")"
+    remoteCmd="cd \"${dir}\" && source \"${VERSION_FILE}\" && echo \"\${SE_VERSION_STR}-\${SE_COMMIT_HASH}\""
+    actualVerStr="$(ssh "${host}" "bash" "-c" "'${remoteCmd}'")"
 
     if [ -z "${actualVerStr}" ]; then
       printError "Got an empty version string for ${nodeName}."
@@ -802,7 +804,7 @@ function stopRemoteNode() {
     remoteCmd="${remoteCmd} --debug"
   fi
 
-  sshCmd=( "ssh" "${host}" "${remoteCmd}" )
+  sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
   if [ ${DEBUG} -eq 1 ]; then
     echo "About to stop node ${nodeName} with the command: ${sshCmd[*]}"

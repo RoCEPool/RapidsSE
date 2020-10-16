@@ -841,8 +841,8 @@ function askThreads() {
       continue
     fi
     
-    if [[ ${line} -lt 1 ]]; then
-      echo "Invalid input: thread count must be at least 1."
+    if [[ ${line} -lt "${MINIMUM_NUM_THREADS}" ]]; then
+      echo "Invalid input: thread count must be at least ${MINIMUM_NUM_THREADS}."
       continue
     fi
     

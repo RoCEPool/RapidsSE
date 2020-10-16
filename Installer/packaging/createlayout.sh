@@ -12,7 +12,9 @@ fi
 
 # Copy binaries
 mkdir -p "${LAYOUT_DIR}/Linux/bin"
-cp "${ROOT_DIR}/Linux/bin/"* "${LAYOUT_DIR}/Linux/bin"
+cp "${ROOT_DIR}/Linux/bin/rapidsse"       "${LAYOUT_DIR}/Linux/bin"
+cp "${ROOT_DIR}/Linux/bin/libRapidsSE.so" "${LAYOUT_DIR}/Linux/bin"
+cp "${ROOT_DIR}/Linux/bin/se.man"         "${LAYOUT_DIR}/Linux/bin"
 
 # Commands directory
 mkdir -p "${LAYOUT_DIR}/Commands"
@@ -41,6 +43,9 @@ cp "${ROOT_DIR}/Source/DEV_interface.h" "${LAYOUT_DIR}/Source"
 cp "${ROOT_DIR}/Source/RLU_interface.h" "${LAYOUT_DIR}/Source"
 cp "${ROOT_DIR}/Source/RluCommon.h"     "${LAYOUT_DIR}/Source"
 cp "${ROOT_DIR}/Source/eEO.h"           "${LAYOUT_DIR}/Source"
+
+# EO_Text
+cp -r "${ROOT_DIR}/EO_Text"             "${LAYOUT_DIR}/EO_Text"
 
 # Bootstrap
 cp "${ROOT_DIR}/Bootstrap/setup.sh"              "${LAYOUT_DIR}"

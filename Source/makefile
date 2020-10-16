@@ -55,7 +55,7 @@ INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../T
 #Libraries
 #THIRDPARTY_LIBS = -llz4 -lbz2 -lantlr4-runtime
 LIBS = -lrt -lpthread -ltcc -ldl -lantlr4-runtime
-RAPIDS_LIBS = -lRapidsSEv0.4.1
+RAPIDS_LIBS = -lRapidsSE
 LIB_DIRS = -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L../ThirdParty/tcc/lib/linux/centos7 -L../ThirdParty/antlr/lib/linux/centos7  -L$(TARGET_PATH)
 
 #all : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)

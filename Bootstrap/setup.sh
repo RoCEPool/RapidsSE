@@ -38,6 +38,7 @@ readonly NODE_CFG_DEFAULT_MEM="32"        # in GB, per node
 readonly NODE_CFG_DEFAULT_PARAMS=""
 
 readonly MINIMUM_MEM_SIZE="4"
+readonly MINIMUM_NUM_THREADS="8"
 
 
 ###############################################################################
