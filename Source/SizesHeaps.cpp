@@ -51,6 +51,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CrwBuffer),          HT_TRANSIENT_LARGE   }, // CN_CRWBUFFER
   { sizeof(CrwHash),            HT_TRANSIENT_LARGE   }, // CN_CRWHASH
   { sizeof(CsvBuffer),          HT_TRANSIENT_LARGE   }, // CN_CSVBUFFER
+  { sizeof(CsvMeta),            HT_TRANSIENT_TINY    }, // CN_CSVMETA
 
   { 'D' - ('A' - 1),            HT_INVALID           }, // CN__D__
   { sizeof(Datum_h),            HT_TRANSIENT_MEDIUM  }, // CN_DATUM

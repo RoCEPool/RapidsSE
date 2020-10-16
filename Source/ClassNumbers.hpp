@@ -55,7 +55,8 @@ enum eCN : u2 // Class Number
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWHASH,
   /* */ CN_CSVBUFFER,
-  
+  /* */ CN_CSVMETA,
+
   /* */ CN__D__,
   /* */ CN_DATUM,
   /* */ CN_DECACNT,
@@ -408,7 +409,8 @@ static Stz* aCN[]
   /* */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /* */ "CRWHASH"_Stz,             // CN_CRWHASH
   /* */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
-  
+  /* */ "CSVMETA"_Stz,             // CN_CSVMETA
+
   /* */ "_D__"_Stz,                // CN__D__
   /* */ "DATUM"_Stz,               // CN_DATUM
   /* */ "DECACNT"_Stz,             // CN_DECACNT
