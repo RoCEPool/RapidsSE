@@ -183,7 +183,8 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define bMORE_DATA()     (bool)(cSrcChr)
 
-#define bMORE_FIELDS()   (bool)(cSrcChr && '\n' != cSrcChr)
+//#define bMORE_FIELDS()   (bool)(cSrcChr && '\n' != cSrcChr)
+#define bMORE_FIELDS()   (bool)(cSrcChr && cSrcChr != m_cRecEnd)
 
 #define bWHITE_SPACE() \
   (cSrcChr == ' ')  || (cSrcChr == '\n') || \
