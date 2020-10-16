@@ -384,7 +384,6 @@ L_Boolean:
     // numeric case
     uNumber = 0;
     for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-      //uNumber = (uNumber * 10) + (cSrcChr - '0');
       vCOLLECT(uNumber);
       nDigits++;
     }
@@ -425,7 +424,6 @@ L_Date:
   // collect digits for year
   uYear = 0;
   for (nDigits = 0; nDigits < 4 && bIS_DIGIT(); vADV_SRCCHR()) {
-    //uYear = (uYear * 10) + (cSrcChr - '0');
     vCOLLECT(uYear);
     nDigits++;
   }
@@ -457,7 +455,6 @@ L_Date:
   // collect digits for month
   uMonth = 0;
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
-    //uMonth = (uMonth * 10) + (cSrcChr - '0');
     vCOLLECT(uMonth);
     nDigits++;
   }
@@ -485,7 +482,6 @@ L_Date:
   // collect digits for day
   uDay = 0;
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
-    //uDay = (uDay * 10) + (cSrcChr - '0');
     vCOLLECT(uDay);
     nDigits++;
   }
@@ -601,7 +597,6 @@ L_Decimal:
   // collect digits for leading number
   uNumber = 0;
   for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-    //uNumber = (uNumber * 10) + (cSrcChr - '0');
     vCOLLECT(uNumber);
     nDigits++;
     nPixPrecision--;
@@ -618,7 +613,6 @@ L_Decimal:
     vADV_SRCCHR(); // skip '.'
     
     for ( ; nPixScale && nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-      //uNumber = (uNumber * 10) + (cSrcChr - '0');
       vCOLLECT(uNumber);
       nDigits++;
       nPixScale--;
@@ -803,7 +797,6 @@ L_Integer:
   // collect digits for number
   uNumber = 0;
   for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-    //uNumber = (uNumber * 10) + (cSrcChr - '0');
     vCOLLECT(uNumber);
     nDigits++;
   }
@@ -852,7 +845,6 @@ L_Interval:
   // collect digits for leading seconds
   uSecond = 0;
   for  (nDigits = 0; nDigits < 9 && bIS_DIGIT(); vADV_SRCCHR()) {
-    //uSecond = (uSecond * 10) + (cSrcChr - '0');
     vCOLLECT(uSecond);
     nDigits++;
   }
@@ -866,9 +858,8 @@ L_Interval:
   if ('.' == cSrcChr) {
     vADV_SRCCHR(); // skip '.'
     for ( ; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
-      nDigits++;
-      //uMicrosecond = (uMicrosecond * 10) + (cSrcChr - '0');
       vCOLLECT(uMicrosecond);
+      nDigits++;
       nShift /= 10;
     }
   }
@@ -920,7 +911,6 @@ L_Time:
   // collect digits for hour
   uHour = 0;
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
-    //uHour = (uHour * 10) + (cSrcChr - '0');
     vCOLLECT(uHour);
     nDigits++;
   }
@@ -948,7 +938,6 @@ L_Time:
   // collect digits for minute
   uMinute = 0;
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
-    //uMinute = (uMinute * 10) + (cSrcChr - '0');
     vCOLLECT(uMinute);
     nDigits++;
   }
@@ -975,7 +964,6 @@ L_Time:
   // collect digits for second
   uSecond = 0;
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
-    //uSecond = (uSecond * 10) + (cSrcChr - '0');
     vCOLLECT(uSecond);
     nDigits++;
   }
@@ -1000,7 +988,6 @@ L_Time:
     vADV_SRCCHR(); // skip '.'
 
     for (nShift = C_IVL_USEC_SHIFT; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
-      //uMicrosecond = (uMicrosecond * 10) + (cSrcChr - '0');
       vCOLLECT(uMicrosecond);
       nShift /= 10;
     }
