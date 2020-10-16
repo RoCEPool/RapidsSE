@@ -261,6 +261,8 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   
   i8 i_Fld = 0;
   bool bSawFldSep = false;
+  
+  eEC eError = EC_NONE;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // determine field seperator
@@ -296,6 +298,7 @@ L_TestMoreRecords:
   
   azRecordStart = azCsvSrc;
   
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) new rsb
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -309,17 +312,20 @@ L_TestMoreRecords:
   
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 3) while more fields of current row
+  // 3) while more fields of current record
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_TestMoreFields:
-    
+  
+  ASSERT(EC_NONE == eError);
+
   if (! bMORE_FIELDS())
     goto L_EndOfRecord;
 
   azFieldStart = azCsvSrc;
 
+  
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 4) decode and convert field
+  // 4) decode and convert field i_Fld
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
   xColPix       = aColPix[i_Fld];
@@ -331,7 +337,7 @@ L_TestMoreFields:
   bSawFldSep = false;
 
   // debug
-  //pCol = m_pStreamDef->pGetColumn(m_i_Fld);
+  //pCol = m_pStreamDef->pGetColumn(i_Fld);
 
   switch (ePixDatum) {
     case DM_BOL : goto L_Boolean;
@@ -583,7 +589,7 @@ L_Decimal:
 
   // ignore leading 0's
   while ('0' == cSrcChr)
-    vADV_SRC();
+    vADV_SRC(); // skip '0'
     
   // collect digits for leading number
   uNumber = 0;
@@ -1058,7 +1064,7 @@ L_Varchar:
 
   // find first non-space character
   while (' ' == cSrcChr)
-    vADV_SRC();
+    vADV_SRC(); // skip ' '
 
   azCsvSrc = azFieldStart;
 
@@ -1071,7 +1077,7 @@ L_Varchar:
     if (nChars++ < nPixLength)
       *acVchDst++ = cSrcChr;
     
-    vADV_SRC();
+    vADV_SRC(); // next char
   }
 
   // terminate
@@ -1106,14 +1112,14 @@ L_PostField:
     
     if (cSrcChr == m_cFldSep) {
       bSawFldSep = true;
-      vADV_SRC();
+      vADV_SRC(); // skip m_cFldSep
       break;
     }
     
     if (cSrcChr == m_cRecEnd)
       break;
     
-    vADV_SRC();
+    vADV_SRC(); // skip any
   }
 
   // move to next field
@@ -1135,18 +1141,22 @@ L_FieldError:
     if (cSrcChr == m_cRecEnd)
       break;
     
-    vADV_SRC();
+    vADV_SRC(); // skip any
   }
   
-  // increment records processed
+  // increment invalid records
   AM::vIncRowsInvalid(m_pPipelineJob);
   m_nRecords++;
   
+  // clear error
+  eError = EC_NONE;
+
   // begin new record
   i_Fld = 0;
 
+  // skip
   if (cSrcChr)
-    vADV_SRC();
+    vADV_SRC(); // skip m_cRecEnd
 
   goto L_TestMoreRecords;
 
@@ -1182,7 +1192,7 @@ L_EndOfRecord:
   i_Fld = 0;
   
   if (cSrcChr)
-    vADV_SRC();
+    vADV_SRC(); // skip m_cRecEnd
 
   goto L_TestMoreRecords;
   
