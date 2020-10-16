@@ -1,0 +1,1221 @@
+#!/bin/bash
+# This file contains function definitions that are imported and used by setup.sh.
+
+# Guard against this file being executed directly.
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]
+then
+  >&2 echo "This file should be sourced, not executed: $0"
+  exit 1
+fi
+
+# Load other common functions
+COMMON_FN="common.fn"
+
+if [ -n "${DIR}" ]; then
+  COMMON_FN="${DIR}/${COMMON_FN}"
+fi
+
+if [ ! -f "${COMMON_FN}" ]; then
+  >&2 echo "File not found: ${COMMON_FN}"
+  >&2 echo "PWD = ${PWD}"
+  exit 1
+fi
+
+#shellcheck source=common.fn
+source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints the acceptable arguments to the script and then exits.
+## Params: None
+
+function printUsageAndExit() {
+  echo ""
+  echo "Usage: ./<install_file>.run [--node | --cluster]"
+  echo "                            [--interactive | --script]"
+  echo "                            [--config <file>]"
+  echo "                            [--basic | --adv/--advanced]"
+  echo "                            [--debug]"
+  echo "Details:"
+  echo "  --cluster       [Default] Installs RapidsSE on a cluster."
+  echo "  --node          Installs RapidsSE on the current node using a supplied"
+  echo "                  configuration file. The --config and --name options must"
+  echo "                  also be specified."
+  echo ""
+  echo "  --interactive   Uses a wizard to ask questions and prompt for answers"
+  echo "                  in order to build a cluster configuration."
+  echo "  --script        Does not prompt the user for input and uses the supplied"
+  echo "                  configuration. The --config option must be specified."
+  echo ""
+  echo "  --config <file> Specifies the path to an existing configuration"
+  echo "                  file that contains the cluster settings."
+  echo ""
+  echo "  --basic         [Default] Hides advanced questions during the cluster"
+  echo "                  installation wizard (if being used)."
+  echo "  --adv"
+  echo "  --advanced      Asks additional questions during the cluster"
+  echo "                  installation wizard."
+  echo ""
+  echo "  --installer     Path to the installation *.run file."
+  echo ""
+  echo "  --name          The name of this node in the cluster configuration."
+  echo "                  Valid when specified with the --node option."
+  echo ""
+  echo "  --debug         Displays more messages during execution."
+  echo ""
+  echo "  --help          Displays this message."
+  exit 1
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Inspect all of the arguments, checking for incompatibilities, and set
+## the appropriate global variables
+## Params: the arguments to the script
+
+function processArgs() {
+
+  # Local variables that have value 1 if that argument has been specified.
+  local argCluster=0
+  local argNode=0
+  local argInteractive=0
+  local argScript=0
+  local argConfig=0
+  local argBasic=0
+  local argAdvanced=0
+  local argInstaller=0
+  local argName=0
+
+  while [[ $# -gt 0 ]]
+  do
+    key="$1"
+    case "${key}" in
+  
+      --cluster)
+        CLUSTER_INSTALL=1
+        argCluster=1
+        shift # past argument
+        ;;
+  
+      --node)
+        CLUSTER_INSTALL=0
+        INTERACTIVE_INSTALL=0
+        argNode=1
+        shift # past argument
+        ;;
+  
+      --interactive)
+        INTERACTIVE_INSTALL=1
+        argInteractive=1
+        shift # past argument
+        ;;
+  
+      --script)
+        INTERACTIVE_INSTALL=0
+        argScript=1
+        shift # past argument
+        ;;
+  
+      --config)
+        argConfig=1
+        CONFIG_FILE="$2"
+        shift # past argument
+        shift # past value
+        ;;
+  
+      --config=*)
+        argConfig=1
+        CONFIG_FILE="${key#*=}"
+        shift # past argument=value
+        ;;
+  
+      --basic)
+        ADV_WIZARD=0
+        argBasic=1
+        shift # past argument
+        ;;
+  
+      --adv|--advanced)
+        ADV_WIZARD=1
+        argAdvanced=1
+        shift # past argument
+        ;;
+
+      --installer)
+        argInstaller=1
+        INSTALL_FILE="$2"
+        shift # past argument
+        shift # past value
+        ;;
+  
+      --installer=*)
+        argInstaller=1
+        INSTALL_FILE="${key#*=}"
+        shift # past argument=value
+        ;;
+  
+      --name)
+        argName=1
+        CURRENT_NODE_NAME="$2"
+        shift # past argument
+        shift # past value
+        ;;
+
+      --name=*)
+        argName=1
+        CURRENT_NODE_NAME="${key#*=}"
+        shift # past argument=value
+        ;;
+
+      --debug)
+        DEBUG=1
+        shift # past argument
+        ;;
+
+      --help|-h)
+        shift
+        printUsageAndExit
+        ;;
+
+      *)
+        shift
+        printUsageAndExit
+        ;;
+    esac
+  done
+
+  if [[ "${argConfig}" -eq 1 && -n "${CONFIG_FILE}" &&  "${CONFIG_FILE:0:1}" != "/" && -n "${USER_PWD}" ]]; then
+    # We've been invoked from the installer and have a relative path to 
+    # the config file. The config file is relative to this directory.
+    CONFIG_FILE="${USER_PWD}/${CONFIG_FILE}"
+  fi
+
+  # Now we can check for invalid combinations of arguments.
+    # --cluster     and --node
+    # --node        and --interactive
+    # --interactive and --script
+    # --basic       and --script
+    # --adv         and --script
+    # --basic       and --node
+    # --adv         and --node
+    # --config      and no file specified
+    # --config      and file not found
+    # --installer   and no file specified
+    # --installer   and file not found
+
+  local errmsg="Invalid combination of arguments specified: "
+
+  if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]]; then 
+    printError "${errmsg}" "--cluster" "--node"
+    printUsageAndExit
+  fi
+
+  if [[ ${argNode} -eq 1     && ${INTERACTIVE_INSTALL} -eq 1 ]]; then 
+    printError "${errmsg}" "--node" "--interactive"
+    printUsageAndExit
+  fi
+
+  if [[ ${argInteractive} -eq 1 && ${argScript} -eq 1 ]]; then 
+    printError "${errmsg}" "--interactive" "--script"
+    printUsageAndExit
+  fi
+
+  if [[ ${argBasic} -eq 1    && ${INTERACTIVE_INSTALL} -eq 0 ]]; then 
+    printError "${errmsg}" "--basic" "--script" 
+    printUsageAndExit
+  fi
+
+  if [[ ${argAdvanced} -eq 1 && ${INTERACTIVE_INSTALL} -eq 0 ]]; then 
+    printError "${errmsg}" "--advanced" "--script"
+    printUsageAndExit
+  fi
+
+  if [[ ${argBasic} -eq 1    && ${CLUSTER_INSTALL} -eq 0 ]]; then 
+    printError "${errmsg}" "--basic" "--node"
+    printUsageAndExit
+  fi
+
+  if [[ ${argAdvanced} -eq 1 && ${CLUSTER_INSTALL} -eq 0 ]]; then 
+    printError "${errmsg}" "--advanced" "--node" 
+    printUsageAndExit
+  fi
+
+  if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then 
+    printError "${errmsg}" "No config file specified" 
+    printUsageAndExit
+  fi
+
+  if [[ ${argConfig} -eq 1 && ! -f "${CONFIG_FILE}" ]]; then 
+    printError "Config file does not exist: ${CONFIG_FILE}"
+    printUsageAndExit 
+  fi
+
+  if [[ ${argInstaller} -eq 1 && -z "${INSTALL_FILE}" ]]; then 
+    printError "${errmsg}" "No installation *.run file specified" 
+    printUsageAndExit
+  fi
+
+  if [[ ${argInstaller} -eq 1 && ! -f "${INSTALL_FILE}" ]]; then 
+    printError "Installation *.run file does not exist: ${INSTALL_FILE}"
+    printUsageAndExit 
+  fi
+
+  if [[ ${argName} -eq 1 && ${CLUSTER_INSTALL} -eq 1 ]]; then 
+    printError "${errmsg}" "--name" "--cluster" 
+    printUsageAndExit
+  fi
+
+
+
+  # Check for dependencies between combinations of arguments.
+    # --node   must have --config
+    # --node   must have --name
+    # --script must have --config
+
+  if [[ ${argNode} -eq 1 && ${argConfig} -eq 0  ]]; then 
+    printError "Missing argument dependency: argument --node must also specify argument --config"
+    printUsageAndExit
+  fi
+
+  if [[ ${argNode} -eq 1 && ${argName} -eq 0 ]]; then
+    printError "Missing argument dependency: argument --node must also specify argument --name"
+    printUsageAndExit 
+  fi
+
+  if [[ ${argScript} -eq 1 && ${argConfig} -eq 0  ]]; then 
+    printError "Missing argument dependency: argument --script must also specify argument --config"
+    printUsageAndExit
+  fi
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Find the path of the installation file that kicked off this script.
+## Params: None
+
+function findInstallFile() {
+
+  # First try to get it from the parent process's command line
+  if [ "${DEBUG}" -eq 1 ]; then echo "Looking for install file from PPID."; fi;
+
+  local parentScript
+  parentScript="$(cut -f 2 -d '' < /proc/${PPID}/cmdline)"
+
+  if [[ -n "${parentScript}" && "${parentScript:(-4):4}" == ".run" && -f "${USER_PWD}/${parentScript}" ]]
+  then
+    INSTALL_FILE="${USER_PWD}/${parentScript}"
+    return
+  fi
+
+  # Otherwise if there is only one .run file in the $USER_PWD then this would be it.
+  if [ -n "${USER_PWD}" ]; then
+
+    if [ "${DEBUG}" -eq 1 ]; then echo "Looking for install file in directory: ${USER_PWD}"; fi;
+
+    local runfiles
+    mapfile -t runfiles < <( ls -1 "${USER_PWD}"/*.run || true )
+  
+    if [[ ${#runfiles[@]} -eq 1 && -f "${runfiles[0]}" ]]
+    then
+      INSTALL_FILE="${runfiles[0]}"
+      return
+    fi
+  fi
+
+  errorExit "Could not find the installation *.run file. Trying specifying it with the --installer argument."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Install the product across the cluster.
+## Params: None
+
+function doClusterInstall() {
+  # Need to consider if this installation is interactive or scripted, or
+  # whether an existing config file is being used.
+
+  if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
+    displayWelcome
+
+    if [ -n "${CONFIG_FILE}" ]; then
+      # Interactive install but we have been given a config file.
+      echo "Using the existing cluster configuration file found at:"
+      echo "  ${CONFIG_FILE}"
+
+      # Load and validate config
+      loadClusterConfig
+      echo ""
+      echo "There are ${#NODE_LIST[@]} nodes defined in this cluster configuration."
+
+      # TODO: Present summary
+      # TODO: Edit ?
+      # TODO: Validate config/environment
+      # TODO: Write config file?
+
+      # Install all nodes
+      distributeSoftware "${CONFIG_FILE}"
+
+    else
+      # Interactive install but no config file given. 
+      # We need to prompt the user to configure the cluster.
+      echo "Let's build a cluster configuration."
+
+      createConfiguration
+
+      if [ ${DEBUG} -eq 1 ]; then
+        echo "Node configuration after creating configuration:"
+        allNodeCfgsPrint
+      fi
+
+      # TODO: Present summary
+      # TODO: Edit ?
+      # TODO: Validate config/environment
+      # Write config file?
+      local outputConfig="${USER_PWD}/${DEFAULT_CONFIG_PATH}"
+      writeClusterConfig "${outputConfig}"
+
+      # Distribute the software and install all nodes
+      distributeSoftware "${outputConfig}"
+    fi
+
+    echo ""
+    echo "Installation of RapidsSE is complete!"
+
+  else 
+    # Scripted installation
+    
+    # Assert that we have a config file
+    [ -f "${CONFIG_FILE}" ] || errorExit "Config file does not exist: ${CONFIG_FILE}"
+
+    # TODO: Load and validate config
+    # TODO: Validate config/environment
+    # TODO: Write config file?
+    # TODO: Install all nodes
+    
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Create a cluster configuration interactively by prompting the user.
+## Params: None
+
+function createConfiguration() {
+  
+  # (advanced) node name prefix
+  askNamePrefix
+
+  # hostnames
+  askHostnames
+
+  # (advanced) port
+  askPort
+
+  # installation directory
+  askInstallDir
+
+  # shared memory size
+  askMemSize
+
+  # (advanced) partitions
+  askPartitions
+
+  # (advanced) threads
+  askThreads
+
+  # (advanced) additional parameters
+  askParams
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Welcomes the user to the interactive install wizard.
+## Params: None
+
+function displayWelcome() {
+  clear
+  #shellcheck disable=1090
+  source "${VERSION_FILE}"
+
+  echo "Welcome to the installation wizard for RapidsSE version ${SE_VERSION_STR}."
+  echo ""
+  echo "This will guide you through the process of installing and setting up RapidsSE"
+  echo "on a cluster."
+  echo ""
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a prefix to be used for each node name.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askNamePrefix() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    return
+  fi
+
+  local line
+
+  echo ""
+  echo "Node Name Prefix"
+  echo "----------------"
+  echo ""
+  echo "Please enter a prefix for naming each node. A sequence number will be applied"
+  echo "after this prefix. e.g a prefix of 'NODE' will result in NODE1, NODE2, etc."
+  echo "The node name prefix must not contain spaces."
+  echo "Press return with a blank input to accept the default value."
+
+  while true
+  do
+    echo ""
+    echo -n "Enter a node name prefix [default: ${NODE_CFG_DEFAULT_NAME_PREFIX}] : "
+    IFS=$'\n' read -r line
+
+    # check for whitespace
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: node name prefix cannot contain whitespace."
+      continue
+    fi
+
+    # Check if using the default value
+    if [ -z "${line}" ]; then 
+      line="${NODE_CFG_DEFAULT_NAME_PREFIX}"
+      break
+    fi
+
+    # Save the value
+    NODE_NAME_PREFIX="${line}"
+    break
+  done
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter all of the hostnames/IPs where RapidsSE is to run.
+## Params: None
+
+function askHostnames() {
+
+  declare -a hostnames
+  local line
+
+  echo ""
+  echo "Hostnames"
+  echo "---------"
+  echo ""
+  echo "Let's collect the hostnames/IP addresses of all the machines that RapidsSE"
+  echo "is to be installed on (including the current machine, if applicable)."
+  
+  # Get the first host
+  while true
+  do
+    echo ""
+    echo -n "Enter a hostname/IP and press return : "
+    IFS=$'\n' read -r line
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: hostname/IP cannot contain whitespace."
+      continue
+    fi
+
+    if [ -z "${line}" ]; then 
+      echo "Invalid input: must have at least one hostname."
+      continue 
+    fi
+
+    hostnames+=("${line}")
+    break
+  done
+
+  # Get any subsequent hosts
+  while true
+  do
+    echo ""
+    echo -n "Enter another hostname/IP, or an empty line to finish : "
+    IFS=$'\n' read -r line
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: hostname/IP cannot contain whitespace."
+      continue
+    fi
+
+    if [ -z "${line}" ]; then 
+      break
+    fi
+
+    hostnames+=("${line}")
+  done
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo ""
+    echo "Got the following hostnames / IP addresses:"
+    printIndentArray 2 "${hostnames[@]}"
+  fi
+
+  # Build the node list, now that we have the initial list & count of hosts.
+  createNodeNames ${#hostnames[@]}
+
+  # With the node count and the node names we can now build the 
+  # node_cfg associative arrays to hold the configuration of each node.
+  createNodeConfigs "${NODE_LIST[@]}"
+
+  # set the hostname field in each node_cfg associative array
+  local i=0
+  while [ $i -lt ${#hostnames[@]}  ] 
+  do
+    nodeCfgSetValue "${NODE_LIST[$i]}" "${NODE_CFG_HOST_KEY}" "${hostnames[$i]}"
+    i=$((i+1))
+  done
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default port number that each SE instance will listen on.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askPort() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    allNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${NODE_CFG_DEFAULT_PORT}"   
+    return
+  fi
+
+  echo ""
+  echo "Internal Port Number"
+  echo "--------------------"
+  echo ""
+  echo "The internal port number is the TCP/IP port that RapidsSE uses to communicate"
+  echo "with other nodes in the cluster."
+
+  local line
+  local re="^-?[0-9]+$"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter a port number for node communication [default: ${NODE_CFG_DEFAULT_PORT}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_PORT}"
+      break
+    fi
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: port number cannot contain whitespace."
+      continue
+    fi
+
+    if ! [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: port number must be an integer."
+      continue
+    fi
+
+    if [[ ${line} -lt 1 || ${line} -gt 65535 ]]; then
+      echo "Invalid input: port number out of range [1024, 65535]."
+      continue
+    fi
+
+    if [[ ${line} -lt 1024 && ${EUID} -ne 0 ]]; then
+      echo "Invalid input: Cannot use a port number less than 1024 as a non-root user."
+      continue
+    fi
+
+    break
+  done
+
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default installation directory for each SE instance
+## on each node.
+## Params: None
+
+function askInstallDir() {
+
+  echo ""
+  echo "Installation Path"
+  echo "-----------------"
+  echo ""
+  echo "This is the path that RapidsSE will be installed on each node."
+
+  local line
+  local re="^( |[[:space:]])+"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter a path where RapidsSE will be installed [default: ${NODE_CFG_DEFAULT_DIR}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_DIR}"
+      break
+    fi
+
+    if [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: Path cannot start with whitespace."
+      continue
+    fi
+
+    if [[ "${line:0:1}" != "/" ]]; then
+      echo "Invalid input: Path cannot be a relative path."
+      continue
+    fi
+
+    break
+  done
+
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_DIR_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default size (in GB) for the shared memory segment
+## for all nodes.
+## Params: None
+
+function askMemSize() {
+
+  echo ""
+  echo "Reserved Memory Size"
+  echo "--------------------"
+  echo ""
+  echo "RapidsSE reserves memory when it starts up. This is the maximum amount of space"
+  echo "that RapidsSE will use for managing data, tables, indexes, etc."
+
+  local line
+  local re="^-?[0-9]+$"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter the desired memory segment size in GB for each node [default: ${NODE_CFG_DEFAULT_MEM}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_MEM}"
+      break
+    fi
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: memory segment size cannot contain whitespace."
+      continue
+    fi
+
+    if ! [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: memory segment size must be an integer."
+      continue
+    fi
+
+    if [[ ${line} -lt "${MINIMUM_MEM_SIZE}" ]]; then
+      echo "Invalid input: memory segment size must be at least 4GB."
+      continue
+    fi
+
+    break
+  done
+
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_MEM_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default number of partitions for each SE instance.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askPartitions() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    allNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${NODE_CFG_DEFAULT_PARTITIONS}"
+    return
+  fi
+
+  echo ""
+  echo "Partitions"
+  echo "----------"
+  echo ""
+  echo "RapidsSE uses partitions to segment the data and parallelise operations."
+  echo "We need to configure how many partitions RapidsDB uses on each node."
+
+  local line
+  local re="^-?[0-9]+$"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter the desired number of partitions for each node [default: ${NODE_CFG_DEFAULT_PARTITIONS}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_PARTITIONS}"
+      break
+    fi
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: partition count cannot contain whitespace."
+      continue
+    fi
+
+    if ! [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: partition count must be an integer."
+      continue
+    fi
+
+    if [[ ${line} -lt 1 ]]; then
+      echo "Invalid input: partition count must be at least 1."
+      continue
+    fi
+
+    break
+  done
+
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_PARTITIONS_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default number of threads for each SE instance.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askThreads() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    allNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${NODE_CFG_DEFAULT_THREADS}"
+    return
+  fi
+
+  echo ""
+  echo "Threads"
+  echo "-------"
+  echo ""
+  echo "RapidsSE uses threads to run tasks in parallel."
+  echo "We need to configure how many threads RapidsDB uses on each node."
+  echo "This value should be similar to the number of CPU cores on a node."
+  
+  local line
+  local re="^-?[0-9]+$"
+  
+  while true
+  do
+    
+    echo ""
+    echo -n "Enter the desired number of threads for each node [default: ${NODE_CFG_DEFAULT_THREADS}] : "
+    IFS=$'\n' read -r line
+    
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_THREADS}"
+      break
+    fi
+    
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: thread count cannot contain whitespace."
+      continue
+    fi
+    
+    if ! [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: thread count must be an integer."
+      continue
+    fi
+    
+    if [[ ${line} -lt "${MINIMUM_NUM_THREADS}" ]]; then
+      echo "Invalid input: thread count must be at least ${MINIMUM_NUM_THREADS}."
+      continue
+    fi
+    
+    break
+  done
+  
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_THREADS_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter any other command line parameters to be applied to all
+## SE instances when they are started or stopped.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askParams() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    allNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${NODE_CFG_DEFAULT_PARAMS}"
+    return
+  fi
+
+  echo ""
+  echo "Startup Parameters"
+  echo "------------------"
+  echo ""
+  echo "Other advanced parameters to be given to RapidsSE when it starts up"
+  echo "can be specified here."
+  
+  local line
+  local re="^[[:space:]]+$"
+  
+  while true
+  do
+    
+    echo ""
+    echo -n "Enter any additional startup parameters [default: ${NODE_CFG_DEFAULT_PARAMS}] : "
+    IFS=$'\n' read -r line
+    
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_PARAMS}"
+      break
+    fi
+    
+    if [[ "${line}" =~ ${re} ]]; then
+      echo "Invalid input: parameters cannot consist only of whitespace."
+      continue
+    fi
+    
+    break
+  done
+  
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Writes the current configuration out to a file.
+## Params:
+##  $1 : (optional) the path to the output file. Set to "" to use the default path.
+function writeClusterConfig() {
+ 
+  # First some sanity checks
+  if [[ -z "${NODE_LIST[*]}" || "${#NODE_LIST[@]}" -eq 0  ]]; then
+    errorExit "Cluster configuration incomplete: missing the list of nodes (\$NODE_LIST)."
+  fi
+
+  local outputFile="$1"
+
+  # Check if a config file path has been specified
+  if [ -z "${outputFile}" ]; then
+    outputFile="${DEFAULT_CONFIG_PATH}"
+  fi
+
+
+  # Write the file header 
+  #  (no parameter/command substitution because "EOT" below is quoted)
+  cat <<'EOT' > "${outputFile}" 
+#!/bin/bash
+
+# Cluster config file.
+# A cluster.config file can be created by hand (see note), or automatically
+# via the installation wizard.
+#
+# Note: This file is a bash script expected to be sourced by other scripts.
+#       As such it must be a syntactically valid bash script.
+
+# Guard against direct execution
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]; then
+  >&2 echo "This file should be sourced, not executed: $0"
+  exit 1
+fi
+
+EOT
+
+
+  # Now add in the file's creation information
+  (
+    echo "CONFIG_VERSION=\"${CONFIG_DEFAULT_VERSION}\""
+    echo "CONFIG_CREATED=\"$(date +%FT%T)\""
+    echo ""
+  ) >> "${outputFile}"
+
+  local keys
+  local key
+  local value
+  local nodeName
+
+  # Write out the definition of the node list.
+  (
+    echo    "declare -ga NODE_LIST"
+    echo -n "NODE_LIST=( "
+
+    for nodeName in "${NODE_LIST[@]}"
+    do
+      echo -n "\"${nodeName}\" "
+    done
+
+    echo ")"
+  ) >> "${outputFile}"
+
+  # Now add in each node's configuration.
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    # Start by declaring the associative map.
+    (
+      echo ""
+      echo "declare -gA ${NODE_CFG_PREFIX}${nodeName}"
+    ) >> "${outputFile}"
+
+    # Get all of the keys for this node.
+    IFS=" " read -r -a keys <<< "$(nodeCfgGetKeys "${nodeName}")"
+    
+    for key in "${keys[@]}"
+    do
+      value=$(nodeCfgGetValue "${nodeName}" "${key}")
+      echo "${NODE_CFG_PREFIX}${nodeName}[\"${key}\"]=\"${value}\"" >> "${outputFile}"
+    done # keys
+  done # nodes
+
+  if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
+    echo ""
+    echo "The cluster configuration has been written out to the file:"
+    echo "    ${outputFile}"
+  fi
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo ""
+    echo "Contents of the cluster configuration file: ${outputFile}"
+    echo ""
+    cat "${outputFile}"
+    echo ""
+  fi
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies the installer and cluster.config to each node and invokes the 
+## installer to do a single node installation.
+## Params: 
+##  $1 : cluster.config path
+
+function distributeSoftware() {
+  local configFile="$1"
+
+  # Assert that we have a valid configuration
+  if [[ -z "${NODE_LIST}" || ${#NODE_LIST[@]} -eq 0 ]]; then
+    errorExit "No nodes have been defined to install RapidsSE onto."
+  fi
+
+  # Check that we have an installation file
+  if ! [ -f "${INSTALL_FILE}" ]; then
+    errorExit "Could not distribute RapidsSE to other nodes because the installation file could not be found at path: ${INSTALL_FILE}"
+  fi
+
+  # Check that we have a cluster.config file
+  if ! [ -f "${configFile}" ]; then
+    errorExit "Could not distribute RapidsSE to other nodes because the cluster.config file could not be found at path: ${configFile}"
+  fi
+
+  echo ""
+  echo "Installing RapidsSE to all nodes in the cluster."
+
+  local nodeName
+  local hostname
+
+  # For each node
+  for nodeName in "${NODE_LIST[@]}"
+  do 
+    # Extract the hostname
+    hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    if [ -z "${hostname}" ]; then
+      errorExit "Cannot distribute RapidsSE to node ${nodeName} because its hostname has not been specified."
+    fi
+
+    # Copy the installer & cluster.config to /tmp
+    # Buid the command
+    local cmd=( "scp" "-q" "${INSTALL_FILE}" "${configFile}" "${hostname}:/tmp"  )
+
+    if [ ${DEBUG} -eq 1 ]; then 
+      echo "Copying installer to node ${nodeName} [host: ${hostname}]."
+      echo "Command: ${cmd[*]}"
+    fi
+
+    # Execute the command
+    "${cmd[@]}" || errorExit "Error copying the installation file to node ${nodeName} [host: ${hostname}]."
+
+
+    # Invoke the installer, passing the path to the cluster.config, the name of
+    #   the current node, and an argument to invoke single node installation
+
+    local remoteInstaller
+    local remoteConfig
+
+    remoteInstaller="/tmp/$(basename "${INSTALL_FILE}")"
+    remoteConfig="/tmp/$(basename "${configFile}")"
+
+    # Build the command to execute
+    local cmd=( "ssh" "-q" "${hostname}" "${remoteInstaller}" "--" "--node" "--config" "${remoteConfig}" "--name" "${nodeName}" "--installer" "${remoteInstaller}" )
+
+    if [ ${DEBUG} -eq 1 ]; then 
+      cmd+=("--debug")
+      echo "Invoking single node installation on node ${nodeName} [host: ${hostname}]."
+      echo "Command: ${cmd[*]}"
+    else 
+      echo ""
+      echo "Installing to node ${nodeName} [host: ${hostname}]."
+    fi
+
+    # Execute the command
+    "${cmd[@]}" || errorExit "Error executing the installer to install RapidsSE on the remote node ${nodeName} [host: ${hostname}]." 
+
+    # N.B.: The single node install option will delete itself and the cluster.config if
+    # they are executed from the /tmp directory. So no need to clean up.
+    
+  done
+  echo ""
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Called to install RapidsSE on the current node only.
+## This is typically called after the installer is copied to a remote node
+## and executed.
+## Params: None
+
+function doNodeInstall() {
+
+  # Needs the installer file, config file and name of the current node.
+  # Let's assert all this.
+  if [ ! -f "${INSTALL_FILE}" ]; then
+    errorExit "Couldn't find the installation file at path: ${INSTALL_FILE}"
+  fi  
+
+  if [ ! -f "${CONFIG_FILE}" ]; then
+    errorExit "Couldn't find the cluster configuration file at path: ${CONFIG_FILE}"
+  fi
+
+  if [ -z "${CURRENT_NODE_NAME}" ]; then
+    errorExit "Current node name was not specified."
+  fi
+
+  # Install an exit hook to clean up the installation file and config files on exit
+  trap cleanupNodeInstall EXIT
+
+  # Source the config file to include its configuration variables here
+  #shellcheck disable=1090
+  source "${CONFIG_FILE}"
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "Loaded cluster configuration file ${CONFIG_FILE}. Contents of file:"
+    echo ""
+    cat "${CONFIG_FILE}"
+  fi
+
+
+  # Check that a configuration exists for the given node name.
+  if ! nodeCfgExists "${CURRENT_NODE_NAME}"; then
+   errorExit "There is no configuration for the node named: ${CURRENT_NODE_NAME}"
+  fi
+
+
+  # Get the installation dir and hostname for this node. Validate that they
+  # have been set.
+  local installDir
+  local hostname
+  local cmd
+
+  installDir="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DIR_KEY}")"
+  hostname="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
+
+  if [ -z "${installDir}" ]; then
+    errorExit "The installation directory for node ${CURRENT_NODE_NAME} has not been set."
+  fi
+
+  if [ -z "${hostname}" ]; then
+    errorExit "The hostname for node ${CURRENT_NODE_NAME} has not been set."
+  fi
+  
+
+  # Test if the parent path of the install directory is writable
+  if [ ! -w "$(dirname "${installDir}")" ]; then
+    errorExit "Parent path of the installation directory (${installDir}) is not writable by the current user (${USER})."
+  fi
+
+
+  # If the installation directory already exists then remove it
+  if [ -d "${installDir}" ]; then
+
+    if [ ${DEBUG} -eq 1 ]; then
+      echo "Removing existing installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+    fi
+
+    rm -rf "${installDir}" || errorExit "Could not remove the existing installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+  fi
+
+
+  # Create installation directory.
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "About to create the installation directory: ${hostname}:${installDir}"
+  fi
+
+  mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+
+
+  # Copy all files that were unpacked from the installer to the installation dir.
+  cmd=("cp" "-r" ./* "${installDir}/")
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "About to copy all files to the installation directory with this command: ${cmd[*]}"
+  fi
+
+  "${cmd[@]}" || errorExit "Could not copy files to the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+
+
+  # Copy the cluster.config to the installation directory
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "About to copy the cluster.config file to the installation directory."
+  fi
+
+  cp "${CONFIG_FILE}" "${installDir}/" || errorExit "Could not copy the cluster configuration file to the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+
+
+  # Create a node name file in the installation directory.
+  echo "CURRENT_NODE_NAME=\"${CURRENT_NODE_NAME}\"" > "${installDir}/${NODE_NAME_FILE}" || errorExit "Could not create the node name file in the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Cleans up the node installation by removing the installation file and 
+## cluster config file that was copied to /tmp prior to it being executed.
+## This is typically called by an EXIT trap in doNodeInstall().
+## Params: None
+
+function cleanupNodeInstall() {
+
+  # Remove the installation file and cluster.config if they reside in /tmp
+  if [[ -n "${INSTALL_FILE}" && "$(dirname "${INSTALL_FILE}")" == "/tmp" ]]; then
+    rm -f "${INSTALL_FILE}" > /dev/null || true
+  fi
+
+  if [[ -n "${CONFIG_FILE}" && "$(dirname "${CONFIG_FILE}")" == "/tmp" ]]; then
+    rm -f "${CONFIG_FILE}" > /dev/null || true
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
