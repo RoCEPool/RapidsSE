@@ -31,6 +31,7 @@ namespace DataBuffers
     
     Stz*       szAllotRecord(i8 nBytes);
     Stz*       szAppendRecord(Stz* szRecord);
+    CsvMeta*   pCsvMeta(void);
     byte*      ayDataArea(void);
     i8         nDataBytes(void);
     i8         nFreeBytes(void);

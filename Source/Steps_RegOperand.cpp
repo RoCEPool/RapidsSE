@@ -225,12 +225,13 @@ void Step::vRegOperandCsvToRsb(void)
   ENTRY();
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpOperandA);
-  
-  char* azRecords = (char*) pCsvBuffer->szRecords();
+  CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
+
+  char* azCsvChunk = (char*) pCsvBuffer->szRecords();
 
   ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
   
-  bool b = pToRsb->bConvertCsv(azRecords);
+  bool b = pToRsb->bConvertCsv(azCsvChunk,pCsvMeta);
 
   EXIT();
 }

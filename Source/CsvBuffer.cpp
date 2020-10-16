@@ -90,6 +90,16 @@ Stz* CsvBuffer::szAppendRecord(Stz* szRecord)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get csv metadata                                                           */
+/*----------------------------------------------------------------------------*/
+CsvMeta* CsvBuffer::pCsvMeta(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  return &m_oCsvMeta;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the records pointer                                                    */
 /*----------------------------------------------------------------------------*/
 byte* CsvBuffer::ayDataArea(void)

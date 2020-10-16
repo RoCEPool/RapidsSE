@@ -41,7 +41,7 @@ namespace Load
    ~ToRsb(void) noexcept(false);
   
     bool bConvertCrw(CrwBuffer* pCrwBuffer);
-    bool bConvertCsv(char* azSrc);
+    bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
 
     RsbBuffer* pDanglingRsbBuffer(void);
     RsbBuffer* pFullRsbBuffer(void);

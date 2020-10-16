@@ -197,7 +197,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a chunk                                          */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertCsv(char* azCsvChunk)
+bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   

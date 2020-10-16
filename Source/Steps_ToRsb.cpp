@@ -42,10 +42,11 @@ void Step::vToRsbRegConvert(void)
   ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpOperandA);
+  CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
+
+  char* azCsvChunk  = (char*)pCsvBuffer->ayDataArea();
   
-  char* azSrc  = (char*)pCsvBuffer->ayDataArea();
-  
-  bool bResult = pToRsb->bConvertCsv(azSrc);
+  bool bResult = pToRsb->bConvertCsv(azCsvChunk,pCsvMeta);
   
   EXIT();
 }
