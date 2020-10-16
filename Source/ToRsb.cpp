@@ -183,7 +183,6 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define bMORE_DATA()     (bool)(cSrcChr)
 
-//#define bMORE_FIELDS()   (bool)(cSrcChr && '\n' != cSrcChr)
 #define bMORE_FIELDS()   (bool)(cSrcChr && cSrcChr != m_cRecEnd)
 
 #define bWHITE_SPACE() \
@@ -293,9 +292,9 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
 L_TestMoreRecords:
     
   // skip leading whitespace
-  while (bWHITE_SPACE())
-    vADV_SRCCHR();
-  
+//  while (bWHITE_SPACE())
+//    vADV_SRCCHR();
+//  
   // test for more csv to be parsed
   if (! bMORE_DATA())
     goto L_EndOfCsvChunk;
