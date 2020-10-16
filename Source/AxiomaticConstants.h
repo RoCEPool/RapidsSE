@@ -30,6 +30,7 @@ static const u8 C_YEAR_MIN   = C_YEAR_BASE;
 
 static const u8 C_IVL_SEC_MAX  = 999999999;
 static const u8 C_IVL_USEC_MAX = 999999;
+static const u8 C_IVL_USEC_SHIFT = 1000000;
 
 static const bool B_CALL_AGAIN      = true;
 static const bool B_DONT_CALL_AGAIN = false;

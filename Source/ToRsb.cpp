@@ -185,11 +185,12 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define bMORE_FIELDS()   (bool)(cSrcChr && '\n' != cSrcChr)
 
-#define bWHITE_SPACE(c)  \
-  (c == ' ') || (c == '\n') || (c == '\r') || (c == '\f') || (c == '\t')
+#define bWHITE_SPACE() \
+  (cSrcChr == ' ')  || (cSrcChr == '\n') || \
+  (cSrcChr == '\r') || (cSrcChr == '\f') || (cSrcChr == '\t')
 
 #define vSKIP_WHITE_SPACE() \
-  while (cSrcChr && StrLib::bIsWhite(cSrcChr)) { \
+  while (cSrcChr && bWHITE_SPACE()) { \
     vADV_SRCCHR(); \
   }
 
@@ -291,7 +292,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
 L_TestMoreRecords:
     
   // skip leading whitespace
-  while (bWHITE_SPACE(cSrcChr))
+  while (bWHITE_SPACE())
     vADV_SRCCHR();
   
   // test for more csv to be parsed
@@ -861,7 +862,7 @@ L_Interval:
   
   // collect further digits for trailing microseconds
   uMicrosecond = 0;
-  nShift = 1000000;
+  nShift = C_IVL_USEC_SHIFT;
   if ('.' == cSrcChr) {
     vADV_SRCCHR(); // skip '.'
     for ( ; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
@@ -939,7 +940,7 @@ L_Time:
     eError = EC_CSV_TIME_SEP_MISSING;
     goto L_FieldError;
   }
-  vADV_SRCCHR();
+  vADV_SRCCHR(); // skip ':'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute portion
@@ -966,7 +967,7 @@ L_Time:
     eError = EC_CSV_TIME_SEP_MISSING;
     goto L_FieldError;
   }
-  vADV_SRCCHR();
+  vADV_SRCCHR(); // skip ':'
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second portion
@@ -998,7 +999,7 @@ L_Time:
     
     vADV_SRCCHR(); // skip '.'
 
-    for (nShift = 1000000; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
+    for (nShift = C_IVL_USEC_SHIFT; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
       //uMicrosecond = (uMicrosecond * 10) + (cSrcChr - '0');
       vCOLLECT(uMicrosecond);
       nShift /= 10;
