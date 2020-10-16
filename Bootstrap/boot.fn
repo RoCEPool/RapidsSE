@@ -59,6 +59,8 @@ function printUsageAndExit() {
   echo ""
   echo "  --debug           Displays additional debugging messages during execution."
   echo ""
+  echo "  --clusterinit     Internal use only."
+  echo ""
   echo "  --help            Displays this message."
   exit 1
 }
@@ -73,6 +75,7 @@ function processArgs() {
   local argCluster=0
   local argNode=0
   local argConfig=0
+  local argClusterInit=0
 
   while [[ $# -gt 0 ]]
   do
@@ -106,6 +109,11 @@ function processArgs() {
 
       --debug)
         DEBUG=1
+        shift # past argument
+        ;;
+
+      --clusterinit)
+        CLUSTER_INIT=1
         shift # past argument
         ;;
 
@@ -191,7 +199,18 @@ function startCluster() {
   # Sleep for 10 seconds and print a "." every second
   sleepProgressPrint 10 
 
-  printClusterStatus
+  if printClusterStatus; then
+    #  Initialise the cluster
+    remoteClusterInit
+
+    echo "Cluster startup complete."
+
+  else
+    echo "Cluster startup failed. Please stop the cluster before restarting it."
+  fi
+
+  # TODO: Check if all nodes are running
+  #######assertAllNodesRunning
 }
 
 
@@ -336,7 +355,108 @@ function buildNodeArguments() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Initiates all of the nodes that were launched in the cluster. All nodes in
+## the cluster must have already been started successfully. This calls the
+## first node in the cluster to start the initialisation.
+## Params: None
+
+function remoteClusterInit() {
+
+  local nodeName
+  local host
+  local dir
+  local remoteCmd
+
+  # Let's use the first node in the list
+  nodeName="${NODE_LIST[0]}"
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+  dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+  remoteCmd="cd ${dir} && ./${START_SCRIPT} --node --clusterinit"
+
+  if [ ${DEBUG} -eq 1 ]; then
+    remoteCmd="${remoteCmd} --debug"
+  fi
+
+  sshCmd=( "ssh" "${host}" "${remoteCmd}" )
+
+  if [ ${DEBUG} -eq 1 ]; then
+    echo "About to initialise the cluster on node ${nodeName} with the command: ${sshCmd[*]}"
+  fi
+
+  "${sshCmd[@]}" || errorExit "Could not initialise the RapidsSE cluster on node ${nodeName} [host ${host}]."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Initiates all of the nodes that were launched in the cluster. All nodes in
+## the cluster must have already been started successfully. This must be called
+## from a node that is participating in the cluster
+## Params: None
+
+function localClusterInit() {
+  echo -n "Initialising the cluster..."
+
+  if [ -z "${CURRENT_NODE_NAME}" ]; then
+    errorExit "The name of the local node has not been loaded."
+  fi
+
+  local host
+  host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
+
+  declare -r connectCmd
+  connectCmd="_connectCluster"
+
+  declare -a cmd
+  cmd+=("${EXE}")
+  cmd+=("--name")
+  cmd+=("${CURRENT_NODE_NAME}")
+  cmd+=("--munged")
+  cmd+=("--script")
+  cmd+=("--commands")
+  cmd+=("${ROOT_DIR}/Commands")
+  cmd+=("--command")
+  cmd+=("${connectCmd}")
+  cmd+=("--appendTrace")
+
+  local startClusterOutputFile="${ROOT_DIR}/startCluster.log"
+  local startClusterExitStatus
+  local startClusterOutput
+
+  # run the _connectCluster command but if it doesn't return after 15 seconds then
+  # kill the process. If the process is killed then the exit status will be 124
+  # so we can explicitly check for that.
+  timeout -k 15s 15s "${cmd[@]}" 1>"${startClusterOutputFile}" 2>&1 &
+  wait $!
+  startClusterExitStatus="$?"
+  startClusterOutput=$(cat "${startClusterOutputFile}" 2>/dev/null)
+
+  if [ "${startClusterExitStatus}" -eq 124 ]
+  then
+    printError "The cluster initialisation command timed out on RapidsSE. RapidsSE may have crashed. Here is the output of the ${connectCmd} command on node ${CURRENT_NODE_NAME} [host ${host}] :\n" "${startClusterOutput}"
+
+    printError "And here is the output of RapidsSE's nohup file (${NOHUP_FILE}) on node ${CURRENT_NODE_NAME} [host ${host}] :" "$(cat "${NOHUP_FILE}")"
+
+    errorExit "Unable to initialise the RapidsSE cluster."
+
+  elif [ "${startClusterExitStatus}" -ne 0 ]
+  then
+    printError "Could not initialise the RapidsSE cluster. Here is the output of the ${connectCmd} command on node ${CURRENT_NODE_NAME} [host ${host}] :\n" "${startClusterOutput}"
+
+    printError "And here is the output of RapidsSE's nohup file (${NOHUP_FILE}) on node ${CURRENT_NODE_NAME} [host ${host}] :" "$(cat "${NOHUP_FILE}")"
+
+    errorExit "Unable to initialise the RapidsSE cluster."
+  fi  
+
+  # Success
+  echo "Done"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Prints whether each node in the cluster is running or not.
+## Returns a zero exit code if all nodes are running or a non-zero exit code
+## if any of the nodes are not running.
 ## Params: None
 
 function printClusterStatus() {
@@ -380,8 +500,13 @@ function printClusterStatus() {
       echo "${errorCount} nodes are stopped."
     fi
 
+    false
+    return
+
   else
     echo "All nodes are running."
+    true
+    return
   fi
 }
 
@@ -531,6 +656,17 @@ function assertNoNodesRunning() {
     return
   fi
 
+  true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks that all of the nodes are currently running. If one or more nodes
+## are not running then errors are printed to stderr and a non-zero exit code
+## is returned.
+## Params: None
+
+function assertAllNodesRunning() {
   true
 }
 

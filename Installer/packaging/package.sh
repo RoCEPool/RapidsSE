@@ -146,7 +146,7 @@ fi
 
 
 ### Run shellcheck against the setup files
-if [ -z "${NO_SHELLCHECK}" ] && (which shellcheck &>/dev/null); then
+if [ "${NO_SHELLCHECK}" -ne 1 ] && (which shellcheck &>/dev/null); then
   echo "Running ShellCheck..."
   if ! ${SHELLCHECK_CMD}; then
     errorExit "Packaging failed due to shellcheck issues with the setup scripts. Please fix these first."
@@ -219,7 +219,7 @@ if [ -n "${DEBUG}" ] ; then echo "Generating the version file"; fi;
 ### (Optional) Compile the software ###
 if [ -n "${DEBUG}" ] ; then echo "Compiling RapidsSE"; fi;
 
-if [ -z "${NO_BUILD}" ] 
+if [ "${NO_BUILD}" -ne 1 ] 
 then
   (
     cd "${SOURCE_DIR}"

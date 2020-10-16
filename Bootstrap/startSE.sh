@@ -19,6 +19,7 @@ readonly SCRIPT_NAME=$(basename "$0")
 
 # Default modes of operation
 CLUSTER_OP=1
+CLUSTER_INIT=0
 CONFIG_FILE="${DIR}/cluster.config"
 NAME_FILE="${DIR}/node.name"
 DEBUG=0
@@ -51,6 +52,7 @@ processArgs "$@"
 
 if [ ${DEBUG} -eq 1 ]; then
   echo "CLUSTER_OP = ${CLUSTER_OP}"
+  echo "CLUSTER_INIT = ${CLUSTER_INIT}"
   echo "CONFIG_FILE = ${CONFIG_FILE}"
   echo "NAME_FILE = ${NAME_FILE}"
   echo "DEBUG = ${DEBUG}"
@@ -60,10 +62,21 @@ fi
 loadClusterConfig
 
 if [ ${CLUSTER_OP} -eq 1 ]; then
+  if [ "${CLUSTER_INIT}" -eq 1 ]; then
+    remoteClusterInit
+    exit
+  fi
+
   startCluster
 
 else
   loadNodeName
+
+  if [ "${CLUSTER_INIT}" -eq 1 ]; then
+    remoteClusterInit
+    exit
+  fi
+
   startCurrentNode
 fi
 
