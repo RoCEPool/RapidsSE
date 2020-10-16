@@ -97,9 +97,9 @@
   ZK_STARTMARKER_handler
 
   // pipeout streamDefout if any (q3)
-  StreamDefOut[].isNull not if
-    StreamDefOut[].pipeout
-  then
+  //StreamDefOut[].isNull not if
+  //  StreamDefOut[].pipeout
+  //then
 
 ;
 
@@ -112,6 +112,26 @@
     ZK_PULSEMARKER EG_ZK PP_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
     PipeIn[].pipeOut // ZK_PULSEMARKER_handler
   then
+
+  //
+  // HACK:: till we get the ASM of query text's out of this operator
+
+  // If a streamDef is created in STARTMARKER
+  // we cannot pipe it out there as its possible
+  // that the next EOASM gets an error while handling its STARTMARKER
+  // and then it doesn't know how to handle the STREAMDEF
+  // eg 300 creates streamdef in startMarker handler
+  // sends it out
+  // 301 gets an error while ASM of 301 query text
+  // can't handle stream marker (from inside ASM code (no ASM)
+
+  // pipeout streamDefout if any (q3)
+  StreamDefOut[].isNull not if
+    StreamDefOut[].pipeout
+  then
+
+  // END HACK
+  //
 
   // execute plan PULSEMARKER_HANDLER
   ZK_PULSEMARKER Counter0[] executeAsmArgs
