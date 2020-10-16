@@ -42,6 +42,8 @@ RowSlab::RowSlab(void)
   
   // m_oStreamPix
   
+  m_nRowStringBytes = 0;
+  
   MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ROWSLAB);
   
   // m_oNmlStr
@@ -212,18 +214,25 @@ i8 RowSlab::iColumn(Rsb* aRsb, i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
-/* discard current/invalid row                                                */
+/* discard current invalid/incomplete row                                     */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vDiscardInvalidRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
+  // undo the row number increments of vNewRow()
   m_nItems--;
-
   m_i_RowLgl--;
   
+  // return tail bytes allotted for cells of current row in vNewRow()
   i8 nCellBytes = nRowProperBytes();
   m_xWsp.vGiveTail(nCellBytes);
+  
+  // return head bytes allotted for strings deposited in vDepositString_end()
+  if (m_nRowStringBytes) {
+    m_xWsp.vGiveHead(m_nRowStringBytes);
+    m_nRowStringBytes = 0;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -315,11 +324,12 @@ bool RowSlab::bNewRow(Rsb** paRow)
   
   *paRow = aRsb;
   
-
   m_amCellCrs = amCell0(m_i_RowLgl);
   
   i8 nCellBytes = nRowProperBytes();
   m_xWsp.vTakeTail(nCellBytes);
+  
+  m_nRowStringBytes = 0;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   

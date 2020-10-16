@@ -607,8 +607,6 @@ L_Decimal:
       uNumber = (uNumber * 10) + (cSrcChr - '0');
       nDigits++;
       nPixScale--;
-      //if (! nPixScale)
-      //  break;
     }
   }
   
@@ -658,7 +656,7 @@ L_Decimal:
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.d) float field : [+|-] uNumber [ . uFraction] [ e|E [+|-] uExponent ]
+  // 4.d) float field : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
     
