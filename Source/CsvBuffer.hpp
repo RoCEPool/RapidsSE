@@ -11,9 +11,9 @@ namespace DataBuffers
   class CsvBuffer : public DataBuffer
   {
   private:
-    s32 m_sReportNm; // optional report name this csv buffer belong to
-  
-    i8  m_nRecords;
+    s32     m_sReportNm; // optional report name this csv buffer belong to
+    i8      m_nRecords;
+    CsvMeta m_oCsvMeta;
   
     SingleWord m__PadToCacheLine[7]; // padding to cache line
 
