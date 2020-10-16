@@ -34,7 +34,9 @@ namespace Rows
 
     StreamPix m_oStreamPix; // condensed stream def
  
-    SingleWord m__PadToCacheLine[7]; // padding to cache line
+    i8   m_nRowStringBytes; // number string bytes for current row
+
+    SingleWord m__PadToCacheLine[6]; // padding to cache line
 
     NmlStr m_oNmlStr;   // normalised string set
     
@@ -181,6 +183,8 @@ namespace Rows
 
     m_xWsp.vTakeHead(nSize);
     
+    m_nRowStringBytes += nSize;
+  
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   }
 
