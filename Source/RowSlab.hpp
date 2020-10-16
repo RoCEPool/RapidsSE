@@ -34,7 +34,9 @@ namespace Rows
 
     StreamPix m_oStreamPix; // condensed stream def
  
-    SingleWord m__PadToCacheLine[7]; // padding to cache line
+    i8   m_nRowStringBytes; // number string bytes for current row
+
+    SingleWord m__PadToCacheLine[6]; // padding to cache line
 
     NmlStr m_oNmlStr;   // normalised string set
     
@@ -54,14 +56,15 @@ namespace Rows
     i8    i_Cell0(i8 i_Row);
     m8*   amCell0(i8 i_Row);
     i8    nCols(void);
-    i8    nExtraCols(void);
     i8    iColumn(Rsb* aRsb, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
     void  vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
+    void  vDiscardInvalidRow(void);
     void  vDumpAllRows(void);
     void  vDumpNst(void);
     void  vDumpRow(i8 i_Row);
     void  vDumpRow(i8 i_Row, Rsb* aRsb);
+    i8    nExtraCols(void);
     i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
     bool  bNewRow(Rsb** paRsb);
@@ -72,6 +75,7 @@ namespace Rows
     void  vPositionOnCell(i8 i_Col);
     bool  bPtnHash(void);
     void  vReset(void);
+    i8    nRowProperBytes(void);
     Rsb*  aRsbAdr(i8 i_Row);
     Rsb*  aRsbByOfs(i8 iOfs);
     i8    iOfsOfRsb(Rsb* aRsb);
@@ -179,6 +183,8 @@ namespace Rows
 
     m_xWsp.vTakeHead(nSize);
     
+    m_nRowStringBytes += nSize;
+  
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   }
 
