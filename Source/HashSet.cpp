@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,HashSet,CN_HASHSET)
+__pCastFunction(DataBuffers,HashSet,CN_HASHSET)
 __aNewFunction(HashSet,CN_HASHSET)
 __vDeleteFunction(HashSet,CN_HASHSET)
 __aFooterFunction(HashSet)
