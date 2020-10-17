@@ -476,7 +476,7 @@ namespace CompactBuffers
         u_Tail_rel = *(u2*)rayDataByte;
         aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
         
-        nStrSize = aTailLine->w8_1B(+ C_U_1B);
+        nStrSize = (i8)aTailLine->w8_1B(+ C_U_1B);
         if (SI_AREA_ADR == eStrInflate) {
           
           memcpy(racStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
@@ -504,7 +504,7 @@ namespace CompactBuffers
       case MN_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)rayDstByte;
         
-        *rayDstByte++ = (i8)uLow; // 0
+        *rayDstByte++ = uLow; // 0
         *rayDstByte++ = 0; // 1
         *rayDstByte++ = 0; // 2
         *rayDstByte++ = 0; // 3
@@ -518,7 +518,7 @@ namespace CompactBuffers
         break;
         
       case MN_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
-        *rayDstByte++ = (i8)uLow; // 0
+        *rayDstByte++ = uLow; // 0
         *rayDstByte++ = 0; // 1
         *rayDstByte++ = 0; // 2
         *rayDstByte++ = 0; // 3
@@ -567,22 +567,15 @@ namespace CompactBuffers
   {
     _static_
     
-  u1* auMetaClue;
-  byte* ayDataByte;
-  
   i8 nCols = pStreamDef->nTotalColumns();
   
-  //vPrepare_v2(auMetaClue,ayDataByte,nCols,aHeadLine);
-  auMetaClue = aHeadLine->auMetaArea();
+  u1* auMetaClue = aHeadLine->auMetaArea();
   
   i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
-  + C_T_8B // (ControlDate) 8 bytes for the perspective
-  + nCols; // metaSize
+                          + C_T_8B // (ControlDate) 8 bytes for the perspective
+                          + nCols; // metaSize
   
-  ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
+  byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
   
   char* acStrArea = nullptr;
   
@@ -591,10 +584,6 @@ namespace CompactBuffers
   byte* ayDstByte = (byte*)++aiDstk_lcl;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // for each column
-  
-  i8 i_WhichCol = 0;
-  i8 i_ColToRetrieve = iaColSet[i_WhichCol];
   
   i8 nSizeUnits;
   i8 nHeadBytes;
@@ -616,6 +605,15 @@ namespace CompactBuffers
   
   OverLine* aOverLine;
   TailLine* aTailLine;
+  
+  Column* pIdxColumn;
+  eDM     eDatum;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // for each column
+  
+  i8 i_ColSet = 0;
+  i8 i_ColToRetrieve = iaColSet[i_ColSet];
   
   for (i8 i_Col = 0; /*none*/; i_Col++) {
     
@@ -673,8 +671,8 @@ namespace CompactBuffers
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inflate column
     
-    // ///////////////////////////////////////////////////////////////////////////
-    
+    // ////////////////////////////////////////////////////////////////////// //
+
   L_HighSwitch:
     
     aiCellValue = (i8*)ayDstByte;
@@ -750,7 +748,7 @@ namespace CompactBuffers
             break;
             
           case 0x8: // MN_NUMERIC 8B
-            *aiCellValue = *(u8*)(ayDataByte);
+            *aiCellValue = *(i8*)(ayDataByte);
             ayDstByte += C_8B;
             ayDataByte += C_8B;
             break;
@@ -878,10 +876,10 @@ namespace CompactBuffers
       case MN_OVERFLOW: // overflow 2B
         
         // calculation to get overflow
-        nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
+        nSizeUnits = (i8)aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
         if (nSizeUnits >= 128) nSizeUnits -= 128;
-        nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
-        i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
+        nHeadBytes = nSizeUnits * (i8)C_BYTES_PER_WORD;
+        i_Over_rel = (i8)aHeadLine->w8_2B(nHeadBytes - C_2B);
         
         aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
         
@@ -1018,7 +1016,7 @@ namespace CompactBuffers
         u_Tail_rel = *(u2*)ayDataByte;
         aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
         
-        nStrSize = aTailLine->w8_1B(+ C_U_1B);
+        nStrSize = (i8)aTailLine->w8_1B(+ C_U_1B);
         if (SI_AREA_ADR == (eSI)ieStrInflate) {
           
           memcpy(acStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
@@ -1046,7 +1044,7 @@ namespace CompactBuffers
       case MN_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)ayDstByte;
         
-        *ayDstByte++ = (i8)uLow; // 0
+        *ayDstByte++ = uLow; // 0
         *ayDstByte++ = 0; // 1
         *ayDstByte++ = 0; // 2
         *ayDstByte++ = 0; // 3
@@ -1060,7 +1058,7 @@ namespace CompactBuffers
         break;
         
       case MN_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
-        *ayDstByte++ = (i8)uLow; // 0
+        *ayDstByte++ = uLow; // 0
         *ayDstByte++ = 0; // 1
         *ayDstByte++ = 0; // 2
         *ayDstByte++ = 0; // 3
@@ -1073,12 +1071,28 @@ namespace CompactBuffers
       default:
         NEVER_REACH;
     }
-    // /////////////////////////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////////////// //
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // handle inflate into key
+    
+    if (! pIndexDef)
+      goto L_NextColumn;
+    
+    pIdxColumn = pIndexDef->pGetColumn(i_ColSet);
+    eDatum = pIdxColumn->eDatum();
+    if (DM_VCH == eDatum) {
+      RASSERT(0);
+    }
+    else {
+      RASSERT(KE_INT == pIndexDef->eKeyKind());
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next column to retrieve
+  L_NextColumn:
     
-    i_ColToRetrieve = iaColSet[++i_WhichCol];
+    i_ColToRetrieve = iaColSet[++i_ColSet];
     if (-1 == i_ColToRetrieve)
       break;
   }
