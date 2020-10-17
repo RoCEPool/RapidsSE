@@ -561,8 +561,9 @@ namespace CompactBuffers
   /*----------------------------------------------------------------------------*/
   public:
   static inline void vInflateSet(i8** aaiDstk, HeadLine*  aHeadLine,
-                                 i8* iaColSet, StreamDef* pStreamDef,
-                                 i8 ieStrInflate)
+                                 i8* iaColSet, i8 ieStrInflate,
+                                 StreamDef* pStreamDef,
+                                 IndexDef* pIndexDef)
   {
     _static_
     
@@ -626,7 +627,6 @@ namespace CompactBuffers
     // ignore column
     
     if (i_Col != i_ColToRetrieve) {
-      //vSkip_v2(uHigh,uLow,ayDataByte,aHeadLine);
       
     L_Overflowed:
       
@@ -650,16 +650,13 @@ namespace CompactBuffers
       else
       if (uHigh == MN_OVERFLOW) { // overflow
         
-        //OverLine* aOverLine = aHeadLine->aGetOver();
-        
         // calculation to get overflow
         nSizeUnits = (i8)aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
         if (nSizeUnits >= 128) nSizeUnits -= 128;
-        nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
-        i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
+        nHeadBytes = nSizeUnits * (i8)C_BYTES_PER_WORD;
+        i_Over_rel = (i8)aHeadLine->w8_2B(nHeadBytes - C_2B);
         
         aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
-        //OverLine* aOverLine = (OverLine*)aGetTail_rel(aHeadLine,i_Over_rel);
         
         uMetaClue = *((u1*)aOverLine + C_U_1B);
         METACLUE_SPLIT(uMetaClue,uHigh,uLow);
