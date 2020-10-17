@@ -572,8 +572,8 @@ namespace CompactBuffers
   u1* auMetaClue = aHeadLine->auMetaArea();
   
   i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
-                          + C_T_8B // (ControlDate) 8 bytes for the perspective
-                          + nCols; // metaSize
+                        + C_T_8B // (ControlDate) 8 bytes for the perspective
+                        + nCols; // metaSize
   
   byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
   

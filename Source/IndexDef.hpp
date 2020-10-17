@@ -20,6 +20,7 @@ namespace MetaData
     
     i8     m_nColumns;       // no of columns in the index
     Column m_xaColumn[C_MAX_INDEX_COLUMNS];
+    i8     m_iaColSet[C_MAX_INDEX_COLUMNS+1];
 
     // must be last
     Footer m_xFooter;
@@ -37,6 +38,7 @@ namespace MetaData
     
     void    vAddColumn(Stz* szColumnNm, eCT eColumnType);
     i8      nColumns(void);
+    i8*     aiaColSet(void);
     void    vDetermineKeyKind(void);
     Column* pGetColumn(i8 iColumn);
     Stz*   szIndexNm(void);

@@ -69,6 +69,9 @@ IndexDef::IndexDef(void)
   m_nColumns      = 0;
   //m_xaColumn[C_MAX_INDEXCOLUMNS];
   
+  MemLib::vZero(m_iaColSet,sizeof(m_iaColSet),CN_INDEXDEF);
+  m_iaColSet[0] = -1;
+
   _checkInitialised_(CN_INDEXDEF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
@@ -91,8 +94,15 @@ IndexDef::IndexDef(IndexDef* pIndexDef)
   m_bIsUnique     = pIndexDef->bIsUnique();
   
   m_nColumns      = pIndexDef->nColumns();
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
+  
+  MemLib::vZero(m_iaColSet,sizeof(m_iaColSet),CN_INDEXDEF);
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     m_xaColumn[i_Col].vCopy(pIndexDef->pGetColumn(i_Col));
+
+    m_iaColSet[i_Col] = pIndexDef->pGetColumn(i_Col)->iColumnNo();
+    m_iaColSet[i_Col + 1] = -1;
+  }
   
   _checkInitialised_(CN_INDEXDEF);
   
@@ -127,6 +137,10 @@ void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType)
   m_xaColumn[m_nColumns].vColumnNm(szColumnNm);
   m_xaColumn[m_nColumns].vColumnType(eColumnType);
   m_xaColumn[m_nColumns].vDatum(Column::eDatum(eColumnType));
+  
+  m_iaColSet[m_nColumns] = m_nColumns;
+  m_iaColSet[m_nColumns+1] = -1;
+
   m_nColumns++;
   
   if (m_nColumns > 1) {
@@ -150,6 +164,16 @@ i8 IndexDef::nColumns(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   return m_nColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the colset array                                                       */
+/*----------------------------------------------------------------------------*/
+i8* IndexDef::aiaColSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_iaColSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -641,6 +665,9 @@ bool IndexDef::bAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm)
   
   m_xaColumn[iCol].vCopy(pColumn);
   
+  m_iaColSet[iCol] = pColumn->iColumnNo();
+  m_iaColSet[iCol+1] = -1;
+
   return true;
 }
 
