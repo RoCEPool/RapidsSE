@@ -432,6 +432,8 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 
   //pEntBuffer->vShow();
 
+  EntWrk xEntWrk;
+  
   Rrf xRowRef;
   xRowRef.vBuffer(pCrwBuffer->iBufferNo());
   
@@ -439,14 +441,46 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
   // iterate thru the buffer till no more entries
   for (i8 i_Row = 0; i_Row < pCrwBuffer->nRowCount(); i_Row++) {
 
+    xEntWrk.vReset();
+    
     xRowRef.vItem(i_Row);
     
-    bool bInserted = bInsertEntry(pCrwBuffer,i_Row,xRowRef);
-    
-    //bVerify();
-    ASSERT(bInserted);
+    m_okLock.vGrabWrite();
+
+    vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
+    xEntWrk.vRef(xRowRef);
+
+    if (! m_pRootEntBuffer)
+      EntBuffer* pRootBuffer = pNewRootBuffer();
+
+    Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
+    ASSERT(aInsertedEntry);
+
+    m_okLock.vDropWrite();
   }
 }
+/*----------------------------------------------------------------------------*/
+//void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+//
+//  //pEntBuffer->vShow();
+//
+//  Rrf xRowRef;
+//  xRowRef.vBuffer(pCrwBuffer->iBufferNo());
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // iterate thru the buffer till no more entries
+//  for (i8 i_Row = 0; i_Row < pCrwBuffer->nRowCount(); i_Row++) {
+//
+//    xRowRef.vItem(i_Row);
+//
+//    bool bInserted = bInsertEntry(pCrwBuffer,i_Row,xRowRef);
+//
+//    //bVerify();
+//    ASSERT(bInserted);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* insert a given entry into this index tree starting at leaf / height 0      */
