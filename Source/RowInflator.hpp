@@ -559,6 +559,7 @@ namespace CompactBuffers
   /*----------------------------------------------------------------------------*/
   /* inflate column set                                                         */
   /*----------------------------------------------------------------------------*/
+  public:
   static inline void vInflateSet(i8** aaiDstk, HeadLine*  aHeadLine,
                                  i8* iaColSet, StreamDef* pStreamDef,
                                  i8 ieStrInflate)
