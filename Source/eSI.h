@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+// ALERT: If this enum changes, make the change in LogicCompiler (line 765)
 enum eSI // string inflate
 {
   /*  0 */ SI_NONE=0,

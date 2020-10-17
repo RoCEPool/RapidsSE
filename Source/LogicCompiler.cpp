@@ -763,7 +763,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n"
   "\n  enum eKC { KC_BEFORE=1, KC_SAME, KC_AFTER };"
   "\n  enum eSI { SI_ADDRESS=1, SI_AREA_ADR, SI_AREA_OFS,"
-  "\n             SI_DEST, SI_DEST_ANT, SI_DEST_PST };"
+  "\n             SI_DEST, SI_DEST_ANT, SI_DEST_KEY, SI_DEST_PST };"
   "\n"
   "\n  #include \"../Source/EnumGroups.h\""
   "\n  #include \"../Source/Ent_int.h\""
