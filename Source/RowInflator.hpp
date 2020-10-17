@@ -581,27 +581,6 @@ namespace CompactBuffers
   ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the set of columns to be retrieved
-  
-  //  i8 nWhichCols = 0;
-  //  i8 iWhichCol[C_MAX_COLUMNS];
-  //
-  //  i8 i_ColToRetrieve;
-  //  for (;;) {
-  //
-  //    i_ColToRetrieve = *((*aaiDstk)--);
-  //
-  //    if (-1 == i_ColToRetrieve)
-  //      break;
-  //
-  //    // must be in ascending order
-  //    ASSERT(0 == nWhichCols ||
-  //           i_ColToRetrieve > iWhichCol[nWhichCols-1]);
-  //
-  //    iWhichCol[nWhichCols++] = i_ColToRetrieve;
-  //  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
   char* acStrArea = nullptr;
@@ -654,42 +633,42 @@ namespace CompactBuffers
       if (uHigh <=  MN_STRING_x1) // numeric & date
         ayDataByte += uLow;
       else
-        if (uHigh >=  MN_NEGATIVE)  // small value
-        {;}
-        else
-          if (uHigh == MN_STRING_x1)  // string x 1
-            ayDataByte += STRx1(uLow);
-          else
-            if (uHigh == MN_STRING_x2)  // string x 2
-              ayDataByte += STRx2(uLow);
-            else
-              if (uHigh == MN_STRING_x4)  // string x 4
-                ayDataByte += STRx4(uLow);
-              else
-                if (uHigh == MN_STRING_x8)  // string x 8
-                  ayDataByte += STRx8(uLow);
-                else
-                  if (uHigh == MN_OVERFLOW) { // overflow
-                    
-                    //OverLine* aOverLine = aHeadLine->aGetOver();
-                    
-                    // calculation to get overflow
-                    nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
-                    if (nSizeUnits >= 128) nSizeUnits -= 128;
-                    nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
-                    i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
-                    
-                    aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
-                    //OverLine* aOverLine = (OverLine*)aGetTail_rel(aHeadLine,i_Over_rel);
-                    
-                    uMetaClue = *((u1*)aOverLine + C_U_1B);
-                    METACLUE_SPLIT(uMetaClue,uHigh,uLow);
-                    ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
-                    goto L_Overflowed;
-                  }
-                  else {
-                    RASSERT(0);
-                  }
+      if (uHigh >=  MN_NEGATIVE)  // small value
+      {;}
+      else
+      if (uHigh == MN_STRING_x1)  // string x 1
+        ayDataByte += STRx1(uLow);
+      else
+      if (uHigh == MN_STRING_x2)  // string x 2
+        ayDataByte += STRx2(uLow);
+      else
+      if (uHigh == MN_STRING_x4)  // string x 4
+        ayDataByte += STRx4(uLow);
+      else
+      if (uHigh == MN_STRING_x8)  // string x 8
+        ayDataByte += STRx8(uLow);
+      else
+      if (uHigh == MN_OVERFLOW) { // overflow
+        
+        //OverLine* aOverLine = aHeadLine->aGetOver();
+        
+        // calculation to get overflow
+        nSizeUnits = (i8)aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
+        if (nSizeUnits >= 128) nSizeUnits -= 128;
+        nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
+        i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
+        
+        aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+        //OverLine* aOverLine = (OverLine*)aGetTail_rel(aHeadLine,i_Over_rel);
+        
+        uMetaClue = *((u1*)aOverLine + C_U_1B);
+        METACLUE_SPLIT(uMetaClue,uHigh,uLow);
+        ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
+        goto L_Overflowed;
+      }
+      else {
+        RASSERT(0);
+      }
       
       continue;
     }
@@ -697,13 +676,7 @@ namespace CompactBuffers
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inflate column
     
-    //vTrace("Inflate %lld\n"_Stz,i_Col);
-    
-    //RASSERT(SI_ADDRESS == eStrInflate || SI_DEST_PST == eStrInflate);
-    //vInflate_v2(ayDstByte,ayDataByte,aHeadLine,uHigh,uLow,eStrInflate,acStrArea);
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
+    // ///////////////////////////////////////////////////////////////////////////
     
   L_HighSwitch:
     
@@ -718,41 +691,18 @@ namespace CompactBuffers
           case 0x0: // MN_NUMERIC 0B
             *aiCellValue = 0;
             ayDstByte += C_8B;
-            //            *ayDstByte++ = 0; // 0
-            //            *ayDstByte++ = 0; // 1
-            //            *ayDstByte++ = 0; // 2
-            //            *ayDstByte++ = 0; // 3
-            //            *ayDstByte++ = 0; // 4
-            //            *ayDstByte++ = 0; // 5
-            //            *ayDstByte++ = 0; // 6
-            //            *ayDstByte++ = 0; // 7
             break;
             
           case 0x1: // MN_NUMERIC 1B
             *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             ayDstByte += C_7B;
-            //            *ayDstByte++ = 0; // 1
-            //            *ayDstByte++ = 0; // 2
-            //            *ayDstByte++ = 0; // 3
-            //            *ayDstByte++ = 0; // 4
-            //            *ayDstByte++ = 0; // 5
-            //            *ayDstByte++ = 0; // 6
-            //            *ayDstByte++ = 0; // 7
             break;
             
           case 0x2: // MN_NUMERIC 2B
             *aiCellValue = *(u2*)(ayDataByte);
             ayDataByte += C_2B;
             ayDstByte += C_8B;
-            //            *ayDstByte++ = *ayDataByte++; // 0
-            //            *ayDstByte++ = *ayDataByte++; // 1
-            //            *ayDstByte++ = 0; // 2
-            //            *ayDstByte++ = 0; // 3
-            //            *ayDstByte++ = 0; // 4
-            //            *ayDstByte++ = 0; // 5
-            //            *ayDstByte++ = 0; // 6
-            //            *ayDstByte++ = 0; // 7
             break;
             
           case 0x3: // MN_NUMERIC 3B
@@ -761,25 +711,12 @@ namespace CompactBuffers
             *ayDstByte++ = *ayDataByte++; // 1
             *ayDstByte++ = *ayDataByte++; // 2
             ayDstByte += C_5B;
-            //            *ayDstByte++ = 0; // 3
-            //            *ayDstByte++ = 0; // 4
-            //            *ayDstByte++ = 0; // 5
-            //            *ayDstByte++ = 0; // 6
-            //            *ayDstByte++ = 0; // 7
             break;
             
           case 0x4: // MN_NUMERIC 4B
             *aiCellValue = *(u4*)(ayDataByte);
             ayDataByte += C_4B;
             ayDstByte += C_8B;
-            //            *ayDstByte++ = *ayDataByte++; // 0
-            //            *ayDstByte++ = *ayDataByte++; // 1
-            //            *ayDstByte++ = *ayDataByte++; // 2
-            //            *ayDstByte++ = *ayDataByte++; // 3
-            //            *ayDstByte++ = 0; // 4
-            //            *ayDstByte++ = 0; // 5
-            //            *ayDstByte++ = 0; // 6
-            //            *ayDstByte++ = 0; // 7
             break;
             
           case 0x5: // MN_NUMERIC 5B
@@ -790,9 +727,6 @@ namespace CompactBuffers
             *ayDstByte++ = *ayDataByte++; // 3
             *ayDstByte++ = *ayDataByte++; // 4
             ayDstByte += C_3B;
-            //            *ayDstByte++ = 0; // 5
-            //            *ayDstByte++ = 0; // 6
-            //            *ayDstByte++ = 0; // 7
             break;
             
           case 0x6: // MN_NUMERIC 6B
@@ -804,8 +738,6 @@ namespace CompactBuffers
             *ayDstByte++ = *ayDataByte++; // 4
             *ayDstByte++ = *ayDataByte++; // 5
             ayDstByte += C_2B;
-            //            *ayDstByte++ = 0; // 6
-            //            *ayDstByte++ = 0; // 7
             break;
             
           case 0x7: // MN_NUMERIC 7B
@@ -822,14 +754,6 @@ namespace CompactBuffers
             
           case 0x8: // MN_NUMERIC 8B
             *aiCellValue = *(u8*)(ayDataByte);
-            //            *ayDstByte++ = *ayDataByte++; // 0
-            //            *ayDstByte++ = *ayDataByte++; // 1
-            //            *ayDstByte++ = *ayDataByte++; // 2
-            //            *ayDstByte++ = *ayDataByte++; // 3
-            //            *ayDstByte++ = *ayDataByte++; // 4
-            //            *ayDstByte++ = *ayDataByte++; // 5
-            //            *ayDstByte++ = *ayDataByte++; // 6
-            //            *ayDstByte++ = *ayDataByte++; // 7
             ayDstByte += C_8B;
             ayDataByte += C_8B;
             break;
@@ -870,14 +794,7 @@ namespace CompactBuffers
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
         ayDstByte += 6;
-        //        *ayDstByte++ = 0; // 2
-        //        *ayDstByte++ = 0; // 3
-        //        *ayDstByte++ = 0; // 4
-        //        *ayDstByte++ = 0; // 5
-        //        *ayDstByte++ = 0; // 6
-        //        *ayDstByte++ = 0; // 7
         
-        //vDteFromEdt(aiCellValue,C_ERA_0);
         aEdt = (Edt*)aiCellValue;
         aDte = (Dte*)aiCellValue;
         
@@ -891,14 +808,7 @@ namespace CompactBuffers
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
         ayDstByte += 6;
-        //        *ayDstByte++ = 0; // 2
-        //        *ayDstByte++ = 0; // 3
-        //        *ayDstByte++ = 0; // 4
-        //        *ayDstByte++ = 0; // 5
-        //        *ayDstByte++ = 0; // 6
-        //        *ayDstByte++ = 0; // 7
         
-        //vDteFromEdt(aiCellValue,C_ERA_1);
         aEdt = (Edt*)aiCellValue;
         aDte = (Dte*)aiCellValue;
         
@@ -912,14 +822,7 @@ namespace CompactBuffers
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
         ayDstByte += 6;
-        //        *ayDstByte++ = 0; // 2
-        //        *ayDstByte++ = 0; // 3
-        //        *ayDstByte++ = 0; // 4
-        //        *ayDstByte++ = 0; // 5
-        //        *ayDstByte++ = 0; // 6
-        //        *ayDstByte++ = 0; // 7
         
-        //vDteFromEdt(aiCellValue,C_ERA_2);
         aEdt = (Edt*)aiCellValue;
         aDte = (Dte*)aiCellValue;
         
@@ -940,29 +843,29 @@ namespace CompactBuffers
         }
         else
           if (SI_AREA_ADR == (eSI)ieStrInflate) {
-            memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
-            ayDataByte += nStrSize;
-            
-            aacCellValue = (char**)ayDstByte;
-            *aacCellValue = acStrArea;
-            ayDstByte += 8;
-            acStrArea += nStrSize;
-          }
-          else
-            if (SI_DEST_PST == (eSI)ieStrInflate) {
-              memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
-              ayDataByte += nStrSize;
-              
-              //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
-              
-              ayDstByte += (((nStrSize) / 8) * 8) + 16;
-              aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize - 1;
-              ayDstByte += 8;
-            }
-            else {
-              RASSERT(0);
-            }
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_DEST_PST == (eSI)ieStrInflate) {
+          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          ayDstByte += (((nStrSize) / 8) * 8) + 16;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize - 1;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
         
         break;
         
@@ -978,7 +881,6 @@ namespace CompactBuffers
       case MN_OVERFLOW: // overflow 2B
         
         // calculation to get overflow
-        //aOverLine = aHeadLine->aGetOver();
         nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
         if (nSizeUnits >= 128) nSizeUnits -= 128;
         nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
@@ -1008,32 +910,32 @@ namespace CompactBuffers
           ayDataByte += nStrSize;
         }
         else
-          if (SI_AREA_ADR == (eSI)ieStrInflate) {
-            
-            memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
-            ayDataByte += nStrSize;
-            
-            aacCellValue = (char**)ayDstByte;
-            *aacCellValue = acStrArea;
-            ayDstByte += 8;
-            acStrArea += nStrSize;
-          }
-          else
-            if (SI_DEST_PST == (eSI)ieStrInflate) {
-              azDst = (char*)ayDstByte;
-              memcpy(azDst,ayDataByte,(size_t)nStrSize);
-              ayDataByte += nStrSize;
-              
-              //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
-              
-              ayDstByte += (((nStrSize) / 8) * 8) + 8;
-              aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize - 1;
-              ayDstByte += 8;
-            }
-            else {
-              RASSERT(0);
-            }
+        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_DEST_PST == (eSI)ieStrInflate) {
+          azDst = (char*)ayDstByte;
+          memcpy(azDst,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          ayDstByte += (((nStrSize) / 8) * 8) + 8;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize - 1;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
         
         break;
         
@@ -1048,31 +950,31 @@ namespace CompactBuffers
           ayDataByte += nStrSize;
         }
         else
-          if (SI_AREA_ADR == (eSI)ieStrInflate) {
-            
-            memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
-            ayDataByte += nStrSize;
-            
-            aacCellValue = (char**)ayDstByte;
-            *aacCellValue = acStrArea;
-            ayDstByte += 8;
-            acStrArea += nStrSize;
-          }
-          else
-            if (SI_DEST_PST == (eSI)ieStrInflate) {
-              memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
-              ayDataByte += nStrSize;
-              
-              //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
-              
-              ayDstByte += (((nStrSize) / 8) * 8) + 8;
-              aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize - 1;
-              ayDstByte += 8;
-            }
-            else {
-              RASSERT(0);
-            }
+        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_DEST_PST == (eSI)ieStrInflate) {
+          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          ayDstByte += (((nStrSize) / 8) * 8) + 8;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize - 1;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
         
         break;
         
@@ -1087,31 +989,31 @@ namespace CompactBuffers
           ayDataByte += nStrSize;
         }
         else
-          if (SI_AREA_ADR == (eSI)ieStrInflate) {
-            
-            memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
-            ayDataByte += nStrSize;
-            
-            aacCellValue = (char**)ayDstByte;
-            *aacCellValue = acStrArea;
-            ayDstByte += 8;
-            acStrArea += nStrSize;
-          }
-          else
-            if (SI_DEST_PST == (eSI)ieStrInflate) {
-              memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
-              ayDataByte += nStrSize;
-              
-              //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
-              
-              ayDstByte += (((nStrSize) / 8) * 8) + 8;
-              aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize - 1;
-              ayDstByte += 8;
-            }
-            else {
-              RASSERT(0);
-            }
+        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_DEST_PST == (eSI)ieStrInflate) {
+          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          ayDstByte += (((nStrSize) / 8) * 8) + 8;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize - 1;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
         
         break;
         
@@ -1174,13 +1076,10 @@ namespace CompactBuffers
       default:
         NEVER_REACH;
     }
-    ///////////////////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////////
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next column to retrieve
-    
-    //    if (++i_WhichCol >= nWhichCols)
-    //      break;
     
     i_ColToRetrieve = iaColSet[++i_WhichCol];
     if (-1 == i_ColToRetrieve)
@@ -1196,10 +1095,7 @@ namespace CompactBuffers
   
   *aaiDstk = --aiDstk_lcl;
 
-  
-  
   }
-  
   
   };
 }
