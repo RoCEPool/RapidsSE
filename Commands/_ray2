@@ -17,7 +17,7 @@ print section "Load LineItem";
 //print "Sleeping ...";
 //sleep 5;
 
-// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv"    <max_errors> =  100;
+// /time fload lineitem "/Users/Shared/tpch/SF0/l ineitem_10.csv"    <max_errors> =  100;
 // /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv"   <max_errors> =  100;
 // /time /summary fload lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv" <note> = "10k" <max_errors> =  100;
 // /time /summary /diary fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <note> = "100k" <max_errors> =  100;
