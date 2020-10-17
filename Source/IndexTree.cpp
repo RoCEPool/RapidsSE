@@ -445,7 +445,7 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
     
     xRowRef.vItem(i_Row);
     
-    m_okLock.vGrabWrite();
+    //m_okLock.vGrabWrite();
 
     vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
     xEntWrk.vRef(xRowRef);
@@ -456,7 +456,7 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
     Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
     ASSERT(aInsertedEntry);
 
-    m_okLock.vDropWrite();
+    //m_okLock.vDropWrite();
   }
 }
 /*----------------------------------------------------------------------------*/
