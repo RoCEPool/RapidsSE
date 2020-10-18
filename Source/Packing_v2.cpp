@@ -14,21 +14,11 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
   
   i8 nCols = pEncoding->m_nColumns;
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
-    vPackCol_v2(aHeadLine,pEncoding->m_nHeadSize,pEncoding->xaColEnc[i_Col]);
-    //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
-  }
-}
+        
+    vPutMetaCode_v2(aHeadLine,pEncoding->m_nHeadSize,pEncoding->xaColEnc[i_Col]);
 
-/*----------------------------------------------------------------------------*/
-/* pack encoded column value into compact row                                 */
-/*----------------------------------------------------------------------------*/
-void Packing_v2::vPackCol_v2(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc)
-{
-  vPutMetaCode_v2(aHeadLine,nHeadSize,xColEnc);
-  
-  vPutDataCode_v2(aHeadLine,xColEnc);
+    vPutDataCode_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
+  }
 }
 
 
