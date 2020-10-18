@@ -21,10 +21,12 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
   i8 nStrBytes;
   i8 i_Tail_rel;
   i8 i_Offset;
+  i8 i_Offset_over;
   byte* aByte;
   
   i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
 
+  i8 nHeadBytes = aHeadLine->nBytes();
   OverLine* aOverLine = nullptr;
 
   i8 nCols = pEncoding->m_nColumns;
@@ -155,9 +157,11 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     
     // put {D}
     if (aOverLine) {
-      aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
-                                 aColEnc->m_wDataCode.m_iWrd,
-                                 aColEnc->m_nDataSize);
+      i_Offset_over = aColEnc->m_i_Offset - nHeadBytes;
+
+      aOverLine->vPut(i_Offset_over,
+                      aColEnc->m_wDataCode.m_iWrd,
+                      aColEnc->m_nDataSize);
     }
     else {
       aHeadLine->vPut(aColEnc->m_i_Offset,
