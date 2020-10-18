@@ -17,7 +17,8 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
   u1 uHigh;
   u1 uLow;
   i8 nStrBytes;
-  
+  i8 i_Tail_rel;
+
 
   i8 nCols = pEncoding->m_nColumns;
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -145,6 +146,8 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
 
     goto L_RowPacked;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
   L_PackVch:
     // vch packing
     
@@ -153,7 +156,19 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     if (MN_STRING_TAIL != uHigh)
       goto L_PackVch_Head;
     
-    vPutData_STR_TAIL_2T_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
+    // calculate [TL]
+    i_Tail_rel = aHeadLine->iGetTailRel(aColEnc->m_aTailLine);
+    
+    //      -- HeadLine / OverLine --                -- TailLine --
+    // +--------------------------------+   **********************************
+    // | ...[TL]                        |---* <U><L><Stl> ////////////////// *
+    // +--------------------------------+   **********************************
+    //
+    
+    // put [TL]
+    aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
+                               i_Tail_rel,
+                               C_2B);
     goto L_RowPacked;
 
     
@@ -186,34 +201,6 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
   L_RowPacked:
     {;}
   }
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                            data code packing                               */
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* put data bytes for MC_STR_TAIL_2T : [TL]                                   */
-/*----------------------------------------------------------------------------*/
-void Packing_v2::vPutData_STR_TAIL_2T_v2(HeadLine* aHeadLine, _ColEnc& xColEnc)
-{
-  // calculate [TL]
-  i8 i_Tail_rel = aHeadLine->iGetTailRel(xColEnc.m_aTailLine);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //      -- HeadLine / OverLine --                -- TailLine --
-  // +--------------------------------+   **********************************
-  // | ...[TL]                        |---* <U><L><Stl> ////////////////// *
-  // +--------------------------------+   **********************************
-  //
-  
-  // put [TL]
-  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset,
-                           i_Tail_rel,
-                           C_2B);
 }
 
 /*============================================================================*/

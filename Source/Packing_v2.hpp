@@ -9,9 +9,6 @@ namespace CompactBuffers
   {
   public:
     static void vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding);
-    
-    static void vPutData_STR_TAIL_2T_v2(HeadLine* aHeadLine, _ColEnc& xColEnc);
-  
   };
 }
 
