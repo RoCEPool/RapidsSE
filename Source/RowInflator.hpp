@@ -662,6 +662,7 @@ namespace CompactBuffers
         goto L_Overflowed;
       }
       else {
+        vTrace("vInflateSet: Invalid uHigh=%lld\n"_Stz,(i8)uHigh);
         RASSERT(0);
       }
       

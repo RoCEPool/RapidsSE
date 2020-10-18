@@ -9,14 +9,28 @@
 /*----------------------------------------------------------------------------*/
 void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pack all the columns into the logical compact row
+  _static_
+  
+  _ColEnc* aColEnc;
+  i8 nHeadSize;
   
   i8 nCols = pEncoding->m_nColumns;
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
         
-    vPutMetaCode_v2(aHeadLine,pEncoding->m_nHeadSize,pEncoding->xaColEnc[i_Col]);
+    aColEnc = &pEncoding->xaColEnc[i_Col];
+    nHeadSize = pEncoding->m_nHeadSize;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // meta code packing
+    
+    //vPutMetaCode_v2(aHeadLine,pEncoding->m_nHeadSize,pEncoding->xaColEnc[i_Col]);
+    if (aColEnc->m_bSplit)
+      vPutMeta_split_v2(aHeadLine,nHeadSize,pEncoding->xaColEnc[i_Col]);
+    else
+      vPutMeta_usual_v2(aHeadLine,nHeadSize,pEncoding->xaColEnc[i_Col]);
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // data code packing
     vPutDataCode_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
   }
 }
