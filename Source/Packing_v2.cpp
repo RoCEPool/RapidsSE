@@ -11,6 +11,8 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
 {
   _static_
   
+  // note: an OverLine will have been alloted if needed
+  
   _ColEnc* aColEnc;
   i8 nHeadSize;
   u1 uMetaClue;
@@ -23,6 +25,7 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
   
   i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
 
+  OverLine* aOverLine = nullptr;
 
   i8 nCols = pEncoding->m_nColumns;
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -111,6 +114,8 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     uMetaClue = METACLUE_FORM(MN_OVERFLOW,2);
     aHeadLine->vMetaClue(i_Col,uMetaClue);
 
+    aOverLine = aHeadLine->aGetOver();
+    
     // +================================+
     // | <W><M>...     <MC_OVERFLOW_2T> |
     // +================================+
@@ -149,10 +154,16 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     // +--------------------------------+
     
     // put {D}
-    aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
-                               aColEnc->m_wDataCode.m_iWrd,
-                               aColEnc->m_nDataSize);
-
+    if (aOverLine) {
+      aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
+                                 aColEnc->m_wDataCode.m_iWrd,
+                                 aColEnc->m_nDataSize);
+    }
+    else {
+      aHeadLine->vPut(aColEnc->m_i_Offset,
+                      aColEnc->m_wDataCode.m_iWrd,
+                      aColEnc->m_nDataSize);
+    }
     goto L_RowPacked;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
