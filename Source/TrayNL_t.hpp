@@ -849,7 +849,9 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vReset(void)
   m_nTailUnits = 0;
   m_nTailBytes = 0;
   
+#ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_axaUnits,(C_SPACEUNIT_QUANTA * m_nSpaceUnits),CN);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

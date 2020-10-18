@@ -645,10 +645,11 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
   
   // copy chars + null into wsp, nS will be size  (i.e. noOf(chars)+1 )
   char* azDst = (char*)m_xWsp.ayLatter();
-  i8 nS = StrLib::nCopy(azDst,(char*)wColVal.m_szVch) + 1;
-  
+  //i8 nS = StrLib::nCopy(azDst,(char*)wColVal.m_szVch) + 1;
+  i8 nS = StrLib::nLength((char*)wColVal.m_szVch) + 1;
+
   // have copied nS bytes into wsp
-  m_xWsp.vTake(nS);
+  //m_xWsp.vTake(nS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -657,7 +658,7 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
     nQuanta = nS; //MemLib::nQuantaRequired(nS,1);
     
     xColEnc.m_eMetaCode = MC_STR_FIT_1L;
-    xColEnc.m_wDataCode.m_azStr = azDst;
+    xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
     xColEnc.m_nDataSize = STRx1(nQuanta);
     
     xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x1,nQuanta);
@@ -669,7 +670,7 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
     nQuanta = MemLib::nQuantaRequired(nS-16,2);
     
     xColEnc.m_eMetaCode = MC_STR_FIT_2L;
-    xColEnc.m_wDataCode.m_azStr = azDst;
+    xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
     xColEnc.m_nDataSize = STRx2(nQuanta);
     
     xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x2,nQuanta);
@@ -682,7 +683,7 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
     nQuanta = MemLib::nQuantaRequired(nS-48,4);
     
     xColEnc.m_eMetaCode = MC_STR_FIT_2L;
-    xColEnc.m_wDataCode.m_azStr = azDst;
+    xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
     xColEnc.m_nDataSize = STRx4(nQuanta);
     
     xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x4,nQuanta);
@@ -695,7 +696,7 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
     nQuanta = MemLib::nQuantaRequired(nS-112,8);
     
     xColEnc.m_eMetaCode = MC_STR_FIT_2L;
-    xColEnc.m_wDataCode.m_azStr = azDst;
+    xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
     xColEnc.m_nDataSize = STRx8(nQuanta);
     
     xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x8,nQuanta);
@@ -705,7 +706,7 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
 
   // 5) MN_STRING_TAIL
   xColEnc.m_eMetaCode = MC_STR_TAIL_2T;
-  xColEnc.m_wDataCode.m_azStr = azDst;
+  xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
   xColEnc.m_nDataSize = nS;
     
   xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_TAIL,2);

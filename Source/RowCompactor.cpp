@@ -615,6 +615,7 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     //m_pCrwNub->vDumpStrings();
     //vTrace("Looking for: %s\n"_Stz,szStr->azChar());
     TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
+    //TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) szStr, i_Tail);
     if (! aTailLine) {
       //vTrace("Tail not found: %s\n"_Stz,szStr->azChar());
       continue;
