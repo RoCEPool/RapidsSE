@@ -18,6 +18,10 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
   u1 uLow;
   i8 nStrBytes;
   i8 i_Tail_rel;
+  i8 i_Offset;
+  byte* aByte;
+  
+  i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
 
 
   i8 nCols = pEncoding->m_nColumns;
@@ -61,7 +65,12 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     // +================================+
         
     // set <M> for this column
-    aHeadLine->vMetaClue(i_Col,aColEnc->m_uMetaClue);
+    //aHeadLine->vMetaClue(i_Col,aColEnc->m_uMetaClue);
+    
+    i_Offset = i_BaseOffsetMeta + i_Col;
+    aByte = ((byte*)aHeadLine) + i_Offset;
+    *aByte = aColEnc->m_uMetaClue;
+
     
     goto L_DataPack;
 
