@@ -114,7 +114,11 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     
     // set <MC_OVERFLOW_2T> for this column
     uMetaClue = METACLUE_FORM(MN_OVERFLOW,2);
-    aHeadLine->vMetaClue(i_Col,uMetaClue);
+//    aHeadLine->vMetaClue(i_Col,uMetaClue);
+    i_Offset = i_BaseOffsetMeta + i_Col;
+    aByte = ((byte*)aHeadLine) + i_Offset;
+    *aByte = uMetaClue;
+
 
     aOverLine = aHeadLine->aGetOver();
     
@@ -127,9 +131,9 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     // +--------------------------------+   +--------------------------------+
     
     // put <M> into over line
-    aHeadLine->vPutDataLogical(nHeadSize + C_U_1B,
-                              (i8)aColEnc->m_uMetaClue,
-                              C_1B);
+    aByte = ((byte*)aOverLine) + C_U_1B;
+    *aByte = aColEnc->m_uMetaClue;
+
     goto L_DataPack;
     
 
