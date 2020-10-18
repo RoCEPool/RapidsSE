@@ -117,7 +117,41 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
 
   L_DataPack:
-    vPutDataCode_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
+    //vPutDataCode_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
+    
+    // no data code {D} case
+    if (! aColEnc->m_nDataSize)
+      goto L_RowPacked;
+    
+    // non-vch packing as {1..8B} (max of 1 word)
+    if (DM_VCH != aColEnc->m_pCol->eDatum()) {
+      vPutData_Bytes_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
+      return;
+    }
+    
+    // vch packing
+    
+    u1 uHigh;
+    u1 uLow;
+    
+    METACLUE_SPLIT(aColEnc->m_uMetaClue,uHigh,uLow);
+
+    if (MN_STRING_x1  == uHigh)
+      vPutData_STRINGx1(aHeadLine,pEncoding->xaColEnc[i_Col],STRx1(uLow));
+    else
+    if (MN_STRING_x2  == uHigh)
+      vPutData_STRINGx1(aHeadLine,pEncoding->xaColEnc[i_Col],STRx2(uLow));
+    else
+    if (MN_STRING_x4  == uHigh)
+      vPutData_STRINGx1(aHeadLine,pEncoding->xaColEnc[i_Col],STRx4(uLow));
+    else
+    if (MN_STRING_x8  == uHigh)
+      vPutData_STRINGx1(aHeadLine,pEncoding->xaColEnc[i_Col],STRx8(uLow));
+    else
+      vPutData_STR_TAIL_2T_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
+
+  L_RowPacked:
+    {;}
   }
 }
 
