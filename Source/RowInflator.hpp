@@ -634,6 +634,9 @@ namespace CompactBuffers
       if (uHigh >=  MN_NEGATIVE)  // small value
       {;}
       else
+      if (uHigh ==  MN_NULL)      // null value
+      {;}
+      else
       if (uHigh == MN_STRING_x1)  // string x 1
         ayDataByte += STRx1(uLow);
       else
