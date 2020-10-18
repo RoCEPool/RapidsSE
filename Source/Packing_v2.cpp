@@ -190,9 +190,13 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     //
     
     // put [TL]
-    aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
-                               i_Tail_rel,
-                               C_2B);
+    if (aOverLine) {
+      i_Offset_over = aColEnc->m_i_Offset - nHeadBytes;
+      aOverLine->vPut(i_Offset_over,i_Tail_rel,C_2B);
+    }
+    else {
+      aHeadLine->vPut(aColEnc->m_i_Offset,i_Tail_rel,C_2B);
+    }
     goto L_RowPacked;
 
     
