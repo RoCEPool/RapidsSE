@@ -423,10 +423,13 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) is there already a tail for the vch?
   
-  TailStr xFindTail(szTailStr);
+  //TailStr xFindTail(szTailStr);
   
-  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
+//  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
+//    return false;
+  if (C_UNKNOWN != m_pCrwNub->iFindTail(szTailStr))
     return false;
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) create a new tail
@@ -440,7 +443,8 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
   //vDumpTails();
   //vDebugPoint();
   
-  i8 nTailBytes = xFindTail.nBytes();
+  //i8 nTailBytes = xFindTail.nBytes();
+  i8 nTailBytes = szTailStr->nSize();
   i8 i_Tail = m_pCrwNub->iAllotTail(nTailBytes);
   TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
   
@@ -863,11 +867,15 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) is there already a tail for the vch?
   
-  TailStr xFindTail(pOuterIrwSample->szStzGet(i_Col));
+  //TailStr xFindTail(pOuterIrwSample->szStzGet(i_Col));
   
-  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
+//  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
+//    return;
+  
+  Stz* szTailToFind = pOuterIrwSample->szStzGet(i_Col);
+  if (C_UNKNOWN != m_pCrwNub->iFindTail(szTailToFind))
     return;
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3) create a new tail
   
@@ -880,7 +888,8 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
   //vDumpTails();
   //vDebugPoint();
   
-  i8 nTailBytes = xFindTail.nBytes();
+  //i8 nTailBytes = xFindTail.nBytes();
+  i8 nTailBytes = szTailToFind->nSize();
   i8 i_Tail = m_pCrwNub->iAllotTail(nTailBytes);
   TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
   

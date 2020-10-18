@@ -67,6 +67,7 @@ namespace Structures
     void  vDumpStrings(void);
     void  vDumpTails(void);
     i8    iFindTail(TAIL* aFindLine);
+    i8    iFindTail(Stz* szStr);
     TAIL* aFindTail(TAIL* aFindLine, i8& i_Tail);
     i8    nFreeAllotableBytes(void);
     HEAD* aGetHead(void);
@@ -528,6 +529,28 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iFindTail(TAIL* aFindLine)
     //aTailLine->vDump();
     
     if (0 == MemLib::iCompareBytes(aTailLine,aFindLine,nTailBytes))
+      return i_Tail;
+  }
+  
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* search for duplicate tail line                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iFindTail(Stz* szString)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+
+  for (i8 i_Tail = iLastTail();
+       i_Tail != C_UNKNOWN;
+       i_Tail = iPrevTail(i_Tail)) {
+    
+    TAIL* aTailLine = aGetTail(i_Tail);
+    Stz* szTail = aTailLine->sz();
+    
+    if (0 == StrLib::iCompare(szString->azChar(),szTail->azChar()))
       return i_Tail;
   }
   
