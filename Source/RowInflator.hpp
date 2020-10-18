@@ -614,6 +614,7 @@ namespace CompactBuffers
   
   i8 i_ColSet = 0;
   i8 i_ColToRetrieve = iaColSet[i_ColSet];
+  RASSERT(-1 != i_ColToRetrieve);
   
   for (i8 i_Col = 0; /*none*/; i_Col++) {
     

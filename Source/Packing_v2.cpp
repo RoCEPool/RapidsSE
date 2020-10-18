@@ -16,6 +16,7 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
   u1 uMetaClue;
   u1 uHigh;
   u1 uLow;
+  i8 nStrBytes;
   
 
   i8 nCols = pEncoding->m_nColumns;
@@ -148,21 +149,40 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     // vch packing
     
     METACLUE_SPLIT(aColEnc->m_uMetaClue,uHigh,uLow);
+    
+    if (MN_STRING_TAIL != uHigh)
+      goto L_PackVch_Head;
+    
+    vPutData_STR_TAIL_2T_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
+    goto L_RowPacked;
 
+    
+  L_PackVch_Head:
     if (MN_STRING_x1  == uHigh)
-      vPutData_STRINGx1(aHeadLine,pEncoding->xaColEnc[i_Col],STRx1(uLow));
+      nStrBytes = STRx1(uLow);
     else
     if (MN_STRING_x2  == uHigh)
-      vPutData_STRINGx1(aHeadLine,pEncoding->xaColEnc[i_Col],STRx2(uLow));
+      nStrBytes = STRx2(uLow);
     else
     if (MN_STRING_x4  == uHigh)
-      vPutData_STRINGx1(aHeadLine,pEncoding->xaColEnc[i_Col],STRx4(uLow));
+      nStrBytes = STRx4(uLow);
     else
     if (MN_STRING_x8  == uHigh)
-      vPutData_STRINGx1(aHeadLine,pEncoding->xaColEnc[i_Col],STRx8(uLow));
-    else
-      vPutData_STR_TAIL_2T_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
+      nStrBytes = STRx8(uLow);
+    else {
+      RASSERT(0);
+    }
     
+    //      -- HeadLine / OverLine --
+    // +--------------------------------+
+    // | ...<StringZ>                   |
+    // +--------------------------------+
+    
+    // put <StringZ> (with null terminator)
+    aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
+                               aColEnc->m_wDataCode.m_szVch,
+                               nStrBytes);
+
   L_RowPacked:
     {;}
   }
@@ -170,130 +190,9 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
 
 
 /*----------------------------------------------------------------------------*/
-/*                            meta code packing                               */
-/*----------------------------------------------------------------------------*/
-
-
-
-/*----------------------------------------------------------------------------*/
 /*                            data code packing                               */
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* put data bytes for unary MC_xyz_1..8B (e.g. for MC_DTE_E1_2B, ...)         */
-/*----------------------------------------------------------------------------*/
-void Packing_v2::vPutData_Bytes_v2(HeadLine* aHeadLine, _ColEnc& xColEnc)
-{
-  //      -- HeadLine / OverLine --
-  // +--------------------------------+
-  // | ...{D}                         |
-  // +--------------------------------+
-  
-  // put {D}
-  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset,
-                           xColEnc.m_wDataCode.m_iWrd,
-                           xColEnc.m_nDataSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put data bytes for MC_STR_FIT_1L : <L><ShortN>                             */
-/*----------------------------------------------------------------------------*/
-void Packing_v2::vPutData_STRINGx1(HeadLine* aHeadLine, _ColEnc& xColEnc, i8 nBytes)
-{
-  // get <ShortN>
-  char* azStringZ = (char*)xColEnc.m_wDataCode.m_szVch;
-    
-  i8 nS = xColEnc.m_nDataSize;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-  //      -- HeadLine / OverLine --
-  // +--------------------------------+
-  // | ...<StringZ>                   |
-  // +--------------------------------+
-  
-  // put <StringZ> (with null terminator)
-  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset,
-                             (Stz*)azStringZ,
-                             nBytes);
-}
-
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/* put data bytes for MC_STR_FIT_1L : <L><ShortN>                             */
-/*----------------------------------------------------------------------------*/
-void Packing_v2::vPutData_STR_FIT_1L_v2(HeadLine* aHeadLine, _ColEnc& xColEnc)
-{
-  // get <ShortN>
-  char* azShortN = (char*)xColEnc.m_wDataCode.m_szVch;
-  
-  // calc <L> (which includes the null term character)
-  i8 nL = xColEnc.m_nDataSize - C_L_1B;
-  RASSERT(nL == StrLib::nLength(azShortN) + C_NULL_1B);
-  RASSERT(nL < (i8)C_1_BYTE);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //      -- HeadLine / OverLine --
-  // +--------------------------------+
-  // | ...<L>                         |
-  // +--------------------------------+
-  
-  // put <L> (which includes the null term character)
-  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset,
-                           nL,
-                           C_1B);
-  
-  //      -- HeadLine / OverLine --
-  // +--------------------------------+
-  // | ...<L><ShortN>                 |
-  // +--------------------------------+
-  
-  // put <ShortN> (with null terminator)
-  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset + C_L_1B,
-                           (Stz*)azShortN,
-                           nL);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put data bytes for MC_STR_FIT_2L : <LL><LongN>                             */
-/*----------------------------------------------------------------------------*/
-void Packing_v2::vPutData_STR_FIT_2L_v2(HeadLine* aHeadLine, _ColEnc& xColEnc)
-{
-  // get <LongN>
-  char* azLongN = (char*)xColEnc.m_wDataCode.m_szVch;
-  
-  // calc <LL>
-  i8 nLL = xColEnc.m_nDataSize - C_L_2B;
-  RASSERT(nLL == StrLib::nLength(azLongN) + C_NULL_1B);
-  RASSERT(nLL < (i8)C_2_BYTES);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //      -- HeadLine / OverLine --
-  // +--------------------------------+
-  // | ...<LL>                        |
-  // +--------------------------------+
-  
-  // put <LL>
-  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset,
-                           nLL,
-                           C_2B);
-  
-  //      -- HeadLine / OverLine --
-  // +--------------------------------+
-  // | ...<LL><LongN>                 |
-  // +--------------------------------+
-  
-  // put <LongN> (has null terminator)
-  aHeadLine->vPutDataLogical(xColEnc.m_i_Offset + C_L_2B,
-                           (Stz*)azLongN,
-                           nLL);
-}
 
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_TAIL_2T : [TL]                                   */
