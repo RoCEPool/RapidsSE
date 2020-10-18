@@ -391,7 +391,7 @@ void EntBuffer::vPosVecPriorToEntry_int(Key* aGivenKey_int,
 /*----------------------------------------------------------------------------*/
 
 
-#define ELM0_OF_KEY(aKey) ( aKey->iGetIntElm() )
+#define ELM0_OF_KEY(aKey) ( *(i8*)aKey )
 
 #define ELM0_OF_ENTRY(aEnt_int) ( aEnt_int->m_iIntElm0 )
 
@@ -414,18 +414,18 @@ Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
   
   if (nItems() == 0)
     return nullptr;
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+      
   i8 nLvlLevels = AM::nLvlLevels();
     
   Ent* aSkipRoots = this->aSkipRoots();
   
   Ent_int* aItemArray = (Ent_int*)this->aItemArray();
   
-  i8 iKey_IntElm = ELM0_OF_KEY(aWithKey_int);
+  i8 iWithIntElm0 = ELM0_OF_KEY(aWithKey_int);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Ent_int* aNextEnt_int;
+  i8 iNextEnt_IntElm0;
 
   Ent_int* aScanEnt = (Ent_int*)aSkipRoots;
   for (i4 i_Level = (i4)nLvlLevels - 1; i_Level >= 0; i_Level--) {
@@ -434,12 +434,12 @@ Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
          ! END_TICKET(tNextEnt);
          tNextEnt = NEXT_TICKET(aScanEnt,i_Level)) {
 
-      Ent_int* aNextEnt_int = GET_ENTRY(tNextEnt);
-      i8 iNextEnt_IntElm = ELM0_OF_ENTRY(aNextEnt_int);
+      aNextEnt_int = GET_ENTRY(tNextEnt);
+      iNextEnt_IntElm0 = ELM0_OF_ENTRY(aNextEnt_int);
       
       //vTrace("@%lld : %lld v %lld\n"_Stz,i_Level,iKey_IntElm,iNextEnt_IntElm);
             
-      if (SCAN_IS_AT_PRIOR_POS(iKey_IntElm,iNextEnt_IntElm))
+      if (SCAN_IS_AT_PRIOR_POS(iWithIntElm0,iNextEnt_IntElm0))
         break;
       
       aScanEnt = aNextEnt_int;
@@ -447,14 +447,16 @@ Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
 
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Ent_int* aFoundEnt = (Ent_int*)GET_ENTRY(aScanEnt->m_taNextEntry[0]);
 
   if (aFoundEnt) {
-    bool b = (iKey_IntElm == ((Ent_int*)aFoundEnt)->m_iIntElm0);
+    bool b = (iWithIntElm0 == ((Ent_int*)aFoundEnt)->m_iIntElm0);
     if (b)
       return (Ent*)aFoundEnt;
   }
-  vTrace("DID NOT FIND %lld\n"_Stz,iKey_IntElm);
+  vTrace("DID NOT FIND %lld\n"_Stz,iWithIntElm0);
   
   NEVER_REACH;
   
