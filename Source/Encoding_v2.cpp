@@ -799,8 +799,9 @@ void Encoding_v2::vReset(void)
   
   m_i_Offset_next = C_UNKNOWN;
 
-  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
-    
+  //for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+
     // leave m_pCol
     // leave m_eDatum
     
