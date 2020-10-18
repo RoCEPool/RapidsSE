@@ -127,11 +127,24 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
       goto L_RowPacked;
     
     // non-vch packing as {1..8B} (max of 1 word)
-    if (DM_VCH != aColEnc->m_pCol->eDatum()) {
-      vPutData_Bytes_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
-      goto L_RowPacked;
-    }
+    if (DM_VCH == aColEnc->m_pCol->eDatum())
+      goto L_PackVch;
     
+    //vPutData_Bytes_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
+    
+    //      -- HeadLine / OverLine --
+    // +--------------------------------+
+    // | ...{D}                         |
+    // +--------------------------------+
+    
+    // put {D}
+    aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
+                               aColEnc->m_wDataCode.m_iWrd,
+                               aColEnc->m_nDataSize);
+
+    goto L_RowPacked;
+
+  L_PackVch:
     // vch packing
     
     METACLUE_SPLIT(aColEnc->m_uMetaClue,uHigh,uLow);
@@ -166,42 +179,6 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
 /*                            data code packing                               */
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* put data code {D} for encoded column value into crw                        */
-/*----------------------------------------------------------------------------*/
-void Packing_v2::vPutDataCode_v2(HeadLine* aHeadLine, _ColEnc& xColEnc)
-{
-  // no data code {D} case
-  if (! xColEnc.m_nDataSize)
-    return;
-  
-  // non-vch packing as {1..8B} (max of 1 word)
-  if (DM_VCH != xColEnc.m_pCol->eDatum()) {
-    vPutData_Bytes_v2(aHeadLine,xColEnc);
-    return;
-  }
-  
-  // vch packing
-  
-  u1 uHigh;
-  u1 uLow;
-  
-  METACLUE_SPLIT(xColEnc.m_uMetaClue,uHigh,uLow);
-
-  if (MN_STRING_x1  == uHigh)
-    vPutData_STRINGx1(aHeadLine,xColEnc,STRx1(uLow));
-  else
-  if (MN_STRING_x2  == uHigh)
-    vPutData_STRINGx1(aHeadLine,xColEnc,STRx2(uLow));
-  else
-  if (MN_STRING_x4  == uHigh)
-    vPutData_STRINGx1(aHeadLine,xColEnc,STRx4(uLow));
-  else
-  if (MN_STRING_x8  == uHigh)
-    vPutData_STRINGx1(aHeadLine,xColEnc,STRx8(uLow));
-  else
-    vPutData_STR_TAIL_2T_v2(aHeadLine,xColEnc);
-}
 
 /*----------------------------------------------------------------------------*/
 /* put data bytes for unary MC_xyz_1..8B (e.g. for MC_DTE_E1_2B, ...)         */
