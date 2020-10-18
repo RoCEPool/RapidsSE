@@ -48,7 +48,7 @@ source "${BOOT_FN}" || { >&2 echo "Could not load ${BOOT_FN}"; exit 1; }
 ###############################################################################
 
 # Process the arguments given to the script.
-processArgs "$@"
+processStartStopArgs "$@"
 
 if [ ${DEBUG} -eq 1 ]; then
   echo "CLUSTER_OP = ${CLUSTER_OP}"

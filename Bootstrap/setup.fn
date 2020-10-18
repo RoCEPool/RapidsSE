@@ -1148,30 +1148,36 @@ function doNodeInstall() {
     errorExit "The hostname for node ${CURRENT_NODE_NAME} has not been set."
   fi
   
-
-  # Test if the parent path of the install directory is writable
-  if [ ! -w "$(dirname "${installDir}")" ]; then
-    errorExit "Parent path of the installation directory (${installDir}) is not writable by the current user (${USER})."
-  fi
-
-
-  # If the installation directory already exists then remove it
+  
+  # If the installation directory already exists then ensure that it is writable.
+  # Then remove the contents of the installation directory.
   if [ -d "${installDir}" ]; then
-
-    if [ ${DEBUG} -eq 1 ]; then
-      echo "Removing existing installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+    if [ ! -w "${installDir}" ]; then
+      errorExit "The installation directory (${installDir}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
     fi
 
-    rm -rf "${installDir}" || errorExit "Could not remove the existing installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+    if [ ${DEBUG} -eq 1 ]; then
+      echo "Removing the contents of the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+    fi
+
+    rm -rf "${installDir:?}/"* || errorExit "Could not remove the contents of the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+  
+  else
+
+    # If the installation directory does not exist then ensure that the parent
+    # directory is writable.
+    # Then create the installation directory.
+
+    if [ ! -w "$(dirname "${installDir}")" ]; then
+      errorExit "Parent path of the installation directory (${installDir}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
+    fi
+
+    if [ ${DEBUG} -eq 1 ]; then
+      echo "About to create the installation directory: ${hostname}:${installDir}"
+    fi
+
+    mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
   fi
-
-
-  # Create installation directory.
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to create the installation directory: ${hostname}:${installDir}"
-  fi
-
-  mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
 
   # Copy all files that were unpacked from the installer to the installation dir.

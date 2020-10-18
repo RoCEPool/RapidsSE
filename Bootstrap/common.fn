@@ -14,6 +14,7 @@ fi
 ### Constants                                                               ###
 ###############################################################################
 
+#shellcheck disable=2034
 readonly VERSION_FILE="version"
 readonly CONFIG_DEFAULT_VERSION="1"
 
@@ -32,7 +33,7 @@ readonly NODE_CFG_PARAMS_KEY="params"
 
 # An array of all mandatory node configuration settings.
 # Note that "params" is not mandatory.
-declare -ra NODE_CFG_ALL_KEYS=( \
+declare -ra NODE_CFG_MANDATORY_KEYS=( \
   "${NODE_CFG_NAME_KEY}" \
   "${NODE_CFG_HOST_KEY}" \
   "${NODE_CFG_PORT_KEY}" \
@@ -42,6 +43,11 @@ declare -ra NODE_CFG_ALL_KEYS=( \
   "${NODE_CFG_MEM_KEY}" \
 )
 
+#shellcheck disable=2034
+declare -ra NODE_CFG_ALL_KEYS=( \
+  "${NODE_CFG_MANDATORY_KEYS[@]}" \
+  "${NODE_CFG_PARAMS_KEY}" \
+)
 
 ###############################################################################
 ### Functions                                                               ###
@@ -140,6 +146,14 @@ function loadClusterConfig() {
 
   local errMsg="Invalid cluster configuration at ${CONFIG_FILE} :"
 
+  if [ -z "${CONFIG_VERSION}" ]; then
+    errorExit "${errMsg}" "No config version (\$CONFIG_VERSION) has been set."
+  fi
+
+  if [ "${CONFIG_VERSION}" -ne "${CONFIG_DEFAULT_VERSION}" ]; then
+    errorExit "${errMsg}" "Config version (${CONFIG_VERSION}) does not match the expected version (${CONFIG_DEFAULT_VERSION})."
+  fi
+
   if [ -z "${NODE_LIST[*]}" ]; then
     errorExit "${errMsg}" "NODE_LIST array is not defined."
   fi
@@ -159,7 +173,7 @@ function loadClusterConfig() {
     local key
     local val
 
-    for key in "${NODE_CFG_ALL_KEYS[@]}"
+    for key in "${NODE_CFG_MANDATORY_KEYS[@]}"
     do
       val="$(nodeCfgGetValue "${nodeName}" "${key}")"
 
