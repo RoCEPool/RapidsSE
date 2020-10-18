@@ -226,10 +226,26 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     // +--------------------------------+
     
     // put <StringZ> (with null terminator)
-    aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
-                               aColEnc->m_wDataCode.m_szVch,
-                               nStrBytes);
+    if (aOverLine) {
+      i_Offset_over = aColEnc->m_i_Offset - nHeadBytes;
+      aByte = ((byte*)aOverLine) + i_Offset_over;
+      MemLib::vCopy(aByte,aColEnc->m_wDataCode.m_szVch,nStrBytes,CN_ROWCOMPACTOR);
 
+//      aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
+//                                 aColEnc->m_wDataCode.m_szVch,
+//                                 nStrBytes);
+    }
+    else {
+      aByte = ((byte*)aHeadLine) + aColEnc->m_i_Offset;
+      MemLib::vCopy(aByte,aColEnc->m_wDataCode.m_szVch,nStrBytes,CN_ROWCOMPACTOR);
+
+//      aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
+//                                 aColEnc->m_wDataCode.m_szVch,
+//                                 nStrBytes);
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
   L_RowPacked:
     {;}
   }
