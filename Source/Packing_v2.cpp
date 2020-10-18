@@ -13,6 +13,7 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
   
   _ColEnc* aColEnc;
   i8 nHeadSize;
+  u1 uMetaClue;
   
   i8 nCols = pEncoding->m_nColumns;
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -20,17 +21,102 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     aColEnc = &pEncoding->xaColEnc[i_Col];
     nHeadSize = pEncoding->m_nHeadSize;
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // meta code packing
-    
-    //vPutMetaCode_v2(aHeadLine,pEncoding->m_nHeadSize,pEncoding->xaColEnc[i_Col]);
-    if (aColEnc->m_bSplit)
-      vPutMeta_split_v2(aHeadLine,nHeadSize,pEncoding->xaColEnc[i_Col]);
-    else
-      vPutMeta_usual_v2(aHeadLine,nHeadSize,pEncoding->xaColEnc[i_Col]);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+    //                            meta code packing                           //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // data code packing
+    if (aColEnc->m_bSplit)
+      goto L_MetaSplit;
+
+    /*
+              -- HeadLine --                      -- OverLine --
+     +================================+
+     | <W><M>...                      |
+     +================================+
+     | {D}...                         |
+     +--------------------------------+   +--------------------------------+
+     |                           [OL] |---| <U> ////////////////////////// |
+     +--------------------------------+   +--------------------------------+
+     
+     where:
+     <W>  is one byte word length of head line
+     <M>  is a metacode for a column value
+     {D}  is a set of data bytes for a column value
+     [OL] is 2B relative index of the over line
+     <U>  is one byte space unit length of over line
+     */
+    
+    // > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > >
+    
+    // put meta code <M> into meta tape of head
+    
+    //            -- HeadLine --
+    // +================================+
+    // | <W><M>...<M>                   |
+    // +================================+
+        
+    // set <M> for this column
+    aHeadLine->vMetaClue(i_Col,aColEnc->m_uMetaClue);
+    
+    goto L_DataPack;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+  L_MetaSplit:
+   
+    /*
+     -- Head-Line --                      -- Over-Line --
+     +================================+
+     | <W><M>...                      |
+     +================================+
+     | {D}...                         |
+     +--------------------------------+   +--------------------------------+
+     |                           [OL] |---| <U> ////////////////////////// |
+     +--------------------------------+   +--------------------------------+
+     
+     where:
+     [OL] is 2B relative index of the over line
+     <W>  is one byte word length of head line
+     <M>  is a metacode for a column value
+     {D}  is a set of data bytes for a column value
+     <U>  is one byte space unit length of over line
+     */
+    
+    // > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > >
+
+    // +================================+
+    // | <W><M>...     <MC_OVERFLOW_2T> |
+    // +================================+
+    // | {D}...                         |
+    // +--------------------------------+   +--------------------------------+
+    // |                           [OL] |---| <U> ////////////////////////// |
+    // +--------------------------------+   +--------------------------------+
+    
+    
+    // set <MC_OVERFLOW_2T> for this column
+    uMetaClue = METACLUE_FORM(MN_OVERFLOW,2);
+    aHeadLine->vMetaClue(i_Col,uMetaClue);
+
+    // +================================+
+    // | <W><M>...     <MC_OVERFLOW_2T> |
+    // +================================+
+    // | {D}...                         |
+    // +--------------------------------+   +--------------------------------+
+    // |                           [OL] |---| <U><M> /////////////////////// |
+    // +--------------------------------+   +--------------------------------+
+    
+    // put <M> into over line
+    aHeadLine->vPutDataLogical(nHeadSize + C_U_1B,
+                              (i8)aColEnc->m_uMetaClue,
+                              C_1B);
+    goto L_DataPack;
+    
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+    //                            data code packing                           //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+
+  L_DataPack:
     vPutDataCode_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
   }
 }
@@ -40,108 +126,6 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
 /*                            meta code packing                               */
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* put meta code for column value into logical compact row                    */
-/*----------------------------------------------------------------------------*/
-void Packing_v2::vPutMetaCode_v2(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc)
-{
-  if (xColEnc.m_bSplit)
-    vPutMeta_split_v2(aHeadLine,nHeadSize,xColEnc);
-  else
-    vPutMeta_usual_v2(aHeadLine,nHeadSize,xColEnc);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put meta code into compact row for split column                            */
-/*----------------------------------------------------------------------------*/
-void Packing_v2::vPutMeta_split_v2(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc)
-{
-  /*
-   -- Head-Line --                      -- Over-Line --
-   +================================+
-   | <W><M>...                      |
-   +================================+
-   | {D}...                         |
-   +--------------------------------+   +--------------------------------+
-   |                           [OL] |---| <U> ////////////////////////// |
-   +--------------------------------+   +--------------------------------+
-   
-   where:
-   [OL] is 2B relative index of the over line
-   <W>  is one byte word length of head line
-   <M>  is a metacode for a column value
-   {D}  is a set of data bytes for a column value
-   <U>  is one byte space unit length of over line
-   */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // +================================+
-  // | <W><M>...     <MC_OVERFLOW_2T> |
-  // +================================+
-  // | {D}...                         |
-  // +--------------------------------+   +--------------------------------+
-  // |                           [OL] |---| <U> ////////////////////////// |
-  // +--------------------------------+   +--------------------------------+
-  
-  i8 i_Col = xColEnc.m_pCol->iColumnNo();
-  
-  // set <MC_OVERFLOW_2T> for this column
-  //aHeadLine->vMetaCode(i_Col,MC_OVERFLOW_2T);
-  
-  u1 uMetaClue = METACLUE_FORM(MN_OVERFLOW,2);
-  aHeadLine->vMetaClue(i_Col,uMetaClue);
-
-  // +================================+
-  // | <W><M>...     <MC_OVERFLOW_2T> |
-  // +================================+
-  // | {D}...                         |
-  // +--------------------------------+   +--------------------------------+
-  // |                           [OL] |---| <U><M> /////////////////////// |
-  // +--------------------------------+   +--------------------------------+
-  
-  // put <M> into over line
-  aHeadLine->vPutDataLogical(nHeadSize + C_U_1B,
-                            (i8)xColEnc.m_uMetaClue,
-                            C_1B);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put meta code into compact row for usual / non-split column                */
-/*----------------------------------------------------------------------------*/
-void Packing_v2::vPutMeta_usual_v2(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc)
-{
-  /*
-   -- HeadLine --                      -- OverLine --
-   +================================+
-   | <W><M>...                      |
-   +================================+
-   | {D}...                         |
-   +--------------------------------+   +--------------------------------+
-   |                           [OL] |---| <U> ////////////////////////// |
-   +--------------------------------+   +--------------------------------+
-   
-   where:
-   <W>  is one byte word length of head line
-   <M>  is a metacode for a column value
-   {D}  is a set of data bytes for a column value
-   [OL] is 2B relative index of the over line
-   <U>  is one byte space unit length of over line
-   */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // put meta code <M> into meta tape of head
-  
-  //            -- HeadLine --
-  // +================================+
-  // | <W><M>...<M>                   |
-  // +================================+
-  
-  i8 i_Col = xColEnc.m_pCol->iColumnNo();
-  
-  // set <M> for this column
-  aHeadLine->vMetaClue(i_Col,xColEnc.m_uMetaClue);
-}
 
 
 /*----------------------------------------------------------------------------*/
