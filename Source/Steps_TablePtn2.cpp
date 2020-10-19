@@ -14,6 +14,7 @@ void Step::vAddSteps_TablePartition2(void)
   vAddStep("tablePtn[].appendBuffer"_Stz,     &Step::vTablePtnAppendBuffer);
   vAddStep("tablePtn[].genCrwBuffers"_Stz,    &Step::vTablePtnGenCrwBuffers);
   vAddStep("tablePtn[].inflateCrwBuffer"_Stz, &Step::vTablePtnInflateCrwBuffer);
+  vAddStep("tablePtn[].populateIndex"_Stz,    &Step::vTablePtnPopulateIndex);
   vAddStep("tablePtn[].purge"_Stz,            &Step::vTablePtnPurge);
   vAddStep("tablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
   vAddStep("tablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
@@ -170,6 +171,27 @@ void Step::vTablePtnInflateCrwBuffer(void)
   }
   
   m_pDataStack->vPushInt(nRows);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tablePtn[].populateIndex -- populate index of this table ptn               */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnPopulateIndex(void)
+{
+  ENTRY();
+  
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iIndexNo = pIndex->iIndexNo();
+  
+  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
+  
+  bool bPopulated = pTablePtn->bPopulateIndex(iIndexNo);
+  
+  m_pDataStack->vPushInt(bPopulated ? 1 : 0);
   
   EXIT();
 }
