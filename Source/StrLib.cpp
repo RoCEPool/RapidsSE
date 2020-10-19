@@ -2572,18 +2572,6 @@ bool StrLib::bSkipLeading(char** ps, char cEnclosedBy_Leading)
 /*----------------------------------------------------------------------------*/
 /* iLength: get length in bytes of arg (not including terminating null)       */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::nLength(const char* s)
-{
-  _static_
-  
-  i8 iLen = strlen(s);
-  
-  return iLen;
-}
-
-/*----------------------------------------------------------------------------*/
-/* iLength: get length in bytes of arg (not including terminating null)       */
-/*----------------------------------------------------------------------------*/
 i8 StrLib::nLength(const char* s, const char cTerm, i8 iMax)
 {
   _static_

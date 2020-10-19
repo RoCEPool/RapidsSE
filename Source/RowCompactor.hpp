@@ -58,12 +58,10 @@ namespace CompactBuffers
     bool bAllotCrw(void);
     bool bCreateTail(Stz* szTailStr);
     void vEncodeHeadForIrw(Row* pIrw);
-    void vEncodeHeadForRsb(Rsb* aRsb);
     void vEncodeHeadForSrw(RowSingle* pSrw);
     void vEncodeTailsForIrw(Row* pIrw);
     void vEncodeTailsForRsb(Rsb* aRsb);
     void vEncodeTailsForSrw(RowSingle* pSrw);
-    void vEncodeSplit(void);
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Row Sampling (structural order)

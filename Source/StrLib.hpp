@@ -145,7 +145,7 @@ namespace Strings
     static bool  bIsWhite(const char c);
    
     static char* acLast(const char* s);
-    static i8    nLength(const char* s);
+    //static i8    nLength(const char* s);
     static i8    nLength(const char* s, const char cTerm, i8 iMax);
     
     static char* sNew(const char* sFormat, ...);
@@ -206,6 +206,20 @@ namespace Strings
 
     static i8    iWordFlip(char* aDst, char* aSrc);
     static i8    iWordFlipBack(char* aDst, char* aSrc);
+  
+  /*----------------------------------------------------------------------------*/
+  /* iLength: get length in bytes of arg (not including terminating null)       */
+  /*----------------------------------------------------------------------------*/
+  inline static i8 nLength(const char* s)
+  {
+    _static_
+    
+    i8 iLen = (i8)strlen(s);
+    
+    return iLen;
+  }
+
+
   };
   
 }

@@ -218,7 +218,7 @@ bool RowCompactor::bAddIrwAsCrw(Row* pIrw)
     vEncodeTailsForIrw(pIrw);
   
   // 3) split encoded head between crw head and crw overflow
-  vEncodeSplit();
+  m_pEncoding_v2->vSplitOver();
 
   // 4) allot a logical compact row (head & over)
   if (! bAllotCrw()) {
@@ -251,13 +251,13 @@ bool RowCompactor::bAddRsbAsCrw(Rsb* aRsb)
   ASSERT(! m_bCollecting);
   
   // 1) initially encode head of inflated row into m_pEncoding_v1
-  vEncodeHeadForRsb(aRsb);
+  m_pEncoding_v2->vEncodeRsb(aRsb);
 
   // 2) encode tails into m_pEncoding_v1
   vEncodeTailsForRsb(aRsb);
 
   // 3) split encoded head between crw head and crw overflow
-  vEncodeSplit();
+  m_pEncoding_v2->vSplitOver();
 
   // 4) allot a logical compact row (head & over)
   if (! bAllotCrw()) {
@@ -303,8 +303,8 @@ bool RowCompactor::bAddSrwAsCrw(RowSingle* pSrw)
   vEncodeTailsForSrw(pSrw);
   
   // 3) split encoded head between crw head and crw overflow
-  vEncodeSplit();
-  
+  m_pEncoding_v2->vSplitOver();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pack
   
@@ -477,18 +477,6 @@ void RowCompactor::vEncodeHeadForIrw(Row* pIrw)
   SP_Encoding spEncoding;
   vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
 #endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode the head                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeHeadForRsb(Rsb* aRsb)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  m_pEncoding_v2->vEncodeRsb(aRsb);
-  //SP_Encoding_v2 spEncoding_v2;
-  //vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -702,22 +690,6 @@ void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
   
 #ifdef WITH_ENCODING_TRACE
   vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* split out over from head (stemming from either sampled irw or input row)   */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeSplit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-
-  m_pEncoding_v2->vSplitOver();
-  //SP_Encoding_v2 spEncoding;
-  //vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v2));
-
-#ifdef WITH_ENCODING_TRACE
-  vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
 #endif
 }
 
