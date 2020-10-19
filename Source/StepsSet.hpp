@@ -1600,6 +1600,7 @@ public:
   void vTablePtnGet(void);
   void vTablePtnGenCrwBuffers(void);
   void vTablePtnInflateCrwBuffer(void);
+  void vTablePtnPopulateIndex(void);
   void vTablePtnPurge(void);
   void vTablePtnRoot(void);
   void vTablePtnSet(void);
