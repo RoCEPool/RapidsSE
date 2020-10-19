@@ -130,7 +130,10 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   
   u1 uLastEncoding = uGetEncMetaCode(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
-  nDataBytes = RowCoder::nDataSizeOfCode(uLastEncoding);
+  u1 uHigh = METACODE_HIGH(uLastEncoding);
+  u1 uLow  = METACODE_LOW(uLastEncoding);
+
+  nDataBytes = RowCoder::nDataSizeOfCode(uHigh,uLow);
   
   i8 nFreeBytes = nBytes() - i_OfsCrs_ - nDataBytes;
   
@@ -198,10 +201,10 @@ u1 HeadLine::uGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
     if (MC_OVERFLOW == uHigh) {
       i_OfsCrs_ = nBytes() + C_U_1B;
       uEncoding = (u1)wGetLogical(i_OfsCrs_++,C_1B);
-      i_OfsCrs_ += RowCoder::nDataSizeOfCode(uEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(uHigh,uLow);
     }
     else {
-      i_OfsCrs_ += RowCoder::nDataSizeOfCode(uEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(uHigh,uLow);
     }
     
     if (MC_STRING_x1 == uHigh) {

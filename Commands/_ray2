@@ -9,7 +9,7 @@ print section "Create LineItem";
 
 _lineitem_dates
 
-_lineitemIndex
+//_lineitemIndex
 
 // ./time CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPINSTRUCT);
 

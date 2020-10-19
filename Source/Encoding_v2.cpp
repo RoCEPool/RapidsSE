@@ -714,42 +714,6 @@ bool Encoding_v2::bEncodeNul(_ColEnc& xColEnc, Dtm wDtm)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compute initial offset and till for column encoding                        */
-/*----------------------------------------------------------------------------*/
-void Encoding_v2::vOffsetTill(_ColEnc& xrColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
-  
-  // set the offset of this column
-  xrColEnc.m_i_Offset = m_i_Offset_next;
-  
-  // get the base size of the encoding
-  i8 nDataBytes = nDataSizeOfCode(xrColEnc.m_uMetaCode);
-  
-  // if 0B case then till is same as offset
-  if (! nDataBytes) {
-    xrColEnc.m_i_Till = m_i_Offset_next;
-    return;
-  }
-    
-  i8 iHigh;
-  i8 iLow;
-  
-  METACODE_SPLIT(xrColEnc.m_uMetaCode, iHigh, iLow);
-
-  if (MC_STRING_TAIL == (eMC)iHigh) {
-    i8 nStrLen = StrLib::nLength(xrColEnc.m_wDataCode.m_szVch->azChar());
-    nDataBytes += nStrLen + 1;
-  }
-  
-  // set where the next offset will be
-  m_i_Offset_next += nDataBytes;
-  
-  // set the till byte of the column encoding
-  xrColEnc.m_i_Till = m_i_Offset_next; // - 1;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
