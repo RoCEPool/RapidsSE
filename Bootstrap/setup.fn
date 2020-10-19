@@ -8,22 +8,26 @@ then
   exit 1
 fi
 
-# Load other common functions
-COMMON_FN="common.fn"
+# Load other common functions. Order is important.
+INCLUDES=("common.fn" "envCheck.fn")
 
-if [ -n "${DIR}" ]; then
-  COMMON_FN="${DIR}/${COMMON_FN}"
-fi
+for incFile in "${INCLUDES[@]}"
+do
 
-if [ ! -f "${COMMON_FN}" ]; then
-  >&2 echo "File not found: ${COMMON_FN}"
-  >&2 echo "PWD = ${PWD}"
-  exit 1
-fi
+  if [ -n "${DIR}" ]; then
+    incFile="${DIR}/${incFile}"
+  fi
 
-#shellcheck source=common.fn
-source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+  if [ ! -f "${incFile}" ]; then
+    >&2 echo "File not found: ${incFile}"
+    >&2 echo "PWD = ${PWD}"
+    exit 1
+  fi
 
+  #shellcheck source=common.fn
+  #shellcheck source=envCheck.fn
+  source "${incFile}" || { >&2 echo "Could not load ${incFile}"; exit 1; }
+done
 
 
 
@@ -951,7 +955,43 @@ function askParams() {
 ## Params: None
 
 function validateEnvironment() {
-  true
+
+  echo "Validating the installation environment on all nodes..."
+
+  # TODO: Check that all host/dir combinations are unique.
+
+  # TODO: Check if all hosts are reachable by SSH.
+
+  # TODO: Check if SE is running in any of these host:directory combinations.
+
+  # TODO: Check if the port is not being used on any of the hosts.
+
+  # TODO: Check if a conflicting SE SHM file exists on any of the hosts.
+
+  # TODO: Check if the SE reserved memory size exceeds RAM.
+
+  # TODO: Check if the SE reserved memory size exceeds /dev/shm total size (if this exists).
+
+  # TODO: Check if the SE reserved memory size exceeds the available SHM space.
+
+  # TODO: Check if the number of threads is more than 2x number of physical cores.
+
+  # Check that the installation dir can be created (if not already) on each node,
+  # and that it is writable.
+  validateInstallDirIsWritable
+
+  # TODO: If an installation already exists on any node, confirm that the user wishes to overwrite it.
+
+  # TODO: Check that node names don't contain spaces or special characters.
+
+  # TODO: Check that node names are unique.
+
+  # TODO: Check that there is at least one hostname.
+
+  # TODO: Check that each hostname is resolvable.
+
+  # TODO: Check that NODE_SEQ_NUM is always non-zero if we read in an existing config
+
 
 }
 

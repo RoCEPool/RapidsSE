@@ -50,6 +50,7 @@ cp -r "${ROOT_DIR}/EO_Text"             "${LAYOUT_DIR}/EO_Text"
 # Bootstrap
 cp "${ROOT_DIR}/Bootstrap/setup.sh"              "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/Bootstrap/setup.fn"              "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/Bootstrap/envCheck.fn"           "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/Bootstrap/common.fn"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/Bootstrap/cluster.config.sample" "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/Bootstrap/startSE.sh"            "${LAYOUT_DIR}"

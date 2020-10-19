@@ -1,0 +1,93 @@
+#!/bin/bash
+# This file contains function definitions that are imported and used by setup.sh.
+
+# Guard against this file being executed directly.
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]
+then
+  >&2 echo "This file should be sourced, not executed: $0"
+  exit 1
+fi
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that the installation directory on each node can be created 
+## and is writable.
+## Params: None
+
+function validateInstallDirIsWritable() {
+  
+  local host
+  local dir
+  local remoteCmd
+  local response
+  
+  declare -a sshCmd
+  declare -A errors
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    remoteCmd="$(cat <<-EOF
+			if [ -d "${dir}" ]; then 
+				if [ ! -w "${dir}" ]; then
+					echo "Installation directory exists (${dir}) but is not writable.";
+					false;
+					exit;
+				fi
+			else
+				if [ ! -w "$(dirname "${dir}")" ]; then
+					echo "Installation directory (${dir}) cannot be created because the parent directory is not writable.";
+					false;
+					exit;
+				fi
+			fi
+			true;
+		EOF
+    )"
+
+    sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
+
+    if [ "${DEBUG}" -eq 1 ]; then
+      echo "About to validate the installation directory on node ${nodeName} with the command: ${sshCmd[*]}"
+    fi
+
+    if ! response="$("${sshCmd[@]}")"; then
+      if [ "${DEBUG}" -eq 1 ]; then
+        echo "Install dir validation failed: ${response}"
+      fi
+
+      # Save the response and the node name
+      errors["${nodeName}"]="${response}"
+    fi
+
+  done
+
+  if [ "${#errors[@]}" -gt 0 ]; then
+    local errMsg="Validation of the installation directory failed:"
+
+    for nodeName in "${!errors[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")" 
+      errMsg="${errMsg}\nOn ${nodeName} [host: ${host}] :	${errors[${nodeName}]}"
+    done
+
+    echo ""
+    errorExit "${errMsg}"
+  fi
+
+  if [ "${DEBUG}" -eq 1 ]; then
+    echo "Successfully validated that the installation directories are writable."
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

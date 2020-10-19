@@ -146,7 +146,7 @@ fi
 
 
 ### Run shellcheck against the setup files
-if [ "${NO_SHELLCHECK}" -ne 1 ] && (which shellcheck &>/dev/null); then
+if [[ -z "${NO_SHELLCHECK}" || "${NO_SHELLCHECK}" -ne 1 ]] && (which shellcheck &>/dev/null); then
   echo "Running ShellCheck..."
   if ! ${SHELLCHECK_CMD}; then
     errorExit "Packaging failed due to shellcheck issues with the setup scripts. Please fix these first."

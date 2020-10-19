@@ -9,6 +9,7 @@ fi
 declare -a FILES
 FILES+=("../../Bootstrap/setup.sh")
 FILES+=("../../Bootstrap/setup.fn")
+FILES+=("../../Bootstrap/envCheck.fn")
 FILES+=("../../Bootstrap/common.fn")
 FILES+=("../../Bootstrap/boot.fn")
 FILES+=("../../Bootstrap/startSE.sh")
