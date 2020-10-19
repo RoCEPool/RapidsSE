@@ -100,14 +100,18 @@
 
   // should be in tables
   folder[].isTables assert
+  indexDef[].tableName@ to sTableNm
 
   // create the index
   createIndex::createNamedIndex
+  nullptr to indexDef[]
 
   // should be in tables
   folder[].isTables assert
 
-  // pipeout indexDef so populate index can get the tableNm
+  // pipeout indexDef with the tableNm for populate index
+  indexDef[].new
+  sTableNm indexDef[].tableName!
   indexDef[].pipeout
 
   // pipeout EOSMARKER so populate index can do its work

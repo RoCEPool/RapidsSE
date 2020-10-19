@@ -495,6 +495,7 @@ public:
   void vIndexDefParseTableName(void);
   void vIndexDefPipeOut(void);
   void vIndexDefTableNameFetch(void);
+  void vIndexDefTableNameStore(void);
 
   // index reg
   void vRegIndexGet(void);

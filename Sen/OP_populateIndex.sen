@@ -16,6 +16,7 @@
   nullptr to Pipein[]
 
   indexDef[].tableName@ to sTableNm
+  indexDef[].delete
 
   sTableNm <indexNm> op__table_index not if
     true

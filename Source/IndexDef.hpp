@@ -47,6 +47,7 @@ namespace MetaData
     eKE    eKeyKind(void);
     void   vKeyKind(eKE eKeyKind);
     Stz*   szTableNm(void);
+    void   vTableNm(Stz* szTableNm);
     eEC    eParse(Table* pTable, Stz* szCmd);
     bool   bIsPrimaryKey(void);
     void   vIsPrimaryKey(bool bUnique);

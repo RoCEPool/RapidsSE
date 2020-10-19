@@ -70,7 +70,10 @@
   stage stageB on all nodes :
     createIndex $indexNm | stageC
 
-  stage stageC on origin :
+  stage stageC on all partitions :
+    populateIndex $indexNm | stageD
+
+  stage stageD on origin :
     sink | stageA
 
   end ;
