@@ -47,7 +47,6 @@ namespace Library
     i8   iAsI8(void);
     void vAsI8(i8 iAsI8);
     i8   iByteMagn(void);
-    bool bIsNull(void);
     void vSetUnknown(void);
     void vSetNull(void);
 
@@ -55,6 +54,17 @@ namespace Library
     void operator =(Stz* szVch) { m_szVch = szVch; }
   
     operator i8(void) { return m_iWrd; } // auto conversion to i8
+  
+    /*------------------------------------------------------------------------*/
+    /* test if null                                                           */
+    /*------------------------------------------------------------------------*/
+    inline bool bIsNull(void)
+    {
+      if (C_DATUM_NULL == m_iWrd)
+        return true;
+      else
+        return false;
+    }
 
   };
 }

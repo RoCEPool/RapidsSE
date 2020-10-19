@@ -9,7 +9,7 @@
 #define MOD(a,b) (b ? (a % b) : 0)    EndDefine // checked modulo
 #define NIL(a,b) (a ? a : b)          EndDefine // null replacement
 
-namespace Locking
+namespace Library
 { 
   class IntLib
   {
