@@ -46,10 +46,13 @@
   stage stageB on all nodes :
     createIndex $indexNm | stageC
 
-  stage stageC on all partitions :
-    populateIndex $indexNm | stageD
+  stage stageC on origin :
+     eatSome | stageD
 
-  stage stageD on origin :
+  stage stageD on all partitions :
+    populateIndex $indexNm | stageE
+
+  stage stageE on origin :
     sink | stageA
 
   end ;
@@ -70,10 +73,13 @@
   stage stageB on all nodes :
     createIndex $indexNm | stageC
 
-  stage stageC on all partitions :
-    populateIndex $indexNm | stageD
+  stage stageC on origin :
+    eatSome | stageD
 
-  stage stageD on origin :
+  stage stageD on all partitions :
+    populateIndex $indexNm | stageE
+
+  stage stageE on origin :
     sink | stageA
 
   end ;
