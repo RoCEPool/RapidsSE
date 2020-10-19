@@ -355,8 +355,13 @@ function doClusterInstall() {
       # TODO: Validate config/environment
       # TODO: Write config file?
 
+      # Write config file to the current working directory, as the user may have
+      # specified a config file in an installation dir that is about to get overwritten.
+      local outputConfig="${DEFAULT_CONFIG_PATH}"
+      writeClusterConfig "${outputConfig}"
+
       # Install all nodes
-      distributeSoftware "${CONFIG_FILE}"
+      distributeSoftware "${outputConfig}"
 
     else
       # Interactive install but no config file given. 
@@ -373,7 +378,8 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
       # TODO: Validate config/environment
-      # Write config file?
+
+      # Write config file to the directory with the installer
       local outputConfig="${USER_PWD}/${DEFAULT_CONFIG_PATH}"
       writeClusterConfig "${outputConfig}"
 
