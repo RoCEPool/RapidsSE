@@ -57,7 +57,6 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
 
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"
-#include "ColDecoder.hpp"
 #include "RowInflator.hpp"
 
 #include "Lrw.hpp"
