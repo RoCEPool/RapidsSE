@@ -239,62 +239,6 @@ u1 HeadLine::uGetEncMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the encoding (metacode and offset) of a column datum                   */
-/*----------------------------------------------------------------------------*/
-eMC HeadLine::eGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
-                           StreamDef* pStreamDef)
-{
-  _nonProper_
-  
-  i8 i_ForCol = pForCol->iColumnNo();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move cursor forward to column required
-  
-  if (C_UNKNOWN == i_OfsCrs_ || i_ForCol < i_ColCrs_) {
-    
-    i_ColCrs_ = 0;
-    i_OfsCrs_ = RowCoder::iBaseOffsetData(pStreamDef);
-  }
-  
-  for (i8 i_Col = i_ColCrs_; i_Col < i_ForCol; i_Col++) {
-    
-    eMC eEncoding = eMetaCode(i_Col);
-    
-    if (MC_OVERFLOW_2T == eEncoding) {
-      i_OfsCrs_ = nBytes() + C_U_1B;
-      eEncoding = (eMC)wGetLogical(i_OfsCrs_++,C_1B);
-      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
-    }
-    else {
-      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
-    }
-    
-    if (MC_STR_FIT_1L == eEncoding) {
-      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_1B);
-    }
-    else
-    if (MC_STR_FIT_2L == eEncoding) {
-      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_2B);
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the encoding for the column
-  
-  eMC eEncoding = eMetaCode(i_ForCol);
-  if (MC_OVERFLOW_2T == eEncoding) {
-    i_OfsCrs_ = nBytes() + C_U_1B + C_M_1B;
-    OverLine* aOverLine = aGetOver();
-    eEncoding = (eMC)aOverLine->w8_1B(1);
-  }
-  
-  i_ColCrs_ = i_ForCol;
-  
-  return eEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get overflow line using relative index [OT]                                */
 /*----------------------------------------------------------------------------*/
 OverLine* HeadLine::aGetOver(void)
@@ -373,20 +317,6 @@ void HeadLine::vMetaClue(i8 i_Col, u1 uMetaClue)
   i8 i_Offset = i_BaseOffsetMeta + i_Col;
   
   v1B(i_Offset,uMetaClue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* store meta code                                                            */
-/*----------------------------------------------------------------------------*/
-void HeadLine::vMetaCode(i8 i_Col, eMC eMetaCode)
-{
-  _nonProper_
-  
-  i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
-  
-  i8 i_Offset = i_BaseOffsetMeta + i_Col;
-  
-  v1B(i_Offset,eMetaCode);
 }
 
 /*----------------------------------------------------------------------------*/
