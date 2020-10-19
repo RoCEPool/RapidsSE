@@ -233,22 +233,18 @@ namespace CompactBuffers
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
     
-    // null case
-    if (bEncodeNul(xColEnc,wColVal))
-      return;
-    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   
+    // general case -- encode as: MC_INT_1..8B + {D}
     xColEnc.m_wDataCode.m_iWrd = wColVal.m_iWrd;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    // -1 case -- encode as: MC_INT_M_ONE + {}
-    if (-1 == wColVal.m_iWrd) {
-      xColEnc.m_nDataSize = C_0B;
-      
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_NEGATIVE,1);
+  
+    if (wColVal.m_iWrd > 10) {
+      xColEnc.m_nDataSize = (u8)IntLib::iByteMagnitude(wColVal.m_iWrd);
+   
+      xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,xColEnc.m_nDataSize);
       return;
     }
-    
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // 0..10 case -- encode as MC_INT_ONE..TEN + {}
@@ -264,13 +260,26 @@ namespace CompactBuffers
       return;
     }
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // null case
+    if (bEncodeNul(xColEnc,wColVal))
+      return;
+        
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    // general case -- encode as: MC_INT_1..8B + {D}
-    i8 nD = wColVal.iByteMagn();
-    xColEnc.m_nDataSize = nD;
-    
-    xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
+    // -1 case -- encode as: MC_INT_M_ONE + {}
+    if (-1 == wColVal.m_iWrd) {
+      xColEnc.m_nDataSize = C_0B;
+      
+      xColEnc.m_uMetaCode = METACODE_FORM(MC_NEGATIVE,1);
+      return;
+    }
+  
+    xColEnc.m_nDataSize = IntLib::iByteMagnitude(wColVal.m_iWrd);
+
+    xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,xColEnc.m_nDataSize);
+
   }
 
   /*----------------------------------------------------------------------------*/
