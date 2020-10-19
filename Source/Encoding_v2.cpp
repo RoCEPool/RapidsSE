@@ -746,7 +746,6 @@ void Encoding_v2::vOffsetTill(_ColEnc& xrColEnc)
   xrColEnc.m_i_Offset = m_i_Offset_next;
   
   // get the base size of the encoding
-  i8 nDataBytes_code = nDataSizeOfCode(xrColEnc.m_eMetaCode);
   i8 nDataBytes = nDataSizeOfClue(xrColEnc.m_uMetaClue);
   
   // if 0B case then till is same as offset
@@ -754,11 +753,7 @@ void Encoding_v2::vOffsetTill(_ColEnc& xrColEnc)
     xrColEnc.m_i_Till = m_i_Offset_next;
     return;
   }
-  
-  // adjust size if encoding has auxilliary length <L>
-  if ( bHasAuxLen(xrColEnc.m_eMetaCode) )
-    nDataBytes_code += xrColEnc.m_nDataSize - iAuxLen(xrColEnc.m_eMetaCode);
-  
+    
   i8 iHigh;
   i8 iLow;
   
@@ -766,15 +761,9 @@ void Encoding_v2::vOffsetTill(_ColEnc& xrColEnc)
 
   if (MN_STRING_TAIL == (eMN)iHigh) {
     i8 nStrLen = StrLib::nLength(xrColEnc.m_wDataCode.m_szVch->azChar());
-    vDebugPoint();
     nDataBytes += nStrLen + 1;
   }
   
-  if (nDataBytes != nDataBytes_code) {
-    vDebugPoint();
-    nDataSizeOfClue(xrColEnc.m_uMetaClue);
-  }
-
   // set where the next offset will be
   m_i_Offset_next += nDataBytes;
   
