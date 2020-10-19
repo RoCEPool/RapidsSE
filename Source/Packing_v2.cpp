@@ -15,7 +15,7 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
   
   _ColEnc* aColEnc;
   i8 nHeadSize;
-  u1 uMetaClue;
+  u1 uMetaCode;
   u1 uHigh;
   u1 uLow;
   i8 nStrBytes;
@@ -70,11 +70,11 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     // +================================+
         
     // set <M> for this column
-    //aHeadLine->vMetaClue(i_Col,aColEnc->m_uMetaClue);
+    //aHeadLine->vMetaCode(i_Col,aColEnc->m_uMetaCode);
     
     i_Offset = i_BaseOffsetMeta + i_Col;
     aByte = ((byte*)aHeadLine) + i_Offset;
-    *aByte = aColEnc->m_uMetaClue;
+    *aByte = aColEnc->m_uMetaCode;
 
     
     goto L_DataPack;
@@ -113,11 +113,11 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     
     
     // set <MC_OVERFLOW_2T> for this column
-    uMetaClue = METACLUE_FORM(MC_OVERFLOW,2);
-//    aHeadLine->vMetaClue(i_Col,uMetaClue);
+    uMetaCode = METACODE_FORM(MC_OVERFLOW,2);
+//    aHeadLine->vMetaCode(i_Col,uMetaCode);
     i_Offset = i_BaseOffsetMeta + i_Col;
     aByte = ((byte*)aHeadLine) + i_Offset;
-    *aByte = uMetaClue;
+    *aByte = uMetaCode;
 
 
     aOverLine = aHeadLine->aGetOver();
@@ -132,7 +132,7 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     
     // put <M> into over line
     aByte = ((byte*)aOverLine) + C_U_1B;
-    *aByte = aColEnc->m_uMetaClue;
+    *aByte = aColEnc->m_uMetaCode;
 
     goto L_DataPack;
     
@@ -179,7 +179,7 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
   L_PackVch:
     // vch packing
     
-    METACLUE_SPLIT(aColEnc->m_uMetaClue,uHigh,uLow);
+    METACODE_SPLIT(aColEnc->m_uMetaCode,uHigh,uLow);
     
     if (MC_STRING_TAIL != uHigh)
       goto L_PackVch_Head;

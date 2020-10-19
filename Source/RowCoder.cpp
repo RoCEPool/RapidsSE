@@ -62,12 +62,12 @@ i8 RowCoder::nControlSize(void)
 /*----------------------------------------------------------------------------*/
 /* how many bytes does given encoding occupy in the data portion of a head?   */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nDataSizeOfClue(u1 uMetaClue)
+i8 RowCoder::nDataSizeOfCode(u1 uMetaCode)
 {
   i8 iHigh;
   i8 iLow;
   
-  METACLUE_SPLIT(uMetaClue, iHigh, iLow);
+  METACODE_SPLIT(uMetaCode, iHigh, iLow);
   
   switch ((eMC)iHigh) {
       

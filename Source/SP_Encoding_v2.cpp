@@ -72,7 +72,7 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
     u1 uHigh;
     u1 uLow;
     
-    METACLUE_SPLIT(aColEnc->m_uMetaClue,uHigh,uLow);
+    METACODE_SPLIT(aColEnc->m_uMetaCode,uHigh,uLow);
     
     StrLib::vAppendString(&szCrs,(char*)" "_Stz);
     StrLib::vAppendPad(&szCrs,caLine,2);
@@ -90,9 +90,9 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
     StrLib::vAppendString(&szCrs,(char*)szDatum);
     
     StrLib::vAppendPad(&szCrs,caLine,30);
-    if (aColEnc->m_uMetaClue < 16)
+    if (aColEnc->m_uMetaCode < 16)
       StrLib::vAppendChar(&szCrs,'0');
-    StrLib::vAppendHex(&szCrs,aColEnc->m_uMetaClue);
+    StrLib::vAppendHex(&szCrs,aColEnc->m_uMetaCode);
     StrLib::vAppendChar(&szCrs,':');
     StrLib::vAppendString(&szCrs,(char*)aMC[uHigh]);
     StrLib::vAppendChar(&szCrs,'.');

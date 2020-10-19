@@ -25,7 +25,7 @@ namespace CompactBuffers
   private:
     
   
-    // v2 meta clue
+    // v2 meta code
   
     static void vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
                                StreamDef* pStreamDef,
@@ -65,8 +65,8 @@ namespace CompactBuffers
     else
     if (uHigh == MC_OVERFLOW) { // overflow
       OverLine* aOverLine = aHeadLine->aGetOver();
-      u1 uMetaClue = *((u1*)aOverLine + C_U_1B);
-      METACLUE_SPLIT(uMetaClue,uHigh,uLow);
+      u1 uMetaCode = *((u1*)aOverLine + C_U_1B);
+      METACODE_SPLIT(uMetaCode,uHigh,uLow);
       rayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
       goto L_Overflowed;
     }
@@ -325,7 +325,7 @@ namespace CompactBuffers
         
       case MC_OVERFLOW: // overflow 2B
         aOverLine = aHeadLine->aGetOver();
-        METACLUE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
+        METACODE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
         rayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
         goto L_HighSwitch;
         break;
@@ -519,12 +519,12 @@ namespace CompactBuffers
   /*----------------------------------------------------------------------------*/
   /* prepare                                                                    */
   /*----------------------------------------------------------------------------*/
-  static inline void vPrepare_v2(u1*& rauMetaClue, byte*& rayDataByte,
+  static inline void vPrepare_v2(u1*& rauMetaCode, byte*& rayDataByte,
                                 i8 nCols, HeadLine* aHeadLine)
   {
     _static_
     
-    rauMetaClue = aHeadLine->auMetaArea();
+    rauMetaCode = aHeadLine->auMetaArea();
     
     i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
                           + C_T_8B // (ControlDate) 8 bytes for the perspective
@@ -550,7 +550,7 @@ namespace CompactBuffers
     
   i8 nCols = pStreamDef->nTotalColumns();
   
-  u1* auMetaClue = aHeadLine->auMetaArea();
+  u1* auMetaCode = aHeadLine->auMetaArea();
   
   i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
                         + C_T_8B // (ControlDate) 8 bytes for the perspective
@@ -572,7 +572,7 @@ namespace CompactBuffers
   i8 nStrSize;
   
   i8* aiCellValue;
-  u1 uMetaClue;
+  u1 uMetaCode;
   u1 uHigh;
   u1 uLow;
   
@@ -599,9 +599,9 @@ namespace CompactBuffers
   
   for (i8 i_Col = 0; /*none*/; i_Col++) {
     
-    uMetaClue = *auMetaClue++;
-    uHigh = uMetaClue >> 4;
-    uLow  = uMetaClue & 0x0F;
+    uMetaCode = *auMetaCode++;
+    uHigh = uMetaCode >> 4;
+    uLow  = uMetaCode & 0x0F;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ignore column
@@ -641,8 +641,8 @@ namespace CompactBuffers
         
         aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
         
-        uMetaClue = *((u1*)aOverLine + C_U_1B);
-        METACLUE_SPLIT(uMetaClue,uHigh,uLow);
+        uMetaCode = *((u1*)aOverLine + C_U_1B);
+        METACODE_SPLIT(uMetaCode,uHigh,uLow);
         ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
         goto L_Overflowed;
       }
@@ -869,7 +869,7 @@ namespace CompactBuffers
         
         aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
         
-        METACLUE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
+        METACODE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
         ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
         goto L_HighSwitch;
         

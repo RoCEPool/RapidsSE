@@ -128,9 +128,9 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   i8 i_OfsCrs_ = C_UNKNOWN;
 
   
-  u1 uLastEncoding = uGetEncMetaClue(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  u1 uLastEncoding = uGetEncMetaCode(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
-  nDataBytes = RowCoder::nDataSizeOfClue(uLastEncoding);
+  nDataBytes = RowCoder::nDataSizeOfCode(uLastEncoding);
   
   i8 nFreeBytes = nBytes() - i_OfsCrs_ - nDataBytes;
   
@@ -170,9 +170,9 @@ w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the encoding (metaclue and offset) of a column datum                   */
+/* get the encoding (metacode and offset) of a column datum                   */
 /*----------------------------------------------------------------------------*/
-u1 HeadLine::uGetEncMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
+u1 HeadLine::uGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
                            StreamDef* pStreamDef)
 {
   _nonProper_
@@ -190,18 +190,18 @@ u1 HeadLine::uGetEncMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
   
   for (i8 i_Col = i_ColCrs_; i_Col < i_ForCol; i_Col++) {
     
-    u1 uEncoding = uMetaClue(i_Col);
+    u1 uEncoding = uMetaCode(i_Col);
     
-    u1 uHigh = METACLUE_HIGH(uEncoding);
-    u1 uLow  = METACLUE_LOW(uEncoding);
+    u1 uHigh = METACODE_HIGH(uEncoding);
+    u1 uLow  = METACODE_LOW(uEncoding);
 
     if (MC_OVERFLOW == uHigh) {
       i_OfsCrs_ = nBytes() + C_U_1B;
       uEncoding = (u1)wGetLogical(i_OfsCrs_++,C_1B);
-      i_OfsCrs_ += RowCoder::nDataSizeOfClue(uEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(uEncoding);
     }
     else {
-      i_OfsCrs_ += RowCoder::nDataSizeOfClue(uEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(uEncoding);
     }
     
     if (MC_STRING_x1 == uHigh) {
@@ -224,9 +224,9 @@ u1 HeadLine::uGetEncMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the encoding for the column
   
-  u1 uEncoding = uMetaClue(i_ForCol);
-  u1 uHigh = METACLUE_HIGH(uEncoding);
-  u1 uLow  = METACLUE_LOW(uEncoding);
+  u1 uEncoding = uMetaCode(i_ForCol);
+  u1 uHigh = METACODE_HIGH(uEncoding);
+  u1 uLow  = METACODE_LOW(uEncoding);
   if (MC_OVERFLOW == uHigh) {
     i_OfsCrs_ = nBytes() + C_U_1B + C_M_1B;
     OverLine* aOverLine = aGetOver();
@@ -306,9 +306,9 @@ void HeadLine::vHasOverflow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* store meta clue                                                            */
+/* store meta code                                                            */
 /*----------------------------------------------------------------------------*/
-void HeadLine::vMetaClue(i8 i_Col, u1 uMetaClue)
+void HeadLine::vMetaCode(i8 i_Col, u1 uMetaCode)
 {
   _nonProper_
   
@@ -316,7 +316,7 @@ void HeadLine::vMetaClue(i8 i_Col, u1 uMetaClue)
   
   i8 i_Offset = i_BaseOffsetMeta + i_Col;
   
-  v1B(i_Offset,uMetaClue);
+  v1B(i_Offset,uMetaCode);
 }
 
 /*----------------------------------------------------------------------------*/

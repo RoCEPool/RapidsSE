@@ -1220,13 +1220,13 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
 
   // --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - ---
 
-  u1* auMetaClue;
+  u1* auMetaCode;
   byte* ayDataByte;
   
   i8 nCols = pStreamDef->nTotalColumns();
   
-  //vPrepare_v2(auMetaClue,ayDataByte,nCols,aHeadLine);
-  auMetaClue = aHeadLine->auMetaArea();
+  //vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
+  auMetaCode = aHeadLine->auMetaArea();
   
   i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
   + C_T_8B // (ControlDate) 8 bytes for the perspective
@@ -1276,7 +1276,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
   i8 nStrSize;
   
   i8* aiCellValue;
-  u1 uMetaClue;
+  u1 uMetaCode;
   u1 uHigh;
   u1 uLow;
   
@@ -1293,9 +1293,9 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
   
   for (i8 i_Col = 0; /*none*/; i_Col++) {
     
-    uMetaClue = *auMetaClue++;
-    uHigh = uMetaClue >> 4;
-    uLow  = uMetaClue & 0x0F;
+    uMetaCode = *auMetaCode++;
+    uHigh = uMetaCode >> 4;
+    uLow  = uMetaCode & 0x0F;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ignore column
@@ -1336,8 +1336,8 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
                     aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
                     //OverLine* aOverLine = (OverLine*)aGetTail_rel(aHeadLine,i_Over_rel);
                     
-                    uMetaClue = *((u1*)aOverLine + C_U_1B);
-                    METACLUE_SPLIT(uMetaClue,uHigh,uLow);
+                    uMetaCode = *((u1*)aOverLine + C_U_1B);
+                    METACODE_SPLIT(uMetaCode,uHigh,uLow);
                     ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
                     goto L_Overflowed;
                   }
@@ -1640,7 +1640,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         
         aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
         
-        METACLUE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
+        METACODE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
         ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
         goto L_HighSwitch;
         
