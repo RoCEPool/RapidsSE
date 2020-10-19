@@ -547,7 +547,7 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // attempt to find tail for non-null vch column of minimum length
     
-    TailStr xFindTail(azStr);
+    //TailStr xFindTail(azStr);
     
 #ifdef WITH_ENCODING_TRACE
     vDumpTails();
@@ -555,7 +555,7 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
     
     
     i8 i_Tail;
-    TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
+    TailLine* aTailLine = m_pCrwNub->aFindTail(azStr, i_Tail);
     if (! aTailLine)
       continue;
     
@@ -609,7 +609,7 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // attempt to find tail for non-null vch column of minimum length
     
-    TailStr xFindTail(szStr);
+    //TailStr xFindTail(szStr);
     
 #ifdef WITH_ENCODING_TRACE
     m_pCrwNub->vDumpTails();
@@ -618,7 +618,7 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     i8 i_Tail;
     //m_pCrwNub->vDumpStrings();
     //vTrace("Looking for: %s\n"_Stz,szStr->azChar());
-    TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
+    TailLine* aTailLine = m_pCrwNub->aFindTail(szStr, i_Tail);
     //TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) szStr, i_Tail);
     if (! aTailLine) {
       //vTrace("Tail not found: %s\n"_Stz,szStr->azChar());
@@ -681,14 +681,14 @@ void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // attempt to find tail for non-null vch column of minimum length
     
-    TailStr xFindTail(aColVal->m_szVch);
+    //TailStr xFindTail(aColVal->m_szVch);
     
 #ifdef WITH_ENCODING_TRACE
     vDumpTails();
 #endif
     
     i8 i_Tail;
-    TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
+    TailLine* aTailLine = m_pCrwNub->aFindTail(aColVal->m_szVch, i_Tail);
     if (! aTailLine)
       continue;
     
