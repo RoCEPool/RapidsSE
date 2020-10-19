@@ -357,72 +357,72 @@ IndexDef* Table::pIndexDef(Table* pTable, i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* insdel row buffer into the table indexes                                   */
 /*----------------------------------------------------------------------------*/
-void Table::vInsdelBuffer(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
-{ //# indexTuning
-  
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // This function is invoked when we insert rows into a table via a
-  // begin/insert/end and via the API's insert-select
-  
-  ASSERT(iSlot < AM::nSlotsPerNode());
-  
-  // if buffer has 0 entries (only head) then should be last buffer
-  if (pCrwBuffer->nRowCount() == 0) {
-    delete pCrwBuffer;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark crwBuffer as permanent before its appended to the table
-  
-  pCrwBuffer->vIsPermanent(true);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append the buffer entries into the table
-  
-  TablePtn* pPartition = this->pPartition(iSlot);
-  
-  t8 tPerspectibe = AM::tThisTLSPespective();
-  
-  pPartition->vInsdelBuffer(pCrwBuffer,tPerspectibe);
-}
+//void Table::vInsdelBuffer(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
+//{ //# indexTuning
+//
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // This function is invoked when we insert rows into a table via a
+//  // begin/insert/end and via the API's insert-select
+//
+//  ASSERT(iSlot < AM::nSlotsPerNode());
+//
+//  // if buffer has 0 entries (only head) then should be last buffer
+//  if (pCrwBuffer->nRowCount() == 0) {
+//    delete pCrwBuffer;
+//    return;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // mark crwBuffer as permanent before its appended to the table
+//
+//  pCrwBuffer->vIsPermanent(true);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // append the buffer entries into the table
+//
+//  TablePtn* pPartition = this->pPartition(iSlot);
+//
+//  t8 tPerspectibe = AM::tThisTLSPespective();
+//
+//  pPartition->vInsdelBuffer(pCrwBuffer,tPerspectibe);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* insdel row buffer into the table indexes                                   */
 /*----------------------------------------------------------------------------*/
-void Table::vInsdelBuffer(i8 iTxId, i8 iSlot, RsbBuffer* pRsbBuffer)
-{ //# indexTuning
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // This function is invoked when we insert rows into a table via a
-  // begin/insert/end and via the API's insert-select
-
-  ASSERT(iSlot < AM::nSlotsPerNode());
-
-  // if buffer has 0 entries (only head) then should be last buffer
-  if (pRsbBuffer->nRsb() == 0) {
-    delete pRsbBuffer;
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark crwBuffer as permanent before its appended to the table
-
-  pRsbBuffer->vIsPermanent(true);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append the buffer entries into the table
-
-  TablePtn* pPartition = this->pPartition(iSlot);
-
-  t8 tPerspective = 0; //AM::tThisTLSPespective();
-
-  pPartition->vInsdelBuffer(pRsbBuffer,tPerspective);
-}
+//void Table::vInsdelBuffer(i8 iTxId, i8 iSlot, RsbBuffer* pRsbBuffer)
+//{ //# indexTuning
+//
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // This function is invoked when we insert rows into a table via a
+//  // begin/insert/end and via the API's insert-select
+//
+//  ASSERT(iSlot < AM::nSlotsPerNode());
+//
+//  // if buffer has 0 entries (only head) then should be last buffer
+//  if (pRsbBuffer->nRsb() == 0) {
+//    delete pRsbBuffer;
+//    return;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // mark crwBuffer as permanent before its appended to the table
+//
+//  pRsbBuffer->vIsPermanent(true);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // append the buffer entries into the table
+//
+//  TablePtn* pPartition = this->pPartition(iSlot);
+//
+//  t8 tPerspective = 0; //AM::tThisTLSPespective();
+//
+//  pPartition->vInsdelBuffer(pRsbBuffer,tPerspective);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get if table is a definition only                                          */
@@ -715,37 +715,37 @@ i8 Table::iToPartition(i8 iRowHash)
 /*----------------------------------------------------------------------------*/
 /* upsert row buffer into the table indexes                                   */
 /*----------------------------------------------------------------------------*/
-void Table::vUpsertBuffer(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
-{ //# indexTuning
-  
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // This function is invoked when we insert rows into a table via a
-  // begin/insert/end and via the API's insert-select
-  
-  ASSERT(iSlot < AM::nSlotsPerNode());
-  
-  // if buffer has 0 entries (only head) then should be last buffer
-  if (pCrwBuffer->nRowCount() == 0) {
-    delete pCrwBuffer;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark crwBuffer as permanent before its appended to the table
-  
-  pCrwBuffer->vIsPermanent(true);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append the buffer entries into the table
-  
-  TablePtn* pPartition = this->pPartition(iSlot);
-  
-  t8 tPerspectibe = AM::tThisTLSPespective();
-  
-  pPartition->vUpsertBuffer(pCrwBuffer,tPerspectibe);
-}
+//void Table::vUpsertBuffer(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
+//{ //# indexTuning
+//
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // This function is invoked when we insert rows into a table via a
+//  // begin/insert/end and via the API's insert-select
+//
+//  ASSERT(iSlot < AM::nSlotsPerNode());
+//
+//  // if buffer has 0 entries (only head) then should be last buffer
+//  if (pCrwBuffer->nRowCount() == 0) {
+//    delete pCrwBuffer;
+//    return;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // mark crwBuffer as permanent before its appended to the table
+//
+//  pCrwBuffer->vIsPermanent(true);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // append the buffer entries into the table
+//
+//  TablePtn* pPartition = this->pPartition(iSlot);
+//
+//  t8 tPerspectibe = AM::tThisTLSPespective();
+//
+//  pPartition->vUpsertBuffer(pCrwBuffer,tPerspectibe);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* verify all indexes                                                         */

@@ -5,23 +5,6 @@
 
 namespace CompactBuffers
 {
-  // how a column is to be compacted
-  struct _ColEnc {
-    
-    Column* m_pCol;    // column
-    
-    eMC  m_eMetaCode;  // meta code describing the column value
-    u1   m_uMetaClue;  // meta code v2 describing the column value
-    Dtm  m_wDataCode;  // column value data bytes
-    i8   m_nDataSize;  // complete number of data code bytes, incl <L> etc
-    i8   m_i_Offset;   // first byte offset in head+over where the data code is
-    i8   m_i_Till;     // last byte offset in head+over where the data code is
-    bool m_bSplit;     // overflow occurs at this point
-    
-    i8   m_i_Tail;     // absolute index of tail
-    
-    TailLine *m_aTailLine;  // the tail line
-  };
   
   //----------------------------------------------------------------------------
   

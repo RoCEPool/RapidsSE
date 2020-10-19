@@ -69,9 +69,9 @@ namespace MetaData
     void    vTidyUpIndex(i8 iIndexNo);
     i8      iToPartition(i8 iRowHash);
     
-    void vInsdelBuffer(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
-    void vInsdelBuffer(i8 iTxId, i8 iPartition, RsbBuffer* pRsbBuffer);
-    void vUpsertBuffer(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
+    //void vInsdelBuffer(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
+    //void vInsdelBuffer(i8 iTxId, i8 iPartition, RsbBuffer* pRsbBuffer);
+    //void vUpsertBuffer(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
     bool bVerifyTable(void);
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);

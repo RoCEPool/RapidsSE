@@ -48,8 +48,8 @@ namespace Partitioning
     bool bGrabWrite(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
-    void vInsdelBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);
-    void vInsdelBuffer(RsbBuffer* pCrwBuffer, t8 tPerspective);
+    //void vInsdelBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);
+    //void vInsdelBuffer(RsbBuffer* pCrwBuffer, t8 tPerspective);
     void vInsertIndexEntries(Crw* aCrw, Rrf& xRowRef);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
     bool bIsLocked(void);
@@ -68,13 +68,13 @@ namespace Partitioning
     Table* pTable(void);
     void vTruncate(void);
     void vTruncateIndex(Index* pIndex);
-    void vUpsertBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);
-    void vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
-                           Encoding_v1* pEncoding_upsert, t8 tPerspective);
-    void vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
-                           Encoding_v1* pEncoding_upsert, t8 tPerspective);
-    void vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_Found,
-                           Encoding_v1* pEncoding_upsert, t8 tPerspective);
+//    void vUpsertBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);
+//    void vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
+//                           Encoding_v1* pEncoding_upsert, t8 tPerspective);
+//    void vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
+//                           Encoding_v1* pEncoding_upsert, t8 tPerspective);
+//    void vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_Found,
+//                           Encoding_v1* pEncoding_upsert, t8 tPerspective);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
     
