@@ -1104,6 +1104,8 @@ void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
+  RASSERT(0);
+  
   StreamDef* pStreamDef = m_pTable->pStreamDef();
   
   HV_Row hvRow_nosuch(pStreamDef,C_ALL);
@@ -1115,7 +1117,9 @@ void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
   TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
   
   Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
-  Packing_v1::vPackCrw_v1(aCrw_insert,pEncoding_upsert);
+  
+  // ... incomplete
+  // Packing_v2::vPackCrw_v2(aCrw_insert,pEncoding_upsert);
   
   // set perspective
   aCrw_insert->vPerspective(tPerspective);
@@ -1135,7 +1139,9 @@ void TablePtn::vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  //StreamDef* pStreamDef = m_pTable->pStreamDef();
+  RASSERT(0);
+  
+//StreamDef* pStreamDef = m_pTable->pStreamDef();
   
   //HV_Row hvRow_nosuch(pStreamDef,C_ALL);
   //CrwBuffer::vToRow(hvRow_nosuch,aCrw_nosuch);
@@ -1146,7 +1152,8 @@ void TablePtn::vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
   //TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
   
   Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
-  Packing_v1::vPackCrw_v1(aCrw_insert,pEncoding_upsert);
+  // ... incomplete
+  // Packing_v2::vPackCrw_v2(aCrw_insert,pEncoding_upsert);
   Rsb* aRsb = pRowSlab->aRsbAdr(i_Row);
   
   
@@ -1168,6 +1175,8 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
+  RASSERT(0);
+  
   StreamDef* pStreamDef = m_pTable->pStreamDef();
   
   HV_Row hvRow_exists(pStreamDef,C_ALL);
@@ -1183,7 +1192,8 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Packing_v1::vPackCrw_v1(aCrw_exists,pEncoding_upsert);
+  // ... incomplete
+  // Packing_v2::vPackCrw_v2(aCrw_exists,pEncoding_upsert);
   
   // set perspective
   aCrw_exists->vPerspective(tPerspective);
