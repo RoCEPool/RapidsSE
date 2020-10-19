@@ -48,25 +48,23 @@ w8 Line::wGet(i8 i_Byte, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put bytes into line                                                        */
-/*----------------------------------------------------------------------------*/
-void Line::vPut(i8 i_Byte, w8 wArg, i8 nBytes)
-{
-  switch (nBytes) {
-    case C_0B: return;
-    case C_1B: v1B(i_Byte,wArg); return;
-    case C_2B: v2B(i_Byte,wArg); return;
-    case C_3B: v3B(i_Byte,wArg); return;
-    case C_4B: v4B(i_Byte,wArg); return;
-    case C_5B: v5B(i_Byte,wArg); return;
-    case C_6B: v6B(i_Byte,wArg); return;
-    case C_7B: v7B(i_Byte,wArg); return;
-    case C_8B: v8B(i_Byte,wArg); return;
-      
-    default:
-      NEVER_REACH;
-  }
-}
+//void Line::vPut(i8 i_Byte, w8 wArg, i8 nBytes)
+//{
+//  switch (nBytes) {
+//    case C_0B: return;
+//    case C_1B: v1B(i_Byte,wArg); return;
+//    case C_2B: v2B(i_Byte,wArg); return;
+//    case C_3B: v3B(i_Byte,wArg); return;
+//    case C_4B: v4B(i_Byte,wArg); return;
+//    case C_5B: v5B(i_Byte,wArg); return;
+//    case C_6B: v6B(i_Byte,wArg); return;
+//    case C_7B: v7B(i_Byte,wArg); return;
+//    case C_8B: v8B(i_Byte,wArg); return;
+//
+//    default:
+//      NEVER_REACH;
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set nBytes bytes to yVal                                                   */

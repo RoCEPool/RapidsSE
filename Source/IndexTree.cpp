@@ -432,8 +432,14 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 
   //pEntBuffer->vShow();
 
+  StreamDef* pStreamDef = pCrwBuffer->pStreamDef();
+  i8* aiaColSet = m_pIndexDef->aiaColSet();
+
   EntWrk xEntWrk;
 
+  i8* aiDstk;
+  HeadLine* aHeadLine;
+  
   Rrf xRowRef;
   xRowRef.vBuffer(pCrwBuffer->iBufferNo());
 
@@ -449,10 +455,22 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
     xEntWrk.vReset();
     
     xRowRef.vItem(i_Row);
-    
-    vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
     xEntWrk.vRef(xRowRef);
+    
+    //vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
+    if (KE_INT == m_pIndexDef->eKeyKind()) {
 
+      aiDstk = ((i8*)xEntWrk.aKey()) - 1;
+      aHeadLine = pCrwBuffer->aGetHead(i_Row);
+
+      RowInflator::vInflateSet(&aiDstk,aHeadLine,aiaColSet,SI_DEST_KEY,
+                               pStreamDef,m_pIndexDef);
+      xEntWrk.aEnt()->vKind(KE_INT);
+    }
+    else {
+      vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
+    }
+    
     Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
     ASSERT(aInsertedEntry);
   }

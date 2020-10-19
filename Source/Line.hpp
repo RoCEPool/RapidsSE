@@ -14,7 +14,6 @@ namespace Alignment
     ~Line(void) noexcept(false);
   
     w8   wGet(i8 i_Byte, i8 nBytes);
-    void vPut(i8 i_Byte, w8 wArg, i8 nBytes);
     void vSet(i8 i_Byte, byte yArg, i8 nBytes);
   
     w8 w8_2B(i8 i_Byte);
@@ -52,7 +51,31 @@ namespace Alignment
       
       return *au1B;
     }
-    
+  
+    /*------------------------------------------------------------------------*/
+    /* put bytes into line                                                    */
+    /*------------------------------------------------------------------------*/
+    inline void vPut(i8 i_Byte, w8 wArg, i8 nBytes)
+    {
+      byte* aSrc = (byte*)&wArg;
+      byte* aDst = ((byte*)this) + i_Byte;
+      
+      switch (nBytes) {
+        case C_8B: *aDst++ = *aSrc++;
+        case C_7B: *aDst++ = *aSrc++;
+        case C_6B: *aDst++ = *aSrc++;
+        case C_5B: *aDst++ = *aSrc++;
+        case C_4B: *aDst++ = *aSrc++;
+        case C_3B: *aDst++ = *aSrc++;
+        case C_2B: *aDst++ = *aSrc++;
+        case C_1B: *aDst   = *aSrc;
+        case C_0B: return;
+          
+        default:
+          NEVER_REACH;
+      }
+    }
+
   };
   
   /*--------------------------------------------------------------------------*/

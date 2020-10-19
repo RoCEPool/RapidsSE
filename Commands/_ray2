@@ -7,9 +7,11 @@ bc;
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create LineItem";
 
-_lineitem
+_lineitem_dates
 
 _lineitemIndex
+
+// ./time CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPINSTRUCT);
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Load LineItem";
@@ -17,7 +19,7 @@ print section "Load LineItem";
 //print "Sleeping ...";
 //sleep 5;
 
-// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv"    <max_errors> =  100;
+// /time fload lineitem "/Users/Shared/tpch/SF0/l ineitem_10.csv"    <max_errors> =  100;
 // /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv"   <max_errors> =  100;
 // /time /summary fload lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv" <note> = "10k" <max_errors> =  100;
 // /time /summary /diary fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <note> = "100k" <max_errors> =  100;
@@ -33,6 +35,8 @@ print section "Indexes LineItem";
 szidx lineitem lineitem_idx1;
 /time compact index lineitem lineitem_idx1;
 szidx lineitem lineitem_idx1;
+
+//dumpIdx lineitem lineitem_idx1;
 
 /*============================================================================*/
 /* end                                                                        */

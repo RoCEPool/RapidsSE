@@ -23,29 +23,10 @@ namespace CompactBuffers
     static void vInflateRow(RowSlab* pRsbSlab, HeadLine* aHeadLine);
 
   private:
-  
-    // v1 meta code
-    static void vInflateSet_v1(i8** aaiDstk, HeadLine* aHeadLine,
-                                StreamDef* pStreamDef, i8* iaColSet);
-    static void vInflateColumn_v1(RowSingle* pRow, HeadLine* aHeadLine,
-                                  i8 i_ColToRetrieve);
-    static void vInflateRow_v1(RowSingle* pRow, HeadLine* aHeadLine);
-    static void vInflateRow_v1(RowSlab* pRsbSlab, HeadLine* aHeadLine);
-  
+    
   
     // v2 meta clue
   
-//    static void vInflate_v2(byte*& rayDstByte,
-//                            byte*& rayDataByte, HeadLine* aHeadLine,
-//                            u1 uHigh, u1 uLow,
-//                            eSI eStrInflate, char*& racString);
-  
-    //static void vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte,
-    //                     HeadLine* aHeadLine);
-
-//    static void vPrepare_v2(u1*& rauMetaClue, byte*& rayDataByte,
-//                            i8 nCols, HeadLine* aHeadLine);
-
     static void vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
                                StreamDef* pStreamDef,
                                eSI eStrInflate, i8* iaColSet);
@@ -476,7 +457,7 @@ namespace CompactBuffers
         u_Tail_rel = *(u2*)rayDataByte;
         aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
         
-        nStrSize = aTailLine->w8_1B(+ C_U_1B);
+        nStrSize = (i8)aTailLine->w8_1B(+ C_U_1B);
         if (SI_AREA_ADR == eStrInflate) {
           
           memcpy(racStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
@@ -504,7 +485,7 @@ namespace CompactBuffers
       case MN_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)rayDstByte;
         
-        *rayDstByte++ = (i8)uLow; // 0
+        *rayDstByte++ = uLow; // 0
         *rayDstByte++ = 0; // 1
         *rayDstByte++ = 0; // 2
         *rayDstByte++ = 0; // 3
@@ -518,7 +499,7 @@ namespace CompactBuffers
         break;
         
       case MN_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
-        *rayDstByte++ = (i8)uLow; // 0
+        *rayDstByte++ = uLow; // 0
         *rayDstByte++ = 0; // 1
         *rayDstByte++ = 0; // 2
         *rayDstByte++ = 0; // 3
@@ -554,6 +535,565 @@ namespace CompactBuffers
 
 
 
+  
+  
+  /*----------------------------------------------------------------------------*/
+  /* inflate column set                                                         */
+  /*----------------------------------------------------------------------------*/
+  public:
+  static inline void vInflateSet(i8** aaiDstk, HeadLine*  aHeadLine,
+                                 i8* iaColSet, i8 ieStrInflate,
+                                 StreamDef* pStreamDef,
+                                 IndexDef* pIndexDef)
+  {
+    _static_
+    
+  i8 nCols = pStreamDef->nTotalColumns();
+  
+  u1* auMetaClue = aHeadLine->auMetaArea();
+  
+  i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
+                        + C_T_8B // (ControlDate) 8 bytes for the perspective
+                        + nCols; // metaSize
+  
+  byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
+  
+  char* acStrArea = nullptr;
+  
+  i8* aiDstk_lcl = *aaiDstk;
+  
+  byte* ayDstByte = (byte*)++aiDstk_lcl;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 nSizeUnits;
+  i8 nHeadBytes;
+  i8 i_Over_rel;
+  i8 nStrSize;
+  
+  i8* aiCellValue;
+  u1 uMetaClue;
+  u1 uHigh;
+  u1 uLow;
+  
+  u2 u_Tail_rel;
+  
+  char* azDst;
+  char** aacCellValue;
+  
+  Edt* aEdt;
+  Dte* aDte;
+  
+  OverLine* aOverLine;
+  TailLine* aTailLine;
+  
+  Column* pIdxColumn;
+  eDM     eDatum;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // for each column
+  
+  i8 i_ColSet = 0;
+  i8 i_ColToRetrieve = iaColSet[i_ColSet];
+  RASSERT(-1 != i_ColToRetrieve);
+  
+  for (i8 i_Col = 0; /*none*/; i_Col++) {
+    
+    uMetaClue = *auMetaClue++;
+    uHigh = uMetaClue >> 4;
+    uLow  = uMetaClue & 0x0F;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ignore column
+    
+    if (i_Col != i_ColToRetrieve) {
+      
+    L_Overflowed:
+      
+      if (uHigh <=  MN_STRING_x1) // numeric & date
+        ayDataByte += uLow;
+      else
+      if (uHigh >=  MN_NEGATIVE)  // small value
+      {;}
+      else
+      if (uHigh ==  MN_NULL)      // null value
+      {;}
+      else
+      if (uHigh == MN_STRING_x1)  // string x 1
+        ayDataByte += STRx1(uLow);
+      else
+      if (uHigh == MN_STRING_x2)  // string x 2
+        ayDataByte += STRx2(uLow);
+      else
+      if (uHigh == MN_STRING_x4)  // string x 4
+        ayDataByte += STRx4(uLow);
+      else
+      if (uHigh == MN_STRING_x8)  // string x 8
+        ayDataByte += STRx8(uLow);
+      else
+      if (uHigh == MN_OVERFLOW) { // overflow
+        
+        // calculation to get overflow
+        nSizeUnits = (i8)aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
+        if (nSizeUnits >= 128) nSizeUnits -= 128;
+        nHeadBytes = nSizeUnits * (i8)C_BYTES_PER_WORD;
+        i_Over_rel = (i8)aHeadLine->w8_2B(nHeadBytes - C_2B);
+        
+        aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+        
+        uMetaClue = *((u1*)aOverLine + C_U_1B);
+        METACLUE_SPLIT(uMetaClue,uHigh,uLow);
+        ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
+        goto L_Overflowed;
+      }
+      else {
+        vTrace("vInflateSet: Invalid uHigh=%lld\n"_Stz,(i8)uHigh);
+        RASSERT(0);
+      }
+      
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // inflate column
+    
+    // ////////////////////////////////////////////////////////////////////// //
+
+  L_HighSwitch:
+    
+    aiCellValue = (i8*)ayDstByte;
+    
+    switch (uHigh) {
+        
+      case MN_NUMERIC: // numeric values 0..8B
+        
+        switch (uLow) {
+            
+          case 0x0: // MN_NUMERIC 0B
+            *aiCellValue = 0;
+            ayDstByte += C_8B;
+            break;
+            
+          case 0x1: // MN_NUMERIC 1B
+            *aiCellValue = 0;
+            *ayDstByte++ = *ayDataByte++; // 0
+            ayDstByte += C_7B;
+            break;
+            
+          case 0x2: // MN_NUMERIC 2B
+            *aiCellValue = *(u2*)(ayDataByte);
+            ayDataByte += C_2B;
+            ayDstByte += C_8B;
+            break;
+            
+          case 0x3: // MN_NUMERIC 3B
+            *aiCellValue = 0;
+            *ayDstByte++ = *ayDataByte++; // 0
+            *ayDstByte++ = *ayDataByte++; // 1
+            *ayDstByte++ = *ayDataByte++; // 2
+            ayDstByte += C_5B;
+            break;
+            
+          case 0x4: // MN_NUMERIC 4B
+            *aiCellValue = *(u4*)(ayDataByte);
+            ayDataByte += C_4B;
+            ayDstByte += C_8B;
+            break;
+            
+          case 0x5: // MN_NUMERIC 5B
+            *aiCellValue = 0;
+            *ayDstByte++ = *ayDataByte++; // 0
+            *ayDstByte++ = *ayDataByte++; // 1
+            *ayDstByte++ = *ayDataByte++; // 2
+            *ayDstByte++ = *ayDataByte++; // 3
+            *ayDstByte++ = *ayDataByte++; // 4
+            ayDstByte += C_3B;
+            break;
+            
+          case 0x6: // MN_NUMERIC 6B
+            *aiCellValue = 0;
+            *ayDstByte++ = *ayDataByte++; // 0
+            *ayDstByte++ = *ayDataByte++; // 1
+            *ayDstByte++ = *ayDataByte++; // 2
+            *ayDstByte++ = *ayDataByte++; // 3
+            *ayDstByte++ = *ayDataByte++; // 4
+            *ayDstByte++ = *ayDataByte++; // 5
+            ayDstByte += C_2B;
+            break;
+            
+          case 0x7: // MN_NUMERIC 7B
+            //*aiCellValue = 0;
+            *ayDstByte++ = *ayDataByte++; // 0
+            *ayDstByte++ = *ayDataByte++; // 1
+            *ayDstByte++ = *ayDataByte++; // 2
+            *ayDstByte++ = *ayDataByte++; // 3
+            *ayDstByte++ = *ayDataByte++; // 4
+            *ayDstByte++ = *ayDataByte++; // 5
+            *ayDstByte++ = *ayDataByte++; // 6
+            *ayDstByte++ = 0; // 7
+            break;
+            
+          case 0x8: // MN_NUMERIC 8B
+            *aiCellValue = *(i8*)(ayDataByte);
+            ayDstByte += C_8B;
+            ayDataByte += C_8B;
+            break;
+            
+          case 0x9: // MN_NUMERIC 9B
+            RASSERT(0);
+            break;
+            
+          case 0xA: // MN_NUMERIC 10B
+            RASSERT(0);
+            break;
+            
+          case 0xB: // MN_NUMERIC 11B
+            RASSERT(0);
+            break;
+            
+          case 0xC: // MN_NUMERIC 12B
+            RASSERT(0);
+            break;
+            
+          case 0xD: // MN_NUMERIC 13B
+            RASSERT(0);
+            break;
+            
+          case 0xE: // MN_NUMERIC 14B
+            RASSERT(0);
+            break;
+            
+          case 0xF: // MN_NUMERIC 15B
+            RASSERT(0);
+            break;
+            
+        }
+        break;
+        
+      case MN_DATE_E0: // date era-0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        *aiCellValue = 0;
+        *ayDstByte++ = *ayDataByte++; // 0
+        *ayDstByte++ = *ayDataByte++; // 1
+        ayDstByte += 6;
+        
+        aEdt = (Edt*)aiCellValue;
+        aDte = (Dte*)aiCellValue;
+        
+        aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_0;
+        aDte->m_uMonth     = aEdt->m_uMonth;
+        aDte->m_uDay       = aEdt->m_uDay;
+        break;
+        
+      case MN_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        *aiCellValue = 0;
+        *ayDstByte++ = *ayDataByte++; // 0
+        *ayDstByte++ = *ayDataByte++; // 1
+        ayDstByte += 6;
+        
+        aEdt = (Edt*)aiCellValue;
+        aDte = (Dte*)aiCellValue;
+        
+        aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_1;
+        aDte->m_uMonth     = aEdt->m_uMonth;
+        aDte->m_uDay       = aEdt->m_uDay;
+        break;
+        
+      case MN_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        *aiCellValue = 0;
+        *ayDstByte++ = *ayDataByte++; // 0
+        *ayDstByte++ = *ayDataByte++; // 1
+        ayDstByte += 6;
+        
+        aEdt = (Edt*)aiCellValue;
+        aDte = (Dte*)aiCellValue;
+        
+        aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_2;
+        aDte->m_uMonth     = aEdt->m_uMonth;
+        aDte->m_uDay       = aEdt->m_uDay;
+        break;
+        
+      case MN_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
+        nStrSize = STRx1(uLow);
+        
+        if (SI_ADDRESS == (eSI)ieStrInflate) {
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = (char*)ayDataByte;
+          ayDstByte += 8;
+          
+          ayDataByte += nStrSize;
+        }
+        else
+          if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_DEST_PST == (eSI)ieStrInflate) {
+          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          ayDstByte += (((nStrSize) / 8) * 8) + 16;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize - 1;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
+        
+        break;
+        
+      case MN_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        *(i8*)ayDstByte = C_DATUM_NULL;
+        ayDstByte += C_BYTES_PER_WORD;
+        break;
+        
+      case MN_SPARE0: // spare
+        RASSERT(0);
+        break;
+        
+      case MN_OVERFLOW: // overflow 2B
+        
+        // calculation to get overflow
+        nSizeUnits = (i8)aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
+        if (nSizeUnits >= 128) nSizeUnits -= 128;
+        nHeadBytes = nSizeUnits * (i8)C_BYTES_PER_WORD;
+        i_Over_rel = (i8)aHeadLine->w8_2B(nHeadBytes - C_2B);
+        
+        aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+        
+        METACLUE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
+        ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
+        goto L_HighSwitch;
+        
+        break;
+        
+        
+        // end where uLow is n-bytes
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // toBytes(uLow) depends on uHigh
+        
+      case MN_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        nStrSize = STRx2(uLow);
+        
+        if (SI_ADDRESS == (eSI)ieStrInflate) {
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = (char*)ayDataByte;
+          ayDstByte += 8;
+          
+          ayDataByte += nStrSize;
+        }
+        else
+        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_DEST_PST == (eSI)ieStrInflate) {
+          azDst = (char*)ayDstByte;
+          memcpy(azDst,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          ayDstByte += (((nStrSize) / 8) * 8) + 8;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize - 1;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
+        
+        break;
+        
+      case MN_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        nStrSize = STRx4(uLow);
+        
+        if (SI_ADDRESS == (eSI)ieStrInflate) {
+          aacCellValue = (char**)ayDataByte;
+          *aacCellValue = (char*)ayDataByte;
+          ayDstByte += 8;
+          
+          ayDataByte += nStrSize;
+        }
+        else
+        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_DEST_PST == (eSI)ieStrInflate) {
+          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          ayDstByte += (((nStrSize) / 8) * 8) + 8;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize - 1;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
+        
+        break;
+        
+      case MN_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        nStrSize = STRx8(uLow);
+        
+        if (SI_ADDRESS == (eSI)ieStrInflate) {
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = (char*)ayDataByte;
+          ayDstByte += 8;
+          
+          ayDataByte += nStrSize;
+        }
+        else
+        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_DEST_PST == (eSI)ieStrInflate) {
+          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          ayDstByte += (((nStrSize) / 8) * 8) + 8;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize - 1;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
+        
+        break;
+        
+      case MN_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
+        u_Tail_rel = *(u2*)ayDataByte;
+        aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
+        
+        nStrSize = (i8)aTailLine->w8_1B(+ C_U_1B);
+        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          
+          memcpy(acStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          ayDataByte += 2;
+          acStrArea += nStrSize;
+        }
+        else {
+          RASSERT(0);
+        }
+        
+        break;
+        
+      case MN_BLOB_0: // blob type 0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        RASSERT(0);
+        break;
+        
+      case MN_BLOB_1: // blob type 1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        RASSERT(0);
+        break;
+        
+      case MN_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
+        aiCellValue = (i8*)ayDstByte;
+        
+        *ayDstByte++ = uLow; // 0
+        *ayDstByte++ = 0; // 1
+        *ayDstByte++ = 0; // 2
+        *ayDstByte++ = 0; // 3
+        *ayDstByte++ = 0; // 4
+        *ayDstByte++ = 0; // 5
+        *ayDstByte++ = 0; // 6
+        *ayDstByte++ = 0; // 7
+        
+        *aiCellValue = - *aiCellValue;
+        
+        break;
+        
+      case MN_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
+        *ayDstByte++ = uLow; // 0
+        *ayDstByte++ = 0; // 1
+        *ayDstByte++ = 0; // 2
+        *ayDstByte++ = 0; // 3
+        *ayDstByte++ = 0; // 4
+        *ayDstByte++ = 0; // 5
+        *ayDstByte++ = 0; // 6
+        *ayDstByte++ = 0; // 7
+        break;
+        
+      default:
+        NEVER_REACH;
+    }
+    // ////////////////////////////////////////////////////////////////////// //
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // handle inflate into key
+    
+    if (! pIndexDef)
+      goto L_NextColumn;
+    
+    pIdxColumn = pIndexDef->pGetColumn(i_ColSet);
+    eDatum = pIdxColumn->eDatum();
+    if (DM_VCH == eDatum) {
+      RASSERT(0);
+    }
+    else {
+      RASSERT(KE_INT == pIndexDef->eKeyKind());
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // move to next column to retrieve
+  L_NextColumn:
+    
+    i_ColToRetrieve = iaColSet[++i_ColSet];
+    if (-1 == i_ColToRetrieve)
+      break;
+  }
+  
+  // end for each column
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // update callers aiDstk
+  
+  aiDstk_lcl = (i8*)ayDstByte;
+  
+  *aaiDstk = --aiDstk_lcl;
+
+  }
+  
   };
 }
 

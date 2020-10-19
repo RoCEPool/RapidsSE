@@ -267,33 +267,33 @@ void Step::vRegOperandGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandInsdelIntoTable(void)
 {
-  ENTRY();
-  
-  ASSERT(*m_pLogicUnit->m_xpOperandA);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  i8 iPartition = pOp->iPartition();
-  i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
-
-  if (CN_CRWBUFFER == (*m_pLogicUnit->m_xpOperandA)->eClass()) {
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
-    // will delete this buffer
-    pCrwBuffer->vIsPermanent(false);
-    m_pLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
-  
-  }
-  else
-  if (CN_RSBBUFFER == (*m_pLogicUnit->m_xpOperandA)->eClass()) {
-    // will delete this buffer
-    RsbBuffer* pRsbBuffer = _pRsbBuffer(*m_pLogicUnit->m_xpOperandA);
-    pRsbBuffer->vIsPermanent(false);
-    m_pLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pRsbBuffer);
-  }
-  else {
-    NEVER_REACH;
-  }
-  
-  EXIT();
+//  ENTRY();
+//
+//  ASSERT(*m_pLogicUnit->m_xpOperandA);
+//
+//  Op* pOp = m_pTask->m_pJob->m_pOp;
+//  i8 iPartition = pOp->iPartition();
+//  i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
+//
+//  if (CN_CRWBUFFER == (*m_pLogicUnit->m_xpOperandA)->eClass()) {
+//    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
+//    // will delete this buffer
+//    pCrwBuffer->vIsPermanent(false);
+//    m_pLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
+//
+//  }
+//  else
+//  if (CN_RSBBUFFER == (*m_pLogicUnit->m_xpOperandA)->eClass()) {
+//    // will delete this buffer
+//    RsbBuffer* pRsbBuffer = _pRsbBuffer(*m_pLogicUnit->m_xpOperandA);
+//    pRsbBuffer->vIsPermanent(false);
+//    m_pLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, iSlot, pRsbBuffer);
+//  }
+//  else {
+//    NEVER_REACH;
+//  }
+//
+//  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -786,21 +786,21 @@ void Step::vRegOperandSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandUpsertIntoTable(void)
 {
-  ENTRY();
-  
-  ASSERT(*m_pLogicUnit->m_xpOperandA);
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  i8 iPartition = pOp->iPartition();
-  i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
-  
-  m_pLogicUnit->m_xpTable->vUpsertBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
-  
-  // will delete this buffer
-  pCrwBuffer->vIsPermanent(false);
-  
-  EXIT();
+//  ENTRY();
+//  
+//  ASSERT(*m_pLogicUnit->m_xpOperandA);
+//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
+//  
+//  Op* pOp = m_pTask->m_pJob->m_pOp;
+//  i8 iPartition = pOp->iPartition();
+//  i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
+//  
+//  m_pLogicUnit->m_xpTable->vUpsertBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
+//  
+//  // will delete this buffer
+//  pCrwBuffer->vIsPermanent(false);
+//  
+//  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

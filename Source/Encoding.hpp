@@ -9,7 +9,6 @@ namespace CompactBuffers
   {
   private:
   
-    Encoding_v1* m_pEncoding_v1;
     Encoding_v2* m_pEncoding_v2;
 
     // must be last

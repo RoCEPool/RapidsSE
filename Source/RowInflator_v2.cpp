@@ -4,6 +4,43 @@
 
 #include "CompactBuffers.h"
 
+/*----------------------------------------------------------------------------*/
+/* inflate set onto Dstk                                                      */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
+                              StreamDef* pStreamDef,
+                              eSI eStrInflate, i8* iaColSet)
+{
+  vInflateSet_v2(aaiDstk,aHeadLine,pStreamDef,eStrInflate,iaColSet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inflate headline into row                                                  */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine,
+                                 i8 i_ColToRetrieve)
+{
+  vInflateColumn_v2(pRow,aHeadLine,i_ColToRetrieve);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inflate headline into row                                                  */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflateRow(RowSingle* pRow, HeadLine* aHeadLine)
+{
+  vInflateRow_v2(pRow,aHeadLine);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inflate headline into row                                                  */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflateRow(RowSlab* pRowSlab, HeadLine* aHeadLine)
+{
+  vInflateRow_v2(pRowSlab,aHeadLine);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
 /*----------------------------------------------------------------------------*/
