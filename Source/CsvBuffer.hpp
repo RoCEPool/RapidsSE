@@ -11,9 +11,9 @@ namespace DataBuffers
   class CsvBuffer : public DataBuffer
   {
   private:
-    s32 m_sReportNm; // optional report name this csv buffer belong to
-  
-    i8  m_nRecords;
+    s32     m_sReportNm; // optional report name this csv buffer belong to
+    i8      m_nRecords;
+    CsvMeta m_oCsvMeta;
   
     SingleWord m__PadToCacheLine[7]; // padding to cache line
 
@@ -31,6 +31,7 @@ namespace DataBuffers
     
     Stz*       szAllotRecord(i8 nBytes);
     Stz*       szAppendRecord(Stz* szRecord);
+    CsvMeta*   pCsvMeta(void);
     byte*      ayDataArea(void);
     i8         nDataBytes(void);
     i8         nFreeBytes(void);

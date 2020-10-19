@@ -175,26 +175,29 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*                             -- FAST INLINE --                              */
 /*----------------------------------------------------------------------------*/
 
-#define vADV_SRC()       (cSrcChr = *++azCsvSrc)
+#define vADV_SRCCHR()    (cSrcChr = *++azCsvSrc)
+
+#define vCOLLECT(i)      i = (i * 10) + (cSrcChr - '0')
 
 #define bIS_DIGIT()      (cSrcChr >= '0' && cSrcChr <= '9')
 
 #define bMORE_DATA()     (bool)(cSrcChr)
 
-#define bMORE_FIELDS()   (bool)(cSrcChr && '\n' != cSrcChr)
+#define bMORE_FIELDS()   (bool)(cSrcChr && cSrcChr != m_cRecEnd)
 
-#define bWHITE_SPACE(c)  \
-  (c == ' ') || (c == '\n') || (c == '\r') || (c == '\f') || (c == '\t')
+#define bWHITE_SPACE() \
+  (cSrcChr == ' ')  || (cSrcChr == '\n') || \
+  (cSrcChr == '\r') || (cSrcChr == '\f') || (cSrcChr == '\t')
 
-#define vSKIP_WHITE_SPACE_ADV() \
-  while (cSrcChr && StrLib::bIsWhite(cSrcChr)) { \
-    vADV_SRC(); \
+#define vSKIP_WHITE_SPACE() \
+  while (cSrcChr && bWHITE_SPACE()) { \
+    vADV_SRCCHR(); \
   }
 
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a chunk                                          */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertCsv(char* azCsvChunk)
+bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
@@ -239,7 +242,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
   
   Tsp xTimestamp;
 
-  char* azVchSlab;
+  char* azVchHead;
   char* acVchDst;
   i8 nChars;
   bool bSawEnclosedLeading;
@@ -289,9 +292,9 @@ bool ToRsb::bConvertCsv(char* azCsvChunk)
 L_TestMoreRecords:
     
   // skip leading whitespace
-  while (bWHITE_SPACE(cSrcChr))
-    vADV_SRC();
-  
+//  while (bWHITE_SPACE())
+//    vADV_SRCCHR();
+//
   // test for more csv to be parsed
   if (! bMORE_DATA())
     goto L_EndOfCsvChunk;
@@ -359,7 +362,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Boolean:
   
-  vSKIP_WHITE_SPACE_ADV();
+  vSKIP_WHITE_SPACE();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // boolean portion
@@ -368,24 +371,24 @@ L_Boolean:
   if ('t' == cSrcChr || 'T' == cSrcChr) {
     // true case
     iBoolean = true;
-    vADV_SRC(); // skip 't'
+    vADV_SRCCHR(); // skip 't'
   }
   else
   if ('f' == cSrcChr || 'F' == cSrcChr) {
     // false case
     iBoolean = false;
-    vADV_SRC(); // skip 'f'
+    vADV_SRCCHR(); // skip 'f'
   }
   else
   if (bIS_DIGIT()) {
     // numeric case
     uNumber = 0;
-    for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
-      uNumber = (uNumber * 10) + (cSrcChr - '0');
+    for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+      vCOLLECT(uNumber);
       nDigits++;
     }
     if (nDigits > 19) {
-      // eError = EC_CSV_BOOLEAN_TOO_LARGE;
+      eError = EC_CSV_BOOLEAN_TOO_LARGE;
       goto L_FieldError;
     }
   
@@ -396,7 +399,7 @@ L_Boolean:
   }
   else {
     // unrecognisable boolean
-    // eError = EC_CSV_NOT_A_BOOLEAN;
+    eError = EC_CSV_BOOLEAN_INVALID;
     goto L_FieldError;
   }
 
@@ -413,25 +416,25 @@ L_Boolean:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
   
-  vSKIP_WHITE_SPACE_ADV();
+  vSKIP_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year portion
   
   // collect digits for year
   uYear = 0;
-  for (nDigits = 0; nDigits < 4 && bIS_DIGIT(); vADV_SRC()) {
-    uYear = (uYear * 10) + (cSrcChr - '0');
+  for (nDigits = 0; nDigits < 4 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uYear);
     nDigits++;
   }
   
   // should have seen some digits
   if (! nDigits) {
-    // eError = EC_CSV_NOT_A_YEAR;
+    eError = EC_CSV_YEAR_INVALID;
     goto L_FieldError;
   }
   if (nDigits > 4) {
-    // eError = EC_CSV_YEAR_TOO_LARGE;
+    eError = EC_CSV_YEAR_TOO_LARGE;
     goto L_FieldError;
   }
 
@@ -441,55 +444,55 @@ L_Date:
 
   // skip over separator
   if ('-' != cSrcChr) {
-    // eError = EC_CSV_MISSING_DATE_SEP;
+    eError = EC_CSV_DATE_SEP_MISSING;
     goto L_FieldError;
   }
-  vADV_SRC(); // skip '-'
+  vADV_SRCCHR(); // skip '-'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month portion
     
   // collect digits for month
   uMonth = 0;
-  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
-    uMonth = (uMonth * 10) + (cSrcChr - '0');
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uMonth);
     nDigits++;
   }
 
   // should have seen some digits
   if (! nDigits) {
-    // eError = EC_CSV_NOT_A_MONTH;
+    eError = EC_CSV_MONTH_INVALID;
     goto L_FieldError;
   }
   if (nDigits > 2) {
-    // eError = EC_CSV_MONTH_TOO_LARGE;
+    eError = EC_CSV_MONTH_TOO_LARGE;
     goto L_FieldError;
   }
 
   // skip over separator
   if ('-' != cSrcChr) {
-    // eError = EC_CSV_MISSING_DATE_SEP;
+    eError = EC_CSV_DATE_SEP_MISSING;
     goto L_FieldError;
   }
-  vADV_SRC(); // skip '-'
+  vADV_SRCCHR(); // skip '-'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day portion
           
   // collect digits for day
   uDay = 0;
-  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
-    uDay = (uDay * 10) + (cSrcChr - '0');
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uDay);
     nDigits++;
   }
 
   // should have seen some digits
   if (! nDigits) {
-    // eError = EC_CSV_NOT_A_DAY;
+    eError = EC_CSV_DAY_INVALID;
     goto L_FieldError;
   }
   if (nDigits > 2) {
-    // eError = EC_CSV_DAY_TOO_LARGE;
+    eError = EC_CSV_DAY_TOO_LARGE;
     goto L_FieldError;
   }
 
@@ -498,17 +501,17 @@ L_Date:
 
   // validate the year
   if (uYear < C_YEAR_MIN) {
-    // eError = EC_CSV_YEAR_TOO_SMALL;
+    eError = EC_CSV_YEAR_TOO_SMALL;
     goto L_FieldError;
   }
   if (uYear > C_YEAR_MAX) {
-    // eError = EC_CSV_YEAR_TOO_LARGE;
+    eError = EC_CSV_YEAR_TOO_LARGE;
     goto L_FieldError;
   }
 
   // validate the month
   if (uMonth < 1 || uMonth > 12) {
-    // eError = EC_CSV_NOT_A_MONTH;
+    eError = EC_CSV_MONTH_INVALID;
     goto L_FieldError;
   }
   
@@ -527,19 +530,19 @@ L_Date:
 
   // validate days per month
   if (uDay < 1) {
-    // eError = EC_CSV_NOT_A_DAY;
+    eError = EC_CSV_DAY_INVALID;
     goto L_FieldError;
   }
   
   if (bLeapYear) {
     if (uDay > (u8)iDaysPerMonthLeap[uMonth]) {
-      // eError = EC_CSV_NOT_A_LEAPDAY;
+      eError = EC_CSV_DAY_NOT_LEAPYEAR;
       goto L_FieldError;
     }
   }
   else {
     if (uDay > (u8)iDaysPerMonth[uMonth]) {
-      // eError = EC_CSV_NOT_A_DAY;
+      eError = EC_CSV_DAY_INVALID;
       goto L_FieldError;
     }
   }
@@ -565,7 +568,7 @@ L_Decimal:
       note: decimals are scaled (numerically shifted left x 10) by nPixScale
    */
 
-  vSKIP_WHITE_SPACE_ADV();
+  vSKIP_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -573,12 +576,12 @@ L_Decimal:
   // collect sign
   if ('-' == cSrcChr) {
     bNegative = true;
-    vADV_SRC(); // skip '-'
+    vADV_SRCCHR(); // skip '-'
   }
   else
   if ('+' == cSrcChr) {
     bNegative = false;
-    vADV_SRC(); // skip '+'
+    vADV_SRCCHR(); // skip '+'
   }
   else {
     bNegative = false;
@@ -589,12 +592,12 @@ L_Decimal:
 
   // ignore leading 0's
   while ('0' == cSrcChr)
-    vADV_SRC(); // skip '0'
+    vADV_SRCCHR(); // skip '0'
     
   // collect digits for leading number
   uNumber = 0;
-  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
-    uNumber = (uNumber * 10) + (cSrcChr - '0');
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uNumber);
     nDigits++;
     nPixPrecision--;
     if (nPixPrecision < 0)
@@ -607,10 +610,10 @@ L_Decimal:
   // collect further digits for trailing fraction
   if ('.' == cSrcChr) {
     
-    vADV_SRC(); // skip '.'
+    vADV_SRCCHR(); // skip '.'
     
-    for ( ; nPixScale && nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
-      uNumber = (uNumber * 10) + (cSrcChr - '0');
+    for ( ; nPixScale && nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+      vCOLLECT(uNumber);
       nDigits++;
       nPixScale--;
     }
@@ -618,11 +621,11 @@ L_Decimal:
   
   // should have seen some digits
   if (! nDigits) {
-    // eError = EC_CSV_NOT_A_DECIMAL;
+    eError = EC_CSV_DECIMAL_INVALID;
     goto L_FieldError;
   }
   if (nDigits > 19) {
-    // eError = EC_CSV_DECIMAL_TOO_LARGE;
+    eError = EC_CSV_DECIMAL_TOO_LARGE;
     goto L_FieldError;
   }
   // correct for scale by x 10 till correctly scaled
@@ -634,7 +637,7 @@ L_Decimal:
     if (cSrcChr - '0' >= 5)
       uNumber += 1;
     while (bIS_DIGIT())
-      vADV_SRC(); // skip remaining digits
+      vADV_SRCCHR(); // skip remaining digits
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -642,7 +645,7 @@ L_Decimal:
   
   // have we exceeded the max ?
   if (uNumber > (u8)C_I8_MAX) {
-    // eError = EC_CSV_DECIMAL_TOO_LARGE;
+    eError = EC_CSV_DECIMAL_TOO_LARGE;
     goto L_FieldError;
   }
   
@@ -651,7 +654,7 @@ L_Decimal:
   
   // have we gone below the negative min ?
   if (iDecimal < C_I8_MIN) {
-    // eError = EC_CSV_DECIMAL_TOO_SMALL;
+    eError = EC_CSV_DECIMAL_TOO_SMALL;
     goto L_FieldError;
   }
   
@@ -671,7 +674,7 @@ L_Float:
             into a d8 floaing point double
    */
   
-  vSKIP_WHITE_SPACE_ADV();
+  vSKIP_WHITE_SPACE();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -679,12 +682,12 @@ L_Float:
   // collect sign
   if ('-' == cSrcChr) {
     bNegative = true;
-    vADV_SRC(); // skip '-'
+    vADV_SRCCHR(); // skip '-'
   }
   else
   if ('+' == cSrcChr ) {
     bNegative = false;
-    vADV_SRC(); // skip '+'
+    vADV_SRCCHR(); // skip '+'
   }
   else {
     bNegative = false;
@@ -695,7 +698,7 @@ L_Float:
 
   // collect digits for leading number
   acBufDst = xBuffer;
-  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
     *acBufDst++ = cSrcChr;
     nDigits++;
   }
@@ -706,8 +709,8 @@ L_Float:
   // collect digits for middle fraction
   if ('.' == cSrcChr) {
     *acBufDst++ = cSrcChr;
-    vADV_SRC(); // skip '.'
-    for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
+    vADV_SRCCHR(); // skip '.'
+    for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
       *acBufDst++ = cSrcChr;
       nDigits++;
     }
@@ -720,23 +723,23 @@ L_Float:
   if ('e' == cSrcChr || 'E' == cSrcChr) {
     
     *acBufDst++ = cSrcChr;
-    vADV_SRC(); // skip 'e'
+    vADV_SRCCHR(); // skip 'e'
 
     // test for +/-
     if ('+' == cSrcChr || '-' == cSrcChr) {
       *acBufDst++ = cSrcChr;
-      vADV_SRC(); // skip +/-
+      vADV_SRCCHR(); // skip +/-
     }
         
     // collect exponent digits
-    for  (nExpDigits = 0; nExpDigits < 3 && bIS_DIGIT(); vADV_SRC()) {
+    for  (nExpDigits = 0; nExpDigits < 3 && bIS_DIGIT(); vADV_SRCCHR()) {
       *acBufDst++ = cSrcChr;
       nExpDigits++;
     }
     
     // should have seen some exponent digits
     if (! nExpDigits) {
-      // eError = EC_CSV_MISSING_EXPONENT;
+      eError = EC_CSV_EXPONENT_MISSING;
       goto L_FieldError;
     }
   }
@@ -746,7 +749,7 @@ L_Float:
   
   // should have seen some digits
   if (! nDigits) {
-    // eError = EC_CSV_NOT_A_FLOAT;
+    eError = EC_CSV_FLOAT_INVALID;
     goto L_FieldError;
   }
   
@@ -769,7 +772,7 @@ L_Float:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
   
-  vSKIP_WHITE_SPACE_ADV();
+  vSKIP_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -777,12 +780,12 @@ L_Integer:
   // collect sign
   if ('-' == cSrcChr) {
     bNegative = true;
-    vADV_SRC(); // skip '-'
+    vADV_SRCCHR(); // skip '-'
   }
   else
   if ('+' == cSrcChr) {
     bNegative = false;
-    vADV_SRC(); // skip '+'
+    vADV_SRCCHR(); // skip '+'
   }
   else {
     bNegative = false;
@@ -793,18 +796,18 @@ L_Integer:
   
   // collect digits for number
   uNumber = 0;
-  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRC()) {
-    uNumber = (uNumber * 10) + (cSrcChr - '0');
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uNumber);
     nDigits++;
   }
   
   // should have seen some digits
   if (! nDigits) {
-    // eError = EC_CSV_NOT_A_INTEGER;
+    eError = EC_CSV_INTEGER_INVALID;
     goto L_FieldError;
   }
   if (nDigits > 19) {
-    // eError = EC_CSV_INTEGER_TOO_LARGE;
+    eError = EC_CSV_INTEGER_TOO_LARGE;
     goto L_FieldError;
   }
 
@@ -812,7 +815,7 @@ L_Integer:
   // all integer portions collected
 
   if (uNumber > (u8)C_I8_MAX) {
-    // eError = EC_CSV_INTEGER_TOO_LARGE;
+    eError = EC_CSV_INTEGER_TOO_LARGE;
     goto L_FieldError;
   }
   
@@ -834,15 +837,15 @@ L_Integer:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
   
-  vSKIP_WHITE_SPACE_ADV();
+  vSKIP_WHITE_SPACE();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned seconds portion
   
   // collect digits for leading seconds
   uSecond = 0;
-  for  (nDigits = 0; nDigits < 9 && bIS_DIGIT(); vADV_SRC()) {
-    uSecond = (uSecond * 10) + (cSrcChr - '0');
+  for  (nDigits = 0; nDigits < 9 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uSecond);
     nDigits++;
   }
   
@@ -851,12 +854,12 @@ L_Interval:
   
   // collect further digits for trailing microseconds
   uMicrosecond = 0;
-  nShift = 1000000;
+  nShift = C_IVL_USEC_SHIFT;
   if ('.' == cSrcChr) {
-    vADV_SRC(); // skip '.'
-    for ( ; nShift > 1 && bIS_DIGIT(); vADV_SRC()) {
+    vADV_SRCCHR(); // skip '.'
+    for ( ; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
+      vCOLLECT(uMicrosecond);
       nDigits++;
-      uMicrosecond = (uMicrosecond * 10) + (cSrcChr - '0');
       nShift /= 10;
     }
   }
@@ -866,7 +869,7 @@ L_Interval:
 
   // should have seen some digits
   if (! nDigits) {
-    // eError = EC_CSV_NOT_A_INTERVAL;
+    eError = EC_CSV_INTERVAL_INVALID;
     goto L_FieldError;
   }
   
@@ -874,14 +877,14 @@ L_Interval:
   // all interval portions collected
 
   // have we exceeded the max for second?
-  if (uSecond > (u8)999999999) {
-    // eError = EC_CSV_INTERVAL_SECS_TOO_LARGE;
+  if (uSecond > (u8)C_IVL_SEC_MAX) {
+    eError = EC_CSV_INTERVAL_SECS_TOO_LARGE;
     goto L_FieldError;
   }
   
   // have we exceeded the max for microsecond?
-  if (uMicrosecond > (u8)999999) {
-    // eError = EC_CSV_INTERVAL_USECS_TOO_LARGE;
+  if (uMicrosecond > (u8)C_IVL_USEC_MAX) {
+    eError = EC_CSV_INTERVAL_USECS_TOO_LARGE;
     goto L_FieldError;
   }
   
@@ -900,78 +903,78 @@ L_Interval:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   
-  vSKIP_WHITE_SPACE_ADV();
+  vSKIP_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour portion
 
   // collect digits for hour
   uHour = 0;
-  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
-    uHour = (uHour * 10) + (cSrcChr - '0');
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uHour);
     nDigits++;
   }
   
   // should have seen some digits
   if (! nDigits) {
-    // eError = EC_CSV_NOT_A_HOUR;
+    eError = EC_CSV_HOUR_INVALID;
     goto L_FieldError;
   }
   if (nDigits > 2) {
-    // eError = EC_CSV_HOUR_TOO_LARGE;
+    eError = EC_CSV_HOUR_TOO_LARGE;
     goto L_FieldError;
   }
 
   // skip over separator
   if (':' != cSrcChr) {
-    // eError = EC_CSV_MISSING_TIME_SEP;
+    eError = EC_CSV_TIME_SEP_MISSING;
     goto L_FieldError;
   }
-  vADV_SRC();
+  vADV_SRCCHR(); // skip ':'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute portion
 
   // collect digits for minute
   uMinute = 0;
-  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
-    uMinute = (uMinute * 10) + (cSrcChr - '0');
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uMinute);
     nDigits++;
   }
   
   // should have seen some digits
   if (! nDigits) {
-    // eError = EC_CSV_NOT_A_MINUTE;
+    eError = EC_CSV_MINUTE_INVALID;
     goto L_FieldError;
   }
   if (nDigits > 2) {
-    // eError = EC_CSV_MINUTE_TOO_LARGE;
+    eError = EC_CSV_MINUTE_TOO_LARGE;
     goto L_FieldError;
   }
   // skip over separator
   if (':' != cSrcChr) {
-    // eError = EC_CSV_MISSING_TIME_SEP;
+    eError = EC_CSV_TIME_SEP_MISSING;
     goto L_FieldError;
   }
-  vADV_SRC();
+  vADV_SRCCHR(); // skip ':'
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second portion
 
   // collect digits for second
   uSecond = 0;
-  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRC()) {
-    uSecond = (uSecond * 10) + (cSrcChr - '0');
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uSecond);
     nDigits++;
   }
   
   // should have seen some digits
   if (! nDigits) {
-    // eError = EC_CSV_NOT_A_SECOND;
+    eError = EC_CSV_SECOND_INVALID;
     goto L_FieldError;
   }
   if (nDigits > 2) {
-    // eError = EC_CSV_SECOND_TOO_LARGE;
+    eError = EC_CSV_SECOND_TOO_LARGE;
     goto L_FieldError;
   }
 
@@ -982,10 +985,10 @@ L_Time:
   uMicrosecond = 0;
   if ('.' == cSrcChr) {
     
-    vADV_SRC(); // skip '.'
+    vADV_SRCCHR(); // skip '.'
 
-    for (nShift = 1000000; nShift > 1 && bIS_DIGIT(); vADV_SRC()) {
-      uMicrosecond = (uMicrosecond * 10) + (cSrcChr - '0');
+    for (nShift = C_IVL_USEC_SHIFT; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
+      vCOLLECT(uMicrosecond);
       nShift /= 10;
     }
 
@@ -996,17 +999,17 @@ L_Time:
   // all time portions collected
 
   if (uHour > 23) {
-    // eError = EC_CSV_HOUR_TOO_LARGE;
+    eError = EC_CSV_HOUR_TOO_LARGE;
     goto L_FieldError;
   }
   
   if (uMinute > 59) {
-    // eError = EC_CSV_MINUTE_TOO_LARGE;
+    eError = EC_CSV_MINUTE_TOO_LARGE;
     goto L_FieldError;
   }
   
   if (uSecond > 59) {
-    // eError = EC_CSV_SECOND_TOO_LARGE;
+    eError = EC_CSV_SECOND_TOO_LARGE;
     goto L_FieldError;
   }
   
@@ -1032,7 +1035,7 @@ L_Timestamp:
     Tsp xTsp;
     SN_Tsp snTsp;
 
-    vSKIP_WHITE_SPACE_ADV();
+    vSKIP_WHITE_SPACE();
     
     xTsp = snTsp.i(&azCsvSrc,m_pFmt);
     cSrcChr = *azCsvSrc;
@@ -1056,15 +1059,15 @@ L_Varchar:
   // ---- ---- ---- ---- ---- ---- ---- ----
 
   // allocate string space in slab
-  azVchSlab = m_pRowSlab->azDepositString_begin();
-  acVchDst  = azVchSlab;
+  azVchHead = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchHead;
   
   if (! m_pFmt->m_cEnclosedBy_Leading)
     bSawEnclosedLeading = false;
 
   // find first non-space character
   while (' ' == cSrcChr)
-    vADV_SRC(); // skip ' '
+    vADV_SRCCHR(); // skip ' '
 
   azCsvSrc = azFieldStart;
 
@@ -1077,7 +1080,7 @@ L_Varchar:
     if (nChars++ < nPixLength)
       *acVchDst++ = cSrcChr;
     
-    vADV_SRC(); // next char
+    vADV_SRCCHR(); // next char
   }
 
   // terminate
@@ -1090,7 +1093,7 @@ L_Varchar:
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
   if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
-    // eError = EC_CSV_NOT_A_VARCHAR;
+    eError = EC_CSV_VARCHAR_INVALID;
     goto L_FieldError;
   }
   
@@ -1112,14 +1115,14 @@ L_PostField:
     
     if (cSrcChr == m_cFldSep) {
       bSawFldSep = true;
-      vADV_SRC(); // skip m_cFldSep
+      vADV_SRCCHR(); // skip m_cFldSep
       break;
     }
     
     if (cSrcChr == m_cRecEnd)
       break;
     
-    vADV_SRC(); // skip any
+    vADV_SRCCHR(); // skip any
   }
 
   // move to next field
@@ -1132,6 +1135,28 @@ L_PostField:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_FieldError:
 
+  /*
+     know:
+   
+           i_Fld
+           eError
+           azCsvSrc
+           azRecordStart;
+           azFieldStart;
+           m_pStreamDef
+           azCsvChunk
+   
+             this node
+             time
+   
+     don't know:
+   
+           origin
+           file
+           offset
+   
+   */
+  
   // discard partial row in row slab
   m_pRowSlab->vDiscardInvalidRow();
 
@@ -1141,7 +1166,7 @@ L_FieldError:
     if (cSrcChr == m_cRecEnd)
       break;
     
-    vADV_SRC(); // skip any
+    vADV_SRCCHR(); // skip any
   }
   
   // increment invalid records
@@ -1156,7 +1181,7 @@ L_FieldError:
 
   // skip
   if (cSrcChr)
-    vADV_SRC(); // skip m_cRecEnd
+    vADV_SRCCHR(); // skip m_cRecEnd
 
   goto L_TestMoreRecords;
 
@@ -1192,7 +1217,7 @@ L_EndOfRecord:
   i_Fld = 0;
   
   if (cSrcChr)
-    vADV_SRC(); // skip m_cRecEnd
+    vADV_SRCCHR(); // skip m_cRecEnd
 
   goto L_TestMoreRecords;
   

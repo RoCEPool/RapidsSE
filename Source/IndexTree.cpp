@@ -432,21 +432,71 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 
   //pEntBuffer->vShow();
 
+  StreamDef* pStreamDef = pCrwBuffer->pStreamDef();
+  i8* aiaColSet = m_pIndexDef->aiaColSet();
+
+  EntWrk xEntWrk;
+
+  i8* aiDstk;
+  HeadLine* aHeadLine;
+  
   Rrf xRowRef;
   xRowRef.vBuffer(pCrwBuffer->iBufferNo());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // iterate thru the buffer till no more entries
-  for (i8 i_Row = 0; i_Row < pCrwBuffer->nRowCount(); i_Row++) {
 
+  if (! m_pRootEntBuffer)
+    EntBuffer* pRootBuffer = pNewRootBuffer();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru each crw in buffer
+  
+  i8 nRows = pCrwBuffer->nRowCount();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+
+    xEntWrk.vReset();
+    
     xRowRef.vItem(i_Row);
+    xEntWrk.vRef(xRowRef);
     
-    bool bInserted = bInsertEntry(pCrwBuffer,i_Row,xRowRef);
+    //vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
+    if (KE_INT == m_pIndexDef->eKeyKind()) {
+
+      aiDstk = ((i8*)xEntWrk.aKey()) - 1;
+      aHeadLine = pCrwBuffer->aGetHead(i_Row);
+
+      RowInflator::vInflateSet(&aiDstk,aHeadLine,aiaColSet,SI_DEST_KEY,
+                               pStreamDef,m_pIndexDef);
+      xEntWrk.aEnt()->vKind(KE_INT);
+    }
+    else {
+      vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
+    }
     
-    //bVerify();
-    ASSERT(bInserted);
+    Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
+    ASSERT(aInsertedEntry);
   }
 }
+/*----------------------------------------------------------------------------*/
+//void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+//
+//  //pEntBuffer->vShow();
+//
+//  Rrf xRowRef;
+//  xRowRef.vBuffer(pCrwBuffer->iBufferNo());
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // iterate thru the buffer till no more entries
+//  for (i8 i_Row = 0; i_Row < pCrwBuffer->nRowCount(); i_Row++) {
+//
+//    xRowRef.vItem(i_Row);
+//
+//    bool bInserted = bInsertEntry(pCrwBuffer,i_Row,xRowRef);
+//
+//    //bVerify();
+//    ASSERT(bInserted);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* insert a given entry into this index tree starting at leaf / height 0      */

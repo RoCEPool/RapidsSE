@@ -67,7 +67,9 @@ namespace Structures
     void  vDumpStrings(void);
     void  vDumpTails(void);
     i8    iFindTail(TAIL* aFindLine);
+    i8    iFindTail(Stz* szStr);
     TAIL* aFindTail(TAIL* aFindLine, i8& i_Tail);
+    TAIL* aFindTail(Stz* szStr, i8& i_Tail);
     i8    nFreeAllotableBytes(void);
     HEAD* aGetHead(void);
     HEAD* aGetHead(i8 i_Head);
@@ -538,6 +540,28 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iFindTail(TAIL* aFindLine)
 /* search for duplicate tail line                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iFindTail(Stz* szString)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+
+  for (i8 i_Tail = iLastTail();
+       i_Tail != C_UNKNOWN;
+       i_Tail = iPrevTail(i_Tail)) {
+    
+    TAIL* aTailLine = aGetTail(i_Tail);
+    Stz* szTail = aTailLine->sz();
+    
+    if (0 == StrLib::iCompare(szString->azChar(),szTail->azChar()))
+      return i_Tail;
+  }
+  
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* search for duplicate tail line                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aFindTail(TAIL* aFindLine, i8& i_Tail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
@@ -555,6 +579,39 @@ TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aFindTail(TAIL* aFindLine, i8& i_Tail)
       i_Tail = iToUnit(aStrLine);
       return aStrLine;
     }
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* search for duplicate tail line                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aFindTail(Stz* szFind, i8& i_Tail)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+
+  for (TAIL* aStrLine = aLastStr();
+       aStrLine;
+       aStrLine = aPrevStr(aStrLine,i_Tail)) {
+    
+    Stz* szTail = aStrLine->sz();
+        
+    if (0 == StrLib::iCompare(szFind->azChar(),szTail->azChar())) {
+      i_Tail = iToUnit(aStrLine);
+      return aStrLine;
+    }
+    
+//    i8 nTailBytes = aStrLine->nBytes();
+//
+//    //aFindLine->vDump();
+//    //aTailLine->vDump();
+//
+//    if (0 == MemLib::iCompareBytes(aStrLine,aFindLine,nTailBytes)) {
+//      i_Tail = iToUnit(aStrLine);
+//      return aStrLine;
+//    }
   }
   
   return nullptr;
@@ -849,7 +906,9 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vReset(void)
   m_nTailUnits = 0;
   m_nTailBytes = 0;
   
+#ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_axaUnits,(C_SPACEUNIT_QUANTA * m_nSpaceUnits),CN);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

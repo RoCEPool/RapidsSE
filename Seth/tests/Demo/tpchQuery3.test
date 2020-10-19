@@ -262,7 +262,6 @@ group by
 revenue desc, o_orderdate
   limit 10;
 
-
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------

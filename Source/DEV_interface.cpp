@@ -1211,17 +1211,19 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-    
-//  RowInflator::vInflateSet(aaiDstk,
-//                           (Crw*)pLogicUnit->m_xRluCommon.m_aSrcCrw,
-//                           pLogicUnit->m_pDevSrcRsb->m_pStreamDef,
-//                           (eSI)ieStrInflate,iaColSet);
+  HeadLine*  aHeadLine  = (HeadLine*)pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  StreamDef* pStreamDef = pLogicUnit->m_pDevSrcRsb->m_pStreamDef;
   
-  HeadLine* aHeadLine = (HeadLine*)pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  RowInflator::vInflateSet(aaiDstk,aHeadLine,iaColSet,ieStrInflate,
+                           pStreamDef,nullptr);
+  return;
+
+  // --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - ---
+
   u1* auMetaClue;
   byte* ayDataByte;
   
-  i8 nCols = pLogicUnit->m_pDevSrcRsb->m_pStreamDef->nTotalColumns();
+  i8 nCols = pStreamDef->nTotalColumns();
   
   //vPrepare_v2(auMetaClue,ayDataByte,nCols,aHeadLine);
   auMetaClue = aHeadLine->auMetaArea();
