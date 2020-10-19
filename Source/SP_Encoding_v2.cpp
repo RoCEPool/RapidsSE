@@ -180,19 +180,7 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
         }
           
         case DM_VCH: {
-          SP_Vch SP_Vch;
-          if (MC_STR_FIT_1L == aColEnc->m_eMetaCode ||
-              MC_STR_FIT_2L == aColEnc->m_eMetaCode) {
-            StrLib::vAppendString(&szCrs,
-                                  aColEnc->m_wDataCode.m_azStr);
-          }
-          else if (MC_STR_EMPTY == aColEnc->m_eMetaCode) {
-            StrLib::vAppendString(&szCrs,(char*)""_Stz);
-          }
-          else {
-            StrLib::vAppendString(&szCrs,
-                                  (char*)aColEnc->m_aTailLine->sz());
-          }
+          StrLib::vAppendString(&szCrs,aColEnc->m_wDataCode.m_azStr);
           break;
         }
           
