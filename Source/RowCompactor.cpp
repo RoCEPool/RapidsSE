@@ -423,8 +423,6 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) is there already a tail for the vch?
   
-  //TailStr xFindTail(szTailStr);
-  
 //  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
 //    return false;
   if (C_UNKNOWN != m_pCrwNub->iFindTail(szTailStr))
@@ -443,8 +441,9 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
   //vDumpTails();
   //vDebugPoint();
   
-  //i8 nTailBytes = xFindTail.nBytes();
-  i8 nTailBytes = szTailStr->nSize();
+  TailStr xFindTail(szTailStr);
+  
+  i8 nTailBytes = xFindTail.nBytes();
   i8 i_Tail = m_pCrwNub->iAllotTail(nTailBytes);
   TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
   
@@ -867,7 +866,6 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) is there already a tail for the vch?
   
-  //TailStr xFindTail(pOuterIrwSample->szStzGet(i_Col));
   
 //  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
 //    return;
@@ -888,8 +886,9 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
   //vDumpTails();
   //vDebugPoint();
   
-  //i8 nTailBytes = xFindTail.nBytes();
-  i8 nTailBytes = szTailToFind->nSize();
+  TailStr xFindTail(szTailToFind);
+
+  i8 nTailBytes = xFindTail.nBytes();
   i8 i_Tail = m_pCrwNub->iAllotTail(nTailBytes);
   TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
   
@@ -899,7 +898,7 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
   // **********************************
   //
   
-  aTail->vAssign(pOuterIrwSample->szStzGet(i_Col));
+  aTail->vAssign(szTailToFind);
  
   m_pCrwNub->vSetLastStr(i_Tail);
   
