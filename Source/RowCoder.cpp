@@ -97,8 +97,8 @@ i8 RowCoder::nDataSizeOfClue(u1 uMetaClue)
     case MN_STRING_TAIL: return 2;
     case MN_BLOB_0:      NEVER_REACH; return 0;
     case MN_BLOB_1:      NEVER_REACH; return 0;
-    case MN_NEGATIVE:    return 1;
-    case MN_POSITIVE:    return 1;
+    case MN_NEGATIVE:    return 0;
+    case MN_POSITIVE:    return 0;
 
     default:
       NEVER_REACH;
