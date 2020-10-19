@@ -79,7 +79,6 @@ static Stz* aEG[]
   "EG_MC"_Stz,
   "EG_MK"_Stz,
   "EG_MM"_Stz,
-  "EG_MN"_Stz,
   "EG_MT"_Stz,
 
   "EG_NE"_Stz,

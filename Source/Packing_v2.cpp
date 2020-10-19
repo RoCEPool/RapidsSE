@@ -113,7 +113,7 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     
     
     // set <MC_OVERFLOW_2T> for this column
-    uMetaClue = METACLUE_FORM(MN_OVERFLOW,2);
+    uMetaClue = METACLUE_FORM(MC_OVERFLOW,2);
 //    aHeadLine->vMetaClue(i_Col,uMetaClue);
     i_Offset = i_BaseOffsetMeta + i_Col;
     aByte = ((byte*)aHeadLine) + i_Offset;
@@ -181,7 +181,7 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
     
     METACLUE_SPLIT(aColEnc->m_uMetaClue,uHigh,uLow);
     
-    if (MN_STRING_TAIL != uHigh)
+    if (MC_STRING_TAIL != uHigh)
       goto L_PackVch_Head;
     
     // calculate [TL]
@@ -205,16 +205,16 @@ void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
 
     
   L_PackVch_Head:
-    if (MN_STRING_x1  == uHigh)
+    if (MC_STRING_x1  == uHigh)
       nStrBytes = STRx1(uLow);
     else
-    if (MN_STRING_x2  == uHigh)
+    if (MC_STRING_x2  == uHigh)
       nStrBytes = STRx2(uLow);
     else
-    if (MN_STRING_x4  == uHigh)
+    if (MC_STRING_x4  == uHigh)
       nStrBytes = STRx4(uLow);
     else
-    if (MN_STRING_x8  == uHigh)
+    if (MC_STRING_x8  == uHigh)
       nStrBytes = STRx8(uLow);
     else {
       RASSERT(0);

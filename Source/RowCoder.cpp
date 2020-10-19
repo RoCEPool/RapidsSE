@@ -69,25 +69,25 @@ i8 RowCoder::nDataSizeOfClue(u1 uMetaClue)
   
   METACLUE_SPLIT(uMetaClue, iHigh, iLow);
   
-  switch ((eMN)iHigh) {
+  switch ((eMC)iHigh) {
       
-    case MN_NUMERIC:     return iLow;
-    case MN_DATE_E0:     return 2;
-    case MN_DATE_E1:     return 2;
-    case MN_DATE_E2:     return 2;
-    case MN_STRING_x1:   return iLow;
-    case MN_NULL:        return 0;
-    case MN_SPARE0:      NEVER_REACH; return 0;
-    case MN_OVERFLOW:    return 2;
+    case MC_NUMERIC:     return iLow;
+    case MC_DATE_E0:     return 2;
+    case MC_DATE_E1:     return 2;
+    case MC_DATE_E2:     return 2;
+    case MC_STRING_x1:   return iLow;
+    case MC_NULL:        return 0;
+    case MC_SPARE0:      NEVER_REACH; return 0;
+    case MC_OVERFLOW:    return 2;
       
-    case MN_STRING_x2:   return STRx2(iLow);
-    case MN_STRING_x4:   return STRx4(iLow);
-    case MN_STRING_x8:   return STRx8(iLow);
-    case MN_STRING_TAIL: return 2;
-    case MN_BLOB_0:      NEVER_REACH; return 0;
-    case MN_BLOB_1:      NEVER_REACH; return 0;
-    case MN_NEGATIVE:    return 0;
-    case MN_POSITIVE:    return 0;
+    case MC_STRING_x2:   return STRx2(iLow);
+    case MC_STRING_x4:   return STRx4(iLow);
+    case MC_STRING_x8:   return STRx8(iLow);
+    case MC_STRING_TAIL: return 2;
+    case MC_BLOB_0:      NEVER_REACH; return 0;
+    case MC_BLOB_1:      NEVER_REACH; return 0;
+    case MC_NEGATIVE:    return 0;
+    case MC_POSITIVE:    return 0;
 
     default:
       NEVER_REACH;

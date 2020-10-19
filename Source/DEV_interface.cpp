@@ -1305,25 +1305,25 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
       
     L_Overflowed:
       
-      if (uHigh <=  MN_STRING_x1) // numeric & date
+      if (uHigh <=  MC_STRING_x1) // numeric & date
         ayDataByte += uLow;
       else
-        if (uHigh >=  MN_NEGATIVE)  // small value
+        if (uHigh >=  MC_NEGATIVE)  // small value
         {;}
         else
-          if (uHigh == MN_STRING_x1)  // string x 1
+          if (uHigh == MC_STRING_x1)  // string x 1
             ayDataByte += STRx1(uLow);
           else
-            if (uHigh == MN_STRING_x2)  // string x 2
+            if (uHigh == MC_STRING_x2)  // string x 2
               ayDataByte += STRx2(uLow);
             else
-              if (uHigh == MN_STRING_x4)  // string x 4
+              if (uHigh == MC_STRING_x4)  // string x 4
                 ayDataByte += STRx4(uLow);
               else
-                if (uHigh == MN_STRING_x8)  // string x 8
+                if (uHigh == MC_STRING_x8)  // string x 8
                   ayDataByte += STRx8(uLow);
                 else
-                  if (uHigh == MN_OVERFLOW) { // overflow
+                  if (uHigh == MC_OVERFLOW) { // overflow
                     
                     //OverLine* aOverLine = aHeadLine->aGetOver();
                     
@@ -1365,11 +1365,11 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
     
     switch (uHigh) {
         
-      case MN_NUMERIC: // numeric values 0..8B
+      case MC_NUMERIC: // numeric values 0..8B
         
         switch (uLow) {
             
-          case 0x0: // MN_NUMERIC 0B
+          case 0x0: // MC_NUMERIC 0B
             *aiCellValue = 0;
             ayDstByte += C_8B;
             //            *ayDstByte++ = 0; // 0
@@ -1382,7 +1382,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             //            *ayDstByte++ = 0; // 7
             break;
             
-          case 0x1: // MN_NUMERIC 1B
+          case 0x1: // MC_NUMERIC 1B
             *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             ayDstByte += C_7B;
@@ -1395,7 +1395,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             //            *ayDstByte++ = 0; // 7
             break;
             
-          case 0x2: // MN_NUMERIC 2B
+          case 0x2: // MC_NUMERIC 2B
             *aiCellValue = *(u2*)(ayDataByte);
             ayDataByte += C_2B;
             ayDstByte += C_8B;
@@ -1409,7 +1409,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             //            *ayDstByte++ = 0; // 7
             break;
             
-          case 0x3: // MN_NUMERIC 3B
+          case 0x3: // MC_NUMERIC 3B
             *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
@@ -1422,7 +1422,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             //            *ayDstByte++ = 0; // 7
             break;
             
-          case 0x4: // MN_NUMERIC 4B
+          case 0x4: // MC_NUMERIC 4B
             *aiCellValue = *(u4*)(ayDataByte);
             ayDataByte += C_4B;
             ayDstByte += C_8B;
@@ -1436,7 +1436,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             //            *ayDstByte++ = 0; // 7
             break;
             
-          case 0x5: // MN_NUMERIC 5B
+          case 0x5: // MC_NUMERIC 5B
             *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
@@ -1449,7 +1449,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             //            *ayDstByte++ = 0; // 7
             break;
             
-          case 0x6: // MN_NUMERIC 6B
+          case 0x6: // MC_NUMERIC 6B
             *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
@@ -1462,7 +1462,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             //            *ayDstByte++ = 0; // 7
             break;
             
-          case 0x7: // MN_NUMERIC 7B
+          case 0x7: // MC_NUMERIC 7B
             //*aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
@@ -1474,7 +1474,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             *ayDstByte++ = 0; // 7
             break;
             
-          case 0x8: // MN_NUMERIC 8B
+          case 0x8: // MC_NUMERIC 8B
             *aiCellValue = *(u8*)(ayDataByte);
             //            *ayDstByte++ = *ayDataByte++; // 0
             //            *ayDstByte++ = *ayDataByte++; // 1
@@ -1488,38 +1488,38 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             ayDataByte += C_8B;
             break;
             
-          case 0x9: // MN_NUMERIC 9B
+          case 0x9: // MC_NUMERIC 9B
             RASSERT(0);
             break;
             
-          case 0xA: // MN_NUMERIC 10B
+          case 0xA: // MC_NUMERIC 10B
             RASSERT(0);
             break;
             
-          case 0xB: // MN_NUMERIC 11B
+          case 0xB: // MC_NUMERIC 11B
             RASSERT(0);
             break;
             
-          case 0xC: // MN_NUMERIC 12B
+          case 0xC: // MC_NUMERIC 12B
             RASSERT(0);
             break;
             
-          case 0xD: // MN_NUMERIC 13B
+          case 0xD: // MC_NUMERIC 13B
             RASSERT(0);
             break;
             
-          case 0xE: // MN_NUMERIC 14B
+          case 0xE: // MC_NUMERIC 14B
             RASSERT(0);
             break;
             
-          case 0xF: // MN_NUMERIC 15B
+          case 0xF: // MC_NUMERIC 15B
             RASSERT(0);
             break;
             
         }
         break;
         
-      case MN_DATE_E0: // date era-0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_DATE_E0: // date era-0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
@@ -1540,7 +1540,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         aDte->m_uDay       = aEdt->m_uDay;
         break;
         
-      case MN_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
@@ -1561,7 +1561,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         aDte->m_uDay       = aEdt->m_uDay;
         break;
         
-      case MN_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
@@ -1582,7 +1582,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         aDte->m_uDay       = aEdt->m_uDay;
         break;
         
-      case MN_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
+      case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
         nStrSize = STRx1(uLow);
         
         if (SI_ADDRESS == (eSI)ieStrInflate) {
@@ -1620,16 +1620,16 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         
         break;
         
-      case MN_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         *(i8*)ayDstByte = C_DATUM_NULL;
         ayDstByte += C_BYTES_PER_WORD;
         break;
         
-      case MN_SPARE0: // spare
+      case MC_SPARE0: // spare
         RASSERT(0);
         break;
         
-      case MN_OVERFLOW: // overflow 2B
+      case MC_OVERFLOW: // overflow 2B
         
         // calculation to get overflow
         //aOverLine = aHeadLine->aGetOver();
@@ -1651,7 +1651,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // toBytes(uLow) depends on uHigh
         
-      case MN_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx2(uLow);
         
         if (SI_ADDRESS == (eSI)ieStrInflate) {
@@ -1691,7 +1691,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         
         break;
         
-      case MN_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx4(uLow);
         
         if (SI_ADDRESS == (eSI)ieStrInflate) {
@@ -1730,7 +1730,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         
         break;
         
-      case MN_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx8(uLow);
         
         if (SI_ADDRESS == (eSI)ieStrInflate) {
@@ -1769,7 +1769,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         
         break;
         
-      case MN_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
         u_Tail_rel = *(u2*)ayDataByte;
         aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
         
@@ -1790,15 +1790,15 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         
         break;
         
-      case MN_BLOB_0: // blob type 0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_BLOB_0: // blob type 0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         RASSERT(0);
         break;
         
-      case MN_BLOB_1: // blob type 1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_BLOB_1: // blob type 1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         RASSERT(0);
         break;
         
-      case MN_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)ayDstByte;
         
         *ayDstByte++ = (i8)uLow; // 0
@@ -1814,7 +1814,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         
         break;
         
-      case MN_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
         *ayDstByte++ = (i8)uLow; // 0
         *ayDstByte++ = 0; // 1
         *ayDstByte++ = 0; // 2

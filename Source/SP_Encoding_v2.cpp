@@ -94,7 +94,7 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
       StrLib::vAppendChar(&szCrs,'0');
     StrLib::vAppendHex(&szCrs,aColEnc->m_uMetaClue);
     StrLib::vAppendChar(&szCrs,':');
-    StrLib::vAppendString(&szCrs,(char*)aMN[uHigh]);
+    StrLib::vAppendString(&szCrs,(char*)aMC[uHigh]);
     StrLib::vAppendChar(&szCrs,'.');
     StrLib::vAppendDecimal(&szCrs,uLow);
 

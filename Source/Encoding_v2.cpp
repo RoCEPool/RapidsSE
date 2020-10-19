@@ -127,16 +127,16 @@ void Encoding_v2::vEncodeSrw(RowSingle* pSrw)
 }
 
 /*----------------------------------------------------------------------------*/
-/* morph the given column encoding (to MN_STRING_TAIL)                        */
+/* morph the given column encoding (to MC_STRING_TAIL)                        */
 /*----------------------------------------------------------------------------*/
 void Encoding_v2::vMorphEncoding(_ColEnc* aColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
   
   //ASSERT(MC_STR_FIT_1L == aColEnc->m_eMetaCode);
-  ASSERT(METACLUE_HIGH(aColEnc->m_uMetaClue) >= MN_STRING_x1 ||
-           (METACLUE_HIGH(aColEnc->m_uMetaClue) >= MN_STRING_x2 &&
-            METACLUE_HIGH(aColEnc->m_uMetaClue) <= MN_STRING_x8));
+  ASSERT(METACLUE_HIGH(aColEnc->m_uMetaClue) >= MC_STRING_x1 ||
+           (METACLUE_HIGH(aColEnc->m_uMetaClue) >= MC_STRING_x2 &&
+            METACLUE_HIGH(aColEnc->m_uMetaClue) <= MC_STRING_x8));
   ASSERT(C_UNKNOWN != aColEnc->m_i_Tail);
 
   // calc the adjustment required because MC_STR_FIT_1L becoming MC_STR_TAIL_2T
@@ -145,7 +145,7 @@ void Encoding_v2::vMorphEncoding(_ColEnc* aColEnc)
   ASSERT(nOffsetAdj < 0);
   
   // morph the given column into a MC_STR_TAIL_2T
-  aColEnc->m_uMetaClue = METACLUE_FORM(MN_STRING_TAIL,2);
+  aColEnc->m_uMetaClue = METACLUE_FORM(MC_STRING_TAIL,2);
   aColEnc->m_wDataCode = aColEnc->m_i_Tail;
   aColEnc->m_nDataSize = C_2B;
   aColEnc->m_i_Till   += nOffsetAdj;
@@ -390,7 +390,7 @@ void Encoding_v2::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
   if (-1 == wColVal.m_wBcd.m_iAsI8) {
     xColEnc.m_nDataSize = C_0B;
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_NEGATIVE,1);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_NEGATIVE,1);
     return;
   }
   
@@ -400,7 +400,7 @@ void Encoding_v2::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
   if (wColVal.m_wBcd.m_iAsI8 >= 0 && wColVal.m_wBcd.m_iAsI8 <= 15) {
     xColEnc.m_nDataSize = C_0B;
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_POSITIVE,wColVal.m_iWrd);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_POSITIVE,wColVal.m_iWrd);
 
     return;
   }
@@ -411,7 +411,7 @@ void Encoding_v2::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
   i8 nD = wColVal.iByteMagn();
   xColEnc.m_nDataSize = nD;
   
-  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NUMERIC,nD);
+  xColEnc.m_uMetaClue = METACLUE_FORM(MC_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,11 +433,11 @@ void Encoding_v2::vEncodeBol(_ColEnc& xColEnc, Dtm wColVal)
   if (wColVal.m_wBol.m_iAsI8) {
     xColEnc.m_nDataSize = C_0B;
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_POSITIVE,1);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_POSITIVE,1);
   }
   else {
     xColEnc.m_nDataSize = C_0B;
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_POSITIVE,0);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_POSITIVE,0);
   }
 }
 
@@ -462,14 +462,14 @@ void Encoding_v2::vEncodeDte(_ColEnc& xColEnc, Dtm wColVal)
   vDteIntoEdt(wColVal.m_wDte.m_iAsI8,&xColEnc.m_wDataCode.m_wEdt.m_iAsI8,iEra);
   
   if (C_ERA_0 == iEra) {
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_DATE_E0,2);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_DATE_E0,2);
   }
   else
   if (C_ERA_1 == iEra) {
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_DATE_E1,2);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_DATE_E1,2);
   }
   else {
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_DATE_E2,2);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_DATE_E2,2);
   }
   
   xColEnc.m_nDataSize = C_2B;
@@ -495,7 +495,7 @@ void Encoding_v2::vEncodeFlt(_ColEnc& xColEnc, Dtm wColVal)
   i8 nD = wColVal.iByteMagn();
   xColEnc.m_nDataSize = nD;
   
-  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NUMERIC,nD);
+  xColEnc.m_uMetaClue = METACLUE_FORM(MC_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -517,7 +517,7 @@ void Encoding_v2::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
   if (-1 == wColVal.m_iWrd) {
     xColEnc.m_nDataSize = C_0B;
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_NEGATIVE,1);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_NEGATIVE,1);
     return;
   }
   
@@ -527,12 +527,12 @@ void Encoding_v2::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
   if (wColVal.m_iWrd >= 0 && wColVal.m_iWrd <= 10) {
     xColEnc.m_nDataSize = C_0B;
     
-    u1 uHigh = MN_POSITIVE;
+    u1 uHigh = MC_POSITIVE;
     uHigh <<= 4;
     u1 uLow = (u1)wColVal.m_iWrd;
     u1 eTest = (uHigh | uLow);
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_POSITIVE,wColVal.m_iWrd);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_POSITIVE,wColVal.m_iWrd);
     return;
   }
   
@@ -542,7 +542,7 @@ void Encoding_v2::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
   i8 nD = wColVal.iByteMagn();
   xColEnc.m_nDataSize = nD;
   
-  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NUMERIC,nD);
+  xColEnc.m_uMetaClue = METACLUE_FORM(MC_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -564,7 +564,7 @@ void Encoding_v2::vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal)
   i8 nD = wColVal.iByteMagn();
   xColEnc.m_nDataSize = nD;
   
-  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NUMERIC,nD);
+  xColEnc.m_uMetaClue = METACLUE_FORM(MC_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -586,7 +586,7 @@ void Encoding_v2::vEncodeTme(_ColEnc& xColEnc, Dtm wColVal)
   i8 nD = wColVal.iByteMagn();
   xColEnc.m_nDataSize = nD;
   
-  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NUMERIC,nD);
+  xColEnc.m_uMetaClue = METACLUE_FORM(MC_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -608,7 +608,7 @@ void Encoding_v2::vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal)
   i8 nD = 8;
   xColEnc.m_nDataSize = nD;
   
-  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NUMERIC,nD);
+  xColEnc.m_uMetaClue = METACLUE_FORM(MC_NUMERIC,nD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -636,30 +636,30 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  // 1) MN_STRING_x1
+  // 1) MC_STRING_x1
   if (nS <= 15) {
     nQuanta = nS; //MemLib::nQuantaRequired(nS,1);
     
     xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
     xColEnc.m_nDataSize = STRx1(nQuanta);
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x1,nQuanta);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_STRING_x1,nQuanta);
     return;
   }
   
-  // 2) MN_STRINGx2
+  // 2) MC_STRINGx2
   if (nS <= 47) {
     nQuanta = MemLib::nQuantaRequired(nS-16,2);
     
     xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
     xColEnc.m_nDataSize = STRx2(nQuanta);
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x2,nQuanta);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_STRING_x2,nQuanta);
 
     return;
   }
   
-  // 3) MN_STRINGx4
+  // 3) MC_STRINGx4
   if (nS <= 111) {
     nQuanta = MemLib::nQuantaRequired(nS-48,4);
     
@@ -667,28 +667,28 @@ void Encoding_v2::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
     xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
     xColEnc.m_nDataSize = STRx4(nQuanta);
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x4,nQuanta);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_STRING_x4,nQuanta);
 
     return;
   }
 
-  // 4) MN_STRINGx8
+  // 4) MC_STRINGx8
   if (nS <= 239) {
     nQuanta = MemLib::nQuantaRequired(nS-112,8);
     
     xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
     xColEnc.m_nDataSize = STRx8(nQuanta);
     
-    xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_x8,nQuanta);
+    xColEnc.m_uMetaClue = METACLUE_FORM(MC_STRING_x8,nQuanta);
 
     return;
   }
 
-  // 5) MN_STRING_TAIL
+  // 5) MC_STRING_TAIL
   xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
   xColEnc.m_nDataSize = nS;
     
-  xColEnc.m_uMetaClue = METACLUE_FORM(MN_STRING_TAIL,2);
+  xColEnc.m_uMetaClue = METACLUE_FORM(MC_STRING_TAIL,2);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -702,7 +702,7 @@ bool Encoding_v2::bEncodeNul(_ColEnc& xColEnc, Dtm wDtm)
     return false;
   
   // null case : encode as: MC_NULL + {}
-  xColEnc.m_uMetaClue = METACLUE_FORM(MN_NULL,0);
+  xColEnc.m_uMetaClue = METACLUE_FORM(MC_NULL,0);
 
   xColEnc.m_wDataCode.vSetNull();
   xColEnc.m_nDataSize = C_0B;
@@ -737,7 +737,7 @@ void Encoding_v2::vOffsetTill(_ColEnc& xrColEnc)
   
   METACLUE_SPLIT(xrColEnc.m_uMetaClue, iHigh, iLow);
 
-  if (MN_STRING_TAIL == (eMN)iHigh) {
+  if (MC_STRING_TAIL == (eMC)iHigh) {
     i8 nStrLen = StrLib::nLength(xrColEnc.m_wDataCode.m_szVch->azChar());
     nDataBytes += nStrLen + 1;
   }
