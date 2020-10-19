@@ -90,14 +90,6 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
     StrLib::vAppendString(&szCrs,(char*)szDatum);
     
     StrLib::vAppendPad(&szCrs,caLine,30);
-    StrLib::vAppendString(&szCrs,(char*)aMC[aColEnc->m_eMetaCode]);
-    
-    StrLib::vAppendPad(&szCrs,caLine,45);
-    StrLib::vAppendString(&szCrs,(char*)"C_"_Stz);
-    StrLib::vAppendDecimal(&szCrs,aColEnc->m_nDataSize);
-    StrLib::vAppendString(&szCrs,(char*)"B"_Stz);
-
-    StrLib::vAppendPad(&szCrs,caLine,55);
     if (aColEnc->m_uMetaClue < 16)
       StrLib::vAppendChar(&szCrs,'0');
     StrLib::vAppendHex(&szCrs,aColEnc->m_uMetaClue);
@@ -106,7 +98,12 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
     StrLib::vAppendChar(&szCrs,'.');
     StrLib::vAppendDecimal(&szCrs,uLow);
 
-    StrLib::vAppendPad(&szCrs,caLine,75);
+    StrLib::vAppendPad(&szCrs,caLine,50);
+    StrLib::vAppendString(&szCrs,(char*)"C_"_Stz);
+    StrLib::vAppendDecimal(&szCrs,aColEnc->m_nDataSize);
+    StrLib::vAppendString(&szCrs,(char*)"B"_Stz);
+
+    StrLib::vAppendPad(&szCrs,caLine,60);
     
     if (pEncoding->xaColEnc[i_Col].m_i_Till) {
       StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Offset);
@@ -114,12 +111,12 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
       StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Till);
     }
     
-    StrLib::vAppendPad(&szCrs,caLine,85);
+    StrLib::vAppendPad(&szCrs,caLine,70);
     StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Tail);
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
-    StrLib::vAppendPad(&szCrs,caLine,90);
+    StrLib::vAppendPad(&szCrs,caLine,75);
     
     if (aColEnc->m_wDataCode.bIsNull()) {
       StrLib::vAppendString(&szCrs,(char*)C_NULL);

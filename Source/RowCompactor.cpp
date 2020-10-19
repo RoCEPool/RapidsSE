@@ -265,8 +265,8 @@ bool RowCompactor::bAddRsbAsCrw(Rsb* aRsb)
     return false;
   }
 
-  //SP_Encoding_v2 spEncoding_v2;
-  //vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
+  SP_Encoding_v2 spEncoding_v2;
+  vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
 
   // 5) pack encoded row into a compact row
   Packing_v2::vPackCrw_v2(m_aHeadLine,m_pEncoding_v2);
