@@ -7,10 +7,6 @@
 # Set to 1 to enable debugging or 0 to turn off.
 DEBUG=1
 
-# Name and location of the SE binary on the NAT box
-SE_TAR_FILE="se.tar.gz"
-NAT_SE_TAR_PATH="/home/ec2-user/${SE_TAR_FILE}"
-
 # Will be populated with the SSD mount points
 declare -a MOUNTS
 
@@ -40,6 +36,10 @@ fi
 echo "tmpfs     /dev/shm     tmpfs     defaults,size=500g     0 0 " >> /etc/fstab
 mount -o remount /dev/shm
 
+# ----------------------------------------------------------------------------------------
+# Change permissions to allow for writing to /opt
+chown root:wheel /opt
+chmod g+w /opt
 
 # ----------------------------------------------------------------------------------------
 # Apply any package updates
@@ -56,7 +56,7 @@ yum install nload nethogs bmon iftop iperf3 -y
 
 # ----------------------------------------------------------------------------------------
 # Set up /etc/hosts using the values in HOST_NAMES and HOST_ADDRS above.
-echo "10.20.1.20 nat" >> /etc/hosts
+echo "10.0.0.66 nat" >> /etc/hosts
 
 
 # ----------------------------------------------------------------------------------------
@@ -179,36 +179,6 @@ done
 
 
 # ----------------------------------------------------------------------------------------
-# Copy SE from NAT box
-
-mkdir -p "${SE_DIR}"
-chown ec2-user:ec2-user "${SE_DIR}"
-
-sudo -u ec2-user scp nat:"${NAT_SE_TAR_PATH}" "${SE_DIR}" || exit
-chown ec2-user:ec2-user "${SE_DIR}/${SE_TAR_FILE}"
-
-pushd "$(pwd)" || exit
-cd "${SE_DIR}" || exit
-tar xvzf "${SE_TAR_FILE}"
-chown -R ec2-user:ec2-user ./*
-popd || exit
-
-
-# ----------------------------------------------------------------------------------------
-# Install tcc
-
-pushd "$(pwd)" || exit
-cd /tmp || exit
-wget http://download.savannah.gnu.org/releases/tinycc/tcc-0.9.27.tar.bz2 || exit
-tar xvjf tcc-0.9.27.tar.bz2
-cd tcc-0.9.27/ || exit
-./configure
-make
-make install
-popd || exit
-
-
-# ----------------------------------------------------------------------------------------
 # Vim annoyances
 vimrc="/home/ec2-user/.vimrc"
 cat << EOF > "${vimrc}"
@@ -219,6 +189,8 @@ set smarttab
 set expandtab
 syntax on
 set background=dark
+set statusline+=%F
+set laststatus=2
 EOF
 
 chown ec2-user:ec2-user "${vimrc}"
