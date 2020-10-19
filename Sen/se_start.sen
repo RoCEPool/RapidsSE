@@ -47,6 +47,49 @@
     createIndex $indexNm | stageC
 
   stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create unique index
+  sPath
+  "
+  procedure create unique index
+    parameters $indexNm $etc
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | syntaxUniqueIndex $indexNm $etc | stageB
+
+  stage stageB on all nodes :
+    createIndex $indexNm | stageC
+
+  stage stageE on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+/*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create index
+  sPath
+  "
+  procedure create index
+    parameters $indexNm $etc
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | syntaxIndex $indexNm $etc | stageB
+
+  stage stageB on all nodes :
+    createIndex $indexNm | stageC
+
+  stage stageC on origin :
      eatSome | stageD
 
   stage stageD on all partitions :
@@ -85,7 +128,7 @@
   end ;
   "
   api::addProcedure
-
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create schema
   sPath

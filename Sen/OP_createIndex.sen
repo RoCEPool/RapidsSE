@@ -54,13 +54,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the index
 
-  //pIndex index.populate not if ( errorCode )
-  //  job::error!
-  //  path[].popIndexesFolder
-  //  path[].popNamedTableFolder
-  //  folder[].isTables assert
-  //  exit
-  //then
+  pIndex index.populate not if ( errorCode )
+    job::error!
+    path[].popIndexesFolder
+    path[].popNamedTableFolder
+    folder[].isTables assert
+    exit
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move back to ./tables
