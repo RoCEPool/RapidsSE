@@ -352,8 +352,9 @@ function doClusterInstall() {
 
       # TODO: Present summary
       # TODO: Edit ?
-      # TODO: Validate config/environment
-      # TODO: Write config file?
+
+      # Validate the installation environment
+      validateEnvironment
 
       # Write config file to the current working directory, as the user may have
       # specified a config file in an installation dir that is about to get overwritten.
@@ -377,7 +378,9 @@ function doClusterInstall() {
 
       # TODO: Present summary
       # TODO: Edit ?
-      # TODO: Validate config/environment
+
+      # Validate the installation environment
+      validateEnvironment
 
       # Write config file to the directory with the installer
       local outputConfig="${USER_PWD}/${DEFAULT_CONFIG_PATH}"
@@ -509,6 +512,11 @@ function askHostnames() {
   declare -a hostnames
   local line
 
+  declare -a loopbackHosts
+  loopbackHosts=("localhost" "127.0.0.1" "::1")
+
+  local gotLoopback=0
+
   echo ""
   echo "Hostnames"
   echo "---------"
@@ -533,6 +541,20 @@ function askHostnames() {
       continue 
     fi
 
+    gotLoopback=0
+    for addr in "${loopbackHosts[@]}"
+    do
+      if [ "${line}" == "${addr}" ]; then
+        echo "Invalid input: hostname cannot be a loopback name/address."
+        gotLoopback=1
+        break;
+      fi
+    done
+
+    if [ "${gotLoopback}" -eq 1 ]; then
+      continue
+    fi
+
     hostnames+=("${line}")
     break
   done
@@ -551,6 +573,20 @@ function askHostnames() {
 
     if [ -z "${line}" ]; then 
       break
+    fi
+
+    gotLoopback=0
+    for addr in "${loopbackHosts[@]}"
+    do
+      if [ "${line}" == "${addr}" ]; then
+        echo "Invalid input: hostname cannot be a loopback name/address."
+        gotLoopback=1
+        break;
+      fi
+    done
+
+    if [ "${gotLoopback}" -eq 1 ]; then
+      continue
     fi
 
     hostnames+=("${line}")
@@ -906,6 +942,17 @@ function askParams() {
   
   # Set the value for all nodes
   allNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validate that the environment we are installing into is correct before
+## continuing with the installation.
+## Params: None
+
+function validateEnvironment() {
+  true
+
 }
 
 
