@@ -22,6 +22,7 @@ void Step::vAddSteps_IndexDef(void)
   vAddStep("indexDef[].set"_Stz,      &Step::vIndexDefSet);
   vAddStep("indexDef::syntax"_Stz,    &Step::vIndexDefSyntax);
   vAddStep("indexDef[].tableName@"_Stz, &Step::vIndexDefTableNameFetch);
+  vAddStep("indexDef[].tableName!"_Stz, &Step::vIndexDefTableNameStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -280,6 +281,23 @@ void Step::vIndexDefTableNameFetch(void)
   s32 sTableNm = pIndexDef->szTableNm();
   
   m_pDataStack->vPushStr(sTableNm);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* indexDef[].tableName! -- store tableNm in indexDef                         */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefTableNameStore(void)
+{
+  ENTRY();
+  
+  IndexDef* pIndexDef = *m_pLogicUnit->m_xpIndexDef;
+  
+  s4K sTableName;
+  m_pDataStack->vPopStr(sTableName,__func__);
+  
+  pIndexDef->vTableNm(sTableName);
   
   EXIT();
 }

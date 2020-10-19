@@ -438,203 +438,203 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 /*----------------------------------------------------------------------------*/
 /* WIP: insdel entries from a row buffer                                      */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vInsdelBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  EntWrk xEntWrk;
-  
-  SP_Record spRecord;
-  
-  StreamDef* pStreamDef = pCrwBuffer_upsert->pStreamDef();
-  
-  IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
-  IndexDef* pIndexDef = pIndexTree->pIndex()->pIndexDef();
-  
-  HV_Row hvRow_upsert(pStreamDef,C_ALL);
-  
-  Encoding_v1* pEncoding_upsert = new Encoding_v1(pStreamDef);
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // iteration of rows from the incoming crw buffer
-  
-  i8 nRows = pCrwBuffer_upsert->nRowCount();
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // get upsert row, re-encode it for this table, and extract key
-    
-    Crw* aCrw_upsert = pCrwBuffer_upsert->aCrw(i_Row);
-    
-    pCrwBuffer_upsert->vGetRow(hvRow_upsert,i_Row);
-    TRACE_UPSERT( vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hvRow_upsert)); )
-    
-    pEncoding_upsert->vEncodeSrw(hvRow_upsert);
-
-    xEntWrk.vElmSeqSize(0);
-    pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer_upsert,i_Row);
-    SP_Ent spEnt;
-    TRACE_UPSERT( vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIndexDef)); )
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // possible insert (can we find the row using primary key)
-    
-    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
-    if (! pEntH0Buf) {
-      TRACE_UPSERT( vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
-      continue;
-    }
-    
-    Ent* aEnt_prior = pEntH0Buf->aFindEntryBefore(xEntWrk.aKey());
-    if (! aEnt_prior) {
-      TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
-      continue;
-    }
-    
-    SP_Key spKey;
-    TRACE_UPSERT( vTrace("Key Prior: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIndexDef)); )
-    vDebugPoint();
-    
-    Ent* aEnt_found = pEntH0Buf->aNextEntry(aEnt_prior,0);
-    if (! aEnt_found) {
-      TRACE_UPSERT( vTrace("No aEnt_found @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
-     continue;
-    }
-    
-    TRACE_UPSERT( vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIndexDef)); )
-    
-    if (KC_SAME != Key::eCompare(aEnt_found->aKey(),xEntWrk.aKey())) {
-      TRACE_UPSERT( vTrace("NOT SAME @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
-      continue;
-    }
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // upsert (we have a crw matching the key)
-    
-    SP_Ent spRef;
-    TRACE_UPSERT( vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef)); )
-    
-    Crw* aCrw_exists = CrwBuffer::pRefdCrw(aEnt_found->rxRef());
-    if (! aCrw_exists) {
-      TRACE_UPSERT( vTrace("No aCrw @%lld; skipping...\n"_Stz,(i8)__LINE__); )
-      continue;
-    }
-    
-    vUpsertRow_update(aCrw_exists,aEnt_found,pEncoding_upsert,tPerspective);
-    
-    vDebugPoint();
-
-  } // for i_Row
-  
-  delete pEncoding_upsert;
-}
+//void TablePtn::vInsdelBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+//
+//  EntWrk xEntWrk;
+//
+//  SP_Record spRecord;
+//
+//  StreamDef* pStreamDef = pCrwBuffer_upsert->pStreamDef();
+//
+//  IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
+//  IndexDef* pIndexDef = pIndexTree->pIndex()->pIndexDef();
+//
+//  HV_Row hvRow_upsert(pStreamDef,C_ALL);
+//
+//  Encoding_v1* pEncoding_upsert = new Encoding_v1(pStreamDef);
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // iteration of rows from the incoming crw buffer
+//
+//  i8 nRows = pCrwBuffer_upsert->nRowCount();
+//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//    // get upsert row, re-encode it for this table, and extract key
+//
+//    Crw* aCrw_upsert = pCrwBuffer_upsert->aCrw(i_Row);
+//
+//    pCrwBuffer_upsert->vGetRow(hvRow_upsert,i_Row);
+//    TRACE_UPSERT( vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hvRow_upsert)); )
+//
+//    pEncoding_upsert->vEncodeSrw(hvRow_upsert);
+//
+//    xEntWrk.vElmSeqSize(0);
+//    pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer_upsert,i_Row);
+//    SP_Ent spEnt;
+//    TRACE_UPSERT( vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIndexDef)); )
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//    // possible insert (can we find the row using primary key)
+//
+//    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
+//    if (! pEntH0Buf) {
+//      TRACE_UPSERT( vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+//      continue;
+//    }
+//
+//    Ent* aEnt_prior = pEntH0Buf->aFindEntryBefore(xEntWrk.aKey());
+//    if (! aEnt_prior) {
+//      TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+//      continue;
+//    }
+//
+//    SP_Key spKey;
+//    TRACE_UPSERT( vTrace("Key Prior: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIndexDef)); )
+//    vDebugPoint();
+//
+//    Ent* aEnt_found = pEntH0Buf->aNextEntry(aEnt_prior,0);
+//    if (! aEnt_found) {
+//      TRACE_UPSERT( vTrace("No aEnt_found @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+//     continue;
+//    }
+//
+//    TRACE_UPSERT( vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIndexDef)); )
+//
+//    if (KC_SAME != Key::eCompare(aEnt_found->aKey(),xEntWrk.aKey())) {
+//      TRACE_UPSERT( vTrace("NOT SAME @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+//      continue;
+//    }
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//    // upsert (we have a crw matching the key)
+//
+//    SP_Ent spRef;
+//    TRACE_UPSERT( vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef)); )
+//
+//    Crw* aCrw_exists = CrwBuffer::pRefdCrw(aEnt_found->rxRef());
+//    if (! aCrw_exists) {
+//      TRACE_UPSERT( vTrace("No aCrw @%lld; skipping...\n"_Stz,(i8)__LINE__); )
+//      continue;
+//    }
+//
+//    vUpsertRow_update(aCrw_exists,aEnt_found,pEncoding_upsert,tPerspective);
+//
+//    vDebugPoint();
+//
+//  } // for i_Row
+//
+//  delete pEncoding_upsert;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* WIP: insdel entries from a row buffer                                      */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-//  SP_DataBuffer spDataBuffer;
+//void TablePtn::vInsdelBuffer(RsbBuffer* pRsbBuffer, t8 tPerspective)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
 //
-//  vTrace("vInsdelBuffer() :- [[RsbBuffer %s ; Rsbs=%lld]]\n"_Stz,
-//         spDataBuffer.sz(pRsbBuffer),
-//         pRsbBuffer->nRsb());
-  
-  //pRsbBuffer->vPrintRows();
-
-  EntWrk xEntWrk;
-  
-  IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
-  IndexDef* pIndexDef = pIndexTree->pIndex()->pIndexDef();
-  
-  StreamDef* pStreamDef = pIndexTree->pIndex()->pTable()->pStreamDef();
-  Encoding_v1* pEncoding_upsert = new Encoding_v1(pStreamDef);
-  
-  RowSlab* pRowSlab = pRsbBuffer->pRowSlab();
-  SP_RowPix spRowPix(pRowSlab->nCols(),pRowSlab->axaColPix());
-  
-  i8 nRows = pRowSlab->nRows();
-  SP_Ent spEnt;
-  
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // get upsert row, re-encode it for this table, and extract key
-    
-    Rsb* aRsb_upsert = pRowSlab->aRsbAdr(i_Row);
-    pEncoding_upsert->vEncodeRsb(aRsb_upsert);
-    
-    Stz* szRsb = spRowPix.sz(aRsb_upsert);
-    TRACE_UPSERT( vTrace("Upsert(P%lld) %lld: %s\n"_Stz,m_iPartitionId,i_Row,szRsb); )
-    
-    xEntWrk.vElmSeqSize(0);
-    pIndexTree->vExtractKey(&xEntWrk,aRsb_upsert);
-    TRACE_UPSERT( vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIndexDef)); )
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // possible insert (can we find the row using primary key)
-    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
-    if (! pEntH0Buf) {
-      TRACE_UPSERT( vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(pRowSlab,i_Row,&xEntWrk,pEncoding_upsert,tPerspective);
-      continue;
-    }
-
-    Ent* aEnt_prior = pEntH0Buf->aFindEntryBefore(xEntWrk.aKey());
-    if (! aEnt_prior) {
-      TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(pRowSlab,i_Row, &xEntWrk,pEncoding_upsert,tPerspective);
-      continue;
-    }
-    
-    SP_Key spKey;
-    TRACE_UPSERT( vTrace("Key Prior: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIndexDef)); )
-    vDebugPoint();
-    
-    Ent* aEnt_found = pEntH0Buf->aNextEntry(aEnt_prior,0);
-    if (! aEnt_found) {
-      TRACE_UPSERT( vTrace("No aEnt_found @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(pRowSlab,i_Row,&xEntWrk,pEncoding_upsert,tPerspective);
-      continue;
-    }
-    
-    TRACE_UPSERT( vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIndexDef)); )
-    
-    if (KC_SAME != Key::eCompare(aEnt_found->aKey(),xEntWrk.aKey())) {
-      TRACE_UPSERT( vTrace("NOT SAME @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(pRowSlab,i_Row,&xEntWrk,pEncoding_upsert,tPerspective);
-      continue;
-    }
-   
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // upsert (we have a crw matching the key)
-  
-    SP_Ent spRef;
-    vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef));
-    TRACE_UPSERT( vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef)); )
-    
-    Crw* aCrw_exists = CrwBuffer::pRefdCrw(aEnt_found->rxRef());
-    if (! aCrw_exists) {
-      TRACE_UPSERT( vTrace("No aCrw @%lld; skipping...\n"_Stz,(i8)__LINE__); )
-      continue;
-    }
-    pIndexTree->vDump(true);
-    
-    vDeleteRow(pIndexTree, pEntH0Buf, aEnt_found);
-    ASSERT(pIndexTree->bVerifyIndex());
-    vDebugPoint();
-  }
-  
-  // delete the encoding
-  delete pEncoding_upsert;
-}
+////  SP_DataBuffer spDataBuffer;
+////
+////  vTrace("vInsdelBuffer() :- [[RsbBuffer %s ; Rsbs=%lld]]\n"_Stz,
+////         spDataBuffer.sz(pRsbBuffer),
+////         pRsbBuffer->nRsb());
+//
+//  //pRsbBuffer->vPrintRows();
+//
+//  EntWrk xEntWrk;
+//
+//  IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
+//  IndexDef* pIndexDef = pIndexTree->pIndex()->pIndexDef();
+//
+//  StreamDef* pStreamDef = pIndexTree->pIndex()->pTable()->pStreamDef();
+//  Encoding_v1* pEncoding_upsert = new Encoding_v1(pStreamDef);
+//
+//  RowSlab* pRowSlab = pRsbBuffer->pRowSlab();
+//  SP_RowPix spRowPix(pRowSlab->nCols(),pRowSlab->axaColPix());
+//
+//  i8 nRows = pRowSlab->nRows();
+//  SP_Ent spEnt;
+//
+//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//    // get upsert row, re-encode it for this table, and extract key
+//
+//    Rsb* aRsb_upsert = pRowSlab->aRsbAdr(i_Row);
+//    pEncoding_upsert->vEncodeRsb(aRsb_upsert);
+//
+//    Stz* szRsb = spRowPix.sz(aRsb_upsert);
+//    TRACE_UPSERT( vTrace("Upsert(P%lld) %lld: %s\n"_Stz,m_iPartitionId,i_Row,szRsb); )
+//
+//    xEntWrk.vElmSeqSize(0);
+//    pIndexTree->vExtractKey(&xEntWrk,aRsb_upsert);
+//    TRACE_UPSERT( vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIndexDef)); )
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//    // possible insert (can we find the row using primary key)
+//    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
+//    if (! pEntH0Buf) {
+//      TRACE_UPSERT( vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(pRowSlab,i_Row,&xEntWrk,pEncoding_upsert,tPerspective);
+//      continue;
+//    }
+//
+//    Ent* aEnt_prior = pEntH0Buf->aFindEntryBefore(xEntWrk.aKey());
+//    if (! aEnt_prior) {
+//      TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(pRowSlab,i_Row, &xEntWrk,pEncoding_upsert,tPerspective);
+//      continue;
+//    }
+//
+//    SP_Key spKey;
+//    TRACE_UPSERT( vTrace("Key Prior: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIndexDef)); )
+//    vDebugPoint();
+//
+//    Ent* aEnt_found = pEntH0Buf->aNextEntry(aEnt_prior,0);
+//    if (! aEnt_found) {
+//      TRACE_UPSERT( vTrace("No aEnt_found @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(pRowSlab,i_Row,&xEntWrk,pEncoding_upsert,tPerspective);
+//      continue;
+//    }
+//
+//    TRACE_UPSERT( vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIndexDef)); )
+//
+//    if (KC_SAME != Key::eCompare(aEnt_found->aKey(),xEntWrk.aKey())) {
+//      TRACE_UPSERT( vTrace("NOT SAME @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(pRowSlab,i_Row,&xEntWrk,pEncoding_upsert,tPerspective);
+//      continue;
+//    }
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//    // upsert (we have a crw matching the key)
+//
+//    SP_Ent spRef;
+//    vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef));
+//    TRACE_UPSERT( vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef)); )
+//
+//    Crw* aCrw_exists = CrwBuffer::pRefdCrw(aEnt_found->rxRef());
+//    if (! aCrw_exists) {
+//      TRACE_UPSERT( vTrace("No aCrw @%lld; skipping...\n"_Stz,(i8)__LINE__); )
+//      continue;
+//    }
+//    pIndexTree->vDump(true);
+//
+//    vDeleteRow(pIndexTree, pEntH0Buf, aEnt_found);
+//    ASSERT(pIndexTree->bVerifyIndex());
+//    vDebugPoint();
+//  }
+//
+//  // delete the encoding
+//  delete pEncoding_upsert;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* insert entries into all indexes for given row                              */
@@ -1000,210 +1000,220 @@ void TablePtn::vTruncateIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* WIP: upsert entries from a row buffer                                      */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  EntWrk xEntWrk;
-  
-  SP_Record spRecord;
-  
-  StreamDef* pStreamDef = pCrwBuffer_upsert->pStreamDef();
-  
-  IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
-  IndexDef* pIndexDef = pIndexTree->pIndex()->pIndexDef();
-  
-  HV_Row hvRow_upsert(pStreamDef,C_ALL);
-  
-  Encoding_v1* pEncoding_upsert = new Encoding_v1(pStreamDef);
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // iteration of rows from the incoming crw buffer
-  
-  i8 nRows = pCrwBuffer_upsert->nRowCount();
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // get upsert row, re-encode it for this table, and extract key
-    
-    Crw* aCrw_upsert = pCrwBuffer_upsert->aCrw(i_Row);
-    
-    pCrwBuffer_upsert->vGetRow(hvRow_upsert,i_Row);
-    TRACE_UPSERT( vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hvRow_upsert)); )
-    
-    pEncoding_upsert->vEncodeSrw(hvRow_upsert);
-
-    xEntWrk.vElmSeqSize(0);
-    pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer_upsert,i_Row);
-    SP_Ent spEnt;
-    TRACE_UPSERT( vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIndexDef)); )
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // possible insert (can we find the row using primary key)
-    
-    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
-    if (! pEntH0Buf) {
-      TRACE_UPSERT( vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
-      continue;
-    }
-    
-    Ent* aEnt_prior = pEntH0Buf->aFindEntryBefore(xEntWrk.aKey());
-    if (! aEnt_prior) {
-      TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
-      continue;
-    }
-    
-    SP_Key spKey;
-    TRACE_UPSERT( vTrace("Key Prior: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIndexDef)); )
-    vDebugPoint();
-    
-    Ent* aEnt_found = pEntH0Buf->aNextEntry(aEnt_prior,0);
-    if (! aEnt_found) {
-      TRACE_UPSERT( vTrace("No aEnt_found @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
-     continue;
-    }
-    
-    TRACE_UPSERT( vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIndexDef)); )
-    
-    if (KC_SAME != Key::eCompare(aEnt_found->aKey(),xEntWrk.aKey())) {
-      TRACE_UPSERT( vTrace("NOT SAME @%lld; inserting...\n"_Stz,(i8)__LINE__); )
-      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
-      continue;
-    }
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // upsert (we have a crw matching the key)
-    
-    SP_Ent spRef;
-    TRACE_UPSERT( vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef)); )
-    
-    Crw* aCrw_exists = CrwBuffer::pRefdCrw(aEnt_found->rxRef());
-    if (! aCrw_exists) {
-      TRACE_UPSERT( vTrace("No aCrw @%lld; skipping...\n"_Stz,(i8)__LINE__); )
-      continue;
-    }
-    
-    vUpsertRow_update(aCrw_exists,aEnt_found,pEncoding_upsert,tPerspective);
-    
-    vDebugPoint();
-
-  } // for i_Row
-  
-  delete pEncoding_upsert;
-}
+//void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+//
+//  EntWrk xEntWrk;
+//
+//  SP_Record spRecord;
+//
+//  StreamDef* pStreamDef = pCrwBuffer_upsert->pStreamDef();
+//
+//  IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
+//  IndexDef* pIndexDef = pIndexTree->pIndex()->pIndexDef();
+//
+//  HV_Row hvRow_upsert(pStreamDef,C_ALL);
+//
+//  Encoding_v1* pEncoding_upsert = new Encoding_v1(pStreamDef);
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // iteration of rows from the incoming crw buffer
+//
+//  i8 nRows = pCrwBuffer_upsert->nRowCount();
+//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//    // get upsert row, re-encode it for this table, and extract key
+//
+//    Crw* aCrw_upsert = pCrwBuffer_upsert->aCrw(i_Row);
+//
+//    pCrwBuffer_upsert->vGetRow(hvRow_upsert,i_Row);
+//    TRACE_UPSERT( vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hvRow_upsert)); )
+//
+//    pEncoding_upsert->vEncodeSrw(hvRow_upsert);
+//
+//    xEntWrk.vElmSeqSize(0);
+//    pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer_upsert,i_Row);
+//    SP_Ent spEnt;
+//    TRACE_UPSERT( vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIndexDef)); )
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//    // possible insert (can we find the row using primary key)
+//
+//    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
+//    if (! pEntH0Buf) {
+//      TRACE_UPSERT( vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+//      continue;
+//    }
+//
+//    Ent* aEnt_prior = pEntH0Buf->aFindEntryBefore(xEntWrk.aKey());
+//    if (! aEnt_prior) {
+//      TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+//      continue;
+//    }
+//
+//    SP_Key spKey;
+//    TRACE_UPSERT( vTrace("Key Prior: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIndexDef)); )
+//    vDebugPoint();
+//
+//    Ent* aEnt_found = pEntH0Buf->aNextEntry(aEnt_prior,0);
+//    if (! aEnt_found) {
+//      TRACE_UPSERT( vTrace("No aEnt_found @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+//     continue;
+//    }
+//
+//    TRACE_UPSERT( vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIndexDef)); )
+//
+//    if (KC_SAME != Key::eCompare(aEnt_found->aKey(),xEntWrk.aKey())) {
+//      TRACE_UPSERT( vTrace("NOT SAME @%lld; inserting...\n"_Stz,(i8)__LINE__); )
+//      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
+//      continue;
+//    }
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//    // upsert (we have a crw matching the key)
+//
+//    SP_Ent spRef;
+//    TRACE_UPSERT( vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIndexDef)); )
+//
+//    Crw* aCrw_exists = CrwBuffer::pRefdCrw(aEnt_found->rxRef());
+//    if (! aCrw_exists) {
+//      TRACE_UPSERT( vTrace("No aCrw @%lld; skipping...\n"_Stz,(i8)__LINE__); )
+//      continue;
+//    }
+//
+//    vUpsertRow_update(aCrw_exists,aEnt_found,pEncoding_upsert,tPerspective);
+//
+//    vDebugPoint();
+//
+//  } // for i_Row
+//
+//  delete pEncoding_upsert;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* WIP: insert a new row (no such row yet exists in the index)                */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
-                                 Encoding_v1* pEncoding_upsert, t8 tPerspective)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  StreamDef* pStreamDef = m_pTable->pStreamDef();
-  
-  HV_Row hvRow_nosuch(pStreamDef,C_ALL);
-  CrwBuffer::vToRow(hvRow_nosuch,aCrw_nosuch);
-  SP_Record spRec;
-  TRACE_UPSERT( vTrace("NoSuch   : %s\n"_Stz,spRec.sz(hvRow_nosuch)); )
-  
-  SP_Encoding spEncoding;
-  TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
-  
-  Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
-  Packing_v1::vPackCrw_v1(aCrw_insert,pEncoding_upsert);
-  
-  // set perspective
-  aCrw_insert->vPerspective(tPerspective);
-  
-  SP_Ref spRef;
-  //TRACE_UPSERT( vTrace("Insert Entries to : %s\n"_Stz,spRef.sz(aEntWrk->xRef())); )
-
-  vInsertIndexEntries(aCrw_insert,aEntWrk->rxRef());
-  
-  vDebugPoint();
-}
+//void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
+//                                 Encoding_v1* pEncoding_upsert, t8 tPerspective)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+//
+//  RASSERT(0);
+//
+//  StreamDef* pStreamDef = m_pTable->pStreamDef();
+//
+//  HV_Row hvRow_nosuch(pStreamDef,C_ALL);
+//  CrwBuffer::vToRow(hvRow_nosuch,aCrw_nosuch);
+//  SP_Record spRec;
+//  TRACE_UPSERT( vTrace("NoSuch   : %s\n"_Stz,spRec.sz(hvRow_nosuch)); )
+//
+//  SP_Encoding spEncoding;
+//  TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
+//
+//  Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
+//
+//  // ... incomplete
+//  // Packing_v2::vPackCrw_v2(aCrw_insert,pEncoding_upsert);
+//
+//  // set perspective
+//  aCrw_insert->vPerspective(tPerspective);
+//
+//  SP_Ref spRef;
+//  //TRACE_UPSERT( vTrace("Insert Entries to : %s\n"_Stz,spRef.sz(aEntWrk->xRef())); )
+//
+//  vInsertIndexEntries(aCrw_insert,aEntWrk->rxRef());
+//
+//  vDebugPoint();
+//}
 /*----------------------------------------------------------------------------*/
 /* WIP: insert a new row (no such row yet exists in the index)                */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
-                                 Encoding_v1* pEncoding_upsert, t8 tPerspective)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  //StreamDef* pStreamDef = m_pTable->pStreamDef();
-  
-  //HV_Row hvRow_nosuch(pStreamDef,C_ALL);
-  //CrwBuffer::vToRow(hvRow_nosuch,aCrw_nosuch);
-  //SP_Record spRec;
-  //TRACE_UPSERT( vTrace("NoSuch   : %s\n"_Stz,spRec.sz(hvRow_nosuch)); )
-  
-  //SP_Encoding spEncoding;
-  //TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
-  
-  Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
-  Packing_v1::vPackCrw_v1(aCrw_insert,pEncoding_upsert);
-  Rsb* aRsb = pRowSlab->aRsbAdr(i_Row);
-  
-  
-  // set perspective
-  //aCrw_insert->vPerspective(tPerspective);
-  
-  SP_Ref spRef;
-  //TRACE_UPSERT( vTrace("Insert Entries to : %s\n"_Stz,spRef.sz(aEntWrk->xRef())); )
-  
-  vInsertIndexEntries(aCrw_insert,aEntWrk->rxRef());
-  
-  vDebugPoint();
-}
+//void TablePtn::vUpsertRow_insert(RowSlab* pRowSlab, i8 i_Row, EntWrk* aEntWrk,
+//                                 Encoding_v1* pEncoding_upsert, t8 tPerspective)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+//  
+//  RASSERT(0);
+//  
+////StreamDef* pStreamDef = m_pTable->pStreamDef();
+//  
+//  //HV_Row hvRow_nosuch(pStreamDef,C_ALL);
+//  //CrwBuffer::vToRow(hvRow_nosuch,aCrw_nosuch);
+//  //SP_Record spRec;
+//  //TRACE_UPSERT( vTrace("NoSuch   : %s\n"_Stz,spRec.sz(hvRow_nosuch)); )
+//  
+//  //SP_Encoding spEncoding;
+//  //TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
+//  
+//  Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
+//  // ... incomplete
+//  // Packing_v2::vPackCrw_v2(aCrw_insert,pEncoding_upsert);
+//  Rsb* aRsb = pRowSlab->aRsbAdr(i_Row);
+//  
+//  
+//  // set perspective
+//  //aCrw_insert->vPerspective(tPerspective);
+//  
+//  SP_Ref spRef;
+//  //TRACE_UPSERT( vTrace("Insert Entries to : %s\n"_Stz,spRef.sz(aEntWrk->xRef())); )
+//  
+//  vInsertIndexEntries(aCrw_insert,aEntWrk->rxRef());
+//  
+//  vDebugPoint();
+//}
 /*----------------------------------------------------------------------------*/
 /* WIP: update an existing row                                                */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
-                                 Encoding_v1* pEncoding_upsert, t8 tPerspective)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  StreamDef* pStreamDef = m_pTable->pStreamDef();
-  
-  HV_Row hvRow_exists(pStreamDef,C_ALL);
-  CrwBuffer::vToRow(hvRow_exists,aCrw_exists);
-  SP_Record spRec;
-  TRACE_UPSERT( vTrace("Exists   : %s\n"_Stz,spRec.sz(hvRow_exists)); )
-  
-  SP_Encoding spEncoding;
-  TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
-  
-  // record prior version
-  m_pReadApi->vAddCrwVersion(aEnt_found->rxRef(),aCrw_exists);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Packing_v1::vPackCrw_v1(aCrw_exists,pEncoding_upsert);
-  
-  // set perspective
-  aCrw_exists->vPerspective(tPerspective);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // read-check
-  
-//  Crw* aCrwPrior = m_pReadApi->aGetCrwVersion(aEnt_found->xRef(),tPerspective - 2);
-//  if (aCrwPrior) {
-//    SP_Crw spCrw;
-//    //vTrace("CrwExists : %s\n"_Stz,spCrw.sz(aCrw_exists,pStreamDef));
-//    //vTrace("aCrwPrior : %s\n"_Stz,spCrw.sz(aCrwPrior,pStreamDef));
-//    vDebugPoint();
-//  }
-//  else {
-//    vDebugPoint();
-//  }
-  
-  vDebugPoint();
-}
+//void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
+//                                 Encoding_v1* pEncoding_upsert, t8 tPerspective)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+//  
+//  RASSERT(0);
+//  
+//  StreamDef* pStreamDef = m_pTable->pStreamDef();
+//  
+//  HV_Row hvRow_exists(pStreamDef,C_ALL);
+//  CrwBuffer::vToRow(hvRow_exists,aCrw_exists);
+//  SP_Record spRec;
+//  TRACE_UPSERT( vTrace("Exists   : %s\n"_Stz,spRec.sz(hvRow_exists)); )
+//  
+//  SP_Encoding spEncoding;
+//  TRACE_UPSERT( vTrace("Encoding_v1 : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert)); )
+//  
+//  // record prior version
+//  m_pReadApi->vAddCrwVersion(aEnt_found->rxRef(),aCrw_exists);
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  // ... incomplete
+//  // Packing_v2::vPackCrw_v2(aCrw_exists,pEncoding_upsert);
+//  
+//  // set perspective
+//  aCrw_exists->vPerspective(tPerspective);
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // read-check
+//  
+////  Crw* aCrwPrior = m_pReadApi->aGetCrwVersion(aEnt_found->xRef(),tPerspective - 2);
+////  if (aCrwPrior) {
+////    SP_Crw spCrw;
+////    //vTrace("CrwExists : %s\n"_Stz,spCrw.sz(aCrw_exists,pStreamDef));
+////    //vTrace("aCrwPrior : %s\n"_Stz,spCrw.sz(aCrwPrior,pStreamDef));
+////    vDebugPoint();
+////  }
+////  else {
+////    vDebugPoint();
+////  }
+//  
+//  vDebugPoint();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* verify the table data of this partition                                    */

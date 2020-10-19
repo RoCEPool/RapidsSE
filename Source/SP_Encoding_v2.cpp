@@ -72,7 +72,7 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
     u1 uHigh;
     u1 uLow;
     
-    METACLUE_SPLIT(aColEnc->m_uMetaClue,uHigh,uLow);
+    METACODE_SPLIT(aColEnc->m_uMetaCode,uHigh,uLow);
     
     StrLib::vAppendString(&szCrs,(char*)" "_Stz);
     StrLib::vAppendPad(&szCrs,caLine,2);
@@ -90,23 +90,20 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
     StrLib::vAppendString(&szCrs,(char*)szDatum);
     
     StrLib::vAppendPad(&szCrs,caLine,30);
-    StrLib::vAppendString(&szCrs,(char*)aMC[aColEnc->m_eMetaCode]);
-    
-    StrLib::vAppendPad(&szCrs,caLine,45);
+    if (aColEnc->m_uMetaCode < 16)
+      StrLib::vAppendChar(&szCrs,'0');
+    StrLib::vAppendHex(&szCrs,aColEnc->m_uMetaCode);
+    StrLib::vAppendChar(&szCrs,':');
+    StrLib::vAppendString(&szCrs,(char*)aMC[uHigh]);
+    StrLib::vAppendChar(&szCrs,'.');
+    StrLib::vAppendDecimal(&szCrs,uLow);
+
+    StrLib::vAppendPad(&szCrs,caLine,50);
     StrLib::vAppendString(&szCrs,(char*)"C_"_Stz);
     StrLib::vAppendDecimal(&szCrs,aColEnc->m_nDataSize);
     StrLib::vAppendString(&szCrs,(char*)"B"_Stz);
 
-    StrLib::vAppendPad(&szCrs,caLine,55);
-    if (aColEnc->m_uMetaClue < 16)
-      StrLib::vAppendChar(&szCrs,'0');
-    StrLib::vAppendHex(&szCrs,aColEnc->m_uMetaClue);
-    StrLib::vAppendChar(&szCrs,':');
-    StrLib::vAppendString(&szCrs,(char*)aMN[uHigh]);
-    StrLib::vAppendChar(&szCrs,'.');
-    StrLib::vAppendDecimal(&szCrs,uLow);
-
-    StrLib::vAppendPad(&szCrs,caLine,75);
+    StrLib::vAppendPad(&szCrs,caLine,60);
     
     if (pEncoding->xaColEnc[i_Col].m_i_Till) {
       StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Offset);
@@ -114,12 +111,12 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
       StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Till);
     }
     
-    StrLib::vAppendPad(&szCrs,caLine,85);
+    StrLib::vAppendPad(&szCrs,caLine,70);
     StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Tail);
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
-    StrLib::vAppendPad(&szCrs,caLine,90);
+    StrLib::vAppendPad(&szCrs,caLine,75);
     
     if (aColEnc->m_wDataCode.bIsNull()) {
       StrLib::vAppendString(&szCrs,(char*)C_NULL);
@@ -183,19 +180,7 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
         }
           
         case DM_VCH: {
-          SP_Vch SP_Vch;
-          if (MC_STR_FIT_1L == aColEnc->m_eMetaCode ||
-              MC_STR_FIT_2L == aColEnc->m_eMetaCode) {
-            StrLib::vAppendString(&szCrs,
-                                  aColEnc->m_wDataCode.m_azStr);
-          }
-          else if (MC_STR_EMPTY == aColEnc->m_eMetaCode) {
-            StrLib::vAppendString(&szCrs,(char*)""_Stz);
-          }
-          else {
-            StrLib::vAppendString(&szCrs,
-                                  (char*)aColEnc->m_aTailLine->sz());
-          }
+          StrLib::vAppendString(&szCrs,aColEnc->m_wDataCode.m_azStr);
           break;
         }
           

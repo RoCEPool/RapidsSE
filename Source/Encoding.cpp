@@ -36,7 +36,6 @@ Encoding::Encoding(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 Encoding::~Encoding(void) noexcept(false)
 {
-  delete m_pEncoding_v1;
   delete m_pEncoding_v2;
 }
 

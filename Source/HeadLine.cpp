@@ -128,9 +128,12 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   i8 i_OfsCrs_ = C_UNKNOWN;
 
   
-  u1 uLastEncoding = uGetEncMetaClue(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  u1 uLastEncoding = uGetEncMetaCode(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
-  nDataBytes = RowCoder::nDataSizeOfClue(uLastEncoding);
+  u1 uHigh = METACODE_HIGH(uLastEncoding);
+  u1 uLow  = METACODE_LOW(uLastEncoding);
+
+  nDataBytes = RowCoder::nDataSizeOfCode(uHigh,uLow);
   
   i8 nFreeBytes = nBytes() - i_OfsCrs_ - nDataBytes;
   
@@ -170,9 +173,9 @@ w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the encoding (metaclue and offset) of a column datum                   */
+/* get the encoding (metacode and offset) of a column datum                   */
 /*----------------------------------------------------------------------------*/
-u1 HeadLine::uGetEncMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
+u1 HeadLine::uGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
                            StreamDef* pStreamDef)
 {
   _nonProper_
@@ -190,33 +193,33 @@ u1 HeadLine::uGetEncMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
   
   for (i8 i_Col = i_ColCrs_; i_Col < i_ForCol; i_Col++) {
     
-    u1 uEncoding = uMetaClue(i_Col);
+    u1 uEncoding = uMetaCode(i_Col);
     
-    u1 uHigh = METACLUE_HIGH(uEncoding);
-    u1 uLow  = METACLUE_LOW(uEncoding);
+    u1 uHigh = METACODE_HIGH(uEncoding);
+    u1 uLow  = METACODE_LOW(uEncoding);
 
-    if (MN_OVERFLOW == uHigh) {
+    if (MC_OVERFLOW == uHigh) {
       i_OfsCrs_ = nBytes() + C_U_1B;
       uEncoding = (u1)wGetLogical(i_OfsCrs_++,C_1B);
-      i_OfsCrs_ += RowCoder::nDataSizeOfClue(uEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(uHigh,uLow);
     }
     else {
-      i_OfsCrs_ += RowCoder::nDataSizeOfClue(uEncoding);
+      i_OfsCrs_ += RowCoder::nDataSizeOfCode(uHigh,uLow);
     }
     
-    if (MN_STRING_x1 == uHigh) {
+    if (MC_STRING_x1 == uHigh) {
       i_OfsCrs_ += STRx1(uLow);
     }
     else
-    if (MN_STRING_x2 == uHigh) {
+    if (MC_STRING_x2 == uHigh) {
       i_OfsCrs_ += STRx2(uLow);
     }
     else
-    if (MN_STRING_x4 == uHigh) {
+    if (MC_STRING_x4 == uHigh) {
       i_OfsCrs_ += STRx4(uLow);
     }
     else
-    if (MN_STRING_x8 == uHigh) {
+    if (MC_STRING_x8 == uHigh) {
       i_OfsCrs_ += STRx8(uLow);
     }
   }
@@ -224,10 +227,10 @@ u1 HeadLine::uGetEncMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the encoding for the column
   
-  u1 uEncoding = uMetaClue(i_ForCol);
-  u1 uHigh = METACLUE_HIGH(uEncoding);
-  u1 uLow  = METACLUE_LOW(uEncoding);
-  if (MN_OVERFLOW == uHigh) {
+  u1 uEncoding = uMetaCode(i_ForCol);
+  u1 uHigh = METACODE_HIGH(uEncoding);
+  u1 uLow  = METACODE_LOW(uEncoding);
+  if (MC_OVERFLOW == uHigh) {
     i_OfsCrs_ = nBytes() + C_U_1B + C_M_1B;
     OverLine* aOverLine = aGetOver();
     uEncoding = (u1)aOverLine->w8_1B(1);
@@ -236,62 +239,6 @@ u1 HeadLine::uGetEncMetaClue(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
   i_ColCrs_ = i_ForCol;
   
   return uEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the encoding (metacode and offset) of a column datum                   */
-/*----------------------------------------------------------------------------*/
-eMC HeadLine::eGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
-                           StreamDef* pStreamDef)
-{
-  _nonProper_
-  
-  i8 i_ForCol = pForCol->iColumnNo();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move cursor forward to column required
-  
-  if (C_UNKNOWN == i_OfsCrs_ || i_ForCol < i_ColCrs_) {
-    
-    i_ColCrs_ = 0;
-    i_OfsCrs_ = RowCoder::iBaseOffsetData(pStreamDef);
-  }
-  
-  for (i8 i_Col = i_ColCrs_; i_Col < i_ForCol; i_Col++) {
-    
-    eMC eEncoding = eMetaCode(i_Col);
-    
-    if (MC_OVERFLOW_2T == eEncoding) {
-      i_OfsCrs_ = nBytes() + C_U_1B;
-      eEncoding = (eMC)wGetLogical(i_OfsCrs_++,C_1B);
-      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
-    }
-    else {
-      i_OfsCrs_ += RowCoder::nDataSizeOfCode(eEncoding);
-    }
-    
-    if (MC_STR_FIT_1L == eEncoding) {
-      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_1B);
-    }
-    else
-    if (MC_STR_FIT_2L == eEncoding) {
-      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_2B);
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the encoding for the column
-  
-  eMC eEncoding = eMetaCode(i_ForCol);
-  if (MC_OVERFLOW_2T == eEncoding) {
-    i_OfsCrs_ = nBytes() + C_U_1B + C_M_1B;
-    OverLine* aOverLine = aGetOver();
-    eEncoding = (eMC)aOverLine->w8_1B(1);
-  }
-  
-  i_ColCrs_ = i_ForCol;
-  
-  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -362,23 +309,9 @@ void HeadLine::vHasOverflow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* store meta clue                                                            */
-/*----------------------------------------------------------------------------*/
-void HeadLine::vMetaClue(i8 i_Col, u1 uMetaClue)
-{
-  _nonProper_
-  
-  i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
-  
-  i8 i_Offset = i_BaseOffsetMeta + i_Col;
-  
-  v1B(i_Offset,uMetaClue);
-}
-
-/*----------------------------------------------------------------------------*/
 /* store meta code                                                            */
 /*----------------------------------------------------------------------------*/
-void HeadLine::vMetaCode(i8 i_Col, eMC eMetaCode)
+void HeadLine::vMetaCode(i8 i_Col, u1 uMetaCode)
 {
   _nonProper_
   
@@ -386,7 +319,7 @@ void HeadLine::vMetaCode(i8 i_Col, eMC eMetaCode)
   
   i8 i_Offset = i_BaseOffsetMeta + i_Col;
   
-  v1B(i_Offset,eMetaCode);
+  v1B(i_Offset,uMetaCode);
 }
 
 /*----------------------------------------------------------------------------*/

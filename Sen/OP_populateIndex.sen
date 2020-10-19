@@ -1,0 +1,91 @@
+/*============================================================================*/
+/* OP_populateIndex.sen -- Operator populate index                            */
+/*============================================================================*/
+
+" OP_populateIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_INDEXDEF ...                                                */
+/*----------------------------------------------------------------------------*/
+: populateIndex_IndexDef
+
+  0 locals| sTableNm |
+
+  // get the index def
+  Pipein[] to indexDef[]
+  nullptr to Pipein[]
+
+  indexDef[].tableName@ to sTableNm
+  indexDef[].delete
+
+  sTableNm <indexNm> op__table_index not if
+    true
+    exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EOSMARKER ...                                                */
+/*----------------------------------------------------------------------------*/
+: populateIndex_EosMarker
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // populate the index
+
+  Table[].tablePtn@ to tablePtn[]
+
+  tablePtn[] tablePtnGrabWrite_msec
+  index[] tablePtn[].populateIndex not if ( errorCode )
+    tablePtn[] tablePtnDropWrite
+    op.pipelineJob@ ERROR_JOB
+    PipeIn[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+    true
+    exit
+  then
+
+  tablePtn[] tablePtnDropWrite
+
+  // should be in tables
+  folder[].isTables assert
+
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for populateIndex req                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: populateIndex_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: populateIndex_EosMarker ZK_EOSMARKER op[].handler!
+  find: populateIndex_IndexDef ZK_INDEXDEF op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: populateIndex :: populateIndex <indexNm> ;
+
+: populateIndex _cmdTags tagCopy: op_tags
+  tags{
+    <jobDesc>   = "--description of operator--" }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

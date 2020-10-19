@@ -23,29 +23,10 @@ namespace CompactBuffers
     static void vInflateRow(RowSlab* pRsbSlab, HeadLine* aHeadLine);
 
   private:
+    
   
-    // v1 meta code
-    static void vInflateSet_v1(i8** aaiDstk, HeadLine* aHeadLine,
-                                StreamDef* pStreamDef, i8* iaColSet);
-    static void vInflateColumn_v1(RowSingle* pRow, HeadLine* aHeadLine,
-                                  i8 i_ColToRetrieve);
-    static void vInflateRow_v1(RowSingle* pRow, HeadLine* aHeadLine);
-    static void vInflateRow_v1(RowSlab* pRsbSlab, HeadLine* aHeadLine);
+    // v2 meta code
   
-  
-    // v2 meta clue
-  
-//    static void vInflate_v2(byte*& rayDstByte,
-//                            byte*& rayDataByte, HeadLine* aHeadLine,
-//                            u1 uHigh, u1 uLow,
-//                            eSI eStrInflate, char*& racString);
-  
-    //static void vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte,
-    //                     HeadLine* aHeadLine);
-
-//    static void vPrepare_v2(u1*& rauMetaClue, byte*& rayDataByte,
-//                            i8 nCols, HeadLine* aHeadLine);
-
     static void vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
                                StreamDef* pStreamDef,
                                eSI eStrInflate, i8* iaColSet);
@@ -64,28 +45,28 @@ namespace CompactBuffers
 
     L_Overflowed:
     
-    if (uHigh <=  MN_STRING_x1) // numeric & date
+    if (uHigh <=  MC_STRING_x1) // numeric & date
       rayDataByte += uLow;
     else
-    if (uHigh >=  MN_NEGATIVE)  // small value
+    if (uHigh >=  MC_NEGATIVE)  // small value
       {;}
     else
-    if (uHigh == MN_STRING_x1)  // string x 1
+    if (uHigh == MC_STRING_x1)  // string x 1
       rayDataByte += STRx1(uLow);
     else
-    if (uHigh == MN_STRING_x2)  // string x 2
+    if (uHigh == MC_STRING_x2)  // string x 2
       rayDataByte += STRx2(uLow);
     else
-    if (uHigh == MN_STRING_x4)  // string x 4
+    if (uHigh == MC_STRING_x4)  // string x 4
       rayDataByte += STRx4(uLow);
     else
-    if (uHigh == MN_STRING_x8)  // string x 8
+    if (uHigh == MC_STRING_x8)  // string x 8
       rayDataByte += STRx8(uLow);
     else
-    if (uHigh == MN_OVERFLOW) { // overflow
+    if (uHigh == MC_OVERFLOW) { // overflow
       OverLine* aOverLine = aHeadLine->aGetOver();
-      u1 uMetaClue = *((u1*)aOverLine + C_U_1B);
-      METACLUE_SPLIT(uMetaClue,uHigh,uLow);
+      u1 uMetaCode = *((u1*)aOverLine + C_U_1B);
+      METACODE_SPLIT(uMetaCode,uHigh,uLow);
       rayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
       goto L_Overflowed;
     }
@@ -116,11 +97,11 @@ namespace CompactBuffers
     
     switch (uHigh) {
         
-      case MN_NUMERIC: // numeric values 0..8B
+      case MC_NUMERIC: // numeric values 0..8B
         
         switch (uLow) {
             
-          case 0x0: // MN_NUMERIC 0B
+          case 0x0: // MC_NUMERIC 0B
             *rayDstByte++ = 0; // 0
             *rayDstByte++ = 0; // 1
             *rayDstByte++ = 0; // 2
@@ -131,7 +112,7 @@ namespace CompactBuffers
             *rayDstByte++ = 0; // 7
             break;
             
-          case 0x1: // MN_NUMERIC 1B
+          case 0x1: // MC_NUMERIC 1B
             *rayDstByte++ = *rayDataByte++; // 0
             *rayDstByte++ = 0; // 1
             *rayDstByte++ = 0; // 2
@@ -142,7 +123,7 @@ namespace CompactBuffers
             *rayDstByte++ = 0; // 7
             break;
             
-          case 0x2: // MN_NUMERIC 2B
+          case 0x2: // MC_NUMERIC 2B
             *rayDstByte++ = *rayDataByte++; // 0
             *rayDstByte++ = *rayDataByte++; // 1
             *rayDstByte++ = 0; // 2
@@ -153,7 +134,7 @@ namespace CompactBuffers
             *rayDstByte++ = 0; // 7
             break;
             
-          case 0x3: // MN_NUMERIC 3B
+          case 0x3: // MC_NUMERIC 3B
             *rayDstByte++ = *rayDataByte++; // 0
             *rayDstByte++ = *rayDataByte++; // 1
             *rayDstByte++ = *rayDataByte++; // 2
@@ -164,7 +145,7 @@ namespace CompactBuffers
             *rayDstByte++ = 0; // 7
             break;
             
-          case 0x4: // MN_NUMERIC 4B
+          case 0x4: // MC_NUMERIC 4B
             *rayDstByte++ = *rayDataByte++; // 0
             *rayDstByte++ = *rayDataByte++; // 1
             *rayDstByte++ = *rayDataByte++; // 2
@@ -175,7 +156,7 @@ namespace CompactBuffers
             *rayDstByte++ = 0; // 7
             break;
             
-          case 0x5: // MN_NUMERIC 5B
+          case 0x5: // MC_NUMERIC 5B
             *rayDstByte++ = *rayDataByte++; // 0
             *rayDstByte++ = *rayDataByte++; // 1
             *rayDstByte++ = *rayDataByte++; // 2
@@ -186,7 +167,7 @@ namespace CompactBuffers
             *rayDstByte++ = 0; // 7
             break;
             
-          case 0x6: // MN_NUMERIC 6B
+          case 0x6: // MC_NUMERIC 6B
             *rayDstByte++ = *rayDataByte++; // 0
             *rayDstByte++ = *rayDataByte++; // 1
             *rayDstByte++ = *rayDataByte++; // 2
@@ -197,7 +178,7 @@ namespace CompactBuffers
             *rayDstByte++ = 0; // 7
             break;
             
-          case 0x7: // MN_NUMERIC 7B
+          case 0x7: // MC_NUMERIC 7B
             *rayDstByte++ = *rayDataByte++; // 0
             *rayDstByte++ = *rayDataByte++; // 1
             *rayDstByte++ = *rayDataByte++; // 2
@@ -208,7 +189,7 @@ namespace CompactBuffers
             *rayDstByte++ = 0; // 7
             break;
             
-          case 0x8: // MN_NUMERIC 8B
+          case 0x8: // MC_NUMERIC 8B
             *rayDstByte++ = *rayDataByte++; // 0
             *rayDstByte++ = *rayDataByte++; // 1
             *rayDstByte++ = *rayDataByte++; // 2
@@ -219,38 +200,38 @@ namespace CompactBuffers
             *rayDstByte++ = *rayDataByte++; // 7
           break;
             
-          case 0x9: // MN_NUMERIC 9B
+          case 0x9: // MC_NUMERIC 9B
             RASSERT(0);
             break;
             
-          case 0xA: // MN_NUMERIC 10B
+          case 0xA: // MC_NUMERIC 10B
             RASSERT(0);
             break;
             
-          case 0xB: // MN_NUMERIC 11B
+          case 0xB: // MC_NUMERIC 11B
             RASSERT(0);
             break;
             
-          case 0xC: // MN_NUMERIC 12B
+          case 0xC: // MC_NUMERIC 12B
             RASSERT(0);
             break;
             
-          case 0xD: // MN_NUMERIC 13B
+          case 0xD: // MC_NUMERIC 13B
             RASSERT(0);
             break;
             
-          case 0xE: // MN_NUMERIC 14B
+          case 0xE: // MC_NUMERIC 14B
             RASSERT(0);
             break;
             
-          case 0xF: // MN_NUMERIC 15B
+          case 0xF: // MC_NUMERIC 15B
             RASSERT(0);
             break;
           
         }
         break;
         
-      case MN_DATE_E0: // date era-0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_DATE_E0: // date era-0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)rayDstByte;
         
         *rayDstByte++ = *rayDataByte++; // 0
@@ -265,7 +246,7 @@ namespace CompactBuffers
         vDteFromEdt(aiCellValue,C_ERA_0);
         break;
         
-      case MN_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)rayDstByte;
         
         *rayDstByte++ = *rayDataByte++; // 0
@@ -280,7 +261,7 @@ namespace CompactBuffers
         vDteFromEdt(aiCellValue,C_ERA_1);
         break;
         
-      case MN_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)rayDstByte;
         
         *rayDstByte++ = *rayDataByte++; // 0
@@ -295,7 +276,7 @@ namespace CompactBuffers
         vDteFromEdt(aiCellValue,C_ERA_2);
         break;
         
-      case MN_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
+      case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
         nStrSize = STRx1(uLow);
         
         if (SI_ADDRESS == eStrInflate) {
@@ -333,18 +314,18 @@ namespace CompactBuffers
         
         break;
         
-      case MN_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         *(i8*)rayDstByte = C_DATUM_NULL;
         rayDstByte += C_BYTES_PER_WORD;
         break;
         
-      case MN_SPARE0: // spare
+      case MC_SPARE0: // spare
         RASSERT(0);
         break;
         
-      case MN_OVERFLOW: // overflow 2B
+      case MC_OVERFLOW: // overflow 2B
         aOverLine = aHeadLine->aGetOver();
-        METACLUE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
+        METACODE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
         rayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
         goto L_HighSwitch;
         break;
@@ -354,7 +335,7 @@ namespace CompactBuffers
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // toBytes(uLow) depends on uHigh
         
-      case MN_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx2(uLow);
         
         if (SI_ADDRESS == eStrInflate) {
@@ -394,7 +375,7 @@ namespace CompactBuffers
 
         break;
         
-      case MN_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx4(uLow);
         
         if (SI_ADDRESS == eStrInflate) {
@@ -433,7 +414,7 @@ namespace CompactBuffers
         
         break;
         
-      case MN_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx8(uLow);
         
         if (SI_ADDRESS == eStrInflate) {
@@ -472,7 +453,7 @@ namespace CompactBuffers
         
         break;
         
-      case MN_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
         u_Tail_rel = *(u2*)rayDataByte;
         aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
         
@@ -493,15 +474,15 @@ namespace CompactBuffers
         
         break;
         
-      case MN_BLOB_0: // blob type 0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_BLOB_0: // blob type 0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         RASSERT(0);
         break;
         
-      case MN_BLOB_1: // blob type 1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_BLOB_1: // blob type 1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         RASSERT(0);
         break;
         
-      case MN_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)rayDstByte;
         
         *rayDstByte++ = uLow; // 0
@@ -517,7 +498,7 @@ namespace CompactBuffers
 
         break;
         
-      case MN_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
         *rayDstByte++ = uLow; // 0
         *rayDstByte++ = 0; // 1
         *rayDstByte++ = 0; // 2
@@ -538,12 +519,12 @@ namespace CompactBuffers
   /*----------------------------------------------------------------------------*/
   /* prepare                                                                    */
   /*----------------------------------------------------------------------------*/
-  static inline void vPrepare_v2(u1*& rauMetaClue, byte*& rayDataByte,
+  static inline void vPrepare_v2(u1*& rauMetaCode, byte*& rayDataByte,
                                 i8 nCols, HeadLine* aHeadLine)
   {
     _static_
     
-    rauMetaClue = aHeadLine->auMetaArea();
+    rauMetaCode = aHeadLine->auMetaArea();
     
     i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
                           + C_T_8B // (ControlDate) 8 bytes for the perspective
@@ -569,7 +550,7 @@ namespace CompactBuffers
     
   i8 nCols = pStreamDef->nTotalColumns();
   
-  u1* auMetaClue = aHeadLine->auMetaArea();
+  u1* auMetaCode = aHeadLine->auMetaArea();
   
   i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
                         + C_T_8B // (ControlDate) 8 bytes for the perspective
@@ -591,7 +572,7 @@ namespace CompactBuffers
   i8 nStrSize;
   
   i8* aiCellValue;
-  u1 uMetaClue;
+  u1 uMetaCode;
   u1 uHigh;
   u1 uLow;
   
@@ -618,9 +599,9 @@ namespace CompactBuffers
   
   for (i8 i_Col = 0; /*none*/; i_Col++) {
     
-    uMetaClue = *auMetaClue++;
-    uHigh = uMetaClue >> 4;
-    uLow  = uMetaClue & 0x0F;
+    uMetaCode = *auMetaCode++;
+    uHigh = uMetaCode >> 4;
+    uLow  = uMetaCode & 0x0F;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ignore column
@@ -629,28 +610,28 @@ namespace CompactBuffers
       
     L_Overflowed:
       
-      if (uHigh <=  MN_STRING_x1) // numeric & date
+      if (uHigh <=  MC_STRING_x1) // numeric & date
         ayDataByte += uLow;
       else
-      if (uHigh >=  MN_NEGATIVE)  // small value
+      if (uHigh >=  MC_NEGATIVE)  // small value
       {;}
       else
-      if (uHigh ==  MN_NULL)      // null value
+      if (uHigh ==  MC_NULL)      // null value
       {;}
       else
-      if (uHigh == MN_STRING_x1)  // string x 1
+      if (uHigh == MC_STRING_x1)  // string x 1
         ayDataByte += STRx1(uLow);
       else
-      if (uHigh == MN_STRING_x2)  // string x 2
+      if (uHigh == MC_STRING_x2)  // string x 2
         ayDataByte += STRx2(uLow);
       else
-      if (uHigh == MN_STRING_x4)  // string x 4
+      if (uHigh == MC_STRING_x4)  // string x 4
         ayDataByte += STRx4(uLow);
       else
-      if (uHigh == MN_STRING_x8)  // string x 8
+      if (uHigh == MC_STRING_x8)  // string x 8
         ayDataByte += STRx8(uLow);
       else
-      if (uHigh == MN_OVERFLOW) { // overflow
+      if (uHigh == MC_OVERFLOW) { // overflow
         
         // calculation to get overflow
         nSizeUnits = (i8)aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
@@ -660,8 +641,8 @@ namespace CompactBuffers
         
         aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
         
-        uMetaClue = *((u1*)aOverLine + C_U_1B);
-        METACLUE_SPLIT(uMetaClue,uHigh,uLow);
+        uMetaCode = *((u1*)aOverLine + C_U_1B);
+        METACODE_SPLIT(uMetaCode,uHigh,uLow);
         ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
         goto L_Overflowed;
       }
@@ -684,28 +665,28 @@ namespace CompactBuffers
     
     switch (uHigh) {
         
-      case MN_NUMERIC: // numeric values 0..8B
+      case MC_NUMERIC: // numeric values 0..8B
         
         switch (uLow) {
             
-          case 0x0: // MN_NUMERIC 0B
+          case 0x0: // MC_NUMERIC 0B
             *aiCellValue = 0;
             ayDstByte += C_8B;
             break;
             
-          case 0x1: // MN_NUMERIC 1B
+          case 0x1: // MC_NUMERIC 1B
             *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             ayDstByte += C_7B;
             break;
             
-          case 0x2: // MN_NUMERIC 2B
+          case 0x2: // MC_NUMERIC 2B
             *aiCellValue = *(u2*)(ayDataByte);
             ayDataByte += C_2B;
             ayDstByte += C_8B;
             break;
             
-          case 0x3: // MN_NUMERIC 3B
+          case 0x3: // MC_NUMERIC 3B
             *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
@@ -713,13 +694,13 @@ namespace CompactBuffers
             ayDstByte += C_5B;
             break;
             
-          case 0x4: // MN_NUMERIC 4B
+          case 0x4: // MC_NUMERIC 4B
             *aiCellValue = *(u4*)(ayDataByte);
             ayDataByte += C_4B;
             ayDstByte += C_8B;
             break;
             
-          case 0x5: // MN_NUMERIC 5B
+          case 0x5: // MC_NUMERIC 5B
             *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
@@ -729,7 +710,7 @@ namespace CompactBuffers
             ayDstByte += C_3B;
             break;
             
-          case 0x6: // MN_NUMERIC 6B
+          case 0x6: // MC_NUMERIC 6B
             *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
@@ -740,7 +721,7 @@ namespace CompactBuffers
             ayDstByte += C_2B;
             break;
             
-          case 0x7: // MN_NUMERIC 7B
+          case 0x7: // MC_NUMERIC 7B
             //*aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             *ayDstByte++ = *ayDataByte++; // 1
@@ -752,44 +733,44 @@ namespace CompactBuffers
             *ayDstByte++ = 0; // 7
             break;
             
-          case 0x8: // MN_NUMERIC 8B
+          case 0x8: // MC_NUMERIC 8B
             *aiCellValue = *(i8*)(ayDataByte);
             ayDstByte += C_8B;
             ayDataByte += C_8B;
             break;
             
-          case 0x9: // MN_NUMERIC 9B
+          case 0x9: // MC_NUMERIC 9B
             RASSERT(0);
             break;
             
-          case 0xA: // MN_NUMERIC 10B
+          case 0xA: // MC_NUMERIC 10B
             RASSERT(0);
             break;
             
-          case 0xB: // MN_NUMERIC 11B
+          case 0xB: // MC_NUMERIC 11B
             RASSERT(0);
             break;
             
-          case 0xC: // MN_NUMERIC 12B
+          case 0xC: // MC_NUMERIC 12B
             RASSERT(0);
             break;
             
-          case 0xD: // MN_NUMERIC 13B
+          case 0xD: // MC_NUMERIC 13B
             RASSERT(0);
             break;
             
-          case 0xE: // MN_NUMERIC 14B
+          case 0xE: // MC_NUMERIC 14B
             RASSERT(0);
             break;
             
-          case 0xF: // MN_NUMERIC 15B
+          case 0xF: // MC_NUMERIC 15B
             RASSERT(0);
             break;
             
         }
         break;
         
-      case MN_DATE_E0: // date era-0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_DATE_E0: // date era-0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
@@ -803,7 +784,7 @@ namespace CompactBuffers
         aDte->m_uDay       = aEdt->m_uDay;
         break;
         
-      case MN_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
@@ -817,7 +798,7 @@ namespace CompactBuffers
         aDte->m_uDay       = aEdt->m_uDay;
         break;
         
-      case MN_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         *aiCellValue = 0;
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
@@ -831,7 +812,7 @@ namespace CompactBuffers
         aDte->m_uDay       = aEdt->m_uDay;
         break;
         
-      case MN_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
+      case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
         nStrSize = STRx1(uLow);
         
         if (SI_ADDRESS == (eSI)ieStrInflate) {
@@ -869,16 +850,16 @@ namespace CompactBuffers
         
         break;
         
-      case MN_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         *(i8*)ayDstByte = C_DATUM_NULL;
         ayDstByte += C_BYTES_PER_WORD;
         break;
         
-      case MN_SPARE0: // spare
+      case MC_SPARE0: // spare
         RASSERT(0);
         break;
         
-      case MN_OVERFLOW: // overflow 2B
+      case MC_OVERFLOW: // overflow 2B
         
         // calculation to get overflow
         nSizeUnits = (i8)aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
@@ -888,7 +869,7 @@ namespace CompactBuffers
         
         aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
         
-        METACLUE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
+        METACODE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
         ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
         goto L_HighSwitch;
         
@@ -899,7 +880,7 @@ namespace CompactBuffers
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // toBytes(uLow) depends on uHigh
         
-      case MN_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx2(uLow);
         
         if (SI_ADDRESS == (eSI)ieStrInflate) {
@@ -939,7 +920,7 @@ namespace CompactBuffers
         
         break;
         
-      case MN_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx4(uLow);
         
         if (SI_ADDRESS == (eSI)ieStrInflate) {
@@ -978,7 +959,7 @@ namespace CompactBuffers
         
         break;
         
-      case MN_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx8(uLow);
         
         if (SI_ADDRESS == (eSI)ieStrInflate) {
@@ -1017,7 +998,7 @@ namespace CompactBuffers
         
         break;
         
-      case MN_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
         u_Tail_rel = *(u2*)ayDataByte;
         aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
         
@@ -1038,15 +1019,15 @@ namespace CompactBuffers
         
         break;
         
-      case MN_BLOB_0: // blob type 0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_BLOB_0: // blob type 0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         RASSERT(0);
         break;
         
-      case MN_BLOB_1: // blob type 1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_BLOB_1: // blob type 1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
         RASSERT(0);
         break;
         
-      case MN_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
         aiCellValue = (i8*)ayDstByte;
         
         *ayDstByte++ = uLow; // 0
@@ -1062,7 +1043,7 @@ namespace CompactBuffers
         
         break;
         
-      case MN_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
+      case MC_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
         *ayDstByte++ = uLow; // 0
         *ayDstByte++ = 0; // 1
         *ayDstByte++ = 0; // 2

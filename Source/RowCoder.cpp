@@ -10,17 +10,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get auxilliary length length fow this meta code (those MC_XYZ_nL)          */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iAuxLen(eMC eMetaCode)
-{
-  if (MC_STR_FIT_1L == eMetaCode) return 1;
-  if (MC_STR_FIT_2L == eMetaCode) return 2;
-
-  return 0;
-}
-
-/*----------------------------------------------------------------------------*/
 /* calc base offset for column data in head line                              */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
@@ -68,146 +57,6 @@ i8 RowCoder::nControlSize(void)
                   ;
   
   return nControlSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* how many bytes does given encoding occupy in the data portion of a head?   */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::nDataSizeOfClue(u1 uMetaClue)
-{
-  i8 iHigh;
-  i8 iLow;
-  
-  METACLUE_SPLIT(uMetaClue, iHigh, iLow);
-  
-  switch ((eMN)iHigh) {
-      
-    case MN_NUMERIC:     return iLow;
-    case MN_DATE_E0:     return 2;
-    case MN_DATE_E1:     return 2;
-    case MN_DATE_E2:     return 2;
-    case MN_STRING_x1:   return iLow;
-    case MN_NULL:        return 0;
-    case MN_SPARE0:      NEVER_REACH; return 0;
-    case MN_OVERFLOW:    return 2;
-      
-    case MN_STRING_x2:   return STRx2(iLow);
-    case MN_STRING_x4:   return STRx4(iLow);
-    case MN_STRING_x8:   return STRx8(iLow);
-    case MN_STRING_TAIL: return 2;
-    case MN_BLOB_0:      NEVER_REACH; return 0;
-    case MN_BLOB_1:      NEVER_REACH; return 0;
-    case MN_NEGATIVE:    return 1;
-    case MN_POSITIVE:    return 1;
-
-    default:
-      NEVER_REACH;
-  }
-  
-  return 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* how many bytes does given encoding occupy in the data portion of a head?   */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::nDataSizeOfCode(eMC eMetaCode)
-{
-  
-  switch (eMetaCode) {
-      
-    case MC_NULL:        return 0;
-      
-    case MC_BCD_1B:      return 1;
-    case MC_BCD_2B:      return 2;
-    case MC_BCD_3B:      return 3;
-    case MC_BCD_4B:      return 4;
-    case MC_BCD_5B:      return 5;
-    case MC_BCD_6B:      return 6;
-    case MC_BCD_7B:      return 7;
-    case MC_BCD_8B:      return 8;
-
-    case MC_BCD_M_ONE:   return 0;
-    case MC_BCD_ZERO:    return 0;
-    case MC_BCD_ONE:     return 0;
-    case MC_BCD_TWO:     return 0;
-    case MC_BCD_THREE:   return 0;
-    case MC_BCD_FOUR:    return 0;
-    case MC_BCD_FIVE:    return 0;
-    case MC_BCD_SIX:     return 0;
-    case MC_BCD_SEVEN:   return 0;
-    case MC_BCD_EIGHT:   return 0;
-    case MC_BCD_NINE:    return 0;
-    case MC_BCD_TEN:     return 0;
-      
-    case MC_BOL_FALSE:   return 0;
-    case MC_BOL_TRUE:    return 0;
-      
-    case MC_DTE_E0_2B:   return 2;
-    case MC_DTE_E1_2B:   return 2;
-    case MC_DTE_E2_2B:   return 2;
-      
-    case MC_FLT_1B:      return 1;
-    case MC_FLT_2B:      return 2;
-    case MC_FLT_3B:      return 3;
-    case MC_FLT_4B:      return 4;
-    case MC_FLT_5B:      return 5;
-    case MC_FLT_6B:      return 6;
-    case MC_FLT_7B:      return 7;
-    case MC_FLT_8B:      return 8;
-      
-    case MC_INT_1B:      return 1;
-    case MC_INT_2B:      return 2;
-    case MC_INT_3B:      return 3;
-    case MC_INT_4B:      return 4;
-    case MC_INT_5B:      return 5;
-    case MC_INT_6B:      return 6;
-    case MC_INT_7B:      return 7;
-    case MC_INT_8B:      return 8;
-      
-    case MC_INT_M_ONE:   return 0;
-    case MC_INT_ZERO:    return 0;
-    case MC_INT_ONE:     return 0;
-    case MC_INT_TWO:     return 0;
-    case MC_INT_THREE:   return 0;
-    case MC_INT_FOUR:    return 0;
-    case MC_INT_FIVE:    return 0;
-    case MC_INT_SIX:     return 0;
-    case MC_INT_SEVEN:   return 0;
-    case MC_INT_EIGHT:   return 0;
-    case MC_INT_NINE:    return 0;
-    case MC_INT_TEN:     return 0;
-      
-    case MC_IVL_1B:      return 1;
-    case MC_IVL_2B:      return 2;
-    case MC_IVL_3B:      return 3;
-    case MC_IVL_4B:      return 4;
-    case MC_IVL_5B:      return 5;
-    case MC_IVL_6B:      return 6;
-    case MC_IVL_7B:      return 7;
-    case MC_IVL_8B:      return 8;
-      
-    case MC_STR_EMPTY:   return 0;
-    case MC_STR_FIT_1L:  return 1;
-    case MC_STR_FIT_2L:  return 2;
-    case MC_STR_TAIL_2T: return 2;
-      
-    case MC_TME_1B:      return 1;
-    case MC_TME_2B:      return 2;
-    case MC_TME_3B:      return 3;
-    case MC_TME_4B:      return 4;
-    case MC_TME_5B:      return 5;
-    case MC_TME_6B:      return 6;
-    case MC_TME_7B:      return 7;
-    case MC_TME_8B:      return 8;
-
-    case MC_TSP_8B:      return 8;
-
-    case MC_OVERFLOW_2T: return 2;
-      
-    default:
-      NEVER_REACH;
-  }
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,18 +156,6 @@ void RowCoder::vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_)
   aEdt->m_uYearInEra = iYearInEra;
   aEdt->m_uMonth     = iMonth;
   aEdt->m_uDay       = iDay;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this meta code have an auxilliary length (those MC_XYZ_nL)            */
-/*----------------------------------------------------------------------------*/
-bool RowCoder::bHasAuxLen(eMC eMetaCode)
-{
-  if (   MC_STR_FIT_1L == eMetaCode
-      || MC_STR_FIT_2L == eMetaCode )
-    return true;
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

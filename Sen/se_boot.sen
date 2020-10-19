@@ -151,6 +151,7 @@ assert::stack_0
         "OP_passThru.sen"             include
         "OP_periodic.sen"             include
         "OP_ping.sen"                 include
+        "OP_populateIndex.sen"        include
         "OP_print.sen"                include
         "OP_progress.sen"             include
         "OP_purge.sen"                include

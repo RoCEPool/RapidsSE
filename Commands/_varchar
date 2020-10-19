@@ -46,7 +46,7 @@ load vchTbl "/DATA/Encoding/varchar.csv" ;
 
 /*
  
- Added special check for MN_EMPTY. Results looking better:
+ Added special check for MC_EMPTY. Results looking better:
  success: 1000000 rows affected
  time 25ms
  success: 1000000 rows affected

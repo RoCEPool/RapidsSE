@@ -29,7 +29,7 @@ RowCompactor::RowCompactor(void)
   m_pCrwBuffer    = nullptr;
   m_pCrwNub       = nullptr;
   m_pStreamDef    = nullptr;
-  m_pEncoding_v1  = nullptr;
+
   m_pEncoding_v2  = nullptr;
 
   m_aHeadLine     = nullptr;
@@ -124,8 +124,6 @@ void RowCompactor::vCompactEnd(void)
   m_aHeadLine   = nullptr;
   m_aOverLine   = nullptr;
   
-  delete m_pEncoding_v1;
-  m_pEncoding_v1 = nullptr;
   delete m_pEncoding_v2;
   m_pEncoding_v2 = nullptr;
 
@@ -423,8 +421,6 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) is there already a tail for the vch?
   
-  //TailStr xFindTail(szTailStr);
-  
 //  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
 //    return false;
   if (C_UNKNOWN != m_pCrwNub->iFindTail(szTailStr))
@@ -443,8 +439,9 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
   //vDumpTails();
   //vDebugPoint();
   
-  //i8 nTailBytes = xFindTail.nBytes();
-  i8 nTailBytes = szTailStr->nSize();
+  TailStr xFindTail(szTailStr);
+  
+  i8 nTailBytes = xFindTail.nBytes();
   i8 i_Tail = m_pCrwNub->iAllotTail(nTailBytes);
   TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
   
@@ -867,7 +864,6 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) is there already a tail for the vch?
   
-  //TailStr xFindTail(pOuterIrwSample->szStzGet(i_Col));
   
 //  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
 //    return;
@@ -888,8 +884,9 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
   //vDumpTails();
   //vDebugPoint();
   
-  //i8 nTailBytes = xFindTail.nBytes();
-  i8 nTailBytes = szTailToFind->nSize();
+  TailStr xFindTail(szTailToFind);
+
+  i8 nTailBytes = xFindTail.nBytes();
   i8 i_Tail = m_pCrwNub->iAllotTail(nTailBytes);
   TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
   
@@ -899,7 +896,7 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
   // **********************************
   //
   
-  aTail->vAssign(pOuterIrwSample->szStzGet(i_Col));
+  aTail->vAssign(szTailToFind);
  
   m_pCrwNub->vSetLastStr(i_Tail);
   

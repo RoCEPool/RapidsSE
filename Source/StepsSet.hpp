@@ -495,6 +495,7 @@ public:
   void vIndexDefParseTableName(void);
   void vIndexDefPipeOut(void);
   void vIndexDefTableNameFetch(void);
+  void vIndexDefTableNameStore(void);
 
   // index reg
   void vRegIndexGet(void);
@@ -1600,6 +1601,7 @@ public:
   void vTablePtnGet(void);
   void vTablePtnGenCrwBuffers(void);
   void vTablePtnInflateCrwBuffer(void);
+  void vTablePtnPopulateIndex(void);
   void vTablePtnPurge(void);
   void vTablePtnRoot(void);
   void vTablePtnSet(void);

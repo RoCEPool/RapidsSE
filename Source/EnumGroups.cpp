@@ -75,7 +75,6 @@ Stz* EnumGroups::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_MC: return aMC[i_Enum];
     case EG_MK: return aMK[i_Enum];
     case EG_MM: return aMM[i_Enum];
-    case EG_MN: return aMN[i_Enum];
     case EG_MT: return aMT[i_Enum];
 
     case EG_NE: return aNE[i_Enum];

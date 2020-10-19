@@ -25,17 +25,14 @@ namespace CompactBuffers
     void vDump(void);
     i8   nFreeSpace(StreamDef* pStreamDef);
     w8   wGetLogical(i8 i_Offset, i8 nDataSize);
-    u1   uGetEncMetaClue(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
-                      StreamDef* pStreamDef);
-    eMC  eGetEncMetaCode(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
+    u1   uGetEncMetaCode(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
                       StreamDef* pStreamDef);
     OverLine* aGetOver(void);
     i8   iGetTailRel(TailLine* TailLine);
     TailLine* aGetTailRel(i8 i_Tail_rel);
     bool bHasOverflow(void);
     void vHasOverflow(void);
-    void vMetaClue(i8 i_Col, u1 uMetaClue);
-    void vMetaCode(i8 i_Col, eMC eMetaCode);
+    void vMetaCode(i8 i_Col, u1 uMetaCode);
     i8   iOverflow2B(void);
     void vOverflow2B(i8 iOver2B);
     t8   tPerspective(void);
@@ -63,29 +60,17 @@ namespace CompactBuffers
     }
   
     /*------------------------------------------------------------------------*/
-    /* return meta clue                                                       */
-    /*------------------------------------------------------------------------*/
-    inline u1 uMetaClue(i8 i_Col)
-    {
-      i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
-    
-      u1 uClue = * aAdd<u1*>(this,i_BaseOffsetMeta + i_Col);
-  
-      return uClue;
-    }
-  
-    /*------------------------------------------------------------------------*/
     /* return meta code                                                       */
     /*------------------------------------------------------------------------*/
-    inline eMC eMetaCode(i8 i_Col)
+    inline u1 uMetaCode(i8 i_Col)
     {
       i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
     
-      eMC eCode = *aAdd<eMC*>(this,i_BaseOffsetMeta + i_Col);
+      u1 uCode = * aAdd<u1*>(this,i_BaseOffsetMeta + i_Col);
   
-      return eCode;
+      return uCode;
     }
-  
+    
   };
 
   /*--------------------------------------------------------------------------*/

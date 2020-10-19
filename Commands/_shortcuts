@@ -7,6 +7,8 @@
 shortcut a    _lineitemay;
 shortcut ad   article_dump;
 shortcut asm  _AsmQueries;
+shortcut asm1  _AsmQueriesSF1;
+shortcut asm10  _AsmQueriesSF10;
 shortcut b    _bm_insidx;
 shortcut bc   _bootCluster;
 shortcut i    _bm_inflateRow;
