@@ -27,7 +27,7 @@ create index Customer_Idx1 ON Customer(C_CUSTKEY);
 
 print "loading Customer...";
 /time fload Customer "/DATA/TPCH/customer_10k.csv";
-///time fload Customer "/TPCH/SF1/customer.tbl";
+
 compactIdx Customer Customer_Idx1;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -50,7 +50,7 @@ create index Orders_Idx2 ON Orders(O_ORDERKEY);
 
 print "loading Orders...";
 /time fload Orders "/DATA/TPCH/orders_10k.csv";
-///time fload Orders "/TPCH/SF1/orders.tbl";
+
 compactIdx Orders Orders_Idx1;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -81,7 +81,6 @@ create index lineitem_idx2 on lineitem (l_orderkey);
 
 print "loading Lineitem...";
 /time fload lineitem "/DATA/TPCH/lineitem_100k.csv";
-///time fload lineitem "/TPCH/SF1/lineitem.tbl";
 
 compactIdx LineItem lineItem_Idx1;
 compactIdx LineItem lineItem_Idx2;
@@ -152,7 +151,6 @@ group by
   o_orderpriority order by
   o_orderpriority;
  
- ///time Query4_ASM "../EO_text/QRY_400.txt" "../EO_text/QRY_401.txt" "../EO_text/QRY_402.txt";
 
 print "*****************************************************************";
 print "executing Query6...";
