@@ -29,7 +29,7 @@ RowCompactor::RowCompactor(void)
   m_pCrwBuffer    = nullptr;
   m_pCrwNub       = nullptr;
   m_pStreamDef    = nullptr;
-  m_pEncoding_v1  = nullptr;
+
   m_pEncoding_v2  = nullptr;
 
   m_aHeadLine     = nullptr;
@@ -124,8 +124,6 @@ void RowCompactor::vCompactEnd(void)
   m_aHeadLine   = nullptr;
   m_aOverLine   = nullptr;
   
-  delete m_pEncoding_v1;
-  m_pEncoding_v1 = nullptr;
   delete m_pEncoding_v2;
   m_pEncoding_v2 = nullptr;
 
