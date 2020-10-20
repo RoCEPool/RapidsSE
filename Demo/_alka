@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TPCH queries - SF1 (alka lab)                                              */
+/* TPCH queries - SF10 (alka lab)                                              */
 /*============================================================================*/
 
 trackMemory;
@@ -22,9 +22,9 @@ create index Orders_Idx1 ON Orders(O_ORDERKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Loading Tables...";
-/time fload customer "/TPCH/SF1/customer.tbl";
-/time fload lineitem "/TPCH/SF1/lineitem.tbl";
-/time fload orders "/TPCH/SF1/orders.tbl";
+/time fload customer "/TPCH/SF10/customer.tbl";
+/time fload lineitem "/TPCH/SF10/lineitem.tbl";
+/time fload orders "/TPCH/SF10/orders.tbl";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Compacting Indexes...";
@@ -66,7 +66,7 @@ create index Orders_Idx2 ON Orders(O_CUSTKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Loading Orders...";
-/time fload orders "/TPCH/SF1/orders.tbl";
+/time fload orders "/TPCH/SF10/orders.tbl";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 print section "Compacting Orders Indexes...";
@@ -101,5 +101,61 @@ Q6    1N-1P  2162     75207429.08,76033
 1N-4P  752
 2N-4P  676
 3N-4P  802
+ 
+ 
+ SF10
+ ----
+ 
+ §file: ../Demo/_alka @line 40 Section 0.24) Query 1... :
+ 
+ metadata: (L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,sum_qty DECIMAL,sum_base_price DECIMAL,sum_disc_price DECIMAL,sum_charge DECIMAL,avg_qty DECIMAL,avg_price DECIMAL,avg_disc DECIMAL,count_order INTEGER)
+ row: ('A','F',377507003.00,566048981675.28,537743114580.79,559260020207.31,25.50,38237.17,0.05,14803631)
+ row: ('N','F',9851312.00,14766983643.05,14028371195.12,14590032927.65,25.52,38257.72,0.04,385987)
+ row: ('N','O',742624755.00,1113549108834.59,1057865324644.81,1100192588447.10,25.49,38233.72,0.05,29124785)
+ row: ('R','F',377720699.00,566412983913.15,538093700728.41,559616847961.93,25.50,38251.23,0.04,14807706)
+ success: 4 rows fetched
+ time 4169ms
+
+ 
+ -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- -
+ 
+ §file: ../Demo/_alka @line 80 Section 0.34) Query 3 ... :
+ 
+ metadata: (l_orderkey INTEGER,revenue DECIMAL,o_orderdate DATE,o_shippriority INTEGER)
+ row: (52974151,415367.10,1995-02-05,0)
+ row: (16384100,421478.69,1995-03-02,0)
+ row: (22810436,423231.94,1995-01-02,0)
+ row: (9806272,425088.03,1995-03-13,0)
+ row: (3355202,425100.63,1995-03-04,0)
+ row: (59393639,426036.03,1995-02-12,0)
+ row: (23861382,428739.12,1995-03-09,0)
+ row: (23906758,432728.55,1995-03-14,0)
+ row: (46678469,439855.31,1995-01-27,0)
+ row: (4791171,440715.19,1995-02-23,0)
+ success: 10 rows fetched
+ time 1991ms
+ 
+ 
+ -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- -
+ §file: ../Demo/_alka @line 54 Section 0.28) Query 4... :
+ 
+ metadata: (o_orderpriority VARCHAR,order_count INTEGER)
+ row: ('1-URGENT',105213)
+ row: ('2-HIGH',104818)
+ row: ('3-MEDIUM',105221)
+ row: ('4-NOT SPECIFIED',105416)
+ row: ('5-LOW',105349)
+ success: 5 rows fetched
+ time 853ms
+ 
+ 
+ -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- -
+ §file: ../Demo/_alka @line 47 Section 0.26) Query 6... :
+ 
+ metadata: (revenue DECIMAL)
+ row: (752424863.12)
+ success: 1 rows fetched
+ time 1369ms
+ 
 */
 
