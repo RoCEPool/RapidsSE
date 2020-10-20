@@ -357,13 +357,13 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
 
-      # Validate the installation environment
-      validateEnvironment
-
       # Write config file to the current working directory, as the user may have
       # specified a config file in an installation dir that is about to get overwritten.
       local outputConfig="${DEFAULT_CONFIG_PATH}"
       writeClusterConfig "${outputConfig}"
+
+      # Validate the installation environment
+      validateEnvironment
 
       # Install all nodes
       distributeSoftware "${outputConfig}"
@@ -383,12 +383,12 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
 
-      # Validate the installation environment
-      validateEnvironment
-
       # Write config file to the directory with the installer
       local outputConfig="${USER_PWD}/${DEFAULT_CONFIG_PATH}"
       writeClusterConfig "${outputConfig}"
+
+      # Validate the installation environment
+      validateEnvironment
 
       # Distribute the software and install all nodes
       distributeSoftware "${outputConfig}"
