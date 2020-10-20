@@ -303,7 +303,7 @@ function processArgs() {
 function findInstallFile() {
 
   # First try to get it from the parent process's command line
-  if [ "${DEBUG}" -eq 1 ]; then echo "Looking for install file from PPID."; fi;
+  debugPrint "Looking for install file from PPID."
 
   local parentScript
   parentScript="$(cut -f 2 -d '' < /proc/${PPID}/cmdline)"
@@ -317,7 +317,7 @@ function findInstallFile() {
   # Otherwise if there is only one .run file in the $USER_PWD then this would be it.
   if [ -n "${USER_PWD}" ]; then
 
-    if [ "${DEBUG}" -eq 1 ]; then echo "Looking for install file in directory: ${USER_PWD}"; fi;
+    debugPrint "Looking for install file in directory: ${USER_PWD}"
 
     local runfiles
     mapfile -t runfiles < <( ls -1 "${USER_PWD}"/*.run || true )
@@ -376,7 +376,7 @@ function doClusterInstall() {
       createConfiguration
 
       if [ ${DEBUG} -eq 1 ]; then
-        echo "Node configuration after creating configuration:"
+        debugPrint "Node configuration after creating configuration:"
         allNodeCfgsPrint
       fi
 
@@ -597,8 +597,7 @@ function askHostnames() {
   done
 
   if [ ${DEBUG} -eq 1 ]; then
-    echo ""
-    echo "Got the following hostnames / IP addresses:"
+    debugPrint "\nGot the following hostnames / IP addresses:"
     printIndentArray 2 "${hostnames[@]}"
   fi
 
@@ -1039,14 +1038,7 @@ EOT
     echo "    ${outputFile}"
   fi
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo ""
-    echo "Contents of the cluster configuration file: ${outputFile}"
-    echo ""
-    cat "${outputFile}"
-    echo ""
-  fi
-
+  debugPrint "\nContents of the cluster configuration file: ${outputFile}\n $(cat "${outputFile}")\n"
 }
 
 
@@ -1094,10 +1086,8 @@ function distributeSoftware() {
     # Buid the command
     local cmd=( "scp" "-q" "${INSTALL_FILE}" "${configFile}" "${hostname}:/tmp"  )
 
-    if [ ${DEBUG} -eq 1 ]; then 
-      echo "Copying installer to node ${nodeName} [host: ${hostname}]."
-      echo "Command: ${cmd[*]}"
-    fi
+      debugPrint "Copying installer to node ${nodeName} [host: ${hostname}]."
+      debugPrint "Command: ${cmd[*]}"
 
     # Execute the command
     "${cmd[@]}" || errorExit "Error copying the installation file to node ${nodeName} [host: ${hostname}]."
@@ -1117,8 +1107,8 @@ function distributeSoftware() {
 
     if [ ${DEBUG} -eq 1 ]; then 
       cmd+=("--debug")
-      echo "Invoking single node installation on node ${nodeName} [host: ${hostname}]."
-      echo "Command: ${cmd[*]}"
+      debugPrint "Invoking single node installation on node ${nodeName} [host: ${hostname}]."
+      debugPrint "Command: ${cmd[*]}"
     else 
       echo ""
       echo "Installing to node ${nodeName} [host: ${hostname}]."
@@ -1164,11 +1154,7 @@ function doNodeInstall() {
   #shellcheck disable=1090
   source "${CONFIG_FILE}"
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "Loaded cluster configuration file ${CONFIG_FILE}. Contents of file:"
-    echo ""
-    cat "${CONFIG_FILE}"
-  fi
+  debugPrint "Loaded cluster configuration file ${CONFIG_FILE}. Contents of file:\n$(cat "${CONFIG_FILE}")"
 
 
   # Check that a configuration exists for the given node name.
@@ -1202,9 +1188,7 @@ function doNodeInstall() {
       errorExit "The installation directory (${installDir}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
     fi
 
-    if [ ${DEBUG} -eq 1 ]; then
-      echo "Removing the contents of the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
-    fi
+    debugPrint "Removing the contents of the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
     rm -rf "${installDir:?}/"* || errorExit "Could not remove the contents of the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
   
@@ -1218,9 +1202,7 @@ function doNodeInstall() {
       errorExit "Parent path of the installation directory (${installDir}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
     fi
 
-    if [ ${DEBUG} -eq 1 ]; then
-      echo "About to create the installation directory: ${hostname}:${installDir}"
-    fi
+    debugPrint "About to create the installation directory: ${hostname}:${installDir}"
 
     mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
   fi
@@ -1229,17 +1211,13 @@ function doNodeInstall() {
   # Copy all files that were unpacked from the installer to the installation dir.
   cmd=("cp" "-r" ./* "${installDir}/")
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to copy all files to the installation directory with this command: ${cmd[*]}"
-  fi
+  debugPrint "About to copy all files to the installation directory with this command: ${cmd[*]}"
 
   "${cmd[@]}" || errorExit "Could not copy files to the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
 
   # Copy the cluster.config to the installation directory
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to copy the cluster.config file to the installation directory."
-  fi
+  debugPrint "About to copy the cluster.config file to the installation directory."
 
   cp "${CONFIG_FILE}" "${installDir}/" || errorExit "Could not copy the cluster configuration file to the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 

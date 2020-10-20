@@ -77,6 +77,18 @@ function errorExit() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints a given message if debug mode is turned on (i.e., $DEBUG == 1).
+## Params:
+##  $@ : The arguments to print
+
+function debugPrint() {
+  if [ "${DEBUG}" -eq 1 ]; then
+    echo -e "$*"
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Prints the members of an array (one per line) with an indentation.
 ## Params:
 ##  $1 : The number of indent spaces on each line.
@@ -183,9 +195,7 @@ function loadClusterConfig() {
     done
   done
 
-  if [ "${DEBUG}" -eq 1 ]; then
-    echo "Loaded and validated the cluster configuration at: ${CONFIG_FILE}"
-  fi
+  debugPrint "Loaded and validated the cluster configuration at: ${CONFIG_FILE}"
 }
 
 
@@ -209,9 +219,7 @@ function loadNodeName() {
     errorExit "\$CURRENT_NODE_NAME has not been set in node name file: ${NAME_FILE}"
   fi
 
-  if [ "${DEBUG}" -eq 1 ]; then
-    echo "Loaded and validated the node name configuration at: ${NAME_FILE}"
-  fi
+  debugPrint "Loaded and validated the node name configuration at: ${NAME_FILE}"
 }
 
 

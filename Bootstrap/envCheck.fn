@@ -96,14 +96,10 @@ function validateInstallDirIsWritable() {
 
     sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
-    if [ "${DEBUG}" -eq 1 ]; then
-      echo "About to validate the installation directory on node ${nodeName} with the command: ${sshCmd[*]}"
-    fi
+    debugPrint "About to validate the installation directory on node ${nodeName} with the command: ${sshCmd[*]}"
 
     if ! response="$("${sshCmd[@]}")"; then
-      if [ "${DEBUG}" -eq 1 ]; then
-        echo "Install dir validation failed: ${response}"
-      fi
+      debugPrint "Install dir validation failed: ${response}"
 
       # Save the response and the node name
       errors["${nodeName}"]="${response}"
@@ -124,9 +120,7 @@ function validateInstallDirIsWritable() {
     errorExit "${errMsg}"
   fi
 
-  if [ "${DEBUG}" -eq 1 ]; then
-    echo "Successfully validated that the installation directories are writable."
-  fi
+  debugPrint "Successfully validated that the installation directories are writable."
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

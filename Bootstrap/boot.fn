@@ -184,7 +184,7 @@ function startCluster() {
     # Start the nodes sequentially
     for nodeName in "${NODE_LIST[@]}"
     do
-      if [ ${DEBUG} -eq 1 ]; then echo "Starting ${nodeName}"; fi;
+      debugPrint "Starting ${nodeName}"
       startRemoteNode "${nodeName}" || errorExit "Could not start all nodes in the cluster."
     done
 
@@ -241,9 +241,7 @@ function startRemoteNode() {
 
   sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to start node ${nodeName} with the command: ${sshCmd[*]}"
-  fi
+  debugPrint "About to start node ${nodeName} with the command: ${sshCmd[*]}"
 
   "${sshCmd[@]}" || errorExit "Could not start RapidsSE on node ${nodeName}."
 }
@@ -383,9 +381,7 @@ function remoteClusterInit() {
 
   sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to initialise the cluster on node ${nodeName} with the command: ${sshCmd[*]}"
-  fi
+  debugPrint "About to initialise the cluster on node ${nodeName} with the command: ${sshCmd[*]}"
 
   "${sshCmd[@]}" || errorExit "Could not initialise the RapidsSE cluster on node ${nodeName} [host ${host}]."
 }
@@ -421,10 +417,7 @@ function localClusterInit() {
   cmd+=("${connectCmd}")
   cmd+=("--appendTrace")
 
-  if [ "${DEBUG}" -eq 1 ]; then
-    echo ""
-    echo "About to execute the cluster initialisation command: ${cmd[*]}"
-  fi
+  debugPrint "\nAbout to execute the cluster initialisation command: ${cmd[*]}"
 
   # Set the library path so the RapidsSE library can be found and loaded
   export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
@@ -747,7 +740,7 @@ function stopCluster() {
     # Stop the nodes sequentially
     for nodeName in "${NODE_LIST[@]}"
     do
-      if [ ${DEBUG} -eq 1 ]; then echo "Stopping ${nodeName}"; fi;
+      debugPrint "Stopping ${nodeName}"
       stopRemoteNode "${nodeName}" || errorExit "Could not stop all nodes in the cluster."
     done
 
@@ -811,9 +804,7 @@ function stopRemoteNode() {
 
   sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to stop node ${nodeName} with the command: ${sshCmd[*]}"
-  fi
+  debugPrint "About to stop node ${nodeName} with the command: ${sshCmd[*]}"
 
   "${sshCmd[@]}" || errorExit "Could not stop RapidsSE on node ${nodeName}."
 }

@@ -95,20 +95,17 @@ if [ -z "${INSTALL_FILE}" ]; then
   findInstallFile
 fi
 
-if [ ${DEBUG} -eq 1 ]; then
-  # Print out current settings from the arguments
-  echo ""
-  echo "pwd = $(pwd)"
-  echo "USER_PWD = ${USER_PWD}"
-  echo "CLUSTER_INSTALL = ${CLUSTER_INSTALL}"
-  echo "INTERACTIVE_INSTALL = ${INTERACTIVE_INSTALL}"
-  echo "ADV_WIZARD = ${ADV_WIZARD}"
-  echo "DEBUG = ${DEBUG}"
-  echo "INSTALL_FILE = ${INSTALL_FILE}"
-  echo "CONFIG_FILE = ${CONFIG_FILE}"
-  echo
-  #echo "$(env)"
-fi
+# Print out current settings from the arguments
+debugPrint ""
+debugPrint "pwd = $(pwd)"
+debugPrint "USER_PWD = ${USER_PWD}"
+debugPrint "CLUSTER_INSTALL = ${CLUSTER_INSTALL}"
+debugPrint "INTERACTIVE_INSTALL = ${INTERACTIVE_INSTALL}"
+debugPrint "ADV_WIZARD = ${ADV_WIZARD}"
+debugPrint "DEBUG = ${DEBUG}"
+debugPrint "INSTALL_FILE = ${INSTALL_FILE}"
+debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
+debugPrint 
 
 
 if [ ${CLUSTER_INSTALL} -eq 1 ]; then
