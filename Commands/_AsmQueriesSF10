@@ -100,7 +100,7 @@ create table LineItem2
  L_COMMENT       VARCHAR(44)   NOT NULL
  );
 
-create index lineitem_idx on lineitem2 (l_shipdate);
+create index lineitem2_idx1 on lineitem2 (l_shipdate);
 
 print "loading Lineitem2...";
 /time fload lineitem2 "/TPCH/SF10/lineitem.tbl";
