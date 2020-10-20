@@ -23,7 +23,7 @@ namespace CompactBuffers
     static i8   iDteFromEdt(i8 wEdtDte, i8 iEra);
     static void vDteFromEdt(i8* awEdtDte_rpl, i8 iEra);
     static void vDteFromEdt(i8* awEdtDte_dst, i8 wEdtDte_src, i8 iEra);
-    static void vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_);
+    //static void vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_);
     static i8   nHeadSize(StreamDef* pStreamDef);
     static i8   nMetaSize(StreamDef* pStreamDef);
     static i8   nMetaSize(StreamPix* pStreamPix);
@@ -60,6 +60,31 @@ namespace CompactBuffers
     return 0;
   }
 
+  /*----------------------------------------------------------------------------*/
+  /* convert a Dte into an Edt                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline static void vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_)
+  {
+    Dte* aDte = (Dte*) & wDte_src;
+    Edt* aEdt = (Edt*)awEdt_dst;
+    * awEdt_dst = 0;
+
+    aEdt->m_uDay   = aDte->m_uDay;
+    aEdt->m_uMonth = aDte->m_uMonth;
+
+    i8 iYearDelta  = aDte->m_uYearDelta;
+
+    if (iYearDelta < C_ERA_1) {
+      aEdt->m_uYearInEra = iYearDelta - C_ERA_0;
+    }
+    else if (iYearDelta < C_ERA_2) {
+      aEdt->m_uYearInEra = iYearDelta - C_ERA_1;
+    }
+    else {
+      aEdt->m_uYearInEra = iYearDelta - C_ERA_2;
+    }
+  }
+  
   };
 }
 
