@@ -14,6 +14,10 @@ failure contains: "invalid command"
 anidx IntTbl;
 failure contains: "invalid command"
 
+// invalid
+anidx IntTbl idx1 idx2;
+failure contains: "invalid command"
+
 // no such table
 anidx IntTbl int_idx1;
 failure contains: "no such table"

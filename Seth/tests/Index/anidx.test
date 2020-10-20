@@ -44,6 +44,10 @@ anidx IntTbl;
 failure contains: "invalid command"
 
 // invalid
+anidx IntTbl idx1 idx2;
+failure contains: "invalid command"
+
+// invalid
 anidx x int_idx1;
 failure contains: "no such table"
 
