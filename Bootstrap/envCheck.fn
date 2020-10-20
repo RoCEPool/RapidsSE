@@ -94,7 +94,7 @@ function validateInstallDirIsWritable() {
 		EOF
     )"
 
-    sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
+    sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
     debugPrint "About to validate the installation directory on node ${nodeName} with the command: ${sshCmd[*]}"
 

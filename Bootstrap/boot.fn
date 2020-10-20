@@ -239,7 +239,7 @@ function startRemoteNode() {
     remoteCmd="${remoteCmd} --debug"
   fi
 
-  sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
+  sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
   debugPrint "About to start node ${nodeName} with the command: ${sshCmd[*]}"
 
@@ -379,7 +379,7 @@ function remoteClusterInit() {
     remoteCmd="${remoteCmd} --debug"
   fi
 
-  sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
+  sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
   debugPrint "About to initialise the cluster on node ${nodeName} with the command: ${sshCmd[*]}"
 
@@ -566,7 +566,7 @@ function getRemoteRunningPid() {
 
   remoteCmd="if [ ! -f \"${dir}/${REMOTE_PID_FILENAME}\" ]; then exit 1; fi; cat \"${dir}/${REMOTE_PID_FILENAME}\" | xargs ps -o pid -h -p "
   
-  pid="$(ssh "${host}" "bash" "-c" "'${remoteCmd}'")"
+  pid="$(ssh -q "${host}" "bash" "-c" "'${remoteCmd}'")"
 
   local re="^[[:space:]]*([0-9]+)[[:space:]]*$"
 
@@ -694,7 +694,7 @@ function checkNodeVersionsAreEqual() {
     dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
     remoteCmd="cd \"${dir}\" && source \"${VERSION_FILE}\" && echo \"\${SE_VERSION_STR}-\${SE_COMMIT_HASH}\""
-    actualVerStr="$(ssh "${host}" "bash" "-c" "'${remoteCmd}'")"
+    actualVerStr="$(ssh -q "${host}" "bash" "-c" "'${remoteCmd}'")"
 
     if [ -z "${actualVerStr}" ]; then
       printError "Got an empty version string for ${nodeName}."
@@ -802,7 +802,7 @@ function stopRemoteNode() {
     remoteCmd="${remoteCmd} --debug"
   fi
 
-  sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
+  sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
   debugPrint "About to stop node ${nodeName} with the command: ${sshCmd[*]}"
 
