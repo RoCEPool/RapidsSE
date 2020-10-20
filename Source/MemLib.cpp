@@ -525,23 +525,6 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute the memory quanta required to hold n bytes                         */
-/*----------------------------------------------------------------------------*/
-i8 MemLib::nQuantaRequired(i8 nBytes, i8 nSizeQuanta)
-{
-  if (! nBytes)
-    return 0;
-  
-  i8 nQuanta = nBytes / nSizeQuanta;
-  if (nBytes % nSizeQuanta)
-    nQuanta++;
-  
-  ASSERT(nQuanta * nSizeQuanta >= nBytes);
-
-  return nQuanta;
-}
-
-/*----------------------------------------------------------------------------*/
 /* reset memory statistics                                                    */
 /*----------------------------------------------------------------------------*/
 void MemLib::vReset(void)

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# A script file for generating TPC-H data on AWS machines with local SSDs.
+# A pre-requisite is that the local SSDs are formatted and mounted under
+# the paths "/mnt/disk*". e.g. /mnt/disk1, /mnt/disk2, etc.
+# 
+
 DEBUG=0
 
 if [ "${DEBUG}" -eq 1 ]

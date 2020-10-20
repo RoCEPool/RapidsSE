@@ -124,41 +124,6 @@ void RowCoder::vDteFromEdt(i8* awEdtDte_dst, i8 wEdtDte_src, i8 iEraBaseYear)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert a Dte into an Edt                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_)
-{
-  Dte* aDte = (Dte*) & wDte_src;
-  
-  i8 iYearDelta = aDte->m_uYearDelta;
-  i8 iMonth     = aDte->m_uMonth;
-  i8 iDay       = aDte->m_uDay;
-  
-  i8 iYearInEra;
-  
-  if (iYearDelta < C_ERA_1) {
-    iEra_ = C_ERA_0;
-    iYearInEra = iYearDelta - C_ERA_0;
-  }
-  else if (iYearDelta < C_ERA_2) {
-    iEra_ = C_ERA_1;
-    iYearInEra = iYearDelta - C_ERA_1;
-  }
-  else {
-    iEra_ = C_ERA_2;
-    iYearInEra = iYearDelta - C_ERA_2;
-  }
-  
-  Edt* aEdt = (Edt*)awEdt_dst;
-  
-  * awEdt_dst = 0;
-
-  aEdt->m_uYearInEra = iYearInEra;
-  aEdt->m_uMonth     = iMonth;
-  aEdt->m_uDay       = iDay;
-}
-
-/*----------------------------------------------------------------------------*/
 /* calc size of the head line for column vector                               */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nHeadSize(StreamDef* pStreamDef)
