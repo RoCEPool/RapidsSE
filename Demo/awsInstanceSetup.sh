@@ -195,6 +195,13 @@ EOF
 
 chown ec2-user:ec2-user "${vimrc}"
 
+# ----------------------------------------------------------------------------------------
+# Bash prompt
+bash_profile="/home/ec2-user/.bash_profile"
+echo "" >> "${bash_profile}"
+echo '#export PS1="[\u@\h \W]\$ ' >> "${bash_profile}"
+echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "' >> "${bash_profile}"
+echo "" >> "${bash_profile}"
 
 # ----------------------------------------------------------------------------------------
 # Setup influxdb and telegraf
