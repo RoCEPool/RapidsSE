@@ -40,6 +40,7 @@ namespace StorageEngine
       bool   m_bMetadata;
       bool   m_bMunged;
       i8     m_nNodes;
+      i8     m_nOperands;
       bool   m_bProgress;
       s32    m_sRegionName;
       i8     m_iRegionSize;

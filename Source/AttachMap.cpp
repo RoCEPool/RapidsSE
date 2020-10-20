@@ -185,6 +185,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->Arg.m_iRegionSize);
   vInfo("SubIngesters : %lld \n"_Stz,   gpAttachMap->Arg.m_nSubIngesters);
   vInfo("SubLoaders   : %lld \n"_Stz,   gpAttachMap->Arg.m_nSubLoaders);
+  vInfo("Operands     : %lld \n"_Stz,   gpAttachMap->Arg.m_nOperands);
 
   vInfo("\n"_Stz);
   vInfo("Epoch        : %lld \n"_Stz, gpAttachMap->m_iEpoch);
@@ -272,6 +273,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_bMetadata        = pArgs->m_bMetadata;
   Arg.m_bMunged          = pArgs->m_bMunged;
   Arg.m_nNodes           = pArgs->m_nNodes;
+  Arg.m_nOperands        = pArgs->m_nOperands;
   Arg.m_bProgress        = pArgs->m_bProgress;
   Arg.m_sRegionName      = pArgs->m_sRegionName;
   Arg.m_iRegionSize      = pArgs->m_iRegionSize;
