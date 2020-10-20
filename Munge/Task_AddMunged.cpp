@@ -22562,7 +22562,7 @@ void Task::vAddMunged(Forth* pForth)
     "  stage stageB on all nodes :\n"
     "    createIndex $indexNm | stageC\n"
     "\n"
-    "  stage stageE on origin :\n"
+    "  stage stageC on origin :\n"
     "    sink | stageA\n"
     "\n"
     "  end ;\n"

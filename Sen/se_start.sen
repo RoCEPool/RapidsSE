@@ -67,7 +67,7 @@
   stage stageB on all nodes :
     createIndex $indexNm | stageC
 
-  stage stageE on origin :
+  stage stageC on origin :
     sink | stageA
 
   end ;
