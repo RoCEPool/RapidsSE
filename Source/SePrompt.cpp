@@ -125,6 +125,17 @@ SePrompt::~SePrompt(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* prompt bg entry point                                                      */
+/*----------------------------------------------------------------------------*/
+void* SePrompt::aEntryPoint_bg(void* pArg)
+{
+  vTrace("aEntryPoint_bg\n"_Stz);
+  sleep(1000000);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump seprompt                                                              */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)

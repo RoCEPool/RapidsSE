@@ -435,6 +435,18 @@ void Thread::vFocalOutline(s4K& sOutline)
 }
 
 /*----------------------------------------------------------------------------*/
+/* spawn a os/posix pthread associated with this thread                       */
+/*----------------------------------------------------------------------------*/
+void Thread::vSpawnPsxThd(void* pFun(void*), void* pArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  bool bResult = m_pPsxThd->bSpawnThread(pFun,pArg);
+  
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this thread                     */
 /*----------------------------------------------------------------------------*/
 void Thread::vSpawnPsxThd_dedicated(void)

@@ -23,6 +23,11 @@ PromptFun __Prompt_bg (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_bg(SePrompt* pPrompt)
 {
+  
+  Thread* pThread = new Thread;
+  
+  pThread->vSpawnPsxThd(SePrompt::aEntryPoint_bg,pThread);
+
   return true;
 }
 
