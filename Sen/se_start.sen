@@ -1895,8 +1895,9 @@
   sPath
   "
   define table __seekOffsets (
-    offset INTEGER NOT NULL ,
-    size   INTEGER NOT NULL
+    offset    INTEGER NOT NULL ,
+    size      INTEGER NOT NULL ,
+    FILENAME  VARCHAR NOT NULL
   ) ;
   "
   api::executeRequest
