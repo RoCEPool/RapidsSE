@@ -7,6 +7,8 @@
 
 namespace Prompt
 {
+  static const i8 C_PMT_MAXSSN = 4;
+
   static Stz* C_PMT_BUFPOOL  = "<bufferPool>"_Stz;
   static Stz* C_PMT_OBJDELTA = "<objectDelta>"_Stz;
   static Stz* C_PMT_MEMTRACK = "<trackMemory>"_Stz;
@@ -24,7 +26,15 @@ namespace Prompt
   class SePrompt : public Focal
   {
   private:
-    Session*  m_pSession;    // rapidsse session
+  
+    Mutex*    m_pMutexFG;    // mutex for foreground thread
+
+    struct {
+      Mutex*    m_pMutexBG;    // mutex for background thread
+      Session*  m_pSession;    // rapidsse session
+      Job*      m_pJob;        // job
+    } Ssn[C_PMT_MAXSSN];
+  
     Input*    m_pInput;      // input processor from session
     TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
     TagSet*   m_pSsnTagSet;  // session tag set
@@ -37,7 +47,6 @@ namespace Prompt
     TagSet    m_oExtTagSet;  // extra tags gleaned from the prompt command
     ReqTuple  m_xReqTuple;   // request information
 
-    Job*      m_pJob;        // job
     Timer     m_oTimer;      // the timer
 
     bool      m_bOneCommand; // run one command only
@@ -55,6 +64,8 @@ namespace Prompt
   
     // temp for demo
     TokenVec* m_pLitTknVec;  // literal token vector for demo
+  
+    i8  m_iSsnBG;
     
     // must be last
     Footer m_xFooter;
@@ -71,7 +82,10 @@ namespace Prompt
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vPromptLoop(void);
- 
+
+    bool bPromptFG(void);
+    void vPromptBG(void);
+
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
     BPA* pBPA(void);
