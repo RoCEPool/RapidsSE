@@ -21,6 +21,9 @@
     row[].get InfoSet[].rdCsvChunk to Operand[]
     Operand[].pipeOut
     InfoSet[].nextRow to row[]
+
+    10 task::sleepMsec
+
   repeat
 
   InfoSet[].delete

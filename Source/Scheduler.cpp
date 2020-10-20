@@ -185,7 +185,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
 
     pSelfTask->vState(TS_SLEEPING);
     pQueues->vAddSleepingQueue(pSelfTask);
-    
+
     pSelfTask->vDropTaskLock();
     /** do not touch task **/
     return;
@@ -200,6 +200,8 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
   pThread->m_eThreadState = HS_ASSIGNED;
 
   pSelfTask->vState(TS_EXECUTING);
+  pSelfTask->vThread(pThread);
+
   pQueues->vAddExecutingSet(pSelfTask);
 
   pSelfTask->vDropTaskLock();
