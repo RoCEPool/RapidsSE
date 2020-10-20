@@ -255,7 +255,10 @@ namespace Oblique
     static Stz* szJobName(Job* pJob);
     
     static Stz* pOperandName(Operand* pOperand);
-    
+    static void vOperandsDec(void);
+    static i8   nOperandsGet(void);
+    static void vOperandsInc(void);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bParseCmd(TagSet* pTagSet, TokenVec* pTknVec);
     static Job* pPipelineJob(void);

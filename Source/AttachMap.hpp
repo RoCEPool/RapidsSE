@@ -84,6 +84,7 @@ namespace StorageEngine
     NextGid       m_inNextTaskId;
     NextGid       m_inNextThreadId;
     NextGid       m_inNextTxId;
+    Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
     Queues*       m_pQueues;
     i8            m_iQuit;

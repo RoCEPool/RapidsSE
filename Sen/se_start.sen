@@ -1897,7 +1897,7 @@
   define table __seekOffsets (
     offset    INTEGER NOT NULL ,
     size      INTEGER NOT NULL ,
-    FILENAME  VARCHAR NOT NULL
+    filename  VARCHAR NOT NULL
   ) ;
   "
   api::executeRequest
