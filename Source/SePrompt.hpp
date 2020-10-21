@@ -7,7 +7,7 @@
 
 namespace Prompt
 {
-  static const i8 C_PMT_MAXSSN = 4;
+  static const i8 C_MAX_DEPUTY = 4;
 
   static Stz* C_PMT_BUFPOOL  = "<bufferPool>"_Stz;
   static Stz* C_PMT_OBJDELTA = "<objectDelta>"_Stz;
@@ -29,14 +29,7 @@ namespace Prompt
   
     Mutex*    m_pMutexFG;    // mutex for foreground thread
 
-    i8        m_nSessions;   //
-    struct _Ssn {
-      Mutex*    m_pMutexBG;    // mutex for background thread
-      Session*  m_pSession;    // rapidsse session
-      Job*      m_pJob;        // job
-    } Ssn[C_PMT_MAXSSN];
   
-    _Ssn*     m_pCurSsn;
     Input*    m_pInput;      // input processor from session
     TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
     TagSet*   m_pSsnTagSet;  // session tag set
@@ -69,6 +62,18 @@ namespace Prompt
   
     i8  m_iSsnBG;
     
+  
+    i8        m_nDeputies;   //
+    struct _Ssn {
+      Mutex*    m_pMutexBG;    // mutex for background thread
+      Session*  m_pSession;    // rapidsse session
+      Job*      m_pJob;        // job
+    } Ssn[C_MAX_DEPUTY];
+  
+    _Ssn*     m_pCurSsn;
+  
+    SeDeputy*  m_paSeDeputy[C_MAX_DEPUTY];
+
     // must be last
     Footer m_xFooter;
   

@@ -33,13 +33,17 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   m_pMutexFG = nullptr;
   
-  m_nSessions = 0;
-  for (i8 i_Ssn = 0; i_Ssn < C_PMT_MAXSSN; i_Ssn++) {
+  m_nDeputies = 0;
+  for (i8 i_Ssn = 0; i_Ssn < C_MAX_DEPUTY; i_Ssn++) {
     Ssn[i_Ssn].m_pMutexBG = nullptr;
     Ssn[i_Ssn].m_pSession = nullptr;
     Ssn[i_Ssn].m_pJob     = nullptr;
   }
   m_pCurSsn    = nullptr;
+  
+  for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
+    m_paSeDeputy[i_Deputy] = nullptr;
+  }
   
   m_pInput     = nullptr;
   m_pInpTknVec = nullptr;
@@ -98,10 +102,17 @@ SePrompt::~SePrompt(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
-  for (i8 i_Ssn = 0; i_Ssn < C_PMT_MAXSSN; i_Ssn++) {
+  for (i8 i_Ssn = 0; i_Ssn < C_MAX_DEPUTY; i_Ssn++) {
     if (Ssn[i_Ssn].m_pSession) {
       Api::vFreeSession(Ssn[0].m_pSession);
       Ssn[0].m_pSession = nullptr;
+    }
+  }
+  
+  for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
+    if (m_paSeDeputy[i_Deputy]) {
+      delete m_paSeDeputy[i_Deputy];
+      m_paSeDeputy[i_Deputy] = nullptr;
     }
   }
   
@@ -432,14 +443,16 @@ void SePrompt::vCreateSession(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Ssn[m_nSessions].m_pSession = Api::pAllocSession(SK_EXTERNAL);
-  Ssn[m_nSessions].m_pSession->vPartition(0);
-  Ssn[m_nSessions].m_pJob   = nullptr;
+  Ssn[m_nDeputies].m_pSession = Api::pAllocSession(SK_EXTERNAL);
+  Ssn[m_nDeputies].m_pSession->vPartition(0);
+  Ssn[m_nDeputies].m_pJob   = nullptr;
 
-  eEC eError = Ssn[m_nSessions].m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
+  eEC eError = Ssn[m_nDeputies].m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
   ASSERT(EC_NONE == eError);
   
-  m_nSessions++;
+  m_paSeDeputy[m_nDeputies] = new SeDeputy(this);
+  
+  m_nDeputies++;
 }
 
 /*----------------------------------------------------------------------------*/
