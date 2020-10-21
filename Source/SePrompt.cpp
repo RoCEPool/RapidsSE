@@ -67,7 +67,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
     
   _checkInitialised_(CN_SEPROMPT);
   
-  vCreateDeputy();
+  m_pSeDeputy = pCreateDeputy();
   
   m_pInput     = new Input;
   m_pInpTknVec = m_pInput->pTokenVec();
@@ -418,18 +418,23 @@ void SePrompt::vContinue(bool bContinue)
 /*----------------------------------------------------------------------------*/
 /* create a new deputy                                                        */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vCreateDeputy(void)
+SeDeputy* SePrompt::pCreateDeputy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
-  m_pSeDeputy = m_paSeDeputy[m_nDeputies] = new SeDeputy(this);
+  if (m_nDeputies >= C_MAX_DEPUTY)
+    return nullptr;
   
-  m_pSeDeputy->vCreateSession();
+  SeDeputy* pSeDeputy = m_paSeDeputy[m_nDeputies] = new SeDeputy(this);
+  
+  pSeDeputy->vCreateSession();
   
   m_nDeputies++;
   
-  while (! m_pSeDeputy->bAvailable())
+  while (! pSeDeputy->bAvailable())
     AM::vNapMsec(10,CN_SEPROMPT);
+  
+  return pSeDeputy;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -659,9 +664,7 @@ bool SePrompt::bExtractSupTags(void)
 bool SePrompt::bFindDeputy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  //return m_pSeDeputy;
-  
+    
   m_pSeDeputy = nullptr;
   
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
@@ -673,8 +676,12 @@ bool SePrompt::bFindDeputy(void)
   
   if (m_pSeDeputy)
     return true;
-  else
-    return false;
+  
+  m_pSeDeputy = pCreateDeputy();
+  if (m_pSeDeputy)
+    return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

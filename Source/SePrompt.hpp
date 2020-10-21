@@ -92,7 +92,7 @@ namespace Prompt
     i8   iDivisionNo(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
-    void vCreateDeputy(void);
+    SeDeputy* pCreateDeputy(void);
     void vCutToken(i8 i_Tkn);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
