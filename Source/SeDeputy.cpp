@@ -54,6 +54,45 @@ SeDeputy::~SeDeputy(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* to SE portion                                                              */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vPromptBG(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  m_oTimer.vStart();
+
+  Api::vMutexLock(m_pSession,m_pJob);
+    
+  // spawn the job
+  if (m_pJob->bNoWaitTag()) {
+    Api::vJob_2_SpawnJob_prompt(m_pJob);
+    Api::vMutexUnlock(m_pSession,m_pJob);
+    return;
+  }
+  else {
+    Api::vJob_2_SpawnJob_prompt(m_pJob);
+  }
+  
+  Api::vMutexWaitCond(m_pSession,m_pJob);
+  Api::vMutexUnlock(m_pSession,m_pJob);
+  m_oTimer.vUpdate();
+
+
+  if (bExecutePipeline()) {
+    // start the buffer queue processing while the pipeline ops are running
+    m_pJob->m_xResult.vProcessBufferQueue();
+  }
+
+  Api::vJob_3_PostJob(m_pJob);
+  
+  
+  vReportTime();
+  
+  Api::vJob_4_DeleteJob(&m_pJob);
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new session                                                       */
 /*----------------------------------------------------------------------------*/
 void SeDeputy::vCreateSession(void)
@@ -66,6 +105,20 @@ void SeDeputy::vCreateSession(void)
 
   eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
   ASSERT(EC_NONE == eError);
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a pipeline job                                         */
+/*----------------------------------------------------------------------------*/
+bool SeDeputy::bExecutePipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  if (AM::szJobName(m_pJob)->bSame("pipeline"_Stz) ||
+      AM::szJobName(m_pJob)->bSame("pipelineLocal"_Stz))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,6 +141,35 @@ void SeDeputy::vJob(Job* pJob)
   m_pJob = pJob;
 }
 
+/*----------------------------------------------------------------------------*/
+/* report time taken by last command                                          */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vReportTime(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  //m_pJob->pTagSet()->vPrint();
+  
+  if (! m_pJob->bTimeTag())
+    return;
+  
+  if (m_pJob->bSummaryTag()) {
+    
+    Stz* szNote = m_pJob->pJobTags()->szValue(C_TAG_NOTE);
+    
+    Now spNow;
+    vTrace("[%s %lldN%lldP%lldT %s %s] "_Stz,
+           szNote,
+           AM::nDefinedNodes(),
+           AM::nSlotsPerNode(),
+           AM::nThreads(),
+           AM::szBuild(),
+           spNow.sz()
+           );
+  }
+  
+  vTrace("time %lldms\n"_Stz,m_oTimer.iMilliseconds());
+}
 /*----------------------------------------------------------------------------*/
 /* get session                                                                */
 /*----------------------------------------------------------------------------*/

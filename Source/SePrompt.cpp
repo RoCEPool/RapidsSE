@@ -182,8 +182,11 @@ void SePrompt::vPromptLoop(void)
       continue;
     
 
-    vPromptBG();
-    
+    //vPromptBG();
+    m_pSeDeputy->vPromptBG();
+
+    vLogFreeSpace();
+
   } // while
 }
 
@@ -370,8 +373,6 @@ void SePrompt::vPromptBG(void)
   Job* pJob = m_pSeDeputy->pJob();
   m_pSeDeputy->vJob(nullptr);
   Api::vJob_4_DeleteJob(&pJob);
-
-  vLogFreeSpace();
 }
 
 /*----------------------------------------------------------------------------*/
