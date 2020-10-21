@@ -76,6 +76,8 @@ SePrompt::~SePrompt(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
       
+  vTrace("~SePrompt\n"_Stz);
+  
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     if (m_paSeDeputy[i_Deputy]) {
       delete m_paSeDeputy[i_Deputy];
