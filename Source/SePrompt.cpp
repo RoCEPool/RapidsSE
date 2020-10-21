@@ -67,23 +67,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
     
   _checkInitialised_(CN_SEPROMPT);
   
-  m_pSeDeputy = pCreateDeputy();
-  
-  m_pInput     = new Input;
-  m_pInpTknVec = m_pInput->pTokenVec();
-  //m_pSsnTagSet = & m_pSeDeputy->pSession()->m_oSsnTagSet;
-
-  //if (bSethScript)
-  //  m_pSeDeputy->pSession()->m_sToDo = ""_Stz;
-  //else
-  m_pSeDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
-
-  m_pInput->vDebugMode(d_iDebugMode);
-
-  // reset stdin as on Linux when another process(prompt)
-  //   accesses the stdin , its not a valid fp
-  m_pInput->vForkReset();
-
   vInitialSettings();
 }
 
@@ -171,21 +154,19 @@ void SePrompt::vPromptLoop(void)
     //vJotDisable(0x27,0);
   }
     
-  m_xReqTuple.m_i_Session = m_pSeDeputy->pSession()->m_i_Session;
-  
   vTrace("vPromptLoop\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   while (m_bContinue) {
         
-    if (! bGetCommand())
-      continue;
-    
     if (! bFindDeputy()) {
       vTrace("No Deputies\n"_Stz);
       RASSERT(0);
     }
+    
+    if (! bGetCommand())
+      continue;
     
     if (! bPrepareJob())
       continue;
@@ -319,6 +300,8 @@ bool SePrompt::bPrepareJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
+  m_xReqTuple.m_i_Session = m_pSeDeputy->pSession()->m_i_Session;
+  
   m_pSeDeputy->vJob(nullptr);
   
   Job* pJob = m_pSeDeputy->pJob();
@@ -667,7 +650,7 @@ bool SePrompt::bFindDeputy(void)
     
   m_pSeDeputy = nullptr;
   
-  for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
+  for (i8 i_Deputy = 0; i_Deputy < m_nDeputies; i_Deputy++) {
     if (m_paSeDeputy[i_Deputy]->bAvailable()) {
       m_pSeDeputy = m_paSeDeputy[i_Deputy];
       break;
@@ -791,6 +774,24 @@ bool SePrompt::bHandleDemo(void)
 void SePrompt::vInitialSettings(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pInput     = new Input;
+  m_pInpTknVec = m_pInput->pTokenVec();
+
+  m_pInput->vDebugMode(d_iDebugMode);
+
+  // reset stdin as on Linux when another process(prompt)
+  //   accesses the stdin , its not a valid fp
+  m_pInput->vForkReset();
+
+  m_pSeDeputy = pCreateDeputy();
+  
+  //if (bSethScript)
+  //  m_pSeDeputy->pSession()->m_sToDo = ""_Stz;
+  //else
+  m_pSeDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
+
+  m_pSeDeputy = nullptr;
   
   if (gxArgs.m_bDeveloper) {
     m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
