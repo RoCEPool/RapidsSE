@@ -34,10 +34,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pMutexFG = nullptr;
   
   m_nDeputies = 0;
-  for (i8 i_Ssn = 0; i_Ssn < C_MAX_DEPUTY; i_Ssn++) {
-    Ssn[i_Ssn].m_pSession = nullptr;
-  }
-  m_pCurSsn    = nullptr;
   
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     m_paSeDeputy[i_Deputy] = nullptr;
@@ -78,12 +74,12 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   m_pInput     = new Input;
   m_pInpTknVec = m_pInput->pTokenVec();
-  m_pSsnTagSet = & Ssn[0].m_pSession->m_oSsnTagSet;
+  m_pSsnTagSet = & m_pSeDeputy->pSession()->m_oSsnTagSet;
 
   //if (bSethScript)
-  //  Ssn[0].m_pSession->m_sToDo = ""_Stz;
+  //  m_pSeDeputy->pSession()->m_sToDo = ""_Stz;
   //else
-  Ssn[0].m_pSession->m_sToDo = "_seprompt"_Stz;
+  m_pSeDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
 
   m_pInput->vDebugMode(d_iDebugMode);
 
@@ -100,14 +96,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 SePrompt::~SePrompt(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  for (i8 i_Ssn = 0; i_Ssn < C_MAX_DEPUTY; i_Ssn++) {
-    if (Ssn[i_Ssn].m_pSession) {
-      Api::vFreeSession(Ssn[0].m_pSession);
-      Ssn[0].m_pSession = nullptr;
-    }
-  }
-  
+      
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     if (m_paSeDeputy[i_Deputy]) {
       delete m_paSeDeputy[i_Deputy];
@@ -145,7 +134,7 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("SePrompt %p session %p \n"_Stz,
          pSePrompt,
-         pSePrompt->Ssn[0].m_pSession);
+         pSePrompt->m_pSeDeputy->pSession());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +173,7 @@ void SePrompt::vPromptLoop(void)
     //vJotDisable(0x27,0);
   }
     
-  m_xReqTuple.m_i_Session = Ssn[0].m_pSession->m_i_Session;
+  m_xReqTuple.m_i_Session = m_pSeDeputy->pSession()->m_i_Session;
   
   vTrace("vPromptLoop\n"_Stz);
   
@@ -213,8 +202,6 @@ bool SePrompt::bPromptFG(void)
   
   s32 sHostName;
   Hardware::vHostName(sHostName);
-
-  m_pCurSsn = & Ssn[m_iSsnBG];
 
   if (bStdIn()) {
     vReportOther();
@@ -360,20 +347,20 @@ void SePrompt::vPromptBG(void)
   i8 i_Ssn = m_iSsnBG;
   m_iSsnBG = C_UNKNOWN;
 
-  Api::vMutexLock(Ssn[i_Ssn].m_pSession,m_pSeDeputy->pJob());
+  Api::vMutexLock(m_pSeDeputy->pSession(),m_pSeDeputy->pJob());
     
   // spawn the job
   if (m_pSeDeputy->pJob()->bNoWaitTag()) {
     Api::vJob_2_SpawnJob_prompt(m_pSeDeputy->pJob());
-    Api::vMutexUnlock(Ssn[i_Ssn].m_pSession,m_pSeDeputy->pJob());
+    Api::vMutexUnlock(m_pSeDeputy->pSession(),m_pSeDeputy->pJob());
     return;
   }
   else {
     Api::vJob_2_SpawnJob_prompt(m_pSeDeputy->pJob());
   }
   
-  Api::vMutexWaitCond(Ssn[i_Ssn].m_pSession,m_pSeDeputy->pJob());
-  Api::vMutexUnlock(Ssn[i_Ssn].m_pSession,m_pSeDeputy->pJob());
+  Api::vMutexWaitCond(m_pSeDeputy->pSession(),m_pSeDeputy->pJob());
+  Api::vMutexUnlock(m_pSeDeputy->pSession(),m_pSeDeputy->pJob());
   m_oTimer.vUpdate();
 
 
@@ -447,13 +434,7 @@ void SePrompt::vContinue(bool bContinue)
 void SePrompt::vCreateSession(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Ssn[m_nDeputies].m_pSession = Api::pAllocSession(SK_EXTERNAL);
-  Ssn[m_nDeputies].m_pSession->vPartition(0);
-
-  eEC eError = Ssn[m_nDeputies].m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
-  ASSERT(EC_NONE == eError);
-  
+    
   m_pSeDeputy = m_paSeDeputy[m_nDeputies] = new SeDeputy(this);
   
   m_pSeDeputy->vCreateSession();
@@ -1026,11 +1007,11 @@ bool SePrompt::bReadNextCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case: a previous command has requested to prompt to do something
   
-  if (* Ssn[0].m_pSession->m_sToDo.azChar()) {
-    m_pInpTknVec->vTokenise(Ssn[0].m_pSession->m_sToDo);
+  if (* m_pSeDeputy->pSession()->m_sToDo.azChar()) {
+    m_pInpTknVec->vTokenise(m_pSeDeputy->pSession()->m_sToDo);
     m_pInpTknVec->vStripSemicolon();
 
-    Ssn[0].m_pSession->m_sToDo = ""_Stz;
+    m_pSeDeputy->pSession()->m_sToDo = ""_Stz;
     m_pInpTknVec->vIntegrityCheck();
     return true;
   }
@@ -1092,7 +1073,7 @@ void SePrompt::vResetExtractedTagSet(void)
   m_oExtTagSet.vReset();
   m_oExtTagSet.vInsert(C_TAG_BYPROMPT,1);
   m_oExtTagSet.vInsert(C_TAG_ORIGIN,AM::pGrid()->m_iThisNode);
-  m_oExtTagSet.vInsert(C_TAG_SESSION,Ssn[0].m_pSession->m_i_Session);
+  m_oExtTagSet.vInsert(C_TAG_SESSION,m_pSeDeputy->pSession()->m_i_Session);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1236,7 +1217,7 @@ Session* SePrompt::pSession(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return Ssn[0].m_pSession;
+  return m_pSeDeputy->pSession();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1265,7 +1246,7 @@ bool SePrompt::bShortCut(void)
     if (! pShortCut->m_sName.bSame(pTkn->szChars()))
       continue;
     
-    Ssn[0].m_pSession->m_sToDo = pShortCut->m_sCmd;
+    m_pSeDeputy->pSession()->m_sToDo = pShortCut->m_sCmd;
     
     return true;
   }

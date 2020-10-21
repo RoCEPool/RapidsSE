@@ -64,13 +64,7 @@ namespace Prompt
     
   
     i8        m_nDeputies;   //
-    struct _Ssn {
-      Session*  m_pSession;    // rapidsse session
-    } Ssn[C_MAX_DEPUTY];
-  
-  
     SeDeputy*  m_paSeDeputy[C_MAX_DEPUTY];
-    _Ssn*      m_pCurSsn;
     SeDeputy*  m_pSeDeputy;
 
     // must be last
