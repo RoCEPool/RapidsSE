@@ -10,6 +10,7 @@ namespace Prompt
   class SeDeputy : public Object
   {
   private:
+    i8        m_i_Deputy;
     SePrompt* m_pSePrompt;
     
     Thread*   m_pThread;
@@ -29,13 +30,14 @@ namespace Prompt
     void* operator new(size_t);
     void  operator delete(void*);
 
-    SeDeputy(SePrompt* pSePrompt);
+    SeDeputy(i8 i_Deputy, SePrompt* pSePrompt);
    ~SeDeputy(void) noexcept(false);
   
     static void* aEntryPoint(void* pArg);
 
     bool bAvailable(void);
-    
+    void vAvailable(bool bAvailable);
+
     void vDeputyLoop(void);
 
     void vExecuteJob(void);

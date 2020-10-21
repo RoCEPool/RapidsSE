@@ -160,7 +160,7 @@ void SePrompt::vPromptLoop(void)
 
   while (m_bContinue) {
         
-    if (! bFindDeputy()) {
+    if (! m_pSeDeputy && ! bFindDeputy()) {
       vTrace("No Deputies\n"_Stz);
       RASSERT(0);
     }
@@ -417,7 +417,8 @@ SeDeputy* SePrompt::pCreateDeputy(void)
   if (m_nDeputies >= C_MAX_DEPUTY)
     return nullptr;
   
-  SeDeputy* pSeDeputy = m_paSeDeputy[m_nDeputies] = new SeDeputy(this);
+  SeDeputy* pSeDeputy =
+    m_paSeDeputy[m_nDeputies] = new SeDeputy(m_nDeputies,this);
   
   pSeDeputy->vCreateSession();
   
@@ -662,6 +663,8 @@ bool SePrompt::bFindDeputy(void)
   for (i8 i_Deputy = 0; i_Deputy < m_nDeputies; i_Deputy++) {
     if (m_paSeDeputy[i_Deputy]->bAvailable()) {
       m_pSeDeputy = m_paSeDeputy[i_Deputy];
+      m_pSeDeputy->vAvailable(false);
+      vTrace("Found Deputy %lld\n"_Stz,i_Deputy);
       break;
     }
   }

@@ -24,11 +24,12 @@ __aFooterFunction(SeDeputy)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SeDeputy::SeDeputy(SePrompt* pSePrompt)
+SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 : Object(CN_SEDEPUTY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
+  m_i_Deputy  = i_Deputy;
   m_pSePrompt = pSePrompt;
   
   m_pThread   = new Thread;
@@ -88,7 +89,6 @@ void SeDeputy::vDeputyLoop(void)
     m_pThread->m_pMutex->vLock(m_pSePrompt);
     m_bAvailable = true;
     m_pThread->m_pMutex->vWait(m_pSePrompt);
-    m_bAvailable = false;
     m_pThread->m_pMutex->vUnlock(m_pSePrompt);
   
     if (! m_pSePrompt->bContinue())
@@ -155,6 +155,16 @@ void SeDeputy::vDeleteJob(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set/clear available                                                        */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vAvailable(bool bAvailable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  m_bAvailable = bAvailable;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is this deputy available to execute jobs?                                  */
