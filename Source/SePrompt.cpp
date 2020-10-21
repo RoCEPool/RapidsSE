@@ -341,7 +341,7 @@ void SePrompt::vExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_pSeDeputy->pJob()->bHasTag_bg()) {
+  if (! m_pSeDeputy->pJob()->bHasTag_bg()) {
     m_pMutex->vLock(this);
   
     m_pSeDeputy->pMutex()->vLock(this);
