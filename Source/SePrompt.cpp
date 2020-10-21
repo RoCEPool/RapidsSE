@@ -425,6 +425,9 @@ void SePrompt::vCreateDeputy(void)
   m_pSeDeputy->vCreateSession();
   
   m_nDeputies++;
+  
+  while (! m_pSeDeputy->bReady())
+    AM::vNapMsec(10,CN_SEPROMPT);
 }
 
 /*----------------------------------------------------------------------------*/

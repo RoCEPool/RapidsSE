@@ -18,6 +18,8 @@ namespace Prompt
     Job*      m_pJob;      // job
   
     Timer     m_oTimer;    // the timer
+  
+    bool      m_bReady;
 
 
     // must be last
@@ -44,6 +46,8 @@ namespace Prompt
     void vJob(Job* pJob);
 
     Mutex* pMutex(void);
+  
+    bool bReady(void);
   
     void vReportTime(void);
 
