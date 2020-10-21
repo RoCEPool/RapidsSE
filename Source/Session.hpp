@@ -61,8 +61,6 @@ namespace Sessions
     
   private:
 
-    Input*   m_pInput;           // input stream
-
     // must be last
     Footer m_xFooter;
     
@@ -81,8 +79,6 @@ namespace Sessions
     void      vEndTx(void);
     void      vFocalOutline(s4K& sOutline);
     eEC       eInit(Stz* pCatalogName, Stz* pSchemaName);
-    Input*    pInput(void);
-    void      vInput(Input* pInput);
     i8        iPartition(void);
     void      vPartition(i8 iPartition);
     DicStack* pPathStack(void);
@@ -90,7 +86,6 @@ namespace Sessions
     void      vReport(void);
     
     i8        iSlot(void);
-    TokenVec* pInpTknVec(void);
     Tx*       pTx(void);
     void      vTx(Tx* pTx);
   

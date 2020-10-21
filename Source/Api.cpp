@@ -25,9 +25,7 @@ Session* Api::pAllocSession(eSK eSession)
   SessionArray* pSessionArray = AM::pSessionArray();
   
   Session* pSession = pSessionArray->pAllocSession(eSession);
-  
-  pSession->vInput(new Input);
-  
+    
   return pSession;
 }
 
@@ -37,10 +35,6 @@ Session* Api::pAllocSession(eSK eSession)
 void Api::vFreeSession(Session* pSession)
 {
   _static_
-  
-  delete pSession->pInput();
-  pSession->vInput(nullptr);
-
   
   SessionArray* pSessionArray = AM::pSessionArray();
 

@@ -98,8 +98,8 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   vCreateSession();
   
-  m_pInput     = Ssn[0].m_pSession->pInput();
-  m_pInpTknVec = Ssn[0].m_pSession->pInpTknVec();
+  m_pInput     = new Input;
+  m_pInpTknVec = m_pInput->pTokenVec();
   m_pSsnTagSet = & Ssn[0].m_pSession->m_oSsnTagSet;
 
   //if (bSethScript)
@@ -130,6 +130,8 @@ SePrompt::~SePrompt(void) noexcept(false)
       Ssn[0].m_pSession = nullptr;
     }
   }
+  
+  delete m_pInput;
   
   delete m_pBPA;
   delete m_pObjectsInPool;
@@ -472,7 +474,7 @@ void SePrompt::vCutToken(i8 i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pInpTknVec = Ssn[0].m_pSession->pInpTknVec();
+  TokenVec* pInpTknVec = m_pInput->pTokenVec();
   
   //pTknVec->vPrint();
   
@@ -1364,6 +1366,16 @@ TokenVec* SePrompt::pInpTknVec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pInpTknVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get input                                                                 */
+/*----------------------------------------------------------------------------*/
+Input* SePrompt::pInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/
