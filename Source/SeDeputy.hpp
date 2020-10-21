@@ -37,7 +37,8 @@ namespace Prompt
     void vDeputyLoop(void);
 
     void vExecuteJob(void);
-  
+    void vDeleteJob(void);
+
     void vCreateSession(void);
 
     bool bExecutePipeline(void);

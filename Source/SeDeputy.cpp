@@ -96,26 +96,14 @@ void SeDeputy::vDeputyLoop(void)
     
     vExecuteJob();
 
-    m_pSePrompt->pMutex()->vLock(m_pSePrompt);
-    m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
-    m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
+    if (! m_pJob->bHasTag_bg()) {
+      m_pSePrompt->pMutex()->vLock(m_pSePrompt);
+      m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
+      m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
+    }
     
+    vDeleteJob();
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new session                                                       */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vCreateSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  m_pSession = Api::pAllocSession(SK_EXTERNAL);
-  m_pSession->vPartition(0);
-  m_pJob   = nullptr;
-
-  eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
-  ASSERT(EC_NONE == eError);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,8 +141,34 @@ void SeDeputy::vExecuteJob(void)
   
   
   vReportTime();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete completed job                                                       */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vDeleteJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   Api::vJob_4_DeleteJob(&m_pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create a new session                                                       */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vCreateSession(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  m_pSession = Api::pAllocSession(SK_EXTERNAL);
+  m_pSession->vPartition(0);
+  m_pJob   = nullptr;
+
+  eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
+  ASSERT(EC_NONE == eError);
 }
 
 /*----------------------------------------------------------------------------*/
