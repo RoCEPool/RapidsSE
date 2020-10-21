@@ -30,12 +30,16 @@ SeDeputy::SeDeputy(SePrompt* pSePrompt)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   m_pSePrompt = pSePrompt;
-    
-  m_pMutexBG  = nullptr;
+  
+  m_pThread   = new Thread;
+
+  m_pMutex    = new Mutex(MK_THREAD,m_pThread);
   m_pSession  = nullptr;
   m_pJob      = nullptr;
 
   _checkInitialised_(CN_SEDEPUTY);
+  
+  m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,11 +51,41 @@ SeDeputy::~SeDeputy(void) noexcept(false)
   
   Api::vFreeSession(m_pSession);
   m_pSession = nullptr;
+  
+  delete m_pMutex;
+  delete m_pThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* deputy entry point                                                         */
+/*----------------------------------------------------------------------------*/
+void* SeDeputy::aEntryPoint(void* pArg)
+{
+  vTrace("SeDeputy::aEntryPoint\n"_Stz);
+  
+  SeDeputy* pSeDeputy = _pSeDeputy(pArg);
+  
+  pSeDeputy->vDeputyLoop();
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* deputy entry point                                                         */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vDeputyLoop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  vTrace("SeDeputy::vDeputyLoop\n"_Stz);
+  
+  sleep(1000000);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* create a new session                                                       */

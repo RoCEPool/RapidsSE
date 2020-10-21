@@ -12,11 +12,13 @@ namespace Prompt
   private:
     SePrompt* m_pSePrompt;
     
-    Mutex*    m_pMutexBG;  // mutex for background thread
+    Thread*   m_pThread;
+
+    Mutex*    m_pMutex;    // mutex
     Session*  m_pSession;  // rapidsse session
     Job*      m_pJob;      // job
   
-    Timer     m_oTimer;      // the timer
+    Timer     m_oTimer;    // the timer
 
 
     // must be last
@@ -29,6 +31,10 @@ namespace Prompt
     SeDeputy(SePrompt* pSePrompt);
    ~SeDeputy(void) noexcept(false);
   
+    static void* aEntryPoint(void* pArg);
+
+    void vDeputyLoop(void);
+
     void vExecuteJob(void);
   
     void vCreateSession(void);
