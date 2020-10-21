@@ -42,7 +42,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   m_pInput     = nullptr;
   m_pInpTknVec = nullptr;
-  m_pSsnTagSet = nullptr;
   
   m_iDivisionNo = 0;
   m_iSectionNo  = 0;
@@ -65,16 +64,14 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 
 
   m_pLitTknVec = new TokenVec;
-  
-  m_iSsnBG = C_UNKNOWN;
-  
+    
   _checkInitialised_(CN_SEPROMPT);
   
   vCreateSession();
   
   m_pInput     = new Input;
   m_pInpTknVec = m_pInput->pTokenVec();
-  m_pSsnTagSet = & m_pSeDeputy->pSession()->m_oSsnTagSet;
+  //m_pSsnTagSet = & m_pSeDeputy->pSession()->m_oSsnTagSet;
 
   //if (bSethScript)
   //  m_pSeDeputy->pSession()->m_sToDo = ""_Stz;
@@ -180,9 +177,7 @@ void SePrompt::vPromptLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   while (m_bContinue) {
-    
-    m_iSsnBG = 0;
-    
+        
     if (! bPromptFG())
       continue;
     
@@ -325,15 +320,14 @@ bool SePrompt::bPromptFG(void)
     return false;
   }
   
-  m_pSeDeputy->pJob()->pJobTags()->vCopy(m_pSsnTagSet);
+  TagSet* pSsnTagSet = & m_pSeDeputy->pSession()->m_oSsnTagSet;
+  m_pSeDeputy->pJob()->pJobTags()->vCopy(pSsnTagSet);
   
   if (m_pSeDeputy->pJob()->bHasTag(C_TAG_TAGS))
     m_pSeDeputy->pJob()->pJobTags()->vDumpSet();
   
   vMakeDiaryDir();
   
-  m_oTimer.vStart();
-
   return true;
 }
 
@@ -344,8 +338,7 @@ void SePrompt::vPromptBG(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Ssn = m_iSsnBG;
-  m_iSsnBG = C_UNKNOWN;
+  m_oTimer.vStart();
 
   Api::vMutexLock(m_pSeDeputy->pSession(),m_pSeDeputy->pJob());
     
@@ -1307,14 +1300,16 @@ bool SePrompt::bSubSsnTags(void)
     s32 sTagName;
     sTagName.vSprint("<%s>"_Stz,pToken_name->szChars());
 
-    if (! m_pSsnTagSet->bHasName(sTagName))
+    TagSet* pSsnTagSet = & m_pSeDeputy->pSession()->m_oSsnTagSet;
+
+    if (! pSsnTagSet->bHasName(sTagName))
       continue;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // substitute the value of the session tag into the input vector
     
     s256 sTagValue;
-    sTagValue = m_pSsnTagSet->szValue(sTagName);
+    sTagValue = pSsnTagSet->szValue(sTagName);
     
     m_pInpTknVec->vRemoveToken(i_Token);
     m_pInpTknVec->vRemoveToken(i_Token);

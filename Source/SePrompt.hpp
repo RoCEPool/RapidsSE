@@ -32,7 +32,6 @@ namespace Prompt
   
     Input*    m_pInput;      // input processor from session
     TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
-    TagSet*   m_pSsnTagSet;  // session tag set
 
     TagSet    m_oPmtTagSet;  // tag set which controls this prompt
     i8        m_iDivisionNo; // division numbering
@@ -59,9 +58,6 @@ namespace Prompt
   
     // temp for demo
     TokenVec* m_pLitTknVec;  // literal token vector for demo
-  
-    i8  m_iSsnBG;
-    
   
     i8        m_nDeputies;   //
     SeDeputy*  m_paSeDeputy[C_MAX_DEPUTY];
