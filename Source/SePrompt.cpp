@@ -173,7 +173,7 @@ void SePrompt::vPromptLoop(void)
     
     vExecuteJob();
 
-    vLogFreeSpace();
+    //vLogFreeSpace();
 
   } // while
 }
@@ -341,14 +341,23 @@ void SePrompt::vExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pMutex->vLock(this);
+  if (m_pSeDeputy->pJob()->bHasTag_bg()) {
+    m_pMutex->vLock(this);
   
-  m_pSeDeputy->pMutex()->vLock(this);
-  m_pSeDeputy->pMutex()->vSignal(this);
-  m_pSeDeputy->pMutex()->vUnlock(this);
+    m_pSeDeputy->pMutex()->vLock(this);
+    m_pSeDeputy->pMutex()->vSignal(this);
+    m_pSeDeputy->pMutex()->vUnlock(this);
 
-  m_pMutex->vWait(this);
-  m_pMutex->vUnlock(this);
+    m_pMutex->vWait(this);
+    m_pMutex->vUnlock(this);
+  }
+  else {
+    m_pSeDeputy->pMutex()->vLock(this);
+    m_pSeDeputy->pMutex()->vSignal(this);
+    m_pSeDeputy->pMutex()->vUnlock(this);
+  }
+  
+  m_pSeDeputy = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
