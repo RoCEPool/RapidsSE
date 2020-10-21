@@ -65,14 +65,14 @@ namespace Prompt
   
     i8        m_nDeputies;   //
     struct _Ssn {
-      Mutex*    m_pMutexBG;    // mutex for background thread
       Session*  m_pSession;    // rapidsse session
       Job*      m_pJob;        // job
     } Ssn[C_MAX_DEPUTY];
   
-    _Ssn*     m_pCurSsn;
   
     SeDeputy*  m_paSeDeputy[C_MAX_DEPUTY];
+    _Ssn*      m_pCurSsn;
+    SeDeputy*  m_pSeDeputy;
 
     // must be last
     Footer m_xFooter;

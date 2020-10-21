@@ -26,6 +26,8 @@ namespace Prompt
     SeDeputy(SePrompt* pSePrompt);
    ~SeDeputy(void) noexcept(false);
   
+    void vCreateSession(void);
+
     Job* pJob(void);
     void vJob(Job* pJob);
 

@@ -35,7 +35,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   m_nDeputies = 0;
   for (i8 i_Ssn = 0; i_Ssn < C_MAX_DEPUTY; i_Ssn++) {
-    Ssn[i_Ssn].m_pMutexBG = nullptr;
     Ssn[i_Ssn].m_pSession = nullptr;
     Ssn[i_Ssn].m_pJob     = nullptr;
   }
@@ -44,13 +43,14 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     m_paSeDeputy[i_Deputy] = nullptr;
   }
+  m_pSeDeputy  = nullptr;
   
   m_pInput     = nullptr;
   m_pInpTknVec = nullptr;
   m_pSsnTagSet = nullptr;
   
   m_iDivisionNo = 0;
-  m_iSectionNo = 0;
+  m_iSectionNo  = 0;
   m_bContinue   = true;
   
   // m_oTimer
@@ -450,7 +450,9 @@ void SePrompt::vCreateSession(void)
   eEC eError = Ssn[m_nDeputies].m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
   ASSERT(EC_NONE == eError);
   
-  m_paSeDeputy[m_nDeputies] = new SeDeputy(this);
+  m_pSeDeputy = m_paSeDeputy[m_nDeputies] = new SeDeputy(this);
+  
+  m_pSeDeputy->vCreateSession();
   
   m_nDeputies++;
 }
