@@ -81,9 +81,23 @@ void SeDeputy::vDeputyLoop(void)
   
   vTrace("SeDeputy::vDeputyLoop\n"_Stz);
   
-  sleep(1000000);
-}
+  while (m_pSePrompt->bContinue()) {
 
+    m_pThread->m_pMutex->vLock(m_pSePrompt);
+    m_pThread->m_pMutex->vWait(m_pSePrompt);
+    m_pThread->m_pMutex->vUnlock(m_pSePrompt);
+  
+    if (! m_pSePrompt->bContinue())
+      break;
+    
+    vExecuteJob();
+
+    m_pSePrompt->pMutex()->vLock(m_pSePrompt);
+    m_pSePrompt->pMutex()->vWait(m_pSePrompt);
+    m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
+    
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* create a new session                                                       */

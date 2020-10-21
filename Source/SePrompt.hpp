@@ -108,6 +108,7 @@ namespace Prompt
     void vLogCommand(void);
     void vLogFreeSpace(void);
     void vMakeDiaryDir(void);
+    Mutex* pMutex(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     ObjectsInPool*  pObjectsInPool(void);

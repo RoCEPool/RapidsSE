@@ -842,6 +842,16 @@ void SePrompt::vMakeDiaryDir(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get mutex                                                                  */
+/*----------------------------------------------------------------------------*/
+Mutex* SePrompt::pMutex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pMutex;
+}
+
+/*----------------------------------------------------------------------------*/
 /* next division number                                                       */
 /*----------------------------------------------------------------------------*/
 i8 SePrompt::iNextDivisionNo(void)
@@ -869,6 +879,16 @@ ObjectsInPool* SePrompt::pObjectsInPool(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pObjectsInPool;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the prompt settings tag set                                            */
+/*----------------------------------------------------------------------------*/
+TagSet* SePrompt::pPmtTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return &m_oPmtTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1122,16 +1142,6 @@ void SePrompt::vSection(Stz* szSection)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get shortcut vector                                                        */
-/*----------------------------------------------------------------------------*/
-ShortCutVec* SePrompt::pShortCutVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return & m_oShortCutVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the rapidsse session                                                   */
 /*----------------------------------------------------------------------------*/
 Session* SePrompt::pSession(void)
@@ -1142,13 +1152,13 @@ Session* SePrompt::pSession(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the prompt settings tag set                                            */
+/* get shortcut vector                                                        */
 /*----------------------------------------------------------------------------*/
-TagSet* SePrompt::pPmtTagSet(void)
+ShortCutVec* SePrompt::pShortCutVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return &m_oPmtTagSet;
+  return & m_oShortCutVec;
 }
 
 /*----------------------------------------------------------------------------*/
