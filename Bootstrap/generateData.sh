@@ -30,6 +30,7 @@ DEBUG=0
 SF=1
 CHUNKS=-1
 FIRST_OFFSET=-1
+NO_RENAME=0
 
 declare -a OUTPUT_DIRS
 
@@ -75,6 +76,8 @@ function printUsageAndExit() {
   echo "                      Requires --node."
   echo "  --offset <val>      The first (1-based) chunk number that this node will create."
   echo "                      Requires --node."
+  echo ""
+  echo "  --norename          Do not remove the \".1\", \",2\" extensions off the data files."
   echo ""
   echo "  --debug             Displays additional debugging messages during execution."
   echo ""
@@ -177,6 +180,11 @@ function processArgs() {
         shift # past argument and value
         ;;
 
+      --norename)
+        NO_RENAME=1
+        shift # past argument
+        ;;
+
       --debug)
         DEBUG=1
         shift # past argument
@@ -252,7 +260,7 @@ function processArgs() {
     local dir="${OUTPUT_DIRS[$i]}"
 
     if [ "${dir:0:1}" != "/" ]; then
-      OUTPUT_DIRS[$i]="$(readlink -f "${dir}")"
+      OUTPUT_DIRS[$i]="$(readlink -f ".")/${dir}"
     fi
   done
 
@@ -382,6 +390,10 @@ function invokeNodeGeneration() {
 
   remoteCmd="\"${installDir}/dbgen/${SCRIPT_NAME}\" --node --sf ${SF} --chunks ${CHUNKS} --offset ${offset}"
 
+  if [ "${NO_RENAME}" -eq 1 ]; then
+    remoteCmd="${remoteCmd} --norename"
+  fi
+
   for dir in "${OUTPUT_DIRS[@]}"
   do
     remoteCmd="${remoteCmd} --dir \"${dir}\""
@@ -438,7 +450,33 @@ function generateNodeData() {
 
   wait
 
+  # Rename the data files to remove the .1, .2, .3... extensions
+  if [ "${NO_RENAME}" -ne 1 ]; then
+    removeFileChunkExt
+  fi
+
   echo "$(date +%T) : Data generation complete on node ${CURRENT_NODE_NAME} [host: ${host}]."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Removes the chunking/offset extension from the file name. So instead of 
+## having a file lineitem.tbl.3 you simply have lineitem.tbl.
+## Params: None
+
+function removeFileChunkExt() {
+  
+  for dir in "${OUTPUT_DIRS[@]}"
+  do
+    declare -a files
+    mapfile -t files < <(find "${dir}" -type f -name "*.tbl.*")
+
+    for f in "${files[@]}"
+    do
+      debugPrint "Renaming file: \"${f}\" --> \"${f%.*}\""
+      mv "${f}" "${f%.*}" || errorExit "Error renaming file: ${f}"
+    done
+  done
 }
 
 
@@ -454,6 +492,9 @@ debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
 debugPrint "NAME_FILE = ${NAME_FILE}"
 debugPrint "DEBUG = ${DEBUG}"
 debugPrint "SF = ${SF}"
+debugPrint "CHUNKS = ${CHUNKS}"
+debugPrint "FIRST_OFFSET = ${FIRST_OFFSET}"
+debugPrint "NO_RENAME = ${NO_RENAME}"
 debugPrint "OUTPUT_DIRS = "
 debugPrintArray 2 "${OUTPUT_DIRS[@]}"
 

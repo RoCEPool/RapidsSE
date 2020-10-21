@@ -40,8 +40,8 @@ readonly VERSION_FILE="${LAYOUT_DIR}/version"
 readonly CREATE_LAYOUT_FILE="${DIR}/createlayout.sh"
 
 readonly SETUP_SCRIPT="./setup.sh"  # relative to the directory of extracted files
-#readonly MAKESELF_ARGS=() 
-readonly MAKESELF_ARGS=( "--bzip2" "--threads" "8")
+readonly MAKESELF_ARGS=() 
+#readonly MAKESELF_ARGS=( "--bzip2" "--threads" "8")
 
 readonly SHELLCHECK_CMD="${DIR}/shellcheck.sh"
 
