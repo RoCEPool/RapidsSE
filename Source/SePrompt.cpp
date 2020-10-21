@@ -31,7 +31,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   i8 iPartition = 0;
   
-  m_pMutexFG = nullptr;
+  m_pMutex = new Mutex(MK_THREAD,this);
   
   m_nDeputies = 0;
   
@@ -100,6 +100,7 @@ SePrompt::~SePrompt(void) noexcept(false)
       m_paSeDeputy[i_Deputy] = nullptr;
     }
   }
+  delete m_pMutex;
   
   delete m_pInput;
   

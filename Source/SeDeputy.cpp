@@ -33,7 +33,6 @@ SeDeputy::SeDeputy(SePrompt* pSePrompt)
   
   m_pThread   = new Thread;
 
-  m_pMutex    = new Mutex(MK_THREAD,m_pThread);
   m_pSession  = nullptr;
   m_pJob      = nullptr;
 
@@ -52,7 +51,6 @@ SeDeputy::~SeDeputy(void) noexcept(false)
   Api::vFreeSession(m_pSession);
   m_pSession = nullptr;
   
-  delete m_pMutex;
   delete m_pThread;
 }
 

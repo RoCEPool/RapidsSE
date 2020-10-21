@@ -14,7 +14,6 @@ namespace Prompt
     
     Thread*   m_pThread;
 
-    Mutex*    m_pMutex;    // mutex
     Session*  m_pSession;  // rapidsse session
     Job*      m_pJob;      // job
   
