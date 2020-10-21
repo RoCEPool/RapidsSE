@@ -792,6 +792,7 @@ function stopRemoteNode() {
   local host
   local dir
   local remoteCmd
+  local sshCmd
 
   host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"

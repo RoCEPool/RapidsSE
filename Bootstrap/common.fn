@@ -89,6 +89,25 @@ function debugPrint() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints a given array (one line per element) if debug mode is turned on 
+## (i.e., $DEBUG == 1).
+## Params:
+##  $1 : The number of indent spaces on each line.
+##  $@ : The array to print.
+
+function debugPrintArray() {
+  if [ "${DEBUG}" -eq 1 ]; then
+    local indents=$1
+    shift
+    local arrayElements=("$@")
+    shift
+
+    printIndentArray "${indents}" "${arrayElements[@]}"
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Prints the members of an array (one per line) with an indentation.
 ## Params:
 ##  $1 : The number of indent spaces on each line.

@@ -29,9 +29,9 @@ cp "${ROOT_DIR}/${TCC_DIR}/include/"*     "${LAYOUT_DIR}/${TCC_DIR}/include"
 
 # dbgen
 mkdir -p "${LAYOUT_DIR}/dbgen"
-cp "${ROOT_DIR}/dbgen/dbgen"              "${LAYOUT_DIR}/dbgen"
-cp "${ROOT_DIR}/dbgen/dists.dss"          "${LAYOUT_DIR}/dbgen"
-cp "${ROOT_DIR}/Demo/awsGenerateData.sh"  "${LAYOUT_DIR}/dbgen"
+cp "${ROOT_DIR}/dbgen/dbgen"                "${LAYOUT_DIR}/dbgen"
+cp "${ROOT_DIR}/dbgen/dists.dss"            "${LAYOUT_DIR}/dbgen"
+cp "${ROOT_DIR}/Bootstrap/generateData.sh"  "${LAYOUT_DIR}/dbgen"
 
 # Source
 mkdir -p "${LAYOUT_DIR}/Source"

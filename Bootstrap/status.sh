@@ -37,10 +37,9 @@ source "${BOOT_FN}" || { >&2 echo "Could not load ${BOOT_FN}"; exit 1; }
 ### Functions                                                               ###
 ###############################################################################
 
-## Prints out the valid arguments to the start & stop scripts and exits.
+## Prints out the valid arguments to the script and exits.
 ## Params: None
-## Note: The variable ${SCRIPT_NAME} must be defined as the name of the start
-##       or stop script filename.
+## Note: The variable ${SCRIPT_NAME} must be defined as the name of the script filename.
 
 function printUsageAndExit() {
 
