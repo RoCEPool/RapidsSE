@@ -80,7 +80,8 @@ namespace Prompt
     void vPromptLoop(void);
 
     bool bGetCommand(void);
-    bool bGetJob(void);
+    bool bPrepareJob(void);
+    void vExecuteJob(void);
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);

@@ -43,6 +43,8 @@ namespace Prompt
     Job* pJob(void);
     void vJob(Job* pJob);
 
+    Mutex* pMutex(void);
+  
     void vReportTime(void);
 
     Session* pSession(void);

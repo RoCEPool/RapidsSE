@@ -93,7 +93,7 @@ void SeDeputy::vDeputyLoop(void)
     vExecuteJob();
 
     m_pSePrompt->pMutex()->vLock(m_pSePrompt);
-    m_pSePrompt->pMutex()->vWait(m_pSePrompt);
+    m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
     m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
     
   }
@@ -185,6 +185,16 @@ void SeDeputy::vJob(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   m_pJob = pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get mutex                                                                  */
+/*----------------------------------------------------------------------------*/
+Mutex* SeDeputy::pMutex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_pThread->m_pMutex;
 }
 
 /*----------------------------------------------------------------------------*/

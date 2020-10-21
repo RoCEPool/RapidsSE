@@ -182,10 +182,10 @@ void SePrompt::vPromptLoop(void)
     if (! bGetCommand())
       continue;
     
-    if (! bGetJob())
+    if (! bPrepareJob())
       continue;
     
-    m_pSeDeputy->vExecuteJob();
+    vExecuteJob();
 
     vLogFreeSpace();
 
@@ -308,9 +308,9 @@ bool SePrompt::bGetCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next command from input                                                */
+/* use SE api to create and prepare a job for commmand                        */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bGetJob(void)
+bool SePrompt::bPrepareJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
@@ -344,6 +344,26 @@ bool SePrompt::bGetJob(void)
   vMakeDiaryDir();
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next command from input                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vExecuteJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  //m_pSeDeputy->vExecuteJob();
+  
+  
+  m_pMutex->vLock(this);
+  
+  m_pSeDeputy->pMutex()->vLock(this);
+  m_pSeDeputy->pMutex()->vSignal(this);
+  m_pSeDeputy->pMutex()->vUnlock(this);
+
+  m_pMutex->vWait(this);
+  m_pMutex->vUnlock(this);
 }
 
 /*----------------------------------------------------------------------------*/
