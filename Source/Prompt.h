@@ -30,6 +30,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_ascii.hpp"
 #include "Prompt_attachMap.hpp"
 
+#include "Prompt_bg.hpp"
 #include "Prompt_bp.hpp"
 #include "Prompt_bye.hpp"
 

@@ -4,6 +4,7 @@
 
 ../testsMN/Datums/testList
 ../tests/Ddl/testList
+../testsMN/Index/testList
 ../tests/LocalFunctions/testList
 ../testsMN/Misc/testList
 ../tests/Table/testList

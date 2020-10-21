@@ -18,11 +18,19 @@
   begin
     row[].isNull
   not while
-    row[].get InfoSet[].rdCsvChunk to Operand[]
-    Operand[].pipeOut
-    InfoSet[].nextRow to row[]
 
-    10 task::sleepMsec
+   args.operands attachmap::operands@ args.operands > and if
+    
+      attachmap::operands@ "Queued Operands : %v" .printf
+      25 task::sleepMsec
+ 
+   else
+
+      row[].get InfoSet[].rdCsvChunk to Operand[]
+      Operand[].pipeOut
+      InfoSet[].nextRow to row[]
+
+    then
 
   repeat
 

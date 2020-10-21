@@ -271,12 +271,15 @@ bool CmdHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
     else {
       Stz* szTagNm = pSynTags->szName(i_Syn);
       
-      vTrace("unknown tag in syntax tag set\n"_Stz);
-      RASSERT(0);
+      //vTrace("unknown tag in syntax tag set\n"_Stz);
+      return false;
     }
 
   }
 
+  if (i_Syn != pSynTags->m_nEnames)
+    return false;
+  
   return true;
 }
 

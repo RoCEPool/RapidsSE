@@ -248,8 +248,10 @@ void Step::vSocketRecvObject(void)
   
   bool bLowMem = gpBufferPool->bLowMemory();
   if (bLowMem) {
-    vSocketRecvObject_LowMem();
-    return;
+    AM::vPoolAnalyze();
+    //vSocketRecvObject_LowMem();
+    //return;
+    RASSERT(0);
   }
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !

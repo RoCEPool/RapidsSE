@@ -90,6 +90,7 @@ Args::Args(void)
   m_nMaxReadyLP      = 32;
   m_bMetadata        = false;
   m_bMunged          = false;
+  m_nOperands        = 0;
   m_nPeriodicSleep   = 10;
   m_bProgress        = true;
   m_iPromptDebug     = 0;
@@ -487,6 +488,12 @@ bool Args::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--nowelcome"_Stz)) {
       m_bWelcome = false;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--operands"_Stz)) {
+      m_nOperands = argv[++i_Arg].iToI8();
       continue;
     }
     

@@ -7,6 +7,8 @@
 
 namespace Prompt
 {
+  static const i8 C_PMT_MAXSSN = 4;
+
   static Stz* C_PMT_BUFPOOL  = "<bufferPool>"_Stz;
   static Stz* C_PMT_OBJDELTA = "<objectDelta>"_Stz;
   static Stz* C_PMT_MEMTRACK = "<trackMemory>"_Stz;
@@ -24,7 +26,16 @@ namespace Prompt
   class SePrompt : public Focal
   {
   private:
-    Session*  m_pSession;    // rapidsse session
+  
+    Mutex*    m_pMutexFG;    // mutex for foreground thread
+
+    i8        m_nSessions;   //
+    struct {
+      Mutex*    m_pMutexBG;    // mutex for background thread
+      Session*  m_pSession;    // rapidsse session
+      Job*      m_pJob;        // job
+    } Ssn[C_PMT_MAXSSN];
+  
     Input*    m_pInput;      // input processor from session
     TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
     TagSet*   m_pSsnTagSet;  // session tag set
@@ -37,7 +48,6 @@ namespace Prompt
     TagSet    m_oExtTagSet;  // extra tags gleaned from the prompt command
     ReqTuple  m_xReqTuple;   // request information
 
-    Job*      m_pJob;        // job
     Timer     m_oTimer;      // the timer
 
     bool      m_bOneCommand; // run one command only
@@ -55,6 +65,8 @@ namespace Prompt
   
     // temp for demo
     TokenVec* m_pLitTknVec;  // literal token vector for demo
+  
+    i8  m_iSsnBG;
     
     // must be last
     Footer m_xFooter;
@@ -66,10 +78,15 @@ namespace Prompt
     SePrompt(bool bOneCommand, bool bSethScript);
    ~SePrompt(void) noexcept(false);
   
+    static void* aEntryPoint_bg(void* pArg);
+  
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vPromptLoop(void);
- 
+
+    bool bPromptFG(void);
+    void vPromptBG(void);
+
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
     BPA* pBPA(void);
@@ -79,6 +96,7 @@ namespace Prompt
     i8   iDivisionNo(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
+    void vCreateSession(void);
     void vCutToken(i8 i_Tkn);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
@@ -91,6 +109,7 @@ namespace Prompt
     bool bHandleDemo(void);
     void vInitialSettings(void);
     TokenVec* pInpTknVec(void);
+    Input* pInput(void);
     bool bIsPromptWord(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);

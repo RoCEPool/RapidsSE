@@ -120,9 +120,10 @@ public:
   void vAstack9(void);
 
   // attachmap
+  void vAttachMapOperandsFetch(void);
+  void vAttachMapRegionSizeFetch(void);
   void vAttachMapTenantsFetch(void);
   void vAttachMapTenantsStore(void);
-  void vAttachMapRegionSizeFetch(void);
 
   // bp
   void vBpAnalyze(void);

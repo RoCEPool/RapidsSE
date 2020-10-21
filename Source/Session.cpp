@@ -113,8 +113,6 @@ Session::Session(void)
   m_bSessionExiting = false;
   m_pJobStack       = new Stack(KK_JOB_STACK);
 
-  m_pInput          = nullptr;
-
   m_sToDo           = ""_Stz;
     
   m_pMutex          = new Mutex(MK_JOB,this);
@@ -145,9 +143,7 @@ Session::~Session(void) noexcept(false)
   
   RASSERT(0 == m_pJobStack->nValues());
   delete m_pJobStack;
-  
-  delete m_pInput;
-  
+    
   delete m_pMutex;
     
   -- gixSession;
@@ -330,16 +326,6 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set partition                                                            */
-/*----------------------------------------------------------------------------*/
-void Session::vPartition(i8 iPartition)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  m_iPartition = iPartition;
-}
-
-/*----------------------------------------------------------------------------*/
 /* which partition                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Session::iPartition(void)
@@ -347,6 +333,16 @@ i8 Session::iPartition(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return m_iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set partition                                                              */
+/*----------------------------------------------------------------------------*/
+void Session::vPartition(i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  m_iPartition = iPartition;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -379,16 +375,6 @@ i8 Session::iSlot(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return TablePtn::iPartitionToSlot(m_iPartition);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token vector from input                                                */
-/*----------------------------------------------------------------------------*/
-TokenVec* Session::pInpTknVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  return m_pInput->pTokenVec();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -81,6 +81,7 @@ namespace Arguments
     i8   m_nMaxReadyLP;      // maximum ready lp queue
     bool m_bMetadata;        // print metadata information
     bool m_bMunged;          // load munged words
+    i8   m_nOperands;        // maximum number of operands in the system
     i8   m_nPeriodicSleep;   // sleep period for periodic job
     bool m_bProgress;        // print initialisation progress
     i8   m_iPromptDebug;     // prompt debug mode

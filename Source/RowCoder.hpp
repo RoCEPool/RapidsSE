@@ -75,12 +75,15 @@ namespace CompactBuffers
     i8 iYearDelta  = aDte->m_uYearDelta;
 
     if (iYearDelta < C_ERA_1) {
+      iEra_ = C_ERA_0;
       aEdt->m_uYearInEra = iYearDelta - C_ERA_0;
     }
     else if (iYearDelta < C_ERA_2) {
+      iEra_ = C_ERA_1;
       aEdt->m_uYearInEra = iYearDelta - C_ERA_1;
     }
     else {
+      iEra_ = C_ERA_2;
       aEdt->m_uYearInEra = iYearDelta - C_ERA_2;
     }
   }

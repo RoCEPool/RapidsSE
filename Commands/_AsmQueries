@@ -26,7 +26,8 @@ create table customer (
 create index Customer_Idx1 ON Customer(C_CUSTKEY);
 
 print "loading Customer...";
-/time fload Customer "/DATA/TPCH/customer_10k.csv";
+// /time fload Customer "/DATA/TPCH/customer_10k.csv";
+/time fload Customer "/Users/Shared/tpch/SF0/customer_10k.csv";
 
 compactIdx Customer Customer_Idx1;
 
@@ -49,7 +50,8 @@ create index Orders_Idx1 ON Orders(O_CUSTKEY);
 create index Orders_Idx2 ON Orders(O_ORDERKEY);
 
 print "loading Orders...";
-/time fload Orders "/DATA/TPCH/orders_10k.csv";
+// /time fload Orders "/DATA/TPCH/orders_10k.csv";
+/time fload Orders "/Users/Shared/tpch/SF0/orders_10k.csv";
 
 compactIdx Orders Orders_Idx1;
 
@@ -80,7 +82,8 @@ create index lineitem_idx1 on lineitem (l_shipdate);
 create index lineitem_idx2 on lineitem (l_orderkey);
 
 print "loading Lineitem...";
-/time fload lineitem "/DATA/TPCH/lineitem_100k.csv";
+// /time fload lineitem "/DATA/TPCH/lineitem_100k.csv";
+/time fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
 
 compactIdx LineItem lineItem_Idx1;
 compactIdx LineItem lineItem_Idx2;

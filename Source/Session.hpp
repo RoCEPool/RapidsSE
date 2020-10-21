@@ -49,7 +49,6 @@ namespace Sessions
     DicStack m_oDicStack;        // dictionary stack
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
-    Input*   m_pInput;           // input stream
 
     TagSet   m_oSsnTagSet;         // session level tags
 
@@ -61,7 +60,6 @@ namespace Sessions
     Mutex*   m_pMutex;           // 
     
   private:
-
 
     // must be last
     Footer m_xFooter;
@@ -88,7 +86,6 @@ namespace Sessions
     void      vReport(void);
     
     i8        iSlot(void);
-    TokenVec* pInpTknVec(void);
     Tx*       pTx(void);
     void      vTx(Tx* pTx);
   

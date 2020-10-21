@@ -42,6 +42,7 @@ namespace Threads
     void vFocalOutline(s4K& sOutline);
     void vLoop_dedicated(void);
     void vLoop_general(void);
+    void vSpawnPsxThd(void* pFun(void*), void* pArg);
     void vSpawnPsxThd_dedicated(void);
     void vSpawnPsxThd_general(void);
     void vSpawnPsxThd_dummy(void);

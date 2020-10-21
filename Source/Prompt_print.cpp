@@ -24,7 +24,7 @@ PromptFun __Prompt_print (
 bool Prompt::bPrompt_print(SePrompt* pPrompt)
 {
   Session* pSession = pPrompt->pSession();
-  Input* pInput = pSession->m_pInput;
+  Input* pInput = pPrompt->pInput();
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 

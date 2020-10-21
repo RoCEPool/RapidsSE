@@ -216,6 +216,8 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   else
     pQueueLeft()->vAppendOperand(pOperand);
 
+  AM::vOperandsInc();
+
   Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
   
   if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
@@ -252,6 +254,8 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   }
   pQueueRight()->vAppendOperand(pOperand);
   
+  AM::vOperandsInc();
+
   Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
   
   if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
@@ -713,6 +717,8 @@ Operand* Op::pPopQueue(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDropTaskLock();
     
+  AM::vOperandsDec();
+  
   if (AM::bVerbose()) {
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
@@ -752,6 +758,9 @@ Operand* Op::pPopQueueOoO(void)
   
   vDropTaskLock();
   
+  if (pOperand)
+    AM::vOperandsDec();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::bVerbose() && pOperand) {
@@ -782,8 +791,11 @@ Operand* Op::pPopQueueLeft(void)
   
   pOperand = pQueueLeft()->pPopQueue();
   
-  if (pOperand)
+  if (pOperand) {
     vDropTaskLock();
+    
+    AM::vOperandsDec();
+  }
   
       // Can Operand be deleted already ????
 //  if (pOperand) {
@@ -824,9 +836,11 @@ Operand* Op::pPopQueueRight(void)
   
   pOperand = pQueueRight()->pPopQueue();
   
-  if (pOperand)
+  if (pOperand) {
     vDropTaskLock();
- 
+    
+    AM::vOperandsDec();
+  }
       // Can Operand be deleted already ????
 //  if (pOperand)
 //    AM::vLogOpr(SL_INF,this,OA_OP_POP,
