@@ -17,6 +17,7 @@ namespace Prompt
 #include "ShortCut.hpp"
 typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 
+#include "SeDeputy.hpp"
 #include "SePrompt.hpp"
 
 #include "PromptFun.hpp"
