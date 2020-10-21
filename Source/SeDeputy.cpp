@@ -31,6 +31,10 @@ SeDeputy::SeDeputy(SePrompt* pSePrompt)
   
   m_pSePrompt = pSePrompt;
     
+  m_pMutexBG  = nullptr;
+  m_pSession  = nullptr;
+  m_pJob      = nullptr;
+
   _checkInitialised_(CN_SEDEPUTY);
 }
 
@@ -45,6 +49,47 @@ SeDeputy::~SeDeputy(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get job                                                                    */
+/*----------------------------------------------------------------------------*/
+Job* SeDeputy::pJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job                                                                    */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  m_pJob = pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get session                                                                */
+/*----------------------------------------------------------------------------*/
+Session* SeDeputy::pSession(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_pSession;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set session                                                                */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vSession(Session* pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  m_pSession = pSession;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
