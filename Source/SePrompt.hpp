@@ -100,7 +100,7 @@ namespace Prompt
     bool bExecuteFunction(void);
     void vExtractCtlTags(void);
     bool bExtractSupTags(void);
-    SeDeputy* pFindDeputy(void);
+    bool bFindDeputy(void);
     void vFocalOutline(s4K& sOutline);
     bool bHandleDemo(void);
     void vInitialSettings(void);

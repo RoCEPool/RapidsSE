@@ -182,6 +182,11 @@ void SePrompt::vPromptLoop(void)
     if (! bGetCommand())
       continue;
     
+    if (! bFindDeputy()) {
+      vTrace("No Deputies\n"_Stz);
+      RASSERT(0);
+    }
+    
     if (! bPrepareJob())
       continue;
     
@@ -352,10 +357,6 @@ bool SePrompt::bPrepareJob(void)
 void SePrompt::vExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  //m_pSeDeputy->vExecuteJob();
-  
-  m_pSeDeputy = pFindDeputy();
   
   m_pMutex->vLock(this);
   
@@ -655,11 +656,25 @@ bool SePrompt::bExtractSupTags(void)
 /*----------------------------------------------------------------------------*/
 /* find an available deputy                                                   */
 /*----------------------------------------------------------------------------*/
-SeDeputy* SePrompt::pFindDeputy(void)
+bool SePrompt::bFindDeputy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSeDeputy;
+  //return m_pSeDeputy;
+  
+  m_pSeDeputy = nullptr;
+  
+  for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
+    if (m_paSeDeputy[i_Deputy]->bAvailable()) {
+      m_pSeDeputy = m_paSeDeputy[i_Deputy];
+      break;
+    }
+  }
+  
+  if (m_pSeDeputy)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
