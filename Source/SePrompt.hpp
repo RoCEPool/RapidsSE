@@ -7,7 +7,7 @@
 
 namespace Prompt
 {
-  static const i8 C_MAX_DEPUTY = 4;
+  static const i8 C_MAX_DEPUTY = 16;
 
   static Stz* C_PMT_BUFPOOL  = "<bufferPool>"_Stz;
   static Stz* C_PMT_OBJDELTA = "<objectDelta>"_Stz;
