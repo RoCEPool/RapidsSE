@@ -1,0 +1,80 @@
+print "Executing Query1...";
+
+demo select
+  L_RETURNFLAG,
+  L_LINESTATUS,
+  sum(l_QUANTITY) as SUM_QTY,
+  sum(L_EXTENDEDPRICE) as SUM_BASE_PRICE, sum(L_EXTENDEDPRICE*L_DISCOUNT) as SUM_DISC_PRICE, sum(L_EXTENDEDPRICE*L_DISCOUNT*L_TAX) as SUM_CHARGE, avg(L_QUANTITY) as AVG_QTY,
+  avg(L_EXTENDEDPRICE) as AVG_PRICE,
+  avg(L_DISCOUNT) as AVG_DISC,
+  count(*) as COUNT_ORDER
+from
+ LINEITEM
+where
+  L_SHIPDATE <= date "1998-09-01"
+  group by L_RETURNFLAG, L_LINESTATUS 
+  order by L_RETURNFLAG, L_LINESTATUS;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "Executing Query3...";
+
+demo select
+  L_ORDERKEY,
+  sum(L_EXTENDEDPRICE*L_DISCOUNT) as REVENUE, O_ORDERDATE,
+  O_SHIPPRIORITY
+from
+  CUSTOMER,
+  ORDERS,
+  LINEITEM
+where
+  C_MKTSEGMENT = "BUILDING" and C_CUSTKEY = O_CUSTKEY
+  and L_ORDERKEY = O_ORDERKEY and O_ORDERDATE < "1995-03-15" and L_SHIPDATE > "1995-03-15"
+group by
+  L_ORDERKEY,
+  O_ORDERDATE,
+  O_SHIPPRIORITY
+order by
+  REVENUE desc, O_ORDERDATE
+  limit 10;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "Executing Query4...";
+
+demo select
+  O_ORDERPRIORITY,
+  count(*) as ORDER_COUNT
+from
+  ORDERS
+where
+  O_ORDERDATE >= "1993-07-01"
+  and O_ORDERDATE < "1993-10-01" and exists
+  (
+   select
+    *
+   from
+    LINEITEM
+   where
+    L_ORDERKEY = O_ORDERKEY
+   and L_COMMITDATE < L_RECEIPTDATE
+   )
+group by O_ORDERPRIORITY 
+order by O_ORDERPRIORITY;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "Executing Query6...";
+
+demo select
+  sum(L_EXTENDEDPRICE*L_DISCOUNT) as REVENUE
+from
+  LINEITEM
+where
+  L_SHIPDATE >= "1994-01-01"
+  and L_SHIPDATE < "1995-01-01"
+  and L_DISCOUNT > 0.05
+  and L_DISCOUNT < 0.07
+  and L_QUANTITY < 24;

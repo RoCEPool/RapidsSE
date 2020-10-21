@@ -1,0 +1,79 @@
+print "Creating demo tables" ;
+
+create table customer (
+   C_CUSTKEY       INTEGER       NOT NULL,  // 0)
+   C_NAME          VARCHAR(25)   NOT NULL,  // 1)
+   C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
+   C_NATIONKEY     INTEGER       NOT NULL,  // 3)
+   C_PHONE         CHAR(15)      NOT NULL,  // 4)
+   C_ACCTBAL       DECIMAL(15,2) NOT NULL,  // 5)
+   C_MKTSEGMENT    CHAR(10)      NOT NULL,  // 6)
+   C_COMMENT       VARCHAR(117)  NOT NULL   // 7)
+);
+
+create index customer_idx1 ON customer(C_CUSTKEY);
+
+create table orders (
+   O_ORDERKEY        INTEGER       NOT NULL,  // 0)
+   O_CUSTKEY         INTEGER       NOT NULL,  // 1)
+   O_ORDERSTATUS     CHAR(1)       NOT NULL,  // 2)
+   O_TOTALPRICE      DECIMAL(15,2) NOT NULL,  // 3)
+   O_ORDERDATE       DATE          NOT NULL,  // 4)
+   O_ORDERPRIORITY   CHAR(15)      NOT NULL,  // 5)
+   O_CLERK           CHAR(15)      NOT NULL,  // 6)
+   O_SHIPPRIORITY    INTEGER       NOT NULL,  // 7)
+   O_COMMENT         VARCHAR(79)   NOT NULL   // 8)
+) partition by (O_CUSTKEY) ;
+
+create index orders_idx1 ON orders(O_CUSTKEY);
+create index orders_idx2 ON orders(O_ORDERKEY);
+
+
+create table lineitem (
+  L_ORDERKEY      INTEGER       NOT NULL,
+  L_PARTKEY       INTEGER       NOT NULL,
+  L_SUPPKEY       INTEGER       NOT NULL,
+  L_LINENUMBER    INTEGER       NOT NULL,
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+  L_TAX           DECIMAL(15,2) NOT NULL,
+  L_RETURNFLAG    CHAR(1)       NOT NULL,
+  L_LINESTATUS    CHAR(1)       NOT NULL,
+  L_SHIPDATE      DATE NOT      NULL,
+  L_COMMITDATE    DATE NOT      NULL,
+  L_RECEIPTDATE   DATE NOT      NULL,
+  L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+  L_SHIPMODE      CHAR(10)      NOT NULL,
+  L_COMMENT       VARCHAR(44)   NOT NULL
+);
+
+create index lineitem_idx1 on lineitem (l_shipdate);
+create index lineitem_idx2 on lineitem (l_orderkey);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "Loading demo data" ;
+
+/nowait fload customer "/mnt/disk1/tpch/sf100/customer.tbl";
+/nowait fload customer "/mnt/disk2/tpch/sf100/customer.tbl";
+
+/nowait fload lineitem "/mnt/disk1/tpch/sf100/lineitem.tbl";
+/nowait fload lineitem "/mnt/disk2/tpch/sf100/lineitem.tbl";
+
+/nowait fload orders "/mnt/disk1/tpch/sf100/orders.tbl";
+/nowait fload orders "/mnt/disk2/tpch/sf100/orders.tbl";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "Compacting indexes" ;
+
+compact index customer customer_idx1;
+compact index orders orders_idx1;
+compact index orders orders_idx2;
+compact index lineItem lineitem_idx1;
+compact index lineItem lineitem_idx2;
+
+
+
+
