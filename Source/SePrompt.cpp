@@ -36,7 +36,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_nDeputies = 0;
   for (i8 i_Ssn = 0; i_Ssn < C_MAX_DEPUTY; i_Ssn++) {
     Ssn[i_Ssn].m_pSession = nullptr;
-    Ssn[i_Ssn].m_pJob     = nullptr;
   }
   m_pCurSsn    = nullptr;
   
@@ -245,7 +244,7 @@ bool SePrompt::bPromptFG(void)
     
     // handle demo statement
     if ( ! bHandleDemo() ) {
-      RASSERT(! m_pCurSsn->m_pJob);
+      RASSERT(! m_pSeDeputy->pJob());
       vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
       if (AM::bDeveloper())
         vDumpInpTknVec(true);
@@ -318,26 +317,31 @@ bool SePrompt::bPromptFG(void)
   if (*m_pInput->szSection()->azChar())
     m_oExtTagSet.vInsert(C_TAG_SECTION,m_pInput->szSection());
 
-  Ssn[0].m_pJob = nullptr;
+  m_pSeDeputy->vJob(nullptr);
   
-  eEC eError = Api::eJob_1_PreJob(&Ssn[0].m_pJob,
+  Job* pJob = m_pSeDeputy->pJob();
+  m_pSeDeputy->vJob(nullptr);
+  
+  eEC eError = Api::eJob_1_PreJob(&pJob,
                                   m_pInpTknVec,
                                   m_pLitTknVec,
                                  &m_oExtTagSet,
                                  &m_xReqTuple);
   
+  m_pSeDeputy->vJob(pJob);
+  
   if (eError) {
-    RASSERT(! m_pCurSsn->m_pJob);
+    RASSERT(! m_pSeDeputy->pJob());
     vTrace("error: %s\n"_Stz,aEC[eError]);
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
     return false;
   }
   
-  m_pCurSsn->m_pJob->pJobTags()->vCopy(m_pSsnTagSet);
+  m_pSeDeputy->pJob()->pJobTags()->vCopy(m_pSsnTagSet);
   
-  if (m_pCurSsn->m_pJob->bHasTag(C_TAG_TAGS))
-    m_pCurSsn->m_pJob->pJobTags()->vDumpSet();
+  if (m_pSeDeputy->pJob()->bHasTag(C_TAG_TAGS))
+    m_pSeDeputy->pJob()->pJobTags()->vDumpSet();
   
   vMakeDiaryDir();
   
@@ -356,35 +360,36 @@ void SePrompt::vPromptBG(void)
   i8 i_Ssn = m_iSsnBG;
   m_iSsnBG = C_UNKNOWN;
 
-  Api::vMutexLock(Ssn[i_Ssn].m_pSession,Ssn[i_Ssn].m_pJob);
+  Api::vMutexLock(Ssn[i_Ssn].m_pSession,m_pSeDeputy->pJob());
     
   // spawn the job
-  if (Ssn[0].m_pJob->bNoWaitTag()) {
-    Api::vJob_2_SpawnJob_prompt(Ssn[0].m_pJob);
-    Api::vMutexUnlock(Ssn[i_Ssn].m_pSession,Ssn[i_Ssn].m_pJob);
+  if (m_pSeDeputy->pJob()->bNoWaitTag()) {
+    Api::vJob_2_SpawnJob_prompt(m_pSeDeputy->pJob());
+    Api::vMutexUnlock(Ssn[i_Ssn].m_pSession,m_pSeDeputy->pJob());
     return;
   }
   else {
-    Api::vJob_2_SpawnJob_prompt(Ssn[0].m_pJob);
+    Api::vJob_2_SpawnJob_prompt(m_pSeDeputy->pJob());
   }
   
-  Api::vMutexWaitCond(Ssn[i_Ssn].m_pSession,Ssn[i_Ssn].m_pJob);
-  Api::vMutexUnlock(Ssn[i_Ssn].m_pSession,Ssn[i_Ssn].m_pJob);
+  Api::vMutexWaitCond(Ssn[i_Ssn].m_pSession,m_pSeDeputy->pJob());
+  Api::vMutexUnlock(Ssn[i_Ssn].m_pSession,m_pSeDeputy->pJob());
   m_oTimer.vUpdate();
 
 
   if (bExecutePipeline()) {
     // start the buffer queue processing while the pipeline ops are running
-    Ssn[0].m_pJob->m_xResult.vProcessBufferQueue();
+    m_pSeDeputy->pJob()->m_xResult.vProcessBufferQueue();
   }
 
-  Api::vJob_3_PostJob(Ssn[i_Ssn].m_pJob);
+  Api::vJob_3_PostJob(m_pSeDeputy->pJob());
   
   
   vReportTime();
   
-  Api::vJob_4_DeleteJob(&Ssn[i_Ssn].m_pJob);
-  Ssn[0].m_pJob = nullptr;
+  Job* pJob = m_pSeDeputy->pJob();
+  m_pSeDeputy->vJob(nullptr);
+  Api::vJob_4_DeleteJob(&pJob);
 
   vLogFreeSpace();
 }
@@ -445,7 +450,6 @@ void SePrompt::vCreateSession(void)
   
   Ssn[m_nDeputies].m_pSession = Api::pAllocSession(SK_EXTERNAL);
   Ssn[m_nDeputies].m_pSession->vPartition(0);
-  Ssn[m_nDeputies].m_pJob   = nullptr;
 
   eEC eError = Ssn[m_nDeputies].m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
   ASSERT(EC_NONE == eError);
@@ -582,8 +586,8 @@ bool SePrompt::bExecutePipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (AM::szJobName(Ssn[0].m_pJob)->bSame("pipeline"_Stz) ||
-      AM::szJobName(Ssn[0].m_pJob)->bSame("pipelineLocal"_Stz))
+  if (AM::szJobName(m_pSeDeputy->pJob())->bSame("pipeline"_Stz) ||
+      AM::szJobName(m_pSeDeputy->pJob())->bSame("pipelineLocal"_Stz))
     return true;
   else
     return false;
@@ -882,10 +886,10 @@ void SePrompt::vMakeDiaryDir(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  if (! Ssn[0].m_pJob->bDiaryTag())
+  if (! m_pSeDeputy->pJob()->bDiaryTag())
     return;
   
-  TagSet* pJobTagSet = Ssn[0].m_pJob->pJobTags();
+  TagSet* pJobTagSet = m_pSeDeputy->pJob()->pJobTags();
   
   Stz* szNote = pJobTagSet->szValue(C_TAG_NOTE);
   
@@ -1182,14 +1186,14 @@ void SePrompt::vReportTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //Ssn[0].m_pJob->pTagSet()->vPrint();
+  //m_pSeDeputy->pJob()->pTagSet()->vPrint();
   
-  if (! Ssn[0].m_pJob->bTimeTag())
+  if (! m_pSeDeputy->pJob()->bTimeTag())
     return;
   
-  if (Ssn[0].m_pJob->bSummaryTag()) {
+  if (m_pSeDeputy->pJob()->bSummaryTag()) {
     
-    Stz* szNote = Ssn[0].m_pJob->pJobTags()->szValue(C_TAG_NOTE);
+    Stz* szNote = m_pSeDeputy->pJob()->pJobTags()->szValue(C_TAG_NOTE);
     
     Now spNow;
     vTrace("[%s %lldN%lldP%lldT %s %s] "_Stz,

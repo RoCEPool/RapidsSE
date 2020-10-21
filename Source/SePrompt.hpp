@@ -66,7 +66,6 @@ namespace Prompt
     i8        m_nDeputies;   //
     struct _Ssn {
       Session*  m_pSession;    // rapidsse session
-      Job*      m_pJob;        // job
     } Ssn[C_MAX_DEPUTY];
   
   
