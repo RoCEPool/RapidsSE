@@ -57,26 +57,17 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   i8 iPartition = 0;
   
+  m_nSessions = 0;
   for (i8 i_Ssn = 0; i_Ssn < C_PMT_MAXSSN; i_Ssn++) {
-    Ssn[0].m_pSession = nullptr;
+    Ssn[i_Ssn].m_pMutexBG = nullptr;
+    Ssn[i_Ssn].m_pSession = nullptr;
+    Ssn[i_Ssn].m_pJob     = nullptr;
   }
   
-  Ssn[0].m_pSession = Api::pAllocSession(SK_EXTERNAL);
-  Ssn[0].m_pSession->vPartition(iPartition);
-  Ssn[0].m_pJob   = nullptr;
+  m_pInput     = nullptr;
+  m_pInpTknVec = nullptr;
+  m_pSsnTagSet = nullptr;
   
-
-  eEC eError = Ssn[0].m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
-
-  ASSERT(EC_NONE == eError);
-  
-  m_pInput     = Ssn[0].m_pSession->m_pInput;
-  m_pInpTknVec = Ssn[0].m_pSession->pInpTknVec();
-  m_pSsnTagSet = & Ssn[0].m_pSession->m_oSsnTagSet;
-  
-  // reset stdin as on Linux when another process(prompt)
-  //   accesses the stdin , its not a valid fp
-  m_pInput->vForkReset();
   
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
@@ -86,10 +77,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 
   // m_oTimer
 
-  //if (bSethScript)
-  //  Ssn[0].m_pSession->m_sToDo = ""_Stz;
-  //else
-  Ssn[0].m_pSession->m_sToDo = "_seprompt"_Stz;
   
   m_pObjectsInPool = new ObjectsInPool;
   m_pSnapshotObjects = new ObjectsInPool;
@@ -102,8 +89,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_iDivisionNo = 0;
   m_iSectionNo = 0;
 
-  d_iDebugMode = gxArgs.m_iPromptDebug;
-  m_pInput->vDebugMode(d_iDebugMode);
   
   m_pLitTknVec = new TokenVec;
   
@@ -111,6 +96,24 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   _checkInitialised_(CN_SEPROMPT);
   
+  vCreateSession();
+  
+  m_pInput     = Ssn[0].m_pSession->m_pInput;
+  m_pInpTknVec = Ssn[0].m_pSession->pInpTknVec();
+  m_pSsnTagSet = & Ssn[0].m_pSession->m_oSsnTagSet;
+
+  //if (bSethScript)
+  //  Ssn[0].m_pSession->m_sToDo = ""_Stz;
+  //else
+  Ssn[0].m_pSession->m_sToDo = "_seprompt"_Stz;
+
+  d_iDebugMode = gxArgs.m_iPromptDebug;
+  m_pInput->vDebugMode(d_iDebugMode);
+
+  // reset stdin as on Linux when another process(prompt)
+  //   accesses the stdin , its not a valid fp
+  m_pInput->vForkReset();
+
   vInitialSettings();
 }
 
@@ -442,6 +445,24 @@ void SePrompt::vContinue(bool bContinue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   m_bContinue = bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new session                                                       */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCreateSession(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Ssn[m_nSessions].m_pSession = Api::pAllocSession(SK_EXTERNAL);
+  Ssn[m_nSessions].m_pSession->vPartition(0);
+  Ssn[m_nSessions].m_pJob   = nullptr;
+
+  m_nSessions++;
+  
+  eEC eError = Ssn[0].m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
+  ASSERT(EC_NONE == eError);
+
 }
 
 /*----------------------------------------------------------------------------*/

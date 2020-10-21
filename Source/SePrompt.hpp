@@ -29,6 +29,7 @@ namespace Prompt
   
     Mutex*    m_pMutexFG;    // mutex for foreground thread
 
+    i8        m_nSessions;   //
     struct {
       Mutex*    m_pMutexBG;    // mutex for background thread
       Session*  m_pSession;    // rapidsse session
@@ -95,6 +96,7 @@ namespace Prompt
     i8   iDivisionNo(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
+    void vCreateSession(void);
     void vCutToken(i8 i_Tkn);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
