@@ -126,7 +126,7 @@ void SeDeputy::vExecuteJob(void)
   Api::vMutexLock(m_pSession,m_pJob);
     
   // spawn the job
-  if (m_pJob->bNoWaitTag()) {
+  if (m_pJob->bHasTag_noWait()) {
     Api::vJob_2_SpawnJob_prompt(m_pJob);
     Api::vMutexUnlock(m_pSession,m_pJob);
     return;
@@ -206,7 +206,7 @@ void SeDeputy::vReportTime(void)
   
   //m_pJob->pTagSet()->vPrint();
   
-  if (! m_pJob->bTimeTag())
+  if (! m_pJob->bHasTag_time())
     return;
   
   if (m_pJob->bSummaryTag()) {

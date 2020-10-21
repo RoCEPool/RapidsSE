@@ -776,7 +776,7 @@ void Step::vJobNoWaitFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->bNoWaitTag());
+  m_pDataStack->vPushInt(pJob->bHasTag_noWait());
   
   EXIT();
 }
@@ -1431,7 +1431,7 @@ void Step::vJobSignalCompletion(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pJob->bNoWaitTag()) {
+  if (pJob->bHasTag_noWait()) {
     //! this is incomplete ... memory leak; job & task need to be deleted
     EXIT();
     return;

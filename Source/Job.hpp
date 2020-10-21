@@ -81,6 +81,9 @@ namespace Jobs
     bool bDiaryTag(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasTag(Stz* szEnameTag);
+    bool bHasTag_bg(void);
+    bool bHasTag_time(void);
+    bool bHasTag_noWait(void);
     void vIncRowsProcessed(void);
     void vIncRowsInvalid(void);
     i8   iJobId(void);
@@ -101,7 +104,6 @@ namespace Jobs
     void vLockJobMutex(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
-    bool bNoWaitTag(void);
     bool bParticipantHasError(void);
     void vParticipantHasError(bool bHasError);
     eEC ePopulateJob(TagSet* pTagSet);
@@ -143,7 +145,6 @@ namespace Jobs
     void vTask(Task* pTask);
     void vTimerStart(void);
     void vTimerUpdate(void);
-    bool bTimeTag(void);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
 
