@@ -330,13 +330,23 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set partition                                                            */
+/* get input                                                                  */
 /*----------------------------------------------------------------------------*/
-void Session::vPartition(i8 iPartition)
+Input* Session::pInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  m_iPartition = iPartition;
+  return m_pInput;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set input                                                                  */
+/*----------------------------------------------------------------------------*/
+void Session::vInput(Input* pInput)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  m_pInput = pInput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -347,6 +357,16 @@ i8 Session::iPartition(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return m_iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set partition                                                              */
+/*----------------------------------------------------------------------------*/
+void Session::vPartition(i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  m_iPartition = iPartition;
 }
 
 /*----------------------------------------------------------------------------*/

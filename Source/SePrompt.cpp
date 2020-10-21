@@ -98,7 +98,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   vCreateSession();
   
-  m_pInput     = Ssn[0].m_pSession->m_pInput;
+  m_pInput     = Ssn[0].m_pSession->pInput();
   m_pInpTknVec = Ssn[0].m_pSession->pInpTknVec();
   m_pSsnTagSet = & Ssn[0].m_pSession->m_oSsnTagSet;
 

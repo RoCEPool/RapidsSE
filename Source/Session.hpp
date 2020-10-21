@@ -49,7 +49,6 @@ namespace Sessions
     DicStack m_oDicStack;        // dictionary stack
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
-    Input*   m_pInput;           // input stream
 
     TagSet   m_oSsnTagSet;         // session level tags
 
@@ -62,6 +61,7 @@ namespace Sessions
     
   private:
 
+    Input*   m_pInput;           // input stream
 
     // must be last
     Footer m_xFooter;
@@ -81,6 +81,8 @@ namespace Sessions
     void      vEndTx(void);
     void      vFocalOutline(s4K& sOutline);
     eEC       eInit(Stz* pCatalogName, Stz* pSchemaName);
+    Input*    pInput(void);
+    void      vInput(Input* pInput);
     i8        iPartition(void);
     void      vPartition(i8 iPartition);
     DicStack* pPathStack(void);
