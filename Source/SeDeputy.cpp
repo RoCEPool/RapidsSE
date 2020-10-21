@@ -54,9 +54,24 @@ SeDeputy::~SeDeputy(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* to SE portion                                                              */
+/* create a new session                                                       */
 /*----------------------------------------------------------------------------*/
-void SeDeputy::vPromptBG(void)
+void SeDeputy::vCreateSession(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  m_pSession = Api::pAllocSession(SK_EXTERNAL);
+  m_pSession->vPartition(0);
+  m_pJob   = nullptr;
+
+  eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
+  ASSERT(EC_NONE == eError);
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute job in SE                                                          */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
@@ -90,21 +105,6 @@ void SeDeputy::vPromptBG(void)
   vReportTime();
   
   Api::vJob_4_DeleteJob(&m_pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new session                                                       */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vCreateSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  m_pSession = Api::pAllocSession(SK_EXTERNAL);
-  m_pSession->vPartition(0);
-  m_pJob   = nullptr;
-
-  eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
-  ASSERT(EC_NONE == eError);
 }
 
 /*----------------------------------------------------------------------------*/

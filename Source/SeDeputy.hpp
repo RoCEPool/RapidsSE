@@ -29,7 +29,7 @@ namespace Prompt
     SeDeputy(SePrompt* pSePrompt);
    ~SeDeputy(void) noexcept(false);
   
-  void vPromptBG(void);
+    void vExecuteJob(void);
   
     void vCreateSession(void);
 

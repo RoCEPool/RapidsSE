@@ -67,7 +67,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
     
   _checkInitialised_(CN_SEPROMPT);
   
-  vCreateSession();
+  vCreateDeputy();
   
   m_pInput     = new Input;
   m_pInpTknVec = m_pInput->pTokenVec();
@@ -178,12 +178,13 @@ void SePrompt::vPromptLoop(void)
 
   while (m_bContinue) {
         
-    if (! bPromptFG())
+    if (! bGetCommand())
       continue;
     
-
-    //vPromptBG();
-    m_pSeDeputy->vPromptBG();
+    if (! bGetJob())
+      continue;
+    
+    m_pSeDeputy->vExecuteJob();
 
     vLogFreeSpace();
 
@@ -192,9 +193,9 @@ void SePrompt::vPromptLoop(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* foreground portion                                                         */
+/* get next command from input                                                */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPromptFG(void)
+bool SePrompt::bGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -302,6 +303,16 @@ bool SePrompt::bPromptFG(void)
   if (*m_pInput->szSection()->azChar())
     m_oExtTagSet.vInsert(C_TAG_SECTION,m_pInput->szSection());
 
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next command from input                                                */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bGetJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
   m_pSeDeputy->vJob(nullptr);
   
   Job* pJob = m_pSeDeputy->pJob();
@@ -328,51 +339,10 @@ bool SePrompt::bPromptFG(void)
   
   if (m_pSeDeputy->pJob()->bHasTag(C_TAG_TAGS))
     m_pSeDeputy->pJob()->pJobTags()->vDumpSet();
-  
+
   vMakeDiaryDir();
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* to SE portion                                                              */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPromptBG(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_oTimer.vStart();
-
-  Api::vMutexLock(m_pSeDeputy->pSession(),m_pSeDeputy->pJob());
-    
-  // spawn the job
-  if (m_pSeDeputy->pJob()->bNoWaitTag()) {
-    Api::vJob_2_SpawnJob_prompt(m_pSeDeputy->pJob());
-    Api::vMutexUnlock(m_pSeDeputy->pSession(),m_pSeDeputy->pJob());
-    return;
-  }
-  else {
-    Api::vJob_2_SpawnJob_prompt(m_pSeDeputy->pJob());
-  }
-  
-  Api::vMutexWaitCond(m_pSeDeputy->pSession(),m_pSeDeputy->pJob());
-  Api::vMutexUnlock(m_pSeDeputy->pSession(),m_pSeDeputy->pJob());
-  m_oTimer.vUpdate();
-
-
-  if (bExecutePipeline()) {
-    // start the buffer queue processing while the pipeline ops are running
-    m_pSeDeputy->pJob()->m_xResult.vProcessBufferQueue();
-  }
-
-  Api::vJob_3_PostJob(m_pSeDeputy->pJob());
-  
-  
-  vReportTime();
-  
-  Job* pJob = m_pSeDeputy->pJob();
-  m_pSeDeputy->vJob(nullptr);
-  Api::vJob_4_DeleteJob(&pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -423,9 +393,9 @@ void SePrompt::vContinue(bool bContinue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new session                                                       */
+/* create a new deputy                                                        */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vCreateSession(void)
+void SePrompt::vCreateDeputy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
@@ -552,20 +522,6 @@ void SePrompt::vDumpInpTknVec(bool bForce)
   vTrace("InpTknVec %lld tokens: %s\n"_Stz,m_pInpTknVec->nTokens(),sCommand.szStz());
   
   Correctness::vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially execute a pipeline job                                         */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExecutePipeline(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (AM::szJobName(m_pSeDeputy->pJob())->bSame("pipeline"_Stz) ||
-      AM::szJobName(m_pSeDeputy->pJob())->bSame("pipelineLocal"_Stz))
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1152,36 +1108,6 @@ void SePrompt::vReportTrace(void)
   MagLib::vByteMag(iSizeTrace,sTrace_magn);
 
   vTrace("[Trace File  : %s]\n"_Stz,sTrace_magn.szStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* report time taken by last command                                          */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vReportTime(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  //m_pSeDeputy->pJob()->pTagSet()->vPrint();
-  
-  if (! m_pSeDeputy->pJob()->bTimeTag())
-    return;
-  
-  if (m_pSeDeputy->pJob()->bSummaryTag()) {
-    
-    Stz* szNote = m_pSeDeputy->pJob()->pJobTags()->szValue(C_TAG_NOTE);
-    
-    Now spNow;
-    vTrace("[%s %lldN%lldP%lldT %s %s] "_Stz,
-           szNote,
-           AM::nDefinedNodes(),
-           AM::nSlotsPerNode(),
-           AM::nThreads(),
-           AM::szBuild(),
-           spNow.sz()
-           );
-  }
-  
-  vTrace("time %lldms\n"_Stz,m_oTimer.iMilliseconds());
 }
 
 /*----------------------------------------------------------------------------*/

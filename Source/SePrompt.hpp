@@ -79,8 +79,8 @@ namespace Prompt
   
     void vPromptLoop(void);
 
-    bool bPromptFG(void);
-    void vPromptBG(void);
+    bool bGetCommand(void);
+    bool bGetJob(void);
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
@@ -91,13 +91,12 @@ namespace Prompt
     i8   iDivisionNo(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
-    void vCreateSession(void);
+    void vCreateDeputy(void);
     void vCutToken(i8 i_Tkn);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
     bool bExecuteFunction(void);
-    bool bExecutePipeline(void);
     void vExtractCtlTags(void);
     bool bExtractSupTags(void);
     void vFocalOutline(s4K& sOutline);
@@ -119,7 +118,6 @@ namespace Prompt
     void vReportOther(void);
     void vReportPool(void);
     void vReportTrace();
-    void vReportTime(void);
     void vResetExtractedTagSet(void);
     void vResetSectionNo(void);
     i8   iRequestId(void);
