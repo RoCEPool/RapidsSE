@@ -38,7 +38,9 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_pJob      = nullptr;
 
   m_bAvailable = false;
-  
+  m_bContinue  = true;
+  m_bExited    = false;
+
   _checkInitialised_(CN_SEDEPUTY);
   
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
@@ -50,6 +52,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 SeDeputy::~SeDeputy(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  vTrace("~SeDeputy\n"_Stz);
   
   Api::vFreeSession(m_pSession);
   m_pSession = nullptr;
@@ -84,14 +88,14 @@ void SeDeputy::vDeputyLoop(void)
   
   vTrace("SeDeputy::vDeputyLoop\n"_Stz);
   
-  while (m_pSePrompt->bContinue()) {
+  while (m_bContinue) {
 
     m_pThread->m_pMutex->vLock(m_pSePrompt);
     m_bAvailable = true;
     m_pThread->m_pMutex->vWait(m_pSePrompt);
     m_pThread->m_pMutex->vUnlock(m_pSePrompt);
   
-    if (! m_pSePrompt->bContinue())
+    if (! m_bContinue)
       break;
     
     vExecuteJob();
@@ -104,6 +108,8 @@ void SeDeputy::vDeputyLoop(void)
     
     vDeleteJob();
   }
+  
+  m_bExited = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,6 +183,26 @@ bool SeDeputy::bAvailable(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set/clear continue                                                         */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vContinue(bool bContinue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  m_bContinue = bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this deputy to continue ?                                               */
+/*----------------------------------------------------------------------------*/
+bool SeDeputy::bContinue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new session                                                       */
 /*----------------------------------------------------------------------------*/
 void SeDeputy::vCreateSession(void)
@@ -203,6 +229,26 @@ bool SeDeputy::bExecutePipeline(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set/clear exited                                                           */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vExited(bool bExited)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  m_bExited = bExited;
+}
+
+/*----------------------------------------------------------------------------*/
+/* has this deputy exited ?                                                   */
+/*----------------------------------------------------------------------------*/
+bool SeDeputy::bExited(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_bExited;
 }
 
 /*----------------------------------------------------------------------------*/

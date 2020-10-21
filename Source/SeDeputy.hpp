@@ -21,6 +21,8 @@ namespace Prompt
     Timer     m_oTimer;    // the timer
   
     bool      m_bAvailable;
+    bool      m_bContinue;
+    bool      m_bExited;
 
 
     // must be last
@@ -38,11 +40,18 @@ namespace Prompt
     bool bAvailable(void);
     void vAvailable(bool bAvailable);
 
+    bool bContinue(void);
+    void vContinue(bool bContinue);
+
+    bool bExited(void);
+    void vExited(bool bExited);
+
     void vDeputyLoop(void);
 
-    void vExecuteJob(void);
     void vDeleteJob(void);
-
+  
+    void vExecuteJob(void);
+  
     void vCreateSession(void);
 
     bool bExecutePipeline(void);

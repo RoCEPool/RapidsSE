@@ -80,6 +80,16 @@ SePrompt::~SePrompt(void) noexcept(false)
   
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     if (m_paSeDeputy[i_Deputy]) {
+      
+      m_paSeDeputy[i_Deputy]->vContinue(false);
+      
+      m_paSeDeputy[i_Deputy]->pMutex()->vLock(this);
+      m_paSeDeputy[i_Deputy]->pMutex()->vSignal(this);
+      m_paSeDeputy[i_Deputy]->pMutex()->vUnlock(this);
+
+      while (! m_paSeDeputy[i_Deputy]->bExited())
+        AM::vNapMsec(10,CN_SEPROMPT);
+
       delete m_paSeDeputy[i_Deputy];
       m_paSeDeputy[i_Deputy] = nullptr;
     }
