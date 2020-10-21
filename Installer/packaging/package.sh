@@ -219,7 +219,7 @@ if [ -n "${DEBUG}" ] ; then echo "Generating the version file"; fi;
 ### (Optional) Compile the software ###
 if [ -n "${DEBUG}" ] ; then echo "Compiling RapidsSE"; fi;
 
-if [ "${NO_BUILD}" -ne 1 ] 
+if [ -z "${NO_BUILD}" ] || [ "${NO_BUILD}" -ne 1 ] 
 then
   (
     cd "${SOURCE_DIR}"
