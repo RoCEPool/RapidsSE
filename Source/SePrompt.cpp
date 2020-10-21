@@ -355,6 +355,7 @@ void SePrompt::vExecuteJob(void)
 
   //m_pSeDeputy->vExecuteJob();
   
+  m_pSeDeputy = pFindDeputy();
   
   m_pMutex->vLock(this);
   
@@ -426,7 +427,7 @@ void SePrompt::vCreateDeputy(void)
   
   m_nDeputies++;
   
-  while (! m_pSeDeputy->bReady())
+  while (! m_pSeDeputy->bAvailable())
     AM::vNapMsec(10,CN_SEPROMPT);
 }
 
@@ -492,7 +493,7 @@ void SePrompt::vDivision(Stz* szDivision)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get division number                                                       */
+/* get division number                                                        */
 /*----------------------------------------------------------------------------*/
 i8 SePrompt::iDivisionNo(void)
 {
@@ -649,6 +650,16 @@ bool SePrompt::bExtractSupTags(void)
   m_pInpTknVec->vTrimTokens(i_TagBegin);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find an available deputy                                                   */
+/*----------------------------------------------------------------------------*/
+SeDeputy* SePrompt::pFindDeputy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSeDeputy;
 }
 
 /*----------------------------------------------------------------------------*/

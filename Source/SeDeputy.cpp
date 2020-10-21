@@ -36,7 +36,7 @@ SeDeputy::SeDeputy(SePrompt* pSePrompt)
   m_pSession  = nullptr;
   m_pJob      = nullptr;
 
-  m_bReady    = false;
+  m_bAvailable = false;
   
   _checkInitialised_(CN_SEDEPUTY);
   
@@ -86,9 +86,9 @@ void SeDeputy::vDeputyLoop(void)
   while (m_pSePrompt->bContinue()) {
 
     m_pThread->m_pMutex->vLock(m_pSePrompt);
-    m_bReady = true;
+    m_bAvailable = true;
     m_pThread->m_pMutex->vWait(m_pSePrompt);
-    m_bReady = false;
+    m_bAvailable = false;
     m_pThread->m_pMutex->vUnlock(m_pSePrompt);
   
     if (! m_pSePrompt->bContinue())
@@ -157,6 +157,16 @@ void SeDeputy::vDeleteJob(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* is this deputy available to execute jobs?                                  */
+/*----------------------------------------------------------------------------*/
+bool SeDeputy::bAvailable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_bAvailable;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new session                                                       */
 /*----------------------------------------------------------------------------*/
 void SeDeputy::vCreateSession(void)
@@ -213,16 +223,6 @@ Mutex* SeDeputy::pMutex(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_pThread->m_pMutex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this deputy ready to execute jobs?                                      */
-/*----------------------------------------------------------------------------*/
-bool SeDeputy::bReady(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return m_bReady;
 }
 
 /*----------------------------------------------------------------------------*/

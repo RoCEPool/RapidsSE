@@ -19,7 +19,7 @@ namespace Prompt
   
     Timer     m_oTimer;    // the timer
   
-    bool      m_bReady;
+    bool      m_bAvailable;
 
 
     // must be last
@@ -34,6 +34,8 @@ namespace Prompt
   
     static void* aEntryPoint(void* pArg);
 
+    bool bAvailable(void);
+    
     void vDeputyLoop(void);
 
     void vExecuteJob(void);
@@ -47,8 +49,6 @@ namespace Prompt
     void vJob(Job* pJob);
 
     Mutex* pMutex(void);
-  
-    bool bReady(void);
   
     void vReportTime(void);
 
