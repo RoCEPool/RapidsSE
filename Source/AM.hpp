@@ -255,6 +255,8 @@ namespace Oblique
     static Stz* szJobName(Job* pJob);
     
     static Stz* pOperandName(Operand* pOperand);
+    static i8   nOperandsArg(void);
+    static void vOperandsArg(i8 nOperands);
     static void vOperandsDec(void);
     static i8   nOperandsGet(void);
     static void vOperandsInc(void);
