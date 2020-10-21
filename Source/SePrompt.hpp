@@ -30,12 +30,13 @@ namespace Prompt
     Mutex*    m_pMutexFG;    // mutex for foreground thread
 
     i8        m_nSessions;   //
-    struct {
+    struct _Ssn {
       Mutex*    m_pMutexBG;    // mutex for background thread
       Session*  m_pSession;    // rapidsse session
       Job*      m_pJob;        // job
     } Ssn[C_PMT_MAXSSN];
   
+    _Ssn*     m_pCurSsn;
     Input*    m_pInput;      // input processor from session
     TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
     TagSet*   m_pSsnTagSet;  // session tag set

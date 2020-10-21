@@ -57,39 +57,40 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   i8 iPartition = 0;
   
+  m_pMutexFG = nullptr;
+  
   m_nSessions = 0;
   for (i8 i_Ssn = 0; i_Ssn < C_PMT_MAXSSN; i_Ssn++) {
     Ssn[i_Ssn].m_pMutexBG = nullptr;
     Ssn[i_Ssn].m_pSession = nullptr;
     Ssn[i_Ssn].m_pJob     = nullptr;
   }
+  m_pCurSsn    = nullptr;
   
   m_pInput     = nullptr;
   m_pInpTknVec = nullptr;
   m_pSsnTagSet = nullptr;
   
+  m_iDivisionNo = 0;
+  m_iSectionNo = 0;
+  m_bContinue   = true;
   
+  // m_oTimer
+
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
 
-  m_bContinue   = true;
-  
-
-  // m_oTimer
-
-  
+  m_pBPA = nullptr;
   m_pObjectsInPool = new ObjectsInPool;
   m_pSnapshotObjects = new ObjectsInPool;
   
   
-  m_pBPA = nullptr;
 //  if (AM::bDeveloper())
 //    m_pBPA = new BPA;
   
-  m_iDivisionNo = 0;
-  m_iSectionNo = 0;
+  d_iDebugMode = gxArgs.m_iPromptDebug;
 
-  
+
   m_pLitTknVec = new TokenVec;
   
   m_iSsnBG = C_UNKNOWN;
@@ -107,7 +108,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   //else
   Ssn[0].m_pSession->m_sToDo = "_seprompt"_Stz;
 
-  d_iDebugMode = gxArgs.m_iPromptDebug;
   m_pInput->vDebugMode(d_iDebugMode);
 
   // reset stdin as on Linux when another process(prompt)
@@ -208,10 +208,11 @@ void SePrompt::vPromptLoop(void)
 
   while (m_bContinue) {
     
+    m_iSsnBG = 0;
+    
     if (! bPromptFG())
       continue;
     
-    m_iSsnBG = 0;
 
     vPromptBG();
     
@@ -229,6 +230,7 @@ bool SePrompt::bPromptFG(void)
   s32 sHostName;
   Hardware::vHostName(sHostName);
 
+  m_pCurSsn = & Ssn[m_iSsnBG];
 
   if (bStdIn()) {
     vReportOther();
@@ -258,7 +260,7 @@ bool SePrompt::bPromptFG(void)
     
     // handle demo statement
     if ( ! bHandleDemo() ) {
-      RASSERT(! Ssn[0].m_pJob);
+      RASSERT(! m_pCurSsn->m_pJob);
       vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
       if (AM::bDeveloper())
         vDumpInpTknVec(true);
@@ -340,17 +342,17 @@ bool SePrompt::bPromptFG(void)
                                  &m_xReqTuple);
   
   if (eError) {
-    RASSERT(! Ssn[0].m_pJob);
+    RASSERT(! m_pCurSsn->m_pJob);
     vTrace("error: %s\n"_Stz,aEC[eError]);
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
     return false;
   }
   
-  Ssn[0].m_pJob->pJobTags()->vCopy(m_pSsnTagSet);
+  m_pCurSsn->m_pJob->pJobTags()->vCopy(m_pSsnTagSet);
   
-  if (Ssn[0].m_pJob->bHasTag(C_TAG_TAGS))
-    Ssn[0].m_pJob->pJobTags()->vDumpSet();
+  if (m_pCurSsn->m_pJob->bHasTag(C_TAG_TAGS))
+    m_pCurSsn->m_pJob->pJobTags()->vDumpSet();
   
   vMakeDiaryDir();
   
