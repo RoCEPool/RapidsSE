@@ -61,7 +61,6 @@ namespace Prompt
   
     i8        m_nDeputies;   //
     SeDeputy*  m_paSeDeputy[C_MAX_DEPUTY];
-    SeDeputy*  m_pSeDeputy;
 
     // must be last
     Footer m_xFooter;
@@ -79,9 +78,9 @@ namespace Prompt
   
     void vPromptLoop(void);
 
-    bool bGetCommand(void);
-    bool bPrepareJob(void);
-    void vExecuteJob(void);
+    bool bGetCommand(SeDeputy* pSeDeputy);
+    bool bPrepareJob(SeDeputy* pSeDeputy);
+    void vExecuteJob(SeDeputy* pSeDeputy);
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
@@ -100,7 +99,7 @@ namespace Prompt
     bool bExecuteFunction(void);
     void vExtractCtlTags(void);
     bool bExtractSupTags(void);
-    bool bFindDeputy(void);
+    SeDeputy* pFindDeputy(void);
     void vFocalOutline(s4K& sOutline);
     bool bHandleDemo(void);
     void vInitialSettings(void);
@@ -109,29 +108,28 @@ namespace Prompt
     bool bIsPromptWord(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
-    void vMakeDiaryDir(void);
+    void vMakeDiaryDir(SeDeputy* pSeDeputy);
     Mutex* pMutex(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     ObjectsInPool*  pObjectsInPool(void);
     void vPromptUser(void);
-    bool bReadNextCommand(void);
+    bool bReadNextCommand(SeDeputy* pSeDeputy);
     bool bRedirectFromFile(void);
     void vReportObjects();
     void vReportOther(void);
     void vReportPool(void);
     void vReportTrace();
-    void vResetExtractedTagSet(void);
+    void vResetExtractedTagSet(SeDeputy* pSeDeputy);
     void vResetSectionNo(void);
     i8   iRequestId(void);
     void vSection(Stz* szSection);
-    Session* pSession(void);
     TagSet* pPmtTagSet(void);
-    bool bShortCut(void);
+    bool bShortCut(SeDeputy* pSeDeputy);
     ShortCutVec* pShortCutVec(void);
     ObjectsInPool*  pSnapshotObjects(void);
     bool bStdIn(void);
-    bool bSubSsnTags(void);
+    bool bSubSsnTags(SeDeputy* pSeDeputy);
     void vTrackingMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);
