@@ -15,37 +15,11 @@ extern Stz* gsBuildGitHash;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-SePrompt* Prompt::_pSePrompt(void* aAddr)
-{
-  SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(aAddr);
-  
-  RASSERT_TYPE(pSePrompt,CN_SEPROMPT);
-  
-  return pSePrompt;
-}
+__pCastFunction(Prompt,SePrompt,CN_SEPROMPT)
+__aNewFunction(SePrompt,CN_SEPROMPT)
+__vDeleteFunction(SePrompt,CN_SEPROMPT)
+__aFooterFunction(SePrompt)
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* SePrompt::operator new(size_t)
-{
-  SePrompt* pSePrompt = (SePrompt*)HeapMem::pAllocate(CN_SEPROMPT);
-  
-  return pPoolCheck<void*>(pSePrompt);
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::operator delete(void* pSePromptAddress)
-{
-  SePrompt* pSePrompt = static_cast<SePrompt*>(pSePromptAddress);
-  
-  HeapMem::vFree(pSePrompt);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -462,11 +436,10 @@ void SePrompt::vCreateSession(void)
   Ssn[m_nSessions].m_pSession->vPartition(0);
   Ssn[m_nSessions].m_pJob   = nullptr;
 
-  m_nSessions++;
-  
-  eEC eError = Ssn[0].m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
+  eEC eError = Ssn[m_nSessions].m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
   ASSERT(EC_NONE == eError);
-
+  
+  m_nSessions++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1447,11 +1420,6 @@ bool SePrompt::bTranslateProcedure(void)
   return false;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(SePrompt)
 
 /*============================================================================*/
 /* end                                                                        */
