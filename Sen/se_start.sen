@@ -671,6 +671,70 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dfload
+  sPath
+  "
+  procedure dfload
+    parameters $table $file
+  begin
+
+  stage stageA on origin :
+
+    start              |
+ 
+    periodicOp once    |
+
+    stageB
+
+  stage stageB on all nodes :
+
+    chunk $file        | // read chunks of file, produce (seekOffset) =>
+    // dump seekOffsets 1 |
+
+    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
+    // dump csvBuffer 0   |
+
+    stageC robin
+
+  stage stageC on all partitions :
+
+    toRsb $table       | // (csvBuffer)  => (rsbBuffer)
+    // dump rsbBuffer 1   |
+
+    toPtnRsb           | // (rsbBuffer)  => (rsbBuffer 'ptn)
+    // dump rsbBuffer 1   |
+
+    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
+    //dump rsbBuffer 1   |
+
+    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
+    //dump rsbBuffer 1   |
+
+    stageD hashed
+
+  stage stageD on all partitions :
+
+    //eatSome |
+
+    insert $table | // (crwBuffer) inserted into table
+
+    stageE
+
+  stage stageE on origin :
+
+    progress 'Load'    |
+
+    toStatDemon        |
+
+    sink               |
+
+    stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy file
   sPath
   "

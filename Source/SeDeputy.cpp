@@ -216,7 +216,7 @@ void SeDeputy::vCreateSession(void)
   m_pJob   = nullptr;
 
   eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
-  ASSERT(EC_NONE == eError);
+  RASSERT(EC_NONE == eError);
 }
 
 /*----------------------------------------------------------------------------*/

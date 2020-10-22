@@ -364,6 +364,9 @@ void SePrompt::vExecuteJob(SeDeputy* pSeDeputy)
 
     m_pMutex->vWait(this);
     m_pMutex->vUnlock(this);
+    
+    while (! pSeDeputy->bAvailable())
+      AM::vNapMsec(10,CN_SEPROMPT);
   }
   else {
     pSeDeputy->pMutex()->vLock(this);
