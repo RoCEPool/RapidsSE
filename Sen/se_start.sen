@@ -681,10 +681,12 @@
   stage stageA on origin :
 
     start              |
+ 
+    periodicOp once    |
 
-    periodicOp once
+    stageB
 
-  stage stageB on all partitions on all nodes :
+  stage stageB on all nodes :
 
     chunk $file        | // read chunks of file, produce (seekOffset) =>
     // dump seekOffsets 1 |
@@ -692,7 +694,7 @@
     rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
     // dump csvBuffer 0   |
 
-    stageB
+    stageC robin
 
   stage stageC on all partitions :
 
@@ -708,7 +710,7 @@
     toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
     //dump rsbBuffer 1   |
 
-    stageC hashed
+    stageD hashed
 
   stage stageD on all partitions :
 
@@ -716,7 +718,7 @@
 
     insert $table | // (crwBuffer) inserted into table
 
-    stageD
+    stageE
 
   stage stageE on origin :
 
