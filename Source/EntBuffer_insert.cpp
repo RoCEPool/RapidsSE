@@ -990,16 +990,16 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
   
-  EntBuffer* pRightBuffer = pLeftBuffer->pSplitBuffer();
+  EntBuffer* pRightBuffer = pNewNextBuffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer if higher buffer
   // was just created
   
-  if ( ! pHigherBuffer->nItems() ) {
+  if (! pHigherBuffer->nItems()) {
     
     EntWrk xEntWrkLeft;
-    Ent* aFirstEntryLeft  = pLeftBuffer->aLeadEntry();
+    Ent* aFirstEntryLeft = pLeftBuffer->aLeadEntry();
 
     // initialize the keyWrk from the first left key
     xEntWrkLeft.vSetEnt(pLeftBuffer->iBufferNo(), 0, aFirstEntryLeft);
@@ -1009,12 +1009,12 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert the first key of right buffer into higher buffer
+  // insert the inserting key / first key of right buffer into higher buffer
   
   EntWrk xEntWrkRight;
-  Ent* aFirstEntryRight = pRightBuffer->aLeadEntry();
+  Ent* aFirstEntryRight = aEntry;
   
-  // initialize the keyWrk from the first left key
+  // initialize the keyWrk from the inserting key
   xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
   
   Ent* aInsertedEntryRight =
@@ -1024,10 +1024,7 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   
   //ASSERT( (* ppRootBuffer)->bVerify() );
   
-  if ( pRightBuffer->bKeyBeforeBuffer(aEntry->aKey()) )
-    return pLeftBuffer;
-  else
-    return pRightBuffer;
+  return pRightBuffer;
 }
 /*----------------------------------------------------------------------------*/
 //EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
