@@ -954,27 +954,25 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
 //  return pNewInsertBySplit(aEntry,ppRootBuffer);
   
   if (bNewInsertDecision(aEntry,ppRootBuffer))
-    return pNewInsertBySplit(aEntry,ppRootBuffer);
+    return pNewInsertIntoSplit(aEntry,ppRootBuffer);
   else
-    return pNewInsertByRight(aEntry,ppRootBuffer);
+    return pNewInsertIntoRight(aEntry,ppRootBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* create a new insert buffer (adjusting higher buffers accordingly)          */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pNewInsertByRight(Ent* aEntry, EntBuffer** ppRootBuffer)
+bool EntBuffer::bNewInsertDecision(Ent* aEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-    
-  EntBuffer* pNewRightBuffer = pNewNextBuffer();
-
-  return pNewRightBuffer;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* create a new insert buffer (adjusting higher buffers accordingly)          */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pNewInsertBySplit(Ent* aEntry, EntBuffer** ppRootBuffer)
+EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
@@ -1031,15 +1029,75 @@ EntBuffer* EntBuffer::pNewInsertBySplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   else
     return pRightBuffer;
 }
+/*----------------------------------------------------------------------------*/
+//EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+//
+//  EntBuffer* pNewRightBuffer = pNewNextBuffer();
+//
+//  return pNewRightBuffer;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* create a new insert buffer (adjusting higher buffers accordingly)          */
 /*----------------------------------------------------------------------------*/
-bool EntBuffer::bNewInsertDecision(Ent* aEntry, EntBuffer** ppRootBuffer)
+EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+  EntBuffer* pLeftBuffer = this;
   
-  return true;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the higher buffer, creating one if it doesnt exist
+  
+  EntBuffer* pHigherBuffer = this->pHigherBuffer();
+  if (! pHigherBuffer) {
+    pHigherBuffer = this->pNewHigherBuffer();
+    *ppRootBuffer = pHigherBuffer;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // split the left buffer to yield a right buffer
+  
+  EntBuffer* pRightBuffer = pLeftBuffer->pSplitBuffer();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the first key of left buffer into higher buffer if higher buffer
+  // was just created
+  
+  if ( ! pHigherBuffer->nItems() ) {
+    
+    EntWrk xEntWrkLeft;
+    Ent* aFirstEntryLeft  = pLeftBuffer->aLeadEntry();
+
+    // initialize the keyWrk from the first left key
+    xEntWrkLeft.vSetEnt(pLeftBuffer->iBufferNo(), 0, aFirstEntryLeft);
+    
+    Ent* aInsertedEntryLeft =
+      pHigherBuffer->aInsertEntUpwards(xEntWrkLeft.aEnt(),ppRootBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the first key of right buffer into higher buffer
+  
+  EntWrk xEntWrkRight;
+  Ent* aFirstEntryRight = pRightBuffer->aLeadEntry();
+  
+  // initialize the keyWrk from the first left key
+  xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
+  
+  Ent* aInsertedEntryRight =
+    pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //ASSERT( (* ppRootBuffer)->bVerify() );
+  
+  if ( pRightBuffer->bKeyBeforeBuffer(aEntry->aKey()) )
+    return pLeftBuffer;
+  else
+    return pRightBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
