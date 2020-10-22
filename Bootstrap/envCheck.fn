@@ -28,7 +28,8 @@ function validateEnvironment() {
   # Check that all host:port combinations are unique.
   validateHostsAndPortsAreUnique
 
-  # TODO: Check if all hosts are reachable by SSH.
+  # Check if all hosts are reachable by SSH.
+  validateHostsReachableBySsh
 
   # TODO: Check if SE is running in any of these host:directory combinations.
 
@@ -228,6 +229,51 @@ function validateHostsAndPortsAreUnique() {
   done
 
   # We're all good. All host:port combinations are unique.
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that each hostname is reachable by SSH.
+## Exits out and writes an error to stderr if not.
+## Params: None
+
+function validateHostsReachableBySsh() {
+ 
+  local nodeName
+  local host 
+
+  declare -a sshArgs
+  declare -a jobArray
+
+  debugPrint "About to validate that nodes can be reached by SSH."
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "-o" "PasswordAuthentication no" "${host}" "exit" "0")
+
+    # Run it, in parallel
+    (
+      if ! ssh "${sshArgs[@]}"; then
+        errorExit "Node ${nodeName} [host: ${host}] cannot be reached by SSH."
+      fi
+  
+      true
+    ) &
+
+    jobArray+=("$!")
+  done
+
+  # Check the exit status of each background job.
+  for j in "${jobArray[@]}"
+  do
+    if ! wait "$j"; then
+      exit 1
+    fi
+  done
+
+  debugPrint "Successfully validated that nodes can be reached by SSH."
 }
 
 
