@@ -951,6 +951,33 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
+//  return pNewInsertBySplit(aEntry,ppRootBuffer);
+  
+  if (bNewInsertDecision(aEntry,ppRootBuffer))
+    return pNewInsertBySplit(aEntry,ppRootBuffer);
+  else
+    return pNewInsertByRight(aEntry,ppRootBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new insert buffer (adjusting higher buffers accordingly)          */
+/*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pNewInsertByRight(Ent* aEntry, EntBuffer** ppRootBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+  EntBuffer* pNewRightBuffer = pNewNextBuffer();
+
+  return pNewRightBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new insert buffer (adjusting higher buffers accordingly)          */
+/*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pNewInsertBySplit(Ent* aEntry, EntBuffer** ppRootBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
   EntBuffer* pLeftBuffer = this;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1003,6 +1030,16 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
     return pLeftBuffer;
   else
     return pRightBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new insert buffer (adjusting higher buffers accordingly)          */
+/*----------------------------------------------------------------------------*/
+bool EntBuffer::bNewInsertDecision(Ent* aEntry, EntBuffer** ppRootBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

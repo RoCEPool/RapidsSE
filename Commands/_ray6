@@ -38,6 +38,7 @@ print section "Load LineItem";
 space;
 sztbl lineitem;
 szidx lineitem lineitem_idx1;
+anidx lineitem lineitem_idx1;
 count lineitem;
 
 /*============================================================================*/

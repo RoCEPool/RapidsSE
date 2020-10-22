@@ -208,6 +208,9 @@ namespace Indexing
     FreeItem*  aMakeFreeEntry(Ent* aEnt);
     EntBuffer* pNewHigherBuffer(void);
     EntBuffer* pNewInsertBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
+    EntBuffer* pNewInsertByRight(Ent* aEntry, EntBuffer** ppRootBuffer);
+    EntBuffer* pNewInsertBySplit(Ent* aEntry, EntBuffer** ppRootBuffer);
+    bool       bNewInsertDecision(Ent* aEntry, EntBuffer** ppRootBuffer);
     EntBuffer* pNewNextBuffer(void);
     Ent*       aPopLazyChain(void);
 
