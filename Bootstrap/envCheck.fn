@@ -19,6 +19,9 @@ function validateEnvironment() {
 
   echo "Validating the installation environment on all nodes..."
 
+  # Check that all hosts are resolvable.
+  validateHostsAreResolvable
+
   # TODO: Check that all host/dir combinations are unique.
 
   # TODO: Check if all hosts are reachable by SSH.
@@ -55,9 +58,110 @@ function validateEnvironment() {
 
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that all hosts are resolvable on the current machine. Exits out
+## and writes an error to stderr if not.
+## Params: None
+
+function validateHostsAreResolvable() {
+
+  local nodeName
+  local host
+  local output
+
+  if [ "${NO_RESOLVE_HOSTS:-x}" == "x" ]; then
+    debugPrint "Skipping host resolution."
+    return
+  fi
+
+  debugPrint "About to validate that all hostnames are resolvable."
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    # Check if the hostname is an IP address
+    local re="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+  
+    if [[ "${host}" =~ ${re} ]]; then
+      # We've got an IPv4 address
+      # Check the quads
+      for i in 1 2 3 4
+      do
+        if [ "$(echo "${host}" | cut -d. -f${i})" -gt 255 ]; then
+          errorExit "Hostname \"${host}\" is not a valid IPv4 address."
+        fi
+      done
+
+      # This is a valid IPv4 address
+      continue
+
+    elif [[ "${host}" == *:* ]]; then
+      # We've got an IPv6 address
+      re="^([0-9a-fA-F]{0,4}:){1,7}([0-9a-fA-F]){0,4}$"
+
+      if [[ ! "${host}" =~ $re ]]; then
+        errorExit "Hostname \"${host}\" is not a valid IPv6 address."
+      fi
+
+      # This is a valid IPv6 address
+      continue
+    fi
+ 
+   
+    # We must have a hostname to resolve. There are a few different tools that
+    # can be used to resolve it, depending on what is installed.
+
+    # Use getent to resolve the hostname, if available
+    if which getent &>/dev/null; then
+
+      output="$(getent hosts "${host}" | awk '{ print $1; exit }' 2>/dev/null)"
+      if [ -z "${output}" ]; then
+        errorExit "Hostname \"${host}\" is not resolvable."
+      fi
+  
+      # Host was resolved.
+      continue
+
+
+    # No getent, then try dig
+    elif which dig &>/dev/null; then
+
+      output="$(dig +short +search "${host}" | awk '{ print ; exit }' 2>/dev/null)"
+      if [ -z "${output}" ]; then
+        errorExit "Hostname \"${host}\" is not resolvable."
+      fi
+
+      # Host was resolved.
+      continue
+
+
+    # No dig, then try nslookup
+    elif which nslookup &>/dev/null; then
+      
+      output="$(nslookup "${host}" | awk '/^Address: / { print $2 ; exit }' 2>/dev/null)"
+      if [ -z "${output}" ]; then
+        errorExit "Hostname \"${host}\" is not resolvable."
+      fi
+
+      # Host was resolved.
+      continue
+
+    # No nslookup either. Don't validate the hostnames.
+    else
+      printWarning "Could not validate that the hostnames are resolvable. No [getent|dig|nslookup] tools available."
+    fi
+
+  done
+
+  debugPrint "Successfully validated that all hostnames are resolvable."
+}
+
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that the installation directory on each node can be created 
-## and is writable.
+## and is writable. Exits out if not.
 ## Params: None
 
 function validateInstallDirIsWritable() {

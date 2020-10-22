@@ -65,6 +65,17 @@ function printError() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Print a warning message to stdout,
+## Params: 
+##   $1 : Warning message
+##   $2..$n : (optional) other arguments to print.
+
+function printWarning() {
+  echo -e "WARNING: $*"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Print an error message to stderr and exit,
 ## Params: 
 ##   $1 : Error message
