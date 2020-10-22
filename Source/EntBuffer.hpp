@@ -207,8 +207,7 @@ namespace Indexing
     bool       bKeyBeforeBuffer(Key* aKey);
     FreeItem*  aMakeFreeEntry(Ent* aEnt);
     EntBuffer* pNewHigherBuffer(void);
-    EntBuffer* pNewInsertBuffer(Ent* aEntry, i8 nEntryPlusOffsets,
-                                EntBuffer** ppRootBuffer);
+    EntBuffer* pNewInsertBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
     EntBuffer* pNewNextBuffer(void);
     Ent*       aPopLazyChain(void);
 

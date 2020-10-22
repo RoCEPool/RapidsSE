@@ -486,8 +486,7 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
       pInsertIntoBuffer = this;
     else {
 //      vTrace("No Space %p entries %lld\n"_Stz,this,nItems());
-      pInsertIntoBuffer =
-        pNewInsertBuffer(aEnt,nEntSizeBytes,ppRootBuffer);
+      pInsertIntoBuffer = pNewInsertBuffer(aEnt,ppRootBuffer);
       //(*ppRootBuffer)->vShow();
     }
     
@@ -948,23 +947,10 @@ EntBuffer* EntBuffer::pNewHigherBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* create a new insert buffer (adjusting higher buffers accordingly)          */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
-                                       i8 nEntryPlusOffsets,
-                                       EntBuffer** ppRootBuffer)
+EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compact this buffer
-  
-  //this->vCompact();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now check if it has enough space
-  
-  //if (this->bHasSpace(nEntryPlusOffsets) )
-  //  return this;
-  
+    
   EntBuffer* pLeftBuffer = this;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1013,7 +999,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
   
   //ASSERT( (* ppRootBuffer)->bVerify() );
   
-  if ( pRightBuffer->bKeyBeforeBuffer(aEntryWork->aKey()) )
+  if ( pRightBuffer->bKeyBeforeBuffer(aEntry->aKey()) )
     return pLeftBuffer;
   else
     return pRightBuffer;
