@@ -694,7 +694,7 @@
     rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
     // dump csvBuffer 0   |
 
-    stageC robin
+    stageC localRobin
 
   stage stageC on all partitions :
 

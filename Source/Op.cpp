@@ -79,6 +79,7 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_iNextOp    = C_UNKNOWN;
   m_iXmitNode  = C_UNKNOWN;
   m_iRobin     = 0;
+  m_iLocalRobin = 0;
   
   vInitOperandHandlers();
   
@@ -1418,6 +1419,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   i8 i_Ptn;
+  i8 i_Slot;
   
   // get the next stage
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
@@ -1473,7 +1475,23 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       break;
     }
       
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_LOCALROBIN : {
+      m_iLocalRobin++;
+      i_Slot = m_iLocalRobin % AM::pGrid()->nSlotsPerNode();
+      i_Ptn = TablePtn::iSlotToPartition(i_Slot);
+      
+      // xmitNode is this node
+      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+      RASSERT(m_iXmitNode == AM::pGrid()->iThisNode());
+      
+      ASSERT( ! bSet );
+      vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+      AM::vDeleteOperand(pOperand);
+      break;
+    }
+      
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_NORMAL: {
       
       ASSERT(pNextStage->nItems() == AM::pGrid()->nPartitions());
@@ -1522,7 +1540,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       break;
     }
       
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
       m_iRobin++;
       i_Ptn = m_iRobin % AM::pGrid()->nPartitions();
