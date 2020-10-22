@@ -68,8 +68,8 @@ SizeHeap gxaSizeHeap[]
 
   { 'E' - ('A' - 1),            HT_INVALID           }, // CN__E__
   { sizeof(EdtVal),             HT_INVALID           }, // CN_EDTVAL
-  { sizeof(Encoding),           HT_TRANSIENT_LARGE   }, // CN_ENCODING
-  { sizeof(Encoding_v2),        HT_TRANSIENT_LARGE   }, // CN_ENCODING_V2
+  { sizeof(Encoding),           HT_TRANSIENT_MEDIUM  }, // CN_ENCODING
+  { sizeof(Encoding_v2),        HT_TRANSIENT_MEDIUM  }, // CN_ENCODING_V2
   { sizeof(Ent),                HT_INVALID           }, // CN_ENT
   { sizeof(EntBuffer),          HT_TRANSIENT_LARGE   }, // CN_ENTBUFFER
   { sizeof(EntBufSorter),       HT_TRANSIENT_LARGE   }, // CN_ENTBUFSORTER
@@ -234,7 +234,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Routine),            HT_TRANSIENT_SMALL   }, // CN_ROUTINE
   { sizeof(Row),                HT_TRANSIENT_LARGE   }, // CN_ROW
   { sizeof(Row),/*correct*/     HT_TRANSIENT_MEDIUM  }, // CN_ROWAGG
-  { sizeof(RowCompactor),       HT_TRANSIENT_LARGE   }, // CN_ROWCOMPACTOR
+  { sizeof(RowCompactor),       HT_TRANSIENT_SMALL   }, // CN_ROWCOMPACTOR
   { sizeof(RowOnce),            HT_TRANSIENT_TINY    }, // CN_ROWONCE
   { sizeof(RowSingle),          HT_TRANSIENT_MEDIUM  }, // CN_ROWSINGLE
   { sizeof(RowSlab),            HT_TRANSIENT_LARGE   }, // CN_ROWSLAB
@@ -253,7 +253,7 @@ SizeHeap gxaSizeHeap[]
   { 'S' - ('A' - 1),            HT_INVALID           }, // CN__S__
   { sizeof(Schema),             HT_TRANSIENT_TINY    }, // CN_SCHEMA
   { sizeof(SchemaTest),         HT_TRANSIENT_LARGE   }, // CN_SCHEMATEST
-  { sizeof(SeDeputy),           HT_TRANSIENT_LARGE   }, // CN_SEDEPUTY
+  { sizeof(SeDeputy),           HT_TRANSIENT_TINY    }, // CN_SEDEPUTY
   { sizeof(SeeMe),              HT_INVALID           }, // CN_SEEME
   { sizeof(SePrompt),           HT_TRANSIENT_LARGE   }, // CN_SEPROMPT
   { sizeof(Session),            HT_TRANSIENT_MEDIUM  }, // CN_SESSION
