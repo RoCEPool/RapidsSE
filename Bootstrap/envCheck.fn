@@ -22,7 +22,11 @@ function validateEnvironment() {
   # Check that all hosts are resolvable.
   validateHostsAreResolvable
 
-  # TODO: Check that all host/dir combinations are unique.
+  # Check that all host/dir combinations are unique.
+  validateHostsAndDirsAreUnique
+
+  # Check that all host:port combinations are unique.
+  validateHostsAndPortsAreUnique
 
   # TODO: Check if all hosts are reachable by SSH.
 
@@ -160,12 +164,81 @@ function validateHostsAreResolvable() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that there are no duplicate entries with the same host:dir combination.
+## Params: None
+
+function validateHostsAndDirsAreUnique() {
+
+  local nodeName
+  local host
+  local dir
+  local key
+
+  declare -A map
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    key="${host}:${dir}"
+
+    # Check if the value for this key is not set.
+    if [ "${map[${key}]:-x}" != "x" ]; then
+      errorExit "Non-unique host / installation directory combination for the following nodes:" "${map[${key}]}" "${nodeName}"
+    fi
+
+    # Set the value for this key.
+    map[${key}]="${nodeName}"
+  done
+
+  # We're all good. All host/dir combinations are unique.
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that there are no duplicate entries with the same host:port combination.
+## Params: None
+
+function validateHostsAndPortsAreUnique() {
+
+  local nodeName
+  local host
+  local port
+  local key
+
+  declare -A map
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+
+    key="${host}:${port}"
+
+    # Check if the value for this key is not set.
+    if [ "${map[${key}]:-x}" != "x" ]; then
+      errorExit "Non-unique host:port combination for the following nodes:" "${map[${key}]}" "${nodeName}"
+    fi
+
+    # Set the value for this key.
+    map[${key}]="${nodeName}"
+  done
+
+  # We're all good. All host:port combinations are unique.
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that the installation directory on each node can be created 
 ## and is writable. Exits out if not.
 ## Params: None
 
 function validateInstallDirIsWritable() {
-  
+ 
+  local nodeName 
   local host
   local dir
   local remoteCmd
