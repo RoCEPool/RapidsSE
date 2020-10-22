@@ -11,7 +11,7 @@ demo select
 from
  LINEITEM
 where
-  L_SHIPDATE <= date "1998-09-01"
+  L_SHIPDATE <= "1998-09-01"
   group by L_RETURNFLAG, L_LINESTATUS 
   order by L_RETURNFLAG, L_LINESTATUS;
 
