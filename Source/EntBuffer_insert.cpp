@@ -957,13 +957,13 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact this buffer
   
-  this->vCompact();
+  //this->vCompact();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now check if it has enough space
   
-  if (this->bHasSpace(nEntryPlusOffsets) )
-    return this;
+  //if (this->bHasSpace(nEntryPlusOffsets) )
+  //  return this;
   
   EntBuffer* pLeftBuffer = this;
   
