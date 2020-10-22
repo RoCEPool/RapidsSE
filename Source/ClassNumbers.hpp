@@ -257,6 +257,7 @@ enum eCN : u2 // Class Number
   /* */ CN__S__,
   /* */ CN_SCHEMA,
   /* */ CN_SCHEMATEST,
+  /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
@@ -610,6 +611,7 @@ static Stz* aCN[]
   /* */ "_S__"_Stz,                // CN__S__
   /* */ "SCHEMA"_Stz,              // CN_SCHEMA
   /* */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST
+  /* */ "SEDEPUTY"_Stz,            // CN_SEDEPUTY
   /* */ "SEEME"_Stz,               // CN_SEEME
   /* */ "SEPROMPT"_Stz,            // CN_SEPROMPT
   /* */ "SESSION"_Stz,             // CN_SESSION

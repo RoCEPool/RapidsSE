@@ -23,27 +23,27 @@ PromptFun __Prompt_fact (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_fact(SePrompt* pPrompt)
 {
-  TokenVec* pTknVec = pPrompt->pInpTknVec();
-  
-  vTrace("... Fact ...\n"_Stz);
-  
-  Kbase* pKb = new Kbase("Test1"_Stz);
-      
-  DicStack* pDicStack = & pPrompt->pSession()->m_oDicStack;
-  
-  Table* pTable;
-  pTable = Table::pFindTable(pDicStack,"customer"_Stz);
-  pKb->vImportTable(pTable);
-  pTable = Table::pFindTable(pDicStack,"orders"_Stz);
-  pKb->vImportTable(pTable);
-  pTable = Table::pFindTable(pDicStack,"lineitem"_Stz);
-  pKb->vImportTable(pTable);
-
-  pKb->vImportStatement("select * from lineitem"_Stz);
-
-  pKb->vTest();
-
-  delete pKb;
+//  TokenVec* pTknVec = pPrompt->pInpTknVec();
+//  
+//  vTrace("... Fact ...\n"_Stz);
+//  
+//  Kbase* pKb = new Kbase("Test1"_Stz);
+//      
+//  DicStack* pDicStack = & pPrompt->pSession()->m_oDicStack;
+//  
+//  Table* pTable;
+//  pTable = Table::pFindTable(pDicStack,"customer"_Stz);
+//  pKb->vImportTable(pTable);
+//  pTable = Table::pFindTable(pDicStack,"orders"_Stz);
+//  pKb->vImportTable(pTable);
+//  pTable = Table::pFindTable(pDicStack,"lineitem"_Stz);
+//  pKb->vImportTable(pTable);
+//
+//  pKb->vImportStatement("select * from lineitem"_Stz);
+//
+//  pKb->vTest();
+//
+//  delete pKb;
   
   return true;
 }

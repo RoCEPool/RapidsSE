@@ -451,7 +451,7 @@ void Job::vContentDump(void)
          aJS[m_eJobState],
          
          bByPromptTag(),
-         bNoWaitTag(),
+         bHasTag_noWait(),
          m_bWasReceived,
          
          m_iParentId,
@@ -509,6 +509,42 @@ bool Job::bHasTag(Stz* szEnameTag)
     return true;
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if this job has a /bg tag                                             */
+/*----------------------------------------------------------------------------*/
+bool Job::bHasTag_bg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool bHas = bHasTag(C_TAG_BG);
+  
+  return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if this job has a /noWait tag                                         */
+/*----------------------------------------------------------------------------*/
+bool Job::bHasTag_noWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool bHas = bHasTag(C_TAG_NOWAIT);
+  
+  return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if this job has a /time tag                                           */
+/*----------------------------------------------------------------------------*/
+bool Job::bHasTag_time(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool bHas = bHasTag(C_TAG_TIME);
+  
+  return bHas;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -603,7 +639,7 @@ eJL Job::eJobList(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the job list                                                          */
+/* set the job list                                                           */
 /*----------------------------------------------------------------------------*/
 void Job::vJobList(eJL eJobList)
 {
@@ -727,18 +763,6 @@ void Job::vMarkJob(Stz* szFormat, ...)
   va_end(xArgs);
 #endif
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if this job has a /noWait ename tag                                   */
-/*----------------------------------------------------------------------------*/
-bool Job::bNoWaitTag(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  bool bNoWait = bHasTag(C_TAG_NOWAIT);
-  
-  return bNoWait;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1176,18 +1200,6 @@ void Job::vTask(Task* pTask)
 {
   ASSERT(! pTask || ! m_pTaskJ);
   m_pTaskJ = pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if this job has a /time ename tag                                     */
-/*----------------------------------------------------------------------------*/
-bool Job::bTimeTag(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  bool bTime = bHasTag(C_TAG_TIME);
-  
-  return bTime;
 }
 
 /*----------------------------------------------------------------------------*/

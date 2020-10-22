@@ -1,0 +1,38 @@
+/*============================================================================*/
+/* _ray6 : timing fload of lineitem 6 Oct 2020                                */
+/*============================================================================*/
+
+bc;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "Create LineItem";
+
+_customer
+_orders
+_lineitem_dates
+
+_lineitemIndex
+
+// ./time CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPINSTRUCT);
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "Load LineItem";
+
+//print "Sleeping ...";
+//sleep 5;
+
+// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv"    <max_errors> =  100;
+// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv"   <max_errors> =  100;
+// /time /summary fload lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv" <note> = "10k" <max_errors> =  100;
+// /time /summary /diary fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <note> = "100k" <max_errors> =  100;
+// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1m.csv" <max_errors> =  100;
+// /tags /time /summary /diary fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv"      <max_errors> =  100 <note> = "SF1";
+/bg /time /summary /diary fload customer "/Users/Shared/tpch/SF10/customer.csv"     <max_errors> =  100 <note> = "SF10";
+
+/bg /time /summary /diary fload orders "/Users/Shared/tpch/SF10/orders.csv"     <max_errors> =  100 <note> = "SF10";
+
+/bg /time /summary /diary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

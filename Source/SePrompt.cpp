@@ -15,37 +15,11 @@ extern Stz* gsBuildGitHash;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-SePrompt* Prompt::_pSePrompt(void* aAddr)
-{
-  SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(aAddr);
-  
-  RASSERT_TYPE(pSePrompt,CN_SEPROMPT);
-  
-  return pSePrompt;
-}
+__pCastFunction(Prompt,SePrompt,CN_SEPROMPT)
+__aNewFunction(SePrompt,CN_SEPROMPT)
+__vDeleteFunction(SePrompt,CN_SEPROMPT)
+__aFooterFunction(SePrompt)
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* SePrompt::operator new(size_t)
-{
-  SePrompt* pSePrompt = (SePrompt*)HeapMem::pAllocate(CN_SEPROMPT);
-  
-  return pPoolCheck<void*>(pSePrompt);
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::operator delete(void* pSePromptAddress)
-{
-  SePrompt* pSePrompt = static_cast<SePrompt*>(pSePromptAddress);
-  
-  HeapMem::vFree(pSePrompt);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -55,65 +29,45 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  vTrace("::SePrompt\n"_Stz);
+  
   i8 iPartition = 0;
   
-  m_nSessions = 0;
-  for (i8 i_Ssn = 0; i_Ssn < C_PMT_MAXSSN; i_Ssn++) {
-    Ssn[i_Ssn].m_pMutexBG = nullptr;
-    Ssn[i_Ssn].m_pSession = nullptr;
-    Ssn[i_Ssn].m_pJob     = nullptr;
+  m_pMutex = new Mutex(MK_THREAD,this);
+  
+  m_nDeputies = 0;
+  
+  for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
+    m_paSeDeputy[i_Deputy] = nullptr;
   }
   
   m_pInput     = nullptr;
   m_pInpTknVec = nullptr;
-  m_pSsnTagSet = nullptr;
   
+  m_iDivisionNo = 0;
+  m_iSectionNo  = 0;
+  m_bContinue   = true;
   
+  // m_oTimer
+
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
 
-  m_bContinue   = true;
-  
-
-  // m_oTimer
-
-  
+  m_pBPA = nullptr;
   m_pObjectsInPool = new ObjectsInPool;
   m_pSnapshotObjects = new ObjectsInPool;
   
   
-  m_pBPA = nullptr;
 //  if (AM::bDeveloper())
 //    m_pBPA = new BPA;
   
-  m_iDivisionNo = 0;
-  m_iSectionNo = 0;
+  d_iDebugMode = gxArgs.m_iPromptDebug;
 
-  
+
   m_pLitTknVec = new TokenVec;
-  
-  m_iSsnBG = C_UNKNOWN;
-  
+    
   _checkInitialised_(CN_SEPROMPT);
   
-  vCreateSession();
-  
-  m_pInput     = new Input;
-  m_pInpTknVec = m_pInput->pTokenVec();
-  m_pSsnTagSet = & Ssn[0].m_pSession->m_oSsnTagSet;
-
-  //if (bSethScript)
-  //  Ssn[0].m_pSession->m_sToDo = ""_Stz;
-  //else
-  Ssn[0].m_pSession->m_sToDo = "_seprompt"_Stz;
-
-  d_iDebugMode = gxArgs.m_iPromptDebug;
-  m_pInput->vDebugMode(d_iDebugMode);
-
-  // reset stdin as on Linux when another process(prompt)
-  //   accesses the stdin , its not a valid fp
-  m_pInput->vForkReset();
-
   vInitialSettings();
 }
 
@@ -123,13 +77,25 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 SePrompt::~SePrompt(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  for (i8 i_Ssn = 0; i_Ssn < C_PMT_MAXSSN; i_Ssn++) {
-    if (Ssn[i_Ssn].m_pSession) {
-      Api::vFreeSession(Ssn[0].m_pSession);
-      Ssn[0].m_pSession = nullptr;
+      
+  vTrace("~SePrompt\n"_Stz);
+  
+  for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
+    if (m_paSeDeputy[i_Deputy]) {
+      
+      m_paSeDeputy[i_Deputy]->pMutex()->vLock(this);
+      m_paSeDeputy[i_Deputy]->vContinue(false);
+      m_paSeDeputy[i_Deputy]->pMutex()->vSignal(this);
+      m_paSeDeputy[i_Deputy]->pMutex()->vUnlock(this);
+
+      while (! m_paSeDeputy[i_Deputy]->bExited())
+        AM::vNapMsec(10,CN_SEPROMPT);
+
+      delete m_paSeDeputy[i_Deputy];
+      m_paSeDeputy[i_Deputy] = nullptr;
     }
   }
+  delete m_pMutex;
   
   delete m_pInput;
   
@@ -159,9 +125,8 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   SePrompt* pSePrompt = _pSePrompt(pObject);
   
-  vTrace("SePrompt %p session %p \n"_Stz,
-         pSePrompt,
-         pSePrompt->Ssn[0].m_pSession);
+  vTrace("SePrompt %p \n"_Stz,
+         pSePrompt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,46 +165,55 @@ void SePrompt::vPromptLoop(void)
     //vJotDisable(0x27,0);
   }
     
-  m_xReqTuple.m_i_Session = Ssn[0].m_pSession->m_i_Session;
-  
   vTrace("vPromptLoop\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  SeDeputy* pSeDeputy = nullptr;
+  
   while (m_bContinue) {
+        
+    if (! pSeDeputy && ! (pSeDeputy = pFindDeputy())) {
+      vTrace("No Deputies\n"_Stz);
+      RASSERT(0);
+    }
     
-    if (! bPromptFG())
+    if (! bGetCommand(pSeDeputy))
       continue;
     
-    m_iSsnBG = 0;
-
-    vPromptBG();
+    if (! bPrepareJob(pSeDeputy))
+      continue;
     
+    vExecuteJob(pSeDeputy);
+
+    pSeDeputy = nullptr;
+    
+    //vLogFreeSpace();
+
   } // while
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* foreground portion                                                         */
+/* get next command from input                                                */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPromptFG(void)
+bool SePrompt::bGetCommand(SeDeputy* pSeDeputy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   s32 sHostName;
   Hardware::vHostName(sHostName);
 
-
   if (bStdIn()) {
     vReportOther();
     vPromptUser();
   }
   
-  vResetExtractedTagSet();
+  vResetExtractedTagSet(pSeDeputy);
   
   //L_Read_Next_Command:
   
-  if (! bReadNextCommand()) {
+  if (! bReadNextCommand(pSeDeputy)) {
     m_bContinue = false;
     return false;
   }
@@ -250,7 +224,7 @@ bool SePrompt::bPromptFG(void)
   if (bDumpTokens())
     vDumpInpTknVec(false);
 
-  if (bShortCut())
+  if (bShortCut(pSeDeputy))
     return false;
 
   // is it a demo statement ?
@@ -258,7 +232,6 @@ bool SePrompt::bPromptFG(void)
     
     // handle demo statement
     if ( ! bHandleDemo() ) {
-      RASSERT(! Ssn[0].m_pJob);
       vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
       if (AM::bDeveloper())
         vDumpInpTknVec(true);
@@ -266,7 +239,7 @@ bool SePrompt::bPromptFG(void)
     }
   }
   
-  while (bSubSsnTags())
+  while (bSubSsnTags(pSeDeputy))
     {;}
 
   if (bRedirectFromFile())
@@ -331,75 +304,77 @@ bool SePrompt::bPromptFG(void)
   if (*m_pInput->szSection()->azChar())
     m_oExtTagSet.vInsert(C_TAG_SECTION,m_pInput->szSection());
 
-  Ssn[0].m_pJob = nullptr;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use SE api to create and prepare a job for commmand                        */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  m_xReqTuple.m_i_Session = pSeDeputy->pSession()->m_i_Session;
   
-  eEC eError = Api::eJob_1_PreJob(&Ssn[0].m_pJob,
+  pSeDeputy->vJob(nullptr);
+  
+  Job* pJob = pSeDeputy->pJob();
+  pSeDeputy->vJob(nullptr);
+  
+  eEC eError = Api::eJob_1_PreJob(&pJob,
                                   m_pInpTknVec,
                                   m_pLitTknVec,
                                  &m_oExtTagSet,
                                  &m_xReqTuple);
   
+  pSeDeputy->vJob(pJob);
+  
   if (eError) {
-    RASSERT(! Ssn[0].m_pJob);
+    RASSERT(! pSeDeputy->pJob());
     vTrace("error: %s\n"_Stz,aEC[eError]);
     if (AM::bDeveloper())
       vDumpInpTknVec(true);
     return false;
   }
   
-  Ssn[0].m_pJob->pJobTags()->vCopy(m_pSsnTagSet);
+  TagSet* pSsnTagSet = & pSeDeputy->pSession()->m_oSsnTagSet;
+  pSeDeputy->pJob()->pJobTags()->vCopy(pSsnTagSet);
   
-  if (Ssn[0].m_pJob->bHasTag(C_TAG_TAGS))
-    Ssn[0].m_pJob->pJobTags()->vDumpSet();
-  
-  vMakeDiaryDir();
-  
-  m_oTimer.vStart();
+  if (pSeDeputy->pJob()->bHasTag(C_TAG_TAGS))
+    pSeDeputy->pJob()->pJobTags()->vDumpSet();
 
+  vMakeDiaryDir(pSeDeputy);
+  
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* to SE portion                                                              */
+/* get next command from input                                                */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vPromptBG(void)
+void SePrompt::vExecuteJob(SeDeputy* pSeDeputy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Ssn = m_iSsnBG;
-  m_iSsnBG = C_UNKNOWN;
+  if (! pSeDeputy->pJob()->bHasTag_bg()) {
+    m_pMutex->vLock(this);
+  
+    pSeDeputy->pMutex()->vLock(this);
+    pSeDeputy->pMutex()->vSignal(this);
+    pSeDeputy->pMutex()->vUnlock(this);
 
-  Api::vMutexLock(Ssn[i_Ssn].m_pSession,Ssn[i_Ssn].m_pJob);
+    m_pMutex->vWait(this);
+    m_pMutex->vUnlock(this);
     
-  // spawn the job
-  if (Ssn[0].m_pJob->bNoWaitTag()) {
-    Api::vJob_2_SpawnJob_prompt(Ssn[0].m_pJob);
-    Api::vMutexUnlock(Ssn[i_Ssn].m_pSession,Ssn[i_Ssn].m_pJob);
-    return;
+    while (! pSeDeputy->bAvailable())
+      AM::vNapMsec(10,CN_SEPROMPT);
   }
   else {
-    Api::vJob_2_SpawnJob_prompt(Ssn[0].m_pJob);
+    pSeDeputy->pMutex()->vLock(this);
+    pSeDeputy->pMutex()->vSignal(this);
+    pSeDeputy->pMutex()->vUnlock(this);
   }
   
-  Api::vMutexWaitCond(Ssn[i_Ssn].m_pSession,Ssn[i_Ssn].m_pJob);
-  Api::vMutexUnlock(Ssn[i_Ssn].m_pSession,Ssn[i_Ssn].m_pJob);
-  m_oTimer.vUpdate();
-
-
-  if (bExecutePipeline()) {
-    // start the buffer queue processing while the pipeline ops are running
-    Ssn[0].m_pJob->m_xResult.vProcessBufferQueue();
-  }
-
-  Api::vJob_3_PostJob(Ssn[i_Ssn].m_pJob);
-  
-  
-  vReportTime();
-  
-  Api::vJob_4_DeleteJob(&Ssn[i_Ssn].m_pJob);
-  Ssn[0].m_pJob = nullptr;
-
-  vLogFreeSpace();
+  pSeDeputy = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,21 +425,26 @@ void SePrompt::vContinue(bool bContinue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new session                                                       */
+/* create a new deputy                                                        */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vCreateSession(void)
+SeDeputy* SePrompt::pCreateDeputy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  if (m_nDeputies >= C_MAX_DEPUTY)
+    return nullptr;
   
-  Ssn[m_nSessions].m_pSession = Api::pAllocSession(SK_EXTERNAL);
-  Ssn[m_nSessions].m_pSession->vPartition(0);
-  Ssn[m_nSessions].m_pJob   = nullptr;
-
-  m_nSessions++;
+  SeDeputy* pSeDeputy =
+    m_paSeDeputy[m_nDeputies] = new SeDeputy(m_nDeputies,this);
   
-  eEC eError = Ssn[0].m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
-  ASSERT(EC_NONE == eError);
-
+  pSeDeputy->vCreateSession();
+  
+  m_nDeputies++;
+  
+  while (! pSeDeputy->bAvailable())
+    AM::vNapMsec(10,CN_SEPROMPT);
+  
+  return pSeDeputy;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -529,7 +509,7 @@ void SePrompt::vDivision(Stz* szDivision)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get division number                                                       */
+/* get division number                                                        */
 /*----------------------------------------------------------------------------*/
 i8 SePrompt::iDivisionNo(void)
 {
@@ -583,20 +563,6 @@ void SePrompt::vDumpInpTknVec(bool bForce)
   vTrace("InpTknVec %lld tokens: %s\n"_Stz,m_pInpTknVec->nTokens(),sCommand.szStz());
   
   Correctness::vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially execute a pipeline job                                         */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExecutePipeline(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (AM::szJobName(Ssn[0].m_pJob)->bSame("pipeline"_Stz) ||
-      AM::szJobName(Ssn[0].m_pJob)->bSame("pipelineLocal"_Stz))
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -703,6 +669,36 @@ bool SePrompt::bExtractSupTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find an available deputy                                                   */
+/*----------------------------------------------------------------------------*/
+SeDeputy* SePrompt::pFindDeputy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  SeDeputy* pSeDeputy = nullptr;
+  
+  for (i8 i_Deputy = 0; i_Deputy < m_nDeputies; i_Deputy++) {
+    if (m_paSeDeputy[i_Deputy]->bAvailable()) {
+      pSeDeputy = m_paSeDeputy[i_Deputy];
+      pSeDeputy->vAvailable(false);
+      vTrace("Found Deputy %lld\n"_Stz,i_Deputy);
+      break;
+    }
+  }
+  
+  if (pSeDeputy)
+    return pSeDeputy;
+  
+  pSeDeputy = pCreateDeputy();
+  if (pSeDeputy) {
+    pSeDeputy->vAvailable(false);
+    return pSeDeputy;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vFocalOutline(s4K& sOutline)
@@ -755,7 +751,7 @@ bool SePrompt::bHandleDemo(void)
   switch (iHash) {
       
       // Query 1
-    case 204757332167:
+    case 201637548233:
       m_pInpTknVec->vTokeniseC(C_Query1);
       m_pInpTknVec->vIntegrityCheck();
       break;
@@ -809,6 +805,22 @@ bool SePrompt::bHandleDemo(void)
 void SePrompt::vInitialSettings(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pInput     = new Input;
+  m_pInpTknVec = m_pInput->pTokenVec();
+
+  m_pInput->vDebugMode(d_iDebugMode);
+
+  // reset stdin as on Linux when another process(prompt)
+  //   accesses the stdin , its not a valid fp
+  m_pInput->vForkReset();
+
+  SeDeputy* pSeDeputy = pCreateDeputy();
+  
+  //if (bSethScript)
+  //  pSeDeputy->pSession()->m_sToDo = ""_Stz;
+  //else
+  pSeDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
   
   if (gxArgs.m_bDeveloper) {
     m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
@@ -888,14 +900,14 @@ void SePrompt::vLogFreeSpace(void)
 /*----------------------------------------------------------------------------*/
 /* make diary dir                                                             */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vMakeDiaryDir(void)
+void SePrompt::vMakeDiaryDir(SeDeputy* pSeDeputy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  if (! Ssn[0].m_pJob->bDiaryTag())
+  if (! pSeDeputy->pJob()->bDiaryTag())
     return;
   
-  TagSet* pJobTagSet = Ssn[0].m_pJob->pJobTags();
+  TagSet* pJobTagSet = pSeDeputy->pJob()->pJobTags();
   
   Stz* szNote = pJobTagSet->szValue(C_TAG_NOTE);
   
@@ -913,6 +925,16 @@ void SePrompt::vMakeDiaryDir(void)
   }
   
   pJobTagSet->vInsert(C_TAG_DIARYDIR,sDiaryPath);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get mutex                                                                  */
+/*----------------------------------------------------------------------------*/
+Mutex* SePrompt::pMutex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pMutex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -943,6 +965,16 @@ ObjectsInPool* SePrompt::pObjectsInPool(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pObjectsInPool;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the prompt settings tag set                                            */
+/*----------------------------------------------------------------------------*/
+TagSet* SePrompt::pPmtTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return &m_oPmtTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -997,7 +1029,7 @@ void SePrompt::vPromptUser(void)
 /*----------------------------------------------------------------------------*/
 /* read next command from                                                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bReadNextCommand(void)
+bool SePrompt::bReadNextCommand(SeDeputy* pSeDeputy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
    
@@ -1032,11 +1064,11 @@ bool SePrompt::bReadNextCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case: a previous command has requested to prompt to do something
   
-  if (* Ssn[0].m_pSession->m_sToDo.azChar()) {
-    m_pInpTknVec->vTokenise(Ssn[0].m_pSession->m_sToDo);
+  if (* pSeDeputy->pSession()->m_sToDo.azChar()) {
+    m_pInpTknVec->vTokenise(pSeDeputy->pSession()->m_sToDo);
     m_pInpTknVec->vStripSemicolon();
 
-    Ssn[0].m_pSession->m_sToDo = ""_Stz;
+    pSeDeputy->pSession()->m_sToDo = ""_Stz;
     m_pInpTknVec->vIntegrityCheck();
     return true;
   }
@@ -1091,14 +1123,14 @@ i8 SePrompt::iRequestId(void)
 /*----------------------------------------------------------------------------*/
 /* init the extracted tag set                                                 */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vResetExtractedTagSet(void)
+void SePrompt::vResetExtractedTagSet(SeDeputy* pSeDeputy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   m_oExtTagSet.vReset();
   m_oExtTagSet.vInsert(C_TAG_BYPROMPT,1);
   m_oExtTagSet.vInsert(C_TAG_ORIGIN,AM::pGrid()->m_iThisNode);
-  m_oExtTagSet.vInsert(C_TAG_SESSION,Ssn[0].m_pSession->m_i_Session);
+  m_oExtTagSet.vInsert(C_TAG_SESSION,pSeDeputy->pSession()->m_i_Session);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1186,36 +1218,6 @@ void SePrompt::vReportTrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* report time taken by last command                                          */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vReportTime(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  //Ssn[0].m_pJob->pTagSet()->vPrint();
-  
-  if (! Ssn[0].m_pJob->bTimeTag())
-    return;
-  
-  if (Ssn[0].m_pJob->bSummaryTag()) {
-    
-    Stz* szNote = Ssn[0].m_pJob->pJobTags()->szValue(C_TAG_NOTE);
-    
-    Now spNow;
-    vTrace("[%s %lldN%lldP%lldT %s %s] "_Stz,
-           szNote,
-           AM::nDefinedNodes(),
-           AM::nSlotsPerNode(),
-           AM::nThreads(),
-           AM::szBuild(),
-           spNow.sz()
-           );
-  }
-  
-  vTrace("time %lldms\n"_Stz,m_oTimer.iMilliseconds());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set prompt section                                                         */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vSection(Stz* szSection)
@@ -1224,6 +1226,16 @@ void SePrompt::vSection(Stz* szSection)
   
   m_pInput->vSection(szSection);
 }
+
+/*----------------------------------------------------------------------------*/
+/* get the rapidsse session                                                   */
+/*----------------------------------------------------------------------------*/
+//Session* SePrompt::pSession(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+//
+//  return pSeDeputy->pSession();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get shortcut vector                                                        */
@@ -1236,29 +1248,9 @@ ShortCutVec* SePrompt::pShortCutVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the rapidsse session                                                   */
-/*----------------------------------------------------------------------------*/
-Session* SePrompt::pSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return Ssn[0].m_pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the prompt settings tag set                                            */
-/*----------------------------------------------------------------------------*/
-TagSet* SePrompt::pPmtTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return &m_oPmtTagSet;
-}
-
-/*----------------------------------------------------------------------------*/
 /* possible shortcut?                                                         */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bShortCut(void)
+bool SePrompt::bShortCut(SeDeputy* pSeDeputy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1271,7 +1263,7 @@ bool SePrompt::bShortCut(void)
     if (! pShortCut->m_sName.bSame(pTkn->szChars()))
       continue;
     
-    Ssn[0].m_pSession->m_sToDo = pShortCut->m_sCmd;
+    pSeDeputy->pSession()->m_sToDo = pShortCut->m_sCmd;
     
     return true;
   }
@@ -1305,7 +1297,7 @@ bool SePrompt::bStdIn(void)
 /*----------------------------------------------------------------------------*/
 /* subsititute session tags                                                   */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bSubSsnTags(void)
+bool SePrompt::bSubSsnTags(SeDeputy* pSeDeputy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1332,14 +1324,16 @@ bool SePrompt::bSubSsnTags(void)
     s32 sTagName;
     sTagName.vSprint("<%s>"_Stz,pToken_name->szChars());
 
-    if (! m_pSsnTagSet->bHasName(sTagName))
+    TagSet* pSsnTagSet = & pSeDeputy->pSession()->m_oSsnTagSet;
+
+    if (! pSsnTagSet->bHasName(sTagName))
       continue;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // substitute the value of the session tag into the input vector
     
     s256 sTagValue;
-    sTagValue = m_pSsnTagSet->szValue(sTagName);
+    sTagValue = pSsnTagSet->szValue(sTagName);
     
     m_pInpTknVec->vRemoveToken(i_Token);
     m_pInpTknVec->vRemoveToken(i_Token);
@@ -1445,11 +1439,6 @@ bool SePrompt::bTranslateProcedure(void)
   return false;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(SePrompt)
 
 /*============================================================================*/
 /* end                                                                        */

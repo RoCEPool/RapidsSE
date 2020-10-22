@@ -4,8 +4,6 @@
 
 #include "Prompt.h"
 
-
-
 PromptFun __Prompt_takeMem (
   PF_TAKEMEM,           // prompt function
   "Prompt_takeMem"_Stz, // name of the prompt function

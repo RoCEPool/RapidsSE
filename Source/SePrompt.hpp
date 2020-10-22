@@ -7,7 +7,7 @@
 
 namespace Prompt
 {
-  static const i8 C_PMT_MAXSSN = 4;
+  static const i8 C_MAX_DEPUTY = 16;
 
   static Stz* C_PMT_BUFPOOL  = "<bufferPool>"_Stz;
   static Stz* C_PMT_OBJDELTA = "<objectDelta>"_Stz;
@@ -27,18 +27,11 @@ namespace Prompt
   {
   private:
   
-    Mutex*    m_pMutexFG;    // mutex for foreground thread
+    Mutex*    m_pMutex;      // mutex for prompt
 
-    i8        m_nSessions;   //
-    struct {
-      Mutex*    m_pMutexBG;    // mutex for background thread
-      Session*  m_pSession;    // rapidsse session
-      Job*      m_pJob;        // job
-    } Ssn[C_PMT_MAXSSN];
   
     Input*    m_pInput;      // input processor from session
     TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
-    TagSet*   m_pSsnTagSet;  // session tag set
 
     TagSet    m_oPmtTagSet;  // tag set which controls this prompt
     i8        m_iDivisionNo; // division numbering
@@ -66,8 +59,9 @@ namespace Prompt
     // temp for demo
     TokenVec* m_pLitTknVec;  // literal token vector for demo
   
-    i8  m_iSsnBG;
-    
+    i8        m_nDeputies;   //
+    SeDeputy*  m_paSeDeputy[C_MAX_DEPUTY];
+
     // must be last
     Footer m_xFooter;
   
@@ -84,8 +78,9 @@ namespace Prompt
   
     void vPromptLoop(void);
 
-    bool bPromptFG(void);
-    void vPromptBG(void);
+    bool bGetCommand(SeDeputy* pSeDeputy);
+    bool bPrepareJob(SeDeputy* pSeDeputy);
+    void vExecuteJob(SeDeputy* pSeDeputy);
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
@@ -96,15 +91,15 @@ namespace Prompt
     i8   iDivisionNo(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
-    void vCreateSession(void);
+    SeDeputy* pCreateDeputy(void);
     void vCutToken(i8 i_Tkn);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
     bool bExecuteFunction(void);
-    bool bExecutePipeline(void);
     void vExtractCtlTags(void);
     bool bExtractSupTags(void);
+    SeDeputy* pFindDeputy(void);
     void vFocalOutline(s4K& sOutline);
     bool bHandleDemo(void);
     void vInitialSettings(void);
@@ -113,29 +108,28 @@ namespace Prompt
     bool bIsPromptWord(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
-    void vMakeDiaryDir(void);
+    void vMakeDiaryDir(SeDeputy* pSeDeputy);
+    Mutex* pMutex(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     ObjectsInPool*  pObjectsInPool(void);
     void vPromptUser(void);
-    bool bReadNextCommand(void);
+    bool bReadNextCommand(SeDeputy* pSeDeputy);
     bool bRedirectFromFile(void);
     void vReportObjects();
     void vReportOther(void);
     void vReportPool(void);
     void vReportTrace();
-    void vReportTime(void);
-    void vResetExtractedTagSet(void);
+    void vResetExtractedTagSet(SeDeputy* pSeDeputy);
     void vResetSectionNo(void);
     i8   iRequestId(void);
     void vSection(Stz* szSection);
-    Session* pSession(void);
     TagSet* pPmtTagSet(void);
-    bool bShortCut(void);
+    bool bShortCut(SeDeputy* pSeDeputy);
     ShortCutVec* pShortCutVec(void);
     ObjectsInPool*  pSnapshotObjects(void);
     bool bStdIn(void);
-    bool bSubSsnTags(void);
+    bool bSubSsnTags(SeDeputy* pSeDeputy);
     void vTrackingMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);
