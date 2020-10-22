@@ -29,6 +29,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
+  vTrace("::SeDeputy\n"_Stz);
+  
   m_i_Deputy  = i_Deputy;
   m_pSePrompt = pSePrompt;
   

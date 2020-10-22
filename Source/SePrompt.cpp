@@ -29,6 +29,8 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  vTrace("::SePrompt\n"_Stz);
+  
   i8 iPartition = 0;
   
   m_pMutex = new Mutex(MK_THREAD,this);
@@ -81,9 +83,8 @@ SePrompt::~SePrompt(void) noexcept(false)
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     if (m_paSeDeputy[i_Deputy]) {
       
-      m_paSeDeputy[i_Deputy]->vContinue(false);
-      
       m_paSeDeputy[i_Deputy]->pMutex()->vLock(this);
+      m_paSeDeputy[i_Deputy]->vContinue(false);
       m_paSeDeputy[i_Deputy]->pMutex()->vSignal(this);
       m_paSeDeputy[i_Deputy]->pMutex()->vUnlock(this);
 
