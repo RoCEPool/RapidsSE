@@ -748,7 +748,7 @@ bool SePrompt::bHandleDemo(void)
   switch (iHash) {
       
       // Query 1
-    case 204757332167:
+    case 201637548233:
       m_pInpTknVec->vTokeniseC(C_Query1);
       m_pInpTknVec->vIntegrityCheck();
       break;
