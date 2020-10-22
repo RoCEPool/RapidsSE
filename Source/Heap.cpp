@@ -128,20 +128,6 @@ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add free chunk onto free chain                                             */
-/*----------------------------------------------------------------------------*/
-void Heap::vAddFree(FreeChunk* aFreeChunk)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
-  ASSERT(m_bFixedHeap);
-  
-  m_nBufferCount++;
-  
-  vPushFree(aFreeChunk,CN_NONE);
-}
-
-/*----------------------------------------------------------------------------*/
 /* allocate an object from the heap                                           */
 /*----------------------------------------------------------------------------*/
 Object* Heap::pAllocObject(eCN eAllocClass)
@@ -285,6 +271,10 @@ void Heap::vFreeObject(Object* pObject)
       vRemoveBuffer(pHeapBuffer);
       
       gpBufferPool->vFreeHeapBuffer(pPoolBuffer);
+      m_okLock.vGrabWrite();
+      m_nCurrAllocated--;
+      m_okLock.vDropWrite();
+
       return;
     }
   }
