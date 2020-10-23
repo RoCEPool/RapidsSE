@@ -177,11 +177,11 @@ namespace Indexing
     void        vSpliceAfter(EntBuffer* pSplicedBuffer);
     void        vTruncate(void);
     EntBuffer*  pUnlinkSubList(void);
+    bool        bVerify(void);
+    bool        bVerifyKeyOrder(void);
   
     void        vNumberEntries(void);
     void        vRecordTickets(void);
-
-    bool        bVerify(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
@@ -209,16 +209,13 @@ namespace Indexing
     EntBuffer* pNewHigherBuffer(void);
     EntBuffer* pNewInsertBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
     bool       bNewInsertDecision(Ent* aEntry, EntBuffer** ppRootBuffer);
-    EntBuffer* pNewInsertIntoPart(Ent* aEntry, EntBuffer** ppRootBuffer);
     EntBuffer* pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer);
     EntBuffer* pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer);
     EntBuffer* pNewNextBuffer(void);
     Ent*       aPopLazyChain(void);
 
-    EntBuffer* pSplitBuffer(Ent* aSplitEntry, Ent* aPriorEntry);
-    Ent*       aSplitEntry(Ent* aEntry, i8 iSplitRatio, Ent** aaPriorEntry);
-
-
+    EntBuffer* pSplitBuffer(void);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions
   
@@ -235,7 +232,6 @@ namespace Indexing
     bool bVerifyFirstKeys(void);
     bool bVerifyItems(void);
     bool bVerifyKeyBufferOrder(void);
-    bool bVerifyKeyOrder(void);
     bool bVerifyNextPrev(void);
     bool bVerifyRowRefs(void);
     bool bVerifySkipListEntry(bool bShowKeys = false);
