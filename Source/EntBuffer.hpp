@@ -240,7 +240,7 @@ namespace Indexing
     bool bVerifyRowRefs(void);
     bool bVerifySkipListEntry(bool bShowKeys = false);
     bool bVerifySkipListLevels(bool bShowKeys = false);
-    void vVerifyFault(void);
+    void vVerifyFault(const char* azFunc, const char* azFilePath, i8 iLineNo);
 
     public:
     Footer* aFooter(void);
