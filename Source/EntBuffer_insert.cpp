@@ -486,8 +486,7 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
       pInsertIntoBuffer = this;
     else {
 //      vTrace("No Space %p entries %lld\n"_Stz,this,nItems());
-      pInsertIntoBuffer =
-        pNewInsertBuffer(aEnt,nEntSizeBytes,ppRootBuffer);
+      pInsertIntoBuffer = pNewInsertBuffer(aEnt,ppRootBuffer);
       //(*ppRootBuffer)->vShow();
     }
     
@@ -948,23 +947,102 @@ EntBuffer* EntBuffer::pNewHigherBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* create a new insert buffer (adjusting higher buffers accordingly)          */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
-                                       i8 nEntryPlusOffsets,
-                                       EntBuffer** ppRootBuffer)
+EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+//  return pNewInsertBySplit(aEntry,ppRootBuffer);
+  
+  if (bNewInsertDecision(aEntry,ppRootBuffer))
+    return pNewInsertIntoSplit(aEntry,ppRootBuffer);
+  else
+    return pNewInsertIntoRight(aEntry,ppRootBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new insert buffer (adjusting higher buffers accordingly)          */
+/*----------------------------------------------------------------------------*/
+bool EntBuffer::bNewInsertDecision(Ent* aEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new insert buffer (adjusting higher buffers accordingly)          */
+/*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+  EntBuffer* pLeftBuffer = this;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compact this buffer
+  // get the higher buffer, creating one if it doesnt exist
   
-  this->vCompact();
+  EntBuffer* pHigherBuffer = this->pHigherBuffer();
+  if (! pHigherBuffer) {
+    pHigherBuffer = this->pNewHigherBuffer();
+    *ppRootBuffer = pHigherBuffer;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now check if it has enough space
+  // split the left buffer to yield a right buffer
   
-  if (this->bHasSpace(nEntryPlusOffsets) )
-    return this;
+  EntBuffer* pRightBuffer = pNewNextBuffer();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the first key of left buffer into higher buffer if higher buffer
+  // was just created
+  
+  if (! pHigherBuffer->nItems()) {
+    
+    EntWrk xEntWrkLeft;
+    Ent* aFirstEntryLeft = pLeftBuffer->aLeadEntry();
+
+    // initialize the keyWrk from the first left key
+    xEntWrkLeft.vSetEnt(pLeftBuffer->iBufferNo(), 0, aFirstEntryLeft);
+    
+    Ent* aInsertedEntryLeft =
+      pHigherBuffer->aInsertEntUpwards(xEntWrkLeft.aEnt(),ppRootBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the inserting key / first key of right buffer into higher buffer
+  
+  EntWrk xEntWrkRight;
+  Ent* aFirstEntryRight = aEntry;
+  
+  // initialize the keyWrk from the inserting key
+  xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
+  
+  Ent* aInsertedEntryRight =
+    pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //ASSERT( (* ppRootBuffer)->bVerify() );
+  
+  return pRightBuffer;
+}
+/*----------------------------------------------------------------------------*/
+//EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+//
+//  EntBuffer* pNewRightBuffer = pNewNextBuffer();
+//
+//  return pNewRightBuffer;
+//}
+
+/*----------------------------------------------------------------------------*/
+/* create a new insert buffer (adjusting higher buffers accordingly)          */
+/*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
   EntBuffer* pLeftBuffer = this;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1013,7 +1091,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
   
   //ASSERT( (* ppRootBuffer)->bVerify() );
   
-  if ( pRightBuffer->bKeyBeforeBuffer(aEntryWork->aKey()) )
+  if ( pRightBuffer->bKeyBeforeBuffer(aEntry->aKey()) )
     return pLeftBuffer;
   else
     return pRightBuffer;
