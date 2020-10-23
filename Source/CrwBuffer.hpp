@@ -104,7 +104,7 @@ namespace CompactBuffers
     // verify functions        
     bool bVerifyNextPrev(void);
     bool bVerifyRows(void);
-    void vVerifyFault(const char* azFunc, const char* azFilePath, i8 iLineNo);
+    void vVerifyFault(void);
 
     public:
     Footer* aFooter(void);

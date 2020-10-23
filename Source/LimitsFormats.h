@@ -31,7 +31,7 @@ static const i8 C_MAX_SLOTS         = 128;    // max slots per node
 static const i8 C_MAX_STAGES        = 256;
 static const i8 C_MAX_STRANDS       = 256;
 static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
-static const i8 C_MAX_THREADS       = 2048;
+static const i8 C_MAX_THREADS       = 256;
 static const i8 C_MAX_TOKENS        = C_2KB;
 
 // max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS INSTEAD
