@@ -29,21 +29,21 @@ bool EntBuffer::bCheckPriorVec(Ent* aPriorVec[])
   
   if (aNextEntry_0 && aNextEntry_1) {
     if (aNextEntry_0->iEntryNo() > aNextEntry_1->iEntryNo()) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
   }
 
   if (aNextEntry_1 && aNextEntry_2) {
     if (aNextEntry_1->iEntryNo() > aNextEntry_2->iEntryNo()) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
   }
 
   if (aNextEntry_0 && aNextEntry_2) {
     if (aNextEntry_0->iEntryNo() > aNextEntry_2->iEntryNo()) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
   }
@@ -369,7 +369,7 @@ bool EntBuffer::bVerifyAdjacent(void)
       // the two child buffers should not be the same
       if ( pChildEntBuffer == pAdjacentChildEntBuffer) {
         vShow();
-        vVerifyFault();
+        vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
     }
@@ -397,17 +397,17 @@ bool EntBuffer::bVerifyBufferRefs(void)
     EntBuffer* pChildEntBuf = EntBuffer::pRefdEntBuffer(aEnt);
     
     if ( ! pChildEntBuf->bValidEntBuffer() ) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
     
     if (pChildEntBuf->iBufferHeight() != m_iBufferHeight - 1) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
     
     if (pChildEntBuf->pHigherBuffer() != this) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
   }
@@ -446,7 +446,7 @@ bool EntBuffer::bVerifyFirstKeys(void)
     if (KE_GENERAL == m_eEntKind) {
       bool bEqual = Key::bEqualTo(aChildFirstEntry->aKey(), aEnt->aKey());
       if (! bEqual) {
-        vVerifyFault();
+        vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
     }
@@ -456,7 +456,7 @@ bool EntBuffer::bVerifyFirstKeys(void)
       bool bEqual = (iChildKey == iCurrKey);
       if (! bEqual) {
         vDump();
-        vVerifyFault();
+        vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
     }
@@ -496,7 +496,7 @@ bool EntBuffer::bVerifyItems(void)
         if (! aEnt->bValidEnt()) {
           vTrace("Not a valid entry: %p\n"_Stz,aEnt);
           vShow(true);
-          vVerifyFault();
+          vVerifyFault(__func__,__FILE__,__LINE__);
           return false;
         }
         nEntryItems++;
@@ -508,7 +508,7 @@ bool EntBuffer::bVerifyItems(void)
 //        if (! aFreeItem->bValidFreeItem()) {
 //          vTrace("Not a valid free item: %p\n"_Stz,aFreeItem);
 //          vShow(true);
-//          vVerifyFault();
+//          vVerifyFault(__func__,__FILE__,__LINE__);
 //          return false;
 //        }
         break;
@@ -519,7 +519,7 @@ bool EntBuffer::bVerifyItems(void)
         if (! aWilderness->bValidWilderness()) {
           vTrace("Not a valid wilderness item: %p\n"_Stz,aWilderness);
           vShow(true);
-          vVerifyFault();
+          vVerifyFault(__func__,__FILE__,__LINE__);
           return false;
         }
         break;
@@ -527,7 +527,7 @@ bool EntBuffer::bVerifyItems(void)
         
       default:
         vTrace("Not a known item: %p\n"_Stz,aEnt);
-        vVerifyFault();
+        vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
     }
   }
@@ -536,7 +536,7 @@ bool EntBuffer::bVerifyItems(void)
   if (nEntryItems != nItems()) {
     vTrace("Number of items dont match: %lld"_Stz,nEntryItems);
     vShow(true);
-    vVerifyFault();
+    vVerifyFault(__func__,__FILE__,__LINE__);
     return false;
   }
   
@@ -573,13 +573,13 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
       vDump();
       vShow(aEnt);
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
     
     // child B should point to child A
     if (pChildBufferB->pPrevBuffer() != pChildBufferA) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
   }
@@ -616,7 +616,7 @@ bool EntBuffer::bVerifyKeyOrder(void)
       bGreaterEqual = Key::bGreaterEqual(aNextKey, aCurrKey);
       if (! bGreaterEqual) {
         vDump();
-        vVerifyFault();
+        vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
       
@@ -627,7 +627,7 @@ bool EntBuffer::bVerifyKeyOrder(void)
       bGreaterEqual = (iNextKey >= iCurrKey);
       if (! bGreaterEqual) {
         vDump();
-        vVerifyFault();
+        vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
     }
@@ -655,11 +655,11 @@ bool EntBuffer::bVerifyNextPrev(void)
   if (m_pPrevBuffer) {
     EntBuffer* pPrevBuffer = _pEntBuffer(m_pPrevBuffer);
     if (pPrevBuffer->pNextBuffer() != this) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
     if (pPrevBuffer->iBufferHeight() != m_iBufferHeight) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
   }
@@ -669,11 +669,11 @@ bool EntBuffer::bVerifyNextPrev(void)
   if (m_pNextBuffer) {
     EntBuffer* pNextBuffer = _pEntBuffer(m_pNextBuffer);
     if (pNextBuffer->pPrevBuffer() != this) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
     if (pNextBuffer->iBufferHeight() != m_iBufferHeight) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
   }
@@ -683,7 +683,7 @@ bool EntBuffer::bVerifyNextPrev(void)
   if (m_pHigherBuffer) {
     EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
     if (pHigherBuffer->iBufferHeight() != m_iBufferHeight + 1) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
   }
@@ -720,7 +720,7 @@ bool EntBuffer::bVerifyRowRefs(void)
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
       Crw* aCrw = pCrwBuffer->aCrw(i_Item);
       if (! aCrw ) {
-        vVerifyFault();
+        vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
     }
@@ -728,7 +728,7 @@ bool EntBuffer::bVerifyRowRefs(void)
       ASSERT(pDataBuffer->eClass() == CN_CRVBUFFER);
       Crv* aCrv = AM::aCrv(pDataBuffer,i_Item);
       if (! aCrv ) {
-        vVerifyFault();
+        vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
     }
@@ -766,7 +766,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
     while (aTestEntry_sl) {
       
       if (CN_ENT != aTestEntry_sl->eClass()) {
-        vVerifyFault();
+        vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
       
@@ -774,19 +774,19 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
         case 2:
           aNextEntry2 = aNextEntry(aTestEntry_sl,2);
           if (aNextEntry2 && CN_ENT != aNextEntry2->eClass()) {
-            vVerifyFault();
+            vVerifyFault(__func__,__FILE__,__LINE__);
             return false;
           }
         case 1:
           aNextEntry1 = aNextEntry(aTestEntry_sl,1);
           if (aNextEntry1 && CN_ENT != aNextEntry1->eClass()) {
-            vVerifyFault();
+            vVerifyFault(__func__,__FILE__,__LINE__);
             return false;
           }
         case 0:
           aNextEntry0 = aNextEntry(aTestEntry_sl,0);
           if (aNextEntry0 && CN_ENT != aNextEntry0->eClass()) {
-            vVerifyFault();
+            vVerifyFault(__func__,__FILE__,__LINE__);
             return false;
           }
           break;
@@ -852,7 +852,7 @@ bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
         // check we dont go backwwards
         if (aNextEntry_sl->iEntryNo() < aScanEntry_sl->iEntryNo()) {
           vShow(aScanEntry_sl);
-          vVerifyFault();
+          vVerifyFault(__func__,__FILE__,__LINE__);
           return false;
         }
         
@@ -861,7 +861,7 @@ bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
       
       if (aScanEntry_sl != aTestEntry_0) {
         vShow(aTestEntry_0);
-        vVerifyFault();
+        vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
       
@@ -876,11 +876,11 @@ bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
 /*----------------------------------------------------------------------------*/
 /* verify has detected a fault                                                */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vVerifyFault(void)
+void EntBuffer::vVerifyFault(const char* azFunc, const char* azFilePath, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  vTrace("VerifyFault\n"_Stz);
+  vTrace("EntBuffer::VerifyFault: %s %s lld\n"_Stz,azFunc,azFilePath,iLineNo);
   ASSERT(0);
   return;
 }
