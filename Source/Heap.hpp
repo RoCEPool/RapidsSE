@@ -33,7 +33,6 @@ namespace Pool
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-    void    vAddFree(FreeChunk* aFreeChunk);
     Object* pAllocObject(eCN eClass);
     void    vAnalyse(i8 xCounts[]);
     i8      nBufferCount(void);

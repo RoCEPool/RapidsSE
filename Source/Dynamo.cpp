@@ -508,6 +508,10 @@ bool Dynamo::bCollectOp(void)
     pOpSpec->vXmitKind(XK_ROBIN);
     vAcceptToken();
   }
+  else if (m_pTkn->bSame("localRobin"_Stz)) {
+    pOpSpec->vXmitKind(XK_LOCALROBIN);
+    vAcceptToken();
+  }
   else if (m_pTkn->bSame("Hashed"_Stz)) {
     pOpSpec->vXmitKind(XK_HASHED);
     vAcceptToken();
@@ -874,7 +878,7 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eTopologyX)
       break;
       
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
-      iXmits = 1;
+      iXmits = AM::pGrid()->nDefinedNodes();
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
