@@ -61,7 +61,7 @@ CONFIG_FILE=""
 # The array of unique node names. The values here are used to help form the
 # name of the dynamic associative arrays used to hold the configuration of
 # an individual node.
-declare -a NODE_LIST
+declare -ga NODE_LIST
 
 # The prefix given to each node name before its sequence number.
 NODE_NAME_PREFIX="${NODE_CFG_DEFAULT_NAME_PREFIX}"
@@ -71,6 +71,18 @@ NODE_SEQ_NUM=0
 
 # The name of the current node, given in the --name argument to the script.
 CURRENT_NODE_NAME=""
+
+# The number of cores on each node, keyed by node name.
+declare -gA NODE_CORE_COUNT
+
+# The amount of memory (in GB) on each node, keyed by node name.
+declare -gA NODE_TOTAL_MEM
+
+# The maximum size of the SHM segment (in GB) on each node, keyed by node name.
+declare -gA NODE_TOTAL_SHM
+
+# The current size of the SHM segment (in GB) that is available on each node, keyed by node name.
+declare -gA NODE_FREE_SHM
 
 ###############################################################################
 ### Functions                                                               ###

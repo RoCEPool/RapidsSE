@@ -423,6 +423,18 @@ function createConfiguration() {
   # hostnames
   askHostnames
 
+  # We need to validate hostnames and SSH access now so that we can connect
+  # to each machine and determine the number of CPUs, so we can set the
+  # number of partitions/threads appropriately.
+  validateHostsAreResolvable
+  validateHostsReachableBySsh
+
+  # Get the number of CPU cores, memory size, SHM size of each node.
+  # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
+  # and will be used for default values for partitions, threads and
+  # shared memory size later on.
+  collectHostSizeInfo
+
   # (advanced) port
   askPort
 
@@ -1248,4 +1260,64 @@ function cleanupNodeInstall() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Get the number of CPU cores, memory size, SHM size of each node.
+# This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM
+# and NODE_FREE_SHM and will be used for default values for partitions, 
+# threads and  shared memory size later on.
+# Params: None
+
+function collectHostSizeInfo() {
+  
+  local nodeName
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    (
+      local coreCount
+      local totalMem
+      local totalShm  
+      local freeShm
+
+      coreCount="$(getCpuCount "${nodeName}")" || exit 1
+
+      if [[ -z "${coreCount}" || "${coreCount}" -le 0 ]]; then
+        coreCount=-1 # unknown
+      fi
+
+
+      totalMem="$(getTotalMem "${nodeName}")" || exit 1
+
+      if [[ -z "${totalMem}" || "${totalMem}" -le 0 ]]; then
+        totalMem=-1 # unknown
+      fi
+
+
+      totalShm="$(getTotalShm "${nodeName}")" || exit 1
+
+      if [[ -z "${totalShm}" || "${totalShm}" -le 0 ]]; then
+        totalShm=-1 # unknown
+      fi
+
+
+      freeShm="$(getFreeShm "${nodeName}")"  || exit 1
+
+      if [[ -z "${freeShm}" || "${freeShm}" -le 0 ]]; then
+        freeShm=-1 # unknown
+      fi
+
+      NODE_CORE_COUNT["${nodeName}"]="${coreCount}"
+      NODE_TOTAL_MEM["${nodeName}"]="${totalMem}"
+      NODE_TOTAL_SHM["${nodeName}"]="${totalShm}"
+      NODE_FREE_SHM["${nodeName}"]="${freeShm}"
+
+    ) &
+  done
+  
+  wait
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 

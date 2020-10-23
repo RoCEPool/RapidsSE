@@ -255,6 +255,50 @@ function loadNodeName() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+## Writes the number of CPU cores to stdout for a given node.
+## Params: 
+##  $1 : nodeName - the name of the node in question.
+
+function getCpuCount() {
+  true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+## Writes the total memory size (in GB) to stdout for a given node.
+## Params: 
+##  $1 : nodeName - the name of the node in question.
+
+function getTotalMem() {
+  true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+## Writes the total SHM size (in GB) to stdout for a given node.
+## Params: 
+##  $1 : nodeName - the name of the node in question.
+
+function getTotalShm() {
+  true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+## Writes the free SHM size (in GB) to stdout for a given node.
+## Params: 
+##  $1 : nodeName - the name of the node in question.
+
+function getFreeShm() {
+  true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 # =========================================================================== #
 # Node Configuration Manipulation                                             #
 #   Below are functions that create and manipulate the associative arrays     #

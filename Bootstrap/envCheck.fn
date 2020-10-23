@@ -256,7 +256,7 @@ function validateHostsReachableBySsh() {
     # Run it, in parallel
     (
       if ! ssh "${sshArgs[@]}"; then
-        errorExit "Node ${nodeName} [host: ${host}] cannot be reached by SSH."
+        errorExit "Node ${nodeName} [host: ${host}] cannot be reached by password-less SSH."
       fi
   
       true
@@ -273,7 +273,7 @@ function validateHostsReachableBySsh() {
     fi
   done
 
-  debugPrint "Successfully validated that nodes can be reached by SSH."
+  debugPrint "Successfully validated that all nodes can be reached by SSH."
 }
 
 
