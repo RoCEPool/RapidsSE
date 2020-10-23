@@ -323,7 +323,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Thing),              HT_TRANSIENT_TINY    }, // CN_THING
   { sizeof(Thread),             HT_TRANSIENT_TINY    }, // CN_THREAD
   { sizeof(ThreadQueue),        HT_TRANSIENT_TINY    }, // CN_THREADQUEUE
-  { sizeof(ThreadVec),          HT_TRANSIENT_SMALL   }, // CN_THREADVEC
+  { sizeof(ThreadVec),          HT_TRANSIENT_MEDIUM  }, // CN_THREADVEC
   { sizeof(Timer),              HT_TRANSIENT_TINY    }, // CN_TIMER
   { sizeof(Heap),/*correct*/    HT_INVALID           }, // CN_TINYPERSISTENT
   { sizeof(Heap),/*correct*/    HT_INVALID           }, // CN_TINYTRANSIENT

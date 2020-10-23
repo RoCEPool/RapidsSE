@@ -858,7 +858,7 @@ bool CrwBuffer::bVerify(void)
 /*----------------------------------------------------------------------------*/
 /* verify has detected a fault                                                */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vVerifyFault(void)
+void CrwBuffer::vVerifyFault(const char* azFunc, const char* azFilePath, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
@@ -901,7 +901,7 @@ bool CrwBuffer::bVerifyNextPrev(void)
   if (m_pPrevBuffer) {
     CrwBuffer* pPrevBuffer = _pCrwBuffer(m_pPrevBuffer);
     if (pPrevBuffer->pNextBuffer() != this) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
   }
@@ -911,7 +911,7 @@ bool CrwBuffer::bVerifyNextPrev(void)
   if (m_pNextBuffer) {
     CrwBuffer* pNextBuffer = _pCrwBuffer(m_pNextBuffer);
     if (pNextBuffer->pPrevBuffer() != this) {
-      vVerifyFault();
+      vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
   }
