@@ -561,6 +561,11 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   
   //vShow();
   
+  //if (iBufferHeight()) {
+  //  if (!bVerifyKeyOrder()) {
+  //    vShow(true,nullptr);
+  //  }
+  //}
   return aInsertedEntry;
 }
 
@@ -956,7 +961,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
   if (bNewInsertDecision(aEntry,ppRootBuffer))
     return pNewInsertIntoSplit(aEntry,ppRootBuffer);
   else
-    return pNewInsertIntoRight(aEntry,ppRootBuffer);
+    return pNewInsertIntoPart(aEntry,ppRootBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -967,6 +972,69 @@ bool EntBuffer::bNewInsertDecision(Ent* aEntry, EntBuffer** ppRootBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new insert buffer (adjusting higher buffers accordingly)          */
+/*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pNewInsertIntoPart(Ent* aEntry, EntBuffer** ppRootBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+  EntBuffer* pLeftBuffer = this;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the higher buffer, creating one if it doesnt exist
+  
+  EntBuffer* pHigherBuffer = this->pHigherBuffer();
+  if (! pHigherBuffer) {
+    pHigherBuffer = this->pNewHigherBuffer();
+    *ppRootBuffer = pHigherBuffer;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // split the left buffer to yield a right buffer
+  
+  Ent* aPriorEntry;
+  Ent* aSplitEntry = pLeftBuffer->aSplitEntry(aEntry,95,&aPriorEntry);
+  EntBuffer* pRightBuffer = pLeftBuffer->pSplitBuffer(aSplitEntry,aPriorEntry);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the first key of left buffer into higher buffer if higher buffer
+  // was just created
+  
+  if ( ! pHigherBuffer->nItems() ) {
+    
+    EntWrk xEntWrkLeft;
+    Ent* aFirstEntryLeft  = pLeftBuffer->aLeadEntry();
+
+    // initialize the keyWrk from the first left key
+    xEntWrkLeft.vSetEnt(pLeftBuffer->iBufferNo(), 0, aFirstEntryLeft);
+    
+    Ent* aInsertedEntryLeft =
+      pHigherBuffer->aInsertEntUpwards(xEntWrkLeft.aEnt(),ppRootBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the first key of right buffer into higher buffer
+  
+  EntWrk xEntWrkRight;
+  Ent* aFirstEntryRight = pRightBuffer->aLeadEntry();
+  
+  // initialize the keyWrk from the first left key
+  xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
+  
+  Ent* aInsertedEntryRight =
+    pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //ASSERT( (* ppRootBuffer)->bVerify() );
+  
+  if ( pRightBuffer->bKeyBeforeBuffer(aEntry->aKey()) )
+    return pLeftBuffer;
+  else
+    return pRightBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1011,14 +1079,14 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the inserting key / first key of right buffer into higher buffer
   
-  EntWrk xEntWrkRight;
-  Ent* aFirstEntryRight = aEntry;
-  
-  // initialize the keyWrk from the inserting key
-  xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
-  
-  Ent* aInsertedEntryRight =
-    pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
+//  EntWrk xEntWrkRight;
+//  Ent* aFirstEntryRight = aEntry;
+//
+//  // initialize the keyWrk from the inserting key
+//  xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
+//
+//  Ent* aInsertedEntryRight =
+//    pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1057,7 +1125,9 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
   
-  EntBuffer* pRightBuffer = pLeftBuffer->pSplitBuffer();
+  Ent* aPriorEntry;
+  Ent* aSplitEntry = pLeftBuffer->aSplitEntry(aEntry,50,&aPriorEntry);
+  EntBuffer* pRightBuffer = pLeftBuffer->pSplitBuffer(aSplitEntry,aPriorEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer if higher buffer
@@ -1218,7 +1288,7 @@ void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
 /*----------------------------------------------------------------------------*/
 /* split this buffer into two: this original buffer and a new right buffer    */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pSplitBuffer(void)
+EntBuffer* EntBuffer::pSplitBuffer(Ent* aSplitEntry, Ent* aPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1239,11 +1309,11 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
   // find split entry. every entry from split entry and to the right of it
   // will be moved to the new right buffer
   
-  Ent* aPriorEntry;
-  //i8 iSplitAtEntry = m_nItems/2;
-  i8 iSplitAtEntry = (m_nItems * iSplitRatio) / 100;
-  Ent* aSplitEntry = aGetEntrySplit(iSplitAtEntry,&aPriorEntry);
-  ASSERT(this->aNextEntry(aPriorEntry,0) == aSplitEntry);
+//  Ent* aPriorEntry;
+//  //i8 iSplitAtEntry = m_nItems/2;
+//  i8 iSplitAtEntry = (m_nItems * iSplitRatio) / 100;
+//  Ent* aSplitEntry = aGetEntrySplit(iSplitAtEntry,&aPriorEntry);
+//  ASSERT(this->aNextEntry(aPriorEntry,0) == aSplitEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy split right entries to a new right buffer
@@ -1360,6 +1430,36 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   return pNewRightBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* split this buffer into two: this original buffer and a new right buffer    */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aSplitEntry(Ent* aEntry, i8 iSplitRatio, Ent** aaPriorEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+#ifdef WITH_EB_LAZY_CHAIN
+  ASSERT( ! m_aLazyChain );
+#endif
+  
+  EntBuffer* pThisLeftBuffer = this;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a new right buffer
+  
+  EntBuffer* pNewRightBuffer = pNewNextBuffer();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find split entry. every entry from split entry and to the right of it
+  // will be moved to the new right buffer
+  
+  //i8 iSplitAtEntry = m_nItems/2;
+  i8 iSplitAtEntry = (m_nItems * iSplitRatio) / 100;
+  Ent* aSplitEntry = aGetEntrySplit(iSplitAtEntry,aaPriorEntry);
+  ASSERT(this->aNextEntry(*aaPriorEntry,0) == aSplitEntry);
+  
+  return aSplitEntry;
 }
 
 /*============================================================================*/
