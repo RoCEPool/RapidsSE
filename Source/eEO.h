@@ -269,6 +269,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_RSB_DST_PRINT,    // print dst rsb
   /*    */ EO_RSB_DST_RESET,    // reset dst rowslab
   /*    */ EO_RSB_DST_NEW,      // create new destination rsb
+  /*    */ EO_RSB_DST_SET,      // set dst rowslab
   /*    */ EO_RSB_DST_TESTROW,  // test if destination rsb
   /*    */ EO_RSB_DST_ZERO,     // zero destination rsb
   /*    */ EO_RSB_SRC_BEGIN,    // begin src rsb traverse
@@ -571,6 +572,7 @@ static Stz* aEO[]
   /*    */ "EO_RSB_DST_PRINT"_Stz,
   /*    */ "EO_RSB_DST_RESET"_Stz,
   /*    */ "EO_RSB_DST_NEW"_Stz,
+  /*    */ "EO_RSB_DST_SET"_Stz,
   /*    */ "EO_RSB_DST_TESTROW"_Stz,
   /*    */ "EO_RSB_DST_ZERO"_Stz,
   /*    */ "EO_RSB_SRC_BEGIN"_Stz,
@@ -879,6 +881,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_RSB_DST_PRINT
   { EA_NONE,    0 },  // EO_RSB_DST_RESET
   { EA_NONE,    0 },  // EO_RSB_DST_NEW
+  { EA_NONE,    0 },  // EO_RSB_DST_SET
   { EA_NONE,    0 },  // EO_RSB_DST_TESTROW
   { EA_NONE,    0 },  // EO_RSB_DST_ZERO
   { EA_NONE,    0 },  // EO_RSB_SRC_BEGIN

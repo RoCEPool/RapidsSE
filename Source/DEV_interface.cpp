@@ -1094,6 +1094,19 @@ void vDev_RSB_RESET(void* aLU, void* aRSB)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set rsb row                                                                 */
+/*----------------------------------------------------------------------------*/
+void vDev_RSB_SET(void* aLU, void* aRSB, i8 iRow)
+{
+  _static_
+  
+  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  
+  pDevRsb->m_pRowSlab->vSetRow(iRow);
+  pDevRsb->m_aRsb = pDevRsb->m_pRowSlab->aRsbAdr(iRow);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set src rsb by using offset on stack                                       */
 /*----------------------------------------------------------------------------*/
 void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)

@@ -78,6 +78,7 @@ namespace Rows
     i8    nRowProperBytes(void);
     Rsb*  aRsbAdr(i8 i_Row);
     Rsb*  aRsbByOfs(i8 iOfs);
+    void  vSetRow(i8 iRow);
     i8    iOfsOfRsb(Rsb* aRsb);
     i8    nRows(void);
     void  vSlabReport(void);

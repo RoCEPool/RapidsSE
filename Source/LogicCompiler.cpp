@@ -98,6 +98,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "szDev_RSB_PUSHCOLS"_Stz,     (const void *) szDev_RSB_PUSHCOLS     },
   { "iDev_RSB_PUSHOFS"_Stz,       (const void *) iDev_RSB_PUSHOFS       },
   { "vDev_RSB_RESET"_Stz,         (const void *) vDev_RSB_RESET         },
+  { "vDev_RSB_SET"_Stz,           (const void *) vDev_RSB_SET         },
   { "vDev_RSB_SETBYOFS"_Stz,      (const void *) vDev_RSB_SETBYOFS      },
   { "vDev_RSB_TABLENM_SET"_Stz,   (const void *) vDev_RSB_TABLENM_SET   },
   { "iDev_RSB_TEST"_Stz,          (const void *) iDev_RSB_TEST          },

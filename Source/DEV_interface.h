@@ -72,6 +72,7 @@ i8   iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg);
 Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg);
 i8   iDev_RSB_PUSHOFS(void* aLU, void* aRSB);
 void vDev_RSB_RESET(void* aLU, void* aRSB);
+void vDev_RSB_SET(void* aLU, void* aRSB, i8 iRow);
 void vDev_RSB_TABLENM_SET(void* aLU, void* aRSB, Stz* szTableNm);
 i8   iDev_RSB_TEST(void* aLU, void* aRSB);
 i8   iDev_RSB_TESTROW(void* aLU, void* aRSB);

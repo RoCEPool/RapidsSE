@@ -213,13 +213,35 @@ Label LIM_RET
 Label OUT_AGG
   EO_PRINTF "OUT_AGG\n"
 
+  EO_PUSH_0
+
+Label CREATE_ROW
+  //EO_RSB_DST_PRINT
+  EO_DUP
+  EO_IXT_TMP_ENTRIES
+  EO_LESSTHAN
+  EO_JMP_FALSE TRV_BEG
+  EO_PUSH_1
+  EO_ADD
+  EO_RSB_DST_NEW
+  EO_JMP CREATE_ROW
+
+Label TRV_BEG
+  EO_POP
+
   EO_IXT_TRV_BEGIN
   EO_JMP_FALSE TRV_RET
 
-  Label TRV_ECH
-  //EO_PRINTF "TRV_ECH\n"
+  EO_IXT_TMP_ENTRIES
 
-  EO_RSB_DST_NEW
+Label TRV_ECH
+  //EO_PRINTF "TRV_ECH\n"
+  EO_PUSH_1
+  EO_SUBTRACT
+
+  EO_DUP
+
+  EO_RSB_DST_SET
 
   EO_PAY_ADDRESS
 
@@ -236,13 +258,14 @@ Label OUT_AGG
   //EO_RSB_DST_PRINT
 
 Label TRV_NXT
+
   EO_IXT_TRV_NEXT
   EO_JMP_TRUE TRV_ECH
 
 Label TRV_RET
-  EO_PRINTF "TRV_RET\n"
   //EO_BREAKPOINT
   EO_RETURN
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 // END SUBROUTINE: QRY_302                                        Q302 OUT_AGG
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

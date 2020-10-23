@@ -2664,6 +2664,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_RSB_DST_RESET);
         vDev_RSB_RESET(pLU,aRluCommon->m_pDevDstRsb);
         break;//+endCase
+       
+      case EO_RSB_DST_SET: ArgNil(); // set dst row
+        dLU0(EO_RSB_DST_SET);
+        iTopA = *(aiDstk--);
+        vDev_RSB_SET(pLU,aRluCommon->m_pDevDstRsb, iTopA);
+        break;//+endCase
         
       case EO_RSB_DST_TESTROW: ArgNil(); // test if there is a destination rsb
         dLU0(EO_RSB_DST_TESTROW);
