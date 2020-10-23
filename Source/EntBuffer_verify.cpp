@@ -368,7 +368,7 @@ bool EntBuffer::bVerifyAdjacent(void)
       
       // the two child buffers should not be the same
       if ( pChildEntBuffer == pAdjacentChildEntBuffer) {
-        vShow();
+        vShow(true);
         vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
@@ -880,7 +880,7 @@ void EntBuffer::vVerifyFault(const char* azFunc, const char* azFilePath, i8 iLin
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  vTrace("EntBuffer::VerifyFault: %s %s lld\n"_Stz,azFunc,azFilePath,iLineNo);
+  vTrace("EntBuffer::VerifyFault: %s %s %lld\n"_Stz,azFunc,azFilePath,iLineNo);
   ASSERT(0);
   return;
 }

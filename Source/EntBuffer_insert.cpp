@@ -744,6 +744,9 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
   vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
 #endif
   
+  if (m_iBufferHeight) {
+    bVerifyKeyOrder();
+  }
   //bVerifyItems();
 
   return aInsertedEntry;
@@ -1057,7 +1060,7 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
   
-  EntBuffer* pRightBuffer = pLeftBuffer->pSplitBuffer();
+  EntBuffer* pRightBuffer = pLeftBuffer->pSplitBuffer(50);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer if higher buffer
@@ -1216,13 +1219,25 @@ void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* split this buffer into two: this original buffer and a new right buffer    */
+/* find the split entry given the ratio of the split                          */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pSplitBuffer(void)
+Ent* EntBuffer::aSplitEntry(i8 iSplitRatio, Ent** aaPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  i8 iSplitRatio = 50;
+  i8 iSplitAtEntry = (m_nItems * iSplitRatio) / 100;
+  Ent* aSplitEntry = aGetEntrySplit(iSplitAtEntry,aaPriorEntry);
+  ASSERT(this->aNextEntry(aPriorEntry,0) == aSplitEntry);
+
+  return aSplitEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* split this buffer into two: this original buffer and a new right buffer    */
+/*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef WITH_EB_LAZY_CHAIN
   ASSERT( ! m_aLazyChain );
@@ -1239,12 +1254,16 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
   // find split entry. every entry from split entry and to the right of it
   // will be moved to the new right buffer
   
-  Ent* aPriorEntry;
-  //i8 iSplitAtEntry = m_nItems/2;
-  i8 iSplitAtEntry = (m_nItems * iSplitRatio) / 100;
-  Ent* aSplitEntry = aGetEntrySplit(iSplitAtEntry,&aPriorEntry);
-  ASSERT(this->aNextEntry(aPriorEntry,0) == aSplitEntry);
+//  i8 iSplitRatio = 50;
+//  Ent* aPriorEntry;
+//  //i8 iSplitAtEntry = m_nItems/2;
+//  i8 iSplitAtEntry = (m_nItems * iSplitRatio) / 100;
+//  Ent* aSplitEntry = aGetEntrySplit(iSplitAtEntry,&aPriorEntry);
+//  ASSERT(this->aNextEntry(aPriorEntry,0) == aSplitEntry);
   
+  Ent* aPriorEntry;
+  Ent* aSplitEntry = aGetEntrySplit(iSplitRatio,&aPriorEntry);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy split right entries to a new right buffer
   
