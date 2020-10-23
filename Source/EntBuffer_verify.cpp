@@ -571,14 +571,15 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
     
     // child A should point to child B
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
-      vDump();
-      vShow(aEnt);
+      //vDump();
+      vShow(true,aEnt);
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
     
     // child B should point to child A
     if (pChildBufferB->pPrevBuffer() != pChildBufferA) {
+      vShow(true,aEnt);
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }

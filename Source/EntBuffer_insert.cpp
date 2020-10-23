@@ -741,12 +741,14 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
 #else
   Ent* aOriginalFirstEntry = aLeadEntry();
   aInsertedEntry = aInsertEntAbs(aEntryWork);
-  vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
+  if ( ! (1 == m_nItems && m_pHigherBuffer) )
+    vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
 #endif
   
-  if (m_iBufferHeight) {
-    bVerifyKeyOrder();
-  }
+//  if (m_iBufferHeight) {
+//    bVerifyKeyOrder();
+//    bVerifyKeyBufferOrder();
+//  }
   //bVerifyItems();
 
   return aInsertedEntry;
@@ -1016,10 +1018,10 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   
   EntWrk xEntWrkRight;
   Ent* aFirstEntryRight = aEntry;
-  
+
   // initialize the keyWrk from the inserting key
   xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
-  
+
   Ent* aInsertedEntryRight =
     pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
   
@@ -1227,7 +1229,7 @@ Ent* EntBuffer::aSplitEntry(i8 iSplitRatio, Ent** aaPriorEntry)
   
   i8 iSplitAtEntry = (m_nItems * iSplitRatio) / 100;
   Ent* aSplitEntry = aGetEntrySplit(iSplitAtEntry,aaPriorEntry);
-  ASSERT(this->aNextEntry(aPriorEntry,0) == aSplitEntry);
+  ASSERT(this->aNextEntry(*aaPriorEntry,0) == aSplitEntry);
 
   return aSplitEntry;
 }
