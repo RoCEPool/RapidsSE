@@ -7,17 +7,13 @@ bc;
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create LineItem";
 
-//_customer
-//_orders
+_customer
+_orders
 _lineitem_dates
 
 _lineitemIndex
 
-<<<<<<< HEAD
-/time CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPDATE);
-=======
 // ./time CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPINSTRUCT);
->>>>>>> parent of 11ee15c5e... Passing split ratio to aSplitEntry()
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Load LineItem";
@@ -31,7 +27,7 @@ print section "Load LineItem";
 // /time /summary /diary fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <note> = "100k" <max_errors> =  100;
 // /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1m.csv" <max_errors> =  100;
 // /tags /time /summary /diary fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv"      <max_errors> =  100 <note> = "SF1";
-// /time /summary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10";
+/time /summary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10";
 
 // /bg /time /summary /diary fload customer "/Users/Shared/tpch/SF10/customer.csv"     <max_errors> =  100 <note> = "SF10";
 
@@ -39,42 +35,11 @@ print section "Load LineItem";
 
 // /bg /time /summary /diary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10";
 
-<<<<<<< HEAD
-/bg /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv" <max_errors> =  100 <note> = "SF1";
-sleep 1;
-/bg /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv" <max_errors> =  100 <note> = "SF1";
-sleep 1;
-/bg /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv" <max_errors> =  100 <note> = "SF1";
-sleep 1;
-/bg /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv" <max_errors> =  100 <note> = "SF1";
-sleep 1;
-/bg /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv" <max_errors> =  100 <note> = "SF1";
-sleep 1;
-/bg /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv" <max_errors> =  100 <note> = "SF1";
-sleep 1;
-/bg /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv" <max_errors> =  100 <note> = "SF1";
-sleep 1;
-/bg /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv" <max_errors> =  100 <note> = "SF1";
-sleep 1;
-/bg /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv" <max_errors> =  100 <note> = "SF1";
-sleep 1;
-/bg /time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv" <max_errors> =  100 <note> = "SF1";
-
-
-
-//space;
-//sztbl lineitem;
-//szidx lineitem lineitem_idx1;
-//anidx lineitem lineitem_idx1;
-//vfyidx lineitem lineitem_idx1;
-//count lineitem;
-=======
 space;
 sztbl lineitem;
 szidx lineitem lineitem_idx1;
 anidx lineitem lineitem_idx1;
 count lineitem;
->>>>>>> parent of 11ee15c5e... Passing split ratio to aSplitEntry()
 
 /*============================================================================*/
 /* end                                                                        */
