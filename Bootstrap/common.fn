@@ -260,39 +260,153 @@ function loadNodeName() {
 ##  $1 : nodeName - the name of the node in question.
 
 function getCpuCount() {
+
+  # NB Cannot print to stdout as the caller is expecting to read a value on stdout.
+
+  local nodeName="$1"
+  local host
+  local remoteCmd
+  declare -a sshArgs
+  local response
+
+  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+  remoteCmd="{ which nproc &>/dev/null && nproc; } || "
+  remoteCmd+="{ getconf _NPROCESSORS_ONLN 2>/dev/null; } || "
+  remoteCmd+="{ echo \"-1\"; }"
+
+  sshArgs=( "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
+
+  if ! response="$(ssh "${sshArgs[@]}")"; then
+    echo "-1" 
+    return
+  fi
+
+  if [[ ! "${response}" =~ ^[0-9]+$ ]]; then
+    echo "-1"
+    return
+  fi
+
+  echo "${response}"
   true
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-## Writes the total memory size (in GB) to stdout for a given node.
+## Writes the total memory size (in GB) to stdout for a given node. The response
+## may be a floating point number.
 ## Params: 
 ##  $1 : nodeName - the name of the node in question.
 
 function getTotalMem() {
+  # NB Cannot print to stdout as the caller is expecting to read a value on stdout.
+
+  local nodeName="$1"
+  local host
+  local remoteCmd
+  declare -a sshArgs
+  local response
+
+  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+  remoteCmd="bash -c \"cat /proc/meminfo | grep MemTotal | awk '{print \\\$2 / 1048576}'\""
+
+  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+
+  if ! response="$(ssh "${sshArgs[@]}")"; then
+    echo "-1" 
+    return
+  fi
+
+  if [[ ! "${response}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    echo "-1"
+    return
+  fi
+
+  echo "${response}"
   true
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-## Writes the total SHM size (in GB) to stdout for a given node.
+## Writes the total SHM size (in GB) to stdout for a given node. The response
+## may be a floating point number.
 ## Params: 
 ##  $1 : nodeName - the name of the node in question.
 
 function getTotalShm() {
+  # NB Cannot print to stdout as the caller is expecting to read a value on stdout.
+
+  local nodeName="$1"
+  local host
+  local remoteCmd
+  declare -a sshArgs
+  local response
+
+  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+  
+  remoteCmd="bash -c \"df -Bk --output=size,avail /dev/shm | tail -n 1 | awk '{print \\\$1 / 1048576}'\""
+
+  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+
+  if ! response="$(ssh "${sshArgs[@]}")"; then
+    echo "-1" 
+    return
+  fi
+
+  if [[ ! "${response}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    echo "-1"
+    return
+  fi
+
+  echo "${response}"
   true
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-## Writes the free SHM size (in GB) to stdout for a given node.
+## Writes the free SHM size (in GB) to stdout for a given node. The response
+## may be a floating point number.
 ## Params: 
 ##  $1 : nodeName - the name of the node in question.
 
 function getFreeShm() {
+  # NB Cannot print to stdout as the caller is expecting to read a value on stdout.
+
+  local nodeName="$1"
+  local host
+  local remoteCmd
+  declare -a sshArgs
+  local response
+
+  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+  remoteCmd="bash -c \"df -Bk --output=size,avail /dev/shm | tail -n 1 | awk '{print \\\$2 / 1048576}'\""
+
+  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+
+  if ! response="$(ssh "${sshArgs[@]}")"; then
+    echo "-1" 
+    return
+  fi
+
+  if [[ ! "${response}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    echo "-1"
+    return
+  fi
+
+  echo "${response}"
   true
 }
 

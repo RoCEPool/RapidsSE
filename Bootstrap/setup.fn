@@ -1270,6 +1270,9 @@ function cleanupNodeInstall() {
 function collectHostSizeInfo() {
   
   local nodeName
+  local tempFile
+
+  tempFile=$(mktemp tmp.XXXXXXXXXX)
 
   for nodeName in "${NODE_LIST[@]}"
   do
@@ -1288,33 +1291,54 @@ function collectHostSizeInfo() {
 
       totalMem="$(getTotalMem "${nodeName}")" || exit 1
 
-      if [[ -z "${totalMem}" || "${totalMem}" -le 0 ]]; then
+      if [ -z "${totalMem}" ]; then
         totalMem=-1 # unknown
       fi
 
 
       totalShm="$(getTotalShm "${nodeName}")" || exit 1
 
-      if [[ -z "${totalShm}" || "${totalShm}" -le 0 ]]; then
+      if [ -z "${totalShm}" ]; then
         totalShm=-1 # unknown
       fi
 
 
       freeShm="$(getFreeShm "${nodeName}")"  || exit 1
 
-      if [[ -z "${freeShm}" || "${freeShm}" -le 0 ]]; then
+      if [ -z "${freeShm}" ]; then
         freeShm=-1 # unknown
       fi
 
-      NODE_CORE_COUNT["${nodeName}"]="${coreCount}"
-      NODE_TOTAL_MEM["${nodeName}"]="${totalMem}"
-      NODE_TOTAL_SHM["${nodeName}"]="${totalShm}"
-      NODE_FREE_SHM["${nodeName}"]="${freeShm}"
+      # We want to write these results back into the parent shells associative
+      # array, but it is not visible to this child shell. So instead we will
+      # write the commands to a temp file and then let the parent shell eval
+      # those commands. Yes, I know, eval is evil...
+
+      {
+        echo "NODE_CORE_COUNT[\"${nodeName}\"]=\"${coreCount}\""
+        echo "NODE_TOTAL_MEM[\"${nodeName}\"]=\"${totalMem}\""
+        echo "NODE_TOTAL_SHM[\"${nodeName}\"]=\"${totalShm}\""
+        echo "NODE_FREE_SHM[\"${nodeName}\"]=\"${freeShm}\""
+      } >> "${tempFile}"
 
     ) &
   done
   
   wait
+
+  while IFS='' read -r line 
+  do
+    eval "${line}"
+  done < "${tempFile}"
+
+  if [ "${DEBUG}" -eq 1 ]; then
+    declare -p NODE_CORE_COUNT
+    declare -p NODE_TOTAL_MEM
+    declare -p NODE_TOTAL_SHM
+    declare -p NODE_FREE_SHM
+  fi
+
+  rm -f "${tempFile}" &>/dev/null || true
 }
 
 
