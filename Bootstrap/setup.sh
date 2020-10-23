@@ -32,9 +32,9 @@ readonly NODE_NAME_FILE="node.name"
 readonly NODE_CFG_DEFAULT_NAME_PREFIX="NODE"
 readonly NODE_CFG_DEFAULT_PORT="5541"
 readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
-readonly NODE_CFG_DEFAULT_PARTITIONS="8"  # per node
-readonly NODE_CFG_DEFAULT_THREADS="16"    # per node
-readonly NODE_CFG_DEFAULT_MEM="32"        # in GB, per node
+         NODE_CFG_DEFAULT_PARTITIONS="8"  # per node. Non-const.
+         NODE_CFG_DEFAULT_THREADS="16"    # per node. Non-const.
+         NODE_CFG_DEFAULT_MEM="32"        # in GB, per node. Non-const.
 readonly NODE_CFG_DEFAULT_PARAMS=""
 
 readonly MINIMUM_MEM_SIZE="4"

@@ -434,6 +434,9 @@ function createConfiguration() {
   # and will be used for default values for partitions, threads and
   # shared memory size later on.
   collectHostSizeInfo
+  
+  # Now we can update the default values for memory size, partitions and threads.
+  updateDefaults
 
   # (advanced) port
   askPort
@@ -1274,6 +1277,8 @@ function collectHostSizeInfo() {
 
   tempFile=$(mktemp tmp.XXXXXXXXXX)
 
+  debugPrint "About to collect the CPU/memory/SHM stats from each node and write them to ${tempFile}"
+
   for nodeName in "${NODE_LIST[@]}"
   do
     (
@@ -1339,8 +1344,49 @@ function collectHostSizeInfo() {
   fi
 
   rm -f "${tempFile}" &>/dev/null || true
+
+  debugPrint "Successfully collected CPU/memory/SHM stats from each node."
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Updates the default values for the following variables, based on the 
+## information collected earlier in collectHostSizeInfo:
+##   NODE_CFG_DEFAULT_PARTITIONS
+##   NODE_CFG_DEFAULT_THREADS
+##   NODE_CFG_DEFAULT_MEM
+## Params: None
+
+function updateDefaults() {
+  
+  # First turn the associative arrays into ascending ordered arrays of their values.
+  # That way we can get the minimum value in each.
+  declare -a sortedCoreCount
+  declare -a sortedTotalMem
+  declare -a sortedTotalShm
+  declare -a sortedFreeShm
+
+  readarray -t sortedCoreCount < <(printf '%s\n' "${NODE_CORE_COUNT[@]}" | sort -n)
+  readarray -t sortedTotalMem < <(printf '%s\n' "${NODE_TOTAL_MEM[@]}"  | sort -n)
+  readarray -t sortedTotalShm < <(printf '%s\n' "${NODE_TOTAL_SHM[@]}"  | sort -n)
+  readarray -t sortedFreeShm < <(printf '%s\n' "${NODE_FREE_SHM[@]}"   | sort -n)
+
+  local minCoreCount="${sortedCoreCount[0]}"
+  local minTotalMem="${sortedTotalMem[0]}"
+  local minTotalShm="${sortedTotalShm[0]}"
+  local minFreeShm="${sortedFreeShm[0]}"
+
+  debugPrint "minCoreCount = ${minCoreCount}"
+  debugPrint "minTotalMem  = ${minTotalMem}"
+  debugPrint "minTotalShm  = ${minTotalShm}"
+  debugPrint "minFreeShm   = ${minFreeShm}"
+
+
+  # TODO: How do we set the partitions, threads and shm from this?
+  # TODO: Account for the fact that the minimum values may be -1.
+
+
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
