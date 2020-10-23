@@ -1264,7 +1264,7 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
 //  ASSERT(this->aNextEntry(aPriorEntry,0) == aSplitEntry);
   
   Ent* aPriorEntry;
-  Ent* aSplitEntry = aGetEntrySplit(iSplitRatio,&aPriorEntry);
+  Ent* aSplitEntry = this->aSplitEntry(iSplitRatio,&aPriorEntry);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy split right entries to a new right buffer
