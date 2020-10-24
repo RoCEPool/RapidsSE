@@ -1,0 +1,230 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN: QRY_600
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Routine QRY_600
+
+  EO_INIT
+  EO_ENTER
+  EO_SQL 600
+
+  // check for STARTMARKER
+  EO_DUP
+  EO_INTEGER ZK_STARTMARKER
+  EO_EQUAL
+  EO_JMP_TRUE STARTMARKER_HANDLER
+
+  // check for PULSEMARKER
+  EO_DUP
+  EO_INTEGER ZK_PULSEMARKER
+  EO_EQUAL
+  EO_JMP_TRUE PULSEMARKER_HANDLER
+
+  // check for ZK_STREAMDEF
+  EO_DUP
+  EO_INTEGER  ZK_STREAMDEF
+  EO_EQUAL
+  EO_JMP_TRUE STREAMDEF_HANDLER
+
+  // check for EOSMARKER
+  EO_DUP
+  EO_INTEGER ZK_EOSMARKER
+  EO_EQUAL
+  EO_JMP_TRUE EOSMARKER_HANDLER
+
+  // never reach
+  EO_PRINTF "**NO_HANDLER : 600**\n"
+  EO_NEVERREACH
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STARTMARKER handler
+Label STARTMARKER_HANDLER
+  EO_PRINTF "**STARTMARKER_HANDLER : 600**\n"
+  EO_POP
+  EO_TABLENM_SRC_SET "lineitem2"
+  EO_INDEXNM_SRC_SET "lineitem2_idx1"
+  EO_JMP QRY_600_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_STREAMDEF handler
+Label STREAMDEF_HANDLER
+  EO_PRINTF "**STREAMDEF_HANDLER : 600**\n"
+  EO_POP
+  EO_JMP QRY_600_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_EOSMARKER handler
+Label EOSMARKER_HANDLER
+  EO_PRINTF "**EOSMARKER_HANDLER : 600**\n"
+  EO_POP
+  EO_JMP QRY_600_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ZK_PULSEMARKER handler
+Label PULSEMARKER_HANDLER
+  EO_PRINTF "**PULSEMARKER_HANDLER : 600**\n"
+  EO_POP
+
+  // create  the streamDefOut
+  EO_REG_STREAMDEFOUT_NEW
+
+  EO_PUSH_COLUMN_SCALE 2
+  EO_PUSH_COLUMN_LENGTH 15
+  EO_PUSH_COLUMN_TYPE CT_DECIMAL
+  EO_REG_STREAMDEFOUT_ADDCOLUMN "revenue"
+
+  EO_POT_USE_STREAMDEFOUT 1
+  EO_REG_EOSMARKER_NEW
+
+  EO_DATE <param0>
+  EO_ENTWRK_SETINTELM
+  EO_IXT_SRC_LBOUND
+
+  EO_JMP_TRUE UPPERBOUND
+  
+  // no lower key start position at beginning of index
+  EO_IXT_SRC_BEGIN
+  
+  // no entry return
+  EO_JMP_FALSE QRY_600_DONE
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the upper key
+Label UPPERBOUND
+
+  EO_ENTWRK_RESET
+  EO_DATE <param1>
+  EO_ENTWRK_SETINTELM
+  EO_IXT_SRC_UBOUND_LT
+  EO_JMP_TRUE TRV_TILL_UPPER
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // no upper key traverse till end
+Label TRV_TILL_END
+  EO_IXT_SRC_NEXT
+  EO_JMP_FALSE QRY_600_DONE
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // call PROCESSROW subroutine to process the row
+  EO_CALL SUBROUTINE_PROCESSROW
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // loop back to getting next row till end
+  EO_JMP TRV_TILL_END
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // traverse the index till we reach upper bound
+Label TRV_TILL_UPPER
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fetch next entry from index
+  EO_IXT_SRC_NEXT
+  EO_JMP_FALSE QRY_600_DONE
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // have we reached the upper entry
+  EO_ENT_SRC_PUSH
+  EO_ENT_SRC_PUSHUPPER
+  EO_EQUAL
+  EO_JMP_TRUE QRY_600_DONE
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // call PROCESSROW subroutine to process the row
+  EO_CALL SUBROUTINE_PROCESSROW
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // loop back to getting next row
+  EO_JMP TRV_TILL_UPPER
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // query done
+Label QRY_600_DONE
+  EO_RETURN
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END: QRY_600
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN: SUBROUTINE_PROCESSROW
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Label SUBROUTINE_PROCESSROW
+  EO_CRW_SRC_DEREF
+  EO_SET_ITEMS 3
+  EO_SET_COLUMN 6
+  EO_SET_COLUMN 5
+  EO_SET_COLUMN 4
+  EO_COL_SRC_PUSHSET
+  EO_POP_LOCALI 2
+  EO_POP_LOCALI 1
+  EO_POP_LOCALI 0
+  EO_RSB_DST_TESTROW
+  EO_JMP_TRUE FILTER
+  EO_RSB_DST_NEW
+  EO_PUSH_0
+  EO_RSB_DST_POPCOLI 0
+  //EO_RSB_DST_PRINT
+
+Label FILTER
+  EO_CALL SUBROUTINE_FILTER
+  EO_JMP_FALSE PROCESSROW_DONE
+  EO_CALL SUBROUTINE_AGGREGATE
+  EO_JMP PROCESSROW_DONE
+
+  Label PROCESSROW_DONE
+  EO_RETURN
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END SUBROUTINE: SUBROUTINE_PROCESSROW
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN SUBROUTINE: SUBROUTINE_FILTER
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Label SUBROUTINE_FILTER
+  EO_PUSH_LOCALI 2
+  EO_INTEGER <param2>
+  EO_GREATEREQUAL
+  EO_JMP_FALSE RETURN_FALSE
+  EO_PUSH_LOCALI 2
+  EO_INTEGER <param3>
+  EO_LESSTHAN
+  EO_JMP_FALSE RETURN_FALSE
+  EO_PUSH_LOCALI 0
+  EO_INTEGER <param4>
+  EO_INTEGER 100
+  EO_MULTIPLY
+  EO_LESSTHAN
+  EO_JMP_FALSE RETURN_FALSE
+  EO_PUSH_1
+  EO_JMP RETURN
+
+  Label RETURN_FALSE
+  EO_PUSH_0
+
+  Label RETURN
+  EO_RETURN
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END SUBROUTINE: SUBROUTINE_FILTER
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BEGIN SUBROUTINE: SUBROUTINE_AGGREGATE
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Label SUBROUTINE_AGGREGATE
+  EO_PUSH_LOCALI 2
+  EO_PUSH_LOCALI 1
+  EO_MULTIPLY
+  EO_INTEGER 100
+  EO_DIVIDE
+  EO_RSB_DST_PUSHCOLI 0
+  EO_ADD
+  EO_RSB_DST_POPCOLI 0
+  EO_RETURN
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// END SUBROUTINE: SUBROUTINE_AGGREGATE
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

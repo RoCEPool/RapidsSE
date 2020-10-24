@@ -769,6 +769,30 @@ bool SePrompt::bHandleDemo(void)
       break;
       
       // Query 6
+    case 68446556094: /* physical locality (lineitem2-lineitem2_idx1) */
+    {
+      m_pInpTknVec->vTokeniseC(C_Query6_PL);
+      m_pInpTknVec->vIntegrityCheck();
+      
+      // collapse the decimal tokens to single integer
+      Token* pIntegralTkn = m_pLitTknVec->pGet(2);
+      Token* pFractionalTkn = m_pLitTknVec->pGet(3);
+      i8 iInteger = pIntegralTkn->iToI8() * 100 + pFractionalTkn->iToI8();
+      StrLib::vSprint(pIntegralTkn->azChars(), "%lld"_Stz, iInteger);
+      
+      // collapse the decimal tokens to single integer
+      pIntegralTkn = m_pLitTknVec->pGet(4);
+      pFractionalTkn = m_pLitTknVec->pGet(5);
+      iInteger = pIntegralTkn->iToI8() * 100 + pFractionalTkn->iToI8();
+      StrLib::vSprint(pIntegralTkn->azChars(), "%lld"_Stz, iInteger);
+      
+      m_pLitTknVec->vRemoveToken(3);
+      m_pLitTknVec->vRemoveToken(4);
+      //vTrace("Collapsed decimals\n"_Stz);
+      //m_pLitTknVec->vDumpVec(0);
+  }
+  break;
+  
     case 65290390556: {
       m_pInpTknVec->vTokeniseC(C_Query6);
       m_pInpTknVec->vIntegrityCheck();
