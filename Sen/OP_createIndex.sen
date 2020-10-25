@@ -53,7 +53,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the index
-
+/*
   pIndex index.populate not if ( errorCode )
     job::error!
     path[].popIndexesFolder
@@ -61,7 +61,7 @@
     folder[].isTables assert
     exit
   then
-
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move back to ./tables
 

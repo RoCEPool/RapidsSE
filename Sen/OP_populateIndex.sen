@@ -11,16 +11,22 @@
 
   0 locals| sTableNm |
 
-  // get the index def
-  Pipein[] to indexDef[]
-  nullptr to Pipein[]
+  1 Counter0[] + to Counter0[]
 
-  indexDef[].tableName@ to sTableNm
-  indexDef[].delete
+  Counter0[] grid::definedNodes == if
+    // get the index def
+    Pipein[] to indexDef[]
+    nullptr to Pipein[]
 
-  sTableNm <indexNm> op__table_index not if
-    true
-    exit
+    indexDef[].tableName@ to sTableNm
+    indexDef[].delete
+
+    sTableNm <indexNm> op__table_index not if
+      true
+      exit
+    then
+  else
+    Pipein[].delete
   then
 
   true
@@ -65,6 +71,9 @@
   LogReqEntry SEED_REQ
 
   op__topology
+
+  // initialize counter0
+  0 to Counter0[]
 
   find: populateIndex_EosMarker ZK_EOSMARKER op[].handler!
   find: populateIndex_IndexDef ZK_INDEXDEF op[].handler!

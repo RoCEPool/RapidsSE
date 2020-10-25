@@ -23,6 +23,8 @@ namespace Prompt
   
   static Stz* C_Query6 = "/time Query6_ASM \"../EO_Text/QRY_600.txt\" \"../EO_Text/QRY_601.txt\""_Stz ;
   
+  static Stz* C_Query6_PL = "/time Query6_ASM \"../EO_Text/QRY_600_2.txt\" \"../EO_Text/QRY_601.txt\""_Stz ;
+  
   class SePrompt : public Focal
   {
   private:
