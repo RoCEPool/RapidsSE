@@ -1077,6 +1077,12 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   if (! pHigherBuffer) {
     pHigherBuffer = this->pNewHigherBuffer();
     *ppRootBuffer = pHigherBuffer;
+  #ifdef EB_TRACE_INSERT
+    vTraceWhere();
+    vTrace("HH new higher buffer: "_Stz);
+    pHigherBuffer->vTraceWhere();
+    vTrace("\n"_Stz);
+  #endif
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1173,6 +1179,12 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   if (! pHigherBuffer) {
     pHigherBuffer = this->pNewHigherBuffer();
     *ppRootBuffer = pHigherBuffer;
+#ifdef EB_TRACE_INSERT
+    vTraceWhere();
+    vTrace("HH new higher buffer: "_Stz);
+    pHigherBuffer->vTraceWhere();
+    vTrace("\n"_Stz);
+#endif
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
