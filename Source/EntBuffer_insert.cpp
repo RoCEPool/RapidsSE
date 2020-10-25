@@ -746,6 +746,10 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
   
   ASSERT(0 == pPositionedH0EntBuffer->iBufferHeight());
   
+#ifdef EB_TRACE_INSERT
+  pPositionedH0EntBuffer->vDipStick();
+#endif
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert into the tree
   
@@ -755,6 +759,10 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
     pPositionedH0EntBuffer->aInsertEntUpwards(IU_DATA_ENTRY,aEnt,ppRootEntBuffer);
   
   //pPositionedH0EntBuffer->vShow();
+
+#ifdef EB_TRACE_INSERT
+  pPositionedH0EntBuffer->vDipStick();
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

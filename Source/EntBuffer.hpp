@@ -198,6 +198,7 @@ namespace Indexing
     void       vCompact(void);
     void       vCompactLeft(void);
     void       vCutEntry(Ent* aEnt, Ent* aPriorVec[]);
+    void       vDipStick(void);
     void       vDumpPriorVec(Ent* aPriorVec[]);
     Ent*       aGetEntry(tET tEntryTicket);
     Ent*       aGetEntrySplit(i8 iSplitEntryNo, Ent** aaPriorEntry);

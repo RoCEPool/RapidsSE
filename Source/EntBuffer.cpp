@@ -623,6 +623,49 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print the dipstick for this buffer                                         */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vDipStick(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+  if (m_pHigherBuffer)
+    _pEntBuffer(m_pHigherBuffer)->vDipStick();
+    
+  EntBuffer* pL  = _pEntBuffer(m_pPrevBuffer);
+  EntBuffer* pLL = pL ? _pEntBuffer(pL->m_pPrevBuffer) : nullptr;
+  
+  EntBuffer* pR  = _pEntBuffer(m_pNextBuffer);
+  EntBuffer* pRR = pR ? _pEntBuffer(pR->m_pNextBuffer) : nullptr;
+
+  vTrace("%lld "_Stz,m_iBufferHeight);
+  
+  if (pLL)
+    vTrace("[%04lld %c]"_Stz,pLL->m_iBufferNo,pLL->bHasSpace(32)?'y':'n');
+  else
+    vTrace("[---- -]"_Stz);
+
+  if (pL)
+    vTrace("[%04lld %c]"_Stz,pL->m_iBufferNo,pL->bHasSpace(32)?'y':'n');
+  else
+    vTrace("[---- -]"_Stz);
+
+  vTrace(" [%04lld %c] "_Stz,m_iBufferNo,bHasSpace(32)?'y':'n');
+
+  if (pR)
+    vTrace("[%04lld %c]"_Stz,pR->m_iBufferNo,pR->bHasSpace(32)?'y':'n');
+  else
+    vTrace("[---- -]"_Stz);
+
+  if (pRR)
+    vTrace("[%04lld %c]"_Stz,pRR->m_iBufferNo,pRR->bHasSpace(32)?'y':'n');
+  else
+    vTrace("[---- -]"_Stz);
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vDropWrite(void)
