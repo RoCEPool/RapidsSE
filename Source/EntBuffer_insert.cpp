@@ -816,11 +816,39 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
     vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
   }
 #else
+  
   EntBuffer* pInsertIntoBuffer =
     pInsertableBuffer(aEntry,ppRootBuffer);
   
+  
+  
+  if (m_iBufferHeight) {
+    i8 iChildBuffer = aEntry->iBuffer();
+    
+    HeapBuffer* pHeapBuffer =
+    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(iChildBuffer));
+    
+    EntBuffer* pChildBuffer =
+    reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
+    
+    if (pChildBuffer->m_pHigherBuffer != pInsertIntoBuffer) {
+      
+      //(*ppRootBuffer)->vShowTree();
+      pChildBuffer->m_pHigherBuffer = pInsertIntoBuffer;
+      //(*ppRootBuffer)->vShowTree();
+    }
+  }
+
+  
+  
+  
+  
+  
+  
   Ent* aOriginalFirstEntry = pInsertIntoBuffer->aLeadEntry();
   aInsertedEntry = pInsertIntoBuffer->aInsertEntAbs(aEntry);
+  
+  
   //if ( ! (1 == m_nItems && m_pHigherBuffer) )
     pInsertIntoBuffer->vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
 #endif
@@ -969,9 +997,9 @@ Ent* EntBuffer::aInsertEntUpwards(eIU eReason, Ent* aEnt, EntBuffer** ppRootBuff
     reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
     
     if (pChildBuffer->m_pHigherBuffer != pInsertIntoBuffer) {
-      
+      NEVER_REACH;
       //(*ppRootBuffer)->vShowTree();
-      pChildBuffer->m_pHigherBuffer = pInsertIntoBuffer;
+//    pChildBuffer->m_pHigherBuffer = pInsertIntoBuffer;
       //(*ppRootBuffer)->vShowTree();
     }
   }
