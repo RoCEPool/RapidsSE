@@ -639,9 +639,11 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
   i_Insert++;
 
 #ifdef EB_TRACE_INSERT
+  IndexDef* pIndexDef = pRootEntBuffer->m_pIndexDef;
   SP_Key spKey;
-  vTrace("\naInsertEntTree %lld) %s\n"_Stz,
-         i_Insert,spKey.sz(aEnt->aKey(),pRootEntBuffer->m_pIndexDef));
+  vTrace("\n%s %s : aInsertEntTree %lld) %s\n"_Stz,
+         pIndexDef->szTableNm(), pIndexDef->szIndexNm(),
+         i_Insert,spKey.sz(aEnt->aKey(),pIndexDef));
 #endif
   
   
