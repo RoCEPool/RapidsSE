@@ -528,6 +528,26 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   }
 #endif
   
+  
+#ifdef EB_LOCAL_VERIFY
+  if (m_iBufferHeight) {
+    i8 iChildNo = aEnt->iBuffer();
+    
+    HeapBuffer* pHeapBuffer =
+      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(iChildNo));
+    
+    EntBuffer* pChildBuffer =
+      reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
+    
+    if (pChildBuffer->pHigherBuffer() != this) {
+      vTrace("Buffer %lld -> ChildBuffer %lld with HighBuffer %lld\n"_Stz,
+             this->iBufferNo(),
+             pChildBuffer->iBufferNo(),pChildBuffer->pHigherBuffer()->iBufferNo());
+      vVerifyFault(__func__,__FILE__,__LINE__);
+    }
+  }
+#endif
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trace
   
@@ -676,14 +696,16 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
          i_Insert,spRef.sz(aEnt->wRef()),spKey.sz(aEnt->aKey(),pIndexDef));
 #endif
   
-  
-//  if (1616 == i_Insert) {
-////    (*ppRootEntBuffer)->vShowTree(true);
-//
-//    vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-//    vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-//    vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-//  }
+#ifdef EB_LOCAL_VERIFY
+
+  if (66 == i_Insert) {
+//    (*ppRootEntBuffer)->vShowTree(true);
+
+    vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+    vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+    vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  }
+#endif
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1202,14 +1224,14 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the higher buffer, creating one if it doesnt exist
   
-  EntBuffer* pHigherBuffer = this->pHigherBuffer();
-  if (! pHigherBuffer) {
-    pHigherBuffer = this->pNewHigherBuffer();
-    *ppRootBuffer = pHigherBuffer;
+  EntBuffer* pLeftHigherBuffer = this->pHigherBuffer();
+  if (! pLeftHigherBuffer) {
+    pLeftHigherBuffer = this->pNewHigherBuffer();
+    *ppRootBuffer = pLeftHigherBuffer;
 #ifdef EB_TRACE_INSERT
     vTraceWhere();
     vTrace("HH new higher buffer: "_Stz);
-    pHigherBuffer->vTraceWhere();
+    pLeftHigherBuffer->vTraceWhere();
     vTrace("\n"_Stz);
 #endif
   }
@@ -1230,7 +1252,7 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   // insert the first key of left buffer into higher buffer if higher buffer
   // was just created
   
-  if ( ! pHigherBuffer->nItems() ) {
+  if ( ! pLeftHigherBuffer->nItems() ) {
     
     EntWrk xEntWrkLeft;
     Ent* aFirstEntryLeft  = pLeftBuffer->aLeadEntry();
@@ -1239,25 +1261,28 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
     xEntWrkLeft.vSetEnt(pLeftBuffer->iBufferNo(), 0, aFirstEntryLeft);
     
     Ent* aInsertedEntryLeft =
-      pHigherBuffer->aInsertEntUpwards(IU_HIGH_LEFT_LEAD,xEntWrkLeft.aEnt(),ppRootBuffer);
+      pLeftHigherBuffer->aInsertEntUpwards(IU_HIGH_LEFT_LEAD,xEntWrkLeft.aEnt(),ppRootBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert the first key of right buffer into higher buffer
+  // insert the lead key of new right buffer into it's higher buffer
   
-  EntWrk xEntWrkRight;
+  EntBuffer* pRightHigherBuffer = pRightBuffer->pHigherBuffer();
+  
+  EntWrk xEntHighRight;
   Ent* aFirstEntryRight = pRightBuffer->aLeadEntry();
   
-  // initialize the keyWrk from the first right key
-  xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
+  // initialize the key from the first right key
+  xEntHighRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
   
   Ent* aInsertedEntryRight =
-  pHigherBuffer->aInsertEntUpwards(IU_SPLIT_RIGHT_LEAD,xEntWrkRight.aEnt(),ppRootBuffer);
+    pRightHigherBuffer->aInsertEntUpwards(IU_SPLIT_RIGHT_LEAD,
+                                          xEntHighRight.aEnt(),ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef EB_LOCAL_VERIFY
-  pHigherBuffer->bVerifyBufferRefs();
+  pRightHigherBuffer->bVerifyBufferRefs();
   if (m_iBufferHeight) {
     pLeftBuffer->bVerifyBufferRefs();
     pRightBuffer->bVerifyBufferRefs();
