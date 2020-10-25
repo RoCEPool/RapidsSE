@@ -23,6 +23,7 @@ namespace Indexing
   
     i8        m_nInsert;              // insert into this buffer
     i8        m_nSplit;               // splits of this buffer
+    i8        m_nDelete;              // delete into this buffer
     i8        m_nInsertEntUpwards;    // number of active aInsertEntUpwards()
     i8        m_nNewInsertIntoSplit;  // number of active pNewInsertIntoSplit()
     i8        m_nNewInsertIntoRight;  // number of active pNewInsertIntoRight()
@@ -159,7 +160,7 @@ namespace Indexing
     void        vAnalyze(i8& iBuffers, i8& iEntries);
     void        vBuildSkipListSorted(void);
     void        vDeleteEntry(Ent** aaEnt);
-    void        vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer);
+    void        vDeleteUpwards(eDU eReason, Ent* aDeleteEntry, EntBuffer** ppRootBuffer);
     void        vDump(bool bEntries = true);
     EntBuffer*  pFirstChildBuffer(void);
     Ent*        aInsertEntAbs(Ent* aEntry);

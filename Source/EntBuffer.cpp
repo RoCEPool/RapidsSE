@@ -72,6 +72,7 @@ EntBuffer::EntBuffer(eKE eEntKind)
   
   m_nInsert             = 0;
   m_nSplit              = 0;
+  m_nDelete             = 0;
   m_nInsertEntUpwards   = 0;
   m_nNewInsertIntoSplit = 0;
   m_nNewInsertIntoRight = 0;
@@ -603,6 +604,15 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
 
 #endif
   
+  m_nDelete++;
+  
+#ifdef EB_TRACE_INSERT
+  SP_Key spKey;
+  vTraceWhere();
+  vTrace("-- delete d%lld %s\n"_Stz,
+         m_nDelete,spKey.sz(aEnt->aKey(),m_pIndexDef));
+#endif
+
   // entry no longer exists, set the pointer to be null
   *aaEnt = nullptr;
   

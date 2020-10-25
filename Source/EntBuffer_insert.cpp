@@ -348,7 +348,7 @@ void EntBuffer::vCompactLeft(void)
 /*----------------------------------------------------------------------------*/
 /* delete upwards                                                             */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
+void EntBuffer::vDeleteUpwards(eDU eReason, Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -356,34 +356,53 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   ASSERT( ! m_aLazyChain );
 #endif
   
+  
+#ifdef EB_TRACE_INSERT
+  SP_Key spKey;
+  vTraceWhere();
+  vTrace(">> vDeleteUpwards %s %s\n"_Stz,
+         aDU[eReason],spKey.sz(aDeleteEntry->aKey(),m_pIndexDef));
+#endif
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Ent* aPriorEntry;
+  Ent* aEntryToBeDeleted;
+  Ent* aFirstEntry;
   
-  Ent* aPriorEntry = aFindEntryBefore(aDeleteEntry->aKey());
+  aPriorEntry = aFindEntryBefore(aDeleteEntry->aKey());
   if (!aPriorEntry)
-    return;
+    goto L_Return;
   
-  Ent* aEntryToBeDeleted = aNextEntry(aPriorEntry,0);
+  aEntryToBeDeleted = aNextEntry(aPriorEntry,0);
   if (!aEntryToBeDeleted)
-    return;
-    
+    goto L_Return;
+
   if (KE_GENERAL == m_eEntKind) {
     if ( ! Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteEntry->aKey()) )
-      return;
+      goto L_Return;
   }
   else {
     i8 iValTbd = *(i8*)aEntryToBeDeleted->aKey();
     i8 iValDel = *(i8*)aDeleteEntry->aKey();
     if (iValTbd != iValDel)
-      return;
+      goto L_Return;
   }
   
-  Ent* aFirstEntry = this->aLeadEntry();
+  aFirstEntry = this->aLeadEntry();
   if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer) {
     EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
-    pHigherBuffer->vDeleteUpwards(aDeleteEntry,ppRootBuffer);
+    pHigherBuffer->vDeleteUpwards(DU_HIGH_LEFT_LEAD,aDeleteEntry,ppRootBuffer);
   }
   
   vDeleteEntry(&aEntryToBeDeleted);
+
+L_Return:
+  #ifdef EB_TRACE_INSERT
+    m_nTabs--;
+    vTraceWhere();
+    vTrace("<< vDeleteUpwards\n"_Stz);
+  #endif
+  return;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -439,7 +458,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   
   if (aOriginalFirstEntry) {
     EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
-    pHigherBuffer->vDeleteUpwards(aOriginalFirstEntry,ppRootBuffer);
+    pHigherBuffer->vDeleteUpwards(DU_HIGH_LEFT_LEAD,aOriginalFirstEntry,ppRootBuffer);
     //(*ppRootBuffer)->vShowTree();
   }
   
@@ -560,8 +579,10 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   m_nInsert++;
   
 #ifdef EB_TRACE_INSERT
+  SP_Key spKey;
   vTraceWhere();
-  vTrace("++ insert i%lld\n"_Stz,m_nInsert);
+  vTrace("++ insert i%lld %s\n"_Stz,
+         m_nInsert,spKey.sz(aEnt->aKey(),m_pIndexDef));
 #endif
   
   //vShow();
@@ -890,8 +911,10 @@ Ent* EntBuffer::aInsertEntUpwards(eIU eReason, Ent* aEnt, EntBuffer** ppRootBuff
   m_nInsertEntUpwards++;
   
 #ifdef EB_TRACE_INSERT
+  SP_Key spKey;
   vTraceWhere();
-  vTrace(">> aInsertEntUpwards %s\n"_Stz,aIU[eReason]);
+  vTrace(">> aInsertEntUpwards %s %s\n"_Stz,
+         aIU[eReason],spKey.sz(aEnt->aKey(),m_pIndexDef));
   m_nTabs++;
 #endif
   
@@ -1565,9 +1588,9 @@ void EntBuffer::vTraceWhere(void)
 //         Stz::szHeight(m_iBufferHeight),
 //         m_iBufferNo,m_nItems,m_nInsert,m_nSplit,
 //         Stz::szTab(m_nTabs));
-  vTrace("%s{EB%lld+n%lld+i%lld+s%lld<EB%lld^EB%lld>EB%lld} "_Stz,
+  vTrace("%s{EB%lld+n%lld+i%lld+s%lld+d%lld<EB%lld^EB%lld>EB%lld} "_Stz,
          Stz::szHeight(m_iBufferHeight),
-         m_iBufferNo,m_nItems,m_nInsert,m_nSplit
+         m_iBufferNo,m_nItems,m_nInsert,m_nSplit,m_nDelete
          
          ,m_pPrevBuffer   ? _pEntBuffer(m_pPrevBuffer)->iBufferNo()   : -1
          ,m_pHigherBuffer ? _pEntBuffer(m_pHigherBuffer)->iBufferNo() : -1
