@@ -33,6 +33,25 @@ void EntBuffer::vBuildSkipList(void)
       aLazyChain = aGetEntry(tNextEntry);
     
     Ent* aPrevEnt = aInsertEntSkipList(aEntry);
+    
+    
+    if (m_iBufferHeight && aPrevEnt != aSkipRoots()) {
+      
+      EntBuffer* pChildBufferA = EntBuffer::pRefdEntBuffer(aPrevEnt);
+      EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aEntry);
+
+      if (pChildBufferA->pNextBuffer() != pChildBufferB) {
+        vVerifyFault(__func__,__FILE__,__LINE__);
+      }
+      
+    }
+
+    
+    
+    
+    
+    
+    
   }
   
   Ent* aRevisedEntry = aNextEntry(aSkipRoots(),0);
@@ -596,6 +615,17 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   
   Ent_gen* pEnt_gen = (Ent_gen*)aInsertedEntry;
   
+  if (m_iBufferHeight && aPrevEnt != aSkipRoots()) {
+    
+    EntBuffer* pChildBufferA = EntBuffer::pRefdEntBuffer(aPrevEnt);
+    EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aInsertedEntry);
+
+    if (pChildBufferA->pNextBuffer() != pChildBufferB) {
+      vVerifyFault(__func__,__FILE__,__LINE__);
+    }
+    
+  }
+  
   m_nInsert++;
   
 #ifdef EB_TRACE_INSERT
@@ -698,7 +728,7 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
   
 #ifdef EB_LOCAL_VERIFY
 
-  if (66 == i_Insert) {
+  if (3094 == i_Insert) {
 //    (*ppRootEntBuffer)->vShowTree(true);
 
     vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
@@ -993,10 +1023,10 @@ Ent* EntBuffer::aInsertEntUpwards(eIU eReason, Ent* aEnt, EntBuffer** ppRootBuff
     i8 i_Buffer = xRef.iBuffer();
     
     HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
     
     EntBuffer* pChildBuffer =
-    reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
+      reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
     
     if (pChildBuffer->m_pHigherBuffer != pInsertIntoBuffer) {
       NEVER_REACH;
