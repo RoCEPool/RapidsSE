@@ -32,7 +32,7 @@ void EntBuffer::vBuildSkipList(void)
     else
       aLazyChain = aGetEntry(tNextEntry);
     
-    vInsertEntSkipList(aEntry);
+    Ent* aPrevEnt = aInsertEntSkipList(aEntry);
   }
   
   Ent* aRevisedEntry = aNextEntry(aSkipRoots(),0);
@@ -592,7 +592,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the new entry into the skip list
   
-  vInsertEntSkipList(aInsertedEntry);
+  Ent* aPrevEnt = aInsertEntSkipList(aInsertedEntry);
   
   Ent_gen* pEnt_gen = (Ent_gen*)aInsertedEntry;
   
@@ -865,9 +865,9 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert given entry into skip list of this buffer                           */
+/* insert given entry into skip list of this buffer, return prev entry        */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vInsertEntSkipList(Ent* aEntry)
+Ent* EntBuffer::aInsertEntSkipList(Ent* aEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -875,7 +875,6 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   // find the entry after which the new entry will be inserted
   
   Ent* xPriorVec[C_MAX_LVL_LEVELS];
-  Ent* xPriorVec2[C_MAX_LVL_LEVELS];
 
   Key* aKey = aEntry->aKey();
   
@@ -901,7 +900,10 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
     aEntry->vNextEntry(i_Level,tNextOffset);
     xPriorVec[i_Level]->vNextEntry(i_Level,tEntry);
   }
+  
+  return xPriorVec[0];
 }
+
 /*----------------------------------------------------------------------------*/
 //void EntBuffer::vInsertEntSkipList(Ent* aEntry)
 //{
