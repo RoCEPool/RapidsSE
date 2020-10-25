@@ -57,6 +57,7 @@ namespace Enums
 #include "eIK.h"
 #include "eIS.h"
 #include "eIT.h"
+#include "eIU.h"
 
 #include "eJA.h"
 #include "eJF.h"
