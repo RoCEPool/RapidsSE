@@ -62,6 +62,16 @@ do
     -offset)
       shift
       OFFSET="$1"
+
+      if [ "${OFFSET}" -le 0 ]; then
+        echo "Offset must start at 1."
+        exit 1
+      fi
+
+      if [ $((OFFSET + NUM_DISKS)) -gt "${CHUNKS}" ]; then
+        echo "Offset cannot be larger than number of chunks."
+        exit 1
+      fi
       shift
       ;;
 

@@ -40,8 +40,8 @@ readonly VERSION_FILE="${LAYOUT_DIR}/version"
 readonly CREATE_LAYOUT_FILE="${DIR}/createlayout.sh"
 
 readonly SETUP_SCRIPT="./setup.sh"  # relative to the directory of extracted files
-#readonly MAKESELF_ARGS=() 
-readonly MAKESELF_ARGS=( "--bzip2" "--threads" "8")
+readonly MAKESELF_ARGS=() 
+#readonly MAKESELF_ARGS=( "--bzip2" "--threads" "8")
 
 readonly SHELLCHECK_CMD="${DIR}/shellcheck.sh"
 
@@ -146,7 +146,7 @@ fi
 
 
 ### Run shellcheck against the setup files
-if [ "${NO_SHELLCHECK}" -ne 1 ] && (which shellcheck &>/dev/null); then
+if [[ -z "${NO_SHELLCHECK}" || "${NO_SHELLCHECK}" -ne 1 ]] && (which shellcheck &>/dev/null); then
   echo "Running ShellCheck..."
   if ! ${SHELLCHECK_CMD}; then
     errorExit "Packaging failed due to shellcheck issues with the setup scripts. Please fix these first."
@@ -219,7 +219,7 @@ if [ -n "${DEBUG}" ] ; then echo "Generating the version file"; fi;
 ### (Optional) Compile the software ###
 if [ -n "${DEBUG}" ] ; then echo "Compiling RapidsSE"; fi;
 
-if [ "${NO_BUILD}" -ne 1 ] 
+if [ -z "${NO_BUILD}" ] || [ "${NO_BUILD}" -ne 1 ] 
 then
   (
     cd "${SOURCE_DIR}"

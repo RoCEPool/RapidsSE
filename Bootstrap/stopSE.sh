@@ -19,6 +19,7 @@ readonly SCRIPT_NAME=$(basename "$0")
 
 # Default modes of operation
 CLUSTER_OP=1
+CLUSTER_INIT=0
 CONFIG_FILE="${DIR}/cluster.config"
 NAME_FILE="${DIR}/node.name"
 DEBUG=0
@@ -47,14 +48,12 @@ source "${BOOT_FN}" || { >&2 echo "Could not load ${BOOT_FN}"; exit 1; }
 ###############################################################################
 
 # Process the arguments given to the script.
-processArgs "$@"
+processStartStopArgs "$@"
 
-if [ ${DEBUG} -eq 1 ]; then
-  echo "CLUSTER_OP = ${CLUSTER_OP}"
-  echo "CONFIG_FILE = ${CONFIG_FILE}"
-  echo "NAME_FILE = ${NAME_FILE}"
-  echo "DEBUG = ${DEBUG}"
-fi
+debugPrint "CLUSTER_OP = ${CLUSTER_OP}"
+debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
+debugPrint "NAME_FILE = ${NAME_FILE}"
+debugPrint "DEBUG = ${DEBUG}"
 
 # Import the cluster configuration
 loadClusterConfig

@@ -8,22 +8,26 @@ then
   exit 1
 fi
 
-# Load other common functions
-COMMON_FN="common.fn"
+# Load other common functions. Order is important.
+INCLUDES=("common.fn" "envCheck.fn")
 
-if [ -n "${DIR}" ]; then
-  COMMON_FN="${DIR}/${COMMON_FN}"
-fi
+for incFile in "${INCLUDES[@]}"
+do
 
-if [ ! -f "${COMMON_FN}" ]; then
-  >&2 echo "File not found: ${COMMON_FN}"
-  >&2 echo "PWD = ${PWD}"
-  exit 1
-fi
+  if [ -n "${DIR}" ]; then
+    incFile="${DIR}/${incFile}"
+  fi
 
-#shellcheck source=common.fn
-source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+  if [ ! -f "${incFile}" ]; then
+    >&2 echo "File not found: ${incFile}"
+    >&2 echo "PWD = ${PWD}"
+    exit 1
+  fi
 
+  #shellcheck source=common.fn
+  #shellcheck source=envCheck.fn
+  source "${incFile}" || { >&2 echo "Could not load ${incFile}"; exit 1; }
+done
 
 
 
@@ -299,7 +303,7 @@ function processArgs() {
 function findInstallFile() {
 
   # First try to get it from the parent process's command line
-  if [ "${DEBUG}" -eq 1 ]; then echo "Looking for install file from PPID."; fi;
+  debugPrint "Looking for install file from PPID."
 
   local parentScript
   parentScript="$(cut -f 2 -d '' < /proc/${PPID}/cmdline)"
@@ -313,7 +317,7 @@ function findInstallFile() {
   # Otherwise if there is only one .run file in the $USER_PWD then this would be it.
   if [ -n "${USER_PWD}" ]; then
 
-    if [ "${DEBUG}" -eq 1 ]; then echo "Looking for install file in directory: ${USER_PWD}"; fi;
+    debugPrint "Looking for install file in directory: ${USER_PWD}"
 
     local runfiles
     mapfile -t runfiles < <( ls -1 "${USER_PWD}"/*.run || true )
@@ -352,11 +356,17 @@ function doClusterInstall() {
 
       # TODO: Present summary
       # TODO: Edit ?
-      # TODO: Validate config/environment
-      # TODO: Write config file?
+
+      # Write config file to the current working directory, as the user may have
+      # specified a config file in an installation dir that is about to get overwritten.
+      local outputConfig="${DEFAULT_CONFIG_PATH}"
+      writeClusterConfig "${outputConfig}"
+
+      # Validate the installation environment
+      validateEnvironment
 
       # Install all nodes
-      distributeSoftware "${CONFIG_FILE}"
+      distributeSoftware "${outputConfig}"
 
     else
       # Interactive install but no config file given. 
@@ -366,16 +376,19 @@ function doClusterInstall() {
       createConfiguration
 
       if [ ${DEBUG} -eq 1 ]; then
-        echo "Node configuration after creating configuration:"
+        debugPrint "Node configuration after creating configuration:"
         allNodeCfgsPrint
       fi
 
       # TODO: Present summary
       # TODO: Edit ?
-      # TODO: Validate config/environment
-      # Write config file?
+
+      # Write config file to the directory with the installer
       local outputConfig="${USER_PWD}/${DEFAULT_CONFIG_PATH}"
       writeClusterConfig "${outputConfig}"
+
+      # Validate the installation environment
+      validateEnvironment
 
       # Distribute the software and install all nodes
       distributeSoftware "${outputConfig}"
@@ -409,6 +422,21 @@ function createConfiguration() {
 
   # hostnames
   askHostnames
+
+  # We need to validate hostnames and SSH access now so that we can connect
+  # to each machine and determine the number of CPUs, so we can set the
+  # number of partitions/threads appropriately.
+  validateHostsAreResolvable
+  validateHostsReachableBySsh
+
+  # Get the number of CPU cores, memory size, SHM size of each node.
+  # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
+  # and will be used for default values for partitions, threads and
+  # shared memory size later on.
+  collectHostSizeInfo
+  
+  # Now we can update the default values for memory size, partitions and threads.
+  updateDefaults
 
   # (advanced) port
   askPort
@@ -503,6 +531,11 @@ function askHostnames() {
   declare -a hostnames
   local line
 
+  declare -a loopbackHosts
+  loopbackHosts=("localhost" "127.0.0.1" "::1")
+
+  local gotLoopback=0
+
   echo ""
   echo "Hostnames"
   echo "---------"
@@ -527,6 +560,20 @@ function askHostnames() {
       continue 
     fi
 
+    gotLoopback=0
+    for addr in "${loopbackHosts[@]}"
+    do
+      if [ "${line}" == "${addr}" ]; then
+        echo "Invalid input: hostname cannot be a loopback name/address."
+        gotLoopback=1
+        break;
+      fi
+    done
+
+    if [ "${gotLoopback}" -eq 1 ]; then
+      continue
+    fi
+
     hostnames+=("${line}")
     break
   done
@@ -547,12 +594,25 @@ function askHostnames() {
       break
     fi
 
+    gotLoopback=0
+    for addr in "${loopbackHosts[@]}"
+    do
+      if [ "${line}" == "${addr}" ]; then
+        echo "Invalid input: hostname cannot be a loopback name/address."
+        gotLoopback=1
+        break;
+      fi
+    done
+
+    if [ "${gotLoopback}" -eq 1 ]; then
+      continue
+    fi
+
     hostnames+=("${line}")
   done
 
   if [ ${DEBUG} -eq 1 ]; then
-    echo ""
-    echo "Got the following hostnames / IP addresses:"
+    debugPrint "\nGot the following hostnames / IP addresses:"
     printIndentArray 2 "${hostnames[@]}"
   fi
 
@@ -993,14 +1053,7 @@ EOT
     echo "    ${outputFile}"
   fi
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo ""
-    echo "Contents of the cluster configuration file: ${outputFile}"
-    echo ""
-    cat "${outputFile}"
-    echo ""
-  fi
-
+  debugPrint "\nContents of the cluster configuration file: ${outputFile}\n $(cat "${outputFile}")\n"
 }
 
 
@@ -1048,10 +1101,8 @@ function distributeSoftware() {
     # Buid the command
     local cmd=( "scp" "-q" "${INSTALL_FILE}" "${configFile}" "${hostname}:/tmp"  )
 
-    if [ ${DEBUG} -eq 1 ]; then 
-      echo "Copying installer to node ${nodeName} [host: ${hostname}]."
-      echo "Command: ${cmd[*]}"
-    fi
+      debugPrint "Copying installer to node ${nodeName} [host: ${hostname}]."
+      debugPrint "Command: ${cmd[*]}"
 
     # Execute the command
     "${cmd[@]}" || errorExit "Error copying the installation file to node ${nodeName} [host: ${hostname}]."
@@ -1071,8 +1122,8 @@ function distributeSoftware() {
 
     if [ ${DEBUG} -eq 1 ]; then 
       cmd+=("--debug")
-      echo "Invoking single node installation on node ${nodeName} [host: ${hostname}]."
-      echo "Command: ${cmd[*]}"
+      debugPrint "Invoking single node installation on node ${nodeName} [host: ${hostname}]."
+      debugPrint "Command: ${cmd[*]}"
     else 
       echo ""
       echo "Installing to node ${nodeName} [host: ${hostname}]."
@@ -1118,11 +1169,7 @@ function doNodeInstall() {
   #shellcheck disable=1090
   source "${CONFIG_FILE}"
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "Loaded cluster configuration file ${CONFIG_FILE}. Contents of file:"
-    echo ""
-    cat "${CONFIG_FILE}"
-  fi
+  debugPrint "Loaded cluster configuration file ${CONFIG_FILE}. Contents of file:\n$(cat "${CONFIG_FILE}")"
 
 
   # Check that a configuration exists for the given node name.
@@ -1148,46 +1195,44 @@ function doNodeInstall() {
     errorExit "The hostname for node ${CURRENT_NODE_NAME} has not been set."
   fi
   
-
-  # Test if the parent path of the install directory is writable
-  if [ ! -w "$(dirname "${installDir}")" ]; then
-    errorExit "Parent path of the installation directory (${installDir}) is not writable by the current user (${USER})."
-  fi
-
-
-  # If the installation directory already exists then remove it
+  
+  # If the installation directory already exists then ensure that it is writable.
+  # Then remove the contents of the installation directory.
   if [ -d "${installDir}" ]; then
-
-    if [ ${DEBUG} -eq 1 ]; then
-      echo "Removing existing installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+    if [ ! -w "${installDir}" ]; then
+      errorExit "The installation directory (${installDir}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
     fi
 
-    rm -rf "${installDir}" || errorExit "Could not remove the existing installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+    debugPrint "Removing the contents of the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+
+    rm -rf "${installDir:?}/"* || errorExit "Could not remove the contents of the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
+  
+  else
+
+    # If the installation directory does not exist then ensure that the parent
+    # directory is writable.
+    # Then create the installation directory.
+
+    if [ ! -w "$(dirname "${installDir}")" ]; then
+      errorExit "Parent path of the installation directory (${installDir}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
+    fi
+
+    debugPrint "About to create the installation directory: ${hostname}:${installDir}"
+
+    mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
   fi
-
-
-  # Create installation directory.
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to create the installation directory: ${hostname}:${installDir}"
-  fi
-
-  mkdir -p "${installDir}" || errorExit "Could not create the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
 
   # Copy all files that were unpacked from the installer to the installation dir.
   cmd=("cp" "-r" ./* "${installDir}/")
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to copy all files to the installation directory with this command: ${cmd[*]}"
-  fi
+  debugPrint "About to copy all files to the installation directory with this command: ${cmd[*]}"
 
   "${cmd[@]}" || errorExit "Could not copy files to the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
 
   # Copy the cluster.config to the installation directory
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to copy the cluster.config file to the installation directory."
-  fi
+  debugPrint "About to copy the cluster.config file to the installation directory."
 
   cp "${CONFIG_FILE}" "${installDir}/" || errorExit "Could not copy the cluster configuration file to the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
@@ -1218,4 +1263,131 @@ function cleanupNodeInstall() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Get the number of CPU cores, memory size, SHM size of each node.
+# This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM
+# and NODE_FREE_SHM and will be used for default values for partitions, 
+# threads and  shared memory size later on.
+# Params: None
+
+function collectHostSizeInfo() {
+  
+  local nodeName
+  local tempFile
+
+  tempFile=$(mktemp tmp.XXXXXXXXXX)
+
+  debugPrint "About to collect the CPU/memory/SHM stats from each node and write them to ${tempFile}"
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    (
+      local coreCount
+      local totalMem
+      local totalShm  
+      local freeShm
+
+      coreCount="$(getCpuCount "${nodeName}")" || exit 1
+
+      if [[ -z "${coreCount}" || "${coreCount}" -le 0 ]]; then
+        coreCount=-1 # unknown
+      fi
+
+
+      totalMem="$(getTotalMem "${nodeName}")" || exit 1
+
+      if [ -z "${totalMem}" ]; then
+        totalMem=-1 # unknown
+      fi
+
+
+      totalShm="$(getTotalShm "${nodeName}")" || exit 1
+
+      if [ -z "${totalShm}" ]; then
+        totalShm=-1 # unknown
+      fi
+
+
+      freeShm="$(getFreeShm "${nodeName}")"  || exit 1
+
+      if [ -z "${freeShm}" ]; then
+        freeShm=-1 # unknown
+      fi
+
+      # We want to write these results back into the parent shells associative
+      # array, but it is not visible to this child shell. So instead we will
+      # write the commands to a temp file and then let the parent shell eval
+      # those commands. Yes, I know, eval is evil...
+
+      {
+        echo "NODE_CORE_COUNT[\"${nodeName}\"]=\"${coreCount}\""
+        echo "NODE_TOTAL_MEM[\"${nodeName}\"]=\"${totalMem}\""
+        echo "NODE_TOTAL_SHM[\"${nodeName}\"]=\"${totalShm}\""
+        echo "NODE_FREE_SHM[\"${nodeName}\"]=\"${freeShm}\""
+      } >> "${tempFile}"
+
+    ) &
+  done
+  
+  wait
+
+  while IFS='' read -r line 
+  do
+    eval "${line}"
+  done < "${tempFile}"
+
+  if [ "${DEBUG}" -eq 1 ]; then
+    declare -p NODE_CORE_COUNT
+    declare -p NODE_TOTAL_MEM
+    declare -p NODE_TOTAL_SHM
+    declare -p NODE_FREE_SHM
+  fi
+
+  rm -f "${tempFile}" &>/dev/null || true
+
+  debugPrint "Successfully collected CPU/memory/SHM stats from each node."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Updates the default values for the following variables, based on the 
+## information collected earlier in collectHostSizeInfo:
+##   NODE_CFG_DEFAULT_PARTITIONS
+##   NODE_CFG_DEFAULT_THREADS
+##   NODE_CFG_DEFAULT_MEM
+## Params: None
+
+function updateDefaults() {
+  
+  # First turn the associative arrays into ascending ordered arrays of their values.
+  # That way we can get the minimum value in each.
+  declare -a sortedCoreCount
+  declare -a sortedTotalMem
+  declare -a sortedTotalShm
+  declare -a sortedFreeShm
+
+  readarray -t sortedCoreCount < <(printf '%s\n' "${NODE_CORE_COUNT[@]}" | sort -n)
+  readarray -t sortedTotalMem < <(printf '%s\n' "${NODE_TOTAL_MEM[@]}"  | sort -n)
+  readarray -t sortedTotalShm < <(printf '%s\n' "${NODE_TOTAL_SHM[@]}"  | sort -n)
+  readarray -t sortedFreeShm < <(printf '%s\n' "${NODE_FREE_SHM[@]}"   | sort -n)
+
+  local minCoreCount="${sortedCoreCount[0]}"
+  local minTotalMem="${sortedTotalMem[0]}"
+  local minTotalShm="${sortedTotalShm[0]}"
+  local minFreeShm="${sortedFreeShm[0]}"
+
+  debugPrint "minCoreCount = ${minCoreCount}"
+  debugPrint "minTotalMem  = ${minTotalMem}"
+  debugPrint "minTotalShm  = ${minTotalShm}"
+  debugPrint "minFreeShm   = ${minFreeShm}"
+
+
+  # TODO: How do we set the partitions, threads and shm from this?
+  # TODO: Account for the fact that the minimum values may be -1.
+
+
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
