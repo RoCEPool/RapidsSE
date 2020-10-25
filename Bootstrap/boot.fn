@@ -32,7 +32,7 @@ readonly REMOTE_PID_FILENAME="se.pid"
 
 readonly START_SCRIPT="startSE.sh"
 readonly STOP_SCRIPT="stopSE.sh"
-readonly STATUS_SCRIPT="status.sh"
+#readonly STATUS_SCRIPT="status.sh"
 
 ###############################################################################
 ### Functions                                                               ###
@@ -44,7 +44,7 @@ readonly STATUS_SCRIPT="status.sh"
 ## Note: The variable ${SCRIPT_NAME} must be defined as the name of the start
 ##       or stop script filename.
 
-function printUsageAndExit() {
+function printStartStopUsageAndExit() {
 
   echo ""
   echo "Usage: ./${SCRIPT_NAME} [--cluster | --node]"
@@ -69,13 +69,17 @@ function printUsageAndExit() {
 ## Process the arguments for the start and stop scripts.
 ## Params: None
 
-function processArgs() {
+function processStartStopArgs() {
+
+  # Check that some globals are specified with defaults
+  if [ -z "${CLUSTER_OP}" ];   then errorExit "No default value for \$CLUSTER_OP specified"; fi;
+  if [ -z "${CLUSTER_INIT}" ]; then errorExit "No default value for \$CLUSTER_INIT specified"; fi;
 
   # Indicates if a given argument was specified.
   local argCluster=0
   local argNode=0
   local argConfig=0
-  local argClusterInit=0
+  #local argClusterInit=0
 
   while [[ $# -gt 0 ]]
   do
@@ -113,18 +117,19 @@ function processArgs() {
         ;;
 
       --clusterinit)
+        #argClusterInit=1
         CLUSTER_INIT=1
         shift # past argument
         ;;
 
       --help|-h)
         shift
-        printUsageAndExit
+        printStartStopUsageAndExit
         ;;
 
       *)
         shift
-        printUsageAndExit
+        printStartStopUsageAndExit
         ;;
     esac
   done
@@ -137,18 +142,18 @@ function processArgs() {
 
   if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]]; then
     printError "${errmsg}" "--cluster" "--node"
-    printUsageAndExit
+    printStartStopUsageAndExit
   fi
 
   if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then
     printError "${errmsg}" "No config file specified"
-    printUsageAndExit
+    printStartStopUsageAndExit
   fi
 
   # Check that the config file exists
   if [[ ! -f "${CONFIG_FILE}" ]]; then
     printError "Config file does not exist: ${CONFIG_FILE}"
-    printUsageAndExit
+    printStartStopUsageAndExit
   fi
 }
 
@@ -179,7 +184,7 @@ function startCluster() {
     # Start the nodes sequentially
     for nodeName in "${NODE_LIST[@]}"
     do
-      if [ ${DEBUG} -eq 1 ]; then echo "Starting ${nodeName}"; fi;
+      debugPrint "Starting ${nodeName}"
       startRemoteNode "${nodeName}" || errorExit "Could not start all nodes in the cluster."
     done
 
@@ -234,11 +239,9 @@ function startRemoteNode() {
     remoteCmd="${remoteCmd} --debug"
   fi
 
-  sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
+  sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to start node ${nodeName} with the command: ${sshCmd[*]}"
-  fi
+  debugPrint "About to start node ${nodeName} with the command: ${sshCmd[*]}"
 
   "${sshCmd[@]}" || errorExit "Could not start RapidsSE on node ${nodeName}."
 }
@@ -376,11 +379,9 @@ function remoteClusterInit() {
     remoteCmd="${remoteCmd} --debug"
   fi
 
-  sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
+  sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to initialise the cluster on node ${nodeName} with the command: ${sshCmd[*]}"
-  fi
+  debugPrint "About to initialise the cluster on node ${nodeName} with the command: ${sshCmd[*]}"
 
   "${sshCmd[@]}" || errorExit "Could not initialise the RapidsSE cluster on node ${nodeName} [host ${host}]."
 }
@@ -416,10 +417,7 @@ function localClusterInit() {
   cmd+=("${connectCmd}")
   cmd+=("--appendTrace")
 
-  if [ "${DEBUG}" -eq 1 ]; then
-    echo ""
-    echo "About to execute the cluster initialisation command: ${cmd[*]}"
-  fi
+  debugPrint "\nAbout to execute the cluster initialisation command: ${cmd[*]}"
 
   # Set the library path so the RapidsSE library can be found and loaded
   export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
@@ -540,7 +538,7 @@ function printNodeStatus() {
   local re="[0-9]+"
 
   if [[ "${pid}" =~ $re ]]; then
-    echo "${CURRENT_NODE_NAME} is running."
+    echo "${CURRENT_NODE_NAME} is running (pid ${pid})."
   else
     echo "${CURRENT_NODE_NAME} is not running."
   fi
@@ -568,7 +566,7 @@ function getRemoteRunningPid() {
 
   remoteCmd="if [ ! -f \"${dir}/${REMOTE_PID_FILENAME}\" ]; then exit 1; fi; cat \"${dir}/${REMOTE_PID_FILENAME}\" | xargs ps -o pid -h -p "
   
-  pid="$(ssh "${host}" "bash" "-c" "'${remoteCmd}'")"
+  pid="$(ssh -q "${host}" "bash" "-c" "'${remoteCmd}'")"
 
   local re="^[[:space:]]*([0-9]+)[[:space:]]*$"
 
@@ -696,7 +694,7 @@ function checkNodeVersionsAreEqual() {
     dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
     remoteCmd="cd \"${dir}\" && source \"${VERSION_FILE}\" && echo \"\${SE_VERSION_STR}-\${SE_COMMIT_HASH}\""
-    actualVerStr="$(ssh "${host}" "bash" "-c" "'${remoteCmd}'")"
+    actualVerStr="$(ssh -q "${host}" "bash" "-c" "'${remoteCmd}'")"
 
     if [ -z "${actualVerStr}" ]; then
       printError "Got an empty version string for ${nodeName}."
@@ -742,7 +740,7 @@ function stopCluster() {
     # Stop the nodes sequentially
     for nodeName in "${NODE_LIST[@]}"
     do
-      if [ ${DEBUG} -eq 1 ]; then echo "Stopping ${nodeName}"; fi;
+      debugPrint "Stopping ${nodeName}"
       stopRemoteNode "${nodeName}" || errorExit "Could not stop all nodes in the cluster."
     done
 
@@ -794,6 +792,7 @@ function stopRemoteNode() {
   local host
   local dir
   local remoteCmd
+  local sshCmd
 
   host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
@@ -804,11 +803,9 @@ function stopRemoteNode() {
     remoteCmd="${remoteCmd} --debug"
   fi
 
-  sshCmd=( "ssh" "${host}" "bash" "-c" "'${remoteCmd}'" )
+  sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
-  if [ ${DEBUG} -eq 1 ]; then
-    echo "About to stop node ${nodeName} with the command: ${sshCmd[*]}"
-  fi
+  debugPrint "About to stop node ${nodeName} with the command: ${sshCmd[*]}"
 
   "${sshCmd[@]}" || errorExit "Could not stop RapidsSE on node ${nodeName}."
 }

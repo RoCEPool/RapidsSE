@@ -14,6 +14,7 @@ fi
 ### Constants                                                               ###
 ###############################################################################
 
+#shellcheck disable=2034
 readonly VERSION_FILE="version"
 readonly CONFIG_DEFAULT_VERSION="1"
 
@@ -32,7 +33,7 @@ readonly NODE_CFG_PARAMS_KEY="params"
 
 # An array of all mandatory node configuration settings.
 # Note that "params" is not mandatory.
-declare -ra NODE_CFG_ALL_KEYS=( \
+declare -ra NODE_CFG_MANDATORY_KEYS=( \
   "${NODE_CFG_NAME_KEY}" \
   "${NODE_CFG_HOST_KEY}" \
   "${NODE_CFG_PORT_KEY}" \
@@ -42,6 +43,11 @@ declare -ra NODE_CFG_ALL_KEYS=( \
   "${NODE_CFG_MEM_KEY}" \
 )
 
+#shellcheck disable=2034
+declare -ra NODE_CFG_ALL_KEYS=( \
+  "${NODE_CFG_MANDATORY_KEYS[@]}" \
+  "${NODE_CFG_PARAMS_KEY}" \
+)
 
 ###############################################################################
 ### Functions                                                               ###
@@ -59,6 +65,17 @@ function printError() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Print a warning message to stdout,
+## Params: 
+##   $1 : Warning message
+##   $2..$n : (optional) other arguments to print.
+
+function printWarning() {
+  echo -e "WARNING: $*"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Print an error message to stderr and exit,
 ## Params: 
 ##   $1 : Error message
@@ -67,6 +84,37 @@ function printError() {
 function errorExit() {
   >&2 echo -e "ERROR: $*"
   exit 1
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints a given message if debug mode is turned on (i.e., $DEBUG == 1).
+## Params:
+##  $@ : The arguments to print
+
+function debugPrint() {
+  if [ "${DEBUG}" -eq 1 ]; then
+    echo -e "$*"
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints a given array (one line per element) if debug mode is turned on 
+## (i.e., $DEBUG == 1).
+## Params:
+##  $1 : The number of indent spaces on each line.
+##  $@ : The array to print.
+
+function debugPrintArray() {
+  if [ "${DEBUG}" -eq 1 ]; then
+    local indents=$1
+    shift
+    local arrayElements=("$@")
+    shift
+
+    printIndentArray "${indents}" "${arrayElements[@]}"
+  fi
 }
 
 
@@ -140,6 +188,14 @@ function loadClusterConfig() {
 
   local errMsg="Invalid cluster configuration at ${CONFIG_FILE} :"
 
+  if [ -z "${CONFIG_VERSION}" ]; then
+    errorExit "${errMsg}" "No config version (\$CONFIG_VERSION) has been set."
+  fi
+
+  if [ "${CONFIG_VERSION}" -ne "${CONFIG_DEFAULT_VERSION}" ]; then
+    errorExit "${errMsg}" "Config version (${CONFIG_VERSION}) does not match the expected version (${CONFIG_DEFAULT_VERSION})."
+  fi
+
   if [ -z "${NODE_LIST[*]}" ]; then
     errorExit "${errMsg}" "NODE_LIST array is not defined."
   fi
@@ -159,7 +215,7 @@ function loadClusterConfig() {
     local key
     local val
 
-    for key in "${NODE_CFG_ALL_KEYS[@]}"
+    for key in "${NODE_CFG_MANDATORY_KEYS[@]}"
     do
       val="$(nodeCfgGetValue "${nodeName}" "${key}")"
 
@@ -169,9 +225,7 @@ function loadClusterConfig() {
     done
   done
 
-  if [ "${DEBUG}" -eq 1 ]; then
-    echo "Loaded and validated the cluster configuration at: ${CONFIG_FILE}"
-  fi
+  debugPrint "Loaded and validated the cluster configuration at: ${CONFIG_FILE}"
 }
 
 
@@ -195,9 +249,165 @@ function loadNodeName() {
     errorExit "\$CURRENT_NODE_NAME has not been set in node name file: ${NAME_FILE}"
   fi
 
-  if [ "${DEBUG}" -eq 1 ]; then
-    echo "Loaded and validated the node name configuration at: ${NAME_FILE}"
+  debugPrint "Loaded and validated the node name configuration at: ${NAME_FILE}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+## Writes the number of CPU cores to stdout for a given node.
+## Params: 
+##  $1 : nodeName - the name of the node in question.
+
+function getCpuCount() {
+
+  # NB Cannot print to stdout as the caller is expecting to read a value on stdout.
+
+  local nodeName="$1"
+  local host
+  local remoteCmd
+  declare -a sshArgs
+  local response
+
+  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+  remoteCmd="{ which nproc &>/dev/null && nproc; } || "
+  remoteCmd+="{ getconf _NPROCESSORS_ONLN 2>/dev/null; } || "
+  remoteCmd+="{ echo \"-1\"; }"
+
+  sshArgs=( "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
+
+  if ! response="$(ssh "${sshArgs[@]}")"; then
+    echo "-1" 
+    return
   fi
+
+  if [[ ! "${response}" =~ ^[0-9]+$ ]]; then
+    echo "-1"
+    return
+  fi
+
+  echo "${response}"
+  true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+## Writes the total memory size (in GB) to stdout for a given node. The response
+## may be a floating point number.
+## Params: 
+##  $1 : nodeName - the name of the node in question.
+
+function getTotalMem() {
+  # NB Cannot print to stdout as the caller is expecting to read a value on stdout.
+
+  local nodeName="$1"
+  local host
+  local remoteCmd
+  declare -a sshArgs
+  local response
+
+  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+  remoteCmd="bash -c \"cat /proc/meminfo | grep MemTotal | awk '{print \\\$2 / 1048576}'\""
+
+  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+
+  if ! response="$(ssh "${sshArgs[@]}")"; then
+    echo "-1" 
+    return
+  fi
+
+  if [[ ! "${response}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    echo "-1"
+    return
+  fi
+
+  echo "${response}"
+  true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+## Writes the total SHM size (in GB) to stdout for a given node. The response
+## may be a floating point number.
+## Params: 
+##  $1 : nodeName - the name of the node in question.
+
+function getTotalShm() {
+  # NB Cannot print to stdout as the caller is expecting to read a value on stdout.
+
+  local nodeName="$1"
+  local host
+  local remoteCmd
+  declare -a sshArgs
+  local response
+
+  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+  
+  remoteCmd="bash -c \"df -Bk --output=size,avail /dev/shm | tail -n 1 | awk '{print \\\$1 / 1048576}'\""
+
+  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+
+  if ! response="$(ssh "${sshArgs[@]}")"; then
+    echo "-1" 
+    return
+  fi
+
+  if [[ ! "${response}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    echo "-1"
+    return
+  fi
+
+  echo "${response}"
+  true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+## Writes the free SHM size (in GB) to stdout for a given node. The response
+## may be a floating point number.
+## Params: 
+##  $1 : nodeName - the name of the node in question.
+
+function getFreeShm() {
+  # NB Cannot print to stdout as the caller is expecting to read a value on stdout.
+
+  local nodeName="$1"
+  local host
+  local remoteCmd
+  declare -a sshArgs
+  local response
+
+  [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+  remoteCmd="bash -c \"df -Bk --output=size,avail /dev/shm | tail -n 1 | awk '{print \\\$2 / 1048576}'\""
+
+  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+
+  if ! response="$(ssh "${sshArgs[@]}")"; then
+    echo "-1" 
+    return
+  fi
+
+  if [[ ! "${response}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    echo "-1"
+    return
+  fi
+
+  echo "${response}"
+  true
 }
 
 

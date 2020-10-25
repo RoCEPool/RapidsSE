@@ -150,11 +150,9 @@ function startPrompt() {
 # Process the arguments given to the script.
 processArgs "$@"
 
-if [ ${DEBUG} -eq 1 ]; then
-  echo "CONFIG_FILE = ${CONFIG_FILE}"
-  echo "NAME_FILE = ${NAME_FILE}"
-  echo "DEBUG = ${DEBUG}"
-fi
+debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
+debugPrint "NAME_FILE = ${NAME_FILE}"
+debugPrint "DEBUG = ${DEBUG}"
 
 # Import the cluster configuration and node name
 loadClusterConfig

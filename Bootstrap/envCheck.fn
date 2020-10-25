@@ -1,0 +1,355 @@
+#!/bin/bash
+# This file contains function definitions that are imported and used by setup.sh.
+
+# Guard against this file being executed directly.
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]
+then
+  >&2 echo "This file should be sourced, not executed: $0"
+  exit 1
+fi
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validate that the environment we are installing into is correct before
+## continuing with the installation.
+## Params: None
+
+function validateEnvironment() {
+
+  echo "Validating the installation environment on all nodes..."
+
+  # Check that all hosts are resolvable.
+  validateHostsAreResolvable
+
+  # Check that all host/dir combinations are unique.
+  validateHostsAndDirsAreUnique
+
+  # Check that all host:port combinations are unique.
+  validateHostsAndPortsAreUnique
+
+  # Check if all hosts are reachable by SSH.
+  validateHostsReachableBySsh
+
+  # TODO: Check if SE is running in any of these host:directory combinations.
+
+  # TODO: Check if the port is not being used on any of the hosts.
+
+  # TODO: Check if a conflicting SE SHM file exists on any of the hosts.
+
+  # TODO: Check if the SE reserved memory size exceeds RAM.
+
+  # TODO: Check if the SE reserved memory size exceeds /dev/shm total size (if this exists).
+
+  # TODO: Check if the SE reserved memory size exceeds the available SHM space.
+
+  # TODO: Check if the number of threads is more than 2x number of physical cores.
+
+  # Check that the installation dir can be created (if not already) on each node,
+  # and that it is writable.
+  validateInstallDirIsWritable
+
+  # TODO: If an installation already exists on any node, confirm that the user wishes to overwrite it.
+
+  # TODO: Check that node names don't contain spaces or special characters.
+
+  # TODO: Check that node names are unique.
+
+  # TODO: Check that there is at least one hostname.
+
+  # TODO: Check that each hostname is resolvable.
+
+  # TODO: Check that NODE_SEQ_NUM is always non-zero if we read in an existing config
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that all hosts are resolvable on the current machine. Exits out
+## and writes an error to stderr if not.
+## Params: None
+
+function validateHostsAreResolvable() {
+
+  local nodeName
+  local host
+  local output
+
+  if [ "${NO_RESOLVE_HOSTS:-x}" == "x" ]; then
+    debugPrint "Skipping host resolution."
+    return
+  fi
+
+  debugPrint "About to validate that all hostnames are resolvable."
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    # Check if the hostname is an IP address
+    local re="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+  
+    if [[ "${host}" =~ ${re} ]]; then
+      # We've got an IPv4 address
+      # Check the quads
+      for i in 1 2 3 4
+      do
+        if [ "$(echo "${host}" | cut -d. -f${i})" -gt 255 ]; then
+          errorExit "Hostname \"${host}\" is not a valid IPv4 address."
+        fi
+      done
+
+      # This is a valid IPv4 address
+      continue
+
+    elif [[ "${host}" == *:* ]]; then
+      # We've got an IPv6 address
+      re="^([0-9a-fA-F]{0,4}:){1,7}([0-9a-fA-F]){0,4}$"
+
+      if [[ ! "${host}" =~ $re ]]; then
+        errorExit "Hostname \"${host}\" is not a valid IPv6 address."
+      fi
+
+      # This is a valid IPv6 address
+      continue
+    fi
+ 
+   
+    # We must have a hostname to resolve. There are a few different tools that
+    # can be used to resolve it, depending on what is installed.
+
+    # Use getent to resolve the hostname, if available
+    if which getent &>/dev/null; then
+
+      output="$(getent hosts "${host}" | awk '{ print $1; exit }' 2>/dev/null)"
+      if [ -z "${output}" ]; then
+        errorExit "Hostname \"${host}\" is not resolvable."
+      fi
+  
+      # Host was resolved.
+      continue
+
+
+    # No getent, then try dig
+    elif which dig &>/dev/null; then
+
+      output="$(dig +short +search "${host}" | awk '{ print ; exit }' 2>/dev/null)"
+      if [ -z "${output}" ]; then
+        errorExit "Hostname \"${host}\" is not resolvable."
+      fi
+
+      # Host was resolved.
+      continue
+
+
+    # No dig, then try nslookup
+    elif which nslookup &>/dev/null; then
+      
+      output="$(nslookup "${host}" | awk '/^Address: / { print $2 ; exit }' 2>/dev/null)"
+      if [ -z "${output}" ]; then
+        errorExit "Hostname \"${host}\" is not resolvable."
+      fi
+
+      # Host was resolved.
+      continue
+
+    # No nslookup either. Don't validate the hostnames.
+    else
+      printWarning "Could not validate that the hostnames are resolvable. No [getent|dig|nslookup] tools available."
+    fi
+
+  done
+
+  debugPrint "Successfully validated that all hostnames are resolvable."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that there are no duplicate entries with the same host:dir combination.
+## Params: None
+
+function validateHostsAndDirsAreUnique() {
+
+  local nodeName
+  local host
+  local dir
+  local key
+
+  declare -A map
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    key="${host}:${dir}"
+
+    # Check if the value for this key is not set.
+    if [ "${map[${key}]:-x}" != "x" ]; then
+      errorExit "Non-unique host / installation directory combination for the following nodes:" "${map[${key}]}" "${nodeName}"
+    fi
+
+    # Set the value for this key.
+    map[${key}]="${nodeName}"
+  done
+
+  # We're all good. All host/dir combinations are unique.
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that there are no duplicate entries with the same host:port combination.
+## Params: None
+
+function validateHostsAndPortsAreUnique() {
+
+  local nodeName
+  local host
+  local port
+  local key
+
+  declare -A map
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+
+    key="${host}:${port}"
+
+    # Check if the value for this key is not set.
+    if [ "${map[${key}]:-x}" != "x" ]; then
+      errorExit "Non-unique host:port combination for the following nodes:" "${map[${key}]}" "${nodeName}"
+    fi
+
+    # Set the value for this key.
+    map[${key}]="${nodeName}"
+  done
+
+  # We're all good. All host:port combinations are unique.
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that each hostname is reachable by SSH.
+## Exits out and writes an error to stderr if not.
+## Params: None
+
+function validateHostsReachableBySsh() {
+ 
+  local nodeName
+  local host 
+
+  declare -a sshArgs
+  declare -a jobArray
+
+  debugPrint "About to validate that nodes can be reached by SSH."
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "-o" "PasswordAuthentication no" "${host}" "exit" "0")
+
+    # Run it, in parallel
+    (
+      if ! ssh "${sshArgs[@]}"; then
+        errorExit "Node ${nodeName} [host: ${host}] cannot be reached by password-less SSH."
+      fi
+  
+      true
+    ) &
+
+    jobArray+=("$!")
+  done
+
+  # Check the exit status of each background job.
+  for j in "${jobArray[@]}"
+  do
+    if ! wait "$j"; then
+      exit 1
+    fi
+  done
+
+  debugPrint "Successfully validated that all nodes can be reached by SSH."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that the installation directory on each node can be created 
+## and is writable. Exits out if not.
+## Params: None
+
+function validateInstallDirIsWritable() {
+ 
+  local nodeName 
+  local host
+  local dir
+  local remoteCmd
+  local response
+  
+  declare -a sshCmd
+  declare -A errors
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    remoteCmd="$(cat <<-EOF
+			if [ -d "${dir}" ]; then 
+				if [ ! -w "${dir}" ]; then
+					echo "Installation directory exists (${dir}) but is not writable.";
+					false;
+					exit;
+				fi
+			else
+				if [ ! -w "$(dirname "${dir}")" ]; then
+					echo "Installation directory (${dir}) cannot be created because the parent directory is not writable.";
+					false;
+					exit;
+				fi
+			fi
+			true;
+		EOF
+    )"
+
+    sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
+
+    debugPrint "About to validate the installation directory on node ${nodeName} with the command: ${sshCmd[*]}"
+
+    if ! response="$("${sshCmd[@]}")"; then
+      debugPrint "Install dir validation failed: ${response}"
+
+      # Save the response and the node name
+      errors["${nodeName}"]="${response}"
+    fi
+
+  done
+
+  if [ "${#errors[@]}" -gt 0 ]; then
+    local errMsg="Validation of the installation directory failed:"
+
+    for nodeName in "${!errors[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")" 
+      errMsg="${errMsg}\nOn ${nodeName} [host: ${host}] :	${errors[${nodeName}]}"
+    done
+
+    echo ""
+    errorExit "${errMsg}"
+  fi
+
+  debugPrint "Successfully validated that the installation directories are writable."
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
