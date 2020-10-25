@@ -23,6 +23,7 @@ namespace Entries
 
 #include "SP_Ent.hpp"
 #include "SP_Key.hpp"
+#include "SP_Ref.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+namespace Entries
 {
   class SP_Ref : public SPsmall
   {
