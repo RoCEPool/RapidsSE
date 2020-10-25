@@ -41,6 +41,13 @@ EntBuffer* EntBuffer::pFindLeafBuffer_gen(Key* aForKey)
   
   while (true) {
     
+#ifdef EB_TRACE_INSERT
+        vTrace("?? pFindLeafBuffer_gen"_Stz);
+        pEntBuffer->vTraceWhere();
+        vTrace("\n"_Stz);
+        m_nTabs++;
+#endif
+    
     iBufferHeight = pEntBuffer->iBufferHeight();
     if (iBufferHeight == 0)
       break;

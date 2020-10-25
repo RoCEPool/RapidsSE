@@ -4,11 +4,6 @@
 
 #include "Indexing.h"
 
-
-//#define EB_TRACE_INSERT
-//#define EB_LOCAL_VERIFY
-//#define EB_SPLIT_RIGHT
-
 /*----------------------------------------------------------------------------*/
 /* build skip list from the lazy chain                                        */
 /*----------------------------------------------------------------------------*/
@@ -1560,10 +1555,6 @@ void EntBuffer::vTraceWhere(void)
          ,m_pNextBuffer   ? _pEntBuffer(m_pNextBuffer)->iBufferNo()   : -1
          );
 }
-
-#undef EB_TRACE_INSERT
-#undef EB_LOCAL_VERIFY
-#undef EB_SPLIT_RIGHT
 
 /*============================================================================*/
 /* end                                                                        */

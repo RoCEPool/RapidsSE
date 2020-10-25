@@ -19,7 +19,6 @@
 
 #define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = (Ent*)aEnt )
 
-
 /*----------------------------------------------------------------------------*/
 /* find entry given int key                                                   */
 /*----------------------------------------------------------------------------*/
@@ -207,6 +206,12 @@ EntBuffer* EntBuffer::pFindLeafBuffer_int(Key* aForKey)
   
     while (true) {
       
+#ifdef EB_TRACE_INSERT
+      vTrace("?? pFindLeafBuffer_int "_Stz);
+      pEntBuffer->vTraceWhere();
+      vTrace("\n"_Stz);
+#endif
+
       iBufferHeight = pEntBuffer->iBufferHeight();
       if (iBufferHeight == 0)
         break;
