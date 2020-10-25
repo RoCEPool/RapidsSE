@@ -561,7 +561,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   
 #ifdef EB_TRACE_INSERT
   vTraceWhere();
-  vTrace("++ insert #%lld\n"_Stz,m_nInsert);
+  vTrace("++ insert i%lld\n"_Stz,m_nInsert);
 #endif
   
   //vShow();
@@ -676,7 +676,7 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
   //pPositionedH0EntBuffer->vShow();
 
   Ent* aInsertedEnt =
-    pPositionedH0EntBuffer->aInsertEntUpwards(aEnt,ppRootEntBuffer);
+    pPositionedH0EntBuffer->aInsertEntUpwards(IU_DATA_ENTRY,aEnt,ppRootEntBuffer);
   
   //pPositionedH0EntBuffer->vShow();
 
@@ -883,7 +883,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree (handling ripple upwards)        */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntUpwards(Ent* aEnt, EntBuffer** ppRootBuffer)
+Ent* EntBuffer::aInsertEntUpwards(eIU eReason, Ent* aEnt, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -891,7 +891,7 @@ Ent* EntBuffer::aInsertEntUpwards(Ent* aEnt, EntBuffer** ppRootBuffer)
   
 #ifdef EB_TRACE_INSERT
   vTraceWhere();
-  vTrace(">> aInsertEntUpwards\n"_Stz);
+  vTrace(">> aInsertEntUpwards %s\n"_Stz,aIU[eReason]);
   m_nTabs++;
 #endif
   
@@ -1112,7 +1112,7 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
     xEntWrkLeft.vSetEnt(pLeftBuffer->iBufferNo(), 0, aFirstEntryLeft);
     
     Ent* aInsertedEntryLeft =
-      pHigherBuffer->aInsertEntUpwards(xEntWrkLeft.aEnt(),ppRootBuffer);
+      pHigherBuffer->aInsertEntUpwards(IU_HIGH_LEFT_LEAD,xEntWrkLeft.aEnt(),ppRootBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1212,7 +1212,7 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
     xEntWrkLeft.vSetEnt(pLeftBuffer->iBufferNo(), 0, aFirstEntryLeft);
     
     Ent* aInsertedEntryLeft =
-      pHigherBuffer->aInsertEntUpwards(xEntWrkLeft.aEnt(),ppRootBuffer);
+      pHigherBuffer->aInsertEntUpwards(IU_HIGH_LEFT_LEAD,xEntWrkLeft.aEnt(),ppRootBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1225,7 +1225,7 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
   
   Ent* aInsertedEntryRight =
-    pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
+  pHigherBuffer->aInsertEntUpwards(IU_SPLIT_RIGHT_LEAD,xEntWrkRight.aEnt(),ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1357,7 +1357,7 @@ void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
     if ( aEntNext ) {
       EntWrk xEntWrkIns;
       xEntWrkIns.vSetEnt(m_iBufferNo, 0, aEntNext);
-      pHigherBuffer->aInsertEntUpwards(xEntWrkIns.aEnt(),ppRootBuffer);
+      pHigherBuffer->aInsertEntUpwards(IU_HIGH_LEFT_LEAD,xEntWrkIns.aEnt(),ppRootBuffer);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

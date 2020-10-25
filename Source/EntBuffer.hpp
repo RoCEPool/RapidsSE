@@ -209,7 +209,7 @@ namespace Indexing
     Ent*       aInsertEntAbsLazy(Ent* aEntry);
     Ent*       aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
     void       vInsertEntSkipList(Ent* aEntry);
-    Ent*       aInsertEntUpwards(Ent* aEntry, EntBuffer** ppRootBuffer);
+    Ent*       aInsertEntUpwards(eIU eReason, Ent* aEntry, EntBuffer** ppRootBuffer);
     bool       bKeyBeforeBuffer(Key* aKey);
     FreeItem*  aMakeFreeEntry(Ent* aEnt);
     EntBuffer* pNewHigherBuffer(void);
