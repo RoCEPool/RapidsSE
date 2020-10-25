@@ -1588,17 +1588,32 @@ void EntBuffer::vTraceWhere(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-//  vTrace("%s{EB%lld+n%lld+i%lld+s%lld} %s"_Stz,
-//         Stz::szHeight(m_iBufferHeight),
-//         m_iBufferNo,m_nItems,m_nInsert,m_nSplit,
-//         Stz::szTab(m_nTabs));
-  vTrace("%s{EB%lld+n%lld+i%lld+s%lld+d%lld<EB%lld^EB%lld>EB%lld} "_Stz,
-         Stz::szHeight(m_iBufferHeight),
-         m_iBufferNo,m_nItems,m_nInsert,m_nSplit,m_nDelete
+  SP_Ref spLeadRef;
+  SP_Key spLeadKey;
+
+  Ent* aLeadEnt = this->aLeadEntry();
+  
+  SP_Ref spLastRef;
+  SP_Key spLastKey;
+
+  Ent* aLastEnt = this->aLastEntry();
+  
+  vTrace("%s{EB%lld+n%lld+i%lld+s%lld+d%lld<EB%lld^EB%lld>EB%lld %s %s .. %s %s} "_Stz,
+         
+         Stz::szHeight(m_iBufferHeight)
+         
+         ,m_iBufferNo,m_nItems,m_nInsert,m_nSplit,m_nDelete
          
          ,m_pPrevBuffer   ? _pEntBuffer(m_pPrevBuffer)->iBufferNo()   : -1
          ,m_pHigherBuffer ? _pEntBuffer(m_pHigherBuffer)->iBufferNo() : -1
          ,m_pNextBuffer   ? _pEntBuffer(m_pNextBuffer)->iBufferNo()   : -1
+         
+         ,aLeadEnt ? spLeadRef.sz(aLeadEnt->wRef()) : ""_Stz
+         ,aLeadEnt ? spLeadKey.sz(aLeadEnt->aKey(),m_pIndexDef) : ""_Stz
+         
+         ,aLastEnt ? spLastRef.sz(aLastEnt->wRef()) : ""_Stz
+         ,aLastEnt ? spLastKey.sz(aLastEnt->aKey(),m_pIndexDef) : ""_Stz
+         
          );
 }
 
