@@ -23,7 +23,7 @@ SP_Key::SP_Key(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Key::SP_Key(Key* pKey, IndexDef* pIndexDef)
+SP_Key::SP_Key(Key* aKey, IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
@@ -33,7 +33,7 @@ SP_Key::SP_Key(Key* pKey, IndexDef* pIndexDef)
   //! FIX RAY
   //_checkInitialised_(CN_SPSMALL);
   
-  vSprintKey(pKey,pIndexDef);
+  vSprintKey(aKey,pIndexDef);
   
   _postcondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
@@ -63,11 +63,11 @@ Stz* SP_Key::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Key::sz(Key* pKey, IndexDef* pIndexDef)
+Stz* SP_Key::sz(Key* aKey, IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  vSprintKey(pKey,pIndexDef);
+  vSprintKey(aKey,pIndexDef);
   
   return (Stz*) &m_caResult[0];
 }
@@ -75,7 +75,7 @@ Stz* SP_Key::sz(Key* pKey, IndexDef* pIndexDef)
 /*----------------------------------------------------------------------------*/
 /* sprint the key                                                             */
 /*----------------------------------------------------------------------------*/
-void SP_Key::vSprintKey(Key* pKey, IndexDef* pIndexDef)
+void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -84,11 +84,24 @@ void SP_Key::vSprintKey(Key* pKey, IndexDef* pIndexDef)
   char caLiteral[128];
   char caElm[128];
 
-  byte* ayCursor = pKey->ayElmSeq();
-  
   vReset();
 
-  StrLib::vSprint((Stz*)m_caResult,"Key[%lldB]; "_Stz,pKey->nElmSeqSize());
+  if (KE_INT == pIndexDef->eKeyKind()) {
+    
+    Column* pCol = pIndexDef->pGetColumn(0);
+    
+    StrLib::vSprint((Stz*)m_caResult,"IntElm0 %lls %lld"_Stz,
+                    aDM[pCol->eDatum()],
+                    *(i8*)aKey);
+    return;
+  }
+      
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  byte* ayCursor = aKey->ayElmSeq();
+  
+
+  StrLib::vSprint((Stz*)m_caResult,"Key[%lldB]; "_Stz,aKey->nElmSeqSize());
 
   i8 nIdxCols = pIndexDef->nColumns();
   for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
