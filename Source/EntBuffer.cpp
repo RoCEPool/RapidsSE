@@ -607,10 +607,11 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
   m_nDelete++;
   
 #ifdef EB_TRACE_INSERT
+  SP_Ref spRef;
   SP_Key spKey;
   vTraceWhere();
-  vTrace("-- delete d%lld %s\n"_Stz,
-         m_nDelete,spKey.sz(aEnt->aKey(),m_pIndexDef));
+  vTrace("-- delete d%lld %s %s\n"_Stz,
+         m_nDelete,spRef.sz(aEnt->wRef()),spKey.sz(aEnt->aKey(),m_pIndexDef));
 #endif
 
   // entry no longer exists, set the pointer to be null

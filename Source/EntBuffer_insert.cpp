@@ -579,10 +579,11 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   m_nInsert++;
   
 #ifdef EB_TRACE_INSERT
+  SP_Ref spRef;
   SP_Key spKey;
   vTraceWhere();
-  vTrace("++ insert i%lld %s\n"_Stz,
-         m_nInsert,spKey.sz(aEnt->aKey(),m_pIndexDef));
+  vTrace("++ insert i%lld %s %s\n"_Stz,
+         m_nInsert,spRef.sz(aEnt->wRef()),spKey.sz(aEnt->aKey(),m_pIndexDef));
 #endif
   
   //vShow();
@@ -657,14 +658,22 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
   
   EntBuffer* pRootEntBuffer = *ppRootEntBuffer;
   
+  // set a random number offsets
+  i8 nSkipLevels = AM::nRndSkipLevel();
+
+  aEnt->vSkipLevels(nSkipLevels);
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i_Insert++;
 
 #ifdef EB_TRACE_INSERT
   IndexDef* pIndexDef = pRootEntBuffer->m_pIndexDef;
+  SP_Ref spRef;
   SP_Key spKey;
-  vTrace("\n%s %s : aInsertEntTree %lld) %s\n"_Stz,
+  vTrace("\n%s %s : aInsertEntTree %lld) %s %s\n"_Stz,
          pIndexDef->szTableNm(), pIndexDef->szIndexNm(),
-         i_Insert,spKey.sz(aEnt->aKey(),pIndexDef));
+         i_Insert,spRef.sz(aEnt->wRef()),spKey.sz(aEnt->aKey(),pIndexDef));
 #endif
   
   
@@ -677,12 +686,6 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
 //  }
   
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set a random number offsets
-  i8 nSkipLevels = AM::nRndSkipLevel();
-
-  aEnt->vSkipLevels(nSkipLevels);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position on an H0 buffer which we will try and insert into
   
@@ -911,10 +914,11 @@ Ent* EntBuffer::aInsertEntUpwards(eIU eReason, Ent* aEnt, EntBuffer** ppRootBuff
   m_nInsertEntUpwards++;
   
 #ifdef EB_TRACE_INSERT
+  SP_Ref spRef;
   SP_Key spKey;
   vTraceWhere();
-  vTrace(">> aInsertEntUpwards %s %s\n"_Stz,
-         aIU[eReason],spKey.sz(aEnt->aKey(),m_pIndexDef));
+  vTrace(">> aInsertEntUpwards %s %s %s\n"_Stz,
+         aIU[eReason],spRef.sz(aEnt->wRef()),spKey.sz(aEnt->aKey(),m_pIndexDef));
   m_nTabs++;
 #endif
   
