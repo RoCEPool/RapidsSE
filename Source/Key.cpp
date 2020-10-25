@@ -160,7 +160,7 @@ bool Key::bNotEqual(Key* aKey_l, Key* aKey_r)
 /*----------------------------------------------------------------------------*/
 i8 Key::iGetIntElm(void)
 {
-  RASSERT(0);
+  //RASSERT(0);
   i8 iVal = *(i8*)ayElmSeq();
   
   return iVal;

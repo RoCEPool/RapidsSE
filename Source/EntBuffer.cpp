@@ -70,6 +70,13 @@ EntBuffer::EntBuffer(eKE eEntKind)
   
   m_eEntKind    = eEntKind;
   
+  m_nInsert             = 0;
+  m_nSplit              = 0;
+  m_nInsertEntUpwards   = 0;
+  m_nNewInsertIntoSplit = 0;
+  m_nNewInsertIntoRight = 0;
+  m_nTabs = 0;
+
   if (AM::nIndexEntries() != 0)
     vMaxItems(AM::nIndexEntries());
   
@@ -1502,13 +1509,18 @@ void EntBuffer::vShowShort(void)
   while (C_ENT_END_TICKET != tEntry) {
     Ent* aEnt = aGetEntry(tEntry);
     
-    Key* aKey = _aKey(aEnt->ayElmSeq());
-    i8 iVal = aKey->iGetIntElm();
+    Key* aKey = aEnt->aKey();
+    i8 iVal;
+    
+    if (KE_INT == m_eEntKind)
+      iVal = *(i8*)aKey;
+    else
+      iVal = aKey->iGetIntElm();
     
     if (m_iBufferHeight)
       vTrace("%lld(%lld)"_Stz,iVal,EntBuffer::pRefdEntBuffer(aEnt)->iBufferNo());
     else
-      vTrace("%lld|%lld|"_Stz,iVal,EntBuffer::pRefdEntBuffer(aEnt)->iBufferNo());
+      vTrace("%lld|"_Stz,iVal);
     
     tEntry = aEnt->tNextEntry(0);
     if (C_ENT_END_TICKET != tEntry)
@@ -1557,19 +1569,19 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   if (! m_pHigherBuffer )
-    vTrace("\nIndex Tree:\n"_Stz,m_iBufferHeight);
+    vTrace("\nIndex Tree %p:\n"_Stz,this);
   
-  vTrace("L%lld"_Stz,m_iBufferHeight);
+  vTrace("Height %lld "_Stz,m_iBufferHeight);
   
-  for (EntBuffer* pBuffer = this;
-       pBuffer;
-       pBuffer = pBuffer->pNextBuffer()) {
-    
-    pBuffer->vShowShort();
-    
-    ASSERT(! pBuffer->pPrevBuffer() || pBuffer == pBuffer->pPrevBuffer()->pNextBuffer());
-    ASSERT(! pBuffer->pNextBuffer() || pBuffer == pBuffer->pNextBuffer()->pPrevBuffer());
-  }
+//  for (EntBuffer* pBuffer = this;
+//       pBuffer;
+//       pBuffer = pBuffer->pNextBuffer()) {
+//    
+//    pBuffer->vShowShort();
+//    
+//    ASSERT(! pBuffer->pPrevBuffer() || pBuffer == pBuffer->pPrevBuffer()->pNextBuffer());
+//    ASSERT(! pBuffer->pNextBuffer() || pBuffer == pBuffer->pNextBuffer()->pPrevBuffer());
+//  }
   
   vTrace("\n"_Stz);
   
@@ -1577,7 +1589,7 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
     for (EntBuffer* pBuffer = this;
          pBuffer;
          pBuffer = pBuffer->pNextBuffer())
-      pBuffer->vShow();
+      pBuffer->vShow(true);
   }
   
   if ( ! m_iBufferHeight )

@@ -5,6 +5,9 @@
 #include "Indexing.h"
 
 
+//#define EB_TRACE_INSERT
+//#define EB_LOCAL_VERIFY
+//#define EB_SPLIT_RIGHT
 
 /*----------------------------------------------------------------------------*/
 /* build skip list from the lazy chain                                        */
@@ -559,6 +562,13 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   
   Ent_gen* pEnt_gen = (Ent_gen*)aInsertedEntry;
   
+  m_nInsert++;
+  
+#ifdef EB_TRACE_INSERT
+  vTraceWhere();
+  vTrace("++ insert #%lld\n"_Stz,m_nInsert);
+#endif
+  
   //vShow();
   
   return aInsertedEntry;
@@ -627,8 +637,25 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
 {
   _static_
   
+  static i8 i_Insert = 0;
+  
+  i_Insert++;
+
+#ifdef EB_TRACE_INSERT
+  vTrace("\naInsertEntTree %lld)\n"_Stz,i_Insert);
+#endif
+  
   EntBuffer* pRootEntBuffer = *ppRootEntBuffer;
   
+//  if (1616 == i_Insert) {
+////    (*ppRootEntBuffer)->vShowTree(true);
+//
+//    vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+//    vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+//    vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+//  }
+  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set a random number offsets
   i8 nSkipLevels = AM::nRndSkipLevel();
@@ -654,6 +681,10 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
   //pPositionedH0EntBuffer->vShow();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+#ifdef EB_LOCAL_VERIFY
+  (*ppRootEntBuffer)->bVerify();
+#endif
   
   return aInsertedEnt;
 }
@@ -712,7 +743,7 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEnt)
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this buffer                                    */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
+Ent* EntBuffer::aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -739,18 +770,23 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
     vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
   }
 #else
-  Ent* aOriginalFirstEntry = aLeadEntry();
-  aInsertedEntry = aInsertEntAbs(aEntryWork);
-  if ( ! (1 == m_nItems && m_pHigherBuffer) )
-    vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
+  EntBuffer* pInsertIntoBuffer =
+    pInsertableBuffer(aEntry,ppRootBuffer);
+  
+  Ent* aOriginalFirstEntry = pInsertIntoBuffer->aLeadEntry();
+  aInsertedEntry = pInsertIntoBuffer->aInsertEntAbs(aEntry);
+  //if ( ! (1 == m_nItems && m_pHigherBuffer) )
+    pInsertIntoBuffer->vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
 #endif
   
-//  if (m_iBufferHeight) {
-//    bVerifyKeyOrder();
-//    bVerifyKeyBufferOrder();
-//  }
+#ifdef EB_LOCAL_VERIFY
+  if (m_iBufferHeight) {
+    bVerifyKeyOrder();
+    //bVerifyKeyBufferOrder();
+  }
   //bVerifyItems();
-
+#endif
+  
   return aInsertedEntry;
 }
 
@@ -851,6 +887,14 @@ Ent* EntBuffer::aInsertEntUpwards(Ent* aEnt, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
+  m_nInsertEntUpwards++;
+  
+#ifdef EB_TRACE_INSERT
+  vTraceWhere();
+  vTrace(">> aInsertEntUpwards\n"_Stz);
+  m_nTabs++;
+#endif
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   aEnt->vKind(m_eEntKind);
@@ -883,6 +927,14 @@ Ent* EntBuffer::aInsertEntUpwards(Ent* aEnt, EntBuffer** ppRootBuffer)
     }
   }
   
+#ifdef EB_TRACE_INSERT
+  m_nTabs--;
+  vTraceWhere();
+  vTrace("<< aInsertEntUpwards\n"_Stz);
+#endif
+  
+  m_nInsertEntUpwards--;
+
   return aInsertedEntry;
 }
 
@@ -965,13 +1017,40 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new insert buffer (adjusting higher buffers accordingly)          */
+/* decide how to cretae a new insert buffer                                   */
 /*----------------------------------------------------------------------------*/
 bool EntBuffer::bNewInsertDecision(Ent* aEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
+#ifdef EB_SPLIT_RIGHT
+
+  Ent* aLastEnt = aLastEntry();
+  
+  bool bInsKeyGE;
+  if (KE_INT == m_eEntKind) {
+    i8 iInsKey  = *(i8*)aEntry->aKey();
+    i8 iLastKey = *(i8*)aLastEnt->aKey();
+    if (iInsKey < iLastKey)
+      bInsKeyGE = true;
+    else
+      bInsKeyGE = false;
+  }
+  else {
+    eKC eCompare = Key::eCompare(aEntry->aKey(),aLastEnt->aKey());
+    if (KC_BEFORE == eCompare)
+      bInsKeyGE = true;
+    else
+      bInsKeyGE = false;
+  }
+  
+  return bInsKeyGE;
+  
+#else
+  
   return true;
+  
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -981,6 +1060,13 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
+  m_nNewInsertIntoRight++;
+  
+#ifdef EB_TRACE_INSERT
+  vTraceWhere();
+  vTrace(">> pNewInsertIntoRight\n"_Stz);
+#endif
+  
   EntBuffer* pLeftBuffer = this;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -995,8 +1081,17 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
   
+  ASSERT(! m_pNextBuffer || this == m_pNextBuffer->pPrevBuffer());
+  ASSERT(! m_pPrevBuffer || this == m_pPrevBuffer->pNextBuffer());
+
   EntBuffer* pRightBuffer = pNewNextBuffer();
   
+  ASSERT(pRightBuffer || m_pNextBuffer);
+  ASSERT(this == pRightBuffer->pPrevBuffer());
+
+  ASSERT(this == m_pNextBuffer->pPrevBuffer());
+  ASSERT(! m_pPrevBuffer || this == m_pPrevBuffer->pNextBuffer());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer if higher buffer
   // was just created
@@ -1016,19 +1111,32 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the inserting key / first key of right buffer into higher buffer
   
-  EntWrk xEntWrkRight;
-  Ent* aFirstEntryRight = aEntry;
-
-  // initialize the keyWrk from the inserting key
-  xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
-
-  Ent* aInsertedEntryRight =
-    pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
+//  EntWrk xEntWrkRight;
+//  Ent* aFirstEntryRight = aEntry;
+//
+//  // initialize the keyWrk from the inserting key
+//  xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
+//  vTrace("pNewInsertIntoRight: %lld \n"_Stz,pRightBuffer->iBufferNo());
+//
+//  Ent* aInsertedEntryRight =
+//    pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //ASSERT( (* ppRootBuffer)->bVerify() );
   
+#ifdef EB_TRACE_INSERT
+  vTraceWhere();
+  vTrace("## new right buffer: "_Stz);
+  pRightBuffer->vTraceWhere();
+  vTrace("\n"_Stz);
+
+  vTraceWhere();
+  vTrace("<< pNewInsertIntoRight\n"_Stz);
+#endif
+  
+  m_nNewInsertIntoRight--;
+
   return pRightBuffer;
 }
 /*----------------------------------------------------------------------------*/
@@ -1048,6 +1156,13 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
+  m_nNewInsertIntoSplit++;
+  
+#ifdef EB_TRACE_INSERT
+  vTraceWhere();
+  vTrace(">> pNewInsertIntoSplit\n"_Stz);
+#endif
+
   EntBuffer* pLeftBuffer = this;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1064,6 +1179,13 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   
   EntBuffer* pRightBuffer = pLeftBuffer->pSplitBuffer(50);
   
+#ifdef EB_TRACE_INSERT
+  vTraceWhere();
+  vTrace("## split off buffer: "_Stz);
+  pRightBuffer->vTraceWhere();
+  vTrace("\n"_Stz);
+#endif
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer if higher buffer
   // was just created
@@ -1086,7 +1208,7 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   EntWrk xEntWrkRight;
   Ent* aFirstEntryRight = pRightBuffer->aLeadEntry();
   
-  // initialize the keyWrk from the first left key
+  // initialize the keyWrk from the first right key
   xEntWrkRight.vSetEnt(pRightBuffer->iBufferNo(), 0, aFirstEntryRight);
   
   Ent* aInsertedEntryRight =
@@ -1094,12 +1216,45 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+#ifdef EB_LOCAL_VERIFY
+  pHigherBuffer->bVerifyBufferRefs();
+  if (m_iBufferHeight) {
+    pLeftBuffer->bVerifyBufferRefs();
+    pRightBuffer->bVerifyBufferRefs();
+  }
+#endif
+  
   //ASSERT( (* ppRootBuffer)->bVerify() );
   
-  if ( pRightBuffer->bKeyBeforeBuffer(aEntry->aKey()) )
-    return pLeftBuffer;
-  else
-    return pRightBuffer;
+
+  EntBuffer* pInsertBuffer;
+  if ( pRightBuffer->bKeyBeforeBuffer(aEntry->aKey()) ) {
+    pInsertBuffer = pLeftBuffer;
+#ifdef EB_TRACE_INSERT
+    vTraceWhere();
+    vTrace("## insert into left: "_Stz);
+    pInsertBuffer->vTraceWhere();
+    vTrace("\n"_Stz);
+#endif
+  }
+  else {
+    pInsertBuffer = pRightBuffer;
+#ifdef EB_TRACE_INSERT
+    vTraceWhere();
+    vTrace("## insert into right:"_Stz);
+    pInsertBuffer->vTraceWhere();
+    vTrace("\n"_Stz);
+#endif
+  }
+  
+#ifdef EB_TRACE_INSERT
+  vTraceWhere();
+  vTrace("<< pNewInsertIntoSplit\n"_Stz);
+#endif
+  
+  m_nNewInsertIntoSplit--;
+
+  return pInsertBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1247,6 +1402,8 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
   
   EntBuffer* pThisLeftBuffer = this;
   
+  m_nSplit++;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new right buffer
   
@@ -1382,6 +1539,31 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
   
   return pNewRightBuffer;
 }
+
+/*----------------------------------------------------------------------------*/
+/* trace where we are                                                         */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vTraceWhere(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+//  vTrace("%s{EB%lld+n%lld+i%lld+s%lld} %s"_Stz,
+//         Stz::szHeight(m_iBufferHeight),
+//         m_iBufferNo,m_nItems,m_nInsert,m_nSplit,
+//         Stz::szTab(m_nTabs));
+  vTrace("%s{EB%lld+n%lld+i%lld+s%lld<EB%lld^EB%lld>EB%lld} "_Stz,
+         Stz::szHeight(m_iBufferHeight),
+         m_iBufferNo,m_nItems,m_nInsert,m_nSplit
+         
+         ,m_pPrevBuffer   ? _pEntBuffer(m_pPrevBuffer)->iBufferNo()   : -1
+         ,m_pHigherBuffer ? _pEntBuffer(m_pHigherBuffer)->iBufferNo() : -1
+         ,m_pNextBuffer   ? _pEntBuffer(m_pNextBuffer)->iBufferNo()   : -1
+         );
+}
+
+#undef EB_TRACE_INSERT
+#undef EB_LOCAL_VERIFY
+#undef EB_SPLIT_RIGHT
 
 /*============================================================================*/
 /* end                                                                        */

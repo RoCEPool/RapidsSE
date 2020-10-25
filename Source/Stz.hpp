@@ -19,6 +19,7 @@ namespace Strings
    ~Stz(void) noexcept(false);
   
     static Stz* szTab(i8 iDepth);
+    static Stz* szHeight(i8 iHeight);
 
     void operator =(i8);
     void operator =(Stz*);

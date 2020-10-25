@@ -21,6 +21,13 @@ namespace Indexing
     
     eKE       m_eEntKind;   // what kind of entries are in this buffer?
   
+    i8        m_nInsert;              // insert into this buffer
+    i8        m_nSplit;               // splits of this buffer
+    i8        m_nInsertEntUpwards;    // number of active aInsertEntUpwards()
+    i8        m_nNewInsertIntoSplit;  // number of active pNewInsertIntoSplit()
+    i8        m_nNewInsertIntoRight;  // number of active pNewInsertIntoRight()
+    i8        m_nTabs;                // trace tab depth
+
     // must be last
     Footer m_xFooter;
   
@@ -216,6 +223,8 @@ namespace Indexing
     Ent*       aSplitEntry(i8 iSplitRatio, Ent** aaPriorEntry);
     EntBuffer* pSplitBuffer(i8 iSplitRatio);
     
+    void vTraceWhere(void);
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions
   

@@ -407,6 +407,8 @@ bool EntBuffer::bVerifyBufferRefs(void)
     }
     
     if (pChildEntBuf->pHigherBuffer() != this) {
+      vTrace("ThisBuff %lld ; ChildBuffer %lld\n"_Stz,
+             this->iBufferNo(),pChildEntBuf->iBufferNo());
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
@@ -573,6 +575,7 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
       //vDump();
       vShow(true,aEnt);
+      vShowTree(true);
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
