@@ -72,6 +72,7 @@ EntBuffer::EntBuffer(eKE eEntKind)
   
   m_nInsert             = 0;
   m_nSplit              = 0;
+  m_nMove               = 0;
   m_nDelete             = 0;
   m_nInsertEntUpwards   = 0;
   m_nNewInsertIntoSplit = 0;

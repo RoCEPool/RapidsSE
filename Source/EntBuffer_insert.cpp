@@ -1491,6 +1491,8 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
     
     Ent* aNewEntry = pNewRightBuffer->aInsertEntAbsL0(xEntWrk.aEnt(),&aLastEntryRight);
     
+    pNewRightBuffer->m_nMove++;
+    
     //.pNewRightBuffer->vShow();
     
     // make the moved entry in the left buffer to be a free entry
@@ -1598,11 +1600,11 @@ void EntBuffer::vTraceWhere(void)
 
   Ent* aLastEnt = this->aLastEntry();
   
-  vTrace("%s{EB%lld+n%lld+i%lld+s%lld+d%lld<EB%lld^EB%lld>EB%lld %s %s .. %s %s} "_Stz,
+  vTrace("%s{EB%lld+n%lld+i%lld+s%lld+m%lld+d%lld<EB%lld^EB%lld>EB%lld %s %s .. %s %s} 🌀 "_Stz,
          
          Stz::szHeight(m_iBufferHeight)
          
-         ,m_iBufferNo,m_nItems,m_nInsert,m_nSplit,m_nDelete
+         ,m_iBufferNo,m_nItems,m_nInsert,m_nSplit,m_nMove,m_nDelete
          
          ,m_pPrevBuffer   ? _pEntBuffer(m_pPrevBuffer)->iBufferNo()   : -1
          ,m_pHigherBuffer ? _pEntBuffer(m_pHigherBuffer)->iBufferNo() : -1

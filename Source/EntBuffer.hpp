@@ -23,6 +23,7 @@ namespace Indexing
   
     i8        m_nInsert;              // insert into this buffer
     i8        m_nSplit;               // splits of this buffer
+    i8        m_nMove;                // moves into of this buffer
     i8        m_nDelete;              // delete into this buffer
     i8        m_nInsertEntUpwards;    // number of active aInsertEntUpwards()
     i8        m_nNewInsertIntoSplit;  // number of active pNewInsertIntoSplit()
