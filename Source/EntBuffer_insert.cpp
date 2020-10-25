@@ -634,13 +634,16 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
   
   static i8 i_Insert = 0;
   
+  EntBuffer* pRootEntBuffer = *ppRootEntBuffer;
+  
   i_Insert++;
 
 #ifdef EB_TRACE_INSERT
-  vTrace("\naInsertEntTree %lld)\n"_Stz,i_Insert);
+  SP_Key spKey;
+  vTrace("\naInsertEntTree %lld) %s\n"_Stz,
+         i_Insert,spKey.sz(aEnt->aKey(),pRootEntBuffer->m_pIndexDef));
 #endif
   
-  EntBuffer* pRootEntBuffer = *ppRootEntBuffer;
   
 //  if (1616 == i_Insert) {
 ////    (*ppRootEntBuffer)->vShowTree(true);
@@ -988,6 +991,7 @@ EntBuffer* EntBuffer::pNewHigherBuffer(void)
   EntBuffer* pNewBuffer = new EntBuffer(m_eEntKind);
   
   pNewBuffer->vIndex(m_pIndex);
+  pNewBuffer->vIndexDef(m_pIndexDef);
   pNewBuffer->vBufferHeight(m_iBufferHeight+1);
   pNewBuffer->vPartitionNo(m_iPartitionNo);
   
@@ -1122,7 +1126,7 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   
 #ifdef EB_TRACE_INSERT
   vTraceWhere();
-  vTrace("## new right buffer: "_Stz);
+  vTrace("RR new right buffer: "_Stz);
   pRightBuffer->vTraceWhere();
   vTrace("\n"_Stz);
 
@@ -1176,7 +1180,7 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   
 #ifdef EB_TRACE_INSERT
   vTraceWhere();
-  vTrace("## split off buffer: "_Stz);
+  vTrace("SS split off buffer: "_Stz);
   pRightBuffer->vTraceWhere();
   vTrace("\n"_Stz);
 #endif
@@ -1263,6 +1267,7 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
   EntBuffer* pNewBuffer = new EntBuffer(m_eEntKind);
   
   pNewBuffer->vIndex(m_pIndex);
+  pNewBuffer->vIndexDef(m_pIndexDef);
   pNewBuffer->vBufferHeight(m_iBufferHeight);
   pNewBuffer->vPartitionNo(m_iPartitionNo);
   
