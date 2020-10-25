@@ -159,6 +159,8 @@ do
     echo "w"  # write the changes and exit
   ) | fdisk "${device}" || exit
   
+  sleep 1
+  
   # Get the partition name
   partition=$(lsblk -l -n -p -oNAME "${device}" | tail -n 1)
   
