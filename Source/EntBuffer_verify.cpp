@@ -407,8 +407,9 @@ bool EntBuffer::bVerifyBufferRefs(void)
     }
     
     if (pChildEntBuf->pHigherBuffer() != this) {
-      vTrace("ThisBuff %lld ; ChildBuffer %lld\n"_Stz,
-             this->iBufferNo(),pChildEntBuf->iBufferNo());
+      vTrace("Buffer %lld -> ChildBuffer %lld with HighBuffer %lld\n"_Stz,
+             this->iBufferNo(),
+             pChildEntBuf->iBufferNo(),pChildEntBuf->pHigherBuffer()->iBufferNo());
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
