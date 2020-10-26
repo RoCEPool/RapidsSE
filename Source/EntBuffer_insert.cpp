@@ -525,7 +525,9 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
     
     //vTrace("InsertableBuffer : compacting\n"_Stz);
     
+    RASSERT(m_nItems > 10000);
     vCompact();
+    RASSERT(m_nItems > 10000);
     
     if (bHasSpace(nEntSizeBytes))
       pInsertIntoBuffer = this;
