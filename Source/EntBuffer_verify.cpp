@@ -865,7 +865,7 @@ bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
         
         // check we dont go backwwards
         if (aNextEntry_sl->iEntryNo() < aScanEntry_sl->iEntryNo()) {
-          vShow(aScanEntry_sl);
+          vShow(true,aScanEntry_sl);
           vVerifyFault(__func__,__FILE__,__LINE__);
           return false;
         }

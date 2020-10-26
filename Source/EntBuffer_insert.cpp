@@ -659,17 +659,18 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   
   Ent_gen* pEnt_gen = (Ent_gen*)aInsertedEntry;
   
-//  if (m_iBufferHeight && aPrevEnt != aSkipRoots()) {
-//    
-//    EntBuffer* pChildBufferA = EntBuffer::pRefdEntBuffer(aPrevEnt);
-//    EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aInsertedEntry);
-//
-//    if (pChildBufferA->pNextBuffer() != pChildBufferB) {
-//      pChildBufferA->vDipStick();
-//      vVerifyFault(__func__,__FILE__,__LINE__);
-//    }
-//    
-//  }
+#ifdef EB_LOCAL_VERIFY
+  if (m_iBufferHeight && aPrevEnt != aSkipRoots()) {
+    
+    EntBuffer* pChildBufferA = EntBuffer::pRefdEntBuffer(aPrevEnt);
+    EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aInsertedEntry);
+
+    if (pChildBufferA->pNextBuffer() != pChildBufferB) {
+      pChildBufferA->vDipStick();
+      vVerifyFault(__func__,__FILE__,__LINE__);
+    }
+  }
+#endif
   
   m_nInsert++;
   
