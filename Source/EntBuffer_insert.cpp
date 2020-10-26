@@ -1175,8 +1175,6 @@ EntBuffer* EntBuffer::pNewHigherBuffer(void)
   // create new buffer at one higher index level
   EntBuffer* pNewBuffer = new EntBuffer(m_pIndexTree,m_eEntKind);
   
-  pNewBuffer->vIndex(m_pIndex);
-  pNewBuffer->vIndexDef(m_pIndexDef);
   pNewBuffer->vBufferHeight(m_iBufferHeight+1);
   pNewBuffer->vPartitionNo(m_iPartitionNo);
   
@@ -1482,8 +1480,6 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
   // create new buffer at the same index level and link the two buffers
   EntBuffer* pNewBuffer = new EntBuffer(m_pIndexTree,m_eEntKind);
   
-  pNewBuffer->vIndex(m_pIndex);
-  pNewBuffer->vIndexDef(m_pIndexDef);
   pNewBuffer->vBufferHeight(m_iBufferHeight);
   pNewBuffer->vPartitionNo(m_iPartitionNo);
   
@@ -1792,10 +1788,10 @@ void EntBuffer::vTraceWhere(void)
          ,m_pNextBuffer   ? _pEntBuffer(m_pNextBuffer)->iBufferNo()   : -1
          
          ,aLeadEnt ? spLeadRef.sz(aLeadEnt->wRef()) : ""_Stz
-         ,aLeadEnt ? spLeadKey.sz(aLeadEnt->aKey(),m_pIndexDef) : ""_Stz
+         ,aLeadEnt ? spLeadKey.sz(aLeadEnt->aKey(),pIndexDef()) : ""_Stz
          
          ,aLastEnt ? spLastRef.sz(aLastEnt->wRef()) : ""_Stz
-         ,aLastEnt ? spLastKey.sz(aLastEnt->aKey(),m_pIndexDef) : ""_Stz
+         ,aLastEnt ? spLastKey.sz(aLastEnt->aKey(),pIndexDef()) : ""_Stz
          
          );
 }

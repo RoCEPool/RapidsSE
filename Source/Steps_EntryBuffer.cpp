@@ -11,7 +11,6 @@ void Step::vAddSteps_EntBuffer(void)
 {
   vAddStep("entryBuffer.dump"_Stz,        &Step::vEntBufferDump);
   vAddStep("entryBuffer.index@"_Stz,      &Step::vEntBufferIndexFetch);
-  vAddStep("entryBuffer.index!"_Stz,      &Step::vEntBufferIndexStore);
   vAddStep("entryBuffer.nextBuffer"_Stz,  &Step::vEntBufferNextBuffer);
   vAddStep("entryBuffer.partition@"_Stz,  &Step::vEntBufferPartitionFetch);
   vAddStep("entryBuffer.partition!"_Stz,  &Step::vEntBufferPartitionStore);
@@ -43,23 +42,6 @@ void Step::vEntBufferIndexFetch(void)
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushPtr(pIndexBuffer->pIndex());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* entryBuffer.index! -- set index in entry buffer                            */
-/*----------------------------------------------------------------------------*/
-void Step::vEntBufferIndexStore(void)
-{
-  ENTRY();
-  
-  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
-  
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  pIndexBuffer->vIndex(pIndex);
   
   EXIT();
 }

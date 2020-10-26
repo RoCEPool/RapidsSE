@@ -351,7 +351,7 @@ bool EntBuffer::bVerifyAdjacent(void)
   
   ASSERT(m_iBufferHeight >= 1);
   
-  IndexDef* pIndexDef = m_pIndex->pIndexDef();
+  IndexDef* pIndexDef = this->pIndexDef();
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
@@ -559,7 +559,7 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
   
   ASSERT(m_iBufferHeight >= 1);
   
-  IndexDef* pIndexDef = m_pIndex->pIndexDef();
+  IndexDef* pIndexDef = this->pIndexDef();
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
@@ -765,7 +765,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
    the same number of scan entries
    */
   
-  IndexDef* pIndexDef = m_pIndex->pIndexDef();
+  IndexDef* pIndexDef = this->pIndexDef();
   
   Ent* aNextEntry2;
   Ent* aNextEntry1;

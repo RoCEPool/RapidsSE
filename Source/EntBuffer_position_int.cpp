@@ -227,10 +227,10 @@ EntBuffer* EntBuffer::pFindLeafBuffer_int(Key* aForKey)
       aEnt = pEntBuffer->pFindEntryPrevTo_int(aEnt,aForKey);
 #ifdef WITH_DEBUG_VERSION
       if (! aEnt) {
-        aForKey->vShow(m_pIndex->pIndexDef());
+        aForKey->vShow(pIndexDef());
         vTrace("\n"_Stz);
 
-        aEntPrev->aKey()->vShow(m_pIndex->pIndexDef());
+        aEntPrev->aKey()->vShow(pIndexDef());
         vTrace("\n"_Stz);
 
         pEntBuffer->vDump();

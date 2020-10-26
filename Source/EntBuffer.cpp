@@ -66,9 +66,6 @@ EntBuffer::EntBuffer(IndexTree* pIndexTree, eKE eEntKind)
   m_pIndexTree  = pIndexTree;
   m_eEntKind    = eEntKind;
 
-  m_pIndex      = nullptr;
-  m_pIndexDef   = nullptr;
-
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
   
@@ -80,7 +77,7 @@ EntBuffer::EntBuffer(IndexTree* pIndexTree, eKE eEntKind)
   m_nInsertEntUpwards   = 0;
   m_nNewInsertIntoSplit = 0;
   m_nNewInsertIntoRight = 0;
-  m_nTabs = 0;
+
 
   if (AM::nIndexEntries() != 0)
     vMaxItems(AM::nIndexEntries());
@@ -197,7 +194,6 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
       
       // new left buffer
       EntBuffer* pNewLeftH0 = new EntBuffer(pLeftH0->m_pIndexTree,pLeftH0->eEntKind());
-      pNewLeftH0->vIndex(pIndex);
       pNewLeftH0->vHigherBuffer(pH1);
       
       // splice the new left buffer into the L0 list
@@ -848,43 +844,25 @@ void EntBuffer::vHigherBuffer(EntBuffer* pHigherBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the index of the index buffer                                          */
-/*----------------------------------------------------------------------------*/
-void EntBuffer::vIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  m_pIndex = pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the index of the index buffer                                          */
 /*----------------------------------------------------------------------------*/
 Index* EntBuffer::pIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return m_pIndex;
+  return m_pIndexTree->pIndex();
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the indexDef of the index buffer                                       */
-/*----------------------------------------------------------------------------*/
-void EntBuffer::vIndexDef(IndexDef* pIndexDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  m_pIndexDef = pIndexDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the indexDef of the index buffer                                       */
+/* get the indexDef of the entry buffer                                       */
 /*----------------------------------------------------------------------------*/
 IndexDef* EntBuffer::pIndexDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return m_pIndexDef;
+  IndexDef* pIdxDef = m_pIndexTree->pIndexDef();
+  
+  return pIdxDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1312,7 +1290,7 @@ void EntBuffer::vPrintRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  StreamDef* pStreamDef = m_pIndex->pTable()->pStreamDef();
+  StreamDef* pStreamDef = m_pIndexTree->pIndex()->pTable()->pStreamDef();
   
   HV_Row hRow(pStreamDef, C_ALL);
   HV_Rec hvRec(pStreamDef, C_ALL);
@@ -1369,7 +1347,7 @@ void EntBuffer::vRestore(void)
   ASSERT( ! m_pPrevBuffer );
   
   // set the index to nullptr (this pointer is not valid any more)
-  m_pIndex = nullptr;
+  m_pIndexTree = nullptr;
   
   // get this buffer address
   PoolBuffer* pThisBuffer =
@@ -1405,7 +1383,7 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   //ASSERT( ! m_pIndex );
-  m_pIndex = pIndex;
+  //m_pIndex = pIndex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1463,7 +1441,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
     vTrace(" IntElm0 %lld"_Stz,aEnt_int->m_iIntElm0);
   }
   else
-    aKey->vShow(m_pIndexDef);
+    aKey->vShow(pIndexDef());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1519,7 +1497,7 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
          m_pHigherBuffer,sHigherBuffer.szStz(),m_pPrevBuffer,m_pNextBuffer);
   
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
-         m_pIndex ? m_pIndex->szIndexNm() : C_NULL,m_iPartitionNo,m_iBufferHeight);
+         m_pIndexTree ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_iPartitionNo,m_iBufferHeight);
   
   SkipRoots* aSkipRoots = this->aSkipRoots();
   vTrace("  skipRoots: %p[%lld, %lld, %lld, %lld, %lld, %lld]\n"_Stz,

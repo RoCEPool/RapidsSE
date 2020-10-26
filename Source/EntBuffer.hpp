@@ -14,10 +14,8 @@ namespace Indexing
   friend class IndexTree;
 
   protected:
-    Index*     m_pIndex;     // index this buffer belongs to
     eKE        m_eEntKind;   // what kind of entries are in this buffer?
 
-    IndexDef*  m_pIndexDef;  // indexDef this buffer belongs to
     IndexTree* m_pIndexTree; // indexDef this buffer belongs to
   
     SkipRoots  m_xSkipRoots; // skip roots
@@ -27,11 +25,11 @@ namespace Indexing
     i8  m_nSplit;               // splits of this buffer
     i8  m_nMove;                // moves into of this buffer
     i8  m_nDelete;              // delete into this buffer
+  
     i8  m_nInsertEntUpwards;    // number of active aInsertEntUpwards()
     i8  m_nNewInsertIntoSplit;  // number of active pNewInsertIntoSplit()
     i8  m_nNewInsertIntoRight;  // number of active pNewInsertIntoRight()
-    i8  m_nTabs;                // trace tab depth
-
+ 
     // must be last
     Footer m_xFooter;
   
@@ -58,9 +56,7 @@ namespace Indexing
     eKE     eEntKind(void);
     void    vEntKind(eKE eEntKind);
 
-    void    vIndex(Index* pIndex);
     Index*  pIndex(void);
-    void    vIndexDef(IndexDef* pIndexDef);
     IndexDef*  pIndexDef(void);
     void    vPrintRows(void);
 

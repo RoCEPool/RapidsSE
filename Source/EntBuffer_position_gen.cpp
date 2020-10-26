@@ -62,10 +62,10 @@ EntBuffer* EntBuffer::pFindLeafBuffer_gen(Key* aForKey)
     
     aEnt = pEntBuffer->pFindEntryPrevTo_gen(aEnt,aForKey);
     if (! aEnt) {
-      aForKey->vShow(m_pIndex->pIndexDef());
+      aForKey->vShow(pIndexDef());
       vTrace("\n"_Stz);
       
-      aEntPrev->aKey()->vShow(m_pIndex->pIndexDef());
+      aEntPrev->aKey()->vShow(pIndexDef());
       vTrace("\n"_Stz);
       
       pEntBuffer->vDump();

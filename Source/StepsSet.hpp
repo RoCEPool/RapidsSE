@@ -327,7 +327,6 @@ public:
   // entry buffer
   void vEntBufferDump(void);
   void vEntBufferIndexFetch(void);
-  void vEntBufferIndexStore(void);
   void vEntBufferIsLastFetch(void);
   void vEntBufferIsLastStore(void);
   void vEntBufferNextBuffer(void);
