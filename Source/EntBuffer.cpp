@@ -786,11 +786,13 @@ Ent* EntBuffer::aGetEntrySplit(i8 iSplitEntryNo, Ent** aaPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  ASSERT(aSkipRoots());
+  RASSERT(aSkipRoots());
   
 #ifdef WITH_EB_LAZY_CHAIN
   ASSERT( ! m_aLazyChain );
 #endif
+  
+  RASSERT(iSplitEntryNo > 10);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1237,17 +1239,22 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  ASSERT(aCurrent->bValidEnt());
+  RASSERT(aCurrent);
+  RASSERT(iLevel <= 5);
+  
+  RASSERT(aCurrent->bValidEnt());
   
   tET tNextEntry = aCurrent->tNextEntry(iLevel);
   
   if (C_ENT_END_TICKET == tNextEntry)
     return nullptr;
   
+  //RASSERT(tNextEntry < m_nItems);
+  
   i8 iNextEntryOffset = iToEntryOffset(tNextEntry);
   Ent* aNextEnt = aGetItem(iNextEntryOffset);
 
-  ASSERT(! aNextEnt || aNextEnt->bValidEnt());
+  RASSERT(! aNextEnt || aNextEnt->bValidEnt());
   
   return aNextEnt;
 }
