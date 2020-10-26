@@ -1525,7 +1525,9 @@ void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
 Ent* EntBuffer::aSplitEntry(i8 iSplitRatio, Ent** aaPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
+ 
+  RASSERT(m_nItems > 10);
+
   i8 iSplitAtEntry = (m_nItems * iSplitRatio) / 100;
   Ent* aSplitEntry = aGetEntrySplit(iSplitAtEntry,aaPriorEntry);
   RASSERT(this->aNextEntry(*aaPriorEntry,0) == aSplitEntry);
