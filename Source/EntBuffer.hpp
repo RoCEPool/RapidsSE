@@ -38,7 +38,7 @@ namespace Indexing
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    EntBuffer(IndexTree* pIndexTree, eKE eEntKind);
+    EntBuffer(IndexTree* pIndexTree);
    ~EntBuffer(void) noexcept(false);
 
     static void vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0);

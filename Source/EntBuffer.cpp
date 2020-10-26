@@ -56,7 +56,7 @@ void EntBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntBuffer::EntBuffer(IndexTree* pIndexTree, eKE eEntKind)
+EntBuffer::EntBuffer(IndexTree* pIndexTree)
 : DataBuffer(CN_ENTBUFFER, true)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -64,7 +64,7 @@ EntBuffer::EntBuffer(IndexTree* pIndexTree, eKE eEntKind)
   ASSERT(CacheLine::bOnCacheLineBoundary(this));
   
   m_pIndexTree  = pIndexTree;
-  m_eEntKind    = eEntKind;
+  m_eEntKind    = pIndexTree->pIndexDef()->eKeyKind();
 
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
@@ -193,7 +193,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
       //pLeftL0->vShow();
       
       // new left buffer
-      EntBuffer* pNewLeftH0 = new EntBuffer(pLeftH0->m_pIndexTree,pLeftH0->eEntKind());
+      EntBuffer* pNewLeftH0 = new EntBuffer(pLeftH0->m_pIndexTree);
       pNewLeftH0->vHigherBuffer(pH1);
       
       // splice the new left buffer into the L0 list
