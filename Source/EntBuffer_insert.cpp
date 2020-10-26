@@ -526,6 +526,9 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
   ASSERT(aEnt->nSkipLevels());
   
   i8 nEntSizeBytes = aEnt->nSizeBytes();
+  if (nEntSizeBytes != 32)
+    vTrace("pInsertableBuffer: nEntSizeBytes %lld\n"_Stz,nEntSizeBytes);
+  RASSERT(32 == nEntSizeBytes);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert key into this EntBuffer if it has space or get a new one
   
