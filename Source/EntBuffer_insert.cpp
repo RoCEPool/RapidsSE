@@ -1292,10 +1292,10 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
     
   m_nNewInsertIntoSplit++;
   
-#ifdef EB_TRACE_INSERT
+//#ifdef EB_TRACE_INSERT
   vTraceWhere();
   vTrace(">> pNewInsertIntoSplit\n"_Stz);
-#endif
+//#endif
 
   EntBuffer* pLeftBuffer = this;
   
@@ -1319,12 +1319,12 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   
   EntBuffer* pRightBuffer = pLeftBuffer->pSplitBuffer(50);
   
-#ifdef EB_TRACE_INSERT
+//#ifdef EB_TRACE_INSERT
   vTraceWhere();
   vTrace("SS split off buffer: "_Stz);
   pRightBuffer->vTraceWhere();
   vTrace("\n"_Stz);
-#endif
+//#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer if higher buffer
@@ -1650,6 +1650,7 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
   // compact the left buffer and rebuild SkipListNL
   
   pThisLeftBuffer->vCompactLeft();
+  vTrace("Enties in LeftBuffer %lld\n"_Stz,pThisLeftBuffer->nItems());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // the child buffer of any moved entry needs to have its higher buffer
@@ -1707,7 +1708,7 @@ void EntBuffer::vTraceWhere(void)
 
   Ent* aLastEnt = this->aLastEntry();
   
-  vTrace("%s{EB%lld+n%lld+i%lld+s%lld+m%lld+d%lld<EB%lld^EB%lld>EB%lld %s %s .. %s %s} 🌀 "_Stz,
+  vTrace("%s{EB%lld+n%lld+i%lld+s%lld+m%lld+d%lld<EB%lld^EB%lld>EB%lld %s %s .. %s %s} "_Stz,
          
          Stz::szHeight(m_iBufferHeight)
          
