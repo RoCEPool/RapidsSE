@@ -282,9 +282,20 @@ void EntBuffer::vCompact(void)
   
   ASSERT( ! aScanItem || CN_FREEITEM == aScanItem->eClass() );
   
-  if (aScanItem)
+  if (aScanItem) {
     vSetUsed(aScanItem);
-  
+  }
+  else {
+    vTrace("vCompact: EB%lld No aScanItem; m_nItems %lld; nFreeBytes %lld"_Stz,
+           m_iBufferNo,m_nItems,nFreeBytes());
+    
+    RASSERT(!m_nFreeItems);
+    
+    RASSERT(m_nItems > 10000);
+    
+    RASSERT(nFreeBytes() < C_1KB);
+  }
+
   m_nFreeItems = 0;
   
   
