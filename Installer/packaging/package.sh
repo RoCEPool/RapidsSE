@@ -222,8 +222,8 @@ if [ -n "${DEBUG}" ] ; then echo "Compiling RapidsSE"; fi;
 if [ -z "${NO_BUILD}" ] || [ "${NO_BUILD}" -ne 1 ] 
 then
 
-  gccver="$(gcc -dumpversion | cut -f1-2 -d.)"
-  if [[ -z "${gccver}" || "${gccver}" -lt 5 ]]; then
+  gccver="$(gcc -dumpversion | cut -f1 -d.)"
+  if [[ -n "${gccver}" && "${gccver}" -lt 5 ]] && which scl 2>/dev/null; then
     (
       cd "${SOURCE_DIR}"
       scl enable devtoolset-7 'make clean && make -j 8'
