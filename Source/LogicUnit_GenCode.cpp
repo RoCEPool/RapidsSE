@@ -127,9 +127,17 @@ void LogicUnit::vCollectOpcode(void)
             else if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
               i8 i_Ename = pJobTags->i_Find(m_pTkn->szChars());
               ASSERT(i_Ename != C_UNKNOWN);
-              if (pJobTags->eToken(i_Ename) != TN_INTEGER)
+            
+              //pJobTags->vContentDump();
+              if (pJobTags->eToken(i_Ename) == TN_INTEGER)
+                iArg = pJobTags->iValue(i_Ename);
+              else if (pJobTags->eToken(i_Ename) == TN_STRING) {
+                Stz* szParam = pJobTags->szValue(i_Ename);
+                iArg = StrLib::iToI8((char*)szParam);
+              }
+              else
                 THROW_USER("vCollectOpcode"_Stz);
-              iArg = pJobTags->iValue(i_Ename);
+
             }
             else {
               vTrace("\n*** Invalid integer argument to opCode %s ***\n"_Stz, m_pTkn->szChars());

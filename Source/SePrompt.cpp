@@ -748,6 +748,9 @@ bool SePrompt::bHandleDemo(void)
   // reset the input token vector
   m_pInpTknVec->vSoftReset();
   
+  char* szToken;
+  bool bResult;
+  
   switch (iHash) {
       
       // Query 1
@@ -760,6 +763,15 @@ bool SePrompt::bHandleDemo(void)
     case 127443435585:
       m_pInpTknVec->vTokeniseC(C_Query3);
       m_pInpTknVec->vIntegrityCheck();
+      
+      i8 iInteger;
+      i8 nDigits;
+      pTkn = m_pLitTknVec->pGet(3);
+      szToken = (char*)pTkn->szChars();
+      bResult = StrLib::bExtractInteger(&szToken, &iInteger, nDigits);
+      if ( ! bResult )
+        return false;
+      
       break;
       
       // Query 4
@@ -769,34 +781,10 @@ bool SePrompt::bHandleDemo(void)
       break;
       
       // Query 6
-    case 68446556094: /* physical locality (lineitem2-lineitem2_idx1) */
-    {
-      m_pInpTknVec->vTokeniseC(C_Query6_PL);
-      m_pInpTknVec->vIntegrityCheck();
-      
-      // collapse the decimal tokens to single integer
-      Token* pIntegralTkn = m_pLitTknVec->pGet(2);
-      Token* pFractionalTkn = m_pLitTknVec->pGet(3);
-      i8 iInteger = pIntegralTkn->iToI8() * 100 + pFractionalTkn->iToI8();
-      StrLib::vSprint(pIntegralTkn->azChars(), "%lld"_Stz, iInteger);
-      
-      // collapse the decimal tokens to single integer
-      pIntegralTkn = m_pLitTknVec->pGet(4);
-      pFractionalTkn = m_pLitTknVec->pGet(5);
-      iInteger = pIntegralTkn->iToI8() * 100 + pFractionalTkn->iToI8();
-      StrLib::vSprint(pIntegralTkn->azChars(), "%lld"_Stz, iInteger);
-      
-      m_pLitTknVec->vRemoveToken(3);
-      m_pLitTknVec->vRemoveToken(4);
-      //vTrace("Collapsed decimals\n"_Stz);
-      //m_pLitTknVec->vDumpVec(0);
-  }
-  break;
-  
-    case 65290390556: {
+    case 63330343570: {
       m_pInpTknVec->vTokeniseC(C_Query6);
       m_pInpTknVec->vIntegrityCheck();
-      
+ /*
       // collapse the decimal tokens to single integer
       Token* pIntegralTkn = m_pLitTknVec->pGet(2);
       Token* pFractionalTkn = m_pLitTknVec->pGet(3);
@@ -811,8 +799,30 @@ bool SePrompt::bHandleDemo(void)
       
       m_pLitTknVec->vRemoveToken(3);
       m_pLitTknVec->vRemoveToken(4);
-      //vTrace("Collapsed decimals\n"_Stz);
-      //m_pLitTknVec->vDumpVec(0);
+  */
+      i8 iDecimal;
+      pTkn = m_pLitTknVec->pGet(2);
+      szToken = (char*)pTkn->szChars();
+      bool bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 15, 2);
+      if ( ! bResult )
+        return false;
+      StrLib::vSprint(pTkn->azChars(), "%lld"_Stz, iDecimal);
+      
+      pTkn = m_pLitTknVec->pGet(3);
+      szToken = (char*)pTkn->szChars();
+      bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 15, 2);
+      if ( ! bResult )
+        return false;
+      StrLib::vSprint(pTkn->azChars(), "%lld"_Stz, iDecimal);
+      
+      i8 iInteger;
+      i8 nDigits;
+      pTkn = m_pLitTknVec->pGet(4);
+      szToken = (char*)pTkn->szChars();
+      bResult = StrLib::bExtractInteger(&szToken, &iInteger, nDigits);
+      if ( ! bResult )
+        return false;
+      
     }
       break;
       

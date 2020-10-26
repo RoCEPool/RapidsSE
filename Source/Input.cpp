@@ -1096,6 +1096,28 @@ void Input::vCollectCppInteger(void)
     }
   }
   
+  // decimal number?
+  if (m_xAnnChar.bIsDot()) {
+    
+    *z++ = m_xAnnChar.m_cChar;
+    
+    vGetAnnCharStripped();
+    
+    // collect digits after decimal
+    while (m_xAnnChar.bIsDigit()) {
+      *z++ = m_xAnnChar.m_cChar;
+      iNoDigits++;
+      vGetAnnCharStripped();
+    }
+    vUngetAnnCharStripped();
+    
+    // terminate the string literal
+    *z = '\0';
+    m_pCurrTkn->vToken(TN_STRING);
+    
+    return;
+  }
+  
   // push back the unconsumed character
   vUngetAnnCharStripped();
     
