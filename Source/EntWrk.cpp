@@ -606,11 +606,13 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   vOffsets(nLevels);
   
   Rrf xRef(iBufferNo,i_Item,nLevels);
-  vRef(xRef);
   
   eKE eEntKind = pEntry->eKind();
-  
   xRef.vKind(eEntKind);
+  
+  vRef(xRef);
+  
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key byte sequence into this entry
