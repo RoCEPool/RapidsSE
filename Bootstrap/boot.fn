@@ -202,7 +202,15 @@ function startCluster() {
   echo -n "Started all ${#NODE_LIST[@]} nodes in the cluster. Waiting for them to boot"
 
   # Sleep for 10 seconds and print a "." every second
-  sleepProgressPrint 10 
+  local sleepTime=10
+
+  if [[ -n "${CLUSTER_BOOT_DELAY}" && "${CLUSTER_BOOT_DELAY}" -ge 0 ]]; then
+    # This boot delay can be defined in startSE.sh to control how long to wait until
+    # the cluster initialisation command is given.
+    sleepTime="${CLUSTER_BOOT_DELAY}"
+  fi
+
+  sleepProgressPrint "${sleepTime}"
 
   if printClusterStatus; then
 

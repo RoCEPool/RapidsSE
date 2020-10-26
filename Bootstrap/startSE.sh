@@ -12,6 +12,8 @@ readonly ROOT_DIR="${DIR}"
 readonly BOOT_FN="${DIR}/boot.fn"
 readonly SCRIPT_NAME=$(basename "$0")
 
+# How long to wait after starting all nodes, before executing the cluster initialisation.
+readonly CLUSTER_BOOT_DELAY=10
 
 ###############################################################################
 ### Significant Global Variables                                            ###
