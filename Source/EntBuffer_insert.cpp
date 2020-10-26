@@ -291,9 +291,9 @@ void EntBuffer::vCompact(void)
     
     RASSERT(!m_nFreeItems);
     
-    RASSERT(m_nItems > 10000);
+    //RASSERT(m_nItems > 10000);
     
-    RASSERT(nFreeBytes() < C_1KB);
+    //RASSERT(nFreeBytes() < C_1KB);
   }
 
   m_nFreeItems = 0;
@@ -534,6 +534,15 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
     pInsertIntoBuffer = this;
   else {
     
+    
+    if (m_nItems < 10000) {
+      vTraceWhere();
+      vDipStick();
+      vShow(true);
+    }
+    
+    
+    
     //vTrace("InsertableBuffer : compacting\n"_Stz);
     
     RASSERT(m_nItems > 10000);
@@ -637,17 +646,17 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   
   Ent_gen* pEnt_gen = (Ent_gen*)aInsertedEntry;
   
-  if (m_iBufferHeight && aPrevEnt != aSkipRoots()) {
-    
-    EntBuffer* pChildBufferA = EntBuffer::pRefdEntBuffer(aPrevEnt);
-    EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aInsertedEntry);
-
-    if (pChildBufferA->pNextBuffer() != pChildBufferB) {
-      pChildBufferA->vDipStick();
-      vVerifyFault(__func__,__FILE__,__LINE__);
-    }
-    
-  }
+//  if (m_iBufferHeight && aPrevEnt != aSkipRoots()) {
+//    
+//    EntBuffer* pChildBufferA = EntBuffer::pRefdEntBuffer(aPrevEnt);
+//    EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aInsertedEntry);
+//
+//    if (pChildBufferA->pNextBuffer() != pChildBufferB) {
+//      pChildBufferA->vDipStick();
+//      vVerifyFault(__func__,__FILE__,__LINE__);
+//    }
+//    
+//  }
   
   m_nInsert++;
   
