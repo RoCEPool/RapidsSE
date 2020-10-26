@@ -11,10 +11,10 @@ _customer
 _orders
 _lineitem_dates
 
-//_lineitemIndex
+_lineitemIndex
 
-// /time CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPINSTRUCT);
-/time CREATE INDEX lineitem_idx1 ON lineitem(L_SHIPDATE);
+//time CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPINSTRUCT);
+// /time CREATE INDEX lineitem_idx1 ON lineitem(L_SHIPDATE);
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Load LineItem";
