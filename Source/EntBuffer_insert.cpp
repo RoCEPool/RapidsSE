@@ -1297,6 +1297,7 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
 //#ifdef EB_TRACE_INSERT
   vTraceWhere();
   vTrace(">> pNewInsertIntoSplit\n"_Stz);
+  vDipStick();
 //#endif
 
   EntBuffer* pLeftBuffer = this;
@@ -1710,11 +1711,11 @@ void EntBuffer::vTraceWhere(void)
 
   Ent* aLastEnt = this->aLastEntry();
   
-  vTrace("%s{EB%lld+n%lld+i%lld+s%lld+m%lld+d%lld<EB%lld^EB%lld>EB%lld %s %s .. %s %s} "_Stz,
+  vTrace("%s{EB%lld+n%lld+f%lld+i%lld+s%lld+m%lld+d%lld<EB%lld^EB%lld>EB%lld %s %s .. %s %s} "_Stz,
          
          Stz::szHeight(m_iBufferHeight)
          
-         ,m_iBufferNo,m_nItems,m_nInsert,m_nSplit,m_nMove,m_nDelete
+         ,m_iBufferNo,m_nItems,nFreeBytes(),m_nInsert,m_nSplit,m_nMove,m_nDelete
          
          ,m_pPrevBuffer   ? _pEntBuffer(m_pPrevBuffer)->iBufferNo()   : -1
          ,m_pHigherBuffer ? _pEntBuffer(m_pHigherBuffer)->iBufferNo() : -1
