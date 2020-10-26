@@ -325,7 +325,7 @@
 /* call handler for operand                                                   */
 /*----------------------------------------------------------------------------*/
 : op__handle params| pHandler iOperandKind |
-
+/*
   LogicUnit[].diary@ if
 
     0 iOperandKind EG_ZK LogicUnit[].diaryNote
@@ -333,10 +333,11 @@
     1 iOperandKind EG_ZK LogicUnit[].diaryNote
 
   else
-
+*/
     pHandler execute
-
+/*
   then
+ */
 ;
 
 /*----------------------------------------------------------------------------*/

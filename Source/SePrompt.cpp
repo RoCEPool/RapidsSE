@@ -958,7 +958,7 @@ void SePrompt::vMakeDiaryDir(SeDeputy* pSeDeputy)
     ASSERT(b);
   }
   
-  pJobTagSet->vInsert(C_TAG_DIARYDIR,sDiaryPath);
+  //pJobTagSet->vInsert(C_TAG_DIARYDIR,sDiaryPath);
 }
 
 /*----------------------------------------------------------------------------*/

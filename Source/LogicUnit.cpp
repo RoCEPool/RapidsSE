@@ -379,8 +379,8 @@ void LogicUnit::vEnter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_oSince.vUpdate();
-  i8 nNanoSeconds = m_oSince.iNanoseconds();
+//  m_oSince.vUpdate();
+//  i8 nNanoSeconds = m_oSince.iNanoseconds();
   
 //  vTrace("Enter (%lld.%lld) %s %lld %lld\n"_Stz,
 //         m_xRluCommon.m_iSql,
@@ -391,10 +391,10 @@ void LogicUnit::vEnter(void)
 //         m_xRluCommon.m_nEnterCount,
 //         nNanoSeconds);
   
-  vDiaryNote(EG_ED,ED_ENTER,
-              m_xRluCommon.m_nEnterCount,
-              nNanoSeconds,
-              0,0,0,-1);
+//  vDiaryNote(EG_ED,ED_ENTER,
+//              m_xRluCommon.m_nEnterCount,
+//              nNanoSeconds,
+//              0,0,0,-1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -404,8 +404,8 @@ void LogicUnit::vExit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
     
-  m_oSince.vUpdate();
-  i8 nNanoSeconds = m_oSince.iNanoseconds();
+//  m_oSince.vUpdate();
+//  i8 nNanoSeconds = m_oSince.iNanoseconds();
   
 //  vTrace("Exit (%lld.%lld) %s %lld %lld\n"_Stz,
 //         m_xRluCommon.m_iSql,
@@ -416,10 +416,10 @@ void LogicUnit::vExit(void)
 //         m_xRluCommon.m_nEnterCount,
 //         nNanoSeconds);
 
-  vDiaryNote(EG_ED,ED_EXIT,
-             m_xRluCommon.m_nEnterCount,
-             nNanoSeconds,
-             0,0,0,-1);
+//  vDiaryNote(EG_ED,ED_EXIT,
+//             m_xRluCommon.m_nEnterCount,
+//             nNanoSeconds,
+//             0,0,0,-1);
 }
 
 /*----------------------------------------------------------------------------*/

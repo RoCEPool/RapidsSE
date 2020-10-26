@@ -87,7 +87,7 @@ print "loading Lineitem...";
 
 compactIdx LineItem lineItem_Idx1;
 compactIdx LineItem lineItem_Idx2;
-/*
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print "*****************************************************************";
 print "executing Query1...";
@@ -153,8 +153,7 @@ where
 group by
   o_orderpriority order by
   o_orderpriority;
- 
-*/
+
 print "*****************************************************************";
 print "executing Query6...";
 
