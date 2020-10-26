@@ -1371,10 +1371,15 @@ function updateDefaults() {
   readarray -t sortedTotalShm < <(printf '%s\n' "${NODE_TOTAL_SHM[@]}"  | sort -n)
   readarray -t sortedFreeShm < <(printf '%s\n' "${NODE_FREE_SHM[@]}"   | sort -n)
 
-  local minCoreCount="${sortedCoreCount[0]}"
-  local minTotalMem="${sortedTotalMem[0]}"
-  local minTotalShm="${sortedTotalShm[0]}"
-  local minFreeShm="${sortedFreeShm[0]}"
+  local minCoreCount
+  local minTotalMem
+  local minTotalShm
+  local minFreeShm
+
+  minCoreCount="$(arrayGetMinNonNegativeValue "${sortedCoreCount[@]}")"
+  minTotalMem="$(arrayGetMinNonNegativeValue "${sortedTotalMem[0]}")"
+  minTotalShm="$(arrayGetMinNonNegativeValue "${sortedTotalShm[0]}")"
+  minFreeShm="$(arrayGetMinNonNegativeValue "${sortedFreeShm[0]}")"
 
   debugPrint "minCoreCount = ${minCoreCount}"
   debugPrint "minTotalMem  = ${minTotalMem}"
@@ -1385,9 +1390,44 @@ function updateDefaults() {
   # TODO: How do we set the partitions, threads and shm from this?
   # TODO: Account for the fact that the minimum values may be -1.
 
+  # Partitions should be equal to the number of cores, with a minimum of 1.
+  
 
+  # Threads should be 4x partitions + 8. Minimum 16.
+  # Memory should be set to 95% of system RAM. Minimum 4GB.
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns the minimum, non-negative value in an array. Integer or decimal.
+## Returns -1 if there are no non-negative values.
+## Params:
+##  $@ : the array of values
 
+function arrayGetMinNonNegativeValue() {
+  local arr=("$@")
+  local min="-1"
+
+  for i in "${arr[@]}"
+  do
+    if [[ ! "$i" =~ -?[0-9]+(\.[0-9]*)? ]]; then
+      # Not a number
+      continue
+    fi
+
+    if [ "${min}" -eq -1 ]; then
+      # This is the first min value
+      min="$i"
+      continue
+    fi
+
+    if [ "$(echo "$i < ${min}" | bc -l)" -eq 1 ]; then
+      # This is a new min value
+      min="$i"
+      continue
+    fi
+  done
+
+  echo "${min}"
+  true
+}
 

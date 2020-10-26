@@ -161,7 +161,8 @@ namespace Indexing
     void        vAnalyze(i8& iBuffers, i8& iEntries);
     void        vBuildSkipListSorted(void);
     void        vDeleteEntry(Ent** aaEnt);
-    void        vDeleteUpwards(eDU eReason, Ent* aDeleteEntry, EntBuffer** ppRootBuffer);
+    void        vDeleteUpwards(eDU eReason, Ent* aDeleteEntry, i8 iRefdBufferNo,
+                               EntBuffer** ppRootBuffer);
     void        vDump(bool bEntries = true);
     EntBuffer*  pFirstChildBuffer(void);
     Ent*        aInsertEntAbs(Ent* aEntry);

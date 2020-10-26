@@ -251,7 +251,7 @@ function validateHostsReachableBySsh() {
   do
 
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "-o" "PasswordAuthentication no" "${host}" "exit" "0")
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "-o" "PasswordAuthentication no" "-o" "ConnectTimeout 10" "${host}" "exit" "0")
 
     # Run it, in parallel
     (

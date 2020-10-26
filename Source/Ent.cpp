@@ -223,7 +223,7 @@ void Ent::vKind(eKE eKind)
 /*----------------------------------------------------------------------------*/
 tET Ent::tNextEntry(i8 i_Level)
 {
-  ASSERT(i_Level >= 0 && i_Level < C_MAX_LVL_LEVELS);
+  RASSERT(i_Level >= 0 && i_Level < C_MAX_LVL_LEVELS);
 
   tET tNextEntry = m_taNextEntry[i_Level];
   
@@ -235,7 +235,7 @@ tET Ent::tNextEntry(i8 i_Level)
 /*----------------------------------------------------------------------------*/
 void Ent::vNextEntry(i8 i_Level, tET tNextEntry)
 {
-  ASSERT(i_Level >= 0 && i_Level < C_MAX_LVL_LEVELS);
+  RASSERT(i_Level >= 0 && i_Level < C_MAX_LVL_LEVELS);
 
   m_taNextEntry[i_Level] = tNextEntry;
 }
