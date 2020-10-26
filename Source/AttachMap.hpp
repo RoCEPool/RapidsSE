@@ -26,6 +26,7 @@ namespace StorageEngine
     s256  m_sLogTxtFile;
     
     struct {
+      bool   m_bDebugIndex;    // debug index
       bool   m_bDebugMode;     // debug mode
       bool   m_bDeveloper;     // developer mode
       i8     m_nDummyLoop;     // loop count for dummy threads

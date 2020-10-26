@@ -59,6 +59,7 @@ namespace Arguments
     s256 m_sCommand;         // command to run
     i8   m_iCondCode;        // conditional compilation cond value
     bool m_bConfig;          // print configuration information
+    bool m_bDebugIndex;      // debug indexes
     bool m_bDebugMode;       // debug mode
     bool m_bDeveloper;       // user is a developer
     bool m_bDontFree;        // dont actually free objects back to heap

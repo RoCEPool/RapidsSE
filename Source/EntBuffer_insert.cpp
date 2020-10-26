@@ -775,16 +775,19 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
          i_Insert,spRef.sz(aEnt->wRef()),spKey.sz(aEnt->aKey(),pIndexDef));
 #endif
   
-#ifdef EB_LOCAL_VERIFY
+  if (AM::bDebugIndex() && (0 == i_Insert % 1000 || i_Insert > 280280))
+    vTrace("aInsertEntTree: %lld\n"_Stz,i_Insert);
+  
+//#ifdef EB_LOCAL_VERIFY
 
-  if (3094 == i_Insert) {
+  if (AM::bDebugIndex() && 280283 == i_Insert) {
 //    (*ppRootEntBuffer)->vShowTree(true);
 
     vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
     vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
     vTrace(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   }
-#endif
+//#endif
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -815,9 +818,14 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-#ifdef EB_LOCAL_VERIFY
-  (*ppRootEntBuffer)->bVerify();
-#endif
+//#ifdef EB_LOCAL_VERIFY
+  //if (i_Insert > 100000)
+  if (AM::bDebugIndex() && (0 == i_Insert % 1000 || i_Insert > 280280)) {
+    vTrace("Verifying...\n"_Stz);
+    (*ppRootEntBuffer)->bVerify();
+    vTrace("Verified\n"_Stz);
+  }
+//#endif
   
   return aInsertedEnt;
 }

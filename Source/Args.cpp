@@ -69,6 +69,7 @@ Args::Args(void)
   // options
   m_bConfig          = true;
   m_iCondCode        = 0;
+  m_bDebugIndex      = false;
   m_bDebugMode       = false;
   m_bDeveloper       = false;
   m_bDontFree        = false;
@@ -267,6 +268,12 @@ bool Args::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--config"_Stz)) {
       m_bConfig = true;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--debugIndex"_Stz)) {
+      m_bDebugIndex = true;
       continue;
     }
     

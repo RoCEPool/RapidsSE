@@ -31,6 +31,7 @@ namespace Oblique
   {
   public:
     // args
+    static bool bDebugIndex(void);
     static bool bDebugMode(void);
     static bool bDeveloper(void);
     static Stz* szCommand(void);

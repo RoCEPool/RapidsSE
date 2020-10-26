@@ -259,6 +259,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
+  Arg.m_bDebugIndex      = pArgs->m_bDebugIndex;
   Arg.m_bDebugMode       = pArgs->m_bDebugMode;
   Arg.m_bDeveloper       = pArgs->m_bDeveloper;
   Arg.m_nDummyLoop       = pArgs->m_nDummyLoop;

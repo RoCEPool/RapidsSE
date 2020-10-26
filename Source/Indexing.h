@@ -22,7 +22,13 @@ namespace Indexing
 #include "KeyBuilder.hpp"
 
 #include "SkipRoots.hpp"
+
+//#define EB_TRACE_INSERT
+//#define EB_LOCAL_VERIFY
+//#define EB_SPLIT_RIGHT
 #include "EntBuffer.hpp"
+
+
 #include "EntBufSorter.hpp"
 
 #include "IndexTree.hpp"
