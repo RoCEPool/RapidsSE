@@ -14,21 +14,22 @@ namespace Indexing
   friend class IndexTree;
 
   protected:
-    Index*    m_pIndex;     // index this buffer belongs to
-    IndexDef* m_pIndexDef;  // indexDef this buffer belongs to
-    SkipRoots m_xSkipRoots; // skip roots
-    Ent*      m_aLazyChain; // first lazy entry
-    
-    eKE       m_eEntKind;   // what kind of entries are in this buffer?
+    Index*     m_pIndex;     // index this buffer belongs to
+    IndexDef*  m_pIndexDef;  // indexDef this buffer belongs to
+    IndexTree* m_pIndexTree; // indexDef this buffer belongs to
+    eKE        m_eEntKind;   // what kind of entries are in this buffer?
   
-    i8        m_nInsert;              // insert into this buffer
-    i8        m_nSplit;               // splits of this buffer
-    i8        m_nMove;                // moves into of this buffer
-    i8        m_nDelete;              // delete into this buffer
-    i8        m_nInsertEntUpwards;    // number of active aInsertEntUpwards()
-    i8        m_nNewInsertIntoSplit;  // number of active pNewInsertIntoSplit()
-    i8        m_nNewInsertIntoRight;  // number of active pNewInsertIntoRight()
-    i8        m_nTabs;                // trace tab depth
+    SkipRoots  m_xSkipRoots; // skip roots
+    Ent*       m_aLazyChain; // first lazy entry
+
+    i8  m_nInsert;              // insert into this buffer
+    i8  m_nSplit;               // splits of this buffer
+    i8  m_nMove;                // moves into of this buffer
+    i8  m_nDelete;              // delete into this buffer
+    i8  m_nInsertEntUpwards;    // number of active aInsertEntUpwards()
+    i8  m_nNewInsertIntoSplit;  // number of active pNewInsertIntoSplit()
+    i8  m_nNewInsertIntoRight;  // number of active pNewInsertIntoRight()
+    i8  m_nTabs;                // trace tab depth
 
     // must be last
     Footer m_xFooter;

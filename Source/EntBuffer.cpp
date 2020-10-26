@@ -65,10 +65,12 @@ EntBuffer::EntBuffer(eKE eEntKind)
   
   m_pIndex      = nullptr;
   m_pIndexDef   = nullptr;
+  m_pIndexTree  = nullptr;
+  m_eEntKind    = eEntKind;
+
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
   
-  m_eEntKind    = eEntKind;
   
   m_nInsert             = 0;
   m_nSplit              = 0;
