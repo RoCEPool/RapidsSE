@@ -730,7 +730,8 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
   
   ASSERT(! m_pRootEntBuffer);
   
-  m_pRootEntBuffer = new EntBuffer(m_pIndex ? m_pIndex->pIndexDef()->eKeyKind()
+  m_pRootEntBuffer = new EntBuffer(this,
+                                   m_pIndex ? m_pIndex->pIndexDef()->eKeyKind()
                                    : m_pIndexDef->eKeyKind());
   m_pRootEntBuffer->vIndex(m_pIndex);
   m_pRootEntBuffer->vIndexDef(m_pIndexDef);

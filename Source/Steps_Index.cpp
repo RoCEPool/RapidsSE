@@ -288,7 +288,7 @@ void Step::vIndexGenEntBuffer(void)
   
   EntWrk oEntWrk;
   
-  EntBuffer* pEntBuffer = new EntBuffer(pIndexDef->eKeyKind());
+  EntBuffer* pEntBuffer = new EntBuffer(nullptr,pIndexDef->eKeyKind());
   
   pEntBuffer->vIsPermanent(false);
   
@@ -362,7 +362,7 @@ void Step::vIndexGenEntBuffers(void)
   while (nBuffers) {
     
     pPrevBuffer = pEntBuffer;
-    pEntBuffer = new EntBuffer(pIndexDef->eKeyKind());
+    pEntBuffer = new EntBuffer(nullptr,pIndexDef->eKeyKind());
     
     // set root buffer
     if ( ! pRootBuffer )

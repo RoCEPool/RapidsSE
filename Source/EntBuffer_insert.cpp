@@ -321,7 +321,7 @@ void EntBuffer::vCompactLeft(void)
   m_nFreeSize  = 0;
 
   EntBuffer* pThisBuffer = this;
-  EntBuffer* pTempBuffer = new EntBuffer(m_eEntKind);
+  EntBuffer* pTempBuffer = new EntBuffer(m_pIndexTree,m_eEntKind);
   
   //IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
@@ -1173,7 +1173,7 @@ EntBuffer* EntBuffer::pNewHigherBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // create new buffer at one higher index level
-  EntBuffer* pNewBuffer = new EntBuffer(m_eEntKind);
+  EntBuffer* pNewBuffer = new EntBuffer(m_pIndexTree,m_eEntKind);
   
   pNewBuffer->vIndex(m_pIndex);
   pNewBuffer->vIndexDef(m_pIndexDef);
@@ -1480,7 +1480,7 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // create new buffer at the same index level and link the two buffers
-  EntBuffer* pNewBuffer = new EntBuffer(m_eEntKind);
+  EntBuffer* pNewBuffer = new EntBuffer(m_pIndexTree,m_eEntKind);
   
   pNewBuffer->vIndex(m_pIndex);
   pNewBuffer->vIndexDef(m_pIndexDef);

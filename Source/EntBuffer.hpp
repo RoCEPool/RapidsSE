@@ -15,9 +15,10 @@ namespace Indexing
 
   protected:
     Index*     m_pIndex;     // index this buffer belongs to
+    eKE        m_eEntKind;   // what kind of entries are in this buffer?
+
     IndexDef*  m_pIndexDef;  // indexDef this buffer belongs to
     IndexTree* m_pIndexTree; // indexDef this buffer belongs to
-    eKE        m_eEntKind;   // what kind of entries are in this buffer?
   
     SkipRoots  m_xSkipRoots; // skip roots
     Ent*       m_aLazyChain; // first lazy entry
@@ -39,7 +40,7 @@ namespace Indexing
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    EntBuffer(eKE eEntKind);
+    EntBuffer(IndexTree* pIndexTree, eKE eEntKind);
    ~EntBuffer(void) noexcept(false);
 
     static void vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0);
