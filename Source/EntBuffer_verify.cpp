@@ -576,10 +576,12 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
       //vDump();
       
-      vTrace("Buffer %lld -> ChildBufferA %lld -/-> ChildBufferB %lld\n"_Stz,
+      vTrace("Buffer %lld -> ChildBufferA %lld -/-> ChildBufferB %lld; ChildBufferA -> %lld\n"_Stz,
              this->iBufferNo(),
              pChildBufferA->iBufferNo(),
-             pChildBufferB->iBufferNo());
+             pChildBufferB->iBufferNo(),
+             pChildBufferA->pNextBuffer()->iBufferNo()
+             );
 
       
       vShow(true,aEnt);

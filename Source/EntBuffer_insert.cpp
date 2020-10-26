@@ -367,7 +367,8 @@ void EntBuffer::vCompactLeft(void)
 /*----------------------------------------------------------------------------*/
 /* delete upwards                                                             */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vDeleteUpwards(eDU eReason, Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
+void EntBuffer::vDeleteUpwards(eDU eReason, Ent* aDeleteEntry, i8 iRefdBufferNo,
+                               EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -407,10 +408,17 @@ void EntBuffer::vDeleteUpwards(eDU eReason, Ent* aDeleteEntry, EntBuffer** ppRoo
       goto L_Return;
   }
   
+  // ray
+  if (aEntryToBeDeleted->iBuffer() != iRefdBufferNo) {
+    vShow(true);
+    RASSERT(aEntryToBeDeleted->iBuffer() == iRefdBufferNo);
+  }
+  
   aFirstEntry = this->aLeadEntry();
   if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer) {
     EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
-    pHigherBuffer->vDeleteUpwards(DU_HIGH_LEFT_LEAD,aDeleteEntry,ppRootBuffer);
+    pHigherBuffer->vDeleteUpwards(DU_HIGH_LEFT_LEAD,aDeleteEntry,m_iBufferNo,
+                                  ppRootBuffer);
   }
   
   vDeleteEntry(&aEntryToBeDeleted);
@@ -477,7 +485,8 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   
   if (aOriginalFirstEntry) {
     EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
-    pHigherBuffer->vDeleteUpwards(DU_HIGH_LEFT_LEAD,aOriginalFirstEntry,ppRootBuffer);
+    pHigherBuffer->vDeleteUpwards(DU_HIGH_LEFT_LEAD,aOriginalFirstEntry,m_iBufferNo,
+                                  ppRootBuffer);
     //(*ppRootBuffer)->vShowTree();
   }
   
@@ -578,7 +587,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  ASSERT(aEnt->nSkipLevels());
+  RASSERT(aEnt->nSkipLevels());
   
   aEnt->vKind(m_eEntKind);
   i8 nEntSizeBytes = aEnt->nSizeBytes();
@@ -592,14 +601,14 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   if (m_aFreeSpare && m_nFreeSize == nEntSizeBytes) {
     aInsertedEntry = (Ent*)m_aFreeSpare;
     aInsertedEntry->rxRef().vFree(false);
-    ASSERT(aInsertedEntry);
+    RASSERT(aInsertedEntry);
     m_aFreeSpare = nullptr;
     m_nFreeSize  = 0;
     m_nItems++;
   }
   else {
     aInsertedEntry = aAllotEntry(nEntSizeBytes);
-    ASSERT(aInsertedEntry);
+    RASSERT(aInsertedEntry);
   }
     
   
@@ -621,6 +630,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
     EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aInsertedEntry);
 
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
+      pChildBufferA->vDipStick();
       vVerifyFault(__func__,__FILE__,__LINE__);
     }
     
@@ -658,7 +668,7 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  ASSERT(aEnt->nSkipLevels());
+  RASSERT(aEnt->nSkipLevels());
   
   aEnt->vKind(m_eEntKind);
   i8 nEntSizeBytes = aEnt->nSizeBytes();
@@ -669,7 +679,7 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
   // allocate space for the key and next offsets in this buffer
   
   Ent* aInsertedEntry = aAllotEntry(nEntSizeBytes);
-  ASSERT(aInsertedEntry);
+  RASSERT(aInsertedEntry);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
