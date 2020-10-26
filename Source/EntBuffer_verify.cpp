@@ -575,6 +575,15 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
     // child A should point to child B
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
       //vDump();
+      
+      vTrace("Buffer %lld -> ChildBufferA %lld -/-> ChildBufferB %lld; ChildBufferA -> %lld\n"_Stz,
+             this->iBufferNo(),
+             pChildBufferA->iBufferNo(),
+             pChildBufferB->iBufferNo(),
+             pChildBufferA->pNextBuffer()->iBufferNo()
+             );
+
+      
       vShow(true,aEnt);
       vShowTree(true);
       vVerifyFault(__func__,__FILE__,__LINE__);

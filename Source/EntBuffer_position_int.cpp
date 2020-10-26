@@ -443,55 +443,59 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
     ASSERT( ! m_aLazyChain );
   #endif
     
-    i8 nLvlLevels = AM::nLvlLevels();
+  i8 nLvlLevels = AM::nLvlLevels();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
+    aPriorVec[i_Level] = aSkipRoots();
+  
+  if (nItems() == 0)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 iFindLevels = aToEntry ? (aToEntry->nSkipLevels() - 1)
+                              : (nLvlLevels - 1);
+  
+  Ent* aNextEntry_sl = nullptr;
+  
+  bool bGreaterEqual;
+  Ent* aScanEntry_sl = aSkipRoots();
+  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
-      aPriorVec[i_Level] = aSkipRoots();
-    
-    if (nItems() == 0)
-      return;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    i8 iFindLevels = aToEntry ? (aToEntry->nSkipLevels() - 1)
-                                : (nLvlLevels - 1);
-    
-    bool bGreaterEqual;
-    Ent* aScanEntry_sl = aSkipRoots();
-    for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+    i8 iItemAtScanLevel = 0;
+    aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
+    while (aNextEntry_sl) {
       
-      i8 iItemAtScanLevel = 0;
-      Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
-      while (aNextEntry_sl) {
-        
-        if (aToEntry == aNextEntry_sl)
+      if (aToEntry == aNextEntry_sl)
+        break;
+      
+      Key* aNextKey = _aKey(aNextEntry_sl->ayElmSeq());
+      
+      i8 iNextInt = aNextEntry_sl->iIntElm0();
+      i8 iWithInt = *(i8*)aWithKey;
+      
+      //bGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
+      bGreaterEqual = (iNextInt >= iWithInt);
+
+      if (bGreaterEqual) {
+        if (! aToEntry || aNextEntry_sl == aToEntry)
           break;
         
-        Key* aNextKey = _aKey(aNextEntry_sl->ayElmSeq());
-        
-        i8 iNextInt = aNextEntry_sl->iIntElm0();
-        i8 iWithInt = *(i8*)aWithKey;
-        
-        //bGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
-        bGreaterEqual = (iNextInt >= iWithInt);
-
-        if (bGreaterEqual) {
-          if (! aToEntry || aNextEntry_sl == aToEntry)
-            break;
-          
-          if (i_ScanLevel > iFindLevels)
-            break;
-        }
-        
-        Ent* aPriorEntry_sl = aScanEntry_sl;
-        aScanEntry_sl = aNextEntry_sl;
-        aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
-        iItemAtScanLevel++;
+        if (i_ScanLevel > iFindLevels)
+          break;
       }
-      aPriorVec[i_ScanLevel] = aScanEntry_sl;
+      
+      Ent* aPriorEntry_sl = aScanEntry_sl;
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
+      iItemAtScanLevel++;
     }
+    aPriorVec[i_ScanLevel] = aScanEntry_sl;
+  }
+  
+  RASSERT(aToEntry == aNextEntry_sl)
 
 }
 
