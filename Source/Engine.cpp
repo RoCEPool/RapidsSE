@@ -1001,7 +1001,7 @@ void Engine::vMungeCheck(void)
 /*----------------------------------------------------------------------------*/
 /* operand queue report                                                       */
 /*----------------------------------------------------------------------------*/
-void Engine::vOperandQueueReport(void)
+void Engine::vOperandQueueReport(bool bStdOut)
 {
   s256 sPath = "../tmp/OpdqReport.txt"_Stz;
   
@@ -1011,7 +1011,7 @@ void Engine::vOperandQueueReport(void)
   
   JobList* pJobPttList = AM::pParticipatingJobs();
   pJobPttList->vGrabLock();
-  pJobPttList->vOperandQueueReport(pFile);
+  pJobPttList->vOperandQueueReport(pFile,bStdOut);
   pJobPttList->vDropLock();
 
   pFile->vClose();

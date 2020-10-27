@@ -25,7 +25,15 @@ bool Prompt::bPrompt_opdq(SePrompt* pPrompt)
 {
   vTrace("Operand Queue Report\n"_Stz);
 
-  Engine::vOperandQueueReport();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  i8 iNumTokens = pInpTknVec->nItems();
+
+  bool bStdOut = false;
+  if (2 == iNumTokens)
+    bStdOut = StrLib::bToBool(pInpTknVec->pGet(1)->azChars());
+  
+  
+  Engine::vOperandQueueReport(bStdOut);
   
   return true;
 }

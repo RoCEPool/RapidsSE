@@ -30,14 +30,14 @@ print section "Load LineItem";
 // /tags /time /summary /diary fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv"      <max_errors> =  100 <note> = "SF1";
 // /time /summary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10";
 
-/bg /time /summary fload customer "/Users/Shared/tpch/SF10/customer.csv"     <max_errors> =  100 <note> = "SF10";
+/bg /time /summary fload customer "/Users/Shared/tpch/SF10/customer.csv"     <max_errors> =  100 <note> = "SF10-Customer";
 
-// /bg /time /summary /diary fload orders "/Users/Shared/tpch/SF10/orders.csv"     <max_errors> =  100 <note> = "SF10";
+/bg /time /summary fload orders "/Users/Shared/tpch/SF10/orders.csv"     <max_errors> =  100 <note> = "SF10-Orders";
 
-// /bg /time /summary /diary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10";
+/bg /time /summary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10-LineItem";
 
 sleep 3;
-opdq;
+opdq false;
 
 //space;
 //sztbl lineitem;
