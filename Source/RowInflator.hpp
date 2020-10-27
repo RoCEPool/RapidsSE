@@ -595,7 +595,7 @@ namespace CompactBuffers
   
   i8 i_ColSet = 0;
   i8 i_ColToRetrieve = iaColSet[i_ColSet];
-  RASSERT(-1 != i_ColToRetrieve);
+  //RASSERT(-1 != i_ColToRetrieve);
   
   for (i8 i_Col = 0; /*none*/; i_Col++) {
     
@@ -813,35 +813,35 @@ namespace CompactBuffers
         break;
         
       case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
-        nStrSize = STRx1(uLow);
+        //nStrSize = STRx1(uLow);
         
         if (SI_ADDRESS == (eSI)ieStrInflate) {
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
           
-          ayDataByte += nStrSize;
+          ayDataByte += uLow;
         }
         else
           if (SI_AREA_ADR == (eSI)ieStrInflate) {
-          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
-          ayDataByte += nStrSize;
+          memcpy(acStrArea,ayDataByte,(size_t)uLow);
+          ayDataByte += uLow;
           
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = acStrArea;
           ayDstByte += 8;
-          acStrArea += nStrSize;
+          acStrArea += uLow;
         }
         else
         if (SI_DEST_PST == (eSI)ieStrInflate) {
-          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
-          ayDataByte += nStrSize;
+          memcpy(ayDstByte,ayDataByte,(size_t)uLow);
+          ayDataByte += uLow;
           
           //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((nStrSize) / 8) * 8) + 16;
+          ayDstByte += (((uLow) / 8) * 8) + 16;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = uLow - 1;
           ayDstByte += 8;
         }
         else {
@@ -1071,7 +1071,7 @@ namespace CompactBuffers
       RASSERT(0);
     }
     else {
-      RASSERT(KE_INT == pIndexDef->eKeyKind());
+      ASSERT(KE_INT == pIndexDef->eKeyKind());
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
